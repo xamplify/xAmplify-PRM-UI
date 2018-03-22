@@ -162,7 +162,7 @@
 								{{model.displayName}}</span> <i class="fa fa-angle-down"></i>
 					</a>
 						<ul class="dropdown-menu dropdown-menu-default">
-							<li><a [routerLink]="['/home/dashboard/myprofile']"> <i
+							<li *ngIf="authenticationService.user.hasCompany"><a [routerLink]="['/home/dashboard/myprofile']"> <i
 									class="icon-user"></i> My Profile
 							</a></li>
 							<li *ngIf="(authenticationService.module.isOrgAdmin || isUser)">

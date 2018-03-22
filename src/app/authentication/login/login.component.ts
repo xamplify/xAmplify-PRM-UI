@@ -44,17 +44,8 @@ export class LoginComponent implements OnInit, OnDestroy {
             if (localStorage.getItem('currentUser')) {
                 this.xtremandLogger.log("User From Local Storage");
                 const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-                const roles = currentUser.roles;
-                const roleNames = roles.map(function (a) { return a.roleName; });
-                if (roles.length === 1 || this.isOnlyPartner(roleNames)) {
-                    this.xtremandLogger.log("User Or Company Partner");
-                    this.router.navigate(['/home/dashboard/myprofile']);
-                } else {
-                    this.xtremandLogger.log("Going To DashBoard");
-                    this.router.navigate(['/home/dashboard/default']);
-                }
-
-                return false
+                this.redirectTo(currentUser);
+                return false;
             } else {
                 const userName = this.model.username.toLowerCase();
                 this.referenceService.userName = userName;
@@ -66,18 +57,7 @@ export class LoginComponent implements OnInit, OnDestroy {
                         const currentUser = JSON.parse(localStorage.getItem('currentUser'));
                         this.xtremandLogger.log(currentUser);
                         this.xtremandLogger.log(currentUser.hasCompany);
-                        const roles = currentUser.roles;
-                        const roleNames = roles.map(function (a) { return a.roleName; });
-                        if (currentUser.hasCompany) {
-                            this.router.navigate(['/home/dashboard/default']);
-                        } else {
-                            if (roles.length === 1 || this.isOnlyPartner(roleNames)) {
-                                this.router.navigate(['/home/dashboard/myprofile']);
-                            } else {
-                                this.router.navigate(['/home/dashboard/add-company-profile']);
-                            }
-                        }
-
+                        this.redirectTo(currentUser);
                         // if user is coming from any link
                         if (this.authenticationService.redirectUrl) {
                             this.router.navigate([this.authenticationService.redirectUrl]);
@@ -106,6 +86,20 @@ export class LoginComponent implements OnInit, OnDestroy {
         }
     }
 
+    redirectTo(user:User){
+        const roles = user.roles;
+        if (user.hasCompany || roles.length === 1) {
+            this.router.navigate(['/home/dashboard/default']);
+        } else {
+            this.router.navigate(['/home/dashboard/add-company-profile']);
+           /* if (roles.length === 1 || this.isOnlyPartner(roleNames)) {
+                this.router.navigate(['/home/dashboard/myprofile']);
+            } else {
+                this.router.navigate(['/home/dashboard/add-company-profile']);
+            }*/
+        }
+    }
+    
     isOnlyPartner(roleNames) {
         if (roleNames.length === 2 && (roleNames.indexOf('ROLE_USER') > -1 && roleNames.indexOf('ROLE_COMPANY_PARTNER') > -1)) {
             this.xtremandLogger.log("*******************LoggedIn User Is Partner***********************")

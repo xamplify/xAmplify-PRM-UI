@@ -37,7 +37,15 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             if(url.indexOf("/dashboard")<0){
                return this.secureUrlByRole(url);
             }else{
-                return true;
+                if(url.indexOf("/myprofile")>-1){
+                    if(this.authenticationService.hasCompany()){
+                        return true;
+                    }else{
+                        this.goToAccessDenied();
+                    }
+                }else{
+                    return true;
+                }
             }
             
         }else{
