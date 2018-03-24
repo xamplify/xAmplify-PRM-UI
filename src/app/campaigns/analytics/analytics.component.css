@@ -307,3 +307,21 @@ tr>td>h6 {
 .crcb {
 	width: 100%;
 }
+
+.bg-color {
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	background-color: lightseagreen;
+	z-index: 0;
+	text-align: center;
+}
+
+.headerCss {
+	font-size: 12px;
+	font-weight: 500;
+}
+.td-chart {
+	position: relative;
+}

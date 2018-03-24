@@ -1,3 +1,97 @@
-<p>
-  partner-reports works!
-</p>
+<div class="page-content">
+  <div class="page-bar">
+    <ul class="page-breadcrumb">
+      <li>
+        <i class="fa fa-home"></i>
+        <a [routerLink]="['/']">Home</a>
+        <i class="fa fa-angle-right"></i>
+      </li>
+      <li (click)="gotoMange()">
+        <a>Manage Partners</a>
+        <i class="fa fa-angle-right"></i>
+      </li>
+      <li>
+        <a>analytics</a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12 col-sm-6 p5">
+        <div class="portlet light">
+            <div class="portlet-title">
+                <div class="caption">
+                  <i class="icon-bar-chart font-green-sharp hide"></i>
+                  <span class="caption-subject font-green-sharp uppercase"></span>
+                </div>
+                <div class="panel-title pull-right">
+                </div>
+              </div>
+          <div class="portlet-body">
+          </div>
+        </div>
+    </div>
+
+    <div class="col-xs-12 col-sm-6 p5">
+        <div class="portlet light">
+            <div class="portlet-title">
+                <div class="caption">
+                  <i class="icon-bar-chart font-green-sharp hide"></i>
+                  <span class="caption-subject font-green-sharp uppercase"></span>
+                </div>
+                <div class="panel-title pull-right">
+                </div>
+              </div>
+          <div class="portlet-body">
+          </div>
+        </div>
+      </div>
+
+  </div>
+  <div class="row">
+      <div class="col-xs-12 col-sm-6 p5">
+        <!-- BEGIN PORTLET-->
+        <div class="portlet light">
+          <div class="portlet-title">
+            <div class="caption">
+              <i class="icon-bar-chart font-green-sharp hide"></i>
+              <span class="caption-subject font-green-sharp uppercase">country wise partners</span>
+            </div>
+            <div class="panel-title pull-right">
+            </div>
+          </div>
+         	<div class="portlet-body text-center">
+              <app-worldmap *ngIf="worldMapdataReport" [worldMapData]='worldMapdataReport' (notifyParent)="clickWorldMapReports($event)"></app-worldmap>
+            </div>
+        </div>
+        <!-- END PORTLET-->
+      </div>
+      <div class="col-xs-12 col-sm-6 p5">
+        <div class="portlet light">
+          <div class="portlet-title">
+            <div class="caption">
+              <span class="caption-subject font-red-sunglo"> campaigns lauched by partners</span>
+            </div>
+          </div>
+          <div class="portlet-body text-center">
+            <table class="table tgrid">
+              <thead>
+                <th class="headerCss center">Email-ID</th>
+                <th class="headerCss center">Campaigns</th>
+              </thead>
+              <tbody>
+                <tr>
+                <td>sathishcharykotha@gmail.com</td>
+                <td>0</td>
+              </tr> 
+               <tr>
+                  <td>sathishchary@gmail.com</td>
+                  <td>0</td>
+                </tr>
+              </tbody>
+              </table>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>

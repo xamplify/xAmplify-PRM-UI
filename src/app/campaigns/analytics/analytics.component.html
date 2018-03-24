@@ -1,33 +1,14 @@
 <style type="text/css">
-	.bg {
-		position: absolute;
-		left: 0;
-		top: 0;
-		bottom: 0;
-		background-color: lightseagreen;
-		z-index: 0;
-		text-align: center;
-	}
-
 	.td-new,
 	th {
 		padding: 2px;
 	}
-
-	.td-chart {
-		position: relative;
-	}
-
 	.disabled {
 		pointer-events: none;
 		;
 		cursor: not-allowed;
 	}
 
-	.headerCss {
-		font-size: 12px;
-		font-weight: 500;
-	}
 </style>
 
 <div class="page-content" [hidden]="isTimeLineView">
@@ -236,7 +217,7 @@
 											<h6>{{item.latestView |date:'MM/dd/yyyy @ h:mma'}}<span *ngIf="! item?.latestView">-</span></h6>
 										</td>
 										<td class="td-chart">
-											<div class="bg" [style.width.%]="(item.viewsCount/maxViewsValue)*100" style="margin: 10px 0px;">
+											<div class="bg-color" [style.width.%]="(item.viewsCount/maxViewsValue)*100" style="margin: 10px 0px;">
 												<span style="text-align: center;vertical-align: middle;color:white;position: absolute; bottom: 9px;font-size:16px">{{item.viewsCount}}</span>												</div>
 										</td>
 									</tr>
