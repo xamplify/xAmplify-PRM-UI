@@ -178,6 +178,12 @@
                                <a (click)="setPage(pagination.pager.totalPages)" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Last</a>
                            </li>
                       </ul>
+                      <select class="btn btn-primary" style="margin-left:150px;margin-bottom:47px;float: right;"
+													    [(ngModel)]="itemsSize" (ngModelChange)="getNumberOfItemsPerPage($event)">
+													  <option *ngFor="let itemPerPage of numberOfItemsPerPage" [ngValue]="itemPerPage">
+													    {{itemPerPage.name}}
+													  </option>
+											</select> 
 				</div>
 				<div *ngIf="pagination.totalRecords==0" class="alert alert-info"><strong>No Email Templates Found</strong></div>	
 			</div>

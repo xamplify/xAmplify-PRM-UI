@@ -156,9 +156,9 @@
 										<div class="col-sm-8">
 											<!-- <input type="text"  id="email"	placeholder="Email" class="form-control" [(ngModel)]="campaign.email" name="email" (input)="validateEmail(campaign.email);validateForm();validateField('email');" maxlength="200" />
 											<span class="pull-left" *ngIf="!isValidEmail &&campaign.email?.length>0" style="color: red">Invalid Email Id</span> -->
-										<select	class="form-control" name="campaign.email" [(ngModel)]="campaign.email" style="width: 100%">
-											<option *ngFor="let emailId of teamMemberEmailIds" [ngValue]="emailId">
-											    {{emailId}}
+										<select	class="form-control" name="campaign.email" [(ngModel)]="campaign.email" style="width: 100%" (change)="setFromName()">
+											<option *ngFor="let teamMember of teamMemberEmailIds" [ngValue]="teamMember.emailId" >
+											    {{teamMember.emailId}}
 									  		</option>
 										</select>
 										</div>

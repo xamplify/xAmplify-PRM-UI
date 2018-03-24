@@ -92,7 +92,6 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
 
     listEmailTemplates( pagination: Pagination ) {
             this.refService.loading(this.httpRequestLoader, true);
-            this.pagination.maxResults = 12;
             this.emailTemplateService.listTemplates( pagination, this.loggedInUserId)
                 .subscribe(
                 ( data: any ) => {
@@ -211,6 +210,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
             Layout.init();
             Demo.init();
             // TableManaged.init();
+            this.pagination.maxResults = this.itemsSize.value;
             this.listEmailTemplates( this.pagination );
         } catch ( error ) {
             this.refService.showError( error, "ngOnInit", "ManageTemplatesComponent" );
@@ -325,5 +325,5 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
        // $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
         $("#show_email_template_preivew").modal('show');
     }
-   
+    
 }

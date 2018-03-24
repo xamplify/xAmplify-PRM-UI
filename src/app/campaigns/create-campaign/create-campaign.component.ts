@@ -61,7 +61,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     campaignContact:CampaignContact=new CampaignContact();
     campaignEmailTemplate:CampaignEmailTemplate = new CampaignEmailTemplate();
     names:string[]=[];
-    teamMemberEmailIds:string[] = [];
+    teamMemberEmailIds:any[] = [];
     editedCampaignName:string = "";
     isAdd:boolean = true;
     name:string = "";
@@ -504,7 +504,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
          var isValid = true;
          let self = this;
         $('#campaignDetailsForm input[type="text"]').each(function() {
-            if ( $(this).val().trim() === '' ){
+            if ($.trim($(this).val())=== '' ){
               isValid = false;
           }
              
@@ -529,7 +529,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
      }
      validateCampaignName(campaignName:string){
         // let lowerCaseCampaignName = campaignName.toLowerCase().trim().replace(/\s/g, "");//Remove all spaces
-         let lowerCaseCampaignName = campaignName.toLowerCase().trim();//Remove all spaces
+         let lowerCaseCampaignName = $.trim(campaignName.toLowerCase());//Remove all spaces
          var list = this.names[0];
          console.log(list);
          if(this.isAdd){
@@ -539,8 +539,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                  this.isValidCampaignName = true;
              }
          }else{
-             console.log(this.editedCampaignName+":::::::::"+lowerCaseCampaignName);
-             if($.inArray(lowerCaseCampaignName, list) > -1 && this.editedCampaignName!=lowerCaseCampaignName){
+             console.log(this.editedCampaignName.toLowerCase()+":::::::::"+lowerCaseCampaignName);
+             if($.inArray(lowerCaseCampaignName, list) > -1 && this.editedCampaignName.toLowerCase()!=lowerCaseCampaignName){
                  this.isValidCampaignName = false;  
              }else{
                  this.isValidCampaignName = true;
@@ -551,7 +551,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
      validateField(fieldId:string){
          var errorClass = "form-group has-error has-feedback";
          var successClass = "form-group has-success has-feedback";
-         let fieldValue = $('#'+fieldId).val().trim();
+         let fieldValue = $.trim($('#'+fieldId).val())
          if(fieldId=="campaignName"){
              if(fieldValue.length>0&&this.isValidCampaignName){
                  this.campaignNameDivClass = successClass;
@@ -1652,7 +1652,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             timeZoneId = Intl.DateTimeFormat().resolvedOptions().timeZone;
         }else{
          //   timeZoneId = this.campaignLaunchForm.value.timeZoneId;
-            timeZoneId = $('#timezoneId option:selected').val()
+            timeZoneId = $('#timezoneId option:selected').val();
         }
         let campaignType = CampaignType.REGULAR;
         if("regular"==this.campaignType){
@@ -1741,7 +1741,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         if(reply.defaultTemplate && reply.selectedEmailTemplateId==0){
             $('#'+reply.divId).addClass('portlet light dashboard-stat2 border-error');
             $('#email-template-'+reply.divId).css('color','red');
-        }else if(!reply.defaultTemplate &&(reply.subject==null || reply.subject==undefined || reply.subject.trim().length==0)){
+        }else if(!reply.defaultTemplate &&(reply.subject==null || reply.subject==undefined || $.trim(reply.subject).length==0)){
             $('#'+reply.divId).addClass('portlet light dashboard-stat2 border-error');
             $('#message-'+reply.divId).css('color','red');
         }
@@ -1793,7 +1793,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     }
     
     validateOnClickSubject(url:Url){
-        if( url.subject==null||url.subject==undefined ||url.subject.trim().length==0){
+        if( url.subject==null||url.subject==undefined || $.trim(url.subject).length==0){
             this.addReplyDivError(url.divId);
             console.log("Added Subject Eror");
             $('#click-subject-'+url.divId).css('color','red');
@@ -1801,7 +1801,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     }
     
     validateOnClickBody(url:Url){
-        if(url.body==null || url.body==undefined || url.body.trim().length==0){
+        if(url.body==null || url.body==undefined || $.trim(url.body).length==0){
             this.addReplyDivError(url.divId);
             $('#click-message-'+url.divId).css('color','red');
         }
@@ -1819,7 +1819,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             console.log("Email Template Error Added For Choose Template On");
             $('#'+url.divId).addClass('portlet light dashboard-stat2 border-error');
             $('#click-email-template-'+url.divId).css('color','red');
-        }else if(!url.defaultTemplate &&(url.body==null || url.body==undefined || url.body.trim().length==0)){
+        }else if(!url.defaultTemplate &&(url.body==null || url.body==undefined || $.trim(url.body).length==0)){
             console.log("Email Template Error Added For Choose Template Off");
             $('#'+url.divId).addClass('portlet light dashboard-stat2 border-error');
             $('#click-message-'+url.divId).css('color','red');
@@ -1977,7 +1977,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     
     saveCampaignOnDestroy(){
         var data = this.getCampaignData("");
-        if(data.scheduleCampaign==null || data.scheduleCampaign=="NOW" || $.trim(data.scheduleCampaign.length==0)){
+        if(data.scheduleCampaign==null || data.scheduleCampaign=="NOW" || $.trim(data.scheduleCampaign).length==0){
             data['scheduleCampaign'] = "SAVE";
         }
         var errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
@@ -1990,6 +1990,10 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 if(data.message=="success"){
                     this.isLaunched = true;
                     this.reInitialize();
+                    if("/home/campaigns/manage"==this.router.url){
+                      this.router.navigate(["/home/campaigns/manage"]);
+                    }
+                   
                 }
             },
             error => {
@@ -2325,16 +2329,26 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
          this.timezones = this.refService.getTimeZones().filter((item)=> item.countryId == countryId);
        }
      
+     setFromName(){
+         let user = this.teamMemberEmailIds.filter((teamMember)=> teamMember.emailId == this.campaign.email)[0];
+         this.campaign.fromName = $.trim(user.firstName+" "+user.lastName);
+         this.setEmailIdAsFromName();
+     }  
+     
      listAllTeamMemberEmailIds(){
          this.campaignService.getAllTeamMemberEmailIds(this.loggedInUserId)
          .subscribe(
          data => {
+             console.log(data);
            let self = this;
            $.each(data,function(index,value){
                self.teamMemberEmailIds.push(data[index]);
            });
            if(this.isAdd){
-               this.campaign.email = this.teamMemberEmailIds[0];
+               let teamMember = this.teamMemberEmailIds[0];
+               this.campaign.email = teamMember.emailId;
+               this.campaign.fromName = $.trim(teamMember.firstName+" "+teamMember.lastName);
+               this.setEmailIdAsFromName();
            }
            
          },
@@ -2343,4 +2357,10 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
          );
      }
      
+     setEmailIdAsFromName(){
+         if(this.campaign.fromName.length==0){
+             this.campaign.fromName = this.campaign.email;
+         }
+     }
+       
 }
