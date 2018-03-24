@@ -39,25 +39,25 @@ export class SignupComponent implements OnInit {
     validationMessages = {
         'fullName': {
             'required': 'Name is required.',
-            'whitespace': 'Invalid Data',
+            'whitespace': 'Invalid Name',
             'minlength': 'Name must be at least 4 characters long.',
             'maxlength': 'Name cannot be more than 50 characters long.',
             'pattern': 'Invalid Name'
         },
         'emailId': {
             'required': 'Email is required.',
-            'pattern': 'Invalid Pattern.'
+            'pattern': 'Please enter a valid email address'
         },
         'address': {
             'required': 'Address is required.',
-            'whitespace': 'Invalid Data',
+            'whitespace': 'Invalid Address',
             'minlength': 'Address must be at least 4 characters long.',
             'maxlength': 'Address cannot be more than 50 characters long.',
             'pattern': 'Invalid Address'
         },
         'city': {
             'required': 'City is required.',
-            'whitespace': 'Invalid Data',
+            'whitespace': 'Invalid City',
             'minlength': 'City must be at least 4 characters long.',
             'maxlength': 'City cannot be more than 50 characters long.',
             'pattern': 'Invalid City'

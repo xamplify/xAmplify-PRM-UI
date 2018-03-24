@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule} from '../shared/shared.module';
 import { ErrorPagesModule } from '../error-pages/error-pages.module';
-
+import { CommonComponentModule} from '../common/common.module';
 import { EmailEditorComponent } from './email-editor/email-editor.component';
 import { CreateTemplateComponent } from './create-template/create-template.component';
 import { ManageTemplateComponent } from './manage-template/manage-template.component';
@@ -15,7 +15,7 @@ import { CKEditorModule } from 'ng2-ckeditor';
 import { HelpComponent } from './help/help.component';
 
 @NgModule({
-  imports: [ CommonModule,SharedModule,EmailTemplateRoutingModule,CKEditorModule, ErrorPagesModule ],
+  imports: [ CommonModule,SharedModule,EmailTemplateRoutingModule,CKEditorModule, ErrorPagesModule,CommonComponentModule ],
   declarations: [EmailEditorComponent, CreateTemplateComponent,ManageTemplateComponent, SelectTemplateComponent,
                  UpdateTemplateComponent, UploadEmailTemplateComponent, HelpComponent]
 })

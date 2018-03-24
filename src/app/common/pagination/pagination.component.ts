@@ -14,7 +14,7 @@ export class PaginationComponent implements OnInit {
   @Output() notifyParentDropDown: EventEmitter<any>;
 
   pageNumber: any;
-  numberPerPage = [{ 'name': '10', 'value': 10 }, { 'name': '20', 'value': 20 }, { 'name': '30', 'value': 30 },
+  numberPerPage = [{ 'name': '12', 'value': 12 }, { 'name': '24', 'value': 24 }, { 'name': '48', 'value': 48 },
   { 'name': 'All', 'value': 0 }];
 
   constructor() {

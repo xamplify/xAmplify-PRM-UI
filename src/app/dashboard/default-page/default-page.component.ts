@@ -23,14 +23,31 @@ export class DefaultPageComponent implements OnInit {
             () => {
                 console.log(this.defaultPage);
                 if (this.defaultPage === 'welcome') {
-                    this.router.navigate(['/home/dashboard/welcome']);
+                   this.goToWelcomePage();
                 } else {
-                    this.router.navigate(['/home/dashboard']);
+                    this.goToDashBoard();
                 }
             }
             );
     }
 
+    
+    goToWelcomePage(){
+        if(this.authenticationService.user.hasCompany){
+            this.router.navigate(['/home/dashboard/welcome']);
+        }else{
+            this.router.navigate(['/home/dashboard/add-company-profile']);
+        }
+    }
+    
+    goToDashBoard(){
+        if(this.authenticationService.user.hasCompany){
+            this.router.navigate(['/home/dashboard']);
+        }else{
+            this.router.navigate(['/home/dashboard/add-company-profile']);
+        }
+    }
+    
     isListView(userId: number) {
         this.userService.isListView(userId)
             .subscribe(

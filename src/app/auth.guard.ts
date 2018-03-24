@@ -122,10 +122,12 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         if(urlType==this.upgradeBaseUrl){
             role = this.roles.orgAdminRole;
         }
-        if(url.indexOf("partners")>-1){
+        if(url.indexOf("partners")>-1 || url.indexOf("upgrade")>-1 ){
             url = url+"/";
         }
-        if(url.indexOf("/"+urlType+"/")>-1 && this.authenticationService.user.hasCompany && (roles.indexOf(this.roles.orgAdminRole)>-1  || roles.indexOf(this.roles.companyPartnerRole)>-1 || roles.indexOf(this.roles.allRole)>-1  || roles.indexOf(role)>-1)){
+        let hasRole = (roles.indexOf(this.roles.orgAdminRole)>-1  || roles.indexOf(this.roles.companyPartnerRole)>-1 || roles.indexOf(this.roles.allRole)>-1  || roles.indexOf(role)>-1);
+        
+        if(url.indexOf("/"+urlType+"/")>-1 && this.authenticationService.user.hasCompany&&hasRole){
             return true;
         }else{
             return this.goToAccessDenied();

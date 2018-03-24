@@ -29,9 +29,9 @@
 			<div class="tabbable tabbable-custom tabbable-noborder">
 				<div class="tab-content">
 				
-						<div class="row">
+				<!-- 		<div class="row">
 						<div class="colxs-12 col-sm-9">
-					<!-- 	<div> 
+						<div> 
 							<ul class="mix-filter" >
 								<li class="filter" (click)="filterTemplates('NONE',false,0)"  >All Campaigns</li>
 								<li class="filter" (click)="filterTemplates('BASIC',false,1)" > Regular Campaigns</li>
@@ -39,7 +39,7 @@
 								<li class="filter" (click)="filterTemplates('BASIC',true,3)" >Social Campaigns </li>
 								<li class="filter" style="display: none;">Own Template</li>
 							</ul>
-						</div> -->
+						</div>
 						</div>
 						<div class="colxs-12 col-sm-3">
 						<div class="inputs regular_emails" align="right" style="float: right">
@@ -55,7 +55,47 @@
 							</div>
 						</div>
 						</div>
-						</div>
+						</div> -->
+						
+						<div class="page-bar m10">
+								<ul class="mix-filter col-sm-6">
+									<!-- <li style="font-size: 16px;">List of Campaigns</li> -->
+									<li class="filter" (click)="filterCampaigns('NONE',0)" [class.campaign-type-selected]="0 == selectedCampaignTypeIndex">All Campaigns</li>
+									<li class="filter" (click)="filterCampaigns('REGULAR',1)" [class.campaign-type-selected]="1 == selectedCampaignTypeIndex"> Email Campaigns</li>
+									<li class="filter" (click)="filterCampaigns('VIDEO',2)"  [class.campaign-type-selected]="2 == selectedCampaignTypeIndex">Video Campaigns</li>
+									<li class="filter" (click)="filterCampaigns('SOCIAL',3)" [class.campaign-type-selected]="3 == selectedCampaignTypeIndex">Social Campaigns </li>
+									<li class="filter" style="display: none;">Own Template</li>
+								</ul>
+								<div class="page-toolbar col-sm-6">
+									<div class="btn-group pull-right">
+										<ng-container class='m10'>
+												<button class="btn btn-xs" [disabled]="isListView" (click)="isListView = true" title="List View"><i class="fa fa-th-list p10" aria-hidden="true"></i></button>
+												<button class="btn btn-xs" [disabled]="!isListView" (click)="isListView = false" title="Grid View"><i class="fa fa-th-large p10" aria-hidden="true"></i></button>
+										</ng-container>
+										
+										<div class="inputs ml10" align="right" style="float: right">
+										<div style="float: left; margin-right: 10px">
+												<select class="form-control"
+									    [(ngModel)]="selectedSortedOption" 
+									    (ngModelChange)="getSortedResult($event)">
+									  <option *ngFor="let sortOption of sortByDropDown" [ngValue]="sortOption">
+									    {{sortOption.name}}
+									  </option>
+							</select>
+											</div>
+											<div class="portlet-input input-inline input-small">
+												<div class="input-icon right">
+													<i class="icon-magnifier"  (click)="searchCampaigns()" style="cursor: pointer;"></i>
+									<input type="text" 
+									 class="form-control input-circle"  [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"  placeholder="search...">
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							
+							
 					<section class='m10' *ngIf="totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
 						<div class="table-responsive">
 						<table class='table tgrid table-hover table-sm' *ngIf="isListView">
@@ -80,17 +120,19 @@
 										<img *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1 && !campaign.launched" src="assets/images/social-campaign.png" style="height: 50px;-webkit-filter: grayscale(100%);filter: grayscale(100%);" alt="{{campaign.campaignType}} Campaign">
 									</td>
 									<td>
-										<h4 class='mt5 mb5 f-w-600'>{{campaign.campaignName}}</h4>
+										<h4 class='mt5 mb5 f-w-600'>{{campaign.campaignName}} </h4>
 										<h5 class='m0'>{{campaign.companyName}} <span class='f-w-600'>{{campaign.createdBy}}</span></h5>
 									</td>
 									<td>
 										<span align="right">
 											<b *ngIf="campaign.launched">Launched On</b>
 											<b *ngIf="!campaign.launched && campaign.launchedOn?.length > 0">Scheduled For</b>
-											<b *ngIf="!campaign.launched && campaign.launchedOn?.length==0">Saved</b>
+											<b *ngIf="!campaign.launched && campaign.launchedOn?.length==0">Saved On</b>
 										</span>
 									    <span align="right" title="upladed date">
-									    	<b *ngIf="campaign.launched || !campaign.launched && campaign.launchedOn?.length > 0">{{campaign.launchedOn}}</b>
+									    	<!-- <b *ngIf="campaign.launched || !campaign.launched && campaign.launchedOn?.length > 0">{{campaign.launchedOn}}</b> -->
+									    	<b *ngIf="campaign.scheduleType=='NOW' || campaign.scheduleType=='SCHEDULE'">{{campaign.launchedOn}}</b>
+									    	<b *ngIf="campaign.scheduleType=='SAVE'">{{campaign.startTime}}</b>
 									    </span>										
 									</td>
 									<td>{{campaign.createdDate}}</td>
@@ -177,7 +219,7 @@
 													<span align="right" style="bottom: 24px; float: right; position: absolute; right: 17px;">
 														<b  *ngIf="campaign.launched">Launched On</b>
 														<b *ngIf="!campaign.launched && campaign.launchedOn?.length > 0">Scheduled For</b>
-														<b *ngIf="!campaign.launched && campaign.launchedOn?.length==0">Saved</b>
+														<b *ngIf="!campaign.launched && campaign.launchedOn?.length==0">Saved On</b>
 													</span>
 														<span align="left" style="bottom: 24px; float: left; position: absolute; left: 3%;">
 														<b>{{campaign.companyName}}</b>
@@ -186,8 +228,9 @@
 													
 													<span  align="left"  title="Uploaded By" style="bottom: -1px; left: 10px; position: absolute;">{{campaign.createdBy}}</span>
 												    <span align="right" title="upladed date" style="bottom: 2px; float: right; position: absolute; right: 17px;" >
-												    	<b *ngIf="campaign.launched || !campaign.launched && campaign.launchedOn?.length > 0">{{campaign.launchedOn}}</b>
-												    	<!-- <b *ngIf="!campaign.launched && campaign.launchedOn?.length==0" >{{campaign.endTime}}</b> -->
+												    	<!-- <b *ngIf="campaign.launched || !campaign.launched && campaign.launchedOn?.length > 0">{{campaign.launchedOn}}</b> -->
+												    	<b *ngIf="campaign.scheduleType=='NOW' || campaign.scheduleType=='SCHEDULE'">{{campaign.launchedOn}}</b>
+												   		<b *ngIf="campaign.scheduleType=='SAVE'">{{campaign.startTime}}</b>
 												    </span>
 												</div>
 											</div>
@@ -200,35 +243,14 @@
 						</div><!-- End of 24 -->
 						 <div *ngIf="totalRecords <= 0 && !isListView"  class="alert alert-info"><strong>No Campaigns Found</strong></div>
 					</div>
-				</div><!-- End Of tab Content -->
-				<div *ngIf="totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError" style="background:white">   
-					<ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination" style="margin: -10px 20px 10px 20px;">
-	                        <li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
-	                           <a (click)="setPage(1)" [class.disabled]="pagination.pager.currentPage === 1">First</a>
-	                        </li>
-	                        <li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
-	                            <a (click)="setPage(pagination.pager.currentPage - 1)" [class.disabled]="pagination.pager.currentPage === 1">Previous</a>
-	                         </li>
-	                         <li *ngFor="let page of pagination.pager.pages" [ngClass]="{active:pagination.pager.currentPage === page}">
-	                            <a (click)="setPage(page)"  [class.disabled]="pagination.pager.currentPage === page">{{page}}</a>
-	                         </li>
-	                         <li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
-	                             <a (click)="setPage(pagination.pager.currentPage + 1)" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Next</a>
-	                         </li>
-	                          <li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
-	                             <a (click)="setPage(pagination.pager.totalPages)" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Last</a>
-	                         </li>
-	                       </ul>
-						<!-- <div class="col-xs-1" style="float: right;margin-top: 10px;">
-							<select class="btn btn-primary"
-									    [(ngModel)]="itemsSize" 
-									    (ngModelChange)="getNumberOfItemsPerPage($event)">
-									  <option *ngFor="let itemPerPage of numberOfItemsPerPage" [ngValue]="itemPerPage">
-									    {{itemPerPage.name}}
-									  </option>
-							</select>
-						</div> -->
+					<div *ngIf="totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError" style="background:white">   
+						<div *ngIf="pagination.pagedItems.length !== 0">
+								<app-pagination [pagination]="pagination" [type]="'campaign'"
+								 (notifyParent)="setPage($event)" (notifyParentDropDown)="listCampaign($event)"></app-pagination>
+						</div>	
 				</div>
+				</div><!-- End Of tab Content -->
+				
 			</div>
 		</div>
 	</div>
