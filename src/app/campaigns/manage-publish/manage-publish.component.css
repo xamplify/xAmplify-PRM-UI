@@ -191,3 +191,10 @@ a:hover{
 .campaign-type-selected {
 	background-color: #6dcff6;
 }
+
+.filter-div{
+	float: left;cursor: pointer;margin: 0px 20px;border: 1px solid #c1c1c1;border-radius: 100%;padding: 5px;
+}
+.filter-div:hover {
+border: 1px solid #ccc;
+}
