@@ -107,9 +107,9 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
                 );
     }
 
-    setPage( page: number ) {
+    setPage( event ) {
         try {
-            this.pagination.pageIndex = page;
+            this.pagination.pageIndex = event.page;
             this.listEmailTemplates( this.pagination );
         } catch ( error ) {
             this.refService.showError( error, "setPage", "ManageTemplatesComponent" )
@@ -210,7 +210,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
             Layout.init();
             Demo.init();
             // TableManaged.init();
-            this.pagination.maxResults = this.itemsSize.value;
+            this.pagination.maxResults = 12;
             this.listEmailTemplates( this.pagination );
         } catch ( error ) {
             this.refService.showError( error, "ngOnInit", "ManageTemplatesComponent" );

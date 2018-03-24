@@ -47,5 +47,6 @@ export class Campaign {
     country:string = "";
     timeZoneId: any;
     createdFromVideos=false;
+    scheduleType:string = "";
     
 }

@@ -6,13 +6,13 @@ import { ManagePartnersComponent } from './manage-partners/manage-partners.compo
 import { SharedContactsModule } from '../shared/shared-contacts.module';
 import { CommonComponentModule } from '../common/common.module';
 import { AddPartnersComponent } from './add-partners/add-partners.component';
-
+import { PartnerReportsComponent } from './partner-reports/partner-reports.component';
 
 @NgModule({
   imports: [
     CommonModule, PartnerRoutingModule, SharedModule, SharedContactsModule, CommonComponentModule
   ],
   providers: [],
-  declarations: [ManagePartnersComponent, AddPartnersComponent]
+  declarations: [ManagePartnersComponent, AddPartnersComponent, PartnerReportsComponent]
 })
 export class PartnersModule { }

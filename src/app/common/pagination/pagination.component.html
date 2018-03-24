@@ -22,7 +22,7 @@
 </ul>
 
 
-<div *ngIf="!isDropdown" style="float: right;font-size: 15px;">
+<div *ngIf="(pagination.pager.pages && pagination.pager.pages.length) && !isDropdown" style="float: right;font-size: 15px;">
   	<select class="form-control" style="cursor: pointer" [(ngModel)]="pageNumber" (ngModelChange)="selectedPageNumber($event.value)">
       <option *ngFor="let pageNo of numberPerPage" [ngValue]="pageNo"> {{pageNo.name}} </option>
     </select>

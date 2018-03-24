@@ -37,8 +37,9 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     isScheduledCampaignLaunched: boolean = false;
     loggedInUserId: number = 0;
     hasAllAccess: boolean = false;
+    selectedCampaignTypeIndex:number = 0;
     sortByDropDown = [
-        { 'name': 'Sort By', 'value': '' },
+        /*{ 'name': 'Sort By', 'value': '' },*/
         { 'name': 'Name(A-Z)', 'value': 'campaign-ASC' },
         { 'name': 'Name(Z-A)', 'value': 'campaign-DESC' },
         { 'name': 'Created Date(ASC)', 'value': 'createdTime-ASC' },
@@ -54,7 +55,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         { 'name': '---All---', 'value': '0' },
     ]
 
-    public selectedSortedOption: any = this.sortByDropDown[0];
+    public selectedSortedOption: any = this.sortByDropDown[3];
     public itemsSize: any = this.numberOfItemsPerPage[0];
     public isError: boolean = false;
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
@@ -91,7 +92,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
 
     listCampaign(pagination: Pagination) {
         this.refService.loading(this.httpRequestLoader, true);
-        this.pagination.maxResults = 12;
+        
+      //  this.pagination.maxResults = 12;
         this.campaignService.listCampaign(pagination, this.loggedInUserId)
             .subscribe(
             data => {
@@ -108,8 +110,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             );
     }
 
-    setPage(page: number) {
-        this.pagination.pageIndex = page;
+    setPage(event) {
+        this.pagination.pageIndex = event.page;
         this.listCampaign(this.pagination);
     }
 
@@ -152,6 +154,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     ngOnInit() {
         try {
             this.isListView = this.refService.isListView;
+            this.pagination.maxResults = 12;
             this.listCampaign(this.pagination);
         } catch (error) {
             this.logger.error("error in manage-publish-component init() ", error);
@@ -250,4 +253,14 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             () => console.log("saveAsCampaign Successfully")
             );
     }
+    
+    
+    filterCampaigns(type:string,index:number){
+        this.selectedCampaignTypeIndex = index;//This is to highlight the tab
+        this.pagination.pageIndex = 1;
+        this.pagination.campaignType = type;
+        this.listCampaign(this.pagination);
+        
+    }
+    
 }

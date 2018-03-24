@@ -15,6 +15,7 @@ export class Pagination {
 	campaignId: number;
 	campaignDefaultTemplate = false;
 	emailTemplateType: EmailTemplateType = EmailTemplateType.NONE;
+	campaignType:string = "NONE";
 	isLoading = false;
 	videoCategoryId = 0;
 	isEmailTemplateSearchedFromCampaign = false;

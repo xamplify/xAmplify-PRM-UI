@@ -1,3 +1,3 @@
 export enum CampaignType{
-    REGULAR,VIDEO,SOCIAL
+  REGULAR,VIDEO,SOCIAL
 }
