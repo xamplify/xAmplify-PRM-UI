@@ -15,11 +15,12 @@ export class DashboardReport {
     allEmailOpenLogList: any;
     allEmailClickedLogList: any;
     allEmailWatchedLogList: any;
-    
+
     downloadEmailLogList: any;
 
     totalViews: number = 0;
     toalEmailTemplates: number = 0;
     totalCreatedCampaigns: number = 0;
     totalSocialAccounts: number = 0;
+    totalCompanyPartnersCount = 0;
 }

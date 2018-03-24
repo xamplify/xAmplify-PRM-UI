@@ -98,7 +98,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     this.dashboardReport.genderDemographicsMale = data['M'];
                     this.dashboardReport.genderDemographicsFemale = data['F'];
                     this.dashboardReport.genderDemographicsTotal =
-                        this.dashboardReport.genderDemographicsMale + this.dashboardReport.genderDemographicsFemale;
+                    this.dashboardReport.genderDemographicsMale + this.dashboardReport.genderDemographicsFemale;
                 },
                 error => console.log(error),
                 () => { }
@@ -616,6 +616,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     this.dashboardReport.toalEmailTemplates = data.totalEmailTemplatesCount;
                     this.dashboardReport.totalCreatedCampaigns = data.totalCampaignsCount;
                     this.dashboardReport.totalSocialAccounts = data.totalSocialConnectionsCount;
+                    this.dashboardReport.totalCompanyPartnersCount = data.totalCompanyPartnersCount;
                 },
                 error => console.log(error),
                 () => console.log('dashboard reports counts completed')
