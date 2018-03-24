@@ -29,15 +29,21 @@
 		font-weight: 500;
 	}
 </style>
+
 <div class="page-content" [hidden]="isTimeLineView">
-	<div class="page-bar square-box" style="margin: 0 10px 15px;border-radius: 0;">
-		<ul class="page-breadcrumb">
-			<li><i class="fa fa-home"></i> <a [routerLink]="['/']">Home</a> <i class="fa fa-angle-right"></i></li>
-			<li><a [routerLink]="['/home/campaigns/manage']">Campaigns</a>
-				<i class="fa fa-angle-right"></i></li>
-			<li style="color: #888;">{{campaign.campaignName}}</li>
-		</ul>
-	</div>
+<div class="page-bar square-box" style="margin: 0 10px 15px;border-radius: 0;">
+	<ul class="page-breadcrumb">
+		<li><i class="fa fa-home"></i> <a [routerLink]="['/']">Home</a> <i class="fa fa-angle-right"></i></li>
+		<li><a [routerLink]="['/home/campaigns/manage']">Campaigns</a>
+			<i class="fa fa-angle-right"></i></li>
+		<li style="color: #888;">{{campaign.campaignName}}</li>
+	</ul>
+</div>
+<div *ngIf="customResponse.responseType === 'ERROR'; else NOERROR" class="m10">
+	<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+</div>
+
+<ng-template #NOERROR>
 	<div class="col-xs-12 col-sm-6 p-5x" [hidden]="campaignType !== 'VIDEO'">
 		<div class="p-5x">
 			<div class="portlet light">
@@ -113,8 +119,8 @@
 		</div>
 	</div>
 	<section class='clearfix' *ngIf="campaignType === 'SOCIAL' && socialStatus">
-		<div class="col-xs-12 pl10 pr10">
-			<div class="portlet light">
+		<div class="col-xs-12">
+			<div class="portlet light" style="margin: -5px -5px 5px -5px;">
 				<div class="portlet-title">
 					<div class="caption">
 						<span class="caption-subject font-red-sunglo">Social Status</span>
@@ -243,7 +249,10 @@
 			</div>
 		</div>
 	</div>
+
+</ng-template>
 </div>
+
 
 <div id="timeline-view" class="page-content" [hidden]="!isTimeLineView">
 	<div class="page-bar">

@@ -5,6 +5,7 @@ import { Campaign } from '../models/campaign';
 import { CampaignReport } from '../models/campaign-report';
 import { Pagination } from '../../core/models/pagination';
 import { SocialStatus } from '../../social/models/social-status';
+import { CustomResponse } from '../../common/models/custom-response';
 
 import { CampaignService } from '../services/campaign.service';
 import { UtilService } from '../../core/services/util.service';
@@ -32,6 +33,7 @@ export class AnalyticsComponent implements OnInit {
   totalEmailLogs: any;
   campaignReport: CampaignReport = new CampaignReport;
   userCampaignReport: CampaignReport = new CampaignReport;
+  customResponse: CustomResponse = new CustomResponse();
 
   campaignViewsPagination: Pagination = new Pagination();
   emailActionListPagination: Pagination = new Pagination();
@@ -467,6 +469,7 @@ export class AnalyticsComponent implements OnInit {
       }
     }
   }
+
   getCampaignById(campaignId: number) {
     const obj = { 'campaignId': campaignId }
     this.campaignService.getCampaignById(obj)
@@ -476,25 +479,28 @@ export class AnalyticsComponent implements OnInit {
         if (this.campaign.channelCampaign === true) {
           this.isPartnerCampaign = '(PARTNER)';
         } else { this.isPartnerCampaign = ''; }
-        console.log(this.campaign);
-
-        const campaignType = this.campaign.campaignType.toLocaleString();
-        if (campaignType.includes('VIDEO')) {
-          this.campaignType = 'VIDEO';
-          this.getCountryWiseCampaignViews(campaignId);
-          this.getCampaignViewsReportDurationWise(campaignId);
-          this.getCampaignWatchedUsersCount(campaignId);
-          this.campaignWatchedUsersListCount(campaignId);
-        } else if (campaignType.includes('SOCIAL')) {
-          this.campaignType = 'SOCIAL';
-          this.getSocialCampaignByCampaignId(campaignId);
-        } else {
-          this.campaignType = 'EMAIL';
-        }
       },
-      error => console.log(error),
+      error => {
+        console.log(error);
+        error = error.json();
+        this.customResponse = new CustomResponse('ERROR', error.message, true);
+      },
       () => {
-
+        if (this.customResponse.responseType !== 'ERROR') {
+          const campaignType = this.campaign.campaignType.toLocaleString();
+          if (campaignType.includes('VIDEO')) {
+            this.campaignType = 'VIDEO';
+            this.getCountryWiseCampaignViews(campaignId);
+            this.getCampaignViewsReportDurationWise(campaignId);
+            this.getCampaignWatchedUsersCount(campaignId);
+            this.campaignWatchedUsersListCount(campaignId);
+          } else if (campaignType.includes('SOCIAL')) {
+            this.campaignType = 'SOCIAL';
+            this.getSocialCampaignByCampaignId(campaignId);
+          } else {
+            this.campaignType = 'EMAIL';
+          }
+        }
       }
       )
   }
