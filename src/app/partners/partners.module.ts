@@ -8,7 +8,6 @@ import { CommonComponentModule } from '../common/common.module';
 import { AddPartnersComponent } from './add-partners/add-partners.component';
 import { PartnerReportsComponent } from './partner-reports/partner-reports.component';
 
-
 @NgModule({
   imports: [
     CommonModule, PartnerRoutingModule, SharedModule, SharedContactsModule, CommonComponentModule
