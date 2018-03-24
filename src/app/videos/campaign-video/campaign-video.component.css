@@ -91,3 +91,7 @@ font-size: 1em;
     right: 21px;
     background: transparent;
 }
+
+.hideDiv {
+    display: none;
+}
