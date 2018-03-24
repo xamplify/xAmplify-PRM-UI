@@ -239,9 +239,11 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.getCampaignUrls(this.campaign);
             this.contactsPagination.campaignId = this.campaign.campaignId;
             /******************Campaign Details Tab**************************/
-            if(this.campaign.campaignName!=undefined && this.campaign.fromName!=undefined && 
-                    this.campaign.subjectLine!=undefined&& 
-                    this.campaign.preHeader!=undefined && this.campaign.message!=undefined){
+            var campaignNameLength= $.trim(this.campaign.campaignName).length;
+            var fromNameLength = $.trim(this.campaign.fromName).length;
+            var subjectLineLength = $.trim(this.campaign.subjectLine).length;
+            var preHeaderLength  =  $.trim(this.campaign.preHeader).length;
+            if(campaignNameLength>0 &&  fromNameLength>0 && subjectLineLength>0 && preHeaderLength>0){
                 this.isCampaignDetailsFormValid = true;
             }else{
                 this.isCampaignDetailsFormValid = false;
@@ -1667,7 +1669,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             'subjectLine': this.refService.replaceMultipleSpacesWithSingleSpace(this.campaign.subjectLine),
             'email': this.campaign.email,
             'preHeader': this.refService.replaceMultipleSpacesWithSingleSpace(this.campaign.preHeader),
-            'message': this.refService.replaceMultipleSpacesWithSingleSpace(this.campaign.message),
             'emailOpened': this.campaign.emailOpened,
             'videoPlayed': this.campaign.videoPlayed,
             'replyVideo': true,

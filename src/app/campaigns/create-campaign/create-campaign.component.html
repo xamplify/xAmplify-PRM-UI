@@ -223,12 +223,12 @@
 											</div>
 										</div>
 									</div> -->
-									<div class="form-group last" [attr.class]="messageDivClass">
+									<!-- <div class="form-group last" [attr.class]="messageDivClass">
 										<label class="control-label col-sm-4">Notification Message<font style="color: red"><b>*</b></font></label>
 										<div class="col-sm-8">
 											<input type="text" id="message"	placeholder="Notification Message" class="form-control" [(ngModel)]="campaign.message" name="message" (input)="validateForm();validateField('message');" maxlength="200" />
 										</div>
-									</div>
+									</div> -->
 								</div>
 								<!-- </form> -->
 								<!-- END FORM-->
@@ -1089,7 +1089,7 @@
 								<input	type="number" class="form-control" name="days" placeholder="Days" [(ngModel)]="reply.replyInDays" min="0" oninput="validity.valid||(value='');">
 							</div>
 							<div class="form-group col-md-3">
-								<label for="time" id="send-time-{{reply.divId}}">Send Time<b  style="color: red">*</b></label> 
+								<label for="time" id="send-time-{{reply.divId}}"  style="margin-top:20px;">At<b  style="color: red">*</b>&nbsp;&nbsp;</label> 
 									<timepicker [(ngModel)]="reply.replyTime" name="time"></timepicker>
 							</div>
 						</div>
@@ -1098,10 +1098,10 @@
 								<select class="form-control" name="actionId" [(ngModel)]="reply.actionId">
 						            <option  [value]="13" [selected]="reply.actionId==13">Email Opened</option>
 						           <option  [value]="0" [selected]="reply.actionId ==0">Email Not Opened</option>
-						           <option  [value]="16" [selected]="reply.actionId ==16">Send immediately After Email Opened</option>
+						           <option  [value]="16" [selected]="reply.actionId ==16">Send Immediately After Email Opened</option>
 									<ng-container *ngIf="campaignType=='video'">
-										<option  [value]="1" [selected]="reply.actionId==1">Video Opened</option>
-										<option  [value]="17" [selected]="reply.actionId==17">Send immediately After Video Opened</option>
+										<option  [value]="1" [selected]="reply.actionId==1">Video Played</option>
+										<option  [value]="17" [selected]="reply.actionId==17">Send Immediately After Video Played</option>
 									</ng-container>
 					          </select>
 							</div>
@@ -1241,7 +1241,7 @@
 										 <input	type="number" class="form-control" name="days"	[(ngModel)]="url.replyInDays" placeholder="Days" min="0" oninput="validity.valid||(value='');">
 									</div>
 								<div class="form-group col-md-6">
-									<label for="time" id="click-send-time-{{url.divId}}">Send Time<b  style="color: red">*</b></label> 
+									<label for="time" id="click-send-time-{{url.divId}}" style="margin-top:20px;">At<b  style="color: red">*</b>&nbsp;&nbsp;</label> 
 									<timepicker [(ngModel)]="url.replyTime" name="time"></timepicker>
 								</div>
 							</div>

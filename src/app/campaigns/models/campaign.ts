@@ -6,12 +6,12 @@ import { SocialStatus } from '../../social/models/social-status';
 import { CampaignType } from './campaign-type';
 export class Campaign {
 
-    campaignName: string;
-    fromName: string;
-    subjectLine: string;
-    email: string;
-    preHeader: string;
-    message: string;
+    campaignName: string="";
+    fromName: string="";
+    subjectLine: string="";
+    email: string="";
+    preHeader: string="";
+    message: string="";
     selectedVideoId: number = 0;;
     userListIds: number[] = [];
     userId: number;
