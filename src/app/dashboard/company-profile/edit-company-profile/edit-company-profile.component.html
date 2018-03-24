@@ -1,9 +1,8 @@
 <div class="page-content">
 	<div class="page-bar">
 		<ul class="page-breadcrumb">
-			<li *ngIf="!companyProfile.isAdd"><i class="fa fa-home"></i> <a [routerLink]="['/']">Home</a>
-				<i class="fa fa-angle-right"></i>
-				</li>
+			<li *ngIf="!companyProfile.isAdd"><i class="fa fa-home"></i> <a
+				[routerLink]="['/']">Home</a> <i class="fa fa-angle-right"></i></li>
 			<li *ngIf="!companyProfile.isAdd">Edit Company Profile</li>
 			<li *ngIf="companyProfile.isAdd">Add Company Profile</li>
 		</ul>
@@ -13,51 +12,261 @@
 		<div class="portlet-title">
 			<div class="caption">Company Profile Info</div>
 		</div>
-		<div class="alert alert-info" id="info" *ngIf="companyProfile.isAdd">Please Provide Company Details To Access The Platform</div>
+		<app-response-message [customResponse]="customResponse"
+			*ngIf="customResponse.isVisible"></app-response-message>
+		<div class="alert alert-info" id="info" *ngIf="companyProfile.isAdd">Please
+			Provide Company Details To Access The Platform</div>
 		<div class="portlet-body clearfix">
-		<div class="alert alert-success"  id="edit-sucess" style="display: none;">
-			<a (click)="refService.hideDiv('edit-sucess')" class="close" aria-label="close">x</a>
-				<ng-container *ngIf="companyProfile.isAdd">
-					<strong>{{message}}.Please Wait...</strong> 
+			<div class="alert alert-success" id="edit-sucess"
+				style="display: none;">
+				<a (click)="refService.hideDiv('edit-sucess')" class="close"
+					aria-label="close">x</a>
+				<ng-container *ngIf="companyProfile.isAdd"> <strong>{{message}}.Please
+					Wait...</strong> </ng-container>
+				<ng-container *ngIf="!companyProfile.isAdd"> <strong>{{message}}</strong>
 				</ng-container>
-				<ng-container *ngIf="!companyProfile.isAdd">
-					<strong>{{message}}</strong> 
-				</ng-container>
-	  		
-		</div>
-			<div [hidden]="!processor.isProcessing">
-			<div class="div-loader" [style.height]="processor.divHeight">
-				<div id="process-loader"></div>
+
 			</div>
-		</div>
-		<div  [hidden]="processor.isProcessing" >
-			<form role="form" >
-				<div class="form-group" [attr.class]="companyNameDivClass">
-					<label class="control-label">Company Name <font style="color: red"><b>*</b></font></label>
-					 <input type="text" id="companyName" name="companyName" placeholder="Company Name" class="form-control" [(ngModel)]="companyProfile.companyName"  (input)="validateEmptySpace('companyName')"   (blur)="validateNames(companyProfile.companyName)"/>
-					<span *ngIf="companyNameError" style="color: red">{{companyNameErrorMessage}}</span>
+			<div [hidden]="!processor.isProcessing">
+				<div class="div-loader" [style.height]="processor.divHeight">
+					<div id="process-loader"></div>
 				</div>
-				<div class="form-group" [attr.class]="companyProfileNameDivClass">
-					<label class="control-label">Company Profile Name <font style="color: red"><b>*</b></font></label>
-					<ng-container *ngIf="companyProfile.isAdd">
-							 <input type="text" id="companyProfileName" placeholder="Company Profile Name" class="form-control" name="companyProfileName" [(ngModel)]="companyProfile.companyProfileName"  (input)="validateEmptySpace('companyProfileName')"  (blur)="validateProfileNames(companyProfile.companyProfileName)" />
-						<span *ngIf="companyProfileNameError" style="color: red">{{companyProfileNameErrorMessage}}</span>
-					</ng-container>
-					<ng-container *ngIf="!companyProfile.isAdd">
-							 <input type="text" id="companyProfileName" disabled="disabled" placeholder="Company Profile Name" class="form-control" name="companyProfileName" [(ngModel)]="companyProfile.companyProfileName" />
-					</ng-container>
-				</div>
-				<div class="form-group">
-					<label class="control-label">About Us</label>
-					<textarea class="form-control" rows="5" cols="5" placeholder="About Us" name="aboutUs" style="resize: none"  [(ngModel)]="companyProfile.aboutUs"></textarea>
-				</div>
-				<div class="pull-right">
-						<button type="submit" *ngIf="companyProfile.isAdd" id="saveOrUpdateCompanyButton" (click)="save()" class="btn green-haze" disabled="disabled">Save</button>
-						<button type="submit" *ngIf="!companyProfile.isAdd" id="saveOrUpdateCompanyButton" (click)="update()" class="btn green-haze">Update</button>
+			</div>
+
+			<div [hidden]="processor.isProcessing">
+				<form role="form">
+
+					<div class="banner-image-wrapper" id="company-background-image-preview">
+						<div class="banner-overlay"><i class="fa fa-camera"></i> Update Cover Photo</div>
+						<div class="profile-image-wrapper">
+							<img src="https://www.timeshighereducation.com/sites/default/files/byline_photos/default-avatar.png" class="profile-image">
+							<div class="profile-overlay"><i class="fa fa-camera"></i> Update Profile Picture</div>
+						</div>
 					</div>
-			</form>
-		</div>
-		
+
+					<div class="row">
+						<div class="col-sm-6 col-xs-12">
+							<div class="form-group" [attr.class]="companyNameDivClass">
+								<label class="control-label">Company Name <font
+									style="color: red"><b>*</b></font></label> <input type="text"
+									id="companyName" name="companyName" placeholder="Company Name"
+									class="form-control" [(ngModel)]="companyProfile.companyName"
+									(input)="validateEmptySpace('companyName')"
+									(blur)="validateNames(companyProfile.companyName)" /> <span
+									*ngIf="companyNameError" style="color: red">{{companyNameErrorMessage}}</span>
+							</div>
+
+							<div class="form-group" [attr.class]="companyProfileNameDivClass">
+								<label class="control-label">Company Profile Name <font
+									style="color: red"><b>*</b></font></label>
+								<ng-container *ngIf="companyProfile.isAdd"> <input
+									type="text" id="companyProfileName"
+									placeholder="Company Profile Name" class="form-control"
+									name="companyProfileName"
+									[(ngModel)]="companyProfile.companyProfileName"
+									(input)="validateEmptySpace('companyProfileName')"
+									(blur)="validateProfileNames(companyProfile.companyProfileName)" />
+								<span *ngIf="companyProfileNameError" style="color: red">{{companyProfileNameErrorMessage}}</span>
+								</ng-container>
+								<ng-container *ngIf="!companyProfile.isAdd"> <input
+									type="text" id="companyProfileName" disabled="disabled"
+									placeholder="Company Profile Name" class="form-control"
+									name="companyProfileName"
+									[(ngModel)]="companyProfile.companyProfileName" /> </ng-container>
+							</div>
+
+							<div class="form-group" [attr.class]="emailIdDivClass">
+								<label class="control-label"> EmailId <font
+									style="color: red"><b>*</b></font></label> <input type="email"
+									id="emailId" name="emailId" placeholder="Email Id"
+									class="form-control" [(ngModel)]="companyProfile.emailId"
+									(input)="validateEmptySpace('emailId')"
+									(blur)="validatePattern('emailId')" /> <span
+									*ngIf="emailIdError" style="color: red">{{emailIdErrorMessage}}</span>
+							</div>
+
+							<div class="form-group" [attr.class]="tagLineDivClass">
+								<label class="control-label">Tag Line <font
+									style="color: red"><b>*</b></font></label> <input type="text"
+									id="tagLine" name="tagLine" placeholder="Tag Line"
+									class="form-control" [(ngModel)]="companyProfile.tagLine"
+									(input)="validateEmptySpace('tagLine')" /> <span
+									*ngIf="tagLineError" style="color: red">{{tagLineErrorMessage}}</span>
+							</div>
+
+							<div class="form-group" [attr.class]="phoneDivClass">
+								<label class="control-label">Phone<font
+									style="color: red"><b>*</b></font></label> <input type="text"
+									id="phone" name="phone" placeholder="Phone"
+									class="form-control" [(ngModel)]="companyProfile.phone"
+									(input)="validateEmptySpace('phone')"
+									(blur)="validatePattern('phone')" /> <span *ngIf="phoneError"
+									style="color: red">{{phoneErrorMessage}}</span>
+							</div>
+
+							<div class="form-group" [attr.class]="websiteDivClass">
+								<label class="control-label">WebSite<font
+									style="color: red"><b>*</b></font></label> <input type="text"
+									id="website" name="website" placeholder="WebSite"
+									class="form-control" [(ngModel)]="companyProfile.website"
+									(input)="validateEmptySpace('website')"
+									(blur)="validatePattern('website')" /> <span
+									*ngIf="websiteError" style="color: red">{{websiteErrorMessage}}</span>
+							</div>
+
+							<div class="form-group" [attr.class]="facebookDivClass">
+								<label class="control-label">Facebook<font
+									style="color: red"><b>*</b></font></label> <input type="text"
+									id="facebook" name="facebook" placeholder="Facebook"
+									class="form-control" [(ngModel)]="companyProfile.facebookLink"
+									(input)="validateEmptySpace('facebook')"
+									(blur)="validatePattern('facebook')" /> <span
+									*ngIf="facebookLinkError" style="color: red">{{facebookLinkErrorMessage}}</span>
+							</div>
+						</div>
+						<div class="col-sm-6 col-xs-12">
+
+							<div class="form-group" [attr.class]="googlePlusDivClass">
+								<label class="control-label">Google<font
+									style="color: red"><b>*</b></font></label> <input type="text"
+									id="googlePlusLink" name="googlePlusLink" placeholder="Google"
+									class="form-control"
+									[(ngModel)]="companyProfile.googlePlusLink"
+									(input)="validateEmptySpace('googlePlusLink')"
+									(blur)="validatePattern('googlePlusLink')" /> <span
+									*ngIf="googlePlusLinkError" style="color: red">{{googlePlusLinkErrorMessage}}</span>
+							</div>
+							<div class="form-group" [attr.class]="linkedInDivClass">
+								<label class="control-label">LinkedIn<font
+									style="color: red"><b>*</b></font></label> <input type="text"
+									id="linkedInLink" name="linkedInLink" placeholder="LinkedIn"
+									class="form-control" [(ngModel)]="companyProfile.linkedInLink"
+									(input)="validateEmptySpace('linkedInLink')"
+									(blur)="validatePattern('linkedInLink')" /> <span
+									*ngIf="linkedinLinkError" style="color: red">{{linkedinLinkErrorMessage}}</span>
+							</div>
+
+							<div class="form-group" [attr.class]="twitterDivClass">
+								<label class="control-label">Twitter<font
+									style="color: red"><b>*</b></font></label> <input type="text"
+									id="twitter" name="twitter" placeholder="Twitter"
+									class="form-control" [(ngModel)]="companyProfile.twitterLink"
+									(input)="validateEmptySpace('twitter')"
+									(blur)="validatePattern('twitterLink')" /> <span
+									*ngIf="twitterLinkError" style="color: red">{{twitterLinkErrorMessage}}</span>
+							</div>
+							<div class="form-group" [attr.class]="cityDivClass">
+								<label class="control-label">City<font
+									style="color: red"><b>*</b></font></label> <input type="text" id="city"
+									name="city" placeholder="City" class="form-control"
+									[(ngModel)]="companyProfile.city"
+									(input)="validateEmptySpace('city')"
+									(blur)="validatePattern('city')" /> <span *ngIf="cityError"
+									style="color: red">{{cityErrorMessage}}</span>
+							</div>
+
+							<div class="form-group" [attr.class]="countryDivClass">
+								<label class="control-label">Country<font
+									style="color: red"><b>*</b></font></label> <select class="form-control"
+									name="campaign.country" [(ngModel)]="companyProfile.country"
+									style="width: 100%" (change)="validateCountry()">
+									<option *ngFor="let country of countryNames.countries"
+										[ngValue]="country">{{country}}</option>
+								</select>
+							</div>
+
+							<div class="form-group" [attr.class]="zipDivClass">
+								<label class="control-label">Zip<font style="color: red"><b>*</b></font></label>
+								<input type="number" id="zip" name="zip" placeholder="Zip"
+									class="form-control" [(ngModel)]="companyProfile.zip"
+									(input)="validateEmptySpace('zip')" /> <span *ngIf="zipError"
+									style="color: red">{{zipErrorMessage}}</span>
+							</div>
+							<!-- 		<div class="form-group" [attr.class]="logoDivClass">
+				<div *ngIf="!companyLogoImageUrlPath">
+					<label class="control-label" style="left: 32px; position: relative;">Logo<font style="color: red"><b>*</b></font></label>
+					<div class="fileinput fileinput-new" data-provides="fileinput" style="position: relative; right: -134px;margin-top: 3px;">
+						<div  class="fileinput-new thumbnail" style="width: 130px; height:107px;border-radius: 0px;">
+							<img  alt="Image" src="assets/images/upload-profile.png" style="max-height: 82%;width: 104px;position: relative;top: -7px">
+						</div>
+						<button  class="btn fileinput-button" style="height: 28px;position: absolute;top: 78px;width: 100%;">Choose image
+							<input type="file" ng2FileSelect [uploader]="companyLogoUploader" accept="image/jpeg,image/pjpeg,image/jpeg,image/pjpeg,image/png" 
+								*ngIf="companyLogoUploader.queue.length==0" (change)="changeLogo(input)" title=" " #input/> 
+						</button>
+					</div>
+				</div>	
+						
+					<div *ngIf="companyLogoImageUrlPath">
+						<label class="control-label" style="left: 20px; position: relative;">Logo </label>
+						 <div class="img-wrap img-responsive img-thumbnail rounded-0">
+							<span (click)="clearLogo()"><i class="fa fa-times-circle"></i></span>
+							<img [src]= "authenticationService.MEDIA_URL + companyLogoImageUrlPath" style="height: 81px; width: auto;">
+						</div>
+					</div>
+					
+						<div *ngIf="companyProfile.id>0">
+						<label class="control-label" style="left: 20px; position: relative;">Preview</label>
+						 <div class="img-wrap img-responsive img-thumbnail rounded-0">
+							<img [src]= "authenticationService.MEDIA_URL + companyProfile.companyLogoPath" style="height: 81px; width: auto;">
+						</div>
+					</div>
+						<span *ngIf="logoError" style="color: red">{{logoErrorMessage}}</span>	
+				</div> -->
+							<!-- 	<div class="form-group" [attr.class]="backgroundDivClass">
+				<div>
+					<label class="control-label" style="left: 32px; position: relative;">BackGround Logo</label>
+					<div class="fileinput fileinput-new" data-provides="fileinput" style="position: relative; right: -134px;margin-top: 3px;">
+						<div  class="fileinput-new thumbnail" style="width: 130px; height:107px;border-radius: 0px;">
+							<img  alt="Image" src="assets/images/upload-profile.png" style="max-height: 82%;width: 104px;position: relative;top: -7px">
+						</div>
+						<button  class="btn fileinput-button" style="height: 28px;position: absolute;top: 78px;width: 100%;">Choose image
+							<input type="file" ng2FileSelect [uploader]="companyBackGroundLogoUploader" accept="image/jpeg,image/pjpeg,image/jpeg,image/pjpeg,image/png" 
+								*ngIf="companyBackGroundLogoUploader.queue.length==0" (change)="changeBackGroundLogo(input)" title=" " #input/> 
+						</button>
+					</div>
+				</div>
+				
+					
+					
+					<div *ngIf="companyBackgroundLogoImageUrlPath">
+						<label class="control-label" style="left: 20px; position: relative;">Logo </label>
+						 <div class="img-wrap img-responsive img-thumbnail rounded-0">
+							<span (click)="clearBackgroundLogo()"><i class="fa fa-times-circle"></i></span>
+							<img [src]= "authenticationService.MEDIA_URL + companyBackgroundLogoImageUrlPath" style="height: 81px; width: auto;">
+						</div>
+					</div>	
+					
+					
+					<div *ngIf="companyProfile.id>0">
+						<label class="control-label" style="left: 20px; position: relative;">Preview</label>
+						 <div class="img-wrap img-responsive img-thumbnail rounded-0">
+							<img [src]= "authenticationService.MEDIA_URL + companyProfile.backgroundLogoPath" style="height: 81px; width: auto;">
+						</div>
+					</div>
+				</div> -->
+							<div class="form-group">
+								<label class="control-label">About Us</label>
+								<textarea class="form-control" rows="3" cols="5"
+									placeholder="About Us" name="aboutUs" style="resize: none"
+									[(ngModel)]="companyProfile.aboutUs"></textarea>
+							</div>
+
+
+						</div>
+					</div>
+
+
+					<div class="pull-right">
+						<button type="submit" *ngIf="companyProfile.isAdd"
+							id="saveOrUpdateCompanyButton" (click)="save()"
+							class="btn green-haze" disabled="disabled">Save</button>
+						<button type="submit" *ngIf="!companyProfile.isAdd"
+							id="saveOrUpdateCompanyButton" (click)="update()"
+							class="btn green-haze">Update</button>
+					</div>
+				</form>
+			</div>
+
 		</div>
 	</div>
 </div>
