@@ -13,7 +13,8 @@ import { HomeComponent } from '../../../core/home/home.component';
 import { CountryNames } from '../../../common/models/country-names';
 import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
 import { RegularExpressions } from '../../../common/models/regular-expressions';
-
+import {VideoFileService} from '../../../videos/services/video-file.service';
+import { SaveVideoFile } from '../../../videos/models/save-video-file';
 declare var $:any;
 @Component({
   selector: 'app-edit-company-profile',
@@ -86,10 +87,14 @@ export class EditCompanyProfileComponent implements OnInit {
     zipError:boolean = false;
     zipErrorMessage:string = "";
     
+    aboutUsDivClass:string = this.formGroupDefaultClass;
+    aboutUsError:boolean = false;
+    aboutUsErrorMesssage:string = "";
+    
     logoDivClass:string = this.formGroupDefaultClass;
     logoError:boolean = false;
     logoErrorMessage:string = "";
-
+    hasPublicVideo:boolean = false;
 
     
     existingCompanyName:string = "";
@@ -97,10 +102,13 @@ export class EditCompanyProfileComponent implements OnInit {
     companyLogoImageUrlPath:string = "";
     companyBackGroundLogoUploader:FileUploader;
     companyBackgroundLogoImageUrlPath:string = "";
+    backGroundImage:string = "https://i.imgur.com/tgYLuLr.jpg";
+    publicVideos: Array<SaveVideoFile>;
 
     constructor( private logger: XtremandLogger, private authenticationService: AuthenticationService, private fb: FormBuilder,
         private companyProfileService: CompanyProfileService, public homeComponent: HomeComponent,
-        public refService:ReferenceService,private router:Router,public processor:Processor,public countryNames: CountryNames,public regularExpressions: RegularExpressions) {
+        public refService:ReferenceService,private router:Router,public processor:Processor,public countryNames: CountryNames,
+        public regularExpressions: RegularExpressions,public videoFileService:VideoFileService) {
         this.loggedInUserId = this.authenticationService.getUserId();
         this.companyNameDivClass = this.refService.formGroupClass;
         this.companyProfileNameDivClass = this.refService.formGroupClass;
@@ -123,9 +131,14 @@ export class EditCompanyProfileComponent implements OnInit {
             console.log(this.companyLogoUploader.queue[0]);
             if (JSON.parse(response).message === null) {
                    this.companyLogoUploader.queue[0].upload(); 
+                   this.logoError = false;
+                   this.logoErrorMessage  = "";
             } else {
                 this.companyLogoUploader.queue.length = 0;
                 this.companyLogoImageUrlPath =  this.companyProfile.companyLogoPath =JSON.parse(response).path;
+                this.logoError = false;
+                this.logoErrorMessage  = "";
+                console.log(this.companyLogoImageUrlPath);
             }
         }
         
@@ -149,6 +162,7 @@ export class EditCompanyProfileComponent implements OnInit {
             } else {
                 this.companyBackGroundLogoUploader.queue.length = 0;
                 this.companyBackgroundLogoImageUrlPath =  this.companyProfile.backgroundLogoPath = JSON.parse(response).path;
+                this.backGroundImage = this.authenticationService.MEDIA_URL+this.companyBackgroundLogoImageUrlPath;
             }
         }
 
@@ -162,48 +176,15 @@ export class EditCompanyProfileComponent implements OnInit {
         }
         this.getAllCompanyNames();
         this.getAllCompanyProfileNames();
-        
     }
   
    
     save() {
         this.refService.goToTop();
-        
         $('#saveOrUpdateCompanyButton').prop('disabled',true);
-       
         this.validateEmptySpace('companyName');
-        
         this.validateEmptySpace('companyProfileName');
-        
-        this.validateEmptySpace('emailId');
-        
-        this.validateEmptySpace('tagLine');
-        
-        this.validateEmptySpace('phone');
-        
-        this.validateEmptySpace('website');
-        
-        this.validateEmptySpace('facebook');
-        
-        this.validateEmptySpace('googlePlusLink');
-        
-        this.validateEmptySpace('linkedInLink');
-        
-        this.validateEmptySpace('twitter');
-        
-        this.validateEmptySpace('city');
-        
-        this.validateCountry();
-        
-        this.validateEmptySpace('zip');
-        
-        this.validateCompanyLogo();
-        
-        this.validateNames(this.companyProfile.companyName);
-        
-        this.validateProfileNames(this.companyProfile.companyProfileName);
-        
-       
+        this.validateEmptySpace('aboutUs');
         this.validatePattern('phone');
         this.validatePattern('website');
         this.validatePattern('facebook');
@@ -212,8 +193,7 @@ export class EditCompanyProfileComponent implements OnInit {
         this.validatePattern('twitterLink');
         this.validatePattern('city');
         this.validatePattern('emailId');
-        
-        
+        this.validateCompanyLogo();
         if(!this.companyNameError && !this.companyProfileNameError && !this.emailIdError && !this.tagLineError && !this.phoneError && !this.websiteError
             && !this.facebookLinkError && !this.googlePlusLinkError && !this.twitterLinkError && !this.linkedinLinkError && !this.cityError && !this.countryError &&
             !this.zipError && !this.logoError){
@@ -226,6 +206,7 @@ export class EditCompanyProfileComponent implements OnInit {
                 $('#edit-sucess' ).show( 600 );
                 let self = this;
                 setTimeout(function(){
+                    $('#company-profile-error-div').hide();
                     $('#saveOrUpdateCompanyButton').prop('disabled',true);
                     self.authenticationService.user.hasCompany = true;
                     self.authenticationService.isCompanyAdded = true;
@@ -257,6 +238,8 @@ export class EditCompanyProfileComponent implements OnInit {
             error => { this.logger.errorPage( error ) },
             () => { this.logger.info( "Completed saveOrUpdate()" ) }
             ); 
+        }else{
+            $('#company-profile-error-div').show(600);
         }
     }
     
@@ -265,24 +248,45 @@ export class EditCompanyProfileComponent implements OnInit {
            this.logoError = false;
            this.logoErrorMessage  = "";
            this.logoDivClass = this.refService.successClass;
+           this.enableOrDisableButton();
        }else{
            this.logoError = true;
            this.logoErrorMessage  = "Please Upload Logo";
            this.logoDivClass = this.refService.errorClass;
+           this.disableButton();
        }
    }
     
+   
+   /***************************Update******************************/
     update(){
         this.refService.goToTop();
+        $('#company-profile-error-div').hide();
         $('#edit-sucess').hide();
         $('#saveOrUpdateCompanyButton').prop('disabled',true);
+        this.validateEmptySpace('companyName');
+        this.validateNames(this.companyProfile.companyName);
+        this.validateEmptySpace('aboutUs');
+        this.validatePattern('emailId');
+        this.validatePattern('phone');
+        this.validatePattern('website');
+        this.validatePattern('facebook');
+        this.validatePattern('googlePlusLink');
+        this.validatePattern('linkedInLink');
+        this.validatePattern('twitterLink');
+        this.validatePattern('city');
+        this.validatePattern('emailId');
+        this.validateCompanyLogo();
         let errorLength = $('div.form-group.has-error.has-feedback').length;
-        if(errorLength==0){
+        if(!this.companyNameError && !this.companyProfileNameError && !this.emailIdError && !this.tagLineError && !this.phoneError && !this.websiteError
+                && !this.facebookLinkError && !this.googlePlusLinkError && !this.twitterLinkError && !this.linkedinLinkError && !this.cityError && !this.countryError &&
+                !this.zipError && !this.aboutUsError && !this.logoError){
             this.processor.set(this.processor);
             this.companyProfileService.update(this.companyProfile,this.loggedInUserId)
             .subscribe(
             data => {
                 this.message = data.message;
+                $('#company-profile-error-div').hide();
                 $('#info').hide();
                 $('#edit-sucess').show( 600 );
                 $('#saveOrUpdateCompanyButton').prop('disabled',false);
@@ -292,6 +296,8 @@ export class EditCompanyProfileComponent implements OnInit {
             error => { this.logger.errorPage( error ) },
             () => { this.logger.info( "Completed saveOrUpdate()" ) }
             ); 
+        }else{
+            $('#company-profile-error-div').show(600);
         }
        
     }
@@ -303,8 +309,17 @@ export class EditCompanyProfileComponent implements OnInit {
             data => {
                if(data.data!=undefined){
                    this.companyProfile = data.data;
-                   console.log(this.companyProfile);
+                   if($.trim(this.companyProfile.companyLogoPath).length>0){
+                       this.companyLogoImageUrlPath = this.companyProfile.companyLogoPath;
+                   }
+                  if($.trim(this.companyProfile.backgroundLogoPath).length>0){
+                     this.backGroundImage = this.authenticationService.MEDIA_URL+this.companyProfile.backgroundLogoPath;
+                  }
+                  if($.trim(this.companyProfile.country).length==0){
+                      this.companyProfile.country = this.countryNames.countries[0];
+                  }
                    this.existingCompanyName = data.data.companyName;
+                   this.loadPublicVideos();
                }
                 
             },
@@ -354,23 +369,38 @@ export class EditCompanyProfileComponent implements OnInit {
                 this.removeCompanyNameError();
             }
         }else{
+            this.companyNameErrorMessage = "";
             this.setCompanyNameError("Please Enter Company Name");
         }
     }
     
     setCompanyNameError(message:string){
-        $('#saveOrUpdateCompanyButton').prop('disabled',true);
+       this.disableButton();
         this.companyNameError = true;
         this.companyNameErrorMessage = message;
         this.companyNameDivClass = this.refService.errorClass;
     }
     
     removeCompanyNameError(){
-        $('#saveOrUpdateCompanyButton').prop('disabled',false);
+      //  $('#saveOrUpdateCompanyButton').prop('disabled',false);
+        this.enableOrDisableButton();
         this.companyNameError = false;
         this.companyNameDivClass = this.refService.successClass;
     }
     
+    enableOrDisableButton(){
+        $('#saveOrUpdateCompanyButton').prop('disabled',false);
+        /*let errorLength = $('div.form-group.has-error.has-feedback').length;
+          if(errorLength==0){
+            $('#saveOrUpdateCompanyButton').prop('disabled',false);
+        }else{
+            $('#saveOrUpdateCompanyButton').prop('disabled',true);
+        }*/
+    }
+    
+    disableButton(){
+        $('#saveOrUpdateCompanyButton').prop('disabled',true);
+    }
     
     validateProfileNames(value:any){
         if(value.trim().length>0){
@@ -384,7 +414,8 @@ export class EditCompanyProfileComponent implements OnInit {
             else if(this.companyProfileNames.indexOf(valueWithOutSpaces)>-1){
                 this.setCompanyProfileNameError("Company Profile Name Already Exists");
             }else{
-                $('#saveOrUpdateCompanyButton').prop('disabled',false);
+             //   $('#saveOrUpdateCompanyButton').prop('disabled',false);
+                this.enableOrDisableButton();
                 this.companyProfileNameError = false;
                 this.companyProfileNameDivClass = this.refService.successClass;
             }
@@ -446,9 +477,11 @@ export class EditCompanyProfileComponent implements OnInit {
            }else if(columnName=="zip"){
                this.zipError = true;
                this.zipDivClass = this.refService.errorClass;
+           }else if(columnName=="aboutUs"){
+               this.aboutUsError = true;
+               this.aboutUsDivClass = this.refService.errorClass;
            }
         }else if(value.length>0){
-            $('#saveOrUpdateCompanyButton').prop('disabled',false);
             if(columnName=="companyName"){
                 this.companyNameError = false;
                 this.companyNameDivClass = this.refService.successClass;
@@ -487,181 +520,241 @@ export class EditCompanyProfileComponent implements OnInit {
             }else if(columnName=="zip"){
                 this.zipError = false;
                 this.zipDivClass = this.refService.successClass;
+            }else if(columnName=="aboutUs"){
+                this.aboutUsError = false;
+                this.aboutUsDivClass = this.refService.successClass;
             }
+            this.enableOrDisableButton();
         }
+       
         
     }
     
     addEmailIdError(){
         this.emailIdError = true;
         this.emailIdDivClass  = this.refService.errorClass;
+        this.disableButton();
     }
     
     addPhoneError(){
         this.phoneError = true;
         this.phoneDivClass = this.refService.errorClass;
+        this.disableButton();
     }
     
     addCityError(){
         this.cityError = true;
         this.cityDivClass = this.refService.errorClass;
+        this.disableButton();
     }
     
     addWebSiteError(){
         this.websiteError = true;
         this.websiteDivClass = this.refService.errorClass;
+        this.disableButton();
     }
     
     addGooglePlusError(){
         this.googlePlusLinkError = true;
         this.googlePlusDivClass = this.refService.errorClass;
+        this.disableButton();
     }
     
     addFacebookError(){
         this.facebookLinkError = true;
         this.facebookDivClass = this.refService.errorClass;
+        this.disableButton();
         
     }
     
     addLinkedInError(){
         this.linkedinLinkError = true;
         this.linkedInDivClass = this.refService.errorClass;
+        this.disableButton();
     }
     
     addTwitterError(){
         this.twitterLinkError = true;
         this.twitterDivClass = this.refService.errorClass;
+        this.disableButton();
     }
     addCountryError(){
         this.countryError = true;
         this.countryDivClass = this.refService.errorClass;
+        this.disableButton();
+    }
+    
+    removeEmailIdError(){
+        this.emailIdError = false;
+        this.emailIdDivClass = this.refService.successClass;
+        this.emailIdErrorMessage = "";
+        this.enableOrDisableButton();
     }
     
     removePhoneError(){
         this.phoneError = false;
         this.phoneDivClass = this.refService.successClass;
         this.phoneErrorMessage = "";
+        this.enableOrDisableButton();
     }
-    removeEmailIdError(){
-        this.emailIdError = false;
-        this.emailIdDivClass = this.refService.successClass;
-        this.emailIdErrorMessage = "";
-    }
+   
     
     removeCityError(){
         this.cityError = false;
         this.cityDivClass = this.refService.successClass;
         this.cityErrorMessage = "";
+        this.enableOrDisableButton();
     }
     
     removeWebSiteError(){
         this.websiteError = false;
         this.websiteDivClass = this.refService.successClass;
         this.websiteErrorMessage = "";
+        this.enableOrDisableButton();
     }
     
     removeGooglePlusError(){
         this.googlePlusLinkError = false;
         this.googlePlusDivClass = this.refService.successClass;
         this.googlePlusLinkErrorMessage = "";
+        this.enableOrDisableButton();
     }
     
     removeFacebookError(){
         this.facebookLinkError = false;
         this.facebookDivClass = this.refService.successClass;
         this.facebookLinkErrorMessage = "";
+        this.enableOrDisableButton();
     }
     
     removeLinkedInError(){
         this.linkedinLinkError = false;
         this.linkedInDivClass = this.refService.successClass;
         this.linkedinLinkErrorMessage = "";
+        this.enableOrDisableButton();
     }
     
     removeTwitterError(){
         this.twitterLinkError = false;
         this.twitterDivClass = this.refService.successClass;
         this.twitterLinkErrorMessage = "";
+        this.enableOrDisableButton();
     }
     
     removeCountryError(){
         this.countryError = false;
         this.countryDivClass = this.refService.successClass;
+        this.enableOrDisableButton();
     }
     
     validateEmailId(){
-        console.log("validating Email Id");
-        if(!this.regularExpressions.EMAIL_ID_PATTERN.test(this.companyProfile.emailId)){
-            this.addEmailIdError();
-            this.emailIdErrorMessage = "Invalid EmailId";
-            console.log("Invalide Emil Id");
+        if($.trim(this.companyProfile.emailId).length>0){
+            if(!this.regularExpressions.EMAIL_ID_PATTERN.test(this.companyProfile.emailId)){
+                this.addEmailIdError();
+                this.emailIdErrorMessage = "Invalid EmailId";
+            }else{
+                this.removeEmailIdError();
+            }
         }else{
             this.removeEmailIdError();
         }
     }
     
     validatePhone(){
-        if(!this.regularExpressions.PHONE_NUMBER_PATTERN.test(this.companyProfile.phone)){
-            this.addPhoneError();
-            this.phoneErrorMessage = "Invalid Phone Number"
+        if($.trim(this.companyProfile.phone).length>0){
+            if(!this.regularExpressions.PHONE_NUMBER_PATTERN.test(this.companyProfile.phone)){
+                this.addPhoneError();
+                this.phoneErrorMessage = "Invalid Contact Number"
+            }else{
+                this.removePhoneError();
+            }
         }else{
-            this.removeEmailIdError();
+            this.removePhoneError();
         }
+       
     }
     
     validateCity(){
-        if(!this.regularExpressions.CITY_PATTERN.test(this.companyProfile.city)){
-            this.addCityError();
-            this.cityErrorMessage = "Invalid City";
+        if($.trim(this.companyProfile.city).length>0){
+            if(!this.regularExpressions.CITY_PATTERN.test(this.companyProfile.city)){
+                this.addCityError();
+                this.cityErrorMessage = "Invalid City";
+            }else{
+                this.removeCityError();
+            }
         }else{
             this.removeCityError();
         }
     }
     
     validateWebSite(){
-        if(!this.regularExpressions.URL_PATTERN.test(this.companyProfile.website)){
-            this.addWebSiteError();
-            this.websiteErrorMessage = "Invalid Pattern";
+        if($.trim(this.companyProfile.website).length>0){
+            if(!this.regularExpressions.URL_PATTERN.test(this.companyProfile.website)){
+                this.addWebSiteError();
+                this.websiteErrorMessage = "Invalid WebSite Url";
+            }else{
+                this.removeWebSiteError();
+            }
         }else{
             this.removeWebSiteError();
         }
-        
     }
     
     validateGooglePlus(){
-        if(!this.regularExpressions.URL_PATTERN.test(this.companyProfile.googlePlusLink)){
-            this.addGooglePlusError();
-            this.googlePlusLinkErrorMessage = "Invalid Pattern";
+        
+        if($.trim(this.companyProfile.googlePlusLink).length>0){
+            if(!this.regularExpressions.URL_PATTERN.test(this.companyProfile.googlePlusLink)){
+                this.addGooglePlusError();
+                this.googlePlusLinkErrorMessage = "Invalid Google Plus Url";
+            }else{
+                this.removeGooglePlusError();
+            }
         }else{
             this.removeGooglePlusError();
         }
+       
     }
     
     validateFacebook(){
-        if(!this.regularExpressions.URL_PATTERN.test(this.companyProfile.facebookLink)){
-            this.addFacebookError();
-            this.facebookLinkErrorMessage = "Invalid Pattern";
+        if($.trim(this.companyProfile.facebookLink).length>0){
+            if(!this.regularExpressions.URL_PATTERN.test(this.companyProfile.facebookLink)){
+                this.addFacebookError();
+                this.facebookLinkErrorMessage = "Invalid Facebook Url";
+            }else{
+                this.removeFacebookError();
+            }
         }else{
             this.removeFacebookError();
         }
     }
     
     validateTwitter(){
-        if(!this.regularExpressions.URL_PATTERN.test(this.companyProfile.twitterLink)){
-            this.addTwitterError();
-            this.twitterLinkErrorMessage = "Invalid Pattern";
+        if($.trim(this.companyProfile.twitterLink).length>0){
+            if(!this.regularExpressions.URL_PATTERN.test(this.companyProfile.twitterLink)){
+                this.addTwitterError();
+                this.twitterLinkErrorMessage = "Invalid Twiiter Url";
+            }else{
+                this.removeTwitterError();
+            }
         }else{
             this.removeTwitterError();
         }
+        
     }
     
     validateLinkedIn(){
-        if(!this.regularExpressions.URL_PATTERN.test(this.companyProfile.linkedInLink)){
-            this.addLinkedInError();
-            this.linkedinLinkErrorMessage = "Invalid Pattern";
+        if($.trim(this.companyProfile.linkedInLink).length>0){
+            if(!this.regularExpressions.URL_PATTERN.test(this.companyProfile.linkedInLink)){
+                this.addLinkedInError();
+                this.linkedinLinkErrorMessage = "Invalid LinkedIn Url";
+            }else{
+                this.removeLinkedInError();
+            }
         }else{
             this.removeLinkedInError();
         }
+        
+       
     }
     
     
@@ -715,5 +808,17 @@ export class EditCompanyProfileComponent implements OnInit {
         this.companyBackgroundLogoImageUrlPath = "";
     }
     
+    loadPublicVideos(){
+        this.videoFileService.loadPublicVideos(this.companyProfile.id)
+            .subscribe(
+            data => {
+              this.publicVideos = data;
+            },
+            error => { this.logger.errorPage( error ) },
+            () => { this.logger.info( "Completed getCompanyProfileByUserId()" ) }
+            );
+
+    
+    }
 
 }

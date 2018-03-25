@@ -251,6 +251,13 @@ export class VideoFileService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+    
+    loadPublicVideos(companyId:number){
+        const url = this.URL + "public/" + companyId +'?access_token=' + this.authenticationService.access_token;
+        return this.http.get(url, '')
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
     extractData(res: Response) {
         const body = res.json();
         console.log(body);

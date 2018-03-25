@@ -19,4 +19,5 @@ export class CompanyProfile {
     backgroundLogoPath:string = "";
      aboutUs:string = "";
      isAdd:boolean = true;
+    videoId:number = 0;
 }
