@@ -1,6 +1,11 @@
 <style type="text/css">
-.numberCss {
-	font-weight: 300 !important;
+.disabled{
+	pointer-events: none;
+	opacity: 0.7;
+}
+.isProcessing{
+	pointer-events: none;
+	opacity: 0.4;
 }
 </style>
 <div class="page-content">
@@ -175,7 +180,8 @@
 												</tr>
 											</thead>
 											<tbody>
-												<tr *ngFor="let contactList of pagination.pagedItems">
+												<tr *ngFor="let contactList of pagination.pagedItems" 
+												 [class.isProcessing]="!contactList.emailValidationInd">
 													<td style="width: 10%;"><img
 														*ngIf="contactList.socialNetwork=='ZOHO'"
 														src="{{zohoImage}}" alt="zoho" style="height: 70px;">
@@ -197,27 +203,30 @@
 													<td class="text-center">{{contactList.noOfContacts}}</td>
 													<td>
 														<div class="actions-block">
-															<a
+															<a 
 																*ngIf="hasAllAccess || (hasContactRole && loggedInUserId == contactList.uploadedUserId) || authenticationService.isOnlyPartner()"
 																(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList)"
 																title="Edit List"> <i class="fa fa-pencil-square-o"></i>
 															</a>
-															<a title="Save Existing List As a new List" (click)="saveAsNewList(contactList.id,contactList.name)"> <i class="fa fa-files-o"></i>
+															<a title="Save Existing List As a new List" 
+															(click)="saveAsNewList(contactList.id,contactList.name)">
+															 <i class="fa fa-files-o"></i>
 															</a>
-															 <a
+															 <a 
 																*ngIf="!hasAllAccess && loggedInUserId != contactList.uploadedUserId"
 																(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList)"
 																title="ContactList Info"> <i
 																class="glyphicon glyphicon-info-sign"></i>
-															</a> <a (click)="downloadContactList(contactList.id)"
+															</a> <a
+															    (click)="downloadContactList(contactList.id)"
 																title="Download List" data-rel="fancybox-button"> <i
 																class="fa fa-cloud-download"></i>
-															</a> <a
+															</a> <a 
 																*ngIf="(hasAllAccess || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner()) && !contactList.defaultPartnerList"
 																(click)="showAlert(contactList.id)" title="Delete List">
 																<i class="fa fa-trash"></i>
 															</a> <span *ngIf="contactList.synchronisedList == true">
-																<a title="sychronizeContactList"
+																<a title="sychronizeContactList" 
 																*ngIf="hasAllAccess || (hasContactRole && loggedInUserId==contactList.uploadedUserId)"
 																(click)="synchronizeContactList(contactList.id,contactList.socialNetwork)">
 																	<i class="fa fa-refresh" aria-hidden="true"></i>
@@ -250,32 +259,31 @@
 													class="img-responsive"
 													*ngIf="contactList.socialNetwork=='MANUAL'"
 													src="{{normalImage}}" alt="">
-													<!-- <div id="container">
-														<h3>its processing<span class="arrow">
-															<img *ngIf="!contactList.emailValidationInd" 
-															src="assets/images/Spinner.gif" class="loaderGif">
+													<div id="container" *ngIf="!contactList.emailValidationInd" >
+														<h3>processing<span class="arrow">
+															<img src="assets/images/Spinner.gif" class="loaderGif">
 														</span> </h3>
-													</div> -->
+													</div>
 												<div class="mix-details-fill">
-													<h4 style="top: 5%; position: relative;"
+													<h4 style="top: 7%; position: relative;"
 														title={{contactList.name}}>{{contactListNameLength(contactList.name)}}
 													</h4>
-													<div style="top: 2%; position: relative;">
-														<a class="mix-preview5"
+													<div style="top: 2%; position: relative;" >
+														<a class="mix-preview5" [class.disabled]="!contactList.emailValidationInd"
 															(click)="downloadContactList(contactList.id)"
 															title="Download List" data-rel="fancybox-button"> <i
 															class="fa fa-cloud-download"></i>
-														</a> <a class="mix-preview4"
+														</a> <a class="mix-preview4"  [class.disabled]="!contactList.emailValidationInd"
 															*ngIf="hasAllAccess || (hasContactRole && loggedInUserId == contactList.uploadedUserId) || authenticationService.isOnlyPartner()"
 															(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList)"
 															title="Edit List" data-rel="fancybox-button"> <i
 															class="fa fa-pencil-square-o"></i>
-														</a> <a class="mix-preview4"
+														</a> <a class="mix-preview4" [class.disabled]="!contactList.emailValidationInd"
 															*ngIf="!hasAllAccess && loggedInUserId != contactList.uploadedUserId"
 															(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList)"
 															title="ContactList Info" data-rel="fancybox-button">
 															<i class="glyphicon glyphicon-info-sign"></i>
-														</a> <a class="mix-preview6"
+														</a> <a class="mix-preview6" [class.disabled]="!contactList.emailValidationInd"
 															*ngIf="(hasAllAccess || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner()) && !contactList.defaultPartnerList"
 															(click)="showAlert(contactList.id)" title="Delete List"
 															data-rel="fancybox-button" lang="{{contactList.id}}">
@@ -284,14 +292,14 @@
 													</div>
 													<div style="top: 38%; position: relative;">
 														<a class="mix-preview2" title="Save Existing list as a new list"
-															(click)="saveAsNewList(contactList.id,contactList.name)"
+															(click)="saveAsNewList(contactList.id,contactList.name)" [class.disabled]="!contactList.emailValidationInd"
 															data-rel="fancybox-button" style="left: 38%; top: -20px;">
 															<i class="fa fa-files-o" aria-hidden="true" style="color: white;"></i>
 														</a>
 													</div>
 													<div style="top: 38%; position: relative;"
 														*ngIf="contactList.synchronisedList == true">
-														<a class="mix-preview2" title="sychronizeContactList"
+														<a class="mix-preview2" title="sychronizeContactList" [class.disabled]="!contactList.emailValidationInd"
 															*ngIf="hasAllAccess || (hasContactRole && loggedInUserId==contactList.uploadedUserId)"
 															(click)="synchronizeContactList(contactList.id,contactList.socialNetwork)"
 															data-rel="fancybox-button" style="left: 18%; top: -20px;">
