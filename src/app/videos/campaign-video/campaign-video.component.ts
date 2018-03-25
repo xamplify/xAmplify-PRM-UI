@@ -414,7 +414,6 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                 let startDuration;
                 selfPanorama.videoFileService.replyVideo = false;
                 player.ready(function () {
-                   // selfPanorama.setVideoBranLogo();
                     selfPanorama.videoFileService.pauseAction = false;
                     selfPanorama.xtremandLog.startDuration = 0;
                     selfPanorama.xtremandLog.stopDuration = 0;
@@ -571,7 +570,6 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                     self.replyVideo = false;
                     const document: any = window.document;
                     this.ready(function () {
-                     //   self.setVideoBranLogo();
                         self.videoFileService.pauseAction = false;
                         self.xtremandLog.startDuration = 0;
                         self.xtremandLog.stopDuration = 0;

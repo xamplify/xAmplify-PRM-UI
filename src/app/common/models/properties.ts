@@ -60,6 +60,9 @@ export class Properties {
     SIGN_UP_ERROR = "An error occured while sign up please try later";
     ACCOUNT_DEACTIVATE_SUCCESS = "OrgAdmin deactivation successfully done";
     
+    COMPANY_LOGO = 'assets/images/xamplify-logo.png'
+    BOTTOM_MESSAGE = '2018 Xamplify, All rights reserved.'
+    
     BAD_CREDENTIAL_ERROR = "Username or password is incorrect";
     USER_ACCOUNT_ACTIVATION_ERROR ="Your account is not activated";
     EMPTY_CREDENTIAL_ERROR = "Username or password can't be empty";

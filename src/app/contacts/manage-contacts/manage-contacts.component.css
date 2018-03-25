@@ -21,10 +21,46 @@ a.disabled{pointer-events:none;cursor:not-allowed}
 .btn-tools{font-size:28px;color:#FFF;margin-top:10px;cursor:pointer}
 .dashboard-stat .details .number{font-weight:600!important}
 .loaderGif{
-    width: 52px;
-    height: 35px;
+    width: 68px;
+    height: 57px;
     position: absolute;
-    top: 0px;
+    top: -12px;
     color: white;
-    right: -2px;
+    right: -10px;
+}
+#container {
+	margin: -4px;
+	width: 500px;
+	height: 25px;
+	padding-top: 30px;
+	font-family: helvetica, arial, sans-serif;
+}
+
+h3 {
+	background: #337ab7;
+	background: -moz-linear-gradient(top, #e3e3e3, #c8c8c8);
+	background: -webkit-gradient(linear, left top, left bottom, from(#16b2f4),
+		to(#16b2f4));
+	padding: 4px 23px;
+	margin-left: -16px;
+	margin-top: 3px;
+	position: relative;
+	width: 30%;
+	font-size: 17px;
+	z-index: 340;
+	-moz-box-shadow: 1px 1px 3px #292929;
+	-webkit-box-shadow: 1px 1px 3px #292929;
+	box-shadow: 1px 1px 3px #292929;
+	color: #fdfdfd;
+}
+
+.arrow {
+	width: 0;
+	height: 0;
+	line-height: 0;
+	border-left: 20px solid transparent;
+	border-top: 10px solid #16b2f4;
+	top: 102%;
+	left: 0;
+	position: absolute;
 }

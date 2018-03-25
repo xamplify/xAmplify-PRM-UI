@@ -1,7 +1,7 @@
 <div class="clearfix"></div>
 <div class="page-footer" [ngClass]="{'customCss': isEmailTemplate}" (window:resize)="onResize($event)">
-	<div align="center" style="color: white; font-size: 13px;position: relative;left:-36px"> 2018 SocialUbuntu, All rights reserved.
-		<a class="copyright-css" href="{{authenticationService.APP_URL}}" title="Stream to generate Demand" target="_blank">www.socialubuntu.com</a>
+	<div align="center" style="color: white; font-size: 13px;position: relative;left:-36px">{{properties.BOTTOM_MESSAGE}}
+		<a class="copyright-css" href="https://xamplify.io" title="Stream to generate Demand" target="_blank">www.xamplify.io</a>
 	</div>
 	<div class="scroll-to-top" (click)="scrollTop()">
 		<i class="icon-arrow-up"></i>

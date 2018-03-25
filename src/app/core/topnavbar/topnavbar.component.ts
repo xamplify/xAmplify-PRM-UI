@@ -8,11 +8,14 @@ import { ReferenceService } from '../../core/services/reference.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { UtilService } from '../../core/services/util.service';
 import { Roles } from '../../core/models/roles';
+import { Properties } from '../../common/models/properties';
+
 declare var swal, $: any;
 @Component({
   selector: 'app-topnavbar',
   templateUrl: './topnavbar.component.html',
-  styleUrls: ['./topnavbar.component.css']
+  styleUrls: ['./topnavbar.component.css'],
+  providers: [Properties]
 })
 export class TopnavbarComponent implements OnInit {
 
@@ -21,7 +24,7 @@ export class TopnavbarComponent implements OnInit {
   @Input() model = { 'displayName': '', 'profilePicutrePath': 'assets/admin/pages/media/profile/icon-user-default.png' };
   constructor(public router: Router, public userService: UserService, public utilService: UtilService,
     public socialService: SocialService, public authenticationService: AuthenticationService,
-    public refService: ReferenceService, public logger: XtremandLogger) {
+    public refService: ReferenceService, public logger: XtremandLogger,public properties: Properties) {
     const userName = this.authenticationService.user.emailId;
     if (this.refService.topNavbarUserService === false || this.utilService.topnavBareLoading === false) {
       this.refService.topNavbarUserService = true;

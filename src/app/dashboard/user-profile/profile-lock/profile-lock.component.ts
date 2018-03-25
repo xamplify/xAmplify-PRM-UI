@@ -1,14 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+
 import { UserService } from '../../../core/services/user.service';
-import { User } from '../../../core/models/user';
 import { AuthenticationService } from '../../../core/services/authentication.service';
+
+import { User } from '../../../core/models/user';
+import { Properties } from '../../../common/models/properties';
+
 declare var Metronic, Layout, Demo: any;
 
 @Component({
     selector: 'app-profile-lock',
     templateUrl: './profile-lock.component.html',
-    styleUrls: ['./profile-lock.component.css']
+    styleUrls: ['./profile-lock.component.css'],
+    providers: [Properties]
 })
 export class ProfileLockComponent implements OnInit {
 
@@ -19,7 +24,7 @@ export class ProfileLockComponent implements OnInit {
     error: string;
     loginDisabled = true;
     constructor(private userService: UserService, private authenticationService: AuthenticationService,
-        private router: Router) {
+        private router: Router, public properties: Properties) {
         this.password = '';
     }
     checkPassword(password: string) {

@@ -250,7 +250,12 @@
 													class="img-responsive"
 													*ngIf="contactList.socialNetwork=='MANUAL'"
 													src="{{normalImage}}" alt="">
-													<!-- <img *ngIf="true" src="assets/images/loadbar.gif" class="loaderGif"> -->
+													<!-- <div id="container">
+														<h3>its processing<span class="arrow">
+															<img *ngIf="!contactList.emailValidationInd" 
+															src="assets/images/Spinner.gif" class="loaderGif">
+														</span> </h3>
+													</div> -->
 												<div class="mix-details-fill">
 													<h4 style="top: 5%; position: relative;"
 														title={{contactList.name}}>{{contactListNameLength(contactList.name)}}
