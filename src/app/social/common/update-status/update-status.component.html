@@ -214,7 +214,7 @@
 			    				<i class="fa fa-camera" aria-hidden="true">&nbsp;</i><span class='hidden-xs'>Add photos</span>
 			    				<input type="file" (change)="fileChange($event)" #input  name="media[]" accept="image/gif,image/jpeg,image/jpg,image/png" multiple="multiple" class="file-input js-tooltip" data-original-title="Add photos or video">
 							</label>
-	                        <button class="btn btn-default rounded-0" (click)="openListVideosModal()">Import Videos</button>
+	                        <button class="btn btn-default rounded-0" (click)="openListVideosModal()">Select Videos</button>
                         </section>
                     </div>
                     <div class="col-xs-6 p0">
@@ -252,9 +252,9 @@
 				    
 					<section *ngIf="contactListsPagination.pagedItems?.length === 0">
 						<div class='alert alert-info' role='alert'>
-							<h4 class='m0'>You have not added any contact list so far. Please start adding contact list to your profile.</h4>
+							<h4 class='m0'>You have not added any contact lists yet. Please add at least one list to your account</h4>
 						</div>
-						<a class='btn btn-info' style="color: #fff;" [routerLink]="['/home/contacts/add']">add contacts</a>
+						<a class='btn btn-info' style="color: #fff;" [routerLink]="['/home/contacts/add']">Add Contacts</a>
 					</section>
 					<section *ngIf="contactListsPagination.pagedItems?.length !== 0">
 						<div class="table-responsive">
