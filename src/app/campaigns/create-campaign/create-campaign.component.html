@@ -664,14 +664,14 @@
 									  [class.contact-list-selected]="(selectedContactListIds.indexOf(contacts.id)>-1 && contacts.noOfContacts>0)" 
 									  (mouseover)='showContactsAlert(contacts.noOfContacts)' [attr.title]="emptyContactsMessage">
 					                     <td>
-					                     	<div class="form-group" *ngIf="contacts.noOfContacts>0">
+					                     	<div class="form-group" *ngIf="contacts.noOfContacts>0 && contacts.emailValidationInd">
 							                     <input type="checkbox" class="chk"  lang="{{contacts.name}}"  id="{{contacts.id}}"
 							                      [checked]="selectedContactListIds.indexOf(contacts.id)>-1"   
 							                     name="campaignContact[]" value="{{contacts.id}}"  (click)="highlightRow(contacts.id,$event,contacts.noOfContacts)">
 					                      </div>
 					                      
-					                      	<div class="form-group" *ngIf="contacts.noOfContacts==0">
-							                     <input type="checkbox" disabled="disabled" title="This Contact List Has No Contacts">
+					                      	<div class="form-group" *ngIf="contacts.noOfContacts==0 || !contacts.emailValidationInd">
+							                     <input type="checkbox" disabled="disabled" title="Contacts are in progress">
 					                      </div>
 					                     </td>
 					                     
@@ -978,98 +978,95 @@
 					<div class="portlet light border-0" style="padding: 2em 1em;;">
 						
 							
-<table width="100%">
-   <tr>
-      <td style="text-align: left" width="35%">
-         <i class="fa fa-users fa-2x" aria-hidden="true" style="color: #86dcfc; padding-top:0px;"></i>
-         <ng-container class="h4-text" *ngIf="campaignType == 'video'">Contact List</ng-container>
-         <ng-container class="h4-text" *ngIf="campaignType == 'regular'">Contact List</ng-container>
-      </td>
-      <td width="45%">
-         <ng-container *ngFor="let contactList of selectedContactLists;let i=index;">
-            <a (click)="loadUsers(contactList.id,contactsUsersPagination)" data-toggle="modal" data-target="#myModal" title="{{contactList.name}}"
-               style="display: block;">
-               <ng-container *ngIf="contactList.name?.length>50">
-                  {{contactList.name | slice:0:50}}...
-               </ng-container>
-               <ng-container *ngIf="contactList.name?.length<=50">
-                  {{contactList.name}}
-               </ng-container>
-            </a>
-         </ng-container>
-      </td>
-      <td style="text-align: right" width="20%">
-         <a class="btn btn-default btn-sm" href="javascript:void(0)" (click)="resetActive($event, 40, 'step-4')">Change</a>
-      </td>
-   </tr>
-</table>
+			<table width="100%">
+			   <tr>
+			      <td style="text-align: left" width="35%">
+			         <i class="fa fa-users fa-2x" aria-hidden="true" style="color: #86dcfc; padding-top:0px;"></i>
+			         <ng-container class="h4-text" *ngIf="campaignType == 'video'">Contact List</ng-container>
+			         <ng-container class="h4-text" *ngIf="campaignType == 'regular'">Contact List</ng-container>
+			      </td>
+			      <td width="45%">
+			         <ng-container *ngFor="let contactList of selectedContactLists;let i=index;">
+			            <a (click)="loadUsers(contactList.id,contactsUsersPagination)" data-toggle="modal" data-target="#myModal" title="{{contactList.name}}"
+			               style="display: block;">
+			               <ng-container *ngIf="contactList.name?.length>50">
+			                  {{contactList.name | slice:0:50}}...
+			               </ng-container>
+			               <ng-container *ngIf="contactList.name?.length<=50">
+			                  {{contactList.name}}
+			               </ng-container>
+			            </a>
+			         </ng-container>
+			      </td>
+			      <td style="text-align: right" width="20%">
+			         <a class="btn btn-default btn-sm" href="javascript:void(0)" (click)="resetActive($event, 40, 'step-4')">Change</a>
+			      </td>
+			   </tr>
+			</table>
 							
-					</div>
-<div class="portlet light border-0" style="padding: 2em 1em;;" id="email-template-preview-div">
-<table width="100%">
-   <tr>
-      <td style="text-align: left" width="35%">
-         <i class="fa fa-envelope fa-2x" aria-hidden="true" style="color: #86dcfc; padding-top:0"></i>
-         <ng-container class="h4-text" *ngIf="campaignType == 'video'">Email Template</ng-container>
-         <ng-container class="h4-text" *ngIf="campaignType == 'regular'">Email Template</ng-container>
-      </td>
-      <td width="45%">
-         <a (click)="getEmailTemplatePreview(emailTemplate)" title="{{emailTemplate.name}}">
-            <ng-container *ngIf="emailTemplate.name?.length>50">
-               {{emailTemplate.name | slice:0:50}}...
-            </ng-container>
-            <ng-container *ngIf="emailTemplate.name?.length<=50">
-               {{emailTemplate.name}}
-            </ng-container>
-         </a>
-      </td>
-      <td style="text-align: right" width="20%"><a class="btn btn-default btn-sm" (click)="resetActive($event, 40, 'step-5')">Change</a></td>
-   </tr>
-</table>
-</div>
-					<div class="portlet light border-0 portlet light border-0 clearfix" style="padding: 2em 1em;;">
-							<ng-container *ngFor="let schedule of sheduleCampaignValues">
-							<div class="col-xs-4" [class.sclass]="schedule==='SCHEDULE'">
-		                		 <label class="label-radio">
-		                		 	<input type="radio" class="text-center"  name="scheduleCampaign" [value]="schedule"  formControlName="scheduleCampaign" ngDefaultControl style=" margin-right:1.5em; "/>{{schedule}}
-		                		 </label>
-							</div>
-							</ng-container>
-							<div class="col-md-12" style="margin-left: -17px;margin-top: 12px;" [hidden]="buttonName!='Schedule'">
-								<div class="col-md-4">
-								  <label style="float: left;">Date</label><br>
-									<input type="text" class="form-control flatpickr square-box" placeholder="Select" formControlName="launchTime"/>
-									<font style="color: red" *ngIf="campaignLaunchForm.hasError('invalidSchedule')">Date Required</font>
-								</div>
-								<div class="col-md-4">
-								<label style="float: left;">Country</label><br>
-									<select	class="form-control"  style="width: 100%" formControlName="countryId" (change)="onSelect($event.target.value)" id="countryName">
-  											<option *ngFor="let country of countries" [value]="country.id">{{country.name}}</option>
-									</select>
-								</div>
-								<div class="col-md-4">
-								<label style="float: left;" >TimeZone </label><br>
-									<select	class="form-control"  style="width: 100%" formControlName="timeZoneId" id="timezoneId">
-									<ng-container *ngIf="timezones?.length==1">
-										<option *ngFor="let timeZone of timezones" [value]="timeZone.timezoneId" [selected]="campaign.countryId==timeZone.countryId">
-										    {{timeZone.cityName}}
-										  </option>
-									</ng-container>
-									<ng-container *ngIf="timezones?.length>1">
-									<option *ngFor="let timeZone of timezones" [value]="timeZone.timezoneId">
-									    {{timeZone.cityName}}
-									  </option>
-								</ng-container>
-									</select>
-								</div>
-							</div>
-					</div>
+			</div>
+			<div class="portlet light border-0" style="padding: 2em 1em;;" id="email-template-preview-div">
+				<table width="100%">
+				   <tr>
+				      <td style="text-align: left" width="35%">
+				         <i class="fa fa-envelope fa-2x" aria-hidden="true" style="color: #86dcfc; padding-top:0"></i>
+				         <ng-container class="h4-text" *ngIf="campaignType == 'video'">Email Template</ng-container>
+				         <ng-container class="h4-text" *ngIf="campaignType == 'regular'">Email Template</ng-container>
+				      </td>
+				      <td width="45%">
+				         <a (click)="getEmailTemplatePreview(emailTemplate)" title="{{emailTemplate.name}}">
+				            <ng-container *ngIf="emailTemplate.name?.length>50">
+				               {{emailTemplate.name | slice:0:50}}...
+				            </ng-container>
+				            <ng-container *ngIf="emailTemplate.name?.length<=50">
+				               {{emailTemplate.name}}
+				            </ng-container>
+				         </a>
+				      </td>
+				      <td style="text-align: right" width="20%"><a class="btn btn-default btn-sm" (click)="resetActive($event, 40, 'step-5')">Change</a></td>
+				   </tr>
+				</table>
 			</div>
 		</div>
 		</div>
-        </div>
+		</div>
+      </div>
+       <!-- --Adding Work Flow------------- --> 
+        <div class="col-xs-12">
+				<div class="portlet light dashboard-stat2 clearfix">
+				<div class="portlet title">
+					<h4 style="text-align: left;margin-left: 15px;font-weight: 600;color: #999;">Add Your Work Flow</h4>
+				</div>
+				<div class="portlet-body clearfix">
+				<div class="portlet-body clearfix">
+				<div  class="col-xs-6">
+					<a *ngIf="emailTemplateHrefLinks?.length==0"  class="dashboard-stat dashboard-stat-lighter yellow-gold" 
+							style="background-color: #26d8ad;" title="No Urls Found">
+	                    <i class="fa fa-plus-square p0" style="display: block; margin: 20px 0;font-size: 20px"></i>	
+							ADD ON CLICK EVENT
+						</a>
+						
+					<a *ngIf="emailTemplateHrefLinks?.length>0"  class="dashboard-stat dashboard-stat-lighter yellow-gold" style="background-color: #26d8ad" (click)="addClickRows()">
+	                    <i class="fa fa-plus-square p0" style="display: block; margin: 20px 0;font-size: 20px"></i>	
+							ADD ON CLICK EVENT
+						</a>	
+				</div>
+				
+				<div  class="col-xs-6">
+					<a  class="dashboard-stat dashboard-stat-lighter yellow-gold" style="background-color: #00a6e87a;" (click)="addReplyRows()">
+	                    <i class="fa fa-plus-square p0" style="display: block; margin: 20px 0;font-size: 20px"></i>	
+						ADD REPLY EVENT
+						</a>
+				</div>
+			</div>
+			</div>
+			</div>
+      </div>
+        
+        
+      <!-- -------------------------------------Add Reply----------------------------- -->  
         	<div class="col-xs-12" id="reply-onclick-div">
-        	 <div  class="alert alert-danger" *ngIf="dataError"><strong>Please Fill Data</strong></div>
+        	 <div  class="alert alert-danger" *ngIf="dataError"><strong>Please complete the required fields</strong></div>
         	<!-- Content Should Come here ------------ -->
         		<div *ngFor="let reply of replies;let i=index">
         		<div class="portlet light dashboard-stat2" id="{{reply.divId}}" >
@@ -1109,6 +1106,12 @@
 								<button type="button" class="btn btn-danger" (click)="remove(reply.divId,'replies')">
 									<span class="glyphicon glyphicon-trash"></span>
 								</button>
+								
+								<button type="button" class="btn btn-primary" (click)="addReplyRows()">
+									<span class="glyphicon glyphicon-plus"></span>
+								</button>
+								
+								
 							</div>
 							<div class="col-sm-12" style="padding: 0">
 							<div id="ck-editor-{{i}}" *ngIf="!reply.defaultTemplate">
@@ -1262,6 +1265,10 @@
 							<button type="button" class="btn btn-danger"(click)="remove(url.divId,'url')">
 									<span class="glyphicon glyphicon-trash"></span>
 							</button>
+							<button type="button" class="btn btn-primary" (click)="addClickRows()">
+									<span class="glyphicon glyphicon-plus"></span>
+								</button>
+								
 						</div>
 						<div class="col-sm-12" style="padding: 0">
 							<div id="ck-editor-{{i}}" *ngIf="!url.defaultTemplate">
@@ -1379,13 +1386,51 @@
 					</div>
 				</div>	
         		</div>
-				<h4 class="panel-title">
+				<!-- <h4 class="panel-title">
 					<button [disabled]="emailTemplateHrefLinks?.length==0"  class="btn btn-reply" (click)="addClickRows()" type="button" style="float: left;">ADD ON CLICK</button>
 					<button class="btn btn-reply" (click)="addReplyRows()" type="button" style="float: right">ADD REPLY</button>
-				</h4>
+				</h4> -->
 		</div>
    		<div class="col-xs-12">
 			<div class="portlet light dashboard-stat2" style="padding-top: 2em;">
+			<div><!-- class="portlet light border-0 portlet light border-0 clearfix" style="padding: 2em 1em;;" -->
+							<ng-container *ngFor="let schedule of sheduleCampaignValues">
+							<div class="col-xs-4" [class.sclass]="schedule==='SCHEDULE'">
+		                		 <label class="label-radio">
+		                		 	<input type="radio" class="text-center"  name="scheduleCampaign" [value]="schedule"  formControlName="scheduleCampaign" ngDefaultControl style=" margin-right:1.5em; "/>{{schedule}}
+		                		 </label>
+							</div>
+							</ng-container>
+							<div class="col-md-12" style="margin-left: -17px;margin-top: 12px;" [hidden]="buttonName!='Schedule'">
+								<div class="col-md-4">
+								  <label style="float: left;">Date</label><br>
+									<input type="text" class="form-control flatpickr square-box" placeholder="Select" formControlName="launchTime"/>
+									<font style="color: red" *ngIf="campaignLaunchForm.hasError('invalidSchedule')">Date Required</font>
+								</div>
+								<div class="col-md-4">
+								<label style="float: left;">Country</label><br>
+									<select	class="form-control"  style="width: 100%" formControlName="countryId" (change)="onSelect($event.target.value)" id="countryName">
+  											<option *ngFor="let country of countries" [value]="country.id">{{country.name}}</option>
+									</select>
+								</div>
+								<div class="col-md-4">
+								<label style="float: left;" >TimeZone </label><br>
+									<select	class="form-control"  style="width: 100%" formControlName="timeZoneId" id="timezoneId">
+									<ng-container *ngIf="timezones?.length==1">
+										<option *ngFor="let timeZone of timezones" [value]="timeZone.timezoneId" [selected]="campaign.countryId==timeZone.countryId">
+										    {{timeZone.cityName}}
+										  </option>
+									</ng-container>
+									<ng-container *ngIf="timezones?.length>1">
+									<option *ngFor="let timeZone of timezones" [value]="timeZone.timezoneId">
+									    {{timeZone.cityName}}
+									  </option>
+								</ng-container>
+									</select>
+								</div>
+							</div>
+					</div>
+			
 				<div class="portlet-title border-none">
 				<div class="col-xs-12 center-block">
 						<button type="button"	class="btn btn-default" (click)="resetActive($event, 40, 'step-5')" style="font-weight: 600;min-width: 10em;">Previous</button>

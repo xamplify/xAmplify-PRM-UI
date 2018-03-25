@@ -104,7 +104,7 @@ export class EditCompanyProfileComponent implements OnInit {
     companyBackgroundLogoImageUrlPath:string = "";
     backGroundImage:string = "https://i.imgur.com/tgYLuLr.jpg";
     publicVideos: Array<SaveVideoFile>;
-
+    isOnlyPartner:boolean = false;
     constructor( private logger: XtremandLogger, private authenticationService: AuthenticationService, private fb: FormBuilder,
         private companyProfileService: CompanyProfileService, public homeComponent: HomeComponent,
         public refService:ReferenceService,private router:Router,public processor:Processor,public countryNames: CountryNames,
@@ -112,8 +112,7 @@ export class EditCompanyProfileComponent implements OnInit {
         this.loggedInUserId = this.authenticationService.getUserId();
         this.companyNameDivClass = this.refService.formGroupClass;
         this.companyProfileNameDivClass = this.refService.formGroupClass;
-        
-        
+        this.isOnlyPartner = this.authenticationService.isOnlyPartner();
         this.companyLogoUploader = new FileUploader({
             allowedMimeType: ['image/jpeg', 'image/pjpeg', 'image/jpeg', 'image/pjpeg', 'image/png'],
             maxFileSize: 10 * 1024 * 1024, // 100 MB
@@ -138,6 +137,7 @@ export class EditCompanyProfileComponent implements OnInit {
                 this.companyLogoImageUrlPath =  this.companyProfile.companyLogoPath =JSON.parse(response).path;
                 this.logoError = false;
                 this.logoErrorMessage  = "";
+                this.enableOrDisableButton();
                 console.log(this.companyLogoImageUrlPath);
             }
         }
@@ -184,6 +184,8 @@ export class EditCompanyProfileComponent implements OnInit {
         $('#saveOrUpdateCompanyButton').prop('disabled',true);
         this.validateEmptySpace('companyName');
         this.validateEmptySpace('companyProfileName');
+        this.validateNames(this.companyProfile.companyName)
+        this.validateProfileNames(this.companyProfile.companyProfileName);
         this.validateEmptySpace('aboutUs');
         this.validatePattern('phone');
         this.validatePattern('website');
@@ -205,34 +207,40 @@ export class EditCompanyProfileComponent implements OnInit {
                 $('#info').hide();
                 $('#edit-sucess' ).show( 600 );
                 let self = this;
+                $('#company-profile-error-div').hide();
                 setTimeout(function(){
                     $('#company-profile-error-div').hide();
                     $('#saveOrUpdateCompanyButton').prop('disabled',true);
                     self.authenticationService.user.hasCompany = true;
                     self.authenticationService.isCompanyAdded = true;
                     let module = self.authenticationService.module;
-                    module.isOrgAdmin = true;
-                    module.isContact = true;
-                    module.isPartner = true;
-                    module.isEmailTemplate = true;
-                    module.isCampaign = true;
-                    module.isStats = true;
-                    module.hasVideoRole = true;
-                    module.hasSocialStatusRole = true;
-                    self.router.navigate(["/home/dashboard/welcome"]);
-                    self.processor.set(self.processor);
-                    self.homeComponent.getVideoDefaultSettings();
-                    const currentUser = localStorage.getItem( 'currentUser' );
-                    const userToken = {
-                    'userName': JSON.parse( currentUser )['userName'],
-                    'userId': JSON.parse(currentUser)['userId'],
-                    'accessToken': JSON.parse( currentUser )['accessToken'],
-                    'refreshToken': JSON.parse( currentUser )['refreshToken'],
-                    'expiresIn': JSON.parse( currentUser )['expiresIn'],
-                    'hasCompany': self.authenticationService.user.hasCompany,
-                    'roles': JSON.parse( currentUser )['roles']
-                    };
-                    localStorage.setItem('currentUser', JSON.stringify(userToken));
+                    if(self.isOnlyPartner){
+                        self.router.navigate(["/home/dashboard"]);
+                    }else{
+                        module.isOrgAdmin = true;
+                        module.isContact = true;
+                        module.isPartner = true;
+                        module.isEmailTemplate = true;
+                        module.isCampaign = true;
+                        module.isStats = true;
+                        module.hasVideoRole = true;
+                        module.hasSocialStatusRole = true;
+                        self.router.navigate(["/home/dashboard/welcome"]);
+                        self.processor.set(self.processor);
+                        self.homeComponent.getVideoDefaultSettings();
+                        const currentUser = localStorage.getItem( 'currentUser' );
+                        const userToken = {
+                        'userName': JSON.parse( currentUser )['userName'],
+                        'userId': JSON.parse(currentUser)['userId'],
+                        'accessToken': JSON.parse( currentUser )['accessToken'],
+                        'refreshToken': JSON.parse( currentUser )['refreshToken'],
+                        'expiresIn': JSON.parse( currentUser )['expiresIn'],
+                        'hasCompany': self.authenticationService.user.hasCompany,
+                        'roles': JSON.parse( currentUser )['roles']
+                        };
+                        localStorage.setItem('currentUser', JSON.stringify(userToken));
+                    }
+                   
                   }, 3000);
             },
             error => { this.logger.errorPage( error ) },
@@ -352,13 +360,13 @@ export class EditCompanyProfileComponent implements OnInit {
     }
     
     validateNames(value:any){
-        if(value.trim().length>0){
-            value = value.trim().toLowerCase().replace(/\s/g,'');
+        if($.trim(value).length>0){
+            value = $.trim(value).toLowerCase().replace(/\s/g,'');
             if(this.companyNames.indexOf(value)>-1){
                 if(this.companyProfile.isAdd){
                   this.setCompanyNameError("Company Name Already Exists");
                 }else{
-                    if(this.existingCompanyName.trim().toLowerCase().replace(/\s/g,'')!=value){
+                    if($.trim(this.existingCompanyName).toLowerCase().replace(/\s/g,'')!=value){
                         this.setCompanyNameError("Company Name Already Exists");
                     }else{
                         this.removeCompanyNameError();
@@ -403,9 +411,9 @@ export class EditCompanyProfileComponent implements OnInit {
     }
     
     validateProfileNames(value:any){
-        if(value.trim().length>0){
-            let valueWithSpace = value.trim().toLowerCase();
-            let valueWithOutSpaces = value.trim().toLowerCase().replace(/\s/g,'');
+        if($.trim(value).length>0){
+            let valueWithSpace = $.trim(value).toLowerCase();
+            let valueWithOutSpaces = $.trim(value).toLowerCase().replace(/\s/g,'');
             if (/\s/.test(value)) {
                 this.setCompanyProfileNameError("Spaces are not allowed");
             }else if(valueWithOutSpaces.length<3){
@@ -820,5 +828,7 @@ export class EditCompanyProfileComponent implements OnInit {
 
     
     }
+    
+   
 
 }

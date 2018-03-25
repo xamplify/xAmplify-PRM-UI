@@ -1003,6 +1003,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             .subscribe(
             (data:any) => {
                 this.campaignContactLists = data.listOfUserLists;
+                console.log(this.campaignContactLists);
                 contactsPagination.totalRecords = data.totalRecords;
                 if(contactsPagination.filterBy!=null){
                     if(contactsPagination.filterBy==0){

@@ -555,14 +555,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         'websiteUrl': {
             'required': 'WebsiteUrl required.',
             'pattern': 'Invalid Url Pattern'
-        },
-        'companyName': {
-            'required': 'Company Name required.',
-            'whitespace': 'Invalid Data',
-            'minlength': 'Company Name must be at least 3 characters long.',
-            'maxlength': 'Company Name cannot be more than 50 characters long.',
-            'pattern': 'Invalid Name'
-        },
+        }
+        
 
 
     };
@@ -574,34 +568,17 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         var mobileNumberPatternRegEx = /^[0-9]{10,10}$/;
         // var nameRegEx = /[a-zA-Z0-9]+[a-zA-Z0-9 ]+/;
         var charWithCommaRegEx = /^(?!.*?([A-D]).*?\1)[A-D](?:,[A-D])*$/;
-        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        let roleNames = currentUser.roles.map(function (a) { return a.roleName; });
-         if (roleNames.length == 2 && (roleNames.indexOf('ROLE_USER') > -1 && roleNames.indexOf('ROLE_COMPANY_PARTNER') > -1)) {
-            this.isOnlyPartnerRole = true;
-            this.updateUserProfileForm = this.fb.group({
-                'firstName': [this.userData.firstName, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(50)])],//Validators.pattern(nameRegEx)
-                'lastName': [this.userData.lastName, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(50)])],//Validators.pattern(nameRegEx)
-                'mobileNumber': [this.userData.mobileNumber, Validators.compose([Validators.minLength(10), Validators.maxLength(10), Validators.pattern(mobileNumberPatternRegEx)])],
-                'interests': [this.userData.interests, Validators.compose([noWhiteSpaceValidator, Validators.maxLength(50)])],
-                'occupation': [this.userData.occupation, Validators.compose([noWhiteSpaceValidator, Validators.maxLength(50)])],
-                'description': [this.userData.description, Validators.compose([noWhiteSpaceValidator, Validators.maxLength(50)])],
-                'websiteUrl': [this.userData.websiteUrl, [Validators.pattern(urlPatternRegEx)]],
-                'companyName': [this.userData.companyName, Validators.compose([noWhiteSpaceValidator, Validators.maxLength(50)])],//Validators.pattern(nameRegEx)
-            });
-        } else {
-            this.isOnlyPartnerRole = false;
-            this.updateUserProfileForm = this.fb.group({
-                'firstName': [this.userData.firstName, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(50)])],//Validators.pattern(nameRegEx)
-                'lastName': [this.userData.lastName, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(50)])],//Validators.pattern(nameRegEx)
-                'mobileNumber': [this.userData.mobileNumber, Validators.compose([Validators.minLength(10), Validators.maxLength(10), Validators.pattern(mobileNumberPatternRegEx)])],
-                'interests': [this.userData.interests, Validators.compose([noWhiteSpaceValidator, Validators.maxLength(50)])],
-                'occupation': [this.userData.occupation, Validators.compose([noWhiteSpaceValidator, Validators.maxLength(50)])],
-                'description': [this.userData.description, Validators.compose([noWhiteSpaceValidator, Validators.maxLength(50)])],
-                'websiteUrl': [this.userData.websiteUrl, [Validators.pattern(urlPatternRegEx)]]
-            });
-        
-        }
-
+        this.updateUserProfileForm = this.fb.group({
+            'firstName': [this.userData.firstName, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(50)])],//Validators.pattern(nameRegEx)
+            'lastName': [this.userData.lastName, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(50)])],//Validators.pattern(nameRegEx)
+            'mobileNumber': [this.userData.mobileNumber, Validators.compose([Validators.minLength(10), Validators.maxLength(10), Validators.pattern(mobileNumberPatternRegEx)])],
+            'interests': [this.userData.interests, Validators.compose([noWhiteSpaceValidator, Validators.maxLength(50)])],
+            'occupation': [this.userData.occupation, Validators.compose([noWhiteSpaceValidator, Validators.maxLength(50)])],
+            'description': [this.userData.description, Validators.compose([noWhiteSpaceValidator, Validators.maxLength(50)])],
+            'websiteUrl': [this.userData.websiteUrl, [Validators.pattern(urlPatternRegEx)]]
+        });
+    
+    
         this.updateUserProfileForm.valueChanges
             .subscribe(data => this.onUpdateUserProfileFormValueChanged(data));
 
@@ -645,9 +622,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                         var message = response.message;
                         if (message === "User Updated") {
                             setTimeout(function () { $("#update-profile-div-id").show(500); }, 1000);
-                            if (this.isOnlyPartnerRole) {
-                                this.authenticationService.user.hasCompany = true;
-                            }
                             this.userData = this.updateUserProfileForm.value;
                             this.userData.displayName = this.updateUserProfileForm.value.firstName;
                             this.parentModel.displayName = this.updateUserProfileForm.value.firstName;
@@ -656,11 +630,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                                 subscribe(
                                     res => {
                                         this.authenticationService.userProfile = res;
-                                        this.getVideoDefaultSettings();
-                                        this.hasCompany = this.authenticationService.user.hasCompany;
-                                        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-                                        let roleNames = currentUser.roles.map(function (a) { return a.roleName; });
-                                        this.isOnlyPartner(roleNames);
+                                       // this.getVideoDefaultSettings();
                                     },
                                     error => { this.logger.error(this.refService.errorPrepender + " updateUserProfile():" + error) },
                                     () => console.log("Finished")

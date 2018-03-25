@@ -262,11 +262,6 @@ input:checked + .slider-new:before {
 															<input type="url"  placeholder="WebSite Url" class="form-control" formControlName="websiteUrl" />
 															<div *ngIf="formErrors.websiteUrl" class="alert alert-danger">{{ formErrors.websiteUrl }}</div>
 														</div>
-														<div class="form-group" *ngIf="isOnlyPartnerRole">
-															<label class="control-label">Company Name</label>
-															<input type="text"   placeholder="Company Name" class="form-control" formControlName="companyName" required/>
-															<div *ngIf="formErrors.companyName" class="alert alert-danger">{{ formErrors.companyName }}</div>
-														</div>
 														<button type="submit"   [disabled]="!updateUserProfileForm.valid" class="btn green-haze">Save Changes</button>
 													</form>
 												</div>
