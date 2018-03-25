@@ -294,6 +294,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
         $('#overLayImage').append($('#overlay-logo').show());
     }
     ngOnInit() {
+        $('#overlay-logo').hide();
         $('body').css('cssText', 'background-color: white !important');
         this.createSessionId();
         this.xtremandLogger.log('public video component ngOnInit called');
@@ -301,8 +302,6 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
         this.alias = this.activatedRoute.snapshot.params['alias'];
         this.getCampaignVideo();
     }
-    
-
     
     defaultVideoSettings() {
         this.xtremandLogger.log('default settings called');
@@ -330,10 +329,6 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
             (error: any) => {
                 console.log('successfully skipped unused logged the actions' + xtremandLog.actionId);
             });
-    
-    
-       
-    
     }
     logVideoViewsCount() {
         this.videoFileService.logVideoViews(this.campaignVideoFile.alias).subscribe(
@@ -419,7 +414,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                 let startDuration;
                 selfPanorama.videoFileService.replyVideo = false;
                 player.ready(function () {
-                    selfPanorama.setVideoBranLogo();
+                   // selfPanorama.setVideoBranLogo();
                     selfPanorama.videoFileService.pauseAction = false;
                     selfPanorama.xtremandLog.startDuration = 0;
                     selfPanorama.xtremandLog.stopDuration = 0;
@@ -576,7 +571,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                     self.replyVideo = false;
                     const document: any = window.document;
                     this.ready(function () {
-                        self.setVideoBranLogo();
+                     //   self.setVideoBranLogo();
                         self.videoFileService.pauseAction = false;
                         self.xtremandLog.startDuration = 0;
                         self.xtremandLog.stopDuration = 0;

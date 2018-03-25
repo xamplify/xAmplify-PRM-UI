@@ -495,3 +495,10 @@ a{text-decoration: none !important;}
     float: right;}
 	.close-circle i{display:block !important; margin-top:-1px;}
 	.close-circle:hover{background:#00a6e8;color:#FFF;}
+	.headerCss {
+		font-size: 12px; 
+		font-weight: 500;
+	 }
+	 .center {
+		 text-align: center;
+	 }

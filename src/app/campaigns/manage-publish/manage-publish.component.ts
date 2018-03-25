@@ -262,5 +262,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.listCampaign(this.pagination);
         
     }
+    filterByUserNameOrDate(){
+        
+    }
     
 }
