@@ -370,11 +370,7 @@ input:checked + .slider-new:before {
 												<!-- PRIVACY SETTINGS TAB -->
 												<div class="tab-pane" id="tab_1_4">
 													<form action="#">
-														<div *ngIf="defaultViewSuccess" 
-															class="alert alert-success alert-dismissable">
-															<a  class="close" data-dismiss="alert" aria-label="close" (click)="closeSuccessPopup()">&times;</a>
-															<strong> Settings have been updated Successfully!</strong> 
-														</div>
+														<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 														<table class="table table-light">
 														<tr>
 															<td>

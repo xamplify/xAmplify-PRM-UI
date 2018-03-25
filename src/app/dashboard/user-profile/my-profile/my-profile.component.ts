@@ -58,7 +58,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     isPlayerSettingUpdated = false;
     hasAllAccess = false;
     hasCompany: boolean;
-    defaultViewSuccess = false;
     orgAdminCount: number = 0;
     infoMessage: string = "";
     currentUser: User;
@@ -903,9 +902,12 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             .subscribe(
                 data => {
                     this.refService.isListView = isListView;
-                    this.defaultViewSuccess = true;
+                    this.customResponse = new CustomResponse('SUCCESS', this.properties.PROCESS_REQUEST_SUCCESS, true);
                 },
-                error => console.log(error),
+                error => {
+                    console.log(error);
+                    this.customResponse = new CustomResponse('ERROR', this.properties.PROCESS_REQUEST_ERROR, true);    
+            },
                 () => { }
             );
     }
