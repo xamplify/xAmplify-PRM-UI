@@ -11,12 +11,13 @@ import { UserInfoComponent } from './user-info/user-info.component';
 import { LocationComponent } from './location/location.component';
 import { PlatformComponent } from './platform/platform.component';
 import { ResponseMessageComponent } from './response-message/response-message.component';
+import { PreviewVideoComponent } from './preview-video/preview-video.component';
 
 @NgModule({
   imports: [CommonModule, FormsModule],
   declarations: [DonutChartComponent, PaginationComponent, WorldmapComponent,
-    BarChartComponent, EmbedModalComponent, EmbedModalComponent, UserInfoComponent, LocationComponent, PlatformComponent, ResponseMessageComponent],
+    BarChartComponent, EmbedModalComponent, EmbedModalComponent, UserInfoComponent, LocationComponent, PlatformComponent, ResponseMessageComponent, PreviewVideoComponent],
   exports: [DonutChartComponent, PaginationComponent, WorldmapComponent,
-    BarChartComponent, EmbedModalComponent, UserInfoComponent, LocationComponent, PlatformComponent, ResponseMessageComponent]
+    BarChartComponent, EmbedModalComponent, UserInfoComponent, LocationComponent, PlatformComponent, ResponseMessageComponent, PreviewVideoComponent]
 })
 export class CommonComponentModule { }

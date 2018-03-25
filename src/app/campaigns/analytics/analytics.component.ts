@@ -63,6 +63,8 @@ export class AnalyticsComponent implements OnInit {
   isPartnerCampaign: string;
   renderMapData: any;
 
+  videoFile: any;
+
   constructor(private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
     private authenticationService: AuthenticationService, public pagerService: PagerService, public pagination: Pagination,
     private referenceService: ReferenceService) {
@@ -718,6 +720,31 @@ export class AnalyticsComponent implements OnInit {
     a.click();
     return 'success';
   }
+
+    showEmailTemplatePreview(emailTemplate:any){
+       console.log(emailTemplate);
+        let body = emailTemplate.body;
+        let emailTemplateName = emailTemplate.name;
+        if(emailTemplateName.length>50){
+            emailTemplateName = emailTemplateName.substring(0, 50)+"...";
+        }
+        $("#htmlContent").empty();
+        $("#email-template-title").empty();
+        $("#email-template-title").append(emailTemplateName);
+        $('#email-template-title').prop('title',emailTemplate.name);
+        $("#htmlContent").append(body);
+        $('.modal .modal-body').css('overflow-y', 'auto'); 
+       // $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
+        $("#show_email_template_preivew").modal('show');
+    }
+
+    previewVideo(videoFile: any){
+      this.videoFile = videoFile;
+    }
+
+    closeModal(event: any){
+      this.videoFile = undefined;
+    }
 
   ngOnInit() {
     this.emailActionListPagination.pageIndex = 1;
