@@ -25,6 +25,45 @@
 </div>
 
 <ng-template #NOERROR>
+	<div class="row">
+		<div [ngClass]="{'col-xs-4': campaignType === 'VIDEO'}" *ngIf="campaignType === 'VIDEO'">
+			<div class="portlet light clearfix">
+				<div class="portlet-title">Video Info</div>
+				<div class="portlet-body">
+					<div class="col-xs-4 p0">
+						<img src="{{campaign.campaignVideoFile.imagePath}}" height="50px">
+					</div>
+					<div class="col-xs-8">
+						<h5 class="m0"><b>{{campaign.campaignVideoFile.title}}</b></h5>
+						<h6>{{campaign.campaignVideoFile.description}}</h6>	
+					</div>					
+				</div>
+			</div>
+		</div>
+		<div [ngClass]="{'col-xs-4': campaignType === 'VIDEO', 'col-xs-6': campaignType === 'EMAIL'}" *ngIf="campaignType === 'VIDEO' || campaignType === 'EMAIL'">
+			<div class="portlet light clearfix">
+				<div class="portlet-title">Email Info</div>
+				<div class="portlet-body">
+					<h5><b>{{campaign.emailTemplate.name}}</b></h5>
+					<h6 class="m0 p0">{{campaign.emailTemplate.description}}</h6>
+				</div>
+			</div>
+		</div>
+		<div [ngClass]="{'col-xs-4': campaignType === 'VIDEO', 'col-xs-6': campaignType === 'EMAIL', 'col-xs-12': campaignType === 'SOCIAL'}">
+			<div class="portlet light clearfix">
+				<div class="portlet-title">Contact List Info</div>
+				<div class="portlet-body">
+					<div *ngFor="let item of campaign.userLists" class="row">
+						<div class="col-xs-2"><h2 class="m0"><b>{{item.noOfContacts}}</b></h2></div>
+						<div class="col-xs-10">
+							<h5 class="m0 p0"><b>{{item.name}}</b></h5>
+							<h6>By {{item.uploadedBy}}</h6>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>	
 	<div class="col-xs-12 col-sm-6 p-5x" [hidden]="campaignType !== 'VIDEO'">
 		<div class="p-5x">
 			<div class="portlet light">

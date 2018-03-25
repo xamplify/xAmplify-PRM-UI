@@ -1,19 +1,18 @@
+import { hasProperties } from 'codelyzer/util/astQuery';
 import { Component, OnInit, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { TopnavbarComponent } from '../../core/topnavbar/topnavbar.component';
 import { UserService } from '../../core/services/user.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 
 @Component({
     selector: 'app-notifications',
     templateUrl: './notifications.component.html',
-    styleUrls: ['./notifications.component.css'],
-    providers: [TopnavbarComponent]
+    styleUrls: ['./notifications.component.css']
 })
 export class NotificationsComponent implements OnInit {
     @Input('isTopNavBar') isTopNavBar = false;
     notifications: any;
-    constructor(private router: Router, public topnavbarComponent: TopnavbarComponent, public userService: UserService, public authenticationService: AuthenticationService) { }
+    constructor(private router: Router, public userService: UserService, public authenticationService: AuthenticationService) { }
 
     listNotifications() {
         this.userService.listNotifications(this.authenticationService.getUserId())
