@@ -891,7 +891,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     isListView(userId: number) {
         this.userService.isListView(userId)
             .subscribe(
-                data => { this.callActionSwitch.isListView = (data === 'true'); },
+                data => { 
+                    this.callActionSwitch.isListView = data; },
                 error => console.log(error),
                 () => { }
             );

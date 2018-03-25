@@ -51,7 +51,7 @@ export class DefaultPageComponent implements OnInit {
     isListView(userId: number) {
         this.userService.isListView(userId)
             .subscribe(
-            data => {this.referenceService.isListView = (data === 'true');},
+            data => {this.referenceService.isListView = data;},
             error => console.log(error),
             () => { }
             );
