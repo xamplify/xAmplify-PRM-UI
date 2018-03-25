@@ -32,7 +32,8 @@ export class AuthenticationService {
     constructor(private http: Http, private router: Router, private utilService: UtilService) {
         this.SERVER_URL = 'https://aravindu.com/';
         //this.SERVER_URL = "http://localhost:8080/";
-        this.APP_URL = 'https://socialubuntu.com/';
+       // this.APP_URL = 'https://socialubuntu.com/';
+        this.APP_URL = 'https://xamplify.io/';
        // this.APP_URL = 'http://localhost:4200';
         this.REST_URL = this.SERVER_URL + 'xtremand-rest/';
         this.MEDIA_URL = this.SERVER_URL + 'vod/';
