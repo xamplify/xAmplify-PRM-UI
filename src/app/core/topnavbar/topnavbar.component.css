@@ -28,3 +28,7 @@ padding: 7px 15px;
     a.disabled{
     pointer-events: none;
     }
+.logo-default{
+    height: 40px;
+    margin: 12px auto;
+}

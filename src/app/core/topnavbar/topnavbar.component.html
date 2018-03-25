@@ -11,9 +11,8 @@
 	<div class="page-header-inner">
 		<!-- BEGIN LOGO -->
 		<div class="page-logo">
-			<a routerLink="/" *ngIf="authenticationService.user.hasCompany"> <img
-				[src]="properties.COMPANY_LOGO" alt="logo"
-				class="logo-default" />
+			<a routerLink="/" *ngIf="authenticationService.user.hasCompany"> 
+			<img [src]="properties.COMPANY_LOGO" alt="logo" class="logo-default" />
 			</a>
 			<a class="disabled" *ngIf="!authenticationService.user.hasCompany">
 			 <img [src]="properties.COMPANY_LOGO" alt="logo" class="logo-default" />
