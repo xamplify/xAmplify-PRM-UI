@@ -30,5 +30,5 @@ padding: 7px 15px;
     }
 .logo-default{
     height: 40px;
-    margin: 12px auto;
+    margin: 12px auto !important;
 }
