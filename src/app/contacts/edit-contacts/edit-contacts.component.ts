@@ -139,13 +139,6 @@ export class EditContactsComponent implements OnInit {
         { 'name': 'Last Name(DESC)', 'value': 'lastName-DESC' },
     ];
 
-    sortOptionsForPagination = [
-        { 'name': '10', 'value': '10' },
-        { 'name': '25', 'value': '25' },
-        { 'name': '50', 'value': '50' },
-        { 'name': 'ALL', 'value': 'ALL' },
-    ];
-    sortOptionForPagination: any = this.sortOptionsForPagination[0];
     public sortOption: any = this.sortOptions[0];
 
     isPartner: boolean;
@@ -196,16 +189,12 @@ export class EditContactsComponent implements OnInit {
         this.loggedInUserId = this.authenticationService.getUserId();
     }
 
-    onChangeAllContactUsers( event: Event ) {
-        this.sortOptionForPagination = event;
-        this.selectedDropDown = this.sortOptionForPagination.value;
+    onChangeAllContactUsers( event: Pagination ) {
+        this.pagination = event;
         if ( this.currentContactType == "all_contacts" ) {
-            this.pagination.maxResults = ( this.selectedDropDown == 'ALL' ) ? this.pagination.totalRecords : parseInt( this.selectedDropDown );
-            this.pagination.pageIndex = 1;
             this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
         } else {
-            this.contactsByType.pagination.maxResults = ( this.selectedDropDown == 'ALL' ) ? this.contactsByType.pagination.totalRecords : parseInt( this.selectedDropDown );
-            this.contactsByType.pagination.pageIndex = 1;
+            this.contactsByType.pagination = event;
             this.listOfSelectedContactListByType( this.contactsByType.selectedCategory );
         }
     }
@@ -910,7 +899,6 @@ export class EditContactsComponent implements OnInit {
         this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
         this.resetResponse();
         this.contactsByType.pagination = new Pagination();
-        this.sortOptionForPagination = this.sortOptionsForPagination[0];
         this.contactsByType.selectedCategory = null;
     }
 
@@ -1127,7 +1115,6 @@ export class EditContactsComponent implements OnInit {
     showingContactDetails( contactType: string ) {
         this.resetResponse();
         this.contactsByType.pagination = new Pagination();
-        this.sortOptionForPagination = this.sortOptionsForPagination[0];
         this.contactsByType.selectedCategory = null;
         this.listOfAllSelectedContactListByType( contactType );
         this.listOfSelectedContactListByType( contactType );

@@ -578,18 +578,8 @@
 								</div>
 							</div>
 							<!-- END EXAMPLE TABLE PORTLET-->
-							<app-pagination [pagination]="pagination" [isDropdown]="true" [type]="'contacts'" (notifyParent)="setPage($event)"></app-pagination>
-							<div class="btn-group pull-right" *ngIf="noOfContactsDropdown"
-								style="left: -4px;">
-								<select class="form-control"
-									[(ngModel)]="sortOptionForPagination"
-									(ngModelChange)="onChangeAllContactUsers($event)">
-									<ng-container
-										*ngFor="let sort of sortOptionsForPagination; let i = index">
-									<option [ngValue]="sort">{{sort.value}}</option>
-									</ng-container>
-								</select> <br>
-							</div>
+							<app-pagination [pagination]="pagination" [type]="'contacts'"
+										(notifyParent)="setPage($event)" (notifyParentDropDown)="onChangeAllContactUsers($event)"></app-pagination>
 						</div>
 					</div>
 				</div>
@@ -718,17 +708,8 @@
 							</div>
 						</div>
 						<!--pager here  -->
-						<app-pagination [pagination]="contactsByType.pagination" [isDropdown]="true" [type]="contactsByType.selectedCategory" (notifyParent)="setPage($event)"></app-pagination>
-						<div class="btn-group pull-right" style="left: -4px;">
-							<select class="form-control"
-								[(ngModel)]="sortOptionForPagination"
-								(ngModelChange)="onChangeAllContactUsers($event)">
-								<ng-container
-									*ngFor="let sort of sortOptionsForPagination; let i = index">
-								<option [ngValue]="sort">{{sort.value}}</option>
-								</ng-container>
-							</select>
-						</div>
+						<app-pagination [pagination]="contactsByType.pagination" [type]="contactsByType.selectedCategory" 
+						(notifyParent)="setPage($event)" (notifyParentDropDown)="onChangeAllContactUsers($event)"></app-pagination>
 					</div>
 				</div>
 
@@ -877,14 +858,10 @@
 					<button type="submit" class="btn green"
 						[disabled]="!checkingForEmail || isEmailExist"
 						(click)="addContactsOption(AddContactsOption.ADDCONTACT);">Save</button>
-					<!-- <button type="button" class="btn green" data-dismiss="modal"
-						(click)="addContactModalClose()">Close</button> -->
 				</div>
 				<div class="modal-footer" *ngIf="updateContactUser">
 					<button type="submit" class="btn green"
 						[disabled]="!checkingForEmail || isEmailExist" (click)="updateContactListUser()">Update</button>
-					<!-- <button type="button" class="btn green" data-dismiss="modal"
-						(click)="updateContactModalClose()">Close</button> -->
 				</div>
 			</div>
 
@@ -958,7 +935,6 @@
 				<div class="modal-footer">
 					<button type="button" class="btn green"
 						(click)="contactFilter()">Submit</button>
-					<!-- <button type="button" class="btn btn-default" (click)="addNewRow()"><i class="fa fa-plus-square" aria-hidden="true" style="color:green"></i></button> -->
 					<button type="button" class="btn green"
 						(click)="cancelSegmentation()" data-dismiss="modal">Cancel</button>
 				</div>

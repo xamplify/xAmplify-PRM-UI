@@ -541,11 +541,11 @@ export class ManageContactsComponent implements OnInit {
         $( "#pagination" ).show();
     }
 
-    onChangeAllContactUsers( event: Event ) {
-        this.sortOption = event;
-        this.selectedDropDown = this.sortOption.value;
-        this.contactsByType.pagination.maxResults = ( this.selectedDropDown == 'ALL' ) ? this.contactsByType.pagination.totalRecords : parseInt( this.selectedDropDown );
-        this.contactsByType.pagination.pageIndex = 1;
+    onChangeAllContactUsers( event: Pagination ) {
+       // this.sortOption = event;
+       // this.selectedDropDown = this.sortOption.value;
+        //this.contactsByType.pagination.maxResults = ( this.selectedDropDown == 'ALL' ) ? this.contactsByType.pagination.totalRecords : parseInt( this.selectedDropDown );
+        this.contactsByType.pagination = event ;
         this.listContactsByType( this.contactsByType.selectedCategory );
     }
 

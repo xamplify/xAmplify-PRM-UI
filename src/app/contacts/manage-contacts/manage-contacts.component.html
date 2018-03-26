@@ -1,9 +1,10 @@
 <style type="text/css">
-.disabled{
+.disabled {
 	pointer-events: none;
 	opacity: 0.7;
 }
-.isProcessing{
+
+.isProcessing {
 	pointer-events: none;
 	opacity: 0.4;
 }
@@ -72,7 +73,8 @@
 														</select>
 													</div>
 													<div class="portlet-input input-inline input-small">
-														<div class="input-icon right" style="width: 106%;left: -4px;">
+														<div class="input-icon right"
+															style="width: 106%; left: -4px;">
 															<i class="icon-magnifier"
 																style="cursor: pointer; font-size: 18px;"
 																(click)="search('contactList')"> </i> <input type="text"
@@ -159,7 +161,8 @@
 											</button>
 										</div>
 									</div>
-								<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+									<app-response-message [customResponse]="customResponse"
+										*ngIf="customResponse.isVisible"></app-response-message>
 									<!-- END DASHBOARD STATS -->
 									<div class="clearfix"></div>
 								</div>
@@ -180,8 +183,8 @@
 												</tr>
 											</thead>
 											<tbody>
-												<tr *ngFor="let contactList of pagination.pagedItems" 
-												 [class.isProcessing]="!contactList.emailValidationInd">
+												<tr *ngFor="let contactList of pagination.pagedItems"
+													[class.isProcessing]="!contactList.emailValidationInd">
 													<td style="width: 10%;"><img
 														*ngIf="contactList.socialNetwork=='ZOHO'"
 														src="{{zohoImage}}" alt="zoho" style="height: 70px;">
@@ -192,6 +195,9 @@
 														style="height: 70px;"> <img
 														*ngIf="contactList.socialNetwork=='MANUAL'"
 														src="{{normalImage}}" alt="manual" style="height: 70px;">
+														<img *ngIf="!contactList.emailValidationInd"
+														src="assets/images/Spinner.gif"
+														style="width: 55px; margin-top: -88px; margin-left: 17px;">
 													</td>
 													<td>
 														<h4 title={{contactList.name}} class='mt5 mb5 f-w-600'>{{contactList.name}}</h4>
@@ -203,30 +209,27 @@
 													<td class="text-center">{{contactList.noOfContacts}}</td>
 													<td>
 														<div class="actions-block">
-															<a 
+															<a
 																*ngIf="hasAllAccess || (hasContactRole && loggedInUserId == contactList.uploadedUserId) || authenticationService.isOnlyPartner()"
 																(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList)"
 																title="Edit List"> <i class="fa fa-pencil-square-o"></i>
-															</a>
-															<a title="Save Existing List As a new List" 
-															(click)="saveAsNewList(contactList.id,contactList.name)">
-															 <i class="fa fa-files-o"></i>
-															</a>
-															 <a 
+															</a> <a title="Save Existing List As a new List"
+																(click)="saveAsNewList(contactList.id,contactList.name)">
+																<i class="fa fa-files-o"></i>
+															</a> <a
 																*ngIf="!hasAllAccess && loggedInUserId != contactList.uploadedUserId"
 																(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList)"
 																title="ContactList Info"> <i
 																class="glyphicon glyphicon-info-sign"></i>
-															</a> <a
-															    (click)="downloadContactList(contactList.id)"
+															</a> <a (click)="downloadContactList(contactList.id)"
 																title="Download List" data-rel="fancybox-button"> <i
 																class="fa fa-cloud-download"></i>
-															</a> <a 
+															</a> <a
 																*ngIf="(hasAllAccess || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner()) && !contactList.defaultPartnerList"
 																(click)="showAlert(contactList.id)" title="Delete List">
 																<i class="fa fa-trash"></i>
 															</a> <span *ngIf="contactList.synchronisedList == true">
-																<a title="sychronizeContactList" 
+																<a title="sychronizeContactList"
 																*ngIf="hasAllAccess || (hasContactRole && loggedInUserId==contactList.uploadedUserId)"
 																(click)="synchronizeContactList(contactList.id,contactList.socialNetwork)">
 																	<i class="fa fa-refresh" aria-hidden="true"></i>
@@ -259,31 +262,37 @@
 													class="img-responsive"
 													*ngIf="contactList.socialNetwork=='MANUAL'"
 													src="{{normalImage}}" alt="">
-													<div id="container" *ngIf="!contactList.emailValidationInd" >
-														<h3>processing<span class="arrow">
-															<img src="assets/images/Spinner.gif" class="loaderGif">
-														</span> </h3>
-													</div>
+												<div id="container" *ngIf="!contactList.emailValidationInd">
+													<h3>
+														processing<span class="arrow"> <img
+															src="assets/images/Spinner.gif" class="loaderGif">
+														</span>
+													</h3>
+												</div>
 												<div class="mix-details-fill">
 													<h4 style="top: 7%; position: relative;"
 														title={{contactList.name}}>{{contactListNameLength(contactList.name)}}
 													</h4>
-													<div style="top: 2%; position: relative;" >
-														<a class="mix-preview5" [class.disabled]="!contactList.emailValidationInd"
+													<div style="top: 2%; position: relative;">
+														<a class="mix-preview5"
+															[class.disabled]="!contactList.emailValidationInd"
 															(click)="downloadContactList(contactList.id)"
 															title="Download List" data-rel="fancybox-button"> <i
 															class="fa fa-cloud-download"></i>
-														</a> <a class="mix-preview4"  [class.disabled]="!contactList.emailValidationInd"
+														</a> <a class="mix-preview4"
+															[class.disabled]="!contactList.emailValidationInd"
 															*ngIf="hasAllAccess || (hasContactRole && loggedInUserId == contactList.uploadedUserId) || authenticationService.isOnlyPartner()"
 															(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList)"
 															title="Edit List" data-rel="fancybox-button"> <i
 															class="fa fa-pencil-square-o"></i>
-														</a> <a class="mix-preview4" [class.disabled]="!contactList.emailValidationInd"
+														</a> <a class="mix-preview4"
+															[class.disabled]="!contactList.emailValidationInd"
 															*ngIf="!hasAllAccess && loggedInUserId != contactList.uploadedUserId"
 															(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList)"
 															title="ContactList Info" data-rel="fancybox-button">
 															<i class="glyphicon glyphicon-info-sign"></i>
-														</a> <a class="mix-preview6" [class.disabled]="!contactList.emailValidationInd"
+														</a> <a class="mix-preview6"
+															[class.disabled]="!contactList.emailValidationInd"
 															*ngIf="(hasAllAccess || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner()) && !contactList.defaultPartnerList"
 															(click)="showAlert(contactList.id)" title="Delete List"
 															data-rel="fancybox-button" lang="{{contactList.id}}">
@@ -291,30 +300,38 @@
 														</a>
 													</div>
 													<div style="top: 38%; position: relative;">
-														<a class="mix-preview2" title="Save Existing list as a new list"
-															(click)="saveAsNewList(contactList.id,contactList.name)" [class.disabled]="!contactList.emailValidationInd"
+														<a class="mix-preview2"
+															title="Save Existing list as a new list"
+															(click)="saveAsNewList(contactList.id,contactList.name)"
+															[class.disabled]="!contactList.emailValidationInd"
 															data-rel="fancybox-button" style="left: 38%; top: -20px;">
-															<i class="fa fa-files-o" aria-hidden="true" style="color: white;"></i>
+															<i class="fa fa-files-o" aria-hidden="true"
+															style="color: white;"></i>
 														</a>
 													</div>
 													<div style="top: 38%; position: relative;"
 														*ngIf="contactList.synchronisedList == true">
-														<a class="mix-preview2" title="sychronizeContactList" [class.disabled]="!contactList.emailValidationInd"
+														<a class="mix-preview2" title="sychronizeContactList"
+															[class.disabled]="!contactList.emailValidationInd"
 															*ngIf="hasAllAccess || (hasContactRole && loggedInUserId==contactList.uploadedUserId)"
 															(click)="synchronizeContactList(contactList.id,contactList.socialNetwork)"
 															data-rel="fancybox-button" style="left: 18%; top: -20px;">
-															<i class="fa fa-refresh" aria-hidden="true" style="color: white;"></i>
+															<i class="fa fa-refresh" aria-hidden="true"
+															style="color: white;"></i>
 														</a>
 													</div>
 													<span align="right"
-														style="bottom: 1px; float: right; position: absolute; right: 10px;" title="Created On"> {{contactList.createdDate}}
-													</span> 
-													<span align="left" style="bottom: 0; left: 6px; position: absolute;" >
+														style="bottom: 1px; float: right; position: absolute; right: 10px;"
+														title="Created On"> {{contactList.createdDate}} </span> <span
+														align="left"
+														style="bottom: 0; left: 6px; position: absolute;">
 														<!-- title={{contactList.uploadedBy}} -->
 														<h5 class="m0" title="Total Contacts">#{{contactList.noOfContacts}}</h5>
 														<br>
-														<h5 class="m0" style="position: absolute; top: 14px"  title="Created By">{{contactListUploadedNameLength(contactList.uploadedBy)}}</h5>
-														<h5 class="m0" style="position: absolute; top: 14px" *ngIf="contactList.uploadedBy==null">-</h5>
+														<h5 class="m0" style="position: absolute; top: 14px"
+															title="Created By">{{contactListUploadedNameLength(contactList.uploadedBy)}}</h5>
+														<h5 class="m0" style="position: absolute; top: 14px"
+															*ngIf="contactList.uploadedBy==null">-</h5>
 													</span>
 												</div>
 											</div>
@@ -324,7 +341,8 @@
 								<div id="pagination">
 									<!--pager here  -->
 									<app-pagination [pagination]="pagination" [type]="'contacts'"
-										(notifyParent)="setPage($event)" (notifyParentDropDown)="loadContactLists($event)"></app-pagination>
+										(notifyParent)="setPage($event)"
+										(notifyParentDropDown)="loadContactLists($event)"></app-pagination>
 								</div>
 							</div>
 						</div>
@@ -343,11 +361,13 @@
 
 	<div *ngIf="! showListOfContactList">
 		<div style="padding: 0 0 15px 0;">
-		 <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+			<app-response-message [customResponse]="customResponse"
+				*ngIf="customResponse.isVisible"></app-response-message>
 		</div>
-		<div class="alert alert-success alert-dismissible" *ngIf="invalidDeleteSucessMessage" style="margin-bottom:20px;">
-		  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-		  <strong>Success!</strong> {{checkingContactTypeName}} List has been
+		<div class="alert alert-success alert-dismissible"
+			*ngIf="invalidDeleteSucessMessage" style="margin-bottom: 20px;">
+			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			<strong>Success!</strong> {{checkingContactTypeName}} List has been
 			Deleted successfully.
 		</div>
 		<div class="alert alert-danger" style="padding: 12px 10px 12px;"
@@ -366,22 +386,6 @@
 					<div class="tab-content" style="min-height: 570px;">
 						<!-- BEGIN PAGE HEADER-->
 						<div class="page-bar" style="margin-bottom: 6px">
-							<!-- <h4 class="btn-group pull-left">
-								<span class="capitalize" style="color: #888888"
-									*ngIf="contactsByType.selectedCategory !='non-active'">{{contactsByType.selectedCategory}}
-									contacts 
-								    {{checkingContactTypeName}}s
-								</span> <span class="capitalize" style="color: #888888"
-									*ngIf="contactsByType.selectedCategory =='non-active'">Inactive
-									contacts 
-									{{checkingContactTypeName}}s
-								</span>
-							</h4> -->
-							<!-- <a (click)="downloadContactTypeList()" title="Download List"
-								data-rel="fancybox-button"> <i
-								class="fa fa-cloud-download mr5"
-								style="font-size: 22px; color: #26a69a; padding: 13px;"></i>
-							</a> -->
 							<div class="page-toolbar">
 								<div class="btn-group pull-right">
 									<div class="inputs" align="right" style="float: right">
@@ -409,7 +413,8 @@
 											</select>
 										</div>
 										<div class="portlet-input input-inline input-small">
-											<div class="input-icon right"  style="width: 122%;left: -29px;">
+											<div class="input-icon right"
+												style="width: 122%; left: -29px;">
 												<i class="icon-magnifier"
 													style="cursor: pointer; font-size: 18px;"
 													(click)="search('contacts')"> </i> <input type="text"
@@ -425,50 +430,6 @@
 						</div>
 						<div class="tab-pane active"></div>
 						<div class="row">
-							<!-- <form #f="ngForm" class="form-inline"
-								*ngIf="contactsByType.selectedCategory == 'all' && (hasAllAccess || hasContactRole)">
-								<div class="contact-list-form">
-									<div class="col-xs-12 col-sm-6">
-										<div class="form-group">
-											<label for="name" class="col-xs-12 col-sm-9" style="margin-left:-14px;color:dimgrey;font-size:15px;margin-top:4px;">
-											{{checkingContactTypeName}} List Name* 
-											Create a new {{checkingContactTypeName}} list from existing {{checkingContactTypeName}}s:
-											</label>
-											<div class="col-xs-12 col-sm-3" style="margin-left: -45px;">
-												<input type="text" autocomplete="off" class="form-control"
-													id="contactListName" required
-													[(ngModel)]="model.contactListName" name="contactListName"
-													minlength="1" maxlength="250"
-													(input)="validateContactName(model.contactListName)"
-													placeholder="List Name" #contactListName="ngModel">
-												Validation Messages
-												<div *ngIf="isValidContactName">
-													<p class="custom-error-message">{{checkingContactTypeName}}
-														List Name Already Exists</p>
-												</div>
-												<div *ngIf="contactsNotSelectedError">
-													<p class="custom-error-message">Please Select the
-														{{checkingContactTypeName}}s.</p>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="col-xs-12 col-sm-6">
-										<section class="pull-right"
-											style="margin-bottom: 10px; margin-top: 3px;">
-											<button id="sample_editable_1_new" class="btn green"
-												(click)="saveSelectedUsers()"
-												[disabled]="isValidContactName||noSaveButtonDisable">
-												Save <i class="fa fa-save"></i>
-											</button>
-											<button id="cancel_button" class="btn green"
-												(click)="cancelAllContactsCancel()">
-												Cancel<i class="fa fa-cancel"></i>
-											</button>
-										</section>
-									</div>
-								</div>
-							</form> -->
 							<div class="col-xs-12">
 								<div *ngIf="contactsByType.isLoading"
 									class="alert alert-info flex">
@@ -503,13 +464,12 @@
 											</span>
 											<ul class="dropdown-menu pull-right">
 												<li *ngIf="contactsByType.selectedCategory == 'all'"><a
-													 (click)="saveAs()">
-														Save As </a></li>
+													(click)="saveAs()"> Save As </a></li>
 												<li *ngIf="contactsByType.selectedCategory == 'invalid'"><a
 													id="delete_button" (click)="invalidContactsShowAlert()">
 														Delete </a></li>
 												<li><a id="delete_button"
-												(click)="downloadContactTypeList()"> Export To Excel </a></li>
+													(click)="downloadContactTypeList()"> Export To Excel </a></li>
 											</ul>
 										</div>
 									</div>
@@ -517,7 +477,6 @@
 										<div class="table-responsive">
 											<app-loader [model]="httpRequestLoader.isHorizontalCss"
 												*ngIf="httpRequestLoader.isLoading"></app-loader>
-
 											<table class='table tgrid' id="sample_editable_1"
 												*ngIf="!httpRequestLoader.isLoading">
 												<thead>
@@ -566,9 +525,8 @@
 															value="{{contact.id}}" id="{{contact.id}}"
 															(click)="invalidContactsSelectedUserIds(contact.id,contact.emailId,contact.firstName,contact.lastName,$event)" />
 														</td>
-														<td>
-														<app-user-info  [userInfo]="contact"> </app-user-info>
-														</td>
+														<td><app-user-info [userInfo]="contact">
+															</app-user-info></td>
 														<td>
 															<h5>
 																<span *ngIf="contact?.mobileNumber; else NA">{{contact.mobileNumber}}</span>
@@ -608,22 +566,14 @@
 													</ng-container>
 												</tbody>
 											</table>
-											<app-pagination [pagination]="contactsByType.pagination"
-												[type]="contactsByType.selectedCategory" [isDropdown]="true"
-												(notifyParent)="setPage($event)"></app-pagination>
-											<div class="btn-group pull-right">
-												<select class="form-control"
-													[(ngModel)]="sortOptionForPagination"
-													(ngModelChange)="onChangeAllContactUsers($event)">
-													<ng-container
-														*ngFor="let sort of sortOptionsForPagination; let i = index">
-													<option [ngValue]="sort">{{sort.value}}</option>
-													</ng-container>
-												</select>
-											</div>
 										</div>
 									</div>
 								</div>
+
+								<app-pagination [pagination]="contactsByType.pagination" [hidden]="contactsByType.isLoading"
+									[type]="contactsByType.selectedCategory"
+									(notifyParent)="setPage($event)"
+									(notifyParentDropDown)="onChangeAllContactUsers($event)"></app-pagination>
 							</div>
 						</div>
 						<!-- END PAGE CONTENT -->
