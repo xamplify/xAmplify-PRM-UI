@@ -13,6 +13,28 @@
 						</a>
 					</li>
 					
+					<li *ngIf="(authService.module.isOrgAdmin && authService.user.hasCompany) || authService.module.isPartner" [ngClass]="{'active':  baseRoute === 'partners'}">
+						<a>
+						<i class="fa fa-handshake-o"></i>
+						<span class="title">Partner</span>
+						<span class="arrow "></span>
+						<span class="selected"></span>
+						</a>
+						<ul class="sub-menu" >
+						<li>
+							<a  [routerLink] ="['./partners/add']" [class.disabled]="!authService.user.hasCompany?true:null" >
+								<i class="fa fa-users"></i>
+								<span class="title">On Boarding Partners</span>
+								</a>
+						</li>
+						<li>
+							<a  [routerLink]="['./partners/manage']" [class.disabled]="!authService.user.hasCompany?true:null">
+							<i class="fa fa-list"></i>
+							<span class="title">Manage Partners</span>
+							</a>
+							</li>
+						</ul>
+					</li>
 					
 					<li *ngIf="authService.module.isCompanyPartner && !authService.module.isVideo"  [ngClass]="{'active':  baseRoute === 'videos'}">
 						<a [routerLink]="['./videos/manage']" [class.disabled]="!authService.user.hasCompany ?true:null">
@@ -67,29 +89,6 @@
 							</li>
 						</ul>
 					</li>
-					<li *ngIf="(authService.module.isOrgAdmin && authService.user.hasCompany) || authService.module.isPartner" [ngClass]="{'active':  baseRoute === 'partners'}">
-						<a>
-						<i class="fa fa-handshake-o"></i>
-						<span class="title">Partner</span>
-						<span class="arrow "></span>
-						<span class="selected"></span>
-						</a>
-						<ul class="sub-menu" >
-						<li>
-							<a  [routerLink] ="['./partners/add']" [class.disabled]="!authService.user.hasCompany?true:null" >
-								<i class="fa fa-users"></i>
-								<span class="title">On Boarding Partners</span>
-								</a>
-						</li>
-						<li>
-							<a  [routerLink]="['./partners/manage']" [class.disabled]="!authService.user.hasCompany?true:null">
-							<i class="fa fa-list"></i>
-							<span class="title">Manage Partners</span>
-							</a>
-							</li>
-						</ul>
-					</li>
-					
 					<!-- <li *ngIf="(authService.module.isOrgAdmin && authService.user.hasCompany) || authService.module.isPartner" [ngClass]="{'active':  baseRoute === 'partners'}">
 						<a  [routerLink]="['./partners']" [class.disabled]="!authService.user.hasCompany?true:null" >
 						<i class="fa fa-handshake-o"></i>
@@ -172,9 +171,9 @@
 						</a>
 					</li>
 					<li>
-						<a  (click)="logout()">
-						<i class="icon-logout"></i>
-						<span class="title">Logout</span>
+						<a>
+						<i class="fa fa-question-circle"></i>
+						<span class="title">Help</span>
 						<span class="arrow "></span>
 						</a>
 					</li>
