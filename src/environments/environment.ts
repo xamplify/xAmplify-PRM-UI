@@ -5,5 +5,7 @@
 
 export const environment = {
   production: false,
-  isDebugMode: true
+  isDebugMode: true,
+  CLIENT_URL : 'http://localhost:4200/',
+  SERVER_URL: 'https://aravindu.com/',  
 };

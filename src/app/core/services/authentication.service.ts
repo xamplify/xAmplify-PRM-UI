@@ -4,12 +4,18 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
+
 import { User } from '../models/user';
 import { Role } from '../models/role';
 import { Module } from '../models/module';
 import { UserToken } from '../models/user-token';
 import { UtilService } from '../services/util.service';
+
+import { environment } from '../../../environments/environment';
 declare var swal: any;
+
+export let CLIENT_URL = environment.CLIENT_URL;
+export let SERVER_URL = environment.SERVER_URL;
 
 @Injectable()
 export class AuthenticationService {
@@ -30,11 +36,8 @@ export class AuthenticationService {
     isCompanyAdded:boolean = false;
     module:Module = new Module();
     constructor(private http: Http, private router: Router, private utilService: UtilService) {
-        this.SERVER_URL = 'https://aravindu.com/';
-        //this.SERVER_URL = "http://localhost:8080/";
-       // this.APP_URL = 'https://socialubuntu.com/';
-        this.APP_URL = 'https://xamplify.io/';
-       // this.APP_URL = 'http://localhost:4200';
+        this.SERVER_URL = SERVER_URL;
+        this.APP_URL = CLIENT_URL;
         this.REST_URL = this.SERVER_URL + 'xtremand-rest/';
         this.MEDIA_URL = this.SERVER_URL + 'vod/';
         this.SHARE_URL = this.SERVER_URL + 'embed/';
