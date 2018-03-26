@@ -94,14 +94,6 @@ export class AddPartnersComponent implements OnInit {
         { 'name': 'Last Name(DESC)', 'value': 'lastName-DESC' },
     ];
     public sortOption: any = this.sortOptions[0];
-    sortOptionsForPagination = [
-        { 'name': '10', 'value': '10' },
-        { 'name': '25', 'value': '25' },
-        { 'name': '50', 'value': '50' },
-        { 'name': 'ALL', 'value': 'ALL' },
-    ];
-    public sortOptionForPagination: any = this.sortOptionsForPagination[0];
-
     public searchKey: string;
     sortcolumn: string = null;
     sortingOrder: string = null;
@@ -125,11 +117,11 @@ export class AddPartnersComponent implements OnInit {
         this.addPartnerUser.country = ( this.countryNames.countries[0] );
     }
 
-    onChangeAllPartnerUsers( event: Event ) {
-        this.sortOptionForPagination = event;
-        this.selectedDropDown = this.sortOptionForPagination.value;
-        this.pagination.maxResults = ( this.selectedDropDown == 'ALL' ) ? this.pagination.totalRecords : parseInt( this.selectedDropDown );
-        this.pagination.pageIndex = 1;
+    onChangeAllPartnerUsers( event: Pagination ) {
+        //this.sortOptionForPagination = event;
+        //this.selectedDropDown = this.sortOptionForPagination.value;
+       // this.pagination.maxResults = ( this.selectedDropDown == 'ALL' ) ? this.pagination.totalRecords : parseInt( this.selectedDropDown );
+        this.pagination = event;
         this.loadPartnerList( this.pagination );
 
     }

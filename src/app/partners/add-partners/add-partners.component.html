@@ -56,10 +56,7 @@ img:hover {
 			<li><a>Manage Partners</a></li>
 		</ul>
 		<div align="right" style="margin-top: 2px;">
-			<!-- <a class="btn btn-success" (click)="saveContacts()"
-				style="color: white;">Save <i class="fa fa-save"></i></a>  <a
-				class="btn btn-success" (click)="cancelPartners()"
-				style="color: white;">Cancel</a>--> <a (click)="downloadEmptyCsv()">
+			 <a (click)="downloadEmptyCsv()">
 				<button type="button" class="btn green" download
 					style="color: #ffffff;">
 					Download Parter CSV Template<i class="fa fa-cloud-download" aria-hidden="true"
@@ -74,7 +71,6 @@ img:hover {
 									<div class="row">
 							<div class="col-xs-6 col-sm-12 col-md-12 col-lg-6">
 								<div class="portlet light add-options">
-								<!-- <div class="portlet-title">Add your Partners with given options</div> -->
 								<div class="portlet-title"> How would you like to add your Partners?</div>
 								<div class="portlet-body">
 									<div class="row">		
@@ -116,7 +112,6 @@ img:hover {
 							</div>
 							<div class="col-xs-6 col-sm-12 col-md-12 col-lg-6">
 									<div class="portlet light cloud-services">
-									<!-- <div class="portlet-title">Import from	available cloud service</div> -->
 									<div class="portlet-title">Import Partners from the cloud:</div>
 									<div class="portlet-body">
 									<div class="row">
@@ -213,7 +208,6 @@ img:hover {
 										height="86" width="90" style="margin-bottom: 18px"
 										onmouseover="this.src='assets/images/crm/connecting.png';"
 										onmouseout="this.src='assets/images/crm/dynamics.png';">
-										<!-- <header style="color: blue">Get MicrosoftContacts</header> -->
 									</a>
 								</div>
 										
@@ -240,9 +234,6 @@ img:hover {
 				 <li><a id="exportToExcel"
 					*ngIf="selectedAddPartnerOption == 5 && pagination.pagedItems?.length != 0 " (click)="downloadPartnerList()">Export
 						To Excel</a></li>
-				<!--<li><a id="delete_button"
-					*ngIf="selectedAddContactsOption == 8 || selectedAddContactsOption == 9"
-					(click)="showAlert(selectedContactListId)"> Delete</a></li> -->
 			</ul>
 		</div>
 	<div class="col-xs-12" style="padding: 0 0 10px 0">	
@@ -388,24 +379,17 @@ img:hover {
 									<table class='table tgrid'>
 										<thead *ngIf="newPartnerUser?.length != 0">
 											<tr>
-											<!-- <th class='text-center'><input type="checkbox"
-																[name]="all" [(ngModel)]="editContactComponent.isHeaderCheckBoxChecked"
-																(change)="editContactComponent.checkAll($event)"
-																[id]="checkAllExistingContacts"/></th> -->
 												<th style="width: 25%; text-align: center;">NAME</th>
 												<th>CONTACT</th>
 												<th>JOB TITLE</th>
 												<th class='text-center'>ADDRESS</th>
 												<th class='text-center'>MORE</th>
-												<!-- <th class='text-center'>ACTIONS</th> -->
 											</tr>
 										</thead>
 										<tbody>
 										<ng-container
 												*ngFor="let newContact of newPartnerUser; let i = index">
 											<tr class='row_{{i}}'>
-												<!-- <td align="center"><input type="checkbox"
-																checked="newContact.checked"></td> -->
 												<td>
 												<app-user-info  [userInfo]="newContact"> </app-user-info>
 												</td>
@@ -431,8 +415,6 @@ img:hover {
 															*ngIf="newContact.isShowDetails">Less</span>
 													</button>
 												</td>
-												<!-- <td align="center"><a class="delete"
-													(click)="cancelRow(i)"> Cancel </a></td> -->
 												<ng-template #NA><span>N/A</span></ng-template>
 											</tr>
 											<tr
@@ -472,12 +454,6 @@ img:hover {
 						<div class="caption">
 							<i class="fa fa-edit" style="font-size: 19px;"></i>List of Partners
 						</div>
-						<!-- <a *ngIf="pagination.pagedItems?.length != 0"
-							(click)="downloadPartnerList()" title="Dowload List"
-							data-rel="fancybox-button"> <i
-							class="fa fa-cloud-download mr5"
-							style="font-size: 22px; color: #f9f7f7; padding: 13px;"></i>
-						</a> -->
 						<div class="inputs" align="right" style="float: right; padding: 4px">
 													<div style="float: left; margin: 0 10px;">
 														<select class="form-control" [(ngModel)]="sortOption"
@@ -490,7 +466,6 @@ img:hover {
 													</div> 
 													<div class="portlet-input input-inline input-small">
 														<div class="input-icon right" style="width:106%">
-															<!-- (input)="searchKeyValue('contactList')" -->
 															<i class="icon-magnifier"
 																style="cursor: pointer; font-size: 18px;"
 																(click)="search()"> </i> <input type="text"
@@ -535,8 +510,7 @@ img:hover {
 											<ng-container
 												*ngFor="let contact of pagination.pagedItems;let i = index">
 											<tr class='row_{{i}}'>
-											<td class='text-center'
-																*ngIf="isAdd || !isCampaignDraftContactList "><input
+											<td class="text-center" *ngIf="isAdd || !isCampaignDraftContactList "><input
 																type="checkbox"
 																[checked]="editContactComponent.selectedContactListIds.indexOf(contact.id)>-1"
 																class="chk"
@@ -606,17 +580,8 @@ img:hover {
 					</div>
 				</div>
 				<!-- END EXAMPLE TABLE PORTLET-->
-				<app-pagination [pagination]="pagination" [type]="'contacts'" [isDropdown]="true" (notifyParent)="setPage($event)"></app-pagination>
-				<div class="btn-group pull-right" style="left: -4px;"
-					*ngIf="pagination.pagedItems?.length != 0">
-					<select class="form-control" [(ngModel)]="sortOptionForPagination"
-						(ngModelChange)="onChangeAllPartnerUsers($event)">
-						<ng-container
-							*ngFor="let sort of sortOptionsForPagination; let i = index">
-						<option [ngValue]="sort">{{sort.value}}</option>
-						</ng-container>
-					</select> <br>
-				</div>
+				<app-pagination [pagination]="pagination" [type]="'contacts'" (notifyParent)="setPage($event)"
+				(notifyParentDropDown)="onChangeAllPartnerUsers($event)"></app-pagination>
 			</div>
 		</div>
 	</div>
@@ -634,7 +599,6 @@ img:hover {
 						data-dismiss="modal" (click)="addPartnerModalClose()">&times;</button>
 					<button type="button" *ngIf="updatePartnerUser" class="close"
 						data-dismiss="modal" (click)="updatePartnerModalClose()">&times;</button>
-						<!-- <a class="close-circle" data-dismiss="modal" (click)="addPartnerModalClose(); updatePartnerModalClose()"><i class="fa fa-times"></i></a> -->
 					<h4 class="modal-title">Add Partner</h4>
 				</div>
 				<div class="modal-body">
@@ -760,13 +724,10 @@ img:hover {
 					<span style="float: left;">Note: * indicates required</span>
 					<button type="submit" class="btn green"
 						[disabled]="!checkingForEmail || isEmailExist" (click)="addRow()">Save</button>
-					<!-- <button type="button" class="btn green" data-dismiss="modal" (click)="addPartnerModalClose()">Close</button> -->
 				</div>
 				<div class="modal-footer" *ngIf="updatePartnerUser">
 					<button type="submit" class="btn green"
 						[disabled]="!checkingForEmail || isEmailExist" (click)="updatePartnerListUser()">Update</button>
-					<!-- <button type="button" class="btn green" data-dismiss="modal"
-						(click)="updatePartnerModalClose()">Close</button> -->
 				</div>
 			</div>
 
@@ -842,8 +803,6 @@ img:hover {
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-				<!-- <button type="button" class="close" (click)="hideZohoAuthorisedPopup()"
-						data-dismiss="modal">&times;</button> -->
 					<div>
 					<a class="close-circle" data-dismiss="modal" (click)="hideZohoAuthorisedPopup()"><i class="fa fa-times"></i></a>
 					<div>
@@ -943,8 +902,6 @@ img:hover {
 			<div class="modal-content">
 				<div class="modal-header">
 					<a class="close-circle" data-dismiss="modal"><i class="fa fa-times"></i></a>
-					<!-- <button type="button" class="close"
-						data-dismiss="modal">&times;</button> -->
 					<div>
 						<h4 class="modal-title" id="settingSocialNetworkModalLabel">{{settingSocialNetwork}}
 							Account Settings</h4>
