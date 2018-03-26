@@ -27,12 +27,7 @@ a.disabled {
 .imageblur {
 	-webkit-filter: grayscale(100%);
 	filter: grayscale(100%);
-	-webkit-filter: blur(1.2px);
-	-moz-filter: blur(1.2px);
-	-o-filter: blur(1.2px);
-	-ms-filter: blur(1.2px);
-	filter: blur(1.2px);
-	opacity: 0.7;
+	opacity: 0.9;
 }
 
 .textWhite {
@@ -142,6 +137,12 @@ img:hover {
 											style="position: relative; font-size: 19px; top: -82px; left: 78px;"></i>
 										</a>
 									</div>
+									<div style="position: relative" *ngIf="!sfImageNormal">
+										<a [class.disabled]="selectedAddPartnerOption != 5"
+										(click)="salesforceContacts()"> <i class="fa fa-plug" aria-hidden="true"
+											style="position: relative; color: grey; font-size: 19px; top: -82px; left: 78px;"></i>
+										</a>
+									</div>
 								</div>
 								<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
 									<a *ngIf="googleImageBlur" id="googleContact_button"
@@ -168,6 +169,12 @@ img:hover {
 										<a [class.disabled]="selectedAddPartnerOption != 5"
 										(click)="settingSocialNetworkOpenModal('google')"> <i id="GgearIcon" class="fa fa-cog" aria-hidden="true"
 											style="position: relative; font-size: 19px; top: -82px; left: 78px;"></i>
+										</a>
+									</div>
+									<div style="position: relative" *ngIf="!googleImageNormal">
+										<a [class.disabled]="selectedAddPartnerOption != 5"
+										(click)="googleContacts()"> <i class="fa fa-plug" aria-hidden="true"
+											style="position: relative; color: grey; font-size: 19px; top: -82px; left: 78px;"></i>
 										</a>
 									</div>
 								</div>
@@ -197,6 +204,12 @@ img:hover {
 										<a [class.disabled]="selectedAddPartnerOption != 5"
 										(click)="settingSocialNetworkOpenModal('zoho')"> <i id="ZgearIcon" class="fa fa-cog" aria-hidden="true"
 											style="position: relative; font-size: 19px; top: -82px; left: 78px;"></i>
+										</a>
+									</div>
+									<div style="position: relative" *ngIf="!zohoImageNormal">
+										<a [class.disabled]="selectedAddPartnerOption != 5"
+										(click)="checkingZohoContactsAuthentication()"> <i class="fa fa-plug" aria-hidden="true"
+											style="position: relative; color: grey; font-size: 19px; top: -82px; left: 78px;"></i>
 										</a>
 									</div>
 								</div>
@@ -624,9 +637,10 @@ img:hover {
 						</div>
 						<div class="form-inline">
 							<label class="control-label col-sm-2" for="company"
-								style="color: #00bcd4; right: 11px !important"><i
+								style="color: #00bcd4;"><i
 								class="fa fa-building-o" style="right: 11px !important"
-								aria-hidden="true"></i></label>
+								aria-hidden="true"><span
+									style="color: red;"> *</span></i></label>
 							<div class="form-group col-sm-5">
 								<input type="company" style="border: none" class="form-control"
 									id="company" [(ngModel)]="addPartnerUser.contactCompany"
