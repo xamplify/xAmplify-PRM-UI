@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { Campaign } from '../models/campaign';
@@ -21,7 +21,7 @@ declare var $, Highcharts: any;
   styleUrls: ['./analytics.component.css', './timeline.css'],
   providers: [Pagination]
 })
-export class AnalyticsComponent implements OnInit {
+export class AnalyticsComponent implements OnInit , OnDestroy{
   isTimeLineView: boolean;
   campaign: Campaign;
   selectedRow: any = new Object();
@@ -62,7 +62,8 @@ export class AnalyticsComponent implements OnInit {
   firstName: string;
   isPartnerCampaign: string;
   renderMapData: any;
-
+  campaingContactLists:any;
+  paginationType:string;
   videoFile: any;
 
   constructor(private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
@@ -79,7 +80,7 @@ export class AnalyticsComponent implements OnInit {
   }
 
   listCampaignViews(campaignId: number, pagination: Pagination) {
-    this.downloadTypeName === 'campaignViews';
+    this.downloadTypeName = 'campaignViews';
     this.listTotalCampaignViews(campaignId);
     this.campaignService.listCampaignViews(campaignId, pagination)
       .subscribe(
@@ -232,6 +233,7 @@ export class AnalyticsComponent implements OnInit {
     });
   }
   getCampaignUserViewsCountBarCharts(campaignId: number, pagination: Pagination) {
+    this.paginationType = 'viewsBarChart';
     this.campaignService.listCampaignViews(campaignId, pagination)
       .subscribe(
       data => {
@@ -266,6 +268,7 @@ export class AnalyticsComponent implements OnInit {
       )
   }
   getCampaignUsersWatchedInfo(countryCode) {
+    this.paginationType = 'coutrywiseUsers';
     this.countryCode = countryCode.toUpperCase();
     this.campaignService.getCampaignUsersWatchedInfo(this.campaignId, this.countryCode, this.pagination)
       .subscribe(
@@ -280,6 +283,18 @@ export class AnalyticsComponent implements OnInit {
       error => console.log(error),
       () => console.log('finished')
       );
+  }
+  paginationDropdown(pagination:Pagination){
+   this.pagination = pagination;
+   if (this.paginationType === 'viewsBarChart') {
+      this.getCampaignUserViewsCountBarCharts(this.campaignId, this.pagination);
+    }
+    else if (this.paginationType === 'donutCampaign') {
+        this.campaignViewsDonut(this.donultModelpopupTitle, this.pagination);
+    }
+    else if (this.paginationType === 'coutrywiseUsers') {
+        this.getCampaignUsersWatchedInfo(this.countryCode);
+    }
   }
   getEmailLogCountByCampaign(campaignId: number) {
     this.campaignService.getEmailLogCountByCampaign(campaignId)
@@ -314,7 +329,7 @@ export class AnalyticsComponent implements OnInit {
   }
 
   usersWatchList(campaignId: number, pagination: Pagination) {
-    this.downloadTypeName === 'usersWatchedList';
+    this.downloadTypeName = 'usersWatchedList';
     this.pagination.maxResults = 10;
     this.campaignService.usersWatchList(campaignId, pagination)
       .subscribe(
@@ -478,10 +493,9 @@ export class AnalyticsComponent implements OnInit {
       .subscribe(
       data => {
         this.campaign = data;
-        console.log(this.campaign);
-        if (this.campaign.channelCampaign === true) {
-          this.isPartnerCampaign = '(PARTNER)';
-        } else { this.isPartnerCampaign = ''; }
+        this.campaingContactLists = data.userLists;
+        console.log(this.campaingContactLists);
+        this.isPartnerCampaign = this.campaign.channelCampaign? '(PARTNER)' : '';
       },
       error => {
         console.log(error);
@@ -541,6 +555,7 @@ export class AnalyticsComponent implements OnInit {
   }
 
   campaignViewsDonut(timePeriod: string, pagination) {
+    this.paginationType = 'donutCampaign';
     this.donultModelpopupTitle = timePeriod;
     this.campaignService.donutCampaignInnerViews(this.campaignId, timePeriod, this.pagination).
       subscribe(
@@ -603,7 +618,7 @@ export class AnalyticsComponent implements OnInit {
   }
 
   listTotalCampaignViews(campaignId: number) {
-    this.downloadTypeName === 'campaignViews';
+    this.downloadTypeName ='campaignViews';
     this.campaignTotalViewsPagination.maxResults = this.campaignReport.emailSentCount;
     this.campaignService.listCampaignViews(campaignId, this.campaignTotalViewsPagination)
       .subscribe(
@@ -758,5 +773,8 @@ export class AnalyticsComponent implements OnInit {
     if (this.isTimeLineView === true) {
       this.getCampaignUserViewsCountBarCharts(this.campaignId, this.pagination);
     }
+  }
+  ngOnDestroy(){
+    this.paginationType = '';
   }
 }

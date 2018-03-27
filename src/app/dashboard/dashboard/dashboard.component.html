@@ -195,7 +195,10 @@
 				</div>
 				<div class="details">
 					<div class="number">{{dashboardReport.totalUploadedvideos}}</div>
-					<div class="desc">Uploaded Videos</div>
+					<div class="desc" >
+						<span *ngIf="!isOnlyPartner;else orgVideo">Uploaded Videos</span> 
+						<ng-template #orgVideo>Videos</ng-template>
+					</div>
 				</div>
 			</a>
 		</div>
