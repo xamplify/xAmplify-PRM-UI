@@ -556,7 +556,7 @@ img:hover {
 												</td>
 												<td align="center">
 												<div class="actions-block">
-												<a *ngIf="contact.signedUp" title="Resend the Email" (click)="sendMail(contact.id)"> 
+												<a *ngIf="!contact.signedUp" title="Resend the Email" (click)="sendMail(contact.id)"> 
 													<i class="fa fa-envelope"></i>
 												</a>
 												<a title="Edit Partner" (click)="editUserDetails(contact)"> 
