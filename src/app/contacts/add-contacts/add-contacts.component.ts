@@ -876,6 +876,10 @@ export class AddContactsComponent implements OnInit {
     }
 
     getGoogleContactsUsers() {
+        swal({
+            text: 'Retrieving contacts from google...! Please Wait...It\'s processing',
+            allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif'
+        });
         this.contactService.socialProviderName = 'google';
         this.socialContact.socialNetwork = "GOOGLE";
         var self = this;
@@ -883,6 +887,7 @@ export class AddContactsComponent implements OnInit {
             .subscribe(
             data => {
                 this.getGoogleConatacts = data;
+                swal.close();
                 if ( this.getGoogleConatacts.contacts.length == 0 ) {
                     this.isContactsThere = true;
                 }

@@ -814,6 +814,10 @@ export class AddPartnersComponent implements OnInit {
     }
 
     getGoogleContactsUsers() {
+        swal({
+            text: 'Retrieving partners from google...! Please Wait...It\'s processing',
+            allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif'
+        });
         this.contactService.socialProviderName = 'google';
         this.socialPartners.socialNetwork = "GOOGLE";
         var self = this;
@@ -821,6 +825,7 @@ export class AddPartnersComponent implements OnInit {
             .subscribe(
             data => {
                 this.getGoogleConatacts = data;
+                swal.close();
                 if ( this.getGoogleConatacts.contacts.length == 0 ) {
                     this.isContactsThere = true;
                 }
