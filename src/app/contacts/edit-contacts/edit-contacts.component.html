@@ -445,7 +445,8 @@
 																[name]="all" [(ngModel)]="isHeaderCheckBoxChecked"
 																(change)="checkAll($event)"
 																[id]="checkAllExistingContacts"/></th>
-															<th style="width: 25%">NAME</th>
+															<th style="width: 25%" *ngIf="isPartner">Entity info</th>
+															<th style="width: 25%" *ngIf="!isPartner">NAME</th>
 															<th>CONTACT</th>
 															<th>JOB TITLE</th>
 															<th class='text-center'>ADDRESS</th>
@@ -460,6 +461,9 @@
 														<tr class='row_{{i}}' style="background-color: #73c5be;">
 															<td align="center"><input type="checkbox"
 																checked="newContact.checked"></td>
+															<td *ngIf="isPartner">
+															<app-user-info [isPartnerEntityInfo]="true" [userInfo]="newContact"> </app-user-info>
+															</td>
 															<td>
 															<app-user-info  [userInfo]="newContact"> </app-user-info>
 															</td>
@@ -471,7 +475,7 @@
 															</td>
 															<td>
 																<h5 class='mb0 textWhite'>{{newContact.jobTitle}}</h5>
-																<h6 class='mt0 textWhite'>{{newContact.contactCompany}}</h6>
+																<h6 class='mt0 textWhite' *ngIf="!isPartner">{{newContact.contactCompany}}</h6>
 															</td>
 															<td>
 																<h5 *ngIf="newContact?.address" class='mb0 textWhite'>{{newContact.address}}</h5>
@@ -518,7 +522,10 @@
 																lang="{{contact.name}}" name="campaignContact[]"
 																value="{{contact.id}}" id="{{contact.id}}"
 																(click)="highlightRow(contact.id,$event)" /></td>
-															<td>
+															<td *ngIf="isPartner">
+															<app-user-info [isPartnerEntityInfo]="true"  [userInfo]="contact"> </app-user-info>
+															</td>
+															<td *ngIf="!isPartner">
 															<app-user-info  [userInfo]="contact"> </app-user-info>
 															</td>
 															<td>
@@ -528,7 +535,7 @@
 															</td>
 															<td>
 																<h5 class='mb0'>{{contact.jobTitle}}</h5>
-																<h6 class='mt0'>{{contact.contactCompany}}</h6>
+																<h6 class='mt0' *ngIf="!isPartner">{{contact.contactCompany}}</h6>
 															</td>
 															<td align="center">
 																<h5 *ngIf="contact?.address" class='mb0'>{{contact.address}}</h5>
@@ -641,7 +648,8 @@
 													[(ngModel)]="isInvalidHeaderCheckBoxChecked"
 													(change)="checkAllInvalidContacts($event)" class=""
 													id="checkAllExistingInvalidContacts" /></th>
-												<th style="width: 25%">NAME</th>
+												<th style="width: 25%" *ngIf="isPartner">Entity info</th>
+												<th style="width: 25%" *ngIf="!isPartner">NAME</th>
 												<th>CONTACT</th>
 												<th>JOB TITLE</th>
 												<th>ADDRESS</th>
@@ -661,7 +669,10 @@
 													value="{{allcontacts.id}}" id="{{allcontacts.id}}"
 													(click)="invalidContactsSelectedUserIds(allcontacts.id,$event)" />
 												</td>
-												<td>
+												<td *ngIf="isPartner">
+													<app-user-info [isPartnerEntityInfo]="true" [userInfo]="allcontacts"> </app-user-info>
+												</td>
+												<td *ngIf="!isPartner">
 													<app-user-info  [userInfo]="allcontacts"> </app-user-info>
 												</td>
 												<td>
@@ -671,7 +682,7 @@
 												</td>
 												<td>
 													<h5 class='mb0'>{{allcontacts.jobTitle}}</h5>
-													<h6 class='mt0'>{{allcontacts.contactCompany}}</h6>
+													<h6 class='mt0' *ngIf="!isPartner">{{allcontacts.contactCompany}}</h6>
 												</td>
 												<td>
 													<h5 *ngIf="allcontacts?.address" class='mb0'>{{allcontacts.address}}</h5>

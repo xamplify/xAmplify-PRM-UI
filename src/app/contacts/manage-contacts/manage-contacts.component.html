@@ -176,9 +176,9 @@
 										<table class='table tgrid'>
 											<thead>
 												<tr>
-													<th colspan="2" style="width: 50%">Contact List</th>
+													<th colspan="2" style="width: 50%">List Name</th>
 													<th>Created On</th>
-													<th class="text-center">Total Contacts</th>
+													<th class="text-center">Total {{checkingContactTypeName}}s</th>
 													<th class="text-center">Actions</th>
 												</tr>
 											</thead>
@@ -494,7 +494,8 @@
 															(change)="checkAllInvalidContacts($event)" class=""
 															id="checkAllExistingInvalidContacts" />
 														</td>
-														<th style="width: 25%">NAME</th>
+														<th style="width: 25%" *ngIf="!isPartner">NAME</th>
+														<th style="width: 25%" *ngIf="isPartner">Entity info</th>
 														<th>CONTACT</th>
 														<th>Job Title</th>
 														<th>ADDRESS</th>
@@ -525,7 +526,9 @@
 															value="{{contact.id}}" id="{{contact.id}}"
 															(click)="invalidContactsSelectedUserIds(contact.id,contact.emailId,contact.firstName,contact.lastName,$event)" />
 														</td>
-														<td><app-user-info [userInfo]="contact">
+														<td *ngIf="isPartner"><app-user-info [isPartnerEntityInfo]="true" [userInfo]="contact">
+															</app-user-info></td>
+														<td *ngIf="!isPartner"><app-user-info [userInfo]="contact">
 															</app-user-info></td>
 														<td>
 															<h5>
@@ -534,7 +537,7 @@
 														</td>
 														<td>
 															<h5 class='mb0'>{{contact.jobTitle}}</h5>
-															<h6 class='mt0'>{{contact.contactCompany}}</h6>
+															<h6 class='mt0' *ngIf="!isPartner">{{contact.contactCompany}}</h6>
 														</td>
 														<td>
 															<h5 *ngIf="contact?.address" class='mb0'>{{contact.address}}</h5>
