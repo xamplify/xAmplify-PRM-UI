@@ -74,6 +74,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     partnerEmailTemplateCount = 0;
     heatMapTooltip = 'last 7 days';
     videoStatesTooltip = 'last 7 days';
+    isOnlyPartner:boolean;
 
     constructor(public router: Router, public dashboardService: DashboardService, public pagination: Pagination, public videosPagination: Pagination,
         public contactService: ContactService, public videoFileService: VideoFileService, public twitterService: TwitterService,
@@ -89,6 +90,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.daySort = this.sortDates[0];
         this.heatMapSort = this.sortHeatMapValues[0];
         this.xtremandLogger.info('dashboard constructor');
+        this.isOnlyPartner = this.authenticationService.isOnlyPartner();
     }
 
     genderDemographics(userId: number) {

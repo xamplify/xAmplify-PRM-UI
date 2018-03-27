@@ -235,24 +235,24 @@ h1.bold {
 }
 
 .color1, .color1-invert:hover {
-	background-color: #76c9ff;
+	background-color: #00a6e8;
 	color: #fff;
-	border: 1px solid #76c9ff;
+	border: 1px solid #00a6e8;
 }
 
 .color1:hover, .color1-invert {
-	color: #76c9ff;
+	color: #00a6e8;
 	background-color: #fff;
-	border: 1px solid #76c9ff;
+	border: 1px solid #00a6e8;
 }
 
-.color2, .color2-invert:hover {
+/*.color2, .color2-invert:hover {
 	background-color: #00B3B3;
 	color: #fff;
 	border: 1px solid #00B3B3;
 }
 
-.color2:hover, .color2-invert {
+ .color2:hover, .color2-invert {
 	background-color: #fff;
 	color: #00B3B3;
 	border: 1px solid #00B3B3;
@@ -280,7 +280,7 @@ h1.bold {
 	color: #fbb23e;
 	background-color: #fff;
 	border: 1px solid #fbb23e;
-}
+} */
 
 .color1:hover, .color2:hover, .color3:hover, .color4:hover {
 	cursor: pointer;
@@ -325,16 +325,16 @@ tr>td>h6 {
 .td-chart {
 	position: relative;
 }
-.dashboard-stat .visual > i{line-height:normal !important}
+.dashboard-stat .visual > i{line-height:normal !important; -webkit-transform: rotate(-15deg);
+	-ms-transform: rotate(-15deg);	transform: rotate(-15deg); position: absolute; bottom: 12px; font-size: 78px !important;}
 .dashboard-stat{
 	 height:auto !important;
 	 border-radius: 0 !important;
 	 margin-bottom: 9px !important;}
 .camp-details{float:left; padding: 10px;}
 .camp-desc, .camp-title, .camp-number{color:#FFF; font-size:12px;}
-.camp-desc{}
-.camp-title{ text-decoration: underline; font-size:14px; }
-.camp-number{font-size:14px; margin-top:20px; margin-bottom:5px; font-weight:bold;}
+.camp-title{ font-size:14px;}
+.camp-number{font-size:14px; margin-top:20px; margin-bottom:3px; font-weight:bold;}
 
 
 

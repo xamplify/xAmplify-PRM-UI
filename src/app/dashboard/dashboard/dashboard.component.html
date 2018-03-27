@@ -244,15 +244,21 @@
 				</div>
 			</a>
 		</div>
-		<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
-			<a *ngIf="authenticationService.isOnlyPartner(); else orgAdmin" class="dashboard-stat dashboard-stat-lighter red-soft" [class.disabled]=" !authenticationService.user.hasCompany? true : null">
-			<ng-template #orgAdmin><a class="dashboard-stat dashboard-stat-lighter red-soft"  [routerLink]="['/home/partners']" [class.disabled]=" !authenticationService.user.hasCompany? true : null"></a></ng-template>
+		<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6"  [class.disabled]="!authenticationService.user.hasCompany? true : null">
+			<a class="dashboard-stat dashboard-stat-lighter red-soft"  [routerLink]="['/home/partners']" >
 				<div class="visual">
 					<i class="fa fa-handshake-o"></i>
 				</div>
 				<div class="details">
-					<div class="number">{{dashboardReport.totalCompanyPartnersCount}}</div>
-					<div class="desc">Partners</div>
+					<div class="number">
+					   <span *ngIf="!isOnlyPartner; else partner">{{dashboardReport.totalCompanyPartnersCount}} </span>
+					   <ng-template #partner>0</ng-template>
+
+					</div>
+					<div class="desc">
+						<span *ngIf="isOnlyPartner; else orgadmin">Vendors</span>
+						<ng-template #orgadmin><span>Partners</span></ng-template>
+					</div>
 				</div>
 			</a>
 		</div>
