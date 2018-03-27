@@ -325,3 +325,19 @@ tr>td>h6 {
 .td-chart {
 	position: relative;
 }
+.dashboard-stat .visual > i{line-height:normal !important}
+.dashboard-stat{
+	 height:auto !important;
+	 border-radius: 0 !important;
+	 margin-bottom: 9px !important;}
+.camp-details{float:left; padding: 10px;}
+.camp-desc, .camp-title, .camp-number{color:#FFF; font-size:12px;}
+.camp-desc{}
+.camp-title{ text-decoration: underline; font-size:14px; }
+.camp-number{font-size:14px; margin-top:20px; margin-bottom:5px; font-weight:bold;}
+
+
+
+.emails-info i {font-size:20px; display: block; text-align: center;}
+.emails-info h1 {margin-bottom:15px;}
+.emails-info h5 {margin:0;}

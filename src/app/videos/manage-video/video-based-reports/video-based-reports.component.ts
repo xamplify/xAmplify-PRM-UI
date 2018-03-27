@@ -72,7 +72,9 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     logoDescriptionUrl: any;
     brandLogoUrl:any;
     fullScreenMode: boolean;
-
+    paginationType:string;
+    videoPlayedSkipedInfo:any;
+    
     constructor(public authenticationService: AuthenticationService, public videoBaseReportService: VideoBaseReportService,
         public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService,
         public pagination: Pagination, public pagerService: PagerService, public router: Router) {
@@ -189,6 +191,8 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                     cursor: 'pointer',
                     events: {
                         click: function (event) {
+                            self.pagination.maxResults = 5;
+                            self.videoPlayedPagination.maxResults = 5;
                             self.videoSkippedDurationInfo();
                             self.videoPlayedDurationInfo();
                             $('#videoSkippedPlayed').modal('show');
@@ -299,6 +303,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         }
     }
     watchedFullyDetailReport() {
+        this.paginationType = 'watchedFully';
         this.videoBaseReportService.watchedFullyReport(this.selectedVideo.id, this.pagination).subscribe(
             (result: any) => {
                 console.log(result);
@@ -387,6 +392,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     }
 
     clickedMinutesWatched(userId: any) {
+        this.paginationType = 'userMinutesWatched';
         console.log(this.dropdownValue + 'and inner data' + this.minutesinnerSort);
         this.userId = userId;
         this.videoBaseReportService.getUsersMinutesWatchedDetailReports(this.dropdownValue, this.selectedVideo.id, this.minutesinnerSort, userId, this.pagination).
@@ -407,26 +413,30 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             );
     }
     setPage(event: any) {
-        const page = event.page;
-        const type = event.type;
-        console.log()
-        if (type === 'userMinutesWatched') {
-            this.pagination.pageIndex = page;
+        this.paginationType = event.type;
+        if(this.paginationType === 'videoPlayed'){ this.videoPlayedPagination.pageIndex = event.page; } 
+        else { this.pagination.pageIndex = event.page; }
+        this.callPaginationMethods();
+    }
+    paginationDropdown(pagination:Pagination){
+        if(this.paginationType === 'videoPlayed'){this.videoPlayedPagination = pagination; }
+        else { this.pagination = pagination; }
+        this.callPaginationMethods();
+    }
+    callPaginationMethods(){
+        if (this.paginationType === 'userMinutesWatched') {
             this.clickedMinutesWatched(this.userId);
         }
-        else if (type === 'watchedFully') {
-            this.pagination.pageIndex = page;
+        else if (this.paginationType === 'watchedFully') {
             this.watchedFullyDetailReport();
         }
-        else if (type === 'videoPlayed') {
-            this.videoPlayedPagination.pageIndex = page;
+        else if (this.paginationType === 'videoPlayed') {
             this.videoPlayedDurationInfo();
         }
-        else if (type === 'videoSkipped') {
-            this.pagination.pageIndex = page;
+        else if (this.paginationType === 'videoSkipped') {
             this.videoSkippedDurationInfo();
-        } else if (type === 'coutrywiseUsers') {
-            this.pagination.pageIndex = page;
+        } 
+        else if (this.paginationType === 'coutrywiseUsers') {
             this.getCampaignCoutryViewsDetailsReport(this.countryCode);
         }
     }
@@ -442,6 +452,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         this.videoBaseReportService.getVideoPlayedSkippedInfo(this.selectedVideo.id).subscribe(
             (result: any) => {
                 console.log(result);
+                this.videoPlayedSkipedInfo = result;
                 this.videoPlayedandSkippedDuration(result.views, result.skipped);
             },
             error => {
@@ -451,7 +462,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         );
     }
     videoSkippedDurationInfo() {
-        this.pagination.maxResults = 5;
+        this.paginationType = 'videoSkipped';
         this.videoBaseReportService.videoSkippedDurationInfo(this.selectedVideo.id, this.pagination).subscribe(
             (result: any) => {
                 console.log(result);
@@ -467,7 +478,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         );
     }
     videoPlayedDurationInfo() {
-        this.videoPlayedPagination.maxResults = 5;
+        this.paginationType = 'videoPlayed';
         this.videoBaseReportService.videoPlayedDurationInfo(this.selectedVideo.id, this.videoPlayedPagination).subscribe(
             (result: any) => {
                 console.log(result);
@@ -497,6 +508,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         );
     }
     getCampaignCoutryViewsDetailsReport(countryCode: string) {
+        this.paginationType = 'coutrywiseUsers';
         this.countryCode = countryCode.toUpperCase();
         this.downloadTypeName = 'worldMapData';
         this.videoBaseReportService.getCampaignCoutryViewsDetailsReport(this.selectedVideo.id, this.countryCode, this.pagination).

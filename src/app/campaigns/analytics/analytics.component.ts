@@ -478,6 +478,7 @@ export class AnalyticsComponent implements OnInit {
       .subscribe(
       data => {
         this.campaign = data;
+        console.log(this.campaign);
         if (this.campaign.channelCampaign === true) {
           this.isPartnerCampaign = '(PARTNER)';
         } else { this.isPartnerCampaign = ''; }

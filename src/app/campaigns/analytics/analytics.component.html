@@ -27,35 +27,45 @@
 <ng-template #NOERROR>
 	<div class="row">
 		<div [ngClass]="{'col-xs-4': campaignType === 'VIDEO'}" *ngIf="campaignType === 'VIDEO'">
-			<div class="portlet light clearfix">
-				<div class="portlet-title">Video Info</div>
-				<div class="portlet-body">
-					<div class="col-xs-4 p0">
-						<img src="{{campaign.campaignVideoFile.imagePath}}" height="50px">
-					</div>
-					<div class="col-xs-8">
-						<a class="m0" (click)="previewVideo(campaign.campaignVideoFile)"><b>{{campaign.campaignVideoFile.title}}</b></a>
-						<h6>{{campaign.campaignVideoFile.description}}</h6>	
-					</div>					
+			<a class="dashboard-stat dashboard-stat-lighter purple-soft" (click)="previewVideo(campaign.campaignVideoFile)">
+				<div class="visual">
+					<i class="fa fa-video-camera"></i>
 				</div>
-			</div>
+				<div class="camp-details">
+					<div class="camp-title ">Video Info</div>
+					<div class="camp-number">
+					
+						<b class="m0" title={{campaign.campaignVideoFile.title}}>{{campaign.campaignVideoFile.title | slice: 0: 20}}</b>
+						<span *ngIf="campaign.campaignVideoFile.title?.length>23">...</span>
+					</div>
+					<div class="camp-desc">
+						<span title={{campaign.campaignVideoFile.description}}>{{campaign.campaignVideoFile.description | slice: 0: 20}}
+						<span *ngIf="campaign.campaignVideoFile.description?.length>23">...</span></span>	
+					</div>
+				</div>
+			</a>
+
 		</div>
 		<div [ngClass]="{'col-xs-4': campaignType === 'VIDEO', 'col-xs-6': campaignType === 'EMAIL'}" *ngIf="campaignType === 'VIDEO' || campaignType === 'EMAIL'">
-			<div class="portlet light clearfix">
-				<div class="portlet-title">Email Info</div>
-				<div class="portlet-body">
-					<div class="col-xs-4 p0">
-						<img src="assets/images/bee-template/basic-news-letter.png" height="50px">
+
+			<a class="dashboard-stat dashboard-stat-lighter blue-soft" (click)="showEmailTemplatePreview(campaign.emailTemplate)" >
+					<div class="visual">
+						<i class="fa fa-envelope-open"></i>
 					</div>
-					<div class="col-xs-8">
-						<a class="m0" (click)="showEmailTemplatePreview(campaign.emailTemplate)" title="Preview"><b>{{campaign.emailTemplate.name}}</b></a>
-						<h6>{{campaign.emailTemplate.description}}</h6>	
+					<div class="camp-details">
+						<div class="camp-title">Email Info</div>
+						<div class="camp-number">
+						  <b class="m0" title={{campaign.emailTemplate.title}}>{{campaign.emailTemplate.name | slice: 0: 20}}</b>
+						</div>
+						<div class="camp-desc">
+						 <span title={{campaign.emailTemplate.description}}>{{campaign.emailTemplate.description | slice: 0: 20}}
+						 <span *ngIf="campaign.emailTemplate.description?.length>23">...</span></span>	
+						</div>
 					</div>
-				</div>
-			</div>
+				</a>
 		</div>
 		<div [ngClass]="{'col-xs-4': campaignType === 'VIDEO', 'col-xs-6': campaignType === 'EMAIL', 'col-xs-12': campaignType === 'SOCIAL'}">
-			<div class="portlet light clearfix">
+			<!-- <div class="portlet light clearfix">
 				<div class="portlet-title">Contact List Info</div>
 				<div class="portlet-body">
 					<div *ngFor="let item of campaign.userLists" class="row">
@@ -66,8 +76,29 @@
 						</div>
 					</div>
 				</div>
+			</div> -->
+			<a class="dashboard-stat dashboard-stat-lighter green-soft" >
+					<div class="visual">
+						<i class="fa fa-users"></i>
+					</div>
+					<div class="camp-details">
+						<div class="camp-title">Contact List Info</div>
+						<!-- <div class="camp-number">
+						  <b class="m0" >{{campaign.emailTemplate.name | slice: 0: 20}}</b>
+						</div>
+						<div class="camp-desc">
+						 <span >{{campaign.emailTemplate.description | slice: 0: 20}}</span>
+						</div> -->
+						<div class="camp-number">
+							<b class="m0">contactListName</b>
+						</div>
+						<div class="camp-desc">
+							<span >description</span>
+						</div>
+					</div>
+				</a>
+
 			</div>
-		</div>
 	</div>	
 	<div class="col-xs-12 col-sm-6 p-5x" [hidden]="campaignType !== 'VIDEO'">
 		<div class="p-5x">
@@ -97,11 +128,12 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-xs-12 col-sm-6 p-5x">
+	<div class="col-xs-12 col-sm-6 p-5x emails-info">
 		<div class="p-5x" [ngClass]="{'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO'}">
 			<button class="portlet light color1-invert crcb" (click)="downloadTypeName = 'campaignViews'" data-toggle="modal" data-target="#emailSentListModal"
 			 [disabled]="campaignReport.emailSentCount < 1">
 				<div class="portlet-body text-center">
+						<i class="fa fa-envelope"></i>
 					<h1>
 						<b>{{campaignReport.emailSentCount}}</b>
 					</h1>
@@ -113,6 +145,7 @@
 			<button class="portlet light color2-invert crcb" (click)="emailActionList(campaign.campaignId, 'open', emailActionListPagination)"
 			 [disabled]="campaignReport.emailOpenCount < 1">
 				<div class="portlet-body text-center">
+						<i class="fa fa-envelope-open"></i>
 					<h1>
 						<b>{{campaignReport.emailOpenCount}}</b>
 					</h1>
@@ -124,6 +157,7 @@
 			<button class="portlet light color3-invert crcb" (click)="emailActionList(campaign.campaignId, 'click', emailActionListPagination)"
 			 [disabled]="campaignReport.emailClickedCount < 1">
 				<div class="portlet-body text-center">
+						<i class="fa fa-globe"></i>
 					<h1>
 						<b>{{campaignReport.emailClickedCount}}</b>
 					</h1>
@@ -135,6 +169,7 @@
 			<button class="portlet light color2-invert crcb" (click)="usersWatchList(campaign.campaignId, usersWatchListPagination)"
 			 [disabled]="campaignReport.usersWatchCount < 1">
 				<div class="portlet-body text-center">
+						<i class="fa fa-eye"></i>
 					<h1>
 						<b>{{campaignReport.usersWatchCount}}</b>
 					</h1>
