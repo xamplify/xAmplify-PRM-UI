@@ -83,6 +83,7 @@ export class AddPartnersComponent implements OnInit {
     deleteErrorMessage: boolean;
     isLoadingList: boolean = true;
     isEmailExist: boolean = false;
+    isCompanyDetails = false;
     allPartnersPagination: Pagination = new Pagination();
     sortOptions = [
         { 'name': 'Sort By', 'value': '' },
@@ -118,9 +119,6 @@ export class AddPartnersComponent implements OnInit {
     }
 
     onChangeAllPartnerUsers( event: Pagination ) {
-        //this.sortOptionForPagination = event;
-        //this.selectedDropDown = this.sortOptionForPagination.value;
-       // this.pagination.maxResults = ( this.selectedDropDown == 'ALL' ) ? this.pagination.totalRecords : parseInt( this.selectedDropDown );
         this.pagination = event;
         this.loadPartnerList( this.pagination );
 
@@ -266,7 +264,6 @@ export class AddPartnersComponent implements OnInit {
     };
 
     savePartnerUsers() {
-        //this.selectedAddPartnerOption = 2;
         this.duplicateEmailIds = [];
         this.dublicateEmailId = false;
         var testArray = [];
@@ -298,6 +295,15 @@ export class AddPartnersComponent implements OnInit {
     }
 
     saveValidEmails() {
+      this.isCompanyDetails = false;
+        for(let i=0; i< this.newPartnerUser.length; i++){
+          if(this.newPartnerUser[i].contactCompany.trim() !=''){
+              this.isCompanyDetails = true;
+          }else {
+              this.isCompanyDetails = false;
+          }
+       }
+      if(this.isCompanyDetails){
         this.xtremandLogger.info( "saving #partnerListId " + this.partnerListId + " data => " + JSON.stringify( this.newPartnerUser ) );
         this.contactService.updateContactList( this.partnerListId, this.newPartnerUser )
             .subscribe(
@@ -332,6 +338,9 @@ export class AddPartnersComponent implements OnInit {
             () => this.xtremandLogger.info( "MangePartnerComponent loadPartners() finished" )
             )
         this.dublicateEmailId = false;
+      }else{
+          this.customResponse = new CustomResponse( 'ERROR', "Company Details is required", true );
+      }
     }
 
     cancelPartners() {
@@ -445,7 +454,6 @@ export class AddPartnersComponent implements OnInit {
 
                 var allTextLines = csvResult.data;
                 for ( var i = 1; i < allTextLines.length; i++ ) {
-                    // var data = allTextLines[i].split( ',' );
                     if ( allTextLines[i][4].trim().length > 0 ) {
                         let user = new User();
                         user.emailId = allTextLines[i][4];
@@ -646,7 +654,6 @@ export class AddPartnersComponent implements OnInit {
             ( data: any ) => {
                 data = data;
                 console.log( "update Contacts ListUsers:" + data );
-               // this.setResponseDetails( 'SUCCESS', 'your Partner has been deleted successfully' );
                 this.customResponse = new CustomResponse( 'SUCCESS', this.properties.PARTNERS_DELETE_SUCCESS, true );
                 this.loadPartnerList( this.pagination );
             },
@@ -654,7 +661,6 @@ export class AddPartnersComponent implements OnInit {
                 let body: string = error['_body'];
                 body = body.substring( 1, body.length - 1 );
                 if ( error.includes( 'Please Launch or Delete those campaigns first' ) ) {
-                   // this.setResponseDetails( 'ERROR', error );
                     this.customResponse = new CustomResponse( 'ERROR', error, true );
                 } else {
                     this.xtremandLogger.errorPage( error );
@@ -713,11 +719,6 @@ export class AddPartnersComponent implements OnInit {
         this.updatedUserDetails = contactDetails;
     }
 
-    /*setResponseDetails( responseType: string, responseMessage: string ) {
-        this.customResponse.responseType = responseType;
-        this.customResponse.responseMessage = responseMessage;
-    }
-*/
     socialContactImage() {
         this.contactService.socialContactImages()
             .subscribe(
@@ -1536,7 +1537,6 @@ export class AddPartnersComponent implements OnInit {
             data => {
                 console.log( data );
                 if ( data.message == "success" ) {
-                   // this.setResponseDetails( 'SUCCESS', 'Email Sent Successfully..' );
                     this.customResponse = new CustomResponse( 'SUCCESS', this.properties.EMAIL_SENT_SUCCESS, true );
                 }
             },
@@ -1545,6 +1545,14 @@ export class AddPartnersComponent implements OnInit {
             },
             () => this.xtremandLogger.log( "Manage Partner component Mail send method successfull" )
             );
+    }
+    
+    contactCompanyChecking(contactCompany: string){
+        if( contactCompany.trim() != '' ){
+            this.isCompanyDetails = true;
+        }else {
+            this.isCompanyDetails = false;
+        }
     }
 
     ngOnInit() {

@@ -142,6 +142,7 @@ export class EditContactsComponent implements OnInit {
     public sortOption: any = this.sortOptions[0];
 
     isPartner: boolean;
+    isCompanyDetails = false;
     checkingContactTypeName: string;
 
     filterOptions = [
@@ -333,6 +334,19 @@ export class EditContactsComponent implements OnInit {
     }
 
     saveValidEmails() {
+        this.isCompanyDetails = false;
+        if(this.isPartner){
+            for(let i=0; i< this.users.length; i++){
+              if(this.users[i].contactCompany.trim() !=''){
+                  this.isCompanyDetails = true;
+              }else {
+                  this.isCompanyDetails = false;
+              }
+           }
+        }else{
+            this.isCompanyDetails = true;
+        }
+      if(this.isCompanyDetails){
         this.xtremandLogger.info( "update contacts #contactSelectedListId " + this.contactListId + " data => " + JSON.stringify( this.users ) );
         this.contactService.updateContactList( this.contactListId, this.users )
             .subscribe(
@@ -364,6 +378,9 @@ export class EditContactsComponent implements OnInit {
             () => this.xtremandLogger.info( "MangeContactsComponent loadContactLists() finished" )
             )
         this.dublicateEmailId = false;
+      }else{
+          this.customResponse = new CustomResponse( 'ERROR', "Company Details is required", true );
+      }
     }
 
     updateCsvContactList( contactListId: number ) {
@@ -381,6 +398,19 @@ export class EditContactsComponent implements OnInit {
             }
             if ( this.validCsvContacts == true && this.invalidPatternEmails.length == 0) {
                 $( "#sample_editable_1" ).show();
+                this.isCompanyDetails = false;
+                if(this.isPartner){
+                    for(let i=0; i< this.users.length; i++){
+                      if(this.users[i].contactCompany.trim() !=''){
+                          this.isCompanyDetails = true;
+                      }else {
+                          this.isCompanyDetails = false;
+                      }
+                   }
+                }else{
+                    this.isCompanyDetails = true;
+                }
+                if(this.isCompanyDetails){
                 this.xtremandLogger.info( "update contacts #contactSelectedListId " + this.contactListId + " data => " + JSON.stringify( this.users ) );
                 this.contactService.updateContactList( this.contactListId, this.users )
                     .subscribe(
@@ -415,6 +445,9 @@ export class EditContactsComponent implements OnInit {
                     },
                     () => this.xtremandLogger.info( "MangeContactsComponent loadContactLists() finished" )
                     )
+                }else{
+                    this.customResponse = new CustomResponse( 'ERROR', "Company Details is required", true );
+                }
             } else {
                 this.inValidCsvContacts = true;
             }
@@ -704,6 +737,19 @@ export class EditContactsComponent implements OnInit {
     saveClipboardValidEmails() {
         this.xtremandLogger.info( "update contacts #contactSelectedListId " + this.contactListId + " data => " + JSON.stringify( this.users ) );
         if ( this.users.length != 0 ) {
+            this.isCompanyDetails = false;
+            if(this.isPartner){
+                for(let i=0; i< this.users.length; i++){
+                  if(this.users[i].contactCompany.trim() !=''){
+                      this.isCompanyDetails = true;
+                  }else {
+                      this.isCompanyDetails = false;
+                  }
+               }
+            }else{
+                this.isCompanyDetails = true;
+            }
+            if(this.isCompanyDetails){
             this.contactService.updateContactList( this.contactListId, this.users )
                 .subscribe(
                 data => {
@@ -737,6 +783,9 @@ export class EditContactsComponent implements OnInit {
                 },
                 () => this.xtremandLogger.info( "MangeContactsComponent loadContactLists() finished" )
                 )
+            }else{
+                this.customResponse = new CustomResponse( 'ERROR', "Company Details is required", true );
+            }
             this.dublicateEmailId = false;
         }
     }
@@ -1706,6 +1755,14 @@ export class EditContactsComponent implements OnInit {
                 this.contactsByType.isLoading = false;
             }
             );
+    }
+    
+    contactCompanyChecking(contactCompany: string){
+        if( contactCompany.trim() != '' ){
+            this.isCompanyDetails = true;
+        }else {
+            this.isCompanyDetails = false;
+        }
     }
 
     ngOnInit() {

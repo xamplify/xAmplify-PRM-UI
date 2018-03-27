@@ -644,6 +644,7 @@ img:hover {
 							<div class="form-group col-sm-5">
 								<input type="company" style="border: none" class="form-control"
 									id="company" [(ngModel)]="addPartnerUser.contactCompany"
+									(input)="contactCompanyChecking(addPartnerUser.contactCompany)"
 									[ngModelOptions]="{standalone: true}"
 									placeholder="Company" maxlength="250">
 								<div class="textCss"></div>
@@ -737,11 +738,11 @@ img:hover {
 				<div class="modal-footer" *ngIf="!updatePartnerUser">
 					<span style="float: left;">Note: * indicates required</span>
 					<button type="submit" class="btn green"
-						[disabled]="!checkingForEmail || isEmailExist" (click)="addRow()">Save</button>
+						[disabled]="!checkingForEmail || isEmailExist || !isCompanyDetails" (click)="addRow()">Save</button>
 				</div>
 				<div class="modal-footer" *ngIf="updatePartnerUser">
 					<button type="submit" class="btn green"
-						[disabled]="!checkingForEmail || isEmailExist" (click)="updatePartnerListUser()">Update</button>
+						[disabled]="!checkingForEmail || isEmailExist || !isCompanyDetails" (click)="updatePartnerListUser()">Update</button>
 				</div>
 			</div>
 
