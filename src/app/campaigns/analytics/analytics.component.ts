@@ -13,6 +13,7 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 import { PagerService } from '../../core/services/pager.service';
 import { ReferenceService } from '../../core/services/reference.service';
 import { SocialService } from '../../social/services/social.service';
+import { ContactService } from '../../contacts/services/contact.service';
 
 declare var $, Highcharts: any;
 @Component({
@@ -63,12 +64,14 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   isPartnerCampaign: string;
   renderMapData: any;
   campaingContactLists:any;
+  campaingContactListValues:any;
+  contactListId:number;
   paginationType:string;
   videoFile: any;
 
   constructor(private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
     private authenticationService: AuthenticationService, public pagerService: PagerService, public pagination: Pagination,
-    private referenceService: ReferenceService) {
+    private referenceService: ReferenceService, public contactService: ContactService) {
     this.isTimeLineView = false;
     this.campaign = new Campaign();
     if (this.referenceService.isFromTopNavBar) {
@@ -748,7 +751,17 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     closeModal(event: any){
       this.videoFile = undefined;
     }
-
+    showContactListModal(){
+      this.getListOfContacts(this.campaingContactLists[0].id);
+      $("#show_contact-list-info").modal('show');
+    }
+    getListOfContacts(id:number){
+     this.contactListId = id;
+     this.contactService.loadUsersOfContactList(id, this.pagination).subscribe(
+       data => {
+        this.campaingContactListValues = data.listOfUsers;
+      })
+    }
   ngOnInit() {
     this.emailActionListPagination.pageIndex = 1;
     const userId = this.authenticationService.getUserId();

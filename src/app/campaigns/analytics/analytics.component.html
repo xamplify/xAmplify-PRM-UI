@@ -65,39 +65,20 @@
 				</a>
 		</div>
 		<div [ngClass]="{'col-xs-4': campaignType === 'VIDEO', 'col-xs-6': campaignType === 'EMAIL', 'col-xs-12': campaignType === 'SOCIAL'}">
-			<!-- <div class="portlet light clearfix">
-				<div class="portlet-title">Contact List Info</div>
-				<div class="portlet-body">
-					<div *ngFor="let item of campaign.userLists" class="row">
-						<div class="col-xs-2"><h2 class="m0"><b>{{item.noOfContacts}}</b></h2></div>
-						<div class="col-xs-10">
-							<h5 class="m0 p0"><b>{{item.name}}</b></h5>
-							<h6>By {{item.uploadedBy}}</h6>
-						</div>
-					</div>
-				</div>
-			</div> -->
-			<a class="dashboard-stat dashboard-stat-lighter green-soft" >
+			<a class="dashboard-stat dashboard-stat-lighter green-soft" (click)="showContactListModal()">
 					<div class="visual">
 						<i class="fa fa-users"></i>
 					</div>
 					<div class="camp-details">
 						<div class="camp-title">Contact List Info</div>
-						<!-- <div class="camp-number">
-						  <b class="m0" >{{campaign.emailTemplate.name | slice: 0: 20}}</b>
-						</div>
-						<div class="camp-desc">
-						 <span >{{campaign.emailTemplate.description | slice: 0: 20}}</span>
-						</div> -->
 						<div class="camp-number">
-							<b class="m0">contactListName</b>
+							<b class="m0">contactLists</b>
 						</div>
 						<div class="camp-desc">
-							<span >description</span>
+							<span >click on the contact list</span>
 						</div>
 					</div>
 				</a>
-
 			</div>
 	</div>	
 	<div class="col-xs-12 col-sm-6 p-5x" [hidden]="campaignType !== 'VIDEO'">
@@ -764,4 +745,57 @@
 			</div>
 		</div>
 	</div>
-<app-preview-video *ngIf="videoFile" [videoFile]="videoFile" (notifyParent)="closeModal($event)"></app-preview-video>	
+<app-preview-video *ngIf="videoFile" [videoFile]="videoFile" (notifyParent)="closeModal($event)"></app-preview-video>
+
+<div class="modal" id="show_contact-list-info">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
+					<h4 class="modal-title" id="show_contact-list-info"	style="text-align: center;"> Contact List Info</h4>
+				</div>
+				<div class="modal-body">
+				<div class="row">
+					<div class="col-md-4">
+					<table class="table tgrid"> 
+						<thead>
+							<th class="center">Contact List name</th>
+						</thead>
+						<tbody>
+							<tr *ngFor="let item of campaingContactLists">
+								<td class="center" (click)="getListOfContacts(item.id)"
+								[ngStyle]="{'background-color':contactListId === item.id ? 'lightblue' : '' }">{{item.name}}</td>
+							</tr>
+						</tbody>
+					</table>
+					</div>
+					<div class="col-md-8">
+					<table class="table tgrid" >
+						<thead>
+							<th class="center">Email Id</th>
+							<th class="center">First Name</th>
+							<th class="center">Last Name</th>
+						</thead>
+						<tbody>
+						  <tr *ngFor="let item of campaingContactListValues">
+							<td class="center">{{item.emailId}}</td>
+							<td class="center">
+							<span *ngIf="item.firstName; else empty"> {{item.firstName}} </span>
+							<ng-template #empty>-</ng-template>
+							</td>
+							<td class="center">
+							<span *ngIf="item.lastName; else lastName"> {{item.lastName}} </span>
+							<ng-template #lastName>-</ng-template>
+							</td>
+						  </tr>
+						</tbody>
+					</table>
+					</div>
+				</div>
+				</div>
+				<div class="modal-footer">
+					<a  data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
+				</div>
+			</div>
+		</div>
+	</div>
