@@ -80,7 +80,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   }
 
   listCampaignViews(campaignId: number, pagination: Pagination) {
-    this.downloadTypeName = 'campaignViews';
+    this.downloadTypeName = this.paginationType = 'campaignViews';
     this.listTotalCampaignViews(campaignId);
     this.campaignService.listCampaignViews(campaignId, pagination)
       .subscribe(
@@ -284,18 +284,6 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       () => console.log('finished')
       );
   }
-  paginationDropdown(pagination:Pagination){
-   this.pagination = pagination;
-   if (this.paginationType === 'viewsBarChart') {
-      this.getCampaignUserViewsCountBarCharts(this.campaignId, this.pagination);
-    }
-    else if (this.paginationType === 'donutCampaign') {
-        this.campaignViewsDonut(this.donultModelpopupTitle, this.pagination);
-    }
-    else if (this.paginationType === 'coutrywiseUsers') {
-        this.getCampaignUsersWatchedInfo(this.countryCode);
-    }
-  }
   getEmailLogCountByCampaign(campaignId: number) {
     this.campaignService.getEmailLogCountByCampaign(campaignId)
       .subscribe(
@@ -329,6 +317,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   }
 
   usersWatchList(campaignId: number, pagination: Pagination) {
+    this.paginationType = 'usersWatch';
     this.downloadTypeName = 'usersWatchedList';
     this.pagination.maxResults = 10;
     this.campaignService.usersWatchList(campaignId, pagination)
@@ -346,49 +335,47 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   }
 
   setPage(event: any) {
-    const page = event.page;
-    const type = event.type;
-    if (type === 'campaignViews') {
-      if (page !== this.campaignViewsPagination.pageIndex) {
-        this.campaignViewsPagination.pageIndex = page;
+    if (event.type === 'campaignViews') {
+        this.campaignViewsPagination.pageIndex = event.page;
         this.listCampaignViews(this.campaign.campaignId, this.campaignViewsPagination);
-      }
-    } else if (type === 'emailAction') {
-      if (page !== this.emailActionListPagination.pageIndex) {
-        this.emailActionListPagination.pageIndex = page;
+    } else if (event.type === 'emailAction') {
+        this.emailActionListPagination.pageIndex = event.page;
         if (this.campaignReport.emailActionType === 'open' || this.campaignReport.emailActionType === 'click') {
           this.emailActionList(this.campaign.campaignId, this.campaignReport.emailActionType, this.emailActionListPagination);
-        }
       }
-    } else if (type === 'usersWatch') {
-      if (page !== this.usersWatchListPagination.pageIndex) {
-        this.usersWatchListPagination.pageIndex = page;
+    } else if (event.type === 'usersWatch') {
+        this.usersWatchListPagination.pageIndex = event.page;
         this.usersWatchList(this.campaign.campaignId, this.usersWatchListPagination);
-      }
-    }
-    else if (type === 'viewsBarChart') {
-      console.log(this.campaignId);
-      if (page !== this.pagination.pageIndex) {
-        this.pagination.pageIndex = page;
-        this.getCampaignUserViewsCountBarCharts(this.campaignId, this.pagination);
-      }
-    }
-    else if (type === 'donutCampaign') {
-      if (page !== this.pagination.pageIndex) {
-        this.pagination.pageIndex = page;
-        this.campaignViewsDonut(this.donultModelpopupTitle, this.pagination);
-      }
-    }
-    else if (type === 'coutrywiseUsers') {
-      if (page !== this.pagination.pageIndex) {
-        this.pagination.pageIndex = page;
-        this.getCampaignUsersWatchedInfo(this.countryCode);
-      }
-    }
-
+    } else {
+      this.pagination.pageIndex = event.page;
+       this.callPaginationValues(event.type);
+     }
   }
-
+  paginationDropdown(pagination:Pagination){
+    if (this.paginationType === 'campaignViews') {
+      this.campaignViewsPagination = pagination;
+      this.listCampaignViews(this.campaign.campaignId, pagination);
+    } else if (this.paginationType === 'emailAction') {
+      this.emailActionListPagination = pagination;
+      if (this.campaignReport.emailActionType === 'open' || this.campaignReport.emailActionType === 'click') {
+        this.emailActionList(this.campaign.campaignId, this.campaignReport.emailActionType, this.emailActionListPagination);
+    }
+    } else if (this.paginationType === 'usersWatch') {
+      this.usersWatchListPagination = pagination;
+      this.usersWatchList(this.campaign.campaignId, this.usersWatchListPagination);
+    }
+    else {
+    this.pagination = pagination;
+    this.callPaginationValues(this.paginationType);
+    }
+   }
+  callPaginationValues(type:string){
+    if (type === 'viewsBarChart') { this.getCampaignUserViewsCountBarCharts(this.campaignId, this.pagination); }
+    else if (type === 'donutCampaign') { this.campaignViewsDonut(this.donultModelpopupTitle, this.pagination); }
+    else if (type === 'coutrywiseUsers') { this.getCampaignUsersWatchedInfo(this.countryCode); }
+  }
   emailActionList(campaignId: number, actionType: string, pagination: Pagination) {
+    this.paginationType = 'emailAction';
     this.campaignService.emailActionList(campaignId, actionType, pagination)
       .subscribe(
       data => {

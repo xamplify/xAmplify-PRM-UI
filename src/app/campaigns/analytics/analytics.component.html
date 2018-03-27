@@ -303,7 +303,7 @@
 								</tbody>
 							</table>
 						</div>
-						<app-pagination [pagination]="campaignViewsPagination" [type]="'campaignViews'" (notifyParent)="setPage($event)"></app-pagination>
+						<app-pagination [pagination]="campaignViewsPagination" [type]="'campaignViews'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
 					</div>
 				</div>
 			</div>
@@ -517,7 +517,7 @@
 						</table>
 					</div>
 					<!--pager here  -->
-					<app-pagination [pagination]="usersWatchListPagination" [type]="'usersWatch'" (notifyParent)="setPage($event)"></app-pagination>
+					<app-pagination [pagination]="usersWatchListPagination" [type]="'usersWatch'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
 				</div>
 			</div>
 		</div>
@@ -571,7 +571,7 @@
 							</tbody>
 						</table>
 					</div>
-					<app-pagination [pagination]="emailActionListPagination" [type]="'emailAction'" (notifyParent)="setPage($event)"></app-pagination>
+					<app-pagination [pagination]="emailActionListPagination" [type]="'emailAction'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
 				</div>
 			</div>
 		</div>
@@ -621,7 +621,7 @@
 								</tr>
 							</tbody>
 						</table>
-						<app-pagination [pagination]="campaignViewsPagination" [type]="'campaignViews'" (notifyParent)="setPage($event)"></app-pagination>
+						<app-pagination [pagination]="campaignViewsPagination" [type]="'campaignViews'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
 					</div>
 				</div>
 			</div>
@@ -684,7 +684,7 @@
 							</tr>
 						</tbody>
 					</table>
-					<app-pagination [pagination]="pagination" [type]="'donutCampaign'" (notifyParent)="setPage($event)"  (notifyParentDropDown)= "paginationDropdown($event)"></app-pagination>
+					<app-pagination [pagination]="pagination" [type]="'donutCampaign'" (notifyParent)="setPage($event)" (notifyParentDropDown)= "paginationDropdown($event)"></app-pagination>
 				</div>
 			</div>
 		</div>
