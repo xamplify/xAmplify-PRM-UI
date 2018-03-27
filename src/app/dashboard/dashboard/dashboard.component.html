@@ -245,7 +245,8 @@
 			</a>
 		</div>
 		<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
-			<a class="dashboard-stat dashboard-stat-lighter red-soft"  [routerLink]="['/home/partners']" [class.disabled]=" !authenticationService.user.hasCompany? true : null">
+			<a *ngIf="authenticationService.isOnlyPartner(); else orgAdmin" class="dashboard-stat dashboard-stat-lighter red-soft" [class.disabled]=" !authenticationService.user.hasCompany? true : null">
+			<ng-template #orgAdmin><a class="dashboard-stat dashboard-stat-lighter red-soft"  [routerLink]="['/home/partners']" [class.disabled]=" !authenticationService.user.hasCompany? true : null"></a></ng-template>
 				<div class="visual">
 					<i class="fa fa-handshake-o"></i>
 				</div>
@@ -279,7 +280,7 @@
 							<span>
 								<i class="fa fa-envelope"></i>
 							</span>
-							<h4>Total Email Templates Shared</h4>
+							<h4>Total Emails Shared</h4>
 							<h3>{{partnerEmailTemplateCount}}</h3>
 						</div>
 					</div>
