@@ -126,6 +126,15 @@ export class AuthenticationService {
             return false;
         }
     }
+        
+    isPartner(){
+        const roleNames = this.getRoles();
+        if(roleNames.indexOf('ROLE_COMPANY_PARTNER')>-1){
+            return true;
+        }else{
+            return false;
+        }
+    }
     logout(): void {
         console.log('logout()');
         // clear token remove user from local storage to log user out
