@@ -1028,7 +1028,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
             this.listActiveSocialAccounts(this.loggedInUserId);
             this.genderDemographics(this.loggedInUserId);
 
-            if (this.authenticationService.isOnlyPartner()) {
+            console.log(this.authenticationService.getRoles());
+
+            if (this.authenticationService.isPartner()) {
                 this.loadChannelVideos();
                 this.countPartnerEmailTemplate();
             }
