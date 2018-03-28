@@ -677,6 +677,7 @@ export class AddPartnersComponent implements OnInit {
         this.updatePartnerUser = false;
         this.updatedUserDetails.length = 0;
         this.addPartnerUser = new User();
+        this.isEmailExist = false;
     }
 
     updatePartnerListUser() {
@@ -712,6 +713,12 @@ export class AddPartnersComponent implements OnInit {
         if ( this.addPartnerUser.country == null ) {
             this.addPartnerUser.country = ( this.countryNames.countries[0] );
         }
+        if(this.addPartnerUser.contactCompany != undefined){
+            this.isCompanyDetails = true;
+        }else {
+            this.isCompanyDetails = false;
+        }
+        
         this.addPartnerUser.mobileNumber = contactDetails.mobileNumber;
         this.addPartnerUser.description = contactDetails.description;
         $( "#addPartnerModal" ).show();

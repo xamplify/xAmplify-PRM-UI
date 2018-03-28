@@ -1571,6 +1571,13 @@ export class EditContactsComponent implements OnInit {
         if ( this.addContactuser.country == null ) {
             this.addContactuser.country = ( this.countryNames.countries[0] );
         }
+        if ( this.isPartner ) {
+            if ( this.addContactuser.contactCompany != undefined ) {
+                this.isCompanyDetails = true;
+            } else {
+                this.isCompanyDetails = false;
+            }
+       }
         this.addContactuser.mobileNumber = contactDetails.mobileNumber;
         this.addContactuser.description = contactDetails.description;
         $( "#addContactModal" ).show();
@@ -1583,6 +1590,7 @@ export class EditContactsComponent implements OnInit {
         $( "#addContactModal .close" ).click()
         this.updateContactUser = false;
         this.updatedUserDetails.length = 0;
+        this.isEmailExist = false;
     }
 
     updateContactListUser() {
