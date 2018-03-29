@@ -18,80 +18,154 @@
 
   <div class="row">
     <div class="col-xs-12 col-sm-6 p5">
-        <div class="portlet light">
-            <div class="portlet-title">
-                <div class="caption">
-                  <i class="icon-bar-chart font-green-sharp hide"></i>
-                  <span class="caption-subject font-green-sharp uppercase"></span>
+      <div>
+        <div>
+          <div class="row">
+            <div class="col-md-6 col-sm-6 col-xs-6">
+              <a class="dashboard-stat dashboard-stat-lighter blue-soft">
+                <div class="visual">
+                  <i class="fa fa-handshake-o"></i>
                 </div>
-                <div class="panel-title pull-right">
+                <div class="details">
+                  <div class="number">0</div>
+                  <div class="desc">Partners</div>
                 </div>
-              </div>
-          <div class="portlet-body">
+              </a>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-6">
+              <a class="dashboard-stat dashboard-stat-lighter green-soft">
+                <div class="visual">
+                  <i class="fa fa-user-secret"></i>
+                </div>
+                <div class="details">
+                  <div class="number">0</div>
+                  <div class="desc">Total Campaigns</div>
+                </div>
+              </a>
+            </div>
           </div>
         </div>
+      </div>
     </div>
 
     <div class="col-xs-12 col-sm-6 p5">
-        <div class="portlet light">
-            <div class="portlet-title">
-                <div class="caption">
-                  <i class="icon-bar-chart font-green-sharp hide"></i>
-                  <span class="caption-subject font-green-sharp uppercase"></span>
-                </div>
-                <div class="panel-title pull-right">
-                </div>
-              </div>
-          <div class="portlet-body">
-          </div>
-        </div>
-      </div>
-
-  </div>
-  <div class="row">
-      <div class="col-xs-12 col-sm-6 p5">
-        <!-- BEGIN PORTLET-->
-        <div class="portlet light">
-          <div class="portlet-title">
-            <div class="caption">
-              <i class="icon-bar-chart font-green-sharp hide"></i>
-              <span class="caption-subject font-green-sharp uppercase">country wise partners</span>
-            </div>
-            <div class="panel-title pull-right">
-            </div>
-          </div>
-         	<div class="portlet-body text-center">
-              <app-worldmap *ngIf="worldMapdataReport" [worldMapData]='worldMapdataReport' (notifyParent)="clickWorldMapReports($event)"></app-worldmap>
-            </div>
-        </div>
-        <!-- END PORTLET-->
-      </div>
-      <div class="col-xs-12 col-sm-6 p5">
-        <div class="portlet light">
-          <div class="portlet-title">
-            <div class="caption">
-              <span class="caption-subject font-red-sunglo"> campaigns lauched by partners</span>
-            </div>
-          </div>
-          <div class="portlet-body text-center">
-            <table class="table tgrid">
-              <thead>
-                <th class="headerCss center">Email-ID</th>
-                <th class="headerCss center">Campaigns</th>
-              </thead>
-              <tbody>
-                <tr>
-                <td>sathishcharykotha@gmail.com</td>
-                <td>0</td>
-              </tr> 
-               <tr>
-                  <td>sathishchary@gmail.com</td>
-                  <td>0</td>
-                </tr>
-              </tbody>
-              </table>
-          </div>
+      <div class="portlet light">
+        <div class="portlet-body">
+          <div style=" position: relative; top: -5px;font-weight: 600;">Campaign Type</div>
+          <table>
+            <tbody>
+              <tr>
+                <td>VIDEO</td>
+                <td width="100%" class="td-new td-chart">
+                  <div class="minutes-color" [style.width.%]="100" style="background:blue">100</div>
+                </td>
+              </tr>
+              <tr>
+                <td>SOCIAL</td>
+                <td width="100%" class="td-new td-chart">
+                  <div class="minutes-color" [style.width.%]="100" style="background:yellow">100</div>
+                </td>
+              </tr>
+              <tr>
+                <td>REGULAR</td>
+                <td width="100%" class="td-new td-chart">
+                  <div class="minutes-color" [style.width.%]="100" style="background:green">100</div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12 col-sm-6 p5">
+      <!-- BEGIN PORTLET-->
+      <div class="portlet light">
+        <div class="portlet-title">
+          <div class="caption">
+            <i class="icon-bar-chart font-green-sharp hide"></i>
+            <span class="caption-subject font-green-sharp uppercase">country wise partners</span>
+          </div>
+          <div class="panel-title pull-right">
+          </div>
+        </div>
+        <div class="portlet-body text-center">
+          <app-worldmap *ngIf="worldMapdataReport" [worldMapData]='worldMapdataReport' (notifyParent)="clickWorldMapReports($event)"></app-worldmap>
+        </div>
+      </div>
+      <!-- END PORTLET-->
+    </div>
+    <div class="col-xs-12 col-sm-6 p5">
+      <div class="portlet light">
+        <div class="portlet-title">
+          <div class="caption">
+            <span class="caption-subject font-red-sunglo uppercase"> campaigns lauched by partners</span>
+          </div>
+        </div>
+        <div class="portlet-body text-center">
+          <table class="table tgrid">
+            <thead>
+              <th class="headerCss center">Email-ID</th>
+              <th class="headerCss center">Campaigns</th>
+            </thead>
+            <tbody>
+              <tr>
+                <td>sathishcharykotha@gmail.com</td>
+                <td>0</td>
+              </tr>
+              <tr>
+                <td>sathishchary@gmail.com</td>
+                <td>0</td>
+              </tr>
+              <tr>
+                <td>sathishchary@gmail.com</td>
+                <td>0</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+      <div class="col-xs-12 p5">
+          <div class="portlet light">
+            <div class="portlet-title">
+              <div class="caption">
+                <span class="caption-subject font-red-sunglo uppercase"> partners campaigns user interactions</span>
+              </div>
+            </div>
+            <div class="portlet-body text-center">
+              <table class="table tgrid">
+                <thead>
+                  <th class="headerCss center">Company name</th>
+                  <th class="headerCss center">Email Id</th>
+                  <th class="headerCss center">Campaign Name</th>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>my campaigns </td>
+                    <td>sathishcharykotha@gmail.com</td>
+                    <td>asdgasd</td>
+                  </tr>
+                  <tr>
+                    <td>my campaigns </td>
+                    <td>sathishchary@gmail.com</td>
+                    <td>asdgasdg</td>
+                  </tr>
+                  <tr>
+                    <td>my campaigns </td>
+                    <td>sathishchary@gmail.com</td>
+                    <td>0</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+   </div>
+
+
 </div>

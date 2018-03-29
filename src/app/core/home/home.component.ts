@@ -51,6 +51,7 @@ export class HomeComponent implements OnInit {
 					console.log(response);
 					this.referenceService.videoBrandLogo = response.brandingLogoUri;
 					this.referenceService.defaultPlayerSettings = response;
+					this.referenceService.companyId = response.companyProfile.id;
 				} else { 	console.log('defaultsetting api result is empty :')}
 			});
 	}

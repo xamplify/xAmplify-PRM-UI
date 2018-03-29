@@ -39,6 +39,7 @@ import { AuthenticationService } from './core/services/authentication.service';
 import { SlimLoadingBarService } from 'ng2-slim-loading-bar';
 import { VideoUtilService } from './videos/services/video-util.service';
 import { ContactService } from './contacts/services/contact.service';
+import { ParterService } from './partners/services/parter.service';
 // logger services
 
 import { LoggerService } from './error-pages/services/logger.service';
@@ -48,6 +49,7 @@ import { XtremandLogger } from './error-pages/xtremand-logger.service';
 import { LogEmailClickComponent } from './campaigns/log-email-click/log-email-click.component';
 import { LogUnsubscribeComponent } from './campaigns/log-unsubscribe/log-unsubscribe.component';
 import { LogRegularCampaignComponent } from './campaigns/log-regular-campaign/log-regular-campaign.component';
+
 
 @NgModule({
     declarations: [AppComponent, SocialLoginComponent, SocialCallbackComponent, ShareVideoComponent,
@@ -62,7 +64,7 @@ import { LogRegularCampaignComponent } from './campaigns/log-regular-campaign/lo
         deps: [XHRBackend, RequestOptions, SlimLoadingBarService]
     }, { provide: LoggerService, useClass: ConsoleLoggerService },
         AuthenticationService, UtilService, UserService, LogService, PagerService, ReferenceService, SocialService,
-        TwitterService, FacebookService, XtremandLogger, VideoUtilService,
+        TwitterService, FacebookService, XtremandLogger, VideoUtilService,ParterService,
         VideoFileService, UploadCloudvideoService, ContactService, EmailTemplateService, CampaignService],
     bootstrap: [AppComponent]
 
