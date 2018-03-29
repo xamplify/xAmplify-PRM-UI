@@ -1,4 +1,10 @@
-<div class="page-content">
+<style>
+ .pageContent{
+	 margin-left:0 !important; 
+ }
+
+</style>
+<div class="page-content" [class.pageContent]="!authenticationService.user.hasCompany">
 	<div class="page-bar">
 		<ul class="page-breadcrumb">
 			<li *ngIf="!companyProfile.isAdd"><i class="fa fa-home"></i> <a

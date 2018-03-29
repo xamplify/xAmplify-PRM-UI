@@ -105,7 +105,7 @@ export class EditCompanyProfileComponent implements OnInit {
     backGroundImage:string = "https://i.imgur.com/tgYLuLr.jpg";
     publicVideos: Array<SaveVideoFile>;
     isOnlyPartner:boolean = false;
-    constructor( private logger: XtremandLogger, private authenticationService: AuthenticationService, private fb: FormBuilder,
+    constructor( private logger: XtremandLogger, public authenticationService: AuthenticationService, private fb: FormBuilder,
         private companyProfileService: CompanyProfileService, public homeComponent: HomeComponent,
         public refService:ReferenceService,private router:Router,public processor:Processor,public countryNames: CountryNames,
         public regularExpressions: RegularExpressions,public videoFileService:VideoFileService) {
