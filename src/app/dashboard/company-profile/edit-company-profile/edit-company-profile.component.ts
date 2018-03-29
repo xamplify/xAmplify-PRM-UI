@@ -184,6 +184,7 @@ export class EditCompanyProfileComponent implements OnInit {
         $('#saveOrUpdateCompanyButton').prop('disabled',true);
         this.validateEmptySpace('companyName');
         this.validateEmptySpace('companyProfileName');
+        this.validateEmptySpace('aboutUs');
         this.validateNames(this.companyProfile.companyName)
         this.validateProfileNames(this.companyProfile.companyProfileName);
         this.validateEmptySpace('aboutUs');

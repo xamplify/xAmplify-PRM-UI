@@ -41,7 +41,7 @@
 						</div>
 						</div>
 						<div class="colxs-12 col-sm-3">
-						<div class="inputs regular_emails" align="right" style="float: right">
+						<div class="btn-group pull-right">
 							<ng-container class='m10'>
 								<button class="btn btn-xs" [disabled]="isListView" (click)="isListView = true" title="List View"><i class="fa fa-th-list p10" aria-hidden="true"></i></button>
 								<button class="btn btn-xs" [disabled]="!isListView" (click)="isListView = false" title="Grid View"><i class="fa fa-th-large p10" aria-hidden="true"></i></button>
@@ -159,43 +159,12 @@
 							</ng-container>	
 							</div>
 						</div>
-						<div *ngIf="pagination.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError" style="background:white">   
-						<!-- <div *ngIf="pagination.pagedItems.length !== 0">
+					<div *ngIf="pagination.pagedItems.length !== 0">
 								<app-pagination [pagination]="pagination" [type]="'t'"
 								 (notifyParent)="setPage($event)" (notifyParentDropDown)="listEmailTemplates($event)"></app-pagination>
-						</div>	 -->
-				</div>
+						</div>
 						<!-- End of 24 -->
-						
-				<div *ngIf="pagination.totalRecords>0">
-					 <!--  <ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination">
-                          <li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
-                             <a (click)="setPage(1)" [class.disabled]="pagination.pager.currentPage === 1">First</a>
-                          </li>
-                          <li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
-                              <a (click)="setPage(pagination.pager.currentPage - 1)" [class.disabled]="pagination.pager.currentPage === 1">Previous</a>
-                           </li>
-                           <li *ngFor="let page of pagination.pager.pages" [ngClass]="{active:pagination.pager.currentPage === page}">
-                              <a (click)="setPage(page)" [class.disabled]="pagination.pager.currentPage === page">{{page}}</a>
-                           </li>
-                           <li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
-                               <a (click)="setPage(pagination.pager.currentPage + 1)" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Next</a>
-                           </li>
-                            <li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
-                               <a (click)="setPage(pagination.pager.totalPages)" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Last</a>
-                           </li>
-                      </ul> -->
-                      <app-pagination [pagination]="pagination" [isDropdown]="true"
-								 (notifyParent)="setPage($event)" (notifyParentDropDown)="listEmailTemplates($event)"></app-pagination>
-					<select class="form-control" style="float: right; width: auto;"
-						[(ngModel)]="itemsSize"
-						(ngModelChange)="getNumberOfItemsPerPage($event)">
-						<option *ngFor="let itemPerPage of numberOfItemsPerPage"
-							[ngValue]="itemPerPage">{{itemPerPage.name}}</option>
-					</select>
-				</div>
 				<div *ngIf="pagination.totalRecords==0" class="alert alert-info"><strong>No Email Templates Found</strong></div>
-					
 			</div>
 			<!-- END PAGE CONTENT-->
 		</div>

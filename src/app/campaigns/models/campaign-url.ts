@@ -19,4 +19,5 @@ export class Url{
     showSelectedEmailTemplate:boolean  = false;
     defaultTemplate:boolean = false;
     replyTimeInHoursAndMinutes:string = "";
+    actionId:number = 0;
 }

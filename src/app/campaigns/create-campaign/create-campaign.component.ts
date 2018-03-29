@@ -1100,7 +1100,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             event.stopPropagation();
             console.log(this.selectedContactListIds);
         }else{
-            this.emptyContactsMessage = "No Contacts Found For This Contact List";
+            this.emptyContactsMessage = "Contacts are in progress";
         }
        
     }
@@ -1709,7 +1709,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.removeStyleAttrByDivId('message-'+reply.divId);
             this.removeStyleAttrByDivId('email-template-'+reply.divId);
             $('#'+reply.divId).addClass('portlet light dashboard-stat2');
-            if(reply.actionId!=16 && reply.actionId!=17){
+            if(reply.actionId!=16 && reply.actionId!=17 && reply.actionId!=18){
                 this.validateReplyInDays(reply);
                 this.validateReplyTime(reply);
                 this.validateEmailTemplateForAddReply(reply);
@@ -1768,13 +1768,15 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.removeStyleAttrByDivId('click-subject-'+url.divId);
             $('#'+url.divId).addClass('portlet light dashboard-stat2');
             console.log(url.scheduled);
-            if(url.scheduled){
+            if(url.actionId==21){
+                url.scheduled = true;
                 console.log("1632");
                 this.validateOnClickReplyTime(url);
                 this.validateOnClickSubject(url);
                 this.validateOnClickReplyInDays(url);
                 this.validateEmailTemplateForAddOnClick(url);
             }else{
+                url.scheduled = false;
                 console.log("1637");
                 this.validateOnClickSubject(url);
                 this.validateEmailTemplateForAddOnClick(url);
@@ -2262,6 +2264,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             var id = 'click-'+ length;
             this.url.divId = id;
             this.url.scheduled = false;
+            this.url.actionId = 19;
             this.url.url = this.emailTemplateHrefLinks[0];
             this.urls.push(this.url);
             this.allItems.push(id);
