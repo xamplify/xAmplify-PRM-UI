@@ -985,6 +985,18 @@ h3 {
     padding: 15px 0;
     color: #fff;
     font-size: 16px;
-    /* margin: 20px 50px; */
+    margin-bottom: 0px;
     /* width: 50%; */
 }
+
+.icon-border{border: 1px solid #00a6e8; border-radius: 50%; display:block !important; width: 42px; height: 42px; margin:0 auto; position:relative;}
+.icon-position{color: #00a6e8; position:absolute; padding-top:3px !important; font-size:1.75em !important; top:12px; left:8px}
+.border0{border:none !important;} padding0{padding:0 !important;}
+fieldset{border:1px solid #CCC; padding: 15px; margin-bottom:15px;}
+.yellow-gold i {margin: 10px; font-size: 18px !important;}
+legend{display: block; width: auto; padding: 0 10px; margin-bottom: 0; font-size: 15px; font-weight:600;  color: #00a6e8;; border: 0; text-align:left; border-bottom: none;}
+.add-click label {text-align: left; display: block; margin-bottom: 5px;}
+.step .col-md-2 {padding-top: 20px; text-align: right; border:none;}
+
+.add-reply label {text-align: left; display: block; margin-bottom: 5px;}
+.time-col span {float:left; margin-right:10px;}

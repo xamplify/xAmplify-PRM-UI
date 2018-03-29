@@ -163,7 +163,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     previewContactListId : number;
     public sheduleCampaignValues = ['NOW', 'SCHEDULE', 'SAVE'];
     isLaunched:boolean = false;
-    lauchTabPreivewDivClass = "col-xs-12 col-sm-12 col-md-6 col-lg-6";
+    lauchTabPreivewDivClass = "col-xs-12 col-sm-12 col-md-7 col-lg-7";
     loggedInUserId:number = 0;
     buttonName:string = "Launch";
     
@@ -442,7 +442,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                  }
                       
              }
-             this.lauchTabPreivewDivClass = "col-xs-12 col-sm-12 col-md-6 col-lg-6";
+             this.lauchTabPreivewDivClass = "col-xs-12 col-sm-12 col-md-7 col-lg-7";
          }else{
              this.width="25%";
              this.emailTemplatesPagination.filterBy = "CampaignRegularEmails";
@@ -941,8 +941,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                  videoSelf.videoControllColors(videoFile);
                 }
               });
-            $("#videoId").css("width", "550px");
-            $("#videoId").css("height", "310px");
+            $("#videoId").css("width", "100%");
+            $("#videoId").css("height", "217px");
             $("#videoId").css("max-width", "100%");
             
         }else{
@@ -959,8 +959,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             videoPath =  videoPath + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
             console.log("Normal Video Updated Path:::"+videoPath);
            $("#"+divId+" video").append('<source src='+videoPath+' type="application/x-mpegURL">');
-            $("#videoId").css("width", "550px");
-            $("#videoId").css("height", "310px");
+           $("#videoId").css("width", "100%");
+           $("#videoId").css("height", "217px");
             $("#videoId").css("max-width", "100%");
             var document:any = window.document;
             const overrideNativeValue = this.refService.getBrowserInfoForNativeSet();
