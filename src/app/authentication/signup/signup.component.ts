@@ -14,6 +14,8 @@ import { ReferenceService } from '../../core/services/reference.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { CountryNames } from '../../common/models/country-names';
 
+declare var $: any;
+
 @Component({
     selector: 'app-signup',
     templateUrl: './signup.component.html',
@@ -68,15 +70,15 @@ export class SignupComponent implements OnInit {
         },
         'password': {
             'required': 'Password is required.',
-            'minlength': 'Minimum 6 Characters',
-            'pattern': 'Password should contain One Upper case letter, one lower case letter, one symbol and one Number'
+            'minlength': '',
+            'pattern': 'Use 6 or more characters with a mix of letters, numbers & symbols'
         },
         'confirmPassword': {
             'required': 'Confirm Password is required.',
-            'pattern': 'Password should contain One Upper case letter, one lower case letter, one symbol and one Number'
+            'pattern': 'Use 6 or more characters with a mix of letters, numbers & symbols'
         },
         'agree': {
-            'required': 'You Must Agree.'
+            'required': 'You Must Agree to the Terms of Service & Privacy Policy.'
         }
     };
 
@@ -125,14 +127,14 @@ export class SignupComponent implements OnInit {
 
     buildForm() {
         this.signUpForm = this.formBuilder.group({
-            'fullName': [this.signUpUser.fullName, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(50)])],//Validators.pattern(nameRegEx)
             'emailId': [this.signUpUser.emailId, [Validators.required, Validators.pattern(this.regularExpressions.EMAIL_ID_PATTERN)]],
-            'address': [this.signUpUser.address, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(50),])],//Validators.pattern(nameRegEx)
-            'city': [this.signUpUser.city, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(50), Validators.pattern(this.regularExpressions.CITY_PATTERN)])],
-            'country': [this.countryNames.countries[0], Validators.compose([Validators.required, validateCountryName])],
             'password': [this.signUpUser.password, [Validators.required, Validators.minLength(6), Validators.pattern(this.regularExpressions.PASSWORD_PATTERN)]],
             'confirmPassword': [null, [Validators.required, Validators.pattern(this.regularExpressions.PASSWORD_PATTERN)]],
             'agree': [false, Validators.required],
+            // 'fullName': [this.signUpUser.fullName, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(50)])],//Validators.pattern(nameRegEx)
+            // 'address': [this.signUpUser.address, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(50),])],//Validators.pattern(nameRegEx)
+            // 'city': [this.signUpUser.city, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(50), Validators.pattern(this.regularExpressions.CITY_PATTERN)])],
+            // 'country': [this.countryNames.countries[0], Validators.compose([Validators.required, validateCountryName])],
         }, {
                 validator: matchingPasswords('password', 'confirmPassword')
             }
@@ -146,13 +148,13 @@ export class SignupComponent implements OnInit {
         if (!this.signUpForm) { return; }
         const form = this.signUpForm;
         this.xtremandLogger.log(form.controls);
-        for (const field in this.formErrors) {
+        for (const field of Object.keys(this.formErrors)) {
             // clear previous error message (if any)
             this.formErrors[field] = '';
             const control = form.get(field);
             if (control && control.dirty && !control.valid) {
                 const messages = this.validationMessages[field];
-                for (const key in control.errors) {
+                for (const key of Object.keys(control.errors)) {
                     this.xtremandLogger.log(this.formErrors[field]);
                     this.formErrors[field] += messages[key] + ' ';
                 }
@@ -163,6 +165,7 @@ export class SignupComponent implements OnInit {
         this.isError = !this.isError;
     }
     ngOnInit() {
+        $("[rel='tooltip']").tooltip();
     }
 
 }
