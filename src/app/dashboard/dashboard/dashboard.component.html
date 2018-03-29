@@ -248,7 +248,7 @@
 			</a>
 		</div>
 		<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6"  [class.disabled]="!authenticationService.user.hasCompany? true : null">
-			<a class="dashboard-stat dashboard-stat-lighter red-soft"  [routerLink]="['/home/partners']" >
+			<a class="dashboard-stat dashboard-stat-lighter red-soft" (click)="navigateToPartner()" >
 				<div class="visual">
 					<i class="fa fa-handshake-o"></i>
 				</div>

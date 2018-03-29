@@ -54,7 +54,7 @@ export class ReferenceService {
     clickedValue:number;
     daySortValue = 7;
     reportName: string;
-    
+    partnerCount:number;
     userProviderMessage = '';
     companyId:number;
     isDisabling:boolean = false;

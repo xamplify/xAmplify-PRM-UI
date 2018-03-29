@@ -618,7 +618,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     this.dashboardReport.toalEmailTemplates = data.totalEmailTemplatesCount;
                     this.dashboardReport.totalCreatedCampaigns = data.totalCampaignsCount;
                     this.dashboardReport.totalSocialAccounts = data.totalSocialConnectionsCount;
-                    this.dashboardReport.totalCompanyPartnersCount = data.totalCompanyPartnersCount;
+                    this.referenceService.partnerCount = this.dashboardReport.totalCompanyPartnersCount = data.totalCompanyPartnersCount;
                 },
                 error => console.log(error),
                 () => console.log('dashboard reports counts completed')
@@ -1004,7 +1004,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         } else { }
     }
     navigateToPartner(){
-       if(!this.authenticationService.isOnlyPartner()){
+       if(!this.authenticationService.isOnlyPartner() && this.dashboardReport.totalCompanyPartnersCount>0){
         this.router.navigate(['/home/partners/analytics']);
        } else { console.log('go to vendors page'); }
     }
