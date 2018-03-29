@@ -1,3 +1,5 @@
+import { CompanyProfile } from "../../dashboard/company-profile/models/company-profile";
+
 export class DefaultVideoPlayer {
     playerColor: string;
     enableVideoController: boolean;
@@ -13,4 +15,5 @@ export class DefaultVideoPlayer {
     is360video: boolean;
     brandingLogoUri: string;
     brandingLogoDescUri: string;
+    companyProfile: CompanyProfile;
 }

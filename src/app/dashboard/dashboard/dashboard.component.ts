@@ -1003,6 +1003,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
             this.generatHeatMap(this.heatMapData, 'heat-map-data');
         } else { }
     }
+    navigateToPartner(){
+       if(!this.authenticationService.isOnlyPartner()){
+        this.router.navigate(['/home/partners/analytics']);
+       } else { console.log('go to vendors page'); }
+    }
     ngOnInit() {
         this.pagination.maxResults = 10;
         try {

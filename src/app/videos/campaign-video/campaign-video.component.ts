@@ -126,6 +126,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
         updatedBody = updatedBody.replace("view in browser", '');
         updatedBody = updatedBody.replace("SocialUbuntuURL", '');
         updatedBody = updatedBody.replace("Loading socialubuntu URL...", '');
+        updatedBody = updatedBody.replace("Loading xamplify URL...", '');
         updatedBody = updatedBody.replace("&lt;SocialUbuntuURL&gt;", "javascript:void(0)");
         updatedBody = updatedBody.replace("<SocialUbuntuURL>", "javascript:void(0)");
         updatedBody = updatedBody.replace("&lt;SocialUbuntuImgURL&gt;", '');
