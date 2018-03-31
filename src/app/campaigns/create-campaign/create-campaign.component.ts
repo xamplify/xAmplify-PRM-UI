@@ -195,6 +195,10 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 public callActionSwitch: CallActionSwitch, public videoUtilService: VideoUtilService
             ){
         this.logger.info("create-campaign-component constructor loaded");
+      /*  CKEDITOR.config.width = 500;     
+        CKEDITOR.config.width = '75%';*/
+       /* CKEDITOR.config.height = 500;        // 500 pixels high.
+        CKEDITOR.config.height = '25em'; */
         this.countries = this.refService.getCountries();
         this.contactsPagination.filterKey = "isPartnerUserList";
         this.campaign = new Campaign();
@@ -612,6 +616,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.loadCampaignContacts(this.contactsPagination);
             this.setCoBrandingLogo(event);
         }
+        console.log(this.replies);
+        
        
     }
     setCoBrandingLogo(event:any){
@@ -1711,7 +1717,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             $('#'+reply.divId).addClass('portlet light dashboard-stat2');
             if(reply.actionId!=16 && reply.actionId!=17 && reply.actionId!=18){
                 this.validateReplyInDays(reply);
-                this.validateReplyTime(reply);
+                if(reply.actionId!=22){
+                    this.validateReplyTime(reply);
+                }
                 this.validateEmailTemplateForAddReply(reply);
             }else{
                 this.validateEmailTemplateForAddReply(reply);
@@ -1726,10 +1734,18 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     }
    
     validateReplyInDays(reply:Reply){
-        if(reply.replyInDays==null){
-            this.addReplyDivError(reply.divId);
-            $('#reply-days-'+reply.divId).css('color','red');
+        if( reply.actionId!= 22 && reply.replyInDays==null){
+           this.addReplyDaysErrorDiv(reply);
+        }else if(reply.actionId==22){
+           if(reply.replyInDays==null || reply.replyInDays==0){
+               this.addReplyDaysErrorDiv(reply);
+           }
         }
+    }
+    
+    addReplyDaysErrorDiv(reply:Reply){
+        this.addReplyDivError(reply.divId);
+        $('#reply-days-'+reply.divId).css('color','red');
     }
     
     validateReplyTime(reply:Reply){

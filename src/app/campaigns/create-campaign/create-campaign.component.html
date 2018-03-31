@@ -1143,7 +1143,7 @@
 						
 				<div class="row">
 					<div class="col-xs-6">
-						<a *ngIf="emailTemplateHrefLinks?.length==0" class="dashboard-stat yellow-gold" style="background-color: #26d8ad;"
+						<a *ngIf="emailTemplateHrefLinks?.length==0" class="dashboard-stat yellow-gold" style="background-color: #f76c1a;"
 							title="No Urls Found">
 							<i class="fa fa-plus-square p0"></i>
 							Add on Click Event
@@ -1181,18 +1181,25 @@
 					</div>
 					<div class="panel-body">
 						<form class="role add-reply" id="form-{{reply.divId}}">
-							<div class="row" *ngIf="reply.actionId!=16 && reply.actionId!=17 && reply.actionId!=18">
+							<div class="row" >
+								<div *ngIf="reply.actionId!=16 && reply.actionId!=17 && reply.actionId!=18">
 								<div class="col-md-4">
-									<label for="days" id="reply-days-{{reply.divId}}">Reply In X Days
+									<label for="days" *ngIf="reply.actionId==22" id="reply-days-{{reply.divId}}">Reply In X Days 
+										<b style="color: red">*</b>
+										<font><b>(Minimum 1 Day)</b></font>
+									</label>
+									<label for="days" *ngIf="reply.actionId!=22" id="reply-days-{{reply.divId}}">Reply In X Days
 										<b style="color: red">*</b>
 									</label>
 									<input type="number" class="form-control" name="days" placeholder="Days" [(ngModel)]="reply.replyInDays" min="0" oninput="validity.valid||(value='');">
 								</div>
-								<div class="col-md-3 time-col">
-									<span for="time" id="send-time-{{reply.divId}}" style="margin-top:20px;">At
+								<div class="col-md-3 time-col" *ngIf="reply.actionId!=22">
+									<span for="time" id="send-time-{{reply.divId}}" style="margin-top:20px;">At 
 										<b style="color: red">*</b>&nbsp;&nbsp;</span>
 									<timepicker [(ngModel)]="reply.replyTime" name="time"></timepicker>
 								</div>
+								</div>
+								
 							
 							<div class="col-md-3">
 								<label for="reason">Reason</label>
@@ -1200,10 +1207,13 @@
 								<option [value]="0" [selected]="reply.actionId ==0">Email Not Opened</option>
 									<option [value]="13" [selected]="reply.actionId==13">Email Opened</option>
 									<option [value]="16" [selected]="reply.actionId ==16">Send Immediately After Email Opened</option>
+									<option [value]="22" [selected]="reply.actionId ==22" *ngIf="campaign.channelCampaign">Send If Partner Email Is Not Used</option>
 									<ng-container *ngIf="campaignType=='video'">
 										<option [value]="1" [selected]="reply.actionId==1">Video Played</option>
 										<option [value]="17" [selected]="reply.actionId==17">Send Immediately After Video Played</option>
 										<option  [value]="18" [selected]="reply.actionId==18">Send If Video Is Not Played</option>
+										<option [value]="23" [selected]="reply.actionId ==23" *ngIf="campaign.channelCampaign">Send If Partner Video Is Not Used</option>
+										
 									</ng-container>
 								</select>
 							</div>
