@@ -378,8 +378,8 @@
 								<div>
 									<div class="panel-title pull-right">
 										<span style="font-size: 13px;">
-											<span class="label label-primary mytooltip" style="position: relative;left:-4px;cursor:pointer;border-radius: 15px 15px 14px;font-size: 11px;" title="{{heatMapTooltip}}">
-												<i class="fa fa-question"></i>
+											<span style="cursor: pointer;color: #54a7e9;" title="{{heatMapTooltip}}">
+												<i class="fa fa-question-circle" style="font-size: 20px"></i>
 											</span>
 											<select style="cursor: pointer" [(ngModel)]="heatMapSort" (ngModelChange)="selectedheatMapSortByValue($event.value)">
 												<option *ngFor="let heatSort of sortHeatMapValues" [ngValue]="heatSort"> {{heatSort.name}} </option>
@@ -751,8 +751,8 @@
 			</div>
 			<div class="modal-body clearfix">
 				<div class="alert alert-info flex" *ngIf="isLoadingList">
-					<div class="loader" style="border: 1; width: 25px; height: 25px;"></div>
-					<h4>please wait while we process your request</h4>
+					<div class="loader" style="margin-right: 10px; width: 25px; height: 25px;"></div>
+					<h4 class="m5">Please wait while we process your request.</h4>
 				</div>
 				<div *ngIf="pagination.pagedItems?.length == 0 && !isLoadingList" class="col-md-6" class="col-md-9 alert alert-info m0" style="width: 100%">
 					<strong>No Results found</strong>
