@@ -745,12 +745,12 @@
 												</thead>
 												<tbody>
 													<tr role="row" *ngFor="let contacts of contactsPagination.pagedItems;let i = index" id="campaignContactListTable_{{contacts.id}}"
-													 (click)="highlightContactRow(contacts.id,$event,contacts.noOfContacts)" [class.contact-list-selected]="(selectedContactListIds.indexOf(contacts.id)>-1 && contacts.noOfContacts>0)"
+													 (click)="highlightContactRow(contacts.id,$event,contacts.noOfContacts,contacts.emailValidationInd)" [class.contact-list-selected]="(selectedContactListIds.indexOf(contacts.id)>-1 && contacts.noOfContacts>0)"
 													 (mouseover)='showContactsAlert(contacts.noOfContacts)' [attr.title]="emptyContactsMessage">
 														<td>
 															<div class="form-group" *ngIf="contacts.noOfContacts>0 && contacts.emailValidationInd">
 																<input type="checkbox" class="chk" lang="{{contacts.name}}" id="{{contacts.id}}" [checked]="selectedContactListIds.indexOf(contacts.id)>-1"
-																 name="campaignContact[]" value="{{contacts.id}}" (click)="highlightRow(contacts.id,$event,contacts.noOfContacts)">
+																 name="campaignContact[]" value="{{contacts.id}}" (click)="highlightRow(contacts.id,$event)">
 															</div>
 
 															<div class="form-group" *ngIf="contacts.noOfContacts==0 || !contacts.emailValidationInd">
@@ -1184,16 +1184,16 @@
 							<div class="row" >
 								<div *ngIf="reply.actionId!=16 && reply.actionId!=17 && reply.actionId!=18">
 								<div class="col-md-4">
-									<label for="days" *ngIf="reply.actionId==22" id="reply-days-{{reply.divId}}">Reply In X Days 
+									<label for="days" *ngIf="reply.actionId==22 || reply.actionId==23 " id="reply-days-{{reply.divId}}">Reply In X Days 
 										<b style="color: red">*</b>
 										<font><b>(Minimum 1 Day)</b></font>
 									</label>
-									<label for="days" *ngIf="reply.actionId!=22" id="reply-days-{{reply.divId}}">Reply In X Days
+									<label for="days" *ngIf="reply.actionId!=22 && reply.actionId!=23" id="reply-days-{{reply.divId}}">Reply In X Days
 										<b style="color: red">*</b>
 									</label>
 									<input type="number" class="form-control" name="days" placeholder="Days" [(ngModel)]="reply.replyInDays" min="0" oninput="validity.valid||(value='');">
 								</div>
-								<div class="col-md-3 time-col" *ngIf="reply.actionId!=22">
+								<div class="col-md-3 time-col" *ngIf="reply.actionId!=22 && reply.actionId!=23 ">
 									<span for="time" id="send-time-{{reply.divId}}" style="margin-top:20px;">At 
 										<b style="color: red">*</b>&nbsp;&nbsp;</span>
 									<timepicker [(ngModel)]="reply.replyTime" name="time"></timepicker>

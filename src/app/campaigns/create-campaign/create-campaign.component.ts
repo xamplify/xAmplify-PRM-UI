@@ -253,7 +253,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 this.isCampaignDetailsFormValid = false;
             }
             /***********Select Video Tab*************************/
-            if(this.campaign.partnerVideoSelected){
+            if(this.campaign.partnerVideoSelected || this.isOnlyPartner){
                 this.partnerVideosClass = this.tabClassActive;
                 this.partnerVideosStyle = this.styleDisplayClass;
             }else{
@@ -1085,28 +1085,31 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     
        
     }
-    highlightContactRow(contactId:number,event:any,count:number){
-        this.emptyContactsMessage = "";
-        if(count>0){
-            let isChecked = $('#'+contactId).is(':checked');
-            if(isChecked){
-                //Removing Highlighted Row
-                $('#'+contactId).prop( "checked", false );
-                $('#campaignContactListTable_'+contactId).removeClass('contact-list-selected');
-                console.log("Revmoing"+contactId);
-                this.selectedContactListIds.splice($.inArray(contactId,this.selectedContactListIds),1);
-          }else{
-              //Highlighting Row
-              $('#'+contactId).prop( "checked", true );
-              $('#campaignContactListTable_'+contactId).addClass('contact-list-selected');
-              console.log("Adding"+contactId);
-              this.selectedContactListIds.push(contactId);
-          }
-            this.contactsUtility();
-            event.stopPropagation();
-            console.log(this.selectedContactListIds);
-        }else{
-            this.emptyContactsMessage = "Contacts are in progress";
+    highlightContactRow(contactId:number,event:any,count:number,isValid:boolean){
+        if(isValid){
+            this.emptyContactsMessage = "";
+            if(count>0){
+                let isChecked = $('#'+contactId).is(':checked');
+                if(isChecked){
+                    //Removing Highlighted Row
+                    $('#'+contactId).prop( "checked", false );
+                    $('#campaignContactListTable_'+contactId).removeClass('contact-list-selected');
+                    console.log("Revmoing"+contactId);
+                    this.selectedContactListIds.splice($.inArray(contactId,this.selectedContactListIds),1);
+              }else{
+                  //Highlighting Row
+                  $('#'+contactId).prop( "checked", true );
+                  $('#campaignContactListTable_'+contactId).addClass('contact-list-selected');
+                  console.log("Adding"+contactId);
+                  this.selectedContactListIds.push(contactId);
+              }
+                this.contactsUtility();
+                event.stopPropagation();
+                console.log(this.selectedContactListIds);
+            }else{
+                this.emptyContactsMessage = "Contacts are in progress";
+            }
+           
         }
        
     }
@@ -1717,7 +1720,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             $('#'+reply.divId).addClass('portlet light dashboard-stat2');
             if(reply.actionId!=16 && reply.actionId!=17 && reply.actionId!=18){
                 this.validateReplyInDays(reply);
-                if(reply.actionId!=22){
+                if(reply.actionId!=22 && reply.actionId!=23){
                     this.validateReplyTime(reply);
                 }
                 this.validateEmailTemplateForAddReply(reply);
@@ -1734,9 +1737,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     }
    
     validateReplyInDays(reply:Reply){
-        if( reply.actionId!= 22 && reply.replyInDays==null){
+        if( reply.actionId!= 22 &&  reply.actionId!= 23 && reply.replyInDays==null){
            this.addReplyDaysErrorDiv(reply);
-        }else if(reply.actionId==22){
+        }else if(reply.actionId==22 ||reply.actionId==23 ){
            if(reply.replyInDays==null || reply.replyInDays==0){
                this.addReplyDaysErrorDiv(reply);
            }
