@@ -94,7 +94,7 @@
 					<div class="col-xs-12" [ngClass]="{'upload-video-css': uploader.queue.length !== 0}">
 						<div *ngIf="isDisable==false">
 							<div *ngFor="let item of uploader.queue">
-								<div class="col-xs-12 col-sm-3 col-md-3 mo p0">
+								<div class="col-xs-12 col-sm-4 mo p0">
 									<video *ngIf="!videoDisabled && browserInfo!=='safari'" id="my-video" style="margin: -7px;" controls preload="auto" width="250" height="150">
 										<source [src]='videoPreviewPath' type='video/mp4'>
 										<source [src]='videoPreviewPath' type='video/quicktime'>
@@ -105,7 +105,7 @@
 									</video>
 									<img *ngIf="!previewDisabled || browserInfo==='safari'" src="assets/images/no-preview.jpg" style="border: 2px solid #00a6e8;" width="250" height="150">
 								</div>
-								<div class="col-xs-12 col-sm-4 col-md-4" style="padding: 10px 0;">
+								<div class="col-xs-12 col-sm-4" style="padding: 10px 0;">
 									<h3 class="" style=" color: #00a6e8;font-weight: 600; ">{{ trimVideoTitle(item?.file?.name) }}</h3>
 									<h5 style="font-weight: 700;color: #929292;letter-spacing: 1px;">{{(item?.file?.size/1024/1024).toFixed(2) }} MB</h5>
 									<div class="progress">
@@ -115,7 +115,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="col-xs-12 col-sm-3 col-md-3" nowrap style="float: right;padding: 45px 0;">
+								<div class="col-xs-12 col-sm-4" nowrap style="float: right;padding: 45px 0;">
 									<button class="text-center" style="background-color:white; cursor:default">
 											<span *ngIf="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
 											<span *ngIf="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
@@ -197,11 +197,8 @@
 				</div>
 				<div class="panel-body">
 					<ul style="color:#4c4b4b;">
-						<li>Maximum video file size is {{maxVideoSize}} MB. For larger files please <a>contact us</a>.<br>
-(I figure they can just email us if they need to upgrade)
-						 </li>
-						<li>Supported files types are <strong>.mp4,.mpg,.m4v,.flv,.avi,.mov,.wmv,.divx,.f4v,.mpeg,.vob, .mkv </strong>.
-						</li>
+						<li>Maximum video file size is {{maxVideoSize}} MB. For larger files please <a href="mailto:example@email.com">contact us</a>.</li>
+						<li>Supported files types are <b>mp4, mpg, m4v, flv, avi, mov, wmv, divx, f4v, mpeg, vob, mkv </b>.</li>
 					</ul>
 				</div>
 			</div>

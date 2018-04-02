@@ -458,8 +458,8 @@
 								</div>
 								<div>
 									<div class="panel-title pull-right">
-										<span class="label label-primary mytooltip mg-tooltip" title="{{videoStatesTooltip}}">
-											<i class="fa fa-question" style="right: 3px;bottom: 4px; position: absolute;color: white;"></i>
+										<span title="{{videoStatesTooltip}}">
+											<i class="fa fa-question-circle" style="color: #54a7e9;font-size: 20px;margin: 5px;"></i>
 									    </span>
 										<span style="float:right; font-size: 13px;">
 											<select style="cursor: pointer" [(ngModel)]="daySort" (ngModelChange)="selectedSortByValue($event.value)">
@@ -732,11 +732,11 @@
 				<a class="close-circle" data-dismiss="modal" (click)="cancelEmailStateModalPopUp()">
 					<i class="fa fa-times"></i>
 				</a>
-				<h4 class="m0">People Who Have
-					<span *ngIf="paginationType=='open'">Opened</span>
-					<span *ngIf="paginationType=='clicked'">Clicked</span>
-					<span *ngIf="paginationType=='watched'">Watched</span>
-					Your Emails</h4>
+				<h4 class="m0">People who have
+					<span *ngIf="paginationType=='open'">opened your emails</span>
+					<span *ngIf="paginationType=='clicked'">clicked your emails</span>
+					<span *ngIf="paginationType=='watched'">watched your videos</span>
+				</h4>
 				<div class="btn-group pull-right" style="margin-top: 8px; cursor:pointer; color: #7d8c98; margin-right: -15px;">
 					<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none; margin-top: -22px;margin-right: 21px; float:right;">
 						<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i>
@@ -867,8 +867,8 @@ listOfEmailOpenLogst" data-dismiss="modal" (click)="cancelEmailStateModalPopUp()
 		<div>
 			<div class="panel-title pull-right">
 				<span style="font-size: 13px;">
-					<span class="label label-primary mytooltip" style="position: relative;left:-4px;cursor:pointer;border-radius: 15px 15px 14px;font-size: 11px;" title="{{heatMapTooltip}}">
-						<i class="fa fa-question"></i>
+					<span style="cursor: pointer;color: #54a7e9;" title="{{heatMapTooltip}}">
+						<i class="fa fa-question-circle" style="font-size: 20px"></i>
 					</span>
 					<select style="cursor: pointer" [(ngModel)]="heatMapSort" (ngModelChange)="selectedheatMapSortByValue($event.value)">
 						<option *ngFor="let heatSort of sortHeatMapValues" [ngValue]="heatSort"> {{heatSort.name}} </option>
