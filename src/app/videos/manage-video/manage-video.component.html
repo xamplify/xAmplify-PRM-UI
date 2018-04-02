@@ -20,8 +20,8 @@
 		<div class="row" *ngIf="manageVideos">
 			<div *ngIf="showMessage || showUpdatevalue || deletedVideo || campaignVideo" style="width: 97.5%;" class="col-md-6" id="message" class="col-md-9 alert alert-success alert-dismissable alertMessageCustom">
 				<a class="close" data-dismiss="alert" aria-label="close"></a>
-				<p *ngIf="showMessage">{{showVideoFileName | slice: 0: 50}} video Saved Successfully!</p>
-				<p *ngIf="showUpdatevalue">{{showVideoFileName | slice: 0: 50}} video file Updated Successfully!</p>
+				<p *ngIf="showMessage">{{showVideoFileName | slice: 0: 50}} video saved Successfully!</p>
+				<p *ngIf="showUpdatevalue">({{showVideoFileName | slice: 0: 50}}) video settings updated successfully.</p>
 				<p *ngIf="deletedVideo">{{showVideoFileName | slice: 0: 50}} video deleted Successfully!</p>
 				<p *ngIf="campaignVideo">{{campaignVideoMesg}}</p>
 			</div>

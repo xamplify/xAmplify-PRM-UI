@@ -61,13 +61,13 @@
 		<div class="portlet-body">
 			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-					<div class="addfiles" style="float: left; width: 113px;">
+					<!-- <div class="addfiles" style="float: left; width: 113px;">
 						<div class="btn green fileinput-button"><span> <i class="fa fa-plus"></i>Add A Video</span>
 							<input type="file" ng2FileSelect [uploader]="uploader" accept=".mp4,.mpg,.m4v,.flv,.avi,.mov,.wmv,.divx,.f4v,.mpeg,.vob, .mkv"
 							 [class.customDisableCss]="isFileProgress==true" *ngIf="uploader.queue.length==0" [disabled]="loading==true||isDisable == true || isSelectedVideo == true"
 							 (change)="fileSizeCheck($event)" title=" " #input />
 						</div>
-					</div>
+					</div> -->
 					<div *ngIf="MultipleVideo" style="float: left; width: 113px;">
 						<button type="button" class="btn btn-success btn-s" (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length || loading==true">
 							<span class="glyphicon glyphicon-upload"></span> Upload all
@@ -78,7 +78,7 @@
 						</button> </div>
 				</div>
 				<br />
-				<div class="col-xs-12" style="margin-top: 25px;">
+				<div class="col-xs-12">
 					<div *ngIf="processing">
 						<div class="alert alert-success alertMessageCustom loaderSymbol" style="background: #dff0d8">
 							<img src="assets/images/loadbar.gif" class="loader-image-tag">
@@ -137,12 +137,12 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-xs-12" style="margin-bottom: 4px;">
+				<!-- <div class="col-xs-12" style="margin-bottom: 4px;">
 					<p style="color:#4c4b4b">
-						<span class="label label-danger" style="border-radius: 0"> NOTE: </span> &nbsp; This plugins works only on Latest Chrome,
-						Firefox, Safari, Opera, MicroSoft Edge & Internet Explorer 10.
+						<span class="label label-danger" style="border-radius: 0"> NOTE: </span> &nbsp; These plugins only work with the latest versions of Latest Chrome,
+						Firefox, Safari, Opera, Microsoft Edge & Internet Explorer 10.
 					</p>
-				</div>
+				</div> -->
 				<div class="col-xs-12 col-sm-6 pr0">
 					<div [class.customDisableCss]='isDisable==true || isFileProgress ==true || isSelectedVideo ==true' ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
 					 (fileOver)="fileOverBase($event)" (onFileDrop)="fileDropPreview($event)" [uploader]="uploader" class="well my-drop-zone"
@@ -151,8 +151,10 @@
 						 *ngIf="uploader.queue.length==0" style="opacity: 0.0; position: absolute;" title=" " id="file-upload">
 						<div class="text-center">
 							<i class="fa fa-cloud-upload fa-6" aria-hidden="true"></i>
-							<h2 class="upload-video" style="margin-top: 3px;">Upload a video </h2>
+							<h2 class="upload-video" style="margin:-5px;">Upload a video </h2>
 							<h6 style="color:#fff">Drag and drop a video file here or click to select a file.</h6>
+							<h6 style="color:#fff" class="m0">These plugins only work with the latest versions of Chrome, Firefox, Safari, Opera, Microsoft Edge & Internet Explorer 10.
+							</h6>
 						</div>
 					</div>
 				</div>
@@ -195,8 +197,10 @@
 				</div>
 				<div class="panel-body">
 					<ul style="color:#4c4b4b;">
-						<li>The maximum video file size ({{maxVideoSize}} MB) allowed for uploads depends on your account.</li>
-						<li>Only Video files (<strong>.mp4,.mpg,.m4v,.flv,.avi,.mov,.wmv,.divx,.f4v,.mpeg,.vob, .mkv </strong>) are allowed to upload.
+						<li>Maximum video file size is {{maxVideoSize}} MB. For larger files please <a>contact us</a>.<br>
+(I figure they can just email us if they need to upgrade)
+						 </li>
+						<li>Supported files types are <strong>.mp4,.mpg,.m4v,.flv,.avi,.mov,.wmv,.divx,.f4v,.mpeg,.vob, .mkv </strong>.
 						</li>
 					</ul>
 				</div>

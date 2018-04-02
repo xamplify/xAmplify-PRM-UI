@@ -168,14 +168,14 @@
 										<label class="col-xs-3 col-sm-3 col-md-3 control-label">Publish to:</label>
 										<div class="col-xs-9 col-sm-9 col-md-9">
 											<select class="form-control" formControlName="viewBy" required title="select a video type">
-												<option *ngFor="let publishName of publish" [value]="publishName.name">{{publishName.name}}</option>
+												<option *ngFor="let publishName of publish" [value]="publishName.name">{{publishName.name}}
 											</select>
 											<div *ngIf="formErrors.publish" class="alert alert-danger">{{formErrors.publish}}
 											</div>
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-xs-3 col-sm-3 col-md-3 control-label">Categories:</label>
+										<label class="col-xs-3 col-sm-3 col-md-3 control-label">Category:</label>
 										<div class="col-xs-9 col-sm-9 col-md-9">
 											<select class="form-control" title="select a category" formControlName="categoryId" required>
 												<option *ngFor="let cate of categories" [value]="cate.id">{{cate.name}}</option>
@@ -306,6 +306,7 @@
 													<input [(colorPicker)]="compPlayerColor" [style.background]="compPlayerColor" formControlName="playerColor" [value]="compPlayerColor"
 													 (colorPickerChange)="changePlayerColor($event)" [class.disablePlayerValues]="disablePlayerSettingnew" [cpPosition]="'bottom'"
 													 [cpWidth]="'200px'" [cpHeight]="'265px'" />
+													 <i class="fa fa-question-circle" style="color:#3598dc" rel="tooltip" data-placement="left" title="Click to change"></i>
 												</div>
 											</div>
 											<div class="form-group">
@@ -338,7 +339,7 @@
 											<!-- cobra eding video logo -->
 
 											<div id ="fileLogoSelectedid" *ngIf="!disablePlayerSettingnew" class="form-group">
-												 <label class="col-xs-5 control-label">Co-branding LOGO:</label>
+												 <label class="col-xs-5 control-label">Co-branding Logo:</label>
 												 <div class="col-xs-7">
 												<input  *ngIf="!brandLogoUrl" type="file" ng2FileSelect [uploader]="videoLogoUploader" accept=".jpg,.jpeg,.png"
 													 class="btn btn-primary" style="background: #00a6e8;width: 100%;">
@@ -347,25 +348,25 @@
 														<img *ngIf="brandLogoUrl" [src]="authenticationService.MEDIA_URL + brandLogoUrl" style="height: 71px; width: 98px; border: 1px solid red;">
 													</div>
 													<div *ngIf="!brandLogoUrl" class="alert alert-danger" style="margin-top: 2px;height: 11px;">
-														<p style="margin-top:-4px">Only image file is allowed, max 10mb </p>
+														<p style="margin-top:-4px">Image files only, 10MB or less </p>
 													</div>
 												</div>
 											</div>
 											<div *ngIf="!disablePlayerSettingnew" class="form-group">
-													<label class="col-xs-5 control-label">Co-branding Url:</label>
+													<label class="col-xs-5 control-label">Co-branding URL:</label>
 													<div class="col-xs-7">
 														<input type="text" style="width: 90%;" formControlName="brandingLogoDescUri"
-														 placeholder="logo website url" #val (input)="logoDescription(val.value)">
+														 placeholder="URLfor website logo link" #val (input)="logoDescription(val.value)">
 												</div>
 											</div>
 											<div *ngIf="disablePlayerSettingnew && brandLogoUrl"  class="form-group">
-													<label class="col-xs-5 control-label">Co-branding LOGO:</label>
+													<label class="col-xs-5 control-label">Co-branding Logo:</label>
 													<div class="col-xs-7"> <img *ngIf="brandLogoUrl" [src]="authenticationService.MEDIA_URL + brandLogoUrl"
 														 style="height: 71px; width: 98px; border: 1px solid red;opacity: 0.5;">
 													</div>
 											</div>
 											<div *ngIf="disablePlayerSettingnew && logoDescriptionUrl" class="form-group">
-													<label class="col-xs-5 control-label">Co-branding Url:</label>
+													<label class="col-xs-5 control-label">Co-branding URL:</label>
 													<div class="col-xs-7"><p style="position: relative;top: 8px;opacity: 0.5;">{{logoDescriptionUrl}}</p></div>
 											</div>
 										</div>
@@ -377,7 +378,7 @@
 							<div class="portlet-title" [ngClass]="{'activeDiv':!controlPlayers , 'inactiveDiv' :controlPlayers}" (click)="controlPlayerChange();">
 								<div class="col-xs-12 caption p01">
 									<div class="col-xs-11 p01">
-										<h4 class="p01">Controls of the player</h4>
+										<h4 class="p01">Video Player Controls</h4>
 									</div>
 									<div class="col-xs-1 text-right p01">
 										<a>

@@ -59,7 +59,7 @@ export class Properties {
     PARTNERS_UPDATE_ERROR = "An error occured while updating your Partner";
 
     PARTNERS_DELETE_SUCCESS = "Your Partners have been deleted successfully";
-    PARTNERS_DELETE_ERROR = "An Error occured while deleting your Partner";
+    PARTNERS_DELETE_ERROR = "An error occured while deleting your Partner";
 
     PARTNERS_SAVE_SUCCESS = "Your Partners have been saved successfully";
     PARTNERS_SAVE_ERROR = "An error occured while saving your Partners";
@@ -75,7 +75,7 @@ export class Properties {
     ACCOUNT_DEACTIVATE_SUCCESS = "OrgAdmin deactivation successfully done";
 
     BAD_CREDENTIAL_ERROR = "Username or password is incorrect";
-    USER_ACCOUNT_ACTIVATION_ERROR = "Your account is not activated";
+    USER_ACCOUNT_ACTIVATION_ERROR = "Your account has not been activated. Please check your inbox for our activation email";
     EMPTY_CREDENTIAL_ERROR = "Username or password can't be empty";
 
     /* User */
