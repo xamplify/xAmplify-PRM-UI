@@ -54,7 +54,7 @@ img:hover {
 			 <a (click)="downloadEmptyCsv()">
 				<button type="button" class="btn green" download
 					style="color: #ffffff;">
-					Download Parter CSV Template<i class="fa fa-cloud-download" aria-hidden="true"
+					Download Partner CSV Template<i class="fa fa-cloud-download" aria-hidden="true"
 						style="margin-left: 5px"></i>
 				</button>
 			</a>
@@ -612,7 +612,8 @@ img:hover {
 						data-dismiss="modal" (click)="addPartnerModalClose()">&times;</button>
 					<button type="button" *ngIf="updatePartnerUser" class="close"
 						data-dismiss="modal" (click)="updatePartnerModalClose()">&times;</button>
-					<h4 class="modal-title">Add Partner</h4>
+					<h4 class="modal-title" *ngIf="!updatePartnerUser">Add Partner</h4>
+					<h4 class="modal-title" *ngIf="updatePartnerUser">Edit Partner</h4>
 				</div>
 				<div class="modal-body">
 					<form class="form-horizontal" autocomplete="off">

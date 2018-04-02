@@ -49,20 +49,20 @@ export class Properties {
 
     /* For Partners*/
 
-    PARTNER_LIST_SYNCHRONIZATION_SUCCESS = "Your parntner List has been synchronized successfully";
+    PARTNER_LIST_SYNCHRONIZATION_SUCCESS = "Your Parntner List has been synchronized successfully";
     PARTNER_LIST_SYNCHRONIZATION_ERROR = "An error occured while synchronizing your partner list";
 
-    PARTNERS_CREATE_SUCCESS = "Your partner List has been created successfully";
-    PARTNERS_CREATE_ERROR = "An error occured while creating your partner";
+    PARTNERS_CREATE_SUCCESS = "Your Partner List has been created successfully";
+    PARTNERS_CREATE_ERROR = "An error occured while creating your Partner";
 
-    PARTNERS_UPDATE_SUCCESS = "Your partner has been updated successfully";
-    PARTNERS_UPDATE_ERROR = "An error occured while updating your partner";
+    PARTNERS_UPDATE_SUCCESS = "Your Partner has been updated successfully";
+    PARTNERS_UPDATE_ERROR = "An error occured while updating your Partner";
 
-    PARTNERS_DELETE_SUCCESS = "Your partners have been deleted successfully";
-    PARTNERS_DELETE_ERROR = "An Error occured while deleting your partner";
+    PARTNERS_DELETE_SUCCESS = "Your Partners have been deleted successfully";
+    PARTNERS_DELETE_ERROR = "An Error occured while deleting your Partner";
 
-    PARTNERS_SAVE_SUCCESS = "Your partners have been saved successfully";
-    PARTNERS_SAVE_ERROR = "An error occured while saving your partners";
+    PARTNERS_SAVE_SUCCESS = "Your Partners have been saved successfully";
+    PARTNERS_SAVE_ERROR = "An error occured while saving your Partners";
 
     /* Authentication Module*/
 
