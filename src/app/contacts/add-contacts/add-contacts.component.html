@@ -132,15 +132,14 @@ img:hover {
 													[disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5">
 													<i class="fa fa-user-plus"></i>
 													 <!-- <span>Add {{checkingContactTypeName}}</span> -->
-													 <span>One at a Time</span>
+													 <span>One at a time</span>
 												</button>
 											</div>
 											<div class="col-xs-12 col-sm-4 col-md-4">
 												<button class="btn-success btn-block" id="copyFromClipBoard"
 													(click)="copyFromClipboard()"
 													[disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5">
-													<i class="fa fa-users"></i> <span>Copy List Form
-														ClipBoard</span>
+													<i class="fa fa-users"></i> <span>Copy list from clipboard</span>
 												</button>
 											</div>
 											<div class="col-xs-12 col-sm-4 col-md-4">
@@ -150,8 +149,7 @@ img:hover {
 													<i
 														style="display: block; margin-top: 22px !important; text-align: center; font-size: 24px; margin: 0 auto 10px"
 														class="fa fa-file-excel-o"></i> <span
-														style="display: block; font-size: 12px; text-align: center">Upload
-														a CSV</span> <input type="file" ng2FileSelect
+														style="display: block; font-size: 12px; text-align: center">Upload a CSV</span> <input type="file" ng2FileSelect
 														*ngIf="uploader.queue.length==0" [uploader]="uploader"
 														title=" " (change)="fileChange(input)" accept=".csv"
 														#input
@@ -833,7 +831,7 @@ img:hover {
 				</form>
 			</div>
 			<div class="modal-footer">
-				<span style="float: left;">Note: * indicates required</span>
+				<span style="float: left;"><span style="color: red">*</span> Required field</span>
 				<button type="submit" class="btn green"
 					[disabled]="!checkingForEmail" (click)="addRow()">Add</button>
 				<!-- <button type="button" class="btn green" data-dismiss="modal"
