@@ -167,9 +167,13 @@
 									<div class="form-group">
 										<label class="col-xs-3 col-sm-3 col-md-3 control-label">Publish to:</label>
 										<div class="col-xs-9 col-sm-9 col-md-9">
-											<select class="form-control" formControlName="viewBy" required title="select a video type">
+											<select class="form-control" (ngModelChange)="selectedPublishToName($event)" formControlName="viewBy" required title="select a video type">
 												<option *ngFor="let publishName of publish" [value]="publishName.name">{{publishName.name}}
+												<!-- <h6>{{publishName.message}}</h6> -->
 											</select>
+											<span class="pull-left" style="margin-top: -24px;margin-left: -21px;cursor: pointer;color: #54a7e9;" title="{{publisToMessage}}">
+												<i class="fa fa-question-circle" style="font-size: 20px"></i>
+											</span>
 											<div *ngIf="formErrors.publish" class="alert alert-danger">{{formErrors.publish}}
 											</div>
 										</div>
@@ -306,7 +310,7 @@
 													<input [(colorPicker)]="compPlayerColor" [style.background]="compPlayerColor" formControlName="playerColor" [value]="compPlayerColor"
 													 (colorPickerChange)="changePlayerColor($event)" [class.disablePlayerValues]="disablePlayerSettingnew" [cpPosition]="'bottom'"
 													 [cpWidth]="'200px'" [cpHeight]="'265px'" />
-													 <i class="fa fa-question-circle" style="color:#3598dc" rel="tooltip" data-placement="left" title="Click to change"></i>
+													 <i class="fa fa-question-circle pull-left" style="margin-top: 4px;margin-left: -19px;color:#3598dc;font-size: 18px;" rel="tooltip" data-placement="left" title="Click to change"></i>
 												</div>
 											</div>
 											<div class="form-group">
@@ -324,6 +328,7 @@
 													<input [(colorPicker)]="compControllerColor" [style.background]="compControllerColor" (colorPickerChange)="changeControllerColor($event)"
 													 formControlName="controllerColor" [value]="compControllerColor" [class.disablePlayerValues]="disablePlayerSettingnew"
 													 [cpPosition]="'bottom'" [cpWidth]="'200px'" [cpHeight]="'265px'"/>
+													 <i class="fa fa-question-circle pull-left" style="margin-top: 4px;margin-left: -19px;color:#3598dc;font-size: 18px;" rel="tooltip" data-placement="left" title="Click to change"></i>
 												</div>
 											</div>
 											<div class="form-group">

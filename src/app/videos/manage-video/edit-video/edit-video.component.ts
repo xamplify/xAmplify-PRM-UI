@@ -137,6 +137,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     isDisable = false;
     brandLogoUrl: any; 
     logoDescriptionUrl: string;
+    publisToMessage = "Only you can view";
     constructor(public referenceService: ReferenceService, public callActionSwitch: CallActionSwitch,
         public videoFileService: VideoFileService, public fb: FormBuilder, public changeDetectorRef: ChangeDetectorRef,
         public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger,
@@ -1279,6 +1280,17 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.setShowSaveUpdateValues(false, false);
         this.notifyParent.emit(null);
     }
+    
+    selectedPublishToName(event: any){
+        if(event == "PUBLIC"){
+            this.publisToMessage = "Everyone can view"
+        } else if(event == "UNLISTED"){
+            this.publisToMessage = "No one can view"
+        } else if(event == "PRIVATE"){
+            this.publisToMessage = "Only you can view"
+        }
+    }
+    
     ngOnDestroy() {
         this.xtremandLogger.info('Deinit - Destroyed Edit-Video Component');
         if (this.is360Value !== true || this.videoJSplayer) { this.videoJSplayer.dispose(); }

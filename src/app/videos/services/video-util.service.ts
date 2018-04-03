@@ -11,7 +11,7 @@ export class VideoUtilService {
     timePeriod: string;
     timePeriodValue: string;
     selectedVideo: SaveVideoFile = null;
-    publishUtil = [{ id: 1, name: 'PRIVATE' }, { id: 2, name: 'PUBLIC' }, { id: 3, name: 'UNLISTED' }];
+    publishUtil = [{ id: 1, name: 'PRIVATE'}, { id: 2, name: 'PUBLIC' }, { id: 3, name: 'UNLISTED' }];
     formErrors = {
         'title': '', 'viewBy': '', 'categoryId': '', 'tags': '', 'imageFile': '', 'gifImagePath': '',
         'description': '', 'upperText': '', 'lowerText': '',
