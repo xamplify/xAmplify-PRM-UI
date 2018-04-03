@@ -147,6 +147,9 @@
 													 [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
 													 (statusChange)="setChannelCampaign($event)">
 													</switch>
+													<span style="cursor: pointer;color: #54a7e9;" title="Create a partner campaign">
+												<i class="fa fa-question-circle" style="margin-top: -14px;margin-right: 204px;font-size: 20px"></i>
+											</span>
 												</div>
 											</div>
 											<div class="form-group" *ngIf="((this.authenticationService.module.isCompanyPartner && this.authenticationService.module.isOrgAdmin) || this.authenticationService.module.isOrgAdmin ) && campaign.channelCampaign">
@@ -156,6 +159,9 @@
 													 [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
 													 (statusChange)="setCoBrandingLogo($event)">
 													</switch>
+													<span style="cursor: pointer;color: #54a7e9;" title="logo for co branding">
+												<i class="fa fa-question-circle" style="margin-top: -14px;margin-right: 204px;font-size: 20px"></i>
+											</span>
 												</div>
 											</div>
 
