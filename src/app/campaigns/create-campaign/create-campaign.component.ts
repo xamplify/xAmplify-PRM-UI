@@ -361,7 +361,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     }
     
     setActiveTabForVideo(){
-        if(this.isOnlyPartner){
+        if(this.isOnlyPartner || this.refService.videoType=='partnerVideos'){
             this.partnerVideosClass = this.tabClassActive;
             this.partnerVideosStyle = this.styleDisplayClass;
             this.isMyVideosActive = false;
@@ -394,7 +394,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     }
     
     extractTimeFromDate(replyTime){
-        let dt = new Date(replyTime);
+        //let dt = new Date(replyTime);
+        let dt = replyTime;
         let hours = dt.getHours() > 9 ? dt.getHours() : '0' + dt.getHours();
         let minutes = dt.getMinutes() > 9 ? dt.getMinutes() : '0' + dt.getMinutes();
         return hours+":"+minutes;
@@ -615,10 +616,20 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.contactsPagination.filterValue = false;
             this.loadCampaignContacts(this.contactsPagination);
             this.setCoBrandingLogo(event);
+            console.log(this.replies);
+            this.removePartnerRules();
+           
         }
-        console.log(this.replies);
+    }
+    
+    removePartnerRules(){
+        let self = this;
+        $.each(this.replies,function(index,reply){
+            if(reply.actionId==22 ||reply.actionId==23){
+               self.remove(reply.divId, 'replies');
+            }
         
-       
+        });
     }
     setCoBrandingLogo(event:any){
         this.campaign.enableCoBrandingLogo = event;
@@ -2290,7 +2301,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.loadEmailTemplatesForAddOnClick(this.url);
         }
      remove(divId:string,type:string){
-       console.log(divId);
          if(type=="replies"){
              this.replies = this.spliceArray(this.replies,divId);
              console.log(this.replies);
@@ -2301,7 +2311,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
          $('#'+divId).remove();
          let index = divId.split('-')[1];
          let editorName = 'editor'+index;
-         console.log("Removing"+editorName);
          let errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
          if(errorLength==0){
              this.dataError = false;

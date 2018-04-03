@@ -3,7 +3,7 @@ import { EmailTemplate } from '../../email-template/models/email-template';
 export class Url{
     id:number;
     replyInDays:number;
-    replyTime:Date;
+    replyTime:Date=new Date();
     subject:string;
     body:string;
     url:string;

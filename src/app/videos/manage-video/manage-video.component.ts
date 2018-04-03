@@ -66,7 +66,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.categoryNum = this.videoFileService.categoryNumber = 0;
         this.videoType = this.videoTypes[0];
         this.videoFileService.videoType = this.videoTypes[0].value;
-        if(this.isPartner){ this.videoFileService.videoType = 'partnerVideos'; }
+        //if(this.isPartner){ this.videoFileService.videoType = 'partnerVideos'; }
     }
     defaultBannerMessageValues() {
         this.showMessage = this.showUpdatevalue = false;
@@ -247,7 +247,8 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                 this.referenceService.campaignVideoFile = videoFile;
                 this.referenceService.selectedCampaignType = 'video';
                 this.referenceService.isCampaignFromVideoRouter = true;
-                if(this.isPartner){ this.referenceService.videoType = 'partnerVideos'; }
+                this.referenceService.videoType =  this.videoFileService.videoType;
+               // if(this.isPartner){ this.referenceService.videoType = 'partnerVideos'; }
                 this.router.navigateByUrl('/home/campaigns/create');
             },
             (error: string) => {
