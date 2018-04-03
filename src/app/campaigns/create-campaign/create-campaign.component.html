@@ -1144,7 +1144,7 @@
 	<!-- --Adding Work Flow------------- -->
 	<div class="col-xs-12">
 		<fieldset>
-			<legend>Add Your Work Flow</legend>
+			<legend>Additional campaign options</legend>
 		<div>
 						
 				<div class="row">
@@ -1152,19 +1152,19 @@
 						<a *ngIf="emailTemplateHrefLinks?.length==0" class="dashboard-stat yellow-gold" style="background-color: #f76c1a;"
 							title="No Urls Found">
 							<i class="fa fa-plus-square p0"></i>
-							Add on Click Event
+							Add an Auto-response to a website visit
 						</a>
 
 						<a *ngIf="emailTemplateHrefLinks?.length>0" class="dashboard-stat yellow-gold" style="background-color: #f76c1a;"
 							(click)="addClickRows()">
 							<i class="fa fa-plus-square p0"></i>
-							Add on Click Event
+							Add an Auto-response to a website visit
 						</a>
 					</div>
 					<div class="col-xs-6">
 						<a class="dashboard-stat yellow-gold" style="background-color: #f4555c;" (click)="addReplyRows()">
 							<i class="fa fa-plus-square p0"></i>
-							Add Reply Event
+							Add an Auto-response to your e-mail
 						</a>
 					</div>
 	<!-- -------------------------------------Add Reply----------------------------- -->
@@ -1177,7 +1177,7 @@
 				<div class="portlet light dashboard-stat2" id="{{reply.divId}}">
 					<div>
 						<h4 class="col-xs-9 text-left">
-							<b>Add Reply-{{i+1}}</b>
+							<b>Add an Auto-response to your e-mail-{{i+1}}</b>
 						</h4>
 						<label>Choose Template</label>
 						<switch [status]="reply.defaultTemplate" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
@@ -1354,7 +1354,7 @@
 				<div class="portlet light dashboard-stat2" id="{{url.divId}}">
 					<div>
 						<h4 class="col-xs-9 text-left">
-							<b>Add on Click - {{i+1}}</b>
+							<b>Add an Auto-response to a website visit - {{i+1}}</b>
 						</h4>
 						<label>Choose Template</label>
 						<switch [status]="url.defaultTemplate" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"

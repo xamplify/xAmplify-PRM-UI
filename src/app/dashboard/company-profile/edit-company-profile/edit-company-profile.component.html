@@ -10,7 +10,7 @@
 			<li *ngIf="!companyProfile.isAdd"><i class="fa fa-home"></i> <a
 				[routerLink]="['/']">Home</a> <i class="fa fa-angle-right"></i></li>
 			<li *ngIf="!companyProfile.isAdd">Edit Company Profile</li>
-			<li *ngIf="companyProfile.isAdd">Add Company Profile</li>
+			<!-- <li *ngIf="companyProfile.isAdd">Add Company Profile</li> -->
 		</ul>
 	</div>
 
@@ -20,12 +20,11 @@
 		</div>
 		<div class="alert alert-danger"  id="company-profile-error-div" style="display: none;">
 			<a (click)="refService.hideDiv('company-profile-error-div')" class="close" aria-label="close">x</a>
-	  		<strong>Please complete the requied fields</strong> 
+	  		<strong>Please complete the required fields. </strong> 
 		</div>
 		<app-response-message [customResponse]="customResponse"
 			*ngIf="customResponse.isVisible"></app-response-message>
-		<div class="alert alert-info" id="info" *ngIf="companyProfile.isAdd">Please
-			Provide Company Details To Access The Platform</div>
+		<div class="alert alert-info" id="info" *ngIf="companyProfile.isAdd">Please complete your company profile to access the platform.</div>
 		<div class="portlet-body clearfix">
 			<div class="alert alert-success" id="edit-sucess"
 				style="display: none;">
