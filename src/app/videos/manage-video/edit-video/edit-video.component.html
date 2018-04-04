@@ -344,21 +344,26 @@
 											<!-- cobra eding video logo -->
 
 											<div id ="fileLogoSelectedid" *ngIf="!disablePlayerSettingnew" class="form-group">
-												 <label class="col-xs-5 control-label">Co-branding Logo:</label>
+												 <label class="col-xs-5 control-label">Video Logo:</label>
 												 <div class="col-xs-7">
 												<input  *ngIf="!brandLogoUrl" type="file" ng2FileSelect [uploader]="videoLogoUploader" accept=".jpg,.jpeg,.png"
 													 class="btn btn-primary" style="background: #00a6e8;width: 100%;">
-													<div>
+													<!-- <div>
 														<span *ngIf="brandLogoUrl" class="close" style="position: absolute;left: 102px;background: #00a6e8;" (click)="clearLogo()"></span>
 														<img *ngIf="brandLogoUrl" [src]="authenticationService.MEDIA_URL + brandLogoUrl" style="height: 71px; width: 98px; border: 1px solid red;">
-													</div>
+													</div> -->
+													  <div *ngIf="brandLogoUrl" class="img-wrap img-responsive img-thumbnail rounded-0">
+															<span (click)="clearLogo()"><i class="fa fa-times-circle"></i></span>
+															<img [src]= "authenticationService.MEDIA_URL + brandLogoUrl" style="height: 71px; width: auto;">
+														</div>
+
 													<div *ngIf="!brandLogoUrl" class="alert alert-danger" style="margin-top: 2px;height: 11px;">
 														<p style="margin-top:-4px">Image files only, 10MB or less </p>
 													</div>
 												</div>
 											</div>
 											<div *ngIf="!disablePlayerSettingnew" class="form-group">
-													<label class="col-xs-5 control-label">Co-branding URL:</label>
+													<label class="col-xs-5 control-label">Video URL:</label>
 													<div class="col-xs-7">
 														<input type="text" style="width: 90%;" formControlName="brandingLogoDescUri"
 														 placeholder="URLfor website logo link" #val (input)="logoDescription(val.value)">

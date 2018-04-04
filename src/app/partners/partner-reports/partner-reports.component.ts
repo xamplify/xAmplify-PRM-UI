@@ -53,7 +53,7 @@ export class PartnerReportsComponent implements OnInit {
       colors: ['#4572A7', 'red', 'green'],
       tooltip: {
         formatter: function () {
-            return 'Campaign Type: <b>' + this.point.category + '</b><br> Count: <b>' + this.point.y;
+            return 'Campaign Type: <b>' + this.point.category + '</b><br>Campaigns Count: <b>' + this.point.y;
         }
     }, 
       plotOptions: { bar: { minPointLength: 3, dataLabels: { enabled: true }, colorByPoint: true } },
