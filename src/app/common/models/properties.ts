@@ -4,17 +4,9 @@ export class Properties {
     COMPANY_LOGO = 'assets/images/xamplify-logo.png'
     BOTTOM_MESSAGE = '2018 Xamplify, All rights reserved.'
     APP_WEBSITE = 'xamplify';
-    APP_Xamplify_URL = 'https://xamplify.io';
-
-    APP_SocialUbuntu_URL = 'https://socialubuntu.com';
-
-    APP_DEV_URL = 'http://localhost:4200';
-    APP_SERVER_URL = 'http://localhost:8080';
-
-
 
     NO_RESULTS_FOUND = "No results Found";
-    EMAIL_SENT_SUCCESS = "Email sent successfully..";
+    EMAIL_SENT_SUCCESS = "Email sent successfully";
     NO_USERS_SELECT_ERROR = "You have not selected any user";
     //FOR CONTACTS
     CONTACT_LIST_CREATE_SUCCESS = "Your contact list has been created successfully";
@@ -69,9 +61,9 @@ export class Properties {
     FORGOT_PASSWORD_MAIL_SEND_SUCCESS = "Password has been sent to your registered Email Id";
     FORGOT_PASSWORD_MAIL_SEND_ERROR = "An error occured while sending mail";
 
-    SIGN_UP_SUCCESS = "Thank you for signing up with the platform! A verification link has been sent to your email account";
+    SIGN_UP_SUCCESS = "Thank you for signing up with the platform. A verification link has been sent to your email account";
     ACCOUNT_ACTIVATED_SUCESS = 'You have successfully activated your account';
-    SIGN_UP_ERROR = "An error occured while sign up please try later";
+    SIGN_UP_ERROR = "An error occurred while processing your request. Please try after some time";
     ACCOUNT_DEACTIVATE_SUCCESS = "OrgAdmin deactivation successfully done";
 
     BAD_CREDENTIAL_ERROR = "Username or password is incorrect";
