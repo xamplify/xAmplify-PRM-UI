@@ -28,7 +28,8 @@ export class SignupComponent implements OnInit {
     isError = false;
     customResponse: CustomResponse = new CustomResponse();
     formErrors = {
-        'fullName': '',
+        'firstName': '',
+        'lastName': '',
         'emailId': '',
         'address': '',
         'city': '',
@@ -39,12 +40,8 @@ export class SignupComponent implements OnInit {
     };
 
     validationMessages = {
-        'fullName': {
-            'required': 'Name is required.',
-            'whitespace': 'Invalid Name',
-            'minlength': 'Name must be at least 4 characters long.',
-            'maxlength': 'Name cannot be more than 50 characters long.',
-            'pattern': 'Invalid Name'
+        'firstName': {
+            'required': 'First name is required.',
         },
         'emailId': {
             'required': 'Email is required.',
@@ -131,6 +128,8 @@ export class SignupComponent implements OnInit {
             'password': [this.signUpUser.password, [Validators.required, Validators.minLength(6), Validators.pattern(this.regularExpressions.PASSWORD_PATTERN)]],
             'confirmPassword': [null, [Validators.required, Validators.pattern(this.regularExpressions.PASSWORD_PATTERN)]],
             'agree': [false, Validators.required],
+            'firstName': [this.signUpUser.firstName, Validators.required],
+            'lastName': [this.signUpUser.lastName]
             // 'fullName': [this.signUpUser.fullName, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(50)])],//Validators.pattern(nameRegEx)
             // 'address': [this.signUpUser.address, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(50),])],//Validators.pattern(nameRegEx)
             // 'city': [this.signUpUser.city, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(50), Validators.pattern(this.regularExpressions.CITY_PATTERN)])],
