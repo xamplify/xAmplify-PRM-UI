@@ -1,3 +1,8 @@
+<style>
+  .hideDiv {
+    display: none;
+  }
+</style>
 <div class="page-content">
   <div class="page-bar">
     <ul class="page-breadcrumb">
@@ -47,33 +52,11 @@
         </div>
       </div>
     </div>
-
     <div class="col-xs-12 col-sm-6 p5">
       <div class="portlet light">
         <div class="portlet-body">
           <div style=" position: relative; top: -5px;font-weight: 600;">Campaign Type</div>
-          <table>
-            <tbody>
-              <tr>
-                <td>VIDEO</td>
-                <td width="100%" class="td-new td-chart">
-                  <div class="minutes-color" [style.width.%]="100" style="background:blue">{{videoCampaign}}</div>
-                </td>
-              </tr>
-              <tr>
-                <td>SOCIAL</td>
-                <td width="100%" class="td-new td-chart">
-                  <div class="minutes-color" [style.width.%]="100" style="background:yellow">{{socialCampaign}}</div>
-                </td>
-              </tr>
-              <tr>
-                <td>REGULAR</td>
-                <td width="100%" class="td-new td-chart">
-                  <div class="minutes-color" [style.width.%]="100" style="background:green">{{regularCampaign}}</div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          <div id="campaign-type-chart" style="min-width: 310px; max-width: 800px; height: 90px; margin: 0 auto"></div>
         </div>
       </div>
     </div>
@@ -122,49 +105,50 @@
   </div>
 
   <div class="row">
-      <div class="col-xs-12 p5">
-          <div class="portlet light">
-            <div class="portlet-title">
-              <div class="caption">
-                <span class="caption-subject font-red-sunglo uppercase"> partners campaigns user interactions</span>
-              </div>
-            </div>
-            <div class="portlet-body text-center">
-              <table class="table tgrid">
-                <thead>
-                  <th class="headerCss center">Company name</th>
-                  <th class="headerCss center"> Partner Id</th>
-                  <th class="headerCss center">Email Id</th>
-                  <th class="headerCss center">Campaign Name</th>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let item of partnerUserInteraction" style="cursor: pointer;" (click)="partnerCampaignInteraction(item.campaignId)">
-                    <td *ngIf="item.companyName">{{item.companyName}} </td>
-                    <td *ngIf="!item.companyName">-</td>
-                    <td>{{item.partnerId}} </td>
-                    <td>{{item.emailId}}</td>
-                    <td>{{item.campaignName}}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <app-pagination [pagination]="pagination" [type]="'userInteraction'" (notifyParentDropDown)="paginationDropdown($event)" (notifyParent)="setPage($event)"></app-pagination>
-		
+    <div class="col-xs-12 p5">
+      <div class="portlet light">
+        <div class="portlet-title">
+          <div class="caption">
+            <span class="caption-subject font-red-sunglo uppercase"> partners campaigns user interactions</span>
           </div>
         </div>
-   </div>
+        <div class="portlet-body text-center">
+          <table class="table tgrid">
+            <thead>
+              <th class="headerCss center">Company name</th>
+              <th class="headerCss center"> Partner Id</th>
+              <th class="headerCss center">Email Id</th>
+              <th class="headerCss center">Campaign Name</th>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of partnerUserInteraction" style="cursor: pointer;" (click)="partnerCampaignInteraction(item.campaignId)">
+                <td *ngIf="item.companyName">{{item.companyName}} </td>
+                <td *ngIf="!item.companyName">-</td>
+                <td>{{item.partnerId}} </td>
+                <td>{{item.emailId}}</td>
+                <td>{{item.campaignName}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <app-pagination [pagination]="pagination" [type]="'userInteraction'" (notifyParentDropDown)="paginationDropdown($event)"
+          (notifyParent)="setPage($event)"></app-pagination>
+
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="modal fade" id="campaignInteractionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false"
- data-backdrop="static">
-	<div class="modal-dialog" role="document" style="width: 80%; margin: 1em auto">
-		<div class="modal-content">
-			<div class="modal-header">
-				<a class="close-circle" data-dismiss="modal" (click)="closeModalPopUp()">
-					<i class="fa fa-times"></i>
-				</a>
-				<h4 class="m0">partner campaign interactions</h4>
-				<!-- <div class="btn-group pull-right" style="margin-top: 8px; cursor:pointer; color: #7d8c98; margin-right: -15px;">
+  data-backdrop="static">
+  <div class="modal-dialog" role="document" style="width: 80%; margin: 1em auto">
+    <div class="modal-content">
+      <div class="modal-header">
+        <a class="close-circle" data-dismiss="modal" (click)="closeModalPopUp()">
+          <i class="fa fa-times"></i>
+        </a>
+        <h4 class="m0">partner campaign interactions</h4>
+        <!-- <div class="btn-group pull-right" style="margin-top: 8px; cursor:pointer; color: #7d8c98; margin-right: -15px;">
 					<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none; margin-top: -22px;margin-right: 21px; float:right;">
 						<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i>
 						<i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
@@ -175,49 +159,50 @@
 						</li>
 					</ul>
 				</div> -->
-			</div>
-			<div class="modal-body clearfix">
-       <div *ngIf="campaignInteractionPagination.pagedItems?.length == 0" class="col-md-6" class="col-md-9 alert alert-info m0" style="width: 100%">
+      </div>
+      <div class="modal-body clearfix">
+        <div *ngIf="campaignInteractionPagination.pagedItems?.length == 0" class="col-md-6" class="col-md-9 alert alert-info m0"
+          style="width: 100%">
           <strong>No Results found</strong>
         </div>
-				<div class="table-responsive">
-					<table class="table tgrid" id="sample_editable_1">
-						<thead>
-							<tr>
-								<th class="headerCss center">NAME</th>
-								<th class="headerCss center">CAMPAIGN NAME</th>
-								<th class="headerCss center">DATE & TIME</th>
-								<th class="headerCss center">LOCATION</th>
-								<th class="headerCss center">PLATFORM</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr *ngFor="let emailClicked of campaignInteractionPagination.pagedItems;let i = index">
-								<td>
-									<app-user-info [userInfo]="emailClicked"> </app-user-info>
-								</td>
-								<td class="center">
-									<h5>{{emailClicked.campaignName}}</h5>
-									<h4 *ngIf="emailClicked.campaignName==null">-</h4>
-								</td>
-								<td class="center">
-									<h5>{{emailClicked.time |date:'MM/dd/yyyy @ h:mma'}}</h5>
-								</td>
-								<td class="center" >
-									<app-location [userLocation]="emailClicked"> </app-location>
+        <div class="table-responsive" [class.hideDiv]="campaignInteractionPagination.pagedItems?.length == 0">
+          <table class="table tgrid" id="sample_editable_1">
+            <thead>
+              <tr>
+                <th class="headerCss center">NAME</th>
+                <th class="headerCss center">CAMPAIGN NAME</th>
+                <th class="headerCss center">DATE & TIME</th>
+                <th class="headerCss center">LOCATION</th>
+                <th class="headerCss center">PLATFORM</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let emailClicked of campaignInteractionPagination.pagedItems;let i = index">
+                <td>
+                  <app-user-info [userInfo]="emailClicked"> </app-user-info>
+                </td>
+                <td class="center">
+                  <h5>{{emailClicked.campaignName}}</h5>
+                  <h4 *ngIf="emailClicked.campaignName==null">-</h4>
+                </td>
+                <td class="center">
+                  <h5>{{emailClicked.time |date:'MM/dd/yyyy @ h:mma'}}</h5>
+                </td>
+                <td class="center">
+                  <app-location [userLocation]="emailClicked"> </app-location>
                 </td>
                 <td class="center" *ngIf="emailClicked.deviceType">{{emailClicked.deviceType}}</td>
                 <td class="center" *ngIf="!emailClicked.deviceType">-</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-				<app-pagination [pagination]="campaignInteractionPagination" [type]="'parnter-interaction'" (notifyParentDropDown)="paginationDropdown($event)" (notifyParent)="setPage($event)"></app-pagination>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-defaullistOfEmailOpenLogs listOfEmailOpenLogst" 
-            data-dismiss="modal" (click)="closeModalPopUp()">Close</button>
-			</div>
-		</div>
-	</div>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <app-pagination [pagination]="campaignInteractionPagination" [type]="'parnter-interaction'" (notifyParentDropDown)="paginationDropdown($event)"
+          (notifyParent)="setPage($event)"></app-pagination>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-defaullistOfEmailOpenLogs listOfEmailOpenLogst" data-dismiss="modal" (click)="closeModalPopUp()">Close</button>
+      </div>
+    </div>
+  </div>
 </div>

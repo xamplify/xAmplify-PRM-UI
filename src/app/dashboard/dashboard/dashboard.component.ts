@@ -744,12 +744,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 subscribe(result => {
                     this.xtremandLogger.log(result.heatMapData);
                     this.heatMapData = result.heatMapData;
-                    if (result.heatMapData.length > 0) {
-                        if (!this.isFullscreenToggle) {
-                            this.generatHeatMap(this.heatMapData, 'dashboard-heat-map');
-                        }
-                        else { this.generatHeatMap(this.heatMapData, 'heat-map-data'); }
-                    }
+                    if (!this.isFullscreenToggle) { this.generatHeatMap(this.heatMapData, 'dashboard-heat-map');
+                    } else { this.generatHeatMap(this.heatMapData, 'heat-map-data'); }
                 },
                     (error: any) => {
                         this.xtremandLogger.error(error);

@@ -5,7 +5,7 @@ import { ReferenceService } from '../../core/services/reference.service';
 import { ParterService } from '../services/parter.service';
 import { Pagination } from '../../core/models/pagination';
 import { PagerService } from '../../core/services/pager.service';
-declare var $:any;
+declare var $, Highcharts: any;
 
 @Component({
   selector: 'app-partner-reports',
@@ -17,17 +17,17 @@ export class PartnerReportsComponent implements OnInit {
   worldMapdataReport: any;
   companyId: number;
   paginationType: string;
-  campaignId:number;
+  campaignId: number;
   campaignsCount: number;
-  regularCampaign:number;
-  socialCampaign:number;
-  videoCampaign:number;
+  regularCampaign: number;
+  socialCampaign: number;
+  videoCampaign: number;
   noOfCampaignsLaunchedByPartner = [];
   partnerUserInteraction = [];
   campaignInteractionPagination: Pagination = new Pagination();
   constructor(public router: Router, public authenticationService: AuthenticationService, public pagination: Pagination,
     public referenseService: ReferenceService, public parterService: ParterService, public pagerService: PagerService) {
-    }
+  }
 
   gotoMange() {
     this.router.navigateByUrl('/home/partners/manage');
@@ -35,16 +35,45 @@ export class PartnerReportsComponent implements OnInit {
   clickWorldMapReports(event) {
     console.log(event);
   }
+  campaignTypeChart(data:any) {
+    Highcharts.chart('campaign-type-chart', {
+      chart: { type: 'bar' },
+      xAxis: {
+        categories: ['VIDEO', 'SOCIAL', 'REGULAR'],
+        lineWidth: 0,
+        minorTickLength: 0,
+        tickLength: 0,
+      },
+      title:{ text:'' },
+      yAxis: {
+        min: 0,
+        visible: false,
+        gridLineWidth: 0,
+      },
+      colors: ['#4572A7', 'red', 'green'],
+      tooltip: {
+        formatter: function () {
+            return 'Campaign Type: <b>' + this.point.category + '</b><br> Count: <b>' + this.point.y;
+        }
+    }, 
+      plotOptions: { bar: { minPointLength: 3, dataLabels: { enabled: true }, colorByPoint: true } },
+      exporting: { enabled: false },
+      credits: { enabled: false },
+      series: [{  showInLegend: false, data:data }]
+    });
+  }
   partnerReportData() {
     this.parterService.partnerReports(this.referenseService.companyId).subscribe(
       (data: any) => {
         console.log(data);
         this.worldMapdataReport = data.countrywisePartnersCount.countrywisepartners;
         this.campaignsCount = data.partnersLaunchedCampaignsCount;
-        this.regularCampaign = data.partnersLaunchedCampaignsByCampaignType.REGULAR;
-        this.socialCampaign = data.partnersLaunchedCampaignsByCampaignType.SOCIAL;
-        this.videoCampaign = data.partnersLaunchedCampaignsByCampaignType.VIDEO;
         this.noOfCampaignsLaunchedByPartner = data.noOfCampaignsLaunchedByPartner.data;
+        const campaignData = [];
+        campaignData.push(data.partnersLaunchedCampaignsByCampaignType.VIDEO);
+        campaignData.push(data.partnersLaunchedCampaignsByCampaignType.SOCIAL);
+        campaignData.push(data.partnersLaunchedCampaignsByCampaignType.REGULAR);
+        this.campaignTypeChart(campaignData);
       },
       (error: any) => { console.log('error got here') });
   }
@@ -59,7 +88,7 @@ export class PartnerReportsComponent implements OnInit {
       },
       (error: any) => { console.log('error got here') });
   }
-  partnerCampaignInteraction(campaignId:number) {
+  partnerCampaignInteraction(campaignId: number) {
     this.campaignId = campaignId;
     this.paginationType = 'partnerInteraction';
     this.parterService.partnerCampaignInteraction(this.campaignId, this.campaignInteractionPagination).subscribe(
@@ -81,11 +110,11 @@ export class PartnerReportsComponent implements OnInit {
       this.partnerCampaignInteraction(this.campaignId);
     }
   }
-  closeModalPopUp(){
-    this.campaignInteractionPagination.pageIndex =1;
+  closeModalPopUp() {
+    this.campaignInteractionPagination.pageIndex = 1;
     this.campaignInteractionPagination.maxResults = 10;
   }
-  paginationDropdown(event){
+  paginationDropdown(event) {
     if (this.paginationType === 'UserInteraction') {
       this.pagination = event;
       this.partnerUserInteractionReports();
@@ -95,8 +124,8 @@ export class PartnerReportsComponent implements OnInit {
     }
   }
   ngOnInit() {
-    if(!this.referenseService.companyId){
-     this.router.navigate(['home/dashboard']);
+    if (!this.referenseService.companyId) {
+      this.router.navigate(['home/dashboard']);
     }
     this.pagination.maxResults = 6;
     this.campaignInteractionPagination.maxResults = 10;

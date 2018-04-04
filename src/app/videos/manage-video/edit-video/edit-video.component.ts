@@ -631,7 +631,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     defaultPlayerSettingsValues(event: boolean) {
         try {
-            if (event) {
+            if (event && !this.isThisDraftVideo) {
                 this.defaultSettingValuesBoolean(event);
                 if (!this.loadRangeDisable) { this.disableTransperancy(event); }
                 this.brandLogoUrl = this.defaultPlayerValues.brandingLogoUri;

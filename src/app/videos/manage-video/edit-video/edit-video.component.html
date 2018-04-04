@@ -157,7 +157,6 @@
 										<div class="col-xs-9 col-sm-9 col-md-9">
 											<input type="text" minlength="1" maxlength="255" (input)="validVideoTitle(videotitle.value)" class="form-control" placeholder="Enter Title here"
 											 formControlName="title" required #videotitle>
-											<!-- <span *ngIf="!isValidTitle || formErrors.title== true" class="help-block">A block of help text.</span> -->
 											<div *ngIf="formErrors.title" class="alert alert-danger">{{formErrors.title}}</div>
 											<div *ngIf="isValidTitle" style="color: red; padding: 2px">Title already exists!</div>
 											<div *ngIf="emptyTitle ==true && formErrors.title==false" class="alert alert-danger">Title name shouldn't be empty</div>
@@ -169,7 +168,6 @@
 										<div class="col-xs-9 col-sm-9 col-md-9">
 											<select class="form-control" (ngModelChange)="selectedPublishToName($event)" formControlName="viewBy" required title="select a video type">
 												<option *ngFor="let publishName of publish" [value]="publishName.name">{{publishName.name}}
-												<!-- <h6>{{publishName.message}}</h6> -->
 											</select>
 											<span class="pull-left" style="margin-top: -24px;margin-left: -21px;cursor: pointer;color: #54a7e9;" title="{{publisToMessage}}">
 												<i class="fa fa-question-circle" style="font-size: 20px"></i>
@@ -188,10 +186,12 @@
 											</div>
 										</div>
 									</div>
-
 									<div class="form-group">
 										<label class="col-xs-3 col-sm-3 col-md-3 control-label">Tags:</label>
 										<div class="col-xs-9 col-sm-9 col-md-9">
+										   <span class="pull-left" style="margin-top: 13px;margin-left: -21px;cursor: pointer;color: #54a7e9;" title="write the tags and click enter">
+											 <i class="fa fa-question-circle" style="font-size: 20px"></i>
+											</span>
 											<tag-input formControlName="tags" [theme]="'foundation-theme'" [placeholder]="'Add Tag and Enter'" [secondaryPlaceholder]="'Add Tag and Enter'" placeholder='Add Tag and Enter' [validators]="validatorsTag" required></tag-input>
 											<div *ngIf="formErrors.tags" class="alert alert-danger">{{formErrors.tags}}</div>
 										</div>

@@ -332,8 +332,8 @@
 							</div>
 							<div class="portlet-title">
 								<div class="caption">
-									<h3 class="caption-subject" style="margin: 0;color: #909090 !important;">
-										{{campaign[1]}}
+									<h3 class="caption-subject" style="margin: 0;color: #909090 !important;" title="{{campaign[1]}}">
+										{{campaign[1] | slice: 0: 23}}<span *ngIf="campaign[1]?.length>23">...</span>
 									</h3>
 								</div>
 							</div>
@@ -458,7 +458,7 @@
 								</div>
 								<div>
 									<div class="panel-title pull-right">
-										<span title="{{videoStatesTooltip}}">
+										<span title="{{videoStatesTooltip}}" style="cursor: pointer;">
 											<i class="fa fa-question-circle" style="color: #54a7e9;font-size: 20px;margin: 5px;"></i>
 									    </span>
 										<span style="float:right; font-size: 13px;">

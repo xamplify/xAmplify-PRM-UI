@@ -49,7 +49,6 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
     videoSort: any;
     videoType: any;
     isListView = false;
-    isPartner = false;
     videoTypes = [{ 'name': 'My Videos', 'value': 'myVideos' }, { 'name': 'Partner Videos', 'value': 'partnerVideos' }];
 
     constructor(public videoFileService: VideoFileService, public referenceService: ReferenceService,
@@ -59,7 +58,6 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.xtremandLogger.log('MangeVideosComponent : constructor ');
         this.loggedInUserId = this.authenticationService.getUserId();
         this.loggedUserName = this.authenticationService.user.emailId;
-        this.isPartner = this.authenticationService.isOnlyPartner();
         this.defaultBannerMessageValues();
         this.sortVideos = this.videoUtilService.sortVideos;
         this.videoSort = this.sortVideos[0];
