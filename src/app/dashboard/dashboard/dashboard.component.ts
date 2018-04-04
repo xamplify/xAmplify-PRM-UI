@@ -75,6 +75,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     heatMapTooltip = 'last 7 days';
     videoStatesTooltip = 'last 7 days';
     isOnlyPartner:boolean;
+    partnerCampaignsCountMap: any;
 
     constructor(public router: Router, public dashboardService: DashboardService, public pagination: Pagination, public videosPagination: Pagination,
         public contactService: ContactService, public videoFileService: VideoFileService, public twitterService: TwitterService,
@@ -959,40 +960,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
         }
     }
 
-    loadChannelVideos() {
-        this.videosPagination.maxResults = 50;
-        try {
-            this.videoFileService.loadChannelVideos(this.videosPagination, 0)
-                .subscribe((result: any) => {
-                    this.videosPagination.totalRecords = result.totalRecords;
-                    this.videosPagination = this.pagerService.getPagedItems(this.videosPagination, result.listOfMobinars);
-                },
-                    (error: any) => {
-                        this.xtremandLogger.errorPage(error);
-                    },
-                    () => console.log('load videos completed:')
-                );
-        } catch (error) {
-            this.xtremandLogger.error('erro in load videos :' + error);
-        }
-    };
-
-    countPartnerEmailTemplate() {
-        try {
-            this.emailTemplateService.countPartnerEmailtemplate(this.loggedInUserId)
-                .subscribe((result: any) => {
-                    console.log(result);
-                    this.partnerEmailTemplateCount = result.count;
-                },
-                    (error: any) => {
-                        this.xtremandLogger.errorPage(error);
-                    },
-                    () => console.log('countPartnerEmailTemplate completed:')
-                );
-        } catch (error) {
-            this.xtremandLogger.error('erro in countPartnerEmailTemplate :' + error);
-        }
-    }
     isFullscreenHeatMap() {
         this.isFullscreenToggle = !this.isFullscreenToggle;
         if (this.isFullscreenToggle) {
@@ -1004,6 +971,18 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.router.navigate(['/home/partners/analytics']);
        } else { console.log('go to vendors page'); }
     }
+
+    getPartnerCampaignsCountMapGroupByCampaignType(userId: number){
+        this.campaignService.getPartnerCampaignsCountMapGroupByCampaignType(userId)
+            .subscribe(
+                data => {
+                    this.partnerCampaignsCountMap = data;
+                },
+                error => { },
+                () => this.xtremandLogger.info('Finished listCampaign()')
+            );
+    }
+
     ngOnInit() {
         this.pagination.maxResults = 10;
         try {
@@ -1032,8 +1011,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             console.log(this.authenticationService.getRoles());
 
             if (this.authenticationService.isPartner()) {
-                this.loadChannelVideos();
-                this.countPartnerEmailTemplate();
+                this.getPartnerCampaignsCountMapGroupByCampaignType(this.loggedInUserId);
             }
         } catch (err) {
             console.log(err);

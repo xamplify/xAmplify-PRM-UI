@@ -27,6 +27,8 @@
 		border-color: #fff;
 		border: 1px solid #cacaca;
 		font-weight: bold;
+		min-height: 33px;
+		min-width: 33px;
 	}
 
 	a {
@@ -280,8 +282,8 @@
 							<span>
 								<i class="fa fa-video-camera"></i>
 							</span>
-							<h4>Total Videos Shared</h4>
-							<h3>{{videosPagination.totalRecords}}</h3>
+							<h4>video campaigns shared</h4>
+							<h3><span *ngIf="partnerCampaignsCountMap">{{partnerCampaignsCountMap.totalVideoCampaign}}</span></h3>
 						</div>
 					</div>
 					<div class="col-xs-12 col-sm-4">
@@ -289,8 +291,8 @@
 							<span>
 								<i class="fa fa-envelope"></i>
 							</span>
-							<h4>Total Emails Shared</h4>
-							<h3>{{partnerEmailTemplateCount}}</h3>
+							<h4>regular campaigns shared</h4>
+							<h3><span *ngIf="partnerCampaignsCountMap">{{partnerCampaignsCountMap.totalRegularCampaign}}</span></h3>
 						</div>
 					</div>
 					<div class="col-xs-12 col-sm-4">
@@ -298,8 +300,8 @@
 							<span>
 								<i class="fa fa-bullhorn"></i>
 							</span>
-							<h4>Total Social Campaigns Shared</h4>
-							<h3>-</h3>
+							<h4>social campaigns shared</h4>
+							<h3><span *ngIf="partnerCampaignsCountMap">{{partnerCampaignsCountMap.totalSocialCampaign}}</span></h3>
 						</div>
 					</div>
 				</div>
