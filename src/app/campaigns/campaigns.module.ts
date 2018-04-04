@@ -17,12 +17,13 @@ import { CKEditorModule } from 'ng2-ckeditor';
 import { HeatMapComponent } from './heat-map/heat-map.component';
 import { SocialCampaignComponent } from './social-campaign/social-campaign.component';
 import { BubbleChartComponent } from './analytics/bubble-chart/bubble-chart.component';
+import { NurtureCampaignComponent } from './nurture-campaign/nurture-campaign.component';
 
 @NgModule({
 
     imports: [CommonModule, SharedModule, CampaignsRoutingModule, CKEditorModule,
          CommonComponentModule, ErrorPagesModule],
-    declarations: [ManagePublishComponent, SelectCampaignTypeComponent, CreateCampaignComponent, AnalyticsComponent, HeatMapComponent, SocialCampaignComponent, BubbleChartComponent/*,CkEditor*/],
+    declarations: [ManagePublishComponent, SelectCampaignTypeComponent, CreateCampaignComponent, AnalyticsComponent, HeatMapComponent, SocialCampaignComponent, BubbleChartComponent, NurtureCampaignComponent/*,CkEditor*/],
     providers: [ContactService, VideoFileService, EmailTemplateService]
 
 })
