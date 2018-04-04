@@ -4,6 +4,7 @@ export class Properties {
     COMPANY_LOGO = 'assets/images/xamplify-logo.png'
     BOTTOM_MESSAGE = '2018 Xamplify, All rights reserved.'
     APP_WEBSITE = 'xamplify';
+    APP_Xamplify_URL="https://xamplify.io"
 
     NO_RESULTS_FOUND = "No results Found";
     EMAIL_SENT_SUCCESS = "Email sent successfully";
