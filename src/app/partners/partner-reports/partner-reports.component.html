@@ -85,7 +85,7 @@
             <span class="caption-subject font-red-sunglo uppercase"> campaigns lauched by partners</span>
           </div>
         </div>
-        <div class="portlet-body text-center">
+        <div class="portlet-body text-center clearfix" style="min-height: 308px;">
           <table class="table tgrid">
             <thead>
               <th class="headerCss center">Email-ID</th>
@@ -115,7 +115,7 @@
           <table class="table tgrid">
             <thead>
               <th class="headerCss center">Company Name</th>
-              <th class="headerCss center"> Partner Email Id</th>
+              <th class="headerCss center"> partner Company Name</th>
               <th class="headerCss center">Email Id</th>
               <th class="headerCss center">Campaign Name</th>
             </thead>
@@ -123,7 +123,8 @@
               <tr *ngFor="let item of partnerUserInteraction" style="cursor: pointer;" (click)="partnerCampaignInteraction(item.campaignId)">
                 <td *ngIf="item.companyName">{{item.companyName}} </td>
                 <td *ngIf="!item.companyName">-</td>
-                <td>{{item.partnerId}} </td>
+                <td *ngIf="item.partnerCompanyName">{{item.partnerCompanyName}} </td>
+                <td *ngIf="!item.partnerCompanyName">-</td>
                 <td>{{item.emailId}}</td>
                 <td>{{item.campaignName}}</td>
               </tr>
