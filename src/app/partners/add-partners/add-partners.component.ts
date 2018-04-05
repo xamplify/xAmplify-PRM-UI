@@ -302,6 +302,9 @@ export class AddPartnersComponent implements OnInit {
           }else {
               this.isCompanyDetails = false;
           }
+          if(this.newPartnerUser[i].country === "---Please Select Country---"){
+              this.newPartnerUser[i].country = null;
+          }
        }
       if(this.isCompanyDetails){
         this.xtremandLogger.info( "saving #partnerListId " + this.partnerListId + " data => " + JSON.stringify( this.newPartnerUser ) );

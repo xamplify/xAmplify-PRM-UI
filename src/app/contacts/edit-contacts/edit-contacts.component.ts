@@ -342,6 +342,9 @@ export class EditContactsComponent implements OnInit {
               }else {
                   this.isCompanyDetails = false;
               }
+              if(this.users[i].country === "---Please Select Country---"){
+                  this.users[i].country = null;
+              }
            }
         }else{
             this.isCompanyDetails = true;
@@ -405,6 +408,9 @@ export class EditContactsComponent implements OnInit {
                           this.isCompanyDetails = true;
                       }else {
                           this.isCompanyDetails = false;
+                      }
+                      if(this.users[i].country === "---Please Select Country---"){
+                          this.users[i].country = null;
                       }
                    }
                 }else{
@@ -744,6 +750,9 @@ export class EditContactsComponent implements OnInit {
                       this.isCompanyDetails = true;
                   }else {
                       this.isCompanyDetails = false;
+                  }
+                  if(this.users[i].country === "---Please Select Country---"){
+                      this.users[i].country = null;
                   }
                }
             }else{
