@@ -3,25 +3,22 @@
 		pointer-events: none;
 		cursor: not-allowed;
 	}
+
 	.ownThumnailCss {
 		margin-top: -22px;
 	}
-	.clipboard {
-		padding: 6px 44px;
-	}
+
 	.disablePlayerValues {
 		pointer-events: none;
 		opacity: 0.6;
 	}
-	.isPlaySubmit {
-		padding: 15px 58px !important;
-		border-radius: 0px;
-	}
+
 	img:hover {
 		opacity: 1.0;
 		filter: alpha(opacity=100);
 		/* For IE8 and earlier */
 	}
+
 	.is360video {
 		z-index: 900;
 	}
@@ -33,7 +30,6 @@
 	.bottomCss {
 		bottom: -183px;
 	}
-
 </style>
 <div class="portlet light">
 	<div class="portlet-body">
@@ -42,8 +38,8 @@
 			<div class="col-xs-12 col-sm-12 col-md-6" style="padding-top: 28px">
 				<div id="overLayImage"></div>
 				<div id="overlay-logo" class="video-js" [ngClass]="{'logoCss':!fullScreenMode , 'logoFullscreen' :fullScreenMode}">
-					<a [href]="logoDescriptionUrl" target="_blank"  [class.disabled]="!logoDescriptionUrl">
-					<img *ngIf="brandLogoUrl" [src]="authenticationService.MEDIA_URL + brandLogoUrl" class="img-responsive"> 
+					<a [href]="logoDescriptionUrl" target="_blank" [class.disabled]="!logoDescriptionUrl">
+						<img *ngIf="brandLogoUrl" [src]="authenticationService.MEDIA_URL + brandLogoUrl" class="img-responsive">
 					</a>
 				</div>
 				<div *ngIf="!is360Value">
@@ -88,33 +84,36 @@
 						</div>
 					</div>
 				</div>
-             <!--  overlay modal ending -->
+				<!--  overlay modal ending -->
 
 				<div class="col-xs-12 col-sm-6" style="padding: 0;margin-top: 10px;">
 					<button *ngIf="shareValues" class="btn btn-primary shareVideoButton" (click)="shareClick()" [disabled]="isThisDraftVideo">
-					<i class="fa fa-share-alt" aria-hidden="true"></i> Share
-				</button>
+						<i class="fa fa-share-alt" aria-hidden="true"></i> Share
+					</button>
 					<button *ngIf="embedVideo" class="btn btn-primary embedVideoButton" data-dismiss="modal" data-toggle="modal" data-target="#myModal"
 					 [disabled]="isThisDraftVideo" (click)="embedModal()">
 						<i class="fa fa-external-link" aria-hidden="true"></i> Embed
-				</button>
+					</button>
 				</div>
 				<div class="col-xs-12 col-sm-6" style="padding: 0;">
 					<div class="col-xs-12" style="padding: 0;">
 						<span class="pull-right videoViews">
-	            <h4 class="viewsh4">{{saveVideoFile.views}} views</h4></span>
+							<h4 class="viewsh4">{{saveVideoFile.views}} views</h4>
+						</span>
 					</div>
 					<div *ngIf="likes" class="col-xs-12" style="padding: 0;">
 						<span class="pull-right">
-						<button style="color: #337ab7; background: #fff;" (click)="likesValuesDemo()">
-							<a  style="color: #337ab7; background: #fff; text-decoration: none;" title="I like this">
-								<i class="fa fa-thumbs-up" aria-hidden="true"></i>
-							{{likesValues}}</a></button>
-						<button style="color: #f3565d; background: #fff;padding: 0;" (click)="disLikesValuesDemo()">
-							<a  style="color: #f3565d; background: #fff;padding: 0; text-decoration: none" title="I dislike this">
-								<i class="fa fa-thumbs-down" aria-hidden="true"></i>
-							{{disLikesValues}}</a></button>
-					</span>
+							<button style="color: #337ab7; background: #fff;" (click)="likesValuesDemo()">
+								<a style="color: #337ab7; background: #fff; text-decoration: none;" title="I like this">
+									<i class="fa fa-thumbs-up" aria-hidden="true"></i>
+									{{likesValues}}</a>
+							</button>
+							<button style="color: #f3565d; background: #fff;padding: 0;" (click)="disLikesValuesDemo()">
+								<a style="color: #f3565d; background: #fff;padding: 0; text-decoration: none" title="I dislike this">
+									<i class="fa fa-thumbs-down" aria-hidden="true"></i>
+									{{disLikesValues}}</a>
+							</button>
+						</span>
 					</div>
 				</div>
 				<!-- emebd src Modal Start-->
@@ -145,7 +144,7 @@
 									</div>
 									<div class="col-xs-1 text-right p01">
 										<a>
-										<i class="fa iconSize" aria-hidden="true" [ngClass]="{'fa-angle-down': !titleDiv, 'fa-angle-up': titleDiv}"></i>
+											<i class="fa iconSize" aria-hidden="true" [ngClass]="{'fa-angle-down': !titleDiv, 'fa-angle-up': titleDiv}"></i>
 										</a>
 									</div>
 								</div>
@@ -189,17 +188,18 @@
 									<div class="form-group">
 										<label class="col-xs-3 col-sm-3 col-md-3 control-label">Tags:</label>
 										<div class="col-xs-9 col-sm-9 col-md-9">
-										   <span class="pull-left" style="margin-top: 13px;margin-left: -21px;cursor: pointer;color: #54a7e9;" title="write the tags and click enter">
-											 <i class="fa fa-question-circle" style="font-size: 20px"></i>
+											<span class="pull-left" style="margin-top: 13px;margin-left: -21px;cursor: pointer;color: #54a7e9;" title="write the tags and click enter">
+												<i class="fa fa-question-circle" style="font-size: 20px"></i>
 											</span>
-											<tag-input formControlName="tags" [theme]="'foundation-theme'" [placeholder]="'Add Tag and Enter'" [secondaryPlaceholder]="'Add Tag and Enter'" placeholder='Add Tag and Enter' [validators]="validatorsTag" required></tag-input>
+											<tag-input formControlName="tags" [theme]="'foundation-theme'" [placeholder]="'Add Tag and Enter'" [secondaryPlaceholder]="'Add Tag and Enter'"
+											 placeholder='Add Tag and Enter' [validators]="validatorsTag" required></tag-input>
 											<div *ngIf="formErrors.tags" class="alert alert-danger">{{formErrors.tags}}</div>
 										</div>
 									</div>
-									<div class="form-group" style="margin-top: 30px;">
-										<label class="col-xs-12 col-sm-3 col-md-3 control-label" style="margin-left: -4px;cursor:pointer">Thumbnail : 
-											<input name="options" type="radio" (click)="changeImageThumbnailOption();uploader.clearQueue();"
-											 [(ngModel)]="options" [ngModelOptions]="{standalone: true}" [checked]='true'>
+									<div class="form-group">
+										<label class="col-xs-12 col-sm-3 col-md-3 control-label" style="margin-left: -4px;cursor:pointer">Thumbnail :
+											<input name="options" type="radio" (click)="changeImageThumbnailOption();uploader.clearQueue();" [(ngModel)]="options" [ngModelOptions]="{standalone: true}"
+											 [checked]='true'>
 										</label>
 										<div class="col-xs-12 col-sm-9 col-md-12 col-lg-9" style="padding:0;" *ngIf="thumbnailRadioOpen">
 											<div>
@@ -223,25 +223,37 @@
 										<div class="col-xs-12">
 											<div class="col-xs-2 col-sm-2 col-md-2"></div>
 											<div class="col-xs-10 col-sm-10 col-md-10">
-												<label class="radio-inline" style="cursor:pointer"> 
-											 <input name="options" (click)="selectedOwnThumnailOption()" type="radio" 
-											  [value]="2" [(ngModel)]="options" [ngModelOptions]="{standalone: true}" style="cursor:pointer"> 
-											 <strong>Or: Upload your own Thumbnail</strong>
-											</label>
+												<label class="radio-inline" style="cursor:pointer">
+													<input name="options" (click)="selectedOwnThumnailOption()" type="radio" [value]="2" [(ngModel)]="options" [ngModelOptions]="{standalone: true}"
+													 style="cursor:pointer">
+													<strong>Or: Upload your own Thumbnail</strong>
+												</label>
 											</div>
 										</div>
 										<div class="col-xs-9 col-sm-9 col-md-9" style="top: 7px; position: relative;float:right">
-											<div *ngIf="openOwnThumbnail">
-												<input id="ownFileuplad" type="file" ng2FileSelect [uploader]="uploader" accept=".jpg,.jpeg,.png"
-												  *ngIf="uploader.queue.length==0" class="btn btn-primary" style="background: #00a6e8;width: 100%;">
-												<p *ngIf="ownThumbnail" class="help-block">If you want to upload your own thumbnail, please choose a file from your system.</p>
-												<div>
+											<div *ngIf="openOwnThumbnail" >
+												<span class="btn btn-css btn-file" *ngIf="ownThumbnail">Choose Image
+												<input id="ownFileuplad" type="file" ng2FileSelect [uploader]="uploader" accept=".jpg,.jpeg,.png" *ngIf="uploader.queue.length==0"
+												 class="btn btn-primary" style="background: #00a6e8;width: 100%;cursor: pointer;" title=" ">
+												</span>
+												 <p *ngIf="ownThumbnail" class="help-block">If you want to upload your own thumbnail, please choose a file from your system.
+														<span style="color:blue">Note: Image file is allowed, max 10 Mb</span>
+												</p>
+												   <div *ngIf="imageUrlPath" class="img-wrap img-responsive img-thumbnail rounded-0" style="margin: 0px -4px;">
+														<span (click)="uploader.clearQueue();clearOwnThumbnail()">
+															<i class="fa fa-times-circle"></i>
+														</span>
+														<img [src]="imageUrlPath" style="height: 71px; width: auto;">
+													</div>
+
+												<!-- <div>
 													<span *ngIf="imageUrlPath" class="close" style="position: absolute;left: 102px;top: 3px;background: #00a6e8;" (click)="uploader.clearQueue();clearOwnThumbnail()">&times;</span>
 													<img *ngIf="imageUrlPath" [src]=imageUrlPath style="height: 71px; width: 98px; border: 1px solid red;">
-												</div>
+												</div> -->
+<!-- 												
 												<div *ngIf="ownThumbnail" class="alert alert-danger" style="margin-top: -7px;height: 38px;">
 													<p style="margin-top:-4px">Only image file is allowed, max 10mb </p>
-												</div>
+												</div> -->
 											</div>
 										</div>
 									</div>
@@ -287,7 +299,7 @@
 									</div>
 									<div class="col-xs-1 text-right p01">
 										<a>
-										<i class="fa iconSize" aria-hidden="true" [ngClass]="{'fa-angle-down': !colorControl, 'fa-angle-up': colorControl}"></i>
+											<i class="fa iconSize" aria-hidden="true" [ngClass]="{'fa-angle-down': !colorControl, 'fa-angle-up': colorControl}"></i>
 										</a>
 									</div>
 								</div>
@@ -299,7 +311,8 @@
 											<label class="col-xs-5 col-sm-5 col-md-5 control-label" style="margin-top:-6px">Default Settings:</label>
 											<div class="col-xs-7 col-sm-7 col-md-7">
 												<switch [status]="defaultSettingValue" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-												 [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (statusChange)="defaultPlayerSettingsValues($event)">
+												 [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+												 (statusChange)="defaultPlayerSettingsValues($event)">
 												</switch>
 											</div>
 										</div>
@@ -310,15 +323,16 @@
 													<input [(colorPicker)]="compPlayerColor" [style.background]="compPlayerColor" formControlName="playerColor" [value]="compPlayerColor"
 													 (colorPickerChange)="changePlayerColor($event)" [class.disablePlayerValues]="disablePlayerSettingnew" [cpPosition]="'bottom'"
 													 [cpWidth]="'200px'" [cpHeight]="'265px'" />
-													 <i class="fa fa-question-circle pull-left" style="margin-top: 4px;margin-left: -19px;color:#3598dc;font-size: 18px;" rel="tooltip" data-placement="left" title="Click to change"></i>
+													<i class="fa fa-question-circle pull-left" style="margin-top: 4px;margin-left: -19px;color:#3598dc;font-size: 18px;" rel="tooltip"
+													 data-placement="left" title="Click to change"></i>
 												</div>
 											</div>
 											<div class="form-group">
 												<label class="col-xs-5 col-sm-5 col-md-5 control-label" style="margin-top:-5px">Enable Video Controller:</label>
 												<div class="col-xs-7 col-sm-7 col-md-7">
 													<switch [status]="newEnableController" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-													 [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
-													 (statusChange)="enableVideoControllers($event)">
+													 [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+													 [disabled]="disablePlayerSettingnew" (statusChange)="enableVideoControllers($event)">
 													</switch>
 												</div>
 											</div>
@@ -327,8 +341,9 @@
 												<div class="col-xs-7 col-sm-7 col-md-7">
 													<input [(colorPicker)]="compControllerColor" [style.background]="compControllerColor" (colorPickerChange)="changeControllerColor($event)"
 													 formControlName="controllerColor" [value]="compControllerColor" [class.disablePlayerValues]="disablePlayerSettingnew"
-													 [cpPosition]="'bottom'" [cpWidth]="'200px'" [cpHeight]="'265px'"/>
-													 <i class="fa fa-question-circle pull-left" style="margin-top: 4px;margin-left: -19px;color:#3598dc;font-size: 18px;" rel="tooltip" data-placement="left" title="Click to change"></i>
+													 [cpPosition]="'bottom'" [cpWidth]="'200px'" [cpHeight]="'265px'" />
+													<i class="fa fa-question-circle pull-left" style="margin-top: 4px;margin-left: -19px;color:#3598dc;font-size: 18px;" rel="tooltip"
+													 data-placement="left" title="Click to change"></i>
 												</div>
 											</div>
 											<div class="form-group">
@@ -343,41 +358,44 @@
 											</div>
 											<!-- cobra eding video logo -->
 
-											<div id ="fileLogoSelectedid" *ngIf="!disablePlayerSettingnew" class="form-group">
-												 <label class="col-xs-5 control-label">Video Logo:</label>
-												 <div class="col-xs-7">
-												<input  *ngIf="!brandLogoUrl" type="file" ng2FileSelect [uploader]="videoLogoUploader" accept=".jpg,.jpeg,.png"
-													 class="btn btn-primary" style="background: #00a6e8;width: 100%;">
-													<!-- <div>
-														<span *ngIf="brandLogoUrl" class="close" style="position: absolute;left: 102px;background: #00a6e8;" (click)="clearLogo()"></span>
-														<img *ngIf="brandLogoUrl" [src]="authenticationService.MEDIA_URL + brandLogoUrl" style="height: 71px; width: 98px; border: 1px solid red;">
-													</div> -->
-													  <div *ngIf="brandLogoUrl" class="img-wrap img-responsive img-thumbnail rounded-0">
-															<span (click)="clearLogo()"><i class="fa fa-times-circle"></i></span>
-															<img [src]= "authenticationService.MEDIA_URL + brandLogoUrl" style="height: 71px; width: auto;">
-														</div>
-
-													<div *ngIf="!brandLogoUrl" class="alert alert-danger" style="margin-top: 2px;height: 11px;">
-														<p style="margin-top:-4px">Image files only, 10MB or less </p>
+											<div id="fileLogoSelectedid" *ngIf="!disablePlayerSettingnew" class="form-group">
+												<label class="col-xs-5 control-label">Video Logo:</label>
+												<div class="col-xs-7">
+													 <span class="btn btn-css btn-file" *ngIf="!brandLogoUrl">Choose Logo
+													<input type="file" ng2FileSelect [uploader]="videoLogoUploader" accept=".jpg,.jpeg,.png" class="btn btn-primary"
+													 style="background: #00a6e8;width: 100%;" title=" ">
+													 </span>
+													<div *ngIf="brandLogoUrl" class="img-wrap img-responsive img-thumbnail rounded-0">
+														<span (click)="clearLogo()">
+															<i class="fa fa-times-circle"></i>
+														</span>
+														<img [src]="authenticationService.MEDIA_URL + brandLogoUrl" style="height: 71px; width: auto;">
+													</div>
+													<div *ngIf="!brandLogoUrl" style="height: 11px;">
+														<p style="color: #114dbd;">Image files only,less than 10 Mb</p>
 													</div>
 												</div>
 											</div>
 											<div *ngIf="!disablePlayerSettingnew" class="form-group">
-													<label class="col-xs-5 control-label">Video URL:</label>
-													<div class="col-xs-7">
-														<input type="text" style="width: 90%;" formControlName="brandingLogoDescUri"
-														 placeholder="URLfor website logo link" #val (input)="logoDescription(val.value)">
+												<label class="col-xs-5 control-label">Video Logo URL:</label>
+												<div class="col-xs-7">
+													<input type="text" style="width: 90%;" formControlName="brandingLogoDescUri" placeholder="URLfor website logo link" #val
+													 (input)="logoDescription(val.value)">
 												</div>
 											</div>
-											<div *ngIf="disablePlayerSettingnew && brandLogoUrl"  class="form-group">
-													<label class="col-xs-5 control-label">Co-branding Logo:</label>
-													<div class="col-xs-7"> <img *ngIf="brandLogoUrl" [src]="authenticationService.MEDIA_URL + brandLogoUrl"
-														 style="height: 71px; width: 98px; border: 1px solid red;opacity: 0.5;">
+											<div *ngIf="disablePlayerSettingnew && brandLogoUrl" class="form-group">
+												<label class="col-xs-5 control-label">Video Logo:</label>
+												<div class="col-xs-7">
+													<div *ngIf="brandLogoUrl" class="img-wrap img-responsive img-thumbnail rounded-0">
+														<img [src]="authenticationService.MEDIA_URL + brandLogoUrl" style="height: 71px; width: auto;opacity: 0.5;">
 													</div>
+												</div>
 											</div>
 											<div *ngIf="disablePlayerSettingnew && logoDescriptionUrl" class="form-group">
-													<label class="col-xs-5 control-label">Co-branding URL:</label>
-													<div class="col-xs-7"><p style="position: relative;top: 8px;opacity: 0.5;">{{logoDescriptionUrl}}</p></div>
+												<label class="col-xs-5 control-label">Video Logo URL:</label>
+												<div class="col-xs-7">
+													<p style="position: relative;top: 8px;opacity: 0.5;">{{logoDescriptionUrl}}</p>
+												</div>
 											</div>
 										</div>
 									</div>
@@ -392,7 +410,7 @@
 									</div>
 									<div class="col-xs-1 text-right p01">
 										<a>
-										<i class="fa iconSize" aria-hidden="true" [ngClass]="{'fa-angle-down': !controlPlayers, 'fa-angle-up': controlPlayers}"></i>
+											<i class="fa iconSize" aria-hidden="true" [ngClass]="{'fa-angle-down': !controlPlayers, 'fa-angle-up': controlPlayers}"></i>
 										</a>
 									</div>
 								</div>
@@ -404,13 +422,15 @@
 											<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Sharing:</label>
 											<div class="col-xs-6 col-sm-3 col-md-3">
 												<switch [status]="newAllowSharing" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
-												 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew" (statusChange)="allowSharing($event)">
+												 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
+												 (statusChange)="allowSharing($event)">
 												</switch>
 											</div>
 											<label class="col-xs-6 col-sm-3 col-md-3 control-label">Enable Settings:</label>
 											<div class="col-xs-6 col-sm-3 col-md-3">
 												<switch [status]="newEnableSetting" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onRedColorSwitch"
-												 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew" (statusChange)="enableSettings($event)">
+												 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
+												 (statusChange)="enableSettings($event)">
 												</switch>
 											</div>
 										</div>
@@ -418,13 +438,15 @@
 											<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Fullscreen:</label>
 											<div class="col-xs-6 col-sm-3 col-md-3">
 												<switch [status]="newFullScreen" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch"
-												 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew" (statusChange)="changeFullscreen($event)">
+												 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
+												 (statusChange)="changeFullscreen($event)">
 												</switch>
 											</div>
 											<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Comments:</label>
 											<div class="col-xs-6 col-sm-3 col-md-3">
 												<switch [status]="newComments" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch"
-												 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew" (statusChange)="allowComments($event)">
+												 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
+												 (statusChange)="allowComments($event)">
 												</switch>
 											</div>
 										</div>
@@ -432,13 +454,15 @@
 											<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Likes:</label>
 											<div class="col-xs-6 col-sm-3 col-md-3">
 												<switch [status]="newAllowLikes" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch"
-												 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew" (statusChange)="allowLikes($event)">
+												 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
+												 (statusChange)="allowLikes($event)">
 												</switch>
 											</div>
 											<label class="col-xs-6 col-sm-3 col-md-3 control-label">Enable Casting:</label>
 											<div class="col-xs-6 col-sm-3 col-md-3">
 												<switch [status]="newEnableCasting" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onYellowColorSwitch"
-												 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew" (statusChange)="enableCastings($event)">
+												 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
+												 (statusChange)="enableCastings($event)">
 												</switch>
 											</div>
 
@@ -447,13 +471,15 @@
 											<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Embed:</label>
 											<div class="col-xs-6 col-sm-3 col-md-3">
 												<switch [status]="newAllowEmbed" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onRedColorSwitch"
-												 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew" (statusChange)="allowEmbedVideo($event)">
+												 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
+												 (statusChange)="allowEmbedVideo($event)">
 												</switch>
 											</div>
 											<label class="col-xs-6 col-sm-3 col-md-3 control-label">360 video:</label>
 											<div class="col-xs-6 col-sm-3 col-md-3">
 												<switch [status]="newValue360" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onBlueColorSwitch"
-												 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew" (statusChange)="is360VideoCheck($event)">
+												 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
+												 (statusChange)="is360VideoCheck($event)">
 												</switch>
 											</div>
 										</div>
@@ -469,7 +495,7 @@
 									</div>
 									<div class="col-xs-1 text-right p01">
 										<a>
-										<i class="fa iconSize" aria-hidden="true" [ngClass]="{'fa-angle-down': !callaction, 'fa-angle-up': callaction}"></i>
+											<i class="fa iconSize" aria-hidden="true" [ngClass]="{'fa-angle-down': !callaction, 'fa-angle-up': callaction}"></i>
 										</a>
 									</div>
 								</div>
@@ -480,7 +506,7 @@
 									<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
 										<div>
 											<switch [status]="enableCalltoAction" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
-												 [offColor]="callActionSwitch.onYellowColorSwitch" [size]="callActionSwitch.size" (statusChange)="enableCallToActionMethodTest($event)">
+											 [offColor]="callActionSwitch.onYellowColorSwitch" [size]="callActionSwitch.size" (statusChange)="enableCallToActionMethodTest($event)">
 											</switch>
 										</div>
 									</div>
@@ -493,9 +519,9 @@
 									<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
 										<div>
 											<label> Start of the video</label>
-											<switch [status]="callAction.startCalltoAction" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onBlueColorSwitch"
-												 [offColor]="callActionSwitch.onDefaultColorSwitch" [disabled]="!enableCalltoAction"
-												  [size]="callActionSwitch.bsize" (statusChange)="startCallToactionOverlay($event)">
+											<switch [status]="callAction.startCalltoAction" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+											 [onColor]="callActionSwitch.onBlueColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [disabled]="!enableCalltoAction"
+											 [size]="callActionSwitch.bsize" (statusChange)="startCallToactionOverlay($event)">
 											</switch>
 										</div>
 									</div>
@@ -503,9 +529,9 @@
 									<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
 										<div>
 											<label> End of the video</label>
-											<switch [status]="callAction.endCalltoAction" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onBlueColorSwitch"
-												 [offColor]="callActionSwitch.onDefaultColorSwitch"  [disabled]="!enableCalltoAction"
-												  [size]="callActionSwitch.bsize" (statusChange)="endCallToactionOverlay($event)">
+											<switch [status]="callAction.endCalltoAction" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+											 [onColor]="callActionSwitch.onBlueColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [disabled]="!enableCalltoAction"
+											 [size]="callActionSwitch.bsize" (statusChange)="endCallToactionOverlay($event)">
 											</switch>
 										</div>
 									</div>
@@ -516,8 +542,9 @@
 										<div class="checkbox-list">
 											<label>
 												<div style="float: left;margin-right: 10px;cursor:pointer">
-													<span><input id ="names" type="checkbox" formControlName="name"
-													(change)="callToActionNames()"></span>
+													<span>
+														<input id="names" type="checkbox" formControlName="name" (change)="callToActionNames()">
+													</span>
 												</div> Ask for First and Last name
 											</label>
 										</div>
@@ -528,9 +555,10 @@
 									<div class="col-xs-7 col-sm-9 col-md-9 col-lg-9">
 										<div class="checkbox-list">
 											<label>
-												<div style="float: left;margin-right: 10px; cursor:pointer"> 
-													<span><input id="isSkiped" type="checkbox" formControlName="skip" 
-													(change)="allowViewersToSkipped()" #isSkip></span>
+												<div style="float: left;margin-right: 10px; cursor:pointer">
+													<span>
+														<input id="isSkiped" type="checkbox" formControlName="skip" (change)="allowViewersToSkipped()" #isSkip>
+													</span>
 												</div> Allow viewers to skip
 											</label>
 										</div>
@@ -538,7 +566,9 @@
 								</div>
 								<div class="form-group">
 									<label class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label" style="margin-top:-6px">Upper Text:
-										<font *ngIf="upperTextValid == false" style="color: red; font-size: 19px;position: absolute;"><b>*</b></font>
+										<font *ngIf="upperTextValid == false" style="color: red; font-size: 19px;position: absolute;">
+											<b>*</b>
+										</font>
 									</label>
 									<div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
 										<textarea id="upperValue" formControlName="upperText" (input)="changeUpperText(uppertext.value)" style="width: 100%; height: 52px; min-height: 52px; max-height:70px;"
@@ -548,7 +578,9 @@
 								</div>
 								<div class="form-group">
 									<label class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label" style="margin-top:-6px">Lower Text:
-											<font *ngIf="lowerTextValid == false" style="color: red; font-size: 19px;position: absolute;"><b>*</b></font>
+										<font *ngIf="lowerTextValid == false" style="color: red; font-size: 19px;position: absolute;">
+											<b>*</b>
+										</font>
 									</label>
 									<div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
 										<textarea id="lowerValue" type="text" formControlName="lowerText" (input)="changeLowerText(lowertext.value)" style="width: 100%; height: 52px;min-height: 52px; max-height:70px;"
@@ -569,8 +601,9 @@
 			<!-- PROJECT HEAD -->
 			<div class="portlet-title">
 				<div class="caption">
-					<i class="icon-bar-chart font-green-sharp hide"></i> <span class="caption-helper"></span> &nbsp; <span class="caption-subject font-green-sharp bold uppercase">Lets
-						Tune the Video</span>
+					<i class="icon-bar-chart font-green-sharp hide"></i>
+					<span class="caption-helper"></span> &nbsp;
+					<span class="caption-subject font-green-sharp bold uppercase">Lets Tune the Video</span>
 				</div>
 			</div>
 			<!-- end PROJECT HEAD -->
@@ -591,8 +624,9 @@
 										<div class="todo-tasklist-item-title">Slider Redesign</div>
 										<div class="todo-tasklist-item-text">Lorem dolor sit amet ipsum dolor sit consectetuer dolore.</div>
 										<div class="todo-tasklist-controls pull-left">
-											<span class="todo-tasklist-date"><i
-												class="fa fa-calendar"></i> 21 Sep 2014 </span> <span class="todo-tasklist-badge badge badge-roundless">Urgent</span>
+											<span class="todo-tasklist-date">
+												<i class="fa fa-calendar"></i> 21 Sep 2014 </span>
+											<span class="todo-tasklist-badge badge badge-roundless">Urgent</span>
 										</div>
 									</div>
 									<div class="todo-tasklist-item todo-tasklist-item-border-red">
@@ -600,16 +634,18 @@
 										<div class="todo-tasklist-item-title">Homepage Alignments to adjust</div>
 										<div class="todo-tasklist-item-text">Lorem ipsum dolor sit amet, consectetuer dolore dolor sit amet.</div>
 										<div class="todo-tasklist-controls pull-left">
-											<span class="todo-tasklist-date"><i
-												class="fa fa-calendar"></i> 14 Sep 2014 </span> <span class="todo-tasklist-badge badge badge-roundless">Important</span>
+											<span class="todo-tasklist-date">
+												<i class="fa fa-calendar"></i> 14 Sep 2014 </span>
+											<span class="todo-tasklist-badge badge badge-roundless">Important</span>
 										</div>
 									</div>
 									<div class="todo-tasklist-item todo-tasklist-item-border-green">
 										<img class="todo-userpic pull-left" src="assets/admin/layout2/img/avatar9.jpg" width="27px" height="27px">
 										<div class="todo-tasklist-item-title">Slider Redesign</div>
 										<div class="todo-tasklist-controls pull-left">
-											<span class="todo-tasklist-date"><i
-												class="fa fa-calendar"></i> 10 Feb 2015 </span> <span class="todo-tasklist-badge badge badge-roundless">Important</span>&nbsp;
+											<span class="todo-tasklist-date">
+												<i class="fa fa-calendar"></i> 10 Feb 2015 </span>
+											<span class="todo-tasklist-badge badge badge-roundless">Important</span>&nbsp;
 										</div>
 									</div>
 									<div class="todo-tasklist-item todo-tasklist-item-border-blue">
@@ -617,8 +653,9 @@
 										<div class="todo-tasklist-item-title">Contact Us Map Location changes</div>
 										<div class="todo-tasklist-item-text">Lorem ipsum amet, consectetuer dolore dolor sit amet.</div>
 										<div class="todo-tasklist-controls pull-left">
-											<span class="todo-tasklist-date"><i
-												class="fa fa-calendar"></i> 04 Oct 2014 </span> <span class="todo-tasklist-badge badge badge-roundless">Postponed</span>&nbsp;
+											<span class="todo-tasklist-date">
+												<i class="fa fa-calendar"></i> 04 Oct 2014 </span>
+											<span class="todo-tasklist-badge badge badge-roundless">Postponed</span>&nbsp;
 											<span class="todo-tasklist-badge badge badge-roundless">Test</span>
 										</div>
 									</div>
@@ -628,8 +665,8 @@
 										</div>
 										<div class="todo-tasklist-item-text">Lorem ipsum dolor sit amet, consectetuer dolore psum dolor sit.</div>
 										<div class="todo-tasklist-controls pull-left">
-											<span class="todo-tasklist-date"><i
-												class="fa fa-calendar"></i> 19 Dec 2014 </span>
+											<span class="todo-tasklist-date">
+												<i class="fa fa-calendar"></i> 19 Dec 2014 </span>
 										</div>
 									</div>
 									<div class="todo-tasklist-item todo-tasklist-item-border-yellow">
@@ -638,16 +675,18 @@
 										</div>
 										<div class="todo-tasklist-item-text">Lorem ipsum dolor sit amet, consectetuer sit amet ipsum dolor, consectetuer ipsum consectetuer sit amet dolore.</div>
 										<div class="todo-tasklist-controls pull-left">
-											<span class="todo-tasklist-date"><i
-												class="fa fa-calendar"></i> 02 Feb 2015 </span> <span class="todo-tasklist-badge badge badge-roundless">Postponed</span>&nbsp;
+											<span class="todo-tasklist-date">
+												<i class="fa fa-calendar"></i> 02 Feb 2015 </span>
+											<span class="todo-tasklist-badge badge badge-roundless">Postponed</span>&nbsp;
 										</div>
 									</div>
 									<div class="todo-tasklist-item todo-tasklist-item-border-green">
 										<img class="todo-userpic pull-left" src="assets/admin/layout2/img/avatar9.jpg" width="27px" height="27px">
 										<div class="todo-tasklist-item-title">Slider Redesign</div>
 										<div class="todo-tasklist-controls pull-left">
-											<span class="todo-tasklist-date"><i
-												class="fa fa-calendar"></i> 10 Feb 2015 </span> <span class="todo-tasklist-badge badge badge-roundless">Important</span>&nbsp;
+											<span class="todo-tasklist-date">
+												<i class="fa fa-calendar"></i> 10 Feb 2015 </span>
+											<span class="todo-tasklist-badge badge badge-roundless">Important</span>&nbsp;
 										</div>
 									</div>
 									<div class="todo-tasklist-item todo-tasklist-item-border-red">
@@ -655,8 +694,9 @@
 										<div class="todo-tasklist-item-title">Homepage Alignments to adjust</div>
 										<div class="todo-tasklist-item-text">Lorem ipsum dolor sit amet, consectetuer dolore psum dolor sit.</div>
 										<div class="todo-tasklist-controls pull-left">
-											<span class="todo-tasklist-date"><i
-												class="fa fa-calendar"></i> 14 Sep 2014 </span> <span class="todo-tasklist-badge badge badge-roundless">Important</span>
+											<span class="todo-tasklist-date">
+												<i class="fa fa-calendar"></i> 14 Sep 2014 </span>
+											<span class="todo-tasklist-badge badge badge-roundless">Important</span>
 										</div>
 									</div>
 									<div class="todo-tasklist-item todo-tasklist-item-border-blue">
@@ -665,8 +705,9 @@
 										</div>
 										<div class="todo-tasklist-item-text">Lorem ipsum amet, psum dolor sit consectetuer dolore.</div>
 										<div class="todo-tasklist-controls pull-left">
-											<span class="todo-tasklist-date"><i
-												class="fa fa-calendar"></i> 21 Feb 2015 </span> <span class="todo-tasklist-badge badge badge-roundless">Postponed</span>&nbsp;
+											<span class="todo-tasklist-date">
+												<i class="fa fa-calendar"></i> 21 Feb 2015 </span>
+											<span class="todo-tasklist-badge badge badge-roundless">Postponed</span>&nbsp;
 											<span class="todo-tasklist-badge badge badge-roundless">Primary</span>
 										</div>
 									</div>
@@ -688,15 +729,13 @@
 											<div class="col-md-8 col-sm-8">
 												<div class="todo-taskbody-user">
 													<img class="todo-userpic pull-left" src="assets/admin/layout2/img/avatar6.jpg" width="50px" height="50px">
-													<span
-													 class="todo-username pull-left">Vanessa Bond</span>
-														<button type="button" class="todo-username-btn btn btn-circle btn-default btn-xs">&nbsp;edit&nbsp;</button>
+													<span class="todo-username pull-left">Vanessa Bond</span>
+													<button type="button" class="todo-username-btn btn btn-circle btn-default btn-xs">&nbsp;edit&nbsp;</button>
 												</div>
 											</div>
 											<div class="col-md-4 col-sm-4">
 												<div class="todo-taskbody-date pull-right">
-													<button type="button" class="todo-username-btn btn btn-circle btn-default btn-xs">&nbsp;
-														Complete &nbsp;</button>
+													<button type="button" class="todo-username-btn btn btn-circle btn-default btn-xs">&nbsp; Complete &nbsp;</button>
 												</div>
 											</div>
 										</div>
@@ -718,7 +757,8 @@
 										<div class="form-group">
 											<div class="col-md-12">
 												<div class="input-icon">
-													<i class="fa fa-calendar"></i> <input type="text" class="form-control todo-taskbody-due" placeholder="Due Date...">
+													<i class="fa fa-calendar"></i>
+													<input type="text" class="form-control todo-taskbody-due" placeholder="Due Date...">
 												</div>
 											</div>
 										</div>
@@ -728,13 +768,18 @@
 												<div class="select2-container select2-container-multi form-control todo-taskbody-tags" id="s2id_autogen1">
 													<ul class="select2-choices">
 														<li class="select2-search-choice">
-															<div>Pending</div> <a href="#" class="select2-search-choice-close" tabindex="-1"></a>
+															<div>Pending</div>
+															<a href="#" class="select2-search-choice-close" tabindex="-1"></a>
 														</li>
 														<li class="select2-search-choice">
-															<div>Requested</div> <a href="#" class="select2-search-choice-close" tabindex="-1"></a>
+															<div>Requested</div>
+															<a href="#" class="select2-search-choice-close" tabindex="-1"></a>
 														</li>
-														<li class="select2-search-field"><label for="s2id_autogen2" class="select2-offscreen"></label> <input type="text" autocomplete="off" autocorrect="off"
-															 autocapitalize="off" spellcheck="false" class="select2-input" id="s2id_autogen2" placeholder="" style="width: 20px;"></li>
+														<li class="select2-search-field">
+															<label for="s2id_autogen2" class="select2-offscreen"></label>
+															<input type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" class="select2-input"
+															 id="s2id_autogen2" placeholder="" style="width: 20px;">
+														</li>
 													</ul>
 													<div class="select2-drop select2-drop-multi select2-display-none">
 														<ul class="select2-results">
@@ -747,8 +792,8 @@
 										</div>
 										<!-- TASK TAGS -->
 										<div class="form-actions right todo-form-actions">
-											<button class="btn btn-circle btn-sm green-haze">Save
-												Changes</button>
+											<button class="btn btn-circle btn-sm green-haze">Save Changes
+											</button>
 											<button class="btn btn-circle btn-sm btn-default">Cancel</button>
 										</div>
 									</div>
