@@ -7,6 +7,8 @@ import { CreateCampaignComponent } from './create-campaign/create-campaign.compo
 import { SocialCampaignComponent } from './social-campaign/social-campaign.component';
 import { AnalyticsComponent } from './analytics/analytics.component';
 import { NurtureCampaignComponent } from './nurture-campaign/nurture-campaign.component';
+import { PartnerCampaignsComponent } from './partner-campaigns/partner-campaigns.component';
+
 export const campaignRoutes: Routes = [
 
     { path: '', redirectTo: 'select', pathMatch: 'full' },
@@ -18,6 +20,8 @@ export const campaignRoutes: Routes = [
     { path: 'edit', component: CreateCampaignComponent },
     { path: 'manage', component: ManagePublishComponent },
     { path: ':campaignId/details', component: AnalyticsComponent },
+    { path: 'partner', component: PartnerCampaignsComponent },
+    { path: 'partner/:type', component: PartnerCampaignsComponent },
 ];
 
 @NgModule({

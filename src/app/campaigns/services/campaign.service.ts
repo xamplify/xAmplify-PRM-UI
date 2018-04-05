@@ -224,6 +224,12 @@ export class CampaignService {
             .catch(this.handleError);
     }
 
+    listPartnerCampaigns(userId: number, campaignType: string){
+        return this.http.get(this.URL+`campaign/partner-campaigns/${userId}?campaignType=${campaignType}&access_token=${this.authenticationService.access_token}`)
+            .map(this.extractData)
+            .catch(this.handleError);        
+    }
+
     private extractData(res: Response) {
         let body = res.json();
         console.log(body);

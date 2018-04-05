@@ -1,0 +1,50 @@
+<div class="page-content">
+						<div class="portlet light border-radius-0">
+							<div class="portlet-body">
+                <div class="page-bar m10">
+								<ul class="mix-filter col-xs-7 p0">
+									<li class="filter" (click)="filterCampaigns('regular')">Email Campaigns</li>
+									<li class="filter" (click)="filterCampaigns('video')">Video Campaigns</li>
+									<li class="filter" (click)="filterCampaigns('social')">Social Campaigns </li>
+									<li class="filter" style="display: none;">Own Template</li>
+								</ul>
+                </div>
+            <div class="table-responsive">
+                <table class='table tgrid table-hover table-sm'>
+                    <thead>
+                        <tr>
+                            <th colspan="2" style="width: 50%">Campaign</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor='let campaign of campaigns'>
+                            <td style="width: 10%;">
+                                <img *ngIf="campaign.campaignType.indexOf('VIDEO') > -1 && campaign.launched " src="assets/images/video-email.png" style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
+                                <img *ngIf="campaign.campaignType.indexOf('REGULAR') > -1 && campaign.launched" src="assets/images/regular-email.png" style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
+                                <img *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1 && campaign.launched" src="assets/images/social-campaign.png" style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
+                            </td>
+                            <td>
+                                <h4 class='mt5 mb5 f-w-600'>{{campaign.campaignName}} </h4>
+                                <h5 class='m0'>{{campaign.companyName}} <span class='f-w-600'>{{campaign.fromName}}</span></h5>
+                            </td>
+                            <td>
+                                <span align="right"><b *ngIf="campaign.launched">Launched On</b></span>
+                                <span align="right" title="Launched On"><b>{{campaign.launchTime | date: 'short'}}</b></span>
+                            </td>
+                            <td>
+                                <div class="actions-block">
+                                    <a (click)="confirmDeleteCampaign(campaign.campaignId)" title="Nurture Campaign" data-rel="fancybox-button">
+                                        <i class="fa fa-clone"></i>
+                                    </a>
+                                    <a class="hidden"><i class="fa fa-trash"></i></a>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+							</div>
+						</div>
+        </div>

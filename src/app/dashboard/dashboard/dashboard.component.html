@@ -1,74 +1,76 @@
 <style type="text/css">
-	.notification-box {
-		position: relative;
-		text-align: center;
-		margin: 10px 0 15px 0;
-		padding: 10px;
-		cursor: pointer
-	}
+.notification-box {
+	position: relative;
+	text-align: center;
+	margin: 10px 0 15px 0;
+	padding: 10px;
+	cursor: pointer
+}
 
-	.notification-box i {
-		font-size: 24px;
-		padding: 20px 0 0 0;
-	}
+.notification-box i {
+	font-size: 24px;
+	padding: 20px 0 0 0;
+	color: #fff;
+}
 
-	.notification-box h4 {
-		padding: 10px;
-	}
+.notification-box h4 {
+	padding: 10px;
+	color: #fff;
+}
 
-	.notification-box h3 {
-		position: absolute;
-		top: -35px;
-		right: -14px;
-		padding: 5px 10px;
-		border-radius: 50%;
-		background: #ffffff;
-		color: #468bca;
-		border-color: #fff;
-		border: 1px solid #cacaca;
-		font-weight: bold;
-		min-height: 33px;
-		min-width: 33px;
-	}
+.notification-box h3 {
+	position: absolute;
+	top: -35px;
+	right: -14px;
+	padding: 5px 10px;
+	border-radius: 50%;
+	background: #ffffff;
+	color: #468bca;
+	border-color: #fff;
+	border: 1px solid #cacaca;
+	font-weight: bold;
+	min-height: 33px;
+	min-width: 33px;
+}
 
-	a {
-		text-decoration: none;
-	}
+a {
+	text-decoration: none;
+}
 
-	tspan.highcharts-text-outline {
-		fill: #000;
-	}
+tspan.highcharts-text-outline {
+	fill: #000;
+}
 
-	.social-profile-name {
-		font-size: 13px;
-		text-transform: uppercase;
-		font-weight: 600;
-		color: #aab5bc;
-	}
+.social-profile-name {
+	font-size: 13px;
+	text-transform: uppercase;
+	font-weight: 600;
+	color: #aab5bc;
+}
 
-	b,
-	strong {
-		font-weight: 500;
-	}
+b,
+strong {
+	font-weight: 500;
+}
 
-	.disabled {
-		pointer-events: none;
-		cursor: not-allowed;
-	}
+.disabled {
+	pointer-events: none;
+	cursor: not-allowed;
+}
 
-	hr {
-		margin: 1em 0;
-		border-top: 0.5px solid rgba(216, 214, 214, 0.4);
-	}
+hr {
+	margin: 1em 0;
+	border-top: 0.5px solid rgba(216, 214, 214, 0.4);
+}
 
-	input[type=radio] {
-		position: relative;
-		opacity: 1 !important;
-	}
+input[type=radio] {
+	position: relative;
+	opacity: 1 !important;
+}
 
-	td>h5 {
-		margin: 2px;
-	}
+td>h5 {
+	margin: 2px;
+}
 </style>
 <div class="page-content">
 	<!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
@@ -278,31 +280,25 @@
 				</div>
 				<div class="portlet-body clearfix">
 					<div class="col-xs-12 col-sm-4">
-						<div class="btn-primary btn-block notification-box" [routerLink]="['../../videos/manage']">
-							<span>
-								<i class="fa fa-video-camera"></i>
-							</span>
+						<a class="btn-primary btn-block notification-box" [routerLink]="['/home/campaigns/partner/video']">
+							<span><i class="fa fa-video-camera"></i></span>
 							<h4>video campaigns shared</h4>
 							<h3><span *ngIf="partnerCampaignsCountMap">{{partnerCampaignsCountMap.totalVideoCampaign}}</span></h3>
-						</div>
+						</a>
 					</div>
 					<div class="col-xs-12 col-sm-4">
-						<div class="btn-success btn-block notification-box" [routerLink]="['../../emailtemplates']">
-							<span>
-								<i class="fa fa-envelope"></i>
-							</span>
+						<a class="btn-success btn-block notification-box" [routerLink]="['/home/campaigns/partner/regular']">
+							<span><i class="fa fa-envelope"></i></span>
 							<h4>regular campaigns shared</h4>
 							<h3><span *ngIf="partnerCampaignsCountMap">{{partnerCampaignsCountMap.totalRegularCampaign}}</span></h3>
-						</div>
+						</a>
 					</div>
 					<div class="col-xs-12 col-sm-4">
-						<div class="btn-info btn-block notification-box">
-							<span>
-								<i class="fa fa-bullhorn"></i>
-							</span>
+						<a class="btn-info btn-block notification-box" [routerLink]="['/home/campaigns/partner/social']">
+							<span><i class="fa fa-bullhorn"></i></span>
 							<h4>social campaigns shared</h4>
 							<h3><span *ngIf="partnerCampaignsCountMap">{{partnerCampaignsCountMap.totalSocialCampaign}}</span></h3>
-						</div>
+						</a>
 					</div>
 				</div>
 			</div>

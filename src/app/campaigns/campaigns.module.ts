@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../shared/shared.module';
 import { CampaignsRoutingModule } from './campaigns-routing.module';
-import { CommonComponentModule} from '../common/common.module';
+import { CommonComponentModule } from '../common/common.module';
 import { ErrorPagesModule } from '../error-pages/error-pages.module';
 
 import { ManagePublishComponent } from './manage-publish/manage-publish.component';
@@ -18,12 +18,15 @@ import { HeatMapComponent } from './heat-map/heat-map.component';
 import { SocialCampaignComponent } from './social-campaign/social-campaign.component';
 import { BubbleChartComponent } from './analytics/bubble-chart/bubble-chart.component';
 import { NurtureCampaignComponent } from './nurture-campaign/nurture-campaign.component';
+import { PartnerCampaignsComponent } from './partner-campaigns/partner-campaigns.component';
 
 @NgModule({
 
     imports: [CommonModule, SharedModule, CampaignsRoutingModule, CKEditorModule,
-         CommonComponentModule, ErrorPagesModule],
-    declarations: [ManagePublishComponent, SelectCampaignTypeComponent, CreateCampaignComponent, AnalyticsComponent, HeatMapComponent, SocialCampaignComponent, BubbleChartComponent, NurtureCampaignComponent/*,CkEditor*/],
+        CommonComponentModule, ErrorPagesModule],
+    declarations: [ManagePublishComponent, SelectCampaignTypeComponent, CreateCampaignComponent, AnalyticsComponent,
+        HeatMapComponent, SocialCampaignComponent, BubbleChartComponent, NurtureCampaignComponent,
+        PartnerCampaignsComponent/*,CkEditor*/],
     providers: [ContactService, VideoFileService, EmailTemplateService]
 
 })
