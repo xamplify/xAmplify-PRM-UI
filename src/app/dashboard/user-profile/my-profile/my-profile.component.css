@@ -86,7 +86,6 @@ right: 0;
 margin: 0;
 opacity: 0;
 -ms-filter: 'alpha(opacity=0)';
-font-size: 200px;
 direction: ltr;
 cursor: pointer;
 }
@@ -138,3 +137,8 @@ font-size:22px;
 line-height:10px;
 border-radius:50%
 }
+.file-input-css{ height: 28px;position: absolute;top: 78px;width: 98%;right:1px;}
+.image-profile{ max-height: 82%;width: 104px;position: relative;top: -7px}
+.thumbnail-css{ cursor:pointer;width: 130px; height:107px;border-radius: 0px;border-color: #b2b4b5;}
+.co-branding{ left: 20px; position: relative;}
+.file-css{ position: relative; right: -134px;margin-top: 3px;}

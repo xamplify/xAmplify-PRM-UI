@@ -276,7 +276,7 @@ input:checked + .slider-new:before {
 													<form action="#" role="form">
 														<div class="form-group">
 															<div class="fileinput fileinput-new" data-provides="fileinput">
-																<div class="fileinput-new thumbnail" style="width: 200px; height: 150px;border-radius: 0px;">
+																<div class="fileinput-new thumbnail" style="width: 200px; height: 150px;border-radius: 0px;cursor: pointer;" (click)="imageUpload('profileImage')">
 																	<img src="assets/images/upload-profile.png" alt="Image" id="priview"/>
 																</div>
 																<div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;" id="previewImage">
@@ -284,14 +284,14 @@ input:checked + .slider-new:before {
 																<div>
 																	<button class="btn fileinput-button">Select image
 																	<input type="file" ng2FileSelect [uploader]="uploader" accept="image/jpeg,image/pjpeg,image/jpeg,image/pjpeg,image/png" 
-																	*ngIf="uploader.queue.length==0" (change)="fileChange(input)" title=" " #input/> 
+																	*ngIf="uploader.queue.length==0" id="profileImage" (change)="fileChange(input)" title=" " #input/> 
 																	</button>
 																</div>
 															</div>
 															
 															<div class="clearfix margin-top-10">
 																<span class="label label-danger">NOTE!</span>
-																<span>Uploading Thumbnail is only supported in latest browsers</span>
+																<span>Uploading Thumbnail is supported in only latest browsers</span>
 															</div>
 														</div>
 														
@@ -545,21 +545,22 @@ input:checked + .slider-new:before {
 													</div>
 													<div>
 														<div *ngIf="!logoImageUrlPath">
-															<label class="control-label" style="left: 32px; position: relative;">Co-Branding Video Logo: </label>
-															<div class="fileinput fileinput-new" data-provides="fileinput" style="position: relative; right: -134px;margin-top: 3px;">
-																<div  class="fileinput-new thumbnail" style="width: 130px; height:107px;border-radius: 0px;">
-																	<img  alt="Image" src="assets/images/upload-profile.png" style="max-height: 82%;width: 104px;position: relative;top: -7px">
+															<label *ngIf="isOnlyPartnerRole; else orgAdminLogo" class="control-label co-branding">Co-Branding Video Logo: </label>
+															<ng-template #orgAdminLogo><label class="control-label co-branding" >Video Logo: </label></ng-template>
+															<div class="fileinput fileinput-new file-css" data-provides="fileinput">
+																<div class="fileinput-new thumbnail thumbnail-css">
+																	<img class="image-profile" alt="Image" src="assets/images/upload-profile.png" (click)="imageUpload('imageUpload')">
 																</div>
-																<button  class="btn fileinput-button" style="height: 28px;position: absolute;top: 78px;width: 100%;">Choose image
+																<button class="btn fileinput-button file-input-css">Choose image
 																	<input type="file" ng2FileSelect [uploader]="logoUploader" accept="image/jpeg,image/pjpeg,image/jpeg,image/pjpeg,image/png" 
-																	*ngIf="logoUploader.queue.length==0" (change)="videofileChange(input)" title=" " #input/> 
+																	*ngIf="logoUploader.queue.length==0" (change)="videofileChange(inputVideoLogo)" id="imageUpload" title=" " #inputVideoLogo/> 
 																</button>
 															</div>
 														</div>
 														<div>
 															<div *ngIf="logoImageUrlPath">
-															<label *ngIf="isOnlyPartnerRole; else orgAdminLogo" class="control-label" style="left: 20px; position: relative;">Co-Branding Video Logo: </label>
-															<ng-template #orgAdminLogo><label class="control-label" style="left: 20px; position: relative;">Video Logo: </label></ng-template>
+															<label *ngIf="isOnlyPartnerRole; else orgAdminLogo" class="control-label co-branding">Co-Branding Video Logo: </label>
+															<ng-template #orgAdminLogo><label class="control-label co-branding">Video Logo: </label></ng-template>
 															 <div class="img-wrap img-responsive img-thumbnail rounded-0">
 																<span (click)="clearLogo()"><i class="fa fa-times-circle"></i></span>
 																<img [src]= "authenticationService.MEDIA_URL + logoImageUrlPath" style="height: 81px; width: auto;">

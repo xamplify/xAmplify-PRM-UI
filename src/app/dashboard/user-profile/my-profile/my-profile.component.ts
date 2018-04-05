@@ -294,6 +294,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             this.logger.log('you already initialized the videojs');
         }
     }
+    imageUpload(event){
+        $('#'+event).click();
+    }
     ngOnInit() {
         try {
             //    $("#defaultPlayerSettings").hide();
