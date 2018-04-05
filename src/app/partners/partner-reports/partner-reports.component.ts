@@ -50,7 +50,7 @@ export class PartnerReportsComponent implements OnInit {
         visible: false,
         gridLineWidth: 0,
       },
-      colors: ['#4572A7', 'red', 'green'],
+      colors: ['#00a6e8', '#3faba4', '#8877a9'],
       tooltip: {
         formatter: function () {
             return 'Campaign Type: <b>' + this.point.category + '</b><br>Campaigns Count: <b>' + this.point.y;

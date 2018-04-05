@@ -26,6 +26,7 @@ import {Pagination} from '../../../core/models/pagination';
 import {CallActionSwitch} from '../../../videos/models/call-action-switch';
 
 declare var $, flatpickr, videojs: any;
+
 @Component({
   selector: 'app-update-status',
   templateUrl: './update-status.component.html',
@@ -48,13 +49,14 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   contactListsPagination: Pagination = new Pagination();
   contactsPagination: Pagination = new Pagination();
   videosPagination: Pagination = new Pagination();
+  paginationType: string;
 
   constructor(private socialService: SocialService, private twitterService: TwitterService,
     private facebookService: FacebookService, private videoFileService: VideoFileService,
     private authenticationService: AuthenticationService, private contactService: ContactService,
     private pagerService: PagerService, private router: Router, public videoUtilService: VideoUtilService,
-    private logger: XtremandLogger, public callActionSwitch: CallActionSwitch, private route: ActivatedRoute) {
-
+    private logger: XtremandLogger, public callActionSwitch: CallActionSwitch, private route: ActivatedRoute)
+    {
     this.resetCustomResponse();
     this.userId = this.authenticationService.getUserId();
     this.socialStatus.userId = this.userId;
@@ -397,6 +399,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     $('#listVideosModal').modal('hide');
     this.videoJSplayer.pause();
     this.videoJSplayer.currentTime(0);
+    this.closeModal();
   }
 
   editSocialStatus(socialStatus: SocialStatus) {
@@ -422,6 +425,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   /*****************LOAD VIDEOS WITH PAGINATION START *****************/
 
   listVideos(videosPagination: Pagination) {
+    this.paginationType = 'updatestatusvideos';
     this.videoFileService.videoType = 'myVideos';
     this.videoFileService.loadVideoFiles(videosPagination)
       .subscribe((result: any) => {
@@ -435,19 +439,12 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
       () => console.log('listVideos() completed:')
   }
 
-  setPageVideos(page: number) {
-    if (page !== this.videosPagination.pageIndex) {
-      this.videosPagination.pageIndex = page;
-      this.listVideos(this.videosPagination);
-    }
-  }
-
   /*****************LOAD VIDEOS WITH PAGINATION END *****************/
-
 
   /*****************LOAD CONTACTLISTS WITH PAGINATION START *****************/
 
   loadContactLists(contactListsPagination: Pagination) {
+    this.paginationType = 'updatestatuscontactlists';
     this.contactListsPagination.filterKey = 'isPartnerUserList';
     this.contactListsPagination.filterValue = this.socialStatus.isPartner;
     this.contactService.loadContactLists(contactListsPagination)
@@ -463,22 +460,17 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
       );
   }
 
-  setPageContactLists(page: number) {
-    if (page !== this.contactListsPagination.pageIndex) {
-      this.contactListsPagination.pageIndex = page;
-      this.loadContactLists(this.contactListsPagination);
-    }
-  }
   /*****************LOAD CONTACTLISTS WITH PAGINATION END *****************/
-
 
   /*****************LOAD CONTACTS BY CONTACT LIST ID WITH PAGINATION START *****************/
   loadContactsOnPreview(contactList: ContactList, pagination: Pagination) {
     pagination.pageIndex = 1;
+    this.contactsPagination.maxResults = 12;
     this.loadContacts(contactList, pagination);
   }
 
   loadContacts(contactList: ContactList, pagination: Pagination) {
+    this.paginationType = 'updatestatuscontacts';
     this.previewContactList = contactList;
     this.contactService.loadUsersOfContactList(this.previewContactList.id, pagination).subscribe(
       (data: any) => {
@@ -491,13 +483,30 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     );
   }
 
-  setPageContacts(page: number) {
-    if (page !== this.contactsPagination.pageIndex) {
-      this.contactsPagination.pageIndex = page;
-      this.loadContacts(this.previewContactList, this.contactsPagination);
-    }
+  setPage(event:any){
+   if(event.type ==='updatestatuscontacts'){
+    this.contactsPagination.pageIndex = event.page;
+    this.loadContacts(this.previewContactList, this.contactsPagination);
+   }
+   else if(event.type === 'updatestatuscontactlists'){
+    this.contactListsPagination.pageIndex = event.page;
+    this.loadContactLists(this.contactListsPagination);
+   }
+   else if(event.type ==='updatestatusvideos'){
+    this.videosPagination.pageIndex = event.page;
+    this.listVideos(this.videosPagination);
+   }
   }
-
+  paginationDropDown(pagination: Pagination){
+    if(this.paginationType ==='updatestatuscontacts'){ this.loadContacts(this.previewContactList, pagination);}
+    else if(this.paginationType === 'updatestatuscontactlists'){ this.loadContactLists(pagination); }
+    else if(this.paginationType ==='updatestatusvideos'){ this.listVideos(pagination);}
+  }
+  closeModal(){
+    this.paginationType = 'updatestatuscontactlists';
+    this.contactsPagination =  new Pagination();
+    this.videosPagination =  new Pagination();
+  }
   /*****************LOAD CONTACTS BY CONTACT LIST ID WITH PAGINATION END *****************/
 
   constructCalendar() {

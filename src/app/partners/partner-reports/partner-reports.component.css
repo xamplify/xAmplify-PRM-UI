@@ -21,3 +21,6 @@ th {
 text-align: center;
 padding: 2px;
 }
+.campaign-type{
+    min-width: 310px; max-width: 800px; height: 88px; margin: 0 auto -10px
+}
