@@ -65,10 +65,10 @@
 						<table class='table tgrid'>
 							<thead>
 								<tr>
-									<th colspan="2" style="width: 40%">Email Template List</th>
-									<th style="width: 20%">Type</th>
-									<th style="width: 20%">Created Date</th>
-									<th style="width: 20%;text-align: center;">Actions</th>
+									<th colspan="2" style="width: 50%">Email Template List</th>
+									<!-- <th style="width: 20%">Type</th> -->
+									<th style="width: 25%">Created Date</th>
+									<th style="width: 25%;text-align: center;">Actions</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -85,12 +85,13 @@
 											<b>{{emailTemplate.createdBy}}</b>
 										</span>
 									 </h5>
+									<h5 class="view-banner" *ngIf="emailTemplate.type=='PARTNER'">PARTNER</h5>
 									</td>
-									<td>
+									<!-- <td>
 										<h5 class="view-banner" *ngIf="emailTemplate.type=='PARTNER'">PARTNER</h5>
 										<h5 class="view-banner" *ngIf="(emailTemplate.regularCoBrandingTemplate||emailTemplate.videoCoBrandingTemplate) &&emailTemplate.type=='UPLOADED' ">CO-BRANDED</h5>
-										<!-- <h5 *ngIf="emailTemplate.type !='PARTNER'">REGULAR</h5> -->
-									</td>
+										<h5 *ngIf="emailTemplate.type !='PARTNER'">REGULAR</h5>
+									</td> -->
 									<td>{{emailTemplate.createdDate}}</td>
 									<td>
 										<div class="actions-block">
