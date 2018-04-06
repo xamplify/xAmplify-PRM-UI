@@ -674,7 +674,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
     listOfEmailOpenLogs(actionId: number) {
         this.paginationType = 'open';
-        if(!this.isCalledPagination){ this.pagination.maxResults = 10; this.isCalledPagination = true;} 
+        if(!this.isCalledPagination){ this.pagination.maxResults = 12; this.isCalledPagination = true;} 
         this.dashboardService.listEmailOpenLogs(this.loggedInUserId, actionId, this.pagination)
             .subscribe(
                 (result: any) => {
@@ -690,7 +690,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     listOfEmailClickedLogs() {
         this.paginationType = 'clicked';
-       if(!this.isCalledPagination){ this.pagination.maxResults = 10; this.isCalledPagination = true;}
+       if(!this.isCalledPagination){ this.pagination.maxResults = 12; this.isCalledPagination = true;}
         this.dashboardService.listEmailClickedLogs(this.loggedInUserId, this.pagination)
             .subscribe(
                 result => {
@@ -831,7 +831,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     cancelEmailStateModalPopUp() {
         this.pagination = new Pagination();
         this.pagination.pageIndex = 1;
-        this.pagination.maxResults = 10;
+        this.pagination.maxResults = 12;
         this.downloadDataList.length = 0;
         this.dashboardReport.emailLogList.length = 0;
         this.isLoadingList = true;
@@ -938,7 +938,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         try {
             this.countryCode = countryCode.toUpperCase();
             this.paginationType = "countryWiseUsers";
-            if(!this.isCalledPagination){ this.pagination.maxResults = 10; this.isCalledPagination = true;}
+            if(!this.isCalledPagination){ this.pagination.maxResults = 12; this.isCalledPagination = true;}
             this.dashboardService.worldMapCampaignDetails(this.loggedInUserId, this.countryCode, this.pagination)
                 .subscribe(
                     (result: any) => {
@@ -984,7 +984,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.pagination.maxResults = 10;
+        this.pagination.maxResults = 12;
         try {
             this.dashboardReportsCount();
             this.loggedInUserId = this.authenticationService.getUserId();

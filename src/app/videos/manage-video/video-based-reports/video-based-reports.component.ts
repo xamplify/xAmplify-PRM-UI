@@ -192,8 +192,8 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                     cursor: 'pointer',
                     events: {
                         click: function (event) {
-                            self.pagination.maxResults = 5;
-                            self.videoPlayedPagination.maxResults = 5;
+                            self.pagination.maxResults = 12;
+                            self.videoPlayedPagination.maxResults = 12;
                             self.videoSkippedDurationInfo();
                             self.videoPlayedDurationInfo();
                             $('#videoSkippedPlayed').modal('show');
@@ -445,9 +445,9 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         this.pagination = new Pagination();
         this.videoPlayedPagination = new Pagination();
         this.videoPlayedPagination.pageIndex = 1;
-        this.videoPlayedPagination.maxResults = 5;
+        this.videoPlayedPagination.maxResults = 12;
         this.pagination.pageIndex = 1;
-        this.pagination.maxResults = 8;
+        this.pagination.maxResults = 12;
     }
     getVideoPlayedSkippedInfo() {
         this.videoBaseReportService.getVideoPlayedSkippedInfo(this.selectedVideo.id).subscribe(
@@ -697,7 +697,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         this.logoDescriptionUrl = this.selectedVideo.brandingLogoDescUri;
         this.brandLogoUrl = this.selectedVideo.brandingLogoUri;
         this.pagination.pageIndex = 1;
-        this.pagination.maxResults = 8;
+        this.pagination.maxResults = 12;
         this.getWatchedCountInfo(this.selectedVideo.alias);
         this.getCampaignVideoCountriesAndViews(this.selectedVideo.alias);
         this.selectedCampaignWatchedUsers(this.videoUtilService.sortMonthDates[3].value);
