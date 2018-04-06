@@ -540,8 +540,13 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     this.barChartCliked = false;
     this.donultModelpopupTitle = '';
     this.emailLogPagination = new Pagination();
+    this.emailActionListPagination = new Pagination();
+    this.usersWatchListPagination = new Pagination();
+    this.emailLogPagination.maxResults = 12;
+    this.campaignViewsPagination.maxResults = 12;
     this.campaignViewsPagination.pageIndex = 1;
     this.emailActionListPagination.pageIndex = 1;
+    this.emailActionListPagination.maxResults = 12;
   }
 
   campaignViewsDonut(timePeriod: string, pagination) {

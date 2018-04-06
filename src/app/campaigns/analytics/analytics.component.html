@@ -284,7 +284,7 @@
 								</tbody>
 							</table>
 						</div>
-						<app-pagination [pagination]="campaignViewsPagination" [type]="'campaignViews'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
+						<app-pagination  [pagination]="campaignViewsPagination" [type]="'campaignViews'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
 					</div>
 				</div>
 			</div>
@@ -314,7 +314,7 @@
 					<span *ngIf="campaignType!=='VIDEO'">User wise Email Opened Count</span>
 				  </span></div>
 				<div id="campaign-views-barchart" style="min-width: 310px; max-width: 800px; height: 260px; margin: 0 auto"></div>
-				<app-pagination [pagination]="pagination" [type]="'viewsBarChart'" (notifyParent)="setPage($event)" (notifyParentDropDown)= "paginationDropdown($event)"></app-pagination>
+				<app-pagination *ngIf="pagination.pagedItems?.length > 0" [pagination]="pagination" [type]="'viewsBarChart'" (notifyParent)="setPage($event)" (notifyParentDropDown)= "paginationDropdown($event)"></app-pagination>
 			</div>
 			<div class="col-xs-12 col-sm-6">
 				<div class="frst-timeline frst-timeline-block frst-timeline-style-1 frst-alternate frst-date-opposite">
@@ -498,7 +498,7 @@
 						</table>
 					</div>
 					<!--pager here  -->
-					<app-pagination [pagination]="usersWatchListPagination" [type]="'usersWatch'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
+					<app-pagination *ngIf="usersWatchListPagination.pagedItems?.length > 0" [pagination]="usersWatchListPagination" [type]="'usersWatch'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
 				</div>
 			</div>
 		</div>
@@ -552,7 +552,7 @@
 							</tbody>
 						</table>
 					</div>
-					<app-pagination [pagination]="emailActionListPagination" [type]="'emailAction'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
+					<app-pagination *ngIf="emailActionListPagination.pagedItems?.length > 0" [pagination]="emailActionListPagination" [type]="'emailAction'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
 				</div>
 			</div>
 		</div>
@@ -602,7 +602,8 @@
 								</tr>
 							</tbody>
 						</table>
-						<app-pagination [pagination]="campaignViewsPagination" [type]="'campaignViews'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
+						<app-pagination [pagination]="campaignViewsPagination"
+						 [type]="'campaignViews'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
 					</div>
 				</div>
 			</div>
@@ -665,7 +666,7 @@
 							</tr>
 						</tbody>
 					</table>
-					<app-pagination [pagination]="pagination" [type]="'donutCampaign'" (notifyParent)="setPage($event)" (notifyParentDropDown)= "paginationDropdown($event)"></app-pagination>
+					<app-pagination  *ngIf="pagination.pagedItems?.length > 0" [pagination]="pagination" [type]="'donutCampaign'" (notifyParent)="setPage($event)" (notifyParentDropDown)= "paginationDropdown($event)"></app-pagination>
 				</div>
 			</div>
 		</div>
@@ -717,7 +718,7 @@
 							</tr>
 						</tbody>
 					</table>
-					<app-pagination [pagination]="pagination" [type]="'coutrywiseUsers'" 
+					<app-pagination *ngIf="pagination.pagedItems?.length > 0"  [pagination]="pagination" [type]="'coutrywiseUsers'" 
 					(notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
 				</div>
 			</div>
