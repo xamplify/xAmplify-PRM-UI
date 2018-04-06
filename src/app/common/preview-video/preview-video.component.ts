@@ -11,7 +11,7 @@ declare var videojs, $: any;
 @Component( {
     selector: 'app-preview-video',
     templateUrl: './preview-video.component.html',
-    styleUrls: ['./preview-video.component.css']
+    styleUrls: ['./preview-video.component.css','../../../assets/css/video-css/video-js.custom.css']
 } )
 export class PreviewVideoComponent implements OnInit {
     @Input() videoFile: any;

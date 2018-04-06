@@ -39,7 +39,7 @@ declare var swal, $, videojs , Metronic, Layout , Demo,TableManaged ,Promise,jQu
 @Component({
   selector: 'app-create-campaign',
   templateUrl: './create-campaign.component.html',
-  styleUrls: ['./create-campaign.component.css'],
+  styleUrls: ['./create-campaign.component.css', '../../../assets/css/video-css/video-js.custom.css'],
   providers:[HttpRequestLoader,CallActionSwitch]
 
 })
@@ -940,8 +940,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             $('.h-video').remove();
             this.videoUtilService.player360VideoJsFiles();
             var str = '<video id=videoId poster='+fullImagePath+'  class="video-js vjs-default-skin" crossorigin="anonymous" controls></video>';
-            $("#"+titleId).append('Title:'+title);
-            $('#'+titleId).prop('title',videoFile.title);
+            $("#"+titleId).append(title);
+            $('#'+titleId).prop(videoFile.title);
             $("#"+divId).append(str);
             console.log("360 video path"+videoPath);
             videoPath = videoPath.replace(".m3u8",".mp4");
@@ -967,8 +967,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             $('.p-video').remove();
             this.videoUtilService.normalVideoJsFiles();
             var str = '<video id=videoId  poster='+fullImagePath+' preload="none"  class="video-js vjs-default-skin" controls></video>';
-            $("#"+titleId).append('Title:'+title);
-            $('#'+titleId).prop('title',videoFile.title);
+            $("#"+titleId).append(title);
+            $('#'+titleId).prop(videoFile.title);
             $("#"+divId).append(str);
            // videoPath = videoPath.replace(".mp4","_mobinar.m3u8");//Replacing .mp4 to .m3u8
             console.log("Video Path:::"+videoPath);

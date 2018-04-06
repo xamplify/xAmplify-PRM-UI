@@ -119,6 +119,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                         minPointLength: 3,
                     },
                     series: {
+                        cursor: 'pointer',
                         colorByPoint: true,
                         point: {
                             events: {

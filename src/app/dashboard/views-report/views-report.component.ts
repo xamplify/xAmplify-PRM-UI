@@ -20,7 +20,7 @@ declare var Metronic, Layout, Demo, Index, QuickSidebar, videojs, $, Tasks: any;
 @Component({
     selector: 'app-views-report',
     templateUrl: './views-report.component.html',
-    styleUrls: ['./views-report.component.css'],
+    styleUrls: ['./views-report.component.css','../../../assets/css/video-css/video-js.custom.css'],
     providers: [Pagination, HttpRequestLoader, VideoBaseReportService]
 })
 export class ViewsReportComponent implements OnInit, OnDestroy {

@@ -73,6 +73,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.pagination.pageIndex = 1;
         this.videoFileService.categoryNumber = this.categoryNum = 0;
         this.pagination.searchKey = null;
+        this.pagination.maxResults = 12;
         this.videoSort = this.sortVideos[0];
         console.log(this.videoType);
         this.videoFileService.videoType = videoType.value;
