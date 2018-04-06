@@ -234,8 +234,10 @@ export class PartnerCampaignsComponent implements OnInit {
             .subscribe(
             response => {
                 this.isNurture = true;
-                if(response.statusCode == 2000){
+                if(response.statusCode === 2000){
                     this.customResponse = new CustomResponse('SUCCESS', 'Campaign has been launched successfully.', true);
+                    this.campaign = null;
+                    this.router.navigate(["/home/campaigns/manage"]);
                 }else{
                     this.customResponse = new CustomResponse('ERROR', 'An error occurred while launching the campaign.', true);
                 }

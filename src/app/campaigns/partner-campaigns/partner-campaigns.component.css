@@ -2,10 +2,13 @@ label {font-weight: 600;}
 .thumb-vid, .thumb-bg {height: 100px}
 .fa.fa-users{
     padding: 1em;
-    font-size: 2em;
+    font-size: 1.8em;
     line-height: 1em;
     background: #00a6e8;
     color: white;
     border-radius: 100%;
     margin-left: 1em;
+}
+fieldset {
+    padding: 10px 20px;
 }
