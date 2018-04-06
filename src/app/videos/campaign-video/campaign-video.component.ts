@@ -193,7 +193,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                            // updatedBody = updatedBody.replace("video-tag", "newPlayerVideo");
                             updatedBody = updatedBody.replace('<div id="video-tag"></div>', '<div id="newPlayerVideo">'+
                             '<div id="overlay-logo-bee"><a href='+this.logoLink+' target="_blank" >'+
-                            '<img id="image"  style="position:relative;top: 47px;right: -813px;width: 63px;z-index:9" src='+this.authenticationService.MEDIA_URL + this.logoImageUrlPath+'></a></div></div>');
+                            '<img id="image"  style="position: relative; top: 47px; width: 63px;z-index: 9;left: 388px;" src='+this.authenticationService.MEDIA_URL + this.logoImageUrlPath+'></a></div></div>');
                             this.templatehtml = updatedBody;
                             checkVideoTag = 'default';
                             document.getElementById('para').innerHTML = this.templatehtml;
@@ -222,7 +222,9 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                             } else if (updatedBody.includes('<a href="<SocialUbuntuURL>">')) {
                                 updatedBody = updatedBody.replace('<a href="<SocialUbuntuURL>">', '<div id="newPlayerVideo"></div><a>');
                             } else if (updatedBody.includes("<a href='<SocialUbuntuURL>'>")) {
-                                updatedBody = updatedBody.replace("<a href='<SocialUbuntuURL>'>", '<div id="newPlayerVideo"></div><a>');
+                                updatedBody = updatedBody.replace("<a href='<SocialUbuntuURL>'>", '<div id="newPlayerVideo"><div id="overlay-logo-bee"><a href='+this.logoLink+' target="_blank" >'+
+                                 '<img id="image"  style="position: relative; top: 47px; width: 63px;z-index: 9;left: 388px;" src='+this.authenticationService.MEDIA_URL + this.logoImageUrlPath+'></div>'+
+                                +'</div><a>');
                             }
                             else {
                                 updatedBody = this.campaignVideoTemplate;
