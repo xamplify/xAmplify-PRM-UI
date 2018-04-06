@@ -23,7 +23,7 @@ export class ProfileLockComponent implements OnInit {
     password: string;
     error: string;
     loginDisabled = true;
-    constructor(private userService: UserService, private authenticationService: AuthenticationService,
+    constructor(private userService: UserService, public authenticationService: AuthenticationService,
         private router: Router, public properties: Properties) {
         this.password = '';
     }

@@ -21,7 +21,7 @@ declare var $, videojs: any;
 @Component({
     selector: 'app-public-video',
     templateUrl: './campaign-video.component.html',
-    styleUrls: ['./campaign-video.component.css'],
+    styleUrls: ['./campaign-video.component.css','../../../assets/css/video-css/video-js.custom.css'],
     providers: [XtremandLog]
 })
 export class CampaignVideoComponent implements OnInit, OnDestroy {
