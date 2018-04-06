@@ -1,7 +1,7 @@
 <div class="clearfix"></div>
 <div class="page-footer" [ngClass]="{'customCss': isEmailTemplate}" (window:resize)="onResize($event)">
-	<div align="center" style="color: white; font-size: 13px;position: relative;left:-36px">{{properties.BOTTOM_MESSAGE}}
-		<a class="copyright-css" [href]="properties.APP_Xamplify_URL" title="Stream to generate Demand"
+	<div align="center" style="color: white; font-size: 13px;">{{properties.BOTTOM_MESSAGE}}
+		<a style="color:#9eb1fb" [href]="properties.APP_Xamplify_URL" title="Stream to generate Demand"
 		 target="_blank">www.{{properties.APP_WEBSITE}}.io</a>
 	</div>
 	<div class="scroll-to-top" (click)="scrollTop()">
