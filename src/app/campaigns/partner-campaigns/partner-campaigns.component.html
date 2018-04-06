@@ -1,14 +1,21 @@
-<div class="page-content">
-						<div class="portlet light border-radius-0">
-							<div class="portlet-body">
-                <div class="page-bar m10">
-								<ul class="mix-filter col-xs-7 p0">
-									<li class="filter" (click)="filterCampaigns('regular')">Email Campaigns</li>
-									<li class="filter" (click)="filterCampaigns('video')">Video Campaigns</li>
-									<li class="filter" (click)="filterCampaigns('social')">Social Campaigns </li>
-									<li class="filter" style="display: none;">Own Template</li>
-								</ul>
-                </div>
+<div class="page-content" *ngIf="!isNurture">
+    <div class="page-bar">
+        <ul class="page-breadcrumb">
+            <li><i class="fa fa-home"></i> <a>Home</a><i class="fa fa-angle-right"></i></li>
+            <li><a>Partner campaigns</a> </li>
+        </ul>
+    </div>
+    <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+    <div class="portlet light border-radius-0">
+        <div class="portlet-body">
+            <div class="page-bar m0">
+                <ul class="mix-filter col-xs-12 p0 mb5">
+                    <li class="filter" (click)="filterCampaigns('regular')" [class.active]="'regular' == campaignType">Email Campaigns</li>
+                    <li class="filter" (click)="filterCampaigns('video')" [class.active]="'video' == campaignType">Video Campaigns</li>
+                    <li class="filter" (click)="filterCampaigns('social')" [class.active]="'social' == campaignType">Social Campaigns </li>
+                    <li class="filter" style="display: none;">Own Template</li>
+                </ul>
+            </div>
             <div class="table-responsive">
                 <table class='table tgrid table-hover table-sm'>
                     <thead>
@@ -35,7 +42,7 @@
                             </td>
                             <td>
                                 <div class="actions-block">
-                                    <a (click)="confirmDeleteCampaign(campaign.campaignId)" title="Nurture Campaign" data-rel="fancybox-button">
+                                    <a (click)="nurtureCampaign(campaign.campaignId)" title="Nurture Campaign" data-rel="fancybox-button">
                                         <i class="fa fa-clone"></i>
                                     </a>
                                     <a class="hidden"><i class="fa fa-trash"></i></a>
@@ -45,6 +52,236 @@
                     </tbody>
                 </table>
             </div>
-							</div>
-						</div>
         </div>
+    </div>
+</div>
+
+<div class="page-content" *ngIf="isNurture && campaign != null">
+    <div class="page-bar">
+        <ul class="page-breadcrumb">
+            <li><i class="fa fa-home"></i> <a>Home</a><i class="fa fa-angle-right"></i></li>
+            <li><a>Partner campaigns</a> </li>
+        </ul>
+    </div>
+
+    <div class="portlet light shadow">
+        <div class="portlet-title">
+            <h4 class="caption-subject font-red-sunglo f-w-600 pull-left">Nurture campaign</h4>
+            <a class="close-circle pull-right" data-dismiss="modal" (click)="isNurture = false">
+                <i class="fa fa-times"></i>
+            </a>
+        </div>
+        <div class="portlet-body clearfix">
+            <form role="form" [formGroup]="campaignLaunchForm" (ngSubmit)="launchCampaign();">
+                <div class="col-xs-12 col-sm-6">
+                    <fieldset>
+                        <legend>campaign details</legend>
+                        <form>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Publish as (save as)</label>
+                                <input type="text" id="campaignName" placeholder="Campaign Name" class="form-control" [(ngModel)]="campaign.campaignName" name="campaignName" />
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">Subject line</label>
+                                <input type="text" id="subjectLine" placeholder="Subject Line" class="form-control" [(ngModel)]="campaign.subjectLine" name="subjectLine" />
+                            </div>
+                            <div class="form-group col-xs-6 p0">
+                                <label for="exampleInputPassword1">From name</label>
+                                <input type="text" id="fromName" placeholder="From Name" class="form-control" [(ngModel)]="campaign.fromName" name="fromName" />
+                            </div>
+                            <div class="form-group col-xs-6 pr0">
+                                <label for="exampleInputPassword1">From email</label>
+                                <select class="form-control" name="campaign.email" [(ngModel)]="campaign.email" (change)="setFromName()">
+                                    <option [ngValue]="campaign.email">
+                                        {{campaign.email}}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">Pre header</label>
+                                <input type="text" id="preHeader" placeholder="Pre Header" class="form-control" [(ngModel)]="campaign.preHeader" name="preHeader" />
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Notify Me When</label>
+                                <div class="col-sm-8">
+                                    <div class="email-options-checkbox-group email-options-notify">
+                                        <div class="email-options-checkbox clearfix">
+                                            <div class="col-sm-4 ui-switch-custom-div">
+                                                <switch [status]="campaign.emailOpened" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (statusChange)="setEmailOpened($event)">
+                                                </switch>
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <label style="margin: 5px 0;">Email is opened</label>
+                                            </div>
+                                        </div>
+                                        <div class="email-options-checkbox clearfix" *ngIf="campaign.campaignType.indexOf('VIDEO') > -1">
+                                            <div class="col-sm-4 ui-switch-custom-div">
+                                                <switch [status]="campaign.videoPlayed" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (statusChange)="setVideoPlayed($event)">
+                                                </switch>
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <label style="margin: 5px 0;">Video is played</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </fieldset>
+                </div>
+                <div class="col-xs-12 col-sm-6">
+                    <fieldset *ngIf="campaign.campaignType.indexOf('VIDEO') > -1">
+                        <legend>selected video</legend>
+                        <div class="row m0" (click)="previewVideo(campaign.campaignVideoFile)" style="cursor: pointer;">
+                            <div class="col-xs-4 thumb-bg p0">
+                                <img class="img-responsive thumb-vid" src="{{campaign.campaignVideoFile.imagePath}}">
+                                <span class="duration f-w-600">{{campaign.campaignVideoFile.videoLength}}</span>
+                            </div>
+                            <div class="col-xs-8">
+                                <a>
+                                    <h4 class="mt5 mb5 f-w-600" title="{{campaign.campaignVideoFile.title}}">{{campaign.campaignVideoFile.title}}</h4>
+                                    <h5 class="m0">By {{campaign.campaignVideoFile.uploadedBy}}</h5>
+                                </a>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <legend>selected email template</legend>
+                        <div class="row m0" (click)="previewEmailTemplate(campaign.emailTemplate)" style="cursor: pointer;">
+                            <div class="col-xs-4 p0">
+                                <img src="{{campaign.emailTemplate.subject}}" height="100">
+                            </div>
+                            <div class="col-xs-8">
+                                <a>
+                                    <h4 class="mt5 mb5 f-w-600" title="{{campaign.emailTemplate.name}}">{{campaign.emailTemplate.name}}</h4>
+                                    <h5 class="m0">Created By {{campaign.emailTemplate.createdBy}}</h5>
+                                </a>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <legend>selected contact list</legend>
+                        <div class="row m0">
+                            <div class="col-xs-4 p0">
+                                <i class="fa fa-users"></i>
+                            </div>
+                            <div class="col-xs-8">
+                                <h4 *ngIf="selectedUserlistIds.length < 1">No contact list is selected</h4>
+                                <h4 *ngIf="selectedUserlistIds.length > 0">{{selectedUserlistIds.length}} contact list is selected</h4>
+                                <a class="pull-right btn btn-info btn-sm" data-toggle="modal" data-target="#contactlist-preivew">select</a>
+                            </div>
+                        </div>
+                    </fieldset>                    
+                </div>
+
+                <div class="col-xs-12">
+                    <fieldset>
+                        <legend>launch option</legend>
+                        <div>
+                            <div class="btn-group btn-group-justified">
+                                <ng-container *ngFor="let launchOption of campaignLaunchOptions">
+                                    <label class="btn btn-success" style="border: 1px solid #fff;">
+                                        <input type="radio" class="text-center" name="scheduleCampaign" [value]="launchOption" formControlName="scheduleCampaign" ngDefaultControl style=" margin-right:1.5em; " />{{launchOption}}
+                                    </label>
+                                </ng-container>
+                            </div>
+                            <div class="col-md-12" style="margin-left: -17px;margin-top: 12px;" [hidden]="buttonName!='Schedule'">
+                                <div class="col-md-4">
+                                    <label style="float: left;">Date</label>
+                                    <br>
+                                    <input type="text" class="form-control flatpickr square-box" placeholder="Select" formControlName="launchTime" />
+                                    <font style="color: red" *ngIf="campaignLaunchForm.hasError('invalidSchedule')">Date Required</font>
+                                </div>
+                                <div class="col-md-4">
+                                    <label style="float: left;">Country</label>
+                                    <br>
+                                    <select class="form-control" style="width: 100%" formControlName="countryId" (change)="onSelect($event.target.value)" id="countryName">
+                                        <option *ngFor="let country of countries" [value]="country.id">{{country.name}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label style="float: left;">TimeZone </label>
+                                    <br>
+                                    <select class="form-control" style="width: 100%" formControlName="timeZoneId" id="timezoneId">
+                                        <ng-container *ngIf="timezones?.length==1">
+                                            <option *ngFor="let timeZone of timezones" [value]="timeZone.timezoneId" [selected]="campaign.countryId==timeZone.countryId">
+                                                {{timeZone.cityName}}
+                                            </option>
+                                        </ng-container>
+                                        <ng-container *ngIf="timezones?.length>1">
+                                            <option *ngFor="let timeZone of timezones" [value]="timeZone.timezoneId">
+                                                {{timeZone.cityName}}
+                                            </option>
+                                        </ng-container>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="portlet-title border-none">
+                            <div class="col-xs-12 center-block pt20 text-center">
+                                <button type="submit" class="btn green" [disabled]="!campaignLaunchForm.valid">{{buttonName}}</button>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<app-preview-video *ngIf="videoFile" [videoFile]="videoFile" (notifyParent)="closePreviewVideoModal($event)"></app-preview-video>
+<!--email template preview-->
+<div class="modal" id="email_template_preivew">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
+                <h4 class="modal-title" id="email-template-title"></h4>
+            </div>
+            <div class="modal-body">
+                <div id="htmlContent"></div>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0)" data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--contact list preview-->
+<div class="modal" id="contactlist-preivew">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
+                <h4 class="modal-title" id="contactlist-title">select contact list</h4>
+            </div>
+            <div class="modal-body">
+                <div id="contactlist-body">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>User list</th>
+                                <th>Uploaded by</th>
+                                <th>Created date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let userList of userLists">
+                                <th scope="row"><input type="checkbox" id='{{userList.id}}' (click)="highlightRow(userList.id)"></th>
+                                <td>{{userList.name}}</td>
+                                <td>{{userList.uploadedBy}}<br>{{userList.companyName}}</td>
+                                <td>{{userList.createdDate | date: 'longDate'}}</td>
+                            </tr>
+                        </tbody>
+                    </table>                    
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0)" data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
+            </div>
+        </div>
+    </div>
+</div>

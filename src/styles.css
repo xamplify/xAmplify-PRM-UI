@@ -280,6 +280,7 @@ nav a.active {
 
 .portlet.light, .dashboard-stat2 {
 	border: 1px solid #CCC;
+	padding: 10px !important;
 }
 .ellipsis {
 	width: 100%;
@@ -505,3 +506,7 @@ opacity: 0;
 transition: all .25s linear;
 }
 .fade-scale.in { opacity: 1; transform: scale(1); }
+.duration {position: absolute;bottom: 5px;padding: 1px 5px;background: #ffffff;right: 5px;}
+.thumb-bg{background: #f1f1f1;padding:0;height: 150px;position:relative}
+.thumb-vid{height: 150px; width: auto; margin: 0 auto; display: block;}
+legend{padding: 0 10px;font-size: 15px;font-weight: 600;color: #00a6e8;}
