@@ -27,7 +27,10 @@
 			</form>
 		</div>
 		<div class="lock-bottom">
-			<a (click)="backToLogin()">Not {{displayName}}?</a>
+			<a (click)="backToLogin()">Not 
+				<span *ngIf="authenticationService.hasCompany">{{displayName}}</span>
+			    <span *ngIf="!authenticationService.hasCompany">{{authenticationService.user.username}}</span>
+				?</a>
 		</div>
 	</div>
 	<div class="page-footer-custom" style="color:#e0f1f7">

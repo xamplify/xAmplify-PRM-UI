@@ -5,13 +5,14 @@ import { ReferenceService } from '../../core/services/reference.service';
 import { ParterService } from '../services/parter.service';
 import { Pagination } from '../../core/models/pagination';
 import { PagerService } from '../../core/services/pager.service';
+import { HomeComponent } from '../../core/home/home.component';
 declare var $, Highcharts: any;
 
 @Component({
   selector: 'app-partner-reports',
   templateUrl: './partner-reports.component.html',
   styleUrls: ['./partner-reports.component.css'],
-  providers: [Pagination]
+  providers: [Pagination, HomeComponent]
 })
 export class PartnerReportsComponent implements OnInit {
   worldMapdataReport: any;
@@ -26,7 +27,8 @@ export class PartnerReportsComponent implements OnInit {
   partnerUserInteraction = [];
   campaignInteractionPagination: Pagination = new Pagination();
   constructor(public router: Router, public authenticationService: AuthenticationService, public pagination: Pagination,
-    public referenseService: ReferenceService, public parterService: ParterService, public pagerService: PagerService) {
+    public referenseService: ReferenceService, public parterService: ParterService, public pagerService: PagerService,
+    public homeComponent: HomeComponent) {
   }
 
   gotoMange() {
@@ -124,6 +126,7 @@ export class PartnerReportsComponent implements OnInit {
     }
   }
   ngOnInit() {
+    this.homeComponent.getVideoDefaultSettings();
     if (!this.referenseService.companyId) {
       this.router.navigate(['home/dashboard']);
     }
