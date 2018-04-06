@@ -18,7 +18,7 @@ import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
 import { EditContactsComponent } from '../../contacts/edit-contacts/edit-contacts.component';
 import { ManageContactsComponent } from '../../contacts/manage-contacts/manage-contacts.component';
 import { RegularExpressions } from '../../common/models/regular-expressions';
-
+import { PaginationComponent } from '../../common/pagination/pagination.component';
 declare var $, Papa, swal: any;
 
 @Component( {
@@ -27,7 +27,7 @@ declare var $, Papa, swal: any;
     styleUrls: ['./add-partners.component.css', '../../contacts/add-contacts/add-contacts.component.css', '../../../assets/global/plugins/jquery-file-upload/css/jquery.fileupload.css',
         '../../../assets/global/plugins/jquery-file-upload/css/jquery.fileupload-ui.css', '../../../assets/css/numbered-textarea.css'],
     providers: [Pagination, SocialPagerService, EditContactsComponent, ManageContactsComponent, CountryNames,
-                Properties, RegularExpressions]
+                Properties, RegularExpressions, PaginationComponent]
 })
 export class AddPartnersComponent implements OnInit {
     loggedInUserId: number;
@@ -85,6 +85,8 @@ export class AddPartnersComponent implements OnInit {
     isEmailExist: boolean = false;
     isCompanyDetails = false;
     allPartnersPagination: Pagination = new Pagination();
+    pageSize: number = 12;
+    
     sortOptions = [
         { 'name': 'Sort By', 'value': '' },
         { 'name': 'Email(A-Z)', 'value': 'emailId-ASC' },
@@ -102,13 +104,14 @@ export class AddPartnersComponent implements OnInit {
     selectedContactListIds = [];
     allselectedUsers = [];
     isHeaderCheckBoxChecked: boolean = false;
+    pageNumber: any;
 
     public uploader: FileUploader = new FileUploader( { allowedMimeType: ["application/csv", "application/vnd.ms-excel", "text/plain", "text/csv"] });
 
     public httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
     constructor( public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
         public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
-        public referenceService: ReferenceService, public countryNames: CountryNames,
+        public referenceService: ReferenceService, public countryNames: CountryNames, public paginationComponent: PaginationComponent,
         public contactService: ContactService, public properties: Properties, public regularExpressions: RegularExpressions,
         public pagination: Pagination, public pagerService: PagerService, public xtremandLogger: XtremandLogger ) {
 
@@ -116,6 +119,7 @@ export class AddPartnersComponent implements OnInit {
         this.referenceService.callBackURLCondition = 'partners';
         this.socialPartners = new SocialContact();
         this.addPartnerUser.country = ( this.countryNames.countries[0] );
+        this.pageNumber = this.paginationComponent.numberPerPage[0];
     }
 
     onChangeAllPartnerUsers( event: Pagination ) {
@@ -762,7 +766,7 @@ export class AddPartnersComponent implements OnInit {
         if ( page < 1 || page > this.pager.totalPages ) {
             return;
         }
-        this.pager = this.socialPagerService.getPager( this.socialPartnerUsers.length, page );
+        this.pager = this.socialPagerService.getPager( this.socialPartnerUsers.length, page, this.pageSize );
         this.pagedItems = this.socialPartnerUsers.slice( this.pager.startIndex, this.pager.endIndex + 1 );
 
         var contactIds = this.pagedItems.map( function( a ) { return a.id; });
@@ -1569,6 +1573,13 @@ export class AddPartnersComponent implements OnInit {
             this.isCompanyDetails = false;
         }
     }
+    
+    selectedPageNumber(event) {
+        this.pageNumber.value = event;
+        if (event === 0) { event = this.socialPartnerUsers.length; }
+        this.pageSize = event;
+        this.setSocialPage(1);
+      }
 
     ngOnInit() {
         this.socialContactImage();

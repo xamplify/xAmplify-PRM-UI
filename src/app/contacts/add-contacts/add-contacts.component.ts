@@ -19,6 +19,7 @@ import { CustomResponse } from '../../common/models/custom-response';
 import { Properties } from '../../common/models/properties';
 import { CountryNames } from '../../common/models/country-names';
 import { RegularExpressions } from '../../common/models/regular-expressions';
+import { PaginationComponent } from '../../common/pagination/pagination.component';
 declare var Metronic: any;
 declare var Layout: any;
 declare var Demo: any;
@@ -34,7 +35,7 @@ declare var $, Papa: any;
         '../../../assets/css/form.css',
         './add-contacts.component.css',
         '../../../assets/css/numbered-textarea.css'],
-    providers: [SocialContact, ZohoContact, SalesforceContact, Pagination, CountryNames, Properties, RegularExpressions]
+    providers: [SocialContact, ZohoContact, SalesforceContact, Pagination, CountryNames, Properties, RegularExpressions,PaginationComponent]
 })
 export class AddContactsComponent implements OnInit {
 
@@ -98,7 +99,9 @@ export class AddContactsComponent implements OnInit {
     allselectedUsers = [];
     isHeaderCheckBoxChecked: boolean = false;
     customResponse: CustomResponse = new CustomResponse();
-
+    pageSize: number = 12;
+    pageNumber: any;
+    
 
     AddContactsOption: typeof AddContactsOption = AddContactsOption;
     selectedAddContactsOption: number = 8;
@@ -108,10 +111,11 @@ export class AddContactsComponent implements OnInit {
     private socialContactType: string;
     emailNotValid: boolean;
     constructor( public socialPagerService: SocialPagerService, public referenceService: ReferenceService, private authenticationService: AuthenticationService,
-            private contactService: ContactService, public regularExpressions: RegularExpressions,
+            private contactService: ContactService, public regularExpressions: RegularExpressions, public paginationComponent: PaginationComponent,
         private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef, private route: ActivatedRoute, public properties: Properties,
         private router: Router, public pagination: Pagination, public xtremandLogger: XtremandLogger, public countryNames: CountryNames ) {
 
+        this.pageNumber = this.paginationComponent.numberPerPage[0];
         this.addContactuser.country = ( this.countryNames.countries[0] );
         let currentUrl = this.router.url;
         if ( currentUrl.includes( 'home/contacts' ) ) {
@@ -931,7 +935,7 @@ export class AddContactsComponent implements OnInit {
             return;
         }
 
-        this.pager = this.socialPagerService.getPager( this.socialContactUsers.length, page );
+        this.pager = this.socialPagerService.getPager( this.socialContactUsers.length, page, this.pageSize );
         this.pagedItems = this.socialContactUsers.slice( this.pager.startIndex, this.pager.endIndex + 1 );
 
         var contactIds1 = this.pagedItems.map( function( a ) { return a.id; });
@@ -1772,6 +1776,13 @@ export class AddContactsComponent implements OnInit {
         $( '#addContactModal' ).modal( 'toggle' );
         $( "#addContactModal .close" ).click()
     }
+    
+    selectedPageNumber(event) {
+        this.pageNumber.value = event;
+        if (event === 0) { event = this.socialContactUsers.length; }
+        this.pageSize = event;
+        this.setPage(1);
+      }
 
     ngOnInit() {
         this.socialContactImage();

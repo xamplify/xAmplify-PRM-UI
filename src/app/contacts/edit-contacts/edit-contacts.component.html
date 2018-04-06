@@ -472,7 +472,7 @@
 															<th>JOB TITLE</th>
 															<th class='text-center'>ADDRESS</th>
 															<th class='text-center'>MORE</th>
-															<th class='text-center'>ACTIONS</th>
+															<th class='text-center' *ngIf="hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId) || authenticationService.isOnlyPartner()">ACTIONS</th>
 														</tr>
 													</thead>
 													<tbody>
