@@ -215,3 +215,11 @@ h3 {
 	left: 10px;
 	position: absolute;
 }
+
+.view-banner{
+    background-color: #00a6e8;
+    color: white;
+    width: 50%;
+    padding: 4px;
+    text-align: center;
+}

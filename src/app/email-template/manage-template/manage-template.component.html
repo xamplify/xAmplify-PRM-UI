@@ -65,9 +65,10 @@
 						<table class='table tgrid'>
 							<thead>
 								<tr>
-									<th colspan="2" style="width: 50%">Email Template List</th>
-									<th>Created Date</th>
-									<th>Actions</th>
+									<th colspan="2" style="width: 40%">Email Template List</th>
+									<th style="width: 20%">Type</th>
+									<th style="width: 20%">Created Date</th>
+									<th style="width: 20%;text-align: center;">Actions</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -76,12 +77,19 @@
 										<img class="img-responsive center-block" src="{{emailTemplate.subject}}" alt="{{emailTemplate.name}}">
 									</td>
 									<td>
-										<h4 class="ellipsis mt5 mb5 f-w-600" title="{{emailTemplate.name}}">{{emailTemplate.name}}</h4>
+										<h4 class="ellipsis mt5 mb5 f-w-600" title="{{emailTemplate.name}}">{{emailTemplate.name | slice:0:25}}
+										<span *ngIf="emailTemplate.name?.length>25">...</span>
+										</h4>
 										<h5 class='m0'>{{emailTemplate.companyName}} 
 										<span class='f-w-600'>
 											<b>{{emailTemplate.createdBy}}</b>
 										</span>
 									 </h5>
+									</td>
+									<td>
+										<h5 class="view-banner" *ngIf="emailTemplate.type=='PARTNER'">PARTNER</h5>
+										<h5 class="view-banner" *ngIf="(emailTemplate.regularCoBrandingTemplate||emailTemplate.videoCoBrandingTemplate) &&emailTemplate.type=='UPLOADED' ">CO-BRANDED</h5>
+										<!-- <h5 *ngIf="emailTemplate.type !='PARTNER'">REGULAR</h5> -->
 									</td>
 									<td>{{emailTemplate.createdDate}}</td>
 									<td>
