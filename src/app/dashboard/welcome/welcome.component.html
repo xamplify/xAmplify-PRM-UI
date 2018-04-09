@@ -44,7 +44,7 @@ cursor: not-allowed;
 		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-2">
 			<div [routerLink]="['/home/videos/manage']" class="portlet light block rounded-0 center color1 padding-top-bottom-5" [class.disabled]="!hasVideoRole || !authenticationService.user.hasCompany? true : null">
 				<div class="col-xs-6">
-					<i class="fa fa-play fa-3" aria-hidden="true" style="font-size: 4em;opacity: 0.5;"></i>
+					<i class="fa fa-play fa-3" aria-hidden="true" style="font-size: 4em;opacity: 0.5;margin: 10px 2px;"></i>
 				</div>
 				<div class="col-xs-6">
 					<h1 class="bold">{{dashboardReport.totalUploadedvideos}}</h1>
@@ -57,7 +57,7 @@ cursor: not-allowed;
 		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-2">
 			<div [routerLink]="['/home/contacts/manage']" class="portlet light block rounded-0 center color2 padding-top-bottom-5" [class.disabled]="!hasContactRole || !authenticationService.user.hasCompany ? true : null">
 				<div class="col-xs-6">
-					<i class="glyphicon glyphicon-th-list" aria-hidden="true" style="font-size: 4em;opacity: 0.5;"></i>
+					<i class="glyphicon glyphicon-th-list" aria-hidden="true" style="font-size: 4em;opacity: 0.5; margin: 10px 2px;"></i>
 				</div>
 				<div class="col-xs-6">
 					<h1 class="bold">{{dashboardReport.totalContacts}}</h1>
@@ -70,7 +70,7 @@ cursor: not-allowed;
 		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-2">
 			<div [routerLink]="['/home/campaigns/manage']" class="portlet light block rounded-0 center color3 padding-top-bottom-5" [class.disabled]="!hasCampaignRole || !authenticationService.user.hasCompany ? true : null">
 				<div class="col-xs-6">
-					<i class="glyphicon glyphicon-bullhorn" aria-hidden="true" style="font-size: 4em;opacity: 0.5;"></i>
+					<i class="glyphicon glyphicon-bullhorn" aria-hidden="true" style="font-size: 4em;opacity: 0.5; margin: 10px 2px;"></i>
 				</div>
 				<div class="col-xs-6">
 					<h1 class="bold">{{dashboardReport.totalCreatedCampaigns}}</h1>
@@ -83,7 +83,7 @@ cursor: not-allowed;
 		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-2">
 			<div [routerLink]="['/home/emailtemplates/manage']" class="portlet light block rounded-0 center color4 padding-top-bottom-5" [class.disabled]="!hasEmailTemplateRole  || !authenticationService.user.hasCompany ? true : null">
 				<div class="col-xs-6">
-					<i class="fa fa-envelope-o fa-3" aria-hidden="true" style="font-size: 4em;opacity: 0.5;"></i>
+					<i class="fa fa-envelope-o fa-3" aria-hidden="true" style="font-size: 4em;opacity: 0.5; margin: 10px 2px;"></i>
 				</div>
 				<div class="col-xs-6">
 					<h1 class="bold">{{dashboardReport.toalEmailTemplates}}</h1>
@@ -96,7 +96,7 @@ cursor: not-allowed;
 		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-2">
 			<div [routerLink]="['/home/social/manage/all']" class="portlet light block rounded-0 center color1 padding-top-bottom-5" [class.disabled]="!hasSocialStatusRole || !authenticationService.user.hasCompany ? true : null">
 				<div class="col-xs-6">
-					<i class="fa fa-users fa-3" aria-hidden="true" style="font-size: 4em;opacity: 0.5;"></i>
+					<i class="fa fa-users fa-3" aria-hidden="true" style="font-size: 4em;opacity: 0.5; margin: 12px 2px;"></i>
 				</div>
 				<div class="col-xs-6">
 					<h1 class="bold">{{dashboardReport.totalSocialAccounts}}</h1>

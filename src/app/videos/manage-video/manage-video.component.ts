@@ -64,7 +64,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.categoryNum = this.videoFileService.categoryNumber = 0;
         this.videoType = this.videoTypes[0];
         this.videoFileService.videoType = this.videoTypes[0].value;
-        //if(this.isPartner){ this.videoFileService.videoType = 'partnerVideos'; }
+        if(this.authenticationService.isOnlyPartner()){ this.videoFileService.videoType = 'partnerVideos'; }
     }
     defaultBannerMessageValues() {
         this.showMessage = this.showUpdatevalue = false;
