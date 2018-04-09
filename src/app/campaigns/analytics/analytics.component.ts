@@ -68,6 +68,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   contactListId:number;
   paginationType:string;
   videoFile: any;
+  userWatchtotalRecords: number;
 
   constructor(private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
     private authenticationService: AuthenticationService, public pagerService: PagerService, public pagination: Pagination,
@@ -313,7 +314,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   campaignWatchedUsersListCount(campaignId: number) {
     this.campaignService.campaignWatchedUsersListCount(campaignId)
       .subscribe(
-      data => this.usersWatchListPagination.totalRecords = data,
+      data => this.userWatchtotalRecords = data,
       error => console.log(error),
       () => console.log()
       )
@@ -322,13 +323,12 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   usersWatchList(campaignId: number, pagination: Pagination) {
     this.paginationType = 'usersWatch';
     this.downloadTypeName = 'usersWatchedList';
-    this.pagination.maxResults = 10;
     this.campaignService.usersWatchList(campaignId, pagination)
       .subscribe(
       data => {
+        this.usersWatchListPagination.totalRecords = this.userWatchtotalRecords;
         this.campaignReport.usersWatchList = data.data;
         $('#usersWatchListModal').modal();
-
         this.usersWatchListPagination = this.pagerService.getPagedItems(this.usersWatchListPagination, this.campaignReport.usersWatchList);
         this.usersWatchTotalList(campaignId, this.usersWatchListPagination.totalRecords);
       },
@@ -547,6 +547,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     this.campaignViewsPagination.pageIndex = 1;
     this.emailActionListPagination.pageIndex = 1;
     this.emailActionListPagination.maxResults = 12;
+    this.paginationType = 'campaignViews';
   }
 
   campaignViewsDonut(timePeriod: string, pagination) {
@@ -768,6 +769,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       })
     }
   ngOnInit() {
+    this.paginationType = 'campaignViews';
     this.emailActionListPagination.pageIndex = 1;
     const userId = this.authenticationService.getUserId();
     this.campaignId = this.route.snapshot.params['campaignId'];
