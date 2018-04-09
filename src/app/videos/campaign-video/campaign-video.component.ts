@@ -355,7 +355,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
         const selfPanorama = this;
         const player = videojs('videoId', {
              "controls": true, 
-             "autoplay": false,
+             "autoplay": true,
              "preload": "auto",
              "customControlsOnMobile": true, 
              "nativeControlsForTouch": true
@@ -558,7 +558,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
         const overrideNativeValue = this.referService.getBrowserInfoForNativeSet();
             this.videoJSplayer = videojs('videoId', {
                 "controls": true, 
-                "autoplay": false,
+                "autoplay": true,
                 "preload": "auto",
                 html5: {
                     hls: {

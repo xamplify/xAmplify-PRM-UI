@@ -373,7 +373,7 @@ input:checked + .slider-new:before {
 															 	<h4 class='f-w-600'>Default View</h4>
 																<section style="margin-left: 7em;">
 																	<switch [(status)]="callActionSwitch.isListView" [onText]="callActionSwitch.onTextValueView" [offText]="callActionSwitch.offTextValueView"
-																		[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size">
+																		[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size">
 																	</switch>
 																</section>
 																</div>
@@ -422,7 +422,7 @@ input:checked + .slider-new:before {
 															<label class="col-xs-3 col-sm-6 col-md-6 control-label" >Enable Video Controller:</label>
 															<div class="col-xs-9 col-sm-6 col-md-6">
 																<switch [(status)]="defaultVideoPlayer.enableVideoController" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-																	[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+																	[onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
 																	(statusChange)="enableVideoController($event)" [disabled]="!hasAllAccess">
 																</switch>
 															</div>
@@ -467,14 +467,14 @@ input:checked + .slider-new:before {
 																<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Sharing:</label>
 																<div class="col-xs-6 col-sm-3 col-md-3">
 		                                                           <switch [(status)]="defaultVideoPlayer.allowSharing" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-											                    	 [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+											                    	 [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
 											                    	 (statusChange)="allowSharing($event)" [disabled]="!hasAllAccess">
 		                                                          </switch> 
 																</div>
 																<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Fullscreen:</label>
 															<div class="col-xs-6 col-sm-3 col-md-3">
 															      <switch [(status)]="defaultVideoPlayer.allowFullscreen" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-											                    	[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+											                    	[onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
 											                    	(statusChange)="changeFullscreen($event)" [disabled]="!hasAllAccess">
 		                                                          </switch>
 															</div>
@@ -483,14 +483,14 @@ input:checked + .slider-new:before {
 														<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Likes:</label>
 														<div class="col-xs-6 col-sm-3 col-md-3">
 														     <switch [(status)]="defaultVideoPlayer.allowLikes" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-											                    	[onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+											                    	[onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
 											                    	(statusChange)="allowLikes($event)" [disabled]="!hasAllAccess">
 		                                                    </switch>
 														</div>
 															<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Embed:</label>
 															<div class="col-xs-6 col-sm-3 col-md-3">
 													           <switch [(status)]="defaultVideoPlayer.allowEmbed" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-																[onColor]="callActionSwitch.onRedColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+																[onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
 																(statusChange)="enableEmbed($event)" [disabled]="!hasAllAccess">
 															 </switch>
 														</div>
@@ -502,14 +502,14 @@ input:checked + .slider-new:before {
 															<label class="col-xs-6 col-sm-3 col-md-3 control-label">Enable Settings:</label>
 																<div class="col-xs-6 col-sm-3 col-md-3">
 																    <switch [(status)]="defaultVideoPlayer.enableSettings" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-											                    	[onColor]="callActionSwitch.onRedColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+											                    	[onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
 											                    	(statusChange)="enableSettings($event)" [disabled]="!hasAllAccess">
 		                                                          </switch>
 																</div>
 																<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Comments:</label>
 															<div class="col-xs-6 col-sm-3 col-md-3">
 														          <switch [(status)]="defaultVideoPlayer.allowComments" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-											                    	[onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+											                    	[onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
 																	(statusChange)="allowComments($event)" [disabled]="!hasAllAccess">
 																 </switch>
 															</div>
@@ -518,14 +518,14 @@ input:checked + .slider-new:before {
 															<label class="col-xs-6 col-sm-3 col-md-3 control-label">Enable Casting:</label>
 															<div class="col-xs-6 col-sm-3 col-md-3">
 														         <switch [(status)]="defaultVideoPlayer.enableCasting" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-											                    	[onColor]="callActionSwitch.onYellowColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+											                    	[onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
 																	(statusChange)="enableCasting($event)" [disabled]="!hasAllAccess">
 																</switch>
 															</div>
 															<label class="col-xs-6 col-sm-3 col-md-3 control-label">360 video:</label>
 																	<div class="col-xs-6 col-sm-3 col-md-3">
 																	<switch [(status)]="defaultVideoPlayer.is360video" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-											                    	  [onColor]="callActionSwitch.onBlueColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+											                    	  [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
 																	  (statusChange)="enable360Video($event)" [disabled]="!hasAllAccess">
 																	</switch>	
 																</div>

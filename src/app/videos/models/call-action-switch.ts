@@ -1,21 +1,21 @@
 export class CallActionSwitch {
-     onTextValue = 'ON';
-     offTextValue = 'OFF';
-     onColorBswitch = 'success';
-     offColorBswitch = 'warning';
-     size = 'small';
-     bsize = 'mini';
-     animate = true;
-     onBlueColorSwitch = 'blue';
-     onGrayColorSwitch = 'gray';
-     onGreenColorSwitch = 'green';
-     onRedColorSwitch = 'red';
-     onSkyBlueColorSwitch = 'sky-blue';
-     onYellowColorSwitch = 'yellow';
-     onDefaultColorSwitch = 'default';
-    
+    onTextValue = 'ON';
+    offTextValue = 'OFF';
+    onColorBswitch = 'success';
+    offColorBswitch = 'warning';
+    size = 'small';
+    bsize = 'mini';
+    animate = true;
+    onBlueColorSwitch = 'blue';
+    onGrayColorSwitch = 'gray';
+    onGreenColorSwitch = 'green';
+    onRedColorSwitch = 'red';
+    onSkyBlueColorSwitch = 'sky-blue';
+    onYellowColorSwitch = 'yellow';
+    onDefaultColorSwitch = 'default';
+    offDefaultColor = 'gray';
     onTextValueView = 'LIST';
     offTextValueView = 'GRID';
     isListView = true;
-    disabled  ='disabled';
+    disabled = 'disabled';
 }
