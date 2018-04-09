@@ -36,6 +36,8 @@ export class AddPartnersComponent implements OnInit {
     checkingForEmail: boolean;
     addPartnerUser: User = new User();
     newPartnerUser = [];
+    invalidPatternEmails = [];
+    validCsvContacts: boolean;
     partners: User[];
     // allPartners: User[];
     partnerId = [];
@@ -309,42 +311,54 @@ export class AddPartnersComponent implements OnInit {
           if(this.newPartnerUser[i].country === "---Please Select Country---"){
               this.newPartnerUser[i].country = null;
           }
+          if ( !this.validateEmailAddress( this.newPartnerUser[i].emailId ) ) {
+              this.invalidPatternEmails.push( this.newPartnerUser[i].emailId )
+          }
+          if ( this.validateEmailAddress( this.newPartnerUser[i].emailId ) ) {
+              this.validCsvContacts = true;
+          }
+          else {
+              this.validCsvContacts = false;
+          }
        }
       if(this.isCompanyDetails){
-        this.xtremandLogger.info( "saving #partnerListId " + this.partnerListId + " data => " + JSON.stringify( this.newPartnerUser ) );
-        this.contactService.updateContactList( this.partnerListId, this.newPartnerUser )
-            .subscribe(
-            ( data: any ) => {
-                data = data;
-                this.xtremandLogger.info( "update partner ListUsers:" + data );
-                $( "tr.new_row" ).each( function() {
-                    $( this ).remove();
-                });
-
-                //this.setResponseDetails( 'SUCCESS', 'your Partner has been saved successfully' );
-                this.customResponse = new CustomResponse( 'SUCCESS', this.properties.PARTNERS_SAVE_SUCCESS, true );
-
-                this.newPartnerUser.length = 0;
-                this.allselectedUsers.length = 0;
-                this.loadPartnerList( this.pagination );
-                this.clipBoard = false;
-                this.cancelPartners();
-            },
-            ( error: any ) => {
-                let body: string = error['_body'];
-                body = body.substring( 1, body.length - 1 );
-                if ( body.includes( 'Please Launch or Delete those campaigns first' ) ) {
-                    //this.setResponseDetails( 'ERROR', body );
-                    this.customResponse = new CustomResponse( 'ERROR', body, true );
-                    console.log( "done" )
-                } else {
-                    this.xtremandLogger.errorPage( error );
-                }
-                console.log( error );
-            },
-            () => this.xtremandLogger.info( "MangePartnerComponent loadPartners() finished" )
-            )
-        this.dublicateEmailId = false;
+          if(this.validCsvContacts){
+            this.xtremandLogger.info( "saving #partnerListId " + this.partnerListId + " data => " + JSON.stringify( this.newPartnerUser ) );
+            this.contactService.updateContactList( this.partnerListId, this.newPartnerUser )
+                .subscribe(
+                ( data: any ) => {
+                    data = data;
+                    this.xtremandLogger.info( "update partner ListUsers:" + data );
+                    $( "tr.new_row" ).each( function() {
+                        $( this ).remove();
+                    });
+    
+                    this.customResponse = new CustomResponse( 'SUCCESS', this.properties.PARTNERS_SAVE_SUCCESS, true );
+    
+                    this.newPartnerUser.length = 0;
+                    this.allselectedUsers.length = 0;
+                    this.loadPartnerList( this.pagination );
+                    this.clipBoard = false;
+                    this.cancelPartners();
+                },
+                ( error: any ) => {
+                    let body: string = error['_body'];
+                    body = body.substring( 1, body.length - 1 );
+                    if ( body.includes( 'Please Launch or Delete those campaigns first' ) ) {
+                        this.customResponse = new CustomResponse( 'ERROR', body, true );
+                        console.log( "done" )
+                    } else {
+                        this.xtremandLogger.errorPage( error );
+                    }
+                    console.log( error );
+                },
+                () => this.xtremandLogger.info( "MangePartnerComponent loadPartners() finished" )
+                )
+            this.dublicateEmailId = false;
+          }else{
+              this.customResponse = new CustomResponse( 'ERROR', "We Found Invalid emailId(s) Please remove "+this.invalidPatternEmails , true );
+              this.invalidPatternEmails = [];
+          }
       }else{
           this.customResponse = new CustomResponse( 'ERROR', "Company Details is required", true );
       }
