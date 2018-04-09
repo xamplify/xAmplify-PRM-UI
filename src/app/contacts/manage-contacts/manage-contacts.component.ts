@@ -1007,6 +1007,8 @@ export class ManageContactsComponent implements OnInit {
         this.isSegmentation = false;
         this.criterias.length = 0;
 
+        this.pagination = new Pagination();
+        this.loadContactLists( this.pagination );
         this.contactsByType.pagination = new Pagination();
 
         this.sortOptionForPagination = this.sortOptionsForPagination[0];
@@ -1018,16 +1020,10 @@ export class ManageContactsComponent implements OnInit {
         this.invalidRemovableContacts = [];
         this.invalidDeleteSucessMessage = false;
         if ( this.contactCountLoad == true ) {
-            this.loadContactLists( this.pagination );
             this.contactsCount();
         }
         this.contactCountLoad = false;
     }
-
-   /* setResponseDetails( responseType: string, responseMessage: string ) {
-        this.response.responseType = responseType;
-        this.response.responseMessage = responseMessage;
-    }*/
 
     resetResponse() {
         this.customResponse.responseType = null;

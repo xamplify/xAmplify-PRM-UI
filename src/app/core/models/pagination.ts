@@ -3,7 +3,7 @@ import { Criteria } from '../../contacts/models/criteria';
 
 export class Pagination {
 	pageIndex = 1;
-	maxResults = 10;
+	maxResults = 12;
 	sortcolumn: string = null;
 	sortingOrder: string = null;
 	searchKey: string = null;
