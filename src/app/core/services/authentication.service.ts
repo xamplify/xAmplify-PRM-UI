@@ -135,6 +135,14 @@ export class AuthenticationService {
             return false;
         }
     }
+    isOrgAdminPartner(){
+        let roleNames = this.getRoles();
+        if((roleNames.indexOf('ROLE_ORG_ADMIN')>-1 && roleNames.indexOf('ROLE_COMPANY_PARTNER')>-1)){
+            return true;
+        }else{
+            return false;
+        }
+    }
     logout(): void {
         console.log('logout()');
         // clear token remove user from local storage to log user out
