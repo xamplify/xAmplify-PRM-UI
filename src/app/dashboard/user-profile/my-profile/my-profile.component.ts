@@ -16,6 +16,7 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 import { CustomResponse } from '../../../common/models/custom-response';
 import { Properties } from '../../../common/models/properties';
+import { RegularExpressions } from '../../../common/models/regular-expressions';
 
 declare var swal, $, Metronic, Layout, Demo, videojs: any;
 
@@ -24,7 +25,7 @@ declare var swal, $, Metronic, Layout, Demo, videojs: any;
     templateUrl: './my-profile.component.html',
     styleUrls: ['./my-profile.component.css', '../../../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css',
         '../../../../assets/admin/pages/css/profile.css', '../../../../assets/css/video-css/video-js.custom.css'],
-    providers: [User, DefaultVideoPlayer, VideoUtilService, CallActionSwitch, Properties]
+    providers: [User, DefaultVideoPlayer, VideoUtilService, CallActionSwitch, Properties, RegularExpressions]
 })
 export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     defaultVideoPlayer: DefaultVideoPlayer;
@@ -76,7 +77,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
     constructor(public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
         public logger: XtremandLogger, public refService: ReferenceService, public videoUtilService: VideoUtilService,
-        public router: Router, public callActionSwitch: CallActionSwitch, public sanitizer: DomSanitizer, public properties: Properties) {
+        public router: Router, public callActionSwitch: CallActionSwitch, public sanitizer: DomSanitizer, 
+        public properties: Properties, public regularExpressions: RegularExpressions) {
         this.userData = this.authenticationService.userProfile;
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
         this.videoUtilService.videoTempDefaultSettings = this.refService.defaultPlayerSettings;
@@ -451,7 +453,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     validateUpdatePasswordForm() {
-        var passwordRegex = '((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})';
+        var passwordRegex = this.regularExpressions.PASSWORD_PATTERN;
         this.updatePasswordForm = this.fb.group({
             'oldPassword': [null, [Validators.required]],
             'newPassword': [null, [Validators.required, Validators.minLength(6), Validators.pattern(passwordRegex)]],
@@ -509,7 +511,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         'newPassword': {
             'required': 'New Password is required.',
             'minlength': 'Minimum 6 Characters',
-            'pattern': 'Password should contain One Upper case letter, one lower case letter, one symbol and one Number'
+            'pattern': 'Use 6 or more characters with a mix of letters, numbers & symbols'
         },
         'confirmNewPassword': {
             'required': 'Confirm Password is required.'

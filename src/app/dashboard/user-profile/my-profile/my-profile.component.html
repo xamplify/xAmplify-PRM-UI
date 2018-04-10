@@ -339,7 +339,7 @@ input:checked + .slider-new:before {
 														<a (click)="hideDiv('update-password-error-div')" class="close" aria-label="close">�</a>
 														<strong>New Password should not be same as Current password</strong>
 													</div>
-													<form [formGroup]="updatePasswordForm" (ngSubmit)="updatePassword()">
+													<form [formGroup]="updatePasswordForm" (ngSubmit)="updatePassword()" autocomplete="off">
 														<div class="form-group">
 															<label class="control-label">Current Password</label>
 															<input type="password" [class]="className"  formControlName="oldPassword" required="required"/>
