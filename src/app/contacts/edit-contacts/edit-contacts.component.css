@@ -22,3 +22,12 @@ a.disabled{pointer-events:none;cursor:not-allowed}
 .actions-block i{font-size: 20px;    text-align: center;vertical-align: middle;display: block;margin-top: 5px;}
 .actions-block a:hover{border: 1px solid #5bb2f5; background: #5bb2f5;color: #FFF;}
 .actions-block a:nth-child(2):hover{background-color: #ff0000;border: 1px solid #ff0000;}
+.textareaNumber {
+	background: url(http://i.imgur.com/2cOaJ.png);
+	background-attachment: local;
+	background-repeat: no-repeat;
+	padding-left: 35px;
+	padding-top: 12px;
+	border-color: #ccc;
+	font-size: 14px;
+}
