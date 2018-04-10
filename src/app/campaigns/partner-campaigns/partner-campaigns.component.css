@@ -12,3 +12,9 @@ label {font-weight: 600;}
 fieldset {
     padding: 10px 20px;
 }
+.dashboard-stat.yellow-gold {
+    text-align: center;
+    padding: 15px;
+    color: #fff;
+    font-size: 14px;
+}
