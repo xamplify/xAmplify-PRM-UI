@@ -38,33 +38,15 @@
     transition: width .6s ease;
 }
 
-  :host /deep/ .bootstrap-switch { 
-border-radius: 0;
+:host /deep/ .bootstrap-switch .bootstrap-switch-handle-on, .bootstrap-switch .bootstrap-switch-handle-off, .bootstrap-switch .bootstrap-switch-label {
+    box-sizing: border-box;
+    cursor: pointer;
+    display: inline-block !important;
+    height: 100%;
+    padding: 5px 12px;
+    font-size: 14px;
+    line-height: 20px;
 }
-
-
-:host /deep/ .bootstrap-switch.bootstrap-switch-small .bootstrap-switch-handle-on,
-.bootstrap-switch.bootstrap-switch-small .bootstrap-switch-handle-off, 
-.bootstrap-switch.bootstrap-switch-small .bootstrap-switch-label {
-    border-radius: 0;
-}
-:host /deep/.bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-success, 
-.bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-success {
-  border-radius: 0;
-}
-:host /deep/ .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-info,
- .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-info{
- border-radius: 0;
-}
-:host /deep/ .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-danger {
- border-radius: 0;
-}
-:host /deep/ .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-primary{
-    border-radius: 0;
-}
-:host /deep/ .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-warning {
-    border-radius: 0;
-} 
 
 .pclass-css{
     padding: 0;
