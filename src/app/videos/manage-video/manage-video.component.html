@@ -18,22 +18,13 @@
 	</div>
 	<div>
 		<div class="row" *ngIf="manageVideos">
-			<div *ngIf="showMessage || showUpdatevalue || deletedVideo || campaignVideo" style="width: 97.5%;" class="col-md-6" id="message" class="col-md-9 alert alert-success alert-dismissable alertMessageCustom">
-				<a class="close" data-dismiss="alert" aria-label="close"></a>
-				<p *ngIf="showMessage">{{showVideoFileName | slice: 0: 50}} video saved Successfully!</p>
-				<p *ngIf="showUpdatevalue">({{showVideoFileName | slice: 0: 50}}) video settings updated successfully.</p>
-				<p *ngIf="deletedVideo">{{showVideoFileName | slice: 0: 50}} video deleted Successfully!</p>
-				<p *ngIf="campaignVideo">{{campaignVideoMesg}}</p>
+			<div class="col-xs-12" style="position: relative;top: -9px;" >
+				<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 			</div>
-			<div class="col-xs-12 col-sm-12 col-md-12">
+				<div class="col-xs-12 col-sm-12 col-md-12">
 				<div class="tabbable tabbable-custom tabbable-noborder" style="background: white">
 					<div class="tab-content" style="min-height: 590px;">
 						<div class="tab-pane active m10">
-							<!-- <div *ngIf="disableDropDowns&& pagination.length==0" class="alert alert-info">
-							   <strong>No videos Found !!! Want to upload videos, Please visit
-								    <a style="color: #2a4c77; text-decoration: underline;" routerLink="../../videos" >Upload Video Page</a>
-							   </strong>
-							</div> -->
 							<div class="page-toolbar">
 								<div *ngIf="!httpRequestLoader.isLoading" class="btn-group pull-right col-xs-12 col-sm-12 col-md-12" style="padding: 0;margin-bottom: 10px; ">
 									<div class="inputs" align="right">
@@ -45,12 +36,6 @@
                                             </select>
 										</div>
 										<div class="col-xs-12 col-md-3">
-											<!-- <span [hidden] = "this.authenticationService.isOnlyPartner()" >
-											<select class="form-control" style="cursor: pointer; width:100%; position: relative;float:left" 
-											[(ngModel)]="videoType" (ngModelChange)="getVideoTypes()">
-											   <option *ngFor="let videoType of videoTypes" [ngValue]="videoType" >{{videoType.name}}</option>
-											</select>
-											</span> -->
 										</div>
 										<div class="col-xs-6 col-sm-3 col-md-3 p0 flex">
 											<ng-container class='m10'>

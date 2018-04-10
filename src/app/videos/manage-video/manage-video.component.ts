@@ -13,6 +13,8 @@ import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { HomeComponent } from '../../core/home/home.component';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { UtilService } from '../../core/services/util.service';
+import { CustomResponse } from '../../common/models/custom-response';
+
 declare var swal, QuickSidebar, Metronic, Demo, Layout, Index, $: any;
 
 @Component({
@@ -34,9 +36,6 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
     categoryNum: number;
     checkTotalRecords: boolean;
     allRecords: number;
-    deletedVideo = false;
-    campaignVideo = false;
-    campaignVideoMesg: string;
     disableDropDowns: boolean;
     hasVideoRole = false;
     hasStatsRole = false;
@@ -45,6 +44,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
     loggedUserName: string;
     hasAllAccess = false;
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
+    customResponse: CustomResponse = new CustomResponse();
     sortVideos: any;
     videoSort: any;
     videoType: any;
@@ -181,7 +181,6 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
     showEditVideo(video: SaveVideoFile) {
         this.referenceService.loading(this.httpRequestLoader, true);
         this.xtremandLogger.log('show edit video method in mange videos ' + JSON.stringify(video));
-        this.closeBannerPopup();
         this.videoFileService.videoViewBy = video.viewBy;
         this.videoFileService.getVideo(video.alias, video.viewBy)
             .subscribe((editVideoFile: SaveVideoFile) => {
@@ -203,7 +202,6 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
             );
     }
     showPlayVideo(video: SaveVideoFile) {
-        this.closeBannerPopup();
         this.referenceService.loading(this.httpRequestLoader, true);
         this.videoFileService.videoViewBy = video.viewBy;
         this.xtremandLogger.log('MangeVideoComponent playVideo:');
@@ -222,7 +220,6 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
             );
     }
     showCampaignVideoReport(video: SaveVideoFile) {
-        this.closeBannerPopup();
         this.referenceService.loading(this.httpRequestLoader, true);
         this.xtremandLogger.log('ManageVideoComponent campaign report:');
         this.videoFileService.getVideo(video.alias, video.viewBy)
@@ -247,7 +244,6 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                 this.referenceService.selectedCampaignType = 'video';
                 this.referenceService.isCampaignFromVideoRouter = true;
                 this.referenceService.videoType =  this.videoFileService.videoType;
-               // if(this.isPartner){ this.referenceService.videoType = 'partnerVideos'; }
                 this.router.navigateByUrl('/home/campaigns/create');
             },
             (error: string) => {
@@ -264,14 +260,15 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                 this.xtremandLogger.log('MangeVideoComponent deleteVideoFile success : ' + data);
                 this.pagination.pagedItems.splice(position, 1);
                 this.defaultBannerMessageValues();
-                this.deletedVideo = true;
+               // this.deletedVideo = true;
                 this.showVideoFileName = videoName;
+                this.showVideoFileName = this.showVideoFileName+' video deleted Successfully';
+                this.customResponse = new CustomResponse( 'SUCCESS', this.showVideoFileName, true );
                 $('html,body').animate({ scrollTop: 0 }, 'slow');
                 if (this.pagination.pagedItems.length === 0) {
                     this.pagination.pageIndex = 1;
                     this.loadVideos(this.pagination);
                 }
-                setTimeout(()=>{ this.deletedVideo = false; },5000); 
             },
             (error: any) => {
                 if (error.search('mobinar is being used in one or more campaigns. Please delete those campaigns') === -1) {
@@ -280,11 +277,9 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                     this.httpRequestLoader.statusCode = error.status;
                 } else if (error.search('mobinar is being used in one or more campaigns. Please delete those campaigns') !== -1) {
                     const message = error.replace('mobinar', 'video');
-                    this.campaignVideoMesg = message;
                     this.defaultBannerMessageValues();
-                    this.campaignVideo = true;
-                    $('html,body').animate({ scrollTop: 0 }, 'slow');
-                    setTimeout(()=>{ this.campaignVideo = false; },5000); 
+                     $('html,body').animate({ scrollTop: 0 }, 'slow');
+                    this.customResponse = new CustomResponse( 'ERROR', message, true );
                 } else {
                     this.xtremandLogger.error('Error In: delete videos ():' + error);
                     this.xtremandLogger.errorPage(error);
@@ -293,7 +288,6 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
             },
             () => this.xtremandLogger.log('deleted functionality done')
             );
-        this.closeBannerPopup();
     }
     deleteVideoAlert(alias: string, position: number, videoName: string) {
         this.xtremandLogger.log('videoId in sweetAlert()');
@@ -313,9 +307,6 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
             console.log('you clicked on option'+dismiss);
         });
     }
-    closeBannerPopup() {
-        this.campaignVideo = this.deletedVideo = false;
-    }
     getVideoType() {
         this.videoType = this.videoFileService.videoType;
         if (this.videoType === this.videoTypes[0].value) {
@@ -325,7 +316,6 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
     update(videoFile: SaveVideoFile) {
         this.videoType = this.videoFileService.videoType;
         this.getVideoType();
-        this.deletedVideo = this.campaignVideo = false;
         if (videoFile != null) { this.homeComponent.getVideoTitles(); }
         this.pagination.pageIndex = 1;
         this.videoSort = this.sortVideos[0];
@@ -337,13 +327,18 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.showVideosPage(true, false, false, false);
         this.showMessage = this.videoFileService.showSave; // boolean
         this.showUpdatevalue = this.videoFileService.showUpadte; // boolean
-        if(this.showMessage === true){  
-            setTimeout(()=>{ this.showMessage = false; },5000); 
-        } else { 
-            setTimeout(()=>{ this.showUpdatevalue = false; },5000); 
-        }
         if (videoFile == null) { this.showVideoFileName = '';
-        } else { this.showVideoFileName = videoFile.title; }
+        } else { 
+            this.showVideoFileName = videoFile.title; 
+        }
+        if(this.showMessage){  
+            this.showVideoFileName = this.showVideoFileName + ' video saved Successfully';
+            this.customResponse = new CustomResponse( 'SUCCESS', this.showVideoFileName, true );
+ 
+         } else if(this.showUpdatevalue){ 
+            this.showVideoFileName = this.showVideoFileName + ' video settings updated successfully';
+            this.customResponse = new CustomResponse( 'SUCCESS', this.showVideoFileName, true );
+         }
         this.xtremandLogger.info('update method called ' + this.showVideoFileName);
     }
     showVideosPage(manageVideos: boolean, editVideo: boolean, playVideo: boolean, campaignReport: boolean) {
@@ -360,7 +355,6 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         if (!this.manageVideos) { this.loadVideos(this.pagination); }
         this.showVideosPage(true, false, false, false);
         this.defaultBannerMessageValues();
-        this.deletedVideo = this.campaignVideo = false;
         this.videoFileService.actionValue = '';
     }
     gotoHome() {
@@ -370,6 +364,5 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         swal.close();
         this.videoFileService.actionValue = this.videoFileService.videoViewBy = '';
-        this.deletedVideo = false;
     }
 }
