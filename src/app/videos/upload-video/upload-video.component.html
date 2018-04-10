@@ -85,11 +85,14 @@
 							<p class="p-tag-loaderCss">Your video has been uploaded. Give us just a moment to process it.</p>
 						</div>
 					</div>
-					<div *ngIf="maxSubscription || noSpaceOnDevice || maxSizeOver|| errorNull || codecSupport" class="alert alert-danger alert-dismissable"
+					<!-- <div *ngIf="maxSubscription || noSpaceOnDevice || maxSizeOver|| errorNull || codecSupport" class="alert alert-danger alert-dismissable"
 					 style="position: relative;top: -13px;">
 						{{failedtoUploadMessage}}
 						<a class="close" data-dismiss="alert" aria-label="close" title="close" (click)="closeBannerAlert()">×</a>
-					</div>
+					</div> -->
+					<div style="position: relative; top:-17px;" *ngIf="!processing">
+					<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+		           </div>
 					<!-- changes   -->
 					<div class="col-xs-12" [ngClass]="{'upload-video-css': uploader.queue.length !== 0}">
 						<div *ngIf="isDisable==false">
@@ -148,7 +151,7 @@
 					 (fileOver)="fileOverBase($event)" (onFileDrop)="fileDropPreview($event)" [uploader]="uploader" class="well my-drop-zone"
 					 style="position: relative; background-color: #00a6e8; cursor:pointer; margin-bottom:0" (click)="dropClick()">
 						<input type="file" ng2FileSelect [uploader]="uploader" accept=".mp4,.mpg,.m4v,.flv,.avi,.mov,.wmv,.divx,.f4v,.mpeg,.vob"
-						 *ngIf="uploader.queue.length==0" style="opacity: 0.0; position: absolute;" title=" " id="file-upload">
+						 *ngIf="uploader.queue.length==0" (change)="fileSizeCheck($event)" style="opacity: 0.0; position: absolute;" title=" " id="file-upload">
 						<div class="text-center">
 							<i class="fa fa-cloud-upload fa-6" aria-hidden="true"></i>
 							<h2 class="upload-video" style="margin:-5px;">Upload a video </h2>

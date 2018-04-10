@@ -260,9 +260,8 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                 this.xtremandLogger.log('MangeVideoComponent deleteVideoFile success : ' + data);
                 this.pagination.pagedItems.splice(position, 1);
                 this.defaultBannerMessageValues();
-               // this.deletedVideo = true;
                 this.showVideoFileName = videoName;
-                this.showVideoFileName = this.showVideoFileName+' video deleted Successfully';
+                this.showVideoFileName = '('+this.showVideoFileName+') video deleted Successfully';
                 this.customResponse = new CustomResponse( 'SUCCESS', this.showVideoFileName, true );
                 $('html,body').animate({ scrollTop: 0 }, 'slow');
                 if (this.pagination.pagedItems.length === 0) {
@@ -332,11 +331,11 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
             this.showVideoFileName = videoFile.title; 
         }
         if(this.showMessage){  
-            this.showVideoFileName = this.showVideoFileName + ' video saved Successfully';
+            this.showVideoFileName = '('+this.showVideoFileName+') video saved Successfully';
             this.customResponse = new CustomResponse( 'SUCCESS', this.showVideoFileName, true );
  
          } else if(this.showUpdatevalue){ 
-            this.showVideoFileName = this.showVideoFileName + ' video settings updated successfully';
+            this.showVideoFileName = '('+this.showVideoFileName+') video settings updated successfully';
             this.customResponse = new CustomResponse( 'SUCCESS', this.showVideoFileName, true );
          }
         this.xtremandLogger.info('update method called ' + this.showVideoFileName);

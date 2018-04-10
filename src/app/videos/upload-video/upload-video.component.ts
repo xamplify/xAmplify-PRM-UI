@@ -14,6 +14,9 @@ import { Ng2DeviceService } from 'ng2-device-detector';
 import { VideoUtilService } from '../services/video-util.service';
 import { SaveVideoFile } from '../models/save-video-file';
 import { HomeComponent } from '../../core/home/home.component';
+
+import { CustomResponse } from '../../common/models/custom-response';
+
 declare var Dropbox, swal, google, QuickSidebar, gapi, downloadFromDropbox, BoxSelect, downloadFromGDrive: any;
 declare var $, videojs: any;
 
@@ -44,7 +47,6 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
     cloudOneDrive: boolean;
     isDisable: boolean;
     checkSpeedValue = false;
-    maxSubscription = false;
     redirectPge = false;
     player: any;
     playerInit = false;
@@ -67,7 +69,6 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
     sweetAlertMesg: string;
     MultipleVideo = false;
     maxVideoSize: number;
-    codecSupport = false;
     isSelectedVideo = false;
     deviceNotSupported = false;
     deviceInfo = null;
@@ -80,10 +81,9 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
     picker: any;
     uploadeRecordVideo = false;
     isProgressBar = false;
-    noSpaceOnDevice = false;
-    errorNull = false;
     failedtoUpload = false;
-    failedtoUploadMessage: string;
+    customResponse: CustomResponse = new CustomResponse();
+
     constructor(public router: Router, public xtremandLogger: XtremandLogger,
         public authenticationService: AuthenticationService, public changeDetectorRef: ChangeDetectorRef,
         public videoFileService: VideoFileService, public cloudUploadService: UploadCloudvideoService,
@@ -107,7 +107,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             this.textAreaDisable = true;
             this.maxTimeDuration = 3400; // record video time
             this.maxVideoSize = 800; // upload video size in MB's
-            $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:1');
+          //  $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:1');
             this.uploader = new FileUploader({
                 allowedMimeType: ['video/m4v', 'video/x-msvideo', 'video/mpg', 'video/mp4', 'video/quicktime',
                     'video/x-ms-wmv', 'video/divx', 'video/x-f4v', 'video/x-matroska', 'video/x-flv', 'video/dvd', 'video/mpeg', 'video/xvid'],
@@ -117,7 +117,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             this.uploader.onAfterAddingFile = (fileItem) => {
                 try{
                 fileItem.withCredentials = false;
-                $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:0.6');
+             //   $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:0.6');
                 console.log(fileItem._file);
                 const isSupportfile = fileItem._file.type.toString();
                 this.checkMimeTypes(isSupportfile);
@@ -136,11 +136,11 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 this.loading = true;
                 this.isProgressBar = false;
                 if (response.includes('No space left on device')) {
-                    this.noSpaceOnDevice = true;
-                    this.failedtoUploadMessage = this.videoUtilService.noSpaceMesg;
+                    this.customResponse = new CustomResponse( 'ERROR', this.videoUtilService.noSpaceMesg, true );
                     this.setTimoutMethod();
                 } else {
-                     this.processVideo(JSON.parse(response).path); }
+                     this.processVideo(JSON.parse(response).path);
+                    }
             };
          //   if (this.refService.uploadRetrivejsCalled === false) {
                 $('head').append('<link href="assets/js/indexjscss/webcam-capture/videojs.record.css" rel="stylesheet"  class="r-video">');
@@ -182,7 +182,6 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
          this.previewDisabled = previewdisable;
     }
     processVideo(responsePath: any) {
-        this.errorNull = false;
         if (!this.videoFileService.isProgressBar) { this.cloudStorageDisabled(); }
         const val = this;
         if (this.RecordSave !== true) {  setTimeout(function () {  val.processing = true; }, 100); }
@@ -211,30 +210,26 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                     } else if (this.playerInit === false) {
                         this.videoFileService.actionValue = '';
                         this.videoFileService.isProgressBar = false;
-                        $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:1');
+                      //  $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:1');
                     } else {
                         this.videoFileService.actionValue = '';
                         this.videoFileService.isProgressBar = false;
-                        $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:1');
+                       // $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:1');
                     }
                 } else {   // Maximum Disk Space Reached for you subscription
                     if (this.processVideoResp.error.includes('maximum upload')) {
                         this.processing = false;
                         this.defaultSettings();
-                        this.maxSubscription = true;
-                        this.failedtoUploadMessage = this.videoUtilService.maxSubscriptionMesg;
+                        this.customResponse = new CustomResponse( 'ERROR', this.videoUtilService.maxSubscriptionMesg, true );
                         this.setTimoutMethod();
                     } else if (this.processVideoResp.error.includes('Codec is not supported')) {
-                        this.codecSupport = true;
-                        this.failedtoUploadMessage = this.videoUtilService.codecNotSupportMesg;
+                        this.customResponse = new CustomResponse( 'ERROR', this.videoUtilService.codecNotSupportMesg, true );
                         this.setTimoutMethod();
                     } else if (this.processVideoResp.error.includes('No space left on device')){
-                        this.noSpaceOnDevice = true;
-                        this.failedtoUploadMessage = this.videoUtilService.noSpaceMesg;
+                        this.customResponse = new CustomResponse( 'ERROR', this.videoUtilService.noSpaceMesg, true );
                         this.setTimoutMethod();
                     } else {
-                        this.errorNull = true;
-                        this.failedtoUploadMessage = this.videoUtilService.errorNullMesg;
+                        this.customResponse = new CustomResponse( 'ERROR', this.videoUtilService.errorNullMesg, true );
                         console.log('process video data object is null please try again:');
                         if (this.RecordSave === true && this.player) {
                             this.player.recorder.reset();
@@ -264,7 +259,8 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             const isSizeExceded: any = fileList[0].size;
             const size = isSizeExceded / (1024 * 1024);
             this.maxSizeOver = size > this.maxVideoSize ? true : false;
-            this.failedtoUploadMessage = this.videoUtilService.maxSizeOverMesg;
+            if(this.maxSizeOver){ this.customResponse = new CustomResponse( 'ERROR',this.videoUtilService.maxSizeOverMesg, true );
+            }
         }
     }
     public fileOverBase(e: any): void {
@@ -276,14 +272,9 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
     }
     setTimoutMethod() {
         this.uploader.queue.length = 0;
-        const val = this;
-        setTimeout(function () {
-            val.maxSizeOver = false;
-            val.maxSubscription = false;
-            val.codecSupport = false;
-            val.noSpaceOnDevice = false;
-            val.errorNull = false;
-            val.router.navigate(['./home/videos']);
+        setTimeout( () => {
+            this.maxSizeOver = false;
+            this.router.navigate(['./home/videos']);
         }, 5000);
     }
     fileDropPreview(file: File): void {
@@ -296,14 +287,6 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             file = null;
             console.log('drop file will not work in progress');
         }
-    }
-    closeBannerAlert() {
-        this.maxSizeOver = false;
-        this.maxSubscription = false;
-        this.codecSupport = false;
-        this.noSpaceOnDevice = false;
-        this.errorNull = false;
-        this.router.navigate(['./home/videos']);
     }
     fileDropDisabled() {
         // this.isChecked =true;
@@ -318,7 +301,6 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         this.defaultSettings();
         this.isChecked = false;
         this.isDisable = false;
-        this.codecSupport = false;
     }
     recordVideo() {
         $('#script-text').val('');
@@ -551,7 +533,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             $('.googleDrive').attr('style', 'cursor:not-allowed; opacity:0.5');
             $('.box').attr('style', 'cursor:not-allowed; opacity:0.5');
             $('.oneDrive').attr('style', 'cursor:not-allowed; opacity:0.5');
-            $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:0.6');
+           // $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:0.6');
         }
     }
     boxChange() {
@@ -573,7 +555,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             $('.dropBox').attr('style', 'cursor:not-allowed; opacity:0.5');
             $('.camera').attr('style', 'cursor:not-allowed; opacity:0.5');
             $('.oneDrive').attr('style', 'cursor:not-allowed; opacity:0.5');
-            $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:0.6');
+          //  $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:0.6');
         }
     }
     googleDriveChange() {
@@ -593,7 +575,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         $('.oneDrive').attr('style', 'cursor:not-allowed; opacity:0.5');
     }
     cloudStorageDisabled() {
-        $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:0.6');
+       // $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:0.6');
         this.defaultDesabled();
     }
     defaultSettings() {
@@ -615,7 +597,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         $('.box').attr('style', 'cursor:pointer; opacity:0.7');
         $('.camera').attr('style', 'cursor:pointer; opacity:0.7');
         $('.oneDrive').attr('style', 'cursor:pointer; opacity:0.7');
-        $('.addfiles').attr('style', 'float: left; margin-right: 9px; opacity:1');
+       // $('.addfiles').attr('style', 'float: left; margin-right: 9px; opacity:1');
     }
     enableDropdown() {
         this.isDisable = false;
@@ -844,12 +826,11 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             this.playerInit = false;
         }
         this.isChecked = false;
-        this.noSpaceOnDevice = false;
         if ((this.isProgressBar || this.uploadeRecordVideo  || this.cloudStorageSelected || this.processing ) 
             && this.errorIsThere === false) {
             this.redirectPge = true;
             this.videoFileService.isProgressBar = true;
-            $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:1');
+          //  $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:1');
             swal('', 'Video is processing backend! your video will be saved as draft mode in manage videos!!');
         }
         if (this.picker) {
