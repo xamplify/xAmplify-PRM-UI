@@ -833,7 +833,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.pagination.pageIndex = 1;
         this.pagination.maxResults = 12;
         this.downloadDataList.length = 0;
-        this.dashboardReport.emailLogList.length = 0;
+        if(this.dashboardReport.emailLogList) { this.dashboardReport.emailLogList.length = 0;}
         this.isLoadingList = true;
         this.isCalledPagination = false;
     }
