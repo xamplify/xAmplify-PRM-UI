@@ -1,5 +1,8 @@
 label {font-weight: 600;}
 .thumb-vid, .thumb-bg {height: 100px}
+.fa.fa-users.disabled{
+    background: gray;
+}
 .fa.fa-users{
     padding: 1em;
     font-size: 1.8em;

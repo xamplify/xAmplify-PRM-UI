@@ -163,7 +163,7 @@
                         <legend>Selected contact list</legend>
                         <div class="row m0">
                             <div class="col-xs-4 p0">
-                                <i class="fa fa-users"></i>
+                                <i class="fa fa-users" [ngClass]="{'disabled': selectedUserlistIds.length < 1}"></i>
                             </div>
                             <div class="col-xs-8" style="top: 1em;">
                                 <h4 class="pull-left" *ngIf="selectedUserlistIds.length < 1">No contact list is selected</h4>
