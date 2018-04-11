@@ -300,6 +300,16 @@ export class AddPartnersComponent implements OnInit {
         }
     }
 
+    validateSocialContacts(socialUsers: any){
+        let users = [];
+         for(let i=0;i< socialUsers.length;i++){
+             if(socialUsers[i].emailId !== null && this.validateEmailAddress(socialUsers[i].emailId)){
+                 users.push(socialUsers[i]);
+             }
+         }
+         return users;
+     }
+    
     saveValidEmails() {
       this.isCompanyDetails = false;
         for(let i=0; i< this.newPartnerUser.length; i++){
@@ -324,6 +334,7 @@ export class AddPartnersComponent implements OnInit {
               this.validCsvContacts = false;
           }
        }
+        this.newPartnerUser = this.validateSocialContacts(this.newPartnerUser);
       if(this.isCompanyDetails){
           if(this.validCsvContacts){
             this.xtremandLogger.info( "saving #partnerListId " + this.partnerListId + " data => " + JSON.stringify( this.newPartnerUser ) );
