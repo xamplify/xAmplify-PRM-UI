@@ -949,6 +949,16 @@ export class AddContactsComponent implements OnInit {
         }
 
     }
+    
+    validateSocialContacts(socialUsers: any){
+       let users = [];
+        for(let i=0;i< socialUsers.length;i++){
+            if(socialUsers[i].emailId !== null && this.validateEmailAddress(socialUsers[i].emailId)){
+                users.push(socialUsers[i]);
+            }
+        }
+        return users;
+    }
 
     saveGoogleContacts() {
         this.socialContact.socialNetwork = "GOOGLE";
@@ -956,7 +966,8 @@ export class AddContactsComponent implements OnInit {
         this.socialContact.isPartnerUserList = this.isPartner;
         this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
         this.socialContact.contactType = "CONTACT";
-        this.socialContact.contacts = this.socialContactUsers;
+        this.socialContact.contacts = this.validateSocialContacts(this.socialContactUsers);
+       // this.socialContact.contacts = this.socialContactUsers;
         if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' ) {
             if ( this.socialContactUsers.length > 0 ) {
                 this.contactService.saveSocialContactList( this.socialContact )
