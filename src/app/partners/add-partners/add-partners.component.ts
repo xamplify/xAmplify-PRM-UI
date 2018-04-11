@@ -303,11 +303,14 @@ export class AddPartnersComponent implements OnInit {
     saveValidEmails() {
       this.isCompanyDetails = false;
         for(let i=0; i< this.newPartnerUser.length; i++){
+         if(this.selectedAddPartnerOption != 3 && this.selectedAddPartnerOption != 6 && this.selectedAddPartnerOption != 7 ){
           if(this.newPartnerUser[i].contactCompany.trim() !=''){
               this.isCompanyDetails = true;
           }else {
               this.isCompanyDetails = false;
           }
+         }else {  this.isCompanyDetails = true;
+         }
           if(this.newPartnerUser[i].country === "---Please Select Country---"){
               this.newPartnerUser[i].country = null;
           }
