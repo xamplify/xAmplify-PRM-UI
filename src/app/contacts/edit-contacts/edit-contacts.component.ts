@@ -877,6 +877,7 @@ export class EditContactsComponent implements OnInit {
             ( data: any ) => {
                 this.xtremandLogger.info( "MangeContactsComponent loadUsersOfContactList() data => " + JSON.stringify( data ) );
                 this.contacts = data.listOfUsers;
+                //this.contactService.allPartners = data.listOfUsers;
                 this.totalRecords = data.totalRecords;
                 this.xtremandLogger.log( data );
                 if ( this.checkingLoadContactsCount == true ) {
@@ -1373,7 +1374,7 @@ export class EditContactsComponent implements OnInit {
             this.contactListObject.isPartnerUserList = this.isPartner;
             if ( this.selectedContactListIds.length == 0) {
                 let listUsers = [];
-                if(this.isPartner == true){
+                if(this.isPartner == true && this.addPartnerSave == true){
                     listUsers = this.contactService.allPartners;
                 }else{
                     listUsers = this.totalListUsers;
