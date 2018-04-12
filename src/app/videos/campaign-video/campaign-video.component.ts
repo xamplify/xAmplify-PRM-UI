@@ -220,19 +220,21 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                             if (updatedBody.includes('<a href="&lt;SocialUbuntuURL&gt;"')) {
                                 updatedBody = updatedBody.replace('<a href="&lt;SocialUbuntuURL&gt;">', '<div id="newPlayerVideo"></div><a>');
                             } else if (updatedBody.includes('<a href="<SocialUbuntuURL>">')) {
-                                updatedBody = updatedBody.replace('<a href="<SocialUbuntuURL>">', '<div id="newPlayerVideo"></div><a>');
+                                updatedBody = updatedBody.replace('<a href="<SocialUbuntuURL>">', '<div id="newPlayerVideo"><div id="overlay-logo-bee"><a href='+this.logoLink+' target="_blank" >'+
+                                '<img id="overlay-logo-bee"  style="position: relative; top: 137px; width: 63px;z-index: 9;left: 402px;" src='+this.authenticationService.MEDIA_URL + this.logoImageUrlPath+'></div>'+
+                                +'</div><a>');
                             } else if (updatedBody.includes("<a href='<SocialUbuntuURL>'>")) {
                                 updatedBody = updatedBody.replace("<a href='<SocialUbuntuURL>'>", '<div id="newPlayerVideo"><div id="overlay-logo-bee"><a href='+this.logoLink+' target="_blank" >'+
-                                 '<img id="image"  style="position: relative; top: 47px; width: 63px;z-index: 9;left: 388px;" src='+this.authenticationService.MEDIA_URL + this.logoImageUrlPath+'></div>'+
+                                 '<img id="overlay-logo-bee"  style="position: relative; top: 137px; width: 63px;z-index: 9;left: 402px;" src='+this.authenticationService.MEDIA_URL + this.logoImageUrlPath+'></div>'+
                                 +'</div><a>');
                             }
                             else {
                                 updatedBody = this.campaignVideoTemplate;
                             }
                             
-                            updatedBody = updatedBody.replace('<div id="newPlayerVideo"></div>', '<div id="newPlayerVideo">'+
-                            '<div id="overlay-logo-bee"><a href='+this.logoLink+' target="_blank" >'+
-                            '<img id="image"  style="position:relative;top: 65px;right: -393px;width: 63px;z-index:9" src='+this.authenticationService.MEDIA_URL + this.logoImageUrlPath+'></a></div></div>');
+                            // updatedBody = updatedBody.replace('<div id="newPlayerVideo"></div>', '<div id="newPlayerVideo">'+
+                            // '<div id="overlay-logo-bee"><a href='+this.logoLink+' target="_blank" >'+
+                            // '<img id="image"  style="position:relative;top: 65px;right: -393px;width: 63px;z-index:9" src='+this.authenticationService.MEDIA_URL + this.logoImageUrlPath+'></a></div></div>');
                            
                             updatedBody = updatedBody.replace("<emailOpenImgURL>", '');
                             updatedBody = updatedBody.replace("<SocialUbuntuImgURL>", '');
