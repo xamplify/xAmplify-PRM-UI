@@ -1,12 +1,15 @@
 <div class="page-content">
-	  <div *ngIf="campaignSuccessMessage?.length > 0" id="lanchSuccess" class="alert alert-success alert-dismissable fade in">
+	<div style="position: relative; top:-6px;">
+	<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+	</div>
+	<!-- <div *ngIf="campaignSuccessMessage?.length > 0" id="lanchSuccess" class="alert alert-success alert-dismissable fade in">
 	  	<a (click)="refService.hideDiv('lanchSuccess')" class="close" aria-label="close">x</a>
 	 	<strong>{{campaignSuccessMessage}}</strong>
-	 </div>
-	  <div *ngIf="isCampaignDeleted" id="deleteSuccess" class="alert alert-success alert-dismissable fade in">
+	 </div> -->
+	  <!-- <div *ngIf="isCampaignDeleted" id="deleteSuccess" class="alert alert-success alert-dismissable fade in">
 	  <a (click)="refService.hideDiv('deleteSuccess')" class="close" aria-label="close">x</a>
 	 	<strong>Campaign Deleted Successfully</strong>
-	 </div>
+	 </div> -->
 	 
 	   <div *ngIf="isScheduledCampaignLaunched" id="scheduleCompleted" class="alert alert-info alert-dismissable fade in">
 	    <a (click)="refService.hideDiv('scheduleCompleted')" class="close" aria-label="close">x</a>
@@ -76,7 +79,7 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr *ngFor='let campaign of pagination.pagedItems'>
+								<tr *ngFor='let campaign of pagination.pagedItems; let i=index'>
 									<td style="width: 10%;">
 										<img *ngIf="campaign.campaignType.indexOf('VIDEO') > -1 && campaign.launched " src="assets/images/video-email.png" style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
 										<img *ngIf="campaign.campaignType.indexOf('VIDEO') > -1 && !campaign.launched " src="assets/images/video-email.png" style="height: 50px;-webkit-filter: grayscale(100%);filter: grayscale(100%);" alt="{{campaign.campaignType}} Campaign">
@@ -123,7 +126,7 @@
 										</a>
 										</ng-container>
 										<a  *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner" 
-											(click)="confirmDeleteCampaign(campaign.campaignId)" title="Delete Campaign"data-rel="fancybox-button"> 
+											(click)="confirmDeleteCampaign(campaign.campaignId, i, campaign.campaignName)" title="Delete Campaign"data-rel="fancybox-button"> 
 											<i class="fa fa-trash"></i>
 										</a>
 										</div>
@@ -140,7 +143,7 @@
 							<app-loader *ngIf="httpRequestLoader.isLoading"></app-loader>
 							<app-error-pages *ngIf="httpRequestLoader.isServerError"></app-error-pages>
 							<ng-container *ngIf="totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
-								<div *ngFor="let campaign of pagination.pagedItems">
+								<div *ngFor="let campaign of pagination.pagedItems; let i= index">
 												<div class="col-md-3 col-sm-4 mix category_1 mix_all"  style="display: block; opacity: 1; margin-top: -35px;">
 										    <div id="container">
 										    	<h3 *ngIf="campaign.launched" class="launched">Launched<span class="launched-arrow"></span></h3> 
@@ -180,7 +183,7 @@
 														</a>
 														</ng-container>
 														
-														<a  *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner" class="mix-preview6" (click)="confirmDeleteCampaign(campaign.campaignId)" title="Delete Campaign"data-rel="fancybox-button" style="margin-top: -1%;margin-left: -6%"> 
+														<a  *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner" class="mix-preview6" (click)="confirmDeleteCampaign(campaign.campaignId, i, campaign.campaignName)" title="Delete Campaign"data-rel="fancybox-button" style="margin-top: -1%;margin-left: -6%"> 
 															<i class="fa fa-trash" style="color:#f43636"></i>
 														</a>
 													</div>

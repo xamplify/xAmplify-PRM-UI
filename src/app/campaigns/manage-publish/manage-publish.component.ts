@@ -15,6 +15,8 @@ import { Pagination} from '../../core/models/pagination';
 import { PagerService } from '../../core/services/pager.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
+import { CustomResponse } from '../../common/models/custom-response';
+
 declare var swal, $, videojs, Metronic, Layout, Demo, TableManaged, Promise: any;
 
 
@@ -62,6 +64,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     saveAsCampaignId = 0;
     saveAsCampaignName = '';
     isOnlyPartner:boolean = false;
+    customResponse: CustomResponse = new CustomResponse();
 
     constructor(private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         private pagination: Pagination, private pagerService: PagerService,
@@ -70,12 +73,15 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         if (this.refService.campaignSuccessMessage == "SCHEDULE") {
             this.showMessageOnTop();
             this.campaignSuccessMessage = "Campaign Scheduled Successfully";
+            this.customResponse = new CustomResponse( 'SUCCESS', this.campaignSuccessMessage, true );
         } else if (this.refService.campaignSuccessMessage == "SAVE") {
             this.showMessageOnTop();
             this.campaignSuccessMessage = "Campaign Saved Successfully";
+            this.customResponse = new CustomResponse( 'SUCCESS', this.campaignSuccessMessage, true );
         } else if (this.refService.campaignSuccessMessage == "NOW") {
             this.showMessageOnTop();
             this.campaignSuccessMessage = "Campaign Launched Successfully";
+            this.customResponse = new CustomResponse( 'SUCCESS', this.campaignSuccessMessage, true );
         }
         this.hasCampaignRole = this.refService.hasSelectedRole(this.refService.roles.campaignRole);
         this.hasStatsRole = this.refService.hasSelectedRole(this.refService.roles.statsRole);
@@ -85,7 +91,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
     showMessageOnTop() {
         $(window).scrollTop(0);
-        setTimeout(function() { $("#lanchSuccess").slideUp(500); }, 5000);
+       // setTimeout(function() { $("#lanchSuccess").slideUp(500); }, 5000);
     }
 
     listCampaign(pagination: Pagination) {
@@ -169,7 +175,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 let isLaunched = this.campaignService.campaign.launched;
                 if (isLaunched) {
                     this.isScheduledCampaignLaunched = true;
-                    setTimeout(function() { $("#scheduleCompleted").slideUp(1000); }, 5000);
+                  //  setTimeout(function() { $("#scheduleCompleted").slideUp(1000); }, 5000);
                 } else {
                     this.router.navigate(["/home/campaigns/edit"]);
                 }
@@ -181,7 +187,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.isScheduledCampaignLaunched = false;
     }
 
-    confirmDeleteCampaign(id: number) {
+    confirmDeleteCampaign(id: number, position:number, name:string) {
         let self = this;
         swal({
             title: 'Are you sure?',
@@ -193,20 +199,24 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             confirmButtonText: 'Yes, delete it!'
 
         }).then(function() {
-            self.deleteCampaign(id);
+            self.deleteCampaign(id, position, name);
         }, function(dismiss:any) {
             console.log('you clicked on option'+dismiss);
         });
     }
 
-    deleteCampaign(id: number) {
+    deleteCampaign(id: number, position:number, campaignName:string) {
         this.campaignService.delete(id)
             .subscribe(
             data => {
                 this.isCampaignDeleted = true;
-                $('#campaignListDiv_' + id).remove();
-                setTimeout(function() { $("#deleteSuccess").slideUp(500); }, 5000);
-                this.pagination.pageIndex = this.pagination.pageIndex - 1;
+               // $('#campaignListDiv_' + id).remove();
+              //  setTimeout(function() { $("#deleteSuccess").slideUp(500); }, 5000);
+              //  this.pagination.pageIndex = this.pagination.pageIndex - 1;
+                const deleteMessage = campaignName + 'Campaign Deleted Successfully'; 
+                this.customResponse = new CustomResponse( 'SUCCESS', deleteMessage, true );
+                this.pagination.pagedItems.splice(position, 1);
+                this.pagination.pageIndex = 1;
                 this.listCampaign(this.pagination);
             },
             error => { this.logger.errorPage(error) },
@@ -242,7 +252,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 $('#lanchSuccess').show(600);
                 $('#saveAsModal').modal('hide');
                 this.showMessageOnTop();
-                setTimeout(function() { $("#lanchSuccess").slideUp(500); }, 5000);
+              //  setTimeout(function() { $("#lanchSuccess").slideUp(500); }, 5000);
                 this.listCampaign(this.pagination);
                 console.log("saveAsCampaign Successfully")
             },
