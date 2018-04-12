@@ -250,7 +250,7 @@
 											<div class="col-sm-4" style="top: 9px">
 												<div>
 													<div>
-														<button id="cancel_button" class="btn pull-right"
+														<button id="cancel_button"[disabled]="selectedAddContactsOption == 8" class="btn pull-right"
 															(click)="cancelContacts()" style="margin-left: 5px;">
 															Cancel<i class="fa fa-cancel"></i>
 														</button>
@@ -261,7 +261,7 @@
 															Actions <i class="fa fa-angle-down"></i>
 														</button>
 														<ul class="dropdown-menu pull-right">
-															<li><a id="save_button" (click)="saveContacts()">Save
+															<li><a [class.disabled]="selectedAddContactsOption == 8" id="save_button" (click)="saveContacts()">Save
 															</a></li>
 															<li><a id="saveAs_button"
 																*ngIf="selectedAddContactsOption == 8"
@@ -269,7 +269,7 @@
 															<li><a id="exportToExcel"
 																*ngIf="selectedAddContactsOption == 8"
 																(click)="downloadList()">Export To Excel</a></li>
-															<li><a id="delete_button"
+															<li><a id="delete_button" [class.disabled]="selectedContactListIds?.length == 0"
 																*ngIf="selectedAddContactsOption == 8 || selectedAddContactsOption == 9"
 																(click)="showAlert(selectedContactListId)"> Delete</a></li>
 														</ul>
