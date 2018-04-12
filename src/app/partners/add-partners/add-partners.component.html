@@ -239,8 +239,8 @@ img:hover {
 				Actions <i class="fa fa-angle-down"></i>
 			</button>
 			<ul class="dropdown-menu pull-right">
-				<li><a id="save_button" (click)="saveContacts()">Save </a></li>
-				<li><a id="save_button" (click)="cancelPartners()">Cancel </a></li>
+				<li><a id="save_button" [class.disabled]="selectedAddPartnerOption == 5" (click)="saveContacts()">Save </a></li>
+				<li><a id="save_button" [class.disabled]="selectedAddPartnerOption == 5" (click)="cancelPartners()">Cancel </a></li>
 				<li><a id="saveAs_button"
 					*ngIf="selectedAddPartnerOption == 5" (click)="editContactComponent.saveAs(); editContactComponent.addPartnerSave = true">Save
 						As </a></li>
