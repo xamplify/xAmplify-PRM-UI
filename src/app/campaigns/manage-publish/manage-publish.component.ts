@@ -19,7 +19,6 @@ import { CustomResponse } from '../../common/models/custom-response';
 
 declare var swal, $, videojs, Metronic, Layout, Demo, TableManaged, Promise: any;
 
-
 @Component({
     selector: 'app-manage-publish',
     templateUrl: './manage-publish.component.html',
