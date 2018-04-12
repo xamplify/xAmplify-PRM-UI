@@ -85,11 +85,6 @@
 							<p class="p-tag-loaderCss">Your video has been uploaded. Give us just a moment to process it.</p>
 						</div>
 					</div>
-					<!-- <div *ngIf="maxSubscription || noSpaceOnDevice || maxSizeOver|| errorNull || codecSupport" class="alert alert-danger alert-dismissable"
-					 style="position: relative;top: -13px;">
-						{{failedtoUploadMessage}}
-						<a class="close" data-dismiss="alert" aria-label="close" title="close" (click)="closeBannerAlert()">×</a>
-					</div> -->
 					<div style="position: relative; top:-17px;" *ngIf="!processing">
 					<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 		           </div>

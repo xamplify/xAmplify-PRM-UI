@@ -27,8 +27,8 @@ export class VideoUtilService {
         { 'name': 'Sort By', 'value': '' },
         { 'name': 'Title(A-Z)', 'value': 'title-ASC' },
         { 'name': 'Title(Z-A)', 'value': 'title-DESC' },
-        { 'name': 'Created Time(ASC)', 'value': 'createdTime-ASC' },
-        { 'name': 'Created Time(DESC)', 'value': 'createdTime-DESC' },
+        { 'name': 'Upload Date(ASC)', 'value': 'createdTime-ASC' },
+        { 'name': 'Upload Date(DESC)', 'value': 'createdTime-DESC' },
         { 'name': 'ViewBy(ASC)', 'value': 'viewBy-ASC' },
         { 'name': 'ViewBy(DESC)', 'value': 'viewBy-DESC' },
     ];

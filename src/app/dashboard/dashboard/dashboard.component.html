@@ -289,7 +289,7 @@ td>h5 {
 					<div class="col-xs-12 col-sm-4">
 						<a class="btn-success btn-block notification-box" [routerLink]="['/home/campaigns/partner/regular']">
 							<span><i class="fa fa-envelope"></i></span>
-							<h4>Regular campaigns shared</h4>
+							<h4>Email campaigns shared</h4>
 							<h3><span *ngIf="partnerCampaignsCountMap">{{partnerCampaignsCountMap.totalRegularCampaign}}</span></h3>
 						</a>
 					</div>
@@ -358,7 +358,7 @@ td>h5 {
 								<div class="text-center" style="margin: 3.7em 0.5em;">
 									<h5 style="color: rgb(119, 119, 119);">create campaign of your choice</h5>
 									<button class="color1 btn-campaign btn-block" (click)="createCampaign('video')">Video Campaign</button>
-									<button class="color2 btn-campaign btn-block" (click)="createCampaign('regular')">Regular Campaign</button>
+									<button class="color2 btn-campaign btn-block" (click)="createCampaign('regular')">Email Campaign</button>
 								</div>
 							</div>
 						</div>
