@@ -33,6 +33,7 @@ declare var $: any;
     providers: [DatePipe, CallActionSwitch]
 })
 export class PartnerCampaignsComponent implements OnInit {
+    selectedEmailTemplateId: number;
     loggedInUserId: number;
     campaigns: any;
     campaign: Campaign;
@@ -174,8 +175,7 @@ export class PartnerCampaignsComponent implements OnInit {
         this.campaignService.getCampaignPartnerByCampaignIdAndUserId(campaignId, userId)
             .subscribe(
             result => {
-                console.log(result);
-                this.campaign.selectedEmailTemplateId = result.emailTemplateId;
+                this.selectedEmailTemplateId = result.emailTemplateId;
             },
             error => console.log(error),
             () => { });
@@ -342,7 +342,7 @@ export class PartnerCampaignsComponent implements OnInit {
             'scheduleTime': this.campaignLaunchForm.value.launchTime,
             'timeZoneId': "Asia/Calcutta",
             'campaignId': 0,
-            'selectedEmailTemplateId': this.campaign.emailTemplate.id,
+            'selectedEmailTemplateId': this.selectedEmailTemplateId,
             'regularEmail': this.campaign.regularEmail,
             'testEmailId': emailId,
             'campaignReplies': this.replies,
