@@ -230,6 +230,12 @@ export class CampaignService {
             .catch(this.handleError);        
     }
 
+    getCampaignPartnerByCampaignIdAndUserId(campaignId: number, userId: number){
+        return this.http.get(this.URL+`campaign/partner-campaign/${campaignId}/${userId}?access_token=${this.authenticationService.access_token}`)
+            .map(this.extractData)
+            .catch(this.handleError);        
+    }
+
     private extractData(res: Response) {
         let body = res.json();
         console.log(body);
