@@ -51,7 +51,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     profilePictueError: boolean = false;
     profilePictureErrorMessage: string = "";
     active = false;
-   // defaultPlayerSuccess = false;
     isPlayed = false;
     loggedInUserId: number = 0;
     tempPlayerColor: string;
@@ -112,8 +111,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             maxFileSize: 100 * 1024 * 1024, // 100 MB
             url: this.authenticationService.REST_URL + "admin/uploadProfilePicture/" + this.loggedInUserId + "?access_token=" + this.authenticationService.access_token
         });
-
-
         this.uploader.onAfterAddingFile = (file) => {
             console.log(file);
             file.withCredentials = false;
@@ -148,7 +145,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             console.log(response);
             console.log(this.logoUploader.queue[0]);
             if (JSON.parse(response).message === null) {
-                //   this.logoUploader.queue[0].upload(); 
+                this.customResponse = new CustomResponse('ERROR', this.properties.PROCESS_REQUEST_ERROR, true);
             } else {
                 this.logoUploader.queue.length = 0;
                 this.logoImageUrlPath = this.defaultVideoPlayer.brandingLogoUri = JSON.parse(response).path;
@@ -382,7 +379,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     updatePassword() {
         console.log(this.updatePasswordForm.value);
         $('#update-password-error-div').hide();
-     //   $("#update-password-div").hide();
         var userPassword = {
             'oldPassword': this.updatePasswordForm.value.oldPassword,
             'newPassword': this.updatePasswordForm.value.newPassword,
@@ -409,7 +405,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                                     this.className = "form-control ng-touched ng-dirty ng-valid";
                                 }
                             } else if (response.message == "Password Updated Successfully") {
-                                $("#update-password-div").show(600);
                                 this.customResponse = new CustomResponse('SUCCESS',this.properties.PASSWORD_UPDATED,true);
                                 this.updatePasswordForm.reset();
                             } else {

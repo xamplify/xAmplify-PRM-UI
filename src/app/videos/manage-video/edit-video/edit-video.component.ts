@@ -289,6 +289,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     // clear videojs logo
     clearLogo(){
       this.brandLogoUrl = undefined;
+      this.videoLogoUploader.queue.length = 0
     }
     // image path and gif image path methods
     clearOwnThumbnail() {
