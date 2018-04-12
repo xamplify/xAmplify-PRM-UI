@@ -202,16 +202,16 @@ input:checked + .slider-new:before {
 											</div>
 											<ul class="nav nav-tabs">
 												<li class="active">
-													<a href="#tab_1_1" data-toggle="tab" >Personal Info</a>
+													<a href="#tab_1_1" data-toggle="tab" (click)="clearCustomResponse()">Personal Info</a>
 												</li>
 												<li>
-													<a href="#tab_1_2" data-toggle="tab" >Change Avatar</a>
+													<a href="#tab_1_2" data-toggle="tab" (click)="clearCustomResponse()">Change Avatar</a>
 												</li>
 												<li>
-													<a href="#tab_1_3" data-toggle="tab" >Change Password</a>
+													<a href="#tab_1_3" data-toggle="tab" (click)="clearCustomResponse()">Change Password</a>
 												</li>
 												<li>
-													<a href="#tab_1_4" data-toggle="tab" >Settings</a>
+													<a href="#tab_1_4" data-toggle="tab" (click)="clearCustomResponse()">Settings</a>
 												</li>
 												<li *ngIf="hasCompany" (click)="videojsCall()">
 													<a href="#tab_1_5" data-toggle="tab">Default Player Settings</a>
@@ -219,12 +219,9 @@ input:checked + .slider-new:before {
 											</ul>
 										</div>
 										<div class="portlet-body clearfix">
+												<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 											<div class="tab-content">
 											<div class="tab-pane active" id="tab_1_1" [ngBusy]="{busy: busy, message: 'Please Wait...',minDuration:1000}">
-													<div  class="alert alert-success alert-dismissable" id="update-profile-div-id" style="display: none">
-													 <a (click)="hideDiv('update-profile-div-id')" class="close" aria-label="close">x</a>
-														<strong>Profile Updated Successfully</strong>
-													</div>
 													<form role="form" [formGroup]="updateUserProfileForm" (ngSubmit)="updateUserProfile()">
 														<div class="form-group">
 															<label class="control-label">First Name</label>
@@ -266,10 +263,6 @@ input:checked + .slider-new:before {
 													</form>
 												</div>
 												<div class="tab-pane" id="tab_1_2">
-													<div class="alert alert-success" id="profile-pic-upload-div" style="display: none">
-														<a (click)="hideDiv('profile-pic-upload-div')" class="close" aria-label="close">�</a>
-														<strong>Profile Picture Updated Successfully</strong>
-													</div>
 													<div *ngIf="profilePictueError" class="alert alert-danger">
 														<strong>{{profilePictureErrorMessage}}</strong>
 													</div>
@@ -331,10 +324,10 @@ input:checked + .slider-new:before {
 												<!-- END CHANGE AVATAR TAB -->
 												<!-- CHANGE PASSWORD TAB -->
 												<div class="tab-pane" id="tab_1_3" [ngBusy]="{busy: updatePasswordBusy, message: 'Please Wait...'}">
-													<div id="update-password-div" class="alert alert-success" style="display: none;">
+													<!-- <div id="update-password-div" class="alert alert-success" style="display: none;">
 														<a (click)="hideDiv('update-password-div')" class="close" aria-label="close">�</a>
 														<strong>Password Updated Successfully</strong>
-													</div>
+													</div> -->
 													<div id="update-password-error-div" class="alert alert-danger" style="display: none;">
 														<a (click)="hideDiv('update-password-error-div')" class="close" aria-label="close">�</a>
 														<strong>New Password should not be same as Current password</strong>
@@ -365,7 +358,6 @@ input:checked + .slider-new:before {
 												<!-- PRIVACY SETTINGS TAB -->
 												<div class="tab-pane" id="tab_1_4">
 													<form action="#">
-														<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 														<table class="table table-light">
 														<tr>
 															<td>
@@ -393,16 +385,6 @@ input:checked + .slider-new:before {
 												<!--video default player settings-->
 													<div class="tab-pane" id="tab_1_5"  [ngBusy]="{busy: updatePlayerBusy, message: 'Please Wait...', minDuration:1000}">
 														<div>   
-															<!-- video js logo add -->
-														<div *ngIf="defaultPlayerSuccess" id="defaultPlayerSettings"
-															class="alert alert-success alert-dismissable">
-															<a  class="close" data-dismiss="alert" aria-label="close" (click)="closeSuccessPopup()"></a>
-															<strong> Default player settings updated Successfully!</strong> 
-														</div>
-														<div *ngIf="logoUrlUpdated" class="alert alert-success alert-dismissable">
-															<a  class="close" data-dismiss="alert" aria-label="close" (click)="closeSuccessPopup()"></a>
-															<strong>Co-Branding video Logo Uploaded Successfully!</strong> 
-														</div>
 														<div *ngIf="!isOnlyPartnerRole">	
 														<form role="form" [formGroup]="defaultPlayerForm" *ngIf="active" (ngSubmit)="UpdatePlayerSettingsValues()">
 														<div class= "col-xs-12" style="padding:0">

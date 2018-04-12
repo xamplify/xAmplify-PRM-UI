@@ -74,4 +74,10 @@ export class Properties {
     /* User */
     PROCESS_REQUEST_SUCCESS = "Your request has been successfully processed.";
     PROCESS_REQUEST_ERROR = "An error occurred while processing your request.";
+    DEFAULT_PLAYER_SETTINGS = 'Default player settings updated Successfully';
+    VIDEO_LOGO_UPDATED = 'Co-Branding video Logo Uploaded Successfully';
+    PROFILE_PIC_UPDATED='Profile Picture Updated Successfully';
+    PROFILE_UPDATED = 'Profile Updated Successfully';
+    PASSWORD_UPDATED= 'Password Updated Successfully';
+    PAWORD_ERROR = 'New Password should not be same as Current password'
 }

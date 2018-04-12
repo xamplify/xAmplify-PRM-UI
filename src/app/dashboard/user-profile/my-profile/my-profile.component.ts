@@ -51,7 +51,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     profilePictueError: boolean = false;
     profilePictureErrorMessage: string = "";
     active = false;
-    defaultPlayerSuccess = false;
+   // defaultPlayerSuccess = false;
     isPlayed = false;
     loggedInUserId: number = 0;
     tempPlayerColor: string;
@@ -74,7 +74,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     roleLength: boolean;
     ngxloading: boolean;
     customResponse: CustomResponse = new CustomResponse();
-
+    defaultPlayerSuccess: CustomResponse = new CustomResponse();
     constructor(public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
         public logger: XtremandLogger, public refService: ReferenceService, public videoUtilService: VideoUtilService,
         public router: Router, public callActionSwitch: CallActionSwitch, public sanitizer: DomSanitizer, 
@@ -127,10 +127,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             this.uploader.queue.length = 0;
             this.clearImage();
             this.profileUploadSuccess = true;
-            $('#profile-pic-upload-div').show();
+            this.customResponse = new CustomResponse('SUCCESS', this.properties.PROFILE_PIC_UPDATED,true);
             this.refService.topNavBarUserDetails.profilePicutrePath = imageFilePath['message'];
             this.authenticationService.userProfile.profileImagePath = imageFilePath['message'];
-            setTimeout(function () { $('#profile-pic-upload-div').hide(500); }, 5000);
         };
         this.logoUploader = new FileUploader({
             allowedMimeType: ['image/jpeg', 'image/pjpeg', 'image/jpeg', 'image/pjpeg', 'image/png'],
@@ -174,10 +173,11 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                     console.log(data);
                     if (data !== undefined) {
                         this.ngxloading = false;
-                        this.logoUrlUpdated = true;
+                    //    this.logoUrlUpdated = true;
+                        this.customResponse =  new CustomResponse('SUCCESS',this.properties.VIDEO_LOGO_UPDATED,true);
                         this.logoImageUrlPath = data.brandingLogoPath
                         this.logoLink = data.brandingLogoDescUri;
-                        setTimeout(()=>{  this.logoUrlUpdated = false; },5000)
+                     //   setTimeout(()=>{  this.logoUrlUpdated = false; },5000)
                     } else { this.ngxloading = false; }
                 },
                 (error) => { this.ngxloading = false; });
@@ -243,6 +243,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
     videojsCall() {
+        this.customResponse =  new CustomResponse();
         if (!this.videoJSplayer && !this.isOnlyPartnerRole) {
             const self = this;
             const overrideNativeValue = this.refService.getBrowserInfoForNativeSet();
@@ -298,6 +299,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     imageUpload(event){
         $('#'+event).click();
+    }
+    clearCustomResponse(){
+        this.customResponse = new CustomResponse();
     }
     ngOnInit() {
         try {
@@ -378,7 +382,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     updatePassword() {
         console.log(this.updatePasswordForm.value);
         $('#update-password-error-div').hide();
-        $("#update-password-div").hide();
+     //   $("#update-password-div").hide();
         var userPassword = {
             'oldPassword': this.updatePasswordForm.value.oldPassword,
             'newPassword': this.updatePasswordForm.value.newPassword,
@@ -406,6 +410,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                                 }
                             } else if (response.message == "Password Updated Successfully") {
                                 $("#update-password-div").show(600);
+                                this.customResponse = new CustomResponse('SUCCESS',this.properties.PASSWORD_UPDATED,true);
                                 this.updatePasswordForm.reset();
                             } else {
                                 this.logger.error(this.refService.errorPrepender + " updatePassword():" + data);
@@ -618,7 +623,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     updateUserProfile() {
         console.log(this.updateUserProfileForm.value);
         this.refService.goToTop();
-        $("#update-profile-div-id").hide();
         this.busy = this.userService.updateUserProfile(this.updateUserProfileForm.value, this.authenticationService.getUserId())
             .subscribe(
                 data => {
@@ -626,7 +630,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                         var response = data;
                         var message = response.message;
                         if (message === "User Updated") {
-                            setTimeout(function () { $("#update-profile-div-id").show(500); }, 1000);
+                            this.customResponse =  new CustomResponse('SUCCESS', this.properties.PROFILE_UPDATED,true);
                             this.userData = this.updateUserProfileForm.value;
                             this.userData.displayName = this.updateUserProfileForm.value.firstName;
                             this.parentModel.displayName = this.updateUserProfileForm.value.firstName;
@@ -695,10 +699,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             }
         );
-    }
-    closeSuccessPopup() {
-        this.defaultPlayerSuccess = false;
-        this.logoUrlUpdated = false;
     }
     enableVideoController(event: any) {
         if (this.isPlayed === false) {
@@ -791,20 +791,21 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     UpdatePlayerSettingsValues() {
         this.isPlayerSettingUpdated = true;
-        this.defaultPlayerSuccess = false;
+      //  this.defaultPlayerSuccess = false;
         this.defaultVideoPlayer.playerColor = this.compPlayerColor;
         this.defaultVideoPlayer.controllerColor = this.compControllerColor;
         this.defaultVideoPlayer.transparency = this.valueRange;
         this.updatePlayerBusy = this.userService.updatePlayerSettings(this.defaultVideoPlayer)
             .subscribe((result: any) => {
-                setTimeout(() => { this.defaultPlayerSuccess = true; }, 1003);
+              //  setTimeout(() => { this.defaultPlayerSuccess = true; }, 1003);
+                this.customResponse = new CustomResponse('SUCCESS', this.properties.DEFAULT_PLAYER_SETTINGS, true);
                 this.getVideoDefaultSettings();  },
                 (error:any) => { console.error('error in update player setting api'); }
             );
-         setTimeout(() => {
-            $('#defaultPlayerSettings').slideUp(500);
-            this.defaultPlayerSuccess = false;
-        }, 5000);
+        //  setTimeout(() => {
+        //     $('#defaultPlayerSettings').slideUp(500);
+        //     this.defaultPlayerSuccess = false;
+        // }, 5000);
     }
     resetForm() {
         console.log(this.refService.defaultPlayerSettings);
