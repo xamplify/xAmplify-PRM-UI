@@ -1,7 +1,4 @@
 <div class="page-content">
-	<div style="position: relative; top:-6px;">
-	<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
-	</div>
 	<!-- <div *ngIf="campaignSuccessMessage?.length > 0" id="lanchSuccess" class="alert alert-success alert-dismissable fade in">
 	  	<a (click)="refService.hideDiv('lanchSuccess')" class="close" aria-label="close">x</a>
 	 	<strong>{{campaignSuccessMessage}}</strong>
@@ -26,6 +23,9 @@
 				<a>Manage Campaigns</a>
 			</li>
 		</ul>
+	</div>
+	<div style="position: relative; top:-10px;">
+		<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 	</div>
 	<div class="row">
 		<div class="col-md-12">

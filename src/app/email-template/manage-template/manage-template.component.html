@@ -1,7 +1,4 @@
 <div class="page-content">
-	<div style="position: relative;top:-5px">
-	<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
-    </div>
 	<!-- <div *ngIf="isEmailTemplateDeleted" id="emailTemplateDeleteId" class="alert alert-success alert-dismissable fade in">
 	 	 <strong>{{selectedEmailTemplateName}}</strong> Deleted Successfully
 	 </div> -->
@@ -21,6 +18,10 @@
 		</ul>
 		<!-- <a class="btn btn-info" id="emailtemplate-help" [routerLink]="['/home/emailtemplates/help']">Custom Template Delivers</a> -->
 	</div>
+	<div style="position: relative;top:-10px">
+		<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+	</div>
+
 	<div class="row">
 		<div class="col-md-12">
 			<div class="portlet light">
