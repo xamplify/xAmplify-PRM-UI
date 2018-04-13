@@ -217,7 +217,7 @@ export class AddPartnersComponent implements OnInit {
     }
 
     addPartnerModalOpen() {
-        $( "#addPartnerModal" ).show();
+      //  $( "#addPartnerModal" ).show();
         this.addPartnerUser.country = ( this.countryNames.countries[0] );
     }
 
@@ -236,7 +236,8 @@ export class AddPartnersComponent implements OnInit {
     }
 
     addRow() {
-        $( "#addPartnerModal .close" ).click()
+        // $( "#addPartnerModal .close" ).click()
+        this.addPartnerModalClose();
         this.newPartnerUser.push( this.addPartnerUser );
         this.selectedAddPartnerOption = 1;
         this.saveContacts();

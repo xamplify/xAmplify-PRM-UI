@@ -780,8 +780,9 @@ export class AddContactsComponent implements OnInit {
     }
 
     addRow() {
-        if ( this.emailNotValid == true ) {
-            $( "#addContactModal .close" ).click()
+        if ( this.emailNotValid === true ) {
+            // $( "#addContactModal .close" ).click()
+              this.addContactModalClose();
             this.newUsers.push( this.addContactuser );
         }
         this.selectedAddContactsOption = 0;
@@ -1779,7 +1780,7 @@ export class AddContactsComponent implements OnInit {
     }
 
     addContactModalOpen() {
-        $( "#addContactModal" ).show();
+       // $( "#addContactModal" ).show();
         this.addContactuser.country = ( this.countryNames.countries[0] );
     }
 

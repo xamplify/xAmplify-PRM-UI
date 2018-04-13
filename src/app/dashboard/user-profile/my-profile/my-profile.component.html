@@ -520,12 +520,12 @@ input:checked + .slider-new:before {
 												 	<!-- videojs logo code end -->
 													<div>
 													<fieldset>
-														<legend *ngIf="isOnlyPartnerRole; else orgAdmin"> Add Co-Branding video Logo </legend>
-														<ng-template #orgAdmin ><legend> Add branding Logo </legend></ng-template>
+														<legend *ngIf="isOnlyPartnerRole; else orgAdmin"> Add Co-Branding Logo </legend>
+														<ng-template #orgAdmin ><legend> Add your company Logo </legend></ng-template>
 												
 														<div *ngIf="!logoImageUrlPath">
-															<label *ngIf="isOnlyPartnerRole; else orgAdminLogo" class="control-label co-branding">Co-Branding Video Logo: </label>
-															<ng-template #orgAdminLogo><label class="control-label co-branding" >Video Logo: </label></ng-template>
+															<label *ngIf="isOnlyPartnerRole; else orgAdminLogo" class="control-label co-branding">Co-Branding Logo: </label>
+															<ng-template #orgAdminLogo><label class="control-label co-branding" >Company Logo: </label></ng-template>
 															<div class="fileinput fileinput-new file-css" data-provides="fileinput">
 																<div class="fileinput-new thumbnail thumbnail-css">
 																	<img class="image-profile" alt="Image" src="assets/images/upload-profile.png" (click)="imageUpload('imageUpload')">
@@ -538,8 +538,8 @@ input:checked + .slider-new:before {
 														</div>
 														<div>
 															<div *ngIf="logoImageUrlPath">
-															<label *ngIf="isOnlyPartnerRole; else orgAdminLogo" class="control-label co-branding">Co-Branding Video Logo: </label>
-															<ng-template #orgAdminLogo><label class="control-label co-branding">Video Logo: </label></ng-template>
+															<label *ngIf="isOnlyPartnerRole; else orgAdminLogo" class="control-label co-branding">Co-Branding Logo: </label>
+															<ng-template #orgAdminLogo><label class="control-label co-branding">Company Logo: </label></ng-template>
 															 <div class="img-wrap img-responsive img-thumbnail rounded-0">
 																<span (click)="clearLogo()"><i class="fa fa-times-circle"></i></span>
 																<img [src]= "authenticationService.MEDIA_URL + logoImageUrlPath" style="height: 81px; width: auto;">
@@ -547,8 +547,8 @@ input:checked + .slider-new:before {
 														</div>
 														</div>
 														<div>
-															<label *ngIf="isOnlyPartnerRole; else orgAdminLogoUrl" class="control-label" style="left: 27px; position: relative;">Co-Branding Video Logo Url: </label>
-															<ng-template #orgAdminLogoUrl><label class="control-label" style="left: 20px; position: relative;">Video Logo Url: </label></ng-template>
+															<label *ngIf="isOnlyPartnerRole; else orgAdminLogoUrl" class="control-label" style="left: 27px; position: relative;">Co-Branding Logo Url: </label>
+															<ng-template #orgAdminLogoUrl><label class="control-label" style="left: 20px; position: relative;">Company Logo Url: </label></ng-template>
 															<input type="text" style="width: 28%; margin-top: 13px; position: relative;right: -110px;" [(ngModel)]="logoLink" placeholder="Video Logo Url">
 														</div>
 														<button style="margin-top: 7px;margin-left: 1px;" class="btn btn-primary" (click)="saveVideoBrandLog()" [disabled]="!logoImageUrlPath">Save Logo Info</button>

@@ -72,6 +72,7 @@ img:hover {
 									<div class="col-xs-12 col-sm-4 col-md-4">
 										<button class="btn-primary btn-block" id="addContacts"
 											(click)="addPartnerModalOpen()"
+											data-dismiss="modal" data-toggle="modal" data-target="#addPartnerModal"
 							 					[disabled]="selectedAddPartnerOption != 1 && selectedAddPartnerOption != 5">
 											<i class="fa fa-user-plus"></i>
 											<span>One at a Time</span>
@@ -617,10 +618,10 @@ img:hover {
 			<!-- Modal content-->
 			<div class="modal-content">
 				<div class="modal-header">
-					<button type="button" *ngIf="!updatePartnerUser" class="close"
-						data-dismiss="modal" (click)="addPartnerModalClose()">&times;</button>
-					<button type="button" *ngIf="updatePartnerUser" class="close"
-						data-dismiss="modal" (click)="updatePartnerModalClose()">&times;</button>
+					<button type="button" *ngIf="!updatePartnerUser" class="close-circle"
+						data-dismiss="modal" (click)="addPartnerModalClose()"><i class="fa fa-times"></i></button>
+					<button type="button" *ngIf="updatePartnerUser" class="close-circle"
+						data-dismiss="modal" (click)="updatePartnerModalClose()"><i class="fa fa-times"></i></button>
 					<h4 class="modal-title" *ngIf="!updatePartnerUser">Add Partner</h4>
 					<h4 class="modal-title" *ngIf="updatePartnerUser">Edit Partner</h4>
 				</div>

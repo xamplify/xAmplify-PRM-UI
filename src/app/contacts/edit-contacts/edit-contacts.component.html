@@ -219,6 +219,7 @@
 												<div class="btn-group">
 													<button id="add_contact" class="btn green"
 														(click)="addContactModalOpen()"
+														data-dismiss="modal" data-toggle="modal" data-target="#addContactModal"
 														[disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 9">
 														<!-- Add {{checkingContactTypeName}}  -->
 														One at a Time
@@ -760,10 +761,10 @@
 			<!-- Modal content-->
 			<div class="modal-content">
 				<div class="modal-header">
-					<button type="button" *ngIf="!updateContactUser" class="close"
-						data-dismiss="modal" (click)="addContactModalClose()">&times;</button>
-					<button type="button" *ngIf="updateContactUser" class="close"
-						data-dismiss="modal" (click)="updateContactModalClose()">&times;</button>
+					<button type="button" *ngIf="!updateContactUser" class="close-circle"
+						data-dismiss="modal" (click)="addContactModalClose()"><i class="fa fa-times"></i></button>
+					<button type="button" *ngIf="updateContactUser" class="close-circle"
+						data-dismiss="modal" (click)="updateContactModalClose()"><i class="fa fa-times"></i></button>
 					<!-- <a class="close-circle" data-dismiss="modal" (click)="addContactModalClose(); updateContactModalClose()"><i class="fa fa-times"></i></a> -->
 					<h4 class="modal-title" *ngIf="!updateContactUser">Add {{checkingContactTypeName}}</h4>
 					<h4 class="modal-title" *ngIf="updateContactUser">Edit {{checkingContactTypeName}}</h4>

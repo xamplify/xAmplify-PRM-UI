@@ -537,7 +537,8 @@ export class EditContactsComponent implements OnInit {
 
     addRow() {
         if ( this.emailNotValid == true ) {
-            $( "#addContactModal .close" ).click()
+           // $( "#addContactModal .close" ).click()
+            this.addContactModalClose();
             this.users.push( this.addContactuser );
         }
         //this.fileTypeError = false;
@@ -1289,7 +1290,7 @@ export class EditContactsComponent implements OnInit {
 
     addContactModalOpen() {
         this.addContactuser = new User();
-        $( "#addContactModal" ).show();
+      //  $( "#addContactModal" ).show();
         this.addContactuser.country = ( this.countryNames.countries[0] );
     }
 

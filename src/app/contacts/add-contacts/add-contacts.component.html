@@ -129,6 +129,7 @@ img:hover {
 											<div class="col-xs-12 col-sm-4 col-md-4">
 												<button class="btn-primary btn-block" id="addContacts"
 													(click)="addContactModalOpen()"
+													data-dismiss="modal" data-toggle="modal" data-target="#addContactModal"
 													[disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5">
 													<i class="fa fa-user-plus"></i>
 													 <!-- <span>Add {{checkingContactTypeName}}</span> -->
@@ -715,8 +716,8 @@ img:hover {
 		<!-- Modal content-->
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal"
-					(click)="addContactModalClose()">&times;</button>
+				<button type="button" class="close-circle" data-dismiss="modal"
+					(click)="addContactModalClose()"><i class="fa fa-times"></i></button>
 				<!-- <a class="close-circle" data-dismiss="modal" (click)="addContactModalClose()"><i class="fa fa-times"></i></a> -->
 				<h4 class="modal-title">Add {{checkingContactTypeName}}</h4>
 			</div>
