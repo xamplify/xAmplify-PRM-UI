@@ -1383,12 +1383,13 @@ export class EditContactsComponent implements OnInit {
                     .subscribe(
                     data => {
                         data = data;
+                        this.contactService.saveAsSuccessMessage = true;
                         if ( this.isPartner == false ) {
                             this.router.navigateByUrl( '/home/contacts/manage' )
                         } else {
                             this.router.navigateByUrl( 'home/partners/manage' )
                         }
-                        this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_LIST_CREATE_SUCCESS, true );
+                        //this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_LIST_CREATE_SUCCESS, true );
                     },
 
                     ( error: any ) => {
@@ -1424,12 +1425,13 @@ export class EditContactsComponent implements OnInit {
                     .subscribe(
                     data => {
                         data = data;
+                        this.contactService.saveAsSuccessMessage = true;
                         if ( this.isPartner == false ) {
                             this.router.navigateByUrl( '/home/contacts/manage' )
                         } else {
                             this.router.navigateByUrl( 'home/partners/manage' )
                         }
-                        this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_LIST_CREATE_SUCCESS, true );
+                        //this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_LIST_CREATE_SUCCESS, true );
                     },
 
                     ( error: any ) => {
