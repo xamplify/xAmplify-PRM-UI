@@ -113,8 +113,8 @@ export class PartnerReportsComponent implements OnInit {
     }
   }
   closeModalPopUp() {
-    this.campaignInteractionPagination.pageIndex = 1;
-    this.campaignInteractionPagination.maxResults = 10;
+    this.paginationType = 'UserInteraction';
+    this.campaignInteractionPagination =  new Pagination();
   }
   paginationDropdown(event) {
     if (this.paginationType === 'UserInteraction') {
@@ -126,6 +126,7 @@ export class PartnerReportsComponent implements OnInit {
     }
   }
   ngOnInit() {
+    this.paginationType = 'userInteraction';
     this.homeComponent.getVideoDefaultSettings();
     if (!this.referenseService.companyId) {
       this.router.navigate(['home/dashboard']);

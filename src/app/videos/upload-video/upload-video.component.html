@@ -135,12 +135,6 @@
 				</div>
 			</div>
 			<div class="row">
-				<!-- <div class="col-xs-12" style="margin-bottom: 4px;">
-					<p style="color:#4c4b4b">
-						<span class="label label-danger" style="border-radius: 0"> NOTE: </span> &nbsp; These plugins only work with the latest versions of Latest Chrome,
-						Firefox, Safari, Opera, Microsoft Edge & Internet Explorer 10.
-					</p>
-				</div> -->
 				<div class="col-xs-12 col-sm-6 pr0">
 					<div [class.customDisableCss]='isDisable==true || isFileProgress ==true || isSelectedVideo ==true' ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
 					 (fileOver)="fileOverBase($event)" (onFileDrop)="fileDropPreview($event)" [uploader]="uploader" class="well my-drop-zone"
