@@ -319,8 +319,9 @@ td>h5 {
 			<div class="portlet-body clearfix">
 				<section *ngFor="let campaign of campaigns; let i=index">
 					<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" *ngIf="i<4">
-						<div class="portlet light border-radius-0 campaign-box" [routerLink]="['/home/campaigns/', campaign[0], 'details']" [class.disabled]="!hasStatsRole ? true : null"
+						<div class="portlet light border-radius-0 campaign-box" [routerLink]="['/home/campaigns/', campaign[0], 'details']" 
 						 style="cursor: pointer">
+						<!--[class.disabled]="!hasStatsRole ? true : null" @date 13/04/218 @added Manas Sahoo-->
 							<div class="bookmark-ribbon">
 								<span style="margin: 0px -7px; font-size: 17px; color: white;">
 									<i *ngIf="campaign[7] ==='VIDEO'" class="fa fa-video-camera" aria-hidden="true"></i>
