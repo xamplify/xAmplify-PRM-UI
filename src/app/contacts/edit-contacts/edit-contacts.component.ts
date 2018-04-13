@@ -1594,14 +1594,15 @@ export class EditContactsComponent implements OnInit {
        }
         this.addContactuser.mobileNumber = contactDetails.mobileNumber;
         this.addContactuser.description = contactDetails.description;
-        $( "#addContactModal" ).show();
+      //  $( "#addContactModal" ).show();
         console.log( contactDetails );
         this.updatedUserDetails = contactDetails;
     }
 
     updateContactModalClose() {
-        $( '#addContactModal' ).modal( 'toggle' );
-        $( "#addContactModal .close" ).click()
+        // $( '#addContactModal' ).modal( 'toggle' );
+        // $( "#addContactModal .close" ).click()
+        this.addContactModalClose();
         this.updateContactUser = false;
         this.updatedUserDetails.length = 0;
         this.isEmailExist = false;
@@ -1610,7 +1611,8 @@ export class EditContactsComponent implements OnInit {
     updateContactListUser() {
         this.editUser.pagination = this.pagination;
         this.editUser.user = this.addContactuser;
-        $( "#addContactModal .close" ).click()
+      //  $( "#addContactModal .close" ).click()
+      this.addContactModalClose();
         this.contactService.updateContactListUser( this.selectedContactListId, this.editUser )
             .subscribe(
             ( data: any ) => {
@@ -1655,7 +1657,8 @@ export class EditContactsComponent implements OnInit {
     }
 
     updateContactListName( newContactListName: string ) {
-        $( "#addContactModal .close" ).click()
+      //  $( "#addContactModal .close" ).click();
+        this.addContactModalClose();
         this.contactService.updateContactListName( this.selectedContactListId, newContactListName )
             .subscribe(
             ( data: any ) => {
