@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy,ViewChild} from '@angular/core';
 import { FormsModule, FormGroup, FormBuilder, Validators, FormControl} from '@angular/forms';
-import { Router } from '@angular/router';
 import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { FileUtil } from '../../core/models/file-util';
@@ -13,7 +12,10 @@ import { TeamMemberService } from '../services/team-member.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { Pagination} from '../../core/models/pagination';
 import { PagerService } from '../../core/services/pager.service';
-declare var $,swal :any ;
+import { CustomResponse } from '../../common/models/custom-response';
+
+declare var $,swal:any ;
+
 @Component({
   selector: 'app-table-editable',
   templateUrl: './add-team-members.component.html',
@@ -53,6 +55,7 @@ export class AddTeamMembersComponent implements OnInit {
     uiError:string = "";
     addTeamMemeberTableId = "add-team-member-table";
     listTeamMemberTableId = "list-team-member-table";
+    customResponse: CustomResponse = new CustomResponse();
     /**********Constructor**********/
     constructor( public logger: XtremandLogger,public referenceService:ReferenceService,private teamMemberService:TeamMemberService,
             public authenticationService:AuthenticationService,private pagerService:PagerService,private pagination:Pagination,
@@ -181,8 +184,9 @@ export class AddTeamMembersComponent implements OnInit {
                 this.isProcessing = false;
                 if(data.statusCode==3000){
                     this.successMessage = "Team Member(s) Added Successfully";
-                    $( "#team-member-success-div" ).show();
-                    setTimeout( function() { $( "#team-member-success-div" ).slideUp( 500 ); }, 7000 );
+                    this.customResponse = new CustomResponse( 'SUCCESS', this.successMessage, true );
+                    // $( "#team-member-success-div" ).show();
+                    // setTimeout( function() { $( "#team-member-success-div" ).slideUp( 500 ); }, 7000 );
                     this.pagination.pageIndex = 1;
                     this.listTeamMembers(this.pagination);
                     this.listEmailIds();
@@ -219,8 +223,9 @@ export class AddTeamMembersComponent implements OnInit {
                 this.isProcessing = false;
                 if(data.statusCode==3002){
                     this.successMessage = "Team Member(s) Updated Successfully";
-                    $( "#team-member-success-div" ).show();
-                    setTimeout( function() { $( "#team-member-success-div" ).slideUp( 500 ); }, 7000 );
+                    this.customResponse = new CustomResponse( 'SUCCESS', this.successMessage, true );
+                    // $( "#team-member-success-div" ).show();
+                    // setTimeout( function() { $( "#team-member-success-div" ).slideUp( 500 ); }, 7000 );
                     this.pagination.pageIndex = 1;
                     this.listTeamMembers(this.pagination);
                     this.listEmailIds();
@@ -243,8 +248,9 @@ export class AddTeamMembersComponent implements OnInit {
     
     showErrorMessageDiv(message:string){
         this.errorMessage =message ;
-        $( "#empty-roles-div" ).show(600);
-        setTimeout( function() { $( "#empty-roles-div" ).slideUp( 500 ); }, 7000 );
+        this.customResponse = new CustomResponse('ERROR', this.errorMessage, true);
+        // $( "#empty-roles-div" ).show(600);
+        // setTimeout( function() { $( "#empty-roles-div" ).slideUp( 500 ); }, 7000 );
     }
     /*********************Delete*********************/
     delete(teamMember:TeamMember){
@@ -284,8 +290,9 @@ export class AddTeamMembersComponent implements OnInit {
                     self.successMessage = teamMember.emailId+" Deleted Successfully";
                     self.pagination.pageIndex = self.pagination.pageIndex-1;
                 }
-                 $( "#team-member-success-div" ).show();
-                setTimeout( function() { $( "#team-member-success-div" ).slideUp( 500 ); }, 7000 );
+                self.customResponse = new CustomResponse( 'SUCCESS', self.successMessage, true );
+                //  $( "#team-member-success-div" ).show();
+                // setTimeout( function() { $( "#team-member-success-div" ).slideUp( 500 ); }, 7000 );
                 self.listTeamMembers(self.pagination);
                 self.listEmailIds();
                 self.clearRows();
