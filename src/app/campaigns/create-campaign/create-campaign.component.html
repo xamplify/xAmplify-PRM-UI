@@ -1060,7 +1060,7 @@
 									</div>
 									<div class="col-sm-12">
 										<textarea placeholder="What's happening?" rows="4" class="form-control form-group status-message-textarea square-box margin-bottom-10px"
-											[(ngModel)]="socialStatus.statusMessage" (keyup)="count(socialStatus.statusMessage)"></textarea>
+											[(ngModel)]="socialStatus.statusMessage" [ngModelOptions]="{standalone: true}" (keyup)="count(socialStatus.statusMessage)"></textarea>
 									</div>
 								</div>
 							</div>
