@@ -12,6 +12,8 @@ import { EmailTemplateType } from '../../email-template/models/email-template-ty
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
+import { CustomResponse } from '../../common/models/custom-response';
+
 declare var Metronic,$, Layout, Demo, swal, TableManaged: any;
 
 @Component( {
@@ -41,7 +43,6 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
         { 'name': 'Uploaded Video Templates', 'value': 'videoTemplate' },
         { 'name': 'Regular Templates', 'value': 'beeRegularTemplate' },
         { 'name': 'Video Templates', 'value': 'beeVideoTemplate' }
-
     ];
 
     sortByDropDown = [
@@ -56,7 +57,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
         { 'name': '12', 'value': '12' },
         { 'name': '24', 'value': '24' },
         { 'name': '48', 'value': '48' },
-        { 'name': '---All---', 'value': '0' },
+        { 'name': 'All', 'value': '0' },
     ]
 
     public selectedTemplate: any = this.templatesDropDown[0];
@@ -65,6 +66,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
     public message:string;   
     loggedInUserId:number = 0;
     httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
+    customResponse: CustomResponse = new CustomResponse();
     isListView: boolean = false;
         
     constructor( private emailTemplateService: EmailTemplateService, private userService: UserService, private router: Router,
@@ -73,18 +75,19 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
         this.loggedInUserId = this.authenticationService.getUserId();
         if(refService.isCreated){
            this.message = "Template Created Successfully";
-           this.showMessageOnTop();
+           this.showMessageOnTop(this.message);
         }else if(refService.isUpdated){
             this.message = "Template Updated Successfully";
-            this.showMessageOnTop();
+            this.showMessageOnTop(this.message);
         }
         this.hasAllAccess = this.refService.hasAllAccess();
         this.hasEmailTemplateRole = this.refService.hasSelectedRole(this.refService.roles.emailTemplateRole);
         this.isOnlyPartner = this.authenticationService.isOnlyPartner()
     }
-    showMessageOnTop(){
+    showMessageOnTop(message){
         $(window).scrollTop(0);
-        setTimeout(function() { $("#templateCreationSuccessDiv").slideUp(500); }, 5000);
+        this.customResponse = new CustomResponse( 'SUCCESS', message, true );
+       // setTimeout(function() { $("#templateCreationSuccessDiv").slideUp(500); }, 5000);
     }
     
 
@@ -252,16 +255,19 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
                 if(data=="Success"){
                     document.getElementById( 'emailTemplateListDiv_' + id ).remove();
                     this.refService.showInfo( "Email Template Deleted Successfully", "" );
-                    this.selectedEmailTemplateName = name;
+                   // this.selectedEmailTemplateName = name;
+                    this.selectedEmailTemplateName =  name+ 'Deleted Successfully';
+                    this.customResponse = new CustomResponse('SUCCESS',this.selectedEmailTemplateName,true );
                     this.isEmailTemplateDeleted = true;
                     this.isCampaignEmailTemplate = false;
-                    setTimeout( function() { $( "#emailTemplateDeleteId" ).slideUp( 500 ); }, 2000 );
-                    this.pagination.pageIndex = this.pagination.pageIndex-1;
+                  //  setTimeout( function() { $( "#emailTemplateDeleteId" ).slideUp( 500 ); }, 2000 );
+                    this.pagination.pageIndex = 1;
                     this.listEmailTemplates(this.pagination);
                 }else{
                     this.isEmailTemplateDeleted = false;
                     this.isCampaignEmailTemplate = true;
-                    setTimeout( function() { $( "#campaignEmailTemplateId" ).slideUp( 500 ); }, 2000 );
+                    this.customResponse = new CustomResponse('ERROR','Please Delete Associated Campaign(s)',true );
+                  //  setTimeout( function() { $( "#campaignEmailTemplateId" ).slideUp( 500 ); }, 2000 );
                 }
                 
             },

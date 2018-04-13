@@ -1,13 +1,16 @@
 <div class="page-content">
-  <div *ngIf="isEmailTemplateDeleted" id="emailTemplateDeleteId" class="alert alert-success alert-dismissable fade in">
+	<div style="position: relative;top:-5px">
+	<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+    </div>
+	<!-- <div *ngIf="isEmailTemplateDeleted" id="emailTemplateDeleteId" class="alert alert-success alert-dismissable fade in">
 	 	 <strong>{{selectedEmailTemplateName}}</strong> Deleted Successfully
-	 </div>
-	  <div *ngIf="isCampaignEmailTemplate" id="campaignEmailTemplateId" class="alert alert-danger alert-dismissable fade in">
+	 </div> -->
+	  <!-- <div *ngIf="isCampaignEmailTemplate" id="campaignEmailTemplateId" class="alert alert-danger alert-dismissable fade in">
 	 	<strong>Please Delete Associated Campaign(s)</strong>
-	 </div>
-	  <div *ngIf="message?.length>0" id="templateCreationSuccessDiv" class="alert alert-success alert-dismissable fade in">
+	 </div> -->
+	  <!-- <div *ngIf="message?.length>0" id="templateCreationSuccessDiv" class="alert alert-success alert-dismissable fade in">
 	 	<strong>{{message}}</strong>
-	 </div>
+	 </div> -->
 	 
 <div class="page-bar">
 		<ul class="page-breadcrumb">
