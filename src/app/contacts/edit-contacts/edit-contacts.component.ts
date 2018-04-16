@@ -49,7 +49,6 @@ export class EditContactsComponent implements OnInit {
     criteria = new Criteria();
     editUser: EditUser = new EditUser();
     criterias = new Array<Criteria>();
-    filterValue: any;
     isSegmentation: boolean = false;
     isSegmentationErrorMessage: boolean;
 
@@ -81,7 +80,6 @@ export class EditContactsComponent implements OnInit {
     names: string[] = [];
 
     selectedContactForSave = [];
-    lessButton: boolean = false;
     addPartnerSave: boolean = false;
 
     dublicateEmailId: boolean = false;
@@ -90,7 +88,6 @@ export class EditContactsComponent implements OnInit {
     inValidCsvContacts: boolean;
     isHeaderCheckBoxChecked: boolean = false;
     isInvalidHeaderCheckBoxChecked: boolean = false;
-    public clipBoard: boolean = false;
     public clipboardTextareaText: string;
     pagedItems: any[];
     checkedUserList = [];
@@ -102,8 +99,6 @@ export class EditContactsComponent implements OnInit {
     public clickBoard: boolean = false;
     public filePrevew: boolean = false;
     noContactsFound: boolean;
-    noContactsFound1: boolean;
-    hidingListUsersTable: boolean;
     invalidPatternEmails: string[] = [];
 
     public allUsers: number;
@@ -123,8 +118,6 @@ export class EditContactsComponent implements OnInit {
     public searchKey: string;
     sortcolumn: string = null;
     sortingOrder: string = null;
-    public isCategoryThere: boolean;
-    public searchDisable = true;
     public invalidPattenMail = false;
     showInvalidMaills = false;
     downloadDataList = [];
@@ -1384,13 +1377,12 @@ export class EditContactsComponent implements OnInit {
                     .subscribe(
                     data => {
                         data = data;
-                        this.contactService.saveAsSuccessMessage = true;
                         if ( this.isPartner == false ) {
                             this.router.navigateByUrl( '/home/contacts/manage' )
                         } else {
                             this.router.navigateByUrl( 'home/partners/manage' )
                         }
-                        //this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_LIST_CREATE_SUCCESS, true );
+                        this.contactService.saveAsSuccessMessage = "SUCCESS";
                     },
 
                     ( error: any ) => {
@@ -1426,13 +1418,12 @@ export class EditContactsComponent implements OnInit {
                     .subscribe(
                     data => {
                         data = data;
-                        this.contactService.saveAsSuccessMessage = true;
                         if ( this.isPartner == false ) {
                             this.router.navigateByUrl( '/home/contacts/manage' )
                         } else {
                             this.router.navigateByUrl( 'home/partners/manage' )
                         }
-                        //this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_LIST_CREATE_SUCCESS, true );
+                        this.contactService.saveAsSuccessMessage = "SUCCESS";
                     },
 
                     ( error: any ) => {

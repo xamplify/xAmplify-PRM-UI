@@ -22,7 +22,7 @@ declare var swal: any;
 @Injectable()
 export class ContactService {
 
-    saveAsSuccessMessage: boolean;
+    saveAsSuccessMessage: string;
     public successMessage: boolean;
     public deleteUserSucessMessage: boolean;
     public socialContact: SocialContact[];

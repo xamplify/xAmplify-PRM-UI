@@ -367,17 +367,12 @@
 		<div class="alert alert-success alert-dismissible"
 			*ngIf="invalidDeleteSucessMessage" style="margin-bottom: 20px;">
 			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-			<strong>Success!</strong> {{checkingContactTypeName}} List has been
+			{{checkingContactTypeName}} List has been
 			Deleted successfully.
 		</div>
 		<div class="alert alert-danger" style="padding: 12px 10px 12px;"
 			*ngIf="invalidDeleteErrorMessage">
 			<span [innerHTML]="response.responseMessage"></span>
-		</div>
-		<div *ngIf="noContactsFound==true" class="col-md-6"
-			class="col-md-9 alert alert alert-danger alert-dismissable">
-			<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
-			<h4>No Contact found.. !!!</h4>
 		</div>
 		<div class="row">
 			<div class="col-md-12">

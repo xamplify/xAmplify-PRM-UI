@@ -28,12 +28,9 @@ declare var Metronic, $, Layout, Demo, Portfolio, swal: any;
 })
 
 export class ManageContactsComponent implements OnInit {
-    public show: boolean = false;
-    public deleteUserSucessMessage: boolean = false;
     public socialContact: SocialContact;
     public googleSynchronizeButton: boolean;
     public storeLogin: any;
-    contactsNotSelectedError: boolean = false;
     contactListObject: ContactList;
     criteria = new Criteria();
     criterias = new Array<Criteria>();
@@ -72,7 +69,6 @@ export class ManageContactsComponent implements OnInit {
     invalidDeleteErrorMessage: boolean = false;
 
     public invalidIds: Array<UserListIds>;
-    isShowDetails = false;
 
     contactsByType: ContactsByType = new ContactsByType();
     downloadDataList = [];
@@ -84,30 +80,18 @@ export class ManageContactsComponent implements OnInit {
     showListOfContactList: boolean = true;
 
     showAllContactData: boolean = false;
-    showManageContactData: boolean = true;
     public contactListName: string;
     public model: any = {};
-    public removeIds: number;
     public alias: any;
     public contactType: string;
-    selectedDropDown: string;
-    public userName: string;
-    public password: string;
-    public getZohoConatacts: any;
-    public zContacts: Set<SocialContact>;
     public userListIds: Array<UserListIds>;
     public searchKey: string;
-    sortingName: string = null;
     sortcolumn: string = null;
     sortingOrder: string = null;
-    noContactsFound: boolean;
-    public isCategoryThere: boolean;
-    public searchDisable = true;
     users: User[];
     access_token: string;
     pager: any = {};
     pagedItems: any[];
-    Campaign: string;
     names: string[] = [];
     isValidContactName: boolean;
     noSaveButtonDisable: boolean;
@@ -116,8 +100,6 @@ export class ManageContactsComponent implements OnInit {
     public googleImage: string = 'assets/admin/pages/media/works/gl.jpg';
     public salesforceImage: string = 'assets/admin/pages/media/works/sf.jpg';
     public normalImage: string = 'assets/admin/pages/media/works/img1.jpg';
-    public currentContactType: string = null;
-
 
     sortOptions = [
         { 'name': 'Sort By', 'value': '', 'for': '' },
@@ -182,10 +164,8 @@ export class ManageContactsComponent implements OnInit {
             this.checkingContactTypeName = "Partner"
         }
 
-        this.show = false;
         this.showAll = true;
         this.showEdit = false;
-        this.showManageContactData = true;
         this.userListIds = new Array<UserListIds>();
         this.googleSynchronizeButton = false;
         this.socialContact = new SocialContact();
@@ -193,13 +173,14 @@ export class ManageContactsComponent implements OnInit {
         this.xtremandLogger.info( "socialContact" + this.socialContact.socialNetwork );
         this.access_token = this.authenticationService.access_token;
         this.xtremandLogger.info( "successmessageLoad" + this.contactService.successMessage )
-        if ( this.contactService.successMessage == true || this.contactService.saveAsSuccessMessage == true) {
+        if ( this.contactService.successMessage == true || this.contactService.saveAsSuccessMessage == "SUCCESS") {
             this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_LIST_CREATE_SUCCESS, true );
-            this.xtremandLogger.info( "Success Message in manage contact pape" + this.show );
+            this.xtremandLogger.info( "Success Message in manage contact pape" );
+            this.contactService.saveAsSuccessMessage = "";
         }
         if ( this.contactService.deleteUserSucessMessage == true ) {
             this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_LIST_DELETE_SUCCESS, true );
-            this.xtremandLogger.info( " delete Success Message in manage contact pape" + this.show );
+            this.xtremandLogger.info( " delete Success Message in manage contact pape");
         }
         this.noSaveButtonDisable = true;
 
@@ -521,7 +502,6 @@ export class ManageContactsComponent implements OnInit {
         this.isDefaultPartnerList = isDefaultPartnerList;
         this.showAll = false;
         this.showEdit = true;
-        this.show = false;
         $( "#pagination" ).hide();
     }
 
@@ -675,7 +655,6 @@ export class ManageContactsComponent implements OnInit {
     }
 
     checkAll( ev: any ) {
-        this.contactsNotSelectedError = false;
         if ( ev.target.checked ) {
             console.log( "checked" );
             $( '[name="campaignContact[]"]' ).prop( 'checked', true );
@@ -717,7 +696,6 @@ export class ManageContactsComponent implements OnInit {
     }
 
     highlightRow( contactId: number, email: any, firstName: any, lastName: any, event: any ) {
-        this.contactsNotSelectedError = false;
         let isChecked = $( '#' + contactId ).is( ':checked' );
         console.log( this.selectedContactListIds )
         if ( isChecked ) {
@@ -759,8 +737,7 @@ export class ManageContactsComponent implements OnInit {
                             this.contactCountLoad = true;
                             this.navigateToManageContacts();
                             this.allselectedUsers.length = 0;
-                            this.customResponse = new CustomResponse( 'INFO', this.properties.CONTACT_LIST_CREATE_SUCCESS, true );
-                            //this.responseMessage = ['SUCCESS', 'your contact List created successfully.','show'];
+                            this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_LIST_CREATE_SUCCESS, true );
                         },
 
                         ( error: any ) => {
@@ -770,7 +747,6 @@ export class ManageContactsComponent implements OnInit {
                         () => this.xtremandLogger.info( "allcontactComponent saveSelectedUsers() finished" )
                         )
             } else {
-                //this.responseMessage = ['ERROR', 'Please select the users.','show'];
                 this.customResponse = new CustomResponse( 'ERROR', this.properties.NO_USERS_SELECT_ERROR, true );
             }
         }
@@ -784,7 +760,6 @@ export class ManageContactsComponent implements OnInit {
         this.selectedContactListIds = [];
         this.allselectedUsers.length = 0;
         this.isHeaderCheckBoxChecked = false;
-        this.contactsNotSelectedError = false;
     }
 
     removeInvalidContactListUsers() {
@@ -807,7 +782,8 @@ export class ManageContactsComponent implements OnInit {
                     $( '#row_' + value ).remove();
                     console.log( index + "value" + value );
                 });
-                this.invalidDeleteSucessMessage = true;
+                //this.invalidDeleteSucessMessage = true;
+               this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACTS_DELETE_SUCCESS, true );
                 this.contactCountLoad = true;
                 this.listContactsByType( this.contactsByType.selectedCategory );
             },
@@ -997,7 +973,6 @@ export class ManageContactsComponent implements OnInit {
     }
 
     navigateToManageContacts() {
-        this.contactsNotSelectedError = false;
         this.model.contactListName = "";
         this.searchKey = null;
         this.customResponse.responseType = null;
@@ -1294,7 +1269,7 @@ export class ManageContactsComponent implements OnInit {
             this.xtremandLogger.error( "ERROR : MangeContactsComponent ngOnInit() " + error );
         }
     }
-
+ 
     ngOnDestroy() {
         this.xtremandLogger.info( 'Deinit - Destroyed Component' )
         this.contactService.successMessage = false;

@@ -20,11 +20,7 @@ import { Properties } from '../../common/models/properties';
 import { CountryNames } from '../../common/models/country-names';
 import { RegularExpressions } from '../../common/models/regular-expressions';
 import { PaginationComponent } from '../../common/pagination/pagination.component';
-declare var Metronic: any;
-declare var Layout: any;
-declare var Demo: any;
-declare var swal: any;
-declare var $, Papa: any;
+declare var swal, $, Papa: any;
 
 @Component( {
     selector: 'app-add-contacts',
