@@ -29,6 +29,9 @@
 				</ul>
 			</div>
 			<div class="panel-title pull-right" style="margin-top: 5px;">
+			   <span style="cursor: pointer;color: #54a7e9;" title="{{heatMapTooltip}}">
+					<i class="fa fa-question-circle" style="font-size: 20px"></i>
+				</span>
 				<span style="float:right; font-size: 13px;">
 					<select style="cursor: pointer" [(ngModel)]="daySort" (ngModelChange)="selectedSortByValue($event.value)">
 						<option *ngFor="let sort of sortDates" [ngValue]="sort"> {{sort.name}} </option>
@@ -111,7 +114,7 @@
 									</span>
 								</div>
 							</td>
-							<td class="center">{{videoViews.videoTitle}}</td>
+							<td class="center">{{videoViews.videoTitle}}</td> 
 							<td class="center">{{videoViews.date |date:'MM/dd/yyyy @ h:mma'}}</td>
 						</tr>
 					</ng-container>

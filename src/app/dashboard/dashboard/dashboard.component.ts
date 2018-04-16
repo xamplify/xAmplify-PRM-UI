@@ -801,29 +801,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
     selectedSortByValue(event: any) {
         console.log(event);
         this.referenceService.daySortValue = event;
-        this.videoStatesTooltip =  this.setTooltipMessage(event);
+        this.videoStatesTooltip =  this.utilService.setTooltipMessage(event);
         this.getVideoStatesSparklineChartsInfo(event);
     }
     selectedheatMapSortByValue(event: any) {
         this.heatMapSort.value = event;
-        this.heatMapTooltip = this.setTooltipMessage(event);
+        this.heatMapTooltip = this.utilService.setTooltipMessage(event);
         this.getCampaignsHeatMapData();
     }
-    setTooltipMessage(event: any) {
-        let tooltipMessage: any
-        if (event === 7) {
-            tooltipMessage = 'last 7 days';
-        } else if (event === 14) {
-            tooltipMessage = 'last 14 days';
-        } else if (event === 21) {
-            tooltipMessage = 'last 21 days';
-        } else if (event === 30) {
-            tooltipMessage = 'current month';
-        } else if (event.includes('year')) {
-            tooltipMessage = 'current year';
-        }
-        return tooltipMessage;
-    }
+
     refreshCampaignBarcharts() {
         this.getUserCampaignReport(this.loggedInUserId);
     }

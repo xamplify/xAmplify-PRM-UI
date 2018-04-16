@@ -69,5 +69,19 @@ export class UtilService {
         pagination.pageIndex = 1;
         return pagination;
     }
-
+    setTooltipMessage(event: any) {
+        let tooltipMessage: any
+        if (event === 7) {
+            tooltipMessage = 'last 7 days';
+        } else if (event === 14) {
+            tooltipMessage = 'last 14 days';
+        } else if (event === 21) {
+            tooltipMessage = 'last 21 days';
+        } else if (event === 30) {
+            tooltipMessage = 'current month';
+        } else if (event.includes('year')) {
+            tooltipMessage = 'current year';
+        }
+        return tooltipMessage;
+    }
 }

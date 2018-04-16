@@ -4,16 +4,16 @@ import { Router } from '@angular/router';
 import { ReferenceService } from '../../../core/services/reference.service';
 import { DashboardService } from '../../dashboard.service';
 import { PagerService } from '../../../core/services/pager.service';
-
 import { Pagination } from '../../../core/models/pagination';
+import { UtilService } from '../../../core/services/util.service';
 
 declare var $: any;
 
 @Component({
   selector: 'app-reports',
   templateUrl: './reports.component.html',
-  styleUrls: ['./reports.component.css'] ,
-  providers :[Pagination]
+  styleUrls: ['./reports.component.css'],
+  providers: [Pagination]
 
 })
 export class ReportsComponent implements OnInit, AfterViewInit {
@@ -35,8 +35,10 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   videoId: number;
   sortDates: any;
   daySort: any;
+  heatMapTooltip = 'Last 7 Days';
+
   constructor(public referenceService: ReferenceService, public router: Router, public dashboardService: DashboardService,
-  public pagerService: PagerService, public pagination: Pagination) {
+    public pagerService: PagerService, public pagination: Pagination, public utilService:UtilService) {
     this.sortDates = this.dashboardService.sortDates;
     this.resultSparkline = this.referenceService.viewsSparklineValues;
     if (this.resultSparkline === undefined || this.resultSparkline === null) {
@@ -58,6 +60,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   selectedSortByValue(event: any) {
     console.log(event);
     this.referenceService.daySortValue = this.daysCount = event;
+    this.heatMapTooltip = this.utilService.setTooltipMessage(event);
     this.getVideoSparklineGraph(this.daysCount);
   }
   getVideoSparklineGraph(daysCount) {
@@ -95,24 +98,24 @@ export class ReportsComponent implements OnInit, AfterViewInit {
       tooltipValueLookups: { 'offset': offsetValues }
     });
   }
-  selectedChartValue(){
-      const self = this;    
-      const offsetValues = this.resultSparkline.dates;
-      $('#sparkline_bar_chart1').bind('sparklineClick', function (ev) {
-        const sparkline = ev.sparklines[0],
-          region = sparkline.getCurrentRegionFields();
-        console.log(self.viewsDate + 'and bar chart date is ' + offsetValues[region[0].offset]);
-        const date = offsetValues[region[0].offset];
-        if (self.viewsDate === date) {
-          console.log("views data is " + self.viewsDate);
-          self.referenceService.viewsDate = self.viewsDate;
-        } else {
-          self.referenceService.viewsDate = self.viewsDate = offsetValues[region[0].offset];
-          if (self.reportName === 'views') {
-            self.getVideoViewsLevelOne(offsetValues[region[0].offset], true);
-          } else { self.getVideoMinutesWatchedLevelOne(offsetValues[region[0].offset], true); }
-        }
-      });
+  selectedChartValue() {
+    const self = this;
+    const offsetValues = this.resultSparkline.dates;
+    $('#sparkline_bar_chart1').bind('sparklineClick', function (ev) {
+      const sparkline = ev.sparklines[0],
+        region = sparkline.getCurrentRegionFields();
+      console.log(self.viewsDate + 'and bar chart date is ' + offsetValues[region[0].offset]);
+      const date = offsetValues[region[0].offset];
+      if (self.viewsDate === date) {
+        console.log("views data is " + self.viewsDate);
+        self.referenceService.viewsDate = self.viewsDate;
+      } else {
+        self.referenceService.viewsDate = self.viewsDate = offsetValues[region[0].offset];
+        if (self.reportName === 'views') {
+          self.getVideoViewsLevelOne(offsetValues[region[0].offset], true);
+        } else { self.getVideoMinutesWatchedLevelOne(offsetValues[region[0].offset], true); }
+      }
+    });
   }
 
   getCurrentDayFromDate(date) {
@@ -152,7 +155,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     }
   }
   getVideoViewsLevelTwo(daysInterval, dateValue, videoId, pagination) {
-  //  this.pagination.maxResults = 5;
+    //  this.pagination.maxResults = 5;
     this.daysInterval = daysInterval;
     this.dateValue = dateValue;
     this.videoId = videoId;
@@ -167,18 +170,18 @@ export class ReportsComponent implements OnInit, AfterViewInit {
         console.error(error);
       });
   }
-  setPage(event:any){
-    this.pagination.pageIndex =  event.page;
+  setPage(event: any) {
+    this.pagination.pageIndex = event.page;
     this.getVideoStatesLevels();
   }
-  paginationDropdown(pagination:Pagination){
+  paginationDropdown(pagination: Pagination) {
     this.pagination = pagination;
     this.getVideoStatesLevels();
   }
- getVideoStatesLevels(){
-  if(this.reportName === 'views') { this.getVideoViewsLevelTwo(this.daysInterval, this.dateValue, this.videoId, this.pagination);}
-  else { this.getVideoMinutesWatchedLevelTwo(this.daysInterval, this.dateValue, this.videoId, this.pagination) }
- }
+  getVideoStatesLevels() {
+    if (this.reportName === 'views') { this.getVideoViewsLevelTwo(this.daysInterval, this.dateValue, this.videoId, this.pagination); }
+    else { this.getVideoMinutesWatchedLevelTwo(this.daysInterval, this.dateValue, this.videoId, this.pagination) }
+  }
   getVideoMinutesWatchedLevelOne(dateValue, isReport) {
     this.isReport = isReport;
     if (dateValue === undefined) {
@@ -206,8 +209,8 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   getVideoMinutesWatchedLevelTwo(daysInterval, dateValue, videoId, pagination) {
     this.daysInterval = daysInterval;
     this.dateValue = dateValue;
-    this.videoId =  videoId;
-   // this.pagination.maxResults = 5;
+    this.videoId = videoId;
+    // this.pagination.maxResults = 5;
     this.dashboardService.getVideoMinutesWatchedLevelTwoReports(daysInterval, dateValue, videoId, pagination).subscribe(
       (result: any) => {
         console.log(result);
@@ -223,81 +226,57 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     console.log(viewData);
     this.videoViewsLevelSecond.length = 0;
     this.pagination.pageIndex = 1;
-    if(this.reportName === 'views'){
-       this.getVideoViewsLevelTwo(this.daysCount, viewData.selectedDate, viewData.videoId, this.pagination);
+    if (this.reportName === 'views') {
+      this.getVideoViewsLevelTwo(this.daysCount, viewData.selectedDate, viewData.videoId, this.pagination);
     }
-    else { 
-       this.getVideoMinutesWatchedLevelTwo(this.daysCount, viewData.selectedDate, viewData.videoId, this.pagination);
+    else {
+      this.getVideoMinutesWatchedLevelTwo(this.daysCount, viewData.selectedDate, viewData.videoId, this.pagination);
     }
   }
-  
-  convertToCSV(objArray) {
-      var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
-      var str = '';
-      var row = "";
-      for (var index in objArray[0]) {
-        row += index + ',';
-      }
-      row = row.slice(0, -1);
-      str += row + '\r\n';
-      for (var i = 0; i < array.length; i++) {
-        var line = '';
-        for (var index in array[i]) {
-          if (line != '') line += ','
-          line += array[i][index];
-        }
-        str += line + '\r\n';
-      }
-      return str;
+  downloadLogs(level: string) {
+    let logListName = 'Video_Statestics.csv';
+    if (level === 'one') {
+      this.downloadCsvList = this.videoViewsLevelFirst;
+    } else if (level === 'two') {
+      this.downloadCsvList = this.videoViewsLevelSecond;
     }
+    this.downloadDataList.length = 0;
+    for (let i = 0; i < this.downloadCsvList.length; i++) {
+      let date = new Date(this.downloadCsvList[i].date);
+      var object = {
+        'First Name': this.downloadCsvList[i].firstName,
+        'Last Name': this.downloadCsvList[i].lastName,
+        'Email Id': this.downloadCsvList[i].emailId,
+        'Video Title': this.downloadCsvList[i].videoTitle,
 
-    downloadLogs(level : string) {
-        let logListName = 'Video_Statestics.csv';
-        if ( level === 'one' ) {
-            this.downloadCsvList = this.videoViewsLevelFirst;
-        } else if ( level === 'two' ) {
-            this.downloadCsvList = this.videoViewsLevelSecond;
-        } 
-        
-        this.downloadDataList.length = 0;
-        for ( let i = 0; i < this.downloadCsvList.length; i++ ) {
-            let date = new Date( this.downloadCsvList[i].date );
-            
-            var object = {
-                    'First Name': this.downloadCsvList[i].firstName,
-                    'Last Name': this.downloadCsvList[i].lastName,
-                    'Email Id': this.downloadCsvList[i].emailId,
-                    'Video Title': this.downloadCsvList[i].videoTitle,
-               
-            }
-
-            if ( level === 'one' ) {
-               if(this.reportName == 'views'){
-                object[this.reportName] = this.downloadCsvList[i].viewsCount;
-               } else {
-                   object[this.reportName] = this.downloadCsvList[i].minutesWatchedValue;
-               }
-                object["Date"] = date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
-            }
-            
-            if ( level === 'two' ) {
-                object["Date and Time"] = date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
-            }
-
-            this.downloadDataList.push( object );
+      }
+      if (level === 'one') {
+        if (this.reportName == 'views') {
+          object[this.reportName] = this.downloadCsvList[i].viewsCount;
+        } else {
+          object[this.reportName] = this.downloadCsvList[i].minutesWatchedValue;
         }
-        var csvData = this.convertToCSV( this.downloadDataList );
-        var a = document.createElement( "a" );
-        a.setAttribute( 'style', 'display:none;' );
-        document.body.appendChild( a );
-        var blob = new Blob( [csvData], { type: 'text/csv' });
-        var url = window.URL.createObjectURL( blob );
-        a.href = url;
-        a.download = logListName;
-        a.click();
-        return 'success';
+        object["Date"] = date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+      }
+
+      if (level === 'two') {
+        object["Date and Time"] = date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+      }
+
+      this.downloadDataList.push(object);
     }
-  
+    var csvData = this.referenceService.convertToCSV(this.downloadDataList);
+    var a = document.createElement("a");
+    a.setAttribute('style', 'display:none;');
+    document.body.appendChild(a);
+    var blob = new Blob([csvData], { type: 'text/csv' });
+    var url = window.URL.createObjectURL(blob);
+    a.href = url;
+    a.download = logListName;
+    a.click();
+    return 'success';
+  }
+
   ngOnInit() {
     this.pagination.maxResults = 5;
     this.isReport = true;

@@ -357,7 +357,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
         const selfPanorama = this;
         const player = videojs('videoId', {
              "controls": true, 
-             "autoplay": true,
+             "autoplay": false,
              "preload": "auto",
              "customControlsOnMobile": true, 
              "nativeControlsForTouch": true
@@ -422,6 +422,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                     selfPanorama.videoFileService.pauseAction = false;
                     selfPanorama.xtremandLog.startDuration = 0;
                     selfPanorama.xtremandLog.stopDuration = 0;
+                    this.play();
                     $('.video-js .vjs-control-bar .vjs-VR-control').css('cssText', 'color:' + selfPanorama.campaignVideoFile.playerColor + '!important');
                 });
                 player.on('play', function () {
