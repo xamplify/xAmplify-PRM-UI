@@ -14,7 +14,8 @@
 						 "assets/admin/pages/img",
 						 "assets/admin/layout2/img",
 						 "assets/admin/pages/media",
-					     "assets/global/img",
+						 "assets/global/img",
+						 "assets/global/plugins/font-awesome",
 					     "assets/js/indexjscss"
 			  ],
 			"index": "index.html",
@@ -30,7 +31,6 @@
 				"./assets/global/plugins/bootstrap/css/bootstrap.min.css",
 				"./assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css",
 				"./assets/global/plugins/fullcalendar/fullcalendar.min.css",
-				"./assets/global/plugins/font-awesome/css/font-awesome.min.css",
 				"./assets/global/plugins/simple-line-icons/simple-line-icons.min.css",
 				"./assets/global/plugins/uniform/css/uniform.default.css",
 				"./assets/global/css/components-rounded.css",
