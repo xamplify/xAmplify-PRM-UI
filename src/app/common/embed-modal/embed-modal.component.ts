@@ -16,7 +16,7 @@ export class EmbedModalComponent implements OnInit, OnDestroy {
   embedSrcPath: string;
   embedWidth = '640';
   embedHeight = '360';
-  videoSizes = ['1280 × 720', '853 × 480', '640 × 360','560 × 315'];
+  videoSizes = ['1280 × 720', '853 × 480', '640 × 360', '560 × 315'];
   videosize = '640 × 360';
   embedFullScreen = 'allowfullscreen';
   isFullscreen: boolean;
@@ -37,14 +37,14 @@ export class EmbedModalComponent implements OnInit, OnDestroy {
   }
   embedVideoSizes() {
     if (this.videosize === this.videoSizes[0]) {
-      this.setEmbedwidthHeight('1280','720');
+      this.setEmbedwidthHeight('1280', '720');
     } else if (this.videosize === this.videoSizes[1]) {
-      this.setEmbedwidthHeight('853','480');
+      this.setEmbedwidthHeight('853', '480');
     } else if (this.videosize === this.videoSizes[2]) {
-      this.setEmbedwidthHeight('640','360');
-    } else {this.setEmbedwidthHeight('560','315');}
+      this.setEmbedwidthHeight('640', '360');
+    } else { this.setEmbedwidthHeight('560', '315'); }
   }
-  setEmbedwidthHeight(width: string, height: string){
+  setEmbedwidthHeight(width: string, height: string) {
     this.embedWidth = width;
     this.embedHeight = height;
   }
