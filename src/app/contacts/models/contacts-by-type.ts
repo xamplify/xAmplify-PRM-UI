@@ -11,6 +11,7 @@ export class ContactsByType {
 
     contacts: Array<User> = new Array<User>();
     listOfAllContacts: any;
+    contactListAssociatedCampaigns: any;
     selectedCategory: string = '';
     pagination: Pagination = new Pagination();
     contactPagination: Pagination = new Pagination();

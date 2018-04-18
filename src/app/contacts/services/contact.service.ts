@@ -105,6 +105,29 @@ export class ContactService {
             .map( this.extractData )
             .catch( this.handleError );
     }
+    
+    contactListAssociatedCampaigns(contactListId: number ){
+        this.logger.info( "ContactService ContactListAssociatedCampaigns():  contactListID=" + contactListId );
+        return this._http.get( this.authenticationService.REST_URL + "campaign/launched-campaigns/" + contactListId + "?access_token=" + this.authenticationService.access_token )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+    
+    sendCampaignEmails( campaigDetails:any ) {
+        var requestoptions = new RequestOptions( {
+            body:  campaigDetails,
+        })
+        var headers = new Headers();
+        headers.append( 'Content-Type', 'application/json' );
+        var options = {
+            headers: headers
+        };
+        var url = this.authenticationService.REST_URL + "campaign/send-campaign-email?access_token=" + this.authenticationService.access_token + '&userId='+ this.authenticationService.getUserId();
+        this.logger.info( campaigDetails );
+        return this._http.post( url, options, requestoptions )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
  
     deleteContactList( contactListId: number ) {
         return this._http.post( this.contactsUrl + contactListId + "/remove?access_token=" + this.authenticationService.access_token, +"" )

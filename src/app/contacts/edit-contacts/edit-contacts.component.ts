@@ -93,6 +93,7 @@ export class EditContactsComponent implements OnInit {
     checkedUserList = [];
     selectedInvalidContactIds = [];
     selectedContactListIds = [];
+    selectedCampaignIds = [];
     fileTypeError: boolean;
     selectedDropDown: string;
     public uploader: FileUploader;
@@ -137,6 +138,7 @@ export class EditContactsComponent implements OnInit {
     isPartner: boolean;
     isCompanyDetails = false;
     checkingContactTypeName: string;
+    newUsersEmails = [];
 
     filterOptions = [
         { 'name': '', 'value': 'Field Name*' },
@@ -329,6 +331,11 @@ export class EditContactsComponent implements OnInit {
 
     saveValidEmails() {
         this.isCompanyDetails = false;
+        
+        for(let i=0; i< this.users.length; i++){
+            this.newUsersEmails.push(this.users[i].emailId);
+        }
+        
         if(this.isPartner){
             for(let i=0; i< this.users.length; i++){
               if(this.users[i].contactCompany.trim() !=''){
@@ -361,6 +368,9 @@ export class EditContactsComponent implements OnInit {
                 this.checkingLoadContactsCount = true;
                 this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
                 this.cancelContacts();
+                if(this.contactsByType.contactListAssociatedCampaigns.length !== 0){
+                    $('#sendMailsModal').modal('show'); 
+                }
             },
             ( error: any ) => {
                 let body: string = error['_body'];
@@ -392,6 +402,8 @@ export class EditContactsComponent implements OnInit {
                 else {
                     this.validCsvContacts = false;
                 }
+               
+                this.newUsersEmails.push(this.users[i].emailId);
             }
             if ( this.validCsvContacts == true && this.invalidPatternEmails.length == 0) {
                 $( "#sample_editable_1" ).show();
@@ -431,6 +443,10 @@ export class EditContactsComponent implements OnInit {
                         this.removeCsv();
                         this.checkingLoadContactsCount = true;
                         this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
+                        
+                        if(this.contactsByType.contactListAssociatedCampaigns.length !== 0){
+                            $('#sendMailsModal').modal('show'); 
+                        }
                     },
                     ( error: any ) => {
                         let body: string = error['_body'];
@@ -736,6 +752,9 @@ export class EditContactsComponent implements OnInit {
     }
 
     saveClipboardValidEmails() {
+        for(let i=0; i< this.users.length; i++){
+            this.newUsersEmails.push(this.users[i].emailId);
+        }
         this.xtremandLogger.info( "update contacts #contactSelectedListId " + this.contactListId + " data => " + JSON.stringify( this.users ) );
         if ( this.users.length != 0 ) {
             this.isCompanyDetails = false;
@@ -774,6 +793,10 @@ export class EditContactsComponent implements OnInit {
                     this.cancelContacts();
                     this.checkingLoadContactsCount = true;
                     this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
+                    
+                    if(this.contactsByType.contactListAssociatedCampaigns.length !== 0){
+                        $('#sendMailsModal').modal('show'); 
+                    }
                 },
                 ( error: any ) => {
                     let body: string = error['_body'];
@@ -1781,7 +1804,60 @@ export class EditContactsComponent implements OnInit {
         }
     }
 
+    getContactsAssocialteCampaigns() {
+        this.contactService.contactListAssociatedCampaigns( this.selectedContactListId)
+            .subscribe(
+            data => {
+                this.contactsByType.contactListAssociatedCampaigns = data;
+            },
+            error => console.log( error ),
+            () => {
+                this.contactsByType.isLoading = false;
+            }
+            );
+    }
+    
+    selectedContactLisAssociatedCampaignIds( campaignId: number, event: any ) {
+        let isChecked = $( '#' + campaignId ).is( ':checked' );
+        if ( isChecked ) {
+            this.selectedCampaignIds.push( campaignId );
+        } else {
+            this.selectedCampaignIds.splice( $.inArray( campaignId, this.selectedCampaignIds ), 1 );
+        }
+        event.stopPropagation();
+    }
+    
+    sendEmailToNewlyAddedUsers() {
+        let campaignDetails = {
+            "campaignIds": this.selectedCampaignIds,
+            "emailIds": this.newUsersEmails
+        }
+        
+        this.contactService.sendCampaignEmails( campaignDetails)
+            .subscribe(
+                data => {
+                   console.log(data);
+                   $('#sendMailsModal').modal('hide');
+                   $('body').removeClass('modal-open');
+                   $('.modal-backdrop fade in').remove();
+                   this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_SAVE_SUCCESS_AND_MAIL_SENT_SUCCESS, true );
+                   
+                   this.selectedCampaignIds.length = 0;
+                   this.newUsersEmails.length = 0;
+                   
+                },
+                error => console.log( error ),
+                () => {
+                    this.contactsByType.isLoading = false;
+                }
+            );
+    }
+
+
+    
+    
     ngOnInit() {
+        this.getContactsAssocialteCampaigns();
         this.loadContactListsNames();
         this.selectedContactListName = this.contactListName;
         this.checkingLoadContactsCount = true;

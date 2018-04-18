@@ -31,7 +31,8 @@ export class Properties {
     CONTACTS_DELETE_SUCCESS = "Your Contacts have been deleted successfully";
     CONTACTS_DELETE_ERROR = "An error occured while deleting your Contacts";
 
-    CONTACT_SAVE_SUCCESS = "Your contacts have been saved successfully";
+    CONTACT_SAVE_SUCCESS = "Your contact list has been updated successfully";
+    CONTACT_SAVE_SUCCESS_AND_MAIL_SENT_SUCCESS = "Your contact list has been updated successfully and campaign mails has been sent successfully";
     CONTACTS_SAVE_ERROR = "An error occured while saving your contacts";
 
     CONTACT_LIST_NAME_UPDATE_SUCCESS = "Your contacts have been saved successfully";
