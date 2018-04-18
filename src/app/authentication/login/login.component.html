@@ -1,5 +1,8 @@
 <app-video></app-video>
 <div class="content">
+	<div class="my-container">
+		<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+	</div>
 	<!-- BEGIN LOGIN FORM -->
 	<div class="row" *ngIf="model">
 	<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>

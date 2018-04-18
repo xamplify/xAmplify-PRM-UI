@@ -1,14 +1,15 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
-import { CustomResponse } from '../../common/models/custom-response';
-import { Properties } from '../../common/models/properties';
-import { User } from '../../core/models/user';
-import { Role } from '../../core/models/role';
+
 import { AuthenticationService } from '../../core/services/authentication.service';
-import { matchingPasswords, noWhiteSpaceValidator, validateCountryName } from '../../form-validator';
 import { ReferenceService } from '../../core/services/reference.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
+
+import { User } from '../../core/models/user';
+import { Role } from '../../core/models/role';
+import { CustomResponse } from '../../common/models/custom-response';
+import { Properties } from '../../common/models/properties';
+
 declare const $: any;
 
 @Component({
@@ -21,7 +22,7 @@ declare const $: any;
 export class LoginComponent implements OnInit, OnDestroy {
     model: any = {};
     customResponse: CustomResponse = new CustomResponse();
-
+    loading = false;
     socialProviders = [{ "name": "salesforce", "iconName": "salesforce" },
     { "name": "facebook", "iconName": "facebook" },
     { "name": "twitter", "iconName": "twitter" },
@@ -29,16 +30,17 @@ export class LoginComponent implements OnInit, OnDestroy {
     { "name": "linkedin", "iconName": "linkedin" }];
 
     roles: Array<Role>;
-    constructor(private router: Router, private authenticationService: AuthenticationService, private formBuilder: FormBuilder,
+    constructor(private router: Router, private authenticationService: AuthenticationService,
         public referenceService: ReferenceService, private xtremandLogger: XtremandLogger, public properties: Properties) {
-
         if (this.referenceService.userProviderMessage !== "") {
             this.customResponse = new CustomResponse('SUCCESS', this.referenceService.userProviderMessage, true);
         }
     }
 
     public login() {
+        this.loading = true;
         if (this.model.username.length === 0 || this.model.password.length === 0) {
+            this.loading = false;
             this.setCustomeResponse("ERROR", this.properties.EMPTY_CREDENTIAL_ERROR);
         } else {
             if (localStorage.getItem('currentUser')) {
@@ -65,10 +67,12 @@ export class LoginComponent implements OnInit, OnDestroy {
                         }
 
                     } else {
+                        this.loading = false;
                         this.setCustomeResponse("ERROR", this.properties.BAD_CREDENTIAL_ERROR);
                     }
                 },
                     (error: any) => {
+                        this.loading = false;
                         const body = error['_body'];
                         if (body !== "") {
                             const response = JSON.parse(body);
@@ -86,20 +90,21 @@ export class LoginComponent implements OnInit, OnDestroy {
         }
     }
 
-    redirectTo(user:User){
+    redirectTo(user: User) {
+        this.loading = false;
         const roles = user.roles;
         if (user.hasCompany || roles.length === 1) {
             this.router.navigate(['/home/dashboard/default']);
         } else {
             this.router.navigate(['/home/dashboard/add-company-profile']);
-           /* if (roles.length === 1 || this.isOnlyPartner(roleNames)) {
-                this.router.navigate(['/home/dashboard/myprofile']);
-            } else {
-                this.router.navigate(['/home/dashboard/add-company-profile']);
-            }*/
+            /* if (roles.length === 1 || this.isOnlyPartner(roleNames)) {
+                 this.router.navigate(['/home/dashboard/myprofile']);
+             } else {
+                 this.router.navigate(['/home/dashboard/add-company-profile']);
+             }*/
         }
     }
-    
+
     isOnlyPartner(roleNames) {
         if (roleNames.length === 2 && (roleNames.indexOf('ROLE_USER') > -1 && roleNames.indexOf('ROLE_COMPANY_PARTNER') > -1)) {
             this.xtremandLogger.log("*******************LoggedIn User Is Partner***********************")
@@ -109,18 +114,18 @@ export class LoginComponent implements OnInit, OnDestroy {
             return false;
         }
     }
-    eventHandler(keyCode: any) {
-        if (keyCode === 13) {
-            this.login();
-        }
-    }
+    eventHandler(keyCode: any) {  if (keyCode === 13) {  this.login();  }  }
     setCustomeResponse(responseType: string, responseMessage: string) {
         this.customResponse = new CustomResponse(responseType, responseMessage, true);
         this.xtremandLogger.error(responseMessage);
     }
 
     ngOnInit() {
-
+        if (localStorage.getItem('currentUser')) {  // if current user is there, directly goto dashboard
+            this.xtremandLogger.log("User From Local Storage");
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            this.redirectTo(currentUser);
+        }
     }
 
     ngOnDestroy() {
