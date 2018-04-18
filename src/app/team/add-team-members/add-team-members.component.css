@@ -10,13 +10,16 @@ table td:first-child, table th:first-child
 	{
 	text-align: left
 }
-
+ 
 .fa-user {
 	padding-right: 10px;
 }
-
+/*
 .fa-times {
 	color: #F3565D;
+} */
+.red{
+	color: #F3565D !important;
 }
 
 hr {

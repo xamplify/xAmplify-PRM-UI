@@ -155,9 +155,9 @@ nav a.active {
 	border-radius: 4px 0 0 4px;
 }
 
-*:not(.fa), :not(div[class^='icon']) {
+/* *:not(.fa), :not(div[class^='icon']) {
 	font-family: Open Sans !important;
-}
+} */
 
 .percentage-circle>.percentage-value {
 	margin: -3em 0 0 0;

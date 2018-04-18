@@ -175,7 +175,7 @@
 								<td><input type="checkbox" id="role-checkbox-{{i}}"[(ngModel)]="teamMember.emailTemplate" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'add-team-member-table')"></td>
 								<td><input type="checkbox" id="role-checkbox-{{i}}"[(ngModel)]="teamMember.socialShare" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'add-team-member-table')"></td>
 								<td><input type="checkbox" id="role-checkbox-{{i}}"[(ngModel)]="teamMember.partners" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'add-team-member-table')"></td>
-								<td><a class="btn-sm" (click)="deleteRow(i,teamMember.emailId)"><em	class="fa fa-times"></em></a></td>
+								<td><a class="btn-sm" (click)="deleteRow(i,teamMember.emailId)"><i class="fa fa-times red"></i></a></td>
 							</tr>
 							</ng-container>
 								
@@ -322,7 +322,7 @@
 											  (statusChange)="changeTeamMemberStatus(teamMember,$event)">
 									</switch>
 								</td>	
-								<td><a class="btn-sm" (click)="delete(teamMember)"><em	class="fa fa-times"></em></a></td>
+								<td><a class="btn-sm" (click)="delete(teamMember)"><em	class="fa fa-times red"></em></a></td>
 							</tr>
 							</ng-container>
 							</tbody>
@@ -371,8 +371,8 @@
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button"  class="close-circle"  data-dismiss="modal" (click)="clearForm();"><i class="fa fa-times"></i></button>
-        <h4 class="modal-title">Add Team Member</h4>
+		<a class="close-circle" (click)="clearForm()"><i class="fa fa-times"></i></a>
+		<h4 class="modal-title">Add Team Member</h4>
       </div>
       <div class="modal-body">
       <form class="form-horizontal" id="add-team-member-form">
