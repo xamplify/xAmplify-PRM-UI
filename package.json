@@ -43,7 +43,6 @@
     "ngx-sharebuttons": "^3.0.0",
     "ngx-ui-switch": "1.4.4",
     "rxjs": "^5.1.0",
-    "tixif-ngx-busy": "0.0.5",
     "underscore": "^1.8.3",
     "zone.js": "^0.8.9"
   },

@@ -10,7 +10,6 @@ import { HttpModule } from '@angular/http';
 import { FileSelectDirective, FileDropDirective } from 'ng2-file-upload';
 import { FileUploadModule } from 'ng2-file-upload/ng2-file-upload';
 import { Ng2FilterPipeModule } from 'ng2-filter-pipe';
-import { BusyModule } from 'tixif-ngx-busy';
 import { TimepickerModule } from 'ngx-bootstrap';
 import { BootstrapSwitchModule } from 'angular2-bootstrap-switch';
 import { TimezonePickerModule } from 'ng2-timezone-selector';
@@ -24,12 +23,12 @@ import { CommonComponentModule } from '../common/common.module';
 
 @NgModule({
         imports: [CommonModule, RouterModule, FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,
-                TagInputModule, HttpModule, Ng2FilterPipeModule, ColorPickerModule, BusyModule, TimepickerModule.forRoot()
+                TagInputModule, HttpModule, Ng2FilterPipeModule, ColorPickerModule, TimepickerModule.forRoot()
                 , BootstrapSwitchModule.forRoot(), TimezonePickerModule, LoadingModule, CommonComponentModule],
         declarations: [LoaderComponent, UpdateStatusComponent, ConnectAccountsComponent, SocialLoaderComponent],
         exports: [FileSelectDirective, FileDropDirective, FormsModule, CommonModule, RouterModule, ColorPickerModule,
                 FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule, TagInputModule,
-                HttpModule, Ng2FilterPipeModule, LoaderComponent, BusyModule, TimepickerModule,
+                HttpModule, Ng2FilterPipeModule, LoaderComponent, TimepickerModule,
                 BootstrapSwitchModule, TimezonePickerModule, UpdateStatusComponent, ConnectAccountsComponent, LoadingModule, SocialLoaderComponent],
         providers: [],
 })

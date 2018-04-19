@@ -1,5 +1,4 @@
 import { Component, OnInit, Output, EventEmitter, AfterViewInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { UserService } from '../../../core/services/user.service';
@@ -372,18 +371,15 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     updatePassword() {
         this.ngxloading = true;
         console.log(this.updatePasswordForm.value);
-       // $('#update-password-error-div').hide();
         var userPassword = {
             'oldPassword': this.updatePasswordForm.value.oldPassword,
             'newPassword': this.updatePasswordForm.value.newPassword,
             'userId': this.loggedInUserId
         }
-        if (this.updatePasswordForm.value.oldPassword == this.updatePasswordForm.value.newPassword) {
-           // $('#update-password-error-div').show(600);
+        if (this.updatePasswordForm.value.oldPassword === this.updatePasswordForm.value.newPassword) {
            this.customResponse = new CustomResponse('ERROR','New Password should not be same as Current password',true);
             this.ngxloading = false;
         } else {
-          //  $('#update-password-error-div').hide();
             this.userService.updatePassword(userPassword)
                 .subscribe(
                     data => {
