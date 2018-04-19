@@ -12,12 +12,13 @@ import { LocationComponent } from './location/location.component';
 import { PlatformComponent } from './platform/platform.component';
 import { ResponseMessageComponent } from './response-message/response-message.component';
 import { PreviewVideoComponent } from './preview-video/preview-video.component';
+import { ContactsCampaignsMailsComponent } from './contacts-campaigns-mails/contacts-campaigns-mails.component';
 
 @NgModule({
   imports: [CommonModule, FormsModule],
   declarations: [DonutChartComponent, PaginationComponent, WorldmapComponent,
-    BarChartComponent, EmbedModalComponent, EmbedModalComponent, UserInfoComponent, LocationComponent, PlatformComponent, ResponseMessageComponent, PreviewVideoComponent],
-  exports: [DonutChartComponent, PaginationComponent, WorldmapComponent,
+    BarChartComponent, EmbedModalComponent, EmbedModalComponent, UserInfoComponent, LocationComponent, PlatformComponent, ResponseMessageComponent, PreviewVideoComponent, ContactsCampaignsMailsComponent],
+  exports: [DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent,
     BarChartComponent, EmbedModalComponent, UserInfoComponent, LocationComponent, PlatformComponent, ResponseMessageComponent, PreviewVideoComponent]
 })
 export class CommonComponentModule { }

@@ -88,6 +88,7 @@ export class AddPartnersComponent implements OnInit {
     isCompanyDetails = false;
     allPartnersPagination: Pagination = new Pagination();
     pageSize: number = 12;
+    contactListAssociatedCampaignsList: any;
     
     sortOptions = [
         { 'name': 'Sort By', 'value': '' },
@@ -107,6 +108,7 @@ export class AddPartnersComponent implements OnInit {
     allselectedUsers = [];
     isHeaderCheckBoxChecked: boolean = false;
     pageNumber: any;
+    newUsersEmails = [];
 
     public uploader: FileUploader = new FileUploader( { allowedMimeType: ["application/csv", "application/vnd.ms-excel", "text/plain", "text/csv"] });
 
@@ -314,6 +316,9 @@ export class AddPartnersComponent implements OnInit {
     saveValidEmails() {
       this.isCompanyDetails = false;
         for(let i=0; i< this.newPartnerUser.length; i++){
+        
+          this.newUsersEmails.push(this.newPartnerUser[i].emailId);
+            
          if(this.selectedAddPartnerOption != 3 && this.selectedAddPartnerOption != 6 && this.selectedAddPartnerOption != 7 ){
           if(this.newPartnerUser[i].contactCompany.trim() !=''){
               this.isCompanyDetails = true;
@@ -355,6 +360,7 @@ export class AddPartnersComponent implements OnInit {
                     this.loadPartnerList( this.pagination );
                     this.clipBoard = false;
                     this.cancelPartners();
+                    this.getContactsAssocialteCampaigns();
                 },
                 ( error: any ) => {
                     let body: string = error['_body'];
@@ -1418,7 +1424,6 @@ export class AddPartnersComponent implements OnInit {
 
     settingSocialNetworkOpenModal( socialNetwork: string ) {
         this.settingSocialNetwork = socialNetwork;
-        // $( '#settingSocialNetwork' ).modal();
         $( '#settingSocialNetwork' ).appendTo( "body" ).modal( 'show' );
     }
 
@@ -1432,20 +1437,17 @@ export class AddPartnersComponent implements OnInit {
                     $( "#salesforceContact_buttonNormal" ).hide();
                     $( "#salesforceGear" ).hide();
                     this.sfImageBlur = true;
-                    //this.setResponseDetails( 'SUCCESS', 'your Salesforce account has been successfully removed.' );
                     this.socialContactImage();
                 }
                 else if ( socialNetwork == 'GOOGLE' ) {
                     $( "#googleContact_buttonNormal" ).hide();
                     $( "#GoogleGear" ).hide();
                     this.googleImageBlur = true;
-                   // this.setResponseDetails( 'SUCCESS', 'your google account has been successfully removed.' );
                 }
                 else if ( socialNetwork == 'ZOHO' ) {
                     $( "#zohoContact_buttonNormal" ).hide();
                     $( "#zohoGear" ).hide();
                     this.zohoImageBlur = true;
-                   // this.setResponseDetails( 'SUCCESS', 'your Zoho account has been successfully removed.' );
                 }
                 $( '#settingSocialNetwork' ).modal( 'hide' );
                 this.customResponse = new CustomResponse( 'SUCCESS', this.properties.SOCIAL_ACCOUNT_REMOVED_SUCCESS, true );
@@ -1609,6 +1611,18 @@ export class AddPartnersComponent implements OnInit {
         this.pageSize = event;
         this.setSocialPage(1);
       }
+    
+    getContactsAssocialteCampaigns() {
+        this.contactService.contactListAssociatedCampaigns( this.partnerListId)
+            .subscribe(
+            data => {
+                this.contactListAssociatedCampaignsList = data;
+            },
+            error => console.log( error ),
+            () => {
+            }
+            );
+    }
 
     ngOnInit() {
         this.socialContactImage();

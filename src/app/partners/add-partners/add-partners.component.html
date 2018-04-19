@@ -961,3 +961,7 @@ img:hover {
 	</div>
 </div>
 </div>
+<div *ngIf="contactListAssociatedCampaignsList?.length">
+<app-contacts-campaigns-mails [associatedCampaignDetails]="contactListAssociatedCampaignsList"
+[userEmails]="newUsersEmails"></app-contacts-campaigns-mails>
+</div>
