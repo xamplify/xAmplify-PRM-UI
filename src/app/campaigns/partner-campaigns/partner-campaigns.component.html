@@ -139,7 +139,7 @@
                             </div>
                             <div class="col-xs-8">
                                 <a>
-                                    <h4 class="mt5 mb5 f-w-600" title="{{campaign.campaignVideoFile.title}}">{{campaign.campaignVideoFile.title}}</h4>
+                                    <h4 class="mt5 mb5 f-w-600" style="font-size: 15px" title="{{campaign.campaignVideoFile.title}}">{{campaign.campaignVideoFile.title}}</h4>
                                     <h5 class="m0">By {{campaign.campaignVideoFile.uploadedBy}}</h5>
                                 </a>
                             </div>
@@ -179,7 +179,16 @@
 		<fieldset>
 			<legend>Additional campaign options</legend>
 		<div>
-				<div class="row">
+	<div class="row">
+		<div class="col-xs-6"></div>
+		<div class="col-xs-6 text-right">
+			<h5 class="control-label font-purple-intense pr10" style="display: inline-block;">Enable work flow</h5>
+			<switch [status]="enableWorkFlow" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+				[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
+				(statusChange)="enableWorkFlow = !enableWorkFlow">
+			</switch>
+		</div>
+<div [hidden]="!enableWorkFlow">
 	<div class="col-xs-6">
 		<a *ngIf="emailTemplateHrefLinks?.length==0" class="dashboard-stat yellow-gold" 
 			style="background-color: #f76c1a;" title="No Urls Found">
@@ -590,7 +599,8 @@
 				</div>
 			</div>
 			<!-- Add on Click end -->
-				</div>
+			</div>
+			</div>
 			</div>
 		
 	</div>

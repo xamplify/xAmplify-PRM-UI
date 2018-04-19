@@ -25,6 +25,7 @@ import { Pagination } from '../../core/models/pagination';
 import { Country } from '../../core/models/country';
 import { Timezone } from '../../core/models/timezone';
 import { EmailTemplateType } from '../../email-template/models/email-template-type';
+
 declare var $: any;
 @Component({
     selector: 'app-partner-campaigns',
@@ -59,9 +60,9 @@ export class PartnerCampaignsComponent implements OnInit {
     url: Url = new Url();
     allItems = [];
     campaignEmailTemplate: CampaignEmailTemplate = new CampaignEmailTemplate();
-    dataError: boolean = false;
+    dataError = false;
     emailTemplateHrefLinks: any[] = [];
-
+    enableWorkFlow = true;
     formErrors = {
         'campaignName': '',
         'fromName': '',
@@ -321,6 +322,12 @@ export class PartnerCampaignsComponent implements OnInit {
         } else if ("video" === this.campaignType) {
             campaignType = CampaignType.VIDEO;
         }
+        // Enable work flow is disabled
+        if(!this.enableWorkFlow){
+            this.replies = [];
+            this.urls = [];
+        }
+
         const data = {
             'campaignName': this.campaign.campaignName,
             'fromName': this.campaign.fromName,
