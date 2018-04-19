@@ -33,13 +33,13 @@ export class LoginComponent implements OnInit, OnDestroy {
     constructor(private router: Router, private authenticationService: AuthenticationService,
         public referenceService: ReferenceService, private xtremandLogger: XtremandLogger, public properties: Properties) {
         if (this.referenceService.userProviderMessage !== "") {
-            this.customResponse = new CustomResponse('SUCCESS', this.referenceService.userProviderMessage, true);
+            this.setCustomeResponse("SUCCESS", this.referenceService.userProviderMessage);
         }
     }
 
     public login() {
         this.loading = true;
-        if (this.model.username.length === 0 || this.model.password.length === 0) {
+        if (!this.model.username || !this.model.password) {
             this.loading = false;
             this.setCustomeResponse("ERROR", this.properties.EMPTY_CREDENTIAL_ERROR);
         } else {
@@ -77,13 +77,15 @@ export class LoginComponent implements OnInit, OnDestroy {
                         if (body !== "") {
                             const response = JSON.parse(body);
                             if (response.error_description === "Bad credentials") {
-                                this.customResponse = new CustomResponse('ERROR', this.properties.BAD_CREDENTIAL_ERROR, true);
+                                this.setCustomeResponse("ERROR", this.properties.BAD_CREDENTIAL_ERROR);
                             } else if (response.error_description === "User is disabled") {
-                                this.customResponse = new CustomResponse('ERROR', this.properties.USER_ACCOUNT_ACTIVATION_ERROR, true);
+                                this.setCustomeResponse("ERROR", this.properties.USER_ACCOUNT_ACTIVATION_ERROR);
                             }
                         }
-                        this.xtremandLogger.error("error:" + error)
-
+                        else { 
+                            this.setCustomeResponse("ERROR", error);
+                            this.xtremandLogger.error("error:" + error)
+                        }
                     });
                 return false;
             }

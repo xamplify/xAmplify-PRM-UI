@@ -34,10 +34,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     videoUrl: string;
     updatePasswordForm: FormGroup;
     defaultPlayerForm: FormGroup;
-    busy: Subscription;
     status: boolean = true;
-    updatePasswordBusy: Subscription;
-    updatePlayerBusy: Subscription;
     updatePasswordSuccess = false;
     profileUploadSuccess = false;
     userProfileImage: string = "assets/admin/pages/media/profile/icon-user-default.png";
@@ -69,11 +66,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     imagePathSafeUrl: any;
     fullScreenMode = false;
     logoLink = '';
-    logoUrlUpdated = false;
     roleLength: boolean;
     ngxloading: boolean;
     customResponse: CustomResponse = new CustomResponse();
-    defaultPlayerSuccess: CustomResponse = new CustomResponse();
     constructor(public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
         public logger: XtremandLogger, public refService: ReferenceService, public videoUtilService: VideoUtilService,
         public router: Router, public callActionSwitch: CallActionSwitch, public sanitizer: DomSanitizer, 
@@ -170,11 +165,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                     console.log(data);
                     if (data !== undefined) {
                         this.ngxloading = false;
-                    //    this.logoUrlUpdated = true;
                         this.customResponse =  new CustomResponse('SUCCESS',this.properties.VIDEO_LOGO_UPDATED,true);
                         this.logoImageUrlPath = data.brandingLogoPath
                         this.logoLink = data.brandingLogoDescUri;
-                     //   setTimeout(()=>{  this.logoUrlUpdated = false; },5000)
                     } else { this.ngxloading = false; }
                 },
                 (error) => { this.ngxloading = false; });
@@ -377,22 +370,26 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     updatePassword() {
+        this.ngxloading = true;
         console.log(this.updatePasswordForm.value);
-        $('#update-password-error-div').hide();
+       // $('#update-password-error-div').hide();
         var userPassword = {
             'oldPassword': this.updatePasswordForm.value.oldPassword,
             'newPassword': this.updatePasswordForm.value.newPassword,
             'userId': this.loggedInUserId
         }
         if (this.updatePasswordForm.value.oldPassword == this.updatePasswordForm.value.newPassword) {
-            $('#update-password-error-div').show(600);
+           // $('#update-password-error-div').show(600);
+           this.customResponse = new CustomResponse('ERROR','New Password should not be same as Current password',true);
+            this.ngxloading = false;
         } else {
-            $('#update-password-error-div').hide();
-            this.updatePasswordBusy = this.userService.updatePassword(userPassword)
+          //  $('#update-password-error-div').hide();
+            this.userService.updatePassword(userPassword)
                 .subscribe(
                     data => {
                         const body = data;
                         if (body !== "") {
+                            this.ngxloading = false;
                             var response = body;
                             var message = response.message;
                             if (message == "Wrong Password") {
@@ -405,18 +402,22 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                                     this.className = "form-control ng-touched ng-dirty ng-valid";
                                 }
                             } else if (response.message == "Password Updated Successfully") {
+                                this.ngxloading = false;
                                 this.customResponse = new CustomResponse('SUCCESS',this.properties.PASSWORD_UPDATED,true);
                                 this.updatePasswordForm.reset();
                             } else {
+                                this.ngxloading = false;
                                 this.logger.error(this.refService.errorPrepender + " updatePassword():" + data);
                             }
 
                         } else {
+                            this.ngxloading = false;
                             this.logger.error(this.refService.errorPrepender + " updatePassword():" + data);
                         }
 
                     },
                     error => {
+                        this.ngxloading = false;
                         this.logger.error(this.refService.errorPrepender + " updatePassword():" + error);
                     },
                     () => console.log("Done")
@@ -618,7 +619,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     updateUserProfile() {
         console.log(this.updateUserProfileForm.value);
         this.refService.goToTop();
-        this.busy = this.userService.updateUserProfile(this.updateUserProfileForm.value, this.authenticationService.getUserId())
+        this.ngxloading = true;
+        this.userService.updateUserProfile(this.updateUserProfileForm.value, this.authenticationService.getUserId())
             .subscribe(
                 data => {
                     if (data != "") {
@@ -633,6 +635,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                             this.userService.getUserByUserName(this.authenticationService.user.emailId).
                                 subscribe(
                                     res => {
+                                        this.ngxloading = false;
                                         this.authenticationService.userProfile = res;
                                        // this.getVideoDefaultSettings();
                                     },
@@ -640,6 +643,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                                     () => console.log("Finished")
                                 );
                         } else {
+                            this.ngxloading = false;
                             this.logger.error(this.refService.errorPrepender + " updateUserProfile():" + data);
                         }
 
@@ -649,6 +653,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
                 },
                 error => {
+                    this.ngxloading = false;
                     this.logger.error(this.refService.errorPrepender + " updateUserProfile():" + error);
                 },
                 () => console.log("Done")
@@ -677,7 +682,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.active = true;
                 const response = result;
                 console.log(response);
-                //  this.defaultPlayerSuccess = true;
                 this.refService.defaultPlayerSettings = response;
                 this.tempDefaultVideoPlayerSettings = response;
                 this.defaultVideoPlayer = response;
@@ -785,22 +789,18 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         } else { $('.video-js .vjs-fullscreen-control').show(); }
     }
     UpdatePlayerSettingsValues() {
+        this.ngxloading = true;
         this.isPlayerSettingUpdated = true;
-      //  this.defaultPlayerSuccess = false;
         this.defaultVideoPlayer.playerColor = this.compPlayerColor;
         this.defaultVideoPlayer.controllerColor = this.compControllerColor;
         this.defaultVideoPlayer.transparency = this.valueRange;
-        this.updatePlayerBusy = this.userService.updatePlayerSettings(this.defaultVideoPlayer)
+         this.userService.updatePlayerSettings(this.defaultVideoPlayer)
             .subscribe((result: any) => {
-              //  setTimeout(() => { this.defaultPlayerSuccess = true; }, 1003);
+                this.ngxloading = false;
                 this.customResponse = new CustomResponse('SUCCESS', this.properties.DEFAULT_PLAYER_SETTINGS, true);
                 this.getVideoDefaultSettings();  },
                 (error:any) => { console.error('error in update player setting api'); }
             );
-        //  setTimeout(() => {
-        //     $('#defaultPlayerSettings').slideUp(500);
-        //     this.defaultPlayerSuccess = false;
-        // }, 5000);
     }
     resetForm() {
         console.log(this.refService.defaultPlayerSettings);
@@ -870,13 +870,16 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     setListView(isListView: boolean) {
+        this.ngxloading = true;
         this.userService.setListView(this.authenticationService.getUserId(), isListView)
             .subscribe(
                 data => {
+                    this.ngxloading = false;
                     this.refService.isListView = isListView;
                     this.customResponse = new CustomResponse('SUCCESS', this.properties.PROCESS_REQUEST_SUCCESS, true);
                 },
                 error => {
+                    this.ngxloading = false;
                     console.log(error);
                     this.customResponse = new CustomResponse('ERROR', this.properties.PROCESS_REQUEST_ERROR, true);    
             },

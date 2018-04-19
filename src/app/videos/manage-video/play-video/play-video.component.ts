@@ -303,12 +303,15 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         $('#newPlayerVideo').empty();
         $('.h-video').remove();
         this.videoUtilService.player360VideoJsFiles();
+        this.videoUtilService.video360withm3u8();
         let str = '<video id=videoId  poster=' + this.posterImg + ' class="video-js vjs-default-skin" crossorigin="anonymous" controls></video>';
         $('#newPlayerVideo').append(str);
         this.videoUrl = this.selectedVideo.videoPath;
         this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
-        this.videoUrl = this.videoUrl + '.mp4?access_token=' + this.authenticationService.access_token;
-        $('#newPlayerVideo video').append('<source src="' + this.videoUrl + '" type="video/mp4">');
+        this.videoUrl = this.videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
+        $('#newPlayerVideo video').append('<source src=' + this.videoUrl + ' type="application/x-mpegURL">');
+       // this.videoUrl = this.videoUrl + '.mp4?access_token=' + this.authenticationService.access_token;
+       // $('#newPlayerVideo video').append('<source src="' + this.videoUrl + '" type="video/mp4">');
         $('#videoId').css('height', '318px');
         $('#videoId').css('width', 'auto');
         const player = videojs('videoId').ready(function () {

@@ -56,12 +56,15 @@ export class VideoUtilService {
         $('head').append('<script src="assets/js/indexjscss/videojs.hotkeys.min.js"" type="text/javascript"  class="p-video" />');
     }
     player360VideoJsFiles() {
+        try{
         $('head').append('<link href="assets/js/indexjscss/video-hls-player/video-hls-js.css" class="p-video" rel="stylesheet">');
         $('head').append('<script src="assets/js/indexjscss/360-video-player/video.js" type="text/javascript"  class="p-video"/>');
         $('head').append('<script src="assets/js/indexjscss/360-video-player/three.js" type="text/javascript"  class="p-video" />');
         $('head').append('<link href="assets/js/indexjscss/360-video-player/videojs-panorama-test.min.css" rel="stylesheet"  class="p-video">');
         $('head').append('<script src="assets/js/indexjscss/360-video-player/videojs-panorama.min.js" type="text/javascript"  class="p-video" />');
         this.videojshotkeys();
+        } catch(error){ console.log(error);}
+
     }
     normalVideoJsFiles() {
         $('head').append('<link href="assets/js/indexjscss/video-hls-player/video-hls-js.css" class="h-video" rel="stylesheet">');
@@ -71,7 +74,10 @@ export class VideoUtilService {
         $('head').append('<script src="assets/js/indexjscss/videojs-playlist.js" type="text/javascript"  class="h-video" />');
         this.videojshotkeys();
     }
-
+    video360withm3u8(){
+        $('head').append('<script src="assets/js/indexjscss/video-hls-player/videojs-flash.js" type="text/javascript" class="h-video"  />');
+       $('head').append('<script src="assets/js/indexjscss/video-hls-player/videojs-contrib-hls.js" type="text/javascript"  class="h-video"/>');
+    }
     constructor() { }
     validateEmail(email: string) {
         const validation = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;

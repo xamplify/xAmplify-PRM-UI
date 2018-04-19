@@ -442,15 +442,20 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         $('#overlay-modal').css('height', '299px');
     }
     play360Video() {
+        try{
         this.is360Value = true;
         $('edit_video_player').empty();
         $('.h-video').remove();
         this.videoUtilService.player360VideoJsFiles();
+        this.videoUtilService.video360withm3u8();
         const str = '<video id=videoId poster=' + this.defaultImagePath + ' class="video-js vjs-default-skin" crossorigin="anonymous" controls></video>';
         $('#newPlayerVideo').append(str);
         this.videoPlayListSourceChange();
-        this.videoUrl = this.videoUrl + '.mp4?access_token=' + this.authenticationService.access_token;
-        $('#newPlayerVideo video').append('<source src="' + this.videoUrl + '" type="video/mp4">');
+        this.videoUrl = this.videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
+        $('#newPlayerVideo video').append('<source src=' + this.videoUrl + ' type="application/x-mpegURL">');
+        // this.videoUrl = this.videoUrl + '.mp4?access_token=' + this.authenticationService.access_token;
+        // $('#newPlayerVideo video').append('<source src="' + this.videoUrl + '" type="video/mp4">');
+       
         this.setVideoIdHeightWidth();
         const newThis = this;
         const player = videojs('videoId').ready(function () {
@@ -481,9 +486,9 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                         },
                         handler: function (player: any, options: any, event: any) {
                             if (options.enableModifiersForNumbers || !(event.metaKey || event.ctrlKey || event.altKey)) {
-                                var sub = 48;
+                                let sub = 48;
                                 if (event.which > 95) { sub = 96; }
-                                var number = event.which - sub;
+                                const number = event.which - sub;
                                 player.currentTime(player.duration() * number * 0.1);
                             }
                         }
@@ -593,6 +598,9 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             }
         });
         this.setVideoIdHeightWidth();
+    } catch(error){
+        console.log(error);
+    }
     }
     // video controller methods
     transperancyControllBar(value: any) {
@@ -1283,11 +1291,11 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     
     selectedPublishToName(event: any){
-        if(event == "PUBLIC"){
+        if(event === "PUBLIC"){
             this.publisToMessage = "Everyone can view"
-        } else if(event == "UNLISTED"){
+        } else if(event === "UNLISTED"){
             this.publisToMessage = "No one can view"
-        } else if(event == "PRIVATE"){
+        } else if(event === "PRIVATE"){
             this.publisToMessage = "Only you can view"
         }
     }

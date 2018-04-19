@@ -70,6 +70,9 @@ input:checked + .slider-new:before {
 .profile-usertitle-name{font-size: 14px;}	
 </style>
 			<div class="page-content">
+				<div class="my-container">
+						<ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+				</div>
 				<!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
 				<app-topnavbar [model]="parentModel"></app-topnavbar>
 				<div class="page-bar">
@@ -221,7 +224,7 @@ input:checked + .slider-new:before {
 										<div class="portlet-body clearfix">
 												<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 											<div class="tab-content">
-											<div class="tab-pane active" id="tab_1_1" [ngBusy]="{busy: busy, message: 'Please Wait...',minDuration:1000}">
+											<div class="tab-pane active" id="tab_1_1">
 													<form role="form" [formGroup]="updateUserProfileForm" (ngSubmit)="updateUserProfile()">
 														<div class="form-group">
 															<label class="control-label">First Name</label>
@@ -323,11 +326,11 @@ input:checked + .slider-new:before {
 												</div>
 												<!-- END CHANGE AVATAR TAB -->
 												<!-- CHANGE PASSWORD TAB -->
-												<div class="tab-pane" id="tab_1_3" [ngBusy]="{busy: updatePasswordBusy, message: 'Please Wait...'}">
-													<div id="update-password-error-div" class="alert alert-danger" style="display: none;">
+												<div class="tab-pane" id="tab_1_3" >
+													<!-- <div id="update-password-error-div" class="alert alert-danger" style="display: none;">
 														<a (click)="hideDiv('update-password-error-div')" class="close" aria-label="close">�</a>
 														<strong>New Password should not be same as Current password</strong>
-													</div>
+													</div> -->
 													<form [formGroup]="updatePasswordForm" (ngSubmit)="updatePassword()" autocomplete="off">
 														<div class="form-group">
 															<label class="control-label">Current Password</label>
@@ -379,7 +382,7 @@ input:checked + .slider-new:before {
 												</div>
 												<!-- END PRIVACY SETTINGS TAB -->
 												<!--video default player settings-->
-													<div class="tab-pane" id="tab_1_5"  [ngBusy]="{busy: updatePlayerBusy, message: 'Please Wait...', minDuration:1000}">
+													<div class="tab-pane" id="tab_1_5">
 														<div>   
 														<div *ngIf="!isOnlyPartnerRole">	
 														<form role="form" [formGroup]="defaultPlayerForm" *ngIf="active" (ngSubmit)="UpdatePlayerSettingsValues()">

@@ -22,7 +22,7 @@ declare var $: any;
 export class ForgotPasswordComponent implements OnInit {
 
     forgotPasswordForm: FormGroup;
-    passwordSuccess = false;
+    loading = false;
     customResponse: CustomResponse = new CustomResponse();
     formErrors = {
         'forgotPasswordEmailId': ''
@@ -42,12 +42,12 @@ export class ForgotPasswordComponent implements OnInit {
     }
 
     sendPassword() {
+        this.loading =  true;
         this.userService.sendPassword(this.forgotPasswordForm.value.forgotPasswordEmailId)
             .subscribe(
                 data => {
-                    /*console.log( data['_body'] );
-                    var body = data['_body'];*/
-                    if (data.message != "") {
+                    this.loading = false;
+                    if (data.message !== "") {
                         // var response = JSON.parse( body );
                         if (data.message === "An email has been sent. Please login with the credentials") {
                             this.forgotPasswordForm.reset();
@@ -55,11 +55,15 @@ export class ForgotPasswordComponent implements OnInit {
                             this.router.navigate(['./login']);
                         }
                     } else {
-                        this.xtremandLogger.error(this.referenceService.errorPrepender + " sendPassword():" + data);
+                        this.customResponse =  new CustomResponse('ERROR', data.toLowerCase(), true);
+                      //  this.xtremandLogger.error(this.referenceService.errorPrepender + " sendPassword():" + data);
                     }
                 },
                 error => {
-                    this.formErrors['forgotPasswordEmailId'] = error.toLowerCase();
+                    this.loading = false;
+                  //  this.formErrors['forgotPasswordEmailId'] = error.toLowerCase();
+                    this.customResponse =  new CustomResponse('ERROR', error.toLowerCase(), true);
+
                 },
                 () => this.xtremandLogger.log("Done")
             );
