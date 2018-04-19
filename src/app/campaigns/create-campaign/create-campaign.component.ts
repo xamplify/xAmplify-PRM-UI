@@ -382,6 +382,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                reply.emailTemplatesPagination = new Pagination();
                reply.replyTime = new Date(reply.replyTime);
                reply.replyTimeInHoursAndMinutes = this.extractTimeFromDate(reply.replyTime);
+               if($.trim(reply.subject).length==0){
+                   reply.subject = campaign.subjectLine;
+               }
                let length = this.allItems.length;
                length = length+1;
                var id = 'reply-'+length;
@@ -1671,11 +1674,14 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.getOnClickData();
         this.selectedContactListIds = this.refService.removeDuplicates(this.selectedContactListIds);
         let timeZoneId = "";
+        let scheduleTime:any;
         if( this.campaignLaunchForm.value.scheduleCampaign=="NOW"){
             timeZoneId = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            scheduleTime = this.setLaunchTime();
         }else{
          //   timeZoneId = this.campaignLaunchForm.value.timeZoneId;
             timeZoneId = $('#timezoneId option:selected').val();
+            scheduleTime = this.campaignLaunchForm.value.launchTime;
         }
         let campaignType = CampaignType.REGULAR;
         if("regular"==this.campaignType){
@@ -1702,7 +1708,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             'userListIds': this.selectedContactListIds,
             "optionForSendingMials": "MOBINAR_SENDGRID_ACCOUNT",
             "scheduleCampaign": this.campaignLaunchForm.value.scheduleCampaign,
-            'scheduleTime': this.campaignLaunchForm.value.launchTime,
+            'scheduleTime': scheduleTime,
             'timeZoneId':timeZoneId,
             'campaignId': this.campaign.campaignId,
             'selectedEmailTemplateId': this.selectedEmailTemplateRow,
@@ -1729,6 +1735,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.removeStyleAttrByDivId('message-'+reply.divId);
             this.removeStyleAttrByDivId('email-template-'+reply.divId);
             $('#'+reply.divId).addClass('portlet light dashboard-stat2');
+            this.validateReplySubject(reply);
             if(reply.actionId!=16 && reply.actionId!=17 && reply.actionId!=18){
                 this.validateReplyInDays(reply);
                 if(reply.actionId!=22 && reply.actionId!=23){
@@ -1769,13 +1776,21 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         }
     }
     
+    validateReplySubject(reply:Reply){
+        if( reply.subject==null||reply.subject==undefined || $.trim(reply.subject).length==0){
+            this.addReplyDivError(reply.divId);
+            console.log("Added Reply Subject Eror");
+            $('#reply-subject-'+reply.divId).css('color','red');
+        }
+    }
+    
     validateEmailTemplateForAddReply(reply:Reply){
         if(reply.defaultTemplate && reply.selectedEmailTemplateId==0){
             $('#'+reply.divId).addClass('portlet light dashboard-stat2 border-error');
             $('#email-template-'+reply.divId).css('color','red');
-        }else if(!reply.defaultTemplate &&(reply.subject==null || reply.subject==undefined || $.trim(reply.subject).length==0)){
+        }else if(!reply.defaultTemplate &&(reply.body==null || reply.body==undefined || $.trim(reply.body).length==0)){
             $('#'+reply.divId).addClass('portlet light dashboard-stat2 border-error');
-            $('#message-'+reply.divId).css('color','red');
+            $('#reply-message-'+reply.divId).css('color','red');
         }
     }
     
@@ -2283,6 +2298,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             var id = 'reply-'+length;
             this.reply.divId = id;
             this.reply.actionId =0;
+            this.reply.subject = this.refService.replaceMultipleSpacesWithSingleSpace(this.campaign.subjectLine);
             this.replies.push(this.reply);
             this.allItems.push(id);
             this.loadEmailTemplatesForAddReply(this.reply);
@@ -2395,5 +2411,19 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
              this.campaign.fromName = this.campaign.email;
          }
      }
+     
+     
+     setLaunchTime(){
+         var date    = new Date(),
+         year      = date.getFullYear(),
+         month   = date.getMonth() < 10 ? '0' + date.getMonth() : date.getMonth(),
+         day     = date.getDate()  < 10 ? '0' + date.getDate()  : date.getDate(),
+         hours = date.getHours() > 9 ? date.getHours() : '0' + date.getHours(),
+         minutes = date.getMinutes() > 9 ? date.getMinutes() : '0' + date.getMinutes();
+         return day+"/"+month+"/"+year+" "+hours+":"+minutes;
+         
+     }
+     
+       
        
 }

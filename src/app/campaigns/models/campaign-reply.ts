@@ -5,6 +5,7 @@ export class Reply{
     replyInDays:number=0;
     replyTime:Date=new Date();
     subject:string;
+    body:string = "";
     actionId:number;
     divId:string;
     emailAction:any;

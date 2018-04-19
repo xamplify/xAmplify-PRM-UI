@@ -1199,6 +1199,7 @@
 									</label>
 									<input type="number" class="form-control" name="days" placeholder="Days" [(ngModel)]="reply.replyInDays" min="0" oninput="validity.valid||(value='');">
 								</div>
+								
 								<div class="col-md-3 time-col" *ngIf="reply.actionId!=22 && reply.actionId!=23 ">
 									<span for="time" id="send-time-{{reply.divId}}" style="margin-top:20px;">At 
 										<b style="color: red">*</b>&nbsp;&nbsp;</span>
@@ -1206,8 +1207,15 @@
 								</div>
 								</div>
 								
+								
+								<div class="col-md-4">
+									<label for="time" id="reply-subject-{{reply.divId}}">Subject
+										<b style="color: red">*</b>
+									</label>
+									<input type="text" class="form-control" name="subject" [(ngModel)]="reply.subject" placeholder="Subject" maxlength="50">
+								</div>
 							
-							<div class="col-md-3">
+							<div class="col-md-6">
 								<label for="reason">Reason</label>
 								<select class="form-control" name="actionId" [(ngModel)]="reply.actionId">
 								<option [value]="0" [selected]="reply.actionId ==0">Email Not Opened</option>
@@ -1232,15 +1240,15 @@
 								</button>
 							</div>
 						</div>
-							<div class="col-sm-12" style="padding: 0">
+							<div class="col-sm-12" style="padding: 0;margin-top: 7px;">
 								<div id="ck-editor-{{i}}" *ngIf="!reply.defaultTemplate">
-									<div class="form-group" style="margin-left: 1px;">
-										<label for="days" id="message-{{reply.divId}}">Message
+									<div  style="margin-left: 1px;">
+										<label for="days" id="reply-message-{{reply.divId}}">Message
 											<b style="color: red">*</b>
 										</label>
 									</div>
 									<div>
-										<ckeditor [(ngModel)]="reply.subject" name="subject"></ckeditor>
+										<ckeditor [(ngModel)]="reply.body" name="body"></ckeditor>
 									</div>
 								</div>
 								<div id="reply-email-template-{{i}}" *ngIf="reply.defaultTemplate">
@@ -1389,9 +1397,6 @@
 										<timepicker [(ngModel)]="url.replyTime" name="time"></timepicker>
 									</div>
 								</div>
-
-
-
 
 								<div class="col-md-4">
 									<label for="time" id="click-subject-{{url.divId}}">Subject
