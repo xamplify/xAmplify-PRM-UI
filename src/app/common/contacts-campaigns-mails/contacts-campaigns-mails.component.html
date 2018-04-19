@@ -1,0 +1,53 @@
+<div id="sendMailsModal" class="modal fade" role="dialog"
+	data-keyboard="false" data-backdrop="static">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close-circle" data-dismiss="modal">
+					<i class="fa fa-times"></i>
+				</button>
+				<h4 class="modal-title">This user list is associated to
+					campaigns:</h4>
+			</div>
+			<div class="modal-body">
+				<p style="color: #7d7d7d;">Would you like to send emails to
+					newly added users?</p>
+				<table class='table tgrid'>
+					<thead>
+						<tr>
+							<th class='text-center'
+								style="font-weight: 400; font-size: 12px;">SELECT</th>
+							<th class='text-center'
+								style="font-weight: 400; font-size: 12px;">CAMPAIGN NAME</th>
+							<th class='text-center'
+								style="font-weight: 400; font-size: 12px;">CAMPAIGN TYPE</th>
+							<th class='text-center'
+								style="font-weight: 400; font-size: 12px;">CREATED BY</th>
+							<th class='text-center'
+								style="font-weight: 400; font-size: 12px;">LAUNCHED ON</th>
+						</tr>
+					</thead>
+					<tbody>
+						<ng-container>
+						<tr class='row_{{i}}'
+							*ngFor="let campaign of associatedCampaignDetails;let i = index">
+							<td align="center"><input type="checkbox"
+								id="{{campaign.campaignId}}"
+								[checked]="selectedCampaignIds.indexOf(campaign.campaignId)>-1"
+								(click)="selectedContactLisAssociatedCampaignIds(campaign.campaignId,$event)"></td>
+							<td align="center">{{campaign.campaignName}}</td>
+							<td align="center">{{campaign.campaignType}}</td>
+							<td align="center">{{campaign.fromName}}</td>
+							<td align="center">{{campaign.launchTime | date: 'short'}}</td>
+						</tr>
+						</ng-container>
+					</tbody>
+				</table>
+			</div>
+			<div class="modal-footer">
+				<button [disabled]="selectedCampaignIds.length == 0" type="button"
+					class="btn green" (click)="sendEmailToNewlyAddedUsers()">Send</button>
+			</div>
+		</div>
+	</div>
+</div>
