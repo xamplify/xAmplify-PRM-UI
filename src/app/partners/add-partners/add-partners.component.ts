@@ -19,6 +19,7 @@ import { EditContactsComponent } from '../../contacts/edit-contacts/edit-contact
 import { ManageContactsComponent } from '../../contacts/manage-contacts/manage-contacts.component';
 import { RegularExpressions } from '../../common/models/regular-expressions';
 import { PaginationComponent } from '../../common/pagination/pagination.component';
+import { TeamMemberService } from '../../team/services/team-member.service';
 declare var $, Papa, swal: any;
 
 @Component( {
@@ -27,7 +28,7 @@ declare var $, Papa, swal: any;
     styleUrls: ['./add-partners.component.css', '../../contacts/add-contacts/add-contacts.component.css', '../../../assets/global/plugins/jquery-file-upload/css/jquery.fileupload.css',
         '../../../assets/global/plugins/jquery-file-upload/css/jquery.fileupload-ui.css', '../../../assets/css/numbered-textarea.css'],
     providers: [Pagination, SocialPagerService, EditContactsComponent, ManageContactsComponent, CountryNames,
-                Properties, RegularExpressions, PaginationComponent]
+                Properties, RegularExpressions, PaginationComponent,TeamMemberService]
 })
 export class AddPartnersComponent implements OnInit {
     loggedInUserId: number;
@@ -87,6 +88,7 @@ export class AddPartnersComponent implements OnInit {
     isEmailExist: boolean = false;
     isCompanyDetails = false;
     allPartnersPagination: Pagination = new Pagination();
+    teamMemberPagination: Pagination = new Pagination();
     pageSize: number = 12;
     contactListAssociatedCampaignsList: any;
     
@@ -109,6 +111,7 @@ export class AddPartnersComponent implements OnInit {
     isHeaderCheckBoxChecked: boolean = false;
     pageNumber: any;
     newUsersEmails = [];
+    teamMembersList = [];
 
     public uploader: FileUploader = new FileUploader( { allowedMimeType: ["application/csv", "application/vnd.ms-excel", "text/plain", "text/csv"] });
 
@@ -117,7 +120,7 @@ export class AddPartnersComponent implements OnInit {
         public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
         public referenceService: ReferenceService, public countryNames: CountryNames, public paginationComponent: PaginationComponent,
         public contactService: ContactService, public properties: Properties, public regularExpressions: RegularExpressions,
-        public pagination: Pagination, public pagerService: PagerService, public xtremandLogger: XtremandLogger ) {
+        public pagination: Pagination, public pagerService: PagerService, public xtremandLogger: XtremandLogger, public teamMemberService: TeamMemberService ) {
 
         this.user = new User();
         this.referenceService.callBackURLCondition = 'partners';
@@ -313,8 +316,32 @@ export class AddPartnersComponent implements OnInit {
          return users;
      }
     
+    checkTeamEmails(arr, val) {
+        this.xtremandLogger.log(arr.indexOf(val) > -1);
+        return arr.indexOf(val) > -1;
+        }
+    
     saveValidEmails() {
-      this.isCompanyDetails = false;
+        this.isCompanyDetails = false;
+        this.teamMembersList.push(this.authenticationService.user.emailId);
+        let emails = []
+        for(let i=0; i< this.newPartnerUser.length; i++){ 
+             emails.push(this.newPartnerUser[i].emailId);
+        }
+        let existedEmails = []
+        if(emails.length > this.teamMembersList.length){
+            for(let i= 0; i< emails.length; i++){
+               let isEmail = this.checkTeamEmails(emails, this.teamMembersList[i]);
+               if(isEmail){ existedEmails.push(this.teamMembersList[i]) }
+            }
+            
+        } else{
+            for(let i= 0; i< this.teamMembersList.length; i++){
+                let isEmail = this.checkTeamEmails(this.teamMembersList, emails[i]);
+                if(isEmail){ existedEmails.push(emails[i]) }
+             }
+        }
+        console.log(existedEmails);
         for(let i=0; i< this.newPartnerUser.length; i++){
         
           this.newUsersEmails.push(this.newPartnerUser[i].emailId);
@@ -341,6 +368,7 @@ export class AddPartnersComponent implements OnInit {
           }
        }
         this.newPartnerUser = this.validateSocialContacts(this.newPartnerUser);
+     if(existedEmails.length === 0){
       if(this.isCompanyDetails){
           if(this.validCsvContacts){
             this.xtremandLogger.info( "saving #partnerListId " + this.partnerListId + " data => " + JSON.stringify( this.newPartnerUser ) );
@@ -383,6 +411,12 @@ export class AddPartnersComponent implements OnInit {
       }else{
           this.customResponse = new CustomResponse( 'ERROR', "Company Details is required", true );
       }
+     }else{
+         this.customResponse = new CustomResponse( 'ERROR', "You can't add teamMember and Your self as a partner", true );
+         if ( this.selectedAddPartnerOption == 1 ) {
+             this.cancelPartners();
+         }
+     }
     }
 
     cancelPartners() {
@@ -1623,9 +1657,35 @@ export class AddPartnersComponent implements OnInit {
             }
             );
     }
+    
+    listTeamMembers(){
+        this.teamMemberPagination.maxResults = 10000000;
+        try{
+            this.teamMemberService.list(this.teamMemberPagination,this.authenticationService.getUserId())
+            .subscribe(
+                data => {
+                    console.log(data);
+                    if ( data.teamMembers.length != 0 ) {
+                        for ( let i = 0; i < data.teamMembers.length; i++ ) {
+                            this.teamMembersList.push(data.teamMembers[i].emailId);
+                        }
+                    }
+                    this.teamMemberPagination = this.pagerService.getPagedItems(this.teamMemberPagination,this.teamMembersList);
+                },
+                error => {
+                    this.xtremandLogger.errorPage(error);
+                },
+                () => this.xtremandLogger.info("Finished listTeamMembers()")
+            );
+        }catch(error){
+            this.xtremandLogger.log(error);
+        }
+       
+    }
 
     ngOnInit() {
         this.socialContactImage();
+        this.listTeamMembers()
         $( "#Gfile_preview" ).hide();
         this.socialContactsValue = true;
         this.loggedInUserId = this.authenticationService.getUserId();
