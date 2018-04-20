@@ -60,11 +60,11 @@ export class Properties {
 
     /* Authentication Module*/
 
-    FORGOT_PASSWORD_MAIL_SEND_SUCCESS = "Password has been sent to your registered Email Id";
+    FORGOT_PASSWORD_MAIL_SEND_SUCCESS = "Check your inbox for a	temporary password";
     FORGOT_PASSWORD_MAIL_SEND_ERROR = "An error occured while sending mail";
 
-    SIGN_UP_SUCCESS = "Thank you for signing up with the platform. A verification link has been sent to your email account";
-    ACCOUNT_ACTIVATED_SUCESS = 'You have successfully activated your account';
+    SIGN_UP_SUCCESS = "Thanks for signing up! Please check your inbox for our account activation email.";
+    ACCOUNT_ACTIVATED_SUCESS = 'Thanks for activating your account.Please login to complete your company profile';
     SIGN_UP_ERROR = "An error occurred while processing your request. Please try after some time";
     ACCOUNT_DEACTIVATE_SUCCESS = "OrgAdmin deactivation successfully done";
 

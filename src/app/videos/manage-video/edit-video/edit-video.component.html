@@ -39,7 +39,7 @@
 				<div id="overLayImage"></div>
 				<div id="overlay-logo" class="video-js" [ngClass]="{'logoCss':!fullScreenMode , 'logoFullscreen' :fullScreenMode}">
 					<a [href]="logoDescriptionUrl" target="_blank" [class.disabled]="!logoDescriptionUrl">
-						<img *ngIf="brandLogoUrl" [src]="authenticationService.MEDIA_URL + brandLogoUrl" class="img-responsive">
+						<img *ngIf="brandLogoUrl && enableVideoLogo" [src]="authenticationService.MEDIA_URL + brandLogoUrl" class="img-responsive">
 					</a>
 				</div>
 				<div *ngIf="!is360Value">
@@ -357,7 +357,15 @@
 												</div>
 											</div>
 											<!-- cobra eding video logo -->
-
+											<div class="form-group">
+													<label class="col-xs-5 col-sm-5 col-md-5 control-label" style="margin-top:-5px">Enable Video Logo & Url:</label>
+													<div class="col-xs-7 col-sm-7 col-md-7">
+														<switch [status]="enableVideoLogo" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+														 [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+														 [disabled]="disablePlayerSettingnew" (statusChange)="isEnableVideoLogo($event)">
+														</switch>
+													</div>
+												</div>
 											<div id="fileLogoSelectedid" *ngIf="!disablePlayerSettingnew" class="form-group">
 												<label class="col-xs-5 control-label">Video Logo:</label>
 												<div class="col-xs-7">

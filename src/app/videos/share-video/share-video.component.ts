@@ -191,13 +191,17 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
         console.log('Loaded 360 Video');
         $('.h-video').remove();
         this.videoUtilService.player360VideoJsFiles();
+        this.videoUtilService.video360withm3u8();
         const str = '<video id=videoId poster=' + this.posterImagePath + ' class="video-js vjs-default-skin" crossorigin="anonymous" controls></video>';
         $('#newPlayerVideo').append(str);
         this.videoUrl = this.embedVideoFile.videoPath;
         this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
-        this.videoUrl = this.videoUrl + '.mp4';
+       // this.videoUrl = this.videoUrl + '.mp4';
         //  this.videoUrl = 'https://yanwsh.github.io/videojs-panorama/assets/shark.mp4'; // need to commet
-        $('#newPlayerVideo video').append('<source src="' + this.videoUrl + '" type="video/mp4">');
+      //  $('#newPlayerVideo video').append('<source src="' + this.videoUrl + '" type="video/mp4">');
+        this.videoUrl = this.videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
+        $('#newPlayerVideo video').append('<source src=' + this.videoUrl + ' type="application/x-mpegURL">');
+     
         const player360 = this;
         const player = videojs('videoId', {
              "controls": true, 

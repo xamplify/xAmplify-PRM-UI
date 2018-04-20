@@ -138,6 +138,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     brandLogoUrl: any; 
     logoDescriptionUrl: string;
     publisToMessage = "Only you can view";
+    enableVideoLogo = true;
     constructor(public referenceService: ReferenceService, public callActionSwitch: CallActionSwitch,
         public videoFileService: VideoFileService, public fb: FormBuilder, public changeDetectorRef: ChangeDetectorRef,
         public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger,
@@ -907,6 +908,9 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     logoDescription(event: string){
         this.logoDescriptionUrl = event;
     }
+    isEnableVideoLogo(event:any){
+     this.enableVideoLogo = event;
+    }
     ngOnInit() {
         QuickSidebar.init();
         console.log(this.referenceService.videoTitles);
@@ -1185,6 +1189,10 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             if(this.logoDescriptionUrl === '' || this.logoDescriptionUrl === null){
             this.saveVideoFile.brandingLogoDescUri = null;
             } else { this.saveVideoFile.brandingLogoDescUri = this.videoUtilService.isStartsWith(this.logoDescriptionUrl); }
+            if(!this.enableVideoLogo){
+                this.saveVideoFile.brandingLogoDescUri = null;
+                this.saveVideoFile.brandingLogoUri = null;
+            }
             const tags = this.saveVideoFile.tags;
             for (let i = 0; i < tags.length; i++) {
                 if (this.videoFileService.actionValue === 'Save') {
