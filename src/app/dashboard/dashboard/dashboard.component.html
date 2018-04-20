@@ -763,8 +763,8 @@ td>h5 {
 								<th class="headerCss center">NAME</th>
 								<th class="headerCss center">CAMPAIGN NAME</th>
 								<th class="headerCss center">DATE & TIME</th>
-								<th class="headerCss center" *ngIf="emailType != 'open'">LOCATION</th>
-								<th class="headerCss center" *ngIf="emailType != 'open'">PLATFORM</th>
+								<th class="headerCss center" *ngIf="paginationType != 'open'">LOCATION</th>
+								<th class="headerCss center" *ngIf="paginationType != 'open'">PLATFORM</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -779,10 +779,10 @@ td>h5 {
 								<td class="center">
 									<h5>{{emailClicked.time |date:'MM/dd/yyyy @ h:mma'}}</h5>
 								</td>
-								<td class="center" *ngIf="emailType != 'open'">
+								<td class="center" *ngIf="paginationType != 'open'">
 									<app-location [userLocation]="emailClicked"> </app-location>
 								</td>
-								<td class="center" *ngIf="emailType != 'open'">
+								<td class="center" *ngIf="paginationType != 'open'">
 									<app-platform [deviceTypeOs]="true" [userPlatform]="emailClicked"> </app-platform>
 								</td>
 							</tr>
