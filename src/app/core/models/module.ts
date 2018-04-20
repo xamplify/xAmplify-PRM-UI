@@ -9,5 +9,6 @@ export class Module {
     hasVideoRole:boolean = false;
     hasSocialStatusRole:boolean = false;
     isCompanyPartner:boolean = false;
+    isVendor:boolean = false;
 
 }

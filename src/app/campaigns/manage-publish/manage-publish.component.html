@@ -110,22 +110,23 @@
 									<td>
 									<div class="actions-block">
 									<ng-container *ngIf="!campaign.launched">
-										<a *ngIf="hasAllAccess || (campaign.launched==false&&hasCampaignRole && loggedInUserId==campaign.userId) || (!campaign.launched&&isOnlyPartner)" 
+										<a *ngIf="hasAllAccess || (campaign.launched==false&&hasCampaignRole && loggedInUserId==campaign.userId) 
+												|| (!campaign.launched&&isOnlyPartner)  || authenticationService.module.isVendor" 
 											(click)="editCampaign(campaign.campaignId)" title="Edit Campaign" class='mr5'> 
 											<i class="fa fa-pencil-square-o"></i>
 										</a> 
 										</ng-container>
 										<ng-container *ngIf="campaign.launched">
-										<a *ngIf="  hasAllAccess || (hasStatsRole || hasCampaignRole) || (loggedInUserId==campaign.userId)" data-rel="fancybox-button"
+										<a *ngIf="  hasAllAccess || (hasStatsRole || hasCampaignRole) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor" data-rel="fancybox-button"
 										 	[routerLink]="['/home/campaigns/',campaign.campaignId, 'details']" title="Campaign Based Reports" class='mr5'>
 												<i class="fa fa-line-chart"></i>
 										</a>
-										<a *ngIf=" (campaign.campaignType !== 'SOCIAL') && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner )" data-rel="fancybox-button" 
+										<a *ngIf=" (campaign.campaignType !== 'SOCIAL') && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor )" data-rel="fancybox-button" 
 											title="Save As" class='mr5' (click)="openSaveAsModal(campaign.campaignId, campaign.campaignName)">
 												<i class="fa fa-files-o"></i>
 										</a>
 										</ng-container>
-										<a  *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner" 
+										<a  *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor" 
 											(click)="confirmDeleteCampaign(campaign.campaignId, i, campaign.campaignName)" title="Delete Campaign"data-rel="fancybox-button"> 
 											<i class="fa fa-trash"></i>
 										</a>
@@ -165,15 +166,19 @@
 													<!-- <div style="top: 2%; position: relative; margin-left: 5px;">
 													</div> -->
 													<div style="top: 30%; position: relative;" >
-														<a *ngIf="hasAllAccess || (campaign.launched==false&&hasCampaignRole && loggedInUserId==campaign.userId) || (!campaign.launched&&isOnlyPartner)" class="mix-preview4"  (click)="editCampaign(campaign.campaignId)" title="Edit Campaign" data-rel="fancybox-button" style="left: 34%;margin-top: -1%;margin-left: 7%"> 
+													<ng-container *ngIf="!campaign.launched">
+														<a *ngIf="hasAllAccess || (campaign.launched==false&&hasCampaignRole && loggedInUserId==campaign.userId) 
+														|| (!campaign.launched&&isOnlyPartner) || authenticationService.module.isVendor" class="mix-preview4" 
+														 (click)="editCampaign(campaign.campaignId)" title="Edit Campaign" data-rel="fancybox-button" style="left: 34%;margin-top: -1%;margin-left: 7%"> 
 															<i class="fa fa-pencil-square-o" ></i>
 														</a> 
+														</ng-container>
 														<ng-container *ngIf="campaign.launched">
-														<a *ngIf="  hasAllAccess || (hasStatsRole || hasCampaignRole ) || (loggedInUserId==campaign.userId)" class="mix-preview4" data-rel="fancybox-button"
+														<a *ngIf="  hasAllAccess || (hasStatsRole || hasCampaignRole ) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor" class="mix-preview4" data-rel="fancybox-button"
 														 	[routerLink]="['/home/campaigns/',campaign.campaignId, 'details']" title="Campaign Based Reports"  data-rel="" style="margin-top: -1%;margin-left: 2%">
 																<i class="fa fa-line-chart" ></i>
 														</a>
-														<a *ngIf="(campaign.campaignType !== 'SOCIAL') && ( hasAllAccess || (hasStatsRole || hasCampaignRole))" data-rel="fancybox-button" 
+														<a *ngIf="(campaign.campaignType !== 'SOCIAL') && ( hasAllAccess || (hasStatsRole || hasCampaignRole || authenticationService.module.isVendor ))" data-rel="fancybox-button" 
 															(click)="openSaveAsModal(campaign.campaignId, campaign.campaignName)" title="Save As" class='mix-preview4' style="margin-top: 17%;margin-left: 24%;">
 																<i class="fa fa-files-o" style="font-size: 16px;color:#fff"></i>
 														</a>
@@ -183,7 +188,7 @@
 														</a>
 														</ng-container>
 														
-														<a  *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner" class="mix-preview6" (click)="confirmDeleteCampaign(campaign.campaignId, i, campaign.campaignName)" title="Delete Campaign"data-rel="fancybox-button" style="margin-top: -1%;margin-left: 1%"> 
+														<a  *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor" class="mix-preview6" (click)="confirmDeleteCampaign(campaign.campaignId, i, campaign.campaignName)" title="Delete Campaign"data-rel="fancybox-button" style="margin-top: -1%;margin-left: 1%"> 
 															<i class="fa fa-trash" style="color:#f43636"></i>
 														</a>
 													</div>

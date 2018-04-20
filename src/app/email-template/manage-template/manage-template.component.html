@@ -95,14 +95,14 @@
 									<td>{{emailTemplate.createdDate}}</td>
 									<td>
 										<div class="actions-block">
-											<a (click)="edit(emailTemplate.id)" title="Edit" *ngIf="hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)">
+											<a (click)="edit(emailTemplate.id)" title="Edit" *ngIf="hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId) || authenticationService.module.isVendor">
 												<i class="fa fa-pencil-square-o"></i>
 											</a> 
 											<a (click)="showPreview(emailTemplate)" title="Preview">
 												<i class="fa fa-eye mr5"></i>
 											</a> 
 											<a id="template-delete" (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)" title="Delete"
-												*ngIf="hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId) || authenticationService.module.isCompanyPartner">
+												*ngIf="hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId) || authenticationService.module.isCompanyPartner ||authenticationService.module.isVendor">
 												<i class="fa fa-trash"></i>
 											</a>
 										</div>
@@ -139,11 +139,11 @@
 												<i class="fa fa-eye"></i>
 										    </a>
 										    <a  class="mix-preview1" (click)="edit(emailTemplate.id)" title="Edit" data-rel=""
-										    		 *ngIf="hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)">
+										    		 *ngIf="hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  || authenticationService.module.isVendor">
 												<i class="fa fa-pencil-square-o"></i>
 										    </a>
 										    <a class="mix-preview3" id="template-delete"  (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)" title="Delete" data-rel="" 
-										    			*ngIf="hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId) || authenticationService.module.isCompanyPartner">
+										    			*ngIf="hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId) || authenticationService.module.isCompanyPartner || authenticationService.module.isVendor">
 												<i class="fa fa-trash" style="color:#f43636"></i>
 											</a>
 											</div>

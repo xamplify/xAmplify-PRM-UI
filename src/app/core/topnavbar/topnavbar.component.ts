@@ -70,6 +70,10 @@ export class TopnavbarComponent implements OnInit {
     if (roles.indexOf(this.roleName.companyPartnerRole) > -1) {
       this.authenticationService.module.isCompanyPartner = true;
     }
+    
+    if(roles.indexOf(this.roleName.vendorRole)>-1){
+        this.authenticationService.module.isVendor = true;
+    }
 
   }
 

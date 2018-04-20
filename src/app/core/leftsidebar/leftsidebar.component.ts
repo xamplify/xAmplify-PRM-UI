@@ -42,7 +42,8 @@ export class LeftsidebarComponent implements OnInit {
         const roles = this.authService.getRoles();
         if (roles.indexOf(this.roleName.campaignRole) > -1 ||
             roles.indexOf(this.roleName.orgAdminRole) > -1 ||
-            roles.indexOf(this.roleName.allRole) > -1) {
+            roles.indexOf(this.roleName.allRole) > -1 ||
+            roles.indexOf(this.roleName.vendorRole)) {
             this.authService.module.isCampaign = true;
            // this.isCampaign = true;
         }
@@ -50,42 +51,44 @@ export class LeftsidebarComponent implements OnInit {
             roles.indexOf(this.roleName.orgAdminRole) > -1 ||
             roles.indexOf(this.roleName.allRole) > -1) {
             this.authService.module.isContact = true;
-           // this.isContact = true;
         }
         if (roles.indexOf(this.roleName.emailTemplateRole) > -1 ||
             roles.indexOf(this.roleName.orgAdminRole) > -1 ||
-            roles.indexOf(this.roleName.allRole) > -1) {
-           //this.isEmailTemplate = true;
+            roles.indexOf(this.roleName.allRole) > -1 ||
+            roles.indexOf(this.roleName.vendorRole)) {
             this.authService.module.isEmailTemplate = true;
        }
         if (roles.indexOf(this.roleName.statsRole) > -1 ||
             roles.indexOf(this.roleName.orgAdminRole) > -1 ||
-            roles.indexOf(this.roleName.allRole) > -1) {
+            roles.indexOf(this.roleName.allRole) > -1 ||  
+            roles.indexOf(this.roleName.vendorRole)) {
             this.authService.module.isStats = true;
-            //this.isStats = true;
         }
         
         if (roles.indexOf(this.roleName.partnersRole) > -1 ||
                 roles.indexOf(this.roleName.orgAdminRole) > -1 ||
-                roles.indexOf(this.roleName.allRole) > -1) {
+                roles.indexOf(this.roleName.allRole) > -1 ||  
+                roles.indexOf(this.roleName.vendorRole)) {
             this.authService.module.isPartner = true;
-               // this.isPartner = true;
             }
         if (roles.indexOf(this.roleName.videRole) > -1 ||
             roles.indexOf(this.roleName.orgAdminRole) > -1 ||
-            roles.indexOf(this.roleName.allRole) > -1) {
+            roles.indexOf(this.roleName.allRole) > -1 ||
+            roles.indexOf(this.roleName.vendorRole)) {
             this.authService.module.isVideo = true;
-           // this.isVideo = true;
         }
         
         
         if (roles.indexOf(this.roleName.orgAdminRole) > -1) {
             this.authService.module.isOrgAdmin = true;
-           // this.isOrgAdmin = true;
         }
         
         if(roles.indexOf(this.roleName.companyPartnerRole)>-1){
             this.authService.module.isCompanyPartner = true;
+        }
+        
+        if(roles.indexOf(this.roleName.vendorRole)>-1){
+            this.authService.module.isVendor = true;
         }
         
     }

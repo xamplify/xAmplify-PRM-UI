@@ -9,5 +9,6 @@ export class Roles {
   orgAdminRole = 'ROLE_ORG_ADMIN';
   socialShare = 'ROLE_SOCIAL_SHARE';
   companyPartnerRole = 'ROLE_COMPANY_PARTNER';
+  vendorRole = 'ROLE_VENDOR';
   userRole = 'ROLE_USER';
 }

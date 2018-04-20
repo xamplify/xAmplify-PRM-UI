@@ -34,6 +34,7 @@ import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import { SocialService } from "../../social/services/social.service";
 import { Country } from '../../core/models/country';
 import { Timezone } from '../../core/models/timezone';
+import {Roles} from '../../core/models/roles';
 declare var swal, $, videojs , Metronic, Layout , Demo,TableManaged ,Promise,jQuery,flatpickr,CKEDITOR:any;
 
 @Component({
@@ -186,6 +187,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     timezones: Timezone[];
     videojsPlayer: any;
     isOnlyPartner:boolean  = false;
+    roleName: Roles= new Roles();
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder,private route: ActivatedRoute,public refService:ReferenceService,
                 private logger:XtremandLogger,private videoFileService:VideoFileService,
@@ -464,8 +466,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.loadCampaignVideos(this.videosPagination);
         this.loadPartnerVideos(this.channelVideosPagination);
         if(this.isAdd){
-            this.contactsPagination.filterValue = false;
-            this.loadCampaignContacts(this.contactsPagination);
+           this.loadContacts();
             if(this.isOnlyPartner){
                 this.loadPartnerEmailTemplates(this.emailTemplatesPagination);
             }else{
@@ -473,11 +474,23 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             }
            
         }else{
-            this.contactsPagination.filterValue = this.campaign.channelCampaign;
-            this.loadCampaignContacts(this.contactsPagination);
+           /* this.contactsPagination.filterValue = this.campaign.channelCampaign;
+            this.loadCampaignContacts(this.contactsPagination);*/
+            this.loadContacts();
         }
         this.listAllTeamMemberEmailIds();
     
+    }
+    
+    loadContacts(){
+        const roles = this.authenticationService.getRoles();
+        //roles.length==2 && roles.indexOf(this.roleName.userRole)>-1 && roles.indexOf(this.roleName.vendorRole)>-1
+        if(roles.indexOf(this.roleName.vendorRole)>-1){
+            this.contactsPagination.filterValue = true;
+        }else{
+            this.contactsPagination.filterValue = this.campaign.channelCampaign;
+        }
+        this.loadCampaignContacts(this.contactsPagination);
     }
     
     /******************************************Pagination Related Code******************************************/
@@ -610,14 +623,15 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     }
     setChannelCampaign(event:any){
         this.campaign.channelCampaign = event;
-        this.selectedContactListIds = [];
-        this.isContactList = false;
+        const roles = this.authenticationService.getRoles();
+        if(roles.indexOf(this.roleName.vendorRole)<0){
+            this.selectedContactListIds = [];
+            this.isContactList = false;
+        }
         if(event){
-            this.contactsPagination.filterValue = true;
-            this.loadCampaignContacts(this.contactsPagination);
+            this.loadContacts();
         }else{
-            this.contactsPagination.filterValue = false;
-            this.loadCampaignContacts(this.contactsPagination);
+            this.loadContacts();
             this.setCoBrandingLogo(event);
             console.log(this.replies);
             this.removePartnerRules();
