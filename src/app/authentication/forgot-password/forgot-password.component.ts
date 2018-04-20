@@ -74,25 +74,6 @@ export class ForgotPasswordComponent implements OnInit {
         this.forgotPasswordForm = this.formBuilder.group({
             'forgotPasswordEmailId': [null, [Validators.required, Validators.pattern(this.regularExpressions.EMAIL_ID_PATTERN)]]
         });
-        this.forgotPasswordForm.valueChanges
-            .subscribe(data => this.onEmailValueChanged(data));
-        this.onEmailValueChanged(); // (re)set validation messages now
-    }
-
-    onEmailValueChanged(data?: any) {
-        if (!this.forgotPasswordForm) { return; }
-        const form = this.forgotPasswordForm;
-        for (const field in this.formErrors) {
-            // clear previous error message (if any)
-            this.formErrors[field] = '';
-            const control = form.get(field);
-            if (control && control.dirty && !control.valid) {
-                const messages = this.validationMessages[field];
-                for (const key in control.errors) {
-                    this.formErrors[field] += messages[key] + ' ';
-                }
-            }
-        }
     }
 
     ngOnInit() {
