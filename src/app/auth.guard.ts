@@ -125,14 +125,30 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         if(url.indexOf("partners")>-1 || url.indexOf("upgrade")>-1 ){
             url = url+"/";
         }
-        let hasRole = (roles.indexOf(this.roles.orgAdminRole)>-1  || roles.indexOf(this.roles.companyPartnerRole)>-1 || roles.indexOf(this.roles.allRole)>-1  || roles.indexOf(role)>-1);
-        
-        if(url.indexOf("/"+urlType+"/")>-1 && this.authenticationService.user.hasCompany&&hasRole){
+        let isVendor =  roles.indexOf(this.roles.vendorRole)>-1;
+        if(isVendor){
+            this.checkVendorAccessUrls(url, urlType);
+        }else{
+            let hasRole = (roles.indexOf(this.roles.orgAdminRole)>-1  || roles.indexOf(this.roles.companyPartnerRole)>-1 
+                    || roles.indexOf(this.roles.allRole)>-1  || roles.indexOf(role)>-1);
+            
+            if(url.indexOf("/"+urlType+"/")>-1 && this.authenticationService.user.hasCompany&&hasRole){
+                return true;
+            }else{
+                return this.goToAccessDenied();
+            }
+        }
+    }
+    
+    checkVendorAccessUrls(url:string,urlType:string):boolean{
+        if(url.indexOf("/"+urlType+"/")>-1 && this.authenticationService.user.hasCompany
+                && url.indexOf("/"+this.contactBaseUrl+"/")<0 &&  url.indexOf("/"+this.teamBaseUrl+"/")<0){
             return true;
         }else{
             return this.goToAccessDenied();
         }
     }
+    
     
     goToAccessDenied():boolean{
         this.router.navigate( ['/access-denied'] );
