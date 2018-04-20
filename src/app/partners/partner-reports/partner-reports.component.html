@@ -26,7 +26,7 @@
       <div>
         <div>
           <div class="row">
-            <div class="col-md-6 col-sm-6 col-xs-6">
+            <div class="col-md-6 col-sm-6 col-xs-6" [routerLink]="['../add']">
               <a class="dashboard-stat dashboard-stat-lighter blue-soft">
                 <div class="visual">
                   <i class="fa fa-handshake-o"></i>
@@ -38,7 +38,7 @@
               </a>
             </div>
             <div class="col-md-6 col-sm-6 col-xs-6">
-              <a class="dashboard-stat dashboard-stat-lighter green-soft">
+              <a class="dashboard-stat dashboard-stat-lighter green-soft" [routerLink]="['../../campaigns/manage']">
                 <div class="visual">
                   <i class="fa fa-user-secret"></i>
                 </div>
