@@ -166,7 +166,7 @@
 									class="fa fa-building-o"></i>Company Profile
 							</a>
 							</li>
-							<li *ngIf="refService.hasAllAccess() && authenticationService.user.hasCompany">
+							<li *ngIf="(refService.hasAllAccess() || authenticationService.module.isVendor )&& authenticationService.user.hasCompany">
 								<a [routerLink]="['/home/social/manage/all']"> <i class="fa fa-cog" aria-hidden="true"></i>Social Accounts</a>
 							</li>
 							<li *ngIf="refService.userDefaultPage == 'DASHBOARD' && authenticationService.user.hasCompany"><a [routerLink]="['/home/dashboard/welcome']"> 

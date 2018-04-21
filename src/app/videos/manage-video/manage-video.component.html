@@ -105,7 +105,7 @@
 												<td>{{videoFile.uploadedDate}}</td>
 												<td>
 													<div class="actions-block" *ngIf="videoFileService.videoType==='myVideos'">
-														<a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId==videoFile.uploadedUserId)"
+														<a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor"
 															(click)="showEditVideo(videoFile)" title="Edit Video"> 
 															<i class="fa fa-pencil-square-o"></i>
 														</a> 
@@ -113,7 +113,7 @@
 															title="Video Based Reports"> 
 															<i class="fa fa-line-chart"></i>
 														</a>
-														<ng-container *ngIf="hasAllAccess || (hasCampaignRole && hasVideoRol && loggedInUserId==videoFile.uploadedUserId)">
+														<ng-container *ngIf="hasAllAccess || (hasCampaignRole && hasVideoRol && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor">
 															<a *ngIf="videoFile.viewBy!='DRAFT'" (click)="campaignRouter(videoFile)" title="Create Campaign">
 																<i class="fa fa-bullhorn"></i>
 															</a>
@@ -121,7 +121,7 @@
 																<i class="fa fa-bullhorn" title="Can't create a Campaign for DRAFT"></i>
 															</a>
 														</ng-container>
-														<a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId == videoFile.uploadedUserId)" (click)="deleteVideoAlert(videoFile.alias,i ,videoFile.title)"> 
+														<a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId == videoFile.uploadedUserId) || authenticationService.module.isVendor" (click)="deleteVideoAlert(videoFile.alias,i ,videoFile.title)"> 
 															<i class="fa fa-trash"></i>
 														</a>
 													</div>
@@ -157,7 +157,7 @@
 														<a class="mix-preview2" (click)="showPlayVideo(videoFile)" title="Play Video" data-rel="">
 														<i class="fa fa-play"></i>
 													    </a>
-														<a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId==videoFile.uploadedUserId)" class="mix-preview1" style="left: 16%;"
+														<a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor" class="mix-preview1" style="left: 16%;"
 														 (click)="showEditVideo(videoFile)" title="Edit Video" data-rel="">
 														<i class="fa fa-pencil-square-o"></i>
 													    </a>
@@ -167,7 +167,7 @@
 													    </a>
 													</div>
 													<div style="top: 27%; position: relative;" *ngIf="videoFileService.videoType==='myVideos'">
-													  <span *ngIf="hasAllAccess || (hasCampaignRole && hasVideoRol && loggedInUserId==videoFile.uploadedUserId)">
+													  <span *ngIf="hasAllAccess || (hasCampaignRole && hasVideoRol && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor">
 														<a class="mix-preview2 " *ngIf="videoFile.viewBy!='DRAFT'" (click)="campaignRouter(videoFile)" title="Create Campaign" data-rel=""
 														 style="left:29%;margin-top :18px">
 														<i class="fa fa-bullhorn"></i>
@@ -176,7 +176,7 @@
 														<i class="fa fa-bullhorn" title="Can't create a Campaign for DRAFT"></i>
 													   </a>
 													 </span>
-														<a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId == videoFile.uploadedUserId)" class="mix-preview6 " (click)="deleteVideoAlert(videoFile.alias,i ,videoFile.title)"
+														<a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId == videoFile.uploadedUserId) || authenticationService.module.isVendor" class="mix-preview6 " (click)="deleteVideoAlert(videoFile.alias,i ,videoFile.title)"
 														 onMouseOver="this.style.color='#fff'" title="Delete Video" data-rel="" lang="{{videoFile.id}}" style="left:50%; margin-top :18px"> 
 							                             <i class="fa fa-trash" style="color: red !important"  onMouseOut="this.style.color='red'" onMouseOver="this.style.color='#fff'"></i>
 						                             </a>

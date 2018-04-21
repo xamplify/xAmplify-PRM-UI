@@ -105,6 +105,7 @@ export class EditCompanyProfileComponent implements OnInit {
     backGroundImage:string = "https://i.imgur.com/tgYLuLr.jpg";
     publicVideos: Array<SaveVideoFile>;
     isOnlyPartner:boolean = false;
+    isVendorRole:boolean = false;
     constructor( private logger: XtremandLogger, public authenticationService: AuthenticationService, private fb: FormBuilder,
         private companyProfileService: CompanyProfileService, public homeComponent: HomeComponent,
         public refService:ReferenceService,private router:Router,public processor:Processor,public countryNames: CountryNames,
@@ -113,6 +114,7 @@ export class EditCompanyProfileComponent implements OnInit {
         this.companyNameDivClass = this.refService.formGroupClass;
         this.companyProfileNameDivClass = this.refService.formGroupClass;
         this.isOnlyPartner = this.authenticationService.isOnlyPartner();
+        this.isVendorRole = this.authenticationService.isVendor();
         this.companyLogoUploader = new FileUploader({
             allowedMimeType: ['image/jpeg', 'image/pjpeg', 'image/jpeg', 'image/pjpeg', 'image/png'],
             maxFileSize: 10 * 1024 * 1024, // 100 MB
@@ -218,14 +220,20 @@ export class EditCompanyProfileComponent implements OnInit {
                     if(self.isOnlyPartner){
                         self.router.navigate(["/home/dashboard"]);
                     }else{
-                        module.isOrgAdmin = true;
-                        module.isContact = true;
-                        module.isPartner = true;
-                        module.isEmailTemplate = true;
-                        module.isCampaign = true;
-                        module.isStats = true;
-                        module.hasVideoRole = true;
-                        module.hasSocialStatusRole = true;
+                        if(self.isVendorRole){
+                            module.isVendor = true;
+                        }else{
+                            module.isOrgAdmin = true;
+                            module.isContact = true;
+                            module.isPartner = true;
+                            module.isEmailTemplate = true;
+                            module.isCampaign = true;
+                            module.isStats = true;
+                            module.hasVideoRole = true;
+                            module.hasSocialStatusRole = true;
+                            
+                        }
+                       
                         self.router.navigate(["/home/dashboard/welcome"]);
                         self.processor.set(self.processor);
                         self.homeComponent.getVideoDefaultSettings();

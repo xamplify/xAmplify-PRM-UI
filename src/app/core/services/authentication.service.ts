@@ -7,6 +7,7 @@ import 'rxjs/add/operator/mergeMap';
 
 import { User } from '../models/user';
 import { Role } from '../models/role';
+import {Roles} from '../models/roles';
 import { Module } from '../models/module';
 import { UserToken } from '../models/user-token';
 import { UtilService } from '../services/util.service';
@@ -35,6 +36,7 @@ export class AuthenticationService {
     map: any;
     isCompanyAdded:boolean = false;
     module:Module = new Module();
+    roleName: Roles= new Roles();
     constructor(private http: Http, private router: Router, private utilService: UtilService) {
         this.SERVER_URL = SERVER_URL;
         this.APP_URL = CLIENT_URL;
@@ -121,6 +123,15 @@ export class AuthenticationService {
     isOnlyPartner(){
         let roleNames = this.getRoles();
         if(roleNames.length==2 && (roleNames.indexOf('ROLE_USER')>-1 && roleNames.indexOf('ROLE_COMPANY_PARTNER')>-1)){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
+    isVendor(){
+        let roleNames = this.getRoles();
+        if(roleNames.length==2 && (roleNames.indexOf(this.roleName.userRole)>-1 && roleNames.indexOf(this.roleName.vendorRole)>-1)){
             return true;
         }else{
             return false;

@@ -1,0 +1,84 @@
+<app-video></app-video>
+<div class="content">
+	<div class="my-container">
+		<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+	</div>
+	<div>
+		<form class="register" [formGroup]="vendorSignUpForm" (ngSubmit)="signUp()">
+			<h3 style=" margin-bottom: 1.5em">Vendor Sign Up</h3>
+			<div *ngIf="isError" class="alert alert-danger" (click)="toggleChild()">
+				<span>something went wrong..!</span>
+			</div>
+			<div class="form-group col-xs-6 p0" style="border-right: 1px solid #fff0;">
+				<label class="control-label visible-ie8 visible-ie9">First Name</label>
+				<input class="form-control placeholder-no-fix" type="text" placeholder="First Name" required formControlName="firstName" />
+				<div *ngIf="formErrors.firstName" class="alert alert-danger">{{ formErrors.firstName }}</div>
+			</div>
+			<div class="form-group col-xs-6 p0">
+				<label class="control-label visible-ie8 visible-ie9">Last Name</label>
+				<input class="form-control placeholder-no-fix" type="text" placeholder="Last Name" formControlName="lastName" />
+			</div>
+			<div class="form-group">
+				<label class="control-label visible-ie8 visible-ie9">Email</label>
+				<input class="form-control placeholder-no-fix" type="email" placeholder="Email" required formControlName="emailId" />
+				<div *ngIf="formErrors.emailId" class="alert alert-danger">{{ formErrors.emailId }}</div>
+			</div>
+			<div class="form-group" style="position: relative">
+				<label class="control-label visible-ie8 visible-ie9">Password</label>
+				<input formControlName="password" class="form-control placeholder-no-fix" type="password" autocomplete="off" placeholder="Password"
+				 required />
+				 <i class="fa fa-question-circle" rel="tooltip" data-placement="left" title="Use 6 or more characters with a mix of letters, numbers & symbols"></i>
+				<div *ngIf="formErrors.password" class="alert alert-danger">{{ formErrors.password }}</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label visible-ie8 visible-ie9">Re-type Your Password</label>
+				<input formControlName="confirmPassword" class="form-control placeholder-no-fix" type="password" autocomplete="off" placeholder="Re-type Your Password"
+				 required />
+				<div *ngIf="formErrors.confirmPassword" class="alert alert-danger">{{ formErrors.confirmPassword }}</div>
+				<div *ngIf="vendorSignUpForm.hasError('mismatchedPasswords')" class="alert alert-danger">Passwords do not match.</div>
+			</div>
+			<!-- 
+			<label class="custom-label">Enter your personal details below:
+			</label>
+			<div class="form-group">
+				<label class="control-label visible-ie8 visible-ie9">Full Name
+				</label>
+				<input class="form-control" type="text" placeholder="Full Name" formControlName="fullName" required />
+				<div *ngIf="formErrors.fullName" class="alert alert-danger">{{ formErrors.fullName }}</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label visible-ie8 visible-ie9">Address</label>
+				<input class="form-control placeholder-no-fix" type="text" placeholder="Address" required formControlName="address" />
+				<div *ngIf="formErrors.address" class="alert alert-danger">{{ formErrors.address }}</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label visible-ie8 visible-ie9">City/Town</label>
+				<input class="form-control placeholder-no-fix" type="text" placeholder="City/Town" name="city" required formControlName="city"
+				/>
+				<div *ngIf="formErrors.city" class="alert alert-danger">{{ formErrors.city }}</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label visible-ie8 visible-ie9">Country</label>
+				<select class="form-control" required formControlName="country">
+					<option *ngFor="let country of countryNames.countries" [value]="country">{{country}}</option>
+				</select>
+				<div *ngIf="formErrors.country" class="alert alert-danger">{{ formErrors.country }}</div>
+			</div>
+			-->
+			<div class="form-group margin-top-20 margin-bottom-20">
+				<label class="check">
+					<input formControlName="agree" type="checkbox" required /> I agree to the Terms of Service & Privacy Policy
+					<!-- <p class="custom-label">I agree to the Terms of Service & Privacy Plolicy </p> -->
+				</label>
+				<div *ngIf="formErrors.agree" class="alert alert-danger">{{ formErrors.agree }}</div>
+				<div id="register_tnc_error"></div>
+			</div>
+			<div class="actions">
+				<button type="button" class="btn btn-default" routerLink="/login">
+					<i class="fa fa-arrow-left" aria-hidden="true" style="margin-right: 5px"></i>Back</button>
+				<button type="submit" id="register-submit-btn" [disabled]="!vendorSignUpForm.valid" class="btn btn-success uppercase pull-right">Submit</button>
+			</div>
+		</form>
+	</div>
+</div>
+<app-copyright></app-copyright>
