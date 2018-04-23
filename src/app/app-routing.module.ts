@@ -35,7 +35,7 @@ import {VendorSignupComponent} from './authentication/vendor-signup/vendor-signu
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'signup', component: SignupComponent },
-    {path:'vendor-signup',component:VendorSignupComponent},
+    {path:'v-signup',component:VendorSignupComponent},
     { path: 'forgot-password', component: ForgotPasswordComponent },
     { path: 'register/verifyemail/user', component: VerifyEmailComponent },
     { path: '', redirectTo: 'home/dashboard/default', pathMatch: 'full', canActivate: [AuthGuard] },
