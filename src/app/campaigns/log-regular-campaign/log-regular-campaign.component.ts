@@ -3,12 +3,14 @@ import { ActivatedRoute } from '@angular/router';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { VideoFileService } from '../../videos/services/video-file.service';
 import { ReferenceService } from '../../core/services/reference.service';
+import { Processor } from '../../core/models/processor';
 declare var $: any;
 
 @Component({
   selector: 'app-log-regular-campaign',
   templateUrl: './log-regular-campaign.component.html',
-  styleUrls: ['./log-regular-campaign.component.css']
+  styleUrls: ['./log-regular-campaign.component.css'],
+  providers:[Processor]
 })
 export class LogRegularCampaignComponent implements OnInit {
 
@@ -20,11 +22,13 @@ export class LogRegularCampaignComponent implements OnInit {
   errorHtml = '<div class="portlet light" style="padding:5px 5px 190px 17px">' +
   '<h3 style="color:blue;text-align: center;margin-top:204px;" >Sorry!!!. This regular email template campaign has been removed</h3></div>';
 
-  constructor(public xtremandLogger: XtremandLogger, public activatedRoute: ActivatedRoute, public videoFileService: VideoFileService,public referenceService:ReferenceService) {
+  constructor(public xtremandLogger: XtremandLogger, public activatedRoute: ActivatedRoute, 
+          public videoFileService: VideoFileService,public referenceService:ReferenceService,public processor:Processor) {
     this.xtremandLogger.log('Ui regular campaign called');
   }
 
   ngOnInit() {
+      this.processor.set(this.processor);
     // this.activatedRoute.queryParams.subscribe((param: any) => {
     //   this.alias = param['alias'];
     //   this.userAlias = param['userAlias'];
@@ -57,6 +61,7 @@ export class LogRegularCampaignComponent implements OnInit {
               updatedBody = updatedBody.replace("<Title_here>", '');
               this.templatehtml = updatedBody;
               document.getElementById('regular-campaign').innerHTML = this.templatehtml;
+              this.processor.remove(this.processor);
         }, (error: any) => {
           this.xtremandLogger.error('log regular campaign component: regular campaign():' + error);
            document.getElementById('regular-campaign').innerHTML = this.errorHtml;

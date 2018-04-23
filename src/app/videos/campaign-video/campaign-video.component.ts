@@ -15,6 +15,7 @@ import { SaveVideoFile } from '../models/save-video-file';
 import { XtremandLog } from '../models/xtremand-log';
 import { LogAction } from '../models/log-action';
 import { UUID } from 'angular2-uuid';
+import { Processor } from '../../core/models/processor';
 
 declare var $, videojs: any;
 
@@ -22,7 +23,7 @@ declare var $, videojs: any;
     selector: 'app-public-video',
     templateUrl: './campaign-video.component.html',
     styleUrls: ['./campaign-video.component.css'],
-    providers: [XtremandLog]
+    providers: [XtremandLog,Processor]
 })
 export class CampaignVideoComponent implements OnInit, OnDestroy {
     campaignVideoFile: SaveVideoFile;
@@ -85,7 +86,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
     constructor(public router: Router, public route: ActivatedRoute, public videoFileService: VideoFileService,
         public http: Http, public authenticationService: AuthenticationService, public referService: ReferenceService,
         public activatedRoute: ActivatedRoute, public xtremandLog: XtremandLog, public deviceService: Ng2DeviceService,
-        public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger, public utilService: UtilService) {
+        public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger, public utilService: UtilService,public processor:Processor) {
         this.xtremandLogger.log('share component constructor called');
         this.xtremandLogger.log('url is on angular 2' + document.location.href);
         this.publicRouterUrl = document.location.href;
@@ -141,6 +142,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
         return updatedBody;
     }
     getCampaignVideo() {
+        this.processor.set(this.processor);
         this.utilService.getJSONLocation()
             .subscribe(
             (data: any) => {
@@ -270,6 +272,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                         if(checkVideoTag==='default') { $('#videoId').css({'width': '479px','height': '279px','margin':'0 auto'});
                         } else {  this.cssOverride(); }
                         console.log(this.videoUrl);
+                        this.processor.remove(this.processor);
                     }, (error: any) => {
                         this.xtremandLogger.error('campagin video Component : cmapaign video File method():' + error);
                         this.xtremandLogger.error(error);

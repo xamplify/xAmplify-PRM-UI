@@ -10,11 +10,11 @@
 	<!-- BEGIN HEADER INNER -->
 	<div class="page-header-inner">
 		<!-- BEGIN LOGO -->
-		<div class="page-logo" *ngIf="authenticationService.user.hasCompany">
+		<div class="page-logo"><!--  -->
 			<a routerLink="/"> 
 			<img [src]="properties.COMPANY_LOGO" alt="logo" class="logo-default" />
 			</a>
-			<div class="menu-toggler sidebar-toggler">
+			<div class="menu-toggler sidebar-toggler" *ngIf="authenticationService.user.hasCompany">
 				<!-- DOC: Remove the above "hide" to enable the sidebar toggler button on header --> 
 			</div>
 		</div>

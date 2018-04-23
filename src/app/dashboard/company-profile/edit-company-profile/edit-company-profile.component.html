@@ -5,12 +5,9 @@
 
 </style>
 <div class="page-content" [class.pageContent]="!authenticationService.user.hasCompany">
-	<div class="page-bar">
+	<div class="page-bar" *ngIf="!companyProfile.isAdd">
 		<ul class="page-breadcrumb">
-			<li *ngIf="!companyProfile.isAdd"><i class="fa fa-home"></i> <a
-				[routerLink]="['/']">Home</a> <i class="fa fa-angle-right"></i></li>
-			<li *ngIf="!companyProfile.isAdd">Edit Company Profile</li>
-			<!-- <li *ngIf="companyProfile.isAdd">Add Company Profile</li> -->
+			<li>Edit Company Profile</li>
 		</ul>
 	</div>
 
@@ -54,7 +51,7 @@
 						<div class="profile-image-wrapper">
 						<span *ngIf="logoError" style="color: red">{{logoErrorMessage}}</span>
 						<span *ngIf="!companyLogoImageUrlPath" style="color:red;position: absolute;font-size: 19px;top: -3px;">*</span>	
-						   <img *ngIf="!companyLogoImageUrlPath" src="https://www.timeshighereducation.com/sites/default/files/byline_photos/default-avatar.png" class="profile-image">
+						   <img *ngIf="!companyLogoImageUrlPath" src="assets/images/company-logo.png" class="profile-image">
 							<img *ngIf="companyLogoImageUrlPath" [src]= "authenticationService.MEDIA_URL + companyLogoImageUrlPath" class="profile-image">
 							<div class="profile-overlay">
 								<i class="fa fa-camera"></i>
