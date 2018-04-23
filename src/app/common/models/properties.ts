@@ -76,7 +76,7 @@ export class Properties {
     PROCESS_REQUEST_SUCCESS = "Your request has been successfully processed.";
     PROCESS_REQUEST_ERROR = "An error occurred while processing your request.";
     DEFAULT_PLAYER_SETTINGS = 'Default player settings updated Successfully';
-    VIDEO_LOGO_UPDATED = 'Co-Branding video Logo Uploaded Successfully';
+    VIDEO_LOGO_UPDATED = 'Co-Branding video logo uploaded successfully';
     PROFILE_PIC_UPDATED='Profile Picture Updated Successfully';
     PROFILE_UPDATED = 'Profile Updated Successfully';
     PASSWORD_UPDATED= 'Password Updated Successfully';

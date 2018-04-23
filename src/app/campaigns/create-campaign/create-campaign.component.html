@@ -66,7 +66,8 @@
 							<span>
 								<i class="fa fa-users"></i>
 							</span>
-							<h5 class="hidden-xs">Contact Lists</h5>
+							<h5 class="hidden-xs" *ngIf="!authenticationService.module.isVendor">Contact Lists</h5>
+							<h5 class="hidden-xs" *ngIf="authenticationService.module.isVendor">Partner</h5>
 						</div>
 					</div>
 
@@ -76,7 +77,8 @@
 							<span>
 								<i class="fa fa-users"></i>
 							</span>
-							<h5 class="hidden-xs">Contact Lists</h5>
+							<h5 class="hidden-xs" *ngIf="!authenticationService.module.isVendor">Contact Lists</h5>
+							<h5 class="hidden-xs" *ngIf="authenticationService.module.isVendor">Partner</h5>
 						</div>
 					</div>
 					<div *ngIf="!isCampaignDetailsFormValid||!isVideo||!isContactList" [attr.class]="disableTabClass" [ngStyle]="{ 'width': width }">
@@ -1087,8 +1089,13 @@
 
 									<i class="fa fa-users fa-2x icon-position" aria-hidden="true"></i>
 								</div>
-									<ng-container class="h4-text" *ngIf="campaignType == 'video'">Contact List</ng-container>
-									<ng-container class="h4-text" *ngIf="campaignType == 'regular'">Contact List</ng-container>
+								<ng-container *ngIf="authenticationService.module.isVendor">
+									<ng-container class="h4-text" *ngIf="campaignType == 'video'||'regular'">Partner</ng-container>
+								</ng-container>
+								<ng-container *ngIf="!authenticationService.module.isVendor">
+									<ng-container class="h4-text" *ngIf="campaignType == 'video'||'regular'">Contact List</ng-container>
+								</ng-container>
+									
 								</td>
 								<td width="55%">
 									<ng-container *ngFor="let contactList of selectedContactLists;let i=index;">
@@ -1188,6 +1195,25 @@
 					<div class="panel-body">
 						<form class="role add-reply" id="form-{{reply.divId}}">
 							<div class="row" >
+							
+								<div class="col-md-6">
+								<label for="reason">Reason</label>
+								<select class="form-control" name="actionId" [(ngModel)]="reply.actionId">
+								<option [value]="0" [selected]="reply.actionId ==0">Email Not Opened</option>
+									<option [value]="13" [selected]="reply.actionId==13">Email Opened</option>
+									<option [value]="16" [selected]="reply.actionId ==16">Send Immediately After Email Opened</option>
+									<option [value]="22" [selected]="reply.actionId ==22" *ngIf="campaign.channelCampaign">Send If Partner Email Is Not Used</option>
+									<ng-container *ngIf="campaignType=='video'">
+										<option [value]="1" [selected]="reply.actionId==1">Video Played</option>
+										<option [value]="17" [selected]="reply.actionId==17">Send Immediately After Video Played</option>
+										<option  [value]="18" [selected]="reply.actionId==18">Send If Video Is Not Played</option>
+										<option [value]="23" [selected]="reply.actionId ==23" *ngIf="campaign.channelCampaign">Send If Partner Video Is Not Used</option>
+										
+									</ng-container>
+								</select>
+							</div>
+							
+							
 								<div *ngIf="reply.actionId!=16 && reply.actionId!=17 && reply.actionId!=18">
 								<div class="col-md-4">
 									<label for="days" *ngIf="reply.actionId==22 || reply.actionId==23 " id="reply-days-{{reply.divId}}">Reply In X Days 
@@ -1215,22 +1241,7 @@
 									<input type="text" class="form-control" name="subject" [(ngModel)]="reply.subject" placeholder="Subject" maxlength="50">
 								</div>
 							
-							<div class="col-md-6">
-								<label for="reason">Reason</label>
-								<select class="form-control" name="actionId" [(ngModel)]="reply.actionId">
-								<option [value]="0" [selected]="reply.actionId ==0">Email Not Opened</option>
-									<option [value]="13" [selected]="reply.actionId==13">Email Opened</option>
-									<option [value]="16" [selected]="reply.actionId ==16">Send Immediately After Email Opened</option>
-									<option [value]="22" [selected]="reply.actionId ==22" *ngIf="campaign.channelCampaign">Send If Partner Email Is Not Used</option>
-									<ng-container *ngIf="campaignType=='video'">
-										<option [value]="1" [selected]="reply.actionId==1">Video Played</option>
-										<option [value]="17" [selected]="reply.actionId==17">Send Immediately After Video Played</option>
-										<option  [value]="18" [selected]="reply.actionId==18">Send If Video Is Not Played</option>
-										<option [value]="23" [selected]="reply.actionId ==23" *ngIf="campaign.channelCampaign">Send If Partner Video Is Not Used</option>
-										
-									</ng-container>
-								</select>
-							</div>
+						
 							<div class="col-md-2" style="padding-top: 1.9em;">
 								<button type="button" class="btn btn-danger" (click)="remove(reply.divId,'replies')">
 									<span class="glyphicon glyphicon-trash"></span>

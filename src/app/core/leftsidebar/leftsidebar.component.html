@@ -13,7 +13,7 @@
 						</a>
 					</li>
 					
-					<li *ngIf="(authService.module.isOrgAdmin && authService.user.hasCompany) || authService.module.isPartner" [ngClass]="{'active':  baseRoute === 'partners'}">
+					<li *ngIf="(authService.module.isOrgAdmin && authService.user.hasCompany) || authService.module.isVendor" [ngClass]="{'active':  baseRoute === 'partners'}">
 						<a>
 						<i class="fa fa-handshake-o"></i>
 						<span class="title">Partner</span>

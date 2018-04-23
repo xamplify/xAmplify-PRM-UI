@@ -1742,12 +1742,15 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     getRepliesData(){
         for(var i=0;i<this.replies.length;i++){
             let reply = this.replies[i];
-            reply.replyTimeInHoursAndMinutes = this.extractTimeFromDate(reply.replyTime);
+            /*if(reply.replyTime!=null){
+                reply.replyTimeInHoursAndMinutes = this.extractTimeFromDate(reply.replyTime);
+            }*/
             $('#'+reply.divId).removeClass('portlet light dashboard-stat2 border-error');
             this.removeStyleAttrByDivId('reply-days-'+reply.divId);
             this.removeStyleAttrByDivId('send-time-'+reply.divId);
             this.removeStyleAttrByDivId('message-'+reply.divId);
             this.removeStyleAttrByDivId('email-template-'+reply.divId);
+            this.removeStyleAttrByDivId('reply-message-'+reply.divId);
             $('#'+reply.divId).addClass('portlet light dashboard-stat2');
             this.validateReplySubject(reply);
             if(reply.actionId!=16 && reply.actionId!=17 && reply.actionId!=18){
@@ -1787,6 +1790,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         if(reply.replyTime==undefined || reply.replyTime==null){
             this.addReplyDivError(reply.divId);
             $('#send-time-'+reply.divId).css('color','red');
+        }else{
+            reply.replyTimeInHoursAndMinutes = this.extractTimeFromDate(reply.replyTime);
         }
     }
     
@@ -2306,7 +2311,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
  /***************************Email Rules***********************************/
         addReplyRows() {
             this.reply = new Reply();
-            $('.bs-timepicker-field').attr("disabled",'disabled');
+            //$('.bs-timepicker-field').attr("disabled",'disabled');
             let length = this.allItems.length;
             length = length+1;
             var id = 'reply-'+length;

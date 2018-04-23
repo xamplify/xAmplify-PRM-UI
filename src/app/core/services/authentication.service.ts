@@ -173,6 +173,7 @@ export class AuthenticationService {
         module.hasVideoRole = false;
         module.isCompanyPartner = false;
         module.hasSocialStatusRole = false;
+        module.isVendor = false;
         swal.close();
     }
 }

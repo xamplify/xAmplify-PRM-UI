@@ -71,15 +71,15 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.loggedInUserId = this.authenticationService.getUserId();
         if (this.refService.campaignSuccessMessage == "SCHEDULE") {
             this.showMessageOnTop();
-            this.campaignSuccessMessage = "Campaign Scheduled Successfully";
+            this.campaignSuccessMessage = "Campaign scheduled successfully";
             this.customResponse = new CustomResponse( 'SUCCESS', this.campaignSuccessMessage, true );
         } else if (this.refService.campaignSuccessMessage == "SAVE") {
             this.showMessageOnTop();
-            this.campaignSuccessMessage = "Campaign Saved Successfully";
+            this.campaignSuccessMessage = "Campaign saved successfully";
             this.customResponse = new CustomResponse( 'SUCCESS', this.campaignSuccessMessage, true );
         } else if (this.refService.campaignSuccessMessage == "NOW") {
             this.showMessageOnTop();
-            this.campaignSuccessMessage = "Campaign Launched Successfully";
+            this.campaignSuccessMessage = "Campaign launched successfully";
             this.customResponse = new CustomResponse( 'SUCCESS', this.campaignSuccessMessage, true );
         }
         this.hasCampaignRole = this.refService.hasSelectedRole(this.refService.roles.campaignRole);
