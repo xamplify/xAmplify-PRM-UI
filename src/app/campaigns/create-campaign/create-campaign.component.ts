@@ -956,15 +956,19 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             console.log("Loaded 360 Video");
             $('.h-video').remove();
             this.videoUtilService.player360VideoJsFiles();
+            this.videoUtilService.video360withm3u8();
             var str = '<video id=videoId poster='+fullImagePath+'  class="video-js vjs-default-skin" crossorigin="anonymous" controls></video>';
             $("#"+titleId).append(title);
             $('#'+titleId).prop(videoFile.title);
             $("#"+divId).append(str);
-            console.log("360 video path"+videoPath);
-            videoPath = videoPath.replace(".m3u8",".mp4");
-            console.log("Updated 360 video path"+videoPath);
-          //  videoPath = videoPath.replace(".mp4","_mobinar.m3u8");//Replacing .mp4 to .m3u8
-            $("#"+divId+" video").append('<source src="'+videoPath+'" type="video/mp4">');
+        //     console.log("360 video path"+videoPath);
+        //     videoPath = videoPath.replace(".m3u8",".mp4");
+        //     console.log("Updated 360 video path"+videoPath);
+        //   //  videoPath = videoPath.replace(".mp4","_mobinar.m3u8");//Replacing .mp4 to .m3u8
+        //     $("#"+divId+" video").append('<source src="'+videoPath+'" type="video/mp4">');
+            videoPath = videoPath.substring(0, videoPath.lastIndexOf('.'));
+            videoPath = videoPath+ '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
+            $("#"+divId+" video").append('<source src=' + videoPath + ' type="application/x-mpegURL">');
             var player = videojs('videoId');
             player.panorama({
                 autoMobileOrientation: true,
