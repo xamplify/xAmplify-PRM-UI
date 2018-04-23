@@ -22,6 +22,7 @@ import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { CountryNames } from '../../common/models/country-names';
 import { RegularExpressions } from '../../common/models/regular-expressions';
+import { TeamMemberService } from '../../team/services/team-member.service';
 //import { AddPartnersComponent } from '../../partners/add-partners/add-partners.component';
 
 declare var Metronic, Promise, Layout, Demo, swal, Portfolio, $, Papa: any;
@@ -32,7 +33,7 @@ declare var Metronic, Promise, Layout, Demo, swal, Portfolio, $, Papa: any;
     styleUrls: ['../../../assets/css/button.css',
         '../../../assets/css/numbered-textarea.css',
         './edit-contacts.component.css'],
-    providers: [Pagination, HttpRequestLoader, CountryNames,Properties, RegularExpressions]
+    providers: [Pagination, HttpRequestLoader, CountryNames,Properties, RegularExpressions, TeamMemberService]
 })
 export class EditContactsComponent implements OnInit {
     @Input() contacts: User[];
@@ -139,6 +140,9 @@ export class EditContactsComponent implements OnInit {
     isCompanyDetails = false;
     checkingContactTypeName: string;
     newUsersEmails = [];
+    teamMemberPagination: Pagination = new Pagination();
+    teamMembersList = [];
+    orgAdminsList = [];
 
     filterOptions = [
         { 'name': '', 'value': 'Field Name*' },
@@ -164,7 +168,8 @@ export class EditContactsComponent implements OnInit {
     constructor( public refService: ReferenceService, private contactService: ContactService, private manageContact: ManageContactsComponent,
         private authenticationService: AuthenticationService, private router: Router,public countryNames: CountryNames,
         public regularExpressions: RegularExpressions,
-        private pagerService: PagerService, public pagination: Pagination, public xtremandLogger: XtremandLogger, public properties: Properties) {
+        private pagerService: PagerService, public pagination: Pagination, public xtremandLogger: XtremandLogger, public properties: Properties,
+        public teamMemberService: TeamMemberService) {
 
         this.addContactuser.country = ( this.countryNames.countries[0] );
 
@@ -328,10 +333,16 @@ export class EditContactsComponent implements OnInit {
             this.dublicateEmailId = true;
         }
     }
+    
+    checkTeamEmails(arr, val) {
+        this.xtremandLogger.log(arr.indexOf(val) > -1);
+        return arr.indexOf(val) > -1;
+        }
 
     saveValidEmails() {
         this.isCompanyDetails = false;
         this.newUsersEmails.length = 0;
+        let existedEmails = [];
         
         for(let i=0; i< this.users.length; i++){
             this.newUsersEmails.push(this.users[i].emailId);
@@ -348,9 +359,35 @@ export class EditContactsComponent implements OnInit {
                   this.users[i].country = null;
               }
            }
+
+            for ( let i = 0; i < this.orgAdminsList.length; i++ ) {
+                this.teamMembersList.push( this.orgAdminsList[i] );
+            }
+            
+            let emails = []
+            for(let i=0; i< this.users.length; i++){ 
+                 emails.push(this.users[i].emailId);
+            }
+            
+            if(emails.length > this.teamMembersList.length){
+                for(let i= 0; i< emails.length; i++){
+                   let isEmail = this.checkTeamEmails(emails, this.teamMembersList[i]);
+                   if(isEmail){ existedEmails.push(this.teamMembersList[i]) }
+                }
+                
+            } else{
+                for(let i= 0; i< this.teamMembersList.length; i++){
+                    let isEmail = this.checkTeamEmails(this.teamMembersList, emails[i]);
+                    if(isEmail){ existedEmails.push(emails[i]) }
+                 }
+            }
+            console.log(existedEmails);
+            
+            
         }else{
             this.isCompanyDetails = true;
         }
+     if(existedEmails.length === 0){
       if(this.isCompanyDetails){
         this.xtremandLogger.info( "update contacts #contactSelectedListId " + this.contactListId + " data => " + JSON.stringify( this.users ) );
         this.contactService.updateContactList( this.contactListId, this.users )
@@ -387,10 +424,15 @@ export class EditContactsComponent implements OnInit {
       }else{
           this.customResponse = new CustomResponse( 'ERROR', "Company Details is required", true );
       }
+     }else{
+          this.customResponse = new CustomResponse( 'ERROR', "You are not allowed to add teamMember or orgAdmin as a partner", true );
+          this.cancelContacts();
+      }
     }
 
     updateCsvContactList( contactListId: number ) {
         this.newUsersEmails.length = 0;
+        let existedEmails = [];
         if ( this.users.length > 0 ) {
             for ( let i = 0; i < this.users.length; i++ ) {
                 if ( !this.validateEmailAddress( this.users[i].emailId ) ) {
@@ -419,9 +461,34 @@ export class EditContactsComponent implements OnInit {
                           this.users[i].country = null;
                       }
                    }
+                    
+                    for ( let i = 0; i < this.orgAdminsList.length; i++ ) {
+                        this.teamMembersList.push( this.orgAdminsList[i] );
+                    }
+                    let emails = []
+                    for(let i=0; i< this.users.length; i++){ 
+                         emails.push(this.users[i].emailId);
+                    }
+                    
+                    if(emails.length > this.teamMembersList.length){
+                        for(let i= 0; i< emails.length; i++){
+                           let isEmail = this.checkTeamEmails(emails, this.teamMembersList[i]);
+                           if(isEmail){ existedEmails.push(this.teamMembersList[i]) }
+                        }
+                        
+                    } else{
+                        for(let i= 0; i< this.teamMembersList.length; i++){
+                            let isEmail = this.checkTeamEmails(this.teamMembersList, emails[i]);
+                            if(isEmail){ existedEmails.push(emails[i]) }
+                         }
+                    }
+                    console.log(existedEmails);
+                    
                 }else{
                     this.isCompanyDetails = true;
                 }
+                
+               if(existedEmails.length === 0){
                 if(this.isCompanyDetails){
                 this.xtremandLogger.info( "update contacts #contactSelectedListId " + this.contactListId + " data => " + JSON.stringify( this.users ) );
                 this.contactService.updateContactList( this.contactListId, this.users )
@@ -461,6 +528,11 @@ export class EditContactsComponent implements OnInit {
                 }else{
                     this.customResponse = new CustomResponse( 'ERROR', "Company Details is required", true );
                 }
+                
+               }else{
+                    this.customResponse = new CustomResponse( 'ERROR', "You are not allowed add teamMember or orgAdmin as a partner", true );
+                }
+                
             } else {
                 this.inValidCsvContacts = true;
             }
@@ -750,6 +822,7 @@ export class EditContactsComponent implements OnInit {
 
     saveClipboardValidEmails() {
         this.newUsersEmails.length = 0;
+        let existedEmails = [];
         for(let i=0; i< this.users.length; i++){
             this.newUsersEmails.push(this.users[i].emailId);
         }
@@ -767,9 +840,33 @@ export class EditContactsComponent implements OnInit {
                       this.users[i].country = null;
                   }
                }
+                
+                for ( let i = 0; i < this.orgAdminsList.length; i++ ) {
+                    this.teamMembersList.push( this.orgAdminsList[i] );
+                }
+                let emails = []
+                for(let i=0; i< this.users.length; i++){ 
+                     emails.push(this.users[i].emailId);
+                }
+                
+                if(emails.length > this.teamMembersList.length){
+                    for(let i= 0; i< emails.length; i++){
+                       let isEmail = this.checkTeamEmails(emails, this.teamMembersList[i]);
+                       if(isEmail){ existedEmails.push(this.teamMembersList[i]) }
+                    }
+                    
+                } else{
+                    for(let i= 0; i< this.teamMembersList.length; i++){
+                        let isEmail = this.checkTeamEmails(this.teamMembersList, emails[i]);
+                        if(isEmail){ existedEmails.push(emails[i]) }
+                     }
+                }
+                console.log(existedEmails);
+                
             }else{
                 this.isCompanyDetails = true;
             }
+           if(existedEmails.length === 0){
             if(this.isCompanyDetails){
             this.contactService.updateContactList( this.contactListId, this.users )
                 .subscribe(
@@ -808,6 +905,9 @@ export class EditContactsComponent implements OnInit {
             }else{
                 this.customResponse = new CustomResponse( 'ERROR', "Company Details is required", true );
             }
+           }else{
+               this.customResponse = new CustomResponse( 'ERROR', "You are not allowed to add teamMember or orgAdmin as a partner", true );
+           }
             this.dublicateEmailId = false;
         }
     }
@@ -1812,8 +1912,55 @@ export class EditContactsComponent implements OnInit {
             );
     }
     
+    listTeamMembers(){
+        this.teamMemberPagination.maxResults = 10000000;
+        try{
+            this.teamMemberService.list(this.teamMemberPagination,this.authenticationService.getUserId())
+            .subscribe(
+                data => {
+                    console.log(data);
+                    if ( data.teamMembers.length != 0 ) {
+                        for ( let i = 0; i < data.teamMembers.length; i++ ) {
+                            this.teamMembersList.push(data.teamMembers[i].emailId);
+                        }
+                    }
+                    this.teamMemberPagination = this.pagerService.getPagedItems(this.teamMemberPagination,this.teamMembersList);
+                },
+                error => {
+                    this.xtremandLogger.errorPage(error);
+                },
+                () => this.xtremandLogger.info("Finished listTeamMembers()")
+            );
+        }catch(error){
+            this.xtremandLogger.log(error);
+        }
+       
+    }
+    
+    listOrgAdmin(){
+        try{
+            this.contactService.listOrgAdmins()
+            .subscribe(
+                data => {
+                    console.log(data);
+                    this.orgAdminsList = data;
+                },
+                error => {
+                    this.xtremandLogger.errorPage(error);
+                },
+                () => this.xtremandLogger.info("Finished listTeamMembers()")
+            );
+        }catch(error){
+            this.xtremandLogger.log(error);
+        }
+       
+    }
+
+    
     ngOnInit() {
         this.loadContactListsNames();
+        this.listTeamMembers();
+        this.listOrgAdmin();
         this.selectedContactListName = this.contactListName;
         this.checkingLoadContactsCount = true;
         this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );

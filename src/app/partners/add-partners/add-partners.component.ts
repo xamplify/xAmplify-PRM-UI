@@ -112,6 +112,7 @@ export class AddPartnersComponent implements OnInit {
     pageNumber: any;
     newUsersEmails = [];
     teamMembersList = [];
+    orgAdminsList = [];
 
     public uploader: FileUploader = new FileUploader( { allowedMimeType: ["application/csv", "application/vnd.ms-excel", "text/plain", "text/csv"] });
 
@@ -323,7 +324,9 @@ export class AddPartnersComponent implements OnInit {
     
     saveValidEmails() {
         this.isCompanyDetails = false;
-        this.teamMembersList.push(this.authenticationService.user.emailId);
+        for ( let i = 0; i < this.orgAdminsList.length; i++ ) {
+            this.teamMembersList.push( this.orgAdminsList[i] );
+        }
         let emails = []
         for(let i=0; i< this.newPartnerUser.length; i++){ 
              emails.push(this.newPartnerUser[i].emailId);
@@ -412,7 +415,7 @@ export class AddPartnersComponent implements OnInit {
           this.customResponse = new CustomResponse( 'ERROR', "Company Details is required", true );
       }
      }else{
-         this.customResponse = new CustomResponse( 'ERROR', "You can't add teamMember and Your self as a partner", true );
+         this.customResponse = new CustomResponse( 'ERROR', "You are not allowed to add teamMember or orgAdmin as a partner", true );
          if ( this.selectedAddPartnerOption == 1 ) {
              this.cancelPartners();
          }
@@ -1682,10 +1685,30 @@ export class AddPartnersComponent implements OnInit {
         }
        
     }
+    
+    listOrgAdmin(){
+        try{
+            this.contactService.listOrgAdmins()
+            .subscribe(
+                data => {
+                    console.log(data);
+                    this.orgAdminsList = data;
+                },
+                error => {
+                    this.xtremandLogger.errorPage(error);
+                },
+                () => this.xtremandLogger.info("Finished listOrgAdmins()")
+            );
+        }catch(error){
+            this.xtremandLogger.log(error);
+        }
+       
+    }
+
 
     ngOnInit() {
         this.socialContactImage();
-        this.listTeamMembers()
+        this.listTeamMembers();
         $( "#Gfile_preview" ).hide();
         this.socialContactsValue = true;
         this.loggedInUserId = this.authenticationService.getUserId();
