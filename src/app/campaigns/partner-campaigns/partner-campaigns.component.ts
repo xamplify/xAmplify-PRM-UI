@@ -154,8 +154,15 @@ export class PartnerCampaignsComponent implements OnInit {
                 this.campaign = result;
                 this.getCampaignPartnerByCampaignIdAndUserId(this.campaign.campaignId, this.loggedInUserId);
                 const userProfile = this.authenticationService.userProfile;
+                debugger;
                 this.campaign.email = userProfile.emailId;
-                this.campaign.fromName = $.trim(userProfile.firstName + " " + userProfile.lastName);
+                if(userProfile.firstName !== undefined && userProfile.lastName !== undefined)
+                    this.campaign.fromName = $.trim(userProfile.firstName + " " + userProfile.lastName);
+                else if(userProfile.firstName !== undefined && userProfile.lastName === undefined)
+                    this.campaign.fromName = $.trim(userProfile.firstName);
+                else
+                    this.campaign.fromName = $.trim(userProfile.emailId);
+                
                 this.setEmailIdAsFromName();
 
                 this.campaign.countryId = this.countries[0].id;
