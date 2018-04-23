@@ -1709,6 +1709,7 @@ export class AddPartnersComponent implements OnInit {
     ngOnInit() {
         this.socialContactImage();
         this.listTeamMembers();
+        this.listOrgAdmin();
         $( "#Gfile_preview" ).hide();
         this.socialContactsValue = true;
         this.loggedInUserId = this.authenticationService.getUserId();
