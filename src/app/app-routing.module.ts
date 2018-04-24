@@ -31,6 +31,7 @@ import { ForgotPasswordComponent } from './authentication/forgot-password/forgot
 import { VerifyEmailComponent } from './authentication/verify-email/verify-email.component';
 import { CompanyPageComponent } from './dashboard/company-profile/company-page/company-page.component';
 import {VendorSignupComponent} from './authentication/vendor-signup/vendor-signup.component';
+import {IntroComponent} from './authentication/intro/intro.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -38,7 +39,7 @@ export const routes: Routes = [
     {path:'v-signup',component:VendorSignupComponent},
     { path: 'forgot-password', component: ForgotPasswordComponent },
     { path: 'register/verifyemail/user', component: VerifyEmailComponent },
-    { path: '', redirectTo: 'home/dashboard/default', pathMatch: 'full', canActivate: [AuthGuard] },
+    { path: '', component: IntroComponent},
     {
         path: 'home', component: HomeComponent, canActivate: [AuthGuard],
         children: [
