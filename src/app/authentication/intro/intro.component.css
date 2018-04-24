@@ -2,8 +2,6 @@
   body {
 	padding: 0;
 	margin: 0;
-	/* background: url(/assets/images/bg.jpg) center top no-repeat !important; */
-	/*background: #fff url(/assets/images/bg.jpg) top left no-repeat !important;*/
 	min-height: 641px;
 	background-size: 100%;
 	font: normal 18px Arial, Helvetica, sans-serif;
@@ -23,7 +21,7 @@ h1 {
 }
 
 a.btn {
-    width: 150px;
+    width: 200px; color: #fff;height:60px; 
 }
 
 .logo {	width: 160px;	height: 65px;	background: url(/assets/images/xamplify-logo.png) top left no-repeat;}
