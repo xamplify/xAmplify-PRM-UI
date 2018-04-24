@@ -8,6 +8,11 @@
 	pointer-events: none;
 	opacity: 0.4;
 }
+
+.saveAsCustomeCss{
+    left: 60% !important;
+    top: -64px !important;
+}
 </style>
 <div class="page-content">
 	<!-- page-breadcrumb -->
@@ -300,7 +305,7 @@
 														</a>
 													</div>
 													<div style="top: 38%; position: relative;">
-														<a class="mix-preview2"
+														<a class="mix-preview2" [ngClass]="{'saveAsCustomeCss':contactList.defaultPartnerList }"
 															title="Save Existing list as a new list"
 															(click)="saveAsNewList(contactList.id,contactList.name)"
 															[class.disabled]="!contactList.emailValidationInd"
