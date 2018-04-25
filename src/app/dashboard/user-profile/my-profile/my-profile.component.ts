@@ -122,29 +122,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             this.referenceService.topNavBarUserDetails.profilePicutrePath = imageFilePath['message'];
             this.authenticationService.userProfile.profileImagePath = imageFilePath['message'];
         };
-        this.logoUploader = new FileUploader({
-            allowedMimeType: ['image/jpeg', 'image/pjpeg', 'image/jpeg', 'image/pjpeg', 'image/png'],
-            maxFileSize: 10 * 1024 * 1024, // 100 MB
-            url: this.authenticationService.REST_URL + "videos/upload-branding-logo?userId=" + this.loggedInUserId + "&videoDefaultSetting=true&access_token=" + this.authenticationService.access_token
-        });
-        this.logoUploader.onAfterAddingFile = (fileItem) => {
-            console.log(fileItem);
-            fileItem.withCredentials = false;
-            this.imagePathSafeUrl = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(fileItem._file)));
-            this.logoImageUrlPath = this.imagePathSafeUrl.changingThisBreaksApplicationSecurity;
-            this.logoUploader.queue[0].upload();
-            $('#overLayImage').append($('#overlay-logo').show());
-        };
-        this.logoUploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-            console.log(response);
-            console.log(this.logoUploader.queue[0]);
-            if (JSON.parse(response).message === null) {
-                this.customResponse = new CustomResponse('ERROR', this.properties.PROCESS_REQUEST_ERROR, true);
-            } else {
-                this.logoUploader.queue.length = 0;
-                this.logoImageUrlPath = this.defaultVideoPlayer.brandingLogoUri = JSON.parse(response).path;
-            }
-        }
     }
     isEmpty(obj) {
         return Object.keys(obj).length === 0;
@@ -152,25 +129,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     clearLogo() {
         this.logoUploader.queue.length = 0;
         this.logoImageUrlPath = undefined;
-    }
-    saveVideoBrandLog() {
-        this.ngxloading = true; //  && this.logoLink
-        if(this.logoImageUrlPath) {
-        this.logoLink = this.videoUtilService.isStartsWith(this.logoLink);
-        this.userService.saveBrandLogo(this.logoImageUrlPath, this.logoLink, this.loggedInUserId)
-            .subscribe(
-                (data: any) => {
-                    this.referenceService.goToTop();
-                    console.log(data);
-                    if (data !== undefined) {
-                        this.ngxloading = false;
-                        this.customResponse =  new CustomResponse('SUCCESS',this.properties.VIDEO_LOGO_UPDATED,true);
-                        this.logoImageUrlPath = data.brandingLogoPath
-                        this.logoLink = data.brandingLogoDescUri;
-                    } else { this.ngxloading = false; }
-                },
-                (error) => { this.ngxloading = false; });
-            }
     }
     hasOrgAdminRole() {
         this.roles = this.authenticationService.getRoles();
