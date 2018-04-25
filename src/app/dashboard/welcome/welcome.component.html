@@ -42,7 +42,7 @@ cursor: not-allowed;
 
 	<div class="page-bar page-bar-shadow">
 		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-2">
-			<div [routerLink]="['/home/videos/manage']" class="portlet light block rounded-0 center color1 padding-top-bottom-5" [class.disabled]="!hasVideoRole || !authenticationService.user.hasCompany? true : null">
+			<div [routerLink]="['/home/videos/manage']" class="portlet light block rounded-0 center color1 padding-top-bottom-5" [class.disabled]="!authenticationService.user.hasCompany? true : null">
 				<div class="col-xs-6">
 					<i class="fa fa-play fa-3" aria-hidden="true" style="font-size: 4em;opacity: 0.5;margin: 10px 2px;"></i>
 				</div>
@@ -55,7 +55,7 @@ cursor: not-allowed;
 			</div>
 		</div>
 		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-2">
-			<div [routerLink]="['/home/contacts/manage']" class="portlet light block rounded-0 center color2 padding-top-bottom-5" [class.disabled]="!hasContactRole || !authenticationService.user.hasCompany ? true : null">
+			<div [routerLink]="['/home/contacts/manage']" class="portlet light block rounded-0 center color2 padding-top-bottom-5" [class.disabled]="!authenticationService.user.hasCompany ? true : null">
 				<div class="col-xs-6">
 					<i class="glyphicon glyphicon-th-list" aria-hidden="true" style="font-size: 4em;opacity: 0.5; margin: 10px 2px;"></i>
 				</div>
@@ -68,7 +68,7 @@ cursor: not-allowed;
 			</div>
 		</div>
 		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-2">
-			<div [routerLink]="['/home/campaigns/manage']" class="portlet light block rounded-0 center color3 padding-top-bottom-5" [class.disabled]="!hasCampaignRole || !authenticationService.user.hasCompany ? true : null">
+			<div [routerLink]="['/home/campaigns/manage']" class="portlet light block rounded-0 center color3 padding-top-bottom-5" [class.disabled]="!authenticationService.user.hasCompany ? true : null">
 				<div class="col-xs-6">
 					<i class="glyphicon glyphicon-bullhorn" aria-hidden="true" style="font-size: 4em;opacity: 0.5; margin: 10px 2px;"></i>
 				</div>
@@ -81,7 +81,7 @@ cursor: not-allowed;
 			</div>
 		</div>
 		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-2">
-			<div [routerLink]="['/home/emailtemplates/manage']" class="portlet light block rounded-0 center color4 padding-top-bottom-5" [class.disabled]="!hasEmailTemplateRole  || !authenticationService.user.hasCompany ? true : null">
+			<div [routerLink]="['/home/emailtemplates/manage']" class="portlet light block rounded-0 center color4 padding-top-bottom-5" [class.disabled]="!authenticationService.user.hasCompany ? true : null">
 				<div class="col-xs-6">
 					<i class="fa fa-envelope-o fa-3" aria-hidden="true" style="font-size: 4em;opacity: 0.5; margin: 10px 2px;"></i>
 				</div>
@@ -94,7 +94,7 @@ cursor: not-allowed;
 			</div>
 		</div>
 		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-2">
-			<div [routerLink]="['/home/social/manage/all']" class="portlet light block rounded-0 center color1 padding-top-bottom-5" [class.disabled]="!hasSocialStatusRole || !authenticationService.user.hasCompany ? true : null">
+			<div [routerLink]="['/home/social/manage/all']" class="portlet light block rounded-0 center color1 padding-top-bottom-5" [class.disabled]="!authenticationService.user.hasCompany ? true : null">
 				<div class="col-xs-6">
 					<i class="fa fa-users fa-3" aria-hidden="true" style="font-size: 4em;opacity: 0.5; margin: 12px 2px;"></i>
 				</div>
@@ -107,7 +107,7 @@ cursor: not-allowed;
 			</div>
 		</div>
 		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-2">
-			<div [routerLink]="['/home/dashboard']" class="portlet light block rounded-0 center color2 padding-top-bottom-5" [class.disabled]="!hasStatsRole || !authenticationService.user.hasCompany ? true : null">
+			<div [routerLink]="['/home/dashboard']" class="portlet light block rounded-0 center color2 padding-top-bottom-5" [class.disabled]="!authenticationService.user.hasCompany ? true : null">
 				<div class="col-xs-12">
 					<h1 class="bold"><i class="fa fa-line-chart" aria-hidden="true" style="font-size: 1.3em; margin-left: -42px;opacity: 0.5;"></i></h1>
 				</div>
@@ -206,7 +206,7 @@ cursor: not-allowed;
 						<h1 class="bold" style="color: #827596">campaign</h1>
 						<p>Automate customer journeys or start your partner campaigns.</p>
 						<div class="flex pull-right">
-							<button class="btn btn-xs color3" [routerLink]="['/home/campaigns']" [class.disabled]="!hasCampaignRole || !authenticationService.user.hasCompany ? true : null">create campaign</button>
+							<button class="btn btn-xs color3" [routerLink]="['/home/campaigns']" [class.disabled]="!authenticationService.user.hasCompany ? true : null">create campaign</button>
 							<button type="button" class="btn btn-xs color3-invert" data-toggle="modal" data-target="#myModal">Tell me how</button>
 						</div>
 					</div>
@@ -218,7 +218,7 @@ cursor: not-allowed;
 						<h1 class="bold" style="color: #FBB23E">Template</h1>
 						<p>Design beautiful, responsive templates to effectively communicate with your audience.</p>
 						<div class="flex pull-left">
-							<button class="btn btn-xs color4" [routerLink]="['/home/emailtemplates/select']" [class.disabled]="!hasEmailTemplateRole || !authenticationService.user.hasCompany  ? true : null">create template</button>
+							<button class="btn btn-xs color4" [routerLink]="['/home/emailtemplates/select']" [class.disabled]="!authenticationService.user.hasCompany  ? true : null">create template</button>
 							<button type="button" class="btn btn-xs color4-invert" data-toggle="modal" data-target="#myModal">Tell me how</button>
 						</div>
 					</div>
@@ -240,7 +240,7 @@ cursor: not-allowed;
 						<h1 class="bold" style="color: #76C9FF">Social Accounts</h1>
 						<p>Collaborate all your social media accounts to give power to your social communication.</p>
 						<div class="flex pull-right">
-							<button class="btn btn-xs color1" [routerLink]="['/home/social/manage/all']" [class.disabled]="!hasSocialStatusRole || !authenticationService.user.hasCompany ? true : null">connect</button>
+							<button class="btn btn-xs color1" [routerLink]="['/home/social/manage/all']" [class.disabled]="!authenticationService.user.hasCompany ? true : null">connect</button>
 							<button type="button" class="btn btn-xs color1-invert" data-toggle="modal" data-target="#myModal">Tell me how</button>
 						</div>
 					</div>
@@ -252,7 +252,7 @@ cursor: not-allowed;
 						<h1 class="bold" style="color: #00B3B3">Analytics</h1>
 						<p>Manage, monitor and measure every aspect of your campaign</p>
 						<div class="flex pull-left">
-							<button class="btn btn-xs color2" [routerLink]="['/home/dashboard']" [class.disabled]="!hasStatsRole || !authenticationService.user.hasCompany ? true : null">analytics</button>
+							<button class="btn btn-xs color2" [routerLink]="['/home/dashboard']" [class.disabled]="!authenticationService.user.hasCompany ? true : null">analytics</button>
 							<button type="button" class="btn btn-xs color2-invert" data-toggle="modal" data-target="#myModal">Tell me how</button>
 						</div>
 					</div>

@@ -212,7 +212,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                // $('#campaignListDiv_' + id).remove();
               //  setTimeout(function() { $("#deleteSuccess").slideUp(500); }, 5000);
               //  this.pagination.pageIndex = this.pagination.pageIndex - 1;
-                const deleteMessage = campaignName + 'Campaign Deleted Successfully'; 
+                const deleteMessage = campaignName + ' Campaign Deleted Successfully'; 
                 this.customResponse = new CustomResponse( 'SUCCESS', deleteMessage, true );
                 this.pagination.pagedItems.splice(position, 1);
                 this.pagination.pageIndex = 1;

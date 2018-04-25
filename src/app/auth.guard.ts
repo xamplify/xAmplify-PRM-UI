@@ -142,7 +142,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     
     checkVendorAccessUrls(url:string,urlType:string):boolean{
         if(url.indexOf("/"+urlType+"/")>-1 && this.authenticationService.user.hasCompany
-                && url.indexOf("/"+this.contactBaseUrl+"/")<0 &&  url.indexOf("/"+this.teamBaseUrl+"/")<0){
+                && url.indexOf("/"+this.contactBaseUrl+"/")<0){
             return true;
         }else{
             return this.goToAccessDenied();

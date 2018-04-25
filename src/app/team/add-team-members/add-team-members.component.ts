@@ -66,7 +66,12 @@ export class AddTeamMembersComponent implements OnInit {
     }
     
     downloadEmptyCsv(){
-        window.location.href = this.authenticationService.MEDIA_URL + "team-member-list.csv";
+        if(this.authenticationService.module.isVendor){
+            window.location.href = this.authenticationService.MEDIA_URL + "team-member-vendor.csv";
+        }else{
+            window.location.href = this.authenticationService.MEDIA_URL + "team-member-list.csv";
+        }
+       
     }
     
     /**********On Init()**********/
@@ -438,7 +443,9 @@ export class AddTeamMembersComponent implements OnInit {
         team.campaign = true;
         team.emailTemplate = true;
         team.stats = true;
-        team.contact = true;
+        if(!this.authenticationService.module.isVendor){
+            team.contact = true;
+        }
         team.socialShare = true;
         team.partners = true;
 
@@ -654,12 +661,21 @@ export class AddTeamMembersComponent implements OnInit {
                   this.setAllRoles(teamMember);
               }else{
                   teamMember.video = this.setDefaultValue(row[2]);
-                  teamMember.contact = this.setDefaultValue(row[3]);
-                  teamMember.campaign   =this.setDefaultValue(row[4]);
-                  teamMember.stats = this.setDefaultValue(row[5]);
-                  teamMember.emailTemplate = this.setDefaultValue(row[6]);
-                  teamMember.socialShare = this.setDefaultValue(row[7]);
-                  teamMember.partners = this.setDefaultValue(row[8]);
+                  if(this.authenticationService.module.isVendor){
+                      teamMember.campaign   =this.setDefaultValue(row[3]);
+                      teamMember.stats = this.setDefaultValue(row[4]);
+                      teamMember.emailTemplate = this.setDefaultValue(row[5]);
+                      teamMember.socialShare = this.setDefaultValue(row[6]);
+                      teamMember.partners = this.setDefaultValue(row[7]);
+                  }else{
+                      teamMember.contact = this.setDefaultValue(row[3]);
+                      teamMember.campaign   =this.setDefaultValue(row[4]);
+                      teamMember.stats = this.setDefaultValue(row[5]);
+                      teamMember.emailTemplate = this.setDefaultValue(row[6]);
+                      teamMember.socialShare = this.setDefaultValue(row[7]);
+                      teamMember.partners = this.setDefaultValue(row[8]);
+                  }
+                  
               }
               this.teamMembers.push(teamMember);
           }

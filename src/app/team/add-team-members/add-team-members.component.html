@@ -116,7 +116,7 @@
 											<img src="assets/images/user-permission.png" class="user-permission-img">User & Permissions
 										</h4>
 									</th>
-									<th  class="rest-header">
+									<th  class="rest-header" *ngIf="!authenticationService.module.isVendor">
 										<br>Enable As Org Admin
 									</th>
 									<th  class="rest-header">
@@ -125,10 +125,10 @@
 									<th class="rest-header">
 										<i class="fa fa-file-video-o" aria-hidden="true"></i><br>Video
 									</th>
-									<th class="rest-header">
+									<th class="rest-header" *ngIf="!authenticationService.module.isVendor">
 										<i class="fa fa-users" aria-hidden="true"></i><br>Contacts
 									</th>
-									<th class="rest-header">
+									<th class="rest-header" >
 										<i class="fa fa-bullhorn" aria-hidden="true"></i><br>Campaign
 									</th>
 									<th class="rest-header">
@@ -150,26 +150,28 @@
 							<ng-container *ngFor="let teamMember of teamMembers;let i=index">
 							<tr id="team-member-{{i}}">
 								<td><i class="fa fa-user" aria-hidden="true"></i>{{teamMember.emailId | lowercase}}</td>
-								<td *ngIf="teamMember.all ">
-									<switch [status]="teamMember.orgAdmin" [onText]="callActionSwitch.onTextValue"
-												 [offText]="callActionSwitch.offTextValue"	[onColor]="callActionSwitch.onGreenColorSwitch" 
-												 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize" 
-												(statusChange)="changeOrgAdminStatus($event,i,teamMember)">
-									</switch>
-								</td>
-								<td *ngIf="!teamMember.all">
-									<switch [status]="teamMember.orgAdmin" [onText]="callActionSwitch.onTextValue"
-												 [offText]="callActionSwitch.offTextValue"	[onColor]="callActionSwitch.onGreenColorSwitch" 
-												 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize" 
-												(statusChange)="changeOrgAdminStatus($event,i,teamMember)" [disabled]="callActionSwitch.disabled">
-									</switch>
-								</td>
+								<ng-container *ngIf="!authenticationService.module.isVendor">
+									<td *ngIf="teamMember.all">
+										<switch [status]="teamMember.orgAdmin" [onText]="callActionSwitch.onTextValue"
+													 [offText]="callActionSwitch.offTextValue"	[onColor]="callActionSwitch.onGreenColorSwitch" 
+													 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize" 
+													(statusChange)="changeOrgAdminStatus($event,i,teamMember)">
+										</switch>
+									</td>
+									<td *ngIf="!teamMember.all">
+										<switch [status]="teamMember.orgAdmin" [onText]="callActionSwitch.onTextValue"
+													 [offText]="callActionSwitch.offTextValue"	[onColor]="callActionSwitch.onGreenColorSwitch" 
+													 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize" 
+													(statusChange)="changeOrgAdminStatus($event,i,teamMember)" [disabled]="callActionSwitch.disabled">
+										</switch>
+									</td>
+								</ng-container>
 								<td>
 									<input type="checkbox" (change)="addAllAuthorities($event,teamMember,'add-team-member-table',i)" class="check-all-{{i}}"  [(ngModel)]="teamMember.all">
 									<br>
 								</td>
 								<td><input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.video" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'add-team-member-table')"></td>
-								<td><input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.contact" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'add-team-member-table')"></td>
+								<td *ngIf="!authenticationService.module.isVendor"><input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.contact" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'add-team-member-table')"></td>
 								<td><input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.campaign" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'add-team-member-table')"></td>
 								<td><input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.stats" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'add-team-member-table')"></td>
 								<td><input type="checkbox" id="role-checkbox-{{i}}"[(ngModel)]="teamMember.emailTemplate" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'add-team-member-table')"></td>
@@ -216,7 +218,7 @@
 											<img src="assets/images/user-permission.png" class="user-permission-img">User & Permissions
 										</h4>
 									</th>
-								<th  class="rest-header">
+								<th  class="rest-header" *ngIf="!authenticationService.module.isVendor">
 										<br>Enable As Org Admin
 									</th>
 									<th class="rest-header">
@@ -225,7 +227,7 @@
 									<th class="rest-header">
 										<i class="fa fa-file-video-o" aria-hidden="true"></i><br>Video
 									</th>
-									<th class="rest-header">
+									<th class="rest-header" *ngIf="!authenticationService.module.isVendor">
 										<i class="fa fa-users" aria-hidden="true"></i><br>Contacts
 									</th>
 									<th class="rest-header">
@@ -258,27 +260,29 @@
 								<td>
 									<i class="fa fa-user" aria-hidden="true"></i>{{teamMember.emailId | lowercase}}
 								</td>
-								<td *ngIf="teamMember.all">
-									<switch *ngIf="teamMember.status!='UNAPPROVED'"  [status]="teamMember.orgAdmin" [onText]="callActionSwitch.onTextValue"
-												 [offText]="callActionSwitch.offTextValue"	[onColor]="callActionSwitch.onGreenColorSwitch" 
-												 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize" 
-												(statusChange)="changeOrgAdminStatus($event,i,teamMember)">
-									</switch>
-									
-									<switch *ngIf="teamMember.status=='UNAPPROVED'" [status]="teamMember.orgAdmin" [onText]="callActionSwitch.onTextValue"
-												 [offText]="callActionSwitch.offTextValue"	[onColor]="callActionSwitch.onGreenColorSwitch" 
-												 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize" 
-												 [disabled]="callActionSwitch.disabled">
-									</switch>
-									
-								</td>
-								<td *ngIf="!teamMember.all">
-									<switch [status]="teamMember.orgAdmin" [onText]="callActionSwitch.onTextValue"
-												 [offText]="callActionSwitch.offTextValue"	[onColor]="callActionSwitch.onGreenColorSwitch" 
-												 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize" 
-												(statusChange)="changeOrgAdminStatus($event,i,teamMember)" [disabled]="callActionSwitch.disabled">
-									</switch>
-								</td>
+								<ng-container *ngIf="!authenticationService.module.isVendor">
+									<td *ngIf="teamMember.all">
+										<switch *ngIf="teamMember.status!='UNAPPROVED'"  [status]="teamMember.orgAdmin" [onText]="callActionSwitch.onTextValue"
+													 [offText]="callActionSwitch.offTextValue"	[onColor]="callActionSwitch.onGreenColorSwitch" 
+													 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize" 
+													(statusChange)="changeOrgAdminStatus($event,i,teamMember)">
+										</switch>
+										
+										<switch *ngIf="teamMember.status=='UNAPPROVED'" [status]="teamMember.orgAdmin" [onText]="callActionSwitch.onTextValue"
+													 [offText]="callActionSwitch.offTextValue"	[onColor]="callActionSwitch.onGreenColorSwitch" 
+													 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize" 
+													 [disabled]="callActionSwitch.disabled">
+										</switch>
+										
+									</td>
+									<td *ngIf="!teamMember.all">
+										<switch [status]="teamMember.orgAdmin" [onText]="callActionSwitch.onTextValue"
+													 [offText]="callActionSwitch.offTextValue"	[onColor]="callActionSwitch.onGreenColorSwitch" 
+													 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize" 
+													(statusChange)="changeOrgAdminStatus($event,i,teamMember)" [disabled]="callActionSwitch.disabled">
+										</switch>
+									</td>
+								</ng-container>
 								<td>
 									<input *ngIf="teamMember.orgAdmin" disabled="disabled" type="checkbox" (change)="addAllAuthorities($event,teamMember,'list-team-member-table',i)" class="check-all-{{i}}"  [(ngModel)]="teamMember.all">
 									<input *ngIf="!teamMember.orgAdmin"  type="checkbox" (change)="addAllAuthorities($event,teamMember,'list-team-member-table',i)" class="check-all-{{i}}"  [(ngModel)]="teamMember.all">
@@ -287,7 +291,7 @@
 								<ng-container *ngIf="(teamMember.orgAdmin || teamMember.all);then disable else enable"></ng-container>
 								<ng-template #disable>
 									<td><input type="checkbox" disabled="disabled" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.video" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')"></td>
-									<td><input type="checkbox"  disabled="disabled" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.contact" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')"></td>
+									<td  *ngIf="!authenticationService.module.isVendor"><input type="checkbox"  disabled="disabled" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.contact" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')"></td>
 									<td><input type="checkbox" disabled="disabled"  id="role-checkbox-{{i}}" [(ngModel)]="teamMember.campaign" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')"></td>
 									<td><input type="checkbox" disabled="disabled"  id="role-checkbox-{{i}}" [(ngModel)]="teamMember.stats" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')"></td>
 									<td><input type="checkbox" disabled="disabled" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.emailTemplate" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')"></td>
@@ -296,7 +300,7 @@
 								</ng-template>
 								<ng-template #enable>
 									<td><input type="checkbox"  id="role-checkbox-{{i}}" [(ngModel)]="teamMember.video" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')"></td>
-									<td><input type="checkbox"  id="role-checkbox-{{i}}" [(ngModel)]="teamMember.contact" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')"></td>
+									<td  *ngIf="!authenticationService.module.isVendor"><input type="checkbox"  id="role-checkbox-{{i}}" [(ngModel)]="teamMember.contact" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')"></td>
 									<td><input type="checkbox"  id="role-checkbox-{{i}}" [(ngModel)]="teamMember.campaign" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')"></td>
 									<td><input type="checkbox"  id="role-checkbox-{{i}}" [(ngModel)]="teamMember.stats" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')"></td>
 									<td><input type="checkbox"  id="role-checkbox-{{i}}" [(ngModel)]="teamMember.emailTemplate" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')"></td>
