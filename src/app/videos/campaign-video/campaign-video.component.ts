@@ -79,9 +79,9 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
     '<div class="col-xs-12 col-sm-12 col-md-12">' +
     '</div></div>';
 
-    errorHtml =  '<div class="page-content"><div class="portlet light">' +
+    errorHtml =  '<div class="page-content"><div class="portlet light" style="border: navajowhite;">' +
     ' <div class="portlet-body clearfix">' +
-    '<h3 style="color:blue;text-align: center;margin-top:204px;" >Sorry!!!. This campaign has been removed</h3></div></div></div>';
+    '<h3 style="color: blue;text-align: center;margin-top: 150px;font-weight: bold;" >Sorry! This campaign has been removed</h3></div></div></div>';
 
     constructor(public router: Router, public route: ActivatedRoute, public videoFileService: VideoFileService,
         public http: Http, public authenticationService: AuthenticationService, public referService: ReferenceService,
@@ -206,7 +206,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                             updatedBody = updatedBody.replace('<a href="https://dummyurl.com"', 'javascript:void(0)');
                             updatedBody = updatedBody.replace('src="https://aravindu.com/vod/images/xtremand-video.gif"', '></a><div id="newPlayerVideo">'+
                             '<div id="overlay-logo-bee"><a href='+this.logoLink+' target="_blank" >'+
-                            '<img id="image"  style="position:relative;top:10px;float: right;right: 10px;width:63px;z-index:9" src='+this.authenticationService.MEDIA_URL + this.logoImageUrlPath+'></a></div></div> <a ');
+                            '<img id="image" style="position:relative;top:10px;float: right;right: 10px;width:63px;z-index:9" src='+this.authenticationService.MEDIA_URL + this.logoImageUrlPath+'></a></div></div> <a ');
                             updatedBody = updatedBody.replace("Image", '');
                             updatedBody = updatedBody.replace('javascript:void(0) target="_blank">', '');
                             this.templatehtml = updatedBody;
@@ -274,6 +274,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                         console.log(this.videoUrl);
                         this.processor.remove(this.processor);
                     }, (error: any) => {
+                        this.processor.remove(this.processor);
                         this.xtremandLogger.error('campagin video Component : cmapaign video File method():' + error);
                         this.xtremandLogger.error(error);
                         document.getElementById('para').innerHTML = this.errorHtml;

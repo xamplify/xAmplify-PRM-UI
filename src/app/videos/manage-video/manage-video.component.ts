@@ -357,6 +357,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.showVideosPage(true, false, false, false);
         this.defaultBannerMessageValues();
         this.videoFileService.actionValue = '';
+        this.customResponse = new CustomResponse();
     }
     gotoHome() {
         this.videoUtilService.selectedVideo = null;
