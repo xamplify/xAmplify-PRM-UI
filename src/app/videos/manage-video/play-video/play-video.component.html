@@ -14,10 +14,10 @@
 					<div id="overLayImage"></div>
 					<div id="overlay-logo" class="video-js"  [ngClass]="{'logoCssplay':!fullScreenMode , 'logoFullscreen' :fullScreenMode}">
 						<a [href]="logoLink" *ngIf="this.videoFileService.videoType ==='partnerVideos'" target="_blank" [class.disabled]="logoLink===null">
-							<img *ngIf="logoImageUrlPath"  [src]="authenticationService.MEDIA_URL + logoImageUrlPath" class="img-responsive" >
+							<img id="imageDivHide" *ngIf="logoImageUrlPath"  [src]="authenticationService.MEDIA_URL + logoImageUrlPath" class="img-responsive" >
 						</a>
 						<a [href]="selectedVideo.brandingLogoDescUri" *ngIf="this.videoFileService.videoType !=='partnerVideos'"  target="_blank" [class.disabled]="selectedVideo.brandingLogoDescUri===null">
-							<img *ngIf="selectedVideo.brandingLogoUri"  [src]="authenticationService.MEDIA_URL + selectedVideo.brandingLogoUri" class="img-responsive" >
+							<img  id="imageDivHide" *ngIf="selectedVideo.brandingLogoUri"  [src]="authenticationService.MEDIA_URL + selectedVideo.brandingLogoUri" class="img-responsive" >
 						</a>
 					</div>
 					<div id="newPlayerVideo"></div>

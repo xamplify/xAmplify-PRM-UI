@@ -63,7 +63,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     loggedInUserId = 0;
     logoImageUrlPath: string;
     logoLink: string;
-
+    pauseVideo:boolean;
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
     constructor(public authenticationService: AuthenticationService, public videoFileService: VideoFileService,
         public videoUtilService: VideoUtilService, public pagination: Pagination, public xtremandLog: XtremandLog,
@@ -74,6 +74,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.loggedInUserId = this.authenticationService.getUserId();
         this.hasVideoRole = this.referenceService.hasRole(this.referenceService.roles.videRole);
         this.hasAllAccess = this.referenceService.hasAllAccess();
+        //vjs-user-inactive
 
     }
     checkCallToActionAvailable() {
@@ -521,7 +522,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.videoUtilService.normalVideoJsFiles();
     }
     playNormalVideo() {
-        const str = '<video id=videoId  poster=' + this.posterImg + ' preload="none"  class="video-js vjs-default-skin" controls></video>';
+        const str = '<video id=videoId  poster=' + this.posterImg + ' preload="none"  class="video-js vjs-default-skin" controls ></video>';
         $('#newPlayerVideo').append(str);
         $('#videoId').css('height', '318px');
         $('#videoId').css('width', 'auto');
@@ -540,8 +541,9 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                 nativeVideoTracks: !overrideNativevalue,
                 nativeAudioTracks: !overrideNativevalue,
                 nativeTextTracks: !overrideNativevalue
-            }
-        }, function () {
+            },
+            inactivityTimeout: 0
+           }, function () {
             const player = this;
             let startDuration;
             self.replyVideo = false;
@@ -585,6 +587,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                 startDuration = self.trimCurrentTime(player.currentTime());
             });
             this.on('play', function () {
+                self.pauseVideo = false;
                 const seekigTime = self.trimCurrentTime(player.currentTime());
                 console.log('ply button pressed ');
                 $('.vjs-big-play-button').css('display', 'none');
@@ -603,6 +606,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                 self.videoLogAction(self.xtremandLog);
             });
             this.on('pause', function () {
+                self.pauseVideo = true;
                 console.log('pused and current time' + self.trimCurrentTime(player.currentTime()));
                 if (self.xtremandLog.actionId !== self.LogAction.videoPlayer_movieReachEnd) {
                     console.log('pused and current time' + self.trimCurrentTime(player.currentTime()));
@@ -615,6 +619,8 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             });
             this.on('ended', function () {
+                self.pauseVideo = true;
+                $('#imageDivHide').css('cssText', 'display:block');
                 const whereYouAt = player.currentTime();
                 console.log(whereYouAt);
                 self.replyVideo = true;
@@ -692,6 +698,18 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             });
             this.on('contextmenu', function (e) {
                 e.preventDefault();
+            });
+            this.on('mouseover', function(){ 
+                this.userActive(true)
+                $('#imageDivHide').css('cssText', 'display:block');
+            });
+            this.on('mouseleave', function(){ 
+                setTimeout(()=>{ 
+                   if(!self.pauseVideo){
+                       $('#imageDivHide').css('cssText', 'display:none'); 
+                       this.userActive(false)
+                    }
+                    },3000);
             });
             this.hotkeys({
                 volumeStep: 0.1, seekStep: 5, enableMute: true,
