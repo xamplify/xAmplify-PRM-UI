@@ -361,7 +361,7 @@
 											</div>
 											<div class="col-sm-7">
 												<textarea class="textareaNumber" [(ngModel)]="clipboardTextareaText"
-													placeholder="FirstName,LastName,Company,Jobtitle,Email,Address,City,Country,MobileNumber,Notes       FirstName,LastName,Company,Jobtitle,Email,Address,City,country,MobileNumber,notes       FirstName,LastName,Company,Jobtitle,Email,Address,City,Country,MobileNumber,Notes"
+													placeholder="FirstName,LastName,Company,Jobtitle,Email,Address,City,Country,MobileNumber       FirstName,LastName,Company,Jobtitle,Email,Address,City,country,MobileNumber       FirstName,LastName,Company,Jobtitle,Email,Address,City,Country,MobileNumber"
 													[ngModelOptions]="{standalone: true}"
 													style="min-width: 100%; max-width: 100%; height: 150px; font-size: 12px; line-height: 1.4;"
 													required="required">
@@ -439,10 +439,10 @@
 																				<td class='pt10 pb10'>Mobile Number:</td>
 																				<td class='pt10 pb10'>{{user.mobileNumber}}</td>
 																			</tr>
-																			<tr style="border-bottom: 1px solid #dcdcdc">
+																			<!-- <tr style="border-bottom: 1px solid #dcdcdc">
 																				<td class='pt10 pb10'>Notes:</td>
 																				<td class='pt10 pb10'>{{user.description}}</td>
-																			</tr>
+																			</tr> -->
 																		</tbody>
 																	</table>
 																</td>
@@ -472,7 +472,7 @@
 															<th>CONTACT</th>
 															<th>JOB TITLE</th>
 															<th class='text-center'>ADDRESS</th>
-															<th class='text-center'>MORE</th>
+															<!-- <th class='text-center'>MORE</th> -->
 															<th class='text-center' *ngIf="hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId) || authenticationService.isOnlyPartner()">ACTIONS</th>
 														</tr>
 													</thead>
@@ -504,18 +504,18 @@
 																<h5 *ngIf="newContact?.city && newContact.country"
 																	class='mt0 textWhite'>{{newContact.city}},&nbsp;{{newContact.country}}</h5>
 															</td>
-															<td align="center">
+															<!-- <td align="center">
 																<button id='more_less_button_{{i}}'
 																	(click)="newContact.isShowDetails = ! newContact.isShowDetails">
 																	<span *ngIf="!newContact.isShowDetails">More</span> <span
 																		*ngIf="newContact.isShowDetails">Less</span>
 																</button>
-															</td>
+															</td> -->
 															<td align="center"><a class="delete textWhite"
 																(click)="cancelRow(i)"> Cancel </a></td>
 															<ng-template #NA>N/A</ng-template>
 														</tr>
-														<tr
+														<!-- <tr
 															[ngClass]="{'hidden': !newContact.isShowDetails, 'show-more': newContact.isShowDetails}"
 															style="background-color: #73c5be;">
 															<td colspan="8">
@@ -529,7 +529,7 @@
 																	</tbody>
 																</table>
 															</td>
-														</tr>
+														</tr> -->
 														</ng-container> 
 														</ng-container>
 														<ng-container
@@ -563,13 +563,13 @@
 																<h5 *ngIf="contact?.address" class='mb0'>{{contact.address}}</h5>
 																<h5 *ngIf="contact?.city && contact.country" class='mt0'>{{contact.city}},&nbsp;{{contact.country}}</h5>
 															</td>
-															<td align="center">
+															<!-- <td align="center">
 																<button id='more_less_button_{{i}}'
 																	(click)="contact.isShowDetails = ! contact.isShowDetails">
 																	<span *ngIf="!contact.isShowDetails">More</span> <span
 																		*ngIf="contact.isShowDetails">Less</span>
 																</button>
-															</td>
+															</td> -->
 															<td align="center"
 																*ngIf="hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId) || authenticationService.isOnlyPartner()">
 															<div class="actions-block">
@@ -585,7 +585,7 @@
 															</td>
 															<ng-template #NA>N/A</ng-template>
 														</tr>
-														<tr
+														<!-- <tr
 															[ngClass]="{'hidden': !contact.isShowDetails, 'show-more': contact.isShowDetails}">
 															<td colspan="6">
 																<table cellpadding="5" cellspacing="0"
@@ -598,7 +598,7 @@
 																	</tbody>
 																</table>
 															</td>
-														</tr>
+														</tr> -->
 														</ng-container>
 														
 													</tbody>
@@ -677,7 +677,7 @@
 												<th>CONTACT</th>
 												<th>JOB TITLE</th>
 												<th>ADDRESS</th>
-												<th>MORE</th>
+												<!-- <th>MORE</th> -->
 											</tr>
 										</thead>
 										<tbody>
@@ -713,16 +713,16 @@
 													<h5 *ngIf="allcontacts?.city && allcontacts.country"
 														class='mt0'>{{allcontacts.city}},&nbsp;{{allcontacts.country}}</h5>
 												</td>
-												<td>
+												<!-- <td>
 													<button id='more_less_button_{{i}}'
 														(click)="allcontacts.isShowDetails = ! allcontacts.isShowDetails">
 														<span *ngIf="!allcontacts.isShowDetails">More</span> <span
 															*ngIf="allcontacts.isShowDetails">Less</span>
 													</button>
-												</td>
+												</td> -->
 												<ng-template #NA>N/A</ng-template>
 											</tr>
-											<tr
+											<!-- <tr
 												[ngClass]="{'hidden': !allcontacts.isShowDetails, 'show-more': allcontacts.isShowDetails}">
 												<td colspan="6">
 													<table cellpadding="5" cellspacing="0"
@@ -735,7 +735,7 @@
 														</tbody>
 													</table>
 												</td>
-											</tr>
+											</tr> -->
 											</ng-container>
 										</tbody>
 									</table>
@@ -877,7 +877,7 @@
 
 							</div>
 						</div>
-						<div class="form-group">
+						<!-- <div class="form-group">
 							<label class="control-label col-sm-2" for="note"
 								style="color: #c3c308"><i
 								class="glyphicon glyphicon-list" aria-hidden="true"></i></label>
@@ -888,7 +888,7 @@
 		     					</textarea>
 								<div class="textCss"></div>
 							</div>
-						</div>
+						</div> -->
 					</form>
 				</div>
 				<div class="modal-footer" *ngIf="!isPartner">

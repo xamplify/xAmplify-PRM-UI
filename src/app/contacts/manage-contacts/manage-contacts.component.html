@@ -499,7 +499,7 @@
 														<th>CONTACT</th>
 														<th>Job Title</th>
 														<th>ADDRESS</th>
-														<th>MORE</th>
+														<!-- <th>MORE</th> -->
 													</tr>
 												</thead>
 												<tbody>
@@ -543,16 +543,16 @@
 															<h5 *ngIf="contact?.address" class='mb0'>{{contact.address}}</h5>
 															<h5 *ngIf="contact?.city && contact.country" class='mt0'>{{contact.city}},&nbsp;{{contact.country}}</h5>
 														</td>
-														<td>
+														<!-- <td>
 															<button id='more_less_button_{{i}}'
 																(click)="contact.isShowDetails = ! contact.isShowDetails">
 																<span *ngIf="!contact.isShowDetails">More</span> <span
 																	*ngIf="contact.isShowDetails">Less</span>
 															</button>
-														</td>
+														</td> -->
 														<ng-template #NA>N/A</ng-template>
 													</tr>
-													<tr
+													<!-- <tr
 														[ngClass]="{'hidden': !contact.isShowDetails, 'show-more': contact.isShowDetails}">
 														<td colspan="6">
 															<table cellpadding="5" cellspacing="0"
@@ -565,7 +565,7 @@
 																</tbody>
 															</table>
 														</td>
-													</tr>
+													</tr> -->
 													</ng-container>
 												</tbody>
 											</table>
