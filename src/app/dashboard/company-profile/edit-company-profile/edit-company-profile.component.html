@@ -17,7 +17,7 @@
 		</div>
 		<div class="alert alert-danger"  id="company-profile-error-div" style="display: none;">
 			<a (click)="refService.hideDiv('company-profile-error-div')" class="close" aria-label="close">x</a>
-	  		<strong>Please complete the required fields. </strong> 
+	  		<strong>Please complete the required (*) fields. </strong> 
 		</div>
 		<app-response-message [customResponse]="customResponse"
 			*ngIf="customResponse.isVisible"></app-response-message>
@@ -101,7 +101,7 @@
 							</div>
 
 							<div class="form-group" [attr.class]="websiteDivClass">
-								<label class="control-label">WebSite</label>
+								<label class="control-label">Company Url <font style="color: red"><b>*</b></font></label>
 								 <input type="text"	id="website" name="website" placeholder="WebSite" class="form-control" [(ngModel)]="companyProfile.website" (input)="validatePattern('website')"	(blur)="validatePattern('website')" />
 								<span *ngIf="websiteError" style="color: red">{{websiteErrorMessage}}</span>
 							</div>
