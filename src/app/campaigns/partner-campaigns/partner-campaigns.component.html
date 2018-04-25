@@ -702,7 +702,7 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let userList of userLists">
-                                <th scope="row"><input type="checkbox" id='{{userList.id}}' (click)="highlightRow(userList.id)"></th>
+                                <th scope="row"><input type="checkbox" [disabled]="!userList.emailValidationInd" id='{{userList.id}}' (click)="highlightRow(userList.id)"></th>
                                 <td>{{userList.name}}</td>
                                 <td>{{userList.uploadedBy}}<br>{{userList.companyName}}</td>
                                 <td>{{userList.createdDate | date: 'longDate'}}</td>
