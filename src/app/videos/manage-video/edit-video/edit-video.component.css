@@ -236,3 +236,9 @@ border-radius:50%
     cursor: inherit;
     display: block;
 }
+.alertError{
+    text-align: center;
+    position: relative;
+    width: 96%;
+    right: -9px;
+}

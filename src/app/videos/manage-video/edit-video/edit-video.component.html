@@ -312,6 +312,7 @@
 							<div class="portlet-body form" *ngIf="colorControl" [@fadeInOut]>
 								<div class="portlet-body form" data-initialized="1" style="width: auto; height: auto">
 									<div class="form-body">
+									 <div class="alert alert-info alert-danger alertError" *ngIf="showError">Please complete * required fields.</div>
 										<div class="form-group">
 											<label class="col-xs-5 col-sm-5 col-md-5 control-label" style="margin-top:-6px">Default Settings:</label>
 											<div class="col-xs-7 col-sm-7 col-md-7">
@@ -371,8 +372,8 @@
 														</switch>
 													</div>
 												</div>
-											<div id="fileLogoSelectedid" *ngIf="!disablePlayerSettingnew" class="form-group" [class.disabledCss]="!enableVideoLogo">
-												<label class="col-xs-5 control-label">Video Logo:</label>
+												<div [hidden]="!enableVideoLogo" id="fileLogoSelectedid" *ngIf="!disablePlayerSettingnew" class="form-group" [class.disabledCss]="!enableVideoLogo">
+												<label class="col-xs-5 control-label">Video Logo:<font *ngIf="!brandLogoUrl" style="color: red"><b>*</b></font></label>
 												<div class="col-xs-7">
 													 <span class="btn btn-css btn-file" *ngIf="!brandLogoUrl">Choose Logo
 													  <input type="file" ng2FileSelect [uploader]="videoLogoUploader" accept=".jpg,.jpeg,.png" class="btn btn-primary"
@@ -386,14 +387,14 @@
 													</div>
 												</div>
 											</div>
-											<div *ngIf="!disablePlayerSettingnew" class="form-group" [class.disabledCss]="!enableVideoLogo">
-												<label class="col-xs-5 control-label">Video Logo URL:</label>
+											<div [hidden]="!enableVideoLogo" *ngIf="!disablePlayerSettingnew" class="form-group" [class.disabledCss]="!enableVideoLogo">
+												<label class="col-xs-5 control-label" style="position: relative; top:-6px;">Video Logo URL:<font *ngIf="!logoDescriptionUrl" style="color: red"><b>*</b></font></label>
 												<div class="col-xs-7">
 													<input type="text" style="width: 90%;" formControlName="brandingLogoDescUri" placeholder="URL for Video logo link" #val
 													 (input)="logoDescription(val.value)">
 												</div>
 											</div>
-											<div *ngIf="disablePlayerSettingnew && brandLogoUrl" class="form-group" [class.disabledCss]="enableVideoLogo">
+											<div  [hidden]="!enableVideoLogo" *ngIf="disablePlayerSettingnew && brandLogoUrl" class="form-group" [class.disabledCss]="enableVideoLogo">
 												<label class="col-xs-5 control-label">Video Logo:</label>
 												<div class="col-xs-7">
 													<div *ngIf="brandLogoUrl" class="img-wrap img-responsive img-thumbnail rounded-0">
@@ -401,7 +402,7 @@
 													</div>
 												</div>
 											</div>
-											<div *ngIf="disablePlayerSettingnew && logoDescriptionUrl" class="form-group" [class.disabledCss]="enableVideoLogo">
+											<div [hidden]="!enableVideoLogo" *ngIf="disablePlayerSettingnew && logoDescriptionUrl" class="form-group" [class.disabledCss]="enableVideoLogo">
 												<label class="col-xs-5 control-label">Video Logo URL:</label>
 												<div class="col-xs-7">
 													<p style="position: relative;top: 8px;opacity: 0.5;">{{logoDescriptionUrl}}</p>

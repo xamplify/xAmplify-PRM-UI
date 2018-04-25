@@ -138,7 +138,8 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     brandLogoUrl: any; 
     logoDescriptionUrl: string;
     publisToMessage = "Only you can view";
-    enableVideoLogo = true;
+    enableVideoLogo:boolean;
+    showError:boolean; 
     constructor(public referenceService: ReferenceService, public callActionSwitch: CallActionSwitch,
         public videoFileService: VideoFileService, public fb: FormBuilder, public changeDetectorRef: ChangeDetectorRef,
         public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger,
@@ -170,6 +171,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.callAction.isSkipChecked = this.saveVideoFile.skip;
         this.is360Value = this.value360 = this.saveVideoFile.is360video;
         this.brandLogoUrl = this.saveVideoFile.brandingLogoUri;
+        this.enableVideoLogo = this.saveVideoFile.enableVideoCobrandingLogo;
         if (this.videoUtilService.validateEmail(this.callAction.email_id)) {
             this.callAction.isOverlay = false;
         } else { this.callAction.isOverlay = true; }
@@ -909,7 +911,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.logoDescriptionUrl = event;
     }
     isEnableVideoLogo(event:any){
-     this.enableVideoLogo = event;
+     this.enableVideoLogo =this.saveVideoFile.enableVideoCobrandingLogo =  event;
     }
     ngOnInit() {
         QuickSidebar.init();
@@ -1142,7 +1144,8 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             'watchedFully': [this.saveVideoFile.watchedFully],
             'brandingLogoUri': [this.saveVideoFile.brandingLogoUri],
             'brandingLogoDescUri': [this.saveVideoFile.brandingLogoDescUri],
-            'companyName': [this.saveVideoFile.companyName]
+            'companyName': [this.saveVideoFile.companyName],
+            'enableVideoCobrandingLogo':[this.saveVideoFile.enableVideoCobrandingLogo]
         });
         this.videoForm.valueChanges.subscribe((data: any) => this.onValueChanged(data));
         this.onValueChanged();
@@ -1162,6 +1165,12 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
     saveVideo() {
+        if(this.enableVideoLogo && (!this.logoDescriptionUrl || !this.brandLogoUrl)){ 
+            if(!this.colorControl){ this.colorControlChange()}
+            this.showError = true 
+            setTimeout(()=>{ this.showError = false; },6000) 
+        }
+        else {  
         this.validVideoTitle(this.saveVideoFile.title);
         const titleUpdatedValue = this.saveVideoFile.title.replace(/\s\s+/g, ' ');
         const descriptionData = this.saveVideoFile.description.replace(/\s\s+/g, ' ');
@@ -1186,6 +1195,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             this.saveVideoFile.startOfVideo = this.callAction.startCalltoAction;
             this.saveVideoFile.endOfVideo = this.callAction.endCalltoAction;
             this.saveVideoFile.brandingLogoUri = this.brandLogoUrl;
+            this.saveVideoFile.enableVideoCobrandingLogo = this.enableVideoLogo;
             if(this.logoDescriptionUrl === '' || this.logoDescriptionUrl === null){
             this.saveVideoFile.brandingLogoDescUri = null;
             } else { this.saveVideoFile.brandingLogoDescUri = this.videoUtilService.isStartsWith(this.logoDescriptionUrl); }
@@ -1244,7 +1254,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.xtremandLogger.errorPage(error);
                 }),
                 () => this.xtremandLogger.log(this.saveVideoFile);
-        } else { if (this.titleDiv !== true) { this.titleDivChange(); } }
+        } else { if (!this.titleDiv) { this.titleDivChange(); } } }
     }
     validVideoTitle(videoTitle: string) {
         this.saveVideoFile.title = videoTitle;
