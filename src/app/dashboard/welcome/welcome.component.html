@@ -63,7 +63,8 @@ cursor: not-allowed;
 					<h1 class="bold">{{dashboardReport.totalContacts}}</h1>
 				</div>
 				<div class="col-xs-12">
-					<h3 class="pull-right"  style="margin-top: 6px; margin-bottom: -6px;">contacts</h3>
+					<h3 class="pull-right"  style="margin-top: 6px; margin-bottom: -6px;" *ngIf="!authenticationService.module.isVendor">contacts</h3>
+					<h3 class="pull-right"  style="margin-top: 6px; margin-bottom: -6px;" *ngIf="authenticationService.module.isVendor">partners</h3>
 				</div>
 			</div>
 		</div>

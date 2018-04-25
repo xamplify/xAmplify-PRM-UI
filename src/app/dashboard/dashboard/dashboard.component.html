@@ -214,7 +214,8 @@ td>h5 {
 				</div>
 				<div class="details">
 					<div class="number">{{dashboardReport.totalContacts}}</div>
-					<div class="desc">Total Contacts</div>
+					<div class="desc" *ngIf="!authenticationService.module.isVendor">Total Contacts</div>
+					<div class="desc" *ngIf="authenticationService.module.isVendor">Total Partners</div>
 				</div>
 			</a>
 		</div>
