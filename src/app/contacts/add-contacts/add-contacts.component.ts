@@ -246,7 +246,7 @@ export class AddContactsComponent implements OnInit {
                         user.city = allTextLines[i][6];
                         user.country = allTextLines[i][7];
                         user.mobileNumber = allTextLines[i][8];
-                        user.description = allTextLines[i][9];
+                        /*user.description = allTextLines[i][9];*/
                         self.contacts.push( user );
                     }
                 }
@@ -365,7 +365,7 @@ export class AddContactsComponent implements OnInit {
                         user.country = data[7];
                         user.mobileNumber = data[8];
                         break;
-                    case 10:
+                    /*case 10:
                         user.firstName = data[0];
                         user.lastName = data[1];
                         user.contactCompany = data[2];
@@ -376,7 +376,7 @@ export class AddContactsComponent implements OnInit {
                         user.country = data[7];
                         user.mobileNumber = data[8];
                         user.description = data[9];
-                        break;
+                        break;*/
                 }
                 this.xtremandLogger.info( user );
                 this.clipboardUsers.push( user );
