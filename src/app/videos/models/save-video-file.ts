@@ -47,5 +47,6 @@ export class SaveVideoFile {
     watchedFully: number;
     brandingLogoUri: string;
     brandingLogoDescUri: string;
-    companyName: string;
+    companyName: string; 
+    enableVideoCobrandingLogo:boolean;
  }
