@@ -81,7 +81,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
     }
     ngOnInit() {
         this.pagination.maxResults = 12;
-        this.isListView = this.referenceService.isListView;
+        this.isListView = ! this.referenceService.isGridView;
         QuickSidebar.init();
         let roleNames =  this.authenticationService.user.roles.map(function (a) { return a.roleName; });
         console.log(roleNames);

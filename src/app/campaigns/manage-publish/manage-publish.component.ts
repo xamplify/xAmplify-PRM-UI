@@ -155,7 +155,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         try {
-            this.isListView = this.refService.isListView;
+            this.isListView = ! this.refService.isGridView;
             this.pagination.maxResults = 12;
             this.listCampaign(this.pagination);
         } catch (error) {

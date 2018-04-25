@@ -48,10 +48,10 @@ export class DefaultPageComponent implements OnInit {
         }
     }
     
-    isListView(userId: number) {
-        this.userService.isListView(userId)
+    isGridView(userId: number) {
+        this.userService.isGridView(userId)
             .subscribe(
-            data => {this.referenceService.isListView = data;},
+            data => {this.referenceService.isGridView = data;},
             error => console.log(error),
             () => { }
             );
@@ -59,7 +59,7 @@ export class DefaultPageComponent implements OnInit {
     ngOnInit() {
         const userId = this.authenticationService.user.id;
         this.getDefaultPage(userId);
-        this.isListView(userId);
+        this.isGridView(userId);
     }
 
 }

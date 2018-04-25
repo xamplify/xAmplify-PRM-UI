@@ -47,7 +47,7 @@ export class ReferenceService {
     errorClass = "form-group has-error has-feedback";
     successClass = "form-group has-success has-feedback";
     deviceInfo: any;
-    isListView: boolean;
+    isGridView: boolean;
     callBackURLCondition = '';
     viewsSparklineValues: any;
     viewsDate:string;

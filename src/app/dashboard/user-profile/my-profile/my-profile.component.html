@@ -363,7 +363,7 @@ input:checked + .slider-new:before {
 															 	<div class='flex'>
 															 	<h4 class='f-w-600'>Default View</h4>
 																<section style="margin-left: 7em;">
-																	<switch [(status)]="callActionSwitch.isListView" [onText]="callActionSwitch.onTextValueView" [offText]="callActionSwitch.offTextValueView"
+																	<switch [(status)]="callActionSwitch.isGridView" [onText]="callActionSwitch.onTextValueView" [offText]="callActionSwitch.offTextValueView"
 																		[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size">
 																	</switch>
 																</section>
@@ -375,7 +375,7 @@ input:checked + .slider-new:before {
 														</table>
 														<!--end profile-settings-->
 														<div class="margin-top-10">
-															<button type="submit"  class="btn green-haze" (click)="setListView(callActionSwitch.isListView)">Save Changes</button>
+															<button type="submit"  class="btn green-haze" (click)="setGridView(callActionSwitch.isGridView)">Save Changes</button>
 															<a href="javascript:;" class="btn default">Cancel</a>
 														</div>
 													</form>

@@ -206,7 +206,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
 
     ngOnInit() {
         try {
-            this.isListView = this.refService.isListView;
+            this.isListView = ! this.refService.isGridView;
             Metronic.init();
             Layout.init();
             Demo.init();

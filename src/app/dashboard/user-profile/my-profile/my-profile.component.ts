@@ -69,15 +69,15 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     ngxloading: boolean;
     customResponse: CustomResponse = new CustomResponse();
     constructor(public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
-        public logger: XtremandLogger, public refService: ReferenceService, public videoUtilService: VideoUtilService,
+        public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
         public router: Router, public callActionSwitch: CallActionSwitch, public sanitizer: DomSanitizer, 
         public properties: Properties, public regularExpressions: RegularExpressions) {
         this.userData = this.authenticationService.userProfile;
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        this.videoUtilService.videoTempDefaultSettings = this.refService.defaultPlayerSettings;
+        this.videoUtilService.videoTempDefaultSettings = this.referenceService.defaultPlayerSettings;
         console.log(this.videoUtilService.videoTempDefaultSettings);
         this.loggedInUserId = this.authenticationService.getUserId();
-        this.hasAllAccess = this.refService.hasAllAccess();
+        this.hasAllAccess = this.referenceService.hasAllAccess();
         this.hasCompany = this.authenticationService.user.hasCompany;
         this.callActionSwitch.size = 'normal';
         this.videoUrl = this.authenticationService.MEDIA_URL + "profile-video/Birds0211512666857407_mobinar.m3u8";
@@ -85,9 +85,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         if (this.isEmpty(this.userData.roles) || this.userData.profileImagePath === undefined) {
             this.router.navigateByUrl('/home/dashboard');
         } else {
-            if (this.hasCompany && this.refService.defaultPlayerSettings !== undefined) {
-                this.logoImageUrlPath = this.refService.defaultPlayerSettings.brandingLogoUri;
-                this.logoLink = this.refService.defaultPlayerSettings.brandingLogoDescUri;
+            if (this.hasCompany && this.referenceService.defaultPlayerSettings !== undefined) {
+                this.logoImageUrlPath = this.referenceService.defaultPlayerSettings.brandingLogoUri;
+                this.logoLink = this.referenceService.defaultPlayerSettings.brandingLogoDescUri;
             }
             console.log(this.userData);
             if (this.userData.firstName !== null) {
@@ -119,7 +119,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             this.clearImage();
             this.profileUploadSuccess = true;
             this.customResponse = new CustomResponse('SUCCESS', this.properties.PROFILE_PIC_UPDATED,true);
-            this.refService.topNavBarUserDetails.profilePicutrePath = imageFilePath['message'];
+            this.referenceService.topNavBarUserDetails.profilePicutrePath = imageFilePath['message'];
             this.authenticationService.userProfile.profileImagePath = imageFilePath['message'];
         };
         this.logoUploader = new FileUploader({
@@ -160,7 +160,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         this.userService.saveBrandLogo(this.logoImageUrlPath, this.logoLink, this.loggedInUserId)
             .subscribe(
                 (data: any) => {
-                    this.refService.goToTop();
+                    this.referenceService.goToTop();
                     console.log(data);
                     if (data !== undefined) {
                         this.ngxloading = false;
@@ -188,7 +188,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     fileChange(inputFile: any, event: any) {
         console.log(inputFile.files);
-        this.refService.goToTop();
+        this.referenceService.goToTop();
         $("#profile-pic-upload-div").hide();
         this.profilePictueError = false;
         let extentionsArray = ["jpg", "JPG", "jpeg", "JPEG", "png", "PNG"];
@@ -235,7 +235,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         this.customResponse =  new CustomResponse();
         if (!this.videoJSplayer && !this.isOnlyPartnerRole) {
             const self = this;
-            const overrideNativeValue = this.refService.getBrowserInfoForNativeSet();
+            const overrideNativeValue = this.referenceService.getBrowserInfoForNativeSet();
             this.videoJSplayer = videojs(document.getElementById('profile_video_player'),
                 {
                     html5: {
@@ -274,8 +274,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                     });
                 });
             this.defaultVideoSettings();
-            this.defaulttransperancyControllBar(this.refService.defaultPlayerSettings.transparency);
-            if (this.refService.defaultPlayerSettings.enableVideoController === false) {
+            this.defaulttransperancyControllBar(this.referenceService.defaultPlayerSettings.transparency);
+            if (this.referenceService.defaultPlayerSettings.enableVideoController === false) {
                 this.defaultVideoControllers();
             }
             setTimeout(function () {
@@ -299,7 +299,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.videoUtilService.normalVideoJsFiles();
                 this.videoUrl = this.authenticationService.MEDIA_URL + "profile-video/Birds0211512666857407_mobinar.m3u8";
             }
-            this.isListView(this.authenticationService.getUserId());
+            this.isGridView(this.authenticationService.getUserId());
             Metronic.init();
             Layout.init();
             Demo.init();
@@ -322,10 +322,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
                 this.getVideoDefaultSettings();
                 this.defaultVideoSettings();
-                this.refService.isDisabling = false;
+                this.referenceService.isDisabling = false;
                 this.status = true;
             } else {
-                this.refService.isDisabling = true;
+                this.referenceService.isDisabling = true;
                 if (this.authenticationService.isCompanyAdded) {
                     this.status = true;
                 } else {
@@ -354,13 +354,13 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         const currentUser = JSON.parse(localStorage.getItem('currentUser'));
         if (currentUser.roles.length > 1 && this.authenticationService.hasCompany()) {
              this.defaultVideoSettings();
-            if (this.refService.defaultPlayerSettings.transparency === null) {
-                this.refService.defaultPlayerSettings.transparency = 100;
-                this.refService.defaultPlayerSettings.controllerColor = '#456';
-                this.refService.defaultPlayerSettings.playerColor = '#879';
+            if (this.referenceService.defaultPlayerSettings.transparency === null) {
+                this.referenceService.defaultPlayerSettings.transparency = 100;
+                this.referenceService.defaultPlayerSettings.controllerColor = '#456';
+                this.referenceService.defaultPlayerSettings.playerColor = '#879';
             }
-            this.defaulttransperancyControllBar(this.refService.defaultPlayerSettings.transparency);
-            if (this.refService.defaultPlayerSettings.enableVideoController === false) {
+            this.defaulttransperancyControllBar(this.referenceService.defaultPlayerSettings.transparency);
+            if (this.referenceService.defaultPlayerSettings.enableVideoController === false) {
                 this.defaultVideoControllers();
             }
 
@@ -403,18 +403,18 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                                 this.updatePasswordForm.reset();
                             } else {
                                 this.ngxloading = false;
-                                this.logger.error(this.refService.errorPrepender + " updatePassword():" + data);
+                                this.logger.error(this.referenceService.errorPrepender + " updatePassword():" + data);
                             }
 
                         } else {
                             this.ngxloading = false;
-                            this.logger.error(this.refService.errorPrepender + " updatePassword():" + data);
+                            this.logger.error(this.referenceService.errorPrepender + " updatePassword():" + data);
                         }
 
                     },
                     error => {
                         this.ngxloading = false;
-                        this.logger.error(this.refService.errorPrepender + " updatePassword():" + error);
+                        this.logger.error(this.referenceService.errorPrepender + " updatePassword():" + error);
                     },
                     () => console.log("Done")
                 );
@@ -436,12 +436,12 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                             const message = response.message;
                             this.formErrors['oldPassword'] = message;
                         } else {
-                            this.logger.error(this.refService.errorPrepender + " checkPassword():" + data);
+                            this.logger.error(this.referenceService.errorPrepender + " checkPassword():" + data);
                         }
 
                     },
                     error => {
-                        this.logger.error(this.refService.errorPrepender + " checkPassword():" + error);
+                        this.logger.error(this.referenceService.errorPrepender + " checkPassword():" + error);
                     },
                     () => console.log("Done")
                 );
@@ -614,7 +614,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
     updateUserProfile() {
         console.log(this.updateUserProfileForm.value);
-        this.refService.goToTop();
+        this.referenceService.goToTop();
         this.ngxloading = true;
         this.userService.updateUserProfile(this.updateUserProfileForm.value, this.authenticationService.getUserId())
             .subscribe(
@@ -627,7 +627,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                             this.userData = this.updateUserProfileForm.value;
                             this.userData.displayName = this.updateUserProfileForm.value.firstName;
                             this.parentModel.displayName = this.updateUserProfileForm.value.firstName;
-                            this.refService.topNavBarUserDetails.displayName = this.parentModel.displayName;
+                            this.referenceService.topNavBarUserDetails.displayName = this.parentModel.displayName;
                             this.userService.getUserByUserName(this.authenticationService.user.emailId).
                                 subscribe(
                                     res => {
@@ -635,22 +635,22 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                                         this.authenticationService.userProfile = res;
                                        // this.getVideoDefaultSettings();
                                     },
-                                    error => { this.logger.error(this.refService.errorPrepender + " updateUserProfile():" + error) },
+                                    error => { this.logger.error(this.referenceService.errorPrepender + " updateUserProfile():" + error) },
                                     () => console.log("Finished")
                                 );
                         } else {
                             this.ngxloading = false;
-                            this.logger.error(this.refService.errorPrepender + " updateUserProfile():" + data);
+                            this.logger.error(this.referenceService.errorPrepender + " updateUserProfile():" + data);
                         }
 
                     } else {
-                        this.logger.error(this.refService.errorPrepender + " updateUserProfile():" + data);
+                        this.logger.error(this.referenceService.errorPrepender + " updateUserProfile():" + data);
                     }
 
                 },
                 error => {
                     this.ngxloading = false;
-                    this.logger.error(this.refService.errorPrepender + " updateUserProfile():" + error);
+                    this.logger.error(this.referenceService.errorPrepender + " updateUserProfile():" + error);
                 },
                 () => console.log("Done")
             );
@@ -678,7 +678,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.active = true;
                 const response = result;
                 console.log(response);
-                this.refService.defaultPlayerSettings = response;
+                this.referenceService.defaultPlayerSettings = response;
                 this.tempDefaultVideoPlayerSettings = response;
                 this.defaultVideoPlayer = response;
                 this.compControllerColor = response.controllerColor;
@@ -706,7 +706,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         } else { $('.video-js .vjs-control-bar').hide(); }
     }
     defaultVideoControllers() {
-        if (this.refService.defaultPlayerSettings.enableVideoController === false) {
+        if (this.referenceService.defaultPlayerSettings.enableVideoController === false) {
             $('.video-js .vjs-control-bar').hide();
         } else { $('.video-js .vjs-control-bar').show(); }
     }
@@ -735,7 +735,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
     }
     defaulttransperancyControllBar(value: any) {
-        const color: any = this.refService.defaultPlayerSettings.controllerColor;
+        const color: any = this.referenceService.defaultPlayerSettings.controllerColor;
         const rgba = this.videoUtilService.transparancyControllBarColor(color, value);
         $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
     }
@@ -768,19 +768,19 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     defaultVideoSettings() {
         console.log('default settings called');
-        if (this.refService.defaultPlayerSettings.playerColor === undefined || this.refService.defaultPlayerSettings.playerColor === null) {
-            this.refService.defaultPlayerSettings.playerColor = '#454';
-            this.refService.defaultPlayerSettings.controllerColor = '#234';
-            this.refService.defaultPlayerSettings.transparency = 100;
+        if (this.referenceService.defaultPlayerSettings.playerColor === undefined || this.referenceService.defaultPlayerSettings.playerColor === null) {
+            this.referenceService.defaultPlayerSettings.playerColor = '#454';
+            this.referenceService.defaultPlayerSettings.controllerColor = '#234';
+            this.referenceService.defaultPlayerSettings.transparency = 100;
         }
-        $('.video-js').css('color', this.refService.defaultPlayerSettings.playerColor);
-        $('.video-js .vjs-play-progress').css('background-color', this.refService.defaultPlayerSettings.playerColor);
-        $('.video-js .vjs-volume-level').css('background-color', this.refService.defaultPlayerSettings.playerColor);
-        if (this.refService.defaultPlayerSettings.controllerColor === '#fff') {
+        $('.video-js').css('color', this.referenceService.defaultPlayerSettings.playerColor);
+        $('.video-js .vjs-play-progress').css('background-color', this.referenceService.defaultPlayerSettings.playerColor);
+        $('.video-js .vjs-volume-level').css('background-color', this.referenceService.defaultPlayerSettings.playerColor);
+        if (this.referenceService.defaultPlayerSettings.controllerColor === '#fff') {
             const event = '#fbfbfb';
             $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + event + '!important');
-        } else { $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + this.refService.defaultPlayerSettings.controllerColor + '!important'); }
-        if (this.refService.defaultPlayerSettings.allowFullscreen === false) {
+        } else { $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + this.referenceService.defaultPlayerSettings.controllerColor + '!important'); }
+        if (this.referenceService.defaultPlayerSettings.allowFullscreen === false) {
             $('.video-js .vjs-fullscreen-control').hide();
         } else { $('.video-js .vjs-fullscreen-control').show(); }
     }
@@ -799,7 +799,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             );
     }
     resetForm() {
-        console.log(this.refService.defaultPlayerSettings);
+        console.log(this.referenceService.defaultPlayerSettings);
         console.log(this.videoUtilService.videoTempDefaultSettings);
         this.compControllerColor = this.videoUtilService.videoTempDefaultSettings.controllerColor;
         this.compPlayerColor = this.videoUtilService.videoTempDefaultSettings.playerColor;
@@ -855,23 +855,23 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    isListView(userId: number) {
-        this.userService.isListView(userId)
+    isGridView(userId: number) {
+        this.userService.isGridView(userId)
             .subscribe(
                 data => { 
-                    this.callActionSwitch.isListView = data; },
+                    this.callActionSwitch.isGridView = data; },
                 error => console.log(error),
                 () => { }
             );
     }
 
-    setListView(isListView: boolean) {
+    setGridView(isGridView: boolean) {
         this.ngxloading = true;
-        this.userService.setListView(this.authenticationService.getUserId(), isListView)
+        this.userService.setGridView(this.authenticationService.getUserId(), isGridView)
             .subscribe(
                 data => {
                     this.ngxloading = false;
-                    this.refService.isListView = isListView;
+                    this.referenceService.isGridView = isGridView;
                     this.customResponse = new CustomResponse('SUCCESS', this.properties.PROCESS_REQUEST_SUCCESS, true);
                 },
                 error => {
@@ -914,7 +914,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                 }).then(function () {
                     if (self.orgAdminCount > 1) {
                         $('a').addClass('disabled');
-                        self.refService.isDisabling = true;
+                        self.referenceService.isDisabling = true;
                         self.disableOrgAdmin();
                     } else {
                         self.infoMessage = "Please Assign An OrgAdmin Before You Disable Yourself.";
@@ -953,10 +953,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                     const response = data;
                     if (response.statusCode == 1048) {
                         $('a').removeClass('disabled');
-                        this.refService.isDisabling = false;
+                        this.referenceService.isDisabling = false;
                         $('#status').prop("checked", true);
                         this.status = false;
-                        this.refService.userProviderMessage = this.properties.ACCOUNT_DEACTIVATE_SUCCESS;
+                        this.referenceService.userProviderMessage = this.properties.ACCOUNT_DEACTIVATE_SUCCESS;
                         this.authenticationService.logout();
                         this.router.navigate(["/login"]);
                     }
@@ -972,6 +972,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         if (this.isPlayed === true) {  this.videoJSplayer.dispose(); }
         $('.profile-video').remove();
         $('.h-video').remove();
-        this.refService.defaulgVideoMethodCalled = false;
+        this.referenceService.defaulgVideoMethodCalled = false;
     }
 }

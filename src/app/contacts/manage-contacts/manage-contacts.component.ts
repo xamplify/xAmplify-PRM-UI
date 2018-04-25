@@ -1260,7 +1260,7 @@ export class ManageContactsComponent implements OnInit {
     ngOnInit() {
         this.pagination.maxResults = 12;
         try {
-            this.isListView = this.referenceService.isListView;
+            this.isListView = ! this.referenceService.isGridView;
             this.loadContactLists( this.pagination );
             this.contactsCount();
             this.loadContactListsNames();
