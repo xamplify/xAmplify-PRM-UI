@@ -48,8 +48,8 @@ img:hover {
 		<ul class="page-breadcrumb">
 			<li><i class="fa fa-home"></i> <a [routerLink]="['/']">Home</a>
 				<i class="fa fa-angle-right"></i></li>
-			<li><a>On Boarding Partners</a></li>
-		</ul>
+			<li><a>Onboarding Partners</a></li>
+		</ul> 
 		<div align="right" style="margin-top: 2px;">
 			 <a (click)="downloadEmptyCsv()">
 				<button type="button" class="btn green" download
@@ -366,7 +366,7 @@ img:hover {
 					<div class="col-xs-12">
 						<textarea id="copyFromclipTextArea" class="textareaNumber"
 							[(ngModel)]="clipboardTextareaText"
-							placeholder="FirstName,LastName,Company,Jobtitle,Email,Address,City,Country,MobileNumber,Notes       FirstName,LastName,Company,Jobtitle,Email,Address,City,Country,MobileNumber,Notes       FirstName,LastName,Company,Jobtitle,Email,Address,City,Country,MobileNumber,Notes"
+							placeholder="FirstName,LastName,Company,Jobtitle,Email,Address,City,Country,MobileNumber       FirstName,LastName,Company,Jobtitle,Email,Address,City,Country,MobileNumber       FirstName,LastName,Company,Jobtitle,Email,Address,City,Country,MobileNumber"
 							[ngModelOptions]="{standalone: true}"
 							style="height: 150px; font-size: 12px; line-height: 1.4; min-width: 100%; max-width: 100%; width: 100%;"
 							required="required">
@@ -406,7 +406,7 @@ img:hover {
 												<th>CONTACT</th>
 												<th>JOB TITLE</th>
 												<th class='text-center'>ADDRESS</th>
-												<th class='text-center'>MORE</th>
+												<!-- <th class='text-center'>MORE</th> -->
 											</tr>
 										</thead>
 										<tbody>
@@ -431,16 +431,16 @@ img:hover {
 													<h5 *ngIf="newContact?.city && newContact.country"
 														class='mt0'>{{newContact.city}},&nbsp;{{newContact.country}}</h5>
 												</td>
-												<td align="center">
+												<!-- <td align="center">
 													<button id='more_less_button_{{i}}'
 														(click)="newContact.isShowDetails = ! newContact.isShowDetails">
 														<span *ngIf="!newContact.isShowDetails">More</span> <span
 															*ngIf="newContact.isShowDetails">Less</span>
 													</button>
-												</td>
+												</td> -->
 												<ng-template #NA><span>N/A</span></ng-template>
 											</tr>
-											<tr
+										<!-- 	<tr
 												[ngClass]="{'hidden': !newContact.isShowDetails, 'show-more': newContact.isShowDetails}"
 												>
 												<td colspan="8">
@@ -454,7 +454,7 @@ img:hover {
 														</tbody>
 													</table>
 												</td>
-											</tr>
+											</tr> -->
 											</ng-container>
 
 										</tbody>
@@ -525,7 +525,7 @@ img:hover {
 												<th>CONTACT</th>
 												<th>JOB TITLE</th>
 												<th class='text-center'>ADDRESS</th>
-												<th class='text-center'>MORE</th>
+												<!-- <th class='text-center'>MORE</th> -->
 												<th class='text-center'>ACTIONS</th>
 											</tr>
 										</thead>
@@ -557,13 +557,13 @@ img:hover {
 													<h5 *ngIf="contact?.address" class='mb0'>{{contact.address}}</h5>
 													<h5 *ngIf="contact?.city && contact.country" class='mt0'>{{contact.city}},&nbsp;{{contact.country}}</h5>
 												</td>
-												<td align="center">
+												<!-- <td align="center">
 													<button id='more_less_button_{{i}}'
 														(click)="contact.isShowDetails = ! contact.isShowDetails">
 														<span *ngIf="!contact.isShowDetails">More</span> <span
 															*ngIf="contact.isShowDetails">Less</span>
 													</button>
-												</td>
+												</td> -->
 												<td align="center">
 												<div class="actions-block">
 												<a *ngIf="!contact.signedUp" title="Resend the Email" (click)="sendMail(contact.id)"> 
@@ -579,7 +579,7 @@ img:hover {
 												</td>
 												<ng-template #NA>N/A</ng-template>
 											</tr>
-											<tr
+											<!-- <tr
 												[ngClass]="{'hidden': !contact.isShowDetails, 'show-more': contact.isShowDetails}">
 												<td colspan="6">
 													<table cellpadding="5" cellspacing="0"
@@ -592,7 +592,7 @@ img:hover {
 														</tbody>
 													</table>
 												</td>
-											</tr>
+											</tr> -->
 											</ng-container>
 
 										</tbody>
@@ -732,7 +732,7 @@ img:hover {
 								<div class="textCss"></div>
 							</div>
 						</div>
-						<div class="form-group">
+						<!-- <div class="form-group">
 							<label class="control-label col-sm-2" for="note"
 								style="color: #c3c308"><i
 								class="glyphicon glyphicon-list" aria-hidden="true"></i></label>
@@ -743,7 +743,7 @@ img:hover {
 		      </textarea>
 								<div class="textCss"></div>
 							</div>
-						</div>
+						</div> -->
 					</form>
 				</div>
 				<div class="modal-footer" *ngIf="!updatePartnerUser">
