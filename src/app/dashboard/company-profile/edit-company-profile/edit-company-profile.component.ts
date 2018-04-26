@@ -250,7 +250,6 @@ export class EditCompanyProfileComponent implements OnInit {
 
                                 self.router.navigate(["/home/dashboard/welcome"]);
                                 self.processor.set(self.processor);
-                                self.homeComponent.getVideoDefaultSettings();
                                 self.saveVideoBrandLog();
                                 const currentUser = localStorage.getItem('currentUser');
                                 const userToken = {
@@ -263,6 +262,7 @@ export class EditCompanyProfileComponent implements OnInit {
                                     'roles': JSON.parse(currentUser)['roles']
                                 };
                                 localStorage.setItem('currentUser', JSON.stringify(userToken));
+                                self.homeComponent.getVideoDefaultSettings();
                             }
 
                         }, 3000);

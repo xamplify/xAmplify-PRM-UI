@@ -643,17 +643,18 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     defaultPlayerSettingsValues(event: boolean) {
         try {
-            if (event && !this.isThisDraftVideo) {
+            if (event) {
                 this.defaultSettingValuesBoolean(event);
                 if (!this.loadRangeDisable) { this.disableTransperancy(event); }
-                this.brandLogoUrl = this.defaultPlayerValues.brandingLogoUri;
-                this.logoDescriptionUrl = this.defaultPlayerValues.brandingLogoDescUri;
+                this.brandLogoUrl = this.defaultPlayerValues.brandingLogoUri = this.defaultPlayerValues.companyProfile.companyLogoPath;
+                this.logoDescriptionUrl = this.defaultPlayerValues.brandingLogoDescUri = this.defaultPlayerValues.companyProfile.website;
                 this.playerColorsChange(this.defaultPlayerValues.playerColor, this.defaultPlayerValues.controllerColor);
                 this.changePlayerColor(this.compPlayerColor);
                 this.changeControllerColor(this.compControllerColor);
                 this.changeTransperancyControllBar(this.defaultPlayerValues.transparency, this.compControllerColor);
                 if (!this.loadNgOninit) { this.enableVideoControllers(this.defaultPlayerValues.enableVideoController); }
                 this.defaultPlayerSettingsCondition(this.defaultPlayerValues);
+                this.enableVideoLogo = true;
             } else {
                 this.defaultSettingValuesBoolean(event);
                 if (!this.loadRangeDisable) { this.disableTransperancy(event); }

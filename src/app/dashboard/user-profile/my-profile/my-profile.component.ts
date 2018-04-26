@@ -644,8 +644,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.valueRange = response.transparency;
                 this.tempControllerColor = response.controllerColor;
                 this.tempPlayerColor = response.playerColor;
-                this.logoImageUrlPath = response.brandingLogoUri;
-                this.logoLink = response.brandingLogoDescUri;
+                this.logoImageUrlPath = response.brandingLogoUri = response.companyProfile.companyLogoPath;
+                this.logoLink = response.brandingLogoDescUri = response.companyProfile.website;
                 this.defaultPlayerbuildForm();
                 if (this.isPlayerSettingUpdated === true) {
                     this.videoUtilService.videoTempDefaultSettings = response;
