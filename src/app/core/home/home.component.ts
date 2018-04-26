@@ -52,9 +52,22 @@ export class HomeComponent implements OnInit {
 					this.referenceService.videoBrandLogo = response.brandingLogoUri;
 					this.referenceService.defaultPlayerSettings = response;
 					this.referenceService.companyId = response.companyProfile.id;
+					if(!response.brandingLogoUri ||!response.brandingLogoDescUri){
+						this.saveVideoBrandLog(response.companyProfile.companyLogoPath,response.companyProfile.website);
+					}
 				} else { 	console.log('defaultsetting api result is empty :')}
 			});
 	}
+	saveVideoBrandLog(companyLogoPath,logoLink) {
+        this.userService.saveBrandLogo(companyLogoPath, logoLink, this.authenticationService.user.id)
+		.subscribe(
+			(data: any) => {
+				console.log(data);
+				if (data !== undefined) { console.log('logo updated successfully');
+				} else { }
+			},
+			(error) => { });
+    }
 	ngOnInit() {
 		const roleNames = this.authenticationService.getRoles();
 		if (this.referenceService.defaulgVideoMethodCalled === false &&
