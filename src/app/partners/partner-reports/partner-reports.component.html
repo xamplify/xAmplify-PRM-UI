@@ -125,15 +125,15 @@
         <div class="portlet-body">
           <table class="table tgrid">
             <thead>
-              <th>partner Company Name</th>
+              <!-- <th>partner Company Name</th> -->
               <th>Email Id</th>
               <th>Campaign Name</th>
               <th>analytics</th>
             </thead>
             <tbody>
               <tr *ngFor="let item of partnerUserInteraction" style="cursor: pointer;" (click)="partnerCampaignInteraction(item.campaignId)">
-                <td *ngIf="item.partnerCompanyName">{{item.partnerCompanyName}} </td>
-                <td *ngIf="!item.partnerCompanyName">-</td>
+                <!-- <td *ngIf="item.partnerCompanyName">{{item.partnerCompanyName}} </td>
+                <td *ngIf="!item.partnerCompanyName">-</td> -->
                 <td><app-user-info [userInfo]="item"></app-user-info></td>
                 <td>{{item.campaignName}}</td>
                 <td>
