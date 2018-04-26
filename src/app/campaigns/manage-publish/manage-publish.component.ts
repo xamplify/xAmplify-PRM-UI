@@ -16,6 +16,7 @@ import { PagerService } from '../../core/services/pager.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { CustomResponse } from '../../common/models/custom-response';
+import { CampaignType } from '../models/campaign-type';
 
 declare var swal, $, videojs, Metronic, Layout, Demo, TableManaged, Promise: any;
 
@@ -172,11 +173,29 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 this.campaignService.campaign = data;
                 console.log(this.campaignService.campaign);
                 let isLaunched = this.campaignService.campaign.launched;
+                let isNurtureCampaign = this.campaignService.campaign.nurtureCampaign;
+                let campaignType= this.campaignService.campaign.campaignType;
                 if (isLaunched) {
                     this.isScheduledCampaignLaunched = true;
                   //  setTimeout(function() { $("#scheduleCompleted").slideUp(1000); }, 5000);
                 } else {
-                    this.router.navigate(["/home/campaigns/edit"]);
+                    if(isNurtureCampaign){
+                        this.refService.isEditNurtureCampaign = true;
+                        this.refService.nurtureCampaignId = this.campaignService.campaign.campaignId;
+                        if(campaignType.toString(1)==CampaignType[CampaignType.VIDEO]){
+                            this.router.navigate(["/home/campaigns/partner/video"]);
+                        }else if(campaignType.toString(1)==CampaignType[CampaignType.REGULAR]){
+                            this.router.navigate(["/home/campaigns/partner/regular"]);
+                        }else{
+                            this.router.navigate(["/home/campaigns/partner/social"]);
+                        }
+                       
+                    }else{
+                        this.refService.isEditNurtureCampaign = false;
+                        this.router.navigate(["/home/campaigns/edit"]);
+                    }
+                    
+                    
                 }
 
             },

@@ -1465,7 +1465,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             updatedBody = updatedBody.replace("&lt;SocialUbuntuURL&gt;","javascript:void(0)");
             updatedBody = updatedBody.replace("<SocialUbuntuURL>","javascript:void(0)");
             updatedBody = updatedBody.replace("https://dummyurl.com","javascript:void(0)");
-            updatedBody = updatedBody.replace("https://aravindu.com/vod/images/xtremand-video.gif",selectedVideoGifPath);
+            updatedBody = updatedBody.replace("https://xamp.io/vod/images/xtremand-video.gif",selectedVideoGifPath);
             updatedBody = updatedBody.replace("&lt;SocialUbuntuImgURL&gt;",selectedVideoGifPath);
             $("#htmlContent").append(updatedBody);
         }else{
@@ -1741,7 +1741,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             'campaignUrls':this.urls,
             'campaignType':campaignType,
             'country':country,
-            'createdFromVideos':this.campaign.createdFromVideos
+            'createdFromVideos':this.campaign.createdFromVideos,
+            'nurtureCampaign':false
         };
         console.log(data);
         return data;

@@ -60,7 +60,8 @@ export class ReferenceService {
     isDisabling:boolean = false;
     videoBrandLogo: string;
     videoType:string = "";
-
+    isEditNurtureCampaign = false;
+    nurtureCampaignId = 0;
     public URL: string = this.authenticationService.REST_URL + 'admin/';
     constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,
         private router: Router, public deviceService: Ng2DeviceService,) {

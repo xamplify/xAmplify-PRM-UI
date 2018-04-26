@@ -48,5 +48,6 @@ export class Campaign {
     timeZoneId: any;
     createdFromVideos=false;
     scheduleType:string = "";
+    nurtureCampaign = false;
     
 }

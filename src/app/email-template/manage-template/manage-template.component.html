@@ -95,7 +95,7 @@
 									<td>{{emailTemplate.createdDate}}</td>
 									<td>
 										<div class="actions-block">
-											<a (click)="edit(emailTemplate.id)" title="Edit" *ngIf="hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId) || authenticationService.module.isVendor">
+											<a (click)="edit(emailTemplate.id)" title="Edit" *ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  || authenticationService.module.isVendor) && emailTemplate.type!='PARTNER'">
 												<i class="fa fa-pencil-square-o"></i>
 											</a> 
 											<a (click)="showPreview(emailTemplate)" title="Preview">
@@ -139,7 +139,7 @@
 												<i class="fa fa-eye"></i>
 										    </a>
 										    <a  class="mix-preview1" (click)="edit(emailTemplate.id)" title="Edit" data-rel=""
-										    		 *ngIf="hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  || authenticationService.module.isVendor">
+										    		 *ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  || authenticationService.module.isVendor) && emailTemplate.type!='PARTNER'">
 												<i class="fa fa-pencil-square-o"></i>
 										    </a>
 										    <a class="mix-preview3" id="template-delete"  (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)" title="Delete" data-rel="" 

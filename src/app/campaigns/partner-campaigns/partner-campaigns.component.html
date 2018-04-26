@@ -42,7 +42,7 @@
                             </td>
                             <td>
                                 <div class="actions-block">
-                                    <a (click)="nurtureCampaign(campaign.campaignId)" title="Nurture Campaign" data-rel="fancybox-button">
+                                    <a (click)="nurtureCampaign(campaign.campaignId)" title="Launch Campaign" data-rel="fancybox-button">
                                         <i class="fa fa-clone"></i>
                                     </a>
                                     <a class="hidden"><i class="fa fa-trash"></i></a>
@@ -224,27 +224,9 @@
 					</div>
 					<div class="panel-body">
 						<form class="role add-reply" id="form-{{reply.divId}}">
-							<div class="row" >
-								<div *ngIf="reply.actionId!=16 && reply.actionId!=17 && reply.actionId!=18">
-								<div class="col-md-4">
-									<label for="days" *ngIf="reply.actionId==22 || reply.actionId==23 " id="reply-days-{{reply.divId}}">Reply In X Days 
-										<b style="color: red">*</b>
-										<font><b>(Minimum 1 Day)</b></font>
-									</label>
-									<label for="days" *ngIf="reply.actionId!=22 && reply.actionId!=23" id="reply-days-{{reply.divId}}">Reply In X Days
-										<b style="color: red">*</b>
-									</label>
-									<input type="number" class="form-control" name="days" placeholder="Days" [(ngModel)]="reply.replyInDays" min="0" oninput="validity.valid||(value='');">
-								</div>
-								<div class="col-md-3 time-col" *ngIf="reply.actionId!=22 && reply.actionId!=23 ">
-									<span for="time" id="send-time-{{reply.divId}}" style="margin-top:20px;">At 
-										<b style="color: red">*</b>&nbsp;&nbsp;</span>
-									<timepicker [(ngModel)]="reply.replyTime" name="time"></timepicker>
-								</div>
-								</div>
-								
+						<div class="row" >
 							
-							<div class="col-md-3">
+								<div class="col-md-6">
 								<label for="reason">Reason</label>
 								<select class="form-control" name="actionId" [(ngModel)]="reply.actionId">
 								<option [value]="0" [selected]="reply.actionId ==0">Email Not Opened</option>
@@ -260,6 +242,35 @@
 									</ng-container>
 								</select>
 							</div>
+							
+							
+								<div *ngIf="reply.actionId!=16 && reply.actionId!=17 && reply.actionId!=18">
+								<div class="col-md-4">
+									<label for="days" *ngIf="reply.actionId==22 || reply.actionId==23 " id="reply-days-{{reply.divId}}">Reply In X Days 
+										<b style="color: red">*</b>
+										<font><b>(Minimum 1 Day)</b></font>
+									</label>
+									<label for="days" *ngIf="reply.actionId!=22 && reply.actionId!=23" id="reply-days-{{reply.divId}}">Reply In X Days
+										<b style="color: red">*</b>
+									</label>
+									<input type="number" class="form-control" name="days" placeholder="Days" [(ngModel)]="reply.replyInDays" min="0" oninput="validity.valid||(value='');">
+								</div>
+								
+								<div class="col-md-3 time-col" *ngIf="reply.actionId!=22 && reply.actionId!=23 ">
+									<span for="time" id="send-time-{{reply.divId}}" style="margin-top:20px;">At 
+										<b style="color: red">*</b>&nbsp;&nbsp;</span>
+									<timepicker [(ngModel)]="reply.replyTime" name="time"></timepicker>
+								</div>
+								</div>
+								
+								<div class="col-md-4">
+									<label for="time" id="reply-subject-{{reply.divId}}">Subject
+										<b style="color: red">*</b>
+									</label>
+									<input type="text" class="form-control" name="subject" [(ngModel)]="reply.subject" placeholder="Subject" maxlength="50">
+								</div>
+							
+						
 							<div class="col-md-2" style="padding-top: 1.9em;">
 								<button type="button" class="btn btn-danger" (click)="remove(reply.divId,'replies')">
 									<span class="glyphicon glyphicon-trash"></span>

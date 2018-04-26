@@ -151,10 +151,10 @@ export class PartnerCampaignsComponent implements OnInit {
         this.campaignService.getCampaignById(data)
             .subscribe(
             result => {
+                console.log(this.campaign);
                 this.campaign = result;
                 this.getCampaignPartnerByCampaignIdAndUserId(this.campaign.campaignId, this.loggedInUserId);
                 const userProfile = this.authenticationService.userProfile;
-                debugger;
                 this.campaign.email = userProfile.emailId;
                 if(userProfile.firstName !== undefined && userProfile.lastName !== undefined)
                     this.campaign.fromName = $.trim(userProfile.firstName + " " + userProfile.lastName);
@@ -363,8 +363,10 @@ export class PartnerCampaignsComponent implements OnInit {
             'campaignUrls': this.urls,
             'campaignType': campaignType,
             'country': "---Please Select Country---",
-            'createdFromVideos': this.campaign.createdFromVideos
+            'createdFromVideos': this.campaign.createdFromVideos,
+            'nurtureCampaign':true
         };
+        console.log(data);
         return data;
     }
 
@@ -675,8 +677,14 @@ export class PartnerCampaignsComponent implements OnInit {
     ngOnInit() {
         this.campaignType = this.route.snapshot.params['type'];
         this.loggedInUserId = this.authenticationService.getUserId();
-
         this.listPartnerCampaigns(this.loggedInUserId, this.campaignType);
+        
+        
+        if(this.referenceService.isEditNurtureCampaign){
+            this.nurtureCampaign(this.referenceService.nurtureCampaignId);
+        }
+        
+        
     }
 
 }
