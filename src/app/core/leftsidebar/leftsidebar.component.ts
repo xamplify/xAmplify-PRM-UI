@@ -43,7 +43,7 @@ export class LeftsidebarComponent implements OnInit {
         if (roles.indexOf(this.roleName.campaignRole) > -1 ||
             roles.indexOf(this.roleName.orgAdminRole) > -1 ||
             roles.indexOf(this.roleName.allRole) > -1 ||
-            roles.indexOf(this.roleName.vendorRole)) {
+            roles.indexOf(this.roleName.vendorRole)>-1) {
             this.authService.module.isCampaign = true;
            // this.isCampaign = true;
         }
@@ -55,26 +55,26 @@ export class LeftsidebarComponent implements OnInit {
         if (roles.indexOf(this.roleName.emailTemplateRole) > -1 ||
             roles.indexOf(this.roleName.orgAdminRole) > -1 ||
             roles.indexOf(this.roleName.allRole) > -1 ||
-            roles.indexOf(this.roleName.vendorRole)) {
+            roles.indexOf(this.roleName.vendorRole)>-1) {
             this.authService.module.isEmailTemplate = true;
        }
         if (roles.indexOf(this.roleName.statsRole) > -1 ||
             roles.indexOf(this.roleName.orgAdminRole) > -1 ||
             roles.indexOf(this.roleName.allRole) > -1 ||  
-            roles.indexOf(this.roleName.vendorRole)) {
+            roles.indexOf(this.roleName.vendorRole)>-1) {
             this.authService.module.isStats = true;
         }
         
         if (roles.indexOf(this.roleName.partnersRole) > -1 ||
                 roles.indexOf(this.roleName.orgAdminRole) > -1 ||
                 roles.indexOf(this.roleName.allRole) > -1 ||  
-                roles.indexOf(this.roleName.vendorRole)) {
+                roles.indexOf(this.roleName.vendorRole)>-1) {
             this.authService.module.isPartner = true;
             }
         if (roles.indexOf(this.roleName.videRole) > -1 ||
             roles.indexOf(this.roleName.orgAdminRole) > -1 ||
             roles.indexOf(this.roleName.allRole) > -1 ||
-            roles.indexOf(this.roleName.vendorRole)) {
+            roles.indexOf(this.roleName.vendorRole)>-1) {
             this.authService.module.isVideo = true;
         }
         
