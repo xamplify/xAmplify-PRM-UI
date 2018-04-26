@@ -909,7 +909,8 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
     logoDescription(event: string){
-        this.logoDescriptionUrl = event;
+        if (event.replace(/\s/g, '').length) { this.logoDescriptionUrl = event;
+        } else { this.logoDescriptionUrl = undefined; }
     }
     isEnableVideoLogo(event:any){
      this.enableVideoLogo =this.saveVideoFile.enableVideoCobrandingLogo =  event;

@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ReferenceService } from '../services/reference.service';
 import { UserService } from '../services/user.service';
 import { AuthenticationService } from '../services/authentication.service';
+import { VideoUtilService } from '../../videos/services/video-util.service';
 
 declare var $: any;
 
@@ -16,7 +17,8 @@ declare var $: any;
 export class HomeComponent implements OnInit {
 	public refcategories: any;
 	public currentUser = JSON.parse(localStorage.getItem('currentUser'));
-	constructor(public referenceService: ReferenceService, public userService: UserService, private router: Router, public authenticationService: AuthenticationService) {
+	constructor(public referenceService: ReferenceService, public userService: UserService,
+		 private router: Router, public authenticationService: AuthenticationService, public videoUtilService:VideoUtilService) {
 		this.isAuthorized();
 	}
 
@@ -53,7 +55,8 @@ export class HomeComponent implements OnInit {
 					this.referenceService.defaultPlayerSettings = response;
 					this.referenceService.companyId = response.companyProfile.id;
 					if(!response.brandingLogoUri ||!response.brandingLogoDescUri){
-						this.saveVideoBrandLog(response.companyProfile.companyLogoPath,response.companyProfile.website);
+						const logoLink = this.videoUtilService.isStartsWith(response.companyProfile.website);
+						this.saveVideoBrandLog(response.companyProfile.companyLogoPath,logoLink);
 					}
 				} else { 	console.log('defaultsetting api result is empty :')}
 			});
