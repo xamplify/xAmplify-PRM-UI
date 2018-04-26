@@ -38,7 +38,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     profileUploadSuccess = false;
     userProfileImage: string = "assets/admin/pages/media/profile/icon-user-default.png";
     userData: User;
-    parentModel = { 'displayName': '', 'profilePicutrePath': 'assets/images/profile-pic.gif' };
+    parentModel = { 'displayName': '', 'profilePicutrePath': 'assets/admin/pages/media/profile/icon-user-default.png' };
     className: string = "form-control ng-touched ng-dirty ng-valid";
     uploader: FileUploader;
     compPlayerColor: string;
