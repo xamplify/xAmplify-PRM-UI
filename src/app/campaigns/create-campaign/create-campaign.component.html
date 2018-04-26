@@ -8,6 +8,7 @@
 	}
 </style>
 <div class="page-content">
+	<app-preview-video *ngIf="createVideoFile" [videoFile]="createVideoFile" (notifyParent)="closeCreateModal($event)"></app-preview-video>
 	<div [hidden]="!isLoading">
 		<div class="div-loader">
 			<div id="process-loader"></div>
@@ -681,7 +682,7 @@
 					</div>
 
 					<!-- -------------------------Video Preview------------------- -->
-					<div class="modal" id="show_preview">
+					<!-- <div class="modal" id="show_preview">
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<div class="modal-header">
@@ -698,7 +699,7 @@
 								</div>
 							</div>
 						</div>
-					</div>
+					</div> -->
 				</div>
 				<!-- End Of 197(Video Tab) -->
 				<!-- -------------------------------------Contact List Tab--------------------------------------------------------- -->
@@ -1703,4 +1704,5 @@
 		</div>
 	</div>
 </div>
+
 <!-- End of Line 1 -->

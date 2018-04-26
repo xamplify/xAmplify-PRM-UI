@@ -755,6 +755,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     }
 
     closeModal(event: any){
+      console.log('closed modal');
       this.videoFile = undefined;
     }
     showContactListModal(){
