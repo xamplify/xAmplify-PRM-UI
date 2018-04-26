@@ -29,14 +29,15 @@ export class PreviewVideoComponent implements OnInit {
         this.appendVideoData( this.videoFile, "main_video", "modal-title" );
         $( "#show_preview" ).modal('show');
     }
-    destroyPreview() {
+    destroyPreviewModal() {
         if ( this.videoJSplayer ) {
             this.videoJSplayer.dispose();
             $( "#main_video" ).empty();
+            this.notifyParent.emit("modal closed");
         } else {
             console.log( '360 video closed' );
+            this.notifyParent.emit("modal closed");
         }
-        this.notifyParent.emit("modal closed");
     }
     videoControllColors( videoFile: SaveVideoFile ) {
         this.videoUtilService.videoColorControlls( videoFile );
@@ -72,7 +73,7 @@ export class PreviewVideoComponent implements OnInit {
             let videoUrl = videoPath;
             videoUrl = videoUrl.substring(0, videoUrl.lastIndexOf('.'));
             videoUrl = videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
-            $( "#" + divId + " video").append('<source src=' + videoPath + ' type="application/x-mpegURL">');
+            $( "#" + divId + " video").append('<source src=' + videoUrl + ' type="application/x-mpegURL">');
           
            // videoPath = videoPath.replace( ".m3u8", ".mp4" );
             console.log( "Updated 360 video path" + videoPath );

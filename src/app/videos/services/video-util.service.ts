@@ -75,7 +75,7 @@ export class VideoUtilService {
         this.videojshotkeys();
     }
     video360withm3u8(){
-        $('head').append('<script src="assets/js/indexjscss/video-hls-player/videojs-flash.js" type="text/javascript" class="h-video"  />');
+        // $('head').append('<script src="assets/js/indexjscss/video-hls-player/videojs-flash.js" type="text/javascript" class="h-video"  />');
        $('head').append('<script src="assets/js/indexjscss/video-hls-player/videojs-contrib-hls.js" type="text/javascript"  class="h-video"/>');
     }
     constructor() { }

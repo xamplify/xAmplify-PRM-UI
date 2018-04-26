@@ -2,14 +2,14 @@
 		<div class="modal-dialog">
 			<div class="modal-content" style="border-radius: 0">
 				<div class="modal-header">
-					<a class="close-circle" data-dismiss="modal" (click)="destroyPreview()"><i class="fa fa-times"></i></a>
+					<a class="close-circle" data-dismiss="modal" (click)="destroyPreviewModal()"><i class="fa fa-times"></i></a>
 					<h4 *ngIf="videotitle?.length < 50" class="modal-title" title={{videotitle}}>{{videotitle | slice: 0:50}}</h4>
 					<h4 *ngIf="videotitle?.length > 50" class="modal-title" title={{videotitle}}>{{videotitle | slice: 0:50}}...</h4>
 				</div>
 				<div class="modal-body">
 					<div id="main_video"></div>
 				</div>
-				<div class="modal-footer"> <a href="javascript:void(0)" (click)="destroyPreview()" data-dismiss="modal" class="btn btn-default">Close</a>
+				<div class="modal-footer"> <a href="javascript:void(0)" (click)="destroyPreviewModal()" data-dismiss="modal" class="btn btn-default">Close</a>
 				</div>
 			</div>
 		</div>
