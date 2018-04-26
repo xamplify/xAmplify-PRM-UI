@@ -400,9 +400,11 @@ export class EditContactsComponent implements OnInit {
                 $( "tr.new_row" ).each( function() {
                     $( this ).remove();
                 });
-
-                this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_SAVE_SUCCESS, true );
-
+                if ( !this.isPartner ) {
+                    this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_SAVE_SUCCESS, true );
+                } else {
+                    this.customResponse = new CustomResponse( 'SUCCESS', this.properties.PARTNERS_SAVE_SUCCESS, true );
+                }
                 this.checkingLoadContactsCount = true;
                 this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
                 this.cancelContacts();
@@ -500,7 +502,12 @@ export class EditContactsComponent implements OnInit {
                         $( "tr.new_row" ).each( function() {
                             $( this ).remove();
                         });
-                        this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_SAVE_SUCCESS, true );
+                        
+                        if ( !this.isPartner ) {
+                            this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_SAVE_SUCCESS, true );
+                        } else {
+                            this.customResponse = new CustomResponse( 'SUCCESS', this.properties.PARTNERS_SAVE_SUCCESS, true );
+                        }
 
                         this.users = [];
                         this.uploadCsvUsingFile = false;
@@ -548,8 +555,11 @@ export class EditContactsComponent implements OnInit {
                 data = data;
                 this.allUsers = this.contactsByType.allContactsCount;
                 console.log( "update Contacts ListUsers:" + data );
-                this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACTS_DELETE_SUCCESS, true );
-
+                if ( !this.isPartner ) {
+                    this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACTS_DELETE_SUCCESS, true );
+                } else {
+                    this.customResponse = new CustomResponse( 'SUCCESS', this.properties.PARTNERS_DELETE_SUCCESS, true );
+                }
                 $.each( this.selectedContactListIds, function( index: number, value: any ) {
                     $( '#row_' + value ).remove();
                     console.log( index + "value" + value );
@@ -880,8 +890,12 @@ export class EditContactsComponent implements OnInit {
                     });
                     this.clickBoard = false;
 
-                    this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_SAVE_SUCCESS, true );
-
+                    if ( !this.isPartner ) {
+                        this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_SAVE_SUCCESS, true );
+                    } else {
+                        this.customResponse = new CustomResponse( 'SUCCESS', this.properties.PARTNERS_SAVE_SUCCESS, true );
+                    }
+                    
                     $( "button#add_contact" ).prop( 'disabled', false );
                     $( "button#upload_csv" ).prop( 'disabled', false );
                     this.users.length = 0;
@@ -1183,7 +1197,11 @@ export class EditContactsComponent implements OnInit {
                 this.contactsByType.inactiveContactsCount = data.nonactiveUsers;
                 this.allUsers = this.contactsByType.allContactsCount;
                 console.log( "update Contacts ListUsers:" + data );
-                this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACTS_DELETE_SUCCESS, true );
+                if ( !this.isPartner ) {
+                    this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACTS_DELETE_SUCCESS, true );
+                } else {
+                    this.customResponse = new CustomResponse( 'SUCCESS', this.properties.PARTNERS_DELETE_SUCCESS, true );
+                }
                 this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
             },
             ( error: any ) => {
@@ -1726,7 +1744,11 @@ export class EditContactsComponent implements OnInit {
             .subscribe(
             ( data: any ) => {
                 console.log( data );
+                if(!this.isPartner){
                 this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACTS_UPDATE_SUCCESS, true );
+                }else{
+                    this.customResponse = new CustomResponse( 'SUCCESS', this.properties.PARTNERS_UPDATE_SUCCESS, true );
+                }
                 this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
             },
             error => this.xtremandLogger.error( error ),
@@ -1956,9 +1978,13 @@ export class EditContactsComponent implements OnInit {
        
     }
 
-    closeModal(event){
-        this.customResponse = new CustomResponse( 'SUCCESS', this.properties.PARTNER_SAVE_SUCCESS_AND_MAIL_SENT_SUCCESS, true );
-    }
+    closeModal( event ) {
+        if ( this.isPartner ) {
+            this.customResponse = new CustomResponse( 'SUCCESS', this.properties.PARTNER_SAVE_SUCCESS_AND_MAIL_SENT_SUCCESS, true );
+        } else {
+            this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_SAVE_SUCCESS_AND_MAIL_SENT_SUCCESS, true );
+        }
+        }
 
     
     ngOnInit() {

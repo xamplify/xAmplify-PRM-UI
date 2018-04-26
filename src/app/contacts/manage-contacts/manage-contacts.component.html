@@ -346,6 +346,7 @@
 								<div id="pagination">
 									<!--pager here  -->
 									<app-pagination [pagination]="pagination" [type]="'contacts'"
+					
 										(notifyParent)="setPage($event)"
 										(notifyParentDropDown)="loadContactLists($event)"></app-pagination>
 								</div>
@@ -496,7 +497,7 @@
 														</td>
 														<th style="width: 25%" *ngIf="!isPartner">NAME</th>
 														<th style="width: 25%" *ngIf="isPartner">Entity info</th>
-														<th>CONTACT</th>
+														<th>Phone</th>
 														<th>Job Title</th>
 														<th>ADDRESS</th>
 														<!-- <th>MORE</th> -->
