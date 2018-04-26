@@ -988,6 +988,6 @@
 </div>
 <div *ngIf="contactsByType.contactListAssociatedCampaigns?.length">
 <app-contacts-campaigns-mails [associatedCampaignDetails]="contactsByType.contactListAssociatedCampaigns"
-[userEmails]="newUsersEmails"></app-contacts-campaigns-mails>
+[userEmails]="newUsersEmails" (notifyParent)="closeModal($event)"></app-contacts-campaigns-mails>
 </div>
 <!-- END PAGE CONTENT -->

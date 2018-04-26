@@ -46,6 +46,8 @@ export class Properties {
 
     PARTNER_LIST_SYNCHRONIZATION_SUCCESS = "Your Parntner List has been synchronized successfully";
     PARTNER_LIST_SYNCHRONIZATION_ERROR = "An error occured while synchronizing your partner list";
+    
+    PARTNER_SAVE_SUCCESS_AND_MAIL_SENT_SUCCESS = "Your Partner list has been updated successfully and campaign mails has been sent successfully";
 
     PARTNERS_CREATE_SUCCESS = "Your Partner List has been created successfully";
     PARTNERS_CREATE_ERROR = "An error occured while creating your Partner";

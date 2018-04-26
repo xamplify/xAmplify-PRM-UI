@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ContactService } from '../../contacts/services/contact.service';
 import { ContactsByType } from '../../contacts/models/contacts-by-type';
 declare var $: any;
@@ -11,11 +11,14 @@ declare var $: any;
 })
 export class ContactsCampaignsMailsComponent implements OnInit {
     @Input() associatedCampaignDetails: any;
-    @Input() userEmails = []
+    @Input() userEmails = [];
+    @Output() notifyParent: EventEmitter<any>; 
     contactsByType: ContactsByType = new ContactsByType();
     selectedCampaignIds = [];
     
-  constructor(public contactService: ContactService) { }
+  constructor(public contactService: ContactService) {
+      this.notifyParent = new EventEmitter();
+  }
  
   selectedContactLisAssociatedCampaignIds( campaignId: number, event: any ) {
       let isChecked = $( '#' + campaignId ).is( ':checked' );
@@ -40,11 +43,9 @@ export class ContactsCampaignsMailsComponent implements OnInit {
                  $('#sendMailsModal').modal('hide');
                  $('body').removeClass('modal-open');
                  $('.modal-backdrop fade in').remove();
-                // this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_SAVE_SUCCESS_AND_MAIL_SENT_SUCCESS, true );
-                 
                  this.selectedCampaignIds.length = 0;
                  this.userEmails.length = 0;
-                 
+                 this.notifyParent.emit("Emails Send Successfully");
               },
               error => console.log( error ),
               () => {

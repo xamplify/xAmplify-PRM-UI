@@ -1704,6 +1704,10 @@ export class AddPartnersComponent implements OnInit {
         }
        
     }
+    
+    closeModal(event){
+        this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_SAVE_SUCCESS_AND_MAIL_SENT_SUCCESS, true );
+    }
 
 
     ngOnInit() {

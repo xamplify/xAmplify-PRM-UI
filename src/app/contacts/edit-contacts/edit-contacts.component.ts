@@ -1956,6 +1956,10 @@ export class EditContactsComponent implements OnInit {
        
     }
 
+    closeModal(event){
+        this.customResponse = new CustomResponse( 'SUCCESS', this.properties.PARTNER_SAVE_SUCCESS_AND_MAIL_SENT_SUCCESS, true );
+    }
+
     
     ngOnInit() {
         this.loadContactListsNames();

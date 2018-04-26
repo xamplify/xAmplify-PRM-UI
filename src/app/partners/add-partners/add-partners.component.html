@@ -963,5 +963,5 @@ img:hover {
 </div>
 <div *ngIf="contactListAssociatedCampaignsList?.length">
 <app-contacts-campaigns-mails [associatedCampaignDetails]="contactListAssociatedCampaignsList"
-[userEmails]="newUsersEmails"></app-contacts-campaigns-mails>
+[userEmails]="newUsersEmails" (notifyParent)="closeModal($event)"></app-contacts-campaigns-mails>
 </div>
