@@ -131,7 +131,7 @@ export class PartnerReportsComponent implements OnInit {
     if (!this.referenseService.companyId) {
       this.router.navigate(['home/dashboard']);
     }
-    this.pagination.maxResults = 6;
+    this.pagination.maxResults = 12;
     this.campaignInteractionPagination.maxResults = 10;
     this.partnerReportData();
     this.partnerUserInteractionReports();

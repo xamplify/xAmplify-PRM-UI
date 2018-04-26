@@ -26,18 +26,29 @@
       <div>
         <div>
           <div class="row">
-            <div class="col-md-6 col-sm-6 col-xs-6" [routerLink]="['../add']">
+            <div class="col-xs-4" [routerLink]="['../add']">
               <a class="dashboard-stat dashboard-stat-lighter blue-soft">
                 <div class="visual">
                   <i class="fa fa-handshake-o"></i>
                 </div>
                 <div class="details">
-                  <div class="number">{{referenseService.partnerCount}}</div>
-                  <div class="desc">Partners</div>
+                  <div class="number">{{noOfCampaignsLaunchedByPartner.length}}</div>
+                  <div class="desc">Active Partners</div>
                 </div>
               </a>
             </div>
-            <div class="col-md-6 col-sm-6 col-xs-6">
+            <div class="col-xs-4" [routerLink]="['../add']">
+              <a class="dashboard-stat dashboard-stat-lighter blue-soft">
+                <div class="visual">
+                  <i class="fa fa-handshake-o"></i>
+                </div>
+                <div class="details">
+                  <div class="number">{{referenseService.partnerCount - noOfCampaignsLaunchedByPartner.length}}</div>
+                  <div class="desc">Inactive Partners</div>
+                </div>
+              </a>
+            </div>
+            <div class="col-xs-4">
               <a class="dashboard-stat dashboard-stat-lighter green-soft" [routerLink]="['../../campaigns/manage']">
                 <div class="visual">
                   <i class="fa fa-user-secret"></i>
@@ -85,16 +96,16 @@
             <span class="caption-subject font-red-sunglo uppercase"> campaigns launched by partners</span>
           </div>
         </div>
-        <div class="portlet-body text-center clearfix" style="min-height: 308px;">
+        <div class="portlet-body clearfix" style="min-height: 300px;">
           <table class="table tgrid">
             <thead>
-              <th class="headerCss center">Email-ID</th>
-              <th class="headerCss center">Campaigns</th>
+              <th>Partner</th>
+              <th>Campaigns</th>
             </thead>
             <tbody>
               <tr *ngFor="let item of noOfCampaignsLaunchedByPartner">
-                <td>{{item.emailId}}</td>
-                <td>{{item.count}}</td>
+                <td><app-user-info [userInfo]="item"></app-user-info></td>
+                <td class="text-center">{{item.count}}</td>
               </tr>
             </tbody>
           </table>
@@ -111,22 +122,27 @@
             <span class="caption-subject font-red-sunglo uppercase"> partners campaigns user interactions</span>
           </div>
         </div>
-        <div class="portlet-body text-center">
+        <div class="portlet-body">
           <table class="table tgrid">
             <thead>
-              <th class="headerCss center">Company Name</th>
-              <th class="headerCss center"> partner Company Name</th>
-              <th class="headerCss center">Email Id</th>
-              <th class="headerCss center">Campaign Name</th>
+              <th>partner Company Name</th>
+              <th>Email Id</th>
+              <th>Campaign Name</th>
+              <th>analytics</th>
             </thead>
             <tbody>
               <tr *ngFor="let item of partnerUserInteraction" style="cursor: pointer;" (click)="partnerCampaignInteraction(item.campaignId)">
-                <td *ngIf="item.companyName">{{item.companyName}} </td>
-                <td *ngIf="!item.companyName">-</td>
                 <td *ngIf="item.partnerCompanyName">{{item.partnerCompanyName}} </td>
                 <td *ngIf="!item.partnerCompanyName">-</td>
-                <td>{{item.emailId}}</td>
+                <td><app-user-info [userInfo]="item"></app-user-info></td>
                 <td>{{item.campaignName}}</td>
+                <td>
+					        <div class="actions-block">
+                      <a [routerLink]="['/home/campaigns/', item.campaignId, 'details']"  title="analytics"> 
+                          <i class="fa fa-eye"></i>
+                        </a>
+                      </div>                
+                </td>
               </tr>
             </tbody>
           </table>
@@ -169,11 +185,11 @@
           <table class="table tgrid" id="sample_editable_1">
             <thead>
               <tr>
-                <th class="headerCss center">NAME</th>
-                <th class="headerCss center">CAMPAIGN NAME</th>
-                <th class="headerCss center">DATE & TIME</th>
-                <th class="headerCss center">LOCATION</th>
-                <th class="headerCss center">PLATFORM</th>
+                <th>NAME</th>
+                <th>CAMPAIGN NAME</th>
+                <th>DATE & TIME</th>
+                <th>LOCATION</th>
+                <th>PLATFORM</th>
               </tr>
             </thead>
             <tbody>

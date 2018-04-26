@@ -47,20 +47,20 @@
 						<li *ngIf="authenticationService.module.isCompanyPartner && !authenticationService.module.isOrgAdmin && authenticationService.user.hasCompany" style="margin-top: 17px;margin-right: 25px;">
 						<!-- refService.hasCompany -->
 						<a class="btn btn-header" routerLink="/home/campaigns/select">
-							Create Campaign
+							<span class="hidden-xs">Create Campaign</span>
 						<i class="fa fa-bullhorn" data-toggle="tooltip"></i>
 						</a>
 					</li>
 					<li *ngIf="(authenticationService.module.hasVideoRole || authenticationService.module.isOrgAdmin || authenticationService.module.isVendor)&&authenticationService.user.hasCompany" style="margin-top: 17px;margin-right: 25px;">
 						<!-- refService.hasCompany -->
 						<a class="btn btn-header" routerLink="/home/videos">
-					Upload Video
+					<span class="hidden-xs">Upload Video</span>
 					<i class="fa fa-upload" data-toggle="tooltip"></i>
 					</a>
 					</li>
 					<li style="margin-top: 17px;margin-right: 25px;" *ngIf="(authenticationService.module.hasSocialStatusRole || authenticationService.module.isOrgAdmin ||authenticationService.module.isVendor) && authenticationService.user.hasCompany">
 						<!-- *ngIf="refService.hasCompany" -->
-						<a class="btn btn-header" routerLink="/home/social/update-status">Update Status <i class="fa fa-share" data-toggle="tooltip"></i>
+						<a class="btn btn-header" routerLink="/home/social/update-status"><span class="hidden-xs">Update Status</span><i class="fa fa-share" data-toggle="tooltip"></i>
 						</a>
 					</li>
 					<!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
