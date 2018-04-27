@@ -1,6 +1,6 @@
   :host /deep/.video-js .vjs-big-play-button {
-        top: 57px !important;
-        left: 120px !important;
+        top: 51px !important;
+        left: 93px !important;
     }
    :host /deep/ .video-js .vjs-mute-control {
        background:  transparent;
