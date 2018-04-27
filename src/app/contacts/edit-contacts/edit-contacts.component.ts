@@ -1727,8 +1727,6 @@ export class EditContactsComponent implements OnInit {
     }
 
     updateContactModalClose() {
-        // $( '#addContactModal' ).modal( 'toggle' );
-        // $( "#addContactModal .close" ).click()
         this.addContactModalClose();
         this.updateContactUser = false;
         this.updatedUserDetails.length = 0;

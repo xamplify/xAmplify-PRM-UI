@@ -229,7 +229,8 @@ export class AddPartnersComponent implements OnInit {
 
     addPartnerModalClose() {
         $( '#addPartnerModal' ).modal( 'toggle' );
-        $( "#addPartnerModal .close" ).click()
+        $( "#addPartnerModal .close" ).click();
+        $('#addPartnerModal').modal('hide');
     }
 
     downloadEmptyCsv() {
@@ -751,8 +752,7 @@ export class AddPartnersComponent implements OnInit {
     }
 
     updatePartnerModalClose() {
-        $( '#addPartnerModal' ).modal( 'toggle' );
-        $( "#addPartnerModal .close" ).click()
+        this.addPartnerModalClose();
         this.updatePartnerUser = false;
         this.updatedUserDetails.length = 0;
         this.addPartnerUser = new User();
@@ -762,7 +762,8 @@ export class AddPartnersComponent implements OnInit {
     updatePartnerListUser() {
         this.editUser.pagination = this.pagination;
         this.editUser.user = this.addPartnerUser;
-        $( "#addPartnerModal .close" ).click()
+       // $( "#addPartnerModal .close" ).click()
+        this.addPartnerModalClose();
         this.contactService.updateContactListUser( this.partnerListId, this.editUser )
             .subscribe(
             ( data: any ) => {
