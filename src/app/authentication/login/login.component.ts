@@ -123,11 +123,12 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        if (localStorage.getItem('currentUser')) {  // if current user is there, directly goto dashboard
-            this.xtremandLogger.log("User From Local Storage");
-            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-            this.redirectTo(currentUser);
-        }
+        localStorage.removeItem('currentUser');
+        // if (localStorage.getItem('currentUser')) {  // if current user is there, directly goto dashboard
+        //     this.xtremandLogger.log("User From Local Storage");
+        //     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        //     this.redirectTo(currentUser);
+        // }
     }
 
     ngOnDestroy() {

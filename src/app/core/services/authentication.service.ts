@@ -146,6 +146,14 @@ export class AuthenticationService {
             return false;
         }
     }
+    isOrgAdmin(){
+        let roleNames = this.getRoles();
+        if(( (roleNames.indexOf('ROLE_ORG_ADMIN')>-1))){
+            return true;
+        }else{
+            return false;
+        }
+    }
     isOrgAdminPartner(){
         let roleNames = this.getRoles();
         if(( (roleNames.indexOf('ROLE_ORG_ADMIN')>-1 || (roleNames.indexOf('ROLE_ALL')>-1)) && roleNames.indexOf('ROLE_COMPANY_PARTNER')>-1)){

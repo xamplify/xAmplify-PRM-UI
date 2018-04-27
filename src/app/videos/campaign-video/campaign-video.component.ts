@@ -179,6 +179,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                     (result: any) => {
                         this.campaignVideoFile = result.videofile;
                         this.templatehtml = result.templatehtml;
+                        console.log(this.templatehtml);
                         this.campaignAlias = result.campaignAlias;
                         this.userAlias = result.userAlias;
                         this.videoAlias = result.videoAlias;
@@ -213,7 +214,22 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                             console.log(this.templatehtml);
                             checkVideoTag = 'beeTemplate';
                             document.getElementById('para').innerHTML = this.templatehtml;
-                        } else {
+                        }  else if (updatedBody.includes('src="https://aravindu.com/vod/images/xtremand-video.gif"')) {
+                        // remove this else part in future   
+                            this.templateName = 'beeTemplate'; 
+                            updatedBody = this.replaceUpdateBody(updatedBody);
+                            updatedBody = updatedBody.replace('<a href="https://dummyurl.com"', 'javascript:void(0)');
+                            updatedBody = updatedBody.replace('src="https://aravindu.com/vod/images/xtremand-video.gif"', '></a><div id="newPlayerVideo">'+
+                            '<div id="overlay-logo-bee"><a href='+this.logoLink+' target="_blank" >'+
+                            '<img id="image" style="position:relative;top:10px;float: right;right: 10px;width:63px;z-index:9" src='+this.authenticationService.MEDIA_URL + this.logoImageUrlPath+'></a></div></div> <a ');
+                            updatedBody = updatedBody.replace("Image", '');
+                            updatedBody = updatedBody.replace('javascript:void(0) target="_blank">', '');
+                            this.templatehtml = updatedBody;
+                            console.log(this.templatehtml);
+                            checkVideoTag = 'beeTemplate';
+                            document.getElementById('para').innerHTML = this.templatehtml;
+                        } 
+                        else {
                             this.templateName = 'uploadedTemplate';
                             updatedBody = updatedBody.replace("view in browser", '');
                             updatedBody = updatedBody.replace("click here","");
@@ -233,11 +249,6 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                             else {
                                 updatedBody = this.campaignVideoTemplate;
                             }
-                            
-                            // updatedBody = updatedBody.replace('<div id="newPlayerVideo"></div>', '<div id="newPlayerVideo">'+
-                            // '<div id="overlay-logo-bee"><a href='+this.logoLink+' target="_blank" >'+
-                            // '<img id="image"  style="position:relative;top: 65px;right: -393px;width: 63px;z-index:9" src='+this.authenticationService.MEDIA_URL + this.logoImageUrlPath+'></a></div></div>');
-                           
                             updatedBody = updatedBody.replace("<emailOpenImgURL>", '');
                             updatedBody = updatedBody.replace("<SocialUbuntuImgURL>", '');
                             updatedBody = updatedBody.replace("SocialUbuntuImgURL", '');

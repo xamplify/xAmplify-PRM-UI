@@ -35,6 +35,7 @@ export class ProfileLockComponent implements OnInit {
             this.error = null;
         }
     }
+    eventHandler(keyCode: any) {  if (keyCode === 13) {  this.lockScreenLogin();  }  }
     ngOnInit() {
         try {
             this.userData = this.authenticationService.user;
@@ -65,7 +66,7 @@ export class ProfileLockComponent implements OnInit {
         const body = 'username=' + this.userData.emailId + '&password=' + this.password + '&grant_type=password';
         this.authenticationService.login(authorization, body, this.userData.emailId).subscribe(result => {
             if (localStorage.getItem('currentUser')) {
-                this.router.navigate(['']);
+                this.router.navigate(['/home/dashboard']);
             } else {
                 this.logError();
             }

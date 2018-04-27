@@ -19,7 +19,7 @@
 						<span style="position: relative; top: -3px;">{{error}}</span>
 					</div>
 					<input class="form-control placeholder-no-fix" type="password" (input)="checkPassword(password)" [(ngModel)]="password" autocomplete="off"
-					 placeholder="Password" name="password" />
+					 placeholder="Password" name="password" (keypress)="eventHandler($event.keyCode)" />
 				</div>
 				<div class="form-actions">
 					<button type="submit" class="btn btn-success uppercase" [disabled]="loginDisabled" (click)="lockScreenLogin()">Login</button>
