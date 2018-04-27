@@ -473,7 +473,7 @@
 															<th>JOB TITLE</th>
 															<th class='text-center'>ADDRESS</th>
 															<!-- <th class='text-center'>MORE</th> -->
-															<th class='text-center' *ngIf="hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId) || authenticationService.isOnlyPartner()">ACTIONS</th>
+															<th class='text-center' *ngIf="hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId) || authenticationService.isOnlyPartner() || authenticationService.isVendor()">ACTIONS</th>
 														</tr>
 													</thead>
 													<tbody>
@@ -571,7 +571,7 @@
 																</button>
 															</td> -->
 															<td align="center"
-																*ngIf="hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId) || authenticationService.isOnlyPartner()">
+																*ngIf="hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId) || authenticationService.isOnlyPartner() || authenticationService.isVendor()">
 															<div class="actions-block">
 																<a (click)="editUserDetails(contact)"
 																data-dismiss="modal" data-toggle="modal" data-target="#addContactModal"
