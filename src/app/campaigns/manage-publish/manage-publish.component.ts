@@ -1,17 +1,17 @@
-import { Component, OnInit, OnDestroy} from '@angular/core';
-import { ActivatedRoute, Router }   from '@angular/router';
-import { FormsModule, FormGroup, FormBuilder, Validators, FormControl} from '@angular/forms';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { FormsModule, FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 
-import { VideoFileService} from '../../videos/services/video-file.service';
+import { VideoFileService } from '../../videos/services/video-file.service';
 import { ContactService } from '../../contacts/services/contact.service';
 import { CampaignService } from '../services/campaign.service';
 import { UserService } from '../../core/services/user.service';
 import { ReferenceService } from '../../core/services/reference.service';
-import { Campaign} from '../models/campaign';
-import { SaveVideoFile} from '../../videos/models/save-video-file';
+import { Campaign } from '../models/campaign';
+import { SaveVideoFile } from '../../videos/models/save-video-file';
 import { ContactList } from '../../contacts/models/contact-list';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
-import { Pagination} from '../../core/models/pagination';
+import { Pagination } from '../../core/models/pagination';
 import { PagerService } from '../../core/services/pager.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
@@ -39,7 +39,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     isScheduledCampaignLaunched: boolean = false;
     loggedInUserId: number = 0;
     hasAllAccess: boolean = false;
-    selectedCampaignTypeIndex:number = 0;
+    selectedCampaignTypeIndex: number = 0;
     sortByDropDown = [
         /*{ 'name': 'Sort By', 'value': '' },*/
         { 'name': 'Name(A-Z)', 'value': 'campaign-ASC' },
@@ -63,7 +63,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
 
     saveAsCampaignId = 0;
     saveAsCampaignName = '';
-    isOnlyPartner:boolean = false;
+    isOnlyPartner: boolean = false;
     customResponse: CustomResponse = new CustomResponse();
 
     constructor(private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
@@ -73,15 +73,15 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         if (this.refService.campaignSuccessMessage == "SCHEDULE") {
             this.showMessageOnTop();
             this.campaignSuccessMessage = "Campaign scheduled successfully";
-            this.customResponse = new CustomResponse( 'SUCCESS', this.campaignSuccessMessage, true );
+            this.customResponse = new CustomResponse('SUCCESS', this.campaignSuccessMessage, true);
         } else if (this.refService.campaignSuccessMessage == "SAVE") {
             this.showMessageOnTop();
             this.campaignSuccessMessage = "Campaign saved successfully";
-            this.customResponse = new CustomResponse( 'SUCCESS', this.campaignSuccessMessage, true );
+            this.customResponse = new CustomResponse('SUCCESS', this.campaignSuccessMessage, true);
         } else if (this.refService.campaignSuccessMessage == "NOW") {
             this.showMessageOnTop();
             this.campaignSuccessMessage = "Campaign launched successfully";
-            this.customResponse = new CustomResponse( 'SUCCESS', this.campaignSuccessMessage, true );
+            this.customResponse = new CustomResponse('SUCCESS', this.campaignSuccessMessage, true);
         }
         this.hasCampaignRole = this.refService.hasSelectedRole(this.refService.roles.campaignRole);
         this.hasStatsRole = this.refService.hasSelectedRole(this.refService.roles.statsRole);
@@ -91,25 +91,25 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
     showMessageOnTop() {
         $(window).scrollTop(0);
-       // setTimeout(function() { $("#lanchSuccess").slideUp(500); }, 5000);
+        // setTimeout(function() { $("#lanchSuccess").slideUp(500); }, 5000);
     }
 
     listCampaign(pagination: Pagination) {
         this.refService.loading(this.httpRequestLoader, true);
-     //   this.pagination.maxResults = 12;
+        //   this.pagination.maxResults = 12;
         this.campaignService.listCampaign(pagination, this.loggedInUserId)
             .subscribe(
-            data => {
-                this.campaigns = data.campaigns;
-                this.totalRecords = data.totalRecords;
-                pagination.totalRecords = data.totalRecords;
-                pagination = this.pagerService.getPagedItems(pagination, data.campaigns);
-                this.refService.loading(this.httpRequestLoader, false);
-            },
-            error => {
-                this.logger.errorPage(error);
-            },
-            () => this.logger.info("Finished listCampaign()", this.campaigns)
+                data => {
+                    this.campaigns = data.campaigns;
+                    this.totalRecords = data.totalRecords;
+                    pagination.totalRecords = data.totalRecords;
+                    pagination = this.pagerService.getPagedItems(pagination, data.campaigns);
+                    this.refService.loading(this.httpRequestLoader, false);
+                },
+                error => {
+                    this.logger.errorPage(error);
+                },
+                () => this.logger.info("Finished listCampaign()", this.campaigns)
             );
     }
 
@@ -156,7 +156,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         try {
-            this.isListView = ! this.refService.isGridView;
+            this.isListView = !this.refService.isGridView;
             this.pagination.maxResults = 12;
             this.listCampaign(this.pagination);
         } catch (error) {
@@ -169,43 +169,43 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         var obj = { 'campaignId': id }
         this.campaignService.getCampaignById(obj)
             .subscribe(
-            data => {
-                this.campaignService.campaign = data;
-                console.log(this.campaignService.campaign);
-                let isLaunched = this.campaignService.campaign.launched;
-                let isNurtureCampaign = this.campaignService.campaign.nurtureCampaign;
-                let campaignType= this.campaignService.campaign.campaignType;
-                if (isLaunched) {
-                    this.isScheduledCampaignLaunched = true;
-                  //  setTimeout(function() { $("#scheduleCompleted").slideUp(1000); }, 5000);
-                } else {
-                    if(isNurtureCampaign){
-                        this.refService.isEditNurtureCampaign = true;
-                        this.refService.nurtureCampaignId = this.campaignService.campaign.campaignId;
-                        if(campaignType.toString(1)==CampaignType[CampaignType.VIDEO]){
-                            this.router.navigate(["/home/campaigns/partner/video"]);
-                        }else if(campaignType.toString(1)==CampaignType[CampaignType.REGULAR]){
-                            this.router.navigate(["/home/campaigns/partner/regular"]);
-                        }else{
-                            this.router.navigate(["/home/campaigns/partner/social"]);
-                        }
-                       
-                    }else{
-                        this.refService.isEditNurtureCampaign = false;
-                        this.router.navigate(["/home/campaigns/edit"]);
-                    }
-                    
-                    
-                }
+                data => {
+                    this.campaignService.campaign = data;
+                    console.log(this.campaignService.campaign);
+                    let isLaunched = this.campaignService.campaign.launched;
+                    let isNurtureCampaign = this.campaignService.campaign.nurtureCampaign;
+                    let campaignType = this.campaignService.campaign.campaignType;
+                    if (isLaunched) {
+                        this.isScheduledCampaignLaunched = true;
+                        //  setTimeout(function() { $("#scheduleCompleted").slideUp(1000); }, 5000);
+                    } else {
+                        if (isNurtureCampaign) {
+                            this.refService.isEditNurtureCampaign = true;
+                            this.refService.nurtureCampaignId = this.campaignService.campaign.campaignId;
+                            if (campaignType.toString(1) == CampaignType[CampaignType.VIDEO]) {
+                                this.router.navigate(["/home/campaigns/partner/video"]);
+                            } else if (campaignType.toString(1) == CampaignType[CampaignType.REGULAR]) {
+                                this.router.navigate(["/home/campaigns/partner/regular"]);
+                            } else {
+                                this.router.navigate(["/home/campaigns/partner/social"]);
+                            }
 
-            },
-            error => { this.logger.errorPage(error) },
-            () => console.log()
+                        } else {
+                            this.refService.isEditNurtureCampaign = false;
+                            this.router.navigate(["/home/campaigns/edit"]);
+                        }
+
+
+                    }
+
+                },
+                error => { this.logger.errorPage(error) },
+                () => console.log()
             )
         this.isScheduledCampaignLaunched = false;
     }
 
-    confirmDeleteCampaign(id: number, position:number, name:string) {
+    confirmDeleteCampaign(id: number, position: number, name: string) {
         let self = this;
         swal({
             title: 'Are you sure?',
@@ -216,29 +216,29 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             swalCancelButtonColor: '#999',
             confirmButtonText: 'Yes, delete it!'
 
-        }).then(function() {
+        }).then(function () {
             self.deleteCampaign(id, position, name);
-        }, function(dismiss:any) {
-            console.log('you clicked on option'+dismiss);
+        }, function (dismiss: any) {
+            console.log('you clicked on option' + dismiss);
         });
     }
 
-    deleteCampaign(id: number, position:number, campaignName:string) {
+    deleteCampaign(id: number, position: number, campaignName: string) {
         this.campaignService.delete(id)
             .subscribe(
-            data => {
-                this.isCampaignDeleted = true;
-               // $('#campaignListDiv_' + id).remove();
-              //  setTimeout(function() { $("#deleteSuccess").slideUp(500); }, 5000);
-              //  this.pagination.pageIndex = this.pagination.pageIndex - 1;
-                const deleteMessage = campaignName + ' Campaign deleted successfully'; 
-                this.customResponse = new CustomResponse( 'SUCCESS', deleteMessage, true );
-                this.pagination.pagedItems.splice(position, 1);
-                this.pagination.pageIndex = 1;
-                this.listCampaign(this.pagination);
-            },
-            error => { this.logger.errorPage(error) },
-            () => console.log("Campaign Deleted Successfully")
+                data => {
+                    this.isCampaignDeleted = true;
+                    // $('#campaignListDiv_' + id).remove();
+                    //  setTimeout(function() { $("#deleteSuccess").slideUp(500); }, 5000);
+                    //  this.pagination.pageIndex = this.pagination.pageIndex - 1;
+                    const deleteMessage = campaignName + ' Campaign deleted successfully';
+                    this.customResponse = new CustomResponse('SUCCESS', deleteMessage, true);
+                    this.pagination.pagedItems.splice(position, 1);
+                    this.pagination.pageIndex = 1;
+                    this.listCampaign(this.pagination);
+                },
+                error => { this.logger.errorPage(error) },
+                () => console.log("Campaign Deleted Successfully")
             );
         this.isCampaignDeleted = false;
     }
@@ -264,31 +264,31 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         console.log(campaign);
         this.campaignService.saveAsCampaign(campaign)
             .subscribe(
-            data => {
-                console.log(data);
-                this.campaignSuccessMessage = "Campaign Copied Successfully";
-                $('#lanchSuccess').show(600);
-                $('#saveAsModal').modal('hide');
-                this.showMessageOnTop();
-              //  setTimeout(function() { $("#lanchSuccess").slideUp(500); }, 5000);
-                this.listCampaign(this.pagination);
-                console.log("saveAsCampaign Successfully")
-            },
-            error => {$('#saveAsModal').modal('hide'); this.logger.errorPage(error) },
-            () => console.log("saveAsCampaign Successfully")
+                data => {
+                    console.log(data);
+                    this.campaignSuccessMessage = "Campaign Copied Successfully";
+                    $('#lanchSuccess').show(600);
+                    $('#saveAsModal').modal('hide');
+                    this.showMessageOnTop();
+                    //  setTimeout(function() { $("#lanchSuccess").slideUp(500); }, 5000);
+                    this.listCampaign(this.pagination);
+                    console.log("saveAsCampaign Successfully")
+                },
+                error => { $('#saveAsModal').modal('hide'); this.logger.errorPage(error) },
+                () => console.log("saveAsCampaign Successfully")
             );
     }
-    
-    
-    filterCampaigns(type:string,index:number){
+
+
+    filterCampaigns(type: string, index: number) {
         this.selectedCampaignTypeIndex = index;//This is to highlight the tab
         this.pagination.pageIndex = 1;
         this.pagination.campaignType = type;
         this.listCampaign(this.pagination);
-        
+
     }
-    filterByUserNameOrDate(){
-        
+    filterByUserNameOrDate() {
+
     }
-    
+
 }
