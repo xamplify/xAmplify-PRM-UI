@@ -1001,3 +1001,6 @@ legend{display: block; width: auto; padding: 0 10px; margin-bottom: 0; font-size
 .add-reply label {text-align: left; display: block; margin-bottom: 5px;}
 .time-col span {float:left; margin-right:10px;}
 :host /deep/.video-js.vjs-panorama .vjs-video-notice-label{ left: 53px; top: 41px;}
+:host /deep/.bootstrap-switch-label{
+	width: 31px;
+}

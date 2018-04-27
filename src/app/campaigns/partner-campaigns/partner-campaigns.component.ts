@@ -394,6 +394,9 @@ export class PartnerCampaignsComponent implements OnInit {
                 reply.emailTemplatesPagination = new Pagination();
                 reply.replyTime = new Date(reply.replyTime);
                 reply.replyTimeInHoursAndMinutes = this.extractTimeFromDate(reply.replyTime);
+                if($.trim(reply.subject).length==0){
+                    reply.subject = campaign.subjectLine;
+                }
                 let length = this.allItems.length;
                 length = length + 1;
                 var id = 'reply-' + length;
@@ -525,6 +528,7 @@ export class PartnerCampaignsComponent implements OnInit {
         var id = 'reply-' + length;
         this.reply.divId = id;
         this.reply.actionId = 0;
+        this.reply.subject = this.referenceService.replaceMultipleSpacesWithSingleSpace(this.campaign.subjectLine);
         this.replies.push(this.reply);
         this.allItems.push(id);
         this.loadEmailTemplatesForAddReply(this.reply);

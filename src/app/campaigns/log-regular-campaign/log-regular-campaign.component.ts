@@ -59,6 +59,7 @@ export class LogRegularCampaignComponent implements OnInit {
               updatedBody = updatedBody.replace("<company_name></company_name>", "");
               updatedBody = updatedBody.replace("<Company_Logo>", '');
               updatedBody = updatedBody.replace("<Title_here>", '');
+              updatedBody = updatedBody.replace("<a href=\"https://dummycobrandingurl.com\" target=\"_blank\">", "<a href=\"https://dummycobrandingurl.com\" target=\"_blank\" style=\"display:none\">");
               this.templatehtml = updatedBody;
               document.getElementById('regular-campaign').innerHTML = this.templatehtml;
               this.processor.remove(this.processor);

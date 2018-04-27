@@ -81,6 +81,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     inActiveTabClass:string = this.defaultTabClass;
     successTabClass:string = this.completedTabClass;
     invalidScheduleTimeError:string = "";
+    toPartner:boolean = false;
     /*************Pagination********************/
     videosPagination:Pagination = new Pagination();
     channelVideosPagination:Pagination = new Pagination();
@@ -197,6 +198,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 public callActionSwitch: CallActionSwitch, public videoUtilService: VideoUtilService
             ){
         this.logger.info("create-campaign-component constructor loaded");
+        $('.bootstrap-switch-label').css('cssText', 'width:31px;!important');
       /*  CKEDITOR.config.width = 500;     
         CKEDITOR.config.width = '75%';*/
        /* CKEDITOR.config.height = 500;        // 500 pixels high.

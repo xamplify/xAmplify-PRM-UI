@@ -283,12 +283,12 @@
 							<div class="col-sm-12" style="padding: 0">
 								<div id="ck-editor-{{i}}" *ngIf="!reply.defaultTemplate">
 									<div class="form-group" style="margin-left: 1px;">
-										<label for="days" id="message-{{reply.divId}}">Message
+										<label for="days" id="reply-message-{{reply.divId}}">Message
 											<b style="color: red">*</b>
 										</label>
 									</div>
 									<div>
-										<ckeditor [(ngModel)]="reply.subject" name="subject"></ckeditor>
+										<ckeditor [(ngModel)]="reply.body" name="body"></ckeditor>
 									</div>
 								</div>
 								<div id="reply-email-template-{{i}}" *ngIf="reply.defaultTemplate">

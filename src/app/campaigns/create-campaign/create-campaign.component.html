@@ -144,17 +144,31 @@
 												</div>
 											</div>
 											<div class="form-group" *ngIf="(this.authenticationService.module.isCompanyPartner && this.authenticationService.module.isOrgAdmin) || this.authenticationService.module.isOrgAdmin || this.authenticationService.module.isVendor">
-												<label class="control-label col-sm-4">Partner Campaign</label>
+												<label class="control-label col-sm-4" *ngIf="campaign.channelCampaign"><b>To Partner</b></label>
+													<label class="control-label col-sm-4" *ngIf="!campaign.channelCampaign">To Partner</label>
 												<div class="col-sm-8">
-													<switch class="pull-left" [status]="campaign.channelCampaign" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-													 [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
-													 (statusChange)="setChannelCampaign($event)">
-													</switch>
-													<span style="cursor: pointer;color: #54a7e9;" title="Create a partner campaign">
-												<i class="fa fa-question-circle" style="margin-top: -14px;margin-right: 204px;font-size: 20px"></i>
-											</span>
+													<div class="email-options-checkbox-group email-options-notify">
+														<div class="email-options-checkbox clearfix">
+															<div class="col-sm-1 ui-switch-custom-div">
+															<switch [status]="campaign.channelCampaign" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.onTextValue"
+																 [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onGreenColorSwitch" [size]="callActionSwitch.size"
+																 (statusChange)="setChannelCampaign($event)" >
+																</switch>
+															
+															</div>
+															<div class="col-sm-11" style="padding: 0;">
+																<label style="margin-top: 10px;margin-left: 75px;;" *ngIf="!campaign.channelCampaign"><b>Through Partner</b></label>
+																<label style="margin-top: 10px;margin-left: 75px;" *ngIf="campaign.channelCampaign">Through Partner</label>
+															</div>
+															<!-- <span style="cursor: pointer;color: #54a7e9;" title="Create a partner campaign">
+																<i class="fa fa-question-circle" style="margin-top: -14px;margin-right: 204px;font-size: 20px"></i>
+															</span> -->
+														</div>
+													</div>
 												</div>
 											</div>
+											
+											
 											<div class="form-group" *ngIf="((this.authenticationService.module.isCompanyPartner && this.authenticationService.module.isOrgAdmin) || this.authenticationService.module.isOrgAdmin || this.authenticationService.module.isVendor ) && campaign.channelCampaign">
 												<label class="control-label col-sm-4">Co-Branding Logo</label>
 												<div class="col-sm-8">
