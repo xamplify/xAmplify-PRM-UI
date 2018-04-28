@@ -74,10 +74,10 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
         public pagination: Pagination,private authenticationService:AuthenticationService,private logger:XtremandLogger) {
         this.loggedInUserId = this.authenticationService.getUserId();
         if(refService.isCreated){
-           this.message = "Template Created Successfully";
+           this.message = "Template created successfully";
            this.showMessageOnTop(this.message);
         }else if(refService.isUpdated){
-            this.message = "Template Updated Successfully";
+            this.message = "Template updated successfully";
             this.showMessageOnTop(this.message);
         }
         this.hasAllAccess = this.refService.hasAllAccess();
@@ -256,7 +256,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
                     document.getElementById( 'emailTemplateListDiv_' + id ).remove();
                     this.refService.showInfo( "Email Template Deleted Successfully", "" );
                    // this.selectedEmailTemplateName = name;
-                    this.selectedEmailTemplateName =  name+ 'Deleted Successfully';
+                    this.selectedEmailTemplateName =  name+ ' deleted successfully';
                     this.customResponse = new CustomResponse('SUCCESS',this.selectedEmailTemplateName,true );
                     this.isEmailTemplateDeleted = true;
                     this.isCampaignEmailTemplate = false;
@@ -266,7 +266,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
                 }else{
                     this.isEmailTemplateDeleted = false;
                     this.isCampaignEmailTemplate = true;
-                    this.customResponse = new CustomResponse('ERROR','Please Delete Associated Campaign(s)',true );
+                    this.customResponse = new CustomResponse('ERROR','Please delete associated campaign(s)',true );
                   //  setTimeout( function() { $( "#campaignEmailTemplateId" ).slideUp( 500 ); }, 2000 );
                 }
                 
