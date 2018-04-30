@@ -116,14 +116,14 @@ td>h5 {
 					<div class="clearfix">
 						<div class="col-xs-12" style="margin-bottom: 10px;" *ngIf="userCampaignReport.response != null">
 							<div class="alert alert-dismissible" role="alert" [ngClass]="{'alert-success': userCampaignReport.response == 'SUCCESS',
-											   'alert-danger': userCampaignReport.response == 'ERROR', 
+											   'alert-danger': userCampaignReport.response == 'ERROR',
 											   'alert-warning': userCampaignReport.response == 'WARNING'}">
 								<button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="userCampaignReport.response = null">
 									<span aria-hidden="true">&times;</span>
 								</button>
 								<h5 class="flex">
 									<i class="fa" [ngClass]="{'fa-check': userCampaignReport.response == 'SUCCESS',
-											   'fa-exclamation': userCampaignReport.response == 'ERROR', 
+											   'fa-exclamation': userCampaignReport.response == 'ERROR',
 											   'fa-exclamation-triangle': userCampaignReport.response == 'WARNING'}" aria-hidden="true" style="padding-right: 7px;"></i>
 									<span>{{userCampaignReport.responseMessage}}</span>
 								</h5>
@@ -200,7 +200,7 @@ td>h5 {
 				<div class="details">
 					<div class="number">{{dashboardReport.totalUploadedvideos}}</div>
 					<div class="desc" >
-						<span *ngIf="!isOnlyPartner;else orgVideo">Uploaded Videos</span> 
+						<span *ngIf="!isOnlyPartner;else orgVideo">Uploaded Videos</span>
 						<ng-template #orgVideo>Videos</ng-template>
 					</div>
 				</div>
@@ -208,14 +208,15 @@ td>h5 {
 		</div>
 
 		<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
-			<a class="dashboard-stat dashboard-stat-lighter purple-soft" [routerLink]="['../../contacts/manage']" [class.disabled]="  !authenticationService.user.hasCompany ? true : null">
+			<a class="dashboard-stat dashboard-stat-lighter purple-soft" (click)="navigateToManage()" [class.disabled]="  !authenticationService.user.hasCompany ? true : null">
 				<div class="visual">
 					<i class="fa fa-users"></i>
 				</div>
 				<div class="details">
-					<div class="number">{{dashboardReport.totalContacts}}</div>
+          <div class="number" *ngIf="!authenticationService.module.isVendor">{{dashboardReport.totalContacts}}</div>
+          <div class="number" *ngIf="authenticationService.module.isVendor">{{dashboardReport.TotalTeamMembers}}</div>
 					<div class="desc" *ngIf="!authenticationService.module.isVendor">Total Contacts</div>
-					<div class="desc" *ngIf="authenticationService.module.isVendor">Total Partners</div>
+					<div class="desc" *ngIf="authenticationService.module.isVendor">Team Members</div>
 				</div>
 			</a>
 		</div>
@@ -320,7 +321,7 @@ td>h5 {
 			<div class="portlet-body clearfix">
 				<section *ngFor="let campaign of campaigns; let i=index">
 					<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" *ngIf="i<4">
-						<div class="portlet light border-radius-0 campaign-box" [routerLink]="['/home/campaigns/', campaign[0], 'details']" 
+						<div class="portlet light border-radius-0 campaign-box" [routerLink]="['/home/campaigns/', campaign[0], 'details']"
 						 style="cursor: pointer">
 						<!--[class.disabled]="!hasStatsRole ? true : null" @date 13/04/218 @added Manas Sahoo-->
 							<div class="bookmark-ribbon">
@@ -503,7 +504,7 @@ td>h5 {
 							</div>
 							<div class="portlet-body">
 								<div class="row">
-									<div class="col-xs-4 sparkline-chart" [class.disabled]="!hasStatsRole ? true : null" (click)="listOfEmailOpenLogs(13)" style="cursor:pointer"
+									<div class="col-xs-4 sparkline-chart" (click)="listOfEmailOpenLogs(13)" style="cursor:pointer"
 									 data-toggle="modal" data-target="#emailClickedModal">
 										<div class="visual">
 											<img alt="opened" src="assets/images/opened.png" title="view emailOpened data">
@@ -518,7 +519,7 @@ td>h5 {
 											</div>
 										</div>
 									</div>
-									<div class="col-xs-4 sparkline-chart" [class.disabled]="!hasStatsRole ? true : null" (click)="listOfEmailClickedLogs()" title="view emailUrlClicked data"
+									<div class="col-xs-4 sparkline-chart"  (click)="listOfEmailClickedLogs()" title="view emailUrlClicked data"
 									 style="cursor:pointer" data-toggle="modal" data-target="#emailClickedModal">
 										<div class="visual">
 											<img alt="Clicked" src="assets/images/clicked.png">
@@ -533,7 +534,7 @@ td>h5 {
 											</div>
 										</div>
 									</div>
-									<div class="col-xs-4 sparkline-chart" [class.disabled]="!hasStatsRole ? true : null" (click)="listOfWatchedLogs()" title="view emailWatched data"
+									<div class="col-xs-4 sparkline-chart"  (click)="listOfWatchedLogs()" title="view emailWatched data"
 									 style="cursor:pointer" data-toggle="modal" data-target="#emailClickedModal">
 										<div class="visual">
 											<img alt="Watched" src="assets/images/watched.png">

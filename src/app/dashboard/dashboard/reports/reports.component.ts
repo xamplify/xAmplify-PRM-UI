@@ -55,6 +55,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
         break;
       }
     }
+    this.selectedSortByValue(this.daysCount);
     console.log("day sort value " + this.daySort + 'views date is ' + this.viewsDate + 'value is ' + this.viewsValue + 'dayscount is' + this.daysCount);
   }
   selectedSortByValue(event: any) {

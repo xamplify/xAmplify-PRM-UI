@@ -1,15 +1,15 @@
 export class DashboardReport {
-    genderDemographicsMale: number = 0;
-    genderDemographicsFemale: number = 0;
-    genderDemographicsTotal: number = 0;
+    genderDemographicsMale  = 0;
+    genderDemographicsFemale  = 0;
+    genderDemographicsTotal  = 0;
 
-    totalContacts: number = 0;
+    totalContacts  = 0;
+    TotalTeamMembers = 0;
+    totalUploadedvideos  = 0;
 
-    totalUploadedvideos: number = 0;
-
-    totalEmailOpenedCount: number = 0;
-    totalEmailClickedCount: number = 0;
-    totalEmailWatchedCount: number = 0;
+    totalEmailOpenedCount  = 0;
+    totalEmailClickedCount  = 0;
+    totalEmailWatchedCount  = 0;
 
     emailLogList: any;
     allEmailOpenLogList: any;
@@ -18,9 +18,9 @@ export class DashboardReport {
 
     downloadEmailLogList: any;
 
-    totalViews: number = 0;
-    toalEmailTemplates: number = 0;
-    totalCreatedCampaigns: number = 0;
-    totalSocialAccounts: number = 0;
+    totalViews  = 0;
+    toalEmailTemplates  = 0;
+    totalCreatedCampaigns  = 0;
+    totalSocialAccounts  = 0;
     totalCompanyPartnersCount = 0;
 }

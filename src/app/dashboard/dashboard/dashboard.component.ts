@@ -674,7 +674,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
     listOfEmailOpenLogs(actionId: number) {
         this.paginationType = 'open';
-        if(!this.isCalledPagination){ this.pagination.maxResults = 12; this.isCalledPagination = true;} 
+        if(!this.isCalledPagination){ this.pagination.maxResults = 12; this.isCalledPagination = true;}
         this.dashboardService.listEmailOpenLogs(this.loggedInUserId, actionId, this.pagination)
             .subscribe(
                 (result: any) => {
@@ -957,7 +957,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.router.navigate(['/home/partners/analytics']);
        } else { console.log('go to vendors page'); }
     }
-
+    navigateToManage(){
+      if(this.authenticationService.isVendor()){
+        this.router.navigate(['/home/team/add-team']);
+       } else { this.router.navigate(['/home/contacts/manage']); }
+    }
     getPartnerCampaignsCountMapGroupByCampaignType(userId: number){
         this.campaignService.getPartnerCampaignsCountMapGroupByCampaignType(userId)
             .subscribe(
