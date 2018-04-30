@@ -61,7 +61,7 @@ width: 100%;
 .banner-image-wrapper {
 position: relative; 
 width: 100%; 
-height: 300px; 
+height: 100px; 
 background-size: cover; 
 background-position: center center; 
 margin-bottom: 100px;
@@ -71,8 +71,6 @@ cursor: pointer;
 .banner-image-wrapper:hover .banner-overlay {
 display: none;
 width: auto;
-background: rgb(0, 0, 0);
-border: 1px solid #fff;
 position: absolute;
 top: 10px;
 left: 10px;
@@ -83,3 +81,36 @@ font-size: 10px;
 cursor: pointer;
 opacity: 0.8;
 }
+
+.profile-image {
+    width: 100%;
+    height: 150px;
+    width: 150px;
+    border: 1px solid #c5c5c5;
+    padding: 5px;
+}
+
+a:hover{ text-decoration:none}
+.smpl-step > .smpl-step-step {padding: 0; position: relative;}   
+.smpl-step > .smpl-step-step > .smpl-step-icon {position: absolute; width: 70px; height: 70px; display: block; background: #008fd5; top: 45px;
+left: 50%; margin-top: -35px; margin-left: -35px; border-radius: 50%;}
+
+.smpl-step > .smpl-step-step > .progress {position: relative; border-radius: 0px; height: 5px; box-shadow: none; margin-top: 45px;}
+.smpl-step > .smpl-step-step > .progress > .progress-bar {width: 0px; box-shadow: none;}
+.smpl-step > .smpl-step-step.complete > .progress > .progress-bar {width: 100%; background:#b2d135;}
+
+.smpl-step > .smpl-step-step > .progress > .progress-bar {width: 100%; background: #008fd5;}
+.smpl-step > .smpl-step-step:first-child > .progress {left: 50%; width: 50%;}
+.smpl-step > .smpl-step-step:last-child > .progress {width: 50%;}
+
+.smpl-step > .smpl-step-step.complete > .smpl-step-icon {background: #b2d135;}
+
+.smpl-step > .smpl-step-step.disabled > .smpl-step-icon:after {opacity: 0;}
+.smpl-step > .smpl-step-step.disabled > .smpl-step-icon {background: #ebebeb;}
+.disabled .progress-bar {background: #ebebeb !important; width: 100% !important;}
+.disabled i {color: #898989 !important;}
+
+.smpl-step-icon i{text-align: center; display: block; height: 70px; line-height: 70px; font-size: 36px; color: #FFF;}
+.smpl-step > .smpl-step-step .smpl-step-info {font-size: 14px; padding-top: 27px; color:#008fd5}
+.smpl-step > .smpl-step-step.complete .smpl-step-info {color:#b2d135}
+.smpl-step > .smpl-step-step.disabled .smpl-step-info {color:#898989;}
