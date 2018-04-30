@@ -35,7 +35,7 @@ declare var $: any;
     providers: [DatePipe, CallActionSwitch]
 })
 export class PartnerCampaignsComponent implements OnInit {
-    selectedEmailTemplateId: number;
+    selectedEmailTemplateId: number=0;
     loggedInUserId: number;
     campaigns: any;
     campaign: Campaign;
@@ -170,7 +170,6 @@ export class PartnerCampaignsComponent implements OnInit {
             result => {
                 console.log(this.campaign);
                 this.campaign = result;
-                this.getCampaignPartnerByCampaignIdAndUserId(this.campaign.campaignId, this.loggedInUserId);
                 const userProfile = this.authenticationService.userProfile;
                 this.campaign.email = userProfile.emailId;
                 if(userProfile.firstName !== undefined && userProfile.lastName !== undefined)
@@ -193,6 +192,9 @@ export class PartnerCampaignsComponent implements OnInit {
                 this.getAnchorLinksFromEmailTemplate(this.campaign.emailTemplate.body);
                 if(this.campaign.nurtureCampaign){
                     this.selectedUserlistIds = this.campaign.userListIds;
+                    this.selectedEmailTemplateId = this.campaign.emailTemplate.id;
+                }else{
+                    this.getCampaignPartnerByCampaignIdAndUserId(this.campaign.campaignId, this.loggedInUserId);
                 }
             },
             error => console.log(error),
@@ -507,6 +509,12 @@ export class PartnerCampaignsComponent implements OnInit {
             timeZoneId = $('#timezoneId option:selected').val();
             scheduleTime = this.campaignLaunchForm.value.launchTime;
         }
+        let campaignId = 0;
+        if(this.campaign.nurtureCampaign){
+            campaignId = this.campaign.campaignId;
+        }else{
+            campaignId = 0;
+        }
         const data = {
             'campaignName': this.campaign.campaignName,
             'fromName': this.campaign.fromName,
@@ -527,7 +535,7 @@ export class PartnerCampaignsComponent implements OnInit {
             "scheduleCampaign": this.campaignLaunchForm.value.scheduleCampaign,
             'scheduleTime': scheduleTime,
             'timeZoneId': timeZoneId,
-            'campaignId': 0,
+            'campaignId': campaignId,
             'selectedEmailTemplateId': this.selectedEmailTemplateId,
             'regularEmail': this.campaign.regularEmail,
             'testEmailId': emailId,
