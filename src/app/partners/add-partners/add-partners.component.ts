@@ -91,6 +91,7 @@ export class AddPartnersComponent implements OnInit {
     teamMemberPagination: Pagination = new Pagination();
     pageSize: number = 12;
     contactListAssociatedCampaignsList: any;
+    editingEmailId ='';
     
     sortOptions = [
         { 'name': 'Sort By', 'value': '' },
@@ -211,6 +212,7 @@ export class AddPartnersComponent implements OnInit {
         else {
             this.checkingForEmail = false;
         }
+        if(lowerCaseEmail != this.editingEmailId ){
         for(let i=0;i< this.contactService.allPartners.length; i++){
             if( lowerCaseEmail == this.contactService.allPartners[i].emailId ){
                 this.isEmailExist = true;
@@ -218,6 +220,7 @@ export class AddPartnersComponent implements OnInit {
             }else{
                 this.isEmailExist = false;
             }
+        }
         }
         
     }
@@ -785,6 +788,7 @@ export class AddPartnersComponent implements OnInit {
         this.addPartnerUser.contactCompany = contactDetails.contactCompany;
         this.addPartnerUser.jobTitle = contactDetails.jobTitle;
         this.addPartnerUser.emailId = contactDetails.emailId;
+        this.editingEmailId = contactDetails.emailId;
         this.addPartnerUser.address = contactDetails.address;
         this.addPartnerUser.city = contactDetails.city;
         this.addPartnerUser.country = contactDetails.country;

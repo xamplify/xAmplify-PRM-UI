@@ -143,6 +143,7 @@ export class EditContactsComponent implements OnInit {
     teamMemberPagination: Pagination = new Pagination();
     teamMembersList = [];
     orgAdminsList = [];
+    editingEmailId = '';
 
     filterOptions = [
         { 'name': '', 'value': 'Field Name*' },
@@ -1436,14 +1437,15 @@ export class EditContactsComponent implements OnInit {
         else {
             this.checkingForEmail = false;
         }
-        
+        if(lowerCaseEmail != this.editingEmailId ){
         for(let i=0;i< this.contacts.length; i++){
             if( lowerCaseEmail == this.contacts[i].emailId ){
                 this.isEmailExist = true;
                 break;
             }else{
-                this.isEmailExist = false;
+                   this.isEmailExist = false;
             }
+        }
         }
     }
 
@@ -1706,6 +1708,7 @@ export class EditContactsComponent implements OnInit {
         this.addContactuser.contactCompany = contactDetails.contactCompany;
         this.addContactuser.jobTitle = contactDetails.jobTitle;
         this.addContactuser.emailId = contactDetails.emailId;
+        this.editingEmailId = contactDetails.emailId;
         this.addContactuser.address = contactDetails.address;
         this.addContactuser.city = contactDetails.city;
         this.addContactuser.country = contactDetails.country;
