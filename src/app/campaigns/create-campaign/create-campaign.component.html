@@ -144,8 +144,8 @@
 												</div>
 											</div>
 											<div class="form-group" *ngIf="(this.authenticationService.module.isCompanyPartner && this.authenticationService.module.isOrgAdmin) || this.authenticationService.module.isOrgAdmin || this.authenticationService.module.isVendor">
-												<label style="margin-top: 10px;margin-left: 75px;;" *ngIf="!campaign.channelCampaign"><b>Through Partner</b></label>
-												<label style="margin-top: 10px;margin-left: 75px;" *ngIf="campaign.channelCampaign">Through Partner</label>
+												<label class="control-label col-sm-4" *ngIf="campaign.channelCampaign"><b>Through Partner</b></label>
+												<label  class="control-label col-sm-4" *ngIf="!campaign.channelCampaign">Through Partner</label>
 												<div class="col-sm-8">
 													<div class="email-options-checkbox-group email-options-notify">
 														<div class="email-options-checkbox clearfix">
@@ -157,8 +157,8 @@
 															
 															</div>
 															<div class="col-sm-11" style="padding: 0;">
-															<label class="control-label col-sm-4" *ngIf="campaign.channelCampaign"><b>To Partner</b></label>
-															<label class="control-label col-sm-4" *ngIf="!campaign.channelCampaign">To Partner</label>
+															<label  *ngIf="!campaign.channelCampaign" style="margin-top: 10px;margin-left: 75px;;"><b>To Partner</b></label>
+															<label  *ngIf="campaign.channelCampaign" style="margin-top: 10px;margin-left: 75px;;">To Partner</label>
 															</div>
 															<!-- <span style="cursor: pointer;color: #54a7e9;" title="Create a partner campaign">
 																<i class="fa fa-question-circle" style="margin-top: -14px;margin-right: 204px;font-size: 20px"></i>

@@ -191,6 +191,9 @@ export class PartnerCampaignsComponent implements OnInit {
                 this.validateLaunchForm();
                 this.loadContactList(this.contactListPagination);
                 this.getAnchorLinksFromEmailTemplate(this.campaign.emailTemplate.body);
+                if(this.campaign.nurtureCampaign){
+                    this.selectedUserlistIds = this.campaign.userListIds;
+                }
             },
             error => console.log(error),
             () => { });
