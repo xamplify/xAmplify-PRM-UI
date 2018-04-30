@@ -26,6 +26,7 @@ import { Country } from '../../core/models/country';
 import { Timezone } from '../../core/models/timezone';
 import { EmailTemplateType } from '../../email-template/models/email-template-type';
 
+
 declare var $: any;
 @Component({
     selector: 'app-partner-campaigns',
@@ -46,7 +47,7 @@ export class PartnerCampaignsComponent implements OnInit {
     campaignLaunchForm: FormGroup;
     buttonName = "Launch";
     isScheduleSelected = false;
-    campaignType: string;
+    isLoading:boolean  = false;
 
     contactListPagination: Pagination;
     selectedUserlistIds = [];
@@ -115,6 +116,32 @@ export class PartnerCampaignsComponent implements OnInit {
 
 
     };
+    
+    
+    
+    /************Campaign Details******************/
+    formGroupClass:string = "form-group";
+    campaignNameDivClass:string = this.formGroupClass;
+    fromNameDivClass:string =  this.formGroupClass;
+    subjectLineDivClass:string = this.formGroupClass;
+    fromEmaiDivClass:string = this.formGroupClass;
+    preHeaderDivClass:string = this.formGroupClass;
+    messageDivClass:string = this.formGroupClass;
+    campaignType:string = "";
+    isCampaignDetailsFormValid:boolean = false;
+    names:string[]=[];
+    editedCampaignName:string = "";
+    /************Contact List**************/
+    contactListBorderColor:string = "black";
+    
+    /************Add Reply/Add OnClick**************/
+    emailNotOpenedReplyDaysSum:number = 0;
+    emailOpenedReplyDaysSum:number = 0;
+    onClickScheduledDaysSum:number = 0;
+    
+    invalidScheduleTime:boolean = false;
+    hasInternalError:boolean =false;
+    invalidScheduleTimeError:string = "";
 
     constructor(private router: Router,
         private route: ActivatedRoute,
@@ -131,20 +158,10 @@ export class PartnerCampaignsComponent implements OnInit {
         this.contactListPagination = new Pagination();
         this.contactListPagination.filterKey = 'isPartnerUserList';
         this.contactListPagination.filterValue = false;
+       
     }
 
-    listPartnerCampaigns(userId: number, campaignType: string) {
-        this.campaignService.listPartnerCampaigns(userId, campaignType)
-            .subscribe(
-            result => { this.campaigns = result; },
-            error => console.log(error),
-            () => { });
-    }
-
-    filterCampaigns(type: string) {
-        this.router.navigate(['/home/campaigns/partner/' + type]);
-    }
-
+    
     nurtureCampaign(campaignId: number) {
         this.isNurture = true;
         const data = { 'campaignId': campaignId }
@@ -207,6 +224,114 @@ export class PartnerCampaignsComponent implements OnInit {
         this.campaign.videoPlayed = event;
     }
 
+    
+    
+    /*************************************************************Campaign Details***************************************************************************************/
+    isValidEmail:boolean = false;
+    isValidCampaignName:boolean = true;
+     validateForm() {
+         var isValid = true;
+         let self = this;
+        $('#campaignDetailsForm input[type="text"]').each(function() {
+            if ($.trim($(this).val())=== '' ){
+              isValid = false;
+          }
+             
+        });
+        if(isValid && this.isValidCampaignName){
+            this.isCampaignDetailsFormValid = true;
+        }else{
+            this.isCampaignDetailsFormValid = false;
+        }
+        console.log("is Valid Form"+this.isCampaignDetailsFormValid);
+      }
+     validateEmail(emailId:string){
+         console.log(emailId);
+         var regex = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*(\.[A-Za-z]{2,})$/;
+         if(regex.test(emailId)){
+             this.isValidEmail = true;
+             console.log("Valid Email Id");
+         }else{
+             this.isValidEmail = false;
+             console.log("Invalid Email Id");
+         }
+     }
+     validateCampaignName(campaignName:string){
+        // let lowerCaseCampaignName = campaignName.toLowerCase().trim().replace(/\s/g, "");//Remove all spaces
+         let lowerCaseCampaignName = $.trim(campaignName.toLowerCase());//Remove all spaces
+         var list = this.names[0];
+         console.log(list);
+         console.log(this.editedCampaignName.toLowerCase()+":::::::::"+lowerCaseCampaignName);
+         if($.inArray(lowerCaseCampaignName, list) > -1 && this.editedCampaignName.toLowerCase()!=lowerCaseCampaignName){
+             this.isValidCampaignName = false;  
+         }else{
+             this.isValidCampaignName = true;
+         }
+     
+         
+     }
+     validateField(fieldId:string){
+         var errorClass = "form-group has-error has-feedback";
+         var successClass = "form-group has-success has-feedback";
+         let fieldValue = $.trim($('#'+fieldId).val())
+         if(fieldId=="campaignName"){
+             if(fieldValue.length>0&&this.isValidCampaignName){
+                 this.campaignNameDivClass = successClass;
+             }else{
+                 this.campaignNameDivClass = errorClass;
+             }
+            
+         }else if(fieldId=="fromName"){
+             if(fieldValue.length>0){
+                 this.fromNameDivClass = successClass;
+             }else{
+                 this.fromNameDivClass = errorClass;
+             }
+         }else if(fieldId=="subjectLine"){
+             if(fieldValue.length>0){
+                 this.subjectLineDivClass = successClass;
+             }else{
+                 this.subjectLineDivClass = errorClass;
+             }
+         }else if(fieldId=="preHeader"){
+             if(fieldValue.length>0){
+                 this.preHeaderDivClass = successClass;
+             }else{
+                 this.preHeaderDivClass = errorClass;
+             }
+         }else if(fieldId=="message"){
+             if(fieldValue.length>0){
+                 this.messageDivClass = successClass;
+             }else{
+                 this.messageDivClass = errorClass;
+             }
+         }
+     }
+    loadCampaignNames(userId:number){
+        this.campaignService.getCampaignNames(userId)
+        .subscribe(
+        data => {
+            this.names.push(data);
+        },
+        error => console.log( error ),
+        () => console.log( "Campaign Names Loaded" )
+        );
+    }
+    
+    listPartnerCampaigns(userId: number, campaignType: string) {
+        this.campaignService.listPartnerCampaigns(userId, campaignType)
+            .subscribe(
+            result => { this.campaigns = result; },
+            error => console.log(error),
+            () => { });
+    }
+
+    filterCampaigns(type: string) {
+        this.router.navigate(['/home/campaigns/partner/' + type]);
+    }
+
+
+   
     validateLaunchForm(): void {
         this.campaignLaunchForm = this.formBuilder.group({
             'scheduleCampaign': [this.campaign.scheduleCampaign, Validators.required],
@@ -300,26 +425,57 @@ export class PartnerCampaignsComponent implements OnInit {
             )
     }
     launchCampaign() {
+        this.isLoading = true;
+        $('#contact-list-error').hide();
         var data = this.getCampaignData("");
-        this.campaignService.saveCampaign(data)
+        var errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
+        if(errorLength===0 && this.selectedUserlistIds.length>0){
+            this.dataError = false;
+            this.contactListBorderColor = "black";
+            this.referenceService.goToTop();
+            this.campaignService.saveCampaign( data )
             .subscribe(
             response => {
                 this.isNurture = true;
                 if (response.statusCode === 2000) {
-                    this.customResponse = new CustomResponse('SUCCESS', 'Campaign has been launched successfully.', true);
+                    this.referenceService.campaignSuccessMessage = data.scheduleCampaign;
                     this.campaign = null;
                     this.router.navigate(["/home/campaigns/manage"]);
                 } else {
-                    this.customResponse = new CustomResponse('ERROR', 'An error occurred while launching the campaign.', true);
+                    this.isLoading = false;
+                    this.invalidScheduleTime = true;
+                    this.invalidScheduleTimeError = response.message;
                 }
+                
             },
             error => {
+                this.hasInternalError = true;
                 this.xtremandLogger.errorPage(error);
-                this.customResponse = new CustomResponse('ERROR', 'An error occurred while launching the campaign.', true);
             },
             () => this.xtremandLogger.info("Finished launchCampaign()")
-            );
-        return false;
+        ); 
+        }else{
+            this.isLoading = false;
+            if(this.replies.length>0 ||this.urls.length>0){
+                this.dataError = true;
+            }else{
+                this.dataError = false;
+            }
+            this.setContactListError();
+        }
+    return false;
+    }
+    
+    
+    setContactListError(){
+        if(this.selectedUserlistIds.length>0){
+            this.contactListBorderColor = "black";
+            this.referenceService.goToDiv("campaign-options-div");
+        }else{
+            $('#contact-list-error').show(600);
+            this.contactListBorderColor = "red";
+            this.referenceService.goToTop();
+        }
     }
 
     getCampaignData(emailId: string) {
@@ -333,8 +489,21 @@ export class PartnerCampaignsComponent implements OnInit {
         if(!this.enableWorkFlow){
             this.replies = [];
             this.urls = [];
+        }else{
+            this.getRepliesData();
+            this.getOnClickData();
         }
-
+        let country = $.trim($('#countryName option:selected').text());
+        let timeZoneId = "";
+        let scheduleTime:any;
+        if( this.campaignLaunchForm.value.scheduleCampaign==="NOW"){
+            timeZoneId = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            scheduleTime = this.setLaunchTime();
+        }else{
+         //   timeZoneId = this.campaignLaunchForm.value.timeZoneId;
+            timeZoneId = $('#timezoneId option:selected').val();
+            scheduleTime = this.campaignLaunchForm.value.launchTime;
+        }
         const data = {
             'campaignName': this.campaign.campaignName,
             'fromName': this.campaign.fromName,
@@ -353,8 +522,8 @@ export class PartnerCampaignsComponent implements OnInit {
             'userListIds': this.selectedUserlistIds,
             "optionForSendingMials": "MOBINAR_SENDGRID_ACCOUNT",
             "scheduleCampaign": this.campaignLaunchForm.value.scheduleCampaign,
-            'scheduleTime': this.campaignLaunchForm.value.launchTime,
-            'timeZoneId': "Asia/Calcutta",
+            'scheduleTime': scheduleTime,
+            'timeZoneId': timeZoneId,
             'campaignId': 0,
             'selectedEmailTemplateId': this.selectedEmailTemplateId,
             'regularEmail': this.campaign.regularEmail,
@@ -362,7 +531,7 @@ export class PartnerCampaignsComponent implements OnInit {
             'campaignReplies': this.replies,
             'campaignUrls': this.urls,
             'campaignType': campaignType,
-            'country': "---Please Select Country---",
+            'country': country,
             'createdFromVideos': this.campaign.createdFromVideos,
             'nurtureCampaign':true
         };
@@ -370,6 +539,207 @@ export class PartnerCampaignsComponent implements OnInit {
         return data;
     }
 
+    
+    
+    getRepliesData(){
+        for(var i=0;i<this.replies.length;i++){
+            let reply = this.replies[i];
+            $('#'+reply.divId).removeClass('portlet light dashboard-stat2 border-error');
+            this.removeStyleAttrByDivId('reply-days-'+reply.divId);
+            this.removeStyleAttrByDivId('send-time-'+reply.divId);
+            this.removeStyleAttrByDivId('message-'+reply.divId);
+            this.removeStyleAttrByDivId('email-template-'+reply.divId);
+            this.removeStyleAttrByDivId('reply-message-'+reply.divId);
+            $('#'+reply.divId).addClass('portlet light dashboard-stat2');
+            this.validateReplySubject(reply);
+            if(reply.actionId!==16 && reply.actionId!==17 && reply.actionId!==18){
+                this.validateReplyInDays(reply);
+                if(reply.actionId!==22 && reply.actionId!==23){
+                    this.validateReplyTime(reply);
+                }
+                this.validateEmailTemplateForAddReply(reply);
+            }else{
+                this.validateEmailTemplateForAddReply(reply);
+            }
+            var errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
+            if(errorLength===0){
+                this.addEmailNotOpenedReplyDaysSum(reply, i);
+                this.addEmailOpenedReplyDaysSum(reply, i);
+            }
+           
+        }
+    }
+   
+    validateReplyInDays(reply:Reply){
+        if( reply.actionId!== 22 &&  reply.actionId!== 23 && reply.replyInDays===null){
+           this.addReplyDaysErrorDiv(reply);
+        }else if(reply.actionId===22 ||reply.actionId===23 ){
+           if(reply.replyInDays===null || reply.replyInDays===0){
+               this.addReplyDaysErrorDiv(reply);
+           }
+        }
+    }
+    
+    addReplyDaysErrorDiv(reply:Reply){
+        this.addReplyDivError(reply.divId);
+        $('#reply-days-'+reply.divId).css('color','red');
+    }
+    
+    validateReplyTime(reply:Reply){
+        if(reply.replyTime===undefined || reply.replyTime===null){
+            this.addReplyDivError(reply.divId);
+            $('#send-time-'+reply.divId).css('color','red');
+        }else{
+            reply.replyTimeInHoursAndMinutes = this.extractTimeFromDate(reply.replyTime);
+        }
+    }
+    
+    validateReplySubject(reply:Reply){
+        if( reply.subject==null||reply.subject===undefined || $.trim(reply.subject).length===0){
+            this.addReplyDivError(reply.divId);
+            console.log("Added Reply Subject Eror");
+            $('#reply-subject-'+reply.divId).css('color','red');
+        }
+    }
+    
+    validateEmailTemplateForAddReply(reply:Reply){
+        if(reply.defaultTemplate && reply.selectedEmailTemplateId===0){
+            $('#'+reply.divId).addClass('portlet light dashboard-stat2 border-error');
+            $('#email-template-'+reply.divId).css('color','red');
+        }else if(!reply.defaultTemplate &&(reply.body===null || reply.body===undefined || $.trim(reply.body).length===0)){
+            $('#'+reply.divId).addClass('portlet light dashboard-stat2 border-error');
+            $('#reply-message-'+reply.divId).css('color','red');
+        }
+    }
+    
+    addReplyDivError(divId:string){
+        $('#'+divId).addClass('portlet light dashboard-stat2 border-error');
+    }
+    removeStyleAttrByDivId(divId:string){
+        $('#'+divId).removeAttr("style");
+    }
+    
+    getOnClickData(){
+        for(var i=0;i<this.urls.length;i++){
+            let url = this.urls[i];
+            url.replyTimeInHoursAndMinutes = this.extractTimeFromDate(url.replyTime);
+            $('#'+url.divId).removeClass('portlet light dashboard-stat2 border-error');
+            this.removeStyleAttrByDivId('click-days-'+url.divId);
+            this.removeStyleAttrByDivId('click-send-time-'+url.divId);
+            this.removeStyleAttrByDivId('click-message-'+url.divId);
+            this.removeStyleAttrByDivId('click-email-template-'+url.divId);
+            this.removeStyleAttrByDivId('click-subject-'+url.divId);
+            $('#'+url.divId).addClass('portlet light dashboard-stat2');
+            console.log(url.scheduled);
+            if(url.actionId===21){
+                url.scheduled = true;
+                console.log("1632");
+                this.validateOnClickReplyTime(url);
+                this.validateOnClickSubject(url);
+                this.validateOnClickReplyInDays(url);
+                this.validateEmailTemplateForAddOnClick(url);
+            }else{
+                url.scheduled = false;
+                console.log("1637");
+                this.validateOnClickSubject(url);
+                this.validateEmailTemplateForAddOnClick(url);
+            }
+            var errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
+            if(errorLength===0){
+                this.addOnClickScheduledDaysSum(url, i);
+            }
+            console.log(errorLength);
+        }
+    }
+    
+    validateOnClickReplyTime(url:Url){
+        if(url.replyTime===undefined || url.replyTime===null){
+            this.addReplyDivError(url.divId);
+            $('#click-send-time-'+url.divId).css('color','red');
+        }
+    }
+    
+    validateOnClickSubject(url:Url){
+        if( url.subject===null||url.subject===undefined || $.trim(url.subject).length===0){
+            this.addReplyDivError(url.divId);
+            console.log("Added Subject Eror");
+            $('#click-subject-'+url.divId).css('color','red');
+        }
+    }
+    
+    validateOnClickBody(url:Url){
+        if(url.body===null || url.body===undefined || $.trim(url.body).length===0){
+            this.addReplyDivError(url.divId);
+            $('#click-message-'+url.divId).css('color','red');
+        }
+    }
+    
+    validateOnClickReplyInDays(url:Url){
+        if(url.replyInDays===null){
+            this.addReplyDivError(url.divId);
+            $('#click-days-'+url.divId).css('color','red');
+        }
+    }
+    
+    validateEmailTemplateForAddOnClick(url:Url){
+        if(url.defaultTemplate && url.selectedEmailTemplateId===0){
+            console.log("Email Template Error Added For Choose Template On");
+            $('#'+url.divId).addClass('portlet light dashboard-stat2 border-error');
+            $('#click-email-template-'+url.divId).css('color','red');
+        }else if(!url.defaultTemplate &&(url.body===null || url.body===undefined || $.trim(url.body).length===0)){
+            console.log("Email Template Error Added For Choose Template Off");
+            $('#'+url.divId).addClass('portlet light dashboard-stat2 border-error');
+            $('#click-message-'+url.divId).css('color','red');
+        }
+    }
+    
+    
+    addEmailNotOpenedReplyDaysSum(reply:Reply,index:number){
+        if(reply.actionId===0){
+            if(index===0){
+                this.emailNotOpenedReplyDaysSum = reply.replyInDays;
+            }else{
+                this.emailNotOpenedReplyDaysSum = reply.replyInDays+this.emailNotOpenedReplyDaysSum;
+            }
+            reply.replyInDaysSum = this.emailNotOpenedReplyDaysSum;
+        }
+    }
+    addEmailOpenedReplyDaysSum(reply:Reply,index:number){
+        if(reply.actionId===13){
+            if(index===0){
+                this.emailOpenedReplyDaysSum = reply.replyInDays;
+            }else{
+                this.emailOpenedReplyDaysSum = reply.replyInDays+this.emailOpenedReplyDaysSum;
+            }
+            reply.replyInDaysSum = this.emailOpenedReplyDaysSum;
+        }
+    }
+    
+    addOnClickScheduledDaysSum(url:Url,i:number){
+        if(i===0){
+            this.onClickScheduledDaysSum = url.replyInDays;
+        }else{
+            this.onClickScheduledDaysSum = url.replyInDays+this.onClickScheduledDaysSum;
+            url.replyInDaysSum = this.onClickScheduledDaysSum;
+        }
+    }
+    
+    setUrlScheduleType(event,url:Url){
+       //url.scheduled = event.target.value;
+       if(event.target.value==="true"){
+           url.scheduled = true;
+       }else{
+           url.scheduled = false;
+       }
+       
+  }
+    
+    
+    
+    
+    
+    
+    
     highlightRow(contactListId: number) {
         const isChecked = $('#' + contactListId).is(':checked');
         if (isChecked) {
@@ -384,11 +754,11 @@ export class PartnerCampaignsComponent implements OnInit {
     }
 
     getCampaignReplies(campaign: Campaign) {
-        if (campaign.campaignReplies != undefined) {
+        if(campaign.campaignReplies!=undefined){
             this.replies = campaign.campaignReplies;
-            for (var i = 0; i < this.replies.length; i++) {
+            for(var i=0;i<this.replies.length;i++){
                 let reply = this.replies[i];
-                if (reply.defaultTemplate) {
+                if(reply.defaultTemplate){
                     reply.selectedEmailTemplateIdForEdit = reply.selectedEmailTemplateId;
                 }
                 reply.emailTemplatesPagination = new Pagination();
@@ -398,42 +768,45 @@ export class PartnerCampaignsComponent implements OnInit {
                     reply.subject = campaign.subjectLine;
                 }
                 let length = this.allItems.length;
-                length = length + 1;
-                var id = 'reply-' + length;
+                length = length+1;
+                var id = 'reply-'+length;
                 reply.divId = id;
                 this.allItems.push(id);
                 this.loadEmailTemplatesForAddReply(reply);
-            }
+            } 
         }
-    }
+        
+     }
 
-    getCampaignUrls(campaign: Campaign) {
-        if (campaign.campaignUrls != undefined) {
+    extractTimeFromDate(replyTime){
+        //let dt = new Date(replyTime);
+        let dt = replyTime;
+        let hours = dt.getHours() > 9 ? dt.getHours() : '0' + dt.getHours();
+        let minutes = dt.getMinutes() > 9 ? dt.getMinutes() : '0' + dt.getMinutes();
+        return hours+":"+minutes;
+    }
+    getCampaignUrls(campaign:Campaign){
+        if(campaign.campaignUrls!=undefined){
             this.urls = campaign.campaignUrls;
-            for (var i = 0; i < this.urls.length; i++) {
+            for(var i=0;i<this.urls.length;i++){
                 let url = this.urls[i];
-                if (url.defaultTemplate) {
+                if(url.defaultTemplate){
                     url.selectedEmailTemplateIdForEdit = url.selectedEmailTemplateId;
                 }
                 url.emailTemplatesPagination = new Pagination();
                 url.replyTime = new Date(url.replyTime);
                 url.replyTimeInHoursAndMinutes = this.extractTimeFromDate(url.replyTime);
                 let length = this.allItems.length;
-                length = length + 1;
-                var id = 'click-' + length;
+                length = length+1;
+                var id = 'click-'+length;
                 url.divId = id;
                 this.allItems.push(id);
                 this.loadEmailTemplatesForAddOnClick(url);
             }
         }
-
+       
     }
-    extractTimeFromDate(replyTime) {
-        let dt = replyTime;
-        let hours = dt.getHours() > 9 ? dt.getHours() : '0' + dt.getHours();
-        let minutes = dt.getMinutes() > 9 ? dt.getMinutes() : '0' + dt.getMinutes();
-        return hours + ":" + minutes;
-    }
+    
     loadEmailTemplatesForAddReply(reply: Reply) {
         this.campaignEmailTemplate.httpRequestLoader.isHorizontalCss = true;
         this.referenceService.loading(this.campaignEmailTemplate.httpRequestLoader, true);
@@ -522,7 +895,6 @@ export class PartnerCampaignsComponent implements OnInit {
 
     addReplyRows() {
         this.reply = new Reply();
-        $('.bs-timepicker-field').attr("disabled", 'disabled');
         let length = this.allItems.length;
         length = length + 1;
         var id = 'reply-' + length;
@@ -681,13 +1053,20 @@ export class PartnerCampaignsComponent implements OnInit {
     ngOnInit() {
         this.campaignType = this.route.snapshot.params['type'];
         this.loggedInUserId = this.authenticationService.getUserId();
+        this.loadCampaignNames( this.loggedInUserId );       
         this.listPartnerCampaigns(this.loggedInUserId, this.campaignType);
-        
-        
         if(this.referenceService.isEditNurtureCampaign){
             this.nurtureCampaign(this.referenceService.nurtureCampaignId);
         }
-        
+    }
+    setLaunchTime(){
+        var date    = new Date(),
+        year      = date.getFullYear(),
+        month   = date.getMonth() < 10 ? '0' + date.getMonth() : date.getMonth(),
+        day     = date.getDate()  < 10 ? '0' + date.getDate()  : date.getDate(),
+        hours = date.getHours() > 9 ? date.getHours() : '0' + date.getHours(),
+        minutes = date.getMinutes() > 9 ? date.getMinutes() : '0' + date.getMinutes();
+        return day+"/"+month+"/"+year+" "+hours+":"+minutes;
         
     }
 

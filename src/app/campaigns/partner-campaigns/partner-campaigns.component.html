@@ -57,6 +57,8 @@
 </div>
 
 <div class="page-content" *ngIf="isNurture && campaign != null">
+    <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+<ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
     <div class="page-bar">
         <ul class="page-breadcrumb">
             <li><i class="fa fa-home"></i> <a>Home</a><i class="fa fa-angle-right"></i></li>
@@ -72,34 +74,44 @@
             </a>
         </div>
         <div class="portlet-body clearfix">
+        
+        <div class="alert alert-danger"  id="contact-list-error" style="display: none;">
+			<strong>Please select contact list</strong>
+		</div>
+		 <div class="alert alert-danger" *ngIf="invalidScheduleTime" id="invalidScheduleTimeDiv">
+								<strong>{{invalidScheduleTimeError}}</strong>
+		</div>
+        
             <form role="form" [formGroup]="campaignLaunchForm" (ngSubmit)="launchCampaign();">
                 <div class="col-xs-12 col-sm-6">
                     <fieldset>
                         <legend>Campaign details</legend>
                         <form>
-                            <div class="form-group">
-                                <label for="exampleInputEmail1">Publish as (save as)</label>
-                                <input type="text" id="campaignName" placeholder="Campaign Name" class="form-control" [(ngModel)]="campaign.campaignName" name="campaignName" />
+                            <div class="form-group" [attr.class]="campaignNameDivClass">
+                                <label for="exampleInputEmail1">Publish as (save as)</label><font style="color: red"><b> * </b></font>
+                                  <span *ngIf="!isValidCampaignName &&campaign.campaignName?.length>0" style="color: red">Already Exists</span>
+                                <input type="text" id="campaignName" placeholder="Campaign Name" class="form-control" [(ngModel)]="campaign.campaignName" name="campaignName"
+                              		  (input)="validateCampaignName(campaign.campaignName);validateForm();validateField('campaignName');"	 maxlength="200" />
                             </div>
-                            <div class="form-group">
-                                <label for="exampleInputPassword1">Subject line</label>
-                                <input type="text" id="subjectLine" placeholder="Subject Line" class="form-control" [(ngModel)]="campaign.subjectLine" name="subjectLine" />
+                            <div class="form-group" [attr.class]="subjectLineDivClass">
+                                <label for="exampleInputPassword1">Subject line</label><font style="color: red"><b> * </b></font>
+                                <input type="text" id="subjectLine" placeholder="Subject Line" class="form-control" [(ngModel)]="campaign.subjectLine" name="subjectLine" (input)="validateForm();validateField('subjectLine');" maxlength="200" />
                             </div>
-                            <div class="form-group col-xs-6 p0">
-                                <label for="exampleInputPassword1">From name</label>
-                                <input type="text" id="fromName" placeholder="From Name" class="form-control" [(ngModel)]="campaign.fromName" name="fromName" />
+                            <div class="form-group col-xs-6 p0" [attr.class]="fromNameDivClass">
+                                <label for="exampleInputPassword1">From name</label><font style="color: red"><b> * </b></font>
+                                <input type="text" id="fromName" placeholder="From Name" class="form-control" [(ngModel)]="campaign.fromName" name="fromName"  (input)="validateForm();validateField('fromName');" maxlength="200" />
                             </div>
-                            <div class="form-group col-xs-6 pr0">
-                                <label for="exampleInputPassword1">From email</label>
+                            <div class="form-group col-xs-6 pr0" [attr.class]="fromEmaiDivClass">
+                                <label for="exampleInputPassword1">From email</label><font style="color: red"><b> * </b></font>
                                 <select class="form-control" name="campaign.email" [(ngModel)]="campaign.email" (change)="setFromName()">
                                     <option [ngValue]="campaign.email">
                                         {{campaign.email}}
                                     </option>
                                 </select>
                             </div>
-                            <div class="form-group">
-                                <label for="exampleInputPassword1">Pre header</label>
-                                <input type="text" id="preHeader" placeholder="Pre Header" class="form-control" [(ngModel)]="campaign.preHeader" name="preHeader" />
+                            <div class="form-group" [attr.class]="preHeaderDivClass">
+                                <label for="exampleInputPassword1">Pre header</label><font style="color: red"><b> * </b></font>
+                                <input type="text" id="preHeader" placeholder="Pre Header" class="form-control" [(ngModel)]="campaign.preHeader" name="preHeader" (input)="validateForm();validateField('preHeader');" maxlength="200"  />
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-sm-4">Notify Me When</label>
@@ -159,7 +171,7 @@
                             </div>
                         </div>
                     </fieldset>
-                    <fieldset>
+                    <fieldset [style.border-color]="contactListBorderColor">
                         <legend>Selected contact list</legend>
                         <div class="row m0">
                             <div class="col-xs-4 p0">
@@ -175,7 +187,7 @@
                 </div>
 
 
-	<div class="col-xs-12">
+	<div class="col-xs-12" id="campaign-options-div">
 		<fieldset>
 			<legend>Additional campaign options</legend>
 		<div>
@@ -225,7 +237,6 @@
 					<div class="panel-body">
 						<form class="role add-reply" id="form-{{reply.divId}}">
 						<div class="row" >
-							
 								<div class="col-md-6">
 								<label for="reason">Reason</label>
 								<select class="form-control" name="actionId" [(ngModel)]="reply.actionId">
@@ -328,7 +339,7 @@
 												</tr>
 											</thead>
 											<tbody>
-												<ng-container *ngIf="!isAdd && reply.emailTemplatesPagination.totalRecords>0 && reply.emailTemplatesPagination.pageIndex==1 && reply.selectedEmailTemplateIdForEdit>0 && reply.showSelectedEmailTemplate ">
+												<ng-container *ngIf="reply.emailTemplatesPagination.totalRecords>0 && reply.emailTemplatesPagination.pageIndex==1 && reply.selectedEmailTemplateIdForEdit>0 && reply.showSelectedEmailTemplate ">
 													<tr (click)="setReplyEmailTemplate(reply.emailTemplate.id,reply,i)" [class.active]="reply.emailTemplate.id==reply.selectedEmailTemplateId">
 														<td>
 															<input type="radio" name="reply-email-template" [value]="reply.emailTemplate.id" id="reply-{{i}}-{{reply.emailTemplate.id}}"
@@ -534,7 +545,7 @@
 												</tr>
 											</thead>
 											<tbody>
-												<ng-container *ngIf="!isAdd && url.emailTemplatesPagination.totalRecords>0 && url.emailTemplatesPagination.pageIndex==1 && url.selectedEmailTemplateIdForEdit>0 && url.showSelectedEmailTemplate ">
+												<ng-container *ngIf="url.emailTemplatesPagination.totalRecords>0 && url.emailTemplatesPagination.pageIndex==1 && url.selectedEmailTemplateIdForEdit>0 && url.showSelectedEmailTemplate ">
 													<tr (click)="setClickEmailTemplate(url.emailTemplate.id,url,i)" [class.active]="url.emailTemplate.id==url.selectedEmailTemplateId">
 														<td>
 															<input type="radio" name="url-email-template" [value]="url.emailTemplate.id" id="url-{{i}}-{{url.emailTemplate.id}}" (click)="setClickEmailTemplate(url.emailTemplate.id,url,i)"

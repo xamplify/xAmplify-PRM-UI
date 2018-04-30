@@ -25,6 +25,7 @@ export class WelcomeComponent implements OnInit {
     hasEmailTemplateRole = false;
     hasStatsRole = false;
     hasSocialStatusRole = false;
+    contactOrPartnerLink:string ="";
     constructor(
         private userService: UserService,
         public authenticationService: AuthenticationService,
@@ -40,6 +41,12 @@ export class WelcomeComponent implements OnInit {
         this.hasEmailTemplateRole = this.referenceService.hasRole(this.referenceService.roles.emailTemplateRole);
         this.hasStatsRole = this.referenceService.hasRole(this.referenceService.roles.statsRole);
         this.hasSocialStatusRole = this.referenceService.hasRole(this.referenceService.roles.socialShare);
+        
+        if(authenticationService.module.isVendor){
+            this.contactOrPartnerLink =  "/home/partners/manage";
+        }else{
+           this.contactOrPartnerLink =  "/home/contacts/manage";
+        }
 
     }
 
