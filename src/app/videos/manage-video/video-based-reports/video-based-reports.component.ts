@@ -637,7 +637,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             }
 
             if (this.downloadTypeName === 'minetesWatched') {
-                object["Email Id"] = this.downloadCsvList[i].name;
+                object["Email Id"] = this.downloadCsvList[i].emailId;
                 object["Date and Time"] = date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
                 object["Device"] = this.downloadCsvList[i].device;
                 object["Location"] = this.downloadCsvList[i].location;
