@@ -544,12 +544,12 @@
 																lang="{{contact.name}}" name="campaignContact[]"
 																value="{{contact.id}}" id="{{contact.id}}"
 																(click)="highlightRow(contact.id,$event)" /></td>
-															<td *ngIf="isPartner">
+															<td>
 															<app-user-info [isPartnerEntityInfo]="true"  [userInfo]="contact"> </app-user-info>
 															</td>
-															<td *ngIf="!isPartner">
+															<!-- <td *ngIf="!isPartner">
 															<app-user-info  [userInfo]="contact"> </app-user-info>
-															</td>
+															</td> -->
 															<td>
 																<h5>
 																	<span *ngIf="contact?.mobileNumber; else NA">{{contact.mobileNumber}}</span>
@@ -557,7 +557,7 @@
 															</td>
 															<td>
 																<h5 class='mb0'>{{contact.jobTitle}}</h5>
-																<h6 class='mt0' *ngIf="!isPartner">{{contact.contactCompany}}</h6>
+																<!-- <h6 class='mt0' *ngIf="!isPartner">{{contact.contactCompany}}</h6> -->
 															</td>
 															<td align="center">
 																<h5 *ngIf="contact?.address" class='mb0'>{{contact.address}}</h5>
@@ -693,12 +693,12 @@
 													value="{{allcontacts.id}}" id="{{allcontacts.id}}"
 													(click)="invalidContactsSelectedUserIds(allcontacts.id,$event)" />
 												</td>
-												<td *ngIf="isPartner">
+												<td>
 													<app-user-info [isPartnerEntityInfo]="true" [userInfo]="allcontacts"> </app-user-info>
 												</td>
-												<td *ngIf="!isPartner">
+												<!-- <td *ngIf="!isPartner">
 													<app-user-info  [userInfo]="allcontacts"> </app-user-info>
-												</td>
+												</td> -->
 												<td>
 													<h5>
 														<span *ngIf="allcontacts?.mobileNumber; else NA">{{allcontacts.mobileNumber}}</span>
@@ -706,7 +706,7 @@
 												</td>
 												<td>
 													<h5 class='mb0'>{{allcontacts.jobTitle}}</h5>
-													<h6 class='mt0' *ngIf="!isPartner">{{allcontacts.contactCompany}}</h6>
+													<!-- <h6 class='mt0' *ngIf="!isPartner">{{allcontacts.contactCompany}}</h6> -->
 												</td>
 												<td>
 													<h5 *ngIf="allcontacts?.address" class='mb0'>{{allcontacts.address}}</h5>
