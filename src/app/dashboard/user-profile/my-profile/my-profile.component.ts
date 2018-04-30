@@ -48,6 +48,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     profilePictureErrorMessage: string = "";
     active = false;
     isPlayed = false;
+    hasVideoRole = false;
     loggedInUserId: number = 0;
     tempPlayerColor: string;
     tempControllerColor: string;
@@ -70,7 +71,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     customResponse: CustomResponse = new CustomResponse();
     constructor(public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
         public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
-        public router: Router, public callActionSwitch: CallActionSwitch, public sanitizer: DomSanitizer, 
+        public router: Router, public callActionSwitch: CallActionSwitch, public sanitizer: DomSanitizer,
         public properties: Properties, public regularExpressions: RegularExpressions) {
         this.userData = this.authenticationService.userProfile;
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -78,6 +79,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         console.log(this.videoUtilService.videoTempDefaultSettings);
         this.loggedInUserId = this.authenticationService.getUserId();
         this.hasAllAccess = this.referenceService.hasAllAccess();
+        this.hasVideoRole = this.authenticationService.hasOnlyVideoRole();
         this.hasCompany = this.authenticationService.user.hasCompany;
         this.callActionSwitch.size = 'normal';
         this.videoUrl = this.authenticationService.MEDIA_URL + "profile-video/Birds0211512666857407_mobinar.m3u8";
@@ -516,7 +518,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             'required': 'WebsiteUrl required.',
             'pattern': 'Invalid Url Pattern'
         }
-        
+
 
 
     };
@@ -537,8 +539,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             'description': [this.userData.description, Validators.compose([noWhiteSpaceValidator, Validators.maxLength(50)])],
             'websiteUrl': [this.userData.websiteUrl, [Validators.pattern(urlPatternRegEx)]]
         });
-    
-    
+
+
         this.updateUserProfileForm.valueChanges
             .subscribe(data => this.onUpdateUserProfileFormValueChanged(data));
 
@@ -816,7 +818,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     isGridView(userId: number) {
         this.userService.isGridView(userId)
             .subscribe(
-                data => { 
+                data => {
                     this.callActionSwitch.isGridView = data; },
                 error => console.log(error),
                 () => { }
@@ -835,7 +837,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                 error => {
                     this.ngxloading = false;
                     console.log(error);
-                    this.customResponse = new CustomResponse('ERROR', this.properties.PROCESS_REQUEST_ERROR, true);    
+                    this.customResponse = new CustomResponse('ERROR', this.properties.PROCESS_REQUEST_ERROR, true);
             },
                 () => { }
             );
@@ -866,7 +868,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                                  self.infoMessage = "Please Assign An OrgAdmin Before You Disable Yourself.";
                                  $('#org-admin-info').show(600);
                                  swal.close();
-                                 
+
                              }
                          }*/
                 }).then(function () {

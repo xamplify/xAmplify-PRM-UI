@@ -106,14 +106,14 @@
 												<td>
 													<div class="actions-block" *ngIf="videoFileService.videoType==='myVideos'">
 														<a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor"
-															(click)="showEditVideo(videoFile)" title="Edit Video"> 
+															(click)="showEditVideo(videoFile)" title="Edit Video">
 															<i class="fa fa-pencil-square-o"></i>
-														</a> 
-														<a (click)="showCampaignVideoReport(videoFile)" 
-															title="Video Based Reports"> 
+														</a>
+														<a (click)="showCampaignVideoReport(videoFile)"
+															title="Video Based Reports">
 															<i class="fa fa-line-chart"></i>
 														</a>
-														<ng-container *ngIf="hasAllAccess || (hasCampaignRole && hasVideoRol && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor">
+														<ng-container *ngIf="hasAllAccess || (hasCampaignRole && hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor">
 															<a *ngIf="videoFile.viewBy!='DRAFT'" (click)="campaignRouter(videoFile)" title="Create Campaign">
 																<i class="fa fa-bullhorn"></i>
 															</a>
@@ -121,7 +121,7 @@
 																<i class="fa fa-bullhorn" title="Can't create a Campaign for DRAFT"></i>
 															</a>
 														</ng-container>
-														<a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId == videoFile.uploadedUserId) || authenticationService.module.isVendor" (click)="deleteVideoAlert(videoFile.alias,i ,videoFile.title)"> 
+														<a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId == videoFile.uploadedUserId) || authenticationService.module.isVendor" (click)="deleteVideoAlert(videoFile.alias,i ,videoFile.title)">
 															<i class="fa fa-trash"></i>
 														</a>
 													</div>
@@ -167,7 +167,7 @@
 													    </a>
 													</div>
 													<div style="top: 27%; position: relative;" *ngIf="videoFileService.videoType==='myVideos'">
-													  <span *ngIf="hasAllAccess || (hasCampaignRole && hasVideoRol && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor">
+													  <span *ngIf="hasAllAccess || (hasCampaignRole && hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor">
 														<a class="mix-preview2 " *ngIf="videoFile.viewBy!='DRAFT'" (click)="campaignRouter(videoFile)" title="Create Campaign" data-rel=""
 														 style="left:29%;margin-top :18px">
 														<i class="fa fa-bullhorn"></i>
@@ -177,7 +177,7 @@
 													   </a>
 													 </span>
 														<a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId == videoFile.uploadedUserId) || authenticationService.module.isVendor" class="mix-preview6 " (click)="deleteVideoAlert(videoFile.alias,i ,videoFile.title)"
-														 onMouseOver="this.style.color='#fff'" title="Delete Video" data-rel="" lang="{{videoFile.id}}" style="left:50%; margin-top :18px"> 
+														 onMouseOver="this.style.color='#fff'" title="Delete Video" data-rel="" lang="{{videoFile.id}}" style="left:50%; margin-top :18px">
 							                             <i class="fa fa-trash" style="color: red !important"  onMouseOut="this.style.color='red'" onMouseOver="this.style.color='#fff'"></i>
 						                             </a>
 													</div>

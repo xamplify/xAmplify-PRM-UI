@@ -119,7 +119,7 @@ export class AuthenticationService {
         if(!roleNames && this.user.roles) { roleNames = this.user.roles.map(function (a) { return a.roleName; });}
         return roleNames;
     }
-    
+
     isOnlyPartner(){
         let roleNames = this.getRoles();
         if(roleNames.length==2 && (roleNames.indexOf('ROLE_USER')>-1 && roleNames.indexOf('ROLE_COMPANY_PARTNER')>-1)){
@@ -128,7 +128,7 @@ export class AuthenticationService {
             return false;
         }
     }
-    
+
     isVendor(){
         let roleNames = this.getRoles();
         if(roleNames.length==2 && (roleNames.indexOf(this.roleName.userRole)>-1 && roleNames.indexOf(this.roleName.vendorRole)>-1)){
@@ -137,7 +137,15 @@ export class AuthenticationService {
             return false;
         }
     }
-        
+    hasOnlyVideoRole(){
+      const roleNames = this.getRoles();
+      if(roleNames.length===2 && (roleNames.indexOf('ROLE_USER')>-1 && roleNames.indexOf(this.roleName.videRole)>-1)){
+          return true;
+      }else{
+          return false;
+      }
+    }
+
     isPartner(){
         const roleNames = this.getRoles();
         if(roleNames.indexOf('ROLE_COMPANY_PARTNER')>-1){
