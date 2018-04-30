@@ -95,27 +95,20 @@ export class UploadEmailTemplateComponent implements OnInit {
             } else {
                // this.companyLogoUploader.queue.length = 0;
                 let path = JSON.parse(response).path;
-                if(path!="htmlNotFound"){
+                if(path!="Html not found in the uploaded zip file." && path!="Zip file contains more than one html file"){
                     this.model.content = path;
                     this.isUploaded = true;
                 }else{
                     this.companyLogoUploader.queue.length = 0;
-                    this.uploadFileErrorMessage = "Html not found in the uploaded zip file.";
+                    this.uploadFileErrorMessage = path;
                     this.isUploadFileError = true;
-                    
                 }
                
             }
             this.loading = false;
         }
-        
-        
-        
     }
 
-    
-
-    
     ngOnInit() {
         try {
             Metronic.init();
