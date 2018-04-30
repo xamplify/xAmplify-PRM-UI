@@ -30,6 +30,7 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
     videoTag:string = "";
     isVideoTagError:boolean = false;
     videoTagsError:string = "";
+    emailOpenTrackingUrl:string = "<div id=\"bottomDiv\"><img src=\"<emailOpenImgURL>\" class='backup_picture' style='display:none'></div>";
     httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
     constructor(private emailTemplateService: EmailTemplateService, private userService: UserService, 
             private router: Router, private emailTemplate: EmailTemplate, private logger: XtremandLogger,
@@ -47,7 +48,8 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
         );
         this.videoTag = "<a href='<SocialUbuntuURL>'>\n   <img src='<SocialUbuntuImgURL>'/> \n </a> \n";
         if (emailTemplateService.emailTemplate != undefined) {
-            this.model.content = emailTemplateService.emailTemplate.body;
+            let body  = emailTemplateService.emailTemplate.body.replace(this.emailOpenTrackingUrl,"");
+            this.model.content = body;
             this.model.templateName = emailTemplateService.emailTemplate.name;
         }
 

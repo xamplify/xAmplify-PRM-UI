@@ -18,36 +18,38 @@
 					<div class="col-xs-12 col-md-6">
    						<form>
 							<h3>Template Name</h3> 
-							<input type="text" class="form-control" style="border-left: 5px solid #a94442" id="templateName" [(ngModel)]="model.templateName" name="templateName" minlength="1" maxlength="50"
+							<input type="text" class="form-control" style="border-left: 5px solid #a94442" id="templateName" [(ngModel)]="model.templateName"
+									 name="templateName" minlength="1" maxlength="50"
 								placeholder="Please Enter Template Name" #templateName="ngModel" (ngModelChange)="checkAvailableNames($event)">
 							<div *ngIf="!isValidTemplateName"	class="alert alert-danger">Name is required</div>
 							<div *ngIf="duplicateTemplateName &&isValidTemplateName " class="alert alert-danger">Duplicate	Name</div>
 						</form>
 		              
 		              <div class="form-group files color">
-                		<h3>Upload Your File </h3>
-		                <input type="file" class="form-control"  ng2FileSelect [uploader]="uploader" id="fileId"
-									class="form-control" name="htmlFile"  accept="text/html"
-										(change)="readFile($event)"  #input>
+		              <div (fileOver)="fileOverBase($event)" ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}" (onFileDrop)="fileDropPreview($event)" [uploader]="companyLogoUploader">
+		              	<h3>Upload Your File </h3>
+							<input type="file"   ng2FileSelect [uploader]="companyLogoUploader" accept=".zip" 
+									*ngIf="companyLogoUploader.queue.length==0"  title=" " #input/>	
 		              </div>
+		              
 		               <div *ngIf="isUploadFileError" class="alert alert-danger" style="margin-top: 40px;" id="upload-error-div">
 							<strong>{{uploadFileErrorMessage}}</strong>
 					 </div>
 					 <div *ngIf="isVideoTagError" class="alert alert-danger">{{videoTagsError}}</div>
+		              </div>
 					</div>
 					<div class="col-xs-12 col-md-6" style="padding: 4em;">
 						<table>
 							<tbody>
 								<tr
-									*ngFor="let item of uploader.queue;let last = last;let index = index">
+									*ngFor="let item of companyLogoUploader.queue;let last = last;let index = index">
 									<td nowrap *ngIf="last">
-										<button type="button" class="btn btn-success"
-											(click)="saveHtmlTemplate()" id="save"
-											[disabled]="!isValidTemplateName ||duplicateTemplateName ">
+										<button type="button" class="btn btn-success"		(click)="saveHtmlTemplate()" id="save"
+											[disabled]="disableButton ||duplicateTemplateName ">
 											<span class="glyphicon glyphicon-upload"></span> Save
 										</button>
 										<button type="button" class="btn btn-danger"
-											(click)="item.remove();removeFile()"  data-dismiss="fileinput" [disabled]="item.isReady || item.isUploading || item.isSuccess">
+											(click)="item.remove();removeFile()"  data-dismiss="fileinput" [disabled]="item.isReady || item.isUploading">
 											<span class="glyphicon glyphicon-trash"></span> Remove
 										</button>
 									</td>

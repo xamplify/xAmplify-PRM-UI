@@ -105,6 +105,20 @@ export class EmailTemplateService {
     }
  
     
+    uploadZip(formData:FormData){
+        let userId =  6;
+        alert("110");
+        let headers = new Headers();
+        headers.append('Content-Type', 'multipart/form-data');
+       // headers.append('Accept', 'application/json');
+       // headers.append('processData','false');
+        let options = new RequestOptions({ headers: headers });
+        var url =this.URL+"admin/upload-zip?access_token="+this.authenticationService.access_token;
+        return this.http.post(url,formData,options)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+    
     private extractData( res: Response ) {
         let body = res.json();
         console.log( body );
