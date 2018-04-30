@@ -132,7 +132,7 @@ export class PartnerCampaignsComponent implements OnInit {
     names:string[]=[];
     editedCampaignName:string = "";
     /************Contact List**************/
-    contactListBorderColor:string = "black";
+    contactListBorderColor:string = "silver";
     
     /************Add Reply/Add OnClick**************/
     emailNotOpenedReplyDaysSum:number = 0;
@@ -434,7 +434,7 @@ export class PartnerCampaignsComponent implements OnInit {
         var errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
         if(errorLength===0 && this.selectedUserlistIds.length>0){
             this.dataError = false;
-            this.contactListBorderColor = "black";
+            this.contactListBorderColor = "silver";
             this.referenceService.goToTop();
             this.campaignService.saveCampaign( data )
             .subscribe(
@@ -472,7 +472,7 @@ export class PartnerCampaignsComponent implements OnInit {
     
     setContactListError(){
         if(this.selectedUserlistIds.length>0){
-            this.contactListBorderColor = "black";
+            this.contactListBorderColor = "silver";
             this.referenceService.goToDiv("campaign-options-div");
         }else{
             $('#contact-list-error').show(600);

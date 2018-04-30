@@ -180,7 +180,8 @@
                             <div class="col-xs-8" style="top: 1em;">
                                 <h4 class="pull-left" *ngIf="selectedUserlistIds.length==0">No contact list is selected</h4>
                                 <h4 class="pull-left" *ngIf="selectedUserlistIds.length > 0">{{selectedUserlistIds.length}} contact list is selected</h4>
-                                <a class="pull-right btn btn-primary btn-sm" data-toggle="modal" data-target="#contactlist-preivew">select</a>
+                                <a  *ngIf="selectedUserlistIds.length==0" class="pull-right btn btn-primary btn-sm" data-toggle="modal" data-target="#contactlist-preivew">select</a>
+                                 <a  *ngIf="selectedUserlistIds.length>0" class="pull-right btn btn-primary btn-sm" data-toggle="modal" data-target="#contactlist-preivew"> select & preview</a>
                             </div>
                         </div>
                     </fieldset>                    
