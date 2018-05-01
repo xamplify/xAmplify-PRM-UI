@@ -25,6 +25,8 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   reportName: string;
   videoViewsLevelFirst = [];
   videoViewsLevelSecond = [];
+  videoViewsLevelSecondAllRecords = [];
+  gettingAllUsersPagination: Pagination = new Pagination();
   isReport: boolean;
   selectedRowValue = false;
   anotherViewDate: string;
@@ -155,6 +157,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
         });
     }
   }
+  
   getVideoViewsLevelTwo(daysInterval, dateValue, videoId, pagination) {
     //  this.pagination.maxResults = 5;
     this.daysInterval = daysInterval;
@@ -166,11 +169,26 @@ export class ReportsComponent implements OnInit, AfterViewInit {
         this.videoViewsLevelSecond = result.data;
         this.pagination.totalRecords = result.totalRecords;
         this.pagination = this.pagerService.getPagedItems(this.pagination, this.videoViewsLevelSecond);
+        
+        this.getVideoViewsLevelTwoAllUsers(daysInterval, dateValue, videoId, result.totalRecords);
       },
       (error: any) => {
         console.error(error);
       });
   }
+  
+  getVideoViewsLevelTwoAllUsers(daysInterval, dateValue, videoId, totalrecords) {
+      this.gettingAllUsersPagination.maxResults = totalrecords;
+      this.dashboardService.getVideoViewsLevelTwoReports(daysInterval, dateValue, videoId, this.gettingAllUsersPagination).subscribe(
+        (result: any) => {
+          console.log(result);
+          this.videoViewsLevelSecondAllRecords = result.data;
+        },
+        (error: any) => {
+          console.error(error);
+        });
+    }
+  
   setPage(event: any) {
     this.pagination.pageIndex = event.page;
     this.getVideoStatesLevels();
@@ -239,7 +257,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     if (level === 'one') {
       this.downloadCsvList = this.videoViewsLevelFirst;
     } else if (level === 'two') {
-      this.downloadCsvList = this.videoViewsLevelSecond;
+      this.downloadCsvList = this.videoViewsLevelSecondAllRecords;
     }
     this.downloadDataList.length = 0;
     for (let i = 0; i < this.downloadCsvList.length; i++) {
