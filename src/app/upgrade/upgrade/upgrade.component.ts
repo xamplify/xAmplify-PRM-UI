@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../../core/services/authentication.service';
+import { ReferenceService } from '../../core/services/reference.service';
 
-declare var Metronic ,Demo,Layout :any;
+declare var Metronic ,Demo,Layout:any;
 
 @Component({
   selector: 'app-upgrade',
@@ -10,13 +11,13 @@ declare var Metronic ,Demo,Layout :any;
 })
 export class UpgradeComponent implements OnInit {
 
-  constructor(public authenticationService:AuthenticationService) { }
+  constructor(public authenticationService:AuthenticationService, public referenceService:ReferenceService) { }
 
   ngOnInit(){
-      try{   
+      try{
            Metronic.init();
-           Layout.init(); 
-           Demo.init(); 
+           Layout.init();
+           Demo.init();
       }
       catch(err){
       console.log("err");

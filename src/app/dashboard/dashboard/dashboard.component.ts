@@ -615,6 +615,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 data => {
                     this.dashboardReport.totalViews = data.totalVideoViewsCount;
                     this.dashboardReport.totalContacts = data.totalcontactsCount;
+                    this.dashboardReport.totalTeamMembers = data.totalTeamMembersCount;
                     this.dashboardReport.totalUploadedvideos = data.totalVideosCount;
                     this.dashboardReport.toalEmailTemplates = data.totalEmailTemplatesCount;
                     this.dashboardReport.totalCreatedCampaigns = data.totalCampaignsCount;

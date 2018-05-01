@@ -4,7 +4,7 @@ export class DashboardReport {
     genderDemographicsTotal  = 0;
 
     totalContacts  = 0;
-    TotalTeamMembers = 0;
+    totalTeamMembers = 0;
     totalUploadedvideos  = 0;
 
     totalEmailOpenedCount  = 0;
