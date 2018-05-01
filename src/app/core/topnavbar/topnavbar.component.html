@@ -11,11 +11,11 @@
 	<div class="page-header-inner">
 		<!-- BEGIN LOGO -->
 		<div class="page-logo"><!--  -->
-			<a routerLink="/home/dashboard/default">
+			<a [routerLink]="refService.homeRouter">
 			<img [src]="properties.COMPANY_LOGO" alt="logo" class="logo-default" />
 			</a>
 			<div class="menu-toggler sidebar-toggler" *ngIf="authenticationService.user.hasCompany">
-				<!-- DOC: Remove the above "hide" to enable the sidebar toggler button on header --> 
+				<!-- DOC: Remove the above "hide" to enable the sidebar toggler button on header -->
 			</div>
 		</div>
 		<!-- END LOGO -->
@@ -43,7 +43,7 @@
 			<div class="top-menu">
 				<ul class="nav navbar-nav pull-right">
 					<!-- BEGIN NOTIFICATION DROPDOWN -->
-					
+
 						<li *ngIf="authenticationService.module.isCompanyPartner && !authenticationService.module.isOrgAdmin && authenticationService.user.hasCompany" style="margin-top: 17px;margin-right: 25px;">
 						<!-- refService.hasCompany -->
 						<a class="btn btn-header" routerLink="/home/campaigns/select">
@@ -64,7 +64,7 @@
 						</a>
 					</li>
 					<!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
-					
+
 					<li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar" *ngIf="authenticationService.user.hasCompany">
 						<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
 						<i class="icon-bell" style="color: #0095da;"></i>
@@ -169,9 +169,9 @@
 							<li *ngIf="(refService.hasAllAccess() || authenticationService.module.isVendor )&& authenticationService.user.hasCompany">
 								<a [routerLink]="['/home/social/manage/all']"> <i class="fa fa-cog" aria-hidden="true"></i>Social Accounts</a>
 							</li>
-							<li *ngIf="refService.userDefaultPage == 'DASHBOARD' && authenticationService.user.hasCompany"><a [routerLink]="['/home/dashboard/welcome']"> 
+							<li *ngIf="refService.userDefaultPage == 'DASHBOARD' && authenticationService.user.hasCompany"><a [routerLink]="['/home/dashboard/welcome']">
 								<i class="fa fa-paper-plane-o" aria-hidden="true"></i>Welcome</a></li>
-							<li *ngIf="refService.userDefaultPage == 'WELCOME'  && authenticationService.user.hasCompany"><a [routerLink]="['/home/dashboard']"> 
+							<li *ngIf="refService.userDefaultPage == 'WELCOME'  && authenticationService.user.hasCompany"><a [routerLink]="['/home/dashboard']">
 								<i class="fa fa-paper-plane-o" aria-hidden="true"></i>Dashboard</a></li>
 							<li><a [routerLink]="['/userlock']"> <i
 									class="icon-lock"></i> Lock Screen

@@ -3,6 +3,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UserService } from '../../core/services/user.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
+import { ReferenceService } from '../services/reference.service';
 
 @Component({
     selector: 'app-notifications',
@@ -12,7 +13,8 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 export class NotificationsComponent implements OnInit {
     @Input('isTopNavBar') isTopNavBar = false;
     notifications: any;
-    constructor(private router: Router, public userService: UserService, public authenticationService: AuthenticationService) { }
+    constructor(private router: Router, public userService: UserService, public authenticationService: AuthenticationService,
+    public referenceService:ReferenceService) { }
 
     listNotifications() {
         this.userService.listNotifications(this.authenticationService.getUserId())

@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { ReferenceService } from '../../../core/services/reference.service';
@@ -16,7 +16,7 @@ declare var $: any;
   providers: [Pagination]
 
 })
-export class ReportsComponent implements OnInit, AfterViewInit {
+export class ReportsComponent implements OnInit {
 
   resultSparkline: any;
   viewsDate: string;
@@ -157,7 +157,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
         });
     }
   }
-  
+
   getVideoViewsLevelTwo(daysInterval, dateValue, videoId, pagination) {
     //  this.pagination.maxResults = 5;
     this.daysInterval = daysInterval;
@@ -169,14 +169,14 @@ export class ReportsComponent implements OnInit, AfterViewInit {
         this.videoViewsLevelSecond = result.data;
         this.pagination.totalRecords = result.totalRecords;
         this.pagination = this.pagerService.getPagedItems(this.pagination, this.videoViewsLevelSecond);
-        
+
         this.getVideoViewsLevelTwoAllUsers(daysInterval, dateValue, videoId, result.totalRecords);
       },
       (error: any) => {
         console.error(error);
       });
   }
-  
+
   getVideoViewsLevelTwoAllUsers(daysInterval, dateValue, videoId, totalrecords) {
       this.gettingAllUsersPagination.maxResults = totalrecords;
       this.dashboardService.getVideoViewsLevelTwoReports(daysInterval, dateValue, videoId, this.gettingAllUsersPagination).subscribe(
@@ -188,7 +188,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
           console.error(error);
         });
     }
-  
+
   setPage(event: any) {
     this.pagination.pageIndex = event.page;
     this.getVideoStatesLevels();
@@ -307,7 +307,5 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     } else {
       this.getVideoMinutesWatchedLevelOne(this.viewsDate, true);
     }
-  }
-  ngAfterViewInit() {
   }
 }
