@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { User } from '../../../core/models/user';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../../../core/services/authentication.service';
+import { ReferenceService } from '../../../core/services/reference.service';
+
 declare var Metronic, Layout, Demo, Profile: any;
 
 @Component({
@@ -14,7 +16,7 @@ export class ProfileHelpComponent implements OnInit {
   userData: User;
   userProfileImage = 'assets/admin/pages/media/profile/icon-user-default.png';
   parentModel = { 'displayName': '', 'profilePicutrePath': 'assets/admin/pages/media/profile/icon-user-default.png' };
-  constructor(public authenticationService: AuthenticationService, public router: Router) {
+  constructor(public authenticationService: AuthenticationService, public router: Router, public referenceService: ReferenceService) {
     this.userData = this.authenticationService.userProfile;
     if (this.isEmpty(this.userData.roles) || this.userData.profileImagePath === undefined) {
       this.router.navigateByUrl('/home/dashboard');

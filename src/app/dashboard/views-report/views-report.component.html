@@ -3,7 +3,7 @@
 		<ul class="page-breadcrumb">
 			<li>
 				<i class="fa fa-home"></i>
-				<a [routerLink]="['/']">Home</a>
+				<a [routerLink]="referenceService.homeRouter">Home</a>
 				<i class="fa fa-angle-right"></i>
 			</li>
 			<li>
@@ -114,7 +114,7 @@
 				</span>
 					 <ul class="dropdown-menu pull-right">
 						<li><a id="delete_button" (click)="downloadLogs()"> Export To Excel </a></li>
-					</ul> 
+					</ul>
 				</div>
 			</div>
 			<div class="modal-body">

@@ -27,8 +27,8 @@ declare var swal, videojs, QuickSidebar,$: any;
     selector: 'app-edit-video',
     templateUrl: './edit-video.component.html',
     styleUrls: ['./edit-video.component.css', '../../../../assets/css/video-css/ngx-tagsinput.scss',
-        '../../../../assets/css/video-css/call-action.css', '../../../../assets/css/video-css/video-js.custom.css', 
-        '../../../../assets/css/todo.css','../../../../assets/css/video-css/videojs-overlay.css', 
+        '../../../../assets/css/video-css/call-action.css', '../../../../assets/css/video-css/video-js.custom.css',
+        '../../../../assets/css/todo.css','../../../../assets/css/video-css/videojs-overlay.css',
         '../../../../assets/css/video-css/customImg.css',
     ],
     animations: [
@@ -135,11 +135,11 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     selectedImagePath: string;
     saveButtonTitle: string;
     isDisable = false;
-    brandLogoUrl: any; 
+    brandLogoUrl: any;
     logoDescriptionUrl: string;
     publisToMessage = "Only you can view";
     enableVideoLogo:boolean;
-    showError:boolean; 
+    showError:boolean;
     constructor(public referenceService: ReferenceService, public callActionSwitch: CallActionSwitch,
         public videoFileService: VideoFileService, public fb: FormBuilder, public changeDetectorRef: ChangeDetectorRef,
         public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger,
@@ -210,7 +210,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             this.uploader.queue[0].upload();
         };
         this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-            console.log(response); 
+            console.log(response);
             this.isThumb = true;
             this.saveVideoFile.imagePath = JSON.parse(response).path;
             this.defaultSaveImagePath = this.saveVideoFile.imagePath;
@@ -252,7 +252,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                 (<HTMLInputElement>document.getElementById('fileLogoSelectedid')).value = '';
                 return false;
             }
-        } 
+        }
     }
 
     public startsWithAt(control: FormControl) {
@@ -382,41 +382,35 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.titleDiv = titleDiv; this.colorControl = colorControl;
         this.controlPlayers = controlPlayers; this.callaction = callaction;
     }
-    titleDivChange() { 
+    titleDivChange() {
         this.divChanageValues(true, false, false, false);
      }
     colorControlChange() {
         $('html,body').animate({ scrollTop: 0 }, 'slow');
         this.divChanageValues(false, true, false, false);
-        const disable = this;
         this.loadRangeDisable = false;
-        setTimeout(function () {
-            if (disable.defaultSettingValue) {
-                disable.disableTransperancy(true);
-                disable.disablePlayerSettingnew = true;
+        setTimeout(() => {
+            if (this.defaultSettingValue) {
+                this.disableTransperancy(true);
+                this.disablePlayerSettingnew = true;
             } else {
-                disable.disableTransperancy(false);
-                disable.disablePlayerSettingnew = false;
+                this.disableTransperancy(false);
+                this.disablePlayerSettingnew = false;
             }
         }, 1);
     }
     controlPlayerChange() {
         $('html,body').animate({ scrollTop: 0 }, 'slow');
         this.divChanageValues(false, false, true, false);
-        const disable = this;
         this.loadRangeDisable = false;
-        setTimeout(function () {
-            disable.disablePlayerSettingnew = disable.defaultSettingValue ? true : false;
-        }, 1);
+        setTimeout(()=>{ this.disablePlayerSettingnew = this.defaultSettingValue ? true : false; }, 1);
     }
     callToActionChange() {
         $('html,body').animate({ scrollTop: 275 }, 'slow');
         this.divChanageValues(false, false, false, true);
-        const disable = this;
-        setTimeout(function () {
-            if (disable.saveVideoFile.callACtion) {
-                disable.disableCalltoAction(false);
-            } else { disable.disableCalltoAction(true); }
+        setTimeout( ()=> {
+            if (this.saveVideoFile.callACtion) { this.disableCalltoAction(false);
+            } else { this.disableCalltoAction(true); }
         }, 1);
     }
     // like and dis like methods
@@ -458,7 +452,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         $('#newPlayerVideo video').append('<source src=' + this.videoUrl + ' type="application/x-mpegURL">');
         // this.videoUrl = this.videoUrl + '.mp4?access_token=' + this.authenticationService.access_token;
         // $('#newPlayerVideo video').append('<source src="' + this.videoUrl + '" type="video/mp4">');
-       
+
         this.setVideoIdHeightWidth();
         const newThis = this;
         const player = videojs('videoId').ready(function () {
@@ -816,13 +810,11 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.callAction.endCalltoAction = this.saveVideoFile.endOfVideo = endValue;
     }
     startCallToactionOverlay(event: boolean) {
-        if (event) {
-            this.callActionOverlayboolean(true, false);
+        if (event) { this.callActionOverlayboolean(true, false);
         } else { this.callActionOverlayboolean(false, true); }
     }
     endCallToactionOverlay(event: boolean) {
-        if (event) {
-            this.callActionOverlayboolean(false, true);
+        if (event) { this.callActionOverlayboolean(false, true);
         } else { this.callActionOverlayboolean(true, false); }
     }
     // video source chage methods
@@ -877,11 +869,8 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     showEditModalDialog() {
         if(this.videoJSplayer){
-            const self = this;
             this.videoJSplayer.play();
-            setTimeout(()=>{
-            self.videoJSplayer.pause();
-           }, 1);
+            setTimeout(()=>{ this.videoJSplayer.pause();}, 1);
         }
         $('#overLayDialog').append($('#overlay-modal').show());
     }
@@ -904,9 +893,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     repeatPlay() {
         $('#overlay-modal').hide();
-        if (this.videoJSplayer) {
-            this.videoJSplayer.play();
-        }
+        if (this.videoJSplayer) {  this.videoJSplayer.play(); }
     }
     logoDescription(event: string){
         if (event.replace(/\s/g, '').length) { this.logoDescriptionUrl = event;
@@ -926,7 +913,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         console.log(this.saveVideoFile);
         this.saveVideoFile.categories = this.categories;
         this.settingImageGifPaths();
-        //   this.defaultVideoControllValues(this.saveVideoFile);
         try {
             this.buildForm();
             this.defaultImagePaths();
@@ -1167,18 +1153,18 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
     saveVideo() {
-        if(this.enableVideoLogo && (!this.logoDescriptionUrl || !this.brandLogoUrl)){ 
+        if(this.enableVideoLogo && (!this.logoDescriptionUrl || !this.brandLogoUrl)){
             if(!this.colorControl){ this.colorControlChange()}
-            this.showError = true 
-            setTimeout(()=>{ this.showError = false; },6000) 
+            this.showError = true
+            setTimeout(()=>{ this.showError = false; },6000)
         }
-        else {  
+        else {
         this.validVideoTitle(this.saveVideoFile.title);
         const titleUpdatedValue = this.saveVideoFile.title.replace(/\s\s+/g, ' ');
         const descriptionData = this.saveVideoFile.description.replace(/\s\s+/g, ' ');
         if (this.isValidTitle === false) {
             // if(this.saveButtonTitle === 'Save') { this.saveButtonTitle = 'saving..'} ;
-            this.saveButtonTitle = this.saveButtonTitle==='Save'? 'Saving': 'Updating'; 
+            this.saveButtonTitle = this.saveButtonTitle==='Save'? 'Saving': 'Updating';
             this.isDisable = true;
             this.saveVideoFile = this.videoForm.value;
             this.saveVideoFile.defaultSetting = this.defaultSettingValue;
@@ -1309,7 +1295,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.setShowSaveUpdateValues(false, false);
         this.notifyParent.emit(null);
     }
-    
+
     selectedPublishToName(event: any){
         if(event === "PUBLIC"){
             this.publisToMessage = "Everyone can view"
@@ -1319,7 +1305,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             this.publisToMessage = "Only you can view"
         }
     }
-    
+
     ngOnDestroy() {
         this.xtremandLogger.info('Deinit - Destroyed Edit-Video Component');
         if (this.is360Value !== true || this.videoJSplayer) { this.videoJSplayer.dispose(); }

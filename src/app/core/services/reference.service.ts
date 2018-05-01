@@ -17,17 +17,17 @@ declare var $: any;
 
 @Injectable()
 export class ReferenceService {
-    
+
     swalConfirmButtonColor: '#54a7e9';
     swalCancelButtonColor: '#999';
     refcategories: Category[];
     userName: any;
-    selectedCampaignType: string = "";
-    isCampaignFromVideoRouter: boolean = false;
-    campaignSuccessMessage: string = "";
-    isCreated: boolean = false;
-    isUpdated: boolean = false;
-    errorPrepender: string = "Error In";
+    selectedCampaignType = "";
+    isCampaignFromVideoRouter = false;
+    campaignSuccessMessage = "";
+    isCreated = false;
+    isUpdated = false;
+    errorPrepender = "Error In";
     campaignVideoFile: SaveVideoFile;
     videoTitles: string[];
     defaultPlayerSettings: DefaultVideoPlayer;
@@ -35,15 +35,15 @@ export class ReferenceService {
     defaulgVideoMethodCalled = false;
     uploadRetrivejsCalled = false;
     topNavbarUserService = false;
-    isFromTopNavBar: boolean = false;
+    isFromTopNavBar = false;
     isEnabledCamera = false;
     cameraIsthere: boolean;
     topNavBarNotificationDetails: any = new Object();
     roles: Roles = new Roles();
     topNavBarUserDetails = { 'displayName': '....', 'profilePicutrePath': 'assets/admin/pages/media/profile/icon-user-default.png' };
-    userDefaultPage: string = 'welcome';
-    hasCompany: boolean = false;
-    formGroupClass: string = "form-group";
+    userDefaultPage = 'welcome';
+    hasCompany = false;
+    formGroupClass = "form-group";
     errorClass = "form-group has-error has-feedback";
     successClass = "form-group has-success has-feedback";
     deviceInfo: any;
@@ -57,11 +57,12 @@ export class ReferenceService {
     partnerCount:number;
     userProviderMessage = '';
     companyId:number;
-    isDisabling:boolean = false;
+    isDisabling = false;
     videoBrandLogo: string;
-    videoType:string = "";
+    videoType = "";
     isEditNurtureCampaign = false;
     nurtureCampaignId = 0;
+    homeRouter = '/home/dashboard/default';
     public URL: string = this.authenticationService.REST_URL + 'admin/';
     constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,
         private router: Router, public deviceService: Ng2DeviceService,) {
@@ -70,7 +71,7 @@ export class ReferenceService {
     getBrowserInfoForNativeSet(){
          this.deviceInfo = this.deviceService.getDeviceInfo();
          if(this.deviceInfo.device === 'iphone' || this.deviceInfo.os === 'mac' || this.deviceInfo.browser=== 'safari'){
-            return false; 
+            return false;
          }
          else {
              return true;
@@ -1066,7 +1067,7 @@ export class ReferenceService {
             new Country(247, 'YE', 'Yemen'),
             new Country(248, 'ZM', 'Zambia'),
             new Country(249, 'ZW', 'Zimbabwe'),
-            
+
         ];
     }
 
@@ -1403,10 +1404,10 @@ export class ReferenceService {
             new Timezone(247, 'Asia/Riyadh', '(GMT+03:00) Riyadh'),
             new Timezone(248, 'Africa/Maputo', '(GMT+02:00) Maputo'),
             new Timezone(249, 'Africa/Maputo', '(GMT+02:00) Maputo'),
-         
+
         ];
     }
-    
+
     convertToCSV( objArray ) {
         var array = typeof objArray != 'object' ? JSON.parse( objArray ) : objArray;
         var str = '';
@@ -1426,8 +1427,8 @@ export class ReferenceService {
         }
         return str;
     }
-    
-    
+
+
     convertStringToBoolean(string){
         switch(string.toLowerCase().trim()){
         case "true": case "yes": case "1": return true;

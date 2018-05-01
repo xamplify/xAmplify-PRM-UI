@@ -202,7 +202,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                             document.getElementById('para').innerHTML = this.templatehtml;
                         }
                         else if (updatedBody.includes('src="https://xamp.io/vod/images/xtremand-video.gif"')) {
-                            this.templateName = 'beeTemplate'; 
+                            this.templateName = 'beeTemplate';
                             updatedBody = this.replaceUpdateBody(updatedBody);
                             updatedBody = updatedBody.replace('<a href="https://dummyurl.com"', 'javascript:void(0)');
                             updatedBody = updatedBody.replace('src="https://xamp.io/vod/images/xtremand-video.gif"', '></a><div id="newPlayerVideo">'+
@@ -215,8 +215,8 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                             checkVideoTag = 'beeTemplate';
                             document.getElementById('para').innerHTML = this.templatehtml;
                         }  else if (updatedBody.includes('src="https://aravindu.com/vod/images/xtremand-video.gif"')) {
-                        // remove this else part in future   
-                            this.templateName = 'beeTemplate'; 
+                        // remove this else part in future
+                            this.templateName = 'beeTemplate';
                             updatedBody = this.replaceUpdateBody(updatedBody);
                             updatedBody = updatedBody.replace('<a href="https://dummyurl.com"', 'javascript:void(0)');
                             updatedBody = updatedBody.replace('src="https://aravindu.com/vod/images/xtremand-video.gif"', '></a><div id="newPlayerVideo">'+
@@ -228,7 +228,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                             console.log(this.templatehtml);
                             checkVideoTag = 'beeTemplate';
                             document.getElementById('para').innerHTML = this.templatehtml;
-                        } 
+                        }
                         else {
                             this.templateName = 'uploadedTemplate';
                             updatedBody = updatedBody.replace("view in browser", '');
@@ -322,7 +322,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
         this.alias = this.activatedRoute.snapshot.params['alias'];
         this.getCampaignVideo();
     }
-    
+
     defaultVideoSettings() {
         this.xtremandLogger.log('default settings called');
         this.videoUtilService.videoColorControlls(this.campaignVideoFile);
@@ -335,15 +335,15 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
     videoLogAction(xtremandLog: XtremandLog) {
       console.log(this.alias);
       xtremandLog.alias = this.alias;
-        if(xtremandLog.actionId === 8) { xtremandLog.startDuration = this.seekbarTimestored; 
+        if(xtremandLog.actionId === 8) { xtremandLog.startDuration = this.seekbarTimestored;
         console.log(xtremandLog.startDuration);
-        this.videoFileService.seekbarTime = this.seekbarTimestored; 
+        this.videoFileService.seekbarTime = this.seekbarTimestored;
         }
         console.log(xtremandLog);
         console.log(xtremandLog.actionId);
         this.videoFileService.logCampaignVideoActions(xtremandLog).subscribe(
             (result: any) => {
-                this.xtremandLogger.log('successfully logged the actions' + xtremandLog.actionId);        
+                this.xtremandLogger.log('successfully logged the actions' + xtremandLog.actionId);
                 xtremandLog.previousId = result.id;
             },
             (error: any) => {
@@ -368,17 +368,17 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
         this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
         this.videoUrl = this.videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
         $('#newPlayerVideo video').append('<source src=' + this.videoUrl + ' type="application/x-mpegURL">');
-       
+
        // this.videoUrl = this.videoUrl + '.mp4';
        // $('#newPlayerVideo video').append('<source src="' + this.videoUrl + '" type="video/mp4">');
         $('#videoId').css('height', '413px');
         $('#videoId').css('width', 'auto');
         const selfPanorama = this;
         const player = videojs('videoId', {
-             "controls": true, 
+             "controls": true,
              "autoplay": false,
              "preload": "auto",
-             "customControlsOnMobile": true, 
+             "customControlsOnMobile": true,
              "nativeControlsForTouch": true
              }).ready(function () {
             this.hotkeys({
@@ -548,7 +548,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                     } else if (event === "FullscreenOff") {
                         if(selfPanorama.templateName=== 'defaultTemplate'){ $("#videoId").css("width", "479px");
                           $("#videoId").css("height", "279px");  }  else {  $("#videoId").css("width", "500px");
-                          $("#videoId").css("height", "279px"); } 
+                          $("#videoId").css("height", "279px"); }
                        selfPanorama.setFullscreenValue('FullscreenOff');
                        $('#overlay-logo').hide()
                     }
@@ -579,7 +579,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
         const self = this;
         const overrideNativeValue = this.referService.getBrowserInfoForNativeSet();
             this.videoJSplayer = videojs('videoId', {
-                "controls": true, 
+                "controls": true,
                 "autoplay": true,
                 "preload": "auto",
                 html5: {
@@ -702,7 +702,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                         } else if (event === "FullscreenOff") {
                            if(self.templateName=== 'defaultTemplate'){ $("#videoId").css("width", "479px");
                            $("#videoId").css("height", "279px");  }  else {  $("#videoId").css("width", "500px");
-                           $("#videoId").css("height", "279px"); } 
+                           $("#videoId").css("height", "279px"); }
                             self.setFullscreenValue('FullscreenOff');
                             $('#overlay-logo').hide()
                         }

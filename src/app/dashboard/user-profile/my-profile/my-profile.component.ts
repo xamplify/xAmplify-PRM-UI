@@ -57,7 +57,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     hasCompany: boolean;
     orgAdminCount: number = 0;
     infoMessage: string = "";
-    currentUser: User;
+    currentUser: any;
     roles: string[] = [];
     isOrgAdmin: boolean = false;
     isOnlyPartnerRole: boolean = false;
@@ -66,7 +66,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     imagePathSafeUrl: any;
     fullScreenMode = false;
     logoLink = '';
-    roleLength: boolean;
     ngxloading: boolean;
     customResponse: CustomResponse = new CustomResponse();
     constructor(public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
@@ -254,30 +253,14 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     ngOnInit() {
         try {
-            //    $("#defaultPlayerSettings").hide();
-            if(this.authenticationService.user.hasCompany){
-                this.videoUtilService.normalVideoJsFiles();
-                this.videoUrl = this.authenticationService.MEDIA_URL + "profile-video/Birds0211512666857407_mobinar.m3u8";
-            }
+            this.videoUtilService.normalVideoJsFiles();
             this.isGridView(this.authenticationService.getUserId());
-            Metronic.init();
-            Layout.init();
-            Demo.init();
             this.validateUpdatePasswordForm();
             this.validateUpdateUserProfileForm();
-            if (this.userData.firstName != null) {
-                this.userData.displayName = this.userData.firstName;
-            } else {
-                this.userData.displayName = this.userData.emailId;
-            }
-
-            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-            let roleNames = currentUser.roles.map(function (a) { return a.roleName; });
-            this.roleLength = currentUser.roles.length > 1 ? true : false;
-            this.isOnlyPartner(roleNames);
-            if ((currentUser.roles.length > 1 && this.hasCompany) || (this.authenticationService.user.roles.length>1 && this.hasCompany)) {
-                let roleNames = currentUser.roles.map(function (a) { return a.roleName; });
-                if (!this.isOnlyPartner(roleNames)) {
+            this.userData.displayName = this.userData.firstName ? this.userData.firstName : this.userData.emailId;
+            this.authenticationService.isOnlyPartner();
+            if ((this.currentUser.roles.length > 1 && this.hasCompany) || (this.authenticationService.user.roles.length>1 && this.hasCompany)) {
+                if (!this.authenticationService.isOnlyPartner()) {
                     this.getOrgAdminsCount(this.loggedInUserId);
                 }
                 this.getVideoDefaultSettings();
@@ -291,28 +274,11 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                 } else {
                     this.status = false;
                 }
-
             }
-
-
-
         } catch (err) { }
     }
-
-    isOnlyPartner(roleNames) {
-        if (roleNames.length == 2 && (roleNames.indexOf('ROLE_USER') > -1 && roleNames.indexOf('ROLE_COMPANY_PARTNER') > -1)) {
-            this.isOnlyPartnerRole = true;
-            return true;
-        } else {
-            this.isOnlyPartnerRole = false;
-            return false;
-        }
-
-    }
     ngAfterViewInit() {
-
-        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        if (currentUser.roles.length > 1 && this.authenticationService.hasCompany()) {
+        if (this.currentUser.roles.length > 1 && this.authenticationService.hasCompany()) {
              this.defaultVideoSettings();
             if (this.referenceService.defaultPlayerSettings.transparency === null) {
                 this.referenceService.defaultPlayerSettings.transparency = 100;
@@ -323,9 +289,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             if (this.referenceService.defaultPlayerSettings.enableVideoController === false) {
                 this.defaultVideoControllers();
             }
-
         }
-
     }
 
     updatePassword() {
@@ -579,13 +543,14 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         this.userService.updateUserProfile(this.updateUserProfileForm.value, this.authenticationService.getUserId())
             .subscribe(
                 data => {
-                    if (data != "") {
-                        var response = data;
-                        var message = response.message;
+                    if (data !== "") {
+                        const response = data;
+                        const message = response.message;
                         if (message === "User Updated") {
                             this.customResponse =  new CustomResponse('SUCCESS', this.properties.PROFILE_UPDATED,true);
                             this.userData = this.updateUserProfileForm.value;
                             this.userData.displayName = this.updateUserProfileForm.value.firstName;
+                            this.userData.emailId = this.authenticationService.user.emailId;
                             this.parentModel.displayName = this.updateUserProfileForm.value.firstName;
                             this.referenceService.topNavBarUserDetails.displayName = this.parentModel.displayName;
                             this.userService.getUserByUserName(this.authenticationService.user.emailId).
@@ -593,7 +558,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                                     res => {
                                         this.ngxloading = false;
                                         this.authenticationService.userProfile = res;
-                                       // this.getVideoDefaultSettings();
                                     },
                                     error => { this.logger.error(this.referenceService.errorPrepender + " updateUserProfile():" + error) },
                                     () => console.log("Finished")
@@ -602,11 +566,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                             this.ngxloading = false;
                             this.logger.error(this.referenceService.errorPrepender + " updateUserProfile():" + data);
                         }
-
                     } else {
                         this.logger.error(this.referenceService.errorPrepender + " updateUserProfile():" + data);
                     }
-
                 },
                 error => {
                     this.ngxloading = false;
