@@ -92,7 +92,9 @@
 											 alt="{{campaign.campaignType}} Campaign">
 										</td>
 										<td>
-											<h4 class='mt5 mb5 f-w-600' style="font-size: 14px;">{{campaign.campaignName}} </h4>
+											  <h4 class="ellipsis mt5 mb5 f-w-600" style="font-size: 14px;" title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:25}}
+													<span *ngIf="campaign.campaignName?.length>25">...</span>
+											</h4>
 											<h5 class='m0'>{{campaign.companyName}}
 												<span class='f-w-300'>{{campaign.createdBy}}</span>
 											</h5>
@@ -180,7 +182,10 @@
 												 style="height: 173px;-webkit-filter: grayscale(100%);filter: grayscale(100%);" alt="No Image Found">
 
 												<div class="mix-details" style="z-index: 700;padding: 7px;height: 174px;">
-													<h4 class="ellipsis" title="{{campaign.campaignName}}" style="height: 20px; margin-top: 9px;">{{campaign.campaignName}}</h4>
+													  <h4 class="ellipsis" style="height: 20px; margin-top: 9px;" title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:25}}
+														<span *ngIf="campaign.campaignName?.length>25">...</span>
+													 </h4>
+													
 													<!-- <div style="top: 2%; position: relative; margin-left: 5px;">
 													</div> -->
 													<div style="top: 30%; position: relative;">

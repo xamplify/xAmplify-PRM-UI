@@ -1,5 +1,5 @@
 import { CampaignType } from '../models/campaign-type';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { FormsModule, FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
@@ -34,14 +34,14 @@ declare var $: any;
     styleUrls: ['./partner-campaigns.component.css'],
     providers: [DatePipe, CallActionSwitch]
 })
-export class PartnerCampaignsComponent implements OnInit {
+export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     selectedEmailTemplateId: number=0;
     loggedInUserId: number;
     campaigns: any;
     campaign: Campaign;
     emailTemplate: EmailTemplate;
     userLists: any;
-    isNurture: boolean;
+    isNurture: boolean=false;
     videoFile: any;
     public campaignLaunchOptions = ['NOW', 'SCHEDULE', 'SAVE'];
     campaignLaunchForm: FormGroup;
@@ -164,42 +164,59 @@ export class PartnerCampaignsComponent implements OnInit {
     
     nurtureCampaign(campaignId: number) {
         this.isNurture = true;
-        const data = { 'campaignId': campaignId }
-        this.campaignService.getCampaignById(data)
+        const data = { 'campaignId': campaignId,'userId':this.loggedInUserId }
+        this.campaignService.getParnterCampaignById(data)
             .subscribe(
             result => {
-                console.log(this.campaign);
-                this.campaign = result;
-                const userProfile = this.authenticationService.userProfile;
-                this.campaign.email = userProfile.emailId;
-                if(userProfile.firstName !== undefined && userProfile.lastName !== undefined)
-                    this.campaign.fromName = $.trim(userProfile.firstName + " " + userProfile.lastName);
-                else if(userProfile.firstName !== undefined && userProfile.lastName === undefined)
-                    this.campaign.fromName = $.trim(userProfile.firstName);
-                else
-                    this.campaign.fromName = $.trim(userProfile.emailId);
-                
-                this.setEmailIdAsFromName();
-
-                this.campaign.countryId = this.countries[0].id;
-                this.onSelect(this.campaign.countryId);
-
-                this.getCampaignReplies(this.campaign);
-                this.getCampaignUrls(this.campaign);
-
-                this.validateLaunchForm();
-                this.loadContactList(this.contactListPagination);
-                this.getAnchorLinksFromEmailTemplate(this.campaign.emailTemplate.body);
-                if(this.campaign.nurtureCampaign){
-                    this.selectedUserlistIds = this.campaign.userListIds;
-                    this.selectedEmailTemplateId = this.campaign.emailTemplate.id;
-                }else{
-                    this.getCampaignPartnerByCampaignIdAndUserId(this.campaign.campaignId, this.loggedInUserId);
-                }
+                this.setCampaignData(result);
             },
             error => console.log(error),
             () => { });
     }
+    editNurtureCampaign(campaignId:number){
+        this.isNurture = true;
+        const data = { 'campaignId': campaignId }
+        this.campaignService.getCampaignById(data)
+            .subscribe(
+            result => {
+                this.setCampaignData(result);
+             
+            },
+            error => console.log(error),
+            () => { });
+    
+    }
+    
+    
+    setCampaignData(result){
+        this.campaign = result;
+        const userProfile = this.authenticationService.userProfile;
+        this.campaign.email = userProfile.emailId;
+        if(userProfile.firstName !== undefined && userProfile.lastName !== undefined)
+            this.campaign.fromName = $.trim(userProfile.firstName + " " + userProfile.lastName);
+        else if(userProfile.firstName !== undefined && userProfile.lastName === undefined)
+            this.campaign.fromName = $.trim(userProfile.firstName);
+        else
+            this.campaign.fromName = $.trim(userProfile.emailId);
+        
+        this.setEmailIdAsFromName();
+
+        this.campaign.countryId = this.countries[0].id;
+        this.onSelect(this.campaign.countryId);
+
+        this.getCampaignReplies(this.campaign);
+        this.getCampaignUrls(this.campaign);
+
+        this.validateLaunchForm();
+        this.loadContactList(this.contactListPagination);
+        this.getAnchorLinksFromEmailTemplate(this.campaign.emailTemplate.body);
+        this.selectedEmailTemplateId = this.campaign.emailTemplate.id;
+        if(this.campaign.nurtureCampaign){
+            this.selectedUserlistIds = this.campaign.userListIds;
+        }
+    }
+    
+    
 
     getCampaignPartnerByCampaignIdAndUserId(campaignId: number, userId: number) {
         this.campaignService.getCampaignPartnerByCampaignIdAndUserId(campaignId, userId)
@@ -1067,7 +1084,7 @@ export class PartnerCampaignsComponent implements OnInit {
         this.loadCampaignNames( this.loggedInUserId );       
         this.listPartnerCampaigns(this.loggedInUserId, this.campaignType);
         if(this.referenceService.isEditNurtureCampaign){
-            this.nurtureCampaign(this.referenceService.nurtureCampaignId);
+            this.editNurtureCampaign(this.referenceService.nurtureCampaignId);
         }
     }
     setLaunchTime(){
@@ -1079,6 +1096,11 @@ export class PartnerCampaignsComponent implements OnInit {
         minutes = date.getMinutes() > 9 ? date.getMinutes() : '0' + date.getMinutes();
         return day+"/"+month+"/"+year+" "+hours+":"+minutes;
         
+    }
+    
+    ngOnDestroy(){
+        this.isNurture = false;
+        this.referenceService.isEditNurtureCampaign = false;
     }
 
 }

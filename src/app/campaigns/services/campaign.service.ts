@@ -62,6 +62,13 @@ export class CampaignService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+    
+    getParnterCampaignById(data: any) {
+        return this.http.post(this.URL + "admin/getPartnerCampaignById?access_token=" + this.authenticationService.access_token, data)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
 
     getCampaignNames(userId: number) {
         return this.http.get(this.URL + "admin/listCampaignNames/" + userId + "?access_token=" + this.authenticationService.access_token)

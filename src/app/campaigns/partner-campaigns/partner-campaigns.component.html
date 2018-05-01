@@ -33,7 +33,9 @@
                                 <img *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1 && campaign.launched" src="assets/images/social-campaign.png" style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
                             </td>
                             <td>
-                                <h4 class='mt5 mb5 f-w-600'>{{campaign.campaignName}} </h4>
+                                <h4 class="ellipsis mt5 mb5 f-w-600" title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:25}}
+										<span *ngIf="campaign.campaignName?.length>25">...</span>
+								</h4>
                                 <h5 class='m0'>{{campaign.companyName}} <span class='f-w-600'>{{campaign.fromName}}</span></h5>
                             </td>
                             <td>
@@ -68,7 +70,7 @@
 
     <div class="portlet light shadow">
         <div class="portlet-title">
-            <h4 class="caption-subject font-red-sunglo f-w-600 pull-left">Nurture campaign</h4>
+            <h4 class="caption-subject font-red-sunglo f-w-600 pull-left">Redistribute A Campaign</h4>
             <a class="close-circle pull-right" data-dismiss="modal" (click)="isNurture = false">
                 <i class="fa fa-times"></i>
             </a>
@@ -165,8 +167,13 @@
                             </div>
                             <div class="col-xs-8">
                                 <a>
-                                    <h4 class="mt5 mb5 f-w-600" title="{{campaign.emailTemplate.name}}">{{campaign.emailTemplate.name}}</h4>
-                                    <h5 class="m0">Created By {{campaign.emailTemplate.createdBy}}</h5>
+                                <h4 class="ellipsis mt5 mb5 f-w-600" title="{{campaign.emailTemplate.name}}">{{campaign.emailTemplate.name | slice:0:25}}
+									<span *ngIf="campaign.emailTemplate.name?.length>25">...</span>
+								</h4>
+                                 <h5 class="m0">Created By {{campaign.emailTemplate.createdBy}}</h5>
+                                
+                                   <!--  <h4 class="mt5 mb5 f-w-600" title="{{campaign.emailTemplate.name}}">{{campaign.emailTemplate.name}}</h4> -->
+                                   
                                 </a>
                             </div>
                         </div>
