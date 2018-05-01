@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ReferenceService } from '../../core/services/reference.service';
 
 @Component({
   selector: 'app-service-unavailable',
@@ -7,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ServiceUnavailableComponent implements OnInit {
 
-  constructor() { }
+  constructor(public referenceService:ReferenceService) { }
 
   ngOnInit() {
     console.log("service unavailable component");

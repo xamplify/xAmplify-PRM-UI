@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ReferenceService } from '../../core/services/reference.service';
 
 @Component({
   selector: 'app-access-denied',
@@ -7,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AccessDeniedComponent implements OnInit {
 
-  constructor() { }
+  constructor(public referenceService:ReferenceService) { }
 
   ngOnInit() {
   }

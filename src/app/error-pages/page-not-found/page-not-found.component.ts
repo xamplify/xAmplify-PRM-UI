@@ -1,17 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ReferenceService } from '../../core/services/reference.service';
 
 @Component({
   selector: 'app-page-not-found',
   templateUrl: './page-not-found.component.html',
   styleUrls: ['./page-not-found.component.css']
 })
-export class PageNotFoundComponent implements OnInit {
-
+export class PageNotFoundComponent {
   title = 'The page was Not Found !';
-  constructor(public router: Router ) { }
-  homePage() { this.router.navigate(['./home/dashboard']); }
-  ngOnInit(){
-    
-  }
+  constructor(public referenceService:ReferenceService ) { }
 }

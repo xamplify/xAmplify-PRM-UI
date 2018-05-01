@@ -8,7 +8,7 @@ import {XtremandLogger } from '../xtremand-logger.service';
   styleUrls: ['./error-pages.component.css']
 })
 export class ErrorPagesComponent implements OnInit, OnDestroy {
-  errorCode: number;
+  errorCode: any;
   private subscribe: any;
   errorMap = [
     { code: '400', message: 'Bad Request' },
