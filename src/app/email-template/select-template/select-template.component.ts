@@ -26,7 +26,7 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
     
     constructor( private emailTemplateService: EmailTemplateService, private userService: UserService,
         private emailTemplate: EmailTemplate, private router: Router, private authenticationService: AuthenticationService,
-        private logger: XtremandLogger,private refService:ReferenceService) {
+        private logger: XtremandLogger,public refService:ReferenceService) {
 
      }
      

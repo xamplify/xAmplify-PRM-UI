@@ -70,7 +70,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
     isListView: boolean = false;
         
     constructor( private emailTemplateService: EmailTemplateService, private userService: UserService, private router: Router,
-        private pagerService: PagerService, private refService: ReferenceService, 
+        private pagerService: PagerService, public refService: ReferenceService, 
         public pagination: Pagination,private authenticationService:AuthenticationService,private logger:XtremandLogger) {
         this.loggedInUserId = this.authenticationService.getUserId();
         if(refService.isCreated){

@@ -68,7 +68,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
 
     constructor(private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         private pagination: Pagination, private pagerService: PagerService,
-        private refService: ReferenceService, private userService: UserService, private authenticationService: AuthenticationService) {
+        public refService: ReferenceService, private userService: UserService, private authenticationService: AuthenticationService) {
         this.loggedInUserId = this.authenticationService.getUserId();
         if (this.refService.campaignSuccessMessage == "SCHEDULE") {
             this.showMessageOnTop();
