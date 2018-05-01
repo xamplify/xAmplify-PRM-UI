@@ -96,7 +96,7 @@ export class EditCompanyProfileComponent implements OnInit {
 
     aboutUsDivClass: string = this.formGroupDefaultClass;
     aboutUsError = false;
-    aboutUsErrorMesssage = "";
+    aboutUsErrorMessage = "";
 
     logoDivClass: string = this.formGroupDefaultClass;
     logoError = false;
@@ -269,7 +269,7 @@ export class EditCompanyProfileComponent implements OnInit {
                     },
                     error => { this.ngxloading = false;
                           this.logger.errorPage(error) },
-                    () => { 
+                    () => {
                         this.saveVideoBrandLog();
                         this.logger.info("Completed saveOrUpdate()") }
                 );
