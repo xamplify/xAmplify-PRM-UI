@@ -216,7 +216,7 @@ input:checked + .slider-new:before {
 												<li>
 													<a href="#tab_1_4" data-toggle="tab" (click)="clearCustomResponse()">Settings</a>
 												</li>
-												<li *ngIf="hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor()" (click)="videojsCall()">
+												<li *ngIf="hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()" (click)="videojsCall()">
 													<a href="#tab_1_5" data-toggle="tab">Default Player Settings</a>
 												</li>
 											</ul>

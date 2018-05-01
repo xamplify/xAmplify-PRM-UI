@@ -326,17 +326,17 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.showVideosPage(true, false, false, false);
         this.showMessage = this.videoFileService.showSave; // boolean
         this.showUpdatevalue = this.videoFileService.showUpadte; // boolean
-        if (videoFile == null) { 
+        if (videoFile == null) {
             this.showVideoFileName = '';
             this.customResponse = new CustomResponse();
-        } else { 
-            this.showVideoFileName = videoFile.title; 
+        } else {
+            this.showVideoFileName = videoFile.title;
         }
-        if(this.showMessage){  
+        if(this.showMessage){
             this.showVideoFileName = '('+this.showVideoFileName+') video saved Successfully';
             this.customResponse = new CustomResponse( 'SUCCESS', this.showVideoFileName, true );
- 
-         } else if(this.showUpdatevalue){ 
+
+         } else if(this.showUpdatevalue){
             this.showVideoFileName = '('+this.showVideoFileName+') video settings updated successfully';
             this.customResponse = new CustomResponse( 'SUCCESS', this.showVideoFileName, true );
          }
@@ -361,7 +361,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
     }
     gotoHome() {
         this.videoUtilService.selectedVideo = null;
-        this.router.navigate(['./home/dashboard']);
+        this.router.navigate(['./home/dashboard/default']);
     }
     ngOnDestroy() {
         swal.close();

@@ -98,3 +98,6 @@ h3 {
 	font-size: 12px;
 	text-transform: uppercase;
 }
+.select-option{
+  cursor: pointer; width:100%; position: relative;float:left
+}

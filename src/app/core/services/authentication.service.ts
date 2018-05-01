@@ -34,7 +34,7 @@ export class AuthenticationService {
     userToken: UserToken = new UserToken();
     redirectUrl: string;
     map: any;
-    isCompanyAdded:boolean = false;
+    isCompanyAdded = false;
     module:Module = new Module();
     roleName: Roles= new Roles();
     constructor(private http: Http, private router: Router, private utilService: UtilService) {
@@ -170,6 +170,14 @@ export class AuthenticationService {
             return false;
         }
     }
+    isVendorPartner(){
+      let roleNames = this.getRoles();
+      if((roleNames.indexOf(this.roleName.vendorRole)>-1) && (roleNames.indexOf('ROLE_COMPANY_PARTNER')>-1)){
+        return true;
+      }else{
+          return false;
+      }
+  }
     logout(): void {
         console.log('logout()');
         // clear token remove user from local storage to log user out
