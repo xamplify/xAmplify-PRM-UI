@@ -20,7 +20,7 @@
 	<!-- page-breadcrumb -->
 	<div class="page-bar" *ngIf="!showEdit">
 		<ul class="page-breadcrumb">
-			<li><i class="fa fa-home"></i> <a [routerLink]="['/']">Home</a>
+			<li><i class="fa fa-home"></i> <a [routerLink]="referenceService.homeRouter">Home</a>
 				<i class="fa fa-angle-right"></i></li>
 			<li><a (click)="navigateToManageContacts()">Manage
 					{{checkingContactTypeName}}s</a> <i class="fa fa-angle-right"

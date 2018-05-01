@@ -1031,7 +1031,7 @@ export class EditContactsComponent implements OnInit {
                 this.xtremandLogger.log( this.allUsers );
 
 
-                this.loadAllContactListUsers( this.selectedContactListId );
+                this.loadAllContactListUsers( this.selectedContactListId, this.totalRecords );
 
 
                 var contactIds = this.pagination.pagedItems.map( function( a ) { return a.id; });
@@ -1683,9 +1683,9 @@ export class EditContactsComponent implements OnInit {
         }
     }
 
-    loadAllContactListUsers( contactSelectedListId: number ) {
+    loadAllContactListUsers( contactSelectedListId: number, totalRecords:number) {
         this.selectedContactListId = contactSelectedListId;
-        this.gettingAllUserspagination.maxResults = 50000;
+        this.gettingAllUserspagination.maxResults = totalRecords;
         this.gettingAllUserspagination.pageIndex = 1;
         this.contactService.loadUsersOfContactList( contactSelectedListId, this.gettingAllUserspagination )
             .subscribe(
@@ -1936,7 +1936,7 @@ export class EditContactsComponent implements OnInit {
     }
     
     listTeamMembers(){
-        this.teamMemberPagination.maxResults = 10000000;
+        this.teamMemberPagination.maxResults = 100000000;
         try{
             this.teamMemberService.list(this.teamMemberPagination,this.authenticationService.getUserId())
             .subscribe(
