@@ -165,9 +165,9 @@ export class EditContactsComponent implements OnInit {
         { 'name': 'like', 'value': 'like' },
     ];
     filterCondition = this.filterConditions[0];
-    
+
     constructor( public refService: ReferenceService, private contactService: ContactService, private manageContact: ManageContactsComponent,
-        private authenticationService: AuthenticationService, private router: Router,public countryNames: CountryNames,
+        public authenticationService: AuthenticationService, private router: Router,public countryNames: CountryNames,
         public regularExpressions: RegularExpressions,
         private pagerService: PagerService, public pagination: Pagination, public xtremandLogger: XtremandLogger, public properties: Properties,
         public teamMemberService: TeamMemberService) {
@@ -290,7 +290,7 @@ export class EditContactsComponent implements OnInit {
     closeShowValidMessage() {
         this.showInvalidMaills = false;
     }
-    
+
     updateContactList( contactListId: number ) {
         this.showInvalidMaills = false;
         this.invalidPattenMail = false;
@@ -334,7 +334,7 @@ export class EditContactsComponent implements OnInit {
             this.dublicateEmailId = true;
         }
     }
-    
+
     checkTeamEmails(arr, val) {
         this.xtremandLogger.log(arr.indexOf(val) > -1);
         return arr.indexOf(val) > -1;
@@ -344,11 +344,11 @@ export class EditContactsComponent implements OnInit {
         this.isCompanyDetails = false;
         this.newUsersEmails.length = 0;
         let existedEmails = [];
-        
+
         for(let i=0; i< this.users.length; i++){
             this.newUsersEmails.push(this.users[i].emailId);
         }
-        
+
         if(this.isPartner){
             for(let i=0; i< this.users.length; i++){
               if(this.users[i].contactCompany.trim() !=''){
@@ -364,18 +364,18 @@ export class EditContactsComponent implements OnInit {
             for ( let i = 0; i < this.orgAdminsList.length; i++ ) {
                 this.teamMembersList.push( this.orgAdminsList[i] );
             }
-            
+
             let emails = []
-            for(let i=0; i< this.users.length; i++){ 
+            for(let i=0; i< this.users.length; i++){
                  emails.push(this.users[i].emailId);
             }
-            
+
             if(emails.length > this.teamMembersList.length){
                 for(let i= 0; i< emails.length; i++){
                    let isEmail = this.checkTeamEmails(emails, this.teamMembersList[i]);
                    if(isEmail){ existedEmails.push(this.teamMembersList[i]) }
                 }
-                
+
             } else{
                 for(let i= 0; i< this.teamMembersList.length; i++){
                     let isEmail = this.checkTeamEmails(this.teamMembersList, emails[i]);
@@ -383,8 +383,8 @@ export class EditContactsComponent implements OnInit {
                  }
             }
             console.log(existedEmails);
-            
-            
+
+
         }else{
             this.isCompanyDetails = true;
         }
@@ -447,7 +447,7 @@ export class EditContactsComponent implements OnInit {
                 else {
                     this.validCsvContacts = false;
                 }
-               
+
                 this.newUsersEmails.push(this.users[i].emailId);
             }
             if ( this.validCsvContacts == true && this.invalidPatternEmails.length == 0) {
@@ -464,21 +464,21 @@ export class EditContactsComponent implements OnInit {
                           this.users[i].country = null;
                       }
                    }
-                    
+
                     for ( let i = 0; i < this.orgAdminsList.length; i++ ) {
                         this.teamMembersList.push( this.orgAdminsList[i] );
                     }
                     let emails = []
-                    for(let i=0; i< this.users.length; i++){ 
+                    for(let i=0; i< this.users.length; i++){
                          emails.push(this.users[i].emailId);
                     }
-                    
+
                     if(emails.length > this.teamMembersList.length){
                         for(let i= 0; i< emails.length; i++){
                            let isEmail = this.checkTeamEmails(emails, this.teamMembersList[i]);
                            if(isEmail){ existedEmails.push(this.teamMembersList[i]) }
                         }
-                        
+
                     } else{
                         for(let i= 0; i< this.teamMembersList.length; i++){
                             let isEmail = this.checkTeamEmails(this.teamMembersList, emails[i]);
@@ -486,11 +486,11 @@ export class EditContactsComponent implements OnInit {
                          }
                     }
                     console.log(existedEmails);
-                    
+
                 }else{
                     this.isCompanyDetails = true;
                 }
-                
+
                if(existedEmails.length === 0){
                 if(this.isCompanyDetails){
                 this.xtremandLogger.info( "update contacts #contactSelectedListId " + this.contactListId + " data => " + JSON.stringify( this.users ) );
@@ -503,7 +503,7 @@ export class EditContactsComponent implements OnInit {
                         $( "tr.new_row" ).each( function() {
                             $( this ).remove();
                         });
-                        
+
                         if ( !this.isPartner ) {
                             this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_SAVE_SUCCESS, true );
                         } else {
@@ -536,11 +536,11 @@ export class EditContactsComponent implements OnInit {
                 }else{
                     this.customResponse = new CustomResponse( 'ERROR', "Company Details is required", true );
                 }
-                
+
                }else{
                     this.customResponse = new CustomResponse( 'ERROR', "You are not allowed add teamMember or orgAdmin as a partner", true );
                 }
-                
+
             } else {
                 this.inValidCsvContacts = true;
             }
@@ -851,21 +851,21 @@ export class EditContactsComponent implements OnInit {
                       this.users[i].country = null;
                   }
                }
-                
+
                 for ( let i = 0; i < this.orgAdminsList.length; i++ ) {
                     this.teamMembersList.push( this.orgAdminsList[i] );
                 }
                 let emails = []
-                for(let i=0; i< this.users.length; i++){ 
+                for(let i=0; i< this.users.length; i++){
                      emails.push(this.users[i].emailId);
                 }
-                
+
                 if(emails.length > this.teamMembersList.length){
                     for(let i= 0; i< emails.length; i++){
                        let isEmail = this.checkTeamEmails(emails, this.teamMembersList[i]);
                        if(isEmail){ existedEmails.push(this.teamMembersList[i]) }
                     }
-                    
+
                 } else{
                     for(let i= 0; i< this.teamMembersList.length; i++){
                         let isEmail = this.checkTeamEmails(this.teamMembersList, emails[i]);
@@ -873,7 +873,7 @@ export class EditContactsComponent implements OnInit {
                      }
                 }
                 console.log(existedEmails);
-                
+
             }else{
                 this.isCompanyDetails = true;
             }
@@ -896,7 +896,7 @@ export class EditContactsComponent implements OnInit {
                     } else {
                         this.customResponse = new CustomResponse( 'SUCCESS', this.properties.PARTNERS_SAVE_SUCCESS, true );
                     }
-                    
+
                     $( "button#add_contact" ).prop( 'disabled', false );
                     $( "button#upload_csv" ).prop( 'disabled', false );
                     this.users.length = 0;
@@ -1530,7 +1530,7 @@ export class EditContactsComponent implements OnInit {
                     () => this.xtremandLogger.info( "allcontactComponent saveSelectedUsers() finished" )
                     )
             } else {
-               
+
                 if(this.addPartnerSave == true){
                     for ( let i = 0; i < this.selectedContactListIds.length; i++ ) {
                         for ( let j = 0; j < this.contactService.allPartners.length; j++ ) {
@@ -1550,7 +1550,7 @@ export class EditContactsComponent implements OnInit {
                     }
                 }
                 }
-                
+
                 console.log( this.selectedContactForSave );
                 this.contactService.saveContactList( this.selectedContactForSave, name, this.isPartner )
                     .subscribe(
@@ -1913,7 +1913,7 @@ export class EditContactsComponent implements OnInit {
             }
             );
     }
-    
+
     contactCompanyChecking(contactCompany: string){
         if( contactCompany.trim() != '' ){
             this.isCompanyDetails = true;
@@ -1934,7 +1934,7 @@ export class EditContactsComponent implements OnInit {
             }
             );
     }
-    
+
     listTeamMembers(){
         this.teamMemberPagination.maxResults = 100000000;
         try{
@@ -1957,9 +1957,9 @@ export class EditContactsComponent implements OnInit {
         }catch(error){
             this.xtremandLogger.log(error);
         }
-       
+
     }
-    
+
     listOrgAdmin(){
         try{
             this.contactService.listOrgAdmins()
@@ -1976,7 +1976,7 @@ export class EditContactsComponent implements OnInit {
         }catch(error){
             this.xtremandLogger.log(error);
         }
-       
+
     }
 
     closeModal( event ) {
@@ -1987,7 +1987,7 @@ export class EditContactsComponent implements OnInit {
         }
         }
 
-    
+
     ngOnInit() {
         this.loadContactListsNames();
         this.listTeamMembers();
