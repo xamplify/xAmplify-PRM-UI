@@ -212,7 +212,7 @@ export class PartnerCampaignsComponent implements OnInit {
     }
 
     onSelect(countryId) {
-        this.timezones = this.referenceService.getTimeZones().filter((item) => item.countryId == countryId);
+        this.timezones  = this.referenceService.getTimeZonesByCountryId(countryId);
     }
 
     setEmailIdAsFromName() {

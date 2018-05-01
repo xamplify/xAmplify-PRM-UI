@@ -2405,7 +2405,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
      }
      
      onSelect(countryId) {
-         this.timezones = this.refService.getTimeZones().filter((item)=> item.countryId === countryId);
+        this.timezones = this.refService.getTimeZonesByCountryId(countryId); 
        }
      
      setFromName(){

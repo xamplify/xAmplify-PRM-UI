@@ -1436,5 +1436,15 @@ export class ReferenceService {
         default: return Boolean(string);
     }
     }
+    
+    
+    getTimeZonesByCountryId(countryId:number){
+        let convertedCountryId = +countryId;
+        var filteredTimeZones = this.getTimeZones().filter(function (timezone) {
+            return timezone.countryId === convertedCountryId;
+        });
+        return filteredTimeZones;
+
+      }
 
 }

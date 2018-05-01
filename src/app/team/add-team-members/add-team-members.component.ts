@@ -333,7 +333,7 @@ export class AddTeamMembersComponent implements OnInit {
                         console.log(emailId.toLowerCase()+" is an org admin")
                         this.showErrorMessage("Org Admin Cannot be added as a team member");
                     }else if(this.partnerEmailIds.indexOf(emailId.toLowerCase())>-1){
-                        this.showErrorMessage("Partner Cannot be added as a team member");
+                        this.showErrorMessage("This email address is already registered with X-amplify and cannot be added as a team member at this time.");
                     }
                     else{
                         if(this.existingEmailIds.indexOf(emailId.toLowerCase())>-1){

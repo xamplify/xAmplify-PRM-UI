@@ -11,7 +11,7 @@
 	 
 <div class="page-bar">
 		<ul class="page-breadcrumb">
-			<li><i class="fa fa-home"></i> <a [routerLink]="['/']">Home</a> <i
+			<li><i class="fa fa-home"></i> <a [routerLink]="refService.homeRouter">Home</a> <i
 				class="fa fa-angle-right"></i></li>
 			<li style="color:#808080">Manage Templates
 			</li>
@@ -102,7 +102,7 @@
 												<i class="fa fa-eye mr5"></i>
 											</a> 
 											<a id="template-delete" (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)" title="Delete"
-												*ngIf="hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  ||authenticationService.module.isVendor">
+												*ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  ||authenticationService.module.isVendor) && emailTemplate.type!='PARTNER' ">
 												<i class="fa fa-trash"></i>
 											</a>
 										</div>
@@ -143,7 +143,7 @@
 												<i class="fa fa-pencil-square-o"></i>
 										    </a>
 										    <a class="mix-preview3" id="template-delete"  (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)" title="Delete" data-rel="" 
-										    			*ngIf="hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  || authenticationService.module.isVendor">
+										    			*ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)||authenticationService.module.isVendor) && emailTemplate.type!='PARTNER' ">
 												<i class="fa fa-trash" style="color:#f43636"></i>
 											</a>
 											</div>
