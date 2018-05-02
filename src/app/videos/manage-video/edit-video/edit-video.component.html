@@ -250,15 +250,6 @@
 														</span>
 														<img [src]="imageUrlPath" style="height: 71px; width: auto;">
 													</div>
-
-												<!-- <div>
-													<span *ngIf="imageUrlPath" class="close" style="position: absolute;left: 102px;top: 3px;background: #00a6e8;" (click)="uploader.clearQueue();clearOwnThumbnail()">&times;</span>
-													<img *ngIf="imageUrlPath" [src]=imageUrlPath style="height: 71px; width: 98px; border: 1px solid red;">
-												</div> -->
-<!--
-												<div *ngIf="ownThumbnail" class="alert alert-danger" style="margin-top: -7px;height: 38px;">
-													<p style="margin-top:-4px">Only image file is allowed, max 10mb </p>
-												</div> -->
 											</div>
 										</div>
 									</div>
@@ -601,13 +592,12 @@
 								</div>
 							</div>
 						</div>
-
 					</div>
 				</form>
 			</div>
 		</div>
 	</div>
-	<div class="todo-content">
+	<div class="todo-content" *ngIf="false">
 		<div>
 			<!-- PROJECT HEAD -->
 			<div class="portlet-title">
