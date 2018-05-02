@@ -71,7 +71,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   userWatchtotalRecords: number;
 
   constructor(private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
-    private authenticationService: AuthenticationService, public pagerService: PagerService, public pagination: Pagination,
+    public authenticationService: AuthenticationService, public pagerService: PagerService, public pagination: Pagination,
     private referenceService: ReferenceService, public contactService: ContactService) {
     this.isTimeLineView = false;
     this.campaign = new Campaign();
@@ -745,7 +745,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
         $("#email-template-title").append(emailTemplateName);
         $('#email-template-title').prop('title',emailTemplate.name);
         $("#htmlContent").append(body);
-        $('.modal .modal-body').css('overflow-y', 'auto'); 
+        $('.modal .modal-body').css('overflow-y', 'auto');
        // $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
         $("#show_email_template_preivew").modal('show');
     }

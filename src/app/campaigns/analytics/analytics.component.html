@@ -34,13 +34,13 @@
 				<div class="camp-details">
 					<div class="camp-title ">Video Info</div>
 					<div class="camp-number">
-					
+
 						<b class="m0" title={{campaign.campaignVideoFile.title}}>{{campaign.campaignVideoFile.title | slice: 0: 20}}</b>
 						<span *ngIf="campaign.campaignVideoFile.title?.length>23">...</span>
 					</div>
 					<div class="camp-desc">
 						<span title={{campaign.campaignVideoFile.description}}>{{campaign.campaignVideoFile.description | slice: 0: 20}}
-						<span *ngIf="campaign.campaignVideoFile.description?.length>23">...</span></span>	
+						<span *ngIf="campaign.campaignVideoFile.description?.length>23">...</span></span>
 					</div>
 				</div>
 			</a>
@@ -55,11 +55,10 @@
 					<div class="camp-details">
 						<div class="camp-title">Email Info</div>
 						<div class="camp-number">
-						  <b class="m0" title={{campaign.emailTemplate.title}}>{{campaign.emailTemplate.name | slice: 0: 20}}</b>
+						  <b class="m0" title={{campaign.emailTemplate.name}}>{{campaign.emailTemplate.name | slice: 0: 20}}</b>
 						</div>
 						<div class="camp-desc">
-						 <span title={{campaign.emailTemplate.description}}>{{campaign.emailTemplate.description | slice: 0: 20}}
-						 <span *ngIf="campaign.emailTemplate.description?.length>23">...</span></span>	
+						 <span>Click for preview</span>
 						</div>
 					</div>
 				</a>
@@ -70,9 +69,13 @@
 						<i class="fa fa-users"></i>
 					</div>
 					<div class="camp-details">
-						<div class="camp-title">Contact List Info</div>
+            <div class="camp-title" *ngIf="!authenticationService.isVendor()">Contact List Info</div>
+            <div class="camp-title" *ngIf="authenticationService.isVendor()">Partners List Info</div>
 						<div class="camp-number">
-							<b class="m0">{{campaingContactLists?.length}} Contact Lists</b>
+              <b class="m0">{{campaingContactLists?.length}}
+                 <span *ngIf="!authenticationService.isVendor()">Contact Lists</span>
+                 <span *ngIf="authenticationService.isVendor()">Partner Lists</span>
+              </b>
 						</div>
 						<div class="camp-desc">
 							<span>Click for details</span>
@@ -80,7 +83,7 @@
 					</div>
 				</a>
 			</div>
-	</div>	
+	</div>
 	<div class="col-xs-12 col-sm-6 p-5x" [hidden]="campaignType !== 'VIDEO'">
 		<div class="p-5x">
 			<div class="portlet light">
@@ -718,7 +721,7 @@
 							</tr>
 						</tbody>
 					</table>
-					<app-pagination *ngIf="pagination.pagedItems?.length > 0"  [pagination]="pagination" [type]="'coutrywiseUsers'" 
+					<app-pagination *ngIf="pagination.pagedItems?.length > 0"  [pagination]="pagination" [type]="'coutrywiseUsers'"
 					(notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
 				</div>
 			</div>
@@ -758,7 +761,7 @@
 				<div class="modal-body">
 				<div class="row">
 					<div class="col-md-4">
-					<table class="table tgrid"> 
+					<table class="table tgrid">
 						<thead>
 							<th class="center">Contact List name</th>
 						</thead>

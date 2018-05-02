@@ -43,52 +43,44 @@ export class LoginComponent implements OnInit, OnDestroy {
             this.loading = false;
             this.setCustomeResponse("ERROR", this.properties.EMPTY_CREDENTIAL_ERROR);
         } else {
-            if (localStorage.getItem('currentUser')) {
-                this.xtremandLogger.log("User From Local Storage");
-                const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-                this.redirectTo(currentUser);
-                return false;
-            } else {
-                const userName = this.model.username.toLowerCase();
-                this.referenceService.userName = userName;
-                const authorization = 'Basic ' + btoa('my-trusted-client:');
-                const body = 'username=' + userName + '&password=' + this.model.password + '&grant_type=password';
-                this.authenticationService.login(authorization, body, userName).subscribe(result => {
-                    if (localStorage.getItem('currentUser')) {
-                        // if user is coming from login
-                        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-                        this.xtremandLogger.log(currentUser);
-                        this.xtremandLogger.log(currentUser.hasCompany);
-                        this.redirectTo(currentUser);
-                        // if user is coming from any link
-                        if (this.authenticationService.redirectUrl) {
-                            this.router.navigate([this.authenticationService.redirectUrl]);
-                            this.authenticationService.redirectUrl = null;
-                        }
-
-                    } else {
-                        this.loading = false;
-                        this.setCustomeResponse("ERROR", this.properties.BAD_CREDENTIAL_ERROR);
-                    }
-                },
-                    (error: any) => {
-                        this.loading = false;
-                        const body = error['_body'];
-                        if (body !== "") {
-                            const response = JSON.parse(body);
-                            if (response.error_description === "Bad credentials") {
-                                this.setCustomeResponse("ERROR", this.properties.BAD_CREDENTIAL_ERROR);
-                            } else if (response.error_description === "User is disabled") {
-                                this.setCustomeResponse("ERROR", this.properties.USER_ACCOUNT_ACTIVATION_ERROR);
-                            }
-                        }
-                        else { 
-                            this.setCustomeResponse("ERROR", error);
-                            this.xtremandLogger.error("error:" + error)
-                        }
-                    });
-                return false;
-            }
+          const userName = this.model.username.toLowerCase();
+          this.referenceService.userName = userName;
+          const authorization = 'Basic ' + btoa('my-trusted-client:');
+          const body = 'username=' + userName + '&password=' + this.model.password + '&grant_type=password';
+          this.authenticationService.login(authorization, body, userName).subscribe(result => {
+              if (localStorage.getItem('currentUser')) {
+                  // if user is coming from login
+                  const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                  this.xtremandLogger.log(currentUser);
+                  this.xtremandLogger.log(currentUser.hasCompany);
+                  this.redirectTo(currentUser);
+                  // if user is coming from any link
+                  if (this.authenticationService.redirectUrl) {
+                      this.router.navigate([this.authenticationService.redirectUrl]);
+                      this.authenticationService.redirectUrl = null;
+                  }
+              } else {
+                  this.loading = false;
+                  this.setCustomeResponse("ERROR", this.properties.BAD_CREDENTIAL_ERROR);
+               }
+             },
+              (error: any) => {
+                  this.loading = false;
+                  const body = error['_body'];
+                  if (body !== "") {
+                      const response = JSON.parse(body);
+                      if (response.error_description === "Bad credentials") {
+                          this.setCustomeResponse("ERROR", this.properties.BAD_CREDENTIAL_ERROR);
+                      } else if (response.error_description === "User is disabled") {
+                          this.setCustomeResponse("ERROR", this.properties.USER_ACCOUNT_ACTIVATION_ERROR);
+                      }
+                  }
+                  else {
+                      this.setCustomeResponse("ERROR", error);
+                      this.xtremandLogger.error("error:" + error)
+                  }
+              });
+          return false;
         }
     }
 
@@ -99,21 +91,6 @@ export class LoginComponent implements OnInit, OnDestroy {
             this.router.navigate(['/home/dashboard/default']);
         } else {
             this.router.navigate(['/home/dashboard/add-company-profile']);
-            /* if (roles.length === 1 || this.isOnlyPartner(roleNames)) {
-                 this.router.navigate(['/home/dashboard/myprofile']);
-             } else {
-                 this.router.navigate(['/home/dashboard/add-company-profile']);
-             }*/
-        }
-    }
-
-    isOnlyPartner(roleNames) {
-        if (roleNames.length === 2 && (roleNames.indexOf('ROLE_USER') > -1 && roleNames.indexOf('ROLE_COMPANY_PARTNER') > -1)) {
-            this.xtremandLogger.log("*******************LoggedIn User Is Partner***********************")
-            return true;
-        } else {
-            this.xtremandLogger.log("*******************LoggedIn User Is Not Partner***********************");
-            return false;
         }
     }
     eventHandler(keyCode: any) {  if (keyCode === 13) {  this.login();  }  }
@@ -121,19 +98,11 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.customResponse = new CustomResponse(responseType, responseMessage, true);
         this.xtremandLogger.error(responseMessage);
     }
-
     ngOnInit() {
         localStorage.removeItem('currentUser');
-        // if (localStorage.getItem('currentUser')) {  // if current user is there, directly goto dashboard
-        //     this.xtremandLogger.log("User From Local Storage");
-        //     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        //     this.redirectTo(currentUser);
-        // }
     }
-
     ngOnDestroy() {
         this.referenceService.userProviderMessage = '';
         $('#org-admin-deactivated').hide();
     }
-
 }
