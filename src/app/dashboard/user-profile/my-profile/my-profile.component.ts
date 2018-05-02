@@ -80,19 +80,16 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         this.hasCompany = this.authenticationService.user.hasCompany;
         this.callActionSwitch.size = 'normal';
         this.videoUrl = this.authenticationService.MEDIA_URL + "profile-video/Birds0211512666857407_mobinar.m3u8";
-        if (this.isEmpty(this.userData.roles) || this.userData.profileImagePath === undefined) {
-            this.router.navigateByUrl('/home/dashboard');
+        if (this.isEmpty(this.userData.roles) || !this.userData.profileImagePath) {
+            this.router.navigateByUrl('/home/dashboard/default');
         } else {
-            if (this.hasCompany && this.referenceService.defaultPlayerSettings !== undefined) {
+            if (this.hasCompany && this.referenceService.defaultPlayerSettings) {
                 this.logoImageUrlPath = this.referenceService.defaultPlayerSettings.brandingLogoUri;
                 this.logoLink = this.referenceService.defaultPlayerSettings.brandingLogoDescUri;
             }
             console.log(this.userData);
-            if (this.userData.firstName !== null) {
-                this.parentModel.displayName = this.userData.firstName;
-            } else {
-                this.parentModel.displayName = this.userData.emailId;
-            }
+            this.parentModel.displayName = this.userData.firstName ? this.userData.firstName : this.userData.emailId;
+
             if (!(this.userData.profileImagePath.indexOf(null) > -1)) {
                 this.userProfileImage = this.userData.profileImagePath;
                 this.parentModel.profilePicutrePath = this.userData.profileImagePath;

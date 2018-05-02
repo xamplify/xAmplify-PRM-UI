@@ -38,17 +38,9 @@ export class ProfileLockComponent implements OnInit {
     ngOnInit() {
         try {
             this.userData = this.authenticationService.user;
-            if (this.userData.emailId === undefined) { this.router.navigate(['./login']); }
-            if (!(this.userData.profileImagePath.indexOf(null) > -1)) {
-                this.userProfileImage = this.userData.profileImagePath;
-            }
-            if (this.userData.firstName !== null) {
-                this.userData.displayName = this.userData.firstName;
-                this.displayName = this.userData.displayName;
-            } else {
-                this.userData.displayName = this.userData.emailId;
-                this.displayName = this.userData.displayName;
-            }
+            if (!this.userData.emailId) { this.router.navigate(['./login']); }
+            if (!(this.userData.profileImagePath.indexOf(null) > -1)) { this.userProfileImage = this.userData.profileImagePath; }
+            this.userData.displayName = this.userData.firstName ? this.userData.firstName : this.userData.emailId;
             console.log(this.displayName);
             this.authenticationService.logout();
         } catch (err) {
@@ -62,15 +54,11 @@ export class ProfileLockComponent implements OnInit {
         const authorization = 'Basic ' + btoa('my-trusted-client:');
         const body = 'username=' + this.userData.emailId + '&password=' + this.password + '&grant_type=password';
         this.authenticationService.login(authorization, body, this.userData.emailId).subscribe(result => {
-          if (localStorage.getItem('currentUser')) {
-                const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-                this.redirectTo(currentUser);
-             } else {
-                this.logError();
-             }
-            },
-            err => this.logError(),
-            () => console.log('login() Complete'));
+          if (localStorage.getItem('currentUser')) { this.redirectTo(JSON.parse(localStorage.getItem('currentUser')));
+           } else {  this.logError(); }
+           },
+           err => this.logError(),
+           () => console.log('login() Complete'));
         return false;
     }
     backToLogin(){

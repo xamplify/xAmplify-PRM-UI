@@ -14,7 +14,7 @@
 				<img [src]="userProfileImage" class="avatarImg">
 			</div>
 			<form class="lock-form pull-left" action="index.html" method="post">
-				<h4>{{displayName}}</h4>
+				<h4>{{userData.displayName}}</h4>
 				<div class="form-group">
 					<div *ngIf="error" class="alert alert-danger" style="height: 43px">
 						<span style="position: relative; top: -3px;">{{error}}</span>
@@ -29,7 +29,7 @@
 		</div>
 		<div class="lock-bottom">
 			<a (click)="backToLogin()">Not
-				<span *ngIf="authenticationService.hasCompany">{{displayName}}</span>
+				<span *ngIf="authenticationService.hasCompany">{{userData.displayName}}</span>
 			    <span *ngIf="!authenticationService.hasCompany">{{authenticationService.user.username}}</span>
 				?</a>
 		</div>
