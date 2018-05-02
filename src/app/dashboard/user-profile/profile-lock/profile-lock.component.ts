@@ -7,8 +7,6 @@ import { AuthenticationService } from '../../../core/services/authentication.ser
 import { User } from '../../../core/models/user';
 import { Properties } from '../../../common/models/properties';
 
-declare var Metronic, Layout, Demo: any;
-
 @Component({
     selector: 'app-profile-lock',
     templateUrl: './profile-lock.component.html',
@@ -23,6 +21,7 @@ export class ProfileLockComponent implements OnInit {
     password: string;
     error: string;
     loginDisabled = true;
+    loading = false;
     constructor(private userService: UserService, public authenticationService: AuthenticationService,
         private router: Router, public properties: Properties) {
         this.password = '';
@@ -50,9 +49,6 @@ export class ProfileLockComponent implements OnInit {
                 this.userData.displayName = this.userData.emailId;
                 this.displayName = this.userData.displayName;
             }
-            Metronic.init();
-            Layout.init();
-            Demo.init();
             console.log(this.displayName);
             this.authenticationService.logout();
         } catch (err) {
@@ -61,16 +57,18 @@ export class ProfileLockComponent implements OnInit {
     }
 
     lockScreenLogin() {
+        this.loading = true;
         console.log('username is :' + this.userData.emailId + ' password is: ' + this.password);
         const authorization = 'Basic ' + btoa('my-trusted-client:');
         const body = 'username=' + this.userData.emailId + '&password=' + this.password + '&grant_type=password';
         this.authenticationService.login(authorization, body, this.userData.emailId).subscribe(result => {
-            if (localStorage.getItem('currentUser')) {
-                this.router.navigate(['/home/dashboard']);
-            } else {
+          if (localStorage.getItem('currentUser')) {
+                const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                this.redirectTo(currentUser);
+             } else {
                 this.logError();
-            }
-        },
+             }
+            },
             err => this.logError(),
             () => console.log('login() Complete'));
         return false;
@@ -78,8 +76,18 @@ export class ProfileLockComponent implements OnInit {
     backToLogin(){
         this.router.navigate(['./login']);
     }
+    redirectTo(user: any) {
+      this.loading = false;
+      const roles = user.roles;
+      if (user.hasCompany || roles.length === 1) {
+          this.router.navigate(['/home/dashboard/default']);
+      } else {
+          this.router.navigate(['/home/dashboard/add-company-profile']);
+      }
+  }
     logError() {
-        if (this.password !== '') {
+      this.loading = false;
+      if (this.password !== '') {
             this.error = 'Password is incorrect';
         } else {
             this.error = "Password should't be empty";
