@@ -63,7 +63,6 @@ export class SocialCallbackComponent implements OnInit {
                                }else{
                                    this.router.navigate(['/home/dashboard/add-company-profile']);
                                }
-                           
                             } else {
                                 this.router.navigate( ['/logout'] );
                             }
