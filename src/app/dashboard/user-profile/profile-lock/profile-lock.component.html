@@ -1,6 +1,6 @@
 <div class="page-lock">
 	<div class="page-logo">
-		<a class="brand">
+		<a class="brand" [routerLink]="['/']">
 			<img [src]="properties.COMPANY_LOGO" alt="logo" />
 		</a>
 	</div>
@@ -27,7 +27,7 @@
 			</form>
 		</div>
 		<div class="lock-bottom">
-			<a (click)="backToLogin()">Not 
+			<a (click)="backToLogin()">Not
 				<span *ngIf="authenticationService.hasCompany">{{displayName}}</span>
 			    <span *ngIf="!authenticationService.hasCompany">{{authenticationService.user.username}}</span>
 				?</a>

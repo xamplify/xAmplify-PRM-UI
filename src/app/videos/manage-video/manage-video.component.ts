@@ -270,6 +270,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                 }
             },
             (error: any) => {
+                try{
                 if (error.search('mobinar is being used in one or more campaigns. Please delete those campaigns') === -1) {
                     this.xtremandLogger.error('Error In : delete videos ():' + error);
                     this.referenceService.showServerError(this.httpRequestLoader);
@@ -283,6 +284,9 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                     this.xtremandLogger.error('Error In: delete videos ():' + error);
                     this.xtremandLogger.errorPage(error);
                 }
+              }catch(error){
+                this.xtremandLogger.log(error);
+              }
                 this.xtremandLogger.log(error);
             },
             () => this.xtremandLogger.log('deleted functionality done')
