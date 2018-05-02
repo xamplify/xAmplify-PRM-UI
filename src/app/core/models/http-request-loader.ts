@@ -1,6 +1,6 @@
 export class HttpRequestLoader{
     isServerError:boolean = false;
-    isLoading:boolean = true;
+    isLoading:boolean = false;
     isClientError:boolean = false;
     statusCode:number=200;
     message:string = "";

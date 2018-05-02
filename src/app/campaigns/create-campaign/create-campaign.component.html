@@ -7,14 +7,10 @@
 		padding: 0;
 	}
 </style>
-<div class="page-content">
+<div class="page-content" [style.background-color]="pageContnetBgColor">
 	<app-preview-video *ngIf="createVideoFile" [videoFile]="createVideoFile" (notifyParent)="closeCreateModal($event)"></app-preview-video>
-	<div [hidden]="!isLoading">
-		<div class="div-loader">
-			<div id="process-loader"></div>
-		</div>
-	</div>
-	<div [hidden]="isLoading">
+	<app-loader [model]="httpRequestLoader.isHorizontalCss" *ngIf="httpRequestLoader.isLoading"></app-loader>
+	<ng-container *ngIf="!httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
 		<div class="page-bar">
 			<ul class="page-breadcrumb">
 				<li>
@@ -1716,7 +1712,7 @@
 				</div>
 			</div>
 		</div>
-	</div>
+</ng-container>
 </div>
 
 <!-- End of Line 1 -->

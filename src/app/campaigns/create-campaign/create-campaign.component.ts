@@ -44,7 +44,6 @@ declare var swal, $, videojs , Metronic, Layout , Demo,TableManaged ,Promise,jQu
 
 })
 export class CreateCampaignComponent implements OnInit,OnDestroy{
-    isLoading:boolean  = false;
     selectedRow:Number;
     categories: Category[];
     partnerCategories:Category[];
@@ -189,6 +188,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     isOnlyPartner:boolean  = false;
     roleName: Roles= new Roles();
     createVideoFile:any;
+    httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
+    pageContnetBgColor:string = "#F1F3FA";
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder,private route: ActivatedRoute,public refService:ReferenceService,
                 private logger:XtremandLogger,private videoFileService:VideoFileService,
@@ -1984,7 +1985,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     
    
     launchCampaign(){
-        this.isLoading = true;
+       this.startLoader();
         var data = this.getCampaignData("");
         var errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
         if(errorLength===0){
@@ -1999,10 +2000,10 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                     this.reInitialize();
                     this.router.navigate(["/home/campaigns/manage"]);
                 }else{
-                    this.isLoading = false;
                     this.invalidScheduleTime = true;
                     this.invalidScheduleTimeError = response.message;
                 }
+                this.stopLoader();
             },
             error => {
                 this.hasInternalError = true;
@@ -2011,11 +2012,22 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             () => this.logger.info("Finished launchCampaign()")
         ); 
         }else{
+            this.stopLoader();
             this.refService.goToDiv("email-template-preview-div");
-            this.isLoading = false;
             this.dataError = true;
         }
     return false;
+    }
+    
+    startLoader(){
+        this.pageContnetBgColor = "#fff"
+        this.httpRequestLoader.isHorizontalCss = true;
+        this.refService.loading( this.httpRequestLoader, true );
+    }
+    stopLoader() {
+        this.pageContnetBgColor = "#F1F3FA"
+        this.httpRequestLoader.isHorizontalCss = false;
+        this.refService.loading( this.httpRequestLoader, false );
     }
     /********************************************On Destory********************************************/
     ngOnDestroy() {
@@ -2093,7 +2105,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.names = [];
         this.name = "";
         this.refService.isCampaignFromVideoRouter = false;
-        this.isLoading = false;
     }
     /*************************************************************Form Errors**************************************************************************************/
     formErrors = {

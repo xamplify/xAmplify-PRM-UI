@@ -266,7 +266,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             .subscribe(
                 data => {
                     console.log(data);
-                    this.campaignSuccessMessage = "Campaign Copied Successfully";
+                    this.campaignSuccessMessage = "Campaign copied successfully";
                     $('#lanchSuccess').show(600);
                     $('#saveAsModal').modal('hide');
                     this.showMessageOnTop();
