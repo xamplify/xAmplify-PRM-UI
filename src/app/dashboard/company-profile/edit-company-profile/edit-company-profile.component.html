@@ -50,26 +50,34 @@
 				<form role="form" id="company-profile-form">
 					<div class="row">
 						<div class="col-sm-4 col-xs-12 col-sm-offset-1">
-							<div class="portlet light border-radius-0">
-								<div class="portlet-body clearfix text-center">
+							<div class="portlet light border-radius-0 shadow">
+								<div class="portlet-body clearfix text-center" style="padding: 2em 0;">
 									<div class="profile-image-wrapper">
 										<span *ngIf="logoError" style="color: #a94442">{{logoErrorMessage}}</span>
 										<img *ngIf="!companyLogoImageUrlPath" src="assets/images/company-profile-logo.png" class="profile-image">
 											<img *ngIf="companyLogoImageUrlPath" [src]= "authenticationService.MEDIA_URL + companyLogoImageUrlPath" class="profile-image">
 											<div class="profile-overlay">
-												<i class="fa fa-camera"></i>Update Profile Picture
-												<input type="file" ng2FileSelect [uploader]="companyLogoUploader" accept="image/jpeg,image/pjpeg,image/jpeg,image/pjpeg,image/png" 
-													*ngIf="companyLogoUploader.queue.length==0" (change)="changeLogo(input)" title=" " #input/>
+												<label class="fileContainer">
+													<i class="fa fa-camera"></i>&nbsp;Upload company logo
+													<input type="file" ng2FileSelect [uploader]="companyLogoUploader" accept="image/jpeg,image/pjpeg,image/jpeg,image/pjpeg,image/png" 
+															*ngIf="companyLogoUploader.queue.length==0" (change)="changeLogo(input)" title=" " #input/>
+												</label>
 											</div>
 										</div>
 										<div class="clearfix"></div>
 										<section class="percentage-circle" style="display: grid; margin: 4em 0 1em;">
-											<app-donut-chart [percentageValue]="50" [totalValue]="100"></app-donut-chart>
+											<svg width="120" height="100" viewBox="0 0 120 120" style="transform: rotate(-90deg)">
+												<circle cx="60" cy="60" r="54" fill="none" stroke="#e6e6e6" stroke-width="10" />
+												<circle cx="60" cy="60" r="54" fill="none" stroke-width="10" stroke="#00a6e8" stroke-dasharray="339.292006588" [ngStyle]="{'stroke-dashoffset': 339.292 * 0.5}"/>
+											</svg>
 											<h2 class="percentage-value" style="margin: -2.7em 0 0 0;">50%</h2>
 										</section>
 										<h5 style="margin-top: -55px;font-weight: 400;margin-bottom: 3em;">complete</h5>
 										<h4 class="control-label">{{authenticationService.user.firstName}}&nbsp;{{authenticationService.user.lastName}}</h4>
 										<h5>{{authenticationService.user.emailId}}</h5>
+										<hr class="divider"/>
+										<h4><span class="f-w-600">Plan Type:</span>&nbsp;BASIC</h4>
+										<button class="btn btn-warning" [routerLink]="['/home/upgrade']">UPGRADE &nbsp;&nbsp;<i class="fa fa-caret-right"></i></button>
 										
 								</div>
 							</div>
