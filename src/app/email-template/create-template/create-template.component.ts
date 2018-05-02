@@ -14,11 +14,11 @@ declare var BeePlugin,swal,$,Promise:any;
   selector: 'app-create-template',
   templateUrl: './create-template.component.html',
   styleUrls: ['./create-template.component.css'],
-  providers :[EmailTemplate]
+  providers :[EmailTemplate,HttpRequestLoader]
 })
 export class CreateTemplateComponent implements OnInit {
 	
-    isLoading:boolean = false;
+    httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
     constructor(private emailTemplateService:EmailTemplateService,
                 private emailTemplate:EmailTemplate,private router:Router, private logger :XtremandLogger,
                 private authenticationService:AuthenticationService,private refService:ReferenceService) {
@@ -98,19 +98,19 @@ export class CreateTemplateComponent implements OnInit {
 	                 saveTemplate();
 	              })).append(createButton('Update', function() {
 	                 console.log('Update'); 
-	                 self.isLoading  = true;
+	                 self.refService.startLoader(self.httpRequestLoader);
 	                 swal.close();
 	                 emailTemplate.name = $.trim($('#templateNameId').val());
 	                 emailTemplate.id = emailTemplateService.emailTemplate.id;
                      emailTemplateService.update(emailTemplate) .subscribe(
                              data => {
-                                 self.isLoading = false;
+                                 self.refService.stopLoader(self.httpRequestLoader);
                                  refService.isUpdated = true;
                                  router.navigate(["/home/emailtemplates/manage"]);
                                  
                              },
                              error => {
-                                 self.isLoading = false;
+                                 self.refService.stopLoader(self.httpRequestLoader);
                                  self.logger.errorPage(error)
                                  },
                              () => console.log( "Email Template Updated" )
@@ -176,7 +176,7 @@ export class CreateTemplateComponent implements OnInit {
 	      };//End Of Save Method
 	    
 	      function saveTemplate(){
-              self.isLoading = true;
+              self.refService.startLoader(self.httpRequestLoader);
               swal.close();
 	          emailTemplate.user = new User();
               emailTemplate.user.userId = loggedInUserId;
@@ -203,12 +203,12 @@ export class CreateTemplateComponent implements OnInit {
               console.log(emailTemplate.name);
               emailTemplateService.save(emailTemplate) .subscribe(
                       data => {
-                          self.isLoading = false;
+                          self.refService.stopLoader(self.httpRequestLoader);
                           refService.isCreated = true;
                           router.navigate(["/home/emailtemplates/manage"]);
                       },
                       error => {
-                          self.isLoading = false;
+                          self.refService.stopLoader(self.httpRequestLoader);
                           self.logger.errorPage(error)
                           },
                       () => console.log( "Email Template Saved" )

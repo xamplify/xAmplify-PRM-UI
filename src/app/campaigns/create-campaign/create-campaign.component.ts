@@ -189,7 +189,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     roleName: Roles= new Roles();
     createVideoFile:any;
     httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
-    pageContnetBgColor:string = "#F1F3FA";
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder,private route: ActivatedRoute,public refService:ReferenceService,
                 private logger:XtremandLogger,private videoFileService:VideoFileService,
@@ -1985,7 +1984,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     
    
     launchCampaign(){
-       this.startLoader();
+       this.refService.startLoader(this.httpRequestLoader);
         var data = this.getCampaignData("");
         var errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
         if(errorLength===0){
@@ -2003,7 +2002,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                     this.invalidScheduleTime = true;
                     this.invalidScheduleTimeError = response.message;
                 }
-                this.stopLoader();
+                this.refService.stopLoader(this.httpRequestLoader);
             },
             error => {
                 this.hasInternalError = true;
@@ -2012,23 +2011,13 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             () => this.logger.info("Finished launchCampaign()")
         ); 
         }else{
-            this.stopLoader();
+            this.refService.stopLoader(this.httpRequestLoader);
             this.refService.goToDiv("email-template-preview-div");
             this.dataError = true;
         }
     return false;
     }
     
-    startLoader(){
-        this.pageContnetBgColor = "#fff"
-        this.httpRequestLoader.isHorizontalCss = true;
-        this.refService.loading( this.httpRequestLoader, true );
-    }
-    stopLoader() {
-        this.pageContnetBgColor = "#F1F3FA"
-        this.httpRequestLoader.isHorizontalCss = false;
-        this.refService.loading( this.httpRequestLoader, false );
-    }
     /********************************************On Destory********************************************/
     ngOnDestroy() {
         this.campaignService.campaign = undefined;

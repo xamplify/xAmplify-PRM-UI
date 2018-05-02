@@ -45,7 +45,6 @@ export class AddTeamMembersComponent implements OnInit {
     userId:number;
     secondOrgAdminId:number = 0;
     public httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
-    isProcessing:boolean = false;
     /*****Form Related**************/
     formGroupClass:string = "form-group";
     emaillIdDivClass:string = this.formGroupClass;
@@ -181,17 +180,15 @@ export class AddTeamMembersComponent implements OnInit {
         this.teamMemberUi.emptyRolesLength = this.validateRoles('add-team-member-table','team-member-');
         if(this.teamMemberUi.emptyRolesLength==0){
             this.errorMessage = "";
-            this.isProcessing = true;
+           this.referenceService.startLoader(this.httpRequestLoader);
             console.log(this.teamMembers);
             this.teamMemberService.save(this.teamMembers,this.userId)
             .subscribe(
             data => {
-                this.isProcessing = false;
+                this.referenceService.stopLoader(this.httpRequestLoader);
                 if(data.statusCode==3000){
                     this.successMessage = "Team Member(s) Added Successfully";
                     this.customResponse = new CustomResponse( 'SUCCESS', this.successMessage, true );
-                    // $( "#team-member-success-div" ).show();
-                    // setTimeout( function() { $( "#team-member-success-div" ).slideUp( 500 ); }, 7000 );
                     this.pagination.pageIndex = 1;
                     this.listTeamMembers(this.pagination);
                     this.listEmailIds();
@@ -219,13 +216,13 @@ export class AddTeamMembersComponent implements OnInit {
         this.teamMemberUi.emptyRolesLength = this.validateRoles('list-team-member-table','list-team-member-');
         if(this.teamMemberUi.emptyRolesLength==0){
             this.errorMessage = "";
-            this.isProcessing = true;
+            this.referenceService.startLoader(this.httpRequestLoader);
             console.log(this.teamMembersList);
             this.teamMemberService.update(this.teamMembersList,this.userId)
             .subscribe(
             data => {
                 console.log(data);
-                this.isProcessing = false;
+                this.referenceService.stopLoader(this.httpRequestLoader);
                 if(data.statusCode==3002){
                     this.successMessage = "Team Member(s) Updated Successfully";
                     this.customResponse = new CustomResponse( 'SUCCESS', this.successMessage, true );

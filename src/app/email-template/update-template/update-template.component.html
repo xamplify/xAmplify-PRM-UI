@@ -1,11 +1,10 @@
 <!-- BEGIN CONTENT -->
 <div class="page-content-wrapper">
-	<div class="page-content">
-	<div class="div-loader"  *ngIf="isLoading">
-			<div id="process-loader"></div>
-		</div>
+	<div class="page-content" [style.background-color]="refService.pageContnetBgColor">
+	<app-loader [model]="httpRequestLoader.isHorizontalCss" *ngIf="httpRequestLoader.isLoading"></app-loader>
+	<ng-container *ngIf="!httpRequestLoader.isLoading">
 		<!-- BEGIN PAGE HEADER-->
-		<div class="page-bar" *ngIf="!isLoading">
+		<div class="page-bar">
 			<ul class="page-breadcrumb">
 				<li>
 					<i class="fa fa-home"></i><a [routerLink]="refService.homeRouter">Home</a><i class="fa fa-angle-right"></i>
@@ -50,6 +49,7 @@
 			</div>
 			<!-- END PAGE CONTENT-->
 		</div>
+		</ng-container>
 	</div>
 	<!-- END CONTAINER -->
 </div>

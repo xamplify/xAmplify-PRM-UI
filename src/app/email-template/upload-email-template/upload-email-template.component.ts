@@ -25,7 +25,6 @@ export class UploadEmailTemplateComponent implements OnInit {
 
 
     public isDisable: boolean = false;
-    loading: boolean = false;
     model: any = {};
     public duplicateTemplateName: boolean = false;
     public isPreview: boolean = false;
@@ -74,7 +73,7 @@ export class UploadEmailTemplateComponent implements OnInit {
         });
         this.companyLogoUploader.onAfterAddingFile = (fileItem) => {
             console.log(fileItem);
-            this.loading = true;
+            this.refService.startLoader(this.httpRequestLoader);
             fileItem.withCredentials = false;
            this.companyLogoUploader.queue[0].upload();
            this.uploadFileErrorMessage = "";
@@ -105,7 +104,7 @@ export class UploadEmailTemplateComponent implements OnInit {
                 }
                
             }
-            this.loading = false;
+            this.refService.stopLoader(this.httpRequestLoader);
         }
     }
 
@@ -243,7 +242,7 @@ export class UploadEmailTemplateComponent implements OnInit {
 
     /************Save Html Template****************/
     saveHtmlTemplate() {
-        this.loading = true;
+       this.refService.startLoader(this.httpRequestLoader);
         this.emailTemplate.user = new User();
         this.emailTemplate.user.userId = this.loggedInUserId;
         this.emailTemplate.name = this.model.templateName;
@@ -265,7 +264,7 @@ export class UploadEmailTemplateComponent implements OnInit {
         this.emailTemplateService.save(this.emailTemplate)
             .subscribe(
             data => {
-                this.loading = false;
+                this.refService.stopLoader(this.httpRequestLoader);
                 if (data == "success") {
                 this.refService.isCreated = true;
                 if(CKEDITOR){
@@ -280,7 +279,7 @@ export class UploadEmailTemplateComponent implements OnInit {
                 }
             },
             error => {
-               this.loading = false;
+                this.refService.stopLoader(this.httpRequestLoader);
                this.logger.errorPage(error);
             },
             () => console.log(" Completed saveHtmlTemplate()")

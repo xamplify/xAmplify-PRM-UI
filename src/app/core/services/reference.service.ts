@@ -63,6 +63,7 @@ export class ReferenceService {
     isEditNurtureCampaign = false;
     nurtureCampaignId = 0;
     homeRouter = '/home/dashboard/default';
+    pageContnetBgColor:string = "#F1F3FA";
     public URL: string = this.authenticationService.REST_URL + 'admin/';
     constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,
         private router: Router, public deviceService: Ng2DeviceService,) {
@@ -1446,5 +1447,17 @@ export class ReferenceService {
         return filteredTimeZones;
 
       }
+    
+    startLoader(httpRequestLoader:HttpRequestLoader){
+        this.pageContnetBgColor = "#fff"
+        httpRequestLoader.isHorizontalCss = true;
+        httpRequestLoader.isLoading = true;
+    }
+    
+    stopLoader(httpRequestLoader:HttpRequestLoader){
+        this.pageContnetBgColor = "#F1F3FA"
+        httpRequestLoader.isHorizontalCss = false;
+        httpRequestLoader.isLoading = false;
+    }
 
 }

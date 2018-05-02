@@ -20,7 +20,6 @@ declare var Metronic ,Layout ,Demo,swal ,TableManaged,$,CKEDITOR:any;
 })
 export class UpdateTemplateComponent implements OnInit, OnDestroy {
 
-    public isLoading:boolean = false;
     public duplicateTemplateName: boolean = false;
     public invalidTemplateName: boolean = false;
     public isTemplateName: boolean = false;
@@ -86,7 +85,7 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
         }
     }
     updateHtmlTemplate() {
-       this.isLoading = true;
+       this.refService.startLoader(this.httpRequestLoader);
         this.emailTemplate.id = this.emailTemplateService.emailTemplate.id;
         this.emailTemplate.name = this.model.templateName;
         for(var instanceName in CKEDITOR.instances){
@@ -96,7 +95,7 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
         this.emailTemplateService.update(this.emailTemplate)
             .subscribe(
             (data: string) => {
-                this.isLoading = false;
+                this.refService.stopLoader(this.httpRequestLoader);
                 if (data == "success") {
                     this.refService.isUpdated = true;
                     this.router.navigate(["/home/emailtemplates/manage"]);
@@ -106,7 +105,7 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
                     }
             },
             (error: string) => {
-                this.isLoading = false;
+                this.refService.stopLoader(this.httpRequestLoader);
                 this.logger.errorPage(error);
             },
             () => this.logger.info("Finished updateHtmlTemplate()")
