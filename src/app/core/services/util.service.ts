@@ -8,7 +8,7 @@ import { Pagination } from '../models/pagination';
 @Injectable()
 export class UtilService {
     topnavBareLoading = false;
-    pagination: Pagination; 
+    pagination: Pagination;
     constructor( private http: Http) { }
 
     intlNumberFormat( num ) {
@@ -72,15 +72,15 @@ export class UtilService {
     setTooltipMessage(event: any) {
         let tooltipMessage: any
         if (event === 7) {
-            tooltipMessage = 'last 7 days';
+            tooltipMessage = 'Last 7 days';
         } else if (event === 14) {
-            tooltipMessage = 'last 14 days';
+            tooltipMessage = 'Last 14 days';
         } else if (event === 21) {
-            tooltipMessage = 'last 21 days';
+            tooltipMessage = 'Last 21 days';
         } else if (event === 30) {
-            tooltipMessage = 'current month';
+            tooltipMessage = 'Current Month';
         } else if (event.includes('year')) {
-            tooltipMessage = 'current year';
+            tooltipMessage = 'Current Year';
         }
         return tooltipMessage;
     }

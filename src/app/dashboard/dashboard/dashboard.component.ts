@@ -72,8 +72,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     heatMapSort: any;
     trellisBarChartData: any;
     partnerEmailTemplateCount = 0;
-    heatMapTooltip = 'last 7 days';
-    videoStatesTooltip = 'last 7 days';
+    heatMapTooltip = 'Last 7 days';
+    videoStatesTooltip = 'Last 7 days';
     isOnlyPartner:boolean;
     partnerCampaignsCountMap: any;
 

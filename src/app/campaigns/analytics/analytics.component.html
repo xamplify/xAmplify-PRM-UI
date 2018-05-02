@@ -756,7 +756,10 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
-					<h4 class="modal-title" id="show_contact-list-info"	style="text-align: center;"> Contact List Info</h4>
+					<h4 class="modal-title" id="show_contact-list-info"	style="text-align: center;">
+            <span *ngIf="!authenticationService.isVendor()">Contact List Info</span>
+            <span *ngIf="authenticationService.isVendor()">Partners List Info</span>
+          </h4>
 				</div>
 				<div class="modal-body">
 				<div class="row">
