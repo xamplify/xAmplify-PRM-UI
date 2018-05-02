@@ -17,7 +17,7 @@ export class ProfileHelpComponent implements OnInit {
   constructor(public authenticationService: AuthenticationService, public router: Router, public referenceService: ReferenceService) {
     this.userData = this.authenticationService.userProfile;
     if (this.isEmpty(this.userData.roles) || !this.userData.profileImagePath) {
-      this.router.navigateByUrl('/home/dashboard/default');
+      this.router.navigateByUrl(this.referenceService.homeRouter);
     } else {
       this.parentModel.displayName = this.userData.firstName ? this.userData.firstName: this.userData.emailId;
       if (!(this.userData.profileImagePath.indexOf(null) > -1)) {

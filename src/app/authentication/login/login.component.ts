@@ -88,7 +88,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.loading = false;
         const roles = user.roles;
         if (user.hasCompany || roles.length === 1) {
-            this.router.navigate(['/home/dashboard/default']);
+            this.router.navigate([this.referenceService.homeRouter]);
         } else {
             this.router.navigate(['/home/dashboard/add-company-profile']);
         }

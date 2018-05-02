@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 
 import { UserService } from '../../../core/services/user.service';
 import { AuthenticationService } from '../../../core/services/authentication.service';
+import { ReferenceService } from '../../../core/services/reference.service';
 
 import { User } from '../../../core/models/user';
 import { Properties } from '../../../common/models/properties';
@@ -23,7 +24,7 @@ export class ProfileLockComponent implements OnInit {
     loginDisabled = true;
     loading = false;
     constructor(private userService: UserService, public authenticationService: AuthenticationService,
-        private router: Router, public properties: Properties) {
+        private router: Router, public properties: Properties, public referenceService: ReferenceService) {
         this.password = '';
     }
     checkPassword(password: string) {
@@ -68,7 +69,7 @@ export class ProfileLockComponent implements OnInit {
       this.loading = false;
       const roles = user.roles;
       if (user.hasCompany || roles.length === 1) {
-          this.router.navigate(['/home/dashboard/default']);
+          this.router.navigate([this.referenceService.homeRouter]);
       } else {
           this.router.navigate(['/home/dashboard/add-company-profile']);
       }
