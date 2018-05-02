@@ -381,35 +381,6 @@ img:hover {
 								</tbody>
 							</table>
 						</div>
-
-						<div *ngIf="isContactsThere"
-							class="col-xs-8 alert alert alert-danger alert-dismissable">
-							<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
-							<strong>No {{checkingContactTypeName}}s found.. !!!</strong>
-						</div>
-						<div *ngIf="fileTypeError" id="csvFileTypeError"
-							class="col-xs-12 alert alert-danger alert-dismissable">
-							<b>File type not allowed please select the .csv file only..</b>
-						</div>
-
-						<div *ngIf="inValidCsvContacts" id="csvInavalidCntactsError"
-							class="col-xs-12 alert alert-danger alert-dismissable"
-							style="font-size: 14px">
-							We found invalid emailIds please remove..<span
-								style="color: black; font-size: 14px">{{invalidPatternEmails}}</span>
-								and Re Upload..
-						</div>
-						<div *ngIf="dublicateEmailId" id="dublicateEmail"
-							class="col-xs-12 alert alert-danger alert-dismissable"
-							style="font-size: 14px">
-							<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
-							Duplicate EmailId Exist Please Remove..<span
-								style="color: black; font-size: 14px">{{duplicateEmailIds}}</span>
-						</div>
-						<div *ngIf="zohoAuthStorageError"
-							class="col-xs-12 alert alert-danger">
-							<span>{{zohoAuthStorageError}}</span>
-						</div>
 				<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 						<div class="row" *ngIf="clipBoard">
 							<div class="col-sm-12">

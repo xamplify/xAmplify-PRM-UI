@@ -11,6 +11,7 @@ export class Properties {
     EMAIL_SENT_SUCCESS = "Email sent successfully";
     NO_USERS_SELECT_ERROR = "You have not selected any user";
     //FOR CONTACTS
+    FILE_TYPE_ERROR = "File type not allowed please select the .csv file only"
     CONTACT_LIST_CREATE_SUCCESS = "Your contact list has been created successfully";
     CONTACT_LIST_CREATE_ERROR = "An error occured while creating your contact list";
 

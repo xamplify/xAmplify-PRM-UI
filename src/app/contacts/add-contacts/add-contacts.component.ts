@@ -46,7 +46,6 @@ export class AddContactsComponent implements OnInit {
     public clipboardTextareaText: string;
     selectedZohoDropDown: string = 'DEFAULT';
     zohoCredentialError = '';
-    zohoAuthStorageError = '';
     model: any = {};
     names: string[] = [];
     invalidPatternEmails: string[] = [];
@@ -59,7 +58,6 @@ export class AddContactsComponent implements OnInit {
     zohoImageBlur: boolean = false;
     zohoImageNormal: boolean = false;
     noOptionsClickError: boolean = false;
-    inValidCsvContacts: boolean;
     duplicateEmailIds: string[] = [];
     public contactListNameError = false;
     public invalidPattenMail: boolean;
@@ -73,9 +71,6 @@ export class AddContactsComponent implements OnInit {
     public salesforceListViewId: string;
     public salesforceListViewName: string;
     public socialNetwork: string;
-    dublicateEmailId: boolean = false;
-    isContactsThere: boolean;
-    fileTypeError: boolean;
     removeCsvName: boolean;
     public socialContact: SocialContact;
     public zohoContact: ZohoContact;
@@ -191,7 +186,6 @@ export class AddContactsComponent implements OnInit {
 
     fileChange( input: any ) {
         this.readFiles( input.files );
-        this.isContactsThere = false;
     }
 
     readFile( file: any, reader: any, callback: any ) {
@@ -205,7 +199,6 @@ export class AddContactsComponent implements OnInit {
         if ( files[0].type == "application/vnd.ms-excel" || files[0].type == "text/csv" || files[0].type == "text/x-csv" ) {
             var outputstring = files[0].name.substring( 0, files[0].name.lastIndexOf( "." ) );
             this.selectedAddContactsOption = 2;
-            this.fileTypeError = false;
             this.noOptionsClickError = false;
             this.model.contactListName = outputstring;
             this.validateContactName( this.model.contactListName );
@@ -253,7 +246,7 @@ export class AddContactsComponent implements OnInit {
                 console.log( "AddContacts : readFiles() contacts " + JSON.stringify( self.contacts ) );
             }
         } else {
-            this.fileTypeError = true;
+            this.customResponse = new CustomResponse( 'ERROR', this.properties.FILE_TYPE_ERROR, true );
             $( "#file_preview" ).hide();
             this.model.contactListName = null;
             this.removeCsvName = false;
@@ -460,7 +453,6 @@ export class AddContactsComponent implements OnInit {
 
     saveContactList() {
         this.duplicateEmailIds = [];
-        this.dublicateEmailId = false;
         var testArray = [];
         for ( var i = 0; i <= this.newUsers.length - 1; i++ ) {
             testArray.push( this.newUsers[i].emailId.toLowerCase() );
@@ -489,7 +481,7 @@ export class AddContactsComponent implements OnInit {
                     this.saveValidEmails();
                     $( "button#sample_editable_1_new" ).prop( 'disabled', false );
                 } else {
-                    this.dublicateEmailId = true;
+                    this.customResponse = new CustomResponse( 'ERROR', "please remove duplicate email id(s) " +  "'" + this.duplicateEmailIds + "'", true );
                     $( "button#sample_editable_1_new" ).prop( 'disabled', false );
                 }
             } else {
@@ -536,13 +528,11 @@ export class AddContactsComponent implements OnInit {
             },
             () => this.xtremandLogger.info( "addcontactComponent saveacontact() finished" )
             )
-        this.dublicateEmailId = false;
     }
 
     saveClipBoardContactList() {
         this.clipboardShowPreview();
         this.duplicateEmailIds = [];
-        this.dublicateEmailId = false;
         var testArray = [];
         for ( var i = 0; i <= this.clipboardUsers.length - 1; i++ ) {
             testArray.push( this.clipboardUsers[i].emailId.toLowerCase() );
@@ -585,7 +575,7 @@ export class AddContactsComponent implements OnInit {
                 if ( !isDuplicate ) {
                     this.saveClipboardValidEmails();
                 } else {
-                    this.dublicateEmailId = true;
+                    this.customResponse = new CustomResponse( 'ERROR', "please remove duplicate email id(s) " +  "'" + this.duplicateEmailIds + "'", true );
                     $( "button#sample_editable_1_new" ).prop( 'disabled', false );
                 }
             }
@@ -620,7 +610,6 @@ export class AddContactsComponent implements OnInit {
                 },
                 () => this.xtremandLogger.info( "addcontactComponent saveacontact() finished" )
                 )
-            this.dublicateEmailId = false;
         }
     }
 
@@ -667,7 +656,7 @@ export class AddContactsComponent implements OnInit {
                         () => this.xtremandLogger.info( "addcontactComponent saveCsvContactList() finished" )
                         )
                 } else {
-                    this.inValidCsvContacts = true;
+                    this.customResponse = new CustomResponse( 'ERROR',"'" + this.invalidPatternEmails + "'"+ " are not valid email id(s) please remove" , true );
                 }
             } else
                 this.xtremandLogger.error( "AddContactComponent saveCsvContactList() Contacts Null Error" );
@@ -749,7 +738,6 @@ export class AddContactsComponent implements OnInit {
         $( '#copyFromclipTextArea' ).val( '' );
         $( "#Gfile_preview" ).hide();
         this.newUsers.length = 0;
-        this.dublicateEmailId = false;
         this.clipBoard = false;
         this.clipboardUsers.length = 0;
         this.selectedAddContactsOption = 8;
@@ -757,8 +745,6 @@ export class AddContactsComponent implements OnInit {
 
     removeCsv() {
         this.selectedAddContactsOption = 8;
-        this.fileTypeError = false;
-        this.inValidCsvContacts = false;
         this.contacts.length = 0;
         this.model.contactListName = "";
         this.isValidContactName = false;
@@ -782,10 +768,7 @@ export class AddContactsComponent implements OnInit {
             this.newUsers.push( this.addContactuser );
         }
         this.selectedAddContactsOption = 0;
-        this.fileTypeError = false;
         this.noOptionsClickError = false;
-        this.inValidCsvContacts = false;
-        this.isContactsThere = false;
         $( "#sample_editable_1" ).show();
         $( "button#cancel_button" ).prop( 'disabled', false );
         $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
@@ -809,11 +792,8 @@ export class AddContactsComponent implements OnInit {
 
     copyFromClipboard() {
         this.selectedAddContactsOption = 1;
-        this.fileTypeError = false;
         this.noOptionsClickError = false;
-        this.inValidCsvContacts = false;
         this.clipboardTextareaText = "";
-        this.isContactsThere = false;
         $( "button#cancel_button" ).prop( 'disabled', false );
         $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
         $( '#uploadCSV' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;min-height:85px' );
@@ -830,9 +810,6 @@ export class AddContactsComponent implements OnInit {
 
     googleContacts() {
         if(this.selectedAddContactsOption == 8){
-        this.fileTypeError = false;
-        this.inValidCsvContacts = false;
-        this.isContactsThere = false;
         this.noOptionsClickError = false;
         this.xtremandLogger.info( "addContactComponent googlecontacts() login:" );
         this.socialContact.firstName = '';
@@ -890,7 +867,7 @@ export class AddContactsComponent implements OnInit {
                 this.getGoogleConatacts = data;
                 swal.close();
                 if ( this.getGoogleConatacts.contacts.length == 0 ) {
-                    this.isContactsThere = true;
+                    this.customResponse = new CustomResponse( 'ERROR', this.properties.NO_RESULTS_FOUND, true );
                 }
                 for ( var i = 0; i < this.getGoogleConatacts.contacts.length; i++ ) {
                     let socialContact = new SocialContact();
@@ -924,7 +901,6 @@ export class AddContactsComponent implements OnInit {
             },
             () => this.xtremandLogger.log( "googleContacts data :" + JSON.stringify( this.getGoogleConatacts.contacts ) )
             );
-        this.isContactsThere = false;
     }
 
     setPage( page: number ) {
@@ -1108,9 +1084,6 @@ export class AddContactsComponent implements OnInit {
     }
 
     zohoContacts() {
-        this.fileTypeError = false;
-        this.inValidCsvContacts = false;
-        this.isContactsThere = false;
         this.noOptionsClickError = false;
         let self = this;
         self.selectedZohoDropDown = $( "select.opts:visible option:selected " ).val();
@@ -1155,10 +1128,7 @@ export class AddContactsComponent implements OnInit {
                 if ( body != "" ) {
                     var response = JSON.parse( body );
                     if ( response.message == "Maximum allowed AuthTokens are exceeded, Please remove Active AuthTokens from your ZOHO Account.!" ) {
-                        this.zohoAuthStorageError = 'Maximum allowed AuthTokens are exceeded, Please remove Active AuthTokens from your ZOHO Account.!';
-                        setTimeout(() => {
-                            this.zohoAuthStorageError = '';
-                        }, 5000 )
+                        this.customResponse = new CustomResponse( 'ERROR','Maximum allowed AuthTokens are exceeded, Please remove Active AuthTokens from your ZOHO Account', true );
                     } else {
                         this.xtremandLogger.errorPage( error );
                     }
@@ -1185,7 +1155,7 @@ export class AddContactsComponent implements OnInit {
                 this.socialContactImage();
                 this.hideZohoModal();
                 if ( this.getZohoConatacts.contacts.length == 0 ) {
-                    this.isContactsThere = true;
+                    this.customResponse = new CustomResponse( 'ERROR', this.properties.NO_RESULTS_FOUND, true );
                 }
                 for ( var i = 0; i < this.getZohoConatacts.contacts.length; i++ ) {
                     let socialContact = new SocialContact();
@@ -1237,7 +1207,6 @@ export class AddContactsComponent implements OnInit {
             },
             () => this.xtremandLogger.log( "googleContacts data :" + JSON.stringify( this.getZohoConatacts.contacts ) )
             );
-        this.isContactsThere = false;
     }
 
     hideZohoAuthorisedPopup() {
@@ -1271,7 +1240,7 @@ export class AddContactsComponent implements OnInit {
                 this.hideZohoAuthorisedPopup();
                 this.selectedAddContactsOption = 5;
                 if ( this.getZohoConatacts.contacts.length == 0 ) {
-                    this.isContactsThere = true;
+                    this.customResponse = new CustomResponse( 'ERROR', this.properties.NO_RESULTS_FOUND, true );
                 }
                 for ( var i = 0; i < this.getZohoConatacts.contacts.length; i++ ) {
                     let socialContact = new SocialContact();
@@ -1303,7 +1272,6 @@ export class AddContactsComponent implements OnInit {
             },
             () => this.xtremandLogger.log( "googleContacts data :" + JSON.stringify( this.getZohoConatacts.contacts ) )
             );
-        this.isContactsThere = false;
     }
 
     saveZohoContacts() {
@@ -1441,10 +1409,7 @@ export class AddContactsComponent implements OnInit {
     salesforceContacts() {
         if(this.selectedAddContactsOption == 8){
         this.contactType = "";
-        this.isContactsThere = false;
         this.noOptionsClickError = false;
-        this.fileTypeError = false;
-        this.inValidCsvContacts = false;
         this.socialContact.socialNetwork = "salesforce";
         this.xtremandLogger.info( "socialContacts" + this.socialContact.socialNetwork );
         this.contactService.salesforceLogin( this.isPartner )
@@ -1507,7 +1472,8 @@ export class AddContactsComponent implements OnInit {
                 this.getSalesforceConatactList = data;
                 this.selectedAddContactsOption = 3;
                 if ( this.getSalesforceConatactList.contacts.length == 0 ) {
-                    this.isContactsThere = true;
+                    this.customResponse = new CustomResponse( 'ERROR', this.properties.NO_RESULTS_FOUND, true );
+                    this.selectedAddContactsOption = 8;
                     this.hideModal();
                 }
                 for ( var i = 0; i < this.getSalesforceConatactList.contacts.length; i++ ) {
@@ -1539,7 +1505,6 @@ export class AddContactsComponent implements OnInit {
             },
             () => this.xtremandLogger.log( "addContactComponent getSalesforceContacts() Data:" + JSON.stringify( this.getSalesforceConatactList.contacts ) )
             );
-        this.isContactsThere = false;
     }
 
     getSalesforceListViewContacts( contactType: any ) {
@@ -1568,7 +1533,8 @@ export class AddContactsComponent implements OnInit {
                 this.getSalesforceConatactList = data;
                 this.selectedAddContactsOption = 3;
                 if ( this.getSalesforceConatactList.contacts.length == 0 ) {
-                    this.isContactsThere = true;
+                    this.customResponse = new CustomResponse( 'ERROR', this.properties.NO_RESULTS_FOUND, true );
+                    this.selectedAddContactsOption = 8;
                     this.hideModal();
                 }
                 for ( var i = 0; i < this.getSalesforceConatactList.contacts.length; i++ ) {
@@ -1600,7 +1566,6 @@ export class AddContactsComponent implements OnInit {
             },
             () => this.xtremandLogger.log( "addContactComponent getSalesforceContacts() Data:" + JSON.stringify( this.getSalesforceConatactList.contacts ) )
             );
-        this.isContactsThere = false;
     }
 
     saveSalesforceContactSelectedUsers() {

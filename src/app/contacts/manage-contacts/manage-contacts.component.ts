@@ -153,7 +153,7 @@ export class ManageContactsComponent implements OnInit {
    // isResponsMessage = false;
 
     constructor( public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router,public properties: Properties,
-        private pagerService: PagerService, private pagination: Pagination, private referenceService: ReferenceService, public xtremandLogger: XtremandLogger ) {
+        private pagerService: PagerService, private pagination: Pagination, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger ) {
 
         let currentUrl = this.router.url;
         if ( currentUrl.includes( 'home/contacts' ) ) {
