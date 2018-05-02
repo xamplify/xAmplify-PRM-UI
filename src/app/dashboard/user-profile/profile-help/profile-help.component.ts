@@ -4,8 +4,6 @@ import { Router } from '@angular/router';
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import { ReferenceService } from '../../../core/services/reference.service';
 
-declare var Metronic, Layout, Demo, Profile: any;
-
 @Component({
   selector: 'app-profile-help',
   templateUrl: './profile-help.component.html',
@@ -18,14 +16,10 @@ export class ProfileHelpComponent implements OnInit {
   parentModel = { 'displayName': '', 'profilePicutrePath': 'assets/admin/pages/media/profile/icon-user-default.png' };
   constructor(public authenticationService: AuthenticationService, public router: Router, public referenceService: ReferenceService) {
     this.userData = this.authenticationService.userProfile;
-    if (this.isEmpty(this.userData.roles) || this.userData.profileImagePath === undefined) {
-      this.router.navigateByUrl('/home/dashboard');
+    if (this.isEmpty(this.userData.roles) || !this.userData.profileImagePath) {
+      this.router.navigateByUrl(this.referenceService.homeRouter);
     } else {
-      if (this.userData.firstName !== null) {
-        this.parentModel.displayName = this.userData.firstName;
-      } else {
-        this.parentModel.displayName = this.userData.emailId;
-      }
+      this.parentModel.displayName = this.userData.firstName ? this.userData.firstName: this.userData.emailId;
       if (!(this.userData.profileImagePath.indexOf(null) > -1)) {
         this.userProfileImage = this.userData.profileImagePath;
         this.parentModel.profilePicutrePath = this.userData.profileImagePath;
@@ -37,14 +31,7 @@ export class ProfileHelpComponent implements OnInit {
   }
   ngOnInit() {
     try {
-      Metronic.init();
-      Layout.init();
-      Demo.init();
-      if (this.userData.firstName != null) {
-        this.userData.displayName = this.userData.firstName;
-      } else {
-        this.userData.displayName = this.userData.emailId;
-      }
+      this.userData.displayName = this.userData.firstName ? this.userData.firstName : this.userData.emailId;
     } catch (err) { console.log(err); }
   }
 }

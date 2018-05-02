@@ -213,7 +213,7 @@
 								</div>
 								<div class="portlet-body">
 									<div class="table-toolbar"
-										*ngIf="hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId) || authenticationService.isOnlyPartner()">
+										*ngIf="hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId) || authenticationService.isOnlyPartner() || authenticationService.isVendorPartner() || authenticationService.isVendor()">
 										<div class="clearfix">
 											<div class="col-sm-8">
 												<div class="btn-group">

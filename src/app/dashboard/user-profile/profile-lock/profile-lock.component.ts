@@ -3,11 +3,10 @@ import { Router } from '@angular/router';
 
 import { UserService } from '../../../core/services/user.service';
 import { AuthenticationService } from '../../../core/services/authentication.service';
+import { ReferenceService } from '../../../core/services/reference.service';
 
 import { User } from '../../../core/models/user';
 import { Properties } from '../../../common/models/properties';
-
-declare var Metronic, Layout, Demo: any;
 
 @Component({
     selector: 'app-profile-lock',
@@ -23,8 +22,9 @@ export class ProfileLockComponent implements OnInit {
     password: string;
     error: string;
     loginDisabled = true;
+    loading = false;
     constructor(private userService: UserService, public authenticationService: AuthenticationService,
-        private router: Router, public properties: Properties) {
+        private router: Router, public properties: Properties, public referenceService: ReferenceService) {
         this.password = '';
     }
     checkPassword(password: string) {
@@ -39,20 +39,9 @@ export class ProfileLockComponent implements OnInit {
     ngOnInit() {
         try {
             this.userData = this.authenticationService.user;
-            if (this.userData.emailId === undefined) { this.router.navigate(['./login']); }
-            if (!(this.userData.profileImagePath.indexOf(null) > -1)) {
-                this.userProfileImage = this.userData.profileImagePath;
-            }
-            if (this.userData.firstName !== null) {
-                this.userData.displayName = this.userData.firstName;
-                this.displayName = this.userData.displayName;
-            } else {
-                this.userData.displayName = this.userData.emailId;
-                this.displayName = this.userData.displayName;
-            }
-            Metronic.init();
-            Layout.init();
-            Demo.init();
+            if (!this.userData.emailId) { this.router.navigate(['./login']); }
+            if (!(this.userData.profileImagePath.indexOf(null) > -1)) { this.userProfileImage = this.userData.profileImagePath; }
+            this.userData.displayName = this.userData.firstName ? this.userData.firstName : this.userData.emailId;
             console.log(this.displayName);
             this.authenticationService.logout();
         } catch (err) {
@@ -61,25 +50,33 @@ export class ProfileLockComponent implements OnInit {
     }
 
     lockScreenLogin() {
+        this.loading = true;
         console.log('username is :' + this.userData.emailId + ' password is: ' + this.password);
         const authorization = 'Basic ' + btoa('my-trusted-client:');
         const body = 'username=' + this.userData.emailId + '&password=' + this.password + '&grant_type=password';
         this.authenticationService.login(authorization, body, this.userData.emailId).subscribe(result => {
-            if (localStorage.getItem('currentUser')) {
-                this.router.navigate(['/home/dashboard']);
-            } else {
-                this.logError();
-            }
-        },
-            err => this.logError(),
-            () => console.log('login() Complete'));
+          if (localStorage.getItem('currentUser')) { this.redirectTo(JSON.parse(localStorage.getItem('currentUser')));
+           } else {  this.logError(); }
+           },
+           err => this.logError(),
+           () => console.log('login() Complete'));
         return false;
     }
     backToLogin(){
         this.router.navigate(['./login']);
     }
+    redirectTo(user: any) {
+      this.loading = false;
+      const roles = user.roles;
+      if (user.hasCompany || roles.length === 1) {
+          this.router.navigate([this.referenceService.homeRouter]);
+      } else {
+          this.router.navigate(['/home/dashboard/add-company-profile']);
+      }
+  }
     logError() {
-        if (this.password !== '') {
+      this.loading = false;
+      if (this.password !== '') {
             this.error = 'Password is incorrect';
         } else {
             this.error = "Password should't be empty";
