@@ -213,10 +213,10 @@ td>h5 {
 					<i class="fa fa-users"></i>
 				</div>
 				<div class="details">
-          <div class="number" *ngIf="!authenticationService.module.isVendor">{{dashboardReport.totalContacts}}</div>
-          <div class="number" *ngIf="authenticationService.module.isVendor">{{dashboardReport.totalTeamMembers}}</div>
-					<div class="desc" *ngIf="!authenticationService.module.isVendor">Total Contacts</div>
-					<div class="desc" *ngIf="authenticationService.module.isVendor">Team Members</div>
+          <div class="number" *ngIf="!this.authenticationService.isVendor()">{{dashboardReport.totalContacts}}</div>
+          <div class="number" *ngIf="this.authenticationService.isVendor()">{{dashboardReport.totalTeamMembers}}</div>
+					<div class="desc" *ngIf="!this.authenticationService.isVendor()">Total Contacts</div>
+					<div class="desc" *ngIf="this.authenticationService.isVendor()">Team Members</div>
 				</div>
 			</a>
 		</div>

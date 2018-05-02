@@ -126,7 +126,7 @@ input:checked + .slider-new:before {
 											<i class="icon-info"></i>
 											Help </a>
 										</li> -->
-										<li *ngIf="(currentUser.roles?.length==1 || isOrgAdmin)">
+										<li *ngIf="(currentUser.roles?.length==1 || authenticationService.isOrgAdmin())">
 										<a>
 											<div class="col-xs-2 p0"><i class="icon-settings"></i></div>
 											<div class="col-xs-5 p0">
@@ -144,8 +144,9 @@ input:checked + .slider-new:before {
 									</ul>
 								</div>
 								<!-- END MENU -->
-							</div>
-							<div class="portlet light">
+              </div>
+              <!-- co -->
+							<div class="portlet light" *ngIf="false">
 									<div>
 									<div class="margin-top-20 profile-desc-link">
 									 <div class="col-xs-12">

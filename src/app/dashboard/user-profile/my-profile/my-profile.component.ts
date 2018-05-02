@@ -33,37 +33,35 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     videoUrl: string;
     updatePasswordForm: FormGroup;
     defaultPlayerForm: FormGroup;
-    status: boolean = true;
+    status = true;
     updatePasswordSuccess = false;
     profileUploadSuccess = false;
-    userProfileImage: string = "assets/admin/pages/media/profile/icon-user-default.png";
+    userProfileImage = "assets/admin/pages/media/profile/icon-user-default.png";
     userData: User;
     parentModel = { 'displayName': '', 'profilePicutrePath': 'assets/admin/pages/media/profile/icon-user-default.png' };
-    className: string = "form-control ng-touched ng-dirty ng-valid";
+    className = "form-control ng-touched ng-dirty ng-valid";
     uploader: FileUploader;
     compPlayerColor: string;
     compControllerColor: string;
     valueRange: number;
-    profilePictueError: boolean = false;
-    profilePictureErrorMessage: string = "";
+    profilePictueError = false;
+    profilePictureErrorMessage = "";
     active = false;
     isPlayed = false;
     hasVideoRole = false;
-    loggedInUserId: number = 0;
+    loggedInUserId = 0;
     tempPlayerColor: string;
     tempControllerColor: string;
     isPlayerSettingUpdated = false;
     hasAllAccess = false;
     hasCompany: boolean;
-    orgAdminCount: number = 0;
-    infoMessage: string = "";
+    orgAdminCount = 0;
+    infoMessage = "";
     currentUser: any;
     roles: string[] = [];
-    isOrgAdmin: boolean = false;
-    isOnlyPartnerRole: boolean = false;
+    isOnlyPartnerRole = false;
     logoUploader: FileUploader;
     logoImageUrlPath: string;
-    imagePathSafeUrl: any;
     fullScreenMode = false;
     logoLink = '';
     ngxloading: boolean;
@@ -82,7 +80,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         this.hasCompany = this.authenticationService.user.hasCompany;
         this.callActionSwitch.size = 'normal';
         this.videoUrl = this.authenticationService.MEDIA_URL + "profile-video/Birds0211512666857407_mobinar.m3u8";
-        this.hasOrgAdminRole();
         if (this.isEmpty(this.userData.roles) || this.userData.profileImagePath === undefined) {
             this.router.navigateByUrl('/home/dashboard');
         } else {
@@ -127,23 +124,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     isEmpty(obj) {
         return Object.keys(obj).length === 0;
     }
-    clearLogo() {
-        this.logoUploader.queue.length = 0;
-        this.logoImageUrlPath = undefined;
-    }
-    hasOrgAdminRole() {
-        this.roles = this.authenticationService.getRoles();
-        if (this.roles.indexOf('ROLE_ORG_ADMIN') > -1) {
-            this.isOrgAdmin = true;
-        } else {
-            this.isOrgAdmin = false;
-        }
-    }
     clearImage() {
         $('div#previewImage > img').remove();
         $('div#previewImage').append('<img src="assets/images/upload-profile.png"/>');
         $('#priview').attr('src', 'assets/images/upload-profile.png');
-
     }
     fileChange(inputFile: any, event: any) {
         console.log(inputFile.files);
@@ -170,9 +154,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         if (!this.profilePictueError) {
             this.readFiles(inputFile.files);
         }
-    }
-    videofileChange(inputFile) {
-        console.log(inputFile);
     }
     readFile(file: any, reader: any, callback: any) {
         reader.onload = () => {
@@ -234,23 +215,14 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                 });
             this.defaultVideoSettings();
             this.defaulttransperancyControllBar(this.referenceService.defaultPlayerSettings.transparency);
-            if (this.referenceService.defaultPlayerSettings.enableVideoController === false) {
-                this.defaultVideoControllers();
-            }
-            setTimeout(function () {
-                self.videoJSplayer.play();
-                self.videoJSplayer.pause();
-            }, 1);
+            if (!this.referenceService.defaultPlayerSettings.enableVideoController) { this.defaultVideoControllers();}
+            setTimeout( ()=> {this.videoJSplayer.play(); this.videoJSplayer.pause();}, 1);
         } else {
             this.logger.log('you already initialized the videojs');
         }
     }
-    imageUpload(event){
-        $('#'+event).click();
-    }
-    clearCustomResponse(){
-        this.customResponse = new CustomResponse();
-    }
+    imageUpload(event){ $('#'+event).click();}
+    clearCustomResponse(){ this.customResponse = new CustomResponse(); }
     ngOnInit() {
         try {
             this.videoUtilService.normalVideoJsFiles();
