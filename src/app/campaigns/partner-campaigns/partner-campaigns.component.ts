@@ -25,6 +25,7 @@ import { Pagination } from '../../core/models/pagination';
 import { Country } from '../../core/models/country';
 import { Timezone } from '../../core/models/timezone';
 import { EmailTemplateType } from '../../email-template/models/email-template-type';
+import { HttpRequestLoader } from '../../core/models/http-request-loader';
 
 
 declare var $: any;
@@ -32,7 +33,7 @@ declare var $: any;
     selector: 'app-partner-campaigns',
     templateUrl: './partner-campaigns.component.html',
     styleUrls: ['./partner-campaigns.component.css'],
-    providers: [DatePipe, CallActionSwitch]
+    providers: [DatePipe, CallActionSwitch,HttpRequestLoader,Pagination]
 })
 export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     selectedEmailTemplateId: number=0;
@@ -142,6 +143,30 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     invalidScheduleTime:boolean = false;
     hasInternalError:boolean =false;
     invalidScheduleTimeError:string = "";
+    
+    /****************Pagination**********************/
+    pager: any = {};
+    pagedItems: any[];
+    public totalRecords: number = 1;
+    public searchKey: string = "";
+    sortByDropDown = [
+                      { 'name': 'Name(A-Z)', 'value': 'campaign-ASC' },
+                      { 'name': 'Name(Z-A)', 'value': 'campaign-DESC' },
+                      { 'name': 'Created Date(ASC)', 'value': 'createdTime-ASC' },
+                      { 'name': 'Created Date(DESC)', 'value': 'createdTime-DESC' }
+                  ];
+
+                  numberOfItemsPerPage = [
+                      { 'name': '12', 'value': '12' },
+                      { 'name': '24', 'value': '24' },
+                      { 'name': '48', 'value': '48' },
+                      { 'name': '---All---', 'value': '0' },
+                  ]
+
+      public selectedSortedOption: any = this.sortByDropDown[3];
+      public itemsSize: any = this.numberOfItemsPerPage[0];
+      httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
+      parterCampaingsPagination:Pagination = new Pagination();
 
     constructor(private router: Router,
         private route: ActivatedRoute,
@@ -340,13 +365,42 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
         );
     }
     
-    listPartnerCampaigns(userId: number, campaignType: string) {
+   /* listPartnerCampaigns(userId: number, campaignType: string) {
         this.campaignService.listPartnerCampaigns(userId, campaignType)
             .subscribe(
             result => { this.campaigns = result; },
             error => console.log(error),
             () => { });
+    }*/
+    
+    
+    listPartnerCampaigns(pagination:Pagination) {
+        this.referenceService.loading(this.httpRequestLoader, true);
+        if(this.campaignType=="regular"){
+            pagination.campaignType = "REGULAR";
+        }else if(this.campaignType=="video"){
+            pagination.campaignType="VIDEO";
+        }else if(this.campaignType=="social"){
+            pagination.campaignType = "SOCIAL";
+        }
+        this.campaignService.listPartnerCampaigns(this.parterCampaingsPagination, this.loggedInUserId)
+            .subscribe(
+                data => {
+                    console.log(data);
+                    this.campaigns = data.campaigns;
+                    this.totalRecords = data.totalRecords;
+                    pagination.totalRecords = data.totalRecords;
+                    pagination = this.pagerService.getPagedItems(pagination, data.campaigns);
+                    this.referenceService.loading(this.httpRequestLoader, false);
+                },
+                error => {
+                    this.xtremandLogger.errorPage(error);
+                },
+                () => this.xtremandLogger.info("Finished listPartnerCampaigns()", this.campaigns)
+            );
     }
+    
+    
 
     filterCampaigns(type: string) {
         this.router.navigate(['/home/campaigns/partner/' + type]);
@@ -1082,7 +1136,8 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
         this.campaignType = this.route.snapshot.params['type'];
         this.loggedInUserId = this.authenticationService.getUserId();
         this.loadCampaignNames( this.loggedInUserId );       
-        this.listPartnerCampaigns(this.loggedInUserId, this.campaignType);
+        this.parterCampaingsPagination.maxResults = 12;
+        this.listPartnerCampaigns(this.parterCampaingsPagination);
         if(this.referenceService.isEditNurtureCampaign){
             this.editNurtureCampaign(this.referenceService.nurtureCampaignId);
         }
@@ -1101,6 +1156,46 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     ngOnDestroy(){
         this.isNurture = false;
         this.referenceService.isEditNurtureCampaign = false;
+    }
+    
+    /************Pagination-Search-Sort**************************/
+    setPage(event) {
+        this.parterCampaingsPagination.pageIndex = event.page;
+        this.listPartnerCampaigns(this.parterCampaingsPagination);
+    }
+
+    searchCampaigns() {
+        this.getAllFilteredResults(this.parterCampaingsPagination);
+    }
+
+    getSortedResult(text: any) {
+        this.selectedSortedOption = text;
+        this.getAllFilteredResults(this.parterCampaingsPagination);
+    }
+
+    getNumberOfItemsPerPage(items: any) {
+        this.itemsSize = items;
+        this.getAllFilteredResults(this.parterCampaingsPagination);
+    }
+
+
+
+    getAllFilteredResults(pagination: Pagination) {
+        this.parterCampaingsPagination.pageIndex = 1;
+        this.parterCampaingsPagination.searchKey = this.searchKey;
+        let sortedValue = this.selectedSortedOption.value;
+        if (sortedValue != "") {
+            let options: string[] = sortedValue.split("-");
+            this.parterCampaingsPagination.sortcolumn = options[0];
+            this.parterCampaingsPagination.sortingOrder = options[1];
+        }
+
+        if (this.itemsSize.value == 0) {
+            this.parterCampaingsPagination.maxResults = this.parterCampaingsPagination.totalRecords;
+        } else {
+            this.parterCampaingsPagination.maxResults = this.itemsSize.value;
+        }
+        this.listPartnerCampaigns(this.parterCampaingsPagination);
     }
 
 }
