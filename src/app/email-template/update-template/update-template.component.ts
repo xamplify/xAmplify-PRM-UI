@@ -31,9 +31,9 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
     videoTagsError:string = "";
     emailOpenTrackingUrl:string = "<div id=\"bottomDiv\"><img src=\"<emailOpenImgURL>\" class='backup_picture' style='display:none'></div>";
     httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
-    constructor(private emailTemplateService: EmailTemplateService, private userService: UserService, 
+    constructor(private emailTemplateService: EmailTemplateService, private userService: UserService,
             private router: Router, private emailTemplate: EmailTemplate, private logger: XtremandLogger,
-            private authenticationService:AuthenticationService,private refService:ReferenceService) {
+            private authenticationService:AuthenticationService,public refService:ReferenceService) {
         logger.debug("updateTemplateComponent() Loaded");
         if(this.emailTemplateService.emailTemplate==undefined){
             this.router.navigate(["/home/emailtemplates/select"]);

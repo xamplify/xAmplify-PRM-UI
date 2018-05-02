@@ -46,14 +46,14 @@ export class UploadEmailTemplateComponent implements OnInit {
     videoTag:string = "";
     emailMergeTags:string = "";
     coBrandingTag:string = "";
-    constructor(public emailTemplateService: EmailTemplateService, private userService: UserService, private router: Router, 
-            private emailTemplate: EmailTemplate, private logger: XtremandLogger,private authenticationService:AuthenticationService,private refService:ReferenceService) {
+    constructor(public emailTemplateService: EmailTemplateService, private userService: UserService, private router: Router,
+            private emailTemplate: EmailTemplate, private logger: XtremandLogger,private authenticationService:AuthenticationService,public refService:ReferenceService) {
         logger.debug("uploadEmailTemplateComponent() Loaded");
         this.videoTag = "<a href='<SocialUbuntuURL>'>\n   <img src='<SocialUbuntuImgURL>'/> \n </a> \n";
         this.emailMergeTags = "  For First Name : {{firstName}} \n  For Last Name : {{lastName}} \n  For Full Name : {{fullName}} |n For Email Id : {{emailId}}";
        this.coBrandingTag = "<img src='<Co-BrandingImgURL>'/> \n";
         this.loggedInUserId = this.authenticationService.getUserId();
-       
+
         if(this.emailTemplateService.isRegularUpload==undefined){
             this.router.navigate(["/home/emailtemplates/select"]);
         }
@@ -64,8 +64,8 @@ export class UploadEmailTemplateComponent implements OnInit {
             (error: any) => console.log(error),
             () => console.log("Got List Of Available Email Template Names in regularEmailsComponent constructor")
         );
-        
-        
+
+
         this.companyLogoUploader = new FileUploader({
             allowedMimeType: ['application/x-zip-compressed'],
             maxFileSize: 10 * 1024 * 1024, // 100 MB
@@ -90,7 +90,7 @@ export class UploadEmailTemplateComponent implements OnInit {
             }
             //this.checkAvailableNames(this.model.templateName);
             if (JSON.parse(response).message === null) {
-                   this.companyLogoUploader.queue[0].upload(); 
+                   this.companyLogoUploader.queue[0].upload();
             } else {
                // this.companyLogoUploader.queue.length = 0;
                 let path = JSON.parse(response).path;
@@ -102,7 +102,7 @@ export class UploadEmailTemplateComponent implements OnInit {
                     this.uploadFileErrorMessage = path;
                     this.isUploadFileError = true;
                 }
-               
+
             }
             this.refService.stopLoader(this.httpRequestLoader);
         }
@@ -123,9 +123,9 @@ export class UploadEmailTemplateComponent implements OnInit {
         //this.emailTemplateService.emailTemplate = new EmailTemplate();
     }
 
-    
-    
-  
+
+
+
 
     /****************Reading Uploaded File********************/
     readFile(event: any ) {
@@ -184,14 +184,16 @@ export class UploadEmailTemplateComponent implements OnInit {
                    console.log(key);
                });
                 ;
-               
+
                // let options = new RequestOptions( { headers: headers });
             }
-          
-        }
-        
-    }
 
+        }
+
+    }
+    fileDropPreview(event:any){
+
+    }
     /***************Remove File****************/
     removeFile() {
         //this.disable = false;
@@ -222,7 +224,7 @@ export class UploadEmailTemplateComponent implements OnInit {
             this.disableButton = true;
         }
     }
-    
+
     checkName(value:string,isAdd:boolean){
         if(isAdd){
             return this.availableTemplateNames.indexOf($.trim(value.toLocaleLowerCase())) > -1;
@@ -238,7 +240,7 @@ export class UploadEmailTemplateComponent implements OnInit {
             this.duplicateTemplateName = false;
         }
     }
-    
+
 
     /************Save Html Template****************/
     saveHtmlTemplate() {
@@ -301,7 +303,7 @@ export class UploadEmailTemplateComponent implements OnInit {
     public fileOverAnother(e: any): void {
         this.hasAnotherDropZoneOver = e;
     }
-    
+
     hideDiv(divId:string){
         $('#'+divId).hide(600);
     }

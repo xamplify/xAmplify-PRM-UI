@@ -17,14 +17,15 @@ declare var BeePlugin,swal,$,Promise:any;
   providers :[EmailTemplate,HttpRequestLoader]
 })
 export class CreateTemplateComponent implements OnInit {
-	
+
     httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
     constructor(private emailTemplateService:EmailTemplateService,
                 private emailTemplate:EmailTemplate,private router:Router, private logger :XtremandLogger,
-                private authenticationService:AuthenticationService,private refService:ReferenceService) {
+                private authenticationService:AuthenticationService,public refService:ReferenceService) {
 		console.log(emailTemplateService.emailTemplate);
 		let loggedInUserId = this.authenticationService.getUserId();
-	    var names:any = [];
+      var names:any = [];
+
 		let self = this;
         emailTemplateService.getAvailableNames(loggedInUserId).subscribe(
             ( data: any ) => {
@@ -35,8 +36,8 @@ export class CreateTemplateComponent implements OnInit {
             },
             () =>  this.logger.info("Finished getAvailableNames()")
         );
-	    
-	    
+
+
 	    var request = function(method, url, data, type, callback) {
 	        var req = new XMLHttpRequest();
 	        req.onreadystatechange = function() {
@@ -53,7 +54,7 @@ export class CreateTemplateComponent implements OnInit {
 	            for (var key in data) {
 	              formData.append(key, data[key]);
 	            }
-	            data = formData;          
+	            data = formData;
 	          }
 	          else {
 	            req.setRequestHeader('Content-type', type);
@@ -74,7 +75,7 @@ export class CreateTemplateComponent implements OnInit {
 	      }else{
 	          this.router.navigate(["/home/emailtemplates/select"]);
 	      }
-	      
+
 	      var save = function(jsonContent:string, htmlContent:string) {
 	          emailTemplate = new EmailTemplate();
               emailTemplate.body = htmlContent;
@@ -97,7 +98,7 @@ export class CreateTemplateComponent implements OnInit {
 	              .append(createButton('Save As', function() {
 	                 saveTemplate();
 	              })).append(createButton('Update', function() {
-	                 console.log('Update'); 
+	                 console.log('Update');
 	                 self.refService.startLoader(self.httpRequestLoader);
 	                 swal.close();
 	                 emailTemplate.name = $.trim($('#templateNameId').val());
@@ -107,7 +108,7 @@ export class CreateTemplateComponent implements OnInit {
                                  self.refService.stopLoader(self.httpRequestLoader);
                                  refService.isUpdated = true;
                                  router.navigate(["/home/emailtemplates/manage"]);
-                                 
+
                              },
                              error => {
                                  self.refService.stopLoader(self.httpRequestLoader);
@@ -166,15 +167,15 @@ export class CreateTemplateComponent implements OnInit {
                               $('#save,#update,#save-as').removeAttr('disabled');
                           }
                       }
-	                 
+
 	               }else{
 	                   $('#save,#update,#save-as').attr('disabled','disabled');
 	               }
 	          });
-	          
-	          
+
+
 	      };//End Of Save Method
-	    
+
 	      function saveTemplate(){
               self.refService.startLoader(self.httpRequestLoader);
               swal.close();
@@ -213,9 +214,9 @@ export class CreateTemplateComponent implements OnInit {
                           },
                       () => console.log( "Email Template Saved" )
                       );
-             
+
 	      }
-	      
+
 	      function createButton(text, cb) {
 	          if(text=="Save"){
 	              return $('<input type="submit" class="btn btn-primary" value="'+text+'" id="save" disabled="disabled">').on('click', cb);
@@ -248,19 +249,19 @@ export class CreateTemplateComponent implements OnInit {
                  value: '{{companyName}}'
              }];
 	      var beeUserId = "bee-"+loggedInUserId;
-	      var beeConfig = {  
+	      var beeConfig = {
 	        uid: beeUserId,
 	        container: 'bee-plugin-container',
-	        autosave: 15, 
+	        autosave: 15,
 	        language: 'en-US',
 	        mergeTags: mergeTags,
-	        onSave: function(jsonFile, htmlFile) { 
+	        onSave: function(jsonFile, htmlFile) {
 	            save(jsonFile, htmlFile);
 	        },
-	        onSaveAsTemplate: function(jsonFile) { // + thumbnail? 
+	        onSaveAsTemplate: function(jsonFile) { // + thumbnail?
 	          //save('newsletter-template.json', jsonFile);
 	        },
-	        onAutoSave: function(jsonFile) { // + thumbnail? 
+	        onAutoSave: function(jsonFile) { // + thumbnail?
 	          console.log(new Date().toISOString() + ' autosaving...');
 	          window.localStorage.setItem('newsletter.autosave', jsonFile);
 	        },
@@ -268,14 +269,14 @@ export class CreateTemplateComponent implements OnInit {
 	          //write your send test function here
 	          console.log(htmlFile);
 	        },
-	        onError: function(errorMessage) { 
+	        onError: function(errorMessage) {
 	          console.log('onError ', errorMessage);
 	        }
 	      };
 
 	      var bee = null;
 	      request(
-	        'POST', 
+	        'POST',
 	        'https://auth.getbee.io/apiauth',
 	        'grant_type=password&client_id=6639d69f-523f-44ca-b809-a00daa26b367&client_secret=XnD77klwAeUFvYS66CbHMd107DMS441Etg9cCOVc63LTYko8NHa',
 	        'application/x-www-form-urlencoded',
@@ -283,7 +284,7 @@ export class CreateTemplateComponent implements OnInit {
 	          BeePlugin.create(token, beeConfig, function(beePluginInstance:any) {
 	            bee = beePluginInstance;
 	            request(
-	              'GET', 
+	              'GET',
 	              'https://rsrc.getbee.io/api/templates/m-bee',
 	              null,
 	              null,
@@ -300,11 +301,11 @@ export class CreateTemplateComponent implements OnInit {
 	                  }else{
 	                      bee.start(template);
 	                  }
-	               
+
 	              });
 	          });
 	        });
-	      
+
     	}//End Of Constructor
 
   ngOnInit() {
