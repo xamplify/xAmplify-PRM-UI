@@ -14,9 +14,22 @@
                     <li class="filter" (click)="filterCampaigns('video')" [class.active]="'video' == campaignType">Video Campaigns</li>
                     <li class="filter" (click)="filterCampaigns('social')" [class.active]="'social' == campaignType">Social Campaigns </li>
                     <li class="filter" style="display: none;">Own Template</li>
+                	     <div class="inputs" align="right" style="float: right">
+							<div style="float: left;">
+								<select class="form-control" [(ngModel)]="selectedSortedOption" (ngModelChange)="getSortedResult($event)" style="position: relative;right: -3px;">
+									<option *ngFor="let sortOption of sortByDropDown" [ngValue]="sortOption">{{sortOption.name}}</option>
+								</select>
+							</div>
+							<div class="portlet-input input-inline input-small">
+								<div class="input-icon right" style="position: relative;right: -11px;">
+									<i class="icon-magnifier" (click)="searchCampaigns()" style="cursor: pointer;"></i>
+									<input type="text" class="form-control" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" placeholder="search...">
+								</div>
+							</div>
+						</div>
                 </ul>
             </div>
-            <div class="table-responsive">
+            <div class="table-responsive" >
                 <table class='table tgrid table-hover table-sm'>
                     <thead>
                         <tr>
@@ -25,7 +38,7 @@
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody  *ngIf="totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
                         <tr *ngFor='let campaign of campaigns'>
                             <td style="width: 10%;">
                                 <img *ngIf="campaign.campaignType.indexOf('VIDEO') > -1 && campaign.launched " src="assets/images/video-email.png" style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
@@ -40,7 +53,7 @@
                             </td>
                             <td>
                                 <span align="right"><b *ngIf="campaign.launched">Received On</b></span>
-                                <span align="right" title="Launched On"><b>{{campaign.launchTime | date: 'short'}}</b></span>
+                                <span align="right" title="Launched On"><b>{{campaign.launchedOn | date: 'short'}}</b></span>
                             </td>
                             <td>
                                 <div class="actions-block">
@@ -55,8 +68,19 @@
                 </table>
             </div>
         </div>
+         <div *ngIf="totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError" style="background:white">
+						<div *ngIf="parterCampaingsPagination.pagedItems.length !== 0">
+							<app-pagination [pagination]="parterCampaingsPagination" [type]="'campaign'" [isDropdown]="true" (notifyParent)="setPage($event)" (notifyParentDropDown)="listPartnerCampaigns($event)"></app-pagination>
+							<select class="form-control" style="float: right; width: auto;" [(ngModel)]="itemsSize" (ngModelChange)="getNumberOfItemsPerPage($event)">
+								<option *ngFor="let itemPerPage of numberOfItemsPerPage" [ngValue]="itemPerPage">{{itemPerPage.name}}</option>
+							</select>
+						</div>
+		</div>
     </div>
 </div>
+
+
+
 
 <div class="page-content" *ngIf="isNurture && campaign != null">
     <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>

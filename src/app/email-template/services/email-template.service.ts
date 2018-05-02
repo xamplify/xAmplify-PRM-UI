@@ -43,7 +43,7 @@ export class EmailTemplateService {
             .map(this.extractData)
             .catch(this.handleError); 
         }catch(error){
-           this.refService.showError(error, "Error in sdfs() in emailTemplate.service.ts","");
+           this.refService.showError(error, "Error in listTemplates() in emailTemplate.service.ts","");
         }
         
     }

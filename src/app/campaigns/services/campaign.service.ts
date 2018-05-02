@@ -231,10 +231,20 @@ export class CampaignService {
             .catch(this.handleError);
     }
 
-    listPartnerCampaigns(userId: number, campaignType: string){
+  /*  listPartnerCampaigns(userId: number, campaignType: string){
         return this.http.get(this.URL+`campaign/partner-campaigns/${userId}?campaignType=${campaignType}&access_token=${this.authenticationService.access_token}`)
             .map(this.extractData)
             .catch(this.handleError);        
+    }*/
+    
+    
+    listPartnerCampaigns(pagination: Pagination, userId: number) {
+        var url = this.URL + "campaign/partner-campaigns/" + userId + "?access_token=" + this.authenticationService.access_token;
+        return this.http.post(url, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+
+
     }
 
     getCampaignPartnerByCampaignIdAndUserId(campaignId: number, userId: number){
