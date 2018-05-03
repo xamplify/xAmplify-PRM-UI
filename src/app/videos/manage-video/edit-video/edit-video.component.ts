@@ -196,7 +196,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.uploader.onAfterAddingFile = (fileItem) => {
             fileItem.withCredentials = false;
             console.log(fileItem);
-           // this.ownThumb = true;
             this.ownThumbnail = false;
             this.imageUrlPath = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(fileItem._file)));
             this.uploader.queue[0].upload();
