@@ -228,145 +228,41 @@ nav a.active {
 	color: #777777;
 }
 
-.mt0 {
-	margin-top: 0 !important;
-}
-
-.mb0 {
-	margin-bottom: 0 !important;
-}
-
-.ml0 {
-	margin-left: 0 !important;
-}
-
-.mr0 {
-	margin-right: 0 !important;
-}
-
-.m0 {
-	margin: 0 !important;
-}
-
-.mt-10 {
-	margin-top: -10px !important;
-}
-
-.mb-10 {
-	margin-bottom: -10px !important;
-}
-
-.ml-10 {
-	margin-left: -10px !important;
-}
-
-.mr-10 {
-	margin-right: -10px !important;
-}
-
-.m-10 {
-	margin: -10px !important;
-}
-
-.mt5 {
-	margin-top: 5px !important;
-}
-
-.mb5 {
-	margin-bottom: 5px !important;
-}
-
-.ml5 {
-	margin-left: 5px !important;
-}
-
-.mr5 {
-	margin-right: 5px !important;
-}
-
-.m5 {
-	margin: 5px !important;
-}
-
-.mt10 {
-	margin-top: 10px !important;
-}
-
-.mb10 {
-	margin-bottom: 10px !important;
-}
-
-.ml10 {
-	margin-left: 10px !important;
-}
-
-.mr10 {
-	margin-right: 10px !important;
-}
-
-.m10 {
-	margin: 10px !important;
-}
-
-.pt0 {
-	padding-top: 0 !important;
-}
-
-.pb0 {
-	padding-bottom: 0 !important;
-}
-
-.pl0 {
-	padding-left: 0 !important;
-}
-
-.pr0 {
-	padding-right: 0 !important;
-}
-
-.p0 {
-	padding: 0 !important;
-}
-
-.p10 {
-	padding: 10px;
-}
-
-.pt10 {
-	padding-top: 10px;
-}
-
-.pb10 {
-	padding-bottom: 10px;
-}
-
-.pl10 {
-	padding-left: 10px;
-}
-
-.pr10 {
-	padding-right: 10px;
-}
-
-.p20 {
-	padding: 20px;
-}
-
-.pt20 {
-	padding-top: 20px;
-}
-
-.pb20 {
-	padding-bottom: 20px;
-}
-
-.pl20 {
-	padding-left: 20px;
-}
-
-.pr20 {
-	padding-right: 20px;
-}
+.mt0{margin-top:0!important}
+.mb0{margin-bottom:0!important}
+.ml0{margin-left:0!important}
+.mr0{margin-right:0!important}
+.m0{margin:0!important}
+.mt-10{margin-top:-10px!important}
+.mb-10{margin-bottom:-10px!important}
+.ml-10{margin-left:-10px!important}
+.mr-10{margin-right:-10px!important}
+.m-10{margin:-10px!important}
+.mt5{margin-top:5px!important}
+.mb5{margin-bottom:5px!important}
+.ml5{margin-left:5px!important}
+.mr5{margin-right:5px!important}
+.m5{margin:5px!important}
+.mt10{margin-top:10px!important}
+.mb10{margin-bottom:10px!important}
+.ml10{margin-left:10px!important}
+.mr10{margin-right:10px!important}
+.m10{margin:10px!important}
+.pt0{padding-top:0!important}
+.pb0{padding-bottom:0!important}
+.pl0{padding-left:0!important}
+.pr0{padding-right:0!important}
+.p0{padding:0!important}
+.p10{padding:10px!important}
+.pt10{padding-top:10px!important}
+.pb10{padding-bottom:10px!important}
+.pl10{padding-left:10px!important}
+.pr10{padding-right:10px!important}
+.p20{padding:20px!important}
+.pt20{padding-top:20px!important}
+.pb20{padding-bottom:20px!important}
+.pl20{padding-left:20px!important}
+.pr20{padding-right:20px!important}
 
 .portlet.light, .dashboard-stat2 {
 	border: 1px solid #CCC;

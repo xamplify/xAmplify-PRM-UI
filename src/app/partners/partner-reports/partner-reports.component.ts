@@ -41,7 +41,7 @@ export class PartnerReportsComponent implements OnInit {
     Highcharts.chart('campaign-type-chart', {
       chart: { type: 'bar' },
       xAxis: {
-        categories: ['VIDEO', 'SOCIAL', 'REGULAR'],
+        categories: ['VIDEO CAMPAIGN', 'SOCIAL CAMPAIGN', 'REGULAR CAMPAIGN'],
         lineWidth: 0,
         minorTickLength: 0,
         tickLength: 0,

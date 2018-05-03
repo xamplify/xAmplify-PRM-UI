@@ -26,7 +26,7 @@
 
 <ng-template #NOERROR>
 	<div class="row">
-		<div [ngClass]="{'col-xs-4': campaignType === 'VIDEO'}" *ngIf="campaignType === 'VIDEO'">
+		<div class="pl10 pr10 col-xs-12" [ngClass]="{'col-sm-4': campaignType === 'VIDEO'}" *ngIf="campaignType === 'VIDEO'">
 			<a class="dashboard-stat dashboard-stat-lighter purple-soft" (click)="previewVideo(campaign.campaignVideoFile)">
 				<div class="visual">
 					<i class="fa fa-video-camera"></i>
@@ -46,7 +46,7 @@
 			</a>
 
 		</div>
-		<div [ngClass]="{'col-xs-4': campaignType === 'VIDEO', 'col-xs-6': campaignType === 'EMAIL'}" *ngIf="campaignType === 'VIDEO' || campaignType === 'EMAIL'">
+		<div  class="pl10 pr10 col-xs-12" [ngClass]="{'col-sm-4': campaignType === 'VIDEO', 'col-sm-6': campaignType === 'EMAIL'}" *ngIf="campaignType === 'VIDEO' || campaignType === 'EMAIL'">
 
 			<a class="dashboard-stat dashboard-stat-lighter blue-soft" (click)="showEmailTemplatePreview(campaign.emailTemplate)" >
 					<div class="visual">
@@ -63,7 +63,7 @@
 					</div>
 				</a>
 		</div>
-		<div [ngClass]="{'col-xs-4': campaignType === 'VIDEO', 'col-xs-6': campaignType === 'EMAIL', 'col-xs-12': campaignType === 'SOCIAL'}">
+		<div  class="pl10 pr10 col-xs-12" [ngClass]="{'col-sm-4': campaignType === 'VIDEO', 'col-sm-6': campaignType === 'EMAIL', 'col-sm-12': campaignType === 'SOCIAL'}">
 			<a class="dashboard-stat dashboard-stat-lighter green-soft" (click)="showContactListModal()">
 					<div class="visual">
 						<i class="fa fa-users"></i>
