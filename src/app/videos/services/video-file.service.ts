@@ -53,7 +53,7 @@ export class VideoFileService {
             .map(this.extractData)
             .catch(this.handleError);
     }
-    saveOwnThumbnailFile(file: any) {
+    saveOwnThumbnailFile(file: any) { // not using this api
         const formData: FormData = new FormData();
         formData.append('file', file);
         const headers = new Headers();
@@ -251,7 +251,7 @@ export class VideoFileService {
             .map(this.extractData)
             .catch(this.handleError);
     }
-    
+
     loadPublicVideos(companyId:number){
         const url = this.URL + "public/" + companyId +'?access_token=' + this.authenticationService.access_token;
         return this.http.get(url, '')

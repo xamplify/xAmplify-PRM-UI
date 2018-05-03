@@ -79,10 +79,10 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
 
     }
     checkCallToActionAvailable() {
-        if (this.selectedVideo.startOfVideo === true && this.selectedVideo.callACtion === true) {
+        if (this.selectedVideo.startOfVideo && this.selectedVideo.callACtion) {
             this.callAction.overLayValue = 'StartOftheVideo';
             this.callAction.videoOverlaySubmit = 'PLAY';
-        } else if (this.selectedVideo.endOfVideo === true && this.selectedVideo.callACtion === true) {
+        } else if (this.selectedVideo.endOfVideo && this.selectedVideo.callACtion) {
             this.callAction.overLayValue = 'EndOftheVideo';
             this.callAction.videoOverlaySubmit = 'SUBMIT';
         } else {
@@ -102,9 +102,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.embedVideo = this.selectedVideo.allowEmbed;
         console.log(this.selectedVideo);
         this.is360Value = this.selectedVideo.is360video;
-        if (this.selectedVideo.viewBy === 'DRAFT') {
-            this.isThisDraftVideo = true;
-        } else { this.isThisDraftVideo = false; }
+        this.isThisDraftVideo = this.selectedVideo.viewBy ==='DRAFT' ? true: false;
     }
     showOverlayModal() {
        $('#modalDialog').append($('#overlay-modal').show());
@@ -218,10 +216,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.xtremandLogDefaultActions();
         this.loadAllVideos(this.pagination);
         $('#overlay-modal').hide();
-        this.callAction.email_id = this.authenticationService.user.emailId;
-        this.callAction.firstName = this.authenticationService.user.firstName;
-        this.callAction.lastName = this.authenticationService.user.lastName;
-
+        this.callAction = this.videoUtilService.setCalltoAction(this.callAction, this.authenticationService.user);
         if (this.videoUtilService.validateEmail(this.callAction.email_id)) {
             this.callAction.isOverlay = false;
         } else { this.callAction.isOverlay = true; }

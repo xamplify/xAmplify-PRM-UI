@@ -95,7 +95,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     gifBoolean3: boolean;
     likesValues: number;
     disLikesValues: number;
-    isThumb: boolean;
     enableCalltoAction: boolean;
     valueRange: number;
     is360Value: boolean;
@@ -164,9 +163,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.defaultImagePath = this.saveVideoFile.imagePath + '?access_token=' + this.authenticationService.access_token;
         this.defaultSaveImagePath = this.saveVideoFile.imagePath;
         this.selectedImagePath = this.saveVideoFile.imagePath;
-        this.callAction.email_id = this.authenticationService.user.emailId;
-        this.callAction.firstName = this.authenticationService.user.firstName;
-        this.callAction.lastName = this.authenticationService.user.lastName;
+        this.callAction = this.videoUtilService.setCalltoAction(this.callAction,this.authenticationService.user);
         this.callAction.isFistNameChecked = this.saveVideoFile.name;
         this.callAction.isSkipChecked = this.saveVideoFile.skip;
         this.is360Value = this.value360 = this.saveVideoFile.is360video;
@@ -184,13 +181,8 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         } else {
             this.callAction.overLayValue = 'removeCallAction';
         }
-        // share details
-        if (this.saveVideoFile.upperText == null) {
-            this.characterleft = this.maxLengthvalue;
-        } else { this.characterleft = this.maxLengthvalue - this.saveVideoFile.upperText.length; }
-        if (this.saveVideoFile.lowerText == null) {
-            this.lowerCharacterleft = this.maxlengthvalueLowerText;
-        } else { this.lowerCharacterleft = this.maxlengthvalueLowerText - this.saveVideoFile.lowerText.length; }
+        this.characterleft = this.saveVideoFile.upperText ? this.maxLengthvalue - this.saveVideoFile.upperText.length: this.maxLengthvalue;
+        this.lowerCharacterleft = this.saveVideoFile.lowerText ? this.maxlengthvalueLowerText - this.saveVideoFile.lowerText.length: this.maxlengthvalueLowerText;
         this.titleDivChange();
         this.likesValues = 0;
         this.disLikesValues = 0;
@@ -211,7 +203,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         };
         this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
             console.log(response);
-            this.isThumb = true;
             this.saveVideoFile.imagePath = JSON.parse(response).path;
             this.defaultSaveImagePath = this.saveVideoFile.imagePath;
         }
@@ -290,28 +281,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.imageUrlPath = false;
         this.ownThumb = false;
         this.ownThumbnail = true;
-        this.isThumb = false;
         this.defaultSaveImagePath = this.selectedImagePath;
-    }
-    ownThumbnailfileChange(event: any) {
-        const fileList: FileList = event.target.files;
-        console.log(fileList[0].type);
-        if (fileList.length > 0) {
-            const file: File = fileList[0];
-            const isSupportfile: any = fileList[0].type;
-            if (isSupportfile === 'image/jpg' || isSupportfile === 'image/jpeg' || isSupportfile === 'image/png') {
-                this.videoFileService.saveOwnThumbnailFile(file)
-                    .subscribe((result: any) => {
-                        this.xtremandLogger.log(result);
-                        this.isThumb = true;
-                        this.saveVideoFile.imagePath = result.path;
-                        this.defaultSaveImagePath = this.saveVideoFile.imagePath;
-                    });
-            } else {
-                (<HTMLInputElement>document.getElementById('ownFileuplad')).value = '';
-                this.xtremandLogger.log('not supported image thumbnail file');
-            }
-        }
     }
     setSelectedImageValues() {
         this.openOwnThumbnail = this.ownThumbnail = false;
@@ -342,14 +312,12 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.ownThumbnail = true;
         this.openOwnThumbnail = true;
         this.ownThumb = true;
-        this.isThumb = false;
         this.thumbnailRadioOpen = false;
     }
     changeImageThumbnailOption() {
         this.openOwnThumbnail = false;
         this.thumbnailRadioOpen = true;
         this.ownThumbnail = false;
-        this.isThumb = true;
         this.imageUrlPath = false;
         this.defaultSaveImagePath = this.selectedImagePath;
     }
@@ -404,12 +372,12 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             } else { this.disableCalltoAction(true); }
         }, 1);
     }
-    // like and dis like methods
+    // like and dislike methods
     likesValuesDemo() {
-        this.likesValues += 1;
+        if( this.likesValues < 2) { this.likesValues += 1; }
     }
     disLikesValuesDemo() {
-        this.disLikesValues += 1;
+        if(this.disLikesValues < 2) { this.disLikesValues += 1; }
     }
     // embed video methods
     closeEmbedModal(event) {
@@ -891,7 +859,11 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         } else { this.logoDescriptionUrl = undefined; }
     }
     isEnableVideoLogo(event:any){
-     this.enableVideoLogo =this.saveVideoFile.enableVideoCobrandingLogo =  event;
+     this.enableVideoLogo = this.saveVideoFile.enableVideoCobrandingLogo = event;
+     if(event && (!this.logoDescriptionUrl || !this.brandLogoUrl)){
+      this.brandLogoUrl = this.defaultPlayerValues.brandingLogoUri = this.defaultPlayerValues.companyProfile.companyLogoPath;
+      this.logoDescriptionUrl = this.saveVideoFile.brandingLogoDescUri = this.defaultPlayerValues.brandingLogoDescUri = this.defaultPlayerValues.companyProfile.website;
+     }
     }
     ngOnInit() {
         QuickSidebar.init();

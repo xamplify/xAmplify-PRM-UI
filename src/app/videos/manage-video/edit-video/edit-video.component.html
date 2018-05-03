@@ -381,7 +381,7 @@
 											<div [hidden]="!enableVideoLogo" *ngIf="!disablePlayerSettingnew" class="form-group" [class.disabledCss]="!enableVideoLogo">
 												<label class="col-xs-5 control-label" style="position: relative; top:-6px;">Video Logo URL:<font *ngIf="!logoDescriptionUrl" style="color: red"><b>*</b></font></label>
 												<div class="col-xs-7">
-													<input type="text" style="width: 90%;" formControlName="brandingLogoDescUri" placeholder="URL for Video logo link" #val
+													<input type="text" style="width: 90%;" [(ngModel)]="logoDescriptionUrl" [ngModelOptions]="{standalone: true}" placeholder="URL for Video logo link" #val
 													 (input)="logoDescription(val.value)">
 												</div>
 											</div>

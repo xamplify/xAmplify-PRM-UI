@@ -153,8 +153,15 @@ export class VideoUtilService {
     }
     isStartsWith(logoLink:string){
        if(logoLink === "" ||logoLink === undefined || logoLink === null){ }
-       else if( logoLink.startsWith("http")){ } 
+       else if( logoLink.startsWith("http")){ }
        else { logoLink = 'http://'+logoLink; }
        return logoLink;
     }
+    setCalltoAction(callAction, user){
+      callAction.email_id = user.emailId;
+      callAction.firstName = user.firstName;
+      callAction.lastName = user.lastName;
+      return callAction;
+    }
+
 }
