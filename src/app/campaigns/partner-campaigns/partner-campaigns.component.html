@@ -82,9 +82,10 @@
 
 
 
-<div class="page-content" *ngIf="isNurture && campaign != null">
+<div class="page-content" *ngIf="isNurture && campaign != null" [style.background-color]="referenceService.pageContnetBgColor">
     <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
-<ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+<app-loader [model]="httpRequestLoader.isHorizontalCss" *ngIf="httpRequestLoader.isLoading"></app-loader>
+	<ng-container *ngIf="!httpRequestLoader.isLoading">
     <div class="page-bar">
         <ul class="page-breadcrumb">
             <li><i class="fa fa-home"></i> <a [routerLink]="referenceService.homeRouter">Home</a><i class="fa fa-angle-right"></i></li>
@@ -210,11 +211,101 @@
                             </div>
                             <div class="col-xs-8" style="top: 1em;">
                                 <h4 class="pull-left" *ngIf="selectedUserlistIds.length==0">No contact list is selected</h4>
-                                <h4 class="pull-left" *ngIf="selectedUserlistIds.length > 0">{{selectedUserlistIds.length}} contact list is selected</h4>
-                                <a  *ngIf="selectedUserlistIds.length==0" class="pull-right btn btn-primary btn-sm" data-toggle="modal" data-target="#contactlist-preivew">select</a>
-                                 <a  *ngIf="selectedUserlistIds.length>0" class="pull-right btn btn-primary btn-sm" data-toggle="modal" data-target="#contactlist-preivew"> select & preview</a>
+                                <h4 class="pull-left" *ngIf="selectedUserlistIds.length==1">{{selectedUserlistIds.length}} contact list is selected</h4>
+                                 <h4 class="pull-left" *ngIf="selectedUserlistIds.length>1">{{selectedUserlistIds.length}} contact lists are selected</h4>
+                                   <a  class="pull-right btn btn-primary btn-sm" class="pull-right btn btn-primary btn-sm" (click)="showContacts()">{{previewText}}</a>
                             </div>
                         </div>
+                        <div class="col-xs-12" id="campaign-contact-list" style="display: none;" >
+						<div class="col-xs-12" style="margin-top: 10px;">
+							<div class="row pb10" id="user_list_table_view">
+								<app-loader [model]="campaignContact.httpRequestLoader.isHorizontalCss" *ngIf="campaignContact.httpRequestLoader.isLoading"></app-loader>
+								<app-error-pages *ngIf="campaignContact.httpRequestLoader.isServerError"></app-error-pages>
+								<ng-container *ngIf="!campaignContact.httpRequestLoader.isLoading && !campaignContact.httpRequestLoader.isServerError">
+									<div id="user_list_tb_wrapper" class="dataTables_wrapper form-inline no-footer">
+										<div class="inputs" align="right" style="display:inline; float:right;padding: 5px 5px 12px 0px;">
+											<div class="portlet-input input-inline input-large" style="position: relative;top: -6px;right: -5px;">
+												<div class="input-icon right">
+													<i class="icon-magnifier" (click)="searchContactList()" style="cursor: pointer;"></i>
+													<input type="text" class="form-control" placeholder="search..." [(ngModel)]="contactSearchInput" [ngModelOptions]="{standalone: true}">
+												</div>
+											</div>
+										</div>
+										<div class="row-fluid">
+											<table class="table table-filter" *ngIf="contactListPagination.totalRecords==0">
+												<tr>
+													<td colspan="5">
+														<div class="alert alert-info">
+															<strong>No Contacts Found</strong>
+														</div>
+													</td>
+												</tr>
+											</table>
+											<table class="table table-bordered no-more-tables dataTable no-footer" id="user_list_tb" role="grid" aria-describedby="user_list_tb_info"
+											 *ngIf="contactListPagination.totalRecords > 0">
+												<thead>
+													<tr>
+														<td align="center">
+															<input type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" class="" id="checkAllExistingContacts" [ngModelOptions]="{standalone: true}"
+															/>
+														</td>
+														<th style="text-align: center;" class="sorting_desc" tabindex="0" aria-controls="user_list_tb" rowspan="1" colspan="1" aria-sort="descending"
+														 aria-label="Date Uploaded: activate to sort column ascending">
+															Date Uploaded
+														</th>
+														<th style="text-align: center;" class="sorting" tabindex="0" aria-controls="user_list_tb" rowspan="1" colspan="1" aria-label="List Name: activate to sort column ascending">
+															List Name
+														</th>
+														<th style="text-align: center;" class="sorting" tabindex="0" aria-controls="user_list_tb" rowspan="1" colspan="1" aria-label="Download: activate to sort column ascending">
+															Preview
+														</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr role="row" *ngFor="let contacts of contactListPagination.pagedItems;let i = index" id="campaignContactListTable_{{contacts.id}}"
+													 	(click)="highlightContactRow(contacts.id,$event,contacts.noOfContacts,contacts.emailValidationInd)" 
+													 	(mouseover)='showContactsAlert(contacts.noOfContacts)' [attr.title]="emptyContactsMessage"
+													 	 [class.contact-list-selected]="(selectedUserlistIds.indexOf(contacts.id)>-1 && contacts.noOfContacts>0)">
+														<td>
+															<div class="form-group" *ngIf="contacts.noOfContacts>0 && contacts.emailValidationInd">
+																<input type="checkbox" class="chk" lang="{{contacts.name}}" id="{{contacts.id}}" [checked]="selectedUserlistIds.indexOf(contacts.id)>-1"
+																 name="campaignContact[]" value="{{contacts.id}}" (click)="highlightRow(contacts.id,$event)">
+															</div>
+
+															<div class="form-group" *ngIf="contacts.noOfContacts==0 || !contacts.emailValidationInd">
+																<input type="checkbox" disabled="disabled" title="Contacts are in progress">
+															</div>
+														</td>
+
+														<td class="text-center sorting_1">{{contacts.createdDate}}</td>
+
+														<td class="text-center" *ngIf="contacts.name?.length>50" title="{{contacts.name}}">
+															{{contacts.name | slice:0:50}}...
+														</td>
+
+														<td class="text-center" *ngIf="contacts.name?.length<=50" title="{{contacts.name}}">
+															{{contacts.name}}
+														</td>
+														<td class="text-center">
+															<a class="btn btn-warning" (mouseover)="loadUsers(contactListPagination.pagedItems[i].id,contactsUsersPagination)">
+																<i class="fa fa-eye" style="padding-top: 3px; font-size: 20px;" title="" data-original-title="Preview"></i>
+															</a>
+														</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</ng-container>
+									<div *ngIf="contactListPagination.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError" style="background:white">
+											<div *ngIf="contactListPagination.pagedItems.length !== 0">
+												<app-pagination [pagination]="contactListPagination" [type]="'contacts'" (notifyParent)="setContactPage($event)"
+													(notifyParentDropDown)="loadContactList($event)" style="margin-left: -10px;"></app-pagination>
+											</div>
+										</div>
+							</div>
+						</div>
+					</div>
                     </fieldset>
                 </div>
 
@@ -225,7 +316,7 @@
 		<div>
 	<div class="row">
 		<div class="col-xs-6"></div>
-		<div class="col-xs-6 text-right">
+		<div class="col-xs-6 text-right pb10">
 			<h5 class="control-label font-purple-intense pr10" style="display: inline-block;">Enable work flow</h5>
 			<switch [status]="enableWorkFlow" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
 				[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
@@ -340,22 +431,30 @@
 											<b style="color: red">*</b>
 										</label>
 									</div>
-									<div class="portlet-title">
-										<ul class="mix-filter" *ngIf="!isOnlyPartner">
-											<li class="filter" (click)="filterReplyTemplates('NONE',0,reply)" [class.emailtemplate-selected]="0 == reply.selectedEmailTemplateTypeIndex">All Email Templates</li>
-											<li class="filter" (click)="filterReplyTemplates('BASIC',1,reply)" [class.emailtemplate-selected]="1 == reply.selectedEmailTemplateTypeIndex">Basic Templates</li>
-											<li class="filter" (click)="filterReplyTemplates('RICH',2,reply)" [class.emailtemplate-selected]="2 == reply.selectedEmailTemplateTypeIndex">Rich Templates</li>
-											<li class="filter" (click)="filterReplyTemplates('UPLOADED',3,reply)" [class.emailtemplate-selected]="3 == reply.selectedEmailTemplateTypeIndex">Uploaded Regular Templates</li>
-
-											<!-- <li class="filter" (click)="filterReplyTemplates('BASIC',4,reply)" *ngIf="campaignType=='video'" [class.emailtemplate-selected]="4== reply.selectedEmailTemplateTypeIndex">Basic Video Templates</li>
-							<li class="filter" (click)="filterReplyTemplates('RICH',5,reply)" *ngIf="campaignType=='video'" [class.emailtemplate-selected]="5== reply.selectedEmailTemplateTypeIndex">RichVideo Templates</li>
-							<li class="filter" (click)="filterReplyTemplates('UPLOADED',6,reply)" *ngIf="campaignType=='video'" [class.emailtemplate-selected]="6== reply.selectedEmailTemplateTypeIndex">Uploaded Video Templates</li> -->
-											<li class="filter" (click)="filterReplyTemplates('PARTNER',7,reply)" [class.emailtemplate-selected]="7== reply.selectedEmailTemplateTypeIndex">Partner Templates</li>
-										</ul>
-										<div class="input-icon pull-right">
-											<i class="icon-magnifier" (click)="searchReplyEmailTemplate(reply)" style="cursor: pointer;"></i>
-											<input type="text" class="form-control" placeholder="search..." [(ngModel)]="reply.emailTemplateSearchInput" [ngModelOptions]="{standalone: true}"
-												style="width: 217px;height: 34px;">
+								<div class="portlet-title">
+										<div class="caption">
+											<div class="row">
+												<div class="col-xs-12 col-sm-8 text-left">
+													<ul class="mix-filter" *ngIf="!isOnlyPartner">
+														<li class="filter" (click)="filterReplyTemplates('NONE',0,reply)" [class.emailtemplate-selected]="0 == reply.selectedEmailTemplateTypeIndex">All Email Templates</li>
+														<li class="filter" (click)="filterReplyTemplates('BASIC',1,reply)" [class.emailtemplate-selected]="1 == reply.selectedEmailTemplateTypeIndex">Basic Templates</li>
+														<li class="filter" (click)="filterReplyTemplates('RICH',2,reply)" [class.emailtemplate-selected]="2 == reply.selectedEmailTemplateTypeIndex">Rich Templates</li>
+														<li class="filter" (click)="filterReplyTemplates('UPLOADED',3,reply)" [class.emailtemplate-selected]="3 == reply.selectedEmailTemplateTypeIndex">Uploaded Regular Templates</li>
+														<li class="filter" (click)="filterReplyTemplates('PARTNER',7,reply)" [class.emailtemplate-selected]="7== reply.selectedEmailTemplateTypeIndex">Partner Templates</li>
+													</ul>
+												</div>
+												<div class="col-xs-12 col-sm-4">
+													<div class="inputs" align="right" style="display:inline; float:right;padding: 5px 5px 12px 0px;">
+														<div class="portlet-input input-inline input-large">
+															<div class="input-icon right">
+																<i class="icon-magnifier" (click)="searchReplyEmailTemplate(reply)" style="cursor: pointer;"></i>
+															<input type="text" class="form-control" placeholder="search..." [(ngModel)]="reply.emailTemplateSearchInput" [ngModelOptions]="{standalone: true}"
+																style="width: 217px;height: 34px;">
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
 										</div>
 									</div>
 									<app-loader [model]="campaignEmailTemplate.httpRequestLoader.isHorizontalCss" *ngIf="campaignEmailTemplate.httpRequestLoader.isLoading"></app-loader>
@@ -529,7 +628,7 @@
 									</div>
 								</div>
 								<div id="url-email-template-{{i}}" *ngIf="url.defaultTemplate">
-									<div class="form-group" style="margin-left: 1px;">
+									<div class="form-group" style="margin-left: 1px;margin-top: 8px;">
 										<label for="days" id="click-email-template-{{url.divId}}">Select Email Template
 											<b style="color: red">*</b>
 										</label>
@@ -543,10 +642,6 @@
 														<li class="filter" (click)="filterClickTemplates('BASIC',1,url)" *ngIf="campaignType=='regular'" [class.emailtemplate-selected]="1 == url.selectedEmailTemplateTypeIndex">Basic Templates</li>
 														<li class="filter" (click)="filterClickTemplates('RICH',2,url)" *ngIf="campaignType=='regular'" [class.emailtemplate-selected]="2 == url.selectedEmailTemplateTypeIndex">Rich Templates</li>
 														<li class="filter" (click)="filterClickTemplates('UPLOADED',3,url)" *ngIf="campaignType=='regular'" [class.emailtemplate-selected]="3 == url.selectedEmailTemplateTypeIndex">Uploaded Regular Templates</li>
-
-														<!-- <li class="filter" (click)="filterClickTemplates('BASIC',4,url)" *ngIf="campaignType=='video'" [class.emailtemplate-selected]="4== url.selectedEmailTemplateTypeIndex">Basic Video Templates</li>
-							<li class="filter" (click)="filterClickTemplates('RICH',5,url)" *ngIf="campaignType=='video'" [class.emailtemplate-selected]="5== url.selectedEmailTemplateTypeIndex">RichVideo Templates</li>
-							<li class="filter" (click)="filterClickTemplates('UPLOADED',6,url)" *ngIf="campaignType=='video'" [class.emailtemplate-selected]="6== url.selectedEmailTemplateTypeIndex">Uploaded Video Templates</li> -->
 														<li class="filter" (click)="filterClickTemplates('PARTNER',7,url)" [class.emailtemplate-selected]="7== url.selectedEmailTemplateTypeIndex">Partner Templates</li>
 													</ul>
 												</div>
@@ -555,7 +650,7 @@
 														<div class="portlet-input input-inline input-large">
 															<div class="input-icon right">
 																<i class="icon-magnifier" (click)="searchClickEmailTemplate(url)" style="cursor: pointer;"></i>
-																<input type="text" class="form-control input-circle" placeholder="search..." [(ngModel)]="url.emailTemplateSearchInput" [ngModelOptions]="{standalone: true}"
+																<input type="text" class="form-control" placeholder="search..." [(ngModel)]="url.emailTemplateSearchInput" [ngModelOptions]="{standalone: true}"
 																	style="width: 217px;height: 34px;">
 															</div>
 														</div>
@@ -714,6 +809,7 @@
             </form>
         </div>
     </div>
+    </ng-container>
 </div>
 
 <app-preview-video *ngIf="videoFile" [videoFile]="videoFile" (notifyParent)="closePreviewVideoModal($event)"></app-preview-video>
@@ -772,3 +868,44 @@
     </div>
 </div>
 <div id="emailTemplateContent" style="display: none;"></div>
+		<!-- ----------------------------------Contact Lists--------------------------------- -->
+		<div class="modal fade" id="usersModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close-circle" data-dismiss="modal" aria-label="Close">
+							<i class="fa fa-times"></i>
+						</button>
+						<div>
+							<h4 class="modal-title" id="user-list-name" align="center">
+								<b>List Of Users</b>
+							</h4>
+						</div>
+					</div>
+					<div class="modal-body" id="users-modal-body">
+					</div>
+					<ul *ngIf="contactsUsersPagination.pager.pages && contactsUsersPagination.pager.pages.length" class="pagination pull-left"
+					 style="margin-left: 10px;">
+						<li [ngClass]="{disabled:contactsUsersPagination.pager.currentPage === 1}">
+							<a (click)="setPage(1,'contactUsers')">First</a>
+						</li>
+						<li [ngClass]="{disabled:contactsUsersPagination.pager.currentPage === 1}">
+							<a (click)="setPage(contactsUsersPagination.pager.currentPage - 1,'contactUsers')">Previous</a>
+						</li>
+						<li *ngFor="let page of contactsUsersPagination.pager.pages" [ngClass]="{active:contactsUsersPagination.pager.currentPage === page}">
+							<a (click)="setPage(page,'contactUsers')" [class.disabled]="contactsUsersPagination.pager.currentPage === page">{{page}}</a>
+						</li>
+						<li [ngClass]="{disabled:contactsUsersPagination.pager.currentPage === contactsUsersPagination.pager.totalPages}">
+							<a (click)="setPage(contactsUsersPagination.pager.currentPage + 1,'contactUsers')">Next</a>
+						</li>
+						<li [ngClass]="{disabled:contactsUsersPagination.pager.currentPage ===contactsUsersPagination.pager.totalPages}">
+							<a (click)="setPage(contactsUsersPagination.pager.totalPages,'contactUsers')">Last</a>
+						</li>
+					</ul>
+
+					<div class="modal-footer">
+						<button type="button" (click)="closeModelPopup()" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>

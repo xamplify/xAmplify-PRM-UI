@@ -9,8 +9,8 @@
 </style>
 <div class="page-content" [style.background-color]="refService.pageContnetBgColor">
 	<app-preview-video *ngIf="createVideoFile" [videoFile]="createVideoFile" (notifyParent)="closeCreateModal($event)"></app-preview-video>
-	<app-loader [model]="httpRequestLoader.isHorizontalCss" *ngIf="httpRequestLoader.isLoading"></app-loader>
-	<ng-container *ngIf="!httpRequestLoader.isLoading">
+	<app-loader [model]="httpRequestLoader.isHorizontalCss" [hidden]="!httpRequestLoader.isLoading"></app-loader>
+	<div [hidden]="httpRequestLoader.isLoading">
 		<div class="page-bar">
 			<ul class="page-breadcrumb">
 				<li>
@@ -814,7 +814,7 @@
 													</li>
 												</ul>
 
-												<select class="btn btn-primary" style="margin-left:150px;margin-bottom:47px;float: right;" [(ngModel)]="contactItemsSize"
+												<select class="btn btn-default" style="margin-left:150px;margin-bottom:47px;float: right;" [(ngModel)]="contactItemsSize"
 												 (ngModelChange)="getNumberOfContactItemsPerPage($event)">
 													<option *ngFor="let itemPerPage of numberOfContactsPerPage" [ngValue]="itemPerPage">
 														{{itemPerPage.name}}
@@ -1286,10 +1286,6 @@
 											<li class="filter" (click)="filterReplyTemplates('BASIC',1,reply)" [class.emailtemplate-selected]="1 == reply.selectedEmailTemplateTypeIndex">Basic Templates</li>
 											<li class="filter" (click)="filterReplyTemplates('RICH',2,reply)" [class.emailtemplate-selected]="2 == reply.selectedEmailTemplateTypeIndex">Rich Templates</li>
 											<li class="filter" (click)="filterReplyTemplates('UPLOADED',3,reply)" [class.emailtemplate-selected]="3 == reply.selectedEmailTemplateTypeIndex">Uploaded Regular Templates</li>
-
-											<!-- <li class="filter" (click)="filterReplyTemplates('BASIC',4,reply)" *ngIf="campaignType=='video'" [class.emailtemplate-selected]="4== reply.selectedEmailTemplateTypeIndex">Basic Video Templates</li>
-							<li class="filter" (click)="filterReplyTemplates('RICH',5,reply)" *ngIf="campaignType=='video'" [class.emailtemplate-selected]="5== reply.selectedEmailTemplateTypeIndex">RichVideo Templates</li>
-							<li class="filter" (click)="filterReplyTemplates('UPLOADED',6,reply)" *ngIf="campaignType=='video'" [class.emailtemplate-selected]="6== reply.selectedEmailTemplateTypeIndex">Uploaded Video Templates</li> -->
 											<li class="filter" (click)="filterReplyTemplates('PARTNER',7,reply)" [class.emailtemplate-selected]="7== reply.selectedEmailTemplateTypeIndex">Partner Templates</li>
 										</ul>
 										<div class="input-icon pull-right">
@@ -1298,6 +1294,35 @@
 												style="width: 217px;height: 34px;">
 										</div>
 									</div>
+									
+									<div class="portlet-title">
+										<div class="caption">
+											<div class="row">
+												<div class="col-xs-12 col-sm-8 text-left">
+													<ul class="mix-filter" *ngIf="!isOnlyPartner">
+														<li class="filter" (click)="filterReplyTemplates('NONE',0,reply)" [class.emailtemplate-selected]="0 == reply.selectedEmailTemplateTypeIndex">All Email Templates</li>
+														<li class="filter" (click)="filterReplyTemplates('BASIC',1,reply)" [class.emailtemplate-selected]="1 == reply.selectedEmailTemplateTypeIndex">Basic Templates</li>
+														<li class="filter" (click)="filterReplyTemplates('RICH',2,reply)" [class.emailtemplate-selected]="2 == reply.selectedEmailTemplateTypeIndex">Rich Templates</li>
+														<li class="filter" (click)="filterReplyTemplates('UPLOADED',3,reply)" [class.emailtemplate-selected]="3 == reply.selectedEmailTemplateTypeIndex">Uploaded Regular Templates</li>
+														<li class="filter" (click)="filterReplyTemplates('PARTNER',7,reply)" [class.emailtemplate-selected]="7== reply.selectedEmailTemplateTypeIndex">Partner Templates</li>
+													</ul>
+												</div>
+												<div class="col-xs-12 col-sm-4">
+													<div class="inputs" align="right" style="display:inline; float:right;padding: 5px 5px 12px 0px;">
+														<div class="portlet-input input-inline input-large">
+															<div class="input-icon right">
+																<i class="icon-magnifier" (click)="searchReplyEmailTemplate(reply)" style="cursor: pointer;"></i>
+															<input type="text" class="form-control" placeholder="search..." [(ngModel)]="reply.emailTemplateSearchInput" [ngModelOptions]="{standalone: true}"
+																style="width: 217px;height: 34px;">
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									
+									
 									<app-loader [model]="campaignEmailTemplate.httpRequestLoader.isHorizontalCss" *ngIf="campaignEmailTemplate.httpRequestLoader.isLoading"></app-loader>
 									<app-error-pages *ngIf="campaignEmailTemplate.httpRequestLoader.isServerError"></app-error-pages>
 									<ng-container *ngIf="!campaignEmailTemplate.httpRequestLoader.isLoading && !campaignEmailTemplate.httpRequestLoader.isServerError">
@@ -1474,10 +1499,6 @@
 														<li class="filter" (click)="filterClickTemplates('BASIC',1,url)" *ngIf="campaignType=='regular'" [class.emailtemplate-selected]="1 == url.selectedEmailTemplateTypeIndex">Basic Templates</li>
 														<li class="filter" (click)="filterClickTemplates('RICH',2,url)" *ngIf="campaignType=='regular'" [class.emailtemplate-selected]="2 == url.selectedEmailTemplateTypeIndex">Rich Templates</li>
 														<li class="filter" (click)="filterClickTemplates('UPLOADED',3,url)" *ngIf="campaignType=='regular'" [class.emailtemplate-selected]="3 == url.selectedEmailTemplateTypeIndex">Uploaded Regular Templates</li>
-
-														<!-- <li class="filter" (click)="filterClickTemplates('BASIC',4,url)" *ngIf="campaignType=='video'" [class.emailtemplate-selected]="4== url.selectedEmailTemplateTypeIndex">Basic Video Templates</li>
-							<li class="filter" (click)="filterClickTemplates('RICH',5,url)" *ngIf="campaignType=='video'" [class.emailtemplate-selected]="5== url.selectedEmailTemplateTypeIndex">RichVideo Templates</li>
-							<li class="filter" (click)="filterClickTemplates('UPLOADED',6,url)" *ngIf="campaignType=='video'" [class.emailtemplate-selected]="6== url.selectedEmailTemplateTypeIndex">Uploaded Video Templates</li> -->
 														<li class="filter" (click)="filterClickTemplates('PARTNER',7,url)" [class.emailtemplate-selected]="7== url.selectedEmailTemplateTypeIndex">Partner Templates</li>
 													</ul>
 												</div>
@@ -1712,7 +1733,6 @@
 				</div>
 			</div>
 		</div>
-</ng-container>
+</div>
 </div>
 
-<!-- End of Line 1 -->

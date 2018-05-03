@@ -25,3 +25,8 @@ fieldset {
 .portlet.light.dashboard-stat2.border-error{
 	border-color: red
 }
+
+.table tr.contact-list-selected td {
+	background-color: #00a6e8 !important;
+	color: white;
+}

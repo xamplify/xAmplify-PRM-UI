@@ -26,6 +26,7 @@ import { Country } from '../../core/models/country';
 import { Timezone } from '../../core/models/timezone';
 import { EmailTemplateType } from '../../email-template/models/email-template-type';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
+import { CampaignContact } from '../models/campaign-contact';
 
 
 declare var $: any;
@@ -50,8 +51,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     isScheduleSelected = false;
     isLoading:boolean  = false;
 
-    contactListPagination: Pagination;
-    selectedUserlistIds = [];
+   
     customResponse: CustomResponse = new CustomResponse();
     countries: Country[];
     timezones: Timezone[];
@@ -132,9 +132,27 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     isCampaignDetailsFormValid:boolean = false;
     names:string[]=[];
     editedCampaignName:string = "";
-    /************Contact List**************/
+    /***************Contact List************************/
+    isContactList:boolean = false;
     contactListBorderColor:string = "silver";
-    
+    numberOfContactsPerPage = [
+                               {'name':'10','value':'10'},
+                               {'name':'20','value':'20'},
+                               {'name':'30','value':'30'},
+                               {'name':'---All---','value':'0'},
+                               ]
+    contactItemsSize:any = this.numberOfContactsPerPage[0];
+    isCampaignDraftContactList:boolean = false;                           
+    selectedRowClass:string = ""; 
+    isHeaderCheckBoxChecked:boolean = false;
+    emptyContactsMessage:string = "";
+    contactSearchInput:string = "";
+    contactListPagination: Pagination = new Pagination();
+    campaignContact:CampaignContact=new CampaignContact();
+    selectedUserlistIds = [];
+    previewContactListId : number;
+    contactsUsersPagination:Pagination = new Pagination();
+    previewText:string = "Select";
     /************Add Reply/Add OnClick**************/
     emailNotOpenedReplyDaysSum:number = 0;
     emailOpenedReplyDaysSum:number = 0;
@@ -365,17 +383,9 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
         );
     }
     
-   /* listPartnerCampaigns(userId: number, campaignType: string) {
-        this.campaignService.listPartnerCampaigns(userId, campaignType)
-            .subscribe(
-            result => { this.campaigns = result; },
-            error => console.log(error),
-            () => { });
-    }*/
-    
     
     listPartnerCampaigns(pagination:Pagination) {
-        this.referenceService.loading(this.httpRequestLoader, true);
+        this.referenceService.startLoader(this.httpRequestLoader);
         if(this.campaignType=="regular"){
             pagination.campaignType = "REGULAR";
         }else if(this.campaignType=="video"){
@@ -391,7 +401,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
                     this.totalRecords = data.totalRecords;
                     pagination.totalRecords = data.totalRecords;
                     pagination = this.pagerService.getPagedItems(pagination, data.campaigns);
-                    this.referenceService.loading(this.httpRequestLoader, false);
+                    this.referenceService.stopLoader(this.httpRequestLoader);
                 },
                 error => {
                     this.xtremandLogger.errorPage(error);
@@ -489,19 +499,9 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
         $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
     }
 
-    loadContactList(contactListPagination: Pagination) {
-        this.contactService.loadContactLists(contactListPagination)
-            .subscribe(
-            (data: any) => {
-                this.xtremandLogger.info("contactListPagination:-->", data);
-                this.userLists = data["listOfUserLists"];
-            },
-            (error: string) => this.xtremandLogger.errorPage(error),
-            () => this.xtremandLogger.info("Finished loadContactList()", this.contactListPagination)
-            )
-    }
+ 
     launchCampaign() {
-        this.isLoading = true;
+        this.referenceService.startLoader(this.httpRequestLoader);
         $('#contact-list-error').hide();
         var data = this.getCampaignData("");
         var errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
@@ -512,15 +512,17 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
             this.campaignService.saveCampaign( data )
             .subscribe(
             response => {
+                this.referenceService.stopLoader(this.httpRequestLoader);
                 this.isNurture = true;
                 if (response.statusCode === 2000) {
                     this.referenceService.campaignSuccessMessage = data.scheduleCampaign;
                     this.campaign = null;
                     this.router.navigate(["/home/campaigns/manage"]);
                 } else {
-                    this.isLoading = false;
+                    this.referenceService.stopLoader(this.httpRequestLoader);
                     this.invalidScheduleTime = true;
                     this.invalidScheduleTimeError = response.message;
+                    
                 }
                 
             },
@@ -531,7 +533,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
             () => this.xtremandLogger.info("Finished launchCampaign()")
         ); 
         }else{
-            this.isLoading = false;
+            this.referenceService.stopLoader(this.httpRequestLoader);
             if(this.replies.length>0 ||this.urls.length>0){
                 this.dataError = true;
             }else{
@@ -822,17 +824,21 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     
     
     
-    highlightRow(contactListId: number) {
+    highlightRow(contactListId: number,event:any) {
         const isChecked = $('#' + contactListId).is(':checked');
         if (isChecked) {
+            $('#campaignContactListTable_'+contactListId).addClass('contact-list-selected');
             if (!this.selectedUserlistIds.includes(contactListId)) {
                 this.selectedUserlistIds.push(contactListId);
             }
             $('#' + contactListId).parent().closest('tr').addClass('highlight');
         } else {
+            $('#campaignContactListTable_'+contactListId).removeClass('contact-list-selected');
             this.selectedUserlistIds.splice($.inArray(contactListId, this.selectedUserlistIds), 1);
             $('#' + contactListId).parent().closest('tr').removeClass('highlight');
         }
+        this.contactsUtility();
+        event.stopPropagation();
     }
 
     getCampaignReplies(campaign: Campaign) {
@@ -1132,16 +1138,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
         }
         console.log(this.emailTemplateHrefLinks);
     }
-    ngOnInit() {
-        this.campaignType = this.route.snapshot.params['type'];
-        this.loggedInUserId = this.authenticationService.getUserId();
-        this.loadCampaignNames( this.loggedInUserId );       
-        this.parterCampaingsPagination.maxResults = 12;
-        this.listPartnerCampaigns(this.parterCampaingsPagination);
-        if(this.referenceService.isEditNurtureCampaign){
-            this.editNurtureCampaign(this.referenceService.nurtureCampaignId);
-        }
-    }
+
     setLaunchTime(){
         var date    = new Date(),
         year      = date.getFullYear(),
@@ -1162,6 +1159,11 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     setPage(event) {
         this.parterCampaingsPagination.pageIndex = event.page;
         this.listPartnerCampaigns(this.parterCampaingsPagination);
+    }
+    
+    setContactPage(event){
+        this.contactListPagination.pageIndex = event.page;
+        this.loadContactList(this.contactListPagination);
     }
 
     searchCampaigns() {
@@ -1197,5 +1199,225 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
         }
         this.listPartnerCampaigns(this.parterCampaingsPagination);
     }
+    
+    
+    /*************************************************************Contact List***************************************************************************************/
+    loadContactList(contactsPagination: Pagination) {
+        this.campaignContact.httpRequestLoader.isHorizontalCss=true;
+        this.referenceService.loading(this.campaignContact.httpRequestLoader, true);
+        if(this.campaign.nurtureCampaign){
+            contactsPagination.editCampaign = true;
+            contactsPagination.campaignId = this.campaign.campaignId;
+        }else{
+            contactsPagination.editCampaign = false;
+        }
+        console.log(contactsPagination);
+        this.contactService.loadContactLists(contactsPagination)
+            .subscribe(
+            (data: any) => {
+                this.userLists = data.listOfUserLists;
+                contactsPagination.totalRecords = data.totalRecords;
+                if(contactsPagination.filterBy!=null){
+                    if(contactsPagination.filterBy==0){
+                        contactsPagination.maxResults = data.totalRecords;
+                    }else{
+                        contactsPagination.maxResults = contactsPagination.filterBy;
+                    }
+                }
+                this.contactListPagination = this.pagerService.getPagedItems(contactsPagination,this.userLists);
+                this.referenceService.loading(this.campaignContact.httpRequestLoader, false);
+                var contactIds = this.contactListPagination.pagedItems.map(function(a) {return a.id;});
+                var items = $.grep(this.selectedUserlistIds, function(element) {
+                    return $.inArray(element, contactIds ) !== -1;
+                });
+                console.log(contactIds);
+                console.log(items);
+               console.log(items.length+"::::::::::::"+contactIds.length);//items.length==contactsPagination.maxResults ||
+                if(items.length==contactIds.length){
+                    this.isHeaderCheckBoxChecked = true;
+                }else{
+                    this.isHeaderCheckBoxChecked = false;
+                }
+            },
+            (error: string) => this.xtremandLogger.errorPage(error),
+            () => this.xtremandLogger.info("Finished loadContactList()", this.contactListPagination)
+            )
+    }
+    
+    showContacts(){
+        if($('#campaign-contact-list').css('display') == 'none'){
+            this.previewText = "Hide";
+        }else{
+            this.previewText = "Select";
+        }
+        $('#campaign-contact-list').toggle(500);
+    }
+    searchContactList(){
+        this.contactListPagination.pageIndex = 1;
+        this.contactListPagination.searchKey = this.contactSearchInput;
+        this.loadContactList(this.contactListPagination);
+    }
+    highlightContactRow(contactId:number,event:any,count:number,isValid:boolean){
+        if(isValid){
+            this.emptyContactsMessage = "";
+            if(count>0){
+                let isChecked = $('#'+contactId).is(':checked');
+                if(isChecked){
+                    //Removing Highlighted Row
+                    $('#'+contactId).prop( "checked", false );
+                    $('#campaignContactListTable_'+contactId).removeClass('contact-list-selected');
+                    console.log("Revmoing"+contactId);
+                    this.selectedUserlistIds.splice($.inArray(contactId,this.selectedUserlistIds),1);
+              }else{
+                  //Highlighting Row
+                  $('#'+contactId).prop( "checked", true );
+                  $('#campaignContactListTable_'+contactId).addClass('contact-list-selected');
+                  console.log("Adding"+contactId);
+                  this.selectedUserlistIds.push(contactId);
+              }
+                this.contactsUtility();
+                event.stopPropagation();
+                console.log(this.selectedUserlistIds);
+            }else{
+                this.emptyContactsMessage = "Contacts are in progress";
+            }
+           
+        }
+       
+    }
+    contactsUtility(){
+        var trLength = $('#user_list_tb tbody tr').length;
+        var selectedRowsLength = $('[name="campaignContact[]"]:checked').length;
+        if(selectedRowsLength>0){
+            this.isContactList = true;
+        }else{
+            this.isContactList = false;
+        }
+        if(trLength!=selectedRowsLength){
+            $('#checkAllExistingContacts').prop("checked",false)
+        }else if(trLength==selectedRowsLength){
+            $('#checkAllExistingContacts').prop("checked",true);
+        }
+    }
+   
+    checkAll(ev:any){
+        if(ev.target.checked){
+            console.log("checked");
+            $('[name="campaignContact[]"]').prop('checked', true);
+            this.isContactList = true;
+            let self = this;
+            $('[name="campaignContact[]"]:checked').each(function(){
+                var id = $(this).val();
+                self.selectedUserlistIds.push(parseInt(id));
+                console.log(self.selectedUserlistIds);
+                $('#campaignContactListTable_'+id).addClass('contact-list-selected');
+             });
+            this.selectedUserlistIds = this.referenceService.removeDuplicates(this.selectedUserlistIds);
+            if(this.selectedUserlistIds.length==0){
+                this.isContactList = false;
+            }
+        }else{
+            $('[name="campaignContact[]"]').prop('checked', false);
+            $('#user_list_tb tr').removeClass("contact-list-selected");
+            if(this.contactListPagination.maxResults>30||(this.contactListPagination.maxResults==this.contactListPagination.totalRecords)){
+                this.isContactList = false;
+                this.selectedUserlistIds = [];
+            }else{
+                this.selectedUserlistIds = this.referenceService.removeDuplicates(this.selectedUserlistIds);
+                let currentPageContactIds = this.contactListPagination.pagedItems.map(function(a) {return a.id;});
+                this.selectedUserlistIds = this.referenceService.removeDuplicatesFromTwoArrays(this.selectedUserlistIds, currentPageContactIds);
+                if(this.selectedUserlistIds.length==0){
+                    this.isContactList = false;
+                }
+            }
+            
+        }
+        ev.stopPropagation();
+    }
+    
 
+    
+    /*******************************Preview*************************************/
+    contactListItems:any[];
+      loadUsers(id:number,pagination:Pagination){
+           if(id==undefined){
+              id=this.previewContactListId;
+          }else{
+              this.previewContactListId = id;
+          }
+          this.contactService.loadUsersOfContactList( id,this.contactsUsersPagination).subscribe(
+                  (data:any) => {
+                      console.log(data);
+                      console.log(pagination);
+                      this.contactListItems = data.listOfUsers;
+                      console.log(this.contactListItems);
+                      pagination.totalRecords = data.totalRecords;
+                      this.contactsUsersPagination = this.pagerService.getPagedItems(pagination, this.contactListItems);
+                      $('#users-modal-body').html('');
+                      var html = "";
+                      html+= '<table  class="table table-striped table-hover table-bordered" id="sample_editable_1">'+
+                              '<thead>'+
+                                  '<tr>'+
+                                      '<th>EMAIL ID</th>'+
+                                      '<th>FIRST NAME</th>'+
+                                      '<th>LAST NAME</th>'+
+                                  '</tr>'+
+                              '</thead>'+
+                               '<tbody>';
+                      $.each(this.contactsUsersPagination.pagedItems,function(index,value){
+                          var firstName = value.firstName;
+                          var lastName = value.lastName;
+                          if(firstName==null || firstName=="null"){
+                              firstName="";
+                          }
+                         if(lastName==null || lastName=="null"){
+                             lastName = "";
+                         }
+                          html+= '<tr>'+
+                                      '<td>'+value.emailId+'</td>'+
+                                      '<td>'+firstName+'</td>'+
+                                      '<td>'+lastName+'</td>'+
+                                  '</tr>';
+                      });     
+                       html+='</tbody>';
+                       html+='</table>';
+                      $('#users-modal-body').append(html);
+                      $('#usersModal').modal({backdrop: 'static', keyboard: false});
+                  },
+                  error =>
+                  () => console.log( "MangeContactsComponent loadUsersOfContactList() finished" )
+              )
+      }
+      
+      closeModelPopup(){
+          this.contactsUsersPagination = new Pagination();
+      }
+      showContactsAlert(count:number){
+          this.emptyContactsMessage = "";
+          if(count==0){
+              this.emptyContactsMessage = "No Contacts Found For This Contact List";
+          }
+      }
+    
+      
+      paginateEmailTemplateRows(pageIndex:number,reply:Reply){
+          reply.emailTemplatesPagination.pageIndex = pageIndex;
+          this.loadEmailTemplatesForAddReply(reply);
+      }
+      paginateClickEmailTemplateRows(pageIndex:number,url:Url){
+          url.emailTemplatesPagination.pageIndex = pageIndex;
+          this.loadEmailTemplatesForAddOnClick(url);
+      }
+      
+      
+      ngOnInit() {
+          this.campaignType = this.route.snapshot.params['type'];
+          this.loggedInUserId = this.authenticationService.getUserId();
+          this.loadCampaignNames( this.loggedInUserId );       
+          this.parterCampaingsPagination.maxResults = 12;
+          this.listPartnerCampaigns(this.parterCampaingsPagination);
+          if(this.referenceService.isEditNurtureCampaign){
+              this.editNurtureCampaign(this.referenceService.nurtureCampaignId);
+          }
+      }
 }
