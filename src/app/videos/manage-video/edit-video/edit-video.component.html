@@ -122,7 +122,7 @@
 					</div>
 				</div>
 				<!-- emebd src Modal Start-->
-				<app-embed-modal *ngIf="embedModelVideo" [video]="embedModelVideo" (notifyParent)="closeEmbedModal($event)"></app-embed-modal>
+				<app-embed-modal *ngIf="embedModelVideo" [video]="embedModelVideo" (notifyParent)="closeEmbedModal($event)" #embedModel></app-embed-modal>
 				<!-- Modal End-->
 			</div>
 			<!-- video ended  -->

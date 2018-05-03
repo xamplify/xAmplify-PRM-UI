@@ -17,6 +17,8 @@ import { User } from '../../../core/models/user';
 import { Pagination } from '../../../core/models/pagination';
 import { XtremandLog } from '../../models/xtremand-log';
 import { HttpRequestLoader } from '../../../core/models/http-request-loader';
+import { EmbedModalComponent } from '../../../common/embed-modal/embed-modal.component';
+
 declare const $, videojs: any;
 
 @Component({
@@ -26,7 +28,7 @@ declare const $, videojs: any;
         '../../../../assets/css/video-css/videojs-overlay.css', '../../../../assets/css/about-us.css',
         '../../../../assets/css/todo.css', '../edit-video/edit-video.component.css',
         '../../../../assets/css/video-css/call-action.css'],
-    providers: [Pagination, XtremandLog, HttpRequestLoader]
+    providers: [Pagination, XtremandLog, HttpRequestLoader, EmbedModalComponent]
 })
 export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     @Input() totalRecords: number;
@@ -48,7 +50,6 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     disLikesValues: number;
     shareValues: boolean;
     is360Value: boolean;
-    embedUrl: string;
     // logging info details
     sessionId: string;
     deviceInfo: any;
@@ -68,7 +69,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     constructor(public authenticationService: AuthenticationService, public videoFileService: VideoFileService,
         public videoUtilService: VideoUtilService, public pagination: Pagination, public xtremandLog: XtremandLog,
         public deviceService: Ng2DeviceService, public xtremandLogger: XtremandLogger,public userService: UserService,
-        public pagerService: PagerService, public referenceService: ReferenceService) {
+        public pagerService: PagerService, public referenceService: ReferenceService, public embedModalComponent:EmbedModalComponent) {
         this.disLikesValues = 0;
         this.likesValues = 0;
         this.loggedInUserId = this.authenticationService.getUserId();
@@ -109,16 +110,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
        $('#modalDialog').append($('#overlay-modal').show());
     }
     shareClick() {
-        this.videoFileService.getShortnerUrlAlias(this.selectedVideo.viewBy, this.selectedVideo.alias)
-            .subscribe((result: any) => {
-                this.embedUrl = this.authenticationService.SERVER_URL + 'embed/' + result.alias;
-                this.shareMetaTags(this.embedUrl);
-                this.videoUtilService.modalWindowPopUp(this.embedUrl, 670, 500);
-            });
-    }
-    shareMetaTags(shareShortUrl: string) {
-        this.videoFileService.shareMetaTags(shareShortUrl).subscribe((result: any) => { },
-            (error: any) => { this.xtremandLogger.error(error); });
+      this.embedModalComponent.shareClick(this.selectedVideo,'share');
     }
     embedModal() {
         this.embedModelVideo = this.selectedVideo;
@@ -211,7 +203,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     getVideoDefaultSettings() {
         this.userService.getVideoDefaultSettings().subscribe(
-            (result: any) => { 
+            (result: any) => {
                 this.logoImageUrlPath = result.brandingLogoUri;
                 this.logoLink = result.brandingLogoDescUri;
             });
@@ -699,14 +691,14 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             this.on('contextmenu', function (e) {
                 e.preventDefault();
             });
-            this.on('mouseover', function(){ 
+            this.on('mouseover', function(){
                 this.userActive(true)
                 $('#imageDivHide').css('cssText', 'display:block');
             });
-            this.on('mouseleave', function(){ 
-                setTimeout(()=>{ 
+            this.on('mouseleave', function(){
+                setTimeout(()=>{
                    if(!self.pauseVideo){
-                       $('#imageDivHide').css('cssText', 'display:none'); 
+                       $('#imageDivHide').css('cssText', 'display:none');
                        this.userActive(false)
                     }
                     },3000);

@@ -62,18 +62,20 @@ export class EmbedModalComponent implements OnInit, OnDestroy {
     this.videoFileService.shareMetaTags(shareShortUrl).subscribe((result: any) => { },
       (error: any) => { console.log(error); });
   }
-  embedModal() {
-    this.videoFileService.getShortnerUrlAlias(this.video.viewBy, this.video.alias)
+  shareClick(video:any, type:string) {
+    this.videoFileService.getShortnerUrlAlias(video.viewBy, video.alias)
       .subscribe((result: any) => {
         this.embedSrcPath = this.authenticationService.SERVER_URL + 'embed/' + result.alias;
         this.shareMetaTags(this.embedSrcPath);
-        if (this.embedSrcPath) {
-          $('#myModal').show();
+        if(type ==='modal'){
+        if (this.embedSrcPath) { $('#myModal').show();} }
+        else {
+          this.videoUtilService.modalWindowPopUp(this.embedSrcPath, 670, 500);
         }
       });
   }
   ngOnInit() {
-    this.embedModal();
+    this.shareClick(this.video, 'modal');
   }
   ngOnDestroy() {
     this.closeEmbed();

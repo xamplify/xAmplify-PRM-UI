@@ -20,6 +20,7 @@ import { CallActionSwitch } from '../../models/call-action-switch';
 import { CallAction } from '../../models/call-action';
 import { User } from '../../../core/models/user';
 import { DefaultVideoPlayer } from '../../models/default-video-player';
+import { EmbedModalComponent } from '../../../common/embed-modal/embed-modal.component';
 
 declare var swal, videojs, QuickSidebar,$: any;
 
@@ -42,7 +43,7 @@ declare var swal, videojs, QuickSidebar,$: any;
             ])
         ])
     ],
-    providers: [CallActionSwitch]
+    providers: [CallActionSwitch, EmbedModalComponent]
 })
 export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     @Output() notifyParent: EventEmitter<SaveVideoFile>;
@@ -106,7 +107,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     formErrors: any;
     validationMessages: any;
     value360: boolean;
-    embedUrl: string;
     upperTextValid: boolean;
     lowerTextValid: boolean;
     isValidTitle = false;
@@ -143,7 +143,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     constructor(public referenceService: ReferenceService, public callActionSwitch: CallActionSwitch,
         public videoFileService: VideoFileService, public fb: FormBuilder, public changeDetectorRef: ChangeDetectorRef,
         public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger,
-        public sanitizer: DomSanitizer, public videoUtilService: VideoUtilService) {
+        public sanitizer: DomSanitizer, public videoUtilService: VideoUtilService, public embedModalComponent:EmbedModalComponent) {
         this.saveVideoFile = this.videoFileService.saveVideoFile;
         this.tempVideoFile = this.videoFileService.saveVideoFile;
         this.tempControllerColor = this.tempVideoFile.controllerColor;
@@ -268,18 +268,9 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     public validatorsTag = [this.startsWithAt];
 
     shareClick() {
-        this.videoFileService.getShortnerUrlAlias(this.saveVideoFile.viewBy, this.saveVideoFile.alias)
-            .subscribe((result: any) => {
-                this.embedUrl = this.authenticationService.SERVER_URL + 'embed/' + result.alias;
-                this.shareMetaTags(this.embedUrl);
-                this.videoUtilService.modalWindowPopUp(this.embedUrl, 670, 500);
-            });
+      this.embedModalComponent.shareClick(this.saveVideoFile,'share');
     }
-    shareMetaTags(shareShortUrl: string) {
-        this.videoFileService.shareMetaTags(shareShortUrl).subscribe((result: any) => { },
-            (error: any) => { this.xtremandLogger.error(error); });
-    }
-   embedModal(){
+    embedModal(){
        this.embedModelVideo = this.saveVideoFile;
     }
     // call to action values
