@@ -985,6 +985,7 @@ export class AddContactsComponent implements OnInit {
     saveGoogleContactSelectedUsers() {
         this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
         this.xtremandLogger.info( "SelectedUserIDs:" + this.allselectedUsers );
+        this.allselectedUsers = this.validateSocialContacts(this.allselectedUsers);
         if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' && this.allselectedUsers.length != 0 ) {
             this.xtremandLogger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( this.allselectedUsers ) );
             this.contactListObject = new ContactList;
