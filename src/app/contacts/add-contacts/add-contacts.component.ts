@@ -505,6 +505,10 @@ export class AddContactsComponent implements OnInit {
         this.xtremandLogger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( this.newUsers ) );
         for ( var i = 0; i < this.newUsers.length; i++ ) {
             this.newUsers[i].emailId = this.convertToLowerCase( this.newUsers[i].emailId );
+            
+            if(this.newUsers[i].country === "---Please Select Country---"){
+                this.newUsers[i].country = null;
+            }
         }
         this.contactListObject = new ContactList;
         this.contactListObject.name = this.model.contactListName;
@@ -585,6 +589,10 @@ export class AddContactsComponent implements OnInit {
     saveClipboardValidEmails() {
         for ( var i = 0; i < this.clipboardUsers.length; i++ ) {
             this.clipboardUsers[i].emailId = this.convertToLowerCase( this.clipboardUsers[i].emailId );
+            
+            if(this.clipboardUsers[i].country === "---Please Select Country---"){
+                this.clipboardUsers[i].country = null;
+            }
         }
         this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
         this.contactListObject = new ContactList;
@@ -632,6 +640,10 @@ export class AddContactsComponent implements OnInit {
                 if ( this.validCsvContacts == true && this.invalidPatternEmails.length == 0 ) {
                     for ( var i = 0; i < this.contacts.length; i++ ) {
                         this.contacts[i].emailId = this.convertToLowerCase( this.contacts[i].emailId );
+                        
+                        if(this.contacts[i].country === "---Please Select Country---"){
+                            this.contacts[i].country = null;
+                        }
                     }
                     this.xtremandLogger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( this.contacts ) );
                     this.contactListObject = new ContactList;
