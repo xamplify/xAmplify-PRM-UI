@@ -15,7 +15,7 @@ export class SaveVideoFile {
     description: string;
     playerColor: string;
     enableVideoController: boolean;
-    controllerColor: string;
+    controllerColor: string="";
     allowSharing: boolean;
     enableSettings: boolean;
     allowFullscreen: boolean;
@@ -23,7 +23,7 @@ export class SaveVideoFile {
     allowLikes: boolean;
     enableCasting: boolean;
     allowEmbed: boolean;
-    transparency: number;
+    transparency: number=0;
     action: string;
     callACtion: boolean;
     name: boolean;

@@ -939,7 +939,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     }
     videoControllColors(videoFile: SaveVideoFile) {
         this.videoUtilService.videoColorControlls(videoFile);
-        if(videoFile.controllerColor && videoFile.transparency) {
+        if($.trim(videoFile.controllerColor).length>0 && videoFile.transparency!=0) {
         const rgba =  this.videoUtilService.transparancyControllBarColor(videoFile.controllerColor, videoFile.transparency);
         $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
         }
