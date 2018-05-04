@@ -347,6 +347,10 @@ export class EditContactsComponent implements OnInit {
 
         for(let i=0; i< this.users.length; i++){
             this.newUsersEmails.push(this.users[i].emailId);
+            
+            if(this.users[i].country === "---Please Select Country---"){
+                this.users[i].country = null;
+            }
         }
 
         if(this.isPartner){
@@ -448,6 +452,10 @@ export class EditContactsComponent implements OnInit {
                     this.validCsvContacts = false;
                 }
 
+                if(this.users[i].country === "---Please Select Country---"){
+                    this.users[i].country = null;
+                }
+                
                 this.newUsersEmails.push(this.users[i].emailId);
             }
             if ( this.validCsvContacts == true && this.invalidPatternEmails.length == 0) {
@@ -836,6 +844,10 @@ export class EditContactsComponent implements OnInit {
         let existedEmails = [];
         for(let i=0; i< this.users.length; i++){
             this.newUsersEmails.push(this.users[i].emailId);
+            
+            if(this.users[i].country === "---Please Select Country---"){
+                this.users[i].country = null;
+            }
         }
         this.xtremandLogger.info( "update contacts #contactSelectedListId " + this.contactListId + " data => " + JSON.stringify( this.users ) );
         if ( this.users.length != 0 ) {
