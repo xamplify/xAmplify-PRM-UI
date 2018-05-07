@@ -1293,6 +1293,7 @@ export class AddContactsComponent implements OnInit {
         this.socialContact.isPartnerUserList = this.isPartner;
         this.socialContact.contactType = this.contactType;
         this.socialContact.contacts = this.socialContactUsers;
+        this.socialContact.contacts = this.validateSocialContacts(this.socialContactUsers);
         this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
         if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' ) {
             if ( this.socialContactUsers.length > 0 ) {
@@ -1326,6 +1327,7 @@ export class AddContactsComponent implements OnInit {
 
     saveZohoContactSelectedUsers() {
         this.xtremandLogger.info( "SelectedUserIDs:" + this.allselectedUsers );
+        this.allselectedUsers = this.validateSocialContacts(this.allselectedUsers);
         this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
         if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' && this.allselectedUsers.length != 0 ) {
             this.xtremandLogger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( this.allselectedUsers ) );
@@ -1584,6 +1586,7 @@ export class AddContactsComponent implements OnInit {
     saveSalesforceContactSelectedUsers() {
         this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
         this.xtremandLogger.info( "SelectedUserIDs:" + this.allselectedUsers );
+        this.allselectedUsers = this.validateSocialContacts(this.allselectedUsers);
         if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' && this.allselectedUsers.length != 0 ) {
             this.xtremandLogger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( this.allselectedUsers ) );
             this.contactListObject = new ContactList;
@@ -1623,6 +1626,7 @@ export class AddContactsComponent implements OnInit {
         this.socialContact.alias = this.salesforceListViewId;
         this.socialContact.contacts = this.socialContactUsers;
         this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
+        this.socialContact.contacts = this.validateSocialContacts(this.socialContactUsers);
         if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' ) {
             if ( this.socialContactUsers.length > 0 ) {
                 this.contactService.saveSocialContactList( this.socialContact )

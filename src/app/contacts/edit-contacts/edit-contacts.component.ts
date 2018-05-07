@@ -1682,7 +1682,11 @@ export class EditContactsComponent implements OnInit {
                 this.listOfSelectedContactListByType( this.contactsByType.selectedCategory );
             }
             this.isSegmentation = true;
-            $( "#filterModal .close" ).click()
+            
+            $( '#filterModal' ).modal( 'toggle' );
+            $( "#filterModal .close" ).click();
+            $('#filterModal').modal('hide');
+            
             this.isSegmentationErrorMessage = false;
             this.selectedAddContactsOption = 9;
         }

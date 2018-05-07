@@ -409,7 +409,6 @@ export class ManageContactsComponent implements OnInit {
             data => {
                 data
                 swal.close();
-                //this.responseMessage = ['SUCCESS', 'Your Contact List has been sychronized successfully.','show'];
                 this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_LIST_SYNCHRONIZATION_SUCCESS, true );
                 this.loadContactLists( this.pagination );
                 this.contactsCount();
@@ -1064,7 +1063,9 @@ export class ManageContactsComponent implements OnInit {
             this.listContactsByType( this.contactsByType.selectedCategory );
             console.log( this.criterias );
             this.isSegmentation = true;
-            $( "#filterModal .close" ).click()
+            $( '#filterModal' ).modal( 'toggle' );
+            $( "#filterModal .close" ).click();
+            $('#filterModal').modal('hide');
         }
     }
 
