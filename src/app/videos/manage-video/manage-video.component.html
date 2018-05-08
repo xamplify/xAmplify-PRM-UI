@@ -111,14 +111,14 @@
 														<a (click)="showCampaignVideoReport(videoFile)" *ngIf="videoFile.viewBy!=='DRAFT'" title="Video Based Reports">
 															<i class="fa fa-line-chart"></i>
                             </a>
-                            <a *ngIf="videoFile.viewBy=='DRAFT'" title="Can't show Reports for DRAFT" style="cursor: not-allowed !important;">
-                              <i class="fa fa-bullhorn" title="Can't show Reports for DRAFT"></i>
+                            <a *ngIf="videoFile.viewBy=='DRAFT'" title="Can't show Reports for DRAFT" style="cursor: not-allowed !important;opacity: 0.6">
+                              <i class="fa fa-line-chart" title="Can't show Reports for DRAFT"></i>
                             </a>
 														<ng-container *ngIf="hasAllAccess || (hasCampaignRole && hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor">
 															<a *ngIf="videoFile.viewBy!='DRAFT'" (click)="campaignRouter(videoFile)" title="Create Campaign">
 																<i class="fa fa-bullhorn"></i>
 															</a>
-															<a *ngIf="videoFile.viewBy=='DRAFT'" title="Can't create a Campaign for DRAFT" style="cursor: not-allowed !important;">
+															<a *ngIf="videoFile.viewBy=='DRAFT'" title="Can't create a Campaign for DRAFT" style="cursor: not-allowed !important;opacity: 0.6;">
 																<i class="fa fa-bullhorn" title="Can't create a Campaign for DRAFT"></i>
 															</a>
 														</ng-container>
