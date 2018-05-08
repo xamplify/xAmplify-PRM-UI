@@ -51,8 +51,8 @@
 
 									<div class="page-bar m0">
 										<ul class="page-breadcrumb">
-											<li style="font-size: 16px; color: #888888">List of
-												{{checkingContactTypeName}}s</li>
+											<li style="font-size: 16px; color: #888888">Your {{checkingContactTypeName}} Lists
+												</li>
 
 										</ul>
 										<div class="page-toolbar">
@@ -220,7 +220,7 @@
 																*ngIf="hasAllAccess || authenticationService.module.isVendor || (hasContactRole && loggedInUserId == contactList.uploadedUserId) || authenticationService.isOnlyPartner()"
 																(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList)"
 																title="Edit List"> <i class="fa fa-pencil-square-o"></i>
-															</a> <a title="Save Existing List As a new List"
+															</a> <a title="Copy and save as a new list"
 																(click)="saveAsNewList(contactList.id,contactList.name)">
 																<i class="fa fa-files-o"></i> 
 															</a> <a
@@ -234,7 +234,7 @@
 															</a> <a
 																*ngIf="(hasAllAccess || authenticationService.module.isVendor || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner()) && !contactList.defaultPartnerList"
 																(click)="showAlert(contactList.id)" title="Delete List">
-																<i class="fa fa-trash"></i>
+																<i class="fa fa-trash"></i> 
 															</a> <span *ngIf="contactList.synchronisedList == true">
 																<a title="sychronizeContactList"
 																*ngIf="hasAllAccess || authenticationService.module.isVendor|| (hasContactRole && loggedInUserId==contactList.uploadedUserId)"
@@ -308,7 +308,7 @@
 													</div>
 													<div style="top: 38%; position: relative;">
 														<a class="mix-preview2" [ngClass]="{'saveAsCustomeCss':contactList.defaultPartnerList }"
-															title="Save Existing list as a new list"
+															title="Copy and save as a new list"
 															(click)="saveAsNewList(contactList.id,contactList.name)"
 															[class.disabled]="!contactList.emailValidationInd"
 															data-rel="fancybox-button" style="left: 38%; top: -20px;">

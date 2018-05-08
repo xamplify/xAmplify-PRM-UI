@@ -86,7 +86,7 @@ img:hover {
 											(click)="copyFromClipboard()"
 											[disabled]="selectedAddPartnerOption != 5">
 											<i class="fa fa-users"></i>
-											<span>Copy List Form ClipBoard</span>
+											<span>Copy list from clipboard</span>
 										</button>
 									</div>
 									<div class="col-xs-12 col-sm-4 col-md-4">
@@ -387,7 +387,7 @@ img:hover {
 				<!-- BEGIN EXAMPLE TABLE PORTLET-->
 				<div *ngIf="newPartnerUser?.length == 0 && selectedAddPartnerOption == 2"
 									class="alert alert-info alert-dismissable">No Partners
-									Found</div>
+									found</div>
 				<div class="portlet box blue" *ngIf="newPartnerUser?.length != 0">
 					<div class="portlet-title">
 						<div class="caption">
@@ -497,7 +497,7 @@ img:hover {
 																(click)="search()"> </i> <input type="text"
 																[(ngModel)]="searchKey"
 																[ngModelOptions]="{standalone: true}" 
-																class="form-control" placeholder="Search for a List">
+																class="form-control" placeholder="Search for a Partner">
 														</div>
 													</div>
 												</div>
@@ -515,7 +515,7 @@ img:hover {
 								</div>
 								<div *ngIf="pagination.pagedItems?.length == 0 && newPartnerUser?.length == 0 && !isLoadingList"
 									class="alert alert-info alert-dismissable">No Partners
-									Found..</div>
+									found.</div>
 								<div class="table-responsive">
 									<table class='table tgrid'>
 										<thead *ngIf="pagination.pagedItems?.length != 0">

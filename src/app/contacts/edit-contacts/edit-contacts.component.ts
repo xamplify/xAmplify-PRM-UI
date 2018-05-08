@@ -144,6 +144,7 @@ export class EditContactsComponent implements OnInit {
     teamMembersList = [];
     orgAdminsList = [];
     editingEmailId = '';
+    loading = false;
 
     filterOptions = [
         { 'name': '', 'value': 'Field Name*' },
@@ -394,11 +395,13 @@ export class EditContactsComponent implements OnInit {
         }
      if(existedEmails.length === 0){
       if(this.isCompanyDetails){
+          this.loading = true;
         this.xtremandLogger.info( "update contacts #contactSelectedListId " + this.contactListId + " data => " + JSON.stringify( this.users ) );
         this.contactService.updateContactList( this.contactListId, this.users )
             .subscribe(
             ( data: any ) => {
                 data = data;
+                this.loading = false;
                 this.allUsers = this.contactsByType.allContactsCount;
                 this.xtremandLogger.info( "update Contacts ListUsers:" + data );
                 this.manageContact.editContactList( this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList );
@@ -416,6 +419,7 @@ export class EditContactsComponent implements OnInit {
                 this.getContactsAssocialteCampaigns();
             },
             ( error: any ) => {
+                this.loading = false;
                 let body: string = error['_body'];
                 body = body.substring( 1, body.length - 1 );
                 if ( body.includes( 'Please Launch or Delete those campaigns first' ) ) {
@@ -501,11 +505,13 @@ export class EditContactsComponent implements OnInit {
 
                if(existedEmails.length === 0){
                 if(this.isCompanyDetails){
-                this.xtremandLogger.info( "update contacts #contactSelectedListId " + this.contactListId + " data => " + JSON.stringify( this.users ) );
+                    this.loading = true;
+                    this.xtremandLogger.info( "update contacts #contactSelectedListId " + this.contactListId + " data => " + JSON.stringify( this.users ) );
                 this.contactService.updateContactList( this.contactListId, this.users )
                     .subscribe(
                     data => {
                         data = data;
+                        this.loading = false;
                         this.xtremandLogger.info( "update Contacts ListUsers:" + data );
                         this.manageContact.editContactList( this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList );
                         $( "tr.new_row" ).each( function() {
@@ -529,6 +535,7 @@ export class EditContactsComponent implements OnInit {
                         this.getContactsAssocialteCampaigns();
                     },
                     ( error: any ) => {
+                        this.loading = false;
                         let body: string = error['_body'];
                         body = body.substring( 1, body.length - 1 );
                         if ( body.includes( 'Please Launch or Delete those campaigns first' ) ) {
@@ -891,10 +898,12 @@ export class EditContactsComponent implements OnInit {
             }
            if(existedEmails.length === 0){
             if(this.isCompanyDetails){
-            this.contactService.updateContactList( this.contactListId, this.users )
+                this.loading = true;
+                this.contactService.updateContactList( this.contactListId, this.users )
                 .subscribe(
                 data => {
                     data = data;
+                    this.loading = false;
                     this.xtremandLogger.info( "update Contacts ListUsers:" + data );
                     this.manageContact.editContactList( this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList );
                     $( "tr.new_row" ).each( function() {
@@ -918,6 +927,7 @@ export class EditContactsComponent implements OnInit {
                     this.getContactsAssocialteCampaigns();
                 },
                 ( error: any ) => {
+                    this.loading = false;
                     let body: string = error['_body'];
                     body = body.substring( 1, body.length - 1 );
                     if ( body.includes( 'Please Launch or Delete those campaigns first' ) ) {

@@ -23,6 +23,10 @@
 				style="background: white;">
 
 				<div class="tab-content">
+					<div class="my-container">
+						<ngx-loading [show]="loading"
+							[config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+					</div>
 					<div class="tab-pane active">
 						<!-- BEGIN FILTER -->
 
