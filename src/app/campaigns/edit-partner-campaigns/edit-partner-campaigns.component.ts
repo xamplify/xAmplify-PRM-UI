@@ -189,7 +189,6 @@ export class EditPartnerCampaignsComponent implements OnInit {
     
     setCampaignData(result){
         this.campaign = result;
-        alert(this.campaign.emailTemplate.createdBy);
         const userProfile = this.authenticationService.userProfile;
         this.campaign.email = userProfile.emailId;
         if(userProfile.firstName !== undefined && userProfile.lastName !== undefined)

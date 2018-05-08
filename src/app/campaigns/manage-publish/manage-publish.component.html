@@ -127,7 +127,7 @@
 													 class='mr5'>
 														<i class="fa fa-line-chart"></i>
 													</a>
-													<a *ngIf=" (campaign.campaignType !== 'SOCIAL') && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor )"
+													<a *ngIf=" (campaign.campaignType !== 'SOCIAL') && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor) && !campaign.nurtureCampaign"
 													 data-rel="fancybox-button" title="Save As" class='mr5' (click)="openSaveAsModal(campaign.campaignId, campaign.campaignName)">
 														<i class="fa fa-files-o"></i>
 													</a>
@@ -202,7 +202,7 @@
 															 title="Campaign Based Reports" data-rel="" style="margin-top: -1%;margin-left: 2%">
 																<i class="fa fa-line-chart"></i>
 															</a>
-															<a *ngIf="(campaign.campaignType !== 'SOCIAL') && ( hasAllAccess || (hasStatsRole || hasCampaignRole || authenticationService.module.isVendor ))"
+															<a *ngIf="(campaign.campaignType !== 'SOCIAL') && ( hasAllAccess || (hasStatsRole || hasCampaignRole || authenticationService.module.isVendor )) && !campaign.nurtureCampaign"
 															 data-rel="fancybox-button" (click)="openSaveAsModal(campaign.campaignId, campaign.campaignName)" title="Save As"
 															 class='mix-preview4' style="margin-top: 17%;margin-left: 24%;">
 																<i class="fa fa-files-o" style="font-size: 16px;color:#fff"></i>
