@@ -44,6 +44,9 @@ img:hover {
 </style>
 
 <div class="page-content">
+<div class="my-container">
+		<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+	</div>
 	<div class="page-bar">
 		<ul class="page-breadcrumb">
 			<li><i class="fa fa-home"></i> <a [routerLink]="referenceService.homeRouter">Home</a>

@@ -92,6 +92,7 @@ export class AddPartnersComponent implements OnInit {
     pageSize: number = 12;
     contactListAssociatedCampaignsList: any;
     editingEmailId ='';
+    loading = false;
     
     sortOptions = [
         { 'name': 'Sort By', 'value': '' },
@@ -376,11 +377,13 @@ export class AddPartnersComponent implements OnInit {
      if(existedEmails.length === 0){
       if(this.isCompanyDetails){
           if(this.validCsvContacts){
-            this.xtremandLogger.info( "saving #partnerListId " + this.partnerListId + " data => " + JSON.stringify( this.newPartnerUser ) );
+              this.loading = true;
+              this.xtremandLogger.info( "saving #partnerListId " + this.partnerListId + " data => " + JSON.stringify( this.newPartnerUser ) );
             this.contactService.updateContactList( this.partnerListId, this.newPartnerUser )
                 .subscribe(
                 ( data: any ) => {
                     data = data;
+                    this.loading = false;
                     this.xtremandLogger.info( "update partner ListUsers:" + data );
                     $( "tr.new_row" ).each( function() {
                         $( this ).remove();
