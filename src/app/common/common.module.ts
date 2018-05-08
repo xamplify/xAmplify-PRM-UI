@@ -13,12 +13,15 @@ import { PlatformComponent } from './platform/platform.component';
 import { ResponseMessageComponent } from './response-message/response-message.component';
 import { PreviewVideoComponent } from './preview-video/preview-video.component';
 import { ContactsCampaignsMailsComponent } from './contacts-campaigns-mails/contacts-campaigns-mails.component';
+import { PieChartComponent } from '../partners/pie-chart/pie-chart.component';
 
 @NgModule({
   imports: [CommonModule, FormsModule],
-  declarations: [DonutChartComponent, PaginationComponent, WorldmapComponent,
-    BarChartComponent, EmbedModalComponent, EmbedModalComponent, UserInfoComponent, LocationComponent, PlatformComponent, ResponseMessageComponent, PreviewVideoComponent, ContactsCampaignsMailsComponent],
+  declarations: [DonutChartComponent, PaginationComponent, WorldmapComponent,PieChartComponent,
+                 BarChartComponent, EmbedModalComponent, EmbedModalComponent, UserInfoComponent, LocationComponent, 
+                 PlatformComponent, ResponseMessageComponent, PreviewVideoComponent, ContactsCampaignsMailsComponent],
   exports: [DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent,
-    BarChartComponent, EmbedModalComponent, UserInfoComponent, LocationComponent, PlatformComponent, ResponseMessageComponent, PreviewVideoComponent]
+    BarChartComponent, EmbedModalComponent, UserInfoComponent, LocationComponent, PlatformComponent, 
+    ResponseMessageComponent, PreviewVideoComponent,PieChartComponent]
 })
 export class CommonComponentModule { }

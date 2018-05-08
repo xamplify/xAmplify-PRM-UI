@@ -78,7 +78,7 @@
         <div class="portlet-title">
           <div class="caption">
             <i class="icon-bar-chart font-green-sharp hide"></i>
-            <span class="caption-subject font-green-sharp uppercase">Partners by Coutry</span>
+            <span class="caption-subject font-green-sharp uppercase">Partners by Country</span>
           </div>
           <div class="panel-title pull-right">
           </div>
@@ -106,6 +106,7 @@
               <tr *ngFor="let item of noOfCampaignsLaunchedByPartner">
                 <td><app-user-info [userInfo]="item"></app-user-info></td>
                 <td class="text-center">{{item.count}}</td>
+                <td><app-pie-chart [customerId]="item.partnerId"></app-pie-chart></td>
               </tr>
             </tbody>
           </table>

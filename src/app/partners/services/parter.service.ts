@@ -27,6 +27,12 @@ export class ParterService {
         return this.httpClient.post( url, pagination )
             .catch( this.handleError );
     }
+    
+    launchedCampaignsCountGroupByCampaignType( customerId: number ) {
+        const url = this.URL + 'partner/campaigns-count-by-campaigntype/'+customerId+'?access_token=' + this.authenticationService.access_token
+        return this.httpClient.get( url )
+            .catch( this.handleError );
+    }
 
     handleError( error: any ) {
         const errMsg = ( error.message ) ? error.message :
