@@ -180,16 +180,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                         //  setTimeout(function() { $("#scheduleCompleted").slideUp(1000); }, 5000);
                     } else {
                         if (isNurtureCampaign) {
-                            this.refService.isEditNurtureCampaign = true;
-                            this.refService.nurtureCampaignId = this.campaignService.campaign.campaignId;
-                            if (campaignType.toString(1) == CampaignType[CampaignType.VIDEO]) {
-                                this.router.navigate(["/home/campaigns/partner/video"]);
-                            } else if (campaignType.toString(1) == CampaignType[CampaignType.REGULAR]) {
-                                this.router.navigate(["/home/campaigns/partner/regular"]);
-                            } else {
-                                this.router.navigate(["/home/campaigns/partner/social"]);
-                            }
-
+                            this.campaignService.reDistributeCampaign = data;
+                            this.router.navigate(['/home/campaigns/re-distribute-campaign']);
                         } else {
                             this.refService.isEditNurtureCampaign = false;
                             this.router.navigate(["/home/campaigns/edit"]);

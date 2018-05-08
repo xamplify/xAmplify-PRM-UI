@@ -18,4 +18,5 @@ export class EmailTemplate {
         type:EmailTemplateType;
         regularCoBrandingTemplate:boolean;
         videoCoBrandingTemplate:boolean;
+        createdBy:string = "";
 }

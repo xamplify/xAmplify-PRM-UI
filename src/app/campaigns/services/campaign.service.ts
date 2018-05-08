@@ -13,6 +13,7 @@ import {Pagination} from '../../core/models/pagination';
 export class CampaignService {
 
     campaign: Campaign;
+    reDistributeCampaign:Campaign;
 
     URL = this.authenticationService.REST_URL;
 

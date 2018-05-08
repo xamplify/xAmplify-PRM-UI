@@ -19,6 +19,7 @@ import { SocialCampaignComponent } from './social-campaign/social-campaign.compo
 import { BubbleChartComponent } from './analytics/bubble-chart/bubble-chart.component';
 import { NurtureCampaignComponent } from './nurture-campaign/nurture-campaign.component';
 import { PartnerCampaignsComponent } from './partner-campaigns/partner-campaigns.component';
+import { EditPartnerCampaignsComponent } from './edit-partner-campaigns/edit-partner-campaigns.component';
 
 @NgModule({
 
@@ -26,7 +27,10 @@ import { PartnerCampaignsComponent } from './partner-campaigns/partner-campaigns
         CommonComponentModule, ErrorPagesModule],
     declarations: [ManagePublishComponent, SelectCampaignTypeComponent, CreateCampaignComponent, AnalyticsComponent,
         HeatMapComponent, SocialCampaignComponent, BubbleChartComponent, NurtureCampaignComponent,
-        PartnerCampaignsComponent/*,CkEditor*/],
+        PartnerCampaignsComponent,
+        EditPartnerCampaignsComponent
+        
+        /*,CkEditor*/],
     providers: [ContactService, VideoFileService, EmailTemplateService]
 
 })
