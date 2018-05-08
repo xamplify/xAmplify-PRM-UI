@@ -73,6 +73,9 @@ img:hover {
 }
 </style>
 <div class="page-content">
+<div class="my-container">
+		<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+	</div>
 	<div></div>
 	<!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
 	<div class="modal fade" id="portlet-config" tabindex="-1" role="dialog"

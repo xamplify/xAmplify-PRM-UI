@@ -92,6 +92,7 @@ export class AddContactsComponent implements OnInit {
     customResponse: CustomResponse = new CustomResponse();
     pageSize: number = 12;
     pageNumber: any;
+    loading = false;
     
 
     AddContactsOption: typeof AddContactsOption = AddContactsOption;
@@ -502,6 +503,7 @@ export class AddContactsComponent implements OnInit {
     }
 
     saveValidEmails() {
+       this.loading = true;
         this.xtremandLogger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( this.newUsers ) );
         for ( var i = 0; i < this.newUsers.length; i++ ) {
             this.newUsers[i].emailId = this.convertToLowerCase( this.newUsers[i].emailId );
@@ -517,6 +519,7 @@ export class AddContactsComponent implements OnInit {
             .subscribe(
             data => {
                 data = data;
+                this.loading = false;
                 this.xtremandLogger.info( "update Contacts ListUsers:" + data );
                 $( "#uploadContactsMessage" ).show();
                 if ( this.isPartner == false ) {
@@ -527,6 +530,7 @@ export class AddContactsComponent implements OnInit {
                 this.contactService.successMessage = true;
             },
             ( error: any ) => {
+                this.loading = false;
                 this.xtremandLogger.error( error );
                 this.xtremandLogger.errorPage( error );
             },
@@ -587,6 +591,7 @@ export class AddContactsComponent implements OnInit {
     }
 
     saveClipboardValidEmails() {
+        this.loading = true;
         for ( var i = 0; i < this.clipboardUsers.length; i++ ) {
             this.clipboardUsers[i].emailId = this.convertToLowerCase( this.clipboardUsers[i].emailId );
             
@@ -604,6 +609,7 @@ export class AddContactsComponent implements OnInit {
                 .subscribe(
                 data => {
                     data = data;
+                    this.loading = false;
                     this.xtremandLogger.info( "update Contacts ListUsers:" + data );
                     $( "#uploadContactsMessage" ).show();
                     if ( this.isPartner == false ) {
@@ -613,6 +619,7 @@ export class AddContactsComponent implements OnInit {
                     }
                 },
                 ( error: any ) => {
+                    this.loading = false;
                     this.xtremandLogger.error( error );
                     this.xtremandLogger.errorPage( error );
                 },
@@ -637,6 +644,7 @@ export class AddContactsComponent implements OnInit {
                         this.validCsvContacts = false;
                     }
                 }
+                this.loading = true;
                 if ( this.validCsvContacts == true && this.invalidPatternEmails.length == 0 ) {
                     for ( var i = 0; i < this.contacts.length; i++ ) {
                         this.contacts[i].emailId = this.convertToLowerCase( this.contacts[i].emailId );
@@ -653,6 +661,7 @@ export class AddContactsComponent implements OnInit {
                         .subscribe(
                         data => {
                             data = data;
+                            this.loading = false;
                             this.xtremandLogger.info( "update Contacts ListUsers:" + data );
                             $( "#uploadContactsMessage" ).show();
                             if ( this.isPartner == false ) {
@@ -677,6 +686,7 @@ export class AddContactsComponent implements OnInit {
             if ( this.isValidContactName == false ) {
                 this.contactListNameError = true;
             }
+            this.loading = false;
             this.xtremandLogger.error( "AddContactComponent saveCsvContactList() ContactListName Error" );
         }
     }
@@ -955,10 +965,12 @@ export class AddContactsComponent implements OnInit {
        // this.socialContact.contacts = this.socialContactUsers;
         if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' ) {
             if ( this.socialContactUsers.length > 0 ) {
+                this.loading = true;
                 this.contactService.saveSocialContactList( this.socialContact )
                     .subscribe(
                     data => {
                         data = data;
+                        this.loading = false;
                         this.xtremandLogger.info( "update Contacts ListUsers:" + data );
                         $( "#uploadContactsMessage" ).show();
                         if ( this.isPartner == false ) {
@@ -968,6 +980,7 @@ export class AddContactsComponent implements OnInit {
                         }
                     },
                     ( error: any ) => {
+                        this.loading = false;
                         this.xtremandLogger.error( error );
                         this.xtremandLogger.errorPage( error );
                     },
@@ -988,6 +1001,7 @@ export class AddContactsComponent implements OnInit {
         this.allselectedUsers = this.validateSocialContacts(this.allselectedUsers);
         if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' && this.allselectedUsers.length != 0 ) {
             this.xtremandLogger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( this.allselectedUsers ) );
+            this.loading = true;
             this.contactListObject = new ContactList;
             this.contactListObject.name = this.model.contactListName;
             this.contactListObject.isPartnerUserList = this.isPartner;
@@ -995,6 +1009,7 @@ export class AddContactsComponent implements OnInit {
                 .subscribe(
                 data => {
                     data = data;
+                    this.loading = false;
                     this.xtremandLogger.info( "update Contacts ListUsers:" + data );
                     $( "#uploadContactsMessage" ).show();
                     if ( this.isPartner == false ) {
@@ -1005,6 +1020,7 @@ export class AddContactsComponent implements OnInit {
                     this.contactService.successMessage = true;
                 },
                 ( error: any ) => {
+                    this.loading = false;
                     this.xtremandLogger.error( error );
                     this.xtremandLogger.errorPage( error );
                 },
@@ -1243,14 +1259,16 @@ export class AddContactsComponent implements OnInit {
             }
 
         }
-
+        this.loading = true;
         this.socialContact.socialNetwork = "ZOHO";
         this.socialContact.contactType = self.contactType;
+        this.hideZohoAuthorisedPopup();
+        this.loading = true;
         this.contactService.getZohoAutherizedContacts( this.socialContact )
             .subscribe(
             data => {
                 this.getZohoConatacts = data;
-                this.hideZohoAuthorisedPopup();
+                this.loading = false;
                 this.selectedAddContactsOption = 5;
                 if ( this.getZohoConatacts.contacts.length == 0 ) {
                     this.customResponse = new CustomResponse( 'ERROR', this.properties.NO_RESULTS_FOUND, true );
@@ -1280,6 +1298,7 @@ export class AddContactsComponent implements OnInit {
                 this.setPage( 1 );
             },
             ( error: any ) => {
+                this.loading = false;
                 this.xtremandLogger.error( error );
                 this.xtremandLogger.errorPage( error );
             },
@@ -1296,11 +1315,13 @@ export class AddContactsComponent implements OnInit {
         this.socialContact.contacts = this.validateSocialContacts(this.socialContactUsers);
         this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
         if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' ) {
+            this.loading = true;
             if ( this.socialContactUsers.length > 0 ) {
                 this.contactService.saveSocialContactList( this.socialContact )
                     .subscribe(
                     data => {
                         data = data;
+                        this.loading = false;
                         this.xtremandLogger.info( "update Contacts ListUsers:" + data );
                         $( "#uploadContactsMessage" ).show();
                         if ( this.isPartner == false ) {
@@ -1311,6 +1332,7 @@ export class AddContactsComponent implements OnInit {
                     },
 
                     ( error: any ) => {
+                        this.loading = false;
                         this.xtremandLogger.error( error );
                         this.xtremandLogger.errorPage( error );
                     },
@@ -1331,6 +1353,8 @@ export class AddContactsComponent implements OnInit {
         this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
         if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' && this.allselectedUsers.length != 0 ) {
             this.xtremandLogger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( this.allselectedUsers ) );
+           
+            this.loading = true;
             this.contactListObject = new ContactList;
             this.contactListObject.name = this.model.contactListName;
             this.contactListObject.isPartnerUserList = this.isPartner;
@@ -1338,6 +1362,7 @@ export class AddContactsComponent implements OnInit {
                 .subscribe(
                 data => {
                     data = data;
+                    this.loading = false;
                     this.xtremandLogger.info( "update Contacts ListUsers:" + data );
                     $( "#uploadContactsMessage" ).show();
                     if ( this.isPartner == false ) {
@@ -1349,6 +1374,7 @@ export class AddContactsComponent implements OnInit {
                 },
 
                 ( error: any ) => {
+                    this.loading = false;
                     this.xtremandLogger.error( error );
                     this.xtremandLogger.errorPage( error );
                 },
@@ -1589,12 +1615,14 @@ export class AddContactsComponent implements OnInit {
         this.allselectedUsers = this.validateSocialContacts(this.allselectedUsers);
         if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' && this.allselectedUsers.length != 0 ) {
             this.xtremandLogger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( this.allselectedUsers ) );
+            this.loading = true;
             this.contactListObject = new ContactList;
             this.contactListObject.name = this.model.contactListName;
             this.contactListObject.isPartnerUserList = this.isPartner;
             this.contactService.saveContactList( this.allselectedUsers, this.model.contactListName, this.isPartner )
                 .subscribe(
                 data => {
+                    this.loading = false;
                     data = data;
                     this.xtremandLogger.info( "update Contacts ListUsers:" + data );
                     $( "#uploadContactsMessage" ).show();
@@ -1606,6 +1634,7 @@ export class AddContactsComponent implements OnInit {
                     this.contactService.successMessage = true;
                 },
                 ( error: any ) => {
+                    this.loading = false;
                     this.xtremandLogger.error( error );
                     this.xtremandLogger.errorPage( error );
                 },
@@ -1628,11 +1657,13 @@ export class AddContactsComponent implements OnInit {
         this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
         this.socialContact.contacts = this.validateSocialContacts(this.socialContactUsers);
         if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' ) {
+            this.loading = true;
             if ( this.socialContactUsers.length > 0 ) {
                 this.contactService.saveSocialContactList( this.socialContact )
                     .subscribe(
                     data => {
                         data = data;
+                        this.loading = false;
                         this.xtremandLogger.info( "update Contacts ListUsers:" + data );
                         $( "#uploadContactsMessage" ).show();
                         if ( this.isPartner == false ) {
@@ -1642,6 +1673,7 @@ export class AddContactsComponent implements OnInit {
                         }
                     },
                     ( error: any ) => {
+                        this.loading = false;
                         this.xtremandLogger.error( error );
                         this.xtremandLogger.errorPage( error );
                     },
