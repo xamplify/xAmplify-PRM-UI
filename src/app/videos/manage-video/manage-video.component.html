@@ -50,7 +50,7 @@
 											<div class="input-icon right" style="cursor:pointer">
 												<i class="icon-magnifier" style="cursor:pointer;font-size:18px;" (click)="searchVideoTitelName()"></i>
 												<input type="text" [(ngModel)]="pagination.searchKey" [ngModelOptions]="{standalone: true}" class="form-control"
-												 placeholder="Search for a Video">
+												 placeholder="Search for a Video" (keypress)="eventHandler($event.keyCode)">
 											</div>
 										</div>
 									</div>
@@ -65,7 +65,7 @@
 							<div class="margin-top-10">
 								<div *ngIf="!httpRequestLoader.isLoading">
 									<div *ngIf="pagination.pagedItems.length == 0" style="position: relative; top: 16px; width: 100%;" class="col-md-9 alert alert-info alert-dismissable">
-										<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+										<a class="close" data-dismiss="alert" aria-label="close"></a>
 										<p>No results found</p>
 									</div>
 								</div>
@@ -85,7 +85,7 @@
 												<td style="width: 10%;">
 													<div style="margin-bottom: -18px" >
 														<a (click)="showPlayVideo(videoFile)">
-															<img src="{{videoFile.imagePath}}" alt="{{videoFile.title}}" style="height:100px;">
+															<img src="{{videoFile.imagePath}}" alt="{{videoFile.title}}" style="height:100px;width: 170px;">
 															<span class="duration f-w-600">{{videoUtilService.truncateHourZeros(videoFile.videoLength)}}</span>
 														</a>
 													</div>
@@ -108,10 +108,12 @@
 															(click)="showEditVideo(videoFile)" title="Edit Video">
 															<i class="fa fa-pencil-square-o"></i>
 														</a>
-														<a (click)="showCampaignVideoReport(videoFile)"
-															title="Video Based Reports">
+														<a (click)="showCampaignVideoReport(videoFile)" *ngIf="videoFile.viewBy!=='DRAFT'" title="Video Based Reports">
 															<i class="fa fa-line-chart"></i>
-														</a>
+                            </a>
+                            <a *ngIf="videoFile.viewBy=='DRAFT'" title="Can't show Reports for DRAFT" style="cursor: not-allowed !important;">
+                              <i class="fa fa-bullhorn" title="Can't show Reports for DRAFT"></i>
+                            </a>
 														<ng-container *ngIf="hasAllAccess || (hasCampaignRole && hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor">
 															<a *ngIf="videoFile.viewBy!='DRAFT'" (click)="campaignRouter(videoFile)" title="Create Campaign">
 																<i class="fa fa-bullhorn"></i>

@@ -515,8 +515,8 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i class="fa fa-times"></i></a>
-				<h4 class="modal-title" id="emailActionListModalLabel" *ngIf="campaignReport.emailActionType === 'open'">Recipients who opened the email</h4>
-				<h4 class="modal-title" id="emailActionListModalLabel" *ngIf="campaignReport.emailActionType === 'click'">Recipients who clicked a URL</h4>
+				<h4 class="modal-title" id="emailActionListModalLabel" *ngIf="campaignReport.emailActionType === 'open'" style="text-align: center;">Recipients who opened the email</h4>
+				<h4 class="modal-title" id="emailActionListModalLabel" *ngIf="campaignReport.emailActionType === 'click'" style="text-align: center;">Recipients who clicked a URL</h4>
 				<div class="btn-group pull-right" style="margin-top: -4px; cursor:pointer; color: #7d8c98">
 					<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none;margin-top: -15px;padding-right: 10px;margin-right: 21px; float:right;">
 					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
@@ -569,7 +569,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i class="fa fa-times"></i></a>
-				<h4 class="modal-title" id="emailSentListModalLabel">Sent Email Details</h4>
+				<h4 class="modal-title" id="emailSentListModalLabel" style="text-align: center;">Sent Email Details</h4>
 				<div class="btn-group pull-right" style="margin-top: -4px; cursor:pointer; color: #7d8c98">
 					<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none;margin-top: -15px;padding-right: 10px;margin-right: 21px; float:right;">
 					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
@@ -619,7 +619,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i class="fa fa-times"></i></a>
-				<h4 class="modal-title">{{donultModelpopupTitle}} Views</h4>
+				<h4 class="modal-title" style="text-align: center">{{donultModelpopupTitle}} Views</h4>
 				<div class="btn-group pull-right" style="margin-top: -4px; cursor:pointer; color: #7d8c98">
 					<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none;margin-top: -15px;padding-right: 10px;margin-right: 21px; float:right;">
 					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
@@ -683,7 +683,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i class="fa fa-times"></i></a>
-				<h4 class="m0">People who have watched video</h4>
+				<h4 class="m0" style="text-align: center">Recipients who have watched video</h4>
 				<div class="btn-group pull-right" style="margin-top: -4px; cursor:pointer; color: #7d8c98">
 					<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none;margin-top: -10px;padding-right: 0px;margin-right: 15px; float:right;">
 					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>

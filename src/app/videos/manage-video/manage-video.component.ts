@@ -172,6 +172,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.pagination.pageIndex = 1;
         this.loadVideos(this.pagination);
     }
+    eventHandler(keyCode: any) {  if (keyCode === 13 && this.pagination.searchKey) {  this.searchVideoTitelName(); } }
     selectedSortByValue(event: any) {
         this.defaultBannerMessageValues();
         this.videoSort = event;

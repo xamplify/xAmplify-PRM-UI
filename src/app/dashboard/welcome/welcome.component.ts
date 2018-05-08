@@ -41,7 +41,7 @@ export class WelcomeComponent implements OnInit {
         this.hasEmailTemplateRole = this.referenceService.hasRole(this.referenceService.roles.emailTemplateRole);
         this.hasStatsRole = this.referenceService.hasRole(this.referenceService.roles.statsRole);
         this.hasSocialStatusRole = this.referenceService.hasRole(this.referenceService.roles.socialShare);
-        
+
         if(authenticationService.module.isVendor){
             this.contactOrPartnerLink =  "/home/partners/manage";
         }else{
@@ -88,17 +88,18 @@ export class WelcomeComponent implements OnInit {
         this.dashboardService.loadDashboardReportsCount(this.loggedInUserId)
             .subscribe(
                 data => {
-                    this.dashboardReport.totalViews = data.totalVideoViewsCount;
-                    this.dashboardReport.totalContacts = data.totalcontactsCount;
-                    this.dashboardReport.totalUploadedvideos = data.totalVideosCount;
-                    this.dashboardReport.toalEmailTemplates = data.totalEmailTemplatesCount;
-                    this.dashboardReport.totalCreatedCampaigns = data.totalCampaignsCount;
-                    this.dashboardReport.totalSocialAccounts = data.totalSocialConnectionsCount;
+                  this.dashboardReport.totalViews = data.totalVideoViewsCount;
+                  this.dashboardReport.totalContacts = data.totalcontactsCount;
+                  this.dashboardReport.totalTeamMembers = data.totalTeamMembersCount;
+                  this.dashboardReport.totalUploadedvideos = data.totalVideosCount;
+                  this.dashboardReport.toalEmailTemplates = data.totalEmailTemplatesCount;
+                  this.dashboardReport.totalCreatedCampaigns = data.totalCampaignsCount;
+                  this.dashboardReport.totalSocialAccounts = data.totalSocialConnectionsCount;
+                  this.referenceService.partnerCount = this.dashboardReport.totalCompanyPartnersCount = data.totalCompanyPartnersCount;
                 },
                 error => console.log(error),
                 () => console.log('dashboard reports counts completed')
             );
-
     }
 
     ngOnInit() {
