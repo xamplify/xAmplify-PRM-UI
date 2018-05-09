@@ -797,24 +797,24 @@
 					</div>
 					<div class="modal-body" id="users-modal-body">
 					</div>
-					<!-- <ul *ngIf="contactsUsersPagination.pager.pages && contactsUsersPagination.pager.pages.length" class="pagination pull-left"
+					<ul *ngIf="contactsUsersPagination.pager.pages && contactsUsersPagination.pager.pages.length" class="pagination pull-left"
 					 style="margin-left: 10px;">
 						<li [ngClass]="{disabled:contactsUsersPagination.pager.currentPage === 1}">
-							<a (click)="setPage(1,'contactUsers')">First</a>
+							<a (click)="setPage(1)">First</a>
 						</li>
 						<li [ngClass]="{disabled:contactsUsersPagination.pager.currentPage === 1}">
-							<a (click)="setPage(contactsUsersPagination.pager.currentPage - 1,'contactUsers')">Previous</a>
+							<a (click)="setPage(contactsUsersPagination.pager.currentPage - 1)">Previous</a>
 						</li>
 						<li *ngFor="let page of contactsUsersPagination.pager.pages" [ngClass]="{active:contactsUsersPagination.pager.currentPage === page}">
-							<a (click)="setPage(page,'contactUsers')" [class.disabled]="contactsUsersPagination.pager.currentPage === page">{{page}}</a>
+							<a (click)="setPage(page)" [class.disabled]="contactsUsersPagination.pager.currentPage === page">{{page}}</a>
 						</li>
 						<li [ngClass]="{disabled:contactsUsersPagination.pager.currentPage === contactsUsersPagination.pager.totalPages}">
-							<a (click)="setPage(contactsUsersPagination.pager.currentPage + 1,'contactUsers')">Next</a>
+							<a (click)="setPage(contactsUsersPagination.pager.currentPage + 1)">Next</a>
 						</li>
 						<li [ngClass]="{disabled:contactsUsersPagination.pager.currentPage ===contactsUsersPagination.pager.totalPages}">
-							<a (click)="setPage(contactsUsersPagination.pager.totalPages,'contactUsers')">Last</a>
+							<a (click)="setPage(contactsUsersPagination.pager.totalPages)">Last</a>
 						</li>
-					</ul> -->
+					</ul>
 
 					<div class="modal-footer">
 						<button type="button" (click)="closeModelPopup()" class="btn btn-default" data-dismiss="modal">Close</button>

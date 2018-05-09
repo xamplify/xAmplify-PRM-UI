@@ -1315,6 +1315,10 @@ export class EditPartnerCampaignsComponent implements OnInit {
       this.router.navigate(['/home/campaigns/partner/' + type.toLowerCase()]);
   }
   
+  setPage(pageIndex:number){
+      this.contactsUsersPagination.pageIndex = pageIndex;
+      this.loadUsers(0,this.contactsUsersPagination);
+  }
   
 
 }
