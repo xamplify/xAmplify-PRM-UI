@@ -24,6 +24,7 @@ import {ContactService} from '../.././../contacts/services/contact.service';
 import {VideoUtilService} from '../../../videos/services/video-util.service';
 import {Pagination} from '../../../core/models/pagination';
 import {CallActionSwitch} from '../../../videos/models/call-action-switch';
+import { ReferenceService } from '../../../core/services/reference.service';
 
 declare var $, flatpickr, videojs: any;
 
@@ -53,9 +54,10 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 
   constructor(private socialService: SocialService, private twitterService: TwitterService,
     private facebookService: FacebookService, private videoFileService: VideoFileService,
-    private authenticationService: AuthenticationService, private contactService: ContactService,
+    public authenticationService: AuthenticationService, private contactService: ContactService,
     private pagerService: PagerService, private router: Router, public videoUtilService: VideoUtilService,
-    private logger: XtremandLogger, public callActionSwitch: CallActionSwitch, private route: ActivatedRoute)
+    private logger: XtremandLogger, public callActionSwitch: CallActionSwitch, private route: ActivatedRoute,
+    public referenceService:ReferenceService)
     {
     this.resetCustomResponse();
     this.userId = this.authenticationService.getUserId();
@@ -102,7 +104,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
           const self = this;
           const overrideNativevalue = true;
           this.videoJSplayer = videojs('videoId',  {
-            autoplay : true, 
+            autoplay : true,
             html5: {
               hls: {
                   overrideNative: overrideNativevalue
@@ -112,7 +114,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
               nativeTextTracks: !overrideNativevalue
               } }  );
       }
-      this.videoControllColors(videoFile);    
+      this.videoControllColors(videoFile);
     $('#list-videos-table > tbody > tr').click(function() {
       $('input[type=radio]', this).attr('checked', 'checked');
     }
@@ -142,7 +144,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
                 });
             }
         });
-        this.videoControllColors(videoFile);  
+        this.videoControllColors(videoFile);
         $('#videoId').css('width', 'auto');
         $('#videoId').css('height', '315px');
     }
@@ -165,7 +167,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   }
 
   removeItem(i: number, socialStatusContent: SocialStatusContent) {
-    this.resetCustomResponse();    
+    this.resetCustomResponse();
     console.log(socialStatusContent + '' + i);
     this.socialService.removeMedia(socialStatusContent.fileName)
       .subscribe(
@@ -180,7 +182,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   }
 
   validateImageUpload(files: any) {
-    this.resetCustomResponse();    
+    this.resetCustomResponse();
     this.customResponse.statusArray = [];
     const uploadedFilesCount = files.length;
     const existingFilesCount = this.socialStatus.socialStatusContents.length;
@@ -543,10 +545,10 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
             str += '<i class="fa fa-social pull-right fa-linkedin  white p-10"></i>';
             element.css('background', '#007bb5');
           }
-        
+
         element.find('.fc-right-block')
           .after($(`<div id = ${event.id} class="fc-left-block col-xs-1 p0"> ${str} </div>`));
-          $(element).popover({ 
+          $(element).popover({
             html: true,
             placement: 'auto',
             trigger : 'hover',
@@ -575,7 +577,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
           socialStatusDto.socialStatusProvider = socialStatus.socialStatusProviders[j];
 
           this.socialStatusDtos.push(socialStatusDto);
-          
+
             const event = {
             title: socialStatus.statusMessage,
             start: socialStatus.scheduledTimeUser,
@@ -635,7 +637,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 
   toggleContactLists() {
     this.socialStatus.isPartner = !this.socialStatus.isPartner;
-    this.contactListsPagination.pageIndex = 1; 
+    this.contactListsPagination.pageIndex = 1;
     this.loadContactLists(this.contactListsPagination);
   }
 

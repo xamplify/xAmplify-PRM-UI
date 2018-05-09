@@ -23,7 +23,7 @@ export class TwitterHomeComponent implements OnInit {
     profileId: any;
 
     constructor(private route: ActivatedRoute, private authenticationService: AuthenticationService, private twitterService: TwitterService,
-        private socialService: SocialService, private referenceService: ReferenceService, private utilService: UtilService) { }
+        private socialService: SocialService, public referenceService: ReferenceService, private utilService: UtilService) { }
 
     getHomeTimeline(socialConnection: SocialConnection) {
         this.referenceService.loading(this.httpRequestLoader, true);

@@ -1,7 +1,7 @@
 <div class="page-content" *ngIf="twitterProfile" >
 <div class="page-bar square-box margin-bottom-10px">
 	<ul class="page-breadcrumb">
-		<li><i class="fa fa-home"></i> <a [routerLink]="['/']">Home</a> <i class="fa fa-angle-right"></i></li>
+		<li><i class="fa fa-home"></i> <a [routerLink]="referenceService.homeRouter">Home</a> <i class="fa fa-angle-right"></i></li>
 		<li><a [routerLink]="['/home/twitter/followers', socialConnection.profileId]">Twitter Followers</a> <i class="fa fa-angle-right"></i></li>
 		<li>{{twitterProfile.screenName}}</li>
 	</ul>
@@ -12,12 +12,12 @@
       <div class="ProfileCard js-actionable-user">
   <a *ngIf="twitterProfile.profileBannerUrl" class="ProfileCard-bg js-nav" tabindex="-1" aria-hidden="true" [ngStyle]="{'background-image': 'url(' + twitterProfile.profileBannerUrl + ')'}"></a>
   <a *ngIf="!twitterProfile.profileBannerUrl" class="ProfileCard-bg js-nav" tabindex="-1" aria-hidden="true" [ngStyle]="{'background-color': '#'+twitterProfile.linkColor}"></a>
-	
+
   <div class="ProfileCard-content">
     <a class="ProfileCard-avatarLink js-nav js-tooltip" tabindex="-1" aria-hidden="true">
       <img class="ProfileCard-avatarImage js-action-profile-avatar" src="{{twitterProfile.profileImageUrl}}" alt="">
     </a>
-    
+
     <div class="ProfileCard-userFields">
 <div class="ProfileNameTruncated">
   <div class="u-textTruncate u-inlineBlock ProfileNameTruncated-withBadges ProfileNameTruncated-withBadges--1">
@@ -25,22 +25,22 @@
   	<img *ngIf="twitterProfile.verified && true" alt="Verified account" src="https://ton.twitter.com/hc_assets/1307051244_737.png" style="float: right;width: 20px;height: 20px;margin-left: 2px;">
   </div>
 </div>
-      
+
       <span class="ProfileCard-screenname u-dir" dir="ltr">
         <a class="ProfileCard-screennameLink u-linkComplex js-nav" data-aria-label-part="">@<span class="u-linkComplex-target">{{twitterProfile.screenName}}</span></a>
       </span>
 <div class="ProfileCardStats">
 	<ul class="ProfileCardStats-statList Arrange Arrange--bottom Arrange--equal">
 		<li class="ProfileCardStats-stat Arrange-sizeFit">
-			<span class="ProfileCardStats-statLabel u-block">Tweets</span> 
+			<span class="ProfileCardStats-statLabel u-block">Tweets</span>
 			<span class="ProfileCardStats-statValue" data-is-compact="false">{{twitterProfile.statusesCount}}</span>
 		</li>
 		<li class="ProfileCardStats-stat Arrange-sizeFit">
-			<span class="ProfileCardStats-statLabel u-block">Following</span> 
+			<span class="ProfileCardStats-statLabel u-block">Following</span>
 			<span class="ProfileCardStats-statValue" data-is-compact="false">{{twitterProfile.friendsCount}}</span>
 		</li>
 		<li class="ProfileCardStats-stat Arrange-sizeFit">
-			<span class="ProfileCardStats-statLabel u-block">Followers</span> 
+			<span class="ProfileCardStats-statLabel u-block">Followers</span>
 			<span class="ProfileCardStats-statValue" data-is-compact="false">{{twitterProfile.followersCount}}</span>
 		</li>
 	</ul>
@@ -54,7 +54,7 @@
         </div>
     </div>
     <h4 style="text-align: center;font-weight: 500;">score</h4>
-</div>   
+</div>
     </div>
   </div>
 </div>
@@ -117,7 +117,7 @@
 
 <div class="DMNotice  DMDeleteMessage" style="display: none;">
 <div class="DMNotice-message">    Are you sure you want to delete this message?</div>
-<div class="DMNotice-actions u-emptyHide">    
+<div class="DMNotice-actions u-emptyHide">
   	<button type="button" class="DMDeleteMessage-cancel btn" (click) = "hideDeleteDirectMessageNotice()">Cancel</button>
     <button type="button" class="DMDeleteMessage-confirm caution-btn js-initial-focus btn" (click) = "deleteDirectMessage()">Delete</button>
 </div>
@@ -161,7 +161,7 @@
 				</div>
 			</div>
 		</div>
-	</div>    
+	</div>
     <div class="DirectMessage-actions">
 		<span class="DirectMessage-action">
 			<button type="button" class="DMDeleteMessageAction js-tooltip" data-original-title="Delete this message" (click)="showDeleteDirectMessageNotice(directMessage.extraData.id_str)">
@@ -285,7 +285,7 @@
 	<button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement=bottom title="Retweet" style="margin-left:1em;">
 	  <i class="fa fa-retweet" aria-hidden="true" ></i>&nbsp;&nbsp;{{item.retweetCount}}
 	</button>
-	<button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement=bottom title="Reply" data-toggle="modal" data-target="#replyModal" style="margin-left:1em;" 
+	<button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement=bottom title="Reply" data-toggle="modal" data-target="#replyModal" style="margin-left:1em;"
 		(click)="populateReplyModalContent(item.id, item.fromUser, item.text)">
 	  <i class="fa fa-reply" aria-hidden="true"></i>
 	</button>

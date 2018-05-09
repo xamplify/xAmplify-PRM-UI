@@ -26,7 +26,7 @@ export class TwitterTweetsComponent implements OnInit {
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
 
     constructor(private route: ActivatedRoute, private authenticationService: AuthenticationService,
-        private twitterService: TwitterService, private socialService: SocialService, private referenceService: ReferenceService) { }
+        private twitterService: TwitterService, private socialService: SocialService, public referenceService: ReferenceService) { }
 
     getTweets(socialConnection: SocialConnection) {
         this.referenceService.loading(this.httpRequestLoader, true);

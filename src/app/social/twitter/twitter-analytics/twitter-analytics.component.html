@@ -22,7 +22,7 @@
 	<!-- /.modal -->
 <div class="page-bar square-box margin-bottom-10px">
 	<ul class="page-breadcrumb">
-		<li><i class="fa fa-home"></i> <a [routerLink]="['/']">Home</a> <i class="fa fa-angle-right"></i></li>
+		<li><i class="fa fa-home"></i> <a [routerLink]="referenceService.homeRouter">Home</a> <i class="fa fa-angle-right"></i></li>
 		<li>Twitter analytics</li>
 	</ul>
 </div>
@@ -34,12 +34,12 @@
 			<div class="portlet-body" style="padding-top: 20px;">
 		<div *ngIf="twitterProfile">
 			<div class="number col-xs-6 text-left" style="padding-left: 15px; padding-right: 0px;">
-				<img alt="" class="img-circle" src="{{twitterProfile.profileImageUrl}}" style="width: 50px;" /> 
-				<small>@{{twitterProfile.screenName}}</small><br> 
+				<img alt="" class="img-circle" src="{{twitterProfile.profileImageUrl}}" style="width: 50px;" />
+				<small>@{{twitterProfile.screenName}}</small><br>
 				<small>{{twitterProfile.name}}</small>
 			</div>
 			<div class="icon col-xs-6 text-right">
-	
+
 				<b>Total Followers</b>
 				<a [routerLink]="['../../twitter-followers', socialConnection.profileId]">
 				<span style="color: #00aced; font-weight: 600; display: inline;">{{twitterProfile.followersCount}}</span>
@@ -52,7 +52,7 @@
 				<b>made in this time period</b>
 			</div>
 		</div>
-		
+
 		<div class="clearfix">&nbsp;</div>
 		<div class="col-xs-6 text-left" style="padding-left: 15px; padding-right: 0px;">
 			<h5>
@@ -65,7 +65,7 @@
 		<div class=" col-xs-4 text-right sparkline-chart icon">
 			<div class="number" id="sparkline_followers"><canvas width="55" height="60" style=" padding: 5px; display: inline-block; width: 46px; height: 20px; vertical-align: top;"></canvas></div>
 	    </div>
-	
+
 		<div class="col-xs-12">
 			<hr
 				style="background-color: #00ACED; height: 1px; border: 0; margin-top: 5px;">
@@ -82,16 +82,16 @@
 				<span class="nummber" style="color: #00aced; font-weight: 600; display: inline;">{{weeklyFriendsCount}}</span>
 			</h5>
 		</div>
-	
+
 	                    <div class=" col-xs-4 text-right sparkline-chart icon">
 			<div class="number" id="sparkline_friends"><canvas width="55" height="60" style=" padding: 5px; display: inline-block; width: 46px; height: 20px; vertical-align: top;"></canvas></div>
 			  </div>
-	
+
 		<div class="col-xs-12">
 			<hr
 				style="background-color: #00ACED; height: 1px; border: 0; margin-top: 5px;">
 		</div>
-	
+
 		<div class="col-xs-6 text-left" style="padding-left: 15px; padding-right: 0px;">
 			<h5><span class="nummber" style="color: #444; font-weight: 600; display: inline;">Direct Messages</span>(Sent/Recived)</h5>
 		</div>
@@ -103,9 +103,9 @@
 				<canvas width="55" height="60" style=" padding: 5px; sparkbarspacing:5; display: inline-block; width: 46px; height: 20px; vertical-align: top;"></canvas>
 			</div>
 		</div>
-		<div class="clearfix">&nbsp;</div>			
+		<div class="clearfix">&nbsp;</div>
 	</div>
-		
+
 		</div>
 		<!-- END Portlet PORTLET-->
 	</div>
@@ -115,72 +115,72 @@
 		<div class="portlet">
 			<div class="portlet-body">
 		<div class="col-xs-6 text-left" style="padding-left:15px;padding-right:0px;">
-			<h5><strong class="nummber" style="color: #444; font-weight: 600;display: inline;">@mentions</strong></h5>	
+			<h5><strong class="nummber" style="color: #444; font-weight: 600;display: inline;">@mentions</strong></h5>
 		</div>
 		<div class="col-xs-2 text-center" style="padding-left:15px;padding-right:0px;">
-			<h5><strong class="nummber" style="color: #00aced; font-weight: 600;display: inline;">{{weeklyMentionsCount}}</strong> </h5>	
+			<h5><strong class="nummber" style="color: #00aced; font-weight: 600;display: inline;">{{weeklyMentionsCount}}</strong> </h5>
 		</div>
 		<div class=" col-xs-4 text-right sparkline-chart icon">
 			<div class="number" id="sparkline_mentions"><canvas width="55" height="60" style=" padding: 5px; display: inline-block; width: 46px; height: 20px; vertical-align: top;"></canvas></div>
- 			</div>	
+ 			</div>
 
 		<div class="col-xs-12">
 			<hr style="background-color: #00ACED; height: 1px; border: 0;margin-top:5px; ">
 		</div>
 
 		<div class="col-xs-6 text-left" style="padding-left:15px;padding-right:0px;">
-			<h5><strong class="nummber" style="color: #444; font-weight: 600;display: inline;">Messages Sent</strong></h5>	
+			<h5><strong class="nummber" style="color: #444; font-weight: 600;display: inline;">Messages Sent</strong></h5>
 		</div>
 		<div class="col-xs-2 text-center" style="padding-left:15px;padding-right:0px;">
-			<h5><strong class="nummber" style="color: #00aced; font-weight: 600;display: inline;">{{weeklyMessagesSentCount}}</strong> </h5>	
+			<h5><strong class="nummber" style="color: #00aced; font-weight: 600;display: inline;">{{weeklyMessagesSentCount}}</strong> </h5>
 		</div>
 
 		<div class=" col-xs-4 text-right sparkline-chart icon">
 			<div class="number" id="sparkline_messages_sent"><canvas width="55" height="60" style=" padding: 5px; display: inline-block; width: 46px; height: 20px; vertical-align: top;"></canvas></div>
- 			</div>	
-		
+ 			</div>
+
 		<div class="col-xs-12">
 			<hr style="background-color: #00ACED; height: 1px; border: 0;margin-top:5px; ">
 		</div>
 
 		<div class="col-xs-6 text-left" style="padding-left:15px;padding-right:0px;">
-			<h5><strong class="nummber" style="color: #444; font-weight: 600;display: inline;">Messages Recieved</strong></h5>	
+			<h5><strong class="nummber" style="color: #444; font-weight: 600;display: inline;">Messages Recieved</strong></h5>
 		</div>
 		<div class="col-xs-2 text-center" style="padding-left:15px;padding-right:0px;">
-			<h5><strong class="nummber" style="color: #00aced; font-weight: 600;display: inline;">{{weeklyMessagesRecievedCount}}</strong> </h5>	
+			<h5><strong class="nummber" style="color: #00aced; font-weight: 600;display: inline;">{{weeklyMessagesRecievedCount}}</strong> </h5>
 		</div>
 		<div class=" col-xs-4 text-right sparkline-chart icon">
 			<div class="number" id="sparkline_messages_recieved"><canvas width="55" height="60" style=" padding: 5px; display: inline-block; width: 46px; height: 20px; vertical-align: top;"></canvas></div>
- 			</div>		
+ 			</div>
 
 		<div class="col-xs-12">
 			<hr style="background-color: #00ACED; height: 1px; border: 0;margin-top:5px; ">
 		</div>
 
 		<div class="col-xs-6 text-left" style="padding-left:15px;padding-right:0px;">
-			<h5><strong class="nummber" style="color: #444; font-weight: 600;display: inline;">Clicks</strong></h5>	
+			<h5><strong class="nummber" style="color: #444; font-weight: 600;display: inline;">Clicks</strong></h5>
 		</div>
 		<div class="col-xs-2 text-center" style="padding-left:15px;padding-right:0px;">
-			<h5><strong class="nummber" style="color: #00aced; font-weight: 600;display: inline;"></strong> </h5>	
+			<h5><strong class="nummber" style="color: #00aced; font-weight: 600;display: inline;"></strong> </h5>
 		</div>
 		<div class=" col-xs-4 text-right sparkline-chart icon">
 			<div class="number" id="sparkline_clicks"><canvas width="55" height="60" style=" padding: 5px; display: inline-block; width: 46px; height: 20px; vertical-align: top;"></canvas></div>
  			</div>
- 					
+
 		<div class="col-xs-12">
 			<hr style="background-color: #00ACED; height: 1px; border: 0;margin-top:5px; ">
 		</div>
 
 		<div class="col-xs-6 text-left" style="padding-left:15px;padding-right:0px;">
-			<h5><strong class="nummber" style="color: #444; font-weight: 600;display: inline;">Retweets</strong></h5>	
+			<h5><strong class="nummber" style="color: #444; font-weight: 600;display: inline;">Retweets</strong></h5>
 		</div>
 		<div class="col-xs-2 text-center" style="padding-left:15px;padding-right:0px;">
-			<h5><strong class="nummber" style="color: #00aced; font-weight: 600;display: inline;"></strong> </h5>	
+			<h5><strong class="nummber" style="color: #00aced; font-weight: 600;display: inline;"></strong> </h5>
 		</div>
 
 		<div class=" col-xs-4 text-right sparkline-chart icon">
 			<div class="number" id="sparkline_retweets"><canvas width="55" height="60" style=" padding: 5px; display: inline-block; width: 46px; height: 20px; vertical-align: top;"></canvas></div>
- 			</div>	
+ 			</div>
 		<div class="clearfix">&nbsp;</div>			</div>
 		</div>
 		<!-- END Portlet PORTLET-->

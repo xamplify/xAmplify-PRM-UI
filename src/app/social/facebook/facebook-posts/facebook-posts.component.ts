@@ -20,7 +20,7 @@ export class FacebookPostsComponent implements OnInit {
     socialConnection = new SocialConnection();
     constructor( private route: ActivatedRoute, private facebookService: FacebookService,
         private authenticationService: AuthenticationService, private socialService: SocialService,
-        private referenceService: ReferenceService) { }
+        public referenceService: ReferenceService) { }
 
     getPosts( socialConnection: SocialConnection ) {
         this.referenceService.loading( this.httpRequestLoader, true );

@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { SocialService } from '../../services/social.service';
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import { SocialConnection } from '../../../social/models/social-connection';
+import { ReferenceService } from '../../../core/services/reference.service';
 
 declare var swal: any;
 @Component( {
@@ -15,7 +16,7 @@ export class SocialManageComponent implements OnInit {
     socialConnections: SocialConnection[] = new Array<SocialConnection>();
     response: any;
     constructor( private router: Router, private route: ActivatedRoute, private socialService: SocialService,
-        private authenticationService: AuthenticationService ) { }
+        private authenticationService: AuthenticationService, public referenceService:ReferenceService ) { }
 
     listAccounts( userId: number, providerName: string ) {
         this.socialService.listAccounts( userId, providerName, 'ALL' )

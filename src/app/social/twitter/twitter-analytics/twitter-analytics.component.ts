@@ -10,6 +10,7 @@ import { Klout } from '../../models/klout';
 import { TwitterService } from '../../services/twitter.service';
 import { SocialService } from '../../services/social.service';
 import { AuthenticationService } from '../../../core/services/authentication.service';
+import { ReferenceService } from '../../../core/services/reference.service';
 
 import { SocialConnection } from '../../models/social-connection';
 
@@ -41,7 +42,7 @@ export class TwitterAnalyticsComponent implements OnInit {
     userId: number;
 
     constructor( private route: ActivatedRoute, private twitterService: TwitterService, private logger: XtremandLogger,
-        private authenticationService: AuthenticationService, private socialService: SocialService ) { }
+        private authenticationService: AuthenticationService, private socialService: SocialService, public referenceService:ReferenceService ) { }
 
     getAnalytics( socialConnection: SocialConnection ) {
         this.twitterService.getAnalytics( socialConnection )

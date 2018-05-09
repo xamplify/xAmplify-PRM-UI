@@ -3,7 +3,7 @@
 		<ul class="page-breadcrumb">
 			<li>
 				<i class="fa fa-home"></i>
-				<a [routerLink]="['/']">Home</a>
+				<a [routerLink]="referenceService.homeRouter">Home</a>
 				<i class="fa fa-angle-right"></i>
 			</li>
 			<li>Update Status</li>
@@ -18,11 +18,11 @@
 						<div class="portlet light block" [ngClass]="{'checked': socialStatusProvider.selected, 'unchecked': !socialStatusProvider.selected}"
 						 (click)="socialStatusProvider.selected = !socialStatusProvider.selected">
 
-							<span class="ribbon" [ngClass]="{'ribbon-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK', 
+							<span class="ribbon" [ngClass]="{'ribbon-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK',
 									'ribbon-twitter': socialStatusProvider.socialConnection.source ==='TWITTER',
 									'ribbon-linkedin': socialStatusProvider.socialConnection.source ==='LINKEDIN',
 									'ribbon-google': socialStatusProvider.socialConnection.source ==='GOOGLE'}">
-								<i class="fa fa-social pull-right" [ngClass]="{'fa-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK', 
+								<i class="fa fa-social pull-right" [ngClass]="{'fa-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK',
 									'fa-twitter': socialStatusProvider.socialConnection.source ==='TWITTER',
 									'fa-linkedin': socialStatusProvider.socialConnection.source ==='LINKEDIN',
 									'fa-google': socialStatusProvider.socialConnection.source ==='GOOGLE'}"></i>
@@ -120,13 +120,13 @@
 						<span *ngFor="let socialStatusProvider of socialStatus.socialStatusProviders" style="padding-right: 5px" [ngClass]="{'inline-grid': socialStatusProvider.selected,
 										'hidden': !socialStatusProvider.selected}">
 							<div class="btn btn-social-selected" *ngIf="socialStatusProvider.selected" [ngClass]="{
-										'btn-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK', 
+										'btn-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK',
 										'btn-twitter': socialStatusProvider.socialConnection.source ==='TWITTER',
 										'btn-linkedin': socialStatusProvider.socialConnection.source ==='LINKEDIN',
 										'btn-google': socialStatusProvider.socialConnection.source ==='GOOGLE'}">
 
 								<i class="fa" [ngClass]="{
-												'fa-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK', 
+												'fa-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK',
 												'fa-twitter': socialStatusProvider.socialConnection.source ==='TWITTER',
 												'fa-linkedin': socialStatusProvider.socialConnection.source ==='LINKEDIN',
 												'fa-google': socialStatusProvider.socialConnection.source ==='GOOGLE'}"></i>
@@ -348,7 +348,7 @@
 												<h5>{{video.title}}</h5>
 												<h6 style="margin: 3px 0 0 0">{{video.videoLength}}</h6>
 											</td>
-											<!-- 
+											<!--
 		                                        <td>
 		                                            <i class="fa fa-upload" aria-hidden="true" *ngIf="video.videoLengthInSeconds <= 30" data-toggle="tooltip" data-placement="top" title="Video is Eligible for Upload"></i>
 		                                            <i class="fa fa-retweet" aria-hidden="true" *ngIf="video.videoLengthInSeconds > 30" data-toggle="tooltip" data-placement="top" title="Video is Not Eligible for Upload"></i>
@@ -413,13 +413,13 @@
 
 <div id='fc-{{item.socialStatus.id}}-{{item.socialStatusProvider.id}}' *ngFor="let item of socialStatusDtos" class='clearfix m10 hidden'>
 	<div class="btn btn-xs rounded-0 mb10" style="color: #FFF;" [ngClass]="{
-				'btn-facebook': item.socialStatusProvider.socialConnection.source ==='FACEBOOK', 
+				'btn-facebook': item.socialStatusProvider.socialConnection.source ==='FACEBOOK',
 				'btn-twitter': item.socialStatusProvider.socialConnection.source ==='TWITTER',
 				'btn-linkedin': item.socialStatusProvider.socialConnection.source ==='LINKEDIN',
 				'btn-google': item.socialStatusProvider.socialConnection.source ==='GOOGLE'}">
 		<div class="col-xs-12" style="display: inline-flex;">
 			<i class="fa fa-social pull-right" [ngClass]="{
-						'fa-facebook': item.socialStatusProvider.socialConnection.source ==='FACEBOOK', 
+						'fa-facebook': item.socialStatusProvider.socialConnection.source ==='FACEBOOK',
 						'fa-twitter': item.socialStatusProvider.socialConnection.source ==='TWITTER',
 						'fa-linkedin': item.socialStatusProvider.socialConnection.source ==='LINKEDIN',
 						'fa-google': item.socialStatusProvider.socialConnection.source ==='GOOGLE'}"></i>

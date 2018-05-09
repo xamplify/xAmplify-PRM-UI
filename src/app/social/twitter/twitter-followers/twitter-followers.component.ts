@@ -7,6 +7,7 @@ import {TwitterService} from '../../services/twitter.service';
 import {UtilService} from '../../../core/services/util.service';
 import {SocialService} from '../../services/social.service';
 import {AuthenticationService} from '../../../core/services/authentication.service';
+import { ReferenceService } from '../../../core/services/reference.service';
 
 import {SocialConnection} from '../../models/social-connection';
 
@@ -20,7 +21,7 @@ export class TwitterFollowersComponent implements OnInit {
   twitterProfiles: any;
   socialConnection: SocialConnection;
   constructor(private route: ActivatedRoute, private twitterService: TwitterService, private utilService: UtilService,
-    private authenticationService: AuthenticationService, private socialService: SocialService) {}
+    private authenticationService: AuthenticationService, private socialService: SocialService, public referenceService: ReferenceService) {}
 
   getFollowers(socialConnection: SocialConnection) {
     this.twitterService.listTwitterProfiles(socialConnection, 'followers')

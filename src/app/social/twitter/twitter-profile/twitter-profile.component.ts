@@ -11,6 +11,7 @@ import { AuthenticationService } from '../../../core/services/authentication.ser
 import { SocialService } from '../../services/social.service';
 
 import { SocialConnection } from '../../models/social-connection';
+import { ReferenceService } from '../../../core/services/reference.service';
 
 declare var $: any;
 
@@ -30,7 +31,8 @@ export class TwitterProfileComponent implements OnInit {
     tweets: any;
     socialConnection: SocialConnection;
     constructor(private router: Router, private route: ActivatedRoute, private twitterService: TwitterService,
-            private utilService: UtilService, private authenticationService: AuthenticationService, private socialService: SocialService) {
+            private utilService: UtilService, private authenticationService: AuthenticationService, private socialService: SocialService,
+            public referenceService:ReferenceService) {
 
     }
 
