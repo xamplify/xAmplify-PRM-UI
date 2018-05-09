@@ -67,10 +67,12 @@ export class PartnerReportsComponent implements OnInit {
   partnerReportData() {
     this.parterService.partnerReports(this.referenseService.companyId).subscribe(
       (data: any) => {
-        console.log(data);
         this.worldMapdataReport = data.countrywisePartnersCount.countrywisepartners;
         this.campaignsCount = data.partnersLaunchedCampaignsCount;
         this.noOfCampaignsLaunchedByPartner = data.noOfCampaignsLaunchedByPartner.data;
+        for(var i in this.noOfCampaignsLaunchedByPartner){
+            this.noOfCampaignsLaunchedByPartner[i].contactCompany = this.noOfCampaignsLaunchedByPartner[i].partnerCompanyName;
+        }
         const campaignData = [];
         campaignData.push(data.partnersLaunchedCampaignsByCampaignType.VIDEO);
         campaignData.push(data.partnersLaunchedCampaignsByCampaignType.SOCIAL);
@@ -83,7 +85,6 @@ export class PartnerReportsComponent implements OnInit {
     this.paginationType = 'UserInteraction';
     this.parterService.partnerUserInteractionReports(this.referenseService.companyId, this.pagination).subscribe(
       (data: any) => {
-        console.log(data);
         this.pagination.totalRecords = data.totalRecords;
         this.partnerUserInteraction = data.data;
         this.pagination = this.pagerService.getPagedItems(this.pagination, data.data);
@@ -95,7 +96,6 @@ export class PartnerReportsComponent implements OnInit {
     this.paginationType = 'partnerInteraction';
     this.parterService.partnerCampaignInteraction(this.campaignId, this.campaignInteractionPagination).subscribe(
       (data: any) => {
-        console.log(data);
         this.campaignInteractionPagination.totalRecords = data.message.totalRecords;
         this.campaignInteractionPagination = this.pagerService.getPagedItems(this.campaignInteractionPagination, data.message.data);
         $('#campaignInteractionModal').modal('show');

@@ -12,7 +12,6 @@ export class PieChartComponent implements OnInit {
   constructor(public parterService: ParterService) { }
 
   constructPieChart(pieChartData: any){
-      console.log(this.customerId);
    Highcharts.chart('pie'+this.customerId, {
        chart: {
            plotBackgroundColor: null,
@@ -51,8 +50,6 @@ export class PieChartComponent implements OnInit {
       var pieChartData;
       this.parterService.launchedCampaignsCountGroupByCampaignType(this.customerId).subscribe(
         (data: any) => {
-          console.log(data.REGULAR);
-          console.log(data.VIDEO);
           pieChartData = [{name: 'VIDEO', y: data.VIDEO}, {name: 'REGULAR', y: data.REGULAR},{name: 'SOCIAL', y: data.SOCIAL}];
         },
         (error: any) => { console.log('error got here') },
