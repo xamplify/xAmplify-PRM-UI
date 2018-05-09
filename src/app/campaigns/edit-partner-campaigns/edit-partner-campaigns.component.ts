@@ -213,6 +213,7 @@ export class EditPartnerCampaignsComponent implements OnInit {
         if(this.campaign.nurtureCampaign){
             this.selectedUserlistIds = this.campaign.userListIds;
         }
+        this.campaignType = this.campaign.campaignType[0];
         this.referenceService.stopLoader(this.httpRequestLoader);
     }
     

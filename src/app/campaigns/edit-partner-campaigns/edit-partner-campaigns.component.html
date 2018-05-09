@@ -46,7 +46,7 @@
                             </div>
                             <div class="form-group col-xs-6 pr0" [attr.class]="fromEmaiDivClass">
                                 <label for="exampleInputPassword1">From email</label><font style="color: red"><b> * </b></font>
-                                <select class="form-control" name="campaign.email" [(ngModel)]="campaign.email" (change)="setFromName()">
+                                <select class="form-control" name="campaign.email" [(ngModel)]="campaign.email">
                                     <option [ngValue]="campaign.email">
                                         {{campaign.email}}
                                     </option>
@@ -69,7 +69,7 @@
                                                 <label style="margin: 5px 0;">Email is opened</label>
                                             </div>
                                         </div>
-                                        <div class="email-options-checkbox clearfix" *ngIf="campaign.campaignType.indexOf('VIDEO') > -1">
+                                        <div class="email-options-checkbox clearfix" *ngIf="campaignType.indexOf('VIDEO') > -1">
                                             <div class="col-sm-4 ui-switch-custom-div">
                                                 <switch [status]="campaign.videoPlayed" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (statusChange)="setVideoPlayed($event)">
                                                 </switch>
@@ -85,7 +85,7 @@
                     </fieldset>
                 </div>
                 <div class="col-xs-12 col-sm-6">
-                    <fieldset *ngIf="campaign.campaignType.indexOf('VIDEO') > -1">
+                    <fieldset *ngIf="campaignType.indexOf('VIDEO') > -1">
                         <legend>Selected video</legend>
                         <div class="row m0" (click)="previewVideo(campaign.campaignVideoFile)" style="cursor: pointer;">
                             <div class="col-xs-4 thumb-bg p0">
@@ -797,7 +797,7 @@
 					</div>
 					<div class="modal-body" id="users-modal-body">
 					</div>
-					<ul *ngIf="contactsUsersPagination.pager.pages && contactsUsersPagination.pager.pages.length" class="pagination pull-left"
+					<!-- <ul *ngIf="contactsUsersPagination.pager.pages && contactsUsersPagination.pager.pages.length" class="pagination pull-left"
 					 style="margin-left: 10px;">
 						<li [ngClass]="{disabled:contactsUsersPagination.pager.currentPage === 1}">
 							<a (click)="setPage(1,'contactUsers')">First</a>
@@ -814,7 +814,7 @@
 						<li [ngClass]="{disabled:contactsUsersPagination.pager.currentPage ===contactsUsersPagination.pager.totalPages}">
 							<a (click)="setPage(contactsUsersPagination.pager.totalPages,'contactUsers')">Last</a>
 						</li>
-					</ul>
+					</ul> -->
 
 					<div class="modal-footer">
 						<button type="button" (click)="closeModelPopup()" class="btn btn-default" data-dismiss="modal">Close</button>
