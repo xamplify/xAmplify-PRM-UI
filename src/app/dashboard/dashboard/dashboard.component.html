@@ -199,7 +199,7 @@ td>h5 {
 				</div>
 				<div class="details">
 					<div class="number">
-            <span *ngIf="dashboardReport.totalUploadedvideos; else uploadVideos">dashboardReport.totalUploadedvideos</span>
+            <span *ngIf="dashboardReport.totalUploadedvideos; else uploadVideos">{{dashboardReport.totalUploadedvideos}}</span>
 						<ng-template #uploadVideos>0</ng-template>
           </div>
 					<div class="desc" >

@@ -34,10 +34,10 @@ ul.alt-row-style1 li a{
      overflow: auto;
 }
  .read {
-    background-color: #edf2fa;
+    background-color: #fff;
 }
  .unread {
-    background-color: #fff;
+    background-color: #d6dfe2;
 }
 .portlet-title {
     min-height: 30px;
