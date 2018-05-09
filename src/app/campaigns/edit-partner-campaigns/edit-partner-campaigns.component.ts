@@ -1233,7 +1233,7 @@ export class EditPartnerCampaignsComponent implements OnInit {
     /*******************************Preview*************************************/
     contactListItems:any[];
       loadUsers(id:number,pagination:Pagination){
-           if(id==undefined){
+           if(id==undefined || id==0){
               id=this.previewContactListId;
           }else{
               this.previewContactListId = id;
