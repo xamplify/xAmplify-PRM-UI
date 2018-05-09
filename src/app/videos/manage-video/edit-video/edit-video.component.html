@@ -419,6 +419,15 @@
 							<div class="portlet-body form" *ngIf="controlPlayers" [@fadeInOut]>
 								<div class="portlet-body form" data-initialized="1" style="overflow: hidden; width: auto; height: auto">
 									<div class="form-body">
+                    	<div class="form-group">
+                          <label class="col-xs-6 control-label" style="margin-top:-6px">Default Settings:</label>
+                          <div class="col-xs-6">
+                            <switch [status]="defaultSettingValue" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+                             [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+                             (statusChange)="defaultPlayerSettingsValues($event)">
+                            </switch>
+                          </div>
+                        </div>
 										<div class="form-group">
 											<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Sharing:</label>
 											<div class="col-xs-6 col-sm-3 col-md-3">
@@ -538,7 +547,7 @@
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="col-xs-5 col-sm-3 col-md-3 col-lg-3 control-label" style="margin-top:-6px">Viewer Name:</label>
+									<label class="col-xs-5 col-sm-3 col-md-3 col-lg-3 control-label" style="margin-top:-6px">Options:</label>
 									<div class="col-xs-7 col-sm-9 col-md-9 col-lg-9">
 										<div class="checkbox-list">
 											<label>
@@ -552,7 +561,7 @@
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="col-xs-5 col-sm-3 col-md-3 col-lg-3 control-label" style="margin-top:-6px">Skip:</label>
+									<label class="col-xs-5 col-sm-3 col-md-3 col-lg-3 control-label" style="margin-top:-6px"></label>
 									<div class="col-xs-7 col-sm-9 col-md-9 col-lg-9">
 										<div class="checkbox-list">
 											<label>

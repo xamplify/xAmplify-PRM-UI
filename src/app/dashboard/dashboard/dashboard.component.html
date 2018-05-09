@@ -198,7 +198,10 @@ td>h5 {
 					<i class="fa fa-cloud-upload"></i>
 				</div>
 				<div class="details">
-					<div class="number">{{dashboardReport.totalUploadedvideos}}</div>
+					<div class="number">
+            <span *ngIf="dashboardReport.totalUploadedvideos; else uploadVideos">dashboardReport.totalUploadedvideos</span>
+						<ng-template #uploadVideos>0</ng-template>
+          </div>
 					<div class="desc" >
 						<span *ngIf="!isOnlyPartner;else orgVideo">Uploaded Videos</span>
 						<ng-template #orgVideo>Videos</ng-template>
@@ -260,9 +263,11 @@ td>h5 {
 				</div>
 				<div class="details">
 					<div class="number">
-					   <span *ngIf="!isOnlyPartner; else partner">{{dashboardReport.totalCompanyPartnersCount}} </span>
+					   <span *ngIf="!isOnlyPartner; else partner">
+               <span *ngIf="dashboardReport.totalCompanyPartnersCount; else emptyValues">{{dashboardReport.totalCompanyPartnersCount}} </span>
+               <ng-template #emptyValues>0</ng-template>
+             </span>
 					   <ng-template #partner>0</ng-template>
-
 					</div>
 					<div class="desc">
 						<span *ngIf="isOnlyPartner; else orgadmin">Vendors</span>
@@ -560,7 +565,7 @@ td>h5 {
 			</div>
 		</div>
 	</div>
-	<ng-container *ngIf="authenticationService.module.hasSocialStatusRole || (authenticationService.user.hasCompany && authenticationService.module.isOrgAdmin)">
+	<ng-container *ngIf="authenticationService.module.hasSocialStatusRole || (authenticationService.module.isOrgAdmin) || authenticationService.isVendor() || authenticationService.isVendorPartner()">
 		<div class="clearfix" *ngIf="socialConnections?.length > 0">
 			<div class="portlet light shadow">
 				<div class="portlet-title">
@@ -569,7 +574,8 @@ td>h5 {
 				<div class="portlet-body clearfix">
 					<div class="clearfix">
 						<section *ngFor="let socialConnection of socialConnections">
-							<div class="col-xs-12 col-sm-6 col-md-4 p10" [class.disabled]="!hasSocialStatusRole?true:null">
+              <!--  [class.disabled]="!hasSocialStatusRole?true:null" -->
+							<div class="col-xs-12 col-sm-6 col-md-4 p10">
 								<div class="dashboard-stat2 m0">
 									<div class="display">
 										<div class="col-xs-3 p0">
