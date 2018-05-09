@@ -150,7 +150,7 @@
 																 [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onGreenColorSwitch" [size]="callActionSwitch.size"
 																 (statusChange)="setChannelCampaign($event)" >
 																</switch>
-															
+
 															</div>
 															<div class="col-sm-11" style="padding: 0;">
 															<label  *ngIf="!campaign.channelCampaign" style="margin-top: 10px;margin-left: 75px;;"><b>To Partner</b></label>
@@ -163,8 +163,8 @@
 													</div>
 												</div>
 											</div>
-											
-											
+
+
 											<div class="form-group" *ngIf="((this.authenticationService.module.isCompanyPartner && this.authenticationService.module.isOrgAdmin) || this.authenticationService.module.isOrgAdmin || this.authenticationService.module.isVendor ) && campaign.channelCampaign">
 												<label class="control-label col-sm-4">Co-Branding Logo</label>
 												<div class="col-sm-8">
@@ -268,7 +268,7 @@
 													</div>
 													<div>
 														<label style="margin-top: 10px;">Reply with Video</label>
-													</div>	
+													</div>
 												</div>
 												<div class="email-options-checkbox clearfix">
 													<div class="col-sm-1 ui-switch-custom-div">
@@ -382,7 +382,7 @@
 																	<td style="text-align: center;">
 																		<input type="radio" [checked]="selectedRow==savedVideoFile.id" (click)="setClickedRow(savedVideoFile,'my-videos')" name="videoFileId"
 																		 [value]="savedVideoFile.id" id="campaign_video_id_{{savedVideoFile.id}}">
-																		<a href="javascript:void(0)" (mouseover)="showPreview(savedVideoFile)">
+																		<a href="javascript:void(0)" (click)="$event.stopPropagation();showPreview(savedVideoFile)">
 																			<img src="{{savedVideoFile.imagePath}}" width="100px" height="50px">
 																		</a>
 																	</td>
@@ -432,7 +432,7 @@
 																	<td style="text-align: center;" *ngIf="videoFile.viewBy!='DRAFT' && videoFile.id!==videoId">
 																		<input type="radio" name="videoFileId" [value]="videoFile.id" (click)="setClickedRow(videoFile,'my-videos')" id="campaign_video_id_{{videoFile.id}}"
 																		 [checked]="videoFile.id == selectedRow">
-																		<a href="javascript:void(0)" (mouseover)="showPreview(videoFile)" lang="{{videoFile.id}}">
+																		<a (click)="$event.stopPropagation();showPreview(videoFile)" lang="{{videoFile.id}}">
 																			<img src="{{videoFile.imagePath}}" width="100px" height="50px">
 																		</a>
 																	</td>
@@ -565,7 +565,7 @@
 																	<td style="text-align: center;">
 																		<input type="radio" [checked]="selectedRow==savedVideoFile.id" (click)="setClickedRow(savedVideoFile,'partner-videos')" name="videoFileId"
 																		 [value]="savedVideoFile.id" id="campaign_video_id_{{savedVideoFile.id}}">
-																		<a href="javascript:void(0)" (mouseover)="showPreview(savedVideoFile)">
+																		<a href="javascript:void(0)" (click)="$event.stopPropagation();showPreview(savedVideoFile)">
 																			<img src="{{savedVideoFile.imagePath}}" width="100px" height="50px">
 																		</a>
 																	</td>
@@ -610,7 +610,7 @@
 																	<td style="text-align: center;" *ngIf="videoFile.viewBy!='DRAFT' && videoFile.id!==videoId">
 																		<input type="radio" name="videoFileId" [value]="videoFile.id" (click)="setClickedRow(videoFile,'partner-videos')" id="campaign_video_id_{{videoFile.id}}"
 																		 [checked]="videoFile.id == selectedRow">
-																		<a href="javascript:void(0)" (mouseover)="showPreview(videoFile)" lang="{{videoFile.id}}">
+																		<a href="javascript:void(0)" (click)="$event.stopPropagation();showPreview(videoFile)" lang="{{videoFile.id}}">
 																			<img src="{{videoFile.imagePath}}" width="100px" height="50px">
 																		</a>
 																	</td>
@@ -690,26 +690,6 @@
 							 [disabled]="!isVideo" title="Please Select Video">Next</button>
 						</div>
 					</div>
-
-					<!-- -------------------------Video Preview------------------- -->
-					<!-- <div class="modal" id="show_preview">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-header">
-									<a class="close-circle" data-dismiss="modal" (click)="destroyPreview()">
-										<i class="fa fa-times" style="padding-top:0; font-size:15px"></i>
-									</a>
-									<h4 class="modal-title" id="modal-title"></h4>
-								</div>
-								<div class="modal-body">
-									<div id="main_video"></div>
-								</div>
-								<div class="modal-footer">
-									<a href="javascript:void(0)" (click)="destroyPreview()" data-dismiss="modal" class="btn btn-default">Close</a>
-								</div>
-							</div>
-						</div>
-					</div> -->
 				</div>
 				<!-- End Of 197(Video Tab) -->
 				<!-- -------------------------------------Contact List Tab--------------------------------------------------------- -->
@@ -788,7 +768,7 @@
 															{{contacts.name}}
 														</td>
 														<td class="text-center">
-															<a class="btn btn-warning" (mouseover)="loadUsers(contactsPagination.pagedItems[i].id,contactsUsersPagination)">
+															<a class="btn btn-warning" (click)="$event.stopPropagation();loadUsers(contactsPagination.pagedItems[i].id,contactsUsersPagination)">
 																<i class="fa fa-eye" style="padding-top: 3px; font-size: 20px;" title="" data-original-title="Preview"></i>
 															</a>
 														</td>
@@ -798,19 +778,19 @@
 											<div *ngIf="contactsPagination.totalRecords > 0 && !campaignContact.httpRequestLoader.isLoading && !campaignContact.httpRequestLoader.isServerError">
 												<ul *ngIf="contactsPagination.pager.pages && contactsPagination.pager.pages.length" class="pagination pull-left">
 													<li [ngClass]="{disabled:contactsPagination.pager.currentPage === 1}">
-														<a (click)="setPage(1,'contacts',contactUsers)" [class.disabled]="contactsPagination.pager.currentPage === 1">First</a>
+														<a (click)="setPage(1,'contacts')" [class.disabled]="contactsPagination.pager.currentPage === 1">First</a>
 													</li>
 													<li [ngClass]="{disabled:contactsPagination.pager.currentPage === 1}">
-														<a (click)="setPage(contactsPagination.pager.currentPage - 1,'contacts',contactUsers)" [class.disabled]="contactsPagination.pager.currentPage === 1">Previous</a>
+														<a (click)="setPage(contactsPagination.pager.currentPage - 1,'contacts')" [class.disabled]="contactsPagination.pager.currentPage === 1">Previous</a>
 													</li>
 													<li *ngFor="let page of contactsPagination.pager.pages" [ngClass]="{disabled:contactsPagination.pager.currentPage === page}">
-														<a (click)="setPage(page,'contacts',contactUsers)" [class.disabled]="contactsPagination.pager.currentPage === page">{{page}}</a>
+														<a (click)="setPage(page,'contacts')" [class.disabled]="contactsPagination.pager.currentPage === page">{{page}}</a>
 													</li>
 													<li [ngClass]="{disabled:contactsPagination.pager.currentPage === contactsPagination.pager.totalPages}">
-														<a (click)="setPage(contactsPagination.pager.currentPage + 1,'contacts',contactUsers)" [class.disabled]="contactsPagination.pager.currentPage === contactsPagination.pager.totalPages">Next</a>
+														<a (click)="setPage(contactsPagination.pager.currentPage + 1,'contacts')" [class.disabled]="contactsPagination.pager.currentPage === contactsPagination.pager.totalPages">Next</a>
 													</li>
 													<li [ngClass]="{disabled:contactsPagination.pager.currentPage === contactsPagination.pager.totalPages}">
-														<a (click)="setPage(contactsPagination.pager.totalPages,'contacts',contactUsers)" [class.disabled]="contactsPagination.pager.currentPage === contactsPagination.pager.totalPages">Last</a>
+														<a (click)="setPage(contactsPagination.pager.totalPages,'contacts')" [class.disabled]="contactsPagination.pager.currentPage === contactsPagination.pager.totalPages">Last</a>
 													</li>
 												</ul>
 
@@ -994,7 +974,7 @@
 				<!-- End of step 5 -->
 				<!-- -------------------------------------Launch Tab--------------------------------------------------------- -->
 				<div class="row setup-content step hiddenStepInfo" id="step-6">
-							
+
 							<div class="alert alert-danger" *ngIf="invalidScheduleTime" id="invalidScheduleTimeDiv">
 								<strong>{{invalidScheduleTimeError}}</strong>
 							</div>
@@ -1029,11 +1009,11 @@
 										<div class="col-md-3 col-sm-4 col-xs-6 box" *ngFor="let socialStatusProvider of socialStatus.socialStatusProviders; let i = index">
 											<div class="portlet light block" [ngClass]="{'checked': socialStatusProvider.selected, 'unchecked': !socialStatusProvider.selected}"
 												(click)="socialStatusProvider.selected = !socialStatusProvider.selected">
-												<span class="ribbon" [ngClass]="{'ribbon-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK', 
+												<span class="ribbon" [ngClass]="{'ribbon-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK',
 														'ribbon-twitter': socialStatusProvider.socialConnection.source ==='TWITTER',
 														'ribbon-linkedin': socialStatusProvider.socialConnection.source ==='LINKEDIN',
 														'ribbon-google': socialStatusProvider.socialConnection.source ==='GOOGLE'}">
-													<i class="fa fa-social pull-right" [ngClass]="{'fa-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK', 
+													<i class="fa fa-social pull-right" [ngClass]="{'fa-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK',
 														'fa-twitter': socialStatusProvider.socialConnection.source ==='TWITTER',
 														'fa-linkedin': socialStatusProvider.socialConnection.source ==='LINKEDIN',
 														'fa-google': socialStatusProvider.socialConnection.source ==='GOOGLE'}"></i>
@@ -1060,11 +1040,11 @@
 										<h4 style="text-align: left;font-weight: 600;color: #999;">Selected Account(s)</h4>
 										<section style="padding: 10px 0; text-align: left;">
 											<span *ngFor="let socialStatusProvider of socialStatus.socialStatusProviders">
-												<div class="btn btn-xs square-box" style="color: #FFF; margin-top: 0.5em;" *ngIf="socialStatusProvider.selected" 
+												<div class="btn btn-xs square-box" style="color: #FFF; margin-top: 0.5em;" *ngIf="socialStatusProvider.selected"
 												[ngClass]="{'btn-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK','btn-twitter': socialStatusProvider.socialConnection.source ==='TWITTER'}">
 													<div class="col-xs-12" style="display: inline-flex;">
-														<i class="fa fa-social pull-right" 
-														[ngClass]="{'fa-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK', 
+														<i class="fa fa-social pull-right"
+														[ngClass]="{'fa-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK',
 																	'fa-twitter': socialStatusProvider.socialConnection.source ==='TWITTER'}"></i>
 														<h5>{{socialStatusProvider.socialConnection.profileName}}</h5>
 													</div>
@@ -1107,7 +1087,7 @@
 								<ng-container *ngIf="!authenticationService.module.isVendor">
 									<ng-container class="h4-text" *ngIf="campaignType == 'video'||'regular'">Contact List</ng-container>
 								</ng-container>
-									
+
 								</td>
 								<td width="55%">
 									<ng-container *ngFor="let contactList of selectedContactLists;let i=index;">
@@ -1165,7 +1145,7 @@
 		<fieldset>
 			<legend>Additional campaign options</legend>
 		<div>
-						
+
 				<div class="row">
 					<div class="col-xs-6">
 						<a *ngIf="emailTemplateHrefLinks?.length==0" class="dashboard-stat yellow-gold" style="background-color: #f76c1a;"
@@ -1207,7 +1187,7 @@
 					<div class="panel-body">
 						<form class="role add-reply" id="form-{{reply.divId}}">
 							<div class="row" >
-							
+
 								<div class="col-md-6">
 								<label for="reason">Reason</label>
 								<select class="form-control" name="actionId" [(ngModel)]="reply.actionId">
@@ -1220,15 +1200,15 @@
 										<option [value]="17" [selected]="reply.actionId==17">Send Immediately After Video Played</option>
 										<option  [value]="18" [selected]="reply.actionId==18">Send If Video Is Not Played</option>
 										<option [value]="23" [selected]="reply.actionId ==23" *ngIf="campaign.channelCampaign">Send If Partner Video Is Not Used</option>
-										
+
 									</ng-container>
 								</select>
 							</div>
-							
-							
+
+
 								<div *ngIf="reply.actionId!=16 && reply.actionId!=17 && reply.actionId!=18">
 								<div class="col-md-4">
-									<label for="days" *ngIf="reply.actionId==22 || reply.actionId==23 " id="reply-days-{{reply.divId}}">Reply In X Days 
+									<label for="days" *ngIf="reply.actionId==22 || reply.actionId==23 " id="reply-days-{{reply.divId}}">Reply In X Days
 										<b style="color: red">*</b>
 										<font><b>(Minimum 1 Day)</b></font>
 									</label>
@@ -1237,23 +1217,23 @@
 									</label>
 									<input type="number" class="form-control" name="days" placeholder="Days" [(ngModel)]="reply.replyInDays" min="0" oninput="validity.valid||(value='');">
 								</div>
-								
+
 								<div class="col-md-3 time-col" *ngIf="reply.actionId!=22 && reply.actionId!=23 ">
-									<span for="time" id="send-time-{{reply.divId}}" style="margin-top:20px;">At 
+									<span for="time" id="send-time-{{reply.divId}}" style="margin-top:20px;">At
 										<b style="color: red">*</b>&nbsp;&nbsp;</span>
 									<timepicker [(ngModel)]="reply.replyTime" name="time"></timepicker>
 								</div>
 								</div>
-								
-								
+
+
 								<div class="col-md-4">
 									<label for="time" id="reply-subject-{{reply.divId}}">Subject
 										<b style="color: red">*</b>
 									</label>
 									<input type="text" class="form-control" name="subject" [(ngModel)]="reply.subject" placeholder="Subject" maxlength="50">
 								</div>
-							
-						
+
+
 							<div class="col-md-2" style="padding-top: 1.9em;">
 								<button type="button" class="btn btn-danger" (click)="remove(reply.divId,'replies')">
 									<span class="glyphicon glyphicon-trash"></span>
@@ -1294,7 +1274,7 @@
 												style="width: 217px;height: 34px;">
 										</div>
 									</div>
-									
+
 									<div class="portlet-title">
 										<div class="caption">
 											<div class="row">
@@ -1321,8 +1301,8 @@
 											</div>
 										</div>
 									</div>
-									
-									
+
+
 									<app-loader [model]="campaignEmailTemplate.httpRequestLoader.isHorizontalCss" *ngIf="campaignEmailTemplate.httpRequestLoader.isLoading"></app-loader>
 									<app-error-pages *ngIf="campaignEmailTemplate.httpRequestLoader.isServerError"></app-error-pages>
 									<ng-container *ngIf="!campaignEmailTemplate.httpRequestLoader.isLoading && !campaignEmailTemplate.httpRequestLoader.isServerError">
@@ -1469,17 +1449,17 @@
 										<button type="button" class="btn btn-primary" (click)="addClickRows()">
 											<span class="glyphicon glyphicon-plus"></span>
 										</button>
-		
+
 									</div>
 							</div>
-							
+
 							<div class="col-sm-12" style="padding: 0">
 								<div id="ck-editor-{{i}}" *ngIf="!url.defaultTemplate">
-									
+
 										<label for="days" id="click-message-{{url.divId}}" style="margin-top:10px">Message
 											<b style="color: red">*</b>
 										</label>
-									
+
 									<div>
 										<ckeditor [(ngModel)]="url.body" name="body"></ckeditor>
 									</div>
@@ -1601,7 +1581,7 @@
 			<!-- Add on Click end -->
 				</div>
 			</div>
-		
+
 	</div>
 </fieldset>
 									<!-- <h4 class="panel-title">
@@ -1667,8 +1647,8 @@
 									</div>
 								</div>
 							</form>
-						
-					
+
+
 				</div>
 			</div>
 			<!-- End Of Line 18 -->

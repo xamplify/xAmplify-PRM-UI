@@ -386,7 +386,7 @@ td>h5 {
 												<option *ngFor="let heatSort of sortHeatMapValues" [ngValue]="heatSort"> {{heatSort.name}} </option>
 											</select>
 										</span>
-										<span *ngIf="heatMapData?.length >= 1" (click)="isFullscreenHeatMap()" style="cursor: pointer; padding: 8px;">
+										<span *ngIf="heatMapData?.length >= 1" (click)="isFullscreenHeatMap()" style="cursor: pointer; padding: 8px;" title="fullscreen">
 											<i style=" font-size: 16px;" class="glyphicon glyphicon-resize-full"></i>
 										</span>
 									</div>
