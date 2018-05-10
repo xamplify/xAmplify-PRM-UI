@@ -231,17 +231,18 @@
 															</a> <a (click)="downloadContactList(contactList.id)"
 																title="Download List" data-rel="fancybox-button"> <i
 																class="fa fa-cloud-download"></i>
-															</a> <a
-																*ngIf="(hasAllAccess || authenticationService.module.isVendor || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner()) && !contactList.defaultPartnerList"
-																(click)="showAlert(contactList.id)" title="Delete List">
-																<i class="fa fa-trash"></i> 
-															</a> <span *ngIf="contactList.synchronisedList == true">
+															</a> 
+															<span *ngIf="contactList.synchronisedList == true">
 																<a title="sychronizeContactList"
 																*ngIf="hasAllAccess || authenticationService.module.isVendor|| (hasContactRole && loggedInUserId==contactList.uploadedUserId)"
 																(click)="synchronizeContactList(contactList.id,contactList.socialNetwork)">
 																	<i class="fa fa-refresh" aria-hidden="true"></i>
 															</a>
 															</span>
+															<a *ngIf="(hasAllAccess || authenticationService.module.isVendor || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner()) && !contactList.defaultPartnerList"
+																(click)="showAlert(contactList.id)" title="Delete List">
+																<i class="fa fa-trash"></i> 
+															</a>
 														</div>
 													</td>
 												</tr>
