@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Properties } from '../../common/models/properties';
 import { UserService } from '../../core/services/user.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
@@ -7,7 +7,6 @@ import { DashboardService } from '../dashboard.service';
 
 import { UserDefaultPage } from '../../core/models/user-default-page';
 import { DashboardReport } from '../../core/models/dashboard-report';
-declare var $:any;
 
 @Component({
     selector: 'app-welcome',
@@ -15,7 +14,7 @@ declare var $:any;
     styleUrls: ['./welcome.component.css'],
     providers: [Properties]
 })
-export class WelcomeComponent implements OnInit, OnDestroy {
+export class WelcomeComponent implements OnInit {
 
     userDefaultPage: UserDefaultPage;
     dashboardReport: DashboardReport;
@@ -108,7 +107,5 @@ export class WelcomeComponent implements OnInit, OnDestroy {
         this.getDefaultPage(this.loggedInUserId);
         this.dashboardReports(this.loggedInUserId);
     }
-    ngOnDestroy(){
-      $('#myModal').modal('hide');
-    }
+
 }
