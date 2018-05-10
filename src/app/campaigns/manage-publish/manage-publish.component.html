@@ -152,7 +152,63 @@
 								<app-loader *ngIf="httpRequestLoader.isLoading"></app-loader>
 								<app-error-pages *ngIf="httpRequestLoader.isServerError"></app-error-pages>
 								<ng-container *ngIf="totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
-									<div *ngFor="let campaign of pagination.pagedItems; let i= index">
+									<div *ngFor="let campaign of pagination.pagedItems; let i= index" class="col-xs-12 col-sm-4 col-lg-3">
+										<div class="box">
+											<img src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png">
+											<h4 class="ellipsis" title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:25}}
+												<span *ngIf="campaign.campaignName?.length>25">...</span>
+											</h4>
+											<h6 class="mt10 mb0">By {{campaign.createdBy}}</h6>
+											<h6 class="mt0"><b>{{campaign.companyName}}</b></h6>
+											<h6>
+											<span>
+												<span *ngIf="campaign.launched">Launched On</span>
+												<span *ngIf="!campaign.launched && campaign.launchedOn?.length > 0">Scheduled For</span>
+												<span *ngIf="!campaign.launched && campaign.launchedOn?.length==0">Saved On</span>
+											</span>
+											<span title="Upload date">
+												<span *ngIf="campaign.scheduleType=='NOW' || campaign.scheduleType=='SCHEDULE'">{{campaign.launchedOn}}</span>
+												<span *ngIf="campaign.scheduleType=='SAVE'">{{campaign.startTime}}</span>
+											</span>
+											</h6>
+											<div class="ribbon">
+												<span *ngIf="campaign.launched">Launched</span>
+												<span *ngIf="!campaign.launched && campaign.launchedOn?.length > 0">Scheduled</span>
+												<span *ngIf="!campaign.launched && campaign.launchedOn?.length==0">Saved</span>
+											</div>
+											<div class="bar">
+												<ng-container *ngIf="!campaign.launched">
+													<a *ngIf="hasAllAccess || (campaign.launched==false && hasCampaignRole && loggedInUserId==campaign.userId) 
+														|| (!campaign.launched&&isOnlyPartner) || authenticationService.module.isVendor" (click)="editCampaign(campaign.campaignId)" title="Edit Campaign">
+														<i class="fa fa-pencil-square-o"></i>
+													</a>
+												</ng-container>
+												<ng-container *ngIf="campaign.launched">
+													<a *ngIf="  hasAllAccess || (hasStatsRole || hasCampaignRole ) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor"
+														[routerLink]="['/home/campaigns/',campaign.campaignId, 'details']" title="Campaign Based Reports">
+														<i class="fa fa-line-chart"></i>
+													</a>
+													<a *ngIf="(campaign.campaignType !== 'SOCIAL') && ( hasAllAccess || (hasStatsRole || hasCampaignRole || authenticationService.module.isVendor )) && !campaign.nurtureCampaign"
+														data-rel="fancybox-button" (click)="openSaveAsModal(campaign.campaignId, campaign.campaignName)" title="Save As">
+														<i class="fa fa-files-o"></i>
+													</a>
+													<a *ngIf=" isOnlyPartner" data-rel="fancybox-button" (click)="openSaveAsModal(campaign.campaignId, campaign.campaignName)" title="Save As">
+														<i class="fa fa-files-o"></i>
+													</a>
+												</ng-container>
+													<a *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor"
+														(click)="confirmDeleteCampaign(campaign.campaignId, i, campaign.campaignName)" title="Delete Campaign">
+														<i class="fa fa-trash"></i>
+													</a>
+											</div>
+										</div>
+
+
+
+
+
+
+<!--
 										<div class="col-md-3 col-sm-4 mix category_1 mix_all" style="display: block; opacity: 1; margin-top: -35px;">
 											<div id="container">
 												<h3 *ngIf="campaign.launched" class="launched">Launched
@@ -186,8 +242,6 @@
 														<span *ngIf="campaign.campaignName?.length>25">...</span>
 													 </h4>
 													
-													<!-- <div style="top: 2%; position: relative; margin-left: 5px;">
-													</div> -->
 													<div style="top: 30%; position: relative;">
 														<ng-container *ngIf="!campaign.launched">
 															<a *ngIf="hasAllAccess || (campaign.launched==false&&hasCampaignRole && loggedInUserId==campaign.userId) 
@@ -231,7 +285,6 @@
 
 													<span align="left" title="Uploaded By" style="bottom: -1px; left: 10px; position: absolute;">{{campaign.createdBy}}</span>
 													<span align="right" title="Upload date" style="bottom: 2px; float: right; position: absolute; right: 17px;">
-														<!-- <b *ngIf="campaign.launched || !campaign.launched && campaign.launchedOn?.length > 0">{{campaign.launchedOn}}</b> -->
 														<b *ngIf="campaign.scheduleType=='NOW' || campaign.scheduleType=='SCHEDULE'">{{campaign.launchedOn}}</b>
 														<b *ngIf="campaign.scheduleType=='SAVE'">{{campaign.startTime}}</b>
 													</span>
@@ -240,6 +293,8 @@
 											<div>
 											</div>
 										</div>
+-->
+
 									</div>
 								</ng-container>
 							</div>
