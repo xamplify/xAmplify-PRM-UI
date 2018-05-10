@@ -82,27 +82,6 @@
 								</div>
 								<div class="page-toolbar" *ngIf="!showEditContactData">
 									<div class="btn-group pull-right">
-										<!-- <div class="inputs" align="right" style="float: right">
-											<div style="float: left; margin-right: 10px; width: 50%">
-												<select class="form-control" [(ngModel)]="sortOption"
-													(ngModelChange)="sortByOption($event)">
-													<ng-container
-														*ngFor="let sort of sortOptions; let i = index">
-													<option [ngValue]="sort">{{sort.name}}</option>
-													</ng-container>
-												</select>
-											</div>
-											<div class="portlet-input input-inline input-small">
-												<div class="input-icon right">
-													<i class="icon-magnifier"
-														style="cursor: pointer; font-size: 18px;"
-														(click)="search('contactList')"></i> <input type="text"
-														[(ngModel)]="searchKey"
-														[ngModelOptions]="{standalone: true}"
-														class="form-control input-circle" placeholder="search...">
-												</div>
-											</div>
-										</div> -->
 										<div class="inputs" align="right" style="float: right">
 											<div style="float: left; margin-right: 10px; width: 50%">
 												<select class="form-control" [(ngModel)]="sortOption"
@@ -139,7 +118,7 @@
 										</div>
 										<div class="details">
 											<div class="number">{{contactsByType.allContactsCount}}</div>
-											<div class="desc">All {{checkingContactTypeName}}s</div>
+											<div class="desc" style="font-size:20px">All <!-- {{checkingContactTypeName}}s --></div>
 										</div>
 									</button>
 								</div>
@@ -152,7 +131,7 @@
 										</div>
 										<div class="details">
 											<div class="number">{{contactsByType.activeContactsCount}}</div>
-											<div class="desc">Active {{checkingContactTypeName}}s</div>
+											<div class="desc" style="font-size:20px">Active <!-- {{checkingContactTypeName}}s --></div>
 										</div>
 									</button>
 								</div>
@@ -165,7 +144,7 @@
 										</div>
 										<div class="details">
 											<div class="number">{{contactsByType.inactiveContactsCount}}</div>
-											<div class="desc">Inactive {{checkingContactTypeName}}s</div>
+											<div class="desc" style="font-size:20px">Inactive <!-- {{checkingContactTypeName}}s --></div>
 										</div>
 									</button>
 								</div>
@@ -178,7 +157,7 @@
 										</div>
 										<div class="details">
 											<div class="number">{{contactsByType.invalidContactsCount}}</div>
-											<div class="desc">Invalid {{checkingContactTypeName}}s</div>
+											<div class="desc" style="font-size:20px">Invalid <!-- {{checkingContactTypeName}}s --></div>
 										</div>
 									</button>
 								</div>
@@ -187,12 +166,13 @@
 										(click)="showingContactDetails('unsubscribe')"
 										[disabled]="contactsByType.unsubscribedContactsCount == 0">
 										<div class="visual">
+										
 											<i class="fa fa-times"></i>
 										</div>
 										<div class="details">
 											<div class="number">{{contactsByType.unsubscribedContactsCount}}</div>
-											<div class="desc">Unsubscribed
-												{{checkingContactTypeName}}s</div>
+											<div class="desc" style="font-size:20px">Unsubscribed
+												<!-- {{checkingContactTypeName}}s --></div>
 										</div>
 									</button>
 								</div>
