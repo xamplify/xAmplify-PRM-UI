@@ -8,7 +8,7 @@ import { User } from '../../core/models/user';
 import {EmailTemplate} from '../models/email-template';
 import {AuthenticationService} from '../../core/services/authentication.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
-declare var Metronic , Layout , Demo, swal , Portfolio: any;
+declare var Metronic , Layout , Demo, swal , Portfolio,$: any;
 @Component({
   selector: 'app-select-template',
   templateUrl: './select-template.component.html',
@@ -237,6 +237,23 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
             this.logger.error(cause+":"+error);
         }
     }
+    
+    showCampaignDefaultTemplates(index:number){
+        try{
+            this.filteredEmailTemplates = new Array<EmailTemplate>();
+            this.selectedTemplateTypeIndex = index;
+            for(var i=0;i<this.allEmailTemplates.length;i++){
+                var isCampaignDefault = this.allEmailTemplates[i].campaignDefault;
+                if(isCampaignDefault){
+                    this.filteredEmailTemplates.push(this.allEmailTemplates[i]);
+                }
+            }
+            this.logger.debug("Showing showCampaignDefaultTemplates size of"+this.filteredEmailTemplates.length);
+        }catch(error){
+            var cause = "Error in showCampaignDefaultTemplates() in selectTemplatesComponent";
+            this.logger.error(cause+":"+error);
+        }
+    }
    
     
     showTemplateById(id:number,index:number){
@@ -253,16 +270,32 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
                },
                () => this.logger.info("Got Email Template")
            );
-       }else if(index==21 || index==1){
+       }else if(index==33 || index==1){
            //This is normal template
            this.emailTemplateService.isRegularUpload = true;
            this.router.navigate(["/home/emailtemplates/upload"]);
-       }else if(index==20 || index==0){
+       }else if(index==32 || index==0){
            //This is video template
            this.emailTemplateService.isRegularUpload = false;
            this.router.navigate(["/home/emailtemplates/upload"]);
        }
     }
+    
+    showPreview(emailTemplate:EmailTemplate){
+         let body = emailTemplate.body;
+         let emailTemplateName = emailTemplate.name;
+         if(emailTemplateName.length>50){
+             emailTemplateName = emailTemplateName.substring(0, 50)+"...";
+         }
+         $("#htmlContent").empty();
+         $("#email-template-title").empty();
+         $("#email-template-title").append(emailTemplateName);
+         $('#email-template-title').prop('title',emailTemplate.name);
+         $("#htmlContent").append(body);
+         $('.modal .modal-body').css('overflow-y', 'auto'); 
+        // $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
+         $("#show_email_template_preivew").modal('show');
+     }
     
 
 }

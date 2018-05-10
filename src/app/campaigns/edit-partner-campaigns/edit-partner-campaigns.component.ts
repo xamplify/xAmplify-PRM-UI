@@ -1067,7 +1067,6 @@ export class EditPartnerCampaignsComponent implements OnInit {
         if (index >= 0) {
             this.emailTemplateHrefLinks.splice(index, 1);
         }
-        console.log(this.emailTemplateHrefLinks);
     }
 
     setLaunchTime(){

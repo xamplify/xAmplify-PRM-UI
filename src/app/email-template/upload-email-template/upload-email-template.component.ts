@@ -13,6 +13,7 @@ import { ReferenceService } from '../../core/services/reference.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { EmailTemplateType } from '../../email-template/models/email-template-type';
 import { noWhiteSpaceValidator} from '../../form-validator';
+import { CustomResponse } from '../../common/models/custom-response';
 declare var Metronic ,Layout ,Demo,swal ,TableManaged,$,CKEDITOR:any;
 
 @Component({
@@ -23,7 +24,7 @@ declare var Metronic ,Layout ,Demo,swal ,TableManaged,$,CKEDITOR:any;
 })
 export class UploadEmailTemplateComponent implements OnInit {
 
-
+    customResponse: CustomResponse = new CustomResponse();
     public isDisable: boolean = false;
     model: any = {};
     public duplicateTemplateName: boolean = false;
@@ -46,6 +47,7 @@ export class UploadEmailTemplateComponent implements OnInit {
     videoTag:string = "";
     emailMergeTags:string = "";
     coBrandingTag:string = "";
+    maxFileSize:number = 10;
     constructor(public emailTemplateService: EmailTemplateService, private userService: UserService, private router: Router,
             private emailTemplate: EmailTemplate, private logger: XtremandLogger,private authenticationService:AuthenticationService,public refService:ReferenceService) {
         logger.debug("uploadEmailTemplateComponent() Loaded");
@@ -68,19 +70,17 @@ export class UploadEmailTemplateComponent implements OnInit {
 
         this.companyLogoUploader = new FileUploader({
             allowedMimeType: ['application/x-zip-compressed'],
-            maxFileSize: 10 * 1024 * 1024, // 100 MB
+            maxFileSize: this.maxFileSize * 1024 * 1024,
             url: this.authenticationService.REST_URL + "admin/upload-zip?userId=" + this.loggedInUserId+"&access_token=" + this.authenticationService.access_token
         });
         this.companyLogoUploader.onAfterAddingFile = (fileItem) => {
-            console.log(fileItem);
             this.refService.startLoader(this.httpRequestLoader);
             fileItem.withCredentials = false;
            this.companyLogoUploader.queue[0].upload();
            this.uploadFileErrorMessage = "";
-           this.isUploadFileError = false;
+           this.customResponse.isVisible = false;
         };
         this.companyLogoUploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-            console.log(this.companyLogoUploader.queue[0]);
             if($.trim(this.model.templateName).length>0){
                 this.isValidTemplateName = true;
                 this.disableButton = false;
@@ -99,8 +99,7 @@ export class UploadEmailTemplateComponent implements OnInit {
                     this.isUploaded = true;
                 }else{
                     this.companyLogoUploader.queue.length = 0;
-                    this.uploadFileErrorMessage = path;
-                    this.isUploadFileError = true;
+                    this.customResponse = new CustomResponse( 'ERROR',path, true );
                 }
 
             }
@@ -144,7 +143,6 @@ export class UploadEmailTemplateComponent implements OnInit {
         } else {
             file = event[0];
         }
-        console.log(event);
         if(file!=undefined){
             this.isUploadFileError = false;
             let  extentionsArray = ["html","zip"];
@@ -199,9 +197,10 @@ export class UploadEmailTemplateComponent implements OnInit {
         //this.disable = false;
         this.isUploaded = false;
         $(".addfiles").attr("style", "float: left; margin-right: 9px; opacity:1");
-        $('#fileId').val('');
+        $('#upload-file').val('');
         this.isVideoTagError = false;
         this.isUploadFileError = false;
+        this.customResponse.isVisible =false;
     }
 
     checkAvailableNames(value: any) {
@@ -244,6 +243,7 @@ export class UploadEmailTemplateComponent implements OnInit {
 
     /************Save Html Template****************/
     saveHtmlTemplate() {
+        this.customResponse.isVisible = false;
        this.refService.startLoader(this.httpRequestLoader);
         this.emailTemplate.user = new User();
         this.emailTemplate.user.userId = this.loggedInUserId;
@@ -278,6 +278,7 @@ export class UploadEmailTemplateComponent implements OnInit {
                 } else{
                     this.isVideoTagError = true;
                     this.videoTagsError = data;
+                    this.customResponse = new CustomResponse("Error",data,true);
                 }
             },
             error => {
@@ -307,4 +308,33 @@ export class UploadEmailTemplateComponent implements OnInit {
     hideDiv(divId:string){
         $('#'+divId).hide(600);
     }
+    
+    changeLogo(event: any) {
+        this.customResponse.isVisible = false;
+          let fileList: any;
+          if (event.target != undefined) {
+              fileList = event.target.files[0];
+          } else {
+              fileList = event[0];
+          }
+      if (fileList!=undefined) {
+          let maxSize = this.maxFileSize*1024*1024;
+          let  size = fileList.size;
+          let ext = fileList.name.split('.').pop().toLowerCase();
+          let  extentionsArray = ['zip'];
+          if ($.inArray(ext, extentionsArray) == -1) {
+              this.refService.goToTop();
+              this.customResponse = new CustomResponse('ERROR',"Invalid file", true);
+              $('#upload-file').val('');
+          }else{
+              let fileSize = (size/ 1024 / 1024); //size in MB
+              if (size > maxSize) {
+                  this.refService.goToTop();
+                  this.customResponse = new CustomResponse('ERROR',"Max size is 10 MB", true);
+                  $('#upload-file').val('');
+              }
+          }
+      }
+  
+  }
 }

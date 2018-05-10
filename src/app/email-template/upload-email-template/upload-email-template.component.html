@@ -26,16 +26,18 @@
 						</form>
 		              
 		              <div class="form-group files color">
-		              <div (fileOver)="fileOverBase($event)" ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}" (onFileDrop)="fileDropPreview($event)" [uploader]="companyLogoUploader">
+		              <div (fileOver)="fileOverBase($event)" ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}" 
+		              		(onFileDrop)="fileDropPreview($event)" [uploader]="companyLogoUploader">
 		              	<h3>Upload Your File </h3>
-							<input type="file"   ng2FileSelect [uploader]="companyLogoUploader" accept=".zip" 
-									*ngIf="companyLogoUploader.queue.length==0"  title=" " #input/>	
+							<input type="file" id="upload-file"   ng2FileSelect [uploader]="companyLogoUploader" accept=".zip" 
+									*ngIf="companyLogoUploader.queue.length==0" (change)="changeLogo($event)" title=" " #input/>	
 		              </div>
 		              
-		               <div *ngIf="isUploadFileError" class="alert alert-danger" style="margin-top: 40px;" id="upload-error-div">
+		             <!--   <div *ngIf="isUploadFileError" class="alert alert-danger" style="margin-top: 40px;" id="upload-error-div">
 							<strong>{{uploadFileErrorMessage}}</strong>
 					 </div>
-					 <div *ngIf="isVideoTagError" class="alert alert-danger">{{videoTagsError}}</div>
+					 <div *ngIf="isVideoTagError" class="alert alert-danger">{{videoTagsError}}</div> -->
+					 <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 		              </div>
 					</div>
 					<div class="col-xs-12 col-md-6" style="padding: 4em;">

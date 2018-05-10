@@ -1,4 +1,5 @@
 <div class="page-content" [class.ml0]="!authenticationService.user.hasCompany">
+<ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 	<div class="portlet light" id="company-profile-div">
 		<div class="portlet-title">
 			<div class="caption">Company Profile Info</div>
@@ -60,7 +61,7 @@
 												<label class="fileContainer">
 													<i class="fa fa-camera"></i>&nbsp;Upload company logo
 													<input type="file" ng2FileSelect [uploader]="companyLogoUploader" accept="image/jpeg,image/pjpeg,image/jpeg,image/pjpeg,image/png" 
-															*ngIf="companyLogoUploader.queue.length==0" (change)="changeLogo(input)" title=" " #input/>
+															*ngIf="companyLogoUploader.queue.length==0" (change)="changeLogo($event)" title=" " #input/>
 												</label>
 											</div>
 										</div>

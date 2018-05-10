@@ -114,6 +114,7 @@ export class EditCompanyProfileComponent implements OnInit {
     isOnlyPartner = false;
     isVendorRole = false;
     ngxloading = false;
+    maxFileSize:number = 10;
     constructor(private logger: XtremandLogger, public authenticationService: AuthenticationService, private fb: FormBuilder,
         private companyProfileService: CompanyProfileService, public homeComponent: HomeComponent,
         public refService: ReferenceService, private router: Router, public processor: Processor, public countryNames: CountryNames,
@@ -125,12 +126,13 @@ export class EditCompanyProfileComponent implements OnInit {
         this.isOnlyPartner = this.authenticationService.isOnlyPartner();
         this.isVendorRole = this.authenticationService.isVendor();
         this.companyLogoUploader = new FileUploader({
-            allowedMimeType: ['image/jpeg', 'image/pjpeg', 'image/jpeg', 'image/pjpeg', 'image/png'],
-            maxFileSize: 10 * 1024 * 1024, // 100 MB
+            allowedMimeType: ['image/jpeg', 'image/pjpeg', 'image/jpg', 'image/png'],
+            maxFileSize: this.maxFileSize * 1024 * 1024, // 10 MB
             url: this.authenticationService.REST_URL + "admin/company-profile/upload-logo?userId=" + this.loggedInUserId + "&access_token=" + this.authenticationService.access_token
         });
         this.companyLogoUploader.onAfterAddingFile = (fileItem) => {
             console.log(fileItem);
+            this.isLoading = true;
             fileItem.withCredentials = false;
             this.companyLogoUploader.queue[0].upload();
         };
@@ -149,6 +151,7 @@ export class EditCompanyProfileComponent implements OnInit {
                 this.enableOrDisableButton();
                 console.log(this.companyLogoImageUrlPath);
             }
+            this.isLoading = false;
         }
 
         this.companyBackGroundLogoUploader = new FileUploader({
@@ -812,8 +815,31 @@ export class EditCompanyProfileComponent implements OnInit {
         }
     }
 
-    changeLogo(inputFile) {
-        console.log(inputFile);
+    changeLogo(event: any) {
+          this.customResponse.isVisible = false;
+            let fileList: any;
+            if (event.target != undefined) {
+                fileList = event.target.files[0];
+            } else {
+                fileList = event[0];
+            }
+        if (fileList!=undefined) {
+            let maxSize = this.maxFileSize*1024*1024;//10 Mb
+            let  size = fileList.size;
+            let ext = fileList.name.split('.').pop().toLowerCase();
+            let  extentionsArray = ['jpeg','pjpeg', 'png','jpg'];
+            if ($.inArray(ext, extentionsArray) == -1) {
+                this.refService.goToTop();
+                this.customResponse = new CustomResponse('ERROR',"Please upload image files only", true );
+            }else{
+                let fileSize = (size/ 1024 / 1024); //size in MB
+                if (size > maxSize) {
+                    this.refService.goToTop();
+                    this.customResponse = new CustomResponse( 'ERROR',"Max size is 10 MB", true );
+                }
+            }
+        }
+    
     }
 
     changeBackGroundLogo(inputFile) {

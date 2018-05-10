@@ -30,6 +30,7 @@
 								<li class="filter" (click)="showUploadTemplates(5)" [class.emailtemplate-selected]="5 == selectedTemplateTypeIndex">Upload Custom</li>
 								<li class="filter" (click)="showRegularCoBrandingTemplates(6)" [class.emailtemplate-selected]="6 == selectedTemplateTypeIndex">Email Co-Branding</li>
 								<li class="filter" (click)="showVideoCoBrandingTemplates(7)" [class.emailtemplate-selected]="7 == selectedTemplateTypeIndex">Video Co-Branding</li>
+								<li class="filter" (click)="showCampaignDefaultTemplates(8)" [class.emailtemplate-selected]="8 == selectedTemplateTypeIndex">Default</li>
 								<li class="filter" style="display: none;">Own Template</li>
 							</ul>
 						</div>
@@ -62,9 +63,11 @@
 									</div>
 									<div class="portlet-body">
 										<div class="row email-template-container">
-											<img class="img-responsive center-block" src="{{beeRegularTemplate.body}}" alt="{{beeRegularTemplate.name}}">
+											<img class="img-responsive center-block" *ngIf="!beeRegularTemplate.campaignDefault" src="{{beeRegularTemplate.body}}" alt="{{beeRegularTemplate.name}}">
+											<img class="img-responsive center-block" *ngIf="beeRegularTemplate.campaignDefault" src="{{beeRegularTemplate.subject}}" alt="{{beeRegularTemplate.name}}">
 											<div class="email-template-i-container">
-										        <i class="fa fa-plus-circle fa-4x" aria-hidden="true" (click)="showTemplateById(beeRegularTemplate.id,i)"></i>
+										        <i class="fa fa-plus-circle fa-4x"  *ngIf="!beeRegularTemplate.campaignDefault" aria-hidden="true" (click)="showTemplateById(beeRegularTemplate.id,i)"></i>
+										   		<i class="fa fa-eye fa-4x"  *ngIf="beeRegularTemplate.campaignDefault" aria-hidden="true" (click)="showPreview(beeRegularTemplate)"></i>
 										    </div>
 										</div>
 									</div>
@@ -77,5 +80,22 @@
 		</div>
 	</div>
 </div>
+	<div class="modal" id="show_email_template_preivew">
+					<div class="modal-dialog modal-lg" style="width: 75%;">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
+								<h4 class="modal-title" id="email-template-title"	style="text-align: center;"></h4>
+							</div>
+							<div class="modal-body">
+								<div id="htmlContent"></div>
+							</div>
+							<div class="modal-footer">
+								<a href="javascript:void(0)" data-dismiss="modal"
+									class="btn btn-default" style="float: right">Close</a>
+							</div>
+						</div>
+					</div>
+				</div>
 
 	<!-- END CONTENT -->

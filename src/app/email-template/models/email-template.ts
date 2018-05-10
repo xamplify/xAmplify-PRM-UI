@@ -19,4 +19,5 @@ export class EmailTemplate {
         regularCoBrandingTemplate:boolean;
         videoCoBrandingTemplate:boolean;
         createdBy:string = "";
+        campaignDefault:boolean;
 }
