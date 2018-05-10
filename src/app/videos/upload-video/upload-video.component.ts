@@ -116,6 +116,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             });
             this.uploader.onAfterAddingFile = (fileItem) => {
                 try{
+                this.customResponse = new CustomResponse();
                 fileItem.withCredentials = false;
              //   $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:0.6');
                 console.log(fileItem._file);
@@ -254,13 +255,15 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
     fileSizeCheck(event: any) {
         const fileList: FileList = event.target.files;
         console.log(fileList[0].type);
-        if (fileList.length > 0) {
+        if (fileList.length > 0 && fileList[0].type.includes('video')) {
             const file: File = fileList[0];
             const isSizeExceded: any = fileList[0].size;
             const size = isSizeExceded / (1024 * 1024);
             this.maxSizeOver = size > this.maxVideoSize ? true : false;
             if(this.maxSizeOver){ this.customResponse = new CustomResponse( 'ERROR',this.videoUtilService.maxSizeOverMesg, true );
             }
+        } else{
+          this.customResponse = new CustomResponse( 'ERROR',this.videoUtilService.fileTypeMessage, true );
         }
     }
     public fileOverBase(e: any): void {
@@ -796,6 +799,9 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
     }
     dropClick(){
       $('#file-upload').click();
+    }
+    mailTo(){
+      window.location.href = "mailto:admin@xamplify.io";
     }
     ngOnInit() {
         QuickSidebar.init();
