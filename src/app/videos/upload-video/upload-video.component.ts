@@ -800,9 +800,6 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
     dropClick(){
       $('#file-upload').click();
     }
-    mailTo(){
-      window.location.href = "mailto:admin@xamplify.io";
-    }
     ngOnInit() {
         QuickSidebar.init();
         try {
