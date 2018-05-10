@@ -306,9 +306,17 @@
 															data-rel="fancybox-button" lang="{{contactList.id}}">
 															<i class="fa fa-trash"></i>
 														</a>
+														<a *ngIf="contactList.defaultPartnerList" class="mix-preview2"
+															title="Copy and save as a new list"
+															(click)="saveAsNewList(contactList.id,contactList.name)"
+															[class.disabled]="!contactList.emailValidationInd"
+															data-rel="fancybox-button" style="left: 60%;">
+															<i class="fa fa-files-o" aria-hidden="true"
+															style="color: white;"></i>
+														</a>
 													</div>
-													<div style="top: 38%; position: relative;">
-														<a class="mix-preview2" [ngClass]="{'saveAsCustomeCss':contactList.defaultPartnerList }"
+													<div  *ngIf="!contactList.defaultPartnerList" style="top: 38%; position: relative;">
+														<a class="mix-preview2"
 															title="Copy and save as a new list"
 															(click)="saveAsNewList(contactList.id,contactList.name)"
 															[class.disabled]="!contactList.emailValidationInd"
