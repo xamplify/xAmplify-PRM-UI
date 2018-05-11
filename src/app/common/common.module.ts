@@ -14,14 +14,15 @@ import { ResponseMessageComponent } from './response-message/response-message.co
 import { PreviewVideoComponent } from './preview-video/preview-video.component';
 import { ContactsCampaignsMailsComponent } from './contacts-campaigns-mails/contacts-campaigns-mails.component';
 import { PieChartComponent } from '../partners/pie-chart/pie-chart.component';
+import { ListLoaderComponent } from './loader/list-loader/list-loader.component';
 
 @NgModule({
   imports: [CommonModule, FormsModule],
   declarations: [DonutChartComponent, PaginationComponent, WorldmapComponent,PieChartComponent,
                  BarChartComponent, EmbedModalComponent, EmbedModalComponent, UserInfoComponent, LocationComponent, 
-                 PlatformComponent, ResponseMessageComponent, PreviewVideoComponent, ContactsCampaignsMailsComponent],
+                 PlatformComponent, ResponseMessageComponent, PreviewVideoComponent, ContactsCampaignsMailsComponent, ListLoaderComponent],
   exports: [DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent,
     BarChartComponent, EmbedModalComponent, UserInfoComponent, LocationComponent, PlatformComponent, 
-    ResponseMessageComponent, PreviewVideoComponent,PieChartComponent]
+    ResponseMessageComponent, PreviewVideoComponent,PieChartComponent, ListLoaderComponent]
 })
 export class CommonComponentModule { }
