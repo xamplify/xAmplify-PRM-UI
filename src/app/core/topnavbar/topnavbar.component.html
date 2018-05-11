@@ -44,24 +44,26 @@
 				<ul class="nav navbar-nav pull-right">
 					<!-- BEGIN NOTIFICATION DROPDOWN -->
 
-						<li *ngIf="authenticationService.module.isCompanyPartner && !authenticationService.module.isOrgAdmin && authenticationService.user.hasCompany" style="margin-top: 17px;margin-right: 25px;">
+						<li *ngIf="authenticationService.module.isCompanyPartner && !authenticationService.module.isOrgAdmin && authenticationService.user.hasCompany" style="margin-top: 17px;margin-right: 5px;">
 						<!-- refService.hasCompany -->
-						<a class="btn btn-header" routerLink="/home/campaigns/select">
+						<button class="btn btn-primary" [routerLink]="['/home/campaigns/select']">
 							<span class="hidden-xs">Create Campaign</span>
-						<i class="fa fa-bullhorn" data-toggle="tooltip"></i>
-						</a>
+							<i class="fa fa-bullhorn" data-toggle="tooltip"></i>
+						</button>
 					</li>
-					<li *ngIf="(authenticationService.module.hasVideoRole || authenticationService.module.isOrgAdmin || authenticationService.module.isVendor)&&authenticationService.user.hasCompany" style="margin-top: 17px;margin-right: 25px;">
+					<li *ngIf="(authenticationService.module.hasVideoRole || authenticationService.module.isOrgAdmin || authenticationService.module.isVendor)&&authenticationService.user.hasCompany" style="margin-top: 17px;margin-right: 5px;">
 						<!-- refService.hasCompany -->
-						<a class="btn btn-header" routerLink="/home/videos">
-					<span class="hidden-xs">Upload Video</span>
-					<i class="fa fa-upload" data-toggle="tooltip"></i>
-					</a>
+						<button class="btn btn-primary" [routerLink]="['/home/videos']">
+							<span class="hidden-xs">Upload Video</span>
+							<i class="fa fa-upload" data-toggle="tooltip"></i>
+						</button>
 					</li>
-					<li style="margin-top: 17px;margin-right: 25px;" *ngIf="(authenticationService.module.hasSocialStatusRole || authenticationService.module.isOrgAdmin ||authenticationService.module.isVendor) && authenticationService.user.hasCompany">
+					<li style="margin-top: 17px;margin-right: 5px;" *ngIf="(authenticationService.module.hasSocialStatusRole || authenticationService.module.isOrgAdmin ||authenticationService.module.isVendor) && authenticationService.user.hasCompany">
 						<!-- *ngIf="refService.hasCompany" -->
-						<a class="btn btn-header" routerLink="/home/social/update-status"><span class="hidden-xs">Update Status</span><i class="fa fa-share" data-toggle="tooltip"></i>
-						</a>
+						<button class="btn btn-primary" [routerLink]="['/home/social/update-status']">
+							<span class="hidden-xs">Update Status</span>
+							<i class="fa fa-share" data-toggle="tooltip"></i>
+						</button>
 					</li>
 					<!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
 

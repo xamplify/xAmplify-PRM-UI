@@ -171,6 +171,13 @@
 												<span *ngIf="campaign.scheduleType=='SAVE'">{{campaign.startTime}}</span>
 											</span>
 											</h6>
+											<div class="bookmark-ribbon">
+												<span style="margin: 0px -7px; font-size: 17px; color: white;">
+													<i *ngIf="campaign.campaignType.indexOf('VIDEO') > -1" class="fa fa-video-camera" aria-hidden="true"></i>
+													<i *ngIf="campaign.campaignType.indexOf('REGULAR') > -1" class="fa fa-envelope" aria-hidden="true"></i>
+													<i *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1" class="fa fa-globe" aria-hidden="true"></i>
+												</span>
+											</div>
 											<div class="ribbon">
 												<span *ngIf="campaign.launched">Launched</span>
 												<span *ngIf="!campaign.launched && campaign.launchedOn?.length > 0">Scheduled</span>

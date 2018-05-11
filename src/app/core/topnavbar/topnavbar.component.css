@@ -32,3 +32,6 @@ padding: 7px 15px;
     height: 40px;
     margin: 12px auto !important;
 }
+.page-header.navbar .top-menu .navbar-nav > li.dropdown-user .dropdown-toggle > img{
+    margin-top: -10px !important;
+}
