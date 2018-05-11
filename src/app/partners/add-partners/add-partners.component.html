@@ -676,7 +676,11 @@ img:hover {
 								style="color: #8512b7; left: 12px"><i
 								class="fa fa-envelope-o" aria-hidden="true"><span
 									style="color: red;"> *</span></i></label>
-							<div class="col-sm-10">
+							<div class="col-sm-10" *ngIf="updatePartnerUser">
+							  <h4 style="border: none;font-size: 15px; cursor: not-allowed;">{{addPartnerUser.emailId}}</h4>
+							<div class="textCss"></div>
+							</div>
+							<div class="col-sm-10" *ngIf="!updatePartnerUser">
 								<input type="email" style="border: none" class="form-control"
 									id="email1"
 									(blur)="checkingEmailPattern(addPartnerUser.emailId)"
