@@ -14,7 +14,7 @@
 <div class="page-content" [hidden]="isTimeLineView">
 <div class="page-bar square-box" style="margin: 0 10px 15px;border-radius: 0;">
 	<ul class="page-breadcrumb">
-		<li><i class="fa fa-home"></i> <a [routerLink]="['/']">Home</a> <i class="fa fa-angle-right"></i></li>
+		<li><i class="fa fa-home"></i> <a [routerLink]="referenceService.homeRouter">Home</a> <i class="fa fa-angle-right"></i></li>
 		<li><a [routerLink]="['/home/campaigns/manage']">Campaigns</a>
 			<i class="fa fa-angle-right"></i></li>
 		<li style="color: #888;">{{campaign.campaignName}}</li>

@@ -72,7 +72,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
 
   constructor(private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
     public authenticationService: AuthenticationService, public pagerService: PagerService, public pagination: Pagination,
-    private referenceService: ReferenceService, public contactService: ContactService) {
+    public referenceService: ReferenceService, public contactService: ContactService) {
     this.isTimeLineView = false;
     this.campaign = new Campaign();
     if (this.referenceService.isFromTopNavBar) {
