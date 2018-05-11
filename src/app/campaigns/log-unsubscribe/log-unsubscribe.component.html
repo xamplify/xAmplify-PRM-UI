@@ -1,4 +1,12 @@
-
-<div class="portlet light" style="padding: 5px 5px 400px 17px">
-	<h3 style="color: blue; text-align: center; margin-top: 120px;">{{message}}</h3>
+<div [hidden]="!processor.isProcessing">
+  <div class="loader-container">
+    <div class="loader"></div>
+    <img  alt="logo" class="logo-default" src="assets/images/xamplify-logo.png">
+  </div>
+</div>
+<div [hidden]="processor.isProcessing">
+  <div class="page-content"><div class="portlet light" style="border: navajowhite;">
+     <div class="portlet-body clearfix">
+     <h3 style="color: blue;text-align: center;margin-top: 150px;font-weight: bold;" >{{message}}</h3></div></div>
+  </div>
 </div>
