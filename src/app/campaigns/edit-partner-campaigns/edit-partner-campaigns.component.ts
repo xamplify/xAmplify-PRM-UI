@@ -122,7 +122,6 @@ export class EditPartnerCampaignsComponent implements OnInit {
     preHeaderDivClass:string = this.formGroupClass;
     messageDivClass:string = this.formGroupClass;
     campaignType:string = "";
-    CampaignType: typeof CampaignType = CampaignType;
     isCampaignDetailsFormValid:boolean = false;
     names:string[]=[];
     editedCampaignName:string = "";
@@ -210,7 +209,12 @@ export class EditPartnerCampaignsComponent implements OnInit {
         if(this.campaign.nurtureCampaign){
             this.selectedUserlistIds = this.campaign.userListIds;
         }
-       // this.activeEnum = this.campaign.campaignType;
+        this.campaignType = this.campaign.campaignType.toLocaleString();
+        if(this.campaignType.includes('VIDEO')){
+            this.campaignType=="VIDEO";
+        }else if(this.campaignType.includes('REGULAR')){
+            this.campaignType=="REGULAR";
+        }
         if(this.campaign.scheduleTime!=null && this.campaign.scheduleTime!="null" ){
             this.campaign.scheduleCampaign  = this.campaignLaunchOptions[1];
         }else{
