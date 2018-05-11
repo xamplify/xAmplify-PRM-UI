@@ -7,7 +7,7 @@
 	<div class="row" *ngIf="model">
 	<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 		<form class="login-form" (ngSubmit)="login()">
-			<h3 class="form-title">Sign In</h3>
+			<h3 class="form-title text-white">Sign In</h3>
 			<div class="alert alert-danger display-hide">
 				<button class="close" data-close="alert"></button>
 				<label class="custom-label">Enter any Email and password.</label>
@@ -30,7 +30,7 @@
 			<label class="rememberme check">
 				<input type="checkbox" name="remember" value="1" />&nbsp;Remember
 			</label>
-			<a class="uppercase" routerLink="/forgot-password" class="forget-password">Forgot Password?</a>
+			<a class="uppercase" routerLink="/forgot-password" class="forget-password text-white">Forgot Password?</a>
 		</div>
 		<div class="login-options login-form m5">
 			<h4>Or login with</h4>
@@ -44,7 +44,7 @@
 		</div>
 		<div class="create-account login-form">
 			<p>
-				<a class="uppercase" routerLink="/signup">start your free trial</a>
+				<a class="uppercase text-white" routerLink="/signup">start your free trial</a>
 			</p>
 		</div>
 	</div>

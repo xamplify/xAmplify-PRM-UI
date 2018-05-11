@@ -61,7 +61,8 @@
 						</div>
 					</div>
 
-
+						<app-loader *ngIf="httpRequestLoader.isLoading && !isListView"></app-loader>
+						<app-list-loader *ngIf="httpRequestLoader.isLoading && isListView"></app-list-loader>
 					<section class='m10' *ngIf="totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
 						<div class="table-responsive">
 							<table class='table tgrid table-hover table-sm' *ngIf="isListView">
@@ -149,7 +150,6 @@
 					<div class="tab-pane active" *ngIf="!isListView">
 						<div class="margin-top-10">
 							<div class="row mix-grid p10">
-								<app-loader *ngIf="httpRequestLoader.isLoading"></app-loader>
 								<app-error-pages *ngIf="httpRequestLoader.isServerError"></app-error-pages>
 								<ng-container *ngIf="totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
 									<div *ngFor="let campaign of pagination.pagedItems; let i= index" class="col-xs-12 col-sm-4 col-lg-3">
@@ -178,7 +178,7 @@
 													<i *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1" class="fa fa-globe" aria-hidden="true"></i>
 												</span>
 											</div>
-											<div class="ribbon">
+											<div class="ribbon" [class.active]="!campaign.launched && campaign.launchedOn?.length==0">
 												<span *ngIf="campaign.launched">Launched</span>
 												<span *ngIf="!campaign.launched && campaign.launchedOn?.length > 0">Scheduled</span>
 												<span *ngIf="!campaign.launched && campaign.launchedOn?.length==0">Saved</span>
