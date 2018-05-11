@@ -28,7 +28,7 @@ export class Campaign {
     campaignId = 0;
     campaignVideoFile: SaveVideoFile;
     emailTemplate: EmailTemplate = new EmailTemplate();
-    scheduleTime: string;
+    scheduleTime: string="";
     regularEmail: boolean;
     launched: boolean;
     launchedOn = "";

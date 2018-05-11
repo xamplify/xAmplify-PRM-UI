@@ -306,19 +306,25 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             }
           /************Launch Campaign**********************/
             this.name = this.campaignService.campaign.campaignName;
-            if(this.campaignService.campaign.endTime.toString() !="null"){   // added to String() method here also
+            /*if(this.campaignService.campaign.endTime.toString() !="null"){   // added to String() method here also
                 this.campaign.scheduleCampaign  = this.sheduleCampaignValues[2];
                 this.isScheduleSelected = true;
                 this.launchCampaignTabClass = this.successTabClass;
-            }
+            }*/
             if(this.campaignService.campaign.scheduleTime!=null && this.campaignService.campaign.scheduleTime!="null" ){
                 this.campaign.scheduleCampaign  = this.sheduleCampaignValues[1];
                 this.isScheduleSelected = true;
                 this.launchCampaignTabClass = this.successTabClass;
-            }
-            if(this.campaignService.campaign.scheduleTime=="null" ||this.campaignService.campaign.scheduleTime==null){
+            }else{
                 this.campaign.scheduleTime = "";
+                this.campaign.scheduleCampaign  = this.sheduleCampaignValues[2];
+                this.isScheduleSelected = true;
+                this.launchCampaignTabClass = this.successTabClass;
             }
+            /*if(this.campaignService.campaign.scheduleTime=="null" ||this.campaignService.campaign.scheduleTime==null){
+                this.campaign.scheduleTime = "";
+                this.campaign.scheduleCampaign  = this.sheduleCampaignValues[2];
+            }*/
             let emailTemplate = this.campaign.emailTemplate;
             if(emailTemplate!=undefined){
                 this.isEmailTemplate = true;
@@ -438,8 +444,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         Demo.init();
         flatpickr( '.flatpickr',{
             enableTime: true,
-            dateFormat: 'd/m/Y H:i',
-            time_24hr: true
+            dateFormat: 'm/d/Y H:i',
+            time_24hr: false
         } );
         //this.validatecampaignForm();
 

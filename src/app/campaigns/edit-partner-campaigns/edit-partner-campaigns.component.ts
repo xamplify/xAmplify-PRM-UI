@@ -44,7 +44,6 @@ export class EditPartnerCampaignsComponent implements OnInit {
     public campaignLaunchOptions = ['NOW', 'SCHEDULE', 'SAVE'];
     campaignLaunchForm: FormGroup;
     buttonName = "Launch";
-    isScheduleSelected = false;
     customResponse: CustomResponse = new CustomResponse();
     
     countries: Country[];
@@ -200,20 +199,38 @@ export class EditPartnerCampaignsComponent implements OnInit {
         
         this.setEmailIdAsFromName();
 
-        this.campaign.countryId = this.countries[0].id;
-        this.onSelect(this.campaign.countryId);
 
         this.getCampaignReplies(this.campaign);
         this.getCampaignUrls(this.campaign);
 
-        this.validateLaunchForm();
         this.loadContactList(this.contactListPagination);
         this.getAnchorLinksFromEmailTemplate(this.campaign.emailTemplate.body);
         this.selectedEmailTemplateId = this.campaign.emailTemplate.id;
         if(this.campaign.nurtureCampaign){
             this.selectedUserlistIds = this.campaign.userListIds;
         }
-        this.campaignType = this.campaign.campaignType[0];
+        //this.campaignType = this.campaign.campaignType;
+       
+        if(this.campaign.scheduleTime!=null && this.campaign.scheduleTime!="null" ){
+            this.campaign.scheduleCampaign  = this.campaignLaunchOptions[1];
+        }else{
+            this.campaign.scheduleCampaign  = this.campaignLaunchOptions[2];
+        }
+        
+        if(this.campaign.timeZoneId==undefined){
+            this.campaign.countryId = this.countries[0].id;
+            this.onSelect(this.campaign.countryId);
+        }else{
+            let countryNames = this.referenceService.getCountries().map(function(a) {return a.name;});
+            let countryIndex = countryNames.indexOf(this.campaign.country);
+            if(countryIndex>-1){
+                this.campaign.countryId = this.countries[countryIndex].id;
+                this.onSelect(this.campaign.countryId);
+            }else{
+                this.campaign.countryId = this.countries[0].id;
+                this.onSelect(this.campaign.countryId);
+            }
+        }
         this.referenceService.stopLoader(this.httpRequestLoader);
     }
     
@@ -379,7 +396,6 @@ export class EditPartnerCampaignsComponent implements OnInit {
         } else if (value == "SCHEDULE") {
             this.buttonName = "Schedule";
         }
-        if (this.campaignLaunchForm['_value'].scheduleCampaign != null) { this.isScheduleSelected = true }
         for (const field of Object.keys(this.formErrors)) {
             // clear previous error message (if any)
             this.formErrors[field] = '';
@@ -488,12 +504,12 @@ export class EditPartnerCampaignsComponent implements OnInit {
     }
 
     getCampaignData(emailId: string) {
-        let campaignType = CampaignType.REGULAR;
+       /* let campaignType = CampaignType.REGULAR;
         if ("regular" === this.campaignType) {
             campaignType = CampaignType.REGULAR;
         } else if ("video" === this.campaignType) {
             campaignType = CampaignType.VIDEO;
-        }
+        }*/
         // Enable work flow is disabled
         if(!this.enableWorkFlow){
             this.replies = [];
@@ -545,7 +561,7 @@ export class EditPartnerCampaignsComponent implements OnInit {
             'testEmailId': emailId,
             'campaignReplies': this.replies,
             'campaignUrls': this.urls,
-            'campaignType': campaignType,
+            'campaignType': this.campaign.campaignType,
             'country': country,
             'createdFromVideos': this.campaign.createdFromVideos,
             'nurtureCampaign':true
@@ -1304,9 +1320,10 @@ export class EditPartnerCampaignsComponent implements OnInit {
   ngOnInit() {
       flatpickr( '.flatpickr',{
           enableTime: true,
-          dateFormat: 'd/m/Y H:i',
-          time_24hr: true
+          dateFormat: 'm/d/Y H:i',
+          time_24hr: false
       } );
+      this.validateLaunchForm();
   }
   
   goToCampaigns(){
