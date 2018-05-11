@@ -127,13 +127,13 @@
 			</div>
 			<!-- video ended  -->
 			<div class="col-xs-12 col-sm-12 col-md-6" style=" top: -15px;">
-				<form class="form-horizontal" [formGroup]="videoForm" (ngSubmit)="saveVideo()" novalidate>
+				<form class="form-horizontal" [formGroup]="videoForm" novalidate>
 					<div class="form-actions">
 						<div class="row">
 							<div class="col-md-offset-7 col-md-6" style="margin-left: auto; float: right; top:6px">
 								<div style="float: right">
-									<button type="submit" class="btn green" [disabled]="!videoForm.valid || upperTextValid==false
-									|| lowerTextValid==false || isValidTitle == true || emptyTitle == true || emptyDescription || isDisable">{{saveButtonTitle}}</button>
+									<button type="button" class="btn green" [disabled]="!videoForm.valid || upperTextValid==false
+									|| lowerTextValid==false || isValidTitle == true || emptyTitle == true || emptyDescription || isDisable" (click)="saveVideoObject()">{{saveButtonTitle}}</button>
 									<button type="button" class="btn default" style="margin-left:2px;" (click)="cancelVideo()" [disabled]="isDisable">Cancel</button>
 								</div>
 							</div>

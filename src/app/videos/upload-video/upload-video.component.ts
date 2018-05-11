@@ -331,6 +331,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         const formData = new FormData();
         const object = this.recordedVideo;
         console.log(this.recordedVideo);
+        //this.uploader.queue[0].upload();
         if (navigator.userAgent.indexOf('Chrome') !== -1) {
             formData.append('file', object.video);
         } else {
@@ -436,6 +437,10 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         //         'No permission to access the camera, please enable the camera and refresh the page once you enable it!',
         //         'error');
         // }
+        if(this.isIE() || this.browserInfo.includes('edge') ){
+          swal('Oops...',  'This Cam won\'t work in Internet explorar and edge browser!', 'error');
+         }
+        else {
         if (this.isChecked !== true && this.cloudDrive === false && this.cloudDropbox === false &&
             this.cloudOneDrive === false && this.cloudBox === false) {
             this.camera = true;
@@ -518,6 +523,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 self.recordedVideo = self.player.recordedData;
             });
         }
+      }
     }
     dropBoxChange() {
         if (this.isChecked === true && this.processing !== true && this.sweetAlertDisabled === false &&
@@ -629,8 +635,8 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
     }
     dropbox(files: any) {
         swal({
-            text: 'Retrieving video from dropbox...! Please Wait...It\'s processing',
-            allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif'
+            text: 'Thanks	for	waiting	while	we retrieve	your video from	Drop box',
+            allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif',
         });
         console.log('files ' + files);
         this.cloudUploadService.downloadFromDropbox(files[0].link, files[0].name)
@@ -663,7 +669,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             if (self.isVideo(files[0].name)) {
                 self.cloudStorageSelected = true;
                 swal({
-                    text: 'Retrieving video from box...! Please Wait...It\'s processing',
+                    text: 'Thanks	for	waiting	while	we retrieve	your video from	Box',
                     allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif'
                 });
                 console.log(files);
@@ -743,7 +749,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 self.picker.dispose();
             }
             swal({
-                text: 'Retrieving video from Google Drive...! Please Wait...It\'s processing',
+                text: 'Thanks	for	waiting	while	we retrieve	your video from	Google Drive',
                 allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif'
             });
             self.downloadGDriveFile(doc.id, doc.name);

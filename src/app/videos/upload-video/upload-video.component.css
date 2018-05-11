@@ -1,10 +1,10 @@
 input[type='file'],
 input[type=file]::-webkit-file-upload-button { /* chromes and blink button */
-    cursor: pointer; 
+    cursor: pointer;
     color: transparent;
 }
 .fa-cloud-upload{
-color: white; 
+color: white;
 font-size: 5em;
 line-height: initial;
 }
@@ -23,17 +23,17 @@ color: white;
 #myVideo{  background-color: #5fdbf5; width: 100%;}
 .zoomin img {  height: 80px; width: 80px;-webkit-transition: all 2s ease;
             -moz-transition: all 2s ease; -ms-transition: all 2s ease; transition: all 2s ease; }
-.zoomin img:hover { width: 87px;height: 87px;  } 
-.closeModal { 
+.zoomin img:hover { width: 87px;height: 87px;  }
+.closeModal {
 float:right;
 font-size:21px;font-weight:700;line-height:1;opacity:1;
 }
-.my-drop-zone { 
-width :auto; 
+.my-drop-zone {
+width :auto;
 border-radius: 0;
 }
 .nav-file-over { border: 0;}
-.another-file-over-class { border: dotted 3px green; }      
+.another-file-over-class { border: dotted 3px green; }
 .fileinput-button {
 position: relative;
 overflow: hidden;
@@ -71,7 +71,7 @@ margin-left: -2px;
 color: black;
 border-color: #000000;
 }
-.p-tag-loaderCss { 
+.p-tag-loaderCss {
 top: -63px;
 position: relative;
 left: 36px;
@@ -94,7 +94,7 @@ line-height : 3.3em;
 }
 :host /deep/ .vjs-record-button.vjs-control.vjs-icon-record-start:before {
 line-height: 2.455em;
-}  
+}
 :host /deep/ .vjs-control-bar {
 display: -webkit-box;
 display: -webkit-flex;
@@ -116,7 +116,7 @@ overflow: hidden;
 padding: 36px 0;
 margin: 0;
 }
-.portlet.light {padding: 10px;min-height: 580px;}    
+.portlet.light {padding: 10px;min-height: 580px;}
 .upload-video-css {
     padding: 20px;
     margin-bottom: 15px;
@@ -127,4 +127,7 @@ margin: 0;
     cursor: not-allowed !important;
     opacity: 0.6;
     pointer-events: none;
+}
+.imageClass{
+  height: 38px;
 }

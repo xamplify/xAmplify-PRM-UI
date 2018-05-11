@@ -1114,7 +1114,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             }
         }
     }
-    saveVideo() {
+    saveVideoObject() {
         if(this.enableVideoLogo && (!this.logoDescriptionUrl || !this.brandLogoUrl)){
             if(!this.colorControl){ this.colorControlChange()}
             this.showError = true
