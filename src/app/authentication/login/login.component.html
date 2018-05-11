@@ -24,15 +24,15 @@
 				 required type="password" autocomplete="off" placeholder="Password" name="password" (keypress)="eventHandler($event.keyCode)"
 				/>
 			</div>
-			<button type="submit" class="btn btn-success uppercase">Login</button>
+			<button type="submit" class="btn btn-primary pull-right">Sign In</button>
 		</form>
 		<div class="form-actions login-form">
 			<label class="rememberme check">
-				<input type="checkbox" name="remember" value="1" />Remember
+				<input type="checkbox" name="remember" value="1" />&nbsp;Remember
 			</label>
 			<a class="uppercase" routerLink="/forgot-password" class="forget-password">Forgot Password?</a>
 		</div>
-		<div class="login-options login-form">
+		<div class="login-options login-form m5">
 			<h4>Or login with</h4>
 			<ul class="social-icons">
 				<ng-container *ngFor="let socialProvider of socialProviders">

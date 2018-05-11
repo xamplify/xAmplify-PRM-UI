@@ -625,3 +625,5 @@ legend {
 .portlet.light>.portlet-title>.caption {
 	padding: 0 0 10px 0 !important;
 }
+.btn-primary {background-color: #008fd5 !important;}
+.btn-primary:hover {background-color: #4db1e2 !important;}

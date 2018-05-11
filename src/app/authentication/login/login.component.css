@@ -1,0 +1,6 @@
+.form-title {color: #008fd5 !important;}
+a.forget-password{color: #008fd5;}
+a.forget-password:hover {color: #4db1e2;}
+.login .content .login-form, .login .content .forget-form {padding: 3px 0;}
+.login-options h4 {font-weight: normal;}
+.create-account {background-color: rgb(73, 143, 215,0.5) !important;}
