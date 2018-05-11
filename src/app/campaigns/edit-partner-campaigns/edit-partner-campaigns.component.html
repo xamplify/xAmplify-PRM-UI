@@ -69,7 +69,7 @@
                                                 <label style="margin: 5px 0;">Email is opened</label>
                                             </div>
                                         </div>
-                                        <div class="email-options-checkbox clearfix" *ngIf="campaign.campaignType=='VIDEO'">
+                                        <div class="email-options-checkbox clearfix" *ngIf="campaign.campaignType==CampaignType[CampaignType.VIDEO]">
                                             <div class="col-sm-4 ui-switch-custom-div">
                                                 <switch [status]="campaign.videoPlayed" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (statusChange)="setVideoPlayed($event)">
                                                 </switch>
@@ -85,7 +85,7 @@
                     </fieldset>
                 </div>
                 <div class="col-xs-12 col-sm-6">
-                    <fieldset *ngIf="campaign.campaignType=='VIDEO'">
+                    <fieldset *ngIf="campaign.campaignType==CampaignType[CampaignType.VIDEO]">
                         <legend>Selected video</legend>
                         <div class="row m0" (click)="previewVideo(campaign.campaignVideoFile)" style="cursor: pointer;">
                             <div class="col-xs-4 thumb-bg p0">
