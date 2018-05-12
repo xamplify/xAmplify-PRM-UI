@@ -30,7 +30,7 @@ export class Campaign {
     emailTemplate: EmailTemplate = new EmailTemplate();
     scheduleTime: string="";
     regularEmail: boolean;
-    launched: boolean;
+    launched: boolean=false;
     launchedOn = "";
     campaignReplies: Array<Reply>;
     campaignUrls: Array<Url>;

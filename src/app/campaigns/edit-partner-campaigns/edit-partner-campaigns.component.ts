@@ -423,6 +423,7 @@ export class EditPartnerCampaignsComponent implements OnInit {
     }
 
     previewEmailTemplate(emailTemplate: EmailTemplate) {
+       console.log(emailTemplate);
         const body = emailTemplate.body;
         let emailTemplateName = emailTemplate.name;
         if (emailTemplateName.length > 50) {
@@ -433,17 +434,18 @@ export class EditPartnerCampaignsComponent implements OnInit {
         $("#email-template-title").append(emailTemplateName);
         $('#email-template-title').prop('title', emailTemplate.name);
 
-        if (this.campaignType == 'video') {
+        if (this.campaign.campaignType.toLocaleString().includes('VIDEO') ) {
             let selectedVideoGifPath = this.campaign.campaignVideoFile.gifImagePath;
             let updatedBody = emailTemplate.body.replace("<SocialUbuntuImgURL>", selectedVideoGifPath);
             updatedBody = updatedBody.replace("&lt;SocialUbuntuURL&gt;", "javascript:void(0)");
             updatedBody = updatedBody.replace("<SocialUbuntuURL>", "javascript:void(0)");
             updatedBody = updatedBody.replace("https://dummyurl.com", "javascript:void(0)");
-            updatedBody = updatedBody.replace("https://aravindu.com/vod/images/xtremand-video.gif", selectedVideoGifPath);
+            updatedBody = updatedBody.replace("https://xamp.io/vod/images/xtremand-video.gif", selectedVideoGifPath);
             updatedBody = updatedBody.replace("&lt;SocialUbuntuImgURL&gt;", selectedVideoGifPath);
             $("#email-template-content").append(updatedBody);
         } else {
-            let updatedBody = emailTemplate.body.replace("<div id=\"video-tag\">", "<div id=\"video-tag\" style=\"display:none\">");
+            console.log(body);
+            let updatedBody = body.replace("<div id=\"video-tag\">", "<div id=\"video-tag\" style=\"display:none\">");
             $("#email-template-content").append(updatedBody);
         }
 
