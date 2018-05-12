@@ -61,7 +61,8 @@
 									</ul></div>
 								</div>
 							</div>
-							<app-loader *ngIf="httpRequestLoader.isLoading"></app-loader>
+              <app-loader *ngIf="httpRequestLoader.isLoading && !isListView"></app-loader>
+              <app-list-loader *ngIf="httpRequestLoader.isLoading && isListView"></app-list-loader>
 							<div class="margin-top-10">
 								<div *ngIf="!httpRequestLoader.isLoading">
 									<div *ngIf="pagination.pagedItems.length == 0" style="position: relative; top: 16px; width: 100%;" class="col-md-9 alert alert-info alert-dismissable">
@@ -70,6 +71,7 @@
 									</div>
 								</div>
 								<section [hidden]="!isListView">
+
 								<div class="table-responsive" style="overflow-x: inherit;"  *ngIf="pagination.pagedItems && !httpRequestLoader.isLoading">
 									<table class='table tgrid' *ngIf="pagination.pagedItems.length !== 0">
 										<thead>
@@ -162,10 +164,10 @@
 														 (click)="showEditVideo(videoFile)" title="Edit Video" data-rel="">
 														<i class="fa fa-pencil-square-o"></i>
 													    </a>
-														<a class="mix-preview3 " style="margin-left:-4px; width: 44px;" (click)="showCampaignVideoReport(videoFile)" title="Video Based Reports"
-														 data-rel="">
-														<i class="fa fa-line-chart"></i>
-													    </a>
+														<a class="mix-preview3" *ngIf="videoFile.viewBy=='DRAFT'" title="Can't show Reports for DRAFT" style="margin-left:-4px; width: 44px;cursor: not-allowed !important;"
+                             data-rel=""><i class="fa fa-line-chart"></i></a>
+                             <a class="mix-preview3" *ngIf="videoFile.viewBy!=='DRAFT'" style="margin-left:-4px; width: 44px;" (click)="showCampaignVideoReport(videoFile)" title="Video Based Reports"
+														 data-rel=""><i class="fa fa-line-chart"></i></a>
 													</div>
 													<div style="top: 27%; position: relative;" *ngIf="videoFileService.videoType==='myVideos'">
 													  <span *ngIf="hasAllAccess || (hasCampaignRole && hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor">

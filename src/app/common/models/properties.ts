@@ -47,7 +47,7 @@ export class Properties {
 
     PARTNER_LIST_SYNCHRONIZATION_SUCCESS = "Your Parntner List has been synchronized successfully";
     PARTNER_LIST_SYNCHRONIZATION_ERROR = "An error occured while synchronizing your partner list";
-    
+
     PARTNER_SAVE_SUCCESS_AND_MAIL_SENT_SUCCESS = "Your Partner list has been updated successfully and campaign mails has been sent successfully";
 
     PARTNERS_CREATE_SUCCESS = "Your Partner List has been created successfully";
@@ -81,8 +81,8 @@ export class Properties {
     PROCESS_REQUEST_ERROR = "An error occurred while processing your request.";
     DEFAULT_PLAYER_SETTINGS = 'Default player settings updated Successfully';
     VIDEO_LOGO_UPDATED = 'Co-Branding video logo uploaded successfully';
-    PROFILE_PIC_UPDATED='Profile Picture Updated Successfully';
-    PROFILE_UPDATED = 'Profile Updated Successfully';
-    PASSWORD_UPDATED= 'Password Updated Successfully';
+    PROFILE_PIC_UPDATED='Profile Picture Updated successfully';
+    PROFILE_UPDATED = 'Profile Updated successfully';
+    PASSWORD_UPDATED= 'Password Updated successfully';
     PAWORD_ERROR = 'New Password should not be same as Current password'
 }

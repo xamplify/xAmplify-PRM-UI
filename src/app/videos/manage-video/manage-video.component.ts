@@ -262,7 +262,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                 this.pagination.pagedItems.splice(position, 1);
                 this.defaultBannerMessageValues();
                 this.showVideoFileName = videoName;
-                this.showVideoFileName = '('+this.showVideoFileName+') video deleted Successfully';
+                this.showVideoFileName = '('+this.showVideoFileName+') video deleted successfully';
                 this.customResponse = new CustomResponse( 'SUCCESS', this.showVideoFileName, true );
                 $('html,body').animate({ scrollTop: 0 }, 'slow');
                 if (this.pagination.pagedItems.length === 0) {
@@ -338,7 +338,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
             this.showVideoFileName = videoFile.title;
         }
         if(this.showMessage){
-            this.showVideoFileName = '('+this.showVideoFileName+') video saved Successfully';
+            this.showVideoFileName = '('+this.showVideoFileName+') video saved successfully';
             this.customResponse = new CustomResponse( 'SUCCESS', this.showVideoFileName, true );
 
          } else if(this.showUpdatevalue){

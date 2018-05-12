@@ -196,6 +196,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.uploader.onAfterAddingFile = (fileItem) => {
             fileItem.withCredentials = false;
             console.log(fileItem);
+            this.showError = false;
             this.ownThumbnail = false;
             this.imageUrlPath = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(fileItem._file)));
             this.uploader.queue[0].upload();
@@ -214,6 +215,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             fileItem.withCredentials = false;
           //  this.brandLogoUrl = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(fileItem._file)));
             console.log(this.brandLogoUrl);
+            this.showError = false;
             this.fileLogoSelected(fileItem._file);
             this.videoLogoUploader.queue[0].upload();
         };
@@ -226,6 +228,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         }
         this.notifyParent = new EventEmitter<SaveVideoFile>();
     }
+
     fileLogoSelected(event: File){
     (<HTMLInputElement>document.getElementById('fileLogoSelectedid')).value = '';
      const fileList: File = event;
@@ -244,7 +247,23 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             }
         }
     }
-
+    isFileCheck(event: File){
+      const fileList: File = event;
+        if (fileList) {
+            const file: File = fileList;
+            console.log(file);
+            const isSupportfile: any = file.type;
+            if (isSupportfile === 'image/jpg' || isSupportfile === 'image/jpeg' || isSupportfile === 'image/png') {
+              this.showError = false;
+              return true;
+            }
+           else {
+             this.showError = true;
+            return false;
+           }
+        }
+        setTimeout(()=>{ this.showError = false; },6000)
+      }
     public startsWithAt(control: FormControl) {
         try {
             let checkTag: string;
