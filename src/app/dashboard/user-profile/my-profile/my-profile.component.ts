@@ -418,9 +418,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         },
         'mobileNumber': {
             'required': 'Mobile Number required.',
-            'minlength': 'Mobile should be 10 digit.',
-            'maxlength': 'Mobile should be 10 digit.',
-            'pattern': 'Mobile Number Only Should Be Numbers'
+            'minlength':'Mobile Number should be 10 digits and only contain numbers.', 
+            'maxlength':'Mobile Number should be 10 digits and only contain numbers.',
+            'pattern': 'Mobile Number should be 10 digits and only contain numbers.'
 
         },
         'interests': {
