@@ -6,9 +6,11 @@ import { ManageTeamMembersComponent } from './manage-team-members/manage-team-me
 import { AddTeamMembersComponent } from './add-team-members/add-team-members.component';
 import { TeamMemberService } from './services/team-member.service';
 import { CommonComponentModule } from '../common/common.module';
+//Import your library
+/*import { AutocompleteModule } from 'ng2-input-autocomplete';*/
 
 @NgModule({
-  imports: [ CommonModule,TeamMemberRoutingModule,SharedModule,CommonComponentModule ],
+  imports: [ CommonModule,TeamMemberRoutingModule,SharedModule,CommonComponentModule],/*AutocompleteModule.forRoot() */
   declarations: [ManageTeamMembersComponent, AddTeamMembersComponent],
   providers:[TeamMemberService]
 })

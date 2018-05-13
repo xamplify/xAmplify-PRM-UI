@@ -2,6 +2,7 @@
   a.disabled { pointer-events: none; cursor: not-allowed; }
 </style>
 <div class="page-content" [style.background-color]="referenceService.pageContnetBgColor">
+	<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 <app-loader [model]="httpRequestLoader.isHorizontalCss" *ngIf="httpRequestLoader.isLoading"></app-loader>
 <ng-container *ngIf="!httpRequestLoader.isLoading">
 	<div class="page-bar">
@@ -314,7 +315,7 @@
 											  (statusChange)="changeTeamMemberStatus(teamMember,$event)">
 									</switch>
 								</td>	
-								<td><a class="btn-sm" (click)="delete(teamMember)"><em	class="fa fa-times red"></em></a></td>
+								<td><a class="btn-sm" (click)="showPopup(teamMember)"><em	class="fa fa-times red"></em></a></td>
 							</tr>
 							</ng-container>
 							</tbody>
@@ -394,9 +395,44 @@
 		<button  class="btn btn-info"   type="reset" (click)="clearForm();">Cancel</button>
       </div>
     </div>
-
   </div>
 </div>
 </ng-container>
 	<!-- END PAGE CONTENT -->
+	<!-- -Deleting Team Member Pop Up -->
+	<div id="delete-team-member-modal" class="modal"  tabindex="-1" role="dialog"  data-keyboard="false" data-backdrop="static">
+ 	 <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+		<a class="close-circle"  (click)="hidePopup()"><i class="fa fa-times"></i></a>
+		<h4 class="modal-title">Please select the email Id to transfer your data</h4>
+      </div>
+      <div class="modal-body">
+      <form class="form-horizontal" id="delete-team-member-form">
+		  <div class="form-group">
+		    <label class="control-label col-sm-2" for="email" style="color:#8512b7;left: 12px">
+		    	<i class="fa fa-envelope-o" aria-hidden="true"></i>
+		    </label>
+		    <div class="col-sm-10">
+		    <!-- <input autocomplete [config]="config2" [items]="emailIds" (inputChangedEvent)="onInputChangedEvent($event)"
+      			(selectEvent)="onSelect($event)" class="form-control" style="border: none;"> -->
+      		<select class="form-control" id="org-id" [(ngModel)]="selectedId" name="name">
+      			<option value="0">Please select emailId</option>
+      			<option *ngFor="let data of emailIds" [ngValue]="data.id">{{data.emailId}}</option>
+      		</select>		
+		      <div class="textCss"></div>
+		    </div>
+		  </div>
+      </form>
+      </div>
+      <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="delete()" *ngIf="selectedId>0" >Go</button>
+       <button type="button" class="btn btn-primary" *ngIf="selectedId==0" disabled="disabled">Go</button>
+        <button type="button" class="btn btn-info" (click)="hidePopup()" >Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 </div>

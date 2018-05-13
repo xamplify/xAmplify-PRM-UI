@@ -62,6 +62,13 @@ export class UserService {
             .catch( this.handleError );
 
     }
+    signUpAsVendor( data: User ) {
+        console.log( data );
+        return this.http.post( this.URL + "register/signup/vendor", data )
+            .map( this.extractData )
+            .catch( this.handleError );
+
+    }
 
     sendPassword( emailId: string ) {
         return this.http.get( this.URL + "register/forgotpassword?emailId=" + emailId )

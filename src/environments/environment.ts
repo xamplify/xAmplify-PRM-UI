@@ -6,6 +6,9 @@
 export const environment = {
   production: false,
   isDebugMode: true,
-  CLIENT_URL : 'http://localhost:4200/',
-  SERVER_URL: 'https://aravindu.com/',  
+ CLIENT_URL : 'http://localhost:4200/',
+ // CLIENT_URL : 'https://xamplify.io/', // xamplify client app server
+ // SERVER_URL: 'https://aravindu.com/',  
+  // SERVER_URL: 'https://xamp.io/'
+ SERVER_URL: 'http://localhost:8080/' 
 };

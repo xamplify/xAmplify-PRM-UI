@@ -40,6 +40,13 @@ export class TeamMemberService{
         .catch(this.handleError);   
     }
     
+    listAllOrgAdminsAndSupervisors(userId:number){
+        return this.http.get(this.URL + "admin/list-org-all/" + userId + "?access_token=" + this.authenticationService.access_token)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+  
+    
     listTeamMemberEmailIds() {
         return this.http.get(this.URL + "admin/listTeamMemberEmailIds?access_token=" + this.authenticationService.access_token)
             .map(this.extractData)

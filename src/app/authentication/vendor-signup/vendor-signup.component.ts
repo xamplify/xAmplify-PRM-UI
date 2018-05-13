@@ -92,7 +92,7 @@ signUp() {
     this.signUpUser.vendorSignUp = true;
     this.loading = true;
     console.log(this.signUpUser);
-    this.userService.signUp(this.signUpUser)
+    this.userService.signUpAsVendor(this.signUpUser)
         .subscribe(
             data => {
                 this.loading = false;
@@ -116,7 +116,10 @@ signUp() {
                 } else if (error === "USER IS ALREADY EXISTING WITH THIS EMAIL") {
                     this.formErrors['emailId'] = 'Email Id already exists';
                     // this.isLoading = false;
-                } else {
+                }else if(error==='INVALID_VENDOR_EMAIL_ID'){
+                    this.formErrors['emailId'] = 'You cannot sign up with this email id';
+                } 
+                else {
                     this.xtremandLogger.errorPage(error);
                 }
             },
