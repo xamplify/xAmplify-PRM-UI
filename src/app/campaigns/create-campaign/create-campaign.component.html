@@ -1274,35 +1274,6 @@
 												style="width: 217px;height: 34px;">
 										</div>
 									</div>
-
-									<div class="portlet-title">
-										<div class="caption">
-											<div class="row">
-												<div class="col-xs-12 col-sm-8 text-left">
-													<ul class="mix-filter" *ngIf="!isOnlyPartner">
-														<li class="filter" (click)="filterReplyTemplates('NONE',0,reply)" [class.emailtemplate-selected]="0 == reply.selectedEmailTemplateTypeIndex">All Email Templates</li>
-														<li class="filter" (click)="filterReplyTemplates('BASIC',1,reply)" [class.emailtemplate-selected]="1 == reply.selectedEmailTemplateTypeIndex">Basic Templates</li>
-														<li class="filter" (click)="filterReplyTemplates('RICH',2,reply)" [class.emailtemplate-selected]="2 == reply.selectedEmailTemplateTypeIndex">Rich Templates</li>
-														<li class="filter" (click)="filterReplyTemplates('UPLOADED',3,reply)" [class.emailtemplate-selected]="3 == reply.selectedEmailTemplateTypeIndex">Uploaded Regular Templates</li>
-														<li class="filter" (click)="filterReplyTemplates('PARTNER',7,reply)" [class.emailtemplate-selected]="7== reply.selectedEmailTemplateTypeIndex">Partner Templates</li>
-													</ul>
-												</div>
-												<div class="col-xs-12 col-sm-4">
-													<div class="inputs" align="right" style="display:inline; float:right;padding: 5px 5px 12px 0px;">
-														<div class="portlet-input input-inline input-large">
-															<div class="input-icon right">
-																<i class="icon-magnifier" (click)="searchReplyEmailTemplate(reply)" style="cursor: pointer;"></i>
-															<input type="text" class="form-control" placeholder="search..." [(ngModel)]="reply.emailTemplateSearchInput" [ngModelOptions]="{standalone: true}"
-																style="width: 217px;height: 34px;">
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-
-
 									<app-loader [model]="campaignEmailTemplate.httpRequestLoader.isHorizontalCss" *ngIf="campaignEmailTemplate.httpRequestLoader.isLoading"></app-loader>
 									<app-error-pages *ngIf="campaignEmailTemplate.httpRequestLoader.isServerError"></app-error-pages>
 									<ng-container *ngIf="!campaignEmailTemplate.httpRequestLoader.isLoading && !campaignEmailTemplate.httpRequestLoader.isServerError">
