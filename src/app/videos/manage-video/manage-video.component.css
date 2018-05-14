@@ -1,4 +1,4 @@
-#container {
+/* #container {
 	margin: -4px;
 	width: 500px;
 	height: 25px;
@@ -33,7 +33,7 @@ h3 {
 	top: 102%;
 	left: 0;
 	position: absolute;
-}
+} */
 
 .colorSelect {
 	background-color: lightblue;
@@ -79,7 +79,7 @@ h3 {
 
 .view-by-banner{padding: 2px 5px;	background-color: #5bb2f5;	color: #fff;}
 
-.bookmark-ribbon{
+/* .bookmark-ribbon{
 	position: absolute;
 	right: 18px;
     top: 25px;
@@ -89,7 +89,7 @@ h3 {
     border-right: 16px solid #00a6e8;
     border-left: 16px solid #00a6e8;
     border-bottom: 13px solid transparent;
-}
+} */
 .mix-filter {
 	margin: 5px;
 }
