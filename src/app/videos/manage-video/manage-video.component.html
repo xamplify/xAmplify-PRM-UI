@@ -63,6 +63,7 @@
                </div>
                <app-loader *ngIf="httpRequestLoader.isLoading && !isListView"></app-loader>
                <app-list-loader *ngIf="httpRequestLoader.isLoading && isListView"></app-list-loader>
+               <app-play-video-loader *ngIf="isPlayvideo"></app-play-video-loader>
                <div class="margin-top-10">
                  <div *ngIf="!httpRequestLoader.isLoading">
                    <div *ngIf="pagination.pagedItems.length == 0" style="position: relative; top: 16px; width: 100%;" class="col-md-9 alert alert-info alert-dismissable">
@@ -287,14 +288,14 @@
              </div>
 
            </div>
-           <div *ngIf="pagination.pagedItems.length !== 0">
-              <app-pagination [pagination]="pagination" [type]="'managaVideos'"
-               (notifyParent)="setPage($event)" (notifyParentDropDown)="loadVideos($event)"></app-pagination>
-              </div>
+
          </div>
 
        </div>
-
+       <div *ngIf="pagination.pagedItems.length !== 0">
+          <app-pagination [pagination]="pagination" [type]="'managaVideos'"
+           (notifyParent)="setPage($event)" (notifyParentDropDown)="loadVideos($event)"></app-pagination>
+          </div>
      </div>
    </div>
    <app-edit-video *ngIf="editVideo" (notifyParent)="update($event)"></app-edit-video>

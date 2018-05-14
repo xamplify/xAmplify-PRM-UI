@@ -49,6 +49,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
     videoSort: any;
     videoType: any;
     isListView = false;
+    isPlayvideo = false;
     videoTypes = [{ 'name': 'My Videos', 'value': 'myVideos' }, { 'name': 'Partner Videos', 'value': 'partnerVideos' }];
 
     constructor(public videoFileService: VideoFileService, public referenceService: ReferenceService,
@@ -203,12 +204,14 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
             );
     }
     showPlayVideo(video: SaveVideoFile) {
-        this.referenceService.loading(this.httpRequestLoader, true);
+       // this.isPlayvideo = true
+       this.referenceService.loading(this.httpRequestLoader, true);
         this.videoFileService.videoViewBy = video.viewBy;
         this.xtremandLogger.log('MangeVideoComponent playVideo:');
         this.videoFileService.getVideo(video.alias, video.viewBy)
             .subscribe((playVideoFile: SaveVideoFile) => {
-                this.xtremandLogger.log(playVideoFile);
+               this.isPlayvideo = false;
+               this.xtremandLogger.log(playVideoFile);
                 this.selectedVideo = playVideoFile;
                 this.selectedVideo.uploadedUserId = video.uploadedUserId;
                 this.referenceService.loading(this.httpRequestLoader, false);
