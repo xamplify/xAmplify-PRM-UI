@@ -654,6 +654,7 @@ export class ManageContactsComponent implements OnInit {
     }
 
     checkAll( ev: any ) {
+      // this.checkAllInvalidContacts( ev );
         if ( ev.target.checked ) {
             console.log( "checked" );
             $( '[name="campaignContact[]"]' ).prop( 'checked', true );
@@ -695,6 +696,7 @@ export class ManageContactsComponent implements OnInit {
     }
 
     highlightRow( contactId: number, email: any, firstName: any, lastName: any, event: any ) {
+       // this.invalidContactsSelectedUserIds( contactId, event );
         let isChecked = $( '#' + contactId ).is( ':checked' );
         console.log( this.selectedContactListIds )
         if ( isChecked ) {
@@ -803,6 +805,10 @@ export class ManageContactsComponent implements OnInit {
     }
 
     invalidContactsShowAlert() {
+        /*if(this.contactsByType.selectedCategory == 'all'){
+            this.allselectedUsers
+        }*/
+        
         var removeUserIds = new Array();
         $( 'input[name="selectedUserIds"]:checked' ).each( function() {
             var id = $( this ).val();
@@ -870,7 +876,7 @@ export class ManageContactsComponent implements OnInit {
                 this.contactsByType.pagination = this.pagerService.getPagedItems( this.contactsByType.pagination, this.contactsByType.contacts );
                 this.listAllContactsByType( contactType, this.contactsByType.pagination.totalRecords );
 
-                if ( this.contactsByType.selectedCategory == 'invalid' ) {
+                if ( this.contactsByType.selectedCategory == 'invalid' || this.contactsByType.selectedCategory == 'all') {
                     this.userListIds = data.listOfUsers;
                 }
 

@@ -174,7 +174,8 @@
 									<div class="clearfix"></div>
 								</div>
 								<!-- END FILTER -->
-								<app-loader *ngIf="httpRequestLoader.isLoading"></app-loader>
+								 <app-loader *ngIf="httpRequestLoader.isLoading && !isListView"></app-loader>
+								<app-list-loader *ngIf="httpRequestLoader.isLoading && isListView"></app-list-loader>
 
 
 								<section [hidden]="!isListView"
