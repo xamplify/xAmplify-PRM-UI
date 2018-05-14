@@ -63,8 +63,10 @@
 						</div>
 					</div>
 				</div>
-					
-					
+
+              <app-loader *ngIf="httpRequestLoader.isLoading && !isListView"></app-loader>
+              <app-list-loader *ngIf="httpRequestLoader.isLoading && isListView"></app-list-loader>
+			
 					<section [hidden]="!isListView">
 						<div class="table-responsive">
 						<table class='table tgrid'>
