@@ -254,8 +254,93 @@
 
 								<div class="row mix-grid mt10" [hidden]="isListView"
 									*ngIf="pagination.pagedItems && !httpRequestLoader.isLoading">
-									<div *ngFor="let contactList of pagination.pagedItems">
-										<div class="col-md-3 col-sm-6 mix category_1 mix_all"
+									<div *ngFor="let contactList of pagination.pagedItems" class="col-xs-12 col-sm-4 col-lg-3">
+										
+										
+										<div class="grid-box" id="contactListDiv_{{contactList.id}}">
+											<img *ngIf="contactList.socialNetwork=='MANUAL'" src="{{normalImage}}" style="height: 22%; width: 20%;" >
+											<img *ngIf="contactList.socialNetwork=='ZOHO'" src="{{zohoImage}}" style="height: 23%; width: 40%;">
+											<img *ngIf="contactList.socialNetwork=='GOOGLE'" src="{{googleImage}}" style="height: 21%; width: 20%;">
+											<img *ngIf="contactList.socialNetwork=='SALESFORCE'" src="{{salesforceImage}}" style="height: 23%; width: 30%;">
+											<!-- <img src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png"> -->
+										<!-- 	<ng-container>
+											<img class="img-responsive center"
+													*ngIf="contactList.socialNetwork=='ZOHO'"style="width:30%" align="middle"
+													src="{{zohoImage}}" alt=""> <img
+													class="img-responsive"
+													*ngIf="contactList.socialNetwork=='GOOGLE'"style="width:30%" align="middle"
+													src="{{googleImage}}" alt=""> <img
+													class="img-responsive"
+													*ngIf="contactList.socialNetwork=='SALESFORCE'"style="width:30%" align="middle"
+													src="{{salesforceImage}}" alt=""> <img
+													class="img-responsive"
+													*ngIf="contactList.socialNetwork=='MANUAL'"style="width:30%" align="middle"
+													src="https://upload.wikimedia.org/wikipedia/commons/3/33/Circle-icons-contacts.svg" alt="">
+													</ng-container> -->
+											
+												<div id="container" *ngIf="!contactList.emailValidationInd">
+													<h3>
+														processing<span class="arrow"> <img
+															src="assets/images/Spinner.gif" class="loaderGif">
+														</span>
+													</h3>
+												</div>
+											<h4 class="ellipsis" title="{{contactList.name}}">{{contactList.name | slice:0:25}}
+												<span *ngIf="contactList.name?.length>25">...</span>
+											</h4>
+											<h6 class="mt10 mb0">By {{contactList.uploadedBy}}</h6>
+											<h6 class="mt0"><b>{{contactList.companyName}}</b></h6>
+											<h6 class="mt10 mb0">Total Contacts {{contactList.noOfContacts}}</h6>
+											<h6 class="mt10 mb0">Created date {{contactList.createdDate}}</h6>
+											<div class="bar">
+											 <a [class.disabled]="!contactList.emailValidationInd"
+															*ngIf="hasAllAccess || authenticationService.module.isVendor || (hasContactRole && loggedInUserId == contactList.uploadedUserId) || authenticationService.isOnlyPartner()"
+															(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList)"
+															title="Edit List" data-rel="fancybox-button"> <i
+															class="fa fa-pencil-square-o"></i>
+														</a> <a 
+															[class.disabled]="!contactList.emailValidationInd"
+															*ngIf="!hasAllAccess && loggedInUserId != contactList.uploadedUserId && !authenticationService.module.isVendor"
+															(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList)"
+															title="ContactList Info" data-rel="fancybox-button">
+															<i class="glyphicon glyphicon-info-sign"></i>
+														</a>
+														<a
+															title="Copy and save as a new list"
+															(click)="saveAsNewList(contactList.id,contactList.name)"
+															[class.disabled]="!contactList.emailValidationInd"
+															data-rel="fancybox-button" style="left: 60%;">
+															<i class="fa fa-files-o" aria-hidden="true"
+															style="color: white;"></i>
+														</a>
+														<a [class.disabled]="!contactList.emailValidationInd"
+															(click)="downloadContactList(contactList.id)"
+															title="Download List" data-rel="fancybox-button"> <i
+															class="fa fa-cloud-download"></i>
+														</a>
+														<ng-container *ngIf="contactList.synchronisedList == true">
+														<a title="sychronizeContactList"
+															[class.disabled]="!contactList.emailValidationInd"
+															*ngIf="hasAllAccess || authenticationService.module.isVendor || (hasContactRole && loggedInUserId==contactList.uploadedUserId)"
+															(click)="synchronizeContactList(contactList.id,contactList.socialNetwork)"
+															data-rel="fancybox-button" style="left: 18%; top: -20px;">
+															<i class="fa fa-refresh" aria-hidden="true"
+															style="color: white;"></i>
+														</a>
+													</ng-container>
+													 <a 
+															[class.disabled]="!contactList.emailValidationInd"
+															*ngIf="(hasAllAccess || authenticationService.module.isVendor || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner()) && !contactList.defaultPartnerList"
+															(click)="showAlert(contactList.id)" title="Delete List"
+															data-rel="fancybox-button" lang="{{contactList.id}}">
+															<i class="fa fa-trash"></i>
+														</a>
+											</div>
+										</div>
+										
+										
+										
+										<!-- <div class="col-md-3 col-sm-6 mix category_1 mix_all"
 											style="display: block; opacity: 1;"
 											id="contactListDiv_{{contactList.id}}">
 											<div class="mix-inner">
@@ -342,7 +427,7 @@
 														title="Created On"> {{contactList.createdDate}} </span> <span
 														align="left"
 														style="bottom: 0; left: 6px; position: absolute;">
-														<!-- title={{contactList.uploadedBy}} -->
+														title={{contactList.uploadedBy}}
 														<h5 class="m0" title="Total Contacts">#{{contactList.noOfContacts}}</h5>
 														<br>
 														<h5 class="m0" style="position: absolute; top: 14px"
@@ -352,7 +437,7 @@
 													</span>
 												</div>
 											</div>
-										</div>
+										</div> -->
 									</div>
 								</div>
 								<div id="pagination">

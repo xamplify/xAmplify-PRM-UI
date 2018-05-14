@@ -96,10 +96,10 @@ export class ManageContactsComponent implements OnInit {
     isValidContactName: boolean;
     noSaveButtonDisable: boolean;
     public totalRecords: number;
-    public zohoImage: string = 'assets/admin/pages/media/works/zoho.png';
-    public googleImage: string = 'assets/admin/pages/media/works/gl.jpg';
-    public salesforceImage: string = 'assets/admin/pages/media/works/sf.jpg';
-    public normalImage: string = 'assets/admin/pages/media/works/img1.jpg';
+    public zohoImage: string = 'assets/admin/pages/media/works/zoho1.png';
+    public googleImage: string = 'assets/admin/pages/media/works/google1.png';
+    public salesforceImage: string = 'assets/admin/pages/media/works/salesforce1.jpg';
+    public normalImage: string = 'assets/admin/pages/media/works/contacts.jpg';
 
     sortOptions = [
         { 'name': 'Sort By', 'value': '', 'for': '' },
