@@ -97,9 +97,9 @@ export class ManageContactsComponent implements OnInit {
     noSaveButtonDisable: boolean;
     public totalRecords: number;
     public zohoImage: string = 'assets/admin/pages/media/works/zoho1.png';
-    public googleImage: string = 'assets/admin/pages/media/works/google1.png';
-    public salesforceImage: string = 'assets/admin/pages/media/works/salesforce1.jpg';
-    public normalImage: string = 'assets/admin/pages/media/works/contacts.jpg';
+    public googleImage: string = 'assets/admin/pages/media/works/google-contacts-logo.png';
+    public salesforceImage: string = 'assets/admin/pages/media/works/salesforce2.png';
+    public normalImage: string = 'assets/admin/pages/media/works/contactliar.png';
 
     sortOptions = [
         { 'name': 'Sort By', 'value': '', 'for': '' },
