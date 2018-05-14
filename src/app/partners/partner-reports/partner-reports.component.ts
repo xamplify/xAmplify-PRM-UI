@@ -168,7 +168,6 @@ export class PartnerReportsComponent implements OnInit {
       this.selectedTabIndex = 3;
       $('#active-partner-div').hide();
       $("#through-partner-div").show();
-      this.throughPartnerCampaignPagination.userId = 0;
       this.listThroughPartnerCampaigns(this.throughPartnerCampaignPagination);
   }
   
@@ -178,15 +177,33 @@ export class PartnerReportsComponent implements OnInit {
       this.selectedTabIndex = 2;
       $('#active-partner-div').hide();
       $("#through-partner-div").show();
-      this.throughPartnerCampaignPagination.userId = this.loggedInUserId;
-      this.listThroughPartnerCampaigns(this.throughPartnerCampaignPagination);
+      this.listCampaignsLaunchedByPartner(this.throughPartnerCampaignPagination);
   }
   
   listThroughPartnerCampaigns(pagination: Pagination) {
       this.referenseService.loading(this.httpRequestLoader, true);
       pagination.partnerAnalytics = true;
       pagination.companyId = this.referenseService.companyId;
-      this.campaignService.listCampaign(pagination,pagination.userId)
+      this.campaignService.listCampaign(pagination,0)
+          .subscribe(
+              data => {
+                  this.sortOption.totalRecords = data.totalRecords;
+                  pagination.totalRecords = data.totalRecords;
+                  pagination = this.pagerService.getPagedItems(pagination, data.campaigns);
+                  this.referenseService.loading(this.httpRequestLoader, false);
+              },
+              error => {
+                  this.xtremandLogger.errorPage(error);
+              },
+              () => this.xtremandLogger.info("Finished listThroughPartnerCampaigns()")
+          );
+  }
+  
+  listCampaignsLaunchedByPartner(pagination: Pagination) {
+      this.referenseService.loading(this.httpRequestLoader, true);
+      pagination.partnerAnalytics = true;
+      pagination.companyId = this.referenseService.companyId;
+      this.campaignService.listPartnerCampaigns(pagination,0)
           .subscribe(
               data => {
                   this.sortOption.totalRecords = data.totalRecords;
