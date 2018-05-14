@@ -64,7 +64,7 @@ strong { font-weight: 600; }
    ========================================================================== */ 
    
 .hero-section {
-  background: url(/assets/images/bg.jpg) center center no-repeat scroll;
+  background: url(/assets/images/login_background_big.jpg) center center no-repeat scroll;
   background-size: cover;
   padding: 0 0 4.5em;
   position: relative;
@@ -350,7 +350,7 @@ transform:translateY(0);
   position: relative;
   height: 400px;
   overflow: hidden;
-  background: #333 url(/assets/images/bg-video-preview.jpg) center center no-repeat scroll;
+  background: #333 url(/assets/images/poster.jpg) center center no-repeat scroll;
   background-size: cover;
   -webkit-perspective: 1000;
   perspective: 1000;
