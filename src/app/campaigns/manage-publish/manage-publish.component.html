@@ -153,7 +153,7 @@
 								<app-error-pages *ngIf="httpRequestLoader.isServerError"></app-error-pages>
 								<ng-container *ngIf="totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
 									<div *ngFor="let campaign of pagination.pagedItems; let i= index" class="col-xs-12 col-sm-4 col-lg-3">
-										<div class="box">
+										<div class="grid-box">
 											<img src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png">
 											<h4 class="ellipsis" title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:25}}
 												<span *ngIf="campaign.campaignName?.length>25">...</span>
@@ -209,99 +209,6 @@
 													</a>
 											</div>
 										</div>
-
-
-
-
-
-
-<!--
-										<div class="col-md-3 col-sm-4 mix category_1 mix_all" style="display: block; opacity: 1; margin-top: -35px;">
-											<div id="container">
-												<h3 *ngIf="campaign.launched" class="launched">Launched
-													<span class="launched-arrow"></span>
-												</h3>
-												<h3 *ngIf="!campaign.launched && campaign.launchedOn?.length > 0" class="saved">Scheduled
-													<span class="saved-arrow"></span>
-												</h3>
-												<h3 *ngIf="!campaign.launched && campaign.launchedOn?.length==0" class="saved">Saved
-													<span class="saved-arrow"></span>
-												</h3>
-											</div>
-											<div class="mix-inner" style="height: 173px;">
-												<img *ngIf="campaign.campaignType.indexOf('VIDEO') > -1 && campaign.launched " class="img-responsive" src="assets/images/video-email.png"
-												 style="height: 173px;" alt="No Image Found">
-												<img *ngIf="campaign.campaignType.indexOf('VIDEO') > -1 && !campaign.launched " class="img-responsive" src="assets/images/video-email.png"
-												 style="height: 173px;-webkit-filter: grayscale(100%);filter: grayscale(100%);" alt="No Image Found">
-
-												<img *ngIf="campaign.campaignType.indexOf('REGULAR') > -1 && campaign.launched" class="img-responsive" src="assets/images/regular-email.png"
-												 style="height: 173px;" alt="No Image Found">
-												<img *ngIf="campaign.campaignType.indexOf('REGULAR') > -1 && !campaign.launched" class="img-responsive" src="assets/images/regular-email.png"
-												 style="height: 173px;-webkit-filter: grayscale(100%);filter: grayscale(100%);" alt="No Image Found">
-
-												<img *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1 && campaign.launched" class="img-responsive" src="assets/images/social-campaign.png"
-												 style="height: 173px;" alt="No Image Found">
-												<img *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1 && !campaign.launched" class="img-responsive" src="assets/images/social-campaign.png"
-												 style="height: 173px;-webkit-filter: grayscale(100%);filter: grayscale(100%);" alt="No Image Found">
-
-												<div class="mix-details" style="z-index: 700;padding: 7px;height: 174px;">
-													  <h4 class="ellipsis" style="height: 20px; margin-top: 9px;" title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:25}}
-														<span *ngIf="campaign.campaignName?.length>25">...</span>
-													 </h4>
-													
-													<div style="top: 30%; position: relative;">
-														<ng-container *ngIf="!campaign.launched">
-															<a *ngIf="hasAllAccess || (campaign.launched==false&&hasCampaignRole && loggedInUserId==campaign.userId) 
-														|| (!campaign.launched&&isOnlyPartner) || authenticationService.module.isVendor" class="mix-preview4" (click)="editCampaign(campaign.campaignId)"
-															 title="Edit Campaign" data-rel="fancybox-button" style="left: 34%;margin-top: -1%;margin-left: 7%">
-																<i class="fa fa-pencil-square-o"></i>
-															</a>
-														</ng-container>
-														<ng-container *ngIf="campaign.launched">
-															<a *ngIf="  hasAllAccess || (hasStatsRole || hasCampaignRole ) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor"
-															 class="mix-preview4" data-rel="fancybox-button" [routerLink]="['/home/campaigns/',campaign.campaignId, 'details']"
-															 title="Campaign Based Reports" data-rel="" style="margin-top: -1%;margin-left: 2%">
-																<i class="fa fa-line-chart"></i>
-															</a>
-															<a *ngIf="(campaign.campaignType !== 'SOCIAL') && ( hasAllAccess || (hasStatsRole || hasCampaignRole || authenticationService.module.isVendor )) && !campaign.nurtureCampaign"
-															 data-rel="fancybox-button" (click)="openSaveAsModal(campaign.campaignId, campaign.campaignName)" title="Save As"
-															 class='mix-preview4' style="margin-top: 17%;margin-left: 24%;">
-																<i class="fa fa-files-o" style="font-size: 16px;color:#fff"></i>
-															</a>
-															<a *ngIf=" isOnlyPartner" data-rel="fancybox-button" (click)="openSaveAsModal(campaign.campaignId, campaign.campaignName)"
-															 title="Save As" class='mix-preview4' style="margin-top: -1%;margin-left: 17%;">
-																<i class="fa fa-files-o" style="font-size: 20px;color:#fff"></i>
-															</a>
-														</ng-container>
-
-														<a *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor"
-														 class="mix-preview6" (click)="confirmDeleteCampaign(campaign.campaignId, i, campaign.campaignName)" title="Delete Campaign"
-														 data-rel="fancybox-button" style="margin-top: -1%;margin-left: 1%">
-															<i class="fa fa-trash" style="color:#f43636"></i>
-														</a>
-													</div>
-													<span align="right" style="bottom: 24px; float: right; position: absolute; right: 17px;">
-														<b *ngIf="campaign.launched">Launched On</b>
-														<b *ngIf="!campaign.launched && campaign.launchedOn?.length > 0">Scheduled For</b>
-														<b *ngIf="!campaign.launched && campaign.launchedOn?.length==0">Saved On</b>
-													</span>
-													<span align="left" style="bottom: 24px; float: left; position: absolute; left: 3%;">
-														<b>{{campaign.companyName}}</b>
-													</span>
-
-
-													<span align="left" title="Uploaded By" style="bottom: -1px; left: 10px; position: absolute;">{{campaign.createdBy}}</span>
-													<span align="right" title="Upload date" style="bottom: 2px; float: right; position: absolute; right: 17px;">
-														<b *ngIf="campaign.scheduleType=='NOW' || campaign.scheduleType=='SCHEDULE'">{{campaign.launchedOn}}</b>
-														<b *ngIf="campaign.scheduleType=='SAVE'">{{campaign.startTime}}</b>
-													</span>
-												</div>
-											</div>
-											<div>
-											</div>
-										</div>
--->
-
 									</div>
 								</ng-container>
 							</div>

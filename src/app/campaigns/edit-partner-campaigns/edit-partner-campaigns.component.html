@@ -200,7 +200,7 @@
 															{{contacts.name}}
 														</td>
 														<td class="text-center">
-															<a class="btn btn-warning" (mouseover)="loadUsers(contactListPagination.pagedItems[i].id,contactsUsersPagination)">
+															<a class="btn btn-warning" (click)="$event.stopPropagation();loadUsers(contactListPagination.pagedItems[i].id,contactsUsersPagination)">
 																<i class="fa fa-eye" style="padding-top: 3px; font-size: 20px;" title="" data-original-title="Preview"></i>
 															</a>
 														</td>

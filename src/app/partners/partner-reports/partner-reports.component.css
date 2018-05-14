@@ -38,3 +38,6 @@
     height: auto;
     min-height: auto;
 }
+.campaign-type-selected {
+	background-color: #6dcff6;
+}

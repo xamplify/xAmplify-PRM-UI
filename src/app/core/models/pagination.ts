@@ -23,5 +23,8 @@ export class Pagination {
 	filterValue: any = null;
 	criterias: Criteria[] = null;
 	coBrandedEmailTemplateSearch = false;
+	partnerAnalytics:boolean = false;
+	companyId:number = 0;
+	userId:number = 0;
 
 }

@@ -6,13 +6,17 @@ import { ParterService } from '../services/parter.service';
 import { Pagination } from '../../core/models/pagination';
 import { PagerService } from '../../core/services/pager.service';
 import { HomeComponent } from '../../core/home/home.component';
+import { HttpRequestLoader } from '../../core/models/http-request-loader';
+import { SortOption } from '../../core/models/sort-option';
+import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
+import { CampaignService } from '../../campaigns/services/campaign.service';
 declare var $, Highcharts: any;
 
 @Component({
   selector: 'app-partner-reports',
   templateUrl: './partner-reports.component.html',
   styleUrls: ['./partner-reports.component.css'],
-  providers: [Pagination, HomeComponent]
+  providers: [Pagination, HomeComponent,HttpRequestLoader,SortOption]
 })
 export class PartnerReportsComponent implements OnInit {
   worldMapdataReport: any;
@@ -20,15 +24,21 @@ export class PartnerReportsComponent implements OnInit {
   paginationType: string;
   campaignId: number;
   campaignsCount: number;
+  throughPartnerCampaignsCount:number = 0;
   regularCampaign: number;
   socialCampaign: number;
   videoCampaign: number;
   noOfCampaignsLaunchedByPartner = [];
   partnerUserInteraction = [];
   campaignInteractionPagination: Pagination = new Pagination();
+  httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
+  throughPartnerCampaignPagination:Pagination = new Pagination();
+  selectedTabIndex:number = 0;
+  loggedInUserId:number = 0;
   constructor(public router: Router, public authenticationService: AuthenticationService, public pagination: Pagination,
     public referenseService: ReferenceService, public parterService: ParterService, public pagerService: PagerService,
-    public homeComponent: HomeComponent) {
+    public homeComponent: HomeComponent,public xtremandLogger:XtremandLogger,public campaignService:CampaignService,public sortOption:SortOption) {
+      this.loggedInUserId = this.authenticationService.getUserId();
   }
 
   gotoMange() {
@@ -41,7 +51,7 @@ export class PartnerReportsComponent implements OnInit {
     Highcharts.chart('campaign-type-chart', {
       chart: { type: 'bar' },
       xAxis: {
-        categories: ['VIDEO CAMPAIGN', 'SOCIAL CAMPAIGN', 'REGULAR CAMPAIGN'],
+        categories: ['VIDEO CAMPAIGN', 'SOCIAL CAMPAIGN', 'EMAIL CAMPAIGN'],
         lineWidth: 0,
         minorTickLength: 0,
         tickLength: 0,
@@ -69,6 +79,7 @@ export class PartnerReportsComponent implements OnInit {
       (data: any) => {
         this.worldMapdataReport = data.countrywisePartnersCount.countrywisepartners;
         this.campaignsCount = data.partnersLaunchedCampaignsCount;
+        this.throughPartnerCampaignsCount = data.throughPartnerCampaignsCount;
         this.noOfCampaignsLaunchedByPartner = data.noOfCampaignsLaunchedByPartner.data;
         for(var i in this.noOfCampaignsLaunchedByPartner){
             this.noOfCampaignsLaunchedByPartner[i].contactCompany = this.noOfCampaignsLaunchedByPartner[i].partnerCompanyName;
@@ -87,6 +98,10 @@ export class PartnerReportsComponent implements OnInit {
       (data: any) => {
         this.pagination.totalRecords = data.totalRecords;
         this.partnerUserInteraction = data.data;
+        for(var i in this.partnerUserInteraction){
+            this.partnerUserInteraction[i].contactCompany = this.partnerUserInteraction[i].companyName;
+        }
+        console.log(this.partnerUserInteraction);
         this.pagination = this.pagerService.getPagedItems(this.pagination, data.data);
       },
       (error: any) => { console.log('error got here') });
@@ -137,4 +152,115 @@ export class PartnerReportsComponent implements OnInit {
     this.partnerUserInteractionReports();
   }
 
+  
+  
+  goToActivePartnersDiv(){
+      this.sortOption = new SortOption();
+      this.selectedTabIndex = 0;
+      $('#through-partner-div').hide();
+      $('#active-partner-div').show();
+  }
+  
+  /****************************Through Partner Analytics**************************/
+  goToThroughPartnersDiv(){
+      this.throughPartnerCampaignPagination = new Pagination();
+      this.sortOption = new SortOption();
+      this.selectedTabIndex = 3;
+      $('#active-partner-div').hide();
+      $("#through-partner-div").show();
+      this.throughPartnerCampaignPagination.userId = 0;
+      this.listThroughPartnerCampaigns(this.throughPartnerCampaignPagination);
+  }
+  
+  goToReDistributedPartnersDiv(){
+      this.throughPartnerCampaignPagination = new Pagination();
+      this.sortOption = new SortOption();
+      this.selectedTabIndex = 2;
+      $('#active-partner-div').hide();
+      $("#through-partner-div").show();
+      this.throughPartnerCampaignPagination.userId = this.loggedInUserId;
+      this.listThroughPartnerCampaigns(this.throughPartnerCampaignPagination);
+  }
+  
+  listThroughPartnerCampaigns(pagination: Pagination) {
+      this.referenseService.loading(this.httpRequestLoader, true);
+      pagination.partnerAnalytics = true;
+      pagination.companyId = this.referenseService.companyId;
+      this.campaignService.listCampaign(pagination,pagination.userId)
+          .subscribe(
+              data => {
+                  this.sortOption.totalRecords = data.totalRecords;
+                  pagination.totalRecords = data.totalRecords;
+                  pagination = this.pagerService.getPagedItems(pagination, data.campaigns);
+                  this.referenseService.loading(this.httpRequestLoader, false);
+              },
+              error => {
+                  this.xtremandLogger.errorPage(error);
+              },
+              () => this.xtremandLogger.info("Finished listThroughPartnerCampaigns()")
+          );
+  }
+  
+  filterCampaigns(type: string, index: number) {
+      this.sortOption.selectedCampaignTypeIndex = index;//This is to highlight the tab
+      this.throughPartnerCampaignPagination.pageIndex = 1;
+      this.throughPartnerCampaignPagination.campaignType = type;
+      this.listThroughPartnerCampaigns(this.throughPartnerCampaignPagination);
+
+  }
+  
+  setPartnerCampaignsPageByType(event:any,type:string) {
+      if("through-partner"==type){
+          this.throughPartnerCampaignPagination.pageIndex = event.page;
+          this.listThroughPartnerCampaigns(this.throughPartnerCampaignPagination);
+      }
+     
+  }
+
+  searchPartnerCampaigns(type:string) {
+      if("through-partner"==type){
+          this.getAllFilteredResults(this.throughPartnerCampaignPagination,type);
+      }
+      
+  }
+
+  getSortedResultForPartnerCampaigns(text: any,type:string) {
+      this.sortOption.selectedSortedOption = text;
+      if("through-partner"==type){
+          this.getAllFilteredResults(this.throughPartnerCampaignPagination,type);
+      }
+     
+  }
+
+  getNumberOfItemsPerPageByType(items: any,type:any) {
+      this.sortOption.itemsSize = items;
+      if("through-partner"==type){
+          this.getAllFilteredResults(this.throughPartnerCampaignPagination,type);
+      }else{
+          
+      }
+     
+  }
+
+  getAllFilteredResults(pagination: Pagination,type:string) {
+      pagination.pageIndex = 1;
+      pagination.searchKey = this.sortOption.searchKey;
+      let sortedValue = this.sortOption.selectedSortedOption.value;
+      if (sortedValue != "") {
+          let options: string[] = sortedValue.split("-");
+          pagination.sortcolumn = options[0];
+          pagination.sortingOrder = options[1];
+      }
+
+      if (this.sortOption.itemsSize.value == 0) {
+          pagination.maxResults = pagination.totalRecords;
+      } else {
+          pagination.maxResults = this.sortOption.itemsSize.value;
+      }
+      if("through-partner"==type){
+          this.listThroughPartnerCampaigns(pagination);
+      }
+      
+  }
+  
 }

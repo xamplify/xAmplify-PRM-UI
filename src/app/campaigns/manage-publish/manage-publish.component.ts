@@ -28,10 +28,6 @@ declare var swal, $, videojs, Metronic, Layout, Demo, TableManaged, Promise: any
 })
 export class ManagePublishComponent implements OnInit, OnDestroy {
     campaigns: Campaign[];
-    pager: any = {};
-    pagedItems: any[];
-    public totalRecords: number = 1;
-    public searchKey: string = "";
     isCampaignDeleted: boolean = false;
     hasCampaignRole: boolean = false;
     hasStatsRole: boolean = false;
@@ -40,8 +36,11 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     loggedInUserId: number = 0;
     hasAllAccess: boolean = false;
     selectedCampaignTypeIndex: number = 0;
+        pager: any = {};
+        pagedItems: any[];
+        public totalRecords: number = 1;
+        public searchKey: string = "";
     sortByDropDown = [
-        /*{ 'name': 'Sort By', 'value': '' },*/
         { 'name': 'Name(A-Z)', 'value': 'campaign-ASC' },
         { 'name': 'Name(Z-A)', 'value': 'campaign-DESC' },
         { 'name': 'Created Date(ASC)', 'value': 'createdTime-ASC' },
@@ -57,10 +56,11 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
 
     public selectedSortedOption: any = this.sortByDropDown[3];
     public itemsSize: any = this.numberOfItemsPerPage[0];
-    public isError: boolean = false;
+        
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
     isListView: boolean = false;
-
+    
+    public isError: boolean = false;
     saveAsCampaignId = 0;
     saveAsCampaignName = '';
     isOnlyPartner: boolean = false;
