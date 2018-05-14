@@ -59,7 +59,7 @@
             <div class="col-xs-3" [class.blur]="2!=selectedTabIndex">
               <a class="dashboard-stat dashboard-stat-lighter purple-soft" (click)="goToReDistributedPartnersDiv()">
                 <div class="visual">
-                  <i class="fa fa-user-secret"></i>
+                  <i class="glyphicon glyphicon-bullhorn"></i>
                 </div>
                 <div class="details">
                   <div class="number">{{campaignsCount}}</div>
@@ -70,7 +70,7 @@
                 <div class="col-xs-3" [class.blur]="3!=selectedTabIndex">
 	              <a class="dashboard-stat dashboard-stat-lighter green-soft" (click)="goToThroughPartnersDiv()">
 	                <div class="visual">
-	                  <i class="fa fa-user-secret"></i>
+	                  <i class="glyphicon glyphicon-bullhorn"></i>
 	                </div>
 	                <div class="details">
 	                  <div class="number">{{throughPartnerCampaignsCount}}</div>
@@ -302,9 +302,9 @@
 											</h6>
 											<div class="bookmark-ribbon">
 												<span style="margin: 0px -7px; font-size: 17px; color: white;">
-													<!-- <i *ngIf="campaign.campaignType.indexOf('VIDEO') > -1" class="fa fa-video-camera" aria-hidden="true"></i>
+													<i *ngIf="campaign.campaignType.indexOf('VIDEO') > -1" class="fa fa-video-camera" aria-hidden="true"></i>
 													<i *ngIf="campaign.campaignType.indexOf('REGULAR') > -1" class="fa fa-envelope" aria-hidden="true"></i>
-													<i *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1" class="fa fa-globe" aria-hidden="true"></i> -->
+													<i *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1" class="fa fa-globe" aria-hidden="true"></i>
 												</span>
 											</div>
 											<div class="ribbon" [class.active]="!campaign.launched && campaign.launchedOn?.length==0">
