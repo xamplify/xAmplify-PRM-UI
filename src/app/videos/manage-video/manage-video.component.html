@@ -237,8 +237,8 @@
                      <span>{{videoFile.viewBy}}</span>
                    </div>
                    <div class="bar">
-                     <div  *ngIf="videoFileService.videoType==='myVideos'">
-                      <ng-container>
+                     <div >
+                      <ng-container  *ngIf="videoFileService.videoType==='myVideos'">
                       <a  (click)="showPlayVideo(videoFile)" title="Play Video" data-rel="">
                        <i class="fa fa-play"></i>
                         </a>
