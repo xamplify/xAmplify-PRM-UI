@@ -1015,6 +1015,7 @@ export class EditContactsComponent implements OnInit {
     }
 
     editContactListLoadAllUsers( contactSelectedListId: number, pagination: Pagination ) {
+        //this.refService.loading( this.httpRequestLoader, true );
         this.refService.loading( this.httpRequestLoader, true );
         this.httpRequestLoader.isHorizontalCss = true;
         this.showSelectedCategoryUsers = false;
@@ -1046,6 +1047,7 @@ export class EditContactsComponent implements OnInit {
                     this.noOfContactsDropdown = false;
                     this.pagedItems = null;
                 }
+               // this.refService.loading( this.httpRequestLoader, false );
                 this.refService.loading( this.httpRequestLoader, false );
                 pagination.totalRecords = this.totalRecords;
                 pagination = this.pagerService.getPagedItems( pagination, this.contacts );
