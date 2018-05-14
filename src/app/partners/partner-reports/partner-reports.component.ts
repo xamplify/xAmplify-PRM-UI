@@ -168,6 +168,7 @@ export class PartnerReportsComponent implements OnInit {
       this.selectedTabIndex = 3;
       $('#active-partner-div').hide();
       $("#through-partner-div").show();
+      this.throughPartnerCampaignPagination.throughPartnerAnalytics = true;
       this.listThroughPartnerCampaigns(this.throughPartnerCampaignPagination);
   }
   
@@ -177,12 +178,12 @@ export class PartnerReportsComponent implements OnInit {
       this.selectedTabIndex = 2;
       $('#active-partner-div').hide();
       $("#through-partner-div").show();
-      this.listCampaignsLaunchedByPartner(this.throughPartnerCampaignPagination);
+      this.throughPartnerCampaignPagination.reDistributedPartnerAnalytics = true;
+      this.listThroughPartnerCampaigns(this.throughPartnerCampaignPagination);
   }
   
   listThroughPartnerCampaigns(pagination: Pagination) {
       this.referenseService.loading(this.httpRequestLoader, true);
-      pagination.partnerAnalytics = true;
       pagination.companyId = this.referenseService.companyId;
       this.campaignService.listCampaign(pagination,0)
           .subscribe(
@@ -199,24 +200,6 @@ export class PartnerReportsComponent implements OnInit {
           );
   }
   
-  listCampaignsLaunchedByPartner(pagination: Pagination) {
-      this.referenseService.loading(this.httpRequestLoader, true);
-      pagination.partnerAnalytics = true;
-      pagination.companyId = this.referenseService.companyId;
-      this.campaignService.listPartnerCampaigns(pagination,0)
-          .subscribe(
-              data => {
-                  this.sortOption.totalRecords = data.totalRecords;
-                  pagination.totalRecords = data.totalRecords;
-                  pagination = this.pagerService.getPagedItems(pagination, data.campaigns);
-                  this.referenseService.loading(this.httpRequestLoader, false);
-              },
-              error => {
-                  this.xtremandLogger.errorPage(error);
-              },
-              () => this.xtremandLogger.info("Finished listThroughPartnerCampaigns()")
-          );
-  }
   
   filterCampaigns(type: string, index: number) {
       this.sortOption.selectedCampaignTypeIndex = index;//This is to highlight the tab
