@@ -1,4 +1,4 @@
-/* You can add global styles to this file, and also import other style files 
+/* You can add global styles to this file, and also import other style files
 @import '~ngx-sharebuttons/styles/share-buttons.css';
 @import '~ngx-sharebuttons/styles/themes/default/default-theme.css'; */
 h1 {
@@ -632,7 +632,7 @@ legend {
 
 
 
-.box {
+.grid-box {
   background: #ececec;
   height: 180px;
   width: 100%;
@@ -640,10 +640,10 @@ legend {
   text-align: center;
   position: relative;
 }
-.box img{
+.grid-box img{
   margin: 1em;
 }
-.box h4 {
+.grid-box h4 {
     font-weight: 600;
     font-size: 14px;
 }
@@ -655,9 +655,9 @@ legend {
   bottom:0px;
   visibility: hidden;
   opacity: 0;
-  transition: visibility 0s, opacity 0.5s linear;  
+  transition: visibility 0s, opacity 0.5s linear;
 }
-.box:hover > .bar {
+.grid-box:hover > .bar {
   visibility: visible;
   opacity: 1;
 }
