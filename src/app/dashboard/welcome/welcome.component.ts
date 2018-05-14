@@ -42,7 +42,7 @@ export class WelcomeComponent implements OnInit {
         this.hasStatsRole = this.referenceService.hasRole(this.referenceService.roles.statsRole);
         this.hasSocialStatusRole = this.referenceService.hasRole(this.referenceService.roles.socialShare);
 
-        if(authenticationService.module.isVendor){
+        if(authenticationService.module.isVendor || authenticationService.isAddedByVendor){
             this.contactOrPartnerLink =  "/home/partners/manage";
         }else{
            this.contactOrPartnerLink =  "/home/contacts/manage";

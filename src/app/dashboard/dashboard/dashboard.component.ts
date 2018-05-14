@@ -961,7 +961,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
     navigateToManage(){
       if(this.authenticationService.isVendor()){
         this.router.navigate(['/home/team/add-team']);
-       } else { this.router.navigate(['/home/contacts/manage']); }
+       } else if(this.authenticationService.isAddedByVendor){
+           this.router.navigate(['/home/partners/manage']); 
+       } else{ this.router.navigate(['/home/contacts/manage']); }
     }
     getPartnerCampaignsCountMapGroupByCampaignType(userId: number){
         this.campaignService.getPartnerCampaignsCountMapGroupByCampaignType(userId)

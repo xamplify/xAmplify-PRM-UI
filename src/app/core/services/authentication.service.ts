@@ -37,12 +37,15 @@ export class AuthenticationService {
     isCompanyAdded = false;
     module:Module = new Module();
     roleName: Roles= new Roles();
+    isAddedByVendor:boolean = false;
     constructor(private http: Http, private router: Router, private utilService: UtilService) {
         this.SERVER_URL = SERVER_URL;
         this.APP_URL = CLIENT_URL;
         this.REST_URL = this.SERVER_URL + 'xtremand-rest/';
         this.MEDIA_URL = this.SERVER_URL + 'vod/';
         this.SHARE_URL = this.SERVER_URL + 'embed/';
+        
+        
     }
 
     getOptions(): RequestOptions {
@@ -198,6 +201,7 @@ export class AuthenticationService {
         module.isCompanyPartner = false;
         module.hasSocialStatusRole = false;
         module.isVendor = false;
+        this.isAddedByVendor = false;
         swal.close();
     }
 }

@@ -87,9 +87,21 @@ export class TopnavbarComponent implements OnInit {
       () => console.log('Finished')
       );
   }
+  
+  isAddedByVendor(){
+      this.userService.isAddedByVendor(this.authenticationService.getUserId())
+      .subscribe(
+      data => {
+           this.authenticationService.isAddedByVendor=data;
+      },
+      error => console.log(error),
+      () => console.log('Finished')
+      );
+  }
 
   ngOnInit() {
     this.getUnreadNotificationsCount();
+    this.isAddedByVendor();
   }
 
   logout() {

@@ -60,12 +60,12 @@ cursor: not-allowed;
 					<i class="glyphicon glyphicon-th-list" aria-hidden="true" style="font-size: 4em;opacity: 0.5; margin: 10px 2px;"></i>
 				</div>
 				<div class="col-xs-6">
-          <h1 class="bold" *ngIf="!authenticationService.isVendor()">{{dashboardReport.totalContacts}}</h1>
-          <h1 class="bold" *ngIf="authenticationService.isVendor()">{{dashboardReport.totalCompanyPartnersCount}}</h1>
+          <h1 class="bold" *ngIf="!authenticationService.isVendor() && !authenticationService.isAddedByVendor">{{dashboardReport.totalContacts}}</h1>
+          <h1 class="bold" *ngIf="authenticationService.isVendor() || authenticationService.isAddedByVendor">{{dashboardReport.totalCompanyPartnersCount}}</h1>
 				</div>
 				<div class="col-xs-12">
-					<h3 class="pull-right"  style="margin-top: 6px; margin-bottom: -6px;" *ngIf="!authenticationService.module.isVendor">contacts</h3>
-					<h3 class="pull-right"  style="margin-top: 6px; margin-bottom: -6px;" *ngIf="authenticationService.module.isVendor">partners</h3>
+					<h3 class="pull-right"  style="margin-top: 6px; margin-bottom: -6px;" *ngIf="!authenticationService.module.isVendor && !authenticationService.isAddedByVendor">contacts</h3>
+					<h3 class="pull-right"  style="margin-top: 6px; margin-bottom: -6px;" *ngIf="authenticationService.module.isVendor || authenticationService.isAddedByVendor ">partners</h3>
 				</div>
 			</div>
 		</div>
