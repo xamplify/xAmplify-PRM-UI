@@ -798,12 +798,11 @@ Page container
   margin-bottom: 20px !important;
 }
 
-@media (min-width: 1260px) {
-  /* 1200px */
+/*@media (min-width: 1260px) {
   .container {
     width: 1270px;
   }
-}
+}*/
 @media (min-width: 992px) {
   /* Page container in fixed footer */
   .page-footer-fixed .page-container {

@@ -1149,3 +1149,10 @@ blockquote::before {
 .features.section-spacing {
     background: #f7f7f7;
 }
+nav a {
+  background: none !important;
+}
+.navbar-default.stuck .navbar-nav > li > a.btn:hover, 
+.navbar-default.stuck .navbar-nav > li > a.btn:focus {
+    color: #f8f8f8;
+}

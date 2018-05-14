@@ -32,39 +32,31 @@
   
   <div class="overlay"></div>
   
-  <!--language switcher-->
-  
+<nav class="navbar navbar-default" id="navbar">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar-collapse-1" aria-expanded="false"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+      <a class="navbar-brand" routerLink="/" style="background: none;">
+        <img class="logo-nav" alt="logo" src="/assets/images/xamplify-logo.png">
+        <img class="logo-head" alt="logo" src="/assets/images/xamplify-logo3.png">
+      </a>
+    </div>
+    <div class="collapse navbar-collapse" id="bs-navbar-collapse-1">
+      <ul class="nav navbar-nav nav-left">
+        <li><a href="#features" lang="en">Features</a></li>
+        <li><a href="#preview" lang="en">Tour</a></li>
+        <li><a href="#pricing" lang="en">Pricing</a></li>
 
-  
-  <!--language switcher end--> 
-  
-  <!--navigation-->
-  
-  <nav class="navbar navbar-default">
-    <div class="container">
-		<div class="navbar-header">
-			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar-collapse-1" aria-expanded="false"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
-			<a class="navbar-brand" routerLink="/" style="background: none;">
-				<img class="logo-nav" alt="logo" src="/assets/images/xamplify-logo.png">
-				<img class="logo-head" alt="logo" src="/assets/images/xamplify-logo3.png">
-			</a>
-		</div>
-      <div class="collapse navbar-collapse" id="bs-navbar-collapse-1">
-        <ul class="nav navbar-nav nav-left">
-          <li><a href="#features" lang="en">Features</a></li>
-          <li><a href="#preview" lang="en">Tour</a></li>
-          <li><a href="#pricing" lang="en">Pricing</a></li>
-          
-          <li><a href="#contact" lang="en">Contact</a></li>
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
+        <li><a href="#contact" lang="en">Contact</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
           <li><a routerLink="/login" lang="en" style="background: none;"><i class="fa fa-sign-in"></i> Login</a></li>
           <li><a routerLink="/v-signup" lang="en" class="btn">REGISTER</a></li>
-        </ul>
-      </div>
+      </ul>
     </div>
-  </nav>
-  
+  </div>
+</nav>
+
   <!--navigation end--> 
   
   <!--welcome message-->
@@ -75,7 +67,7 @@
         <h1 lang="en">Experience the new way of ecosystem marketing</h1>
         <p style="color: #fff;" lang="en">Whether you’ve been spent years cultivating your network or are just testing the waters, X-Amplify provides you with a digital platform that allows you to engage and equip your partners, solidifying relationships and driving sales like never before.</p>
         <div class="play-btn"> <a href="https://vimeo.com/109054393" class="play litebox-hero"><img src="/assets/images/play-btn.png" alt="play"></a> </div>
-        <div class="cta-btn"> <a href="https://xamplify.io/v-signup" class="btn" lang="en">REGISTER <span style="font-size: 14px; color: #333; font-weight: 500;">(beta
+        <div class="cta-btn"> <a routerLink="/v-signup" class="btn" lang="en">REGISTER <span style="font-size: 14px; color: #333; font-weight: 500;">(beta
 				signup)</span></a>
           <!--<p lang="en"><span class="total-number-1">0</span>K Worldwide Signups</p>-->
         </div>
@@ -240,7 +232,7 @@
             <li lang="en"><span lang="en">1</span> Team members<i class="fa fa-check"></i></li>
             </ul>
           </div>
-          <div class="buy-button"><a class="btn" href="#" lang="en">Get Started</a>
+          <div class="buy-button"><a class="btn" routerLink="/login" lang="en">Get Started</a>
             <p lang="en">**Limited time offer.</p>
           </div>
         </div>
