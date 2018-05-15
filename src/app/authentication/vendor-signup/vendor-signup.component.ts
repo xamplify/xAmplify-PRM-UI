@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 
@@ -22,7 +22,7 @@ declare var $: any;
   styleUrls: ['./vendor-signup.component.css', '../../../assets/css/default.css', '../../../assets/css/authentication-page.css'],
   providers: [User, CountryNames, RegularExpressions, Properties]
 })
-export class VendorSignupComponent implements OnInit {
+export class VendorSignupComponent implements OnInit, OnDestroy {
     vendorSignUpForm: FormGroup;
     loading = false;
     isError = false;
@@ -112,17 +112,20 @@ signUp() {
             error => {
                 this.loading = false;
                 if (error === "USERNAME IS ALREADY EXISTING") {
-                    this.formErrors['userName'] = error;
+                  this.invalidVendor = false;
+                  this.formErrors['userName'] = error;
                     // this.isLoading = false;
                 } else if (error === "USER IS ALREADY EXISTING WITH THIS EMAIL") {
-                    this.formErrors['emailId'] = 'Email Id already exists';
+                  this.invalidVendor = false;
+                  this.formErrors['emailId'] = 'Email Id already exists';
                     // this.isLoading = false;
                 }else if(error==='INVALID_VENDOR_EMAIL_ID'){
                   this.invalidVendor = true;
                   this.formErrors['emailId'] = 'It looks like that email has already been used to create an account. If this is your email address,';
                 }
                 else {
-                    this.xtremandLogger.errorPage(error);
+                  this.invalidVendor = false;
+                  this.xtremandLogger.errorPage(error);
                 }
             },
             () => this.xtremandLogger.log("Done")
@@ -172,6 +175,9 @@ toggleChild() {
 }
 ngOnInit() {
     $("[rel='tooltip']").tooltip();
+}
+ngOnDestroy(){
+  this.invalidVendor = false;
 }
 
 }
