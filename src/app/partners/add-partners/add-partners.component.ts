@@ -538,7 +538,7 @@ export class AddPartnersComponent implements OnInit {
 
                 var allTextLines = csvResult.data;
                 for ( var i = 1; i < allTextLines.length; i++ ) {
-                    if ( allTextLines[i][4].trim().length > 0 ) {
+                    if ( allTextLines[i][4] && allTextLines[i][4].trim().length > 0 ) {
                         let user = new User();
                         user.emailId = allTextLines[i][4];
                         user.firstName = allTextLines[i][0];

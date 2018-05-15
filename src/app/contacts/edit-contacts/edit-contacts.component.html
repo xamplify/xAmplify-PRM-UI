@@ -345,7 +345,7 @@
 											</div>
 											<div class="col-sm-7">
 												<textarea class="textareaNumber" [(ngModel)]="clipboardTextareaText"
-													placeholder="FirstName,LastName,Company,Jobtitle,Email,Address,City,Country,MobileNumber       FirstName,LastName,Company,Jobtitle,Email,Address,City,country,MobileNumber       FirstName,LastName,Company,Jobtitle,Email,Address,City,Country,MobileNumber"
+													placeholder="FirstName,LastName,Company,Jobtitle,Email,Address,City,Country,Phonenumber       FirstName,LastName,Company,Jobtitle,Email,Address,City,country,Phonenumber       FirstName,LastName,Company,Jobtitle,Email,Address,City,Country,Phonenumber"
 													[ngModelOptions]="{standalone: true}"
 													style="min-width: 100%; max-width: 100%; height: 150px; font-size: 12px; line-height: 1.4;"
 													required="required">
@@ -420,7 +420,7 @@
 																				<td class='pt10 pb10'>{{user.country}}</td>
 																			</tr>
 																			<tr style="border-bottom: 1px solid #dcdcdc">
-																				<td class='pt10 pb10'>Mobile Number:</td>
+																				<td class='pt10 pb10'>Phone Number:</td>
 																				<td class='pt10 pb10'>{{user.mobileNumber}}</td>
 																			</tr>
 																			<!-- <tr style="border-bottom: 1px solid #dcdcdc">
@@ -856,7 +856,7 @@
 									style="border: none" class="form-control" id="number"
 									[(ngModel)]="addContactuser.mobileNumber"
 									[ngModelOptions]="{standalone: true}"
-									placeholder="Mobile Number" maxlength="10" autocomplete="off">
+									placeholder="Phone Number" maxlength="10" autocomplete="off">
 								<div class="textCss"></div>
 
 							</div>

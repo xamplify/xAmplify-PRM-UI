@@ -229,7 +229,7 @@ export class AddContactsComponent implements OnInit {
                 var allTextLines = csvResult.data;
                 for ( var i = 1; i < allTextLines.length; i++ ) {
                     // var data = allTextLines[i].split( ',' );
-                    if ( allTextLines[i][4].trim().length > 0 ) {
+                    if ( allTextLines[i][4] && allTextLines[i][4].trim().length > 0 ) {
                         let user = new User();
                         user.emailId = allTextLines[i][4];
                         user.firstName = allTextLines[i][0];
@@ -677,6 +677,7 @@ export class AddContactsComponent implements OnInit {
                         () => this.xtremandLogger.info( "addcontactComponent saveCsvContactList() finished" )
                         )
                 } else {
+                    this.loading = false;
                     this.customResponse = new CustomResponse( 'ERROR',"'" + this.invalidPatternEmails + "'"+ " are not valid email id(s) please remove" , true );
                 }
             } else
@@ -895,10 +896,12 @@ export class AddContactsComponent implements OnInit {
                     let socialContact = new SocialContact();
                     let user = new User();
                     socialContact.id = i;
-                    socialContact.emailId = this.getGoogleConatacts.contacts[i].emailId;
-                    socialContact.firstName = this.getGoogleConatacts.contacts[i].firstName;
-                    socialContact.lastName = this.getGoogleConatacts.contacts[i].lastName;
-                    this.socialContactUsers.push( socialContact );
+                    if ( this.validateEmailAddress( this.getGoogleConatacts.contacts[i].emailId )){
+                        socialContact.emailId = this.getGoogleConatacts.contacts[i].emailId;
+                        socialContact.firstName = this.getGoogleConatacts.contacts[i].firstName;
+                        socialContact.lastName = this.getGoogleConatacts.contacts[i].lastName;
+                        this.socialContactUsers.push( socialContact );
+                    }
                     this.xtremandLogger.info( this.getGoogleConatacts );
                     this.contactService.socialProviderName = "";
                     $( "button#sample_editable_1_new" ).prop( 'disabled', false );

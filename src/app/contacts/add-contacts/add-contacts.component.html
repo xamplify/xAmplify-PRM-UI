@@ -404,7 +404,7 @@ img:hover {
 									<div class="col-xs-12">
 										<textarea id="copyFromclipTextArea" class="textareaNumber"
 											[(ngModel)]="clipboardTextareaText"
-											placeholder="FirstName,LastName,Company,Jobtitle,Email,Address,City,Country,MobileNumber       FirstName,LastName,Company,Jobtitle,Email,Address,City,country,MobileNumber       FirstName,LastName,Company,Jobtitle,Email,Address,City,Country,MobileNumber"
+											placeholder="FirstName,LastName,Company,Jobtitle,Email,Address,City,Country,Phonenumber       FirstName,LastName,Company,Jobtitle,Email,Address,City,country,Phonenumber       FirstName,LastName,Company,Jobtitle,Email,Address,City,Country,Phonenumber"
 											[ngModelOptions]="{standalone: true}"
 											style="height: 150px; font-size: 12px; line-height: 1.4; min-width: 100%; max-width: 100%; width: 100%;"
 											required="required">
@@ -479,7 +479,7 @@ img:hover {
 															<td class='pt10 pb10'>{{newContact.country}}</td>
 														</tr>
 														<tr style="border-bottom: 1px solid #dcdcdc">
-															<td class='pt10 pb10'>Mobile Number:</td>
+															<td class='pt10 pb10'>Phone Number:</td>
 															<td class='pt10 pb10'>{{newContact.mobileNumber}}</td>
 														</tr>
 														<!-- <tr style="border-bottom: 1px solid #dcdcdc">
@@ -630,7 +630,7 @@ img:hover {
 																	<td class='pt10 pb10'>{{user.country}}</td>
 																</tr>
 																<tr style="border-bottom: 1px solid #dcdcdc">
-																	<td class='pt10 pb10'>Mobile Number:</td>
+																	<td class='pt10 pb10'>Phone Number:</td>
 																	<td class='pt10 pb10'>{{user.mobileNumber}}</td>
 																</tr>
 																<!-- <tr style="border-bottom: 1px solid #dcdcdc">
@@ -794,7 +794,7 @@ img:hover {
 								style="border: none" class="form-control" id="phone"
 								[(ngModel)]="addContactuser.mobileNumber"
 								[ngModelOptions]="{standalone: true}"
-								placeholder="Mobile Number" maxlength="10"
+								placeholder="Phone Number" maxlength="10"
 								autocomplete="off">
 							<div class="textCss"></div>
 						</div>
