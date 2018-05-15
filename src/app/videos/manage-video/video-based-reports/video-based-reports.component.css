@@ -64,18 +64,18 @@ z-index: 0;
 text-align: center;
 }
 .headerCss {
-   font-size: 12px; 
+   font-size: 12px;
    font-weight: 500;
 }
 .center {
 	text-align: center;
 }
 .logoCss{
-    position: absolute;
+    position: relative;
     width: 91px;
     height: 1px;
-    right: 32px;
-    top: 22px;
+    right: -536px;
+    top: 9px;
     background: transparent;
     z-index: 99;
 }

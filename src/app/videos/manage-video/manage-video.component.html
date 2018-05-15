@@ -26,7 +26,7 @@
            <div class="tab-content" style="min-height: 590px;">
              <div class="tab-pane active m10">
                <div class="page-toolbar">
-                 <div *ngIf="!httpRequestLoader.isLoading" class="btn-group pull-right col-xs-12 col-sm-12 col-md-12" style="padding: 0;margin-bottom: 10px; ">
+                 <div *ngIf="!httpRequestLoader.isLoading  && !referenceService.isPlayVideo" class="btn-group pull-right col-xs-12 col-sm-12 col-md-12" style="padding: 0;margin-bottom: 10px; ">
                    <div class="inputs" align="right">
                      <div style="padding:0" class="col-xs-12 col-sm-6 col-md-3">
                        <select class="form-control select-option" [(ngModel)]="categoryNum" (ngModelChange)="getCategoryNumber()">
@@ -61,11 +61,11 @@
                    </ul></div>
                  </div>
                </div>
-               <app-loader *ngIf="httpRequestLoader.isLoading && !isListView"></app-loader>
-               <app-list-loader *ngIf="httpRequestLoader.isLoading && isListView"></app-list-loader>
-               <app-play-video-loader *ngIf="isPlayvideo"></app-play-video-loader>
+               <app-loader *ngIf="httpRequestLoader.isLoading && !isListView  && !referenceService.isPlayVideo"></app-loader>
+               <app-list-loader *ngIf="httpRequestLoader.isLoading && isListView && !referenceService.isPlayVideo"></app-list-loader>
+               <app-play-video-loader *ngIf="referenceService.isPlayVideo"></app-play-video-loader>
                <div class="margin-top-10">
-                 <div *ngIf="!httpRequestLoader.isLoading">
+                 <div *ngIf="!httpRequestLoader.isLoading  && !referenceService.isPlayVideo">
                    <div *ngIf="pagination.pagedItems.length == 0" style="position: relative; top: 16px; width: 100%;" class="col-md-9 alert alert-info alert-dismissable">
                      <a class="close" data-dismiss="alert" aria-label="close"></a>
                      <p>No results found</p>
@@ -73,7 +73,7 @@
                  </div>
                  <section [hidden]="!isListView">
 
-                 <div class="table-responsive" style="overflow-x: inherit;"  *ngIf="pagination.pagedItems && !httpRequestLoader.isLoading">
+                 <div class="table-responsive" style="overflow-x: inherit;"  *ngIf="pagination.pagedItems && !httpRequestLoader.isLoading  && !referenceService.isPlayVideo">
                    <table class='table tgrid' *ngIf="pagination.pagedItems.length !== 0">
                      <thead>
                        <tr>
@@ -214,7 +214,7 @@
                    </div>
                  </div> -->
                  <div class="col-xs-12 col-sm-3" *ngFor="let videoFile of pagination.pagedItems ;let i =index" >
-                 <div class="grid-box" *ngIf="pagination.pagedItems && !httpRequestLoader.isLoading">
+                 <div class="grid-box" *ngIf="pagination.pagedItems && !httpRequestLoader.isLoading && !referenceService.isPlayVideo">
                    <img src="{{videoFile.imagePath}}" height="50px" width="auto">
                    <div>
                     <h4 class="ellipsis" title="{{videoFile.title}}">{{videoFile.title | slice:0:25}}
@@ -288,14 +288,14 @@
              </div>
 
            </div>
-
+           <div *ngIf="pagination.pagedItems.length !== 0 && !referenceService.isPlayVideo">
+            <app-pagination [pagination]="pagination" [type]="'managaVideos'"
+             (notifyParent)="setPage($event)" (notifyParentDropDown)="loadVideos($event)"></app-pagination>
+            </div>
          </div>
 
        </div>
-       <div *ngIf="pagination.pagedItems.length !== 0">
-          <app-pagination [pagination]="pagination" [type]="'managaVideos'"
-           (notifyParent)="setPage($event)" (notifyParentDropDown)="loadVideos($event)"></app-pagination>
-          </div>
+
      </div>
    </div>
    <app-edit-video *ngIf="editVideo" (notifyParent)="update($event)"></app-edit-video>

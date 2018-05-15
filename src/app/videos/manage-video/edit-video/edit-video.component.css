@@ -1,10 +1,10 @@
  :host /deep/ .video-js .vjs-progress-holder .vjs-load-progress {
     position: absolute;
     display: block;
-    height: 2.3em; }         
+    height: 2.3em; }
 .customCss{
    margin-right: 13px;margin-left: -11px;
-        } 
+        }
 
 .closeModal {
     background-color:white;
@@ -16,7 +16,7 @@
     opacity:1;
     }
 
-.videoSizeCss { 
+.videoSizeCss {
     position: relative;
     height: 24px;
     padding: 0px 2px;
@@ -26,22 +26,22 @@
     color: white;
     position: relative;
 }
-.modal { 
-    position: fixed; 
-    top: 3%; 
-    right: 3%; 
-    left: 3%; 
-    width: auto; 
-    margin: 0; 
+.modal {
+    position: fixed;
+    top: 3%;
+    right: 3%;
+    left: 3%;
+    width: auto;
+    margin: 0;
 }
-.modal-body { 
-    height: 60%; 
+.modal-body {
+    height: 60%;
 }
-  .modal-body { 
-    max-height: 350px; 
-    padding: 15px; 
-    overflow-y: auto; 
-    -webkit-overflow-scrolling: touch; 
+  .modal-body {
+    max-height: 350px;
+    padding: 15px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
  }
  .pre {
     color: #3e2525 !important;
@@ -97,15 +97,15 @@ border-bottom: 1px solid #c3c0c0;margin-bottom: 10px; width: 50%; text-align: ri
     top: 9px;
 }
 
- :host /deep/ .bootstrap-switch { 
+ :host /deep/ .bootstrap-switch {
 border-radius: 0;
 }
 :host /deep/ .bootstrap-switch.bootstrap-switch-small .bootstrap-switch-handle-on,
-.bootstrap-switch.bootstrap-switch-small .bootstrap-switch-handle-off, 
+.bootstrap-switch.bootstrap-switch-small .bootstrap-switch-handle-off,
 .bootstrap-switch.bootstrap-switch-small .bootstrap-switch-label {
     border-radius: 0;
 }
-:host /deep/.bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-success, 
+:host /deep/.bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-success,
 .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-success {
   border-radius: 0;
 }
@@ -121,7 +121,7 @@ border-radius: 0;
 }
 :host /deep/ .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-warning {
     border-radius: 0;
-} 
+}
 .portlet,
 .portlet-body {
     border-radius: 0;
@@ -156,11 +156,11 @@ textarea {
     padding: 10px;
 }
 .logoCss{
-    position: absolute;
+    position: relative;
     width: 91px;
     height: 1px;
-    right: 28px;
-    top: 36px;
+    right: -545px;
+    top: 9px;
     background: transparent;
     z-index: 99;
 }
@@ -173,7 +173,7 @@ textarea {
     background: transparent;
     z-index: 99;
 }
-#edit_video_player{ 
+#edit_video_player{
     width:auto;
 }
 .img-thumbnail span {
@@ -185,7 +185,7 @@ textarea {
     color:#00a6e8;
     cursor:pointer
     }
-    
+
 .img-wrap .close,.text-center {
 text-align:center
 }

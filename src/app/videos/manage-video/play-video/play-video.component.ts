@@ -207,6 +207,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             });
       }
     ngOnInit() {
+        this.referenceService.isPlayVideoLoading(false);
         this.pagination.maxResults = 13;
         if(this.videoFileService.videoType==='partnerVideos'){
             this.getVideoDefaultSettings();

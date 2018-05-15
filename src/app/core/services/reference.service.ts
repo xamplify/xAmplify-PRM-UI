@@ -63,7 +63,8 @@ export class ReferenceService {
     isEditNurtureCampaign = false;
     nurtureCampaignId = 0;
     homeRouter = '/home/dashboard/default';
-    pageContnetBgColor:string = "#F1F3FA";
+    pageContnetBgColor = "#F1F3FA";
+    isPlayVideo = false;
     public URL: string = this.authenticationService.REST_URL + 'admin/';
     constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,
         private router: Router, public deviceService: Ng2DeviceService,) {
@@ -127,6 +128,9 @@ export class ReferenceService {
     }
     loading(httpRequestLoader: HttpRequestLoader, isLoading: boolean) {
         httpRequestLoader.isLoading = isLoading;
+    }
+    isPlayVideoLoading(loading:boolean){
+      return this.isPlayVideo = loading;
     }
     showInfo(info: string, data: any) {
         this.logger.debug(info, data);
@@ -1437,8 +1441,8 @@ export class ReferenceService {
         default: return Boolean(string);
     }
     }
-    
-    
+
+
     getTimeZonesByCountryId(countryId:number){
         let convertedCountryId = +countryId;
         var filteredTimeZones = this.getTimeZones().filter(function (timezone) {
@@ -1447,13 +1451,13 @@ export class ReferenceService {
         return filteredTimeZones;
 
       }
-    
+
     startLoader(httpRequestLoader:HttpRequestLoader){
         this.pageContnetBgColor = "#fff"
         httpRequestLoader.isHorizontalCss = true;
         httpRequestLoader.isLoading = true;
     }
-    
+
     stopLoader(httpRequestLoader:HttpRequestLoader){
         this.pageContnetBgColor = "#F1F3FA"
         httpRequestLoader.isHorizontalCss = false;
