@@ -63,8 +63,8 @@
 							<span>
 								<i class="fa fa-users"></i>
 							</span>
-							<h5 class="hidden-xs" *ngIf="!authenticationService.module.isVendor">Contact Lists</h5>
-							<h5 class="hidden-xs" *ngIf="authenticationService.module.isVendor">Partner</h5>
+							<h5 class="hidden-xs" *ngIf="!authenticationService.module.isVendor && !authenticationService.isAddedByVendor">Contact Lists</h5>
+							<h5 class="hidden-xs" *ngIf="authenticationService.module.isVendor || authenticationService.isAddedByVendor">Partner</h5>
 						</div>
 					</div>
 
@@ -74,8 +74,8 @@
 							<span>
 								<i class="fa fa-users"></i>
 							</span>
-							<h5 class="hidden-xs" *ngIf="!authenticationService.module.isVendor">Contact Lists</h5>
-							<h5 class="hidden-xs" *ngIf="authenticationService.module.isVendor">Partner</h5>
+							<h5 class="hidden-xs" *ngIf="!authenticationService.module.isVendor && !authenticationService.isAddedByVendor">Contact Lists</h5>
+							<h5 class="hidden-xs" *ngIf="authenticationService.module.isVendor || authenticationService.isAddedByVendor">Partner</h5>
 						</div>
 					</div>
 					<div *ngIf="!isCampaignDetailsFormValid||!isVideo||!isContactList" [attr.class]="disableTabClass" [ngStyle]="{ 'width': width }">
@@ -139,7 +139,7 @@
 													<span class="pull-left" *ngIf="!isValidCampaignName &&campaign.campaignName?.length>0" style="color: red">Already Exists</span>
 												</div>
 											</div>
-											<div class="form-group" *ngIf="(this.authenticationService.module.isCompanyPartner && this.authenticationService.module.isOrgAdmin) || this.authenticationService.module.isOrgAdmin || this.authenticationService.module.isVendor">
+											<div class="form-group" *ngIf="!isOnlyPartner">
 												<label class="control-label col-sm-4" *ngIf="campaign.channelCampaign"><b>Through Partner</b></label>
 												<label  class="control-label col-sm-4" *ngIf="!campaign.channelCampaign">Through Partner</label>
 												<div class="col-sm-8">
@@ -165,7 +165,7 @@
 											</div>
 
 
-											<div class="form-group" *ngIf="((this.authenticationService.module.isCompanyPartner && this.authenticationService.module.isOrgAdmin) || this.authenticationService.module.isOrgAdmin || this.authenticationService.module.isVendor ) && campaign.channelCampaign">
+											<div class="form-group" *ngIf="!isOnlyPartner && campaign.channelCampaign">
 												<label class="control-label col-sm-4">Co-Branding Logo</label>
 												<div class="col-sm-8">
 													<switch class="pull-left" [status]="campaign.enableCoBrandingLogo" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
@@ -702,8 +702,8 @@
 								<app-error-pages *ngIf="campaignContact.httpRequestLoader.isServerError"></app-error-pages>
 								<ng-container *ngIf="!campaignContact.httpRequestLoader.isLoading && !campaignContact.httpRequestLoader.isServerError">
 									<div id="user_list_tb_wrapper" class="dataTables_wrapper form-inline no-footer" style="padding:10px">
-										<div class="note-vid pull-left" *ngIf="authenticationService.module.isVendor">Select the Partner list(s) you would like to send your campaign to</div>
-										<div class="note-vid pull-left" *ngIf="!authenticationService.module.isVendor">Select the Contact list(s) you would like to send your campaign to</div>
+										<div class="note-vid pull-left" *ngIf="authenticationService.module.isVendor || authenticationService.isAddedByVendor">Select the Partner list(s) you would like to send your campaign to</div>
+										<div class="note-vid pull-left" *ngIf="!authenticationService.module.isVendor && !authenticationService.isAddedByVendor">Select the Contact list(s) you would like to send your campaign to</div>
 										<div class="inputs" align="right" style="display:inline; float:right;padding: 5px 5px 12px 0px;">
 											<div class="portlet-input input-inline input-large" style="position: relative;top: -6px;right: -5px;">
 												<div class="input-icon right">
@@ -717,7 +717,8 @@
 												<tr>
 													<td colspan="5">
 														<div class="alert alert-info">
-															<strong>No Contacts Found</strong>
+															<strong *ngIf="authenticationService.module.isVendor || authenticationService.isAddedByVendor">No Partners Found</strong>
+															<strong *ngIf="!authenticationService.module.isVendor && !authenticationService.isAddedByVendor">No Contacts Found</strong>
 														</div>
 													</td>
 												</tr>
@@ -1081,10 +1082,10 @@
 
 									<i class="fa fa-users fa-2x icon-position" aria-hidden="true"></i>
 								</div>
-								<ng-container *ngIf="authenticationService.module.isVendor">
+								<ng-container *ngIf="authenticationService.module.isVendor || authenticationService.isAddedByVendor">
 									<ng-container class="h4-text" *ngIf="campaignType == 'video'||'regular'">Partner</ng-container>
 								</ng-container>
-								<ng-container *ngIf="!authenticationService.module.isVendor">
+								<ng-container *ngIf="!authenticationService.module.isVendor && !authenticationService.isAddedByVendor">
 									<ng-container class="h4-text" *ngIf="campaignType == 'video'||'regular'">Contact List</ng-container>
 								</ng-container>
 

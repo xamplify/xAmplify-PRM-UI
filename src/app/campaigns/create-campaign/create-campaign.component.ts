@@ -199,7 +199,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             ){
         this.logger.info("create-campaign-component constructor loaded");
         $('.bootstrap-switch-label').css('cssText', 'width:31px;!important');
-      /*  CKEDITOR.config.width = 500;
+        /*  CKEDITOR.config.width = 500;
         CKEDITOR.config.width = '75%';*/
        /* CKEDITOR.config.height = 500;        // 500 pixels high.
         CKEDITOR.config.height = '25em'; */
@@ -495,7 +495,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     loadContacts(){
         const roles = this.authenticationService.getRoles();
         //roles.length==2 && roles.indexOf(this.roleName.userRole)>-1 && roles.indexOf(this.roleName.vendorRole)>-1
-        if(roles.indexOf(this.roleName.vendorRole)>-1){
+        if(roles.indexOf(this.roleName.vendorRole)>-1 || this.authenticationService.isAddedByVendor){
             this.contactsPagination.filterValue = true;
         }else{
             this.contactsPagination.filterValue = this.campaign.channelCampaign;
