@@ -77,6 +77,7 @@ export class LoginComponent implements OnInit, OnDestroy {
                           this.setCustomeResponse("ERROR", this.properties.BAD_CREDENTIAL_ERROR);
                       } else if (response.error_description === "User is disabled") {
                         this.resendActiveMail = true;
+                        this.customResponse =  new CustomResponse();
                      //   this.setCustomeResponse("ERROR", this.properties.USER_ACCOUNT_ACTIVATION_ERROR);
                       }
                   }

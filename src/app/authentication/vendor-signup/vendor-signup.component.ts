@@ -92,11 +92,13 @@ signUp() {
     this.signUpUser.emailId = this.signUpUser.emailId.toLowerCase();
     this.signUpUser.vendorSignUp = true;
     this.loading = true;
+    this.invalidVendor = false;
     console.log(this.signUpUser);
     this.userService.signUpAsVendor(this.signUpUser)
         .subscribe(
             data => {
                 this.loading = false;
+                this.invalidVendor = false;
                 if (data !== undefined) {
                     if (data.message === 'USER CREATED SUCCESSFULLY' || data.message.includes('USER CREATED')) {
                         this.loading = false;
@@ -172,6 +174,9 @@ onValueChanged(data?: any) {
 }
 toggleChild() {
     this.isError = !this.isError;
+}
+validEmail(event:any){
+  this.invalidVendor = false;
 }
 ngOnInit() {
     $("[rel='tooltip']").tooltip();
