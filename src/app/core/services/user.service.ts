@@ -49,10 +49,10 @@ export class UserService {
             , defaultVideoSettings )
             .map( this.extractData )
             .catch( this.handleError );
-        }  
+        }
          else {
             console.log("user role ");
-        } 
+        }
     }
 
     signUp( data: User ) {
@@ -107,37 +107,37 @@ export class UserService {
             .map( this.extractData )
             .catch( this.handleError );
     }
-    
+
     getUserDefaultPage( userId: number ) {
         return this.http.get( this.URL + "admin/get-user-default-page?userId=" + userId + "&access_token=" + this.authenticationService.access_token )
             .map( this.extractData )
             .catch( this.handleError );
     }
-    
+
     setUserDefaultPage( userId: number, defaultPage: string ) {
         return this.http.get( this.URL + "admin/set-user-default-page?userId=" + userId + "&defaultPage="+ defaultPage + "&access_token=" + this.authenticationService.access_token )
             .map( this.extractData )
             .catch( this.handleError );
     }
-    
+
     isGridView( userId: number ) {
         return this.http.get( this.URL + "admin/get-user-gridview/" + userId + "?access_token=" + this.authenticationService.access_token )
             .map( this.extractData )
             .catch( this.handleError );
     }
-    
+
     setGridView( userId: number, isGridView: boolean ) {
         return this.http.get( this.URL + "admin/set-user-gridview/" + userId + "?isGridView="+ isGridView + "&access_token=" + this.authenticationService.access_token )
             .map( this.extractData )
             .catch( this.handleError );
     }
-    
+
     getOrgAdminsCount( userId: number ) {
         return this.http.get( this.URL + "admin/getOrgAdminCount/" + userId + "?access_token=" + this.authenticationService.access_token )
             .map( this.extractData )
             .catch( this.handleError );
     }
-    
+
     disableOrgAdmin( userId: number ) {
         return this.http.get( this.URL + "admin/disableAsOrgAdmin/" + userId + "?access_token=" + this.authenticationService.access_token )
             .map( this.extractData )
@@ -167,18 +167,25 @@ export class UserService {
             .map(this.extractData)
             .catch(this.handleError);
     }
-    
+
     saveBrandLogo(logoPath: string,logoDesc: string,userId: number){
      return this.http.get( this.URL + 'videos/save-branding-logo?logoPath='+logoPath+'&LogoDescUri='+logoDesc+'&userId='+userId+'&access_token='+this.authenticationService.access_token )
        .map(this.extractData)
        .catch(this.handleError);
     }
-    
+
     isAddedByVendor( userId: number ) {
         return this.http.get( this.URL + "admin/get-team-member-details/" + userId + "?access_token=" + this.authenticationService.access_token )
             .map( this.extractData )
             .catch( this.handleError );
     }
+
+    resendActivationMail(emailId:string) {
+        return this.http.get( this.URL+'/register/resend/activationemail?email='+ emailId )
+        .map( this.extractData )
+        .catch( this.handleError );
+    }
+
     private extractData( res: Response ) {
         const body = res.json();
         console.log(body);

@@ -4,11 +4,13 @@ import { Router } from '@angular/router';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { ReferenceService } from '../../core/services/reference.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
+import { UserService } from '../../core/services/user.service';
 
 import { User } from '../../core/models/user';
 import { Role } from '../../core/models/role';
 import { CustomResponse } from '../../common/models/custom-response';
 import { Properties } from '../../common/models/properties';
+
 
 declare const $: any;
 
@@ -31,7 +33,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     { "name": "linkedin", "iconName": "linkedin" }];
 
     roles: Array<Role>;
-    constructor(private router: Router, private authenticationService: AuthenticationService,
+    constructor(private router: Router, private authenticationService: AuthenticationService,public userService: UserService,
         public referenceService: ReferenceService, private xtremandLogger: XtremandLogger, public properties: Properties) {
         if (this.referenceService.userProviderMessage !== "") {
             this.setCustomeResponse("SUCCESS", this.referenceService.userProviderMessage);
@@ -103,7 +105,16 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.xtremandLogger.error(responseMessage);
     }
     resendActivation(){
-
+      this.userService.resendActivationMail(this.model.username).subscribe(result=>{
+        if(result ==='resend Activation email success'){
+          this.resendActiveMail = false;
+          this.setCustomeResponse('SUCCESS', this.properties.RESEND_ACTIVATION_MAIL);
+        }
+       },
+       (error:any)=>{
+        this.xtremandLogger.error(error);
+       }
+      )
     }
     ngOnInit() {
         localStorage.removeItem('currentUser');
