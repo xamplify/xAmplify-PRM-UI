@@ -24,10 +24,11 @@ declare var $: any;
 })
 export class VendorSignupComponent implements OnInit {
     vendorSignUpForm: FormGroup;
-loading = false;
-isError = false;
-customResponse: CustomResponse = new CustomResponse();
-formErrors = {
+    loading = false;
+    isError = false;
+    invalidVendor= false;
+    customResponse: CustomResponse = new CustomResponse();
+   formErrors = {
     'firstName': '',
     'lastName': '',
     'emailId': '',
@@ -117,7 +118,8 @@ signUp() {
                     this.formErrors['emailId'] = 'Email Id already exists';
                     // this.isLoading = false;
                 }else if(error==='INVALID_VENDOR_EMAIL_ID'){
-                    this.formErrors['emailId'] = 'It looks like that email has already been used to create an account. If this is your email address, just log in to your account.';
+                  this.invalidVendor = true;
+                  this.formErrors['emailId'] = 'It looks like that email has already been used to create an account. If this is your email address,';
                 }
                 else {
                     this.xtremandLogger.errorPage(error);
