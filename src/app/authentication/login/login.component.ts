@@ -23,6 +23,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     model: any = {};
     customResponse: CustomResponse = new CustomResponse();
     loading = false;
+    resendActiveMail = false;
     socialProviders = [{ "name": "salesforce", "iconName": "salesforce" },
     { "name": "facebook", "iconName": "facebook" },
     { "name": "twitter", "iconName": "twitter" },
@@ -72,10 +73,12 @@ export class LoginComponent implements OnInit, OnDestroy {
                       if (response.error_description === "Bad credentials") {
                           this.setCustomeResponse("ERROR", this.properties.BAD_CREDENTIAL_ERROR);
                       } else if (response.error_description === "User is disabled") {
-                          this.setCustomeResponse("ERROR", this.properties.USER_ACCOUNT_ACTIVATION_ERROR);
+                        this.resendActiveMail = true;
+                     //   this.setCustomeResponse("ERROR", this.properties.USER_ACCOUNT_ACTIVATION_ERROR);
                       }
                   }
                   else {
+                      this.resendActiveMail = false;
                       this.setCustomeResponse("ERROR", error);
                       this.xtremandLogger.error("error:" + error)
                   }
@@ -98,11 +101,15 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.customResponse = new CustomResponse(responseType, responseMessage, true);
         this.xtremandLogger.error(responseMessage);
     }
+    resendActivation(){
+
+    }
     ngOnInit() {
         localStorage.removeItem('currentUser');
     }
     ngOnDestroy() {
         this.referenceService.userProviderMessage = '';
+        this.resendActiveMail = false;
         $('#org-admin-deactivated').hide();
     }
 }
