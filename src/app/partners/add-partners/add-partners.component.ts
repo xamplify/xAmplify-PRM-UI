@@ -925,10 +925,12 @@ export class AddPartnersComponent implements OnInit {
                     let socialContact = new SocialContact();
                     let user = new User();
                     socialContact.id = i;
+                    if ( this.validateEmailAddress( this.getGoogleConatacts.contacts[i].emailId )){
                     socialContact.emailId = this.getGoogleConatacts.contacts[i].emailId;
                     socialContact.firstName = this.getGoogleConatacts.contacts[i].firstName;
                     socialContact.lastName = this.getGoogleConatacts.contacts[i].lastName;
                     this.socialPartnerUsers.push( socialContact );
+                    }
                     this.xtremandLogger.info( this.getGoogleConatacts );
                     this.contactService.socialProviderName = "";
                     $( "#Gfile_preview" ).show();
@@ -1059,10 +1061,12 @@ export class AddPartnersComponent implements OnInit {
                     let socialContact = new SocialContact();
                     let user = new User();
                     socialContact.id = i;
+                    if ( this.validateEmailAddress( this.getGoogleConatacts.contacts[i].emailId )){
                     socialContact.emailId = this.getGoogleConatacts.contacts[i].emailId;
                     socialContact.firstName = this.getGoogleConatacts.contacts[i].firstName;
                     socialContact.lastName = this.getGoogleConatacts.contacts[i].lastName;
                     this.socialPartnerUsers.push( socialContact );
+                    }
                     this.xtremandLogger.info( this.getGoogleConatacts );
                     $( "#Gfile_preview" ).show();
                     $( "#myModal .close" ).click()
@@ -1143,10 +1147,12 @@ export class AddPartnersComponent implements OnInit {
                     let socialContact = new SocialContact();
                     let user = new User();
                     socialContact.id = i;
+                    if ( this.validateEmailAddress( this.getGoogleConatacts.contacts[i].emailId )){
                     socialContact.emailId = this.getGoogleConatacts.contacts[i].emailId;
                     socialContact.firstName = this.getGoogleConatacts.contacts[i].firstName;
                     socialContact.lastName = this.getGoogleConatacts.contacts[i].lastName;
                     this.socialPartnerUsers.push( socialContact );
+                    }
                     this.xtremandLogger.info( this.getGoogleConatacts );
                     $( "#Gfile_preview" ).show();
                     $( "#myModal .close" ).click()
@@ -1327,10 +1333,12 @@ export class AddPartnersComponent implements OnInit {
                     let socialContact = new SocialContact();
                     let user = new User();
                     socialContact.id = i;
+                    if ( this.validateEmailAddress( this.getGoogleConatacts.contacts[i].emailId )){
                     socialContact.emailId = this.getGoogleConatacts.contacts[i].emailId;
                     socialContact.firstName = this.getGoogleConatacts.contacts[i].firstName;
                     socialContact.lastName = this.getGoogleConatacts.contacts[i].lastName;
                     this.socialPartnerUsers.push( socialContact );
+                    }
                     this.xtremandLogger.info( this.getGoogleConatacts );
                     $( "#Gfile_preview" ).show();
                     this.hideModal();
@@ -1386,10 +1394,12 @@ export class AddPartnersComponent implements OnInit {
                     let socialContact = new SocialContact();
                     let user = new User();
                     socialContact.id = i;
+                    if ( this.validateEmailAddress( this.getGoogleConatacts.contacts[i].emailId )){
                     socialContact.emailId = this.getGoogleConatacts.contacts[i].emailId;
                     socialContact.firstName = this.getGoogleConatacts.contacts[i].firstName;
                     socialContact.lastName = this.getGoogleConatacts.contacts[i].lastName;
                     this.socialPartnerUsers.push( socialContact );
+                    }
                     this.xtremandLogger.info( this.getGoogleConatacts );
                     $( "#Gfile_preview" ).show();
                     $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );

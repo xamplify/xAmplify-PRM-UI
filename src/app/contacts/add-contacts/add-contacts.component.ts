@@ -1193,10 +1193,12 @@ export class AddContactsComponent implements OnInit {
                     let socialContact = new SocialContact();
                     let user = new User();
                     socialContact.id = i;
+                    if ( this.validateEmailAddress( this.getZohoConatacts.contacts[i].emailId )){
                     socialContact.emailId = this.getZohoConatacts.contacts[i].emailId;
                     socialContact.firstName = this.getZohoConatacts.contacts[i].firstName;
                     socialContact.lastName = this.getZohoConatacts.contacts[i].lastName;
                     this.socialContactUsers.push( socialContact );
+                    }
                     this.xtremandLogger.info( this.getZohoConatacts );
                     $( "button#sample_editable_1_new" ).prop( 'disabled', false );
                     $( "button#cancel_button" ).prop( 'disabled', false );
@@ -1280,10 +1282,12 @@ export class AddContactsComponent implements OnInit {
                     let socialContact = new SocialContact();
                     let user = new User();
                     socialContact.id = i;
+                    if ( this.validateEmailAddress( this.getZohoConatacts.contacts[i].emailId )){
                     socialContact.emailId = this.getZohoConatacts.contacts[i].emailId;
                     socialContact.firstName = this.getZohoConatacts.contacts[i].firstName;
                     socialContact.lastName = this.getZohoConatacts.contacts[i].lastName;
                     this.socialContactUsers.push( socialContact );
+                    }
                     this.xtremandLogger.info( this.getZohoConatacts );
                     $( "button#sample_editable_1_new" ).prop( 'disabled', false );
                     $( "#Gfile_preview" ).show();
@@ -1524,10 +1528,12 @@ export class AddContactsComponent implements OnInit {
                     let socialContact = new SocialContact();
                     let user = new User();
                     socialContact.id = i;
+                    if ( this.validateEmailAddress( this.getSalesforceConatactList.contacts[i].emailId )){
                     socialContact.emailId = this.getSalesforceConatactList.contacts[i].emailId;
                     socialContact.firstName = this.getSalesforceConatactList.contacts[i].firstName;
                     socialContact.lastName = this.getSalesforceConatactList.contacts[i].lastName;
                     this.socialContactUsers.push( socialContact );
+                    }
                     this.xtremandLogger.info( this.getSalesforceConatactList );
                     $( "button#sample_editable_1_new" ).prop( 'disabled', false );
                     $( "#Gfile_preview" ).show();
@@ -1585,10 +1591,12 @@ export class AddContactsComponent implements OnInit {
                     let socialContact = new SocialContact();
                     let user = new User();
                     socialContact.id = i;
+                    if ( this.validateEmailAddress( this.getSalesforceConatactList.contacts[i].emailId )){
                     socialContact.emailId = this.getSalesforceConatactList.contacts[i].emailId;
                     socialContact.firstName = this.getSalesforceConatactList.contacts[i].firstName;
                     socialContact.lastName = this.getSalesforceConatactList.contacts[i].lastName;
                     this.socialContactUsers.push( socialContact );
+                    }
                     this.xtremandLogger.info( this.getSalesforceConatactList );
                     $( "button#sample_editable_1_new" ).prop( 'disabled', false );
                     $( "#Gfile_preview" ).show();
