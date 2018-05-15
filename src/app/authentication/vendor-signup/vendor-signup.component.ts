@@ -117,8 +117,8 @@ signUp() {
                     this.formErrors['emailId'] = 'Email Id already exists';
                     // this.isLoading = false;
                 }else if(error==='INVALID_VENDOR_EMAIL_ID'){
-                    this.formErrors['emailId'] = 'You cannot sign up with this email id';
-                } 
+                    this.formErrors['emailId'] = 'It looks like that email has already been used to create an account. If this is your email address, just log in to your account.';
+                }
                 else {
                     this.xtremandLogger.errorPage(error);
                 }
