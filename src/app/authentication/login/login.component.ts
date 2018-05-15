@@ -40,6 +40,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     public login() {
         this.loading = true;
+        this.resendActiveMail = false;
         if (!this.model.username || !this.model.password) {
             this.loading = false;
             this.setCustomeResponse("ERROR", this.properties.EMPTY_CREDENTIAL_ERROR);
