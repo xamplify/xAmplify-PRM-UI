@@ -215,19 +215,18 @@
                  </div> -->
                  <div class="col-xs-12 col-sm-3" *ngFor="let videoFile of pagination.pagedItems ;let i =index" >
                  <div class="grid-box" *ngIf="pagination.pagedItems && !httpRequestLoader.isLoading && !referenceService.isPlayVideo">
-                   <img src="{{videoFile.imagePath}}" height="50px" width="auto">
-                   <div>
-                    <h4 class="ellipsis" title="{{videoFile.title}}">{{videoFile.title | slice:0:25}}
-                      <span *ngIf="videoFile.title?.length>25">...</span>
-                    </h4>
-                    <h6 class="mt0"><b> #{{videoFile.views}}</b></h6>
-                    <span  class="mt10 mb0" *ngIf="videoFileService.videoType==='myVideos'"  title="Uploaded By" >by {{videoFile.uploadedUserName}}</span>
-                    <span  class="mt10 mb0" *ngIf="videoFileService.videoType==='partnerVideos'" title="Uploaded By" >by {{videoFile.uploadedBy | slice: 0: 21}}</span>
-                    <h6>
-                      <span class="mt10 mb0"  title="Video Length" >{{videoUtilService.truncateHourZeros(videoFile.videoLength)}}</span>
-                      <span class="mt10 mb0"  title="Uploaded Date">{{videoFile.uploadedDate }}</span>
-                    </h6>
-                  </div>
+                   <div class="video-thumbnail-wrapper">
+                       <img class="video-thumbnail" src="{{videoFile.imagePath}}" width="auto">
+                       <i class="fa fa-play-circle"></i>
+                       <span class="ellipsis video-title" title="{{videoFile.title}}">{{videoFile.title | slice:0:25}}<span *ngIf="videoFile.title?.length>25">...</span></span>
+                       <span class="views-count" title="views"><i class="fa fa-eye"></i>&nbsp;{{videoFile.views}}</span>
+                       <span class="video-duration"  title="Video Length">{{videoUtilService.truncateHourZeros(videoFile.videoLength)}}</span>
+
+                      <span  class="video-uploaded-by" *ngIf="videoFileService.videoType==='myVideos'"  title="Uploaded By">By {{videoFile.uploadedUserName}}</span>
+                      <span  class="video-uploaded-by" *ngIf="videoFileService.videoType==='partnerVideos'" title="Uploaded By">By {{videoFile.uploadedBy | slice: 0: 21}}</span>
+                      <span class="video-upload-date"  title="Uploaded Date">{{videoFile.uploadedDate }}</span>
+                   </div>
+                   
                    <div class="bookmark-ribbon" *ngIf="videoFileService.videoType === 'partnerVideos'">
                      <span style="margin: 0px -7px; font-size: 17px; color: white;">
                        <i *ngIf="videoFileService.videoType === 'partnerVideos'" class="fa fa-handshake-o"  aria-hidden="true"></i>
