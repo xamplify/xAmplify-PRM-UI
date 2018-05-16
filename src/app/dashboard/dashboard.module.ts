@@ -23,12 +23,13 @@ import { EditCompanyProfileComponent } from './company-profile/edit-company-prof
 import { CompanyProfileService } from './company-profile/services/company-profile.service';
 import { ReportsComponent } from './dashboard/reports/reports.component';
 import { CompanyPageComponent } from './company-profile/company-page/company-page.component';
+import { PartnerNotificationComponent } from './partner-notification/partner-notification.component';
 
 @NgModule({
     imports: [DasboardRoutingModule, SharedModule, CoreModule, CommonModule, DragulaModule, CommonComponentModule],
     declarations: [DashboardComponent, TableAdvanceComponent, ViewsReportComponent, ExtraFaqComponent,
         WelcomeComponent, MyProfileComponent, ProfileLockComponent, ProfileHelpComponent, DefaultPageComponent,
-        FollowersComponent, SharedComponent,EditCompanyProfileComponent, ReportsComponent, CompanyPageComponent
+        FollowersComponent, SharedComponent,EditCompanyProfileComponent, ReportsComponent, CompanyPageComponent, PartnerNotificationComponent
     ],
     exports: [],
     providers: [DashboardService,CompanyProfileService]

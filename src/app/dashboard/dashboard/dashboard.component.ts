@@ -75,7 +75,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     heatMapTooltip = 'Last 7 days';
     videoStatesTooltip = 'Last 7 days';
     isOnlyPartner:boolean;
-    partnerCampaignsCountMap: any;
 
     constructor(public router: Router, public dashboardService: DashboardService, public pagination: Pagination, public videosPagination: Pagination,
         public contactService: ContactService, public videoFileService: VideoFileService, public twitterService: TwitterService,
@@ -965,16 +964,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
            this.router.navigate(['/home/partners/manage']); 
        } else{ this.router.navigate(['/home/contacts/manage']); }
     }
-    getPartnerCampaignsCountMapGroupByCampaignType(userId: number){
-        this.campaignService.getPartnerCampaignsCountMapGroupByCampaignType(userId)
-            .subscribe(
-                data => {
-                    this.partnerCampaignsCountMap = data;
-                },
-                error => { },
-                () => this.xtremandLogger.info('Finished listCampaign()')
-            );
-    }
+
 
     ngOnInit() {
         this.pagination.maxResults = 12;
@@ -1002,10 +992,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
             this.genderDemographics(this.loggedInUserId);
 
             console.log(this.authenticationService.getRoles());
-
-            if (this.authenticationService.isPartner()) {
-                this.getPartnerCampaignsCountMapGroupByCampaignType(this.loggedInUserId);
-            }
         } catch (err) {
             console.log(err);
         }

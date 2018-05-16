@@ -1,0 +1,33 @@
+.notification-box {
+	position: relative;
+	text-align: center;
+	margin: 10px 0 15px 0;
+	padding: 10px;
+	cursor: pointer
+}
+
+.notification-box i {
+	font-size: 24px;
+	padding: 20px 0 0 0;
+	color: #fff;
+}
+
+.notification-box h4 {
+	padding: 10px;
+	color: #fff;
+}
+
+.notification-box h3 {
+	position: absolute;
+	top: -35px;
+	right: -14px;
+	padding: 5px 10px;
+	border-radius: 50%;
+	background: #ffffff;
+	color: #468bca;
+	border-color: #fff;
+	border: 1px solid #cacaca;
+	font-weight: bold;
+	min-height: 33px;
+	min-width: 33px;
+}
