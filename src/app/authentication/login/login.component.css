@@ -2,7 +2,7 @@ a.forget-password:hover {color: #4db1e2;}
 .login .content .login-form, .login .content .forget-form {padding: 3px 0;}
 .login-options h4 {font-weight: normal;}
 .create-account {background-color: rgb(73, 143, 215,0.5) !important;}
-.alert-dismissible .close{top:10px;right:10px}
+.alert-dismissible .close{top: 0 !important;right: 0px !important;}
 .alert-danger{background-color:#ec6262}
 .alert{padding:10px}
 .alert-success,.alert-danger,.alert-warning>h5{font-size:14px}

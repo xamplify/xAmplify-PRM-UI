@@ -1,4 +1,4 @@
-.alert-dismissible .close{top:10px;right:10px}
+.alert-dismissible .close{top: 0 !important;right: 0px !important;}
 .alert-success,.alert-danger,.alert-warning{color:#fff;border-radius:0}
 .alert-success{background-color:#77bf81}
 .alert-danger{background-color:#ec6262}
