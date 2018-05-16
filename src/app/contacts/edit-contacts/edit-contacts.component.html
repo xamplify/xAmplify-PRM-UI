@@ -469,7 +469,7 @@
 															<td align="center"><input type="checkbox"
 																checked="newContact.checked"></td>
 															<td *ngIf="isPartner">
-															<app-user-info [isPartnerEntityInfo]="true" [userInfo]="newContact"> </app-user-info>
+															<app-user-info [isPartnerEntityInfo]="true" [isPartnerInfo]="true" [userInfo]="newContact"> </app-user-info>
 															</td>
 															<td>
 															<app-user-info  [userInfo]="newContact"> </app-user-info>
@@ -529,12 +529,12 @@
 																lang="{{contact.name}}" name="campaignContact[]"
 																value="{{contact.id}}" id="{{contact.id}}"
 																(click)="highlightRow(contact.id,$event)" /></td>
-															<td>
-															<app-user-info [isPartnerEntityInfo]="true"  [userInfo]="contact"> </app-user-info>
+															<td *ngIf="isPartner">
+															<app-user-info [isPartnerEntityInfo]="true" [isPartnerInfo]="true" [userInfo]="contact"> </app-user-info>
 															</td>
-															<!-- <td *ngIf="!isPartner">
+															<td *ngIf="!isPartner">
 															<app-user-info  [userInfo]="contact"> </app-user-info>
-															</td> -->
+															</td>
 															<td>
 																<h5>
 																	<span *ngIf="contact?.mobileNumber; else NA">{{contact.mobileNumber}}</span>
@@ -673,12 +673,12 @@
 													value="{{allcontacts.id}}" id="{{allcontacts.id}}"
 													(click)="invalidContactsSelectedUserIds(allcontacts.id,$event)" />
 												</td>
-												<td>
-													<app-user-info [isPartnerEntityInfo]="true" [userInfo]="allcontacts"> </app-user-info>
+												<td *ngIf="isPartner">
+													<app-user-info [isPartnerEntityInfo]="true" [isPartnerInfo]="true" [userInfo]="allcontacts"> </app-user-info>
 												</td>
-												<!-- <td *ngIf="!isPartner">
+												<td *ngIf="!isPartner">
 													<app-user-info  [userInfo]="allcontacts"> </app-user-info>
-												</td> -->
+												</td>
 												<td>
 													<h5>
 														<span *ngIf="allcontacts?.mobileNumber; else NA">{{allcontacts.mobileNumber}}</span>

@@ -9,6 +9,7 @@ declare var $: any;
 export class UserInfoComponent implements OnInit {
     @Input() userInfo: any;
     @Input() isPartnerEntityInfo: boolean;
+    @Input() isPartnerInfo: boolean;
     backgroudColor: any;
     constructor() { }
 

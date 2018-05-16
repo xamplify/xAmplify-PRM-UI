@@ -416,7 +416,7 @@ img:hover {
 												*ngFor="let newContact of newPartnerUser; let i = index">
 											<tr class='row_{{i}}'>
 												<td>
-												<app-user-info [isPartnerEntityInfo]="true"  [userInfo]="newContact"> </app-user-info>
+												<app-user-info [isPartnerEntityInfo]="true" [isPartnerInfo]="true" [isPartnerInfo]="true" [userInfo]="newContact"> </app-user-info>
 												</td>
 												<td>
 													<h5>
@@ -544,7 +544,7 @@ img:hover {
 																value="{{contact.id}}" id="{{contact.id}}"
 																(click)="editContactComponent.highlightRow(contact.id,$event)" /></td>
 												<td>
-													<app-user-info [isPartnerEntityInfo]="true"  [userInfo]="contact"> </app-user-info>
+													<app-user-info [isPartnerEntityInfo]="true" [isPartnerInfo]="true"  [userInfo]="contact"> </app-user-info>
 												</td>
 												<td>
 													<h5>
