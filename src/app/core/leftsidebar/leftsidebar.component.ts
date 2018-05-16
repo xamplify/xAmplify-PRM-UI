@@ -15,6 +15,7 @@ export class LeftsidebarComponent implements OnInit {
     baseRoute: string;
     enableLink = true;
     roleName: Roles= new Roles();
+    isOnlyPartner:boolean = false;
     constructor(location: Location, public authService: AuthenticationService, private refService: ReferenceService,private router:Router) {
         this.updateLeftSideBar(location);
     }
@@ -95,7 +96,7 @@ export class LeftsidebarComponent implements OnInit {
     
 
   ngOnInit() {
-
+      this.isOnlyPartner = this.authService.isOnlyPartner();
   }
   
   logout(){

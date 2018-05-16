@@ -140,7 +140,11 @@
 						</a>
 						<ul class="sub-menu">
 						<li>
-								<a  [routerLink] ="['./campaigns']" [class.disabled]="!authService.user.hasCompany?true:null">
+								<a *ngIf="isOnlyPartner && !authService.module.isCampaign"  [routerLink] ="['./campaigns/partner/regular']" [class.disabled]="!authService.user.hasCompany?true:null">
+								<i class="fa fa-bullhorn"></i>
+								<span class="title">Create Nurture Campaign</span>
+								</a>
+								<a *ngIf="!isOnlyPartner && authService.module.isCampaign"  [routerLink] ="['./campaigns']" [class.disabled]="!authService.user.hasCompany?true:null">
 								<i class="fa fa-bullhorn"></i>
 								<span class="title">Create Campaign</span>
 								</a>
