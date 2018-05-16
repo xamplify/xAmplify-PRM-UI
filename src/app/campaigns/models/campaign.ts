@@ -49,5 +49,5 @@ export class Campaign {
     createdFromVideos=false;
     scheduleType:string = "";
     nurtureCampaign = false;
-    
+    campaignScheduleType:string = "";
 }

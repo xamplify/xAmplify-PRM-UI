@@ -311,7 +311,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 this.isScheduleSelected = true;
                 this.launchCampaignTabClass = this.successTabClass;
             }*/
-            if(this.campaignService.campaign.scheduleTime!=null && this.campaignService.campaign.scheduleTime!="null" ){
+            if(this.campaignService.campaign.scheduleTime!=null && this.campaignService.campaign.scheduleTime!="null"){
                 this.campaign.scheduleCampaign  = this.sheduleCampaignValues[1];
                 this.isScheduleSelected = true;
                 this.launchCampaignTabClass = this.successTabClass;

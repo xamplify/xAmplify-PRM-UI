@@ -176,7 +176,6 @@ export class EditPartnerCampaignsComponent implements OnInit {
             if(this.campaignService.reDistributeCampaign!=undefined){
                 console.log(this.campaignService.reDistributeCampaign);
                 this.setCampaignData(this.campaignService.reDistributeCampaign);
-                
             }else{
                 this.router.navigate(['/home/campaigns/partner/regular']);
             }
@@ -215,7 +214,7 @@ export class EditPartnerCampaignsComponent implements OnInit {
         }else if(this.campaignType.includes('REGULAR')){
             this.campaignType=="REGULAR";
         }
-        if(this.campaign.scheduleTime!=null && this.campaign.scheduleTime!="null" ){
+        if(this.campaign.scheduleTime!=null && this.campaign.scheduleTime!="null" && this.campaign.campaignScheduleType!="NOW"){
             this.campaign.scheduleCampaign  = this.campaignLaunchOptions[1];
         }else{
             this.campaign.scheduleCampaign  = this.campaignLaunchOptions[2];
