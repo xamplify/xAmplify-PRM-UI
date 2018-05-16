@@ -690,7 +690,7 @@ img:hover {
 								<div class="textCss"></div>
 								<div style="color: red" *ngIf="!validEmailPatternSuccess">Invalid
 									EmailId</div>
-								<div style="color: red" *ngIf="isEmailExist">Given Partner already exist</div>
+								<div style="color: red" *ngIf="isEmailExist">This email address has already been added</div>
 							</div>
 						</div>
 						<div class="form-group">
@@ -727,7 +727,17 @@ img:hover {
 							<label class="control-label col-sm-2" for="phone"
 								style="color: green"><i class="fa fa-phone"
 								aria-hidden="true"></i></label>
+								<div class="col-sm-10">
+						<!-- <h1>{{title}}</h1> -->
+						<div class="row">
 							<div class="col-sm-10">
+								<int-phone-prefix [(ngModel)]="addPartnerUser.mobileNumber" [ngModelOptions]="{standalone: true}"></int-phone-prefix>
+								<!-- <input type="tel" id="demo" placeholder=""> -->
+
+							</div>
+						</div>
+						</div>
+						<!-- 	<div class="col-sm-10">
 								<input type="text"
 									onkeypress="return event.charCode >= 48 && event.charCode <= 57"
 									style="border: none" class="form-control" id="phone"
@@ -736,7 +746,7 @@ img:hover {
 									placeholder="Phone Number" maxlength="10"
 									autocomplete="off">
 								<div class="textCss"></div>
-							</div>
+							</div> -->
 						</div>
 						<!-- <div class="form-group">
 							<label class="control-label col-sm-2" for="note"

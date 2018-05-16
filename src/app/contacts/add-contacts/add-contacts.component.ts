@@ -1818,6 +1818,8 @@ export class AddContactsComponent implements OnInit {
       }
 
     ngOnInit() {
+/*        $("#demo").intlTelInput();*/
+
         this.socialContactImage();
         this.hideModal();
         this.loadContactListsNames();

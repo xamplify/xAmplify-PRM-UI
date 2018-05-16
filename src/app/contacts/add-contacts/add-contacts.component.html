@@ -785,7 +785,20 @@ img:hover {
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="control-label col-sm-2" for="phone"
+					<label class="control-label col-sm-2" for="phone"
+							style="color: green"><i class="fa fa-phone"
+							aria-hidden="true"></i></label>
+						<div class="col-sm-10">
+						<!-- <h1>{{title}}</h1> -->
+						<div class="row">
+							<div class="col-sm-10">
+								<int-phone-prefix [(ngModel)]="addContactuser.mobileNumber" [ngModelOptions]="{standalone: true}"></int-phone-prefix>
+								<!-- <input type="tel" id="demo" placeholder=""> -->
+
+							</div>
+						</div>
+						</div>
+						<!-- <label class="control-label col-sm-2" for="phone"
 							style="color: green"><i class="fa fa-phone"
 							aria-hidden="true"></i></label>
 						<div class="col-sm-10">
@@ -797,7 +810,7 @@ img:hover {
 								placeholder="Phone Number" maxlength="10"
 								autocomplete="off">
 							<div class="textCss"></div>
-						</div>
+						</div> -->
 					</div>
 					<!-- <div class="form-group">
 						<label class="control-label col-sm-2" for="note"

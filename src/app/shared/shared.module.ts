@@ -20,16 +20,20 @@ import { UpdateStatusComponent } from '../social/common/update-status/update-sta
 import { ConnectAccountsComponent } from '../social/common/connect-accounts/connect-accounts.component';
 import { SocialLoaderComponent } from '../social/common/social-loader/social-loader.component';
 import { CommonComponentModule } from '../common/common.module';
+import { InternationalPhoneModule } from 'ng4-intl-phone';
+
 
 @NgModule({
         imports: [CommonModule, RouterModule, FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,
                 TagInputModule, HttpModule, Ng2FilterPipeModule, ColorPickerModule, TimepickerModule.forRoot()
-                , BootstrapSwitchModule.forRoot(), TimezonePickerModule, LoadingModule, CommonComponentModule],
+                , BootstrapSwitchModule.forRoot(), TimezonePickerModule, LoadingModule, CommonComponentModule,
+                InternationalPhoneModule ],
         declarations: [LoaderComponent, UpdateStatusComponent, ConnectAccountsComponent, SocialLoaderComponent],
         exports: [FileSelectDirective, FileDropDirective, FormsModule, CommonModule, RouterModule, ColorPickerModule,
                 FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule, TagInputModule,
                 HttpModule, Ng2FilterPipeModule, LoaderComponent, TimepickerModule,
-                BootstrapSwitchModule, TimezonePickerModule, UpdateStatusComponent, ConnectAccountsComponent, LoadingModule, SocialLoaderComponent],
+                BootstrapSwitchModule, TimezonePickerModule, UpdateStatusComponent, ConnectAccountsComponent, LoadingModule, SocialLoaderComponent,
+                InternationalPhoneModule],
         providers: [],
 })
 
