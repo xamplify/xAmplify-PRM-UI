@@ -158,43 +158,43 @@
                          <div class="mix-details" style="z-index: 700;padding: 11px;">
                             <h4  title={{videoFile.title}} >{{videoFile.title | slice: 0: 23}} <span *ngIf="videoFile.title?.length>23">...</span> </h4>
                            <div style="top: 2%; position: relative; margin-left: 5px;" *ngIf="videoFileService.videoType==='myVideos'">
-                             <a class="mix-preview2" (click)="showPlayVideo(videoFile)" title="Play Video" data-rel="">
+                             <a class="mix-preview2" (click)="showPlayVideo(videoFile)" title="Play Video">
                              <i class="fa fa-play"></i>
                                </a>
                              <a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor" class="mix-preview1" style="left: 16%;"
-                              (click)="showEditVideo(videoFile)" title="Edit Video" data-rel="">
+                              (click)="showEditVideo(videoFile)" title="Edit Video">
                              <i class="fa fa-pencil-square-o"></i>
                                </a>
                              <a class="mix-preview3" *ngIf="videoFile.viewBy=='DRAFT'" title="Can't show Reports for DRAFT" style="margin-left:-4px; width: 44px;cursor: not-allowed !important;"
-                              data-rel=""><i class="fa fa-line-chart"></i></a>
+                             ><i class="fa fa-line-chart"></i></a>
                               <a class="mix-preview3" *ngIf="videoFile.viewBy!=='DRAFT'" style="margin-left:-4px; width: 44px;" (click)="showCampaignVideoReport(videoFile)" title="Video Based Reports"
-                              data-rel=""><i class="fa fa-line-chart"></i></a>
+                             ><i class="fa fa-line-chart"></i></a>
                            </div>
                            <div style="top: 27%; position: relative;" *ngIf="videoFileService.videoType==='myVideos'">
                              <span *ngIf="hasAllAccess || (hasCampaignRole && hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor">
-                             <a class="mix-preview2 " *ngIf="videoFile.viewBy!='DRAFT'" (click)="campaignRouter(videoFile)" title="Create Campaign" data-rel=""
+                             <a class="mix-preview2 " *ngIf="videoFile.viewBy!='DRAFT'" (click)="campaignRouter(videoFile)" title="Create Campaign"
                               style="left:29%;margin-top :18px">
                              <i class="fa fa-bullhorn"></i>
                               </a>
-                             <a class="mix-preview2" *ngIf="videoFile.viewBy=='DRAFT'" title="Can't create a Campaign for DRAFT" data-rel="" style="left:29%;margin-top :18px; cursor: not-allowed !important;">
+                             <a class="mix-preview2" *ngIf="videoFile.viewBy=='DRAFT'" title="Can't create a Campaign for DRAFT" style="left:29%;margin-top :18px; cursor: not-allowed !important;">
                              <i class="fa fa-bullhorn" title="Can't create a Campaign for DRAFT"></i>
                               </a>
                             </span>
                              <a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId == videoFile.uploadedUserId) || authenticationService.module.isVendor" class="mix-preview6 " (click)="deleteVideoAlert(videoFile.alias,i ,videoFile.title)"
-                              onMouseOver="this.style.color='#fff'" title="Delete Video" data-rel="" lang="{{videoFile.id}}" style="left:50%; margin-top :18px">
+                              onMouseOver="this.style.color='#fff'" title="Delete Video" lang="{{videoFile.id}}" style="left:50%; margin-top :18px">
                                             <i class="fa fa-trash" style="color: red !important"  onMouseOut="this.style.color='red'" onMouseOver="this.style.color='#fff'"></i>
                                           </a>
                            </div>
 
                            <div style="top: 2%; position: relative; margin-left: 5px;" *ngIf="videoFileService.videoType==='partnerVideos'">
                              <a class="mix-preview2" (click)="showPlayVideo(videoFile)"  style="margin-top: 29px; left: 27%;"
-                             title="Play Video" data-rel="">
+                             title="Play Video">
                              <i class="fa fa-play"></i>
                                </a>
                            </div>
                            <div style="top: 27%; position: relative;" *ngIf="videoFileService.videoType==='partnerVideos'">
                              <span>
-                             <a class="mix-preview2 " (click)="campaignRouter(videoFile)" title="Create Campaign" data-rel=""
+                             <a class="mix-preview2 " (click)="campaignRouter(videoFile)" title="Create Campaign"
                               style="left: 50%;margin-top: -9px;">
                              <i class="fa fa-bullhorn"></i>
                               </a>
@@ -217,7 +217,7 @@
                  <div class="grid-box" *ngIf="pagination.pagedItems && !httpRequestLoader.isLoading && !referenceService.isPlayVideo">
                    <div class="video-thumbnail-wrapper">
                        <img class="video-thumbnail" src="{{videoFile.imagePath}}" width="auto">
-                       <i class="fa fa-play-circle"></i>
+                       <i class="fa fa-play-circle" (click)="showPlayVideo(videoFile)"></i>
                        <span class="ellipsis video-title" title="{{videoFile.title}}">{{videoFile.title | slice:0:25}}<span *ngIf="videoFile.title?.length>25">...</span></span>
                        <span class="views-count" title="views"><i class="fa fa-eye"></i>&nbsp;{{videoFile.views}}</span>
                        <span class="video-duration"  title="Video Length">{{videoUtilService.truncateHourZeros(videoFile.videoLength)}}</span>
@@ -238,24 +238,26 @@
                    <div class="bar">
                      <div >
                       <ng-container  *ngIf="videoFileService.videoType==='myVideos'">
-                      <a  (click)="showPlayVideo(videoFile)" title="Play Video" data-rel="">
+                      <a  (click)="showPlayVideo(videoFile)" title="Play Video">
                        <i class="fa fa-play"></i>
+                      </a>
+                        <a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor"
+                          (click)="showEditVideo(videoFile)" title="Edit Video">
+                          <i class="fa fa-pencil-square-o"></i>
                         </a>
-                       <a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor"
-                        (click)="showEditVideo(videoFile)" title="Edit Video" data-rel="">
-                       <i class="fa fa-pencil-square-o"></i>
-                         </a>
-                       <a *ngIf="videoFile.viewBy=='DRAFT'" title="Can't show Reports for DRAFT"
-                        data-rel=""><i class="fa fa-line-chart"></i></a>
-                        <a  *ngIf="videoFile.viewBy!=='DRAFT'" (click)="showCampaignVideoReport(videoFile)" title="Video Based Reports"
-                        data-rel=""><i class="fa fa-line-chart"></i></a>
+                        <a *ngIf="videoFile.viewBy=='DRAFT'" title="Can't show Reports for DRAFT video">
+                          <i class="fa fa-line-chart"></i>
+                        </a>
+                        <a  *ngIf="videoFile.viewBy!=='DRAFT'" (click)="showCampaignVideoReport(videoFile)" title="Video Based Reports">
+                          <i class="fa fa-line-chart"></i>
+                        </a>
                       </ng-container>
                         <ng-container *ngIf="videoFileService.videoType==='myVideos'">
                           <span *ngIf="hasAllAccess || (hasCampaignRole && hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor">
-                          <a *ngIf="videoFile.viewBy!='DRAFT'" (click)="campaignRouter(videoFile)" title="Create Campaign" data-rel="" >
+                          <a *ngIf="videoFile.viewBy!='DRAFT'" (click)="campaignRouter(videoFile)" title="Create Campaign" >
                            <i class="fa fa-bullhorn"></i>
                            </a>
-                          <a  *ngIf="videoFile.viewBy=='DRAFT'" title="Can't create a Campaign for DRAFT" data-rel="" >
+                          <a  *ngIf="videoFile.viewBy=='DRAFT'" title="Can't create a Campaign for DRAFT" >
                           <i class="fa fa-bullhorn" title="Can't create a Campaign for DRAFT"></i>
                            </a>
                          </span>
@@ -266,16 +268,12 @@
                         </ng-container>
 
                         <ng-container  *ngIf="videoFileService.videoType==='partnerVideos'">
-                          <a (click)="showPlayVideo(videoFile)" title="Play Video" data-rel="">
-                          <i class="fa fa-play"></i>
-                            </a>
-                        </ng-container>
-                        <ng-container *ngIf="videoFileService.videoType==='partnerVideos'">
-                          <span>
+                          <a (click)="showPlayVideo(videoFile)" title="Play Video">
+                            <i class="fa fa-play"></i>
+                          </a>
                           <a (click)="campaignRouter(videoFile)" title="Create Campaign">
-                           <i class="fa fa-bullhorn"></i>
-                           </a>
-                        </span>
+                            <i class="fa fa-bullhorn"></i>
+                          </a>
                         </ng-container>
                      </div>
 

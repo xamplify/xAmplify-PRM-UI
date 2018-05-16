@@ -163,12 +163,13 @@ h3 {
 	visibility: visible;
 }
 .fa.fa-play-circle{
-	visibility: hidden;
+    visibility: hidden;
+    font-size: 4em;
+    color: #ffffff;
     position: absolute;
-    font-size: 5em;
-    top: 80px;
-    left: 128px;
-    color: #fff;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
 }
 .bar {
 	transition: visibility 0s, opacity 0.2s linear;
