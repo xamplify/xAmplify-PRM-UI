@@ -571,6 +571,7 @@ export class EditCompanyProfileComponent implements OnInit {
 
     addPhoneError() {
         this.phoneError = true;
+        this.phoneErrorMessage = "Phone number is mandatory";
         this.phoneDivClass = this.refService.errorClass;
         this.disableButton();
     }
@@ -693,7 +694,7 @@ export class EditCompanyProfileComponent implements OnInit {
     }
 
     validatePhone() {
-        if ($.trim(this.companyProfile.phone).length > 0) {
+        if (this.companyProfile.phone) {
             if (!this.regularExpressions.PHONE_NUMBER_PATTERN.test(this.companyProfile.phone)) {
                 this.addPhoneError();
                 this.phoneErrorMessage = "Invalid Contact Number"
@@ -701,7 +702,7 @@ export class EditCompanyProfileComponent implements OnInit {
                 this.removePhoneError();
             }
         } else {
-            this.removePhoneError();
+            this.addPhoneError();
         }
     }
 
@@ -839,7 +840,7 @@ export class EditCompanyProfileComponent implements OnInit {
                 }
             }
         }
-    
+
     }
 
     changeBackGroundLogo(inputFile) {
