@@ -5,7 +5,7 @@
 	</style>
 <div class="row">
 	<div class="col-xs-12 col-sm-6 p5">
-		<div class="portlet light">
+		<div class="portlet light" style="position:relative">
 				<div id="overLayImage"></div>
 				<div id="overlay-logo"  class="video-js"  [ngClass]="{'logoCss':!fullScreenMode , 'logoFullscreen' :fullScreenMode}" >
 					<a [href]="logoDescriptionUrl" target="_blank"  [class.disabled]="logoDescriptionUrl===null">
@@ -43,7 +43,7 @@
 							<tr>
 								<td class="first"></td>
 							</tr>
-						</table>  
+						</table>
 						<h5 class="title" style="margin-top: -2px;color: #3d3d3e;font-weight: 400;"> Total minutes watched by top {{minutesWatchedUsers}} users </h5>
 					</div>
 					<div class="col-xs-12 col-md-3 text-center" style="padding: 0" (click)="watchedFullyDetailReport()">
@@ -236,7 +236,7 @@
 							</tbody>
 						</table>
 						<!--pager here  -->
-						<app-pagination *ngIf="pagination.pagedItems?.length > 0" [pagination]="pagination" [type]="'userMinutesWatched'" (notifyParent)="setPage($event)" 
+						<app-pagination *ngIf="pagination.pagedItems?.length > 0" [pagination]="pagination" [type]="'userMinutesWatched'" (notifyParent)="setPage($event)"
 						(notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
 					</div>
 				</div>

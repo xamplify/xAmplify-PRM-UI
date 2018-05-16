@@ -71,11 +71,11 @@ text-align: center;
 	text-align: center;
 }
 .logoCss{
-    position: relative;
+    position: absolute;
     width: 91px;
     height: 1px;
-    right: -536px;
-    top: 9px;
+    right: 15px;
+    top: 15px;
     background: transparent;
     z-index: 99;
 }

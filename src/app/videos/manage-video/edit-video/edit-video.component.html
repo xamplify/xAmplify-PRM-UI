@@ -41,7 +41,8 @@
 		<div class="row margin-bottom-30">
 			<!-- video started -->
 			<div class="col-xs-12 col-sm-12 col-md-6" style="padding-top: 28px">
-				<div id="overLayImage"></div>
+        <div style="position:relative">
+        <div id="overLayImage"></div>
 				<div id="overlay-logo" class="video-js" [ngClass]="{'logoCss':!fullScreenMode , 'logoFullscreen' :fullScreenMode}">
 					<a [href]="logoDescriptionUrl" target="_blank" [class.disabled]="!logoDescriptionUrl">
 						<img *ngIf="brandLogoUrl && enableVideoLogo" [src]="authenticationService.MEDIA_URL + brandLogoUrl" class="img-responsive">
@@ -53,7 +54,8 @@
 				</div>
 				<div *ngIf="is360Value">
 					<div id="newPlayerVideo"></div>
-				</div>
+        </div>
+        </div>
 				<div id="overLayDialog"></div>
 				<!-- video overlay modal popup -->
 				<div id="overlay-modal" class="video-js overlay is360video" [class.overlaySet]="!overLaySet" style="height: 299px; width:100%;color:white !important; background-color:rgba(29, 25, 25, 0.72);">

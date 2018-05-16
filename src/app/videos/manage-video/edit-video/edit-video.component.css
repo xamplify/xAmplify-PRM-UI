@@ -156,11 +156,11 @@ textarea {
     padding: 10px;
 }
 .logoCss{
-    position: relative;
+    position: absolute;
     width: 91px;
     height: 1px;
-    right: -545px;
-    top: 9px;
+    right: 15px;
+    top: 15px;
     background: transparent;
     z-index: 99;
 }
