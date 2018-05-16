@@ -44,13 +44,12 @@
 				<ul class="nav navbar-nav pull-right">
 					<!-- BEGIN NOTIFICATION DROPDOWN -->
 
-						<li *ngIf="authenticationService.module.isCompanyPartner && !authenticationService.module.isOrgAdmin && authenticationService.user.hasCompany" style="margin-top: 17px;margin-right: 5px;">
-						<!-- refService.hasCompany -->
+					<!-- 	<li *ngIf="authenticationService.module.isCompanyPartner && !authenticationService.module.isOrgAdmin && authenticationService.user.hasCompany" style="margin-top: 17px;margin-right: 5px;">
 						<button class="btn btn-primary" [routerLink]="['/home/campaigns/select']">
 							<span class="hidden-xs">Create Campaign</span>
 							<i class="fa fa-bullhorn" data-toggle="tooltip"></i>
 						</button>
-					</li>
+					</li> -->
 					<li *ngIf="(authenticationService.module.hasVideoRole || authenticationService.module.isOrgAdmin || authenticationService.module.isVendor)&&authenticationService.user.hasCompany" style="margin-top: 17px;margin-right: 5px;">
 						<!-- refService.hasCompany -->
 						<button class="btn btn-primary" [routerLink]="['/home/videos']">

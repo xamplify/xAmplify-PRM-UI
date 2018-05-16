@@ -56,7 +56,7 @@ export class ReferenceService {
     reportName: string;
     partnerCount:number;
     userProviderMessage = '';
-    companyId:number;
+    companyId:number=0;
     isDisabling = false;
     videoBrandLogo: string;
     videoType = "";

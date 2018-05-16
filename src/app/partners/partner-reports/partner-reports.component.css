@@ -42,3 +42,33 @@
 	background-color: #6dcff6;
 }
 
+.more {
+    color: #FFF;
+    background-color: #357ca5;
+}
+.more {
+    color: #FFF;
+    background-color: #258fd7;
+}
+.more {
+    clear: both;
+    display: block;
+    padding: 6px 10px;
+    position: relative;
+    text-transform: uppercase;
+    font-weight: 300;
+    font-size: 11px;
+    opacity: .7;
+}
+.center-aligned{
+	text-align: left;
+}
+
+  
+  .blur {
+	-webkit-filter: blur(1px);
+	-moz-filter: blur(1px);
+	-o-filter: blur(1px);
+	-ms-filter: blur(1px);
+	filter: blur(1px);
+}

@@ -173,7 +173,7 @@
 					<div *ngIf="pagination.pagedItems.length !== 0">
 								<app-pagination [pagination]="pagination" [type]="'t'"
 								 (notifyParent)="setPage($event)" (notifyParentDropDown)="listEmailTemplates($event)"></app-pagination>
-						</div>
+					</div>
 						<!-- End of 24 -->
 				<div *ngIf="pagination.totalRecords==0" class="alert alert-info"><strong>No Email Templates Found</strong></div>
 			</div>
