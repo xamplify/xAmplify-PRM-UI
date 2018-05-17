@@ -61,10 +61,8 @@
                    </ul></div>
                  </div>
                </div>
-               <!-- <app-loader *ngIf="httpRequestLoader.isLoading && !isListView  && !referenceService.isPlayVideo"></app-loader>
-               <app-list-loader *ngIf="httpRequestLoader.isLoading && isListView && !referenceService.isPlayVideo"></app-list-loader> -->
-               <app-grid-loader *ngIf="httpRequestLoader.isLoading && !isListView && !referenceService.isPlayVideo"></app-grid-loader>
-               <app-list-loader *ngIf="httpRequestLoader.isLoading && isListView"></app-list-loader>
+               <app-grid-loader *ngIf="httpRequestLoader.isLoading && !isListView  && !referenceService.isPlayVideo"></app-grid-loader>
+               <app-list-loader *ngIf="httpRequestLoader.isLoading && isListView && !referenceService.isPlayVideo"></app-list-loader>
                <app-play-video-loader *ngIf="referenceService.isPlayVideo"></app-play-video-loader>
                <div class="margin-top-10">
                  <div *ngIf="!httpRequestLoader.isLoading  && !referenceService.isPlayVideo">
@@ -220,14 +218,13 @@
                    <div class="video-thumbnail-wrapper">
                        <img class="video-thumbnail" src="{{videoFile.imagePath}}" width="auto">
                        <i class="fa fa-play-circle" (click)="showPlayVideo(videoFile)"></i>
-                       <span class="ellipsis video-title" title="{{videoFile.title}}">{{videoFile.title | slice:0:25}}<span *ngIf="videoFile.title?.length>25">...</span></span>
                        <span class="views-count" title="views"><i class="fa fa-eye"></i>&nbsp;{{videoFile.views}}</span>
                        <span class="video-duration"  title="Video Length">{{videoUtilService.truncateHourZeros(videoFile.videoLength)}}</span>
-
+                   </div>
+                      <span class="ellipsis video-title" title="{{videoFile.title}}">{{videoFile.title | slice:0:25}}<span *ngIf="videoFile.title?.length>25">...</span></span>
                       <span  class="video-uploaded-by" *ngIf="videoFileService.videoType==='myVideos'"  title="Uploaded By">By {{videoFile.uploadedUserName}}</span>
                       <span  class="video-uploaded-by" *ngIf="videoFileService.videoType==='partnerVideos'" title="Uploaded By">By {{videoFile.uploadedBy | slice: 0: 21}}</span>
                       <span class="video-upload-date"  title="Uploaded Date">{{videoFile.uploadedDate }}</span>
-                   </div>
 
                    <div class="bookmark-ribbon" *ngIf="videoFileService.videoType === 'partnerVideos'">
                      <span style="margin: 0px -7px; font-size: 17px; color: white;">
@@ -240,9 +237,6 @@
                    <div class="bar">
                      <div >
                       <ng-container  *ngIf="videoFileService.videoType==='myVideos'">
-                      <a  (click)="showPlayVideo(videoFile)" title="Play Video">
-                       <i class="fa fa-play"></i>
-                      </a>
                         <a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor"
                           (click)="showEditVideo(videoFile)" title="Edit Video">
                           <i class="fa fa-pencil-square-o"></i>
@@ -270,9 +264,6 @@
                         </ng-container>
 
                         <ng-container  *ngIf="videoFileService.videoType==='partnerVideos'">
-                          <a (click)="showPlayVideo(videoFile)" title="Play Video">
-                            <i class="fa fa-play"></i>
-                          </a>
                           <a (click)="campaignRouter(videoFile)" title="Create Campaign">
                             <i class="fa fa-bullhorn"></i>
                           </a>
