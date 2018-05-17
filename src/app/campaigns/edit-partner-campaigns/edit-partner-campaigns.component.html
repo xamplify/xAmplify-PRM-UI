@@ -238,9 +238,9 @@
 		</div>
 <div [hidden]="!enableWorkFlow">
 	<div class="col-xs-6">
-		<a *ngIf="emailTemplateHrefLinks?.length==0" class="dashboard-stat yellow-gold"
+		<a *ngIf="emailTemplateHrefLinks?.length==0" class="dashboard-stat yellow-gold blur"
 			style="background-color: #f76c1a;" title="No Urls Found">
-			<i class="fa fa-plus-square p0"></i>Add an Auto-response to a website visit
+			<i class="fa fa-ban p0"></i>Add an Auto-response to a website visit
 		</a>
 		<a *ngIf="emailTemplateHrefLinks?.length>0" class="dashboard-stat yellow-gold" style="background-color: #f76c1a;"
 			(click)="addClickRows()">
@@ -280,7 +280,7 @@
 									<option [value]="13" [selected]="reply.actionId==13">Email Opened</option>
 									<option [value]="16" [selected]="reply.actionId ==16">Send Immediately After Email Opened</option>
 									<option [value]="22" [selected]="reply.actionId ==22" *ngIf="campaign.channelCampaign">Send If Partner Email Is Not Used</option>
-									<ng-container *ngIf="campaignType=='video'">
+									<ng-container *ngIf="campaignType=='VIDEO'">
 										<option [value]="1" [selected]="reply.actionId==1">Video Played</option>
 										<option [value]="17" [selected]="reply.actionId==17">Send Immediately After Video Played</option>
 										<option  [value]="18" [selected]="reply.actionId==18">Send If Video Is Not Played</option>
@@ -552,9 +552,9 @@
 												<div class="col-xs-12 col-sm-8 text-left">
 													<ul class="mix-filter" *ngIf="!isOnlyPartner">
 														<li class="filter" (click)="filterClickTemplates('NONE',0,url)" [class.emailtemplate-selected]="0 == url.selectedEmailTemplateTypeIndex">All Email Templates</li>
-														<li class="filter" (click)="filterClickTemplates('BASIC',1,url)" *ngIf="campaignType=='regular'" [class.emailtemplate-selected]="1 == url.selectedEmailTemplateTypeIndex">Basic Templates</li>
-														<li class="filter" (click)="filterClickTemplates('RICH',2,url)" *ngIf="campaignType=='regular'" [class.emailtemplate-selected]="2 == url.selectedEmailTemplateTypeIndex">Rich Templates</li>
-														<li class="filter" (click)="filterClickTemplates('UPLOADED',3,url)" *ngIf="campaignType=='regular'" [class.emailtemplate-selected]="3 == url.selectedEmailTemplateTypeIndex">Uploaded Regular Templates</li>
+														<li class="filter" (click)="filterClickTemplates('BASIC',1,url)" *ngIf="campaignType=='REGULAR'" [class.emailtemplate-selected]="1 == url.selectedEmailTemplateTypeIndex">Basic Templates</li>
+														<li class="filter" (click)="filterClickTemplates('RICH',2,url)" *ngIf="campaignType=='REGULAR'" [class.emailtemplate-selected]="2 == url.selectedEmailTemplateTypeIndex">Rich Templates</li>
+														<li class="filter" (click)="filterClickTemplates('UPLOADED',3,url)" *ngIf="campaignType=='REGULAR'" [class.emailtemplate-selected]="3 == url.selectedEmailTemplateTypeIndex">Uploaded Regular Templates</li>
 														<li class="filter" (click)="filterClickTemplates('PARTNER',7,url)" [class.emailtemplate-selected]="7== url.selectedEmailTemplateTypeIndex">Partner Templates</li>
 													</ul>
 												</div>

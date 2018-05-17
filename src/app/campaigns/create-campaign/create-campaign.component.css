@@ -1012,4 +1012,5 @@ legend{display: block; width: auto; padding: 0 10px; margin-bottom: 0; font-size
 	-o-filter: blur(1px);
 	-ms-filter: blur(1px);
 	filter: blur(1px);
+	cursor: default;
 }

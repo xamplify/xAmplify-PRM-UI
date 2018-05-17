@@ -1149,16 +1149,17 @@
 
 				<div class="row">
 					<div class="col-xs-6">
-						<p *ngIf="emailTemplateHrefLinks?.length==0" class="dashboard-stat yellow-gold blur" style="background-color: #f76c1a;">
+						<a *ngIf="emailTemplateHrefLinks?.length==0" class="dashboard-stat yellow-gold blur" style="background-color: #f76c1a;">
+						<i class="fa fa-ban p0"></i>
 							No website links found in email template
-						</p>
-
+						</a>
 						<a *ngIf="emailTemplateHrefLinks?.length>0" class="dashboard-stat yellow-gold" style="background-color: #f76c1a;"
 							(click)="addClickRows()">
 							<i class="fa fa-plus-square p0"></i>
 							Add an Auto-response to a website visit
 						</a>
 					</div>
+					
 					<div class="col-xs-6">
 						<a class="dashboard-stat yellow-gold" style="background-color: #f4555c;" (click)="addReplyRows()">
 							<i class="fa fa-plus-square p0"></i>

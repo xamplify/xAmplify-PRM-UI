@@ -3,8 +3,7 @@
 </style>
 <div class="page-content" [style.background-color]="referenceService.pageContnetBgColor">
 	<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-<app-loader [model]="httpRequestLoader.isHorizontalCss" *ngIf="httpRequestLoader.isLoading"></app-loader>
-<ng-container *ngIf="!httpRequestLoader.isLoading">
+<!-- <app-loader [model]="httpRequestLoader." *ngIf="httpRequestLoader.isLoading"></app-loader> -->
 	<div class="page-bar">
 		<ul class="page-breadcrumb">
 			<li>
@@ -198,7 +197,7 @@
 				</div>
 				<div class="portlet-body clearfix">
 					<div class="table-responsive">
-					<app-loader [model]="httpRequestLoader.isHorizontalCss" *ngIf="httpRequestLoader.isLoading"></app-loader>
+					<app-list-loader  *ngIf="httpRequestLoader.isLoading"></app-list-loader>
 						<table class="table table-striped  table-hover" id="list-team-member-table"  *ngIf="!httpRequestLoader.isLoading">
 							<thead>
 								<tr>
@@ -397,7 +396,6 @@
     </div>
   </div>
 </div>
-</ng-container>
 	<!-- END PAGE CONTENT -->
 	<!-- -Deleting Team Member Pop Up -->
 	<div id="delete-team-member-modal" class="modal"  tabindex="-1" role="dialog"  data-keyboard="false" data-backdrop="static">

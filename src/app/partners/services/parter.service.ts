@@ -20,6 +20,11 @@ export class ParterService {
         return this.httpClient.post( url, pagination )
             .catch( this.handleError );
     }
+    getInActivePartnersAnalytics(pagination:Pagination){
+        const url = this.URL + 'partner/inactive-partner-analytics?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post( url, pagination )
+            .catch( this.handleError );
+    }
     partnerUserInteractionReports( companyId: number, pagination: Pagination ): Observable<any> {
         const url = this.URL + 'partner/campaigns?access_token=' + this.authenticationService.access_token +
             '&companyId=' + companyId

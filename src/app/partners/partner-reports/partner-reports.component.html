@@ -40,17 +40,17 @@
                   </span>
               </a>
             </div>
-            <div class="col-xs-3" (click)="goToActivePartnersDiv()" [class.blur]="1!=selectedTabIndex">
+            <div class="col-xs-3" (click)="goToInActivePartnersDiv()" [class.blur]="1!=selectedTabIndex">
               <a class="dashboard-stat dashboard-stat-lighter blue-soft">
                 <div class="visual">
                   <i class="fa fa-handshake-o"></i>
                 </div>
                 <div class="details">
-                  <div class="number">{{referenseService.partnerCount - noOfCampaignsLaunchedByPartner.length}}</div>
+                  <div class="number">{{referenseService.partnerCount - activePartnersPagination.totalRecords}}</div>
                   <div class="desc">Inactive Partners</div>
                 </div>
                  <span id="permhref" class="morePadding">
-                  	<a class="more" (click)="goToActivePartnersDiv()"> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
+                  	<a class="more" (click)="goToInActivePartnersDiv()"> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
                   </span>
               </a>
             </div>
@@ -118,20 +118,15 @@
             <span class="caption-subject font-red-sunglo uppercase"> campaigns launched by partners</span>
           </div>
            	<div class="inputs" align="right" style="float: right">
-		<!-- 	<div style="float: left;">
-				<select class="form-control" [(ngModel)]="selectedSortedOption" (ngModelChange)="getSortedResult($event)" style="position: relative;right: -3px;">
-					<option *ngFor="let sortOption of sortByDropDown" [ngValue]="sortOption">{{sortOption.name}}</option>
-				</select>
-			</div> -->
 			<div class="portlet-input input-inline input-small">
-				<div class="input-icon right" style="position: relative;">
-					<i class="icon-magnifier" (click)="searchInActivePartnerAnalytics()" style="cursor: pointer;"></i>
+				<div class="input-icon right" style="position: relative; margin: -12px 0 0 0;">
+					<i class="icon-magnifier" (click)="searchActivePartnerAnalytics()" style="cursor: pointer;"></i>
 					<input type="text" class="form-control" [(ngModel)]="activePartnersSearchKey" [ngModelOptions]="{standalone: true}" placeholder="search...">
 				</div>
 			</div>
 		</div>
         </div>
-        <div class="portlet-body clearfix" style="min-height: 410px;">
+        <div class="portlet-body clearfix" style="min-height: 400px; position: relative;">
         <app-list-loader *ngIf="activeParnterHttpRequestLoader.isLoading"></app-list-loader>
           <table class="table tgrid">
             <thead>
@@ -141,61 +136,58 @@
             </thead>
             <tbody>
               <tr *ngFor="let item of activePartnersPagination.pagedItems">
-                <td><app-user-info [userInfo]="item" [isPartnerEntityInfo]=true></app-user-info></td>
+                <td><app-user-info [userInfo]="item" [isPartnerEntityInfo]="true" [isPartnerInfo]="true"></app-user-info></td>
                 <td class="text-center">{{item.count}}</td>
                 <td><app-pie-chart [customerId]="item.partnerId"></app-pie-chart></td>
               </tr>
             </tbody>
           </table>
           <div *ngIf="activePartnersPagination.totalRecords==0" class="alert alert-info">
-					<strong>No Campaigns Used</strong>
-				</div>
-				<div *ngIf="activePartnersPagination.totalRecords>0 && !activeParnterHttpRequestLoader.isLoading &&!activeParnterHttpRequestLoader.isServerError">
-					<ul *ngIf="activePartnersPagination.pager.pages && activePartnersPagination.pager.pages.length" class="pagination">
-						<li [ngClass]="{disabled:activePartnersPagination.pager.currentPage === 1}">
-							<a (click)="setActivePartnesPage(1)" [class.disabled]="activePartnersPagination.pager.currentPage === 1">First</a>
-						</li>
-						<li [ngClass]="{disabled:activePartnersPagination.pager.currentPage === 1}">
-							<a (click)="setActivePartnesPage(activePartnersPagination.pager.currentPage - 1)" [class.disabled]="activePartnersPagination.pager.currentPage === 1">Previous</a>
-						</li>
-						<li *ngFor="let page of activePartnersPagination.pager.pages" [ngClass]="{active:activePartnersPagination.pager.currentPage === page}">
-							<a (click)="setActivePartnesPage(page)" [class.disabled]="activePartnersPagination.pager.currentPage === page">{{page}}</a>
-						</li>
-						<li [ngClass]="{disabled:activePartnersPagination.pager.currentPage === activePartnersPagination.pager.totalPages}">
-							<a (click)="setActivePartnesPage(activePartnersPagination.pager.currentPage + 1)" [class.disabled]="activePartnersPagination.pager.currentPage === activePartnersPagination.pager.totalPages">Next</a>
-						</li>
-						<li [ngClass]="{disabled:activePartnersPagination.pager.currentPage === activePartnersPagination.pager.totalPages}">
-							<a (click)="setActivePartnesPage(activePartnersPagination.pager.totalPages)" [class.disabled]="activePartnersPagination.pager.currentPage === activePartnersPagination.pager.totalPages">Last</a>
-						</li>
-					</ul>
-				</div>
+				<strong>No Campaigns Used</strong>
+			</div>
+			<div style="position: absolute;bottom: -10px;" 
+			*ngIf="activePartnersPagination.totalRecords>0 && !activeParnterHttpRequestLoader.isLoading &&!activeParnterHttpRequestLoader.isServerError">
+				<ul *ngIf="activePartnersPagination.pager.pages && activePartnersPagination.pager.pages.length" class="pagination">
+					<li [ngClass]="{disabled:activePartnersPagination.pager.currentPage === 1}">
+						<a (click)="setActivePartnesPage(1)" [class.disabled]="activePartnersPagination.pager.currentPage === 1">First</a>
+					</li>
+					<li [ngClass]="{disabled:activePartnersPagination.pager.currentPage === 1}">
+						<a (click)="setActivePartnesPage(activePartnersPagination.pager.currentPage - 1)" [class.disabled]="activePartnersPagination.pager.currentPage === 1">Previous</a>
+					</li>
+					<li *ngFor="let page of activePartnersPagination.pager.pages" [ngClass]="{active:activePartnersPagination.pager.currentPage === page}">
+						<a (click)="setActivePartnesPage(page)" [class.disabled]="activePartnersPagination.pager.currentPage === page">{{page}}</a>
+					</li>
+					<li [ngClass]="{disabled:activePartnersPagination.pager.currentPage === activePartnersPagination.pager.totalPages}">
+						<a (click)="setActivePartnesPage(activePartnersPagination.pager.currentPage + 1)" [class.disabled]="activePartnersPagination.pager.currentPage === activePartnersPagination.pager.totalPages">Next</a>
+					</li>
+					<li [ngClass]="{disabled:activePartnersPagination.pager.currentPage === activePartnersPagination.pager.totalPages}">
+						<a (click)="setActivePartnesPage(activePartnersPagination.pager.totalPages)" [class.disabled]="activePartnersPagination.pager.currentPage === activePartnersPagination.pager.totalPages">Last</a>
+					</li>
+				</ul>
+			</div>
         </div>
       </div>
     </div>
   </div>
   <div class="row">
-  <app-list-loader *ngIf="campaignUserInteractionHttpRequestLoader.isLoading"></app-list-loader>
-    <div class="col-xs-12 p5" *ngIf="!campaignUserInteractionHttpRequestLoader.isLoading">
+  
+    <div class="col-xs-12 p5">
       <div class="portlet light">
         <div class="portlet-title">
           <div class="caption">
             <span class="caption-subject font-red-sunglo uppercase"> partners campaigns user interactions</span>
           </div>
            	<div class="inputs" align="right" style="float: right">
-		<!-- 	<div style="float: left;">
-				<select class="form-control" [(ngModel)]="selectedSortedOption" (ngModelChange)="getSortedResult($event)" style="position: relative;right: -3px;">
-					<option *ngFor="let sortOption of sortByDropDown" [ngValue]="sortOption">{{sortOption.name}}</option>
-				</select>
-			</div> -->
 			<div class="portlet-input input-inline input-small">
-				<div class="input-icon right" style="position: relative;">
+				<div class="input-icon right" style="position: relative;margin: -12px 0 0 0;">
 					<i class="icon-magnifier" (click)="searchInPartnerCampaignsUI()" style="cursor: pointer;"></i>
 					<input type="text" class="form-control" [(ngModel)]="partnerCampaignUISearchKey" [ngModelOptions]="{standalone: true}" placeholder="search...">
 				</div>
 			</div>
 		</div>
         </div>
-        <div class="portlet-body" *ngIf="!campaignUserInteractionHttpRequestLoader.isLoading">
+         <app-list-loader  *ngIf="campaignUserInteractionHttpRequestLoader.isLoading"></app-list-loader>
+        <div class="portlet-body"  *ngIf="!campaignUserInteractionHttpRequestLoader.isLoading">
           <table class="table tgrid">
             <thead>
               <!-- <th>partner Company Name</th> -->
@@ -204,10 +196,8 @@
               <th class="center-aligned">analytics</th>
             </thead>
             <tbody>
-              <tr *ngFor="let item of partnerUserInteraction" style="cursor: pointer;" (click)="partnerCampaignInteraction(item.campaignId)">
-                <!-- <td *ngIf="item.partnerCompanyName">{{item.partnerCompanyName}} </td>
-                <td *ngIf="!item.partnerCompanyName">-</td> -->
-                <td><app-user-info [userInfo]="item" [isPartnerEntityInfo]=true></app-user-info></td>
+              <tr *ngFor="let item of partnerUserInteraction" style="cursor: pointer;" (click)="goToCampaignAnalytics(item.campaignId)">
+                <td><app-user-info [userInfo]="item" [isPartnerEntityInfo]="true" [isPartnerInfo]="true"></app-user-info></td>
                 <td>{{item.campaignName}}</td>
                 <td>
 					        <div class="actions-block">
@@ -226,8 +216,57 @@
       </div>
     </div>
   </div>
+  
+  
   </div><!-- End Of active-partners-div -->
   
+  
+  <!-- --------------------Inactive Partners Count-------- -->
+  <div id="inactive-partners-div" style="display: none;">
+   <div class="row">
+    <div class="col-xs-12 p5">
+      <div class="portlet light">
+        <div class="portlet-title">
+          <div class="caption">
+            <span class="caption-subject font-red-sunglo uppercase"> inactive partners</span>
+          </div>
+           	<div class="inputs" align="right" style="float: right">
+			<div class="portlet-input input-inline input-small">
+				<div class="input-icon right" style="position: relative; margin: -12px 0 0 0;">
+					<i class="icon-magnifier" (click)="searchInActivePartnerAnalytics()" style="cursor: pointer;"></i>
+					<input type="text" class="form-control" [(ngModel)]="inActivePartnersSearchKey" [ngModelOptions]="{standalone: true}" placeholder="search...">
+				</div>
+			</div>
+		</div>
+        </div>
+        <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+        <div class="portlet-body" *ngIf="!httpRequestLoader.isLoading">
+          <table class="table tgrid">
+            <thead>
+              <th class="center-aligned">Email Id</th>
+              <th align="right">Notify Email</th>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of inActivePartnersPagination.pagedItems" style="cursor: pointer;">
+                <td><app-user-info [userInfo]="item" [isPartnerEntityInfo]="true" [isPartnerInfo]="true"></app-user-info></td>
+                <td>
+					<div class="actions-block">
+                      <a   title="Send email"> 
+                          <i class="fa fa-envelope"></i>
+                        </a>
+                      </div>                
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <app-pagination [pagination]="inActivePartnersPagination" [type]="'userInteraction'" (notifyParentDropDown)="inActivePartnerDropDownList($event)"
+          (notifyParent)="setInActivePartnesPage($event)"></app-pagination>
+      </div>
+    </div>
+  </div>
+  </div>
+  <!-- ------****************Through Partner Div************************** -->
   <div id="through-partner-div" style="display: none;">
   <div class="row">
 		<div class="col-md-12">
