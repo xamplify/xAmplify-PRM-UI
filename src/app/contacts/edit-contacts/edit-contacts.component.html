@@ -111,7 +111,7 @@
 
 							<div class="row mt5 mb5">
 								<div class="col-sm-5ths">
-									<button class="btn-block dashboard-stat blue-soft"
+									<button class="btn-block dashboard-stat blue"
 										(click)="backToEditContacts()">
 										<div class="visual">
 											<i class="fa fa-users"></i>
@@ -120,10 +120,14 @@
 											<div class="number">{{contactsByType.allContactsCount}}</div>
 											<div class="desc" style="font-size:20px">All <!-- {{checkingContactTypeName}}s --></div>
 										</div>
+										<span class="morePadding"> <a class="more" style="text-align: left;">
+														Detailed view <i class="m-icon-swapright m-icon-white"></i>
+												</a>
+												</span>
 									</button>
 								</div>
 								<div class="col-sm-5ths">
-									<button class="btn-block dashboard-stat red-soft"
+									<button class="btn-block dashboard-stat green"
 										(click)="showingContactDetails('active')"
 										[disabled]="contactsByType.activeContactsCount == 0">
 										<div class="visual">
@@ -133,10 +137,14 @@
 											<div class="number">{{contactsByType.activeContactsCount}}</div>
 											<div class="desc" style="font-size:20px">Active <!-- {{checkingContactTypeName}}s --></div>
 										</div>
+										<span class="morePadding"> <a class="more" style="text-align: left;">
+														Detailed view <i class="m-icon-swapright m-icon-white"></i>
+												</a>
+												</span>
 									</button>
 								</div>
 								<div class="col-sm-5ths">
-									<button class="btn-block dashboard-stat blue-sharp"
+									<button class="btn-block dashboard-stat purple"
 										(click)="showingContactDetails('non-active')"
 										[disabled]="contactsByType.inactiveContactsCount == 0">
 										<div class="visual">
@@ -146,6 +154,10 @@
 											<div class="number">{{contactsByType.inactiveContactsCount}}</div>
 											<div class="desc" style="font-size:20px">Inactive <!-- {{checkingContactTypeName}}s --></div>
 										</div>
+										<span class="morePadding"> <a class="more" style="text-align: left;">
+														Detailed view <i class="m-icon-swapright m-icon-white"></i>
+												</a>
+												</span>
 									</button>
 								</div>
 								<div class="col-sm-5ths">
@@ -159,10 +171,14 @@
 											<div class="number">{{contactsByType.invalidContactsCount}}</div>
 											<div class="desc" style="font-size:20px">Invalid <!-- {{checkingContactTypeName}}s --></div>
 										</div>
+										<span class="morePadding"> <a class="more" style="text-align: left;">
+														Detailed view <i class="m-icon-swapright m-icon-white"></i>
+												</a>
+												</span>
 									</button>
 								</div>
 								<div class="col-sm-5ths">
-									<button class="btn-block dashboard-stat green-soft"
+									<button class="btn-block dashboard-stat red"
 										(click)="showingContactDetails('unsubscribe')"
 										[disabled]="contactsByType.unsubscribedContactsCount == 0">
 										<div class="visual">
@@ -174,6 +190,10 @@
 											<div class="desc" style="font-size:20px">Unsubscribed
 												<!-- {{checkingContactTypeName}}s --></div>
 										</div>
+										<span class="morePadding"> <a class="more" style="text-align: left;">
+														Detailed view <i class="m-icon-swapright m-icon-white"></i>
+												</a>
+												</span>
 									</button>
 								</div>
 							</div>
