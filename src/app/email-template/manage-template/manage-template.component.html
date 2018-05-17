@@ -64,10 +64,12 @@
 					</div>
 				</div>
 
-              <app-loader *ngIf="httpRequestLoader.isLoading && !isListView"></app-loader>
+              <app-grid-loader *ngIf="httpRequestLoader.isLoading && !isListView"></app-grid-loader>
               <app-list-loader *ngIf="httpRequestLoader.isLoading && isListView"></app-list-loader>
 			
 					<section [hidden]="!isListView">
+						<app-error-pages *ngIf="httpRequestLoader.isServerError"></app-error-pages>
+						<ng-container *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError ">
 						<div class="table-responsive">
 						<table class='table tgrid'>
 							<thead>
@@ -113,11 +115,11 @@
 							</tbody>
 						</table>
 						</div>
+						</ng-container>
 					</section>
 								
 					<div class="margin-top-10"  [hidden]="isListView">
-							<div class="row mix-grid" style="margin-top: -15px;padding: 7px;">
-							<app-loader *ngIf="httpRequestLoader.isLoading"></app-loader>
+							<div class="row mix-grid" style="margin-top: -15px;padding: 7px;">							
 							<app-error-pages *ngIf="httpRequestLoader.isServerError"></app-error-pages>
 							<ng-container *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError ">
 								<div *ngFor="let emailTemplate of pagination.pagedItems ;let i =index" id="emailTemplateListDiv_{{emailTemplate.id}}">

@@ -105,56 +105,49 @@ h3 {
 	position: absolute;
     bottom: 0;
     left: 0;
-    background: #000000;
-    color: #fff;
-    padding: 5px 10px;
+	background: #ffffff;
+    color: #498fd7;
+    padding: 2px 7px;
     margin: 0;
 }
 .video-duration {
 	position: absolute;
     bottom: 0;
     right: 0;
-    background: #000000;
-    color: #fff;
-    padding: 5px 10px;
+background: #ffffff;
+    color: #498fd7;
+    padding: 2px 7px;
     font-weight: bold;
 }
 .video-title {
-    color: #ffffff;
-    background: linear-gradient(rgba(11, 35, 94, 0), #00000080 85%);
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    padding: 30px 0;
-    font-weight: bold;
+	color: #000000;
+    font-weight: 600;
+    text-align: left;
+    margin: 5px 0 0 0;
 }
 .video-thumbnail {
-    margin: 0;
-    min-height: inherit;
-	height: inherit;
+	margin: 0;
     width: auto;
     max-width: 100%;
+	height: 100%;
 }
 .video-thumbnail-wrapper{
 	position: relative;
-    height: 180px;
+    height: 126px;
+    width: 224px;
+    max-width: 100%;
+	margin: 0 auto;
 }
 .video-uploaded-by {
-	position: absolute;
-    bottom: -28px;
-    color: #000;
-    left: 10px;
-    font-weight: 600;
+    float: left;
+	color: #777;
 }
 .video-upload-date {
-	position: absolute;
-    bottom: -28px;
-    color: #000;
-    right: 10px;
-    font-weight: 600;
+    float: right;
 }
 .grid-box {
-	height: 220px;
+	height: 180px;
+	background-color: #fff;
 }
 .grid-box:hover {
 	cursor: pointer;
@@ -173,4 +166,9 @@ h3 {
 }
 .bar {
 	transition: visibility 0s, opacity 0.2s linear;
+    bottom: 10px;
+    height: 45px;
+}
+.bar a {
+	margin: 7px 5px;
 }
