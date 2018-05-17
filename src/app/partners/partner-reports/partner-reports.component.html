@@ -230,6 +230,7 @@
           <div class="caption">
             <span class="caption-subject font-red-sunglo uppercase"> inactive partners</span>
           </div>
+          <app-response-message style="position: relative; bottom: 9px;" [customResponse]="customResponse" *ngIf="!customResponse.isVisible"></app-response-message>
            	<div class="inputs" align="right" style="float: right">
 			<div class="portlet-input input-inline input-small">
 				<div class="input-icon right" style="position: relative; margin: -12px 0 0 0;">
@@ -249,7 +250,7 @@
             <tbody>
               <tr *ngFor="let item of inActivePartnersPagination.pagedItems" style="cursor: pointer;">
                 <td><app-user-info [userInfo]="item" [isPartnerEntityInfo]="true" [isPartnerInfo]="true"></app-user-info></td>
-                <td>
+                <td (click)="sendPartnerReminder(item)">
 					<div class="actions-block">
                       <a   title="Send email"> 
                           <i class="fa fa-envelope"></i>

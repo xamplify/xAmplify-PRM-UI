@@ -10,7 +10,9 @@ import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { SortOption } from '../../core/models/sort-option';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { CampaignService } from '../../campaigns/services/campaign.service';
-declare var $, Highcharts: any;
+import { User } from '../../core/models/user';
+import { CustomResponse } from '../../common/models/custom-response';
+declare var $,swal, Highcharts: any;
 
 @Component({
   selector: 'app-partner-reports',
@@ -42,6 +44,7 @@ export class PartnerReportsComponent implements OnInit {
   activePartnersSearchKey:string = "";
   inActivePartnersSearchKey:string = "";
   partnerCampaignUISearchKey:string = "";
+  customResponse: CustomResponse = new CustomResponse();
   constructor(public router: Router, public authenticationService: AuthenticationService, public pagination: Pagination,
     public referenseService: ReferenceService, public parterService: ParterService, public pagerService: PagerService,
     public homeComponent: HomeComponent,public xtremandLogger:XtremandLogger,public campaignService:CampaignService,public sortOption:SortOption) {
@@ -188,17 +191,19 @@ export class PartnerReportsComponent implements OnInit {
     }
   }
   ngOnInit() {
-    this.paginationType = 'userInteraction';
-    this.homeComponent.getVideoDefaultSettings();
-    if (this.referenseService.companyId==0) {
-      this.router.navigate(['home/dashboard']);
-    }
-    this.pagination.maxResults = 12;
-    this.campaignInteractionPagination.maxResults = 10;
-    this.partnerReportData();
-    this.partnerUserInteractionReports();
-    this.activePartnersPagination.maxResults = 3;
-    this.getActivePartnerReports(this.activePartnersPagination);
+    if(this.referenseService.companyId>0){
+        this.paginationType = 'userInteraction';
+        this.homeComponent.getVideoDefaultSettings();
+        this.pagination.maxResults = 12;
+        this.campaignInteractionPagination.maxResults = 10;
+        this.partnerReportData();
+        this.partnerUserInteractionReports();
+        this.activePartnersPagination.maxResults = 3;
+        this.getActivePartnerReports(this.activePartnersPagination);
+    }else{
+        this.router.navigate(['home/dashboard']);
+    }  
+   
   }
 
   
@@ -362,6 +367,27 @@ export class PartnerReportsComponent implements OnInit {
       this.inActivePartnersPagination = event;
       this.getInActivePartnerReports(this.inActivePartnersPagination);
   }
+  
+  sendPartnerReminder(item:any){
+     console.log(item);
+     let user = new User();
+     user.emailId = item.emailId;
+     user.firstName = item.firstName;
+     user.lastName = item.lastName;
+     console.log(user);
+       this.referenseService.loading(this.httpRequestLoader, true);
+      this.parterService.sendPartnerReminderEmail(user).subscribe(
+              (response: any) => {
+                if(response.statusCode==2017){
+                    swal('Email sent successfully','','success');
+                }
+               this.referenseService.loading(this.httpRequestLoader, false);
+              },
+              (error: any) => { this.referenseService.loading(this.httpRequestLoader, false);console.log("error")});
+  
+  }
+  
+  
   goToCampaignAnalytics(campaignId){
       this.router.navigate(["/home/campaigns/"+campaignId+"/details"]);
   }

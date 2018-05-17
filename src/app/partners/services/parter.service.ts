@@ -3,7 +3,7 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 import { Observable } from 'rxjs/Observable';
 import { HttpClient } from '@angular/common/http'
 import { Pagination } from '../../core/models/pagination';
-
+import { User } from '../../core/models/user';
 @Injectable()
 export class ParterService {
     URL = this.authenticationService.REST_URL;
@@ -44,6 +44,12 @@ export class ParterService {
             .catch( this.handleError );
     }
 
+    sendPartnerReminderEmail(user:User) {
+        const url = this.URL + 'partner/send-in-active-reminder-email?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post( url, user )
+        .catch( this.handleError );
+    }
+    
     handleError( error: any ) {
         const errMsg = ( error.message ) ? error.message :
             error.status ? `${error.status} - ${error.statusText}` : 'Server   error';
