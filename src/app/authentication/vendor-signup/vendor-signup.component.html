@@ -68,7 +68,7 @@
 			-->
 			<div class="form-group margin-top-20 margin-bottom-20">
 				<label class="check">
-					<input formControlName="agree" type="checkbox" required /> I agree to the <a href="https://xamplify.io" target="_blank">Terms of Service & Privacy Policy</a>
+					<input formControlName="agree" type="checkbox" required /> I agree to the <a routerLink="../termsconditions" target="_blank">Terms of Service & Privacy Policy</a>
 					<!-- <p class="custom-label">I agree to the Terms of Service & Privacy Plolicy </p> -->
 				</label>
 				<div *ngIf="formErrors.agree" class="alert alert-danger">{{ formErrors.agree }}</div>

@@ -7,3 +7,4 @@ a.forget-password:hover {color: #4db1e2;}
 .alert{padding:10px}
 .alert-success,.alert-danger,.alert-warning>h5{font-size:14px}
 .text{padding-top: 12px;}
+.underlinetext:hover{text-decoration: underline !important}

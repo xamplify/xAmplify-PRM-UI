@@ -5,7 +5,7 @@ import { AuthGuard } from './auth.guard';
 
 import { VideosModule } from './videos/videos.module';
 import { ContactsModule } from './contacts/contacts.module';
-import { PartnersModule } from './partners/partners.module'; 
+import { PartnersModule } from './partners/partners.module';
 import { EmailTemplateModule } from './email-template/email-template.module';
 import { CampaignsModule } from './campaigns/campaigns.module';
 import { UpgradeModule } from './upgrade/upgrade.module';
@@ -30,13 +30,14 @@ import { SignupComponent } from './authentication/signup/signup.component';
 import { ForgotPasswordComponent } from './authentication/forgot-password/forgot-password.component';
 import { VerifyEmailComponent } from './authentication/verify-email/verify-email.component';
 import { CompanyPageComponent } from './dashboard/company-profile/company-page/company-page.component';
-import {VendorSignupComponent} from './authentication/vendor-signup/vendor-signup.component';
-import {IntroComponent} from './authentication/intro/intro.component';
+import { VendorSignupComponent } from './authentication/vendor-signup/vendor-signup.component';
+import { IntroComponent } from './authentication/intro/intro.component';
+import { TermsConditonComponent } from 'app/authentication/terms-conditon/terms-conditon.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'signup', component: SignupComponent },
-    {path:'v-signup',component:VendorSignupComponent},
+    { path: 'v-signup', component:VendorSignupComponent},
     { path: 'forgot-password', component: ForgotPasswordComponent },
     { path: 'register/verifyemail/user', component: VerifyEmailComponent },
     { path: '', component: IntroComponent},
@@ -56,6 +57,7 @@ export const routes: Routes = [
             { path: 'error/:errorStatusId', component: ErrorPagesComponent }
         ]
     },
+    { path: 'termsconditions', component: TermsConditonComponent },
     { path: 'userlock', component: ProfileLockComponent },
     { path: 'logout', component: LoginComponent },
     { path: ':social/login', component: SocialLoginComponent },

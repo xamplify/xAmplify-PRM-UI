@@ -290,7 +290,7 @@ export class EditCompanyProfileComponent implements OnInit {
             this.enableOrDisableButton();
         } else {
             this.logoError = true;
-            this.logoErrorMessage = "Please Upload Logo";
+            this.logoErrorMessage = "";
             this.logoDivClass = this.refService.errorClass;
             this.disableButton();
         }

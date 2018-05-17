@@ -1,4 +1,4 @@
-<!-- 
+<!--
 <app-video></app-video>
 <div class="container">
 	<div class="jumbotron">
@@ -22,16 +22,16 @@
 
 <!--hero section-->
 
-<header class="hero-section"> 
-  
+<header class="hero-section">
+
   <!--HTML5 Video-->
 <video autoplay poster="/assets/images/login_background_big.jpg" id="bgvid" loop>
   <source src="https://hls.mobinar.com/vod/videos/343/04042016/Final51459808822437.mp4" type="video/mp4">
 </video>
   <!--HTML5 Video end-->
-  
+
   <div class="overlay"></div>
-  
+
 <nav class="navbar navbar-default" id="navbar">
   <div class="container">
     <div class="navbar-header">
@@ -46,8 +46,8 @@
         <li><a href="#features" lang="en">Features</a></li>
         <li><a href="#preview" lang="en">Tour</a></li>
         <li><a href="#pricing" lang="en">Pricing</a></li>
-
         <li><a href="#contact" lang="en">Contact</a></li>
+        <li><a [routerLink]="['./termsconditions']" lang="en">Terms & conditions</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
           <li><a routerLink="/login" lang="en" style="background: none;"><i class="fa fa-sign-in"></i> Login</a></li>
@@ -57,10 +57,10 @@
   </div>
 </nav>
 
-  <!--navigation end--> 
-  
+  <!--navigation end-->
+
   <!--welcome message-->
-  
+
   <section class="container text-center welcome-message">
     <div class="row">
       <div class="col-md-12">
@@ -74,9 +74,9 @@
       </div>
     </div>
   </section>
-  
-  <!--welcome message end--> 
-  
+
+  <!--welcome message end-->
+
 </header>
 
 <section class="benefits section-spacing text-center" id="features">
@@ -102,15 +102,15 @@
   </div>
 </section>
 
-<!--benefits end--> 
+<!--benefits end-->
 
 <!--Features-->
 
 <div class="features section-spacing">
-  <div class="container"> 
-    
+  <div class="container">
+
     <!--feature 1-->
-    
+
     <div class="row">
       <div class="col-md-7 col-md-push-5 text-center"> <img src="/assets/images/feature-1.png" alt="feature"> </div>
       <div class="col-md-5 col-md-pull-7">
@@ -126,9 +126,9 @@
         </article>
       </div>
     </div>
-    
-    <!--feature 1 end--> 
-    
+
+    <!--feature 1 end-->
+
     <!--feature 2-->
     <div class="row">
       <div class="col-md-7 text-center"> <img src="/assets/images/feature-2.png" alt="feature"> </div>
@@ -146,8 +146,8 @@
         </article>
       </div>
     </div>
-    <!--feature 2 end--> 
-    
+    <!--feature 2 end-->
+
     <!--feature 3-->
     <div class="row">
       <div class="col-md-7 col-md-push-5 text-center"> <img src="/assets/images/feature-3.png" alt="feature"> </div>
@@ -163,11 +163,11 @@
         </article>
       </div>
     </div>
-    <!--feature 3 end--> 
+    <!--feature 3 end-->
   </div>
 </div>
 
-<!--Features end--> 
+<!--Features end-->
 
 <!--Video section-->
 
@@ -175,17 +175,17 @@
   <div class="play-btn"> <a href="/embed/sb63hg" class="play litebox-tour"><img src="/assets/images/play-btn-vs.png" alt="play"></a>
     <h2 lang="en">Video Preview Of Product</h2>
   </div>
-  
+
   <!--HTML5 Video-->
   <video autoplay loop muted id="bgvid" poster="/assets/images/poster.jpg">
     <source src="https://xamp.io/vod/vb.mp4" type="video/mp4">
     <source src="https://xamp.io/vod/vb.webm" type="video/webm">
   </video>
-  <!--HTML5 Video end--> 
-  
+  <!--HTML5 Video end-->
+
 </section>
 
-<!--Video section end--> 
+<!--Video section end-->
 
 <!--Tour-->
 
@@ -199,7 +199,7 @@
   </div>
 </section>
 
-<!--Tour end--> 
+<!--Tour end-->
 
 
 
@@ -212,8 +212,8 @@
       <h3 lang="en">Free signup. 14 days free trial. No credit card required.</h3>
     </header>
     <div class="row">
-      <div class="col-md-12"> 
-        
+      <div class="col-md-12">
+
         <!--PRICE TABLE-->
         <div class="plan">
           <div class="plan-details">
@@ -236,14 +236,14 @@
             <p lang="en">**Limited time offer.</p>
           </div>
         </div>
-        <!--PRICE TABLE END--> 
+        <!--PRICE TABLE END-->
         <!--PRICE TABLE-->
         <div class="plan">
           <div class="plan-details">
             <div class="header">
               <h4 lang="en">BASIC</h4>
               <h5 lang="en">For  individual marketing professionals and pioneers</h5>
-              
+
             </div>
             <div class="price"> <span class="currency">$</span><span class="price-amount">199</span><span class="period" lang="en">/ mo</span> </div>
             <ul class="plan-features">
@@ -260,16 +260,16 @@
           </div>
         </div>
         <!--PRICE TABLE END-->
-         
-        
-        
+
+
+
         <!--PRICE TABLE-->
         <div class="plan">
           <div class="plan-details">
             <div class="header">
               <h4 lang="en">PREMIUM</h4>
               <h5 lang="en">For business who has marketing wing and marketing agencies</h5>
-               
+
             </div>
             <div class="price"> <span class="currency">$</span><span class="price-amount">499</span><span class="period" lang="en">/ mo</span> </div>
             <ul class="plan-features">
@@ -285,14 +285,14 @@
             <p lang="en">10% OFF. Limited time offer.</p>
           </div>
         </div>
-        <!--PRICE TABLE END--> 
-        
+        <!--PRICE TABLE END-->
+
       </div>
     </div>
   </div>
 </section>
 
-<!--Pricing end--> 
+<!--Pricing end-->
 
 <!--cta section-->
 
@@ -310,7 +310,7 @@
   </div>
 </section>
 
-<!--cta section end--> 
+<!--cta section end-->
 
 <!--contact us-->
 
@@ -321,16 +321,16 @@
       <h3 lang="en">Have any questions? Get in touch</h3>
     </header>
   </div>
-  
+
   <!--map-->
   <div class="map">
 	<div id="map-canvas_"><img  src="/assets/images/map.jpg"></div>
   </div>
-  <!--map end--> 
-  
+  <!--map end-->
+
 </section>
 
-<!--contact us end--> 
+<!--contact us end-->
 
 <!--sub-form-->
 <section class="sub-form section-spacing text-center">
@@ -353,36 +353,36 @@
     </div>
   </div>
 </section>
-<!--sub-form end--> 
+<!--sub-form end-->
 
 <!--site-footer-->
 <footer class="site-footer section-spacing text-center">
   <div class="container">
     <div class="row">
       <div class="col-md-4">
-        <p class="footer-links"><a href="" lang="en">Terms of Use</a> <a href="" lang="en">Privacy Policy</a></p>
+        <p class="footer-links"><a [routerLink]="['./termsconditions']" lang="en">Terms of Use</a> <a [routerLink]="['./termscondtions']" lang="en">Privacy Policy</a></p>
       </div>
       <div class="col-md-4"> <small lang="en">&copy; 2018 Xamplify. All rights reserved.</small></div>
-      <div class="col-md-4"> 
+      <div class="col-md-4">
         <!--social-->
-        
+
         <ul class="social">
           <li><a href="https://twitter.com/" target="_blank"><i class="fa fa-twitter"></i></a></li>
           <li><a href="https://www.facebook.com/" target="_blank"><i class="fa fa-facebook"></i></a></li>
           <li><a href="https://www.youtube.com/" target="_blank"><i class="fa fa-youtube-play"></i></a></li>
         </ul>
-        
-        <!--social end--> 
-        
+
+        <!--social end-->
+
       </div>
     </div>
-    <!--chat-btn--> 
-    <a href="" class="chat-btn" data-toggle="modal" data-target="#modal-contact-form"></a> 
-    <!--chat-btn end--> 
-    
+    <!--chat-btn-->
+    <a href="" class="chat-btn" data-toggle="modal" data-target="#modal-contact-form"></a>
+    <!--chat-btn end-->
+
   </div>
 </footer>
-<!--site-footer end--> 
+<!--site-footer end-->
 
 <!--contact form modal-->
 
@@ -390,10 +390,10 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-      <div class="modal-body"> 
-        
+      <div class="modal-body">
+
         <!--contact form-->
-        
+
         <div class="contact-form text-center">
           <header class="section-header"> <img src="/assets/images/support-icon.svg" alt="support icon">
             <h2>Contact us</h2>
@@ -415,9 +415,9 @@
             <button type="submit" class="btn">SEND MESSAGE</button>
           </form>
         </div>
-        
+
         <!--contact form end-->
-        
+
         <p class="contact-form-success"><i class="fa fa-check"></i><span>Thanks for contacting us!</span> We will get back to you very soon.</p>
       </div>
     </div>

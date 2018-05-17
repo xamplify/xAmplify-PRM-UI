@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CoreModule } from '../core/core.module';
-import { SharedModule } from '../shared/shared.module'; 
+import { SharedModule } from '../shared/shared.module';
 
 import { SignupComponent } from './signup/signup.component';
 import { LoginComponent } from './login/login.component';
@@ -13,13 +13,13 @@ import { VideoComponent } from './video/video.component';
 import { CommonComponentModule } from '../common/common.module';
 import { VendorSignupComponent } from './vendor-signup/vendor-signup.component';
 import { IntroComponent } from './intro/intro.component';
-
+import { TermsConditonComponent } from './terms-conditon/terms-conditon.component';
 
 @NgModule({
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule, RouterModule, CoreModule, SharedModule, CommonComponentModule
   ],
-  declarations: [SignupComponent, LoginComponent, ForgotPasswordComponent, VerifyEmailComponent, VideoComponent, VendorSignupComponent, IntroComponent],
+  declarations: [SignupComponent, LoginComponent, ForgotPasswordComponent, VerifyEmailComponent, VideoComponent, VendorSignupComponent, IntroComponent, TermsConditonComponent],
   exports: []
 })
 export class AuthenticationModule { }

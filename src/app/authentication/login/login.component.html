@@ -10,7 +10,8 @@
   <button type="button" class="close" data-dismiss="alert" aria-label="Close" >
     <span aria-hidden="true">&times;</span>
   </button>
-  <h4 style="padding-top: 6px;"><span class="text">{{properties.USER_ACCOUNT_ACTIVATION_ERROR}} Click for <a (click)="resendActivation()">Resend Activation mail</a></span>
+  <h4 style="padding-top: 6px;"><span class="text">{{properties.USER_ACCOUNT_ACTIVATION_ERROR}}<br>
+    <span style="position: relative;top: 4px;">Click to <a class="underlinetext" (click)="resendActivation()" style="color:blue">Resend Activation mail.</a></span></span>
   </h4>
 </div>
   <form class="login-form" (ngSubmit)="login()">

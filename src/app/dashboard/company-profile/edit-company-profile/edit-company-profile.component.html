@@ -12,8 +12,8 @@
 		<div class="portlet-body clearfix">
 			<div class="alert alert-success" id="edit-sucess" style="display: none;">
 				<a (click)="refService.hideDiv('edit-sucess')" class="close" aria-label="close">x</a>
-				<ng-container *ngIf="companyProfile.isAdd"> <strong>{{message}}.Please Wait...</strong> </ng-container>
-				<ng-container *ngIf="!companyProfile.isAdd"> <strong>{{message}}</strong></ng-container>
+				<ng-container *ngIf="companyProfile.isAdd"> <strong>{{message}}. Please Wait...</strong> </ng-container>
+				<ng-container *ngIf="!companyProfile.isAdd"> <strong>{{message}}.</strong></ng-container>
 			</div>
 			<div [hidden]="!processor.isProcessing">
 				<div class="div-loader" [style.height]="processor.divHeight">
