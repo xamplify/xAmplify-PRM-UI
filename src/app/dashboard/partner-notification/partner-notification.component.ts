@@ -12,7 +12,7 @@ import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 export class PartnerNotificationComponent implements OnInit {
   partnerCampaignsCountMap: any;
   loggedInUserId: number;
-  constructor( private authenticationService: AuthenticationService, 
+  constructor( public authenticationService: AuthenticationService,
                private campaignService: CampaignService,
                private xtremandLogger: XtremandLogger  ) { }
     getPartnerCampaignsCountMapGroupByCampaignType(userId: number){
