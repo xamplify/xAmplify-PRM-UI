@@ -1446,6 +1446,7 @@ export class EditContactsComponent implements OnInit {
         this.addContactuser = new User();
       //  $( "#addContactModal" ).show();
         this.addContactuser.country = ( this.countryNames.countries[0] );
+        this.addContactuser.mobileNumber = "+1";
     }
 
     addContactModalClose() {

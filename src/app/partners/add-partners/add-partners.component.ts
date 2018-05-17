@@ -228,6 +228,7 @@ export class AddPartnersComponent implements OnInit {
 
     addPartnerModalOpen() {
         this.addPartnerUser.country = ( this.countryNames.countries[0] );
+        this.addPartnerUser.mobileNumber = "+1";
     }
 
     addPartnerModalClose() {

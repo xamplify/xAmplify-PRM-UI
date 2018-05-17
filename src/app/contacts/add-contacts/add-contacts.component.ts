@@ -1803,6 +1803,7 @@ export class AddContactsComponent implements OnInit {
     addContactModalOpen() {
        // $( "#addContactModal" ).show();
         this.addContactuser.country = ( this.countryNames.countries[0] );
+        this.addContactuser.mobileNumber = "+1";
     }
 
     addContactModalClose() {
