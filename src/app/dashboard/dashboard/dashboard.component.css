@@ -39,7 +39,7 @@
 }
 
 .number {
-	font-size: 15px;	
+	font-size: 15px;
 }
 
 .dashboard-stat2 {
@@ -89,8 +89,11 @@
 	border: 1px solid;
 }
 
-.custom-anchor {
-	
+.img-dash {
+  width: 120px;
+  left: -20px;
+  position: relative;
+  bottom: 7px;
 }
 
 .fa-line-chart {
@@ -245,7 +248,7 @@ h1.bold {
     border-right: 16px solid #00a6e8;
     border-left: 16px solid #00a6e8;
     border-bottom: 13px solid transparent;
-}	
+}
 .campaign-box{position: relative}
 .profile-name{font-weight: 600;margin: 0 0 5px 0; font-size: 14px;}
 .profile-details b{color: #333;}

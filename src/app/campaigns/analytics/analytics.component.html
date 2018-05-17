@@ -38,10 +38,13 @@
 						<b class="m0" title={{campaign.campaignVideoFile.title}}>{{campaign.campaignVideoFile.title | slice: 0: 20}}</b>
 						<span *ngIf="campaign.campaignVideoFile.title?.length>23">...</span>
 					</div>
-					<div class="camp-desc">
+					<!-- <div class="camp-desc">
 						<span title={{campaign.campaignVideoFile.description}}>{{campaign.campaignVideoFile.description | slice: 0: 20}}
 						<span *ngIf="campaign.campaignVideoFile.description?.length>23">...</span></span>
-					</div>
+          </div> -->
+          <div class="camp-desc">
+            <span>Click for preview</span>
+           </div>
 				</div>
 			</a>
 

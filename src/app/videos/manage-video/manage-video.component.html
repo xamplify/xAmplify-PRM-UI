@@ -61,8 +61,10 @@
                    </ul></div>
                  </div>
                </div>
-               <app-loader *ngIf="httpRequestLoader.isLoading && !isListView  && !referenceService.isPlayVideo"></app-loader>
-               <app-list-loader *ngIf="httpRequestLoader.isLoading && isListView && !referenceService.isPlayVideo"></app-list-loader>
+               <!-- <app-loader *ngIf="httpRequestLoader.isLoading && !isListView  && !referenceService.isPlayVideo"></app-loader>
+               <app-list-loader *ngIf="httpRequestLoader.isLoading && isListView && !referenceService.isPlayVideo"></app-list-loader> -->
+               <app-grid-loader *ngIf="httpRequestLoader.isLoading && !isListView && !referenceService.isPlayVideo"></app-grid-loader>
+               <app-list-loader *ngIf="httpRequestLoader.isLoading && isListView"></app-list-loader>
                <app-play-video-loader *ngIf="referenceService.isPlayVideo"></app-play-video-loader>
                <div class="margin-top-10">
                  <div *ngIf="!httpRequestLoader.isLoading  && !referenceService.isPlayVideo">
@@ -226,7 +228,7 @@
                       <span  class="video-uploaded-by" *ngIf="videoFileService.videoType==='partnerVideos'" title="Uploaded By">By {{videoFile.uploadedBy | slice: 0: 21}}</span>
                       <span class="video-upload-date"  title="Uploaded Date">{{videoFile.uploadedDate }}</span>
                    </div>
-                   
+
                    <div class="bookmark-ribbon" *ngIf="videoFileService.videoType === 'partnerVideos'">
                      <span style="margin: 0px -7px; font-size: 17px; color: white;">
                        <i *ngIf="videoFileService.videoType === 'partnerVideos'" class="fa fa-handshake-o"  aria-hidden="true"></i>
@@ -285,7 +287,7 @@
              </div>
 
            </div>
-           <div *ngIf="pagination.pagedItems.length !== 0 && !referenceService.isPlayVideo">
+           <div class="clearfix" *ngIf="pagination.pagedItems.length !== 0 && !referenceService.isPlayVideo">
             <app-pagination [pagination]="pagination" [type]="'managaVideos'"
              (notifyParent)="setPage($event)" (notifyParentDropDown)="loadVideos($event)"></app-pagination>
             </div>

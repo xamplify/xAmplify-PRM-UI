@@ -737,3 +737,10 @@ legend {
   border-right: 3px solid #31cd2c;
   border-top: 3px solid #31cd2c;
 }
+.dashboard-stat .visual {
+  height: 60px !important;
+  }
+
+.dashboard-stat .details .number {
+  padding-top: 15px !important;
+}
