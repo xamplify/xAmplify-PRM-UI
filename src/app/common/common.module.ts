@@ -16,14 +16,15 @@ import { ContactsCampaignsMailsComponent } from './contacts-campaigns-mails/cont
 import { PieChartComponent } from '../partners/pie-chart/pie-chart.component';
 import { ListLoaderComponent } from './loader/list-loader/list-loader.component';
 import { PlayVideoLoaderComponent } from './loader/play-video-loader/play-video-loader.component';
+import { GridLoaderComponent } from './loader/grid-loader/grid-loader.component';
 
 @NgModule({
   imports: [CommonModule, FormsModule],
   declarations: [DonutChartComponent, PaginationComponent, WorldmapComponent,PieChartComponent,
                  BarChartComponent, EmbedModalComponent, EmbedModalComponent, UserInfoComponent, LocationComponent, 
-                 PlatformComponent, ResponseMessageComponent, PreviewVideoComponent, ContactsCampaignsMailsComponent, ListLoaderComponent, PlayVideoLoaderComponent],
+                 PlatformComponent, ResponseMessageComponent, PreviewVideoComponent, ContactsCampaignsMailsComponent, ListLoaderComponent, PlayVideoLoaderComponent, GridLoaderComponent],
   exports: [DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent,
     BarChartComponent, EmbedModalComponent, UserInfoComponent, LocationComponent, PlatformComponent, 
-    ResponseMessageComponent, PreviewVideoComponent,PieChartComponent, ListLoaderComponent, PlayVideoLoaderComponent]
+    ResponseMessageComponent, PreviewVideoComponent,PieChartComponent, ListLoaderComponent, GridLoaderComponent, PlayVideoLoaderComponent]
 })
 export class CommonComponentModule { }
