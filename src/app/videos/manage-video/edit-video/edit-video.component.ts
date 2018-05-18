@@ -404,16 +404,16 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     // normal and 360 video methods
     setVideoIdHeightWidth() {
-        $('#videoId').css('height', '299px');
+        $('#videoId').css('height', '315px');
         $('#videoId').css('width', 'auto');
     }
     setNewPlayerIdHeightWidth() {
-        $('#newPlayerVideo').css('height', '299px');
+        $('#newPlayerVideo').css('height', '315px');
         $('#newPlayerVideo').css('width', 'auto');
     }
     setOverlayModalHeightWidth() {
         $('#overlay-modal').css('width', 'auto');
-        $('#overlay-modal').css('height', '299px');
+        $('#overlay-modal').css('height', '315px');
     }
     play360Video() {
         try{

@@ -175,6 +175,7 @@ textarea {
 }
 #edit_video_player{
     width:auto;
+    height: 315px;
 }
 .img-thumbnail span {
     width:16px;

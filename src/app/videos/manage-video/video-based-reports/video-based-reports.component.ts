@@ -74,7 +74,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     fullScreenMode: boolean;
     paginationType:string;
     videoPlayedSkipedInfo:any;
-    
+
     constructor(public authenticationService: AuthenticationService, public videoBaseReportService: VideoBaseReportService,
         public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService,
         public pagination: Pagination, public pagerService: PagerService, public router: Router) {
@@ -415,7 +415,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     }
     setPage(event: any) {
         this.paginationType = event.type;
-        if(this.paginationType === 'videoPlayed'){ this.videoPlayedPagination.pageIndex = event.page; } 
+        if(this.paginationType === 'videoPlayed'){ this.videoPlayedPagination.pageIndex = event.page; }
         else { this.pagination.pageIndex = event.page; }
         this.callPaginationMethods();
     }
@@ -436,7 +436,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         }
         else if (this.paginationType === 'videoSkipped') {
             this.videoSkippedDurationInfo();
-        } 
+        }
         else if (this.paginationType === 'coutrywiseUsers') {
             this.getCampaignCoutryViewsDetailsReport(this.countryCode);
         }
@@ -690,7 +690,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         a.click();
         return 'success';
     }
-    clickedTrellisChart(){ 
+    clickedTrellisChart(){
        this.totalMinutesWatchedByMostUsers();
     }
     ngOnInit() {
@@ -733,7 +733,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
         this.videoUrl = this.videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
         $('#newPlayerVideo video').append('<source src=' + this.videoUrl + ' type="application/x-mpegURL">');
-        $('#videoId').css('height', '300px');
+        $('#videoId').css('height', '315px');
         $('#videoId').css('width', 'auto');
         $('.video-js .vjs-tech').css('width', '100%');
         $('.video-js .vjs-tech').css('height', '100%');
@@ -772,7 +772,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                     $('#videoId').append($('#overlay-logo').show());
                 } else if (event === 'FullscreenOff') {
                     $('#videoId').css('width', 'auto');
-                    $('#videoId').css('height', '300px');
+                    $('#videoId').css('height', '315px');
                     self.fullScreenMode = false;
                 }
             });
@@ -838,7 +838,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         $('#newPlayerVideo video').append('<source src=' + this.videoUrl + ' type="application/x-mpegURL">');
         //this.videoUrl = this.videoUrl + '.mp4?access_token=' + this.authenticationService.access_token;
         //$('#newPlayerVideo video').append('<source src="' + this.videoUrl + '" type="video/mp4">');
-        $('#videoId').css('height', '300px');
+        $('#videoId').css('height', '315px');
         $('#videoId').css('width', 'auto');
         const newValue = this;
         const player = videojs('videoId').ready(function () {
@@ -908,14 +908,14 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                         $('#videoId').append($('#overlay-logo').show());
                     } else if (event === 'FullscreenOff') {
                         $('#videoId').css('width', 'auto');
-                        $('#videoId').css('height', '300px');
+                        $('#videoId').css('height', '315px');
                         newValue.fullScreenMode = false;
                     }
                 });
             }
         });
         $('#videoId').css('width', 'auto');
-        $('#videoId').css('height', '300px');
+        $('#videoId').css('height', '315px');
     }
     ngOnDestroy() {
         this.xtremandLogger.log('Deinit - Destroyed Component');

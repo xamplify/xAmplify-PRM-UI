@@ -301,7 +301,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         $('#newPlayerVideo video').append('<source src=' + this.videoUrl + ' type="application/x-mpegURL">');
        // this.videoUrl = this.videoUrl + '.mp4?access_token=' + this.authenticationService.access_token;
        // $('#newPlayerVideo video').append('<source src="' + this.videoUrl + '" type="video/mp4">');
-        $('#videoId').css('height', '318px');
+        $('#videoId').css('height', '360px');
         $('#videoId').css('width', 'auto');
         const player = videojs('videoId').ready(function () {
             this.hotkeys({
@@ -485,17 +485,17 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                         $('#videoId').append($('#overlay-logo').show());
                     } else if (event === 'FullscreenOff') {
                         $('#videoId').css('width', 'auto');
-                        $('#videoId').css('height', '318px');
+                        $('#videoId').css('height', '360px');
                         self.fullScreenMode = false;
                         $('#overLayImage').append($('#overlay-logo').show());
                         if (isCallActionthere === true) {
                             self.overLaySet = false;
                             $('#overlay-modal').css('width', 'auto');
-                            $('#overlay-modal').css('height', '318px');
+                            $('#overlay-modal').css('height', '360px');
                             $('#videoId').append($('#overlay-modal').hide());
                             self.showOverlayModal();
                             $('#overlay-modal').css('width', '100%');
-                            $('#overlay-modal').css('height', '318px');
+                            $('#overlay-modal').css('height', '360px');
                         }
                     }
                 });
@@ -503,7 +503,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             }
         });
         $('#videoId').css('width', 'auto');
-        $('#videoId').css('height', '318px');
+        $('#videoId').css('height', '360px');
     }
     playNormalVideoFiles() {
         $('.p-video').remove();
@@ -512,7 +512,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     playNormalVideo() {
         const str = '<video id=videoId  poster=' + this.posterImg + ' preload="none"  class="video-js vjs-default-skin" controls ></video>';
         $('#newPlayerVideo').append(str);
-        $('#videoId').css('height', '318px');
+        $('#videoId').css('height', '360px');
         $('#videoId').css('width', 'auto');
         this.videoUrl = this.selectedVideo.videoPath;
         this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
@@ -668,7 +668,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                     $('#videoId').append($('#overlay-logo').show());
                 } else if (event === 'FullscreenOff') {
                     $('#videoId').css('width', 'auto');
-                    $('#videoId').css('height', '318px');
+                    $('#videoId').css('height', '360px');
                     self.fullScreenMode = false;
                     self.overLaySet = false;
                     $('#overLayImage').append($('#overlay-logo').show());
@@ -676,11 +676,11 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                         self.overLaySet = false;
                         self.fullScreenMode = false;
                         $('#overlay-modal').css('width', 'auto');
-                        $('#overlay-modal').css('height', '318px');
+                        $('#overlay-modal').css('height', '360px');
                         $('#videoId').append($('#overlay-modal').hide());
                         self.showOverlayModal();
                         $('#overlay-modal').css('width', '100%');
-                        $('#overlay-modal').css('height', '318px');
+                        $('#overlay-modal').css('height', '360px');
                     }
                 }
             });

@@ -16,7 +16,7 @@ export class ErrorPagesComponent implements OnInit, OnDestroy {
     { code: '403', message: 'Forbidden' },
     { code: '404', message: 'Not Found' },
     { code: '405', message: 'Method Not Allowed' },
-    { code: '500', message: 'Internal Server Error' },
+    { code: '500', message: 'Oops! That wasn’t supposed to happen' },
     { code: '502', message: 'Bad Gateway' },
     { code: '503', message: 'Service Unavailable' },
     { code: '504', message: 'Gateway Timeout' },

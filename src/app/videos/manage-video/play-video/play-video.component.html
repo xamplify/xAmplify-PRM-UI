@@ -1,6 +1,6 @@
 <style type="text/css">
 	.overlaySet {
-		margin-top: -331px;
+		margin-top: -372px;
 	}
 	a.disabled {
 		pointer-events: none;
@@ -24,7 +24,7 @@
 				</div>
 				<div id="modalDialog"></div>
 				<!-- modal popup  -->
-				<div id="overlay-modal" class="video-js overlay is360video" [class.overlaySet]="overLaySet==false" style="height: 318px; width: 100% !important;color:white !important; background-color:rgba(29, 25, 25, 0.72);">
+				<div id="overlay-modal" class="video-js overlay is360video" [class.overlaySet]="overLaySet==false" style="height: 360px; width: 100% !important;color:white !important; background-color:rgba(29, 25, 25, 0.72);">
 					<form #f="ngForm" novalidate>
 						<div class="col-xs-12 overlay-main" [ngClass]="{'bottomCss':fullScreenMode}">
 							<h2 class="upper-text-heading upperText">{{selectedVideo.upperText}}</h2>
@@ -235,7 +235,7 @@
 									<h4>Related Videos:</h4>
 									<div>
 										<div class="row mix-grid" style="margin-top: 10px">
-											<app-loader *ngIf="httpRequestLoader.isLoading"></app-loader>
+                      <app-grid-loader *ngIf="httpRequestLoader.isLoading"></app-grid-loader>
 											<div *ngIf="allVideos && !httpRequestLoader.isLoading">
 												<div class="col-md-6 col-sm-8 mix category_1 mix_all" style="display:block; opacity: 1;" *ngFor="let videoFile of pagination.pagedItems; let i = index;">
 													<div class="mix-inner">

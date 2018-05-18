@@ -81,8 +81,8 @@ export class Properties {
     PROCESS_REQUEST_ERROR = "An error occurred while processing your request.";
     DEFAULT_PLAYER_SETTINGS = 'Default player settings updated successfully.';
     VIDEO_LOGO_UPDATED = 'Co-Branding video logo uploaded successfully.';
-    PROFILE_PIC_UPDATED='Profile Picture Updated successfully.';
-    PROFILE_UPDATED = 'Profile Updated successfully.';
-    PASSWORD_UPDATED= 'Password Updated successfully.';
-    PAWORD_ERROR = 'New Password should not be same as current password.'
+    PROFILE_PIC_UPDATED='Profile picture updated successfully.';
+    PROFILE_UPDATED = 'Profile updated successfully.';
+    PASSWORD_UPDATED= 'Password updated successfully.';
+    PAWORD_ERROR = 'New password should not be same as current password.'
 }
