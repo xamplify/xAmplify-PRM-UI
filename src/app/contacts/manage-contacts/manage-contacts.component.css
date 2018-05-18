@@ -72,3 +72,8 @@ h3 {
     .dashboard-stat .visual{height:60px}
     .dashboard-stat .details .number {
     padding-top: 10px;}
+    
+.imageClassCss{
+	width: 26%;
+	margin: 0px;
+}

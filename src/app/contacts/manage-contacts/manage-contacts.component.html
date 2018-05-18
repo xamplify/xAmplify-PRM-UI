@@ -50,11 +50,11 @@
 									<!-- BEGIN FILTER -->
 
 									<div class="page-bar m0">
-										<ul class="page-breadcrumb">
+										<!-- <ul class="page-breadcrumb">
 											<li style="font-size: 16px; color: #888888">Your {{checkingContactTypeName}} Lists
 												</li>
 
-										</ul>
+										</ul> -->
 										<div class="page-toolbar">
 											<div class="btn-group pull-right">
 												<ng-container class='m10'>
@@ -188,6 +188,13 @@
 											</button>
 										</div>
 									</div>
+									<div class="page-bar m0">
+										<ul class="page-breadcrumb">
+											<li style="font-size: 16px; color: #888888">Your {{checkingContactTypeName}} Lists
+												</li>
+
+										</ul>
+										</div>
 									<app-response-message [customResponse]="customResponse"
 										*ngIf="customResponse.isVisible"></app-response-message>
 									<!-- END DASHBOARD STATS -->
@@ -272,16 +279,16 @@
 									</div>
 								</section>
 
-								<div class="row mix-grid mt10" [hidden]="isListView"
+								<div class="row mix-grid" [hidden]="isListView"
 									*ngIf="pagination.pagedItems && !httpRequestLoader.isLoading">
 									<div *ngFor="let contactList of pagination.pagedItems" class="col-xs-12 col-sm-4 col-lg-3">
 										
 										
 										<div class="grid-box" id="contactListDiv_{{contactList.id}}">
-											<img *ngIf="contactList.socialNetwork=='MANUAL'" src="{{normalImage}}" style="height: 26%; width: 27%; margin: 0px;" >
-											<img *ngIf="contactList.socialNetwork=='ZOHO'" src="{{zohoImage}}" style="height: 35%; width: 40%; margin: 0px;">
-											<img *ngIf="contactList.socialNetwork=='GOOGLE'" src="{{googleImage}}" style="height: 30%; width: 26%; margin: 0px;">
-											<img *ngIf="contactList.socialNetwork=='SALESFORCE'" src="{{salesforceImage}}" style="height: 34%; width: 30%; margin: 0px;">
+											<img class="imageClassCss" *ngIf="contactList.socialNetwork=='MANUAL'" src="{{normalImage}}">
+											<img class="imageClassCss" *ngIf="contactList.socialNetwork=='ZOHO'" src="{{zohoImage}}">
+											<img class="imageClassCss" *ngIf="contactList.socialNetwork=='GOOGLE'" src="{{googleImage}}">
+											<img class="imageClassCss" *ngIf="contactList.socialNetwork=='SALESFORCE'" src="{{salesforceImage}}">
 											<!-- <img src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png"> -->
 
 												<div id="container" *ngIf="!contactList.emailValidationInd">
