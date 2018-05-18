@@ -361,7 +361,7 @@ export class AddPartnersComponent implements OnInit {
           }
          }else {  this.isCompanyDetails = true;
          }
-          if(this.newPartnerUser[i].country === "---Please Select Country---"){
+          if(this.newPartnerUser[i].country === "Select Country"){
               this.newPartnerUser[i].country = null;
           }
           if ( !this.validateEmailAddress( this.newPartnerUser[i].emailId ) ) {

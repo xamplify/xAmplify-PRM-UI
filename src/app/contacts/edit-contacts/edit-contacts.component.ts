@@ -349,7 +349,7 @@ export class EditContactsComponent implements OnInit {
         for(let i=0; i< this.users.length; i++){
             this.newUsersEmails.push(this.users[i].emailId);
             
-            if(this.users[i].country === "---Please Select Country---"){
+            if(this.users[i].country === "Select Country"){
                 this.users[i].country = null;
             }
         }
@@ -361,7 +361,7 @@ export class EditContactsComponent implements OnInit {
               }else {
                   this.isCompanyDetails = false;
               }
-              if(this.users[i].country === "---Please Select Country---"){
+              if(this.users[i].country === "Select Country"){
                   this.users[i].country = null;
               }
            }
@@ -456,7 +456,7 @@ export class EditContactsComponent implements OnInit {
                     this.validCsvContacts = false;
                 }
 
-                if(this.users[i].country === "---Please Select Country---"){
+                if(this.users[i].country === "Select Country"){
                     this.users[i].country = null;
                 }
                 
@@ -472,7 +472,7 @@ export class EditContactsComponent implements OnInit {
                       }else {
                           this.isCompanyDetails = false;
                       }
-                      if(this.users[i].country === "---Please Select Country---"){
+                      if(this.users[i].country === "Select Country"){
                           this.users[i].country = null;
                       }
                    }
@@ -852,7 +852,7 @@ export class EditContactsComponent implements OnInit {
         for(let i=0; i< this.users.length; i++){
             this.newUsersEmails.push(this.users[i].emailId);
             
-            if(this.users[i].country === "---Please Select Country---"){
+            if(this.users[i].country === "Select Country"){
                 this.users[i].country = null;
             }
         }
@@ -866,7 +866,7 @@ export class EditContactsComponent implements OnInit {
                   }else {
                       this.isCompanyDetails = false;
                   }
-                  if(this.users[i].country === "---Please Select Country---"){
+                  if(this.users[i].country === "Select Country"){
                       this.users[i].country = null;
                   }
                }
