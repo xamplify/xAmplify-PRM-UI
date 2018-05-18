@@ -7,7 +7,7 @@ export class Properties {
     APP_WELCOME_MESSAGE = 'Welcome to Xamplify';
     APP_Xamplify_URL="https://xamplify.io"
 
-    NO_RESULTS_FOUND = "No results Found.";
+    NO_RESULTS_FOUND = "No results found.";
     EMAIL_SENT_SUCCESS = "Email sent successfully.";
     NO_USERS_SELECT_ERROR = "You have not selected any user.";
     //FOR CONTACTS
@@ -37,7 +37,7 @@ export class Properties {
     CONTACT_SAVE_SUCCESS_AND_MAIL_SENT_SUCCESS = "Your contact list has been updated successfully and campaign mails has been sent successfully.";
     CONTACTS_SAVE_ERROR = "An error occured while saving your contacts.";
 
-    CONTACT_LIST_NAME_UPDATE_SUCCESS = "Your contacts have been saved successfully.";
+    CONTACT_LIST_NAME_UPDATE_SUCCESS = "Your contact(s) have been saved successfully.";
     CONTACT_LIST_NAME_UPDATE_ERROR = "An error occured while saving your contacts.";
 
     SOCIAL_ACCOUNT_REMOVED_SUCCESS = "Your social account has been removed successfully.";
@@ -59,7 +59,7 @@ export class Properties {
     PARTNERS_DELETE_SUCCESS = "Your Partners have been deleted successfully.";
     PARTNERS_DELETE_ERROR = "An error occured while deleting your partner.";
 
-    PARTNERS_SAVE_SUCCESS = "Your Partners have been saved successfully.";
+    PARTNERS_SAVE_SUCCESS = "Your Partner(s) have been saved successfully.";
     PARTNERS_SAVE_ERROR = "An error occured while saving your partners.";
 
     /* Authentication Module*/

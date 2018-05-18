@@ -832,8 +832,7 @@
 									[ngModelOptions]="{standalone: true}"
 									placeholder="email *" autocomplete="off" maxlength="250">
 								<div class="textCss"></div>
-								<div style="color: red" *ngIf="!validEmailPatternSuccess">invalid
-									emailId</div>
+								<div style="color: red" *ngIf="!validEmailPatternSuccess">Please enter a valid email address.</div>
 								<div style="color: red" *ngIf="isEmailExist">This email address has already been added</div>
 							</div>
 						</div>
