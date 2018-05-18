@@ -75,7 +75,7 @@ export class Properties {
     BAD_CREDENTIAL_ERROR = "Username or password is incorrect.";
     USER_ACCOUNT_ACTIVATION_ERROR = "Your account has not been activated. Please check your inbox for our activation email.";
     EMPTY_CREDENTIAL_ERROR = "Username or password can't be empty.";
-    RESEND_ACTIVATION_MAIL = 'Activation mail has been sent to your inbox. Please check your inbox.'
+    RESEND_ACTIVATION_MAIL = 'Please check your inbox	for	our	account activation email.'
     /* User */
     PROCESS_REQUEST_SUCCESS = "Your request has been successfully processed.";
     PROCESS_REQUEST_ERROR = "An error occurred while processing your request.";

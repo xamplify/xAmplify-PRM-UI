@@ -729,7 +729,7 @@ export class EditCompanyProfileComponent implements OnInit {
             }
         } else {
             this.websiteError = true;
-            this.websiteErrorMessage = 'Website url should not be empty';
+            this.websiteErrorMessage = 'Please add your company’ URL';
         }
     }
 
