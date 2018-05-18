@@ -173,7 +173,7 @@
 													 (statusChange)="setCoBrandingLogo($event)">
 													</switch>
 													<span style="cursor: pointer;color: #54a7e9;" title="logo for co branding">
-												<i class="fa fa-question-circle" style="margin-top: -14px;margin-right: 204px;font-size: 20px"></i>
+												<i class="fa fa-question-circle" style="font-size: 20px;float: left;margin: -14px 0 0 15px;"></i>
 											</span>
 												</div>
 											</div>
@@ -319,11 +319,11 @@
 											<ng-container *ngIf="!campaign.createdFromVideos">
 												<div class="input-icon right pull-right m10" *ngIf="isMyVideosActive">
 													<i class="icon-magnifier" (click)="searchVideo()" style="cursor: pointer;"></i>
-													<input type="text" class="form-control" placeholder="search in My videos" [(ngModel)]="videoSearchInput" [ngModelOptions]="{standalone: true}">
+													<input type="text" class="form-control" placeholder="search in My Videos" [(ngModel)]="videoSearchInput" [ngModelOptions]="{standalone: true}">
 												</div>
 												<div class="input-icon right pull-right m10" *ngIf="!isMyVideosActive">
 													<i class="icon-magnifier" (click)="searchChannelVideo()" style="cursor: pointer;"></i>
-													<input type="text" class="form-control" placeholder="search in Partner videos" [(ngModel)]="channelVideoSearchInput" [ngModelOptions]="{standalone: true}">
+													<input type="text" class="form-control" placeholder="search in Partner Videos" [(ngModel)]="channelVideoSearchInput" [ngModelOptions]="{standalone: true}">
 												</div>
 											</ng-container>
 										</div>
@@ -369,7 +369,7 @@
 														<tr>
 															<td colspan="5">
 																<div *ngIf="videosPagination.totalRecords==0" class="alert alert-info">
-																	<strong>No Videos Found</strong>
+																	<strong>No videos found</strong>
 																</div>
 															</td>
 														</tr>
@@ -554,7 +554,7 @@
 														<tr>
 															<td colspan="5">
 																<div *ngIf="channelVideosPagination.totalRecords==0" class="alert alert-info">
-																	<strong>No Partner Videos Found</strong>
+																	<strong>No Partner videos found</strong>
 																</div>
 															</td>
 														</tr>
@@ -1083,10 +1083,10 @@
 									<i class="fa fa-users fa-2x icon-position" aria-hidden="true"></i>
 								</div>
 								<ng-container *ngIf="authenticationService.module.isVendor || authenticationService.isAddedByVendor">
-									<ng-container class="h4-text" *ngIf="campaignType == 'video'||'regular'">Partner</ng-container>
+									<ng-container class="h4-text" *ngIf="campaignType == 'video'||'regular'">Partner List(s)</ng-container>
 								</ng-container>
 								<ng-container *ngIf="!authenticationService.module.isVendor && !authenticationService.isAddedByVendor">
-									<ng-container class="h4-text" *ngIf="campaignType == 'video'||'regular'">Contact List</ng-container>
+									<ng-container class="h4-text" *ngIf="campaignType == 'video'||'regular'">Contact List(s)</ng-container>
 								</ng-container>
 
 								</td>

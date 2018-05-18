@@ -2403,7 +2403,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                self.teamMemberEmailIds.push(data[index]);
            });
            if(this.isAdd){
-               let teamMember = this.teamMemberEmailIds[0];
+               let teamMember = this.teamMemberEmailIds.filter((teamMember)=> teamMember.id ===this.loggedInUserId)[0];
                this.campaign.email = teamMember.emailId;
                this.campaign.fromName = $.trim(teamMember.firstName+" "+teamMember.lastName);
                this.setEmailIdAsFromName();

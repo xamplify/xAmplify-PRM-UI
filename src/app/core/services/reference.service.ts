@@ -823,7 +823,7 @@ export class ReferenceService {
     }
     getCountries() {
         return [
-            new Country(0, '', '---Please Select Country---'),
+            new Country(0, '', 'Select Country'),
             new Country(1, 'AF', 'Afghanistan'),
             new Country(2, 'AX', 'Aland Islands'),
             new Country(3, 'AL', 'Albania'),

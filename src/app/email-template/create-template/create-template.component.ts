@@ -293,7 +293,7 @@ export class CreateTemplateComponent implements OnInit {
 	                  console.log(emailTemplateService.emailTemplate);
 	                  if(emailTemplateService.emailTemplate!=undefined){
 	                      var body = emailTemplateService.emailTemplate.jsonBody;
-	                      body = body.replace("https://eu-bee-resources.s3.amazonaws.com/public/resources/img/placeholder_01.png","https://xamp.io/vod/images/co-branding.png");
+	                     // body = body.replace("https://eu-bee-resources.s3.amazonaws.com/public/resources/img/placeholder_01.png","https://xamp.io/vod/images/co-branding.png");
 	                      var jsonBody = JSON.parse(body);
 	                      console.log(jsonBody);
 	                      bee.load(jsonBody);
