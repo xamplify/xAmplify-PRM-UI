@@ -57,6 +57,22 @@
                                 <input type="text" id="preHeader" placeholder="Pre Header" class="form-control" [(ngModel)]="campaign.preHeader" name="preHeader" (input)="validateForm();validateField('preHeader');" maxlength="200"  />
                             </div>
                             <div class="form-group">
+                                <label class="control-label col-sm-4">Share Analytics</label>
+                                <div class="col-sm-8" style="margin-bottom: 10px;">
+                                    <div class="email-options-checkbox-group email-options-notify">
+                                        <div class="email-options-checkbox clearfix">
+                                            <div class="col-sm-4 ui-switch-custom-div">
+                                                 <switch [status]="campaign.detailedAnalyticsShared" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (statusChange)="shareAnalytics($event)">
+                                                </switch>
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <label style="margin: 5px 0;"></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <label class="control-label col-sm-4">Notify Me When</label>
                                 <div class="col-sm-8">
                                     <div class="email-options-checkbox-group email-options-notify">

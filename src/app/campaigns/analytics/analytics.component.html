@@ -27,7 +27,7 @@
 <ng-template #NOERROR>
 	<div class="row">
 		<div class="pl10 pr10 col-xs-12" [ngClass]="{'col-sm-4': campaignType === 'VIDEO'}" *ngIf="campaignType === 'VIDEO'">
-			<a class="dashboard-stat dashboard-stat-lighter purple-soft" (click)="previewVideo(campaign.campaignVideoFile)">
+			<a class="dashboard-stat dashboard-stat-lighter purple-soft" (click)="previewVideo(campaign.campaignVideoFile)" [class.disabled]="!isPartnerEnabledAnalyticsAccess ?true:null">
 				<div class="visual">
 					<i class="fa fa-video-camera"></i>
 				</div>
@@ -42,7 +42,7 @@
 						<span title={{campaign.campaignVideoFile.description}}>{{campaign.campaignVideoFile.description | slice: 0: 20}}
 						<span *ngIf="campaign.campaignVideoFile.description?.length>23">...</span></span>
           </div> -->
-          <div class="camp-desc">
+          <div class="camp-desc" *ngIf="isPartnerEnabledAnalyticsAccess">
             <span>Click for preview</span>
            </div>
 				</div>
@@ -51,7 +51,7 @@
 		</div>
 		<div  class="pl10 pr10 col-xs-12" [ngClass]="{'col-sm-4': campaignType === 'VIDEO', 'col-sm-6': campaignType === 'EMAIL'}" *ngIf="campaignType === 'VIDEO' || campaignType === 'EMAIL'">
 
-			<a class="dashboard-stat dashboard-stat-lighter blue-soft" (click)="showEmailTemplatePreview(campaign.emailTemplate)" >
+			<a class="dashboard-stat dashboard-stat-lighter blue-soft" (click)="showEmailTemplatePreview(campaign.emailTemplate)" [class.disabled]="!isPartnerEnabledAnalyticsAccess ?true:null" >
 					<div class="visual">
 						<i class="fa fa-envelope-open"></i>
 					</div>
@@ -60,14 +60,14 @@
 						<div class="camp-number">
 						  <b class="m0" title={{campaign.emailTemplate.name}}>{{campaign.emailTemplate.name | slice: 0: 20}}</b>
 						</div>
-						<div class="camp-desc">
+						<div class="camp-desc" *ngIf="isPartnerEnabledAnalyticsAccess">
 						 <span>Click for preview</span>
 						</div>
 					</div>
 				</a>
 		</div>
 		<div  class="pl10 pr10 col-xs-12" [ngClass]="{'col-sm-4': campaignType === 'VIDEO', 'col-sm-6': campaignType === 'EMAIL', 'col-sm-12': campaignType === 'SOCIAL'}">
-			<a class="dashboard-stat dashboard-stat-lighter green-soft" (click)="showContactListModal()">
+			<a class="dashboard-stat dashboard-stat-lighter green-soft" (click)="showContactListModal()" [class.disabled]="!isPartnerEnabledAnalyticsAccess ?true:null">
 					<div class="visual">
 						<i class="fa fa-users"></i>
 					</div>
@@ -80,7 +80,7 @@
                  <span *ngIf="authenticationService.isVendor()">Partner Lists</span>
               </b>
 						</div>
-						<div class="camp-desc">
+						<div class="camp-desc" *ngIf="isPartnerEnabledAnalyticsAccess">
 							<span>Click for details</span>
 						</div>
 					</div>
@@ -98,7 +98,8 @@
 					</div>
 				</div>
 				<div class="portlet-body text-center">
-					<app-worldmap *ngIf="renderMapData" [worldMapData] = "renderMapData" (notifyParent)="clickWorldMapReports($event)"></app-worldmap>
+					<app-worldmap *ngIf="renderMapData && isPartnerEnabledAnalyticsAccess" [worldMapData] = "renderMapData" (notifyParent)="clickWorldMapReports($event)"></app-worldmap>
+					<app-worldmap *ngIf="renderMapData && !isPartnerEnabledAnalyticsAccess" [worldMapData] = "renderMapData"></app-worldmap>
 				</div>
 			</div>
 		</div>
@@ -118,7 +119,7 @@
 	<div class="col-xs-12 col-sm-6 p-5x emails-info">
 		<div class="p-5x" [ngClass]="{'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO'}">
 			<button class="portlet light color1-invert crcb" (click)="downloadTypeName = 'campaignViews'" data-toggle="modal" data-target="#emailSentListModal"
-			 [disabled]="campaignReport.emailSentCount < 1">
+			 [disabled]="campaignReport.emailSentCount < 1 ||  !isPartnerEnabledAnalyticsAccess">
 				<div class="portlet-body text-center">
 						<i class="fa fa-envelope"></i>
 					<h1>
@@ -130,7 +131,7 @@
 		</div>
 		<div class="p-5x" [ngClass]="{'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO'}">
 			<button class="portlet light color1-invert crcb" (click)="emailActionList(campaign.campaignId, 'open', emailActionListPagination)"
-			 [disabled]="campaignReport.emailOpenCount < 1">
+			 [disabled]="campaignReport.emailOpenCount < 1 || !isPartnerEnabledAnalyticsAccess">
 				<div class="portlet-body text-center">
 						<i class="fa fa-envelope-open"></i>
 					<h1>
@@ -142,7 +143,7 @@
 		</div>
 		<div class="p-5x" [ngClass]="{'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO'}">
 			<button class="portlet light color1-invert crcb" (click)="emailActionList(campaign.campaignId, 'click', emailActionListPagination)"
-			 [disabled]="campaignReport.emailClickedCount < 1">
+			 [disabled]="campaignReport.emailClickedCount < 1 || !isPartnerEnabledAnalyticsAccess">
 				<div class="portlet-body text-center">
 						<i class="fa fa-globe"></i>
 					<h1>
@@ -154,7 +155,7 @@
 		</div>
 		<div class="col-xs-6 col-sm-3 p-5x" *ngIf="campaignType === 'VIDEO'">
 			<button class="portlet light color1-invert crcb" (click)="usersWatchList(campaign.campaignId, usersWatchListPagination)"
-			 [disabled]="campaignReport.usersWatchCount < 1">
+			 [disabled]="campaignReport.usersWatchCount < 1 || !isPartnerEnabledAnalyticsAccess">
 				<div class="portlet-body text-center">
 						<i class="fa fa-eye"></i>
 					<h1>
@@ -202,7 +203,7 @@
 					</div>
 				</div>
 				<div class="portlet-body flex" style="padding: 1.7em 0;">
-					<div class="col-xs-4 text-center" [class.disabled]="campaignReport.lifetimeViewsCount < 1 ? true : null">
+					<div class="col-xs-4 text-center" [class.disabled]="(campaignReport.lifetimeViewsCount < 1 || !isPartnerEnabledAnalyticsAccess) ? true : null">
 						<section class="percentage-circle" style="cursor: pointer" (click)="campaignViewsDonut('life-time')">
 							<app-donut-chart [percentageValue]="campaignReport.lifetimeViewsCount" [totalValue]="campaignReport.emailSentCount"> </app-donut-chart>
 							<h2 class="percentage-value" style="font-size: 23px;" *ngIf="campaignReport.emailSentCount!==0">{{campaignReport.lifetimeViewsCount*100/campaignReport.emailSentCount | number : '1.0-2'}}%</h2>
@@ -211,7 +212,7 @@
 						</section>
 						<h5 style="text-align: center; color: #00a6e8; margin-top: 3.5em;">Lifetime</h5>
 					</div>
-					<div class="col-xs-4 text-center" [class.disabled]="campaignReport.thisMonthViewsCount < 1 ? true : null" (click)="campaignViewsDonut('current-month')">
+					<div class="col-xs-4 text-center" [class.disabled]="(campaignReport.thisMonthViewsCount < 1 || !isPartnerEnabledAnalyticsAccess) ? true : null" (click)="campaignViewsDonut('current-month')">
 						<section class="percentage-circle" style="cursor: pointer">
 							<app-donut-chart [percentageValue]="campaignReport.thisMonthViewsCount" [totalValue]="campaignReport.emailSentCount"> </app-donut-chart>
 							<h2 class="percentage-value" style="font-size: 23px;" *ngIf="campaignReport.emailSentCount!==0">{{campaignReport.thisMonthViewsCount*100/campaignReport.emailSentCount | number : '1.0-2'}}%</h2>
@@ -221,7 +222,7 @@
 						<h5 style="text-align: center; color: #00a6e8; margin-top: 3.5em;">This Month
 						</h5>
 					</div>
-					<div class="col-xs-4 text-center" [class.disabled]="campaignReport.todayViewsCount < 1 ? true : null">
+					<div class="col-xs-4 text-center" [class.disabled]="(campaignReport.todayViewsCount < 1  || !isPartnerEnabledAnalyticsAccess)? true : null">
 						<section class="percentage-circle" style="cursor: pointer" (click)="campaignViewsDonut('today')">
 							<app-donut-chart [percentageValue]="campaignReport.todayViewsCount" [totalValue]="campaignReport.emailSentCount"> </app-donut-chart>
 							<h2 class="percentage-value" style="font-size: 23px;" *ngIf="campaignReport.emailSentCount!==0">{{campaignReport.todayViewsCount*100/campaignReport.emailSentCount | number : '1.0-2'}}%</h2>
@@ -234,7 +235,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="row">
+	<div class="row" *ngIf="isPartnerEnabledAnalyticsAccess">
 		<div class="col-xs-12 col-sm-12 p-5x">
 			<div class="col-xs-12 p-5x">
 				<div class="portlet light">

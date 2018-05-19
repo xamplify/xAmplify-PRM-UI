@@ -69,7 +69,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   paginationType:string;
   videoFile: any;
   userWatchtotalRecords: number;
-
+  isPartnerEnabledAnalyticsAccess:boolean = false;
   constructor(private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
     public authenticationService: AuthenticationService, public pagerService: PagerService, public pagination: Pagination,
     public referenceService: ReferenceService, public contactService: ContactService) {
@@ -483,6 +483,11 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       .subscribe(
       data => {
         this.campaign = data;
+        if(this.campaign.nurtureCampaign && this.campaign.userId!=this.authenticationService.getUserId()){
+            this.isPartnerEnabledAnalyticsAccess = this.campaign.detailedAnalyticsShared;
+        }else{
+            this.isPartnerEnabledAnalyticsAccess = true;
+        }
         this.campaingContactLists = data.userLists;
         console.log(this.campaingContactLists);
         this.isPartnerCampaign = this.campaign.channelCampaign? '(PARTNER)' : '';

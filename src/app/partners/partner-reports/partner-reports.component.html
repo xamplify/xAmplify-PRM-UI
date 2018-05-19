@@ -143,7 +143,7 @@
             </tbody>
           </table>
           <div *ngIf="activePartnersPagination.totalRecords==0" class="alert alert-info">
-				<strong>No Campaigns Used</strong>
+				<strong>No Campaigns Found</strong>
 			</div>
 			<div style="position: absolute;bottom: -10px;" 
 			*ngIf="activePartnersPagination.totalRecords>0 && !activeParnterHttpRequestLoader.isLoading &&!activeParnterHttpRequestLoader.isServerError">
@@ -196,7 +196,7 @@
               <th class="center-aligned">analytics</th>
             </thead>
             <tbody>
-              <tr *ngFor="let item of partnerUserInteraction" style="cursor: pointer;" (click)="goToCampaignAnalytics(item.campaignId)">
+              <tr *ngFor="let item of pagination.pagedItems" style="cursor: pointer;" (click)="goToCampaignAnalytics(item.campaignId)">
                 <td><app-user-info [userInfo]="item" [isPartnerEntityInfo]="true" [isPartnerInfo]="true"></app-user-info></td>
                 <td>{{item.campaignName}}</td>
                 <td>
@@ -209,6 +209,9 @@
               </tr>
             </tbody>
           </table>
+          <div *ngIf="pagination.totalRecords==0" class="alert alert-info">
+				<strong>No Campaigns Found</strong>
+			</div>
         </div>
         <app-pagination [pagination]="pagination" [type]="'userInteraction'" (notifyParentDropDown)="paginationDropdown($event)"
           (notifyParent)="setPage($event)"></app-pagination>

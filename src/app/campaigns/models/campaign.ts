@@ -50,4 +50,5 @@ export class Campaign {
     scheduleType:string = "";
     nurtureCampaign = false;
     campaignScheduleType:string = "";
+    detailedAnalyticsShared:boolean = false;
 }

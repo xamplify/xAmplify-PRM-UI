@@ -262,12 +262,15 @@ export class EditPartnerCampaignsComponent implements OnInit {
     setEmailOpened(event: any) {
         this.campaign.emailOpened = event;
     }
+    
 
     setVideoPlayed(event: any) {
         this.campaign.videoPlayed = event;
     }
 
-    
+    shareAnalytics(event:any){
+        this.campaign.detailedAnalyticsShared = event;
+    }
     
     /*************************************************************Campaign Details***************************************************************************************/
     isValidEmail:boolean = false;
@@ -454,47 +457,7 @@ export class EditPartnerCampaignsComponent implements OnInit {
     }
 
  
-    launchCampaign() {
-        this.referenceService.startLoader(this.httpRequestLoader);
-        $('#contact-list-error').hide();
-        var data = this.getCampaignData("");
-        var errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
-        if(errorLength===0 && this.selectedUserlistIds.length>0){
-            this.dataError = false;
-            this.contactListBorderColor = "silver";
-            this.referenceService.goToTop();
-            this.campaignService.saveCampaign( data )
-            .subscribe(
-            response => {
-                this.referenceService.stopLoader(this.httpRequestLoader);
-                if (response.statusCode === 2000) {
-                    this.referenceService.campaignSuccessMessage = data.scheduleCampaign;
-                    this.campaign = null;
-                    this.router.navigate(["/home/campaigns/manage"]);
-                } else {
-                    this.referenceService.stopLoader(this.httpRequestLoader);
-                    this.invalidScheduleTime = true;
-                    this.invalidScheduleTimeError = response.message;
-                }
-                
-            },
-            error => {
-                this.hasInternalError = true;
-                this.xtremandLogger.errorPage(error);
-            },
-            () => this.xtremandLogger.info("Finished launchCampaign()")
-        ); 
-        }else{
-            this.referenceService.stopLoader(this.httpRequestLoader);
-            if(this.replies.length>0 ||this.urls.length>0){
-                this.dataError = true;
-            }else{
-                this.dataError = false;
-            }
-            this.setContactListError();
-        }
-    return false;
-    }
+
     
     
     setContactListError(){
@@ -569,7 +532,8 @@ export class EditPartnerCampaignsComponent implements OnInit {
             'campaignType': this.campaign.campaignType,
             'country': country,
             'createdFromVideos': this.campaign.createdFromVideos,
-            'nurtureCampaign':true
+            'nurtureCampaign':true,
+            'detailedAnalyticsShared':this.campaign.detailedAnalyticsShared
         };
         console.log(data);
         return data;
@@ -1341,5 +1305,45 @@ export class EditPartnerCampaignsComponent implements OnInit {
       this.loadUsers(0,this.contactsUsersPagination);
   }
   
-
+  launchCampaign() {
+      this.referenceService.startLoader(this.httpRequestLoader);
+      $('#contact-list-error').hide();
+      var data = this.getCampaignData("");
+      var errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
+      if(errorLength===0 && this.selectedUserlistIds.length>0){
+          this.dataError = false;
+          this.contactListBorderColor = "silver";
+          this.referenceService.goToTop();
+          this.campaignService.saveCampaign( data )
+          .subscribe(
+          response => {
+              this.referenceService.stopLoader(this.httpRequestLoader);
+              if (response.statusCode === 2000) {
+                  this.referenceService.campaignSuccessMessage = data.scheduleCampaign;
+                  this.campaign = null;
+                  this.router.navigate(["/home/campaigns/manage"]);
+              } else {
+                  this.referenceService.stopLoader(this.httpRequestLoader);
+                  this.invalidScheduleTime = true;
+                  this.invalidScheduleTimeError = response.message;
+              }
+              
+          },
+          error => {
+              this.hasInternalError = true;
+              this.xtremandLogger.errorPage(error);
+          },
+          () => this.xtremandLogger.info("Finished launchCampaign()")
+      ); 
+      }else{
+          this.referenceService.stopLoader(this.httpRequestLoader);
+          if(this.replies.length>0 ||this.urls.length>0){
+              this.dataError = true;
+          }else{
+              this.dataError = false;
+          }
+          this.setContactListError();
+      }
+  return false;
+  }
 }
