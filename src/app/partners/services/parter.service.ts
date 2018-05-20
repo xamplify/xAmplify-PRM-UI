@@ -9,9 +9,9 @@ export class ParterService {
     URL = this.authenticationService.REST_URL;
 
     constructor( public authenticationService: AuthenticationService, public httpClient: HttpClient ) { }
-    partnerReports( companyId: number ): Observable<any> {
+    partnerReports( userId: number ): Observable<any> {
         const url = this.URL + 'partner/analytics?access_token=' + this.authenticationService.access_token +
-            '&companyId=' + companyId;
+            '&userId=' + userId;
         return this.httpClient.get( url )
             .catch( this.handleError );
     }
@@ -25,9 +25,9 @@ export class ParterService {
         return this.httpClient.post( url, pagination )
             .catch( this.handleError );
     }
-    partnerUserInteractionReports( companyId: number, pagination: Pagination ): Observable<any> {
+    partnerUserInteractionReports( userId: number, pagination: Pagination ): Observable<any> {
         const url = this.URL + 'partner/campaigns?access_token=' + this.authenticationService.access_token +
-            '&companyId=' + companyId
+            '&userId=' + userId
         return this.httpClient.post( url, pagination )
             .catch( this.handleError );
     }

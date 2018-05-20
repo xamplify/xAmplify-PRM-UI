@@ -51,4 +51,5 @@ export class Campaign {
     nurtureCampaign = false;
     campaignScheduleType:string = "";
     detailedAnalyticsShared:boolean = false;
+    vendorOrganizationId:number = 0;
 }

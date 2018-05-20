@@ -128,6 +128,7 @@ export class ReferenceService {
     }
     loading(httpRequestLoader: HttpRequestLoader, isLoading: boolean) {
         httpRequestLoader.isLoading = isLoading;
+        httpRequestLoader.isServerError = false;
     }
     isPlayVideoLoading(loading:boolean){
       return this.isPlayVideo = loading;

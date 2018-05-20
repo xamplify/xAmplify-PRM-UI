@@ -61,7 +61,7 @@
 						</div>
 					</div>
 
-						<app-grid-loader *ngIf="httpRequestLoader.isLoading && !isListView"></app-gridloader>
+						<app-grid-loader *ngIf="httpRequestLoader.isLoading && !isListView"></app-grid-loader>
 						<app-list-loader *ngIf="httpRequestLoader.isLoading && isListView"></app-list-loader>
 					<section class='m10' *ngIf="totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
 						<div class="table-responsive">

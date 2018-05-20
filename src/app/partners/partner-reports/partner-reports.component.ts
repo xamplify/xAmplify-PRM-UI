@@ -85,7 +85,7 @@ export class PartnerReportsComponent implements OnInit {
     });
   }
   partnerReportData() {
-    this.parterService.partnerReports(this.referenseService.companyId).subscribe(
+    this.parterService.partnerReports(this.loggedInUserId).subscribe(
       (data: any) => {
         this.worldMapdataReport = data.countrywisePartnersCount.countrywisepartners;
         this.campaignsCount = data.partnersLaunchedCampaignsCount;
@@ -101,7 +101,7 @@ export class PartnerReportsComponent implements OnInit {
   /*********Active Partner  Analytics***********/
   getActivePartnerReports(pagination:Pagination){
       this.referenseService.loading(this.activeParnterHttpRequestLoader, true);
-      pagination.companyId =this.referenseService.companyId;
+      pagination.userId = this.loggedInUserId;
       this.parterService.getActivePartnersAnalytics(pagination).subscribe(
               (response: any) => {
                console.log(response);
@@ -135,7 +135,7 @@ export class PartnerReportsComponent implements OnInit {
   partnerUserInteractionReports() {
       this.referenseService.loading( this.campaignUserInteractionHttpRequestLoader, true );
       this.paginationType = 'UserInteraction';
-      this.parterService.partnerUserInteractionReports( this.referenseService.companyId, this.pagination ).subscribe(
+      this.parterService.partnerUserInteractionReports( this.loggedInUserId, this.pagination ).subscribe(
           ( data: any ) => {
               this.pagination.totalRecords = data.totalRecords;
               this.partnerUserInteraction = data.data;
@@ -191,7 +191,7 @@ export class PartnerReportsComponent implements OnInit {
     }
   }
   ngOnInit() {
-    if(this.referenseService.companyId>0){
+      if(this.loggedInUserId>0){
         this.paginationType = 'userInteraction';
         this.homeComponent.getVideoDefaultSettings();
         this.pagination.maxResults = 12;
@@ -228,7 +228,8 @@ export class PartnerReportsComponent implements OnInit {
       this.throughPartnerCampaignPagination.throughPartnerAnalytics = true;
       this.listThroughPartnerCampaigns(this.throughPartnerCampaignPagination);
   }
-  
+
+  /***************************Re Distributed**************************/
   goToReDistributedPartnersDiv(){
       this.throughPartnerCampaignPagination = new Pagination();
       this.sortOption = new SortOption();
@@ -242,8 +243,7 @@ export class PartnerReportsComponent implements OnInit {
   
   listThroughPartnerCampaigns(pagination: Pagination) {
       this.referenseService.loading(this.httpRequestLoader, true);
-      pagination.companyId = this.referenseService.companyId;
-      this.campaignService.listCampaign(pagination,0)
+      this.campaignService.listCampaign(pagination,this.loggedInUserId)
           .subscribe(
               data => {
                   this.sortOption.totalRecords = data.totalRecords;
@@ -334,7 +334,7 @@ export class PartnerReportsComponent implements OnInit {
   
   getInActivePartnerReports(pagination:Pagination){
       this.referenseService.loading(this.httpRequestLoader, true);
-      pagination.companyId =this.referenseService.companyId;
+      pagination.userId =this.loggedInUserId;
       this.parterService.getInActivePartnersAnalytics(pagination).subscribe(
               (response: any) => {
                pagination.totalRecords = response.totalRecords;
