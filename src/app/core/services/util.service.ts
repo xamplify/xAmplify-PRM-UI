@@ -84,4 +84,12 @@ export class UtilService {
         }
         return tooltipMessage;
     }
+    setRouterLocalStorage(router:string){
+      localStorage.removeItem("campaignRouter");
+      localStorage.setItem('campaignRouter', router);
+    }
+    getRouterLocalStorage(){
+      return localStorage.getItem("campaignRouter");
+    }
+
 }

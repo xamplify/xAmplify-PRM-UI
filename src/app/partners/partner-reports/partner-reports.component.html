@@ -11,12 +11,12 @@
         <a [routerLink]="referenseService.homeRouter">Home</a>
         <i class="fa fa-angle-right"></i>
       </li>
-      <li (click)="gotoMange()">
+      <!-- <li (click)="gotoMange()">
         <a>Manage Partners</a>
         <i class="fa fa-angle-right"></i>
-      </li>
+      </li> -->
       <li>
-        <a>Analytics</a>
+        <a>Partner Analytics</a>
       </li>
     </ul>
   </div>
@@ -145,7 +145,7 @@
           <div *ngIf="activePartnersPagination.totalRecords==0" class="alert alert-info">
 				<strong>No Campaigns Found</strong>
 			</div>
-			<div style="position: absolute;bottom: -10px;" 
+			<div style="position: absolute;bottom: -10px;"
 			*ngIf="activePartnersPagination.totalRecords>0 && !activeParnterHttpRequestLoader.isLoading &&!activeParnterHttpRequestLoader.isServerError">
 				<ul *ngIf="activePartnersPagination.pager.pages && activePartnersPagination.pager.pages.length" class="pagination">
 					<li [ngClass]="{disabled:activePartnersPagination.pager.currentPage === 1}">
@@ -170,7 +170,7 @@
     </div>
   </div>
   <div class="row">
-  
+
     <div class="col-xs-12 p5">
       <div class="portlet light">
         <div class="portlet-title">
@@ -201,10 +201,10 @@
                 <td>{{item.campaignName}}</td>
                 <td>
 					        <div class="actions-block">
-                      <a [routerLink]="['/home/campaigns/', item.campaignId, 'details']"  title="analytics"> 
+                      <a [routerLink]="['/home/campaigns/', item.campaignId, 'details']"  title="analytics">
                           <i class="fa fa-eye"></i>
                         </a>
-                      </div>                
+                      </div>
                 </td>
               </tr>
             </tbody>
@@ -219,11 +219,11 @@
       </div>
     </div>
   </div>
-  
-  
+
+
   </div><!-- End Of active-partners-div -->
-  
-  
+
+
   <!-- --------------------Inactive Partners Count-------- -->
   <div id="inactive-partners-div" style="display: none;">
    <div class="row">
@@ -255,10 +255,10 @@
                 <td><app-user-info [userInfo]="item" [isPartnerEntityInfo]="true" [isPartnerInfo]="true"></app-user-info></td>
                 <td (click)="sendPartnerReminder(item)">
 					<div class="actions-block">
-                      <a   title="Send email"> 
+                      <a   title="Send email">
                           <i class="fa fa-envelope"></i>
                         </a>
-                      </div>                
+                      </div>
                 </td>
               </tr>
             </tbody>
@@ -413,7 +413,7 @@
 												<a [routerLink]="['/home/campaigns/',campaign.campaignId, 'details']" title="Campaign Based Reports">
 														<i class="fa fa-line-chart"></i>
 													</a>
-											</div>		
+											</div>
 										</div>
 									</div>
 								</ng-container>
@@ -438,14 +438,14 @@
 			</div>
 		</div>
 	</div>
-  
-  
-  
-  
+
+
+
+
   </div>
-  
-  
-  
+
+
+
 </div>
 
 <div class="modal fade" id="campaignInteractionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false"

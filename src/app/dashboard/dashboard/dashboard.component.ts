@@ -90,6 +90,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.daySort = this.sortDates[0];
         this.heatMapSort = this.sortHeatMapValues[0];
         this.xtremandLogger.info('dashboard constructor');
+        this.utilService.setRouterLocalStorage('dashboard');
         this.isOnlyPartner = this.authenticationService.isOnlyPartner();
     }
 
@@ -961,7 +962,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       if(this.authenticationService.isVendor()){
         this.router.navigate(['/home/team/add-team']);
        } else if(this.authenticationService.isAddedByVendor){
-           this.router.navigate(['/home/partners/manage']); 
+           this.router.navigate(['/home/partners/manage']);
        } else{ this.router.navigate(['/home/contacts/manage']); }
     }
 

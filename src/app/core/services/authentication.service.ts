@@ -44,8 +44,8 @@ export class AuthenticationService {
         this.REST_URL = this.SERVER_URL + 'xtremand-rest/';
         this.MEDIA_URL = this.SERVER_URL + 'vod/';
         this.SHARE_URL = this.SERVER_URL + 'embed/';
-        
-        
+
+
     }
 
     getOptions(): RequestOptions {
@@ -187,6 +187,7 @@ export class AuthenticationService {
         this.access_token = null;
         this.refresh_token = null;
         localStorage.removeItem('currentUser');
+        localStorage.removeItem("campaignRouter");
         this.utilService.topnavBareLoading = false;
         this.isCompanyAdded = false;
         let module = this.module;

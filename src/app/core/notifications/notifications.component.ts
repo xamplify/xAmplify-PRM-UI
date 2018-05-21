@@ -6,7 +6,7 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 import { ReferenceService } from '../services/reference.service';
 import { SocialPagerService } from '../../contacts/services/social-pager.service';
 import { PaginationComponent } from '../../common/pagination/pagination.component';
-
+import { UtilService } from '../services/util.service';
 
 @Component({
     selector: 'app-notifications',
@@ -19,11 +19,12 @@ export class NotificationsComponent implements OnInit {
     notifications = [];
     pager: any = {};
     pagedItems: any[];
-    pageSize: number = 12;
+    pageSize = 12;
     pageNumber: any;
     constructor(private router: Router, public userService: UserService, public authenticationService: AuthenticationService,
-    public referenceService:ReferenceService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent) {
-        
+    public referenceService:ReferenceService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent,
+    public utilService: UtilService) {
+
         this.pageNumber = this.paginationComponent.numberPerPage[0];
     }
 
@@ -69,7 +70,7 @@ export class NotificationsComponent implements OnInit {
         }
         this.router.navigate(['/home/' + notification.targetUrl]);
     }
-    
+
     setPage( page: number ) {
         if ( page < 1 || page > this.pager.totalPages ) {
             return;
@@ -77,15 +78,18 @@ export class NotificationsComponent implements OnInit {
         this.pager = this.socialPagerService.getPager( this.notifications.length, page, this.pageSize );
         this.pagedItems = this.notifications.slice( this.pager.startIndex, this.pager.endIndex + 1 );
     }
-    
+
     selectedPageNumber(event) {
         this.pageNumber.value = event;
         if (event === 0) { event = this.notifications.length; }
         this.pageSize = event;
         this.setPage(1);
       }
-    
+
     ngOnInit() {
+        if(this.router.url.includes('home/dashboard/notifications')){
+        this.utilService.setRouterLocalStorage('notification');
+        }
         this.listNotifications();
     }
 

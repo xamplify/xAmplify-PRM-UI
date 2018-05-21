@@ -284,6 +284,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                      message = message.replace('video',') video');
                      message = message.replace('"','');
                      message = message.replace('."','.');
+                     message = message.replace('more campaigns','more campaigns or might be used by vendor activity');
                      const errorMesge = message;
                     this.defaultBannerMessageValues();
                      $('html,body').animate({ scrollTop: 0 }, 'slow');

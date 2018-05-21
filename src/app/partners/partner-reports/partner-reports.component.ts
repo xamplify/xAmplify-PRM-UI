@@ -12,6 +12,7 @@ import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { CampaignService } from '../../campaigns/services/campaign.service';
 import { User } from '../../core/models/user';
 import { CustomResponse } from '../../common/models/custom-response';
+import { UtilService } from '../../core/services/util.service';
 declare var $,swal, Highcharts: any;
 
 @Component({
@@ -44,12 +45,13 @@ export class PartnerReportsComponent implements OnInit {
   activePartnersSearchKey:string = "";
   inActivePartnersSearchKey:string = "";
   partnerCampaignUISearchKey:string = "";
-  inActivePartnersCount:number = 0;
   customResponse: CustomResponse = new CustomResponse();
   constructor(public router: Router, public authenticationService: AuthenticationService, public pagination: Pagination,
     public referenseService: ReferenceService, public parterService: ParterService, public pagerService: PagerService,
-    public homeComponent: HomeComponent,public xtremandLogger:XtremandLogger,public campaignService:CampaignService,public sortOption:SortOption) {
+    public homeComponent: HomeComponent,public xtremandLogger:XtremandLogger,public campaignService:CampaignService,public sortOption:SortOption,
+    public utilService: UtilService) {
       this.loggedInUserId = this.authenticationService.getUserId();
+      this.utilService.setRouterLocalStorage('partnerAnalytics');
   }
 
   gotoMange() {
@@ -78,7 +80,7 @@ export class PartnerReportsComponent implements OnInit {
         formatter: function () {
             return 'Campaign Type: <b>' + this.point.category + '</b><br>Campaigns Count: <b>' + this.point.y;
         }
-    }, 
+    },
       plotOptions: { bar: { minPointLength: 3, dataLabels: { enabled: true }, colorByPoint: true } },
       exporting: { enabled: false },
       credits: { enabled: false },
@@ -91,7 +93,6 @@ export class PartnerReportsComponent implements OnInit {
         this.worldMapdataReport = data.countrywisePartnersCount.countrywisepartners;
         this.campaignsCount = data.partnersLaunchedCampaignsCount;
         this.throughPartnerCampaignsCount = data.throughPartnerCampaignsCount;
-        this.inActivePartnersCount = data.inActivePartnersCount;
         const campaignData = [];
         campaignData.push(data.partnersLaunchedCampaignsByCampaignType.VIDEO);
         campaignData.push(data.partnersLaunchedCampaignsByCampaignType.SOCIAL);
@@ -116,7 +117,7 @@ export class PartnerReportsComponent implements OnInit {
               },
               (error: any) => { console.log("error")});
   }
-  
+
   setActivePartnesPage( pageIndex:number ) {
       try {
           this.activePartnersPagination.pageIndex = pageIndex;
@@ -125,15 +126,15 @@ export class PartnerReportsComponent implements OnInit {
           this.referenseService.showError( error, "setPage", "partner-reports.component.ts" )
       }
   }
-  
-  
+
+
   searchActivePartnerAnalytics(){
       this.activePartnersPagination.pageIndex = 1;
       this.activePartnersPagination.searchKey = this.activePartnersSearchKey;
       this.getActivePartnerReports(this.activePartnersPagination);
   }
-  
-  
+
+
   partnerUserInteractionReports() {
       this.referenseService.loading( this.campaignUserInteractionHttpRequestLoader, true );
       this.paginationType = 'UserInteraction';
@@ -154,10 +155,10 @@ export class PartnerReportsComponent implements OnInit {
       this.pagination.pageIndex = 1;
       this.pagination.searchKey = this.partnerCampaignUISearchKey;
       this.partnerUserInteractionReports();
-      
-      
+
+
   }
-  
+
   partnerCampaignInteraction(campaignId: number) {
     this.campaignId = campaignId;
     this.paginationType = 'partnerInteraction';
@@ -204,12 +205,12 @@ export class PartnerReportsComponent implements OnInit {
         this.getActivePartnerReports(this.activePartnersPagination);
     }else{
         this.router.navigate(['home/dashboard']);
-    }  
-   
+    }
+
   }
 
-  
-  
+
+
   goToActivePartnersDiv(){
       this.sortOption = new SortOption();
       this.selectedTabIndex = 0;
@@ -242,7 +243,7 @@ export class PartnerReportsComponent implements OnInit {
       this.throughPartnerCampaignPagination.reDistributedPartnerAnalytics = true;
       this.listThroughPartnerCampaigns(this.throughPartnerCampaignPagination);
   }
-  
+
   listThroughPartnerCampaigns(pagination: Pagination) {
       this.referenseService.loading(this.httpRequestLoader, true);
       this.campaignService.listCampaign(pagination,this.loggedInUserId)
@@ -259,8 +260,8 @@ export class PartnerReportsComponent implements OnInit {
               () => this.xtremandLogger.info("Finished listThroughPartnerCampaigns()")
           );
   }
-  
-  
+
+
   filterCampaigns(type: string, index: number) {
       this.sortOption.selectedCampaignTypeIndex = index;//This is to highlight the tab
       this.throughPartnerCampaignPagination.pageIndex = 1;
@@ -268,20 +269,20 @@ export class PartnerReportsComponent implements OnInit {
       this.listThroughPartnerCampaigns(this.throughPartnerCampaignPagination);
 
   }
-  
+
   setPartnerCampaignsPageByType(event:any,type:string) {
       if("through-partner"==type){
           this.throughPartnerCampaignPagination.pageIndex = event.page;
           this.listThroughPartnerCampaigns(this.throughPartnerCampaignPagination);
       }
-     
+
   }
 
   searchPartnerCampaigns(type:string) {
       if("through-partner"==type){
           this.getAllFilteredResults(this.throughPartnerCampaignPagination,type);
       }
-      
+
   }
 
   getSortedResultForPartnerCampaigns(text: any,type:string) {
@@ -289,7 +290,7 @@ export class PartnerReportsComponent implements OnInit {
       if("through-partner"==type){
           this.getAllFilteredResults(this.throughPartnerCampaignPagination,type);
       }
-     
+
   }
 
   getNumberOfItemsPerPageByType(items: any,type:any) {
@@ -297,9 +298,9 @@ export class PartnerReportsComponent implements OnInit {
       if("through-partner"==type){
           this.getAllFilteredResults(this.throughPartnerCampaignPagination,type);
       }else{
-          
+
       }
-     
+
   }
 
   getAllFilteredResults(pagination: Pagination,type:string) {
@@ -321,7 +322,7 @@ export class PartnerReportsComponent implements OnInit {
           this.listThroughPartnerCampaigns(pagination);
       }
   }
-  
+
   /************************InActive Partners Tab********************/
   goToInActivePartnersDiv(){
       this.sortOption = new SortOption();
@@ -333,7 +334,7 @@ export class PartnerReportsComponent implements OnInit {
       this.inActivePartnersPagination.maxResults = 12;
       this.getInActivePartnerReports(this.inActivePartnersPagination);
   }
-  
+
   getInActivePartnerReports(pagination:Pagination){
       this.referenseService.loading(this.httpRequestLoader, true);
       pagination.userId =this.loggedInUserId;
@@ -349,7 +350,7 @@ export class PartnerReportsComponent implements OnInit {
               },
               (error: any) => { console.log("error")});
   }
-  
+
   setInActivePartnesPage( pageIndex:number ) {
       try {
           this.inActivePartnersPagination.pageIndex = pageIndex;
@@ -358,8 +359,8 @@ export class PartnerReportsComponent implements OnInit {
           this.referenseService.showError( error, "setPage", "partner-reports.component.ts" )
       }
   }
-  
-  
+
+
   searchInActivePartnerAnalytics(){
       this.inActivePartnersPagination.pageIndex = 1;
       this.inActivePartnersPagination.searchKey = this.inActivePartnersSearchKey;
@@ -369,7 +370,7 @@ export class PartnerReportsComponent implements OnInit {
       this.inActivePartnersPagination = event;
       this.getInActivePartnerReports(this.inActivePartnersPagination);
   }
-  
+
   sendPartnerReminder(item:any){
      console.log(item);
      let user = new User();
@@ -386,10 +387,10 @@ export class PartnerReportsComponent implements OnInit {
                this.referenseService.loading(this.httpRequestLoader, false);
               },
               (error: any) => { this.referenseService.loading(this.httpRequestLoader, false);console.log("error")});
-  
+
   }
-  
-  
+
+
   goToCampaignAnalytics(campaignId){
       this.router.navigate(["/home/campaigns/"+campaignId+"/details"]);
   }
