@@ -1,0 +1,22 @@
+.textCss {
+	background-color: rgba(0, 0, 0, 0.12);
+	bottom: -2px;
+	height: 1px;
+	left: 13;
+	margin: 0;
+	padding: 0;
+	width: 91%;
+}
+
+.disabled {
+   pointer-events: none;
+   cursor: default;
+}
+
+/deep/ .input-group > .form-control {
+    border-left: none;
+    height: 36px;	
+}
+/deep/ .input-group > .form-control:focus {
+    border-color: #e5e5e5;
+}

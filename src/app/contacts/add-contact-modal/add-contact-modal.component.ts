@@ -1,0 +1,141 @@
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { User } from '../../core/models/user';
+import { CountryNames } from '../../common/models/country-names';
+import { RegularExpressions } from '../../common/models/regular-expressions';
+import { ContactService } from '../../contacts/services/contact.service';
+declare var $: any;
+
+@Component( {
+    selector: 'app-add-contact-modal',
+    templateUrl: './add-contact-modal.component.html',
+    styleUrls: ['./add-contact-modal.component.css'],
+    providers: [CountryNames, RegularExpressions]
+})
+export class AddContactModalComponent implements OnInit {
+
+    @Input() contactDetails: any;
+    @Input() isContactTypeEdit: boolean;
+    @Input() isPartner: boolean;
+    @Input() isUpdateUser: boolean;
+    @Input() totalUsers: any;
+    @Output() notifyParent: EventEmitter<any>;
+
+    addContactuser: User = new User();
+    validEmailPatternSuccess = true;
+    emailNotValid: boolean;
+    checkingForEmail: boolean;
+    editingEmailId = '';
+    isEmailExist: boolean = false;
+    isCompanyDetails = false;
+    constructor( public countryNames: CountryNames, public regularExpressions: RegularExpressions, public contactService: ContactService ) {
+        this.notifyParent = new EventEmitter();
+        if ( this.addContactuser.mobileNumber == undefined ) {
+            this.addContactuser.mobileNumber = "+1";
+        }
+    }
+
+    addContactModalClose() {
+        $( '#addContactModal' ).modal( 'toggle' );
+        $( "#addContactModal .close" ).click()
+        $('#addContactModal').modal('hide');
+        $('body').removeClass('modal-open');
+        $('.modal-backdrop fade in').remove();
+        $(".modal-backdrop in").css("display", "none");
+        this.contactService.isContactModalPopup = false;
+    }
+
+    validateEmail( emailId: string ) {
+        const lowerCaseEmail = emailId.toLowerCase();
+        if ( this.validateEmailAddress( emailId ) ) {
+            this.checkingForEmail = true;
+            this.validEmailPatternSuccess = true;
+        }
+        else {
+            this.checkingForEmail = false;
+        }
+        
+        if(lowerCaseEmail != this.editingEmailId && this.totalUsers){
+            for(let i=0;i< this.totalUsers.length; i++){
+                if( lowerCaseEmail == this.totalUsers[i].emailId ){
+                    this.isEmailExist = true;
+                    break;
+                }else{
+                       this.isEmailExist = false;
+                }
+            }
+            }
+    }
+
+    validateEmailAddress( emailId: string ) {
+        var EMAIL_ID_PATTERN = this.regularExpressions.EMAIL_ID_PATTERN;
+        return EMAIL_ID_PATTERN.test( emailId );
+    }
+
+    checkingEmailPattern( emailId: string ) {
+        this.validEmailPatternSuccess = false;
+        if ( this.validateEmailAddress( emailId ) ) {
+            this.validEmailPatternSuccess = true;
+            this.emailNotValid = true;
+        } else {
+            this.validEmailPatternSuccess = false;
+            this.emailNotValid = false;
+        }
+    }
+
+    addRow() {
+        this.addContactModalClose();
+        this.notifyParent.emit( this.addContactuser );
+    }
+
+    addEditContactRow() {
+        this.addContactModalClose();
+        this.notifyParent.emit( this.addContactuser );
+    }
+
+    updateUser(){
+        $('#addContactModal').modal('hide');
+        this.contactService.isContactModalPopup = false;
+        this.notifyParent.emit( this.addContactuser );
+    }
+    
+    contactCompanyChecking(contactCompany: string){
+        if( contactCompany.trim() != '' ){
+            this.isCompanyDetails = true;
+        }else {
+            this.isCompanyDetails = false;
+        }
+    }
+
+    ngOnInit() {
+        if ( this.isUpdateUser ) {
+            this.checkingForEmail = true;
+            this.addContactuser.userId = this.contactDetails.id;
+            this.addContactuser.firstName = this.contactDetails.firstName;
+            this.addContactuser.lastName = this.contactDetails.lastName;
+            this.addContactuser.contactCompany = this.contactDetails.contactCompany;
+            this.addContactuser.jobTitle = this.contactDetails.jobTitle;
+            this.addContactuser.emailId = this.contactDetails.emailId;
+            this.editingEmailId = this.contactDetails.emailId;
+            this.addContactuser.address = this.contactDetails.address;
+            this.addContactuser.city = this.contactDetails.city;
+            this.addContactuser.country = this.contactDetails.country;
+            this.addContactuser.mobileNumber = this.contactDetails.mobileNumber;
+            if ( this.addContactuser.mobileNumber == undefined ) {
+                this.addContactuser.mobileNumber = "+1";
+            }
+            if ( this.isPartner ) {
+                if ( this.addContactuser.contactCompany != undefined ) {
+                    this.isCompanyDetails = true;
+                } else {
+                    this.isCompanyDetails = false;
+                }
+           }
+            
+        }
+        if ( this.addContactuser.country == null ) {
+            this.addContactuser.country = ( this.countryNames.countries[0] );
+        }
+        $( '#addContactModal' ).modal( 'show' );
+    }
+
+}

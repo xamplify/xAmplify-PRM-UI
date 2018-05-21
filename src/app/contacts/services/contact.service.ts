@@ -29,6 +29,7 @@ export class ContactService {
     public zohoContact: ZohoContact;
     public salesforceContact: SalesforceContact;
     public salesforceListViewContact: SalesforceListViewContact;
+    isContactModalPopup = false;
     
     socialProviderName = "";
     public pagination: Pagination;
@@ -45,7 +46,7 @@ export class ContactService {
         console.log( logger );
     }
     
-    loadUsersOfContactList( contactListId: number, pagination: Pagination ): Observable<any> {
+    loadUsersOfContactList( contactListId: number, pagination: Pagination ) {
     	//pagination.criterias = criterias;
     	return this._http.post( this.contactsUrl + contactListId + "/contacts?access_token=" + this.authenticationService.access_token, pagination )
             .map( this.extractData )

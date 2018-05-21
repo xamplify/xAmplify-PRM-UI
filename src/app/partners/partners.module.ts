@@ -7,10 +7,11 @@ import { SharedContactsModule } from '../shared/shared-contacts.module';
 import { CommonComponentModule } from '../common/common.module';
 import { AddPartnersComponent } from './add-partners/add-partners.component';
 import { PartnerReportsComponent } from './partner-reports/partner-reports.component';
+import { SharedLibraryModule } from '../shared/shared-library.module';
 
 @NgModule({
   imports: [
-    CommonModule, PartnerRoutingModule, SharedModule, SharedContactsModule, CommonComponentModule
+    CommonModule, PartnerRoutingModule, SharedModule, SharedContactsModule, CommonComponentModule, SharedLibraryModule
   ],
   providers: [],
   declarations: [ManagePartnersComponent, AddPartnersComponent, PartnerReportsComponent]

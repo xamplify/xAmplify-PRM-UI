@@ -93,6 +93,7 @@ export class AddPartnersComponent implements OnInit {
     contactListAssociatedCampaignsList: any;
     editingEmailId ='';
     loading = false;
+    partnerAllDetails = [];
     
     sortOptions = [
         { 'name': 'Sort By', 'value': '' },
@@ -227,6 +228,8 @@ export class AddPartnersComponent implements OnInit {
     }
 
     addPartnerModalOpen() {
+        this.contactService.isContactModalPopup = true;
+        
         this.addPartnerUser.country = ( this.countryNames.countries[0] );
         this.addPartnerUser.mobileNumber = "+1";
     }
@@ -246,9 +249,9 @@ export class AddPartnersComponent implements OnInit {
         this.loadPartnerList( this.pagination );
     }
 
-    addRow() {
-        this.addPartnerModalClose();
-        this.newPartnerUser.push( this.addPartnerUser );
+    addRow(event) {
+        //this.addPartnerModalClose();
+        this.newPartnerUser.push( event );
         this.selectedAddPartnerOption = 1;
         this.saveContacts();
         this.addPartnerUser = new User();
@@ -764,9 +767,9 @@ export class AddPartnersComponent implements OnInit {
         this.isEmailExist = false;
     }
 
-    updatePartnerListUser() {
+    updatePartnerListUser(event) {
         this.editUser.pagination = this.pagination;
-        this.editUser.user = this.addPartnerUser;
+        this.editUser.user = event;
        // $( "#addPartnerModal .close" ).click()
         this.addPartnerModalClose();
         this.contactService.updateContactListUser( this.partnerListId, this.editUser )
@@ -783,7 +786,11 @@ export class AddPartnersComponent implements OnInit {
     }
 
     editUserDetails( contactDetails: any ) {
-        this.checkingForEmail = true;
+     
+        this.updatePartnerUser = true;
+        this.partnerAllDetails = contactDetails;
+        this.contactService.isContactModalPopup = true;
+        /*this.checkingForEmail = true;
 
         this.updatePartnerUser = true;
         this.addPartnerUser.userId = contactDetails.id;
@@ -809,7 +816,7 @@ export class AddPartnersComponent implements OnInit {
         this.addPartnerUser.description = contactDetails.description;
         $( "#addPartnerModal" ).show();
         console.log( contactDetails );
-        this.updatedUserDetails = contactDetails;
+        this.updatedUserDetails = contactDetails;*/
     }
 
     socialContactImage() {

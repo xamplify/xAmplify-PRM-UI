@@ -10,13 +10,14 @@ import { SharedModule } from '../shared/shared.module';
 import { SocialPagerService } from '.././contacts/services/social-pager.service';
 import { CommonComponentModule } from '../common/common.module';
 import { SocialContactsCallbackComponent } from '../contacts/social-contacts-callback/social-contacts-callback.component';
-
+import { SharedLibraryModule } from '../shared/shared-library.module';
+import { AddContactModalComponent } from '../contacts/add-contact-modal/add-contact-modal.component';
 
 @NgModule({
-        imports: [CommonModule, RouterModule, ReactiveFormsModule, FormsModule, SharedModule, CommonComponentModule ],
-        declarations: [AddContactsComponent, ManageContactsComponent,EditContactsComponent,SocialContactsCallbackComponent],
+        imports: [CommonModule, RouterModule, ReactiveFormsModule, FormsModule, SharedModule, CommonComponentModule, SharedLibraryModule ],
+        declarations: [AddContactsComponent, ManageContactsComponent,EditContactsComponent,SocialContactsCallbackComponent, AddContactModalComponent],
         exports: [FormsModule, CommonModule, RouterModule, AddContactsComponent,ManageContactsComponent,EditContactsComponent,
-                  SocialContactsCallbackComponent],
+                  SocialContactsCallbackComponent, AddContactModalComponent],
         providers: [SocialPagerService],
 })
 

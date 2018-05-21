@@ -1,0 +1,178 @@
+
+<div id="addContactModal" class="modal" id="addContactModal"
+	tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+	data-keyboard="false" data-backdrop="static">
+	<div class="modal-dialog">
+
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close-circle" data-dismiss="modal"
+					(click)="addContactModalClose()"><i class="fa fa-times"></i></button>
+				<!-- <a class="close-circle" data-dismiss="modal" (click)="addContactModalClose()"><i class="fa fa-times"></i></a> -->
+				<h4 class="modal-title">Add {{checkingContactTypeName}}</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal" autocomplete="off">
+					<div class="form-inline">
+						<label class="control-label col-sm-2" for="name"
+							style="color: blue"><i class="glyphicon glyphicon-user"
+							style="right: 11px" aria-hidden="true"></i></label>
+						<div class="form-group col-sm-5">
+							<input type="name" style="border: none" class="form-control"
+								id="firstName" [(ngModel)]="addContactuser.firstName"
+								[ngModelOptions]="{standalone: true}"
+								placeholder="First Name" maxlength="250">
+							<div class="textCss"></div>
+						</div>
+						<div class="form-group col-sm-5">
+							<input type="name" style="border: none" class="form-control"
+								id="lastName" [(ngModel)]="addContactuser.lastName"
+								[ngModelOptions]="{standalone: true}"
+								placeholder="Last Name" maxlength="250">
+							<div class="textCss"></div>
+						</div>
+					</div>
+					<div class="form-inline">
+						<label class="control-label col-sm-2" for="company"
+							style="color: #00bcd4; right: 11px !important"><i
+							class="fa fa-building-o" style="right: 11px !important"
+							aria-hidden="true"></i><span *ngIf="isPartner"
+								style="color: red; margin-right: -9px;"> *</span></label>
+						<div class="form-group col-sm-5">
+							<input type="company" style="border: none" class="form-control"
+								id="company" [(ngModel)]="addContactuser.contactCompany"
+								(input)="contactCompanyChecking(addContactuser.contactCompany)"
+								[ngModelOptions]="{standalone: true}"
+								placeholder="Company" maxlength="250">
+							<div class="textCss"></div>
+						</div>
+						<div class="form-group col-sm-5">
+							<input type="title" style="border: none" class="form-control"
+								id="title" [(ngModel)]="addContactuser.jobTitle"
+								[ngModelOptions]="{standalone: true}"
+								placeholder="Job Title" maxlength="250">
+							<div class="textCss"></div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-2" for="email"
+							style="color: #8512b7; left: 12px"><i
+							class="fa fa-envelope-o" aria-hidden="true"><span
+								style="color: red;"> *</span></i></label>
+						<div class="col-sm-10" *ngIf="isUpdateUser">
+							  <h4 style="border: none;font-size: 15px; cursor: not-allowed;">{{addContactuser.emailId}}</h4>
+							<div class="textCss"></div>
+							</div>
+						<div class="col-sm-10" *ngIf="!isUpdateUser">
+							<input type="email" style="border: none" class="form-control"
+								id="email1"
+								(blur)="checkingEmailPattern(addContactuser.emailId)"
+								(input)="validateEmail(addContactuser.emailId)"
+								[(ngModel)]="addContactuser.emailId"
+								[ngModelOptions]="{standalone: true}"
+								placeholder="Email *" autocomplete="off" maxlength="250">
+							<div class="textCss"></div>
+							<div style="color: red" *ngIf="!validEmailPatternSuccess">Please enter a valid email address.</div>
+							<div style="color: red" *ngIf="isEmailExist">This email address has already been added</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="form-inline">
+							<label class="control-label col-sm-2" for="address"
+								style="color: #53affe;"><i
+								class="glyphicon glyphicon-home" aria-hidden="true"></i></label>
+							<div class="form-group col-sm-4">
+								<input type="address" style="border: none" class="form-control"
+									id="address" [(ngModel)]="addContactuser.address"
+									[ngModelOptions]="{standalone: true}"
+									placeholder="Address" maxlength="250">
+								<div class="textCss"></div>
+							</div>
+							<div class="form-group col-sm-3">
+								<input type="city" style="border: none" class="form-control"
+									id="city" [(ngModel)]="addContactuser.city"
+									[ngModelOptions]="{standalone: true}" placeholder="City/Town"
+									maxlength="44">
+								<div class="textCss"></div>
+							</div>
+							<div class="form-group col-sm-3">
+								<select class="form-control" style="border: none; width: 120%"
+									class="form-control" [(ngModel)]="addContactuser.country"
+									[ngModelOptions]="{standalone: true}" placeholder="Country">
+									<option *ngFor="let country of countryNames.countries"
+										[value]="country">{{country}}</option>
+								</select>
+								<div class="textCss"></div>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+					<label class="control-label col-sm-2" for="phone"
+							style="color: green"><i class="fa fa-phone"
+							aria-hidden="true"></i></label>
+						<div class="col-sm-10">
+						<!-- <h1>{{title}}</h1> -->
+						<div class="row">
+							<div class="col-sm-10">
+								<int-phone-prefix [(ngModel)]="addContactuser.mobileNumber"  [ngModelOptions]="{standalone: true}"></int-phone-prefix>
+								<!-- <input type="tel" id="demo" placeholder=""> -->
+
+							</div>
+						</div>
+						</div>
+						<!-- <label class="control-label col-sm-2" for="phone"
+							style="color: green"><i class="fa fa-phone"
+							aria-hidden="true"></i></label>
+						<div class="col-sm-10">
+							<input type="text"
+								onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+								style="border: none" class="form-control" id="phone"
+								[(ngModel)]="addContactuser.mobileNumber"
+								[ngModelOptions]="{standalone: true}"
+								placeholder="Phone Number" maxlength="10"
+								autocomplete="off">
+							<div class="textCss"></div>
+						</div> -->
+					</div>
+					<!-- <div class="form-group">
+						<label class="control-label col-sm-2" for="note"
+							style="color: #c3c308"><i
+							class="glyphicon glyphicon-list" aria-hidden="true"></i></label>
+						<div class="col-sm-10">
+							<textarea name="note" style="border: none" class="form-control"
+								id="note" [(ngModel)]="addContactuser.description"
+								[ngModelOptions]="{standalone: true}" placeholder="Notes">
+		      </textarea>
+							<div class="textCss"></div>
+						</div> 
+					</div> -->
+				</form>
+			</div>
+			<div class="modal-footer" *ngIf="!isPartner">
+				<span style="float: left;"><span style="color: red">*</span> Required field</span>
+				<button *ngIf="!isContactTypeEdit && !isUpdateUser" type="submit" class="btn green"
+					[disabled]="!checkingForEmail" (click)="addRow()">Add</button>
+				<button *ngIf="isContactTypeEdit && !isUpdateUser" type="submit" class="btn green"
+					[disabled]="!checkingForEmail || isEmailExist" (click)="addEditContactRow()">Save</button>
+				<button *ngIf="!isContactTypeEdit && isUpdateUser" type="submit" class="btn green"
+					[disabled]="!checkingForEmail || isEmailExist" (click)="updateUser()" data-dismiss="modal">Update</button>
+				<!-- <button type="button" class="btn green" data-dismiss="modal"
+					(click)="addContactModalClose()">Close</button> -->
+			</div>
+			<div class="modal-footer" *ngIf="isPartner">
+				<span style="float: left;"><span style="color: red">*</span> Required field</span>
+				<button *ngIf="!isContactTypeEdit && !isUpdateUser" type="submit" class="btn green"
+					[disabled]="!checkingForEmail || !isCompanyDetails || isEmailExist" (click)="addRow()">Add</button>
+				<button *ngIf="isContactTypeEdit && !isUpdateUser" type="submit" class="btn green"
+					[disabled]="!checkingForEmail || !isCompanyDetails || isEmailExist" (click)="addEditContactRow()">Save</button>
+				<button *ngIf="!isContactTypeEdit && isUpdateUser" type="submit" class="btn green"
+					[disabled]="!checkingForEmail || !isCompanyDetails || isEmailExist" (click)="updateUser()" data-dismiss="modal">Update</button>
+				<!-- <button type="button" class="btn green" data-dismiss="modal"
+					(click)="addContactModalClose()">Close</button> -->
+			</div>
+			
+		</div>
+
+	</div>
+</div>

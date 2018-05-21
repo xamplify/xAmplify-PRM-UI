@@ -93,7 +93,6 @@ export class AddContactsComponent implements OnInit {
     pageSize: number = 12;
     pageNumber: any;
     loading = false;
-    
 
     AddContactsOption: typeof AddContactsOption = AddContactsOption;
     selectedAddContactsOption: number = 8;
@@ -238,7 +237,7 @@ export class AddContactsComponent implements OnInit {
                         user.jobTitle = allTextLines[i][3];
                         user.address = allTextLines[i][5];
                         user.city = allTextLines[i][6];
-                        user.country = allTextLines[i][7];
+                        user = allTextLines[i][7];
                         user.mobileNumber = allTextLines[i][8];
                         /*user.description = allTextLines[i][9];*/
                         self.contacts.push( user );
@@ -508,7 +507,7 @@ export class AddContactsComponent implements OnInit {
         for ( var i = 0; i < this.newUsers.length; i++ ) {
             this.newUsers[i].emailId = this.convertToLowerCase( this.newUsers[i].emailId );
             
-            if(this.newUsers[i].country === "---Please Select Country---"){
+            if(this.newUsers[i].country === "Select Country"){
                 this.newUsers[i].country = null;
             }
         }
@@ -595,7 +594,7 @@ export class AddContactsComponent implements OnInit {
         for ( var i = 0; i < this.clipboardUsers.length; i++ ) {
             this.clipboardUsers[i].emailId = this.convertToLowerCase( this.clipboardUsers[i].emailId );
             
-            if(this.clipboardUsers[i].country === "---Please Select Country---"){
+            if(this.clipboardUsers[i].country === "Select Country"){
                 this.clipboardUsers[i].country = null;
             }
         }
@@ -649,7 +648,7 @@ export class AddContactsComponent implements OnInit {
                     for ( var i = 0; i < this.contacts.length; i++ ) {
                         this.contacts[i].emailId = this.convertToLowerCase( this.contacts[i].emailId );
                         
-                        if(this.contacts[i].country === "---Please Select Country---"){
+                        if(this.contacts[i].country === "Select Country"){
                             this.contacts[i].country = null;
                         }
                     }
@@ -784,12 +783,13 @@ export class AddContactsComponent implements OnInit {
         $( '#ZgearIcon' ).attr( 'style', 'opacity: 1;position: relative;font-size: 19px;top: -83px;left: 78px;' );
     }
 
-    addRow() {
+    addRow(event) {
         if ( this.emailNotValid === true ) {
             // $( "#addContactModal .close" ).click()
-              this.addContactModalClose();
-            this.newUsers.push( this.addContactuser );
+             // this.addContactModalClose();
+              //this.newUsers = event;
         }
+        this.newUsers.push( event );
         this.selectedAddContactsOption = 0;
         this.noOptionsClickError = false;
         $( "#sample_editable_1" ).show();
@@ -1802,13 +1802,16 @@ export class AddContactsComponent implements OnInit {
 
     addContactModalOpen() {
        // $( "#addContactModal" ).show();
-        this.addContactuser.country = ( this.countryNames.countries[0] );
-        this.addContactuser.mobileNumber = "+1";
+        this.contactService.isContactModalPopup = true;
+   /*     this.addContactuser.country = ( this.countryNames.countries[0] );
+        this.addContactuser.mobileNumber = "+1";*/
+        
     }
 
     addContactModalClose() {
-        $( '#addContactModal' ).modal( 'toggle' );
-        $( "#addContactModal .close" ).click()
+        this.contactService.isContactModalPopup = false;
+        /*$( '#addContactModal' ).modal( 'toggle' );
+        $( "#addContactModal .close" ).click()*/
     }
     
     selectedPageNumber(event) {

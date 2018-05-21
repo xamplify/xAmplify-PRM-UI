@@ -145,6 +145,7 @@ export class EditContactsComponent implements OnInit {
     orgAdminsList = [];
     editingEmailId = '';
     loading = false;
+    contactAllDetails = [];
 
     filterOptions = [
         { 'name': '', 'value': 'Field Name*' },
@@ -639,12 +640,14 @@ export class EditContactsComponent implements OnInit {
         }
     }
 
-    addRow() {
+    addRow( event ) {
         if ( this.emailNotValid == true ) {
            // $( "#addContactModal .close" ).click()
-            this.addContactModalClose();
-            this.users.push( this.addContactuser );
+            //this.addContactModalClose();
+            this.users.push( event );
         }
+        this.selectedAddContactsOption = 0;
+        this.users.push( event );
         //this.fileTypeError = false;
         //this.noContactsFound = false;
         this.saveContacts(this.contactListId);
@@ -1430,7 +1433,8 @@ export class EditContactsComponent implements OnInit {
         this.resetResponse();
         this.selectedAddContactsOption = addContactsOption;
         if ( addContactsOption === 0 ){
-            this.addRow();
+           // this.addRow();
+            console.log(addContactsOption)
         } else if ( addContactsOption === 1 ){
             this.copyFromClipboard();
         }
@@ -1445,8 +1449,9 @@ export class EditContactsComponent implements OnInit {
     addContactModalOpen() {
         this.addContactuser = new User();
       //  $( "#addContactModal" ).show();
-        this.addContactuser.country = ( this.countryNames.countries[0] );
-        this.addContactuser.mobileNumber = "+1";
+       /* this.addContactuser.country = ( this.countryNames.countries[0] );
+        this.addContactuser.mobileNumber = "+1";*/
+        this.contactService.isContactModalPopup = true;
     }
 
     addContactModalClose() {
@@ -1727,8 +1732,12 @@ export class EditContactsComponent implements OnInit {
             )
     }
 
-    editUserDetails( contactDetails: any ) {
-        this.checkingForEmail = true;
+    editUserDetails( contactDetails ) {
+        this.updateContactUser = true;
+        this.contactAllDetails = contactDetails;
+        this.contactService.isContactModalPopup = true;
+        
+        /*this.checkingForEmail = true;
 
         this.updateContactUser = true
         this.addContactuser.userId = contactDetails.id;
@@ -1755,7 +1764,7 @@ export class EditContactsComponent implements OnInit {
         this.addContactuser.description = contactDetails.description;
       //  $( "#addContactModal" ).show();
         console.log( contactDetails );
-        this.updatedUserDetails = contactDetails;
+        this.updatedUserDetails = contactDetails*/;
     }
 
     updateContactModalClose() {
@@ -1765,9 +1774,9 @@ export class EditContactsComponent implements OnInit {
         this.isEmailExist = false;
     }
 
-    updateContactListUser() {
+    updateContactListUser(event) {
         this.editUser.pagination = this.pagination;
-        this.editUser.user = this.addContactuser;
+        this.editUser.user = event;
       //  $( "#addContactModal .close" ).click()
       this.addContactModalClose();
         this.contactService.updateContactListUser( this.selectedContactListId, this.editUser )

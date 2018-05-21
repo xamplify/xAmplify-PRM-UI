@@ -223,7 +223,6 @@
 												<div class="btn-group">
 													<button id="add_contact" class="btn green"
 														(click)="addContactModalOpen()"
-														data-dismiss="modal" data-toggle="modal" data-target="#addContactModal"
 														[disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 9">
 														<!-- Add {{checkingContactTypeName}}  -->
 														One at a Time
@@ -577,7 +576,7 @@
 															</td> -->
 															<td align="center" *ngIf="hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId) || authenticationService.isOnlyPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()">
 															<div class="actions-block">
-															  	<a (click)="editUserDetails(contact)"	data-dismiss="modal" data-toggle="modal" data-target="#addContactModal">
+															  	<a (click)="editUserDetails(contact)">
 																  	<i class="fa fa-pencil-square-o"></i>
 																 </a>
 																<a (click)="deleteUserShowAlert(contact.id)">	<i class="fa fa-trash-o"></i>	</a>
@@ -755,19 +754,28 @@
 
 	<!-- modals -->
 
-	<div id="addContactModal" class="modal" id="addContactModal"
+
+<div *ngIf="contactService.isContactModalPopup && !updateContactUser">
+	<app-add-contact-modal [totalUsers]="contacts" [isPartner]="isPartner" [isContactTypeEdit]="true" (notifyParent)="addRow($event)" ></app-add-contact-modal>
+</div>
+
+<div *ngIf="contactService.isContactModalPopup && updateContactUser">
+	<app-add-contact-modal [totalUsers]="contacts" [isPartner]="isPartner" [contactDetails]="contactAllDetails" [isUpdateUser] = "true" (notifyParent)="updateContactListUser($event)"></app-add-contact-modal>
+</div> 
+
+<!-- 	<div id="addContactModal" class="modal" id="addContactModal"
 		tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
 		data-keyboard="false" data-backdrop="static">
 		<div class="modal-dialog">
 
-			<!-- Modal content-->
+			Modal content
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" *ngIf="!updateContactUser" class="close-circle"
 						data-dismiss="modal" (click)="addContactModalClose()"><i class="fa fa-times"></i></button>
 					<button type="button" *ngIf="updateContactUser" class="close-circle"
 						data-dismiss="modal" (click)="updateContactModalClose()"><i class="fa fa-times"></i></button>
-					<!-- <a class="close-circle" data-dismiss="modal" (click)="addContactModalClose(); updateContactModalClose()"><i class="fa fa-times"></i></a> -->
+					<a class="close-circle" data-dismiss="modal" (click)="addContactModalClose(); updateContactModalClose()"><i class="fa fa-times"></i></a>
 					<h4 class="modal-title" *ngIf="!updateContactUser">Add {{checkingContactTypeName}}</h4>
 					<h4 class="modal-title" *ngIf="updateContactUser">Edit {{checkingContactTypeName}}</h4>
 				</div>
@@ -860,7 +868,7 @@
 										[ngModelOptions]="{standalone: true}" placeholder="Country">
 										<option *ngFor="let country of countryNames.countries" [value]="country">{{country}}</option>
 									</select>
-									<!-- <input type="country" style="border:none" class="form-control" id="address" [(ngModel)]="addContactuser.country" [ngModelOptions]="{standalone: true}" placeholder="select country"> -->
+									<input type="country" style="border:none" class="form-control" id="address" [(ngModel)]="addContactuser.country" [ngModelOptions]="{standalone: true}" placeholder="select country">
 									<div class="textCss"></div>
 								</div>
 							</div>
@@ -870,16 +878,16 @@
 								style="color: green"><i class="fa fa-phone"
 								aria-hidden="true"></i></label>
 								<div class="col-sm-10">
-						<!-- <h1>{{title}}</h1> -->
+						<h1>{{title}}</h1>
 						<div class="row">
 							<div class="col-sm-10">
 								<int-phone-prefix [(ngModel)]="addContactuser.mobileNumber" [ngModelOptions]="{standalone: true}"></int-phone-prefix>
-								<!-- <input type="tel" id="demo" placeholder=""> -->
+								<input type="tel" id="demo" placeholder="">
 
 							</div>
 						</div>
 						</div>
-							<!-- <div class="col-sm-10">
+							<div class="col-sm-10">
 								<input type="text"
 									onkeypress="return event.charCode >= 48 && event.charCode <= 57"
 									style="border: none" class="form-control" id="number"
@@ -888,9 +896,9 @@
 									placeholder="Phone Number" maxlength="10" autocomplete="off">
 								<div class="textCss"></div>
 
-							</div> -->
+							</div>
 						</div>
-						<!-- <div class="form-group">
+						<div class="form-group">
 							<label class="control-label col-sm-2" for="note"
 								style="color: #c3c308"><i
 								class="glyphicon glyphicon-list" aria-hidden="true"></i></label>
@@ -901,7 +909,7 @@
 		     					</textarea>
 								<div class="textCss"></div>
 							</div>
-						</div> -->
+						</div>
 					</form>
 				</div>
 				<div class="modal-footer" *ngIf="!isPartner">
@@ -923,7 +931,7 @@
 			</div>
 
 		</div>
-	</div>
+	</div> -->
 	<!-- closing modals -->
 
 	<!-- BEGIN PAGE CONTENT-->
