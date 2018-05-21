@@ -5,6 +5,7 @@ import { SocialService } from '../../services/social.service';
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import { SocialConnection } from '../../../social/models/social-connection';
 import { ReferenceService } from '../../../core/services/reference.service';
+import { HttpRequestLoader } from '../../../core/models/http-request-loader';
 
 declare var swal: any;
 @Component( {
@@ -15,18 +16,23 @@ declare var swal: any;
 export class SocialManageComponent implements OnInit {
     socialConnections: SocialConnection[] = new Array<SocialConnection>();
     response: any;
+    httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
     constructor( private router: Router, private route: ActivatedRoute, private socialService: SocialService,
         private authenticationService: AuthenticationService, public referenceService:ReferenceService ) { }
 
     listAccounts( userId: number, providerName: string ) {
+        this.referenceService.loading(this.httpRequestLoader, true);
         this.socialService.listAccounts( userId, providerName, 'ALL' )
             .subscribe(
             result => {
                 this.socialConnections = result;
-              console.table(result);
                 this.socialService.setDefaultAvatar(this.socialConnections);
+                this.referenceService.loading(this.httpRequestLoader, false);
             },
-            error => console.log( error ),
+            ( error: string ) => {
+                console.error(error);
+                this.referenceService.showServerError(this.httpRequestLoader);
+            },
             () => {});
     }
 
