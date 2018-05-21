@@ -1,0 +1,40 @@
+label {font-weight: 600;}
+.thumb-vid, .thumb-bg {height: 100px}
+.fa.fa-users.disabled{
+    background: gray;
+}
+.fa.fa-users{
+    padding: 1em;
+    font-size: 1.8em;
+    line-height: 1em;
+    background: #00a6e8;
+    color: white;
+    border-radius: 100%;
+    margin-left: 1em;
+}
+fieldset {
+    padding: 10px 20px;
+}
+.dashboard-stat.yellow-gold {
+    text-align: center;
+    padding: 15px;
+    color: #fff;
+    font-size: 14px;
+}
+
+.portlet.light.dashboard-stat2.border-error{
+	border-color: red
+}
+
+.table tr.contact-list-selected td {
+	background-color: #00a6e8 !important;
+	color: white;
+}
+  .blur {
+	-webkit-filter: blur(1px);
+	-moz-filter: blur(1px);
+	-o-filter: blur(1px);
+	-ms-filter: blur(1px);
+	filter: blur(1px);
+	cursor: default;
+}

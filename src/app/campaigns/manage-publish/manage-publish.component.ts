@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit, OnDestroy, } from '@angular/core';
+import { ActivatedRoute, Router,NavigationExtras } from '@angular/router';
 import { FormsModule, FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 
 import { VideoFileService } from '../../videos/services/video-file.service';
@@ -281,6 +281,10 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
     filterByUserNameOrDate() {
 
+    }
+    
+    showCampaignPreview(campaignId:number){
+        this.router.navigate(['/home/campaigns/preview/'+campaignId]);
     }
 
 }
