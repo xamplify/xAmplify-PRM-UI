@@ -198,7 +198,6 @@ export class EditPartnerCampaignsComponent implements OnInit {
         
         this.setEmailIdAsFromName();
 
-
         this.getCampaignReplies(this.campaign);
         this.getCampaignUrls(this.campaign);
 
