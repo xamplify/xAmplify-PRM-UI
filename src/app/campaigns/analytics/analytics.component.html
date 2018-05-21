@@ -311,14 +311,15 @@
 			<div class="col-xs-12 col-sm-6" style="padding: 12px;z-index: 3;">
 				<div style="text-align: center;">
 					<span style="color: #7d7676; font-weight: bold; font-size: 15px;">
-					<span *ngIf="campaignType==='VIDEO'">Top Users Minutes Watched </span>
-					<span *ngIf="campaignType!=='VIDEO'">Top Users Email Opened </span>
+              <span >Most Active Recipients for this Campaign</span>
+					<!-- <span *ngIf="campaignType==='VIDEO'">Most Active Recipients for this Campaign</span>
+					<span *ngIf="campaignType!=='VIDEO'">Most Active Recipients for this Campaign</span> -->
 					</span>
 					</div>
 				<app-bubble-chart [campaignId]="campaignId"></app-bubble-chart>
 				<div style="text-align: center;"><span style="color: #7d7676; font-weight: bold; font-size: 15px;">
-					<span *ngIf="campaignType==='VIDEO'">User wise Views Count</span>
-					<span *ngIf="campaignType!=='VIDEO'">User wise Email Opened Count</span>
+					<span *ngIf="campaignType==='VIDEO'">Views Count By Recipient</span>
+					<span *ngIf="campaignType!=='VIDEO'">Email Opened Count By Recipient </span>
 				  </span></div>
 				<div id="campaign-views-barchart" style="min-width: 310px; max-width: 800px; height: 260px; margin: 0 auto"></div>
 				<app-pagination *ngIf="pagination.pagedItems?.length > 0" [pagination]="pagination" [type]="'viewsBarChart'" (notifyParent)="setPage($event)" (notifyParentDropDown)= "paginationDropdown($event)"></app-pagination>
