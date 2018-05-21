@@ -70,10 +70,12 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   videoFile: any;
   userWatchtotalRecords: number;
   isPartnerEnabledAnalyticsAccess:boolean = false;
+  campaignRouter:any;
   constructor(private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
     public authenticationService: AuthenticationService, public pagerService: PagerService, public pagination: Pagination,
     public referenceService: ReferenceService, public contactService: ContactService) {
-    this.isTimeLineView = false;
+      this.campaignRouter = this.utilService.getRouterLocalStorage();
+      this.isTimeLineView = false;
     this.campaign = new Campaign();
     if (this.referenceService.isFromTopNavBar) {
       this.userTimeline(this.referenceService.topNavBarNotificationDetails.campaignId, this.referenceService.topNavBarNotificationDetails.userId, this.referenceService.topNavBarNotificationDetails.emailId);
