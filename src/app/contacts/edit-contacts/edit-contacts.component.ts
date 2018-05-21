@@ -135,7 +135,7 @@ export class EditContactsComponent implements OnInit {
     ];
 
     public sortOption: any = this.sortOptions[0];
-
+    isUpdateUser:boolean;
     isPartner: boolean;
     isCompanyDetails = false;
     checkingContactTypeName: string;
@@ -168,7 +168,7 @@ export class EditContactsComponent implements OnInit {
     ];
     filterCondition = this.filterConditions[0];
 
-    constructor( public refService: ReferenceService, private contactService: ContactService, private manageContact: ManageContactsComponent,
+    constructor( public refService: ReferenceService, public contactService: ContactService, private manageContact: ManageContactsComponent,
         public authenticationService: AuthenticationService, private router: Router,public countryNames: CountryNames,
         public regularExpressions: RegularExpressions,
         private pagerService: PagerService, public pagination: Pagination, public xtremandLogger: XtremandLogger, public properties: Properties,
@@ -641,6 +641,7 @@ export class EditContactsComponent implements OnInit {
     }
 
     addRow( event ) {
+        if(event!=='close'){
         if ( this.emailNotValid == true ) {
            // $( "#addContactModal .close" ).click()
             //this.addContactModalClose();
@@ -652,6 +653,10 @@ export class EditContactsComponent implements OnInit {
         //this.noContactsFound = false;
         this.saveContacts(this.contactListId);
         this.addContactuser = new User();
+        }
+        else {
+            this.contactService.isContactModalPopup = false;
+        }
     }
 
     cancelRow( rowId: number ) {
@@ -1448,6 +1453,8 @@ export class EditContactsComponent implements OnInit {
 
     addContactModalOpen() {
         this.addContactuser = new User();
+        this.isUpdateUser = false;
+        this.contactAllDetails = [];
       //  $( "#addContactModal" ).show();
        /* this.addContactuser.country = ( this.countryNames.countries[0] );
         this.addContactuser.mobileNumber = "+1";*/
@@ -1734,6 +1741,7 @@ export class EditContactsComponent implements OnInit {
 
     editUserDetails( contactDetails ) {
         this.updateContactUser = true;
+        this.isUpdateUser = true;
         this.contactAllDetails = contactDetails;
         this.contactService.isContactModalPopup = true;
         

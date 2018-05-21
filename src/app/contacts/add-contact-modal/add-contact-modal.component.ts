@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { User } from '../../core/models/user';
+import {Router } from '@angular/router';
 import { CountryNames } from '../../common/models/country-names';
 import { RegularExpressions } from '../../common/models/regular-expressions';
 import { ContactService } from '../../contacts/services/contact.service';
@@ -15,7 +16,7 @@ export class AddContactModalComponent implements OnInit {
 
     @Input() contactDetails: any;
     @Input() isContactTypeEdit: boolean;
-    @Input() isPartner: boolean;
+    isPartner: boolean;
     @Input() isUpdateUser: boolean;
     @Input() totalUsers: any;
     @Output() notifyParent: EventEmitter<any>;
@@ -27,21 +28,28 @@ export class AddContactModalComponent implements OnInit {
     editingEmailId = '';
     isEmailExist: boolean = false;
     isCompanyDetails = false;
-    constructor( public countryNames: CountryNames, public regularExpressions: RegularExpressions, public contactService: ContactService ) {
+    checkingContactTypeName = '';
+    constructor( public countryNames: CountryNames, public regularExpressions: RegularExpressions,public router:Router,
+                 public contactService: ContactService ) {
         this.notifyParent = new EventEmitter();
+        this.isPartner = this.router.url.includes('home/contacts')? false: true;
         if ( this.addContactuser.mobileNumber == undefined ) {
             this.addContactuser.mobileNumber = "+1";
         }
+        
     }
 
     addContactModalClose() {
         $( '#addContactModal' ).modal( 'toggle' );
         $( "#addContactModal .close" ).click()
-        $('#addContactModal').modal('hide');
-        $('body').removeClass('modal-open');
-        $('.modal-backdrop fade in').remove();
-        $(".modal-backdrop in").css("display", "none");
+        $( '#addContactModal' ).modal( 'hide' );
+        $( 'body' ).removeClass( 'modal-open' );
+        $( '.modal-backdrop fade in' ).remove();
+        $( ".modal-backdrop in" ).css( "display", "none" );
         this.contactService.isContactModalPopup = false;
+       // this.addContactuser = new User();
+       // this.contactDetails = undefined;
+        
     }
 
     validateEmail( emailId: string ) {
@@ -53,17 +61,17 @@ export class AddContactModalComponent implements OnInit {
         else {
             this.checkingForEmail = false;
         }
-        
-        if(lowerCaseEmail != this.editingEmailId && this.totalUsers){
-            for(let i=0;i< this.totalUsers.length; i++){
-                if( lowerCaseEmail == this.totalUsers[i].emailId ){
+
+        if ( lowerCaseEmail != this.editingEmailId && this.totalUsers ) {
+            for ( let i = 0; i < this.totalUsers.length; i++ ) {
+                if ( lowerCaseEmail == this.totalUsers[i].emailId ) {
                     this.isEmailExist = true;
                     break;
-                }else{
-                       this.isEmailExist = false;
+                } else {
+                    this.isEmailExist = false;
                 }
             }
-            }
+        }
     }
 
     validateEmailAddress( emailId: string ) {
@@ -92,21 +100,28 @@ export class AddContactModalComponent implements OnInit {
         this.notifyParent.emit( this.addContactuser );
     }
 
-    updateUser(){
-        $('#addContactModal').modal('hide');
+    updateUser() {
+        $( '#addContactModal' ).modal( 'hide' );
         this.contactService.isContactModalPopup = false;
         this.notifyParent.emit( this.addContactuser );
     }
-    
-    contactCompanyChecking(contactCompany: string){
-        if( contactCompany.trim() != '' ){
+
+    contactCompanyChecking( contactCompany: string ) {
+        if ( contactCompany.trim() != '' ) {
             this.isCompanyDetails = true;
-        }else {
+        } else {
             this.isCompanyDetails = false;
         }
     }
 
     ngOnInit() {
+       
+        if(this.isPartner){
+            this.checkingContactTypeName = "Partner"
+        }else{
+            this.checkingContactTypeName = "Contact"
+        }
+        
         if ( this.isUpdateUser ) {
             this.checkingForEmail = true;
             this.addContactuser.userId = this.contactDetails.id;
@@ -129,8 +144,8 @@ export class AddContactModalComponent implements OnInit {
                 } else {
                     this.isCompanyDetails = false;
                 }
-           }
-            
+            }
+
         }
         if ( this.addContactuser.country == null ) {
             this.addContactuser.country = ( this.countryNames.countries[0] );

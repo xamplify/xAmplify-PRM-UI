@@ -10,7 +10,8 @@
 				<button type="button" class="close-circle" data-dismiss="modal"
 					(click)="addContactModalClose()"><i class="fa fa-times"></i></button>
 				<!-- <a class="close-circle" data-dismiss="modal" (click)="addContactModalClose()"><i class="fa fa-times"></i></a> -->
-				<h4 class="modal-title">Add {{checkingContactTypeName}}</h4>
+				<h4 class="modal-title" *ngIf="!isUpdateUser">Add {{checkingContactTypeName}}</h4>
+				<h4 class="modal-title" *ngIf="isUpdateUser">Edit {{checkingContactTypeName}}</h4>
 			</div>
 			<div class="modal-body">
 				<form class="form-horizontal" autocomplete="off">
