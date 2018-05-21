@@ -11,7 +11,7 @@
 	<app-preview-video *ngIf="createVideoFile" [videoFile]="createVideoFile" (notifyParent)="closeCreateModal($event)"></app-preview-video>
 	<app-grid-loader *ngIf="httpRequestLoader.isLoading && !isListView"></app-grid-loader>
 	<app-list-loader *ngIf="httpRequestLoader.isLoading && isListView"></app-list-loader>
-	<div [hidden]="!httpRequestLoader.isLoading">
+	<div [hidden]="httpRequestLoader.isLoading">
 		<div class="page-bar">
 			<ul class="page-breadcrumb">
 				<li>

@@ -1,8 +1,8 @@
 <div class="page-content">
     <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 <!-- <app-loader [model]="httpRequestLoader.isHorizontalCss" [hidden]="!httpRequestLoader.isLoading"></app-loader> -->
-<app-grid-loader *ngIf="httpRequestLoader.isLoading && !isListView"></app-grid-loader>
-<app-list-loader *ngIf="httpRequestLoader.isLoading && isListView"></app-list-loader>
+	<app-grid-loader *ngIf="httpRequestLoader.isLoading && !isListView"></app-grid-loader>
+	<app-list-loader *ngIf="httpRequestLoader.isLoading && isListView"></app-list-loader>
 	<div [hidden]="httpRequestLoader.isLoading">
     <div class="page-bar">
         <ul class="page-breadcrumb">
