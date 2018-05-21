@@ -17,6 +17,7 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { CustomResponse } from '../../common/models/custom-response';
 import { CampaignType } from '../models/campaign-type';
+import { UtilService } from '../../core/services/util.service';
 
 declare var swal, $, videojs, Metronic, Layout, Demo, TableManaged, Promise: any;
 
@@ -56,10 +57,10 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
 
     public selectedSortedOption: any = this.sortByDropDown[3];
     public itemsSize: any = this.numberOfItemsPerPage[0];
-        
+
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
     isListView: boolean = false;
-    
+
     public isError: boolean = false;
     saveAsCampaignId = 0;
     saveAsCampaignName = '';
@@ -67,9 +68,10 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     customResponse: CustomResponse = new CustomResponse();
 
     constructor(private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
-        private pagination: Pagination, private pagerService: PagerService,
-        public refService: ReferenceService, private userService: UserService, private authenticationService: AuthenticationService) {
+        public pagination: Pagination, private pagerService: PagerService, public utilService:UtilService,
+        public refService: ReferenceService, private userService: UserService, public authenticationService: AuthenticationService) {
         this.loggedInUserId = this.authenticationService.getUserId();
+        this.utilService.setRouterLocalStorage('managecampaigns');
         if (this.refService.campaignSuccessMessage == "SCHEDULE") {
             this.showMessageOnTop();
             this.campaignSuccessMessage = "Campaign scheduled successfully";
@@ -282,7 +284,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     filterByUserNameOrDate() {
 
     }
-    
+
     showCampaignPreview(campaignId:number){
         this.router.navigate(['/home/campaigns/preview/'+campaignId]);
     }
