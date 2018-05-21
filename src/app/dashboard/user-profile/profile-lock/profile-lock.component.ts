@@ -11,7 +11,7 @@ import { Properties } from '../../../common/models/properties';
 @Component({
     selector: 'app-profile-lock',
     templateUrl: './profile-lock.component.html',
-    styleUrls: ['./profile-lock.component.css'],
+    styleUrls: ['./profile-lock.component.css','../../../../assets/css/default.css', '../../../../assets/css/authentication-page.css'],
     providers: [Properties]
 })
 export class ProfileLockComponent implements OnInit {
@@ -23,6 +23,11 @@ export class ProfileLockComponent implements OnInit {
     error: string;
     loginDisabled = true;
     loading = false;
+    socialProviders = [{ "name": "salesforce", "iconName": "salesforce" },
+    { "name": "facebook", "iconName": "facebook" },
+    { "name": "twitter", "iconName": "twitter" },
+    { "name": "google", "iconName": "googleplus" },
+    { "name": "linkedin", "iconName": "linkedin" }]
     constructor(private userService: UserService, public authenticationService: AuthenticationService,
         private router: Router, public properties: Properties, public referenceService: ReferenceService) {
         this.password = '';
@@ -52,6 +57,7 @@ export class ProfileLockComponent implements OnInit {
     lockScreenLogin() {
         this.loading = true;
         console.log('username is :' + this.userData.emailId + ' password is: ' + this.password);
+        if(this.password && this.userData.emailId){
         const authorization = 'Basic ' + btoa('my-trusted-client:');
         const body = 'username=' + this.userData.emailId + '&password=' + this.password + '&grant_type=password';
         this.authenticationService.login(authorization, body, this.userData.emailId).subscribe(result => {
@@ -60,7 +66,8 @@ export class ProfileLockComponent implements OnInit {
            },
            err => this.logError(),
            () => console.log('login() Complete'));
-        return false;
+           return false;
+          } else { this.logError(); }
     }
     backToLogin(){
         this.router.navigate(['./login']);

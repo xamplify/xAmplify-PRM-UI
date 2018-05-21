@@ -1,3 +1,6 @@
+<video autoplay poster="assets/js/indexjscss/login-background/login_background_big.jpg" id="bgvid" loop>
+  <source src="https://hls.mobinar.com/vod/videos/343/04042016/Final51459808822437.mp4" type="video/mp4">
+</video>
 <div class="page-lock">
 	<div class="page-logo">
 		<a class="brand" [routerLink]="['/']">
@@ -6,9 +9,7 @@
 	</div>
 	<div class="page-body">
     <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-		<div class="lock-head">
-			Locked
-		</div>
+		<div class="lock-head" style="color:#fff">Locked</div>
 		<div class="lock-body">
 			<div class="pull-left lock-avatar-block">
 				<img [src]="userProfileImage" class="avatarImg">
@@ -16,19 +17,29 @@
 			<form class="lock-form pull-left" action="index.html" method="post">
 				<h4>{{userData.displayName}}</h4>
 				<div class="form-group">
-					<div *ngIf="error" class="alert alert-danger" style="height: 43px">
+					<div *ngIf="error" class="alert alert-custom">
 						<span style="position: relative; top: -3px;">{{error}}</span>
 					</div>
 					<input class="form-control placeholder-no-fix" type="password" (input)="checkPassword(password)" [(ngModel)]="password" autocomplete="off"
 					 placeholder="Password" name="password" (keypress)="eventHandler($event.keyCode)" />
 				</div>
 				<div class="form-actions">
-					<button type="submit" class="btn btn-success uppercase" [disabled]="loginDisabled" (click)="lockScreenLogin()">Login</button>
+					<button type="submit" class="btn btn-success uppercase" (click)="lockScreenLogin()">Login</button>
 				</div>
-			</form>
-		</div>
-		<div class="lock-bottom">
-			<a (click)="backToLogin()">Not
+      </form>
+    </div>
+    <div class="login-options" style="border-top: 1px solid #eee;">
+      <h4>Or login with</h4>
+      <ul class="social-icons">
+        <ng-container *ngFor="let socialProvider of socialProviders">
+          <li>
+            <a class="social-icon-color {{socialProvider.iconName}}" title="{{socialProvider.name}}" routerLink="../{{socialProvider.name}}/login"></a>
+          </li>
+        </ng-container>
+      </ul>
+    </div>
+		<div class="lock-bottom"  >
+			<a (click)="backToLogin()" style="color:#fff">Not
 				<span *ngIf="authenticationService.hasCompany">{{userData.displayName}}</span>
 			    <span *ngIf="!authenticationService.hasCompany">{{authenticationService.user.username}}</span>
 				?</a>
