@@ -1,6 +1,8 @@
 <div class="page-content">
     <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
-<app-loader [model]="httpRequestLoader.isHorizontalCss" [hidden]="!httpRequestLoader.isLoading"></app-loader>
+<!-- <app-loader [model]="httpRequestLoader.isHorizontalCss" [hidden]="!httpRequestLoader.isLoading"></app-loader> -->
+<app-grid-loader *ngIf="httpRequestLoader.isLoading && !isListView"></app-grid-loader>
+<app-list-loader *ngIf="httpRequestLoader.isLoading && isListView"></app-list-loader>
 	<div [hidden]="httpRequestLoader.isLoading">
     <div class="page-bar">
         <ul class="page-breadcrumb">
@@ -66,7 +68,10 @@
                                                 </switch>
                                             </div>
                                             <div class="col-sm-8">
-                                                <label style="margin: 5px 0;"></label>
+                                                <label style="margin: 5px 0;">
+                                                <span style="cursor: pointer;color: #54a7e9;" title="Enable/disable analytics access to vendor">
+													<i class="fa fa-question-circle" style="font-size: 20px;float: left;"></i>
+											</span></label>
                                             </div>
                                         </div>
                                     </div>
@@ -81,7 +86,7 @@
                                                 <switch [status]="campaign.emailOpened" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (statusChange)="setEmailOpened($event)">
                                                 </switch>
                                             </div>
-                                            <div class="col-sm-8">
+                                            <div class="col-sm-8"  style="margin-bottom: 10px;">
                                                 <label style="margin: 5px 0;">Email is opened</label>
                                             </div>
                                         </div>

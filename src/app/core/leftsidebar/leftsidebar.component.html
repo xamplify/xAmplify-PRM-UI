@@ -140,7 +140,7 @@
 						</a>
 						<ul class="sub-menu">
 						<li>
-								<a *ngIf="isOnlyPartner && !authService.module.isCampaign"  [routerLink] ="['./campaigns/partner/regular']" [class.disabled]="!authService.user.hasCompany?true:null">
+								<a *ngIf="isOnlyPartner && !authService.module.isCampaign"  [routerLink] ="['./campaigns/partner/all']" [class.disabled]="!authService.user.hasCompany?true:null">
 								<i class="fa fa-bullhorn"></i>
 								<span class="title">Redistribute Campaign</span>
 								</a>

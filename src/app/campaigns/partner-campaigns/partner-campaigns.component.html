@@ -20,9 +20,10 @@
 				<div class="tab-content">
 					<div class="page-bar m10">
 						<ul class="mix-filter col-xs-6 p0 m0">
-						 <li class="filter" (click)="filterCampaigns('regular')" [class.active]="'regular' == campaignType">Email Campaigns</li>
-	                    <li class="filter" (click)="filterCampaigns('video')" [class.active]="'video' == campaignType">Video Campaigns</li>
-	                    <li class="filter" (click)="filterCampaigns('social')" [class.active]="'social' == campaignType">Social Campaigns </li>
+						<li class="filter" (click)="filterCampaigns('all')" [class.active]="'all' == campaignType">All</li>
+						 <li class="filter" (click)="filterCampaigns('regular')" [class.active]="'regular' == campaignType">Email</li>
+	                    <li class="filter" (click)="filterCampaigns('video')" [class.active]="'video' == campaignType">Video</li>
+	                    <li class="filter" (click)="filterCampaigns('social')" [class.active]="'social' == campaignType">Social</li>
 	                    <li class="filter" style="display: none;">Own Template</li>
 						</ul>
 						<div class="page-toolbar col-xs-6">
@@ -52,7 +53,8 @@
 						</div>
 					</div>
 
-
+						<app-grid-loader *ngIf="httpRequestLoader.isLoading && !isListView"></app-grid-loader>
+						<app-list-loader *ngIf="httpRequestLoader.isLoading && isListView"></app-list-loader>
 					<section class='m10' *ngIf="totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
 						<div class="table-responsive">
 							<table class='table tgrid table-hover table-sm' *ngIf="isListView">

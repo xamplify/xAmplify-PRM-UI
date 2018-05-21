@@ -914,6 +914,7 @@ export class EditPartnerCampaignsComponent implements OnInit {
         let length = this.allItems.length;
         length = length + 1
         var id = 'click-' + length;
+        this.referenceService.goToDiv(id);
         this.url.divId = id;
         this.url.scheduled = false;
         this.url.actionId = 19;

@@ -44,6 +44,7 @@ export class PartnerReportsComponent implements OnInit {
   activePartnersSearchKey:string = "";
   inActivePartnersSearchKey:string = "";
   partnerCampaignUISearchKey:string = "";
+  inActivePartnersCount:number = 0;
   customResponse: CustomResponse = new CustomResponse();
   constructor(public router: Router, public authenticationService: AuthenticationService, public pagination: Pagination,
     public referenseService: ReferenceService, public parterService: ParterService, public pagerService: PagerService,
@@ -90,6 +91,7 @@ export class PartnerReportsComponent implements OnInit {
         this.worldMapdataReport = data.countrywisePartnersCount.countrywisepartners;
         this.campaignsCount = data.partnersLaunchedCampaignsCount;
         this.throughPartnerCampaignsCount = data.throughPartnerCampaignsCount;
+        this.inActivePartnersCount = data.inActivePartnersCount;
         const campaignData = [];
         campaignData.push(data.partnersLaunchedCampaignsByCampaignType.VIDEO);
         campaignData.push(data.partnersLaunchedCampaignsByCampaignType.SOCIAL);

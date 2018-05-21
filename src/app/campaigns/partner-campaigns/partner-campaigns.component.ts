@@ -63,24 +63,9 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
         public referenceService: ReferenceService, private userService: UserService, 
         private authenticationService: AuthenticationService,private route: ActivatedRoute) {
         this.loggedInUserId = this.authenticationService.getUserId();
-    /*    if (this.refService.campaignSuccessMessage == "SCHEDULE") {
-            this.showMessageOnTop();
-            this.campaignSuccessMessage = "Campaign scheduled successfully";
-            this.customResponse = new CustomResponse('SUCCESS', this.campaignSuccessMessage, true);
-        } else if (this.refService.campaignSuccessMessage == "SAVE") {
-            this.showMessageOnTop();
-            this.campaignSuccessMessage = "Campaign saved successfully";
-            this.customResponse = new CustomResponse('SUCCESS', this.campaignSuccessMessage, true);
-        } else if (this.refService.campaignSuccessMessage == "NOW") {
-            this.showMessageOnTop();
-            this.campaignSuccessMessage = "Campaign launched successfully";
-            this.customResponse = new CustomResponse('SUCCESS', this.campaignSuccessMessage, true);
-        }*/
-
     }
     showMessageOnTop() {
         $(window).scrollTop(0);
-        // setTimeout(function() { $("#lanchSuccess").slideUp(500); }, 5000);
     }
 
     listCampaign(pagination: Pagination) {
@@ -91,6 +76,8 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
             pagination.campaignType="VIDEO";
         }else if(this.campaignType=="social"){
             pagination.campaignType = "SOCIAL";
+        }else{
+            pagination.campaignType = "NONE";
         }
         this.campaignService.listPartnerCampaigns(this.pagination, this.loggedInUserId)
             .subscribe(
