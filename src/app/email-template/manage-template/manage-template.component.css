@@ -158,7 +158,19 @@ a.disabled {
     text-align: center;
 }
 img {
-	height: 98px;
+	height: 80px;
 	width: auto;
 	margin: 0;
+}
+
+td h6 {
+	margin: 5px 0;
+}
+.input-small {
+    width: 130px !important;
+}
+.mix-filter li {
+    font-size: 11px;
+    text-transform: uppercase;
+    padding: 3px 9px;
 }

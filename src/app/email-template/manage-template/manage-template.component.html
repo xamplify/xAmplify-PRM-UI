@@ -26,8 +26,7 @@
 		<div class="col-md-12">
 			<div class="portlet light">
 				<div class="portlet-title"><!--  -->
-					<div class="caption">
-						<div class="row">
+					<div class="row">
 						<div class="colxs-12 col-sm-9">
 						<div *ngIf="!isOnlyPartner"> 
 							<ul class="mix-filter" >
@@ -59,7 +58,6 @@
 							</div>
 						</div>
 						</div>
-						</div>
 					</div>
 				</div>
 
@@ -84,13 +82,10 @@
 									</td>
 									<td>
 										<h4 class="ellipsis mt5 mb5 f-w-600" title="{{emailTemplate.name}}">{{emailTemplate.name | slice:0:25}}
-										<span *ngIf="emailTemplate.name?.length>25">...</span>
+											<span *ngIf="emailTemplate.name?.length>25">...</span>
 										</h4>
-										<h5 class='m0'>{{emailTemplate.companyName}} 
-										<span class='f-w-600'>
-											<b>{{emailTemplate.createdBy}}</b>
-										</span>
-									 </h5>
+										<h6>Created By <b>{{emailTemplate.createdBy}}</b></h6>
+										<h6>From <b>{{emailTemplate.companyName}}</b></h6>
 									<h5 class="view-banner" *ngIf="emailTemplate.type=='PARTNER'">PARTNER</h5>
 									<h5 class="view-banner" *ngIf="(emailTemplate.regularCoBrandingTemplate||emailTemplate.videoCoBrandingTemplate) &&emailTemplate.type=='UPLOADED' ">CO-BRANDED</h5>
 									</td>
@@ -122,12 +117,12 @@
 								<img  src="{{emailTemplate.subject}}" alt="{{emailTemplate.name}}">
 								<h4 class="ellipsis" title="{{emailTemplate.name}}">{{emailTemplate.name}}</h4>								
 								<div>									
-									<h6>Created On: {{emailTemplate.createdDate}}</h6>
-									<h6 title="{{emailTemplate.createdBy}}">
+									<h6>Created On <b>{{emailTemplate.createdDate}}</b></h6>
+									<h6 title="{{emailTemplate.createdBy}}">By 
 										<b *ngIf="emailTemplate.createdBy?.length>17">{{emailTemplate.createdBy|slice:0:17}}..</b>
 										<b *ngIf="emailTemplate.createdBy?.length<17">{{emailTemplate.createdBy}}</b>
 									</h6>
-									<h6 title="{{emailTemplate.companyName}}">
+									<h6 title="{{emailTemplate.companyName}}">From 
 										<b *ngIf="emailTemplate.companyName?.length>17">{{emailTemplate.companyName|slice:0:17}}..</b>
 										<b *ngIf="emailTemplate.companyName?.length<17">{{emailTemplate.companyName}}</b>
 									</h6>
