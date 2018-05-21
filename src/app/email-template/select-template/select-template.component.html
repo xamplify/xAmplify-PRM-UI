@@ -1,5 +1,3 @@
-
-
 <div class="page-content">
 	<div class="page-bar">
 		<ul class="page-breadcrumb">
@@ -15,13 +13,11 @@
 	<div class="row">
 		<div class="col-md-12">
 			<div class="portlet light">
-				<div class="portlet-title">
-					<div class="caption">
-						<div class="row">
-						<div class="colxs-12 col-sm-9">
+				<div class="portlet-title m0">
+					<div class="row">
+						<div class="colxs-12 col-sm-11">
 						<div>
 							<ul class="mix-filter">
-							    <li style="background: white; color: #616161;cursor: default;font-size: 14px;">Template Type:</li>
 								<li class="filter" (click)="showAllTemplates(0)" [class.emailtemplate-selected]="0 == selectedTemplateTypeIndex">All</li>
 								<li class="filter" (click)="showBasicTemplates(1)" [class.emailtemplate-selected]="1 == selectedTemplateTypeIndex">Basic</li>
 								<li class="filter" (click)="showRichTemplates(2)" [class.emailtemplate-selected]="2 == selectedTemplateTypeIndex">Rich</li>
@@ -35,45 +31,34 @@
 							</ul>
 						</div>
 						</div>
-						<div class="colxs-12 col-sm-3">
-						<div class="inputs regular_emails" align="right" style="float: right">
-							<div class="portlet-input input-inline input-small">
-								<div class="input-icon right">
-									<i class="icon-magnifier"></i> <input type="text"
-										class="form-control"
-										[(ngModel)]="templateFilter.name" placeholder="search...">
+						<div class="colxs-12 col-sm-1">
+							<div class="inputs regular_emails" align="right" style="float: right">
+								<div class="portlet-input input-inline input-small">
+									<div class="input-icon right">
+										<i class="icon-magnifier"></i> <input type="text" class="form-control"
+											[(ngModel)]="templateFilter.name" placeholder="search...">
+									</div>
 								</div>
 							</div>
-						</div>
-						</div>
 						</div>
 					</div>
 				</div>
 				<div class="portlet-body">
 					<div class="row">
-					<app-loader *ngIf="httpRequestLoader.isLoading"></app-loader>
+					<app-grid-loader *ngIf="httpRequestLoader.isLoading"></app-grid-loader>
 					<app-error-pages *ngIf="httpRequestLoader.isServerError"></app-error-pages>
-							<div class="col-md-3 col-sm-4 col-xs-6 box" *ngFor="let beeRegularTemplate of filteredEmailTemplates | filterBy: templateFilter;let i=index">
-								<div class="portlet light block">
-									<div class="portlet-title">
-										<div class="caption">
-											<h4 class="caption-subject font-purple-intense uppercase text-center"
-											 title="{{beeRegularTemplate.name}}">{{beeRegularTemplate.name|slice:0:23}} <span *ngIf="beeRegularTemplate.name?.length>23">....</span></h4>
-										</div>
-									</div>
-									<div class="portlet-body">
-										<div class="row email-template-container">
-											<img class="img-responsive center-block" *ngIf="!beeRegularTemplate.campaignDefault" src="{{beeRegularTemplate.body}}" alt="{{beeRegularTemplate.name}}">
-											<img class="img-responsive center-block" *ngIf="beeRegularTemplate.campaignDefault" src="{{beeRegularTemplate.subject}}" alt="{{beeRegularTemplate.name}}">
-											<div class="email-template-i-container">
-										        <i class="fa fa-plus-circle fa-4x"  *ngIf="!beeRegularTemplate.campaignDefault" aria-hidden="true" (click)="showTemplateById(beeRegularTemplate.id,i)"></i>
-										   		<i class="fa fa-eye fa-4x"  *ngIf="beeRegularTemplate.campaignDefault" aria-hidden="true" (click)="showPreview(beeRegularTemplate)"></i>
-										    </div>
-										</div>
-									</div>
-								</div>
+						<div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let beeRegularTemplate of filteredEmailTemplates | filterBy: templateFilter;let i=index">
+							<div class="grid-box">
+								<img class="img-responsive center-block" *ngIf="!beeRegularTemplate.campaignDefault" src="{{beeRegularTemplate.body}}" alt="{{beeRegularTemplate.name}}">
+								<img class="img-responsive center-block" *ngIf="beeRegularTemplate.campaignDefault" src="{{beeRegularTemplate.subject}}" alt="{{beeRegularTemplate.name}}">
+								<h4 title="{{beeRegularTemplate.name}}">{{beeRegularTemplate.name|slice:0:23}} <span *ngIf="beeRegularTemplate.name?.length>23">....</span></h4>								
+							<div class="bar">
+								<a (click)="showTemplateById(beeRegularTemplate.id,i)" *ngIf="!beeRegularTemplate.campaignDefault"><i class="fa fa-plus-circle"></i></a>
+								<a (click)="showPreview(beeRegularTemplate)" *ngIf="beeRegularTemplate.campaignDefault"><i class="fa fa-eye"></i></a>
+							</div>
 							</div>
 						</div>
+					</div>
 				</div>
 			</div>
 			<!-- END PAGE CONTENT-->

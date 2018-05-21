@@ -31,7 +31,6 @@
 						<div class="colxs-12 col-sm-9">
 						<div *ngIf="!isOnlyPartner"> 
 							<ul class="mix-filter" >
-							<li style="background: white; color: #616161;cursor: default;font-size: 14px;">Template Type:</li>
 								<li class="filter" (click)="filterTemplates('NONE',false,0)" [class.emailtemplate-selected]="0 == selectedTemplateTypeIndex" >All</li>
 								<li class="filter" (click)="filterTemplates('BASIC',false,1)" [class.emailtemplate-selected]="1 == selectedTemplateTypeIndex"> Basic</li>
 								<li class="filter" (click)="filterTemplates('RICH',false,2)" [class.emailtemplate-selected]="2 == selectedTemplateTypeIndex">Rich</li>
@@ -64,11 +63,10 @@
 					</div>
 				</div>
 
-              <app-grid-loader *ngIf="httpRequestLoader.isLoading && !isListView"></app-grid-loader>
-              <app-list-loader *ngIf="httpRequestLoader.isLoading && isListView"></app-list-loader>
-			
-					<section [hidden]="!isListView">
-						<app-error-pages *ngIf="httpRequestLoader.isServerError"></app-error-pages>
+	<app-grid-loader *ngIf="httpRequestLoader.isLoading && !isListView"></app-grid-loader>
+	<app-list-loader *ngIf="httpRequestLoader.isLoading && isListView"></app-list-loader>
+	<app-error-pages *ngIf="httpRequestLoader.isServerError"></app-error-pages>
+					<section [hidden]="!isListView">						
 						<ng-container *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError ">
 						<div class="table-responsive">
 						<table class='table tgrid'>
@@ -82,7 +80,7 @@
 							<tbody>
 								<tr *ngFor="let emailTemplate of pagination.pagedItems ;let i =index">
 									<td style="width: 10%;">
-										<img class="img-responsive center-block" src="{{emailTemplate.subject}}" alt="{{emailTemplate.name}}">
+										<img src="{{emailTemplate.subject}}" alt="{{emailTemplate.name}}">
 									</td>
 									<td>
 										<h4 class="ellipsis mt5 mb5 f-w-600" title="{{emailTemplate.name}}">{{emailTemplate.name | slice:0:25}}
@@ -119,8 +117,37 @@
 					</section>
 								
 					<div class="margin-top-10"  [hidden]="isListView">
-							<div class="row mix-grid" style="margin-top: -15px;padding: 7px;">							
-							<app-error-pages *ngIf="httpRequestLoader.isServerError"></app-error-pages>
+						<div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let emailTemplate of pagination.pagedItems ;let i =index" id="emailTemplateListDiv_{{emailTemplate.id}}">
+							<div class="grid-box">
+								<img  src="{{emailTemplate.subject}}" alt="{{emailTemplate.name}}">
+								<h4 class="ellipsis" title="{{emailTemplate.name}}">{{emailTemplate.name}}</h4>								
+								<div>									
+									<h6>Created On: {{emailTemplate.createdDate}}</h6>
+									<h6 title="{{emailTemplate.createdBy}}">
+										<b *ngIf="emailTemplate.createdBy?.length>17">{{emailTemplate.createdBy|slice:0:17}}..</b>
+										<b *ngIf="emailTemplate.createdBy?.length<17">{{emailTemplate.createdBy}}</b>
+									</h6>
+									<h6 title="{{emailTemplate.companyName}}">
+										<b *ngIf="emailTemplate.companyName?.length>17">{{emailTemplate.companyName|slice:0:17}}..</b>
+										<b *ngIf="emailTemplate.companyName?.length<17">{{emailTemplate.companyName}}</b>
+									</h6>
+								</div>
+								<div class="bar">
+									<a (click)="showPreview(emailTemplate)" title="Preview">
+										<i class="fa fa-eye"></i>
+									</a>
+									<a  (click)="edit(emailTemplate.id)" title="Edit" 
+										*ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  || authenticationService.module.isVendor) && emailTemplate.type!='PARTNER'">
+										<i class="fa fa-pencil-square-o"></i>
+									</a>
+									<a (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)" title="Delete" 
+										*ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)||authenticationService.module.isVendor) && emailTemplate.type!='PARTNER' ">
+										<i class="fa fa-trash"></i>
+									</a>
+								</div>
+							</div>
+						</div>
+						<div class="row mix-grid" style="margin-top: -15px;padding: 7px;">							
 							<ng-container *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError ">
 								<div *ngFor="let emailTemplate of pagination.pagedItems ;let i =index" id="emailTemplateListDiv_{{emailTemplate.id}}">
 									<div class="col-md-3 col-sm-4 mix category_1 mix_all"  style="display: block; opacity: 1; margin-top: -11px;">
@@ -132,41 +159,6 @@
 												CO-BRANDED<span class="arrow"></span>
 											</h3>
 										</div>
-									<div class="mix-inner" id="mix-inner">
-										<img class="img-responsive center-block" src="{{emailTemplate.subject}}" alt="{{emailTemplate.name}}" id="emailtemplate-image">										
-										<div class="mix-details" id="mix-details" style="height:199px">
-											<h4 class="ellipsis" title="{{emailTemplate.name}}" style="margin-top: 14px;">{{emailTemplate.name}}</h4>
-											<div style="top: 2%; position: relative; margin-left: 5px;">
-											</div>
-											<div id="template-action-div">
-											<a class="mix-preview2" (click)="showPreview(emailTemplate)" title="Preview" data-rel="">
-												<i class="fa fa-eye"></i>
-										    </a>
-										    <a  class="mix-preview1" (click)="edit(emailTemplate.id)" title="Edit" data-rel=""
-										    		 *ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  || authenticationService.module.isVendor) && emailTemplate.type!='PARTNER'">
-												<i class="fa fa-pencil-square-o"></i>
-										    </a>
-										    <a class="mix-preview3" id="template-delete"  (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)" title="Delete" data-rel="" 
-										    			*ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)||authenticationService.module.isVendor) && emailTemplate.type!='PARTNER' ">
-												<i class="fa fa-trash" style="color:#f43636"></i>
-											</a>
-											</div>
-											<span align="right" class="template-created-on-label">
-												<b>Created On</b>
-											</span>
-											<span align="right" title="upladed date" class="template-created-on-value" >
-												<b>{{emailTemplate.createdDate}}</b>
-									 		</span>
-									 		<span align="left" class="template-created-by-label" title="{{emailTemplate.createdBy}}">
-									 			<b  *ngIf="emailTemplate.createdBy?.length>17">{{emailTemplate.createdBy|slice:0:17}}..</b>
-												<b  *ngIf="emailTemplate.createdBy?.length<17">{{emailTemplate.createdBy}}</b>
-									 		</span>
-									 		<span align="left" class="template-created-by-value" title="{{emailTemplate.companyName}}">
-									 			<b  *ngIf="emailTemplate.companyName?.length>17">{{emailTemplate.companyName|slice:0:17}}..</b>
-												<b  *ngIf="emailTemplate.companyName?.length<17">{{emailTemplate.companyName}}</b>
-									 	</span>
-										</div>
-									</div>
 								</div>
 							</div>
 							</ng-container>	
