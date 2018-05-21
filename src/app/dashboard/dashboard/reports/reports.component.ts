@@ -297,7 +297,7 @@ export class ReportsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.pagination.maxResults = 5;
+  //  this.pagination.maxResults = 5;
     this.isReport = true;
     console.log(this.referenceService.viewsSparklineValues);
     if (this.viewsDate === undefined || this.viewsDate === null) { this.viewsDate = this.resultSparkline.dates[0]; }

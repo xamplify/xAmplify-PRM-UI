@@ -279,7 +279,12 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                     this.referenceService.showServerError(this.httpRequestLoader);
                     this.httpRequestLoader.statusCode = error.status;
                 } else if (error.search('mobinar is being used in one or more campaigns. Please delete those campaigns') !== -1) {
-                    const message = error.replace('mobinar', 'video');
+                    let message = error.replace('mobinar', 'video');
+                     message = message.replace('Heads up!','Heads up! ( ');
+                     message = message.replace('video',') video');
+                     message = message.replace('"','');
+                     message = message.replace('."','.');
+                     const errorMesge = message;
                     this.defaultBannerMessageValues();
                      $('html,body').animate({ scrollTop: 0 }, 'slow');
                     this.customResponse = new CustomResponse( 'ERROR', message, true );
