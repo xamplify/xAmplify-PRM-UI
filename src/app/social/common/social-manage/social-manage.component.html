@@ -22,7 +22,7 @@
 	</h4>
 	<h5>Please click <a data-toggle="modal" data-target="#connectAccountsModal">here</a> to add your social account.</h5>
 </div>
-<app-grid-loader *ngIf="httpRequestLoader.isLoading && !isListView"></app-grid-loader>
+<app-grid-loader *ngIf="httpRequestLoader.isLoading"></app-grid-loader>
 
 <div *ngIf="socialConnections?.length > 0">
 	<div class="col-md-3 col-sm-4 col-xs-12 box" *ngFor="let socialConnection of socialConnections;let i = index">
