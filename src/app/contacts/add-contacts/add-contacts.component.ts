@@ -102,7 +102,7 @@ export class AddContactsComponent implements OnInit {
     private socialContactType: string;
     emailNotValid: boolean;
     constructor( public socialPagerService: SocialPagerService, public referenceService: ReferenceService, private authenticationService: AuthenticationService,
-            private contactService: ContactService, public regularExpressions: RegularExpressions, public paginationComponent: PaginationComponent,
+            public contactService: ContactService, public regularExpressions: RegularExpressions, public paginationComponent: PaginationComponent,
         private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef, private route: ActivatedRoute, public properties: Properties,
         private router: Router, public pagination: Pagination, public xtremandLogger: XtremandLogger, public countryNames: CountryNames ) {
 
@@ -506,7 +506,7 @@ export class AddContactsComponent implements OnInit {
         this.xtremandLogger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( this.newUsers ) );
         for ( var i = 0; i < this.newUsers.length; i++ ) {
             this.newUsers[i].emailId = this.convertToLowerCase( this.newUsers[i].emailId );
-            
+
             if(this.newUsers[i].country === "Select Country"){
                 this.newUsers[i].country = null;
             }
@@ -593,7 +593,7 @@ export class AddContactsComponent implements OnInit {
         this.loading = true;
         for ( var i = 0; i < this.clipboardUsers.length; i++ ) {
             this.clipboardUsers[i].emailId = this.convertToLowerCase( this.clipboardUsers[i].emailId );
-            
+
             if(this.clipboardUsers[i].country === "Select Country"){
                 this.clipboardUsers[i].country = null;
             }
@@ -647,7 +647,7 @@ export class AddContactsComponent implements OnInit {
                 if ( this.validCsvContacts == true && this.invalidPatternEmails.length == 0 ) {
                     for ( var i = 0; i < this.contacts.length; i++ ) {
                         this.contacts[i].emailId = this.convertToLowerCase( this.contacts[i].emailId );
-                        
+
                         if(this.contacts[i].country === "Select Country"){
                             this.contacts[i].country = null;
                         }
@@ -947,7 +947,7 @@ export class AddContactsComponent implements OnInit {
         }
 
     }
-    
+
     validateSocialContacts(socialUsers: any){
        let users = [];
         for(let i=0;i< socialUsers.length;i++){
@@ -1360,7 +1360,7 @@ export class AddContactsComponent implements OnInit {
         this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
         if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' && this.allselectedUsers.length != 0 ) {
             this.xtremandLogger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( this.allselectedUsers ) );
-           
+
             this.loading = true;
             this.contactListObject = new ContactList;
             this.contactListObject.name = this.model.contactListName;
@@ -1775,7 +1775,7 @@ export class AddContactsComponent implements OnInit {
                 if ( error.search( 'Please Launch or Delete those campaigns first' ) != -1 ) {
                     this.customResponse = new CustomResponse( 'ERROR', error, true );
                     $( '#settingSocialNetwork' ).modal( 'hide' );
-                    
+
                     setTimeout( function() { $( "#campaignError" ).slideUp( 500 ); }, 3000 );
                 } else {
                     this.xtremandLogger.errorPage( error );
@@ -1805,7 +1805,7 @@ export class AddContactsComponent implements OnInit {
         this.contactService.isContactModalPopup = true;
    /*     this.addContactuser.country = ( this.countryNames.countries[0] );
         this.addContactuser.mobileNumber = "+1";*/
-        
+
     }
 
     addContactModalClose() {
@@ -1813,7 +1813,7 @@ export class AddContactsComponent implements OnInit {
         /*$( '#addContactModal' ).modal( 'toggle' );
         $( "#addContactModal .close" ).click()*/
     }
-    
+
     selectedPageNumber(event) {
         this.pageNumber.value = event;
         if (event === 0) { event = this.socialContactUsers.length; }
@@ -1834,7 +1834,7 @@ export class AddContactsComponent implements OnInit {
             $( "#salesforceModal" ).modal();
             this.contactService.socialProviderName = "nothing";
         }
-        
+
         this.contactListName = '';
         $( "#Gfile_preview" ).hide();
         $( "#popupForListviews" ).hide();
