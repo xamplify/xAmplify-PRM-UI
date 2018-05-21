@@ -641,13 +641,21 @@ legend {
   position: relative;
   padding: 1em 0;
 }
+
 .grid-box img{
   margin: 1em;
 }
+
 .grid-box h4 {
     font-weight: 600;
     font-size: 14px;
 }
+
+.grid-box h6 {
+	text-align: left;    
+	margin: 5px 0 5px 25px;
+}
+
 .bar{
   background: #54a7e9;
   width: 100%;
@@ -744,4 +752,7 @@ legend {
 
 .dashboard-stat .details .number {
   padding-top: 15px !important;
+}
+b, strong {
+    font-weight: 600 !important;
 }
