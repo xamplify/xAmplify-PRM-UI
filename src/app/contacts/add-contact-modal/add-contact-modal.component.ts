@@ -4,6 +4,7 @@ import {Router } from '@angular/router';
 import { CountryNames } from '../../common/models/country-names';
 import { RegularExpressions } from '../../common/models/regular-expressions';
 import { ContactService } from '../../contacts/services/contact.service';
+import { VideoFileService } from '../../videos/services/video-file.service'
 declare var $: any;
 
 @Component( {
@@ -29,8 +30,11 @@ export class AddContactModalComponent implements OnInit {
     isEmailExist: boolean = false;
     isCompanyDetails = false;
     checkingContactTypeName = '';
+    locationDetails: any;
+    locationCountry = '';
+    
     constructor( public countryNames: CountryNames, public regularExpressions: RegularExpressions,public router:Router,
-                 public contactService: ContactService ) {
+                 public contactService: ContactService, public videoFileService: VideoFileService ) {
         this.notifyParent = new EventEmitter();
         this.isPartner = this.router.url.includes('home/contacts')? false: true;
         if ( this.addContactuser.mobileNumber == undefined ) {
@@ -113,9 +117,21 @@ export class AddContactModalComponent implements OnInit {
             this.isCompanyDetails = false;
         }
     }
+    
+    geoLocation(){
+        this.videoFileService.getJSONLocation()
+        .subscribe(
+        (data: any) => {
+            this.locationCountry = data.country;
+            if ( !this.isUpdateUser || this.addContactuser.country == undefined ) {
+                this.addContactuser.country = data.country;
+            }
+            
+        } )
+    }
 
     ngOnInit() {
-       
+       this.geoLocation();
         if(this.isPartner){
             this.checkingContactTypeName = "Partner"
         }else{
@@ -145,10 +161,10 @@ export class AddContactModalComponent implements OnInit {
                     this.isCompanyDetails = false;
                 }
             }
-
+            
         }
-        if ( this.addContactuser.country == null ) {
-            this.addContactuser.country = ( this.countryNames.countries[0] );
+        if ( this.addContactuser.country == undefined ) {
+            this.geoLocation();
         }
         $( '#addContactModal' ).modal( 'show' );
     }
