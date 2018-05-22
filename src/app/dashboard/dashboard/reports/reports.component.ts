@@ -44,7 +44,7 @@ export class ReportsComponent implements OnInit {
     this.sortDates = this.dashboardService.sortDates;
     this.resultSparkline = this.referenceService.viewsSparklineValues;
     if (this.resultSparkline === undefined || this.resultSparkline === null) {
-      this.router.navigate(['/']);
+      this.router.navigate(['/home/dashboard/default']);
     }
     console.log(this.resultSparkline);
     this.viewsDate = this.referenceService.viewsDate;
