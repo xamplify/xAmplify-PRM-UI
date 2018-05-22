@@ -237,7 +237,7 @@ export class AddContactsComponent implements OnInit {
                         user.jobTitle = allTextLines[i][3];
                         user.address = allTextLines[i][5];
                         user.city = allTextLines[i][6];
-                        user = allTextLines[i][7];
+                        user.country = allTextLines[i][7];
                         user.mobileNumber = allTextLines[i][8];
                         /*user.description = allTextLines[i][9];*/
                         self.contacts.push( user );
