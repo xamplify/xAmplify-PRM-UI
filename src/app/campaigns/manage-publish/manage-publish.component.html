@@ -65,10 +65,10 @@
 						<app-list-loader *ngIf="httpRequestLoader.isLoading && isListView"></app-list-loader>
 					<section class='m10' *ngIf="totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
 						<div class="table-responsive">
-							<table class='table tgrid table-hover table-sm' *ngIf="isListView">
+							<table class='table tgrid table-hover table-sm hidden-xs' *ngIf="isListView">
 								<thead>
 									<tr>
-										<th colspan="2" style="width: 50%">Campaign</th>
+										<th colspan="2" style="width: 45%">Campaign</th>
 										<th>Status</th>
 										<th>Created Date</th>
 										<th>Actions</th>
@@ -77,28 +77,22 @@
 								<tbody>
 									<tr *ngFor='let campaign of pagination.pagedItems; let i=index'>
 										<td style="width: 10%;">
-											<img *ngIf="campaign.campaignType.indexOf('VIDEO') > -1 && campaign.launched " src="assets/images/video-email.png" style="height: 50px;"
-											 alt="{{campaign.campaignType}} Campaign">
-											<img *ngIf="campaign.campaignType.indexOf('VIDEO') > -1 && !campaign.launched " src="assets/images/video-email.png" style="height: 50px;-webkit-filter: grayscale(100%);filter: grayscale(100%);"
-											 alt="{{campaign.campaignType}} Campaign">
-
-											<img *ngIf="campaign.campaignType.indexOf('REGULAR') > -1 && campaign.launched" src="assets/images/regular-email.png" style="height: 50px;"
-											 alt="{{campaign.campaignType}} Campaign">
-											<img *ngIf="campaign.campaignType.indexOf('REGULAR') > -1 && !campaign.launched" src="assets/images/regular-email.png" style="height: 50px;-webkit-filter: grayscale(100%);filter: grayscale(100%);"
-											 alt="{{campaign.campaignType}} Campaign">
-
-											<img *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1 && campaign.launched" src="assets/images/social-campaign.png" style="height: 50px;"
-											 alt="{{campaign.campaignType}} Campaign">
-											<img *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1 && !campaign.launched" src="assets/images/social-campaign.png" style="height: 50px;-webkit-filter: grayscale(100%);filter: grayscale(100%);"
-											 alt="{{campaign.campaignType}} Campaign">
+											<ng-container *ngIf="campaign.campaignType.indexOf('VIDEO') > -1">
+												<img [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/video-email.png" alt="Video Campaign">
+											</ng-container>
+											<ng-container *ngIf="campaign.campaignType.indexOf('REGULAR') > -1">
+												<img [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/regular-email.png" alt="Regular Campaign">
+											</ng-container>
+											<ng-container *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1">
+												<img [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/social-campaign.png" alt="Social Campaign">
+											</ng-container>
 										</td>
 										<td>
-											  <h4 class="ellipsis mt5 mb5 f-w-600" style="font-size: 14px;" title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:25}}
+											<h4 class="ellipsis campaign-title" title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:25}}
 													<span *ngIf="campaign.campaignName?.length>25">...</span>
 											</h4>
-											<h5 class='m0'>{{campaign.companyName}}
-												<span class='f-w-300'>{{campaign.createdBy}}</span>
-											</h5>
+											<h5>By <b>{{campaign.createdBy}}</b></h5>
+											<h5>From <b>{{campaign.companyName}}</b></h5>
 										</td>
 										<td>
 											<span align="right">
@@ -141,6 +135,83 @@
 													<i class="fa fa-eye mr5"></i>
 												</a>  -->
 											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+
+							<table class='table tgrid table-sm visible-xs' *ngIf="isListView">
+								<thead>
+									<tr>
+										<th colspan="2">Campaign</th>
+										<th>Actions</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr *ngFor='let campaign of pagination.pagedItems; let i=index'>
+										<td style="width: 10%;">
+											<ng-container *ngIf="campaign.campaignType.indexOf('VIDEO') > -1">
+												<img [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/video-email.png" alt="Video Campaign">
+											</ng-container>
+											<ng-container *ngIf="campaign.campaignType.indexOf('REGULAR') > -1">
+												<img [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/regular-email.png" alt="Regular Campaign">
+											</ng-container>
+											<ng-container *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1">
+												<img [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/social-campaign.png" alt="Social Campaign">
+											</ng-container>
+										</td>
+										<td>
+											<h4 class="campaign-title" title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:25}}
+													<span *ngIf="campaign.campaignName?.length>25">...</span>
+											</h4>
+											<h5>By <b>{{campaign.createdBy}}</b></h5>
+											<h5>From <b>{{campaign.companyName}}</b></h5>
+											<h5>
+												<span *ngIf="campaign.launched">Launched On </span>
+												<span *ngIf="!campaign.launched && campaign.launchedOn?.length > 0">Scheduled For </span>
+												<span *ngIf="!campaign.launched && campaign.launchedOn?.length==0">Saved On </span>
+												<span *ngIf="campaign.scheduleType=='NOW' || campaign.scheduleType=='SCHEDULE'">{{campaign.launchedOn}}</span>
+												<span *ngIf="campaign.scheduleType=='SAVE'">{{campaign.startTime}}</span>
+											</h5>
+										</td>
+										<td>
+<div class="pull-right">
+<div class="dropdown">
+	<i class="fa fa-ellipsis-v dropdown-toggle" data-toggle="dropdown"></i>
+	<ul class="dropdown-menu pull-right">
+		<ng-container *ngIf="!campaign.launched">
+				<li>
+					<a *ngIf="hasAllAccess || (campaign.launched==false&&hasCampaignRole && loggedInUserId==campaign.userId) 
+						|| (!campaign.launched&&isOnlyPartner)  || authenticationService.module.isVendor" (click)="editCampaign(campaign.campaignId)"
+						title="Edit Campaign" class='mr5'>
+						<i class="fa fa-pencil-square-o"></i> Edit Campaign
+					</a>
+				</li>
+		</ng-container>			
+		<ng-container *ngIf="campaign.launched">
+			<li>
+				<a *ngIf="  hasAllAccess || (hasStatsRole || hasCampaignRole) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor"
+					data-rel="fancybox-button" [routerLink]="['/home/campaigns/',campaign.campaignId, 'details']" title="Campaign Based Reports"
+					class='mr5'>
+					<i class="fa fa-line-chart"></i> Campaign Analytics
+				</a>
+			</li>
+			<li>
+				<a *ngIf=" (campaign.campaignType !== 'SOCIAL') && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor) && !campaign.nurtureCampaign"
+					data-rel="fancybox-button" title="Save As" class='mr5' (click)="openSaveAsModal(campaign.campaignId, campaign.campaignName)">
+					<i class="fa fa-files-o"></i> Save As
+				</a>
+			</li>
+		</ng-container>
+		<li>
+			<a *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor"
+				(click)="confirmDeleteCampaign(campaign.campaignId, i, campaign.campaignName)" title="Delete Campaign" data-rel="fancybox-button">
+				<i class="fa fa-trash"></i> Delete Campaign
+			</a>
+		</li>
+	</ul>
+</div>
+</div>											
 										</td>
 									</tr>
 								</tbody>

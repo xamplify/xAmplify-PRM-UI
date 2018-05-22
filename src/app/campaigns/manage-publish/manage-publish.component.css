@@ -196,5 +196,39 @@ a:hover{
 	float: left;cursor: pointer;margin: 0px 20px;border: 1px solid #c1c1c1;border-radius: 100%;padding: 5px;
 }
 .filter-div:hover {
-border: 1px solid #ccc;
+    border: 1px solid #ccc;
+}
+
+img.active {
+    height: 50px;
+}
+img.inactive {
+    height: 50px;
+    -webkit-filter: grayscale(100%);
+    filter: grayscale(100%);
+}
+td h5 {
+    margin: 5px 0;
+}
+.campaign-title {
+    margin: 5px 0;
+    font-weight: 600;
+    color: #666;
+    font-size: 14px;
+}
+.fa-ellipsis-v:hover{
+    background-color: #f1f1f1;
+    padding: 10px 15px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+.fa-ellipsis-v {
+    padding: 10px 15px;
+}
+.dropdown-menu {
+    min-width: auto;
+    box-shadow: 1px 1px rgba(102, 102, 102, 0.1);
+}
+.dropdown {
+    margin-right: 1em;
 }
