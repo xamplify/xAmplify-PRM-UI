@@ -20,6 +20,7 @@ import { Properties } from '../../common/models/properties';
 import { CountryNames } from '../../common/models/country-names';
 import { RegularExpressions } from '../../common/models/regular-expressions';
 import { PaginationComponent } from '../../common/pagination/pagination.component';
+import { VideoFileService } from '../../videos/services/video-file.service';
 declare var swal, $, Papa: any;
 
 @Component( {
@@ -104,7 +105,8 @@ export class AddContactsComponent implements OnInit {
     constructor( public socialPagerService: SocialPagerService, public referenceService: ReferenceService, private authenticationService: AuthenticationService,
             public contactService: ContactService, public regularExpressions: RegularExpressions, public paginationComponent: PaginationComponent,
         private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef, private route: ActivatedRoute, public properties: Properties,
-        private router: Router, public pagination: Pagination, public xtremandLogger: XtremandLogger, public countryNames: CountryNames ) {
+        private router: Router, public pagination: Pagination, public xtremandLogger: XtremandLogger, public countryNames: CountryNames,
+        public videoFileService: VideoFileService) {
 
         this.pageNumber = this.paginationComponent.numberPerPage[0];
         this.addContactuser.country = ( this.countryNames.countries[0] );

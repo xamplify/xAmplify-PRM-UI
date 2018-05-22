@@ -923,7 +923,7 @@ export class AddPartnersComponent implements OnInit {
             data => {
                 this.getGoogleConatacts = data;
                 swal.close();
-                if ( this.getGoogleConatacts.contacts.length == 0 ) {
+                if ( !this.getGoogleConatacts.contacts ) {
                     this.customResponse = new CustomResponse( 'ERROR', this.properties.NO_RESULTS_FOUND, true );
                     this.selectedAddPartnerOption = 5;
                 }else{
@@ -1059,7 +1059,7 @@ export class AddPartnersComponent implements OnInit {
                 this.zohoImageBlur = false;
                 this.zohoImageNormal = true;
                 this.hideZohoModal();
-                if ( this.getGoogleConatacts.contacts.length == 0 ) {
+                if ( !this.getGoogleConatacts.contacts ) {
                     this.customResponse = new CustomResponse( 'ERROR', this.properties.NO_RESULTS_FOUND, true );
                     this.selectedAddPartnerOption = 5;
                 }else{
@@ -1146,7 +1146,7 @@ export class AddPartnersComponent implements OnInit {
                 this.getGoogleConatacts = data;
                 this.hideZohoAuthorisedPopup();
                 this.selectedAddPartnerOption = 6;
-                if ( this.getGoogleConatacts.contacts.length == 0 ) {
+                if ( !this.getGoogleConatacts.contacts ) {
                     this.customResponse = new CustomResponse( 'ERROR', this.properties.NO_RESULTS_FOUND, true );
                     this.selectedAddPartnerOption = 5;
                 }else{
@@ -1332,7 +1332,7 @@ export class AddPartnersComponent implements OnInit {
             data => {
                 this.getGoogleConatacts = data;
                 this.selectedAddPartnerOption = 7;
-                if ( this.getGoogleConatacts.contacts.length == 0 ) {
+                if ( !this.getGoogleConatacts.contacts ) {
                     this.customResponse = new CustomResponse( 'ERROR', this.properties.NO_RESULTS_FOUND, true );
                     this.selectedAddPartnerOption = 5;
                     //this.hideModal();
@@ -1405,7 +1405,7 @@ export class AddPartnersComponent implements OnInit {
             data => {
                 this.getGoogleConatacts = data;
                 this.selectedAddPartnerOption = 7;
-                if ( this.getGoogleConatacts.contacts.length == 0 ) {
+                if ( !this.getGoogleConatacts.contacts ) {
                     this.customResponse = new CustomResponse( 'ERROR', this.properties.NO_RESULTS_FOUND, true );
                     this.selectedAddPartnerOption = 5;
                     //this.hideModal();
