@@ -41,6 +41,7 @@ export class EditPartnerCampaignsComponent implements OnInit {
     emailTemplate: EmailTemplate;
     userLists: any;
     videoFile: any;
+    isListView: boolean = false;
     public campaignLaunchOptions = ['NOW', 'SCHEDULE', 'SAVE'];
     campaignLaunchForm: FormGroup;
     buttonName = "Launch";
@@ -200,8 +201,9 @@ export class EditPartnerCampaignsComponent implements OnInit {
 
         this.getCampaignReplies(this.campaign);
         this.getCampaignUrls(this.campaign);
-
-        this.loadContactList(this.contactListPagination);
+        if(this.campaign.userListIds.length>0){
+            this.loadContactList(this.contactListPagination);
+        }
         this.getAnchorLinksFromEmailTemplate(this.campaign.emailTemplate.body);
         this.selectedEmailTemplateId = this.campaign.emailTemplate.id;
         if(this.campaign.nurtureCampaign){
@@ -1292,6 +1294,7 @@ export class EditPartnerCampaignsComponent implements OnInit {
           dateFormat: 'm/d/Y H:i',
           time_24hr: false
       } );
+      this.isListView = !this.referenceService.isGridView;
       this.validateLaunchForm();
   }
   

@@ -65,7 +65,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     isAdd:boolean = true;
     name:string = "";
     width:string="";
-
+    isListView: boolean = false;
     defaultTabClass = "col-block";
     activeTabClass = "col-block col-block-active";
     completedTabClass = "col-block col-block-complete";
@@ -448,7 +448,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             time_24hr: false
         } );
         //this.validatecampaignForm();
-
+        this.isListView = !this.refService.isGridView;
         if(this.campaignType=="video"){
             this.width="20%";
              this.emailTemplatesPagination.filterBy = "CampaignVideoEmails";

@@ -34,7 +34,7 @@ declare var swal, $, videojs , Metronic, Layout , Demo,TableManaged ,Promise,jQu
   styleUrls: ['./preview-campaign.component.css'],
   providers:[CallActionSwitch]
 })
-export class PreviewCampaignComponent implements OnInit {
+export class PreviewCampaignComponent implements OnInit,OnDestroy {
     campaignType:string = "";
     selectedEmailTemplateId: number = 0;
     campaign: Campaign=new Campaign();
@@ -89,7 +89,7 @@ export class PreviewCampaignComponent implements OnInit {
     invalidScheduleTimeError:string = "";
     httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
     loggedInUserId:number = 0;
-    
+    contactType:string = "contacts";
     constructor(private router: Router,
             private route: ActivatedRoute,
             private campaignService: CampaignService,
@@ -107,6 +107,7 @@ export class PreviewCampaignComponent implements OnInit {
             this.contactListPagination.filterValue = false;
             this.loggedInUserId = this.authenticationService.getUserId();
            this.getCampaignById();
+           CKEDITOR.config.readOnly = true;
         }
     
     
@@ -124,23 +125,20 @@ export class PreviewCampaignComponent implements OnInit {
     }
     setCampaignData(result){
         this.campaign = result;
-        const userProfile = this.authenticationService.userProfile;
-        this.campaign.email = userProfile.emailId;
-        if(userProfile.firstName !== undefined && userProfile.lastName !== undefined)
-            this.campaign.fromName = $.trim(userProfile.firstName + " " + userProfile.lastName);
-        else if(userProfile.firstName !== undefined && userProfile.lastName === undefined)
-            this.campaign.fromName = $.trim(userProfile.firstName);
-        else
-            this.campaign.fromName = $.trim(userProfile.emailId);
-
-        this.getCampaignReplies(this.campaign);
-        this.getCampaignUrls(this.campaign);
-
-        this.loadContactList(this.contactListPagination);
-        this.selectedEmailTemplateId = this.campaign.emailTemplate.id;
-        if(this.campaign.nurtureCampaign){
-            this.selectedUserlistIds = this.campaign.userListIds;
+        console.log(this.campaign);
+        if(this.campaign.channelCampaign){
+            this.contactType = "partner";
+        }else{
+            this.contactType ="contact";
         }
+        if(this.campaign.userListIds.length>0){
+            this.loadContactList(this.contactListPagination);
+        }
+        if(this.campaign.selectedEmailTemplateId>0){
+            this.getAnchorLinksFromEmailTemplate(this.campaign.emailTemplate.body);
+        }
+        this.selectedEmailTemplateId = this.campaign.selectedEmailTemplateId;
+        this.selectedUserlistIds = this.campaign.userListIds;
         this.campaignType = this.campaign.campaignType.toLocaleString();
         if(this.campaignType.includes('VIDEO')){
             this.campaignType=="VIDEO";
@@ -152,22 +150,30 @@ export class PreviewCampaignComponent implements OnInit {
         }else{
             this.campaign.scheduleCampaign  = this.campaignLaunchOptions[2];
         }
-        
         if(this.campaign.timeZoneId==undefined){
             this.campaign.countryId = this.countries[0].id;
+            this.onSelect(this.campaign.countryId);
         }else{
             let countryNames = this.referenceService.getCountries().map(function(a) {return a.name;});
-            let countryIndex = countryNames.indexOf(this.campaign.country);
+            let countryIndex = countryNames.indexOf(this.campaign.country)
             if(countryIndex>-1){
                 this.campaign.countryId = this.countries[countryIndex].id;
+                this.onSelect(this.campaign.countryId);
             }else{
                 this.campaign.countryId = this.countries[0].id;
+                this.onSelect(this.campaign.countryId);
             }
+
         }
+       
         this.referenceService.stopLoader(this.httpRequestLoader);
+        this.getCampaignReplies(this.campaign);
+        this.getCampaignUrls(this.campaign);
     }
     
-    
+    onSelect(countryId) {
+        this.timezones  = this.referenceService.getTimeZonesByCountryId(countryId);
+    }
 
     getCampaignPartnerByCampaignIdAndUserId(campaignId: number, userId: number) {
         this.campaignService.getCampaignPartnerByCampaignIdAndUserId(campaignId, userId)
@@ -233,28 +239,6 @@ export class PreviewCampaignComponent implements OnInit {
             this.contactListBorderColor = "red";
             this.referenceService.goToTop();
         }
-    }
-
-    
-    
-    
-    
-    
-    highlightRow(contactListId: number,event:any) {
-        const isChecked = $('#' + contactListId).is(':checked');
-        if (isChecked) {
-            $('#campaignContactListTable_'+contactListId).addClass('contact-list-selected');
-            if (!this.selectedUserlistIds.includes(contactListId)) {
-                this.selectedUserlistIds.push(contactListId);
-            }
-            $('#' + contactListId).parent().closest('tr').addClass('highlight');
-        } else {
-            $('#campaignContactListTable_'+contactListId).removeClass('contact-list-selected');
-            this.selectedUserlistIds.splice($.inArray(contactListId, this.selectedUserlistIds), 1);
-            $('#' + contactListId).parent().closest('tr').removeClass('highlight');
-        }
-        this.contactsUtility();
-        event.stopPropagation();
     }
 
     extractTimeFromDate(replyTime){
@@ -426,22 +410,36 @@ export class PreviewCampaignComponent implements OnInit {
         $("#email_template_preivew").modal('show');
     }
 
-    
-    ngOnDestroy(){
+    getAnchorLinksFromEmailTemplate(body: string) {
+        $('#emailTemplateContent').html('');
+        $('#emailTemplateContent').append(body);
+        console.log($('#emailTemplateContent').find('a'));
+        let self = this;
+        $('#emailTemplateContent').find('a').each(function (e) {
+            let href = $(this).attr('href');
+            self.emailTemplateHrefLinks.push(href);
+        });
+        this.emailTemplateHrefLinks = this.referenceService.removeDuplicates(this.emailTemplateHrefLinks);
+        var index = $.inArray("<SocialUbuntuURL>", this.emailTemplateHrefLinks);
+        if (index >= 0) {
+            this.emailTemplateHrefLinks.splice(index, 1);
+        }
     }
+    
+    ngOnDestroy(){CKEDITOR.config.readOnly = false;}
     
     
     /*************************************************************Contact List***************************************************************************************/
     loadContactList(contactsPagination: Pagination) {
         this.campaignContact.httpRequestLoader.isHorizontalCss=true;
         this.referenceService.loading(this.campaignContact.httpRequestLoader, true);
-        if(this.campaign.nurtureCampaign){
-            contactsPagination.editCampaign = true;
-            contactsPagination.campaignId = this.campaign.campaignId;
+        contactsPagination.editCampaign = true;
+        contactsPagination.campaignId = this.campaign.campaignId;
+        if(this.campaign.channelCampaign){
+            contactsPagination.filterValue = true;
         }else{
-            contactsPagination.editCampaign = false;
+            contactsPagination.filterValue = false;
         }
-        console.log(contactsPagination);
         this.contactService.loadContactLists(contactsPagination)
             .subscribe(
             (data: any) => {
@@ -460,9 +458,6 @@ export class PreviewCampaignComponent implements OnInit {
                 var items = $.grep(this.selectedUserlistIds, function(element) {
                     return $.inArray(element, contactIds ) !== -1;
                 });
-                console.log(contactIds);
-                console.log(items);
-               console.log(items.length+"::::::::::::"+contactIds.length);//items.length==contactsPagination.maxResults ||
                 if(items.length==contactIds.length){
                     this.isHeaderCheckBoxChecked = true;
                 }else{
@@ -482,48 +477,12 @@ export class PreviewCampaignComponent implements OnInit {
         }
         $('#campaign-contact-list').toggle(500);
     }
-    highlightContactRow(contactId:number,event:any,count:number,isValid:boolean){
-        if(isValid){
-            this.emptyContactsMessage = "";
-            if(count>0){
-                let isChecked = $('#'+contactId).is(':checked');
-                if(isChecked){
-                    //Removing Highlighted Row
-                    $('#'+contactId).prop( "checked", false );
-                    $('#campaignContactListTable_'+contactId).removeClass('contact-list-selected');
-                    console.log("Revmoing"+contactId);
-                    this.selectedUserlistIds.splice($.inArray(contactId,this.selectedUserlistIds),1);
-              }else{
-                  //Highlighting Row
-                  $('#'+contactId).prop( "checked", true );
-                  $('#campaignContactListTable_'+contactId).addClass('contact-list-selected');
-                  console.log("Adding"+contactId);
-                  this.selectedUserlistIds.push(contactId);
-              }
-                this.contactsUtility();
-                event.stopPropagation();
-                console.log(this.selectedUserlistIds);
-            }else{
-                this.emptyContactsMessage = "Contacts are in progress";
-            }
-           
-        }
-       
+    searchContactList(){
+        this.contactListPagination.pageIndex = 1;
+        this.contactListPagination.searchKey = this.contactSearchInput;
+        this.loadContactList(this.contactListPagination);
     }
-    contactsUtility(){
-        var trLength = $('#user_list_tb tbody tr').length;
-        var selectedRowsLength = $('[name="campaignContact[]"]:checked').length;
-        if(selectedRowsLength>0){
-            this.isContactList = true;
-        }else{
-            this.isContactList = false;
-        }
-        if(trLength!=selectedRowsLength){
-            $('#checkAllExistingContacts').prop("checked",false)
-        }else if(trLength==selectedRowsLength){
-            $('#checkAllExistingContacts').prop("checked",true);
-        }
-    }
+   
    
     /*******************************Preview*************************************/
     contactListItems:any[];
@@ -590,6 +549,7 @@ export class PreviewCampaignComponent implements OnInit {
   ngOnInit() {
   }
   
+ 
   setPage(pageIndex:number){
       this.contactsUsersPagination.pageIndex = pageIndex;
       this.loadUsers(0,this.contactsUsersPagination);

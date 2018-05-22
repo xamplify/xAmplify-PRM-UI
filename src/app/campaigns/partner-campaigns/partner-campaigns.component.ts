@@ -160,7 +160,10 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
         this.router.navigate(['/home/campaigns/partner/' + type]);
     }
     
-
+    showCampaignPreview(campaignId:number){
+        this.router.navigate(['/home/campaigns/preview/'+campaignId]);
+    }
+    
     reDistributeCampaign(campaignId:number){
         const data = { 'campaignId': campaignId,'userId':this.loggedInUserId }
         this.campaignService.getParnterCampaignById(data)

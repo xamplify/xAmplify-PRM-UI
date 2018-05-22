@@ -195,7 +195,6 @@ export class UserService {
 
     private handleError( error: any ) {
         const body = error['_body'];
-        console.log( body );
         if ( body != "" ) {
             var response = JSON.parse( body );
             if ( response.message != undefined ) {
