@@ -139,6 +139,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
         updatedBody = updatedBody.replace('<a href="<unsubscribeURL>">click here</a>',"");
         updatedBody = updatedBody.replace("click here", "");
         updatedBody = updatedBody.replace("If you'd like to unsubscribe and stop receiving these emails","");
+        updatedBody = updatedBody.replace("If you'd like to unsubscribe and stop receiving these emails click here"," ");
         return updatedBody;
     }
     getCampaignVideo() {

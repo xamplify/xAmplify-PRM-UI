@@ -22,20 +22,13 @@ export class LogRegularCampaignComponent implements OnInit {
   errorHtml = '<div class="portlet light" style="padding:5px 5px 190px 17px">' +
   '<h3 style="color:blue;text-align: center;margin-top:204px;" >Sorry!!!. This regular email template campaign has been removed</h3></div>';
 
-  constructor(public xtremandLogger: XtremandLogger, public activatedRoute: ActivatedRoute, 
+  constructor(public xtremandLogger: XtremandLogger, public activatedRoute: ActivatedRoute,
           public videoFileService: VideoFileService,public referenceService:ReferenceService,public processor:Processor) {
     this.xtremandLogger.log('Ui regular campaign called');
   }
 
   ngOnInit() {
-      this.processor.set(this.processor);
-    // this.activatedRoute.queryParams.subscribe((param: any) => {
-    //   this.alias = param['alias'];
-    //   this.userAlias = param['userAlias'];
-    //   this.templateId = param['templateId'];
-    // }, (error: any) => {
-    //   this.xtremandLogger.error(error);
-    // });
+    this.processor.set(this.processor);
     this.alias = this.activatedRoute.snapshot.params['alias'];
     this.getRegularTemplateHtml();
   }
@@ -59,6 +52,10 @@ export class LogRegularCampaignComponent implements OnInit {
               updatedBody = updatedBody.replace("<company_name></company_name>", "");
               updatedBody = updatedBody.replace("<Company_Logo>", '');
               updatedBody = updatedBody.replace("<Title_here>", '');
+              updatedBody = updatedBody.replace("<unsubscribeURL>","");
+              updatedBody = updatedBody.replace('click here','');
+              updatedBody = updatedBody.replace("If you'd like to unsubscribe and stop receiving these emails click here"," ");
+              updatedBody = updatedBody.replace("If you'd like to unsubscribe and stop receiving these emails","");
               this.templatehtml = updatedBody;
               document.getElementById('regular-campaign').innerHTML = this.templatehtml;
               this.processor.remove(this.processor);
