@@ -19,7 +19,9 @@ export class DefaultPageComponent implements OnInit {
         this.userService.getUserDefaultPage(userId)
             .subscribe(
             data => this.defaultPage = data.replace(/['"]+/g, ''),
-            error => console.log(error),
+            error => {this.goToWelcomePage();
+                    this.referenceService.userDefaultPage = "WELCOME";
+            },
             () => {
                 console.log(this.defaultPage);
                 if (this.defaultPage === 'welcome') {
