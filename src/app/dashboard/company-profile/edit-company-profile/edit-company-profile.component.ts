@@ -175,6 +175,10 @@ export class EditCompanyProfileComponent implements OnInit {
                 this.backGroundImage = this.authenticationService.MEDIA_URL + this.companyBackgroundLogoImageUrlPath;
             }
         }
+        
+        if ( !this.companyProfile.phone ) {
+            this.companyProfile.phone = "+1";
+        }
     }
     saveVideoBrandLog() {
         const logoLink = this.videoUtilService.isStartsWith(this.companyProfile.website);
@@ -357,6 +361,9 @@ export class EditCompanyProfileComponent implements OnInit {
                         }
                         if ($.trim(this.companyProfile.country).length == 0) {
                             this.companyProfile.country = this.countryNames.countries[0];
+                        }
+                        if ( !this.companyProfile.phone ) {
+                            this.companyProfile.phone = "+1";
                         }
                         this.existingCompanyName = data.data.companyName;
                         this.loadPublicVideos();

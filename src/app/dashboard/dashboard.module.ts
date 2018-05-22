@@ -24,14 +24,15 @@ import { CompanyProfileService } from './company-profile/services/company-profil
 import { ReportsComponent } from './dashboard/reports/reports.component';
 import { CompanyPageComponent } from './company-profile/company-page/company-page.component';
 import { PartnerNotificationComponent } from './partner-notification/partner-notification.component';
+import { InternationalPhoneModule } from 'ng4-intl-phone';
 
 @NgModule({
-    imports: [DasboardRoutingModule, SharedModule, CoreModule, CommonModule, DragulaModule, CommonComponentModule],
+    imports: [DasboardRoutingModule, SharedModule, CoreModule, CommonModule, DragulaModule, CommonComponentModule, InternationalPhoneModule],
     declarations: [DashboardComponent, TableAdvanceComponent, ViewsReportComponent, ExtraFaqComponent,
         WelcomeComponent, MyProfileComponent, ProfileLockComponent, ProfileHelpComponent, DefaultPageComponent,
         FollowersComponent, SharedComponent,EditCompanyProfileComponent, ReportsComponent, CompanyPageComponent, PartnerNotificationComponent
     ],
-    exports: [],
+    exports: [InternationalPhoneModule],
     providers: [DashboardService,CompanyProfileService]
 })
 export class DashboardModule { }

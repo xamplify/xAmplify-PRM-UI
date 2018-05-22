@@ -117,7 +117,8 @@
 
 							<div class="form-group" [attr.class]="phoneDivClass">
 								<label class="control-label">Phone Number <font style="color: #a94442"><b>*</b></font></label>
-								 <input type="text"	id="phone" name="phone" placeholder="Phone number"		class="form-control" [(ngModel)]="companyProfile.phone" (input)="validatePattern('phone')" (blur)="validatePattern('phone')" />
+								<!--  <input type="text"	id="phone" name="phone" placeholder="Phone number"		class="form-control" [(ngModel)]="companyProfile.phone" (input)="validatePattern('phone')" (blur)="validatePattern('phone')" /> -->
+								 <int-phone-prefix [(ngModel)]="companyProfile.phone" (input)="validatePattern('phone')" (blur)="validatePattern('phone')" [ngModelOptions]="{standalone: true}"></int-phone-prefix>
 								 <span *ngIf="phoneError" style="color: #a94442">{{phoneErrorMessage}}</span>
 							</div>
 

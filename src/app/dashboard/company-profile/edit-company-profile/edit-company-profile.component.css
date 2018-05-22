@@ -128,3 +128,11 @@ svg {
 .fileContainer [type=file] {
     cursor: pointer;
 }
+
+/deep/ .input-group > .form-control {
+    border-left: none;
+    height: 36px;	
+}
+/deep/ .input-group > .form-control:focus {
+    border-color: #e5e5e5;
+}
