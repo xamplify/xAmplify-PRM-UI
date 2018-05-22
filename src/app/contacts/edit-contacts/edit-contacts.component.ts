@@ -146,6 +146,7 @@ export class EditContactsComponent implements OnInit {
     editingEmailId = '';
     loading = false;
     contactAllDetails = [];
+    openCampaignModal = false;
 
     filterOptions = [
         { 'name': '', 'value': 'Field Name*' },
@@ -1973,6 +1974,9 @@ export class EditContactsComponent implements OnInit {
             .subscribe(
             data => {
                 this.contactsByType.contactListAssociatedCampaigns = data;
+                if(this.contactsByType.contactListAssociatedCampaigns){
+                    this.openCampaignModal = true;
+                }
             },
             error => console.log( error ),
             () => {
@@ -2026,12 +2030,16 @@ export class EditContactsComponent implements OnInit {
     }
 
     closeModal( event ) {
-        if ( this.isPartner ) {
-            this.customResponse = new CustomResponse( 'SUCCESS', this.properties.PARTNER_SAVE_SUCCESS_AND_MAIL_SENT_SUCCESS, true );
-        } else {
-            this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_SAVE_SUCCESS_AND_MAIL_SENT_SUCCESS, true );
+        if ( event == "Emails Send Successfully" ) {
+            if ( this.isPartner ) {
+                this.customResponse = new CustomResponse( 'SUCCESS', this.properties.PARTNER_SAVE_SUCCESS_AND_MAIL_SENT_SUCCESS, true );
+            } else {
+                this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_SAVE_SUCCESS_AND_MAIL_SENT_SUCCESS, true );
+            }
         }
-        }
+        this.openCampaignModal = false;
+        this.contactsByType.contactListAssociatedCampaigns.length = 0;
+    }
 
 
     ngOnInit() {

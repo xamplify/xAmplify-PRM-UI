@@ -1007,7 +1007,7 @@
 		</div>
 	</div>
 </div>
-<div *ngIf="contactsByType.contactListAssociatedCampaigns?.length">
+<div *ngIf="contactsByType.contactListAssociatedCampaigns?.length && openCampaignModal">
 <app-contacts-campaigns-mails [associatedCampaignDetails]="contactsByType.contactListAssociatedCampaigns"
 [userEmails]="newUsersEmails" (notifyParent)="closeModal($event)"></app-contacts-campaigns-mails>
 </div>

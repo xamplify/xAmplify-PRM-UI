@@ -30,6 +30,10 @@ export class ContactsCampaignsMailsComponent implements OnInit {
       event.stopPropagation();
   }
   
+  closeModal(){
+      this.notifyParent.emit("closed");
+  }
+  
   sendEmailToNewlyAddedUsers() {
       let campaignDetails = {
           "campaignIds": this.selectedCampaignIds,

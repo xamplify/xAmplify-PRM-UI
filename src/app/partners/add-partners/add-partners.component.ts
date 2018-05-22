@@ -94,6 +94,7 @@ export class AddPartnersComponent implements OnInit {
     editingEmailId ='';
     loading = false;
     partnerAllDetails = [];
+    openCampaignModal = false;
     
     sortOptions = [
         { 'name': 'Sort By', 'value': '' },
@@ -1678,6 +1679,9 @@ export class AddPartnersComponent implements OnInit {
             .subscribe(
             data => {
                 this.contactListAssociatedCampaignsList = data;
+                if(this.contactListAssociatedCampaignsList){
+                    this.openCampaignModal = true;
+                }
             },
             error => console.log( error ),
             () => {
@@ -1730,7 +1734,11 @@ export class AddPartnersComponent implements OnInit {
     }
     
     closeModal(event){
-        this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_SAVE_SUCCESS_AND_MAIL_SENT_SUCCESS, true );
+        if ( event == "Emails Send Successfully" ) {
+            this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_SAVE_SUCCESS_AND_MAIL_SENT_SUCCESS, true );
+        }
+        this.openCampaignModal = false;
+        this.contactListAssociatedCampaignsList.length = 0;
     }
 
 
