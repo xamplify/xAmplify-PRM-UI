@@ -44,6 +44,11 @@ img:hover {
 </style>
 
 <div class="page-content">
+<!-- <div>
+    <int-phone-prefix [locale]="'es'" [defaultCountry] = "'india'"
+                    ></int-phone-prefix>
+  other controls are here...
+</div> -->
 <div class="my-container">
 		<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 	</div>
@@ -937,7 +942,7 @@ img:hover {
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 					<button type="button" id="salesforce_save_button"
-						class="btn btn-primary" (click)="checkingPopupValues()">Submit</button>
+						class="btn btn-primary" (click)="checkingPopupValues()" data-dismiss="modal">Submit</button>
 				</div>
 			</div>
 		</div>

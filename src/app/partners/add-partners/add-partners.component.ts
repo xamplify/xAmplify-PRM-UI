@@ -64,7 +64,6 @@ export class AddPartnersComponent implements OnInit {
     pager: any = {};
     pagedItems: any[];
     public getGoogleConatacts: any;
-    isContactsThere: boolean = false;
     public socialPartners: SocialContact;
     public socialPartnerUsers: SocialContact[] = new Array();
     socialPartnersAllChecked: boolean;
@@ -504,7 +503,6 @@ export class AddPartnersComponent implements OnInit {
 
     fileChange( input: any ) {
         this.readFiles( input.files );
-        this.isContactsThere = false;
     }
 
     readFile( file: any, reader: any, callback: any ) {
@@ -571,7 +569,6 @@ export class AddPartnersComponent implements OnInit {
         this.selectedAddPartnerOption = 4;
         this.fileTypeError = false;
         this.clipboardTextareaText = "";
-        this.isContactsThere = false;
         $( "button#cancel_button" ).prop( 'disabled', false );
         $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
         $( '#uploadCSV' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;min-height:85px' );
@@ -872,7 +869,6 @@ export class AddPartnersComponent implements OnInit {
     googleContacts() {
        if(this.selectedAddPartnerOption == 5){
         this.fileTypeError = false;
-        this.isContactsThere = false;
         this.socialPartners.firstName = '';
         this.socialPartners.lastName = '';
         this.socialPartners.emailId = '';
@@ -928,8 +924,9 @@ export class AddPartnersComponent implements OnInit {
                 this.getGoogleConatacts = data;
                 swal.close();
                 if ( this.getGoogleConatacts.contacts.length == 0 ) {
-                    this.isContactsThere = true;
-                }
+                    this.customResponse = new CustomResponse( 'ERROR', this.properties.NO_RESULTS_FOUND, true );
+                    this.selectedAddPartnerOption = 5;
+                }else{
                 for ( var i = 0; i < this.getGoogleConatacts.contacts.length; i++ ) {
                     let socialContact = new SocialContact();
                     let user = new User();
@@ -952,6 +949,7 @@ export class AddPartnersComponent implements OnInit {
                     $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                     $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                 }
+                }
                 this.selectedAddPartnerOption = 3;
                 this.setSocialPage( 1 );
                 this.socialPartners.contacts = this.socialPartnerUsers;
@@ -962,7 +960,6 @@ export class AddPartnersComponent implements OnInit {
             },
             () => this.xtremandLogger.log( "googleContacts data :" + JSON.stringify( this.getGoogleConatacts.contacts ) )
             );
-        this.isContactsThere = false;
     }
 
     saveGoogleContacts() {
@@ -991,7 +988,6 @@ export class AddPartnersComponent implements OnInit {
 
     zohoContacts() {
         this.fileTypeError = false;
-        this.isContactsThere = false;
         let self = this;
         self.selectedZohoDropDown = $( "select.opts:visible option:selected " ).val();
         if ( self.selectedZohoDropDown == "DEFAULT" ) {
@@ -1064,8 +1060,9 @@ export class AddPartnersComponent implements OnInit {
                 this.zohoImageNormal = true;
                 this.hideZohoModal();
                 if ( this.getGoogleConatacts.contacts.length == 0 ) {
-                    this.isContactsThere = true;
-                }
+                    this.customResponse = new CustomResponse( 'ERROR', this.properties.NO_RESULTS_FOUND, true );
+                    this.selectedAddPartnerOption = 5;
+                }else{
                 for ( var i = 0; i < this.getGoogleConatacts.contacts.length; i++ ) {
                     let socialContact = new SocialContact();
                     let user = new User();
@@ -1087,6 +1084,7 @@ export class AddPartnersComponent implements OnInit {
                     $( '.googleImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
                     $( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                     $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                }
                 }
                 this.selectedAddPartnerOption = 6;
                 this.setSocialPage( 1 );
@@ -1116,7 +1114,6 @@ export class AddPartnersComponent implements OnInit {
             },
             () => this.xtremandLogger.log( "googleContacts data :" + JSON.stringify( this.getGoogleConatacts.contacts ) )
             );
-        this.isContactsThere = false;
     }
 
     hideZohoAuthorisedPopup() {
@@ -1150,8 +1147,9 @@ export class AddPartnersComponent implements OnInit {
                 this.hideZohoAuthorisedPopup();
                 this.selectedAddPartnerOption = 6;
                 if ( this.getGoogleConatacts.contacts.length == 0 ) {
-                    this.isContactsThere = true;
-                }
+                    this.customResponse = new CustomResponse( 'ERROR', this.properties.NO_RESULTS_FOUND, true );
+                    this.selectedAddPartnerOption = 5;
+                }else{
                 for ( var i = 0; i < this.getGoogleConatacts.contacts.length; i++ ) {
                     let socialContact = new SocialContact();
                     let user = new User();
@@ -1174,6 +1172,7 @@ export class AddPartnersComponent implements OnInit {
                     $( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                     $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                 }
+                }
                 this.setSocialPage( 1 );
             },
             ( error: any ) => {
@@ -1182,7 +1181,6 @@ export class AddPartnersComponent implements OnInit {
             },
             () => this.xtremandLogger.log( "googleContacts data :" + JSON.stringify( this.getGoogleConatacts.contacts ) )
             );
-        this.isContactsThere = false;
     }
 
     saveZohoContacts() {
@@ -1264,13 +1262,13 @@ export class AddPartnersComponent implements OnInit {
         $( '#salesforceModal' ).modal( 'hide' );
         $( 'body' ).removeClass( 'modal-open' );
         $( '.modal-backdrop fade in' ).remove();
+        $( '#salesforceModal' ).appendTo( "body" ).modal( 'hide' );
 
     }
 
     salesforceContacts() {
         if(this.selectedAddPartnerOption == 5){
         this.contactType = "";
-        this.isContactsThere = false;
         this.fileTypeError = false;
         this.socialPartners.socialNetwork = "salesforce";
         this.xtremandLogger.info( "socialContacts" + this.socialPartners.socialNetwork );
@@ -1335,9 +1333,15 @@ export class AddPartnersComponent implements OnInit {
                 this.getGoogleConatacts = data;
                 this.selectedAddPartnerOption = 7;
                 if ( this.getGoogleConatacts.contacts.length == 0 ) {
-                    this.isContactsThere = true;
-                    this.hideModal();
-                }
+                    this.customResponse = new CustomResponse( 'ERROR', this.properties.NO_RESULTS_FOUND, true );
+                    this.selectedAddPartnerOption = 5;
+                    //this.hideModal();
+                    $( '#salesforceModal' ).modal( 'hide' );
+                    $( 'body' ).removeClass( 'modal-open' );
+                    $( '.modal-backdrop fade in' ).remove();
+                    $( '#salesforceModal' ).appendTo( "body" ).modal( 'hide' );
+                    $('#overlay-modal').hide();
+                }else{
                 for ( var i = 0; i < this.getGoogleConatacts.contacts.length; i++ ) {
                     let socialContact = new SocialContact();
                     let user = new User();
@@ -1350,7 +1354,13 @@ export class AddPartnersComponent implements OnInit {
                     }
                     this.xtremandLogger.info( this.getGoogleConatacts );
                     $( "#Gfile_preview" ).show();
-                    this.hideModal();
+                    //this.hideModal();
+                    $( '#salesforceModal' ).modal( 'hide' );
+                    $( 'body' ).removeClass( 'modal-open' );
+                    $( '.modal-backdrop fade in' ).remove();
+                    $( '#salesforceModal' ).appendTo( "body" ).modal( 'hide' );
+                    $('#overlay-modal').hide();
+                    
                     $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                     $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                     $( '#uploadCSV' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;min-height:85px' );
@@ -1360,6 +1370,7 @@ export class AddPartnersComponent implements OnInit {
                     $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                     $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                 }
+                }
                 this.setSocialPage( 1 );
             },
             ( error: any ) => {
@@ -1367,7 +1378,6 @@ export class AddPartnersComponent implements OnInit {
             },
             () => this.xtremandLogger.log( "addContactComponent getSalesforceContacts() Data:" + JSON.stringify( this.getGoogleConatacts.contacts ) )
             );
-        this.isContactsThere = false;
     }
 
     getSalesforceListViewContacts( contactType: any ) {
@@ -1396,9 +1406,15 @@ export class AddPartnersComponent implements OnInit {
                 this.getGoogleConatacts = data;
                 this.selectedAddPartnerOption = 7;
                 if ( this.getGoogleConatacts.contacts.length == 0 ) {
-                    this.isContactsThere = true;
-                    this.hideModal();
-                }
+                    this.customResponse = new CustomResponse( 'ERROR', this.properties.NO_RESULTS_FOUND, true );
+                    this.selectedAddPartnerOption = 5;
+                    //this.hideModal();
+                    $( '#salesforceModal' ).modal( 'hide' );
+                    $( 'body' ).removeClass( 'modal-open' );
+                    $( '.modal-backdrop fade in' ).remove();
+                    $( '#salesforceModal' ).appendTo( "body" ).modal( 'hide' );
+                    $('#overlay-modal').hide();
+                }else{
                 for ( var i = 0; i < this.getGoogleConatacts.contacts.length; i++ ) {
                     let socialContact = new SocialContact();
                     let user = new User();
@@ -1409,17 +1425,26 @@ export class AddPartnersComponent implements OnInit {
                     socialContact.lastName = this.getGoogleConatacts.contacts[i].lastName;
                     this.socialPartnerUsers.push( socialContact );
                     }
+                    
+                    $( '#salesforceModal' ).modal( 'hide' );
+                    $( 'body' ).removeClass( 'modal-open' );
+                    $( '.modal-backdrop fade in' ).remove();
+                    $( '#salesforceModal' ).appendTo( "body" ).modal( 'hide' );
+
+                    $('#overlay-modal').hide();
+                    
                     this.xtremandLogger.info( this.getGoogleConatacts );
                     $( "#Gfile_preview" ).show();
                     $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                     $( '#uploadCSV' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;min-height:85px' );
                     $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
-                    this.hideModal();
+                    //this.hideModal();
                     $( '.googleImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
                     $( '.zohoImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
                     $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                     $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                     $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                }
                 }
                 this.setSocialPage( 1 );
             },
@@ -1428,7 +1453,6 @@ export class AddPartnersComponent implements OnInit {
             },
             () => this.xtremandLogger.log( "addContactComponent getSalesforceContacts() Data:" + JSON.stringify( this.getGoogleConatacts.contacts ) )
             );
-        this.isContactsThere = false;
     }
 
     saveSalesforceContactSelectedUsers() {
