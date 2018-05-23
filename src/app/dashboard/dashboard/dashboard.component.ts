@@ -608,24 +608,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
 
-    dashboardReportsCount() {
-        this.loggedInUserId = this.authenticationService.getUserId();
-        this.dashboardService.loadDashboardReportsCount(this.loggedInUserId)
-            .subscribe(
-                data => {
-                    this.dashboardReport.totalViews = data.totalVideoViewsCount;
-                    this.dashboardReport.totalContacts = data.totalcontactsCount;
-                    this.dashboardReport.totalTeamMembers = data.totalTeamMembersCount;
-                    this.dashboardReport.totalUploadedvideos = data.totalVideosCount;
-                    this.dashboardReport.toalEmailTemplates = data.totalEmailTemplatesCount;
-                    this.dashboardReport.totalCreatedCampaigns = data.totalCampaignsCount;
-                    this.dashboardReport.totalSocialAccounts = data.totalSocialConnectionsCount;
-                    this.referenceService.partnerCount = this.dashboardReport.totalCompanyPartnersCount = data.totalCompanyPartnersCount;
-                },
-                error => console.log(error),
-                () => console.log('dashboard reports counts completed')
-            );
-    }
+
 
     getEmailActionCount(userId: number) {
         this.dashboardService.getEmailActionCount(userId)
@@ -953,24 +936,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
             this.generatHeatMap(this.heatMapData, 'heat-map-data');
         } else { }
     }
-    navigateToPartner(){
-       if(!this.authenticationService.isOnlyPartner() && this.dashboardReport.totalCompanyPartnersCount>0){
-        this.router.navigate(['/home/partners/analytics']);
-       } else { console.log('go to vendors page'); }
-    }
-    navigateToManage(){
-      if(this.authenticationService.isVendor()){
-        this.router.navigate(['/home/team/add-team']);
-       } else if(this.authenticationService.isAddedByVendor){
-           this.router.navigate(['/home/partners/manage']);
-       } else{ this.router.navigate(['/home/contacts/manage']); }
-    }
-
 
     ngOnInit() {
         this.pagination.maxResults = 12;
         try {
-            this.dashboardReportsCount();
             this.loggedInUserId = this.authenticationService.getUserId();
             this.getDefaultPage(this.loggedInUserId);
             this.getUserCampaignReport(this.loggedInUserId);

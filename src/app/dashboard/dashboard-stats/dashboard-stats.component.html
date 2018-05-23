@@ -1,0 +1,121 @@
+	<!-- BEGIN DASHBOARD STATS -->
+	<div class="row">
+		<!--  commented for future work -->
+		<!-- <div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
+			<a class="dashboard-stat dashboard-stat-lighter red-soft" [routerLink]="['./views_report']" [class.disabled]="!hasStatsRole  || !authenticationService.user.hasCompany? true : null">
+				<div class="visual">
+					<i class="fa fa-eye"></i>
+				</div>
+				<div class="details">
+					<div class="number">{{dashboardReport.totalViews}}</div>
+					<div class="desc">Total Views</div>
+				</div>
+			</a>
+		</div> -->
+		<div class="col-lg-4 col-md-4 col-sm-3 col-xs-6">
+			<a class="dashboard-stat dashboard-stat-lighter yellow-gold" [routerLink]="['../../videos/manage']" [class.disabled]=" !authenticationService.user.hasCompany ? true : null">
+				<div class="visual">
+          <!-- <i class="fa fa-cloud-upload"></i> -->
+          <img src="assets/images/white15.png" class="img-dash">
+				</div>
+				<div class="details">
+					<div class="number">
+            <span *ngIf="dashboardReport.totalUploadedvideos; else uploadVideos">{{dashboardReport.totalUploadedvideos}}</span>
+						<ng-template #uploadVideos>0</ng-template>
+          </div>
+					<div class="desc" >
+						<span *ngIf="!isOnlyPartner;else orgVideo">Uploaded Videos</span>
+						<ng-template #orgVideo>Videos</ng-template>
+					</div>
+        </div>
+        <span  class="morePadding">
+          <a class="more"> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
+        </span>
+			</a>
+		</div>
+
+		<div class="col-lg-4 col-md-4 col-sm-3 col-xs-6">
+			<a class="dashboard-stat dashboard-stat-lighter purple-soft" (click)="navigateToManageContacts()" [class.disabled]="  !authenticationService.user.hasCompany ? true : null">
+				<div class="visual">
+					<i class="fa fa-users"></i>
+				</div>
+				<div class="details">
+          <div class="number" *ngIf="!this.authenticationService.isVendor() && !authenticationService.isAddedByVendor">{{dashboardReport.totalContacts}}</div>
+          <div class="number" *ngIf="this.authenticationService.isVendor() && !authenticationService.isAddedByVendor">{{dashboardReport.totalTeamMembers}}</div>
+            <div class="number" *ngIf="authenticationService.isAddedByVendor">{{dashboardReport.totalCompanyPartnersCount}}</div>
+					<div class="desc" *ngIf="!this.authenticationService.isVendor() && !authenticationService.isAddedByVendor">Total Contacts</div>
+					<div class="desc" *ngIf="this.authenticationService.isVendor() && !authenticationService.isAddedByVendor">Team Members</div>
+					<div class="desc" *ngIf="authenticationService.isAddedByVendor">Total Partners</div>
+        </div>
+        <span  class="morePadding">
+          <a class="more"> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
+        </span>
+			</a>
+		</div>
+		<div class="col-lg-4 col-md-4 col-sm-3 col-xs-6">
+			<a class="dashboard-stat dashboard-stat-lighter blue-soft" [routerLink]="['../../emailtemplates']" [class.disabled]="  !authenticationService.user.hasCompany ? true : null">
+				<div class="visual">
+					<i class="fa fa-smile-o"></i>
+				</div>
+				<div class="details">
+					<div class="number">{{dashboardReport.toalEmailTemplates}}</div>
+					<div class="desc">Total Email Templates</div>
+        </div>
+        <span id="permhref" class="morePadding">
+          <a class="more"> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
+        </span>
+			</a>
+		</div>
+		<div class="col-lg-4 col-md-4 col-sm-3 col-xs-6">
+			<a class="dashboard-stat dashboard-stat-lighter green-soft" [routerLink]="['../../campaigns/manage']" [class.disabled]=" !authenticationService.user.hasCompany ? true : null">
+				<div class="visual">
+					<i class="fa fa-bullhorn"></i>
+				</div>
+				<div class="details">
+					<div class="number">{{dashboardReport.totalCreatedCampaigns}}</div>
+					<div class="desc">Total Campaigns</div>
+        </div>
+        <span  class="morePadding">
+          <a class="more"> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
+        </span>
+			</a>
+		</div>
+		<div class="col-lg-4 col-md-4 col-sm-3 col-xs-6" [class.disabled]="!authenticationService.user.hasCompany ? true : null">
+			<a class="dashboard-stat dashboard-stat-lighter blue-sharp" [routerLink]="['/home/social/manage/all']">
+				<div class="visual">
+					<i class="fa fa-share"></i>
+				</div>
+				<div class="details">
+					<div class="number">{{dashboardReport.totalSocialAccounts}}</div>
+					<div class="desc">Social Accounts</div>
+        </div>
+        <span  class="morePadding">
+          <a class="more"> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
+        </span>
+			</a>
+		</div>
+		<div class="col-lg-4 col-md-4 col-sm-3 col-xs-6"  [class.disabled]="!authenticationService.user.hasCompany? true : null">
+			<a class="dashboard-stat dashboard-stat-lighter red-soft" (click)="navigateToPartner()" >
+				<div class="visual">
+					<i class="fa fa-handshake-o"></i>
+				</div>
+				<div class="details">
+					<div class="number">
+					   <span *ngIf="!isOnlyPartner; else partner">
+               <span *ngIf="dashboardReport.totalCompanyPartnersCount; else emptyValues">{{dashboardReport.totalCompanyPartnersCount}} </span>
+               <ng-template #emptyValues>0</ng-template>
+             </span>
+					   <ng-template #partner>0</ng-template>
+					</div>
+					<div class="desc">
+						<span *ngIf="isOnlyPartner; else orgadmin">Vendors</span>
+						<ng-template #orgadmin><span>Partners</span></ng-template>
+					</div>
+        </div>
+        <span  class="morePadding">
+          <a class="more"> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
+        </span>
+			</a>
+		</div>
+	</div>
+	<!-- END DASHBOARD STATS -->

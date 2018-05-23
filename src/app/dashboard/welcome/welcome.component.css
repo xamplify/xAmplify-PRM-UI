@@ -49,34 +49,13 @@ h3 {
 	box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.4);
 }
 
-.btn {
-	min-width: 12em;
-	font-weight: 600;
-	min-height: 3em;
-}
-
-p {
-	margin: 0 0 10px;
-	font-size: 20px;
-	color: rgba(119, 119, 119, 0.7);
-	text-align: justify;
-	padding: 1em;
-}
-
 .p5 {
 	padding: 2em;
 }
 
 .page-bar {
-	padding: 2em;
+	padding: 1em 1em 0 1em;
 	border-radius: 0;
-}
-
-h1.bold {
-	font-weight: bolder;
-	font-size: 3.2em;
-	text-transform: lowercase;
-	margin: 0
 }
 
 .padding-top-bottom-5 {
@@ -162,4 +141,55 @@ h1.bold {
 	height: 180px;
 	min-width: 100%;
 }
-.p0{padding: 0}
+.dashboard-stat-lighter {
+    margin-bottom: 1em;
+}
+
+@media only screen and (min-width: 600px) {
+    .text-block {
+		padding: 2em; 
+		text-align: center;
+	}
+	.text-block p {
+		margin: 0 0 10px;
+		font-size: 20px;
+		color: rgba(119, 119, 119, 0.7);
+		text-align: justify;
+		padding: 1em;
+	}
+	.text-block h1 {
+		font-weight: bolder;
+		font-size: 3.2em;
+		text-transform: lowercase;
+		margin: 0;
+	}
+	.btn {
+		min-width: 12em;
+		font-weight: 600;
+		min-height: 3em;
+	}
+	.image-block {
+		margin: 4em;
+	}	
+}
+
+@media screen and (max-width: 600px) {
+	.image-block {
+		display: none;
+	}
+	.text-block {
+		text-align: left;
+		margin-bottom: 5em;
+	}
+	.text-block .flex {
+		margin: 1em 0;
+	}
+	.text-block h1 {
+		font-weight: 600;
+		text-transform: lowercase;
+		font-size: 25px;
+	}
+	.block {
+		border-bottom: 1px solid #f1f1f1;
+	}
+}

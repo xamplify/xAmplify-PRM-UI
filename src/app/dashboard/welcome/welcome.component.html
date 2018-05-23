@@ -41,172 +41,88 @@ cursor: not-allowed;
 	</div>
 
 	<div class="page-bar page-bar-shadow">
-		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-2">
-			<div [routerLink]="['/home/videos/manage']" class="portlet light block rounded-0 center color1 padding-top-bottom-5" [class.disabled]="!authenticationService.user.hasCompany? true : null">
-				<div class="col-xs-6">
-					<i class="fa fa-play fa-3" aria-hidden="true" style="font-size: 3em;opacity: 0.5;margin: 10px 2px;"></i>
-				</div>
-				<div class="col-xs-6">
-					<h1 class="bold">{{dashboardReport.totalUploadedvideos}}</h1>
-				</div>
-				<div class="col-xs-12">
-					<h3 class="pull-right"  style="margin-top: 6px; margin-bottom: -6px;">videos</h3>
-				</div>
-			</div>
-		</div>
-		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-2">
-			<div routerLink="{{contactOrPartnerLink}}" class="portlet light block rounded-0 center color2 padding-top-bottom-5" [class.disabled]="!authenticationService.user.hasCompany ? true : null">
-				<div class="col-xs-6">
-					<i class="glyphicon glyphicon-th-list" aria-hidden="true" style="font-size: 3em;opacity: 0.5; margin: 10px 2px;"></i>
-				</div>
-				<div class="col-xs-6">
-          <h1 class="bold" *ngIf="!authenticationService.isVendor() && !authenticationService.isAddedByVendor">{{dashboardReport.totalContacts}}</h1>
-          <h1 class="bold" *ngIf="authenticationService.isVendor() || authenticationService.isAddedByVendor">{{dashboardReport.totalCompanyPartnersCount}}</h1>
-				</div>
-				<div class="col-xs-12">
-					<h3 class="pull-right"  style="margin-top: 6px; margin-bottom: -6px;" *ngIf="!authenticationService.module.isVendor && !authenticationService.isAddedByVendor">contacts</h3>
-					<h3 class="pull-right"  style="margin-top: 6px; margin-bottom: -6px;" *ngIf="authenticationService.module.isVendor || authenticationService.isAddedByVendor ">partners</h3>
-				</div>
-			</div>
-		</div>
-		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-2">
-			<div [routerLink]="['/home/campaigns/manage']" class="portlet light block rounded-0 center color3 padding-top-bottom-5" [class.disabled]="!authenticationService.user.hasCompany ? true : null">
-				<div class="col-xs-6">
-					<i class="glyphicon glyphicon-bullhorn" aria-hidden="true" style="font-size: 3em;opacity: 0.5; margin: 10px 2px;"></i>
-				</div>
-				<div class="col-xs-6">
-					<h1 class="bold">{{dashboardReport.totalCreatedCampaigns}}</h1>
-				</div>
-				<div class="col-xs-12">
-					<h3 class="pull-right"  style="margin-top: 6px; margin-bottom: -6px;">campaigns</h3>
-				</div>
-			</div>
-		</div>
-		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-2">
-			<div [routerLink]="['/home/emailtemplates/manage']" class="portlet light block rounded-0 center color4 padding-top-bottom-5" [class.disabled]="!authenticationService.user.hasCompany ? true : null">
-				<div class="col-xs-6">
-					<i class="fa fa-envelope-o fa-3" aria-hidden="true" style="font-size: 3em;opacity: 0.5; margin: 10px 2px;"></i>
-				</div>
-				<div class="col-xs-6">
-					<h1 class="bold">{{dashboardReport.toalEmailTemplates}}</h1>
-				</div>
-				<div class="col-xs-12">
-					<h3 class="pull-right"  style="margin-top: 6px; margin-bottom: -6px;">emails</h3>
-				</div>
-			</div>
-		</div>
-		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-2">
-			<div [routerLink]="['/home/social/manage/all']" class="portlet light block rounded-0 center color1 padding-top-bottom-5" [class.disabled]="!authenticationService.user.hasCompany ? true : null">
-				<div class="col-xs-6">
-					<i class="fa fa-users fa-3" aria-hidden="true" style="font-size: 3em;opacity: 0.5; margin: 12px 2px;"></i>
-				</div>
-				<div class="col-xs-6">
-					<h1 class="bold">{{dashboardReport.totalSocialAccounts}}</h1>
-				</div>
-				<div class="col-xs-12">
-					<h3 class="pull-right"  style="margin-top: 3px; margin-bottom: -6px;">social accounts</h3>
-				</div>
-			</div>
-		</div>
-		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-2">
-			<div [routerLink]="['/home/dashboard']" class="portlet light block rounded-0 center color2 padding-top-bottom-5" [class.disabled]="!authenticationService.user.hasCompany ? true : null">
-				<div class="col-xs-12">
-					<h1 class="bold"><i class="fa fa-line-chart" aria-hidden="true" style="font-size: 1.3em; margin-left: -42px;opacity: 0.5;"></i></h1>
-				</div>
-				<div class="col-xs-12">
-					<h3 class="text-center" style="margin-top: 11px;">analytics</h3>
-				</div>
-			</div>
-		</div>
+		<app-dashboard-stats></app-dashboard-stats>
 	</div>
 	<app-partner-notification></app-partner-notification>
 	<div class="page-bar page-bar-shadow">
 		<div class="col-xs-12">
 			<div class="flex">
-				<div class="col-xs-6 p5">
-					<div style="padding: 4em;">
-						<div class="carousel slide" id="carousel-example-generic"
-							data-ride="carousel">
-							<ol class="carousel-indicators">
-								<li data-target="#carousel-example-generic" data-slide-to="0"
-									class="active"></li>
-								<li data-target="#carousel-example-generic" data-slide-to="1"
-									class=""></li>
-								<li data-target="#carousel-example-generic" data-slide-to="2"
-									class=""></li>
-							</ol>
-							<div class="carousel-inner" role="listbox">
-								<div class="item active">
-									<img alt="First slide [900x500]"
-										data-src="holder.js/900x500/auto/#777:#555/text:First slide"
-										src="https://wistia.com/assets/main/welcome/Hosting-4334f606464c413fc825f3d7d718a0ff.svg"
-										data-holder-rendered="true">
-								</div>
-								<div class="item">
-									<img alt="Second slide [900x500]"
-										data-src="holder.js/900x500/auto/#666:#444/text:Second slide"
-										src="https://wistia.com/assets/main/welcome/Hosting-4334f606464c413fc825f3d7d718a0ff.svg"
-										data-holder-rendered="true">
-								</div>
-								<div class="item">
-									<img alt="Third slide [900x500]"
-										data-src="holder.js/900x500/auto/#555:#333/text:Third slide"
-										src="https://wistia.com/assets/main/welcome/Hosting-4334f606464c413fc825f3d7d718a0ff.svg"
-										data-holder-rendered="true">
-								</div>
+				<div class="col-sm-6 col-xs-12 block image-block">
+					<div class="carousel slide" id="carousel-example-generic"
+						data-ride="carousel">
+						<ol class="carousel-indicators">
+							<li data-target="#carousel-example-generic" data-slide-to="0"
+								class="active"></li>
+							<li data-target="#carousel-example-generic" data-slide-to="1"
+								class=""></li>
+							<li data-target="#carousel-example-generic" data-slide-to="2"
+								class=""></li>
+						</ol>
+						<div class="carousel-inner" role="listbox">
+							<div class="item active">
+								<img alt="First slide [900x500]"
+									data-src="holder.js/900x500/auto/#777:#555/text:First slide"
+									src="https://wistia.com/assets/main/welcome/Hosting-4334f606464c413fc825f3d7d718a0ff.svg"
+									data-holder-rendered="true">
 							</div>
-							<a href="#carousel-example-generic" class="left carousel-control"
-								role="button" data-slide="prev"> <span
-								class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-								<span class="sr-only">Previous</span>
-							</a> <a href="#carousel-example-generic"
-								class="right carousel-control" role="button" data-slide="next">
-								<span class="glyphicon glyphicon-chevron-right"
-								aria-hidden="true"></span> <span class="sr-only">Next</span>
-							</a>
+							<div class="item">
+								<img alt="Second slide [900x500]"
+									data-src="holder.js/900x500/auto/#666:#444/text:Second slide"
+									src="https://wistia.com/assets/main/welcome/Hosting-4334f606464c413fc825f3d7d718a0ff.svg"
+									data-holder-rendered="true">
+							</div>
+							<div class="item">
+								<img alt="Third slide [900x500]"
+									data-src="holder.js/900x500/auto/#555:#333/text:Third slide"
+									src="https://wistia.com/assets/main/welcome/Hosting-4334f606464c413fc825f3d7d718a0ff.svg"
+									data-holder-rendered="true">
+							</div>
 						</div>
-
+						<a href="#carousel-example-generic" class="left carousel-control"
+							role="button" data-slide="prev"> <span
+							class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+							<span class="sr-only">Previous</span>
+						</a> <a href="#carousel-example-generic"
+							class="right carousel-control" role="button" data-slide="next">
+							<span class="glyphicon glyphicon-chevron-right"
+							aria-hidden="true"></span> <span class="sr-only">Next</span>
+						</a>
 					</div>
 				</div>
-				<div class="col-xs-6 p5">
-					<div class="center" style="padding: 2em;">
-						<h1 class="bold" style="color: #76c9ff">Videos</h1>
-						<p>Upload your videos and turn your viewers into customers.</p>
+				<div class="col-sm-6 col-xs-12 block">
+					<div class="text-block">
+						<h1 style="color: #76c9ff">Videos</h1>
+						<p>{{welcome_text.videos}}</p>
 						<div class="flex pull-right">
-							<button class="btn btn-xs color1" [routerLink]="['/home/videos']" [class.disabled]="!hasVideoRole || !authenticationService.user.hasCompany ? true : null">upload video</button>
+							<button class="btn btn-xs color1" [routerLink]="['/home/videos']" [class.disabled]="this.authenticationService.isOnlyPartner() || !hasVideoRole || !authenticationService.user.hasCompany ? true : null">upload video</button>
 							<button type="button" class="btn btn-xs color1-invert" data-toggle="modal" data-target="#myModal">Tell me how</button>
 						</div>
 					</div>
 				</div>
 			</div>
 			<div class="flex">
-				<div class="col-xs-6 p5">
-					<div class="center" style="padding: 2em;">
-						<h1 class="bold" style="color: #00B3B3">contacts</h1>
-						<p>Add, edit, segment or manage your contact lists.</p>
+				<div class="col-sm-6 col-xs-12 block">
+					<div class="text-block">
+						<h1 style="color: #00B3B3">contacts</h1>
+						<p>{{welcome_text.contacts}}</p>
 						<div class="flex pull-left">
-							<button class="btn btn-xs color2" [routerLink]="['/home/contacts/add']" [class.disabled]="!hasContactRole|| !authenticationService.user.hasCompany ? true : null">add contacts</button>
+							<button class="btn btn-xs color2" [routerLink]="['/home/contacts/add']" [class.disabled]="!hasContactRole || !authenticationService.user.hasCompany ? true : null">add contacts</button>
 							<button type="button" class="btn btn-xs color2-invert" data-toggle="modal" data-target="#myModal">Tell me how</button>
 						</div>
 					</div>
 				</div>
-				<div class="col-xs-6 p5">
-					<div style="padding: 4em;">
-						<img src="https://wistia.com/assets/product/video-seo/VideoSEO_2-2fc96034647ff7b9ecc5e0be9bac526f.png"
-							style="max-width: 100%">
-					</div>
+				<div class="col-sm-6 col-xs-12 block image-block">
+					<img src="https://wistia.com/assets/product/video-seo/VideoSEO_2-2fc96034647ff7b9ecc5e0be9bac526f.png" style="max-width: 100%">
 				</div>
 			</div>
 			<div class="flex">
-				<div class="col-xs-6 p5">
-					<div style="padding: 4em;">
-						<img src="https://wistia.com/assets/features/secure-ddcc83774ec8351e9de6cec79f8ad49d.png">
-					</div>
+				<div class="col-sm-6 col-xs-12 block image-block">
+					<img src="https://wistia.com/assets/features/secure-ddcc83774ec8351e9de6cec79f8ad49d.png">
 				</div>
-				<div class="col-xs-6 p5">
-					<div class="center" style="padding: 2em;">
-						<h1 class="bold" style="color: #827596">campaign</h1>
-						<p>Automate customer journeys or start your partner campaigns.</p>
+				<div class="col-sm-6 col-xs-12 block">
+					<div class="text-block">
+						<h1 style="color: #827596">campaign</h1>
+						<p>{{welcome_text.campaigns}}</p>
 						<div class="flex pull-right">
 							<button class="btn btn-xs color3" [routerLink]="['/home/campaigns']" [class.disabled]="!authenticationService.user.hasCompany ? true : null">create campaign</button>
 							<button type="button" class="btn btn-xs color3-invert" data-toggle="modal" data-target="#myModal">Tell me how</button>
@@ -215,32 +131,28 @@ cursor: not-allowed;
 				</div>
 			</div>
 			<div class="flex">
-				<div class="col-xs-6 p5">
-					<div class="center" style="padding: 2em;">
-						<h1 class="bold" style="color: #FBB23E">Template</h1>
-						<p>Design beautiful, responsive templates to effectively communicate with your audience.</p>
+				<div class="col-sm-6 col-xs-12 block">
+					<div class="text-block">
+						<h1 style="color: #FBB23E">Template</h1>
+						<p>{{welcome_text.templates}}</p>
 						<div class="flex pull-left">
-							<button class="btn btn-xs color4" [routerLink]="['/home/emailtemplates/select']" [class.disabled]="!authenticationService.user.hasCompany  ? true : null">create template</button>
+							<button class="btn btn-xs color4" [routerLink]="['/home/emailtemplates/select']" [class.disabled]="this.authenticationService.isOnlyPartner() || !authenticationService.user.hasCompany  ? true : null">create template</button>
 							<button type="button" class="btn btn-xs color4-invert" data-toggle="modal" data-target="#myModal">Tell me how</button>
 						</div>
 					</div>
 				</div>
-				<div class="col-xs-6 p5">
-					<div style="padding: 4em;">
-						<img src="https://wistia.com/assets/main/welcome/Marketing-bf8195807e780b9926a5dc125d763a62.svg">
-					</div>
+				<div class="col-sm-6 col-xs-12 block image-block">
+					<img src="https://wistia.com/assets/main/welcome/Marketing-bf8195807e780b9926a5dc125d763a62.svg">
 				</div>
 			</div>
 			<div class="flex">
-				<div class="col-xs-6 p5">
-					<div style="padding: 4em;">
-						<img src="https://wistia.com/assets/features/secure-ddcc83774ec8351e9de6cec79f8ad49d.png">
-					</div>
+				<div class="col-sm-6 col-xs-12 block image-block">
+					<img src="https://wistia.com/assets/features/secure-ddcc83774ec8351e9de6cec79f8ad49d.png">
 				</div>
-				<div class="col-xs-6 p5">
-					<div class="center" style="padding: 2em;">
-						<h1 class="bold" style="color: #76C9FF">Social Accounts</h1>
-						<p>Collaborate all your social media accounts to give power to your social communication.</p>
+				<div class="col-sm-6 col-xs-12 block">
+					<div class="text-block">
+						<h1 style="color: #76C9FF">Social Accounts</h1>
+						<p>{{welcome_text.socialMedia}}</p>
 						<div class="flex pull-right">
 							<button class="btn btn-xs color1" [routerLink]="['/home/social/manage/all']" [class.disabled]="!authenticationService.user.hasCompany ? true : null">connect</button>
 							<button type="button" class="btn btn-xs color1-invert" data-toggle="modal" data-target="#myModal">Tell me how</button>
@@ -249,20 +161,18 @@ cursor: not-allowed;
 				</div>
 			</div>
 			<div class="flex">
-				<div class="col-xs-6 p5">
-					<div class="center" style="padding: 2em;">
-						<h1 class="bold" style="color: #00B3B3">Analytics</h1>
-						<p>Manage, monitor and measure every aspect of your campaign</p>
+				<div class="col-sm-6 col-xs-12 block">
+					<div class="text-block">
+						<h1 style="color: #00B3B3">Analytics</h1>
+						<p>{{welcome_text.analytics}}</p>
 						<div class="flex pull-left">
 							<button class="btn btn-xs color2" [routerLink]="['/home/dashboard']" [class.disabled]="!authenticationService.user.hasCompany ? true : null">analytics</button>
 							<button type="button" class="btn btn-xs color2-invert" data-toggle="modal" data-target="#myModal">Tell me how</button>
 						</div>
 					</div>
 				</div>
-				<div class="col-xs-6 p5">
-					<div style="padding: 4em;">
-						<img src="https://wistia.com/assets/main/welcome/Marketing-bf8195807e780b9926a5dc125d763a62.svg">
-					</div>
+				<div class="col-sm-6 col-xs-12 block image-block">
+					<img src="https://wistia.com/assets/main/welcome/Marketing-bf8195807e780b9926a5dc125d763a62.svg">
 				</div>
 			</div>
 		</div>

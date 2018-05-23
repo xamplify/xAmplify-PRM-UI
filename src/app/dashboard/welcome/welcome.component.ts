@@ -26,6 +26,25 @@ export class WelcomeComponent implements OnInit {
     hasStatsRole = false;
     hasSocialStatusRole = false;
     contactOrPartnerLink:string ="";
+    vendor_welcome_text = {
+        "videos": "Upload your content and you’ll soon be ready for primetime.",
+        "contacts": "Add, segment, manage, and edit the members of your Strategic Network.",
+        "campaigns": "Easily automate your audience’s digital journey.",
+        "templates": "Design beautiful, responsive email  templates that communicate effectively.",
+        "socialMedia": "Up your social game and coordinate your message across all of your social media accounts.",
+        "analytics": "Manage, monitor, and measure various aspects of your campaigns and your partners."
+    };
+
+    partner_welcome_text = {
+        "videos": "Check out the shareable content you received from your Strategic Alliances.",
+        "contacts": "Add, segment, manage, and edit your customers and leads.",
+        "campaigns": "Easily automate your audience’s digital journey.",
+        "templates": "Browse through the email templates that your Strategic Alliances have provided.",
+        "socialMedia": "Up your social game and coordinate your message across all of your social media accounts.",
+        "analytics": "Manage, monitor, and measure various aspects of your campaigns."
+    }
+    welcome_text: any;
+
     constructor(
         private userService: UserService,
         public authenticationService: AuthenticationService,
@@ -84,28 +103,10 @@ export class WelcomeComponent implements OnInit {
             );
     }
 
-    dashboardReports(loggedInUserId: number) {
-        this.dashboardService.loadDashboardReportsCount(this.loggedInUserId)
-            .subscribe(
-                data => {
-                  this.dashboardReport.totalViews = data.totalVideoViewsCount;
-                  this.dashboardReport.totalContacts = data.totalcontactsCount;
-                  this.dashboardReport.totalTeamMembers = data.totalTeamMembersCount;
-                  this.dashboardReport.totalUploadedvideos = data.totalVideosCount;
-                  this.dashboardReport.toalEmailTemplates = data.totalEmailTemplatesCount;
-                  this.dashboardReport.totalCreatedCampaigns = data.totalCampaignsCount;
-                  this.dashboardReport.totalSocialAccounts = data.totalSocialConnectionsCount;
-                  this.referenceService.partnerCount = this.dashboardReport.totalCompanyPartnersCount = data.totalCompanyPartnersCount;
-                },
-                error => console.log(error),
-                () => console.log('dashboard reports counts completed')
-            );
-    }
-
     ngOnInit() {
         this.loggedInUserId = this.authenticationService.getUserId();
         this.getDefaultPage(this.loggedInUserId);
-        this.dashboardReports(this.loggedInUserId);
+        this.welcome_text = this.authenticationService.isOnlyPartner() ? this.partner_welcome_text: this.vendor_welcome_text;
     }
 
 }

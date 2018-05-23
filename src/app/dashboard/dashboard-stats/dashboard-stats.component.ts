@@ -1,0 +1,57 @@
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { DashboardReport } from '../../core/models/dashboard-report';
+
+import { DashboardService } from '../dashboard.service';
+import { AuthenticationService } from '../../core/services/authentication.service';
+
+@Component({
+  selector: 'app-dashboard-stats',
+  templateUrl: './dashboard-stats.component.html',
+  styleUrls: ['./dashboard-stats.component.css']
+})
+export class DashboardStatsComponent implements OnInit {
+  dashboardReport: DashboardReport = new DashboardReport();
+  constructor(private router: Router, private dashboardService: DashboardService, private authenticationService: AuthenticationService) { }
+
+  dashboardReportsCount() {
+      this.dashboardService.loadDashboardReportsCount(this.authenticationService.getUserId())
+          .subscribe(
+              data => {
+                  this.dashboardReport.totalViews = data.totalVideoViewsCount;
+                  this.dashboardReport.totalContacts = data.totalcontactsCount;
+                  this.dashboardReport.totalTeamMembers = data.totalTeamMembersCount;
+                  this.dashboardReport.totalUploadedvideos = data.totalVideosCount;
+                  this.dashboardReport.toalEmailTemplates = data.totalEmailTemplatesCount;
+                  this.dashboardReport.totalCreatedCampaigns = data.totalCampaignsCount;
+                  this.dashboardReport.totalSocialAccounts = data.totalSocialConnectionsCount;
+                  this.dashboardReport.totalCompanyPartnersCount = data.totalCompanyPartnersCount;
+              },
+              error => console.log(error),
+              () => console.log('dashboard reports counts completed')
+          );
+  }
+
+  navigateToManageContacts() {
+    if (this.authenticationService.isVendor()) {
+      this.router.navigate(['/home/team/add-team']);
+    } else if (this.authenticationService.isAddedByVendor) {
+      this.router.navigate(['/home/partners/manage']);
+    } else { 
+      this.router.navigate(['/home/contacts/manage']); 
+    }
+  }
+
+  navigateToPartner(){
+      if(!this.authenticationService.isOnlyPartner() && this.dashboardReport.totalCompanyPartnersCount>0){
+        this.router.navigate(['/home/partners/analytics']);
+      } else { 
+        console.log('go to vendors page');
+      }
+  }  
+  
+  ngOnInit() {
+    this.dashboardReportsCount();
+  }
+
+}
