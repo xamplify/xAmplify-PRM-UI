@@ -243,7 +243,8 @@
 												 class="btn btn-primary" style="background: #00a6e8;width: 100%;cursor: pointer;" title=" " (change)="isFileCheck($event)">
                         </span>
 												 <p *ngIf="ownThumbnail" class="help-block">If you want to upload your own thumbnail, please choose a file from your system.
-														<span style="color:blue">Note: Max image size 10 MB</span>
+                            <span style="color:blue">Note: Max image size 10 MB</span><br/>
+                          <span style="color:red">*please upload your thumbnail</span>
 												</p>
 												   <div *ngIf="imageUrlPath" class="img-wrap img-responsive img-thumbnail rounded-0" style="margin: 0px -4px;">
 														<span (click)="uploader.clearQueue();clearOwnThumbnail()">
@@ -369,21 +370,23 @@
 													 <span class="btn btn-css btn-file" *ngIf="!brandLogoUrl">Choose Logo
 													  <input type="file" ng2FileSelect [uploader]="videoLogoUploader" accept=".jpg,.jpeg,.png" class="btn btn-primary"
 													   style="background: #00a6e8;width: 100%;" title=" " (change)="isFileCheck($event)">
-													 </span>
+                           </span>
 													<div *ngIf="brandLogoUrl" class="img-wrap img-responsive img-thumbnail rounded-0">
 														<span (click)="clearLogo()"><i class="fa fa-times-circle"></i> </span>
 														<img [src]="authenticationService.MEDIA_URL + brandLogoUrl" style="height: 71px; width: auto;">
                           </div>
 													<div *ngIf="!brandLogoUrl" style="height: 11px;">
+                              <span style="color:red">Please upload the video logo</span>
                               <p style="color: blue;">Note:Max image size 10 MB</p>
 													</div>
 												</div>
 											</div>
-											<div [hidden]="!enableVideoLogo" *ngIf="!disablePlayerSettingnew" class="form-group" [class.disabledCss]="!enableVideoLogo">
-												<label class="col-xs-5 control-label" style="position: relative; top:-6px;">Video Logo URL:<font *ngIf="!logoDescriptionUrl" style="color: red"><b>*</b></font></label>
+											<div [hidden]="!enableVideoLogo" *ngIf="!disablePlayerSettingnew" class="form-group" style="position: relative;top:11px;" [class.disabledCss]="!enableVideoLogo">
+												<label class="col-xs-5 control-label" >Video Logo URL:<font *ngIf="!logoDescriptionUrl" style="color: red"><b>*</b></font></label>
 												<div class="col-xs-7">
 													<input type="text" style="width: 90%;" [(ngModel)]="logoDescriptionUrl" [ngModelOptions]="{standalone: true}" placeholder="URL for Video logo link" #val
-													 (input)="logoDescription(val.value)">
+                           (input)="logoDescription(val.value)">
+                           <span *ngIf="!logoDescriptionUrl" style="color:red">please add the video logo url</span>
 												</div>
 											</div>
 											<div  [hidden]="!enableVideoLogo" *ngIf="disablePlayerSettingnew && brandLogoUrl" class="form-group" [class.disabledCss]="enableVideoLogo">

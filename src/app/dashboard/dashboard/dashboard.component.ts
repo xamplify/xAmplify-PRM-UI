@@ -1000,6 +1000,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         $('#emailClickedModal').modal('hide');
+        $('#customizeCampaignModal').modal('hide');
         this.isFullscreenToggle = false;
     }
 }
