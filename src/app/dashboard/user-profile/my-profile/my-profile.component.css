@@ -124,3 +124,8 @@ border-radius:50%
 .thumbnail-css{ cursor:pointer;width: 130px; height:107px;border-radius: 0px;border-color: #b2b4b5;}
 .co-branding{ left: 20px; position: relative;}
 .file-css{ position: relative; right: -134px;margin-top: 3px;}
+
+/deep/ .input-group .form-control:last-child{
+	    border-left: none;
+    	height: 36px
+}

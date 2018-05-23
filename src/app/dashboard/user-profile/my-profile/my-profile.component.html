@@ -239,8 +239,9 @@ input:checked + .slider-new:before {
 														</div>
 														<div class="form-group">
 															<label class="control-label">Mobile Number</label>
-															<input type="text"    placeholder="Mobile Number" class="form-control" formControlName="mobileNumber"    pattern="[0-9]*"
-  																	 minlength="10"  maxlength="10" />
+															<!-- <input type="text"    placeholder="Mobile Number" class="form-control" formControlName="mobileNumber"    pattern="[0-9]*"
+  																	 minlength="10"  maxlength="10" /> -->
+													<int-phone-prefix placeholder="Mobile Number" formControlName="mobileNumber"></int-phone-prefix>
 															<div *ngIf="formErrors.mobileNumber" class="alert alert-danger">{{ formErrors.mobileNumber }}</div>
 														</div>
 														<div class="form-group">
