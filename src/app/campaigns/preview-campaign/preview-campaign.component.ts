@@ -45,7 +45,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     campaignLaunchForm: FormGroup;
     buttonName = "Launch";
     customResponse: CustomResponse = new CustomResponse();
-    
+    isListView: boolean = false;
     countries: Country[];
     timezones: Timezone[];
     replies: Array<Reply> = new Array<Reply>();
@@ -525,6 +525,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
       }
     
   ngOnInit() {
+      this.isListView = !this.referenceService.isGridView;
   }
   
  
