@@ -99,6 +99,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         this.uploader.onAfterAddingFile = (file) => {
             console.log(file);
             file.withCredentials = false;
+            this.uploader.queue[0].upload();
         };
         this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
             console.log(response);
@@ -109,9 +110,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             this.uploader.queue.length = 0;
             this.clearImage();
             this.profileUploadSuccess = true;
-            this.customResponse = new CustomResponse('SUCCESS', this.properties.PROFILE_PIC_UPDATED,true);
             this.referenceService.topNavBarUserDetails.profilePicutrePath = imageFilePath['message'];
             this.authenticationService.userProfile.profileImagePath = imageFilePath['message'];
+            this.customResponse = new CustomResponse('SUCCESS', this.properties.PROFILE_PIC_UPDATED,true);
         };
     }
     isEmpty(obj) {

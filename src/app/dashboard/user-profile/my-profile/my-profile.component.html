@@ -100,9 +100,27 @@ input:checked + .slider-new:before {
 							<!-- PORTLET MAIN -->
 							<div class="portlet light profile-sidebar-portlet">
 								<!-- SIDEBAR USERPIC -->
-								<div class="profile-userpic">
-									<img src="{{userProfileImage}}" class="img-responsive" alt="" style="width: 100px;height: 100px;">
-								</div>
+								<!-- <div class="profile-userpic">
+									<img src="{{userProfileImage}}" class="img-responsive" alt="" style="cursor:pointer;width: 100px;height: 100px;">
+                   <span class="btn btn-css btn-file btn-user-pic buttonclass"> Change
+                      <input type="file" ng2FileSelect [uploader]="uploader" accept="image/jpeg,image/pjpeg,image/jpeg,image/pjpeg,image/png"
+                      *ngIf="uploader.queue.length==0" id="profileImage" (change)="fileChange(input)" title=" " #input/>
+                      </span>
+                </div> -->
+                <div class="profile-image-wrapper">
+											<img [src]= "userProfileImage" class="profile-image" style="cursor: pointer" (click)="imageUpload('imageSelect')">
+											<div class="profile-overlay">
+												<label class="btn-file" style="cursor:pointer">
+												  Change
+													<input type="file" ng2FileSelect [uploader]="uploader" accept="image/jpeg,image/pjpeg,image/jpeg,image/pjpeg,image/png"
+                            *ngIf="uploader.queue.length==0" id="imageSelect" style="position:relative;overflow:hidden" (change)="fileChange(input)" title=" " #input/>
+												</label>
+											</div>
+										</div>
+
+
+
+
 								<!-- END SIDEBAR USERPIC -->
 								<!-- SIDEBAR USER TITLE -->
 								<div class="profile-usertitle">
@@ -293,7 +311,7 @@ input:checked + .slider-new:before {
 															</div>
 														</div>
 
-														<table class="table">
+														<table class="table" *ngIf="false">
 															<tbody>
 																<tr *ngFor="let item of uploader.queue">
 																	<td><strong>{{ item?.file?.name }}</strong></td>

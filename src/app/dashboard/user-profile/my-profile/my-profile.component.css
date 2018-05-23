@@ -4,15 +4,15 @@
     }
    :host /deep/ .video-js .vjs-mute-control {
        background:  transparent;
-   } 
+   }
   .disablePlayerValues {
 		pointer-events: none;
 		opacity: 0.6;
   }
-  .videoCssDefault{ 
+  .videoCssDefault{
         position: absolute;
         right: 34px;
-        top: 89px; 
+        top: 89px;
         z-index: 600;
     }
  .progress {
@@ -129,3 +129,45 @@ border-radius:50%
 	    border-left: none;
     	height: 36px
 }
+.btn-user-pic{
+  border-radius: 60% 57%!important;
+  background: #290303;
+  color: white;
+  top: -39px;
+  right: -86px;
+}
+.profile-image-wrapper {
+display: block;
+}
+.profile-overlay, .banner-overlay {
+  display:none;
+}
+.profile-image-wrapper:hover .profile-overlay {
+  background: #111;
+  position: relative;
+  bottom: -45px;
+  color: white;
+  left: -14px;
+  height: 23px;
+  display: inline-block;
+  cursor: pointer;
+  width: 27%;
+  text-align: center;
+}
+
+.banner-image-wrapper {
+  position: relative;
+  height: 80px;
+  margin-bottom: 100px;
+}
+
+.profile-image {
+  border-radius: 50% !important;
+  width: 100px;
+  height: 100px;
+  position: relative;
+  right: -73px;
+}
+
+a:hover{ text-decoration:none}
+
