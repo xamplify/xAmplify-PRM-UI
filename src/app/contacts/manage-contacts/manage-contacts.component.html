@@ -207,7 +207,7 @@
               					<app-list-loader *ngIf="httpRequestLoader.isLoading && isListView"></app-list-loader>
 
 
-								<section [hidden]="!isListVisw"
+								<section [hidden]="!isListView"
 									*ngIf="pagination.pagedItems?.length != 0">
 									<div class="table-responsive">
 										<table class='table tgrid'>
