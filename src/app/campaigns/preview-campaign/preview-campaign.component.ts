@@ -126,7 +126,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     setCampaignData(result){
         this.campaign = result;
         console.log(this.campaign);
-        if(this.campaign.channelCampaign){
+        if(this.campaign.channelCampaign || this.campaign.launchedByVendor){
             this.contactType = "partner";
         }else{
             this.contactType ="contact";
@@ -433,36 +433,14 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     loadContactList(contactsPagination: Pagination) {
         this.campaignContact.httpRequestLoader.isHorizontalCss=true;
         this.referenceService.loading(this.campaignContact.httpRequestLoader, true);
-        contactsPagination.editCampaign = true;
-        contactsPagination.campaignId = this.campaign.campaignId;
-        if(this.campaign.channelCampaign){
-            contactsPagination.filterValue = true;
-        }else{
-            contactsPagination.filterValue = false;
-        }
-        this.contactService.loadContactLists(contactsPagination)
+        contactsPagination.campaignUserListIds = this.campaign.userListIds;
+        this.contactService.loadCampaignContactsList(contactsPagination)
             .subscribe(
             (data: any) => {
                 this.userLists = data.listOfUserLists;
                 contactsPagination.totalRecords = data.totalRecords;
-                if(contactsPagination.filterBy!=null){
-                    if(contactsPagination.filterBy==0){
-                        contactsPagination.maxResults = data.totalRecords;
-                    }else{
-                        contactsPagination.maxResults = contactsPagination.filterBy;
-                    }
-                }
                 this.contactListPagination = this.pagerService.getPagedItems(contactsPagination,this.userLists);
                 this.referenceService.loading(this.campaignContact.httpRequestLoader, false);
-                var contactIds = this.contactListPagination.pagedItems.map(function(a) {return a.id;});
-                var items = $.grep(this.selectedUserlistIds, function(element) {
-                    return $.inArray(element, contactIds ) !== -1;
-                });
-                if(items.length==contactIds.length){
-                    this.isHeaderCheckBoxChecked = true;
-                }else{
-                    this.isHeaderCheckBoxChecked = false;
-                }
             },
             (error: string) => this.xtremandLogger.errorPage(error),
             () => this.xtremandLogger.info("Finished loadContactList()", this.contactListPagination)

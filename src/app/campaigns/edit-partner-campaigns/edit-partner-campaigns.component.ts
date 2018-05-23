@@ -123,7 +123,7 @@ export class EditPartnerCampaignsComponent implements OnInit {
     preHeaderDivClass:string = this.formGroupClass;
     messageDivClass:string = this.formGroupClass;
     campaignType:string = "";
-    isCampaignDetailsFormValid:boolean = false;
+    isCampaignDetailsFormValid:boolean = true;
     names:string[]=[];
     editedCampaignName:string = "";
     /***************Contact List************************/
@@ -175,7 +175,7 @@ export class EditPartnerCampaignsComponent implements OnInit {
             this.contactListPagination.filterValue = false;
             this.loggedInUserId = this.authenticationService.getUserId();
             if(this.campaignService.reDistributeCampaign!=undefined){
-                console.log(this.campaignService.reDistributeCampaign);
+                this.loadCampaignNames(this.loggedInUserId);
                 this.setCampaignData(this.campaignService.reDistributeCampaign);
             }else{
                 this.router.navigate(['/home/campaigns/partner/regular']);
@@ -278,13 +278,15 @@ export class EditPartnerCampaignsComponent implements OnInit {
     isValidCampaignName:boolean = true;
      validateForm() {
          var isValid = true;
-         let self = this;
-        $('#campaignDetailsForm input[type="text"]').each(function() {
-            if ($.trim($(this).val())=== '' ){
-              isValid = false;
-          }
-             
-        });
+         var campaignNameLength= $.trim(this.campaign.campaignName).length;
+         var fromNameLength = $.trim(this.campaign.fromName).length;
+         var subjectLineLength = $.trim(this.campaign.subjectLine).length;
+         var preHeaderLength  =  $.trim(this.campaign.preHeader).length;
+         if(campaignNameLength>0 &&  fromNameLength>0 && subjectLineLength>0 && preHeaderLength>0){
+             isValid = true;
+         }else{
+             isValid = false;
+         }
         if(isValid && this.isValidCampaignName){
             this.isCampaignDetailsFormValid = true;
         }else{

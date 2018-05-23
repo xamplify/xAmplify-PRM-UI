@@ -1,4 +1,4 @@
-<div class="page-content">
+<div class="page-content" [style.background-color]="refService.pageContnetBgColor">
     <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 	<app-grid-loader *ngIf="httpRequestLoader.isLoading && !isListView"></app-grid-loader>
 	<app-list-loader *ngIf="httpRequestLoader.isLoading && isListView"></app-list-loader>
@@ -735,7 +735,7 @@
 
                         <div class="portlet-title border-none">
                             <div class="col-xs-12 center-block pt20 text-center">
-                                <button type="submit" class="btn green" [disabled]="!campaignLaunchForm.valid">{{buttonName}}</button>
+                                <button type="submit" class="btn green" [disabled]="!campaignLaunchForm.valid || !isCampaignDetailsFormValid">{{buttonName}}</button>
                             </div>
                         </div>
                     </fieldset>

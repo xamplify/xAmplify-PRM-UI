@@ -52,4 +52,5 @@ export class Campaign {
     campaignScheduleType:string = "";
     detailedAnalyticsShared:boolean = false;
     vendorOrganizationId:number = 0;
+    launchedByVendor:boolean = false;
 }

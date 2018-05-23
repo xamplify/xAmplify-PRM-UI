@@ -72,6 +72,12 @@ export class ContactService {
             .catch( this.handleError );
     }
     
+    loadCampaignContactsList( pagination: Pagination ): Observable<ContactList[]> {
+        return this._http.post( this.contactsUrl +"campaign-user-lists"+ "?access_token=" + this.authenticationService.access_token, pagination )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+    
     unlinkSocailAccount(socialNetwork: string, isDeleteContactList:boolean): Observable<ContactList[]> {
         this.logger.info( "unlinkSocailAccount() method invoked" );
         return this._http.get( this.authenticationService.REST_URL + "unlink-account?" + "access_token=" + this.authenticationService.access_token + '&userId='+ this.authenticationService.getUserId() + '&socialNetwork='+ socialNetwork + '&deleteContactList=' + isDeleteContactList)

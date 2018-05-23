@@ -82,13 +82,13 @@ export class CreateTemplateComponent implements OnInit {
               emailTemplate.jsonBody = jsonContent;
 	          if(emailTemplateService.emailTemplate.beeVideoTemplate || emailTemplateService.emailTemplate.videoCoBrandingTemplate){
 	              if(jsonContent.indexOf("xtremand-video.gif")<0){
-	                 swal("Please Add Default .gif ","","error");
+	                 swal("Please select new email template as you deleted the default .gif","","error");
 	                 return false;
 	              }
 	          }
 	          if(emailTemplateService.emailTemplate.regularCoBrandingTemplate || emailTemplateService.emailTemplate.videoCoBrandingTemplate){
 	              if(jsonContent.indexOf("co-branding.png")<0){
-	                     swal("Please Add Default Co-Branding Image","","error");
+	                     swal("Please select new email template as you deleted the default logo","","error");
 	                     return false;
 	                  }
 	          }

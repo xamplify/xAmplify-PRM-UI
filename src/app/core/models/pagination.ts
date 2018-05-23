@@ -10,6 +10,7 @@ export class Pagination {
 	filterBy: any = null;
 	pager: any = {};
 	pagedItems: any[] = [];
+	campaignUserListIds:number[] = [];
 	totalRecords: number;
 	editCampaign = false;
 	campaignId: number;
