@@ -534,5 +534,12 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
       this.loadUsers(0,this.contactsUsersPagination);
   }
   
-
+  setReplyEmailTemplate(emailTemplateId:number,reply:Reply,index:number){
+      reply.selectedEmailTemplateId = emailTemplateId;
+      $('#reply-'+index+emailTemplateId).prop("checked",true);
+  }
+  setClickEmailTemplate(emailTemplateId:number,url:Url,index:number){
+      url.selectedEmailTemplateId = emailTemplateId;
+      $('#url-'+index+emailTemplateId).prop("checked",true);
+  }
 }

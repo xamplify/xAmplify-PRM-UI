@@ -24,7 +24,7 @@
 						<ng-template #uploadVideos>0</ng-template>
           </div>
 					<div class="desc" >
-						<span *ngIf="!isOnlyPartner;else orgVideo">Uploaded Videos</span>
+						<span *ngIf="!this.authenticationService.isOnlyPartner();else orgVideo">Uploaded Videos</span>
 						<ng-template #orgVideo>Videos</ng-template>
 					</div>
         </div>
@@ -101,14 +101,14 @@
 				</div>
 				<div class="details">
 					<div class="number">
-					   <span *ngIf="!isOnlyPartner; else partner">
+					   <span *ngIf="!this.authenticationService.isOnlyPartner(); else partner">
                <span *ngIf="dashboardReport.totalCompanyPartnersCount; else emptyValues">{{dashboardReport.totalCompanyPartnersCount}} </span>
                <ng-template #emptyValues>0</ng-template>
              </span>
 					   <ng-template #partner>0</ng-template>
 					</div>
 					<div class="desc">
-						<span *ngIf="isOnlyPartner; else orgadmin">Vendors</span>
+						<span *ngIf="this.authenticationService.isOnlyPartner(); else orgadmin">Vendors</span>
 						<ng-template #orgadmin><span>Partners</span></ng-template>
 					</div>
         </div>
