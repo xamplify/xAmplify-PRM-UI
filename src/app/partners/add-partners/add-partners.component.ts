@@ -937,7 +937,6 @@ export class AddPartnersComponent implements OnInit {
                     socialContact.lastName = this.getGoogleConatacts.contacts[i].lastName;
                     this.socialPartnerUsers.push( socialContact );
                     }
-                    this.xtremandLogger.info( this.getGoogleConatacts );
                     this.contactService.socialProviderName = "";
                     $( "#Gfile_preview" ).show();
                     $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
@@ -950,6 +949,7 @@ export class AddPartnersComponent implements OnInit {
                     $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                 }
                 }
+                this.xtremandLogger.info( this.getGoogleConatacts );
                 this.selectedAddPartnerOption = 3;
                 this.setSocialPage( 1 );
                 this.socialPartners.contacts = this.socialPartnerUsers;
@@ -1073,7 +1073,6 @@ export class AddPartnersComponent implements OnInit {
                     socialContact.lastName = this.getGoogleConatacts.contacts[i].lastName;
                     this.socialPartnerUsers.push( socialContact );
                     }
-                    this.xtremandLogger.info( this.getGoogleConatacts );
                     $( "#Gfile_preview" ).show();
                     $( "#myModal .close" ).click()
                     $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
@@ -1086,6 +1085,7 @@ export class AddPartnersComponent implements OnInit {
                     $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                 }
                 }
+                this.xtremandLogger.info( this.getGoogleConatacts );
                 this.selectedAddPartnerOption = 6;
                 this.setSocialPage( 1 );
             },
@@ -1160,7 +1160,6 @@ export class AddPartnersComponent implements OnInit {
                     socialContact.lastName = this.getGoogleConatacts.contacts[i].lastName;
                     this.socialPartnerUsers.push( socialContact );
                     }
-                    this.xtremandLogger.info( this.getGoogleConatacts );
                     $( "#Gfile_preview" ).show();
                     $( "#myModal .close" ).click()
                     $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
@@ -1173,6 +1172,7 @@ export class AddPartnersComponent implements OnInit {
                     $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                 }
                 }
+                this.xtremandLogger.info( this.getGoogleConatacts );
                 this.setSocialPage( 1 );
             },
             ( error: any ) => {
@@ -1352,7 +1352,6 @@ export class AddPartnersComponent implements OnInit {
                     socialContact.lastName = this.getGoogleConatacts.contacts[i].lastName;
                     this.socialPartnerUsers.push( socialContact );
                     }
-                    this.xtremandLogger.info( this.getGoogleConatacts );
                     $( "#Gfile_preview" ).show();
                     //this.hideModal();
                     $( '#salesforceModal' ).modal( 'hide' );
@@ -1371,6 +1370,7 @@ export class AddPartnersComponent implements OnInit {
                     $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                 }
                 }
+                this.xtremandLogger.info( this.getGoogleConatacts );
                 this.setSocialPage( 1 );
             },
             ( error: any ) => {
@@ -1433,7 +1433,6 @@ export class AddPartnersComponent implements OnInit {
 
                     $('#overlay-modal').hide();
                     
-                    this.xtremandLogger.info( this.getGoogleConatacts );
                     $( "#Gfile_preview" ).show();
                     $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                     $( '#uploadCSV' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;min-height:85px' );
@@ -1446,6 +1445,7 @@ export class AddPartnersComponent implements OnInit {
                     $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                 }
                 }
+                this.xtremandLogger.info( this.getGoogleConatacts );
                 this.setSocialPage( 1 );
             },
             ( error: any ) => {

@@ -902,7 +902,6 @@ export class AddContactsComponent implements OnInit {
                         socialContact.lastName = this.getGoogleConatacts.contacts[i].lastName;
                         this.socialContactUsers.push( socialContact );
                     }
-                    this.xtremandLogger.info( this.getGoogleConatacts );
                     this.contactService.socialProviderName = "";
                     $( "button#sample_editable_1_new" ).prop( 'disabled', false );
                     $( "button#cancel_button" ).prop( 'disabled', false );
@@ -916,6 +915,7 @@ export class AddContactsComponent implements OnInit {
                     $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                     $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                 }
+                this.xtremandLogger.info( this.getGoogleConatacts );
                 this.selectedAddContactsOption = 4;
                 this.setPage( 1 );
                 this.socialContact.contacts = this.socialContactUsers;
@@ -1199,7 +1199,6 @@ export class AddContactsComponent implements OnInit {
                     socialContact.lastName = this.getZohoConatacts.contacts[i].lastName;
                     this.socialContactUsers.push( socialContact );
                     }
-                    this.xtremandLogger.info( this.getZohoConatacts );
                     $( "button#sample_editable_1_new" ).prop( 'disabled', false );
                     $( "button#cancel_button" ).prop( 'disabled', false );
                     $( "#Gfile_preview" ).show();
@@ -1213,6 +1212,7 @@ export class AddContactsComponent implements OnInit {
                     $( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                     $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                 }
+                this.xtremandLogger.info( this.getZohoConatacts );
                 this.selectedAddContactsOption = 5;
                 this.setPage( 1 );
             },
@@ -1288,7 +1288,6 @@ export class AddContactsComponent implements OnInit {
                     socialContact.lastName = this.getZohoConatacts.contacts[i].lastName;
                     this.socialContactUsers.push( socialContact );
                     }
-                    this.xtremandLogger.info( this.getZohoConatacts );
                     $( "button#sample_editable_1_new" ).prop( 'disabled', false );
                     $( "#Gfile_preview" ).show();
                     $( "#myModal .close" ).click()
@@ -1302,6 +1301,7 @@ export class AddContactsComponent implements OnInit {
                     $( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                     $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                 }
+                this.xtremandLogger.info( this.getZohoConatacts );
                 this.setPage( 1 );
             },
             ( error: any ) => {
@@ -1534,7 +1534,6 @@ export class AddContactsComponent implements OnInit {
                     socialContact.lastName = this.getSalesforceConatactList.contacts[i].lastName;
                     this.socialContactUsers.push( socialContact );
                     }
-                    this.xtremandLogger.info( this.getSalesforceConatactList );
                     $( "button#sample_editable_1_new" ).prop( 'disabled', false );
                     $( "#Gfile_preview" ).show();
                     $( "button#cancel_button" ).prop( 'disabled', false );
@@ -1548,6 +1547,7 @@ export class AddContactsComponent implements OnInit {
                     $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                     $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                 }
+                this.xtremandLogger.info( this.getSalesforceConatactList );
                 this.setPage( 1 );
             },
             ( error: any ) => {
@@ -1597,7 +1597,6 @@ export class AddContactsComponent implements OnInit {
                     socialContact.lastName = this.getSalesforceConatactList.contacts[i].lastName;
                     this.socialContactUsers.push( socialContact );
                     }
-                    this.xtremandLogger.info( this.getSalesforceConatactList );
                     $( "button#sample_editable_1_new" ).prop( 'disabled', false );
                     $( "#Gfile_preview" ).show();
                     $( "button#cancel_button" ).prop( 'disabled', false );
@@ -1611,6 +1610,7 @@ export class AddContactsComponent implements OnInit {
                     $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                     $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                 }
+                this.xtremandLogger.info( this.getSalesforceConatactList );
                 this.setPage( 1 );
             },
             ( error: any ) => {
