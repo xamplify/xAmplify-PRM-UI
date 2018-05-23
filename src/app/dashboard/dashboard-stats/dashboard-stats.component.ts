@@ -12,7 +12,7 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 })
 export class DashboardStatsComponent implements OnInit {
   dashboardReport: DashboardReport = new DashboardReport();
-  constructor(private router: Router, private dashboardService: DashboardService, private authenticationService: AuthenticationService) { }
+  constructor(public router: Router, public dashboardService: DashboardService, public authenticationService: AuthenticationService) { }
 
   dashboardReportsCount() {
       this.dashboardService.loadDashboardReportsCount(this.authenticationService.getUserId())
