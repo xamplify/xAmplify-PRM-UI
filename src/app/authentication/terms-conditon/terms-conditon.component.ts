@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-terms-conditon',
@@ -6,8 +7,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./terms-conditon.component.css','../intro/intro.component.css']
 })
 export class TermsConditonComponent implements OnInit {
-
-  constructor() { }
+  termsPage:boolean;
+  constructor(public router:Router) {
+    this.termsPage = this.router.url.includes('terms')? true:false;
+   }
 
   ngOnInit() {
     window.onscroll = function () { myFunction() };

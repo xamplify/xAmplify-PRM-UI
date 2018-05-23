@@ -57,7 +57,8 @@ export const routes: Routes = [
             { path: 'error/:errorStatusId', component: ErrorPagesComponent }
         ]
     },
-    { path: 'termsconditions', component: TermsConditonComponent },
+    { path: 'terms-conditions', component: TermsConditonComponent },
+    { path: 'privacy-policy', component: TermsConditonComponent },
     { path: 'userlock', component: ProfileLockComponent },
     { path: 'logout', component: LoginComponent },
     { path: ':social/login', component: SocialLoginComponent },
