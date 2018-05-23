@@ -208,7 +208,7 @@
 
 
 								<section [hidden]="!isListView"
-									*ngIf="pagination.pagedItems?.length != 0">
+									*ngIf="pagination.pagedItems?.length != 0 && !httpRequestLoader.isLoading">
 									<div class="table-responsive">
 										<table class='table tgrid'>
 											<thead>
