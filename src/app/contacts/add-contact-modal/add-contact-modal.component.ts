@@ -37,9 +37,9 @@ export class AddContactModalComponent implements OnInit {
                  public contactService: ContactService, public videoFileService: VideoFileService ) {
         this.notifyParent = new EventEmitter();
         this.isPartner = this.router.url.includes('home/contacts')? false: true;
-        if ( this.addContactuser.mobileNumber == undefined ) {
+        /*if ( this.addContactuser.mobileNumber == undefined ) {
             this.addContactuser.mobileNumber = "+1";
-        }
+        }*/
         
     }
 
@@ -51,6 +51,8 @@ export class AddContactModalComponent implements OnInit {
         $( '.modal-backdrop fade in' ).remove();
         $( ".modal-backdrop in" ).css( "display", "none" );
         this.contactService.isContactModalPopup = false;
+       // this.addContactuser.mobileNumber = undefined;
+       // this.addContactuser.country = undefined;
        // this.addContactuser = new User();
        // this.contactDetails = undefined;
         
@@ -127,6 +129,15 @@ export class AddContactModalComponent implements OnInit {
                 this.addContactuser.country = data.country;
             }
             
+            if ( !this.isUpdateUser || this.addContactuser.mobileNumber == undefined ) {
+                for ( let i = 0; i < this.countryNames.countriesMobileCodes.length; i++ ) {
+                    if ( data.countryCode == this.countryNames.countriesMobileCodes[i].code ) {
+                        this.addContactuser.mobileNumber = this.countryNames.countriesMobileCodes[i].dial_code;
+                        break;
+                    }
+                }
+            }
+
         } )
     }
 
@@ -152,7 +163,8 @@ export class AddContactModalComponent implements OnInit {
             this.addContactuser.country = this.contactDetails.country;
             this.addContactuser.mobileNumber = this.contactDetails.mobileNumber;
             if ( this.addContactuser.mobileNumber == undefined ) {
-                this.addContactuser.mobileNumber = "+1";
+                //this.addContactuser.mobileNumber = "+1";
+                this.geoLocation()
             }
             if ( this.isPartner ) {
                 if ( this.addContactuser.contactCompany != undefined ) {

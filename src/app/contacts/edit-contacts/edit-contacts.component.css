@@ -51,3 +51,12 @@ a.disabled{pointer-events:none;cursor:not-allowed}
 .dashboard-stat .details .number {
 	padding-top: 10px;
 }
+/deep/ .input-group > .form-control:focus {
+    border-color: white !important;
+}
+/deep/ .input-group > .input-group-addon {
+    background: white !important;
+} 
+ /deep/ .input-group-addon {
+  border: none !important;
+	}

@@ -494,10 +494,13 @@
 															<app-user-info  [userInfo]="newContact"> </app-user-info>
 															</td>
 															<td>
-																<h5>
+															<div *ngIf="newContact.mobileNumber" [class.disabled]="true" style="pointer-events: none !important; cursor: auto;">
+													<int-phone-prefix [(ngModel)]="newContact.mobileNumber"  [ngModelOptions]="{standalone: true}"></int-phone-prefix>
+													</div>
+																<!-- <h5>
 																	<span *ngIf="newContact?.mobileNumber; else NA"
 																		class="textWhite">{{newContact.mobileNumber}}</span>
-																</h5>
+																</h5> -->
 															</td>
 															<td>
 																<h5 class='mb0 textWhite'>{{newContact.jobTitle}}</h5>
@@ -555,9 +558,12 @@
 															<app-user-info  [userInfo]="contact"> </app-user-info>
 															</td>
 															<td>
-																<h5>
+															<div *ngIf="contact.mobileNumber" [class.disabled]="true" style="pointer-events: none !important; cursor: auto;">
+													<int-phone-prefix [(ngModel)]="contact.mobileNumber"  [ngModelOptions]="{standalone: true}"></int-phone-prefix>
+													</div>
+																<!-- <h5>
 																	<span *ngIf="contact?.mobileNumber; else NA">{{contact.mobileNumber}}</span>
-																</h5>
+																</h5> -->
 															</td>
 															<td>
 																<h5 class='mb0'>{{contact.jobTitle}}</h5>
@@ -699,9 +705,12 @@
 													<app-user-info  [userInfo]="allcontacts"> </app-user-info>
 												</td>
 												<td>
-													<h5>
+												<div *ngIf="allcontacts.mobileNumber" [class.disabled]="true" style="pointer-events: none !important; cursor: auto;">
+													<int-phone-prefix [(ngModel)]="allcontacts.mobileNumber"  [ngModelOptions]="{standalone: true}"></int-phone-prefix>
+													</div>
+													<!-- <h5>
 														<span *ngIf="allcontacts?.mobileNumber; else NA">{{allcontacts.mobileNumber}}</span>
-													</h5>
+													</h5> -->
 												</td>
 												<td>
 													<h5 class='mb0'>{{allcontacts.jobTitle}}</h5>

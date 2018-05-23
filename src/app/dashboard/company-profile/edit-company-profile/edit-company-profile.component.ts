@@ -191,13 +191,34 @@ export class EditCompanyProfileComponent implements OnInit {
                 },
                 (error) => { this.ngxloading = false; });
     }
+    
+    geoLocation(){
+        this.videoFileService.getJSONLocation()
+        .subscribe(
+        (data: any) => {
+            if ( this.companyProfile.country == undefined || this.companyProfile.country == "" || this.companyProfile.country =="Select Country" ) {
+                this.companyProfile.country = data.country;
+            }
+            if ( this.companyProfile.phone == undefined || this.companyProfile.phone == "" && !this.companyProfile.phone) {
+                for ( let i = 0; i < this.countryNames.countriesMobileCodes.length; i++ ) {
+                    if ( data.countryCode == this.countryNames.countriesMobileCodes[i].code ) {
+                        this.companyProfile.phone = this.countryNames.countriesMobileCodes[i].dial_code;
+                        break;
+                    }
+                }
+            }
+
+        } )
+    }
+    
+    
     ngOnInit() {
         this.getCompanyProfileByUserId();
         if (this.authenticationService.user.hasCompany) {
             this.companyProfile.isAdd = false;
-        } else {
+        } /*else {
             this.companyProfile.country = this.countryNames.countries[0];
-        }
+        }*/
         this.getAllCompanyNames();
         this.getAllCompanyProfileNames();
     }
@@ -362,9 +383,10 @@ export class EditCompanyProfileComponent implements OnInit {
                         if ($.trim(this.companyProfile.country).length == 0) {
                             this.companyProfile.country = this.countryNames.countries[0];
                         }
-                        if ( !this.companyProfile.phone ) {
+                        this.geoLocation();
+                        /*if ( !this.companyProfile.phone ) {
                             this.companyProfile.phone = "+1";
-                        }
+                        }*/
                         this.existingCompanyName = data.data.companyName;
                         this.loadPublicVideos();
                     }

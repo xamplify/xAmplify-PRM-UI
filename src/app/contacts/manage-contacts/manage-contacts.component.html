@@ -201,11 +201,13 @@
 									<div class="clearfix"></div>
 								</div>
 								<!-- END FILTER -->
-								 <app-loader *ngIf="httpRequestLoader.isLoading && !isListView"></app-loader>
-								<app-list-loader *ngIf="httpRequestLoader.isLoading && isListView"></app-list-loader>
+								 <!-- <app-loader *ngIf="httpRequestLoader.isLoading && !isListView"></app-loader>
+								<app-list-loader *ngIf="httpRequestLoader.isLoading && isListView"></app-list-loader> -->
+								<app-grid-loader *ngIf="httpRequestLoader.isLoading && !isListView"></app-grid-loader>
+              					<app-list-loader *ngIf="httpRequestLoader.isLoading && isListView"></app-list-loader>
 
 
-								<section [hidden]="!isListView"
+								<section [hidden]="!isListVisw"
 									*ngIf="pagination.pagedItems?.length != 0">
 									<div class="table-responsive">
 										<table class='table tgrid'>
@@ -643,9 +645,12 @@
 														<app-user-info [isPartnerEntityInfo]="true" [userInfo]="contact">
 															</app-user-info></td>
 														<td>
-															<h5>
+														<div *ngIf="contact.mobileNumber" [class.disabled]="true" style="pointer-events: none !important; cursor: auto;">
+													<int-phone-prefix [(ngModel)]="contact.mobileNumber"  [ngModelOptions]="{standalone: true}"></int-phone-prefix>
+													</div>
+															<!-- <h5>
 																<span *ngIf="contact?.mobileNumber; else NA">{{contact.mobileNumber}}</span>
-															</h5>
+															</h5> -->
 														</td>
 														<td>
 															<h5 class='mb0'>{{contact.jobTitle}}</h5>

@@ -10,9 +10,21 @@
 .cloud-services .portlet-body {padding: 10px 0 0px;}
 .cloud-services.portlet.light {padding-bottom: 0px;}
 /deep/ .input-group > .form-control {
-    border-left: none;
-    height: 36px;	
+    border: none !important;
+    height: 36px !important;	
 }
 /deep/ .input-group > .form-control:focus {
-    border-color: #e5e5e5;
+    border-color: white !important;
 }
+/deep/ .input-group > .input-group-addon {
+    background: white !important;
+} 
+ 
+ /deep/ .input-group-addon {
+  border: none !important;
+	}
+/*	
+/deep/ .dropbtn {
+pointer-events: none !important;	
+}
+ */

@@ -246,8 +246,8 @@ img:hover {
 				Actions <i class="fa fa-angle-down"></i>
 			</button>
 			<ul class="dropdown-menu pull-right">
-				<li><a id="save_button" [class.disabled]="selectedAddPartnerOption == 5" (click)="saveContacts()">Save </a></li>
-				<li><a id="save_button" [class.disabled]="selectedAddPartnerOption == 5" (click)="cancelPartners()">Cancel </a></li>
+				<li><a id="save_button" *ngIf="selectedAddPartnerOption != 5" (click)="saveContacts()">Save </a></li>
+				<li><a id="save_button" *ngIf="selectedAddPartnerOption != 5" (click)="cancelPartners()">Cancel </a></li>
 				<li><a id="saveAs_button"
 					*ngIf="selectedAddPartnerOption == 5" (click)="editContactComponent.saveAs(); editContactComponent.addPartnerSave = true">Save
 						As </a></li>
@@ -423,10 +423,13 @@ img:hover {
 												<app-user-info [isPartnerEntityInfo]="true" [isPartnerInfo]="true" [isPartnerInfo]="true" [userInfo]="newContact"> </app-user-info>
 												</td>
 												<td>
-													<h5>
+												<div *ngIf="newContact.mobileNumber" [class.disabled]="true" style="pointer-events: none !important; cursor: auto;">
+													<int-phone-prefix [(ngModel)]="newContact.mobileNumber"  [ngModelOptions]="{standalone: true}"></int-phone-prefix>
+													</div>
+													<!-- <h5>
 														<span *ngIf="newContact?.mobileNumber; else NA"
 															>{{newContact.mobileNumber}}</span>
-													</h5>
+													</h5> -->
 												</td>
 												<td>
 													<h5 class='mb0'>{{newContact.jobTitle}}</h5>
@@ -554,9 +557,10 @@ img:hover {
 											<!-- 	<img
 													src="https://lipis.github.io/flag-icon-css/flags/4x3/in.svg"
 													width="15px"> -->
-													<h5>
-														<span *ngIf="contact?.mobileNumber; else NA">{{contact.mobileNumber}}</span>
-													</h5>
+													<div *ngIf="contact.mobileNumber" [class.disabled]="true" style="pointer-events: none !important; cursor: auto;">
+														<!-- <span *ngIf="contact?.mobileNumber; else NA">{{contact.mobileNumber}}</span> -->
+													<int-phone-prefix [(ngModel)]="contact.mobileNumber"  [ngModelOptions]="{standalone: true}"></int-phone-prefix>
+													</div>
 												</td>
 												<td>
 													<h5 class='mb0'>{{contact.jobTitle}}</h5>
