@@ -35,3 +35,8 @@ padding: 7px 15px;
 .page-header.navbar .top-menu .navbar-nav > li.dropdown-user .dropdown-toggle > img{
     margin-top: -10px !important;
 }
+.img-circle {
+    height: 40px;
+    width: 40px;
+    border: 1px solid #ccc;
+}

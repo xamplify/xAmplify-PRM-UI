@@ -107,16 +107,15 @@ input:checked + .slider-new:before {
                       *ngIf="uploader.queue.length==0" id="profileImage" (change)="fileChange(input)" title=" " #input/>
                       </span>
                 </div> -->
-                <div class="profile-image-wrapper">
-											<img [src]= "userProfileImage" class="profile-image" style="cursor: pointer" (click)="imageUpload('imageSelect')">
-											<div class="profile-overlay">
-												<label class="btn-file" style="cursor:pointer">
-												  Change
-													<input type="file" ng2FileSelect [uploader]="uploader" accept="image/jpeg,image/pjpeg,image/jpeg,image/pjpeg,image/png"
-                            *ngIf="uploader.queue.length==0" id="imageSelect" style="position:relative;overflow:hidden" (change)="fileChange(input)" title=" " #input/>
-												</label>
-											</div>
-										</div>
+<div class="profile-image-wrapper">
+	<img [src]="userProfileImage" class="profile-image" (click)="imageUpload('imageSelect')">
+	<div class="upload-btn-wrapper">
+  		<i class="fa fa-camera"></i>
+  		<input type="file" ng2FileSelect [uploader]="uploader" 
+			accept="image/jpeg,image/pjpeg,image/jpeg,image/pjpeg,image/png" *ngIf="uploader.queue.length==0"
+			id="imageSelect" (change)="fileChange(input)" title=" " #input/>
+	</div>
+</div>
 
 
 
@@ -226,9 +225,9 @@ input:checked + .slider-new:before {
 												<li class="active">
 													<a href="#tab_1_1" data-toggle="tab" (click)="clearCustomResponse()">Personal Info</a>
 												</li>
-												<li>
+												<!--<li>
 													<a href="#tab_1_2" data-toggle="tab" (click)="clearCustomResponse()">Change Avatar</a>
-												</li>
+												</li>-->
 												<li>
 													<a href="#tab_1_3" data-toggle="tab" (click)="clearCustomResponse()">Change Password</a>
 												</li>
