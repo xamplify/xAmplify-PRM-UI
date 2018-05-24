@@ -44,7 +44,8 @@ export class Properties {
     SOCIAL_ACCOUNT_REMOVED_ERROR = "An error occured while removing your social Account.";
 
     /* For Partners*/
-
+    PARTNER_LIST_CREATE_SUCCESS = "Your partner list has been created successfully.";
+    
     PARTNER_LIST_SYNCHRONIZATION_SUCCESS = "Your Parntner List has been synchronized successfully.";
     PARTNER_LIST_SYNCHRONIZATION_ERROR = "An error occured while synchronizing your partner list.";
 

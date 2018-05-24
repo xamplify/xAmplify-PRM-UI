@@ -265,7 +265,7 @@
 															Actions <i class="fa fa-angle-down"></i>
 														</button>
 														<ul class="dropdown-menu pull-right">
-															<li><a [class.disabled]="selectedAddContactsOption == 8" id="save_button" (click)="saveContacts()">Save
+															<li><a *ngIf="selectedAddContactsOption != 8" id="save_button" (click)="saveContacts()">Save
 															</a></li>
 															<li><a id="saveAs_button"
 																*ngIf="selectedAddContactsOption == 8"
@@ -273,8 +273,8 @@
 															<li><a id="exportToExcel"
 																*ngIf="selectedAddContactsOption == 8"
 																(click)="downloadList()">Export To Excel</a></li>
-															<li><a id="delete_button" [class.disabled]="selectedContactListIds?.length == 0"
-																*ngIf="selectedAddContactsOption == 8 || selectedAddContactsOption == 9"
+															<li><a id="delete_button"
+																*ngIf="selectedAddContactsOption == 8 || selectedAddContactsOption == 9 && selectedContactListIds?.length != 0"
 																(click)="showAlert(selectedContactListId)"> Delete</a></li>
 														</ul>
 													</div>
@@ -1017,7 +1017,7 @@
 	</div>
 </div>
 <div *ngIf="contactsByType.contactListAssociatedCampaigns?.length && openCampaignModal">
-<app-contacts-campaigns-mails [associatedCampaignDetails]="contactsByType.contactListAssociatedCampaigns"
+<app-contacts-campaigns-mails [associatedCampaignDetails]="contactsByType.contactListAssociatedCampaigns" [isPartner]="isPartner"
 [userEmails]="newUsersEmails" (notifyParent)="closeModal($event)"></app-contacts-campaigns-mails>
 </div>
 <!-- END PAGE CONTENT -->

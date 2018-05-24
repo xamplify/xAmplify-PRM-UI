@@ -149,10 +149,10 @@ export class ManageContactsComponent implements OnInit {
     isPartner: boolean;
     checkingContactTypeName: string;
     isListView = false;
-    responseMessage= [];
-   // isResponsMessage = false;
+    responseMessage = [];
+    // isResponsMessage = false;
 
-    constructor( public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router,public properties: Properties,
+    constructor( public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
         private pagerService: PagerService, private pagination: Pagination, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger ) {
 
         let currentUrl = this.router.url;
@@ -173,14 +173,14 @@ export class ManageContactsComponent implements OnInit {
         this.xtremandLogger.info( "socialContact" + this.socialContact.socialNetwork );
         this.access_token = this.authenticationService.access_token;
         this.xtremandLogger.info( "successmessageLoad" + this.contactService.successMessage )
-        if ( this.contactService.successMessage == true || this.contactService.saveAsSuccessMessage == "SUCCESS") {
+        if ( this.contactService.successMessage == true || this.contactService.saveAsSuccessMessage == "SUCCESS" ) {
             this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_LIST_CREATE_SUCCESS, true );
             this.xtremandLogger.info( "Success Message in manage contact pape" );
             this.contactService.saveAsSuccessMessage = "";
         }
         if ( this.contactService.deleteUserSucessMessage == true ) {
             this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_LIST_DELETE_SUCCESS, true );
-            this.xtremandLogger.info( " delete Success Message in manage contact pape");
+            this.xtremandLogger.info( " delete Success Message in manage contact pape" );
         }
         this.noSaveButtonDisable = true;
 
@@ -226,7 +226,7 @@ export class ManageContactsComponent implements OnInit {
                 }
                 if ( this.contactLists.length == 0 ) {
                     this.resetResponse();
-                   // this.responseMessage = ['INFO', 'No results found.','show'];
+                    // this.responseMessage = ['INFO', 'No results found.','show'];
                     this.customResponse = new CustomResponse( 'INFO', this.properties.NO_RESULTS_FOUND, true );
                     this.pagedItems = null;
                 }
@@ -290,7 +290,7 @@ export class ManageContactsComponent implements OnInit {
             },
             ( error: any ) => {
                 if ( error.includes( 'Please Launch or Delete those campaigns first' ) ) {
-                   // this.responseMessage = ['ERROR', error,'show'];
+                    // this.responseMessage = ['ERROR', error,'show'];
                     this.customResponse = new CustomResponse( 'ERROR', error, true );
                 } else {
                     this.xtremandLogger.errorPage( error );
@@ -316,9 +316,9 @@ export class ManageContactsComponent implements OnInit {
         }).then( function( myData: any ) {
             console.log( "ManageContacts showAlert then()" + myData );
             self.deleteContactList( contactListId );
-         }, function(dismiss:any) {
-                console.log('you clicked on option'+dismiss);
-         });
+        }, function( dismiss: any ) {
+            console.log( 'you clicked on option' + dismiss );
+        });
     }
 
     downloadContactList( contactListId: number ) {
@@ -521,10 +521,10 @@ export class ManageContactsComponent implements OnInit {
     }
 
     onChangeAllContactUsers( event: Pagination ) {
-       // this.sortOption = event;
-       // this.selectedDropDown = this.sortOption.value;
+        // this.sortOption = event;
+        // this.selectedDropDown = this.sortOption.value;
         //this.contactsByType.pagination.maxResults = ( this.selectedDropDown == 'ALL' ) ? this.contactsByType.pagination.totalRecords : parseInt( this.selectedDropDown );
-        this.contactsByType.pagination = event ;
+        this.contactsByType.pagination = event;
         this.listContactsByType( this.contactsByType.selectedCategory );
     }
 
@@ -654,7 +654,7 @@ export class ManageContactsComponent implements OnInit {
     }
 
     checkAll( ev: any ) {
-      // this.checkAllInvalidContacts( ev );
+        // this.checkAllInvalidContacts( ev );
         if ( ev.target.checked ) {
             console.log( "checked" );
             $( '[name="campaignContact[]"]' ).prop( 'checked', true );
@@ -696,7 +696,7 @@ export class ManageContactsComponent implements OnInit {
     }
 
     highlightRow( contactId: number, email: any, firstName: any, lastName: any, event: any ) {
-       // this.invalidContactsSelectedUserIds( contactId, event );
+        // this.invalidContactsSelectedUserIds( contactId, event );
         let isChecked = $( '#' + contactId ).is( ':checked' );
         console.log( this.selectedContactListIds )
         if ( isChecked ) {
@@ -722,31 +722,36 @@ export class ManageContactsComponent implements OnInit {
         event.stopPropagation();
     }
 
-    saveSelectedUsers(listName: string) {
+    saveSelectedUsers( listName: string ) {
         this.resetResponse();
         var selectedUserIds = new Array();
         let selectedUsers = new Array<User>();
         this.xtremandLogger.info( "SelectedUserIDs:" + this.selectedContactListIds );
         this.contactListObject = new ContactList;
         this.contactListObject.isPartnerUserList = this.isPartner;
-        if ( listName != "") {
+        if ( listName != "" ) {
             if ( this.selectedContactListIds.length != 0 ) {
-                    this.contactService.saveContactList( this.allselectedUsers, listName, this.isPartner )
-                        .subscribe(
-                        data => {
-                            data = data;
-                            this.contactCountLoad = true;
-                            this.navigateToManageContacts();
-                            this.allselectedUsers.length = 0;
-                            this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_LIST_CREATE_SUCCESS, true );
-                        },
+                this.contactService.saveContactList( this.allselectedUsers, listName, this.isPartner )
+                    .subscribe(
+                    data => {
+                        data = data;
+                        this.contactCountLoad = true;
+                        this.navigateToManageContacts();
+                        this.allselectedUsers.length = 0;
 
-                        ( error: any ) => {
-                            this.xtremandLogger.error( error );
-                            this.xtremandLogger.errorPage( error );
-                        },
-                        () => this.xtremandLogger.info( "allcontactComponent saveSelectedUsers() finished" )
-                        )
+                        if ( this.isPartner ) {
+                            this.customResponse = new CustomResponse( 'SUCCESS', this.properties.PARTNER_LIST_CREATE_SUCCESS, true );
+                        } else {
+                            this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_LIST_CREATE_SUCCESS, true );
+                        }
+                    },
+
+                    ( error: any ) => {
+                        this.xtremandLogger.error( error );
+                        this.xtremandLogger.errorPage( error );
+                    },
+                    () => this.xtremandLogger.info( "allcontactComponent saveSelectedUsers() finished" )
+                    )
             } else {
                 this.customResponse = new CustomResponse( 'ERROR', this.properties.NO_USERS_SELECT_ERROR, true );
             }
@@ -784,7 +789,7 @@ export class ManageContactsComponent implements OnInit {
                     console.log( index + "value" + value );
                 });
                 //this.invalidDeleteSucessMessage = true;
-               this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACTS_DELETE_SUCCESS, true );
+                this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACTS_DELETE_SUCCESS, true );
                 this.contactCountLoad = true;
                 this.listContactsByType( this.contactsByType.selectedCategory );
             },
@@ -808,7 +813,7 @@ export class ManageContactsComponent implements OnInit {
         /*if(this.contactsByType.selectedCategory == 'all'){
             this.allselectedUsers
         }*/
-        
+
         var removeUserIds = new Array();
         $( 'input[name="selectedUserIds"]:checked' ).each( function() {
             var id = $( this ).val();
@@ -876,7 +881,7 @@ export class ManageContactsComponent implements OnInit {
                 this.contactsByType.pagination = this.pagerService.getPagedItems( this.contactsByType.pagination, this.contactsByType.contacts );
                 this.listAllContactsByType( contactType, this.contactsByType.pagination.totalRecords );
 
-                if ( this.contactsByType.selectedCategory == 'invalid' || this.contactsByType.selectedCategory == 'all') {
+                if ( this.contactsByType.selectedCategory == 'invalid' || this.contactsByType.selectedCategory == 'all' ) {
                     this.userListIds = data.listOfUsers;
                 }
 
@@ -1071,7 +1076,7 @@ export class ManageContactsComponent implements OnInit {
             this.isSegmentation = true;
             $( '#filterModal' ).modal( 'toggle' );
             $( "#filterModal .close" ).click();
-            $('#filterModal').modal('hide');
+            $( '#filterModal' ).modal( 'hide' );
         }
     }
 
@@ -1145,7 +1150,7 @@ export class ManageContactsComponent implements OnInit {
         a.click();
         return 'success';
     }
-    
+
     listAllContactsByType( contactType: string, totalRecords: number ) {
         this.contactsByType.contactPagination.filterKey = 'isPartnerUserList';
         this.contactsByType.contactPagination.filterValue = this.isPartner;
@@ -1166,7 +1171,7 @@ export class ManageContactsComponent implements OnInit {
             }
             );
     }
-    
+
     saveAs() {
         let self = this;
         swal( {
@@ -1185,19 +1190,19 @@ export class ManageContactsComponent implements OnInit {
                         if ( name != "" ) {
                             swal.close();
                             self.saveSelectedUsers( name );
-                        }else {
+                        } else {
                             swal.showValidationError( 'List Name is Required..' )
                         }
                     }
                 });
             }
         }).then( function( name: any ) {
-            console.log(name);
+            console.log( name );
         }, function( dismiss: any ) {
             console.log( 'you clicked on option' + dismiss );
         });
     }
-    
+
     saveAsNewList( contactSelectedListId: number, contactListName: string ) {
         this.loadContactListsNames();
         let self = this;
@@ -1218,20 +1223,20 @@ export class ManageContactsComponent implements OnInit {
                         if ( name != "" ) {
                             swal.close();
                             self.saveExistingContactList( contactSelectedListId, name );
-                        }else {
+                        } else {
                             swal.showValidationError( 'List Name is Required..' )
                         }
                     }
                 });
             }
         }).then( function( name: any ) {
-            console.log(name);
+            console.log( name );
         }, function( dismiss: any ) {
             console.log( 'you clicked on option' + dismiss );
         });
     }
-    
-    saveExistingContactList( contactSelectedListId: number, contactListName: string ){
+
+    saveExistingContactList( contactSelectedListId: number, contactListName: string ) {
         this.gettingAllUserspagination.maxResults = 50000;
         this.gettingAllUserspagination.pageIndex = 1;
         this.contactService.loadUsersOfContactList( contactSelectedListId, this.gettingAllUserspagination )
@@ -1241,19 +1246,24 @@ export class ManageContactsComponent implements OnInit {
                 this.contactListUsers = data.listOfUsers;
             },
             error => this.xtremandLogger.error( error ),
-            () =>{ this.xtremandLogger.info( "MangeContactsComponent loadUsersOfContactList() finished" )
+            () => {
+                this.xtremandLogger.info( "MangeContactsComponent loadUsersOfContactList() finished" )
                 this.saveListAsNewList( contactListName );
             }
             )
     }
-    
+
     saveListAsNewList( contactListName: string ) {
         this.contactService.saveContactList( this.contactListUsers, contactListName, this.isPartner )
             .subscribe(
             data => {
                 data = data;
-                this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_LIST_CREATE_SUCCESS, true );
-                this.loadContactLists(this.pagination);
+                if ( this.isPartner ) {
+                    this.customResponse = new CustomResponse( 'SUCCESS', this.properties.PARTNER_LIST_CREATE_SUCCESS, true );
+                } else {
+                    this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_LIST_CREATE_SUCCESS, true );
+                }
+                this.loadContactLists( this.pagination );
             },
             ( error: any ) => {
                 this.xtremandLogger.error( error );
@@ -1267,7 +1277,7 @@ export class ManageContactsComponent implements OnInit {
     ngOnInit() {
         this.pagination.maxResults = 12;
         try {
-            this.isListView = ! this.referenceService.isGridView;
+            this.isListView = !this.referenceService.isGridView;
             this.loadContactLists( this.pagination );
             this.contactsCount();
             this.loadContactListsNames();
@@ -1276,7 +1286,7 @@ export class ManageContactsComponent implements OnInit {
             this.xtremandLogger.error( "ERROR : MangeContactsComponent ngOnInit() " + error );
         }
     }
- 
+
     ngOnDestroy() {
         this.xtremandLogger.info( 'Deinit - Destroyed Component' )
         this.contactService.successMessage = false;

@@ -11,10 +11,12 @@ declare var $: any;
 })
 export class ContactsCampaignsMailsComponent implements OnInit {
     @Input() associatedCampaignDetails: any;
+    @Input() isPartner: boolean;
     @Input() userEmails = [];
     @Output() notifyParent: EventEmitter<any>; 
     contactsByType: ContactsByType = new ContactsByType();
     selectedCampaignIds = [];
+    checkengListType = "";
     
   constructor(public contactService: ContactService) {
       this.notifyParent = new EventEmitter();
@@ -59,6 +61,11 @@ export class ContactsCampaignsMailsComponent implements OnInit {
 
 
   ngOnInit() {
+      if(this.isPartner){
+          this.checkengListType = "Partner";
+      }else{
+          this.checkengListType = "Contact";
+      }
       $('#sendMailsModal').modal('show'); 
   }
 
