@@ -1043,11 +1043,8 @@ export class EditPartnerCampaignsComponent implements OnInit {
         this.loadEmailTemplatesForAddOnClick(url);
     }
     getAnchorLinksFromEmailTemplate(body: string) {
-        $('#emailTemplateContent').html('');
-        $('#emailTemplateContent').append(body);
-        console.log($('#emailTemplateContent').find('a'));
         let self = this;
-        $('#emailTemplateContent').find('a').each(function (e) {
+        $(body).find('a').each(function (e) {
             let href = $(this).attr('href');
             self.emailTemplateHrefLinks.push(href);
         });
