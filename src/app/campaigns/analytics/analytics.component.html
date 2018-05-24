@@ -16,9 +16,10 @@
 	<ul class="page-breadcrumb">
 		<li><i class="fa fa-home"></i> <a [routerLink]="referenceService.homeRouter">Home</a> <i class="fa fa-angle-right"></i></li>
 		<li *ngIf="campaignRouter==='managecampaigns'"><a  [routerLink]="['/home/campaigns/manage']">Manage Campaigns</a><i class="fa fa-angle-right"></i></li>
-    <li *ngIf="campaignRouter==='notification'"><a [routerLink]="['/home/dashboard/notifications']">Notificatioins</a><i class="fa fa-angle-right"></i></li>
-    <li *ngIf="campaignRouter==='partnerAnalytics'"><a [routerLink]="['/home/partners/analytics']">partner Analytics</a><i class="fa fa-angle-right"></i></li>
-    <li style="color: #888;">{{campaign.campaignName}}</li>
+    <li *ngIf="campaignRouter==='notification'"><a [routerLink]="['/home/dashboard/notifications']">Notifications</a><i class="fa fa-angle-right"></i></li>
+    <li *ngIf="campaignRouter==='partnerAnalytics'"><a [routerLink]="['/home/partners/analytics']">Partner Analytics</a><i class="fa fa-angle-right"></i></li>
+    <li style="color: #888;" *ngIf="isPartnerEnabledAnalyticsAccess">{{campaign.campaignName}}</li>
+    <li style="color: #888;" *ngIf="!isPartnerEnabledAnalyticsAccess">{{campaign.campaignName}} <b>(Analytics Disabled)</b></li>
 	</ul>
 </div>
 <div *ngIf="customResponse.responseType === 'ERROR'; else NOERROR" class="m10">
@@ -37,7 +38,7 @@
 					<div class="camp-number">
 
 						<b class="m0" title={{campaign.campaignVideoFile.title}}>{{campaign.campaignVideoFile.title | slice: 0: 20}}</b>
-						<span *ngIf="campaign.campaignVideoFile.title?.length>23">...</span>
+						<span *ngIf="campaign.campaignVideoFile.title?.length>20">...</span>
 					</div>
 					<!-- <div class="camp-desc">
 						<span title={{campaign.campaignVideoFile.description}}>{{campaign.campaignVideoFile.description | slice: 0: 20}}
@@ -59,7 +60,8 @@
 					<div class="camp-details">
 						<div class="camp-title">Email Info</div>
 						<div class="camp-number">
-						  <b class="m0" title={{campaign.emailTemplate.name}}>{{campaign.emailTemplate.name | slice: 0: 20}}</b>
+						  <b class="m0" title={{campaign.emailTemplate.name}}>{{campaign.emailTemplate.name | slice: 0: 25}}</b>
+						  <span *ngIf="campaign.emailTemplate.name?.length>25">...</span>
 						</div>
 						<div class="camp-desc" *ngIf="isPartnerEnabledAnalyticsAccess">
 						 <span>Click for preview</span>

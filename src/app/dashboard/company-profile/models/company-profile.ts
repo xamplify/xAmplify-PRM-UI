@@ -20,4 +20,5 @@ export class CompanyProfile {
      aboutUs:string = "";
      isAdd:boolean = true;
     videoId:number = 0;
+    street:string = "";
 }

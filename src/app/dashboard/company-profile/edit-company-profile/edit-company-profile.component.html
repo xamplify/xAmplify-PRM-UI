@@ -150,8 +150,7 @@
 								<div id="collapse1" class="panel-collapse collapse">
                     <div class="form-group">
                         <label class="control-label">Street</label>
-                        <input type="text" id="street"	name="street" placeholder="street" class="form-control"/>
-                        <!-- <span *ngIf="cityError" style="color: #a94442">{{cityErrorMessage}}</span> -->
+                        <input type="text" id="street" [(ngModel)]="companyProfile.street"	name="street" placeholder="street" class="form-control"/>
                       </div>
 									<div class="form-group" [attr.class]="cityDivClass">
 										<label class="control-label">City</label>
