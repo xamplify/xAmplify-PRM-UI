@@ -74,7 +74,7 @@ input:checked + .slider-new:before {
 						<ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 				</div>
 				<!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
-				<app-topnavbar [model]="parentModel"></app-topnavbar>
+				<app-topnavbar [hidden]="true" [model]="parentModel"></app-topnavbar>
 				<div class="page-bar">
 					<ul class="page-breadcrumb">
 						<li *ngIf="hasCompany">
@@ -99,29 +99,15 @@ input:checked + .slider-new:before {
 						<div class="profile-sidebar" style="width:250px;" *ngIf="userData">
 							<!-- PORTLET MAIN -->
 							<div class="portlet light profile-sidebar-portlet">
-								<!-- SIDEBAR USERPIC -->
-								<!-- <div class="profile-userpic">
-									<img src="{{userProfileImage}}" class="img-responsive" alt="" style="cursor:pointer;width: 100px;height: 100px;">
-                   <span class="btn btn-css btn-file btn-user-pic buttonclass"> Change
-                      <input type="file" ng2FileSelect [uploader]="uploader" accept="image/jpeg,image/pjpeg,image/jpeg,image/pjpeg,image/png"
-                      *ngIf="uploader.queue.length==0" id="profileImage" (change)="fileChange(input)" title=" " #input/>
-                      </span>
-                </div> -->
-<div class="profile-image-wrapper">
-	<img [src]="userProfileImage" class="profile-image" (click)="imageUpload('imageSelect')">
-	<div class="upload-btn-wrapper">
-  		<i class="fa fa-camera"></i>
-  		<input type="file" ng2FileSelect [uploader]="uploader" 
-			accept="image/jpeg,image/pjpeg,image/jpeg,image/pjpeg,image/png" *ngIf="uploader.queue.length==0"
-			id="imageSelect" (change)="fileChange(input)" title=" " #input/>
-	</div>
-</div>
-
-
-
-
-								<!-- END SIDEBAR USERPIC -->
-								<!-- SIDEBAR USER TITLE -->
+              <div class="profile-image-wrapper">
+                <img [src]="userProfileImage" class="profile-image" (click)="imageUpload('imageSelect')">
+                <div class="upload-btn-wrapper">
+                    <i class="fa fa-camera"></i>
+                    <input type="file" ng2FileSelect [uploader]="uploader"
+                    accept="image/jpeg,image/pjpeg,image/jpeg,image/pjpeg,image/png" *ngIf="uploader.queue.length==0"
+                    id="imageSelect" (change)="fileChange(input)" title=" " #input/>
+                </div>
+              </div>
 								<div class="profile-usertitle">
 									<div class="profile-usertitle-name" style="overflow: auto">
 										 {{userData.displayName}}
@@ -225,9 +211,6 @@ input:checked + .slider-new:before {
 												<li class="active">
 													<a href="#tab_1_1" data-toggle="tab" (click)="clearCustomResponse()">Personal Info</a>
 												</li>
-												<!--<li>
-													<a href="#tab_1_2" data-toggle="tab" (click)="clearCustomResponse()">Change Avatar</a>
-												</li>-->
 												<li>
 													<a href="#tab_1_3" data-toggle="tab" (click)="clearCustomResponse()">Change Password</a>
 												</li>
@@ -284,67 +267,6 @@ input:checked + .slider-new:before {
 														<button type="submit"   [disabled]="!updateUserProfileForm.valid" class="btn green-haze">Save Changes</button>
 													</form>
 												</div>
-												<div class="tab-pane" id="tab_1_2">
-													<div *ngIf="profilePictueError" class="alert alert-danger">
-														<strong>{{profilePictureErrorMessage}}</strong>
-													</div>
-													<form action="#" role="form">
-														<div class="form-group">
-															<div class="fileinput fileinput-new" data-provides="fileinput">
-																<div class="fileinput-new thumbnail" style="width: 200px; height: 150px;border-radius: 0px;cursor: pointer;" (click)="imageUpload('profileImage')">
-																	<img src="assets/images/upload-profile.png" alt="Image" id="priview"/>
-																</div>
-																<div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;" id="previewImage">
-																</div>
-																<div>
-																	<button class="btn fileinput-button">Select image
-																	<input type="file" ng2FileSelect [uploader]="uploader" accept="image/jpeg,image/pjpeg,image/jpeg,image/pjpeg,image/png"
-																	*ngIf="uploader.queue.length==0" id="profileImage" (change)="fileChange(input)" title=" " #input/>
-																	</button>
-																</div>
-															</div>
-
-															<div class="clearfix margin-top-10">
-																<span class="label label-danger">NOTE!</span>
-																<span>Uploading Thumbnail is supported in only latest browsers</span>
-															</div>
-														</div>
-
-														<table class="table" *ngIf="false">
-															<tbody>
-																<tr *ngFor="let item of uploader.queue">
-																	<td><strong>{{ item?.file?.name }}</strong></td>
-																    <td nowrap>{{ (item?.file?.size/1024/1024).toFixed(2) }} MB</td>
-																	<td >
-																		<div class="progress" style="border-radius: 0;margin-top: 4px;width: 51px;">
-																			<div class="progress-bar" role="progressbar"
-																				[ngStyle]="{ 'width': item.progress + '%' }"></div>
-																		</div>
-																	</td>
-																	<td class="text-center"><span *ngIf="item.isSuccess"><i
-																			class="glyphicon glyphicon-ok"></i></span> <span
-																		*ngIf="item.isCancel"><i
-																			class="glyphicon glyphicon-ban-circle"></i></span> <span
-																		*ngIf="item.isError"><i
-																			class="glyphicon glyphicon-remove"></i></span></td>
-																	<td nowrap>
-																		<button type="button" class="btn btn-success btn-xs"
-																			(click)="item.upload()"
-																			[disabled]="item.isReady || item.isUploading || item.isSuccess">
-																			<span class="glyphicon glyphicon-upload"></span> Upload
-																		</button>
-																		 <button type="button" class="btn btn-danger btn-xs"
-								                                (click)="item.remove();clearImage()" data-dismiss="fileinput" [disabled]="item.isReady || item.isUploading || item.isSuccess">
-								                            <span class="glyphicon glyphicon-trash"></span> Remove
-								                        </button>
-																	</td>
-																</tr>
-															</tbody>
-														</table>
-													</form>
-												</div>
-												<!-- END CHANGE AVATAR TAB -->
-												<!-- CHANGE PASSWORD TAB -->
 												<div class="tab-pane" id="tab_1_3" >
 													<form [formGroup]="updatePasswordForm" (ngSubmit)="updatePassword()" autocomplete="off">
 														<div class="form-group">
