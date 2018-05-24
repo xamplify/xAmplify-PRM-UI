@@ -889,9 +889,9 @@ export class AddContactsComponent implements OnInit {
             data => {
                 this.getGoogleConatacts = data;
                 swal.close();
-                if ( this.getGoogleConatacts.contacts.length == 0 ) {
+                if ( !this.getGoogleConatacts.contacts ) {
                     this.customResponse = new CustomResponse( 'ERROR', this.properties.NO_RESULTS_FOUND, true );
-                }
+                }else{
                 for ( var i = 0; i < this.getGoogleConatacts.contacts.length; i++ ) {
                     let socialContact = new SocialContact();
                     let user = new User();
@@ -914,6 +914,7 @@ export class AddContactsComponent implements OnInit {
                     $( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                     $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                     $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                }
                 }
                 this.xtremandLogger.info( this.getGoogleConatacts );
                 this.selectedAddContactsOption = 4;
@@ -952,6 +953,8 @@ export class AddContactsComponent implements OnInit {
        let users = [];
         for(let i=0;i< socialUsers.length;i++){
             if(socialUsers[i].emailId !== null && this.validateEmailAddress(socialUsers[i].emailId)){
+               let email = socialUsers[i].emailId.toLowerCase();
+               socialUsers[i].emailId = email;
                 users.push(socialUsers[i]);
             }
         }
@@ -1186,9 +1189,9 @@ export class AddContactsComponent implements OnInit {
                 this.zohoImageNormal = true;
                 this.socialContactImage();
                 this.hideZohoModal();
-                if ( this.getZohoConatacts.contacts.length == 0 ) {
+                if ( this.getZohoConatacts.contacts ) {
                     this.customResponse = new CustomResponse( 'ERROR', this.properties.NO_RESULTS_FOUND, true );
-                }
+                }else{
                 for ( var i = 0; i < this.getZohoConatacts.contacts.length; i++ ) {
                     let socialContact = new SocialContact();
                     let user = new User();
@@ -1211,6 +1214,7 @@ export class AddContactsComponent implements OnInit {
                     $( '.googleImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
                     $( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                     $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                }
                 }
                 this.xtremandLogger.info( this.getZohoConatacts );
                 this.selectedAddContactsOption = 5;
@@ -1275,9 +1279,9 @@ export class AddContactsComponent implements OnInit {
                 this.getZohoConatacts = data;
                 this.loading = false;
                 this.selectedAddContactsOption = 5;
-                if ( this.getZohoConatacts.contacts.length == 0 ) {
+                if ( !this.getZohoConatacts.contacts ) {
                     this.customResponse = new CustomResponse( 'ERROR', this.properties.NO_RESULTS_FOUND, true );
-                }
+                }else{
                 for ( var i = 0; i < this.getZohoConatacts.contacts.length; i++ ) {
                     let socialContact = new SocialContact();
                     let user = new User();
@@ -1300,6 +1304,7 @@ export class AddContactsComponent implements OnInit {
                     $( '.googleImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
                     $( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                     $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                }
                 }
                 this.xtremandLogger.info( this.getZohoConatacts );
                 this.setPage( 1 );
@@ -1519,11 +1524,11 @@ export class AddContactsComponent implements OnInit {
             data => {
                 this.getSalesforceConatactList = data;
                 this.selectedAddContactsOption = 3;
-                if ( this.getSalesforceConatactList.contacts.length == 0 ) {
+                if ( !this.getSalesforceConatactList.contacts ) {
                     this.customResponse = new CustomResponse( 'ERROR', this.properties.NO_RESULTS_FOUND, true );
                     this.selectedAddContactsOption = 8;
                     this.hideModal();
-                }
+                }else{
                 for ( var i = 0; i < this.getSalesforceConatactList.contacts.length; i++ ) {
                     let socialContact = new SocialContact();
                     let user = new User();
@@ -1546,6 +1551,7 @@ export class AddContactsComponent implements OnInit {
                     $( '.zohoImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
                     $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                     $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                }
                 }
                 this.xtremandLogger.info( this.getSalesforceConatactList );
                 this.setPage( 1 );
@@ -1582,11 +1588,11 @@ export class AddContactsComponent implements OnInit {
             data => {
                 this.getSalesforceConatactList = data;
                 this.selectedAddContactsOption = 3;
-                if ( this.getSalesforceConatactList.contacts.length == 0 ) {
+                if ( !this.getSalesforceConatactList.contacts ) {
                     this.customResponse = new CustomResponse( 'ERROR', this.properties.NO_RESULTS_FOUND, true );
                     this.selectedAddContactsOption = 8;
                     this.hideModal();
-                }
+                }else{
                 for ( var i = 0; i < this.getSalesforceConatactList.contacts.length; i++ ) {
                     let socialContact = new SocialContact();
                     let user = new User();
@@ -1609,6 +1615,7 @@ export class AddContactsComponent implements OnInit {
                     $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                     $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 73px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                     $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                }
                 }
                 this.xtremandLogger.info( this.getSalesforceConatactList );
                 this.setPage( 1 );

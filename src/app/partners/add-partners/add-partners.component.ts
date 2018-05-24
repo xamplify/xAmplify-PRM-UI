@@ -318,6 +318,8 @@ export class AddPartnersComponent implements OnInit {
         let users = [];
          for(let i=0;i< socialUsers.length;i++){
              if(socialUsers[i].emailId !== null && this.validateEmailAddress(socialUsers[i].emailId)){
+                 let email = socialUsers[i].emailId.toLowerCase();
+                 socialUsers[i].emailId = email;
                  users.push(socialUsers[i]);
              }
          }
