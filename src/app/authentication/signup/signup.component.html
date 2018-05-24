@@ -39,38 +39,9 @@
 				<div *ngIf="formErrors.confirmPassword" class="alert alert-danger">{{ formErrors.confirmPassword }}</div>
 				<div *ngIf="signUpForm.hasError('mismatchedPasswords') && !formErrors.confirmPassword && !formErrors.password" class="alert alert-danger">Passwords do not match.</div>
 			</div>
-			<!--
-			<label class="custom-label">Enter your personal details below:
-			</label>
-			<div class="form-group">
-				<label class="control-label visible-ie8 visible-ie9">Full Name
-				</label>
-				<input class="form-control" type="text" placeholder="Full Name" formControlName="fullName" required />
-				<div *ngIf="formErrors.fullName" class="alert alert-danger">{{ formErrors.fullName }}</div>
-			</div>
-			<div class="form-group">
-				<label class="control-label visible-ie8 visible-ie9">Address</label>
-				<input class="form-control placeholder-no-fix" type="text" placeholder="Address" required formControlName="address" />
-				<div *ngIf="formErrors.address" class="alert alert-danger">{{ formErrors.address }}</div>
-			</div>
-			<div class="form-group">
-				<label class="control-label visible-ie8 visible-ie9">City/Town</label>
-				<input class="form-control placeholder-no-fix" type="text" placeholder="City/Town" name="city" required formControlName="city"
-				/>
-				<div *ngIf="formErrors.city" class="alert alert-danger">{{ formErrors.city }}</div>
-			</div>
-			<div class="form-group">
-				<label class="control-label visible-ie8 visible-ie9">Country</label>
-				<select class="form-control" required formControlName="country">
-					<option *ngFor="let country of countryNames.countries" [value]="country">{{country}}</option>
-				</select>
-				<div *ngIf="formErrors.country" class="alert alert-danger">{{ formErrors.country }}</div>
-			</div>
-			-->
 			<div class="form-group margin-top-20 margin-bottom-20">
 				<label class="check">
 					<input formControlName="agree" type="checkbox" required /> I agree to the <a routerLink="../terms-conditions" target="_blank">Terms of Service &</a><a routerLink="../privacy-policy" target="_blank"> Privacy Policy </a>
-					<!-- <p class="custom-label">I agree to the Terms of Service & Privacy Plolicy </p> -->
 				</label>
 				<div *ngIf="formErrors.agree" class="alert alert-danger">{{ formErrors.agree }}</div>
 				<div id="register_tnc_error"></div>

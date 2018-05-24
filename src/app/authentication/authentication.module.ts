@@ -11,7 +11,6 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { VerifyEmailComponent } from './verify-email/verify-email.component';
 import { VideoComponent } from './video/video.component';
 import { CommonComponentModule } from '../common/common.module';
-import { VendorSignupComponent } from './vendor-signup/vendor-signup.component';
 import { IntroComponent } from './intro/intro.component';
 import { TermsConditonComponent } from './terms-conditon/terms-conditon.component';
 
@@ -19,7 +18,7 @@ import { TermsConditonComponent } from './terms-conditon/terms-conditon.componen
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule, RouterModule, CoreModule, SharedModule, CommonComponentModule
   ],
-  declarations: [SignupComponent, LoginComponent, ForgotPasswordComponent, VerifyEmailComponent, VideoComponent, VendorSignupComponent, IntroComponent, TermsConditonComponent],
+  declarations: [SignupComponent, LoginComponent, ForgotPasswordComponent, VerifyEmailComponent, VideoComponent, IntroComponent, TermsConditonComponent],
   exports: []
 })
 export class AuthenticationModule { }

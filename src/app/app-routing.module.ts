@@ -30,7 +30,6 @@ import { SignupComponent } from './authentication/signup/signup.component';
 import { ForgotPasswordComponent } from './authentication/forgot-password/forgot-password.component';
 import { VerifyEmailComponent } from './authentication/verify-email/verify-email.component';
 import { CompanyPageComponent } from './dashboard/company-profile/company-page/company-page.component';
-import { VendorSignupComponent } from './authentication/vendor-signup/vendor-signup.component';
 import { IntroComponent } from './authentication/intro/intro.component';
 import { TermsConditonComponent } from 'app/authentication/terms-conditon/terms-conditon.component';
 
