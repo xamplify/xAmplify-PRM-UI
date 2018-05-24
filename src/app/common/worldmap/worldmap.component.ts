@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Router } from '@angular/router';
 declare var Highcharts: any;
 
 @Component({
@@ -9,10 +10,12 @@ declare var Highcharts: any;
 export class WorldmapComponent implements OnInit {
   @Input() worldMapData: any;
   @Output() notifyParent: EventEmitter<any>;
-  constructor() { 
+  worldmapMessage: string;
+
+  constructor(public router:Router) {
     this.notifyParent = new EventEmitter<any>();
   }
-  renderWorldMap(data: any) {
+  renderWorldMap(data: any, message) {
     const self = this;
     Highcharts.mapChart('world-map', {
       chart: {
@@ -20,7 +23,7 @@ export class WorldmapComponent implements OnInit {
       },
       exporting: { enabled: false },
       title: {
-        text: 'Check out where your videos are being watched',
+        text: message,
         style: {
           color: '#696666',
           fontWeight: 'normal',
@@ -72,7 +75,15 @@ export class WorldmapComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.renderWorldMap(this.worldMapData);
+    if(this.router.url.includes('home/partners/analytics')){
+     this.worldmapMessage = 'Check where your partner are located';
+    } else if(this.router.url.includes('home/videos/manage')){
+      this.worldmapMessage = 'Check out where your videos are being watched';
+    }
+    else {
+      this.worldmapMessage = 'Check out where your videos are being watched';
+    }
+    this.renderWorldMap(this.worldMapData,this.worldmapMessage);
     console.log(this.worldMapData);
   }
 
