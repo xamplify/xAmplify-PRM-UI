@@ -175,7 +175,7 @@ export class EditCompanyProfileComponent implements OnInit {
                 this.backGroundImage = this.authenticationService.MEDIA_URL + this.companyBackgroundLogoImageUrlPath;
             }
         }
-        
+
         if ( !this.companyProfile.phone ) {
             this.companyProfile.phone = "+1";
         }
@@ -191,7 +191,7 @@ export class EditCompanyProfileComponent implements OnInit {
                 },
                 (error) => { this.ngxloading = false; });
     }
-    
+
     geoLocation(){
         this.videoFileService.getJSONLocation()
         .subscribe(
@@ -210,8 +210,8 @@ export class EditCompanyProfileComponent implements OnInit {
 
         } )
     }
-    
-    
+
+
     ngOnInit() {
         this.getCompanyProfileByUserId();
         if (this.authenticationService.user.hasCompany) {
@@ -758,7 +758,7 @@ export class EditCompanyProfileComponent implements OnInit {
             }
         } else {
             this.websiteError = true;
-            this.websiteErrorMessage = 'Please add your company’ URL';
+            this.websiteErrorMessage = 'Please add your company’s URL';
         }
     }
 

@@ -267,7 +267,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             'userId': this.loggedInUserId
         }
         if (this.updatePasswordForm.value.oldPassword === this.updatePasswordForm.value.newPassword) {
-           this.customResponse = new CustomResponse('ERROR','New Password should not be same as Current password',true);
+           this.customResponse = new CustomResponse('ERROR','Your new password cannot be the same as your current password',true);
             this.ngxloading = false;
         } else {
             this.userService.updatePassword(userPassword)
