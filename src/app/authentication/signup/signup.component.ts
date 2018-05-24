@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy} from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 
@@ -22,10 +22,12 @@ declare var $: any;
     styleUrls: ['./signup.component.css', '../../../assets/css/default.css', '../../../assets/css/authentication-page.css'],
     providers: [User, CountryNames, RegularExpressions, Properties]
 })
-export class SignupComponent implements OnInit {
+export class SignupComponent implements OnInit, OnDestroy {
     signUpForm: FormGroup;
     loading = false;
     isError = false;
+    vendorSignup = false;
+    invalidVendor = false;
     customResponse: CustomResponse = new CustomResponse();
     formErrors = {
         'firstName': '',
@@ -83,9 +85,15 @@ export class SignupComponent implements OnInit {
         private formBuilder: FormBuilder, private signUpUser: User,
         private userService: UserService, public referenceService: ReferenceService,private xtremandLogger: XtremandLogger) {
         this.buildForm();
+        if(this.router.url.includes('/v-signup')){ this.vendorSignup = true; } else { this.vendorSignup = false;}
     }
-
-    signUp() {
+    signUp(){
+      if(this.router.url.includes('/v-signup')) {  this.vendorSignUp(); } else { this.orgSignUp(); }
+    }
+    goToBack(){
+      if(this.router.url.includes('/v-signup')) {  this.router.navigate(['/']); } else {  this.router.navigate(['/login']) }
+    }
+    orgSignUp() {
         //this.isLoading = true;
         this.signUpUser = this.signUpForm.value;
         this.signUpUser.emailId = this.signUpUser.emailId.toLowerCase();
@@ -121,6 +129,54 @@ export class SignupComponent implements OnInit {
                 () => this.xtremandLogger.log("Done")
             );
     }
+    vendorSignUp() {
+      //this.isLoading = true;
+      this.signUpUser = this.signUpForm.value;
+      this.signUpUser.emailId = this.signUpUser.emailId.toLowerCase();
+      this.signUpUser.vendorSignUp = true;
+      this.loading = true;
+      this.invalidVendor = false;
+      console.log(this.signUpUser);
+      this.userService.signUpAsVendor(this.signUpUser)
+          .subscribe(
+              data => {
+                  this.loading = false;
+                  this.invalidVendor = false;
+                  if (data !== undefined) {
+                      if (data.message === 'USER CREATED SUCCESSFULLY' || data.message.includes('USER CREATED')) {
+                          this.loading = false;
+                          this.referenceService.userProviderMessage = this.properties.SIGN_UP_SUCCESS;
+                          this.router.navigate(['/login']);
+                      }
+                  } else {
+                      this.loading = false;
+                      this.isError = true;
+                      this.xtremandLogger.error(this.referenceService.errorPrepender + " signUp():" + data);
+                  }
+              },
+              error => {
+                  this.loading = false;
+                  if (error === "USERNAME IS ALREADY EXISTING") {
+                    this.invalidVendor = false;
+                    this.formErrors['userName'] = error;
+                      // this.isLoading = false;
+                  } else if (error === "USER IS ALREADY EXISTING WITH THIS EMAIL") {
+                    this.invalidVendor = false;
+                    this.formErrors['emailId'] = 'Email Id already exists';
+                      // this.isLoading = false;
+                  }else if(error==='INVALID_VENDOR_EMAIL_ID'){
+                    this.invalidVendor = true;
+                    this.formErrors['emailId'] = 'It looks like that email has already been used to create an account. If this is your email address,';
+                  }
+                  else {
+                    this.invalidVendor = false;
+                    this.xtremandLogger.errorPage(error);
+                  }
+              },
+              () => this.xtremandLogger.log("Done")
+          );
+  }
+
 
     buildForm() {
         this.signUpForm = this.formBuilder.group({
@@ -163,8 +219,14 @@ export class SignupComponent implements OnInit {
     toggleChild() {
         this.isError = !this.isError;
     }
+    validEmail(event:any){
+      this.invalidVendor = false;
+    }
     ngOnInit() {
         $("[rel='tooltip']").tooltip();
+    }
+    ngOnDestroy(){
+      this.invalidVendor = false;
     }
 
 }

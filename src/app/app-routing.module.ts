@@ -37,7 +37,7 @@ import { TermsConditonComponent } from 'app/authentication/terms-conditon/terms-
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'signup', component: SignupComponent },
-    { path: 'v-signup', component:VendorSignupComponent},
+    { path: 'v-signup', component: SignupComponent},
     { path: 'forgot-password', component: ForgotPasswordComponent },
     { path: 'register/verifyemail/user', component: VerifyEmailComponent },
     { path: '', component: IntroComponent},
