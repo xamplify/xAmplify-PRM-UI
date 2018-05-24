@@ -71,18 +71,18 @@ export class AddTeamMembersComponent implements OnInit {
             private fileUtil:FileUtil,public callActionSwitch: CallActionSwitch) {
         this.team = new TeamMember();
         this.userId = this.authenticationService.getUserId();
-        
+
     }
-    
+
     downloadEmptyCsv(){
         if(this.authenticationService.module.isVendor){
             window.location.href = this.authenticationService.MEDIA_URL + "team-member-vendor.csv";
         }else{
             window.location.href = this.authenticationService.MEDIA_URL + "team-member-list.csv";
         }
-       
+
     }
-    
+
     /**********On Init()**********/
     ngOnInit() {
         try {
@@ -97,7 +97,7 @@ export class AddTeamMembersComponent implements OnInit {
             this.showUIError(error);
         }
     }
-    
+
     /************List Members*****************/
     listTeamMembers(pagination:Pagination){
         try{
@@ -113,7 +113,7 @@ export class AddTeamMembersComponent implements OnInit {
                     this.secondOrgAdminId = data.secondOrgAdminId;
                     pagination.totalRecords = data.totalRecords;
                     pagination = this.pagerService.getPagedItems(pagination,this.teamMembersList);
-                    this.referenceService.loading(this.httpRequestLoader, false); 
+                    this.referenceService.loading(this.httpRequestLoader, false);
                 },
                 error => {
                     this.logger.errorPage(error);
@@ -123,15 +123,15 @@ export class AddTeamMembersComponent implements OnInit {
         }catch(error){
             this.showUIError(error);
         }
-       
+
     }
-    
+
     /**************Search TeamMembers***************/
     searchTeamMembers(){
     this.pagination.pageIndex =1;
     this.listTeamMembers(this.pagination);
     }
-    
+
     /***********List TeamMember EmailIds****************/
     listEmailIds(){
         this.teamMemberService.listTeamMemberEmailIds()
@@ -158,7 +158,7 @@ export class AddTeamMembersComponent implements OnInit {
             () => this.logger.info("Finished listDisabledEmailIds()")
         );
     }
-    
+
     listAllOrgAdminsEmailIds(){
         this.teamMemberService.listAllOrgAdminsEmailIds()
         .subscribe(
@@ -171,7 +171,7 @@ export class AddTeamMembersComponent implements OnInit {
             () => this.logger.info("Finished listAllOrgAdminsEmailIds()")
         );
     }
-    
+
     listAllPartnerEmailIds(){
         this.teamMemberService.listAllPartnerEmailIds()
         .subscribe(
@@ -184,7 +184,7 @@ export class AddTeamMembersComponent implements OnInit {
             () => this.logger.info("Finished listAllPartnerEmailIds()")
         );
     }
-    
+
     save(){
         $( "#empty-roles-div" ).hide();
         this.referenceService.goToTop();
@@ -208,7 +208,7 @@ export class AddTeamMembersComponent implements OnInit {
                 }else{
                     this.showErrorMessageDiv(data.message);
                 }
-              
+
             },
             error => {
                 this.logger.errorPage(error);
@@ -218,9 +218,9 @@ export class AddTeamMembersComponent implements OnInit {
         }else{
             this.showErrorMessageDiv("Please assign atleast one role to team member");
         }
-       
+
     }
-    
+
     update(){
         $( "#empty-roles-div" ).hide();
         this.referenceService.goToTop();
@@ -247,7 +247,7 @@ export class AddTeamMembersComponent implements OnInit {
                 }else{
                    this.showErrorMessageDiv(data.message);
                 }
-              
+
             },
             error => {
                 this.logger.errorPage(error);
@@ -258,7 +258,7 @@ export class AddTeamMembersComponent implements OnInit {
             this.showErrorMessageDiv("Please assign atleast one role to team member");
         }
     }
-    
+
     showErrorMessageDiv(message:string){
         this.errorMessage =message ;
         this.customResponse = new CustomResponse('ERROR', this.errorMessage, true);
@@ -270,15 +270,15 @@ export class AddTeamMembersComponent implements OnInit {
         this.deleteText = "This will remove team member.";
         this.sweetAlertWarning(teamMember);
     }*/
-    
+
     deleteAll(){
         this.deleteText = "This will remove all team members.";
         let teamMember = new TeamMember();
         teamMember.teamMemberId = 0;
       //  this.showPopup(teamMember);
     }
-    
-    
+
+
     hidePopup(){
         this.selectedItem="";
         this.inputChanged="";
@@ -319,20 +319,20 @@ export class AddTeamMembersComponent implements OnInit {
         () => console.log( "Team member Deleted Successfully" )
         );
     }
-    
+
     showPopup(teamMember:TeamMember){
         $('#delete-team-member-modal').show();
         this.emailIds= this.items2.filter((item) => item.id !== teamMember.teamMemberId);
         this.teamMemberIdToDelete = teamMember.teamMemberId;
         this.selectedTeamMemberEmailId = teamMember.emailId;
   }
-    
+
     setPage(page: number) {
         this.pagination.pageIndex = page;
         this.listTeamMembers(this.pagination);
     }
-    
-  
+
+
     validateEmailId(emailId:string,isTabChangeEvent:boolean){
         try{
             console.log($.trim(emailId).length);
@@ -354,11 +354,11 @@ export class AddTeamMembersComponent implements OnInit {
                     }
                     else{
                         if(this.existingEmailIds.indexOf(emailId.toLowerCase())>-1){
-                            this.showErrorMessage("Already Added As Team Member ");
+                            this.showErrorMessage("Sorry, but this person is already a team member for a different account.");
                         }else{
                             this.hideErrorMessage();
                         }
-                        
+
                     }
                 }
             }else{
@@ -366,12 +366,12 @@ export class AddTeamMembersComponent implements OnInit {
                 $(".col-md-12 span").text('');
                 this.removeErrorClass();
             }
-            
+
         }catch(error){
             this.showUIError(error);
         }
     }
-    
+
     validateDisableEmailIds(emailId:string){
         if(this.disabledEmailIds.indexOf(emailId.toLowerCase())>-1){
             this.showErrorMessage("Disabled Team Member Cannot Be Added");
@@ -379,8 +379,8 @@ export class AddTeamMembersComponent implements OnInit {
             this.hideErrorMessage();
         }
     }
-    
-    
+
+
     showErrorMessage(message:string){
         this.teamMemberUi.isValidForm = false;
         this.teamMemberUi.errorMessage = message;
@@ -392,15 +392,15 @@ export class AddTeamMembersComponent implements OnInit {
         $(".col-md-12 span").text('');
         this.removeErrorClass();
     }
-    
-    
+
+
     addErrorClass(){
         return this.emaillIdDivClass = this.errorClass;
     }
     removeErrorClass(){
         return this.emaillIdDivClass = this.successClass;
     }
-    
+
     addTeamMember(){
         try{
             this.teamMemberUi.emptyTable = false;
@@ -413,9 +413,9 @@ export class AddTeamMembersComponent implements OnInit {
         }catch(error){
             this.showUIError(error);
         }
-        
+
     }
-    
+
     deleteRow(index:number,emailId:string){
         try{
             $('#team-member-'+index).remove();
@@ -428,20 +428,20 @@ export class AddTeamMembersComponent implements OnInit {
         }catch(error){
             this.showUIError(error);
         }
-        
+
     }
-    
+
     spliceArray(arr:any,emailId:string){
         arr = $.grep(arr, function(data, index) {
             return data.emailId != emailId
          });
         return arr;
     }
-    
+
     clearRows(){
         try{
             $('#add-team-member-table tbody').remove();
-            this.teamMembers = []; 
+            this.teamMembers = [];
             this.team = new TeamMember();
             this.emaillIdDivClass = this.defaultClass;
             $(".col-md-12 span").text('');
@@ -451,10 +451,10 @@ export class AddTeamMembersComponent implements OnInit {
         }catch(error){
           this.showUIError(error);
         }
-       
+
     }
-    
-    
+
+
     setAllRoles( team: TeamMember ) {
         team.video = true;
         team.campaign = true;
@@ -476,7 +476,7 @@ export class AddTeamMembersComponent implements OnInit {
         team.socialShare = false;
         team.partners = false;
     }
-    
+
     countCheckedCheckBoxesLength(team:TeamMember,index:number,tableId:string){
        try{
            let length = $('#'+tableId+' .module-checkbox-'+index+':checked').length;
@@ -505,10 +505,10 @@ export class AddTeamMembersComponent implements OnInit {
         }catch(error){
             this.showUIError(error);
         }
-       
+
       }
-    
-    
+
+
     validateRoles(tableId:string,trId:string){
         try{
             let tableRowsLength = $('#'+tableId+' tbody tr').length;
@@ -524,22 +524,22 @@ export class AddTeamMembersComponent implements OnInit {
         }catch(error){
             this.showUIError(error);
         }
-       
+
     }
-    
+
     showUIError(error){
         this.uiError = 'Oops! Something went wrong';
         this.logger.error( error );
     }
 
-    
+
     refreshList(){
         this.pagination.pageIndex =1;
         this.pagination.searchKey = "";
         this.listTeamMembers(this.pagination);
     }
     csvErrors:string[] = [];
-    
+
     fileChangeListener($event): void {
         this.csvErrors = [];
         var text = [];
@@ -579,11 +579,11 @@ export class AddTeamMembersComponent implements OnInit {
           this.fileReset();
         }
       };
-      
+
          validateHeaders(headers){
           return (headers[0]=="EMAIL_ID" && headers[1]=="ALL" && headers[2]=="VIDEO" && headers[3]=="CONTACTS" && headers[4]=="CAMPAIGN" && headers[5]=="STATS" && headers[6]=="EMAIL" && headers[7]=="SOCIAL_SHARE" && headers[8]=="PARTNERS");
          }
-      
+
       readCsvData(csvRecordsArray,rowLength){
           this.csvRecords = this.fileUtil.getDataRecordsArrayFromCSVFile(csvRecordsArray,rowLength);
           if(this.csvRecords.length>1){
@@ -592,8 +592,8 @@ export class AddTeamMembersComponent implements OnInit {
               this.showCsvFileError('You Cannot Upload Empty File');
           }
       }
-      
-      
+
+
       processCSVData(){
           this.validateCsvData();
           if(this.csvErrors.length>0){
@@ -607,15 +607,15 @@ export class AddTeamMembersComponent implements OnInit {
               this.fileReset();
           }
       }
-      
+
       showCsvFileError(message:string){
           this.showErrorMessageDiv(message);
           this.fileReset();
           this.isUploadCsv = false;
           this.isAddTeamMember = false;
-      
+
       }
-      
+
       validateCsvData(){
           let names = this.csvRecords.map(function(a) {return a[0].split(',')[0]});
           let duplicateEmailIds = this.referenceService.returnDuplicates(names);
@@ -649,7 +649,7 @@ export class AddTeamMembersComponent implements OnInit {
                   this.isUploadCsv = false;
                   this.isAddTeamMember = false;
               }
-              
+
           }
       }
 
@@ -657,7 +657,7 @@ export class AddTeamMembersComponent implements OnInit {
         this.fileImportInput.nativeElement.value = "";
         this.csvRecords = [];
       }
-      
+
       setDefaultValue(value:any){
           if(value==1){
               return true;
@@ -665,7 +665,7 @@ export class AddTeamMembersComponent implements OnInit {
               return false;
           }
       }
-      
+
       appendCsvDataToTable(){
           for(var i=1;i<this.csvRecords.length;i++){
               let rows = this.csvRecords[i];
@@ -692,12 +692,12 @@ export class AddTeamMembersComponent implements OnInit {
                       teamMember.socialShare = this.setDefaultValue(row[7]);
                       teamMember.partners = this.setDefaultValue(row[8]);
                   }
-                  
+
               }
               this.teamMembers.push(teamMember);
           }
       }
-      
+
       showAddTeamMember(){
          // this.isAddTeamMember = true;
           $( "#csv-error-div" ).hide();
@@ -727,9 +727,9 @@ export class AddTeamMembersComponent implements OnInit {
              $('#empty-roles-div').show('600');
              this.errorMessage = "More than two org admins are not allowed";
           }*/
-        
+
       }
-      
+
       disableAsAnOrgAdmin(event:any,index:number,team:TeamMember){
           //this.removeAllRoles(team);
           //team.all = false;
@@ -737,7 +737,7 @@ export class AddTeamMembersComponent implements OnInit {
           $('.module-checkbox-'+index).prop('disabled',false);
           $('.check-all-'+index).prop('disabled',false);
       }
-      
+
       enableAsOrgAdmin(event:any,index:number,team:TeamMember){
           this.setAllRoles(team);
           team.all = true;
@@ -760,7 +760,7 @@ export class AddTeamMembersComponent implements OnInit {
           var orgAdminsCount = counts['true'];
           return orgAdminsCount;
       }
-      
+
       changeTeamMemberStatus(teamMember:TeamMember,event:any){
           if(event){
               teamMember.status = Status.APPROVE;
@@ -770,11 +770,11 @@ export class AddTeamMembersComponent implements OnInit {
               teamMember.enabled = event;
           }
       }
-      
+
       onSelect(item: any) {
         this.selectedItem = item;
       }
-     
+
       onInputChangedEvent(val: string) {
         this.inputChanged = val;
       }
