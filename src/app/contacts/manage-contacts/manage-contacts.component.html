@@ -203,9 +203,10 @@
 								<!-- END FILTER -->
 								 <!-- <app-loader *ngIf="httpRequestLoader.isLoading && !isListView"></app-loader>
 								<app-list-loader *ngIf="httpRequestLoader.isLoading && isListView"></app-list-loader> -->
+								<div class="clearfix">
 								<app-grid-loader *ngIf="httpRequestLoader.isLoading && !isListView"></app-grid-loader>
               					<app-list-loader *ngIf="httpRequestLoader.isLoading && isListView"></app-list-loader>
-
+								</div>
 
 								<section [hidden]="!isListView"
 									*ngIf="pagination.pagedItems?.length != 0 && !httpRequestLoader.isLoading">
