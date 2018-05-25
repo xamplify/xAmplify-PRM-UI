@@ -14,7 +14,7 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 import { EmailTemplateService } from '../../email-template/services/email-template.service';
 import { ContactService } from '../../contacts/services/contact.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
-
+import { CompanyProfileService } from '../../dashboard/company-profile/services/company-profile.service';
 import { validateCampaignSchedule } from '../../form-validator';
 import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import { CampaignEmailTemplate } from '../models/campaign-email-template';
@@ -59,6 +59,8 @@ export class EditPartnerCampaignsComponent implements OnInit {
     dataError = false;
     emailTemplateHrefLinks: any[] = [];
     enableWorkFlow = true;
+    partnerLogo:string = "";
+    partnerCompanyUrl:string = "";
     formErrors = {
         'campaignName': '',
         'fromName': '',
@@ -168,7 +170,7 @@ export class EditPartnerCampaignsComponent implements OnInit {
             private emailTemplateService: EmailTemplateService,
             public callActionSwitch: CallActionSwitch,
             private formBuilder: FormBuilder,
-            private xtremandLogger: XtremandLogger) {
+            private xtremandLogger: XtremandLogger,private companyProfileService:CompanyProfileService) {
             this.countries = this.referenceService.getCountries();
             this.contactListPagination = new Pagination();
             this.contactListPagination.filterKey = 'isPartnerUserList';
@@ -185,10 +187,11 @@ export class EditPartnerCampaignsComponent implements OnInit {
     
     
     
-    
     setCampaignData(result){
         this.campaign = result;
         const userProfile = this.authenticationService.userProfile;
+        this.partnerLogo = userProfile.companyLogo;
+        this.partnerCompanyUrl = userProfile.websiteUrl;
         this.campaign.email = userProfile.emailId;
         if(userProfile.firstName !== undefined && userProfile.lastName !== undefined)
             this.campaign.fromName = $.trim(userProfile.firstName + " " + userProfile.lastName);
@@ -438,7 +441,6 @@ export class EditPartnerCampaignsComponent implements OnInit {
         $("#email-template-title").empty();
         $("#email-template-title").append(emailTemplateName);
         $('#email-template-title').prop('title', emailTemplate.name);
-
         if (this.campaign.campaignType.toLocaleString().includes('VIDEO') ) {
             let selectedVideoGifPath = this.campaign.campaignVideoFile.gifImagePath;
             let updatedBody = emailTemplate.body.replace("<SocialUbuntuImgURL>", selectedVideoGifPath);
@@ -447,10 +449,12 @@ export class EditPartnerCampaignsComponent implements OnInit {
             updatedBody = updatedBody.replace("https://dummyurl.com", "javascript:void(0)");
             updatedBody = updatedBody.replace("https://xamp.io/vod/images/xtremand-video.gif", selectedVideoGifPath);
             updatedBody = updatedBody.replace("&lt;SocialUbuntuImgURL&gt;", selectedVideoGifPath);
+            updatedBody = this.replacePartnerLogo(updatedBody);
             $("#email-template-content").append(updatedBody);
         } else {
             console.log(body);
             let updatedBody = body.replace("<div id=\"video-tag\">", "<div id=\"video-tag\" style=\"display:none\">");
+            updatedBody = this.replacePartnerLogo(updatedBody);
             $("#email-template-content").append(updatedBody);
         }
 
@@ -459,7 +463,15 @@ export class EditPartnerCampaignsComponent implements OnInit {
         $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
     }
 
- 
+    replacePartnerLogo(updatedBody:string){
+        this.partnerLogo = this.partnerLogo.replace("http://localhost:8080","https://xamp.io");
+        updatedBody = updatedBody.replace("https://xamp.io/vod/images/co-branding.png",this.partnerLogo);
+        return updatedBody = this.replaceCoBrandingDummyUrl(updatedBody);
+    }
+    
+    replaceCoBrandingDummyUrl(updatedBody:string){
+        return updatedBody = updatedBody.replace("https://dummycobrandingurl.com",this.partnerCompanyUrl);
+    }
 
     
     
@@ -983,6 +995,7 @@ export class EditPartnerCampaignsComponent implements OnInit {
             updatedBody = updatedBody.replace("<SocialUbuntuURL>", "javascript:void(0)");
             updatedBody = updatedBody.replace("https://dummyurl.com", "javascript:void(0)");
             updatedBody = updatedBody.replace("https://aravindu.com/vod/images/xtremand-video.gif", selectedVideoGifPath);
+            updatedBody = updatedBody.replace("https://xamp.io/vod/images/xtremand-video.gif", selectedVideoGifPath);
             updatedBody = updatedBody.replace("&lt;SocialUbuntuImgURL&gt;", selectedVideoGifPath);
             $("#email-template-content").append(updatedBody);
         } else {
@@ -1044,6 +1057,7 @@ export class EditPartnerCampaignsComponent implements OnInit {
     }
     getAnchorLinksFromEmailTemplate(body: string) {
         let self = this;
+        body = this.replaceCoBrandingDummyUrl(body);
         $(body).find('a').each(function (e) {
             let href = $(this).attr('href');
             self.emailTemplateHrefLinks.push(href);

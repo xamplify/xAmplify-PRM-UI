@@ -161,6 +161,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.isListView = !this.refService.isGridView;
             this.pagination.maxResults = 12;
             this.listCampaign(this.pagination);
+            
         } catch (error) {
             this.logger.error("error in manage-publish-component init() ", error);
         }

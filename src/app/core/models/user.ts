@@ -30,4 +30,5 @@ export class User {
     isShowDetails = false;
     companyName:string = "";
     vendorSignUp:boolean = false;
+    companyLogo:string = "";
 }

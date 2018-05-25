@@ -1591,13 +1591,17 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
            self.emailTemplateHrefLinks.push(href);
         });
         this.emailTemplateHrefLinks = this.refService.removeDuplicates(this.emailTemplateHrefLinks);
-        var index = $.inArray("<SocialUbuntuURL>", this.emailTemplateHrefLinks);
+        this.removeUrls("<SocialUbuntuURL>");
+        this.removeUrls("https://dummycobrandingurl.com");
+    }
+
+    removeUrls(url:string){
+        var index =  $.inArray(url, this.emailTemplateHrefLinks);
         if (index>=0) {
             this.emailTemplateHrefLinks.splice(index, 1);
         }
-        console.log(this.emailTemplateHrefLinks);
     }
-
+    
     /*************************************************************Launch Campaign***************************************************************************************/
     validateLaunchForm(): void {
         this.campaignLaunchForm = this.fb.group( {
