@@ -147,6 +147,7 @@ export class EditContactsComponent implements OnInit {
     loading = false;
     contactAllDetails = [];
     openCampaignModal = false;
+    logListName = "";
 
     filterOptions = [
         { 'name': '', 'value': 'Field Name*' },
@@ -1902,18 +1903,45 @@ export class EditContactsComponent implements OnInit {
     }
 
     downloadContactTypeList() {
-        let logListName: string;
         if ( this.contactsByType.selectedCategory === 'active' ) {
-            logListName = 'Active_Users_of_ContactList.csv';
+            this.logListName = 'Active_Users_of_ContactList.csv';
         } else if ( this.contactsByType.selectedCategory === 'non-active' ) {
-            logListName = 'InActive_Users_of_ContactList.csv';
+            this.logListName = 'InActive_Users_of_ContactList.csv';
         } else if ( this.contactsByType.selectedCategory === 'invalid' ) {
-            logListName = 'Invalid_Users_of_ContactList.csv';
+            this.logListName = 'Invalid_Users_of_ContactList.csv';
         } else if ( this.contactsByType.selectedCategory === 'unsubscribe' ) {
-            logListName = 'Unsubscribed_Users_of_ContactList.csv';
+            this.logListName = 'Unsubscribed_Users_of_ContactList.csv';
         }
         this.downloadDataList.length = 0;
         for ( let i = 0; i < this.contactsByType.listOfAllContacts.length; i++ ) {
+            
+            if(this.contactsByType.listOfAllContacts[i].firstName == undefined){
+                this.contactsByType.listOfAllContacts[i].firstName = "";
+            }
+            if(this.contactsByType.listOfAllContacts[i].lastName == undefined){
+                this.contactsByType.listOfAllContacts[i].lastName = "";
+            }
+           
+            if(this.contactsByType.listOfAllContacts[i].contactCompany == undefined){
+                this.contactsByType.listOfAllContacts[i].contactCompany = "";
+            }
+            if(this.contactsByType.listOfAllContacts[i].address == undefined){
+                this.contactsByType.listOfAllContacts[i].address = "";
+            }
+            if(this.contactsByType.listOfAllContacts[i].city == undefined){
+                this.contactsByType.listOfAllContacts[i].city = "";
+            }
+            if(this.contactsByType.listOfAllContacts[i].country == undefined){
+                this.contactsByType.listOfAllContacts[i].country = "";
+            }
+            if(this.contactsByType.listOfAllContacts[i].jobTitle == undefined){
+                this.contactsByType.listOfAllContacts[i].jobTitle = "";
+            }
+           
+            if(this.contactsByType.listOfAllContacts[i].mobileNumber == undefined){
+                this.contactsByType.listOfAllContacts[i].mobileNumber = "";
+            }
+            
             var object = {
                 "EmailId": this.contactsByType.listOfAllContacts[i].emailId,
                 "First Name": this.contactsByType.listOfAllContacts[i].firstName,
@@ -1924,21 +1952,19 @@ export class EditContactsComponent implements OnInit {
                 "Country": this.contactsByType.listOfAllContacts[i].country,
                 "JobTitle": this.contactsByType.listOfAllContacts[i].jobTitle,
                 "MobileNumber": this.contactsByType.listOfAllContacts[i].mobileNumber,
-                "Notes": this.contactsByType.listOfAllContacts[i].description
+                //"Notes": this.contactsByType.listOfAllContacts[i].description
             }
 
             this.downloadDataList.push( object );
         }
-        var csvData = this.refService.convertToCSV( this.downloadDataList );
-        var a = document.createElement( "a" );
-        a.setAttribute( 'style', 'display:none;' );
-        document.body.appendChild( a );
-        var blob = new Blob( [csvData], { type: 'text/csv' });
-        var url = window.URL.createObjectURL( blob );
-        a.href = url;
-        a.download = logListName;
-        a.click();
-        return 'success';
+        this.refService.isDownloadCsvFile = true;
+    }
+    
+    closingDownload(event){
+        this.refService.isDownloadCsvFile = false;
+        if(event == "success"){
+            return 'success';
+        }
     }
 
     listOfAllSelectedContactListByType( contactType: string ) {

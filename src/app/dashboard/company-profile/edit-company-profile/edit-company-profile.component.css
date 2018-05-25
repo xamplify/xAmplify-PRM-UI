@@ -54,8 +54,6 @@
 .profile-image {
     width: auto;
     height: 100%;
-    max-width: 100%;
-    max-height: 100%;
 }
 
 a:hover{ text-decoration:none}
@@ -135,6 +133,6 @@ svg {
     border-left: none;
     height: 36px;	
 }
-/deep/ .input-group > .form-control:focus {
+/* /deep/ .input-group > .form-control:focus {
     border-color: #e5e5e5;
-}
+} */

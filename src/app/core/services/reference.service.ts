@@ -65,6 +65,8 @@ export class ReferenceService {
     homeRouter = '/home/dashboard/default';
     pageContnetBgColor = "#F1F3FA";
     isPlayVideo = false;
+    isDownloadCsvFile = false;
+    
     public URL: string = this.authenticationService.REST_URL + 'admin/';
     constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,
         private router: Router, public deviceService: Ng2DeviceService,) {
