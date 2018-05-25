@@ -91,14 +91,14 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
           $('#videoId').remove();
           $('.p-video').remove();
           this.videoUtilService.normalVideoJsFiles();
-          const str = '<video id="videoId" style="max-width: 100% !important;" poster=' + this.posterImage + ' preload="none"  autoplay= "false" class="video-js vjs-default-skin" controls></video>';
+          const str = '<video id="videoId"  poster=' + this.posterImage + ' preload="none"  autoplay= "false" class="video-js vjs-default-skin" controls></video>';
           $('#newPlayerVideo').append(str);
           this.videoUrl = this.selectedVideo.videoPath;
           this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
           this.videoUrl = this.videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
           $('#newPlayerVideo video').append('<source src=' + this.videoUrl + ' type="application/x-mpegURL">');
           $('#videoId').css('height', '315px');
-          $('#videoId').css('width', 'auto');
+          $('#videoId').css('width', '100%');
           $('.video-js .vjs-tech').css('width', '100%');
           $('.video-js .vjs-tech').css('height', '100%');
           const self = this;
@@ -145,7 +145,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
             }
         });
         this.videoControllColors(videoFile);
-        $('#videoId').css('width', 'auto');
+        $('#videoId').css('width', '100%');
         $('#videoId').css('height', '315px');
     }
   addVideo() {
