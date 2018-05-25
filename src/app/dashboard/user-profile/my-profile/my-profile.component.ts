@@ -93,10 +93,11 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         }
         this.uploader = new FileUploader({
             allowedMimeType: ['image/jpeg', 'image/pjpeg', 'image/jpeg', 'image/pjpeg', 'image/png'],
-            maxFileSize: 100 * 1024 * 1024, // 100 MB
+            maxFileSize: 10 * 1024 * 1024, // 10 MB
             url: this.authenticationService.REST_URL + "admin/uploadProfilePicture/" + this.loggedInUserId + "?access_token=" + this.authenticationService.access_token
         });
         this.uploader.onAfterAddingFile = (file) => {
+            this.ngxloading = true;
             console.log(file);
             file.withCredentials = false;
             this.uploader.queue[0].upload();
@@ -112,6 +113,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             this.profileUploadSuccess = true;
             this.referenceService.topNavBarUserDetails.profilePicutrePath = imageFilePath['message'];
             this.authenticationService.userProfile.profileImagePath = imageFilePath['message'];
+            this.ngxloading = false;
             this.customResponse = new CustomResponse('SUCCESS', this.properties.PROFILE_PIC_UPDATED,true);
         };
     }
@@ -139,30 +141,13 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         if ($.inArray(ext, extentionsArray) == -1) {
             this.profilePictueError = true;
             this.profilePictureErrorMessage = "Please Upload Image Files Only";
+            this.customResponse =  new CustomResponse('ERROR',this.profilePictureErrorMessage, true);
         }
         let fileSize = (size / 1024 / 1024); //size in MB
         if (fileSize > maxSize) {
             this.profilePictueError = true;
-            this.profilePictureErrorMessage = "Maximum File Size is 100 MB";
-        }
-        if (!this.profilePictueError) {
-            this.readFiles(inputFile.files);
-        }
-    }
-    readFile(file: any, reader: any, callback: any) {
-        reader.onload = () => {
-            callback(reader.result);
-        }
-        reader.readAsDataURL(file);
-    }
-
-    readFiles(files: any, index = 0) {
-        let reader = new FileReader();
-        if (index in files) {
-            this.readFile(files[index], reader, (result: any) => {
-                $('#priview').attr('src', result);
-                this.readFiles(files, index + 1); // Read the next file;
-            });
+            this.profilePictureErrorMessage = "Maximum File Size is 10 MB";
+            this.customResponse =  new CustomResponse('ERROR',this.profilePictureErrorMessage, true);
         }
     }
     videojsCall() {
@@ -300,7 +285,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                             this.ngxloading = false;
                             this.logger.error(this.referenceService.errorPrepender + " updatePassword():" + data);
                         }
-
                     },
                     error => {
                         this.ngxloading = false;
@@ -310,9 +294,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                 );
         }
         return false;
-
     }
-
 
     checkPassword(event: any) {
         var password = event.target.value;

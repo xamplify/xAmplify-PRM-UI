@@ -15,7 +15,7 @@ declare var videojs, $: any;
 } )
 export class PreviewVideoComponent implements OnInit {
     @Input() videoFile: any;
-      @Output() notifyParent: EventEmitter<any>; 
+      @Output() notifyParent: EventEmitter<any>;
     videoJSplayer: any;
     videotitle: string;
     videoId: number;
@@ -24,7 +24,7 @@ export class PreviewVideoComponent implements OnInit {
         public authenticationService: AuthenticationService, public videoUtilService: VideoUtilService ) {
                 this.notifyParent = new EventEmitter();
          }
-    
+
     showPreview() {
         this.appendVideoData( this.videoFile, "main_video", "modal-title" );
         $( "#show_preview" ).modal('show');
@@ -74,10 +74,6 @@ export class PreviewVideoComponent implements OnInit {
             videoUrl = videoUrl.substring(0, videoUrl.lastIndexOf('.'));
             videoUrl = videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
             $( "#" + divId + " video").append('<source src=' + videoUrl + ' type="application/x-mpegURL">');
-          
-           // videoPath = videoPath.replace( ".m3u8", ".mp4" );
-            console.log( "Updated 360 video path" + videoPath );
-          //  $( "#" + divId + " video" ).append( '<source src="' + videoPath + '" type="video/mp4">' );
             var player = videojs( 'videoId' );
             player.panorama( {
                 autoMobileOrientation: true,
@@ -85,7 +81,7 @@ export class PreviewVideoComponent implements OnInit {
                 clickToToggle: true,
                 callback: function() {
                     player.ready();
-                    // videoSelf.videoControllColors( videoFile );
+                     videoSelf.videoControllColors( videoFile );
                 }
             } );
             $( "#videoId" ).css( "width", "550px" );
@@ -100,7 +96,6 @@ export class PreviewVideoComponent implements OnInit {
             console.log( "Video Path:::" + videoPath );
             videoPath = videoPath.substring( 0, videoPath.lastIndexOf( '.' ) );
             videoPath = videoPath + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
-            console.log( "Normal Video Updated Path:::" + videoPath );
             $( "#" + divId + " video" ).append( '<source src=' + videoPath + ' type="application/x-mpegURL">' );
             $( "#videoId" ).css( "width", "550px" );
             $( "#videoId" ).css( "height", "310px" );
@@ -117,7 +112,7 @@ export class PreviewVideoComponent implements OnInit {
                     nativeTextTracks: !overrideNativeValue
                 }
             } );
-            // this.videoControllColors( videoFile );
+             this.videoControllColors( videoFile );
             console.log( player );
             if ( this.videoJSplayer ) {
                 this.videoJSplayer.on( 'fullscreenchange', function() {
