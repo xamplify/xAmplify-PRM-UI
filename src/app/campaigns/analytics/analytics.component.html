@@ -18,8 +18,8 @@
 		<li *ngIf="campaignRouter==='managecampaigns'"><a  [routerLink]="['/home/campaigns/manage']">Manage Campaigns</a><i class="fa fa-angle-right"></i></li>
     <li *ngIf="campaignRouter==='notification'"><a [routerLink]="['/home/dashboard/notifications']">Notifications</a><i class="fa fa-angle-right"></i></li>
     <li *ngIf="campaignRouter==='partnerAnalytics'"><a [routerLink]="['/home/partners/analytics']">Partner Analytics</a><i class="fa fa-angle-right"></i></li>
-    <li style="color: #888;" *ngIf="isPartnerEnabledAnalyticsAccess">{{campaign.campaignName}}</li>
-    <li style="color: #888;" *ngIf="!isPartnerEnabledAnalyticsAccess">{{campaign.campaignName}} <b>(Analytics Disabled)</b></li>
+    <li style="color: #888;" *ngIf="isPartnerEnabledAnalyticsAccess">{{campaign.campaignName}} <b *ngIf="isNavigatedThroughAnalytics">(Data Sharing Enabled)</b></li>
+    <li style="color: #888;" *ngIf="!isPartnerEnabledAnalyticsAccess">{{campaign.campaignName}} <b *ngIf="isNavigatedThroughAnalytics">(Data Sharing Disabled)</b></li>
 	</ul>
 </div>
 <div *ngIf="customResponse.responseType === 'ERROR'; else NOERROR" class="m10">

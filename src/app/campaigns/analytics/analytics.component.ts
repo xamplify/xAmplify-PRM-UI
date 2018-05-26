@@ -70,12 +70,15 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   videoFile: any;
   userWatchtotalRecords: number;
   isPartnerEnabledAnalyticsAccess:boolean = false;
+  isNavigatedThroughAnalytics:boolean = false;
   campaignRouter:any;
+  loggedInUserId:number = 0;
   constructor(private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
     public authenticationService: AuthenticationService, public pagerService: PagerService, public pagination: Pagination,
     public referenceService: ReferenceService, public contactService: ContactService) {
       this.campaignRouter = this.utilService.getRouterLocalStorage();
       this.isTimeLineView = false;
+      this.loggedInUserId = this.authenticationService.getUserId();
     this.campaign = new Campaign();
     if (this.referenceService.isFromTopNavBar) {
       this.userTimeline(this.referenceService.topNavBarNotificationDetails.campaignId, this.referenceService.topNavBarNotificationDetails.userId, this.referenceService.topNavBarNotificationDetails.emailId);
@@ -485,9 +488,11 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       .subscribe(
       data => {
         this.campaign = data;
-        if(this.campaign.nurtureCampaign && this.campaign.userId!=this.authenticationService.getUserId()){
+        if(this.campaign.nurtureCampaign && this.campaign.userId!=this.loggedInUserId){
             this.isPartnerEnabledAnalyticsAccess = this.campaign.detailedAnalyticsShared;
+            this.isNavigatedThroughAnalytics = true;
         }else{
+            this.isNavigatedThroughAnalytics = false;
             this.isPartnerEnabledAnalyticsAccess = true;
         }
         this.campaingContactLists = data.userLists;
@@ -758,7 +763,8 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     }
 
     previewVideo(videoFile: any){
-      this.videoFile = videoFile;
+        alert("Preview video");
+        this.videoFile = videoFile;
     }
 
     closeModal(event: any){
@@ -779,7 +785,6 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   ngOnInit() {
     this.paginationType = 'campaignViews';
     this.emailActionListPagination.pageIndex = 1;
-    const userId = this.authenticationService.getUserId();
     this.campaignId = this.route.snapshot.params['campaignId'];
     this.getCampaignById(this.campaignId);
     this.getEmailSentCount(this.campaignId);

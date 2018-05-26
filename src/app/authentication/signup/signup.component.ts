@@ -95,6 +95,7 @@ export class SignupComponent implements OnInit, OnDestroy {
         this.signUpUser = this.signUpForm.value;
         this.signUpUser.emailId = this.signUpUser.emailId.toLowerCase();
         this.loading = true;
+        this.signUpUser.vendorSignUp = this.vendorSignup;
         this.userService.signUp(this.signUpUser)
             .subscribe(
                 data => {
