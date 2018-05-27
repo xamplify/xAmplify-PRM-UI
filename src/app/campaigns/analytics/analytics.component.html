@@ -10,7 +10,7 @@
 	}
 
 </style>
-
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 <div class="page-content" [hidden]="isTimeLineView">
 <div class="page-bar square-box" style="margin: 0 10px 15px;border-radius: 0;">
 	<ul class="page-breadcrumb">
@@ -37,8 +37,8 @@
 					<div class="camp-title ">Video Info</div>
 					<div class="camp-number">
 
-						<b class="m0" title={{campaign.campaignVideoFile.title}}>{{campaign.campaignVideoFile.title | slice: 0: 20}}</b>
-						<span *ngIf="campaign.campaignVideoFile.title?.length>20">...</span>
+						<b class="m0" title={{campaign.campaignVideoFile.title}}>{{campaign.campaignVideoFile.title | slice: 0: 25}}</b>
+						<span *ngIf="campaign.campaignVideoFile.title?.length>25">...</span>
 					</div>
 					<!-- <div class="camp-desc">
 						<span title={{campaign.campaignVideoFile.description}}>{{campaign.campaignVideoFile.description | slice: 0: 20}}
@@ -473,6 +473,8 @@
 			<div class="modal-body">
 				<div class="row">
 					<div class="table-responsive">
+					<app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+ 					<ng-container *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError">
 						<table class="table tgrid">
 							<thead>
 								<tr>
@@ -508,6 +510,7 @@
 								</tr>
 							</tbody>
 						</table>
+						</ng-container>
 					</div>
 					<!--pager here  -->
 					<app-pagination *ngIf="usersWatchListPagination.pagedItems?.length > 0" [pagination]="usersWatchListPagination" [type]="'usersWatch'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
@@ -538,6 +541,8 @@
 			<div class="modal-body">
 				<div class="row">
 					<div class="table-responsive">
+					 <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+						<ng-container *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError">
 						<table class="table tgrid">
 							<thead>
 								<tr>
@@ -563,6 +568,7 @@
 								</tr>
 							</tbody>
 						</table>
+						</ng-container>
 					</div>
 					<app-pagination *ngIf="emailActionListPagination.pagedItems?.length > 0" [pagination]="emailActionListPagination" [type]="'emailAction'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
 				</div>
@@ -591,6 +597,8 @@
 			<div class="modal-body">
 				<div class="row">
 					<div class="table-responsive">
+					 <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+				 	<ng-container *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError ">
 						<table class="table tgrid">
 							<thead>
 								<tr>
@@ -614,6 +622,7 @@
 								</tr>
 							</tbody>
 						</table>
+						</ng-container>
 						<app-pagination [pagination]="campaignViewsPagination"
 						 [type]="'campaignViews'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
 					</div>
@@ -642,6 +651,8 @@
 			<div class="modal-body clearfix">
 				<!-- <div class="row"> -->
 				<div class="table-responsive">
+				 <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+				 <ng-container *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError ">
 					<table class="table tgrid">
 						<thead>
 							<tr>
@@ -678,6 +689,7 @@
 							</tr>
 						</tbody>
 					</table>
+					</ng-container>
 					<app-pagination  *ngIf="pagination.pagedItems?.length > 0" [pagination]="pagination" [type]="'donutCampaign'" (notifyParent)="setPage($event)" (notifyParentDropDown)= "paginationDropdown($event)"></app-pagination>
 				</div>
 			</div>
@@ -704,6 +716,8 @@
 			</div>
 			<div class="modal-body clearfix">
 				<div class="table-responsive">
+				 <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+				 <ng-container *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError ">
 					<table class="table tgrid">
 						<thead>
 							<tr>
@@ -730,6 +744,7 @@
 							</tr>
 						</tbody>
 					</table>
+					</ng-container>
 					<app-pagination *ngIf="pagination.pagedItems?.length > 0"  [pagination]="pagination" [type]="'coutrywiseUsers'"
 					(notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
 				</div>
