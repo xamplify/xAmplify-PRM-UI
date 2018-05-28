@@ -77,7 +77,7 @@ h3 {
 	width: 60px;
 	margin: 0px;
 }
-/deep/ .input-group > .form-control:focus {
+/* /deep/ .input-group > .form-control:focus {
     border-color: white !important;
 }
 /deep/ .input-group > .input-group-addon {
@@ -85,4 +85,4 @@ h3 {
 } 
  /deep/ .input-group-addon {
   border: none !important;
-	}
+	} */
