@@ -28,7 +28,7 @@
 
 <ng-template #NOERROR>
 	<div class="row">
-		<div class="pl10 pr10 col-xs-12" [ngClass]="{'col-sm-4': campaignType === 'VIDEO'}" *ngIf="campaignType === 'VIDEO'">
+		<div class="pl10 pr10 col-xs-12" [ngClass]="{'col-sm-4': campaignType === 'VIDEO'}" *ngIf="campaignType === 'VIDEO' && campaign.selectedVideoId>0">
 			<a class="dashboard-stat dashboard-stat-lighter purple-soft" (click)="previewVideo(campaign.campaignVideoFile)" [class.disabled]="!isPartnerEnabledAnalyticsAccess ?true:null">
 				<div class="visual">
 					<i class="fa fa-video-camera"></i>
@@ -40,19 +40,13 @@
 						<b class="m0" title={{campaign.campaignVideoFile.title}}>{{campaign.campaignVideoFile.title | slice: 0: 25}}</b>
 						<span *ngIf="campaign.campaignVideoFile.title?.length>25">...</span>
 					</div>
-					<!-- <div class="camp-desc">
-						<span title={{campaign.campaignVideoFile.description}}>{{campaign.campaignVideoFile.description | slice: 0: 20}}
-						<span *ngIf="campaign.campaignVideoFile.description?.length>23">...</span></span>
-          </div> -->
-          <div class="camp-desc" *ngIf="isPartnerEnabledAnalyticsAccess">
-            <span>Click for preview</span>
-           </div>
+         		 <div class="camp-desc" *ngIf="isPartnerEnabledAnalyticsAccess">
+		            <span>Click for preview</span>
+		           </div>
 				</div>
 			</a>
-
 		</div>
-		<div  class="pl10 pr10 col-xs-12" [ngClass]="{'col-sm-4': campaignType === 'VIDEO', 'col-sm-6': campaignType === 'EMAIL'}" *ngIf="campaignType === 'VIDEO' || campaignType === 'EMAIL'">
-
+		<div  class="pl10 pr10 col-xs-12" [ngClass]="{'col-sm-4': campaignType === 'VIDEO', 'col-sm-6': campaignType === 'EMAIL'}" *ngIf="(campaignType === 'VIDEO' || campaignType === 'EMAIL') && campaign.selectedEmailTemplateId>0">
 			<a class="dashboard-stat dashboard-stat-lighter blue-soft" (click)="showEmailTemplatePreview(campaign.emailTemplate)" [class.disabled]="!isPartnerEnabledAnalyticsAccess ?true:null" >
 					<div class="visual">
 						<i class="fa fa-envelope-open"></i>
@@ -69,6 +63,20 @@
 					</div>
 				</a>
 		</div>
+		<!-- <div  class="pl10 pr10 col-xs-12" [ngClass]="{'col-sm-4': campaignType === 'VIDEO', 'col-sm-6': campaignType === 'EMAIL'}" *ngIf="campaign.selectedEmailTemplateId==0">
+			<a class="dashboard-stat dashboard-stat-lighter blue-soft" style="cursor: default;" >
+					<div class="visual">
+						<i class="fa fa-envelope-open"></i>
+					</div>
+					<div class="camp-details">
+						<div class="camp-title">Email Info</div>
+						<div class="camp-number">
+						  <b class="m0">No email template found</b>
+						</div>
+					</div>
+				</a>
+		</div> -->
+		
 		<div  class="pl10 pr10 col-xs-12" [ngClass]="{'col-sm-4': campaignType === 'VIDEO', 'col-sm-6': campaignType === 'EMAIL', 'col-sm-12': campaignType === 'SOCIAL'}">
 			<a class="dashboard-stat dashboard-stat-lighter green-soft" (click)="showContactListModal()" [class.disabled]="!isPartnerEnabledAnalyticsAccess ?true:null">
 					<div class="visual">
