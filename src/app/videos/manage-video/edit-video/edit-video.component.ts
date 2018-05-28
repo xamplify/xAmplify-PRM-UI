@@ -1279,11 +1279,11 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
 
     selectedPublishToName(event: any){
         if(event === "PUBLIC"){
-            this.publisToMessage = "Everyone can view"
+            this.publisToMessage = "Coming soon"
         } else if(event === "UNLISTED"){
-            this.publisToMessage = "No one can view"
+            this.publisToMessage = "Coming soon"
         } else if(event === "PRIVATE"){
-            this.publisToMessage = "Only you can view"
+            this.publisToMessage = "Coming soon"
         }
     }
 
