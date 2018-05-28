@@ -2042,7 +2042,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         $('.h-video').remove();
         $('.hls-video').remove();
         $('#usersModal').modal('hide');
-         }
+        $('#show_email_template_preivew').modal('hide');
+     }
 
     saveCampaignOnDestroy(){
         var data = this.getCampaignData("");

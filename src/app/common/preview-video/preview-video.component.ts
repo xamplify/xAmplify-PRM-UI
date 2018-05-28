@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 
 import { ReferenceService } from '../../core/services/reference.service';
 import { VideoUtilService } from '../../videos/services/video-util.service';
@@ -13,7 +13,7 @@ declare var videojs, $: any;
     templateUrl: './preview-video.component.html',
     styleUrls: ['./preview-video.component.css','../../../assets/css/video-css/video-js.custom.css']
 } )
-export class PreviewVideoComponent implements OnInit {
+export class PreviewVideoComponent implements OnInit, OnDestroy {
     @Input() videoFile: any;
     @Output() notifyParent: EventEmitter<any>;
     videoJSplayer: any;
@@ -132,6 +132,9 @@ export class PreviewVideoComponent implements OnInit {
     }
     ngOnInit() {
        this.showPreview();
+    }
+    ngOnDestroy(){
+      $('#show_preview').modal('hide');
     }
 
 }

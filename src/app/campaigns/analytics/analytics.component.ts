@@ -870,5 +870,9 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   }
   ngOnDestroy(){
     this.paginationType = '';
+    $('#worldMapModal').modal('hide');
+    $('#show_email_template_preivew').modal('hide');
+    $('#show_contact-list-info').modal('hide');
+
   }
 }

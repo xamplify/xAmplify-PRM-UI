@@ -75,6 +75,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     heatMapTooltip = 'Last 7 days';
     videoStatesTooltip = 'Last 7 days';
     isOnlyPartner:boolean;
+    loading = false;
 
     constructor(public router: Router, public dashboardService: DashboardService, public pagination: Pagination, public videosPagination: Pagination,
         public contactService: ContactService, public videoFileService: VideoFileService, public twitterService: TwitterService,
@@ -905,13 +906,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     getCampaignUsersWatchedInfo(countryCode) {
-        try {
+      this.loading = true;
+      try {
             this.countryCode = countryCode.toUpperCase();
             this.paginationType = "countryWiseUsers";
             if(!this.isCalledPagination){ this.pagination.maxResults = 12; this.isCalledPagination = true;}
             this.dashboardService.worldMapCampaignDetails(this.loggedInUserId, this.countryCode, this.pagination)
                 .subscribe(
                     (result: any) => {
+                        this.loading = false;
                         console.log(result);
                         this.worldMapUserData = result.data;
                         this.pagination.totalRecords = result.totalRecords;
@@ -919,6 +922,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                         $('#worldMapModal').modal('show');
                     },
                     (error: any) => {
+                        this.loading = false;
                         console.log(error)
                         this.xtremandLogger.error('error in world map dashboard ' + error);
                         this.xtremandLogger.errorPage(error);
@@ -926,6 +930,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     () => console.log('finished')
                 );
         } catch (error) {
+            this.loading = false;
             this.xtremandLogger.error('error in world map dashboard ' + error);
         }
     }
@@ -970,6 +975,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         $('#emailClickedModal').modal('hide');
         $('#customizeCampaignModal').modal('hide');
+        $('#worldMapModal').modal('hide');
         this.isFullscreenToggle = false;
     }
 }
