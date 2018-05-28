@@ -258,6 +258,7 @@ export class EditCompanyProfileComponent implements OnInit {
                             $('#company-profile-error-div').hide();
                             $('#saveOrUpdateCompanyButton').prop('disabled', true);
                             self.authenticationService.user.hasCompany = true;
+                            self.authenticationService.user.websiteUrl = self.companyProfile.website;
                             self.authenticationService.isCompanyAdded = true;
                             let module = self.authenticationService.module;
                             if (self.isOnlyPartner) {

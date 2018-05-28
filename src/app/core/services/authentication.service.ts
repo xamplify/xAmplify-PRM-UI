@@ -132,11 +132,13 @@ export class AuthenticationService {
             return "User";
         }else{
             if(isOrgAdmin&&isPartner){
-                return "Org Admin & Partner";
+                return "Orgadmin & Partner";
             }else if(isVendor&&isPartner){
                 return "Vendor & Partner";
             }else if(isOrgAdmin){
-                return "Org Admin";
+                return "Orgadmin";
+            }else if(isVendor){
+                return "Vendor";
             }else if(isPartner){
                 return "Partner";
             }else{
