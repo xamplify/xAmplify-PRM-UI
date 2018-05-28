@@ -124,55 +124,28 @@
 								<app-loader *ngIf="httpRequestLoader.isLoading"></app-loader>
 								<app-error-pages *ngIf="httpRequestLoader.isServerError"></app-error-pages>
 								<ng-container *ngIf="totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
-									<div *ngFor="let campaign of pagination.pagedItems; let i= index">
-										<div class="col-md-3 col-sm-4 mix category_1 mix_all" style="display: block; opacity: 1; margin-top: -35px;">
-											<div class="mix-inner" style="height: 173px;">
-												<img *ngIf="campaign.campaignType.indexOf('VIDEO') > -1 && campaign.launched " class="img-responsive" src="assets/images/video-email.png"
-												 style="height: 173px;" alt="No Image Found">
-												<img *ngIf="campaign.campaignType.indexOf('VIDEO') > -1 && !campaign.launched " class="img-responsive" src="assets/images/video-email.png"
-												 style="height: 173px;-webkit-filter: grayscale(100%);filter: grayscale(100%);" alt="No Image Found">
-
-												<img *ngIf="campaign.campaignType.indexOf('REGULAR') > -1 && campaign.launched" class="img-responsive" src="assets/images/regular-email.png"
-												 style="height: 173px;" alt="No Image Found">
-												<img *ngIf="campaign.campaignType.indexOf('REGULAR') > -1 && !campaign.launched" class="img-responsive" src="assets/images/regular-email.png"
-												 style="height: 173px;-webkit-filter: grayscale(100%);filter: grayscale(100%);" alt="No Image Found">
-
-												<img *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1 && campaign.launched" class="img-responsive" src="assets/images/social-campaign.png"
-												 style="height: 173px;" alt="No Image Found">
-												<img *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1 && !campaign.launched" class="img-responsive" src="assets/images/social-campaign.png"
-												 style="height: 173px;-webkit-filter: grayscale(100%);filter: grayscale(100%);" alt="No Image Found">
-
-												<div class="mix-details" style="z-index: 700;padding: 7px;height: 174px;">
-													  <h4 class="ellipsis" style="height: 20px; margin-top: 9px;" title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:25}}
-														<span *ngIf="campaign.campaignName?.length>25">...</span>
-													 </h4>
-													
-													<div style="top: 30%; position: relative;">
-														 <a (click)="reDistributeCampaign(campaign.campaignId)" title="Redistribute Campaign" data-rel="fancybox-button">
-                                        					<i class="fa fa-clone"></i>
-                                    					</a>
-                                    					<a class="hidden"><i class="fa fa-trash"></i></a>
-                                    					
-                                    					<!-- <a (click)="showCampaignPreview(campaign.campaignId)" title="Preview">
-															<i class="fa fa-eye mr5"></i>
-														</a>  -->
-												
-													</div>
-													<span align="right" style="bottom: 24px; float: right; position: absolute; right: 17px;">
-														<b *ngIf="campaign.launched">Received On</b>
-													</span>
-													<span align="left" style="bottom: 24px; float: left; position: absolute; left: 3%;">
-														<b>{{campaign.companyName}}</b>
-													</span>
-													<span align="left" title="Uploaded By" style="bottom: -1px; left: 10px; position: absolute;">{{campaign.createdBy}}</span>
-													<span align="right" title="Upload date" style="bottom: 2px; float: right; position: absolute; right: 17px;">
-														<b>{{campaign.launchTime}}</b>
-													</span>
-												</div>
+									<div *ngFor="let campaign of pagination.pagedItems; let i= index" class="col-xs-12 col-sm-4 col-lg-3">
+										<div class="grid-box">
+											<img src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png">
+											<h4 class="ellipsis" title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:25}}
+												<span *ngIf="campaign.campaignName?.length>25">...</span>
+											</h4>
+											<h6>By <b>{{campaign.createdBy}}</b></h6>
+											<h6>From <b>{{campaign.companyName}}</b></h6>
+											<h6>Received On <b>{{campaign.launchedOn}}</b></h6>
+											<div class="bookmark-ribbon">
+												<span style="margin: 0px -7px; font-size: 17px; color: white;">
+													<i *ngIf="campaign.campaignType.indexOf('VIDEO') > -1" class="fa fa-video-camera" aria-hidden="true"></i>
+													<i *ngIf="campaign.campaignType.indexOf('REGULAR') > -1" class="fa fa-envelope" aria-hidden="true"></i>
+													<i *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1" class="fa fa-globe" aria-hidden="true"></i>
+												</span>
 											</div>
-											<div>
+											<div class="bar">
+												<a (click)="reDistributeCampaign(campaign.campaignId)" title="Redistribute Campaign" data-rel="fancybox-button">
+													<i class="fa fa-clone"></i>
+												</a>
 											</div>
-										</div>
+										</div>										
 									</div>
 								</ng-container>
 							</div>
