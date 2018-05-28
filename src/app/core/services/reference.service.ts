@@ -65,7 +65,7 @@ export class ReferenceService {
     homeRouter = '/home/dashboard/default';
     pageContnetBgColor = "#F1F3FA";
     isPlayVideo = false;
-    isDownloadCsvFile = false;
+    isDownloadCsvFile: boolean;
     
     public URL: string = this.authenticationService.REST_URL + 'admin/';
     constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,

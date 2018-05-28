@@ -469,6 +469,7 @@
 				</div>
 			</div>
 		</div>
+		
 		<app-edit-contacts *ngIf="showEdit" [contacts]="users"
 			(notifyParent)="update($event)"
 			[selectedContactListId]="selectedContactListId"
@@ -697,6 +698,7 @@
 									(notifyParentDropDown)="onChangeAllContactUsers($event)"></app-pagination>
 							</div>
 						</div>
+						<app-export-csv *ngIf="referenceService.isDownloadCsvFile" [downloadListDetails]="downloadDataList" [downloadListName]="logListName"> </app-export-csv>
 						<!-- END PAGE CONTENT -->
 					</div>
 				</div>

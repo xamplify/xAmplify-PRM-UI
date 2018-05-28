@@ -1904,13 +1904,13 @@ export class EditContactsComponent implements OnInit {
 
     downloadContactTypeList() {
         if ( this.contactsByType.selectedCategory === 'active' ) {
-            this.logListName = 'Active_Users_of_ContactList.csv';
+            this.logListName = this.selectedContactListName + '_list_Active_'+ this.checkingContactTypeName+'s.csv';
         } else if ( this.contactsByType.selectedCategory === 'non-active' ) {
-            this.logListName = 'InActive_Users_of_ContactList.csv';
+            this.logListName = this.selectedContactListName + '_list_Inactive_'+ this.checkingContactTypeName+'s.csv';
         } else if ( this.contactsByType.selectedCategory === 'invalid' ) {
-            this.logListName = 'Invalid_Users_of_ContactList.csv';
+            this.logListName = this.selectedContactListName + '_list_Invalid_'+ this.checkingContactTypeName+'s.csv';
         } else if ( this.contactsByType.selectedCategory === 'unsubscribe' ) {
-            this.logListName = 'Unsubscribed_Users_of_ContactList.csv';
+            this.logListName = this.selectedContactListName + '_list_Unsubscribe_'+ this.checkingContactTypeName+'s.csv';
         }
         this.downloadDataList.length = 0;
         for ( let i = 0; i < this.contactsByType.listOfAllContacts.length; i++ ) {
@@ -1959,14 +1959,7 @@ export class EditContactsComponent implements OnInit {
         }
         this.refService.isDownloadCsvFile = true;
     }
-    
-    closingDownload(event){
-        this.refService.isDownloadCsvFile = false;
-        if(event == "success"){
-            return 'success';
-        }
-    }
-
+   
     listOfAllSelectedContactListByType( contactType: string ) {
         this.currentContactType = '';
         this.resetListContacts();

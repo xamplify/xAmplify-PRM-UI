@@ -150,6 +150,7 @@ export class ManageContactsComponent implements OnInit {
     checkingContactTypeName: string;
     isListView = false;
     responseMessage = [];
+    logListName = "";
     // isResponsMessage = false;
 
     constructor( public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
@@ -1109,21 +1110,48 @@ export class ManageContactsComponent implements OnInit {
     }
 
     downloadContactTypeList() {
-        let logListName: string;
         if ( this.contactsByType.selectedCategory === 'all' ) {
-            logListName = 'All_Users_List.csv';
+            this.logListName = 'All_'+ this.checkingContactTypeName +'s_list.csv';
         }
         else if ( this.contactsByType.selectedCategory === 'active' ) {
-            logListName = 'Active_Users_List.csv';
+            this.logListName = 'All_Active_'+ this.checkingContactTypeName +'s_list.csv';
         } else if ( this.contactsByType.selectedCategory === 'non-active' ) {
-            logListName = 'InActive_Users_List.csv';
+            this.logListName = 'All_Inactive_'+ this.checkingContactTypeName +'s_list.csv';
         } else if ( this.contactsByType.selectedCategory === 'invalid' ) {
-            logListName = 'Invalid_Users_List.csv';
+            this.logListName = 'All_Invalid_'+ this.checkingContactTypeName +'s_list.csv';
         } else if ( this.contactsByType.selectedCategory === 'unsubscribe' ) {
-            logListName = 'Unsubscribed_Users_List.csv';
+            this.logListName = 'All_Unsubscribed_' + this.checkingContactTypeName +'s_list.csv';
         }
         this.downloadDataList.length = 0;
         for ( let i = 0; i < this.contactsByType.listOfAllContacts.length; i++ ) {
+            
+            if(this.contactsByType.listOfAllContacts[i].firstName == undefined){
+                this.contactsByType.listOfAllContacts[i].firstName = "";
+            }
+            if(this.contactsByType.listOfAllContacts[i].lastName == undefined){
+                this.contactsByType.listOfAllContacts[i].lastName = "";
+            }
+           
+            if(this.contactsByType.listOfAllContacts[i].contactCompany == undefined){
+                this.contactsByType.listOfAllContacts[i].contactCompany = "";
+            }
+            if(this.contactsByType.listOfAllContacts[i].address == undefined){
+                this.contactsByType.listOfAllContacts[i].address = "";
+            }
+            if(this.contactsByType.listOfAllContacts[i].city == undefined){
+                this.contactsByType.listOfAllContacts[i].city = "";
+            }
+            if(this.contactsByType.listOfAllContacts[i].country == undefined){
+                this.contactsByType.listOfAllContacts[i].country = "";
+            }
+            if(this.contactsByType.listOfAllContacts[i].jobTitle == undefined){
+                this.contactsByType.listOfAllContacts[i].jobTitle = "";
+            }
+           
+            if(this.contactsByType.listOfAllContacts[i].mobileNumber == undefined){
+                this.contactsByType.listOfAllContacts[i].mobileNumber = "";
+            }
+            
             var object = {
                 "EmailId": this.contactsByType.listOfAllContacts[i].emailId,
                 "First Name": this.contactsByType.listOfAllContacts[i].firstName,
@@ -1134,23 +1162,14 @@ export class ManageContactsComponent implements OnInit {
                 "Country": this.contactsByType.listOfAllContacts[i].country,
                 "JobTitle": this.contactsByType.listOfAllContacts[i].jobTitle,
                 "MobileNumber": this.contactsByType.listOfAllContacts[i].mobileNumber,
-                "Notes": this.contactsByType.listOfAllContacts[i].description
+               // "Notes": this.contactsByType.listOfAllContacts[i].description
             }
 
             this.downloadDataList.push( object );
         }
-        var csvData = this.referenceService.convertToCSV( this.downloadDataList );
-        var a = document.createElement( "a" );
-        a.setAttribute( 'style', 'display:none;' );
-        document.body.appendChild( a );
-        var blob = new Blob( [csvData], { type: 'text/csv' });
-        var url = window.URL.createObjectURL( blob );
-        a.href = url;
-        a.download = logListName;
-        a.click();
-        return 'success';
+        this.referenceService.isDownloadCsvFile = true;
     }
-
+    
     listAllContactsByType( contactType: string, totalRecords: number ) {
         this.contactsByType.contactPagination.filterKey = 'isPartnerUserList';
         this.contactsByType.contactPagination.filterValue = this.isPartner;

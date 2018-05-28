@@ -1,15 +1,16 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef, AfterViewInit } from '@angular/core';
+import { ReferenceService } from '../../../core/services/reference.service';
 
 @Component({
   selector: 'app-export-csv',
   templateUrl: './export-csv.component.html',
   styleUrls: ['./export-csv.component.css']
 })
-export class ExportCsvComponent implements OnInit {
+export class ExportCsvComponent implements OnInit, AfterViewInit{
     @Input() downloadListDetails: any;
     @Input() downloadListName: any;
     @Output() notifyParent: EventEmitter<any>; 
-  constructor() {
+  constructor(public referenceService: ReferenceService, public changeDetectorRef: ChangeDetectorRef) {
       this.notifyParent = new EventEmitter();
   }
 
@@ -43,14 +44,22 @@ export class ExportCsvComponent implements OnInit {
       a.href = url;
       a.download = this.downloadListName;
       a.click();
-      this.notifyParent.emit("success");
-      return 'success';
+      this.changeDetectorRef.detectChanges();
       
   }
   
   ngOnInit() {
      this.downloadCsvList();
+     
+     setTimeout(()=>{  
+         this.referenceService.isDownloadCsvFile = false;
+    },3000);
+     
   
   }
+  
+  ngAfterViewInit(){
+      this.changeDetectorRef.detectChanges();
+   }
 
 }

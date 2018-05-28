@@ -772,7 +772,7 @@
 	<app-add-contact-modal [totalUsers]="contacts"  [contactDetails]="contactAllDetails" [isUpdateUser] = "isUpdateUser" (notifyParent)="updateContactListUser($event)"></app-add-contact-modal>
 </div> 
 
-<app-export-csv *ngIf="refService.isDownloadCsvFile" [downloadListDetails]="downloadDataList" [downloadListName]="logListName" (notifyParent)="closingDownload($event)"> </app-export-csv>
+<app-export-csv *ngIf="refService.isDownloadCsvFile" [downloadListDetails]="downloadDataList" [downloadListName]="logListName"> </app-export-csv>
 
 <!-- 	<div id="addContactModal" class="modal" id="addContactModal"
 		tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
