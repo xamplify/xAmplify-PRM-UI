@@ -122,6 +122,28 @@ export class AuthenticationService {
         if(!roleNames && this.user.roles) { roleNames = this.user.roles.map(function (a) { return a.roleName; });}
         return roleNames;
     }
+    showRoles():string{
+        let roleNames = this.getRoles();
+        /***********Org Admin**************/
+        let isOrgAdmin = roleNames.indexOf(this.roleName.orgAdminRole)>-1;
+        let isPartner =  roleNames.indexOf(this.roleName.companyPartnerRole)>-1;
+        let isVendor = roleNames.indexOf(this.roleName.vendorRole)>-1;
+        if(roleNames.length==1){
+            return "User";
+        }else{
+            if(isOrgAdmin&&isPartner){
+                return "Org Admin & Partner";
+            }else if(isVendor&&isPartner){
+                return "Vendor & Partner";
+            }else if(isOrgAdmin){
+                return "Org Admin";
+            }else if(isPartner){
+                return "Partner";
+            }else{
+                return "Team Member";
+            }
+        }
+    }
 
     isOnlyPartner(){
         let roleNames = this.getRoles();

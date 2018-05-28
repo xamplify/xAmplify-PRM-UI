@@ -66,12 +66,14 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     fullScreenMode = false;
     logoLink = '';
     ngxloading: boolean;
+    roleNames:string = "";
     customResponse: CustomResponse = new CustomResponse();
     constructor(public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
         public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
         public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
         public regularExpressions: RegularExpressions) {
         this.userData = this.authenticationService.userProfile;
+        this.roleNames = this.authenticationService.showRoles();
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
         this.videoUtilService.videoTempDefaultSettings = this.referenceService.defaultPlayerSettings;
         console.log(this.videoUtilService.videoTempDefaultSettings);
@@ -839,6 +841,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                 () => this.logger.info("Finished enableOrDisableOrgAdmin()")
             );
     }
+    
     ngOnDestroy() {
         if (this.isPlayed === true) {  this.videoJSplayer.dispose(); }
         $('.profile-video').remove();

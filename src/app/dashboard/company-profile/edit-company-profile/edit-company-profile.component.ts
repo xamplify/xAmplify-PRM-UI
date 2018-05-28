@@ -355,6 +355,7 @@ export class EditCompanyProfileComponent implements OnInit {
                         $('#edit-sucess').show(600);
                         $('#saveOrUpdateCompanyButton').prop('disabled', false);
                         this.processor.remove(this.processor);
+                        this.authenticationService.user.websiteUrl = this.companyProfile.website;
                         setTimeout(function () { $("#edit-sucess").slideUp(500); }, 5000);
                         this.saveVideoBrandLog();
                     },
