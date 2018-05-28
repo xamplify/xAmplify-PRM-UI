@@ -51,7 +51,7 @@ a.disabled{pointer-events:none;cursor:not-allowed}
 .dashboard-stat .details .number {
 	padding-top: 10px;
 }
-/deep/ .input-group > .form-control {
+/* /deep/ .input-group > .form-control {
     border: none !important;
     height: 36px !important;	
 }
@@ -63,4 +63,4 @@ a.disabled{pointer-events:none;cursor:not-allowed}
 } 
  /deep/ .input-group-addon {
   border: none !important;
-	}
+	} */

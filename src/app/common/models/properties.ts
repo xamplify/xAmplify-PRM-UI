@@ -34,7 +34,7 @@ export class Properties {
     CONTACTS_DELETE_ERROR = "An error occured while deleting your contacts";
 
     CONTACT_SAVE_SUCCESS = "Your contact list has been updated successfully.";
-    CONTACT_SAVE_SUCCESS_AND_MAIL_SENT_SUCCESS = "Your contact list has been updated successfully and campaign mails has been sent successfully.";
+    CONTACT_SAVE_SUCCESS_AND_MAIL_SENT_SUCCESS = "Your contact list has been updated successfully and any selected campaigns have been launched.";
     CONTACTS_SAVE_ERROR = "An error occured while saving your contacts.";
 
     CONTACT_LIST_NAME_UPDATE_SUCCESS = "Your contact(s) have been saved successfully.";
@@ -49,7 +49,7 @@ export class Properties {
     PARTNER_LIST_SYNCHRONIZATION_SUCCESS = "Your Parntner List has been synchronized successfully.";
     PARTNER_LIST_SYNCHRONIZATION_ERROR = "An error occured while synchronizing your partner list.";
 
-    PARTNER_SAVE_SUCCESS_AND_MAIL_SENT_SUCCESS = "Your Partner list has been updated successfully and campaign mails has been sent successfully.";
+    PARTNER_SAVE_SUCCESS_AND_MAIL_SENT_SUCCESS = "Your partner list has been updated successfully and any selected campaigns have been launched.";
 
     PARTNERS_CREATE_SUCCESS = "Your Partner List has been created successfully.";
     PARTNERS_CREATE_ERROR = "An error occured while creating your partner";

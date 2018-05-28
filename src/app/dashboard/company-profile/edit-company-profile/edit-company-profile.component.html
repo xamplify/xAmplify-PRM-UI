@@ -150,7 +150,7 @@
 								<div id="collapse1" class="panel-collapse collapse">
                     <div class="form-group">
                         <label class="control-label">Street</label>
-                        <input type="text" id="street" [(ngModel)]="companyProfile.street"	name="street" placeholder="street" class="form-control"/>
+                        <input type="text" id="street" [(ngModel)]="companyProfile.street"	name="street" placeholder="Street" class="form-control"/>
                       </div>
 									<div class="form-group" [attr.class]="cityDivClass">
 										<label class="control-label">City</label>
@@ -166,7 +166,7 @@
 									</div>
 									<div class="form-group" [attr.class]="zipDivClass">
 										<label class="control-label">Zip</label>
-										<input type="number" id="zip" name="zip" placeholder="Zip"	class="form-control" [(ngModel)]="companyProfile.zip"  />
+										<input type="text" id="zip" name="zip" placeholder="Zip" onkeypress="return event.charCode >= 48 && event.charCode <= 57"	class="form-control" [(ngModel)]="companyProfile.zip"  />
 										<span *ngIf="zipError"  style="color: #a94442">{{zipErrorMessage}}</span>
 									</div>
 								</div>

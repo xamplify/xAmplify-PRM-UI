@@ -1204,7 +1204,7 @@ export class ManageContactsComponent implements OnInit {
                     console.log( 'logic begins' );
                     var inputName = name.toLowerCase().replace( /\s/g, '' );
                     if ( $.inArray( inputName, self.names ) > -1 ) {
-                        swal.showValidationError( 'This Contact List Name is already taken.' )
+                        swal.showValidationError( 'This list name is already taken.' )
                     } else {
                         if ( name != "" ) {
                             swal.close();
@@ -1237,7 +1237,7 @@ export class ManageContactsComponent implements OnInit {
                     self.xtremandLogger.log( 'logic begins' );
                     var inputName = name.toLowerCase().replace( /\s/g, '' );
                     if ( $.inArray( inputName, self.names ) > -1 ) {
-                        swal.showValidationError( 'This Contact List Name is already taken.' )
+                        swal.showValidationError( 'This list name is already taken. ' )
                     } else {
                         if ( name != "" ) {
                             swal.close();
