@@ -224,7 +224,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     },
                     events: {
                         click: function (event) {
-                            self.router.navigate(['./home/campaigns/' + event.point.campaignId + '/details']);
+                          self.loading = true;
+                          self.router.navigate(['./home/campaigns/' + event.point.campaignId + '/details']);
                         }
                     }
                 }
@@ -934,7 +935,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
             this.xtremandLogger.error('error in world map dashboard ' + error);
         }
     }
-
+    showCampaignDetails(id){
+     this.loading = true;
+      this.router.navigate(['/home/campaigns/'+id+'/details']);
+    }
     isFullscreenHeatMap() {
         this.isFullscreenToggle = !this.isFullscreenToggle;
         if (this.isFullscreenToggle) {
@@ -977,5 +981,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
         $('#customizeCampaignModal').modal('hide');
         $('#worldMapModal').modal('hide');
         this.isFullscreenToggle = false;
+        this.loading = false;
     }
 }
