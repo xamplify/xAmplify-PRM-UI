@@ -136,7 +136,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     isDisable = false;
     brandLogoUrl: any;
     logoDescriptionUrl: string;
-    publisToMessage = "Only you can view";
+    publisToMessage = "Coming soon";
     enableVideoLogo:boolean;
     showError:boolean;
     constructor(public referenceService: ReferenceService, public callActionSwitch: CallActionSwitch,
