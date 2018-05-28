@@ -135,6 +135,7 @@ svg {
     border-left: none !important;
     height: 36px !important;	
 }
+
 /* /deep/ .input-group > .form-control:focus {
     border-color: #e5e5e5;
 } */

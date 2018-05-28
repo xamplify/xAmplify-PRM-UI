@@ -1124,34 +1124,6 @@ export class ManageContactsComponent implements OnInit {
         }
         this.downloadDataList.length = 0;
         for ( let i = 0; i < this.contactsByType.listOfAllContacts.length; i++ ) {
-            
-            if(this.contactsByType.listOfAllContacts[i].firstName == undefined){
-                this.contactsByType.listOfAllContacts[i].firstName = "";
-            }
-            if(this.contactsByType.listOfAllContacts[i].lastName == undefined){
-                this.contactsByType.listOfAllContacts[i].lastName = "";
-            }
-           
-            if(this.contactsByType.listOfAllContacts[i].contactCompany == undefined){
-                this.contactsByType.listOfAllContacts[i].contactCompany = "";
-            }
-            if(this.contactsByType.listOfAllContacts[i].address == undefined){
-                this.contactsByType.listOfAllContacts[i].address = "";
-            }
-            if(this.contactsByType.listOfAllContacts[i].city == undefined){
-                this.contactsByType.listOfAllContacts[i].city = "";
-            }
-            if(this.contactsByType.listOfAllContacts[i].country == undefined){
-                this.contactsByType.listOfAllContacts[i].country = "";
-            }
-            if(this.contactsByType.listOfAllContacts[i].jobTitle == undefined){
-                this.contactsByType.listOfAllContacts[i].jobTitle = "";
-            }
-           
-            if(this.contactsByType.listOfAllContacts[i].mobileNumber == undefined){
-                this.contactsByType.listOfAllContacts[i].mobileNumber = "";
-            }
-            
             var object = {
                 "EmailId": this.contactsByType.listOfAllContacts[i].emailId,
                 "First Name": this.contactsByType.listOfAllContacts[i].firstName,
