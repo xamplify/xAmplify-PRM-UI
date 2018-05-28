@@ -115,6 +115,7 @@ export class EditCompanyProfileComponent implements OnInit {
     isVendorRole = false;
     ngxloading = false;
     maxFileSize:number = 10;
+    profileCompleted = 50;
     constructor(private logger: XtremandLogger, public authenticationService: AuthenticationService, private fb: FormBuilder,
         private companyProfileService: CompanyProfileService, public homeComponent: HomeComponent,
         public refService: ReferenceService, private router: Router, public processor: Processor, public countryNames: CountryNames,
@@ -216,6 +217,7 @@ export class EditCompanyProfileComponent implements OnInit {
         this.getCompanyProfileByUserId();
         if (this.authenticationService.user.hasCompany) {
             this.companyProfile.isAdd = false;
+            this.profileCompleted = 100;
         } /*else {
             this.companyProfile.country = this.countryNames.countries[0];
         }*/
