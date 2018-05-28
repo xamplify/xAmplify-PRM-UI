@@ -358,6 +358,10 @@ export class AddPartnersComponent implements OnInit {
         
           this.newUsersEmails.push(this.newPartnerUser[i].emailId);
             
+          if(this.newPartnerUser[i].mobileNumber.length < 10){
+              this.newPartnerUser[i].mobileNumber = "";
+          }
+          
          if(this.selectedAddPartnerOption != 3 && this.selectedAddPartnerOption != 6 && this.selectedAddPartnerOption != 7 ){
           if(this.newPartnerUser[i].contactCompany.trim() !=''){
               this.isCompanyDetails = true;
@@ -790,33 +794,6 @@ export class AddPartnersComponent implements OnInit {
         this.updatePartnerUser = true;
         this.partnerAllDetails = contactDetails;
         this.contactService.isContactModalPopup = true;
-        /*this.checkingForEmail = true;
-
-        this.updatePartnerUser = true;
-        this.addPartnerUser.userId = contactDetails.id;
-        this.addPartnerUser.firstName = contactDetails.firstName;
-        this.addPartnerUser.lastName = contactDetails.lastName;
-        this.addPartnerUser.contactCompany = contactDetails.contactCompany;
-        this.addPartnerUser.jobTitle = contactDetails.jobTitle;
-        this.addPartnerUser.emailId = contactDetails.emailId;
-        this.editingEmailId = contactDetails.emailId;
-        this.addPartnerUser.address = contactDetails.address;
-        this.addPartnerUser.city = contactDetails.city;
-        this.addPartnerUser.country = contactDetails.country;
-        if ( this.addPartnerUser.country == null ) {
-            this.addPartnerUser.country = ( this.countryNames.countries[0] );
-        }
-        if(this.addPartnerUser.contactCompany != undefined){
-            this.isCompanyDetails = true;
-        }else {
-            this.isCompanyDetails = false;
-        }
-        
-        this.addPartnerUser.mobileNumber = contactDetails.mobileNumber;
-        this.addPartnerUser.description = contactDetails.description;
-        $( "#addPartnerModal" ).show();
-        console.log( contactDetails );
-        this.updatedUserDetails = contactDetails;*/
     }
 
     socialContactImage() {

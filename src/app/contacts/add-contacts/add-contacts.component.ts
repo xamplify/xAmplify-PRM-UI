@@ -510,6 +510,10 @@ export class AddContactsComponent implements OnInit {
             if(this.newUsers[i].country === "Select Country"){
                 this.newUsers[i].country = null;
             }
+            
+            if(this.newUsers[i].mobileNumber.length < 10){
+                this.newUsers[i].mobileNumber = "";
+            }
         }
         this.contactListObject = new ContactList;
         this.contactListObject.name = this.model.contactListName;
@@ -597,6 +601,10 @@ export class AddContactsComponent implements OnInit {
             if(this.clipboardUsers[i].country === "Select Country"){
                 this.clipboardUsers[i].country = null;
             }
+            
+            if(this.clipboardUsers[i].mobileNumber.length < 10){
+                this.clipboardUsers[i].mobileNumber = "";
+            }
         }
         this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
         this.contactListObject = new ContactList;
@@ -650,6 +658,10 @@ export class AddContactsComponent implements OnInit {
 
                         if(this.contacts[i].country === "Select Country"){
                             this.contacts[i].country = null;
+                        }
+                        
+                        if(this.contacts[i].mobileNumber.length < 10){
+                            this.contacts[i].mobileNumber = "";
                         }
                     }
                     this.xtremandLogger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( this.contacts ) );
