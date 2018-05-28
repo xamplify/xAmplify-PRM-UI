@@ -55,8 +55,8 @@
 							<div class="portlet light border-radius-0 shadow">
 								<div class="portlet-body clearfix text-center" style="padding: 2em 0;">
 									<div class="profile-image-wrapper">
-                    <span *ngIf="logoError" style="color: #a94442">{{logoErrorMessage}}</span>
-                    <span *ngIf="!companyLogoImageUrlPath" style="color: #a94442">*Please upload company logo</span>
+                    <span *ngIf="logoError" style="color: #f55d7a">{{logoErrorMessage}}</span>
+                    <span *ngIf="!companyLogoImageUrlPath" style="color: #f55d7a; position: absolute;bottom: 5px;">* Please upload company logo</span>
 										<img *ngIf="!companyLogoImageUrlPath" src="assets/images/company-profile-logo.png" class="profile-image">
 											<img *ngIf="companyLogoImageUrlPath" [src]= "authenticationService.MEDIA_URL + companyLogoImageUrlPath" class="profile-image">
 											<div class="profile-overlay">
@@ -71,9 +71,9 @@
 										<section class="percentage-circle" style="display: grid; margin: 4em 0 1em;">
 											<svg width="120" height="100" viewBox="0 0 120 120" style="transform: rotate(-90deg)">
 												<circle cx="60" cy="60" r="54" fill="none" stroke="#e6e6e6" stroke-width="10" />
-												<circle cx="60" cy="60" r="54" fill="none" stroke-width="10" stroke="#00a6e8" stroke-dasharray="339.292006588" [ngStyle]="{'stroke-dashoffset': 339.292 * 0.5}"/>
+												<circle cx="60" cy="60" r="54" fill="none" stroke-width="10" stroke="#00a6e8" stroke-dasharray="339.292006588" [ngStyle]="{'stroke-dashoffset': 339.292 * (1 - profileCompleted/100)}"/>
 											</svg>
-											<h2 class="percentage-value" style="margin: -2.7em 0 0 0;">50%</h2>
+											<h2 class="percentage-value" style="margin: -2.7em 0 0 0;">{{profileCompleted}}%</h2>
 										</section>
 										<h5 style="margin-top: -55px;font-weight: 400;margin-bottom: 3em;">complete</h5>
 										<h4 class="control-label">{{authenticationService.user.firstName}}&nbsp;{{authenticationService.user.lastName}}</h4>
@@ -87,18 +87,18 @@
 						</div>
 						<div class="col-sm-6 col-xs-12">
 							<div class="form-group" [attr.class]="companyNameDivClass">
-								<label class="control-label">Company Name <font	style="color: #a94442"><b>*</b></font></label>
+								<label class="control-label">Company Name <font	style="color: #f55d7a"><b>*</b></font></label>
 									<input type="text"		id="companyName" name="companyName" placeholder="Company Name"	class="form-control" [(ngModel)]="companyProfile.companyName"
 									(input)="validateEmptySpace('companyName')"	(blur)="validateNames(companyProfile.companyName)" />
-								<span *ngIf="companyNameError" style="color: #a94442">{{companyNameErrorMessage}}</span>
+								<span *ngIf="companyNameError" style="color: #f55d7a">{{companyNameErrorMessage}}</span>
 							</div>
 
 							<div class="form-group" [attr.class]="companyProfileNameDivClass">
-								<label class="control-label">Company Profile Name <font style="color: #a94442"><b>*</b></font></label>
+								<label class="control-label">Company Profile Name <font style="color: #f55d7a"><b>*</b></font></label>
 								<ng-container *ngIf="companyProfile.isAdd">
 									 <input	type="text" id="companyProfileName"	placeholder="Company Profile Name" class="form-control"name="companyProfileName"[(ngModel)]="companyProfile.companyProfileName"
 										(input)="validateEmptySpace('companyProfileName')"	(blur)="validateProfileNames(companyProfile.companyProfileName)" />
-									<span *ngIf="companyProfileNameError" style="color: #a94442">{{companyProfileNameErrorMessage}}</span>
+									<span *ngIf="companyProfileNameError" style="color: #f55d7a">{{companyProfileNameErrorMessage}}</span>
 								</ng-container>
 								<ng-container *ngIf="!companyProfile.isAdd">
 								<input	type="text" id="companyProfileName" disabled="disabled"	placeholder="Company Profile Name" class="form-control"	name="companyProfileName"	[(ngModel)]="companyProfile.companyProfileName" /> </ng-container>
@@ -107,26 +107,26 @@
 							<div class="form-group" [attr.class]="emailIdDivClass">
 								<label class="control-label"> Company Email</label>
 								 <input type="email"	id="emailId" name="emailId" placeholder="Email Id"	class="form-control" [(ngModel)]="companyProfile.emailId" (input)="validatePattern('emailId')" (blur)="validatePattern('emailId')" />
-								 <span	*ngIf="emailIdError" style="color: #a94442">{{emailIdErrorMessage}}</span>
+								 <span	*ngIf="emailIdError" style="color: #f55d7a">{{emailIdErrorMessage}}</span>
 							</div>
 
 							<div class="form-group" [attr.class]="tagLineDivClass">
 								<label class="control-label">Tag Line</label>
 									<input type="text" id="tagLine" name="tagLine" placeholder="Tag Line" class="form-control" [(ngModel)]="companyProfile.tagLine" />
-									<span	*ngIf="tagLineError" style="color: #a94442">{{tagLineErrorMessage}}</span>
+									<span	*ngIf="tagLineError" style="color: #f55d7a">{{tagLineErrorMessage}}</span>
 							</div>
 
 							<div class="form-group" [attr.class]="phoneDivClass">
-								<label class="control-label">Phone Number <font style="color: #a94442"><b>*</b></font></label>
+								<label class="control-label">Phone Number <font style="color: #f55d7a"><b>*</b></font></label>
 								<!--  <input type="text"	id="phone" name="phone" placeholder="Phone number"		class="form-control" [(ngModel)]="companyProfile.phone" (input)="validatePattern('phone')" (blur)="validatePattern('phone')" /> -->
 								 <int-phone-prefix [(ngModel)]="companyProfile.phone" (input)="validatePattern('phone')" (blur)="validatePattern('phone')" [ngModelOptions]="{standalone: true}"></int-phone-prefix>
-								 <span *ngIf="phoneError" style="color: #a94442">{{phoneErrorMessage}}</span>
+								 <span *ngIf="phoneError" style="color: #f55d7a">{{phoneErrorMessage}}</span>
 							</div>
 
 							<div class="form-group" [attr.class]="websiteDivClass">
-								<label class="control-label">Company Url <font style="color: #a94442"><b>*</b></font></label>
+								<label class="control-label">Company Url <font style="color: #f55d7a"><b>*</b></font></label>
 								 <input type="text"	id="website" name="website" placeholder="WebSite" class="form-control" [(ngModel)]="companyProfile.website" (input)="validatePattern('website')"	(blur)="validatePattern('website')" />
-								<span *ngIf="websiteError" style="color: #a94442">{{websiteErrorMessage}}</span>
+								<span *ngIf="websiteError" style="color: #f55d7a">{{websiteErrorMessage}}</span>
 							</div>
 
 							<div class="form-group" *ngIf="!companyProfile.isAdd && publicVideos?.length>0">
@@ -137,9 +137,9 @@
 								</select>
 							</div>
 							<div class="form-group" [attr.class]="aboutUsDivClass">
-								<label class="control-label">About Us <font	style="color: #a94442"><b>*</b></font></label>
+								<label class="control-label">About Us <font	style="color: #f55d7a"><b>*</b></font></label>
 								<textarea class="form-control" rows="3" cols="5" placeholder="About Us" name="aboutUs" id="aboutUs" style="resize: none" [(ngModel)]="companyProfile.aboutUs" (input)="validateEmptySpace('aboutUs')" (blur)="validateEmptySpace('aboutUs')"></textarea>
-								<span *ngIf="aboutUsError"  style="color: #a94442">{{aboutUsErrorMessage}}</span>
+								<span *ngIf="aboutUsError"  style="color: #f55d7a">{{aboutUsErrorMessage}}</span>
 							</div>
 							<div class="panel-group">
 								<div class="panel panel-default">
@@ -156,7 +156,7 @@
 									<div class="form-group" [attr.class]="cityDivClass">
 										<label class="control-label">City</label>
 										<input type="text" id="city"	name="city" placeholder="City" class="form-control" [(ngModel)]="companyProfile.city" (input)="validatePattern('city')" (blur)="validatePattern('city')" />
-										<span *ngIf="cityError" style="color: #a94442">{{cityErrorMessage}}</span>
+										<span *ngIf="cityError" style="color: #f55d7a">{{cityErrorMessage}}</span>
 									</div>
 									<div class="form-group" [attr.class]="countryDivClass">
 										<label class="control-label">Country</label>
@@ -168,7 +168,7 @@
 									<div class="form-group" [attr.class]="zipDivClass">
 										<label class="control-label">Zip</label>
 										<input type="text" id="zip" name="zip" placeholder="Zip" onkeypress="return event.charCode >= 48 && event.charCode <= 57"	class="form-control" [(ngModel)]="companyProfile.zip"  />
-										<span *ngIf="zipError"  style="color: #a94442">{{zipErrorMessage}}</span>
+										<span *ngIf="zipError"  style="color: #f55d7a">{{zipErrorMessage}}</span>
 									</div>
 								</div>
 								</div>
@@ -184,22 +184,22 @@
 									<div class="form-group" [attr.class]="facebookDivClass">
 										<label class="control-label">Facebook</label>
 										<input type="text"	id="facebook" name="facebook" placeholder="Facebook" class="form-control" [(ngModel)]="companyProfile.facebookLink"	(input)="validatePattern('facebook')" (blur)="validatePattern('facebook')" />
-										<span *ngIf="facebookLinkError" style="color: #a94442">{{facebookLinkErrorMessage}}</span>
+										<span *ngIf="facebookLinkError" style="color: #f55d7a">{{facebookLinkErrorMessage}}</span>
 									</div>
 									<div class="form-group" [attr.class]="googlePlusDivClass">
 										<label class="control-label">Google</label>
 										<input type="text"	id="googlePlusLink" name="googlePlusLink" placeholder="Google"class="form-control" [(ngModel)]="companyProfile.googlePlusLink" (input)="validatePattern('googlePlusLink')" (blur)="validatePattern('googlePlusLink')" />
-										<span *ngIf="googlePlusLinkError" style="color: #a94442">{{googlePlusLinkErrorMessage}}</span>
+										<span *ngIf="googlePlusLinkError" style="color: #f55d7a">{{googlePlusLinkErrorMessage}}</span>
 									</div>
 									<div class="form-group" [attr.class]="linkedInDivClass">
 										<label class="control-label">LinkedIn</label>
 										<input type="text"	id="linkedInLink" name="linkedInLink" placeholder="LinkedIn" class="form-control" [(ngModel)]="companyProfile.linkedInLink" (input)="validatePattern('linkedInLink')" (blur)="validatePattern('linkedInLink')" />
-										<span *ngIf="linkedinLinkError" style="color: #a94442">{{linkedinLinkErrorMessage}}</span>
+										<span *ngIf="linkedinLinkError" style="color: #f55d7a">{{linkedinLinkErrorMessage}}</span>
 									</div>
 									<div class="form-group" [attr.class]="twitterDivClass">
 										<label class="control-label">Twitter</label>
 											<input type="text"	id="twitter" name="twitter" placeholder="Twitter"	class="form-control" [(ngModel)]="companyProfile.twitterLink" (input)="validatePattern('twitterLink')" (blur)="validatePattern('twitterLink')" />
-											<span *ngIf="twitterLinkError" style="color: #a94442">{{twitterLinkErrorMessage}}</span>
+											<span *ngIf="twitterLinkError" style="color: #f55d7a">{{twitterLinkErrorMessage}}</span>
 									</div>
 								</div>
 								</div>

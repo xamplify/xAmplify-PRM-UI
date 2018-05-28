@@ -30,6 +30,7 @@
     padding: 1px;
     margin: 0 auto;
     border: 1px solid #d0d0d0;
+    position: relative;
 }
 .profile-overlay, .banner-overlay {
     display:none;
