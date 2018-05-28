@@ -9,7 +9,7 @@
             <li><a>Partner campaigns</a> </li>
         </ul>
     </div>
-
+    <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
     <div class="portlet light shadow">
         <div class="portlet-title">
             <h4 class="caption-subject font-red-sunglo f-w-600 pull-left">Redistribute A Campaign</h4>
@@ -196,7 +196,7 @@
 												</thead>
 												<tbody>
 													<tr role="row" *ngFor="let contacts of contactListPagination.pagedItems;let i = index" id="campaignContactListTable_{{contacts.id}}"
-													 	(click)="highlightContactRow(contacts.id,$event,contacts.noOfContacts,contacts.emailValidationInd)" 
+													 	(click)="highlightContactRow(contacts.id,$event,contacts.noOfContacts,contacts.emailValidationInd)"
 													 	(mouseover)='showContactsAlert(contacts.noOfContacts)' [attr.title]="emptyContactsMessage"
 													 	 [class.contact-list-selected]="(selectedUserlistIds.indexOf(contacts.id)>-1 && contacts.noOfContacts>0)">
 														<td>
@@ -220,7 +220,7 @@
 															{{contacts.name}}
 														</td>
 														<td class="text-center">
-															<a class="btn btn-warning" (click)="$event.stopPropagation();loadUsers(contactListPagination.pagedItems[i].id,contactsUsersPagination)">
+															<a class="btn btn-warning" (click)="$event.stopPropagation();loadUsers(contactListPagination.pagedItems[i].id,contactsUsersPagination,contacts.name)">
 																<i class="fa fa-eye" style="padding-top: 3px; font-size: 20px;" title="" data-original-title="Preview"></i>
 															</a>
 														</td>
@@ -744,7 +744,7 @@
         </div>
     </div>
    </div>
-  
+
 </div>
 
 <app-preview-video *ngIf="videoFile" [videoFile]="videoFile" (notifyParent)="closePreviewVideoModal($event)"></app-preview-video>
@@ -811,8 +811,8 @@
 							<i class="fa fa-times"></i>
 						</button>
 						<div>
-							<h4 class="modal-title" id="user-list-name" align="center">
-								<b>List Of Users</b>
+							<h4 class="modal-title" id="user-list-name" align="center" title="{{listName}}">
+								<b>{{listName |slice:0:20}}	<span *ngIf="listName?.length>20">...</span></b>
 							</h4>
 						</div>
 					</div>

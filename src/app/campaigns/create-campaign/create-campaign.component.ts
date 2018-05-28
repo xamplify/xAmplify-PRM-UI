@@ -188,6 +188,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     isOnlyPartner:boolean  = false;
     roleName: Roles= new Roles();
     createVideoFile:any;
+    listName:string;
+    loading = false;
     httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder,private route: ActivatedRoute,public refService:ReferenceService,
@@ -514,7 +516,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.loadCampaignContacts(this.contactsPagination);
         }else if(module=="contactUsers"){
            this.contactsUsersPagination.pageIndex = pageIndex;
-            this.loadUsers(this.id,this.contactsUsersPagination);
+            this.loadUsers(this.id,this.contactsUsersPagination,this.listName);
         }else if(module=="emailTemplates"){
             this.emailTemplatesPagination.pageIndex = pageIndex;
             if(this.isOnlyPartner){
@@ -1184,15 +1186,18 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
 
     /*******************************Preview*************************************/
     contactListItems:any[];
-      loadUsers(id:number,pagination:Pagination){
-           if(id==undefined){
+      loadUsers(id:number,pagination:Pagination, ListName){
+         this.loading = true;
+         if(id==undefined){
               id=this.previewContactListId;
           }else{
               this.previewContactListId = id;
           }
+          this.listName = ListName;
           this.contactService.loadUsersOfContactList( id,this.contactsUsersPagination).subscribe(
                   (data:any) => {
                       console.log(data);
+                      this.loading = false;
                       console.log(pagination);
                       this.contactListItems = data.listOfUsers;
                       console.log(this.contactListItems);
@@ -1229,7 +1234,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                       $('#users-modal-body').append(html);
                       $('#usersModal').modal({backdrop: 'static', keyboard: false});
                   },
-                  error =>
+                  error => { this.loading = false; },
                   () => console.log( "MangeContactsComponent loadUsersOfContactList() finished" )
               )
       }
@@ -1601,7 +1606,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.emailTemplateHrefLinks.splice(index, 1);
         }
     }
-    
+
     /*************************************************************Launch Campaign***************************************************************************************/
     validateLaunchForm(): void {
         this.campaignLaunchForm = this.fb.group( {
@@ -2036,6 +2041,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         $('.p-video').remove();
         $('.h-video').remove();
         $('.hls-video').remove();
+        $('#usersModal').modal('hide');
          }
 
     saveCampaignOnDestroy(){

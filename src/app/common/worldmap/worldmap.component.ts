@@ -76,7 +76,7 @@ export class WorldmapComponent implements OnInit {
 
   ngOnInit() {
     if(this.router.url.includes('home/partners/analytics')){
-     this.worldmapMessage = 'Check where your partner are located';
+     this.worldmapMessage = 'Check out where your Partners are located';
     } else if(this.router.url.includes('home/videos/manage')){
       this.worldmapMessage = 'Check out where your videos are being watched';
     }

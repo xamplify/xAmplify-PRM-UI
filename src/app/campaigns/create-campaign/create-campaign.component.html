@@ -28,7 +28,8 @@
 					<a>Create Campaign</a>
 				</li>
 			</ul>
-		</div>
+    </div>
+    <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 		<!-- End of Line 2 -->
 		<div class="page-bar">
 			<div class="container" style="width: 100%;border-radius: 0;border: 1px solid #869ab3;border-top: 0;box-shadow: 0 0 6px rgba(0, 0, 0, 0.6);padding-bottom: 10px;">
@@ -767,7 +768,7 @@
 															{{contacts.name}}
 														</td>
 														<td class="text-center">
-															<a class="btn btn-warning" (click)="$event.stopPropagation();loadUsers(contactsPagination.pagedItems[i].id,contactsUsersPagination)">
+															<a class="btn btn-warning" (click)="$event.stopPropagation();loadUsers(contactsPagination.pagedItems[i].id,contactsUsersPagination,contacts.name)">
 																<i class="fa fa-eye" style="padding-top: 3px; font-size: 20px;" title="" data-original-title="Preview"></i>
 															</a>
 														</td>
@@ -1090,7 +1091,7 @@
 								</td>
 								<td width="55%">
 									<ng-container *ngFor="let contactList of selectedContactLists;let i=index;">
-										<a (click)="loadUsers(contactList.id,contactsUsersPagination)" data-toggle="modal" data-target="#myModal" title="{{contactList.name}}"
+										<a (click)="loadUsers(contactList.id,contactsUsersPagination,contactList.name)" data-toggle="modal" data-target="#myModal" title="{{contactList.name}}"
 											style="display: block;">
 											<ng-container *ngIf="contactList.name?.length>50">
 												{{contactList.name | slice:0:50}}...
@@ -1157,7 +1158,7 @@
 							Add an Auto-response to a website visit
 						</a>
 					</div>
-					
+
 					<div class="col-xs-6">
 						<a class="dashboard-stat yellow-gold" style="background-color: #f4555c;" (click)="addReplyRows()">
 							<i class="fa fa-plus-square p0"></i>
@@ -1189,15 +1190,15 @@
 								<div class="col-md-6">
 								<label for="reason">Reason</label>
 								<select class="form-control" name="actionId" [(ngModel)]="reply.actionId">
-								<option [value]="0" [selected]="reply.actionId ==0">Email Not Opened</option>
-									<option [value]="13" [selected]="reply.actionId==13">Email Opened</option>
-									<option [value]="16" [selected]="reply.actionId ==16">Send Immediately After Email Opened</option>
-									<option [value]="22" [selected]="reply.actionId ==22" *ngIf="campaign.channelCampaign">Send If Partner Email Is Not Used</option>
+								<option [value]="0" [selected]="reply.actionId ==0">Email is not opened</option>
+									<option [value]="13" [selected]="reply.actionId==13">Email is opened</option>
+									<option [value]="16" [selected]="reply.actionId ==16">Send immediately after email is opened</option>
+									<option [value]="22" [selected]="reply.actionId ==22" *ngIf="campaign.channelCampaign">Send if partner email is not used</option>
 									<ng-container *ngIf="campaignType=='video'">
-										<option [value]="1" [selected]="reply.actionId==1">Video Played</option>
-										<option [value]="17" [selected]="reply.actionId==17">Send Immediately After Video Played</option>
-										<option  [value]="18" [selected]="reply.actionId==18">Send If Video Is Not Played</option>
-										<option [value]="23" [selected]="reply.actionId ==23" *ngIf="campaign.channelCampaign">Send If Partner Video Is Not Used</option>
+										<option [value]="1" [selected]="reply.actionId==1"> Video is played</option>
+										<option [value]="17" [selected]="reply.actionId==17"> Send immediately after video is played</option>
+										<option  [value]="18" [selected]="reply.actionId==18">Video is not played</option>
+										<option [value]="23" [selected]="reply.actionId ==23" *ngIf="campaign.channelCampaign"> Video is not redistributed</option>
 
 									</ng-container>
 								</select>
@@ -1650,8 +1651,8 @@
 							<i class="fa fa-times"></i>
 						</button>
 						<div>
-							<h4 class="modal-title" id="user-list-name" align="center">
-								<b>List Of Users</b>
+							<h4 class="modal-title" id="user-list-name" align="center"  title="{{listName}}">
+								<b>{{listName|slice:0:20}}<span *ngIf="listName?.length>20">...</span></b>
 							</h4>
 						</div>
 					</div>
