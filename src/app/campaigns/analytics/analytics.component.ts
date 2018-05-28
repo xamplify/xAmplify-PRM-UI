@@ -292,7 +292,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       () => console.log()
       )
   }
-  
+
   getCampaignUsersWatchedInfo(countryCode) {
       this.loading = true;
       this.referenceService.loading(this.httpRequestLoader, true);
@@ -833,7 +833,10 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     }
 
     previewVideo(videoFile: any){
-        this.videoFile = videoFile;
+        this.loading = true;
+        setTimeout(()=>{ this.loading = false;
+          this.videoFile = videoFile;
+        },600);
     }
 
     closeModal(event: any){

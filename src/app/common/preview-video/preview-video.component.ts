@@ -15,14 +15,13 @@ declare var videojs, $: any;
 } )
 export class PreviewVideoComponent implements OnInit {
     @Input() videoFile: any;
-      @Output() notifyParent: EventEmitter<any>;
+    @Output() notifyParent: EventEmitter<any>;
     videoJSplayer: any;
     videotitle: string;
     videoId: number;
-
-    constructor( public referenceService: ReferenceService,
-        public authenticationService: AuthenticationService, public videoUtilService: VideoUtilService ) {
-                this.notifyParent = new EventEmitter();
+    constructor( public referenceService: ReferenceService,public authenticationService: AuthenticationService,
+                 public videoUtilService: VideoUtilService ) {
+                 this.notifyParent = new EventEmitter();
          }
 
     showPreview() {
@@ -132,7 +131,7 @@ export class PreviewVideoComponent implements OnInit {
         } );
     }
     ngOnInit() {
-        this.showPreview();
+       this.showPreview();
     }
 
 }
