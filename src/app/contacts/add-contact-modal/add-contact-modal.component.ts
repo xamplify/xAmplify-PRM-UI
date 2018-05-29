@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter,AfterViewInit,OnDestroy } from '@angular/core';
 import { User } from '../../core/models/user';
 import {Router } from '@angular/router';
 import { CountryNames } from '../../common/models/country-names';
@@ -13,7 +13,7 @@ declare var $: any;
     styleUrls: ['./add-contact-modal.component.css'],
     providers: [CountryNames, RegularExpressions]
 })
-export class AddContactModalComponent implements OnInit {
+export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy {
 
     @Input() contactDetails: any;
     @Input() isContactTypeEdit: boolean;
@@ -32,7 +32,7 @@ export class AddContactModalComponent implements OnInit {
     checkingContactTypeName = '';
     locationDetails: any;
     locationCountry = '';
-    
+
     constructor( public countryNames: CountryNames, public regularExpressions: RegularExpressions,public router:Router,
                  public contactService: ContactService, public videoFileService: VideoFileService ) {
         this.notifyParent = new EventEmitter();
@@ -40,7 +40,7 @@ export class AddContactModalComponent implements OnInit {
         /*if ( this.addContactuser.mobileNumber == undefined ) {
             this.addContactuser.mobileNumber = "+1";
         }*/
-        
+
     }
 
     addContactModalClose() {
@@ -55,7 +55,7 @@ export class AddContactModalComponent implements OnInit {
        // this.addContactuser.country = undefined;
        // this.addContactuser = new User();
        // this.contactDetails = undefined;
-        
+
     }
 
     validateEmail( emailId: string ) {
@@ -119,7 +119,7 @@ export class AddContactModalComponent implements OnInit {
             this.isCompanyDetails = false;
         }
     }
-    
+
     geoLocation(){
         this.videoFileService.getJSONLocation()
         .subscribe(
@@ -128,7 +128,7 @@ export class AddContactModalComponent implements OnInit {
             if ( !this.isUpdateUser || this.addContactuser.country == undefined ) {
                 this.addContactuser.country = data.country;
             }
-            
+
             if ( !this.isUpdateUser || this.addContactuser.mobileNumber == undefined ) {
                 for ( let i = 0; i < this.countryNames.countriesMobileCodes.length; i++ ) {
                     if ( data.countryCode == this.countryNames.countriesMobileCodes[i].code ) {
@@ -148,7 +148,7 @@ export class AddContactModalComponent implements OnInit {
         }else{
             this.checkingContactTypeName = "Contact"
         }
-        
+
         if ( this.isUpdateUser ) {
             this.checkingForEmail = true;
             this.addContactuser.userId = this.contactDetails.id;
@@ -173,12 +173,24 @@ export class AddContactModalComponent implements OnInit {
                     this.isCompanyDetails = false;
                 }
             }
-            
+
         }
         if ( this.addContactuser.country == undefined ) {
             this.geoLocation();
         }
         $( '#addContactModal' ).modal( 'show' );
+    }
+    cssChanges(){
+      $('.input-group > .form-control').css('cssText','border: none !important;height: 36px !important;');
+      $('.input-group > .form-control:focus').css('cssText','border-color: white !important;');
+      $('.input-group > .input-group-addon').css('cssText','background: white !important;');
+      $('.input-group-addon').css('cssText','border: none !important;');
+    }
+    ngAfterViewInit(){
+      this.cssChanges();
+    }
+    ngOnDestroy(){
+    // $('#addContactModal').modal('hide');
     }
 
 }

@@ -1,17 +1,17 @@
 <style>
-/deep/ .input-group > .form-control {
+/* /deep/ .input-group > .form-control {
     border: none !important;
-    height: 36px !important;	
+    height: 36px !important;
 }
 /deep/ .input-group > .form-control:focus {
     border-color: white !important;
 }
 /deep/ .input-group > .input-group-addon {
     background: white !important;
-} 
+}
  /deep/ .input-group-addon {
   border: none !important;
-	}
+	} */
 </style>
 
 <!-- BEGIN PAGE CONTENT-->
@@ -198,7 +198,7 @@
 										(click)="showingContactDetails('unsubscribe')"
 										[disabled]="contactsByType.unsubscribedContactsCount == 0">
 										<div class="visual">
-										
+
 											<i class="fa fa-times"></i>
 										</div>
 										<div class="details">
@@ -778,7 +778,7 @@
 	</div>
 
 	<!-- modals -->
- 
+
 
 <div *ngIf="contactService.isContactModalPopup && !updateContactUser">
 	<app-add-contact-modal [totalUsers]="contacts" [isContactTypeEdit]="true" [isUpdateUser] = "false"  (notifyParent)="addRow($event)" ></app-add-contact-modal>
@@ -786,7 +786,7 @@
 
 <div *ngIf="contactService.isContactModalPopup && updateContactUser">
 	<app-add-contact-modal [totalUsers]="contacts"  [contactDetails]="contactAllDetails" [isUpdateUser] = "isUpdateUser" (notifyParent)="updateContactListUser($event)"></app-add-contact-modal>
-</div> 
+</div>
 
 <app-export-csv *ngIf="refService.isDownloadCsvFile" [downloadListDetails]="downloadDataList" [downloadListName]="logListName"> </app-export-csv>
 

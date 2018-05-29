@@ -60,7 +60,7 @@
 }
 
 a:hover{ text-decoration:none}
-.smpl-step > .smpl-step-step {padding: 0; position: relative;}   
+.smpl-step > .smpl-step-step {padding: 0; position: relative;}
 .smpl-step > .smpl-step-step > .smpl-step-icon {position: absolute; width: 70px; height: 70px; display: block; background: #008fd5; top: 45px;
 left: 50%; margin-top: -35px; margin-left: -35px; border-radius: 50%;}
 
@@ -96,7 +96,7 @@ left: 50%; margin-top: -35px; margin-left: -35px; border-radius: 50%;}
     border: 1px solid #f1f1f1;
     width: 80%;
     margin: 0 auto;
-    margin: 1.5em auto;    
+    margin: 1.5em auto;
 }
 svg {
     margin: 0 auto;
@@ -132,10 +132,10 @@ svg {
     cursor: pointer;
 }
 
-/deep/ .input-group > .form-control {
+/* ::ng-deep .input-group > .form-control {
     border-left: none !important;
-    height: 36px !important;	
-}
+    height: 36px !important;
+} */
 
 /* /deep/ .input-group > .form-control:focus {
     border-color: #e5e5e5;

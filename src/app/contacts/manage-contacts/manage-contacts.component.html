@@ -13,21 +13,21 @@
     position:absolute;
     left: 60% !important;
     top: -64px !important;
-    
+
 }
-/deep/ .input-group > .form-control {
+/* /deep/ .input-group > .form-control {
     border: none !important;
-    height: 36px !important;	
+    height: 36px !important;
 }
 /deep/ .input-group > .form-control:focus {
     border-color: white !important;
 }
 /deep/ .input-group > .input-group-addon {
     background: white !important;
-} 
+}
  /deep/ .input-group-addon {
   border: none !important;
-	}
+	} */
 </style>
 <div class="page-content">
 	<!-- page-breadcrumb -->
@@ -127,7 +127,7 @@
 												</a>
 												</span>
 											</button>
-										</div> 
+										</div>
 										<div class="col-sm-5ths">
 											<button class="btn-block dashboard-stat green"
 												(click)="listContactsByType('active')"
@@ -266,7 +266,7 @@
 																title="Edit List"> <i class="fa fa-pencil-square-o"></i>
 															</a> <a title="Copy and save as a new list"
 																(click)="saveAsNewList(contactList.id,contactList.name)">
-																<i class="fa fa-files-o"></i> 
+																<i class="fa fa-files-o"></i>
 															</a> <a
 																*ngIf="!hasAllAccess && loggedInUserId != contactList.uploadedUserId && !authenticationService.module.isVendor"
 																(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList)"
@@ -275,7 +275,7 @@
 															</a> <a (click)="downloadContactList(contactList.id)"
 																title="Download List" data-rel="fancybox-button"> <i
 																class="fa fa-cloud-download"></i>
-															</a> 
+															</a>
 															<span *ngIf="contactList.synchronisedList == true">
 																<a title="sychronizeContactList"
 																*ngIf="hasAllAccess || authenticationService.module.isVendor|| (hasContactRole && loggedInUserId==contactList.uploadedUserId)"
@@ -285,7 +285,7 @@
 															</span>
 															<a *ngIf="(hasAllAccess || authenticationService.module.isVendor || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner()) && !contactList.defaultPartnerList"
 																(click)="showAlert(contactList.id)" title="Delete List">
-																<i class="fa fa-trash"></i> 
+																<i class="fa fa-trash"></i>
 															</a>
 														</div>
 													</td>
@@ -298,8 +298,8 @@
 								<div class="row mix-grid" [hidden]="isListView"
 									*ngIf="pagination.pagedItems && !httpRequestLoader.isLoading">
 									<div *ngFor="let contactList of pagination.pagedItems" class="col-xs-12 col-sm-4 col-lg-3">
-										
-										
+
+
 										<div class="grid-box" id="contactListDiv_{{contactList.id}}">
 											<img class="imageClassCss" *ngIf="contactList.socialNetwork=='MANUAL'" src="{{normalImage}}">
 											<img class="imageClassCss" *ngIf="contactList.socialNetwork=='ZOHO'" src="{{zohoImage}}">
@@ -327,7 +327,7 @@
 															(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList)"
 															title="Edit List" data-rel="fancybox-button"> <i
 															class="fa fa-pencil-square-o"></i>
-														</a> <a 
+														</a> <a
 															[class.disabled]="!contactList.emailValidationInd"
 															*ngIf="!hasAllAccess && loggedInUserId != contactList.uploadedUserId && !authenticationService.module.isVendor"
 															(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList)"
@@ -357,7 +357,7 @@
 															style="color: white;"></i>
 														</a>
 													</ng-container>
-													 <a 
+													 <a
 															[class.disabled]="!contactList.emailValidationInd"
 															*ngIf="(hasAllAccess || authenticationService.module.isVendor || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner()) && !contactList.defaultPartnerList"
 															(click)="showAlert(contactList.id)" title="Delete List"
@@ -366,9 +366,9 @@
 														</a>
 											</div>
 										</div>
-										
-										
-										
+
+
+
 										<!-- <div class="col-md-3 col-sm-6 mix category_1 mix_all"
 											style="display: block; opacity: 1;"
 											id="contactListDiv_{{contactList.id}}">
@@ -472,7 +472,7 @@
 								<div id="pagination">
 									<!--pager here  -->
 									<app-pagination [pagination]="pagination" [type]="'contacts'"
-					
+
 										(notifyParent)="setPage($event)"
 										(notifyParentDropDown)="loadContactLists($event)"></app-pagination>
 								</div>
@@ -482,7 +482,7 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<app-edit-contacts *ngIf="showEdit" [contacts]="users"
 			(notifyParent)="update($event)"
 			[selectedContactListId]="selectedContactListId"

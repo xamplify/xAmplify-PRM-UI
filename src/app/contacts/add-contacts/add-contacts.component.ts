@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, Input } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, Input,AfterViewInit } from '@angular/core';
 import { ContactService } from '../services/contact.service';
 import { ContactList } from '../models/contact-list';
 import { User } from '../../core/models/user';
@@ -33,7 +33,7 @@ declare var swal, $, Papa: any;
         '../../../assets/css/numbered-textarea.css'],
     providers: [SocialContact, ZohoContact, SalesforceContact, Pagination, CountryNames, Properties, RegularExpressions,PaginationComponent]
 })
-export class AddContactsComponent implements OnInit {
+export class AddContactsComponent implements OnInit, AfterViewInit {
 
     settingSocialNetwork: string;
     isUnLinkSocialNetwork: boolean = false;
@@ -510,7 +510,7 @@ export class AddContactsComponent implements OnInit {
             if(this.newUsers[i].country === "Select Country"){
                 this.newUsers[i].country = null;
             }
-            
+
             if(this.newUsers[i].mobileNumber.length < 10){
                 this.newUsers[i].mobileNumber = "";
             }
@@ -601,7 +601,7 @@ export class AddContactsComponent implements OnInit {
             if(this.clipboardUsers[i].country === "Select Country"){
                 this.clipboardUsers[i].country = null;
             }
-            
+
             if(this.clipboardUsers[i].mobileNumber.length < 10){
                 this.clipboardUsers[i].mobileNumber = "";
             }
@@ -659,7 +659,7 @@ export class AddContactsComponent implements OnInit {
                         if(this.contacts[i].country === "Select Country"){
                             this.contacts[i].country = null;
                         }
-                        
+
                         if(this.contacts[i].mobileNumber.length < 10){
                             this.contacts[i].mobileNumber = "";
                         }
@@ -1872,8 +1872,18 @@ export class AddContactsComponent implements OnInit {
         catch ( err ) {
             this.xtremandLogger.error( "addContacts.component error " + err );
         }
-    }
+     //  this.cssChanges();
 
+    }
+    ngAfterViewInit(){
+     // this.cssChanges();
+    }
+    // cssChanges(){
+    //   $('.input-group > .form-control').css('cssText','border: none !important;height: 36px !important;');
+    //   $('.input-group > .form-control:focus').css('cssText','border-color: white !important;');
+    //   $('.input-group > .input-group-addon').css('cssText','background: white !important;');
+    //   $('.input-group-addon').css('cssText','border: none !important;');
+    // }
     toggle( i: number ) {
         const className = $( '#more_' + i ).attr( 'class' );
         if ( className === 'hidden' ) {

@@ -9,22 +9,22 @@
 .cloud-services img{display:block; margin:0 auto;}
 .cloud-services .portlet-body {padding: 10px 0 0px;}
 .cloud-services.portlet.light {padding-bottom: 0px;}
-/deep/ .input-group > .form-control {
+/* ::ng-deep .input-group > .form-control {
     border: none !important;
-    height: 36px !important;	
+    height: 36px !important;
 }
-/deep/ .input-group > .form-control:focus {
+::ng-deep .input-group > .form-control:focus {
     border-color: white !important;
 }
-/deep/ .input-group > .input-group-addon {
+::ng-deep .input-group > .input-group-addon {
     background: white !important;
-} 
- 
- /deep/ .input-group-addon {
+}
+
+::ng-deep .input-group-addon {
   border: none !important;
-	}
-/*	
+	} */
+/*
 /deep/ .dropbtn {
-pointer-events: none !important;	
+pointer-events: none !important;
 }
  */
