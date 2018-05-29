@@ -292,10 +292,10 @@
 							[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
 							(statusChange)="selectReplyEmailBody($event,i,reply)">
             </switch>
-								<button type="button" class="btn btn-danger" style="position: relative;background: #8395a7;top: 2px; !important"  (click)="remove(reply.divId,'replies')">
+								<button type="button" class="btn btn-danger" style="position: relative;background: #8395a7;top: 2px !important"  (click)="remove(reply.divId,'replies')">
 									<span class="glyphicon glyphicon-trash"></span>
 								</button>
-								<button type="button" class="btn btn-primary" style="position: relative;background: #8395a7;top: 2px; !important"  (click)="addReplyRows()">
+								<button type="button" class="btn btn-primary" style="position: relative;background: #8395a7 !important;top: 2px"  (click)="addReplyRows()">
 									<span class="glyphicon glyphicon-plus"></span>
 								</button>
             </div>
