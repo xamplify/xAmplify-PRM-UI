@@ -104,7 +104,6 @@ export class UploadEmailTemplateComponent implements OnInit {
                     this.mycontent = path;
                 }else{
                     this.emailTemplateUploader.queue.length = 0;
-                    alert(path);
                     this.customResponse = new CustomResponse( 'ERROR',path, true );
                 }
 
