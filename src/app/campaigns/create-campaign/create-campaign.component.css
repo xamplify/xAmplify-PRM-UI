@@ -34,7 +34,7 @@ a.disabled {
 
 .step {
 	/*margin-top: 27px;*/
-	
+
 }
 
 .progress {
@@ -274,7 +274,7 @@ a.disabled {
 }
 
 .portlet.light.block.active {
-	/* padding: 10px; 
+	/* padding: 10px;
 	background-color:#123456 !important; */
 	background-color: #eee;
 }
@@ -1005,7 +1005,7 @@ legend{display: block; width: auto; padding: 0 10px; margin-bottom: 0; font-size
 	width: 31px;
 }
 
- 
+
   .blur {
 	-webkit-filter: blur(1px);
 	-moz-filter: blur(1px);
@@ -1013,4 +1013,10 @@ legend{display: block; width: auto; padding: 0 10px; margin-bottom: 0; font-size
 	-ms-filter: blur(1px);
 	filter: blur(1px);
 	cursor: default;
+}
+.custom-change-css{
+  width: 100%;
+  background: #eaeaea;
+  border-radius: 0;
+  padding: 10px 20px;
 }

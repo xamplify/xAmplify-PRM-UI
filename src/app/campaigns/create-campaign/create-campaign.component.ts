@@ -205,6 +205,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         CKEDITOR.config.width = '75%';*/
        /* CKEDITOR.config.height = 500;        // 500 pixels high.
         CKEDITOR.config.height = '25em'; */
+        CKEDITOR.config.height = '100';
         this.countries = this.refService.getCountries();
         this.contactsPagination.filterKey = "isPartnerUserList";
         this.campaign = new Campaign();
@@ -925,6 +926,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         if($.trim(videoFile.controllerColor).length>0 && videoFile.transparency!=0) {
         const rgba =  this.videoUtilService.transparancyControllBarColor(videoFile.controllerColor, videoFile.transparency);
         $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
+        $('.video-js .vjs-big-play-button').css('cssText', 'top: 47px;!important');
         }
     }
     appendVideoData(videoFile:SaveVideoFile,divId:string,titleId:string){
@@ -950,9 +952,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             $("#"+titleId).append(title);
             $('#'+titleId).prop(videoFile.title);
             $("#"+divId).append(str);
-        //     console.log("Updated 360 video path"+videoPath);
-        //   //  videoPath = videoPath.replace(".mp4","_mobinar.m3u8");//Replacing .mp4 to .m3u8
-        //     $("#"+divId+" video").append('<source src="'+videoPath+'" type="video/mp4">');
             videoPath = videoPath.substring(0, videoPath.lastIndexOf('.'));
             videoPath = videoPath+ '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
             $("#"+divId+" video").append('<source src=' + videoPath + ' type="application/x-mpegURL">');
@@ -967,7 +966,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 }
               });
             $("#videoId").css("width", "100%");
-            $("#videoId").css("height", "217px");
+            $("#videoId").css("height", "155px");
             $("#videoId").css("max-width", "100%");
 
         }else{
@@ -985,7 +984,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             console.log("Normal Video Updated Path:::"+videoPath);
            $("#"+divId+" video").append('<source src='+videoPath+' type="application/x-mpegURL">');
            $("#videoId").css("width", "100%");
-           $("#videoId").css("height", "217px");
+           $("#videoId").css("height", "155px");
             $("#videoId").css("max-width", "100%");
             var document:any = window.document;
             const overrideNativeValue = this.refService.getBrowserInfoForNativeSet();
