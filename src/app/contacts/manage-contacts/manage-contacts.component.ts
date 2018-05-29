@@ -1115,16 +1115,16 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
 
     downloadContactTypeList() {
         if ( this.contactsByType.selectedCategory === 'all' ) {
-            this.logListName = 'All_'+ this.checkingContactTypeName +'s_list.csv';
+            this.logListName = 'All_' + this.checkingContactTypeName + 's_list.csv';
         }
         else if ( this.contactsByType.selectedCategory === 'active' ) {
-            this.logListName = 'All_Active_'+ this.checkingContactTypeName +'s_list.csv';
+            this.logListName = 'All_Active_' + this.checkingContactTypeName + 's_list.csv';
         } else if ( this.contactsByType.selectedCategory === 'non-active' ) {
-            this.logListName = 'All_Inactive_'+ this.checkingContactTypeName +'s_list.csv';
+            this.logListName = 'All_Inactive_' + this.checkingContactTypeName + 's_list.csv';
         } else if ( this.contactsByType.selectedCategory === 'invalid' ) {
-            this.logListName = 'All_Invalid_'+ this.checkingContactTypeName +'s_list.csv';
+            this.logListName = 'All_Invalid_' + this.checkingContactTypeName + 's_list.csv';
         } else if ( this.contactsByType.selectedCategory === 'unsubscribe' ) {
-            this.logListName = 'All_Unsubscribed_' + this.checkingContactTypeName +'s_list.csv';
+            this.logListName = 'All_Unsubscribed_' + this.checkingContactTypeName + 's_list.csv';
         }
         this.downloadDataList.length = 0;
         for ( let i = 0; i < this.contactsByType.listOfAllContacts.length; i++ ) {
@@ -1138,14 +1138,14 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
                 "Country": this.contactsByType.listOfAllContacts[i].country,
                 "Job Title": this.contactsByType.listOfAllContacts[i].jobTitle,
                 "Mobile Number": this.contactsByType.listOfAllContacts[i].mobileNumber,
-               // "Notes": this.contactsByType.listOfAllContacts[i].description
+                // "Notes": this.contactsByType.listOfAllContacts[i].description
             }
 
             this.downloadDataList.push( object );
         }
         this.referenceService.isDownloadCsvFile = true;
     }
-    
+
     listAllContactsByType( contactType: string, totalRecords: number ) {
         this.contactsByType.contactPagination.filterKey = 'isPartnerUserList';
         this.contactsByType.contactPagination.filterValue = this.isPartner;
@@ -1268,9 +1268,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
             )
 
     }
-    
-      ngAfterViewInit(){
-      }
+
+    ngAfterViewInit() {
+    }
 
     ngOnInit() {
         this.pagination.maxResults = 12;
@@ -1289,5 +1289,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
         this.xtremandLogger.info( 'Deinit - Destroyed Component' )
         this.contactService.successMessage = false;
         this.contactService.deleteUserSucessMessage = false;
+        swal.close();
     }
 }

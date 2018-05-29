@@ -51,11 +51,6 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
         $( '.modal-backdrop fade in' ).remove();
         $( ".modal-backdrop in" ).css( "display", "none" );
         this.contactService.isContactModalPopup = false;
-       // this.addContactuser.mobileNumber = undefined;
-       // this.addContactuser.country = undefined;
-       // this.addContactuser = new User();
-       // this.contactDetails = undefined;
-
     }
 
     validateEmail( emailId: string ) {
@@ -190,7 +185,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
       this.cssChanges();
     }
     ngOnDestroy(){
-    // $('#addContactModal').modal('hide');
+        this.addContactModalClose();
     }
 
 }
