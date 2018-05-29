@@ -27,10 +27,10 @@
 		              
 		              <div class="form-group files color">
 		              <div (fileOver)="fileOverBase($event)" ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}" 
-		              		(onFileDrop)="fileDropPreview($event)" [uploader]="companyLogoUploader">
+		              		(onFileDrop)="fileDropPreview($event)" [uploader]="emailTemplateUploader">
 		              	<h3>Upload Your File </h3>
-							<input type="file" id="upload-file"   ng2FileSelect [uploader]="companyLogoUploader" accept=".zip" 
-									*ngIf="companyLogoUploader.queue.length==0" (change)="changeLogo($event)" title=" " #input/>	
+							<input type="file" id="upload-file"   ng2FileSelect [uploader]="emailTemplateUploader" accept=".zip" 
+									*ngIf="emailTemplateUploader.queue.length==0" (change)="changeLogo($event)" title=" " #input/>	
 		              </div>
 		              
 		             <!--   <div *ngIf="isUploadFileError" class="alert alert-danger" style="margin-top: 40px;" id="upload-error-div">
@@ -44,7 +44,7 @@
 						<table>
 							<tbody>
 								<tr
-									*ngFor="let item of companyLogoUploader.queue;let last = last;let index = index">
+									*ngFor="let item of emailTemplateUploader.queue;let last = last;let index = index">
 									<td nowrap *ngIf="last">
 										<button type="button" class="btn btn-success"		(click)="saveHtmlTemplate()" id="save"
 											[disabled]="disableButton ||duplicateTemplateName ">
@@ -73,8 +73,9 @@
 					</div>
 					
 					</div>
-					<div class="col-xs-12" *ngIf="isUploaded"><!--  -->
-					 <ckeditor [(ngModel)]="model.content" name="content"></ckeditor>
+					<div class="col-xs-12" *ngIf="isUploaded" ><!--  -->
+					 	<ckeditor [(ngModel)]="mycontent" #myckeditor [config]="ckeConfig" debounce="500">
+						</ckeditor>
 					</div>
 			
 				<div class="clearfix" style="margin: 5px;"></div>

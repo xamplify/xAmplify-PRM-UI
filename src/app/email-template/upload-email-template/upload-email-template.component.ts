@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy,ViewChild } from '@angular/core';
 import { ActivatedRoute, Router }   from '@angular/router';
 import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
@@ -34,7 +34,7 @@ export class UploadEmailTemplateComponent implements OnInit {
     public isValidTemplateName: boolean = true;
     public disableButton: boolean = true;
     public htmlText: string;
-    public companyLogoUploader: FileUploader;
+    public emailTemplateUploader: FileUploader;
     public availableTemplateNames: Array<string>;
     isFileDrop: boolean;
     isFileProgress: boolean;
@@ -48,6 +48,11 @@ export class UploadEmailTemplateComponent implements OnInit {
     emailMergeTags:string = "";
     coBrandingTag:string = "";
     maxFileSize:number = 10;
+    name = 'ng2-ckeditor';
+    ckeConfig: any;
+    mycontent: string;
+    log: string = '';
+    @ViewChild("myckeditor") ckeditor: any;
     constructor(public emailTemplateService: EmailTemplateService, private userService: UserService, private router: Router,
             private emailTemplate: EmailTemplate, private logger: XtremandLogger,private authenticationService:AuthenticationService,public refService:ReferenceService) {
         logger.debug("uploadEmailTemplateComponent() Loaded");
@@ -68,19 +73,19 @@ export class UploadEmailTemplateComponent implements OnInit {
         );
 
 
-        this.companyLogoUploader = new FileUploader({
+        this.emailTemplateUploader = new FileUploader({
             allowedMimeType: ['application/x-zip-compressed'],
             maxFileSize: this.maxFileSize * 1024 * 1024,
             url: this.authenticationService.REST_URL + "admin/upload-zip?userId=" + this.loggedInUserId+"&access_token=" + this.authenticationService.access_token
         });
-        this.companyLogoUploader.onAfterAddingFile = (fileItem) => {
+        this.emailTemplateUploader.onAfterAddingFile = (fileItem) => {
             this.refService.startLoader(this.httpRequestLoader);
             fileItem.withCredentials = false;
-           this.companyLogoUploader.queue[0].upload();
+           this.emailTemplateUploader.queue[0].upload();
            this.uploadFileErrorMessage = "";
            this.customResponse.isVisible = false;
         };
-        this.companyLogoUploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+        this.emailTemplateUploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
             if($.trim(this.model.templateName).length>0){
                 this.isValidTemplateName = true;
                 this.disableButton = false;
@@ -90,15 +95,15 @@ export class UploadEmailTemplateComponent implements OnInit {
             }
             //this.checkAvailableNames(this.model.templateName);
             if (JSON.parse(response).message === null) {
-                   this.companyLogoUploader.queue[0].upload();
+                   this.emailTemplateUploader.queue[0].upload();
             } else {
-               // this.companyLogoUploader.queue.length = 0;
+               // this.emailTemplateUploader.queue.length = 0;
                 let path = JSON.parse(response).path;
                 if(path!="Html not found in the uploaded zip file." && path!="Zip file contains more than one html file"){
-                    this.model.content = path;
                     this.isUploaded = true;
+                    this.mycontent = path;
                 }else{
-                    this.companyLogoUploader.queue.length = 0;
+                    this.emailTemplateUploader.queue.length = 0;
                     this.customResponse = new CustomResponse( 'ERROR',path, true );
                 }
 
@@ -113,7 +118,9 @@ export class UploadEmailTemplateComponent implements OnInit {
             Layout.init();
             Demo.init();
             TableManaged.init();
-            console.log(CKEDITOR.instances);
+            this.ckeConfig = {
+                    allowedContent: true
+                  };
         } catch (errr) { }
     }
 
@@ -127,68 +134,6 @@ export class UploadEmailTemplateComponent implements OnInit {
 
 
     /****************Reading Uploaded File********************/
-    readFile(event: any ) {
-        var self = this;
-        if(this.model.templateName=="undefined" || this.model.templateName==undefined){
-           this.isValidTemplateName = false;
-           this.disableButton = true;
-        }else{
-            this.isValidTemplateName = true;
-            this.disableButton = false;
-        }
-        this.htmlText = "";
-        let file: any;
-        if (event.target != undefined) {
-            file = event.target.files[0];
-        } else {
-            file = event[0];
-        }
-        if(file!=undefined){
-            this.isUploadFileError = false;
-            let  extentionsArray = ["html","zip"];
-            let maxSize = 1*1024*1024;//10 Mb
-            let name = file.name;
-            let size = file.size;
-            let type = file.type;
-            let ext = name.split('.').pop().toLowerCase();
-            if ($.inArray(ext, extentionsArray) == -1) {
-                this.isUploadFileError = true;
-                this.uploadFileErrorMessage = "Please Upload .html and .zip files only";
-            }
-            if(!this.isUploadFileError){
-                let fileSize = (size/ 1024 / 1024); //size in MB
-                if (size > maxSize) {
-                    this.isUploadFileError = true;
-                    this.uploadFileErrorMessage = "Maximum File Size is 10 MB";
-                }
-            }
-            if (ext == "html" && !this.isUploadFileError ) {
-                let reader: FileReader = new FileReader();
-                reader.onload = ( e ) => {
-                    console.log( "Loading The File" )
-                    let htmlText: string = reader.result;
-                    this.model.content = htmlText;
-                    console.log( this.model.content );
-                    console.log( "Done with reading file" );
-                }
-                reader.readAsText( file );
-                this.isUploaded = true;
-                //this.disable = true;
-                $( ".addfiles" ).attr( "style", "float: left; margin-right: 9px;cursor:not-allowed; opacity:0.3" );
-            } else if ( ext == "zip" && !this.isUploadFileError ) {
-                var formData: FormData = new FormData();
-                formData.append( 'file', file, file.name );
-               $.each(formData,function(key,pair){
-                   console.log(key);
-               });
-                ;
-
-               // let options = new RequestOptions( { headers: headers });
-            }
-
-        }
-
-    }
     fileDropPreview(event:any){
 
     }
@@ -240,7 +185,6 @@ export class UploadEmailTemplateComponent implements OnInit {
         }
     }
 
-
     /************Save Html Template****************/
     saveHtmlTemplate() {
         this.customResponse.isVisible = false;
@@ -269,11 +213,6 @@ export class UploadEmailTemplateComponent implements OnInit {
                 this.refService.stopLoader(this.httpRequestLoader);
                 if (data == "success") {
                 this.refService.isCreated = true;
-                if(CKEDITOR){
-                    if(CKEDITOR.instances.editor1){
-                        CKEDITOR.instances.editor1.destroy();
-                    }
-                }
                 this.router.navigate(["/home/emailtemplates/manage"]);
                 } else{
                     this.isVideoTagError = true;
