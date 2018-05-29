@@ -461,8 +461,8 @@
 								<div class="col-md-3">
 									<label for="reason">Available Urls</label>
 									<select disabled="disabled" class="form-control" name="url" [(ngModel)]="url.url" style="width: 100%">
-										<option *ngFor="let hrefLink of emailTemplateHrefLinks;" [ngValue]="hrefLink" [selected]="hrefLink==url.url">
-											{{hrefLink}}
+										<option>
+											{{url.url}}
 										</option>
 									</select>
 								</div>

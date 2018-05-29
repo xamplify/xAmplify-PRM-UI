@@ -59,8 +59,6 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     dataError = false;
     emailTemplateHrefLinks: any[] = [];
     enableWorkFlow = true;
-    partnerLogo:string = "";
-    partnerCompanyUrl:string = "";
     formErrors = {
         'campaignName': '',
         'fromName': '',
@@ -192,8 +190,6 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     setCampaignData(result){
         this.campaign = result;
         const userProfile = this.authenticationService.userProfile;
-        this.partnerLogo = userProfile.companyLogo;
-        this.partnerCompanyUrl = userProfile.websiteUrl;
         this.campaign.email = userProfile.emailId;
         if(userProfile.firstName !== undefined && userProfile.lastName !== undefined)
             this.campaign.fromName = $.trim(userProfile.firstName + " " + userProfile.lastName);
@@ -432,7 +428,13 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
         this.videoFile = undefined;
     }
 
+    
     previewEmailTemplate(emailTemplate: EmailTemplate) {
+        this.referenceService.previewEmailTemplate(emailTemplate, this.campaign);
+        
+    }
+    
+   /* previewEmailTemplate(emailTemplate: EmailTemplate) {
        console.log(emailTemplate);
         const body = emailTemplate.body;
         let emailTemplateName = emailTemplate.name;
@@ -473,7 +475,9 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
 
     replaceCoBrandingDummyUrl(updatedBody:string){
         return updatedBody = updatedBody.replace("https://dummycobrandingurl.com",this.partnerCompanyUrl);
-    }
+    }*/
+    
+    
 
 
 
@@ -1059,7 +1063,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     }
     getAnchorLinksFromEmailTemplate(body: string) {
         let self = this;
-        body = this.replaceCoBrandingDummyUrl(body);
+        body = this.referenceService.replaceCoBrandingDummyUrlByUserProfile(body);
         $(body).find('a').each(function (e) {
             let href = $(this).attr('href');
             self.emailTemplateHrefLinks.push(href);

@@ -134,9 +134,6 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
         if(this.campaign.userListIds.length>0){
             this.loadContactList(this.contactListPagination);
         }
-        if(this.campaign.selectedEmailTemplateId>0){
-            this.getAnchorLinksFromEmailTemplate(this.campaign.emailTemplate.body);
-        }
         this.selectedEmailTemplateId = this.campaign.selectedEmailTemplateId;
         this.selectedUserlistIds = this.campaign.userListIds;
         this.campaignType = this.campaign.campaignType.toLocaleString();
@@ -193,7 +190,11 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     closePreviewVideoModal(event: any) {
         this.videoFile = undefined;
     }
-
+    previewEmailTemplate(emailTemplate: EmailTemplate){
+        this.referenceService.previewEmailTemplate(emailTemplate, this.campaign);
+    }
+    
+ /*   
     previewEmailTemplate(emailTemplate: EmailTemplate) {
        console.log(emailTemplate);
         const body = emailTemplate.body;
@@ -225,7 +226,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
         $("#email_template_preivew").modal('show');
         $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
     }
-
+*/
  
 
     
@@ -410,22 +411,6 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
         $("#email_template_preivew").modal('show');
     }
 
-    getAnchorLinksFromEmailTemplate(body: string) {
-        $('#emailTemplateContent').html('');
-        $('#emailTemplateContent').append(body);
-        console.log($('#emailTemplateContent').find('a'));
-        let self = this;
-        $('#emailTemplateContent').find('a').each(function (e) {
-            let href = $(this).attr('href');
-            self.emailTemplateHrefLinks.push(href);
-        });
-        this.emailTemplateHrefLinks = this.referenceService.removeDuplicates(this.emailTemplateHrefLinks);
-        var index = $.inArray("<SocialUbuntuURL>", this.emailTemplateHrefLinks);
-        if (index >= 0) {
-            this.emailTemplateHrefLinks.splice(index, 1);
-        }
-    }
-    
     ngOnDestroy(){CKEDITOR.config.readOnly = false;}
     
     
