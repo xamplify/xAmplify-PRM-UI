@@ -376,7 +376,8 @@ export class EditContactsComponent implements OnInit {
             for ( let i = 0; i < this.orgAdminsList.length; i++ ) {
                 this.teamMembersList.push( this.orgAdminsList[i] );
             }
-
+            this.teamMembersList.push(this.authenticationService.user);
+            
             let emails = []
             for(let i=0; i< this.users.length; i++){
                  emails.push(this.users[i].emailId);
@@ -491,6 +492,8 @@ export class EditContactsComponent implements OnInit {
                     for ( let i = 0; i < this.orgAdminsList.length; i++ ) {
                         this.teamMembersList.push( this.orgAdminsList[i] );
                     }
+                    this.teamMembersList.push(this.authenticationService.user);
+                    
                     let emails = []
                     for(let i=0; i< this.users.length; i++){
                          emails.push(this.users[i].emailId);
@@ -899,6 +902,7 @@ export class EditContactsComponent implements OnInit {
                 for ( let i = 0; i < this.orgAdminsList.length; i++ ) {
                     this.teamMembersList.push( this.orgAdminsList[i] );
                 }
+                this.teamMembersList.push(this.authenticationService.user);
                 let emails = []
                 for(let i=0; i< this.users.length; i++){
                      emails.push(this.users[i].emailId);

@@ -336,6 +336,7 @@ export class AddPartnersComponent implements OnInit {
         for ( let i = 0; i < this.orgAdminsList.length; i++ ) {
             this.teamMembersList.push( this.orgAdminsList[i] );
         }
+        this.teamMembersList.push(this.authenticationService.user);
         let emails = []
         for(let i=0; i< this.newPartnerUser.length; i++){ 
              emails.push(this.newPartnerUser[i].emailId);
