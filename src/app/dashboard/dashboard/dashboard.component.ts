@@ -76,6 +76,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     videoStatesTooltip = 'Last 7 days';
     isOnlyPartner:boolean;
     loading = false;
+    logListName = "";
 
     constructor(public router: Router, public dashboardService: DashboardService, public pagination: Pagination, public videosPagination: Pagination,
         public contactService: ContactService, public videoFileService: VideoFileService, public twitterService: TwitterService,
@@ -811,18 +812,17 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     downloadEmailLogs() {
-        let logListName: string;
         if (this.paginationType === 'open') {
-            logListName = 'Email_Open_Logs.csv';
+            this.logListName = 'Email_Open_Logs.csv';
             this.dashboardReport.downloadEmailLogList = this.dashboardReport.allEmailOpenLogList;
         } else if (this.paginationType === 'clicked') {
-            logListName = 'Email_Clicked_Logs.csv';
+            this.logListName = 'Email_Clicked_Logs.csv';
             this.dashboardReport.downloadEmailLogList = this.dashboardReport.allEmailClickedLogList;
         } else if (this.paginationType === 'watched') {
-            logListName = 'Email_Watched_Logs.csv';
+            this.logListName = 'Email_Watched_Logs.csv';
             this.dashboardReport.downloadEmailLogList = this.dashboardReport.allEmailWatchedLogList;
         } else if (this.paginationType === 'countryWiseUsers') {
-            logListName = 'Country_Wise_Views_Logs.csv';
+            this.logListName = 'Country_Wise_Views_Logs.csv';
             this.dashboardReport.downloadEmailLogList = this.worldMapUserData;
         }
 
@@ -830,7 +830,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         for (let i = 0; i < this.dashboardReport.downloadEmailLogList.length; i++) {
             let date = new Date(this.dashboardReport.downloadEmailLogList[i].time);
             var object = {
-                "EmailId": this.dashboardReport.downloadEmailLogList[i].emailId,
+                "Email Id": this.dashboardReport.downloadEmailLogList[i].emailId,
                 "First Name": this.dashboardReport.downloadEmailLogList[i].firstName,
                 "Last Name": this.dashboardReport.downloadEmailLogList[i].lastName,
                 "Date and Time": date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds(),
@@ -852,16 +852,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
             this.downloadDataList.push(object);
         }
-        var csvData = this.referenceService.convertToCSV(this.downloadDataList);
-        var a = document.createElement("a");
-        a.setAttribute('style', 'display:none;');
-        document.body.appendChild(a);
-        var blob = new Blob([csvData], { type: 'text/csv' });
-        var url = window.URL.createObjectURL(blob);
-        a.href = url;
-        a.download = logListName;
-        a.click();
-        return 'success';
+        this.referenceService.isDownloadCsvFile = true;
     }
 
     listOfAllEmailOpenLogs() {

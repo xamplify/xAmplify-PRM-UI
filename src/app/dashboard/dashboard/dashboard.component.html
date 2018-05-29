@@ -734,6 +734,8 @@ listOfEmailOpenLogst" data-dismiss="modal" (click)="cancelEmailStateModalPopUp()
 	</div>
 </div>
 
+<app-export-csv *ngIf="referenceService.isDownloadCsvFile" [downloadListDetails]="downloadDataList" [downloadListName]="logListName"> </app-export-csv>
+
 <div class="portlet light portlet-fullscreen" [hidden]="!isFullscreenToggle">
 	<div class="portlet-title">
 		<div class="caption">

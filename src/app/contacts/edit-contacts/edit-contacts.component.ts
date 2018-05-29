@@ -1762,34 +1762,6 @@ export class EditContactsComponent implements OnInit {
         this.contactAllDetails = contactDetails;
         this.contactService.isContactModalPopup = true;
         
-        /*this.checkingForEmail = true;
-
-        this.updateContactUser = true
-        this.addContactuser.userId = contactDetails.id;
-        this.addContactuser.firstName = contactDetails.firstName;
-        this.addContactuser.lastName = contactDetails.lastName;
-        this.addContactuser.contactCompany = contactDetails.contactCompany;
-        this.addContactuser.jobTitle = contactDetails.jobTitle;
-        this.addContactuser.emailId = contactDetails.emailId;
-        this.editingEmailId = contactDetails.emailId;
-        this.addContactuser.address = contactDetails.address;
-        this.addContactuser.city = contactDetails.city;
-        this.addContactuser.country = contactDetails.country;
-        if ( this.addContactuser.country == null ) {
-            this.addContactuser.country = ( this.countryNames.countries[0] );
-        }
-        if ( this.isPartner ) {
-            if ( this.addContactuser.contactCompany != undefined ) {
-                this.isCompanyDetails = true;
-            } else {
-                this.isCompanyDetails = false;
-            }
-       }
-        this.addContactuser.mobileNumber = contactDetails.mobileNumber;
-        this.addContactuser.description = contactDetails.description;
-      //  $( "#addContactModal" ).show();
-        console.log( contactDetails );
-        this.updatedUserDetails = contactDetails*/;
     }
 
     updateContactModalClose() {
@@ -1931,15 +1903,15 @@ export class EditContactsComponent implements OnInit {
         for ( let i = 0; i < this.contactsByType.listOfAllContacts.length; i++ ) {
             
             var object = {
-                "EmailId": this.contactsByType.listOfAllContacts[i].emailId,
+                "Email Id": this.contactsByType.listOfAllContacts[i].emailId,
                 "First Name": this.contactsByType.listOfAllContacts[i].firstName,
                 "Last Name": this.contactsByType.listOfAllContacts[i].lastName,
                 "Company": this.contactsByType.listOfAllContacts[i].contactCompany,
                 "Address": this.contactsByType.listOfAllContacts[i].address,
                 "City": this.contactsByType.listOfAllContacts[i].city,
                 "Country": this.contactsByType.listOfAllContacts[i].country,
-                "JobTitle": this.contactsByType.listOfAllContacts[i].jobTitle,
-                "MobileNumber": this.contactsByType.listOfAllContacts[i].mobileNumber,
+                "Job Title": this.contactsByType.listOfAllContacts[i].jobTitle,
+                "Mobile Number": this.contactsByType.listOfAllContacts[i].mobileNumber,
                 //"Notes": this.contactsByType.listOfAllContacts[i].description
             }
 
