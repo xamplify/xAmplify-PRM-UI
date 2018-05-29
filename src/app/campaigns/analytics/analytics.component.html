@@ -76,7 +76,7 @@
 					</div>
 				</a>
 		</div> -->
-		
+
 		<div  class="pl10 pr10 col-xs-12" [ngClass]="{'col-sm-4': campaignType === 'VIDEO', 'col-sm-6': campaignType === 'EMAIL', 'col-sm-12': campaignType === 'SOCIAL'}">
 			<a class="dashboard-stat dashboard-stat-lighter green-soft" (click)="showContactListModal()" [class.disabled]="!isPartnerEnabledAnalyticsAccess ?true:null">
 					<div class="visual">
@@ -329,7 +329,7 @@
 					</div>
 				<app-bubble-chart [campaignId]="campaignId"></app-bubble-chart>
 				<div style="text-align: center;"><span style="color: #7d7676; font-weight: bold; font-size: 15px;">
-					<span *ngIf="campaignType==='VIDEO'">Views Count By Recipient</span>
+					<span *ngIf="campaignType==='VIDEO'">View Count By Recipient</span>
 					<span *ngIf="campaignType!=='VIDEO'">Email Opened Count By Recipient </span>
 				  </span></div>
 				<div id="campaign-views-barchart" style="min-width: 310px; max-width: 800px; height: 260px; margin: 0 auto"></div>

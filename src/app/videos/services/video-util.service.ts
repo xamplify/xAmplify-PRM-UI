@@ -23,7 +23,7 @@ export class VideoUtilService {
     maxSizeOverMesg = 'Your video size is more than the maximum video file size(800 MB)' +
         'Please upload another video file within the limit!!';
     fileTypeMessage = 'Invalid video file Format.Please Upload supported video files only';
-    errorNullMesg = 'Something went wrong !! while uploading your video into our system.!!';
+    errorNullMesg = 'Uh oh! Looks like something went wrong during the video upload. Please try again';
     sortVideos = [
         { 'name': 'Sort By', 'value': '' },
         { 'name': 'Title(A-Z)', 'value': 'title-ASC' },
