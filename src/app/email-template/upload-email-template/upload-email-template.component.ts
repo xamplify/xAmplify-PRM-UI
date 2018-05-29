@@ -74,7 +74,7 @@ export class UploadEmailTemplateComponent implements OnInit {
 
 
         this.emailTemplateUploader = new FileUploader({
-            allowedMimeType: ['application/x-zip-compressed'],
+          //  allowedMimeType: ['application/x-zip-compressed'],
             maxFileSize: this.maxFileSize * 1024 * 1024,
             url: this.authenticationService.REST_URL + "admin/upload-zip?userId=" + this.loggedInUserId+"&access_token=" + this.authenticationService.access_token
         });
@@ -104,6 +104,7 @@ export class UploadEmailTemplateComponent implements OnInit {
                     this.mycontent = path;
                 }else{
                     this.emailTemplateUploader.queue.length = 0;
+                    alert(path);
                     this.customResponse = new CustomResponse( 'ERROR',path, true );
                 }
 
@@ -217,7 +218,7 @@ export class UploadEmailTemplateComponent implements OnInit {
                 } else{
                     this.isVideoTagError = true;
                     this.videoTagsError = data;
-                    this.customResponse = new CustomResponse("Error",data,true);
+                    this.customResponse = new CustomResponse("ERROR",data,true);
                 }
             },
             error => {
@@ -263,7 +264,7 @@ export class UploadEmailTemplateComponent implements OnInit {
           let  extentionsArray = ['zip'];
           if ($.inArray(ext, extentionsArray) == -1) {
               this.refService.goToTop();
-              this.customResponse = new CustomResponse('ERROR',"Invalid file", true);
+              this.customResponse = new CustomResponse('ERROR',"Please upload .zip files only", true);
               $('#upload-file').val('');
           }else{
               let fileSize = (size/ 1024 / 1024); //size in MB
