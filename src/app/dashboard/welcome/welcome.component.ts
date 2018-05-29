@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Properties } from '../../common/models/properties';
 import { UserService } from '../../core/services/user.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
@@ -7,6 +7,7 @@ import { DashboardService } from '../dashboard.service';
 
 import { UserDefaultPage } from '../../core/models/user-default-page';
 import { DashboardReport } from '../../core/models/dashboard-report';
+declare var $:any;
 
 @Component({
     selector: 'app-welcome',
@@ -14,7 +15,7 @@ import { DashboardReport } from '../../core/models/dashboard-report';
     styleUrls: ['./welcome.component.css'],
     providers: [Properties]
 })
-export class WelcomeComponent implements OnInit {
+export class WelcomeComponent implements OnInit, OnDestroy {
 
     userDefaultPage: UserDefaultPage;
     dashboardReport: DashboardReport;
@@ -107,6 +108,9 @@ export class WelcomeComponent implements OnInit {
         this.loggedInUserId = this.authenticationService.getUserId();
         this.getDefaultPage(this.loggedInUserId);
         this.welcome_text = this.authenticationService.isOnlyPartner() ? this.partner_welcome_text: this.vendor_welcome_text;
+    }
+    ngOnDestroy(){
+      $('#myModal').modal('hide');
     }
 
 }
