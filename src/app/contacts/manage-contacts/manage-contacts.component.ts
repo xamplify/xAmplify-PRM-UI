@@ -1269,14 +1269,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
 
     }
     
-    /*cssChanges(){
-        $('.input-group > .form-control').css('cssText','border: none !important;height: 36px !important;');
-        $('.input-group > .form-control:focus').css('cssText','border-color: white !important;');
-        $('.input-group > .input-group-addon').css('cssText','background: white !important;border: none !important;border-color: #ffffff;');
-        $('.input-group-addon').css('cssText','border: none !important;');
-      }*/
       ngAfterViewInit(){
-       // this.cssChanges();
       }
 
     ngOnInit() {

@@ -74,6 +74,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   campaignRouter:any;
   loggedInUserId:number = 0;
   loading:boolean =false;
+  logListName = "";
   httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
   constructor(private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
     public authenticationService: AuthenticationService, public pagerService: PagerService, public pagination: Pagination,
@@ -728,21 +729,20 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
 
   downloadEmailLogs() {
       this.loading = true;
-      let logListName: string;
     if (this.downloadTypeName === 'donut') {
-      logListName = 'Campaign_Views_Logs.csv';
+      this.logListName = 'Campaign_Views_Logs.csv';
       this.downloadCsvList = this.totalListOfemailLog;
     } else if (this.downloadTypeName === 'emailAction') {
-      logListName = 'Email_Action_Logs.csv';
+        this.logListName = 'Email_Action_Logs.csv';
       this.downloadCsvList = this.campaignReport.totalEmailActionList;
     } else if (this.downloadTypeName === 'usersWatchedList') {
-      logListName = 'Users_watched_Logs.csv';
+        this.logListName = 'Users_watched_Logs.csv';
       this.downloadCsvList = this.campaignReport.totalWatchedList;
     } else if (this.downloadTypeName === 'campaignViews') {
-      logListName = 'Campaign_report_logs.csv';
+        this.logListName = 'Campaign_report_logs.csv';
       this.downloadCsvList = this.campaignTotalViewsData;
     } else if (this.downloadTypeName === 'worldMap') {
-      logListName = 'World_Map_logs.csv';
+        this.logListName = 'World_Map_logs.csv';
       this.downloadCsvList = this.worldMapUserTotalData;
     }
 
@@ -798,17 +798,9 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
 
       this.downloadDataList.push(object);
     }
-    var csvData = this.referenceService.convertToCSV(this.downloadDataList);
-    var a = document.createElement("a");
-    a.setAttribute('style', 'display:none;');
-    document.body.appendChild(a);
-    var blob = new Blob([csvData], { type: 'text/csv' });
-    var url = window.URL.createObjectURL(blob);
-    a.href = url;
-    a.download = logListName;
-    a.click();
-    this.loading =false;
-    return 'success';
+    
+    this.referenceService.isDownloadCsvFile = true;
+    this.loading = false;
   }
 
     showEmailTemplatePreview(emailTemplate:any){

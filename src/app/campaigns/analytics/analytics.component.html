@@ -783,6 +783,8 @@
 	</div>
 <app-preview-video *ngIf="videoFile" [videoFile]="videoFile" (notifyParent)="closeModal($event)"></app-preview-video>
 
+<app-export-csv *ngIf="referenceService.isDownloadCsvFile" [downloadListDetails]="downloadDataList" [downloadListName]="logListName"> </app-export-csv>
+
 <div class="modal fade-scale" id="show_contact-list-info">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
