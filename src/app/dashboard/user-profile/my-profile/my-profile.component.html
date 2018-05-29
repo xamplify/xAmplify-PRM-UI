@@ -245,7 +245,9 @@ input:checked + .slider-new:before {
 															<label class="control-label">Mobile Number</label>
 															<!-- <input type="text"    placeholder="Mobile Number" class="form-control" formControlName="mobileNumber"    pattern="[0-9]*"
   																	 minlength="10"  maxlength="10" /> -->
+  													 <fieldset style="padding:0 !important;border: 1px solid #ece2e2; !important">
 													<int-phone-prefix placeholder="Mobile Number" formControlName="mobileNumber"></int-phone-prefix>
+															</fieldset>
 															<div *ngIf="formErrors.mobileNumber" class="alert alert-danger">{{ formErrors.mobileNumber }}</div>
 														</div>
 														<div class="form-group">

@@ -125,10 +125,6 @@ border-radius:50%
 .co-branding{ left: 20px; position: relative;}
 .file-css{ position: relative; right: -134px;margin-top: 3px;}
 
-/deep/ .input-group .form-control:last-child{
-	    border-left: none;
-    	height: 36px
-}
 .btn-user-pic{
   border-radius: 60% 57%!important;
   background: #290303;
@@ -186,3 +182,16 @@ a:hover{ text-decoration:none}
     width: 32px;
 }
 
+>>> .input-group > .form-control {
+    border: none !important;
+    height: 36px !important;
+}
+>>> .input-group > .form-control:focus {
+    border-color: white !important;
+}
+>>> .input-group > .input-group-addon {
+    background: white !important;
+}
+>>> .input-group-addon {
+  border: none !important;
+	} 

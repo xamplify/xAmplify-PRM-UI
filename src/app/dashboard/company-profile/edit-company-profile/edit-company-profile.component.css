@@ -132,6 +132,24 @@ svg {
     cursor: pointer;
 }
 
+
+>>> .input-group > .form-control {
+    border: none !important;
+    height: 36px !important;
+}
+>>> .input-group > .form-control:focus {
+    border-color: white !important;
+}
+>>> .input-group > .input-group-addon {
+    background: white !important;
+}
+>>> .input-group-addon {
+  border: none !important;
+	} 
+
+
+
+
 /* ::ng-deep .input-group > .form-control {
     border-left: none !important;
     height: 36px !important;

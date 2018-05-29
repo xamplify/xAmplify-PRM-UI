@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ContactService } from '../services/contact.service';
 import { ContactList } from '../models/contact-list';
 import { Criteria } from '../models/criteria';
@@ -27,7 +27,7 @@ declare var Metronic, $, Layout, Demo, Portfolio, swal: any;
     providers: [SocialContact, Pagination, Properties]
 })
 
-export class ManageContactsComponent implements OnInit {
+export class ManageContactsComponent implements OnInit, AfterViewInit {
     public socialContact: SocialContact;
     public googleSynchronizeButton: boolean;
     public storeLogin: any;
@@ -911,6 +911,10 @@ export class ManageContactsComponent implements OnInit {
                     this.isInvalidHeaderCheckBoxChecked = false;
                 }
                 this.referenceService.loading( this.httpRequestLoader, false );
+                /*$('.input-group > .form-control').css('cssText','border: none !important;height: 36px !important;');
+                $('.input-group > .form-control:focus').css('cssText','border-color: white !important;');
+                $('.input-group > .input-group-addon').css('cssText','background: white !important;border: none !important;border-color: #ffffff;');
+                $('.input-group-addon').css('cssText','border: none !important;');*/
 
             },
             ( error: any ) => {
@@ -1264,6 +1268,16 @@ export class ManageContactsComponent implements OnInit {
             )
 
     }
+    
+    /*cssChanges(){
+        $('.input-group > .form-control').css('cssText','border: none !important;height: 36px !important;');
+        $('.input-group > .form-control:focus').css('cssText','border-color: white !important;');
+        $('.input-group > .input-group-addon').css('cssText','background: white !important;border: none !important;border-color: #ffffff;');
+        $('.input-group-addon').css('cssText','border: none !important;');
+      }*/
+      ngAfterViewInit(){
+       // this.cssChanges();
+      }
 
     ngOnInit() {
         this.pagination.maxResults = 12;
