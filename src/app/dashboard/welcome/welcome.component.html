@@ -103,31 +103,19 @@ cursor: not-allowed;
 			<div class="flex">
 				<div class="col-sm-6 col-xs-12 block">
 					<div class="text-block">
-						<h1 style="color: #00B3B3">contacts</h1>
+            <h1 style="color: #00B3B3" *ngIf="!authenticationService.isVendor()">contacts</h1>
+            <h1 style="color: #00B3B3" *ngIf="authenticationService.isVendor()">partners</h1>
 						<p>{{welcome_text.contacts}}</p>
 						<div class="flex pull-left">
-							<button class="btn btn-xs color2" [routerLink]="['/home/contacts/add']" [class.disabled]="!hasContactRole || !authenticationService.user.hasCompany ? true : null">add contacts</button>
+              <!-- [class.disabled]="!hasContactRole || !authenticationService.user.hasCompany ? true : null" -->
+              <button class="btn btn-xs color2"  *ngIf="!authenticationService.isVendor()" [routerLink]="['/home/contacts/add']" >add contacts</button>
+              <button class="btn btn-xs color2"  *ngIf="authenticationService.isVendor()" [routerLink]="['/home/partners/add']" >add partners</button>
 							<button type="button" class="btn btn-xs color2-invert" data-toggle="modal" data-target="#myModal">Tell me how</button>
 						</div>
 					</div>
 				</div>
 				<div class="col-sm-6 col-xs-12 block image-block">
 					<img src="https://wistia.com/assets/product/video-seo/VideoSEO_2-2fc96034647ff7b9ecc5e0be9bac526f.png" style="max-width: 100%">
-				</div>
-			</div>
-			<div class="flex">
-				<div class="col-sm-6 col-xs-12 block image-block">
-					<img src="https://wistia.com/assets/features/secure-ddcc83774ec8351e9de6cec79f8ad49d.png">
-				</div>
-				<div class="col-sm-6 col-xs-12 block">
-					<div class="text-block">
-						<h1 style="color: #827596">campaign</h1>
-						<p>{{welcome_text.campaigns}}</p>
-						<div class="flex pull-right">
-							<button class="btn btn-xs color3" [routerLink]="['/home/campaigns']" [class.disabled]="!authenticationService.user.hasCompany ? true : null">create campaign</button>
-							<button type="button" class="btn btn-xs color3-invert" data-toggle="modal" data-target="#myModal">Tell me how</button>
-						</div>
-					</div>
 				</div>
 			</div>
 			<div class="flex">
@@ -143,6 +131,21 @@ cursor: not-allowed;
 				</div>
 				<div class="col-sm-6 col-xs-12 block image-block">
 					<img src="https://wistia.com/assets/main/welcome/Marketing-bf8195807e780b9926a5dc125d763a62.svg">
+				</div>
+      </div>
+      <div class="flex">
+				<div class="col-sm-6 col-xs-12 block image-block">
+					<img src="https://wistia.com/assets/features/secure-ddcc83774ec8351e9de6cec79f8ad49d.png">
+				</div>
+				<div class="col-sm-6 col-xs-12 block">
+					<div class="text-block">
+						<h1 style="color: #827596">campaign</h1>
+						<p>{{welcome_text.campaigns}}</p>
+						<div class="flex pull-right">
+							<button class="btn btn-xs color3" [routerLink]="['/home/campaigns']" [class.disabled]="!authenticationService.user.hasCompany ? true : null">create campaign</button>
+							<button type="button" class="btn btn-xs color3-invert" data-toggle="modal" data-target="#myModal">Tell me how</button>
+						</div>
+					</div>
 				</div>
 			</div>
 			<div class="flex">
