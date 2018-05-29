@@ -248,6 +248,8 @@
 	</div>
 </div>
 
+<app-export-csv *ngIf="referenceService.isDownloadCsvFile" [downloadListDetails]="downloadDataList" [downloadListName]="logListName"> </app-export-csv>
+
 <!-- model popup for watched fully  -->
 <div class="modal fade" id="watchedFullyModelPopup" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
 	<div class="modal-dialog modal-lg" role="document" style="width: 80%; margin: 1em auto">

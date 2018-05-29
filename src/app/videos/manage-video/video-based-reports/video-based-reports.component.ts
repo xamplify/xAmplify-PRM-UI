@@ -74,6 +74,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     fullScreenMode: boolean;
     paginationType:string;
     videoPlayedSkipedInfo:any;
+    logListName = "";
 
     constructor(public authenticationService: AuthenticationService, public videoBaseReportService: VideoBaseReportService,
         public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService,
@@ -602,26 +603,25 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     }
 
     downloadLogs() {
-        let logListName: string;
         if (this.downloadTypeName === 'minetesWatched') {
-            logListName = 'Minetes_Views_Logs.csv';
+            this.logListName = 'Minetes_Views_Logs.csv';
             this.downloadCsvList = this.totalUsersWatched;
         } else if (this.downloadTypeName === 'watchedFully') {
-            logListName = 'Fully_Watched_Logs.csv';
+            this.logListName = 'Fully_Watched_Logs.csv';
             this.downloadCsvList = this.watchedFullyTotalReportList;
         } else if (this.downloadTypeName === 'worldMapData') {
-            logListName = 'country_Wise_Logs.csv';
+            this.logListName = 'country_Wise_Logs.csv';
             this.downloadCsvList = this.worldMapCampaignUsersTotalData;
         } else if (this.downloadTypeName === 'clickedMenetsWatched') {
-            logListName = 'Clicked_Menetes_logs.csv';
+            this.logListName = 'Clicked_Menetes_logs.csv';
             this.downloadCsvList = this.userMinutesWatchedTotalList;
         }
         else if (this.downloadTypeName === 'playedDuration') {
-            logListName = 'Played_Duration_logs.csv';
+            this.logListName = 'Played_Duration_logs.csv';
             this.downloadCsvList = this.videoPlayedDurationTotalList;
         }
         else if (this.downloadTypeName === 'skippedDuration') {
-            logListName = 'Skipped_Duration_logs.csv';
+            this.logListName = 'Skipped_Duration_logs.csv';
             this.downloadCsvList = this.videoSkippedDurationTotalList;
         }
 
@@ -679,16 +679,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
 
             this.downloadDataList.push(object);
         }
-        var csvData = this.referenceService.convertToCSV(this.downloadDataList);
-        var a = document.createElement("a");
-        a.setAttribute('style', 'display:none;');
-        document.body.appendChild(a);
-        var blob = new Blob([csvData], { type: 'text/csv' });
-        var url = window.URL.createObjectURL(blob);
-        a.href = url;
-        a.download = logListName;
-        a.click();
-        return 'success';
+        this.referenceService.isDownloadCsvFile = true;
     }
     clickedTrellisChart(){
        this.totalMinutesWatchedByMostUsers();
