@@ -176,6 +176,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
             this.contactListPagination.filterKey = 'isPartnerUserList';
             this.contactListPagination.filterValue = false;
             this.loggedInUserId = this.authenticationService.getUserId();
+             CKEDITOR.config.height = '100';
             if(this.campaignService.reDistributeCampaign!=undefined){
                 this.loadCampaignNames(this.loggedInUserId);
                 this.setCampaignData(this.campaignService.reDistributeCampaign);
@@ -428,12 +429,12 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
         this.videoFile = undefined;
     }
 
-    
+
     previewEmailTemplate(emailTemplate: EmailTemplate) {
         this.referenceService.previewEmailTemplate(emailTemplate, this.campaign);
-        
+
     }
-    
+
    /* previewEmailTemplate(emailTemplate: EmailTemplate) {
        console.log(emailTemplate);
         const body = emailTemplate.body;
@@ -476,8 +477,8 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     replaceCoBrandingDummyUrl(updatedBody:string){
         return updatedBody = updatedBody.replace("https://dummycobrandingurl.com",this.partnerCompanyUrl);
     }*/
-    
-    
+
+
 
 
 

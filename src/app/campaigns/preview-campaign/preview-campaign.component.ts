@@ -68,8 +68,8 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
                                {'name':'---All---','value':'0'},
                                ]
     contactItemsSize:any = this.numberOfContactsPerPage[0];
-    isCampaignDraftContactList:boolean = false;                           
-    selectedRowClass:string = ""; 
+    isCampaignDraftContactList:boolean = false;
+    selectedRowClass:string = "";
     isHeaderCheckBoxChecked:boolean = false;
     emptyContactsMessage:string = "";
     contactSearchInput:string = "";
@@ -83,7 +83,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     emailNotOpenedReplyDaysSum:number = 0;
     emailOpenedReplyDaysSum:number = 0;
     onClickScheduledDaysSum:number = 0;
-    
+
     invalidScheduleTime:boolean = false;
     hasInternalError:boolean =false;
     invalidScheduleTimeError:string = "";
@@ -106,12 +106,18 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
             this.contactListPagination.filterKey = 'isPartnerUserList';
             this.contactListPagination.filterValue = false;
             this.loggedInUserId = this.authenticationService.getUserId();
+            CKEDITOR.config.height = '100';
            this.getCampaignById();
            CKEDITOR.config.readOnly = true;
         }
-    
-    
-    
+
+
+        selectReplyEmailBody(i,e){
+
+        }
+        selectClickEmailBody(i,r,e){
+
+        }
     getCampaignById() {
         var obj = { 'campaignId': this.route.snapshot.params['id'] }
         this.campaignService.getCampaignById( obj )
@@ -162,12 +168,12 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
             }
 
         }
-       
+
         this.referenceService.stopLoader(this.httpRequestLoader);
         this.getCampaignReplies(this.campaign);
         this.getCampaignUrls(this.campaign);
     }
-    
+
     onSelect(countryId) {
         this.timezones  = this.referenceService.getTimeZonesByCountryId(countryId);
     }
@@ -193,8 +199,8 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     previewEmailTemplate(emailTemplate: EmailTemplate){
         this.referenceService.previewEmailTemplate(emailTemplate, this.campaign);
     }
-    
- /*   
+
+ /*
     previewEmailTemplate(emailTemplate: EmailTemplate) {
        console.log(emailTemplate);
         const body = emailTemplate.body;
@@ -227,10 +233,10 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
         $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
     }
 */
- 
 
-    
-    
+
+
+
     setContactListError(){
         if(this.selectedUserlistIds.length>0){
             this.contactListBorderColor = "silver";
@@ -249,7 +255,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
         let minutes = dt.getMinutes() > 9 ? dt.getMinutes() : '0' + dt.getMinutes();
         return hours+":"+minutes;
     }
-    
+
     getCampaignReplies(campaign: Campaign) {
         if(campaign.campaignReplies!=undefined){
             this.replies = campaign.campaignReplies;
@@ -270,9 +276,9 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
                 reply.divId = id;
                 this.allItems.push(id);
                 this.loadEmailTemplatesForAddReply(reply);
-            } 
+            }
         }
-        
+
      }
 
     getCampaignUrls(campaign:Campaign){
@@ -294,9 +300,9 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
                 this.loadEmailTemplatesForAddOnClick(url);
             }
         }
-       
+
     }
-    
+
     loadEmailTemplatesForAddReply(reply: Reply) {
         this.campaignEmailTemplate.httpRequestLoader.isHorizontalCss = true;
         this.referenceService.loading(this.campaignEmailTemplate.httpRequestLoader, true);
@@ -412,8 +418,8 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     }
 
     ngOnDestroy(){CKEDITOR.config.readOnly = false;}
-    
-    
+
+
     /*************************************************************Contact List***************************************************************************************/
     loadContactList(contactsPagination: Pagination) {
         this.campaignContact.httpRequestLoader.isHorizontalCss=true;
@@ -431,7 +437,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
             () => this.xtremandLogger.info("Finished loadContactList()", this.contactListPagination)
             )
     }
-    
+
     showContacts(){
         if($('#campaign-contact-list').css('display') == 'none'){
             this.previewText = "Hide";
@@ -445,8 +451,8 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
         this.contactListPagination.searchKey = this.contactSearchInput;
         this.loadContactList(this.contactListPagination);
     }
-   
-   
+
+
     /*******************************Preview*************************************/
     contactListItems:any[];
       loadUsers(id:number,pagination:Pagination){
@@ -488,7 +494,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
                                       '<td>'+firstName+'</td>'+
                                       '<td>'+lastName+'</td>'+
                                   '</tr>';
-                      });     
+                      });
                        html+='</tbody>';
                        html+='</table>';
                       $('#users-modal-body').append(html);
@@ -498,7 +504,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
                   () => console.log( "MangeContactsComponent loadUsersOfContactList() finished" )
               )
       }
-      
+
       closeModelPopup(){
           this.contactsUsersPagination = new Pagination();
       }
@@ -508,17 +514,17 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
               this.emptyContactsMessage = "No Contacts Found For This Contact List";
           }
       }
-    
+
   ngOnInit() {
       this.isListView = !this.referenceService.isGridView;
   }
-  
- 
+
+
   setPage(pageIndex:number){
       this.contactsUsersPagination.pageIndex = pageIndex;
       this.loadUsers(0,this.contactsUsersPagination);
   }
-  
+
   setReplyEmailTemplate(emailTemplateId:number,reply:Reply,index:number){
       reply.selectedEmailTemplateId = emailTemplateId;
       $('#reply-'+index+emailTemplateId).prop("checked",true);

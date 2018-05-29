@@ -38,3 +38,9 @@ fieldset {
 	filter: blur(1px);
 	cursor: default;
 }
+.custom-change-css{
+  width: 100%;
+  background: #eaeaea;
+  border-radius: 0;
+  padding: 10px 20px;
+}

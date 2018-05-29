@@ -244,8 +244,8 @@
 
 
 	<div class="col-xs-12" id="campaign-options-div">
-		<fieldset>
-			<legend>Additional campaign options</legend>
+		<!-- <fieldset>
+			<legend>Additional campaign options</legend> -->
 		<div>
 	<div class="row">
 		<div class="col-xs-6"></div>
@@ -277,23 +277,34 @@
 			<div class="alert alert-danger" *ngIf="dataError">
 				<strong>Please complete the required fields</strong>
 			</div>
-			<!-- Content Should Come here ------------ -->
+      <!-- Content Should Come here ------------ -->
+      <fieldset *ngIf="replies?.length>0">
+        <legend>Add a Auto-response Campaign Option to your E-mail</legend>
 			<div *ngFor="let reply of replies;let i=index">
 				<div class="portlet light dashboard-stat2" id="{{reply.divId}}">
-					<div>
-						<h4 class="col-xs-9 text-left">
-							<b>Add an Auto-response to your e-mail-{{i+1}}</b>
-						</h4>
+					<div class="portlet-title custom-change-css">
+            <div class="col-xs-7 ">
+                <h4 class="text-left"><b>Add an Auto-response to your e-mail-{{i+1}}</b></h4>
+            </div>
+            <div class="col-xs-5" style="text-align:right">
 						<label>Choose Template</label>
 						<switch [status]="reply.defaultTemplate" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
 							[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
 							(statusChange)="selectReplyEmailBody($event,i,reply)">
-						</switch>
+            </switch>
+								<button type="button" class="btn btn-danger" style="position: relative;background: #8395a7;top: 2px; !important"  (click)="remove(reply.divId,'replies')">
+									<span class="glyphicon glyphicon-trash"></span>
+								</button>
+								<button type="button" class="btn btn-primary" style="position: relative;background: #8395a7;top: 2px; !important"  (click)="addReplyRows()">
+									<span class="glyphicon glyphicon-plus"></span>
+								</button>
+            </div>
 					</div>
-					<div class="panel-body">
+					<div class="row">
 						<form class="role add-reply" id="form-{{reply.divId}}">
-						<div class="row" >
-									<div class="col-md-6">
+             <div class="col-xs-12" style="padding:0" >
+						<div class="col-xs-4">
+									<div class="col-xs-12">
 								<label for="reason">Reason</label>
 								<select class="form-control" name="actionId" [(ngModel)]="reply.actionId">
 								<option [value]="0" [selected]="reply.actionId ==0">Email is not opened</option>
@@ -312,7 +323,7 @@
 
 
 								<div *ngIf="reply.actionId!=16 && reply.actionId!=17 && reply.actionId!=18">
-								<div class="col-md-4">
+								<div class="col-xs-12" style="margin-top: 9px;">
 									<label for="days" *ngIf="reply.actionId==22 || reply.actionId==23 " id="reply-days-{{reply.divId}}">Reply In X Days
 										<b style="color: red">*</b>
 										<font><b>(Minimum 1 Day)</b></font>
@@ -323,33 +334,24 @@
 									<input type="number" class="form-control" name="days" placeholder="Days" [(ngModel)]="reply.replyInDays" min="0" oninput="validity.valid||(value='');">
 								</div>
 
-								<div class="col-md-3 time-col" *ngIf="reply.actionId!=22 && reply.actionId!=23 ">
+								<div class="col-xs-12 time-col" *ngIf="reply.actionId!=22 && reply.actionId!=23 ">
 									<span for="time" id="send-time-{{reply.divId}}" style="margin-top:20px;">At
 										<b style="color: red">*</b>&nbsp;&nbsp;</span>
 									<timepicker [(ngModel)]="reply.replyTime" name="time"></timepicker>
 								</div>
 								</div>
 
-								<div class="col-md-4">
+								<div class="col-xs-12" style="margin-top: 6px;">
 									<label for="time" id="reply-subject-{{reply.divId}}">Subject
 										<b style="color: red">*</b>
 									</label>
 									<input type="text" class="form-control" name="subject" [(ngModel)]="reply.subject" placeholder="Subject" maxlength="50">
 								</div>
 
-
-							<div class="col-md-2" style="padding-top: 1.9em;">
-								<button type="button" class="btn btn-danger" (click)="remove(reply.divId,'replies')">
-									<span class="glyphicon glyphicon-trash"></span>
-								</button>
-								<button type="button" class="btn btn-primary" (click)="addReplyRows()">
-									<span class="glyphicon glyphicon-plus"></span>
-								</button>
-							</div>
 						</div>
-							<div class="col-sm-12" style="padding: 0">
+							<div class="col-xs-8">
 								<div id="ck-editor-{{i}}" *ngIf="!reply.defaultTemplate">
-									<div class="form-group" style="margin-left: 1px;">
+									<div >
 										<label for="days" id="reply-message-{{reply.divId}}">Message
 											<b style="color: red">*</b>
 										</label>
@@ -473,28 +475,41 @@
 										</div>
 									</ng-container>
 								</div>
-							</div>
+              </div>
+              </div>
 						</form>
 					</div>
 				</div>
-			</div>
-			<!-- ------------ADD ON CLICK------------------------ -->
+      </div>
+    </fieldset>
+      <!-- ------------ADD ON CLICK------------------------ -->
+      <fieldset *ngIf="urls?.length>0">
+          <legend>Add-response Campaign Option to a Website Visit</legend>
 			<div *ngFor="let url of urls;let i=index">
 				<div class="portlet light dashboard-stat2" id="{{url.divId}}">
-					<div>
-						<h4 class="col-xs-9 text-left">
-							<b>Add an Auto-response to a website visit - {{i+1}}</b>
-						</h4>
+					<div class="portlet-title custom-change-css">
+            <div class="col-xs-7">
+                <h4 class="text-left"><b>Add an Auto-response to a website visit - {{i+1}}</b></h4>
+             </div>
+             <div class="col-xs-5" style="text-align:right">
 						<label>Choose Template</label>
 						<switch [status]="url.defaultTemplate" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
 							[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
 							(statusChange)="selectClickEmailBody($event,i,url)">
-						</switch>
+            </switch>
+             <button type="button" class="btn btn-danger" style="position: relative;background: #8395a7 !important;top: 2px;"  (click)="remove(url.divId,'url')">
+                <span class="glyphicon glyphicon-trash"></span>
+              </button>
+              <button type="button" class="btn btn-primary" style="position: relative;background: #8395a7 !important;top: 2px;"  (click)="addClickRows()">
+                <span class="glyphicon glyphicon-plus"></span>
+              </button>
+              </div>
 					</div>
-					<div class="panel-body">
+					<div class="row">
 						<form class="role" id="form-{{url.divId}}" class="add-click">
-							<div class="row">
-								<div class="col-md-3">
+                <div class="col-xs-12" style="padding:0">
+							<div class="col-xs-4">
+								<div class="col-xs-12">
 									<label for="reason">When To Send Email</label>
 									<select class="form-control" id="url-schedule-type" name="scheduleEmail" [(ngModel)]="url.actionId" (change)="setUrlScheduleType($event,url)">
 										  <option  [value]="19" [selected]="url.actionId ==19">Send if not clicked</option>
@@ -503,16 +518,14 @@
 									</select>
 								</div>
 
-
-
 								<div *ngIf="url.actionId==21">
-									<div class="form-group col-md-3">
+									<div class="form-group col-xs-12">
 										<label for="days" id="click-days-{{url.divId}}">Wait X Days After Click
 											<b style="color: red">*</b>
 										</label>
 										<input type="number" class="form-control" name="days" [(ngModel)]="url.replyInDays" placeholder="Days" min="0" oninput="validity.valid||(value='');">
 									</div>
-									<div class="form-group col-md-6">
+									<div class="form-group col-xs-12">
 										<label for="time" id="click-send-time-{{url.divId}}" style="margin-top:20px;">At
 											<b style="color: red">*</b>&nbsp;&nbsp;</label>
 										<timepicker [(ngModel)]="url.replyTime" name="time"></timepicker>
@@ -522,14 +535,14 @@
 
 
 
-								<div class="col-md-4">
+								<div class="col-xs-12" style="margin-top:6px">
 									<label for="time" id="click-subject-{{url.divId}}">Subject
 										<b style="color: red">*</b>
 									</label>
 									<input type="text" class="form-control" name="subject" [(ngModel)]="url.subject" placeholder="Subject" maxlength="50">
 								</div>
 
-								<div class="col-md-3">
+								<div class="col-xs-12" style="margin-top:6px">
 									<label for="reason">Available Urls</label>
 									<select class="form-control" name="url" [(ngModel)]="url.url" style="width: 100%">
 										<option *ngFor="let hrefLink of emailTemplateHrefLinks;" [ngValue]="hrefLink" [selected]="hrefLink==url.url">
@@ -537,22 +550,12 @@
 										</option>
 									</select>
 								</div>
-
-								<div class="col-md-2">
-										<button type="button" class="btn btn-danger" (click)="remove(url.divId,'url')">
-											<span class="glyphicon glyphicon-trash"></span>
-										</button>
-										<button type="button" class="btn btn-primary" (click)="addClickRows()">
-											<span class="glyphicon glyphicon-plus"></span>
-										</button>
-
-									</div>
 							</div>
 
-							<div class="col-sm-12" style="padding: 0">
+							<div class="col-xs-8" >
 								<div id="ck-editor-{{i}}" *ngIf="!url.defaultTemplate">
 
-										<label for="days" id="click-message-{{url.divId}}" style="margin-top:10px">Message
+										<label for="days" id="click-message-{{url.divId}}">Message
 											<b style="color: red">*</b>
 										</label>
 
@@ -675,18 +678,20 @@
 										</div>
 									</ng-container>
 								</div>
-							</div>
+              </div>
+              </div>
 						</form>
 					</div>
 				</div>
-			</div>
+      </div>
+      </fieldset>
 			<!-- Add on Click end -->
 			</div>
 			</div>
 			</div>
 
 	</div>
-</fieldset>
+<!-- </fieldset> -->
 								</div>
                 <div class="col-xs-12">
                     <fieldset>
