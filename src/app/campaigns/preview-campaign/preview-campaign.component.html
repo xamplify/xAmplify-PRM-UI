@@ -296,16 +296,15 @@
 								<div class="col-md-6">
 								<label for="reason">Reason</label>
 								<select class="form-control" name="actionId" [(ngModel)]="reply.actionId" disabled="disabled">
-								<option [value]="0" [selected]="reply.actionId ==0">Email Not Opened</option>
-									<option [value]="13" [selected]="reply.actionId==13">Email Opened</option>
-									<option [value]="16" [selected]="reply.actionId ==16">Send Immediately After Email Opened</option>
-									<option [value]="22" [selected]="reply.actionId ==22" *ngIf="campaign.channelCampaign">Send If Partner Email Is Not Used</option>
-									<ng-container *ngIf="campaignType=='VIDEO'">
-										<option [value]="1" [selected]="reply.actionId==1">Video Played</option>
-										<option [value]="17" [selected]="reply.actionId==17">Send Immediately After Video Played</option>
-										<option  [value]="18" [selected]="reply.actionId==18">Send If Video Is Not Played</option>
-										<option [value]="23" [selected]="reply.actionId ==23" *ngIf="campaign.channelCampaign">Send If Partner Video Is Not Used</option>
-
+								<option [value]="0" [selected]="reply.actionId ==0">Email is not opened</option>
+									<option [value]="13" [selected]="reply.actionId==13">Email is opened</option>
+									<option [value]="16" [selected]="reply.actionId ==16">Send immediately after email is opened</option>
+									<option [value]="22" [selected]="reply.actionId ==22" *ngIf="campaign.channelCampaign">Send if partner email is not used</option>
+									<ng-container *ngIf="campaignType=='video'">
+										<option [value]="1" [selected]="reply.actionId==1"> Video is played</option>
+										<option [value]="17" [selected]="reply.actionId==17"> Send immediately after video is played</option>
+										<option  [value]="18" [selected]="reply.actionId==18">Video is not played</option>
+										<option [value]="23" [selected]="reply.actionId ==23" *ngIf="campaign.channelCampaign"> Video is not redistributed</option>
 									</ng-container>
 								</select>
 							</div>
@@ -432,8 +431,8 @@
 								<div class="col-md-3">
 									<label for="reason">When To Send Email</label>
 									<select disabled="disabled" class="form-control" id="url-schedule-type" name="scheduleEmail" [(ngModel)]="url.actionId" (change)="setUrlScheduleType($event,url)">
-										  <option  [value]="19" [selected]="url.actionId ==19">Send If Not Clicked</option>
-						           	 		<option  [value]="20" [selected]="url.actionId ==20">Send Immediately After Clicked</option>
+										 <option  [value]="19" [selected]="url.actionId ==19">Send if not clicked</option>
+						           	 		<option  [value]="20" [selected]="url.actionId ==20">Send immediately after clicked</option>
 						           			<option  [value]="21" [selected]="url.actionId ==21">Schedule</option>
 									</select>
 								</div>
