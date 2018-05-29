@@ -38,6 +38,7 @@ export class ReportsComponent implements OnInit {
   sortDates: any;
   daySort: any;
   heatMapTooltip = 'Last 7 Days';
+  logListName = "";
 
   constructor(public referenceService: ReferenceService, public router: Router, public dashboardService: DashboardService,
     public pagerService: PagerService, public pagination: Pagination, public utilService:UtilService) {
@@ -253,7 +254,7 @@ export class ReportsComponent implements OnInit {
     }
   }
   downloadLogs(level: string) {
-    let logListName = 'Video_Statestics.csv';
+     this.logListName = 'Video_Statestics.csv';
     if (level === 'one') {
       this.downloadCsvList = this.videoViewsLevelFirst;
     } else if (level === 'two') {
@@ -284,16 +285,7 @@ export class ReportsComponent implements OnInit {
 
       this.downloadDataList.push(object);
     }
-    var csvData = this.referenceService.convertToCSV(this.downloadDataList);
-    var a = document.createElement("a");
-    a.setAttribute('style', 'display:none;');
-    document.body.appendChild(a);
-    var blob = new Blob([csvData], { type: 'text/csv' });
-    var url = window.URL.createObjectURL(blob);
-    a.href = url;
-    a.download = logListName;
-    a.click();
-    return 'success';
+    this.referenceService.isDownloadCsvFile = true;
   }
 
   ngOnInit() {

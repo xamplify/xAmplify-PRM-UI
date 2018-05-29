@@ -111,4 +111,5 @@
 			<app-pagination [pagination]="pagination" [type]="'reports'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
 		</div>
 	</div>
+	<app-export-csv *ngIf="referenceService.isDownloadCsvFile" [downloadListDetails]="downloadDataList" [downloadListName]="logListName"> </app-export-csv>
 </div>
