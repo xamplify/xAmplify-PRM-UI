@@ -5,6 +5,7 @@ import { ReferenceService } from '../services/reference.service';
 import { UserService } from '../services/user.service';
 import { AuthenticationService } from '../services/authentication.service';
 import { VideoUtilService } from '../../videos/services/video-util.service';
+import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 
 declare var $: any;
 
@@ -17,7 +18,7 @@ declare var $: any;
 export class HomeComponent implements OnInit {
 	public refcategories: any;
 	public currentUser = JSON.parse(localStorage.getItem('currentUser'));
-	constructor(public referenceService: ReferenceService, public userService: UserService,
+	constructor(public referenceService: ReferenceService, public userService: UserService, public xtremandLogger:XtremandLogger,
 		 private router: Router, public authenticationService: AuthenticationService, public videoUtilService:VideoUtilService) {
 		this.isAuthorized();
 	}
@@ -58,8 +59,10 @@ export class HomeComponent implements OnInit {
 						const logoLink = this.videoUtilService.isStartsWith(response.companyProfile.website);
 						this.saveVideoBrandLog(response.companyProfile.companyLogoPath,logoLink);
 					}
-				} else { 	console.log('defaultsetting api result is empty :')}
-			});
+				} else { 	console.log('defaultsetting api result is empty :'); }
+      },
+      (error:any)=>{ this.xtremandLogger.errorPage(error); }
+     );
 	}
 	saveVideoBrandLog(companyLogoPath,logoLink) {
         this.userService.saveBrandLogo(companyLogoPath, logoLink, this.authenticationService.user.id)
