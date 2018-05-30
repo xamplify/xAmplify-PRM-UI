@@ -63,14 +63,14 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
     public selectedTemplate: any = this.templatesDropDown[0];
     public selectedSortedOption: any = this.sortByDropDown[0];
     public itemsSize: any = this.numberOfItemsPerPage[0];
-    public message:string;   
+    public message:string;
     loggedInUserId:number = 0;
     httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
     customResponse: CustomResponse = new CustomResponse();
     isListView: boolean = false;
-        
+
     constructor( private emailTemplateService: EmailTemplateService, private userService: UserService, private router: Router,
-        private pagerService: PagerService, public refService: ReferenceService, 
+        private pagerService: PagerService, public refService: ReferenceService,
         public pagination: Pagination,private authenticationService:AuthenticationService,private logger:XtremandLogger) {
         this.loggedInUserId = this.authenticationService.getUserId();
         if(refService.isCreated){
@@ -89,7 +89,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
         this.customResponse = new CustomResponse( 'SUCCESS', message, true );
        // setTimeout(function() { $("#templateCreationSuccessDiv").slideUp(500); }, 5000);
     }
-    
+
 
     listEmailTemplates( pagination: Pagination ) {
         this.refService.loading(this.httpRequestLoader, true);
@@ -269,11 +269,11 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
                     this.customResponse = new CustomResponse('ERROR','Please delete associated campaign(s)',true );
                   //  setTimeout( function() { $( "#campaignEmailTemplateId" ).slideUp( 500 ); }, 2000 );
                 }
-                
+
             },
-            ( error: string ) => { 
+            ( error: string ) => {
                 this.logger.errorPage(error);
-                this.refService.showServerError(this.httpRequestLoader); 
+                this.refService.showServerError(this.httpRequestLoader);
                 }
             );
     }
@@ -294,7 +294,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
         }else if(type=="VIDEO_CO_BRANDING"){
             this.pagination.emailTemplateType = EmailTemplateType.VIDEO_CO_BRANDING;
         }
-       
+
         this.selectedTemplateTypeIndex = index;//This is to highlight the tab
         this.pagination.pageIndex = 1;
         if(isVideoTemplate){
@@ -305,13 +305,14 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
         this.listEmailTemplates(this.pagination);
     }
 
-    
+
     ngOnDestroy() {
         this.refService.isCreated = false;
         this.refService.isUpdated = false;
         this.message = "";
+        $('#show_email_template_preivew').modal('hide');
         swal.close();
-        
+
     }
     showPreview(emailTemplate:EmailTemplate){
        console.log(emailTemplate);
@@ -325,9 +326,9 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
         $("#email-template-title").append(emailTemplateName);
         $('#email-template-title').prop('title',emailTemplate.name);
         $("#htmlContent").append(body);
-        $('.modal .modal-body').css('overflow-y', 'auto'); 
+        $('.modal .modal-body').css('overflow-y', 'auto');
        // $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
         $("#show_email_template_preivew").modal('show');
     }
-    
+
 }
