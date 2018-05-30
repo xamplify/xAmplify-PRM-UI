@@ -112,14 +112,11 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
            this.getCampaignById();
            CKEDITOR.config.readOnly = true;
         }
-
-
-        selectReplyEmailBody(i,e){
-
-        }
-        selectClickEmailBody(i,r,e){
-
-        }
+    selectReplyEmailBody(i,e){}
+    selectClickEmailBody(i,r,e){}
+    setUrlScheduleType(i,e){}
+    shareAnalytics(e){}
+    setContactPage(e){}
     getCampaignById() {
         var obj = { 'campaignId': this.route.snapshot.params['id'] }
         this.campaignService.getCampaignById( obj )

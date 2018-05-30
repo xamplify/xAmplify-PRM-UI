@@ -71,7 +71,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
 
     constructor( private emailTemplateService: EmailTemplateService, private userService: UserService, private router: Router,
         private pagerService: PagerService, public refService: ReferenceService,
-        public pagination: Pagination,private authenticationService:AuthenticationService,private logger:XtremandLogger) {
+        public pagination: Pagination,public authenticationService:AuthenticationService,private logger:XtremandLogger) {
         this.loggedInUserId = this.authenticationService.getUserId();
         if(refService.isCreated){
            this.message = "Template created successfully";
