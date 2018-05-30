@@ -1191,8 +1191,6 @@
                 <span class="glyphicon glyphicon-plus"></span>
               </button>
           </div>
-            <!-- <div class="col-xs-2">
-							</div> -->
 					</div>
 					<div class="row">
 						<form class="role add-reply" id="form-{{reply.divId}}">
@@ -1257,7 +1255,7 @@
 										</label>
 									</div>
 									<div class="portlet-title">
-										<ul class="mix-filter" *ngIf="!isOnlyPartner">
+										<ul class="mix-filter" *ngIf="!isOnlyPartner" style="margin-top: -14px;">
 											<li class="filter" (click)="filterReplyTemplates('NONE',0,reply)" [class.emailtemplate-selected]="0 == reply.selectedEmailTemplateTypeIndex">All Email Templates</li>
 											<li class="filter" (click)="filterReplyTemplates('BASIC',1,reply)" [class.emailtemplate-selected]="1 == reply.selectedEmailTemplateTypeIndex">Basic Templates</li>
 											<li class="filter" (click)="filterReplyTemplates('RICH',2,reply)" [class.emailtemplate-selected]="2 == reply.selectedEmailTemplateTypeIndex">Rich Templates</li>
@@ -1432,7 +1430,7 @@
 									</div>
 									<div class="portlet-title">
 										<div class="caption">
-											<div class="row">
+											<div class="row" style="margin-top:-12px;">
 												<div class="col-xs-12 col-sm-8 text-left">
 													<ul class="mix-filter" *ngIf="!isOnlyPartner">
 														<li class="filter" (click)="filterClickTemplates('NONE',0,url)" [class.emailtemplate-selected]="0 == url.selectedEmailTemplateTypeIndex">All Email Templates</li>
@@ -1455,7 +1453,7 @@
 									<app-loader [model]="campaignEmailTemplate.httpRequestLoader.isHorizontalCss" *ngIf="campaignEmailTemplate.httpRequestLoader.isLoading"></app-loader>
 									<app-error-pages *ngIf="campaignEmailTemplate.httpRequestLoader.isServerError"></app-error-pages>
 									<ng-container *ngIf="!campaignEmailTemplate.httpRequestLoader.isLoading && !campaignEmailTemplate.httpRequestLoader.isServerError">
-										<table class="table tgrid">
+										<table class="table tgrid" style="margin-top: -3px;">
 											<thead>
 												<tr>
 													<th class="text-center"></th>
