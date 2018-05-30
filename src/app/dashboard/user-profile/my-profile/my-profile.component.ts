@@ -24,7 +24,8 @@ declare var swal, $, videojs: any;
     selector: 'app-my-profile',
     templateUrl: './my-profile.component.html',
     styleUrls: ['./my-profile.component.css', '../../../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css',
-        '../../../../assets/admin/pages/css/profile.css', '../../../../assets/css/video-css/video-js.custom.css'],
+        '../../../../assets/admin/pages/css/profile.css', '../../../../assets/css/video-css/video-js.custom.css',
+        '../../../../assets/css/phone-number-plugin.css'],
     providers: [User, DefaultVideoPlayer, VideoUtilService, CallActionSwitch, Properties, RegularExpressions]
 })
 export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {

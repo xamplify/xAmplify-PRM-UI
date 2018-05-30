@@ -32,7 +32,7 @@ declare var Metronic, Promise, Layout, Demo, swal, Portfolio, $, Papa: any;
     templateUrl: './edit-contacts.component.html',
     styleUrls: ['../../../assets/css/button.css',
         '../../../assets/css/numbered-textarea.css',
-        './edit-contacts.component.css'],
+        './edit-contacts.component.css', '../../../assets/css/phone-number-plugin.css'],
     providers: [Pagination, HttpRequestLoader, CountryNames, Properties, RegularExpressions, TeamMemberService]
 })
 export class EditContactsComponent implements OnInit, OnDestroy {

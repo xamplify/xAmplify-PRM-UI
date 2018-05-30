@@ -23,7 +23,7 @@ declare var Metronic, $, Layout, Demo, Portfolio, swal: any;
 @Component( {
     selector: 'app-manage-contacts',
     templateUrl: './manage-contacts.component.html',
-    styleUrls: ['./manage-contacts.component.css'],
+    styleUrls: ['./manage-contacts.component.css', '../../../assets/css/phone-number-plugin.css'],
     providers: [SocialContact, Pagination, Properties]
 })
 

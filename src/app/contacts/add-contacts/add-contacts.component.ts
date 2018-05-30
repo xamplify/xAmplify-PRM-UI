@@ -30,7 +30,7 @@ declare var swal, $, Papa: any;
         '../../../assets/global/plugins/jquery-file-upload/css/jquery.fileupload-ui.css',
         '../../../assets/css/form.css',
         './add-contacts.component.css',
-        '../../../assets/css/numbered-textarea.css'],
+        '../../../assets/css/numbered-textarea.css', '../../../assets/css/phone-number-plugin.css'],
     providers: [SocialContact, ZohoContact, SalesforceContact, Pagination, CountryNames, Properties, RegularExpressions, PaginationComponent]
 })
 export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {

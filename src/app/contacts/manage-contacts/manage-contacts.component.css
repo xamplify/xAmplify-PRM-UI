@@ -77,12 +77,19 @@ h3 {
 	width: 60px;
 	margin: 0px;
 }
-/* /deep/ .input-group > .form-control:focus {
-    border-color: white !important;
+.disabled {
+	pointer-events: none;
+	opacity: 0.7;
 }
-/deep/ .input-group > .input-group-addon {
-    background: white !important;
-} 
- /deep/ .input-group-addon {
-  border: none !important;
-	} */
+
+.isProcessing {
+	pointer-events: none;
+	opacity: 0.4;
+}
+
+.saveAsCustomeCss{
+    position:absolute;
+    left: 60% !important;
+    top: -64px !important;
+
+}
