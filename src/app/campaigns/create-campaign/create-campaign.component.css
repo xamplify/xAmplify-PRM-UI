@@ -1020,3 +1020,25 @@ legend{display: block; width: auto; padding: 0 10px; margin-bottom: 0; font-size
   border-radius: 0;
   padding: 10px 20px;
 }
+.time-picker-css{
+  margin-top: 30px;
+  margin-right: 10px;
+  position: relative;
+  right: -4px;
+}
+.button-blue{
+  position: relative;
+  background: #8395a7 !important;
+  top: 6px;
+  font-size: 4px;
+}
+.switch-choose{
+  position: relative;
+  top: 6px;
+}
+.error-div{
+  width: 97%;
+  top: 12px;
+  right: -17px;
+  position: relative;
+}

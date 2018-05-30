@@ -195,7 +195,7 @@
 												<tr>
 													<td colspan="5">
 														<div class="alert alert-info">
-															<strong>No {{contactType}} Found</strong>
+															<strong>No {{contactType}} found</strong>
 														</div>
 													</td>
 												</tr>
@@ -227,7 +227,7 @@
 															{{contacts.name}}
 														</td>
 														<td class="text-center">
-															<a class="btn btn-warning" (click)="$event.stopPropagation();loadUsers(contactListPagination.pagedItems[i].id,contactsUsersPagination)">
+															<a class="btn btn-warning" (click)="$event.stopPropagation();loadUsers(contactListPagination.pagedItems[i].id,contactsUsersPagination,contacts.name)">
 																<i class="fa fa-eye" style="padding-top: 3px; font-size: 20px;" title="" data-original-title="Preview"></i>
 															</a>
 														</td>
@@ -287,15 +287,15 @@
                   <h4 class="text-left"><b>Add an Auto-response to your e-mail-{{i+1}}</b></h4>
               </div>
            <div class="col-xs-5" style="text-align:right">
-              <label>Choose Template</label>
-						<switch [disabled]="callActionSwitch.disabled" [status]="reply.defaultTemplate" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+              <label class="switch-choose">Choose Template</label>
+						<switch class="switch-choose" [disabled]="callActionSwitch.disabled" [status]="reply.defaultTemplate" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
 							[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
 							(statusChange)="selectReplyEmailBody($event,i,reply)">
             </switch>
-            <button type="button" class="btn btn-danger blur" style="position: relative;background: #8395a7;top: 2px;!important">
+            <button type="button" class="btn btn-danger blur button-blue">
                 <span class="glyphicon glyphicon-trash"></span>
               </button>
-              <button type="button" class="btn btn-primary blur" style="position: relative;background: #8395a7;top: 2px;!important">
+              <button type="button" class="btn btn-primary blur button-blue">
                 <span class="glyphicon glyphicon-plus"></span>
               </button>
             </div>
@@ -303,7 +303,7 @@
 					<div class="row">
 						<form class="role add-reply" id="form-{{reply.divId}}">
               <div class="col-xs-12" style="padding:0">
-						<div class="col-xs-4" >
+						<div class="col-xs-4" style="padding:0">
 								<div class="col-xs-12">
 								<label for="reason">Reason</label>
 								<select class="form-control" name="actionId" [(ngModel)]="reply.actionId" disabled="disabled">
@@ -319,8 +319,6 @@
 									</ng-container>
 								</select>
 							</div>
-
-
 								<div *ngIf="reply.actionId!=16 && reply.actionId!=17 && reply.actionId!=18">
 								<div class="col-xs-12" style="margin-top:6px;">
 									<label for="days" *ngIf="reply.actionId==22 || reply.actionId==23 " id="reply-days-{{reply.divId}}">Reply In X Days
@@ -334,7 +332,7 @@
 								</div>
 
 								<div class="col-xs-12 time-col" *ngIf="reply.actionId!=22 && reply.actionId!=23 ">
-									<span for="time" id="send-time-{{reply.divId}}" style="margin-top:20px;">At
+									<span for="time" id="send-time-{{reply.divId}}"  class="time-picker-css">At
 										<b style="color: red">*</b>&nbsp;&nbsp;</span>
 									<timepicker  disabled="disabled" [(ngModel)]="reply.replyTime" name="time"></timepicker>
 								</div>
@@ -346,16 +344,14 @@
 									</label>
 									<input disabled="disabled" type="text" class="form-control" name="subject" [(ngModel)]="reply.subject" placeholder="Subject" maxlength="50">
 								</div>
-
 						</div>
-							<div class="col-sm-12" style="padding: 0">
+							<div class="col-xs-8">
 								<div id="ck-editor-{{i}}" *ngIf="!reply.defaultTemplate">
-									<div class="form-group" style="margin-left: 1px;">
-										<label for="days" id="reply-message-{{reply.divId}}">Message
-											<b style="color: red">*</b>
+									<div class="form-group">
+										<label for="days" id="reply-message-{{reply.divId}}">Message<b style="color: red">*</b>
 										</label>
 									</div>
-									<div>
+									<div style="margin-top: -17px;">
 										<ckeditor disabled="disabled" [(ngModel)]="reply.body" name="body"></ckeditor>
 									</div>
 								</div>
@@ -405,7 +401,7 @@
 											</tbody>
 										</table>
 										<div *ngIf="reply.emailTemplatesPagination.totalRecords==0" class="alert alert-info">
-											<strong>No Email Templates Found</strong>
+											<strong>No email templates found</strong>
 										</div>
 									</ng-container>
 								</div>
@@ -427,15 +423,15 @@
                 <h4 class="text-left"><b>Add an Auto-response to a website visit - {{i+1}}</b></h4>
              </div>
              <div class="col-xs-5" style="text-align:right">
-						<label>Choose Template</label>
-						<switch  [disabled]="callActionSwitch.disabled" [status]="url.defaultTemplate" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+						<label class="switch-choose">Choose Template</label>
+						<switch class="switch-choose" [disabled]="callActionSwitch.disabled" [status]="url.defaultTemplate" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
 							[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
 							(statusChange)="selectClickEmailBody($event,i,url)">
             </switch>
-                <button type="button" class="btn btn-danger blur" style="position: relative;background: #8395a7 !important;top: 2px;">
+                <button type="button" class="btn btn-danger blur button-blue" >
                   <span class="glyphicon glyphicon-trash"></span>
                 </button>
-                <button type="button" class="btn btn-primary blur"  style="position: relative;background: #8395a7 !important;top: 2px;">
+                <button type="button" class="btn btn-primary blur button-blue">
                   <span class="glyphicon glyphicon-plus"></span>
                 </button>
 
@@ -444,7 +440,7 @@
 					<div class="row">
 						<form class="role" id="form-{{url.divId}}" class="add-click">
                 <div class="col-xs-12" style="padding:0">
-							<div class="col-xs-4">
+							<div class="col-xs-4" style="padding:0">
 								<div class="col-xs-12">
 									<label for="reason">When To Send Email</label>
 									<select disabled="disabled" class="form-control" id="url-schedule-type" name="scheduleEmail" [(ngModel)]="url.actionId" (change)="setUrlScheduleType($event,url)">
@@ -461,13 +457,10 @@
 										<input disabled="disabled" type="number" class="form-control" name="days" [(ngModel)]="url.replyInDays" placeholder="Days" min="0" oninput="validity.valid||(value='');">
 									</div>
 									<div class="form-group col-xs-12">
-										<label for="time" id="click-send-time-{{url.divId}}" style="margin-top:20px;">At
-											<b style="color: red">*</b>&nbsp;&nbsp;</label>
+										<label for="time" id="click-send-time-{{url.divId}}" class="time-picker-css">At<b style="color: red">*</b></label>
 										<timepicker disabled="disabled" [(ngModel)]="url.replyTime" name="time"></timepicker>
 									</div>
 								</div>
-
-
 								<div class="col-xs-12" style="margin-top:6px">
 									<label for="time" id="click-subject-{{url.divId}}">Subject
 										<b style="color: red">*</b>
@@ -537,7 +530,7 @@
 											</tbody>
 										</table>
 										<div *ngIf="url.emailTemplatesPagination.totalRecords==0" class="alert alert-info">
-											<strong>No Email Templates Found</strong>
+											<strong>No email templates found</strong>
 										</div>
 									</ng-container>
 								</div>
@@ -555,7 +548,7 @@
 			</div>
 			<!-- </fieldset> -->
 			</div>
-		     <div class="col-xs-12">
+		     <div class="col-xs-12" style="margin-top: 8px;">
                     <fieldset>
                         <legend>Launch option</legend>
                         <div>
@@ -664,7 +657,7 @@
 						</button>
 						<div>
 							<h4 class="modal-title" id="user-list-name" align="center">
-								<b>List Of Users</b>
+								<b>{{listName}}</b>
 							</h4>
 						</div>
 					</div>

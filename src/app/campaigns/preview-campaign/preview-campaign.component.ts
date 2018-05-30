@@ -90,6 +90,8 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
     loggedInUserId:number = 0;
     contactType:string = "contacts";
+    listName:string;
+
     constructor(private router: Router,
             private route: ActivatedRoute,
             private campaignService: CampaignService,
@@ -417,8 +419,11 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
         $("#email_template_preivew").modal('show');
     }
 
-    ngOnDestroy(){CKEDITOR.config.readOnly = false;}
-
+    ngOnDestroy(){
+      CKEDITOR.config.readOnly = false;
+      $('#usersModal').modal('hide');
+      $("#email_template_preivew").modal('hide');
+    }
 
     /*************************************************************Contact List***************************************************************************************/
     loadContactList(contactsPagination: Pagination) {
@@ -455,7 +460,8 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
 
     /*******************************Preview*************************************/
     contactListItems:any[];
-      loadUsers(id:number,pagination:Pagination){
+      loadUsers(id:number,pagination:Pagination, name){
+        this.listName = name;
            if(id==undefined || id==0){
               id=this.previewContactListId;
           }else{
@@ -522,7 +528,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
 
   setPage(pageIndex:number){
       this.contactsUsersPagination.pageIndex = pageIndex;
-      this.loadUsers(0,this.contactsUsersPagination);
+      this.loadUsers(0,this.contactsUsersPagination,this.listName);
   }
 
   setReplyEmailTemplate(emailTemplateId:number,reply:Reply,index:number){

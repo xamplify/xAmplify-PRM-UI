@@ -44,3 +44,29 @@ fieldset {
   border-radius: 0;
   padding: 10px 20px;
 }
+.time-picker-css{
+  position: relative;
+  right: -5px;
+  top: 29px;
+}
+.time-picker{
+  position: relative;
+    right: -42px;
+    top: -16px;
+}
+.button-blue{
+  position: relative;
+  background: #8395a7 !important;
+  top: 6px;
+  font-size: 4px;
+}
+.switch-choose{
+  position: relative;
+  top: 6px;
+}
+.error-div{
+  width: 97%;
+  top: 12px;
+  right: -17px;
+  position: relative;
+}
