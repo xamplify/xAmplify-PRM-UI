@@ -200,11 +200,14 @@
                 <td><app-user-info [userInfo]="item" [isPartnerEntityInfo]="true" [isPartnerInfo]="true"></app-user-info></td>
                 <td>{{item.campaignName}}</td>
                 <td>
-					        <div class="actions-block">
-                      <a [routerLink]="['/home/campaigns/', item.campaignId, 'details']"  title="analytics">
+					<div class="actions-block">
+                      <a id="disabled-icon" class="blur" title="Data Sharing Disabled" *ngIf="!item.dataSharingEnabled">
+                          <img src="../assets/images/disabled-icon.png">
+                        </a>
+                        <a [routerLink]="['/home/campaigns/', item.campaignId, 'details']"  title="analytics">
                           <i class="fa fa-eye"></i>
                         </a>
-                      </div>
+                     </div>
                 </td>
               </tr>
             </tbody>

@@ -72,3 +72,10 @@
 	-ms-filter: blur(1px);
 	filter: blur(1px);
 }
+
+#disabled-icon{
+border: none;
+margin: -5px 15px 0 0;
+background-color: white;
+cursor: default;
+}
