@@ -51,6 +51,7 @@ export class ForgotPasswordComponent implements OnInit {
                         // var response = JSON.parse( body );
                         if (data.message === "An email has been sent. Please login with the credentials") {
                             this.forgotPasswordForm.reset();
+                            this.referenceService.userName = '';
                             this.referenceService.userProviderMessage = this.properties.FORGOT_PASSWORD_MAIL_SEND_SUCCESS;
                             this.router.navigate(['./login']);
                         }
@@ -62,7 +63,8 @@ export class ForgotPasswordComponent implements OnInit {
                 error => {
                     this.loading = false;
                   //  this.formErrors['forgotPasswordEmailId'] = error.toLowerCase();
-                    this.customResponse =  new CustomResponse('ERROR', error.toLowerCase(), true);
+                    this.referenceService.userName = '';
+                    this.customResponse = new CustomResponse('ERROR', error.toLowerCase(), true);
 
                 },
                 () => this.xtremandLogger.log("Done")
@@ -72,13 +74,13 @@ export class ForgotPasswordComponent implements OnInit {
 
     validateForgotPasswordForm() {
         this.forgotPasswordForm = this.formBuilder.group({
-            'forgotPasswordEmailId': [null, [Validators.required, Validators.pattern(this.regularExpressions.EMAIL_ID_PATTERN)]]
+            'forgotPasswordEmailId': [this.referenceService.userName, [Validators.required, Validators.pattern(this.regularExpressions.EMAIL_ID_PATTERN)]]
         });
     }
 
     ngOnInit() {
         $('.forget-form').show();
-        this.forgotPasswordForm.reset();
+       // this.forgotPasswordForm.reset();
     }
 
 }

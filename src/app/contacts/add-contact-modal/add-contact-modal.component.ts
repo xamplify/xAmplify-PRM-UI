@@ -10,7 +10,7 @@ declare var $: any;
 @Component( {
     selector: 'app-add-contact-modal',
     templateUrl: './add-contact-modal.component.html',
-    styleUrls: ['./add-contact-modal.component.css'],
+    styleUrls: ['./add-contact-modal.component.css', '../../../assets/css/phone-number-plugin.css'],
     providers: [CountryNames, RegularExpressions]
 })
 export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy {
@@ -175,14 +175,13 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
         }
         $( '#addContactModal' ).modal( 'show' );
     }
-    cssChanges(){
+    /*cssChanges(){
       $('.input-group > .form-control').css('cssText','border: none !important;height: 36px !important;');
       $('.input-group > .form-control:focus').css('cssText','border-color: white !important;');
       $('.input-group > .input-group-addon').css('cssText','background: white !important;border: none !important;');
       $('.input-group-addon').css('cssText','border: none !important;');
-    }
+    }*/
     ngAfterViewInit(){
-      this.cssChanges();
     }
     ngOnDestroy(){
         this.addContactModalClose();

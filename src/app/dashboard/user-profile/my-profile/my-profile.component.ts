@@ -24,7 +24,8 @@ declare var swal, $, videojs: any;
     selector: 'app-my-profile',
     templateUrl: './my-profile.component.html',
     styleUrls: ['./my-profile.component.css', '../../../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css',
-        '../../../../assets/admin/pages/css/profile.css', '../../../../assets/css/video-css/video-js.custom.css'],
+        '../../../../assets/admin/pages/css/profile.css', '../../../../assets/css/video-css/video-js.custom.css',
+        '../../../../assets/css/phone-number-plugin.css'],
     providers: [User, DefaultVideoPlayer, VideoUtilService, CallActionSwitch, Properties, RegularExpressions]
 })
 export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
@@ -228,7 +229,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.status = false;
                 }
             }
-        } catch (err) { }
+        } catch (err) { console.log(err); }
     }
     ngAfterViewInit() {
         if (this.currentUser.roles.length > 1 && this.authenticationService.hasCompany()) {
@@ -432,9 +433,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             'required': 'WebsiteUrl required.',
             'pattern': 'Invalid Url Pattern'
         }
-
-
-
     };
 
     /*******************Update User Profile*************************************/
@@ -565,7 +563,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                 if (this.isPlayerSettingUpdated === true) {
                     this.videoUtilService.videoTempDefaultSettings = response;
                 }
-            }
+            },
+            (error:any)=>{ console.log('error'+error); }
         );
     }
     enableVideoController(event: any) {
@@ -841,7 +840,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                 () => this.logger.info("Finished enableOrDisableOrgAdmin()")
             );
     }
-    
+
     ngOnDestroy() {
         if (this.isPlayed === true) {  this.videoJSplayer.dispose(); }
         $('.profile-video').remove();
