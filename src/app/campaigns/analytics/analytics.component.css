@@ -341,3 +341,12 @@ tr>td>h6 {
 .emails-info i {font-size:20px; display: block; text-align: center;}
 .emails-info h1 {margin-bottom:15px;}
 .emails-info h5 {margin:0;}
+
+  .blur {
+	-webkit-filter: blur(1px);
+	-moz-filter: blur(1px);
+	-o-filter: blur(1px);
+	-ms-filter: blur(1px);
+	filter: blur(1px);
+	cursor: default;
+}
