@@ -9,16 +9,36 @@ declare const $,google: any;
 })
 export class IntroComponent implements OnInit {
   mainLoader:boolean;
-  constructor(public authenticationService:AuthenticationService) { }
-  googleMap() {
-    const myCenter = new google.maps.LatLng(40.7143528,-74.0059731);
-    const mapCanvas = document.getElementById("map-canvas_");
-    const mapOptions = {center: myCenter, zoom: 5,
-      mapTypeId:google.maps.MapTypeId.TERRAIN};
-    const map = new google.maps.Map(mapCanvas, mapOptions);
-    const marker = new google.maps.Marker({position:myCenter});
-    marker.setMap(map);
-  }
+
+   // google maps zoom level
+   zoom  = 15;
+   // initial center position for the map
+   lat = 40.7143528;
+   lng = -74.0059731;
+   markers = [
+    {
+      lat: 40.7143528,
+      lng: -74.0059731,
+      label: 'A',
+      draggable: true
+    }
+  ]
+   constructor(public authenticationService:AuthenticationService) { }
+   clickedMarker(label: string, index: number) {
+     console.log(`clicked the marker: ${label || index}`)
+   }
+
+   mapClicked($event: MouseEvent) {
+    //  this.markers.push({
+    //    lat: $event.coords.lat,
+    //    lng: $event.coords.lng,
+    //    draggable: true
+    //  });
+   }
+
+   markerDragEnd(m: any, $event: MouseEvent) {
+     console.log('dragEnd', m, $event);
+   }
   ngOnInit() {
     this.mainLoader = true;
     if(localStorage.getItem('currentUser')){ this.mainLoader=false ;this.authenticationService.navigateToDashboardIfUserExists()}
@@ -33,7 +53,5 @@ export class IntroComponent implements OnInit {
         navbar.classList.remove("stuck");
       }
     }
-    // this.googleMap();
   }
-
 }

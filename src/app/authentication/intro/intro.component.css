@@ -61,8 +61,8 @@ strong { font-weight: 600; }
 
 /* ==========================================================================
    2.Hero section
-   ========================================================================== */ 
-   
+   ========================================================================== */
+
 .hero-section {
   background: url(/assets/images/login_background_big.jpg) center center no-repeat scroll;
   background-size: cover;
@@ -238,8 +238,8 @@ transform:translateY(0);
 /* ==========================================================================
    4.Play button
    ========================================================================== */
-  
- 
+
+
 .play-btn { margin: 2.25em 0; }
 
 .hero-section .play-btn img { transition: opacity 0.3s linear; }
@@ -249,8 +249,8 @@ transform:translateY(0);
 /* ==========================================================================
    5.Featured on
    ========================================================================== */
-   
- 
+
+
 
 .section-header { margin-bottom: 3em; }
 
@@ -292,7 +292,7 @@ transform:translateY(0);
 /* ==========================================================================
    6.Benefits
    ========================================================================== */
-   
+
 
 
 .benefits img { margin-bottom: .75em; }
@@ -311,7 +311,7 @@ transform:translateY(0);
 /* ==========================================================================
    7.Features
    ========================================================================== */
-   
+
 .features { overflow: hidden; }
 
 .features div[class="row"]:nth-child(1),
@@ -344,8 +344,8 @@ transform:translateY(0);
 
 /* ==========================================================================
    8.video tour
-   ========================================================================== */ 
-   
+   ========================================================================== */
+
 .video-tour {
   position: relative;
   height: 400px;
@@ -400,7 +400,7 @@ transform:translateY(0);
 /* ==========================================================================
    9.tour
    ========================================================================== */
-   
+
 .center-block { float: none; }
 
 .tour h2 {
@@ -419,8 +419,8 @@ transform:translateY(0);
 
 /* ==========================================================================
    10.Pricing
-   ========================================================================== */ 
-   
+   ========================================================================== */
+
 .pricing {
   background: url(/assets/images/bg-pricing.jpg) center center no-repeat scroll;
   background-size: cover;
@@ -496,7 +496,7 @@ transform:translateY(0);
 /* ==========================================================================
   11.reviews
    ========================================================================== */
-   
+
 .reviews figure { margin-bottom: 1.5em; }
 
 blockquote {
@@ -530,7 +530,7 @@ blockquote cite {
 /* ==========================================================================
   12.cta section
    ========================================================================== */
-   
+
 .cta-section { background-color: #f56363; }
 
 .cta-section .section-header { margin-bottom: 2.25em; }
@@ -574,8 +574,8 @@ blockquote cite {
 /* ==========================================================================
    13.Team
    ========================================================================== */
-   
-  
+
+
 
 .team h4 {
   font-size: 21px;
@@ -672,7 +672,7 @@ blockquote cite {
 /* ==========================================================================
    14.Twitter feed
    ========================================================================== */
-   
+
 .twitter-feed {
   background: url(/assets/images/bg-twitter.jpg) center center no-repeat scroll;
   background-size: cover;
@@ -736,7 +736,7 @@ blockquote cite {
 /* ==========================================================================
    16.Subscription form styles
    ========================================================================== */
-   
+
 
  .form-control::-webkit-input-placeholder {
  color: #8A8A8A;
@@ -787,7 +787,7 @@ blockquote cite {
 .valid i { padding-right: .5em; }
 
 /* ==========================================================================
-   17.site footer 
+   17.site footer
    ========================================================================== */
 
 
@@ -909,7 +909,7 @@ blockquote cite {
 .modal .modal-content { border-radius: 3px; }
 
 /* ==========================================================================
-   18.Social 
+   18.Social
    ========================================================================== */
 
 
@@ -980,7 +980,7 @@ blockquote cite {
 /* ==========================================================================
    19.Small devices (tablets, 768px and up)
    ========================================================================== */
-   
+
 @media (min-width: 768px) {
 
 .hero-section { padding: 0 0 7.5em; }
@@ -1044,9 +1044,9 @@ blockquote::before {
 }
 
 /* ==========================================================================
-   20.Medium devices (desktops, 992px and up) 
+   20.Medium devices (desktops, 992px and up)
    ========================================================================== */
-   
+
 @media (min-width: 992px) {
 
 .hero-section {
@@ -1139,9 +1139,9 @@ blockquote::before {
 .video-tour .play-btn img { width: 45%; }
 }
 
-.contact.section-spacing, 
-.sub-form.section-spacing, 
-.benefits.section-spacing, 
+.contact.section-spacing,
+.sub-form.section-spacing,
+.benefits.section-spacing,
 .tour.section-spacing {
     background: #fff;
 }
@@ -1152,7 +1152,10 @@ blockquote::before {
 nav a {
   background: none !important;
 }
-.navbar-default.stuck .navbar-nav > li > a.btn:hover, 
+.navbar-default.stuck .navbar-nav > li > a.btn:hover,
 .navbar-default.stuck .navbar-nav > li > a.btn:focus {
     color: #f8f8f8;
+}
+agm-map {
+  height: 700px;
 }

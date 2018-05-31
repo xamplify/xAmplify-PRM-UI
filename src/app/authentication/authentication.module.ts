@@ -14,9 +14,12 @@ import { CommonComponentModule } from '../common/common.module';
 import { IntroComponent } from './intro/intro.component';
 import { TermsConditonComponent } from './terms-conditon/terms-conditon.component';
 
+import { AgmCoreModule } from '@agm/core';
+
 @NgModule({
   imports: [
-    CommonModule, FormsModule, ReactiveFormsModule, RouterModule, CoreModule, SharedModule, CommonComponentModule
+    CommonModule, FormsModule, ReactiveFormsModule, RouterModule, CoreModule, SharedModule, CommonComponentModule,
+    AgmCoreModule.forRoot({ apiKey: 'AIzaSyDDdgixbmMAkOIcujVZpwsguQXefh1-Kqw'})
   ],
   declarations: [SignupComponent, LoginComponent, ForgotPasswordComponent, VerifyEmailComponent, VideoComponent, IntroComponent, TermsConditonComponent],
   exports: []
