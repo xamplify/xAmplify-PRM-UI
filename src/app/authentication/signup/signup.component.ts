@@ -13,6 +13,7 @@ import { matchingPasswords, noWhiteSpaceValidator, validateCountryName } from '.
 import { ReferenceService } from '../../core/services/reference.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { CountryNames } from '../../common/models/country-names';
+import { AuthenticationService } from '../../core/services/authentication.service';
 
 declare var $: any;
 
@@ -83,7 +84,7 @@ export class SignupComponent implements OnInit, OnDestroy {
 
     constructor(private router: Router, public countryNames: CountryNames, public regularExpressions: RegularExpressions, public properties: Properties,
         private formBuilder: FormBuilder, private signUpUser: User,
-        private userService: UserService, public referenceService: ReferenceService,private xtremandLogger: XtremandLogger) {
+        private userService: UserService, public referenceService: ReferenceService,private xtremandLogger: XtremandLogger,public authenticationService:AuthenticationService) {
         this.buildForm();
         if(this.router.url.includes('/v-signup')){ this.vendorSignup = true; } else { this.vendorSignup = false;}
     }
@@ -176,6 +177,7 @@ export class SignupComponent implements OnInit, OnDestroy {
     }
     ngOnInit() {
         $("[rel='tooltip']").tooltip();
+        this.authenticationService.navigateToDashboardIfUserExists();
     }
     ngOnDestroy(){
       this.invalidVendor = false;

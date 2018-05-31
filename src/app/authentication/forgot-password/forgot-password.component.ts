@@ -10,7 +10,7 @@ import { matchingPasswords, noWhiteSpaceValidator, validateCountryName } from '.
 import { ReferenceService } from '../../core/services/reference.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { RegularExpressions } from '../../common/models/regular-expressions';
-
+import { AuthenticationService } from '../../core/services/authentication.service';
 declare var $: any;
 
 @Component({
@@ -37,7 +37,7 @@ export class ForgotPasswordComponent implements OnInit {
 
     constructor(private router: Router, public regularExpressions: RegularExpressions, public properties: Properties,
         private formBuilder: FormBuilder, private userService: UserService, public referenceService: ReferenceService,
-        private xtremandLogger: XtremandLogger) {
+        private xtremandLogger: XtremandLogger,public authenticationService:AuthenticationService) {
         this.validateForgotPasswordForm();
     }
 
@@ -80,6 +80,7 @@ export class ForgotPasswordComponent implements OnInit {
 
     ngOnInit() {
         $('.forget-form').show();
+        this.authenticationService.navigateToDashboardIfUserExists();
        // this.forgotPasswordForm.reset();
     }
 

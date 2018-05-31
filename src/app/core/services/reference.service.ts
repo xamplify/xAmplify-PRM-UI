@@ -65,6 +65,7 @@ export class ReferenceService {
     isEditNurtureCampaign = false;
     nurtureCampaignId = 0;
     homeRouter = '/home/dashboard/default';
+    loginUrl = '/login';
     pageContnetBgColor = "#F1F3FA";
     isPlayVideo = false;
     isDownloadCsvFile: boolean;

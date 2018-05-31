@@ -229,4 +229,10 @@ export class AuthenticationService {
         this.isAddedByVendor = false;
         swal.close();
     }
+    
+    navigateToDashboardIfUserExists(){
+        if(localStorage.getItem('currentUser')){
+            this.router.navigate(["/home/dashboard/default"]);
+        }
+    }
 }
