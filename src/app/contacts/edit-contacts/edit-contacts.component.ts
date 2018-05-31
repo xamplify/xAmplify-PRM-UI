@@ -68,7 +68,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     AddContactsOption: typeof AddContactsOption = AddContactsOption;
     selectedAddContactsOption: number = 8;
     invalidDeleteSuccessMessage: boolean = false;
-    invalidDeleteErrorMessage: boolean = false;
     editListContacts: boolean = true;
 
     uploadCsvUsingFile: boolean = false;
@@ -430,8 +429,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                         this.loading = false;
                         let body: string = error['_body'];
                         body = body.substring( 1, body.length - 1 );
-                        if ( body.includes( 'Please Launch or Delete those campaigns first' ) ) {
-                            this.customResponse = new CustomResponse( 'ERROR', body, true );
+                        if ( error._body.includes( 'Please launch or delete those campaigns first' ) ) {
+                            this.customResponse = new CustomResponse( 'ERROR', error._body, true );
                         } else {
                             this.xtremandLogger.errorPage( error );
                         }
@@ -552,8 +551,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                                 this.loading = false;
                                 let body: string = error['_body'];
                                 body = body.substring( 1, body.length - 1 );
-                                if ( body.includes( 'Please Launch or Delete those campaigns first' ) ) {
-                                    this.customResponse = new CustomResponse( 'ERROR', body, true );
+                                if ( error._body.includes( 'Please launch or delete those campaigns first' ) ) {
+                                    this.customResponse = new CustomResponse( 'ERROR', error._body, true );
 
                                 } else {
                                     this.xtremandLogger.errorPage( error );
@@ -601,8 +600,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
             ( error: any ) => {
                 //let body: string = error['_body'];
                 //body = body.substring(1, body.length-1);
-                if ( error.includes( 'Please Launch or Delete those campaigns first' ) ) {
-                    this.customResponse = new CustomResponse( 'ERROR', error, true );
+                if ( error._body.includes( 'Please launch or delete those campaigns first' ) ) {
+                    this.customResponse = new CustomResponse( 'ERROR', error._body, true );
                 } else {
                     this.xtremandLogger.errorPage( error );
                 }
@@ -959,8 +958,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                             this.loading = false;
                             let body: string = error['_body'];
                             body = body.substring( 1, body.length - 1 );
-                            if ( body.includes( 'Please Launch or Delete those campaigns first' ) ) {
-                                this.customResponse = new CustomResponse( 'ERROR', body, true );
+                            if ( error._body.includes( 'Please launch or delete those campaigns first' ) ) {
+                                this.customResponse = new CustomResponse( 'ERROR', error._body, true );
                             } else {
                                 this.xtremandLogger.errorPage( error );
                             }
@@ -1127,7 +1126,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
         this.pagination.searchKey = this.searchKey;
         this.pagination.maxResults = 10;
         this.invalidDeleteSuccessMessage = false;
-        this.invalidDeleteErrorMessage = false;
         this.editListContacts = true;
         this.showAllContactData = false;
         this.showEditContactData = true;
@@ -1198,6 +1196,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                 });
                 //this.setResponseDetails('SUCCESS', 'your contacts has been deleted successfully');
                 this.invalidDeleteSuccessMessage = true;
+                //this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACTS_DELETE_SUCCESS, true );
                 this.listOfSelectedContactListByType( this.contactsByType.selectedCategory );
                 this.contactsByType.invalidContactsCount = data.invalidUsers;
                 this.selectedInvalidContactIds.length = 0;
@@ -1205,15 +1204,13 @@ export class EditContactsComponent implements OnInit, OnDestroy {
             ( error: any ) => {
                 //let body: string = error['_body'];
                 // body = body.substring(1, body.length-1);
-                if ( error.includes( 'Please Launch or Delete those campaigns first' ) ) {
-                    this.customResponse.responseMessage = error;
-                    this.invalidDeleteErrorMessage = true;
+                if ( error._body.includes( 'Please launch or delete those campaigns first' ) ) {
+                    this.customResponse = new CustomResponse( 'ERROR', error._body, true );
                 }
             },
             () => this.xtremandLogger.info( "deleted completed" )
             );
         this.invalidDeleteSuccessMessage = false;
-        this.invalidDeleteErrorMessage = false;
     }
     invalidContactsShowAlert() {
         if ( this.selectedInvalidContactIds.length != 0 ) {
@@ -1261,8 +1258,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
             ( error: any ) => {
                 // let body: string = error['_body'];
                 //body = body.substring(1, body.length-1);
-                if ( error.includes( 'Please Launch or Delete those campaigns first' ) ) {
-                    this.customResponse = new CustomResponse( 'ERROR', error, true );
+                if ( error._body.includes( 'Please launch or delete those campaigns first' ) ) {
+                    this.customResponse = new CustomResponse( 'ERROR', error._body, true );
                 } else {
                     this.xtremandLogger.errorPage( error );
                 }
@@ -1286,8 +1283,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
             ( error: any ) => {
                 //let body: string = error['_body'];
                 //body = body.substring(1, body.length-1);
-                if ( error.includes( 'Please Launch or Delete those campaigns first' ) ) {
-                    this.customResponse = new CustomResponse( 'ERROR', error, true );
+                if ( error._body.includes( 'Please launch or delete those campaigns first' ) ) {
+                    this.customResponse = new CustomResponse( 'ERROR', error._body, true );
                 } else {
                     this.xtremandLogger.errorPage( error );
                 }

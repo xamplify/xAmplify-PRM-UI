@@ -290,9 +290,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
                 }
             },
             ( error: any ) => {
-                if ( error.includes( 'Please Launch or Delete those campaigns first' ) ) {
+                if ( error._body.includes( 'Please launch or delete those campaigns first' ) ) {
                     // this.responseMessage = ['ERROR', error,'show'];
-                    this.customResponse = new CustomResponse( 'ERROR', error, true );
+                    this.customResponse = new CustomResponse( 'ERROR', error._body, true );
                 } else {
                     this.xtremandLogger.errorPage( error );
                 }
@@ -795,9 +795,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
                 this.listContactsByType( this.contactsByType.selectedCategory );
             },
             ( error: any ) => {
-                if ( error.includes( 'Please Launch or Delete those campaigns first' ) ) {
+                if ( error._body.includes( 'Please launch or delete those campaigns first' ) ) {
                     //this.responseMessage = ['ERROR', error,'show'];
-                    this.customResponse = new CustomResponse( 'ERROR', error, true );
+                    this.customResponse = new CustomResponse( 'ERROR', error._body, true );
                     this.invalidDeleteErrorMessage = true;
                 } else {
                     this.xtremandLogger.errorPage( error );

@@ -413,8 +413,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                         ( error: any ) => {
                             let body: string = error['_body'];
                             body = body.substring( 1, body.length - 1 );
-                            if ( body.includes( 'Please Launch or Delete those campaigns first' ) ) {
-                                this.customResponse = new CustomResponse( 'ERROR', body, true );
+                            if ( error._body.includes( 'Please launch or delete those campaigns first' ) ) {
+                                this.customResponse = new CustomResponse( 'ERROR', error._body, true );
                                 console.log( "done" )
                             } else {
                                 this.xtremandLogger.errorPage( error );
@@ -754,8 +754,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             ( error: any ) => {
                 let body: string = error['_body'];
                 body = body.substring( 1, body.length - 1 );
-                if ( error.includes( 'Please Launch or Delete those campaigns first' ) ) {
-                    this.customResponse = new CustomResponse( 'ERROR', error, true );
+                if ( error._body.includes( 'Please launch or delete those campaigns first' ) ) {
+                    this.customResponse = new CustomResponse( 'ERROR', error._body, true );
                 } else {
                     this.xtremandLogger.errorPage( error );
                 }
@@ -1520,7 +1520,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                 this.customResponse = new CustomResponse( 'SUCCESS', this.properties.SOCIAL_ACCOUNT_REMOVED_SUCCESS, true );
             },
             ( error: any ) => {
-                if ( error.search( 'Please Launch or Delete those campaigns first' ) != -1 ) {
+                if ( error._body.search( 'Please launch or delete those campaigns first' ) != -1 ) {
                     this.Campaign = error;
                     $( '#settingSocialNetwork' ).modal( 'hide' );
                     this.deleteErrorMessage = true;

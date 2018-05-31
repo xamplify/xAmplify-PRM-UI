@@ -628,14 +628,10 @@
 							<h4>No results found</h4>
 						</div>
 						<div class="alert alert-success alert-dismissable col-xs-12"
-							style="padding: 12px 10px 12px;"
+							style="padding: 15px 10px 12px;"
 							*ngIf="invalidDeleteSuccessMessage">
 							<strong>Success!</strong> your {{checkingContactTypeName}}s has
 							been deleted successfully.
-						</div>
-						<div class="alert alert-danger" style="padding: 12px 10px 12px;"
-							*ngIf="invalidDeleteErrorMessage">
-							<span [innerHTML]="response.responseMessage"></span>
 						</div>
 					</div>
 					<div class="col-xs-12" id="hidingListOfUsersTable"
