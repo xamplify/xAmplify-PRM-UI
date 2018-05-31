@@ -53,4 +53,5 @@ export class Campaign {
     detailedAnalyticsShared:boolean = false;
     vendorOrganizationId:number = 0;
     launchedByVendor:boolean = false;
+    partnerCompanyLogo:string = "";
 }

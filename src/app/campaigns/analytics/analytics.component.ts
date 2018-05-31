@@ -804,7 +804,9 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   }
 
     showEmailTemplatePreview(emailTemplate:any){
-       this.loading =true;
+        console.log(this.campaign);
+        this.referenceService.previewEmailTemplate(emailTemplate, this.campaign);
+        /* this.loading =true;
         let body = emailTemplate.body;
         if(this.campaignType=="VIDEO"){
             body = body.replace("https://xamp.io/vod/images/xtremand-video.gif",this.campaign.campaignVideoFile.gifImagePath);
@@ -820,8 +822,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
         $("#htmlContent").append(body);
         $('.modal .modal-body').css('overflow-y', 'auto');
         this.loading = false;
-       // $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
-        $("#show_email_template_preivew").modal('show');
+        $("#show_email_template_preivew").modal('show');*/
     }
 
     previewVideo(videoFile: any){

@@ -435,49 +435,6 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
 
     }
 
-   /* previewEmailTemplate(emailTemplate: EmailTemplate) {
-       console.log(emailTemplate);
-        const body = emailTemplate.body;
-        let emailTemplateName = emailTemplate.name;
-        if (emailTemplateName.length > 50) {
-            emailTemplateName = emailTemplateName.substring(0, 50) + "...";
-        }
-        $("#email-template-content").empty();
-        $("#email-template-title").empty();
-        $("#email-template-title").append(emailTemplateName);
-        $('#email-template-title').prop('title', emailTemplate.name);
-        if (this.campaign.campaignType.toLocaleString().includes('VIDEO') ) {
-            let selectedVideoGifPath = this.campaign.campaignVideoFile.gifImagePath;
-            let updatedBody = emailTemplate.body.replace("<SocialUbuntuImgURL>", selectedVideoGifPath);
-            updatedBody = updatedBody.replace("&lt;SocialUbuntuURL&gt;", "javascript:void(0)");
-            updatedBody = updatedBody.replace("<SocialUbuntuURL>", "javascript:void(0)");
-            updatedBody = updatedBody.replace("https://dummyurl.com", "javascript:void(0)");
-            updatedBody = updatedBody.replace("https://xamp.io/vod/images/xtremand-video.gif", selectedVideoGifPath);
-            updatedBody = updatedBody.replace("&lt;SocialUbuntuImgURL&gt;", selectedVideoGifPath);
-            updatedBody = this.replacePartnerLogo(updatedBody);
-            $("#email-template-content").append(updatedBody);
-        } else {
-            console.log(body);
-            let updatedBody = body.replace("<div id=\"video-tag\">", "<div id=\"video-tag\" style=\"display:none\">");
-            updatedBody = this.replacePartnerLogo(updatedBody);
-            $("#email-template-content").append(updatedBody);
-        }
-
-        $('.modal .modal-body').css('overflow-y', 'auto');
-        $("#email_template_preivew").modal('show');
-        $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
-    }
-
-    replacePartnerLogo(updatedBody:string){
-        this.partnerLogo = this.partnerLogo.replace("http://localhost:8080","https://xamp.io");
-        updatedBody = updatedBody.replace("https://xamp.io/vod/images/co-branding.png",this.partnerLogo);
-        return updatedBody = this.replaceCoBrandingDummyUrl(updatedBody);
-    }
-
-    replaceCoBrandingDummyUrl(updatedBody:string){
-        return updatedBody = updatedBody.replace("https://dummycobrandingurl.com",this.partnerCompanyUrl);
-    }*/
-
 
 
 

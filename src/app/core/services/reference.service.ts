@@ -65,6 +65,7 @@ export class ReferenceService {
     isEditNurtureCampaign = false;
     nurtureCampaignId = 0;
     homeRouter = '/home/dashboard/default';
+    manageCampaignsRouter = '/home/campaigns/manage';
     loginUrl = '/login';
     pageContnetBgColor = "#F1F3FA";
     isPlayVideo = false;
@@ -1481,36 +1482,40 @@ export class ReferenceService {
          let partnerLogo = userProfile.companyLogo;
          let partnerCompanyUrl = userProfile.websiteUrl;
          let emailTemplateName = emailTemplate.name;
-         if (emailTemplateName.length > 50) {
-             emailTemplateName = emailTemplateName.substring(0, 50) + "...";
+         if (emailTemplateName.length > 25) {
+             emailTemplateName = emailTemplateName.substring(0, 25) + "...";
          }
          $("#email-template-content").empty();
          $("#email-template-title").empty();
          $("#email-template-title").append(emailTemplateName);
          $('#email-template-title').prop('title', emailTemplate.name);
+         let updatedBody = "";
          if (campaign.campaignType.toLocaleString().includes('VIDEO') ) {
              let selectedVideoGifPath = campaign.campaignVideoFile.gifImagePath;
-             let updatedBody = emailTemplate.body.replace("<SocialUbuntuImgURL>", selectedVideoGifPath);
+             updatedBody = emailTemplate.body.replace("<SocialUbuntuImgURL>", selectedVideoGifPath);
              updatedBody = updatedBody.replace("&lt;SocialUbuntuURL&gt;", "javascript:void(0)");
              updatedBody = updatedBody.replace("<SocialUbuntuURL>", "javascript:void(0)");
              updatedBody = updatedBody.replace("https://dummyurl.com", "javascript:void(0)");
              updatedBody = updatedBody.replace("https://xamp.io/vod/images/xtremand-video.gif", selectedVideoGifPath);
              updatedBody = updatedBody.replace("&lt;SocialUbuntuImgURL&gt;", selectedVideoGifPath);
-             updatedBody = this.replacePartnerLogo(updatedBody,partnerLogo,partnerCompanyUrl);
-             $("#email-template-content").append(updatedBody);
          } else {
-             let updatedBody = body.replace("<div id=\"video-tag\">", "<div id=\"video-tag\" style=\"display:none\">");
-             updatedBody = this.replacePartnerLogo(updatedBody,partnerLogo,partnerCompanyUrl);
-             $("#email-template-content").append(updatedBody);
+             updatedBody = body.replace("<div id=\"video-tag\">", "<div id=\"video-tag\" style=\"display:none\">");
          }
-
+         if(campaign.nurtureCampaign ||userProfile.id!=campaign.userId){
+             updatedBody = this.replacePartnerLogo(updatedBody,partnerLogo,partnerCompanyUrl,campaign);
+         }
+         $("#email-template-content").append(updatedBody);
          $('.modal .modal-body').css('overflow-y', 'auto');
          $("#email_template_preivew").modal('show');
          $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
      }
 
-     replacePartnerLogo(updatedBody:string,partnerLogo:string,partnerCompanyUrl:string){
-         partnerLogo = partnerLogo.replace("http://localhost:8080","https://xamp.io");
+     replacePartnerLogo(updatedBody:string,partnerLogo:string,partnerCompanyUrl:string,campaign:Campaign){
+         if(campaign.partnerCompanyLogo!=undefined){
+             partnerLogo = campaign.partnerCompanyLogo;
+         }else{
+             partnerLogo = partnerLogo.replace("http://localhost:8080","https://xamp.io");
+         }
          updatedBody = updatedBody.replace("https://xamp.io/vod/images/co-branding.png",partnerLogo);
          return updatedBody = this.replaceCoBrandingDummyUrl(updatedBody,partnerCompanyUrl);
      }
