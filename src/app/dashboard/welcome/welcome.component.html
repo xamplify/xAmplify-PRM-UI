@@ -94,8 +94,9 @@ cursor: not-allowed;
 						<h1 style="color: #76c9ff">Videos</h1>
 						<p>{{welcome_text.videos}}</p>
 						<div class="flex pull-right">
-							<button class="btn btn-xs color1" [routerLink]="['/home/videos']" [class.disabled]="this.authenticationService.isOnlyPartner() || !hasVideoRole || !authenticationService.user.hasCompany ? true : null">upload video</button>
-							<button type="button" class="btn btn-xs color1-invert" data-toggle="modal" data-target="#myModal">Tell me how</button>
+							<button *ngIf="!authenticationService.isOnlyPartner()" class="btn btn-xs color1" [routerLink]="['/home/videos']" >upload video</button>
+              <button *ngIf="authenticationService.isOnlyPartner()" class="btn btn-xs color1" [routerLink]="['/home/videos/manage']">View videos</button>
+              <button type="button" class="btn btn-xs color1-invert" data-toggle="modal" data-target="#myModal">Tell me how</button>
 						</div>
 					</div>
 				</div>
@@ -142,7 +143,8 @@ cursor: not-allowed;
 						<h1 style="color: #827596">campaign</h1>
 						<p>{{welcome_text.campaigns}}</p>
 						<div class="flex pull-right">
-							<button class="btn btn-xs color3" [routerLink]="['/home/campaigns']" [class.disabled]="!authenticationService.user.hasCompany ? true : null">create campaign</button>
+              <button *ngIf="!authenticationService.isOnlyPartner()" class="btn btn-xs color3" [routerLink]="['/home/campaigns']">create campaign</button>
+              <button *ngIf="authenticationService.isOnlyPartner()" class="btn btn-xs color3" [routerLink]="['/home/campaigns/partner/all']">create campaign</button>
 							<button type="button" class="btn btn-xs color3-invert" data-toggle="modal" data-target="#myModal">Tell me how</button>
 						</div>
 					</div>
