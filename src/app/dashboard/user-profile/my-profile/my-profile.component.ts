@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter, AfterViewInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router,ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 
 import { matchingPasswords, noWhiteSpaceValidator } from '../../../form-validator';
@@ -69,56 +69,63 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     ngxloading: boolean;
     roleNames:string = "";
     customResponse: CustomResponse = new CustomResponse();
+    hasClientErrors:boolean = false;
     constructor(public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
         public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
         public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
-        public regularExpressions: RegularExpressions) {
-        this.userData = this.authenticationService.userProfile;
-        this.roleNames = this.authenticationService.showRoles();
-        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        this.videoUtilService.videoTempDefaultSettings = this.referenceService.defaultPlayerSettings;
-        console.log(this.videoUtilService.videoTempDefaultSettings);
-        this.loggedInUserId = this.authenticationService.getUserId();
-        this.hasAllAccess = this.referenceService.hasAllAccess();
-        this.hasVideoRole = this.authenticationService.hasOnlyVideoRole();
-        this.hasCompany = this.authenticationService.user.hasCompany;
-        this.callActionSwitch.size = 'normal';
-        this.videoUrl = this.authenticationService.MEDIA_URL + "profile-video/Birds0211512666857407_mobinar.m3u8";
-        if (this.isEmpty(this.userData.roles) || !this.userData.profileImagePath) {
-            this.router.navigateByUrl(this.referenceService.homeRouter);
-        } else {
-            console.log(this.userData);
-            this.parentModel.displayName = this.userData.firstName ? this.userData.firstName : this.userData.emailId;
-            if (!(this.userData.profileImagePath.indexOf(null) > -1)) {
-                this.userProfileImage = this.userData.profileImagePath;
-                this.parentModel.profilePicutrePath = this.userData.profileImagePath;
+        public regularExpressions: RegularExpressions,public route:ActivatedRoute) {
+        try{
+            this.userData = this.authenticationService.userProfile;
+            this.roleNames = this.authenticationService.showRoles();
+            this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            this.videoUtilService.videoTempDefaultSettings = this.referenceService.defaultPlayerSettings;
+            console.log(this.videoUtilService.videoTempDefaultSettings);
+            this.loggedInUserId = this.authenticationService.getUserId();
+            this.hasAllAccess = this.referenceService.hasAllAccess();
+            this.hasVideoRole = this.authenticationService.hasOnlyVideoRole();
+            this.hasCompany = this.authenticationService.user.hasCompany;
+            this.callActionSwitch.size = 'normal';
+            this.videoUrl = this.authenticationService.MEDIA_URL + "profile-video/Birds0211512666857407_mobinar.m3u8";
+            if (this.isEmpty(this.userData.roles) || !this.userData.profileImagePath) {
+                this.router.navigateByUrl(this.referenceService.homeRouter);
+            } else {
+                console.log(this.userData);
+                this.parentModel.displayName = this.userData.firstName ? this.userData.firstName : this.userData.emailId;
+                if (!(this.userData.profileImagePath.indexOf(null) > -1)) {
+                    this.userProfileImage = this.userData.profileImagePath;
+                    this.parentModel.profilePicutrePath = this.userData.profileImagePath;
+                }
             }
+            this.uploader = new FileUploader({
+                allowedMimeType: ['image/jpeg', 'image/pjpeg', 'image/jpeg', 'image/pjpeg', 'image/png'],
+                maxFileSize: 10 * 1024 * 1024, // 10 MB
+                url: this.authenticationService.REST_URL + "admin/uploadProfilePicture/" + this.loggedInUserId + "?access_token=" + this.authenticationService.access_token
+            });
+            this.uploader.onAfterAddingFile = (file) => {
+                this.ngxloading = true;
+                console.log(file);
+                file.withCredentials = false;
+                this.uploader.queue[0].upload();
+            };
+            this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+                console.log(response);
+                const imageFilePath = JSON.parse(response);
+                console.log(imageFilePath);
+                this.userProfileImage = imageFilePath['message'];
+                this.parentModel.profilePicutrePath = imageFilePath['message'];
+                this.uploader.queue.length = 0;
+                this.clearImage();
+                this.profileUploadSuccess = true;
+                this.referenceService.topNavBarUserDetails.profilePicutrePath = imageFilePath['message'];
+                this.authenticationService.userProfile.profileImagePath = imageFilePath['message'];
+                this.ngxloading = false;
+                this.customResponse = new CustomResponse('SUCCESS', this.properties.PROFILE_PIC_UPDATED,true);
+            };
+        }catch(error){
+            this.hasClientErrors = true;
+            this.logger.showClientErrors("my-profile.component.ts", "constructor()", error);
         }
-        this.uploader = new FileUploader({
-            allowedMimeType: ['image/jpeg', 'image/pjpeg', 'image/jpeg', 'image/pjpeg', 'image/png'],
-            maxFileSize: 10 * 1024 * 1024, // 10 MB
-            url: this.authenticationService.REST_URL + "admin/uploadProfilePicture/" + this.loggedInUserId + "?access_token=" + this.authenticationService.access_token
-        });
-        this.uploader.onAfterAddingFile = (file) => {
-            this.ngxloading = true;
-            console.log(file);
-            file.withCredentials = false;
-            this.uploader.queue[0].upload();
-        };
-        this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-            console.log(response);
-            const imageFilePath = JSON.parse(response);
-            console.log(imageFilePath);
-            this.userProfileImage = imageFilePath['message'];
-            this.parentModel.profilePicutrePath = imageFilePath['message'];
-            this.uploader.queue.length = 0;
-            this.clearImage();
-            this.profileUploadSuccess = true;
-            this.referenceService.topNavBarUserDetails.profilePicutrePath = imageFilePath['message'];
-            this.authenticationService.userProfile.profileImagePath = imageFilePath['message'];
-            this.ngxloading = false;
-            this.customResponse = new CustomResponse('SUCCESS', this.properties.PROFILE_PIC_UPDATED,true);
-        };
+
     }
     isEmpty(obj) {
         return Object.keys(obj).length === 0;
@@ -229,21 +236,31 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.status = false;
                 }
             }
-        } catch (err) { console.log(err); }
+        } catch (error) {  
+            this.hasClientErrors = true;
+            this.logger.showClientErrors("my-profile.component.ts", "ngAfterViewInit()", error);
+        }
     }
     ngAfterViewInit() {
-        if (this.currentUser.roles.length > 1 && this.authenticationService.hasCompany()) {
-             this.defaultVideoSettings();
-            if (this.referenceService.defaultPlayerSettings.transparency === null) {
-                this.referenceService.defaultPlayerSettings.transparency = 100;
-                this.referenceService.defaultPlayerSettings.controllerColor = '#456';
-                this.referenceService.defaultPlayerSettings.playerColor = '#879';
-            }
-            this.defaulttransperancyControllBar(this.referenceService.defaultPlayerSettings.transparency);
-            if (this.referenceService.defaultPlayerSettings.enableVideoController === false) {
-                this.defaultVideoControllers();
-            }
+        try{
+            if (this.currentUser.roles.length > 1 && this.authenticationService.hasCompany()) {
+                this.defaultVideoSettings();
+               if (this.referenceService.defaultPlayerSettings.transparency === null) {
+                   this.referenceService.defaultPlayerSettings.transparency = 100;
+                   this.referenceService.defaultPlayerSettings.controllerColor = '#456';
+                   this.referenceService.defaultPlayerSettings.playerColor = '#879';
+               }
+               this.defaulttransperancyControllBar(this.referenceService.defaultPlayerSettings.transparency);
+               if (this.referenceService.defaultPlayerSettings.enableVideoController === false) {
+                   this.defaultVideoControllers();
+               }
+           }
+        }catch(error){
+            this.hasClientErrors = true;
+            this.logger.showClientErrors("my-profile.component.ts", "ngAfterViewInit()", error);
+        
         }
+    
     }
 
     updatePassword() {

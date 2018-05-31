@@ -43,6 +43,10 @@ export class XtremandLogger {
 	    this.router.navigate(['/home/error/', error.status]);
 		this.error(JSON.parse(error['_body']).message);
 	}
+	
+	showClientErrors(componentName:string,methodName:string,error:any){
+	    this.logger.error("Component:-"+componentName+":\nMethod:-"+methodName+",\n"+error);
+	}
 
 
 }

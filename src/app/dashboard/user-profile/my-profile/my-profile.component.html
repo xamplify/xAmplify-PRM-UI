@@ -69,7 +69,7 @@ input:checked + .slider-new:before {
 }
 .profile-usertitle-name{font-size: 14px;}
 </style>
-			<div class="page-content">
+			<div class="page-content" *ngIf="!hasClientErrors">
 				<div class="my-container">
 						<ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 				</div>
@@ -475,5 +475,10 @@ input:checked + .slider-new:before {
 					</div>
 				</div>
 				<!-- END PAGE CONTENT-->
+			</div>
+			</div>
+			<div class="page-content" *ngIf="hasClientErrors">
+				<h5 style="color: red">Something went wrong.please contact admin</h5>
+			
 			</div>
 
