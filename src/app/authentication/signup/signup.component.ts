@@ -20,7 +20,8 @@ declare var $: any;
 @Component({
     selector: 'app-signup',
     templateUrl: './signup.component.html',
-    styleUrls: ['./signup.component.css', '../../../assets/css/default.css', '../../../assets/css/authentication-page.css'],
+    styleUrls: ['./signup.component.css', '../../../assets/css/default.css', '../../../assets/css/authentication-page.css',
+    '../../../assets/css/loader.css'],
     providers: [User, CountryNames, RegularExpressions, Properties]
 })
 export class SignupComponent implements OnInit, OnDestroy {
@@ -29,6 +30,7 @@ export class SignupComponent implements OnInit, OnDestroy {
     isError = false;
     vendorSignup = false;
     invalidVendor = false;
+    mainLoader = false;
     customResponse: CustomResponse = new CustomResponse();
     formErrors = {
         'firstName': '',
@@ -177,7 +179,8 @@ export class SignupComponent implements OnInit, OnDestroy {
     }
     ngOnInit() {
         $("[rel='tooltip']").tooltip();
-        this.authenticationService.navigateToDashboardIfUserExists();
+        this.mainLoader = true;
+        setTimeout(()=>{ this.mainLoader = false; this.authenticationService.navigateToDashboardIfUserExists();},300);
     }
     ngOnDestroy(){
       this.invalidVendor = false;

@@ -11,13 +11,13 @@ import { Role } from '../../core/models/role';
 import { CustomResponse } from '../../common/models/custom-response';
 import { Properties } from '../../common/models/properties';
 
-
 declare const $: any;
 
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
-    styleUrls: ['./login.component.css', '../../../assets/css/default.css', '../../../assets/css/authentication-page.css'],
+    styleUrls: ['./login.component.css', '../../../assets/css/default.css', '../../../assets/css/authentication-page.css',
+     '../../../assets/css/loader.css'],
     providers: [User, Properties]
 })
 
@@ -26,6 +26,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     customResponse: CustomResponse = new CustomResponse();
     loading = false;
     resendActiveMail = false;
+    mainLoader = false;
     socialProviders = [{ "name": "salesforce", "iconName": "salesforce" },
     { "name": "facebook", "iconName": "facebook" },
     { "name": "twitter", "iconName": "twitter" },
@@ -119,7 +120,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
     ngOnInit() {
       // localStorage.removeItem('currentUser');
-       this.authenticationService.navigateToDashboardIfUserExists();
+     this.mainLoader = true;
+     setTimeout(()=>{ this.mainLoader = false; this.authenticationService.navigateToDashboardIfUserExists();},300);
     }
     ngOnDestroy() {
         this.referenceService.userProviderMessage = '';

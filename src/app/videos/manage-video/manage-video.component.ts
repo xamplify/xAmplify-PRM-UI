@@ -274,13 +274,12 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
             },
             (error: any) => {
                 try{
-                if (error.search('mobinar is being used in one or more campaigns. Please delete those campaigns') === -1) {
+                if (error._body.search('video is being used in one or more campaigns. Please delete those campaigns') === -1) {
                     this.xtremandLogger.error('Error In : delete videos ():' + error);
                     this.referenceService.showServerError(this.httpRequestLoader);
                     this.httpRequestLoader.statusCode = error.status;
-                } else if (error.search('mobinar is being used in one or more campaigns. Please delete those campaigns') !== -1) {
-                    let message = error.replace('mobinar', 'video');
-                     message = message.replace('Heads up!','Heads up! ( ');
+                } else if (error._body.search('video is being used in one or more campaigns. Please delete those campaigns') !== -1) {
+                    let message = error._body.replace('Heads up!','Heads up! ( ');
                      message = message.replace('video',') video');
                      message = message.replace('"','');
                      message = message.replace('."','.');

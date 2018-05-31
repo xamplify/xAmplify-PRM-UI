@@ -16,13 +16,15 @@ declare var $: any;
 @Component({
     selector: 'app-forgot-password',
     templateUrl: './forgot-password.component.html',
-    styleUrls: ['./forgot-password.component.css', '../../../assets/css/default.css', '../../../assets/css/authentication-page.css'],
+    styleUrls: ['./forgot-password.component.css', '../../../assets/css/default.css', '../../../assets/css/authentication-page.css',
+    '../../../assets/css/loader.css'],
     providers: [RegularExpressions, Properties]
 })
 export class ForgotPasswordComponent implements OnInit {
 
     forgotPasswordForm: FormGroup;
     loading = false;
+    mainLoader = false;
     customResponse: CustomResponse = new CustomResponse();
     formErrors = {
         'forgotPasswordEmailId': ''
@@ -80,8 +82,10 @@ export class ForgotPasswordComponent implements OnInit {
 
     ngOnInit() {
         $('.forget-form').show();
-        this.authenticationService.navigateToDashboardIfUserExists();
        // this.forgotPasswordForm.reset();
+       this.mainLoader = true;
+       setTimeout(()=>{ this.mainLoader = false; this.authenticationService.navigateToDashboardIfUserExists();},300);
+
     }
 
 }
