@@ -37,9 +37,6 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
                  public contactService: ContactService, public videoFileService: VideoFileService ) {
         this.notifyParent = new EventEmitter();
         this.isPartner = this.router.url.includes('home/contacts')? false: true;
-        /*if ( this.addContactuser.mobileNumber == undefined ) {
-            this.addContactuser.mobileNumber = "+1";
-        }*/
 
     }
 
@@ -175,12 +172,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
         }
         $( '#addContactModal' ).modal( 'show' );
     }
-    /*cssChanges(){
-      $('.input-group > .form-control').css('cssText','border: none !important;height: 36px !important;');
-      $('.input-group > .form-control:focus').css('cssText','border-color: white !important;');
-      $('.input-group > .input-group-addon').css('cssText','background: white !important;border: none !important;');
-      $('.input-group-addon').css('cssText','border: none !important;');
-    }*/
+
     ngAfterViewInit(){
     }
     ngOnDestroy(){

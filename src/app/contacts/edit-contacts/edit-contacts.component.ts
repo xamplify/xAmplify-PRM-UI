@@ -1906,14 +1906,14 @@ export class EditContactsComponent implements OnInit, OnDestroy {
         for ( let i = 0; i < this.contactsByType.listOfAllContacts.length; i++ ) {
 
             var object = {
-                "Email Id": this.contactsByType.listOfAllContacts[i].emailId,
                 "First Name": this.contactsByType.listOfAllContacts[i].firstName,
                 "Last Name": this.contactsByType.listOfAllContacts[i].lastName,
                 "Company": this.contactsByType.listOfAllContacts[i].contactCompany,
+                "Job Title": this.contactsByType.listOfAllContacts[i].jobTitle,
+                "Email Id": this.contactsByType.listOfAllContacts[i].emailId,
                 "Address": this.contactsByType.listOfAllContacts[i].address,
                 "City": this.contactsByType.listOfAllContacts[i].city,
                 "Country": this.contactsByType.listOfAllContacts[i].country,
-                "Job Title": this.contactsByType.listOfAllContacts[i].jobTitle,
                 "Mobile Number": this.contactsByType.listOfAllContacts[i].mobileNumber,
                 //"Notes": this.contactsByType.listOfAllContacts[i].description
             }
