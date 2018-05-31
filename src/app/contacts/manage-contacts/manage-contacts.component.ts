@@ -107,6 +107,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
         { 'name': 'Name(Z-A)', 'value': 'name-DESC', 'for': 'contactList' },
         { 'name': 'Created Time(ASC)', 'value': 'createdTime-ASC', 'for': 'contactList' },
         { 'name': 'Created Time(DESC)', 'value': 'createdTime-DESC', 'for': 'contactList' },
+        { 'name': 'Company Name(ASC)', 'value': 'contactCompany-ASC', 'for': 'contactList' },
+        { 'name': 'Company Name(DESC)', 'value': 'contactCompany-DESC', 'for': 'contactList' },
 
         { 'name': 'Email(A-Z)', 'value': 'emailId-ASC', 'for': 'contacts' },
         { 'name': 'Email(Z-A)', 'value': 'emailId-DESC', 'for': 'contacts' },
@@ -114,6 +116,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
         { 'name': 'First Name(DESC)', 'value': 'firstName-DESC', 'for': 'contacts' },
         { 'name': 'Last Name(ASC)', 'value': 'lastName-ASC', 'for': 'contacts' },
         { 'name': 'Last Name(DESC)', 'value': 'lastName-DESC', 'for': 'contacts' },
+        { 'name': 'Company Name(ASC)', 'value': 'contactCompany-ASC', 'for': 'contacts' },
+        { 'name': 'Company Name(DESC)', 'value': 'contactCompany-DESC', 'for': 'contacts' },
     ];
 
     sortOptionsForPagination = [
@@ -151,7 +155,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
     isListView = false;
     responseMessage = [];
     logListName = "";
-    // isResponsMessage = false;
 
     constructor( public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
         private pagerService: PagerService, private pagination: Pagination, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger ) {

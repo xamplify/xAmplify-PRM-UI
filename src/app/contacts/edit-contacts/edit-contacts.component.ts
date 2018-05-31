@@ -131,6 +131,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
         { 'name': 'First Name(DESC)', 'value': 'firstName-DESC' },
         { 'name': 'Last Name(ASC)', 'value': 'lastName-ASC' },
         { 'name': 'Last Name(DESC)', 'value': 'lastName-DESC' },
+        { 'name': 'Company Name(ASC)', 'value': 'contactCompany-ASC' },
+        { 'name': 'Company Name(DESC)', 'value': 'contactCompany-DESC' },
     ];
 
     public sortOption: any = this.sortOptions[0];
