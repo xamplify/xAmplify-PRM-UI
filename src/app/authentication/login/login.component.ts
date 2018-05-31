@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     customResponse: CustomResponse = new CustomResponse();
     loading = false;
     resendActiveMail = false;
-    mainLoader = false;
+    mainLoader:boolean;
     socialProviders = [{ "name": "salesforce", "iconName": "salesforce" },
     { "name": "facebook", "iconName": "facebook" },
     { "name": "twitter", "iconName": "twitter" },

@@ -30,7 +30,7 @@ export class SignupComponent implements OnInit, OnDestroy {
     isError = false;
     vendorSignup = false;
     invalidVendor = false;
-    mainLoader = false;
+    mainLoader:boolean;
     customResponse: CustomResponse = new CustomResponse();
     formErrors = {
         'firstName': '',

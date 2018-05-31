@@ -24,7 +24,7 @@ export class ForgotPasswordComponent implements OnInit {
 
     forgotPasswordForm: FormGroup;
     loading = false;
-    mainLoader = false;
+    mainLoader:boolean;
     customResponse: CustomResponse = new CustomResponse();
     formErrors = {
         'forgotPasswordEmailId': ''

@@ -8,7 +8,7 @@ declare const $,google: any;
   styleUrls: ['./intro.component.css']
 })
 export class IntroComponent implements OnInit {
-  mainLoader = false;
+  mainLoader:boolean;
   constructor(public authenticationService:AuthenticationService) { }
   googleMap() {
     const myCenter = new google.maps.LatLng(40.7143528,-74.0059731);
@@ -33,7 +33,7 @@ export class IntroComponent implements OnInit {
         navbar.classList.remove("stuck");
       }
     }
- //   this.googleMap();
+    // this.googleMap();
   }
 
 }

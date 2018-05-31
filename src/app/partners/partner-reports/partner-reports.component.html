@@ -191,7 +191,7 @@
           <table class="table tgrid">
             <thead>
               <!-- <th>partner Company Name</th> -->
-              <th class="center-aligned">Email Id</th>
+              <th class="center-aligned">partners</th>
               <th class="center-aligned">Campaign Name</th>
               <th class="center-aligned">analytics</th>
             </thead>
@@ -250,15 +250,15 @@
         <div class="portlet-body" *ngIf="!httpRequestLoader.isLoading">
           <table class="table tgrid">
             <thead>
-              <th class="center-aligned">Email Id</th>
-              <th align="right">Notify Email</th>
+              <th class="center-aligned">partners</th>
+              <th align="right">Actions</th>
             </thead>
             <tbody>
               <tr *ngFor="let item of inActivePartnersPagination.pagedItems" style="cursor: pointer;">
                 <td><app-user-info [userInfo]="item" [isPartnerEntityInfo]="true" [isPartnerInfo]="true"></app-user-info></td>
                 <td (click)="sendPartnerReminder(item)">
 					<div class="actions-block">
-                      <a   title="Send email">
+                      <a   title="Send reminder email">
                           <i class="fa fa-envelope"></i>
                         </a>
                       </div>
