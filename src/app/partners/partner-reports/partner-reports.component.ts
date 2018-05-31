@@ -381,16 +381,20 @@ export class PartnerReportsComponent implements OnInit {
      user.emailId = item.emailId;
      user.firstName = item.firstName;
      user.lastName = item.lastName;
-     console.log(user);
-       this.referenseService.loading(this.httpRequestLoader, true);
+     user.id = this.loggedInUserId;
+      this.referenseService.loading(this.httpRequestLoader, true);
       this.parterService.sendPartnerReminderEmail(user).subscribe(
               (response: any) => {
                 if(response.statusCode==2017){
-                    swal('Email sent successfully','','success');
+                    this.customResponse = new CustomResponse( 'SUCCESS','Email sent successfully.', true );
                 }
                this.referenseService.loading(this.httpRequestLoader, false);
               },
-              (error: any) => { this.referenseService.loading(this.httpRequestLoader, false);console.log("error")});
+              (error: any) => {
+                  this.referenseService.loading(this.httpRequestLoader, false);
+                  this.xtremandLogger.showClientErrors("partner-reports", "sendPartnerReminder()",error.error.message);
+                  this.customResponse = new CustomResponse( 'ERROR','Something went wrong in sending an email.', true );
+              });
 
   }
 
