@@ -199,42 +199,6 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
         this.referenceService.previewEmailTemplate(emailTemplate, this.campaign);
     }
 
- /*
-    previewEmailTemplate(emailTemplate: EmailTemplate) {
-       console.log(emailTemplate);
-        const body = emailTemplate.body;
-        let emailTemplateName = emailTemplate.name;
-        if (emailTemplateName.length > 50) {
-            emailTemplateName = emailTemplateName.substring(0, 50) + "...";
-        }
-        $("#email-template-content").empty();
-        $("#email-template-title").empty();
-        $("#email-template-title").append(emailTemplateName);
-        $('#email-template-title').prop('title', emailTemplate.name);
-
-        if (this.campaign.campaignType.toLocaleString().includes('VIDEO') ) {
-            let selectedVideoGifPath = this.campaign.campaignVideoFile.gifImagePath;
-            let updatedBody = emailTemplate.body.replace("<SocialUbuntuImgURL>", selectedVideoGifPath);
-            updatedBody = updatedBody.replace("&lt;SocialUbuntuURL&gt;", "javascript:void(0)");
-            updatedBody = updatedBody.replace("<SocialUbuntuURL>", "javascript:void(0)");
-            updatedBody = updatedBody.replace("https://dummyurl.com", "javascript:void(0)");
-            updatedBody = updatedBody.replace("https://xamp.io/vod/images/xtremand-video.gif", selectedVideoGifPath);
-            updatedBody = updatedBody.replace("&lt;SocialUbuntuImgURL&gt;", selectedVideoGifPath);
-            $("#email-template-content").append(updatedBody);
-        } else {
-            console.log(body);
-            let updatedBody = body.replace("<div id=\"video-tag\">", "<div id=\"video-tag\" style=\"display:none\">");
-            $("#email-template-content").append(updatedBody);
-        }
-
-        $('.modal .modal-body').css('overflow-y', 'auto');
-        $("#email_template_preivew").modal('show');
-        $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
-    }
-*/
-
-
-
 
     setContactListError(){
         if(this.selectedUserlistIds.length>0){
@@ -285,6 +249,9 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
             this.urls = campaign.campaignUrls;
             for(var i=0;i<this.urls.length;i++){
                 let url = this.urls[i];
+                if(url.replyInDays==null){
+                    url.replyInDays = 0;
+                }
                 if(url.defaultTemplate){
                     url.selectedEmailTemplateIdForEdit = url.selectedEmailTemplateId;
                 }

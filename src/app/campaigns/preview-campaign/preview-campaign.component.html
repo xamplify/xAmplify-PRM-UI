@@ -449,12 +449,12 @@
 						           			<option  [value]="21" [selected]="url.actionId ==21">Schedule</option>
 									</select>
 								</div>
-								<div *ngIf="url.actionId==21">
-									<div class="form-group col-xs-12">
+								<div>
+									<div class="form-group col-xs-12" *ngIf="url.actionId==21">
 										<label for="days" id="click-days-{{url.divId}}">Wait X Days After Click
 											<b style="color: red">*</b>
 										</label>
-										<input disabled="disabled" type="number" class="form-control" name="days" [(ngModel)]="url.replyInDays" placeholder="Days" min="0" oninput="validity.valid||(value='');">
+										<input disabled="disabled" type="number" class="form-control" name="days" [(ngModel)]="url.replyInDays" placeholder="Days">
 									</div>
 									<div class="form-group col-xs-12">
 										<label for="time" id="click-send-time-{{url.divId}}" class="time-picker-css">At<b style="color: red">*</b></label>
