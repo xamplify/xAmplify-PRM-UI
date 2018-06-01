@@ -287,7 +287,7 @@ export class AddTeamMembersComponent implements OnInit {
     }
     delete(){
         $('#delete-team-member-modal').hide();
-        this.loading = true;
+       // this.loading = true;
         let teamMember:TeamMember = new TeamMember();
         teamMember.teamMemberId = this.teamMemberIdToDelete;
         teamMember.orgAdminId = this.selectedId;
@@ -321,6 +321,7 @@ export class AddTeamMembersComponent implements OnInit {
     }
 
     showPopup(teamMember:TeamMember){
+        this.selectedId = 0;
         $('#delete-team-member-modal').show();
         this.emailIds= this.items2.filter((item) => item.id !== teamMember.teamMemberId);
         this.teamMemberIdToDelete = teamMember.teamMemberId;

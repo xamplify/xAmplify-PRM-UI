@@ -413,8 +413,6 @@
 		    	<i class="fa fa-envelope-o" aria-hidden="true"></i>
 		    </label>
 		    <div class="col-sm-10">
-		    <!-- <input autocomplete [config]="config2" [items]="emailIds" (inputChangedEvent)="onInputChangedEvent($event)"
-      			(selectEvent)="onSelect($event)" class="form-control" style="border: none;"> -->
       		<select class="form-control" id="org-id" [(ngModel)]="selectedId" name="name">
       			<option value="0">Please select emailId</option>
       			<option *ngFor="let data of emailIds" [ngValue]="data.id">{{data.emailId}}</option>
