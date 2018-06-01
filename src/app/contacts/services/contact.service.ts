@@ -199,10 +199,10 @@ export class ContactService {
            .catch( this.handleError);
     }
     
-    updateContactListName( contactListId: number, contactListName: string ): Observable<any> {
-        var newUrl = this.contactsUrl + contactListId + '/rename?access_token=' + this.authenticationService.access_token + '&name=' + contactListName;
+    updateContactListName( updatingObject: any ): Observable<any> {
+        var newUrl = this.contactsUrl + 'rename?access_token=' + this.authenticationService.access_token;
         this.logger.info( newUrl );
-        return this._http.post( newUrl, "" )
+        return this._http.post( newUrl, updatingObject )
             .map(( response: any ) => response.json() )
            .catch( this.handleError);
     }

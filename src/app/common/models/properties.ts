@@ -37,7 +37,7 @@ export class Properties {
     CONTACT_SAVE_SUCCESS_AND_MAIL_SENT_SUCCESS = "Your contact list has been updated successfully and any selected campaigns have been launched.";
     CONTACTS_SAVE_ERROR = "An error occured while saving your contacts.";
 
-    CONTACT_LIST_NAME_UPDATE_SUCCESS = "Your contact(s) have been saved successfully.";
+    CONTACT_LIST_NAME_UPDATE_SUCCESS = "Your contact list name has been updated successfully.";
     CONTACT_LIST_NAME_UPDATE_ERROR = "An error occured while saving your contacts.";
 
     SOCIAL_ACCOUNT_REMOVED_SUCCESS = "Your social account has been removed successfully.";
@@ -45,6 +45,7 @@ export class Properties {
 
     /* For Partners*/
     PARTNER_LIST_CREATE_SUCCESS = "Your partner list has been created successfully.";
+    PARTNER_LIST_NAME_UPDATE_SUCCESS = "Your partner list name has been updated successfully.";
     
     PARTNER_LIST_SYNCHRONIZATION_SUCCESS = "Your Parntner List has been synchronized successfully.";
     PARTNER_LIST_SYNCHRONIZATION_ERROR = "An error occured while synchronizing your partner list.";

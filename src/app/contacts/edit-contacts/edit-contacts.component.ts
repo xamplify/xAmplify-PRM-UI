@@ -1801,7 +1801,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
             //title: this.checkingContactTypeName + ' List Name',
             title: "<span style='font-weight: 100;font-family: Open Sans;font-size: 24px;'>Update List Name</span>",
             input: 'text',
-            inputValue: this.contactListName,
+            inputValue: this.selectedContactListName,
             showCancelButton: true,
             padding: 20,
             confirmButtonText: 'Update',
@@ -1827,14 +1827,22 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     }
 
     updateContactListName( newContactListName: string ) {
-        //  $( "#addContactModal .close" ).click();
+
+        var object = {
+                "id": this.selectedContactListId,
+                "name": newContactListName
+        }
         this.addContactModalClose();
-        this.contactService.updateContactListName( this.selectedContactListId, newContactListName )
+        this.contactService.updateContactListName( object )
             .subscribe(
             ( data: any ) => {
                 console.log( data );
-                this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_LIST_NAME_UPDATE_SUCCESS, true );
-                this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
+                this.selectedContactListName = newContactListName;
+                if ( this.isPartner ) {
+                    this.customResponse = new CustomResponse( 'SUCCESS', this.properties.PARTNER_LIST_NAME_UPDATE_SUCCESS, true );
+                }else{
+                    this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_LIST_NAME_UPDATE_SUCCESS, true );
+                }
             },
             error => this.xtremandLogger.error( error ),
             () => this.xtremandLogger.info( "EditContactsComponent updateContactListName() finished" )
@@ -2053,5 +2061,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         swal.close();
+        $( '#filterModal' ).modal( 'hide' );
     }
 }

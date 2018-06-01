@@ -1293,5 +1293,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
         this.contactService.successMessage = false;
         this.contactService.deleteUserSucessMessage = false;
         swal.close();
+        $( '#filterModal' ).modal( 'hide' );
     }
 }
