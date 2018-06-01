@@ -5,7 +5,7 @@ declare const $,google: any;
 @Component({
   selector: 'app-intro',
   templateUrl: './intro.component.html',
-  styleUrls: ['./intro.component.css', '../../../assets/css/loader.css']
+  styleUrls: ['./intro.component.css']
 })
 export class IntroComponent implements OnInit {
   mainLoader:boolean;
