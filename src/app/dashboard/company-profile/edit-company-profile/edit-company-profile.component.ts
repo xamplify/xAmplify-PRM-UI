@@ -178,9 +178,6 @@ export class EditCompanyProfileComponent implements OnInit {
             }
         }
 
-        if ( !this.companyProfile.phone ) {
-            this.companyProfile.phone = "+1";
-        }
     }
     saveVideoBrandLog() {
         const logoLink = this.videoUtilService.isStartsWith(this.companyProfile.website);
@@ -215,6 +212,7 @@ export class EditCompanyProfileComponent implements OnInit {
 
 
     ngOnInit() {
+        this.geoLocation();
         this.getCompanyProfileByUserId();
         if (this.authenticationService.user.hasCompany) {
             this.companyProfile.isAdd = false;
@@ -389,9 +387,6 @@ export class EditCompanyProfileComponent implements OnInit {
                             this.companyProfile.country = this.countryNames.countries[0];
                         }
                         this.geoLocation();
-                        /*if ( !this.companyProfile.phone ) {
-                            this.companyProfile.phone = "+1";
-                        }*/
                         this.existingCompanyName = data.data.companyName;
                         this.loadPublicVideos();
                     }
