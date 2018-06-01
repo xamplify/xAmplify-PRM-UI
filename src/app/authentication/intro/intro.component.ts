@@ -5,7 +5,7 @@ declare const $,google: any;
 @Component({
   selector: 'app-intro',
   templateUrl: './intro.component.html',
-  styleUrls: ['./intro.component.css']
+  styleUrls: ['./intro.component.css', '../../../assets/css/loader.css']
 })
 export class IntroComponent implements OnInit {
   mainLoader:boolean;
@@ -41,7 +41,9 @@ export class IntroComponent implements OnInit {
    }
   ngOnInit() {
     this.mainLoader = true;
-    if(localStorage.getItem('currentUser')){ this.mainLoader=false ;this.authenticationService.navigateToDashboardIfUserExists()}
+    if(localStorage.getItem('currentUser')){ this.authenticationService.navigateToDashboardIfUserExists();
+      setTimeout(()=>{  this.mainLoader = false;},1000);
+     }
     else {this.mainLoader=false }
     window.onscroll = function () { myFunction() };
     const navbar = document.getElementById("navbar");

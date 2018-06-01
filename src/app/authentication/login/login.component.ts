@@ -121,7 +121,9 @@ export class LoginComponent implements OnInit, OnDestroy {
     ngOnInit() {
       // localStorage.removeItem('currentUser');
      this.mainLoader = true;
-     setTimeout(()=>{ this.mainLoader = false; this.authenticationService.navigateToDashboardIfUserExists();},300);
+     this.authenticationService.navigateToDashboardIfUserExists();
+     setTimeout(()=>{  this.mainLoader = false;},1000);
+     //setTimeout(()=>{ this.mainLoader = false; this.authenticationService.navigateToDashboardIfUserExists();},300);
     }
     ngOnDestroy() {
         this.referenceService.userProviderMessage = '';

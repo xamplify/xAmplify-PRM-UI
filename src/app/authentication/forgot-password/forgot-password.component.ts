@@ -84,8 +84,9 @@ export class ForgotPasswordComponent implements OnInit {
         $('.forget-form').show();
        // this.forgotPasswordForm.reset();
        this.mainLoader = true;
-       setTimeout(()=>{ this.mainLoader = false; this.authenticationService.navigateToDashboardIfUserExists();},300);
-
+       this.authenticationService.navigateToDashboardIfUserExists();
+       setTimeout(()=>{  this.mainLoader = false;},1000);
+       //  setTimeout(()=>{ this.mainLoader = false; this.authenticationService.navigateToDashboardIfUserExists();},300);
     }
 
 }
