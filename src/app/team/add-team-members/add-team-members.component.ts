@@ -67,7 +67,7 @@ export class AddTeamMembersComponent implements OnInit {
     selectedId:number=0;
     /**********Constructor**********/
     constructor( public logger: XtremandLogger,public referenceService:ReferenceService,private teamMemberService:TeamMemberService,
-            public authenticationService:AuthenticationService,private pagerService:PagerService,private pagination:Pagination,
+            public authenticationService:AuthenticationService,private pagerService:PagerService,public pagination:Pagination,
             private fileUtil:FileUtil,public callActionSwitch: CallActionSwitch) {
         this.team = new TeamMember();
         this.userId = this.authenticationService.getUserId();
@@ -198,7 +198,7 @@ export class AddTeamMembersComponent implements OnInit {
             data => {
                 this.referenceService.stopLoader(this.httpRequestLoader);
                 if(data.statusCode==3000){
-                    this.successMessage = "Team Member(s) Added Successfully";
+                    this.successMessage = "Team Member(s) added successfully.";
                     this.customResponse = new CustomResponse( 'SUCCESS', this.successMessage, true );
                     this.pagination.pageIndex = 1;
                     this.listTeamMembers(this.pagination);
@@ -235,7 +235,7 @@ export class AddTeamMembersComponent implements OnInit {
                 console.log(data);
                 this.referenceService.stopLoader(this.httpRequestLoader);
                 if(data.statusCode==3002){
-                    this.successMessage = "Team Member(s) Updated Successfully";
+                    this.successMessage = "Team Member(s) updated successfully.";
                     this.customResponse = new CustomResponse( 'SUCCESS', this.successMessage, true );
                     // $( "#team-member-success-div" ).show();
                     // setTimeout( function() { $( "#team-member-success-div" ).slideUp( 500 ); }, 7000 );
@@ -300,10 +300,10 @@ export class AddTeamMembersComponent implements OnInit {
             this.loading = false;
             this.referenceService.goToTop();
             if(teamMember.teamMemberId==0){
-                this.successMessage ="All Team Members Deleted Successfully";
+                this.successMessage ="All Team Members deleted successfully.";
                 this.pagination.pageIndex = 0;
             }else{
-                this.successMessage =  this.selectedTeamMemberEmailId+" Deleted Successfully";
+                this.successMessage =  this.selectedTeamMemberEmailId+" deleted successfully.";
                 this.pagination.pageIndex = this.pagination.pageIndex-1;
             }
             this.teamMemberIdToDelete = 0;
@@ -316,7 +316,7 @@ export class AddTeamMembersComponent implements OnInit {
             this.clearRows();
         },
         error => {this.logger.errorPage(error)},
-        () => console.log( "Team member Deleted Successfully" )
+        () => console.log( "Team member deleted successfully." )
         );
     }
 
@@ -375,7 +375,7 @@ export class AddTeamMembersComponent implements OnInit {
 
     validateDisableEmailIds(emailId:string){
         if(this.disabledEmailIds.indexOf(emailId.toLowerCase())>-1){
-            this.showErrorMessage("Disabled Team Member Cannot Be Added");
+            this.showErrorMessage("Disabled team member cannot be added.");
         }else{
             this.hideErrorMessage();
         }
