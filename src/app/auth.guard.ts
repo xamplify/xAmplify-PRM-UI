@@ -13,7 +13,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     campaignBaseUrl:string = 'campaigns';
     upgradeBaseUrl:string = 'upgrade';
     teamBaseUrl:string = 'team';
-    
+
     constructor( private authenticationService: AuthenticationService, private router: Router ) {  }
     canActivate( route: ActivatedRouteSnapshot, state: RouterStateSnapshot ): boolean {
         const url: string = state.url;
@@ -47,7 +47,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
                     return true;
                 }
             }
-            
+
         }else{
             this.authenticationService.redirectUrl = url;
             // Navigate to the login page
@@ -67,7 +67,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             () => { }
             );
     }
-    
+
     secureUrlByRole(url:string):boolean{
         let roles = this.authenticationService.user.roles.map(function(a) {return a.roleName;});
         if(url.indexOf(this.emailTemplateBaseUrl)>-1){
@@ -95,7 +95,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             return this.authorizeUrl(roles, url, this.upgradeBaseUrl);
         }
     }
-    
+
     authorizeUrl(roles:any,url:string,urlType:string):boolean{
         let role = "";
         if(urlType==this.emailTemplateBaseUrl){
@@ -128,10 +128,14 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         let isVendor =  roles.indexOf(this.roles.vendorRole)>-1;
         if(isVendor){
             return this.checkVendorAccessUrls(url, urlType);
-        }else{
-            let hasRole = (roles.indexOf(this.roles.orgAdminRole)>-1  || roles.indexOf(this.roles.companyPartnerRole)>-1 
+        }
+        else if(roles.indexOf(this.roles.companyPartnerRole)>-1){
+            return this.checkPartnerAccessUrls(url, urlType)
+        }
+        else{
+            let hasRole = (roles.indexOf(this.roles.orgAdminRole)>-1  || roles.indexOf(this.roles.companyPartnerRole)>-1
                     || roles.indexOf(this.roles.allRole)>-1  || roles.indexOf(role)>-1);
-            
+
             if(url.indexOf("/"+urlType+"/")>-1 && this.authenticationService.user.hasCompany&&hasRole){
                 return true;
             }else{
@@ -139,7 +143,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             }
         }
     }
-    
+
     checkVendorAccessUrls(url:string,urlType:string):boolean{
         if(url.indexOf("/"+urlType+"/")>-1 && this.authenticationService.user.hasCompany
                 && url.indexOf("/"+this.contactBaseUrl+"/")<0){
@@ -148,8 +152,14 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             return this.goToAccessDenied();
         }
     }
-    
-    
+    checkPartnerAccessUrls(url:string,urlType:string):boolean{
+      if(this.authenticationService.user.hasCompany && !(url.includes('/home/videos/upload') || url.includes('/home/campaigns/create') || url.includes('/home/campaigns/select') || url.includes('/home/emailtemplates/create') || url.includes('/home/emailtemplates/select') || url.includes('/home/partners/add') || url.includes('/home/partners/manage'))){
+        return true;
+      }else{
+        return this.goToAccessDenied();
+      }
+    }
+
     goToAccessDenied():boolean{
         this.router.navigate( ['/access-denied'] );
         return false;
