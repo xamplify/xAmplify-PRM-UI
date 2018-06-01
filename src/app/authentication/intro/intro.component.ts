@@ -11,7 +11,7 @@ export class IntroComponent implements OnInit {
   mainLoader:boolean;
 
    // google maps zoom level
-   zoom  = 15;
+   zoom  = 10;
    // initial center position for the map
    lat = 40.7143528;
    lng = -74.0059731;

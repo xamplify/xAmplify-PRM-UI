@@ -326,7 +326,6 @@
       <h3 lang="en">Have any questions? Get in touch</h3>
     </header>
   </div>
-
   <!--map-->
   <div class="map">
   <!-- <div id="map-canvas_"><img  src="/assets/images/map.jpg"></div> -->
@@ -337,7 +336,6 @@
   [disableDefaultUI]="false"
   [zoomControl]="false"
   (mapClick)="mapClicked($event)">
-
   <agm-marker
       *ngFor="let m of markers; let i = index"
       (markerClick)="clickedMarker(m.label, i)"
@@ -346,26 +344,19 @@
       [label]="m.label"
       [markerDraggable]="m.draggable"
       (dragEnd)="markerDragEnd(m, $event)">
-
     <agm-info-window>
       <strong>InfoWindow content</strong>
     </agm-info-window>
-
   </agm-marker>
-
-  <agm-circle [latitude]="lat + 0.3" [longitude]="lng"
+  <agm-circle [latitude]="lat" [longitude]="lng"
       [radius]="5000"
       [fillColor]="'red'"
       [circleDraggable]="true"
       [editable]="true">
   </agm-circle>
-
 </agm-map>
   </div>
-  <!--map end-->
-
 </section>
-
 <!--contact us end-->
 
 <!--sub-form-->
