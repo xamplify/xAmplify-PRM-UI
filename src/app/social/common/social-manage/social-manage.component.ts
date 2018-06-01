@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { SocialService } from '../../services/social.service';
@@ -13,7 +13,7 @@ declare var swal: any;
     templateUrl: './social-manage.component.html',
     styleUrls: ['./social-manage.component.css']
 })
-export class SocialManageComponent implements OnInit {
+export class SocialManageComponent implements OnInit, OnDestroy {
     socialConnections: SocialConnection[] = new Array<SocialConnection>();
     response: any;
     httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
@@ -79,6 +79,9 @@ export class SocialManageComponent implements OnInit {
         } catch ( err ) {
             console.log( err );
         }
+    }
+    ngOnDestroy(){
+      swal.close();
     }
 
 }

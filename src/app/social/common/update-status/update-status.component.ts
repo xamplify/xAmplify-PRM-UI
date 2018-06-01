@@ -662,5 +662,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     }
     $('.profile-video').remove();
     this.videoFileService.videoType = '';
+    $('#listVideosModal').modal('hide');
+    $('#contactsModal').modal('hide');
   }
 }

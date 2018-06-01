@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { EmailTemplateService } from '../services/email-template.service';
 import { User } from '../../core/models/user';
@@ -16,7 +16,7 @@ declare var BeePlugin,swal,$,Promise:any;
   styleUrls: ['./create-template.component.css'],
   providers :[EmailTemplate,HttpRequestLoader]
 })
-export class CreateTemplateComponent implements OnInit {
+export class CreateTemplateComponent implements OnInit,OnDestroy {
 
     httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
     constructor(private emailTemplateService:EmailTemplateService,
@@ -311,6 +311,9 @@ export class CreateTemplateComponent implements OnInit {
     	}//End Of Constructor
 
   ngOnInit() {
+  }
+  ngOnDestroy(){
+    swal.close();
   }
 
 }

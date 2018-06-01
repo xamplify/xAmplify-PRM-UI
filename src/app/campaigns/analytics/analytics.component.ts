@@ -798,7 +798,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
 
       this.downloadDataList.push(object);
     }
-    
+
     this.referenceService.isDownloadCsvFile = true;
     this.loading = false;
   }
@@ -864,8 +864,12 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   ngOnDestroy(){
     this.paginationType = '';
     $('#worldMapModal').modal('hide');
-    $('#show_email_template_preivew').modal('hide');
+    $('#email_template_preivew').modal('hide');
     $('#show_contact-list-info').modal('hide');
+    $('#usersWatchListModal').modal('hide');
+    $('#emailActionListModal').modal('hide');
+    $('#emailSentListModal').modal('hide');
+    $('#donutModelPopup').modal('hide');
 
   }
 }
