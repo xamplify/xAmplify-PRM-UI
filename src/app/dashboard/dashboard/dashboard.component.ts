@@ -72,8 +72,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     heatMapSort: any;
     trellisBarChartData: any;
     partnerEmailTemplateCount = 0;
-    heatMapTooltip = 'Last 7 days';
-    videoStatesTooltip = 'Last 7 days';
+    heatMapTooltip = 'current year';
+    videoStatesTooltip = 'current month';
     isOnlyPartner:boolean;
     loading = false;
     logListName = "";
@@ -89,8 +89,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.hasSocialStatusRole = this.referenceService.hasRole(this.referenceService.roles.socialShare);
         this.sortDates = this.dashboardService.sortDates;
         this.sortHeatMapValues = this.sortDates.concat([{ 'name': 'Year', 'value': 'year' }]);
-        this.daySort = this.sortDates[0];
-        this.heatMapSort = this.sortHeatMapValues[0];
+        this.daySort = this.sortDates[3];
+        this.heatMapSort = this.sortHeatMapValues[4];
         this.xtremandLogger.info('dashboard constructor');
         this.utilService.setRouterLocalStorage('dashboard');
         this.isOnlyPartner = this.authenticationService.isOnlyPartner();
