@@ -452,17 +452,17 @@
 						           			<option  [value]="21" [selected]="url.actionId ==21">Schedule</option>
 									</select>
 								</div>
-								<div>
-									<div class="form-group col-xs-12" style="margin-top: 8px;" *ngIf="url.actionId==21">
+								<div *ngIf="url.actionId==21">
+									<div class="form-group col-xs-12" style="margin-top: 8px;" >
 										<label for="days" id="click-days-{{url.divId}}">Wait X Days After Click
 											<b style="color: red">*</b>
 										</label>
 										<input disabled="disabled" type="number" class="form-control" name="days" [(ngModel)]="url.replyInDays" placeholder="Days">
 									</div>
 									<div class="form-group col-xs-12">
-                  <div class="col-xs-2" style="margin-top: 15px;"><label for="time" id="send-time-{{url.divId}}">At<b style="color: red">*</b></label></div>
+                 					 <div class="col-xs-2" style="margin-top: 15px;"><label for="time" id="send-time-{{url.divId}}">At<b style="color: red">*</b></label></div>
 									<div class="col-xs-10" style="margin-top: 10px;"><timepicker disabled="disabled" [(ngModel)]="url.replyTime" name="time"></timepicker></div>
-                  </div>
+                 				 </div>
 								</div>
 								<div class="col-xs-12" >
 									<label for="time" id="click-subject-{{url.divId}}">Subject
