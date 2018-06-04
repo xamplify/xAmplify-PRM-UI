@@ -167,7 +167,7 @@
 						</a>
 					</li>
 					<li *ngIf="authService.module.isOrgAdmin || authService.module.isVendor" [ngClass]="{'active':  baseRoute === 'upgrade'}">
-            <a >
+            <a style="cursor:not-allowed">
               <!-- [routerLink]="['./upgrade']" -->
 						<i class="fa fa-arrow-circle-up"></i>
 						<span class="title">Upgrade</span>
