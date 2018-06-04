@@ -128,8 +128,7 @@ export class AuthenticationService {
         return roleNames;
         } catch(error){
          console.log('error'+error);
-         window.location.reload();
-      //   this.router.navigate(['./login']);
+        this.router.navigate(['./login']);
       }
     }
     showRoles():string{
@@ -199,36 +198,45 @@ export class AuthenticationService {
     }
 
     isPartner(){
+        try{
         const roleNames = this.getRoles();
         if(roleNames.indexOf('ROLE_COMPANY_PARTNER')>-1){
             return true;
         }else{
             return false;
         }
+      }catch(error){ console.log('error'+error);
+    }
     }
     isOrgAdmin(){
+       try{
         const roleNames = this.getRoles();
         if(( (roleNames.indexOf('ROLE_ORG_ADMIN')>-1))){
             return true;
         }else{
             return false;
         }
+      } catch(error){ console.log('error'+error);}
     }
     isOrgAdminPartner(){
+      try{
         const roleNames = this.getRoles();
         if(( (roleNames.indexOf('ROLE_ORG_ADMIN')>-1 || (roleNames.indexOf('ROLE_ALL')>-1)) && roleNames.indexOf('ROLE_COMPANY_PARTNER')>-1)){
             return true;
         }else{
             return false;
         }
+      }catch(error){console.log('error'+error); }
     }
     isVendorPartner(){
+      try{
       const roleNames = this.getRoles();
       if((roleNames.indexOf(this.roleName.vendorRole)>-1) && (roleNames.indexOf('ROLE_COMPANY_PARTNER')>-1)){
         return true;
       }else{
           return false;
       }
+    } catch(error) { console.log('error'+error);}
   }
     logout(): void {
         console.log('logout()');
@@ -256,8 +264,10 @@ export class AuthenticationService {
     }
 
     navigateToDashboardIfUserExists(){
-        if(localStorage.getItem('currentUser')){
+       try{
+       if(localStorage.getItem('currentUser')){
             this.router.navigate(["/home/dashboard/default"]);
         }
+      }catch(err){ console.log('error'+err);}
     }
 }

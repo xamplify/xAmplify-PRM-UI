@@ -70,7 +70,7 @@ export class ReferenceService {
     pageContnetBgColor = "#F1F3FA";
     isPlayVideo = false;
     isDownloadCsvFile: boolean;
-    
+
     public URL: string = this.authenticationService.REST_URL + 'admin/';
     constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,
         private router: Router, public deviceService: Ng2DeviceService,) {
@@ -190,34 +190,42 @@ export class ReferenceService {
         $('#' + divId).hide(600);
     }
     hasRole(roleName: string) {
-        let roles = this.authenticationService.getRoles();
+      try{
+       const roles = this.authenticationService.getRoles();
         if (roles.indexOf(roleName) > -1 || roles.indexOf(this.roles.orgAdminRole) > -1 || roles.indexOf(this.roles.allRole) > -1) {
             return true;
         } else {
             return false;
         }
+      }catch(error){
+        console.log('error'+error);
+      }
     }
 
     hasSelectedRole(roleName: string) {
-        let roles = this.authenticationService.getRoles();
+       try{
+       const roles = this.authenticationService.getRoles();
         if (roles.indexOf(roleName) > -1) {
             return true;
         } else {
             return false;
         }
+      }catch(error){console.log('error'+error);}
     }
 
     hasAllAccess() {
-        let roles = this.authenticationService.getRoles();
+       try{
+       const roles = this.authenticationService.getRoles();
         if (roles.indexOf(this.roles.allRole) > -1 || roles.indexOf(this.roles.orgAdminRole) > -1) {
             return true;
         } else {
             return false;
         }
+      }catch(error){console.log('error'+error);}
     }
 
     returnDuplicates(names: string[]) {
-        var uniq = names
+        const uniq = names
             .map((name) => {
                 return { count: 1, name: name }
             })
@@ -229,7 +237,7 @@ export class ReferenceService {
         return Object.keys(uniq).filter((a) => uniq[a] > 1)
     }
     goToDiv(divId: string) {
-      let div = $("#"+divId);
+      var div = $("#"+divId);
       if(div.length){
           var contentNav = div.offset().top;
           $('html,body').animate({
@@ -237,7 +245,7 @@ export class ReferenceService {
           },
               'slow');
       }
-        
+
     }
 
 
@@ -1475,7 +1483,7 @@ export class ReferenceService {
         httpRequestLoader.isHorizontalCss = false;
         httpRequestLoader.isLoading = false;
     }
-    
+
     previewEmailTemplate(emailTemplate: EmailTemplate,campaign:Campaign) {
          const body = emailTemplate.body;
          let userProfile = this.authenticationService.userProfile;
@@ -1523,12 +1531,12 @@ export class ReferenceService {
      replaceCoBrandingDummyUrl(updatedBody:string,partnerCompanyUrl:string){
          return updatedBody = updatedBody.replace("https://dummycobrandingurl.com",partnerCompanyUrl);
      }
-     
+
      replaceCoBrandingDummyUrlByUserProfile(updatedBody:string){
          return updatedBody = updatedBody.replace("https://dummycobrandingurl.com",this.authenticationService.userProfile.websiteUrl);
      }
-     
-     
+
+
 
 
 }

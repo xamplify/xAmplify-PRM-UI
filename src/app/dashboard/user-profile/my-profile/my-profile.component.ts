@@ -80,7 +80,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             this.roleNames = this.authenticationService.showRoles();
             this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
             this.videoUtilService.videoTempDefaultSettings = this.referenceService.defaultPlayerSettings;
-            this.videoUtilService.videoTempDefaultSettings.playerColor = null;
             console.log(this.videoUtilService.videoTempDefaultSettings);
             this.loggedInUserId = this.authenticationService.getUserId();
             this.hasAllAccess = this.referenceService.hasAllAccess();

@@ -24,6 +24,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         return this.canActivate( route, state );
     }
     checkLogin( url: string ): boolean {
+      try{
         const currentUser = localStorage.getItem( 'currentUser' );
         if ( currentUser ) {
             this.authenticationService.access_token = JSON.parse( currentUser )['accessToken'];
@@ -55,6 +56,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             this.router.navigate( ['/login'] );
             return false;
         }
+      }catch(error){console.log('error'+error); this.router.navigate( ['/login'] ); }
     }
 
     getUserByUserName( userName: string ) {
@@ -70,6 +72,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     }
 
     secureUrlByRole(url:string):boolean{
+        try{
         let roles = this.authenticationService.user.roles.map(function(a) {return a.roleName;});
         if(url.indexOf(this.emailTemplateBaseUrl)>-1){
             return this.authorizeUrl(roles, url, this.emailTemplateBaseUrl);
@@ -95,6 +98,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         if(url.indexOf(this.upgradeBaseUrl)>-1){
             return this.authorizeUrl(roles, url, this.upgradeBaseUrl);
         }
+      }catch(error){ console.log('error'+error);}
     }
 
     authorizeUrl(roles:any,url:string,urlType:string):boolean{
@@ -126,6 +130,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         if(url.indexOf("partners")>-1 || url.indexOf("upgrade")>-1 ){
             url = url+"/";
         }
+        try{
         const isVendor =  roles.indexOf(this.roles.vendorRole)>-1;
         const isPartner = roles.indexOf(this.roles.companyPartnerRole)>-1;
         const orgAdmin =  roles.indexOf(this.roles.orgAdminRole)>-1;
@@ -145,6 +150,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
                 return this.goToAccessDenied();
             }
         }
+      }catch(error){console.log('error'+error); }
     }
 
     checkVendorAccessUrls(url:string,urlType:string):boolean{
