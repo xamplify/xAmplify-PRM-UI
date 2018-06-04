@@ -116,7 +116,7 @@ input:checked + .slider-new:before {
 									<div class="profile-usertitle-job">
 										{{userData.occupation}}
 									</div>
-									
+
 									<div class="profile-usertitle-job">
 										{{roleNames}}
 									</div>
@@ -243,9 +243,7 @@ input:checked + .slider-new:before {
 														</div>
 														<div class="form-group">
 															<label class="control-label">Mobile Number</label>
-															<!-- <input type="text"    placeholder="Mobile Number" class="form-control" formControlName="mobileNumber"    pattern="[0-9]*"
-  																	 minlength="10"  maxlength="10" /> -->
-  													 <fieldset style="padding:0 !important;border: 1px solid #ece2e2; !important">
+  													 <fieldset style="padding:0 !important;border: 1px solid #ece2e2 !important">
 													<int-phone-prefix placeholder="Mobile Number" formControlName="mobileNumber"></int-phone-prefix>
 															</fieldset>
 															<div *ngIf="formErrors.mobileNumber" class="alert alert-danger">{{ formErrors.mobileNumber }}</div>
@@ -479,6 +477,6 @@ input:checked + .slider-new:before {
 			</div>
 			<div class="page-content" *ngIf="hasClientErrors">
 				<h5 style="color: red">Something went wrong.please contact admin</h5>
-			
+
 			</div>
 

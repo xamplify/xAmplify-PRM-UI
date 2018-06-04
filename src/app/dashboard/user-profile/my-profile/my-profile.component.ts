@@ -74,11 +74,13 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
         public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
         public regularExpressions: RegularExpressions,public route:ActivatedRoute) {
-        try{
+          if (this.isEmpty(this.authenticationService.userProfile.roles) || !this.authenticationService.userProfile.profileImagePath) {this.router.navigateByUrl(this.referenceService.homeRouter);}
+          try{
             this.userData = this.authenticationService.userProfile;
             this.roleNames = this.authenticationService.showRoles();
             this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
             this.videoUtilService.videoTempDefaultSettings = this.referenceService.defaultPlayerSettings;
+            this.videoUtilService.videoTempDefaultSettings.playerColor = null;
             console.log(this.videoUtilService.videoTempDefaultSettings);
             this.loggedInUserId = this.authenticationService.getUserId();
             this.hasAllAccess = this.referenceService.hasAllAccess();
@@ -236,7 +238,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.status = false;
                 }
             }
-        } catch (error) {  
+        } catch (error) {
             this.hasClientErrors = true;
             this.logger.showClientErrors("my-profile.component.ts", "ngAfterViewInit()", error);
         }
@@ -258,9 +260,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         }catch(error){
             this.hasClientErrors = true;
             this.logger.showClientErrors("my-profile.component.ts", "ngAfterViewInit()", error);
-        
+
         }
-    
+
     }
 
     updatePassword() {

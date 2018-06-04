@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot, CanActivateChild } from '@angular/router';
 import { AuthenticationService } from './core/services/authentication.service';
 import { Roles } from './core/models/roles';
+import { version } from 'punycode';
 @Injectable()
 export class AuthGuard implements CanActivate, CanActivateChild {
     roles: Roles = new Roles();
@@ -125,11 +126,13 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         if(url.indexOf("partners")>-1 || url.indexOf("upgrade")>-1 ){
             url = url+"/";
         }
-        let isVendor =  roles.indexOf(this.roles.vendorRole)>-1;
-        if(isVendor){
+        const isVendor =  roles.indexOf(this.roles.vendorRole)>-1;
+        const isPartner = roles.indexOf(this.roles.companyPartnerRole)>-1;
+        const orgAdmin =  roles.indexOf(this.roles.orgAdminRole)>-1;
+        if(isVendor && !isPartner){
             return this.checkVendorAccessUrls(url, urlType);
         }
-        else if(roles.indexOf(this.roles.companyPartnerRole)>-1){
+        else if(isPartner && !isVendor && !orgAdmin){
             return this.checkPartnerAccessUrls(url, urlType)
         }
         else{
