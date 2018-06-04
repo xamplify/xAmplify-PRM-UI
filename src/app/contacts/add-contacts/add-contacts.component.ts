@@ -1908,6 +1908,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.hideZohoModal();
         this.contactService.isContactModalPopup = false;
         swal.close();
+        $( '#settingSocialNetwork' ).modal( 'hide' );
 
     }
 }

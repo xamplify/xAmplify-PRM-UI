@@ -7,7 +7,7 @@ declare var $:any;
 @Component({
   selector: 'app-log-unsubscribe',
   templateUrl: './log-unsubscribe.component.html',
-  styleUrls: ['./log-unsubscribe.component.css'],
+  styleUrls: ['./log-unsubscribe.component.css', '../../../assets/css/loader.css'],
   providers:[Processor]
 })
 export class LogUnsubscribeComponent implements OnInit {

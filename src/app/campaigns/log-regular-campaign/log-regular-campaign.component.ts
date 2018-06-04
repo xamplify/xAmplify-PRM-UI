@@ -9,7 +9,7 @@ declare var $: any;
 @Component({
   selector: 'app-log-regular-campaign',
   templateUrl: './log-regular-campaign.component.html',
-  styleUrls: ['./log-regular-campaign.component.css'],
+  styleUrls: ['./log-regular-campaign.component.css', '../../../assets/css/loader.css'],
   providers:[Processor]
 })
 export class LogRegularCampaignComponent implements OnInit {

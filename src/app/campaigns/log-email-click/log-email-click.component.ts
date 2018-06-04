@@ -8,7 +8,7 @@ import { ReferenceService } from '../../core/services/reference.service';
 @Component({
     selector: 'app-log-email-click',
     templateUrl: './log-email-click.component.html',
-    styleUrls: ['./log-email-click.component.css']
+    styleUrls: ['./log-email-click.component.css', '../../../assets/css/loader.css']
 })
 export class LogEmailClickComponent implements OnInit {
     public campaignAlias: string=null;

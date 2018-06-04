@@ -1774,7 +1774,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         this.contactService.isContactModalPopup = false;
         this.updatePartnerUser = false;
         swal.close();
-
+        $( '#settingSocialNetwork' ).modal( 'hide' );
+        
     }
 
 }
