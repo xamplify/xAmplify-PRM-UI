@@ -309,13 +309,10 @@
 								<option [value]="0" [selected]="reply.actionId ==0">Email is not opened</option>
 									<option [value]="13" [selected]="reply.actionId==13">Email is opened</option>
 									<option [value]="16" [selected]="reply.actionId ==16">Send immediately after email is opened</option>
-									<option [value]="22" [selected]="reply.actionId ==22" *ngIf="campaign.channelCampaign">Send if partner email is not used</option>
 									<ng-container *ngIf="campaignType=='VIDEO' ">
 										<option [value]="1" [selected]="reply.actionId==1"> Video is played</option>
 										<option [value]="17" [selected]="reply.actionId==17"> Send immediately after video is played</option>
 										<option  [value]="18" [selected]="reply.actionId==18">Video is not played</option>
-										<option [value]="23" [selected]="reply.actionId ==23" *ngIf="campaign.channelCampaign"> Video is not redistributed</option>
-
 									</ng-container>
 								</select>
 							</div>
