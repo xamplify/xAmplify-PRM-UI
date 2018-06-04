@@ -26,7 +26,8 @@ declare var $, Papa, swal: any;
     selector: 'app-add-partners',
     templateUrl: './add-partners.component.html',
     styleUrls: ['./add-partners.component.css', '../../contacts/add-contacts/add-contacts.component.css', '../../../assets/global/plugins/jquery-file-upload/css/jquery.fileupload.css',
-        '../../../assets/global/plugins/jquery-file-upload/css/jquery.fileupload-ui.css', '../../../assets/css/numbered-textarea.css'],
+        '../../../assets/global/plugins/jquery-file-upload/css/jquery.fileupload-ui.css', '../../../assets/css/numbered-textarea.css',
+         '../../../assets/css/phone-number-plugin.css'],
     providers: [Pagination, SocialPagerService, EditContactsComponent, ManageContactsComponent, CountryNames,
         Properties, RegularExpressions, PaginationComponent, TeamMemberService]
 })
@@ -361,10 +362,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
             this.newUsersEmails.push( this.newPartnerUser[i].emailId );
 
-            if ( this.newPartnerUser[i].mobileNumber.length < 6 ) {
-                this.newPartnerUser[i].mobileNumber = "";
+            if ( this.newPartnerUser[i].mobileNumber ) {
+                if ( this.newPartnerUser[i].mobileNumber.length < 6 ) {
+                    this.newPartnerUser[i].mobileNumber = "";
+                }
             }
-
             if ( this.selectedAddPartnerOption != 3 && this.selectedAddPartnerOption != 6 && this.selectedAddPartnerOption != 7 ) {
                 if ( this.newPartnerUser[i].contactCompany.trim() != '' ) {
                     this.isCompanyDetails = true;

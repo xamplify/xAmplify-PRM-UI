@@ -469,9 +469,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                     this.users[i].country = null;
                 }
 
-                if ( this.users[i].mobileNumber.length < 6 ) {
+                /*if ( this.users[i].mobileNumber.length < 6 ) {
                     this.users[i].mobileNumber = "";
-                }
+                }*/
 
                 this.newUsersEmails.push( this.users[i].emailId );
             }
@@ -878,9 +878,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                 this.users[i].country = null;
             }
 
-            if ( this.users[i].mobileNumber.length < 6 ) {
+            /*if ( this.users[i].mobileNumber.length < 6 ) {
                 this.users[i].mobileNumber = "";
-            }
+            }*/
         }
         this.xtremandLogger.info( "update contacts #contactSelectedListId " + this.contactListId + " data => " + JSON.stringify( this.users ) );
         if ( this.users.length != 0 ) {
@@ -895,9 +895,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                     if ( this.users[i].country === "Select Country" ) {
                         this.users[i].country = null;
                     }
-                    if ( this.users[i].mobileNumber.length < 6 ) {
+                    /*if ( this.users[i].mobileNumber.length < 6 ) {
                         this.users[i].mobileNumber = "";
-                    }
+                    }*/
                 }
 
                 for ( let i = 0; i < this.orgAdminsList.length; i++ ) {
