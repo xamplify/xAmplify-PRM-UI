@@ -432,6 +432,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                                 } else {
                                     this.xtremandLogger.errorPage( error );
                                 }
+                                this.loading = false;
                                 console.log( error );
                             },
                             () => this.xtremandLogger.info( "MangePartnerComponent loadPartners() finished" )
@@ -1743,16 +1744,19 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
     sendMail( partnerId: number ) {
         try {
+            this.loading = true;
             this.contactService.mailSend( partnerId )
                 .subscribe(
                 data => {
                     console.log( data );
+                    this.loading = false;
                     if ( data.message == "success" ) {
                         this.customResponse = new CustomResponse( 'SUCCESS', this.properties.EMAIL_SENT_SUCCESS, true );
                     }
                 },
                 ( error: any ) => {
                     this.xtremandLogger.error( error );
+                    this.loading = false;
                 },
                 () => this.xtremandLogger.log( "Manage Partner component Mail send method successfull" )
                 );
