@@ -673,7 +673,7 @@
                         <div>
                             <div class="btn-group btn-group-justified">
                                 <ng-container *ngFor="let launchOption of campaignLaunchOptions">
-                                    <label class="btn btn-success" style="border: 1px solid #fff;">
+                                    <label class="btn btn-primary" style="border: 1px solid #fff;">
                                         <input type="radio" class="text-center" name="scheduleCampaign" [value]="launchOption" formControlName="scheduleCampaign" ngDefaultControl style=" margin-right:1.5em; " />
                                         {{launchOption}}
                                     </label>
@@ -714,8 +714,8 @@
 
                         <div class="portlet-title border-none">
                             <div class="col-xs-12 center-block pt20 text-center">
-                                <button type="submit" class="btn green" [disabled]="!campaignLaunchForm.valid || !isCampaignDetailsFormValid">{{buttonName}}</button>
-                            	<button type="button" class="btn green" (click)="campaignService.addEmailId(campaign,selectedEmailTemplateId,true)">Send Test Email</button>
+                                 <button type="button" class="btn green" (click)="campaignService.addEmailId(campaign,selectedEmailTemplateId,true)">Send Test Email</button>
+                                <button type="submit" class="btn green" [disabled]="!campaignLaunchForm.valid || !isCampaignDetailsFormValid" style="width: 180px;">{{buttonName}}</button>
                             </div>
                         </div>
                     </fieldset>
