@@ -24,29 +24,37 @@ export class HomeComponent implements OnInit {
 	}
 
 	isAuthorized(): boolean {
+    try{
 		if (!localStorage.getItem('currentUser')) {
 			$('.page-container,.page-header.navbar.navbar-fixed-top').html('');
 			this.router.navigateByUrl('/login');
 			return false;
-		}
+    }
+    }catch(error){this.xtremandLogger.error(error);}
 	}
 	getCategorisService() {
-		this.referenceService.getCategories()
+   try{
+    this.referenceService.getCategories()
 			.subscribe((result: any) => {
 				this.refcategories = result;
 				this.referenceService.refcategories = this.refcategories;
-			},
-				() => console.log('categoriss  are in the manage vidoes :' + this.refcategories)
-			);
+      },
+      (error:any)=>{this.xtremandLogger.error('error'+error);},
+			() => console.log('categoriss  are in the manage vidoes :' + this.refcategories)
+      );
+    }catch(error){ this.xtremandLogger.error('error'+error);}
 	}
 	getVideoTitles() {
-		this.referenceService.getVideoTitles()
+    try{
+    this.referenceService.getVideoTitles()
 			.subscribe((result: any) => {
 				this.referenceService.videoTitles = result.titles;
-			});
+      });
+    }catch(error){ this.xtremandLogger.error('error'+error);}
 	}
 	getVideoDefaultSettings() {
-		this.userService.getVideoDefaultSettings().subscribe(
+    try{
+    this.userService.getVideoDefaultSettings().subscribe(
 			(result: any) => {
 				if (result !== "") {
 					const response = result;
@@ -63,25 +71,29 @@ export class HomeComponent implements OnInit {
       },
       (error:any)=>{ this.xtremandLogger.errorPage(error); }
      );
+    }catch(error){ this.xtremandLogger.error('error'+error);}
 	}
 	saveVideoBrandLog(companyLogoPath,logoLink) {
-        this.userService.saveBrandLogo(companyLogoPath, logoLink, this.authenticationService.user.id)
+    try{
+    this.userService.saveBrandLogo(companyLogoPath, logoLink, this.authenticationService.user.id)
 		.subscribe(
 			(data: any) => {
 				console.log(data);
 				if (data !== undefined) { console.log('logo updated successfully');
 				} else { }
 			},
-			(error) => { });
+      (error) => { this.xtremandLogger.error('error'+error);});
+    }catch(error){ this.xtremandLogger.error('error'+error);}
     }
 	ngOnInit() {
+    try{
 		const roleNames = this.authenticationService.getRoles();
 		if (this.referenceService.defaulgVideoMethodCalled === false &&
 			 (roleNames.length > 1 && this.authenticationService.hasCompany())) {
 			this.getVideoDefaultSettings();
 			this.referenceService.defaulgVideoMethodCalled = true;
 		}
-
+  } catch(error){ this.xtremandLogger.error('error'+error);}
 	}
 
 }
