@@ -154,7 +154,7 @@ tr:hover {
 }
 
 .custom-anchor {
-	
+
 }
 
 .fa-line-chart {
@@ -350,3 +350,6 @@ tr>td>h6 {
 	filter: blur(1px);
 	cursor: default;
 }
+.forbidden{
+  cursor: not-allowed;
+  }

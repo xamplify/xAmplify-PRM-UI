@@ -18,7 +18,8 @@ export class VerifyEmailComponent implements OnInit {
         public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, public properties: Properties) { }
 
     activateAccount() {
-        this.userService.activateAccount(this.alias)
+      try{
+      this.userService.activateAccount(this.alias)
             .subscribe(
                 (result: any) => {
                     this.processor.remove(this.processor);
@@ -31,15 +32,15 @@ export class VerifyEmailComponent implements OnInit {
                 this.processor.remove(this.processor);
                 this.xtremandLogger.error('error'+error);
               });
+         }catch(error){this.xtremandLogger.error('error in verifyemail'+error);}
     }
 
     ngOnInit() {
-      this.processor.set(this.processor)
-        this.activatedRoute.queryParams.subscribe(
-            (param: any) => {
-                this.alias = param['alias'];
-            });
+        try{
+        this.processor.set(this.processor)
+        this.activatedRoute.queryParams.subscribe( (param: any) => { this.alias = param['alias']; });
         this.activateAccount();
+        }catch(error){this.xtremandLogger.error('error in verifyemail'+error);}
     }
 
 }
