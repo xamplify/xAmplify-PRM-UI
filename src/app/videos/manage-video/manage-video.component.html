@@ -213,8 +213,8 @@
                      </div>
                    </div>
                  </div> -->
-                 <div class="col-xs-12 col-sm-3" *ngFor="let videoFile of pagination.pagedItems ;let i =index" >
-                 <div class="grid-box" *ngIf="pagination.pagedItems && !httpRequestLoader.isLoading && !referenceService.isPlayVideo">
+                 <div class="col-xs-6 col-sm-3" *ngFor="let videoFile of pagination.pagedItems ;let i =index" >
+                 <div class="grid-box p0" *ngIf="pagination.pagedItems && !httpRequestLoader.isLoading && !referenceService.isPlayVideo">
                    <div class="video-thumbnail-wrapper">
                        <img class="video-thumbnail" src="{{videoFile.imagePath}}" width="auto">
                        <i class="fa fa-play-circle" (click)="showPlayVideo(videoFile)"></i>
