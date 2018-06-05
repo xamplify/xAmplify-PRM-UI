@@ -269,13 +269,13 @@
 														[routerLink]="['/home/campaigns/',campaign.campaignId, 'details']" title="Campaign Based Reports">
 														<i class="fa fa-line-chart"></i>
 													</a>
-													<a *ngIf="(campaign.campaignType !== 'SOCIAL') && ( hasAllAccess || (hasStatsRole || hasCampaignRole || authenticationService.module.isVendor )) && !campaign.nurtureCampaign"
-														data-rel="fancybox-button" (click)="openSaveAsModal(campaign.campaignId, campaign.campaignName)" title="Save As">
+													<a *ngIf=" (campaign.campaignType !== 'SOCIAL') && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor) && !campaign.nurtureCampaign"
+													 data-rel="fancybox-button" title="Save As" class='mr5' (click)="openSaveAsModal(campaign.campaignId, campaign.campaignName)">
 														<i class="fa fa-files-o"></i>
 													</a>
-													<a *ngIf=" isOnlyPartner" data-rel="fancybox-button" (click)="openSaveAsModal(campaign.campaignId, campaign.campaignName)" title="Save As">
+													<!-- <a *ngIf="isOnlyPartner" data-rel="fancybox-button" (click)="openSaveAsModal(campaign.campaignId, campaign.campaignName)" title="Save As">
 														<i class="fa fa-files-o"></i>
-													</a>
+													</a> -->
 												</ng-container>
 													<a *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor"
 														(click)="confirmDeleteCampaign(campaign.campaignId, i, campaign.campaignName)" title="Delete Campaign">
