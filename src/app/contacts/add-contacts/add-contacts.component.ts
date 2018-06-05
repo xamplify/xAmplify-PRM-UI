@@ -1794,35 +1794,35 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     socialContactImage() {
-        try{
-        this.contactService.socialContactImages()
-            .subscribe(
-            data => {
-                this.storeLogin = data;
-                if ( this.storeLogin.GOOGLE == true ) {
-                    this.googleImageNormal = true;
-                } else {
-                    this.googleImageBlur = true;
-                }
-                if ( this.storeLogin.SALESFORCE == true ) {
-                    this.sfImageNormal = true;
-                } else {
-                    this.sfImageBlur = true;
-                }
-                if ( this.storeLogin.ZOHO == true ) {
-                    this.zohoImageNormal = true;
-                } else {
-                    this.zohoImageBlur = true;
-                }
-            },
-            ( error: any ) => {
-                this.xtremandLogger.error( error );
-                this.xtremandLogger.errorPage( error );
-            },
-            () => this.xtremandLogger.log( "AddContactsComponent socialContactImage() finished." )
-            );
+        try {
+            this.contactService.socialContactImages()
+                .subscribe(
+                data => {
+                    this.storeLogin = data;
+                    if ( this.storeLogin.GOOGLE == true ) {
+                        this.googleImageNormal = true;
+                    } else {
+                        this.googleImageBlur = true;
+                    }
+                    if ( this.storeLogin.SALESFORCE == true ) {
+                        this.sfImageNormal = true;
+                    } else {
+                        this.sfImageBlur = true;
+                    }
+                    if ( this.storeLogin.ZOHO == true ) {
+                        this.zohoImageNormal = true;
+                    } else {
+                        this.zohoImageBlur = true;
+                    }
+                },
+                ( error: any ) => {
+                    this.xtremandLogger.error( error );
+                    this.xtremandLogger.errorPage( error );
+                },
+                () => this.xtremandLogger.log( "AddContactsComponent socialContactImage() finished." )
+                );
         } catch ( error ) {
-            this.xtremandLogger.error( error, "AddContactsComponent SocialContactsImages()." )
+            this.xtremandLogger.error( error, "addContactComponent", "social Partners images" );
         }
     }
 
