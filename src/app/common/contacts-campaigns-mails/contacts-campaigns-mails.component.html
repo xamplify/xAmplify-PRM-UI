@@ -43,6 +43,7 @@
 					</tbody>
 				</table>
 			</div>
+			<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 			<div class="modal-footer">
 				<button [disabled]="selectedCampaignIds.length == 0" type="button"
 					class="btn green" (click)="sendEmailToNewlyAddedUsers()">Send</button>

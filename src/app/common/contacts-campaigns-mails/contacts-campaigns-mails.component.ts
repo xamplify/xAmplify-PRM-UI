@@ -17,6 +17,7 @@ export class ContactsCampaignsMailsComponent implements OnInit {
     contactsByType: ContactsByType = new ContactsByType();
     selectedCampaignIds = [];
     checkengListType = "";
+    loading = false;
 
     constructor( public contactService: ContactService ) {
         this.notifyParent = new EventEmitter();
@@ -37,6 +38,7 @@ export class ContactsCampaignsMailsComponent implements OnInit {
     }
 
     sendEmailToNewlyAddedUsers() {
+        this.loading = true;
         let campaignDetails = {
             "campaignIds": this.selectedCampaignIds,
             "emailIds": this.userEmails
@@ -52,6 +54,7 @@ export class ContactsCampaignsMailsComponent implements OnInit {
                 this.selectedCampaignIds.length = 0;
                 this.userEmails.length = 0;
                 this.notifyParent.emit( "Emails Send Successfully" );
+                this.loading = false;
             },
             error => console.log( error ),
             () => {
