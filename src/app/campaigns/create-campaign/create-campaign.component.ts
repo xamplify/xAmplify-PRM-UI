@@ -1649,30 +1649,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             }
         }
     }
-    /****************Sending Test Email*************************/
-    addEmailId() {
-        var self = this;
-        swal( {
-            title: 'Please Enter Email Id',
-            input: 'email',
-            showCancelButton: true,
-            confirmButtonText: 'Submit',
-            showLoaderOnConfirm: true,
-            preConfirm: function( email: string ) {
-                return new Promise( function( resolve, reject ) {
-                    setTimeout( function() {
-                        resolve();
-                    }, 2000 )
-                } )
-            },
-            allowOutsideClick: false,
-
-        }).then( function( email: string ) {
-            self.sendTestEmail( email );
-        }, function( dismiss: any ) {
-            console.log( 'you clicked on option' + dismiss );
-        });
-       }
+    
     getCampaignData( emailId: string ) {
         if ( this.campaignType === "regular" ) {
             this.campaign.regularEmail = true;
@@ -1929,23 +1906,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
        }
 
   }
-    sendTestEmail(emailId:string){
-        let self = this;
-        var data = this.getCampaignData(emailId);
-        this.campaignService.sendTestEmail(data)
-        .subscribe(
-        data => {
-           if(data.statusCode===2017){
-               swal("Mail Sent Successfully", "", "success");
-            }
-        },
-        error => {
-            this.logger.error("error in sendTestEmail()", error);
-            swal("Unable to send email", "", "error");
-        },
-        () => this.logger.info("Finished sendTestEmail()")
-    );
-    }
+
 
     addUserEmailIds(){
         let self = this;

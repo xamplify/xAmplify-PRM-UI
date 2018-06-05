@@ -19,7 +19,7 @@ export class Campaign {
     videoPlayed = false;
     socialSharingIcons: boolean;
     replyVideo = false;
-    selectedEmailTemplateId: number;
+    selectedEmailTemplateId: number=0;
     optionForSendingMials: string;
     launchTime: Date;
     endTime: Date;

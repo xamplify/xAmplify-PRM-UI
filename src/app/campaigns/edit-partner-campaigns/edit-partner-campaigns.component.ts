@@ -514,7 +514,6 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
             'nurtureCampaign':true,
             'detailedAnalyticsShared':this.campaign.detailedAnalyticsShared
         };
-        console.log(data);
         return data;
     }
 

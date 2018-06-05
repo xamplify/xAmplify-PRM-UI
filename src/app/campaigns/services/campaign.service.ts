@@ -8,16 +8,17 @@ import 'rxjs/add/observable/throw';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { Campaign } from '../models/campaign';
 import {Pagination} from '../../core/models/pagination';
-
+import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
+declare var swal, $, videojs , Metronic, Layout , Demo,TableManaged ,Promise,jQuery:any;
 @Injectable()
 export class CampaignService {
 
     campaign: Campaign;
     reDistributeCampaign:Campaign;
-
+    componentName:string = "campaign.service.ts";
     URL = this.authenticationService.REST_URL;
 
-    constructor(private http: Http, private authenticationService: AuthenticationService) { }
+    constructor(private http: Http, private authenticationService: AuthenticationService,private logger:XtremandLogger) { }
 
     saveCampaignDetails(data: any) {
         return this.http.post(this.URL + "admin/saveCampaignDetails?access_token=" + this.authenticationService.access_token, data)
@@ -292,4 +293,70 @@ export class CampaignService {
         let minutes = dt.getMinutes() > 9 ? dt.getMinutes() : '0' + dt.getMinutes();
         return hours+":"+minutes;
     }
+    
+    
+    
+    addEmailId(campaign:Campaign,selectedEmailTemplateId:number,nurtureCampaign:boolean) {
+       try{
+           var self = this;
+           swal( {
+               title: 'Please Enter Email Id',
+               input: 'email',
+               showCancelButton: true,
+               confirmButtonText: 'Submit',
+               showLoaderOnConfirm: true,
+               preConfirm: function( email: string ) {
+                   return new Promise( function( resolve, reject ) {
+                       setTimeout( function() {
+                           resolve();
+                       }, 2000 )
+                   } )
+               },
+               allowOutsideClick: false,
+
+           }).then( function( email: string) {
+               self.setData( email,campaign,selectedEmailTemplateId,nurtureCampaign);
+           }, function( dismiss: any ) {
+               console.log( 'you clicked on option' + dismiss );
+           });
+       }catch(error){
+           this.logger.showClientErrors(this.componentName, "addEmailId(campaign:"+campaign+",selectedEmailTemplateId:"+selectedEmailTemplateId+")", error);
+       }
+    
+       }
+    
+    
+    setData(emailId:string,campaign:Campaign,selectedEmailTemplateId:number,nutrureCampaign:boolean){
+        try{
+            let data: Object = {};
+            data['campaignName'] = campaign.campaignName;
+            data['fromName'] = campaign.fromName;
+            data['email'] = campaign.email;
+            data['subjectLine'] = campaign.subjectLine;
+            data['nurtureCampaign'] = nutrureCampaign;
+            data['preHeader'] = campaign.preHeader;
+            data['selectedEmailTemplateId'] = selectedEmailTemplateId;
+            data['testEmailId'] = emailId;
+            data['userId'] = campaign.userId;
+            data['selectedVideoId'] = campaign.selectedVideoId;
+            this.sendTestEmail(data)
+            .subscribe(
+            data => {
+               if(data.statusCode===2017){
+                   swal("Mail Sent Successfully", "", "success");
+                }
+            },
+            error => {
+                this.logger.error("error in setData()", error);
+                swal("Unable to send email", "", "error");
+            },
+            () => this.logger.info("Finished setData()")
+        );
+        }catch(error){
+            this.logger.showClientErrors(this.componentName, "addEmailId(emailId:"+emailId+":campaign:"+campaign+",selectedEmailTemplateId:"+selectedEmailTemplateId+")", error);
+        }
+   
+    }
+    
+    
 }
