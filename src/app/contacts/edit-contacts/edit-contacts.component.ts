@@ -1776,8 +1776,12 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
     updateContactListUser( event ) {
         this.editUser.pagination = this.pagination;
+        if ( event.mobileNumber ) {
+            if ( event.mobileNumber.length < 6 ) {
+                event.mobileNumber = "";
+            }
+        }
         this.editUser.user = event;
-        //  $( "#addContactModal .close" ).click()
         this.addContactModalClose();
         this.contactService.updateContactListUser( this.selectedContactListId, this.editUser )
             .subscribe(

@@ -804,6 +804,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     updatePartnerListUser( event ) {
         try {
             this.editUser.pagination = this.pagination;
+            if ( event.mobileNumber ) {
+                if ( event.mobileNumber.length < 6 ) {
+                    event.mobileNumber = "";
+                }
+            }
             this.editUser.user = event;
             // $( "#addPartnerModal .close" ).click()
             this.addPartnerModalClose();
