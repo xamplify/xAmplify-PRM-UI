@@ -1471,6 +1471,15 @@ export class ReferenceService {
         return filteredTimeZones;
 
       }
+    
+    getTimeZoneByTimeZonId(timeZoneId:string){
+        var filteredTimeZones = this.getTimeZones().filter(function (timezone) {
+            return timezone.timezoneId === timeZoneId;
+        });
+        return filteredTimeZones;
+
+    }
+    
 
     startLoader(httpRequestLoader:HttpRequestLoader){
         this.pageContnetBgColor = "#fff"

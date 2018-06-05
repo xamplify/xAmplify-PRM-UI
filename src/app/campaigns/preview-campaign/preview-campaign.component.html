@@ -578,7 +578,7 @@
                                     <label style="float: left;">TimeZone </label>
                                     <br>
                                     <select class="form-control" style="width: 100%"  id="timezoneId" disabled="disabled">
-                                    	<option *ngFor="let timeZone of timezones" [value]="timeZone.timezoneId" [selected]="campaign.countryId==timeZone.countryId">
+                                    	<option *ngFor="let timeZone of timezones">
 												{{timeZone.cityName}}
 										</option>
                                     </select>

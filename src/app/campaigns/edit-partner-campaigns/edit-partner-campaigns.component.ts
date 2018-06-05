@@ -468,9 +468,9 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
         let country = $.trim($('#countryName option:selected').text());
         let timeZoneId = "";
         let scheduleTime:any;
-        if( this.campaignLaunchForm.value.scheduleCampaign==="NOW"){
+        if( this.campaignLaunchForm.value.scheduleCampaign==="NOW" || this.campaignLaunchForm.value.scheduleCampaign==="SAVE"){
             timeZoneId = Intl.DateTimeFormat().resolvedOptions().timeZone;
-            scheduleTime = this.setLaunchTime();
+            scheduleTime = this.campaignService.setLaunchTime();
         }else{
          //   timeZoneId = this.campaignLaunchForm.value.timeZoneId;
             timeZoneId = $('#timezoneId option:selected').val();
@@ -601,7 +601,6 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     getOnClickData(){
         for(var i=0;i<this.urls.length;i++){
             let url = this.urls[i];
-            url.replyTimeInHoursAndMinutes = this.extractTimeFromDate(url.replyTime);
             $('#'+url.divId).removeClass('portlet light dashboard-stat2 border-error');
             this.removeStyleAttrByDivId('click-days-'+url.divId);
             this.removeStyleAttrByDivId('click-send-time-'+url.divId);
@@ -609,17 +608,15 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
             this.removeStyleAttrByDivId('click-email-template-'+url.divId);
             this.removeStyleAttrByDivId('click-subject-'+url.divId);
             $('#'+url.divId).addClass('portlet light dashboard-stat2');
-            console.log(url.scheduled);
-            if(url.actionId===21){
+            if(url.actionId==21){
                 url.scheduled = true;
-                console.log("1632");
+                url.replyTimeInHoursAndMinutes = this.extractTimeFromDate(url.replyTime);
                 this.validateOnClickReplyTime(url);
                 this.validateOnClickSubject(url);
                 this.validateOnClickReplyInDays(url);
                 this.validateEmailTemplateForAddOnClick(url);
             }else{
                 url.scheduled = false;
-                console.log("1637");
                 this.validateOnClickSubject(url);
                 this.validateEmailTemplateForAddOnClick(url);
             }
@@ -745,8 +742,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
                     reply.selectedEmailTemplateIdForEdit = reply.selectedEmailTemplateId;
                 }
                 reply.emailTemplatesPagination = new Pagination();
-                reply.replyTime = new Date(reply.replyTime);
-                reply.replyTimeInHoursAndMinutes = this.extractTimeFromDate(reply.replyTime);
+                reply.replyTime = this.campaignService.setHoursAndMinutesToAutoReponseReplyTimes(reply.replyTimeInHoursAndMinutes);
                 if($.trim(reply.subject).length==0){
                     reply.subject = campaign.subjectLine;
                 }
@@ -777,8 +773,9 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
                     url.selectedEmailTemplateIdForEdit = url.selectedEmailTemplateId;
                 }
                 url.emailTemplatesPagination = new Pagination();
-                url.replyTime = new Date(url.replyTime);
-                url.replyTimeInHoursAndMinutes = this.extractTimeFromDate(url.replyTime);
+                if(url.scheduled){
+                    url.replyTime = this.campaignService.setHoursAndMinutesToAutoReponseReplyTimes(url.replyTimeInHoursAndMinutes);
+                }
                 let length = this.allItems.length;
                 length = length+1;
                 var id = 'click-'+length;

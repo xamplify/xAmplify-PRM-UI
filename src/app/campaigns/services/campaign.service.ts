@@ -264,4 +264,32 @@ export class CampaignService {
     private handleError(error: any) {
         return Observable.throw(error);
     }
+    
+    /*********Common Methods***********/
+    setLaunchTime(){
+        let date    = new Date();
+        let year      = date.getFullYear();
+        let currentMonth = date.getMonth()+1;
+        let month   = currentMonth < 10 ? '0' + currentMonth : currentMonth;
+        let day     = date.getDate()  < 10 ? '0' + date.getDate()  : date.getDate();
+        let hours = date.getHours() > 9 ? date.getHours() : '0' + date.getHours();
+        let minutes = date.getMinutes() > 9 ? date.getMinutes() : '0' + date.getMinutes();
+        return month+"/"+day+"/"+year+" "+hours+":"+minutes;
+
+    }
+    setHoursAndMinutesToAutoReponseReplyTimes(timeAndHoursString:string){
+        let date = new Date();
+        let hoursString = timeAndHoursString.split(":")[0];
+        let minutesString = timeAndHoursString.split(":")[1];
+        date.setHours(parseInt(hoursString));
+        date.setMinutes(parseInt(minutesString));
+        return date;
+    }
+    
+    extractTimeFromDate(replyTime){
+        let dt = replyTime;
+        let hours = dt.getHours() > 9 ? dt.getHours() : '0' + dt.getHours();
+        let minutes = dt.getMinutes() > 9 ? dt.getMinutes() : '0' + dt.getMinutes();
+        return hours+":"+minutes;
+    }
 }

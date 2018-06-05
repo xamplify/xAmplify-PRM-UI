@@ -157,7 +157,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
             this.onSelect(this.campaign.countryId);
         }else{
             let countryNames = this.referenceService.getCountries().map(function(a) {return a.name;});
-            let countryIndex = countryNames.indexOf(this.campaign.country)
+            let countryIndex = countryNames.indexOf(this.campaign.country);
             if(countryIndex>-1){
                 this.campaign.countryId = this.countries[countryIndex].id;
                 this.onSelect(this.campaign.countryId);
@@ -175,6 +175,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
 
     onSelect(countryId) {
         this.timezones  = this.referenceService.getTimeZonesByCountryId(countryId);
+        this.timezones = this.referenceService.getTimeZoneByTimeZonId(this.campaign.timeZoneId);
     }
 
     getCampaignPartnerByCampaignIdAndUserId(campaignId: number, userId: number) {
@@ -228,8 +229,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
                     reply.selectedEmailTemplateIdForEdit = reply.selectedEmailTemplateId;
                 }
                 reply.emailTemplatesPagination = new Pagination();
-                reply.replyTime = new Date(reply.replyTime);
-                reply.replyTimeInHoursAndMinutes = this.extractTimeFromDate(reply.replyTime);
+                reply.replyTime = this.campaignService.setHoursAndMinutesToAutoReponseReplyTimes(reply.replyTimeInHoursAndMinutes);
                 if($.trim(reply.subject).length==0){
                     reply.subject = campaign.subjectLine;
                 }
@@ -256,8 +256,9 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
                     url.selectedEmailTemplateIdForEdit = url.selectedEmailTemplateId;
                 }
                 url.emailTemplatesPagination = new Pagination();
-                url.replyTime = new Date(url.replyTime);
-                url.replyTimeInHoursAndMinutes = this.extractTimeFromDate(url.replyTime);
+                if(url.scheduled){
+                    url.replyTime = this.campaignService.setHoursAndMinutesToAutoReponseReplyTimes(url.replyTimeInHoursAndMinutes);
+                }
                 let length = this.allItems.length;
                 length = length+1;
                 var id = 'click-'+length;
