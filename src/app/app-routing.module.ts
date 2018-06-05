@@ -40,6 +40,7 @@ export const routes: Routes = [
     { path: 'forgot-password', component: ForgotPasswordComponent },
     { path: 'register/verifyemail/user', component: VerifyEmailComponent },
     { path: '', component: IntroComponent},
+    { path: 'home', redirectTo:'', pathMatch: 'full'},
     {
         path: 'home', component: HomeComponent, canActivate: [AuthGuard],
         children: [
