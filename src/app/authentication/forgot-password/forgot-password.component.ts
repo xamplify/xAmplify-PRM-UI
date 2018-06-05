@@ -44,6 +44,7 @@ export class ForgotPasswordComponent implements OnInit {
     }
 
     sendPassword() {
+        try{
         this.loading =  true;
         this.userService.sendPassword(this.forgotPasswordForm.value.forgotPasswordEmailId)
             .subscribe(
@@ -72,6 +73,7 @@ export class ForgotPasswordComponent implements OnInit {
                 () => this.xtremandLogger.log("Done")
             );
         return false;
+      }catch(error){ this.xtremandLogger.error(error);}
     }
 
     validateForgotPasswordForm() {
@@ -81,12 +83,13 @@ export class ForgotPasswordComponent implements OnInit {
     }
 
     ngOnInit() {
-        $('.forget-form').show();
+      try{
+       $('.forget-form').show();
        // this.forgotPasswordForm.reset();
        this.mainLoader = true;
        this.authenticationService.navigateToDashboardIfUserExists();
        setTimeout(()=>{  this.mainLoader = false;},1000);
-       //  setTimeout(()=>{ this.mainLoader = false; this.authenticationService.navigateToDashboardIfUserExists();},300);
+      }catch(error){ this.xtremandLogger.error('error'+error);}
     }
 
 }

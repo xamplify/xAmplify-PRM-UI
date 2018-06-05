@@ -42,6 +42,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
 
     public login() {
+        try{
         this.loading = true;
         this.resendActiveMail = false;
         if (!this.model.username || !this.model.password) {
@@ -90,6 +91,7 @@ export class LoginComponent implements OnInit, OnDestroy {
               });
           return false;
         }
+      }catch(error){ console.log('error'+error);}
     }
 
     redirectTo(user: User) {
@@ -107,6 +109,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.xtremandLogger.error(responseMessage);
     }
     resendActivation(){
+      try{
       this.userService.resendActivationMail(this.model.username).subscribe(result=>{
         if(result ==='resend Activation email success'){
           this.resendActiveMail = false;
@@ -117,13 +120,14 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.xtremandLogger.error(error);
        }
       )
+    } catch(error){ console.log('error'+error);}
     }
     ngOnInit() {
-      // localStorage.removeItem('currentUser');
+     try{
      this.mainLoader = true;
      this.authenticationService.navigateToDashboardIfUserExists();
      setTimeout(()=>{  this.mainLoader = false;},1000);
-     //setTimeout(()=>{ this.mainLoader = false; this.authenticationService.navigateToDashboardIfUserExists();},300);
+     }catch(error){this.xtremandLogger.error('error'+error)}
     }
     ngOnDestroy() {
         this.referenceService.userProviderMessage = '';

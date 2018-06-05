@@ -94,7 +94,7 @@ export class SignupComponent implements OnInit, OnDestroy {
       if(this.router.url.includes('/v-signup')) {  this.router.navigate(['/']); } else {  this.router.navigate(['/login']) }
     }
     signUp() {
-        //this.isLoading = true;
+        try{
         this.signUpUser = this.signUpForm.value;
         this.signUpUser.emailId = this.signUpUser.emailId.toLowerCase();
         this.loading = true;
@@ -129,9 +129,8 @@ export class SignupComponent implements OnInit, OnDestroy {
                 },
                 () => this.xtremandLogger.log("Done")
             );
+          }catch(error){ this.xtremandLogger.error('error'+error);}
     }
-
-
 
     buildForm() {
         this.signUpForm = this.formBuilder.group({
@@ -178,11 +177,12 @@ export class SignupComponent implements OnInit, OnDestroy {
       this.invalidVendor = false;
     }
     ngOnInit() {
+        try{
         $("[rel='tooltip']").tooltip();
         this.mainLoader = true;
         this.authenticationService.navigateToDashboardIfUserExists();
         setTimeout(()=>{  this.mainLoader = false;},1000);
-       // setTimeout(()=>{ this.authenticationService.navigateToDashboardIfUserExists();this.mainLoader = false;},300);
+        }catch(error){this.xtremandLogger.error('error'+error); }
     }
     ngOnDestroy(){
       this.invalidVendor = false;
