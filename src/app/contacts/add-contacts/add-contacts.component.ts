@@ -607,9 +607,9 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.clipboardUsers[i].country = null;
                 }
 
-               /* if ( this.clipboardUsers[i].mobileNumber.length < 6 ) {
-                    this.clipboardUsers[i].mobileNumber = "";
-                }*/
+                /* if ( this.clipboardUsers[i].mobileNumber.length < 6 ) {
+                     this.clipboardUsers[i].mobileNumber = "";
+                 }*/
             }
             this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
             this.contactListObject = new ContactList;
@@ -639,7 +639,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                     )
             }
         } catch ( error ) {
-            this.xtremandLogger.error( error,"addcontactComponent saveClipboardContact()" )
+            this.xtremandLogger.error( error, "addcontactComponent saveClipboardContact()" )
         }
     }
 
@@ -1419,47 +1419,47 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     saveZohoContactSelectedUsers() {
-       try{
-        this.xtremandLogger.info( "SelectedUserIDs:" + this.allselectedUsers );
-        this.allselectedUsers = this.validateSocialContacts( this.allselectedUsers );
-        this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
-        if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' && this.allselectedUsers.length != 0 ) {
-            this.xtremandLogger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( this.allselectedUsers ) );
+        try {
+            this.xtremandLogger.info( "SelectedUserIDs:" + this.allselectedUsers );
+            this.allselectedUsers = this.validateSocialContacts( this.allselectedUsers );
+            this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
+            if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' && this.allselectedUsers.length != 0 ) {
+                this.xtremandLogger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( this.allselectedUsers ) );
 
-            this.loading = true;
-            this.contactListObject = new ContactList;
-            this.contactListObject.name = this.model.contactListName;
-            this.contactListObject.isPartnerUserList = this.isPartner;
-            this.contactService.saveContactList( this.allselectedUsers, this.model.contactListName, this.isPartner )
-                .subscribe(
-                data => {
-                    data = data;
-                    this.loading = false;
-                    this.xtremandLogger.info( "update Contacts ListUsers:" + data );
-                    $( "#uploadContactsMessage" ).show();
-                    if ( this.isPartner == false ) {
-                        this.router.navigateByUrl( '/home/contacts/manage' )
-                    } else {
-                        this.router.navigateByUrl( 'home/partners/manage' )
-                    }
-                    this.contactService.successMessage = true;
-                },
+                this.loading = true;
+                this.contactListObject = new ContactList;
+                this.contactListObject.name = this.model.contactListName;
+                this.contactListObject.isPartnerUserList = this.isPartner;
+                this.contactService.saveContactList( this.allselectedUsers, this.model.contactListName, this.isPartner )
+                    .subscribe(
+                    data => {
+                        data = data;
+                        this.loading = false;
+                        this.xtremandLogger.info( "update Contacts ListUsers:" + data );
+                        $( "#uploadContactsMessage" ).show();
+                        if ( this.isPartner == false ) {
+                            this.router.navigateByUrl( '/home/contacts/manage' )
+                        } else {
+                            this.router.navigateByUrl( 'home/partners/manage' )
+                        }
+                        this.contactService.successMessage = true;
+                    },
 
-                ( error: any ) => {
-                    this.loading = false;
-                    this.xtremandLogger.error( error );
-                    this.xtremandLogger.errorPage( error );
-                },
-                () => this.xtremandLogger.info( "addcontactComponent saveZohoContactUsers() finished" )
-                )
+                    ( error: any ) => {
+                        this.loading = false;
+                        this.xtremandLogger.error( error );
+                        this.xtremandLogger.errorPage( error );
+                    },
+                    () => this.xtremandLogger.info( "addcontactComponent saveZohoContactUsers() finished" )
+                    )
+            }
+            else {
+                this.contactListNameError = true;
+                this.xtremandLogger.error( "AddContactComponent saveZohoContactSelectedUsers() ContactList Name Error" );
+            }
+        } catch ( error ) {
+            this.xtremandLogger.error( error, "AddContactsComponent SaveSelectedZohoContacts()." )
         }
-        else {
-            this.contactListNameError = true;
-            this.xtremandLogger.error( "AddContactComponent saveZohoContactSelectedUsers() ContactList Name Error" );
-        }
-       } catch ( error ) {
-           this.xtremandLogger.error( error, "AddContactsComponent SaveSelectedZohoContacts()." )
-       }
     }
 
     onChange( item: any ) {
@@ -1921,21 +1921,22 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.socialContactImage();
-        this.hideModal();
-        this.loadContactListsNames();
-        if ( this.contactService.socialProviderName == 'google' ) {
-            this.getGoogleContactsUsers();
-            this.contactService.socialProviderName = "nothing";
-        } else if ( this.contactService.socialProviderName == 'salesforce' ) {
-            $( "#salesforceModal" ).modal();
-            this.contactService.socialProviderName = "nothing";
-        }
-
-        this.contactListName = '';
-        $( "#Gfile_preview" ).hide();
-        $( "#popupForListviews" ).hide();
         try {
+            this.socialContactImage();
+            this.hideModal();
+            this.loadContactListsNames();
+            if ( this.contactService.socialProviderName == 'google' ) {
+                this.getGoogleContactsUsers();
+                this.contactService.socialProviderName = "nothing";
+            } else if ( this.contactService.socialProviderName == 'salesforce' ) {
+                $( "#salesforceModal" ).modal();
+                this.contactService.socialProviderName = "nothing";
+            }
+
+            this.contactListName = '';
+            $( "#Gfile_preview" ).hide();
+            $( "#popupForListviews" ).hide();
+
             $( "#uploadContactsMessage" ).hide();
             $( "#sample_editable_1" ).hide();
             $( "#file_preview" ).hide();
@@ -1947,8 +1948,8 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.getGoogleContactsUsers();
             }
         }
-        catch ( err ) {
-            this.xtremandLogger.error( "addContacts.component error " + err );
+        catch ( error ) {
+            this.xtremandLogger.error( "addContacts.component error " + error );
         }
 
     }

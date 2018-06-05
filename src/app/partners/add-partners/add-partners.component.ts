@@ -1849,19 +1849,24 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
 
     ngOnInit() {
-        this.socialContactImage();
-        this.listTeamMembers();
-        this.listOrgAdmin();
-        $( "#Gfile_preview" ).hide();
-        this.socialContactsValue = true;
-        this.loggedInUserId = this.authenticationService.getUserId();
-        this.defaultPartnerList( this.loggedInUserId );
-        if ( this.contactService.socialProviderName == 'google' ) {
-            this.getGoogleContactsUsers();
-            this.contactService.socialProviderName = "nothing";
-        } else if ( this.contactService.socialProviderName == 'salesforce' ) {
-            $( '#salesforceModal' ).appendTo( "body" ).modal( 'show' );
-            this.contactService.socialProviderName = "nothing";
+        try {
+            this.socialContactImage();
+            this.listTeamMembers();
+            this.listOrgAdmin();
+            $( "#Gfile_preview" ).hide();
+            this.socialContactsValue = true;
+            this.loggedInUserId = this.authenticationService.getUserId();
+            this.defaultPartnerList( this.loggedInUserId );
+            if ( this.contactService.socialProviderName == 'google' ) {
+                this.getGoogleContactsUsers();
+                this.contactService.socialProviderName = "nothing";
+            } else if ( this.contactService.socialProviderName == 'salesforce' ) {
+                $( '#salesforceModal' ).appendTo( "body" ).modal( 'show' );
+                this.contactService.socialProviderName = "nothing";
+            }
+        }
+        catch ( error ) {
+            this.xtremandLogger.error( "addPartner.component oninit " + error );
         }
     }
 
