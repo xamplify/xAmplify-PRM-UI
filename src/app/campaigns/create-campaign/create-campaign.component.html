@@ -152,11 +152,13 @@
 																 [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onGreenColorSwitch" [size]="callActionSwitch.size"
 																 (statusChange)="setChannelCampaign($event)" >
 																</switch>
-
 															</div>
 															<div class="col-sm-11" style="padding: 0;">
 															<label  *ngIf="!campaign.channelCampaign" style="margin-top: 10px;margin-left: 75px;" title="Send a campaign intended just for your Partners"><b>To Partner</b></label>
 															<label  *ngIf="campaign.channelCampaign" style="margin-top: 10px;margin-left: 75px;;" title="Send a campaign intended just for your Partners">To Partner</label>
+															<span style="cursor: pointer;color: #54a7e9;" title="To Partner->Message will be shared;Through Partner->Re-distributed campaigns will be shared">
+																	<i class="fa fa-question-circle" style="font-size: 20px;float: left;margin: -8px 0 0 15px;"></i>
+															</span>
 															</div>
 														</div>
 													</div>
@@ -172,8 +174,8 @@
 													 (statusChange)="setCoBrandingLogo($event)">
 													</switch>
 													<span style="cursor: pointer;color: #54a7e9;" title="Enable your Partner’s logo to be displayed in redistributed campaigns">
-												<i class="fa fa-question-circle" style="font-size: 20px;float: left;margin: -14px 0 0 15px;"></i>
-											</span>
+														<i class="fa fa-question-circle" style="font-size: 20px;float: left;margin: -14px 0 0 15px;"></i>
+													</span>
 												</div>
 											</div>
 
