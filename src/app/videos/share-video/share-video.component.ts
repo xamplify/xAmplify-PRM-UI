@@ -87,7 +87,8 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
     }
 
     getVideo(shortnerUrlAlias: string) {
-        this.videoFileService.getVideoByShortenerUrlAlias(shortnerUrlAlias)
+      try{
+      this.videoFileService.getVideoByShortenerUrlAlias(shortnerUrlAlias)
             .subscribe(
             (result: any) => {
                 let message: any = '';
@@ -150,9 +151,11 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                 this.xtremandLogger.error(error);
                 this.router.navigate(['/no-videos-found']);
             });
+          }catch(error){ this.xtremandLogger.error('error');}
     }
     ngOnInit() {
-        //  this.setConfirmUnload(true);
+       try{
+       //  this.setConfirmUnload(true);
         $('body').css('cssText', 'background-color: white !important');
         $('#overlay-modal').hide();
         console.log('Share video component ngOnInit called');
@@ -163,6 +166,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
         this.shareShortUrl = this.authenticationService.SHARE_URL + this.shortnerUrlAlias;
         this.getVideo(this.shortnerUrlAlias);
         console.log(this.embedVideoFile);
+      }catch(error){ this.xtremandLogger.error('error');}
     }
     defaultCallToActionValues() {
         this.callAction.isFistNameChecked = this.embedVideoFile.name;
@@ -196,18 +200,14 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
         $('#newPlayerVideo').append(str);
         this.videoUrl = this.embedVideoFile.videoPath;
         this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
-       // this.videoUrl = this.videoUrl + '.mp4';
-        //  this.videoUrl = 'https://yanwsh.github.io/videojs-panorama/assets/shark.mp4'; // need to commet
-      //  $('#newPlayerVideo video').append('<source src="' + this.videoUrl + '" type="video/mp4">');
         this.videoUrl = this.videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
         $('#newPlayerVideo video').append('<source src=' + this.videoUrl + ' type="application/x-mpegURL">');
-     
         const player360 = this;
         const player = videojs('videoId', {
-             "controls": true, 
+             "controls": true,
              "autoplay": false,
              "preload": "auto",
-             "customControlsOnMobile": true, 
+             "customControlsOnMobile": true,
              "nativeControlsForTouch": true
         }).ready(function () {
             this.hotkeys({
@@ -449,7 +449,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
         const self = this;
         const overrideNativeValue = this.referService.getBrowserInfoForNativeSet();
             this.videoJSplayer = videojs('videoId', {
-                "controls": true, 
+                "controls": true,
                 "autoplay": false,
                 "preload": "auto",
                 html5: {
@@ -764,9 +764,9 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
         this.deviceDectorInfo();
     }
     videoLogAction(xtremandLog: XtremandLog) {
-        if(xtremandLog.actionId === 8) { xtremandLog.startDuration = this.seekbarTimestored; 
+        if(xtremandLog.actionId === 8) { xtremandLog.startDuration = this.seekbarTimestored;
         console.log(xtremandLog.startDuration);
-        this.videoFileService.seekbarTime = this.seekbarTimestored; 
+        this.videoFileService.seekbarTime = this.seekbarTimestored;
         }
         this.videoFileService.logEmbedVideoActions(xtremandLog).subscribe(
             (result: any) => {

@@ -143,6 +143,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         public videoFileService: VideoFileService, public fb: FormBuilder, public changeDetectorRef: ChangeDetectorRef,
         public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger,
         public sanitizer: DomSanitizer, public videoUtilService: VideoUtilService, public embedModalComponent:EmbedModalComponent) {
+        try{
         this.saveVideoFile = this.videoFileService.saveVideoFile;
         this.tempVideoFile = this.videoFileService.saveVideoFile;
         this.tempControllerColor = this.tempVideoFile.controllerColor;
@@ -220,13 +221,13 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             this.videoLogoUploader.queue[0].upload();
         };
         this.videoLogoUploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-            if(JSON.parse(response).message === null){
-            } else {
+            if(JSON.parse(response).message === null){ } else {
             this.brandLogoUrl = this.saveVideoFile.brandingLogoUri = JSON.parse(response).path;
             console.log(response);
             }
         }
         this.notifyParent = new EventEmitter<SaveVideoFile>();
+      }catch(error) { this.xtremandLogger.error('error'+error);}
     }
 
     fileLogoSelected(event: File){
@@ -427,9 +428,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.videoPlayListSourceChange();
         this.videoUrl = this.videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
         $('#newPlayerVideo video').append('<source src=' + this.videoUrl + ' type="application/x-mpegURL">');
-        // this.videoUrl = this.videoUrl + '.mp4?access_token=' + this.authenticationService.access_token;
-        // $('#newPlayerVideo video').append('<source src="' + this.videoUrl + '" type="video/mp4">');
-
         this.setVideoIdHeightWidth();
         const newThis = this;
         const player = videojs('videoId').ready(function () {
@@ -578,11 +576,15 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     // video controller methods
     transperancyControllBar(value: any) {
+        try{
         const color: any = this.saveVideoFile.controllerColor;
         const rgba = this.videoUtilService.transparancyControllBarColor(color, value);
         $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
         this.valueRange = value;
         this.xtremandLogger.log(this.valueRange);
+        }catch(error){
+          this.xtremandLogger.error('error'+error);
+        }
     }
     allowComments(event: boolean) {
         this.saveVideoFile.allowComments = this.comments = this.newComments = event;
