@@ -15,6 +15,7 @@ export class CampaignService {
 
     campaign: Campaign;
     reDistributeCampaign:Campaign;
+    isExistingRedistributedCampaignName:boolean = false;
     componentName:string = "campaign.service.ts";
     URL = this.authenticationService.REST_URL;
 
