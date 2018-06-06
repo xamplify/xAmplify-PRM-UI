@@ -170,6 +170,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
             .subscribe(
                 data => {
                     this.campaignService.reDistributeCampaign = data;
+                    this.campaignService.isExistingRedistributedCampaignName = false;
                     this.router.navigate(['/home/campaigns/re-distribute-campaign']);
                 },
                 error => { this.xtremandLogger.errorPage(error) },

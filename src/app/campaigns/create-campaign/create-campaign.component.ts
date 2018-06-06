@@ -567,7 +567,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         // let lowerCaseCampaignName = campaignName.toLowerCase().trim().replace(/\s/g, "");//Remove all spaces
          let lowerCaseCampaignName = $.trim(campaignName.toLowerCase());//Remove all spaces
          var list = this.names[0];
-         console.log(list);
          if(this.isAdd){
              if($.inArray(lowerCaseCampaignName, list) > -1){
                  this.isValidCampaignName = false;
@@ -1925,40 +1924,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     }
 
 
-    launchCampaign(){
-       this.refService.startLoader(this.httpRequestLoader);
-        var data = this.getCampaignData("");
-        var errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
-        if(errorLength===0){
-            this.dataError = false;
-            this.refService.goToTop();
-            this.campaignService.saveCampaign( data )
-            .subscribe(
-            response => {
-                if(response.statusCode===2000){
-                    this.refService.campaignSuccessMessage = data.scheduleCampaign;
-                    this.isLaunched = true;
-                    this.reInitialize();
-                    this.router.navigate(["/home/campaigns/manage"]);
-                }else{
-                    this.invalidScheduleTime = true;
-                    this.invalidScheduleTimeError = response.message;
-                }
-                this.refService.stopLoader(this.httpRequestLoader);
-            },
-            error => {
-                this.hasInternalError = true;
-                this.logger.errorPage(error);
-            },
-            () => this.logger.info("Finished launchCampaign()")
-        );
-        }else{
-            this.refService.stopLoader(this.httpRequestLoader);
-            this.refService.goToDiv("email-template-preview-div");
-            this.dataError = true;
-        }
-    return false;
-    }
 
     /********************************************On Destory********************************************/
     ngOnDestroy() {
@@ -2388,6 +2353,40 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
 
 
 
+     launchCampaign(){
+        this.refService.startLoader(this.httpRequestLoader);
+         var data = this.getCampaignData("");
+         var errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
+         if(errorLength===0){
+             this.dataError = false;
+             this.refService.goToTop();
+             this.campaignService.saveCampaign( data )
+             .subscribe(
+             response => {
+                 if(response.statusCode===2000){
+                     this.refService.campaignSuccessMessage = data.scheduleCampaign;
+                     this.isLaunched = true;
+                     this.reInitialize();
+                     this.router.navigate(["/home/campaigns/manage"]);
+                 }else{
+                     this.invalidScheduleTime = true;
+                     this.invalidScheduleTimeError = response.message;
+                 }
+                 this.refService.stopLoader(this.httpRequestLoader);
+             },
+             error => {
+                 this.hasInternalError = true;
+                 this.logger.errorPage(error);
+             },
+             () => this.logger.info("Finished launchCampaign()")
+         );
+         }else{
+             this.refService.stopLoader(this.httpRequestLoader);
+             this.refService.goToDiv("email-template-preview-div");
+             this.dataError = true;
+         }
+     return false;
+     }
 
 
 }

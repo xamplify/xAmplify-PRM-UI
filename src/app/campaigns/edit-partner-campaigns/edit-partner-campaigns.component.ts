@@ -190,6 +190,9 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
 
     setCampaignData(result){
         this.campaign = result;
+        if(this.campaignService.isExistingRedistributedCampaignName){
+            this.editedCampaignName = this.campaign.campaignName;
+        }
         const userProfile = this.authenticationService.userProfile;
         this.campaign.email = userProfile.emailId;
         if(userProfile.firstName !== undefined && userProfile.lastName !== undefined)
@@ -308,11 +311,8 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
          }
      }
      validateCampaignName(campaignName:string){
-        // let lowerCaseCampaignName = campaignName.toLowerCase().trim().replace(/\s/g, "");//Remove all spaces
          let lowerCaseCampaignName = $.trim(campaignName.toLowerCase());//Remove all spaces
          var list = this.names[0];
-         console.log(list);
-         console.log(this.editedCampaignName.toLowerCase()+":::::::::"+lowerCaseCampaignName);
          if($.inArray(lowerCaseCampaignName, list) > -1 && this.editedCampaignName.toLowerCase()!=lowerCaseCampaignName){
              this.isValidCampaignName = false;
          }else{
@@ -483,11 +483,11 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
             campaignId = 0;
         }
         const data = {
-            'campaignName': this.campaign.campaignName,
-            'fromName': this.campaign.fromName,
-            'subjectLine': this.campaign.subjectLine,
+            'campaignName': this.referenceService.replaceMultipleSpacesWithSingleSpace(this.campaign.campaignName),
+            'fromName': this.referenceService.replaceMultipleSpacesWithSingleSpace(this.campaign.fromName),
+            'subjectLine': this.referenceService.replaceMultipleSpacesWithSingleSpace(this.campaign.subjectLine),
             'email': this.campaign.email,
-            'preHeader': this.campaign.preHeader,
+            'preHeader': this.referenceService.replaceMultipleSpacesWithSingleSpace(this.campaign.preHeader),
             'emailOpened': this.campaign.emailOpened,
             'videoPlayed': this.campaign.videoPlayed,
             'replyVideo': true,
@@ -1286,44 +1286,53 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
   }
 
   launchCampaign() {
-      this.referenceService.startLoader(this.httpRequestLoader);
-      $('#contact-list-error').hide();
-      var data = this.getCampaignData("");
-      var errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
-      if(errorLength===0 && this.selectedUserlistIds.length>0){
-          this.dataError = false;
-          this.contactListBorderColor = "silver";
-          this.referenceService.goToTop();
-          this.campaignService.saveCampaign( data )
-          .subscribe(
-          response => {
-              this.referenceService.stopLoader(this.httpRequestLoader);
-              if (response.statusCode === 2000) {
-                  this.referenceService.campaignSuccessMessage = data.scheduleCampaign;
-                  this.campaign = null;
-                  this.router.navigate(["/home/campaigns/manage"]);
-              } else {
-                  this.referenceService.stopLoader(this.httpRequestLoader);
-                  this.invalidScheduleTime = true;
-                  this.invalidScheduleTimeError = response.message;
-              }
-
-          },
-          error => {
-              this.hasInternalError = true;
-              this.xtremandLogger.errorPage(error);
-          },
-          () => this.xtremandLogger.info("Finished launchCampaign()")
-      );
-      }else{
-          this.referenceService.stopLoader(this.httpRequestLoader);
-          if(this.replies.length>0 ||this.urls.length>0){
-              this.dataError = true;
-          }else{
+      this.validateCampaignName(this.referenceService.replaceMultipleSpacesWithSingleSpace(this.campaign.campaignName));
+      if(this.isValidCampaignName){
+          this.referenceService.startLoader(this.httpRequestLoader);
+          $('#contact-list-error').hide();
+          var data = this.getCampaignData("");
+          var errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
+          if(errorLength===0 && this.selectedUserlistIds.length>0){
               this.dataError = false;
+              this.contactListBorderColor = "silver";
+              this.referenceService.goToTop();
+              this.campaignService.saveCampaign( data )
+              .subscribe(
+              response => {
+                  this.referenceService.stopLoader(this.httpRequestLoader);
+                  if (response.statusCode === 2000) {
+                      this.referenceService.campaignSuccessMessage = data.scheduleCampaign;
+                      this.campaign = null;
+                      this.router.navigate(["/home/campaigns/manage"]);
+                  } else {
+                      this.referenceService.stopLoader(this.httpRequestLoader);
+                      this.invalidScheduleTime = true;
+                      this.invalidScheduleTimeError = response.message;
+                  }
+
+              },
+              error => {
+                  this.hasInternalError = true;
+                  this.xtremandLogger.errorPage(error);
+              },
+              () => this.xtremandLogger.info("Finished launchCampaign()")
+          );
+          }else{
+              this.referenceService.stopLoader(this.httpRequestLoader);
+              if(this.replies.length>0 ||this.urls.length>0){
+                  this.dataError = true;
+              }else{
+                  this.dataError = false;
+              }
+              this.setContactListError();
           }
-          this.setContactListError();
+      }else{
+          this.referenceService.goToTop();
       }
+      
+      
   return false;
+  
+  
   }
 }

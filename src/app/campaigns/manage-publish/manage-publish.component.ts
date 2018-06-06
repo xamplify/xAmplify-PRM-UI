@@ -184,6 +184,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                     } else {
                         if (isNurtureCampaign) {
                             this.campaignService.reDistributeCampaign = data;
+                            this.campaignService.isExistingRedistributedCampaignName = true;
                             this.router.navigate(['/home/campaigns/re-distribute-campaign']);
                         } else {
                             this.refService.isEditNurtureCampaign = false;
@@ -265,7 +266,6 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                     $('#lanchSuccess').show(600);
                     $('#saveAsModal').modal('hide');
                     this.showMessageOnTop();
-                    //  setTimeout(function() { $("#lanchSuccess").slideUp(500); }, 5000);
                     this.listCampaign(this.pagination);
                     console.log("saveAsCampaign Successfully")
                 },

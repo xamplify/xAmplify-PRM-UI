@@ -261,7 +261,7 @@
 		<div>
 	<div class="row">
 		<div class="col-xs-6"></div>
-		<div class="col-xs-6 text-right pb10">
+		<div class="col-xs-6 text-right pb10" style="margin-top: 10px;">
 			<h5 class="control-label font-purple-intense pr10" style="display: inline-block;" *ngIf="campaign.nurtureCampaign" >Enable work flow</h5>
 			<switch *ngIf="campaign.nurtureCampaign" [disabled]="callActionSwitch.disabled" [status]="enableWorkFlow" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
 				[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
