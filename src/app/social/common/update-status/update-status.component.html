@@ -76,8 +76,8 @@
 			</div>
 		</div>
 		<div class="col-md-9 col-sm-12" [ngClass]="{'disabled-div': socialStatus.socialStatusProviders?.length === 0}" id="us-right">
-			<div class="col-sm-12 portlet light" *ngIf="isSocialCampaign">
-				<div class="portlet-body clearfix" style="padding: 15px;">
+			<div class="col-sm-12 dashboard-stat2 p0 clearfix" *ngIf="isSocialCampaign">
+				<div class="portlet-body clearfix p10">
 					<div class="form-group m0 pull-right">
 						<h5 class="control-label font-purple-intense pr10">Notify Me When Email is opened</h5>
 						<switch [status]="socialStatus.emailOpened" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
@@ -103,7 +103,7 @@
 						<button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="customResponse.statusText = null">
 							<span aria-hidden="true">&times;</span>
 						</button>
-						<h4 class="m0 bold">
+						<h4 class="m0">
 							<i class="fa pr10" [ngClass]="{'fa-check': customResponse.type === 1,
 	                				'fa-exclamation': customResponse.type === 2,
 	                				'fa-times': customResponse.type === 3}" aria-hidden="true"></i>
@@ -250,8 +250,8 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-sm-12 portlet light" *ngIf="isSocialCampaign">
-				<div class="portlet-body clearfix" style="padding: 15px;">
+			<div class="col-sm-12 dashboard-stat2 p0 clearfix" *ngIf="isSocialCampaign">
+				<div class="portlet-body clearfix p10">
 					<ng-container *ngIf="authenticationService.module.hasSocialStatusRole || (authenticationService.user.hasCompany && authenticationService.module.isOrgAdmin)">
 						<div class="form-group m0 pull-right">
 							<h5 class="control-label font-purple-intense pr10">Partner Contacts</h5>

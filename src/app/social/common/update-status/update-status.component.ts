@@ -252,23 +252,26 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   }
 
   isSocialAccountsSelected() {
-    if (this.countSelectedSocialAccounts() < 1) {
-      this.setCustomResponse(ResponseType.Warning, 'Please select the accounts to post the status.');
-      return false;
-    } else {
-      return true;
-    }
+      if ( this.countSelectedSocialAccounts() < 1 ) {
+          this.setCustomResponse( ResponseType.Warning, 'Please select the accounts to post the status.' );
+          return false;
+      } else {
+          return true;
+      }
   }
 
   isValidSocialCampaign() {
-    let isValid = true;
-    isValid = this.isSocialAccountsSelected();
+      let isValid = true;
+      isValid = this.isSocialAccountsSelected();
 
-    if (!this.socialStatus.campaignName) {
-      isValid = false;
-      this.setCustomResponse(ResponseType.Warning, 'Please provide campaign name');
-    }
-    return isValid;
+      if ( !this.socialStatus.campaignName ) {
+          isValid = false;
+          this.setCustomResponse( ResponseType.Warning, 'Please provide campaign name' );
+      } else if ( this.socialStatus.campaignName && this.socialStatus.userListIds.length === 0 ) {
+          isValid = false;
+          this.setCustomResponse( ResponseType.Warning, 'Please select contact lists' );
+      }
+      return isValid;
   }
 
   isValidUpdateStatus() {
