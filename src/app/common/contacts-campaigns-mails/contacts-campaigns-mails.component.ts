@@ -38,44 +38,56 @@ export class ContactsCampaignsMailsComponent implements OnInit {
     }
 
     sendEmailToNewlyAddedUsers() {
-        this.loading = true;
-        let campaignDetails = {
-            "campaignIds": this.selectedCampaignIds,
-            "emailIds": this.userEmails
-        }
-
-        this.contactService.sendCampaignEmails( campaignDetails )
-            .subscribe(
-            data => {
-                console.log( data );
-                $( '#sendMailsModal' ).modal( 'hide' );
-                $( 'body' ).removeClass( 'modal-open' );
-                $( '.modal-backdrop fade in' ).remove();
-                this.selectedCampaignIds.length = 0;
-                this.userEmails.length = 0;
-                this.notifyParent.emit( "Emails Send Successfully" );
-                this.loading = false;
-            },
-            error => console.log( error ),
-            () => {
+        try {
+            this.loading = true;
+            let campaignDetails = {
+                "campaignIds": this.selectedCampaignIds,
+                "emailIds": this.userEmails
             }
-            );
+
+            this.contactService.sendCampaignEmails( campaignDetails )
+                .subscribe(
+                data => {
+                    console.log( data );
+                    $( '#sendMailsModal' ).modal( 'hide' );
+                    $( 'body' ).removeClass( 'modal-open' );
+                    $( '.modal-backdrop fade in' ).remove();
+                    this.selectedCampaignIds.length = 0;
+                    this.userEmails.length = 0;
+                    this.notifyParent.emit( "Emails Send Successfully" );
+                    this.loading = false;
+                },
+                error => console.log( error ),
+                () => {
+                }
+                );
+        } catch ( error ) {
+            console.error( error, "ContactsCampaignsEmailComponent", "sendingEmailsToNewlyAddedUsers()" );
+        }
     }
 
 
     ngOnInit() {
-        if ( this.isPartner ) {
-            this.checkengListType = "Partner";
-        } else {
-            this.checkengListType = "Contact";
+        try {
+            if ( this.isPartner ) {
+                this.checkengListType = "Partner";
+            } else {
+                this.checkengListType = "Contact";
+            }
+            $( '#sendMailsModal' ).modal( 'show' );
+        } catch ( error ) {
+            console.error( error, "ContactsCampaignsEmailComponent", "OnInit()" );
         }
-        $( '#sendMailsModal' ).modal( 'show' );
     }
 
     ngOnDestroy() {
-        $( '#sendMailsModal' ).modal( 'hide' );
-        $( 'body' ).removeClass( 'modal-open' );
-        $( '.modal-backdrop fade in' ).remove();
+        try {
+            $( '#sendMailsModal' ).modal( 'hide' );
+            $( 'body' ).removeClass( 'modal-open' );
+            $( '.modal-backdrop fade in' ).remove();
+        } catch ( error ) {
+            console.error( error, "ContactsCampaignsEmailComponent", "OnDestroy()" );
+        }
     }
 
 }
