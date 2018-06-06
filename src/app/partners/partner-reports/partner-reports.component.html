@@ -201,7 +201,7 @@
                 <td>{{item.campaignName}}</td>
                 <td>
 					<div class="actions-block">
-                      <a id="disabled-icon" class="blur" title="Data Sharing Disabled" *ngIf="!item.dataSharingEnabled">
+                      <a id="disabled-icon" class="blur" title="Data Sharing Disabled" *ngIf="!item.dataSharingEnabled" style="background-color: white;">
                           <img src="../assets/images/disabled-icon.png">
                         </a>
                         <a [routerLink]="['/home/campaigns/', item.campaignId, 'details']"  title="analytics">
@@ -366,8 +366,13 @@
 											</span>
 										</td>
 										<td>{{campaign.createdDate}}</td>
-										<td><a  data-rel="fancybox-button" [routerLink]="['/home/campaigns/',campaign.campaignId, 'details']" title="Campaign Based Reports"
-													 class='mr5'><i class="fa fa-line-chart"></i></a>
+										<td>
+										 <a id="disabled-icon" class="blur" title="Data Sharing Disabled" *ngIf="!campaign.detailedAnalyticsShared && selectedTabIndex==2">
+                          						<img src="../assets/images/disabled-icon.png">
+                       					 </a>
+										<a  data-rel="fancybox-button" [routerLink]="['/home/campaigns/',campaign.campaignId, 'details']" title="Campaign Based Reports" class='mr5'>
+												<i class="fa fa-line-chart"></i>
+										</a>
 										</td>
 									</tr>
 								</tbody>
@@ -413,6 +418,9 @@
 												<span *ngIf="!campaign.launched && campaign.launchedOn?.length==0">Saved</span>
 											</div>
 											<div class="bar">
+											 <a id="disabled-icon" class="blur" title="Data Sharing Disabled" *ngIf="!campaign.detailedAnalyticsShared && selectedTabIndex==2">
+                          						<img src="../assets/images/disabled-icon.png" id="grid-disabled-analytics">
+                       						 </a>
 												<a [routerLink]="['/home/campaigns/',campaign.campaignId, 'details']" title="Campaign Based Reports">
 														<i class="fa fa-line-chart"></i>
 													</a>

@@ -76,6 +76,11 @@
 #disabled-icon{
 border: none;
 margin: -5px 15px 0 0;
-background-color: white;
 cursor: default;
+}
+
+#grid-disabled-analytics{
+	background-color: white;
+    margin-top: 9px;
+    margin-left: 2px;
 }
