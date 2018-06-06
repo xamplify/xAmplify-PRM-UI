@@ -162,7 +162,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
 
     constructor(private router: Router,
             private route: ActivatedRoute,
-            private campaignService: CampaignService,
+            public campaignService: CampaignService,
             private authenticationService: AuthenticationService,
             private contactService: ContactService,
             public referenceService: ReferenceService,

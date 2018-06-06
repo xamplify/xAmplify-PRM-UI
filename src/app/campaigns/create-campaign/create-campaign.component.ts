@@ -195,7 +195,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     constructor(private fb: FormBuilder,private route: ActivatedRoute,public refService:ReferenceService,
                 private logger:XtremandLogger,private videoFileService:VideoFileService,
                 public authenticationService:AuthenticationService,private pagerService:PagerService,
-                private userService:UserService,private campaignService:CampaignService,private contactService:ContactService,
+                private userService:UserService,public campaignService:CampaignService,private contactService:ContactService,
                 private emailTemplateService:EmailTemplateService,private router:Router, private socialService: SocialService,
                 public callActionSwitch: CallActionSwitch, public videoUtilService: VideoUtilService
             ){
