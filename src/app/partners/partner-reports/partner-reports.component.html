@@ -314,7 +314,7 @@
 							</div>
 						</div>
 					</div>
-					<app-loader *ngIf="httpRequestLoader.isLoading && !sortOption.isListView"></app-loader>
+					<app-grid-loader *ngIf="httpRequestLoader.isLoading && !sortOption.isListView"></app-grid-loader>
 					<app-list-loader *ngIf="httpRequestLoader.isLoading && sortOption.isListView"></app-list-loader>
 						<section class='m10' *ngIf="sortOption.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
 						<div class="table-responsive">
