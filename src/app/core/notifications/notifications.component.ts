@@ -29,7 +29,8 @@ export class NotificationsComponent implements OnInit {
     }
 
     listNotifications() {
-        this.userService.listNotifications(this.authenticationService.getUserId())
+      try{
+      this.userService.listNotifications(this.authenticationService.getUserId())
             .subscribe(
             data => {
                 this.notifications = data;
@@ -38,6 +39,7 @@ export class NotificationsComponent implements OnInit {
             error => console.log(error),
             () => console.log('Finished')
             );
+          }catch(error) {console.error('error'+error); }
     }
 
     markAllAsRead() {
