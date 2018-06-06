@@ -113,6 +113,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     }
 
     geoLocation(){
+        try{
         this.videoFileService.getJSONLocation()
         .subscribe(
         (data: any) => {
@@ -131,10 +132,14 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
             }
 
         } )
+        } catch ( error ) {
+            console.error( error, "addcontactOneAttimeModalComponent()", "gettingGeoLocation" );
+        }
     }
 
     ngOnInit() {
-       this.geoLocation();
+       try{
+        this.geoLocation();
         if(this.isPartner){
             this.checkingContactTypeName = "Partner"
         }else{
@@ -171,8 +176,11 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
             this.geoLocation();
         }
         $( '#addContactModal' ).modal( 'show' );
+       } catch ( error ) {
+           console.error( error, "addcontactOneAttimeModalComponent()", "ngOnInit()" );
+       }
     }
-
+       
     ngAfterViewInit(){
     }
     ngOnDestroy(){

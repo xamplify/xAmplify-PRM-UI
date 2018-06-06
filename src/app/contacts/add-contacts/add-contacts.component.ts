@@ -371,6 +371,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                         user.description = data[9];
                         break;*/
                 }
+                this.selectedAddContactsOption = 1;
                 this.xtremandLogger.info( user );
                 this.clipboardUsers.push( user );
                 self.contacts.push( user );
@@ -524,6 +525,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                 data => {
                     data = data;
                     this.loading = false;
+                    this.selectedAddContactsOption = 8;
                     this.xtremandLogger.info( "update Contacts ListUsers:" + data );
                     $( "#uploadContactsMessage" ).show();
                     if ( this.isPartner == false ) {
@@ -622,6 +624,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                     data => {
                         data = data;
                         this.loading = false;
+                        this.selectedAddContactsOption = 8;
                         this.xtremandLogger.info( "update Contacts ListUsers:" + data );
                         $( "#uploadContactsMessage" ).show();
                         if ( this.isPartner == false ) {
@@ -682,6 +685,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                             data => {
                                 data = data;
                                 this.loading = false;
+                                this.selectedAddContactsOption = 8;
                                 this.xtremandLogger.info( "update Contacts ListUsers:" + data );
                                 $( "#uploadContactsMessage" ).show();
                                 if ( this.isPartner == false ) {
@@ -833,7 +837,6 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     copyFromClipboard() {
-        this.selectedAddContactsOption = 1;
         this.noOptionsClickError = false;
         this.clipboardTextareaText = "";
         $( "button#cancel_button" ).prop( 'disabled', false );
@@ -1008,6 +1011,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                         .subscribe(
                         data => {
                             data = data;
+                            this.selectedAddContactsOption = 8;
                             this.loading = false;
                             this.xtremandLogger.info( "update Contacts ListUsers:" + data );
                             $( "#uploadContactsMessage" ).show();
@@ -1052,6 +1056,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                     data => {
                         data = data;
                         this.loading = false;
+                        this.selectedAddContactsOption = 8;
                         this.xtremandLogger.info( "update Contacts ListUsers:" + data );
                         $( "#uploadContactsMessage" ).show();
                         if ( this.isPartner == false ) {
@@ -1390,6 +1395,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                         data => {
                             data = data;
                             this.loading = false;
+                            this.selectedAddContactsOption = 8;
                             this.xtremandLogger.info( "update Contacts ListUsers:" + data );
                             $( "#uploadContactsMessage" ).show();
                             if ( this.isPartner == false ) {
@@ -1435,6 +1441,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                     data => {
                         data = data;
                         this.loading = false;
+                        this.selectedAddContactsOption = 8;
                         this.xtremandLogger.info( "update Contacts ListUsers:" + data );
                         $( "#uploadContactsMessage" ).show();
                         if ( this.isPartner == false ) {
@@ -1722,6 +1729,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                     data => {
                         this.loading = false;
                         data = data;
+                        this.selectedAddContactsOption = 8;
                         this.xtremandLogger.info( "update Contacts ListUsers:" + data );
                         $( "#uploadContactsMessage" ).show();
                         if ( this.isPartner == false ) {
@@ -1766,6 +1774,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                         data => {
                             data = data;
                             this.loading = false;
+                            this.selectedAddContactsOption = 8;
                             this.xtremandLogger.info( "update Contacts ListUsers:" + data );
                             $( "#uploadContactsMessage" ).show();
                             if ( this.isPartner == false ) {
@@ -1980,6 +1989,26 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.contactService.isContactModalPopup = false;
         swal.close();
         $( '#settingSocialNetwork' ).modal( 'hide' );
+        
+        if ( this.selectedAddContactsOption !=8 ) {
+            let self = this;
+             swal( {
+                 title: 'Are you sure?',
+                 text: "You have unsaved data",
+                 type: 'warning',
+                 showCancelButton: true,
+                 confirmButtonColor: '#54a7e9',
+                 cancelButtonColor: '#999',
+                 confirmButtonText: 'Yes, Save it!'
+
+             }).then( function() {
+                 self.saveContacts();
+             }, function( dismiss ) {
+                 if ( dismiss === 'cancel' ) {
+                     self.selectedAddContactsOption = 8;
+                 }
+             })
+         }
 
     }
 }

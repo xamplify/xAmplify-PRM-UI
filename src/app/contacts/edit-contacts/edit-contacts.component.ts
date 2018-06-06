@@ -540,6 +540,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                                 data => {
                                     data = data;
                                     this.loading = false;
+                                    this.selectedAddContactsOption = 8;
                                     this.xtremandLogger.info( "update Contacts ListUsers:" + data );
                                     this.manageContact.editContactList( this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList );
                                     $( "tr.new_row" ).each( function() {
@@ -553,6 +554,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                                     }
 
                                     this.users = [];
+                                    this.selectedAddContactsOption = 8;
                                     this.uploadCsvUsingFile = false;
                                     this.uploader.queue.length = 0;
                                     this.filePrevew = false;
@@ -715,6 +717,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
         this.noContactsFound = false;
         this.clipboardTextareaText = "";
         this.clickBoard = true;
+        this.selectedAddContactsOption = 8;
     }
 
     clipboardShowPreview() {
@@ -838,6 +841,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                 self.pagination.pagedItems.push( user );
                 $( "button#sample_editable_1_new" ).prop( 'disabled', false );
             }
+            this.selectedAddContactsOption = 1;
             var endTime = new Date();
             $( "#clipBoardValidationMessage" ).append( "<h5 style='color:#07dc8f;'><i class='fa fa-check' aria-hidden='true'></i>" + "Processing started at: <b>" + startTime + "</b></h5>" );
             $( "#clipBoardValidationMessage" ).append( "<h5 style='color:#07dc8f;'><i class='fa fa-check' aria-hidden='true'></i>" + "Processing Finished at: <b>" + endTime + "</b></h5>" );
@@ -959,6 +963,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                             data => {
                                 data = data;
                                 this.loading = false;
+                                this.selectedAddContactsOption = 8;
                                 this.xtremandLogger.info( "update Contacts ListUsers:" + data );
                                 this.manageContact.editContactList( this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList );
                                 $( "tr.new_row" ).each( function() {
@@ -2182,5 +2187,25 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         swal.close();
         $( '#filterModal' ).modal( 'hide' );
+        
+        if ( this.selectedAddContactsOption !=8 ) {
+            let self = this;
+             swal( {
+                 title: 'Are you sure?',
+                 text: "You have unsaved data",
+                 type: 'warning',
+                 showCancelButton: true,
+                 confirmButtonColor: '#54a7e9',
+                 cancelButtonColor: '#999',
+                 confirmButtonText: 'Yes, Save it!'
+
+             }).then( function() {
+                 self.saveContacts( self.contactListId );
+             }, function( dismiss ) {
+                 if ( dismiss === 'cancel' ) {
+                     self.selectedAddContactsOption = 8;
+                 }
+             })
+         }
     }
 }
