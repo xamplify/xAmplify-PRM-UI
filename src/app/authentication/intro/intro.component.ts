@@ -43,7 +43,7 @@ export class IntroComponent implements OnInit {
     this.mainLoader = true;
     try{
     if(localStorage.getItem('currentUser')){ this.authenticationService.navigateToDashboardIfUserExists();
-      setTimeout(()=>{  this.mainLoader = false;},1000);
+      setTimeout(()=>{  this.mainLoader = false;},900);
      }
     else {this.mainLoader=false; }
     }catch(error){console.log('error'+error);}

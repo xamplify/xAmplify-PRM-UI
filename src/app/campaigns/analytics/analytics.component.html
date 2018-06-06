@@ -129,7 +129,7 @@
 				</div>
 				<div class="portlet-body text-center" [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}">
 					<app-worldmap *ngIf="renderMapData && isPartnerEnabledAnalyticsAccess" [worldMapData] = "renderMapData" (notifyParent)="clickWorldMapReports($event)"></app-worldmap>
-					<app-worldmap class="forbidden" *ngIf="renderMapData && !isPartnerEnabledAnalyticsAccess" [worldMapData] = "renderMapData"></app-worldmap>
+					<app-worldmap class="disabled" *ngIf="renderMapData && !isPartnerEnabledAnalyticsAccess" [worldMapData] = "renderMapData"></app-worldmap>
 				</div>
 			</div>
 		</div>

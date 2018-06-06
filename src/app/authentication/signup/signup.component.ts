@@ -181,7 +181,7 @@ export class SignupComponent implements OnInit, OnDestroy {
         $("[rel='tooltip']").tooltip();
         this.mainLoader = true;
         this.authenticationService.navigateToDashboardIfUserExists();
-        setTimeout(()=>{  this.mainLoader = false;},1000);
+        setTimeout(()=>{  this.mainLoader = false;},900);
         }catch(error){this.xtremandLogger.error('error'+error); }
     }
     ngOnDestroy(){

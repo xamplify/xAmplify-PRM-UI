@@ -16,29 +16,29 @@
 				<span>something went wrong..!</span>
 			</div>
 			<div class="form-group col-xs-6 p0" style="border-right: 1px solid #fff0;">
-				<label class="control-label visible-ie8 visible-ie9">First Name</label>
+				<label class="control-label visible-ie8 visible-ie9 firstNameTF">First Name</label>
 				<input class="form-control placeholder-no-fix" type="text" placeholder="First Name" required formControlName="firstName" />
 				<div *ngIf="formErrors.firstName" class="alert alert-danger">{{ formErrors.firstName }}</div>
 			</div>
 			<div class="form-group col-xs-6 p0">
-				<label class="control-label visible-ie8 visible-ie9">Last Name</label>
+				<label class="control-label visible-ie8 visible-ie9 lastNameTF">Last Name</label>
 				<input class="form-control placeholder-no-fix" type="text" placeholder="Last Name" formControlName="lastName" />
 			</div>
 			<div class="form-group">
-				<label class="control-label visible-ie8 visible-ie9">Email</label>
+				<label class="control-label visible-ie8 visible-ie9 emailTF">Email</label>
 				<input class="form-control placeholder-no-fix" type="email" placeholder="Email" required formControlName="emailId" (keyup)="validEmail($event)"/>
         <div *ngIf="formErrors.emailId && !invalidVendor" class="alert alert-danger">{{ formErrors.emailId }}</div>
         <div *ngIf="formErrors.emailId && invalidVendor" class="alert alert-danger">{{formErrors.emailId }} just <a [routerLink]="['../login']">log in</a> to your account.</div>
 			</div>
 			<div class="form-group" style="position: relative">
-				<label class="control-label visible-ie8 visible-ie9">Password</label>
+				<label class="control-label visible-ie8 visible-ie9 passwordTF">Password</label>
 				<input formControlName="password" class="form-control placeholder-no-fix" type="password" autocomplete="off" placeholder="Password"
 				 required />
 				 <i class="fa fa-question-circle" rel="tooltip" data-placement="left" title="Use 6 or more characters with a mix of letters, numbers & symbols"></i>
 				<div *ngIf="formErrors.password" class="alert alert-danger">{{ formErrors.password }}</div>
 			</div>
 			<div class="form-group">
-				<label class="control-label visible-ie8 visible-ie9">Re-type Your Password</label>
+				<label class="control-label visible-ie8 visible-ie9 confirmPasswordTF">Re-type Your Password</label>
 				<input formControlName="confirmPassword" class="form-control placeholder-no-fix" type="password" autocomplete="off" placeholder="Re-type Your Password"
 				 required />
 				<div *ngIf="formErrors.confirmPassword" class="alert alert-danger">{{ formErrors.confirmPassword }}</div>
@@ -54,7 +54,7 @@
 			<div class="actions">
 				<button type="button" class="btn btn-default" (click)="goToBack()">
 					<i class="fa fa-arrow-left" aria-hidden="true" style="margin-right: 5px"></i>Back</button>
-				<button type="submit" id="register-submit-btn" [disabled]="!signUpForm.valid" class="btn btn-success uppercase pull-right" (click)="signUp()">Submit</button>
+				<button type="submit" id="register-submit-btn" [disabled]="!signUpForm.valid" class="btn btn-success uppercase pull-right signinTF" (click)="signUp()">Submit</button>
 			</div>
 		</form>
 	</div>

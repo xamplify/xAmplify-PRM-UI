@@ -126,7 +126,7 @@ export class LoginComponent implements OnInit, OnDestroy {
      try{
      this.mainLoader = true;
      this.authenticationService.navigateToDashboardIfUserExists();
-     setTimeout(()=>{  this.mainLoader = false;},1000);
+     setTimeout(()=>{  this.mainLoader = false;},900);
      }catch(error){this.xtremandLogger.error('error'+error)}
     }
     ngOnDestroy() {

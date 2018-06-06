@@ -88,7 +88,7 @@ export class ForgotPasswordComponent implements OnInit {
        // this.forgotPasswordForm.reset();
        this.mainLoader = true;
        this.authenticationService.navigateToDashboardIfUserExists();
-       setTimeout(()=>{  this.mainLoader = false;},1000);
+       setTimeout(()=>{  this.mainLoader = false;},900);
       }catch(error){ this.xtremandLogger.error('error'+error);}
     }
 
