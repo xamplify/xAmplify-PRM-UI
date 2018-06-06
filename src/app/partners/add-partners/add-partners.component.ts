@@ -409,6 +409,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                             ( data: any ) => {
                                 data = data;
                                 this.loading = false;
+                                this.selectedAddPartnerOption = 5;
                                 this.xtremandLogger.info( "update partner ListUsers:" + data );
                                 $( "tr.new_row" ).each( function() {
                                     $( this ).remove();
@@ -599,7 +600,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     }
 
     copyFromClipboard() {
-        this.selectedAddPartnerOption = 4;
         this.fileTypeError = false;
         this.clipboardTextareaText = "";
         $( "button#cancel_button" ).prop( 'disabled', false );
@@ -734,6 +734,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                 this.xtremandLogger.info( user );
                 self.newPartnerUser.push( user );
             }
+            this.selectedAddPartnerOption = 4;
             var endTime = new Date();
             $( "#clipBoardValidationMessage" ).append( "<h5 style='color:#07dc8f;'><i class='fa fa-check' aria-hidden='true'></i>" + "Processing started at: <b>" + startTime + "</b></h5>" );
             $( "#clipBoardValidationMessage" ).append( "<h5 style='color:#07dc8f;'><i class='fa fa-check' aria-hidden='true'></i>" + "Processing Finished at: <b>" + endTime + "</b></h5>" );
@@ -1881,7 +1882,30 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         this.hideZohoModal();
         this.contactService.isContactModalPopup = false;
         this.updatePartnerUser = false;
-        swal.close();
+        
+        if ( this.selectedAddPartnerOption !=5 ) {
+           let self = this;
+            swal( {
+                title: 'Are you sure?',
+                text: "You have unsaved data",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#54a7e9',
+                cancelButtonColor: '#999',
+                confirmButtonText: 'Yes, Save it!'
+
+            }).then( function() {
+                self.saveContacts();
+            }, function( dismiss ) {
+                if ( dismiss === 'cancel' ) {
+                    self.selectedAddPartnerOption = 5;
+                }
+            })
+        }
+        if ( this.selectedAddPartnerOption == 5 ){
+            swal.close();
+        }
+  
         $( '#settingSocialNetwork' ).modal( 'hide' );
 
     }
