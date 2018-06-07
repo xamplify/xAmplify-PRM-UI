@@ -2185,6 +2185,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
+        try{
         swal.close();
         $( '#filterModal' ).modal( 'hide' );
         
@@ -2207,5 +2208,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                  }
              })
          }
+        }catch ( error ) {
+            this.xtremandLogger.error( error, "editContactComponent", "ngOnDestroy()" );
+        }
     }
 }
