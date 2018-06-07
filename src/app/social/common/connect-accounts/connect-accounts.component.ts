@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from "@angular/router";
 
 declare var $: any;
@@ -7,7 +7,7 @@ declare var $: any;
     templateUrl: './connect-accounts.component.html',
     styleUrls: ['./connect-accounts.component.css']
 })
-export class ConnectAccountsComponent implements OnInit {
+export class ConnectAccountsComponent implements OnInit, OnDestroy {
 
     constructor( private router: Router ) { }
 
@@ -18,5 +18,7 @@ export class ConnectAccountsComponent implements OnInit {
 
     ngOnInit() {
     }
-
+    ngOnDestroy(){
+      $('#connectAccountsModal').modal('hide');
+    }
 }
