@@ -1985,7 +1985,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
         } else {
             let a = document.createElement( 'a' );
             a.href = url;
-            a.download = 'Contact_List.csv';
+            a.download = this.contactListName + '_' + this.checkingContactTypeName + '_List.csv';
             document.body.appendChild( a );
             a.click();
             document.body.removeChild( a );

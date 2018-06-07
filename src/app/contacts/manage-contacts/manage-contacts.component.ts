@@ -341,11 +341,11 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
         }
     }
 
-    downloadContactList( contactListId: number ) {
+    downloadContactList( contactListId: number, contactListName: any ) {
         try {
             this.contactService.downloadContactList( contactListId )
                 .subscribe(
-                data => this.downloadFile( data ),
+                data => this.downloadFile( data, contactListName ),
                 ( error: any ) => {
                     this.xtremandLogger.error( error );
                     this.xtremandLogger.errorPage( error );
@@ -357,7 +357,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
         }
     }
 
-    downloadFile( data: any ) {
+    downloadFile( data: any, contactListName: any) {
         let parsedResponse = data.text();
         let blob = new Blob( [parsedResponse], { type: 'text/csv' });
         let url = window.URL.createObjectURL( blob );
@@ -367,7 +367,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
         } else {
             let a = document.createElement( 'a' );
             a.href = url;
-            a.download = 'UserList.csv';
+            a.download = contactListName + '_Contact_List.csv';
             document.body.appendChild( a );
             a.click();
             document.body.removeChild( a );

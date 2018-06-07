@@ -242,7 +242,7 @@
 																(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList)"
 																title="ContactList Info"> <i
 																class="glyphicon glyphicon-info-sign"></i>
-															</a> <a (click)="downloadContactList(contactList.id)"
+															</a> <a (click)="downloadContactList(contactList.id, contactList.name)"
 																title="Download List" data-rel="fancybox-button"> <i
 																class="fa fa-cloud-download"></i>
 															</a>
@@ -313,7 +313,7 @@
 															style="color: white;"></i>
 														</a>
 														<a [class.disabled]="!contactList.emailValidationInd"
-															(click)="downloadContactList(contactList.id)"
+															(click)="downloadContactList(contactList.id, contactList.name)"
 															title="Download List" data-rel="fancybox-button"> <i
 															class="fa fa-cloud-download"></i>
 														</a>

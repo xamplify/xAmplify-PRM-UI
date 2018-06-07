@@ -1720,7 +1720,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             } else {
                 let a = document.createElement( 'a' );
                 a.href = url;
-                a.download = 'Partner_List.csv';
+                a.download = this.contactService.partnerListName + '.csv';
                 document.body.appendChild( a );
                 a.click();
                 document.body.removeChild( a );
@@ -1732,15 +1732,19 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     }
 
     downloadPartnerList() {
-        this.contactService.downloadContactList( this.partnerListId )
-            .subscribe(
-            data => this.downloadFile( data ),
-            ( error: any ) => {
-                this.xtremandLogger.error( error );
-                this.xtremandLogger.errorPage( error );
-            },
-            () => this.xtremandLogger.info( "download partner List completed" )
-            );
+        try {
+            this.contactService.downloadContactList( this.partnerListId )
+                .subscribe(
+                data => this.downloadFile( data ),
+                ( error: any ) => {
+                    this.xtremandLogger.error( error );
+                    this.xtremandLogger.errorPage( error );
+                },
+                () => this.xtremandLogger.info( "download partner List completed" )
+                );
+        } catch ( error ) {
+            this.xtremandLogger.error( error, "addPartnerComponent", "download Partner list" );
+        }
     }
 
     sendMail( partnerId: number ) {
