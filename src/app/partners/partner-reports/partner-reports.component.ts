@@ -109,6 +109,7 @@ export class PartnerReportsComponent implements OnInit {
   getActivePartnerReports(pagination:Pagination){
       this.referenseService.loading(this.activeParnterHttpRequestLoader, true);
       pagination.userId = this.loggedInUserId;
+      this.paginationType = 'ActivePartnerPagination';
       this.parterService.getActivePartnersAnalytics(pagination).subscribe(
               (response: any) => {
                console.log(response);
@@ -121,16 +122,6 @@ export class PartnerReportsComponent implements OnInit {
               },
               (error: any) => { console.log("error")});
   }
-
-  setActivePartnesPage( pageIndex:number ) {
-      try {
-          this.activePartnersPagination.pageIndex = pageIndex;
-          this.getActivePartnerReports(this.activePartnersPagination);
-      } catch ( error ) {
-          this.referenseService.showError( error, "setPage", "partner-reports.component.ts" )
-      }
-  }
-
 
   searchActivePartnerAnalytics(){
       this.activePartnersPagination.pageIndex = 1;
@@ -183,6 +174,10 @@ export class PartnerReportsComponent implements OnInit {
       this.campaignInteractionPagination.pageIndex = event.page;
       this.partnerCampaignInteraction(this.campaignId);
     }
+    else if (this.paginationType === 'ActivePartnerPagination') {
+        this.activePartnersPagination.pageIndex = event.page;
+        this.getActivePartnerReports(this.activePartnersPagination);
+      }
   }
   closeModalPopUp() {
     this.paginationType = 'UserInteraction';
