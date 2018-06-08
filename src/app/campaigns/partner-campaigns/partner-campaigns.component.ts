@@ -6,6 +6,7 @@ import { VideoFileService } from '../../videos/services/video-file.service';
 import { ContactService } from '../../contacts/services/contact.service';
 import { CampaignService } from '../services/campaign.service';
 import { UserService } from '../../core/services/user.service';
+import { SocialService } from '../../social/services/social.service';
 import { ReferenceService } from '../../core/services/reference.service';
 import { Campaign } from '../models/campaign';
 import { SaveVideoFile } from '../../videos/models/save-video-file';
@@ -60,7 +61,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
 
     constructor(private campaignService: CampaignService, private router: Router, private xtremandLogger: XtremandLogger,
         private pagination: Pagination, private pagerService: PagerService,
-        public referenceService: ReferenceService, private userService: UserService, 
+        public referenceService: ReferenceService, private userService: UserService, private socialService: SocialService,
         private authenticationService: AuthenticationService,private route: ActivatedRoute) {
         this.loggedInUserId = this.authenticationService.getUserId();
     }
@@ -163,9 +164,23 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     showCampaignPreview(campaignId:number){
         this.router.navigate(['/home/campaigns/preview/'+campaignId]);
     }
+
+    navigateSocialCampaign(campaign:any) {
+        this.socialService.getSocialCampaignByCampaignId( campaign.campaignId )
+        .subscribe(
+                data => {
+                    this.router.navigate(['/home/campaigns/social', data.alias]);
+                },
+                error => { this.xtremandLogger.errorPage(error) },
+                () => console.log()
+            )
+    }
     
-    reDistributeCampaign(campaignId:number){
-        const data = { 'campaignId': campaignId,'userId':this.loggedInUserId }
+    reDistributeCampaign(campaign:any){
+        if(campaign.campaignType.indexOf('SOCIAL') > -1){
+            this.navigateSocialCampaign(campaign);
+        } else {
+        const data = { 'campaignId': campaign.campaignId,'userId':this.loggedInUserId }
         this.campaignService.getParnterCampaignById(data)
             .subscribe(
                 data => {
@@ -176,8 +191,8 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
                 error => { this.xtremandLogger.errorPage(error) },
                 () => console.log()
             )
-    
-       
+        }
+
     }
     
 }
