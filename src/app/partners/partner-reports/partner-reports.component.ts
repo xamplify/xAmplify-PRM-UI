@@ -106,18 +106,19 @@ export class PartnerReportsComponent implements OnInit {
       (error: any) => { console.log('error got here') });
   }
   /*********Active Partner  Analytics***********/
-  getActivePartnerReports(pagination:Pagination){
+  getActivePartnerReports(){
       this.referenseService.loading(this.activeParnterHttpRequestLoader, true);
-      pagination.userId = this.loggedInUserId;
+      this.activePartnersPagination.userId = this.loggedInUserId;
       this.paginationType = 'ActivePartnerPagination';
-      this.parterService.getActivePartnersAnalytics(pagination).subscribe(
+      this.activePartnersPagination.maxResults = 3;
+      this.parterService.getActivePartnersAnalytics(this.activePartnersPagination).subscribe(
               (response: any) => {
                console.log(response);
                 for(var i in response.activePartnesList){
                     response.activePartnesList[i].contactCompany = response.activePartnesList[i].partnerCompanyName;
                 }
-               pagination.totalRecords = response.totalRecords;
-               pagination = this.pagerService.getPagedItems(pagination, response.activePartnesList);
+                this.activePartnersPagination.totalRecords = response.totalRecords;
+                this.activePartnersPagination = this.pagerService.getPagedItems(this.activePartnersPagination, response.activePartnesList);
                this.referenseService.loading(this.activeParnterHttpRequestLoader, false);
               },
               (error: any) => { console.log("error")});
@@ -126,7 +127,7 @@ export class PartnerReportsComponent implements OnInit {
   searchActivePartnerAnalytics(){
       this.activePartnersPagination.pageIndex = 1;
       this.activePartnersPagination.searchKey = this.activePartnersSearchKey;
-      this.getActivePartnerReports(this.activePartnersPagination);
+      this.getActivePartnerReports();
   }
 
 
@@ -176,7 +177,7 @@ export class PartnerReportsComponent implements OnInit {
     }
     else if (this.paginationType === 'ActivePartnerPagination') {
         this.activePartnersPagination.pageIndex = event.page;
-        this.getActivePartnerReports(this.activePartnersPagination);
+        this.getActivePartnerReports();
       }
   }
   closeModalPopUp() {
@@ -200,8 +201,7 @@ export class PartnerReportsComponent implements OnInit {
         this.campaignInteractionPagination.maxResults = 10;
         this.partnerReportData();
         this.partnerUserInteractionReports();
-        this.activePartnersPagination.maxResults = 3;
-        this.getActivePartnerReports(this.activePartnersPagination);
+        this.getActivePartnerReports();
     }else{
         this.router.navigate(['home/dashboard']);
     }
