@@ -7,7 +7,7 @@
 		pointer-events: none;
 		cursor: not-allowed !important;
 	}
-
+.btn-social { color: #fff;}
 </style>
 <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 <div class="page-content" [hidden]="isTimeLineView">
@@ -79,7 +79,7 @@
 					</div>
 				</a>
 		</div>
-		<div  class="pl10 pr10 col-xs-12 blur" [ngClass]="{'col-sm-4': campaignType === 'VIDEO', 'col-sm-6': campaignType === 'EMAIL'}" *ngIf="campaign.selectedEmailTemplateId==0">
+		<div [hidden]="campaignType === 'SOCIAL'" class="pl10 pr10 col-xs-12 blur" [ngClass]="{'col-sm-4': campaignType === 'VIDEO', 'col-sm-6': campaignType === 'EMAIL'}" *ngIf="campaign.selectedEmailTemplateId==0">
 			<a class="dashboard-stat dashboard-stat-lighter blue-soft" style="cursor: default;" >
 					<div class="visual">
 						<i class="fa fa-envelope-open"></i>
@@ -206,7 +206,8 @@
 				</div>
 				<div class="portlet-body clearfix">
 					<div class='col-xs-12 col-sm-6'>
-						<h4>{{socialStatus.statusMessage}}</h4>
+						<h5>Social status content</h5>
+						<textarea disabled class="form-control form-group rounded-0 mb5" maxlength="140">{{socialStatus.statusMessage}}</textarea>
 						<div *ngFor="let socialStatusContent of socialStatus.socialStatusContents">
 							<img async *ngIf="socialStatusContent.fileType === 'image'" src="{{authenticationService.MEDIA_URL}}{{socialStatusContent.filePath}}?access_token={{authenticationService.access_token}}"
 							 style="height: 240px; width: auto;">
@@ -216,9 +217,24 @@
 						</div>
 					</div>
 					<div class='col-xs-12 col-sm-6'>
-						<div *ngFor="let socialStatusProvider of socialStatus.socialStatusProviders">
-							<h4>{{socialStatusProvider.socialConnection.profileName}}</h4>
-						</div>
+						<h5>Selected Accounts</h5>
+						<span *ngFor="let socialStatusProvider of socialStatus.socialStatusProviders" style="padding-right: 5px">
+							<div class="btn btn-social" [ngClass]="{
+										'btn-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK',
+										'btn-twitter': socialStatusProvider.socialConnection.source ==='TWITTER',
+										'btn-linkedin': socialStatusProvider.socialConnection.source ==='LINKEDIN',
+										'btn-google': socialStatusProvider.socialConnection.source ==='GOOGLE'}">
+
+								<i class="fa" [ngClass]="{
+												'fa-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK',
+												'fa-twitter': socialStatusProvider.socialConnection.source ==='TWITTER',
+												'fa-linkedin': socialStatusProvider.socialConnection.source ==='LINKEDIN',
+												'fa-google': socialStatusProvider.socialConnection.source ==='GOOGLE'}"></i>
+								<span *ngIf="socialStatusProvider.socialConnection.profileName">{{socialStatusProvider.socialConnection.profileName}}</span>
+								<span *ngIf="!socialStatusProvider.socialConnection.profileName">{{socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatusProvider.socialConnection.lastName}}</span>
+
+							</div>
+						</span>
 					</div>
 				</div>
 			</div>
