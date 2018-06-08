@@ -127,8 +127,8 @@
 		</div>
         </div>
         <div class="portlet-body clearfix" style="min-height: 400px; position: relative;">
-        <app-list-loader *ngIf="activeParnterHttpRequestLoader.isLoading"></app-list-loader>
-          <table class="table tgrid">
+        <app-list-loader *ngIf="activeParnterHttpRequestLoader.isLoading" [rowsCount]="listLoaderValue.ACTIVEPARTNERS"></app-list-loader>
+          <table class="table tgrid" *ngIf="!activeParnterHttpRequestLoader.isLoading">
             <thead>
               <th>Partner</th>
               <th>Campaigns</th>

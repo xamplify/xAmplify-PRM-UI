@@ -13,13 +13,14 @@ import { CampaignService } from '../../campaigns/services/campaign.service';
 import { User } from '../../core/models/user';
 import { CustomResponse } from '../../common/models/custom-response';
 import { UtilService } from '../../core/services/util.service';
+import { ListLoaderValue } from '../../common/models/list-loader-value';
 declare var $,swal, Highcharts: any;
 
 @Component({
   selector: 'app-partner-reports',
   templateUrl: './partner-reports.component.html',
   styleUrls: ['./partner-reports.component.css'],
-  providers: [Pagination, HomeComponent,HttpRequestLoader,SortOption]
+  providers: [Pagination, HomeComponent,HttpRequestLoader,SortOption, ListLoaderValue]
 })
 export class PartnerReportsComponent implements OnInit {
   worldMapdataReport: any;
@@ -48,7 +49,7 @@ export class PartnerReportsComponent implements OnInit {
   inActivePartnersCount:number = 0;
   activePartnersCount:number = 0;
   customResponse: CustomResponse = new CustomResponse();
-  constructor(public router: Router, public authenticationService: AuthenticationService, public pagination: Pagination,
+  constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService, public pagination: Pagination,
     public referenseService: ReferenceService, public parterService: ParterService, public pagerService: PagerService,
     public homeComponent: HomeComponent,public xtremandLogger:XtremandLogger,public campaignService:CampaignService,public sortOption:SortOption,
     public utilService: UtilService) {

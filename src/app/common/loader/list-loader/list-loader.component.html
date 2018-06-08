@@ -1,5 +1,5 @@
 <table>
-	<tr *ngFor="let number of [0,1,2,3,4,5]">
+	<tr *ngFor="let number of rowsCount">
 		<td>
 			<div class='text-input__loading--line rect-box'></div>
 		</td>
@@ -14,9 +14,9 @@
 			<div class='text-input__loading--line thin w75'></div>
 		</td>
 		<td>
+		<ng-container *ngFor="let number of icons"> 
 			<div class='text-input__loading--line action-icon'></div>
-			<div class='text-input__loading--line action-icon'></div>
-			<div class='text-input__loading--line action-icon'></div>
+		</ng-container>
 		</td>
 	</tr>
 </table>
