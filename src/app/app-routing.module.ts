@@ -41,20 +41,19 @@ export const routes: Routes = [
     { path: 'register/verifyemail/user', component: VerifyEmailComponent },
     { path: '', component: IntroComponent},
     { path: 'home', redirectTo:'', pathMatch: 'full'},
-    {
-        path: 'home', component: HomeComponent, canActivate: [AuthGuard],
-        children: [
-            { path: 'dashboard', loadChildren: 'app/dashboard/dashboard.module#DashboardModule' },
-            { path: 'emailtemplates', loadChildren: 'app/email-template/email-template.module#EmailTemplateModule' },
-            { path: 'videos', loadChildren: 'app/videos/videos.module#VideosModule',  data: { preload: true } },
-            { path: 'social', loadChildren: 'app/social/social.module#SocialModule' },
-            { path: 'twitter', loadChildren: 'app/social/twitter/twitter.module#TwitterModule' },
-            { path: 'contacts', loadChildren: 'app/contacts/contacts.module#ContactsModule',  data: { preload: true } },
-            { path: 'partners', loadChildren: 'app/partners/partners.module#PartnersModule',  data: { preload: true } },
-            { path: 'campaigns', loadChildren: 'app/campaigns/campaigns.module#CampaignsModule',  data: { preload: false } },
-            { path: 'upgrade', loadChildren: 'app/upgrade/upgrade.module#UpgradeModule' },
-            { path: 'team', loadChildren: 'app/team/team-member.module#TeamMemberModule' },
-            { path: 'error/:errorStatusId', component: ErrorPagesComponent }
+    { path: 'home', component: HomeComponent, canActivate: [AuthGuard],
+      children: [
+          { path: 'dashboard', loadChildren: 'app/dashboard/dashboard.module#DashboardModule' },
+          { path: 'emailtemplates', loadChildren: 'app/email-template/email-template.module#EmailTemplateModule' },
+          { path: 'videos', loadChildren: 'app/videos/videos.module#VideosModule',  data: { preload: true } },
+          { path: 'social', loadChildren: 'app/social/social.module#SocialModule' },
+          { path: 'twitter', loadChildren: 'app/social/twitter/twitter.module#TwitterModule' },
+          { path: 'contacts', loadChildren: 'app/contacts/contacts.module#ContactsModule',  data: { preload: true } },
+          { path: 'partners', loadChildren: 'app/partners/partners.module#PartnersModule',  data: { preload: true } },
+          { path: 'campaigns', loadChildren: 'app/campaigns/campaigns.module#CampaignsModule',  data: { preload: false } },
+          { path: 'upgrade', loadChildren: 'app/upgrade/upgrade.module#UpgradeModule' },
+          { path: 'team', loadChildren: 'app/team/team-member.module#TeamMemberModule' },
+          { path: 'error/:errorStatusId', component: ErrorPagesComponent }
         ]
     },
     { path: 'terms-conditions', component: TermsConditonComponent },
