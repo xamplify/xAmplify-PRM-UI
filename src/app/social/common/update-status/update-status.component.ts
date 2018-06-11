@@ -167,6 +167,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   }
 
   removeItem(i: number, socialStatusContent: SocialStatusContent) {
+    debugger;
     this.resetCustomResponse();
     console.log(socialStatusContent + '' + i);
     this.socialService.removeMedia(socialStatusContent.fileName)
@@ -285,7 +286,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
       scrollTop: $('#us-right').offset().top
     }, 500);
     if (this.validate()) {
-      this.setCustomResponse(ResponseType.Loading, 'Creating Social Campaign');
+      this.setCustomResponse(ResponseType.Loading, 'Creating and publishing social campaign');
       this.socialStatus.socialStatusProviders = this.filterSelectedSocialProviders(this.socialStatus.socialStatusProviders);
 
       this.socialStatus.userId = this.userId;
@@ -630,6 +631,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
         this.socialStatus.shareNow = true;
         this.socialStatus.isPartner = true;
         this.socialStatus.emailOpened = false;
+        this.socialStatus.userListIds = []
       },
       error => this.router.navigate(['/home/error/404']),
       () => {
