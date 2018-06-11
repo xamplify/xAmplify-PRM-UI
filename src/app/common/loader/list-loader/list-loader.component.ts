@@ -7,9 +7,9 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class ListLoaderComponent implements OnInit {
     @Input() rowsCount: any;
-    
+    analytics = false;
     icons: any;
-    
+
   constructor() { }
 
   ngOnInit() {

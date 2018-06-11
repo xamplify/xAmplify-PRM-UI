@@ -1,4 +1,4 @@
-<table>
+<table  *ngIf="!analytics">
 	<tr *ngFor="let number of rowsCount">
 		<td>
 			<div class='text-input__loading--line rect-box'></div>
@@ -14,9 +14,51 @@
 			<div class='text-input__loading--line thin w75'></div>
 		</td>
 		<td>
-		<ng-container *ngFor="let number of icons"> 
+		<ng-container *ngFor="let number of icons">
 			<div class='text-input__loading--line action-icon'></div>
 		</ng-container>
 		</td>
 	</tr>
 </table>
+
+<div *ngIf="analytics" class="row">
+    <div class="col-xs-12" style="padding: 0;">
+        <div class="col-sm-4">
+          <div class='text-input__loading--line rect-box' style="width: auto; height: 102px;"></div>
+        </div>
+        <div class="col-sm-4">
+            <div class='text-input__loading--line rect-box' style="width: auto; height: 102px;"></div>
+        </div>
+        <div class="col-sm-4">
+            <div class='text-input__loading--line rect-box' style="width: auto; height: 102px;"></div>
+        </div>
+      </div>
+      <div class="col-xs-12">
+        <div class="col-xs-6" style="padding:0">
+            <div class='text-input__loading--line rect-box' style="width: auto; height: 302px;"></div>
+        </div>
+        <div class="col-xs-6">
+             <div class="col-xs-12">
+                <div class="row p0">
+                    <div class="col-sm-3 p0">
+                      <div class='text-input__loading--line rect-box' style="width: auto; height: 102px;"></div>
+                    </div>
+                    <div class="col-sm-3 p0">
+                        <div class='text-input__loading--line rect-box' style="width: auto; height: 102px;"></div>
+                    </div>
+                    <div class="col-sm-3 p0">
+                        <div class='text-input__loading--line rect-box' style="width: auto; height: 102px;"></div>
+                    </div>
+                    <div class="col-sm-3 p0">
+                        <div class='text-input__loading--line rect-box' style="width: auto; height: 102px;"></div>
+                    </div>
+                  </div>
+             </div>
+            <div class="col-xs-12">
+            <div class="circle-css"></div>
+            <div class="circle-css"></div>
+            <div class="circle-css"></div>
+            </div>
+        </div>
+      </div>
+</div>

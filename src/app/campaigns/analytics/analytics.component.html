@@ -17,15 +17,15 @@
 		<li *ngIf="campaignRouter==='managecampaigns'"><a  [routerLink]="['/home/campaigns/manage']">Manage Campaigns</a><i class="fa fa-angle-right"></i></li>
     <li *ngIf="campaignRouter==='notification'"><a [routerLink]="['/home/dashboard/notifications']">Notifications</a><i class="fa fa-angle-right"></i></li>
     <li *ngIf="campaignRouter==='partnerAnalytics'"><a [routerLink]="['/home/partners/analytics']">Partner Analytics</a><i class="fa fa-angle-right"></i></li>
-    <li style="color: #888;" *ngIf="isPartnerEnabledAnalyticsAccess">{{campaign.campaignName}} <b *ngIf="isNavigatedThroughAnalytics">(Data Sharing Enabled)</b></li>
-    <li style="color: #888;" *ngIf="!isPartnerEnabledAnalyticsAccess">{{campaign.campaignName}} <b *ngIf="isNavigatedThroughAnalytics">(Data Sharing Disabled)</b></li>
+    <li style="color: #888;" *ngIf="isPartnerEnabledAnalyticsAccess">{{campaign.campaignName}} <b  *ngIf="isNavigatedThroughAnalytics" style="color:#0195da">(Data Sharing Enabled)</b></li>
+    <li style="color: #888;" *ngIf="!isPartnerEnabledAnalyticsAccess">{{campaign.campaignName}} <b *ngIf="isNavigatedThroughAnalytics" style="color:#ed1d24">(Data Sharing Disabled)</b></li>
 	</ul>
 </div>
 <div *ngIf="customResponse.responseType === 'ERROR'; else NOERROR" class="m10">
 	<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 </div>
-
 <ng-template #NOERROR>
+<!-- <app-list-loader></app-list-loader> -->
 	<div class="row">
 		<div class="pl10 pr10 col-xs-12" [ngClass]="{'col-sm-4': campaignType === 'VIDEO','forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}" *ngIf="campaignType === 'VIDEO' && campaign.selectedVideoId>0">
 			<a class="dashboard-stat dashboard-stat-lighter purple-soft" (click)="previewVideo(campaign.campaignVideoFile)" [class.disabled]="!isPartnerEnabledAnalyticsAccess ?true:null">
@@ -191,7 +191,7 @@
 					<h1>
 						<b>{{campaignReport.usersWatchCount}}</b>
 					</h1>
-					<h5>Recipients watched</h5>
+					<h5>Views</h5>
 				</div>
 			</button>
 		</div>
@@ -280,10 +280,17 @@
 				</div>
 			</div>
 		</div>
-	</div>
+  </div>
 	<div class="row" *ngIf="isPartnerEnabledAnalyticsAccess">
 		<div class="col-xs-12 col-sm-12 p-5x">
 			<div class="col-xs-12 p-5x">
+          <div class="row" *ngIf="!campaignViews">
+              <div class="porlet light" style="background: white;">
+                  <div class="portlet-body clearfix">
+                  <app-list-loader style="background: white"></app-list-loader>
+                 </div>
+            </div>
+            </div>
 				<div class="portlet light">
 					<div class="portlet-title">
 						<div class="caption">
@@ -294,14 +301,15 @@
 						</div>
 						<div class="btn-group pull-right" style="margin-top: -4px; cursor:pointer; color: #7d8c98">
 							<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none;margin-top: 14px;margin-right: 21px; float:right;">
-					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
-				</span>
+                <i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
+              </span>
 							<ul class="dropdown-menu pull-right">
 								<li><a id="delete_button" (click)="downloadTypeName = 'campaignViews'; downloadEmailLogs()"> Export To Excel </a></li>
 							</ul>
 						</div>
 					</div>
 					<div class="portlet-body clearfix">
+            <div *ngIf="campaignViews">
 						<div class="table-responsive">
 							<table class="table tgrid">
 								<thead>
@@ -338,7 +346,8 @@
 							</table>
 						</div>
 						<app-pagination  [pagination]="campaignViewsPagination" [type]="'campaignViews'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
-					</div>
+          </div>
+          </div>
 				</div>
 			</div>
 		</div>
