@@ -12,7 +12,7 @@
 				[ngClass]="{'fa-check': customResponse.responseType == 'SUCCESS',
 				'fa-exclamation': customResponse.responseType == 'ERROR'}"
 				aria-hidden="true" style="padding-right: 7px; padding-top: 10px;"></i> -->
-				<span class="text"
+				<span class="text" id='responseMessage'
 				[innerHTML]="customResponse.responseMessage"></span>
 		</h4>
 	</div>

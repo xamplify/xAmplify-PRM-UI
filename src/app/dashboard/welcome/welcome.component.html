@@ -94,8 +94,8 @@ cursor: not-allowed;
 						<h1 style="color: #76c9ff">Videos</h1>
 						<p>{{welcome_text.videos}}</p>
 						<div class="flex pull-right">
-							<button *ngIf="!authenticationService.isOnlyPartner()" class="btn btn-xs color1" [routerLink]="['/home/videos']" >upload video</button>
-              <button *ngIf="authenticationService.isOnlyPartner()" class="btn btn-xs color1" [routerLink]="['/home/videos/manage']">View videos</button>
+							<button *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdminPartner()|| authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.module.isVideo" class="btn btn-xs color1" [routerLink]="['/home/videos']" >upload video</button>
+              <button *ngIf="authenticationService.isOnlyPartner() || !authenticationService.module.isVideo" class="btn btn-xs color1" [routerLink]="['/home/videos/manage']">View videos</button>
               <button type="button" class="btn btn-xs color1-invert" data-toggle="modal" data-target="#myModal">Tell me how</button>
 						</div>
 					</div>

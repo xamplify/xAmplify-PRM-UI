@@ -153,7 +153,7 @@
 					<!-- BEGIN USER LOGIN DROPDOWN -->
 					<!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
 
-					<li class="dropdown dropdown-user"><a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+					<li class="dropdown dropdown-user top-menu-bar" id="headerdropDownLi"><a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
 						 <img class="img-circle" src="{{model.profilePicutrePath}}" /> <span
 							class="username username-hide-on-mobile">
 								{{model.displayName}}</span> <i class="fa fa-angle-down"></i>
@@ -178,7 +178,7 @@
 									class="icon-lock"></i> Lock Screen
 							</a></li>
 							<li class="divider"></li>
-							<li><a (click)="logout()"> <i class="icon-key"></i>
+							<li id="logoutButton"><a (click)="logout()"> <i class="icon-key"></i>
 									Log Out
 							</a></li>
 						</ul>
