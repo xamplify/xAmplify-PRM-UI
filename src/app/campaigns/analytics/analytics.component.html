@@ -484,11 +484,12 @@
 									<span *ngIf="emailLog.actionId == 1">Video Played</span> at {{emailLog.time | date: 'mediumTime'}}
 								</h4>
 								<span *ngIf="emailLog.countryCode">
-						 		<h6>{{emailLog.city}}, {{emailLog.country}}</h6>
+						 		<h6>
+								<img *ngIf="emailLog.countryCode" src="https://lipis.github.io/flag-icon-css/flags/4x3/{{emailLog.countryCode | lowercase}}.svg"
+								 width="20px" class="mr10">{{emailLog.country}}, {{emailLog.city}}</h6>
 						 		<h6>{{emailLog.isp}}</h6>
 						 	</span>
-								<img *ngIf="emailLog.countryCode" src="https://lipis.github.io/flag-icon-css/flags/4x3/{{emailLog.countryCode | lowercase}}.svg"
-								 width="24px">
+								
 								<span>
 								<h6>{{emailLog.time | date: 'fullDate'}}</h6>
 							</span>
