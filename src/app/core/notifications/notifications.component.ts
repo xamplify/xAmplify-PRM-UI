@@ -1,6 +1,5 @@
-import { hasProperties } from 'codelyzer/util/astQuery';
 import { Component, OnInit, Input } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { UserService } from '../../core/services/user.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { ReferenceService } from '../services/reference.service';
@@ -30,7 +29,7 @@ export class NotificationsComponent implements OnInit {
 
     listNotifications() {
       try{
-      this.userService.listNotifications(this.authenticationService.getUserId())
+        this.userService.listNotifications(this.authenticationService.getUserId())
             .subscribe(
             data => {
                 this.notifications = data;
@@ -39,10 +38,11 @@ export class NotificationsComponent implements OnInit {
             error => console.log(error),
             () => console.log('Finished')
             );
-          }catch(error) {console.error('error'+error); }
+        }catch(error) {console.error('error'+error); }
     }
 
     markAllAsRead() {
+      try{
         this.userService.markAllAsRead(this.authenticationService.getUserId())
             .subscribe(
             data => {
@@ -54,8 +54,10 @@ export class NotificationsComponent implements OnInit {
             error => console.log(error),
             () => console.log('Finished')
             );
+        }catch(error) {console.error('error'+error); }
     }
     markAsRead(notification: any) {
+      try{
         this.userService.markAsRead(notification)
             .subscribe(
             data => {
@@ -63,6 +65,7 @@ export class NotificationsComponent implements OnInit {
             error => console.log(error),
             () => console.log('Finished')
             );
+        }catch(error) {console.error('error'+error); }
     }
 
     navigate(notification: any) {
@@ -74,11 +77,13 @@ export class NotificationsComponent implements OnInit {
     }
 
     setPage( page: number ) {
+      try{
         if ( page < 1 || page > this.pager.totalPages ) {
             return;
         }
         this.pager = this.socialPagerService.getPager( this.notifications.length, page, this.pageSize );
         this.pagedItems = this.notifications.slice( this.pager.startIndex, this.pager.endIndex + 1 );
+      }catch(error) {console.error('error'+error); }
     }
 
     selectedPageNumber(event) {

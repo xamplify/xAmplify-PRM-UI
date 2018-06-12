@@ -1,0 +1,16 @@
+.box-custom {
+  width: auto !important;
+  height: 102px !important;
+}
+.circle-custom {
+  margin: 45px 28px;
+}
+.circle-css{
+  width:22%;
+  border-radius:50% !important;
+  height:100px;
+  background:#bbbaba44;
+  float:left;
+  border: 7px solid;
+  color: #cac7c7;
+  }

@@ -93,13 +93,3 @@ td:nth-child(last){
 .w50{width: 50%}
 .w75{width: 75%}
 .w100{width: 100%}
-
-.circle-css{
-  width:19%;
-  border-radius:50% !important;
-  height:100px;
-  background:#bbbaba44;
-  float:left;
-  border: 7px solid;
-  color: #cac7c7;
-  }

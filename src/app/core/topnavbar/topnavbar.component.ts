@@ -1,8 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
 import { UserService } from '../services/user.service';
 import { SocialService } from '../../social/services/social.service';
-import { User } from '../models/user';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { ReferenceService } from '../../core/services/reference.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
@@ -10,7 +9,6 @@ import { UtilService } from '../../core/services/util.service';
 import { Roles } from '../../core/models/roles';
 import { Properties } from '../../common/models/properties';
 
-declare var swal, $: any;
 @Component({
   selector: 'app-topnavbar',
   templateUrl: './topnavbar.component.html',
@@ -25,6 +23,7 @@ export class TopnavbarComponent implements OnInit {
   constructor(public router: Router, public userService: UserService, public utilService: UtilService,
     public socialService: SocialService, public authenticationService: AuthenticationService,
     public refService: ReferenceService, public logger: XtremandLogger,public properties: Properties) {
+    try{
     const userName = this.authenticationService.user.emailId;
     if (this.refService.topNavbarUserService === false || this.utilService.topnavBareLoading === false) {
       this.refService.topNavbarUserService = true;
@@ -51,7 +50,7 @@ export class TopnavbarComponent implements OnInit {
           }
         },
         error => { this.logger.error(this.refService.errorPrepender + ' Constructor():' + error); },
-        () => console.log('Finished')
+        () => this.logger.log('Finished')
         );
     }
     const roles = this.authenticationService.getRoles();
@@ -70,38 +69,44 @@ export class TopnavbarComponent implements OnInit {
     if (roles.indexOf(this.roleName.companyPartnerRole) > -1) {
       this.authenticationService.module.isCompanyPartner = true;
     }
-    
+
     if(roles.indexOf(this.roleName.vendorRole)>-1){
         this.authenticationService.module.isVendor = true;
     }
-
+    }catch(error) {this.logger.error('error'+error); }
   }
 
   getUnreadNotificationsCount() {
+   try{
     this.userService.getUnreadNotificationsCount(this.authenticationService.getUserId())
       .subscribe(
       data => {
         this.userService.unreadNotificationsCount = data;
       },
-      error => console.log(error),
-      () => console.log('Finished')
+      error => this.logger.log(error),
+      () => this.logger.log('Finished')
       );
+    }catch(error) {this.logger.error('error'+error); }
   }
-  
+
   isAddedByVendor(){
+    try{
       this.userService.isAddedByVendor(this.authenticationService.getUserId())
       .subscribe(
       data => {
            this.authenticationService.isAddedByVendor=data;
       },
-      error => console.log(error),
-      () => console.log('Finished')
+      error => this.logger.log(error),
+      () => this.logger.log('Finished')
       );
+    }catch(error) {this.logger.error('error'+error); }
   }
 
   ngOnInit() {
-    this.getUnreadNotificationsCount();
-    this.isAddedByVendor();
+    try{
+     this.getUnreadNotificationsCount();
+     this.isAddedByVendor();
+    }catch(error) {this.logger.error('error'+error); }
   }
 
   logout() {

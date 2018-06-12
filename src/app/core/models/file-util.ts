@@ -1,4 +1,4 @@
-import { Injectable }       from '@angular/core';
+import { Injectable } from '@angular/core';
 
 @Injectable()
 export class FileUtil {
@@ -46,7 +46,7 @@ export class FileUtil {
             }else{
                 return null;
             }
-        }   
+        }
         //dataArr = dataArr.slice(1);
         return dataArr;
     }
