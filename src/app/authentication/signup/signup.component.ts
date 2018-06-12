@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy} from '@angular/core';
 import { Router } from '@angular/router';
-import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { User } from '../../core/models/user';
 import { RegularExpressions } from '../../common/models/regular-expressions';
@@ -9,7 +9,7 @@ import { CustomResponse } from '../../common/models/custom-response';
 import { Properties } from '../../common/models/properties';
 
 import { UserService } from '../../core/services/user.service';
-import { matchingPasswords, noWhiteSpaceValidator, validateCountryName } from '../../form-validator';
+import { matchingPasswords } from '../../form-validator';
 import { ReferenceService } from '../../core/services/reference.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { CountryNames } from '../../common/models/country-names';

@@ -19,16 +19,17 @@ import { PlayVideoLoaderComponent } from './loader/play-video-loader/play-video-
 import { GridLoaderComponent } from './loader/grid-loader/grid-loader.component';
 import { ExportCsvComponent } from './export/export-csv/export-csv.component';
 import { LoadingModule } from 'ngx-loading';
+import { AnalyticsLoaderComponent } from './loader/analytics-loader/analytics-loader.component';
 
 @NgModule({
   imports: [CommonModule, FormsModule,LoadingModule],
   declarations: [DonutChartComponent, PaginationComponent, WorldmapComponent,PieChartComponent,
-                 BarChartComponent, EmbedModalComponent, EmbedModalComponent, UserInfoComponent, LocationComponent, 
-                 PlatformComponent, ResponseMessageComponent, PreviewVideoComponent, ContactsCampaignsMailsComponent, ListLoaderComponent, 
-                 PlayVideoLoaderComponent, GridLoaderComponent, ExportCsvComponent],
+                 BarChartComponent, EmbedModalComponent, EmbedModalComponent, UserInfoComponent, LocationComponent,
+                 PlatformComponent, ResponseMessageComponent, PreviewVideoComponent, ContactsCampaignsMailsComponent, ListLoaderComponent,
+                 PlayVideoLoaderComponent, GridLoaderComponent, ExportCsvComponent, AnalyticsLoaderComponent],
   exports: [DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent,
-    BarChartComponent, EmbedModalComponent, UserInfoComponent, LocationComponent, PlatformComponent, 
+    BarChartComponent, EmbedModalComponent, UserInfoComponent, LocationComponent, PlatformComponent,
     ResponseMessageComponent, PreviewVideoComponent,PieChartComponent, ListLoaderComponent, GridLoaderComponent, PlayVideoLoaderComponent,
-    ExportCsvComponent,LoadingModule]
+    ExportCsvComponent,LoadingModule,AnalyticsLoaderComponent]
 })
 export class CommonComponentModule { }

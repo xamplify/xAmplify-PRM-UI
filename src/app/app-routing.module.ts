@@ -1,15 +1,8 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
+import { Routes, RouterModule } from '@angular/router';
 
 import { AuthGuard } from './auth.guard';
 
-import { VideosModule } from './videos/videos.module';
-import { ContactsModule } from './contacts/contacts.module';
-import { PartnersModule } from './partners/partners.module';
-import { EmailTemplateModule } from './email-template/email-template.module';
-import { CampaignsModule } from './campaigns/campaigns.module';
-import { UpgradeModule } from './upgrade/upgrade.module';
-import { TeamMemberModule } from './team/team-member.module';
 import { AppCustomPreloader } from './app-routing-loader';
 
 import { HomeComponent } from './core/home/home.component';

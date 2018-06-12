@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../../core/services/authentication.service';
 
-declare const $,google: any;
 @Component({
   selector: 'app-intro',
   templateUrl: './intro.component.html',
