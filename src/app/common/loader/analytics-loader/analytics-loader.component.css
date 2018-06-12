@@ -2,15 +2,12 @@
   width: auto !important;
   height: 102px !important;
 }
-.circle-custom {
-  margin: 39px 26px;
-}
 .circle-css{
-  width:22%;
-  border-radius:50% !important;
-  height:100px;
-  background:#bbbaba44;
-  float:left;
-  border: 7px solid;
-  color: #cac7c7;
+    width: 100px;
+    border-radius: 50% !important;
+    height: 100px;
+    background: #f5f5f5;
+    border: 5px solid;
+    color: #cac7c7;
+    margin: 4em 0;
   }
