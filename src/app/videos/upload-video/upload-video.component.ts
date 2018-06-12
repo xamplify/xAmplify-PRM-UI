@@ -1,5 +1,4 @@
-import { Component, OnInit, Directive, ViewChild, ChangeDetectorRef, AfterContentInit, ElementRef, OnDestroy } from '@angular/core';
-import { Headers, Response } from '@angular/http';
+import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { FileUploader } from 'ng2-file-upload/ng2-file-upload';

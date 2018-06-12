@@ -15,7 +15,7 @@ import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { UtilService } from '../../core/services/util.service';
 import { CustomResponse } from '../../common/models/custom-response';
 
-declare var swal, QuickSidebar, Metronic, Demo, Layout, Index, $: any;
+declare var swal, QuickSidebar, $: any;
 
 @Component({
     selector: 'app-manage-video',

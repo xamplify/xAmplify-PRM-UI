@@ -3,7 +3,7 @@ import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, ChangeDetect
 } from '@angular/core';
 
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { FormsModule, FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 
 import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
 import { FileItem } from 'ng2-file-upload';
@@ -22,7 +22,7 @@ import { User } from '../../../core/models/user';
 import { DefaultVideoPlayer } from '../../models/default-video-player';
 import { EmbedModalComponent } from '../../../common/embed-modal/embed-modal.component';
 
-declare var swal, videojs, QuickSidebar,$: any;
+declare var videojs, QuickSidebar,$: any;
 
 @Component({
     selector: 'app-edit-video',
