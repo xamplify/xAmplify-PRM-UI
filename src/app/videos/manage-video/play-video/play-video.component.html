@@ -10,7 +10,8 @@
 	<div class="portlet-body">
 		<div class="row margin-bottom-30">
 			<div class="col-md-7">
-				<div style="margin-bottom: 1em;">
+        <app-play-video-loader [isPlaying]="true" *ngIf="isVideoChanged"></app-play-video-loader>
+				<div style="margin-bottom: 1em;" [hidden]="isVideoChanged">
 					<div id="overLayImage"></div>
 					<div id="overlay-logo" class="video-js"  [ngClass]="{'logoCssplay':!fullScreenMode , 'logoFullscreen' :fullScreenMode}">
 						<a [href]="logoLink" *ngIf="this.videoFileService.videoType ==='partnerVideos'" target="_blank" [class.disabled]="logoLink===null">
@@ -22,9 +23,9 @@
 					</div>
 					<div id="newPlayerVideo"></div>
 				</div>
-				<div id="modalDialog"></div>
+				<div id="modalDialog" [hidden]="isVideoChanged"></div>
 				<!-- modal popup  -->
-				<div id="overlay-modal" class="video-js overlay is360video" [class.overlaySet]="overLaySet==false" style="height: 360px; width: 100% !important;color:white !important; background-color:rgba(29, 25, 25, 0.72);">
+				<div id="overlay-modal" class="video-js overlay is360video"  [hidden]="isVideoChanged" [class.overlaySet]="overLaySet==false" style="height: 360px; width: 100% !important;color:white !important; background-color:rgba(29, 25, 25, 0.72);">
 					<form #f="ngForm" novalidate>
 						<div class="col-xs-12 overlay-main" [ngClass]="{'bottomCss':fullScreenMode}">
 							<h2 class="upper-text-heading upperText">{{selectedVideo.upperText}}</h2>
@@ -46,7 +47,7 @@
 							<h4 class="upper-text-heading lowerText">{{selectedVideo.lowerText}}</h4>
 						</div>
 					</form>
-					<div>
+					<div [hidden]="isVideoChanged">
 						<div *ngIf="callAction.videoOverlaySubmit=='SUBMIT'" id="repeatPlay" style="cursor: pointer">
 							<i class="fa fa-repeat" aria-hidden="true"></i>
 						</div>
@@ -57,10 +58,10 @@
 					</div>
 				</div>
 				<!-- modal popup end-->
-				<div>
+				<div [hidden]="isVideoChanged">
 					<h3 style="word-break: break-all;color:#777">{{selectedVideo.title}}</h3>
 				</div>
-				<div class="col-xs-12 col-sm-6" style="padding: 0;">
+				<div class="col-xs-12 col-sm-6" style="padding: 0;" [hidden]="isVideoChanged">
 					<div *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId == selectedVideo.uploadedUserId ) || authenticationService.isOnlyPartner">
 						<button *ngIf="shareVideo==true" class="btn btn-primary shareVideoButton" (click)="shareClick()" [disabled]="isThisDraftVideo==true">
 							<i class="fa fa-share-alt" aria-hidden="true"></i> Share
@@ -71,7 +72,7 @@
 						</button>
 					</div>
 				</div>
-				<div class="col-xs-12 col-sm-6" style="padding: 0;">
+				<div class="col-xs-12 col-sm-6" style="padding: 0;" [hidden]="isVideoChanged">
 					<div class="col-xs-12" style="padding: 0;">
 						<span class="pull-right videoViews">
 							<h4 class="viewsh4">{{selectedVideo.views}} views</h4>
@@ -95,11 +96,11 @@
 				<!-- emebd src Modal Start-->
 				<app-embed-modal *ngIf="embedModelVideo" [video]="embedModelVideo" (notifyParent)="closeEmbedModal($event)"></app-embed-modal>
 				<!-- Modal End-->
-				<div>
+				<div [hidden]="isVideoChanged">
 					<strong>Uploaded on :{{selectedVideo.uploadedDate}}</strong>
 					<p align="justify" style="word-break: break-all;"> {{selectedVideo.description}}</p>
 				</div>
-				<div>
+				<div [hidden]="isVideoChanged">
 					<p>Category : {{selectedVideo.category.name}}</p>
 				</div>
 				<div>
@@ -235,7 +236,7 @@
 									<h4>Related Videos:</h4>
 									<div>
 										<div class="row mix-grid" style="margin-top: 10px">
-                      <app-grid-loader *ngIf="httpRequestLoader.isLoading"></app-grid-loader>
+                      <app-play-video-loader [playVideo]="true" *ngIf="httpRequestLoader.isLoading"></app-play-video-loader>
 											<div *ngIf="allVideos && !httpRequestLoader.isLoading">
 												<div class="col-md-6 col-sm-8 mix category_1 mix_all" style="display:block; opacity: 1;" *ngFor="let videoFile of pagination.pagedItems; let i = index;">
 													<div class="mix-inner">

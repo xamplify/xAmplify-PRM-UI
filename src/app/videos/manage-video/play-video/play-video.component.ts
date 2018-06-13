@@ -66,6 +66,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     logoLink: string;
     pauseVideo:boolean;
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
+    isVideoChanged = false;
     constructor(public authenticationService: AuthenticationService, public videoFileService: VideoFileService,
         public videoUtilService: VideoUtilService, public pagination: Pagination, public xtremandLog: XtremandLog,
         public deviceService: Ng2DeviceService, public xtremandLogger: XtremandLogger,public userService: UserService,
@@ -114,6 +115,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.embedModelVideo = this.selectedVideo;
     }
     showVideo(videoFile: SaveVideoFile, position: number) {
+        this.isVideoChanged = true;
         this.createSessionId();  // creating new session id
         console.log('videoComponent showVideo() ' + position);
         if (this.selectedVideo) {
@@ -147,8 +149,10 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.defaultVideoOptions();
                 this.transperancyControllBar(this.selectedVideo.transparency);
                 if (this.selectedVideo.enableVideoController === false) { this.defaultVideoControllers(); }
+                this.isVideoChanged = false;
             },
             (error: any) => {
+                this.isVideoChanged = false;
                 console.log('Play video component : show play videos method ():' + error);
                 this.xtremandLogger.errorPage(error);
             }

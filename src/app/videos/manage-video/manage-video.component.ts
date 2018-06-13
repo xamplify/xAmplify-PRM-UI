@@ -276,8 +276,8 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                     this.referenceService.showServerError(this.httpRequestLoader);
                     this.httpRequestLoader.statusCode = error.status;
                 } else if (error._body.search('video is being used in one or more campaigns. Please delete those campaigns') !== -1) {
-                    let message = error._body.replace('Heads up!','Heads up! ( ');
-                     message = message.replace('video',') video');
+                    let message = error._body.replace('Heads up!','Heads up! " ');
+                     message = message.replace('video','" video');
                      message = message.replace('"','');
                      message = message.replace('."','.');
                      message = message.replace('more campaigns','more campaigns or might be used by vendor activity');
