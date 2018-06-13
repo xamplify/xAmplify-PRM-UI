@@ -243,12 +243,12 @@ img:hover {
 			</button>
 			<ul class="dropdown-menu pull-right">
 				<li><a id="save_button" *ngIf="selectedAddPartnerOption != 5" (click)="saveContacts()">Save </a></li>
-				<li><a id="save_button" *ngIf="selectedAddPartnerOption != 5" (click)="cancelPartners()">Cancel </a></li>
+				<li><a id="save_button" *ngIf="selectedAddPartnerOption != 5 || clipBoard" (click)="cancelPartners()">Cancel </a></li>
 				<li><a id="saveAs_button"
-					*ngIf="selectedAddPartnerOption == 5" (click)="editContactComponent.saveAs(); editContactComponent.addPartnerSave = true">Save
+					*ngIf="selectedAddPartnerOption == 5 && !clipBoard" (click)="editContactComponent.saveAs(); editContactComponent.addPartnerSave = true">Save
 						As </a></li>
 				 <li><a id="exportToExcel"
-					*ngIf="selectedAddPartnerOption == 5 && pagination.pagedItems?.length != 0 " (click)="downloadPartnerList()">Export
+					*ngIf="selectedAddPartnerOption == 5 && pagination.pagedItems?.length != 0 && !clipBoard" (click)="downloadPartnerList()">Export
 						To Excel</a></li>
 			</ul>
 		</div>
