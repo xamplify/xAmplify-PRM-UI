@@ -485,10 +485,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             }else{
                 this.loadEmailTemplates(this.emailTemplatesPagination);//Loading Email Templates
             }
-
         }else{
-           /* this.contactsPagination.filterValue = this.campaign.channelCampaign;
-            this.loadCampaignContacts(this.contactsPagination);*/
             this.loadContacts();
         }
         this.listAllTeamMemberEmailIds();
@@ -766,7 +763,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 this.categories = result.categories;
                 pagination.totalRecords = result.totalRecords;
                 this.videosPagination = this.pagerService.getPagedItems(pagination, this.campaignVideos);
-               console.log( this.videosPagination);
                this.filterVideosForEditCampaign();
                this.refService.loading(this.campaignVideo.httpRequestLoader, false);
             },

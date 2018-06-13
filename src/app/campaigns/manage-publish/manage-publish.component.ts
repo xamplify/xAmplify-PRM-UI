@@ -174,7 +174,6 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             .subscribe(
                 data => {
                     this.campaignService.campaign = data;
-                    console.log(this.campaignService.campaign);
                     let isLaunched = this.campaignService.campaign.launched;
                     let isNurtureCampaign = this.campaignService.campaign.nurtureCampaign;
                     let campaignType = this.campaignService.campaign.campaignType;

@@ -49,4 +49,5 @@ export class SaveVideoFile {
     brandingLogoDescUri: string;
     companyName: string; 
     enableVideoCobrandingLogo:boolean;
+    uploadedUserName:string = "";
  }
