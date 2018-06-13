@@ -10,7 +10,7 @@
 .btn-social { color: #fff;}
 </style>
 <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-<div class="page-content" [hidden]="isTimeLineView">
+<div class="page-content" *ngIf="!isTimeLineView">
 <div class="page-bar square-box" style="margin: 0 10px 15px;border-radius: 0;">
 	<ul class="page-breadcrumb">
 		<li><i class="fa fa-home"></i> <a [routerLink]="referenceService.homeRouter">Home</a> <i class="fa fa-angle-right"></i></li>
@@ -20,7 +20,7 @@
     <li style="color: #888;" *ngIf="isPartnerEnabledAnalyticsAccess">{{campaign.campaignName}} <b  *ngIf="isNavigatedThroughAnalytics" style="color:#0195da">(Data Sharing Enabled)</b></li>
     <li style="color: #888;" *ngIf="!isPartnerEnabledAnalyticsAccess">{{campaign.campaignName}} <b *ngIf="isNavigatedThroughAnalytics" style="color:#ed1d24">(Data Sharing Disabled)</b></li>
 	</ul>
-<app-analytics-loader [campaignType]="campaignType" *ngIf="loading"></app-analytics-loader>
+<!--<app-analytics-loader [campaignType]="campaignType" *ngIf="loading"></app-analytics-loader>-->
 </div>
 <div *ngIf="customResponse.responseType === 'ERROR'; else NOERROR" class="m10">
 	<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
@@ -325,7 +325,7 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr *ngFor="let item of campaignViews" (click)="userTimeline(item.campaignId, item.userId, item.emailId);">
+									<tr *ngFor="let item of campaignViews" (click)="userTimeline(item);">
 										<td>
 										<app-user-info  [userInfo]="item"> </app-user-info>
 											<!-- here emailId coming as userMail -->
@@ -358,104 +358,70 @@
 </div>
 
 
-<div id="timeline-view" class="page-content" [hidden]="!isTimeLineView">
+<div id="timeline-view" class="page-content" *ngIf="isTimeLineView">
 	<div class="page-bar">
 		<a (click)="resetTopNavBarValue()" class="pull-right close-circle" style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;"> <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;"
 			aria-hidden="true"></span></a>
 
-		<div class="frst-container" data-animation-name="slideInUp" style="margin: 43px auto;">
+		<div data-animation-name="slideInUp">
 			<div class="col-xs-12 col-sm-6" style="padding: 12px;z-index: 3;">
-				<div style="text-align: center;">
-					<span style="color: #7d7676; font-weight: bold; font-size: 15px;">
-              <span >Most Active Recipients for this Campaign</span>
-					<!-- <span *ngIf="campaignType==='VIDEO'">Most Active Recipients for this Campaign</span>
-					<span *ngIf="campaignType!=='VIDEO'">Most Active Recipients for this Campaign</span> -->
-					</span>
-					</div>
+				<div class="text-center f-w-600">Most Active Recipients for this Campaign</div>
 				<app-bubble-chart [campaignId]="campaignId"></app-bubble-chart>
-				<div style="text-align: center;"><span style="color: #7d7676; font-weight: bold; font-size: 15px;">
+				<div class="text-center f-w-600">
 					<span *ngIf="campaignType==='VIDEO'">View Count By Recipient</span>
 					<span *ngIf="campaignType!=='VIDEO'">Email Opened Count By Recipient </span>
-				  </span></div>
-				<div id="campaign-views-barchart" style="min-width: 310px; max-width: 800px; height: 260px; margin: 0 auto"></div>
+				</div>
+				<div id="campaign-views-barchart" style="width: 100%; max-width: 100%; height: 260px; margin: 0 auto"></div>
 				<app-pagination *ngIf="pagination.pagedItems?.length > 0" [pagination]="pagination" [type]="'viewsBarChart'" (notifyParent)="setPage($event)" (notifyParentDropDown)= "paginationDropdown($event)"></app-pagination>
 			</div>
 			<div class="col-xs-12 col-sm-6">
-				<div class="frst-timeline frst-timeline-block frst-timeline-style-1 frst-alternate frst-date-opposite">
-					<div class="frst-timeline-block frst-even-item" data-animation="slideInUp" style="padding: 6px;margin-left: -492px;">
-						<div class="frst-timeline-img abc">
-							<div class="frst-labels frst-start-label">
-								<span>
-								<img src="assets/images/user-new.png" style="width: auto;" alt="{{selectedRow.userEmail}}">
-							</span>
-							</div>
-						</div>
-						<div class="frst-timeline-content box">
-							<div class="frst-timeline-content-inner" style="background: none;padding: 10px">
-								<h5 *ngIf="firstName" style="font-weight: 700;margin-top: -7px;">{{firstName}}</h5>
-								<span><h6 style="font-weight: 600; margin-top:-2px;font-size: 13px;">{{selectedRow.userEmail}}</h6></span>
-								<span class="frst-date"></span>
-								<div class="row" style=" padding: 74px;margin: -73px;">
-									<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 p-5x">
-										<a >
-											<div style="text-align: center">
-												<span><img src="assets/images/email-opened.png" style="margin: 0px 5px;width: 52px;"></span>
-											</div>
-											<div>
-												<span>Email Opened</span>
-											</div>
-											<div class="number" style="text-align: center">
-												<span data-counter="counterup" style="margin: 0 25px;">{{userCampaignReport.emailOpenCount}}</span>
-											</div>
-										</a>
-									</div>
-									<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 p-5x">
-										<a >
-											<div style="text-align: center">
-												<span><img src="assets/images/clicked-new.png" style="margin: 0px 10px;width: 52px;"></span>
-											</div>
-											<div style="text-align: center;">
-												<span>Clicked URL</span>
-											</div>
-											<div class="number" style="text-align: center">
-												<span data-counter="counterup" style="margin: 0 25px;">{{userCampaignReport.emailClickedCount}}</span>
-											</div>
-										</a>
-									</div>
-									<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 p-5x" [hidden]="campaignType==='EMAIL' || campaignType==='SOCIAL' ">
-										<a>
-											<div style="text-align: center">
-												<span><img src="assets/images/video-watched.png" style="margin: 0px 11px;width: 52px;"></span>
-											</div>
-											<div>
-												<span>VideosWatched</span>
-											</div>
-											<div class="number" style="text-align: center">
-												<span data-counter="counterup" style="margin: 0 33px;">{{userCampaignReport.totalUniqueWatchCount}}</span>
-											</div>
-										</a>
-									</div>
-									<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 p-5x" [hidden]="campaignType==='EMAIL' || campaignType==='SOCIAL'">
-										<a >
-											<div style="text-align: center">
-												<span><img src="assets/images/total-time-spent.png" style="margin: 4px 15px;width: 45px;"></span>
-											</div>
-											<div style="text-align: center;">
-												<span>Time Spent</span>
-											</div>
-											<div class="number" style="text-align: center">
-												<span data-counter="counterup" style="margin: 0 33px;">{{totalTimeSpent}}</span>
-											</div>
-										</a>
-									</div>
+				<div data-animation="slideInUp">
+					<div class="row mb10">
+						<img src="/assets/images/user.png" width="48px" class="user-profile-image">
+						<h5 class="f-w-600 mt10 mb0">{{selectedRow.firstName}}&nbsp;{{selectedRow.lastName}}</h5>
+						<h6 class="m0">{{selectedRow.emailId}}</h6>
+					</div>
+					<div class="row mb10">
+						<div class="col-sm-3 col-xs-6">
+							<a class="text-center">
+								<div><img src="assets/images/email-opened.png" style="margin: 0px 5px;width: 52px;"></div>
+								<div>Email Opened</div>
+								<div class="number">
+									<span data-counter="counterup" style="margin: 0 25px;">{{userCampaignReport.emailOpenCount}}</span>
 								</div>
-							</div>
+							</a>
+						</div>
+						<div class="col-sm-3 col-xs-6">
+							<a class="text-center">
+								<div><img src="assets/images/clicked-new.png" style="margin: 0px 10px;width: 52px;"></div>
+								<div>Clicked URL</div>
+								<div class="number">
+									<span data-counter="counterup" style="margin: 0 25px;">{{userCampaignReport.emailClickedCount}}</span>
+								</div>
+							</a>
+						</div>
+						<div class="col-sm-3 col-xs-6" [hidden]="campaignType==='EMAIL' || campaignType==='SOCIAL' ">
+							<a class="text-center">
+								<div><img src="assets/images/video-watched.png" style="margin: 0px 11px;width: 52px;"></div>
+								<div>Views</div>
+								<div class="number">
+									<span data-counter="counterup" style="margin: 0 33px;">{{userCampaignReport.totalUniqueWatchCount}}</span>
+								</div>
+							</a>
+						</div>
+						<div class="col-sm-3 col-xs-6" [hidden]="campaignType==='EMAIL' || campaignType==='SOCIAL'">
+							<a class="text-center">
+								<div><img src="assets/images/total-time-spent.png" style="margin: 4px 15px;width: 45px;"></div>
+								<div>Time Spent</div>
+								<div class="number">
+									<span data-counter="counterup" style="margin: 0 33px;">{{totalTimeSpent}}</span>
+								</div>
+							</a>
 						</div>
 					</div>
 				</div>
 
-
-	<ul class="timeline" data-animation="slideInUp">
+	<ul class="timeline" data-animation="slideInUp" *ngIf="selectedRow">
 		<li class="timeline-inverted">
           <div class="timeline-badge warning"><img src="assets/images/closed-env.png"></div>
           <div class="timeline-panel">
@@ -464,7 +430,7 @@
             </div>
             <div class="timeline-body">
 				<h5><span class="f-w-600">{{campaign.campaignName}}</span> campaign Launched at {{campaign.launchTime | date: 'shortTime'}}</h5>
-				<h5>Email sent to <b>{{selectedRow.userEmail}}</b></h5>
+				<h5>Email sent to <b>{{selectedRow.emailId}}</b></h5>
             </div>
           </div>
         </li>
@@ -484,24 +450,21 @@
 			<div class="timeline-body">
 				<h5>
 					<span *ngIf="emailLog.actionId == 13">
-					Campaign Email Opened 
-					<span class="f-w-600" *ngIf="emailLog.subject">{{emailLog.subject}}</span>
+						Campaign <span class="f-w-600" *ngIf="emailLog.subject">{{emailLog.subject}}</span> email opened 					
 					</span>
-					<span *ngIf="emailLog.actionId == 14">Clicked video GIF: 
-					<span class="f-w-600">{{campaign.campaignVideoFile.title}}</span>
-					</span>
+					<span *ngIf="emailLog.actionId == 14">Clicked <span class="f-w-600">{{campaign.campaignVideoFile.title}}</span> video GIF</span>
 					<span *ngIf="emailLog.actionId == 15">
 					Clicked on the URL
 					<span class="f-w-600" *ngIf="emailLog.url"><a href="{{emailLog.url}}" target="_blank">{{emailLog.url}}</a></span>
 					</span>
-					<span *ngIf="emailLog.actionId == 1">Video Played</span> at {{emailLog.time | date: 'shortTime'}}
+					<span *ngIf="emailLog.actionId == 1"><span class="f-w-600">{{campaign.campaignVideoFile.title}}</span> played</span> at {{emailLog.time | date: 'shortTime'}}
 				</h5>
 				<span *ngIf="emailLog.countryCode">
 					<h6>
 						<img *ngIf="emailLog.countryCode" src="https://lipis.github.io/flag-icon-css/flags/4x3/{{emailLog.countryCode | lowercase}}.svg"
 						width="20px" class="mr10">{{emailLog.country}}, {{emailLog.city}}
 					</h6>
-					<h6>{{emailLog.isp}}</h6>
+					<h6 class="mb0">{{emailLog.isp}}</h6>
 				</span>
 				<div *ngIf="emailLog.actionId == 1">
 					<app-heat-map [sessionId]="emailLog.sessionId"></app-heat-map>

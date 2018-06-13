@@ -363,7 +363,12 @@ tr>td>h6 {
 
 
 
-
+.user-profile-image {
+	width: 48px;
+	height: auto;
+	float: left;
+	margin: 0 20px 0 -20px;
+}
 .timeline {
     list-style: none;
     padding: 0;
@@ -371,8 +376,8 @@ tr>td>h6 {
 }
 
     .timeline:before {
-    top: 0;
-    bottom: -20px;
+    top: 15px;
+    bottom: -35px;
     position: absolute;
     content: " ";
     width: 2px;
@@ -380,11 +385,11 @@ tr>td>h6 {
     margin-left: -1.5px;
     }
 	.timeline:last-child:before {
-		background-color: #fff;
+		display: none;
 	}
 
     .timeline > li {
-        margin-bottom: 20px;
+        margin-bottom: 10px;
         position: relative;
     }
 
@@ -414,8 +419,8 @@ tr>td>h6 {
             border: 1px solid #d4d4d4;
             padding: 15px;
             position: relative;
-            -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.175);
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.175);
+            -webkit-box-shadow: 0 0 2px #f1f1f1;
+            box-shadow: 0 0 2px #f1f1f1;
         }
 
             .timeline > li > .timeline-panel:before {

@@ -63,7 +63,6 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   worldMapUserTotalData: any;
   countryCode: string;
   campaignTypeValue: string;
-  firstName: string;
   isPartnerCampaign: string;
   renderMapData: any;
   campaingContactLists:any;
@@ -86,8 +85,15 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       this.isTimeLineView = false;
       this.loggedInUserId = this.authenticationService.getUserId();
       this.campaign = new Campaign();
+      this.selectedRow.emailId = "";
       if (this.referenceService.isFromTopNavBar) {
-       this.userTimeline(this.referenceService.topNavBarNotificationDetails.campaignId, this.referenceService.topNavBarNotificationDetails.userId, this.referenceService.topNavBarNotificationDetails.emailId);
+        const object = {
+          "campaignId": this.referenceService.topNavBarNotificationDetails.campaignId,
+          "userId": this.referenceService.topNavBarNotificationDetails.userId,
+          "emailId": this.referenceService.topNavBarNotificationDetails.emailId
+        }
+       this.isTimeLineView = false;
+       this.userTimeline(object);
       }
   }
   showTimeline() {
@@ -104,16 +110,6 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       .subscribe(
       data => {
         this.campaignViews = data.campaignviews;
-        try {
-          const self = this;
-          const obj = this.campaignViews.find(function (obj) { return obj.emailId === self.selectedRow.userEmail; });
-          this.firstName = obj.firstName;
-          if(this.firstName === undefined || this.firstName === null){
-            const index = this.selectedRow.userEmail.indexOf('@');
-            this.firstName = this.selectedRow.userEmail.substring(0,index);
-          }
-        } catch (err) { console.log(err); }
-        console.log(data);
         const views = [];
         for (let i = 0; i < data.campaignviews.length; i++) {
           views.push(data.campaignviews[i].viewsCount)
@@ -194,8 +190,6 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
 
   campaignViewsCountBarchart(names, data) {
   this.loading = true;
-      console.log(names);
-    console.log(data);
     let nameValue: string;
     const maxValue = Math.max.apply(null, data);
     if(this.campaignType === 'VIDEO'){
@@ -209,6 +203,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       title: {
         text: ' '
       },
+      useHTML: true,
       xAxis: {
         categories: names,
         title: {
@@ -242,7 +237,6 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
           cursor: 'pointer',
           events: {
             click: function (e) {
-              //   alert(e.point.category+', views:'+e.point.y);
               self.userWatchedviewsInfo(e.point.category);
             }
           }
@@ -276,20 +270,12 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       data => {
         console.log(data);
         this.campaignBarViews = data.campaignviews;
-        const self = this;
-        try {
-          const obj = this.campaignBarViews.find(function (obj) { return obj.emailId === self.selectedRow.userEmail; });
-          console.log(obj.campaignId + ' user id is ' + obj.userId + 'email id ' + obj.emailId);
-          this.firstName = obj.firstName;
-          if(this.firstName === undefined || this.firstName === null){
-            const index = this.selectedRow.userEmail.indexOf('@');
-            this.firstName = this.selectedRow.userEmail.substring(0,index);
-          }
-        } catch (err) { this.firstName = ''; console.log(err); }
         const names = [];
         const views = [];
         for (let i = 0; i < data.campaignviews.length; i++) {
-          names.push(data.campaignviews[i].emailId);
+          const firstName = data.campaignviews[i].firstName ? data.campaignviews[i].firstName : "";
+          const lastName =  data.campaignviews[i].lastName ? data.campaignviews[i].lastName : "";
+          names.push( "<b>"+firstName + " "+ lastName + '</b><br/>' + data.campaignviews[i].emailId);
           views.push(data.campaignviews[i].viewsCount)
         }
         this.maxViewsValue = Math.max.apply(null, views);
@@ -497,12 +483,12 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       this.loading = false;
   }
 
-  userTimeline(campaignId: number, userId: number, emailId: string) {
+  userTimeline(campaignViews: any) {
     try{
     this.loading = true;
-     this.listEmailLogsByCampaignAndUser(campaignId, userId);
-    this.getTotalTimeSpentOfCampaigns(userId);
-    this.selectedRow.userEmail = emailId;
+     this.listEmailLogsByCampaignAndUser(campaignViews.campaignId, campaignViews.userId);
+    this.getTotalTimeSpentOfCampaigns(campaignViews.userId);
+    this.selectedRow = campaignViews;
     this.isTimeLineView = !this.isTimeLineView;
     if (!this.barChartCliked) {
       this.pagination.pageIndex = 1;
@@ -533,6 +519,8 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   }
   userWatchedviewsInfo(emailId: string) {
     try {
+      emailId = emailId.substring(emailId.indexOf('<br/>'), emailId.length);
+      emailId = emailId.substring(5);
     this.loading = true;
       if (emailId !== this.selectedRow.emailId) {
       this.userCampaignReport.emailOpenCount = 0;
@@ -540,14 +528,8 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       this.userCampaignReport.totalUniqueWatchCount = 0;
       this.barChartCliked = true;
 
-        const obj = this.campaignBarViews.find(function (obj) { return obj.emailId === emailId; });
-        console.log(obj.campaignId + ' user id is ' + obj.userId + 'email id ' + obj.emailId);
-        this.firstName = obj.firstName;
-        if(this.firstName === undefined || this.firstName === null){
-          const index = emailId.indexOf('@');
-          this.firstName = emailId.substring(0,index);
-        }
-        this.userTimeline(obj.campaignId, obj.userId, obj.emailId);
+        this.selectedRow = this.campaignBarViews.find(function (obj) { return obj.emailId === emailId; });
+        this.userTimeline(this.selectedRow);
         this.isTimeLineView = true;
     }
       this.loading = false;
@@ -750,12 +732,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
         this.campaignTotalViewsData = data.campaignviews;
         try {
           const self = this;
-          const obj = this.campaignTotalViewsData.find(function (obj) { return obj.emailId === self.selectedRow.emailId; });
-          this.firstName = obj.firstName;
-          if(this.firstName === undefined || this.firstName === null){
-            const index = this.selectedRow.emailId.indexOf('@');
-            this.firstName = this.selectedRow.emailId.substring(0,index);
-          }
+          this.selectedRow = this.campaignTotalViewsData.find(function (obj) { return obj.emailId === self.selectedRow.emailId; });
           this.loading = false;
         } catch (err) { console.log(err); }
       },

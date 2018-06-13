@@ -23,10 +23,9 @@ export class HeatMapComponent implements OnInit {
             .subscribe(
             data => {
                 this.heatMapData = data;
-                for ( var i = 0; i <= 100; i++ ) {
+                for ( let i = 0; i <= 100; i++ ) {
                     this.numbers.push( this.utilService.convertSecondsToHHMMSS( this.heatMapData.videoLength * i / 100 ) );
                 }
-                console.log( this.numbers );
             },
             error => console.log( error ),
             () => console.log()

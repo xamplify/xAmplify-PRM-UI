@@ -58,6 +58,7 @@ rect:hover {
 
 .skip-box {
 	background: #FFF;
+	border: 1px solid #ccc;
 }
 
 .small-box {
