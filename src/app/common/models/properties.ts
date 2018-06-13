@@ -2,9 +2,9 @@ export class Properties {
 
     /*App Info*/
     COMPANY_LOGO = 'assets/images/xamplify-logo.png'
-    BOTTOM_MESSAGE = '&copy; 2018 Xamplify. All rights reserved.'
+    BOTTOM_MESSAGE = '&copy; 2018 xAmplify. All rights reserved.'
     APP_WEBSITE = 'xamplify';
-    APP_WELCOME_MESSAGE = 'Welcome to Xamplify';
+    APP_WELCOME_MESSAGE = 'Welcome to xAmplify';
     APP_Xamplify_URL="https://xamplify.io"
 
     NO_RESULTS_FOUND = "No results found.";
@@ -46,7 +46,7 @@ export class Properties {
     /* For Partners*/
     PARTNER_LIST_CREATE_SUCCESS = "Your partner list has been created successfully.";
     PARTNER_LIST_NAME_UPDATE_SUCCESS = "Your partner list name has been updated successfully.";
-    
+
     PARTNER_LIST_SYNCHRONIZATION_SUCCESS = "Your Parntner List has been synchronized successfully.";
     PARTNER_LIST_SYNCHRONIZATION_ERROR = "An error occured while synchronizing your partner list.";
 

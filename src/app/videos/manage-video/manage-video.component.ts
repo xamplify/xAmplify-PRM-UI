@@ -261,7 +261,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                 this.pagination.pagedItems.splice(position, 1);
                 this.defaultBannerMessageValues();
                 this.showVideoFileName = videoName;
-                this.showVideoFileName = '('+this.showVideoFileName+') video deleted successfully';
+                this.showVideoFileName = '"'+this.showVideoFileName+'" video deleted successfully';
                 this.customResponse = new CustomResponse( 'SUCCESS', this.showVideoFileName, true );
                 $('html,body').animate({ scrollTop: 0 }, 'slow');
                 if (this.pagination.pagedItems.length === 0) {
@@ -284,7 +284,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                      const errorMesge = message;
                     this.defaultBannerMessageValues();
                      $('html,body').animate({ scrollTop: 0 }, 'slow');
-                    this.customResponse = new CustomResponse( 'ERROR', message, true );
+                    this.customResponse = new CustomResponse( 'ERROR', errorMesge, true );
                 } else {
                     this.xtremandLogger.error('Error In: delete videos ():' + error);
                     this.xtremandLogger.errorPage(error);
