@@ -1646,7 +1646,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.campaign.regularEmail = false;
         }
         this.filteredSocialStatusProviders();
-        //
         this.getRepliesData();
         this.getOnClickData();
         this.selectedContactListIds = this.refService.removeDuplicates(this.selectedContactListIds);
@@ -1706,9 +1705,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     getRepliesData(){
         for(var i=0;i<this.replies.length;i++){
             let reply = this.replies[i];
-            /*if(reply.replyTime!=null){
-                reply.replyTimeInHoursAndMinutes = this.extractTimeFromDate(reply.replyTime);
-            }*/
             $('#'+reply.divId).removeClass('portlet light dashboard-stat2 border-error');
             this.removeStyleAttrByDivId('reply-days-'+reply.divId);
             this.removeStyleAttrByDivId('send-time-'+reply.divId);
@@ -1756,6 +1752,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.addReplyDivError(reply.divId);
             $('#send-time-'+reply.divId).css('color','red');
         }else{
+            reply.replyTime = this.campaignService.setAutoReplyDefaultTime(this.campaignLaunchForm.value.scheduleCampaign, reply.replyInDays,reply.replyTime,this.campaignLaunchForm.value.launchTime);
             reply.replyTimeInHoursAndMinutes = this.extractTimeFromDate(reply.replyTime);
         }
     }
@@ -1819,6 +1816,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.addReplyDivError(url.divId);
             $('#send-time-'+url.divId).css('color','red');
         }else{
+            url.replyTime = this.campaignService.setAutoReplyDefaultTime(this.campaignLaunchForm.value.scheduleCampaign, url.replyInDays,url.replyTime,this.campaignLaunchForm.value.launchTime);
             url.replyTimeInHoursAndMinutes = this.extractTimeFromDate(url.replyTime);
         }
     }

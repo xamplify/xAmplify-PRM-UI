@@ -293,6 +293,14 @@ export class CampaignService {
         let minutes = dt.getMinutes() > 9 ? dt.getMinutes() : '0' + dt.getMinutes();
         return hours+":"+minutes;
     }
+    extractTodayDateAsString(){
+        let currentTime = new Date();
+        let year      = currentTime.getFullYear();
+        let currentMonth = currentTime.getMonth()+1;
+        let month   = currentMonth < 10 ? '0' + currentMonth : currentMonth;
+        let day     = currentTime.getDate()  < 10 ? '0' + currentTime.getDate()  : currentTime.getDate();
+        return $.trim(month+"/"+day+"/"+year);
+    }
     
     
     
@@ -379,5 +387,21 @@ export class CampaignService {
         return links;
     }
 
+    setAutoReplyDefaultTime(campaignType:string,replyInDays:number,replyTime:Date,scheduleTime:any){
+        let currentTime = new Date();
+        let isValid = (replyInDays==0 && replyTime.getTime()<currentTime.getTime());
+        if("NOW"===campaignType && isValid){
+            return currentTime;
+        }else if("SCHEDULE"===campaignType && isValid){
+            let date = $.trim(scheduleTime.split(' ')[0]);
+            if(this.extractTodayDateAsString()==date){
+                return currentTime;
+            }else{
+                return replyTime;
+            }
+        }else{
+            return replyTime;
+        }
+    }
     
 }

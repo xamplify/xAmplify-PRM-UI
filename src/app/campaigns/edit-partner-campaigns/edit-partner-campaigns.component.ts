@@ -569,6 +569,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
             this.addReplyDivError(reply.divId);
             $('#send-time-'+reply.divId).css('color','red');
         }else{
+            reply.replyTime = this.campaignService.setAutoReplyDefaultTime(this.campaignLaunchForm.value.scheduleCampaign, reply.replyInDays,reply.replyTime,this.campaignLaunchForm.value.launchTime);
             reply.replyTimeInHoursAndMinutes = this.extractTimeFromDate(reply.replyTime);
         }
     }
@@ -632,6 +633,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
             this.addReplyDivError(url.divId);
             $('#send-time-'+url.divId).css('color','red');
         }else{
+            url.replyTime = this.campaignService.setAutoReplyDefaultTime(this.campaignLaunchForm.value.scheduleCampaign, url.replyInDays,url.replyTime,this.campaignLaunchForm.value.launchTime);
             url.replyTimeInHoursAndMinutes = this.extractTimeFromDate(url.replyTime);
         }
     }
