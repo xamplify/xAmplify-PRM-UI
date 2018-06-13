@@ -26,7 +26,6 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
     isPreview = false;
     emailTemplate: EmailTemplate;
     emailPreview: string;
-    emailTemplates: any[];
     hasEmailTemplateRole:boolean = false;
     hasAllAccess:boolean = false;
     pager: any = {};
@@ -96,7 +95,6 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
             this.emailTemplateService.listTemplates( pagination, this.loggedInUserId)
                 .subscribe(
                 ( data: any ) => {
-                    this.emailTemplates = data.emailTemplates;
                     pagination.totalRecords = data.totalRecords;
                     pagination = this.pagerService.getPagedItems( pagination, data.emailTemplates );
                     this.refService.loading(this.httpRequestLoader, false);

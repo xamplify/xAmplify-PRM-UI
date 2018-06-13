@@ -1018,18 +1018,20 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
         this.loadEmailTemplatesForAddOnClick(url);
     }
     getAnchorLinksFromEmailTemplate(body: string) {
+       /* body = this.referenceService.replaceCoBrandingDummyUrlByUserProfile(body);
         let self = this;
-        body = this.referenceService.replaceCoBrandingDummyUrlByUserProfile(body);
         $(body).find('a').each(function (e) {
             let href = $(this).attr('href');
             if(href!=undefined && $.trim(href).length>0){
-                self.emailTemplateHrefLinks.push(href);
+                if(href!="<SocialUbuntuURL>" && href!="https://dummyurl.com" &&  href!="https://dummycobrandingurl.com" && href!="<unsubscribeURL>"){
+                    self.emailTemplateHrefLinks.push(href);
+                }
+                
             }
         });
-        this.emailTemplateHrefLinks = this.referenceService.removeDuplicates(this.emailTemplateHrefLinks);
-        this.emailTemplateHrefLinks = this.campaignService.removeUrls("<SocialUbuntuURL>",this.emailTemplateHrefLinks);
-        this.emailTemplateHrefLinks = this.campaignService.removeUrls("https://dummyurl.com",this.emailTemplateHrefLinks);
-        this.emailTemplateHrefLinks = this.campaignService.removeUrls("https://dummycobrandingurl.com",this.emailTemplateHrefLinks);
+        this.emailTemplateHrefLinks = this.referenceService.removeDuplicates(this.emailTemplateHrefLinks);*/
+        body = this.referenceService.replaceCoBrandingDummyUrlByUserProfile(body);
+        this.emailTemplateHrefLinks = this.referenceService.getAnchorTagsFromEmailTemplate(body, this.emailTemplateHrefLinks);
     }
 
     setLaunchTime(){

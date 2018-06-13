@@ -1545,7 +1545,18 @@ export class ReferenceService {
          return updatedBody = updatedBody.replace("https://dummycobrandingurl.com",this.authenticationService.userProfile.websiteUrl);
      }
 
-
+     getAnchorTagsFromEmailTemplate(body:string,emailTemplateHrefLinks:any){
+         $(body).find('a').each(function (e) {
+             let href = $(this).attr('href');
+             if(href!=undefined && $.trim(href).length>0){
+                 if(href!="<SocialUbuntuURL>" && href!="https://dummyurl.com" &&  href!="https://dummycobrandingurl.com" && href!="<unsubscribeURL>"){
+                     emailTemplateHrefLinks.push(href);
+                 }
+                 
+             }
+         });
+         return emailTemplateHrefLinks = this.removeDuplicates(emailTemplateHrefLinks);
+     }
 
 
 }

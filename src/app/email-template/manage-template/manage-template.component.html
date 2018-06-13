@@ -87,6 +87,7 @@
 										<h6>Created By <b>{{emailTemplate.createdBy}}</b></h6>
 										<h6>From <b>{{emailTemplate.companyName}}</b></h6>
 									<h5 class="view-banner" *ngIf="emailTemplate.type=='PARTNER'">PARTNER</h5>
+									<h5 class="view-banner">{{emailTemplate.emailTemplateType}}</h5>
 									<h5 class="view-banner" *ngIf="(emailTemplate.regularCoBrandingTemplate||emailTemplate.videoCoBrandingTemplate) &&emailTemplate.type=='UPLOADED' ">CO-BRANDED</h5>
 									</td>
 									<td>{{emailTemplate.createdDate}}</td>

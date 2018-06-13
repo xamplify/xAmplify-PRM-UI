@@ -60,7 +60,6 @@ export class PagerService {
            
         }catch(error){
             alert(error);
-            // this.refService.showError(error, "setPagination","ManageTemplatesComponent")
         }
     }
     

@@ -1585,24 +1585,18 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     }
 
     getAnchorLinksFromEmailTemplate(body:string){
-        $('#emailTemplateContent').html('');
+       /* $('#emailTemplateContent').html('');
         $('#emailTemplateContent').append(body);
-        console.log($('#emailTemplateContent').find('a'));
         let self = this;
         $('#emailTemplateContent').find('a').each(function(e) {
            let href = $(this).attr('href');
-           self.emailTemplateHrefLinks.push(href);
+           if(href!=undefined && $.trim(href).length>0){
+               self.emailTemplateHrefLinks.push(href);
+           }
         });
-        this.emailTemplateHrefLinks = this.refService.removeDuplicates(this.emailTemplateHrefLinks);
-        this.removeUrls("<SocialUbuntuURL>");
-        this.removeUrls("https://dummycobrandingurl.com");
-    }
-
-    removeUrls(url:string){
-        var index =  $.inArray(url, this.emailTemplateHrefLinks);
-        if (index>=0) {
-            this.emailTemplateHrefLinks.splice(index, 1);
-        }
+        this.emailTemplateHrefLinks = this.refService.removeDuplicates(this.emailTemplateHrefLinks);*/
+        
+        this.emailTemplateHrefLinks = this.refService.getAnchorTagsFromEmailTemplate(body, this.emailTemplateHrefLinks);
     }
 
     /*************************************************************Launch Campaign***************************************************************************************/
