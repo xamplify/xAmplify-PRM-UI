@@ -1,16 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import {  Router }   from '@angular/router';
+import { Router } from '@angular/router';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
-import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
-import { FileDropDirective, FileItem } from 'ng2-file-upload';
 import { EmailTemplateService } from '../services/email-template.service';
 import { UserService } from '../../core/services/user.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
-import { User } from '../../core/models/user';
-import {EmailTemplate} from '../models/email-template';
+import { EmailTemplate} from '../models/email-template';
 import { ReferenceService } from '../../core/services/reference.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
-declare var Metronic ,Layout ,Demo,swal ,TableManaged,$,CKEDITOR:any;
+declare var Metronic ,Layout ,Demo ,TableManaged,$,CKEDITOR:any;
 
 @Component({
     selector: 'app-update-template',

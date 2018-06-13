@@ -1,20 +1,17 @@
-import { Component, OnInit, OnDestroy,ViewChild } from '@angular/core';
-import { ActivatedRoute, Router }   from '@angular/router';
-import { Http, Headers, Response, RequestOptions } from '@angular/http';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
-import { FileDropDirective, FileItem } from 'ng2-file-upload';
 import { EmailTemplateService } from '../services/email-template.service';
 import { UserService } from '../../core/services/user.service';
 import { User } from '../../core/models/user';
-import {EmailTemplate} from '../models/email-template';
+import { EmailTemplate} from '../models/email-template';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { ReferenceService } from '../../core/services/reference.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { EmailTemplateType } from '../../email-template/models/email-template-type';
-import { noWhiteSpaceValidator} from '../../form-validator';
 import { CustomResponse } from '../../common/models/custom-response';
-declare var Metronic ,Layout ,Demo,swal ,TableManaged,$,CKEDITOR:any;
+declare var Metronic ,Layout ,Demo ,TableManaged,$,CKEDITOR:any;
 
 @Component({
     selector: 'app-upload-email-template',
@@ -247,7 +244,7 @@ export class UploadEmailTemplateComponent implements OnInit {
     hideDiv(divId:string){
         $('#'+divId).hide(600);
     }
-    
+
     changeLogo(event: any) {
         this.customResponse.isVisible = false;
           let fileList: any;
@@ -274,6 +271,6 @@ export class UploadEmailTemplateComponent implements OnInit {
               }
           }
       }
-  
+
   }
 }

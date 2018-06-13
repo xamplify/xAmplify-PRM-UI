@@ -14,7 +14,7 @@ import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { CustomResponse } from '../../common/models/custom-response';
 
-declare var Metronic,$, Layout, Demo, swal, TableManaged: any;
+declare var Metronic,$, Layout, Demo, swal: any;
 
 @Component( {
     selector: 'app-manage-template',

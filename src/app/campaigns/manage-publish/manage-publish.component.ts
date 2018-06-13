@@ -1,25 +1,19 @@
 import { Component, OnInit, OnDestroy, } from '@angular/core';
-import { ActivatedRoute, Router,NavigationExtras } from '@angular/router';
-import { FormsModule, FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
 
-import { VideoFileService } from '../../videos/services/video-file.service';
-import { ContactService } from '../../contacts/services/contact.service';
 import { CampaignService } from '../services/campaign.service';
 import { UserService } from '../../core/services/user.service';
 import { ReferenceService } from '../../core/services/reference.service';
 import { Campaign } from '../models/campaign';
-import { SaveVideoFile } from '../../videos/models/save-video-file';
-import { ContactList } from '../../contacts/models/contact-list';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { Pagination } from '../../core/models/pagination';
 import { PagerService } from '../../core/services/pager.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { CustomResponse } from '../../common/models/custom-response';
-import { CampaignType } from '../models/campaign-type';
 import { UtilService } from '../../core/services/util.service';
 
-declare var swal, $, videojs, Metronic, Layout, Demo, TableManaged, Promise: any;
+declare var swal, $: any;
 
 @Component({
     selector: 'app-manage-publish',
@@ -161,7 +155,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.isListView = !this.refService.isGridView;
             this.pagination.maxResults = 12;
             this.listCampaign(this.pagination);
-            
+
         } catch (error) {
             this.logger.error("error in manage-publish-component init() ", error);
         }

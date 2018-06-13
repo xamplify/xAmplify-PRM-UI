@@ -1,5 +1,4 @@
-import { Component, OnInit, OnDestroy,ViewChild} from '@angular/core';
-import { FormsModule, FormGroup, FormBuilder, Validators, FormControl} from '@angular/forms';
+import { Component, OnInit,ViewChild} from '@angular/core';
 import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { FileUtil } from '../../core/models/file-util';

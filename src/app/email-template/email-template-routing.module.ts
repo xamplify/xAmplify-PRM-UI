@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 
 import { EmailEditorComponent } from './email-editor/email-editor.component';
@@ -8,7 +7,7 @@ import { ManageTemplateComponent } from './manage-template/manage-template.compo
 import { SelectTemplateComponent } from './select-template/select-template.component';
 import { UpdateTemplateComponent } from './update-template/update-template.component';
 import { UploadEmailTemplateComponent } from './upload-email-template/upload-email-template.component';
-import {HelpComponent} from './help/help.component';
+import { HelpComponent } from './help/help.component';
 
 export const emailRoutes: Routes = [
 { path: '', redirectTo: 'manage', pathMatch: 'full' },
