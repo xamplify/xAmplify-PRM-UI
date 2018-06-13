@@ -348,10 +348,10 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   getCampaignWatchedUsersCount(campaignId: number) {
     try{
     this.loading = true;
-      this.campaignService.getCampaignWatchedUsersCount(campaignId)
+      this.campaignService.getCampaignTotalViewsCount(campaignId)
       .subscribe(
       data => {
-        this.campaignReport.usersWatchCount = data.campaign_users_watched;
+        this.campaignReport.usersWatchCount = data.total_views_count;
         this.loading = false;
       },
       error => console.log(error),

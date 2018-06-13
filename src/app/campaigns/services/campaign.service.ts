@@ -150,6 +150,12 @@ export class CampaignService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+    
+    getCampaignTotalViewsCount(campaignId: number) {
+        return this.http.get(this.URL + 'campaign/total-views-count/' + campaignId + '?access_token=' + this.authenticationService.access_token )
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 
     getCountryWiseCampaignViews(campaignId: number) {
         return this.http.get(this.URL + 'campaign/world-map/' + campaignId + '?access_token=' + this.authenticationService.access_token)
