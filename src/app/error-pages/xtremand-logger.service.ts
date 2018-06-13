@@ -5,7 +5,7 @@ import { LoggerService } from './services/logger.service';
 @Injectable()
 export class XtremandLogger {
 
-    errorMessage='';
+  errorMessage='';
 	constructor(public router: Router, public logger: LoggerService) { }
 
 	log(...logMessages) {
@@ -37,13 +37,12 @@ export class XtremandLogger {
 			this.logger.error(err);
 		}
 	}
-	
+
 	errorPage(error: any) {
-        //alert(this.errorMessage);
-	    this.router.navigate(['/home/error/', error.status]);
+	  this.router.navigate(['/home/error/', error.status]);
 		this.error(JSON.parse(error['_body']).message);
 	}
-	
+
 	showClientErrors(componentName:string,methodName:string,error:any){
 	    this.logger.error("Component:-"+componentName+":\nMethod:-"+methodName+",\n"+error);
 	}

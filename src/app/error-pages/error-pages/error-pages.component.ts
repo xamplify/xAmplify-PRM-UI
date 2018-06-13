@@ -1,6 +1,6 @@
-import { Component, OnInit, Input, Output, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import {XtremandLogger } from '../xtremand-logger.service';
+import { XtremandLogger } from '../xtremand-logger.service';
 
 @Component({
   selector: 'app-error-pages',
