@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, ChangeDetectorRef, AfterViewInit,
-    style, state, animate, transition, trigger
+    style, animate, transition, trigger
 } from '@angular/core';
 
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
