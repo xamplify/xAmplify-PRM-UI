@@ -14,7 +14,6 @@ import { SocialService } from '../../social/services/social.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { UtilService } from '../../core/services/util.service';
 
-import { SocialStatusProvider } from '../../social/models/social-status-provider';
 import { ContactService } from '../../contacts/services/contact.service';
 import { UserService } from '../../core/services/user.service';
 import { CampaignService } from '../../campaigns/services/campaign.service';
@@ -26,7 +25,7 @@ import { UserDefaultPage } from '../../core/models/user-default-page';
 import { PagerService } from '../../core/services/pager.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { EmailTemplateService } from '../../email-template/services/email-template.service';
-declare var Metronic, swal, $, Layout, Login, Demo, Index, QuickSidebar, Highcharts, Tasks: any;
+declare var Metronic, $, Layout, Demo, Index, QuickSidebar, Highcharts, Tasks: any;
 
 @Component({
     selector: 'app-dashboard',

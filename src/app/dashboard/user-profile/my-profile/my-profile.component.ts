@@ -1,6 +1,6 @@
-import { Component, OnInit, Output, EventEmitter, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { Router,ActivatedRoute } from '@angular/router';
-import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup,FormBuilder, Validators } from '@angular/forms';
 
 import { matchingPasswords, noWhiteSpaceValidator } from '../../../form-validator';
 import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
@@ -476,7 +476,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             console.error( error, "addcontactOneAttimeModalComponent()", "gettingGeoLocation" );
         }
     }
-    
+
     updateUserProfileForm: FormGroup;
     validateUpdateUserProfileForm() {
         var urlPatternRegEx = /(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/;
@@ -529,13 +529,13 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         console.log(this.updateUserProfileForm.value);
         this.referenceService.goToTop();
         this.ngxloading = true;
-        
+
         if( this.userData.mobileNumber.length > 6){
             this.updateUserProfileForm.value.mobileNumber = this.userData.mobileNumber;
         }else {
             this.updateUserProfileForm.value.mobileNumber = ""
         }
-        
+
         this.userService.updateUserProfile(this.updateUserProfileForm.value, this.authenticationService.getUserId())
             .subscribe(
                 data => {

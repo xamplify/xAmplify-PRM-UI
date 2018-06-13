@@ -4,11 +4,10 @@ import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { ReferenceService } from '../../core/services/reference.service';
 import { EmailTemplateService } from '../services/email-template.service';
 import { UserService } from '../../core/services/user.service';
-import { User } from '../../core/models/user';
-import {EmailTemplate} from '../models/email-template';
-import {AuthenticationService} from '../../core/services/authentication.service';
+import { EmailTemplate} from '../models/email-template';
+import { AuthenticationService} from '../../core/services/authentication.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
-declare var Metronic , Layout , Demo, swal , Portfolio,$: any;
+declare var Metronic , Layout , Demo,$: any;
 @Component({
   selector: 'app-select-template',
   templateUrl: './select-template.component.html',
@@ -23,13 +22,13 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
     templateFilter: any = { name: '' };
     selectedTemplateTypeIndex:number = 0;
     httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
-    
+
     constructor( private emailTemplateService: EmailTemplateService, private userService: UserService,
         private emailTemplate: EmailTemplate, private router: Router, private authenticationService: AuthenticationService,
         private logger: XtremandLogger,public refService:ReferenceService) {
 
      }
-     
+
     ngOnInit(){
         try{
             Metronic.init();
@@ -40,8 +39,8 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
          catch(error){
              this.logger.error(this.refService.errorPrepender+" ngOnInit():", error);
          }
-       }       
-    
+       }
+
        listDefaultTemplates(){
           this.refService.loading(this.httpRequestLoader, true);
           this.emailTemplateService.listDefaultTemplates()
@@ -58,20 +57,20 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
                () =>this.logger.info("Finished listDefaultTemplates()")
            );
        }
-       
-    
-    
+
+
+
     ngOnDestroy() {
         //  this.emailTemplateService.emailTemplate = new EmailTemplate();
     }
-    
+
     showAllTemplates(index:number){
         this.filteredEmailTemplates = new Array<EmailTemplate>();
         this.filteredEmailTemplates=this.allEmailTemplates;
         this.selectedTemplateTypeIndex = index;
     }
-    
-    
+
+
     showRegularTemplates(){
         try{
             this.filteredEmailTemplates = new Array<EmailTemplate>();
@@ -87,8 +86,8 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
             this.logger.error(cause+":"+error);
         }
     }
-    
-    
+
+
     showVideoTemplates(){
         try{
             this.filteredEmailTemplates = new Array<EmailTemplate>();
@@ -104,7 +103,7 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
             this.logger.error(cause+":"+error);
         }
     }
-    
+
     showUploadTemplates(index:number){
         try{
             this.filteredEmailTemplates = new Array<EmailTemplate>();
@@ -122,7 +121,7 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
             this.logger.error(cause+":"+error);
         }
     }
-    
+
     showBasicTemplates(index:number){
         try{
             this.filteredEmailTemplates = new Array<EmailTemplate>();
@@ -141,7 +140,7 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
             this.logger.error(cause+":"+error);
         }
     }
-    
+
     showRichTemplates(index:number){
         try{
             this.filteredEmailTemplates = new Array<EmailTemplate>();
@@ -159,9 +158,9 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
             var cause = "Error in showRichTemplates() in selectTemplatesComponent";
             this.logger.error(cause+":"+error);
         }
-    
+
     }
-    
+
     showBasicVideoTemplates(index:number){
         try{
             this.filteredEmailTemplates = new Array<EmailTemplate>();
@@ -179,9 +178,9 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
             var cause = "Error in showBasicVideoTemplates() in selectTemplatesComponent";
             this.logger.error(cause+":"+error);
         }
-    
+
     }
-    
+
     showRichVideoTemplates(index:number){
         try{
             this.filteredEmailTemplates = new Array<EmailTemplate>();
@@ -199,10 +198,10 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
             var cause = "Error in showRichVideoTemplates() in selectTemplatesComponent";
             this.logger.error(cause+":"+error);
         }
-    
-    
+
+
     }
-    
+
     showRegularCoBrandingTemplates(index:number){
         try{
             this.filteredEmailTemplates = new Array<EmailTemplate>();
@@ -220,7 +219,7 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
             this.logger.error(cause+":"+error);
         }
     }
-    
+
     showVideoCoBrandingTemplates(index:number){
         try{
             this.filteredEmailTemplates = new Array<EmailTemplate>();
@@ -237,7 +236,7 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
             this.logger.error(cause+":"+error);
         }
     }
-    
+
     showCampaignDefaultTemplates(index:number){
         try{
             this.filteredEmailTemplates = new Array<EmailTemplate>();
@@ -254,8 +253,8 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
             this.logger.error(cause+":"+error);
         }
     }
-   
-    
+
+
     showTemplateById(id:number,index:number){
         if(id!=undefined){
            this.emailTemplateService.getById(id)
@@ -280,7 +279,7 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
            this.router.navigate(["/home/emailtemplates/upload"]);
        }
     }
-    
+
     showPreview(emailTemplate:EmailTemplate){
          let body = emailTemplate.body;
          let emailTemplateName = emailTemplate.name;
@@ -292,10 +291,10 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
          $("#email-template-title").append(emailTemplateName);
          $('#email-template-title').prop('title',emailTemplate.name);
          $("#htmlContent").append(body);
-         $('.modal .modal-body').css('overflow-y', 'auto'); 
+         $('.modal .modal-body').css('overflow-y', 'auto');
         // $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
          $("#show_email_template_preivew").modal('show');
      }
-    
+
 
 }

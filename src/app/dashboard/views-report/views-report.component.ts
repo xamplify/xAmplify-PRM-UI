@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { ReferenceService } from '../../core/services/reference.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
@@ -11,11 +11,10 @@ import { VideoBaseReportService } from '../../videos/services/video-base-report.
 
 import { SaveVideoFile } from '../../videos/models/save-video-file';
 import { Category } from '../../videos/models/category';
-import { ContactList } from '../../contacts/models/contact-list';
 import { Pagination } from '../../core/models/pagination';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 
-declare var Metronic, Layout, Demo, Index, QuickSidebar, videojs, $, Tasks: any;
+declare var Metronic, Layout, Demo, QuickSidebar, videojs, $: any;
 
 @Component({
     selector: 'app-views-report',
@@ -254,7 +253,7 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
             return false;
         });
     }
-    
+
     watchedFullyAllDataReport(videoId: number, totalRecords: number) {
         this.reportPagination.maxResults = totalRecords;
         this.videoBaseReportService.watchedFullyReport(videoId, this.reportPagination).subscribe(
@@ -264,7 +263,7 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
             },
             (err: any) => { console.log(err); })
     }
-    
+
     downloadLogs(){
         for (let i = 0; i < this.watchedFullyTotalList.length; i++) {
             let date = new Date(this.watchedFullyTotalList[i].time);
@@ -292,7 +291,7 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
         return 'success';
     }
 
-    
+
     ngOnInit() {
         try {
             this.loadVideos(this.pagination);

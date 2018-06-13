@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { ActivatedRoute, Router } from '@angular/router';
+import { FormBuilder } from "@angular/forms";
+import { Router } from '@angular/router';
 import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
 
-import { noWhiteSpaceValidator } from '../../../form-validator';
 import { Processor } from '../../../core/models/processor';
 import { HomeComponent } from '../../../core/home/home.component';
 import { CountryNames } from '../../../common/models/country-names';
@@ -247,11 +246,11 @@ export class EditCompanyProfileComponent implements OnInit {
             && !this.facebookLinkError && !this.googlePlusLinkError && !this.twitterLinkError && !this.linkedinLinkError && !this.cityError && !this.countryError &&
             !this.zipError && !this.logoError) {
             this.processor.set(this.processor);
-            
+
             if( this.companyProfile.phone.length < 6){
                 this.companyProfile.phone = "";
             }
-            
+
             this.companyProfileService.save(this.companyProfile, this.loggedInUserId)
                 .subscribe(
                     data => {
@@ -353,11 +352,11 @@ export class EditCompanyProfileComponent implements OnInit {
             && !this.facebookLinkError && !this.googlePlusLinkError && !this.twitterLinkError && !this.linkedinLinkError && !this.cityError && !this.countryError &&
             !this.zipError && !this.aboutUsError && !this.logoError) {
             this.processor.set(this.processor);
-            
+
             if( this.companyProfile.phone.length < 6){
                 this.companyProfile.phone = "";
             }
-            
+
             this.companyProfileService.update(this.companyProfile, this.loggedInUserId)
                 .subscribe(
                     data => {

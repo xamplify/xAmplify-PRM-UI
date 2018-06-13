@@ -1,13 +1,11 @@
-import { Component, OnInit,OnDestroy} from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { ActivatedRoute,Router } from '@angular/router';
-import { FormsModule, FormGroup, FormBuilder, Validators, FormControl} from '@angular/forms';
-import { Pagination } from '../../core/models/pagination';
+import { FormBuilder} from '@angular/forms';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { ReferenceService } from '../../core/services/reference.service';
-import { validateCampaignSchedule,validateCampaignName } from '../../form-validator'; // not using multipleCheckboxRequireOne
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { Roles } from '../../core/models/roles';
-declare var swal, $,  Metronic, Layout , Demo,TableManaged ,Promise;
+declare var swal, $,  Metronic, Layout , Demo,TableManaged:any;
 @Component({
     selector: 'app-select-campaign',
     templateUrl: './select-campaign-type-component.html',

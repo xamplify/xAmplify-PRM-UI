@@ -1,24 +1,16 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormsModule, FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { CampaignType } from '../models/campaign-type';
-import { VideoFileService } from '../../videos/services/video-file.service';
-import { ContactService } from '../../contacts/services/contact.service';
 import { CampaignService } from '../services/campaign.service';
 import { UserService } from '../../core/services/user.service';
 import { SocialService } from '../../social/services/social.service';
 import { ReferenceService } from '../../core/services/reference.service';
 import { Campaign } from '../models/campaign';
-import { SaveVideoFile } from '../../videos/models/save-video-file';
-import { ContactList } from '../../contacts/models/contact-list';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { Pagination } from '../../core/models/pagination';
 import { PagerService } from '../../core/services/pager.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { CustomResponse } from '../../common/models/custom-response';
-
-
 
 declare var $: any;
 @Component({
@@ -55,7 +47,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     public isError: boolean = false;
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
     isListView: boolean = false;
-    campaignType:string;  
+    campaignType:string;
 
     customResponse: CustomResponse = new CustomResponse();
 
@@ -150,7 +142,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
 
     }
 
-   
+
 
     ngOnDestroy() {
 
@@ -160,7 +152,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     filterCampaigns(type: string) {
         this.router.navigate(['/home/campaigns/partner/' + type]);
     }
-    
+
     showCampaignPreview(campaignId:number){
         this.router.navigate(['/home/campaigns/preview/'+campaignId]);
     }
@@ -175,7 +167,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
                 () => console.log()
             )
     }
-    
+
     reDistributeCampaign(campaign:any){
         if(campaign.campaignType.indexOf('SOCIAL') > -1){
             this.navigateSocialCampaign(campaign);
@@ -194,5 +186,5 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
         }
 
     }
-    
+
 }
