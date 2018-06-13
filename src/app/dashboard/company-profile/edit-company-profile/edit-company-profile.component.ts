@@ -247,6 +247,11 @@ export class EditCompanyProfileComponent implements OnInit {
             && !this.facebookLinkError && !this.googlePlusLinkError && !this.twitterLinkError && !this.linkedinLinkError && !this.cityError && !this.countryError &&
             !this.zipError && !this.logoError) {
             this.processor.set(this.processor);
+            
+            if( this.companyProfile.phone.length < 6){
+                this.companyProfile.phone = "";
+            }
+            
             this.companyProfileService.save(this.companyProfile, this.loggedInUserId)
                 .subscribe(
                     data => {
@@ -348,6 +353,11 @@ export class EditCompanyProfileComponent implements OnInit {
             && !this.facebookLinkError && !this.googlePlusLinkError && !this.twitterLinkError && !this.linkedinLinkError && !this.cityError && !this.countryError &&
             !this.zipError && !this.aboutUsError && !this.logoError) {
             this.processor.set(this.processor);
+            
+            if( this.companyProfile.phone.length < 6){
+                this.companyProfile.phone = "";
+            }
+            
             this.companyProfileService.update(this.companyProfile, this.loggedInUserId)
                 .subscribe(
                     data => {
