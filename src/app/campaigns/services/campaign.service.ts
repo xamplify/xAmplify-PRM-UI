@@ -287,7 +287,6 @@ export class CampaignService {
         date.setMinutes(parseInt(minutesString));
         return date;
     }
-    
     extractTimeFromDate(replyTime){
         let dt = replyTime;
         let hours = dt.getHours() > 9 ? dt.getHours() : '0' + dt.getHours();
@@ -358,6 +357,27 @@ export class CampaignService {
         }
    
     }
+    addErrorClassToDiv(list:any){
+        let self = this;
+        $.each(list,function(index,divId){
+            $('#'+divId).removeClass('portlet light dashboard-stat2 border-error');
+            self.removeStyleAttrByDivId('send-time-'+divId);
+            $('#'+divId).addClass('portlet light dashboard-stat2 border-error');
+            $('#send-time-'+divId).css('color','red');
+        });
+       
+    }
+    removeStyleAttrByDivId(divId:string){
+        $('#'+divId).removeAttr("style");
+    }
     
+    removeUrls(url:string,links:any){
+        var index =  $.inArray(url, links);
+        if (index>=0) {
+            links.splice(index, 1);
+        }
+        return links;
+    }
+
     
 }

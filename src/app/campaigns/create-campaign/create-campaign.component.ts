@@ -1723,6 +1723,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.removeStyleAttrByDivId('reply-days-'+reply.divId);
             this.removeStyleAttrByDivId('send-time-'+reply.divId);
             this.removeStyleAttrByDivId('message-'+reply.divId);
+            this.removeStyleAttrByDivId('reply-subject-'+reply.divId);
             this.removeStyleAttrByDivId('email-template-'+reply.divId);
             this.removeStyleAttrByDivId('reply-message-'+reply.divId);
             $('#'+reply.divId).addClass('portlet light dashboard-stat2');
@@ -1799,14 +1800,13 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             let url = this.urls[i];
             $('#'+url.divId).removeClass('portlet light dashboard-stat2 border-error');
             this.removeStyleAttrByDivId('click-days-'+url.divId);
-            this.removeStyleAttrByDivId('click-send-time-'+url.divId);
+            this.removeStyleAttrByDivId('send-time-'+url.divId);
             this.removeStyleAttrByDivId('click-message-'+url.divId);
             this.removeStyleAttrByDivId('click-email-template-'+url.divId);
             this.removeStyleAttrByDivId('click-subject-'+url.divId);
             $('#'+url.divId).addClass('portlet light dashboard-stat2');
             if(url.actionId==21){
                 url.scheduled = true;
-                url.replyTimeInHoursAndMinutes = this.extractTimeFromDate(url.replyTime);
                 this.validateOnClickReplyTime(url);
                 this.validateOnClickSubject(url);
                 this.validateOnClickReplyInDays(url);
@@ -1827,7 +1827,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     validateOnClickReplyTime(url:Url){
         if(url.replyTime===undefined || url.replyTime===null){
             this.addReplyDivError(url.divId);
-            $('#click-send-time-'+url.divId).css('color','red');
+            $('#send-time-'+url.divId).css('color','red');
+        }else{
+            url.replyTimeInHoursAndMinutes = this.extractTimeFromDate(url.replyTime);
         }
     }
 
@@ -2371,6 +2373,10 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                  }else{
                      this.invalidScheduleTime = true;
                      this.invalidScheduleTimeError = response.message;
+                     if(response.statusCode===2016){
+                         this.campaignService.addErrorClassToDiv(response.data.emailErrorDivs);
+                         this.campaignService.addErrorClassToDiv(response.data.websiteErrorDivs);
+                     }
                  }
                  this.refService.stopLoader(this.httpRequestLoader);
              },

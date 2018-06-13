@@ -13,7 +13,9 @@ a.disabled {
 	pointer-events: none;
 	cursor: not-allowed;
 }
-
+.portlet.light.dashboard-stat2.border-error{
+	border-color: red
+}
 /* action.css*/
 .hiddenStepInfo {
 	display: none;
