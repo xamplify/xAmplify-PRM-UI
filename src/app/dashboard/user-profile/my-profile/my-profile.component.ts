@@ -17,6 +17,8 @@ import { Properties } from '../../../common/models/properties';
 import { RegularExpressions } from '../../../common/models/regular-expressions';
 import { User } from '../../../core/models/user';
 import { DefaultVideoPlayer } from '../../../videos/models/default-video-player';
+import { CountryNames } from '../../../common/models/country-names';
+import { VideoFileService } from '../../../videos/services/video-file.service'
 
 declare var swal, $, videojs: any;
 
@@ -26,7 +28,7 @@ declare var swal, $, videojs: any;
     styleUrls: ['./my-profile.component.css', '../../../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css',
         '../../../../assets/admin/pages/css/profile.css', '../../../../assets/css/video-css/video-js.custom.css',
         '../../../../assets/css/phone-number-plugin.css'],
-    providers: [User, DefaultVideoPlayer, VideoUtilService, CallActionSwitch, Properties, RegularExpressions]
+    providers: [User, DefaultVideoPlayer, VideoUtilService, CallActionSwitch, Properties, RegularExpressions, CountryNames]
 })
 export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     defaultVideoPlayer: DefaultVideoPlayer;
@@ -70,7 +72,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     roleNames:string = "";
     customResponse: CustomResponse = new CustomResponse();
     hasClientErrors:boolean = false;
-    constructor(public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
+    constructor(public videoFileService: VideoFileService, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
         public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
         public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
         public regularExpressions: RegularExpressions,public route:ActivatedRoute) {
@@ -215,6 +217,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     clearCustomResponse(){ this.customResponse = new CustomResponse(); }
     ngOnInit() {
         try {
+            this.geoLocation();
             this.videoUtilService.normalVideoJsFiles();
             this.isGridView(this.authenticationService.getUserId());
             this.validateUpdatePasswordForm();
@@ -454,6 +457,26 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     };
 
     /*******************Update User Profile*************************************/
+    geoLocation(){
+        try{
+        this.videoFileService.getJSONLocation()
+        .subscribe(
+        (data: any) => {
+            if ( this.userData.mobileNumber == "" || this.userData.mobileNumber == undefined ) {
+                for ( let i = 0; i < this.countryNames.countriesMobileCodes.length; i++ ) {
+                    if ( data.countryCode == this.countryNames.countriesMobileCodes[i].code ) {
+                        this.userData.mobileNumber = this.countryNames.countriesMobileCodes[i].dial_code;
+                        break;
+                    }
+                }
+            }
+
+        } )
+        } catch ( error ) {
+            console.error( error, "addcontactOneAttimeModalComponent()", "gettingGeoLocation" );
+        }
+    }
+    
     updateUserProfileForm: FormGroup;
     validateUpdateUserProfileForm() {
         var urlPatternRegEx = /(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/;
@@ -470,7 +493,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             'description': [this.userData.description, Validators.compose([noWhiteSpaceValidator, Validators.maxLength(50)])],
             'websiteUrl': [this.userData.websiteUrl, [Validators.pattern(urlPatternRegEx)]]
         });
-
 
         this.updateUserProfileForm.valueChanges
             .subscribe(data => this.onUpdateUserProfileFormValueChanged(data));
@@ -507,6 +529,13 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         console.log(this.updateUserProfileForm.value);
         this.referenceService.goToTop();
         this.ngxloading = true;
+        
+        if( this.userData.mobileNumber.length > 6){
+            this.updateUserProfileForm.value.mobileNumber = this.userData.mobileNumber;
+        }else {
+            this.updateUserProfileForm.value.mobileNumber = ""
+        }
+        
         this.userService.updateUserProfile(this.updateUserProfileForm.value, this.authenticationService.getUserId())
             .subscribe(
                 data => {
