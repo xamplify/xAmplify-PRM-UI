@@ -112,7 +112,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
         }
     }
 
-    geoLocation(){
+/*    geoLocation(){
         try{
         this.videoFileService.getJSONLocation()
         .subscribe(
@@ -135,11 +135,12 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
         } catch ( error ) {
             console.error( error, "addcontactOneAttimeModalComponent()", "gettingGeoLocation" );
         }
-    }
+    }*/
 
     ngOnInit() {
        try{
-        this.geoLocation();
+        //this.geoLocation();
+        this.addContactuser.country = this.countryNames.countries[0];
         if(this.isPartner){
             this.checkingContactTypeName = "Partner"
         }else{
@@ -159,10 +160,10 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
             this.addContactuser.city = this.contactDetails.city;
             this.addContactuser.country = this.contactDetails.country;
             this.addContactuser.mobileNumber = this.contactDetails.mobileNumber;
-            if ( this.addContactuser.mobileNumber == undefined ) {
+           /* if ( this.addContactuser.mobileNumber == undefined ) {
                 //this.addContactuser.mobileNumber = "+1";
                 this.geoLocation()
-            }
+            }*/
             if ( this.isPartner ) {
                 if ( this.addContactuser.contactCompany != undefined ) {
                     this.isCompanyDetails = true;
@@ -173,7 +174,8 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
 
         }
         if ( this.addContactuser.country == undefined ) {
-            this.geoLocation();
+            //this.geoLocation();
+            this.addContactuser.country = this.countryNames.countries[0];
         }
         $( '#addContactModal' ).modal( 'show' );
        } catch ( error ) {
