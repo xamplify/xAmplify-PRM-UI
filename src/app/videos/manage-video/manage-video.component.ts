@@ -342,11 +342,11 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
             this.showVideoFileName = videoFile.title;
         }
         if(this.showMessage){
-            this.showVideoFileName = '('+this.showVideoFileName+') video saved successfully';
+            this.showVideoFileName = '"'+this.showVideoFileName+'" video saved successfully';
             this.customResponse = new CustomResponse( 'SUCCESS', this.showVideoFileName, true );
 
          } else if(this.showUpdatevalue){
-            this.showVideoFileName = '('+this.showVideoFileName+') video settings updated successfully';
+            this.showVideoFileName = '"'+this.showVideoFileName+'" video settings updated successfully';
             this.customResponse = new CustomResponse( 'SUCCESS', this.showVideoFileName, true );
          }
         this.xtremandLogger.info('update method called ' + this.showVideoFileName);

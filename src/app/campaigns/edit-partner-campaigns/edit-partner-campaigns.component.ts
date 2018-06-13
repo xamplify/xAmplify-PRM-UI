@@ -1,12 +1,10 @@
 import { Component, OnInit,OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { DatePipe } from '@angular/common';
-import { FormsModule, FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { EmailTemplate } from '../../email-template/models/email-template';
 import { CustomResponse } from '../../common/models/custom-response';
 
-import { CampaignType } from '../models/campaign-type';
 import { ReferenceService } from '../../core/services/reference.service';
 import { PagerService } from '../../core/services/pager.service';
 import { CampaignService } from '../services/campaign.service';
@@ -14,7 +12,6 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 import { EmailTemplateService } from '../../email-template/services/email-template.service';
 import { ContactService } from '../../contacts/services/contact.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
-import { CompanyProfileService } from '../../dashboard/company-profile/services/company-profile.service';
 import { validateCampaignSchedule } from '../../form-validator';
 import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import { CampaignEmailTemplate } from '../models/campaign-email-template';
@@ -27,26 +24,28 @@ import { Timezone } from '../../core/models/timezone';
 import { EmailTemplateType } from '../../email-template/models/email-template-type';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { CampaignContact } from '../models/campaign-contact';
-declare var swal, $, videojs , Metronic, Layout , Demo,TableManaged ,Promise,jQuery,flatpickr,CKEDITOR:any;
+import { Properties } from '../../common/models/properties';
+
+declare var  $,flatpickr,CKEDITOR:any;
+
 @Component({
   selector: 'app-edit-partner-campaigns',
   templateUrl: './edit-partner-campaigns.component.html',
   styleUrls: ['./edit-partner-campaigns.component.css'],
-  providers:[CallActionSwitch,HttpRequestLoader,Pagination]
+  providers:[CallActionSwitch,HttpRequestLoader,Pagination,Properties]
 })
 export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
 
-    selectedEmailTemplateId: number = 0;
+    selectedEmailTemplateId = 0;
     campaign: Campaign;
     emailTemplate: EmailTemplate;
     userLists: any;
     videoFile: any;
-    isListView: boolean = false;
-    public campaignLaunchOptions = ['NOW', 'SCHEDULE', 'SAVE'];
+    isListView = false;
+    campaignLaunchOptions = ['NOW', 'SCHEDULE', 'SAVE'];
     campaignLaunchForm: FormGroup;
     buttonName = "Launch";
     customResponse: CustomResponse = new CustomResponse();
-
     countries: Country[];
     timezones: Timezone[];
     replies: Array<Reply> = new Array<Reply>();
@@ -112,23 +111,21 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
 
     };
 
-
-
     /************Campaign Details******************/
-    formGroupClass:string = "form-group";
+    formGroupClass = "form-group";
     campaignNameDivClass:string = this.formGroupClass;
     fromNameDivClass:string =  this.formGroupClass;
     subjectLineDivClass:string = this.formGroupClass;
     fromEmaiDivClass:string = this.formGroupClass;
     preHeaderDivClass:string = this.formGroupClass;
     messageDivClass:string = this.formGroupClass;
-    campaignType:string = "";
-    isCampaignDetailsFormValid:boolean = true;
+    campaignType = "";
+    isCampaignDetailsFormValid = true;
     names:string[]=[];
-    editedCampaignName:string = "";
+    editedCampaignName = "";
     /***************Contact List************************/
-    isContactList:boolean = false;
-    contactListBorderColor:string = "silver";
+    isContactList = false;
+    contactListBorderColor = "silver";
     numberOfContactsPerPage = [
                                {'name':'10','value':'10'},
                                {'name':'20','value':'20'},
@@ -170,7 +167,8 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
             private emailTemplateService: EmailTemplateService,
             public callActionSwitch: CallActionSwitch,
             private formBuilder: FormBuilder,
-            private xtremandLogger: XtremandLogger,private companyProfileService:CompanyProfileService) {
+            public properties:Properties,
+            private xtremandLogger: XtremandLogger) {
             this.countries = this.referenceService.getCountries();
             this.contactListPagination = new Pagination();
             this.contactListPagination.filterKey = 'isPartnerUserList';
@@ -183,10 +181,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
             }else{
                 this.router.navigate(['/home/campaigns/partner/regular']);
             }
-
         }
-
-
 
     setCampaignData(result){
         this.campaign = result;
@@ -1028,7 +1023,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
                 if(href!="<SocialUbuntuURL>" && href!="https://dummyurl.com" &&  href!="https://dummycobrandingurl.com" && href!="<unsubscribeURL>"){
                     self.emailTemplateHrefLinks.push(href);
                 }
-                
+
             }
         });
         this.emailTemplateHrefLinks = this.referenceService.removeDuplicates(this.emailTemplateHrefLinks);*/
@@ -1339,8 +1334,8 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
           this.referenceService.goToTop();
       }
   return false;
-  
+
   }
-  
+
 
 }

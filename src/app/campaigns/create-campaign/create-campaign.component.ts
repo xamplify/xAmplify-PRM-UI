@@ -1,6 +1,6 @@
-import { Component, OnInit,OnDestroy,ViewChild, ElementRef,HostListener} from '@angular/core';
+import { Component, OnInit,OnDestroy} from '@angular/core';
 import { ActivatedRoute,Router } from '@angular/router';
-import { FormsModule, FormGroup, FormBuilder, Validators, FormControl} from '@angular/forms';
+import { FormGroup, FormBuilder, Validators} from '@angular/forms';
 import { Pagination } from '../../core/models/pagination';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { ReferenceService } from '../../core/services/reference.service';
@@ -34,13 +34,14 @@ import { SocialService } from "../../social/services/social.service";
 import { Country } from '../../core/models/country';
 import { Timezone } from '../../core/models/timezone';
 import {Roles} from '../../core/models/roles';
-declare var swal, $, videojs , Metronic, Layout , Demo,TableManaged ,Promise,jQuery,flatpickr,CKEDITOR:any;
+import { Properties } from '../../common/models/properties';
+declare var swal, $, videojs , Metronic, Layout , Demo,flatpickr,CKEDITOR:any;
 
 @Component({
   selector: 'app-create-campaign',
   templateUrl: './create-campaign.component.html',
   styleUrls: ['./create-campaign.component.css', '../../../assets/css/video-css/video-js.custom.css'],
-  providers:[HttpRequestLoader,CallActionSwitch]
+  providers:[HttpRequestLoader,CallActionSwitch,Properties]
 
 })
 export class CreateCampaignComponent implements OnInit,OnDestroy{
@@ -197,7 +198,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 public authenticationService:AuthenticationService,private pagerService:PagerService,
                 private userService:UserService,public campaignService:CampaignService,private contactService:ContactService,
                 private emailTemplateService:EmailTemplateService,private router:Router, private socialService: SocialService,
-                public callActionSwitch: CallActionSwitch, public videoUtilService: VideoUtilService
+                public callActionSwitch: CallActionSwitch, public videoUtilService: VideoUtilService,public properties:Properties
             ){
         this.logger.info("create-campaign-component constructor loaded");
         $('.bootstrap-switch-label').css('cssText', 'width:31px;!important');
@@ -1591,7 +1592,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
            }
         });
         this.emailTemplateHrefLinks = this.refService.removeDuplicates(this.emailTemplateHrefLinks);*/
-        
+
         this.emailTemplateHrefLinks = this.refService.getAnchorTagsFromEmailTemplate(body, this.emailTemplateHrefLinks);
     }
 
@@ -1638,7 +1639,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             }
         }
     }
-    
+
     getCampaignData( emailId: string ) {
         if ( this.campaignType === "regular" ) {
             this.campaign.regularEmail = true;

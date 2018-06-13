@@ -87,4 +87,11 @@ export class Properties {
     PROFILE_UPDATED = 'Profile updated successfully.';
     PASSWORD_UPDATED= 'Password updated successfully.';
     PAWORD_ERROR = 'New password should not be same as current password.'
+
+    /* campaign */
+    ADD_AUTO_RESPONSE_WEBSITE = 'Auto-responses to your	website	visit'
+    ADD_AUTO_RESPONSE_EMAIL = 'Auto-responses to  your email	visit'
+    TO_PARTNER_MESSAGE = 'To Partner: Send a campaign intended just for your Partners';
+    THROUGH_PARTNER_MESSAGE = 'Through Partner: Send a campaign that your Partners can redistribute';
+    ENALEORDISABLE_VENDOR_MESSAGE='Enable/disable	the	Vendor’s access to your campaign analytics'
 }

@@ -1,8 +1,6 @@
-import { CampaignType } from '../models/campaign-type';
 import { Component, OnInit,OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { DatePipe } from '@angular/common';
-import { FormsModule, FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 
 import { EmailTemplate } from '../../email-template/models/email-template';
 import { CustomResponse } from '../../common/models/custom-response';
@@ -15,7 +13,6 @@ import { EmailTemplateService } from '../../email-template/services/email-templa
 import { ContactService } from '../../contacts/services/contact.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 
-import { validateCampaignSchedule } from '../../form-validator';
 import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import { CampaignEmailTemplate } from '../models/campaign-email-template';
 import { Campaign } from '../models/campaign';
@@ -24,10 +21,11 @@ import { Url } from '../models/campaign-url';
 import { Pagination } from '../../core/models/pagination';
 import { Country } from '../../core/models/country';
 import { Timezone } from '../../core/models/timezone';
-import { EmailTemplateType } from '../../email-template/models/email-template-type';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { CampaignContact } from '../models/campaign-contact';
-declare var swal, $, videojs , Metronic, Layout , Demo,TableManaged ,Promise,jQuery,flatpickr,CKEDITOR:any;
+import { Properties } from '../../common/models/properties';
+declare var $,CKEDITOR:any;
+
 @Component({
   selector: 'app-preview-campaign',
   templateUrl: './preview-campaign.component.html',
@@ -101,7 +99,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
             private pagerService: PagerService,
             private emailTemplateService: EmailTemplateService,
             public callActionSwitch: CallActionSwitch,
-            private formBuilder: FormBuilder,
+            public properties:Properties,
             private xtremandLogger: XtremandLogger) {
             this.countries = this.referenceService.getCountries();
             this.contactListPagination = new Pagination();
