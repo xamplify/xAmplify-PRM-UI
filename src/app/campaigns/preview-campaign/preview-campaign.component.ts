@@ -1,5 +1,5 @@
 import { Component, OnInit,OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { FormGroup } from '@angular/forms';
 
 import { EmailTemplate } from '../../email-template/models/email-template';
@@ -30,7 +30,7 @@ declare var $,CKEDITOR:any;
   selector: 'app-preview-campaign',
   templateUrl: './preview-campaign.component.html',
   styleUrls: ['./preview-campaign.component.css'],
-  providers:[CallActionSwitch]
+  providers:[CallActionSwitch,Properties]
 })
 export class PreviewCampaignComponent implements OnInit,OnDestroy {
     campaignType:string = "";
@@ -90,7 +90,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     contactType:string = "contacts";
     listName:string;
 
-    constructor(private router: Router,
+    constructor(
             private route: ActivatedRoute,
             private campaignService: CampaignService,
             private authenticationService: AuthenticationService,
