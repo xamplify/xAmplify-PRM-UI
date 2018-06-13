@@ -468,7 +468,7 @@
     </fieldset>
       <!-- ------------ADD ON CLICK------------------------ -->
       <fieldset *ngIf="urls?.length>0">
-          <legend>Add-response Campaign Option to a Website Visit</legend>
+          <legend>{{properties.ADD_AUTO_RESPONSE_WEBSITE}}</legend>
 			<div *ngFor="let url of urls;let i=index">
 				<div class="portlet light dashboard-stat2" id="{{url.divId}}">
 					<div class="portlet-title custom-change-css">
@@ -497,8 +497,8 @@
 									<label for="reason">When To Send Email</label>
 									<select class="form-control" id="url-schedule-type" name="scheduleEmail" [(ngModel)]="url.actionId" (change)="setUrlScheduleType($event,url)">
 										  <option  [value]="19" [selected]="url.actionId ==19">Send if not clicked</option>
-						           	 		<option  [value]="20" [selected]="url.actionId ==20">Send immediately after clicked</option>
-						           			<option  [value]="21" [selected]="url.actionId ==21">Schedule</option>
+                      <option  [value]="20" [selected]="url.actionId ==20">Send immediately after clicked</option>
+                      <option  [value]="21" [selected]="url.actionId ==21">Schedule</option>
 									</select>
 								</div>
 
