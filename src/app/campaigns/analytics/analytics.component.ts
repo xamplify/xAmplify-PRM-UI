@@ -888,7 +888,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     if (this.isTimeLineView === true) {
       this.getCampaignUserViewsCountBarCharts(this.campaignId, this.pagination);
     }
-    setTimeout(() => { this.mainLoader = false;}, 1600);
+    setTimeout(() => { this.mainLoader = false;}, 3000);
   }catch(error) { this.mainLoader = false; this.xtremandLogger.error('error'+error); }
   }
   ngOnDestroy(){

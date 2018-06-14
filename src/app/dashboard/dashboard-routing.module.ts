@@ -14,6 +14,7 @@ import { SharedComponent } from "./shared/shared.component";
 import { EditCompanyProfileComponent } from "./company-profile/edit-company-profile/edit-company-profile.component";
 import { ReportsComponent } from "./dashboard/reports/reports.component";
 import { NotificationsComponent } from "../core/notifications/notifications.component";
+import { VendorReportsComponent } from "./vendor-reports/vendor-reports.component";
 
 const routes: Routes = [
   { path: "", component: DashboardComponent },
@@ -29,7 +30,8 @@ const routes: Routes = [
   { path: "add-company-profile", component: EditCompanyProfileComponent },
   { path: "edit-company-profile", component: EditCompanyProfileComponent },
   { path: "reports", component: ReportsComponent },
-  { path: "notifications", component: NotificationsComponent }
+  { path: "notifications", component: NotificationsComponent },
+  { path: 'vendors',component:VendorReportsComponent}
 ];
 @NgModule({
   imports: [RouterModule.forChild(routes)],

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthenticationService } from '../../core/services/authentication.service';
+import { ReferenceService } from '../../core/services/reference.service';
 
 @Component({
   selector: 'app-vendor-reports',
@@ -7,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class VendorReportsComponent implements OnInit {
 
-  constructor() { }
+  constructor(public referenseService:ReferenceService) { }
 
   ngOnInit() {
   }

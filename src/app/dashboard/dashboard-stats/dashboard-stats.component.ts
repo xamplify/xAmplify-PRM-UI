@@ -48,6 +48,7 @@ export class DashboardStatsComponent implements OnInit {
         this.router.navigate(['/home/partners/analytics']);
       } else {
         console.log('go to vendors page');
+      //  this.router.navigate(['/home/dashboard/vendors']); // un comment for vendor page
       }
   }
 
