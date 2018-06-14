@@ -71,11 +71,12 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   paginationType:string;
   videoFile: any;
   userWatchtotalRecords: number;
-  isPartnerEnabledAnalyticsAccess:boolean = false;
-  isNavigatedThroughAnalytics:boolean = false;
+  isPartnerEnabledAnalyticsAccess = false;
+  isNavigatedThroughAnalytics = false;
   campaignRouter:any;
-  loggedInUserId:number = 0;
-  loading:boolean =false;
+  loggedInUserId = 0;
+  loading =false;
+  mainLoader = false;
   logListName = "";
   httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
   constructor(private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
@@ -876,6 +877,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   }
   ngOnInit() {
     try{
+    this.mainLoader = true;
     this.paginationType = 'campaignViews';
     this.emailActionListPagination.pageIndex = 1;
     this.campaignId = this.route.snapshot.params['campaignId'];
@@ -886,7 +888,8 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     if (this.isTimeLineView === true) {
       this.getCampaignUserViewsCountBarCharts(this.campaignId, this.pagination);
     }
-  }catch(error) {this.xtremandLogger.error('error'+error); }
+    setTimeout(() => { this.mainLoader = false;}, 1600);
+  }catch(error) { this.mainLoader = false; this.xtremandLogger.error('error'+error); }
   }
   ngOnDestroy(){
     this.paginationType = '';

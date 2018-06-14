@@ -1,9 +1,4 @@
-<style>
-  .selectedtype{
-    background:#00a6e8;
-  }
-
- </style>
+<style>.selectedtype{ background:#00a6e8;}</style>
  <div class="page-content">
    <div>
      <div class="page-bar">
@@ -95,9 +90,12 @@
                          </td>
                          <td>
                            <a (click)="showPlayVideo(videoFile)">
-                             <h4  title={{videoFile.title}} class='mt5 mb5 f-w-600'>{{videoFile.title | slice: 0: 23}} <span *ngIf="videoFile.title?.length>23">...</span> </h4>
+                             <h4  title={{videoFile.title}} class='mt5 mb5 f-w-600'>{{videoFile.title | slice: 0: 40}} <span *ngIf="videoFile.title?.length>42">...</span> </h4>
                              <h5 *ngIf="videoFileService.videoType === 'myVideos'" class='m0'>By {{videoFile.uploadedUserName}}</h5>
-                             <h5 *ngIf="videoFileService.videoType === 'partnerVideos'">by {{videoFile.uploadedUserName}}</h5>
+                             <h5 *ngIf="videoFileService.videoType === 'partnerVideos'">by
+                               <span *ngIf="videoFile.companyName">{{videoFile.companyName}}</span>
+                               <span *ngIf="!videoFile.companyName">{{videoFile.uploadedUserName}}</span>
+                              </h5>
                              <h6 class='f-w-600'>{{videoFile.views}} views</h6>
                            </a>
                          </td>
@@ -148,7 +146,10 @@
                    </div>
                       <span class="ellipsis video-title" title="{{videoFile.title}}">{{videoFile.title | slice:0:25}}<span *ngIf="videoFile.title?.length>25">...</span></span>
                       <span  class="video-uploaded-by" *ngIf="videoFileService.videoType==='myVideos'"  title="Uploaded By">By {{videoFile.uploadedUserName}}</span>
-                      <span  class="video-uploaded-by" *ngIf="videoFileService.videoType==='partnerVideos'" title="Uploaded By">By {{videoFile.uploadedUserName | slice: 0: 21}}</span>
+                      <span  class="video-uploaded-by" *ngIf="videoFileService.videoType==='partnerVideos'" title="Uploaded By">By
+                         <span *ngIf="videoFile.companyName">{{videoFile.companyName}}</span>
+                         <span *ngIf="!videoFile.companyName">{{videoFile.uploadedUserName}}</span>
+                      </span>
                       <span class="video-upload-date"  title="Uploaded Date">{{videoFile.uploadedDate }}</span>
 
                    <div class="bookmark-ribbon" *ngIf="videoFileService.videoType === 'partnerVideos'">

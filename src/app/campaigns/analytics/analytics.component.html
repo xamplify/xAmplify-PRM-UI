@@ -9,7 +9,7 @@
 	}
 .btn-social { color: #fff;}
 </style>
-<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+<!-- <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading> -->
 <div class="page-content" *ngIf="!isTimeLineView">
 <div class="page-bar square-box" style="margin: 0 10px 15px;border-radius: 0;">
 	<ul class="page-breadcrumb">
@@ -26,8 +26,8 @@
 	<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 </div>
 <ng-template #NOERROR>
-<!-- <app-analytics-loader></app-analytics-loader> -->
-	<div class="row">
+<app-analytics-loader [campaignType]="'VIDEO'" *ngIf="mainLoader"></app-analytics-loader>
+	<div class="row" [hidden]="mainLoader">
 		<div class="pl10 pr10 col-xs-12" [ngClass]="{'col-sm-4': campaignType === 'VIDEO','forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}" *ngIf="campaignType === 'VIDEO' && campaign.selectedVideoId>0">
 			<a class="dashboard-stat dashboard-stat-lighter purple-soft" (click)="previewVideo(campaign.campaignVideoFile)" [class.disabled]="!isPartnerEnabledAnalyticsAccess ?true:null">
 				<div class="visual">
@@ -118,7 +118,7 @@
 				</a>
 			</div>
 	</div>
-	<div class="col-xs-12 col-sm-6 p-5x" [hidden]="campaignType !== 'VIDEO'">
+	<div class="col-xs-12 col-sm-6 p-5x" [hidden]="campaignType !== 'VIDEO' || mainLoader">
 		<div class="p-5x">
 			<div class="portlet light">
 				<div class="portlet-title">
@@ -135,7 +135,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-xs-12 col-sm-6 p-5x" *ngIf="campaignType !== 'VIDEO'">
+	<div class="col-xs-12 col-sm-6 p-5x" [hidden]="mainLoader" *ngIf="campaignType !== 'VIDEO'">
 		<div class="p-5x">
 			<div class="portlet light">
 				<div class="portlet-body clearfix">
@@ -147,7 +147,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-xs-12 col-sm-6 p-5x emails-info">
+	<div class="col-xs-12 col-sm-6 p-5x emails-info" [hidden]="mainLoader" >
 		<div class="p-5x" [ngClass]="{'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO'}">
 			<button class="portlet light color1-invert crcb" (click)="downloadTypeName = 'campaignViews'" data-toggle="modal" data-target="#emailSentListModal" [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
 			 [disabled]="campaignReport.emailSentCount < 1 ||  !isPartnerEnabledAnalyticsAccess">
@@ -160,7 +160,7 @@
 				</div>
 			</button>
 		</div>
-		<div class="p-5x" [ngClass]="{'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO','forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}">
+		<div class="p-5x" [hidden]="mainLoader"  [ngClass]="{'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO','forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}">
 			<button class="portlet light color1-invert crcb" (click)="emailActionList(campaign.campaignId, 'open', emailActionListPagination)"  [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
 			 [disabled]="campaignReport.emailOpenCount < 1 || !isPartnerEnabledAnalyticsAccess">
 				<div class="portlet-body text-center">
@@ -172,7 +172,7 @@
 				</div>
 			</button>
 		</div>
-		<div class="p-5x" [ngClass]="{'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO','forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}">
+		<div class="p-5x" [hidden]="mainLoader"  [ngClass]="{'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO','forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}">
 			<button class="portlet light color1-invert crcb" (click)="emailActionList(campaign.campaignId, 'click', emailActionListPagination)"  [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
 			 [disabled]="campaignReport.emailClickedCount < 1 || !isPartnerEnabledAnalyticsAccess">
 				<div class="portlet-body text-center">
@@ -184,7 +184,7 @@
 				</div>
 			</button>
 		</div>
-		<div class="col-xs-6 col-sm-3 p-5x" *ngIf="campaignType === 'VIDEO'" [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}">
+		<div [hidden]="mainLoader"  class="col-xs-6 col-sm-3 p-5x" *ngIf="campaignType === 'VIDEO'" [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}">
 			<button class="portlet light color1-invert crcb" (click)="usersWatchList(campaign.campaignId, usersWatchListPagination)"  [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
 			 [disabled]="campaignReport.usersWatchCount < 1 || !isPartnerEnabledAnalyticsAccess">
 				<div class="portlet-body text-center">
@@ -197,7 +197,7 @@
 			</button>
 		</div>
 	</div>
-	<section class='clearfix' *ngIf="campaignType === 'SOCIAL' && socialStatus">
+	<section class='clearfix' [hidden]="mainLoader"  *ngIf="campaignType === 'SOCIAL' && socialStatus">
 		<div class="col-xs-12">
 			<div class="portlet light" style="margin: -5px -5px 5px -5px;">
 				<div class="portlet-title">
@@ -241,7 +241,7 @@
 			</div>
 		</div>
 	</section>
-	<div class="col-xs-12 col-sm-6 p-5x" [hidden]="campaignType !== 'VIDEO'">
+	<div class="col-xs-12 col-sm-6 p-5x" [hidden]="campaignType !== 'VIDEO' || mainLoader">
 		<div class="col-xs-12 p-5x">
 			<div class="portlet light">
 				<div class="portlet-title">
