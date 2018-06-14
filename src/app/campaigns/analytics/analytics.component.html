@@ -26,7 +26,7 @@
 	<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 </div>
 <ng-template #NOERROR>
-<!-- <app-list-loader></app-list-loader> -->
+<app-analytics-loader></app-analytics-loader>
 	<div class="row">
 		<div class="pl10 pr10 col-xs-12" [ngClass]="{'col-sm-4': campaignType === 'VIDEO','forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}" *ngIf="campaignType === 'VIDEO' && campaign.selectedVideoId>0">
 			<a class="dashboard-stat dashboard-stat-lighter purple-soft" (click)="previewVideo(campaign.campaignVideoFile)" [class.disabled]="!isPartnerEnabledAnalyticsAccess ?true:null">
@@ -128,7 +128,7 @@
 					<div><span style="float: right;font-size: 14px;color: #fff;background: #00a6e8;padding: 0px 17px;margin-right: 1px;margin-top:2px;">{{campaignType}} CAMPAIGN {{isPartnerCampaign}}</span>
 					</div>
 				</div>
-				<div class="portlet-body text-center" [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}">
+				<div class="portlet-body text-center" style="min-height: 300px;" [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}">
 					<app-worldmap *ngIf="renderMapData && isPartnerEnabledAnalyticsAccess" [worldMapData] = "renderMapData" (notifyParent)="clickWorldMapReports($event)"></app-worldmap>
 					<app-worldmap class="disabled" *ngIf="renderMapData && !isPartnerEnabledAnalyticsAccess" [worldMapData] = "renderMapData"></app-worldmap>
 				</div>
@@ -241,7 +241,7 @@
 			</div>
 		</div>
 	</section>
-	<div class="col-xs-12 col-sm-6 p-5x" *ngIf="campaignType === 'VIDEO'">
+	<div class="col-xs-12 col-sm-6 p-5x" [hidden]="campaignType !== 'VIDEO'">
 		<div class="col-xs-12 p-5x">
 			<div class="portlet light">
 				<div class="portlet-title">
@@ -575,6 +575,7 @@
 							<thead>
 								<tr>
 									<th style="font-size: 12px; font-weight: 500;">NAME</th>
+									<th *ngIf="campaignReport.emailActionType === 'open'">Email Subject</th>
 									<th *ngIf="campaignReport.emailActionType === 'click'" style="font-size: 12px; font-weight: 500;">URL</th>
 									<th style="font-size: 12px; font-weight: 500;">TIME</th>
 								</tr>
@@ -583,6 +584,9 @@
 								<tr *ngFor="let item of campaignReport.emailActionList">
 									<td>
 										<app-user-info  [userInfo]="item"> </app-user-info>
+									</td>
+									<td *ngIf="campaignReport.emailActionType === 'open'">
+										<h6>{{item.subject}}</h6>
 									</td>
 									<td *ngIf="campaignReport.emailActionType === 'click' && item.url != null">
 										<h6>{{item.url}}</h6>
