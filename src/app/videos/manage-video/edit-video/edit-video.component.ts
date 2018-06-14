@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, ChangeDetectorRef, AfterViewInit,
+import { Component, OnInit, OnDestroy, Output, EventEmitter, ChangeDetectorRef, AfterViewInit,
     style, animate, transition, trigger
 } from '@angular/core';
 

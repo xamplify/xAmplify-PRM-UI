@@ -1,12 +1,11 @@
-import { Injectable, OnInit } from '@angular/core';
-import { Http, Headers, Response, RequestOptions } from '@angular/http';
+import { Injectable } from '@angular/core';
+import { Http, Response } from '@angular/http';
 import { SaveVideoFile } from '../../videos/models/save-video-file';
 import { AuthenticationService } from './authentication.service';
 import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
 import { Category } from '../../videos/models/category';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
-import { User } from '../models/user';
 import { DefaultVideoPlayer } from '../../videos/models/default-video-player';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { Roles } from '../../core/models/roles';
@@ -58,7 +57,7 @@ export class ReferenceService {
     reportName: string;
     partnerCount:number;
     userProviderMessage = '';
-    companyId:number=0;
+    companyId=0;
     isDisabling = false;
     videoBrandLogo: string;
     videoType = "";
@@ -1471,7 +1470,7 @@ export class ReferenceService {
         return filteredTimeZones;
 
       }
-    
+
     getTimeZoneByTimeZonId(timeZoneId:string){
         var filteredTimeZones = this.getTimeZones().filter(function (timezone) {
             return timezone.timezoneId === timeZoneId;
@@ -1479,7 +1478,7 @@ export class ReferenceService {
         return filteredTimeZones;
 
     }
-    
+
 
     startLoader(httpRequestLoader:HttpRequestLoader){
         this.pageContnetBgColor = "#fff"
@@ -1552,7 +1551,7 @@ export class ReferenceService {
                  if(href!="<SocialUbuntuURL>" && href!="https://dummyurl.com" &&  href!="https://dummycobrandingurl.com" && href!="<unsubscribeURL>"){
                      emailTemplateHrefLinks.push(href);
                  }
-                 
+
              }
          });
          return emailTemplateHrefLinks = this.removeDuplicates(emailTemplateHrefLinks);

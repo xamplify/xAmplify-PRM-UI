@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import { User } from '../models/user';
-import { UserToken } from '../models/user-token';
-import { Http, Headers, RequestOptions, Response } from '@angular/http';
+import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Pagination } from '../models/pagination';
 

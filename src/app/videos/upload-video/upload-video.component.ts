@@ -182,6 +182,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
          this.previewDisabled = previewdisable;
     }
     processVideo(responsePath: any) {
+        try{
         if (!this.videoFileService.isProgressBar) { this.cloudStorageDisabled(); }
         const val = this;
         if (this.RecordSave !== true) {  setTimeout(function () {  val.processing = true; }, 100); }
@@ -245,6 +246,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 this.xtremandLogger.errorPage(error);
             }),
             () => console.log('process video is:' + this.processVideoResp);
+        }catch(error) { this.xtremandLogger.error('Error in upload video, process video method'+error);}
     }
     modalPopupClosed() {
         $('#myModal').modal('hide');
@@ -252,10 +254,10 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         $('.modal-backdrop fade in').remove();
     }
     fileSizeCheck(event: any) {
+       try{
         const fileList: FileList = event.target.files;
         console.log(fileList[0].type);
         if (fileList.length > 0 && fileList[0].type.includes('video')) {
-            const file: File = fileList[0];
             const isSizeExceded: any = fileList[0].size;
             const size = isSizeExceded / (1024 * 1024);
             this.maxSizeOver = size > this.maxVideoSize ? true : false;
@@ -264,6 +266,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         } else{
           this.customResponse = new CustomResponse( 'ERROR',this.videoUtilService.fileTypeMessage, true );
         }
+     }catch(error) { this.xtremandLogger.error('Error in upload video, fileSizeCheck method'+error);}
     }
     public fileOverBase(e: any): void {
         if (this.isFileDrop === false && this.isFileProgress === false) {
@@ -274,16 +277,11 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
     }
     setTimoutMethod() {
         this.uploader.queue.length = 0;
-        setTimeout( () => {
-            this.maxSizeOver = false;
-            this.router.navigate(['./home/videos']);
-        }, 5000);
+        setTimeout( () => { this.maxSizeOver = false;  this.router.navigate(['./home/videos']);}, 5000);
     }
     fileDropPreview(file: File): void {
         if (this.isFileDrop === false) {
-            console.log('file got it');
             console.log(file);
-            console.log(file[0].type);
         } else {
             this.isFileDrop = true;
             file = null;
@@ -315,6 +313,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         this.processing = true;
     }
     uploadRecordedVideo() {
+      try{
         this.RecordSave = true;
         this.saveVideo = false;
         this.discardVideo = false;
@@ -344,8 +343,10 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 this.errorIsThere = true;
                 this.xtremandLogger.errorPage(error);
              } );
+       }catch(error) { this.xtremandLogger.error('Error in upload video, uploadRecordedVideo method'+error);}
     }
     removeRecordVideo() {
+       try{
         this.player.recorder.stopDevice();
         this.player.recorder.getDevice();
         // this.player.recorder.reset();
@@ -353,9 +354,11 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         this.discardVideo = false;
         this.hideSaveDiscard = true;
         $('.video-js .vjs-fullscreen-control').hide();
+      }catch(error) { this.xtremandLogger.error('Error in upload video, removeRecordVideo method'+error);}
     }
     closeRecordPopup() {
-        $('#myModal').modal('hide');
+      try{
+       $('#myModal').modal('hide');
         this.defaultSettings();
         this.stop();
         this.isFileDrop = false;
@@ -365,20 +368,22 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         this.discardVideo = false;
         this.playerInit = true;
         // this.router.navigate(['./home/videos']);
+      }catch(error) { this.xtremandLogger.error('Error in upload video, closeRecordPopup method'+error);}
     }
     trimVideoTitle(title: string) {
-        if (title.length > 30) {
+      try{
+      if (title.length > 30) {
             const fileTitleStart = title.substr(0, 25);
             const fileTitleend = title.slice(-5);
             return fileTitleStart + '...' + fileTitleend;
         } else {
             return title;
         }
+      }catch(error) { this.xtremandLogger.error('Error in upload video, trimVideoTitle method'+error);}
+
     }
     textAreaEmpty() {
-        if (this.textAreaValue !== '') {
-            this.testSpeeddisabled = false;
-        }
+        if (this.textAreaValue !== '') { this.testSpeeddisabled = false; }
     }
     stop() {
         this.stopButtonShow = false; // hide the stop button
@@ -525,7 +530,8 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
       }
     }
     dropBoxChange() {
-        if (this.isChecked === true && this.processing !== true && this.sweetAlertDisabled === false &&
+      try{
+      if (this.isChecked === true && this.processing !== true && this.sweetAlertDisabled === false &&
             this.sweetAlertMesg === 'DropBox') { swal('Oops...', 'You minimized DropBox window!', 'error'); }
         if (this.isChecked !== true && this.cloudDrive === false && this.camera === false && this.cloudOneDrive === false &&
             this.cloudBox === false) {
@@ -542,9 +548,11 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             $('.box').attr('style', 'cursor:not-allowed; opacity:0.5');
             $('.oneDrive').attr('style', 'cursor:not-allowed; opacity:0.5');
            // $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:0.6');
-        }
+          }
+        } catch(error){this.xtremandLogger.error('Error in upload video dropBoxChange method'+error);}
     }
     boxChange() {
+      try{
         if (this.isChecked === true && this.processing !== true && this.sweetAlertDisabled === false &&
             this.sweetAlertMesg === 'Box') { swal('Oops...', 'You minimized Box window!', 'error'); }
         if (this.isChecked !== true && this.cloudDrive === false && this.camera === false && this.cloudOneDrive === false &&
@@ -565,12 +573,15 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             $('.oneDrive').attr('style', 'cursor:not-allowed; opacity:0.5');
           //  $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:0.6');
         }
+      } catch(error){this.xtremandLogger.error('Error in upload video box method'+error);}
     }
     googleDriveChange() {
-        this.sweetAlertMesg = 'Drive';
+      try{
+      this.sweetAlertMesg = 'Drive';
         if(this.uploader.queue.length === 0){
         this.onApiLoad();    // google drive code
         }
+      } catch(error){this.xtremandLogger.error('Error in upload video googleDriveChange method'+error);}
     }
     defaultDesabled() {
         this.sweetAlertDisabled = true;
@@ -614,7 +625,8 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         this.router.navigate(['./home/videos']);
     }
     downloadFromDropbox() {
-        if (this.processing !== true) {
+      try{
+      if (this.processing !== true) {
             const self = this;
             const options = {
                 success: function (files: any) {
@@ -631,9 +643,11 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             };
             Dropbox.choose(options);
         } // close if condition
+      }catch(error) {this.xtremandLogger.error('Error in upload video downloadFromDropbox'+error); }
     }
     dropbox(files: any) {
-        swal({
+      try{
+      swal({
             text: 'Thanks	for	waiting	while	we retrieve	your video from	Drop box',
             allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif',
         });
@@ -650,9 +664,11 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 this.errorIsThere = true;
                 this.xtremandLogger.errorPage(error);
             });
+          }catch(error){ this.xtremandLogger.error('Error in upload vidoe dropbox'+error);}
     }
     /* box retreive videos */
     downloadFrombox() {
+      try{
         const value = this;
         const options = {
             clientId: 'a8gaa6kwnxe10uruyregh3u6h7qxd24g',
@@ -691,6 +707,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             console.log('The user clicked cancel or closed the popup');
             self.defaultSettings();
         });
+      } catch(error) { this.xtremandLogger.error('upload video downloadFrombox'+error);}
     };
     /* google drive retreive videos */
     onApiLoad() {
@@ -701,7 +718,6 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         }
     }
     onAuthApiLoad() {
-        const self = this;
         window['gapi'].auth.authorize(
             {
                 'client_id': '516784406032-okvpndbvngrrev2vq0gdd3n2tng5joq8.apps.googleusercontent.com',
@@ -739,7 +755,8 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         }
     }
     pickerCallback(data: any) {
-        const self = this;
+      try{
+      const self = this;
         if (data[google.picker.Response.ACTION] === google.picker.Action.PICKED) {
             self.cloudStorageSelected = true;
             const doc = data[google.picker.Response.DOCUMENTS][0];
@@ -756,8 +773,10 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             self.picker.setVisible(false);
             self.picker.dispose();
         }
+      }catch(error) {this.xtremandLogger.error('Error in upload video pickerCallback'+error); }
     }
     downloadGDriveFile(fileId: any, name: string) {
+       try{
         const self = this;
         if (this.isVideo(name)) {
             const downloadLink = 'https://www.googleapis.com/drive/v3/files/' + fileId + '?alt=media';
@@ -779,6 +798,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         } else {
             swal('Only video files can be uploaded');
         }
+       } catch(error){this.xtremandLogger.error('error in upload vidoe downloadGDriveFile'+error); }
     }
 
     isVideo(filename: any) {
