@@ -530,10 +530,12 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         this.referenceService.goToTop();
         this.ngxloading = true;
 
-        if( this.userData.mobileNumber.length > 6){
-            this.updateUserProfileForm.value.mobileNumber = this.userData.mobileNumber;
-        }else {
-            this.updateUserProfileForm.value.mobileNumber = ""
+        if ( this.userData.mobileNumber ) {
+            if ( this.userData.mobileNumber.length > 6 ) {
+                this.updateUserProfileForm.value.mobileNumber = this.userData.mobileNumber;
+            } else {
+                this.updateUserProfileForm.value.mobileNumber = ""
+            }
         }
 
         this.userService.updateUserProfile(this.updateUserProfileForm.value, this.authenticationService.getUserId())

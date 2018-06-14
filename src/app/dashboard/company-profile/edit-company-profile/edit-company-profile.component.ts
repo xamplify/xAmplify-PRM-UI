@@ -353,9 +353,11 @@ export class EditCompanyProfileComponent implements OnInit {
             !this.zipError && !this.aboutUsError && !this.logoError) {
             this.processor.set(this.processor);
 
-            if( this.companyProfile.phone.length < 6){
-                this.companyProfile.phone = "";
-            }
+            if ( this.companyProfile.phone ) {
+                if ( this.companyProfile.phone.length < 6 ) {
+                    this.companyProfile.phone = "";
+                }
+             }
 
             this.companyProfileService.update(this.companyProfile, this.loggedInUserId)
                 .subscribe(
