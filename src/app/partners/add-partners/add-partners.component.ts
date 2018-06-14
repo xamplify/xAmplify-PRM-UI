@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormsModule, FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { User } from '../../core/models/user';
 import { EditUser } from '../../contacts/models/edit-user';
 import { CustomResponse } from '../../common/models/custom-response';
@@ -1886,7 +1885,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         this.hideZohoModal();
         this.contactService.isContactModalPopup = false;
         this.updatePartnerUser = false;
-        
+
         if ( this.selectedAddPartnerOption !=5 ) {
            let self = this;
             swal( {
@@ -1909,7 +1908,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         if ( this.selectedAddPartnerOption == 5 ){
             swal.close();
         }
-  
+
         $( '#settingSocialNetwork' ).modal( 'hide' );
 
     }

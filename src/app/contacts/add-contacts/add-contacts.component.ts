@@ -4,10 +4,9 @@ import { ContactList } from '../models/contact-list';
 import { User } from '../../core/models/user';
 import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
 import { AuthenticationService } from '../../core/services/authentication.service';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Router, ActivatedRoute, Params, RouterModule } from '@angular/router';
+import { FormBuilder } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
 import { SocialContact } from '../models/social-contact';
-import { Contacts } from '../models/contacts';
 import { ZohoContact } from '../models/zoho-contact';
 import { SalesforceContact } from '../models/salesforce-contact';
 import { Pagination } from '../../core/models/pagination';
@@ -1989,7 +1988,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.contactService.isContactModalPopup = false;
         swal.close();
         $( '#settingSocialNetwork' ).modal( 'hide' );
-        
+
         if ( this.selectedAddContactsOption !=8 ) {
             let self = this;
              swal( {

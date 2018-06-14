@@ -6,8 +6,7 @@ import { ContactsByType } from '../models/contacts-by-type';
 import { User } from '../../core/models/user';
 import { CustomResponse } from '../../common/models/custom-response';
 import { Properties } from '../../common/models/properties';
-import { Router, NavigationExtras } from "@angular/router";
-import { Response } from '@angular/http';
+import { Router } from "@angular/router";
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { SocialContact } from '../models/social-contact';
 import { UserListIds } from '../models/user-listIds';
@@ -16,7 +15,6 @@ import { Pagination } from '../../core/models/pagination';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { ReferenceService } from '../../core/services/reference.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
-//import { EditContactsComponent } from '../edit-contacts/edit-contacts.component';
 
 declare var Metronic, $, Layout, Demo, Portfolio, swal: any;
 

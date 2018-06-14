@@ -7,9 +7,7 @@ import { CustomResponse } from '../../common/models/custom-response';
 import { Properties } from '../../common/models/properties';
 import { AddContactsOption } from '../models/contact-option';
 import { User } from '../../core/models/user';
-import { FormsModule, FormControl } from '@angular/forms';
-import { Routes, RouterModule } from '@angular/router';
-import { Router, ActivatedRoute, Params } from '@angular/router';
+import { Router } from '@angular/router';
 import { ManageContactsComponent } from '../manage-contacts/manage-contacts.component';
 import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
 import { AuthenticationService } from '../../core/services/authentication.service';
@@ -23,7 +21,6 @@ import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { CountryNames } from '../../common/models/country-names';
 import { RegularExpressions } from '../../common/models/regular-expressions';
 import { TeamMemberService } from '../../team/services/team-member.service';
-//import { AddPartnersComponent } from '../../partners/add-partners/add-partners.component';
 
 declare var Metronic, Promise, Layout, Demo, swal, Portfolio, $, Papa: any;
 
@@ -2188,7 +2185,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
         try{
         swal.close();
         $( '#filterModal' ).modal( 'hide' );
-        
+
         if ( this.selectedAddContactsOption !=8 ) {
             let self = this;
              swal( {

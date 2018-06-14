@@ -35,7 +35,7 @@
 								<span *ngIf="!isDefaultPartnerList" title="Edit Contact list Name" style="cursor:pointer;font-size: 16px; font-family: Open Sans; color: #989292;"
 								(click)="updateContactListNameAlert()">{{selectedContactListName}}
 									<span *ngIf="!isDefaultPartnerList">List</span>
-									</span> 
+									</span>
 									<span *ngIf="isDefaultPartnerList"
 									style="font-size: 16px; font-family: Open Sans; color: #989292;">{{selectedContactListName}}
 								</span>
@@ -294,14 +294,14 @@
 												<tr *ngFor="let item of uploader.queue">
 													<td width="28%"><strong>{{ item?.file?.name
 															}}</strong></td>
-													<td *ngIf="uploader.isHTML5" nowrap>{{
+													<!-- <td *ngIf="uploader.isHTML5" nowrap>{{
 														item?.file?.size/1024/1024 | number:'.2' }} MB</td>
 													<td *ngIf="uploader.isHTML5">
 														<div class="progress" style="margin-bottom: 0;">
 															<div class="progress-bar" role="progressbar"
 																[ngStyle]="{ 'width': item.progress + '%' }"></div>
 														</div>
-													</td>
+													</td> -->
 													<td class="text-center"><span *ngIf="item.isSuccess"><i
 															class="glyphicon glyphicon-ok"></i></span> <span
 														*ngIf="item.isCancel"><i
@@ -402,7 +402,7 @@
 															</tr>
 														</thead>
 														<tbody>
-															<ng-container *ngFor="let user of users">
+															<ng-container *ngFor="let user of users; let i = index">
 															<tr>
 																<td>{{user.firstName}}</td>
 																<td>{{user.lastName}}</td>
@@ -471,9 +471,9 @@
 													<thead>
 														<tr>
 															<th class='text-center'><input type="checkbox"
-																[name]="all" [(ngModel)]="isHeaderCheckBoxChecked"
+																name="all" [(ngModel)]="isHeaderCheckBoxChecked"
 																(change)="checkAll($event)"
-																[id]="checkAllExistingContacts"/></th>
+																id="checkAllExistingContacts"/></th>
 															<th style="width: 25%" *ngIf="isPartner">Entity info</th>
 															<th style="width: 25%" *ngIf="!isPartner">NAME</th>
 															<th>PHONE</th>
@@ -546,11 +546,11 @@
 															*ngFor="let contact of pagination.pagedItems;let i = index">
 														<tr class='row_{{i}}'>
 															<td class='text-center'
-																*ngIf="isAdd || !isCampaignDraftContactList "><input
+																*ngIf="!isCampaignDraftContactList "><input
 																type="checkbox"
 																[checked]="selectedContactListIds.indexOf(contact.id)>-1"
 																class="chk"
-																[class.contact-list-selected]="selectedContactListIds.indexOf(contacts.id)>-1"
+																[class.contact-list-selected]="selectedContactListIds.indexOf(contact.id)>-1"
 																lang="{{contact.name}}" name="campaignContact[]"
 																value="{{contact.id}}" id="{{contact.id}}"
 																(click)="highlightRow(contact.id,$event)" /></td>
@@ -636,7 +636,7 @@
 							<strong>Success!</strong> your {{checkingContactTypeName}}s has
 							been deleted successfully.
 						</div>
-					</div> 
+					</div>
 					<div class="col-xs-12" id="hidingListOfUsersTable"
 						style="top: -13px; width: 104%; left: -6px;">
 						<!-- BEGIN EXAMPLE TABLE PORTLET-->
@@ -693,7 +693,7 @@
 													[checked]="selectedInvalidContactIds.indexOf(allcontacts.id)>-1"
 													class="chk"
 													[class.invalid-contacts-selected]="selectedInvalidContactIds.indexOf(allcontacts.id)>-1"
-													lang="{{allcontacts.name}}" name="invalidContact[]"
+													lang="{{allcontacts.id}}" name="invalidContact[]"
 													value="{{allcontacts.id}}" id="{{allcontacts.id}}"
 													(click)="invalidContactsSelectedUserIds(allcontacts.id,$event)" />
 												</td>
