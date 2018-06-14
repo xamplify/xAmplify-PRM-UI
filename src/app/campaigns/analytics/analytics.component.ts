@@ -189,12 +189,8 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   }
 
   campaignViewsCountBarchart(names, data) {
-  this.loading = true;
-    let nameValue: string;
-    const maxValue = Math.max.apply(null, data);
-    if(this.campaignType === 'VIDEO'){
-      nameValue = 'Views'
-    } else {  nameValue = 'Email Opened'}
+    this.loading = true;
+    const nameValue = this.campaignType === 'VIDEO' ? 'Views' : 'Email Opened';
     const self = this;
     Highcharts.chart('campaign-views-barchart', {
       chart: {
@@ -264,7 +260,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   getCampaignUserViewsCountBarCharts(campaignId: number, pagination: Pagination) {
     try{
     this.loading = true;
-      this.paginationType = 'viewsBarChart';
+    this.paginationType = 'viewsBarChart';
     this.campaignService.listCampaignViews(campaignId, pagination)
       .subscribe(
       data => {
@@ -422,10 +418,11 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
    }
   callPaginationValues(type:string){
     if (type === 'viewsBarChart') { this.getCampaignUserViewsCountBarCharts(this.campaignId, this.pagination); }
-    else if (type === 'donutCampaign') { this.campaignViewsDonut(this.donultModelpopupTitle, this.pagination); }
+    else if (type === 'donutCampaign') { this.campaignViewsDonut(this.donultModelpopupTitle); }
     else if (type === 'coutrywiseUsers') { this.getCampaignUsersWatchedInfo(this.countryCode); }
   }
   emailActionList(campaignId: number, actionType: string, pagination: Pagination) {
+      try{
       this.loading = true;
       this.referenceService.loading(this.httpRequestLoader, true);
       this.paginationType = 'emailAction';
@@ -449,10 +446,12 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       error => console.log(error),
       () => console.log()
       )
+    }catch(error) {this.xtremandLogger.error('Error in analytics page emails sent'+error); }
   }
 
   listEmailLogsByCampaignAndUser(campaignId: number, userId: number) {
-    this.loading = true;
+    try{
+      this.loading = true;
       this.campaignService.listEmailLogsByCampaignAndUser(campaignId, userId)
       .subscribe(
       data => {
@@ -465,9 +464,11 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
         this.count();
       }
       )
+    }catch(error) {this.xtremandLogger.error('Error in analytics page listEmailLogsByCampaignAndUser'+error); }
   }
 
   count() {
+    try{
       this.loading = true;
       if (this.emailLogs !== undefined) {
       for (const i in this.emailLogs) {
@@ -481,6 +482,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       }
     }
       this.loading = false;
+  } catch(error){this.xtremandLogger.error('Error in count'+error); }
   }
 
   userTimeline(campaignViews: any) {
@@ -638,7 +640,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     }
   }
 
-  campaignViewsDonut(timePeriod: string, pagination) {
+  campaignViewsDonut(timePeriod: string) {
     try{
     this.loading = true;
     this.referenceService.loading(this.httpRequestLoader, true);
@@ -853,7 +855,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     }
 
     closeModal(event: any){
-      console.log('closed modal');
+      console.log('closed modal'+event);
       this.videoFile = undefined;
     }
     showContactListModal(){

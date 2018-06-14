@@ -26,7 +26,7 @@
 	<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 </div>
 <ng-template #NOERROR>
-<app-analytics-loader></app-analytics-loader>
+<!-- <app-analytics-loader></app-analytics-loader> -->
 	<div class="row">
 		<div class="pl10 pr10 col-xs-12" [ngClass]="{'col-sm-4': campaignType === 'VIDEO','forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}" *ngIf="campaignType === 'VIDEO' && campaign.selectedVideoId>0">
 			<a class="dashboard-stat dashboard-stat-lighter purple-soft" (click)="previewVideo(campaign.campaignVideoFile)" [class.disabled]="!isPartnerEnabledAnalyticsAccess ?true:null">
@@ -156,7 +156,7 @@
 					<h1>
 						<b>{{campaignReport.emailSentCount}}</b>
 					</h1>
-					<h5>Emails Sent</h5>
+					<h5>Total Recipients</h5>
 				</div>
 			</button>
 		</div>
@@ -450,7 +450,7 @@
 			<div class="timeline-body">
 				<h5>
 					<span *ngIf="emailLog.actionId == 13">
-						Campaign <span class="f-w-600" *ngIf="emailLog.subject">{{emailLog.subject}}</span> email opened 					
+						Campaign <span class="f-w-600" *ngIf="emailLog.subject">{{emailLog.subject}}</span> email opened
 					</span>
 					<span *ngIf="emailLog.actionId == 14">Clicked <span class="f-w-600">{{campaign.campaignVideoFile.title}}</span> video GIF</span>
 					<span *ngIf="emailLog.actionId == 15">
@@ -669,7 +669,11 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i class="fa fa-times"></i></a>
-				<h4 class="modal-title" style="text-align: center">{{donultModelpopupTitle}} Views</h4>
+				<h4 class="modal-title" style="text-align: center">
+          <span *ngIf="donultModelpopupTitle ==='current-month'">This Month's</span>
+          <span *ngIf="donultModelpopupTitle ==='life-time'">Lifetime</span>
+          <span *ngIf="donultModelpopupTitle !=='life-time' && donultModelpopupTitle !=='current-month'">Today</span>
+          Views</h4>
 				<div class="btn-group pull-right" style="margin-top: -4px; cursor:pointer; color: #7d8c98">
 					<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none;margin-top: -15px;padding-right: 10px;margin-right: 21px; float:right;">
 					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
