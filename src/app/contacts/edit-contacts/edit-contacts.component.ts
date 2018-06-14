@@ -362,9 +362,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                 if ( this.users[i].country === "Select Country" ) {
                     this.users[i].country = null;
                 }
-
-                if ( this.users[i].mobileNumber.length < 6 ) {
-                    this.users[i].mobileNumber = "";
+                if (this.users[i].mobileNumber) {
+                    if (this.users[i].mobileNumber.length < 6) {
+                        this.users[i].mobileNumber = "";
+                    }
                 }
             }
 

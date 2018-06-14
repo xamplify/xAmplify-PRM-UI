@@ -512,8 +512,10 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.newUsers[i].country = null;
                 }
 
-                if ( this.newUsers[i].mobileNumber.length < 6 ) {
-                    this.newUsers[i].mobileNumber = "";
+                if (this.newUsers[i].mobileNumber) {
+                    if (this.newUsers[i].mobileNumber.length < 6) {
+                        this.newUsers[i].mobileNumber = "";
+                    }
                 }
             }
             this.contactListObject = new ContactList;
