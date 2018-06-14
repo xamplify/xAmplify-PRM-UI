@@ -105,7 +105,10 @@
                <span *ngIf="dashboardReport.totalCompanyPartnersCount; else emptyValues">{{dashboardReport.totalCompanyPartnersCount}} </span>
                <ng-template #emptyValues>0</ng-template>
              </span>
-					   <ng-template #partner>0</ng-template>
+					   <ng-template #partner>
+               <span *ngIf="dashboardReport.vendorsCount; else emptyValue">{{dashboardReport.vendorsCount}} </span>
+               <ng-template #emptyValue>0</ng-template>
+             </ng-template>
 					</div>
 					<div class="desc">
 						<span *ngIf="this.authenticationService.isOnlyPartner(); else orgadmin">Vendors</span>

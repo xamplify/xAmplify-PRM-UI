@@ -26,6 +26,7 @@ export class DashboardStatsComponent implements OnInit {
                   this.dashboardReport.totalCreatedCampaigns = data.totalCampaignsCount;
                   this.dashboardReport.totalSocialAccounts = data.totalSocialConnectionsCount;
                   this.dashboardReport.totalCompanyPartnersCount = data.totalCompanyPartnersCount;
+                  this.dashboardReport.vendorsCount = data.vendorsCount;
               },
               error => console.log(error),
               () => console.log('dashboard reports counts completed')
@@ -37,19 +38,19 @@ export class DashboardStatsComponent implements OnInit {
       this.router.navigate(['/home/team/add-team']);
     } else if (this.authenticationService.isAddedByVendor) {
       this.router.navigate(['/home/partners/manage']);
-    } else { 
-      this.router.navigate(['/home/contacts/manage']); 
+    } else {
+      this.router.navigate(['/home/contacts/manage']);
     }
   }
 
   navigateToPartner(){
       if(!this.authenticationService.isOnlyPartner() && this.dashboardReport.totalCompanyPartnersCount>0){
         this.router.navigate(['/home/partners/analytics']);
-      } else { 
+      } else {
         console.log('go to vendors page');
       }
-  }  
-  
+  }
+
   ngOnInit() {
     this.dashboardReportsCount();
   }

@@ -23,4 +23,5 @@ export class DashboardReport {
     totalCreatedCampaigns  = 0;
     totalSocialAccounts  = 0;
     totalCompanyPartnersCount = 0;
+    vendorsCount = 0;
 }
