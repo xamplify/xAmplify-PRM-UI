@@ -652,7 +652,7 @@ legend {
 }
 
 .grid-box h6 {
-	text-align: left;    
+	text-align: left;
 	margin: 5px 0 5px 25px;
 }
 
@@ -755,4 +755,13 @@ legend {
 }
 b, strong {
     font-weight: 600 !important;
+}
+/* prevent scrolling page in mac os */
+html {
+  overflow: hidden;
+  height: 100%;
+}
+body {
+  height: 100%;
+  overflow: auto;
 }

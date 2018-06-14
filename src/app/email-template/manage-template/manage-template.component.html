@@ -1,14 +1,4 @@
 <div class="page-content">
-	<!-- <div *ngIf="isEmailTemplateDeleted" id="emailTemplateDeleteId" class="alert alert-success alert-dismissable fade in">
-	 	 <strong>{{selectedEmailTemplateName}}</strong> Deleted Successfully
-	 </div> -->
-	  <!-- <div *ngIf="isCampaignEmailTemplate" id="campaignEmailTemplateId" class="alert alert-danger alert-dismissable fade in">
-	 	<strong>Please Delete Associated Campaign(s)</strong>
-	 </div> -->
-	  <!-- <div *ngIf="message?.length>0" id="templateCreationSuccessDiv" class="alert alert-success alert-dismissable fade in">
-	 	<strong>{{message}}</strong>
-	 </div> -->
-	 
 <div class="page-bar">
 		<ul class="page-breadcrumb">
 			<li><i class="fa fa-home"></i> <a [routerLink]="refService.homeRouter">Home</a> <i
@@ -28,7 +18,7 @@
 				<div class="portlet-title"><!--  -->
 					<div class="row">
 						<div class="colxs-12 col-sm-9">
-						<div *ngIf="!isOnlyPartner"> 
+						<div *ngIf="!isOnlyPartner">
 							<ul class="mix-filter" >
 								<li class="filter" (click)="filterTemplates('NONE',false,0)" [class.emailtemplate-selected]="0 == selectedTemplateTypeIndex" >All</li>
 								<li class="filter" (click)="filterTemplates('BASIC',false,1)" [class.emailtemplate-selected]="1 == selectedTemplateTypeIndex"> Basic</li>
@@ -52,19 +42,19 @@
 							<div class="portlet-input input-inline input-small">
 								<div class="input-icon right">
 									<i class="icon-magnifier"  (click)="searchTemplates()" style="cursor: pointer;"></i>
-									<input type="search" 
+									<input type="search"
 									 class="form-control" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"  placeholder="search...">
 								</div>
-							</div>
-						</div>
-						</div>
-					</div>
-				</div>
+							 </div>
+					   	</div>
+						 </div>
+            </div>
+          </div>
 
-	<app-grid-loader *ngIf="httpRequestLoader.isLoading && !isListView"></app-grid-loader>
-	<app-list-loader *ngIf="httpRequestLoader.isLoading && isListView"></app-list-loader>
-	<app-error-pages *ngIf="httpRequestLoader.isServerError"></app-error-pages>
-					<section [hidden]="!isListView">						
+          <app-grid-loader *ngIf="httpRequestLoader.isLoading && !isListView"></app-grid-loader>
+          <app-list-loader *ngIf="httpRequestLoader.isLoading && isListView"></app-list-loader>
+          <app-error-pages *ngIf="httpRequestLoader.isServerError"></app-error-pages>
+            <section [hidden]="!isListView">
 						<ng-container *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError ">
 						<div class="table-responsive">
 						<table class='table tgrid'>
@@ -95,10 +85,10 @@
 										<div class="actions-block">
 											<a (click)="edit(emailTemplate.id)" title="Edit" *ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  || authenticationService.module.isVendor) && emailTemplate.type!='PARTNER'">
 												<i class="fa fa-pencil-square-o"></i>
-											</a> 
+											</a>
 											<a (click)="showPreview(emailTemplate)" title="Preview">
 												<i class="fa fa-eye mr5"></i>
-											</a> 
+											</a>
 											<a id="template-delete" (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)" title="Delete"
 												*ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  ||authenticationService.module.isVendor) && emailTemplate.type!='PARTNER' ">
 												<i class="fa fa-trash"></i>
@@ -111,19 +101,19 @@
 						</div>
 						</ng-container>
 					</section>
-								
-					<div class="margin-top-10"  [hidden]="isListView">
+
+					<div class="margin-top-10"  [hidden]="isListView || httpRequestLoader.isLoading">
 						<div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let emailTemplate of pagination.pagedItems ;let i =index" id="emailTemplateListDiv_{{emailTemplate.id}}">
 							<div class="grid-box">
 								<img  src="{{emailTemplate.subject}}" alt="{{emailTemplate.name}}">
-								<h4 class="ellipsis" title="{{emailTemplate.name}}">{{emailTemplate.name}}</h4>								
-								<div>									
+								<h4 class="ellipsis" title="{{emailTemplate.name}}">{{emailTemplate.name}}</h4>
+								<div>
 									<h6>Created On <b>{{emailTemplate.createdDate}}</b></h6>
-									<h6 title="{{emailTemplate.createdBy}}">By 
+									<h6 title="{{emailTemplate.createdBy}}">By
 										<b *ngIf="emailTemplate.createdBy?.length>17">{{emailTemplate.createdBy|slice:0:17}}..</b>
 										<b *ngIf="emailTemplate.createdBy?.length<17">{{emailTemplate.createdBy}}</b>
 									</h6>
-									<h6 title="{{emailTemplate.companyName}}">From 
+									<h6 title="{{emailTemplate.companyName}}">From
 										<b *ngIf="emailTemplate.companyName?.length>17">{{emailTemplate.companyName|slice:0:17}}..</b>
 										<b *ngIf="emailTemplate.companyName?.length<17">{{emailTemplate.companyName}}</b>
 									</h6>
@@ -132,18 +122,18 @@
 									<a (click)="showPreview(emailTemplate)" title="Preview">
 										<i class="fa fa-eye"></i>
 									</a>
-									<a  (click)="edit(emailTemplate.id)" title="Edit" 
+									<a  (click)="edit(emailTemplate.id)" title="Edit"
 										*ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  || authenticationService.module.isVendor) && emailTemplate.type!='PARTNER'">
 										<i class="fa fa-pencil-square-o"></i>
 									</a>
-									<a (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)" title="Delete" 
+									<a (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)" title="Delete"
 										*ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)||authenticationService.module.isVendor) && emailTemplate.type!='PARTNER' ">
 										<i class="fa fa-trash"></i>
 									</a>
 								</div>
 							</div>
 						</div>
-						<div class="row mix-grid" style="margin-top: -15px;padding: 7px;">							
+						<div class="row mix-grid" style="margin-top: -15px;padding: 7px;">
 							<ng-container *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError ">
 								<div *ngFor="let emailTemplate of pagination.pagedItems ;let i =index" id="emailTemplateListDiv_{{emailTemplate.id}}">
 									<div class="col-md-3 col-sm-4 mix category_1 mix_all"  style="display: block; opacity: 1; margin-top: -11px;">
@@ -157,7 +147,7 @@
 										</div>
 								</div>
 							</div>
-							</ng-container>	
+							</ng-container>
 							</div>
 						</div>
 					<div *ngIf="pagination.pagedItems.length !== 0">
@@ -170,8 +160,7 @@
 			<!-- END PAGE CONTENT-->
 		</div>
 	</div>
-	
-	
+
 			<div class="modal" id="show_email_template_preivew">
 					<div class="modal-dialog modal-lg" style="width: 75%;">
 						<div class="modal-content">
@@ -189,7 +178,4 @@
 						</div>
 					</div>
 				</div>
-						
-</div>
-				<!-- END PAGE CONTENT-->
-		<!-- END CONTENT -->
+   </div>
