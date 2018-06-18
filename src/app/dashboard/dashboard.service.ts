@@ -69,6 +69,14 @@ export class DashboardService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+    
+    loadVendorDetails(userId: number, pagination: Pagination) {
+        const url = this.authenticationService.REST_URL+ 'vendor/details?access_token=' + this.authenticationService.access_token + '&partnerId=' + userId;
+        return this.http.post(url, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+        
+    }
 
     getCountryViewsDetails() {
         const url = this.authenticationService.REST_URL + 'dashboard/countrywise_users_count?userId=' + this.authenticationService.user.id +
