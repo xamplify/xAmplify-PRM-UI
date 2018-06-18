@@ -68,7 +68,7 @@ cursor: not-allowed;
 		
 		
 			<div class="flex">
-			<div class="col-sm-6 col-xs-12 block">
+			<div class="col-sm-6 col-xs-12 block" *ngIf="authenticationService.isVendor()">
 					<div class="text-block">
 						<h1 style="color: #76c9ff">Videos</h1>
 						<p>{{welcome_text.videos}}</p>
@@ -119,6 +119,18 @@ cursor: not-allowed;
 							<span class="glyphicon glyphicon-chevron-right"
 							aria-hidden="true"></span> <span class="sr-only">Next</span>
 						</a>
+					</div>
+				</div>
+				
+				<div class="col-sm-6 col-xs-12 block" *ngIf="!authenticationService.isVendor()">
+					<div class="text-block">
+						<h1 style="color: #76c9ff">Videos</h1>
+						<p>{{welcome_text.videos}}</p>
+						<div class="flex pull-right">
+							<button *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdminPartner()|| authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.module.isVideo" class="btn btn-xs color1" [routerLink]="['/home/videos']" >upload video</button>
+              <button *ngIf="authenticationService.isOnlyPartner() || !authenticationService.module.isVideo" class="btn btn-xs color1" [routerLink]="['/home/videos/manage']">View videos</button>
+              <button type="button" class="btn btn-xs color1-invert" data-toggle="modal" data-target="#myModal">Tell me how</button>
+						</div>
 					</div>
 				</div>
 				
@@ -173,7 +185,7 @@ cursor: not-allowed;
 			</div>
 			<div class="flex" *ngIf="!authenticationService.isOnlyPartner()">
 				<div class="col-sm-6 col-xs-12 block image-block">
-					<img style="width: 350px" src="assets/images/social-icons.jpg">
+					<img style="width: 320px" src="assets/images/social-account-icons.jpg">
 				</div>
 				<div class="col-sm-6 col-xs-12 block">
 					<div class="text-block">
@@ -187,6 +199,9 @@ cursor: not-allowed;
 				</div>
 			</div>
 			<div class="flex">
+			<div class="col-sm-6 col-xs-12 block image-block" *ngIf="!authenticationService.isVendor() &&  !authenticationService.isOrgAdmin() || authenticationService.isPartner()">
+					<img src="https://wistia.com/assets/main/welcome/Marketing-bf8195807e780b9926a5dc125d763a62.svg">
+				</div>
 				<div class="col-sm-6 col-xs-12 block">
 					<div class="text-block">
 						<h1 style="color: #00B3B3">Analytics</h1>
@@ -197,7 +212,7 @@ cursor: not-allowed;
 						</div>
 					</div>
 				</div>
-				<div class="col-sm-6 col-xs-12 block image-block">
+				<div class="col-sm-6 col-xs-12 block image-block" *ngIf="authenticationService.isVendor() && !authenticationService.isPartner() || authenticationService.isOrgAdmin()">
 					<img src="https://wistia.com/assets/main/welcome/Marketing-bf8195807e780b9926a5dc125d763a62.svg">
 				</div>
 			</div>
