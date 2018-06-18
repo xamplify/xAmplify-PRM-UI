@@ -26,7 +26,7 @@ export class VendorReportsComponent implements OnInit {
       this.dashboardService.loadVendorDetails(this.authenticationService.getUserId(), this.pagination)
           .subscribe(
               data => {
-                  this.vendorDetails = data;
+                  this.vendorDetails = data.data;
                   
                   this.pagination.totalRecords = data.totalRecords;
                   this.pagination = this.pagerService.getPagedItems( this.pagination, this.vendorDetails.data );
