@@ -185,7 +185,7 @@ cursor: not-allowed;
 			</div>
 			<div class="flex" *ngIf="!authenticationService.isOnlyPartner()">
 				<div class="col-sm-6 col-xs-12 block image-block">
-					<img style="width: 320px" src="assets/images/social-account-icons.jpg">
+					<img style="width: 320px; height:210px" src="assets/images/social-account-icons.jpg">
 				</div>
 				<div class="col-sm-6 col-xs-12 block">
 					<div class="text-block">
@@ -199,7 +199,7 @@ cursor: not-allowed;
 				</div>
 			</div>
 			<div class="flex">
-			<div class="col-sm-6 col-xs-12 block image-block" *ngIf="!authenticationService.isVendor() &&  !authenticationService.isOrgAdmin() || authenticationService.isPartner()">
+			<div class="col-sm-6 col-xs-12 block image-block" *ngIf="!authenticationService.isVendor() &&  !authenticationService.isOrgAdmin() && authenticationService.isPartner()">
 					<img src="https://wistia.com/assets/main/welcome/Marketing-bf8195807e780b9926a5dc125d763a62.svg">
 				</div>
 				<div class="col-sm-6 col-xs-12 block">
