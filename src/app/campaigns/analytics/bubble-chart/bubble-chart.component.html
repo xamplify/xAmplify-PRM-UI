@@ -1,24 +1,28 @@
 <style>
-    td,
-    th {
+td, th {
         border: 0px solid #dddddd;
-    }
-    .td-css{
-        width: 23px !important;
-        height: 8px
-    }
+}
+.td-css{
+    width: 20px;
+    height: 20px;
+    margin: 7px 10px;
+}
 </style>
 <div class="col-xs-12">
     <div class="col-xs-7 m0 p0" id="bubble-chart" style="height: 250px;z-index: 555"></div>
-    <div class="col-xs-5" style="padding: 9px;margin: auto -15px;">
-        <table style="border-collapse: collapse;">
-            <tr *ngFor="let array of namesArray">
-                <td><div [style.background]="array.color" class="td-css"></div></td>
-                <td style="text-align: center;color: black;font-weight: 600">
-                  <span *ngIf="array.firstName!=='null'">{{array.firstName}} <span *ngIf="array.lastName!=='null'">{{array.lastName}}</span></span>
-                  <span>{{array.emailId}}</span>
-                </td>
-            </tr>
-        </table>
-    </div>
+<div class="col-xs-5" style="padding: 9px;margin: auto -15px;">
+<table style="border-collapse: collapse;">
+<tr *ngFor="let array of namesArray">
+    <td>
+        <div [style.background]="array.color" class="td-css"></div>
+    </td>
+    <td>
+        <h6 *ngIf="array.firstName!=='null'" class="bold m0">{{array.firstName}}
+            <span *ngIf="array.lastName!=='null'"> {{array.lastName}}</span>
+        </h6>
+        <h6 class="m0">{{array.emailId}}</h6>
+    </td>
+</tr>
+</table>
+</div>
 </div>
