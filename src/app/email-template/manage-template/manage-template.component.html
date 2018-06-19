@@ -11,7 +11,11 @@
 	<div style="position: relative;top:-10px">
 		<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 	</div>
-
+		<div>
+			<h4 *ngFor="let campaignName of campaignNames" style="color: red">
+				{{campaignName}}
+			</h4>
+		</div>
 	<div class="row">
 		<div class="col-md-12">
 			<div class="portlet light clearfix">
