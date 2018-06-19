@@ -440,7 +440,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
                       this.contactsUsersPagination = this.pagerService.getPagedItems(pagination, this.contactListItems);
                       $('#users-modal-body').html('');
                       var html = "";
-                      html+= '<table  class="table table-striped table-hover table-bordered" id="sample_editable_1">'+
+                      html+= '<table style="margin:0" class="table table-striped table-hover table-bordered" id="sample_editable_1">'+
                               '<thead>'+
                                   '<tr>'+
                                       '<th>EMAIL ID</th>'+
