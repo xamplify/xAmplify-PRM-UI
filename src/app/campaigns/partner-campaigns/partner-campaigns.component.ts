@@ -48,6 +48,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
     isListView: boolean = false;
     campaignType:string;
+    role = '';
 
     customResponse: CustomResponse = new CustomResponse();
 
@@ -56,6 +57,13 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
         public referenceService: ReferenceService, private userService: UserService, private socialService: SocialService,
         private authenticationService: AuthenticationService,private route: ActivatedRoute) {
         this.loggedInUserId = this.authenticationService.getUserId();
+        
+        let currentUrl = this.router.url;
+        if ( currentUrl.includes( 'campaigns/vendor' ) ) {
+            this.role = "Vendor"
+        } else {
+            this.role = "Partner"
+        }
     }
     showMessageOnTop() {
         $(window).scrollTop(0);
@@ -72,6 +80,15 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
         }else{
             pagination.campaignType = "NONE";
         }
+        
+        if ( this.role == "Vendor" ) {
+            pagination.filterValue = this.referenceService.vendorDetails.id;
+            pagination.filterKey = "customerId";
+        }else{
+            pagination.filterValue = null;
+            pagination.filterKey = null;
+        }
+        
         this.campaignService.listPartnerCampaigns(this.pagination, this.loggedInUserId)
             .subscribe(
                 data => {
@@ -149,7 +166,11 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
 
 
     filterCampaigns(type: string) {
-        this.router.navigate(['/home/campaigns/partner/' + type]);
+        if ( this.role == "Vendor" ) {
+            this.router.navigate( ['/home/campaigns/vendor/' + type] );
+        } else {
+            this.router.navigate( ['/home/campaigns/partner/' + type] );
+        }
     }
 
     showCampaignPreview(campaignId:number){

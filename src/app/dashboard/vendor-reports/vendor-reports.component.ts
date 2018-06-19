@@ -5,6 +5,7 @@ import { Pagination } from '../../core/models/pagination';
 import { DashboardService } from '../dashboard.service';
 import { PagerService } from '../../core/services/pager.service';
 import { PaginationComponent } from '../../common/pagination/pagination.component';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-vendor-reports',
@@ -17,7 +18,8 @@ export class VendorReportsComponent implements OnInit {
     vendorDetails: any;
     
   constructor(public referenseService:ReferenceService, public pagination: Pagination, public dashboardService: DashboardService,
-              public authenticationService: AuthenticationService, public pagerService: PagerService, public paginationComponent: PaginationComponent) { 
+              public authenticationService: AuthenticationService, public pagerService: PagerService, public paginationComponent: PaginationComponent,
+              private router: Router) { 
   
   }
   
@@ -44,6 +46,11 @@ export class VendorReportsComponent implements OnInit {
       this.pagination = event;
       this.vendorReports();
 
+  }
+  
+  navigateToVendorCampaigns(venderReport:any){
+      this.referenseService.vendorDetails = venderReport;
+      this.router.navigateByUrl( '/home/campaigns/vendor/all' )
   }
 
   ngOnInit() {
