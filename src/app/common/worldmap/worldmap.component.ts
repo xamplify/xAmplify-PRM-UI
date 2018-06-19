@@ -56,7 +56,7 @@ export class WorldmapComponent implements OnInit {
       },
       series: [{
         data: data,
-        name: 'Views',
+        name: 'Recipients',
         states: {
           hover: {
             color: '#BADA55'
