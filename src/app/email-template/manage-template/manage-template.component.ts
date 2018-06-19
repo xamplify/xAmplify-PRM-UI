@@ -251,19 +251,22 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
                 if(data=="Success"){
                     document.getElementById( 'emailTemplateListDiv_' + id ).remove();
                     this.refService.showInfo( "Email Template Deleted Successfully", "" );
-                   // this.selectedEmailTemplateName = name;
                     this.selectedEmailTemplateName =  name+ ' deleted successfully';
                     this.customResponse = new CustomResponse('SUCCESS',this.selectedEmailTemplateName,true );
                     this.isEmailTemplateDeleted = true;
                     this.isCampaignEmailTemplate = false;
-                  //  setTimeout( function() { $( "#emailTemplateDeleteId" ).slideUp( 500 ); }, 2000 );
                     this.pagination.pageIndex = 1;
                     this.listEmailTemplates(this.pagination);
                 }else{
                     this.isEmailTemplateDeleted = false;
                     this.isCampaignEmailTemplate = true;
-                    this.customResponse = new CustomResponse('ERROR','Please delete associated campaign(s)',true );
-                  //  setTimeout( function() { $( "#campaignEmailTemplateId" ).slideUp( 500 ); }, 2000 );
+                    let result = data.split(",");
+                    let campaignNames = "";
+                    $.each(result,function(index,value){
+                        campaignNames+= (index+1)+"."+value+"<br><br>";
+                    });
+                    let message = "Please delete associated campaign(s)<br><br>"+campaignNames;
+                    this.customResponse = new CustomResponse('ERROR',message,true );
                 }
 
             },
