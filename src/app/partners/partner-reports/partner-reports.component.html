@@ -180,12 +180,14 @@
               <!-- <th>partner Company Name</th> -->
               <th class="center-aligned">partners</th>
               <th class="center-aligned">Campaign Name</th>
+               <th class="center-aligned">Redistributed Time</th>
               <th class="center-aligned">analytics</th>
             </thead>
             <tbody>
               <tr *ngFor="let item of pagination.pagedItems" style="cursor: pointer;" (click)="goToCampaignAnalytics(item.campaignId)">
                 <td><app-user-info [userInfo]="item" [isPartnerEntityInfo]="true" [isPartnerInfo]="true"></app-user-info></td>
                 <td>{{item.campaignName}}</td>
+                 <td>{{item.redistributedTime}}</td>
                 <td>
 					<div class="actions-block">
                       <a id="disabled-icon" class="blur" title="Data Sharing Disabled" *ngIf="!item.dataSharingEnabled" style="background-color: white;">
