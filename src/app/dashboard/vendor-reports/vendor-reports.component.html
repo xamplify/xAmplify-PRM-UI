@@ -13,9 +13,10 @@
 				<div>
 					<div class="row">
 						<div class="col-xs-4" *ngFor="let vendorReport of vendorDetails">
-							<a class="dashboard-stat dashboard-stat-lighter yellow-gold">
+							<a class="dashboard-stat dashboard-stat-lighter dashboard-stat blue">
 								<div class="visual">
-									<img src="{{vendorReport.companyLogo}}">
+									<img style="width: 100px; height: 66px;" src="{{vendorReport.companyLogo}}">
+									<!-- <i class="fa fa-users"></i> -->
 								</div>
 								<div class="details">
 									<div class="number">{{vendorReport.campaignsCount}}</div>

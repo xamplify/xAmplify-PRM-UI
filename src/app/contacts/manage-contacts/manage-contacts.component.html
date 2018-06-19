@@ -552,7 +552,7 @@
 										</div>
 										<div class="btn-group pull-right"
 											style="margin-top: 4px; color: #000000;"
-											*ngIf="(hasAllAccess || hasContactRole || authenticationService.module.isVendor)">
+											*ngIf="(hasAllAccess || hasContactRole || authenticationService.module.isVendor || authenticationService.isVendorPartner() || authenticationService.isPartner() || authenticationService.isOrgAdminPartner())">
 											<span class="dropdown-toggle" data-toggle="dropdown"
 												style="color: #FFF; box-shadow: none; margin-top: 8px; float: right;">
 												<i class="fa fa-cog"

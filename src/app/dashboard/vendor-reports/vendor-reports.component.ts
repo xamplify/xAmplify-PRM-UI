@@ -22,7 +22,6 @@ export class VendorReportsComponent implements OnInit {
   }
   
   vendorReports() {
-      this.pagination.maxResults = 6;
       this.dashboardService.loadVendorDetails(this.authenticationService.getUserId(), this.pagination)
           .subscribe(
               data => {
