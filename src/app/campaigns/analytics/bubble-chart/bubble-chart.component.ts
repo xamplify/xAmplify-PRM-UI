@@ -29,10 +29,14 @@ export class BubbleChartComponent implements OnInit {
 
                 this.bubbleChart(data.names, data.legend, data.values);
                 for(let i=0; i< data.names.length; i++){
-                        if(data.names[i].length > 0){
-                        const obj = {'name': data.names[i],'color': colors[i]}; 
+                     ///   if(data.names[i].length > 0){
+                        const obj = {'emailId':data.names[i].emailId,
+                                     'firstName': data.names[i].firstName,
+                                     'lastName':data.names[i].lastName,
+                                     'color': colors[i]};
+                        console.log(obj);
                         this.namesArray.push(obj);
-                        } else { }
+                    //    } else { }
                 }
                 console.log(this.namesArray);
                 },
@@ -71,11 +75,12 @@ export class BubbleChartComponent implements OnInit {
                                 minorGridLineWidth: 0,
                                 lineColor: 'transparent'
                         },
-                        
+
                         plotOptions: {
                                 bubble: {
                                         tooltip: {
-                                                headerFormat: '<b>{series.name}</b><br>',
+                                          // <b>{series.name.firstName}{series.name.lastName}</b><br>
+                                                headerFormat: '{series.name.emailId}<br>',
                                                 pointFormat: hoverValue+':  {point.z}'
 
                                         }
@@ -236,7 +241,7 @@ export class BubbleChartComponent implements OnInit {
         const obj = { 'campaignId': campaignId }
         this.campaignService.getCampaignById(obj)
         .subscribe(
-         data => {  
+         data => {
           console.log(data);
           const campaignType = data.campaignType.toLocaleString();
           if(campaignType.includes('VIDEO')){
@@ -246,7 +251,7 @@ export class BubbleChartComponent implements OnInit {
                 } else {
                 this.campaignType = 'REGULAR';
                 }
-           
+
           this.getCampaignUserWatchedMinutesCountes(this.campaignId, this.campaignType);
 
           }

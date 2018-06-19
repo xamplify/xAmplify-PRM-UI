@@ -14,7 +14,10 @@
         <table style="border-collapse: collapse;">
             <tr *ngFor="let array of namesArray">
                 <td><div [style.background]="array.color" class="td-css"></div></td>
-                <td style="text-align: center;color: black;font-weight: 600">{{array.name}}</td>
+                <td style="text-align: center;color: black;font-weight: 600">
+                  <span *ngIf="array.firstName!=='null'">{{array.firstName}} <span *ngIf="array.lastName!=='null'">{{array.lastName}}</span></span>
+                  <span>{{array.emailId}}</span>
+                </td>
             </tr>
         </table>
     </div>
