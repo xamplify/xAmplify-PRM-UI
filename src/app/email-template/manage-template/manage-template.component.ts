@@ -86,7 +86,6 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
     showMessageOnTop(message){
         $(window).scrollTop(0);
         this.customResponse = new CustomResponse( 'SUCCESS', message, true );
-       // setTimeout(function() { $("#templateCreationSuccessDiv").slideUp(500); }, 5000);
     }
 
 
@@ -101,7 +100,6 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
                 },
                 ( error: string ) => {
                     this.logger.errorPage(error);
-                    this.refService.showServerError(this.httpRequestLoader);
                 }
                 );
     }

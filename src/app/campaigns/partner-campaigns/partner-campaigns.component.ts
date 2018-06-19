@@ -75,7 +75,6 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
         this.campaignService.listPartnerCampaigns(this.pagination, this.loggedInUserId)
             .subscribe(
                 data => {
-                    console.log(data);
                     this.campaigns = data.campaigns;
                     this.totalRecords = data.totalRecords;
                     pagination.totalRecords = data.totalRecords;

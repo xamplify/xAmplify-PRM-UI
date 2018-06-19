@@ -57,12 +57,13 @@
             <section [hidden]="!isListView">
 						<ng-container *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError ">
 						<div class="table-responsive">
-						<table class='table tgrid'>
+						<table class='table tgrid table-hover table-sm hidden-xs'>
 							<thead>
 								<tr>
-									<th colspan="2" style="width: 50%">Email Template List</th>
-									<th style="width: 25%">Created Date</th>
-									<th style="width: 25%;text-align: center;">Actions</th>
+									<th colspan="2" style="width: 45%">Email Template List</th>
+									<th>Type</th>
+									<th>Created Date</th>
+									<th style="text-align: center;">Actions</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -74,11 +75,20 @@
 										<h4 class="ellipsis mt5 mb5 f-w-600" title="{{emailTemplate.name}}">{{emailTemplate.name | slice:0:25}}
 											<span *ngIf="emailTemplate.name?.length>25">...</span>
 										</h4>
-										<h6>Created By <b>{{emailTemplate.createdBy}}</b></h6>
-										<h6>From <b>{{emailTemplate.companyName}}</b></h6>
+										<ng-container *ngIf="emailTemplate.type=='PARTNER'">
+											<h6>Shared By <b>{{emailTemplate.vendorName}}</b></h6>
+											<h6>From <b>{{emailTemplate.vendorOrganizationName}}</b></h6>
+										</ng-container>
+										<ng-container *ngIf="emailTemplate.type!='PARTNER'">
+											<h6>Created By <b>{{emailTemplate.createdBy}}</b></h6>
+											<h6>From <b>{{emailTemplate.companyName}}</b></h6>
+										</ng-container>
+										
 									<h5 class="view-banner" *ngIf="emailTemplate.type=='PARTNER'">PARTNER</h5>
-									<h5 class="view-banner">{{emailTemplate.emailTemplateType}}</h5>
 									<h5 class="view-banner" *ngIf="(emailTemplate.regularCoBrandingTemplate||emailTemplate.videoCoBrandingTemplate) &&emailTemplate.type=='UPLOADED' ">CO-BRANDED</h5>
+									</td>
+									<td>
+										<h5 class="view-banner" style="width: 53%">{{emailTemplate.emailTemplateType}}</h5>
 									</td>
 									<td>{{emailTemplate.createdDate}}</td>
 									<td>
@@ -109,7 +119,8 @@
 								<h4 class="ellipsis" title="{{emailTemplate.name}}">{{emailTemplate.name}}</h4>
 								<div>
 									<h6>Created On <b>{{emailTemplate.createdDate}}</b></h6>
-									<h6 title="{{emailTemplate.createdBy}}">By
+									<ng-container *ngIf="emailTemplate.type!='PARTNER'">
+										<h6 title="{{emailTemplate.createdBy}}">By
 										<b *ngIf="emailTemplate.createdBy?.length>17">{{emailTemplate.createdBy|slice:0:17}}..</b>
 										<b *ngIf="emailTemplate.createdBy?.length<17">{{emailTemplate.createdBy}}</b>
 									</h6>
@@ -117,6 +128,19 @@
 										<b *ngIf="emailTemplate.companyName?.length>17">{{emailTemplate.companyName|slice:0:17}}..</b>
 										<b *ngIf="emailTemplate.companyName?.length<17">{{emailTemplate.companyName}}</b>
 									</h6>
+									</ng-container>
+									
+									<ng-container *ngIf="emailTemplate.type=='PARTNER'">
+										<h6 title="{{emailTemplate.vendorName}}">By
+										<b *ngIf="emailTemplate.vendorName?.length>17">{{emailTemplate.vendorName|slice:0:17}}..</b>
+										<b *ngIf="emailTemplate.vendorName?.length<17">{{emailTemplate.vendorName}}</b>
+									</h6>
+									<h6 title="{{emailTemplate.vendorOrganizationName}}">From
+										<b *ngIf="emailTemplate.companyName?.length>17">{{emailTemplate.vendorOrganizationName|slice:0:17}}..</b>
+										<b *ngIf="emailTemplate.companyName?.length<17">{{emailTemplate.vendorOrganizationName}}</b>
+									</h6>
+									</ng-container>
+									
 								</div>
 								<div class="bar">
 									<a (click)="showPreview(emailTemplate)" title="Preview">

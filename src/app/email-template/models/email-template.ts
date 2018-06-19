@@ -20,4 +20,6 @@ export class EmailTemplate {
         videoCoBrandingTemplate:boolean;
         createdBy:string = "";
         campaignDefault:boolean;
+        vendorName:string = "";
+        vendorOrganizationName:string = "";
 }
