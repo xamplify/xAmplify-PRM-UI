@@ -29,7 +29,7 @@ export class VendorReportsComponent implements OnInit {
                   this.vendorDetails = data.data;
                   
                   this.pagination.totalRecords = data.totalRecords;
-                  this.pagination = this.pagerService.getPagedItems( this.pagination, this.vendorDetails.data );
+                  this.pagination = this.pagerService.getPagedItems( this.pagination, this.vendorDetails );
               },
               error => console.log(error),
               () => console.log('vendor reports completed')
