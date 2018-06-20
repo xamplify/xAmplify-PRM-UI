@@ -73,8 +73,8 @@
                      <thead>
                        <tr>
                          <th colspan="2" style="width: 50%">Videos</th>
-                         <th>Type</th>
-                         <th>Upload Date</th>
+                         <th class="text-center">Type</th>
+                         <th class="text-center">Upload Date</th>
                          <th class="text-center">Actions</th>
                        </tr>
                      </thead>
@@ -104,10 +104,10 @@
                              <h6 class='f-w-600'>{{videoFile.views}} views</h6>
                            </a>
                          </td>
-                         <td>
+                         <td class="text-center">
                            <span class='view-by-banner'>{{videoFile.viewBy}}</span>
                          </td>
-                         <td>{{videoFile.uploadedDate}}</td>
+                         <td class="text-center">{{videoFile.uploadedDate}}</td>
                          <td>
                            <div class="actions-block" *ngIf="videoFileService.videoType==='myVideos'">
                              <a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor"
