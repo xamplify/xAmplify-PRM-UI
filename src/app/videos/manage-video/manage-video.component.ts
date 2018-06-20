@@ -60,6 +60,10 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.loggedUserName = this.authenticationService.user.emailId;
         this.defaultBannerMessageValues();
         this.sortVideos = this.videoUtilService.sortVideos;
+        if(this.authenticationService.isOnlyPartner()){
+          this.sortVideos = this.sortVideos.concat([{ 'name': 'Company Name(ASC)', 'value': 'companyName-ASC' }]);
+          this.sortVideos = this.sortVideos.concat([{ 'name': 'Company Name(DESC)', 'value': 'companyName-DESC'}]);
+        }
         this.videoSort = this.sortVideos[0];
         this.categoryNum = this.videoFileService.categoryNumber = 0;
         this.videoType = this.videoTypes[0];
