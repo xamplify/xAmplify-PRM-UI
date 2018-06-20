@@ -60,8 +60,8 @@
 							<thead>
 								<tr>
 									<th colspan="2" style="width: 45%">Email Template List</th>
-									<th>Type</th>
-									<th>Created Date</th>
+									<th style="text-align: center;">Type</th>
+									<th style="text-align: center;">Created Date</th>
 									<th style="text-align: center;">Actions</th>
 								</tr>
 							</thead>
@@ -82,14 +82,14 @@
 											<h6>Created By <b>{{emailTemplate.createdBy}}</b></h6>
 											<h6>From <b>{{emailTemplate.companyName}}</b></h6>
 										</ng-container>
-										
+
 									<h5 class="view-banner" *ngIf="emailTemplate.type=='PARTNER'">PARTNER</h5>
 									<h5 class="view-banner" *ngIf="(emailTemplate.regularCoBrandingTemplate||emailTemplate.videoCoBrandingTemplate) &&emailTemplate.type=='UPLOADED' ">CO-BRANDED</h5>
 									</td>
 									<td>
-										<h5 class="view-banner" style="width: 53%">{{emailTemplate.emailTemplateType}}</h5>
+										<h5 class="view-banner" style="width: auto;">{{emailTemplate.emailTemplateType}}</h5>
 									</td>
-									<td>{{emailTemplate.createdDate}}</td>
+									<td  style="text-align: center;">{{emailTemplate.createdDate}}</td>
 									<td>
 										<div class="actions-block">
 											<a (click)="edit(emailTemplate.id)" title="Edit" *ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  || authenticationService.module.isVendor) && emailTemplate.type!='PARTNER'">
@@ -128,7 +128,7 @@
 										<b *ngIf="emailTemplate.companyName?.length<17">{{emailTemplate.companyName}}</b>
 									</h6>
 									</ng-container>
-									
+
 									<ng-container *ngIf="emailTemplate.type=='PARTNER'">
 										<h6 title="{{emailTemplate.vendorName}}">By
 										<b *ngIf="emailTemplate.vendorName?.length>17">{{emailTemplate.vendorName|slice:0:17}}..</b>
@@ -139,7 +139,7 @@
 										<b *ngIf="emailTemplate.companyName?.length<17">{{emailTemplate.vendorOrganizationName}}</b>
 									</h6>
 									</ng-container>
-									
+
 								</div>
 								<div class="bar">
 									<a (click)="showPreview(emailTemplate)" title="Preview">

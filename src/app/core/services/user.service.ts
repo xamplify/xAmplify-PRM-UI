@@ -59,7 +59,7 @@ export class UserService {
         console.log( data );
         return this.http.post( this.URL + "register/signup/user", data )
             .map( this.extractData )
-            .catch( this.handleError );
+            .catch( this.signUpHandleError );
 
     }
 
@@ -185,10 +185,16 @@ export class UserService {
         // return body || {};
         return body;
     }
-
+    private signUpHandleError( error: any){
+      const body = error['_body'];
+      if ( body !== "" ) {
+          const response = JSON.parse( body );
+          return Observable.throw( response );
+      }
+    }
     private handleError( error: any ) {
         const body = error['_body'];
-        if ( body != "" ) {
+        if ( body !== "" ) {
             var response = JSON.parse( body );
             if ( response.message != undefined ) {
                 return Observable.throw( response.message );

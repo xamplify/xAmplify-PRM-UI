@@ -66,8 +66,8 @@ export class ForgotPasswordComponent implements OnInit {
                     this.loading = false;
                   //  this.formErrors['forgotPasswordEmailId'] = error.toLowerCase();
                     this.referenceService.userName = '';
-                    this.customResponse = new CustomResponse('ERROR', error.toLowerCase(), true);
-
+                    this.xtremandLogger.error(error);
+                    this.customResponse = new CustomResponse('ERROR', 'Something went worng.Please try again', true);
                 },
                 () => this.xtremandLogger.log("Done")
             );

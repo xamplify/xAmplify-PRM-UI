@@ -120,7 +120,7 @@ export class SignupComponent implements OnInit, OnDestroy {
                     if (error === "USERNAME IS ALREADY EXISTING") {
                         this.formErrors['userName'] = error;
                         // this.isLoading = false;
-                    } else if (error === "USER IS ALREADY EXISTING WITH THIS EMAIL") {
+                    } else if (error === "USER IS ALREADY EXISTING WITH THIS EMAIL" || error.includes('User is already existing with this email')) {
                         this.formErrors['emailId'] = 'Email Id already exists';
                         // this.isLoading = false;
                     } else {
