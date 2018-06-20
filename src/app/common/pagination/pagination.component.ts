@@ -23,7 +23,6 @@ export class PaginationComponent implements OnInit {
     this.pageNumber = this.numberPerPage[0];
   }
   setPage(page: number) {
-    const self = this;
     const obj = { 'page': page, 'type': this.type }
     this.notifyParent.emit(obj);
   }
