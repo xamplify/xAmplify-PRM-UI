@@ -12,6 +12,7 @@ declare var $: any;
 export class ContactsCampaignsMailsComponent implements OnInit {
     @Input() associatedCampaignDetails: any;
     @Input() isPartner: boolean;
+    @Input() contactListId: number;
     @Input() userEmails = [];
     @Output() notifyParent: EventEmitter<any>;
     contactsByType: ContactsByType = new ContactsByType();
@@ -42,7 +43,8 @@ export class ContactsCampaignsMailsComponent implements OnInit {
             this.loading = true;
             let campaignDetails = {
                 "campaignIds": this.selectedCampaignIds,
-                "emailIds": this.userEmails
+                "emailIds": this.userEmails,
+                "contactListId": this.contactListId
             }
 
             this.contactService.sendCampaignEmails( campaignDetails )
