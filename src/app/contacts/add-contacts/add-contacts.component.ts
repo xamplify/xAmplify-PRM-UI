@@ -138,7 +138,6 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.uploader.onCompleteItem = ( item: any, response: any, status: any, headers: any ) => {
             var responsePath = response;
             this.xtremandLogger.info( "addContacts.component onCompleteItem:" + responsePath );// the url will be in the response
-            $( "#uploadContactsMessage" ).show();
             if ( this.isPartner == false ) {
                 this.router.navigateByUrl( '/home/contacts/manage' )
             } else {
@@ -528,13 +527,13 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.loading = false;
                     this.selectedAddContactsOption = 8;
                     this.xtremandLogger.info( "update Contacts ListUsers:" + data );
-                    $( "#uploadContactsMessage" ).show();
+                    this.contactService.successMessage = true;
+                    this.contactService.saveAsSuccessMessage = "add";
                     if ( this.isPartner == false ) {
                         this.router.navigateByUrl( '/home/contacts/manage' )
                     } else {
                         this.router.navigateByUrl( 'home/partners/manage' )
                     }
-                    this.contactService.successMessage = true;
                 },
                 ( error: any ) => {
                     this.loading = false;
@@ -626,8 +625,8 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                         data = data;
                         this.loading = false;
                         this.selectedAddContactsOption = 8;
+                        this.contactService.saveAsSuccessMessage = "add";
                         this.xtremandLogger.info( "update Contacts ListUsers:" + data );
-                        $( "#uploadContactsMessage" ).show();
                         if ( this.isPartner == false ) {
                             this.router.navigateByUrl( '/home/contacts/manage' )
                         } else {
@@ -688,7 +687,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                                 this.loading = false;
                                 this.selectedAddContactsOption = 8;
                                 this.xtremandLogger.info( "update Contacts ListUsers:" + data );
-                                $( "#uploadContactsMessage" ).show();
+                                this.contactService.saveAsSuccessMessage = "add";
                                 if ( this.isPartner == false ) {
                                     this.router.navigateByUrl( '/home/contacts/manage' )
                                 } else {
@@ -1014,8 +1013,8 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                             data = data;
                             this.selectedAddContactsOption = 8;
                             this.loading = false;
+                            this.contactService.saveAsSuccessMessage = "add";
                             this.xtremandLogger.info( "update Contacts ListUsers:" + data );
-                            $( "#uploadContactsMessage" ).show();
                             if ( this.isPartner == false ) {
                                 this.router.navigateByUrl( '/home/contacts/manage' )
                             } else {
@@ -1058,8 +1057,8 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                         data = data;
                         this.loading = false;
                         this.selectedAddContactsOption = 8;
+                        this.contactService.saveAsSuccessMessage = "add";
                         this.xtremandLogger.info( "update Contacts ListUsers:" + data );
-                        $( "#uploadContactsMessage" ).show();
                         if ( this.isPartner == false ) {
                             this.router.navigateByUrl( '/home/contacts/manage' )
                         } else {
@@ -1397,8 +1396,8 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                             data = data;
                             this.loading = false;
                             this.selectedAddContactsOption = 8;
+                            this.contactService.saveAsSuccessMessage = "add";
                             this.xtremandLogger.info( "update Contacts ListUsers:" + data );
-                            $( "#uploadContactsMessage" ).show();
                             if ( this.isPartner == false ) {
                                 this.router.navigateByUrl( '/home/contacts/manage' )
                             } else {
@@ -1443,8 +1442,8 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                         data = data;
                         this.loading = false;
                         this.selectedAddContactsOption = 8;
+                        this.contactService.saveAsSuccessMessage = "add";
                         this.xtremandLogger.info( "update Contacts ListUsers:" + data );
-                        $( "#uploadContactsMessage" ).show();
                         if ( this.isPartner == false ) {
                             this.router.navigateByUrl( '/home/contacts/manage' )
                         } else {
@@ -1731,8 +1730,8 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                         this.loading = false;
                         data = data;
                         this.selectedAddContactsOption = 8;
+                        this.contactService.saveAsSuccessMessage = "add";
                         this.xtremandLogger.info( "update Contacts ListUsers:" + data );
-                        $( "#uploadContactsMessage" ).show();
                         if ( this.isPartner == false ) {
                             this.router.navigateByUrl( '/home/contacts/manage' )
                         } else {
@@ -1776,13 +1775,14 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                             data = data;
                             this.loading = false;
                             this.selectedAddContactsOption = 8;
+                            this.contactService.saveAsSuccessMessage = "add";
                             this.xtremandLogger.info( "update Contacts ListUsers:" + data );
-                            $( "#uploadContactsMessage" ).show();
                             if ( this.isPartner == false ) {
                                 this.router.navigateByUrl( '/home/contacts/manage' )
                             } else {
                                 this.router.navigateByUrl( 'home/partners/manage' )
                             }
+                            this.contactService.successMessage = true;
                         },
                         ( error: any ) => {
                             this.loading = false;
@@ -1947,7 +1947,6 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
             $( "#Gfile_preview" ).hide();
             $( "#popupForListviews" ).hide();
 
-            $( "#uploadContactsMessage" ).hide();
             $( "#sample_editable_1" ).hide();
             $( "#file_preview" ).hide();
             $( "#google contacts file_preview" ).hide();

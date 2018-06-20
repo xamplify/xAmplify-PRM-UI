@@ -175,7 +175,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
         this.xtremandLogger.info( "socialContact" + this.socialContact.socialNetwork );
         this.access_token = this.authenticationService.access_token;
         this.xtremandLogger.info( "successmessageLoad" + this.contactService.successMessage )
-        if ( this.contactService.successMessage == true || this.contactService.saveAsSuccessMessage == "SUCCESS" ) {
+        if ( this.contactService.saveAsSuccessMessage == "add" || this.contactService.successMessage == true || this.contactService.saveAsSuccessMessage == "SUCCESS" ) {
             this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_LIST_CREATE_SUCCESS, true );
             this.xtremandLogger.info( "Success Message in manage contact pape" );
             this.contactService.saveAsSuccessMessage = "";
