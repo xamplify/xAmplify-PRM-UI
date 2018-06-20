@@ -16,6 +16,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class VendorReportsComponent implements OnInit {
 
     vendorDetails: any;
+    loading = false;
     
   constructor(public referenseService:ReferenceService, public pagination: Pagination, public dashboardService: DashboardService,
               public authenticationService: AuthenticationService, public pagerService: PagerService, public paginationComponent: PaginationComponent,
@@ -24,6 +25,7 @@ export class VendorReportsComponent implements OnInit {
   }
   
   vendorReports() {
+      this.loading = true;
       this.dashboardService.loadVendorDetails(this.authenticationService.getUserId(), this.pagination)
           .subscribe(
               data => {
@@ -31,9 +33,13 @@ export class VendorReportsComponent implements OnInit {
                   
                   this.pagination.totalRecords = data.totalRecords;
                   this.pagination = this.pagerService.getPagedItems( this.pagination, this.vendorDetails );
+                  this.loading = false;
               },
               error => console.log(error),
-              () => console.log('vendor reports completed')
+              () => {
+                  console.log('vendor reports completed')
+                  this.loading = false;
+              }
           );
   }
   
@@ -49,8 +55,13 @@ export class VendorReportsComponent implements OnInit {
   }
   
   navigateToVendorCampaigns(venderReport:any){
+      this.loading = true;
       this.referenseService.vendorDetails = venderReport;
+      setTimeout(()=>{  
+          this.loading = false;
+     },3000);
       this.router.navigateByUrl( '/home/campaigns/vendor/all' )
+      
   }
 
   ngOnInit() {
