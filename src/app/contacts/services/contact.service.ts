@@ -136,7 +136,7 @@ export class ContactService {
         var options = {
             headers: headers
         };
-        var url = this.authenticationService.REST_URL + "campaign/send-campaign-email?access_token=" + this.authenticationService.access_token + '&userId='+ this.authenticationService.getUserId();
+        var url = this.authenticationService.REST_URL + "campaign/share-existing-campaigns?access_token=" + this.authenticationService.access_token + '&userId='+ this.authenticationService.getUserId();
         this.logger.info( campaigDetails );
         return this._http.post( url, options, requestoptions )
             .map( this.extractData )
