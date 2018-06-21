@@ -871,13 +871,24 @@
 														<span align="right" title="upladed date" class="template-created-on-value">
 															<b>{{campaign.emailTemplate.createdDate}}</b>
 														</span>
-														<span align="left" class="template-created-by-label" title="{{campaign.emailTemplate.createdBy}}">
-															<b *ngIf="emailTemplate.createdBy?.length>20">{{campaign.emailTemplate.createdBy|slice:0:20}}....</b>
-															<b *ngIf="emailTemplate.createdBy?.length<=20">{{campaign.emailTemplate.createdBy}}</b>
-														</span>
-														<span align="left" class="template-created-by-value">
-															<b>Created By</b>
-														</span>
+														<ng-container *ngIf="campaign.emailTemplate.type!='PARTNER'">
+															<span align="left" class="template-created-by-label" title="{{campaign.emailTemplate.createdBy}}">
+																<b *ngIf="campaign.emailTemplate.createdBy?.length>20">{{campaign.emailTemplate.createdBy|slice:0:20}}....</b>
+																<b *ngIf="campaign.emailTemplate.createdBy?.length<=20">{{campaign.emailTemplate.createdBy}}</b>
+															</span>
+															<span align="left" class="template-created-by-value">
+																<b>Created By</b>
+															</span>
+														</ng-container>
+														<ng-container *ngIf="campaign.emailTemplate.type=='PARTNER'">
+															<span align="left" class="template-created-by-label" title="{{campaign.emailTemplate.vendorName}}">
+																<b *ngIf="campaign.emailTemplate.vendorName?.length>20">{{campaign.emailTemplate.vendorName|slice:0:20}}....</b>
+																<b *ngIf="campaign.emailTemplate.vendorName?.length<=20">{{campaign.emailTemplate.vendorName}}</b>
+															</span>
+															<span align="left" class="template-created-by-value">
+																<b>Shared By</b>
+															</span>
+														</ng-container>
 													</div>
 												</div>
 											</div>
@@ -914,13 +925,26 @@
 													<span align="right" title="upladed date" class="template-created-on-value">
 														<b>{{emailTemplate.createdDate}}</b>
 													</span>
-													<span align="left" class="template-created-by-label" title="{{emailTemplate.createdBy}}">
-														<b *ngIf="emailTemplate.createdBy?.length>20" title="{{emailTemplate.createdBy}}">{{emailTemplate.createdBy|slice:0:15}}...</b>
-														<b *ngIf="emailTemplate.createdBy?.length<=20" title="{{emailTemplate.createdBy}}">{{emailTemplate.createdBy}}</b>
-													</span>
-													<span align="left" class="template-created-by-value">
-														<b>Created By</b>
-													</span>
+													
+													
+													<ng-container *ngIf="emailTemplate.type!='PARTNER'">
+														<span align="left" class="template-created-by-label" title="{{emailTemplate.createdBy}}">
+															<b *ngIf="emailTemplate.createdBy?.length>20">{{emailTemplate.createdBy|slice:0:20}}....</b>
+															<b *ngIf="emailTemplate.createdBy?.length<=20">{{emailTemplate.createdBy}}</b>
+														</span>
+														<span align="left" class="template-created-by-value">
+															<b>Created By</b>
+														</span>
+													</ng-container>
+													<ng-container *ngIf="emailTemplate.type=='PARTNER'">
+														<span align="left" class="template-created-by-label" title="{{emailTemplate.vendorName}}">
+															<b *ngIf="emailTemplate.vendorName?.length>20">{{emailTemplate.vendorName|slice:0:20}}....</b>
+															<b *ngIf="emailTemplate.vendorName?.length<=20">{{emailTemplate.vendorName}}</b>
+														</span>
+														<span align="left" class="template-created-by-value">
+															<b>Shared By</b>
+														</span>
+													</ng-container>
 												</div>
 											</div>
 										</div>
