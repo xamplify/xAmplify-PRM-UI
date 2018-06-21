@@ -118,7 +118,7 @@
 												</ng-container>
 												<ng-container *ngIf="campaign.launched">
 													<a *ngIf="  hasAllAccess || (hasStatsRole || hasCampaignRole) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor"
-													 data-rel="fancybox-button" [routerLink]="['/home/campaigns/',campaign.campaignId, 'details']" title="Campaign Based Reports"
+													 data-rel="fancybox-button" (click)="campaginRouter(campaign)" title="Campaign Based Reports"
 													 class='mr5'>
 														<i class="fa fa-line-chart"></i>
 													</a>
@@ -191,7 +191,7 @@
 		<ng-container *ngIf="campaign.launched">
 			<li>
 				<a *ngIf="  hasAllAccess || (hasStatsRole || hasCampaignRole) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor"
-					data-rel="fancybox-button" [routerLink]="['/home/campaigns/',campaign.campaignId, 'details']" title="Campaign Based Reports"
+					data-rel="fancybox-button" (click)="campaginRouter(campaign)" title="Campaign Based Reports"
 					class='mr5'>
 					<i class="fa fa-line-chart"></i> Campaign Analytics
 				</a>
@@ -266,7 +266,7 @@
 												</ng-container>
 												<ng-container *ngIf="campaign.launched">
 													<a *ngIf="  hasAllAccess || (hasStatsRole || hasCampaignRole ) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor"
-														[routerLink]="['/home/campaigns/',campaign.campaignId, 'details']" title="Campaign Based Reports">
+                          (click)="campaginRouter(campaign)" title="Campaign Based Reports">
 														<i class="fa fa-line-chart"></i>
 													</a>
 													<a *ngIf=" (campaign.campaignType !== 'SOCIAL') && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor) && !campaign.nurtureCampaign"

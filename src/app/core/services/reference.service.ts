@@ -70,7 +70,7 @@ export class ReferenceService {
     isPlayVideo = false;
     isDownloadCsvFile: boolean;
     vendorDetails: any;
-
+    campaignType: any;
     public URL: string = this.authenticationService.REST_URL + 'admin/';
     constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,
         private router: Router, public deviceService: Ng2DeviceService,) {

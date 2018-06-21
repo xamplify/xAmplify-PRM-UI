@@ -395,7 +395,8 @@ export class PartnerReportsComponent implements OnInit {
   }
 
 
-  goToCampaignAnalytics(campaignId){
-      this.router.navigate(["/home/campaigns/"+campaignId+"/details"]);
+  goToCampaignAnalytics(campaign){
+      this.referenseService.campaignType = campaign.campaignType;
+      this.router.navigate(["/home/campaigns/"+campaign.campaignId+"/details"]);
   }
 }

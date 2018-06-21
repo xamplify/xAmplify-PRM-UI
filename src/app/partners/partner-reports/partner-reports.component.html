@@ -147,10 +147,10 @@
 			</div>
 			<div style="position: absolute;bottom: -10px;"
 			*ngIf="activePartnersPagination.totalRecords>0 && !activeParnterHttpRequestLoader.isLoading &&!activeParnterHttpRequestLoader.isServerError">
-				 
+
 				 <app-pagination [pagination]="activePartnersPagination" [type]="'ActivePartnerPagination'" [isDropdown]="true"
           (notifyParent)="setPage($event)"></app-pagination>
-          
+
 			</div>
         </div>
       </div>
@@ -184,7 +184,7 @@
               <th class="center-aligned">analytics</th>
             </thead>
             <tbody>
-              <tr *ngFor="let item of pagination.pagedItems" style="cursor: pointer;" (click)="goToCampaignAnalytics(item.campaignId)">
+              <tr *ngFor="let item of pagination.pagedItems" style="cursor: pointer;" (click)="goToCampaignAnalytics(item)">
                 <td><app-user-info [userInfo]="item" [isPartnerEntityInfo]="true" [isPartnerInfo]="true"></app-user-info></td>
                 <td>{{item.campaignName}}</td>
                  <td>{{item.redistributedTime}}</td>
@@ -193,7 +193,7 @@
                       <a id="disabled-icon" class="blur" title="Data Sharing Disabled" *ngIf="!item.dataSharingEnabled" style="background-color: white;">
                           <img src="../assets/images/disabled-icon.png">
                         </a>
-                        <a [routerLink]="['/home/campaigns/', item.campaignId, 'details']"  title="analytics">
+                        <a  (click)="goToCampaignAnalytics(item)" title="analytics">
                           <i class="fa fa-line-chart"></i>
                         </a>
                      </div>
@@ -223,7 +223,7 @@
       <div class="portlet light">
         <div class="portlet-title">
           <div class="caption">
-            <span class="caption-subject font-red-sunglo uppercase"> inactive partners</span>
+            <span class="caption-subject font-red-sunglo uppercase">Non-active Partners</span>
           </div>
            	<div class="inputs" align="right" style="float: right">
 			<div class="portlet-input input-inline input-small">
@@ -246,11 +246,11 @@
               <tr *ngFor="let item of inActivePartnersPagination.pagedItems" style="cursor: pointer;">
                 <td><app-user-info [userInfo]="item" [isPartnerEntityInfo]="true" [isPartnerInfo]="true"></app-user-info></td>
                 <td (click)="sendPartnerReminder(item)">
-					<div class="actions-block">
-                      <a   title="Send reminder email">
+				          	<div class="actions-block">
+                      <a title="Send reminder email">
                           <i class="fa fa-envelope"></i>
                         </a>
-                      </div>
+                    </div>
                 </td>
               </tr>
             </tbody>
@@ -342,7 +342,7 @@
 												<span class='f-w-300'>{{campaign.createdBy}}</span>
 											</h5>
 										</td>
-										<td>
+										<td class="center">
 											<span align="right">
 												<b *ngIf="campaign.launched">Launched On</b>
 												<b *ngIf="!campaign.launched && campaign.launchedOn?.length > 0">Scheduled For</b>
@@ -354,12 +354,12 @@
 												<b *ngIf="campaign.scheduleType=='SAVE'">{{campaign.startTime}}</b>
 											</span>
 										</td>
-										<td>{{campaign.createdDate}}</td>
-										<td>
+										<td class="center">{{campaign.createdDate}}</td>
+										<td class="center">
 										 <a id="disabled-icon" class="blur" title="Data Sharing Disabled" *ngIf="!campaign.detailedAnalyticsShared && selectedTabIndex==2">
                           						<img src="../assets/images/disabled-icon.png">
                        					 </a>
-										<a  data-rel="fancybox-button" [routerLink]="['/home/campaigns/',campaign.campaignId, 'details']" title="Campaign Based Reports" class='mr5'>
+										<a  data-rel="fancybox-button" (click)="goToCampaignAnalytics(campaign)" title="Campaign Based Reports" class='mr5'>
 												<i class="fa fa-line-chart"></i>
 										</a>
 										</td>
@@ -410,7 +410,7 @@
 											 <a id="disabled-icon" class="blur" title="Data Sharing Disabled" *ngIf="!campaign.detailedAnalyticsShared && selectedTabIndex==2">
                           						<img src="../assets/images/disabled-icon.png" style="margin-top: 9px;margin-left: 2px;">
                        						 </a>
-												<a [routerLink]="['/home/campaigns/',campaign.campaignId, 'details']" title="Campaign Based Reports">
+												<a (click)="goToCampaignAnalytics(campaign)" title="Campaign Based Reports">
 														<i class="fa fa-line-chart"></i>
 													</a>
 											</div>

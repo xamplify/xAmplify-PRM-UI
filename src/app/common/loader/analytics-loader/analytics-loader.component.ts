@@ -1,4 +1,6 @@
 import { Component, OnInit,Input } from '@angular/core';
+import { ReferenceService } from '../../../core/services/reference.service';
+
 
 @Component({
   selector: 'app-analytics-loader',
@@ -6,10 +8,14 @@ import { Component, OnInit,Input } from '@angular/core';
   styleUrls: ['./analytics-loader.component.css','../list-loader/list-loader.component.css']
 })
 export class AnalyticsLoaderComponent implements OnInit {
- @Input() campaignType:any;
-  constructor() { }
+  campaignType:any;
+  constructor(private referenceService:ReferenceService) {
+  }
 
   ngOnInit() {
+    if( this.referenceService.campaignType === 'REGULAR'){
+      this.campaignType = 'REGULAR';
+    } else { this.campaignType = 'VIDEO';}
   }
 
 }

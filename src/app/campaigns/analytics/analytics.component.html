@@ -26,7 +26,7 @@
 	<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 </div>
 <ng-template #NOERROR>
-<app-analytics-loader [campaignType]="'VIDEO'" *ngIf="mainLoader"></app-analytics-loader>
+<app-analytics-loader *ngIf="mainLoader"></app-analytics-loader>
 	<div class="row" [hidden]="mainLoader">
 		<div class="pl10 pr10 col-xs-12" [ngClass]="{'col-sm-4': campaignType === 'VIDEO','forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}" *ngIf="campaignType === 'VIDEO' && campaign.selectedVideoId>0">
 			<a class="dashboard-stat dashboard-stat-lighter purple-soft" (click)="previewVideo(campaign.campaignVideoFile)" [class.disabled]="!isPartnerEnabledAnalyticsAccess ?true:null">
