@@ -138,6 +138,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     isCompanyDetails = false;
     checkingContactTypeName: string;
     newUsersEmails = [];
+    newUserDetails = [];
     teamMemberPagination: Pagination = new Pagination();
     teamMembersList = [];
     orgAdminsList = [];
@@ -353,11 +354,18 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     saveValidEmails() {
         try {
             this.isCompanyDetails = false;
-            this.newUsersEmails.length = 0;
+            this.newUserDetails.length = 0;
             let existedEmails = [];
 
             for ( let i = 0; i < this.users.length; i++ ) {
-                this.newUsersEmails.push( this.users[i].emailId );
+                
+                let userDetails = {
+                        "emailId": this.users[i].emailId,
+                        "firstName": this.users[i].firstName,
+                        "lastName": this.users[i].lastName,
+                    }
+                
+                this.newUserDetails.push( userDetails );
 
                 if ( this.users[i].country === "Select Country" ) {
                     this.users[i].country = null;
@@ -462,7 +470,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
     updateCsvContactList( contactListId: number ) {
         try {
-            this.newUsersEmails.length = 0;
+            this.newUserDetails.length = 0;
             let existedEmails = [];
             if ( this.users.length > 0 ) {
                 for ( let i = 0; i < this.users.length; i++ ) {
@@ -484,7 +492,13 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                         this.users[i].mobileNumber = "";
                     }*/
 
-                    this.newUsersEmails.push( this.users[i].emailId );
+                    let userDetails = {
+                            "emailId": this.users[i].emailId,
+                            "firstName": this.users[i].firstName,
+                            "lastName": this.users[i].lastName,
+                        }
+                    
+                    this.newUserDetails.push( userDetails );
                 }
                 if ( this.validCsvContacts == true && this.invalidPatternEmails.length == 0 ) {
                     $( "#sample_editable_1" ).show();
@@ -896,11 +910,17 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
     saveClipboardValidEmails() {
         try {
-            this.newUsersEmails.length = 0;
+            this.newUserDetails.length = 0;
             let existedEmails = [];
             for ( let i = 0; i < this.users.length; i++ ) {
-                this.newUsersEmails.push( this.users[i].emailId );
-
+                let userDetails = {
+                        "emailId": this.users[i].emailId,
+                        "firstName": this.users[i].firstName,
+                        "lastName": this.users[i].lastName,
+                    }
+                
+                this.newUserDetails.push( userDetails );
+                
                 if ( this.users[i].country === "Select Country" ) {
                     this.users[i].country = null;
                 }

@@ -13,6 +13,7 @@ export class ContactsCampaignsMailsComponent implements OnInit {
     @Input() associatedCampaignDetails: any;
     @Input() isPartner: boolean;
     @Input() contactListId: number;
+    @Input() users = [];
     @Input() userEmails = [];
     @Output() notifyParent: EventEmitter<any>;
     contactsByType: ContactsByType = new ContactsByType();
@@ -43,7 +44,7 @@ export class ContactsCampaignsMailsComponent implements OnInit {
             this.loading = true;
             let campaignDetails = {
                 "campaignIds": this.selectedCampaignIds,
-                "emailIds": this.userEmails,
+                "users": this.users,
                 "contactListId": this.contactListId
             }
 

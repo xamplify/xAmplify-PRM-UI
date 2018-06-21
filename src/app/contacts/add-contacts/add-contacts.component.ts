@@ -1912,7 +1912,8 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
 
     settingSocialNetworkOpenModal( socialNetwork: string ) {
         this.settingSocialNetwork = socialNetwork;
-        $( '#settingSocialNetwork' ).appendTo( "body" ).modal( 'show' );
+       // $( '#settingSocialNetwork' ).appendTo( "body" ).modal( 'show' );
+        $( '#settingSocialNetwork' ).modal( 'show' );
     }
 
     addContactModalOpen() {

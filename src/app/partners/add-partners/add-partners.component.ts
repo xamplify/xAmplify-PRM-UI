@@ -115,7 +115,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     allselectedUsers = [];
     isHeaderCheckBoxChecked: boolean = false;
     pageNumber: any;
-    newUsersEmails = [];
+    newUserDetails = [];
     teamMembersList = [];
     orgAdminsList = [];
 
@@ -343,6 +343,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
     saveValidEmails() {
         try {
+            this.newUserDetails.length = 0;
             this.isCompanyDetails = false;
             for ( let i = 0; i < this.orgAdminsList.length; i++ ) {
                 this.teamMembersList.push( this.orgAdminsList[i] );
@@ -367,8 +368,14 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             }
             console.log( existedEmails );
             for ( let i = 0; i < this.newPartnerUser.length; i++ ) {
-
-                this.newUsersEmails.push( this.newPartnerUser[i].emailId );
+                
+                let userDetails = {
+                        "emailId": this.newPartnerUser[i].emailId,
+                        "firstName": this.newPartnerUser[i].firstName,
+                        "lastName": this.newPartnerUser[i].lastName,
+                    }
+                
+                this.newUserDetails.push( userDetails );
 
                 if ( this.newPartnerUser[i].mobileNumber ) {
                     if ( this.newPartnerUser[i].mobileNumber.length < 6 ) {
@@ -1310,14 +1317,15 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     }
 
     showModal() {
-        $( '#salesforceModal' ).appendTo( "body" ).modal( 'show' );
+       // $( '#salesforceModal' ).appendTo( "body" ).modal( 'show' );
+        $( '#salesforceModal' ).modal( 'show' );
+        
     }
 
     hideModal() {
         $( '#salesforceModal' ).modal( 'hide' );
         $( 'body' ).removeClass( 'modal-open' );
         $( '.modal-backdrop fade in' ).remove();
-        $( '#salesforceModal' ).appendTo( "body" ).modal( 'hide' );
 
     }
 
@@ -1334,7 +1342,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                         this.storeLogin = data;
                         console.log( data );
                         if ( this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM" ) {
-                            $( '#salesforceModal' ).appendTo( "body" ).modal( 'show' );
+                           // $( '#salesforceModal' ).appendTo( "body" ).modal( 'show' );
+                            $( '#salesforceModal' ).modal( 'show' );
                             console.log( "AddContactComponent salesforce() Authentication Success" );
                             this.checkingPopupValues();
                         } else {
@@ -1399,7 +1408,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                         $( '#salesforceModal' ).modal( 'hide' );
                         $( 'body' ).removeClass( 'modal-open' );
                         $( '.modal-backdrop fade in' ).remove();
-                        $( '#salesforceModal' ).appendTo( "body" ).modal( 'hide' );
+                        //$( '#salesforceModal' ).appendTo( "body" ).modal( 'hide' );
                         $( '#overlay-modal' ).hide();
                     } else {
                         for ( var i = 0; i < this.getGoogleConatacts.contacts.length; i++ ) {
@@ -1417,7 +1426,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                             $( '#salesforceModal' ).modal( 'hide' );
                             $( 'body' ).removeClass( 'modal-open' );
                             $( '.modal-backdrop fade in' ).remove();
-                            $( '#salesforceModal' ).appendTo( "body" ).modal( 'hide' );
+                            //$( '#salesforceModal' ).appendTo( "body" ).modal( 'hide' );
                             $( '#overlay-modal' ).hide();
 
                             $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
@@ -1476,7 +1485,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                         $( '#salesforceModal' ).modal( 'hide' );
                         $( 'body' ).removeClass( 'modal-open' );
                         $( '.modal-backdrop fade in' ).remove();
-                        $( '#salesforceModal' ).appendTo( "body" ).modal( 'hide' );
+                       // $( '#salesforceModal' ).appendTo( "body" ).modal( 'hide' );
                         $( '#overlay-modal' ).hide();
                     } else {
                         for ( var i = 0; i < this.getGoogleConatacts.contacts.length; i++ ) {
@@ -1493,7 +1502,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                             $( '#salesforceModal' ).modal( 'hide' );
                             $( 'body' ).removeClass( 'modal-open' );
                             $( '.modal-backdrop fade in' ).remove();
-                            $( '#salesforceModal' ).appendTo( "body" ).modal( 'hide' );
+                           // $( '#salesforceModal' ).appendTo( "body" ).modal( 'hide' );
 
                             $( '#overlay-modal' ).hide();
 
@@ -1869,7 +1878,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                 this.getGoogleContactsUsers();
                 this.contactService.socialProviderName = "nothing";
             } else if ( this.contactService.socialProviderName == 'salesforce' ) {
-                $( '#salesforceModal' ).appendTo( "body" ).modal( 'show' );
+                $( '#salesforceModal' ).modal( 'show' );
                 this.contactService.socialProviderName = "nothing";
             }
         }
