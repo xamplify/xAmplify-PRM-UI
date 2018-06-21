@@ -234,7 +234,8 @@
               <div id="campaign-contact-list" *ngIf="selectedUserlistIds.length>0">
                 <div >
                   <div class="row pb10" id="user_list_table_view">
-                    <app-loader [model]="campaignContact.httpRequestLoader.isHorizontalCss" *ngIf="campaignContact.httpRequestLoader.isLoading"></app-loader>
+                    <!-- <app-loader [model]="campaignContact.httpRequestLoader.isHorizontalCss" *ngIf="campaignContact.httpRequestLoader.isLoading"></app-loader> -->
+                    <app-list-loader *ngIf="campaignContact.httpRequestLoader.isLoading" [rowsCount]="3"></app-list-loader>
                     <app-error-pages *ngIf="campaignContact.httpRequestLoader.isServerError"></app-error-pages>
                     <ng-container *ngIf="!campaignContact.httpRequestLoader.isLoading && !campaignContact.httpRequestLoader.isServerError">
                       <div id="user_list_tb_wrapper" class="dataTables_wrapper form-inline no-footer">

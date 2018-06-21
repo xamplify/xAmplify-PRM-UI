@@ -69,9 +69,9 @@
 								<thead>
 									<tr>
 										<th colspan="2" style="width: 45%">Campaign</th>
-										<th>Status</th>
-										<th>Created Date</th>
-										<th>Actions</th>
+										<th class="center">Status</th>
+										<th class="center">Created Date</th>
+										<th class="center">Actions</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -94,7 +94,7 @@
 											<h5>By <b>{{campaign.createdBy}}</b></h5>
 											<h5>From <b>{{campaign.companyName}}</b></h5>
 										</td>
-										<td>
+										<td class="center">
 											<span align="right">
 												<b *ngIf="campaign.launched">Launched On</b>
 												<b *ngIf="!campaign.launched && campaign.launchedOn?.length > 0">Scheduled For</b>
@@ -106,11 +106,11 @@
 												<b *ngIf="campaign.scheduleType=='SAVE'">{{campaign.startTime}}</b>
 											</span>
 										</td>
-										<td>{{campaign.createdDate}}</td>
-										<td>
+										<td class="center">{{campaign.createdDate}}</td>
+										<td class="center">
 											<div class="actions-block">
 												<ng-container *ngIf="!campaign.launched">
-													<a *ngIf="hasAllAccess || (campaign.launched==false&&hasCampaignRole && loggedInUserId==campaign.userId) 
+													<a *ngIf="hasAllAccess || (campaign.launched==false&&hasCampaignRole && loggedInUserId==campaign.userId)
 												|| (!campaign.launched&&isOnlyPartner)  || authenticationService.module.isVendor" (click)="editCampaign(campaign.campaignId)"
 													 title="Edit Campaign" class='mr5'>
 														<i class="fa fa-pencil-square-o"></i>
@@ -127,13 +127,13 @@
 														<i class="fa fa-files-o"></i>
 													</a>
 												</ng-container>
-												<a *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor"
-												 (click)="confirmDeleteCampaign(campaign.campaignId, i, campaign.campaignName)" title="Delete Campaign" data-rel="fancybox-button">
-													<i class="fa fa-trash"></i>
-												</a>
 												<a (click)="showCampaignPreview(campaign.campaignId)" title="Preview">
 													<i class="fa fa-eye mr5"></i>
-												</a> 
+                        </a>
+                        <a *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor"
+                        (click)="confirmDeleteCampaign(campaign.campaignId, i, campaign.campaignName)" title="Delete Campaign" data-rel="fancybox-button">
+                         <i class="fa fa-trash"></i>
+                       </a>
 											</div>
 										</td>
 									</tr>
@@ -181,13 +181,13 @@
 	<ul class="dropdown-menu pull-right">
 		<ng-container *ngIf="!campaign.launched">
 				<li>
-					<a *ngIf="hasAllAccess || (campaign.launched==false&&hasCampaignRole && loggedInUserId==campaign.userId) 
+					<a *ngIf="hasAllAccess || (campaign.launched==false&&hasCampaignRole && loggedInUserId==campaign.userId)
 						|| (!campaign.launched&&isOnlyPartner)  || authenticationService.module.isVendor" (click)="editCampaign(campaign.campaignId)"
 						title="Edit Campaign" class='mr5'>
 						<i class="fa fa-pencil-square-o"></i> Edit Campaign
 					</a>
 				</li>
-		</ng-container>			
+		</ng-container>
 		<ng-container *ngIf="campaign.launched">
 			<li>
 				<a *ngIf="  hasAllAccess || (hasStatsRole || hasCampaignRole) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor"
@@ -211,7 +211,7 @@
 		</li>
 	</ul>
 </div>
-</div>											
+</div>
 										</td>
 									</tr>
 								</tbody>
@@ -259,7 +259,7 @@
 											</div>
 											<div class="bar">
 												<ng-container *ngIf="!campaign.launched">
-													<a *ngIf="hasAllAccess || (campaign.launched==false && hasCampaignRole && loggedInUserId==campaign.userId) 
+													<a *ngIf="hasAllAccess || (campaign.launched==false && hasCampaignRole && loggedInUserId==campaign.userId)
 														|| (!campaign.launched&&isOnlyPartner) || authenticationService.module.isVendor" (click)="editCampaign(campaign.campaignId)" title="Edit Campaign">
 														<i class="fa fa-pencil-square-o"></i>
 													</a>
@@ -283,7 +283,7 @@
 													</a>
 													<a (click)="showCampaignPreview(campaign.campaignId)" title="Preview">
 														<i class="fa fa-eye mr5"></i>
-												</a> 
+												</a>
 											</div>
 										</div>
 									</div>
