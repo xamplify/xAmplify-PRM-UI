@@ -31,9 +31,11 @@ export class ChartReportComponent implements OnInit, OnDestroy {
   downloadDataList = [];
   downloadCsvList: any;
   viewsBarData: any;
+  loading = false;
   constructor(public referenceService: ReferenceService, public videoBaseReportService: VideoBaseReportService, public xtremandLogger: XtremandLogger,
     public videoUtilService: VideoUtilService, public router: Router, public pagination: Pagination, public pagerService: PagerService) {
-    this.selectedVideoId = this.videoUtilService.selectedVideoId;
+    try{
+      this.selectedVideoId = this.videoUtilService.selectedVideoId;
     this.videoViewsData = this.videoUtilService.videoViewsData;
     this.timePeriod = this.videoUtilService.timePeriod;
     this.timePeriodValue = this.videoUtilService.timePeriodValue;
@@ -43,8 +45,12 @@ export class ChartReportComponent implements OnInit, OnDestroy {
         break;
       }
     }
+    }catch(error){
+    this.xtremandLogger.error('Error in chart report component constructor'+error); }
   }
   videoViewsBarchart(){
+   try{
+    this.loading = true;
     if(this.selectedVideoId && this.timePeriodValue){
     this.videoBaseReportService.getVideoViewsDetails(this.timePeriod,this.selectedVideoId,this.timePeriodValue)
      .subscribe(
@@ -55,12 +61,20 @@ export class ChartReportComponent implements OnInit, OnDestroy {
        this.date = this.videoViewsLevelOne.date;
        this.views = this.videoViewsLevelOne.views;
        this.videoViewsBarChartLevelTwo();
-      });
+       this.loading = false;
+      },
+     (error:any) =>{
+       this.loading = false;
+       this.xtremandLogger.error('Error in chart report component viewsbarchart method'+error); }
+    );
     }
+     } catch(error){
+    this.xtremandLogger.error('Error in chart report component viewsbarchart method'+error); }
     }
   videoViewsBarChartLevelTwo(){
-     this.videoViewsBarChartLevelTwoTotalList();
-      if(this.selectedVideoId && this.timePeriodValue){
+    try{
+    this.videoViewsBarChartLevelTwoTotalList();
+    if(this.selectedVideoId && this.timePeriodValue){
     this.videoBaseReportService.getVideoViewsInnerDetails(this.timePeriod,this.selectedVideoId,this.timePeriodValue, this.pagination)
      .subscribe(
        (result:any)=>  {
@@ -68,14 +82,18 @@ export class ChartReportComponent implements OnInit, OnDestroy {
        this.videoViewsLevelTwo = result.data;
        this.pagination.totalRecords = result.totalRecords;
        this.pagination = this.pagerService.getPagedItems(this.pagination, this.videoViewsLevelTwo);
-      });
-    }
+      },
+    (error:any)=>{this.xtremandLogger.error('Error in chartreport page, videoviewsbarchartlevelTwo'+error);}
+      );}
+    }catch(error){
+    this.xtremandLogger.error('Error in chart report component viewsbarchart method'+error); }
   }
   selectedCampaignWatchedUsers(timePeriod, checkValue) {
+    try{
+    this.loading = true;
     this.timePeriod = timePeriod;
     this.viewsBarData = undefined;
-    console.log(checkValue);
-    try{
+    this.xtremandLogger.log(checkValue);
     this.videoBaseReportService.getCampaignUserWatchedViews(timePeriod, this.selectedVideoId)
       .subscribe((result: any) => {
         console.log(result);
@@ -99,13 +117,16 @@ export class ChartReportComponent implements OnInit, OnDestroy {
           this.date = null;
           this.videoViewsLevelTwo = [];
         }
+        this.loading = false;
       },
       (error: any) => {
         this.xtremandLogger.error(error);
+        this.loading = false;
         // this.xtremandLogger.errorPage(error);
       });
     }catch(err){
        console.log(err);
+       this.loading = false;
     }
   }
   setPage(event: any){
@@ -114,12 +135,14 @@ export class ChartReportComponent implements OnInit, OnDestroy {
   }
 
   getCategoryValue(category:any){
+    try{
        if(category.includes('Q')){
             const timePeriod = category.substring(1,category.length);
             this.timePeriodValue = timePeriod;
           }
         else { this.timePeriodValue = category; }
         this.videoViewsBarchart();
+    }catch(error) {this.xtremandLogger.log('Error in getCategory value, chart report page'+error); }
   }
 
   goToMangeVideos() {
@@ -133,8 +156,8 @@ export class ChartReportComponent implements OnInit, OnDestroy {
   }
 
   videoViewsBarChartLevelTwoTotalList(){
-      this.reportPagination.maxResults = 5000000;
-      if(this.selectedVideoId && this.timePeriodValue){
+    this.reportPagination.maxResults = 5000000;
+    if(this.selectedVideoId && this.timePeriodValue){
     this.videoBaseReportService.getVideoViewsInnerDetails(this.timePeriod,this.selectedVideoId,this.timePeriodValue, this.reportPagination)
      .subscribe(
        (result:any)=>  {
@@ -175,15 +198,19 @@ export class ChartReportComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
+    try{
     console.log(this.videoViewsData);
     if (!this.timePeriod) {
       this.router.navigate(['/home/videos/manage']);
     }
     this.selectedCampaignWatchedUsers(this.timePeriod, true);
+  } catch(error){this.xtremandLogger.log('error in ngonit'+error); }
   }
   ngOnDestroy() {
+    try{
     if (!this.checkVideo) {
       this.videoUtilService.selectedVideo = null;
     }
+  } catch(error){this.xtremandLogger.log('error in ngOnDestroy'+error); }
   }
 }

@@ -62,7 +62,8 @@
 			</div>
 		</div>
 		<div class="portlet-body clearfix" style="max-width: 100%;">
-			<table class='table tgrid' id="sample_editable_1">
+      <app-list-loader *ngIf="loading"></app-list-loader>
+			<table class='table tgrid' id="sample_editable_1" *ngIf="!loading">
 				<thead>
 					<tr>
 						<th class="headerCss center">NAME</th>
