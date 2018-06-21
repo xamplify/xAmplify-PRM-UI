@@ -1586,7 +1586,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
     settingSocialNetworkOpenModal( socialNetwork: string ) {
         this.settingSocialNetwork = socialNetwork;
-        $( '#settingSocialNetwork' ).appendTo( "body" ).modal( 'show' );
+       $( '#settingSocialNetworkPartner' ).modal( 'show' );
+       // $('#settingSocialNetworkPartner').modal('toggle'); 
+       // $('#settingSocialNetworkPartner').modal();
+       // $( '#settingSocialNetwork' ).appendTo( "body" ).modal( 'show' );
+        $("#settingSocialNetworkPartner").appendTo("body");
     }
 
     unlinkSocailAccount() {
@@ -1612,13 +1616,13 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                         $( "#zohoGear" ).hide();
                         this.zohoImageBlur = true;
                     }
-                    $( '#settingSocialNetwork' ).modal( 'hide' );
+                    $( '#settingSocialNetworkPartner' ).modal( 'hide' );
                     this.customResponse = new CustomResponse( 'SUCCESS', this.properties.SOCIAL_ACCOUNT_REMOVED_SUCCESS, true );
                 },
                 ( error: any ) => {
                     if ( error._body.search( 'Please launch or delete those campaigns first' ) != -1 ) {
                         this.Campaign = error;
-                        $( '#settingSocialNetwork' ).modal( 'hide' );
+                        $( '#settingSocialNetworkPartner' ).modal( 'hide' );
                         this.deleteErrorMessage = true;
                         setTimeout( function() { $( "#campaignError" ).slideUp( 500 ); }, 3000 );
                     } else {
@@ -1627,7 +1631,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                     console.log( error );
                 },
                 () => {
-                    $( '#settingSocialNetwork' ).modal( 'hide' );
+                    $( '#settingSocialNetworkPartner' ).modal( 'hide' );
                     this.cancelPartners();
                     this.xtremandLogger.info( "deleted completed" );
                 }
@@ -1894,6 +1898,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         this.hideZohoModal();
         this.contactService.isContactModalPopup = false;
         this.updatePartnerUser = false;
+        $( '#settingSocialNetworkPartner' ).modal( 'hide' );
+        $("body>#settingSocialNetworkPartner").remove();
+        $( 'body' ).removeClass( 'modal-backdrop in' );
 
         if ( this.selectedAddPartnerOption !=5 ) {
            let self = this;
@@ -1917,8 +1924,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         if ( this.selectedAddPartnerOption == 5 ){
             swal.close();
         }
-
-        $( '#settingSocialNetwork' ).modal( 'hide' );
 
     }
 
