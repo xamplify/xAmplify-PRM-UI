@@ -11,3 +11,14 @@
     color: #cac7c7;
     margin: 4em 0;
   }
+.donut-css{
+  width: 100% !important;
+  height: 1px !important;
+  margin-left: 0px !important;
+}
+.map-css{
+  position:  relative;
+  top: 24px !important;
+  height: 3px !important;
+  width: 97% !important;
+}
