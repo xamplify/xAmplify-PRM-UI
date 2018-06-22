@@ -75,7 +75,7 @@
                          <th colspan="2" style="width: 50%">Videos</th>
                          <th class="text-center">Type</th>
                          <th class="text-center">Upload Date</th>
-                         <th class="text-center">Actions</th>
+                         <th class="text-center"><span [hidden]="authenticationService.isOnlyPartner()">Actions</span></th>
                        </tr>
                      </thead>
                      <tbody>
@@ -131,7 +131,7 @@
                                <i class="fa fa-trash"></i>
                              </a>
                            </div>
-                             <div class="actions-block" *ngIf="videoFileService.videoType==='partnerVideos'" style="position: relative;left: -30px;color: #00a6e8;">
+                             <div [hidden]="true" class="actions-block" *ngIf="videoFileService.videoType==='partnerVideos'" style="position: relative;left: -30px;color: #00a6e8;">
                                <a  (click)="campaignRouter(videoFile)" title="Create Campaign"> <i class="fa fa-bullhorn"></i> </a>
                            </div>
                          </td>
@@ -200,8 +200,8 @@
                           </a>
                         </ng-container>
 
-                        <ng-container  *ngIf="videoFileService.videoType==='partnerVideos'">
-                          <a (click)="campaignRouter(videoFile)" title="Create Campaign">
+                        <ng-container *ngIf="videoFileService.videoType==='partnerVideos'">
+                          <a (click)="campaignRouter(videoFile)" title="Create Campaign" *ngIf="false">
                             <i class="fa fa-bullhorn"></i>
                           </a>
                         </ng-container>

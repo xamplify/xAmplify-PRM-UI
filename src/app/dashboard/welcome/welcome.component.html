@@ -46,8 +46,8 @@ cursor: not-allowed;
 	<app-partner-notification></app-partner-notification>
 	<div class="page-bar page-bar-shadow">
 		<div class="col-xs-12">
-		
-		
+
+
 		<div class="flex" *ngIf="authenticationService.isVendor()">
 		<div class="col-sm-6 col-xs-12 block image-block">
 					<img src="https://wistia.com/assets/product/video-seo/VideoSEO_2-2fc96034647ff7b9ecc5e0be9bac526f.png" style="max-width: 100%">
@@ -59,14 +59,14 @@ cursor: not-allowed;
 						<div class="flex pull-left">
               <!-- [class.disabled]="!hasContactRole || !authenticationService.user.hasCompany ? true : null" -->
               <button class="btn btn-xs color2"  *ngIf="authenticationService.isVendor()" [routerLink]="['/home/partners/add']" >add partners</button>
-							<button type="button" class="btn btn-xs color2-invert" data-toggle="modal" data-target="#myModal">Tell me how</button>
+							<button type="button" class="btn btn-xs color2-invert" data-toggle="modal" [disabled]="true" data-target="#myModal">Tell me how</button>
 						</div>
 					</div>
 				</div>
-				
+
 			</div>
-		
-		
+
+
 			<div class="flex">
 			<div class="col-sm-6 col-xs-12 block" *ngIf="authenticationService.isVendor()">
 					<div class="text-block">
@@ -75,7 +75,7 @@ cursor: not-allowed;
 						<div class="flex pull-right">
 							<button *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdminPartner()|| authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.module.isVideo" class="btn btn-xs color1" [routerLink]="['/home/videos']" >upload video</button>
               <button *ngIf="authenticationService.isOnlyPartner() || !authenticationService.module.isVideo" class="btn btn-xs color1" [routerLink]="['/home/videos/manage']">View videos</button>
-              <button type="button" class="btn btn-xs color1-invert" data-toggle="modal" data-target="#myModal">Tell me how</button>
+              <button type="button" class="btn btn-xs color1-invert" data-toggle="modal" [disabled]="true" data-target="#myModal">Tell me how</button>
 						</div>
 					</div>
 				</div>
@@ -121,7 +121,7 @@ cursor: not-allowed;
 						</a>
 					</div>
 				</div>
-				
+
 				<div class="col-sm-6 col-xs-12 block" *ngIf="!authenticationService.isVendor()">
 					<div class="text-block">
 						<h1 style="color: #76c9ff">Videos</h1>
@@ -129,11 +129,11 @@ cursor: not-allowed;
 						<div class="flex pull-right">
 							<button *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdminPartner()|| authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.module.isVideo" class="btn btn-xs color1" [routerLink]="['/home/videos']" >upload video</button>
               <button *ngIf="authenticationService.isOnlyPartner() || !authenticationService.module.isVideo" class="btn btn-xs color1" [routerLink]="['/home/videos/manage']">View videos</button>
-              <button type="button" class="btn btn-xs color1-invert" data-toggle="modal" data-target="#myModal">Tell me how</button>
+              <button type="button" class="btn btn-xs color1-invert" data-toggle="modal" [disabled]="true" data-target="#myModal">Tell me how</button>
 						</div>
 					</div>
 				</div>
-				
+
 			</div>
 			<div class="flex" *ngIf="!authenticationService.isVendor()">
 				<div class="col-sm-6 col-xs-12 block">
@@ -143,7 +143,7 @@ cursor: not-allowed;
 						<div class="flex pull-left">
               <!-- [class.disabled]="!hasContactRole || !authenticationService.user.hasCompany ? true : null" -->
               <button class="btn btn-xs color2"  *ngIf="!authenticationService.isVendor()" [routerLink]="['/home/contacts/add']" >add contacts</button>
-							<button type="button" class="btn btn-xs color2-invert" data-toggle="modal" data-target="#myModal">Tell me how</button>
+							<button type="button" class="btn btn-xs color2-invert" data-toggle="modal" [disabled]="true" data-target="#myModal">Tell me how</button>
 						</div>
 					</div>
 				</div>
@@ -161,11 +161,11 @@ cursor: not-allowed;
 						<p>{{welcome_text.templates}}</p>
 						<div class="flex pull-left">
 							<button class="btn btn-xs color4" [routerLink]="['/home/emailtemplates/select']" [class.disabled]="this.authenticationService.isOnlyPartner() || !authenticationService.user.hasCompany  ? true : null">create templates</button>
-							<button type="button" class="btn btn-xs color4-invert" data-toggle="modal" data-target="#myModal">Tell me how</button>
+							<button type="button" class="btn btn-xs color4-invert" data-toggle="modal" [disabled]="true" data-target="#myModal">Tell me how</button>
 						</div>
 					</div>
 				</div>
-				
+
       </div>
       <div class="flex">
 				<div class="col-sm-6 col-xs-12 block">
@@ -175,7 +175,7 @@ cursor: not-allowed;
 						<div class="flex pull-right">
               <button *ngIf="!authenticationService.isOnlyPartner()" class="btn btn-xs color3" [routerLink]="['/home/campaigns']">create campaigns</button>
               <button *ngIf="authenticationService.isOnlyPartner()" class="btn btn-xs color3" [routerLink]="['/home/campaigns/partner/all']">create campaigns</button>
-							<button type="button" class="btn btn-xs color3-invert" data-toggle="modal" data-target="#myModal">Tell me how</button>
+							<button type="button" class="btn btn-xs color3-invert" data-toggle="modal" [disabled]="true" data-target="#myModal">Tell me how</button>
 						</div>
 					</div>
 				</div>
@@ -193,7 +193,7 @@ cursor: not-allowed;
 						<p>{{welcome_text.socialMedia}}</p>
 						<div class="flex pull-right">
 							<button class="btn btn-xs color1" [routerLink]="['/home/social/manage/all']" [class.disabled]="!authenticationService.user.hasCompany ? true : null">connect</button>
-							<button type="button" class="btn btn-xs color1-invert" data-toggle="modal" data-target="#myModal">Tell me how</button>
+							<button type="button" class="btn btn-xs color1-invert" data-toggle="modal" [disabled]="true" data-target="#myModal">Tell me how</button>
 						</div>
 					</div>
 				</div>
@@ -208,7 +208,7 @@ cursor: not-allowed;
 						<p>{{welcome_text.analytics}}</p>
 						<div class="flex pull-left">
 							<button class="btn btn-xs color2" [routerLink]="['/home/dashboard']" [class.disabled]="!authenticationService.user.hasCompany ? true : null">analytics</button>
-							<button type="button" class="btn btn-xs color2-invert" data-toggle="modal" data-target="#myModal">Tell me how</button>
+							<button type="button" class="btn btn-xs color2-invert" data-toggle="modal" [disabled]="true" data-target="#myModal">Tell me how</button>
 						</div>
 					</div>
 				</div>
