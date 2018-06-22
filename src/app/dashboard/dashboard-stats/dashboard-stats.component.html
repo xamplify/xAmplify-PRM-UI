@@ -42,10 +42,14 @@
 				<div class="details">
           <div class="number" *ngIf="!this.authenticationService.isVendor() && !authenticationService.isAddedByVendor">{{dashboardReport.totalContacts}}</div>
           <div class="number" *ngIf="this.authenticationService.isVendor() && !authenticationService.isAddedByVendor">{{dashboardReport.totalTeamMembers}}</div>
-            <div class="number" *ngIf="authenticationService.isAddedByVendor">{{dashboardReport.totalCompanyPartnersCount}}</div>
+          <div class="number" *ngIf="authenticationService.isAddedByVendor">
+            <span *ngIf="dashboardReport.totalCompanyPartnersCount; else count">{{dashboardReport.totalCompanyPartnersCount}}</span>
+            <ng-template #count>0</ng-template>
+          </div>
 					<div class="desc" *ngIf="!this.authenticationService.isVendor() && !authenticationService.isAddedByVendor">Total Contacts</div>
 					<div class="desc" *ngIf="this.authenticationService.isVendor() && !authenticationService.isAddedByVendor">Team Members</div>
-					<div class="desc" *ngIf="authenticationService.isAddedByVendor">Total Partners</div>
+          <div class="desc" *ngIf="authenticationService.isAddedByVendor">Team Members</div>
+          <!-- Total Partners -->
         </div>
         <span  class="morePadding">
           <a class="more"> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>

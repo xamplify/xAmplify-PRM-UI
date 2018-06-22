@@ -37,8 +37,9 @@ export class DashboardStatsComponent implements OnInit {
     if (this.authenticationService.isVendor()) {
       this.router.navigate(['/home/team/add-team']);
     } else if (this.authenticationService.isAddedByVendor) {
-      this.router.navigate(['/home/partners/manage']);
-    } else {
+      // this.router.navigate(['/home/partners/manage']);
+      this.router.navigate(['/home/team/add-team']);
+    } else if(!this.authenticationService.isVendor()) {
       this.router.navigate(['/home/contacts/manage']);
     }
   }

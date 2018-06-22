@@ -299,7 +299,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                         text: null
                     },
                     min: 0,
-                    max: maxValue
+                    max: 10
                 },
                 legend: {
                     enabled: false

@@ -126,7 +126,7 @@ export class AuthenticationService {
         return roleNames;
         } catch(error){
          console.log('error'+error);
-        this.router.navigate(['./login']);
+        this.router.navigate(['/']);
       }
     }
     showRoles():string{
