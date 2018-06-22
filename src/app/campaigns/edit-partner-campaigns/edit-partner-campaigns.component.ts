@@ -506,7 +506,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
             'campaignUrls': this.urls,
             'campaignType': this.campaign.campaignType,
             'country': country,
-            'createdFromVideos': this.campaign.createdFromVideos,
+            'createdFromVideos': false,
             'nurtureCampaign':true,
             'detailedAnalyticsShared':this.campaign.detailedAnalyticsShared
         };
