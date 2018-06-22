@@ -1448,6 +1448,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
     listOfSelectedContactListByType( contactType: string ) {
         try {
+            if(contactType == undefined){
+                contactType = 'all';
+            }
             this.currentContactType = '';
             this.showAllContactData = true;
             this.showEditContactData = false;
