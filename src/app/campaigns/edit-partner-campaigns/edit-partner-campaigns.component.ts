@@ -201,9 +201,10 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
 
         this.getCampaignReplies(this.campaign);
         this.getCampaignUrls(this.campaign);
-        if(this.campaign.userListIds.length>0){
+        /*if(this.campaign.userListIds.length>0){
             this.loadContactList(this.contactListPagination);
-        }
+        }*/
+        this.loadContactList(this.contactListPagination);
         this.getAnchorLinksFromEmailTemplate(this.campaign.emailTemplate.body);
         this.selectedEmailTemplateId = this.campaign.emailTemplate.id;
         if(this.campaign.nurtureCampaign){
