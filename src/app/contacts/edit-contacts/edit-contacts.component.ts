@@ -1450,8 +1450,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
         try {
             if(contactType == undefined){
                 contactType = 'all';
-                this.contactsByType.pagination.pageIndex = 1;
-               
             }
             this.currentContactType = '';
             this.showAllContactData = true;

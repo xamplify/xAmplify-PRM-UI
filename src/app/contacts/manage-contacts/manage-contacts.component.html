@@ -441,7 +441,7 @@
 								</div>
 								<div id="pagination">
 									<!--pager here  -->
-									<app-pagination [pagination]="pagination" [type]="'contacts'"
+									<app-pagination [hidden]="httpRequestLoader.isLoading" [pagination]="pagination" [type]="'contacts'"
 
 										(notifyParent)="setPage($event)"
 										(notifyParentDropDown)="loadContactLists($event)"></app-pagination>

@@ -46,10 +46,14 @@ export class DashboardStatsComponent implements OnInit {
   navigateToPartner(){
       if(!this.authenticationService.isOnlyPartner() && this.dashboardReport.totalCompanyPartnersCount>0){
         this.router.navigate(['/home/partners/analytics']);
-      } else {
+      } else if(this.authenticationService.isOnlyPartner() && this.dashboardReport.vendorsCount>0){
         console.log('go to vendors page');
         this.router.navigate(['/home/dashboard/vendors']); // un comment for vendor page
       }
+      else {
+          console.log('go to prtner page');
+          this.router.navigate(['/home/partners/analytics']);
+        }
   }
 
   ngOnInit() {
