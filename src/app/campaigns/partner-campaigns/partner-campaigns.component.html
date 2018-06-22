@@ -63,8 +63,9 @@
 							<table class='table tgrid table-hover table-sm' *ngIf="isListView">
 								<thead>
 									<tr>
-										<th colspan="2" style="width: 50%">Campaign</th>
-										<th>Status</th>
+										<th colspan="2">Campaign</th>
+										<th>Vendor Company Name</th>
+										<th style="text-align: center">Status</th>
 										<th>Actions</th>
 									</tr>
 								</thead>
@@ -93,6 +94,10 @@
 											<h5>By <b>{{campaign.createdBy}}</b></h5>
 											<h5>From <b>{{campaign.companyName}}</b></h5>
 										</td>
+										<td>
+											{{campaign.companyName}}
+										</td>
+										
 										<td>
 											<span align="right">
 												<b>Received On</b>

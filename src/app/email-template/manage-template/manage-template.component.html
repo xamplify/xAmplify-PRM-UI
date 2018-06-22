@@ -60,6 +60,7 @@
 							<thead>
 								<tr>
 									<th colspan="2" style="width: 45%">Email Template List</th>
+									<th style="text-align: center;">Vendor Company Name</th>
 									<th style="text-align: center;">Type</th>
 									<th style="text-align: center;">Created Date</th>
 									<th style="text-align: center;">Actions</th>
@@ -85,6 +86,10 @@
 
 									<h5 class="view-banner" *ngIf="emailTemplate.type=='PARTNER'">PARTNER</h5>
 									<h5 class="view-banner" *ngIf="(emailTemplate.regularCoBrandingTemplate||emailTemplate.videoCoBrandingTemplate) &&emailTemplate.type=='UPLOADED' ">CO-BRANDED</h5>
+									</td>
+									<td style="text-align: center;">
+										<h5 style="width: auto;" *ngIf="emailTemplate.type=='PARTNER'"><b>{{emailTemplate.vendorOrganizationName}}</b></h5>
+										<h5 style="width: auto;" *ngIf="emailTemplate.type!='PARTNER'"><b>-</b></h5>
 									</td>
 									<td>
 										<h5 class="view-banner" style="width: auto;">{{emailTemplate.emailTemplateType}}</h5>
