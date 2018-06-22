@@ -255,6 +255,9 @@ export class EditCompanyProfileComponent implements OnInit {
                 .subscribe(
                     data => {
                         this.message = data.message;
+                        if(this.message==='Company Profile Info Added Successfully') {
+                          this.message = 'Company Profile saved successfully';
+                        }
                         $('#info').hide();
                         $('#edit-sucess').show(600);
                         let self = this;
@@ -363,6 +366,9 @@ export class EditCompanyProfileComponent implements OnInit {
                 .subscribe(
                     data => {
                         this.message = data.message;
+                        if(this.message ==='Company Profile Info Updated Successfully'){
+                          this.message = 'Company Profile updated successfully'
+                        }
                         $('#company-profile-error-div').hide();
                         $('#info').hide();
                         $('#edit-sucess').show(600);

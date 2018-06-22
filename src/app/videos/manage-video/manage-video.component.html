@@ -215,7 +215,7 @@
              </div>
 
            </div>
-           <div class="clearfix" *ngIf="pagination.pagedItems.length !== 0 && !referenceService.isPlayVideo">
+           <div [hidden]="httpRequestLoader.isLoading" class="clearfix" *ngIf="pagination.pagedItems.length !== 0 && !referenceService.isPlayVideo">
             <app-pagination [pagination]="pagination" [type]="'managaVideos'"
              (notifyParent)="setPage($event)" (notifyParentDropDown)="loadVideos($event)"></app-pagination>
             </div>
