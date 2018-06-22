@@ -2,5 +2,5 @@
 	src="https://lipis.github.io/flag-icon-css/flags/4x3/{{userLocation.countryCode | lowercase}}.svg"
 	width="15px">
 {{userLocation.country}}
-<h5 class="m0" *ngIf="userLocation.country!=null">{{userLocation.city}},{{userLocation.state}}</h5>
+<h5 class="m0" *ngIf="userLocation.country!=null">{{userLocation.city}}, {{userLocation.state}}</h5>
 <h5 class="m0" *ngIf="userLocation.country==null && userLocation.city==null && userLocation.state==null">{{userLocation.location}}</h5>
