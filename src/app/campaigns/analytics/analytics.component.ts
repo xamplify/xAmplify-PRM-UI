@@ -79,6 +79,16 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   mainLoader = false;
   logListName = "";
   httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
+  sortByDropDown = [
+                    { 'name': 'Sort By', 'value': '' },
+                    { 'name': 'Name(A-Z)', 'value': 'name-ASC' },
+                    { 'name': 'Name(Z-A)', 'value': 'name-DESC' },
+                    { 'name': 'Subject(ASC)', 'value': 'subject-ASC' },
+                    { 'name': 'Subject (DESC)', 'value': 'subject-DESC' },
+                    { 'name': 'Time(ASC)', 'value': 'time-ASC' },
+                    { 'name': 'Time(DESC)', 'value': 'time-DESC' }
+                ];
+  public selectedSortedOption: any = this.sortByDropDown[this.sortByDropDown.length-1];
   constructor(private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
     public authenticationService: AuthenticationService, public pagerService: PagerService, public pagination: Pagination,
     public referenceService: ReferenceService, public contactService: ContactService, public xtremandLogger:XtremandLogger) {
@@ -901,5 +911,17 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     $('#emailSentListModal').modal('hide');
     $('#donutModelPopup').modal('hide');
 
+  }
+  
+  getSortedResult(campaignId: number, actionType: string,text:any){
+      this.selectedSortedOption = text;
+      let sortedValue = this.selectedSortedOption.value;
+      if ( sortedValue != "" ) {
+          let options: string[] = sortedValue.split( "-" );
+          this.emailActionListPagination.sortcolumn = options[0];
+          this.emailActionListPagination.sortingOrder = options[1];
+      }
+      this.emailActionList(campaignId, actionType, this.emailActionListPagination);
+      
   }
 }

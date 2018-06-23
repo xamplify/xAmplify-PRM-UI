@@ -48,6 +48,8 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
         { 'name': 'Sort By', 'value': '' },
         { 'name': 'Name(A-Z)', 'value': 'name-ASC' },
         { 'name': 'Name(Z-A)', 'value': 'name-DESC' },
+        { 'name': 'Company Name(A-Z)', 'value': 'company-ASC' },
+        { 'name': 'Company Name(Z-A)', 'value': 'company-DESC' },
         { 'name': 'Created Date(ASC)', 'value': 'createdTime-ASC' },
         { 'name': 'Created Date(DESC)', 'value': 'createdTime-DESC' }
     ];
@@ -60,7 +62,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
     ]
 
     public selectedTemplate: any = this.templatesDropDown[0];
-    public selectedSortedOption: any = this.sortByDropDown[0];
+    public selectedSortedOption: any = this.sortByDropDown[this.sortByDropDown.length-1];
     public itemsSize: any = this.numberOfItemsPerPage[0];
     public message:string;
     loggedInUserId:number = 0;

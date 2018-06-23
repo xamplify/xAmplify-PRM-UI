@@ -569,6 +569,13 @@
 			<div class="modal-body">
 				<div class="row">
 					<div class="table-responsive">
+					<div *ngIf="campaignReport.emailActionType" class="inputs" align="right" style="float: right;margin-bottom: 10px;">
+						<div style="float: left;">
+							<select class="form-control" [(ngModel)]="selectedSortedOption" (ngModelChange)="getSortedResult(campaign.campaignId, 'open',$event)" style="position: relative;">
+								<option *ngFor="let sortOption of sortByDropDown" [ngValue]="sortOption">{{sortOption.name}}</option>
+							</select>
+						</div>
+					</div>
 					 <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
 						<ng-container *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError">
 						<table class="table tgrid">

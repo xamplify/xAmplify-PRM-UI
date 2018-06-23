@@ -6,6 +6,11 @@
 			<li style="color:#808080">Manage Templates
 			</li>
 		</ul>
+		<div style="float: right;">
+				<select class="form-control" [(ngModel)]="selectedSortedOption" (ngModelChange)="getSortedResult($event)" style="position: relative;right: 10px;top: 2px;">
+					<option *ngFor="let sortOption of sortByDropDown" [ngValue]="sortOption">{{sortOption.name}}</option>
+				</select>
+		</div>
 		<!-- <a class="btn btn-info" id="emailtemplate-help" [routerLink]="['/home/emailtemplates/help']">Custom Template Delivers</a> -->
 	</div>
 	<div style="position: relative;top:-10px">
