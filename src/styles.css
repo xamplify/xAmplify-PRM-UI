@@ -757,11 +757,11 @@ b, strong {
     font-weight: 600 !important;
 }
 /* prevent scrolling page in mac os */
-html {
+/* html {
   overflow: hidden;
   height: 100%;
 }
 body {
   height: 100%;
   overflow: auto;
-}
+} */
