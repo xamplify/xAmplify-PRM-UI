@@ -156,6 +156,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     videoEmailTemplateSearchInput:string = "";
     filteredEmailTemplateIds: Array<number>;
     showSelectedEmailTemplate:boolean = false;
+    hideCoBrandedEmailTemplate:boolean = false;
     /*****************Launch************************/
     isScheduleSelected:boolean = false;
     campaignLaunchForm: FormGroup;
@@ -643,7 +644,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         }else{
             this.loadContacts();
             this.setCoBrandingLogo(event);
-            console.log(this.replies);
             this.removePartnerRules();
 
         }
@@ -660,6 +660,12 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     }
     setCoBrandingLogo(event:any){
         this.campaign.enableCoBrandingLogo = event;
+        if(!this.campaign.enableCoBrandingLogo && (this.campaign.emailTemplate.regularCoBrandingTemplate || this.campaign.emailTemplate.videoCoBrandingTemplate)){
+            this.hideCoBrandedEmailTemplate = true;
+        }else{
+            this.hideCoBrandedEmailTemplate = false;
+        }
+        this.urls = [];//Removing Auto-Response WebSites
         this.selectedEmailTemplateRow = 0;
         this.isEmailTemplate = false;
         this.filterCoBrandedTemplates(event);

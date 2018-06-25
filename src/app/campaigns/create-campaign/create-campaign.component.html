@@ -841,7 +841,7 @@
 						<div class="portlet-body">
 							<div id="user_list_tb_wrapper" class="dataTables_wrapper form-inline no-footer col-xs-12">
 								<div class="mix-grid">
-									<ng-container *ngIf="showSelectedEmailTemplate">
+									<ng-container *ngIf="showSelectedEmailTemplate && !hideCoBrandedEmailTemplate">
 										<div  *ngIf="!isAdd && isCampaignDraftEmailTemplate && emailTemplatesPagination.totalRecords>0 && emailTemplatesPagination.pageIndex==1 ">
 											<div class="col-md-3 col-sm-4 mix category_1 mix_all" style="display: block; opacity: 1; margin-top: -11px;">
 												<div id="container">
@@ -894,6 +894,7 @@
 											</div>
 										</div>
 									</ng-container>
+									
 									<div *ngFor="let emailTemplate of emailTemplatesPagination.pagedItems ;let i =index" id="emailTemplateListDiv_{{emailTemplate.id}}">
 										<div class="col-md-3 col-sm-4 mix category_1 mix_all" style="display: block; opacity: 1; margin-top: -11px;" *ngIf="emailTemplateId!=emailTemplate.id">
 											<div id="container">
