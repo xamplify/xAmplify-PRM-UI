@@ -842,7 +842,7 @@
 							<div id="user_list_tb_wrapper" class="dataTables_wrapper form-inline no-footer col-xs-12">
 								<div class="mix-grid">
 									<ng-container *ngIf="showSelectedEmailTemplate">
-										<div (click)="setEmailTemplate(campaign.emailTemplate)" *ngIf="!isAdd && isCampaignDraftEmailTemplate && emailTemplatesPagination.totalRecords>0 && emailTemplatesPagination.pageIndex==1 ">
+										<div  *ngIf="!isAdd && isCampaignDraftEmailTemplate && emailTemplatesPagination.totalRecords>0 && emailTemplatesPagination.pageIndex==1 ">
 											<div class="col-md-3 col-sm-4 mix category_1 mix_all" style="display: block; opacity: 1; margin-top: -11px;">
 												<div id="container">
 													<h3 *ngIf="campaign.emailTemplate.type=='PARTNER'" style="width: 21%">

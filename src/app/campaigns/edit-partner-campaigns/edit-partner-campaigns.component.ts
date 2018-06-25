@@ -179,7 +179,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
                 this.loadCampaignNames(this.loggedInUserId);
                 this.setCampaignData(this.campaignService.reDistributeCampaign);
             }else{
-                this.router.navigate(['/home/campaigns/partner/regular']);
+                this.router.navigate(['/home/campaigns/partner/all']);
             }
         }
 
@@ -201,9 +201,6 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
 
         this.getCampaignReplies(this.campaign);
         this.getCampaignUrls(this.campaign);
-        /*if(this.campaign.userListIds.length>0){
-            this.loadContactList(this.contactListPagination);
-        }*/
         this.loadContactList(this.contactListPagination);
         this.getAnchorLinksFromEmailTemplate(this.campaign.emailTemplate.body);
         this.selectedEmailTemplateId = this.campaign.emailTemplate.id;
@@ -216,7 +213,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
         }else if(this.campaignType.includes('REGULAR')){
             this.campaignType=="REGULAR";
         }
-        if(this.campaign.scheduleTime!=null && this.campaign.scheduleTime!="null" && this.campaign.campaignScheduleType!="NOW"){
+        if(this.campaign.scheduleTime!=null && this.campaign.scheduleTime!="null" && this.campaign.campaignScheduleType!="NOW" && this.campaign.userId==this.loggedInUserId){
             this.campaign.scheduleCampaign  = this.campaignLaunchOptions[1];
         }else{
             this.campaign.scheduleCampaign  = this.campaignLaunchOptions[2];
