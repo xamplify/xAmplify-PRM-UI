@@ -84,7 +84,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
                     { 'name': 'Name(A-Z)', 'value': 'name-ASC' },
                     { 'name': 'Name(Z-A)', 'value': 'name-DESC' },
                     { 'name': 'Subject(ASC)', 'value': 'subject-ASC' },
-                    { 'name': 'Subject (DESC)', 'value': 'subject-DESC' },
+                    { 'name': 'Subject(DESC)', 'value': 'subject-DESC' },
                     { 'name': 'Time(ASC)', 'value': 'time-ASC' },
                     { 'name': 'Time(DESC)', 'value': 'time-DESC' }
                 ];
