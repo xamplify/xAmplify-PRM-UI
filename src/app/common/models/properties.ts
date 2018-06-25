@@ -59,6 +59,7 @@ export class Properties {
     PARTNERS_UPDATE_ERROR = "An error occured while updating your partner.";
 
     PARTNERS_DELETE_SUCCESS = "Your Partners have been deleted successfully.";
+    PARTNERS_LIST_DELETE_SUCCESS = 'Your Partner list has been deleted successfully.'
     PARTNERS_DELETE_ERROR = "An error occured while deleting your partner.";
 
     PARTNERS_SAVE_SUCCESS = "Your Partner(s) have been saved successfully.";
