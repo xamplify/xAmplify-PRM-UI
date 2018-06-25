@@ -75,7 +75,7 @@ export class UtilService {
             tooltipMessage = 'Last 14 days';
         } else if (event === 21) {
             tooltipMessage = 'Last 21 days';
-        } else if (event === 30) {
+        } else if (event === 30 || event.value === 30) {
             tooltipMessage = 'Current Month';
         } else if (event.includes('year')) {
             tooltipMessage = 'Current Year';

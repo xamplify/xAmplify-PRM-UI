@@ -37,7 +37,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     watchedFully: number;
     minutesWatchedUsers: number;
     dropdownValue: any;
-    sortMintuesDates = [{ 'name': 'today views', 'value': 'today' }, { 'name': 'monthly', 'value': 'month' }, { 'name': 'Quarterly', 'value': 'quarter' }, { 'name': 'yearly', 'value': 'year' }];
+    sortMintuesDates = [{ 'name': 'Today', 'value': 'today' }, { 'name': 'By Month', 'value': 'month' }, { 'name': 'By Quarter', 'value': 'quarter' }, { 'name': 'By Year', 'value': 'year' }];
     viewsMinutesData: any = [];
     daySort: any;
     minutesSort: any;
@@ -155,7 +155,8 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                         text: null
                     },
                     min: 0,
-                    max: maxValue  // findout maxmum,it is important
+                    max:10
+                  //  max: maxValue  // findout maxmum,it is important
                 },
                 legend: {
                     enabled: false

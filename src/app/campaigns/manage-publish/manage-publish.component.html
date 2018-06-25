@@ -120,7 +120,7 @@
 														<i class="fa fa-line-chart"></i>
 													</a>
 													<a *ngIf=" (campaign.campaignType !== 'SOCIAL') && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor) && !campaign.nurtureCampaign"
-													 data-rel="fancybox-button" title="Save As" class='mr5' (click)="openSaveAsModal(campaign.campaignId, campaign.campaignName)">
+													 data-rel="fancybox-button" title="Copy campaign" class='mr5' (click)="openSaveAsModal(campaign.campaignId, campaign.campaignName)">
 														<i class="fa fa-files-o"></i>
 													</a>
 												</ng-container>
@@ -195,8 +195,8 @@
 			</li>
 			<li>
 				<a *ngIf=" (campaign.campaignType !== 'SOCIAL') && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor) && !campaign.nurtureCampaign"
-					data-rel="fancybox-button" title="Save As" class='mr5' (click)="openSaveAsModal(campaign.campaignId, campaign.campaignName)">
-					<i class="fa fa-files-o"></i> Save As
+					data-rel="fancybox-button" title="Copy campaign" class='mr5' (click)="openSaveAsModal(campaign.campaignId, campaign.campaignName)">
+					<i class="fa fa-files-o"></i> Copy campaign
 				</a>
 			</li>
 		</ng-container>
@@ -267,7 +267,7 @@
 														<i class="fa fa-line-chart"></i>
 													</a>
 													<a *ngIf=" (campaign.campaignType !== 'SOCIAL') && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor) && !campaign.nurtureCampaign"
-													 data-rel="fancybox-button" title="Save As" class='mr5' (click)="openSaveAsModal(campaign.campaignId, campaign.campaignName)">
+													 data-rel="fancybox-button" title="Copy campaign" class='mr5' (click)="openSaveAsModal(campaign.campaignId, campaign.campaignName)">
 														<i class="fa fa-files-o"></i>
 													</a>
 													<!-- <a *ngIf="isOnlyPartner" data-rel="fancybox-button" (click)="openSaveAsModal(campaign.campaignId, campaign.campaignName)" title="Save As">
@@ -315,7 +315,7 @@
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h4 class="modal-title f-w-600" id="saveAsModalLabel">Save As</h4>
+				<h4 class="modal-title f-w-600" id="saveAsModalLabel">Copy campaign</h4>
 				<button type="button" class="close-circle" data-dismiss="modal" style=" position: relative;top: -24px;">
 					<i class="fa fa-times"></i>
 				</button>

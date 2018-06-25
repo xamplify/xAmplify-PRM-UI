@@ -21,7 +21,7 @@ import { CallAction } from '../../models/call-action';
 import { User } from '../../../core/models/user';
 import { DefaultVideoPlayer } from '../../models/default-video-player';
 import { EmbedModalComponent } from '../../../common/embed-modal/embed-modal.component';
-
+import { HomeComponent } from '../../../core/home/home.component';
 declare var videojs, QuickSidebar,$: any;
 
 @Component({
@@ -43,7 +43,7 @@ declare var videojs, QuickSidebar,$: any;
             ])
         ])
     ],
-    providers: [CallActionSwitch, EmbedModalComponent]
+    providers: [CallActionSwitch, EmbedModalComponent,HomeComponent]
 })
 export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     @Output() notifyParent: EventEmitter<SaveVideoFile>;
@@ -141,7 +141,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     showError:boolean;
     constructor(public referenceService: ReferenceService, public callActionSwitch: CallActionSwitch,
         public videoFileService: VideoFileService, public fb: FormBuilder, public changeDetectorRef: ChangeDetectorRef,
-        public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger,
+        public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger,private homeComponent:HomeComponent,
         public sanitizer: DomSanitizer, public videoUtilService: VideoUtilService, public embedModalComponent:EmbedModalComponent) {
         try{
         this.saveVideoFile = this.videoFileService.saveVideoFile;
@@ -149,6 +149,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.tempControllerColor = this.tempVideoFile.controllerColor;
         this.tempPlayerColor = this.tempVideoFile.playerColor;
         this.defaultPlayerValues = this.referenceService.defaultPlayerSettings;
+        this.defaultPlayerValues = null;
         this.defaultSettingValue = this.saveVideoFile.defaultSetting;
         this.enableVideoControl = this.saveVideoFile.enableVideoController;
         this.editVideoTitle = this.saveVideoFile.title;
@@ -886,7 +887,12 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
      }
     }
     ngOnInit() {
+      try{
         QuickSidebar.init();
+        if(!this.defaultPlayerValues ||!this.defaultPlayerValues.playerColor){
+         this.homeComponent.getVideoDefaultSettings();
+         this.defaultPlayerValues = this.referenceService.defaultPlayerSettings;
+        }
         console.log(this.referenceService.videoTitles);
         this.removeVideoTitlesWhiteSpaces();
         this.loadRangeDisable = true;
@@ -896,10 +902,9 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         console.log(this.saveVideoFile);
         this.saveVideoFile.categories = this.categories;
         this.settingImageGifPaths();
-        try {
-            this.buildForm();
-            this.defaultImagePaths();
-            this.defaultGifPaths();
+        this.buildForm();
+        this.defaultImagePaths();
+        this.defaultGifPaths();
         } catch (error) {
             console.log('error' + error);
         }
@@ -1136,6 +1141,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
     saveVideoObject() {
+        try{
         if(this.enableVideoLogo && (!this.logoDescriptionUrl || !this.brandLogoUrl)){
             if(!this.colorControl){ this.colorControlChange()}
             this.showError = true
@@ -1226,8 +1232,10 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                 }),
                 () => this.xtremandLogger.log(this.saveVideoFile);
         } else { if (!this.titleDiv) { this.titleDivChange(); } } }
+      }catch(error){ this.xtremandLogger.error(error);}
     }
     validVideoTitle(videoTitle: string) {
+      try{
         this.saveVideoFile.title = videoTitle;
         console.log(videoTitle.length);
         if (videoTitle.replace(/\s/g, '').length) {
@@ -1240,6 +1248,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             videoTitle = videoTitle.replace(/\s/g, '');
             this.isValidTitle = this.checkVideoTitleAvailability(this.videoTitlesValues, videoTitle.toLowerCase());
         }
+      }catch(error){this.xtremandLogger.error('error in title '+error); }
     }
     checkVideoTitleAvailability(arr, val) {
         this.xtremandLogger.log(arr.indexOf(val) > -1);

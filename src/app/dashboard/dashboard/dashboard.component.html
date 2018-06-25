@@ -636,7 +636,8 @@ td>h5 {
 					<table class="table tgrid" id="sample_editable_1">
 						<thead>
 							<tr>
-								<th class="headerCss center">NAME</th>
+                <th class="headerCss center">NAME</th>
+                <th class="headerCss center" *ngIf="paginationType == 'open'">SUBJECT</th>
 								<th class="headerCss center">CAMPAIGN NAME</th>
 								<th class="headerCss center">DATE & TIME</th>
 								<th class="headerCss center" *ngIf="paginationType != 'open'">LOCATION</th>
@@ -647,7 +648,10 @@ td>h5 {
 							<tr *ngFor="let emailClicked of pagination.pagedItems;let i = index">
 								<td>
 									<app-user-info [userInfo]="emailClicked"> </app-user-info>
-								</td>
+                </td>
+                <td class="center" *ngIf="paginationType == 'open'">
+                    <h5>{{emailClicked.subject}}</h5>
+                </td>
 								<td class="center">
 									<h5>{{emailClicked.campaignName}}</h5>
 									<h4 *ngIf="emailClicked.campaignName==null">-</h4>

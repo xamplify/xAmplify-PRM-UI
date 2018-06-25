@@ -700,7 +700,7 @@
 						<thead>
 							<tr>
 								<th style="font-size: 12px; font-weight: 500;">NAME</th>
-								<th style="font-size: 12px; font-weight: 500;">CAMPAIGN NAME</th>
+								<!-- <th style="font-size: 12px; font-weight: 500;">CAMPAIGN NAME</th> -->
 								<th style="font-size: 12px; font-weight: 500;">LOCATION</th>
 								<th style="font-size: 12px; font-weight: 500;">DATE</th>
 								<th style="font-size: 12px; font-weight: 500;">PLATFORM</th>
@@ -712,10 +712,10 @@
 								<td>
 									<app-user-info  [userInfo]="item"> </app-user-info>
 								</td>
-								<td>
+								<!-- <td>
 									<h6>{{item.campaignName}}</h6>
 									<h4 *ngIf="item.campaignName==null">-</h4>
-								</td>
+								</td> -->
 								<td>
 									<app-location  [userLocation]="item"> </app-location>
 								</td>

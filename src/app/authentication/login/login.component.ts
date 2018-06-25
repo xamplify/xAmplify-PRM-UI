@@ -75,7 +75,7 @@ export class LoginComponent implements OnInit, OnDestroy {
                   const body = error['_body'];
                   if (body !== "") {
                       const response = JSON.parse(body);
-                      if (response.error_description === "Bad credentials") {
+                      if (response.error_description === "Bad credentials" || response.error_description.includes('Username/password are wrong')) {
                           this.setCustomeResponse("ERROR", this.properties.BAD_CREDENTIAL_ERROR);
                       } else if (response.error_description === "User is disabled") {
                         this.resendActiveMail = true;

@@ -78,12 +78,13 @@
 			</div>
 		</div>
 		<div class="portlet-body clearfix" style="max-width: 100%;">
-			<table class='table tgrid' id="sample_editable_1">
+     <app-list-loader *ngIf="loading"></app-list-loader>
+			<table class='table tgrid' id="sample_editable_1" [hidden]="loading">
 				<thead>
 					<tr>
 						<th class="headerCss center">Name</th>
 						<th class="headerCss center">Title</th>
-						<th class="headerCss center">Date</th>
+						<th class="headerCss center">Date and time</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -108,7 +109,7 @@
 					</ng-container>
 				</tbody>
 			</table>
-			<app-pagination [pagination]="pagination" [type]="'reports'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
+			<app-pagination [hidden]="loading" [pagination]="pagination" [type]="'reports'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
 		</div>
 	</div>
 	<app-export-csv *ngIf="referenceService.isDownloadCsvFile" [downloadListDetails]="downloadDataList" [downloadListName]="logListName"> </app-export-csv>

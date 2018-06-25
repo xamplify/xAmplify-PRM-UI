@@ -89,6 +89,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.sortDates = this.dashboardService.sortDates;
         this.sortHeatMapValues = this.sortDates.concat([{ 'name': 'Year', 'value': 'year' }]);
         this.daySort = this.sortDates[3];
+        this.referenceService.daySortValue = this.daySort.value;
+
         this.heatMapSort = this.sortHeatMapValues[4];
         this.xtremandLogger.info('dashboard constructor');
         this.utilService.setRouterLocalStorage('dashboard');
@@ -946,7 +948,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             this.emailWatchedCount(this.loggedInUserId);
             this.getCountriesTotalViewsData();
             this.getCampaignsHeatMapData();
-            this.getVideoStatesSparklineChartsInfo(7);
+            this.getVideoStatesSparklineChartsInfo(30);
 
             Metronic.init();
             Layout.init();

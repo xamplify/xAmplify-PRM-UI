@@ -39,6 +39,7 @@ export class ReportsComponent implements OnInit {
   daySort: any;
   heatMapTooltip = 'Last 7 Days';
   logListName = "";
+  loading = false;
 
   constructor(public referenceService: ReferenceService, public router: Router, public dashboardService: DashboardService,
     public pagerService: PagerService, public pagination: Pagination, public utilService:UtilService) {
@@ -142,13 +143,16 @@ export class ReportsComponent implements OnInit {
       this.videoViewsLevelFirst = null;
       this.dashboardService.getVideoViewsLevelOneReports(this.daysCount, dateCountValue).subscribe(
         (result: any) => {
+         // this.loading =true;
           this.videoViewsLevelFirst = result;
           console.log(this.videoViewsLevelFirst);
           if (this.videoViewsLevelFirst.length === 0) {
             this.videoViewsLevelSecond.length = 0;
+          //  this.loading =false;
           }
           if (this.isReport && this.videoViewsLevelFirst.length > 0) {
             this.pagination.pageIndex = 1;
+         ///   this.loading = false;
             this.getVideoViewsLevelTwo(this.daysCount, result[0].selectedDate, result[0].videoId, this.pagination);
             this.isReport = false;
           }
