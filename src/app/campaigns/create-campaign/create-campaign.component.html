@@ -147,11 +147,11 @@
 																 (statusChange)="setChannelCampaign($event)" >
 																</switch>
 															</div>
-															<div class="col-sm-11" style="padding: 0;">
-															<label  *ngIf="!campaign.channelCampaign" style="margin-top: 10px;margin-left: 75px;" title="{{properties.TO_PARTNER_MESSAGE}}"><b>To Partner</b></label>
-															<label  *ngIf="campaign.channelCampaign" style="margin-top: 10px;margin-left: 75px;;" title="{{properties.TO_PARTNER_MESSAGE}}">To Partner</label>
+															<div class="col-sm-11" style="padding: 0; margin-left: 100px;margin-top: -32px">
+															<label  *ngIf="!campaign.channelCampaign" title="{{properties.TO_PARTNER_MESSAGE}}"><b>To Partner</b></label>
+															<label  *ngIf="campaign.channelCampaign" title="{{properties.TO_PARTNER_MESSAGE}}">To Partner</label>
 															<span style="cursor: pointer;color: #54a7e9;" title="{{properties.TO_PARTNER_MESSAGE}}&#013;{{properties.THROUGH_PARTNER_MESSAGE}}">
-																	<i class="fa fa-question-circle" style="font-size: 20px;float: left;margin: -8px 0 0 15px;"></i>
+																	<i class="fa fa-question-circle" style="font-size: 20px;float: left;margin: -18px 0 0 15px;"></i>
 															</span>
 															</div>
 														</div>
@@ -230,8 +230,8 @@
 																 (statusChange)="setEmailOpened($event)">
 																</switch>
 															</div>
-															<div class="col-sm-11" style="padding: 0;">
-																<label style="margin-top: 10px;margin-left: 75px;">Email is opened</label>
+															<div class="col-sm-11" style="padding: 0; margin-left: 100px;margin-top: -32px">
+																<label>Email is opened</label>
 															</div>
 														</div>
 														<div class="email-options-checkbox clearfix" *ngIf="campaignType=='video'">
@@ -242,8 +242,8 @@
 																</switch>
 																<!-- <ui-switch color="green" size="medium" [(ngModel)]="campaign.videoPlayed" name="videoPlayed"  (change)=setVideoPlayed($event)></ui-switch> -->
 															</div>
-															<div class="col-sm-11" style="padding: 0;">
-																<label style="margin-top: 10px;margin-left: 75px;">Video is played</label>
+															<div class="col-sm-11" style="padding: 0; margin-left: 100px;margin-top: -32px">
+																<label>Video is played</label>
 															</div>
 														</div>
 													</div>
