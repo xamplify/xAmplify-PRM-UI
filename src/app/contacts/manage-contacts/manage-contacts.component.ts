@@ -49,6 +49,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
     selectedContactListId: number;
     selectedContactListName: string;
     isDefaultPartnerList: boolean;
+    isSynchronizationList: boolean;
     uploadedUserId: number;
     showAll: boolean;
     showEdit: boolean;
@@ -545,11 +546,12 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
         }
     }
 
-    editContactList( contactSelectedListId: number, contactListName: string, uploadUserId: number, isDefaultPartnerList: boolean ) {
+    editContactList( contactSelectedListId: number, contactListName: string, uploadUserId: number, isDefaultPartnerList: boolean, isSynchronizationList: boolean ) {
         this.uploadedUserId = uploadUserId;
         this.selectedContactListId = contactSelectedListId;
         this.selectedContactListName = contactListName;
         this.isDefaultPartnerList = isDefaultPartnerList;
+        this.isSynchronizationList = isSynchronizationList
         this.showAll = false;
         this.showEdit = true;
         $( "#pagination" ).hide();

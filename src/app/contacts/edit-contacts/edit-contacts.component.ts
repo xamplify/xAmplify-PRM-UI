@@ -40,6 +40,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     @Input() selectedContactListId: number;
     @Input() uploadedUserId: number;
     @Input() isDefaultPartnerList: boolean;
+    @Input() isSynchronizationList: boolean;
     @Input( 'value' ) value: number;
     editContacts: User;
     @Output() notifyParent: EventEmitter<User>;
@@ -428,7 +429,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                             this.loading = false;
                             this.allUsers = this.contactsByType.allContactsCount;
                             this.xtremandLogger.info( "update Contacts ListUsers:" + data );
-                            this.manageContact.editContactList( this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList );
+                            this.manageContact.editContactList( this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isSynchronizationList );
                             $( "tr.new_row" ).each( function() {
                                 $( this ).remove();
                             });
@@ -554,7 +555,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                                     this.loading = false;
                                     this.selectedAddContactsOption = 8;
                                     this.xtremandLogger.info( "update Contacts ListUsers:" + data );
-                                    this.manageContact.editContactList( this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList );
+                                    this.manageContact.editContactList( this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isSynchronizationList );
                                     $( "tr.new_row" ).each( function() {
                                         $( this ).remove();
                                     });
@@ -983,7 +984,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                                 this.loading = false;
                                 this.selectedAddContactsOption = 8;
                                 this.xtremandLogger.info( "update Contacts ListUsers:" + data );
-                                this.manageContact.editContactList( this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList );
+                                this.manageContact.editContactList( this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isSynchronizationList );
                                 $( "tr.new_row" ).each( function() {
                                     $( this ).remove();
 

@@ -231,18 +231,22 @@
 													<td>
 														<div class="actions-block">
 															<a
-																*ngIf="hasAllAccess || authenticationService.module.isVendor || (hasContactRole && loggedInUserId == contactList.uploadedUserId) || authenticationService.isOnlyPartner()"
-																(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList)"
+																*ngIf="(hasAllAccess || authenticationService.module.isVendor || (hasContactRole && loggedInUserId == contactList.uploadedUserId) || authenticationService.isOnlyPartner()) && !contactList.synchronisedList"
+																(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.synchronisedList)"
 																title="Edit List"> <i class="fa fa-pencil-square-o"></i>
-															</a> <a title="Copy and save as a new list"
-																(click)="saveAsNewList(contactList.id,contactList.name)">
-																<i class="fa fa-files-o"></i>
-															</a> <a
-																*ngIf="!hasAllAccess && loggedInUserId != contactList.uploadedUserId && !authenticationService.module.isVendor"
-																(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList)"
+															</a> 
+															
+															<a *ngIf="!hasAllAccess && loggedInUserId != contactList.uploadedUserId && !authenticationService.module.isVendor || contactList.synchronisedList"
+																(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.synchronisedList)"
 																title="ContactList Info"> <i
 																class="glyphicon glyphicon-info-sign"></i>
-															</a> <a (click)="downloadContactList(contactList.id, contactList.name)"
+															</a>
+															
+															<a title="Copy and save as a new list"
+																(click)="saveAsNewList(contactList.id,contactList.name)">
+																<i class="fa fa-files-o"></i>
+															</a> 
+															 <a (click)="downloadContactList(contactList.id, contactList.name)"
 																title="Download List" data-rel="fancybox-button"> <i
 																class="fa fa-cloud-download"></i>
 															</a>
@@ -293,13 +297,13 @@
 											<h6 class="mt10 mb0">Created date {{contactList.createdDate}}</h6>
 											<div class="bar">
 											 <a [class.disabled]="!contactList.emailValidationInd"
-															*ngIf="hasAllAccess || authenticationService.module.isVendor || (hasContactRole && loggedInUserId == contactList.uploadedUserId) || authenticationService.isOnlyPartner()"
+															*ngIf="(hasAllAccess || authenticationService.module.isVendor || (hasContactRole && loggedInUserId == contactList.uploadedUserId) || authenticationService.isOnlyPartner()) && !contactList.synchronisedList"
 															(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList)"
 															title="Edit List" data-rel="fancybox-button"> <i
 															class="fa fa-pencil-square-o"></i>
 														</a> <a
 															[class.disabled]="!contactList.emailValidationInd"
-															*ngIf="!hasAllAccess && loggedInUserId != contactList.uploadedUserId && !authenticationService.module.isVendor"
+															*ngIf="(!hasAllAccess && loggedInUserId != contactList.uploadedUserId && !authenticationService.module.isVendor) || contactList.synchronisedList"
 															(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList)"
 															title="ContactList Info" data-rel="fancybox-button">
 															<i class="glyphicon glyphicon-info-sign"></i>
@@ -459,7 +463,7 @@
 			[uploadedUserId]="uploadedUserId"
 			[contactListId]="selectedContactListId"
 			[contactListName]="selectedContactListName"
-			[isDefaultPartnerList]="isDefaultPartnerList"></app-edit-contacts>
+			[isDefaultPartnerList]="isDefaultPartnerList" [isSynchronizationList]="isSynchronizationList"></app-edit-contacts>
 	</div>
 
 	<div *ngIf="! showListOfContactList">

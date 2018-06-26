@@ -223,7 +223,7 @@
 										*ngIf="hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId) || authenticationService.isOnlyPartner() || authenticationService.isVendorPartner() || authenticationService.isVendor()">
 										<div class="clearfix">
 											<div class="col-sm-8">
-												<div class="btn-group">
+												<div class="btn-group" *ngIf="!isSynchronizationList">
 													<button id="add_contact" class="btn green"
 														(click)="addContactModalOpen()"
 														[disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 9">
@@ -232,7 +232,7 @@
 														<i class="fa fa-plus" style="font-size: 12px; margin-left: 5px;"></i>
 													</button>
 												</div>
-												<div class="btn-group">
+												<div class="btn-group" *ngIf="!isSynchronizationList">
 													<button id="copyFrom_clipboard" class="btn green"
 														[disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 2 || selectedAddContactsOption == 9"
 														(click)="addContactsOption(AddContactsOption.COPYFROMCLIPBOARD);">
@@ -241,7 +241,7 @@
 															style="font-size: 12px; margin-left: 5px;"></i>
 													</button>
 												</div>
-												<div class="btn-group">
+												<div class="btn-group" *ngIf="!isSynchronizationList">
 													<div class="fileUpload btn btn-primary" id="upload_csv"
 														[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 9"
 														style="background-color: #26a69a !important">
@@ -256,7 +256,7 @@
 											</div>
 											<div class="col-sm-4" style="top: 9px">
 												<div>
-													<div>
+													<div *ngIf="!isSynchronizationList">
 														<button id="cancel_button"[disabled]="selectedAddContactsOption == 8 && !clickBoard" class="btn pull-right"
 															(click)="cancelContacts()" style="margin-left: 5px;">
 															Cancel<i class="fa fa-cancel"></i>
@@ -277,7 +277,7 @@
 																*ngIf="selectedAddContactsOption == 8"
 																(click)="downloadList()">Export To Excel</a></li>
 															<li><a id="delete_button"
-																*ngIf="selectedAddContactsOption == 8 || selectedAddContactsOption == 9 && selectedContactListIds?.length != 0"
+																*ngIf="(selectedAddContactsOption == 8 || selectedAddContactsOption == 9 && selectedContactListIds?.length != 0) && !isSynchronizationList"
 																(click)="showAlert(selectedContactListId)"> Delete</a></li>
 														</ul>
 													</div>
@@ -480,7 +480,7 @@
 															<th>JOB TITLE</th>
 															<th class='text-center'>ADDRESS</th>
 															<!-- <th class='text-center'>MORE</th> -->
-															<th class='text-center' *ngIf="hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId) || authenticationService.isOnlyPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()">ACTIONS</th>
+															<th class='text-center' *ngIf="(hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId) || authenticationService.isOnlyPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()) && !isSynchronizationList">ACTIONS</th>
 														</tr>
 													</thead>
 													<tbody>
@@ -583,7 +583,7 @@
 																		*ngIf="contact.isShowDetails">Less</span>
 																</button>
 															</td> -->
-															<td align="center" *ngIf="hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId) || authenticationService.isOnlyPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()">
+															<td align="center" *ngIf="(hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId) || authenticationService.isOnlyPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()) && !isSynchronizationList">
 															<div class="actions-block">
 															  	<a (click)="editUserDetails(contact)">
 																  	<i class="fa fa-pencil-square-o"></i>
