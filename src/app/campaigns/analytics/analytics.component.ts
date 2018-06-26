@@ -358,7 +358,10 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       this.loading = true;
       this.campaignService.campaignWatchedUsersListCount(campaignId)
       .subscribe(
-      data => {this.userWatchtotalRecords = data;this.loading = false;},
+      data => {
+          this.userWatchtotalRecords = data;
+          this.loading = false;   
+      },
       error => console.log(error),
       () => console.log()
       )
@@ -374,7 +377,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     this.campaignService.usersWatchList(campaignId, pagination)
       .subscribe(
       data => {
-        this.usersWatchListPagination.totalRecords = this.userWatchtotalRecords;
+        this.usersWatchListPagination.totalRecords = this.campaignReport.usersWatchCount;
         this.campaignReport.usersWatchList = data.data;
         $('#usersWatchListModal').modal();
         this.usersWatchListPagination = this.pagerService.getPagedItems(this.usersWatchListPagination, this.campaignReport.usersWatchList);
