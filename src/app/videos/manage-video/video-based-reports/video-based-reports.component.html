@@ -66,7 +66,7 @@
 		<div style="background: white;box-shadow: none;margin-top: 14px;">
 			<table class="table-new" style="width: 100%;" height=120>
 				<tr>
-					<th class="td-new-n" rowspan="2">ANONYMOUS VIEWERS <br>
+					<th class="td-new-n" rowspan="2">ANONYMOUS VIEWERS
             <!-- <span>(Views from indirect sources <br>such as social campaigns and <br>embedded videos)</span> -->
             <span style="position: relative;cursor: pointer;color: #54a7e9;" title="Views from indirect sources such as social campaigns and embedded videos">
               <i class="fa fa-question-circle circle-custome-css" ></i>
@@ -221,7 +221,7 @@
 							<thead>
 								<tr>
 									<th class="center text-uppercase headerCss">NAME</th>
-									<th class="center text-uppercase headerCss">video Title</th>
+									<!-- <th class="center text-uppercase headerCss">video Title</th> -->
 									<th class="center text-uppercase headerCss">data and time</th>
 									<th class="center text-uppercase headerCss">minutes watched</th>
 									<th class="center text-uppercase headerCss">device</th>
@@ -233,8 +233,8 @@
 									<td>
 										<app-user-info  [userInfo]="item"> </app-user-info>
 									</td>
-									<td class="center">{{item.videoTitle}}</td>
-									<td class="center">{{item.date }}</td>
+									<!-- <td class="center">{{item.videoTitle}}</td> -->
+									<td class="center">{{item.date |date:'MM/dd/yyyy @ h:mma' }}</td>
 									<td class="center">{{item.minutesWatched }}</td>
 									<td class="center">
 									<app-platform [userPlatform]="item"> </app-platform>
@@ -365,7 +365,7 @@
 									<app-user-info  [userInfo]="item"> </app-user-info>
 								</td>
 								<td class="center">{{item.minutesWatched }}</td>
-								<td class="center">{{item.date }}</td>
+								<td class="center">{{item.date |date:'MM/dd/yyyy @ h:mma' }}</td>
 								<td class="center">
 								<app-platform [userPlatform]="item"> </app-platform>
 								</td>
