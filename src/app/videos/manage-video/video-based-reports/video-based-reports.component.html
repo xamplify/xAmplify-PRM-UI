@@ -420,7 +420,7 @@
 									</td>
 									<!--|date:'MM/dd/yyyy @ h:mma'  -->
 									<td class="center">
-										<h5>{{item.date }}</h5>
+										<h5>{{item.date |date:'MM/dd/yyyy @ h:mma'}}</h5>
 									</td>
 									<td class="center">
 									<app-platform [userPlatform]="item"> </app-platform>
@@ -459,7 +459,7 @@
 									</td>
 									<!--|date:'MM/dd/yyyy @ h:mma'  -->
 									<td class="center">
-										<h5>{{item.date }}</h5>
+										<h5>{{item.date |date:'MM/dd/yyyy @ h:mma' }}</h5>
 									</td>
 									<td class="center">
 									<app-platform [userPlatform]="item"> </app-platform>
