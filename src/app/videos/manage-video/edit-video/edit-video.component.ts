@@ -149,7 +149,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.tempControllerColor = this.tempVideoFile.controllerColor;
         this.tempPlayerColor = this.tempVideoFile.playerColor;
         this.defaultPlayerValues = this.referenceService.defaultPlayerSettings;
-        this.defaultPlayerValues = null;
         this.defaultSettingValue = this.saveVideoFile.defaultSetting;
         this.enableVideoControl = this.saveVideoFile.enableVideoController;
         this.editVideoTitle = this.saveVideoFile.title;
