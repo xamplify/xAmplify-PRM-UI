@@ -88,3 +88,10 @@ text-align: center;
     background: transparent;
     z-index: 99;
 }
+.circle-custom-css{
+  font-size: 20px;
+  float: right;
+  position: relative;
+  top: 4px;
+  right: -3px
+}
