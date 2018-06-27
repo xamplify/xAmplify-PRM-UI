@@ -47,10 +47,10 @@
     </div>
     <div class="collapse navbar-collapse" id="bs-navbar-collapse-1">
       <ul class="nav navbar-nav nav-left">
-        <li><a href="#features" lang="en">Features</a></li>
-        <li><a href="#preview" lang="en">Tour</a></li>
-        <li><a href="#pricing" lang="en">Pricing</a></li>
-        <li><a href="#contact" lang="en">Contact</a></li>
+        <li><a (click)="goToFeaturesTab()" lang="en">Features</a></li>
+        <li><a (click)="goToTourTab()" lang="en">Tour</a></li>
+        <li><a (click)="goToPricingTab()" lang="en">Pricing</a></li>
+        <li><a (click)="goToContactTab()" lang="en">Contact</a></li>
         <li><a [routerLink]="['./terms-conditions']" lang="en">Terms & conditions</a></li>
         <li><a [routerLink]="['./privacy-policy']" lang="en">Privacy policy</a></li>
       </ul>
@@ -84,7 +84,7 @@
 
 </header>
 
-<section class="benefits section-spacing text-center" id="features">
+<section class="benefits section-spacing text-center" #features id="features">
   <div class="container">
     <header class="section-header">
       <h2 lang="en">#SquadGoals</h2>
@@ -194,7 +194,7 @@
 
 <!--Tour-->
 
-<section class="tour section-spacing text-center">
+<section class="tour section-spacing text-center" #tour id="tour">
   <div class="container">
     <div class="row">
       <div class="col-md-8 center-block">
@@ -210,7 +210,7 @@
 
 <!--Pricing-->
 
-<section class="pricing section-spacing text-center hidden" id="pricing">
+<section class="pricing section-spacing text-center hidden" #pricing id="pricing">
   <div class="container">
     <header class="section-header">
       <h2 lang="en">We Provide Flexible Plans</h2>
@@ -319,7 +319,7 @@
 
 <!--contact us-->
 
-<section class="contact section-spacing text-center" id="contact">
+<section class="contact section-spacing text-center" #contact id="contact">
   <div class="container">
     <header class="section-header">
       <h2 lang="en">Contact Us</h2>
