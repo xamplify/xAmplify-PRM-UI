@@ -503,7 +503,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     try{
     this.loading = true;
      this.listEmailLogsByCampaignAndUser(campaignViews.campaignId, campaignViews.userId);
-    this.getTotalTimeSpentOfCampaigns(campaignViews.userId);
+    this.getTotalTimeSpentOfCampaigns(campaignViews.userId, campaignViews.campaignId);
     this.selectedRow = campaignViews;
     this.isTimeLineView = !this.isTimeLineView;
     if (!this.barChartCliked) {
@@ -518,10 +518,10 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     }
   }catch(error){ this.xtremandLogger.error(error);}
   }
-  getTotalTimeSpentOfCampaigns(userId: number) {
+  getTotalTimeSpentOfCampaigns(userId: number, campaignId:number) {
     try{
       this.loading = true;
-      this.campaignService.getTotalTimeSpentofCamapaigns(userId)
+      this.campaignService.getTotalTimeSpentofCamapaigns(userId, campaignId)
       .subscribe(data => {
         console.log(data);
         this.totalTimeSpent = data;   // data is coming as empty object ,, need to handle it
