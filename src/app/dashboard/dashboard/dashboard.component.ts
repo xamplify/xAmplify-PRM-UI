@@ -927,9 +927,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
             this.xtremandLogger.error('error in world map dashboard ' + error);
         }
     }
-    showCampaignDetails(id){
-     this.loading = true;
-      this.router.navigate(['/home/campaigns/'+id+'/details']);
+    showCampaignDetails(campaign:any){
+      this.loading = true;
+      this.referenceService.campaignType = campaign[7];
+      this.router.navigate(['/home/campaigns/'+campaign[0]+'/details']);
     }
     isFullscreenHeatMap() {
         this.isFullscreenToggle = !this.isFullscreenToggle;

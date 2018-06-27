@@ -17,8 +17,12 @@
 		<li *ngIf="campaignRouter==='managecampaigns'"><a  [routerLink]="['/home/campaigns/manage']">Manage Campaigns</a><i class="fa fa-angle-right"></i></li>
     <li *ngIf="campaignRouter==='notification'"><a [routerLink]="['/home/dashboard/notifications']">Notifications</a><i class="fa fa-angle-right"></i></li>
     <li *ngIf="campaignRouter==='partnerAnalytics'"><a [routerLink]="['/home/partners/analytics']">Partner Analytics</a><i class="fa fa-angle-right"></i></li>
-    <li style="color: #888;" *ngIf="isPartnerEnabledAnalyticsAccess">{{campaign.campaignName}} <b  *ngIf="isNavigatedThroughAnalytics" style="color:#0195da">(Data Sharing Enabled)</b></li>
-    <li style="color: #888;" *ngIf="!isPartnerEnabledAnalyticsAccess">{{campaign.campaignName}} <b *ngIf="isNavigatedThroughAnalytics" style="color:#ed1d24">(Data Sharing Disabled)</b></li>
+    <li style="color: #888;" *ngIf="isPartnerEnabledAnalyticsAccess" title="{{campaign.campaignName}}">
+      {{campaign.campaignName | slice: 0: 35}}<span *ngIf="campaign.campaignName?.length>35">...</span>
+      <b *ngIf="isNavigatedThroughAnalytics" style="color:#0195da">(Data Sharing Enabled)</b></li>
+    <li style="color: #888;" *ngIf="!isPartnerEnabledAnalyticsAccess" title="{{campaign.campaignName}}">
+      {{campaign.campaignName | slice: 0: 35}}<span *ngIf="campaign.campaignName?.length>35">...</span>
+      <b *ngIf="isNavigatedThroughAnalytics" style="color:#ed1d24">(Data Sharing Disabled)</b></li>
 	</ul>
 <!--<app-analytics-loader [campaignType]="campaignType" *ngIf="loading"></app-analytics-loader>-->
 </div>
