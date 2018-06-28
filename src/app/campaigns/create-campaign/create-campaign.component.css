@@ -991,6 +991,10 @@ h3 {
     /* width: 50%; */
 }
 
+.center{
+  text-align: center;
+}
+
 .icon-border{border: 1px solid #00a6e8; border-radius: 50%; display:block !important; width: 42px; height: 42px; margin:0 auto; position:relative;}
 .icon-position{color: #00a6e8; position:absolute; padding-top:3px !important; font-size:1.75em !important; top:12px; left:8px}
 .border0{border:none !important;} padding0{padding:0 !important;}
