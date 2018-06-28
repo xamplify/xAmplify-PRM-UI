@@ -152,12 +152,12 @@
 
 								</div>
 								<div class="bar">
-									<a (click)="showPreview(emailTemplate)" title="Preview">
-										<i class="fa fa-eye"></i>
-									</a>
-									<a  (click)="edit(emailTemplate.id)" title="Edit"
+                  <a  (click)="edit(emailTemplate.id)" title="Edit"
 										*ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  || authenticationService.module.isVendor) && emailTemplate.type!='PARTNER'">
 										<i class="fa fa-pencil-square-o"></i>
+									</a>
+									<a (click)="showPreview(emailTemplate)" title="Preview">
+										<i class="fa fa-eye"></i>
 									</a>
 									<a (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)" title="Delete"
 										*ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)||authenticationService.module.isVendor) && emailTemplate.type!='PARTNER' ">
