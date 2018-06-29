@@ -216,7 +216,7 @@ td>h5 {
 								<section class="percentage-circle">
 									<svg width="120" height="120" viewBox="0 0 120 120" style="transform: rotate(-90deg)">
 										<circle cx="60" cy="60" r="54" fill="none" stroke="#e6e6e6" stroke-width="5" />
-										<circle cx="60" cy="60" r="54" fill="none" stroke="#54a7e9" stroke-width="5" stroke-dasharray="339.292006588" [ngStyle]="{'stroke-dashoffset': 339.292 * (1 - campaign[4]/campaign[5])}"
+										<circle cx="60" cy="60" r="54" fill="none" stroke="#54a7e9" stroke-width="5" stroke-dasharray="339.292006588" [ngStyle]="{'stroke-dashoffset': campaign[5] === 0 ? 339.292006588 : 339.292 * (1 - campaign[4]/campaign[5])}"
 										/>
 									</svg>
 									<h2 class="percentage-value">{{campaign[6]}}%</h2>
