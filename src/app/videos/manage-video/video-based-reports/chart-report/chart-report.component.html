@@ -37,7 +37,10 @@
 					</thead>
 					<tbody>
 						<tr>
-							<td class="center">{{videoTitle}}</td>
+							<td class="center">
+                {{videoTitle | slice:0:30}}
+                <span *ngIf="videoTitle?.length>30">...</span>
+              </td>
 							<td class="center">{{views}}</td>
 							<td class="center">{{date}}</td>
 						</tr>

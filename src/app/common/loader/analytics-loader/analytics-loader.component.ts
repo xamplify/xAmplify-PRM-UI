@@ -9,13 +9,13 @@ import { ReferenceService } from '../../../core/services/reference.service';
 })
 export class AnalyticsLoaderComponent implements OnInit {
   campaignType:any;
+  rowsCount = [0, 1, 2, 3];
+  textLoader = [0,1,2];
   constructor(private referenceService:ReferenceService) {
   }
 
   ngOnInit() {
-    if( this.referenceService.campaignType === 'REGULAR'){
-      this.campaignType = 'REGULAR';
-    } else { this.campaignType = 'VIDEO';}
+    this.campaignType = this.referenceService.campaignType;
   }
 
 }

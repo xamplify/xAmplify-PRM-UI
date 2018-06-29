@@ -301,7 +301,9 @@
 									<td>
 										<app-user-info  [userInfo]="item"> </app-user-info>
 									</td>
-									<td class="center">{{item.campaignName}}
+									<td class="center" title="{{item.campaignName}}">
+                    {{item.campaignName | slice:0:30}}
+                    <span *ngIf="item.campaignName?.length>30">...</span>
 									<h4 *ngIf="item.campaignName==null">-</h4>
 									</td>
 									<td class="center">{{item.time |date:'MM/dd/yyyy @ h:mma' }}</td>
@@ -513,7 +515,10 @@
 									<app-user-info  [userInfo]="item"> </app-user-info>
 								</td>
 								<td class="center">
-									<h5>{{item.campaignName}}</h5>
+									<h5>
+                    {{item.campaignName | slice:0:30}}
+                    <span *ngIf="item.campaignName?.length>30">...</span>
+                  </h5>
 									<h4 *ngIf="item.campaignName==null">-</h4>
 								</td>
 								<!-- |date:'MM/dd/yyyy @ h:mma' -->
