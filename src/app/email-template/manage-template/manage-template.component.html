@@ -30,7 +30,7 @@
 								<li class="filter" (click)="filterTemplates('BASIC',true,3)" [class.emailtemplate-selected]="3 == selectedTemplateTypeIndex">Basic Video</li>
 								<li class="filter" (click)="filterTemplates('RICH',true,4)" [class.emailtemplate-selected]="4 == selectedTemplateTypeIndex">Rich Video</li>
 								<li class="filter" (click)="filterTemplates('UPLOADED',false,5)"[class.emailtemplate-selected]="5 == selectedTemplateTypeIndex">Uploaded</li>
-								<li class="filter" (click)="filterTemplates('PARTNER',false,6)"[class.emailtemplate-selected]="6 == selectedTemplateTypeIndex">Partner</li>
+								<li *ngIf="isVendorAndPartner" class="filter" (click)="filterTemplates('PARTNER',false,6)"[class.emailtemplate-selected]="6 == selectedTemplateTypeIndex">Partner</li>
 								<li class="filter" (click)="filterTemplates('REGULAR_CO_BRANDING',false,7)"[class.emailtemplate-selected]="7 == selectedTemplateTypeIndex">Email Co-Branding</li>
 								<li class="filter" (click)="filterTemplates('VIDEO_CO_BRANDING',false,8)"[class.emailtemplate-selected]="8 == selectedTemplateTypeIndex">Video Co-Branding</li>
 								<li class="filter" style="display: none;">Own Template</li>
