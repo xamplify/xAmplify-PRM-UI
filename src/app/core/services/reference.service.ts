@@ -73,7 +73,7 @@ export class ReferenceService {
     campaignType: any;
     public URL: string = this.authenticationService.REST_URL + 'admin/';
     constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,
-        private router: Router, public deviceService: Ng2DeviceService,) {
+        private router: Router, public deviceService: Ng2DeviceService) {
         console.log('reference service constructor');
     }
     getBrowserInfoForNativeSet(){

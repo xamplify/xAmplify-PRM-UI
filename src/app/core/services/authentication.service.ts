@@ -36,6 +36,7 @@ export class AuthenticationService {
     module:Module = new Module();
     roleName: Roles= new Roles();
     isAddedByVendor = false;
+    isPartnerToo:boolean  = false;
     constructor(private http: Http, private router: Router, private utilService: UtilService) {
         this.SERVER_URL = SERVER_URL;
         this.APP_URL = CLIENT_URL;
@@ -87,6 +88,14 @@ export class AuthenticationService {
                     this.refresh_token = this.map.refresh_token;
                     this.user = res.json();
                     this.userProfile = res.json();
+                    let roles = this.showRoles();
+                    if(roles=="Vendor & Partner" || roles=="Orgadmin & Partner"){
+                       this.isPartnerToo = true;
+                    }else{
+                        this.isPartnerToo = false;
+                    }
+                    
+                
                 }));
     }
     getUserByUserName(userName: string) {
@@ -258,6 +267,7 @@ export class AuthenticationService {
         module.hasSocialStatusRole = false;
         module.isVendor = false;
         this.isAddedByVendor = false;
+        this.isPartnerToo = false;
         swal.close();
     }
 
@@ -268,4 +278,5 @@ export class AuthenticationService {
         }
       }catch(err){ console.log('error'+err);}
     }
+    
 }

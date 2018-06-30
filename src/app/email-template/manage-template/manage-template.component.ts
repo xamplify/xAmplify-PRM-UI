@@ -36,7 +36,6 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
     selectedEmailTemplateName:string = "";
     selectedTemplateTypeIndex:number = 0;
     isOnlyPartner:boolean = false;
-    isVendorAndPartner:boolean = false;
     templatesDropDown = [
         { 'name': 'All Email Templates', 'value': '' },
         { 'name': 'Uploaded Regular Templates', 'value': 'regularTemplate' },
@@ -70,15 +69,10 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
     httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
     customResponse: CustomResponse = new CustomResponse();
     isListView: boolean = false;
-
     constructor( private emailTemplateService: EmailTemplateService, private userService: UserService, private router: Router,
         private pagerService: PagerService, public refService: ReferenceService,
         public pagination: Pagination,public authenticationService:AuthenticationService,private logger:XtremandLogger) {
         this.loggedInUserId = this.authenticationService.getUserId();
-        let roles = this.authenticationService.showRoles();
-        if(roles=="Vendor & Partner" || roles=="Orgadmin & Partner"){
-            this.isVendorAndPartner = true;
-        }
         if(refService.isCreated){
            this.message = "Template created successfully";
            this.showMessageOnTop(this.message);
