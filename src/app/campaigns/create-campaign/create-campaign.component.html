@@ -306,7 +306,7 @@
 									<div id="home" class="tab-pane fade in active">
 										<div class="tab" *ngIf="!campaign.createdFromVideos">
 											<button [class]="myVideosClass" (click)="showTab($event,'my-videos')" id="my-videos-tab" *ngIf="!isOnlyPartner">My Videos</button>
-											<button [class]="partnerVideosClass" (click)="showTab($event,'channel-videos')" id="partner-videos-tab">Partner Videos</button>
+											<button *ngIf="authenticationService.isPartnerToo" [class]="partnerVideosClass" (click)="showTab($event,'channel-videos')" id="partner-videos-tab">Partner Videos</button>
 											<ng-container *ngIf="!campaign.createdFromVideos">
 												<div class="input-icon right pull-right m10" *ngIf="isMyVideosActive">
 													<i class="icon-magnifier" (click)="searchVideo()" style="cursor: pointer;"></i>
