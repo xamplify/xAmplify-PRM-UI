@@ -26,6 +26,15 @@ describe("Login Test ", () => {
       expect(loginPage.getMessageText()).toBe("Username or password can't be empty.");
     });
 
+    it("should not be able to login  - entered username or password is incorrect", () => {
+      loginPage.getUserNameTF().clear();
+      loginPage.getPasswordTF().clear();
+      loginPage.getUserNameTF().sendKeys("ksathish@stratapps.com");
+      loginPage.getPasswordTF().sendKeys("kashdgkaagsdg");
+      loginPage.getLoginButton().click();
+      expect(loginPage.getMessageText()).toBe("Username or password is incorrect.");
+    });
+
     it('should be able to test forgotpassword ', () => {
       browser.waitForAngularEnabled(false);
       loginPage.navigateToPassword();
@@ -38,10 +47,7 @@ describe("Login Test ", () => {
 
     it("should be able to login  - entered username and password", () => {
       const loggedInSuccess = 'login success';
-      browser.waitForAngularEnabled(false);
-      loginPage.getUserNameTF().sendKeys("ksathish@stratapps.com");
-      loginPage.getPasswordTF().sendKeys("Sathish@123");
-      loginPage.getLoginButton().click();
+      loginPage.login();
       expect(loggedInSuccess).toBe('login success');
     });
 

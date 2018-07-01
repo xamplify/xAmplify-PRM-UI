@@ -5,5 +5,7 @@ export class DashBoardPage extends LoginPage {
   navigateTo() {
     return browser.get("/home/dashboard");
   }
-  //get logout button
+  getSingUpPageButton(){
+    return element(by.css('.signUpTF'));
+  }
 }

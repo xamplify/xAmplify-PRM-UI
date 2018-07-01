@@ -36,4 +36,7 @@ export class signUpPage extends BasePage {
   getEmailExitMessage(){
     return element(by.xpath('/html/body/app-root/app-signup/div/div/div[2]/form/div[3]/div'));
   }
+  getSigupAnchorButton(){
+    return element(by.xpath('/html/body/app-root/app-login/div/div/div[2]/div[3]/p/a'));
+  }
 }

@@ -43,13 +43,15 @@ export class LoginPage extends BasePage {
   login() {
     this.getUserNameTF().clear();
     this.getPasswordTF().clear();
-    this.getUserNameTF().sendKeys("sathish8chary@gmail.com");
+    browser.waitForAngularEnabled(false);
+    this.getUserNameTF().sendKeys("ksathish@stratapps.com");
     this.getPasswordTF().sendKeys("Sathish@123");
     this.getLoginButton().click();
   }
   logout() {
     browser.waitForAngularEnabled(false);
     element.all(by.xpath('//*[@id="headerdropDownLi"]')).click();
-    element.all(by.xpath('//*[@id="logoutButton"]/a')).click();
+    browser.waitForAngularEnabled(false);
+    element.all(by.xpath('//*[@id="logoutButton"]')).click();
   }
 }

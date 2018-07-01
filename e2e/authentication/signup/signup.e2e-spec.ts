@@ -11,6 +11,8 @@ describe("Signup Test Suite", () => {
       signupPage = new signUpPage();
       logingPage = new LoginPage();
       signupPage.navigateTo();
+     // browser.waitForAngularEnabled(true);
+    //  signupPage.getSignUpButtonTF().click();
     });
 
     it("should have signup page", () => {
@@ -18,7 +20,7 @@ describe("Signup Test Suite", () => {
       browser.waitForAngularEnabled(false);
       signupPage.getFirstNameTF().sendKeys("sathish");
       signupPage.getLastNameTF().sendKeys("sathish");
-      signupPage.getEmailTF().sendKeys("sathishkk1461@gmail.com");
+      signupPage.getEmailTF().sendKeys("sathishkk1463@gmail.com");
       signupPage.getPasswordTF().sendKeys("Sathish@123");
       signupPage.getConfirmPasswordTF().sendKeys("Sathish@123");
       signupPage.getAgreeCheckBox().click();
@@ -28,9 +30,7 @@ describe("Signup Test Suite", () => {
     });
 
     afterAll(()=>{
-    //  signupPage.navigateToLogin();
     });
-
 
   });
 });
