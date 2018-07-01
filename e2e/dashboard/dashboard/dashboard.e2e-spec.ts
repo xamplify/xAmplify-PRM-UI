@@ -18,6 +18,11 @@ describe("Dashboard Test", () => {
       // browser.sleep(1000)
       // browser.waitForAngularEnabled(true);
     });
+    it("click dashboard again should work fine ",()=>{
+       browser.sleep(1000);
+       dashBoardPage.gotoDashoardPage();
+    });
+
     afterAll(() => {
       dashBoardPage.logout();
     });
