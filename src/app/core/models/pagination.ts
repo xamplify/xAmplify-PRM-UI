@@ -27,6 +27,7 @@ export class Pagination {
 	companyId:number = 0;
 	userId:number = 0;
 	throughPartnerAnalytics:boolean = false;
-   reDistributedPartnerAnalytics:boolean= false;
+	reDistributedPartnerAnalytics:boolean= false;
+	throughPartner:boolean = false;
 
 }
