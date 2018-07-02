@@ -90,7 +90,7 @@
                          </td>
                          <td>
                            <a (click)="showPlayVideo(videoFile)">
-                             <h4  title={{videoFile.title}} class='mt5 mb5 f-w-600'>{{videoFile.title | slice: 0: 40}} <span *ngIf="videoFile.title?.length>42">...</span> </h4>
+                             <h4  title={{videoFile.title}} class='mt5 mb5 f-w-600'>{{videoFile.title | slice: 0: 35}} <span *ngIf="videoFile.title?.length>35">...</span> </h4>
                              <span *ngIf="!authenticationService.isOnlyPartner()">
                              <h5 *ngIf="videoFileService.videoType === 'myVideos'" class='m0'>By {{videoFile.uploadedUserName}}</h5>
                              <h5 *ngIf="videoFileService.videoType === 'partnerVideos'">By

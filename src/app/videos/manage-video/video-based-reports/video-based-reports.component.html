@@ -15,7 +15,7 @@
 			<div id="newPlayerVideo"></div>
 			<div>
 				<div>
-					<h4 class="videoTitle">{{selectedVideo.title}}</h4>
+					<h4 class="videoTitle" title="{{selectedVideo.title}}">{{selectedVideo.title | slice:0:50}}<span *ngIf="selectedVideo.title?.length>50">...</span></h4>
 					<h5 align="justify" style="word-break: break-all;">{{selectedVideo.description}}</h5>
 				</div>
 				<div class="row">
