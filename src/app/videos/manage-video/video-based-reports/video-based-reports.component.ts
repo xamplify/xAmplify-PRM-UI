@@ -172,6 +172,12 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         });
     }
     videoPlayedandSkippedDuration(views, skipped) {
+        let xAxis = ' ';
+        let yAxis = ' ';
+        if(skipped.length>0 || views.length>0) {
+          xAxis = 'X-Axis';
+          yAxis='Y-Axis'
+        }
         const self = this;
         Highcharts.chart('video-skipped', {
             chart: {
@@ -183,12 +189,12 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             exporting: { enabled: false },
             xAxis:[{
               title: {
-                  text: 'X-Axis',
+                  text: xAxis,
               }
           }],
             yAxis: [{
               title: {
-                  text: 'Y-Axis',
+                  text: yAxis,
               }
           }],
             credits: {

@@ -95,7 +95,7 @@
 					<span class="caption-subject font-green-sharp uppercase">Minutes watched by RECIPIENT</span>
 					<span class="caption-helper"></span>
 				</div>
-				<div class="panel-title pull-right">
+				<div class="panel-title pull-right" [hidden]="viewsMinutesData?.length==0">
 					<span style="float:right; font-size: 13px;">
 						<select style="cursor: pointer" [(ngModel)]="minutesSort" (ngModelChange)="selectedSortByValue($event.value)">
 							<option *ngFor="let sort of sortMintuesDates" [ngValue]="sort"> {{sort.name}} </option>
@@ -111,7 +111,7 @@
 			<div class="portlet-body">
 				<div style="max-width: 100%; min-height: 300px;">
 					<table style="width:100%;">
-						<thead>
+						<thead [hidden]="viewsMinutesData?.length==0">
 							<tr>
 								<th style="color: #7a8082;font-weight: 600;">Name </th>
 								<th style="color: #7a8082;font-weight: 600;">Views</th>
@@ -166,7 +166,7 @@
 					<i class="icon-bar-chart font-green-sharp hide"></i>
 					<span class="caption-subject font-green-sharp uppercase">video Views</span>
 				</div>
-				<div class="panel-title pull-right">
+        <div class="panel-title pull-right" [hidden]="viewsBarData?.dates?.length<=0 || viewsBarData?.views?.length<=0">
 					<span style="float:right; font-size: 13px;">
 					<select style="cursor: pointer" [(ngModel)]="daySort" (ngModelChange)="selectedCampaignWatchedUsers($event.value)">
 						<option *ngFor="let sort of videoUtilService.sortMonthDates" [ngValue]="sort"> {{sort.name}} </option>
@@ -176,7 +176,6 @@
 			</div>
 			<div class="portlet-body" style="min-height: 308px">
 				<app-bar-chart *ngIf="viewsBarData" [viewsBarData]="viewsBarData" (notifyParent)="selectedCategoryValue($event)"></app-bar-chart>
-
 			</div>
 		</div>
 		<!-- END PORTLET-->
