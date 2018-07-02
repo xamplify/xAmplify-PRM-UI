@@ -181,11 +181,16 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                 text: ' '
             },
             exporting: { enabled: false },
-            xAxis: {
-            },
-            yAxis: {
-                title: '',
-            },
+            xAxis:[{
+              title: {
+                  text: 'X-Axis',
+              }
+          }],
+            yAxis: [{
+              title: {
+                  text: 'Y-Axis',
+              }
+          }],
             credits: {
                 enabled: false
             },
