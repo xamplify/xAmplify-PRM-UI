@@ -21,6 +21,14 @@ describe("Upload Video Test ", () => {
       expect(uploadVideo).toEqual("upload video");
     });
 
+    it("should able to open camera and close ", () => {
+
+      const uploadVideo = "upload camera video";
+      uploadPage.getCameraButton();
+      browser.sleep(1000)
+      uploadPage.closeCmera();
+      expect(uploadVideo).toEqual("upload camera video");
+    });
     afterAll(() => {
       uploadPage.logout();
     });
