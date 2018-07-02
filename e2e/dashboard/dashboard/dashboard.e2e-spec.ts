@@ -7,7 +7,7 @@ describe("Dashboard Test", () => {
   describe("dashboard page should work fine", () => {
     beforeAll(() => {
       dashBoardPage = new DashBoardPage();
-      // dashBoardPage.getLoginPageButton().click();
+      //  dashBoardPage.getLoginPagetButtonWithXpath();
       dashBoardPage.navigateToLogin();
       dashBoardPage.login();
     });
@@ -15,12 +15,11 @@ describe("Dashboard Test", () => {
     it("should have dashboard page", () => {
       const dashboardage = "Dashboard Page";
       expect(dashboardage).toBe("Dashboard Page");
-      // browser.sleep(1000)
+      browser.sleep(1000);
       // browser.waitForAngularEnabled(true);
     });
-    it("click dashboard again should work fine ",()=>{
-       browser.sleep(1000);
-       dashBoardPage.gotoDashoardPage();
+    it("click dashboard again should work fine ", () => {
+      dashBoardPage.gotoDashoardPage();
     });
 
     afterAll(() => {

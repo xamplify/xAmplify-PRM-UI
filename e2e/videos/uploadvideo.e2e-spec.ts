@@ -8,14 +8,16 @@ describe("Upload Video Test ", () => {
       uploadPage = new UploadVideoPage();
       // loginPage.getLoginPageButton().click();
       // uploadPage.navigateToUpload();
+     // uploadPage.getLoginPagetButtonWithXpath();
       uploadPage.navigateToLogin();
       uploadPage.login();
     });
 
     it("should able to go to upload video page ", () => {
-      // browser.sleep(1000)
+      browser.sleep(1000)
       const uploadVideo = "upload video";
-
+      uploadPage.clickOnVideos();
+      uploadPage.clickOnUploadVideos();
       expect(uploadVideo).toEqual("upload video");
     });
 

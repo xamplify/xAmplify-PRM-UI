@@ -10,7 +10,10 @@ export class BasePage {
   getSingUpPageButton(){
     return element(by.css('.signUpTF'));
   }
-
+  getLoginPagetButtonWithXpath(){
+    browser.waitForAngularEnabled(false);
+    return element(by.xpath('//*[@id="bs-navbar-collapse-1"]/ul[2]/li[1]/a')).click();
+  }
   getHeaderText() {
     return element(by.css('app-root h1')).getText();
   }
