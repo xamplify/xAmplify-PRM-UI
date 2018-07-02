@@ -329,7 +329,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       .subscribe(
       data => {
         this.campaignReport.emailOpenCount = data["email_opened_count"];
-        this.campaignReport.emailClickedCount = data["email_url_clicked_count"] + data['email_gif_clicked_count'];
+        this.campaignReport.emailClickedCount = data["email_url_clicked_count"];
         this.loading = false;
       },
       error => console.log(error),
