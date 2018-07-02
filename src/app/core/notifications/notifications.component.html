@@ -27,7 +27,7 @@
               <i class="fa fa-share" aria-hidden="true" *ngIf="item.actionId == 0"></i>
             </span>
             <span class="time">{{item.createdTime | date: 'short'}}</span>
-            <span class="details" [innerHtml]="item.message"></span>
+            <span class="details" [innerHtml]="item.message?.substr(0,185)"></span><span *ngIf="item.message?.length>185">...</span>
           </a>
         </li>
       </ul>
@@ -66,9 +66,9 @@
           <i class="fa fa-share" aria-hidden="true" *ngIf="item.actionId == 0"></i>
         </span>
         <span class="time">{{item.createdTime | date: 'short'}}</span>
-        <span class="details" [innerHtml]="item.message">
+        <span class="details" [innerHtml]="item.message?.substr(0,105)">
           <span class="label label-sm label-icon label-success"> </span>
-          {{item.message}} - {{item.read}}
+          {{item.message | slice:0:100}}<span *ngIf="item.message?.length> 100">....</span> - {{item.read}}
         </span>
       </a>
     </li>

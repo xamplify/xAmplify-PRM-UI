@@ -447,12 +447,12 @@
 	</ul>
     <ul class="timeline" *ngFor="let emailLog of emailLogs">
         <li class="timeline-inverted">
-          	<div class="timeline-badge">
+        <div class="timeline-badge">
 				<img *ngIf="emailLog.actionId == 13" alt="opened" src="assets/images/opened.png">
 				<img *ngIf="emailLog.actionId == 14" alt="clicked" src="assets/images/clicked.png">
 				<img *ngIf="emailLog.actionId == 15" alt="clicked" src="assets/images/clicked.png">
 				<img *ngIf="emailLog.actionId == 1" alt="watched" src="assets/images/video.png">
-			</div>
+		  	</div>
           <div class="timeline-panel">
             <div class="timeline-heading">
               <span class="timeline-title">{{emailLog.time | date: 'fullDate'}}</span>
@@ -460,36 +460,35 @@
 			<div class="timeline-body">
 				<h5>
 					<span *ngIf="emailLog.actionId == 13">
-						Campaign <span class="f-w-600" *ngIf="emailLog.subject">{{emailLog.subject}}</span> email opened
+						Campaign <span class="f-w-600" *ngIf="emailLog.subject" title="{{emailLog.subject}}">
+              {{emailLog.subject | slice:0:30}} <span *ngIf="emailLog.subject?.length>30">...</span>
+            </span> email opened
 					</span>
-					<span *ngIf="emailLog.actionId == 14">Clicked <span class="f-w-600">{{campaign.campaignVideoFile.title}}</span> video GIF</span>
+					<span *ngIf="emailLog.actionId == 14">Clicked <span class="f-w-600" title="{{campaign.campaignVideoFile.title}}">{{campaign.campaignVideoFile.title | slice:0:30}} <span *ngIf="campaign.campaignVideoFile.title?.length>30">...</span></span> video GIF</span>
 					<span *ngIf="emailLog.actionId == 15">
 					Clicked on the URL
-					<span class="f-w-600" *ngIf="emailLog.url"><a href="{{emailLog.url}}" target="_blank">{{emailLog.url}}</a></span>
+					<span class="f-w-600" *ngIf="emailLog.url"><a href="{{emailLog.url}}" target="_blank" title="{{emailLog.url}}">{{emailLog.url | slice:0:30}}<span *ngIf="emailLog.url?.length>30">...</span></a></span>
 					</span>
-					<span *ngIf="emailLog.actionId == 1"><span class="f-w-600">{{campaign.campaignVideoFile.title}}</span> played</span> at {{emailLog.time | date: 'shortTime'}}
+					<span *ngIf="emailLog.actionId == 1"><span class="f-w-600" title="{{campaign.campaignVideoFile.title}}">{{campaign.campaignVideoFile.title | slice:0:30}} <span *ngIf="campaign.campaignVideoFile.title?.length>30">...</span></span> played</span> at {{emailLog.time | date: 'shortTime'}}
 				</h5>
-				<span *ngIf="emailLog.countryCode">
-					<h6>
+			  	<span *ngIf="emailLog.countryCode">
+				  	<h6>
 						<img *ngIf="emailLog.countryCode" src="https://lipis.github.io/flag-icon-css/flags/4x3/{{emailLog.countryCode | lowercase}}.svg"
 						width="20px" class="mr10">{{emailLog.country}}, {{emailLog.city}}
-					</h6>
-					<h6 class="mb0">{{emailLog.isp}}</h6>
-				</span>
-				<div *ngIf="emailLog.actionId == 1">
-					<app-heat-map [sessionId]="emailLog.sessionId"></app-heat-map>
-				</div>
-			</div>
+				  	</h6>
+				  	<h6 class="mb0">{{emailLog.isp}}</h6>
+			   	</span>
+			    	<div *ngIf="emailLog.actionId == 1">
+				  	<app-heat-map [sessionId]="emailLog.sessionId"></app-heat-map>
+			    	</div>
+		    	</div>
           </div>
         </li>
-    </ul>
-
+       </ul>
 			</div>
-
 		</div>
 	</div>
 </div>
-
 
 <!-- Users Watch List Modal -->
 <div class="modal fade" id="usersWatchListModal" tabindex="-1" role="dialog" aria-labelledby="usersWatchListModalLabel" data-backdrop="static"
@@ -603,10 +602,13 @@
 										<app-user-info  [userInfo]="item"> </app-user-info>
 									</td>
 									<td *ngIf="campaignReport.emailActionType === 'open'">
-										<h6>{{item.subject}}</h6>
+										<h6 title="{{item.subject}}">
+                      {{item.subject | slice:0:30}}
+                      <span *ngIf="item.subject?.length > 30" >...</span>
+                    </h6>
 									</td>
 									<td *ngIf="campaignReport.emailActionType === 'click' && item.url != null">
-										<h6>{{item.url}}</h6>
+										<h6>{{item.url | slice:0:30}}  <span *ngIf="item.url?.length > 30" >...</span></h6>
 									</td>
 									<td *ngIf="campaignReport.emailActionType === 'click' && item.url == null">
 										<h6>Clicked on the video thumbnail</h6>
@@ -724,17 +726,12 @@
 								<td>
 									<app-user-info  [userInfo]="item"> </app-user-info>
 								</td>
-								<!-- <td>
-									<h6>{{item.campaignName}}</h6>
-									<h4 *ngIf="item.campaignName==null">-</h4>
-								</td> -->
-								<td>
+								<td style="text-align: center">
 									<app-location  [userLocation]="item"> </app-location>
 								</td>
 								<td>
 									<h6>{{item.time | date: 'fullDate'}}</h6>
 								</td>
-								<!-- <td><h6>{{item.deviceType }}</h6></td> -->
 								<td class="center">
 								<app-platform [deviceTypeOs]="true" [userPlatform]="item"> </app-platform>
 								</td>

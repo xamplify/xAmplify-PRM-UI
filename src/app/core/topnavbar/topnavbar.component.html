@@ -67,11 +67,11 @@
 					<!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
 
 					<li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar" *ngIf="authenticationService.user.hasCompany">
-						<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+						<a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
 						<i class="icon-bell" style="color: #0095da;"></i>
 							<span *ngIf="userService.unreadNotificationsCount>0" class="badge badge-default" style="background-color: #ed1c24 !important;">{{userService.unreadNotificationsCount}}</span>
 						</a>
-						<ul class="dropdown-menu" *ngIf="userService.unreadNotificationsCount>0">
+						<ul class="dropdown-menu">
 							<li class="external">
 								<h3><span class="bold">{{userService.unreadNotificationsCount}} pending</span> notifications</h3>
 							</li>
@@ -86,7 +86,7 @@
 
 					<!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
 					<li class="dropdown dropdown-extended dropdown-tasks" id="header_task_bar" style="display: none;">
-						<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+						<a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
 						<i class="icon-info"></i>
 						</a>
 						<ul class="dropdown-menu extended tasks">
