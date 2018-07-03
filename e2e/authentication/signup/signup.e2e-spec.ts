@@ -2,7 +2,7 @@ import { by, browser, element } from "protractor";
 import { signUpPage } from "../signup/sinup.page";
 import { LoginPage } from "../login/login.page";
 
-describe("Signup Test Suite", () => {
+xdescribe("Signup Test Suite", () => {
   let signupPage: signUpPage;
   let logingPage: LoginPage;
 

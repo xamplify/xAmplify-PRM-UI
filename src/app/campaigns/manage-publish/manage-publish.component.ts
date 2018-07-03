@@ -133,13 +133,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     getAllFilteredResults(pagination: Pagination) {
         this.pagination.pageIndex = 1;
         this.pagination.searchKey = this.searchKey;
-        let sortedValue = this.selectedSortedOption.value;
-        if (sortedValue != "") {
-            let options: string[] = sortedValue.split("-");
-            this.pagination.sortcolumn = options[0];
-            this.pagination.sortingOrder = options[1];
-        }
-
+        this.pagination = this.utilService.sortOptionValues(this.selectedSortedOption, this.pagination);
         if (this.itemsSize.value == 0) {
             this.pagination.maxResults = this.pagination.totalRecords;
         } else {

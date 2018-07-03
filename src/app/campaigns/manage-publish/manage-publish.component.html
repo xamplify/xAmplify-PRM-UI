@@ -83,13 +83,13 @@
 											<ng-container *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1">
 												<img [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/social-campaign.png" alt="Social Campaign">
 											</ng-container>
-										</td>
-										<td>
-											<h4 class="ellipsis campaign-title" title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:25}}
-													<span *ngIf="campaign.campaignName?.length>25">...</span>
+                    </td>
+                    <td>
+											<h4 class="ellipsis campaign-title" title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:20}}
+													<span *ngIf="campaign.campaignName?.length>20">...</span>
 											</h4>
-											<h5>By <b>{{campaign.createdBy}}</b></h5>
-											<h5>From <b>{{campaign.companyName}}</b></h5>
+											<h5 [title]="campaign.createdBy">By <b>{{campaign.createdBy | slice:0:35 }}<span *ngIf="campaign.createdBy?.length>35">...</span></b></h5>
+											<h5 [title]="campaign.companyName">From <b>{{campaign.companyName | slice:0:20 }}<span *ngIf="campaign.companyName?.length>20">...</span></b></h5>
 										</td>
 										<td class="center">
 											<span align="right">
@@ -161,8 +161,8 @@
 											<h4 class="campaign-title" title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:25}}
 													<span *ngIf="campaign.campaignName?.length>25">...</span>
 											</h4>
-											<h5>By <b>{{campaign.createdBy}}</b></h5>
-											<h5>From <b>{{campaign.companyName}}</b></h5>
+											<h5 [title]="campaign.createdBy">By <b>{{campaign.createdBy | slice:0:20}}<span *ngIf="campaign.createdBy?.length>20">...</span></b></h5>
+											<h5 [title]="campaign.companyName">From <b>{{campaign.companyName | slice:0:20}}<span *ngIf="campaign.companyName?.length>20">...</span></b></h5>
 											<h5>
 												<span *ngIf="campaign.launched">Launched On </span>
 												<span *ngIf="!campaign.launched && campaign.launchedOn?.length > 0">Scheduled For </span>
@@ -226,11 +226,11 @@
 									<div *ngFor="let campaign of pagination.pagedItems; let i= index" class="col-xs-12 col-sm-4 col-lg-3">
 										<div class="grid-box">
 											<img src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png">
-											<h4 class="ellipsis" title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:25}}
-												<span *ngIf="campaign.campaignName?.length>25">...</span>
+											<h4 class="ellipsis" title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:22}}
+												<span *ngIf="campaign.campaignName?.length>22">...</span>
 											</h4>
-											<h6>By <b>{{campaign.createdBy}}</b></h6>
-											<h6>From <b>{{campaign.companyName}}</b></h6>
+											<h6 [title]="campaign.createdBy">By <b>{{campaign.createdBy | slice:0:15}}<span *ngIf="campaign.createdBy?.length>15">...</span></b></h6>
+											<h6 [title]="campaign.companyName">From <b>{{campaign.companyName | slice:0:15}}<span *ngIf="campaign.companyName?.length>15">...</span></b></h6>
 											<h6>
 											<span>
 												<span *ngIf="campaign.launched">Launched On</span>
@@ -273,14 +273,14 @@
 													<!-- <a *ngIf="isOnlyPartner" data-rel="fancybox-button" (click)="openSaveAsModal(campaign.campaignId, campaign.campaignName)" title="Save As">
 														<i class="fa fa-files-o"></i>
 													</a> -->
-												</ng-container>
+                        </ng-container>
+                          <a (click)="showCampaignPreview(campaign.campaignId)" title="Preview">
+														<i class="fa fa-eye mr5"></i>
+												  </a>
 													<a *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor"
 														(click)="confirmDeleteCampaign(campaign.campaignId, i, campaign.campaignName)" title="Delete Campaign">
 														<i class="fa fa-trash"></i>
 													</a>
-													<a (click)="showCampaignPreview(campaign.campaignId)" title="Preview">
-														<i class="fa fa-eye mr5"></i>
-												</a>
 											</div>
 										</div>
 									</div>

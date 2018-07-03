@@ -478,7 +478,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                             $('.vjs-big-play-button').css('display', 'none');
                             $('#videoId').append($('#overlay-modal').show());
                         } else if (isValid !== 'StartOftheVideo') {
-                            $('.vjs-big-play-button').css('display', 'none');
+                          //  $('.vjs-big-play-button').css('display', 'none');
                             $('#overlay-modal').hide(); player.play();
                         } else { $('#overlay-modal').hide(); }
                         $('#skipOverlay').click(function () {
@@ -496,7 +496,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                         self.videoFileService.pauseAction = false;
                         const seekigTime = self.trimCurrentTime(player.currentTime());
                         console.log('ply button pressed ');
-                        $('.vjs-big-play-button').css('display', 'none');
+                       // $('.vjs-big-play-button').css('display', 'none');
                         console.log('play button clicked and current time' + self.trimCurrentTime(player.currentTime()));
                         if (self.replyVideo === true) {
                             self.xtremandLog.actionId = self.LogAction.replyVideo;
