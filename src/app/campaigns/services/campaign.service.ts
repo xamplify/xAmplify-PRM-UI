@@ -409,5 +409,11 @@ export class CampaignService {
             return replyTime;
         }
     }
+
+    listEmailLogsByCampaignIdUserIdActionType (campaignId: number, userId: number, actionType: string) {
+        return this.http.get(this.URL+`campaign/list-emaillogs-history/${campaignId}/${userId}/${actionType}?access_token=${this.authenticationService.access_token}`)
+            .map(this.extractData)
+            .catch(this.handleError);       
+    }
     
 }

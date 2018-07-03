@@ -1,4 +1,5 @@
 import { Pagination } from '../../core/models/pagination';
+import { EmailLog } from './email-log';
 export class CampaignReport {
     id: number;
     userId: number;
@@ -22,6 +23,6 @@ export class CampaignReport {
     totalWatchedList: any;
 
     emailActionType: string;
-    emailActionList: any;
+    emailLogs: Array<EmailLog>;
     totalEmailActionList: any;
 }

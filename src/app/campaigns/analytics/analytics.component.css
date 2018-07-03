@@ -1,3 +1,4 @@
+.modal-title { font-weight: 600; color: #888;}
 a.disabled {
 	pointer-events: none;
 	cursor: not-allowed;

@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { Campaign } from '../models/campaign';
 import { CampaignReport } from '../models/campaign-report';
+import { EmailLog } from '../models/email-log';
 import { Pagination } from '../../core/models/pagination';
 import { SocialStatus } from '../../social/models/social-status';
 import { CustomResponse } from '../../common/models/custom-response';
@@ -34,6 +35,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   campaignTotalViewsData: any;
   campaignBarViews: any;
   emailLogs: any;
+  emailLogDetails: any;
   totalEmailLogs: any;
   campaignReport: CampaignReport = new CampaignReport;
   userCampaignReport: CampaignReport = new CampaignReport;
@@ -443,7 +445,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
      this.campaignService.emailActionList(campaignId, actionType, pagination)
       .subscribe(
       data => {
-        this.campaignReport.emailActionList = data;
+        this.campaignReport.emailLogs = data;
         this.campaignReport.emailActionType = actionType;
         $('#emailActionListModal').modal();
 
@@ -452,7 +454,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
         } else if (actionType === 'click') {
           this.emailActionListPagination.totalRecords = this.campaignReport.emailClickedCount;
         }
-        this.emailActionListPagination = this.pagerService.getPagedItems(this.emailActionListPagination, this.campaignReport.emailActionList);
+        this.emailActionListPagination = this.pagerService.getPagedItems(this.emailActionListPagination, this.campaignReport.emailLogs);
         this.emailActionTotalList(campaignId, actionType, this.emailActionListPagination.totalRecords);
         this.loading = false;
         this.referenceService.loading(this.httpRequestLoader, false);
@@ -892,6 +894,29 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   getSortedResult(campaignId: number,event:any){
     this.emailActionListPagination = this.utilService.sortOptionValues(event,this.emailActionListPagination);
     this.emailActionList(campaignId, this.campaignReport.emailActionType, this.emailActionListPagination);
+  }
+
+  listEmailLogsByCampaignIdUserIdActionType(emailLog: EmailLog, actionType: string) {
+    this.campaignReport.emailLogs.forEach((element) => {
+      element.isExpand = false;
+    });
+    emailLog.isExpand = !emailLog.isExpand;
+    if (emailLog.emailLogHistory === undefined) {
+      try {
+        this.loading = true;
+        this.campaignService.listEmailLogsByCampaignIdUserIdActionType(emailLog.campaignId, emailLog.userId, actionType)
+          .subscribe(
+          data => {
+            emailLog.emailLogHistory = data;
+            this.loading = false;
+          },
+          error => console.log(error),
+          () => { }
+          )
+      } catch (error) {
+        this.xtremandLogger.error('Error in listEmailLogsByCampaignIdUserIdActionType: ' + error);
+      }
+    }
   }
 
   ngOnInit() {
