@@ -224,10 +224,14 @@
 															{{contactList.name | slice:0:50}} 
 															<span *ngIf="contactList.name?.length>50">...</span>
 														</h4>
-														<h5 class='m0'>
-															By <span class='f-w-400'>{{contactList.uploadedBy}}</span>
+														<h5 class='m0 ellipsis'  title="{{contactList.uploadedBy}}">
+															By <span class='f-w-400'>{{contactList.uploadedBy | slice:0:50}}
+															<span *ngIf="contactList.uploadedBy?.length>50">...</span>
+															</span>
 														</h5>
-														<h5 class="mb0"><b>{{contactList.companyName}}</b></h5>
+														<h5 class="mb0 ellipsis" title="{{contactList.companyName}}"><b>{{contactList.companyName | slice:0:50}}</b>
+														<span *ngIf="contactList.companyName?.length>50">...</span>
+														</h5>
 													</td>
 													<td>{{contactList.createdDate}}</td>
 													<td class="text-center">{{contactList.noOfContacts}}</td>
@@ -294,8 +298,12 @@
 											<h4 class="ellipsis" title="{{contactList.name}}">{{contactList.name | slice:0:25}}
 												<span *ngIf="contactList.name?.length>25">...</span>
 											</h4>
-											<h6 class="mt10 mb0">By {{contactList.uploadedBy}}</h6>
-											<h6 class="mt0"><b>{{contactList.companyName}}</b></h6>
+											<h6 class="mt10 mb0 ellipsis" title="{{contactList.uploadedBy}}">By {{contactList.uploadedBy | slice:0:30}}
+											<span *ngIf="contactList.uploadedBy?.length>30">...</span>
+											</h6>
+											<h6 class="mt0 ellipsis" title="{{contactList.companyName}}"><b>{{contactList.companyName | slice:0:30}}</b>
+											<span *ngIf="contactList.companyName?.length>30">...</span>
+											</h6>
 											<h6 class="mt10 mb0">Total {{checkingContactTypeName}}s {{contactList.noOfContacts}}</h6>
 											<h6 class="mt10 mb0">Created date {{contactList.createdDate}}</h6>
 											<div class="bar">
