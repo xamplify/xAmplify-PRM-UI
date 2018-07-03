@@ -110,7 +110,7 @@ input:checked + .slider-new:before {
               </div>
 								<div class="profile-usertitle">
 									<div class="profile-usertitle-name" style="overflow: auto">
-										 {{userData.displayName}}
+										 <span>{{userData.displayName | slice:0:23}}</span><span *ngIf="userData.displayName?.length>23">...</span>
 										 <h5>{{userData.emailId}}</h5>
 									</div>
 									<div class="profile-usertitle-job">
