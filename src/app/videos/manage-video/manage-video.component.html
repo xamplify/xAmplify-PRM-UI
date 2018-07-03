@@ -92,14 +92,14 @@
                            <a (click)="showPlayVideo(videoFile)">
                              <h4  title={{videoFile.title}} class='mt5 mb5 f-w-600'>{{videoFile.title | slice: 0: 35}} <span *ngIf="videoFile.title?.length>35">...</span> </h4>
                              <span *ngIf="!authenticationService.isOnlyPartner()">
-                             <h5 *ngIf="videoFileService.videoType === 'myVideos'" class='m0'>By {{videoFile.uploadedUserName}}</h5>
-                             <h5 *ngIf="videoFileService.videoType === 'partnerVideos'">By
-                               <span *ngIf="videoFile.companyName">{{videoFile.companyName}}</span>
-                               <span *ngIf="!videoFile.companyName">{{videoFile.uploadedUserName}}</span>
+                             <h5 [title]="videoFile.uploadedUserName" *ngIf="videoFileService.videoType === 'myVideos'" class='m0'>By {{videoFile.uploadedUserName | slice:0:20}}<span *ngIf="videoFile.uploadedUserName?.length>20">...</span></h5>
+                             <h5  *ngIf="videoFileService.videoType === 'partnerVideos'">By
+                               <span [title]="videoFile.companyName" *ngIf="videoFile.companyName">{{videoFile.companyName | slice:0:20 }}<span *ngIf="videoFile.companyName?.length>20">...</span></span>
+                               <span [title]="videoFile.uploadedUserName" *ngIf="!videoFile.companyName">{{videoFile.uploadedUserName | slice:0:20}}<span *ngIf="videoFile.uploadedUserName?.length>20">...</span></span>
                              </h5>
                              </span>
                              <span *ngIf="authenticationService.isOnlyPartner()">
-                                <span *ngIf="videoFile.companyName">By {{videoFile.companyName}}</span>
+                                <span [title]="videoFile.companyName"  *ngIf="videoFile.companyName">By {{videoFile.companyName}}</span>
                               </span>
                              <h6 class='f-w-600'>{{videoFile.views}} views</h6>
                            </a>
@@ -151,18 +151,17 @@
                    </div>
                       <span class="ellipsis video-title" title="{{videoFile.title}}">{{videoFile.title | slice:0:25}}<span *ngIf="videoFile.title?.length>25">...</span></span>
                       <span *ngIf="!authenticationService.isOnlyPartner()">
-                      <span class="video-uploaded-by" *ngIf="videoFileService.videoType==='myVideos'"  title="Uploaded By">By {{videoFile.uploadedUserName}}</span>
+                      <span class="video-uploaded-by" *ngIf="videoFileService.videoType==='myVideos'"  title="Uploaded By">By {{videoFile.uploadedUserName | slice:0:15}}<span *ngIf="videoFile.uploadedUserName?.length>15">...</span></span>
                       <span class="video-uploaded-by" *ngIf="videoFileService.videoType==='partnerVideos'" title="Uploaded By">By
-                         <span *ngIf="videoFile.companyName">{{videoFile.companyName}}</span>
-                         <span *ngIf="!videoFile.companyName">{{videoFile.uploadedUserName}}</span>
+                         <span *ngIf="videoFile.companyName">{{videoFile.companyName | slice:0:15}}<span *ngIf="videoFile.companyName?.length>15">...</span></span>
+                         <span *ngIf="!videoFile.companyName">{{videoFile.uploadedUserName | slice:0:15}}<span *ngIf="videoFile.uploadedUserName?.length>15">...</span></span>
                       </span>
                     </span>
                       <span *ngIf="authenticationService.isOnlyPartner()">
-                          <span style="float: left;">By {{videoFile.companyName}}</span>
+                          <span style="float: left;">By {{videoFile.companyName | slice:0:15}}<span *ngIf="videoFile.companyName?.length>15">...</span></span>
                           <!-- <span *ngIf="!videoFile.companyName">{{videoFile.uploadedUserName}}</span> -->
                       </span>
-                      <span class="video-upload-date"  title="Uploaded Date">{{videoFile.uploadedDate }}</span>
-
+                      <span class="video-upload-date"  title="Uploaded Date">{{videoFile.uploadedDate}}</span>
                    <div class="bookmark-ribbon" *ngIf="videoFileService.videoType === 'partnerVideos'">
                      <span style="margin: 0px -7px; font-size: 17px; color: white;">
                        <i *ngIf="videoFileService.videoType === 'partnerVideos'" class="fa fa-handshake-o"  aria-hidden="true"></i>
