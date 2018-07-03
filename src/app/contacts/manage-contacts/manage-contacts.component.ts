@@ -1279,12 +1279,17 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
                         if ( $.inArray( inputName, self.names ) > -1 ) {
                             swal.showValidationError( 'This list name is already taken.' )
                         } else {
-                            if ( name != "" ) {
+                            if ( name != "" && name.length < 250 ) {
                                 swal.close();
                                 self.saveSelectedUsers( name );
                             } else {
-                                swal.showValidationError( 'List Name is Required..' )
-                            }
+                                if(name == ""){
+                                    swal.showValidationError( 'List Name is Required..' )
+                                   }
+                                   else{
+                                       swal.showValidationError("You have exceeded 250 characters!");
+                                   }
+                                }
                         }
                     });
                 }
