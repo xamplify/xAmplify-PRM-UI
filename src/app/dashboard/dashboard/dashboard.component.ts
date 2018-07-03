@@ -290,7 +290,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 xAxis: {
                     categories: names,
                     labels: {
-                        enabled: i === 0
+                        enabled: i === 0,
+                        formatter: function () {
+                          const text = this.value,
+                            formatted = text.length > 10 ? text.substring(0, 10) + '...' : text;
+                              return formatted ;
+                        }
                     }
                 },
                 exporting: { enabled: false },
@@ -502,9 +507,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     this.campaigns = data;
                     console.log(data);
                     const campaignIdArray = data.map(function (a) { return a[0]; });
-                    console.log(campaignIdArray);
-                    console.log(this.campaigns.length);
-                    console.log(data[data.length - 1]);
                     this.totalCampaignsCount = this.campaigns.length;
                     if (this.totalCampaignsCount >= 1) {
                         this.getCampaignsEamailBarChartReports(campaignIdArray);
@@ -610,9 +612,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     onSelectionChangeCampaignReportOption(userCampaignReportOption: string) {
         this.userCampaignReport.campaignReportOption = userCampaignReportOption;
     }
-
-
-
 
     getEmailActionCount(userId: number) {
         this.dashboardService.getEmailActionCount(userId)

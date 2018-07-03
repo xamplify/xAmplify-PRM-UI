@@ -139,7 +139,12 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                 xAxis: {
                     categories: names,
                     labels: {
-                        enabled: i === 0
+                        enabled: i === 0,
+                        formatter: function () {
+                          const text = this.value,
+                            formatted = text.length > 10 ? text.substring(0, 10) + '...' : text;
+                              return formatted ;
+                        }
                     },
                     lineWidth: 0,
                     minorGridLineWidth: 0,
