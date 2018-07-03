@@ -360,7 +360,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       .subscribe(
       data => {
           this.userWatchtotalRecords = data;
-          this.loading = false;   
+          this.loading = false;
       },
       error => console.log(error),
       () => console.log()
@@ -888,6 +888,12 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       (error:any)=>{this.xtremandLogger.error('error'+error); })
     }catch(error) { this.xtremandLogger.error('error'+error);}
   }
+
+  getSortedResult(campaignId: number,event:any){
+    this.emailActionListPagination = this.utilService.sortOptionValues(event,this.emailActionListPagination);
+    this.emailActionList(campaignId, this.campaignReport.emailActionType, this.emailActionListPagination);
+  }
+
   ngOnInit() {
     try{
     this.mainLoader = true;
@@ -914,17 +920,5 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     $('#emailSentListModal').modal('hide');
     $('#donutModelPopup').modal('hide');
 
-  }
-  
-  getSortedResult(campaignId: number, actionType: string,text:any){
-      this.selectedSortedOption = text;
-      let sortedValue = this.selectedSortedOption.value;
-      if ( sortedValue != "" ) {
-          let options: string[] = sortedValue.split( "-" );
-          this.emailActionListPagination.sortcolumn = options[0];
-          this.emailActionListPagination.sortingOrder = options[1];
-      }
-      this.emailActionList(campaignId, actionType, this.emailActionListPagination);
-      
   }
 }

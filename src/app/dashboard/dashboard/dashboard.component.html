@@ -630,7 +630,7 @@ td>h5 {
 					<h4 class="m5">Please wait while we process your request.</h4>
 				</div>
 				<div *ngIf="pagination.pagedItems?.length == 0 && !isLoadingList" class="col-md-6" class="col-md-9 alert alert-info m0" style="width: 100%">
-					<strong>No Results found</strong>
+					<strong>No results found</strong>
 				</div>
 				<div class="table-responsive" *ngIf="pagination.pagedItems?.length != 0">
 					<table class="table tgrid" id="sample_editable_1">
@@ -650,10 +650,10 @@ td>h5 {
 									<app-user-info [userInfo]="emailClicked"> </app-user-info>
                 </td>
                 <td class="center" *ngIf="paginationType == 'open'">
-                    <h5>{{emailClicked.subject}}</h5>
+                    <h5  title="{{emailClicked.subject}}">{{emailClicked.subject | slice:0:30}} <span *ngIf="emailClicked.subject?.length>30">...</span></h5>
                 </td>
 								<td class="center">
-									<h5>{{emailClicked.campaignName}}</h5>
+									<h5 title="{{emailClicked.campaignName}}">{{emailClicked.campaignName| slice:0:30}} <span *ngIf="emailClicked.campaignName?.length>30">...</span></h5>
 									<h4 *ngIf="emailClicked.campaignName==null">-</h4>
 								</td>
 								<td class="center">

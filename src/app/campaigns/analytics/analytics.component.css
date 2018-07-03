@@ -229,7 +229,11 @@ h1.bold {
 .center {
 	text-align: center;
 }
-
+.sort-dropdown{
+  position: absolute;
+  left: -144px;
+  top: -22px;
+}
 .glyphicon, .fa-3 {
 	font-size: 2em;
 }
