@@ -7,9 +7,14 @@
 	<span style="margin-left:10px" *ngIf="(userInfo.firstName |slice:0:1)==null && (userInfo.emailId |slice:0:1)==null">-
 	</span>
 	<span style="margin-left: 20px;">
-		<h5 style="margin: 7px 0 2px 0;font-weight: 400;">{{userInfo.firstName}}&nbsp;{{userInfo.lastName}}</h5>
-		<h6 class='m0' style="font-weight: 400;">
-			<a title="{{userInfo.emailId}}">{{userInfo.emailId}}</a>
+		<h5 class='ellipsis' title="{{userInfo.firstName}} {{userInfo.lastName}}" style="margin: 7px 0 2px 0;font-weight: 400;">{{userInfo.firstName | slice:0:20}}
+		<span *ngIf="userInfo.firstName?.length>20">...</span>
+		&nbsp;{{userInfo.lastName | slice:0:15}}
+		<span *ngIf="userInfo.lastName?.length>15">...</span>
+		</h5>
+		<h6 class='m0 ellipsis' style="font-weight: 400;">
+			<a title="{{userInfo.emailId}}">{{userInfo.emailId | slice:0:30}}</a>
+			<span *ngIf="userInfo.emailId?.length>30">...</span>
 		</h6>
 		<h5 style="margin: 7px 0 2px 0;font-weight: 600; color: #676767;" *ngIf="isPartnerEntityInfo">{{userInfo.contactCompany}}</h5>
 	</span>

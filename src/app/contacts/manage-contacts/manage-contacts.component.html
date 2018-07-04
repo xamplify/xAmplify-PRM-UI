@@ -653,7 +653,9 @@
 															</h5> -->
 														</td>
 														<td>
-															<h5 class='mb0'>{{contact.jobTitle}}</h5>
+															<h5 class='mb0 ellipsis' title="{{contact.jobTitle}}">{{contact.jobTitle | slice:0:25}}
+															<span *ngIf="contact.jobTitle?.length>25">...</span>
+															</h5>
 															<!-- <h6 class='mt0' *ngIf="!isPartner">{{contact.contactCompany}}</h6> -->
 														</td>
 														<td>

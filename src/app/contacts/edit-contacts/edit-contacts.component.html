@@ -509,8 +509,12 @@
 																</h5> -->
 															</td>
 															<td>
-																<h5 class='mb0 textWhite'>{{newContact.jobTitle}}</h5>
-																<h6 class='mt0 textWhite' *ngIf="!isPartner">{{newContact.contactCompany}}</h6>
+																<h5 class='mb0 textWhite ellipsis' title="{{newContact.jobTitle}}">{{newContact.jobTitle | slice:0:25}}
+																<span *ngIf="newContact.jobTitle?.length>25">...</span>
+																</h5>
+																<h6 class='mt0 textWhite ellipsis' *ngIf="!isPartner" title="{{newContact.contactCompany}}">{{newContact.contactCompany | slice:0:25}}
+																<span *ngIf="newContact.contactCompany?.length>25">...</span>
+																</h6>
 															</td>
 															<td>
 																<h5 *ngIf="newContact?.address" class='mb0 textWhite'>{{newContact.address}}</h5>
@@ -572,7 +576,9 @@
 																</h5> -->
 															</td>
 															<td>
-																<h5 class='mb0'>{{contact.jobTitle}}</h5>
+																<h5 class='mb0 ellipsis' title="{{contact.jobTitle}}">{{contact.jobTitle | slice:0:25}}
+																<span *ngIf="contact.jobTitle?.length>25">...</span>
+																</h5>
 																<!-- <h6 class='mt0' *ngIf="!isPartner">{{contact.contactCompany}}</h6> -->
 															</td>
 															<td align="center">
@@ -715,7 +721,9 @@
 													</h5> -->
 												</td>
 												<td>
-													<h5 class='mb0'>{{allcontacts.jobTitle}}</h5>
+													<h5 class='mb0 ellipsis' title="{{allcontacts.jobTitle}}" >{{allcontacts.jobTitle | slice:0:25}}
+													<span *ngIf="allcontacts.jobTitle?.length>25">...</span>
+													</h5>
 													<!-- <h6 class='mt0' *ngIf="!isPartner">{{allcontacts.contactCompany}}</h6> -->
 												</td>
 												<td>
