@@ -374,7 +374,7 @@
 																		<input type="radio" [checked]="selectedRow==savedVideoFile.id" (click)="setClickedRow(savedVideoFile,'my-videos')" name="videoFileId"
 																		 [value]="savedVideoFile.id" id="campaign_video_id_{{savedVideoFile.id}}">
 																		<a href="javascript:void(0)" (click)="$event.stopPropagation();showPreview(savedVideoFile)">
-																			<img src="{{savedVideoFile.imagePath}}" width="100px" height="50px">
+																			<img src="{{savedVideoFile.imagePath}}" width="100px" height="50px"  (error)="videoUtilService.errorVideoHandler($event)">
 																		</a>
 																	</td>
 
@@ -384,12 +384,14 @@
 																			<div class="col-md-12" title="{{savedVideoFile.title}}">
 																				<p style="margin: 0;">
 																					<a href="javascript:void(0)" class="not-active">
-																						<b style="font-size: 13px;" *ngIf="savedVideoFile.title?.length>50">{{savedVideoFile.title|slice:0:50}}....</b>
+																						<b style="font-size: 13px;">{{savedVideoFile.title|slice:0:50}}
+                                                <span *ngIf="savedVideoFile.title?.length>50">...</span>
+                                            </b>
 																						<b style="font-size: 13px;" *ngIf="savedVideoFile.title?.length<=50">{{savedVideoFile.title}}</b>
 																					</a>
 																				</p>
 																				<p>by
-																					<b>{{savedVideoFile.uploadedUserName}}</b>
+                                            <b>{{savedVideoFile.uploadedUserName | slice:0:20}}<span *ngIf="savedVideoFile.uploadedUserName?.length>20">...</span></b>
 																				</p>
 																				<p>
 																					<span>{{savedVideoFile.uploadedDate}} </span>
@@ -403,9 +405,7 @@
 																	</td>
 																	<!-- --------------Published To--------------------------- -->
 																	<td style="text-align: center;">
-																		<span class="label label-blue" style="color: #607D8B">
-																			<b>{{savedVideoFile.viewBy | lowercase}}</b>
-																		</span>
+																		<span class="view-by-banner">{{savedVideoFile.viewBy | lowercase}}</span>
 																	</td>
 																	<!-- --------------Status--------------------------- -->
 																	<td style="text-align: center;">
@@ -424,13 +424,13 @@
 																		<input type="radio" name="videoFileId" [value]="videoFile.id" (click)="setClickedRow(videoFile,'my-videos')" id="campaign_video_id_{{videoFile.id}}"
 																		 [checked]="videoFile.id == selectedRow">
 																		<a (click)="$event.stopPropagation();showPreview(videoFile)" lang="{{videoFile.id}}">
-																			<img src="{{videoFile.imagePath}}" width="100px" height="50px">
+																			<img src="{{videoFile.imagePath}}" width="100px" height="50px"  (error)="videoUtilService.errorVideoHandler($event)">
 																		</a>
 																	</td>
 																	<td style="text-align: center;" *ngIf="videoFile.viewBy=='DRAFT'  && videoFile.id!==videoId">
 																		<input type="radio" name="videoFileId" [value]="videoFile.id" disabled="disabled" title="Video is in draft mode, please update the publish options to Library or Viewers.">
 																		<a href="javascript:void(0)" class="not-active">
-																			<img src="{{videoFile.imagePath}}" width="100px" height="50px">
+																			<img src="{{videoFile.imagePath}}" width="100px" height="50px"  (error)="videoUtilService.errorVideoHandler($event)">
 																		</a>
 																	</td>
 																	<!-- --------------Title--------------------------- -->
@@ -439,19 +439,16 @@
 																			<div class="col-md-12">
 																				<p style="margin: 0;" title="{{videoFile.title}}">
 																					<a href="javascript:void(0)" class="not-active">
-																						<b style="font-size: 13px;" *ngIf="videoFile.title?.length>50">
-																							{{videoFile.title|slice:0:50}}....
-																						</b>
-																						<b style="font-size: 13px;" *ngIf="videoFile.title?.length<=50">
-																							{{videoFile.title}}
+																						<b style="font-size: 13px;"> {{videoFile.title|slice:0:50}}
+                                              <span *ngIf="videoFile.title?.length>50">...</span>
 																						</b>
 																					</a>
 																				</p>
 																				<p>by
-																					<b>{{videoFile.uploadedUserName}}</b>
+                                            <b>{{videoFile.uploadedUserName | slice:0:20}}<span *ngIf="videoFile.uploadedUserName?.length>20">...</span></b>
 																				</p>
 																				<p>
-																					<span style="float:right">{{videoFile.uploadedDate}} </span>
+																					<span >{{videoFile.uploadedDate}} </span>
 																				</p>
 																			</div>
 																		</div>
@@ -462,9 +459,7 @@
 																	</td>
 																	<!-- --------------Published To--------------------------- -->
 																	<td style="text-align: center;" *ngIf="videoFile.id!==videoId">
-																		<span class="label label-blue" style="color: #607D8B">
-																			<b>{{videoFile.viewBy | lowercase}}</b>
-																		</span>
+																		<span class="view-by-banner">{{videoFile.viewBy | lowercase}}</span>
 																	</td>
 																	<!-- --------------Status--------------------------- -->
 																	<td style="text-align: center;" *ngIf="videoFile.id!==videoId">
@@ -557,7 +552,7 @@
 																		<input type="radio" [checked]="selectedRow==savedVideoFile.id" (click)="setClickedRow(savedVideoFile,'partner-videos')" name="videoFileId"
 																		 [value]="savedVideoFile.id" id="campaign_video_id_{{savedVideoFile.id}}">
 																		<a href="javascript:void(0)" (click)="$event.stopPropagation();showPreview(savedVideoFile)">
-																			<img src="{{savedVideoFile.imagePath}}" width="100px" height="50px">
+																			<img src="{{savedVideoFile.imagePath}}" width="100px" height="50px" (error)="videoUtilService.errorVideoHandler($event)">
 																		</a>
 																	</td>
 																	<td class="text-left">
@@ -570,7 +565,7 @@
 																					</a>
 																				</p>
 																				<p>by
-																					<b>{{savedVideoFile.uploadedUserName}}</b>
+                                            <b>{{savedVideoFile.uploadedUserName | slice:0:20}}<span *ngIf="savedVideoFile.uploadedUserName?.length>20">...</span></b>
 																				</p>
 																				<p>
 																					<span>{{savedVideoFile.uploadedDate}}</span>
@@ -582,9 +577,7 @@
 																		{{savedVideoFile.category.name}}
 																	</td>
 																	<td style="text-align: center;">
-																		<span class="label label-blue" style="color: #607D8B">
-																			<b>{{savedVideoFile.viewBy | lowercase}}</b>
-																		</span>
+                                      <span class="view-by-banner">{{savedVideoFile.viewBy | lowercase}}</span>
 																	</td>
 																	<td style="text-align: center;">
 																		<img src="assets/images/draft.png" *ngIf="savedVideoFile.viewBy=='DRAFT'">
@@ -602,13 +595,13 @@
 																		<input type="radio" name="videoFileId" [value]="videoFile.id" (click)="setClickedRow(videoFile,'partner-videos')" id="campaign_video_id_{{videoFile.id}}"
 																		 [checked]="videoFile.id == selectedRow">
 																		<a href="javascript:void(0)" (click)="$event.stopPropagation();showPreview(videoFile)" lang="{{videoFile.id}}">
-																			<img src="{{videoFile.imagePath}}" width="100px" height="50px">
+																			<img src="{{videoFile.imagePath}}" width="100px" height="50px"  (error)="videoUtilService.errorVideoHandler($event)">
 																		</a>
 																	</td>
 																	<td style="text-align: center;" *ngIf="videoFile.viewBy=='DRAFT'  && videoFile.id!==videoId">
 																		<input type="radio" name="videoFileId" [value]="videoFile.id" disabled="disabled" title="Video is in draft mode, please update the publish options to Library or Viewers.">
 																		<a href="javascript:void(0)" class="not-active">
-																			<img src="{{videoFile.imagePath}}" width="100px" height="50px">
+																			<img src="{{videoFile.imagePath}}" width="100px" height="50px" (error)="videoUtilService.errorVideoHandler($event)">
 																		</a>
 																	</td>
 																	<!-- --------------Title--------------------------- -->
@@ -617,12 +610,13 @@
 																			<div class="col-md-12">
 																				<p style="margin: 0;" title="{{videoFile.title}}">
 																					<a href="javascript:void(0)" class="not-active">
-																						<b style="font-size: 13px;" *ngIf="videoFile.title?.length>50">{{videoFile.title|slice:0:50}}....</b>
-																						<b style="font-size: 13px;" *ngIf="videoFile.title?.length<=50">{{videoFile.title}}</b>
+																						<b style="font-size: 13px;">{{videoFile.title|slice:0:50}}
+                                                <span *ngIf="videoFile.title?.length>50">...</span>
+                                            </b>
 																					</a>
 																				</p>
 																				<p>by
-																					<b>{{videoFile.uploadedUserName}}</b>
+																					<b>{{videoFile.uploadedUserName | slice:0:20}}<span *ngIf="videoFile.uploadedUserName?.length>20">...</span></b>
 																				</p>
 																				<p>
 																					<span>{{videoFile.uploadedDate}}</span>
@@ -636,9 +630,7 @@
 																	</td>
 																	<!-- --------------Published To--------------------------- -->
 																	<td style="text-align: center;" *ngIf="videoFile.id!==videoId">
-																		<span class="label label-blue" style="color: #607D8B">
-																			<b>{{videoFile.viewBy | lowercase}}</b>
-																		</span>
+																		<span class="view-by-banner">{{videoFile.viewBy | lowercase}}</span>
 																	</td>
 																	<!-- --------------Status--------------------------- -->
 																	<td style="text-align: center;" *ngIf="videoFile.id!==videoId">
@@ -1506,8 +1498,8 @@
 															<input *ngIf="!emailTemplate.draft" type="radio" name="url-email-template" [value]="emailTemplate.id" id="url-{{i}}-{{emailTemplate.id}}"
 															 (click)="setClickEmailTemplate(emailTemplate.id,url,i,emailTemplate.draft)"
 																[checked]="emailTemplate.id == url.selectedEmailTemplateId">
-																
-															<input *ngIf="emailTemplate.draft" title="draft template cannot be selected" disabled="disabled" type="radio" name="url-email-template">	
+
+															<input *ngIf="emailTemplate.draft" title="draft template cannot be selected" disabled="disabled" type="radio" name="url-email-template">
 														</td>
 														<td *ngIf="emailTemplate.name?.length>20" title="{{emailTemplate.name}}">{{emailTemplate.name|slice:0:20}}....</td>
 														<td *ngIf="emailTemplate.name?.length<=20" title="{{emailTemplate.name}}">{{emailTemplate.name}}</td>
