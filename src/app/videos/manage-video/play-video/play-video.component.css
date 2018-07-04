@@ -42,7 +42,7 @@
     letter-spacing: 1px;
 }
 .embedVideoButton{
-   color: #00a6e8;
+    color: #fff !important;
     background-color: #fff;
     border: 1px solid #00a6e8;
     border-radius: 0;
@@ -101,4 +101,10 @@ textarea {
     right: 17px;
     background: transparent;
     z-index: 99;
+}
+.video-title{
+  word-break: break-all;
+  color: #5d5d5d;
+  font-size: 18px;
+  font-weight: 500;
 }

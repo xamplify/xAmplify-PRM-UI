@@ -72,7 +72,7 @@
                    <table class='table tgrid' *ngIf="pagination.pagedItems.length !== 0">
                      <thead>
                        <tr>
-                         <th colspan="2" style="width: 50%">Videos</th>
+                         <th colspan="1" style="width: 50%">Videos</th>
                          <th class="text-center">Type</th>
                          <th class="text-center">Upload Date</th>
                          <th class="text-center"><span [hidden]="authenticationService.isOnlyPartner()">Actions</span></th>
@@ -80,16 +80,17 @@
                      </thead>
                      <tbody>
                        <tr *ngFor="let videoFile of pagination.pagedItems ;let i =index">
-                         <td style="width: 10%;">
-                           <div style="margin-bottom: -18px" >
+                        <td>
+                        <app-video-thumbnail [videoFile]="videoFile" (notifyParent)="showPlayVideo($event)"></app-video-thumbnail>
+                        </td>
+                           <!-- <div style="margin-bottom: -18px" >
                              <a (click)="showPlayVideo(videoFile)">
                                <img src="{{videoFile.imagePath}}" alt="{{videoFile.title}}" style="height:100px;width: 170px;">
                                <span class="duration f-w-600">{{videoUtilService.truncateHourZeros(videoFile.videoLength)}}</span>
                              </a>
-                           </div>
-                         </td>
-                         <td>
-                           <a (click)="showPlayVideo(videoFile)">
+                           </div> -->
+                         <!-- <td> -->
+                           <!-- <a (click)="showPlayVideo(videoFile)">
                              <h4  title={{videoFile.title}} class='mt5 mb5 f-w-600'>{{videoFile.title | slice: 0: 35}} <span *ngIf="videoFile.title?.length>35">...</span> </h4>
                              <span *ngIf="!authenticationService.isOnlyPartner()">
                              <h5 [title]="videoFile.uploadedUserName" *ngIf="videoFileService.videoType === 'myVideos'" class='m0'>By {{videoFile.uploadedUserName | slice:0:20}}<span *ngIf="videoFile.uploadedUserName?.length>20">...</span></h5>
@@ -102,8 +103,8 @@
                                 <span [title]="videoFile.companyName"  *ngIf="videoFile.companyName">By {{videoFile.companyName}}</span>
                               </span>
                              <h6 class='f-w-600'>{{videoFile.views}} views</h6>
-                           </a>
-                         </td>
+                           </a> -->
+                         <!-- </td> -->
                          <td class="text-center">
                            <span class='view-by-banner'>{{videoFile.viewBy}}</span>
                          </td>
@@ -144,7 +145,7 @@
                  <div class="col-xs-6 col-sm-3" *ngFor="let videoFile of pagination.pagedItems ;let i =index" >
                  <div class="grid-box p0" *ngIf="pagination.pagedItems && !httpRequestLoader.isLoading && !referenceService.isPlayVideo">
                    <div class="video-thumbnail-wrapper">
-                       <img class="video-thumbnail" src="{{videoFile.imagePath}}" width="auto">
+                       <img class="video-thumbnail" src="{{videoFile.imagePath}}" width="auto" (error)="videoUtilService.errorVideoHandler($event)">
                        <i class="fa fa-play-circle" (click)="showPlayVideo(videoFile)"></i>
                        <span class="views-count" title="views"><i class="fa fa-eye"></i>&nbsp;{{videoFile.views}}</span>
                        <span class="video-duration"  title="Video Length">{{videoUtilService.truncateHourZeros(videoFile.videoLength)}}</span>

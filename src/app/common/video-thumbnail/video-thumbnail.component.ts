@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Input, Output, EventEmitter } from '@angular/core';
+import { VideoUtilService } from '../../videos/services/video-util.service';
+import { VideoFileService } from '../../videos/services/video-file.service';
+import { AuthenticationService } from '../../core/services/authentication.service';
 
 @Component({
   selector: 'app-video-thumbnail',
@@ -6,10 +9,16 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./video-thumbnail.component.css']
 })
 export class VideoThumbnailComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
+  @Input() videoFile: any;
+  @Output() notifyParent: EventEmitter<any>;
+  constructor(public videoUtilService:VideoUtilService, public videoFileService:VideoFileService,public authenticationService:AuthenticationService) {
+    this.notifyParent = new EventEmitter<any>();
   }
+
+  showPlayVideo(videoFile){
+   this.notifyParent.emit(videoFile);
+  }
+
+  ngOnInit() {}
 
 }

@@ -75,7 +75,9 @@ export class TopnavbarComponent implements OnInit {
     }
     }catch(error) {this.logger.error('error'+error); }
   }
-
+  errorHandler(event:any){
+    event.target.src = 'assets/admin/pages/media/profile/icon-user-default.png';
+  }
   getUnreadNotificationsCount() {
    try{
     this.userService.getUnreadNotificationsCount(this.authenticationService.getUserId())

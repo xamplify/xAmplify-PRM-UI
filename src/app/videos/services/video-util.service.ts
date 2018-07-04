@@ -166,4 +166,9 @@ export class VideoUtilService {
       return callAction;
     }
 
+    errorVideoHandler(event) {
+      console.log(event);
+      event.target.src = "assets/images/default-image.jpg";
+    }
+
 }

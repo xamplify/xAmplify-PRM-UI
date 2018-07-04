@@ -59,7 +59,7 @@
 				</div>
 				<!-- modal popup end-->
 				<div [hidden]="isVideoChanged">
-					<h3 style="word-break: break-all;color:#777">
+					<h3 class="video-title">
             <span [hidden]="fullTitle">{{selectedVideo.title | slice:0:140}}<a title="more" *ngIf="selectedVideo.title?.length>140" (click)="showFullTitle(true)">...</a></span>
             <span [hidden]="!fullTitle">{{selectedVideo.title}}<a title="less" (click)="showFullTitle(false)">...</a></span>
           </h3>

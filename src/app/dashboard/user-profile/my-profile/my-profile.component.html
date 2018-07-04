@@ -100,7 +100,7 @@ input:checked + .slider-new:before {
 							<!-- PORTLET MAIN -->
 							<div class="portlet light profile-sidebar-portlet">
               <div class="profile-image-wrapper">
-                <img [src]="userProfileImage" class="profile-image" (click)="imageUpload('imageSelect')">
+                <img src="{{userProfileImage}}" class="profile-image" (error)="errorHandler($event)" (click)="imageUpload('imageSelect')">
                 <div class="upload-btn-wrapper">
                     <i class="fa fa-camera"></i>
                     <input type="file" ng2FileSelect [uploader]="uploader"
