@@ -110,7 +110,7 @@ input:checked + .slider-new:before {
               </div>
 								<div class="profile-usertitle">
 									<div class="profile-usertitle-name" style="overflow: auto">
-										 <span>{{userData.displayName | slice:0:23}}</span><span *ngIf="userData.displayName?.length>23">...</span>
+										 <span style="font-size: 17px !important;" [title]="userData.displayName">{{userData.displayName | slice:0:18}}</span><span *ngIf="userData.displayName?.length>18">...</span>
 										 <h5>{{userData.emailId}}</h5>
 									</div>
 									<div class="profile-usertitle-job">
@@ -123,6 +123,7 @@ input:checked + .slider-new:before {
 								</div>
 								<div class="profile-usermenu">
 									<ul class="nav">
+                    <!-- commented for future work -->
 										<!--	<li class="active" >
 											<a routerLink="../myprofile">
 											<i class="icon-settings"></i>
