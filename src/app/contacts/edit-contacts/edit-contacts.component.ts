@@ -1940,8 +1940,17 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                         if ( $.inArray( inputName, self.names ) > -1 ) {
                             swal.showValidationError( 'This list name is already taken.' )
                         } else {
-                            swal.close();
-                            self.updateContactListName( name );
+                            if ( name != "" && name.length < 250 ) {
+                                swal.close();
+                                self.updateContactListName( name );
+                            } else {
+                                if(name == ""){
+                                    swal.showValidationError( 'List Name is Required..' )
+                                   }
+                                   else{
+                                       swal.showValidationError("You have exceeded 250 characters!");
+                                   }
+                                }
                         }
                     });
                 }
