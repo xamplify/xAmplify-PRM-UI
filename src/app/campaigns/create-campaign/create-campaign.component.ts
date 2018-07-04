@@ -755,13 +755,18 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     }
 
 
-    setReplyEmailTemplate(emailTemplateId:number,reply:Reply,index:number){
-        reply.selectedEmailTemplateId = emailTemplateId;
-        $('#reply-'+index+emailTemplateId).prop("checked",true);
+    setReplyEmailTemplate(emailTemplateId:number,reply:Reply,index:number,isDraft:boolean){
+        if(!isDraft){
+            reply.selectedEmailTemplateId = emailTemplateId;
+            $('#reply-'+index+emailTemplateId).prop("checked",true);
+        }
+     
     }
-    setClickEmailTemplate(emailTemplateId:number,url:Url,index:number){
-        url.selectedEmailTemplateId = emailTemplateId;
-        $('#url-'+index+emailTemplateId).prop("checked",true);
+    setClickEmailTemplate(emailTemplateId:number,url:Url,index:number,isDraft:boolean){
+        if(!isDraft){
+            url.selectedEmailTemplateId = emailTemplateId;
+            $('#url-'+index+emailTemplateId).prop("checked",true);
+        }
     }
     showToolTip(videoType:string){
         if(videoType=="DRAFT"){

@@ -900,9 +900,13 @@
 									<div *ngFor="let emailTemplate of emailTemplatesPagination.pagedItems ;let i =index" id="emailTemplateListDiv_{{emailTemplate.id}}">
 										<div class="col-md-3 col-sm-4 mix category_1 mix_all" style="display: block; opacity: 1; margin-top: -11px;" *ngIf="emailTemplateId!=emailTemplate.id">
 											<div id="container">
-												<h3 *ngIf="emailTemplate.type=='PARTNER'" style="width: 21%">
+												<h3 *ngIf="emailTemplate.type=='PARTNER'" class="partner-ribbon">
 													{{emailTemplate.type}}
 													<span class="arrow"></span>
+												</h3>
+												<h3 *ngIf="emailTemplate.draft" class="draft-header">
+													DRAFT
+													<span class="draft-arrow"></span>
 												</h3>
 											</div>
 											<div class="mix-inner css" [class.template-selected]="emailTemplate.id == selectedEmailTemplateRow">
@@ -911,7 +915,7 @@
 													<h4 class="ellipsis" title="{{emailTemplate.name}}" style="margin-top: 14px;">{{emailTemplate.name}}</h4>
 													<div style="top: 2%; position: relative; margin-left: 5px;">
 													</div>
-													<div id="template-action-div">
+													<div id="template-action-div" *ngIf="!emailTemplate.draft">
 														<a class="mix-preview4 icons-css" title="Select" data-rel="" *ngIf="emailTemplate.id!=selectedEmailTemplateRow" (click)="setEmailTemplate(emailTemplate)">
 															<i class="fa fa-check-circle" id="fa-font-size"></i>
 														</a>
@@ -1313,19 +1317,21 @@
 													</tr>
 												</ng-container>
 												<ng-container *ngFor="let emailTemplate of reply.emailTemplatesPagination.pagedItems ;let e =index">
-													<tr (click)="setReplyEmailTemplate(emailTemplate.id,reply,i)" [class.active]="emailTemplate.id==reply.selectedEmailTemplateId"
+													<tr (click)="setReplyEmailTemplate(emailTemplate.id,reply,i,emailTemplate.draft)" [class.active]="emailTemplate.id==reply.selectedEmailTemplateId"
 														*ngIf="reply.selectedEmailTemplateIdForEdit!=emailTemplate.id">
 														<!-- -->
 														<td>
-															<input type="radio" name="reply-email-template" [value]="emailTemplate.id" id="reply-{{i}}-{{emailTemplate.id}}" (click)="setReplyEmailTemplate(emailTemplate.id,reply,i)"
+															<input *ngIf="!emailTemplate.draft" type="radio" name="reply-email-template" [value]="emailTemplate.id" id="reply-{{i}}-{{emailTemplate.id}}"
+															 (click)="setReplyEmailTemplate(emailTemplate.id,reply,i,emailTemplate.draft)"
 																[checked]="emailTemplate.id == reply.selectedEmailTemplateId">
+														<input *ngIf="emailTemplate.draft" title="draft template cannot be selected" disabled="disabled" type="radio" name="reply-email-template">
 														</td>
 														<td *ngIf="emailTemplate.name?.length>20" title="{{emailTemplate.name}}">{{emailTemplate.name|slice:0:20}}....</td>
 														<td *ngIf="emailTemplate.name?.length<=20" title="{{emailTemplate.name}}">{{emailTemplate.name}}</td>
 														<td *ngIf="emailTemplate.createdBy?.length>20" title="{{emailTemplate.createdBy}}">{{emailTemplate.createdBy|slice:0:20}}....</td>
 														<td *ngIf="emailTemplate.createdBy?.length<=20" title="{{emailTemplate.createdBy}}">{{emailTemplate.createdBy}}</td>
 														<td>
-															<a class="btn btn-warning" (click)="getEmailTemplatePreview(emailTemplate)">
+															<a *ngIf="!emailTemplate.draft" class="btn btn-warning" (click)="getEmailTemplatePreview(emailTemplate)">
 																<i class="fa fa-eye" style="padding-top: 3px; font-size: 20px;" title="" data-original-title="Preview"></i>
 															</a>
 														</td>
@@ -1493,19 +1499,22 @@
 													</tr>
 												</ng-container>
 												<ng-container *ngFor="let emailTemplate of url.emailTemplatesPagination.pagedItems ;let e =index">
-													<tr (click)="setClickEmailTemplate(emailTemplate.id,url,i)" [class.active]="emailTemplate.id==url.selectedEmailTemplateId"
+													<tr (click)="setClickEmailTemplate(emailTemplate.id,url,i,emailTemplate.draft)" [class.active]="emailTemplate.id==url.selectedEmailTemplateId"
 														*ngIf="url.selectedEmailTemplateIdForEdit!=emailTemplate.id">
 														<!-- -->
 														<td>
-															<input type="radio" name="url-email-template" [value]="emailTemplate.id" id="url-{{i}}-{{emailTemplate.id}}" (click)="setClickEmailTemplate(emailTemplate.id,url,i)"
+															<input *ngIf="!emailTemplate.draft" type="radio" name="url-email-template" [value]="emailTemplate.id" id="url-{{i}}-{{emailTemplate.id}}"
+															 (click)="setClickEmailTemplate(emailTemplate.id,url,i,emailTemplate.draft)"
 																[checked]="emailTemplate.id == url.selectedEmailTemplateId">
+																
+															<input *ngIf="emailTemplate.draft" title="draft template cannot be selected" disabled="disabled" type="radio" name="url-email-template">	
 														</td>
 														<td *ngIf="emailTemplate.name?.length>20" title="{{emailTemplate.name}}">{{emailTemplate.name|slice:0:20}}....</td>
 														<td *ngIf="emailTemplate.name?.length<=20" title="{{emailTemplate.name}}">{{emailTemplate.name}}</td>
 														<td *ngIf="emailTemplate.createdBy?.length>20" title="{{emailTemplate.createdBy}}">{{emailTemplate.createdBy|slice:0:20}}....</td>
 														<td *ngIf="emailTemplate.createdBy?.length<=20" title="{{emailTemplate.createdBy}}">{{emailTemplate.createdBy}}</td>
 														<td>
-															<a class="btn btn-warning" (click)="getEmailTemplatePreview(emailTemplate)">
+															<a *ngIf="!emailTemplate.draft" class="btn btn-warning" (click)="getEmailTemplatePreview(emailTemplate)">
 																<i class="fa fa-eye" style="padding-top: 3px; font-size: 20px;" title="" data-original-title="Preview"></i>
 															</a>
 														</td>

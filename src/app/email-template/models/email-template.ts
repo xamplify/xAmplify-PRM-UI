@@ -22,4 +22,5 @@ export class EmailTemplate {
         campaignDefault:boolean;
         vendorName:string = "";
         vendorOrganizationName:string = "";
+        draft:boolean = false;
 }

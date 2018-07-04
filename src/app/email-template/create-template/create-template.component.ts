@@ -17,22 +17,24 @@ declare var BeePlugin,swal,$,Promise:any;
   providers :[EmailTemplate,HttpRequestLoader]
 })
 export class CreateTemplateComponent implements OnInit,OnDestroy {
-
     httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
+    loggedInUserId:number = 0;
+    emailTemplate:EmailTemplate = new EmailTemplate();
+    clickedButtonName:string = "";
+    videoGif:string = "xtremand-video.gif";
+    coBraningImage:string = "co-branding.png";
     constructor(private emailTemplateService:EmailTemplateService,
-                private emailTemplate:EmailTemplate,private router:Router, private logger :XtremandLogger,
+               private router:Router, private logger :XtremandLogger,
                 private authenticationService:AuthenticationService,public refService:ReferenceService) {
-		console.log(emailTemplateService.emailTemplate);
-		let loggedInUserId = this.authenticationService.getUserId();
-      var names:any = [];
-
+        var names:any = [];
 		let self = this;
-        emailTemplateService.getAvailableNames(loggedInUserId).subscribe(
+		self.loggedInUserId = this.authenticationService.getUserId();
+        emailTemplateService.getAvailableNames(self.loggedInUserId).subscribe(
             ( data: any ) => {
 	              names = data;
             },
             error => {
-                this.logger.error("error in getAvailableNames("+loggedInUserId+")", error);
+                this.logger.error("error in getAvailableNames("+self.loggedInUserId+")", error);
             },
             () =>  this.logger.info("Finished getAvailableNames()")
         );
@@ -77,17 +79,17 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
 	      }
 
 	      var save = function(jsonContent:string, htmlContent:string) {
-	          emailTemplate = new EmailTemplate();
-              emailTemplate.body = htmlContent;
-              emailTemplate.jsonBody = jsonContent;
+	          self.emailTemplate = new EmailTemplate();
+              self.emailTemplate.body = htmlContent;
+              self.emailTemplate.jsonBody = jsonContent;
 	          if(emailTemplateService.emailTemplate.beeVideoTemplate || emailTemplateService.emailTemplate.videoCoBrandingTemplate){
-	              if(jsonContent.indexOf("xtremand-video.gif")<0){
+	              if(jsonContent.indexOf(self.videoGif)<0){
 	                 swal("","Whoops! We’re unable to save this template because you deleted the default gif. You’ll need to select a new email template and start over.","error");
 	                 return false;
 	              }
 	          }
 	          if(emailTemplateService.emailTemplate.regularCoBrandingTemplate || emailTemplateService.emailTemplate.videoCoBrandingTemplate){
-	              if(jsonContent.indexOf("co-branding.png")<0){
+	              if(jsonContent.indexOf(self.coBraningImage)<0){
 	                     swal("","Whoops! We’re unable to save this template because you deleted the co-branding logo. You’ll need to select a new email template and start over.","error");
 	                     return false;
 	                  }
@@ -96,27 +98,15 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
 	              var buttons = $('<div>')
                   .append(' <div class="form-group"><input class="form-control" type="text" value="'+templateName+'" id="templateNameId" maxLength="200"><span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>')
 	              .append(createButton('Save As', function() {
+	                  self.clickedButtonName = "SAVE_AS";
 	                 saveTemplate();
 	              })).append(createButton('Update', function() {
-	                 console.log('Update');
+	                  self.clickedButtonName = "UPDATE";
 	                 self.refService.startLoader(self.httpRequestLoader);
 	                 swal.close();
-	                 emailTemplate.name = $.trim($('#templateNameId').val());
-	                 emailTemplate.id = emailTemplateService.emailTemplate.id;
-                     emailTemplateService.update(emailTemplate) .subscribe(
-                             data => {
-                                 self.refService.stopLoader(self.httpRequestLoader);
-                                 refService.isUpdated = true;
-                                 router.navigate(["/home/emailtemplates/manage"]);
-
-                             },
-                             error => {
-                                 self.refService.stopLoader(self.httpRequestLoader);
-                                 self.logger.errorPage(error)
-                                 },
-                             () => console.log( "Email Template Updated" )
-                             );
+	                 self.updateEmailTemplate(self.emailTemplate, emailTemplateService, false);
 	              })).append(createButton('Cancel', function() {
+	                  self.clickedButtonName = "CANCEL";
 	                 swal.close();
 	                 console.log('Cancel');
 	              }));
@@ -130,10 +120,11 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
 	              var buttons = $('<div>')
 	              .append(' <div class="form-group"><input class="form-control" type="text" value="'+templateName+'" id="templateNameId" maxLength="200"><span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>')
 	              .append(createButton('Save', function() {
+	                  self.clickedButtonName = "SAVE";
 	                  saveTemplate();
 	              })).append(createButton('Cancel', function() {
+	                  self.clickedButtonName = "CANCEL";
 	                 swal.close();
-	                 console.log('Cancel');
 	              }));
 	              swal({
 	                title: title,
@@ -145,7 +136,6 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
 	          $('#templateNameId').on('input',function(event){
 	             let value = $.trim(event.target.value);
 	              if(value.length>0){
-	                  console.log(names);
 	                  if(!(emailTemplateService.emailTemplate.defaultTemplate)){
                           if(names.indexOf(value.toLocaleLowerCase())>-1 && emailTemplateService.emailTemplate.name.toLowerCase()!=value.toLowerCase()){
                               $('#save,#update,#save-as').attr('disabled','disabled');
@@ -178,43 +168,8 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
 
 	      function saveTemplate(){
               self.refService.startLoader(self.httpRequestLoader);
+              self.saveEmailTemplate(self.emailTemplate,emailTemplateService,self.loggedInUserId,false);
               swal.close();
-	          emailTemplate.user = new User();
-              emailTemplate.user.userId = loggedInUserId;
-              emailTemplate.userDefined = true;
-              emailTemplate.name = $.trim($('#templateNameId').val());
-              emailTemplate.beeRegularTemplate = emailTemplateService.emailTemplate.beeRegularTemplate;
-              emailTemplate.beeVideoTemplate = emailTemplateService.emailTemplate.beeVideoTemplate;
-              emailTemplate.desc = emailTemplateService.emailTemplate.name;//Type Of Email Template
-              emailTemplate.subject = emailTemplateService.emailTemplate.subject;//Image Path
-              emailTemplate.regularCoBrandingTemplate = emailTemplateService.emailTemplate.regularCoBrandingTemplate;
-              emailTemplate.videoCoBrandingTemplate = emailTemplateService.emailTemplate.videoCoBrandingTemplate;
-              let isCoBrandingTemplate = emailTemplate.regularCoBrandingTemplate || emailTemplate.videoCoBrandingTemplate;
-              if(emailTemplateService.emailTemplate.subject.indexOf('basic')>-1 && !isCoBrandingTemplate){
-                  emailTemplate.type = EmailTemplateType.BASIC;
-              }else if(emailTemplateService.emailTemplate.subject.indexOf('rich')>-1 && !isCoBrandingTemplate){
-                  emailTemplate.type = EmailTemplateType.RICH;
-              }else if(emailTemplateService.emailTemplate.subject.indexOf('Upload')>-1 && !isCoBrandingTemplate){
-                  emailTemplate.type = EmailTemplateType.UPLOADED;
-              }else if(emailTemplate.regularCoBrandingTemplate){
-                  emailTemplate.type = EmailTemplateType.REGULAR_CO_BRANDING;
-              }else if(emailTemplate.videoCoBrandingTemplate){
-                  emailTemplate.type = EmailTemplateType.VIDEO_CO_BRANDING;
-              }
-              console.log(emailTemplate.name);
-              emailTemplateService.save(emailTemplate) .subscribe(
-                      data => {
-                          self.refService.stopLoader(self.httpRequestLoader);
-                          refService.isCreated = true;
-                          router.navigate(["/home/emailtemplates/manage"]);
-                      },
-                      error => {
-                          self.refService.stopLoader(self.httpRequestLoader);
-                          self.logger.errorPage(error)
-                          },
-                      () => console.log( "Email Template Saved" )
-                      );
-
 	      }
 
 	      function createButton(text, cb) {
@@ -248,7 +203,7 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
                  name: 'Company Name',
                  value: '{{companyName}}'
              }];
-	      var beeUserId = "bee-"+loggedInUserId;
+	      var beeUserId = "bee-"+self.loggedInUserId;
 	      var beeConfig = {
 	        uid: beeUserId,
 	        container: 'bee-plugin-container',
@@ -264,13 +219,14 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
 	        onAutoSave: function(jsonFile) { // + thumbnail?
 	          console.log(new Date().toISOString() + ' autosaving...');
 	          window.localStorage.setItem('newsletter.autosave', jsonFile);
+	          self.emailTemplate.jsonBody = jsonFile;
 	        },
 	        onSend: function(htmlFile) {
 	          //write your send test function here
 	          console.log(htmlFile);
 	        },
 	        onError: function(errorMessage) {
-	          console.log('onError ', errorMessage);
+                swal("","Unable to load bee template:"+errorMessage,"error");
 	        }
 	      };
 
@@ -289,17 +245,12 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
 	              null,
 	              null,
 	              function(template:any) {
-	                  console.log("Template is ready");
-	                  console.log(emailTemplateService.emailTemplate);
 	                  if(emailTemplateService.emailTemplate!=undefined){
 	                      var body = emailTemplateService.emailTemplate.jsonBody;
-	                     // body = body.replace("https://eu-bee-resources.s3.amazonaws.com/public/resources/img/placeholder_01.png","https://xamp.io/vod/images/co-branding.png");
+	                      self.emailTemplate.jsonBody = body;
 	                      var jsonBody = JSON.parse(body);
-	                      console.log(jsonBody);
 	                      bee.load(jsonBody);
-	                      console.log("Template Loaded");
 	                      bee.start(jsonBody);
-	                      console.log("Template Started");
 	                  }else{
 	                      bee.start(template);
 	                  }
@@ -310,10 +261,82 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
 
     	}//End Of Constructor
 
+  saveEmailTemplate(emailTemplate:EmailTemplate,emailTemplateService:EmailTemplateService,loggedInUserId:number,isOnDestroy:boolean){
+      emailTemplate.user = new User();
+      emailTemplate.user.userId = loggedInUserId;
+      emailTemplate.userDefined = true;
+      emailTemplate.name = $.trim($('#templateNameId').val());
+      emailTemplate.beeRegularTemplate = emailTemplateService.emailTemplate.beeRegularTemplate;
+      emailTemplate.beeVideoTemplate = emailTemplateService.emailTemplate.beeVideoTemplate;
+      emailTemplate.desc = emailTemplateService.emailTemplate.name;//Type Of Email Template
+      emailTemplate.subject = emailTemplateService.emailTemplate.subject;//Image Path
+      emailTemplate.regularCoBrandingTemplate = emailTemplateService.emailTemplate.regularCoBrandingTemplate;
+      emailTemplate.videoCoBrandingTemplate = emailTemplateService.emailTemplate.videoCoBrandingTemplate;
+      let isCoBrandingTemplate = emailTemplate.regularCoBrandingTemplate || emailTemplate.videoCoBrandingTemplate;
+      if(emailTemplateService.emailTemplate.subject.indexOf('basic')>-1 && !isCoBrandingTemplate){
+          emailTemplate.type = EmailTemplateType.BASIC;
+      }else if(emailTemplateService.emailTemplate.subject.indexOf('rich')>-1 && !isCoBrandingTemplate){
+          emailTemplate.type = EmailTemplateType.RICH;
+      }else if(emailTemplateService.emailTemplate.subject.indexOf('Upload')>-1 && !isCoBrandingTemplate){
+          emailTemplate.type = EmailTemplateType.UPLOADED;
+      }else if(emailTemplate.regularCoBrandingTemplate){
+          emailTemplate.type = EmailTemplateType.REGULAR_CO_BRANDING;
+      }else if(emailTemplate.videoCoBrandingTemplate){
+          emailTemplate.type = EmailTemplateType.VIDEO_CO_BRANDING;
+      }
+      emailTemplateService.save(emailTemplate) .subscribe(
+              data => {
+                  this.refService.stopLoader(this.httpRequestLoader);
+                  if(!isOnDestroy){
+                      this.refService.isCreated = true;
+                      this.router.navigate(["/home/emailtemplates/manage"]);
+                  }
+              },
+              error => {
+                  this.refService.stopLoader(this.httpRequestLoader);
+                  this.logger.errorPage(error)
+                  },
+              () => console.log( "Email Template Saved" )
+              );
+  }
+  
+
+  updateEmailTemplate(emailTemplate:EmailTemplate,emailTemplateService:EmailTemplateService,isOnDestroy:boolean){
+      let enteredEmailTemplateName = $.trim($('#templateNameId').val());
+      if(enteredEmailTemplateName.length==0){
+          emailTemplate.name = emailTemplateService.emailTemplate.name;
+      }else{
+          emailTemplate.name = $.trim($('#templateNameId').val());
+      }
+      emailTemplate.id = emailTemplateService.emailTemplate.id;
+      emailTemplateService.update(emailTemplate) .subscribe(
+              data => {
+                  this.refService.stopLoader(this.httpRequestLoader);
+                  if(!isOnDestroy){
+                      this.refService.isUpdated = true;
+                      this.router.navigate(["/home/emailtemplates/manage"]);
+                  }
+              },
+              error => {
+                  this.refService.stopLoader(this.httpRequestLoader);
+                  this.logger.errorPage(error)
+                  },
+              () => console.log( "Email Template Updated" )
+              );
+  }
+  
   ngOnInit() {
   }
   ngOnDestroy(){
-    swal.close();
+      swal.close();
+      let isButtonClicked = this.clickedButtonName!="SAVE" && this.clickedButtonName!="SAVE_AS" &&  this.clickedButtonName!="UPDATE";
+      if(isButtonClicked && this.emailTemplateService.emailTemplate!=undefined &&this.loggedInUserId>0 && this.emailTemplate.jsonBody!=undefined){
+          if(!this.emailTemplateService.emailTemplate.defaultTemplate){
+              this.updateEmailTemplate(this.emailTemplate,this.emailTemplateService, true);
+           }else{
+               this.saveEmailTemplate(this.emailTemplate,this.emailTemplateService,this.loggedInUserId,true);
+           }
+      }
   }
-
+  
 }

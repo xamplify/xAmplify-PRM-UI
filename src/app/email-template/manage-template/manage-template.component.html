@@ -88,7 +88,7 @@
 											<h6>Created By <b>{{emailTemplate.createdBy}}</b></h6>
 											<h6>From <b>{{emailTemplate.companyName}}</b></h6>
 										</ng-container>
-
+									<h5 class="view-banner-draft" *ngIf="emailTemplate.draft">DRAFT</h5>
 									<h5 class="view-banner" *ngIf="emailTemplate.type=='PARTNER'">PARTNER</h5>
 									<h5 class="view-banner" *ngIf="(emailTemplate.regularCoBrandingTemplate||emailTemplate.videoCoBrandingTemplate) &&emailTemplate.type=='UPLOADED' ">CO-BRANDED</h5>
 									</td>
@@ -97,15 +97,15 @@
 										<h5 style="width: auto;" *ngIf="emailTemplate.type!='PARTNER'"><b>-</b></h5>
 									</td>
 									<td>
-										<h5 class="view-banner" style="width: auto;">{{emailTemplate.emailTemplateType}}</h5>
+										<h5 class="view-banner" style="width: 115%;">{{emailTemplate.emailTemplateType}}</h5>
 									</td>
 									<td  style="text-align: center;">{{emailTemplate.createdDate}}</td>
-									<td>
+									<td style="width: 14%">
 										<div class="actions-block">
 											<a (click)="edit(emailTemplate.id)" title="Edit" *ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  || authenticationService.module.isVendor) && emailTemplate.type!='PARTNER'">
 												<i class="fa fa-pencil-square-o"></i>
 											</a>
-											<a (click)="showPreview(emailTemplate)" title="Preview">
+											<a  *ngIf= "!emailTemplate.draft" (click)="showPreview(emailTemplate)" title="Preview">
 												<i class="fa fa-eye mr5"></i>
 											</a>
 											<a id="template-delete" (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)" title="Delete"
@@ -138,7 +138,9 @@
 										<b *ngIf="emailTemplate.companyName?.length<17">{{emailTemplate.companyName}}</b>
 									</h6>
 									</ng-container>
-
+									<div class="ribbon active" *ngIf="emailTemplate.draft">
+										<span>DRAFT</span>
+									</div>
 									<ng-container *ngIf="emailTemplate.type=='PARTNER'">
 										<h6 title="{{emailTemplate.vendorName}}">By
 										<b *ngIf="emailTemplate.vendorName?.length>17">{{emailTemplate.vendorName|slice:0:17}}..</b>
@@ -152,11 +154,11 @@
 
 								</div>
 								<div class="bar">
-                  <a  (click)="edit(emailTemplate.id)" title="Edit"
+                  					<a  (click)="edit(emailTemplate.id)" title="Edit"
 										*ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  || authenticationService.module.isVendor) && emailTemplate.type!='PARTNER'">
 										<i class="fa fa-pencil-square-o"></i>
 									</a>
-									<a (click)="showPreview(emailTemplate)" title="Preview">
+									<a *ngIf="!emailTemplate.draft" (click)="showPreview(emailTemplate)" title="Preview">
 										<i class="fa fa-eye"></i>
 									</a>
 									<a (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)" title="Delete"
