@@ -897,8 +897,11 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   }
 
   listEmailLogsByCampaignIdUserIdActionType(emailLog: EmailLog, actionType: string) {
+    debugger;
     this.campaignReport.emailLogs.forEach((element) => {
-      element.isExpand = false;
+      if(element.userId !== emailLog.userId) {
+          element.isExpand = false;
+      }
     });
     emailLog.isExpand = !emailLog.isExpand;
     if (emailLog.emailLogHistory === undefined) {
