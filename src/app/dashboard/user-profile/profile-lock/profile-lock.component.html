@@ -12,10 +12,10 @@
 		<div class="lock-head" style="color:#fff">Locked</div>
 		<div class="lock-body">
 			<div class="pull-left lock-avatar-block">
-				<img [src]="userProfileImage" class="avatarImg">
+				<img [src]="userProfileImage" class="avatarImg" (error)="errorHandler($event)">
 			</div>
 			<form class="lock-form pull-left" action="index.html" method="post">
-				<h4>{{userData.displayName}}</h4>
+				<h4 [title]="userData.displayName">{{userData.displayName| slice:0:15}} <span *ngIf="userData.displayName?.length>15">...</span></h4>
 				<div class="form-group">
 					<div *ngIf="error" class="alert alert-custom">
 						<span style="position: relative; top: -3px;">{{error}}</span>
@@ -40,8 +40,8 @@
     </div>
 		<div class="lock-bottom"  >
 			<a (click)="backToLogin()" style="color:#fff">Not
-				<span *ngIf="authenticationService.hasCompany">{{userData.displayName}}</span>
-			    <span *ngIf="!authenticationService.hasCompany">{{authenticationService.user.username}}</span>
+				<span *ngIf="authenticationService.hasCompany">{{userData.displayName | slice:0:15}}<span *ngIf="userData.displayName?.length>15">...</span></span>
+			    <span *ngIf="!authenticationService.hasCompany">{{authenticationService.user.username | slice:0:15}}<span *ngIf="authenticationService.user.username?.length>15">...</span></span>
 				?</a>
 		</div>
 	</div>

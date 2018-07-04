@@ -32,6 +32,7 @@ export class ProfileLockComponent implements OnInit {
         private router: Router, public properties: Properties, public referenceService: ReferenceService) {
         this.password = '';
     }
+    errorHandler(event:any){ event.target.src='assets/admin/pages/media/profile/icon-user-default.png';}
     checkPassword(password: string) {
         if (password.replace(/\s/g, '').length === 0) {
             this.loginDisabled = true;
