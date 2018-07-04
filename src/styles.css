@@ -746,6 +746,38 @@ legend {
   border-right: 3px solid #31cd2c;
   border-top: 3px solid #31cd2c;
 }
+
+.ribbon.draft > span {
+    background-color: #f76c1a;
+}
+.ribbon.draft > span::before {
+  border-left: 3px solid #f76c1a;
+  border-top: 3px solid #f76c1a;
+}
+.ribbon.draft > span::after {
+  border-right: 3px solid #f76c1a;
+  border-top: 3px solid #f76c1a;
+}
+
+.ribbon.draft > span::before {
+  content: "";
+  position: absolute; left: 0px; top: 100%;
+  z-index: -1;
+  border-left: 3px solid #f76c1a;
+  border-right: 3px solid transparent;
+  border-bottom: 3px solid transparent;
+  border-top: 3px solid #f76c1a;
+}
+.ribbon.draft > span::after {
+  content: "";
+  position: absolute; right: 0px; top: 100%;
+  z-index: -1;
+  border-left: 3px solid transparent;
+  border-right: 3px solid #f76c1a;
+  border-bottom: 3px solid transparent;
+  border-top: 3px solid #f76c1a;
+}
+
 .dashboard-stat .visual {
   height: 60px !important;
   }

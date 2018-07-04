@@ -138,7 +138,7 @@
 										<b *ngIf="emailTemplate.companyName?.length<17">{{emailTemplate.companyName}}</b>
 									</h6>
 									</ng-container>
-									<div class="ribbon active" *ngIf="emailTemplate.draft">
+									<div class="ribbon draft" *ngIf="emailTemplate.draft">
 										<span>DRAFT</span>
 									</div>
 									<ng-container *ngIf="emailTemplate.type=='PARTNER'">
