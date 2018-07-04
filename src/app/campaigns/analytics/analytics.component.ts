@@ -11,6 +11,7 @@ import { HttpRequestLoader } from '../../core/models/http-request-loader';
 
 import { CampaignService } from '../services/campaign.service';
 import { UtilService } from '../../core/services/util.service';
+import { VideoUtilService } from '../../videos/services/video-util.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { PagerService } from '../../core/services/pager.service';
 import { ReferenceService } from '../../core/services/reference.service';
@@ -60,7 +61,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   downloadDataList = [];
   downloadCsvList: any;
   downloadTypeName = '';
-  totalTimeSpent = 0;
+  totalTimeSpent: string = "00:00:00";
   worldMapUserData: any;
   worldMapUserTotalData: any;
   countryCode: string;
@@ -93,7 +94,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   public selectedSortedOption: any = this.sortByDropDown[this.sortByDropDown.length-1];
   constructor(private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
     public authenticationService: AuthenticationService, public pagerService: PagerService, public pagination: Pagination,
-    public referenceService: ReferenceService, public contactService: ContactService, public xtremandLogger:XtremandLogger) {
+    public referenceService: ReferenceService, public contactService: ContactService, public videoUtilService: VideoUtilService, public xtremandLogger:XtremandLogger) {
       this.campaignRouter = this.utilService.getRouterLocalStorage();
       this.isTimeLineView = false;
       this.loggedInUserId = this.authenticationService.getUserId();
@@ -527,7 +528,6 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       .subscribe(data => {
         console.log(data);
         this.totalTimeSpent = data;   // data is coming as empty object ,, need to handle it
-        if (typeof data === 'number') { this.totalTimeSpent = data; } else { this.totalTimeSpent = 0; }
         this.loading = false;
       },
       error => console.log(error),

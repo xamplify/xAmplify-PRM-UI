@@ -12,15 +12,15 @@ td, th {
     <div class="col-xs-7 m0 p0" id="bubble-chart" style="height: 250px;z-index: 555"></div>
 <div class="col-xs-5" style="padding: 9px;margin: auto -15px;">
 <table style="border-collapse: collapse;">
-<tr *ngFor="let array of namesArray">
+<tr *ngFor="let name of names">
     <td>
-        <div [style.background]="array.color" class="td-css"></div>
+        <div [style.background]="name.color" class="td-css"></div>
     </td>
     <td>
-        <h6 *ngIf="array.firstName!=='null'" class="bold m0">{{array.firstName}}
-            <span *ngIf="array.lastName!=='null'"> {{array.lastName}}</span>
+        <h6 *ngIf="name.firstName!=='null'" class="bold m0">{{name.firstName}}
+            <span *ngIf="name.lastName!=='null'"> {{name.lastName}}</span>
         </h6>
-        <h6 class="m0">{{array.emailId}}</h6>
+        <h6 class="m0">{{name.emailId}}</h6>
     </td>
 </tr>
 </table>
