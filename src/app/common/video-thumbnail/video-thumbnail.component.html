@@ -7,7 +7,7 @@
   </div>
   <div class="title-div">
     <a (click)="showPlayVideo(videoFile)">
-      <h4 [title]="videoFile.title" class='mt5 mb5 f-w-600'>{{videoFile.title | slice: 0: 35}}
+      <h4 [title]="videoFile.title" class='mt5 mb5 f-w-600'>{{videoFile.title | slice: 0: 27}}
         <span *ngIf="videoFile.title?.length>35">...</span>
       </h4>
       <span *ngIf="!authenticationService.isOnlyPartner()">

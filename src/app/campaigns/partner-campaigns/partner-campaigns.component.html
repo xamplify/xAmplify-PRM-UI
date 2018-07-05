@@ -137,8 +137,6 @@
 											<h4 class="ellipsis" title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:25}}
 												<span *ngIf="campaign.campaignName?.length>25">...</span>
 											</h4>
-											<!-- <h6>By <b>{{campaign.createdBy}}</b></h6>
-                      <h6>From <b>{{campaign.companyName}}</b></h6> -->
                       <h5 [title]="campaign.createdBy">By <b>{{campaign.createdBy | slice:0:15}}<span *ngIf="campaign.createdBy?.length>15">...</span></b></h5>
 											<h5 [title]="campaign.companyName">From <b>{{campaign.companyName | slice:0:15}}<span *ngIf="campaign.companyName?.length>15">...</span></b></h5>
 											<h6>Received On <b>{{campaign.launchedOn}}</b></h6>
@@ -161,7 +159,7 @@
 						</div>
 						<!-- End of 24 -->
 						<div *ngIf="totalRecords <= 0 && !isListView" class="alert alert-info">
-							<strong>No Campaigns Found</strong>
+							<strong>No campaigns found</strong>
 						</div>
 					</div>
 					<div *ngIf="totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError" style="background:white">
