@@ -1,5 +1,5 @@
 import { element, browser, by, Key } from "protractor";
-import { LoginPage } from "../authentication/login/login.page";
+import { LoginPage } from "../../authentication/login/login.page";
 
 export class UploadVideoPage extends LoginPage {
 
@@ -23,5 +23,8 @@ export class UploadVideoPage extends LoginPage {
   closeCmera(){
     browser.waitForAngularEnabled(false);
     return element.all(by.xpath('//*[@id="myModal"]/div/div/div[1]/button')).click();
+  }
+  getUploadButton(){
+    return element.all(by.xpath('/html/body/app-root/app-home/div/div/app-upload-video/div/div[3]/div/div[1]/div[2]/div[2]/div/div/div[3]/button[2]')).click();
   }
 }
