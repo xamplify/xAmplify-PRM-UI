@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-
-import { UserService } from '../../../core/services/user.service';
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import { ReferenceService } from '../../../core/services/reference.service';
-
 import { User } from '../../../core/models/user';
 import { Properties } from '../../../common/models/properties';
 
@@ -28,8 +25,8 @@ export class ProfileLockComponent implements OnInit {
     { "name": "twitter", "iconName": "twitter" },
     { "name": "google", "iconName": "googleplus" },
     { "name": "linkedin", "iconName": "linkedin" }]
-    constructor(private userService: UserService, public authenticationService: AuthenticationService,
-        private router: Router, public properties: Properties, public referenceService: ReferenceService) {
+    constructor(public authenticationService: AuthenticationService,private router: Router,
+      public properties: Properties, public referenceService: ReferenceService) {
         this.password = '';
     }
     errorHandler(event:any){ event.target.src='assets/admin/pages/media/profile/icon-user-default.png';}

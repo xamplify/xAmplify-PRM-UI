@@ -141,7 +141,7 @@
 	</div>
 	<div class="col-xs-12 col-sm-6 p-5x" [hidden]="mainLoader" *ngIf="campaignType !== 'VIDEO'">
 		<div class="p-5x">
-			<div class="portlet light">
+			<div class="portlet light" style="min-height: 118px;">
 				<div class="portlet-body clearfix">
 					<div class="col-xs-12">
 						<span class="btn btn-sm btn-primary pull-right">{{campaignType}} CAMPAIGN {{isPartnerCampaign}}</span>
@@ -254,7 +254,7 @@
 						<span class="caption-subject font-red-sunglo uppercase" style="font-size: 15px !important;">Campaign Recipient Participation</span>
 					</div>
 				</div>
-				<div class="portlet-body flex" style="padding: 1.7em 0;" [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}">
+				<div class="portlet-body flex" style="padding: 1.49em 0;" [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}">
 					<div class="col-xs-4 text-center" [class.disabled]="(campaignReport.lifetimeViewsCount < 1 || !isPartnerEnabledAnalyticsAccess) ? true : null">
 						<section class="percentage-circle" style="cursor: pointer" (click)="campaignViewsDonut('life-time')">
 							<app-donut-chart [percentageValue]="campaignReport.lifetimeViewsCount" [totalValue]="campaignReport.emailSentCount"> </app-donut-chart>
@@ -620,7 +620,7 @@
 		</td>
 		<td>
 			<div class="actions-block" *ngIf="item.emailActionCount > 1">
-				<a title="View History" (click)="listEmailLogsByCampaignIdUserIdActionType(item, campaignReport.emailActionType)"> 
+				<a title="View History" (click)="listEmailLogsByCampaignIdUserIdActionType(item, campaignReport.emailActionType)">
 					<i class="fa" [ngClass]="{'fa-plus': !item.isExpand, 'fa-minus': item.isExpand}"></i>
 				</a>
 			</div>
@@ -648,7 +648,7 @@
 					<h6>Clicked on the video thumbnail</h6>
 				</td>
 				<td>{{emailLog.time | date: 'short'}}</td>
-			</tr>			
+			</tr>
 		</tbody>
 	</table>
 	</td>

@@ -14,7 +14,7 @@
 			<div class="pull-left lock-avatar-block">
 				<img [src]="userProfileImage" class="avatarImg" (error)="errorHandler($event)">
 			</div>
-			<form class="lock-form pull-left" action="index.html" method="post">
+			<form class="lock-form pull-left">
 				<h4 [title]="userData.displayName">{{userData.displayName| slice:0:15}} <span *ngIf="userData.displayName?.length>15">...</span></h4>
 				<div class="form-group">
 					<div *ngIf="error" class="alert alert-custom">
