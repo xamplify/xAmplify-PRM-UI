@@ -83,6 +83,8 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.videoFileService.videoType = videoType.value;
         this.loadVideos(this.pagination);
     }
+    mouseEnter(event, videoFile){ event.target.src = videoFile.gifImagePath; }
+    mouseLeave(event, videoFile){ event.target.src = videoFile.imagePath; }
     ngOnInit() {
       try {
         this.pagination.maxResults = 12;

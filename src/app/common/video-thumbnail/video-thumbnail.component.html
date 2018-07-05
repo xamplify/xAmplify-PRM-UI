@@ -1,7 +1,8 @@
 <div>
   <div style="margin-bottom: -77px">
     <a (click)="showPlayVideo(videoFile)">
-      <img src="{{videoFile.imagePath}}" (error)="videoUtilService.errorVideoHandler($event)" style="height:100px;width: 170px;">
+      <img src="{{videoFile.imagePath}}" (error)="videoUtilService.errorVideoHandler($event)"
+       style="height:100px;width: 170px;" (mouseenter) ="mouseEnter($event)" (mouseleave) ="mouseLeave($event)">
       <span class="duration f-w-600">{{videoUtilService.truncateHourZeros(videoFile.videoLength)}}</span>
     </a>
   </div>
