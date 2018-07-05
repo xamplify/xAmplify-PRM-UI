@@ -435,8 +435,9 @@ img:hover {
 												</td>
 												<td>
 													<h5 *ngIf="newContact?.address" class='mb0'>{{newContact.address}}</h5>
+													<h5 class='mb0'>{{newContact.city}},&nbsp;{{newContact.state}},</h5>
 													<h5 *ngIf="newContact?.city && newContact.country"
-														class='mt0'>{{newContact.city}},&nbsp;{{newContact.country}}</h5>
+														class='mt0'>{{newContact.zipCode}},&nbsp;{{newContact.country}}</h5>
 												</td>
 												<!-- <td align="center">
 													<button id='more_less_button_{{i}}'

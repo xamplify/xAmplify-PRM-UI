@@ -402,7 +402,7 @@ img:hover {
 									<div class="col-xs-12">
 										<textarea id="copyFromclipTextArea" class="textareaNumber"
 											[(ngModel)]="clipboardTextareaText"
-											placeholder="FirstName,LastName,Company,Jobtitle,Email,Address,City,Country,Phonenumber       FirstName,LastName,Company,Jobtitle,Email,Address,City,country,Phonenumber       FirstName,LastName,Company,Jobtitle,Email,Address,City,Country,Phonenumber"
+											placeholder="FirstName,LastName,Company,Jobtitle,Email,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Address,City,State,Zip,Country,Phone"
 											[ngModelOptions]="{standalone: true}"
 											style="height: 150px; font-size: 12px; line-height: 1.4; min-width: 100%; max-width: 100%; width: 100%;"
 											required="required">
@@ -473,8 +473,16 @@ img:hover {
 															<td class='pt10 pb10'>{{newContact.city}}</td>
 														</tr>
 														<tr style="border-bottom: 1px solid #dcdcdc">
+															<td class='pt10 pb10'>State:</td>
+															<td class='pt10 pb10'>{{newContact.state}}</td>
+														</tr>
+														<tr style="border-bottom: 1px solid #dcdcdc">
 															<td class='pt10 pb10'>Country:</td>
 															<td class='pt10 pb10'>{{newContact.country}}</td>
+														</tr>
+														<tr style="border-bottom: 1px solid #dcdcdc">
+															<td class='pt10 pb10'>Zip Code:</td>
+															<td class='pt10 pb10'>{{newContact.zipCode}}</td>
 														</tr>
 														<tr style="border-bottom: 1px solid #dcdcdc">
 															<td class='pt10 pb10'>Phone Number:</td>
@@ -627,6 +635,14 @@ img:hover {
 																<tr style="border-bottom: 1px solid #dcdcdc">
 																	<td class='pt10 pb10'>City:</td>
 																	<td class='pt10 pb10'>{{user.city}}</td>
+																</tr>
+																<tr style="border-bottom: 1px solid #dcdcdc">
+																	<td class='pt10 pb10'>State:</td>
+																	<td class='pt10 pb10'>{{user.state}}</td>
+																</tr>
+																<tr style="border-bottom: 1px solid #dcdcdc">
+																	<td class='pt10 pb10'>Zip Code:</td>
+																	<td class='pt10 pb10'>{{user.zipCode}}</td>
 																</tr>
 																<tr style="border-bottom: 1px solid #dcdcdc">
 																	<td class='pt10 pb10'>Country:</td>

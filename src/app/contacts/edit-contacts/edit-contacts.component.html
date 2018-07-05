@@ -370,7 +370,7 @@
 											</div>
 											<div class="col-sm-7">
 												<textarea class="textareaNumber" [(ngModel)]="clipboardTextareaText"
-													placeholder="FirstName,LastName,Company,Jobtitle,Email,Address,City,Country,Phonenumber       FirstName,LastName,Company,Jobtitle,Email,Address,City,country,Phonenumber       FirstName,LastName,Company,Jobtitle,Email,Address,City,Country,Phonenumber"
+													placeholder="FirstName,LastName,Company,Jobtitle,Email,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Address,City,State,Zip,Country,Phone"
 													[ngModelOptions]="{standalone: true}"
 													style="min-width: 100%; max-width: 100%; height: 150px; font-size: 12px; line-height: 1.4;"
 													required="required">
@@ -439,6 +439,14 @@
 																			<tr style="border-bottom: 1px solid #dcdcdc">
 																				<td class='pt10 pb10'>City:</td>
 																				<td class='pt10 pb10'>{{user.city}}</td>
+																			</tr>
+																			<tr style="border-bottom: 1px solid #dcdcdc">
+																				<td class='pt10 pb10'>State:</td>
+																				<td class='pt10 pb10'>{{user.state}}</td>
+																			</tr>
+																			<tr style="border-bottom: 1px solid #dcdcdc">
+																				<td class='pt10 pb10'>Zip Code:</td>
+																				<td class='pt10 pb10'>{{user.zipCode}}</td>
 																			</tr>
 																			<tr style="border-bottom: 1px solid #dcdcdc">
 																				<td class='pt10 pb10'>Country:</td>
