@@ -71,6 +71,9 @@ export class ReferenceService {
     isDownloadCsvFile: boolean;
     vendorDetails: any;
     campaignType = 'REGULAR';
+    videoTag = "<a href='<SocialUbuntuURL>'>\n   <img src='<SocialUbuntuImgURL>'/> \n </a> \n";
+    emailMergeTags = "  For First Name : {{firstName}} \n  For Last Name : {{lastName}} \n  For Full Name : {{fullName}} |n For Email Id : {{emailId}}";
+    coBrandingTag = "<img src='<Co-BrandingImgURL>'/> \n";
     public URL: string = this.authenticationService.REST_URL + 'admin/';
     constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,
         private router: Router, public deviceService: Ng2DeviceService) {

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit,OnDestroy, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
 import { EmailTemplateService } from '../services/email-template.service';
@@ -19,7 +19,7 @@ declare var Metronic ,Layout ,Demo ,TableManaged,$,CKEDITOR:any;
     styleUrls: ['./upload-email-template.component.css'],
     providers: [EmailTemplate,HttpRequestLoader]
 })
-export class UploadEmailTemplateComponent implements OnInit {
+export class UploadEmailTemplateComponent implements OnInit,OnDestroy {
 
     customResponse: CustomResponse = new CustomResponse();
     public isDisable: boolean = false;
@@ -41,21 +41,18 @@ export class UploadEmailTemplateComponent implements OnInit {
     videoTagsError:string = "";
     isUploadFileError:boolean = false;
     uploadFileErrorMessage:string = "";
-    videoTag:string = "";
-    emailMergeTags:string = "";
-    coBrandingTag:string = "";
     maxFileSize:number = 10;
     name = 'ng2-ckeditor';
     ckeConfig: any;
     mycontent: string;
     log: string = '';
+    clickedButtonName:string = "";
+    saveButtonName:string = "SAVE";
     @ViewChild("myckeditor") ckeditor: any;
     constructor(public emailTemplateService: EmailTemplateService, private userService: UserService, private router: Router,
             private emailTemplate: EmailTemplate, private logger: XtremandLogger,private authenticationService:AuthenticationService,public refService:ReferenceService) {
         logger.debug("uploadEmailTemplateComponent() Loaded");
-        this.videoTag = "<a href='<SocialUbuntuURL>'>\n   <img src='<SocialUbuntuImgURL>'/> \n </a> \n";
-        this.emailMergeTags = "  For First Name : {{firstName}} \n  For Last Name : {{lastName}} \n  For Full Name : {{fullName}} |n For Email Id : {{emailId}}";
-       this.coBrandingTag = "<img src='<Co-BrandingImgURL>'/> \n";
+        
         this.loggedInUserId = this.authenticationService.getUserId();
 
         if(this.emailTemplateService.isRegularUpload==undefined){
@@ -108,28 +105,6 @@ export class UploadEmailTemplateComponent implements OnInit {
             this.refService.stopLoader(this.httpRequestLoader);
         }
     }
-
-    ngOnInit() {
-        try {
-            Metronic.init();
-            Layout.init();
-            Demo.init();
-            TableManaged.init();
-            this.ckeConfig = {
-                    allowedContent: true
-                  };
-        } catch (errr) { }
-    }
-
-
-    ngOnDestroy() {
-        //this.emailTemplateService.emailTemplate = new EmailTemplate();
-    }
-
-
-
-
-
     /****************Reading Uploaded File********************/
     fileDropPreview(event:any){
 
@@ -182,15 +157,21 @@ export class UploadEmailTemplateComponent implements OnInit {
         }
     }
 
+    save(){
+        this.clickedButtonName = this.saveButtonName;
+        this.saveHtmlTemplate(false);
+    }
+    
     /************Save Html Template****************/
-    saveHtmlTemplate() {
+    saveHtmlTemplate(isOnDestroy:boolean) {
         this.customResponse.isVisible = false;
-       this.refService.startLoader(this.httpRequestLoader);
+        this.refService.startLoader(this.httpRequestLoader);
         this.emailTemplate.user = new User();
         this.emailTemplate.user.userId = this.loggedInUserId;
         this.emailTemplate.name = this.model.templateName;
         this.emailTemplate.userDefined = true;
         this.emailTemplate.type = EmailTemplateType.UPLOADED;
+        this.emailTemplate.onDestroy = isOnDestroy;
         if (this.emailTemplateService.isRegularUpload) {
             this.emailTemplate.regularTemplate = true;
             this.emailTemplate.desc = "Regular Template";
@@ -204,18 +185,23 @@ export class UploadEmailTemplateComponent implements OnInit {
             CKEDITOR.instances[instanceName].updateElement();
             this.emailTemplate.body =  CKEDITOR.instances[instanceName].getData();
         }
-        this.emailTemplateService.save(this.emailTemplate)
+        if($.trim(this.emailTemplate.body).length>0){
+            this.emailTemplateService.save(this.emailTemplate)
             .subscribe(
             data => {
                 this.refService.stopLoader(this.httpRequestLoader);
-                if (data == "success") {
-                this.refService.isCreated = true;
-                this.router.navigate(["/home/emailtemplates/manage"]);
-                } else{
-                    this.isVideoTagError = true;
-                    this.videoTagsError = data;
-                    this.customResponse = new CustomResponse("ERROR",data,true);
+                if(!isOnDestroy){
+                    if (data == "success") {
+                        this.refService.isCreated = true;
+                        this.router.navigate(["/home/emailtemplates/manage"]);
+                        } else{
+                            this.clickedButtonName = '';
+                            this.isVideoTagError = true;
+                            this.videoTagsError = data;
+                            this.customResponse = new CustomResponse("ERROR",data,true);
+                        }
                 }
+               
             },
             error => {
                 this.refService.stopLoader(this.httpRequestLoader);
@@ -223,6 +209,8 @@ export class UploadEmailTemplateComponent implements OnInit {
             },
             () => console.log(" Completed saveHtmlTemplate()")
             );
+        }
+       
     }
 
 
@@ -273,4 +261,26 @@ export class UploadEmailTemplateComponent implements OnInit {
       }
 
   }
+    
+    
+    ngOnInit() {
+        try {
+            Metronic.init();
+            Layout.init();
+            Demo.init();
+            TableManaged.init();
+            this.ckeConfig = {
+                    allowedContent: true
+                  };
+        } catch (errr) { }
+    }
+
+
+    ngOnDestroy() {
+        if(this.clickedButtonName!=this.saveButtonName){
+            this.saveHtmlTemplate(true);
+        }
+    }
+
+    
 }

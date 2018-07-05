@@ -41,7 +41,7 @@
 								<tr
 									*ngFor="let item of emailTemplateUploader.queue;let last = last;let index = index">
 									<td nowrap *ngIf="last">
-										<button type="button" class="btn btn-success"		(click)="saveHtmlTemplate()" id="save"
+										<button type="button" class="btn btn-success"	(click)="save()" id="save"
 											[disabled]="disableButton ||duplicateTemplateName ">
 											<span class="glyphicon glyphicon-upload"></span> Save
 										</button>
@@ -55,16 +55,16 @@
 						</table>
 						<div>
 					 		<label for="info"><font style="color: red;">Use Below Image Tag For Co-Branding.</font></label>
-						 	<textarea class="form-control" style="cursor: default;resize: none;" id="info" disabled="disabled" rows="2">{{coBrandingTag}}</textarea>
-					</div>
+						 	<textarea class="form-control" style="cursor: default;resize: none;" id="info" disabled="disabled" rows="2">{{refService.coBrandingTag}}</textarea>
+						</div>
 						<div *ngIf="!emailTemplateService.isRegularUpload" class="form-group" id="infoDiv">
 					 		<br><label for="info"><font style="color: red;">**Before you upload your HTML template, please be sure to include the code below.</font></label>
-						 	<textarea class="form-control" style="cursor: default;resize: none;" id="info" disabled="disabled" rows="4">{{videoTag}}</textarea>
+						 	<textarea class="form-control" style="cursor: default;resize: none;" id="info" disabled="disabled" rows="4">{{refService.videoTag}}</textarea>
 					</div>
 					
 					<div>
 					 		<br><label for="info"><font style="color: red;">**Be sure to use these merge tags if you’re doing a mail merge.</font></label>
-						 	<textarea class="form-control" style="cursor: default;resize: none;" id="info" disabled="disabled" rows="4">{{emailMergeTags}}</textarea>
+						 	<textarea class="form-control" style="cursor: default;resize: none;" id="info" disabled="disabled" rows="4">{{refService.emailMergeTags}}</textarea>
 					</div>
 					
 					</div>

@@ -23,4 +23,5 @@ export class EmailTemplate {
         vendorName:string = "";
         vendorOrganizationName:string = "";
         draft:boolean = false;
+        onDestroy:boolean = false;
 }
