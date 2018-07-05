@@ -17,7 +17,7 @@ export class SocialManageComponent implements OnInit, OnDestroy {
     socialConnections: SocialConnection[] = new Array<SocialConnection>();
     response: any;
     httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
-    constructor( private router: Router, private route: ActivatedRoute, private socialService: SocialService,
+    constructor( private route: ActivatedRoute, private socialService: SocialService,
         private authenticationService: AuthenticationService, public referenceService:ReferenceService ) { }
 
     listAccounts( userId: number, providerName: string ) {
@@ -70,7 +70,7 @@ export class SocialManageComponent implements OnInit, OnDestroy {
             });
         }
     }
-
+    errorHandler(event){event.target.src= 'assets/admin/pages/media/profile/icon-user-default.png';}
     ngOnInit() {
         try {
             const providerName = this.route.snapshot.params['social'];

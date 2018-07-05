@@ -13,61 +13,64 @@
                 <div *ngIf="response === 'success'">
                   <div class="alert alert-success rounded-0" role="alert">
                     <h4>Your account has been linked successfully</h4>
-                    <h5><a class="btn btn btn-primary" [routerLink]="referenceService.homeRouter">DASHBOARD</a></h5>
+                    <h5>
+                      <a class="btn btn btn-primary" [routerLink]="referenceService.homeRouter">DASHBOARD</a>
+                    </h5>
                   </div>
                 </div>
-<div class="alert alert-warning rounded-0" *ngIf="socialConnections?.length == 0 && !httpRequestLoader.isLoading">
-	<h4 class="text-warning">
-	<i class="fa fa-exclamation-triangle" aria-hidden="true" style="font-size: 20px;"></i> No accounts found.
-	</h4>
-	<h5>Please click <a data-toggle="modal" data-target="#connectAccountsModal">here</a> to add your social accounts.</h5>
-</div>
-<app-grid-loader *ngIf="httpRequestLoader.isLoading"></app-grid-loader>
+                <div class="alert alert-warning rounded-0" *ngIf="socialConnections?.length == 0 && !httpRequestLoader.isLoading">
+                  <h4 class="text-warning">
+                    <i class="fa fa-exclamation-triangle" aria-hidden="true" style="font-size: 20px;"></i> No accounts found.
+                  </h4>
+                  <h5>Please click
+                    <a data-toggle="modal" data-target="#connectAccountsModal">here</a> to add your social accounts.</h5>
+                </div>
+                <app-grid-loader *ngIf="httpRequestLoader.isLoading"></app-grid-loader>
 
-<div *ngIf="socialConnections?.length > 0">
-	<div class="col-md-3 col-sm-4 col-xs-12 box" *ngFor="let socialConnection of socialConnections;let i = index">
-	<div class="portlet light block" [ngClass]="{'checked': socialConnection.active, 'unchecked': !socialConnection.active}"
-	(click)="confirmDialog(socialConnection)">
-	<div class="portlet-body">
-		<div class="pt10">
-		<div style="display: block; height: 20px;">
-			<img src="https://image.flaticon.com/icons/svg/291/291201.svg" width="20px" alt="selected" [hidden]="!socialConnection.active">
-			<i class="fa fa-social pull-right" [ngClass]="{
-			'fa-facebook fa-facebook-color': socialConnection.source ==='FACEBOOK',
-			'fa-twitter fa-twitter-color': socialConnection.source ==='TWITTER',
-			'fa-linkedin fa-linkedin-color': socialConnection.source ==='LINKEDIN',
-			'fa-google fa-google-color': socialConnection.source ==='GOOGLE'}"></i>
-		</div>
-		<img class="img-responsive img-circle profile-picture center-block" src="{{socialConnection.profileImage}}" alt="{{socialConnection.profileName}}">
-		</div>
-		<div class="clearfix">
-		<br>
-		<div *ngIf="socialConnection.profileName;then profileName else fullName"></div>
-		<br>
-		<ng-template #profileName>
-			<h5 class="caption-subject ellipsis text-center" style="margin: 0 5px;" title="{{socialConnection.profileName}}">{{socialConnection.profileName}}</h5>
-		</ng-template>
-		<ng-template #fullName>
-			<h5 class="caption-subject ellipsis text-center" style="margin: 0 5px;" title="{{socialConnection.firstName}}&nbsp;{{socialConnection.lastName}}">{{socialConnection.firstName}}&nbsp;{{socialConnection.lastName}}</h5>
-		</ng-template>
-		</div>
-	</div>
-	</div>
-</div>
-</div>
+                <div *ngIf="socialConnections?.length > 0">
+                  <div class="col-md-3 col-sm-4 col-xs-12 box" *ngFor="let socialConnection of socialConnections;let i = index">
+                    <div class="portlet light block" [ngClass]="{'checked': socialConnection.active, 'unchecked': !socialConnection.active}"
+                      (click)="confirmDialog(socialConnection)">
+                      <div class="portlet-body">
+                        <div class="pt10">
+                          <div style="display: block; height: 20px;">
+                            <img src="https://image.flaticon.com/icons/svg/291/291201.svg" width="20px" alt="selected" [hidden]="!socialConnection.active">
+                            <i class="fa fa-social pull-right" [ngClass]="{
+                                'fa-facebook fa-facebook-color': socialConnection.source ==='FACEBOOK',
+                                'fa-twitter fa-twitter-color': socialConnection.source ==='TWITTER',
+                                'fa-linkedin fa-linkedin-color': socialConnection.source ==='LINKEDIN',
+                                'fa-google fa-google-color': socialConnection.source ==='GOOGLE'}"></i>
+                             </div>
+                          <img class="img-responsive img-circle profile-picture center-block" src="{{socialConnection.profileImage}}" alt="{{socialConnection.profileName}}" (error)="errorHandler($event)">
+                        </div>
+                        <div class="clearfix">
+                          <br>
+                          <div *ngIf="socialConnection.profileName;then profileName else fullName"></div>
+                          <br>
+                          <ng-template #profileName>
+                            <h5 class="caption-subject ellipsis text-center" style="margin: 0 5px;" title="{{socialConnection.profileName}}">{{socialConnection.profileName}}</h5>
+                          </ng-template>
+                          <ng-template #fullName>
+                            <h5 class="caption-subject ellipsis text-center" style="margin: 0 5px;" title="{{socialConnection.firstName}}&nbsp;{{socialConnection.lastName}}">{{socialConnection.firstName}}&nbsp;{{socialConnection.lastName}}</h5>
+                          </ng-template>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
-<div class="col-xs-12" *ngIf="socialConnections?.length > 0">
-<div class="pull-right">
-	<button type="button" class="btn btn-success" (click)="save()">Save</button>
-	<a type="button" class="btn btn-default" [routerLink]="referenceService.homeRouter">Cancel</a>
-</div>
-</div>
+                <div class="col-xs-12" *ngIf="socialConnections?.length > 0">
+                  <div class="pull-right">
+                    <button type="button" class="btn btn-success" (click)="save()">Save</button>
+                    <a type="button" class="btn btn-default" [routerLink]="referenceService.homeRouter">Cancel</a>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 </div>
 <app-connect-accounts></app-connect-accounts>
