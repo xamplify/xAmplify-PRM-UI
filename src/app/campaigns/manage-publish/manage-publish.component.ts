@@ -92,7 +92,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
 
     listCampaign(pagination: Pagination) {
         this.refService.loading(this.httpRequestLoader, true);
-        //   this.pagination.maxResults = 12;
+        pagination.searchKey = this.searchKey;
         this.campaignService.listCampaign(pagination, this.loggedInUserId)
             .subscribe(
                 data => {

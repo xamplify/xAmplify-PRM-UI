@@ -127,7 +127,8 @@
 								<img  src="{{emailTemplate.subject}}" alt="{{emailTemplate.name}}">
 								<h4 class="ellipsis" title="{{emailTemplate.name}}">{{emailTemplate.name}}</h4>
 								<div>
-									<h6>Created On <b>{{emailTemplate.createdDate}}</b></h6>
+									<h6 *ngIf="emailTemplate.type=='PARTNER'">Shared On <b>{{emailTemplate.createdDate}}</b></h6>
+									<h6 *ngIf="emailTemplate.type!='PARTNER'">Created On <b>{{emailTemplate.createdDate}}</b></h6>
 									<ng-container *ngIf="emailTemplate.type!='PARTNER'">
 										<h6 title="{{emailTemplate.createdBy}}">By
 										<b *ngIf="emailTemplate.createdBy?.length>17">{{emailTemplate.createdBy|slice:0:17}}..</b>
@@ -140,6 +141,9 @@
 									</ng-container>
 									<div class="ribbon draft" *ngIf="emailTemplate.draft">
 										<span>DRAFT</span>
+									</div>
+									<div class="ribbon active" *ngIf="emailTemplate.type=='PARTNER'">
+										<span>PARTNER</span>
 									</div>
 									<ng-container *ngIf="emailTemplate.type=='PARTNER'">
 										<h6 title="{{emailTemplate.vendorName}}">By
