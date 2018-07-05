@@ -24,9 +24,17 @@
         </h5>
       </span>
       <span *ngIf="authenticationService.isOnlyPartner()">
-        <span [title]="videoFile.companyName" *ngIf="videoFile.companyName">By {{videoFile.companyName}}</span>
+        <span [title]="videoFile.companyName" *ngIf="videoFile.companyName">By {{videoFile.companyName | slice:0:20}}
+            <span *ngIf="videoFile.companyName?.length>20">...</span>
+        </span>
+        <span [title]="videoFile.uploadedUserName" *ngIf="!videoFile.companyName">By {{videoFile.uploadedUserName | slice:0:20}}
+            <span *ngIf="videoFile.uploadedUserName?.length>20">...</span>
+        </span>
       </span>
-      <h6 class='f-w-600'>{{videoFile.views}} views</h6>
+      <h6 class='f-w-600'>
+        <span *ngIf="videoFile.views">{{videoFile.views}}</span>
+        <span  *ngIf="!videoFile.views">0</span>
+        views</h6>
     </a>
   </div>
 </div>

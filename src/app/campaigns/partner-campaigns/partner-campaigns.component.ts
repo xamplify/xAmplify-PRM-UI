@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CampaignService } from '../services/campaign.service';
-import { UserService } from '../../core/services/user.service';
 import { SocialService } from '../../social/services/social.service';
 import { ReferenceService } from '../../core/services/reference.service';
 import { Campaign } from '../models/campaign';
@@ -55,12 +54,12 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     customResponse: CustomResponse = new CustomResponse();
 
     constructor(private campaignService: CampaignService, private router: Router, private xtremandLogger: XtremandLogger,
-        private pagination: Pagination, private pagerService: PagerService,
-        public referenceService: ReferenceService, private userService: UserService, private socialService: SocialService,
+        public pagination: Pagination, private pagerService: PagerService,
+        public referenceService: ReferenceService, private socialService: SocialService,
         private authenticationService: AuthenticationService,private route: ActivatedRoute) {
         this.loggedInUserId = this.authenticationService.getUserId();
-        
-        let currentUrl = this.router.url;
+
+        const currentUrl = this.router.url;
         if ( currentUrl.includes( 'campaigns/vendor' ) ) {
             this.role = "Vendor"
         } else {
@@ -82,7 +81,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
         }else{
             pagination.campaignType = "NONE";
         }
-        
+
         if ( this.role == "Vendor" ) {
             pagination.filterValue = this.referenceService.vendorDetails.id;
             pagination.filterKey = "customerId";
@@ -90,7 +89,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
             pagination.filterValue = null;
             pagination.filterKey = null;
         }
-        
+
         this.campaignService.listPartnerCampaigns(this.pagination, this.loggedInUserId)
             .subscribe(
                 data => {
