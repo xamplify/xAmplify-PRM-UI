@@ -79,6 +79,7 @@ export class Properties {
     USER_ACCOUNT_ACTIVATION_ERROR = "Your account has not been activated. Please check your inbox for our activation email.";
     EMPTY_CREDENTIAL_ERROR = "Username or password can't be empty.";
     RESEND_ACTIVATION_MAIL = 'Please check your inbox	for	our	account activation email.'
+    SOMTHING_WENT_WRONG = 'Something went worng. Please try again.';
     /* User */
     PROCESS_REQUEST_SUCCESS = "Your request has been successfully processed.";
     PROCESS_REQUEST_ERROR = "An error occurred while processing your request.";
