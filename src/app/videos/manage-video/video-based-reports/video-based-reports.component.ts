@@ -180,8 +180,8 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         let xAxis = ' ';
         let yAxis = ' ';
         if(skipped.length>0 || views.length>0) {
-          xAxis = 'X-Axis';
-          yAxis='Y-Axis'
+          xAxis = 'minutes';
+          yAxis='views'
         }
         const self = this;
         Highcharts.chart('video-skipped', {
