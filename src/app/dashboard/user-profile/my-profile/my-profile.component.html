@@ -100,7 +100,7 @@ input:checked + .slider-new:before {
 							<!-- PORTLET MAIN -->
 							<div class="portlet light profile-sidebar-portlet">
               <div class="profile-image-wrapper">
-                <img [src]="userProfileImage" class="profile-image" (click)="imageUpload('imageSelect')">
+                <img src="{{userProfileImage}}" class="profile-image" (error)="errorHandler($event)" (click)="imageUpload('imageSelect')">
                 <div class="upload-btn-wrapper">
                     <i class="fa fa-camera"></i>
                     <input type="file" ng2FileSelect [uploader]="uploader"
@@ -110,7 +110,7 @@ input:checked + .slider-new:before {
               </div>
 								<div class="profile-usertitle">
 									<div class="profile-usertitle-name" style="overflow: auto">
-										 {{userData.displayName}}
+										 <span style="font-size: 17px !important;" [title]="userData.displayName">{{userData.displayName | slice:0:18}}</span><span *ngIf="userData.displayName?.length>18">...</span>
 										 <h5>{{userData.emailId}}</h5>
 									</div>
 									<div class="profile-usertitle-job">
@@ -123,12 +123,13 @@ input:checked + .slider-new:before {
 								</div>
 								<div class="profile-usermenu">
 									<ul class="nav">
-										<li class="active">
+                    <!-- commented for future work -->
+										<!--	<li class="active" >
 											<a routerLink="../myprofile">
 											<i class="icon-settings"></i>
 											Account Settings </a>
 										</li>
-										<!-- <li>
+									 <li>
 											<a routerLink="../profilehelp">
 											<i class="icon-info"></i>
 											Help </a>

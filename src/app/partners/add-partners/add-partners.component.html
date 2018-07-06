@@ -405,7 +405,7 @@ img:hover {
 										<thead *ngIf="newPartnerUser?.length != 0">
 											<tr>
 												<th style="width: 25%; text-align: center;">Entity info</th>
-												<th>CONTACT</th>
+												<th>PHONE</th>
 												<th>JOB TITLE</th>
 												<th class='text-center'>ADDRESS</th>
 												<!-- <th class='text-center'>MORE</th> -->
@@ -428,13 +428,16 @@ img:hover {
 													</h5> -->
 												</td>
 												<td>
-													<h5 class='mb0'>{{newContact.jobTitle}}</h5>
+													<h5 class='mb0 ellipsis'>{{newContact.jobTitle | slice:0:25}}
+													<span *ngIf="newContact.jobTitle?.length>25">...</span>
+													</h5>
 													<!-- <h6 class='mt0'>{{newContact.contactCompany}}</h6> -->
 												</td>
 												<td>
 													<h5 *ngIf="newContact?.address" class='mb0'>{{newContact.address}}</h5>
+													<h5 class='mb0'>{{newContact.city}},&nbsp;{{newContact.state}},</h5>
 													<h5 *ngIf="newContact?.city && newContact.country"
-														class='mt0'>{{newContact.city}},&nbsp;{{newContact.country}}</h5>
+														class='mt0'>{{newContact.zipCode}},&nbsp;{{newContact.country}}</h5>
 												</td>
 												<!-- <td align="center">
 													<button id='more_less_button_{{i}}'
@@ -527,7 +530,7 @@ img:hover {
 																(change)="editContactComponent.checkAll($event)"
 																id="checkAllExistingContacts"/></th>
 												<th style="width: 25%;">Entity info</th>
-												<th>CONTACT</th>
+												<th>PHONE</th>
 												<th>JOB TITLE</th>
 												<th class='text-center'>ADDRESS</th>
 												<!-- <th class='text-center'>MORE</th> -->
@@ -559,12 +562,15 @@ img:hover {
 													</div>
 												</td>
 												<td>
-													<h5 class='mb0'>{{contact.jobTitle}}</h5>
+													<h5 class='mb0' title="{{contact.jobTitle}}">{{contact.jobTitle | slice:0:25}}
+													<span *ngIf="contact.jobTitle?.length>25">...</span>
+													</h5>
 													<!-- <h6 class='mt0'>{{contact.contactCompany}}</h6> -->
 												</td>
 												<td align="center">
 													<h5 *ngIf="contact?.address" class='mb0'>{{contact.address}}</h5>
-													<h5 *ngIf="contact?.city || contact.country" class='mt0'>{{contact.city}}<span *ngIf="contact.city">,&nbsp;</span>{{contact.country}}</h5>
+													<h5 class='mb0'>{{contact.city}},&nbsp;{{contact.state}}</h5>
+													<h5 *ngIf="contact?.zipCode || contact.country" class='mt0'>{{contact.zipCode}}<span *ngIf="contact.city">,&nbsp;</span>{{contact.country}}</h5>
 												</td>
 												<!-- <td align="center">
 													<button id='more_less_button_{{i}}'

@@ -139,7 +139,12 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                 xAxis: {
                     categories: names,
                     labels: {
-                        enabled: i === 0
+                        enabled: i === 0,
+                        formatter: function () {
+                          const text = this.value,
+                            formatted = text.length > 10 ? text.substring(0, 10) + '...' : text;
+                              return formatted ;
+                        }
                     },
                     lineWidth: 0,
                     minorGridLineWidth: 0,
@@ -172,6 +177,12 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         });
     }
     videoPlayedandSkippedDuration(views, skipped) {
+        let xAxis = ' ';
+        let yAxis = ' ';
+        if(skipped.length>0 || views.length>0) {
+          xAxis = 'minutes';
+          yAxis='views'
+        }
         const self = this;
         Highcharts.chart('video-skipped', {
             chart: {
@@ -181,11 +192,16 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                 text: ' '
             },
             exporting: { enabled: false },
-            xAxis: {
-            },
-            yAxis: {
-                title: '',
-            },
+            xAxis:[{
+              title: {
+                  text: xAxis,
+              }
+          }],
+            yAxis: [{
+              title: {
+                  text: yAxis,
+              }
+          }],
             credits: {
                 enabled: false
             },
@@ -676,8 +692,6 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                 object["Date and Time"] = date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
                 object["Device"] = this.downloadCsvList[i].device;
             }
-
-
             this.downloadDataList.push(object);
         }
         this.referenceService.isDownloadCsvFile = true;
@@ -749,7 +763,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                 $('#overLayImage').append($('#overlay-logo').show());
                 $('.video-js .vjs-tech').css('width', '100%');
                 $('.video-js .vjs-tech').css('height', '100%');
-                player.play();
+                player.pause();
             });
             this.on('ended', function () {
                 console.log('video done');
@@ -828,8 +842,6 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
         this.videoUrl = this.videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
         $('#newPlayerVideo video').append('<source src=' + this.videoUrl + ' type="application/x-mpegURL">');
-        //this.videoUrl = this.videoUrl + '.mp4?access_token=' + this.authenticationService.access_token;
-        //$('#newPlayerVideo video').append('<source src="' + this.videoUrl + '" type="video/mp4">');
         $('#videoId').css('height', '315px');
         $('#videoId').css('width', 'auto');
         const newValue = this;
@@ -887,7 +899,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                 const document: any = window.document;
                 player.ready(function () {
                     $('#overLayImage').append($('#overlay-logo').show());
-                    player.play();
+                    player.pause();
                     $('.video-js .vjs-control-bar .vjs-VR-control').css('cssText', 'color:' + newValue.selectedVideo.playerColor + '!important');
                 });
                 player.on('fullscreenchange', function () {

@@ -23,11 +23,11 @@
 				<div class="tab-content">
 					<div class="page-bar m10">
 						<ul class="mix-filter col-xs-6 p0 m0">
-						<li class="filter" (click)="filterCampaigns('all')" [class.active]="'all' == campaignType">All</li>
-						 <li class="filter" (click)="filterCampaigns('regular')" [class.active]="'regular' == campaignType">Email</li>
-	                    <li class="filter" (click)="filterCampaigns('video')" [class.active]="'video' == campaignType">Video</li>
-	                    <li class="filter" (click)="filterCampaigns('social')" [class.active]="'social' == campaignType">Social</li>
-	                    <li class="filter" style="display: none;">Own Template</li>
+					  	<li class="filter" (click)="filterCampaigns('all')" [class.active]="'all' == campaignType">All</li>
+					  	<li class="filter" (click)="filterCampaigns('regular')" [class.active]="'regular' == campaignType">Email</li>
+              <li class="filter" (click)="filterCampaigns('video')" [class.active]="'video' == campaignType">Video</li>
+              <li class="filter" (click)="filterCampaigns('social')" [class.active]="'social' == campaignType">Social</li>
+              <li class="filter" style="display: none;">Own Template</li>
 						</ul>
 						<div class="page-toolbar col-xs-6">
 							<div class="btn-group pull-right">
@@ -56,17 +56,17 @@
 						</div>
 					</div>
 
-						<app-grid-loader *ngIf="httpRequestLoader.isLoading && !isListView"></app-grid-loader>
-						<app-list-loader *ngIf="httpRequestLoader.isLoading && isListView"></app-list-loader>
+					<app-grid-loader *ngIf="httpRequestLoader.isLoading && !isListView"></app-grid-loader>
+					<app-list-loader *ngIf="httpRequestLoader.isLoading && isListView"></app-list-loader>
 					<section class='m10' *ngIf="totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
 						<div class="table-responsive">
 							<table class='table tgrid table-hover table-sm' *ngIf="isListView">
 								<thead>
 									<tr>
 										<th colspan="2">Campaign</th>
-										<th>Vendor Company Name</th>
+										<th style="text-align: center">Vendor Company Name</th>
 										<th style="text-align: center">Status</th>
-										<th>Actions</th>
+										<th style="text-align: center">Actions</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -91,14 +91,14 @@
 											  <h4 class="ellipsis mt5 mb5 f-w-600" style="font-size: 14px;" title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:25}}
 													<span *ngIf="campaign.campaignName?.length>25">...</span>
 											</h4>
-											<h5>By <b>{{campaign.createdBy}}</b></h5>
-											<h5>From <b>{{campaign.companyName}}</b></h5>
+											<h5 [title]="campaign.createdBy">By <b>{{campaign.createdBy | slice:0:15}}<span *ngIf="campaign.createdBy?.length>15">...</span></b></h5>
+											<h5 [title]="campaign.companyName">From <b>{{campaign.companyName | slice:0:15}}<span *ngIf="campaign.companyName?.length>15">...</span></b></h5>
 										</td>
-										<td>
-											{{campaign.companyName}}
+										<td style="text-align: center">
+											{{campaign.companyName | slice:0:15}}<span *ngIf="campaign.companyName?.length>15">...</span>
 										</td>
-										
-										<td>
+
+										<td style="text-align: center">
 											<span align="right">
 												<b>Received On</b>
 											</span>
@@ -106,15 +106,15 @@
 												<b>{{campaign.launchedOn}}</b>
 											</span>
 										</td>
-										<td>
+										<td style="text-align: center">
 											<div class="actions-block">
-												 <a (click)="reDistributeCampaign(campaign)" title="Redistribute Campaign" data-rel="fancybox-button">
-                                        			<i class="fa fa-clone"></i>
-                                    		</a>
-                                    		<a class="hidden"><i class="fa fa-trash"></i></a>
-                                    		<!-- <a (click)="showCampaignPreview(campaign.campaignId)" title="Preview">
+												<a (click)="reDistributeCampaign(campaign)" title="Redistribute Campaign" data-rel="fancybox-button">
+                            <i class="fa fa-clone"></i>
+                        </a>
+                        <a class="hidden"><i class="fa fa-trash"></i></a>
+                        <!-- <a (click)="showCampaignPreview(campaign.campaignId)" title="Preview">
 												<i class="fa fa-eye mr5"></i>
-											</a>  -->
+										  	</a>  -->
 											</div>
 										</td>
 									</tr>
@@ -123,7 +123,7 @@
 						</div>
 					</section>
 					<div *ngIf="totalRecords <= 0 && isListView" class="alert alert-info">
-						<strong>No Campaigns Found</strong>
+						<strong>No campaigns found</strong>
 					</div>
 					<div class="tab-pane active" *ngIf="!isListView">
 						<div class="margin-top-10">
@@ -137,8 +137,8 @@
 											<h4 class="ellipsis" title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:25}}
 												<span *ngIf="campaign.campaignName?.length>25">...</span>
 											</h4>
-											<h6>By <b>{{campaign.createdBy}}</b></h6>
-											<h6>From <b>{{campaign.companyName}}</b></h6>
+                      <h5 [title]="campaign.createdBy">By <b>{{campaign.createdBy | slice:0:15}}<span *ngIf="campaign.createdBy?.length>15">...</span></b></h5>
+											<h5 [title]="campaign.companyName">From <b>{{campaign.companyName | slice:0:15}}<span *ngIf="campaign.companyName?.length>15">...</span></b></h5>
 											<h6>Received On <b>{{campaign.launchedOn}}</b></h6>
 											<div class="bookmark-ribbon">
 												<span style="margin: 0px -7px; font-size: 17px; color: white;">
@@ -152,14 +152,14 @@
 													<i class="fa fa-clone"></i>
 												</a>
 											</div>
-										</div>										
+										</div>
 									</div>
 								</ng-container>
 							</div>
 						</div>
 						<!-- End of 24 -->
 						<div *ngIf="totalRecords <= 0 && !isListView" class="alert alert-info">
-							<strong>No Campaigns Found</strong>
+							<strong>No campaigns found</strong>
 						</div>
 					</div>
 					<div *ngIf="totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError" style="background:white">
@@ -169,10 +169,9 @@
 								<option *ngFor="let itemPerPage of numberOfItemsPerPage" [ngValue]="itemPerPage">{{itemPerPage.name}}</option>
 							</select>
 						</div>
-		</div>
-				</div>
+	         </div>
+				  </div>
 				<!-- End Of tab Content -->
-
 			</div>
 		</div>
 	</div>

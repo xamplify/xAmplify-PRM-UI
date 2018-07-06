@@ -13,6 +13,7 @@ export class CompanyProfile {
     mobinarId = "";
     tagLine = "";
     city = "";
+    state = "";
     country = "";
     zip;
     backgroundLogoPath = "";

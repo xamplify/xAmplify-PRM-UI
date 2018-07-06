@@ -215,6 +215,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     imageUpload(event){ $('#'+event).click();}
     clearCustomResponse(){ this.customResponse = new CustomResponse(); }
+    errorHandler(event:any){ event.target.src = 'assets/admin/pages/media/profile/icon-user-default.png';}
     ngOnInit() {
         try {
             this.geoLocation();

@@ -261,8 +261,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                             user.jobTitle = allTextLines[i][3];
                             user.address = allTextLines[i][5];
                             user.city = allTextLines[i][6];
-                            user.country = allTextLines[i][7];
-                            user.mobileNumber = allTextLines[i][8];
+                            user.state = allTextLines[i][7];
+                            user.zipCode = allTextLines[i][8];
+                            user.country = allTextLines[i][9];
+                            user.mobileNumber = allTextLines[i][10];
                             /*user.description = allTextLines[i][9];*/
                             self.users.push( user );
                             self.contacts.push( user );
@@ -823,7 +825,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                         user.emailId = data[4];
                         user.address = data[5];
                         user.city = data[6];
-                        user.country = data[7];
+                        user.state = data[7];
                         break;
                     case 9:
                         user.firstName = data[0];
@@ -833,8 +835,33 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                         user.emailId = data[4];
                         user.address = data[5];
                         user.city = data[6];
-                        user.country = data[7];
-                        user.mobileNumber = data[8];
+                        user.state = data[7];
+                        user.zipCode = data[8];
+                        break;
+                    case 10:
+                        user.firstName = data[0];
+                        user.lastName = data[1];
+                        user.contactCompany = data[2];
+                        user.jobTitle = data[3];
+                        user.emailId = data[4];
+                        user.address = data[5];
+                        user.city = data[6];
+                        user.state = data[7];
+                        user.zipCode = data[8];
+                        user.country = data[9];
+                        break;
+                    case 11:
+                        user.firstName = data[0];
+                        user.lastName = data[1];
+                        user.contactCompany = data[2];
+                        user.jobTitle = data[3];
+                        user.emailId = data[4];
+                        user.address = data[5];
+                        user.city = data[6];
+                        user.state = data[7];
+                        user.zipCode = data[8];
+                        user.country = data[9];
+                        user.mobileNumber = data[10];
                         break;
                     /*case 10:
                         user.firstName = data[0];
@@ -1451,6 +1478,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
         try {
             if(contactType == undefined){
                 contactType = 'all';
+                this.contactsByType.pagination.pageIndex = 1;
             }
             this.currentContactType = '';
             this.showAllContactData = true;
@@ -1637,11 +1665,16 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                         if ( $.inArray( inputName, self.names ) > -1 ) {
                             swal.showValidationError( 'This list name is already taken.' )
                         } else {
-                            if ( name != "" ) {
+                            if ( name != "" && name.length < 250) {
                                 swal.close();
                                 self.saveDuplicateContactList( name );
                             } else {
+                               if(name == ""){
                                 swal.showValidationError( 'List Name is Required..' )
+                               }
+                               else{
+                                   swal.showValidationError("You have exceeded 250 characters!");
+                               }
                             }
                         }
                     });
@@ -1934,8 +1967,17 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                         if ( $.inArray( inputName, self.names ) > -1 ) {
                             swal.showValidationError( 'This list name is already taken.' )
                         } else {
-                            swal.close();
-                            self.updateContactListName( name );
+                            if ( name != "" && name.length < 250 ) {
+                                swal.close();
+                                self.updateContactListName( name );
+                            } else {
+                                if(name == ""){
+                                    swal.showValidationError( 'List Name is Required..' )
+                                   }
+                                   else{
+                                       swal.showValidationError("You have exceeded 250 characters!");
+                                   }
+                                }
                         }
                     });
                 }

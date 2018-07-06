@@ -33,13 +33,16 @@
 						<div class="page-bar m0">
 							<div class="page-breadcrumb">
 								<span *ngIf="!isDefaultPartnerList" title="Edit Contact list Name" style="cursor:pointer;font-size: 16px; font-family: Open Sans; color: #989292;"
-								(click)="updateContactListNameAlert()">{{selectedContactListName}}
+								(click)="updateContactListNameAlert()">
+								<span class="ellipsis" title="{{selectedContactListName}}">{{selectedContactListName | slice:0:30}}
+												<span *ngIf="selectedContactListName?.length>30">...</span>
 									<span *ngIf="!isDefaultPartnerList">List</span>
+									</span>
 									</span>
 									<span *ngIf="isDefaultPartnerList"
 									style="font-size: 16px; font-family: Open Sans; color: #989292;">{{selectedContactListName}}
 								</span>
-								<div *ngIf="!isDefaultPartnerList" style="color: #4d5b69;text-align: right;margin-top: -18px;margin-right: -19px;">
+								<div *ngIf="!isDefaultPartnerList" style="color: #4d5b69;text-align: right;margin-right: -19px;">
 									<i class="fa fa-pencil" aria-hidden="true"></i>
 									</div>
 							</div>
@@ -155,7 +158,7 @@
 										</div>
 										<div class="details">
 											<div class="number">{{contactsByType.inactiveContactsCount}}</div>
-											<div class="desc" style="font-size:20px">Inactive <!-- {{checkingContactTypeName}}s --></div>
+											<div class="desc" style="font-size:20px">Unregistered <!-- {{checkingContactTypeName}}s --></div>
 										</div>
 										<span class="morePadding"> <a class="more" style="text-align: left;">
 														Detailed view <i class="m-icon-swapright m-icon-white"></i>
@@ -367,7 +370,7 @@
 											</div>
 											<div class="col-sm-7">
 												<textarea class="textareaNumber" [(ngModel)]="clipboardTextareaText"
-													placeholder="FirstName,LastName,Company,Jobtitle,Email,Address,City,Country,Phonenumber       FirstName,LastName,Company,Jobtitle,Email,Address,City,country,Phonenumber       FirstName,LastName,Company,Jobtitle,Email,Address,City,Country,Phonenumber"
+													placeholder="FirstName,LastName,Company,Jobtitle,Email,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Address,City,State,Zip,Country,Phone"
 													[ngModelOptions]="{standalone: true}"
 													style="min-width: 100%; max-width: 100%; height: 150px; font-size: 12px; line-height: 1.4;"
 													required="required">
@@ -438,6 +441,14 @@
 																				<td class='pt10 pb10'>{{user.city}}</td>
 																			</tr>
 																			<tr style="border-bottom: 1px solid #dcdcdc">
+																				<td class='pt10 pb10'>State:</td>
+																				<td class='pt10 pb10'>{{user.state}}</td>
+																			</tr>
+																			<tr style="border-bottom: 1px solid #dcdcdc">
+																				<td class='pt10 pb10'>Zip Code:</td>
+																				<td class='pt10 pb10'>{{user.zipCode}}</td>
+																			</tr>
+																			<tr style="border-bottom: 1px solid #dcdcdc">
 																				<td class='pt10 pb10'>Country:</td>
 																				<td class='pt10 pb10'>{{user.country}}</td>
 																			</tr>
@@ -506,13 +517,18 @@
 																</h5> -->
 															</td>
 															<td>
-																<h5 class='mb0 textWhite'>{{newContact.jobTitle}}</h5>
-																<h6 class='mt0 textWhite' *ngIf="!isPartner">{{newContact.contactCompany}}</h6>
+																<h5 class='mb0 textWhite ellipsis' title="{{newContact.jobTitle}}">{{newContact.jobTitle | slice:0:25}}
+																<span *ngIf="newContact.jobTitle?.length>25">...</span>
+																</h5>
+																<h6 class='mt0 textWhite ellipsis' *ngIf="!isPartner" title="{{newContact.contactCompany}}">{{newContact.contactCompany | slice:0:25}}
+																<span *ngIf="newContact.contactCompany?.length>25">...</span>
+																</h6>
 															</td>
 															<td>
 																<h5 *ngIf="newContact?.address" class='mb0 textWhite'>{{newContact.address}}</h5>
-																<h5 *ngIf="newContact?.city || newContact.country"
-																	class='mt0 textWhite'>{{newContact.city}},&nbsp;{{newContact.country}}</h5>
+																<h5 class='mb0 textWhite'>{{newContact.city}},&nbsp;{{newContact.state}}</h5>
+																<h5 *ngIf="newContact?.zipCode || newContact.country"
+																	class='mt0 textWhite'>{{newContact.zipCode}},&nbsp;{{newContact.country}}</h5>
 															</td>
 															<!-- <td align="center">
 																<button id='more_less_button_{{i}}'
@@ -569,7 +585,9 @@
 																</h5> -->
 															</td>
 															<td>
-																<h5 class='mb0'>{{contact.jobTitle}}</h5>
+																<h5 class='mb0 ellipsis' title="{{contact.jobTitle}}">{{contact.jobTitle | slice:0:25}}
+																<span *ngIf="contact.jobTitle?.length>25">...</span>
+																</h5>
 																<!-- <h6 class='mt0' *ngIf="!isPartner">{{contact.contactCompany}}</h6> -->
 															</td>
 															<td align="center">
@@ -712,13 +730,16 @@
 													</h5> -->
 												</td>
 												<td>
-													<h5 class='mb0'>{{allcontacts.jobTitle}}</h5>
+													<h5 class='mb0 ellipsis' title="{{allcontacts.jobTitle}}" >{{allcontacts.jobTitle | slice:0:25}}
+													<span *ngIf="allcontacts.jobTitle?.length>25">...</span>
+													</h5>
 													<!-- <h6 class='mt0' *ngIf="!isPartner">{{allcontacts.contactCompany}}</h6> -->
 												</td>
 												<td>
 													<h5 *ngIf="allcontacts?.address" class='mb0'>{{allcontacts.address}}</h5>
-													<h5 *ngIf="allcontacts?.city && allcontacts.country"
-														class='mt0'>{{allcontacts.city}},&nbsp;{{allcontacts.country}}</h5>
+													<h5 class='mb0'>{{allcontacts.city}},&nbsp;{{allcontacts.state}}</h5>
+													<h5 *ngIf="allcontacts?.zipCode || allcontacts.country"
+														class='mt0'>{{allcontacts.zipCode}},&nbsp;{{allcontacts.country}}</h5>
 												</td>
 												<!-- <td>
 													<button id='more_less_button_{{i}}'

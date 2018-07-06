@@ -28,12 +28,10 @@ export class ExportCsvComponent implements OnInit, AfterViewInit{
           for ( var index in array[i] ) {
               if ( line != '' ) line += ','
                   if ( array[i][index] == undefined ) {
-                      line += '';
+                      line += ' ';
                   } else{
                       line += array[i][index];
                   }
-
-              
           }
           str += line + '\r\n';
       }

@@ -180,20 +180,7 @@
             <fieldset *ngIf="campaignType=='VIDEO'">
               <legend>Selected video</legend>
               <h4 style="text-align: center;" *ngIf="campaign.selectedVideoId==0">No video is selected</h4>
-              <div class="row m0" (click)="previewVideo(campaign.campaignVideoFile)" style="cursor: pointer;" *ngIf="campaign.selectedVideoId>0">
-                <div class="col-xs-4 thumb-bg p0">
-                  <img class="img-responsive thumb-vid" src="{{campaign.campaignVideoFile.imagePath}}">
-                  <span class="duration f-w-600">{{campaign.campaignVideoFile.videoLength}}</span>
-                </div>
-                <div class="col-xs-8">
-                  <a>
-                    <h4 class="mt5 mb5 f-w-600" style="font-size: 15px" title="{{campaign.campaignVideoFile.title}}">{{campaign.campaignVideoFile.title | slice:0:30}}
-                      <span *ngIf="campaign.campaignVideoFile.title?.length>30">...</span>
-                    </h4>
-                    <h5 class="m0">By {{campaign.campaignVideoFile.uploadedBy}}</h5>
-                  </a>
-                </div>
-              </div>
+              <app-video-thumbnail *ngIf="campaign.selectedVideoId!==0" [videoFile]="campaign.campaignVideoFile" (notifyParent)="previewVideo($event)"></app-video-thumbnail>
             </fieldset>
             <fieldset>
               <legend>Selected email template</legend>
@@ -208,12 +195,12 @@
                       <span *ngIf="campaign.emailTemplate.name?.length>25">...</span>
                     </h4>
                      <h5 class="m0" *ngIf="campaign.emailTemplate.type=='PARTNER'" title="{{campaign.emailTemplate.vendorName}}">
-                   		Shared By {{campaign.emailTemplate.vendorName}}
-                   		<span *ngIf="campaign.emailTemplate.vendorName?.length>25">...</span>
+                   		Shared By {{campaign.emailTemplate.vendorName | slice:0:15}}
+                   		<span *ngIf="campaign.emailTemplate.vendorName?.length>15">...</span>
                    	</h5>
-                 	<h5 class="m0" *ngIf="campaign.emailTemplate.type!='PARTNER'" title="{{campaign.emailTemplate.createdBy}}">
-                   		Shared By {{campaign.emailTemplate.createdBy}}
-                   		<span *ngIf="campaign.emailTemplate.createdBy?.length>25">...</span>
+                   	<h5 class="m0" *ngIf="campaign.emailTemplate.type!='PARTNER'" title="{{campaign.emailTemplate.createdBy}}">
+                   		Created By {{campaign.emailTemplate.createdBy | slice:0:15}}
+                   		<span *ngIf="campaign.emailTemplate.createdBy?.length>15">...</span>
                    	</h5>
                   </a>
                 </div>
@@ -320,12 +307,12 @@
                 <div [hidden]="!enableWorkFlow">
                   <div class="col-xs-6">
                     <a class="dashboard-stat yellow-gold blur" style="background-color: #f76c1a;cursor: default;">
-                      <i class="fa fa-ban p0"></i>{{properties.ADD_AUTO_RESPONSE_WEBSITE}}
+                      <i class="fa fa-ban p0" style="margin: 0 5px;"></i>{{properties.ADD_AUTO_RESPONSE_WEBSITE}}
                     </a>
                   </div>
                   <div class="col-xs-6">
                     <a class="dashboard-stat yellow-gold blur" style="background-color: #f4555c;cursor: default;">
-                      <i class="fa fa-ban p0"></i> {{properties.ADD_AUTO_RESPONSE_EMAIL}}
+                      <i class="fa fa-ban p0" style="margin: 0 5px;"></i> {{properties.ADD_AUTO_RESPONSE_EMAIL}}
                     </a>
                   </div>
                   <!-- -------------------------------------Add Reply----------------------------- -->

@@ -67,6 +67,8 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     pauseVideo:boolean;
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
     isVideoChanged = false;
+    fullTitle = false;
+
     constructor(public authenticationService: AuthenticationService, public videoFileService: VideoFileService,
         public videoUtilService: VideoUtilService, public pagination: Pagination, public xtremandLog: XtremandLog,
         public deviceService: Ng2DeviceService, public xtremandLogger: XtremandLogger,public userService: UserService,
@@ -210,6 +212,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.logoLink = result.brandingLogoDescUri;
             });
       }
+    showFullTitle(event){ this.fullTitle = event; }
     ngOnInit() {
         this.referenceService.isPlayVideoLoading(false);
         this.pagination.maxResults = 13;

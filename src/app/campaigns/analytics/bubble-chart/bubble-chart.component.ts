@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { CampaignService } from '../../../campaigns/services/campaign.service';
 import { ReferenceService } from '../../../core/services/reference.service';
+import { VideoUtilService } from '../../../videos/services/video-util.service';
 declare var Highcharts: any;
 
 @Component({
@@ -12,33 +13,27 @@ declare var Highcharts: any;
 export class BubbleChartComponent implements OnInit {
         @Input() campaignId: number;
         campaignType: any;
-        namesArray = [];
-        constructor(public campaignService: CampaignService, public referenceService: ReferenceService) { }
+        names: Array<any>;
+        constructor(public campaignService: CampaignService, public referenceService: ReferenceService, public videoUtilService: VideoUtilService) { }
 
       getCampaignUserWatchedMinutesCountes(campaignId: number, campaignType) {
         console.log(this.campaignType);
+        const colors =['#d0e4f8','#d1d190','#dbdbdc','#ebb995','#e1efec','#b9acbb', '#c9a8ca','#d9c997','#d2e6f9','#f0cdfc'];
         this.campaignService.getCampaignUserWatchedMinutes(campaignId, campaignType)
                 .subscribe(
                 data => {
-                console.log(data);
+                this.names = data.names;
               //  const names=  [ "PALLAVI",  "pavan","RAFI", "sravan", "santhosh","Manas","k", "HANUMANTHA","asdg", "yeerye" ];
                 const colors =['#d0e4f8','#d1d190','#dbdbdc','#ebb995','#e1efec','#b9acbb', '#c9a8ca','#d9c997','#d2e6f9','#f0cdfc'];
-                // const valuess = [[ 16, 45,  2.97  ], [ 11, 38,2.54 ],[ 0, 47, 1.65 ],
-                //                 [ 5,  38, 0.53],[ 2, 36.7, 0.45 ], [ 5,42, 0.25],
-                //                 [ 1,   45, 0.2  ],  [ -5,  42,  0.06 ], [6,4,0.5], [7,8,0.88]];
 
-                this.bubbleChart(data.names, data.legend, data.values);
-                for(let i=0; i< data.names.length; i++){
-                     ///   if(data.names[i].length > 0){
-                        const obj = {'emailId':data.names[i].emailId,
-                                     'firstName': data.names[i].firstName,
-                                     'lastName':data.names[i].lastName,
-                                     'color': colors[i]};
-                        console.log(obj);
-                        this.namesArray.push(obj);
-                    //    } else { }
-                }
-                console.log(this.namesArray);
+    this.names.forEach((element, index) => {
+      element.description = this.videoUtilService.truncateHourZeros(element.description);
+      element.firstName = element.firstName === "null" ? "" : element.firstName;
+      element.lastName = element.lastName === "null" ? "" : element.lastName;
+      element.color = colors[index];
+    });
+
+                this.bubbleChart(this.names, data.legend, data.values);
                 },
                 error => console.log(error),
                 () => console.log() )
@@ -80,8 +75,8 @@ export class BubbleChartComponent implements OnInit {
                                 bubble: {
                                         tooltip: {
                                           // <b>{series.name.firstName}{series.name.lastName}</b><br>
-                                                headerFormat: '{series.name.emailId}<br>',
-                                                pointFormat: hoverValue+':  {point.z}'
+                                                headerFormat: '<b>{series.name.firstName} {series.name.lastName}</b><br>{series.name.emailId}<br><br>',
+                                                pointFormat: hoverValue+': {series.name.description}'
 
                                         }
                                 },

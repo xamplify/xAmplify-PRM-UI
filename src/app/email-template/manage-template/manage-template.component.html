@@ -30,7 +30,7 @@
 								<li class="filter" (click)="filterTemplates('BASIC',true,3)" [class.emailtemplate-selected]="3 == selectedTemplateTypeIndex">Basic Video</li>
 								<li class="filter" (click)="filterTemplates('RICH',true,4)" [class.emailtemplate-selected]="4 == selectedTemplateTypeIndex">Rich Video</li>
 								<li class="filter" (click)="filterTemplates('UPLOADED',false,5)"[class.emailtemplate-selected]="5 == selectedTemplateTypeIndex">Uploaded</li>
-								<li class="filter" (click)="filterTemplates('PARTNER',false,6)"[class.emailtemplate-selected]="6 == selectedTemplateTypeIndex">Partner</li>
+								<li *ngIf="isPartnerToo" class="filter" (click)="filterTemplates('PARTNER',false,6)"[class.emailtemplate-selected]="6 == selectedTemplateTypeIndex">Partner</li>
 								<li class="filter" (click)="filterTemplates('REGULAR_CO_BRANDING',false,7)"[class.emailtemplate-selected]="7 == selectedTemplateTypeIndex">Email Co-Branding</li>
 								<li class="filter" (click)="filterTemplates('VIDEO_CO_BRANDING',false,8)"[class.emailtemplate-selected]="8 == selectedTemplateTypeIndex">Video Co-Branding</li>
 								<li class="filter" style="display: none;">Own Template</li>
@@ -65,7 +65,7 @@
 							<thead>
 								<tr>
 									<th colspan="2" style="width: 45%">Email Template List</th>
-									<th style="text-align: center;">Vendor Company Name</th>
+									<th style="text-align: center;" *ngIf="!authenticationService.isVendor()">Vendor Company Name</th>
 									<th style="text-align: center;">Type</th>
 									<th style="text-align: center;">Created Date</th>
 									<th style="text-align: center;">Actions</th>
@@ -88,24 +88,24 @@
 											<h6>Created By <b>{{emailTemplate.createdBy}}</b></h6>
 											<h6>From <b>{{emailTemplate.companyName}}</b></h6>
 										</ng-container>
-
+									<h5 class="view-banner-draft" *ngIf="emailTemplate.draft">DRAFT</h5>
 									<h5 class="view-banner" *ngIf="emailTemplate.type=='PARTNER'">PARTNER</h5>
 									<h5 class="view-banner" *ngIf="(emailTemplate.regularCoBrandingTemplate||emailTemplate.videoCoBrandingTemplate) &&emailTemplate.type=='UPLOADED' ">CO-BRANDED</h5>
 									</td>
-									<td style="text-align: center;">
+									<td style="text-align: center;" *ngIf="!authenticationService.isVendor()">
 										<h5 style="width: auto;" *ngIf="emailTemplate.type=='PARTNER'"><b>{{emailTemplate.vendorOrganizationName}}</b></h5>
 										<h5 style="width: auto;" *ngIf="emailTemplate.type!='PARTNER'"><b>-</b></h5>
 									</td>
 									<td>
-										<h5 class="view-banner" style="width: auto;">{{emailTemplate.emailTemplateType}}</h5>
+										<h5 class="view-banner" style="width: 115%;">{{emailTemplate.emailTemplateType}}</h5>
 									</td>
 									<td  style="text-align: center;">{{emailTemplate.createdDate}}</td>
-									<td>
+									<td style="width: 14%">
 										<div class="actions-block">
 											<a (click)="edit(emailTemplate.id)" title="Edit" *ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  || authenticationService.module.isVendor) && emailTemplate.type!='PARTNER'">
 												<i class="fa fa-pencil-square-o"></i>
 											</a>
-											<a (click)="showPreview(emailTemplate)" title="Preview">
+											<a  *ngIf= "!emailTemplate.draft" (click)="showPreview(emailTemplate)" title="Preview">
 												<i class="fa fa-eye mr5"></i>
 											</a>
 											<a id="template-delete" (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)" title="Delete"
@@ -127,7 +127,8 @@
 								<img  src="{{emailTemplate.subject}}" alt="{{emailTemplate.name}}">
 								<h4 class="ellipsis" title="{{emailTemplate.name}}">{{emailTemplate.name}}</h4>
 								<div>
-									<h6>Created On <b>{{emailTemplate.createdDate}}</b></h6>
+									<h6 *ngIf="emailTemplate.type=='PARTNER'">Shared On <b>{{emailTemplate.createdDate}}</b></h6>
+									<h6 *ngIf="emailTemplate.type!='PARTNER'">Created On <b>{{emailTemplate.createdDate}}</b></h6>
 									<ng-container *ngIf="emailTemplate.type!='PARTNER'">
 										<h6 title="{{emailTemplate.createdBy}}">By
 										<b *ngIf="emailTemplate.createdBy?.length>17">{{emailTemplate.createdBy|slice:0:17}}..</b>
@@ -138,7 +139,12 @@
 										<b *ngIf="emailTemplate.companyName?.length<17">{{emailTemplate.companyName}}</b>
 									</h6>
 									</ng-container>
-
+									<div class="ribbon draft" *ngIf="emailTemplate.draft">
+										<span>DRAFT</span>
+									</div>
+									<div class="ribbon active" *ngIf="emailTemplate.type=='PARTNER'">
+										<span>PARTNER</span>
+									</div>
 									<ng-container *ngIf="emailTemplate.type=='PARTNER'">
 										<h6 title="{{emailTemplate.vendorName}}">By
 										<b *ngIf="emailTemplate.vendorName?.length>17">{{emailTemplate.vendorName|slice:0:17}}..</b>
@@ -152,12 +158,12 @@
 
 								</div>
 								<div class="bar">
-									<a (click)="showPreview(emailTemplate)" title="Preview">
-										<i class="fa fa-eye"></i>
-									</a>
-									<a  (click)="edit(emailTemplate.id)" title="Edit"
+                  					<a  (click)="edit(emailTemplate.id)" title="Edit"
 										*ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  || authenticationService.module.isVendor) && emailTemplate.type!='PARTNER'">
 										<i class="fa fa-pencil-square-o"></i>
+									</a>
+									<a *ngIf="!emailTemplate.draft" (click)="showPreview(emailTemplate)" title="Preview">
+										<i class="fa fa-eye"></i>
 									</a>
 									<a (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)" title="Delete"
 										*ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)||authenticationService.module.isVendor) && emailTemplate.type!='PARTNER' ">

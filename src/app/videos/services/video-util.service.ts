@@ -165,5 +165,5 @@ export class VideoUtilService {
       callAction.lastName = user.lastName;
       return callAction;
     }
-
+    errorVideoHandler(event) { event.target.src = "assets/images/default-image.jpg"; }
 }

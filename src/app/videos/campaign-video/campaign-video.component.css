@@ -152,3 +152,8 @@ body{
 		.loader-container {
 			background-color: #fff;
 		}
+    :host /deep/ .video-js .vjs-volume-panel .vjs-volume-control.vjs-volume-horizontal {
+      position: relative;
+      padding-top: 19px;
+      padding-bottom: 15px;
+  }

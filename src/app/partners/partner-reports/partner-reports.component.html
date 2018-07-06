@@ -11,10 +11,6 @@
         <a [routerLink]="referenseService.homeRouter">Home</a>
         <i class="fa fa-angle-right"></i>
       </li>
-      <!-- <li (click)="gotoMange()">
-        <a>Manage Partners</a>
-        <i class="fa fa-angle-right"></i>
-      </li> -->
       <li>
         <a>Partner Analytics</a>
       </li>
@@ -47,7 +43,7 @@
                 </div>
                 <div class="details">
                   <div class="number">{{inActivePartnersCount}}</div>
-                  <div class="desc">Non-active Partners</div>
+                  <div class="desc">Inactive partners</div>
                 </div>
                  <span id="permhref" class="morePadding">
                   	<a class="more" (click)="goToInActivePartnersDiv()"> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
@@ -143,7 +139,7 @@
             </tbody>
           </table>
           <div *ngIf="activePartnersPagination.totalRecords==0" class="alert alert-info">
-				<strong>No Campaigns Found</strong>
+				<strong>No campaigns found</strong>
 			</div>
 			<div style="position: absolute;bottom: -10px;"
 			*ngIf="activePartnersPagination.totalRecords>0 && !activeParnterHttpRequestLoader.isLoading &&!activeParnterHttpRequestLoader.isServerError">
@@ -202,7 +198,7 @@
             </tbody>
           </table>
           <div *ngIf="pagination.totalRecords==0" class="alert alert-info">
-				<strong>No Campaigns Found</strong>
+				<strong>No campaigns found</strong>
 			</div>
         </div>
         <app-pagination [pagination]="pagination" [type]="'userInteraction'" (notifyParentDropDown)="paginationDropdown($event)"
@@ -223,7 +219,7 @@
       <div class="portlet light">
         <div class="portlet-title">
           <div class="caption">
-            <span class="caption-subject font-red-sunglo uppercase">Non-active Partners</span>
+            <span class="caption-subject font-red-sunglo uppercase">Inactive partners</span>
           </div>
            	<div class="inputs" align="right" style="float: right">
 			<div class="portlet-input input-inline input-small">
@@ -338,11 +334,11 @@
 											  <h4 class="ellipsis mt5 mb5 f-w-600" style="font-size: 14px;" title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:25}}
 													<span *ngIf="campaign.campaignName?.length>25">...</span>
 											</h4>
-											<h5 class='m0'>{{campaign.companyName}}
-												<span class='f-w-300'>{{campaign.createdBy}}</span>
+											<h5 class='m0'>{{campaign.companyName | slice:0:15}}
+												<span class='f-w-300'>{{campaign.createdBy | slice:0:25}}<span *ngIf="campaign.createdBy?.length>25">...</span></span>
 											</h5>
 										</td>
-										<td class="center">
+										<td class="center" style="text-align: center">
 											<span align="right">
 												<b *ngIf="campaign.launched">Launched On</b>
 												<b *ngIf="!campaign.launched && campaign.launchedOn?.length > 0">Scheduled For</b>
@@ -354,7 +350,7 @@
 												<b *ngIf="campaign.scheduleType=='SAVE'">{{campaign.startTime}}</b>
 											</span>
 										</td>
-										<td class="center">{{campaign.createdDate}}</td>
+										<td style="text-align: center">{{campaign.createdDate}}</td>
 										<td class="center">
 										 <a id="disabled-icon" class="blur" title="Data Sharing Disabled" *ngIf="!campaign.detailedAnalyticsShared && selectedTabIndex==2">
                           						<img src="../assets/images/disabled-icon.png">
@@ -369,7 +365,7 @@
 						</div>
 					</section>
 					<div *ngIf="sortOption.totalRecords <= 0 && sortOption.isListView" class="alert alert-info">
-						<strong>No Campaigns Found</strong>
+						<strong>No campaigns found</strong>
 					</div>
 					<div class="tab-pane active" *ngIf="!sortOption.isListView">
 						<div class="margin-top-10">
@@ -381,8 +377,8 @@
 											<h4 class="ellipsis" title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:25}}
 												<span *ngIf="campaign.campaignName?.length>25">...</span>
 											</h4>
-											<h6 class="mt10 mb0">By {{campaign.createdBy}}</h6>
-											<h6 class="mt0"><b>{{campaign.companyName}}</b></h6>
+											<h6 class="mt10 mb0" [title]="campaign.createdBy">By {{campaign.createdBy | slice:0:15}}<span *ngIf="campaign.createdBy?.length>15">...</span></h6>
+											<h6 class="mt0"><b>{{campaign.companyName | slice:0:15}}<span *ngIf="campaign.companyName?.length>15">...</span></b></h6>
 											<h6>
 											<span>
 												<span *ngIf="campaign.launched">Launched On</span>
@@ -407,12 +403,12 @@
 												<span *ngIf="!campaign.launched && campaign.launchedOn?.length==0">Saved</span>
 											</div>
 											<div class="bar">
-											 <a id="disabled-icon" class="blur" title="Data Sharing Disabled" *ngIf="!campaign.detailedAnalyticsShared && selectedTabIndex==2">
-                          						<img src="../assets/images/disabled-icon.png" style="margin-top: 9px;margin-left: 2px;">
-                       						 </a>
+											  <a id="disabled-icon" class="blur" title="Data Sharing Disabled" *ngIf="!campaign.detailedAnalyticsShared && selectedTabIndex==2">
+                          <img src="../assets/images/disabled-icon.png" style="margin-top: 9px;margin-left: 2px;">
+                       	</a>
 												<a (click)="goToCampaignAnalytics(campaign)" title="Campaign Based Reports">
 														<i class="fa fa-line-chart"></i>
-													</a>
+												</a>
 											</div>
 										</div>
 									</div>
@@ -421,7 +417,7 @@
 						</div>
 						<!-- End of 24 -->
 						<div *ngIf="sortOption.totalRecords <= 0 && !sortOption.isListView" class="alert alert-info">
-							<strong>No Campaigns Found</strong>
+							<strong>No campaigns found</strong>
 						</div>
 					</div>
 					<div *ngIf="sortOption.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError" style="background:white">
@@ -434,7 +430,6 @@
 					</div>
 				</div>
 				<!-- End Of tab Content -->
-
 			</div>
 		</div>
 	</div>

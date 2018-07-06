@@ -1,0 +1,15 @@
+.duration {
+  position: relative;
+  left: -43px;
+  padding: 1px 5px;
+  background: #ffffff;
+  bottom: -42px;
+
+}
+.title-div{
+  position: relative;
+    right: -178px;
+    top: -14px;
+    padding: 3px;
+    padding-top: 0px;
+}

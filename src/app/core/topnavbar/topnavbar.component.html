@@ -67,11 +67,11 @@
 					<!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
 
 					<li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar" *ngIf="authenticationService.user.hasCompany">
-						<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+						<a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
 						<i class="icon-bell" style="color: #0095da;"></i>
 							<span *ngIf="userService.unreadNotificationsCount>0" class="badge badge-default" style="background-color: #ed1c24 !important;">{{userService.unreadNotificationsCount}}</span>
 						</a>
-						<ul class="dropdown-menu" *ngIf="userService.unreadNotificationsCount>0">
+						<ul class="dropdown-menu">
 							<li class="external">
 								<h3><span class="bold">{{userService.unreadNotificationsCount}} pending</span> notifications</h3>
 							</li>
@@ -86,7 +86,7 @@
 
 					<!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
 					<li class="dropdown dropdown-extended dropdown-tasks" id="header_task_bar" style="display: none;">
-						<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+						<a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
 						<i class="icon-info"></i>
 						</a>
 						<ul class="dropdown-menu extended tasks">
@@ -154,9 +154,9 @@
 					<!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
 
 					<li class="dropdown dropdown-user top-menu-bar" id="headerdropDownLi"><a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-						 <img class="img-circle" src="{{model.profilePicutrePath}}" /> <span
-							class="username username-hide-on-mobile">
-								{{model.displayName}}</span> <i class="fa fa-angle-down"></i>
+             <img class="img-circle" src="{{model.profilePicutrePath}}" (error)="errorHandler($event)"/>
+              <span	class="username username-hide-on-mobile">
+								{{model.displayName | slice:0:17}}<span *ngIf="model.displayName?.length>17">..</span></span> <i class="fa fa-angle-down"></i>
 					</a>
 						<ul class="dropdown-menu dropdown-menu-default">
 							<li *ngIf="authenticationService.user.hasCompany"><a [routerLink]="['/home/dashboard/myprofile']"> <i
@@ -178,7 +178,7 @@
 									class="icon-lock"></i> Lock Screen
 							</a></li>
 							<li class="divider"></li>
-							<li id="logoutButton"><a (click)="logout()"> <i class="icon-key"></i>
+							<li id="logoutButton" (click)="logout()"><a > <i class="icon-key"></i>
 									Log Out
 							</a></li>
 						</ul>

@@ -157,6 +157,13 @@ a.disabled {
     padding: 4px;
     text-align: center;
 }
+.view-banner-draft{
+    background-color: #f76c1a;
+    color: white;
+    width: 25%;
+    padding: 4px;
+    text-align: center;
+}
 img {
 	height: 80px;
 	width: auto;

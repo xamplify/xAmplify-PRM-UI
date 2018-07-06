@@ -306,7 +306,7 @@
 									<div id="home" class="tab-pane fade in active">
 										<div class="tab" *ngIf="!campaign.createdFromVideos">
 											<button [class]="myVideosClass" (click)="showTab($event,'my-videos')" id="my-videos-tab" *ngIf="!isOnlyPartner">My Videos</button>
-											<button [class]="partnerVideosClass" (click)="showTab($event,'channel-videos')" id="partner-videos-tab">Partner Videos</button>
+											<button *ngIf="isPartnerToo" [class]="partnerVideosClass" (click)="showTab($event,'channel-videos')" id="partner-videos-tab">Partner Videos</button>
 											<ng-container *ngIf="!campaign.createdFromVideos">
 												<div class="input-icon right pull-right m10" *ngIf="isMyVideosActive">
 													<i class="icon-magnifier" (click)="searchVideo()" style="cursor: pointer;"></i>
@@ -374,7 +374,7 @@
 																		<input type="radio" [checked]="selectedRow==savedVideoFile.id" (click)="setClickedRow(savedVideoFile,'my-videos')" name="videoFileId"
 																		 [value]="savedVideoFile.id" id="campaign_video_id_{{savedVideoFile.id}}">
 																		<a href="javascript:void(0)" (click)="$event.stopPropagation();showPreview(savedVideoFile)">
-																			<img src="{{savedVideoFile.imagePath}}" width="100px" height="50px">
+																			<img src="{{savedVideoFile.imagePath}}" width="100px" height="50px"  (error)="videoUtilService.errorVideoHandler($event)">
 																		</a>
 																	</td>
 
@@ -384,12 +384,14 @@
 																			<div class="col-md-12" title="{{savedVideoFile.title}}">
 																				<p style="margin: 0;">
 																					<a href="javascript:void(0)" class="not-active">
-																						<b style="font-size: 13px;" *ngIf="savedVideoFile.title?.length>50">{{savedVideoFile.title|slice:0:50}}....</b>
+																						<b style="font-size: 13px;">{{savedVideoFile.title|slice:0:50}}
+                                                <span *ngIf="savedVideoFile.title?.length>50">...</span>
+                                            </b>
 																						<b style="font-size: 13px;" *ngIf="savedVideoFile.title?.length<=50">{{savedVideoFile.title}}</b>
 																					</a>
 																				</p>
 																				<p>by
-																					<b>{{savedVideoFile.uploadedUserName}}</b>
+                                            <b>{{savedVideoFile.uploadedUserName | slice:0:20}}<span *ngIf="savedVideoFile.uploadedUserName?.length>20">...</span></b>
 																				</p>
 																				<p>
 																					<span>{{savedVideoFile.uploadedDate}} </span>
@@ -403,9 +405,7 @@
 																	</td>
 																	<!-- --------------Published To--------------------------- -->
 																	<td style="text-align: center;">
-																		<span class="label label-blue" style="color: #607D8B">
-																			<b>{{savedVideoFile.viewBy | lowercase}}</b>
-																		</span>
+																		<span class="view-by-banner">{{savedVideoFile.viewBy | lowercase}}</span>
 																	</td>
 																	<!-- --------------Status--------------------------- -->
 																	<td style="text-align: center;">
@@ -424,13 +424,13 @@
 																		<input type="radio" name="videoFileId" [value]="videoFile.id" (click)="setClickedRow(videoFile,'my-videos')" id="campaign_video_id_{{videoFile.id}}"
 																		 [checked]="videoFile.id == selectedRow">
 																		<a (click)="$event.stopPropagation();showPreview(videoFile)" lang="{{videoFile.id}}">
-																			<img src="{{videoFile.imagePath}}" width="100px" height="50px">
+																			<img src="{{videoFile.imagePath}}" width="100px" height="50px"  (error)="videoUtilService.errorVideoHandler($event)">
 																		</a>
 																	</td>
 																	<td style="text-align: center;" *ngIf="videoFile.viewBy=='DRAFT'  && videoFile.id!==videoId">
 																		<input type="radio" name="videoFileId" [value]="videoFile.id" disabled="disabled" title="Video is in draft mode, please update the publish options to Library or Viewers.">
 																		<a href="javascript:void(0)" class="not-active">
-																			<img src="{{videoFile.imagePath}}" width="100px" height="50px">
+																			<img src="{{videoFile.imagePath}}" width="100px" height="50px"  (error)="videoUtilService.errorVideoHandler($event)">
 																		</a>
 																	</td>
 																	<!-- --------------Title--------------------------- -->
@@ -439,19 +439,16 @@
 																			<div class="col-md-12">
 																				<p style="margin: 0;" title="{{videoFile.title}}">
 																					<a href="javascript:void(0)" class="not-active">
-																						<b style="font-size: 13px;" *ngIf="videoFile.title?.length>50">
-																							{{videoFile.title|slice:0:50}}....
-																						</b>
-																						<b style="font-size: 13px;" *ngIf="videoFile.title?.length<=50">
-																							{{videoFile.title}}
+																						<b style="font-size: 13px;"> {{videoFile.title|slice:0:50}}
+                                              <span *ngIf="videoFile.title?.length>50">...</span>
 																						</b>
 																					</a>
 																				</p>
 																				<p>by
-																					<b>{{videoFile.uploadedUserName}}</b>
+                                            <b>{{videoFile.uploadedUserName | slice:0:20}}<span *ngIf="videoFile.uploadedUserName?.length>20">...</span></b>
 																				</p>
 																				<p>
-																					<span style="float:right">{{videoFile.uploadedDate}} </span>
+																					<span >{{videoFile.uploadedDate}} </span>
 																				</p>
 																			</div>
 																		</div>
@@ -462,9 +459,7 @@
 																	</td>
 																	<!-- --------------Published To--------------------------- -->
 																	<td style="text-align: center;" *ngIf="videoFile.id!==videoId">
-																		<span class="label label-blue" style="color: #607D8B">
-																			<b>{{videoFile.viewBy | lowercase}}</b>
-																		</span>
+																		<span class="view-by-banner">{{videoFile.viewBy | lowercase}}</span>
 																	</td>
 																	<!-- --------------Status--------------------------- -->
 																	<td style="text-align: center;" *ngIf="videoFile.id!==videoId">
@@ -557,7 +552,7 @@
 																		<input type="radio" [checked]="selectedRow==savedVideoFile.id" (click)="setClickedRow(savedVideoFile,'partner-videos')" name="videoFileId"
 																		 [value]="savedVideoFile.id" id="campaign_video_id_{{savedVideoFile.id}}">
 																		<a href="javascript:void(0)" (click)="$event.stopPropagation();showPreview(savedVideoFile)">
-																			<img src="{{savedVideoFile.imagePath}}" width="100px" height="50px">
+																			<img src="{{savedVideoFile.imagePath}}" width="100px" height="50px" (error)="videoUtilService.errorVideoHandler($event)">
 																		</a>
 																	</td>
 																	<td class="text-left">
@@ -570,7 +565,7 @@
 																					</a>
 																				</p>
 																				<p>by
-																					<b>{{savedVideoFile.uploadedUserName}}</b>
+                                            <b>{{savedVideoFile.uploadedUserName | slice:0:20}}<span *ngIf="savedVideoFile.uploadedUserName?.length>20">...</span></b>
 																				</p>
 																				<p>
 																					<span>{{savedVideoFile.uploadedDate}}</span>
@@ -582,9 +577,7 @@
 																		{{savedVideoFile.category.name}}
 																	</td>
 																	<td style="text-align: center;">
-																		<span class="label label-blue" style="color: #607D8B">
-																			<b>{{savedVideoFile.viewBy | lowercase}}</b>
-																		</span>
+                                      <span class="view-by-banner">{{savedVideoFile.viewBy | lowercase}}</span>
 																	</td>
 																	<td style="text-align: center;">
 																		<img src="assets/images/draft.png" *ngIf="savedVideoFile.viewBy=='DRAFT'">
@@ -602,13 +595,13 @@
 																		<input type="radio" name="videoFileId" [value]="videoFile.id" (click)="setClickedRow(videoFile,'partner-videos')" id="campaign_video_id_{{videoFile.id}}"
 																		 [checked]="videoFile.id == selectedRow">
 																		<a href="javascript:void(0)" (click)="$event.stopPropagation();showPreview(videoFile)" lang="{{videoFile.id}}">
-																			<img src="{{videoFile.imagePath}}" width="100px" height="50px">
+																			<img src="{{videoFile.imagePath}}" width="100px" height="50px"  (error)="videoUtilService.errorVideoHandler($event)">
 																		</a>
 																	</td>
 																	<td style="text-align: center;" *ngIf="videoFile.viewBy=='DRAFT'  && videoFile.id!==videoId">
 																		<input type="radio" name="videoFileId" [value]="videoFile.id" disabled="disabled" title="Video is in draft mode, please update the publish options to Library or Viewers.">
 																		<a href="javascript:void(0)" class="not-active">
-																			<img src="{{videoFile.imagePath}}" width="100px" height="50px">
+																			<img src="{{videoFile.imagePath}}" width="100px" height="50px" (error)="videoUtilService.errorVideoHandler($event)">
 																		</a>
 																	</td>
 																	<!-- --------------Title--------------------------- -->
@@ -617,12 +610,13 @@
 																			<div class="col-md-12">
 																				<p style="margin: 0;" title="{{videoFile.title}}">
 																					<a href="javascript:void(0)" class="not-active">
-																						<b style="font-size: 13px;" *ngIf="videoFile.title?.length>50">{{videoFile.title|slice:0:50}}....</b>
-																						<b style="font-size: 13px;" *ngIf="videoFile.title?.length<=50">{{videoFile.title}}</b>
+																						<b style="font-size: 13px;">{{videoFile.title|slice:0:50}}
+                                                <span *ngIf="videoFile.title?.length>50">...</span>
+                                            </b>
 																					</a>
 																				</p>
 																				<p>by
-																					<b>{{videoFile.uploadedUserName}}</b>
+																					<b>{{videoFile.uploadedUserName | slice:0:20}}<span *ngIf="videoFile.uploadedUserName?.length>20">...</span></b>
 																				</p>
 																				<p>
 																					<span>{{videoFile.uploadedDate}}</span>
@@ -636,9 +630,7 @@
 																	</td>
 																	<!-- --------------Published To--------------------------- -->
 																	<td style="text-align: center;" *ngIf="videoFile.id!==videoId">
-																		<span class="label label-blue" style="color: #607D8B">
-																			<b>{{videoFile.viewBy | lowercase}}</b>
-																		</span>
+																		<span class="view-by-banner">{{videoFile.viewBy | lowercase}}</span>
 																	</td>
 																	<!-- --------------Status--------------------------- -->
 																	<td style="text-align: center;" *ngIf="videoFile.id!==videoId">
@@ -812,7 +804,7 @@
 					<!-- <div *ngIf="emailTemplatesPagination.totalRecords==0" class="alert alert-danger"><strong>No Email Templates Found</strong></div> -->
 					<div class="col-xs-12 text-center" style="margin-top: 10px;">
 						<div class="portlet light">
-							<ul class="mix-filter pull-left" style="padding: 10px 10px 0 10px;" *ngIf="!campaign.enableCoBrandingLogo">
+							<ul class="mix-filter pull-left" style="padding:0" *ngIf="!campaign.enableCoBrandingLogo">
 								<li class="filter" (click)="filterTemplates('NONE',0)" [class.emailtemplate-selected]="0 == selectedEmailTemplateTypeIndex"
 								 *ngIf="!isOnlyPartner">All Email Templates</li>
 								<li class="filter" (click)="filterTemplates('BASIC',1)" *ngIf="campaignType=='regular' && !isOnlyPartner" [class.emailtemplate-selected]="1 == selectedEmailTemplateTypeIndex">Basic Templates</li>
@@ -823,12 +815,12 @@
 								<li class="filter" (click)="filterTemplates('RICH',5)" *ngIf="campaignType=='video' && !isOnlyPartner" [class.emailtemplate-selected]="5== selectedEmailTemplateTypeIndex">RichVideo Templates</li>
 								<li class="filter" (click)="filterTemplates('UPLOADED',6)" *ngIf="campaignType=='video' && !isOnlyPartner" [class.emailtemplate-selected]="6== selectedEmailTemplateTypeIndex">Uploaded Video Templates</li>
 								<li class="filter" (click)="filterTemplates('PARTNER',7)" [class.emailtemplate-selected]="7== selectedEmailTemplateTypeIndex"
-								 *ngIf="!isOnlyPartner">Partner Templates</li>
+								 *ngIf="!isOnlyPartner && isPartnerToo">Partner Templates</li>
 							</ul>
-							<div class="input-icon right pull-right" style="padding-top: 10px;right: 15px;">
+							<div class="input-icon right pull-right" style="padding-top: 4px;right: 8px;">
 								<i class="icon-magnifier" (click)="searchEmailTemplate()" style="cursor: pointer;"></i>
 								<input type="text" class="form-control" placeholder="search..." [(ngModel)]="emailTemplateSearchInput" [ngModelOptions]="{standalone: true}"
-								 style="width: 217px;height: 34px;">
+								 style="width: 170px;height: 34px;">
 							</div>
 							<div class="portlet-body">
 								<div class="row">
@@ -841,7 +833,7 @@
 						<div class="portlet-body">
 							<div id="user_list_tb_wrapper" class="dataTables_wrapper form-inline no-footer col-xs-12">
 								<div class="mix-grid">
-									<ng-container *ngIf="showSelectedEmailTemplate && !hideCoBrandedEmailTemplate">
+									<ng-container *ngIf="showSelectedEmailTemplate"><!-- !hideCoBrandedEmailTemplate -->
 										<div  *ngIf="!isAdd && isCampaignDraftEmailTemplate && emailTemplatesPagination.totalRecords>0 && emailTemplatesPagination.pageIndex==1 ">
 											<div class="col-md-3 col-sm-4 mix category_1 mix_all" style="display: block; opacity: 1; margin-top: -11px;">
 												<div id="container">
@@ -857,9 +849,11 @@
 														<div style="top: 2%; position: relative; margin-left: 5px;">
 														</div>
 														<div id="template-action-div">
-															<a class="mix-preview4 icons-css" title="Select" data-rel="">
-																<i *ngIf="emailTemplateId!=selectedEmailTemplateRow" class="fa fa-check-circle" id="fa-font-size" (click)="setEmailTemplate(campaign.emailTemplate)"></i>
-																<i *ngIf="emailTemplateId == selectedEmailTemplateRow" class="fa fa-ban" id="fa-font-size"></i>
+															<a class="mix-preview4 icons-css" title="Select" data-rel="" *ngIf="emailTemplateId!=selectedEmailTemplateRow" (click)="setEmailTemplate(campaign.emailTemplate)">
+																<i class="fa fa-check-circle" id="fa-font-size"></i>
+															</a>
+															<a class="mix-preview4 icons-css" title="Select" data-rel="" *ngIf="emailTemplateId == selectedEmailTemplateRow">
+																<i class="fa fa-ban" id="fa-font-size"></i>
 															</a>
 															<a class="mix-preview6 icons-css" title="Preview" data-rel="">
 																<i class="fa fa-eye" id="fa-font-size" (click)="getEmailTemplatePreview(campaign.emailTemplate)"></i>
@@ -894,13 +888,17 @@
 											</div>
 										</div>
 									</ng-container>
-									
+
 									<div *ngFor="let emailTemplate of emailTemplatesPagination.pagedItems ;let i =index" id="emailTemplateListDiv_{{emailTemplate.id}}">
 										<div class="col-md-3 col-sm-4 mix category_1 mix_all" style="display: block; opacity: 1; margin-top: -11px;" *ngIf="emailTemplateId!=emailTemplate.id">
 											<div id="container">
-												<h3 *ngIf="emailTemplate.type=='PARTNER'" style="width: 21%">
+												<h3 *ngIf="emailTemplate.type=='PARTNER'" class="partner-ribbon">
 													{{emailTemplate.type}}
 													<span class="arrow"></span>
+												</h3>
+												<h3 *ngIf="emailTemplate.draft" class="draft-header">
+													DRAFT
+													<span class="draft-arrow"></span>
 												</h3>
 											</div>
 											<div class="mix-inner css" [class.template-selected]="emailTemplate.id == selectedEmailTemplateRow">
@@ -909,7 +907,7 @@
 													<h4 class="ellipsis" title="{{emailTemplate.name}}" style="margin-top: 14px;">{{emailTemplate.name}}</h4>
 													<div style="top: 2%; position: relative; margin-left: 5px;">
 													</div>
-													<div id="template-action-div">
+													<div id="template-action-div" *ngIf="!emailTemplate.draft">
 														<a class="mix-preview4 icons-css" title="Select" data-rel="" *ngIf="emailTemplate.id!=selectedEmailTemplateRow" (click)="setEmailTemplate(emailTemplate)">
 															<i class="fa fa-check-circle" id="fa-font-size"></i>
 														</a>
@@ -926,8 +924,8 @@
 													<span align="right" title="upladed date" class="template-created-on-value">
 														<b>{{emailTemplate.createdDate}}</b>
 													</span>
-													
-													
+
+
 													<ng-container *ngIf="emailTemplate.type!='PARTNER'">
 														<span align="left" class="template-created-by-label" title="{{emailTemplate.createdBy}}">
 															<b *ngIf="emailTemplate.createdBy?.length>20">{{emailTemplate.createdBy|slice:0:20}}....</b>
@@ -1167,14 +1165,14 @@
 						</a>
 						<a *ngIf="emailTemplateHrefLinks?.length>0" class="dashboard-stat yellow-gold" style="background-color: #f76c1a;padding: 9px 0;"
 							(click)="addClickRows()">
-							<i class="fa fa-plus-square p0"></i>
+							<i class="fa fa-plus-square p0" style="margin: 0 5px;"></i>
 							{{properties.ADD_AUTO_RESPONSE_WEBSITE}}
 						</a>
 					</div>
 
 					<div class="col-xs-6">
 						<a class="dashboard-stat yellow-gold" style="background-color: #f4555c;padding: 9px 0;" (click)="addReplyRows()">
-							<i class="fa fa-plus-square p0"></i>
+							<i class="fa fa-plus-square p0" style="margin: 0 5px;"></i>
               {{properties.ADD_AUTO_RESPONSE_EMAIL}}
 						</a>
 					</div>
@@ -1272,7 +1270,7 @@
 											<li class="filter" (click)="filterReplyTemplates('BASIC',1,reply)" [class.emailtemplate-selected]="1 == reply.selectedEmailTemplateTypeIndex">Basic Templates</li>
 											<li class="filter" (click)="filterReplyTemplates('RICH',2,reply)" [class.emailtemplate-selected]="2 == reply.selectedEmailTemplateTypeIndex">Rich Templates</li>
 											<li class="filter" (click)="filterReplyTemplates('UPLOADED',3,reply)" [class.emailtemplate-selected]="3 == reply.selectedEmailTemplateTypeIndex">Uploaded Regular Templates</li>
-											<li class="filter" (click)="filterReplyTemplates('PARTNER',7,reply)" [class.emailtemplate-selected]="7== reply.selectedEmailTemplateTypeIndex">Partner Templates</li>
+											<li *ngIf="isPartnerToo" class="filter" (click)="filterReplyTemplates('PARTNER',7,reply)" [class.emailtemplate-selected]="7== reply.selectedEmailTemplateTypeIndex">Partner Templates</li>
 										</ul>
                     <div class="input-icon pull-right" style="cursor:pointer; position: relative;top: -16px;" >
                         <i class="icon-magnifier" style="cursor:pointer;font-size:18px;" (click)="searchReplyEmailTemplate(reply)"></i>
@@ -1311,19 +1309,21 @@
 													</tr>
 												</ng-container>
 												<ng-container *ngFor="let emailTemplate of reply.emailTemplatesPagination.pagedItems ;let e =index">
-													<tr (click)="setReplyEmailTemplate(emailTemplate.id,reply,i)" [class.active]="emailTemplate.id==reply.selectedEmailTemplateId"
+													<tr (click)="setReplyEmailTemplate(emailTemplate.id,reply,i,emailTemplate.draft)" [class.active]="emailTemplate.id==reply.selectedEmailTemplateId"
 														*ngIf="reply.selectedEmailTemplateIdForEdit!=emailTemplate.id">
 														<!-- -->
 														<td>
-															<input type="radio" name="reply-email-template" [value]="emailTemplate.id" id="reply-{{i}}-{{emailTemplate.id}}" (click)="setReplyEmailTemplate(emailTemplate.id,reply,i)"
+															<input *ngIf="!emailTemplate.draft" type="radio" name="reply-email-template" [value]="emailTemplate.id" id="reply-{{i}}-{{emailTemplate.id}}"
+															 (click)="setReplyEmailTemplate(emailTemplate.id,reply,i,emailTemplate.draft)"
 																[checked]="emailTemplate.id == reply.selectedEmailTemplateId">
+														<input *ngIf="emailTemplate.draft" title="draft template cannot be selected" disabled="disabled" type="radio" name="reply-email-template">
 														</td>
 														<td *ngIf="emailTemplate.name?.length>20" title="{{emailTemplate.name}}">{{emailTemplate.name|slice:0:20}}....</td>
 														<td *ngIf="emailTemplate.name?.length<=20" title="{{emailTemplate.name}}">{{emailTemplate.name}}</td>
 														<td *ngIf="emailTemplate.createdBy?.length>20" title="{{emailTemplate.createdBy}}">{{emailTemplate.createdBy|slice:0:20}}....</td>
 														<td *ngIf="emailTemplate.createdBy?.length<=20" title="{{emailTemplate.createdBy}}">{{emailTemplate.createdBy}}</td>
 														<td>
-															<a class="btn btn-warning" (click)="getEmailTemplatePreview(emailTemplate)">
+															<a *ngIf="!emailTemplate.draft" class="btn btn-warning" (click)="getEmailTemplatePreview(emailTemplate)">
 																<i class="fa fa-eye" style="padding-top: 3px; font-size: 20px;" title="" data-original-title="Preview"></i>
 															</a>
 														</td>
@@ -1447,7 +1447,7 @@
 														<li class="filter" (click)="filterClickTemplates('BASIC',1,url)" *ngIf="campaignType=='regular'" [class.emailtemplate-selected]="1 == url.selectedEmailTemplateTypeIndex">Basic Templates</li>
 														<li class="filter" (click)="filterClickTemplates('RICH',2,url)" *ngIf="campaignType=='regular'" [class.emailtemplate-selected]="2 == url.selectedEmailTemplateTypeIndex">Rich Templates</li>
 														<li class="filter" (click)="filterClickTemplates('UPLOADED',3,url)" *ngIf="campaignType=='regular'" [class.emailtemplate-selected]="3 == url.selectedEmailTemplateTypeIndex">Uploaded Regular Templates</li>
-														<li class="filter" (click)="filterClickTemplates('PARTNER',7,url)" [class.emailtemplate-selected]="7== url.selectedEmailTemplateTypeIndex">Partner Templates</li>
+														<li *ngIf="isPartnerToo" class="filter" (click)="filterClickTemplates('PARTNER',7,url)" [class.emailtemplate-selected]="7== url.selectedEmailTemplateTypeIndex">Partner Templates</li>
 													</ul>
 												</div>
 												<div class="col-xs-12 col-sm-4">
@@ -1491,19 +1491,22 @@
 													</tr>
 												</ng-container>
 												<ng-container *ngFor="let emailTemplate of url.emailTemplatesPagination.pagedItems ;let e =index">
-													<tr (click)="setClickEmailTemplate(emailTemplate.id,url,i)" [class.active]="emailTemplate.id==url.selectedEmailTemplateId"
+													<tr (click)="setClickEmailTemplate(emailTemplate.id,url,i,emailTemplate.draft)" [class.active]="emailTemplate.id==url.selectedEmailTemplateId"
 														*ngIf="url.selectedEmailTemplateIdForEdit!=emailTemplate.id">
 														<!-- -->
 														<td>
-															<input type="radio" name="url-email-template" [value]="emailTemplate.id" id="url-{{i}}-{{emailTemplate.id}}" (click)="setClickEmailTemplate(emailTemplate.id,url,i)"
+															<input *ngIf="!emailTemplate.draft" type="radio" name="url-email-template" [value]="emailTemplate.id" id="url-{{i}}-{{emailTemplate.id}}"
+															 (click)="setClickEmailTemplate(emailTemplate.id,url,i,emailTemplate.draft)"
 																[checked]="emailTemplate.id == url.selectedEmailTemplateId">
+
+															<input *ngIf="emailTemplate.draft" title="draft template cannot be selected" disabled="disabled" type="radio" name="url-email-template">
 														</td>
 														<td *ngIf="emailTemplate.name?.length>20" title="{{emailTemplate.name}}">{{emailTemplate.name|slice:0:20}}....</td>
 														<td *ngIf="emailTemplate.name?.length<=20" title="{{emailTemplate.name}}">{{emailTemplate.name}}</td>
 														<td *ngIf="emailTemplate.createdBy?.length>20" title="{{emailTemplate.createdBy}}">{{emailTemplate.createdBy|slice:0:20}}....</td>
 														<td *ngIf="emailTemplate.createdBy?.length<=20" title="{{emailTemplate.createdBy}}">{{emailTemplate.createdBy}}</td>
 														<td>
-															<a class="btn btn-warning" (click)="getEmailTemplatePreview(emailTemplate)">
+															<a *ngIf="!emailTemplate.draft" class="btn btn-warning" (click)="getEmailTemplatePreview(emailTemplate)">
 																<i class="fa fa-eye" style="padding-top: 3px; font-size: 20px;" title="" data-original-title="Preview"></i>
 															</a>
 														</td>

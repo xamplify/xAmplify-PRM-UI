@@ -227,6 +227,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     events: {
                         click: function (event) {
                           self.loading = true;
+                          self.referenceService.campaignType = event.point.campaignType;
                           self.router.navigate(['./home/campaigns/' + event.point.campaignId + '/details']);
                         }
                     }
@@ -290,7 +291,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 xAxis: {
                     categories: names,
                     labels: {
-                        enabled: i === 0
+                        enabled: i === 0,
+                        formatter: function () {
+                          const text = this.value,
+                            formatted = text.length > 10 ? text.substring(0, 10) + '...' : text;
+                              return formatted ;
+                        }
                     }
                 },
                 exporting: { enabled: false },
@@ -502,9 +508,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     this.campaigns = data;
                     console.log(data);
                     const campaignIdArray = data.map(function (a) { return a[0]; });
-                    console.log(campaignIdArray);
-                    console.log(this.campaigns.length);
-                    console.log(data[data.length - 1]);
                     this.totalCampaignsCount = this.campaigns.length;
                     if (this.totalCampaignsCount >= 1) {
                         this.getCampaignsEamailBarChartReports(campaignIdArray);
@@ -610,9 +613,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     onSelectionChangeCampaignReportOption(userCampaignReportOption: string) {
         this.userCampaignReport.campaignReportOption = userCampaignReportOption;
     }
-
-
-
 
     getEmailActionCount(userId: number) {
         this.dashboardService.getEmailActionCount(userId)
@@ -731,6 +731,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         try {
             this.dashboardService.getCampaignsHeatMapDetails(this.heatMapSort.value).
                 subscribe(result => {
+                    debugger;
                     this.xtremandLogger.log(result.heatMapData);
                     this.heatMapData = result.heatMapData;
                     if (!this.isFullscreenToggle) { this.generatHeatMap(this.heatMapData, 'dashboard-heat-map');
@@ -927,9 +928,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
             this.xtremandLogger.error('error in world map dashboard ' + error);
         }
     }
-    showCampaignDetails(id){
-     this.loading = true;
-      this.router.navigate(['/home/campaigns/'+id+'/details']);
+    showCampaignDetails(campaign:any){
+      this.loading = true;
+      this.referenceService.campaignType = campaign[7];
+      this.router.navigate(['/home/campaigns/'+campaign[0]+'/details']);
     }
     isFullscreenHeatMap() {
         this.isFullscreenToggle = !this.isFullscreenToggle;

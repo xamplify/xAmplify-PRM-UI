@@ -192,6 +192,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     createVideoFile:any;
     listName:string;
     loading = false;
+    isPartnerToo:boolean = false;
     httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder,private route: ActivatedRoute,public refService:ReferenceService,
@@ -208,6 +209,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
        /* CKEDITOR.config.height = 500;        // 500 pixels high.
         CKEDITOR.config.height = '25em'; */
         CKEDITOR.config.height = '100';
+        this.isPartnerToo = this.authenticationService.checkIsPartnerToo();
         this.countries = this.refService.getCountries();
         this.contactsPagination.filterKey = "isPartnerUserList";
         this.campaign = new Campaign();
@@ -640,6 +642,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.isContactList = false;
         }
         if(event){
+            this.removeTemplateAndAutoResponse();
+            this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.NONE;
+            this.loadEmailTemplates(this.emailTemplatesPagination);
             this.loadContacts();
         }else{
             this.loadContacts();
@@ -660,15 +665,21 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     }
     setCoBrandingLogo(event:any){
         this.campaign.enableCoBrandingLogo = event;
-        if(!this.campaign.enableCoBrandingLogo && (this.campaign.emailTemplate.regularCoBrandingTemplate || this.campaign.emailTemplate.videoCoBrandingTemplate)){
+        let isRegularCoBranding = this.campaign.emailTemplate!=undefined &&this.campaign.emailTemplate.regularCoBrandingTemplate;
+        let isVideoCoBranding =  this.campaign.emailTemplate!=undefined &&  this.campaign.emailTemplate.videoCoBrandingTemplate;
+        /*if(!this.campaign.enableCoBrandingLogo || isRegularCoBranding || isVideoCoBranding){
             this.hideCoBrandedEmailTemplate = true;
         }else{
             this.hideCoBrandedEmailTemplate = false;
-        }
+        }*/
+        this.removeTemplateAndAutoResponse();
+        this.filterCoBrandedTemplates(event);
+    }
+    
+    removeTemplateAndAutoResponse(){
         this.urls = [];//Removing Auto-Response WebSites
         this.selectedEmailTemplateRow = 0;
         this.isEmailTemplate = false;
-        this.filterCoBrandedTemplates(event);
     }
     filterCoBrandedTemplates(event:any){
         if(event){
@@ -744,13 +755,18 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     }
 
 
-    setReplyEmailTemplate(emailTemplateId:number,reply:Reply,index:number){
-        reply.selectedEmailTemplateId = emailTemplateId;
-        $('#reply-'+index+emailTemplateId).prop("checked",true);
+    setReplyEmailTemplate(emailTemplateId:number,reply:Reply,index:number,isDraft:boolean){
+        if(!isDraft){
+            reply.selectedEmailTemplateId = emailTemplateId;
+            $('#reply-'+index+emailTemplateId).prop("checked",true);
+        }
+     
     }
-    setClickEmailTemplate(emailTemplateId:number,url:Url,index:number){
-        url.selectedEmailTemplateId = emailTemplateId;
-        $('#url-'+index+emailTemplateId).prop("checked",true);
+    setClickEmailTemplate(emailTemplateId:number,url:Url,index:number,isDraft:boolean){
+        if(!isDraft){
+            url.selectedEmailTemplateId = emailTemplateId;
+            $('#url-'+index+emailTemplateId).prop("checked",true);
+        }
     }
     showToolTip(videoType:string){
         if(videoType=="DRAFT"){
@@ -1252,6 +1268,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
 
     /*************************************************************Email Template***************************************************************************************/
     loadEmailTemplates(pagination:Pagination){
+        pagination.throughPartner = this.campaign.channelCampaign;
         this.refService.loading(this.campaignEmailTemplate.httpRequestLoader, true);
         if(pagination.searchKey==null || pagination.searchKey==""){
             pagination.campaignDefaultTemplate = true;

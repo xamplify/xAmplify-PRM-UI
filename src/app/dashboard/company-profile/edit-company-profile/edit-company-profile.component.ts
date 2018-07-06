@@ -84,6 +84,10 @@ export class EditCompanyProfileComponent implements OnInit {
     cityDivClass: string = this.formGroupDefaultClass;
     cityError = false;
     cityErrorMessage = "";
+    
+    stateDivClass: string = this.formGroupDefaultClass;
+    stateError = false;
+    stateErrorMessage = "";
 
     countryDivClass: string = this.formGroupDefaultClass;
     countryError = false;
@@ -240,10 +244,11 @@ export class EditCompanyProfileComponent implements OnInit {
         this.validatePattern('linkedInLink');
         this.validatePattern('twitterLink');
         this.validatePattern('city');
+        this.validatePattern('state');
         this.validatePattern('emailId');
         this.validateCompanyLogo();
         if (!this.companyNameError && !this.companyProfileNameError && !this.emailIdError && !this.tagLineError && !this.phoneError && !this.websiteError
-            && !this.facebookLinkError && !this.googlePlusLinkError && !this.twitterLinkError && !this.linkedinLinkError && !this.cityError && !this.countryError &&
+            && !this.facebookLinkError && !this.googlePlusLinkError && !this.twitterLinkError && !this.linkedinLinkError && !this.cityError && !this.stateError && !this.countryError &&
             !this.zipError && !this.logoError) {
             this.processor.set(this.processor);
 
@@ -348,11 +353,12 @@ export class EditCompanyProfileComponent implements OnInit {
         this.validatePattern('linkedInLink');
         this.validatePattern('twitterLink');
         this.validatePattern('city');
+        this.validatePattern('state');
         this.validatePattern('emailId');
         this.validateCompanyLogo();
         let errorLength = $('div.form-group.has-error.has-feedback').length;
         if (!this.companyNameError && !this.companyProfileNameError && !this.emailIdError && !this.tagLineError && !this.phoneError && !this.websiteError
-            && !this.facebookLinkError && !this.googlePlusLinkError && !this.twitterLinkError && !this.linkedinLinkError && !this.cityError && !this.countryError &&
+            && !this.facebookLinkError && !this.googlePlusLinkError && !this.twitterLinkError && !this.linkedinLinkError && !this.cityError && !this.stateError && !this.countryError &&
             !this.zipError && !this.aboutUsError && !this.logoError) {
             this.processor.set(this.processor);
 
@@ -627,6 +633,12 @@ export class EditCompanyProfileComponent implements OnInit {
         this.cityDivClass = this.refService.errorClass;
         this.disableButton();
     }
+    
+    addStateError() {
+        this.stateError = true;
+        this.stateDivClass = this.refService.errorClass;
+        this.disableButton();
+    }
 
     addWebSiteError() {
         this.websiteError = true;
@@ -682,6 +694,13 @@ export class EditCompanyProfileComponent implements OnInit {
         this.cityError = false;
         this.cityDivClass = this.refService.successClass;
         this.cityErrorMessage = "";
+        this.enableOrDisableButton();
+    }
+    
+    removeStateError() {
+        this.stateError = false;
+        this.stateDivClass = this.refService.successClass;
+        this.stateErrorMessage = "";
         this.enableOrDisableButton();
     }
 
@@ -762,6 +781,19 @@ export class EditCompanyProfileComponent implements OnInit {
             }
         } else {
             this.removeCityError();
+        }
+    }
+    
+    validateState() {
+        if ($.trim(this.companyProfile.state).length > 0) {
+            if (!this.regularExpressions.CITY_PATTERN.test(this.companyProfile.state)) {
+                this.addStateError();
+                this.stateErrorMessage = "Invalid State";
+            } else {
+                this.removeStateError();
+            }
+        } else {
+            this.removeStateError();
         }
     }
 
@@ -859,6 +891,9 @@ export class EditCompanyProfileComponent implements OnInit {
         }
         else if (column == "city") {
             this.validateCity();
+        }
+        else if (column == "state") {
+            this.validateState();
         }
     }
 

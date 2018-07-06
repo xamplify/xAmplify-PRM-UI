@@ -124,7 +124,7 @@
 												</div>
 												<div class="details">
 													<div class="number" style="font-weight: 300 !important;">{{contactsByType.inactiveContactsCount}}</div>
-													<div class="desc" style="font-size:20px">Inactive
+													<div class="desc" style="font-size:20px">Unregistered
 														<!-- {{checkingContactTypeName}}s --></div>
 												</div>
 												<span class="morePadding"> <a class="more" style="text-align: left;">
@@ -220,11 +220,18 @@
 														style="width: 55px; margin-top: -88px; margin-left: 17px;">
 													</td>
 													<td>
-														<h4 title={{contactList.name}} class='mt5 mb5 f-w-400'>{{contactList.name}}</h4>
-														<h5 class='m0'>
-															By <span class='f-w-400'>{{contactList.uploadedBy}}</span>
+													<h4 class="ellipsis" title="{{contactList.name}}">
+															{{contactList.name | slice:0:50}} 
+															<span *ngIf="contactList.name?.length>50">...</span>
+														</h4>
+														<h5 class='m0 ellipsis'  title="{{contactList.uploadedBy}}">
+															By <span class='f-w-400'>{{contactList.uploadedBy | slice:0:50}}
+															<span *ngIf="contactList.uploadedBy?.length>50">...</span>
+															</span>
 														</h5>
-														<h5 class="mb0"><b>{{contactList.companyName}}</b></h5>
+														<h5 class="mb0 ellipsis" title="{{contactList.companyName}}"><b>{{contactList.companyName | slice:0:50}}</b>
+														<span *ngIf="contactList.companyName?.length>50">...</span>
+														</h5>
 													</td>
 													<td>{{contactList.createdDate}}</td>
 													<td class="text-center">{{contactList.noOfContacts}}</td>
@@ -291,8 +298,12 @@
 											<h4 class="ellipsis" title="{{contactList.name}}">{{contactList.name | slice:0:25}}
 												<span *ngIf="contactList.name?.length>25">...</span>
 											</h4>
-											<h6 class="mt10 mb0">By {{contactList.uploadedBy}}</h6>
-											<h6 class="mt0"><b>{{contactList.companyName}}</b></h6>
+											<h6 class="mt10 mb0 ellipsis" title="{{contactList.uploadedBy}}">By {{contactList.uploadedBy | slice:0:30}}
+											<span *ngIf="contactList.uploadedBy?.length>30">...</span>
+											</h6>
+											<h6 class="mt0 ellipsis" title="{{contactList.companyName}}"><b>{{contactList.companyName | slice:0:30}}</b>
+											<span *ngIf="contactList.companyName?.length>30">...</span>
+											</h6>
 											<h6 class="mt10 mb0">Total {{checkingContactTypeName}}s {{contactList.noOfContacts}}</h6>
 											<h6 class="mt10 mb0">Created date {{contactList.createdDate}}</h6>
 											<div class="bar">
@@ -642,12 +653,15 @@
 															</h5> -->
 														</td>
 														<td>
-															<h5 class='mb0'>{{contact.jobTitle}}</h5>
+															<h5 class='mb0 ellipsis' title="{{contact.jobTitle}}">{{contact.jobTitle | slice:0:25}}
+															<span *ngIf="contact.jobTitle?.length>25">...</span>
+															</h5>
 															<!-- <h6 class='mt0' *ngIf="!isPartner">{{contact.contactCompany}}</h6> -->
 														</td>
 														<td>
 															<h5 *ngIf="contact?.address" class='mb0'>{{contact.address}}</h5>
-															<h5 *ngIf="contact?.city && contact.country" class='mt0'>{{contact.city}},&nbsp;{{contact.country}}</h5>
+															<h5 class='mb0'>{{contact.city}},&nbsp;{{contact.state}}</h5>
+															<h5 *ngIf="contact?.zipCode || contact.country" class='mt0'>{{contact.zipCode}},&nbsp;{{contact.country}}</h5>
 														</td>
 														<!-- <td>
 															<button id='more_less_button_{{i}}'

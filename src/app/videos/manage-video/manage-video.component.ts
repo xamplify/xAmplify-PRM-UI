@@ -83,6 +83,8 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.videoFileService.videoType = videoType.value;
         this.loadVideos(this.pagination);
     }
+    mouseEnter(event, videoFile){ event.target.src = videoFile.gifImagePath; }
+    mouseLeave(event, videoFile){ event.target.src = videoFile.imagePath; }
     ngOnInit() {
       try {
         this.pagination.maxResults = 12;
@@ -265,7 +267,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                 this.pagination.pagedItems.splice(position, 1);
                 this.defaultBannerMessageValues();
                 this.showVideoFileName = videoName;
-                this.showVideoFileName = '"'+this.showVideoFileName+'" deleted successfully';
+                this.showVideoFileName = '"'+this.showVideoFileName.substr(0,50)+'" deleted successfully';
                 this.customResponse = new CustomResponse( 'SUCCESS', this.showVideoFileName, true );
                 $('html,body').animate({ scrollTop: 0 }, 'slow');
                 if (this.pagination.pagedItems.length === 0) {
@@ -280,14 +282,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                     this.referenceService.showServerError(this.httpRequestLoader);
                     this.httpRequestLoader.statusCode = error.status;
                 } else if (error._body.search('video is being used in one or more campaigns. Please delete those campaigns') !== -1) {
-                    let message = error._body.replace('Heads up!','Heads up! " ');
-                     message = message.replace('video','" video');
-                     message = message.replace('"','');
-                     message = message.replace('."','.');
-                     message = message.replace('{message":','');
-                     message = message.replace('}','')
-                     message = message.replace('more campaigns','more campaigns or might be used by vendor activity');
-                     const errorMesge = message;
+                    const errorMesge = "Heads up! "+ videoName.substr(0,50) +" is being used in one or more campaigns or might be used by vendor activity. Please delete those campaigns first.";
                     this.defaultBannerMessageValues();
                      $('html,body').animate({ scrollTop: 0 }, 'slow');
                     this.customResponse = new CustomResponse( 'ERROR', errorMesge, true );
@@ -348,11 +343,11 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
             this.showVideoFileName = videoFile.title;
         }
         if(this.showMessage){
-            this.showVideoFileName = '"'+this.showVideoFileName+'" saved successfully';
+            this.showVideoFileName = '"'+this.showVideoFileName.substr(0,50) +'" saved successfully';
             this.customResponse = new CustomResponse( 'SUCCESS', this.showVideoFileName, true );
 
          } else if(this.showUpdatevalue){
-            this.showVideoFileName = '"'+this.showVideoFileName+'" settings updated successfully';
+            this.showVideoFileName = '"'+this.showVideoFileName.substr(0,50) +'" settings updated successfully';
             this.customResponse = new CustomResponse( 'SUCCESS', this.showVideoFileName, true );
          }
         this.xtremandLogger.info('update method called ' + this.showVideoFileName);

@@ -27,6 +27,8 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
     isVideoTagError:boolean = false;
     videoTagsError:string = "";
     emailOpenTrackingUrl:string = "<div id=\"bottomDiv\"><img src=\"<emailOpenImgURL>\" class='backup_picture' style='display:none'></div>";
+    clickedButtonName:string = "";
+    updateButton:string = "UPDATE";
     httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
     constructor(private emailTemplateService: EmailTemplateService, private userService: UserService,
             private router: Router, private emailTemplate: EmailTemplate, private logger: XtremandLogger,
@@ -51,19 +53,6 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
 
     }
 
-    ngOnInit() {
-        try {
-            Metronic.init();
-            Layout.init();
-            Demo.init();
-            TableManaged.init();
-        } catch (errr) { }
-    }
-
-
-    ngOnDestroy() {
-        this.emailTemplateService.emailTemplate = new EmailTemplate();
-    }
 
     checkUpdatedAvailableNames(value: any) {
         if (value.trim().length > 0 ) {
@@ -81,25 +70,39 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
             this.invalidTemplateName = true;
         }
     }
-    updateHtmlTemplate() {
+    
+    
+    update(){
+        this.clickedButtonName = this.updateButton;
+        this.updateHtmlTemplate(false);
+    }
+    
+    updateHtmlTemplate(isOnDestroy:boolean) {
        this.refService.startLoader(this.httpRequestLoader);
         this.emailTemplate.id = this.emailTemplateService.emailTemplate.id;
         this.emailTemplate.name = this.model.templateName;
+        this.emailTemplate.onDestroy = isOnDestroy;
         for(var instanceName in CKEDITOR.instances){
             CKEDITOR.instances[instanceName].updateElement();
             this.emailTemplate.body =  CKEDITOR.instances[instanceName].getData();
         }
-        this.emailTemplateService.update(this.emailTemplate)
+        if($.trim(this.emailTemplate.body).length>0){
+            this.emailTemplateService.update(this.emailTemplate)
             .subscribe(
             (data: string) => {
                 this.refService.stopLoader(this.httpRequestLoader);
-                if (data == "success") {
-                    this.refService.isUpdated = true;
-                    this.router.navigate(["/home/emailtemplates/manage"]);
-                    } else{
-                        this.isVideoTagError = true;
-                        this.videoTagsError = data;
-                    }
+                if(!isOnDestroy){
+                    if (data == "success") {
+                        this.refService.isUpdated = true;
+                        this.emailTemplateService.emailTemplate = new EmailTemplate();
+                        this.router.navigate(["/home/emailtemplates/manage"]);
+                        } else{
+                            this.clickedButtonName = "";
+                            this.isVideoTagError = true;
+                            this.videoTagsError = data;
+                        }
+                }
+               
             },
             (error: string) => {
                 this.refService.stopLoader(this.httpRequestLoader);
@@ -107,6 +110,25 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
             },
             () => this.logger.info("Finished updateHtmlTemplate()")
             );
+        }
+        
 
+    }
+    
+    ngOnInit() {
+        try {
+            Metronic.init();
+            Layout.init();
+            Demo.init();
+            TableManaged.init();
+        } catch (errr) { }
+    }
+
+
+    ngOnDestroy() {
+        if(this.emailTemplateService.emailTemplate != undefined && this.clickedButtonName!=this.updateButton){
+            this.updateHtmlTemplate(true);
+        }
+        
     }
 }

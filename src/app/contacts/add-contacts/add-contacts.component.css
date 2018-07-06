@@ -9,4 +9,7 @@
 .cloud-services img{display:block; margin:0 auto;}
 .cloud-services .portlet-body {padding: 10px 0 0px;}
 .cloud-services.portlet.light {padding-bottom: 0px;}
+.center{
+  text-align: center;
+}
 

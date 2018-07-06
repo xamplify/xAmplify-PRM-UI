@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit,ViewChild,ElementRef } from "@angular/core";
 import { AuthenticationService } from "../../core/services/authentication.service";
 
 @Component({
@@ -7,23 +7,21 @@ import { AuthenticationService } from "../../core/services/authentication.servic
   styleUrls: ["./intro.component.css"]
 })
 export class IntroComponent implements OnInit {
+
+  @ViewChild('features') public features:ElementRef;
+  @ViewChild('pricing') public pricing:ElementRef;
+  @ViewChild('tour') public tour:ElementRef;
+  @ViewChild('contact') public contact:ElementRef;
+
   mainLoader: boolean;
   navbar: any;
   sticky: any;
-  // google maps zoom level
   zoom = 10;
-  // initial center position for the map
   lat = 40.7143528;
   lng = -74.0059731;
-  markers = [
-    {
-      lat: 40.7143528,
-      lng: -74.0059731,
-      label: "A",
-      draggable: true
-    }
-  ];
+  markers = [{ lat: 40.7143528, lng: -74.0059731, label: "A", draggable: true }];
   constructor(public authenticationService: AuthenticationService) {}
+
   clickedMarker(label: string, index: number) {
     console.log(`clicked the marker: ${label || index}`);
   }
@@ -36,8 +34,19 @@ export class IntroComponent implements OnInit {
     console.log("dragEnd", m, $event);
   }
   onScroll() {
-    if (window.pageYOffset >= this.sticky) { this.navbar.classList.add("stuck");
-    } else { this.navbar.classList.remove("stuck"); }
+    if (window.pageYOffset >= this.sticky) { this.navbar.classList.add("stuck");} else { this.navbar.classList.remove("stuck"); }
+  }
+  goToFeaturesTab(){
+    this.features.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'start' });
+  }
+  goToTourTab():void {
+    this.tour.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'start' });
+  }
+  goToPricingTab(){
+    this.pricing.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'start' });
+  }
+  goToContactTab(){
+      this.contact.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'start' });
   }
   ngOnInit() {
     this.navbar = document.getElementById("navbar");

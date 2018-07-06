@@ -59,9 +59,12 @@
 				</div>
 				<!-- modal popup end-->
 				<div [hidden]="isVideoChanged">
-					<h3 style="word-break: break-all;color:#777">{{selectedVideo.title}}</h3>
+					<h3 class="video-title">
+            <span [hidden]="fullTitle">{{selectedVideo.title | slice:0:140}}<a title="more" *ngIf="selectedVideo.title?.length>140" (click)="showFullTitle(true)">...</a></span>
+            <span [hidden]="!fullTitle">{{selectedVideo.title}}<a title="less" (click)="showFullTitle(false)">...</a></span>
+          </h3>
 				</div>
-				<div class="col-xs-12 col-sm-6" style="padding: 0;" [hidden]="isVideoChanged">
+				<div class="col-xs-12 col-sm-7 col-md-8" style="padding: 0;" [hidden]="isVideoChanged">
 					<div *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId == selectedVideo.uploadedUserId ) || authenticationService.isOnlyPartner">
 						<button *ngIf="shareVideo==true" class="btn btn-primary shareVideoButton" (click)="shareClick()" [disabled]="isThisDraftVideo==true">
 							<i class="fa fa-share-alt" aria-hidden="true"></i> Share
@@ -72,7 +75,7 @@
 						</button>
 					</div>
 				</div>
-				<div class="col-xs-12 col-sm-6" style="padding: 0;" [hidden]="isVideoChanged">
+				<div class="col-xs-12 col-sm-5 col-md-4" style="padding: 0;" [hidden]="isVideoChanged">
 					<div class="col-xs-12" style="padding: 0;">
 						<span class="pull-right videoViews">
 							<h4 class="viewsh4">{{selectedVideo.views}} views</h4>
@@ -249,7 +252,7 @@
 															<span align="right" style="bottom: 4px; float: right; position: absolute; right: 10px;">{{videoUtilService.truncateHourZeros(videoFile.videoLength)}}</span>
 															<span align="left" style="bottom: 17px; left: 10px; position: absolute;">#{{videoFile.views}}</span>
 															<br>
-															<span align="left" style="bottom: 3px; left: 10px; position: absolute;">by {{videoFile.uploadedUserName}}</span>
+															<span align="left" style="bottom: 3px; left: 10px; position: absolute;">by {{videoFile.uploadedUserName | slice:0:8}} <span *ngIf="videoFile.uploadedUserName?.length>8">..</span></span>
 														</div>
 													</div>
 												</div>

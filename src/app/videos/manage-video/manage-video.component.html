@@ -18,7 +18,7 @@
        </div>
          <div class="col-xs-12 col-sm-12 col-md-12">
          <div class="tabbable tabbable-custom tabbable-noborder" style="background: white">
-           <div class="tab-content" style="min-height: 590px;">
+           <div class="tab-content" style="min-height: 715px;">
              <div class="tab-pane active m10">
                <div class="page-toolbar">
                  <div *ngIf="!httpRequestLoader.isLoading  && !referenceService.isPlayVideo" class="btn-group pull-right col-xs-12 col-sm-12 col-md-12" style="padding: 0;margin-bottom: 10px; ">
@@ -72,7 +72,7 @@
                    <table class='table tgrid' *ngIf="pagination.pagedItems.length !== 0">
                      <thead>
                        <tr>
-                         <th colspan="2" style="width: 50%">Videos</th>
+                         <th colspan="1" style="width: 50%">Videos</th>
                          <th class="text-center">Type</th>
                          <th class="text-center">Upload Date</th>
                          <th class="text-center"><span [hidden]="authenticationService.isOnlyPartner()">Actions</span></th>
@@ -80,30 +80,9 @@
                      </thead>
                      <tbody>
                        <tr *ngFor="let videoFile of pagination.pagedItems ;let i =index">
-                         <td style="width: 10%;">
-                           <div style="margin-bottom: -18px" >
-                             <a (click)="showPlayVideo(videoFile)">
-                               <img src="{{videoFile.imagePath}}" alt="{{videoFile.title}}" style="height:100px;width: 170px;">
-                               <span class="duration f-w-600">{{videoUtilService.truncateHourZeros(videoFile.videoLength)}}</span>
-                             </a>
-                           </div>
-                         </td>
-                         <td>
-                           <a (click)="showPlayVideo(videoFile)">
-                             <h4  title={{videoFile.title}} class='mt5 mb5 f-w-600'>{{videoFile.title | slice: 0: 40}} <span *ngIf="videoFile.title?.length>42">...</span> </h4>
-                             <span *ngIf="!authenticationService.isOnlyPartner()">
-                             <h5 *ngIf="videoFileService.videoType === 'myVideos'" class='m0'>By {{videoFile.uploadedUserName}}</h5>
-                             <h5 *ngIf="videoFileService.videoType === 'partnerVideos'">By
-                               <span *ngIf="videoFile.companyName">{{videoFile.companyName}}</span>
-                               <span *ngIf="!videoFile.companyName">{{videoFile.uploadedUserName}}</span>
-                             </h5>
-                             </span>
-                             <span *ngIf="authenticationService.isOnlyPartner()">
-                                <span *ngIf="videoFile.companyName">By {{videoFile.companyName}}</span>
-                              </span>
-                             <h6 class='f-w-600'>{{videoFile.views}} views</h6>
-                           </a>
-                         </td>
+                        <td>
+                        <app-video-thumbnail [videoFile]="videoFile" (notifyParent)="showPlayVideo($event)"></app-video-thumbnail>
+                        </td>
                          <td class="text-center">
                            <span class='view-by-banner'>{{videoFile.viewBy}}</span>
                          </td>
@@ -113,20 +92,20 @@
                              <a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor"
                                (click)="showEditVideo(videoFile)" title="Edit Video"> <i class="fa fa-pencil-square-o"></i>
                              </a>
+                             <ng-container *ngIf="hasAllAccess || (hasCampaignRole && hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor">
+                                <a *ngIf="videoFile.viewBy!='DRAFT'" (click)="campaignRouter(videoFile)" title="Create Campaign">
+                                  <i class="fa fa-bullhorn"></i>
+                                </a>
+                                <a *ngIf="videoFile.viewBy=='DRAFT'" title="Can't create a Campaign for DRAFT" style="cursor: not-allowed !important;opacity: 0.6;">
+                                  <i class="fa fa-bullhorn" title="Can't create a Campaign for DRAFT"></i>
+                                </a>
+                              </ng-container>
                              <a (click)="showCampaignVideoReport(videoFile)" *ngIf="videoFile.viewBy!=='DRAFT'" title="Video Based Reports">
                                <i class="fa fa-line-chart"></i>
                              </a>
                              <a *ngIf="videoFile.viewBy=='DRAFT'" title="Can't show Reports for DRAFT" style="cursor: not-allowed !important;opacity: 0.6">
                                <i class="fa fa-line-chart" title="Can't show Reports for DRAFT"></i>
                              </a>
-                             <ng-container *ngIf="hasAllAccess || (hasCampaignRole && hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor">
-                               <a *ngIf="videoFile.viewBy!='DRAFT'" (click)="campaignRouter(videoFile)" title="Create Campaign">
-                                 <i class="fa fa-bullhorn"></i>
-                               </a>
-                               <a *ngIf="videoFile.viewBy=='DRAFT'" title="Can't create a Campaign for DRAFT" style="cursor: not-allowed !important;opacity: 0.6;">
-                                 <i class="fa fa-bullhorn" title="Can't create a Campaign for DRAFT"></i>
-                               </a>
-                             </ng-container>
                              <a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId == videoFile.uploadedUserId) || authenticationService.module.isVendor" (click)="deleteVideoAlert(videoFile.alias,i ,videoFile.title)">
                                <i class="fa fa-trash"></i>
                              </a>
@@ -144,25 +123,24 @@
                  <div class="col-xs-6 col-sm-3" *ngFor="let videoFile of pagination.pagedItems ;let i =index" >
                  <div class="grid-box p0" *ngIf="pagination.pagedItems && !httpRequestLoader.isLoading && !referenceService.isPlayVideo">
                    <div class="video-thumbnail-wrapper">
-                       <img class="video-thumbnail" src="{{videoFile.imagePath}}" width="auto">
+                       <img class="video-thumbnail" src="{{videoFile.imagePath}}" width="auto" (error)="videoUtilService.errorVideoHandler($event)" (mouseenter) ="mouseEnter($event,videoFile)" (mouseleave) ="mouseLeave($event,videoFile)">
                        <i class="fa fa-play-circle" (click)="showPlayVideo(videoFile)"></i>
                        <span class="views-count" title="views"><i class="fa fa-eye"></i>&nbsp;{{videoFile.views}}</span>
                        <span class="video-duration"  title="Video Length">{{videoUtilService.truncateHourZeros(videoFile.videoLength)}}</span>
                    </div>
                       <span class="ellipsis video-title" title="{{videoFile.title}}">{{videoFile.title | slice:0:25}}<span *ngIf="videoFile.title?.length>25">...</span></span>
                       <span *ngIf="!authenticationService.isOnlyPartner()">
-                      <span class="video-uploaded-by" *ngIf="videoFileService.videoType==='myVideos'"  title="Uploaded By">By {{videoFile.uploadedUserName}}</span>
+                      <span class="video-uploaded-by" *ngIf="videoFileService.videoType==='myVideos'"  title="Uploaded By">By {{videoFile.uploadedUserName | slice:0:15}}<span *ngIf="videoFile.uploadedUserName?.length>15">...</span></span>
                       <span class="video-uploaded-by" *ngIf="videoFileService.videoType==='partnerVideos'" title="Uploaded By">By
-                         <span *ngIf="videoFile.companyName">{{videoFile.companyName}}</span>
-                         <span *ngIf="!videoFile.companyName">{{videoFile.uploadedUserName}}</span>
+                         <span *ngIf="videoFile.companyName">{{videoFile.companyName | slice:0:15}}<span *ngIf="videoFile.companyName?.length>15">...</span></span>
+                         <span *ngIf="!videoFile.companyName">{{videoFile.uploadedUserName | slice:0:15}}<span *ngIf="videoFile.uploadedUserName?.length>15">...</span></span>
                       </span>
                     </span>
                       <span *ngIf="authenticationService.isOnlyPartner()">
-                          <span style="float: left;">By {{videoFile.companyName}}</span>
+                          <span style="float: left;">By {{videoFile.companyName | slice:0:15}}<span *ngIf="videoFile.companyName?.length>15">...</span></span>
                           <!-- <span *ngIf="!videoFile.companyName">{{videoFile.uploadedUserName}}</span> -->
                       </span>
-                      <span class="video-upload-date"  title="Uploaded Date">{{videoFile.uploadedDate }}</span>
-
+                      <span class="video-upload-date"  title="Uploaded Date">{{videoFile.uploadedDate}}</span>
                    <div class="bookmark-ribbon" *ngIf="videoFileService.videoType === 'partnerVideos'">
                      <span style="margin: 0px -7px; font-size: 17px; color: white;">
                        <i *ngIf="videoFileService.videoType === 'partnerVideos'" class="fa fa-handshake-o"  aria-hidden="true"></i>
@@ -178,6 +156,14 @@
                           (click)="showEditVideo(videoFile)" title="Edit Video">
                           <i class="fa fa-pencil-square-o"></i>
                         </a>
+                        <span *ngIf="hasAllAccess || (hasCampaignRole && hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor">
+                            <a *ngIf="videoFile.viewBy!='DRAFT'" (click)="campaignRouter(videoFile)" title="Create Campaign" >
+                             <i class="fa fa-bullhorn"></i>
+                             </a>
+                            <a  *ngIf="videoFile.viewBy=='DRAFT'" title="Can't create a Campaign for DRAFT" >
+                            <i class="fa fa-bullhorn" title="Can't create a Campaign for DRAFT"></i>
+                             </a>
+                        </span>
                         <a *ngIf="videoFile.viewBy=='DRAFT'" title="Can't show Reports for DRAFT video">
                           <i class="fa fa-line-chart"></i>
                         </a>
@@ -186,14 +172,7 @@
                         </a>
                       </ng-container>
                         <ng-container *ngIf="videoFileService.videoType==='myVideos'">
-                          <span *ngIf="hasAllAccess || (hasCampaignRole && hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor">
-                          <a *ngIf="videoFile.viewBy!='DRAFT'" (click)="campaignRouter(videoFile)" title="Create Campaign" >
-                           <i class="fa fa-bullhorn"></i>
-                           </a>
-                          <a  *ngIf="videoFile.viewBy=='DRAFT'" title="Can't create a Campaign for DRAFT" >
-                          <i class="fa fa-bullhorn" title="Can't create a Campaign for DRAFT"></i>
-                           </a>
-                         </span>
+
                           <a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId == videoFile.uploadedUserId) || authenticationService.module.isVendor" (click)="deleteVideoAlert(videoFile.alias,i ,videoFile.title)"
                             title="Delete Video">
                             <i class="fa fa-trash" ></i>

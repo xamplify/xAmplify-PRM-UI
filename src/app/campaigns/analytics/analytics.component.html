@@ -17,8 +17,12 @@
 		<li *ngIf="campaignRouter==='managecampaigns'"><a  [routerLink]="['/home/campaigns/manage']">Manage Campaigns</a><i class="fa fa-angle-right"></i></li>
     <li *ngIf="campaignRouter==='notification'"><a [routerLink]="['/home/dashboard/notifications']">Notifications</a><i class="fa fa-angle-right"></i></li>
     <li *ngIf="campaignRouter==='partnerAnalytics'"><a [routerLink]="['/home/partners/analytics']">Partner Analytics</a><i class="fa fa-angle-right"></i></li>
-    <li style="color: #888;" *ngIf="isPartnerEnabledAnalyticsAccess">{{campaign.campaignName}} <b  *ngIf="isNavigatedThroughAnalytics" style="color:#0195da">(Data Sharing Enabled)</b></li>
-    <li style="color: #888;" *ngIf="!isPartnerEnabledAnalyticsAccess">{{campaign.campaignName}} <b *ngIf="isNavigatedThroughAnalytics" style="color:#ed1d24">(Data Sharing Disabled)</b></li>
+    <li style="color: #888;" *ngIf="isPartnerEnabledAnalyticsAccess" title="{{campaign.campaignName}}">
+      {{campaign.campaignName | slice: 0: 35}}<span *ngIf="campaign.campaignName?.length>35">...</span>
+      <b *ngIf="isNavigatedThroughAnalytics" style="color:#0195da">(Data Sharing Enabled)</b></li>
+    <li style="color: #888;" *ngIf="!isPartnerEnabledAnalyticsAccess" title="{{campaign.campaignName}}">
+      {{campaign.campaignName | slice: 0: 35}}<span *ngIf="campaign.campaignName?.length>35">...</span>
+      <b *ngIf="isNavigatedThroughAnalytics" style="color:#ed1d24">(Data Sharing Disabled)</b></li>
 	</ul>
 <!--<app-analytics-loader [campaignType]="campaignType" *ngIf="loading"></app-analytics-loader>-->
 </div>
@@ -137,11 +141,12 @@
 	</div>
 	<div class="col-xs-12 col-sm-6 p-5x" [hidden]="mainLoader" *ngIf="campaignType !== 'VIDEO'">
 		<div class="p-5x">
-			<div class="portlet light">
+			<div class="portlet light" style="min-height: 118px;">
 				<div class="portlet-body clearfix">
 					<div class="col-xs-12">
-						<h3>{{campaign.campaignName}}<span style="float: right;font-size: 14px;margin-top: -24px;color: #fff;background: #00a6e8;padding: 2px 14px;margin-right: -10px;">{{campaignType}} CAMPAIGN {{isPartnerCampaign}}</span></h3>
-						<h5 class="text-info" style="margin-bottom: 24px;">{{campaign.launchTime | date: 'fullDate'}}</h5>
+						<span class="btn btn-sm btn-primary pull-right">{{campaignType}} CAMPAIGN {{isPartnerCampaign}}</span>
+						<h4>{{campaign.campaignName}}</h4>
+						<h5 class="text-info mb10">{{campaign.launchTime | date: 'fullDate'}}</h5>
 					</div>
 				</div>
 			</div>
@@ -249,7 +254,7 @@
 						<span class="caption-subject font-red-sunglo uppercase" style="font-size: 15px !important;">Campaign Recipient Participation</span>
 					</div>
 				</div>
-				<div class="portlet-body flex" style="padding: 1.7em 0;" [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}">
+				<div class="portlet-body flex" style="padding: 1.49em 0;" [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}">
 					<div class="col-xs-4 text-center" [class.disabled]="(campaignReport.lifetimeViewsCount < 1 || !isPartnerEnabledAnalyticsAccess) ? true : null">
 						<section class="percentage-circle" style="cursor: pointer" (click)="campaignViewsDonut('life-time')">
 							<app-donut-chart [percentageValue]="campaignReport.lifetimeViewsCount" [totalValue]="campaignReport.emailSentCount"> </app-donut-chart>
@@ -292,7 +297,7 @@
                  </div>
             </div>
             </div>
-				<div class="portlet light">
+				<div class="portlet light" [hidden]="mainLoader">
 					<div class="portlet-title">
 						<div class="caption">
 							<span class="caption-subject font-red-sunglo" style="font-size: 15px !important;">
@@ -331,7 +336,9 @@
 											<!-- here emailId coming as userMail -->
 										</td>
 										<td class="td-chart">
-											<h6>{{item.campaignName}}</h6>
+											<h6 title="{{campaign.campaignName}}">{{item.campaignName | slice: 0: 35}}
+                        <span *ngIf="campaign.campaignName?.length>35">...</span>
+                      </h6>
 											<h4 *ngIf="item.campaignName==null">-</h4>
 										</td>
 										<!-- <td class="td-chart"><h6>{{item.userEmail}}</h6></td> -->
@@ -340,7 +347,8 @@
 										</td>
 										<td class="td-chart">
 											<div class="bg-color" [style.width.%]="(item.viewsCount/maxViewsValue)*100" style="margin: 10px 0px;">
-												<span style="text-align: center;vertical-align: middle;color:white;position: absolute; bottom: 9px;font-size:16px">{{item.viewsCount}}</span>												</div>
+												<h1 style="text-align: center;vertical-align: middle;color:white;font-size: 17px;">{{item.viewsCount}}</h1>
+											</div>
 										</td>
 									</tr>
 								</tbody>
@@ -414,7 +422,7 @@
 								<div><img src="assets/images/total-time-spent.png" style="margin: 4px 15px;width: 45px;"></div>
 								<div>Time Spent</div>
 								<div class="number">
-									<span data-counter="counterup" style="margin: 0 33px;">{{totalTimeSpent}}</span>
+									<span data-counter="counterup" style="margin: 0 33px;">{{videoUtilService.truncateHourZeros(totalTimeSpent)}}</span>
 								</div>
 							</a>
 						</div>
@@ -429,7 +437,10 @@
               <span class="timeline-title">{{campaign.launchTime | date: 'fullDate'}}</span>
             </div>
             <div class="timeline-body">
-				<h5><span class="f-w-600">{{campaign.campaignName}}</span> campaign Launched at {{campaign.launchTime | date: 'shortTime'}}</h5>
+				<h5><span class="f-w-600" title="{{campaign.campaignName}}">
+          {{campaign.campaignName | slice: 0: 30}}
+          <span *ngIf="campaign.campaignName?.length>30">...</span>
+        </span> campaign Launched at {{campaign.launchTime | date: 'shortTime'}}</h5>
 				<h5>Email sent to <b>{{selectedRow.emailId}}</b></h5>
             </div>
           </div>
@@ -437,12 +448,12 @@
 	</ul>
     <ul class="timeline" *ngFor="let emailLog of emailLogs">
         <li class="timeline-inverted">
-          	<div class="timeline-badge">
+        <div class="timeline-badge">
 				<img *ngIf="emailLog.actionId == 13" alt="opened" src="assets/images/opened.png">
 				<img *ngIf="emailLog.actionId == 14" alt="clicked" src="assets/images/clicked.png">
 				<img *ngIf="emailLog.actionId == 15" alt="clicked" src="assets/images/clicked.png">
 				<img *ngIf="emailLog.actionId == 1" alt="watched" src="assets/images/video.png">
-			</div>
+		  	</div>
           <div class="timeline-panel">
             <div class="timeline-heading">
               <span class="timeline-title">{{emailLog.time | date: 'fullDate'}}</span>
@@ -450,36 +461,35 @@
 			<div class="timeline-body">
 				<h5>
 					<span *ngIf="emailLog.actionId == 13">
-						Campaign <span class="f-w-600" *ngIf="emailLog.subject">{{emailLog.subject}}</span> email opened
+						Campaign <span class="f-w-600" *ngIf="emailLog.subject" title="{{emailLog.subject}}">
+              {{emailLog.subject | slice:0:30}} <span *ngIf="emailLog.subject?.length>30">...</span>
+            </span> email opened
 					</span>
-					<span *ngIf="emailLog.actionId == 14">Clicked <span class="f-w-600">{{campaign.campaignVideoFile.title}}</span> video GIF</span>
+					<span *ngIf="emailLog.actionId == 14">Clicked <span class="f-w-600" title="{{campaign.campaignVideoFile.title}}">{{campaign.campaignVideoFile.title | slice:0:30}} <span *ngIf="campaign.campaignVideoFile.title?.length>30">...</span></span> video GIF</span>
 					<span *ngIf="emailLog.actionId == 15">
 					Clicked on the URL
-					<span class="f-w-600" *ngIf="emailLog.url"><a href="{{emailLog.url}}" target="_blank">{{emailLog.url}}</a></span>
+					<span class="f-w-600" *ngIf="emailLog.url"><a href="{{emailLog.url}}" target="_blank" title="{{emailLog.url}}">{{emailLog.url | slice:0:30}}<span *ngIf="emailLog.url?.length>30">...</span></a></span>
 					</span>
-					<span *ngIf="emailLog.actionId == 1"><span class="f-w-600">{{campaign.campaignVideoFile.title}}</span> played</span> at {{emailLog.time | date: 'shortTime'}}
+					<span *ngIf="emailLog.actionId == 1"><span class="f-w-600" title="{{campaign.campaignVideoFile.title}}">{{campaign.campaignVideoFile.title | slice:0:30}} <span *ngIf="campaign.campaignVideoFile.title?.length>30">...</span></span> played</span> at {{emailLog.time | date: 'shortTime'}}
 				</h5>
-				<span *ngIf="emailLog.countryCode">
-					<h6>
+			  	<span *ngIf="emailLog.countryCode">
+				  	<h6>
 						<img *ngIf="emailLog.countryCode" src="https://lipis.github.io/flag-icon-css/flags/4x3/{{emailLog.countryCode | lowercase}}.svg"
 						width="20px" class="mr10">{{emailLog.country}}, {{emailLog.city}}
-					</h6>
-					<h6 class="mb0">{{emailLog.isp}}</h6>
-				</span>
-				<div *ngIf="emailLog.actionId == 1">
-					<app-heat-map [sessionId]="emailLog.sessionId"></app-heat-map>
-				</div>
-			</div>
+				  	</h6>
+				  	<h6 class="mb0">{{emailLog.isp}}</h6>
+			   	</span>
+			    	<div *ngIf="emailLog.actionId == 1">
+				  	<app-heat-map [sessionId]="emailLog.sessionId"></app-heat-map>
+			    	</div>
+		    	</div>
           </div>
         </li>
-    </ul>
-
+       </ul>
 			</div>
-
 		</div>
 	</div>
 </div>
-
 
 <!-- Users Watch List Modal -->
 <div class="modal fade" id="usersWatchListModal" tabindex="-1" role="dialog" aria-labelledby="usersWatchListModalLabel" data-backdrop="static"
@@ -488,7 +498,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i class="fa fa-times"></i></a>
-				<h4 class="modal-title" id="usersWatchListModalLabel" style="text-align: center;">Recipients who have watched the campaign</h4>
+				<h4 class="modal-title" id="usersWatchListModalLabel" >Recipients who have watched the campaign</h4>
 				<div class="btn-group pull-right" style="margin-top: -4px; cursor:pointer; color: #7d8c98">
 					<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none;margin-top: -15px;padding-right: 10px;margin-right: 21px; float:right;">
 					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
@@ -555,56 +565,96 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i class="fa fa-times"></i></a>
-				<h4 class="modal-title" id="emailActionListModalLabel" *ngIf="campaignReport.emailActionType === 'open'" style="text-align: center;">Recipients who opened the email</h4>
-				<h4 class="modal-title" id="emailActionListModalLabel" *ngIf="campaignReport.emailActionType === 'click'" style="text-align: center;">Recipients who clicked a URL</h4>
-				<div class="btn-group pull-right" style="margin-top: -4px; cursor:pointer; color: #7d8c98">
-					<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none;margin-top: -15px;padding-right: 10px;margin-right: 21px; float:right;">
+				<h4 class="modal-title" id="emailActionListModalLabel" *ngIf="campaignReport.emailActionType === 'open'">Recipients who opened the email</h4>
+				<h4 class="modal-title" id="emailActionListModalLabel" *ngIf="campaignReport.emailActionType === 'click'">Recipients who clicked a URL</h4>
+        <div class="btn-group pull-right" style="margin-top: -4px; cursor:pointer; color: #7d8c98">
+          <div class="sort-dropdown">
+            <select class="form-control" [(ngModel)]="selectedSortedOption" (ngModelChange)="getSortedResult(campaign.campaignId,$event)">
+              <option *ngFor="let sortOption of sortByDropDown" [ngValue]="sortOption">{{sortOption.name}}</option>
+            </select>
+          </div>
+          <span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none;margin-top: -15px;padding-right: 10px;margin-right: 21px; float:right;">
 					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
-				</span>
+			  	</span>
 					<ul class="dropdown-menu pull-right">
 						<li><a id="delete_button" (click)="downloadEmailLogs()"> Export To Excel </a></li>
-					</ul>
+          </ul>
 				</div>
 			</div>
 			<div class="modal-body">
 				<div class="row">
 					<div class="table-responsive">
 					<div *ngIf="campaignReport.emailActionType" class="inputs" align="right" style="float: right;margin-bottom: 10px;">
-						<div style="float: left;">
-							<select class="form-control" [(ngModel)]="selectedSortedOption" (ngModelChange)="getSortedResult(campaign.campaignId, 'open',$event)" style="position: relative;">
-								<option *ngFor="let sortOption of sortByDropDown" [ngValue]="sortOption">{{sortOption.name}}</option>
-							</select>
-						</div>
 					</div>
 					 <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
 						<ng-container *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError">
 						<table class="table tgrid">
 							<thead>
 								<tr>
-									<th style="font-size: 12px; font-weight: 500;">NAME</th>
+									<th>NAME</th>
 									<th *ngIf="campaignReport.emailActionType === 'open'">Email Subject</th>
-									<th *ngIf="campaignReport.emailActionType === 'click'" style="font-size: 12px; font-weight: 500;">URL</th>
-									<th style="font-size: 12px; font-weight: 500;">TIME</th>
+									<th *ngIf="campaignReport.emailActionType === 'click'">URL</th>
+									<th colspan="2">Latest Time</th>
 								</tr>
 							</thead>
 							<tbody>
-								<tr *ngFor="let item of campaignReport.emailActionList">
-									<td>
-										<app-user-info  [userInfo]="item"> </app-user-info>
-									</td>
-									<td *ngIf="campaignReport.emailActionType === 'open'">
-										<h6>{{item.subject}}</h6>
-									</td>
-									<td *ngIf="campaignReport.emailActionType === 'click' && item.url != null">
-										<h6>{{item.url}}</h6>
-									</td>
-									<td *ngIf="campaignReport.emailActionType === 'click' && item.url == null">
-										<h6>Clicked on the video thumbnail</h6>
-									</td>
-									<td>
-										<h6>{{item.time | date: 'short'}}</h6>
-									</td>
-								</tr>
+<ng-container *ngFor="let item of campaignReport.emailLogs">
+	<tr>
+		<td>
+			<app-user-info [userInfo]="item"> </app-user-info>
+		</td>
+		<td *ngIf="campaignReport.emailActionType === 'open'">
+			<h6 title="{{item.subject}}">
+				{{item.subject | slice:0:40}}
+				<span *ngIf="item.subject?.length > 40">...</span>
+			</h6>
+		</td>
+		<td *ngIf="campaignReport.emailActionType === 'click' && item.url != null">
+			<h6>{{item.url | slice:0:40}} <span *ngIf="item.url?.length > 40">...</span></h6>
+		</td>
+		<td *ngIf="campaignReport.emailActionType === 'click' && item.url == null">
+			<h6>Clicked on the video thumbnail</h6>
+		</td>
+		<td>
+			<h6>{{item.time | date: 'short'}}</h6>
+		</td>
+		<td>
+			<div class="actions-block" *ngIf="item.emailActionCount > 1">
+				<a title="View History" (click)="listEmailLogsByCampaignIdUserIdActionType(item, campaignReport.emailActionType)">
+					<i class="fa" [ngClass]="{'fa-plus': !item.isExpand, 'fa-minus': item.isExpand}"></i>
+				</a>
+			</div>
+		</td>
+	</tr>
+	<tr [ngClass]="{'hidden': !item.isExpand}">
+		<td colspan="4">
+	<table class="table tgrid table-condensed" *ngIf="item.emailLogHistory">
+		<thead>
+			<tr>
+				<th *ngIf="campaignReport.emailActionType === 'open'">Email Subject</th>
+				<th *ngIf="campaignReport.emailActionType === 'click'">URL</th>
+				<th colspan="2">Opened At</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let emailLog of item.emailLogHistory">
+				<td *ngIf="campaignReport.emailActionType === 'open'">
+					<h6>{{emailLog.subject}}</h6>
+				</td>
+				<td *ngIf="campaignReport.emailActionType === 'click' && emailLog.url != null">
+					<h6>{{emailLog.url}}</h6>
+				</td>
+				<td *ngIf="campaignReport.emailActionType === 'click' && emailLog.url == null">
+					<h6>Clicked on the video thumbnail</h6>
+				</td>
+				<td>{{emailLog.time | date: 'short'}}</td>
+			</tr>
+		</tbody>
+	</table>
+	</td>
+	</tr>
+
+</ng-container>
 							</tbody>
 						</table>
 						</ng-container>
@@ -623,7 +673,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i class="fa fa-times"></i></a>
-				<h4 class="modal-title" id="emailSentListModalLabel" style="text-align: center;">Sent Email Details</h4>
+				<h4 class="modal-title" id="emailSentListModalLabel" >Sent Email Details</h4>
 				<div class="btn-group pull-right" style="margin-top: -4px; cursor:pointer; color: #7d8c98">
 					<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none;margin-top: -15px;padding-right: 10px;margin-right: 21px; float:right;">
 					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
@@ -652,7 +702,9 @@
 										<app-user-info  [userInfo]="item"> </app-user-info>
 									</td>
 									<td>
-										<h6>{{item.campaignName}}</h6>
+										<h6 title="{{item.campaignName}}">{{item.campaignName | slice:0:30}}
+                        <span *ngIf="campaign.campaignName?.length>30">...</span>
+                    </h6>
 										<h4 *ngIf="item.campaignName==null">-</h4>
 									</td>
 									<td>
@@ -712,17 +764,12 @@
 								<td>
 									<app-user-info  [userInfo]="item"> </app-user-info>
 								</td>
-								<!-- <td>
-									<h6>{{item.campaignName}}</h6>
-									<h4 *ngIf="item.campaignName==null">-</h4>
-								</td> -->
-								<td>
+								<td style="text-align: center">
 									<app-location  [userLocation]="item"> </app-location>
 								</td>
 								<td>
 									<h6>{{item.time | date: 'fullDate'}}</h6>
 								</td>
-								<!-- <td><h6>{{item.deviceType }}</h6></td> -->
 								<td class="center">
 								<app-platform [deviceTypeOs]="true" [userPlatform]="item"> </app-platform>
 								</td>
@@ -805,7 +852,7 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
-					<h4 class="modal-title" id="email-template-title"	style="text-align: center;"></h4>
+					<h4 class="modal-title" id="email-template-title"	></h4>
 				</div>
 				<div class="modal-body">
 					<div id="email-template-content"></div>
@@ -825,7 +872,7 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
-					<h4 class="modal-title" id="show_contact-list-info"	style="text-align: center;">
+					<h4 class="modal-title" id="show_contact-list-info"	>
             <span *ngIf="!authenticationService.isVendor()">Contact List Info</span>
             <span *ngIf="authenticationService.isVendor()">Partners List Info</span>
           </h4>

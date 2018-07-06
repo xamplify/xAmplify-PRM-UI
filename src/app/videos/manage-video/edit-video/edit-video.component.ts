@@ -139,6 +139,8 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     publisToMessage = "Coming soon";
     enableVideoLogo:boolean;
     showError:boolean;
+    clientError = false;
+
     constructor(public referenceService: ReferenceService, public callActionSwitch: CallActionSwitch,
         public videoFileService: VideoFileService, public fb: FormBuilder, public changeDetectorRef: ChangeDetectorRef,
         public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger,private homeComponent:HomeComponent,
@@ -891,6 +893,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         if(!this.defaultPlayerValues ||!this.defaultPlayerValues.playerColor){
          this.homeComponent.getVideoDefaultSettings();
          this.defaultPlayerValues = this.referenceService.defaultPlayerSettings;
+         if(!this.defaultPlayerValues){ this.clientError = true;}
         }
         console.log(this.referenceService.videoTitles);
         this.removeVideoTitlesWhiteSpaces();

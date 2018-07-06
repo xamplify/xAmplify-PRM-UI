@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { Campaign } from '../models/campaign';
 import { CampaignReport } from '../models/campaign-report';
+import { EmailLog } from '../models/email-log';
 import { Pagination } from '../../core/models/pagination';
 import { SocialStatus } from '../../social/models/social-status';
 import { CustomResponse } from '../../common/models/custom-response';
@@ -10,6 +11,7 @@ import { HttpRequestLoader } from '../../core/models/http-request-loader';
 
 import { CampaignService } from '../services/campaign.service';
 import { UtilService } from '../../core/services/util.service';
+import { VideoUtilService } from '../../videos/services/video-util.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { PagerService } from '../../core/services/pager.service';
 import { ReferenceService } from '../../core/services/reference.service';
@@ -34,6 +36,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   campaignTotalViewsData: any;
   campaignBarViews: any;
   emailLogs: any;
+  emailLogDetails: any;
   totalEmailLogs: any;
   campaignReport: CampaignReport = new CampaignReport;
   userCampaignReport: CampaignReport = new CampaignReport;
@@ -58,7 +61,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   downloadDataList = [];
   downloadCsvList: any;
   downloadTypeName = '';
-  totalTimeSpent = 0;
+  totalTimeSpent: string = "00:00:00";
   worldMapUserData: any;
   worldMapUserTotalData: any;
   countryCode: string;
@@ -91,7 +94,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   public selectedSortedOption: any = this.sortByDropDown[this.sortByDropDown.length-1];
   constructor(private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
     public authenticationService: AuthenticationService, public pagerService: PagerService, public pagination: Pagination,
-    public referenceService: ReferenceService, public contactService: ContactService, public xtremandLogger:XtremandLogger) {
+    public referenceService: ReferenceService, public contactService: ContactService, public videoUtilService: VideoUtilService, public xtremandLogger:XtremandLogger) {
       this.campaignRouter = this.utilService.getRouterLocalStorage();
       this.isTimeLineView = false;
       this.loggedInUserId = this.authenticationService.getUserId();
@@ -329,7 +332,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       .subscribe(
       data => {
         this.campaignReport.emailOpenCount = data["email_opened_count"];
-        this.campaignReport.emailClickedCount = data["email_url_clicked_count"] + data['email_gif_clicked_count'];
+        this.campaignReport.emailClickedCount = data["email_url_clicked_count"];
         this.loading = false;
       },
       error => console.log(error),
@@ -360,7 +363,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       .subscribe(
       data => {
           this.userWatchtotalRecords = data;
-          this.loading = false;   
+          this.loading = false;
       },
       error => console.log(error),
       () => console.log()
@@ -443,7 +446,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
      this.campaignService.emailActionList(campaignId, actionType, pagination)
       .subscribe(
       data => {
-        this.campaignReport.emailActionList = data;
+        this.campaignReport.emailLogs = data;
         this.campaignReport.emailActionType = actionType;
         $('#emailActionListModal').modal();
 
@@ -452,7 +455,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
         } else if (actionType === 'click') {
           this.emailActionListPagination.totalRecords = this.campaignReport.emailClickedCount;
         }
-        this.emailActionListPagination = this.pagerService.getPagedItems(this.emailActionListPagination, this.campaignReport.emailActionList);
+        this.emailActionListPagination = this.pagerService.getPagedItems(this.emailActionListPagination, this.campaignReport.emailLogs);
         this.emailActionTotalList(campaignId, actionType, this.emailActionListPagination.totalRecords);
         this.loading = false;
         this.referenceService.loading(this.httpRequestLoader, false);
@@ -503,7 +506,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     try{
     this.loading = true;
      this.listEmailLogsByCampaignAndUser(campaignViews.campaignId, campaignViews.userId);
-    this.getTotalTimeSpentOfCampaigns(campaignViews.userId);
+    this.getTotalTimeSpentOfCampaigns(campaignViews.userId, campaignViews.campaignId);
     this.selectedRow = campaignViews;
     this.isTimeLineView = !this.isTimeLineView;
     if (!this.barChartCliked) {
@@ -518,14 +521,13 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     }
   }catch(error){ this.xtremandLogger.error(error);}
   }
-  getTotalTimeSpentOfCampaigns(userId: number) {
+  getTotalTimeSpentOfCampaigns(userId: number, campaignId:number) {
     try{
       this.loading = true;
-      this.campaignService.getTotalTimeSpentofCamapaigns(userId)
+      this.campaignService.getTotalTimeSpentofCamapaigns(userId, campaignId)
       .subscribe(data => {
         console.log(data);
         this.totalTimeSpent = data;   // data is coming as empty object ,, need to handle it
-        if (typeof data === 'number') { this.totalTimeSpent = data; } else { this.totalTimeSpent = 0; }
         this.loading = false;
       },
       error => console.log(error),
@@ -888,6 +890,38 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       (error:any)=>{this.xtremandLogger.error('error'+error); })
     }catch(error) { this.xtremandLogger.error('error'+error);}
   }
+
+  getSortedResult(campaignId: number,event:any){
+    this.emailActionListPagination = this.utilService.sortOptionValues(event,this.emailActionListPagination);
+    this.emailActionList(campaignId, this.campaignReport.emailActionType, this.emailActionListPagination);
+  }
+
+  listEmailLogsByCampaignIdUserIdActionType(emailLog: EmailLog, actionType: string) {
+    debugger;
+    this.campaignReport.emailLogs.forEach((element) => {
+      if(element.userId !== emailLog.userId) {
+          element.isExpand = false;
+      }
+    });
+    emailLog.isExpand = !emailLog.isExpand;
+    if (emailLog.emailLogHistory === undefined) {
+      try {
+        this.loading = true;
+        this.campaignService.listEmailLogsByCampaignIdUserIdActionType(emailLog.campaignId, emailLog.userId, actionType)
+          .subscribe(
+          data => {
+            emailLog.emailLogHistory = data;
+            this.loading = false;
+          },
+          error => console.log(error),
+          () => { }
+          )
+      } catch (error) {
+        this.xtremandLogger.error('Error in listEmailLogsByCampaignIdUserIdActionType: ' + error);
+      }
+    }
+  }
+
   ngOnInit() {
     try{
     this.mainLoader = true;
@@ -914,17 +948,5 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     $('#emailSentListModal').modal('hide');
     $('#donutModelPopup').modal('hide');
 
-  }
-  
-  getSortedResult(campaignId: number, actionType: string,text:any){
-      this.selectedSortedOption = text;
-      let sortedValue = this.selectedSortedOption.value;
-      if ( sortedValue != "" ) {
-          let options: string[] = sortedValue.split( "-" );
-          this.emailActionListPagination.sortcolumn = options[0];
-          this.emailActionListPagination.sortingOrder = options[1];
-      }
-      this.emailActionList(campaignId, actionType, this.emailActionListPagination);
-      
   }
 }

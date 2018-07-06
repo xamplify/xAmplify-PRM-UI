@@ -839,6 +839,24 @@ h3 {
 	position: absolute;
 }
 
+.draft-arrow {
+	width: 0;
+	height: 0;
+	line-height: 0;
+	border-left: 20px solid transparent;
+	border-top: 10px solid #f76c1a;
+	top: 102%;
+	left: 0;
+	position: absolute;
+}
+.partner-ribbon{
+	width: 21%;
+}
+.draft-header{
+	width: 21%;
+	background: #f76c1a;
+}
+
 .css {
 	height: 200px;
 	border: 1px solid #dad4d4;
@@ -991,6 +1009,10 @@ h3 {
     /* width: 50%; */
 }
 
+.center{
+  text-align: center;
+}
+
 .icon-border{border: 1px solid #00a6e8; border-radius: 50%; display:block !important; width: 42px; height: 42px; margin:0 auto; position:relative;}
 .icon-position{color: #00a6e8; position:absolute; padding-top:3px !important; font-size:1.75em !important; top:12px; left:8px}
 .border0{border:none !important;} padding0{padding:0 !important;}
@@ -1044,3 +1066,4 @@ legend{display: block; width: auto; padding: 0 10px; margin-bottom: 0; font-size
   right: -17px;
   position: relative;
 }
+.view-by-banner{padding: 2px 5px;	background-color: #5bb2f5;	color: #fff;}

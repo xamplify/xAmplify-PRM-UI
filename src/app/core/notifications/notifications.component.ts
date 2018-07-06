@@ -73,6 +73,7 @@ export class NotificationsComponent implements OnInit {
             this.userService.unreadNotificationsCount--;
             this.markAsRead(notification);
         }
+        this.referenceService.campaignType ='REGULAR'; // get the campaign type dynamically to show the analytics loader correctly
         this.router.navigate(['/home/' + notification.targetUrl]);
     }
 

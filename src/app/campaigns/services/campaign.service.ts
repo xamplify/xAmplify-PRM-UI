@@ -216,8 +216,8 @@ export class CampaignService {
             .map(this.extractData)
             .catch(this.handleError);
     }    
-    getTotalTimeSpentofCamapaigns(userId: number){
-      const url = this.URL+'campaign/total-time-spent-by-user?access_token='+this.authenticationService.access_token+'&userId='+userId;
+    getTotalTimeSpentofCamapaigns(userId: number, campaignId: number){
+      const url = this.URL+'campaign/total-time-spent-by-user?access_token='+this.authenticationService.access_token+'&userId='+userId+'&campaignId='+campaignId;
       return this.http.get(url)
             .map(this.extractData)
             .catch(this.handleError);
@@ -408,6 +408,12 @@ export class CampaignService {
         }else{
             return replyTime;
         }
+    }
+
+    listEmailLogsByCampaignIdUserIdActionType (campaignId: number, userId: number, actionType: string) {
+        return this.http.get(this.URL+`campaign/list-emaillogs-history/${campaignId}/${userId}/${actionType}?access_token=${this.authenticationService.access_token}`)
+            .map(this.extractData)
+            .catch(this.handleError);       
     }
     
 }

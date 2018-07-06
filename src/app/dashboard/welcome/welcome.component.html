@@ -160,8 +160,9 @@ cursor: not-allowed;
 						<h1 style="color: #FBB23E">Templates</h1>
 						<p>{{welcome_text.templates}}</p>
 						<div class="flex pull-left">
-							<button class="btn btn-xs color4" [routerLink]="['/home/emailtemplates/select']" [class.disabled]="this.authenticationService.isOnlyPartner() || !authenticationService.user.hasCompany  ? true : null">create templates</button>
-							<button type="button" class="btn btn-xs color4-invert" data-toggle="modal" [disabled]="true" data-target="#myModal">Tell me how</button>
+              <button *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdminPartner()|| authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.module.isVideo" class="btn btn-xs color1" [routerLink]="['/home/emailtemplates/select']" >create templates</button>
+              <button *ngIf="authenticationService.isOnlyPartner() || !authenticationService.module.isVideo" class="btn btn-xs color1" [routerLink]="['/home/emailtemplates/manage']">View templates</button>
+              <button type="button" class="btn btn-xs color4-invert" data-toggle="modal" [disabled]="true" data-target="#myModal">Tell me how</button>
 						</div>
 					</div>
 				</div>

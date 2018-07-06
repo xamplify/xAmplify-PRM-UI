@@ -194,7 +194,7 @@ td>h5 {
 			<div class="portlet-body clearfix">
 				<section *ngFor="let campaign of campaigns; let i=index">
 					<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" *ngIf="i<4">
-						<div class="portlet light border-radius-0 campaign-box" (click)="showCampaignDetails(campaign[0])"
+						<div class="portlet light border-radius-0 campaign-box" (click)="showCampaignDetails(campaign)"
 						 style="cursor: pointer">
 						<!--[class.disabled]="!hasStatsRole ? true : null" @date 13/04/218 @added Manas Sahoo // [routerLink]="['/home/campaigns/', campaign[0], 'details']"-->
 							<div class="bookmark-ribbon">
@@ -216,7 +216,7 @@ td>h5 {
 								<section class="percentage-circle">
 									<svg width="120" height="120" viewBox="0 0 120 120" style="transform: rotate(-90deg)">
 										<circle cx="60" cy="60" r="54" fill="none" stroke="#e6e6e6" stroke-width="5" />
-										<circle cx="60" cy="60" r="54" fill="none" stroke="#54a7e9" stroke-width="5" stroke-dasharray="339.292006588" [ngStyle]="{'stroke-dashoffset': 339.292 * (1 - campaign[4]/campaign[5])}"
+										<circle cx="60" cy="60" r="54" fill="none" stroke="#54a7e9" stroke-width="5" stroke-dasharray="339.292006588" [ngStyle]="{'stroke-dashoffset': campaign[5] === 0 ? 339.292006588 : 339.292 * (1 - campaign[4]/campaign[5])}"
 										/>
 									</svg>
 									<h2 class="percentage-value">{{campaign[6]}}%</h2>
@@ -630,7 +630,7 @@ td>h5 {
 					<h4 class="m5">Please wait while we process your request.</h4>
 				</div>
 				<div *ngIf="pagination.pagedItems?.length == 0 && !isLoadingList" class="col-md-6" class="col-md-9 alert alert-info m0" style="width: 100%">
-					<strong>No Results found</strong>
+					<strong>No results found</strong>
 				</div>
 				<div class="table-responsive" *ngIf="pagination.pagedItems?.length != 0">
 					<table class="table tgrid" id="sample_editable_1">
@@ -650,10 +650,10 @@ td>h5 {
 									<app-user-info [userInfo]="emailClicked"> </app-user-info>
                 </td>
                 <td class="center" *ngIf="paginationType == 'open'">
-                    <h5>{{emailClicked.subject}}</h5>
+                    <h5  title="{{emailClicked.subject}}">{{emailClicked.subject | slice:0:30}} <span *ngIf="emailClicked.subject?.length>30">...</span></h5>
                 </td>
 								<td class="center">
-									<h5>{{emailClicked.campaignName}}</h5>
+									<h5 title="{{emailClicked.campaignName}}">{{emailClicked.campaignName| slice:0:30}} <span *ngIf="emailClicked.campaignName?.length>30">...</span></h5>
 									<h4 *ngIf="emailClicked.campaignName==null">-</h4>
 								</td>
 								<td class="center">

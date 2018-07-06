@@ -1,21 +1,16 @@
-import { Component, OnInit,Input } from '@angular/core';
-import { ReferenceService } from '../../../core/services/reference.service';
-
+import { Component, OnInit } from "@angular/core";
+import { ReferenceService } from "../../../core/services/reference.service";
 
 @Component({
-  selector: 'app-analytics-loader',
-  templateUrl: './analytics-loader.component.html',
-  styleUrls: ['./analytics-loader.component.css','../list-loader/list-loader.component.css']
+  selector: "app-analytics-loader",
+  templateUrl: "./analytics-loader.component.html",
+  styleUrls: [ "./analytics-loader.component.css",  "../list-loader/list-loader.component.css" ]
 })
 export class AnalyticsLoaderComponent implements OnInit {
-  campaignType:any;
-  constructor(private referenceService:ReferenceService) {
-  }
+  rowsCount = [0, 1, 2, 3];
+  textLoader = [0, 1, 2];
 
-  ngOnInit() {
-    if( this.referenceService.campaignType === 'REGULAR'){
-      this.campaignType = 'REGULAR';
-    } else { this.campaignType = 'VIDEO';}
-  }
+  constructor(public referenceService: ReferenceService) {}
 
+  ngOnInit() {}
 }

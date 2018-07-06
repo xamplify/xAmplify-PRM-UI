@@ -43,4 +43,8 @@ a.disabled{pointer-events:none;cursor:not-allowed}
 .dashboard-stat .details .number {
 	padding-top: 10px;
 }
+
+.center{
+  text-align: center;
+}
  

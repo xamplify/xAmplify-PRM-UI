@@ -1,14 +1,16 @@
-import { XtremandWebCliPage } from './app.po';
+import { BasePage } from './app.po';
+import { browser } from 'protractor';
 
 describe('xtremand-web-cli App', () => {
-  let page: XtremandWebCliPage;
+  let page: BasePage;
 
   beforeEach(() => {
-    page = new XtremandWebCliPage();
+    page = new BasePage();
   });
 
-  it('should display message saying app works', () => {
+  it('should display message saying Experience the new way of ecosystem marketing', () => {
     page.navigateTo();
-    expect(page.getParagraphText()).toEqual('app works!');
+    expect(page.getHeaderText()).toEqual('Experience the new way of ecosystem marketing');
   });
+
 });

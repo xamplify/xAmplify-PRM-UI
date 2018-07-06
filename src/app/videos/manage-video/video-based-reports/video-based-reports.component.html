@@ -15,7 +15,7 @@
 			<div id="newPlayerVideo"></div>
 			<div>
 				<div>
-					<h4 class="videoTitle">{{selectedVideo.title}}</h4>
+					<h4 class="videoTitle" title="{{selectedVideo.title}}">{{selectedVideo.title | slice:0:50}}<span *ngIf="selectedVideo.title?.length>50">...</span></h4>
 					<h5 align="justify" style="word-break: break-all;">{{selectedVideo.description}}</h5>
 				</div>
 				<div class="row">
@@ -41,22 +41,22 @@
 			</div>
 			<div class="portlet-body">
 				<div class="row">
-					<div class="col-xs-12 col-md-6 text-center">
-						  <table id="trellis" style="min-width: 250px; max-width: 250px; height: 200px;">
+					<div class="col-xs-12 col-sm-12 col-md-6 text-center">
+						  <table id="trellis" style="min-width: 215px; max-width:215px; height: 200px;">
 							<tr>
 								<td class="first"></td>
 							</tr>
 						</table>
-						<h5 class="title" style="margin-top: -2px;color: #3d3d3e;font-weight: 400;"> Total minutes watched by top {{minutesWatchedUsers}} recipients </h5>
+						<h5 class="title" style="margin-top: -1px;color: #3d3d3e;font-weight: 400;"> Total minutes watched by top {{minutesWatchedUsers}} recipients </h5>
 					</div>
-					<div class="col-xs-12 col-md-3 text-center" style="padding: 0" (click)="watchedFullyDetailReport()">
+					<div class="col-xs-12 col-sm-12 col-md-3 text-center" style="padding: 0" [class.disabled]="watchedFully<=0" (click)="watchedFullyDetailReport()">
 						<section class="percentage-circle" style="margin-top: 15px;cursor: pointer">
 							<app-donut-chart [percentageValue]="watchedFully" [totalValue]="100"></app-donut-chart>
 							<h2 class="percentage-value" style="margin: -2.7em 0 0 0;">{{watchedFully}}%</h2>
 						</section>
 						<h5 style="margin-top: 122px;font-weight: 400;">Watched completely</h5>
 					</div>
-					<div class="col-xs-12 col-md-3 text-center">
+					<div class="col-xs-12 col-sm-12 col-md-3 text-center">
 						<h1 style="margin-top: 48px;">{{videoUtilService.nFormatter(selectedVideo.views)}}</h1>
 						<h5 style="margin-top: 8.8em; font-weight: 400;">Total views</h5>
 					</div>
@@ -95,7 +95,7 @@
 					<span class="caption-subject font-green-sharp uppercase">Minutes watched by RECIPIENT</span>
 					<span class="caption-helper"></span>
 				</div>
-				<div class="panel-title pull-right">
+				<div class="panel-title pull-right" [hidden]="viewsMinutesData?.length==0">
 					<span style="float:right; font-size: 13px;">
 						<select style="cursor: pointer" [(ngModel)]="minutesSort" (ngModelChange)="selectedSortByValue($event.value)">
 							<option *ngFor="let sort of sortMintuesDates" [ngValue]="sort"> {{sort.name}} </option>
@@ -111,7 +111,7 @@
 			<div class="portlet-body">
 				<div style="max-width: 100%; min-height: 300px;">
 					<table style="width:100%;">
-						<thead>
+						<thead [hidden]="viewsMinutesData?.length==0">
 							<tr>
 								<th style="color: #7a8082;font-weight: 600;">Name </th>
 								<th style="color: #7a8082;font-weight: 600;">Views</th>
@@ -166,7 +166,7 @@
 					<i class="icon-bar-chart font-green-sharp hide"></i>
 					<span class="caption-subject font-green-sharp uppercase">video Views</span>
 				</div>
-				<div class="panel-title pull-right">
+        <div class="panel-title pull-right" [hidden]="viewsBarData?.dates?.length<=0 || viewsBarData?.views?.length<=0">
 					<span style="float:right; font-size: 13px;">
 					<select style="cursor: pointer" [(ngModel)]="daySort" (ngModelChange)="selectedCampaignWatchedUsers($event.value)">
 						<option *ngFor="let sort of videoUtilService.sortMonthDates" [ngValue]="sort"> {{sort.name}} </option>
@@ -176,7 +176,6 @@
 			</div>
 			<div class="portlet-body" style="min-height: 308px">
 				<app-bar-chart *ngIf="viewsBarData" [viewsBarData]="viewsBarData" (notifyParent)="selectedCategoryValue($event)"></app-bar-chart>
-
 			</div>
 		</div>
 		<!-- END PORTLET-->
@@ -204,7 +203,7 @@
 					<span aria-hidden="true">&times;</span>
 				</button> -->
 				<a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i class="fa fa-times"></i></a>
-				<h4 class="modal-title" style="text-align: center">Viewer details</h4>
+				<h4 class="modal-title" style="text-align: center">Viewer Details</h4>
 				<div class="btn-group pull-right" style="margin-top: 4px; cursor:pointer; color: #7d8c98">
 					<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none; margin-top: -24px;margin-right: 27px; float:right;">
 					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
@@ -222,7 +221,7 @@
 								<tr>
 									<th class="center text-uppercase headerCss">NAME</th>
 									<!-- <th class="center text-uppercase headerCss">video Title</th> -->
-									<th class="center text-uppercase headerCss">data and time</th>
+									<th class="center text-uppercase headerCss">date and time</th>
 									<th class="center text-uppercase headerCss">minutes watched</th>
 									<th class="center text-uppercase headerCss">device</th>
 									<th class="center text-uppercase headerCss">location</th>
@@ -270,7 +269,7 @@
 					<span aria-hidden="true">&times;</span>
 				</button> -->
 				<a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i class="fa fa-times"></i></a>
-				<h4 class="modal-title m0 center">watched completely Reports</h4>
+				<h4 class="modal-title m0 center">Watched Completely Reports</h4>
 				<div class="btn-group pull-right" style="margin-top:4px; cursor:pointer; color: #7d8c98;margin-top:4px;">
 					<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none; margin-top: -24px;margin-right: 26px; float:right;">
 					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
@@ -283,7 +282,7 @@
 			<div class="modal-body">
 				<div class="row">
 					<div *ngIf="watchedFullyReportData?.length < 1" class="col-md-9 alert alert-info m0" style="width: 98%;position: relative;right: -10px;">
-						<strong>No Records found</strong>
+						<strong>No records found</strong>
 					</div>
 					<div class="table-responsive" style="padding: 0px 7px;">
 						<table class="table tgrid" *ngIf="watchedFullyReportData?.length > 0">
@@ -301,7 +300,9 @@
 									<td>
 										<app-user-info  [userInfo]="item"> </app-user-info>
 									</td>
-									<td class="center">{{item.campaignName}}
+									<td class="center" title="{{item.campaignName}}">
+                    {{item.campaignName | slice:0:30}}
+                    <span *ngIf="item.campaignName?.length>30">...</span>
 									<h4 *ngIf="item.campaignName==null">-</h4>
 									</td>
 									<td class="center">{{item.time |date:'MM/dd/yyyy @ h:mma' }}</td>
@@ -408,8 +409,8 @@
 						<table class="table tgrid" id="sample_editable_1">
 							<thead>
 								<tr>
-									<th class="center headerCss">NAME</th>
-									<th class="text-center headerCss">DATE and TIME</th>
+									<th class="center headerCss" style="width: 36%;">NAME</th>
+									<th class="text-center headerCss" style="width: 41%;">DATE and TIME</th>
 									<th class="center headerCss">DEVICE</th>
 								</tr>
 							</thead>
@@ -447,7 +448,7 @@
 						<table class="table tgrid" id="sample_editable_1">
 							<thead>
 								<tr>
-									<th class="center headerCss">NAME</th>
+									<th class="center headerCss" style="width: 36%;">NAME</th>
 									<th class="text-center headerCss">DATE and TIME</th>
 									<th class="center headerCss">DEVICE</th>
 								</tr>
@@ -513,7 +514,10 @@
 									<app-user-info  [userInfo]="item"> </app-user-info>
 								</td>
 								<td class="center">
-									<h5>{{item.campaignName}}</h5>
+									<h5>
+                    {{item.campaignName | slice:0:30}}
+                    <span *ngIf="item.campaignName?.length>30">...</span>
+                  </h5>
 									<h4 *ngIf="item.campaignName==null">-</h4>
 								</td>
 								<!-- |date:'MM/dd/yyyy @ h:mma' -->

@@ -13,19 +13,16 @@ import { UtilService } from '../services/util.service';
 import { environment } from '../../../environments/environment';
 declare var swal: any;
 
-export let CLIENT_URL = environment.CLIENT_URL;
-export let SERVER_URL = environment.SERVER_URL;
-
 @Injectable()
 export class AuthenticationService {
     access_token: string;
     refresh_token: string;
     expires_in: number;
     logged_in_time: Date;
-    SERVER_URL: string;
+    APP_URL = environment.CLIENT_URL;
+    SERVER_URL = environment.SERVER_URL;
     REST_URL: string;
     MEDIA_URL: string;
-    APP_URL: string;
     SHARE_URL: string;
     user: User = new User();
     userProfile: User = new User();
@@ -37,8 +34,6 @@ export class AuthenticationService {
     roleName: Roles= new Roles();
     isAddedByVendor = false;
     constructor(private http: Http, private router: Router, private utilService: UtilService) {
-        this.SERVER_URL = SERVER_URL;
-        this.APP_URL = CLIENT_URL;
         this.REST_URL = this.SERVER_URL + 'xtremand-rest/';
         this.MEDIA_URL = this.SERVER_URL + 'vod/';
         this.SHARE_URL = this.SERVER_URL + 'embed/';
@@ -268,4 +263,14 @@ export class AuthenticationService {
         }
       }catch(err){ console.log('error'+err);}
     }
+
+    checkIsPartnerToo(){
+        let roles = this.showRoles();
+        if(roles=="Vendor & Partner" || roles=="Orgadmin & Partner"){
+           return true;
+        }else{
+            return false;
+        }
+    }
+
 }
