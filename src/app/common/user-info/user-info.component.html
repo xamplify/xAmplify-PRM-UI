@@ -1,9 +1,9 @@
 <div class="flex">
-	<span *ngIf="(userInfo.firstName |slice:0:1)!=null || (userInfo.emailId |slice:0:1)!=null" class='profile' [style.background-color]="backgroudColor"> 
+	<span *ngIf="(userInfo.firstName |slice:0:1)!=null || (userInfo.emailId |slice:0:1)!=null" class='profile' [style.background-color]="backgroudColor">
 	<span class='uppercase' *ngIf="isPartnerInfo && userInfo.contactCompany |slice:0:1!=null">{{userInfo.contactCompany |slice:0:1}}
 	<span class='uppercase' *ngIf="(userInfo.contactCompany |slice:0:1)==null">{{userInfo.emailId |slice:0:1}}</span></span>
 	<span class='uppercase' *ngIf="!isPartnerInfo">{{userInfo.firstName |slice:0:1}}<span *ngIf="(userInfo.firstName |slice:0:1)==null">{{userInfo.emailId |slice:0:1}}</span> </span>
-	</span> 
+	</span>
 	<span style="margin-left:10px" *ngIf="(userInfo.firstName |slice:0:1)==null && (userInfo.emailId |slice:0:1)==null">-
 	</span>
 	<span style="margin-left: 20px;">
@@ -12,7 +12,7 @@
 		&nbsp;{{userInfo.lastName | slice:0:15}}
 		<span *ngIf="userInfo.lastName?.length>15">...</span>
 		</h5>
-		<h6 class='m0 ellipsis' style="font-weight: 400;">
+		<h6 class='m0' style="font-weight: 400;">
 			<a title="{{userInfo.emailId}}">{{userInfo.emailId | slice:0:30}}</a>
 			<span *ngIf="userInfo.emailId?.length>30">...</span>
 		</h6>

@@ -52,6 +52,6 @@ export class LoginPage extends BasePage {
     browser.waitForAngularEnabled(false);
     element.all(by.xpath('//*[@id="headerdropDownLi"]')).click();
     browser.waitForAngularEnabled(false);
-    element.all(by.xpath('//*[@id="logoutButton"]')).click();
+    element.all(by.xpath('//*[@id="logoutButton"]/a')).click();
   }
 }
