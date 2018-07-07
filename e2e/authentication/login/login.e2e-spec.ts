@@ -10,7 +10,6 @@ describe("Login Test ", () => {
     });
 
     it("should not be able to login  - username and password are blank", () => {
-      // browser.sleep(1000)
       loginPage.getUserNameTF().sendKeys("");
       loginPage.getPasswordTF().sendKeys("");
       loginPage.getLoginButton().click();
@@ -32,7 +31,7 @@ describe("Login Test ", () => {
       loginPage.getUserNameTF().sendKeys("ksathish@stratapps.com");
       loginPage.getPasswordTF().sendKeys("kashdgkaagsdg");
       loginPage.getLoginButton().click();
-      expect(loginPage.getMessageText()).toBe("Username or password is incorrect.");
+      expect(loginPage.getMessageText()).toEqual("Username or password is incorrect.");
     });
 
     it('should be able to test forgotpassword ', () => {
@@ -49,6 +48,7 @@ describe("Login Test ", () => {
       const loggedInSuccess = 'login success';
       loginPage.login();
       expect(loggedInSuccess).toBe('login success');
+      browser.sleep(3000);
     });
 
     afterAll(() => {
