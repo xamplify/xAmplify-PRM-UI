@@ -1,5 +1,6 @@
 import { by, browser, element } from "protractor";
 import { LoginPage } from "./login.page";
+import { Properties } from "../properties";
 
 describe("Login Test ", () => {
   let loginPage: LoginPage;
@@ -19,7 +20,7 @@ describe("Login Test ", () => {
     it("should not be able to login  - entered username but password is blank", () => {
       loginPage.getUserNameTF().clear();
       loginPage.getPasswordTF().clear();
-      loginPage.getUserNameTF().sendKeys("ksathish@stratapps.com");
+      loginPage.getUserNameTF().sendKeys(Properties.userName);
       loginPage.getPasswordTF().sendKeys("");
       loginPage.getLoginButton().click();
       expect(loginPage.getMessageText()).toBe("Username or password can't be empty.");
@@ -28,16 +29,16 @@ describe("Login Test ", () => {
     it("should not be able to login  - entered username or password is incorrect", () => {
       loginPage.getUserNameTF().clear();
       loginPage.getPasswordTF().clear();
-      loginPage.getUserNameTF().sendKeys("ksathish@stratapps.com");
+      loginPage.getUserNameTF().sendKeys(Properties.userName);
       loginPage.getPasswordTF().sendKeys("kashdgkaagsdg");
       loginPage.getLoginButton().click();
       expect(loginPage.getMessageText()).toEqual("Username or password is incorrect.");
     });
 
-    it('should be able to test forgotpassword ', () => {
+    xit('should be able to test forgot password Test', () => {
       browser.waitForAngularEnabled(false);
       loginPage.navigateToPassword();
-      loginPage.getForgotEmailTF().sendKeys('sathishcharykotha@gmail.com');
+      loginPage.getForgotEmailTF().sendKeys(Properties.forgotEmail);
       loginPage.getForgotSubmitButton().click();
       browser.waitForAngularEnabled(true);
       expect(loginPage.getMessageText()).toBe('Check your inbox for a temporary password.');
