@@ -592,8 +592,8 @@
 															</td>
 															<td align="center">
 																<h5 *ngIf="contact?.address" class='mb0'>{{contact.address}}</h5>
-																<h5 class='mb0'>{{contact.city}},&nbsp;{{contact.state}}</h5>
-																<h5 *ngIf="contact?.zipCode || contact.country" class='mt0'>{{contact.zipCode}}<span *ngIf="contact.city">,&nbsp;</span>{{contact.country}}</h5>
+																<h5 class='mb0'>{{contact.city}}<span *ngIf="contact.city && contact.state">,&nbsp;</span>{{contact.state}}</h5>
+																<h5 *ngIf="contact?.zipCode || contact.country" class='mt0'>{{contact.zipCode}}<span *ngIf="contact.zipCode && contact.country">,&nbsp;</span>{{contact.country}}</h5>
 															</td>
 															<!-- <td align="center">
 																<button id='more_less_button_{{i}}'
@@ -738,9 +738,9 @@
 												</td>
 												<td>
 													<h5 *ngIf="allcontacts?.address" class='mb0'>{{allcontacts.address}}</h5>
-													<h5 class='mb0'>{{allcontacts.city}},&nbsp;{{allcontacts.state}}</h5>
+													<h5 class='mb0'>{{allcontacts.city}}<span *ngIf="allcontacts.city && allcontacts.state">,&nbsp;</span>{{allcontacts.state}}</h5>
 													<h5 *ngIf="allcontacts?.zipCode || allcontacts.country"
-														class='mt0'>{{allcontacts.zipCode}},&nbsp;{{allcontacts.country}}</h5>
+														class='mt0'>{{allcontacts.zipCode}}<span *ngIf="allcontacts.zipCode && allcontacts.country">,&nbsp;</span>{{allcontacts.country}}</h5>
 												</td>
 												<!-- <td>
 													<button id='more_less_button_{{i}}'
