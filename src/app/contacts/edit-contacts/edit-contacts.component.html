@@ -592,7 +592,8 @@
 															</td>
 															<td align="center">
 																<h5 *ngIf="contact?.address" class='mb0'>{{contact.address}}</h5>
-																<h5 *ngIf="contact?.city || contact.country" class='mt0'>{{contact.city}}<span *ngIf="contact.city">,&nbsp;</span>{{contact.country}}</h5>
+																<h5 class='mb0'>{{contact.city}},&nbsp;{{contact.state}}</h5>
+																<h5 *ngIf="contact?.zipCode || contact.country" class='mt0'>{{contact.zipCode}}<span *ngIf="contact.city">,&nbsp;</span>{{contact.country}}</h5>
 															</td>
 															<!-- <td align="center">
 																<button id='more_less_button_{{i}}'
