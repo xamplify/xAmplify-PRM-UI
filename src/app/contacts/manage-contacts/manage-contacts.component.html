@@ -13,7 +13,7 @@
 					{{checkingContactTypeName}}s</span></li>
 			<li
 				*ngIf="! showListOfContactList && contactsByType.selectedCategory == 'non-active'"><span
-				class="capitalize">Inactive {{checkingContactTypeName}}s</span></li>
+				class="capitalize">Unregistered {{checkingContactTypeName}}s</span></li>
 		</ul>
 	</div>
 
@@ -562,7 +562,7 @@
 											<i class="fa fa-edit"></i> <span class="capitalize"
 												*ngIf="contactsByType.selectedCategory !='non-active'">{{contactsByType.selectedCategory}}
 												{{checkingContactTypeName}}s List</span> <span class="capitalize"
-												*ngIf="contactsByType.selectedCategory =='non-active'">Inactive
+												*ngIf="contactsByType.selectedCategory =='non-active'">Unregistered
 												{{checkingContactTypeName}}s List</span>
 										</div>
 										<div class="btn-group pull-right"

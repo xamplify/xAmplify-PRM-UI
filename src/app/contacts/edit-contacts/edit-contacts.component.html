@@ -11,7 +11,7 @@
 		</i>
 		<span class="capitalize" *ngIf="contactsByType.selectedCategory != 'non-active'">{{contactsByType.selectedCategory}}
 		   {{checkingContactTypeName}}s</span>
-		<span class="capitalize" *ngIf="contactsByType.selectedCategory == 'non-active'">Inactive
+		<span class="capitalize" *ngIf="contactsByType.selectedCategory == 'non-active'">Unregistered
 		   {{checkingContactTypeName}}s</span>
 		</li>
 	</ul>
@@ -664,7 +664,7 @@
 								<div class="caption">
 									<span class="capitalize" *ngIf="contactsByType.selectedCategory != 'non-active'">{{contactsByType.selectedCategory}}
 										{{checkingContactTypeName}} List</span>
-									<span class="capitalize" *ngIf="contactsByType.selectedCategory == 'non-active'">Inactive
+									<span class="capitalize" *ngIf="contactsByType.selectedCategory == 'non-active'">Unregistered
 										{{checkingContactTypeName}} List</span>
 								</div>
 								<div class="btn-group pull-right"
