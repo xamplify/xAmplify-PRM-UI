@@ -95,3 +95,10 @@ text-align: center;
   top: 4px;
   right: -3px
 }
+.minutesWatched{
+  position: absolute;
+  top: 1px;
+  z-index: 99;
+  right: 0;
+  left: 0
+}

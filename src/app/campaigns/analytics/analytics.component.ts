@@ -95,6 +95,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   constructor(private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
     public authenticationService: AuthenticationService, public pagerService: PagerService, public pagination: Pagination,
     public referenceService: ReferenceService, public contactService: ContactService, public videoUtilService: VideoUtilService, public xtremandLogger:XtremandLogger) {
+      try{
       this.campaignRouter = this.utilService.getRouterLocalStorage();
       this.isTimeLineView = false;
       this.loggedInUserId = this.authenticationService.getUserId();
@@ -109,6 +110,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
        this.isTimeLineView = false;
        this.userTimeline(object);
       }
+    }catch(error){ this.xtremandLogger.error('error'+error);}
   }
   showTimeline() {
     this.isTimeLineView = !this.isTimeLineView;
@@ -117,8 +119,8 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   listCampaignViews(campaignId: number, pagination: Pagination) {
     try{
     this.loading = true;
-      this.referenceService.loading(this.httpRequestLoader, true);
-      this.downloadTypeName = this.paginationType = 'campaignViews';
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.downloadTypeName = this.paginationType = 'campaignViews';
     this.listTotalCampaignViews(campaignId);
     this.campaignService.listCampaignViews(campaignId, pagination)
       .subscribe(

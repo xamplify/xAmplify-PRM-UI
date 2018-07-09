@@ -497,10 +497,10 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                         $('.vjs-big-play-button').css('display', 'none');
                         newThis.showEditModalDialog();
                     } else if (isValid !== 'StartOftheVideo') {
-                        $('#overlay-modal').hide(); player.play();
+                        $('#overlay-modal').hide(); player.pause();
                     } else {
                         $('#overlay-modal').hide();
-                        player.play();
+                        player.pause();
                     }
                     $('#skipOverlay').click(function () {
                         isCallActionthere = false;
@@ -513,6 +513,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                         player.play();
                     });
                 });
+                player.on('play', function () { $('.vjs-big-play-button').css('display', 'none'); });
                 player.on('ended', function () {
                     if (isValid === 'EndOftheVideo') {
                         const state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
@@ -944,9 +945,9 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                             player.pause();
                             callactionValue.showEditModalDialog();
                         } else if (isValid !== 'StartOftheVideo') {
-                            $('.vjs-big-play-button').css('display', 'none');
-                            $('#overlay-modal').hide(); player.play();
-                        } else { $('#overlay-modal').hide(); player.play(); }
+                            $('.vjs-big-play-button').css('display', 'block');
+                            $('#overlay-modal').hide(); player.pause();
+                        } else { $('#overlay-modal').hide(); player.pause(); }
                         $('#skipOverlay').click(function () {
                             isCallActionthere = false;
                             $('#overlay-modal').hide();
@@ -958,6 +959,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                             player.play();
                         });
                     });
+                    this.on('play', function () { $('.vjs-big-play-button').css('display', 'none'); });
                     this.on('ended', function () {
                         if (isValid === 'EndOftheVideo') {
                             $('.vjs-big-play-button').css('display', 'none');
