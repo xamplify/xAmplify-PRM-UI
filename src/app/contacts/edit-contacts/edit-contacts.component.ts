@@ -1926,6 +1926,11 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                     event.mobileNumber = "";
                 }
             }
+            
+            if ( event.country === "Select Country" ) {
+                event.country = null;
+            }
+            
             this.editUser.user = event;
             this.addContactModalClose();
             this.contactService.updateContactListUser( this.selectedContactListId, this.editUser )

@@ -844,6 +844,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                     event.mobileNumber = "";
                 }
             }
+            
+            if ( event.country === "Select Country" ) {
+                event.country = null;
+            }
+            
             this.editUser.user = event;
             // $( "#addPartnerModal .close" ).click()
             this.addPartnerModalClose();
