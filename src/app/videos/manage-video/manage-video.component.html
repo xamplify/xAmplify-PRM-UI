@@ -106,7 +106,7 @@
                              <a *ngIf="videoFile.viewBy=='DRAFT'" title="Can't show Reports for DRAFT" style="cursor: not-allowed !important;opacity: 0.6">
                                <i class="fa fa-line-chart" title="Can't show Reports for DRAFT"></i>
                              </a>
-                             <a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId == videoFile.uploadedUserId) || authenticationService.module.isVendor" (click)="deleteVideoAlert(videoFile.alias,i ,videoFile.title)">
+                             <a title="Delete Video" *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId == videoFile.uploadedUserId) || authenticationService.module.isVendor" (click)="deleteVideoAlert(videoFile.alias,i ,videoFile.title)">
                                <i class="fa fa-trash"></i>
                              </a>
                            </div>

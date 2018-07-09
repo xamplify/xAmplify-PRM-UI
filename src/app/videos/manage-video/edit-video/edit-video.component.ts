@@ -136,10 +136,11 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     isDisable = false;
     brandLogoUrl: any;
     logoDescriptionUrl: string;
-    publisToMessage = "Coming soon";
+    publishToMessage = "Coming soon";
     enableVideoLogo:boolean;
     showError:boolean;
     clientError = false;
+    itemOfTags = [];
 
     constructor(public referenceService: ReferenceService, public callActionSwitch: CallActionSwitch,
         public videoFileService: VideoFileService, public fb: FormBuilder, public changeDetectorRef: ChangeDetectorRef,
@@ -154,6 +155,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.defaultSettingValue = this.saveVideoFile.defaultSetting;
         this.enableVideoControl = this.saveVideoFile.enableVideoController;
         this.editVideoTitle = this.saveVideoFile.title;
+        this.itemOfTags = this.saveVideoFile.tags;
         this.publish = this.videoUtilService.publishUtil;
         this.validationMessages = this.videoUtilService.validationMessages;
         this.formErrors = this.videoUtilService.formErrors;
@@ -366,6 +368,8 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.divChanageValues(true, false, false, false);
      }
     colorControlChange() {
+        this.xtremandLogger.log(this.itemOfTags);
+        // if(this.itemOfTags.length>0){
         $('html,body').animate({ scrollTop: 0 }, 'slow');
         this.divChanageValues(false, true, false, false);
         this.loadRangeDisable = false;
@@ -1091,7 +1095,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             'uploadedUserId': [this.saveVideoFile.uploadedUserId],
             'viewBy': [this.saveVideoFile.viewBy, Validators.required],
             'categoryId': [this.saveVideoFile.categoryId, Validators.required],
-            'tags': [this.saveVideoFile.tags, Validators.required],
+            'tags': [this.saveVideoFile.tags],
             'imageFile': [this.saveVideoFile.imageFile],
             'imagePath': [this.saveVideoFile.imagePath],
             'gifImagePath': [this.saveVideoFile.gifImagePath, Validators.required],
@@ -1153,7 +1157,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.validVideoTitle(this.saveVideoFile.title);
         const titleUpdatedValue = this.saveVideoFile.title.replace(/\s\s+/g, ' ');
         const descriptionData = this.saveVideoFile.description.replace(/\s\s+/g, ' ');
-        if (this.isValidTitle === false) {
+        if (this.isValidTitle === false && this.itemOfTags.length>0) {
             // if(this.saveButtonTitle === 'Save') { this.saveButtonTitle = 'saving..'} ;
             this.saveButtonTitle = this.saveButtonTitle==='Save'? 'Saving': 'Updating';
             this.isDisable = true;
@@ -1182,7 +1186,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.saveVideoFile.brandingLogoDescUri = null;
                 this.saveVideoFile.brandingLogoUri = null;
             }
-            const tags = this.saveVideoFile.tags;
+            const tags = this.itemOfTags;
             for (let i = 0; i < tags.length; i++) {
                 if (this.videoFileService.actionValue === 'Save') {
                     this.newTags[i] = tags[i]['value'];
@@ -1292,11 +1296,11 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
 
     selectedPublishToName(event: any){
         if(event === "PUBLIC"){
-            this.publisToMessage = "Coming soon"
+            this.publishToMessage = "Coming soon"
         } else if(event === "UNLISTED"){
-            this.publisToMessage = "Coming soon"
+            this.publishToMessage = "Coming soon"
         } else if(event === "PRIVATE"){
-            this.publisToMessage = "Coming soon"
+            this.publishToMessage = "Coming soon"
         }
     }
 
