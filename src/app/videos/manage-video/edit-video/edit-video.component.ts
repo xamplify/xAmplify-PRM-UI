@@ -364,12 +364,9 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.titleDiv = titleDiv; this.colorControl = colorControl;
         this.controlPlayers = controlPlayers; this.callaction = callaction;
     }
-    titleDivChange() {
-        this.divChanageValues(true, false, false, false);
-     }
+    titleDivChange() { this.divChanageValues(true, false, false, false);  }
     colorControlChange() {
         this.xtremandLogger.log(this.itemOfTags);
-        // if(this.itemOfTags.length>0){
         $('html,body').animate({ scrollTop: 0 }, 'slow');
         this.divChanageValues(false, true, false, false);
         this.loadRangeDisable = false;
@@ -1157,8 +1154,10 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.validVideoTitle(this.saveVideoFile.title);
         const titleUpdatedValue = this.saveVideoFile.title.replace(/\s\s+/g, ' ');
         const descriptionData = this.saveVideoFile.description.replace(/\s\s+/g, ' ');
-        if (this.isValidTitle === false && this.itemOfTags.length>0) {
-            // if(this.saveButtonTitle === 'Save') { this.saveButtonTitle = 'saving..'} ;
+        let isTagsValid;
+        if(this.videoFileService.actionValue==='Update'){ isTagsValid = this.itemOfTags.length>0 ? true:false}
+        if(this.videoFileService.actionValue==='Save'){ isTagsValid = this.itemOfTags!==null ? true:false}
+        if (this.isValidTitle === false && isTagsValid) {
             this.saveButtonTitle = this.saveButtonTitle==='Save'? 'Saving': 'Updating';
             this.isDisable = true;
             this.saveVideoFile = this.videoForm.value;
