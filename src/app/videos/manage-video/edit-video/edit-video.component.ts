@@ -644,8 +644,8 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             } else {
                 this.defaultSettingValuesBoolean(event);
                 if (!this.loadRangeDisable) { this.disableTransperancy(event); }
-                this.brandLogoUrl = this.tempVideoFile.brandingLogoUri;
-                this.logoDescriptionUrl = this.tempVideoFile.brandingLogoDescUri;
+                this.brandLogoUrl = this.tempVideoFile.brandingLogoUri!==null ? this.tempVideoFile.brandingLogoUri : this.defaultPlayerValues.companyProfile.companyLogoPath;
+                this.logoDescriptionUrl = this.tempVideoFile.brandingLogoDescUri !==null ? this.tempVideoFile.brandingLogoDescUri : this.defaultPlayerValues.companyProfile.website;
                 this.playerColorsChange(this.tempPlayerColor, this.tempControllerColor);
                 this.changePlayerColor(this.compPlayerColor);
                 this.changeControllerColor(this.compControllerColor);
@@ -894,9 +894,9 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     isEnableVideoLogo(event:any){
      this.enableVideoLogo = this.saveVideoFile.enableVideoCobrandingLogo = event;
      if(event && (!this.logoDescriptionUrl || !this.brandLogoUrl)){
-      this.brandLogoUrl = this.defaultPlayerValues.brandingLogoUri = this.defaultPlayerValues.companyProfile.companyLogoPath;
-      this.logoDescriptionUrl = this.saveVideoFile.brandingLogoDescUri = this.defaultPlayerValues.brandingLogoDescUri = this.defaultPlayerValues.companyProfile.website;
-     }
+      this.brandLogoUrl = this.tempVideoFile.brandingLogoUri!==null ? this.tempVideoFile.brandingLogoUri : this.defaultPlayerValues.companyProfile.companyLogoPath;
+      this.logoDescriptionUrl = this.tempVideoFile.brandingLogoDescUri !==null ? this.tempVideoFile.brandingLogoDescUri : this.defaultPlayerValues.companyProfile.website;
+    }
     }
     errorHandler(event){ event.target.src="assets/images/no-thumbnail.png" }
     ngOnInit() {
