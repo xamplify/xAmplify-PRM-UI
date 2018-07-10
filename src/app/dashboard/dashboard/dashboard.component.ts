@@ -731,7 +731,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
         try {
             this.dashboardService.getCampaignsHeatMapDetails(this.heatMapSort.value).
                 subscribe(result => {
-                    debugger;
                     this.xtremandLogger.log(result.heatMapData);
                     this.heatMapData = result.heatMapData;
                     if (!this.isFullscreenToggle) { this.generatHeatMap(this.heatMapData, 'dashboard-heat-map');

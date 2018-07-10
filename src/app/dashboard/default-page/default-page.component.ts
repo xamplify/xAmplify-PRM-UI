@@ -16,7 +16,10 @@ export class DefaultPageComponent implements OnInit {
         private referenceService: ReferenceService) { }
 
     getDefaultPage(userId: number) {
-        this.userService.getUserDefaultPage(userId)
+      if(this.referenceService.userDefaultPage==='WELCOME'|| this.referenceService.userDefaultPage==='DASHBOARD'){
+        this.checkDefaultPage(this.referenceService.userDefaultPage);
+      }else {
+      this.userService.getUserDefaultPage(userId)
             .subscribe(
             data => this.defaultPage = data.replace(/['"]+/g, ''),
             error => {this.goToWelcomePage();
@@ -24,16 +27,16 @@ export class DefaultPageComponent implements OnInit {
             },
             () => {
                 console.log(this.defaultPage);
-                if (this.defaultPage === 'welcome') {
-                   this.goToWelcomePage();
-                } else {
-                    this.goToDashBoard();
-                }
+                this.checkDefaultPage(this.defaultPage);
             }
             );
+       }
     }
+   checkDefaultPage(defaultPage:string){
+    if (defaultPage === 'welcome' || defaultPage==='WELCOME') {  this.goToWelcomePage();
+    } else {  this.goToDashBoard();  }
+   }
 
-    
     goToWelcomePage(){
         if(this.authenticationService.user.hasCompany){
             this.router.navigate(['/home/dashboard/welcome']);
@@ -41,7 +44,7 @@ export class DefaultPageComponent implements OnInit {
             this.router.navigate(['/home/dashboard/add-company-profile']);
         }
     }
-    
+
     goToDashBoard(){
         if(this.authenticationService.user.hasCompany){
             this.router.navigate(['/home/dashboard']);
@@ -49,7 +52,7 @@ export class DefaultPageComponent implements OnInit {
             this.router.navigate(['/home/dashboard/add-company-profile']);
         }
     }
-    
+
     isGridView(userId: number) {
         this.userService.isGridView(userId)
             .subscribe(

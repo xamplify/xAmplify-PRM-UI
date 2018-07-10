@@ -42,7 +42,7 @@ export class ReferenceService {
     topNavBarNotificationDetails: any = new Object();
     roles: Roles = new Roles();
     topNavBarUserDetails = { 'displayName': '....', 'profilePicutrePath': 'assets/admin/pages/media/profile/icon-user-default.png' };
-    userDefaultPage = 'welcome';
+    userDefaultPage = '';
     hasCompany = false;
     formGroupClass = "form-group";
     errorClass = "form-group has-error has-feedback";
@@ -75,6 +75,7 @@ export class ReferenceService {
     emailMergeTags = "  For First Name : {{firstName}} \n  For Last Name : {{lastName}} \n  For Full Name : {{fullName}} |n For Email Id : {{emailId}}";
     coBrandingTag = "<img src='<Co-BrandingImgURL>'/> \n";
     public URL: string = this.authenticationService.REST_URL + 'admin/';
+    hasClientError = false;
     constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,
         private router: Router, public deviceService: Ng2DeviceService) {
         console.log('reference service constructor');
