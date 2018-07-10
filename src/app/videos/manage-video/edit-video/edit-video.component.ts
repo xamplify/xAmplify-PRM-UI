@@ -159,10 +159,17 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.publish = this.videoUtilService.publishUtil;
         this.validationMessages = this.videoUtilService.validationMessages;
         this.formErrors = this.videoUtilService.formErrors;
+        this.categories = this.referenceService.refcategories;
         if (this.saveVideoFile.viewBy === 'DRAFT') {
             this.isThisDraftVideo = true;
             this.saveVideoFile.viewBy = 'PRIVATE';
             this.saveButtonTitle = 'Save';
+            for(let i=0;i<=this.categories.length;i++){
+              if(this.categories[i].name === 'None'){
+                this.saveVideoFile.categoryId = this.categories[i].id;
+                break;
+              }
+            }
         } else { this.saveButtonTitle = 'Update'; }
         this.formErrors = this.videoUtilService.formErrors;
         this.defaultImagePath = this.saveVideoFile.imagePath + '?access_token=' + this.authenticationService.access_token;
@@ -497,10 +504,12 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                         $('.vjs-big-play-button').css('display', 'none');
                         newThis.showEditModalDialog();
                     } else if (isValid !== 'StartOftheVideo') {
-                        $('#overlay-modal').hide(); player.pause();
+                        $('#overlay-modal').hide(); player.play();
+                        setTimeout(()=>{ player.pause();},2);
                     } else {
                         $('#overlay-modal').hide();
                         player.pause();
+                        setTimeout(()=>{ player.pause();},2);
                     }
                     $('#skipOverlay').click(function () {
                         isCallActionthere = false;
@@ -889,6 +898,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
       this.logoDescriptionUrl = this.saveVideoFile.brandingLogoDescUri = this.defaultPlayerValues.brandingLogoDescUri = this.defaultPlayerValues.companyProfile.website;
      }
     }
+    errorHandler(event){ event.target.src="assets/images/no-thumbnail.png" }
     ngOnInit() {
       try{
         QuickSidebar.init();
@@ -945,9 +955,10 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                             player.pause();
                             callactionValue.showEditModalDialog();
                         } else if (isValid !== 'StartOftheVideo') {
-                            $('.vjs-big-play-button').css('display', 'block');
-                            $('#overlay-modal').hide(); player.pause();
-                        } else { $('#overlay-modal').hide(); player.pause(); }
+                            $('#overlay-modal').hide(); player.play();
+                            setTimeout(()=>{ player.pause();},2);
+                        } else { $('#overlay-modal').hide(); setTimeout(()=>{ player.pause();},2);
+                        }
                         $('#skipOverlay').click(function () {
                             isCallActionthere = false;
                             $('#overlay-modal').hide();

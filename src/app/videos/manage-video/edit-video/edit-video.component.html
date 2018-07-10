@@ -374,7 +374,7 @@
                            </span>
 													<div *ngIf="brandLogoUrl" class="img-wrap img-responsive img-thumbnail rounded-0">
 														<span (click)="clearLogo()"><i class="fa fa-times-circle"></i> </span>
-														<img [src]="authenticationService.MEDIA_URL + brandLogoUrl" style="height: 71px; width: auto;">
+														<img [src]="authenticationService.MEDIA_URL + brandLogoUrl" style="height: 71px; width: auto;" (error)="errorHandler($event)">
                           </div>
 													<div *ngIf="!brandLogoUrl" style="height: 11px;">
                               <span style="color:red">Please upload the video logo</span>

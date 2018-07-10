@@ -198,6 +198,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
               }
           }],
             yAxis: [{
+              allowDecimals: false,
               title: {
                   text: yAxis,
               }

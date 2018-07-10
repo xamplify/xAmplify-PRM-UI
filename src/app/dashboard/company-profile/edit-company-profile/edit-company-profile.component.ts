@@ -84,7 +84,7 @@ export class EditCompanyProfileComponent implements OnInit {
     cityDivClass: string = this.formGroupDefaultClass;
     cityError = false;
     cityErrorMessage = "";
-    
+
     stateDivClass: string = this.formGroupDefaultClass;
     stateError = false;
     stateErrorMessage = "";
@@ -182,6 +182,7 @@ export class EditCompanyProfileComponent implements OnInit {
         }
 
     }
+    errorHandler(event){ event.target.src ='assets/images/company-profile-logo.png'; }
     saveVideoBrandLog() {
         const logoLink = this.videoUtilService.isStartsWith(this.companyProfile.website);
         this.userService.saveBrandLogo(this.companyProfile.companyLogoPath, logoLink, this.loggedInUserId)
@@ -633,7 +634,7 @@ export class EditCompanyProfileComponent implements OnInit {
         this.cityDivClass = this.refService.errorClass;
         this.disableButton();
     }
-    
+
     addStateError() {
         this.stateError = true;
         this.stateDivClass = this.refService.errorClass;
@@ -696,7 +697,7 @@ export class EditCompanyProfileComponent implements OnInit {
         this.cityErrorMessage = "";
         this.enableOrDisableButton();
     }
-    
+
     removeStateError() {
         this.stateError = false;
         this.stateDivClass = this.refService.successClass;
@@ -783,7 +784,7 @@ export class EditCompanyProfileComponent implements OnInit {
             this.removeCityError();
         }
     }
-    
+
     validateState() {
         if ($.trim(this.companyProfile.state).length > 0) {
             if (!this.regularExpressions.CITY_PATTERN.test(this.companyProfile.state)) {
