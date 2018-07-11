@@ -120,10 +120,10 @@
                    </div>
                  </section>
                  <section [hidden]="isListView">
-                 <div class="col-xs-6 col-sm-3" *ngFor="let videoFile of pagination.pagedItems ;let i =index" >
-                 <div class="grid-box p0" *ngIf="pagination.pagedItems && !httpRequestLoader.isLoading && !referenceService.isPlayVideo">
+                 <div class="col-xs-6 col-sm-3" *ngFor="let videoFile of pagination.pagedItems ;let i =index">
+                 <div class="grid-box p0" *ngIf="pagination.pagedItems && !httpRequestLoader.isLoading && !referenceService.isPlayVideo" (mouseenter) ="mouseEnter(videoFile)" (mouseleave) ="mouseLeave(videoFile)">
                    <div class="video-thumbnail-wrapper">
-                       <img class="video-thumbnail" (click)="showPlayVideo(videoFile)" src="{{videoFile.imagePath}}" width="auto" (error)="videoUtilService.errorVideoHandler($event)" (mouseenter) ="mouseEnter($event,videoFile)" (mouseleave) ="mouseLeave($event,videoFile)">
+                       <img id="imagePathVideo{{videoFile.id}}" class="video-thumbnail" (click)="showPlayVideo(videoFile)" src="{{videoFile.imagePath}}" width="auto" (error)="videoUtilService.errorVideoHandler($event)" >
                        <i class="fa fa-play-circle" (click)="showPlayVideo(videoFile)"></i>
                        <span class="views-count" title="views"><i class="fa fa-eye"></i>&nbsp;{{videoFile.views}}</span>
                        <span class="video-duration"  title="Video Length">{{videoUtilService.truncateHourZeros(videoFile.videoLength)}}</span>

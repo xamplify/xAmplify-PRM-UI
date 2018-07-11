@@ -19,8 +19,14 @@ export class VideoThumbnailComponent implements OnInit {
   showPlayVideo(videoFile){
    this.notifyParent.emit(videoFile);
   }
-  mouseEnter(event){ event.target.src = this.videoFile.gifImagePath; }
-  mouseLeave(event){ event.target.src = this.videoFile.imagePath; }
+  mouseEnter(event){ event.target.src = this.videoFile.gifImagePath;}
+  mouseLeave(event){ event.target.src = this.videoFile.imagePath;}
+  mouseEnterVideo(){
+    (<HTMLInputElement>document.getElementById('imagePath'+this.videoFile.id)).src =  this.videoFile.gifImagePath;
+  }
+  mouseLeaveVideo(){
+    (<HTMLInputElement>document.getElementById('imagePath'+this.videoFile.id)).src =  this.videoFile.imagePath;
+  }
   ngOnInit() {}
 
 }

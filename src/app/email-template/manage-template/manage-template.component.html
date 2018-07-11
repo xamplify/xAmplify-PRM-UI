@@ -3,8 +3,8 @@
 		<ul class="page-breadcrumb">
 			<li><i class="fa fa-home"></i> <a [routerLink]="refService.homeRouter">Home</a> <i
 				class="fa fa-angle-right"></i></li>
-			<li style="color:#808080">Manage Templates
-			</li>
+      <li style="color:#808080" *ngIf="!authenticationService.isOnlyPartner()">Manage Templates</li>
+      <li style="color:#808080" *ngIf="authenticationService.isOnlyPartner()">View Templates</li>
 		</ul>
 		<div style="float: right;">
 				<select class="form-control" [(ngModel)]="selectedSortedOption" (ngModelChange)="getSortedResult($event)" style="position: relative;right: 10px;top: 2px;">
