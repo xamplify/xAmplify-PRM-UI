@@ -177,7 +177,7 @@
               <th class="center-aligned">partners</th>
               <th class="center-aligned">Campaign Name</th>
                <th class="center-aligned">Redistributed Time</th>
-              <th class="center-aligned">analytics</th>
+              <th class="center-aligned">Analytics</th>
             </thead>
             <tbody>
               <tr *ngFor="let item of pagination.pagedItems" style="cursor: pointer;" (click)="goToCampaignAnalytics(item)">
@@ -189,7 +189,7 @@
                       <a id="disabled-icon" class="blur" title="Data Sharing Disabled" *ngIf="!item.dataSharingEnabled" style="background-color: white;">
                           <img src="../assets/images/disabled-icon.png">
                         </a>
-                        <a  (click)="goToCampaignAnalytics(item)" title="analytics">
+                        <a  (click)="goToCampaignAnalytics(item)" title="Analytics">
                           <i class="fa fa-line-chart"></i>
                         </a>
                      </div>
