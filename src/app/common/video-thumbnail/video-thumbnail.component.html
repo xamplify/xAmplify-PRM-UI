@@ -1,4 +1,4 @@
-<div (mouseenter) ="mouseEnterVideo(videoFile)" (mouseleave) ="mouseLeaveVideo(videoFile)">
+<div (mouseenter) ="mouseEnterVideo()" (mouseleave) ="mouseLeaveVideo()">
   <div style="margin-bottom: -77px">
     <a (click)="showPlayVideo(videoFile)">
       <img id="imagePath{{videoFile.id}}" src="{{videoFile.imagePath}}" (error)="videoUtilService.errorVideoHandler($event)"
