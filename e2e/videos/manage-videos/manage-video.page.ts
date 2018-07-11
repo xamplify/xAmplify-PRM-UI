@@ -17,6 +17,7 @@ export class ManageVideoPage extends LoginPage {
   }
   getEmbedVideoActions(){
     browser.waitForAngularEnabled(false);
+    browser.sleep(2000);
     element.all(by.xpath('/html/body/app-root/app-home/div/div/app-manage-video/div/app-play-video/div/div/div/div[1]/div[5]/div/button[2]')).click();
     element.all(by.xpath('//*[@id="myModal"]/div/div/div[2]/form/div[2]/div/div[1]/select')).click();
     element.all(by.xpath('//*[@id="myModal"]/div/div/div[2]/form/div[2]/div/div[1]/select/option[2]')).click();
@@ -25,7 +26,14 @@ export class ManageVideoPage extends LoginPage {
     element.all(by.xpath('//*[@id="myModal"]/div/div/div[2]/form/div[2]/div/div[3]/button')).click();
     element.all(by.xpath('//*[@id="myModal"]/div/div/div[1]/a')).click();
   }
-
+  getEditVideo(){
+    browser.waitForAngularEnabled(false);
+    element.all(by.xpath('/html/body/app-root/app-home/div/div/app-manage-video/div/div[2]/div/div[2]/div/div[1]/div/div[2]/section[2]/div[3]/div/div[3]/div/a[1]')).click();
+  }
+  getVideoAnalytics(){
+    browser.waitForAngularEnabled(false);
+    element.all(by.xpath('/html/body/app-root/app-home/div/div/app-manage-video/div/div[2]/div/div[2]/div/div[1]/div/div[2]/section[2]/div[3]/div/div[3]/div/a[2]')).click();
+  }
 }
 
 

@@ -41,8 +41,23 @@ describe("Manage Video Test ", () => {
     it("should able to go to manageVideos ", () => {
       browser.sleep(1000);
       manageVideosPage.gotoManageVideos();
+      browser.sleep(2000);
+     // element.all(by.css('.dfdf')).get(4).all(by.xpath(''));
     });
 
+    // it("should able to go to video based reports page ", () => {
+    //   browser.sleep(1000);
+    //   manageVideosPage.getVideoAnalytics();
+    //   manageVideosPage.gotoManageVideos();
+    //   browser.sleep(2000);
+    // });
+
+    // it("should able to go to Edit video page ", () => {
+    //   browser.sleep(1000);
+    //   manageVideosPage.getEditVideo();
+    //   browser.sleep(2000);
+    //   manageVideosPage.gotoManageVideos();
+    // });
 
     afterAll(() => {
       manageVideosPage.logout();

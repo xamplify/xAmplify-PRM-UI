@@ -165,7 +165,7 @@
 											<input type="text" minlength="1" maxlength="255" (input)="validVideoTitle(videotitle.value)" class="form-control" placeholder="Enter Title here"
 											 formControlName="title" required #videotitle>
 											<div *ngIf="formErrors.title" class="alert alert-danger">{{formErrors.title}}</div>
-											<div *ngIf="isValidTitle" style="color: red; padding: 2px">Title already exists!</div>
+											<div *ngIf="isValidTitle" style="color: red; padding: 2px">This title already exists.</div>
 											<div *ngIf="emptyTitle ==true && formErrors.title==false" class="alert alert-danger">Title name shouldn't be empty</div>
 										</div>
 									</div>
