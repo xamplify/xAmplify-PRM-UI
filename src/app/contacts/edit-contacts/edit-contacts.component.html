@@ -36,7 +36,7 @@
 								(click)="updateContactListNameAlert()">
 								<span class="ellipsis" title="{{selectedContactListName}}">{{selectedContactListName | slice:0:30}}
 												<span *ngIf="selectedContactListName?.length>30">...</span>
-									<span *ngIf="!isDefaultPartnerList">List</span>
+									<!-- <span *ngIf="!isDefaultPartnerList">List</span> -->
 									</span>
 									</span>
 									<span *ngIf="isDefaultPartnerList"
