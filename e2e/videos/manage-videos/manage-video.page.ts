@@ -9,11 +9,11 @@ export class ManageVideoPage extends LoginPage {
   }
   playVideo(){
     browser.waitForAngularEnabled(false);
-    return element.all(by.xpath('/html/body/app-root/app-home/div/div/app-manage-video/div/div[2]/div/div[2]/div/div[1]/div/div[2]/section[2]/div[3]/div/div[1]/img')).click();
+    return element.all(by.xpath('//*[@id="imagePath1888"]')).click();
   }
   gotoManageVideos(){
     browser.waitForAngularEnabled(false);
-    return element.all(by.xpath('/html/body/app-root/app-home/div/div/app-manage-video/div/div[1]/div/ul/li[2]/a')).click();
+    return element.all(by.xpath('/html/body/app-root/app-home/div/div/app-manage-video/div/div[1]/div/ul/li[2]')).click();
   }
   getEmbedVideoActions(){
     browser.waitForAngularEnabled(false);
@@ -25,6 +25,13 @@ export class ManageVideoPage extends LoginPage {
     element.all(by.xpath('//*[@id="myModal"]/div/div/div[2]/form/div[2]/div/div[2]/input')).click();
     element.all(by.xpath('//*[@id="myModal"]/div/div/div[2]/form/div[2]/div/div[3]/button')).click();
     element.all(by.xpath('//*[@id="myModal"]/div/div/div[1]/a')).click();
+  }
+  getSearchTF(){
+    browser.waitForAngularEnabled(false);
+    return element.all(by.xpath('/html/body/app-root/app-home/div/div/app-manage-video/div/div[2]/div/div[2]/div/div[1]/div/div[1]/div/div[1]/div[4]/div/input'));
+  }
+  clickSearchButton(){
+    return element.all(by.xpath('/html/body/app-root/app-home/div/div/app-manage-video/div/div[2]/div/div[2]/div/div[1]/div/div[1]/div/div[1]/div[4]/div/i')).click();
   }
   getEditVideo(){
     browser.waitForAngularEnabled(false);

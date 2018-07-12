@@ -35,7 +35,7 @@ describe("Login Test ", () => {
       expect(loginPage.getMessageText()).toEqual("Username or password is incorrect.");
     });
 
-    xit('should be able to test forgot password Test', () => {
+    it('should be able to test forgot password Test', () => {
       browser.waitForAngularEnabled(false);
       loginPage.navigateToPassword();
       loginPage.getForgotEmailTF().sendKeys(Properties.forgotEmail);

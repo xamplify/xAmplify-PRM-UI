@@ -30,5 +30,6 @@ exports.config = {
       new SpecReporter({ spec: { displayStacktrace: true } }),
     //  new Jasmine2HtmlReporter({ savePath: './results/', screenshotsFolder: 'images',})
     );
+    browser.manage().window().setSize(1600, 1000);
   }
 };

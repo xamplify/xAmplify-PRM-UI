@@ -40,10 +40,22 @@ describe("Manage Video Test ", () => {
 
     it("should able to go to manageVideos ", () => {
       browser.sleep(1000);
-      manageVideosPage.gotoManageVideos();
+     // manageVideosPage.gotoManageVideos();
+      uploadVideoPage.clickOnVideos();
+      manageVideosPage.clickOnManageVideos();
       browser.sleep(2000);
-     // element.all(by.css('.dfdf')).get(4).all(by.xpath(''));
     });
+
+    it("should able to search video in mange videos ", () => {
+      browser.sleep(1000);
+      manageVideosPage.getSearchTF().sendKeys("%^&*&^%$^&*(&^%$^&*(&^%$");
+      manageVideosPage.clickSearchButton();
+      manageVideosPage.getSearchTF().clear();
+      browser.sleep(1000);
+      manageVideosPage.getSearchTF().sendKeys("songvideo");
+      manageVideosPage.clickSearchButton();
+    });
+
 
     // it("should able to go to video based reports page ", () => {
     //   browser.sleep(1000);
