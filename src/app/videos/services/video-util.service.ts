@@ -49,7 +49,7 @@ export class VideoUtilService {
         'imageFile': { 'required': 'Image file is required' },
         'gifImagePath': { 'required': 'Gif is required' },
         'description': {
-            'required': 'Description is required',
+            'required': 'Please enter a video description.',
             'minlength': 'Title must be at least 5 characters long.'
         },
         'upperText': { 'required': 'upper text is required', },

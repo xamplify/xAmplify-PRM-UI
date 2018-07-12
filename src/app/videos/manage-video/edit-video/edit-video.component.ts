@@ -602,11 +602,11 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   defaultPlayerSettingsCondition(playerSettings: any) {
       // future work is there on enable casting and enable settings.
-      if(!playerSettings.enableVideoController){ playerSettings = this.getDefaultPlayerSettings(playerSettings);
-      }
+      if(!playerSettings.enableVideoController){ playerSettings = this.getDefaultPlayerSettings(playerSettings);}
       try {
           this.valueRange = playerSettings.transparency;
-          this.newEnableController = playerSettings.enableVideoController;
+          this.newEnableController = playerSettings.newEnableController;
+          if(this.newEnableController==null || this.newEnableController===undefined){ this.clientError=true;}
           this.comments = this.newComments = playerSettings.allowComments; // done
           this.newFullScreen = playerSettings.allowFullscreen;
           this.likes = this.newAllowLikes = playerSettings.allowLikes; // done

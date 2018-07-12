@@ -5,9 +5,13 @@
 				<i class="fa fa-home"></i>
 				<a [routerLink]="referenceService.homeRouter">Home</a>
 				<i class="fa fa-angle-right"></i>
+      </li>
+      <li *ngIf="role === 'Vendor'">
+        <a [routerLink]="['/home/dashboard/vendors']">Your Vendors</a>
+        <i class="fa fa-angle-right"></i>
 			</li>
 			<li *ngIf="role === 'Vendor'">
-				<a [routerLink]="['/home/dashboard/vendors']">Campaigns From Vendor</a>
+				<a >Campaigns</a>
 			</li>
 			<li *ngIf="role === 'Partner'">
 				<a [routerLink]="referenceService.homeRouter">Campaigns shared by Vendor</a>
