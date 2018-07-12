@@ -776,7 +776,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
             });
     }
     logVideoViewsCount() {
-        this.videoFileService.logVideoViews(this.embedVideoFile.alias).subscribe(
+        this.videoFileService.logVideoViews(this.embedVideoFile.alias,this.shortnerUrlAlias).subscribe(
             (result: any) => {
                 console.log('successfully logged view count');
             });
