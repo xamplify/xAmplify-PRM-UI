@@ -602,10 +602,10 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   defaultPlayerSettingsCondition(playerSettings: any) {
       // future work is there on enable casting and enable settings.
-      if(!playerSettings.enableVideoController){ playerSettings = this.getDefaultPlayerSettings(playerSettings);}
+      if(!playerSettings.enableVideoController){ this.getDefaultPlayerSettings(); playerSettings = this.defaultPlayerValues;}
       try {
           this.valueRange = playerSettings.transparency;
-          this.newEnableController = playerSettings.newEnableController;
+          this.newEnableController = playerSettings.enableVideoController;
           if(this.newEnableController==null || this.newEnableController===undefined){ this.clientError=true;}
           this.comments = this.newComments = playerSettings.allowComments; // done
           this.newFullScreen = playerSettings.allowFullscreen;
@@ -910,18 +910,17 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   }
   errorHandler(event){ event.target.src="assets/images/no-thumbnail.png" }
-  getDefaultPlayerSettings(playerSettingValues){
-    if(!playerSettingValues ||!playerSettingValues.playerColor || !playerSettingValues.enableVideoController){
+  getDefaultPlayerSettings(){
+    if(!this.referenceService.defaultPlayerSettings){
       this.homeComponent.getVideoDefaultSettings();
-      this.defaultPlayerValues = playerSettingValues = this.referenceService.defaultPlayerSettings;
-      if(!this.defaultPlayerValues ||!playerSettingValues.playerColor || !playerSettingValues.enableVideoController){ this.clientError = true;}
+      this.defaultPlayerValues = this.referenceService.defaultPlayerSettings;
+      if(!this.defaultPlayerValues ||!this.defaultPlayerValues.playerColor || !this.defaultPlayerValues.enableVideoController){ this.clientError = true;}
      }
-    return playerSettingValues;
   }
   ngOnInit() {
     try{
       QuickSidebar.init();
-      this.getDefaultPlayerSettings(this.defaultPlayerValues);
+      this.getDefaultPlayerSettings();
       console.log(this.referenceService.videoTitles);
       this.removeVideoTitlesWhiteSpaces();
       this.loadRangeDisable = true;
