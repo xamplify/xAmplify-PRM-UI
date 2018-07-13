@@ -5,6 +5,7 @@ import { Criteria } from '../models/criteria';
 import { EditUser } from '../models/edit-user';
 import { CustomResponse } from '../../common/models/custom-response';
 import { Properties } from '../../common/models/properties';
+import { ActionsDescription } from '../../common/models/actions-description';
 import { AddContactsOption } from '../models/contact-option';
 import { User } from '../../core/models/user';
 import { Router } from '@angular/router';
@@ -30,7 +31,7 @@ declare var Metronic, Promise, Layout, Demo, swal, Portfolio, $, Papa: any;
     styleUrls: ['../../../assets/css/button.css',
         '../../../assets/css/numbered-textarea.css',
         './edit-contacts.component.css', '../../../assets/css/phone-number-plugin.css'],
-    providers: [Pagination, HttpRequestLoader, CountryNames, Properties, RegularExpressions, TeamMemberService]
+    providers: [Pagination, HttpRequestLoader, CountryNames, Properties, ActionsDescription, RegularExpressions, TeamMemberService]
 })
 export class EditContactsComponent implements OnInit, OnDestroy {
     @Input() contacts: User[];
@@ -172,7 +173,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
     constructor( public refService: ReferenceService, public contactService: ContactService, private manageContact: ManageContactsComponent,
         public authenticationService: AuthenticationService, private router: Router, public countryNames: CountryNames,
-        public regularExpressions: RegularExpressions,
+        public regularExpressions: RegularExpressions, public actionsDescription: ActionsDescription,
         private pagerService: PagerService, public pagination: Pagination, public xtremandLogger: XtremandLogger, public properties: Properties,
         public teamMemberService: TeamMemberService ) {
 

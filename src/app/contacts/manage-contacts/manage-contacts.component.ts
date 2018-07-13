@@ -6,6 +6,7 @@ import { ContactsByType } from '../models/contacts-by-type';
 import { User } from '../../core/models/user';
 import { CustomResponse } from '../../common/models/custom-response';
 import { Properties } from '../../common/models/properties';
+import { ActionsDescription } from '../../common/models/actions-description';
 import { Router } from "@angular/router";
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { SocialContact } from '../models/social-contact';
@@ -22,7 +23,7 @@ declare var Metronic, $, Layout, Demo, Portfolio, swal: any;
     selector: 'app-manage-contacts',
     templateUrl: './manage-contacts.component.html',
     styleUrls: ['./manage-contacts.component.css', '../../../assets/css/phone-number-plugin.css'],
-    providers: [SocialContact, Pagination, Properties]
+    providers: [SocialContact, Pagination, Properties, ActionsDescription]
 })
 
 export class ManageContactsComponent implements OnInit, AfterViewInit {
@@ -156,7 +157,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
     logListName = "";
 
     constructor( public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
-        private pagerService: PagerService, private pagination: Pagination, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger ) {
+        private pagerService: PagerService, private pagination: Pagination, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,
+        public actionsDescription: ActionsDescription) {
 
         let currentUrl = this.router.url;
         if ( currentUrl.includes( 'home/contacts' ) ) {

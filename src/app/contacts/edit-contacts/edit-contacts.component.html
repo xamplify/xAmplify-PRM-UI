@@ -604,10 +604,10 @@
 															</td> -->
 															<td align="center" *ngIf="(hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId) || authenticationService.isOnlyPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()) && !isSynchronizationList">
 															<div class="actions-block">
-															  	<a data-toggle="tooltip" data-placement="top" title="Edit {{checkingContactTypeName}}" (click)="editUserDetails(contact)">
+															  	<a data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_edit}} {{checkingContactTypeName}}" (click)="editUserDetails(contact)">
 																  	<i class="fa fa-pencil-square-o"></i>
 																 </a>
-																<a data-toggle="tooltip" data-placement="top" title="Delete {{checkingContactTypeName}}" (click)="deleteUserShowAlert(contact.id)">	<i class="fa fa-trash-o"></i>	</a>
+																<a data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_delete}} {{checkingContactTypeName}}" (click)="deleteUserShowAlert(contact.id)">	<i class="fa fa-trash-o"></i>	</a>
 															</div>
 															</td>
 															<ng-template #NA>N/A</ng-template>
