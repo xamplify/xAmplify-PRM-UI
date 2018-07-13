@@ -13,6 +13,7 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { CustomResponse } from '../../common/models/custom-response';
+import { ActionsDescription } from '../../common/models/actions-description';
 
 declare var Metronic,$, Layout, Demo, swal: any;
 
@@ -20,7 +21,7 @@ declare var Metronic,$, Layout, Demo, swal: any;
     selector: 'app-manage-template',
     templateUrl: './manage-template.component.html',
     styleUrls: ['./manage-template.component.css', '../../../assets/css/video-css/ribbons.css'],
-    providers: [Pagination,HttpRequestLoader]
+    providers: [Pagination,HttpRequestLoader, ActionsDescription]
 })
 export class ManageTemplateComponent implements OnInit,OnDestroy {
     isPreview = false;
@@ -71,7 +72,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
     customResponse: CustomResponse = new CustomResponse();
     isListView: boolean = false;
     constructor( private emailTemplateService: EmailTemplateService, private userService: UserService, private router: Router,
-        private pagerService: PagerService, public refService: ReferenceService,
+        private pagerService: PagerService, public refService: ReferenceService, public actionsDescription: ActionsDescription,
         public pagination: Pagination,public authenticationService:AuthenticationService,private logger:XtremandLogger) {
         this.loggedInUserId = this.authenticationService.getUserId();
         this.isPartnerToo = this.authenticationService.checkIsPartnerToo();

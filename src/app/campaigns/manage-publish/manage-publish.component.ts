@@ -12,6 +12,8 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { CustomResponse } from '../../common/models/custom-response';
 import { UtilService } from '../../core/services/util.service';
+import { ActionsDescription } from '../../common/models/actions-description';
+
 
 declare var swal, $: any;
 
@@ -19,7 +21,7 @@ declare var swal, $: any;
     selector: 'app-manage-publish',
     templateUrl: './manage-publish.component.html',
     styleUrls: ['./manage-publish.component.css'],
-    providers: [Pagination, HttpRequestLoader]
+    providers: [Pagination, HttpRequestLoader, ActionsDescription]
 })
 export class ManagePublishComponent implements OnInit, OnDestroy {
     campaigns: Campaign[];
@@ -62,7 +64,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     customResponse: CustomResponse = new CustomResponse();
 
     constructor(private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
-        public pagination: Pagination, private pagerService: PagerService, public utilService:UtilService,
+        public pagination: Pagination, private pagerService: PagerService, public utilService:UtilService, public actionsDescription: ActionsDescription,
         public refService: ReferenceService, private userService: UserService, public authenticationService: AuthenticationService) {
         this.loggedInUserId = this.authenticationService.getUserId();
         this.utilService.setRouterLocalStorage('managecampaigns');
