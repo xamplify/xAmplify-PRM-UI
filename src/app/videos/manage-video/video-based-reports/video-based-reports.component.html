@@ -220,7 +220,7 @@
 							<thead>
 								<tr>
 									<th class="center text-uppercase headerCss">NAME</th>
-									<!-- <th class="center text-uppercase headerCss">video Title</th> -->
+									<th class="center text-uppercase headerCss">CAMPAIGN NAME</th>
 									<th class="center text-uppercase headerCss">date and time</th>
 									<th class="center text-uppercase headerCss">minutes watched</th>
 									<th class="center text-uppercase headerCss">device</th>
@@ -233,6 +233,7 @@
 										<app-user-info  [userInfo]="item"> </app-user-info>
 									</td>
 									<!-- <td class="center">{{item.videoTitle}}</td> -->
+									<td class="center">{{item.campaignName }}</td>
 									<td class="center">{{item.date |date:'MM/dd/yyyy @ h:mma' }}</td>
 									<td class="center">{{item.minutesWatched }}</td>
 									<td class="center">
