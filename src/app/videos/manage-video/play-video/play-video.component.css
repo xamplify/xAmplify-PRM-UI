@@ -108,3 +108,7 @@ textarea {
   font-size: 18px;
   font-weight: 500;
 }
+.list-grid{
+  position: relative;
+  right: -14px;
+}
