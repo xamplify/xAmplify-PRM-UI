@@ -14,6 +14,7 @@ import { HomeComponent } from '../../core/home/home.component';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { UtilService } from '../../core/services/util.service';
 import { CustomResponse } from '../../common/models/custom-response';
+import { ActionsDescription } from '../../common/models/actions-description';
 
 declare var swal, QuickSidebar, $: any;
 
@@ -21,7 +22,7 @@ declare var swal, QuickSidebar, $: any;
     selector: 'app-manage-video',
     templateUrl: './manage-video.component.html',
     styleUrls: ['./manage-video.component.css'],
-    providers: [Pagination, HttpRequestLoader, HomeComponent]
+    providers: [Pagination, HttpRequestLoader, HomeComponent,ActionsDescription]
 })
 export class ManageVideoComponent implements OnInit, OnDestroy {
     manageVideos = true;
@@ -54,7 +55,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
     constructor(public videoFileService: VideoFileService, public referenceService: ReferenceService,
         public authenticationService: AuthenticationService, public videoUtilService: VideoUtilService,
         public pagerService: PagerService, public pagination: Pagination, public router: Router,
-        public xtremandLogger: XtremandLogger, public homeComponent: HomeComponent, public utilService:UtilService) {
+        public xtremandLogger: XtremandLogger, public homeComponent: HomeComponent, public utilService:UtilService, public actionsDescription:ActionsDescription) {
         this.xtremandLogger.log('MangeVideosComponent : constructor ');
         this.loggedInUserId = this.authenticationService.getUserId();
         this.loggedUserName = this.authenticationService.user.emailId;
