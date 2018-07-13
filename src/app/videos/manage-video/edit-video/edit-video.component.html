@@ -164,9 +164,9 @@
 										<div class="col-xs-9 col-sm-9 col-md-9">
 											<input type="text" minlength="1" maxlength="255" (input)="validVideoTitle(videotitle.value)" class="form-control" placeholder="Enter Title here"
 											 formControlName="title" required #videotitle>
-											<div *ngIf="formErrors.title" class="alert alert-danger">{{formErrors.title}}</div>
+											<div *ngIf="formErrors.title"  style="color: red; padding: 2px" >{{formErrors.title}}</div>
 											<div *ngIf="isValidTitle" style="color: red; padding: 2px">This title already exists.</div>
-											<div *ngIf="emptyTitle ==true && formErrors.title==false" class="alert alert-danger">Title name shouldn't be empty</div>
+											<div *ngIf="emptyTitle ==true && formErrors.title==false"  style="color: red; padding: 2px">Title name shouldn't be empty</div>
 										</div>
 									</div>
 									<input type="hidden" class="form-control" formControlName="id">
@@ -280,7 +280,7 @@
 										<div class="col-xs-9 col-sm-9 col-md-9">
 											<textarea (input)="descriptionInput(descriptionValue.value)" class="form-control" rows="3" style="min-height: 70px; max-height:110px;"
 											 formControlName="description" required #descriptionValue></textarea>
-											<div *ngIf="formErrors.description" style="color:red">{{formErrors.description}}</div>
+											<div *ngIf="formErrors.description || saveVideoFile.description==null" style="color:red">Please enter a video description.</div>
 											<div *ngIf="emptyDescription && formErrors.description==false" style="color:red">description shouldn't be empty</div>
 										</div>
 									</div>

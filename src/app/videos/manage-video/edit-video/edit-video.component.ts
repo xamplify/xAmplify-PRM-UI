@@ -368,7 +368,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   titleDivChange() { this.divChanageValues(true, false, false, false);  }
   colorControlChange() {
-      if(!this.emptyDescription && this.checkTagsValidation() && this.saveVideoFile.title && !this.emptyTitle){
+      if(!this.emptyDescription && this.checkTagsValidation() && this.saveVideoFile.title && !this.emptyTitle && this.saveVideoFile.description){
       this.xtremandLogger.log(this.itemOfTags);
       $('html,body').animate({ scrollTop: 0 }, 'slow');
       this.divChanageValues(false, true, false, false);
@@ -385,7 +385,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     } else { $('html,body').animate({ scrollTop: 170 }, 'slow');}
   }
   controlPlayerChange() {
-    if(!this.emptyDescription && this.checkTagsValidation() && this.saveVideoFile.title && !this.emptyTitle){
+    if(!this.emptyDescription && this.checkTagsValidation() && this.saveVideoFile.title && !this.emptyTitle && this.saveVideoFile.description){
       $('html,body').animate({ scrollTop: 0 }, 'slow');
       this.divChanageValues(false, false, true, false);
       this.loadRangeDisable = false;
@@ -393,7 +393,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     } else { $('html,body').animate({ scrollTop: 170 }, 'slow');}
   }
   callToActionChange() {
-    if(!this.emptyDescription && this.checkTagsValidation() && this.saveVideoFile.title && !this.emptyTitle){
+    if(!this.emptyDescription && this.checkTagsValidation() && this.saveVideoFile.title && !this.emptyTitle && this.saveVideoFile.description){
       $('html,body').animate({ scrollTop: 275 }, 'slow');
       this.divChanageValues(false, false, false, true);
       setTimeout( ()=> {
