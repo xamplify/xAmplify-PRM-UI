@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { SaveVideoFile } from '.././models/save-video-file';
 import { Category } from '.././models/category';
@@ -58,6 +58,8 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.xtremandLogger.log('MangeVideosComponent : constructor ');
         this.loggedInUserId = this.authenticationService.getUserId();
         this.loggedUserName = this.authenticationService.user.emailId;
+        this.referenceService.loading(this.httpRequestLoader, true);
+        this.isListView = ! this.referenceService.isGridView;
         this.defaultBannerMessageValues();
         this.sortVideos = this.videoUtilService.sortVideos;
         if(this.authenticationService.isOnlyPartner()){
@@ -92,7 +94,6 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
     ngOnInit() {
       try {
         this.pagination.maxResults = 12;
-        this.isListView = ! this.referenceService.isGridView;
         QuickSidebar.init();
         this.hasVideoRole = this.referenceService.hasRole(this.referenceService.roles.videRole);
         this.hasStatsRole = this.referenceService.hasRole(this.referenceService.roles.statsRole);
@@ -273,6 +274,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                 this.showVideoFileName = videoName;
                 this.showVideoFileName = '"'+this.showVideoFileName.substr(0,50)+'" deleted successfully.';
                 this.customResponse = new CustomResponse( 'SUCCESS', this.showVideoFileName, true );
+                this.homeComponent.getVideoTitles();
                 $('html,body').animate({ scrollTop: 0 }, 'slow');
                 if (this.pagination.pagedItems.length === 0) {
                     this.pagination.pageIndex = 1;

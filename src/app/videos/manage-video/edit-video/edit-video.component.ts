@@ -368,6 +368,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   titleDivChange() { this.divChanageValues(true, false, false, false);  }
   colorControlChange() {
+      if(!this.emptyDescription && this.checkTagsValidation() && this.saveVideoFile.title && !this.emptyTitle){
       this.xtremandLogger.log(this.itemOfTags);
       $('html,body').animate({ scrollTop: 0 }, 'slow');
       this.divChanageValues(false, true, false, false);
@@ -381,20 +382,25 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
               this.disablePlayerSettingnew = false;
           }
       }, 1);
+    } else { $('html,body').animate({ scrollTop: 170 }, 'slow');}
   }
   controlPlayerChange() {
+    if(!this.emptyDescription && this.checkTagsValidation() && this.saveVideoFile.title && !this.emptyTitle){
       $('html,body').animate({ scrollTop: 0 }, 'slow');
       this.divChanageValues(false, false, true, false);
       this.loadRangeDisable = false;
       setTimeout(()=>{ this.disablePlayerSettingnew = this.defaultSettingValue ? true : false; }, 1);
+    } else { $('html,body').animate({ scrollTop: 170 }, 'slow');}
   }
   callToActionChange() {
+    if(!this.emptyDescription && this.checkTagsValidation() && this.saveVideoFile.title && !this.emptyTitle){
       $('html,body').animate({ scrollTop: 275 }, 'slow');
       this.divChanageValues(false, false, false, true);
       setTimeout( ()=> {
           if (this.saveVideoFile.callACtion) { this.disableCalltoAction(false);
           } else { this.disableCalltoAction(true); }
       }, 1);
+    } else { $('html,body').animate({ scrollTop: 170 }, 'slow');}
   }
   // like and dislike methods
   likesValuesDemo() {
@@ -1171,6 +1177,12 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
           }
       }
   }
+  checkTagsValidation(){
+    let isTagsValid;
+    if(this.videoFileService.actionValue==='Update'){ isTagsValid = this.itemOfTags.length>0 ? true:false}
+    if(this.videoFileService.actionValue==='Save'){ isTagsValid = this.itemOfTags!==null ? true:false}
+    return isTagsValid;
+  }
   saveVideoObject() {
       try{
       if(this.enableVideoLogo && (!this.logoDescriptionUrl || !this.brandLogoUrl)){
@@ -1182,10 +1194,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
       this.validVideoTitle(this.saveVideoFile.title);
       const titleUpdatedValue = this.saveVideoFile.title.replace(/\s\s+/g, ' ');
       const descriptionData = this.saveVideoFile.description.replace(/\s\s+/g, ' ');
-      let isTagsValid;
-      if(this.videoFileService.actionValue==='Update'){ isTagsValid = this.itemOfTags.length>0 ? true:false}
-      if(this.videoFileService.actionValue==='Save'){ isTagsValid = this.itemOfTags!==null ? true:false}
-      if (this.isValidTitle === false && isTagsValid) {
+      if (this.isValidTitle === false && this.checkTagsValidation()) {
           this.saveButtonTitle = this.saveButtonTitle==='Save'? 'Saving': 'Updating';
           this.isDisable = true;
           this.saveVideoFile = this.videoForm.value;
