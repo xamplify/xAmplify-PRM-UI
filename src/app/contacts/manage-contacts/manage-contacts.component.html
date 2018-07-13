@@ -317,7 +317,7 @@
 															*ngIf="(!hasAllAccess && loggedInUserId != contactList.uploadedUserId && !authenticationService.module.isVendor) || contactList.synchronisedList"
 															(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList)"
 															 data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_list_info}}" data-rel="fancybox-button">
-															<i class="glyphicon glyphicon-info-sign"></i>
+															<i class="glyphicon glyphicon-info-sign" style="color: white;"></i>
 														</a>
 														<a
 															data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_list_saveAs}}"
