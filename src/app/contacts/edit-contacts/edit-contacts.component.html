@@ -32,7 +32,7 @@
 
 						<div class="page-bar m0">
 							<div class="page-breadcrumb">
-								<span *ngIf="!isDefaultPartnerList" title="Edit Contact list Name" style="cursor:pointer;font-size: 16px; font-family: Open Sans; color: #989292;"
+								<span *ngIf="!isDefaultPartnerList" data-toggle="tooltip" data-placement="top" title="Edit Contact list Name" style="cursor:pointer;font-size: 16px; font-family: Open Sans; color: #989292;"
 								(click)="updateContactListNameAlert()">
 								<span class="ellipsis" title="{{selectedContactListName}}">{{selectedContactListName | slice:0:30}}
 												<span *ngIf="selectedContactListName?.length>30">...</span>
@@ -604,10 +604,10 @@
 															</td> -->
 															<td align="center" *ngIf="(hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId) || authenticationService.isOnlyPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()) && !isSynchronizationList">
 															<div class="actions-block">
-															  	<a title="Edit {{checkingContactTypeName}}" (click)="editUserDetails(contact)">
+															  	<a data-toggle="tooltip" data-placement="top" title="Edit {{checkingContactTypeName}}" (click)="editUserDetails(contact)">
 																  	<i class="fa fa-pencil-square-o"></i>
 																 </a>
-																<a title="Delete {{checkingContactTypeName}}" (click)="deleteUserShowAlert(contact.id)">	<i class="fa fa-trash-o"></i>	</a>
+																<a data-toggle="tooltip" data-placement="top" title="Delete {{checkingContactTypeName}}" (click)="deleteUserShowAlert(contact.id)">	<i class="fa fa-trash-o"></i>	</a>
 															</div>
 															</td>
 															<ng-template #NA>N/A</ng-template>

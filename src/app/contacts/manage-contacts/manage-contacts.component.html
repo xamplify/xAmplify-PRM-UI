@@ -240,32 +240,32 @@
 															<a
 																*ngIf="(hasAllAccess || authenticationService.module.isVendor || (hasContactRole && loggedInUserId == contactList.uploadedUserId) || authenticationService.isOnlyPartner()) && !contactList.synchronisedList"
 																(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.synchronisedList)"
-																title="Edit List"> <i class="fa fa-pencil-square-o"></i>
+																data-toggle="tooltip" data-placement="top" title="Edit List"> <i class="fa fa-pencil-square-o"></i>
 															</a> 
 															
 															<a *ngIf="!hasAllAccess && loggedInUserId != contactList.uploadedUserId && !authenticationService.module.isVendor || contactList.synchronisedList"
 																(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.synchronisedList)"
-																title="ContactList Info"> <i
+																data-toggle="tooltip" data-placement="top" title="ContactList Info"> <i
 																class="glyphicon glyphicon-info-sign"></i>
 															</a>
 															
-															<a title="Copy and save as a new list"
+															<a data-toggle="tooltip" data-placement="top" title="Copy and save as a new list"
 																(click)="saveAsNewList(contactList.id,contactList.name)">
 																<i class="fa fa-files-o"></i>
 															</a> 
 															 <a (click)="downloadContactList(contactList.id, contactList.name)"
-																title="Download List" data-rel="fancybox-button"> <i
+																data-toggle="tooltip" data-placement="top" title="Download List" data-rel="fancybox-button"> <i
 																class="fa fa-cloud-download"></i>
 															</a>
 															<span *ngIf="contactList.synchronisedList == true">
-																<a title="sychronizeContactList"
+																<a data-toggle="tooltip" data-placement="top" title="sychronizeContactList"
 																*ngIf="hasAllAccess || authenticationService.module.isVendor|| (hasContactRole && loggedInUserId==contactList.uploadedUserId)"
 																(click)="synchronizeContactList(contactList.id,contactList.socialNetwork)">
 																	<i class="fa fa-refresh" aria-hidden="true"></i>
 															</a>
 															</span>
 															<a *ngIf="(hasAllAccess || authenticationService.module.isVendor || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner()) && !contactList.defaultPartnerList"
-																(click)="showAlert(contactList.id)" title="Delete List">
+																(click)="showAlert(contactList.id)" data-toggle="tooltip" data-placement="top"  title="Delete List">
 																<i class="fa fa-trash"></i>
 															</a>
 														</div>
@@ -310,17 +310,17 @@
 											 <a [class.disabled]="!contactList.emailValidationInd"
 															*ngIf="(hasAllAccess || authenticationService.module.isVendor || (hasContactRole && loggedInUserId == contactList.uploadedUserId) || authenticationService.isOnlyPartner()) && !contactList.synchronisedList"
 															(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList)"
-															title="Edit List" data-rel="fancybox-button"> <i
+															 data-toggle="tooltip" data-placement="top" title="Edit List" data-rel="fancybox-button"> <i
 															class="fa fa-pencil-square-o"></i>
 														</a> <a
 															[class.disabled]="!contactList.emailValidationInd"
 															*ngIf="(!hasAllAccess && loggedInUserId != contactList.uploadedUserId && !authenticationService.module.isVendor) || contactList.synchronisedList"
 															(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList)"
-															title="ContactList Info" data-rel="fancybox-button">
+															 data-toggle="tooltip" data-placement="top" title="ContactList Info" data-rel="fancybox-button">
 															<i class="glyphicon glyphicon-info-sign"></i>
 														</a>
 														<a
-															title="Copy and save as a new list"
+															data-toggle="tooltip" data-placement="top" title="Copy and save as a new list"
 															(click)="saveAsNewList(contactList.id,contactList.name)"
 															[class.disabled]="!contactList.emailValidationInd"
 															data-rel="fancybox-button" style="left: 60%;">
@@ -329,11 +329,11 @@
 														</a>
 														<a [class.disabled]="!contactList.emailValidationInd"
 															(click)="downloadContactList(contactList.id, contactList.name)"
-															title="Download List" data-rel="fancybox-button"> <i
+															data-toggle="tooltip" data-placement="top" title="Download List" data-rel="fancybox-button"> <i
 															class="fa fa-cloud-download"></i>
 														</a>
 														<ng-container *ngIf="contactList.synchronisedList == true">
-														<a title="sychronizeContactList"
+														<a data-toggle="tooltip" data-placement="top" title="sychronizeContactList"
 															[class.disabled]="!contactList.emailValidationInd"
 															*ngIf="hasAllAccess || authenticationService.module.isVendor || (hasContactRole && loggedInUserId==contactList.uploadedUserId)"
 															(click)="synchronizeContactList(contactList.id,contactList.socialNetwork)"
@@ -345,7 +345,7 @@
 													 <a
 															[class.disabled]="!contactList.emailValidationInd"
 															*ngIf="(hasAllAccess || authenticationService.module.isVendor || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner()) && !contactList.defaultPartnerList"
-															(click)="showAlert(contactList.id)" title="Delete List"
+															(click)="showAlert(contactList.id)" data-toggle="tooltip" data-placement="top" title="Delete List"
 															data-rel="fancybox-button" lang="{{contactList.id}}">
 															<i class="fa fa-trash"></i>
 														</a>
