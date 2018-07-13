@@ -1900,7 +1900,10 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         this.contactListAssociatedCampaignsList.length = 0;
     }
 
-
+/*    ngAfterViewInit(){
+        $('body').tooltip({ selector: '[data-toggle="tooltip"]' });
+        }
+*/
     ngOnInit() {
         try {
             this.socialContactImage();

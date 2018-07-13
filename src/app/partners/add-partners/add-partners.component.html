@@ -41,6 +41,7 @@ img:hover {
 	filter: grayscale(0%);
 	opacity: 2;
 }
+
 </style>
 
 <div class="page-content">
@@ -581,13 +582,13 @@ img:hover {
 												</td> -->
 												<td align="center">
 												<div class="actions-block">
-												<a *ngIf="!contact.signedUp" title="Resend registration email" (click)="sendMail(contact.id)">
+												<a *ngIf="!contact.signedUp" data-toggle="tooltip" data-placement="top" title="Resend registration email" (click)="sendMail(contact.id)">
 													<i class="fa fa-envelope"></i>
 												</a>
-												<a title="Edit Partner" (click)="editUserDetails(contact)">
-													<i class="fa fa-pencil-square-o" ></i>
+												<a  data-toggle="tooltip" data-placement="top" title="Edit Partner" (click)="editUserDetails(contact)">
+													<i class="fa fa-pencil-square-o"></i>
 												</a>
-												<a title="Delete partner" (click)="deleteUserShowAlert(contact.id)">
+												<a data-toggle="tooltip" data-placement="top" title="Delete Partner" (click)="deleteUserShowAlert(contact.id)">
 													<i class="fa fa-trash-o" style="color:#ff0000"></i>
 												</a>
 												</div>
