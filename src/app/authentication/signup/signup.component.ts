@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy} from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, OnDestroy, AfterViewInit} from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { User } from '../../core/models/user';
@@ -24,7 +24,7 @@ declare var $: any;
     '../../../assets/css/loader.css'],
     providers: [User, CountryNames, RegularExpressions, Properties]
 })
-export class SignupComponent implements OnInit, OnDestroy {
+export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
     signUpForm: FormGroup;
     loading = false;
     isError = false;
@@ -85,9 +85,8 @@ export class SignupComponent implements OnInit, OnDestroy {
     };
 
     constructor(private router: Router, public countryNames: CountryNames, public regularExpressions: RegularExpressions, public properties: Properties,
-        private formBuilder: FormBuilder, private signUpUser: User,
+        private formBuilder: FormBuilder, private signUpUser: User,public route:ActivatedRoute,
         private userService: UserService, public referenceService: ReferenceService,private xtremandLogger: XtremandLogger,public authenticationService:AuthenticationService) {
-        this.buildForm();
         if(this.router.url.includes('/v-signup')){ this.vendorSignup = true; } else { this.vendorSignup = false;}
     }
     goToBack(){
@@ -176,13 +175,29 @@ export class SignupComponent implements OnInit, OnDestroy {
     validEmail(event:any){
       this.invalidVendor = false;
     }
+    getUserDatails(alias:string){
+     this.userService.getSingUpUserDatails(alias).subscribe((data)=>{
+       this.signUpUser.firstName = data.firstName;
+       this.signUpUser.lastName = data.lastName;
+       this.signUpUser.emailId = data.emailId;
+     },
+    (error)=>{ this.xtremandLogger.error('error in signup page'+error);}
+    );
+    }
     ngOnInit() {
-        try{
-        $("[rel='tooltip']").tooltip();
+      try{
         this.mainLoader = true;
         this.authenticationService.navigateToDashboardIfUserExists();
         setTimeout(()=>{  this.mainLoader = false;},900);
-        }catch(error){this.xtremandLogger.error('error'+error); }
+        if(this.router.url.includes('?alias')){
+            const alias = this.route.snapshot.queryParams['alias'];
+            this.getUserDatails(alias);
+        }
+        this.buildForm();
+      }catch(error){this.xtremandLogger.error('error'+error); }
+    }
+    ngAfterViewInit(){
+      $('body').tooltip({ selector: '[data-toggle="tooltip"]' });
     }
     ngOnDestroy(){
       this.invalidVendor = false;
