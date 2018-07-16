@@ -20,6 +20,7 @@ import { BubbleChartComponent } from "./analytics/bubble-chart/bubble-chart.comp
 import { PartnerCampaignsComponent } from "./partner-campaigns/partner-campaigns.component";
 import { EditPartnerCampaignsComponent } from "./edit-partner-campaigns/edit-partner-campaigns.component";
 import { PreviewCampaignComponent } from "./preview-campaign/preview-campaign.component";
+import { EventCampaignComponent } from './event-campaign/event-campaign.component';
 
 @NgModule({
   imports: [
@@ -40,7 +41,8 @@ import { PreviewCampaignComponent } from "./preview-campaign/preview-campaign.co
     BubbleChartComponent,
     PartnerCampaignsComponent,
     EditPartnerCampaignsComponent,
-    PreviewCampaignComponent
+    PreviewCampaignComponent,
+    EventCampaignComponent
     /*,CkEditor*/
   ],
   providers: [ContactService, VideoFileService, EmailTemplateService]

@@ -1,0 +1,140 @@
+<div class="page-content">
+	<div class="page-bar">
+		<ul class="page-breadcrumb">
+			<li>
+				<i class="fa fa-home"></i> 
+				<a [routerLink]="referenceService.homeRouter">Home</a> 
+				<i class="fa fa-angle-right"></i>
+			</li>
+			<li>Event Based Campaign</li>
+		</ul>
+	</div>
+	<div class="page-bar portlet light border-radius-0 shadow">
+		<div class="portlet-title">
+			<h4 class="pull-left m10 f-w-600 text-primary">Campaigns</h4>
+		</div>
+		<div class="portlet-body clearfix">
+			<div class="col-xs-12 col-sm-6">
+				<form class="form-horizontal">
+					<div class="form-group">
+						<label for="eventTitle" class="col-sm-3 control-label">Event Title</label>
+						<div class="col-sm-9">
+						<input type="text" class="form-control" id="eventTitle" placeholder="Event Title">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="hostedBy" class="col-sm-3 control-label">Hosted By</label>
+						<div class="col-sm-9">
+						<input type="text" class="form-control" id="hostedBy" placeholder="Hosted By">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="hostedBy" class="col-sm-3 control-label">Channel Campaign</label>
+						<div class="col-sm-9">
+							<switch [(status)]="callActionSwitch.isGridView" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+								[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size">
+							</switch>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-offset-3 col-sm-9">
+							<div class="pull-left mr10">
+								<label>
+									<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+									Through Partner
+								</label>
+							</div>
+							<div class="ml10">
+								<label>
+									<input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+									To Partner
+								</label>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="eventDateTime" class="col-sm-3 control-label">Event Date/Time</label>
+						<div class="col-sm-9 p0">
+							<div class="col-sm-5"><input type="text" class="form-control" id="eventDateTime" placeholder="Start Time"></div>
+							<div class="col-sm-5"><input type="text" class="form-control" id="eventDateTime" placeholder="End Time"></div>
+							<div class="col-sm-2"><button class="btn btn-default" type="submit">+</button></div>
+						</div>
+					</div>					
+					<div class="form-group">
+						<label for="hostedBy" class="col-sm-3 control-label">Online Meeting</label>
+						<div class="col-sm-9">
+							<switch [(status)]="callActionSwitch.isGridView" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+								[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size">
+							</switch>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="hostedBy" class="col-sm-3 control-label">Location Name</label>
+						<div class="col-sm-9">
+							<input type="text" class="form-control" id="eventDateTime" placeholder="My house, bar, etc">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="hostedBy" class="col-sm-3 control-label">Address</label>
+						<div class="col-sm-9">
+							<input type="text" class="form-control" id="eventDateTime" placeholder="Street Address">
+						</div>
+						<div class="col-sm-offset-3 col-sm-9 pt10">
+							<div class="col-sm-4 p0"><input type="text" class="form-control" id="city" placeholder="City"></div>
+							<div class="col-sm-4 p0"><input type="text" class="form-control" id="state" placeholder="State"></div>
+							<div class="col-sm-4 p0"><input type="text" class="form-control" id="zip" placeholder="Zip"></div>
+						</div>
+					</div>
+					<div class="portlet light">
+						<div class="portlet-title">
+							<h4 class="pull-left f-w-600 text-primary">Event settings</h4>
+						</div>
+						<div class="portlet-body clearfix">
+							<div><label> <input type="checkbox"> Notify me when guests RSVP </label></div>
+							<div><label> <input type="checkbox"> Notify me when email is opened </label></div>
+							<div><label> <input type="checkbox"> Invite others </label></div>
+						</div>
+					</div>
+					
+				</form>
+			</div>
+			<div class="col-xs-12 col-sm-6">
+				<div class="portlet light">
+					<div class="portlet-title">
+						<h4 class="pull-left f-w-600 text-primary">Pick an email template</h4>
+					</div>
+					<div class="portlet-body clearfix">
+
+					</div>
+				</div>
+				<div class="portlet light">
+					<div class="portlet-title">
+						<h4 class="pull-left f-w-600 text-primary">Select contact list</h4>
+					</div>
+					<div class="portlet-body clearfix">
+
+					</div>
+				</div>
+				<div class="portlet light">
+					<div class="portlet-title">
+						<h4 class="pull-left f-w-600 text-primary">Listing privacy</h4>
+					</div>
+					<div class="portlet-body clearfix">
+						<div>
+							<label class="bold">
+								<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>Public page
+							</label>
+							<p class="ml10">Turn attendes into your biggest promoters by letting them share your event on facebook, twitter, linkedin and or any social media platform</p>
+						</div>
+						<div>
+							<label class="bold">
+								<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1">Private page
+							</label>
+							<p class="ml10">Turn attendes into your biggest promoters by letting them share your event on facebook, twitter, linkedin and or any social media platform</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

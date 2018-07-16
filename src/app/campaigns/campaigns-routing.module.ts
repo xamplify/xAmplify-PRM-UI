@@ -9,6 +9,7 @@ import { AnalyticsComponent } from "./analytics/analytics.component";
 import { PartnerCampaignsComponent } from "./partner-campaigns/partner-campaigns.component";
 import { EditPartnerCampaignsComponent } from "./edit-partner-campaigns/edit-partner-campaigns.component";
 import { PreviewCampaignComponent } from "./preview-campaign/preview-campaign.component";
+import { EventCampaignComponent } from './event-campaign/event-campaign.component';
 
 export const campaignRoutes: Routes = [
   { path: "", redirectTo: "select", pathMatch: "full" },
@@ -23,7 +24,8 @@ export const campaignRoutes: Routes = [
   { path: "partner/:type", component: PartnerCampaignsComponent },
   { path: "vendor/:type", component: PartnerCampaignsComponent },
   { path: "re-distribute-campaign", component: EditPartnerCampaignsComponent },
-  { path: "preview/:id", component: PreviewCampaignComponent }
+  { path: "preview/:id", component: PreviewCampaignComponent },
+  { path: "event", component: EventCampaignComponent }
 ];
 
 @NgModule({
