@@ -2019,8 +2019,49 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
         $( '#settingSocialNetwork' ).modal( 'hide' );
 
         if ( this.selectedAddContactsOption !=8 ) {
+            this.model.contactListName = "";
+            
             let self = this;
-             swal( {
+            
+            swal( {
+                title: 'Are you sure?',
+                text: "You have unsaved data",
+                type: 'warning',
+                input: 'text',
+                showCancelButton: true,
+                confirmButtonText: 'Save',
+                allowOutsideClick: false,
+                preConfirm: function( name: any ) {
+                    return new Promise( function() {
+                        console.log( 'logic begins' );
+                        var inputName = name.toLowerCase().replace( /\s/g, '' );
+                        if ( $.inArray( inputName, self.names ) > -1 ) {
+                            swal.showValidationError( 'This list name is already taken.' )
+                        } else {
+                            if ( name != "" && name.length < 250) {
+                                swal.close();
+                                self.isValidContactName = false;
+                                self.model.contactListName = name;
+                                self.saveContacts();
+                            } else {
+                               if(name == ""){
+                                swal.showValidationError( 'List Name is Required..' )
+                               }
+                               else{
+                                   swal.showValidationError("You have exceeded 250 characters!");
+                               }
+                            }
+                        }
+                    });
+                }
+            }).then( function( name: any ) {
+                console.log( name );
+            }, function( dismiss: any ) {
+                if ( dismiss === 'cancel' ) {
+                    self.selectedAddContactsOption = 8;
+                }
+            });
+            /* swal( {
                  title: 'Are you sure?',
                  text: "You have unsaved data",
                  type: 'warning',
@@ -2035,7 +2076,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                  if ( dismiss === 'cancel' ) {
                      self.selectedAddContactsOption = 8;
                  }
-             })
+             })*/
          }
 
     }
