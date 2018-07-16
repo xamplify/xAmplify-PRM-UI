@@ -179,7 +179,7 @@ export class UserService {
         .catch( this.handleError );
     }
     getSingUpUserDatails(alias:string){
-      return this.http.get( this.URL+'/user/{'+alias+'}')
+      return this.http.get( this.URL+'user/'+alias)
       .map( this.extractData )
       .catch( this.handleError );
     }

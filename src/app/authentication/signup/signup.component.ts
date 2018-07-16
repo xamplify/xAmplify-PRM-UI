@@ -180,8 +180,9 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
        this.signUpUser.firstName = data.firstName;
        this.signUpUser.lastName = data.lastName;
        this.signUpUser.emailId = data.emailId;
+       this.buildForm();
      },
-    (error)=>{ this.xtremandLogger.error('error in signup page'+error);}
+    (error)=>{  this.buildForm();this.xtremandLogger.error('error in signup page'+error);}
     );
     }
     ngOnInit() {
@@ -189,11 +190,13 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
         this.mainLoader = true;
         this.authenticationService.navigateToDashboardIfUserExists();
         setTimeout(()=>{  this.mainLoader = false;},900);
-        if(this.router.url.includes('?alias')){
-            const alias = this.route.snapshot.queryParams['alias'];
+        if(this.router.url.includes('/signup/')){
+            let alias = this.route.snapshot.params['alias'];
             this.getUserDatails(alias);
         }
-        this.buildForm();
+        else {
+        	this.buildForm();
+        }
       }catch(error){this.xtremandLogger.error('error'+error); }
     }
     ngAfterViewInit(){
