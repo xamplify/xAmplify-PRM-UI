@@ -415,5 +415,11 @@ export class CampaignService {
             .map(this.extractData)
             .catch(this.handleError);       
     }
+
+    createEventCampaign(eventCampaign: any) {
+        return this.http.post(this.URL + "campaign/save-event-campaign?access_token=" + this.authenticationService.access_token, eventCampaign)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
     
 }
