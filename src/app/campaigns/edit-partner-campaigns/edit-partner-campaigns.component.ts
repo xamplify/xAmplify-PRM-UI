@@ -1264,7 +1264,9 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
           url.emailTemplatesPagination.pageIndex = pageIndex;
           this.loadEmailTemplatesForAddOnClick(url);
       }
-
+      contactSearchInputKey(event:any) {if(event.key ===13){this.searchContactList();}}
+      searchReplyEmailTemplateKey(event:any,value) {if(event.key ===13){this.searchReplyEmailTemplate(value);}}
+      searchClickEmailTemplateKey(event:any,value) {if(event.key ===13){this.searchClickEmailTemplate(value);}}
   ngOnInit() {
       flatpickr( '.flatpickr',{
           enableTime: true,
