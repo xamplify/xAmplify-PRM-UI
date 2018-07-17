@@ -204,6 +204,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
 
     }
 
+    eventHandler(keyCode: any) {  if (keyCode === 13) {  this.searchTemplates(); } }
 
     ngOnInit() {
         try {

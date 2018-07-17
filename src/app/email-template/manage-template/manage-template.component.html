@@ -45,10 +45,13 @@
 							</ng-container>
 							<div class="portlet-input input-inline input-small">
 								<div class="input-icon right">
-									<i class="icon-magnifier"  (click)="searchTemplates()" style="cursor: pointer;"></i>
+									<!-- <i class="icon-magnifier"  (click)="searchTemplates()" style="cursor: pointer;"></i>
 									<input type="search"
-									 class="form-control" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"  placeholder="search...">
-								</div>
+									 class="form-control" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"  placeholder="search..."> -->
+                   <input type="text" class="form-control" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="eventHandler($event.keyCode)">
+                   <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey=''"></button>
+                   <button type="submit" class="search-box-item-click" (click)="searchTemplates()"><i class="fa fa-search"></i></button>
+                  </div>
 							 </div>
 					   	</div>
 						 </div>
