@@ -149,6 +149,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     contactAllDetails = [];
     openCampaignModal = false;
     logListName = "";
+    searchContactType = "";
 
     filterOptions = [
         { 'name': '', 'value': 'Field Name*' },
@@ -1567,6 +1568,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     }
 
     search( searchType: string ) {
+        
+        this.searchContactType = this.searchContactType;
         try {
             if ( this.currentContactType == "all_contacts" ) {
                 this.pagination.searchKey = this.searchKey;
@@ -2225,6 +2228,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
         this.contactsByType.contactListAssociatedCampaigns.length = 0;
     }
 
+    eventHandler( keyCode: any ) { if ( keyCode === 13 ) { this.search(this.searchContactType); } }
 
     ngOnInit() {
         try {

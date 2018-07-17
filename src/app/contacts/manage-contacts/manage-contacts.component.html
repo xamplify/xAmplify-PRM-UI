@@ -64,13 +64,16 @@
 													<div class="portlet-input input-inline input-small">
 														<div class="input-icon right"
 															style="width: 106%; left: -4px;">
-															<i class="icon-magnifier"
+															<!-- <i class="icon-magnifier"
 																style="cursor: pointer; font-size: 18px;"
-																(click)="search('contactList')"> </i> <input type="text"
+																(click)="search('contactList')"> </i> --> <input type="text"
 																[(ngModel)]="searchKey"
 																[ngModelOptions]="{standalone: true}"
 																(input)="searchKeyValue('contactList')"
-																class="form-control" placeholder="Search For a List">
+																class="form-control" placeholder="Search For a List" (keypress)="eventHandler($event.keyCode)">
+														
+														<button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey=''"></button>
+														<button type="submit" class="search-box-item-click" (click)="search('contactList')"><i class="fa fa-search"></i></button>
 														</div>
 													</div>
 												</div>
@@ -528,13 +531,16 @@
 										<div class="portlet-input input-inline input-small">
 											<div class="input-icon right"
 												style="width: 122%; left: -29px;">
-												<i class="icon-magnifier"
+												<!-- <i class="icon-magnifier"
 													style="cursor: pointer; font-size: 18px;"
-													(click)="search('contacts')"> </i> <input type="text"
+													(click)="search('contacts')"> </i> --> <input type="text"
 													[(ngModel)]="searchKey"
 													[ngModelOptions]="{standalone: true}"
 													(input)="searchKeyValue('contacts')" class="form-control"
-													placeholder="Search For {{checkingContactTypeName}}">
+													placeholder="Search For {{checkingContactTypeName}}" (keypress)="eventHandler($event.keyCode)">
+													
+													<button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey=''"></button>
+														<button type="submit" class="search-box-item-click" (click)="search('contacts')"><i class="fa fa-search"></i></button>
 											</div>
 										</div>
 									</div>

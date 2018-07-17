@@ -96,6 +96,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
     isValidContactName: boolean;
     noSaveButtonDisable: boolean;
     public totalRecords: number;
+    
+    searchContactType = "";
+    
     public zohoImage: string = 'assets/admin/pages/media/works/zoho-contacts.png';
     public googleImage: string = 'assets/admin/pages/media/works/google-contacts.png';
     public salesforceImage: string = 'assets/admin/pages/media/works/salesforce-contacts.png';
@@ -1044,6 +1047,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
     }
 
     searchKeyValue( searchType: string ) {
+        this.searchContactType = searchType;
         if ( searchType == 'contactList' ) {
             this.pagination.searchKey = this.searchKey;
         } else {
@@ -1052,6 +1056,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
     }
 
     search( searchType: string ) {
+        this.searchContactType = searchType;
         try {
             this.resetResponse();
             if ( searchType == 'contactList' ) {
@@ -1387,6 +1392,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
         }
     }
 
+    eventHandler( keyCode: any ) { if ( keyCode === 13 ) { this.search(this.searchContactType); } }
+    
     ngAfterViewInit() {
     }
 

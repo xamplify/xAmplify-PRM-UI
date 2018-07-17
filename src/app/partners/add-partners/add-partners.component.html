@@ -498,12 +498,12 @@ img:hover {
 													</div>
 													<div class="portlet-input input-inline input-small">
 														<div class="input-icon right" style="width:106%">
-															<i class="icon-magnifier"
-																style="cursor: pointer; font-size: 18px;"
-																(click)="search()"> </i> <input type="text"
+															 <input type="text"
 																[(ngModel)]="searchKey"
 																[ngModelOptions]="{standalone: true}"
-																class="form-control" placeholder="Search for a Partner">
+																class="form-control" placeholder="Search for a Partner" (keypress)="eventHandler($event.keyCode)">
+														<button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey=''"></button>
+														<button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search"></i></button>						
 														</div>
 													</div>
 												</div>
