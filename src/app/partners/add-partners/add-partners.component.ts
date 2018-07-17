@@ -1795,7 +1795,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     sendMail( partnerId: number ) {
         try {
             this.loading = true;
-            this.contactService.mailSend( partnerId )
+            this.contactService.mailSend( partnerId, this.partnerListId )
                 .subscribe(
                 data => {
                     console.log( data );
