@@ -72,7 +72,24 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.videoType = this.videoTypes[0];
         this.videoFileService.videoType = this.videoTypes[0].value;
         if(this.authenticationService.isOnlyPartner()){ this.videoFileService.videoType = 'partnerVideos'; }
-    }
+
+        if (this.videoFileService.actionValue === 'Save') {
+          this.referenceService.loading(this.httpRequestLoader, true);
+          this.showVideosPage(false, true, false, false);
+          this.referenceService.loading(this.httpRequestLoader, false);
+          this.showMessage = this.videoFileService.showSave; // true
+          this.showUpdatevalue = this.videoFileService.showUpadte; // false
+          }
+          if (this.videoFileService.actionValue !== 'Save' || this.videoFileService.actionValue === undefined) {
+              this.showVideosPage(true, false, false, false);
+              this.defaultBannerMessageValues();
+          }
+          this.checkTotalRecords = true;
+          this.loadVideos(this.pagination);
+          if (this.videoUtilService.selectedVideo) {
+              this.showCampaignVideoReport(this.videoUtilService.selectedVideo);
+          }
+      }
     defaultBannerMessageValues() {
         this.showMessage = this.showUpdatevalue = false;
     }
@@ -108,22 +125,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         }
         this.xtremandLogger.log(this.referenceService.videoTitles);
         this.xtremandLogger.log('MangeVideosComponent ngOnInit()');
-            if (this.videoFileService.actionValue === 'Save') {
-                this.referenceService.loading(this.httpRequestLoader, true);
-                this.showVideosPage(false, true, false, false);
-                this.referenceService.loading(this.httpRequestLoader, false);
-                this.showMessage = this.videoFileService.showSave; // true
-                this.showUpdatevalue = this.videoFileService.showUpadte; // false
-            }
-            if (this.videoFileService.actionValue !== 'Save' || this.videoFileService.actionValue === undefined) {
-                this.showVideosPage(true, false, false, false);
-                this.defaultBannerMessageValues();
-            }
-            this.checkTotalRecords = true;
-            this.loadVideos(this.pagination);
-            if (this.videoUtilService.selectedVideo) {
-                this.showCampaignVideoReport(this.videoUtilService.selectedVideo);
-            }
+
         } catch (error) {
             this.xtremandLogger.error('error in ng oninit :' + error);
         }
@@ -277,10 +279,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                 this.customResponse = new CustomResponse( 'SUCCESS', this.showVideoFileName, true );
                 this.homeComponent.getVideoTitles();
                 $('html,body').animate({ scrollTop: 0 }, 'slow');
-                if (this.pagination.pagedItems.length === 0) {
-                    this.pagination.pageIndex = 1;
-                    this.loadVideos(this.pagination);
-                }
+                this.loadVideos(this.pagination);
             },
             (error: any) => {
                 try{

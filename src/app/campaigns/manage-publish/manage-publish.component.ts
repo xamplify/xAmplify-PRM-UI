@@ -143,8 +143,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         }
         this.listCampaign(this.pagination);
     }
-
-
+    eventHandler(keyCode: any) {  if (keyCode === 13) {  this.searchCampaigns(); } }
 
     ngOnInit() {
         try {

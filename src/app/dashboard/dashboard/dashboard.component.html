@@ -185,7 +185,7 @@ td>h5 {
 		<div class="page-bar portlet light border-radius-0 shadow" style="margin: 14px;margin-top: 1px;">
 			<div class="portlet-title">
 				<h4 class="pull-left m10 f-w-600 text-primary">Campaigns</h4>
-				<a>
+				<a data-toggle="tooltip" title="Customize campaign report" data-placement="left" style="float: right;">
 					<i style="font-size: 1.5em;padding: 3px 10px;margin: 10px 0;" class="fa fa-cog pull-right" data-toggle="modal" data-target="#customizeCampaignModal"
 					 *ngIf="hasCampaignRole ||authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()"></i>
 				</a>
@@ -259,7 +259,7 @@ td>h5 {
 												<option *ngFor="let heatSort of sortHeatMapValues" [ngValue]="heatSort"> {{heatSort.name}} </option>
 											</select>
 										</span>
-										<span *ngIf="heatMapData?.length >= 1" (click)="isFullscreenHeatMap()" style="cursor: pointer; padding: 8px;" title="fullscreen">
+										<span *ngIf="heatMapData?.length >= 1" (click)="isFullscreenHeatMap()" style="cursor: pointer; padding: 8px;"  data-toggle="tooltip" data-placement="top" title="fullscreen">
 											<i style=" font-size: 16px;" class="glyphicon glyphicon-resize-full"></i>
 										</span>
 									</div>
@@ -284,7 +284,7 @@ td>h5 {
 								</div>
 								<div>
 									<div class="panel-title pull-right" *ngIf="categories?.length > 0">
-										<span style="float:right" title='refresh'>
+										<span style="float:right" data-toggle="tooltip" data-placement="top" title='Refresh'>
 											<i class="icon-refresh" style="float:right;cursor:pointer;font-size: 14px;margin-top: 2.5px;color: #a0a0a0;" (click)="refreshCampaignBarcharts()"></i>
 										</span>
 									</div>
@@ -392,7 +392,7 @@ td>h5 {
 											</div>
 										</div>
 									</div>
-									<div class="col-xs-4 sparkline-chart"  (click)="listOfEmailClickedLogs()" 
+									<div class="col-xs-4 sparkline-chart"  (click)="listOfEmailClickedLogs()"
 									 style="cursor:pointer" data-toggle="modal" data-target="#emailClickedModal">
 										<div class="visual">
 											<img alt="Clicked" src="assets/images/clicked.png" data-toggle="tooltip" data-placement="top" title="View clicked URL data">
@@ -407,7 +407,7 @@ td>h5 {
 											</div>
 										</div>
 									</div>
-									<div class="col-xs-4 sparkline-chart"  (click)="listOfWatchedLogs()" 
+									<div class="col-xs-4 sparkline-chart"  (click)="listOfWatchedLogs()"
 									 style="cursor:pointer" data-toggle="modal" data-target="#emailClickedModal">
 										<div class="visual">
 											<img alt="Watched" src="assets/images/watched.png" data-toggle="tooltip" data-placement="top" title="View watched video data">

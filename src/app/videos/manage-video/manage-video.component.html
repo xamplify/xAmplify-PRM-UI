@@ -58,10 +58,10 @@
                    </ul></div>
                  </div>
                </div>
+               <!-- <app-play-video-loader [isPlaying]="true" *ngIf="editVideoLoader"></app-play-video-loader> -->
                <app-grid-loader *ngIf="httpRequestLoader.isLoading && !isListView  && !referenceService.isPlayVideo"></app-grid-loader>
                <app-list-loader *ngIf="httpRequestLoader.isLoading && isListView && !referenceService.isPlayVideo"></app-list-loader>
-               <app-play-video-loader *ngIf="referenceService.isPlayVideo"></app-play-video-loader>
-               <div class="margin-top-10">
+                 <div class="margin-top-10">
                  <div *ngIf="!httpRequestLoader.isLoading  && !referenceService.isPlayVideo">
                    <div *ngIf="pagination.pagedItems.length == 0" style="position: relative; top: 16px; width: 100%;" class="col-md-9 alert alert-info alert-dismissable">
                      <a class="close" data-dismiss="alert" aria-label="close"></a>

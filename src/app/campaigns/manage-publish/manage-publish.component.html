@@ -49,9 +49,11 @@
 									</div>
 									<div class="portlet-input input-inline input-small">
 										<div class="input-icon right" style="position: relative;right: -11px;">
-											<i class="icon-magnifier" (click)="searchCampaigns()" style="cursor: pointer;"></i>
-											<input type="text" class="form-control" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" placeholder="search...">
-										</div>
+											<!-- <i class="icon-magnifier" (click)="searchCampaigns()" style="cursor: pointer;"></i>-->
+											<input type="text" class="form-control" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="eventHandler($event.keyCode)">
+                      <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey=''"></button>
+                      <button type="submit" class="search-box-item-click" (click)="searchCampaigns()"><i class="fa fa-search"></i></button>
+                    </div>
 									</div>
 								</div>
 							</div>
@@ -257,7 +259,7 @@
 											<div class="bar">
 												<ng-container *ngIf="!campaign.launched">
 													<a *ngIf="hasAllAccess || (campaign.launched==false && hasCampaignRole && loggedInUserId==campaign.userId)
-														|| (!campaign.launched&&isOnlyPartner) || authenticationService.module.isVendor" (click)="editCampaign(campaign.campaignId)" 
+														|| (!campaign.launched&&isOnlyPartner) || authenticationService.module.isVendor" (click)="editCampaign(campaign.campaignId)"
 														data-toggle="tooltip" data-placement="top" title="{{actionsDescription.campaign_edit}}">
 														<i class="fa fa-pencil-square-o"></i>
 													</a>

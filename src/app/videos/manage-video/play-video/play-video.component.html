@@ -275,8 +275,8 @@
 														</div>
                           </div>
                         </div>
-                        <div *ngIf="isListView" style="position:relative;bottom:-5px;">
-                            <app-video-thumbnail [videoFile]="videoFile"  (notifyParent)="showVideo($event)"></app-video-thumbnail>
+                        <div *ngIf="isListView" style="padding: 3px;">
+                            <app-video-thumbnail style="position: relative;bottom: -12px;" [videoFile]="videoFile"  (notifyParent)="showVideo($event)"></app-video-thumbnail>
                         </div>
                         </ng-container>
 											</div>
