@@ -7,7 +7,7 @@
          <li><a (click)="backToManageVideos()">Manage Videos</a> </li>
          <li *ngIf="editVideo" style="color: #888;"><i class="fa fa-angle-right"></i>Edit Video </li>
          <li *ngIf="playVideo" style="color: #888;"><i class="fa fa-angle-right"></i>Play Videos </li>
-         <li *ngIf="campaignReport" style="color: #888;"><i class="fa fa-angle-right"></i>Video Based Reports </li>
+         <li *ngIf="campaignReport" style="color: #888;"><i class="fa fa-angle-right"></i>Reports - video statistics</li>
        </ul>
      </div>
    </div>
@@ -21,7 +21,7 @@
            <div class="tab-content" style="min-height: 715px;">
              <div class="tab-pane active m10">
                <div class="page-toolbar">
-                 <div *ngIf="!httpRequestLoader.isLoading  && !referenceService.isPlayVideo" class="btn-group pull-right col-xs-12 col-sm-12 col-md-12" style="padding: 0;margin-bottom: 10px; ">
+                 <div *ngIf="!httpRequestLoader.isLoading  && !referenceService.isPlayVideo" class="btn-group pull-right col-xs-12 col-sm-12 col-md-12" style="padding: 0;">
                    <div class="inputs" align="right">
                      <div style="padding:0" class="col-xs-12 col-sm-6 col-md-3">
                        <select class="form-control select-option" [(ngModel)]="categoryNum" (ngModelChange)="getCategoryNumber()">
@@ -33,8 +33,8 @@
                      </div>
                      <div class="col-xs-6 col-sm-3 col-md-3 p0 flex">
                        <ng-container class='m10'>
-                         <button class="btn btn-xs" [disabled]="isListView" (click)="isListView = true" title="List View"><i class="fa fa-th-list p10" aria-hidden="true"></i></button>
-                         <button class="btn btn-xs" [disabled]="!isListView" (click)="isListView = false" title="Grid View"><i class="fa fa-th-large p10" aria-hidden="true"></i></button>
+                         <button class="btn btn-xs" [disabled]="isListView" (click)="isListView = true"><i class="fa fa-th-list p10" aria-hidden="true"></i></button>
+                         <button class="btn btn-xs" [disabled]="!isListView" (click)="isListView = false"><i class="fa fa-th-large p10" aria-hidden="true"></i></button>
                        </ng-container>
 
                        <select class="form-control ml5" style="cursor: pointer" [(ngModel)]="videoSort" (ngModelChange)="selectedSortByValue($event)">
@@ -43,23 +43,25 @@
                      </div>
                      <div class="col-xs-6 col-sm-3 col-md-3 col-md-3" style="padding-right:0">
                        <div class="input-icon right" style="cursor:pointer">
-                         <i class="icon-magnifier" style="cursor:pointer;font-size:18px;" (click)="searchVideoTitelName()"></i>
-                         <input type="text" [(ngModel)]="pagination.searchKey" [ngModelOptions]="{standalone: true}" class="form-control"
+                         <!-- <i class="icon-magnifier" style="cursor:pointer;font-size:18px;" (click)="searchVideoTitelName()"></i> -->
+                          <input type="text" [(ngModel)]="pagination.searchKey" [ngModelOptions]="{standalone: true}" class="form-control"
                           placeholder="Search for a Video" (keypress)="eventHandler($event.keyCode)">
+                          <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="pagination.searchKey" (click)="pagination.searchKey=''"></button>
+                          <button type="submit" class="search-box-item-click" (click)="searchVideoTitelName()"><i class="fa fa-search"></i></button>
                        </div>
                      </div>
                    </div>
-                   <div class="col-xs-12" style="margin: 1px -18px;"  *ngIf="authenticationService.isOrgAdminPartner() || authenticationService.isVendorPartner()">
+                   <div class="col-xs-12" style="margin: 2px -18px;"  *ngIf="authenticationService.isOrgAdminPartner() || authenticationService.isVendorPartner()">
                    <ul class="mix-filter" >
                      <li class="filter" *ngFor="let videoType of videoTypes; let i = index;"
                       (click)="getVideoTypes(videoType)" [class.selectedtype]="videoFileService.videoType === videoType.value">{{videoType.name}}</li>
                    </ul></div>
                  </div>
                </div>
+               <!-- <app-play-video-loader [isPlaying]="true" *ngIf="editVideoLoader"></app-play-video-loader> -->
                <app-grid-loader *ngIf="httpRequestLoader.isLoading && !isListView  && !referenceService.isPlayVideo"></app-grid-loader>
                <app-list-loader *ngIf="httpRequestLoader.isLoading && isListView && !referenceService.isPlayVideo"></app-list-loader>
-               <app-play-video-loader *ngIf="referenceService.isPlayVideo"></app-play-video-loader>
-               <div class="margin-top-10">
+                 <div class="margin-top-10">
                  <div *ngIf="!httpRequestLoader.isLoading  && !referenceService.isPlayVideo">
                    <div *ngIf="pagination.pagedItems.length == 0" style="position: relative; top: 16px; width: 100%;" class="col-md-9 alert alert-info alert-dismissable">
                      <a class="close" data-dismiss="alert" aria-label="close"></a>
@@ -67,7 +69,6 @@
                    </div>
                  </div>
                  <section [hidden]="!isListView">
-
                  <div class="table-responsive" style="overflow-x: inherit;"  *ngIf="pagination.pagedItems && !httpRequestLoader.isLoading  && !referenceService.isPlayVideo">
                    <table class='table tgrid' *ngIf="pagination.pagedItems.length !== 0">
                      <thead>
@@ -90,28 +91,28 @@
                          <td>
                            <div class="actions-block" *ngIf="videoFileService.videoType==='myVideos'">
                              <a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor"
-                               (click)="showEditVideo(videoFile)" title="Edit Video"> <i class="fa fa-pencil-square-o"></i>
+                               (click)="showEditVideo(videoFile)" data-toggle="tooltip" data-placement="top" [title]="actionsDescription.video_edit"> <i class="fa fa-pencil-square-o"></i>
                              </a>
                              <ng-container *ngIf="hasAllAccess || (hasCampaignRole && hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor">
-                                <a *ngIf="videoFile.viewBy!='DRAFT'" (click)="campaignRouter(videoFile)" title="Create Campaign">
+                                <a *ngIf="videoFile.viewBy!='DRAFT'" (click)="campaignRouter(videoFile)" data-toggle="tooltip" data-placement="top" title="Create Campaign">
                                   <i class="fa fa-bullhorn"></i>
                                 </a>
-                                <a *ngIf="videoFile.viewBy=='DRAFT'" title="Can't create a Campaign for DRAFT" style="cursor: not-allowed !important;opacity: 0.6;">
-                                  <i class="fa fa-bullhorn" title="Can't create a Campaign for DRAFT"></i>
+                                <a *ngIf="videoFile.viewBy=='DRAFT'" data-toggle="tooltip" data-placement="top" title="Can't create a Campaign for DRAFT" style="cursor: not-allowed !important;opacity: 0.6;">
+                                  <i class="fa fa-bullhorn" ></i>
                                 </a>
                               </ng-container>
-                             <a (click)="showCampaignVideoReport(videoFile)" *ngIf="videoFile.viewBy!=='DRAFT'" title="Video Based Reports">
+                             <a (click)="showCampaignVideoReport(videoFile)" data-toggle="tooltip" data-placement="top" *ngIf="videoFile.viewBy!=='DRAFT'" title="Video Based Reports">
                                <i class="fa fa-line-chart"></i>
                              </a>
-                             <a *ngIf="videoFile.viewBy=='DRAFT'" title="Can't show Reports for DRAFT" style="cursor: not-allowed !important;opacity: 0.6">
-                               <i class="fa fa-line-chart" title="Can't show Reports for DRAFT"></i>
+                             <a *ngIf="videoFile.viewBy=='DRAFT'" data-toggle="tooltip" data-placement="top" title="Can't show Reports for DRAFT" style="cursor: not-allowed !important;opacity: 0.6">
+                               <i class="fa fa-line-chart"></i>
                              </a>
-                             <a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId == videoFile.uploadedUserId) || authenticationService.module.isVendor" (click)="deleteVideoAlert(videoFile.alias,i ,videoFile.title)">
+                             <a data-toggle="tooltip" data-placement="top" [title]="actionsDescription.video_delete" *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId == videoFile.uploadedUserId) || authenticationService.module.isVendor" (click)="deleteVideoAlert(videoFile.alias,i ,videoFile.title)">
                                <i class="fa fa-trash"></i>
                              </a>
                            </div>
                              <div [hidden]="authenticationService.isOnlyPartner()" class="actions-block" *ngIf="videoFileService.videoType==='partnerVideos'" style="position: relative;left: -30px;color: #00a6e8;">
-                               <a  (click)="campaignRouter(videoFile)" title="Create Campaign"> <i class="fa fa-bullhorn"></i> </a>
+                               <a  (click)="campaignRouter(videoFile)" data-toggle="tooltip" data-placement="top"  [title]="actionsDescription.video_campaign"> <i class="fa fa-bullhorn"></i> </a>
                            </div>
                          </td>
                        </tr>
@@ -120,10 +121,10 @@
                    </div>
                  </section>
                  <section [hidden]="isListView">
-                 <div class="col-xs-6 col-sm-3" *ngFor="let videoFile of pagination.pagedItems ;let i =index" >
-                 <div class="grid-box p0" *ngIf="pagination.pagedItems && !httpRequestLoader.isLoading && !referenceService.isPlayVideo">
+                 <div class="col-xs-6 col-sm-3" *ngFor="let videoFile of pagination.pagedItems ;let i =index">
+                 <div class="grid-box p0" *ngIf="pagination.pagedItems && !httpRequestLoader.isLoading && !referenceService.isPlayVideo" (mouseenter) ="mouseEnter(videoFile)" (mouseleave) ="mouseLeave(videoFile)">
                    <div class="video-thumbnail-wrapper">
-                       <img class="video-thumbnail" src="{{videoFile.imagePath}}" width="auto" (error)="videoUtilService.errorVideoHandler($event)" (mouseenter) ="mouseEnter($event,videoFile)" (mouseleave) ="mouseLeave($event,videoFile)">
+                       <img id="imagePathVideo{{videoFile.id}}" class="video-thumbnail" (click)="showPlayVideo(videoFile)" src="{{videoFile.imagePath}}" style="width:100%" (error)="videoUtilService.errorVideoHandler($event)" >
                        <i class="fa fa-play-circle" (click)="showPlayVideo(videoFile)"></i>
                        <span class="views-count" title="views"><i class="fa fa-eye"></i>&nbsp;{{videoFile.views}}</span>
                        <span class="video-duration"  title="Video Length">{{videoUtilService.truncateHourZeros(videoFile.videoLength)}}</span>
@@ -153,34 +154,32 @@
                      <div >
                       <ng-container  *ngIf="videoFileService.videoType==='myVideos'">
                         <a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor"
-                          (click)="showEditVideo(videoFile)" title="Edit Video">
+                          (click)="showEditVideo(videoFile)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.video_edit}}">
                           <i class="fa fa-pencil-square-o"></i>
                         </a>
                         <span *ngIf="hasAllAccess || (hasCampaignRole && hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor">
-                            <a *ngIf="videoFile.viewBy!='DRAFT'" (click)="campaignRouter(videoFile)" title="Create Campaign" >
+                            <a *ngIf="videoFile.viewBy!='DRAFT'" (click)="campaignRouter(videoFile)"  data-toggle="tooltip" data-placement="top" title="{{actionsDescription.video_campaign}}">
                              <i class="fa fa-bullhorn"></i>
                              </a>
-                            <a  *ngIf="videoFile.viewBy=='DRAFT'" title="Can't create a Campaign for DRAFT" >
-                            <i class="fa fa-bullhorn" title="Can't create a Campaign for DRAFT"></i>
+                            <a  *ngIf="videoFile.viewBy=='DRAFT'" data-toggle="tooltip" data-placement="top" title="Can't create a Campaign for DRAFT" >
+                            <i class="fa fa-bullhorn" ></i>
                              </a>
                         </span>
-                        <a *ngIf="videoFile.viewBy=='DRAFT'" title="Can't show Reports for DRAFT video">
+                        <a *ngIf="videoFile.viewBy=='DRAFT'"data-toggle="tooltip" data-placement="top"  title="Can't show Reports for DRAFT video">
                           <i class="fa fa-line-chart"></i>
                         </a>
-                        <a  *ngIf="videoFile.viewBy!=='DRAFT'" (click)="showCampaignVideoReport(videoFile)" title="Video Based Reports">
+                        <a  *ngIf="videoFile.viewBy!=='DRAFT'" data-toggle="tooltip" data-placement="top" (click)="showCampaignVideoReport(videoFile)" title="Video Based Reports">
                           <i class="fa fa-line-chart"></i>
                         </a>
                       </ng-container>
                         <ng-container *ngIf="videoFileService.videoType==='myVideos'">
-
                           <a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId == videoFile.uploadedUserId) || authenticationService.module.isVendor" (click)="deleteVideoAlert(videoFile.alias,i ,videoFile.title)"
-                            title="Delete Video">
+                          data-toggle="tooltip" data-placement="top" title="{{actionsDescription.video_delete}}">
                             <i class="fa fa-trash" ></i>
                           </a>
                         </ng-container>
-
                         <ng-container *ngIf="videoFileService.videoType==='partnerVideos'">
-                          <a (click)="campaignRouter(videoFile)" title="Create Campaign" [hidden]="authenticationService.isOnlyPartner()">
+                          <a (click)="campaignRouter(videoFile)" data-toggle="tooltip" title="Create Campaign" [hidden]="authenticationService.isOnlyPartner()">
                             <i class="fa fa-bullhorn"></i>
                           </a>
                         </ng-container>

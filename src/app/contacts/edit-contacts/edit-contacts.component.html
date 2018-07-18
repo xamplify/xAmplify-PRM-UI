@@ -11,7 +11,7 @@
 		</i>
 		<span class="capitalize" *ngIf="contactsByType.selectedCategory != 'non-active'">{{contactsByType.selectedCategory}}
 		   {{checkingContactTypeName}}s</span>
-		<span class="capitalize" *ngIf="contactsByType.selectedCategory == 'non-active'">Inactive
+		<span class="capitalize" *ngIf="contactsByType.selectedCategory == 'non-active'">Unregistered
 		   {{checkingContactTypeName}}s</span>
 		</li>
 	</ul>
@@ -32,11 +32,11 @@
 
 						<div class="page-bar m0">
 							<div class="page-breadcrumb">
-								<span *ngIf="!isDefaultPartnerList" title="Edit Contact list Name" style="cursor:pointer;font-size: 16px; font-family: Open Sans; color: #989292;"
+								<span *ngIf="!isDefaultPartnerList" data-toggle="tooltip" data-placement="top" title="Edit Contact list Name" style="cursor:pointer;font-size: 16px; font-family: Open Sans; color: #989292;"
 								(click)="updateContactListNameAlert()">
 								<span class="ellipsis" title="{{selectedContactListName}}">{{selectedContactListName | slice:0:30}}
 												<span *ngIf="selectedContactListName?.length>30">...</span>
-									<span *ngIf="!isDefaultPartnerList">List</span>
+									<!-- <span *ngIf="!isDefaultPartnerList">List</span> -->
 									</span>
 									</span>
 									<span *ngIf="isDefaultPartnerList"
@@ -75,12 +75,15 @@
 											</div>
 											<div class="portlet-input input-inline input-small">
 												<div class="input-icon right"  style="width: 106%;left: -4px;">
-													<i class="icon-magnifier"
+													<!-- <i class="icon-magnifier"
 														style="cursor: pointer; font-size: 18px;"
-														(click)="search('contactList')"></i> <input type="text"
+														(click)="search('contactList')"></i> --> <input type="text"
 														[(ngModel)]="searchKey"
 														[ngModelOptions]="{standalone: true}"
-														class="form-control" placeholder="Search For {{checkingContactTypeName}}">
+														class="form-control" placeholder="Search For {{checkingContactTypeName}}" (keypress)="eventHandler($event.keyCode)">
+												<button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey=''"></button>
+														<button type="submit" class="search-box-item-click" (click)="search('contactList')"><i class="fa fa-search"></i></button>
+												
 												</div>
 											</div>
 										</div>
@@ -100,12 +103,14 @@
 											</div>
 											<div class="portlet-input input-inline input-small">
 												<div class="input-icon right"  style="width: 106%;left: -4px;">
-													<i class="icon-magnifier"
+													<!-- <i class="icon-magnifier"
 														style="cursor: pointer; font-size: 18px;"
-														(click)="search('contactList')"></i> <input type="text"
+														(click)="search('contactList')"></i> --> <input type="text"
 														[(ngModel)]="searchKey"
 														[ngModelOptions]="{standalone: true}"
-														class="form-control" placeholder="Search For {{checkingContactTypeName}}">
+														class="form-control" placeholder="Search For {{checkingContactTypeName}}" (keypress)="eventHandler($event.keyCode)">
+														<button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey=''"></button>
+														<button type="submit" class="search-box-item-click" (click)="search('contacts')"><i class="fa fa-search"></i></button>
 												</div>
 											</div>
 										</div>
@@ -592,7 +597,8 @@
 															</td>
 															<td align="center">
 																<h5 *ngIf="contact?.address" class='mb0'>{{contact.address}}</h5>
-																<h5 *ngIf="contact?.city || contact.country" class='mt0'>{{contact.city}}<span *ngIf="contact.city">,&nbsp;</span>{{contact.country}}</h5>
+																<h5 class='mb0'>{{contact.city}}<span *ngIf="contact.city && contact.state">,&nbsp;</span>{{contact.state}}</h5>
+																<h5 *ngIf="contact?.zipCode || contact.country" class='mt0'>{{contact.zipCode}}<span *ngIf="contact.zipCode && contact.country">,&nbsp;</span>{{contact.country}}</h5>
 															</td>
 															<!-- <td align="center">
 																<button id='more_less_button_{{i}}'
@@ -603,10 +609,10 @@
 															</td> -->
 															<td align="center" *ngIf="(hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId) || authenticationService.isOnlyPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()) && !isSynchronizationList">
 															<div class="actions-block">
-															  	<a (click)="editUserDetails(contact)">
+															  	<a data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_edit}} {{checkingContactTypeName}}" (click)="editUserDetails(contact)">
 																  	<i class="fa fa-pencil-square-o"></i>
 																 </a>
-																<a (click)="deleteUserShowAlert(contact.id)">	<i class="fa fa-trash-o"></i>	</a>
+																<a data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_delete}} {{checkingContactTypeName}}" (click)="deleteUserShowAlert(contact.id)">	<i class="fa fa-trash-o"></i>	</a>
 															</div>
 															</td>
 															<ng-template #NA>N/A</ng-template>
@@ -663,7 +669,7 @@
 								<div class="caption">
 									<span class="capitalize" *ngIf="contactsByType.selectedCategory != 'non-active'">{{contactsByType.selectedCategory}}
 										{{checkingContactTypeName}} List</span>
-									<span class="capitalize" *ngIf="contactsByType.selectedCategory == 'non-active'">Inactive
+									<span class="capitalize" *ngIf="contactsByType.selectedCategory == 'non-active'">Unregistered
 										{{checkingContactTypeName}} List</span>
 								</div>
 								<div class="btn-group pull-right"
@@ -699,6 +705,7 @@
 												<th>PHONE</th>
 												<th>JOB TITLE</th>
 												<th>ADDRESS</th>
+												<th *ngIf="isPartner && contactsByType.selectedCategory == 'non-active'">ACTIONS</th>
 												<!-- <th>MORE</th> -->
 											</tr>
 										</thead>
@@ -737,9 +744,15 @@
 												</td>
 												<td>
 													<h5 *ngIf="allcontacts?.address" class='mb0'>{{allcontacts.address}}</h5>
-													<h5 class='mb0'>{{allcontacts.city}},&nbsp;{{allcontacts.state}}</h5>
+													<h5 class='mb0'>{{allcontacts.city}}<span *ngIf="allcontacts.city && allcontacts.state">,&nbsp;</span>{{allcontacts.state}}</h5>
 													<h5 *ngIf="allcontacts?.zipCode || allcontacts.country"
-														class='mt0'>{{allcontacts.zipCode}},&nbsp;{{allcontacts.country}}</h5>
+														class='mt0'>{{allcontacts.zipCode}}<span *ngIf="allcontacts.zipCode && allcontacts.country">,&nbsp;</span>{{allcontacts.country}}</h5>
+												</td>
+													<td align="center" *ngIf="isPartner && contactsByType.selectedCategory == 'non-active'">
+												<div class="actions-block">
+												<a *ngIf="!allcontacts.signedUp" data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.partner_reSendMail}}" (click)="sendMail(allcontacts.id)">
+													<i class="fa fa-envelope"></i>
+												</a></div>
 												</td>
 												<!-- <td>
 													<button id='more_less_button_{{i}}'

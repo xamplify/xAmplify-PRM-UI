@@ -10,8 +10,11 @@ describe("Upload Video Test ", () => {
       // loginPage.getLoginPageButton().click();
       // uploadPage.navigateToUpload();
      // uploadPage.getLoginPagetButtonWithXpath();
+      browser.waitForAngularEnabled(false);
+      if(uploadPage.getUserNameTF().isPresent()){
       uploadPage.navigateToLogin();
       uploadPage.login();
+      }
     });
 
     it("should able to go to upload video page ", () => {
@@ -22,7 +25,7 @@ describe("Upload Video Test ", () => {
       expect(uploadVideo).toEqual("upload video");
     });
 
-    xit("should able to open camera and close ", () => {
+    it("should able to open camera and close ", () => {
       const uploadVideo = "upload camera video";
       uploadPage.getCameraButton();
       browser.sleep(1000)

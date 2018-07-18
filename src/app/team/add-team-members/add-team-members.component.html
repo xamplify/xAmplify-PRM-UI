@@ -7,8 +7,8 @@
 	<div class="page-bar">
 		<ul class="page-breadcrumb">
 			<li>
-				<i class="fa fa-home"></i> 
-				<a [routerLink]="referenceService.homeRouter">Home</a> 
+				<i class="fa fa-home"></i>
+				<a [routerLink]="referenceService.homeRouter">Home</a>
 				<i	class="fa fa-angle-right"></i>
 			</li>
 			<li>
@@ -17,7 +17,7 @@
 		</ul>
 	</div>
 		<div class="alert alert-danger" *ngIf="uiError?.length>0" id="ui-error-div">
-	  		<strong>{{uiError}}</strong> 
+	  		<strong>{{uiError}}</strong>
 		</div>
 		<div class="alert alert-danger"  id="csv-error-div" style="display: none;">
 		<a (click)="referenceService.hideDiv('csv-error-div')" class="close" aria-label="close">x</a>
@@ -30,7 +30,7 @@
 					<hr>
 		  		</ng-container>
 				</table>
-	  		</div>	
+	  		</div>
 		</div>
 	    <div *ngIf="uiError?.length==0 && csvErrors?.length==0">
 		<app-response-message style="position: relative; bottom: 9px;" [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
@@ -44,7 +44,7 @@
 							<h6 style="text-align: center;">Upload Csv</h6>
 							<input type="file" class="file-upload" #fileImportInput  name="File Upload" id="txtFileUpload" accept=".csv" (change)="fileChangeListener($event)" />
 						</div>
-						<div class="btn-xs btn-info fileinput-button btn-block rounded-0" style="overflow: hidden;position: relative;cursor: not-allowed;" disabled="disabled" 
+						<div class="btn-xs btn-info fileinput-button btn-block rounded-0" style="overflow: hidden;position: relative;cursor: not-allowed;" disabled="disabled"
 							*ngIf="isAddTeamMember  || isUploadCsv">
 							<h6 style="text-align: center;">Upload Csv</h6>
 						</div>
@@ -62,7 +62,7 @@
 					</div>
 				</section>
 			</div>
-			
+
 			<div class="portlet light border-radius-0" *ngIf="isAddTeamMember" style="height: 85px;">
 				<div class="portlet-body">
 					<form id="add-team-member-form">
@@ -88,7 +88,7 @@
 					</form>
 				</div>
 			</div>
-			
+
 		<!-- BEGIN EXAMPLE TABLE PORTLET-->
 			<div class="portlet light" *ngIf="!teamMemberUi.emptyTable">
 				<div class="portlet-title">
@@ -141,15 +141,15 @@
 								<ng-container *ngIf="!authenticationService.module.isVendor">
 									<td *ngIf="teamMember.all">
 										<switch [status]="teamMember.orgAdmin" [onText]="callActionSwitch.onTextValue"
-													 [offText]="callActionSwitch.offTextValue"	[onColor]="callActionSwitch.onGreenColorSwitch" 
-													 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize" 
+													 [offText]="callActionSwitch.offTextValue"	[onColor]="callActionSwitch.onGreenColorSwitch"
+													 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
 													(statusChange)="changeOrgAdminStatus($event,i,teamMember)">
 										</switch>
 									</td>
 									<td *ngIf="!teamMember.all">
 										<switch [status]="teamMember.orgAdmin" [onText]="callActionSwitch.onTextValue"
-													 [offText]="callActionSwitch.offTextValue"	[onColor]="callActionSwitch.onGreenColorSwitch" 
-													 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize" 
+													 [offText]="callActionSwitch.offTextValue"	[onColor]="callActionSwitch.onGreenColorSwitch"
+													 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
 													(statusChange)="changeOrgAdminStatus($event,i,teamMember)" [disabled]="callActionSwitch.disabled">
 										</switch>
 									</td>
@@ -168,7 +168,7 @@
 								<td><a class="btn-sm" (click)="deleteRow(i,teamMember.emailId)"><i class="fa fa-times red"></i></a></td>
 							</tr>
 							</ng-container>
-								
+
 							</tbody>
 						</table>
 					</div>
@@ -187,9 +187,13 @@
 							<div class="inputs" align="right" style="padding:0;display: inline;">
 								<div class="portlet-input input-inline input-large">
 									<div class="input-icon right">
-										<i class="icon-magnifier" (click)="searchTeamMembers()" style="cursor: pointer;max-width: 80%"></i>
-										<input type="text"  class="form-control input-circle" placeholder="search..." [(ngModel)]="pagination.searchKey" [ngModelOptions]="{standalone: true}">
-									</div>
+										<!-- <i class="icon-magnifier" (click)="searchTeamMembers()" style="cursor: pointer;max-width: 80%"></i>
+										<input type="text"  class="form-control input-circle" placeholder="search..." [(ngModel)]="pagination.searchKey" [ngModelOptions]="{standalone: true}"> -->
+                    <input type="text" class="form-control" [(ngModel)]="pagination.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="eventHandler($event.keyCode)">
+                    <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="pagination.searchKey" (click)="pagination.searchKey=''"></button>
+                    <button type="submit" class="search-box-item-click" (click)="searchTeamMembers()"><i class="fa fa-search"></i></button>
+
+                  </div>
 								</div>
 							</div>
 							<a class="reload" (click)="refreshList()" style="margin: -5px 15px;"></a>
@@ -251,22 +255,22 @@
 								<ng-container *ngIf="!authenticationService.module.isVendor">
 									<td *ngIf="teamMember.all">
 										<switch *ngIf="teamMember.status!='UNAPPROVED'"  [status]="teamMember.orgAdmin" [onText]="callActionSwitch.onTextValue"
-													 [offText]="callActionSwitch.offTextValue"	[onColor]="callActionSwitch.onGreenColorSwitch" 
-													 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize" 
+													 [offText]="callActionSwitch.offTextValue"	[onColor]="callActionSwitch.onGreenColorSwitch"
+													 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
 													(statusChange)="changeOrgAdminStatus($event,i,teamMember)">
 										</switch>
-										
+
 										<switch *ngIf="teamMember.status=='UNAPPROVED'" [status]="teamMember.orgAdmin" [onText]="callActionSwitch.onTextValue"
-													 [offText]="callActionSwitch.offTextValue"	[onColor]="callActionSwitch.onGreenColorSwitch" 
-													 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize" 
+													 [offText]="callActionSwitch.offTextValue"	[onColor]="callActionSwitch.onGreenColorSwitch"
+													 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
 													 [disabled]="callActionSwitch.disabled">
 										</switch>
-										
+
 									</td>
 									<td *ngIf="!teamMember.all">
 										<switch [status]="teamMember.orgAdmin" [onText]="callActionSwitch.onTextValue"
-													 [offText]="callActionSwitch.offTextValue"	[onColor]="callActionSwitch.onGreenColorSwitch" 
-													 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize" 
+													 [offText]="callActionSwitch.offTextValue"	[onColor]="callActionSwitch.onGreenColorSwitch"
+													 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
 													(statusChange)="changeOrgAdminStatus($event,i,teamMember)" [disabled]="callActionSwitch.disabled">
 										</switch>
 									</td>
@@ -297,23 +301,23 @@
 								</ng-template>
 								<td *ngIf="teamMember.teamMemberId==secondOrgAdminId">
 								<switch [status]="teamMember.enabled" [onText]="callActionSwitch.onTextValue"
-											 [offText]="callActionSwitch.offTextValue"	[onColor]="callActionSwitch.onGreenColorSwitch" 
+											 [offText]="callActionSwitch.offTextValue"	[onColor]="callActionSwitch.onGreenColorSwitch"
 											 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
 											  (statusChange)="changeTeamMemberStatus(teamMember,$event)" [disabled]="callActionSwitch.disabled">
 									</switch>
 								</td>
 								<td *ngIf="teamMember.teamMemberId!=secondOrgAdminId">
 								<switch *ngIf="teamMember.status=='UNAPPROVED'" [status]="teamMember.enabled" [onText]="callActionSwitch.onTextValue"
-											 [offText]="callActionSwitch.offTextValue"	[onColor]="callActionSwitch.onGreenColorSwitch" 
+											 [offText]="callActionSwitch.offTextValue"	[onColor]="callActionSwitch.onGreenColorSwitch"
 											 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
 											  (statusChange)="changeTeamMemberStatus(teamMember,$event)" [disabled]="callActionSwitch.disabled">
 									</switch>
 								<switch *ngIf="teamMember.status!='UNAPPROVED'" [status]="teamMember.enabled" [onText]="callActionSwitch.onTextValue"
-											 [offText]="callActionSwitch.offTextValue"	[onColor]="callActionSwitch.onGreenColorSwitch" 
+											 [offText]="callActionSwitch.offTextValue"	[onColor]="callActionSwitch.onGreenColorSwitch"
 											 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
 											  (statusChange)="changeTeamMemberStatus(teamMember,$event)">
 									</switch>
-								</td>	
+								</td>
 								<td><a class="btn-sm" (click)="showPopup(teamMember)"><em	class="fa fa-times red"></em></a></td>
 							</tr>
 							</ng-container>
@@ -324,13 +328,13 @@
 								<td colspan="12">
 										<div  *ngIf="pagination.totalRecords==0" class="alert alert-info" style="text-align: center;"><strong>No Team Members Found</strong></div>
 									</td>
-								</tr>	
+								</tr>
 							</ng-container>
 						</table>
 					</div>
 					<hr>
 						<!-- -----------Pagination-------------- -->
-						<div *ngIf="pagination.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError" class="pull-left">   
+						<div *ngIf="pagination.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError" class="pull-left">
 						<ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination">
 		                        <li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
 		                           <a (click)="setPage(1)" [class.disabled]="pagination.pager.currentPage === 1">First</a>
@@ -372,7 +376,7 @@
 		   <div class="form-group col-sm-5">
 			      <input type="text" style="border:none" id="firstName" placeholder="First Name" class="form-control" [(ngModel)]="team.firstName" name="firstName">
 			    <div class="textCss"></div>
-		  </div> 
+		  </div>
 		   <div class="form-group col-sm-5">
 			      <input type="text" style="border:none" id="lastName" placeholder="Last Name" class="form-control" [(ngModel)]="team.lastName" name="lastName">
 			       <div class="textCss"></div>
@@ -416,7 +420,7 @@
       		<select class="form-control" id="org-id" [(ngModel)]="selectedId" name="name">
       			<option value="0">Please select emailId</option>
       			<option *ngFor="let data of emailIds" [ngValue]="data.id">{{data.emailId}}</option>
-      		</select>		
+      		</select>
 		      <div class="textCss"></div>
 		    </div>
 		  </div>

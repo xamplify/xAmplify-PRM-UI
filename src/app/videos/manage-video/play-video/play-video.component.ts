@@ -68,7 +68,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
     isVideoChanged = false;
     fullTitle = false;
-
+    isListView = false;
     constructor(public authenticationService: AuthenticationService, public videoFileService: VideoFileService,
         public videoUtilService: VideoUtilService, public pagination: Pagination, public xtremandLog: XtremandLog,
         public deviceService: Ng2DeviceService, public xtremandLogger: XtremandLogger,public userService: UserService,
@@ -78,6 +78,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.loggedInUserId = this.authenticationService.getUserId();
         this.hasVideoRole = this.referenceService.hasRole(this.referenceService.roles.videRole);
         this.hasAllAccess = this.referenceService.hasAllAccess();
+        this.isListView = ! this.referenceService.isGridView;
         //vjs-user-inactive
 
     }
@@ -116,10 +117,10 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     embedModal() {
         this.embedModelVideo = this.selectedVideo;
     }
-    showVideo(videoFile: SaveVideoFile, position: number) {
+    showVideo(videoFile: SaveVideoFile) {
         this.isVideoChanged = true;
         this.createSessionId();  // creating new session id
-        console.log('videoComponent showVideo() ' + position);
+        console.log('videoComponent showVideo() ');
         if (this.selectedVideo) {
             console.log('videoComponent showVideo() re adding the existing video' + this.selectedPosition);
             this.allVideos.push(this.selectedVideo);
@@ -136,7 +137,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.pagination.pagedItems = this.pagination.pagedItems.filter(i => i.id !== this.selectedVideo.id);
                 }
                 console.log(this.pagination.pagedItems);
-                this.selectedPosition = position;
+                //this.selectedPosition = position;
                 this.playVideoInfo(this.selectedVideo);
                 this.checkCallToActionAvailable();
                 if (this.selectedVideo.is360video) {

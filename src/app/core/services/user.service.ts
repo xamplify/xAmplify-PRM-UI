@@ -178,7 +178,11 @@ export class UserService {
         .map( this.extractData )
         .catch( this.handleError );
     }
-
+    getSingUpUserDatails(alias:string){
+      return this.http.get( this.URL+'user/'+alias)
+      .map( this.extractData )
+      .catch( this.handleError );
+    }
     private extractData( res: Response ) {
         const body = res.json();
         console.log(body);

@@ -116,9 +116,13 @@
            	<div class="inputs" align="right" style="float: right">
 			<div class="portlet-input input-inline input-small">
 				<div class="input-icon right" style="position: relative; margin: -12px 0 0 0;">
-					<i class="icon-magnifier" (click)="searchActivePartnerAnalytics()" style="cursor: pointer;"></i>
-					<input type="text" class="form-control" [(ngModel)]="activePartnersSearchKey" [ngModelOptions]="{standalone: true}" placeholder="search...">
-				</div>
+					<!-- <i class="icon-magnifier" (click)="searchActivePartnerAnalytics()" style="cursor: pointer;"></i>
+					<input type="text" class="form-control" [(ngModel)]="activePartnersSearchKey" [ngModelOptions]="{standalone: true}" placeholder="search..."> -->
+          <input type="text" style="height: 34px;" class="form-control" [(ngModel)]="activePartnersSearchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="activePartnerSearch($event.keyCode)">
+          <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="activePartnersSearchKey" (click)="activePartnersSearchKey=''"></button>
+          <button type="submit" class="search-box-item-click" (click)="searchActivePartnerAnalytics()"><i class="fa fa-search"></i></button>
+
+        </div>
 			</div>
 		</div>
         </div>
@@ -163,9 +167,12 @@
            	<div class="inputs" align="right" style="float: right">
 			<div class="portlet-input input-inline input-small">
 				<div class="input-icon right" style="position: relative;margin: -12px 0 0 0;">
-					<i class="icon-magnifier" (click)="searchInPartnerCampaignsUI()" style="cursor: pointer;"></i>
-					<input type="text" class="form-control" [(ngModel)]="partnerCampaignUISearchKey" [ngModelOptions]="{standalone: true}" placeholder="search...">
-				</div>
+					<!-- <i class="icon-magnifier" (click)="searchInPartnerCampaignsUI()" style="cursor: pointer;"></i> -->
+					<!-- <input type="text" class="form-control" [(ngModel)]="partnerCampaignUISearchKey" [ngModelOptions]="{standalone: true}" placeholder="search..."> -->
+          <input type="text" style="height:34px;" class="form-control" [(ngModel)]="partnerCampaignUISearchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="partnerCampaignUISearch($event.keyCode)">
+          <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="partnerCampaignUISearchKey" (click)="partnerCampaignUISearchKey=''"></button>
+          <button type="submit" class="search-box-item-click" (click)="searchInPartnerCampaignsUI()"><i class="fa fa-search"></i></button>
+        </div>
 			</div>
 		</div>
         </div>
@@ -177,7 +184,7 @@
               <th class="center-aligned">partners</th>
               <th class="center-aligned">Campaign Name</th>
                <th class="center-aligned">Redistributed Time</th>
-              <th class="center-aligned">analytics</th>
+              <th class="center-aligned">Analytics</th>
             </thead>
             <tbody>
               <tr *ngFor="let item of pagination.pagedItems" style="cursor: pointer;" (click)="goToCampaignAnalytics(item)">
@@ -185,14 +192,14 @@
                 <td>{{item.campaignName}}</td>
                  <td>{{item.redistributedTime |date:'MM/dd/yyyy @ h:mma' }}</td>
                 <td>
-					<div class="actions-block">
-                      <a id="disabled-icon" class="blur" title="Data Sharing Disabled" *ngIf="!item.dataSharingEnabled" style="background-color: white;">
-                          <img src="../assets/images/disabled-icon.png">
-                        </a>
-                        <a  (click)="goToCampaignAnalytics(item)" title="analytics">
-                          <i class="fa fa-line-chart"></i>
-                        </a>
-                     </div>
+				       	<div class="actions-block">
+                  <a id="disabled-icon" class="blur" data-toggle="tooltip" data-placement="top" title="Data Sharing Disabled" *ngIf="!item.dataSharingEnabled" style="background-color: white;">
+                    <img src="../assets/images/disabled-icon.png">
+                  </a>
+                  <a  (click)="goToCampaignAnalytics(item)" data-toggle="tooltip" data-placement="top" title="Analytics">
+                    <i class="fa fa-line-chart"></i>
+                  </a>
+                 </div>
                 </td>
               </tr>
             </tbody>
@@ -203,12 +210,9 @@
         </div>
         <app-pagination [pagination]="pagination" [type]="'userInteraction'" (notifyParentDropDown)="paginationDropdown($event)"
           (notifyParent)="setPage($event)"></app-pagination>
-
       </div>
     </div>
   </div>
-
-
   </div><!-- End Of active-partners-div -->
 
 
@@ -222,16 +226,20 @@
             <span class="caption-subject font-red-sunglo uppercase">Inactive partners</span>
           </div>
            	<div class="inputs" align="right" style="float: right">
-			<div class="portlet-input input-inline input-small">
-				<div class="input-icon right" style="position: relative; margin: -12px 0 0 0;">
-					<i class="icon-magnifier" (click)="searchInActivePartnerAnalytics()" style="cursor: pointer;"></i>
-					<input type="text" class="form-control" [(ngModel)]="inActivePartnersSearchKey" [ngModelOptions]="{standalone: true}" placeholder="search...">
-				</div>
-			</div>
-		</div>
+            <div class="portlet-input input-inline input-small">
+              <div class="input-icon right" style="position: relative; margin: -12px 0 0 0;">
+                <!-- <i class="icon-magnifier" (click)="searchInActivePartnerAnalytics()" style="cursor: pointer;"></i>
+                <input type="text" class="form-control" [(ngModel)]="inActivePartnersSearchKey" [ngModelOptions]="{standalone: true}" placeholder="search...">
+               -->
+                <input type="text" style="height: 34px;" class="form-control" [(ngModel)]="inActivePartnersSearchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="inActivePartnersSearch($event.keyCode)">
+                <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="inActivePartnersSearchKey" (click)="inActivePartnersSearchKey=''"></button>
+                <button type="submit" class="search-box-item-click" (click)="searchInActivePartnerAnalytics()"><i class="fa fa-search"></i></button>
+              </div>
+            </div>
+          </div>
         </div>
         <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
-          <app-response-message style="position: relative; bottom: 9px;" [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+        <app-response-message style="position: relative; bottom: 9px;" [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
         <div class="portlet-body" *ngIf="!httpRequestLoader.isLoading">
           <table class="table tgrid">
             <thead>
@@ -243,7 +251,7 @@
                 <td><app-user-info [userInfo]="item" [isPartnerEntityInfo]="true" [isPartnerInfo]="true"></app-user-info></td>
                 <td (click)="sendPartnerReminder(item)">
 				          	<div class="actions-block">
-                      <a title="Send reminder email">
+                      <a data-toggle="tooltip" data-placement="left" title="Send reminder email">
                           <i class="fa fa-envelope"></i>
                         </a>
                     </div>
@@ -291,9 +299,13 @@
 									</div>
 									<div class="portlet-input input-inline input-small">
 										<div class="input-icon right" style="position: relative;right: -11px;">
-											<i class="icon-magnifier" (click)="searchPartnerCampaigns('through-partner')" style="cursor: pointer;"></i>
+											<!-- <i class="icon-magnifier" (click)="searchPartnerCampaigns('through-partner')" style="cursor: pointer;"></i>
 											<input type="text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search...">
-										</div>
+                   -->
+                      <input type="text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="searchPartnerCampaignKeyPress($event.keyCode,'through-partner')">
+                      <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey=''"></button>
+                      <button type="submit" class="search-box-item-click" (click)="searchPartnerCampaigns('through-partner')"><i class="fa fa-search"></i></button>
+                    </div>
 									</div>
 								</div>
 							</div>
@@ -352,10 +364,10 @@
 										</td>
 										<td style="text-align: center">{{campaign.createdDate}}</td>
 										<td class="center">
-										 <a id="disabled-icon" class="blur" title="Data Sharing Disabled" *ngIf="!campaign.detailedAnalyticsShared && selectedTabIndex==2">
+										 <a id="disabled-icon" class="blur" data-toggle="tooltip" data-placement="top" title="Data Sharing Disabled" *ngIf="!campaign.detailedAnalyticsShared && selectedTabIndex==2">
                           						<img src="../assets/images/disabled-icon.png">
                        					 </a>
-										<a  data-rel="fancybox-button" (click)="goToCampaignAnalytics(campaign)" title="Campaign Based Reports" class='mr5'>
+										<a  data-rel="fancybox-button" (click)="goToCampaignAnalytics(campaign)" data-toggle="tooltip" data-placement="top" title="Campaign Based Reports" class='mr5'>
 												<i class="fa fa-line-chart"></i>
 										</a>
 										</td>
@@ -403,10 +415,10 @@
 												<span *ngIf="!campaign.launched && campaign.launchedOn?.length==0">Saved</span>
 											</div>
 											<div class="bar">
-											  <a id="disabled-icon" class="blur" title="Data Sharing Disabled" *ngIf="!campaign.detailedAnalyticsShared && selectedTabIndex==2">
+											  <a id="disabled-icon" class="blur" data-toggle="tooltip" data-placement="top" title="Data Sharing Disabled" *ngIf="!campaign.detailedAnalyticsShared && selectedTabIndex==2">
                           <img src="../assets/images/disabled-icon.png" style="margin-top: 9px;margin-left: 2px;">
                        	</a>
-												<a (click)="goToCampaignAnalytics(campaign)" title="Campaign Based Reports">
+												<a (click)="goToCampaignAnalytics(campaign)" data-toggle="tooltip" data-placement="top" title="Campaign Based Reports">
 														<i class="fa fa-line-chart"></i>
 												</a>
 											</div>
@@ -433,14 +445,7 @@
 			</div>
 		</div>
 	</div>
-
-
-
-
   </div>
-
-
-
 </div>
 
 <div class="modal fade" id="campaignInteractionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false"

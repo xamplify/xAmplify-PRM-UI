@@ -13,7 +13,7 @@
 					{{checkingContactTypeName}}s</span></li>
 			<li
 				*ngIf="! showListOfContactList && contactsByType.selectedCategory == 'non-active'"><span
-				class="capitalize">Inactive {{checkingContactTypeName}}s</span></li>
+				class="capitalize">Unregistered {{checkingContactTypeName}}s</span></li>
 		</ul>
 	</div>
 
@@ -64,13 +64,16 @@
 													<div class="portlet-input input-inline input-small">
 														<div class="input-icon right"
 															style="width: 106%; left: -4px;">
-															<i class="icon-magnifier"
+															<!-- <i class="icon-magnifier"
 																style="cursor: pointer; font-size: 18px;"
-																(click)="search('contactList')"> </i> <input type="text"
+																(click)="search('contactList')"> </i> --> <input type="text"
 																[(ngModel)]="searchKey"
 																[ngModelOptions]="{standalone: true}"
 																(input)="searchKeyValue('contactList')"
-																class="form-control" placeholder="Search For a List">
+																class="form-control" placeholder="Search For a List" (keypress)="eventHandler($event.keyCode)">
+														
+														<button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey=''"></button>
+														<button type="submit" class="search-box-item-click" (click)="search('contactList')"><i class="fa fa-search"></i></button>
 														</div>
 													</div>
 												</div>
@@ -240,32 +243,32 @@
 															<a
 																*ngIf="(hasAllAccess || authenticationService.module.isVendor || (hasContactRole && loggedInUserId == contactList.uploadedUserId) || authenticationService.isOnlyPartner()) && !contactList.synchronisedList"
 																(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.synchronisedList)"
-																title="Edit List"> <i class="fa fa-pencil-square-o"></i>
+																data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_list_edit}}"> <i class="fa fa-pencil-square-o"></i>
 															</a> 
 															
 															<a *ngIf="!hasAllAccess && loggedInUserId != contactList.uploadedUserId && !authenticationService.module.isVendor || contactList.synchronisedList"
 																(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.synchronisedList)"
-																title="ContactList Info"> <i
+																data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_list_info}}"> <i
 																class="glyphicon glyphicon-info-sign"></i>
 															</a>
 															
-															<a title="Copy and save as a new list"
+															<a data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_list_saveAs}}"
 																(click)="saveAsNewList(contactList.id,contactList.name)">
 																<i class="fa fa-files-o"></i>
 															</a> 
 															 <a (click)="downloadContactList(contactList.id, contactList.name)"
-																title="Download List" data-rel="fancybox-button"> <i
+																data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_list_download}}" data-rel="fancybox-button"> <i
 																class="fa fa-cloud-download"></i>
 															</a>
 															<span *ngIf="contactList.synchronisedList == true">
-																<a title="sychronizeContactList"
+																<a data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_list_synchronize}}"
 																*ngIf="hasAllAccess || authenticationService.module.isVendor|| (hasContactRole && loggedInUserId==contactList.uploadedUserId)"
 																(click)="synchronizeContactList(contactList.id,contactList.socialNetwork)">
 																	<i class="fa fa-refresh" aria-hidden="true"></i>
 															</a>
 															</span>
 															<a *ngIf="(hasAllAccess || authenticationService.module.isVendor || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner()) && !contactList.defaultPartnerList"
-																(click)="showAlert(contactList.id)" title="Delete List">
+																(click)="showAlert(contactList.id)" data-toggle="tooltip" data-placement="top"  title="{{actionsDescription.contact_list_delete}}">
 																<i class="fa fa-trash"></i>
 															</a>
 														</div>
@@ -310,17 +313,17 @@
 											 <a [class.disabled]="!contactList.emailValidationInd"
 															*ngIf="(hasAllAccess || authenticationService.module.isVendor || (hasContactRole && loggedInUserId == contactList.uploadedUserId) || authenticationService.isOnlyPartner()) && !contactList.synchronisedList"
 															(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList)"
-															title="Edit List" data-rel="fancybox-button"> <i
+															 data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_list_edit}}" data-rel="fancybox-button"> <i
 															class="fa fa-pencil-square-o"></i>
 														</a> <a
 															[class.disabled]="!contactList.emailValidationInd"
 															*ngIf="(!hasAllAccess && loggedInUserId != contactList.uploadedUserId && !authenticationService.module.isVendor) || contactList.synchronisedList"
 															(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList)"
-															title="ContactList Info" data-rel="fancybox-button">
-															<i class="glyphicon glyphicon-info-sign"></i>
+															 data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_list_info}}" data-rel="fancybox-button">
+															<i class="glyphicon glyphicon-info-sign" style="color: white;"></i>
 														</a>
 														<a
-															title="Copy and save as a new list"
+															data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_list_saveAs}}"
 															(click)="saveAsNewList(contactList.id,contactList.name)"
 															[class.disabled]="!contactList.emailValidationInd"
 															data-rel="fancybox-button" style="left: 60%;">
@@ -329,11 +332,11 @@
 														</a>
 														<a [class.disabled]="!contactList.emailValidationInd"
 															(click)="downloadContactList(contactList.id, contactList.name)"
-															title="Download List" data-rel="fancybox-button"> <i
+															data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_list_download}}" data-rel="fancybox-button"> <i
 															class="fa fa-cloud-download"></i>
 														</a>
 														<ng-container *ngIf="contactList.synchronisedList == true">
-														<a title="sychronizeContactList"
+														<a data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_list_synchronize}}"
 															[class.disabled]="!contactList.emailValidationInd"
 															*ngIf="hasAllAccess || authenticationService.module.isVendor || (hasContactRole && loggedInUserId==contactList.uploadedUserId)"
 															(click)="synchronizeContactList(contactList.id,contactList.socialNetwork)"
@@ -345,7 +348,7 @@
 													 <a
 															[class.disabled]="!contactList.emailValidationInd"
 															*ngIf="(hasAllAccess || authenticationService.module.isVendor || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner()) && !contactList.defaultPartnerList"
-															(click)="showAlert(contactList.id)" title="Delete List"
+															(click)="showAlert(contactList.id)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_list_delete}}"
 															data-rel="fancybox-button" lang="{{contactList.id}}">
 															<i class="fa fa-trash"></i>
 														</a>
@@ -528,13 +531,16 @@
 										<div class="portlet-input input-inline input-small">
 											<div class="input-icon right"
 												style="width: 122%; left: -29px;">
-												<i class="icon-magnifier"
+												<!-- <i class="icon-magnifier"
 													style="cursor: pointer; font-size: 18px;"
-													(click)="search('contacts')"> </i> <input type="text"
+													(click)="search('contacts')"> </i> --> <input type="text"
 													[(ngModel)]="searchKey"
 													[ngModelOptions]="{standalone: true}"
 													(input)="searchKeyValue('contacts')" class="form-control"
-													placeholder="Search For {{checkingContactTypeName}}">
+													placeholder="Search For {{checkingContactTypeName}}" (keypress)="eventHandler($event.keyCode)">
+													
+													<button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey=''"></button>
+														<button type="submit" class="search-box-item-click" (click)="search('contacts')"><i class="fa fa-search"></i></button>
 											</div>
 										</div>
 									</div>
@@ -562,7 +568,7 @@
 											<i class="fa fa-edit"></i> <span class="capitalize"
 												*ngIf="contactsByType.selectedCategory !='non-active'">{{contactsByType.selectedCategory}}
 												{{checkingContactTypeName}}s List</span> <span class="capitalize"
-												*ngIf="contactsByType.selectedCategory =='non-active'">Inactive
+												*ngIf="contactsByType.selectedCategory =='non-active'">Unregistered
 												{{checkingContactTypeName}}s List</span>
 										</div>
 										<div class="btn-group pull-right"
@@ -612,6 +618,7 @@
 														<th>Phone</th>
 														<th>Job Title</th>
 														<th>ADDRESS</th>
+														<th *ngIf="isPartner && contactsByType.selectedCategory == 'non-active'">ACTIONS</th>
 														<!-- <th>MORE</th> -->
 													</tr>
 												</thead>
@@ -660,9 +667,15 @@
 														</td>
 														<td>
 															<h5 *ngIf="contact?.address" class='mb0'>{{contact.address}}</h5>
-															<h5 class='mb0'>{{contact.city}},&nbsp;{{contact.state}}</h5>
-															<h5 *ngIf="contact?.zipCode || contact.country" class='mt0'>{{contact.zipCode}},&nbsp;{{contact.country}}</h5>
+															<h5 class='mb0'>{{contact.city}}<span *ngIf="contact?.city && contact.state">,&nbsp;</span>{{contact.state}}</h5>
+															<h5 *ngIf="contact?.zipCode || contact.country" class='mt0'>{{contact.zipCode}}<span *ngIf="contact?.zipCode && contact.country">,&nbsp;</span>{{contact.country}}</h5>
 														</td>
+														<td align="center" *ngIf="isPartner && contactsByType.selectedCategory == 'non-active'">
+												<div class="actions-block">
+												<a *ngIf="!contact.signedUp" data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.partner_reSendMail}}" (click)="sendMail(contact.id)">
+													<i class="fa fa-envelope"></i>
+												</a></div>
+												</td>
 														<!-- <td>
 															<button id='more_less_button_{{i}}'
 																(click)="contact.isShowDetails = ! contact.isShowDetails">

@@ -194,6 +194,10 @@ export class PartnerReportsComponent implements OnInit {
       this.partnerCampaignInteraction(this.campaignId);
     }
   }
+  activePartnerSearch(keyCode: any) {  if (keyCode === 13) {  this.searchActivePartnerAnalytics(); } }
+  partnerCampaignUISearch(keyCode: any) {  if (keyCode === 13) {  this.searchInPartnerCampaignsUI(); } }
+  inActivePartnersSearch(keyCode:any){if (keyCode === 13) {  this.searchInActivePartnerAnalytics(); }}
+  searchPartnerCampaignKeyPress(keyCode:any,value:string){if (keyCode === 13) {  this.searchPartnerCampaigns(value); }}
   ngOnInit() {
       if(this.loggedInUserId>0){
         this.paginationType = 'userInteraction';

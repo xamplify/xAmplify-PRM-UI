@@ -35,8 +35,11 @@
 							<div class="inputs regular_emails" align="right" style="float: right">
 								<div class="portlet-input input-inline input-small">
 									<div class="input-icon right">
-										<i class="icon-magnifier"></i> <input type="text" class="form-control"
-											[(ngModel)]="templateFilter.name" placeholder="search...">
+                    <!-- <i class="icon-magnifier"></i> -->
+                     <input type="text" class="form-control"
+                      [(ngModel)]="templateFilter.name" placeholder="search...">
+                      <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="templateFilter.name" (click)="templateFilter.name=''"></button>
+                      <button type="submit" class="search-box-item-click" ><i class="fa fa-search"></i></button>
 									</div>
 								</div>
 							</div>
@@ -51,7 +54,7 @@
 							<div class="grid-box">
 								<img class="img-responsive center-block" *ngIf="!beeRegularTemplate.campaignDefault" src="{{beeRegularTemplate.body}}" alt="{{beeRegularTemplate.name}}">
 								<img class="img-responsive center-block" *ngIf="beeRegularTemplate.campaignDefault" src="{{beeRegularTemplate.subject}}" alt="{{beeRegularTemplate.name}}">
-								<h4 title="{{beeRegularTemplate.name}}">{{beeRegularTemplate.name|slice:0:23}} <span *ngIf="beeRegularTemplate.name?.length>23">....</span></h4>								
+								<h4 title="{{beeRegularTemplate.name}}">{{beeRegularTemplate.name|slice:0:23}} <span *ngIf="beeRegularTemplate.name?.length>23">....</span></h4>
 							<div class="bar">
 								<a (click)="showTemplateById(beeRegularTemplate.id,i)" *ngIf="!beeRegularTemplate.campaignDefault"><i class="fa fa-plus-circle"></i></a>
 								<a (click)="showPreview(beeRegularTemplate)" *ngIf="beeRegularTemplate.campaignDefault"><i class="fa fa-eye"></i></a>

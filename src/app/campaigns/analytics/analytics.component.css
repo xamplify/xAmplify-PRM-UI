@@ -537,3 +537,9 @@ tr>td>h6 {
             right: auto;
         }
 }
+.client-error{
+  color: red;
+  position: relative;
+  left: 10px;
+  font-size: 15px;
+}

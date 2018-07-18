@@ -58,7 +58,7 @@
                     <span *ngIf="logoError" style="color: #f55d7a">{{logoErrorMessage}}</span>
                     <span *ngIf="!companyLogoImageUrlPath" style="color: #f55d7a; position: absolute;bottom: 5px;">* Please upload company logo</span>
 										<img *ngIf="!companyLogoImageUrlPath" src="assets/images/company-profile-logo.png" class="profile-image">
-											<img *ngIf="companyLogoImageUrlPath" [src]= "authenticationService.MEDIA_URL + companyLogoImageUrlPath" class="profile-image">
+											<img *ngIf="companyLogoImageUrlPath" [src]= "authenticationService.MEDIA_URL + companyLogoImageUrlPath" class="profile-image" (error)="errorHandler($event)">
 											<div class="profile-overlay">
 												<label class="fileContainer">
 													<i class="fa fa-camera"></i>&nbsp;Upload company logo

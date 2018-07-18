@@ -82,6 +82,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   mainLoader = false;
   logListName = "";
   httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
+  hasClientError = false;
   sortByDropDown = [
                     { 'name': 'Sort By', 'value': '' },
                     { 'name': 'Name(A-Z)', 'value': 'name-ASC' },
@@ -95,6 +96,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   constructor(private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
     public authenticationService: AuthenticationService, public pagerService: PagerService, public pagination: Pagination,
     public referenceService: ReferenceService, public contactService: ContactService, public videoUtilService: VideoUtilService, public xtremandLogger:XtremandLogger) {
+      try{
       this.campaignRouter = this.utilService.getRouterLocalStorage();
       this.isTimeLineView = false;
       this.loggedInUserId = this.authenticationService.getUserId();
@@ -109,6 +111,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
        this.isTimeLineView = false;
        this.userTimeline(object);
       }
+    }catch(error){ this.xtremandLogger.error('error'+error);}
   }
   showTimeline() {
     this.isTimeLineView = !this.isTimeLineView;
@@ -117,8 +120,8 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   listCampaignViews(campaignId: number, pagination: Pagination) {
     try{
     this.loading = true;
-      this.referenceService.loading(this.httpRequestLoader, true);
-      this.downloadTypeName = this.paginationType = 'campaignViews';
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.downloadTypeName = this.paginationType = 'campaignViews';
     this.listTotalCampaignViews(campaignId);
     this.campaignService.listCampaignViews(campaignId, pagination)
       .subscribe(
@@ -299,7 +302,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       error => console.log(error),
       () => console.log()
       )
-    }catch(error){ this.xtremandLogger.error('error'+error);}
+    }catch(error){ this.hasClientError = true;this.xtremandLogger.error('error'+error);}
   }
 
   getCampaignUsersWatchedInfo(countryCode) {
@@ -338,7 +341,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       error => console.log(error),
       () => console.log()
       )
-    }catch(error){ this.xtremandLogger.error('error'+error);}
+    }catch(error){ this.hasClientError = true;this.xtremandLogger.error('error'+error);}
   }
 
   getCampaignWatchedUsersCount(campaignId: number) {
@@ -601,7 +604,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
         this.loading = false;
       }
       )
-    } catch(error){this.xtremandLogger.error(error); }
+    } catch(error){this.hasClientError = true;this.xtremandLogger.error(error); }
   }
 
   getSocialCampaignByCampaignId(campaignId: number) {
@@ -897,7 +900,6 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   }
 
   listEmailLogsByCampaignIdUserIdActionType(emailLog: EmailLog, actionType: string) {
-    debugger;
     this.campaignReport.emailLogs.forEach((element) => {
       if(element.userId !== emailLog.userId) {
           element.isExpand = false;
@@ -936,7 +938,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       this.getCampaignUserViewsCountBarCharts(this.campaignId, this.pagination);
     }
     setTimeout(() => { this.mainLoader = false;}, 3000);
-  }catch(error) { this.mainLoader = false; this.xtremandLogger.error('error'+error); }
+  }catch(error) {this.hasClientError = true;this.mainLoader = false; this.xtremandLogger.error('error'+error); }
   }
   ngOnDestroy(){
     this.paginationType = '';
@@ -947,6 +949,5 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     $('#emailActionListModal').modal('hide');
     $('#emailSentListModal').modal('hide');
     $('#donutModelPopup').modal('hide');
-
   }
 }

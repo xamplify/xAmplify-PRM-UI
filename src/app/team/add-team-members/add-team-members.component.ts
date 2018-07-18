@@ -81,6 +81,7 @@ export class AddTeamMembersComponent implements OnInit {
         }
 
     }
+    eventHandler(keyCode: any) {  if (keyCode === 13) {  this.searchTeamMembers(); } }
 
     /**********On Init()**********/
     ngOnInit() {

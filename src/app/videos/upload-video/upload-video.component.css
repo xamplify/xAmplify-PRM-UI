@@ -113,7 +113,7 @@ border-radius: 0
 #file-upload { width:0; height:0; }
 .box-border{border: 1px solid #54a7e9;
 overflow: hidden;
-padding: 36px 0;
+padding: 37px 16px;
 margin: 0;
 }
 .portlet.light {padding: 10px;min-height: 580px;}

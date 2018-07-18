@@ -3,7 +3,7 @@ export class Properties {
     /*App Info*/
     COMPANY_LOGO = 'assets/images/xamplify-logo.png'
     BOTTOM_MESSAGE = '&copy; 2018 xAmplify. All rights reserved.'
-    APP_WEBSITE = 'xamplify';
+    APP_WEBSITE = 'xAmplify';
     APP_WELCOME_MESSAGE = 'Welcome to xAmplify';
     APP_Xamplify_URL="https://xamplify.io"
 

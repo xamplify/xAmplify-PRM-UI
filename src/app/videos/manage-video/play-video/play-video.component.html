@@ -236,32 +236,55 @@
 							<!-- BEGIN FILTER -->
 							<div class="margin-top-10">
 								<div style="display: inline">
-									<h4>Related Videos:</h4>
+                  <div>
+                    <div class="col-xs-6"><h4 style="position: relative;left: -14px;">Related Videos:</h4></div>
+                    <div class="col-xs-6 list-grid" style="text-align: right; margin-bottom: 7px;z-index: 999;">
+                      <button class="btn btn-xs" [disabled]="isListView" (click)="isListView = true" title="List View"><i class="fa fa-th-list p10" aria-hidden="true"></i></button>
+                      <button class="btn btn-xs" [disabled]="!isListView" (click)="isListView = false" title="Grid View"><i class="fa fa-th-large p10" aria-hidden="true"></i></button>
+                    </div>
+                  </div>
 									<div>
 										<div class="row mix-grid" style="margin-top: 10px">
                       <app-play-video-loader [playVideo]="true" *ngIf="httpRequestLoader.isLoading"></app-play-video-loader>
 											<div *ngIf="allVideos && !httpRequestLoader.isLoading">
-												<div class="col-md-6 col-sm-8 mix category_1 mix_all" style="display:block; opacity: 1;" *ngFor="let videoFile of pagination.pagedItems; let i = index;">
+                        <ng-container *ngFor="let videoFile of pagination.pagedItems; let i = index;">
+												<div *ngIf="!isListView" class="col-md-6 col-sm-8 mix category_1 mix_all" style="display:block; opacity: 1;" >
 													<div class="mix-inner">
-														<img class="img-responsive" src="{{videoFile.imagePath}}" alt="No Image" class="imagePath">
+														<img class="img-responsive" src="{{videoFile.imagePath}}" (error)="videoUtilService.errorVideoHandler($event)" class="imagePath">
 														<div class="mix-details">
 															<h4 title={{videoFile.title}}>{{titleCheckLength(videoFile.title)}}</h4>
-															<a class="mix-preview" (click)="showVideo(videoFile, i)" title="play video" data-rel="">
+															<a class="mix-preview" (click)="showVideo(videoFile)" title="play video" data-rel="">
 																<i class="fa fa-play" style="margin-right:0px"></i>
 															</a>
 															<span align="right" style="bottom: 4px; float: right; position: absolute; right: 10px;">{{videoUtilService.truncateHourZeros(videoFile.videoLength)}}</span>
 															<span align="left" style="bottom: 17px; left: 10px; position: absolute;">#{{videoFile.views}}</span>
 															<br>
-															<span align="left" style="bottom: 3px; left: 10px; position: absolute;">by {{videoFile.uploadedUserName | slice:0:8}} <span *ngIf="videoFile.uploadedUserName?.length>8">..</span></span>
+															<span align="left" style="bottom: 3px; left: 10px; position: absolute;">
+                                 <span *ngIf="!authenticationService.isOnlyPartner()">
+                                    <span class="video-uploaded-by" *ngIf="videoFileService.videoType==='myVideos'"  title="Uploaded By">By {{videoFile.uploadedUserName | slice:0:15}}<span *ngIf="videoFile.uploadedUserName?.length>15">...</span></span>
+                                    <span class="video-uploaded-by" *ngIf="videoFileService.videoType==='partnerVideos'" title="Uploaded By">By
+                                       <span *ngIf="videoFile.companyName">{{videoFile.companyName | slice:0:15}}<span *ngIf="videoFile.companyName?.length>15">...</span></span>
+                                       <span *ngIf="!videoFile.companyName">{{videoFile.uploadedUserName | slice:0:15}}<span *ngIf="videoFile.uploadedUserName?.length>15">...</span></span>
+                                    </span>
+                                  </span>
+                                    <span *ngIf="authenticationService.isOnlyPartner()">
+                                        <span style="float: left;">By {{videoFile.companyName | slice:0:15}}<span *ngIf="videoFile.companyName?.length>15">...</span></span>
+                                        <!-- <span *ngIf="!videoFile.companyName">{{videoFile.uploadedUserName}}</span> -->
+                                    </span>
+                                </span>
 														</div>
-													</div>
-												</div>
+                          </div>
+                        </div>
+                        <div *ngIf="isListView" style="padding: 3px;">
+                            <app-video-thumbnail style="position: relative;bottom: -12px;" [videoFile]="videoFile"  (notifyParent)="showVideo($event)"></app-video-thumbnail>
+                        </div>
+                        </ng-container>
 											</div>
 										</div>
 										<!-- END FILTER -->
 									</div>
 								</div>
-								<div *ngIf="showRelatedMessage == false">
+								<div *ngIf="showRelatedMessage == false" style=" position: relative;bottom: -14px;">
 									<app-pagination [pagination]="pagination" [type]="'playvideos'" (notifyParent)="setPage($event)" (notifyParentDropDown)="loadAllVideos($event)"></app-pagination>
 								</div>
 								<p *ngIf="showRelatedMessage" class="notFoundVideo">No Related videos Found</p>

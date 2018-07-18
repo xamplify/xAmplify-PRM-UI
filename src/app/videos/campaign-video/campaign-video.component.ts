@@ -352,7 +352,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
             });
     }
     logVideoViewsCount() {
-        this.videoFileService.logVideoViews(this.campaignVideoFile.alias).subscribe(
+        this.videoFileService.logVideoViews(this.campaignVideoFile.alias,this.alias).subscribe(
             (result: any) => {
                 console.log('successfully logged view count');
             });

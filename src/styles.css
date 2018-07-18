@@ -271,7 +271,6 @@ nav a.active {
 
 .ellipsis {
 	width: 100%;
-	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	float: left !important;
@@ -788,12 +787,26 @@ legend {
 b, strong {
     font-weight: 600 !important;
 }
-/* prevent scrolling page in mac os */
-/* html {
-  overflow: hidden;
-  height: 100%;
+
+.search-box-item-click{
+  font-size: 16px;
+  top: 1px;
+  right: 1px;
+  position: absolute;
+  background: #dbe4db;
+  width: 39px;
 }
-body {
-  height: 100%;
-  overflow: auto;
-} */
+.search-box-item-clear{
+  cursor: pointer;
+  pointer-events: all;
+  width: 25px !important;
+  right: 40px !important;
+  top: 6px !important;
+  background: #ffffff !important;
+  color: #008fd5 !important;
+  font-size: 13px !important;
+  position: absolute !important;
+}
+.search-box-item-clear:hover {
+  background-color: #ffffff;
+}

@@ -58,8 +58,9 @@ export class ForgotPasswordComponent implements OnInit {
                             this.router.navigate(['./login']);
                         }
                     } else {
-                        this.customResponse =  new CustomResponse('ERROR', data.toLowerCase(), true);
-                      //  this.xtremandLogger.error(this.referenceService.errorPrepender + " sendPassword():" + data);
+                      // need to change message correctly
+                      this.customResponse =  new CustomResponse('ERROR', 'Email Id doesn\'t exists', true);
+                      //   this.customResponse =  new CustomResponse('ERROR', data.toLowerCase(), true);
                     }
                 },
                 error => {

@@ -220,9 +220,9 @@ export class VideoFileService {
             console.log('error comes here');
         }
     }
-    logVideoViews(alias: string) {
-        const url = this.authenticationService.REST_URL + 'admin/video/increment_view?alias=' + alias;
-        return this.http.post(url, '')
+    logVideoViews(alias: string,urlAlias:string) {
+        const url = this.authenticationService.REST_URL + 'admin/video/increment_view?alias=' + alias+ '&urlAlias='+ urlAlias;
+        return this.http.post(url,'')
             .map(this.extractData)
             .catch(this.handleErrorLogAction);
     }

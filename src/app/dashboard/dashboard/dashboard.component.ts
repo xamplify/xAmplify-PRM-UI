@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { DatePipe } from '@angular/common';
 
 import { Properties } from '../../common/models/properties';
 import { SocialConnection } from '../../social/models/social-connection';
@@ -31,7 +30,7 @@ declare var Metronic, $, Layout, Demo, Index, QuickSidebar, Highcharts, Tasks: a
     selector: 'app-dashboard',
     templateUrl: './dashboard.component.html',
     styleUrls: ['./dashboard.component.css'],
-    providers: [DashboardService, Pagination, DatePipe, Properties]
+    providers: [DashboardService, Pagination, Properties]
 })
 export class DashboardComponent implements OnInit, OnDestroy {
 
@@ -82,7 +81,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         public facebookService: FacebookService, public socialService: SocialService, public emailTemplateService: EmailTemplateService,
         public authenticationService: AuthenticationService, public utilService: UtilService, public userService: UserService,
         public campaignService: CampaignService, public referenceService: ReferenceService,
-        public pagerService: PagerService, public xtremandLogger: XtremandLogger, public datePipe: DatePipe, public properties: Properties) {
+        public pagerService: PagerService, public xtremandLogger: XtremandLogger, public properties: Properties) {
         this.hasCampaignRole = this.referenceService.hasRole(this.referenceService.roles.campaignRole);
         this.hasStatsRole = this.referenceService.hasRole(this.referenceService.roles.statsRole);
         this.hasSocialStatusRole = this.referenceService.hasRole(this.referenceService.roles.socialShare);
@@ -210,7 +209,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             exporting: { enabled: false },
             tooltip: {
                 formatter: function () {
-                    return 'Campaign Name: <b>' + this.point.name + '</b><br> Email Open Count: <b>' + this.point.value + '</b>' +
+                    return 'Campaign Name: <b>' + this.point.name.substring(0, 45) + '.' + '</b><br> Email Open Count: <b>' + this.point.value + '</b>' +
                         '<br> Interaction : <b>' + this.point.interactionPercentage + '%</b><br>Launch Date:<b>' + this.point.launchTime + '</b>';
                 }
             },
@@ -731,12 +730,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
         try {
             this.dashboardService.getCampaignsHeatMapDetails(this.heatMapSort.value).
                 subscribe(result => {
-                    debugger;
                     this.xtremandLogger.log(result.heatMapData);
                     this.heatMapData = result.heatMapData;
+                    this.heatMapData.forEach(element => {
+                      element.name = element.name.length>25 ? element.name.substring(0,25)+"..." : element.name;
+                    });
                     if (!this.isFullscreenToggle) { this.generatHeatMap(this.heatMapData, 'dashboard-heat-map');
                     } else { this.generatHeatMap(this.heatMapData, 'heat-map-data'); }
-                },
+                  },
                     (error: any) => {
                         this.xtremandLogger.error(error);
                         this.xtremandLogger.errorPage(error);

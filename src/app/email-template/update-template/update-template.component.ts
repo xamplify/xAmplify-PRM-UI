@@ -30,7 +30,7 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
     clickedButtonName:string = "";
     updateButton:string = "UPDATE";
     httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
-    constructor(private emailTemplateService: EmailTemplateService, private userService: UserService,
+    constructor(public emailTemplateService: EmailTemplateService, private userService: UserService,
             private router: Router, private emailTemplate: EmailTemplate, private logger: XtremandLogger,
             private authenticationService:AuthenticationService,public refService:ReferenceService) {
         logger.debug("updateTemplateComponent() Loaded");
@@ -70,13 +70,13 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
             this.invalidTemplateName = true;
         }
     }
-    
-    
+
+
     update(){
         this.clickedButtonName = this.updateButton;
         this.updateHtmlTemplate(false);
     }
-    
+
     updateHtmlTemplate(isOnDestroy:boolean) {
        this.refService.startLoader(this.httpRequestLoader);
         this.emailTemplate.id = this.emailTemplateService.emailTemplate.id;
@@ -102,7 +102,7 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
                             this.videoTagsError = data;
                         }
                 }
-               
+
             },
             (error: string) => {
                 this.refService.stopLoader(this.httpRequestLoader);
@@ -111,10 +111,10 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
             () => this.logger.info("Finished updateHtmlTemplate()")
             );
         }
-        
+
 
     }
-    
+
     ngOnInit() {
         try {
             Metronic.init();
@@ -129,6 +129,6 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
         if(this.emailTemplateService.emailTemplate != undefined && this.clickedButtonName!=this.updateButton){
             this.updateHtmlTemplate(true);
         }
-        
+
     }
 }

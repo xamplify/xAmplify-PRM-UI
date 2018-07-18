@@ -1,5 +1,6 @@
 import { element, browser, by, Key } from "protractor";
 import { BasePage } from "../../app.po";
+import { Properties } from "../properties";
 
 export class LoginPage extends BasePage {
   navigateTo() {
@@ -44,14 +45,17 @@ export class LoginPage extends BasePage {
     this.getUserNameTF().clear();
     this.getPasswordTF().clear();
     browser.waitForAngularEnabled(false);
-    this.getUserNameTF().sendKeys("ksathish@stratapps.com");
-    this.getPasswordTF().sendKeys("Sathish@123");
+    this.getUserNameTF().sendKeys(Properties.userName);
+    this.getPasswordTF().sendKeys(Properties.password);
     this.getLoginButton().click();
+  }
+  getProfileDropdown(){
+    element.all(by.xpath('//*[@id="headerdropDownLi"]')).click();
   }
   logout() {
     browser.waitForAngularEnabled(false);
-    element.all(by.xpath('//*[@id="headerdropDownLi"]')).click();
+    this.getProfileDropdown();
     browser.waitForAngularEnabled(false);
-    element.all(by.xpath('//*[@id="logoutButton"]')).click();
+    element.all(by.xpath('//*[@id="logoutButton"]/a')).click();
   }
 }

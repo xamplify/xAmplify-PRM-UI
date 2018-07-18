@@ -6,6 +6,7 @@ import { ContactsByType } from '../models/contacts-by-type';
 import { User } from '../../core/models/user';
 import { CustomResponse } from '../../common/models/custom-response';
 import { Properties } from '../../common/models/properties';
+import { ActionsDescription } from '../../common/models/actions-description';
 import { Router } from "@angular/router";
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { SocialContact } from '../models/social-contact';
@@ -22,7 +23,7 @@ declare var Metronic, $, Layout, Demo, Portfolio, swal: any;
     selector: 'app-manage-contacts',
     templateUrl: './manage-contacts.component.html',
     styleUrls: ['./manage-contacts.component.css', '../../../assets/css/phone-number-plugin.css'],
-    providers: [SocialContact, Pagination, Properties]
+    providers: [SocialContact, Pagination, Properties, ActionsDescription]
 })
 
 export class ManageContactsComponent implements OnInit, AfterViewInit {
@@ -68,6 +69,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
     invalidDeleteErrorMessage: boolean = false;
 
     public invalidIds: Array<UserListIds>;
+    defaultPartnerListId: number;
 
     contactsByType: ContactsByType = new ContactsByType();
     downloadDataList = [];
@@ -95,6 +97,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
     isValidContactName: boolean;
     noSaveButtonDisable: boolean;
     public totalRecords: number;
+    
+    searchContactType = "";
+    
     public zohoImage: string = 'assets/admin/pages/media/works/zoho-contacts.png';
     public googleImage: string = 'assets/admin/pages/media/works/google-contacts.png';
     public salesforceImage: string = 'assets/admin/pages/media/works/salesforce-contacts.png';
@@ -156,7 +161,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
     logListName = "";
 
     constructor( public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
-        private pagerService: PagerService, private pagination: Pagination, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger ) {
+        private pagerService: PagerService, private pagination: Pagination, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,
+        public actionsDescription: ActionsDescription) {
 
         let currentUrl = this.router.url;
         if ( currentUrl.includes( 'home/contacts' ) ) {
@@ -235,6 +241,13 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
                     } else {
                         pagination.totalRecords = this.totalRecords;
                         pagination = this.pagerService.getPagedItems( pagination, this.contactLists );
+                        
+                        for( let i=0; i< data.listOfUserLists.length; i++ ){
+                            if( data.listOfUserLists[i].defaultPartnerList){
+                                this.defaultPartnerListId = data.listOfUserLists[i].id;
+                            }
+                        }
+                        
                     }
                     if ( this.contactLists.length == 0 ) {
                         this.resetResponse();
@@ -1042,6 +1055,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
     }
 
     searchKeyValue( searchType: string ) {
+        this.searchContactType = searchType;
         if ( searchType == 'contactList' ) {
             this.pagination.searchKey = this.searchKey;
         } else {
@@ -1050,6 +1064,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
     }
 
     search( searchType: string ) {
+        this.searchContactType = searchType;
         try {
             this.resetResponse();
             if ( searchType == 'contactList' ) {
@@ -1385,6 +1400,31 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
         }
     }
 
+    eventHandler( keyCode: any ) { if ( keyCode === 13 ) { this.search(this.searchContactType); } }
+    
+    sendMail( partnerId: number ) {
+        try {
+            this.contactService.mailSend( partnerId, this.defaultPartnerListId )
+                .subscribe(
+                data => {
+                    console.log( data );
+                    if ( data.message == "success" ) {
+                        this.customResponse = new CustomResponse( 'SUCCESS', this.properties.EMAIL_SENT_SUCCESS, true );
+                        this.contactService.successMessage = true;
+                    }
+                },
+                ( error: any ) => {
+                    this.xtremandLogger.error( error );
+                },
+                () => this.xtremandLogger.log( "Manage Partner component Mail send method successfull" )
+                );
+        } catch ( error ) {
+            this.xtremandLogger.error( error, "addPartnerComponent", "resending Partner email" );
+        }
+       
+    }
+    
+    
     ngAfterViewInit() {
     }
 
