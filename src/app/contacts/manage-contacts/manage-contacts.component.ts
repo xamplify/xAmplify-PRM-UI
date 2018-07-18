@@ -69,6 +69,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
     invalidDeleteErrorMessage: boolean = false;
 
     public invalidIds: Array<UserListIds>;
+    defaultPartnerListId: number;
 
     contactsByType: ContactsByType = new ContactsByType();
     downloadDataList = [];
@@ -240,6 +241,13 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
                     } else {
                         pagination.totalRecords = this.totalRecords;
                         pagination = this.pagerService.getPagedItems( pagination, this.contactLists );
+                        
+                        for( let i=0; i< data.listOfUserLists.length; i++ ){
+                            if( data.listOfUserLists[i].defaultPartnerList){
+                                this.defaultPartnerListId = data.listOfUserLists[i].id;
+                            }
+                        }
+                        
                     }
                     if ( this.contactLists.length == 0 ) {
                         this.resetResponse();
@@ -1393,6 +1401,29 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
     }
 
     eventHandler( keyCode: any ) { if ( keyCode === 13 ) { this.search(this.searchContactType); } }
+    
+    sendMail( partnerId: number ) {
+        try {
+            this.contactService.mailSend( partnerId, this.defaultPartnerListId )
+                .subscribe(
+                data => {
+                    console.log( data );
+                    if ( data.message == "success" ) {
+                        this.customResponse = new CustomResponse( 'SUCCESS', this.properties.EMAIL_SENT_SUCCESS, true );
+                        this.contactService.successMessage = true;
+                    }
+                },
+                ( error: any ) => {
+                    this.xtremandLogger.error( error );
+                },
+                () => this.xtremandLogger.log( "Manage Partner component Mail send method successfull" )
+                );
+        } catch ( error ) {
+            this.xtremandLogger.error( error, "addPartnerComponent", "resending Partner email" );
+        }
+       
+    }
+    
     
     ngAfterViewInit() {
     }

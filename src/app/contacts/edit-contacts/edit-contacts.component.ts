@@ -2230,6 +2230,26 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
     eventHandler( keyCode: any ) { if ( keyCode === 13 ) { this.search(this.searchContactType); } }
 
+    sendMail( partnerId: number ) {
+        try {
+            this.contactService.mailSend( partnerId, this.selectedContactListId )
+                .subscribe(
+                data => {
+                    console.log( data );
+                    if ( data.message == "success" ) {
+                        this.customResponse = new CustomResponse( 'SUCCESS', this.properties.EMAIL_SENT_SUCCESS, true );
+                    }
+                },
+                ( error: any ) => {
+                    this.xtremandLogger.error( error );
+                },
+                () => this.xtremandLogger.log( "Manage Partner component Mail send method successfull" )
+                );
+        } catch ( error ) {
+            this.xtremandLogger.error( error, "addPartnerComponent", "resending Partner email" );
+        }
+    }
+    
     ngOnInit() {
         try {
             this.loadContactListsNames();

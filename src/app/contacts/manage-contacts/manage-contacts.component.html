@@ -618,6 +618,7 @@
 														<th>Phone</th>
 														<th>Job Title</th>
 														<th>ADDRESS</th>
+														<th *ngIf="isPartner && contactsByType.selectedCategory == 'non-active'">ACTIONS</th>
 														<!-- <th>MORE</th> -->
 													</tr>
 												</thead>
@@ -669,6 +670,12 @@
 															<h5 class='mb0'>{{contact.city}}<span *ngIf="contact?.city && contact.state">,&nbsp;</span>{{contact.state}}</h5>
 															<h5 *ngIf="contact?.zipCode || contact.country" class='mt0'>{{contact.zipCode}}<span *ngIf="contact?.zipCode && contact.country">,&nbsp;</span>{{contact.country}}</h5>
 														</td>
+														<td align="center" *ngIf="isPartner && contactsByType.selectedCategory == 'non-active'">
+												<div class="actions-block">
+												<a *ngIf="!contact.signedUp" data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.partner_reSendMail}}" (click)="sendMail(contact.id)">
+													<i class="fa fa-envelope"></i>
+												</a></div>
+												</td>
 														<!-- <td>
 															<button id='more_less_button_{{i}}'
 																(click)="contact.isShowDetails = ! contact.isShowDetails">
