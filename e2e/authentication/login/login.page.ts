@@ -49,9 +49,12 @@ export class LoginPage extends BasePage {
     this.getPasswordTF().sendKeys(Properties.password);
     this.getLoginButton().click();
   }
+  getProfileDropdown(){
+    element.all(by.xpath('//*[@id="headerdropDownLi"]')).click();
+  }
   logout() {
     browser.waitForAngularEnabled(false);
-    element.all(by.xpath('//*[@id="headerdropDownLi"]')).click();
+    this.getProfileDropdown();
     browser.waitForAngularEnabled(false);
     element.all(by.xpath('//*[@id="logoutButton"]/a')).click();
   }

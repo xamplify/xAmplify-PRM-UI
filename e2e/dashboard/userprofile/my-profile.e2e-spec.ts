@@ -31,8 +31,19 @@ describe("My profile Test ", () => {
       if(myProfilePage.getDefaultsettingTab().isPresent()) { myProfilePage.getDefaultsettingTab().click();}
       myProfilePage.getPersonalInfoTab();
       expect(page).toEqual('click all tabs');
+      browser.sleep(1000);
+    });
+
+    afterAll(() => {
+      browser.waitForAngularEnabled(false);
+      browser.sleep(2000);
+      myProfilePage.getProfileDropdown();
+      browser.waitForAngularEnabled(false);
+      element.all(by.xpath('//*[@id="logoutButton"]/a')).click();
     });
 
   });
 
 });
+
+
