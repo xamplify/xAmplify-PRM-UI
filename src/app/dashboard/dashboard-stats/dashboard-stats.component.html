@@ -78,7 +78,10 @@
             <i class="fa fa-smile-o"></i>
           </div>
           <div class="details">
-            <div class="number">{{dashboardReport.totalTeamMembers}}</div>
+            <div class="number">
+                <span *ngIf="dashboardReport.totalTeamMembers; else teams">{{dashboardReport.totalTeamMembers}}</span>
+                <ng-template #teams>0</ng-template>
+            </div>
             <div class="desc">Team Members</div>
           </div>
           <span id="permhref" class="morePadding">
