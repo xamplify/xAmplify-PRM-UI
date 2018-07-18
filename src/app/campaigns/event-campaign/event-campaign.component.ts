@@ -147,7 +147,7 @@ export class EventCampaignComponent implements OnInit {
       let contactList = new ContactList(userListId);
       eventCampaign.userLists.push(contactList);
     }
-    this.eventCampaign.emailTemplate = new EmailTemplate(1700);
+    this.eventCampaign.emailTemplate.id = 1700;
     this.eventCampaign.user.userId = this.loggedInUserId;
     this.eventCampaign.campaignScheduleType = launchOption;
     console.log(eventCampaign);

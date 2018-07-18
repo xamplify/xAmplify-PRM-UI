@@ -24,8 +24,4 @@ export class EmailTemplate {
 	vendorOrganizationName: string = "";
 	draft: boolean = false;
 	onDestroy: boolean = false;
-
-	constructor(id?: number) {
-		this.id = id;
-	}
 }
