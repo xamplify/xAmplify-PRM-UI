@@ -30,14 +30,20 @@
 				<table class='table tgrid' id="tabletest">
 					<thead>
 						<tr>
-							<th class="headerCss center">TITLE</th>
+							<th class="headerCss center" style="width: 50%;">TITLE</th>
 							<th class="headerCss center">VIEWS</th>
-							<th class="headerCss center">DATE</th>
+							<th class="headerCss center uppercase">
+                  <span *ngIf="!daySort?.name">date</span>
+                  <span *ngIf="daySort?.name==='Current Month'">date</span>
+                  <span *ngIf="daySort?.name==='By Month'">Month</span>
+                  <span *ngIf="daySort?.name==='By Quarter'">QUARTER</span>
+                  <span *ngIf="daySort?.name==='By Year'">YEAR</span>
+              </th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr>
-							<td class="center">
+							<td class="center" title="{{videoTitle}}">
                 {{videoTitle | slice:0:30}}
                 <span *ngIf="videoTitle?.length>30">...</span>
               </td>
@@ -72,7 +78,13 @@
 						<th class="headerCss center">NAME</th>
 						<!-- <th class="headerCss center">TITLE</th> -->
 						<th class="headerCss center">VIEWS</th>
-						<th class="headerCss center">DATE</th>
+						<th class="headerCss center uppercase">
+              <span *ngIf="!daySort?.name">date</span>
+              <span *ngIf="daySort?.name==='Current Month'">date</span>
+              <span *ngIf="daySort?.name==='By Month'">Month</span>
+              <span *ngIf="daySort?.name==='By Quarter'">QUARTER</span>
+              <span *ngIf="daySort?.name==='By Year'">YEAR</span>
+            </th>
 						<th class="headerCss center">DEVICE</th>
 						<th class="headerCss center">LOCATION</th>
 					</tr>
