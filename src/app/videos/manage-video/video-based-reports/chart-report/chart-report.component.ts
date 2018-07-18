@@ -36,14 +36,14 @@ export class ChartReportComponent implements OnInit, OnDestroy {
     public videoUtilService: VideoUtilService, public router: Router, public pagination: Pagination, public pagerService: PagerService) {
     try{
       this.selectedVideoId = this.videoUtilService.selectedVideoId;
-      this.videoViewsData = this.videoUtilService.videoViewsData;
-      this.timePeriod = this.videoUtilService.timePeriod;
-      this.timePeriodValue = this.videoUtilService.timePeriodValue;
-      for (let i = 0; i < this.videoUtilService.sortMonthDates.length; i++) {
-        if (this.videoUtilService.timePeriod === this.videoUtilService.sortMonthDates[i].value) {
-          this.daySort = this.videoUtilService.sortMonthDates[i];
-          break;
-        }
+    this.videoViewsData = this.videoUtilService.videoViewsData;
+    this.timePeriod = this.videoUtilService.timePeriod;
+    this.timePeriodValue = this.videoUtilService.timePeriodValue;
+    for (let i = 0; i < this.videoUtilService.sortMonthDates.length; i++) {
+      if (this.videoUtilService.timePeriod === this.videoUtilService.sortMonthDates[i].value) {
+        this.daySort = this.videoUtilService.sortMonthDates[i];
+        break;
+      }
     }
     }catch(error){
     this.xtremandLogger.error('Error in chart report component constructor'+error); }
