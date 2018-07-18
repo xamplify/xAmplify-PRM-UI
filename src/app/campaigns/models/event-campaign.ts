@@ -1,8 +1,10 @@
 import { EmailTemplate } from '../../email-template/models/email-template';
 import { Location } from './location';
 import { CampaignEventTime } from './campaign-event-time';
+import { CampaignEventMedia } from './campaign-event-media'; 
 import { User } from '../../core/models/user';
 import { ContactList } from '../../contacts/models/contact-list';
+
 export class EventCampaign {
     campaign: string;
     user: User = new User();
@@ -28,6 +30,7 @@ export class EventCampaign {
     userListIds: Array<number> = [];
 
     campaignEventTimes: Array<CampaignEventTime> = [];
+    campaignEventMedias: Array<CampaignEventMedia> = [];
 
     hostedBy: string = "";
 }

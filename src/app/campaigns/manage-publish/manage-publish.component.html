@@ -29,6 +29,7 @@
 							<li class="filter" (click)="filterCampaigns('REGULAR',1)" [class.campaign-type-selected]="1 == selectedCampaignTypeIndex">Email</li>
 							<li class="filter" (click)="filterCampaigns('VIDEO',2)" [class.campaign-type-selected]="2 == selectedCampaignTypeIndex">Video</li>
 							<li class="filter" (click)="filterCampaigns('SOCIAL',3)" [class.campaign-type-selected]="3 == selectedCampaignTypeIndex">Social</li>
+							<li class="filter" (click)="filterCampaigns('EVENT',4)" [class.campaign-type-selected]="4 == selectedCampaignTypeIndex">Event</li>
 							<li class="filter" style="display: none;">Own Template</li>
 						</ul>
 						<div class="page-toolbar col-xs-6">
@@ -83,7 +84,10 @@
 											<ng-container *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1">
 												<img [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/social-campaign.png" alt="Social Campaign">
 											</ng-container>
-                    </td>
+											<ng-container *ngIf="campaign.campaignType.indexOf('EVENT') > -1">
+												<img [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/event-campaign.png" alt="Event Campaign">
+											</ng-container>
+                    					</td>
                     <td>
 											<h4 class="ellipsis campaign-title" title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:20}}
 													<span *ngIf="campaign.campaignName?.length>20">...</span>

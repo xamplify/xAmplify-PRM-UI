@@ -71,6 +71,21 @@
 						</div>
 					</section>
 					<div class="form-group">
+						<label for="hostedBy" class="col-sm-3 control-label">Event Image</label>
+						<div class="col-sm-9">
+							<label class="upload-media-wrapper" *ngIf="! eventCampaign.campaignEventMedias[0].filePath">
+								<i class="fa fa-camera" aria-hidden="true"></i>
+								<b>Add Event Image</b>
+								<input type="file" (change)="fileChange($event)" #input name="media[]" accept="image/gif,image/jpeg,image/jpg,image/png"
+								 class="file-input js-tooltip" data-original-title="Add photos or video">
+							</label>
+							<div *ngIf="eventCampaign.campaignEventMedias[0].filePath">
+								<img src="{{eventCampaign.campaignEventMedias[0].filePath}}">
+							</div>
+						</div>
+					</div>					
+
+					<div class="form-group">
 						<label for="hostedBy" class="col-sm-3 control-label">Event Description</label>
 						<div class="col-sm-9">
 							<ckeditor [(ngModel)]="eventCampaign.message"  [ngModelOptions]="{standalone: true}" #myckeditor [config]="ckeConfig" debounce="500"></ckeditor>

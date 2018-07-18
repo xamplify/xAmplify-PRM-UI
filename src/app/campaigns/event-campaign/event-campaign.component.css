@@ -1,3 +1,22 @@
 .text-danger {
     color: #e62f2e!important;
 }
+.upload-media-wrapper {
+    border: 1px solid #eeeeee;
+    padding: 1em;
+    width: 100%;
+    text-align: center;
+    cursor: pointer;
+}
+.upload-media-wrapper input[type=file] {
+    display: block;
+    width: auto;
+    opacity: 0;
+    position: absolute;
+}
+.upload-media-wrapper i.fa-camera {
+    font-size: 30px;
+    color: #a5a5a5;
+    display: grid;
+    margin: 10px;
+}

@@ -194,4 +194,19 @@ export class EventCampaignComponent implements OnInit {
       this.eventCampaign.fromName = this.eventCampaign.email;
     }
   }
+
+  fileChange(event: any) {
+    const file: File = event.target.files[0];
+    const formData: FormData = new FormData();
+    formData.append('file', file, file.name);
+
+    this.campaignService.uploadEventCampaignMedia(this.loggedInUserId, formData)
+      .subscribe(
+      data => {
+        this.eventCampaign.campaignEventMedias[0].filePath = data.data;
+      },
+      error => console.log(error),
+      () => console.log('Finished')
+      );
+  }
 }
