@@ -192,7 +192,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
         this.campaign.email = userProfile.emailId;
         if(userProfile.firstName !== undefined && userProfile.lastName !== undefined)
             this.campaign.fromName = $.trim(userProfile.firstName + " " + userProfile.lastName);
-        else if(userProfile.firstName !== undefined && userProfile.lastName === undefined)
+        else if(userProfile.firstName !== undefined && userProfile.lastName == undefined)
             this.campaign.fromName = $.trim(userProfile.firstName);
         else
             this.campaign.fromName = $.trim(userProfile.emailId);
@@ -253,7 +253,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     }
 
     setEmailIdAsFromName() {
-        if (this.campaign.fromName.length === 0) {
+        if (this.campaign.fromName.length == 0) {
             this.campaign.fromName = this.campaign.email;
         }
     }
@@ -445,9 +445,9 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
 
     getCampaignData(emailId: string) {
        /* let campaignType = CampaignType.REGULAR;
-        if ("regular" === this.campaignType) {
+        if ("regular" == this.campaignType) {
             campaignType = CampaignType.REGULAR;
-        } else if ("video" === this.campaignType) {
+        } else if ("video" == this.campaignType) {
             campaignType = CampaignType.VIDEO;
         }*/
         // Enable work flow is disabled
@@ -461,7 +461,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
         let country = $.trim($('#countryName option:selected').text());
         let timeZoneId = "";
         let scheduleTime:any;
-        if( this.campaignLaunchForm.value.scheduleCampaign==="NOW" || this.campaignLaunchForm.value.scheduleCampaign==="SAVE"){
+        if( this.campaignLaunchForm.value.scheduleCampaign=="NOW" || this.campaignLaunchForm.value.scheduleCampaign=="SAVE"){
             timeZoneId = Intl.DateTimeFormat().resolvedOptions().timeZone;
             scheduleTime = this.campaignService.setLaunchTime();
         }else{
@@ -534,7 +534,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
                 this.validateEmailTemplateForAddReply(reply);
             }
             var errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
-            if(errorLength===0){
+            if(errorLength==0){
                 this.addEmailNotOpenedReplyDaysSum(reply, i);
                 this.addEmailOpenedReplyDaysSum(reply, i);
             }
@@ -543,10 +543,10 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     }
 
     validateReplyInDays(reply:Reply){
-        if( reply.actionId!== 22 &&  reply.actionId!== 23 && reply.replyInDays===null){
+        if( reply.actionId!== 22 &&  reply.actionId!== 23 && reply.replyInDays==null){
            this.addReplyDaysErrorDiv(reply);
-        }else if(reply.actionId===22 ||reply.actionId===23 ){
-           if(reply.replyInDays===null || reply.replyInDays===0){
+        }else if(reply.actionId==22 ||reply.actionId==23 ){
+           if(reply.replyInDays==null || reply.replyInDays==0){
                this.addReplyDaysErrorDiv(reply);
            }
         }
@@ -558,7 +558,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     }
 
     validateReplyTime(reply:Reply){
-        if(reply.replyTime===undefined || reply.replyTime===null){
+        if(reply.replyTime==undefined || reply.replyTime==null){
             this.addReplyDivError(reply.divId);
             $('#send-time-'+reply.divId).css('color','red');
         }else{
@@ -568,7 +568,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     }
 
     validateReplySubject(reply:Reply){
-        if( reply.subject==null||reply.subject===undefined || $.trim(reply.subject).length===0){
+        if( reply.subject==null||reply.subject==undefined || $.trim(reply.subject).length==0){
             this.addReplyDivError(reply.divId);
             console.log("Added Reply Subject Eror");
             $('#reply-subject-'+reply.divId).css('color','red');
@@ -576,10 +576,10 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     }
 
     validateEmailTemplateForAddReply(reply:Reply){
-        if(reply.defaultTemplate && reply.selectedEmailTemplateId===0){
+        if(reply.defaultTemplate && reply.selectedEmailTemplateId==0){
             $('#'+reply.divId).addClass('portlet light dashboard-stat2 border-error');
             $('#email-template-'+reply.divId).css('color','red');
-        }else if(!reply.defaultTemplate &&(reply.body===null || reply.body===undefined || $.trim(reply.body).length===0)){
+        }else if(!reply.defaultTemplate &&(reply.body==null || reply.body==undefined || $.trim(reply.body).length==0)){
             $('#'+reply.divId).addClass('portlet light dashboard-stat2 border-error');
             $('#reply-message-'+reply.divId).css('color','red');
         }
@@ -614,7 +614,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
                 this.validateEmailTemplateForAddOnClick(url);
             }
             var errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
-            if(errorLength===0){
+            if(errorLength==0){
                 this.addOnClickScheduledDaysSum(url, i);
             }
             console.log(errorLength);
@@ -622,7 +622,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     }
 
     validateOnClickReplyTime(url:Url){
-        if(url.replyTime===undefined || url.replyTime===null){
+        if(url.replyTime==undefined || url.replyTime==null){
             this.addReplyDivError(url.divId);
             $('#send-time-'+url.divId).css('color','red');
         }else{
@@ -632,7 +632,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     }
 
     validateOnClickSubject(url:Url){
-        if( url.subject===null||url.subject===undefined || $.trim(url.subject).length===0){
+        if( url.subject==null||url.subject==undefined || $.trim(url.subject).length==0){
             this.addReplyDivError(url.divId);
             console.log("Added Subject Eror");
             $('#click-subject-'+url.divId).css('color','red');
@@ -640,25 +640,25 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     }
 
     validateOnClickBody(url:Url){
-        if(url.body===null || url.body===undefined || $.trim(url.body).length===0){
+        if(url.body==null || url.body==undefined || $.trim(url.body).length==0){
             this.addReplyDivError(url.divId);
             $('#click-message-'+url.divId).css('color','red');
         }
     }
 
     validateOnClickReplyInDays(url:Url){
-        if(url.replyInDays===null){
+        if(url.replyInDays==null){
             this.addReplyDivError(url.divId);
             $('#click-days-'+url.divId).css('color','red');
         }
     }
 
     validateEmailTemplateForAddOnClick(url:Url){
-        if(url.defaultTemplate && url.selectedEmailTemplateId===0){
+        if(url.defaultTemplate && url.selectedEmailTemplateId==0){
             console.log("Email Template Error Added For Choose Template On");
             $('#'+url.divId).addClass('portlet light dashboard-stat2 border-error');
             $('#click-email-template-'+url.divId).css('color','red');
-        }else if(!url.defaultTemplate &&(url.body===null || url.body===undefined || $.trim(url.body).length===0)){
+        }else if(!url.defaultTemplate &&(url.body==null || url.body==undefined || $.trim(url.body).length==0)){
             console.log("Email Template Error Added For Choose Template Off");
             $('#'+url.divId).addClass('portlet light dashboard-stat2 border-error');
             $('#click-message-'+url.divId).css('color','red');
@@ -667,8 +667,8 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
 
 
     addEmailNotOpenedReplyDaysSum(reply:Reply,index:number){
-        if(reply.actionId===0){
-            if(index===0){
+        if(reply.actionId==0){
+            if(index==0){
                 this.emailNotOpenedReplyDaysSum = reply.replyInDays;
             }else{
                 this.emailNotOpenedReplyDaysSum = reply.replyInDays+this.emailNotOpenedReplyDaysSum;
@@ -677,8 +677,8 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
         }
     }
     addEmailOpenedReplyDaysSum(reply:Reply,index:number){
-        if(reply.actionId===13){
-            if(index===0){
+        if(reply.actionId==13){
+            if(index==0){
                 this.emailOpenedReplyDaysSum = reply.replyInDays;
             }else{
                 this.emailOpenedReplyDaysSum = reply.replyInDays+this.emailOpenedReplyDaysSum;
@@ -688,7 +688,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     }
 
     addOnClickScheduledDaysSum(url:Url,i:number){
-        if(i===0){
+        if(i==0){
             this.onClickScheduledDaysSum = url.replyInDays;
         }else{
             this.onClickScheduledDaysSum = url.replyInDays+this.onClickScheduledDaysSum;
@@ -698,7 +698,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
 
     setUrlScheduleType(event,url:Url){
        //url.scheduled = event.target.value;
-       if(event.target.value==="true"){
+       if(event.target.value=="true"){
            url.scheduled = true;
        }else{
            url.scheduled = false;
@@ -1264,9 +1264,9 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
           url.emailTemplatesPagination.pageIndex = pageIndex;
           this.loadEmailTemplatesForAddOnClick(url);
       }
-      contactSearchInputKey(event:any) {if(event.key ===13){this.searchContactList();}}
-      searchReplyEmailTemplateKey(event:any,value) {if(event.key ===13){this.searchReplyEmailTemplate(value);}}
-      searchClickEmailTemplateKey(event:any,value) {if(event.key ===13){this.searchClickEmailTemplate(value);}}
+      contactSearchInputKey(event:any) {if(event.key ==13){this.searchContactList();}}
+      searchReplyEmailTemplateKey(event:any,value) {if(event.key ==13){this.searchReplyEmailTemplate(value);}}
+      searchClickEmailTemplateKey(event:any,value) {if(event.key ==13){this.searchClickEmailTemplate(value);}}
   ngOnInit() {
       flatpickr( '.flatpickr',{
           enableTime: true,
@@ -1294,21 +1294,21 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
           $('#contact-list-error').hide();
           var data = this.getCampaignData("");
           var errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
-          if(errorLength===0 && this.selectedUserlistIds.length>0){
+          if(errorLength==0 && this.selectedUserlistIds.length>0){
               this.dataError = false;
               this.contactListBorderColor = "silver";
               this.referenceService.goToTop();
               this.campaignService.saveCampaign( data )
               .subscribe(
               response => {
-                  if (response.statusCode === 2000) {
+                  if (response.statusCode == 2000) {
                       this.referenceService.campaignSuccessMessage = data.scheduleCampaign;
                       this.campaign = null;
                       this.router.navigate(["/home/campaigns/manage"]);
                   } else {
                       this.invalidScheduleTime = true;
                       this.invalidScheduleTimeError = response.message;
-                      if(response.statusCode===2016){
+                      if(response.statusCode==2016){
                           this.campaignService.addErrorClassToDiv(response.data.emailErrorDivs);
                           this.campaignService.addErrorClassToDiv(response.data.websiteErrorDivs);
                       }
