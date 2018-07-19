@@ -34,11 +34,13 @@
 								id="{{campaign.campaignId}}"
 								[checked]="selectedCampaignIds.indexOf(campaign.campaignId)>-1"
 								(click)="selectedContactLisAssociatedCampaignIds(campaign.campaignId,$event)"></td>
-							<td align="center" title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:20}}
-							<span *ngIf="campaign.campaignName?.length>20">...</span>
+							<td align="center" title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:18}}
+							<span *ngIf="campaign.campaignName?.length>18">...</span>
 							</td>
 							<td align="center">{{campaign.campaignType}}</td>
-							<td align="center">{{campaign.fromName}}</td>
+							<td align="center" title="campaign.fromName">{{campaign.fromName | slice:0:15}}
+							<span *ngIf="campaign.campaignName?.length>15">...</span>
+							</td>
 							<td align="center">
 							<app-timestamp [dateAndTime]="campaign.launchTime"> </app-timestamp>
 							</td>
