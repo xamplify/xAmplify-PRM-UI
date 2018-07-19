@@ -657,7 +657,7 @@ td>h5 {
 									<h4 *ngIf="emailClicked.campaignName==null">-</h4>
 								</td>
 								<td class="center">
-									<h5>{{emailClicked.time |date:'MM/dd/yyyy @ h:mma'}}</h5>
+								<app-date-and-time [dateAndTime]="emailClicked.time"> </app-date-and-time>
 								</td>
 								<td class="center" *ngIf="paginationType != 'open'">
 									<app-location [userLocation]="emailClicked"> </app-location>
@@ -716,7 +716,7 @@ td>h5 {
 									<app-user-info [userInfo]="item"> </app-user-info>
 								</td>
 								<td class="center">
-									<h5>{{item.time |date:'MM/dd/yyyy @ h:mma'}}</h5>
+								<app-date-and-time [dateAndTime]="item.time"> </app-date-and-time>
 								</td>
 								<td style="text-align: center">
 									<app-platform [deviceTypeOs]="true" [userPlatform]="item"> </app-platform>
