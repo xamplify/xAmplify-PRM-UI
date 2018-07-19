@@ -147,7 +147,9 @@
 					<div class="col-xs-12">
 						<span class="btn btn-sm btn-primary pull-right">{{campaignType}} CAMPAIGN {{isPartnerCampaign}}</span>
 						<h4>{{campaign.campaignName}}</h4>
-						<h5 class="text-info mb10">{{campaign.launchTime | date: 'fullDate'}}</h5>
+						<h5 class="text-info mb10"><!-- {{campaign.launchTime | date: 'fullDate'}} -->
+						<app-timestamp [dateAndTime]="campaign.launchTime"> </app-timestamp>
+						</h5>
 					</div>
 				</div>
 			</div>
@@ -344,7 +346,9 @@
 										</td>
 										<!-- <td class="td-chart"><h6>{{item.userEmail}}</h6></td> -->
 										<td class="td-chart">
-											<h6>{{item.latestView |date:'MM/dd/yyyy @ h:mma'}}<span *ngIf="! item?.latestView">-</span></h6>
+											<h6>
+											<app-timestamp [dateAndTime]="item.latestView"> </app-timestamp>
+											<span *ngIf="! item?.latestView">-</span></h6>
 										</td>
 										<td class="td-chart">
 											<div class="bg-color" [style.width.%]="(item.viewsCount/maxViewsValue)*100" style="margin: 10px 0px;">
@@ -435,7 +439,9 @@
           <div class="timeline-badge warning"><img src="assets/images/closed-env.png"></div>
           <div class="timeline-panel">
             <div class="timeline-heading">
-              <span class="timeline-title">{{campaign.launchTime | date: 'fullDate'}}</span>
+              <span class="timeline-title"><!-- {{campaign.launchTime | date: 'fullDate'}} -->
+              <app-timestamp [dateAndTime]="campaign.launchTime"> </app-timestamp>
+              </span>
             </div>
             <div class="timeline-body">
 				<h5><span class="f-w-600" title="{{campaign.campaignName}}">
@@ -457,7 +463,9 @@
 		  	</div>
           <div class="timeline-panel">
             <div class="timeline-heading">
-              <span class="timeline-title">{{emailLog.time | date: 'fullDate'}}</span>
+              <span class="timeline-title"><!-- {{emailLog.time | date: 'fullDate'}} -->
+               <app-timestamp [dateAndTime]="emailLog.time"> </app-timestamp>
+              </span>
             </div>
 			<div class="timeline-body">
 				<h5>
@@ -531,10 +539,14 @@
 										<app-user-info  [userInfo]="item"> </app-user-info>
 									</td>
 									<td>
-										<h6>{{item.startTime | date: 'short'}}</h6>
+										<h6><!-- {{item.startTime | date: 'short'}} -->
+										<app-timestamp [dateAndTime]="item.startTime"> </app-timestamp>
+										</h6>
 									</td>
 									<td>
-										<h6>{{item.endTime | date: 'short'}}</h6>
+										<h6><!-- {{item.endTime | date: 'short'}} -->
+										<app-timestamp [dateAndTime]="item.endTime"> </app-timestamp>
+										</h6>
 									</td>
 									<td>
 										<h6>{{item.ipAddress}}</h6>
@@ -617,7 +629,10 @@
 			<h6>Clicked on the video thumbnail</h6>
 		</td>
 		<td>
-			<h6>{{item.time | date: 'short'}}</h6>
+			<h6><!-- {{item.time | date: 'short'}} -->
+			<app-timestamp [dateAndTime]="item.time"> </app-timestamp>
+			</h6>
+			
 		</td>
 		<td>
 			<div class="actions-block" *ngIf="item.emailActionCount > 1">
@@ -648,7 +663,9 @@
 				<td *ngIf="campaignReport.emailActionType === 'click' && emailLog.url == null">
 					<h6>Clicked on the video thumbnail</h6>
 				</td>
-				<td>{{emailLog.time | date: 'short'}}</td>
+				<td>
+				<app-timestamp [dateAndTime]="emailLog.time"> </app-timestamp>
+				</td>
 			</tr>
 		</tbody>
 	</table>
@@ -709,7 +726,9 @@
 										<h4 *ngIf="item.campaignName==null">-</h4>
 									</td>
 									<td>
-										<h6>{{campaign.launchTime | date: 'MM/dd/yyyy @ h:mma'}}</h6>
+										<h6>
+											<app-timestamp [dateAndTime]="campaign.launchTime"> </app-timestamp>
+										</h6>
 									</td>
 								</tr>
 							</tbody>
@@ -769,7 +788,9 @@
 									<app-location  [userLocation]="item"> </app-location>
 								</td>
 								<td>
-									<h6>{{item.time | date: 'fullDate'}}</h6>
+									<h6>
+									<app-timestamp [dateAndTime]="item.time"> </app-timestamp>
+									</h6>
 								</td>
 								<td class="center">
 								<app-platform [deviceTypeOs]="true" [userPlatform]="item"> </app-platform>
@@ -824,7 +845,9 @@
 									<app-user-info  [userInfo]="emailClicked"> </app-user-info>
 								</td>
 								<td style="text-align: center">
-									<h5>{{emailClicked.time |date:'MM/dd/yyyy @ h:mma'}}</h5>
+									<h5>
+									<app-timestamp [dateAndTime]="emailClicked.time"> </app-timestamp>
+									</h5>
 								</td>
 								<td style="text-align: center">
 								<app-platform [deviceTypeOs]="false" [userPlatform]="emailClicked"> </app-platform>
