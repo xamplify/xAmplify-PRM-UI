@@ -147,7 +147,7 @@ td>h5 {
 										</div>
 										<div class="portlet-body scrollbar launchedCampaignsMaster" [dragula]='"bag-items"'>
 											<div class="gu-block" *ngFor="let item of launchedCampaignsMaster">
-												<h6 class="gu-block-content" [id]="item.id">{{item.campaign}}</h6>
+												<h6 class="gu-block-content" [id]="item.id">{{item.campaign | slice:0:27}}<span *ngIf="item.campaign?.length>27">...</span></h6>
 											</div>
 										</div>
 									</div>
@@ -161,7 +161,7 @@ td>h5 {
 										</div>
 										<div class="portlet-body launchedCampaignsChild" [dragula]='"bag-items"'>
 											<div class="gu-block" *ngFor="let item of launchedCampaignsChild">
-												<h6 class="gu-block-content" [id]="item.id">{{item.campaign}}</h6>
+												<h6 class="gu-block-content" [id]="item.id">{{item.campaign | slice:0:27}}<span *ngIf="item.campaign?.length>27">...</span></h6>
 											</div>
 										</div>
 									</div>
@@ -222,7 +222,7 @@ td>h5 {
 									<h2 class="percentage-value">{{campaign[6]}}%</h2>
 									<h6 class="percentage-text">interaction</h6>
 								</section>
-								<h5 class="text-primary" style="margin-top: 3.2em;">Released on 
+								<h5 class="text-primary" style="margin-top: 3.2em;">Released on
 								<app-timestamp [dateAndTime]="campaign[3]"> </app-timestamp></h5>
 							</div>
 						</div>
