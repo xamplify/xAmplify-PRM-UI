@@ -38,7 +38,7 @@
 							<span *ngIf="campaign.campaignName?.length>18">...</span>
 							</td>
 							<td align="center">{{campaign.campaignType}}</td>
-							<td align="center" title="campaign.fromName">{{campaign.fromName | slice:0:15}}
+							<td align="center" title="{{campaign.fromName}}">{{campaign.fromName | slice:0:15}}
 							<span *ngIf="campaign.campaignName?.length>15">...</span>
 							</td>
 							<td align="center">
