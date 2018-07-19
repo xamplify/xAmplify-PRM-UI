@@ -48,7 +48,12 @@
                 <span *ngIf="videoTitle?.length>30">...</span>
               </td>
 							<td class="center">{{views}}</td>
-							<td class="center">{{date}}</td>
+							<td class="center" >
+							<span *ngIf="daySort?.name!=='Current Month'">{{date}}</span>
+							<span *ngIf="daySort?.name==='Current Month'">
+							<app-timestamp [isOnlyDate]="true" [dateAndTime]="date"> </app-timestamp>
+							</span>
+							</td>
 						</tr>
 					</tbody>
 				</table>
@@ -97,7 +102,13 @@
 							</td>
 							<!-- <td class="center">{{videoViews.videoTitle}}</td> -->
 							<td class="center">{{videoViews.views}}</td>
-							<td class="center">{{videoViews.date}}</td>
+							<td class="center" >
+							<span *ngIf="daySort?.name!=='Current Month'">{{videoViews.date}}</span>
+							<span *ngIf="daySort?.name==='Current Month'">
+							<app-timestamp [isOnlyDate]="true" [dateAndTime]="videoViews.date"> </app-timestamp>
+							</span>
+							</td>
+							
 							<td class="center">
 							<app-platform [userPlatform]="videoViews"> </app-platform>
 							</td>
