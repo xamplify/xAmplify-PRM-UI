@@ -234,7 +234,9 @@
 									</td>
 									<!-- <td class="center">{{item.videoTitle}}</td> -->
 									<td class="center">{{item.campaignName }}</td>
-									<td class="center">{{item.date |date:'MM/dd/yyyy @ h:mma' }}</td>
+									<td class="center">
+									<app-timestamp [dateAndTime]="item.date"> </app-timestamp>
+									</td>
 									<td class="center">{{item.minutesWatched }}</td>
 									<td class="center">
 									<app-platform [userPlatform]="item"> </app-platform>
@@ -306,7 +308,9 @@
                     <span *ngIf="item.campaignName?.length>30">...</span>
 									<h4 *ngIf="item.campaignName==null">-</h4>
 									</td>
-									<td class="center">{{item.time |date:'MM/dd/yyyy @ h:mma' }}</td>
+									<td class="center">
+									<app-timestamp [dateAndTime]="item.time"> </app-timestamp>
+									</td>
 									<td class="center">
 									<app-platform [deviceTypeOs]="false" [userPlatform]="item"> </app-platform>
 									</td>
@@ -367,7 +371,9 @@
 									<app-user-info  [userInfo]="item"> </app-user-info>
 								</td>
 								<td class="center">{{item.minutesWatched }}</td>
-								<td class="center">{{item.date |date:'MM/dd/yyyy @ h:mma' }}</td>
+								<td class="center">
+								<app-timestamp [dateAndTime]="item.date"> </app-timestamp>
+								</td>
 								<td class="center">
 								<app-platform [userPlatform]="item"> </app-platform>
 								</td>
@@ -422,7 +428,9 @@
 									</td>
 									<!--|date:'MM/dd/yyyy @ h:mma'  -->
 									<td class="center">
-										<h5>{{item.date |date:'MM/dd/yyyy @ h:mma'}}</h5>
+										<h5>
+										<app-timestamp [dateAndTime]="item.date"> </app-timestamp>
+										</h5>
 									</td>
 									<td class="center">
 									<app-platform [userPlatform]="item"> </app-platform>
@@ -461,7 +469,9 @@
 									</td>
 									<!--|date:'MM/dd/yyyy @ h:mma'  -->
 									<td class="center">
-										<h5>{{item.date |date:'MM/dd/yyyy @ h:mma' }}</h5>
+										<h5>
+										<app-timestamp [dateAndTime]="item.date"> </app-timestamp>
+										</h5>
 									</td>
 									<td class="center">
 									<app-platform [userPlatform]="item"> </app-platform>
@@ -523,7 +533,9 @@
 								</td>
 								<!-- |date:'MM/dd/yyyy @ h:mma' -->
 								<td class="center">
-									<h5>{{item.time |date:'MM/dd/yyyy @ h:mma' }}</h5>
+									<h5>
+									<app-timestamp [dateAndTime]="item.time"> </app-timestamp>
+									</h5>
 								</td>
 								<td class="center">
 								<app-platform [deviceTypeOs]="true" [userPlatform]="item"> </app-platform>
