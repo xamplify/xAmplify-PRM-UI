@@ -19,7 +19,7 @@ a.disabled{pointer-events:none;cursor:not-allowed}
 .actions-block {float:right;}
 .actions-block a{border: 1px solid #e7e6e3;padding: 3px;margin-right: 5px;width: 32px;height: 32px;display: block;float: left;color: #5bb2f5;text-decoration: none;}
 .actions-block a:nth-child(2){color: #ff0000;}
-.actions-block i{font-size: 20px;    text-align: center;vertical-align: middle;display: block;margin-top: 5px;}
+.actions-block i{font-size: 15px;    text-align: center;vertical-align: middle;display: block;margin-top: 5px;}
 .actions-block a:hover{border: 1px solid #5bb2f5; background: #5bb2f5;color: #FFF;}
 .actions-block a:nth-child(2):hover{background-color: #ff0000;border: 1px solid #ff0000;}
 .textareaNumber {
