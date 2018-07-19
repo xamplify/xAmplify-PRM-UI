@@ -87,7 +87,9 @@
                          <td class="text-center">
                            <span class='view-by-banner'>{{videoFile.viewBy}}</span>
                          </td>
-                         <td class="text-center">{{videoFile.uploadedDate}}</td>
+                         <td class="text-center">
+                         <app-timestamp [isOnlyDate]="true" [dateAndTime]="videoFile.uploadedDate"> </app-timestamp>
+                         </td>
                          <td>
                            <div class="actions-block" *ngIf="videoFileService.videoType==='myVideos'">
                              <a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor"
@@ -141,7 +143,9 @@
                           <span style="float: left;">By {{videoFile.companyName | slice:0:15}}<span *ngIf="videoFile.companyName?.length>15">...</span></span>
                           <!-- <span *ngIf="!videoFile.companyName">{{videoFile.uploadedUserName}}</span> -->
                       </span>
-                      <span class="video-upload-date"  title="Uploaded Date">{{videoFile.uploadedDate}}</span>
+                      <span class="video-upload-date"  title="Uploaded Date">
+                      <app-timestamp [isOnlyDate]="true" [dateAndTime]="videoFile.uploadedDate"> </app-timestamp>
+                      </span>
                    <div class="bookmark-ribbon" *ngIf="videoFileService.videoType === 'partnerVideos'">
                      <span style="margin: 0px -7px; font-size: 17px; color: white;">
                        <i *ngIf="videoFileService.videoType === 'partnerVideos'" class="fa fa-handshake-o"  aria-hidden="true"></i>

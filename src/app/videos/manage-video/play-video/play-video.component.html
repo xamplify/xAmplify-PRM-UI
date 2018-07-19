@@ -100,7 +100,9 @@
 				<app-embed-modal *ngIf="embedModelVideo" [video]="embedModelVideo" (notifyParent)="closeEmbedModal($event)"></app-embed-modal>
 				<!-- Modal End-->
 				<div [hidden]="isVideoChanged">
-					<strong>Uploaded on :{{selectedVideo.uploadedDate}}</strong>
+					<strong>Uploaded on :
+					<app-timestamp [isOnlyDate]="true" [dateAndTime]="selectedVideo.uploadedDate"> </app-timestamp>
+					</strong>
 					<p align="justify" style="word-break: break-all;"> {{selectedVideo.description}}</p>
 				</div>
 				<div [hidden]="isVideoChanged">
