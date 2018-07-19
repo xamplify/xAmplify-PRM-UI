@@ -33,4 +33,5 @@ export class User {
     companyName:string = "";
     vendorSignUp:boolean = false;
     companyLogo:string = "";
+    hasPassword = false;
 }

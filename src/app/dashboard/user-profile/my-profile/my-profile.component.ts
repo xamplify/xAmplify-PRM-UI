@@ -300,6 +300,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                             } else if (response.message == "Password Updated Successfully") {
                                 this.ngxloading = false;
                                 this.customResponse = new CustomResponse('SUCCESS',this.properties.PASSWORD_UPDATED,true);
+                                this.userData.hasPassword = true;
                                 this.updatePasswordForm.reset();
                             } else {
                                 this.ngxloading = false;
@@ -349,7 +350,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     validateUpdatePasswordForm() {
         var passwordRegex = this.regularExpressions.PASSWORD_PATTERN;
         this.updatePasswordForm = this.fb.group({
-            'oldPassword': [null, [Validators.required]],
+            'oldPassword': [null],
             'newPassword': [null, [Validators.required, Validators.minLength(6), Validators.pattern(passwordRegex)]],
             'confirmNewPassword': [null, [Validators.required]],
         }, {
