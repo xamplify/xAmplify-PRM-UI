@@ -21,17 +21,17 @@ import { ExportCsvComponent } from './export/export-csv/export-csv.component';
 import { LoadingModule } from 'ngx-loading';
 import { AnalyticsLoaderComponent } from './loader/analytics-loader/analytics-loader.component';
 import { VideoThumbnailComponent } from './video-thumbnail/video-thumbnail.component';
-import { DateAndTimeComponent } from './date-and-time/date-and-time.component';
+import { TimestampComponent } from './timestamp/timestamp.component';
 
 @NgModule({
   imports: [CommonModule, FormsModule,LoadingModule],
   declarations: [DonutChartComponent, PaginationComponent, WorldmapComponent,PieChartComponent,
                  BarChartComponent, EmbedModalComponent, EmbedModalComponent, UserInfoComponent, LocationComponent,
                  PlatformComponent, ResponseMessageComponent, PreviewVideoComponent, ContactsCampaignsMailsComponent, ListLoaderComponent,
-                 PlayVideoLoaderComponent, GridLoaderComponent, ExportCsvComponent, AnalyticsLoaderComponent, VideoThumbnailComponent, DateAndTimeComponent],
+                 PlayVideoLoaderComponent, GridLoaderComponent, ExportCsvComponent, AnalyticsLoaderComponent, VideoThumbnailComponent, TimestampComponent],
   exports: [DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent,
     BarChartComponent, EmbedModalComponent, UserInfoComponent, LocationComponent, PlatformComponent,
     ResponseMessageComponent, PreviewVideoComponent,PieChartComponent, ListLoaderComponent, GridLoaderComponent, PlayVideoLoaderComponent,
-    ExportCsvComponent,LoadingModule,AnalyticsLoaderComponent,VideoThumbnailComponent, DateAndTimeComponent]
+    ExportCsvComponent,LoadingModule,AnalyticsLoaderComponent,VideoThumbnailComponent, TimestampComponent]
 })
 export class CommonComponentModule { }

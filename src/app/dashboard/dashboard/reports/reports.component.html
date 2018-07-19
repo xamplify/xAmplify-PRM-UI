@@ -52,7 +52,7 @@
 								<td class="center" *ngIf="reportName==='views'">{{view.viewsCount}}</td>
 								<td class="center" *ngIf="reportName!=='views'">{{view.minutesWatchedValue}}</td>
 								<td class="center">
-								<app-date-and-time [isOnlyDate]="true" [dateAndTime]="view.date"> </app-date-and-time>
+								<app-timestamp [isOnlyDate]="true" [dateAndTime]="view.date"> </app-timestamp>
 								</td>
 							</tr>
 						</ng-container>
@@ -107,7 +107,7 @@
 							</td>
 							<td [title]="videoViews.videoTitle" class="center">{{videoViews.videoTitle | slice:0:20}} <span *ngIf="videoViews.videoTitle?.length>20">...</span></td>
 							<td class="center">
-							<app-date-and-time [dateAndTime]="videoViews.date"> </app-date-and-time>
+							<app-timestamp [dateAndTime]="videoViews.date"> </app-timestamp>
 							</td>
 						</tr>
 					</ng-container>
