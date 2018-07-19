@@ -8,7 +8,7 @@
 				</button>
 				<h4 class="modal-title">This {{checkengListType}} list is associated with the following campaigns:</h4>
 			</div>
-			<div class="modal-body">
+			<div class="modal-body table-responsive">
 				<p style="color: #7d7d7d;">Would you like to include newly added
 {{checkengListType}}(s) in these campaigns?</p>
 				<table class='table tgrid'>
@@ -34,10 +34,14 @@
 								id="{{campaign.campaignId}}"
 								[checked]="selectedCampaignIds.indexOf(campaign.campaignId)>-1"
 								(click)="selectedContactLisAssociatedCampaignIds(campaign.campaignId,$event)"></td>
-							<td align="center">{{campaign.campaignName}}</td>
+							<td align="center" title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:20}}
+							<span *ngIf="campaign.campaignName?.length>20">...</span>
+							</td>
 							<td align="center">{{campaign.campaignType}}</td>
 							<td align="center">{{campaign.fromName}}</td>
-							<td align="center">{{campaign.launchTime | date: 'short'}}</td>
+							<td align="center">
+							<app-timestamp [dateAndTime]="campaign.launchTime"> </app-timestamp>
+							</td>
 						</tr>
 						</ng-container>
 					</tbody>
