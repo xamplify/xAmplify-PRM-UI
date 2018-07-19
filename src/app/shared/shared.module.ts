@@ -23,13 +23,13 @@ import { CommonComponentModule } from '../common/common.module';
 
 @NgModule({
         imports: [CommonModule, RouterModule, FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,
-                TagInputModule, HttpModule, Ng2FilterPipeModule, ColorPickerModule, TimepickerModule.forRoot()
-                , BootstrapSwitchModule.forRoot(), TimezonePickerModule, LoadingModule, CommonComponentModule ],
+                  TagInputModule, HttpModule, Ng2FilterPipeModule, ColorPickerModule, TimepickerModule.forRoot(),
+                  BootstrapSwitchModule.forRoot(), TimezonePickerModule, LoadingModule, CommonComponentModule ],
         declarations: [LoaderComponent, UpdateStatusComponent, ConnectAccountsComponent, SocialLoaderComponent],
         exports: [FileSelectDirective, FileDropDirective, FormsModule, CommonModule, RouterModule, ColorPickerModule,
-                FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule, TagInputModule,
-                HttpModule, Ng2FilterPipeModule, LoaderComponent, TimepickerModule,
-                BootstrapSwitchModule, TimezonePickerModule, UpdateStatusComponent, ConnectAccountsComponent, LoadingModule, SocialLoaderComponent
+                  FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule, TagInputModule,
+                  HttpModule, Ng2FilterPipeModule, LoaderComponent, TimepickerModule,
+                  BootstrapSwitchModule, TimezonePickerModule, UpdateStatusComponent, ConnectAccountsComponent, LoadingModule, SocialLoaderComponent
                 ],
         providers: [],
 })
