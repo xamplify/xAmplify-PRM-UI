@@ -222,7 +222,8 @@ td>h5 {
 									<h2 class="percentage-value">{{campaign[6]}}%</h2>
 									<h6 class="percentage-text">interaction</h6>
 								</section>
-								<h5 class="text-primary" style="margin-top: 3.2em;">Released on {{campaign[3] | date: 'short'}}</h5>
+								<h5 class="text-primary" style="margin-top: 3.2em;">Released on 
+								<app-timestamp [dateAndTime]="campaign[3]"> </app-timestamp></h5>
 							</div>
 						</div>
 					</div>

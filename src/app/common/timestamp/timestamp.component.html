@@ -1,4 +1,4 @@
 <div>
-   <h5 *ngIf="!isOnlyDate">{{dateAndTime |date:'MM/dd/yyyy @ h:mma'}}</h5>
-   <h5 *ngIf="isOnlyDate">{{dateAndTime |date:'MM/dd/yyyy'}}</h5>
+   <h5 *ngIf="!isOnlyDate">{{dateAndTime |date:'medium'}}</h5>
+   <h5 *ngIf="isOnlyDate">{{dateAndTime |date:'mediumDate'}}</h5>
 </div> 
