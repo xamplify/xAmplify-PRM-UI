@@ -48,6 +48,7 @@ export class PartnerReportsComponent implements OnInit {
   partnerCampaignUISearchKey:string = "";
   inActivePartnersCount:number = 0;
   activePartnersCount:number = 0;
+  isListView = false;
   customResponse: CustomResponse = new CustomResponse();
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService, public pagination: Pagination,
     public referenseService: ReferenceService, public parterService: ParterService, public pagerService: PagerService,
@@ -55,6 +56,7 @@ export class PartnerReportsComponent implements OnInit {
     public utilService: UtilService) {
       this.loggedInUserId = this.authenticationService.getUserId();
       this.utilService.setRouterLocalStorage('partnerAnalytics');
+      this.isListView = ! this.referenseService.isGridView;
   }
 
   gotoMange() {

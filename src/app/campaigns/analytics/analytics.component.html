@@ -632,7 +632,7 @@
 			<h6><!-- {{item.time | date: 'short'}} -->
 			<app-timestamp [dateAndTime]="item.time"> </app-timestamp>
 			</h6>
-			
+
 		</td>
 		<td>
 			<div class="actions-block" *ngIf="item.emailActionCount > 1">
@@ -654,16 +654,19 @@
 		</thead>
 		<tbody>
 			<tr *ngFor="let emailLog of item.emailLogHistory">
-				<td *ngIf="campaignReport.emailActionType === 'open'">
-					<h6>{{emailLog.subject}}</h6>
+				<td *ngIf="campaignReport.emailActionType === 'open'" [title]="emailLog.subject">
+          <h6>{{emailLog.subject | slice:0:40}}
+				   <span *ngIf="emailLog.subject?.length > 40">...</span>
+          </h6>
+
 				</td>
 				<td *ngIf="campaignReport.emailActionType === 'click' && emailLog.url != null">
-					<h6>{{emailLog.url}}</h6>
+					<h6>{{emailLog.url}} <span *ngIf="emailLog.url?.length > 40">...</span></h6>
 				</td>
 				<td *ngIf="campaignReport.emailActionType === 'click' && emailLog.url == null">
 					<h6>Clicked on the video thumbnail</h6>
 				</td>
-				<td>
+				<td style="text-align: center;">
 				<app-timestamp [dateAndTime]="emailLog.time"> </app-timestamp>
 				</td>
 			</tr>
