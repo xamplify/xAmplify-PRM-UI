@@ -1,3 +1,4 @@
 <div>
-   <h5>{{dateAndTime |date:'MM/dd/yyyy @ h:mma'}}</h5>
+   <h5 *ngIf="!isOnlyDate">{{dateAndTime |date:'MM/dd/yyyy @ h:mma'}}</h5>
+    <h5 *ngIf="isOnlyDate">{{dateAndTime |date:'MM/dd/yyyy'}}</h5>
 </div> 

@@ -7,6 +7,8 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class DateAndTimeComponent implements OnInit {
  @Input() dateAndTime: any;
+ @Input() isOnlyTime = false;
+ @Input() isOnlyDate = false;
 
  constructor() { }
 
