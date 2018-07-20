@@ -601,81 +601,86 @@
 					</div>
 					 <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
 						<ng-container *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError">
-						<table class="table tgrid">
+						<table class="table tgrid" style="width:99%;">
 							<thead>
 								<tr>
 									<th>NAME</th>
 									<th *ngIf="campaignReport.emailActionType === 'open'">Email Subject</th>
 									<th *ngIf="campaignReport.emailActionType === 'click'">URL</th>
-									<th colspan="2">Latest Time</th>
+									<th style="position: relative;right: 30px;">Latest Time</th>
 								</tr>
 							</thead>
 							<tbody>
-<ng-container *ngFor="let item of campaignReport.emailLogs">
-	<tr>
-		<td>
-			<app-user-info [userInfo]="item"> </app-user-info>
-		</td>
-		<td *ngIf="campaignReport.emailActionType === 'open'">
-			<h6 title="{{item.subject}}">
-				{{item.subject | slice:0:40}}
-				<span *ngIf="item.subject?.length > 40">...</span>
-			</h6>
-		</td>
-		<td *ngIf="campaignReport.emailActionType === 'click' && item.url != null">
-			<h6>{{item.url | slice:0:40}} <span *ngIf="item.url?.length > 40">...</span></h6>
-		</td>
-		<td *ngIf="campaignReport.emailActionType === 'click' && item.url == null">
-			<h6>Clicked on the video thumbnail</h6>
-		</td>
-		<td>
-			<h6><!-- {{item.time | date: 'short'}} -->
-			<app-timestamp [dateAndTime]="item.time"> </app-timestamp>
-			</h6>
+                <ng-container *ngFor="let item of campaignReport.emailLogs">
+                  <tr>
+                    <td>
+                      <app-user-info [userInfo]="item"> </app-user-info>
+                    </td>
+                    <td *ngIf="campaignReport.emailActionType === 'open'">
+                      <h6 title="{{item.subject}}">
+                        {{item.subject | slice:0:40}}
+                        <span *ngIf="item.subject?.length > 40">...</span>
+                      </h6>
+                    </td>
+                    <td *ngIf="campaignReport.emailActionType === 'click' && item.url != null">
+                      <h6>{{item.url | slice:0:40}} <span *ngIf="item.url?.length > 40">...</span></h6>
+                    </td>
+                    <td *ngIf="campaignReport.emailActionType === 'click' && item.url == null">
+                      <h6>Clicked on the video thumbnail</h6>
+                    </td>
+                    <td>
+                      <h6 style="text-align: left"><!-- {{item.time | date: 'short'}} -->
+                      <app-timestamp [dateAndTime]="item.time"> </app-timestamp>
+                      </h6>
 
-		</td>
-		<td>
-			<div class="actions-block" *ngIf="item.emailActionCount > 1">
-				<a title="View History" (click)="listEmailLogsByCampaignIdUserIdActionType(item, campaignReport.emailActionType)">
-					<i class="fa" [ngClass]="{'fa-plus': !item.isExpand, 'fa-minus': item.isExpand}"></i>
-				</a>
-			</div>
-		</td>
-	</tr>
-	<tr [ngClass]="{'hidden': !item.isExpand}">
-		<td colspan="4">
-	<table class="table tgrid table-condensed" *ngIf="item.emailLogHistory">
-		<thead>
-			<tr>
-				<th *ngIf="campaignReport.emailActionType === 'open'">Email Subject</th>
-				<th *ngIf="campaignReport.emailActionType === 'click'">URL</th>
-				<th colspan="2">Opened At</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr *ngFor="let emailLog of item.emailLogHistory">
-				<td *ngIf="campaignReport.emailActionType === 'open'" [title]="emailLog.subject">
-          <h6>{{emailLog.subject | slice:0:40}}
-				   <span *ngIf="emailLog.subject?.length > 40">...</span>
-          </h6>
+                      <div style="text-align: center;position: relative; top: -27px;" class="actions-block" *ngIf="item.emailActionCount > 1">
+                          <a title="View History" (click)="listEmailLogsByCampaignIdUserIdActionType(item, campaignReport.emailActionType)">
+                            <i class="fa" [ngClass]="{'fa-plus': !item.isExpand, 'fa-minus': item.isExpand}"></i>
+                          </a>
+                        </div>
+                    </td>
+                    <!-- <td>
+                      <div class="actions-block" *ngIf="item.emailActionCount > 1">
+                        <a title="View History" (click)="listEmailLogsByCampaignIdUserIdActionType(item, campaignReport.emailActionType)">
+                          <i class="fa" [ngClass]="{'fa-plus': !item.isExpand, 'fa-minus': item.isExpand}"></i>
+                        </a>
+                      </div>
+                    </td> -->
+                  </tr>
+                  <tr [ngClass]="{'hidden': !item.isExpand}">
+                    <td colspan="4">
+                  <table class="table tgrid table-condensed" *ngIf="item.emailLogHistory">
+                    <thead>
+                      <tr>
+                        <th *ngIf="campaignReport.emailActionType === 'open'">Email Subject</th>
+                        <th *ngIf="campaignReport.emailActionType === 'click'">URL</th>
+                        <th colspan="2">Opened At</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let emailLog of item.emailLogHistory">
+                        <td *ngIf="campaignReport.emailActionType === 'open'" [title]="emailLog.subject">
+                          <h6>{{emailLog.subject | slice:0:40}}
+                          <span *ngIf="emailLog.subject?.length > 40">...</span>
+                          </h6>
 
-				</td>
-				<td *ngIf="campaignReport.emailActionType === 'click' && emailLog.url != null">
-					<h6>{{emailLog.url}} <span *ngIf="emailLog.url?.length > 40">...</span></h6>
-				</td>
-				<td *ngIf="campaignReport.emailActionType === 'click' && emailLog.url == null">
-					<h6>Clicked on the video thumbnail</h6>
-				</td>
-				<td style="text-align: center;">
-				<app-timestamp [dateAndTime]="emailLog.time"> </app-timestamp>
-				</td>
-			</tr>
-		</tbody>
-	</table>
-	</td>
-	</tr>
+                        </td>
+                        <td *ngIf="campaignReport.emailActionType === 'click' && emailLog.url != null">
+                          <h6>{{emailLog.url}} <span *ngIf="emailLog.url?.length > 40">...</span></h6>
+                        </td>
+                        <td *ngIf="campaignReport.emailActionType === 'click' && emailLog.url == null">
+                          <h6>Clicked on the video thumbnail</h6>
+                        </td>
+                        <td style="text-align: center;">
+                        <app-timestamp [dateAndTime]="emailLog.time"> </app-timestamp>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  </td>
+                  </tr>
 
-</ng-container>
+                </ng-container>
 							</tbody>
 						</table>
 						</ng-container>
