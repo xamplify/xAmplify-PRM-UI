@@ -418,4 +418,9 @@ a.social-stats{text-align: center;}
     width: 15px;
     height: 23px;
 }
-
+.sparkline-chart .number {
+  width: 100% !important;
+}
+.sparkline-chart .number > canvas {
+  width: 100% !important;
+}
