@@ -27,6 +27,7 @@
 .title-div {
   margin-left: 10px;
   float: left;
+  text-align: left !important;
 }
 .title-div > a {
   color: #666;
