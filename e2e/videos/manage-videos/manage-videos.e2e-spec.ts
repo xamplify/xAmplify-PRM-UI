@@ -10,10 +10,10 @@ describe("Manage Video Test ", () => {
       manageVideosPage = new ManageVideoPage();
       uploadVideoPage = new UploadVideoPage();
       browser.waitForAngularEnabled(false);
-      if(manageVideosPage.getUserNameTF().isPresent() || manageVideosPage.getPasswordTF().isPresent()){
-        manageVideosPage.navigateToLogin();
-        manageVideosPage.login();
-      }
+      // if(manageVideosPage.getUserNameTF().isPresent() || manageVideosPage.getPasswordTF().isPresent()){
+      //   manageVideosPage.navigateToLogin();
+      //   manageVideosPage.login();
+      // }
     });
 
     it("should able to go to Manage videos page ", () => {
