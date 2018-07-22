@@ -58,4 +58,15 @@ export class LoginPage extends BasePage {
     browser.waitForAngularEnabled(false);
     element.all(by.xpath('//*[@id="logoutButton"]/a')).click();
   }
+  loginLogoutCheck(){
+    this.navigateToLogin();
+    let displayed;
+    this.getUserNameTF().isPresent().then(function(visible) { displayed = visible });
+     if(!displayed){  console.log('logout is not happend');
+     } else { this.login();}
+     if(this.getLoginButton().isPresent()){
+      this.login();
+     }
+  }
+
 }

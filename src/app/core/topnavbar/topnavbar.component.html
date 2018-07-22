@@ -174,7 +174,7 @@
 								<i class="fa fa-paper-plane-o" aria-hidden="true"></i>Welcome</a></li>
 							<li *ngIf="refService.userDefaultPage == 'WELCOME'  && authenticationService.user.hasCompany"><a [routerLink]="['/home/dashboard']">
 								<i class="fa fa-paper-plane-o" aria-hidden="true"></i>Dashboard</a></li>
-							<li><a [routerLink]="['/userlock']"> <i
+							<li id="lockscreen"><a [routerLink]="['/userlock']"> <i
 									class="icon-lock"></i> Lock Screen
 							</a></li>
 							<li class="divider"></li>
