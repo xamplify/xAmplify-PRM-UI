@@ -7,7 +7,8 @@ describe("My profile Page Test", () => {
   describe("my profile page should work fine", () => {
     beforeAll(() => {
       myProfilePage = new MyProfilePage();
-      myProfilePage.loginLogoutCheck();
+      myProfilePage.navigateToLogin();
+      myProfilePage.login();
     });
 
     it("should able to go to my profile page ", () => {

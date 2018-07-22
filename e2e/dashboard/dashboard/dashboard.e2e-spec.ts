@@ -1,7 +1,7 @@
 import { by, browser, element } from "protractor";
 import { DashBoardPage } from "./dashboard.page";
 
-xdescribe("Dashboard Test", () => {
+describe("Dashboard Test", () => {
   let dashBoardPage: DashBoardPage;
 
   describe("dashboard page should work fine", () => {
