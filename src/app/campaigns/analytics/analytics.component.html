@@ -601,13 +601,13 @@
 					</div>
 					 <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
 						<ng-container *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError">
-						<table class="table tgrid" style="width:99%;">
+						<table class="table tgrid">
 							<thead>
 								<tr>
-									<th>NAME</th>
-									<th *ngIf="campaignReport.emailActionType === 'open'">Email Subject</th>
-									<th *ngIf="campaignReport.emailActionType === 'click'">URL</th>
-									<th style="position: relative;right: 30px;">Latest Time</th>
+									<th style="width:40%">NAME</th>
+									<th style="width:33%" *ngIf="campaignReport.emailActionType === 'open'">Email Subject</th>
+									<th style="width:33%" *ngIf="campaignReport.emailActionType === 'click'">URL</th>
+									<th style="width:27%;">Latest Time</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -629,7 +629,7 @@
                       <h6>Clicked on the video thumbnail</h6>
                     </td>
                     <td>
-                      <h6 style="text-align: left"><!-- {{item.time | date: 'short'}} -->
+                      <h6><!-- {{item.time | date: 'short'}} -->
                       <app-timestamp [dateAndTime]="item.time"> </app-timestamp>
                       </h6>
 
