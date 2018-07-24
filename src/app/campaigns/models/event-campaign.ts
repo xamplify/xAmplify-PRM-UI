@@ -1,7 +1,8 @@
 import { EmailTemplate } from '../../email-template/models/email-template';
 import { Location } from './location';
 import { CampaignEventTime } from './campaign-event-time';
-import { CampaignEventMedia } from './campaign-event-media'; 
+import { CampaignEventMedia } from './campaign-event-media';
+import { Reply } from './campaign-reply'; 
 import { User } from '../../core/models/user';
 import { ContactList } from '../../contacts/models/contact-list';
 
@@ -20,6 +21,7 @@ export class EventCampaign {
     campaignScheduleType: string;
     campaignLocation: Location = new Location();
     country: string;
+    countryId: number;
     publicEventCampaign: boolean = true;
     toPartner: boolean = true;
     inviteOthers: boolean = true;
@@ -31,6 +33,12 @@ export class EventCampaign {
 
     campaignEventTimes: Array<CampaignEventTime> = [];
     campaignEventMedias: Array<CampaignEventMedia> = [];
+    campaignReplies: Array<Reply> = [];
 
     hostedBy: string = "";
+
+    constructor() {
+        this.campaignEventMedias.push(new CampaignEventMedia());
+        this.campaignEventTimes.push(new CampaignEventTime());
+    }
 }

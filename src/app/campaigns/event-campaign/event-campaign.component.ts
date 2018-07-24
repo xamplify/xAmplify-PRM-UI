@@ -6,14 +6,21 @@ import { CampaignService } from '../../campaigns/services/campaign.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { PagerService } from '../../core/services/pager.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
+import { EmailTemplateService } from '../../email-template/services/email-template.service';
 
 import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import { EventCampaign } from '../models/event-campaign';
 import { CampaignEventTime } from '../models/campaign-event-time';
+import { CampaignEventMedia } from '../models/campaign-event-media';
 import { Pagination } from '../../core/models/pagination';
 import { ContactList } from '../../contacts/models/contact-list';
 import { EmailTemplate } from '../../email-template/models/email-template';
 import { User } from '../../core/models/user';
+import { Country } from '../../core/models/country';
+import { Timezone } from '../../core/models/timezone';
+import { Properties } from '../../common/models/properties';
+import { Reply } from '../models/campaign-reply';
+import { CampaignEmailTemplate } from '../models/campaign-email-template';
 
 declare var $, flatpickr, CKEDITOR;
 
@@ -21,9 +28,20 @@ declare var $, flatpickr, CKEDITOR;
   selector: 'app-event-campaign',
   templateUrl: './event-campaign.component.html',
   styleUrls: ['./event-campaign.component.css'],
-  providers: [PagerService, Pagination, CallActionSwitch]
+  providers: [PagerService, Pagination, CallActionSwitch, Properties]
 })
 export class EventCampaignComponent implements OnInit {
+  emailTemplates: Array<EmailTemplate> = [];
+  campaignEmailTemplate: CampaignEmailTemplate = new CampaignEmailTemplate();
+  reply: Reply = new Reply();
+  countries: Country[];
+  timezones: Timezone[];
+  allItems = [];
+  dataError: boolean = false;
+
+  launchOptions = ['NOW', 'SCHEDULE', 'SAVE'];
+  selectedLaunchOption: string;
+
   loggedInUserId: number;
   isPartnerUserList: boolean = false;
   eventCampaign: EventCampaign = new EventCampaign();
@@ -41,10 +59,14 @@ export class EventCampaignComponent implements OnInit {
     private contactService: ContactService,
     public campaignService: CampaignService,
     public authenticationService: AuthenticationService,
+    public emailTemplateService: EmailTemplateService,
     private pagerService: PagerService,
     private logger: XtremandLogger,
-    private router: Router) {
-    this.eventCampaign.campaignEventTimes.push(new CampaignEventTime());
+    private router: Router,
+    public properties: Properties) {
+    this.countries = this.referenceService.getCountries();
+    this.listEmailTemplates();
+    this.eventCampaign.emailTemplate = this.emailTemplates[0];
   }
 
   ngOnInit() {
@@ -54,11 +76,13 @@ export class EventCampaignComponent implements OnInit {
     flatpickr('.flatpickr', {
       enableTime: true,
       dateFormat: 'm/d/Y H:i',
-      time_24hr: false
+      time_24hr: false,
+      minDate: new Date(),
     });
+
+
     this.ckeConfig = {
       allowedContent: true,
-      toolbar: 'Basic'
     };
   }
 
@@ -147,7 +171,6 @@ export class EventCampaignComponent implements OnInit {
       let contactList = new ContactList(userListId);
       eventCampaign.userLists.push(contactList);
     }
-    this.eventCampaign.emailTemplate.id = 1700;
     this.eventCampaign.user.userId = this.loggedInUserId;
     this.eventCampaign.campaignScheduleType = launchOption;
     console.log(eventCampaign);
@@ -195,6 +218,12 @@ export class EventCampaignComponent implements OnInit {
     }
   }
 
+  setFromName() {
+    let user = this.teamMemberEmailIds.filter((teamMember) => teamMember.emailId === this.eventCampaign.email)[0];
+    this.eventCampaign.fromName = $.trim(user.firstName + " " + user.lastName);
+    this.setEmailIdAsFromName();
+  }
+
   fileChange(event: any) {
     const file: File = event.target.files[0];
     const formData: FormData = new FormData();
@@ -208,5 +237,141 @@ export class EventCampaignComponent implements OnInit {
       error => console.log(error),
       () => console.log('Finished')
       );
+  }
+
+  resetcampaignEventMedia() {
+    this.eventCampaign.campaignEventMedias[0] = new CampaignEventMedia();
+  }
+
+  onChangeCountry(countryId) {
+    this.timezones = this.referenceService.getTimeZonesByCountryId(countryId);
+  }
+
+  addReplyRows() {
+    this.reply = new Reply();
+    let length = this.allItems.length;
+    length = length + 1;
+    var id = 'reply-' + length;
+    this.reply.divId = id;
+    this.reply.actionId = 0;
+    this.reply.subject = this.referenceService.replaceMultipleSpacesWithSingleSpace(this.eventCampaign.campaign);
+
+    this.eventCampaign.campaignReplies.push(this.reply);
+    this.allItems.push(id);
+    this.loadEmailTemplatesForAddReply(this.reply);
+  }
+
+  loadEmailTemplatesForAddReply(reply: Reply) {
+    this.campaignEmailTemplate.httpRequestLoader.isHorizontalCss = true;
+    this.referenceService.loading(this.campaignEmailTemplate.httpRequestLoader, true);
+    reply.emailTemplatesPagination.filterBy = "CampaignRegularEmails";
+    if (reply.emailTemplatesPagination.searchKey == null || reply.emailTemplatesPagination.searchKey == "") {
+      reply.emailTemplatesPagination.campaignDefaultTemplate = true;
+    } else {
+      reply.emailTemplatesPagination.campaignDefaultTemplate = false;
+      reply.emailTemplatesPagination.isEmailTemplateSearchedFromCampaign = true;
+    }
+    reply.emailTemplatesPagination.maxResults = 12;
+    this.emailTemplateService.listTemplates(reply.emailTemplatesPagination, this.loggedInUserId)
+      .subscribe(
+      (data: any) => {
+        reply.emailTemplatesPagination.totalRecords = data.totalRecords;
+        reply.emailTemplatesPagination = this.pagerService.getPagedItems(reply.emailTemplatesPagination, data.emailTemplates);
+        this.filterReplyrEmailTemplateForEditCampaign(reply);
+        this.referenceService.loading(this.campaignEmailTemplate.httpRequestLoader, false);
+      },
+      (error: string) => {
+        this.logger.errorPage(error);
+      },
+      () => this.logger.info("Finished loadEmailTemplatesForAddReply()", reply.emailTemplatesPagination)
+      )
+  }
+
+  filterReplyrEmailTemplateForEditCampaign(reply: Reply) {
+    if (reply.emailTemplatesPagination.emailTemplateType == 0 && reply.emailTemplatesPagination.searchKey == null) {
+      if (reply.emailTemplatesPagination.pageIndex == 1) {
+        reply.showSelectedEmailTemplate = true;
+      } else {
+        reply.showSelectedEmailTemplate = false;
+      }
+    } else {
+      let emailTemplateIds = reply.emailTemplatesPagination.pagedItems.map(function (a) { return a.id; });
+      if (emailTemplateIds.indexOf(reply.selectedEmailTemplateIdForEdit) > -1) {
+        reply.showSelectedEmailTemplate = true;
+      } else {
+        reply.showSelectedEmailTemplate = false;
+      }
+    }
+  }
+
+  remove(divId: string, type: string) {
+    if (type === "replies") {
+      this.eventCampaign.campaignReplies = this.spliceArray(this.eventCampaign.campaignReplies, divId);
+      console.log(this.eventCampaign.campaignReplies);
+    }
+    $('#' + divId).remove();
+    let index = divId.split('-')[1];
+    let editorName = 'editor' + index;
+    let errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
+    if (errorLength === 0) {
+      this.dataError = false;
+    }
+  }
+
+  spliceArray(arr: any, id: string) {
+    arr = $.grep(arr, function (data, index) {
+      return data.divId !== id
+    });
+    return arr;
+  }
+
+  setReplyEmailTemplate(emailTemplateId: number, reply: Reply, index: number, isDraft: boolean) {
+    if (!isDraft) {
+      reply.selectedEmailTemplateId = emailTemplateId;
+      $('#reply-' + index + emailTemplateId).prop("checked", true);
+    }
+  }
+  selectReplyEmailBody(event: any, index: number, reply: Reply) {
+    reply.defaultTemplate = event;
+  }
+
+  getEmailTemplatePreview(emailTemplate: EmailTemplate) {
+    let body = emailTemplate.body;
+    let emailTemplateName = emailTemplate.name;
+    if (emailTemplateName.length > 50) {
+      emailTemplateName = emailTemplateName.substring(0, 50) + "...";
+    }
+    $("#htmlContent").empty();
+    $("#email-template-title").empty();
+    $("#email-template-title").append(emailTemplateName);
+    $('#email-template-title').prop('title', emailTemplate.name);
+    let updatedBody = emailTemplate.body.replace("<div id=\"video-tag\">", "<div id=\"video-tag\" style=\"display:none\">");
+    $("#htmlContent").append(updatedBody);
+    $('.modal .modal-body').css('overflow-y', 'auto');
+    $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
+    $("#show_email_template_preivew").modal('show');
+  }
+
+  previewEventCampaignEmailTemplate(emailTemplateId: number) {
+    this.emailTemplateService.getById(emailTemplateId)
+          .subscribe(
+      (data: any) => {
+        this.getEmailTemplatePreview(data);
+      },
+      (error: string) => {
+        this.logger.errorPage(error);
+      },
+      () => this.logger.info("Finished previewEventCampaignEmailTemplate()", emailTemplateId)
+      )
+    
+  }
+
+  listEmailTemplates() {
+    let emailTemplate1 = new EmailTemplate(); emailTemplate1.id = 1700; emailTemplate1.name = "event based template 1";
+    let emailTemplate2 = new EmailTemplate(); emailTemplate2.id = 1701; emailTemplate2.name = "event based template 2";
+    let emailTemplate3 = new EmailTemplate(); emailTemplate3.id = 1702; emailTemplate3.name = "event based template 3";
+    this.emailTemplates.push(emailTemplate1);
+    this.emailTemplates.push(emailTemplate2);
+    this.emailTemplates.push(emailTemplate3);
   }
 }
