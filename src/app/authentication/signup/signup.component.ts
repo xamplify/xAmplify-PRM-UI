@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, AfterViewInit} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 
 import { User } from '../../core/models/user';
 import { RegularExpressions } from '../../common/models/regular-expressions';
@@ -88,6 +88,14 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
         private formBuilder: FormBuilder, private signUpUser: User,public route:ActivatedRoute,
         private userService: UserService, public referenceService: ReferenceService,private xtremandLogger: XtremandLogger,public authenticationService:AuthenticationService) {
         if(this.router.url.includes('/v-signup')){ this.vendorSignup = true; } else { this.vendorSignup = false;}
+          this.signUpForm = new FormGroup({
+            firstName: new FormControl(),
+            lastName: new FormControl(),
+            emailId: new FormControl(),
+            password: new FormControl(),
+            confirmPassword: new FormControl(),
+            agree : new FormControl()
+        });
     }
     goToBack(){
       if(this.router.url.includes('/v-signup')) {  this.router.navigate(['/']); } else {  this.router.navigate(['/login']) }
@@ -176,15 +184,23 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
       this.invalidVendor = false;
     }
     getUserDatails(alias:string){
-     this.userService.getSingUpUserDatails(alias).subscribe((data)=>{
+      try{
+       this.userService.getSingUpUserDatails(alias).subscribe((data)=>{
        this.signUpUser.firstName = data.firstName;
        this.signUpUser.lastName = data.lastName;
        this.signUpUser.emailId = data.emailId;
        this.buildForm();
      },
-    (error)=>{  this.buildForm();this.xtremandLogger.error('error in signup page'+error);}
+    (error)=>{   this.mainLoader = false;this.xtremandLogger.error('error in signup page'+error);}
     );
-    }
+    }catch(error){
+      this.signUpUser.firstName = '';
+      this.signUpUser.lastName = '';
+      this.signUpUser.emailId = '';
+      this.buildForm(); this.xtremandLogger.error('error in signup page'+error);
+      this.mainLoader = false;
+     }
+  }
     ngOnInit() {
       try{
         this.mainLoader = true;
@@ -195,15 +211,17 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
             this.getUserDatails(alias);
         }
         else {
-        	this.buildForm();
+          this.buildForm();
+          this.mainLoader = false;
         }
-      }catch(error){this.xtremandLogger.error('error'+error); }
+      }catch(error){  this.mainLoader = false;this.xtremandLogger.error('error'+error); }
     }
     ngAfterViewInit(){
       $('body').tooltip({ selector: '[data-toggle="tooltip"]' });
     }
     ngOnDestroy(){
       this.invalidVendor = false;
+      this.mainLoader = false;
     }
 
 }
