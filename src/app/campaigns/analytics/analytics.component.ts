@@ -496,9 +496,10 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
           this.userCampaignReport.emailOpenCount += 1;
         } else if (this.emailLogs[i].actionId === 14 || this.emailLogs[i].actionId === 15) {
           this.userCampaignReport.emailClickedCount += 1;
-        } else if (this.emailLogs[i].actionId === 1) {
-          this.userCampaignReport.totalUniqueWatchCount += 1;
         }
+       // else if (this.emailLogs[i].actionId === 1) {
+       //   this.userCampaignReport.totalUniqueWatchCount += 1;
+      //  }
       }
     }
       this.loading = false;
@@ -512,6 +513,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     this.getTotalTimeSpentOfCampaigns(campaignViews.userId, campaignViews.campaignId);
     this.selectedRow = campaignViews;
     this.isTimeLineView = !this.isTimeLineView;
+    this.userCampaignReport.totalUniqueWatchCount = campaignViews.viewsCount;
     if (!this.barChartCliked) {
       this.pagination.pageIndex = 1;
       this.pagination.maxResults = 10;

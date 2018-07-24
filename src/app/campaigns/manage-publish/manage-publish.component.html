@@ -101,11 +101,17 @@
 											</span>
 											<span align="right" title="Upload Date">
 												<!-- <b *ngIf="campaign.launched || !campaign.launched && campaign.launchedOn?.length > 0">{{campaign.launchedOn}}</b> -->
-												<b *ngIf="campaign.scheduleType=='NOW' || campaign.scheduleType=='SCHEDULE'">{{campaign.launchedOn}}</b>
-												<b *ngIf="campaign.scheduleType=='SAVE'">{{campaign.startTime}}</b>
+												<b *ngIf="campaign.scheduleType=='NOW' || campaign.scheduleType=='SCHEDULE'">
+												<app-timestamp [isOnlyDate]="true" [dateAndTime]="campaign.launchedOn"> </app-timestamp>
+												</b>
+												<b *ngIf="campaign.scheduleType=='SAVE'">
+												<app-timestamp [isOnlyDate]="true" [dateAndTime]="campaign.startTime"> </app-timestamp>
+												</b>
 											</span>
 										</td>
-										<td class="center">{{campaign.createdDate}}</td>
+										<td class="center">
+										<app-timestamp [isOnlyDate]="true" [dateAndTime]="campaign.createdDate"> </app-timestamp>
+										</td>
 										<td class="center">
 											<div class="actions-block">
 												<ng-container *ngIf="!campaign.launched">
@@ -240,8 +246,12 @@
 												<span *ngIf="!campaign.launched && campaign.launchedOn?.length==0">Saved On</span>
 											</span>
 											<span title="Upload date"><b>
-												<span *ngIf="campaign.scheduleType=='NOW' || campaign.scheduleType=='SCHEDULE'">{{campaign.launchedOn}}</span>
-												<span *ngIf="campaign.scheduleType=='SAVE'">{{campaign.startTime}}</span></b>
+												<span *ngIf="campaign.scheduleType=='NOW' || campaign.scheduleType=='SCHEDULE'">
+												<app-timestamp [isOnlyDate]="true" [dateAndTime]="campaign.launchedOn"> </app-timestamp>
+												</span>
+												<span *ngIf="campaign.scheduleType=='SAVE'">
+												<app-timestamp [isOnlyDate]="true" [dateAndTime]="campaign.startTime"> </app-timestamp>
+												</span></b>
 											</span>
 											</h6>
 											<div class="bookmark-ribbon">

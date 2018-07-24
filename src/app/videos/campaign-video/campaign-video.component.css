@@ -89,11 +89,11 @@ font-size: 1em;
 }
 .logoFullscreen {
     position: absolute;
-    top: 15px;
-    width: 91px;
-    height: 58px;
-    right: 21px;
-    background: transparent;
+    top: 15px !important;
+    width: 91px !important;
+    height: 58px !important;
+    right: 21px !important;
+    background: transparent !important;
 }
 
 .hideDiv {
@@ -108,7 +108,7 @@ font-size: 1em;
 
 
 
-img {
+  .logo-default {
     vertical-align: middle;
     position: absolute;
     bottom: 10px;

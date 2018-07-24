@@ -10,10 +10,14 @@ describe("Manage Video Test ", () => {
       manageVideosPage = new ManageVideoPage();
       uploadVideoPage = new UploadVideoPage();
       browser.waitForAngularEnabled(false);
-      if(manageVideosPage.getUserNameTF().isPresent()){
-        manageVideosPage.navigateToLogin();
-        manageVideosPage.login();
-      }
+      manageVideosPage.navigateToLogin();
+      let displayed;
+      manageVideosPage.getUserNameTF().isPresent().then(function(visible) { displayed = visible });
+      if(!displayed){  console.log('logout is not happend');
+       if(manageVideosPage.getLoginButton().isPresent().then(function(visible) { displayed = visible })){
+        if(displayed){manageVideosPage.login();}
+       }
+       } else { manageVideosPage.login();}
     });
 
     it("should able to go to Manage videos page ", () => {

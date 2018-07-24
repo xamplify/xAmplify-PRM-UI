@@ -1,17 +1,14 @@
 import { by, browser, element } from "protractor";
 import { MyProfilePage } from "./my-profile.po";
-var path = require('path');
 
-describe("My profile Test ", () => {
+describe("My profile Page Test", () => {
   let myProfilePage: MyProfilePage;
-  describe("Profile Page test", () => {
+
+  describe("my profile page should work fine", () => {
     beforeAll(() => {
       myProfilePage = new MyProfilePage();
-      browser.waitForAngularEnabled(false);
-      if(myProfilePage.getUserNameTF().isPresent()){
-        myProfilePage.navigateToLogin();
-        myProfilePage.login();
-      }
+      myProfilePage.navigateToLogin();
+      myProfilePage.login();
     });
 
     it("should able to go to my profile page ", () => {
@@ -35,15 +32,7 @@ describe("My profile Test ", () => {
     });
 
     afterAll(() => {
-      browser.waitForAngularEnabled(false);
-      browser.sleep(2000);
-      myProfilePage.getProfileDropdown();
-      browser.waitForAngularEnabled(false);
-      element.all(by.xpath('//*[@id="logoutButton"]/a')).click();
+       myProfilePage.logout();
     });
-
   });
-
 });
-
-

@@ -130,8 +130,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
         const offsetValues = dates;
         $('#sparkline_bar').sparkline(myvalues, {
             type: 'bar',
-            width: '100',
-            barWidth: 5,
+            width: '70',
+            barWidth: 3,
             height: '55',
             barColor: '#35aa47',
             negBarColor: '#e02222',
@@ -163,8 +163,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
         const offsetValues = dates;
         $('#sparkline_bar2').sparkline(myvalues, {
             type: 'bar',
-            width: '100',
-            barWidth: 5,
+            width: '70',
+            barWidth: 3,
             height: '55',
             barColor: '#35aa47',
             negBarColor: '#e02222',
@@ -186,8 +186,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
         const offsetValues = dates;
         $('#sparkline_line').sparkline(myvalues, {
             type: 'line',
-            width: '100',
-            barWidth: 5,
+            width: '70',
+            barWidth: 3,
             height: '55',
             barColor: '#35aa47',
             negBarColor: '#e02222',

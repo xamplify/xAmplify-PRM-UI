@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
@@ -197,7 +197,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                            // updatedBody = updatedBody.replace("video-tag", "newPlayerVideo");
                             updatedBody = updatedBody.replace('<div id="video-tag"></div>', '<div id="newPlayerVideo">'+
                             '<div id="overlay-logo-bee"><a href='+this.logoLink+' target="_blank" >'+
-                            '<img id="image"  style="position: relative; top: 47px; width: 63px;z-index: 9;left: 388px;" src='+this.authenticationService.MEDIA_URL + this.logoImageUrlPath+'></a></div></div>');
+                            '<img id="image"  style="position: absolute;top: 45px;width: 68px; z-index: 9;right: 29px;" src='+this.authenticationService.MEDIA_URL + this.logoImageUrlPath+'></a></div></div>');
                             this.templatehtml = updatedBody;
                             checkVideoTag = 'default';
                             document.getElementById('para').innerHTML = this.templatehtml;
@@ -442,7 +442,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                     selfPanorama.videoFileService.pauseAction = false;
                     selfPanorama.xtremandLog.startDuration = 0;
                     selfPanorama.xtremandLog.stopDuration = 0;
-                    this.play();
+                   // this.play();
                     $('.video-js .vjs-control-bar .vjs-VR-control').css('cssText', 'color:' + selfPanorama.campaignVideoFile.playerColor + '!important');
                 });
                 player.on('play', function () {
@@ -581,7 +581,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
         const overrideNativeValue = this.referService.getBrowserInfoForNativeSet();
             this.videoJSplayer = videojs('videoId', {
                 "controls": true,
-                "autoplay": true,
+                "autoplay": false,
                 "preload": "auto",
                 html5: {
                     hls: {

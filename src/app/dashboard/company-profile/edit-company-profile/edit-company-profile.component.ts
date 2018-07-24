@@ -19,6 +19,7 @@ import { ReferenceService } from '../../../core/services/reference.service';
 import { CompanyProfile } from '../models/company-profile';
 import { CustomResponse } from '../../../common/models/custom-response';
 import { SaveVideoFile } from '../../../videos/models/save-video-file';
+import { Properties } from '../../../common/models/properties';
 
 declare var $: any;
 
@@ -27,7 +28,7 @@ declare var $: any;
     templateUrl: './edit-company-profile.component.html',
     styleUrls: ['./edit-company-profile.component.css', '../../../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css',
                 '../../../../assets/css/phone-number-plugin.css'],
-    providers: [Processor, CountryNames, RegularExpressions]
+    providers: [Processor, CountryNames, RegularExpressions, Properties]
 })
 export class EditCompanyProfileComponent implements OnInit {
     customResponse: CustomResponse = new CustomResponse();
@@ -124,7 +125,7 @@ export class EditCompanyProfileComponent implements OnInit {
         private companyProfileService: CompanyProfileService, public homeComponent: HomeComponent,
         public refService: ReferenceService, private router: Router, public processor: Processor, public countryNames: CountryNames,
         public regularExpressions: RegularExpressions, public videoFileService: VideoFileService, public videoUtilService: VideoUtilService,
-        public userService: UserService) {
+        public userService: UserService, public properties: Properties) {
         this.loggedInUserId = this.authenticationService.getUserId();
         this.companyNameDivClass = this.refService.formGroupClass;
         this.companyProfileNameDivClass = this.refService.formGroupClass;

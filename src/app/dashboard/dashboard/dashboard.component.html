@@ -147,7 +147,7 @@ td>h5 {
 										</div>
 										<div class="portlet-body scrollbar launchedCampaignsMaster" [dragula]='"bag-items"'>
 											<div class="gu-block" *ngFor="let item of launchedCampaignsMaster">
-												<h6 class="gu-block-content" [id]="item.id">{{item.campaign}}</h6>
+												<h6 class="gu-block-content" [id]="item.id">{{item.campaign | slice:0:27}}<span *ngIf="item.campaign?.length>27">...</span></h6>
 											</div>
 										</div>
 									</div>
@@ -161,7 +161,7 @@ td>h5 {
 										</div>
 										<div class="portlet-body launchedCampaignsChild" [dragula]='"bag-items"'>
 											<div class="gu-block" *ngFor="let item of launchedCampaignsChild">
-												<h6 class="gu-block-content" [id]="item.id">{{item.campaign}}</h6>
+												<h6 class="gu-block-content" [id]="item.id">{{item.campaign | slice:0:27}}<span *ngIf="item.campaign?.length>27">...</span></h6>
 											</div>
 										</div>
 									</div>
@@ -222,7 +222,8 @@ td>h5 {
 									<h2 class="percentage-value">{{campaign[6]}}%</h2>
 									<h6 class="percentage-text">interaction</h6>
 								</section>
-								<h5 class="text-primary" style="margin-top: 3.2em;">Released on {{campaign[3] | date: 'short'}}</h5>
+								<h5 class="text-primary" style="margin-top: 3.2em;">Released on
+								<app-timestamp [dateAndTime]="campaign[3]"> </app-timestamp></h5>
 							</div>
 						</div>
 					</div>
@@ -344,24 +345,30 @@ td>h5 {
 								</div>
 							</div>
 							<div class="portlet-body">
-								<div class="row">
-									<div class="col-xs-4 sparkline-chart">
+								<div class="clearfix">
+									<div class="col-xs-4">
+                      <div class="sparkline-chart">
 										<div class="number" id="sparkline_bar" style="cursor:pointer">
-											<canvas width="113" height="55" style="display: inline-block; width: 113px; height: 55px; vertical-align: top;"></canvas>
+											<canvas width="100" height="55" style="display: inline-block; width: 100%; height: 55px; vertical-align: top;"></canvas>
 										</div>
-										<a class="title" href="javascript:;"> Views </a>
+                    <a class="title" style="font-size: 13px;font-weight: 500;"> Views </a>
+                    </div>
 									</div>
-									<div class="col-xs-4 sparkline-chart">
+									<div class="col-xs-4">
+                    <div class="sparkline-chart">
 										<div class="number" id="sparkline_bar2" style="cursor:pointer">
-											<canvas width="113" height="55" style="display: inline-block; width: 113px; height: 55px; vertical-align: top;"></canvas>
+											<canvas width="100" height="55" style="display: inline-block; width: 100%; height: 55px; vertical-align: top;"></canvas>
 										</div>
-										<a class="title" href="javascript:;"> Minutes Watched </a>
+                    <a class="title" style="font-size: 13px;font-weight: 500;"> Minutes Watched </a>
+                    </div>
 									</div>
-									<div class="col-xs-4 sparkline-chart">
+									<div class="col-xs-4">
+                      <div class="sparkline-chart">
 										<div class="number" id="sparkline_line">
-											<canvas width="113" height="55" style="display: inline-block; width: 113px; height: 55px; vertical-align: top;"></canvas>
+											<canvas width="100" height="55" style="display: inline-block; width: 100%; height: 55px; vertical-align: top;"></canvas>
 										</div>
-										<a class="title" href="javascript:;"> Average Duration </a>
+                    <a class="title" style="font-size: 13px;font-weight: 500;"> Average Duration </a>
+                    </div>
 									</div>
 								</div>
 							</div>
@@ -657,7 +664,7 @@ td>h5 {
 									<h4 *ngIf="emailClicked.campaignName==null">-</h4>
 								</td>
 								<td class="center">
-									<h5>{{emailClicked.time |date:'MM/dd/yyyy @ h:mma'}}</h5>
+								<app-timestamp [dateAndTime]="emailClicked.time"> </app-timestamp>
 								</td>
 								<td class="center" *ngIf="paginationType != 'open'">
 									<app-location [userLocation]="emailClicked"> </app-location>
@@ -716,7 +723,7 @@ td>h5 {
 									<app-user-info [userInfo]="item"> </app-user-info>
 								</td>
 								<td class="center">
-									<h5>{{item.time |date:'MM/dd/yyyy @ h:mma'}}</h5>
+								<app-timestamp [dateAndTime]="item.time"> </app-timestamp>
 								</td>
 								<td style="text-align: center">
 									<app-platform [deviceTypeOs]="true" [userPlatform]="item"> </app-platform>

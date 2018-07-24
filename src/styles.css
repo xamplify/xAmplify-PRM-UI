@@ -810,3 +810,12 @@ b, strong {
 .search-box-item-clear:hover {
   background-color: #ffffff;
 }
+
+.tooltip-inner {
+    max-width: 200px;
+    padding: 7px 14px;
+    color: #fff;
+    text-align: center;
+    background-color: #000;
+    border-radius: 0;
+}

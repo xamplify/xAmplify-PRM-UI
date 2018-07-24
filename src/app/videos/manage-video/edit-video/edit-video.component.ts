@@ -628,7 +628,9 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
 
   }
   defaultSettingValuesBoolean(event: boolean) { this.defaultSettingValue = this.disablePlayerSettingnew = event; }
-  disableTransperancy(event: boolean) { (<HTMLInputElement>document.getElementById('rangeValue')).disabled = event; }
+  disableTransperancy(event: boolean) {
+    (<HTMLInputElement>document.getElementById('rangeValue')).disabled = event;
+  }
   playerColorsChange(playercolor: string, controlcolor: string) {
       this.compPlayerColor = playercolor; this.compControllerColor = controlcolor;
   }
@@ -636,7 +638,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
       try {
           if (event) {
               this.defaultSettingValuesBoolean(event);
-              if (!this.loadRangeDisable) { this.disableTransperancy(event); }
               this.brandLogoUrl = this.defaultPlayerValues.brandingLogoUri = this.defaultPlayerValues.companyProfile.companyLogoPath;
               this.logoDescriptionUrl = this.defaultPlayerValues.brandingLogoDescUri = this.defaultPlayerValues.companyProfile.website;
               this.playerColorsChange(this.defaultPlayerValues.playerColor, this.defaultPlayerValues.controllerColor);
@@ -645,10 +646,10 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
               this.changeTransperancyControllBar(this.defaultPlayerValues.transparency, this.compControllerColor);
               if (!this.loadNgOninit) { this.enableVideoControllers(this.defaultPlayerValues.enableVideoController); }
               this.defaultPlayerSettingsCondition(this.defaultPlayerValues);
+              if (!this.loadRangeDisable) { this.disableTransperancy(event); }
               this.enableVideoLogo = true;
           } else {
               this.defaultSettingValuesBoolean(event);
-              if (!this.loadRangeDisable) { this.disableTransperancy(event); }
               this.brandLogoUrl = this.tempVideoFile.brandingLogoUri!==null ? this.tempVideoFile.brandingLogoUri : this.defaultPlayerValues.companyProfile.companyLogoPath;
               this.logoDescriptionUrl = this.tempVideoFile.brandingLogoDescUri !==null ? this.tempVideoFile.brandingLogoDescUri : this.defaultPlayerValues.companyProfile.website;
               this.playerColorsChange(this.tempPlayerColor, this.tempControllerColor);
@@ -657,10 +658,11 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
               this.changeTransperancyControllBar(this.tempVideoFile.transparency, this.compControllerColor);
               if (!this.loadNgOninit) { this.enableVideoControllers(this.tempVideoFile.enableVideoController); }
               this.defaultPlayerSettingsCondition(this.tempVideoFile);
+              if (!this.loadRangeDisable) { this.disableTransperancy(event); }
           }
           this.loadNgOninit = false;
       } catch (error) {
-        this.clientError = true;
+   //     this.clientError = true;
         console.log('default player setting method edit video'+error); }
   }
   changePlayerColor(event: any) {

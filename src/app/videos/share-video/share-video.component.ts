@@ -269,8 +269,8 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                     if (isValid === 'StartOftheVideo') {
                         $('#videoId').append($('#overlay-modal').show());
                     } else if (isValid !== 'StartOftheVideo') {
-                        $('#overlay-modal').hide(); player.play();
-                    } else { $('#overlay-modal').hide(); player.play(); }
+                        $('#overlay-modal').hide();
+                    } else { $('#overlay-modal').hide(); }
                     $('#skipOverlay').click(function () {
                         isCallActionthere = false;
                         $('#overlay-modal').hide();
@@ -479,7 +479,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                             $('#videoId').append($('#overlay-modal').show());
                         } else if (isValid !== 'StartOftheVideo') {
                           //  $('.vjs-big-play-button').css('display', 'none');
-                            $('#overlay-modal').hide(); player.play();
+                            $('#overlay-modal').hide();
                         } else { $('#overlay-modal').hide(); }
                         $('#skipOverlay').click(function () {
                             isCallActionthere = false;

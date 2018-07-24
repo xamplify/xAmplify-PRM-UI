@@ -274,7 +274,7 @@ input:checked + .slider-new:before {
 												</div>
 												<div class="tab-pane" id="tab_1_3" >
 													<form [formGroup]="updatePasswordForm" (ngSubmit)="updatePassword()" autocomplete="off">
-														<div class="form-group">
+														<div class="form-group" *ngIf="userData.hasPassword">
 															<label class="control-label">Current Password</label>
 															<input type="password" [class]="className"  formControlName="oldPassword" required="required"/>
 															<div *ngIf="formErrors.oldPassword" class="alert alert-danger">{{formErrors.oldPassword}}</div>

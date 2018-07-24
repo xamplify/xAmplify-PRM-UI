@@ -102,7 +102,9 @@
 									<td>
 										<h5 class="view-banner" style="width: 115%;">{{emailTemplate.emailTemplateType}}</h5>
 									</td>
-									<td  style="text-align: center;">{{emailTemplate.createdDate}}</td>
+									<td  style="text-align: center;">
+									<app-timestamp [isOnlyDate]="true" [dateAndTime]="emailTemplate.createdDate"> </app-timestamp>
+									</td>
 									<td style="width: 14%">
 										<div class="actions-block">
 											<a (click)="edit(emailTemplate.id)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_edit}}" *ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  || authenticationService.module.isVendor) && emailTemplate.type!='PARTNER'">
@@ -128,10 +130,16 @@
 						<div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let emailTemplate of pagination.pagedItems ;let i =index" id="emailTemplateListDiv_{{emailTemplate.id}}">
 							<div class="grid-box">
 								<img  src="{{emailTemplate.subject}}" alt="{{emailTemplate.name}}">
-								<h4 class="ellipsis" title="{{emailTemplate.name}}">{{emailTemplate.name}}</h4>
+                <h4 class="ellipsis mt5 mb5 f-w-600" title="{{emailTemplate.name}}">{{emailTemplate.name | slice:0:25}}
+                    <span *ngIf="emailTemplate.name?.length>25">...</span>
+                  </h4>
 								<div>
-									<h6 *ngIf="emailTemplate.type=='PARTNER'">Shared On <b>{{emailTemplate.createdDate}}</b></h6>
-									<h6 *ngIf="emailTemplate.type!='PARTNER'">Created On <b>{{emailTemplate.createdDate}}</b></h6>
+									<h6 *ngIf="emailTemplate.type=='PARTNER'">Shared On <b>
+									<app-timestamp [isOnlyDate]="true" [dateAndTime]="emailTemplate.createdDate"> </app-timestamp>
+									</b></h6>
+									<h6 *ngIf="emailTemplate.type!='PARTNER'">Created On <b>
+									<app-timestamp [isOnlyDate]="true" [dateAndTime]="emailTemplate.createdDate"> </app-timestamp>
+									</b></h6>
 									<ng-container *ngIf="emailTemplate.type!='PARTNER'">
 										<h6 title="{{emailTemplate.createdBy}}">By
 										<b *ngIf="emailTemplate.createdBy?.length>17">{{emailTemplate.createdBy|slice:0:17}}..</b>

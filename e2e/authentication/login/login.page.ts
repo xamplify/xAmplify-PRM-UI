@@ -1,6 +1,5 @@
 import { element, browser, by, Key } from "protractor";
 import { BasePage } from "../../app.po";
-import { Properties } from "../properties";
 
 export class LoginPage extends BasePage {
   navigateTo() {
@@ -45,8 +44,8 @@ export class LoginPage extends BasePage {
     this.getUserNameTF().clear();
     this.getPasswordTF().clear();
     browser.waitForAngularEnabled(false);
-    this.getUserNameTF().sendKeys(Properties.userName);
-    this.getPasswordTF().sendKeys(Properties.password);
+    this.getUserNameTF().sendKeys(browser.params.userName);
+    this.getPasswordTF().sendKeys(browser.params.password);
     this.getLoginButton().click();
   }
   getProfileDropdown(){
@@ -58,4 +57,15 @@ export class LoginPage extends BasePage {
     browser.waitForAngularEnabled(false);
     element.all(by.xpath('//*[@id="logoutButton"]/a')).click();
   }
+  loginLogoutCheck(){
+    this.navigateToLogin();
+    let displayed;
+    this.getUserNameTF().isPresent().then(function(visible) { displayed = visible });
+     if(!displayed){  console.log('logout is not happend');
+     } else { this.login();}
+     if(this.getLoginButton().isPresent()){
+      this.login();
+     }
+  }
+
 }

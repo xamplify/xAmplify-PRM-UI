@@ -5,6 +5,7 @@
     min-height: 100%;
     min-width: 100%;
     padding: 10px;
+    overflow: hidden;
   }
   .clip-button {
      width:100%;
@@ -14,4 +15,8 @@
   }
   .clipboard {
     padding: 6px 44px;
+  }
+  .text-area{
+    height: 150px;  min-height: 140px; max-height:160px;font-size: 15px;
+    /* border:1px solid; */
   }

@@ -383,7 +383,7 @@
 												</div>
 											</div>
 											<div [hidden]="!enableVideoLogo" *ngIf="!disablePlayerSettingnew" class="form-group" style="position: relative;top:11px;" [class.disabledCss]="!enableVideoLogo">
-												<label class="col-xs-5 control-label" >Video Logo URL:<font *ngIf="!logoDescriptionUrl" style="color: red"><b>*</b></font></label>
+												<label class="col-xs-5 control-label" style="position: relative;top:-7px;">Video Logo URL:<font *ngIf="!logoDescriptionUrl" style="color: red"><b>*</b></font></label>
 												<div class="col-xs-7">
 													<input type="text" style="width: 90%;" [(ngModel)]="logoDescriptionUrl" [ngModelOptions]="{standalone: true}" placeholder="URL for Video logo link" #val
                            (input)="logoDescription(val.value)">
