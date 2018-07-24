@@ -64,7 +64,7 @@
 									<div class="inputs" align="right" style="float: right">
 
 										<div class="inputs" align="right" style="float: right">
-											<div style="float: left; margin-right: 10px; width: 50%">
+											<div style="float: left; margin-right: 10px;">
 												<select class="form-control" [(ngModel)]="sortOption"
 													(ngModelChange)="sortByOption($event)">
 													<ng-container
@@ -73,11 +73,9 @@
 													</ng-container>
 												</select>
 											</div>
-											<div class="portlet-input input-inline input-small">
-												<div class="input-icon right"  style="width: 106%;left: -4px;">
-													<!-- <i class="icon-magnifier"
-														style="cursor: pointer; font-size: 18px;"
-														(click)="search('contactList')"></i> --> <input type="text"
+											<div class="portlet-input input-inline">
+												<div class="input-icon right">
+													<input type="text"
 														[(ngModel)]="searchKey"
 														[ngModelOptions]="{standalone: true}"
 														class="form-control" placeholder="Search For {{checkingContactTypeName}}" (keypress)="eventHandler($event.keyCode)">
@@ -92,7 +90,7 @@
 								<div class="page-toolbar" *ngIf="!showEditContactData">
 									<div class="btn-group pull-right">
 										<div class="inputs" align="right" style="float: right">
-											<div style="float: left; margin-right: 10px; width: 50%">
+											<div style="float: left; margin-right: 10px;">
 												<select class="form-control" [(ngModel)]="sortOption"
 													(ngModelChange)="sortByOption($event)">
 													<ng-container
@@ -101,8 +99,8 @@
 													</ng-container>
 												</select>
 											</div>
-											<div class="portlet-input input-inline input-small">
-												<div class="input-icon right"  style="width: 106%;left: -4px;">
+											<div class="portlet-input input-inline">
+												<div class="input-icon right">
 													<!-- <i class="icon-magnifier"
 														style="cursor: pointer; font-size: 18px;"
 														(click)="search('contactList')"></i> --> <input type="text"
