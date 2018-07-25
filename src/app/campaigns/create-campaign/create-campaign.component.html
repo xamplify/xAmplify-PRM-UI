@@ -855,8 +855,8 @@
 														</span>
 														<ng-container *ngIf="campaign.emailTemplate.type!='PARTNER'">
 															<span align="left" class="template-created-by-label" title="{{campaign.emailTemplate.createdBy}}">
-																<b *ngIf="campaign.emailTemplate.createdBy?.length>20">{{campaign.emailTemplate.createdBy|slice:0:20}}....</b>
-																<b *ngIf="campaign.emailTemplate.createdBy?.length<=20">{{campaign.emailTemplate.createdBy}}</b>
+																<b *ngIf="campaign.emailTemplate.createdBy?.length>12">{{campaign.emailTemplate.createdBy|slice:0:12}}....</b>
+																<b *ngIf="campaign.emailTemplate.createdBy?.length<=12">{{campaign.emailTemplate.createdBy}}</b>
 															</span>
 															<span align="left" class="template-created-by-value">
 																<b>Created By</b>
@@ -914,8 +914,8 @@
 													</span>
 													<ng-container *ngIf="emailTemplate.type!='PARTNER'">
 														<span align="left" class="template-created-by-label" title="{{emailTemplate.createdBy}}">
-															<b *ngIf="emailTemplate.createdBy?.length>20">{{emailTemplate.createdBy|slice:0:20}}....</b>
-															<b *ngIf="emailTemplate.createdBy?.length<=20">{{emailTemplate.createdBy}}</b>
+															<b *ngIf="emailTemplate.createdBy?.length>12">{{emailTemplate.createdBy|slice:0:12}}....</b>
+															<b *ngIf="emailTemplate.createdBy?.length<=12">{{emailTemplate.createdBy}}</b>
 														</span>
 														<span align="left" class="template-created-by-value">
 															<b>Created By</b>
