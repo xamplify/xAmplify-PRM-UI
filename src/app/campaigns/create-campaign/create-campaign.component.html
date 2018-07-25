@@ -687,8 +687,8 @@
 									<div id="user_list_tb_wrapper" class="dataTables_wrapper form-inline no-footer" style="padding:10px">
 										<div class="note-vid pull-left" *ngIf="authenticationService.module.isVendor || authenticationService.isAddedByVendor">Select the Partner list(s) to be used in this campaign</div>
 										<div class="note-vid pull-left" *ngIf="!authenticationService.module.isVendor && !authenticationService.isAddedByVendor">Select the Contact list(s) to be used in this campaign</div>
-										<div class="inputs" align="right" style="display:inline;padding: 5px 5px 12px 0px;">
-											<div class="portlet-input input-inline input-large" style="position: relative;top: -6px;right: -5px;">
+										<div class="inputs" align="right" style="float: right;">
+											<div class="portlet-input input-inline" style="position: relative;top: -6px;">
 												<div class="input-icon right">
 													<i class="icon-magnifier" (click)="searchContactList()" style="cursor: pointer;"></i>
 													<input type="text" class="form-control" placeholder="search..." [(ngModel)]="contactSearchInput" [ngModelOptions]="{standalone: true}">
@@ -732,7 +732,9 @@
 																<input type="checkbox" disabled="disabled" title="Contacts are in progress">
 															</div>
 														</td>
-														<td class="text-center sorting_1">{{contacts.createdDate}}</td>
+														<td class="text-center sorting_1">
+                              <app-timestamp [isOnlyDate]="true" [dateAndTime]="contacts.createdDate"> </app-timestamp>
+                            </td>
 														<td class="text-center" *ngIf="contacts.name?.length>50" title="{{contacts.name}}">
 															{{contacts.name | slice:0:50}}...
 														</td>
