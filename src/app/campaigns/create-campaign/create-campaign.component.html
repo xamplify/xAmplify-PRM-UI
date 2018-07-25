@@ -125,8 +125,7 @@
 										<div class="form-body col-sm-6 col-sm-offset-3">
 											<div class="form-group" [attr.class]="campaignNameDivClass">
 												<label class="control-label col-sm-4">Campaign name
-													<small>(Save as)</small>
-													<font style="color: red">*</font>
+													<br><small>(Save as)</small><font style="color: red">*</font>
 												</label>
 												<div class="col-sm-8">
 													<input type="text" id="campaignName" placeholder="Campaign Name" class="form-control" [(ngModel)]="campaign.campaignName"
@@ -310,11 +309,11 @@
 											<ng-container *ngIf="!campaign.createdFromVideos">
 												<div class="input-icon right pull-right m10" *ngIf="isMyVideosActive">
 													<i class="icon-magnifier" (click)="searchVideo()" style="cursor: pointer;"></i>
-													<input type="text" class="form-control" placeholder="search in My Videos" [(ngModel)]="videoSearchInput" [ngModelOptions]="{standalone: true}">
+													<input type="text" class="form-control" placeholder="Search in My Videos" [(ngModel)]="videoSearchInput" [ngModelOptions]="{standalone: true}">
 												</div>
 												<div class="input-icon right pull-right m10" *ngIf="!isMyVideosActive">
 													<i class="icon-magnifier" (click)="searchChannelVideo()" style="cursor: pointer;"></i>
-													<input type="text" class="form-control" placeholder="search in Partner Videos" [(ngModel)]="channelVideoSearchInput" [ngModelOptions]="{standalone: true}">
+													<input type="text" class="form-control" placeholder="Search in Partner Videos" [(ngModel)]="channelVideoSearchInput" [ngModelOptions]="{standalone: true}">
 												</div>
 											</ng-container>
 										</div>
@@ -325,29 +324,29 @@
 												 id="videoTable">
 													<thead style="background-color: #B7B7B7;">
 														<tr role="row">
-															<th style="text-align: center" class="sorting_disabled" rowspan="1" colspan="1" aria-label="Thumbnail">Thumbnail</th>
-															<th style="text-align: center;" class="sorting" tabindex="0" aria-controls="videos_table_new" rowspan="1" colspan="1" aria-label="Title: activate to sort column ascending">Title</th>
-															<th style="text-align: center" class="sorting_disabled" rowspan="1" colspan="1" *ngIf="!campaign.createdFromVideos">
+															<th class="sorting_disabled" rowspan="1" colspan="1" aria-label="Thumbnail" style="width: 45%;">Videos</th>
+															<!-- <th style="text-align: center;" class="sorting" tabindex="0" aria-controls="videos_table_new" rowspan="1" colspan="1" aria-label="Title: activate to sort column ascending"></th> -->
+															<th style="text-align: center;width: 24%;" class="sorting_disabled" rowspan="1" colspan="1" *ngIf="!campaign.createdFromVideos">
 																<span class="filter_column filter_select">
-																	<select class="select_filter form-control" data-live-search="true" (change)="filterCategoryVideos($event)">
+																	<select class="select_filter form-control" data-live-search="true" (change)="filterCategoryVideos($event)" style="width:67%">
 																		<option value="" class="search_init">Category</option>
 																		<option *ngFor="let category of categories" class="colorSelect" value="{{category.id}}" [selected]="category.id==videosPagination.videoCategoryId">{{category.name}}</option>
 																	</select>
 																</span>
 															</th>
-															<th style="text-align: center" class="sorting_disabled" rowspan="1" colspan="1" *ngIf="campaign.createdFromVideos">Category</th>
-															<th style="text-align: center" class="sorting_disabled" rowspan="1" colspan="1" *ngIf="!campaign.createdFromVideos">
+															<th style="text-align: center;width: 24%;"  *ngIf="campaign.createdFromVideos">Category</th>
+															<th style="text-align: center;width: 18%;"  *ngIf="!campaign.createdFromVideos">
 																<span class="filter_column filter_select">
 																	<select class="form-control" (change)="filterVideosByType($event)">
 																		<option value="" class="search_init">Type</option>
-																		<option value="PRIVATE">private</option>
-																		<option value="PUBLIC">public</option>
-																		<option value="UNLISTED">unlisted</option>
+																		<option value="PRIVATE">PRIVATE</option>
+																		<option value="PUBLIC">PUBLIC</option>
+																		<option value="UNLISTED">UNLISTED</option>
 																	</select>
 																</span>
 															</th>
-															<th style="text-align: center" class="sorting_disabled" rowspan="1" colspan="1" *ngIf="campaign.createdFromVideos">Type</th>
-															<th style="text-align: center;" class="sorting" tabindex="0" aria-controls="videos_table_new" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending">Status</th>
+															<th style="text-align: center;width: 18%;"  *ngIf="campaign.createdFromVideos">Type</th>
+															<th style="text-align: center;width: 13%;" >Status</th>
 														</tr>
 													</thead>
 													<tbody class="row_selected">
@@ -371,15 +370,16 @@
 																 id="selectedVideoRow" (click)="setClickedRow(savedVideoFile,'my-videos')">
 																	<!-- --------------Thumbnail--------------------------- -->
 																	<td style="text-align: center;">
-																		<input type="radio" [checked]="selectedRow==savedVideoFile.id" (click)="setClickedRow(savedVideoFile,'my-videos')" name="videoFileId"
+																		<input  class="radio-button-css" type="radio" [checked]="selectedRow==savedVideoFile.id" (click)="setClickedRow(savedVideoFile,'my-videos')" name="videoFileId"
 																		 [value]="savedVideoFile.id" id="campaign_video_id_{{savedVideoFile.id}}">
-																		<a href="javascript:void(0)" (click)="$event.stopPropagation();showPreview(savedVideoFile)">
+																		<!-- <a href="javascript:void(0)" (click)="$event.stopPropagation();showPreview(savedVideoFile)">
 																			<img src="{{savedVideoFile.imagePath}}" width="100px" height="50px"  (error)="videoUtilService.errorVideoHandler($event)">
-																		</a>
+                                    </a> -->
+                                    <app-video-thumbnail [videoFile]="savedVideoFile" (notifyParent)="showPreview($event)"></app-video-thumbnail>
 																	</td>
 
 																	<!-- --------------Title--------------------------- -->
-																	<td class="text-left">
+																	<!-- <td class="text-left">
 																		<div class="row">
 																			<div class="col-md-12" title="{{savedVideoFile.title}}">
 																				<p style="margin: 0;">
@@ -400,17 +400,13 @@
 																				</p>
 																			</div>
 																		</div>
-																	</td>
+																	</td> -->
 																	<!-- --------------Category--------------------------- -->
-																	<td style="text-align: center;">
-																		{{savedVideoFile.category.name}}
-																	</td>
+																	<td class="text-center">{{savedVideoFile.category.name}}</td>
 																	<!-- --------------Published To--------------------------- -->
-																	<td style="text-align: center;">
-																		<span class="view-by-banner">{{savedVideoFile.viewBy}}</span>
-																	</td>
+																	<td class="text-center"><span class="view-by-banner">{{savedVideoFile.viewBy}}</span></td>
 																	<!-- --------------Status--------------------------- -->
-																	<td style="text-align: center;">
+																	<td class="text-center">
 																		<img src="assets/images/draft.png" *ngIf="savedVideoFile.viewBy=='DRAFT'">
 																		<img src="assets/images/success.png" *ngIf="savedVideoFile.viewBy!='DRAFT'">
 																	</td>
@@ -422,22 +418,26 @@
 																 [class.active]="(videoFile.id == selectedRow && videoFile.viewBy!=='DRAFT')" [attr.title]="draftMessage"
 																 (mouseover)='showToolTip(videoFile.viewBy)'>
 																	<!-- --------------Thumbnail--------------------------- -->
-																	<td style="text-align: center;" *ngIf="videoFile.viewBy!='DRAFT' && videoFile.id!==videoId">
-																		<input type="radio" name="videoFileId" [value]="videoFile.id" (click)="setClickedRow(videoFile,'my-videos')" id="campaign_video_id_{{videoFile.id}}"
+																	<!-- <td style="text-align: center;" *ngIf="videoFile.viewBy!='DRAFT' && videoFile.id!==videoId">
+																		<input [hidden]="true" type="radio" name="videoFileId" [value]="videoFile.id" (click)="setClickedRow(videoFile,'my-videos')" id="campaign_video_id_{{videoFile.id}}"
 																		 [checked]="videoFile.id == selectedRow">
 																		<a (click)="$event.stopPropagation();showPreview(videoFile)" lang="{{videoFile.id}}">
 																			<img src="{{videoFile.imagePath}}" width="100px" height="50px"  (error)="videoUtilService.errorVideoHandler($event)">
 																		</a>
-																	</td>
-																	<td style="text-align: center;" *ngIf="videoFile.viewBy=='DRAFT'  && videoFile.id!==videoId">
-																		<input type="radio" name="videoFileId" [value]="videoFile.id" disabled="disabled" title="Video is in draft mode, please update the publish options to Library or Viewers.">
+																	</td> -->
+																	<!-- <td style="text-align: center;" *ngIf="videoFile.viewBy=='DRAFT'  && videoFile.id!==videoId">
+																		<input [hidden]="true" type="radio" name="videoFileId" [value]="videoFile.id" disabled="disabled" title="Video is in draft mode, please update the publish options to Library or Viewers.">
 																		<a href="javascript:void(0)" class="not-active">
 																			<img src="{{videoFile.imagePath}}" width="100px" height="50px"  (error)="videoUtilService.errorVideoHandler($event)">
 																		</a>
-																	</td>
+																	</td> -->
 																	<!-- --------------Title--------------------------- -->
 																	<td *ngIf="videoFile.id!==videoId">
-																		<div class="row">
+                                      <input  class="radio-button-css" *ngIf="videoFile.viewBy!='DRAFT' && videoFile.id!==videoId" type="radio" name="videoFileId" [value]="videoFile.id" (click)="setClickedRow(videoFile,'my-videos')" id="campaign_video_id_{{videoFile.id}}"
+                                      [checked]="videoFile.id == selectedRow">
+                                      <input  class="radio-button-css" *ngIf="videoFile.viewBy=='DRAFT'  && videoFile.id!==videoId" type="radio" name="videoFileId" [value]="videoFile.id" disabled="disabled" title="Video is in draft mode, please update the publish options to Library or Viewers.">
+                                      <app-video-thumbnail [videoFile]="videoFile" (notifyParent)="showPreview($event)"></app-video-thumbnail>
+																		<!-- <div class="row">
 																			<div class="col-md-12">
 																				<p style="margin: 0;" title="{{videoFile.title}}">
 																					<a href="javascript:void(0)" class="not-active">
@@ -455,18 +455,14 @@
 																					</span>
 																				</p>
 																			</div>
-																		</div>
+																		</div> -->
 																	</td>
 																	<!-- --------------Category--------------------------- -->
-																	<td style="text-align: center;" *ngIf="videoFile.id!==videoId">
-																		{{videoFile.category.name}}
-																	</td>
+																	<td class="text-center" *ngIf="videoFile.id!==videoId">	{{videoFile.category.name}}</td>
 																	<!-- --------------Published To--------------------------- -->
-																	<td style="text-align: center;" *ngIf="videoFile.id!==videoId">
-																		<span class="view-by-banner">{{videoFile.viewBy}}</span>
-																	</td>
+																	<td class="text-center" *ngIf="videoFile.id!==videoId"> <span class="view-by-banner">{{videoFile.viewBy}}</span></td>
 																	<!-- --------------Status--------------------------- -->
-																	<td style="text-align: center;" *ngIf="videoFile.id!==videoId">
+																	<td class="text-center" *ngIf="videoFile.id!==videoId">
 																		<img src="assets/images/draft.png" *ngIf="videoFile.viewBy=='DRAFT'">
 																		<img src="assets/images/success.png" *ngIf="videoFile.viewBy!='DRAFT'">
 																	</td>
@@ -501,37 +497,37 @@
 										<!-- ----Partner Videos Start Here -->
 										<div id="channel-videos" class="tabcontent" [style.display]="partnerVideosStyle">
 											<div id="videos_table_new_wrapper" class="dataTables_wrapper form-inline no-footer">
-												<div class="inputs" align="right" style="display:inline; float:right;padding: 5px 5px 12px 0px;">
+												<div class="inputs" align="right" style="display:inline;padding: 5px 5px 12px 0px;">
 													<div class="portlet-input input-inline input-large">
 													</div>
 												</div>
 												<table class="table table-filter" cellspacing="0" width="100%" style="background-color: rgb(255, 255, 255);" role="grid"
-												 id="videoTable">
+												 id="videoTable" style="margin-top:-18px;">
 													<thead style="background-color: #B7B7B7;">
 														<tr role="row">
-															<th style="text-align: center" class="sorting_disabled" rowspan="1" colspan="1" aria-label="Thumbnail">Thumbnail</th>
-															<th style="text-align: center;" class="sorting" tabindex="0" aria-controls="videos_table_new" rowspan="1" colspan="1" aria-label="Title: activate to sort column ascending">Title</th>
-															<th style="text-align: center" class="sorting_disabled" rowspan="1" colspan="1" *ngIf="!campaign.createdFromVideos">
+															<th style="text-align: left;width:45%">Videos</th>
+															<!-- <th style="text-align: center;" class="sorting" tabindex="0" aria-controls="videos_table_new" rowspan="1" colspan="1" aria-label="Title: activate to sort column ascending">Title</th> -->
+															<th style="width:24%;" class="text-center" *ngIf="!campaign.createdFromVideos">
 																<span class="filter_column filter_select">
-																	<select class="select_filter form-control" data-live-search="true" (change)="filterPartnerCategoryVideos($event)">
+																	<select class="select_filter form-control" data-live-search="true" (change)="filterPartnerCategoryVideos($event)" style="width:67%">
 																		<option value="" class="search_init">Category</option>
 																		<option *ngFor="let category of partnerCategories" class="colorSelect" value="{{category.id}}" [selected]="category.id==channelVideosPagination.videoCategoryId">{{category.name}}</option>
 																	</select>
 																</span>
 															</th>
-															<th style="text-align: center" class="sorting_disabled" rowspan="1" colspan="1" aria-label="Thumbnail" *ngIf="campaign.createdFromVideos">Category</th>
-															<th style="text-align: center" class="sorting_disabled" rowspan="1" colspan="1" *ngIf="!campaign.createdFromVideos">
+															<th style="width: 24%;" class="text-center" *ngIf="campaign.createdFromVideos">Category</th>
+															<th style="width: 18%"  class="text-center" *ngIf="!campaign.createdFromVideos">
 																<span class="filter_column filter_select">
 																	<select class="form-control" (change)="filterPartnerVideosByType($event)">
 																		<option value="" class="search_init">Type</option>
-																		<option value="PRIVATE">private</option>
-																		<option value="PUBLIC">public</option>
-																		<option value="UNLISTED">unlisted</option>
+																		<option value="PRIVATE">PRIVATE</option>
+																		<option value="PUBLIC">PUBLIC</option>
+																		<option value="UNLISTED">UNLISTED</option>
 																	</select>
 																</span>
 															</th>
-															<th style="text-align: center" class="sorting_disabled" rowspan="1" colspan="1" *ngIf="campaign.createdFromVideos">Type</th>
-															<th style="text-align: center;" class="sorting" tabindex="0" aria-controls="videos_table_new" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending">Status</th>
+															<th style="width: 18%;" class="text-center" *ngIf="campaign.createdFromVideos">Type</th>
+															<th style="width: 13%;" class="text-center">Status</th>
 														</tr>
 													</thead>
 													<tbody class="row_selected">
@@ -552,14 +548,15 @@
 															<ng-container *ngIf="showSelectedVideo==true && partnerVideoSelected">
 																<tr *ngIf="(!isAdd && isCampaignDraftVideo)|| (refService.campaignVideoFile!=undefined)" [class.active]="selectedRow==savedVideoFile.id"
 																 id="selectedVideoRow" (click)="setClickedRow(savedVideoFile,'partner-videos')">
-																	<td style="text-align: center;">
-																		<input type="radio" [checked]="selectedRow==savedVideoFile.id" (click)="setClickedRow(savedVideoFile,'partner-videos')" name="videoFileId"
+																	<td class="text-center">
+																		<input class="radio-button-css" type="radio" [checked]="selectedRow==savedVideoFile.id" (click)="setClickedRow(savedVideoFile,'partner-videos')" name="videoFileId"
 																		 [value]="savedVideoFile.id" id="campaign_video_id_{{savedVideoFile.id}}">
-																		<a href="javascript:void(0)" (click)="$event.stopPropagation();showPreview(savedVideoFile)">
+																		<!-- <a href="javascript:void(0)" (click)="$event.stopPropagation();showPreview(savedVideoFile)">
 																			<img src="{{savedVideoFile.imagePath}}" width="100px" height="50px" (error)="videoUtilService.errorVideoHandler($event)">
-																		</a>
+                                    </a> -->
+                                    <app-video-thumbnail [videoFile]="savedVideoFile" (notifyParent)="showPreview($event)"></app-video-thumbnail>
 																	</td>
-																	<td class="text-left">
+																	<!-- <td class="text-left">
 																		<div class="row">
 																			<div class="col-md-12" title="{{savedVideoFile.title}}">
 																				<p style="margin: 0;">
@@ -576,14 +573,14 @@
 																				</p>
 																			</div>
 																		</div>
-																	</td>
-																	<td style="text-align: center;">
+																	</td> -->
+																	<td class="text-center">
 																		{{savedVideoFile.category.name}}
 																	</td>
-																	<td style="text-align: center;">
+																	<td class="text-center">
                                       <span class="view-by-banner">{{savedVideoFile.viewBy | lowercase}}</span>
 																	</td>
-																	<td style="text-align: center;">
+																	<td class="text-center">
 																		<img src="assets/images/draft.png" *ngIf="savedVideoFile.viewBy=='DRAFT'">
 																		<img src="assets/images/success.png" *ngIf="savedVideoFile.viewBy!='DRAFT'">
 																	</td>
@@ -595,21 +592,24 @@
 																 [class.active]="(videoFile.id == selectedRow && videoFile.viewBy!=='DRAFT')" [attr.title]="draftMessage"
 																 (mouseover)='showToolTip(videoFile.viewBy)'>
 																	<!-- --------------Thumbnail--------------------------- -->
-																	<td style="text-align: center;" *ngIf="videoFile.viewBy!='DRAFT' && videoFile.id!==videoId">
-																		<input type="radio" name="videoFileId" [value]="videoFile.id" (click)="setClickedRow(videoFile,'partner-videos')" id="campaign_video_id_{{videoFile.id}}"
+																	<td class="text-center" >
+																		<input *ngIf="videoFile.viewBy!='DRAFT' && videoFile.id!==videoId" class="radio-button-css" type="radio" name="videoFileId" [value]="videoFile.id" (click)="setClickedRow(videoFile,'partner-videos')" id="campaign_video_id_{{videoFile.id}}"
 																		 [checked]="videoFile.id == selectedRow">
-																		<a href="javascript:void(0)" (click)="$event.stopPropagation();showPreview(videoFile)" lang="{{videoFile.id}}">
+																		<!-- <a href="javascript:void(0)" (click)="$event.stopPropagation();showPreview(videoFile)" lang="{{videoFile.id}}">
 																			<img src="{{videoFile.imagePath}}" width="100px" height="50px"  (error)="videoUtilService.errorVideoHandler($event)">
-																		</a>
+                                    </a> -->
+                                    <input *ngIf="videoFile.viewBy=='DRAFT'  && videoFile.id!==videoId" class="radio-button-css"  type="radio" name="videoFileId" [value]="videoFile.id" disabled="disabled" title="Video is in draft mode, please update the publish options to Library or Viewers.">
+                                    <app-video-thumbnail [videoFile]="videoFile" (notifyParent)="showPreview($event)"></app-video-thumbnail>
+
 																	</td>
-																	<td style="text-align: center;" *ngIf="videoFile.viewBy=='DRAFT'  && videoFile.id!==videoId">
-																		<input type="radio" name="videoFileId" [value]="videoFile.id" disabled="disabled" title="Video is in draft mode, please update the publish options to Library or Viewers.">
+																	<!-- <td style="text-align: center;" *ngIf="videoFile.viewBy=='DRAFT'  && videoFile.id!==videoId">
+																		<input  type="radio" name="videoFileId" [value]="videoFile.id" disabled="disabled" title="Video is in draft mode, please update the publish options to Library or Viewers.">
 																		<a href="javascript:void(0)" class="not-active">
 																			<img src="{{videoFile.imagePath}}" width="100px" height="50px" (error)="videoUtilService.errorVideoHandler($event)">
 																		</a>
-																	</td>
+																	</td> -->
 																	<!-- --------------Title--------------------------- -->
-																	<td class="text-left" *ngIf="videoFile.id!==videoId">
+																	<!-- <td class="text-left" *ngIf="videoFile.id!==videoId">
 																		<div class="row">
 																			<div class="col-md-12">
 																				<p style="margin: 0;" title="{{videoFile.title}}">
@@ -627,17 +627,13 @@
 																				</p>
 																			</div>
 																		</div>
-																	</td>
+																	</td> -->
 																	<!-- --------------Category--------------------------- -->
-																	<td style="text-align: center;" *ngIf="videoFile.id!==videoId">
-																		{{videoFile.category.name}}
-																	</td>
+																	<td class="text-center" *ngIf="videoFile.id!==videoId"> {{videoFile.category.name}}	</td>
 																	<!-- --------------Published To--------------------------- -->
-																	<td style="text-align: center;" *ngIf="videoFile.id!==videoId">
-																		<span class="view-by-banner">{{videoFile.viewBy | lowercase}}</span>
-																	</td>
+																	<td class="text-center" *ngIf="videoFile.id!==videoId"><span class="view-by-banner">{{videoFile.viewBy}}</span></td>
 																	<!-- --------------Status--------------------------- -->
-																	<td style="text-align: center;" *ngIf="videoFile.id!==videoId">
+																	<td class="text-center" *ngIf="videoFile.id!==videoId">
 																		<img src="assets/images/draft.png" *ngIf="videoFile.viewBy=='DRAFT'">
 																		<img src="assets/images/success.png" *ngIf="videoFile.viewBy!='DRAFT'">
 																	</td>
@@ -716,19 +712,11 @@
 													<tr>
 														<td align="center">
 															<!-- selectedContactListIds?.length==contactsPagination.pagedItems.length [checked]="isAllChecked()"-->
-															<input type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" class="" id="checkAllExistingContacts"
-															/>
+															<input type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" id="checkAllExistingContacts"/>
 														</td>
-														<th style="text-align: center;" class="sorting_desc" tabindex="0" aria-controls="user_list_tb" rowspan="1" colspan="1" aria-sort="descending"
-														 aria-label="Date Uploaded: activate to sort column ascending">
-															Date Uploaded
-														</th>
-														<th style="text-align: center;" class="sorting" tabindex="0" aria-controls="user_list_tb" rowspan="1" colspan="1" aria-label="List Name: activate to sort column ascending">
-															List Name
-														</th>
-														<th style="text-align: center;" class="sorting" tabindex="0" aria-controls="user_list_tb" rowspan="1" colspan="1" aria-label="Download: activate to sort column ascending">
-															Preview
-														</th>
+														<th style="text-align: center;">Date Uploaded	</th>
+														<th style="text-align: center;">List Name	</th>
+														<th style="text-align: center;">Preview </th>
 													</tr>
 												</thead>
 												<tbody>
@@ -740,18 +728,14 @@
 																<input type="checkbox" class="chk" lang="{{contacts.name}}" id="{{contacts.id}}" [checked]="selectedContactListIds.indexOf(contacts.id)>-1"
 																 name="campaignContact[]" value="{{contacts.id}}" (click)="highlightRow(contacts.id,$event)">
 															</div>
-
 															<div class="form-group" *ngIf="contacts.noOfContacts==0 || !contacts.emailValidationInd">
 																<input type="checkbox" disabled="disabled" title="Contacts are in progress">
 															</div>
 														</td>
-
 														<td class="text-center sorting_1">{{contacts.createdDate}}</td>
-
 														<td class="text-center" *ngIf="contacts.name?.length>50" title="{{contacts.name}}">
 															{{contacts.name | slice:0:50}}...
 														</td>
-
 														<td class="text-center" *ngIf="contacts.name?.length<=50" title="{{contacts.name}}">
 															{{contacts.name}}
 														</td>
@@ -792,9 +776,7 @@
 										</div>
 									</div>
 								</ng-container>
-
 							</div>
-
 							<button *ngIf="campaignType=='video'" type="button" style="float:left;" class="btn btn-default" (click)="resetActive($event, 40, 'step-3');">Previous</button>
 							<button *ngIf="campaignType=='regular'" type="button" style="float:left;" class="btn btn-default" (click)="resetActive($event, 40, 'step-2')">Previous</button>
 							<button type="submit" style="float: right;" class="btn btn-default btn green" (click)="resetActive($event, 40, 'step-5');"
@@ -827,25 +809,25 @@
 								 style="width: 170px;height: 34px;">
 							</div>
 							<div class="portlet-body">
-								<div class="row">
-									<form role="form" class="form-horizontal form-bordered form-label-stripped">
-										<div class="col-xs-12">
-				<app-loader *ngIf="campaignEmailTemplate.httpRequestLoader.isLoading"></app-loader>
-				<app-error-pages *ngIf="campaignEmailTemplate.httpRequestLoader.isServerError"></app-error-pages>
-				<ng-container *ngIf=" emailTemplatesPagination.totalRecords > 0 && !campaignEmailTemplate.httpRequestLoader.isLoading && !campaignEmailTemplate.httpRequestLoader.isServerError">
-					<div class="row pb10" id="user_list_table_view">
-						<div class="portlet-body">
-							<div id="user_list_tb_wrapper" class="dataTables_wrapper form-inline no-footer col-xs-12">
-								<div class="mix-grid">
-									<ng-container *ngIf="showSelectedEmailTemplate"><!-- !hideCoBrandedEmailTemplate -->
-										<div  *ngIf="!isAdd && isCampaignDraftEmailTemplate && emailTemplatesPagination.totalRecords>0 && emailTemplatesPagination.pageIndex==1 ">
-											<div class="col-md-3 col-sm-4 mix category_1 mix_all" style="display: block; opacity: 1; margin-top: -11px;">
-												<div id="container">
-													<h3 *ngIf="campaign.emailTemplate.type=='PARTNER'" style="width: 21%">
-														{{campaign.emailTemplate.type}}
-														<span class="arrow"></span>
-													</h3>
-												</div>
+							<div class="row">
+							<form role="form" class="form-horizontal form-bordered form-label-stripped">
+               <div class="col-xs-12">
+                <app-loader *ngIf="campaignEmailTemplate.httpRequestLoader.isLoading"></app-loader>
+                <app-error-pages *ngIf="campaignEmailTemplate.httpRequestLoader.isServerError"></app-error-pages>
+                <ng-container *ngIf=" emailTemplatesPagination.totalRecords > 0 && !campaignEmailTemplate.httpRequestLoader.isLoading && !campaignEmailTemplate.httpRequestLoader.isServerError">
+                  <div class="row pb10" id="user_list_table_view">
+                    <div class="portlet-body">
+                      <div id="user_list_tb_wrapper" class="dataTables_wrapper form-inline no-footer col-xs-12">
+                        <div class="mix-grid">
+                          <ng-container *ngIf="showSelectedEmailTemplate"><!-- !hideCoBrandedEmailTemplate -->
+                          <div  *ngIf="!isAdd && isCampaignDraftEmailTemplate && emailTemplatesPagination.totalRecords>0 && emailTemplatesPagination.pageIndex==1 ">
+                            <div class="col-md-3 col-sm-4 mix category_1 mix_all" style="display: block; opacity: 1; margin-top: -11px;">
+                              <div id="container">
+                                <h3 *ngIf="campaign.emailTemplate.type=='PARTNER'" style="width: 21%">
+												    		{{campaign.emailTemplate.type}}
+												    		<span class="arrow"></span>
+												   	</h3>
+											 	</div>
 												<div class="mix-inner css" [class.template-selected]="emailTemplateId == selectedEmailTemplateRow">
 													<img class="img-responsive center-block" src="{{campaign.emailTemplate.subject}}" alt="{{campaign.emailTemplate.name}}" id="emailtemplate-image">
 													<div class="mix-details" id="mix-details" style="height:199px">
@@ -880,8 +862,8 @@
 														</ng-container>
 														<ng-container *ngIf="campaign.emailTemplate.type=='PARTNER'">
 															<span align="left" class="template-created-by-label" title="{{campaign.emailTemplate.vendorName}}">
-																<b *ngIf="campaign.emailTemplate.vendorName?.length>20">{{campaign.emailTemplate.vendorName|slice:0:20}}....</b>
-																<b *ngIf="campaign.emailTemplate.vendorName?.length<=20">{{campaign.emailTemplate.vendorName}}</b>
+																<b *ngIf="campaign.emailTemplate.vendorName?.length>13">{{campaign.emailTemplate.vendorName|slice:0:13}}....</b>
+																<b *ngIf="campaign.emailTemplate.vendorName?.length<=13">{{campaign.emailTemplate.vendorName}}</b>
 															</span>
 															<span align="left" class="template-created-by-value">
 																<b>Shared By</b>
@@ -928,8 +910,6 @@
 													<span align="right" title="upladed date" class="template-created-on-value">
 														<b>{{emailTemplate.createdDate}}</b>
 													</span>
-
-
 													<ng-container *ngIf="emailTemplate.type!='PARTNER'">
 														<span align="left" class="template-created-by-label" title="{{emailTemplate.createdBy}}">
 															<b *ngIf="emailTemplate.createdBy?.length>20">{{emailTemplate.createdBy|slice:0:20}}....</b>
@@ -941,8 +921,8 @@
 													</ng-container>
 													<ng-container *ngIf="emailTemplate.type=='PARTNER'">
 														<span align="left" class="template-created-by-label" title="{{emailTemplate.vendorName}}">
-															<b *ngIf="emailTemplate.vendorName?.length>20">{{emailTemplate.vendorName|slice:0:20}}....</b>
-															<b *ngIf="emailTemplate.vendorName?.length<=20">{{emailTemplate.vendorName}}</b>
+															<b *ngIf="emailTemplate.vendorName?.length>13">{{emailTemplate.vendorName|slice:0:13}}....</b>
+															<b *ngIf="emailTemplate.vendorName?.length<=13">{{emailTemplate.vendorName}}</b>
 														</span>
 														<span align="left" class="template-created-by-value">
 															<b>Shared By</b>
@@ -1621,13 +1601,13 @@
 						<button type="button" class="close-circle" data-dismiss="modal">
 							<i class="fa fa-times"></i>
 						</button>
-						<h4 class="modal-title" id="email-template-title" style="text-align: center;"></h4>
+						<h4 class="modal-title text-center" id="email-template-title"></h4>
 					</div>
 					<div class="modal-body">
 						<div id="htmlContent"></div>
 					</div>
 					<div class="modal-footer">
-						<a href="javascript:void(0)" data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
+						<a data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
 					</div>
 				</div>
 			</div>

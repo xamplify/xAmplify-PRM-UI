@@ -469,6 +469,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     getDefaultPage(userId: number) {
+      try{
         this.userService.getUserDefaultPage(userId)
             .subscribe(
                 data => {
@@ -477,9 +478,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
                         this.referenceService.userDefaultPage = 'DASHBOARD';
                     }
                 },
-                error => console.log(error),
+                error => {
+                  this.xtremandLogger.error(error);
+                  this.xtremandLogger.errorPage(error);},
                 () => { }
             );
+          } catch(error){
+            this.xtremandLogger.error(error);
+            this.xtremandLogger.errorPage(error);
+          }
     }
 
     setDashboardAsDefaultPage(event: any) {
