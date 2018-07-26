@@ -675,7 +675,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.removeTemplateAndAutoResponse();
         this.filterCoBrandedTemplates(event);
     }
-    
+
     removeTemplateAndAutoResponse(){
         this.urls = [];//Removing Auto-Response WebSites
         this.selectedEmailTemplateRow = 0;
@@ -760,7 +760,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             reply.selectedEmailTemplateId = emailTemplateId;
             $('#reply-'+index+emailTemplateId).prop("checked",true);
         }
-     
+
     }
     setClickEmailTemplate(emailTemplateId:number,url:Url,index:number,isDraft:boolean){
         if(!isDraft){
@@ -919,6 +919,10 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             }
         }
     }
+    isEven(n) {
+      if(n % 2 === 0){ return true;}
+      return false;
+   }
 
     /************Showing Video Preview****************/
     showPreview(videoFile:SaveVideoFile){

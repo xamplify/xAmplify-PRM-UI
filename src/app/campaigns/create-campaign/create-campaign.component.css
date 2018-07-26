@@ -1057,7 +1057,7 @@ legend{display: block; width: auto; padding: 0 10px; margin-bottom: 0; font-size
 }
 .button-blue{
   position: relative;
-  background: #8395a7 !important;
+  background: #888a8c !important;
   top: 6px;
   font-size: 4px;
 }
@@ -1078,4 +1078,10 @@ legend{display: block; width: auto; padding: 0 10px; margin-bottom: 0; font-size
   top: 31px;
   left: -7px;
   cursor: pointer;
+}
+.colorBlue{
+background: #0396db;
+}
+.colorRed{
+background: #ee1f26;
 }
