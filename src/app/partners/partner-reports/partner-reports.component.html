@@ -190,7 +190,10 @@
               <tr *ngFor="let item of pagination.pagedItems" style="cursor: pointer;" (click)="goToCampaignAnalytics(item)">
                 <td><app-user-info [userInfo]="item" [isPartnerEntityInfo]="true" [isPartnerInfo]="true"></app-user-info></td>
                 <td>{{item.campaignName}}</td>
-                 <td>{{item.redistributedTime |date:'MM/dd/yyyy @ h:mma' }}</td>
+                 <td>
+                   <!-- {{item.redistributedTime |date:'MM/dd/yyyy @ h:mma' }} -->
+                    <app-timestamp [isOnlyDate]="false" [dateAndTime]="item.redistributedTime"> </app-timestamp>
+                 </td>
                 <td>
 				       	<div class="actions-block">
                   <a id="disabled-icon" class="blur" data-toggle="tooltip" data-placement="top" title="Data Sharing Disabled" *ngIf="!item.dataSharingEnabled" style="background-color: white;">
@@ -358,18 +361,25 @@
 											</span>
 											<span align="right" title="Upload Date">
 												<!-- <b *ngIf="campaign.launched || !campaign.launched && campaign.launchedOn?.length > 0">{{campaign.launchedOn}}</b> -->
-												<b *ngIf="campaign.scheduleType=='NOW' || campaign.scheduleType=='SCHEDULE'">{{campaign.launchedOn}}</b>
-												<b *ngIf="campaign.scheduleType=='SAVE'">{{campaign.startTime}}</b>
+												<b *ngIf="campaign.scheduleType=='NOW' || campaign.scheduleType=='SCHEDULE'">
+                          <!-- {{campaign.launchedOn}} -->
+                          <app-timestamp [isOnlyDate]="false" [dateAndTime]="campaign.launchedOn"> </app-timestamp>
+                        </b>
+												<b *ngIf="campaign.scheduleType=='SAVE'">
+                            <app-timestamp [isOnlyDate]="false" [dateAndTime]="campaign.startTime"> </app-timestamp>
+                        </b>
 											</span>
 										</td>
-										<td style="text-align: center">{{campaign.createdDate}}</td>
+										<td style="text-align: center">
+                      <app-timestamp [isOnlyDate]="true" [dateAndTime]="campaign.createdDate"> </app-timestamp>
+                    </td>
 										<td class="center">
 										 <a id="disabled-icon" class="blur" data-toggle="tooltip" data-placement="top" title="Data Sharing Disabled" *ngIf="!campaign.detailedAnalyticsShared && selectedTabIndex==2">
-                          						<img src="../assets/images/disabled-icon.png">
-                       					 </a>
-										<a  data-rel="fancybox-button" (click)="goToCampaignAnalytics(campaign)" data-toggle="tooltip" data-placement="top" title="Campaign Based Reports" class='mr5'>
+                        <img src="../assets/images/disabled-icon.png">
+                      </a>
+										  <a data-rel="fancybox-button" (click)="goToCampaignAnalytics(campaign)" data-toggle="tooltip" data-placement="top" title="Campaign Based Reports" class='mr5'>
 												<i class="fa fa-line-chart"></i>
-										</a>
+										  </a>
 										</td>
 									</tr>
 								</tbody>
@@ -398,8 +408,13 @@
 												<span *ngIf="!campaign.launched && campaign.launchedOn?.length==0">Saved On</span>
 											</span>
 											<span title="Upload date">
-												<span *ngIf="campaign.scheduleType=='NOW' || campaign.scheduleType=='SCHEDULE'">{{campaign.launchedOn}}</span>
-												<span *ngIf="campaign.scheduleType=='SAVE'">{{campaign.startTime}}</span>
+												<span *ngIf="campaign.scheduleType=='NOW' || campaign.scheduleType=='SCHEDULE'">
+                          <!-- {{campaign.launchedOn}} -->
+                          <app-timestamp [isOnlyDate]="false" [dateAndTime]="campaign.launchedOn"> </app-timestamp>
+                        </span>
+												<span *ngIf="campaign.scheduleType=='SAVE'">
+                            <app-timestamp [isOnlyDate]="false" [dateAndTime]="campaign.startTime"> </app-timestamp>
+                        </span>
 											</span>
 											</h6>
 											<div class="bookmark-ribbon">
