@@ -345,23 +345,19 @@
 																	</select>
 																</span>
 															</th>
-															<th style="text-align: center;width: 18%;"  *ngIf="campaign.createdFromVideos">Type</th>
-															<th style="text-align: center;width: 13%;" >Status</th>
+															<th style="text-align: center;width: 18%;" *ngIf="campaign.createdFromVideos">Type</th>
+															<th style="text-align: center;width: 13%;">Status</th>
 														</tr>
 													</thead>
 													<tbody class="row_selected">
-														<tr>
+														<tr *ngIf="campaignVideo.httpRequestLoader.isServerError || campaignVideo.httpRequestLoader.isLoading">
 															<td colspan="5">
 																<app-loader [model]="campaignVideo.httpRequestLoader.isHorizontalCss" *ngIf="campaignVideo.httpRequestLoader.isLoading"></app-loader>
 																<app-error-pages *ngIf="campaignVideo.httpRequestLoader.isServerError"></app-error-pages>
 															</td>
 														</tr>
-														<tr>
-															<td colspan="5">
-																<div *ngIf="videosPagination.totalRecords==0" class="alert alert-info">
-																	<strong>No videos found</strong>
-																</div>
-															</td>
+														<tr *ngIf="videosPagination.totalRecords==0">
+															<td colspan="5"><div class="alert alert-info"><strong>No videos found</strong></div></td>
 														</tr>
 														<ng-container *ngIf="videosPagination.totalRecords > 0 && !campaignVideo.httpRequestLoader.isLoading && !campaignVideo.httpRequestLoader.isServerError">
 															<!-- ------------------Selected Video Row-->
@@ -436,7 +432,7 @@
                                       <input  class="radio-button-css" *ngIf="videoFile.viewBy!='DRAFT' && videoFile.id!==videoId" type="radio" name="videoFileId" [value]="videoFile.id" (click)="setClickedRow(videoFile,'my-videos')" id="campaign_video_id_{{videoFile.id}}"
                                       [checked]="videoFile.id == selectedRow">
                                       <input  class="radio-button-css" *ngIf="videoFile.viewBy=='DRAFT'  && videoFile.id!==videoId" type="radio" name="videoFileId" [value]="videoFile.id" disabled="disabled" title="Video is in draft mode, please update the publish options to Library or Viewers.">
-                                      <app-video-thumbnail [videoFile]="videoFile" (notifyParent)="showPreview($event)"></app-video-thumbnail>
+                                      <app-video-thumbnail [ngClass]="{'not-active':videoFile.viewBy=='DRAFT'}" [videoFile]="videoFile" (notifyParent)="showPreview($event)"></app-video-thumbnail>
 																		<!-- <div class="row">
 																			<div class="col-md-12">
 																				<p style="margin: 0;" title="{{videoFile.title}}">
@@ -531,15 +527,15 @@
 														</tr>
 													</thead>
 													<tbody class="row_selected">
-														<tr>
+														<tr *ngIf="campaignVideo.httpRequestLoader.isLoading || campaignVideo.httpRequestLoader.isServerError">
 															<td colspan="5">
 																<app-loader [model]="campaignVideo.httpRequestLoader.isHorizontalCss" *ngIf="campaignVideo.httpRequestLoader.isLoading"></app-loader>
 																<app-error-pages *ngIf="campaignVideo.httpRequestLoader.isServerError"></app-error-pages>
 															</td>
 														</tr>
-														<tr>
+														<tr *ngIf="channelVideosPagination.totalRecords==0">
 															<td colspan="5">
-																<div *ngIf="channelVideosPagination.totalRecords==0" class="alert alert-info">
+																<div  class="alert alert-info">
 																	<strong>No Partner videos found</strong>
 																</div>
 															</td>
@@ -574,12 +570,8 @@
 																			</div>
 																		</div>
 																	</td> -->
-																	<td class="text-center">
-																		{{savedVideoFile.category.name}}
-																	</td>
-																	<td class="text-center">
-                                      <span class="view-by-banner">{{savedVideoFile.viewBy | lowercase}}</span>
-																	</td>
+																	<td class="text-center">	{{savedVideoFile.category.name}}</td>
+																	<td class="text-center"> <span class="view-by-banner">{{savedVideoFile.viewBy}}</span></td>
 																	<td class="text-center">
 																		<img src="assets/images/draft.png" *ngIf="savedVideoFile.viewBy=='DRAFT'">
 																		<img src="assets/images/success.png" *ngIf="savedVideoFile.viewBy!='DRAFT'">
@@ -592,8 +584,8 @@
 																 [class.active]="(videoFile.id == selectedRow && videoFile.viewBy!=='DRAFT')" [attr.title]="draftMessage"
 																 (mouseover)='showToolTip(videoFile.viewBy)'>
 																	<!-- --------------Thumbnail--------------------------- -->
-																	<td class="text-center" >
-																		<input *ngIf="videoFile.viewBy!='DRAFT' && videoFile.id!==videoId" class="radio-button-css" type="radio" name="videoFileId" [value]="videoFile.id" (click)="setClickedRow(videoFile,'partner-videos')" id="campaign_video_id_{{videoFile.id}}"
+																	<td class="text-center" *ngIf="videoFile.viewBy!='DRAFT' && videoFile.id!==videoId">
+																		<input  class="radio-button-css" type="radio" name="videoFileId" [value]="videoFile.id" (click)="setClickedRow(videoFile,'partner-videos')" id="campaign_video_id_{{videoFile.id}}"
 																		 [checked]="videoFile.id == selectedRow">
 																		<!-- <a href="javascript:void(0)" (click)="$event.stopPropagation();showPreview(videoFile)" lang="{{videoFile.id}}">
 																			<img src="{{videoFile.imagePath}}" width="100px" height="50px"  (error)="videoUtilService.errorVideoHandler($event)">
@@ -602,12 +594,13 @@
                                     <app-video-thumbnail [videoFile]="videoFile" (notifyParent)="showPreview($event)"></app-video-thumbnail>
 
 																	</td>
-																	<!-- <td style="text-align: center;" *ngIf="videoFile.viewBy=='DRAFT'  && videoFile.id!==videoId">
+																	<td class="text-center" *ngIf="videoFile.viewBy=='DRAFT'  && videoFile.id!==videoId">
 																		<input  type="radio" name="videoFileId" [value]="videoFile.id" disabled="disabled" title="Video is in draft mode, please update the publish options to Library or Viewers.">
-																		<a href="javascript:void(0)" class="not-active">
+																		<!-- <a href="javascript:void(0)" class="not-active">
 																			<img src="{{videoFile.imagePath}}" width="100px" height="50px" (error)="videoUtilService.errorVideoHandler($event)">
-																		</a>
-																	</td> -->
+                                    </a> -->
+                                    <app-video-thumbnail [ngClass]="{'not-active':videoFile.viewBy=='DRAFT'}" [videoFile]="videoFile" (notifyParent)="showPreview($event)"></app-video-thumbnail>
+																	</td>
 																	<!-- --------------Title--------------------------- -->
 																	<!-- <td class="text-left" *ngIf="videoFile.id!==videoId">
 																		<div class="row">

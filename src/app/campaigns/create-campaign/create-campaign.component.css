@@ -1039,10 +1039,15 @@ legend{display: block; width: auto; padding: 0 10px; margin-bottom: 0; font-size
 	cursor: default;
 }
 .custom-change-css{
-  width: 100%;
+  /* width: 100%; */
   background: #eaeaea;
   border-radius: 0;
-  padding: 10px 20px;
+  /* padding: 10px 20px; */
+  width: 102%;
+  position: relative;
+  top: -24px;
+  margin-bottom: -16px;
+  right: 10px;
 }
 .time-picker-css{
   margin-top: 30px;
