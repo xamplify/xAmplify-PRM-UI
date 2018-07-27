@@ -427,5 +427,15 @@ export class CampaignService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+    getEventCampaignByAlias(alias: string) {
+        return this.http.get(this.URL + `get-event-campaign-rsvp-alias/${alias}`)
+            .map(this.extractData)
+            .catch(this.handleError);        
+    }
+    saveEventCampaignRsvp(campaignRsvp: any) {
+        return this.http.post(this.URL + `save-rsvp`, campaignRsvp)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 
 }

@@ -35,6 +35,7 @@ export class EventCampaignComponent implements OnInit {
   campaignEmailTemplate: CampaignEmailTemplate = new CampaignEmailTemplate();
   reply: Reply = new Reply();
   countries: Country[];
+  timezonesCampaignEventTime: Timezone[];
   timezones: Timezone[];
   allItems = [];
   dataError: boolean = false;
@@ -54,6 +55,7 @@ export class EventCampaignComponent implements OnInit {
   paginationType: string;
 
   teamMemberEmailIds: any[] = [];
+  isFormSubmitted: boolean = false;
 
   constructor(public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
     private contactService: ContactService,
@@ -67,6 +69,8 @@ export class EventCampaignComponent implements OnInit {
     this.countries = this.referenceService.getCountries();
     this.listEmailTemplates();
     this.eventCampaign.emailTemplate = this.emailTemplates[0];
+    this.eventCampaign.countryId = this.countries[0].id;
+    this.eventCampaign.campaignEventTimes[0].countryId = this.countries[0].id;
   }
 
   ngOnInit() {
@@ -167,22 +171,28 @@ export class EventCampaignComponent implements OnInit {
   }
 
   createEventCampaign(eventCampaign: EventCampaign, launchOption: string) {
+    this.isFormSubmitted = true;
     for (let userListId of eventCampaign.userListIds) {
       let contactList = new ContactList(userListId);
       eventCampaign.userLists.push(contactList);
     }
+    this.eventCampaign.campaignReplies.forEach((item, index) => {
+      console.log(item); // 9, 2, 5
+      console.log(index); // 0, 1, 2
+    });
     this.eventCampaign.user.userId = this.loggedInUserId;
     this.eventCampaign.campaignScheduleType = launchOption;
     console.log(eventCampaign);
     let scheduleTime:any;
-    if(eventCampaign.campaignScheduleType=="NOW" || eventCampaign.campaignScheduleType=="SAVE"){
-        eventCampaign.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        eventCampaign.launchTimeInString = this.campaignService.setLaunchTime();
-    }else{
-        eventCampaign.timeZone = $('#timezoneId option:selected').val();
-        eventCampaign.launchTimeInString = this.eventCampaign.launchTimeInString;
+    if (eventCampaign.campaignScheduleType == "NOW" || eventCampaign.campaignScheduleType == "SAVE") {
+      eventCampaign.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      eventCampaign.launchTimeInString = this.campaignService.setLaunchTime();
+    } else {
+      eventCampaign.timeZone = $('#timezoneId option:selected').val();
     }
-    
+
+    eventCampaign.campaignEventTimes[0].timeZone = $('#timezoneIdCampaignEventTime option:selected').val();
+    eventCampaign.campaignEventTimes[0].country = this.countries.find(x => x.id == eventCampaign.campaignEventTimes[0].countryId).name;
 
     this.campaignService.createEventCampaign(eventCampaign)
       .subscribe(
@@ -250,10 +260,6 @@ export class EventCampaignComponent implements OnInit {
 
   resetcampaignEventMedia() {
     this.eventCampaign.campaignEventMedias[0] = new CampaignEventMedia();
-  }
-
-  onChangeCountry(countryId) {
-    this.timezones = this.referenceService.getTimeZonesByCountryId(countryId);
   }
 
   addReplyRows() {
@@ -382,5 +388,12 @@ export class EventCampaignComponent implements OnInit {
     this.emailTemplates.push(emailTemplate1);
     this.emailTemplates.push(emailTemplate2);
     this.emailTemplates.push(emailTemplate3);
+  }
+
+  onChangeCountryCampaignEventTime(countryId: number) {
+    this.timezonesCampaignEventTime = this.referenceService.getTimeZonesByCountryId(countryId);
+  }
+  onChangeCountry(countryId: number) {
+    this.timezones = this.referenceService.getTimeZonesByCountryId(countryId);
   }
 }

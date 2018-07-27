@@ -49,11 +49,12 @@ import { XtremandLogger } from './error-pages/xtremand-logger.service';
 import { LogEmailClickComponent } from './campaigns/log-email-click/log-email-click.component';
 import { LogUnsubscribeComponent } from './campaigns/log-unsubscribe/log-unsubscribe.component';
 import { LogRegularCampaignComponent } from './campaigns/log-regular-campaign/log-regular-campaign.component';
+import { RsvpComponent } from './campaigns/rsvp/rsvp.component';
 
 
 @NgModule({
     declarations: [AppComponent, SocialLoginComponent, SocialCallbackComponent, ShareVideoComponent,
-        CampaignVideoComponent, LogEmailClickComponent, LogUnsubscribeComponent, LogRegularCampaignComponent
+        CampaignVideoComponent, LogEmailClickComponent, LogUnsubscribeComponent, LogRegularCampaignComponent, RsvpComponent
     ],
     imports: [BrowserAnimationsModule, BrowserModule, FormsModule, HttpModule, HttpClientModule, HttpClientJsonpModule,
         AppRoutingModule, DashboardModule, CoreModule, AuthenticationModule, ReactiveFormsModule, CommonModule, ShareButtonsModule.forRoot(),

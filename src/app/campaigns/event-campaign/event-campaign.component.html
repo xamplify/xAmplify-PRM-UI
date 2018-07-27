@@ -20,18 +20,22 @@
 					<div class="form-group">
 						<label for="eventTitle" class="col-sm-3 control-label">Event Title <span class=text-danger>*</span></label>
 						<div class="col-sm-9">
-						<input type="text" class="form-control" id="eventTitle" placeholder="Event Title" [(ngModel)]="eventCampaign.campaign" [ngModelOptions]="{standalone: true}">
-						</div>
+						<input type="text" class="form-control" id="eventTitle" placeholder="Event Title" [(ngModel)]="eventCampaign.campaign" [ngModelOptions]="{standalone: true}"
+						[ngClass]="{'has-error': isFormSubmitted && !eventCampaign.campaign}">
+						<div class="text-danger" *ngIf="isFormSubmitted && !eventCampaign.campaign">Event Title is required</div>
+					</div>
 					</div>
 					<div class="form-group">
 						<label for="hostedBy" class="col-sm-3 control-label">Hosted By <span class=text-danger>*</span></label>
 						<div class="col-sm-9">
-						<input type="text" class="form-control pull-left" style="width: 50%" placeholder="Hosted By" [(ngModel)]="eventCampaign.fromName" [ngModelOptions]="{standalone: true}">
+						<input type="text" class="form-control pull-left" style="width: 50%" placeholder="Hosted By" [(ngModel)]="eventCampaign.fromName" [ngModelOptions]="{standalone: true}"
+							[ngClass]="{'has-error': isFormSubmitted && !eventCampaign.fromName}">
 						<select class="form-control" style="width: 50%" [(ngModel)]="eventCampaign.email" [ngModelOptions]="{standalone: true}" (change)="setFromName()">
 							<option *ngFor="let teamMember of teamMemberEmailIds" [ngValue]="teamMember.emailId">
 								{{teamMember.emailId}}
 							</option>
 						</select>
+						<div class="text-danger" *ngIf="isFormSubmitted && !eventCampaign.fromName">Hosted By is required</div>
 						</div>
 					</div>
 					<div class="form-group">
@@ -46,9 +50,47 @@
 					<div class="form-group">
 						<label for="eventDateTime" class="col-sm-3 control-label">Event Date/Time</label>
 						<div class="col-sm-9 p0">
-							<div class="col-sm-6"><input type="text" id="startDatePicker" class="form-control flatpickr" placeholder="Start Time" [(ngModel)]="eventCampaign.campaignEventTimes[0].startTimeString" [ngModelOptions]="{standalone: true}"></div>
-							<div class="col-sm-6"><input type="text" id="enDatePicker" class="form-control flatpickr" placeholder="End Time"></div>
-							<!--<div class="col-sm-2"><button class="btn btn-default" type="submit">+</button></div>-->
+							<div class="col-sm-6"><input type="text" id="startDatePicker" class="form-control flatpickr" placeholder="Start Time" 
+								[(ngModel)]="eventCampaign.campaignEventTimes[0].startTimeString" [ngModelOptions]="{standalone: true}" 
+								[ngClass]="{'has-error': isFormSubmitted && !eventCampaign.campaignEventTimes[0].startTimeString}"></div>
+							<div class="col-sm-6">
+								<input type="text" id="enDatePicker" class="form-control flatpickr" placeholder="End Time" 
+								[(ngModel)]="eventCampaign.campaignEventTimes[0].endTimeString" [ngModelOptions]="{standalone: true}">
+							</div>
+							<div class="col-sm-6 text-danger" *ngIf="isFormSubmitted && !eventCampaign.campaignEventTimes[0].startTimeString">Please enter a valid start Date / Time</div>
+						<div class="clearfix">
+							<div class="col-sm-6">
+								<label> 
+									<input type="checkbox" [checked]="eventCampaign.campaignEventTimes[0].allDay" (change)="eventCampaign.campaignEventTimes[0].allDay = !eventCampaign.campaignEventTimes[0].allDay"> All Day 
+								</label>
+							</div>
+							<div class="col-sm-6">TIMEZONE</div>
+						</div>
+						<div class="clearfix">
+							<div class="col-sm-6">
+								<label style="float: left;">Country</label>
+								<br>
+								<select class="form-control" style="width: 100%" [(ngModel)]="eventCampaign.campaignEventTimes[0].countryId" [ngModelOptions]="{standalone: true}" (change)="onChangeCountryCampaignEventTime($event.target.value)">
+									<option *ngFor="let country of countries" [value]="country.id">{{country.name}}</option>
+								</select>
+							</div>
+							<div class="col-sm-6">
+								<label style="float: left;">TimeZone </label>
+								<br>
+								<select class="form-control" style="width: 100%" [(ngModel)]="eventCampaign.campaignEventTimes[0].timeZone" [ngModelOptions]="{standalone: true}" id="timezoneIdCampaignEventTime">
+									<ng-container *ngIf="timezonesCampaignEventTime?.length==1">
+										<option *ngFor="let timeZone of timezonesCampaignEventTime" [value]="timeZone.timezoneId" [selected]="eventCampaign.campaignEventTimes[0].countryId == timeZone.countryId">
+											{{timeZone.cityName}}
+										</option>
+									</ng-container>
+									<ng-container *ngIf="timezonesCampaignEventTime?.length>1">
+										<option *ngFor="let timeZone of timezonesCampaignEventTime" [value]="timeZone.timezoneId">
+											{{timeZone.cityName}}
+										</option>
+									</ng-container>
+								</select>
+							</div>
+						</div>
 						</div>
 					</div>					
 					<div class="form-group">
@@ -344,8 +386,40 @@
       </fieldset>
 			<div class="portlet light dashboard-stat2 col-xs-12">
 				<div class="col-xs-4"><button class='btn btn-block btn-primary' (click)="createEventCampaign(eventCampaign, 'NOW')">Now</button></div>
-				<div class="col-xs-4"><button class='btn btn-block btn-primary' disabled (click)="createEventCampaign(eventCampaign, 'SCHEDULE')">Schedule</button></div>
+				<div class="col-xs-4"><button class='btn btn-block btn-primary' (click)="selectedLaunchOption = 'SCHEDULE'">Schedule</button></div>
 				<div class="col-xs-4"><button class='btn btn-block btn-primary' (click)="createEventCampaign(eventCampaign, 'SAVE')">Save</button></div>
+
+				<div class="col-md-12" style="margin-left: -17px;margin-top: 12px;" [hidden]="selectedLaunchOption!='SCHEDULE'">
+					<div class="col-md-4">
+						<label style="float: left;">Date</label>
+						<br>
+						<input type="text" id="launchTimeInString" class="form-control flatpickr" placeholder="Launch Time" 
+								[(ngModel)]="eventCampaign.launchTimeInString" [ngModelOptions]="{standalone: true}">
+					</div>
+					<div class="col-md-4">
+						<label style="float: left;">Country</label>
+						<br>
+						<select class="form-control" style="width: 100%" [(ngModel)]="eventCampaign.countryId" [ngModelOptions]="{standalone: true}" (change)="onChangeCountry($event.target.value)" id="countryName">
+							<option *ngFor="let country of countries" [value]="country.id">{{country.name}}</option>
+						</select>
+					</div>
+					<div class="col-md-4">
+						<label style="float: left;">TimeZone </label>
+						<br>
+						<select class="form-control" style="width: 100%" [(ngModel)]="eventCampaign.timeZone" [ngModelOptions]="{standalone: true}" id="timezoneId">
+							<ng-container *ngIf="timezones?.length==1">
+								<option *ngFor="let timeZone of timezones" [value]="timeZone.timezoneId" [selected]="eventCampaign.countryId == timeZone.countryId">
+									{{timeZone.cityName}}
+								</option>
+							</ng-container>
+							<ng-container *ngIf="timezones?.length>1">
+								<option *ngFor="let timeZone of timezones" [value]="timeZone.timezoneId">
+									{{timeZone.cityName}}
+								</option>
+							</ng-container>
+						</select>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

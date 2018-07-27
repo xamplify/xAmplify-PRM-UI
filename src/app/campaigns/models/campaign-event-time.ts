@@ -3,6 +3,7 @@ export class CampaignEventTime {
     endTimeString: string;
     timeZone: string;
     country: string;
-    allDay: boolean;
+    countryId:number = 0;
+    allDay = false;
     message: string;
 }

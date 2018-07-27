@@ -21,7 +21,7 @@ export class EventCampaign {
     campaignScheduleType: string;
     campaignLocation: Location = new Location();
     country: string;
-    countryId: number;
+    countryId:number = 0;
     publicEventCampaign: boolean = true;
     toPartner: boolean = true;
     inviteOthers: boolean = true;

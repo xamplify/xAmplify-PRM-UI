@@ -42,7 +42,7 @@ import { EventCampaignComponent } from './event-campaign/event-campaign.componen
     PartnerCampaignsComponent,
     EditPartnerCampaignsComponent,
     PreviewCampaignComponent,
-    EventCampaignComponent
+    EventCampaignComponent,
     /*,CkEditor*/
   ],
   providers: [ContactService, VideoFileService, EmailTemplateService]
