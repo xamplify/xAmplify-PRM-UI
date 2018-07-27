@@ -75,7 +75,8 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     paginationType:string;
     videoPlayedSkipedInfo:any;
     logListName = "";
-
+    videoTotalViews: number;
+   
     constructor(public authenticationService: AuthenticationService, public videoBaseReportService: VideoBaseReportService,
         public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService,
         public pagination: Pagination, public pagerService: PagerService, public router: Router) {
@@ -399,6 +400,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                     console.log(result);
                     this.watchedFully = result.video_views_count_data.watchedfullypercentage;
                     this.minutesWatchedUsers = result.video_views_count_data.minutesWatched.length;
+                    this.videoTotalViews = result.video_views_count_data.totalViewsCount;
                      const maxValue = Math.max.apply(null, result.video_views_count_data.minutesWatched);
                      const obj = { 'result': result, 'type': 'videobasedreport','maxValue': maxValue };
                      this.trellisBarChartData = obj;
