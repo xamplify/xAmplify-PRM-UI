@@ -624,7 +624,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
           this.changeFullscreenCondtion(this.newFullScreen);
       } catch (error) {
         this.clientError = true;
-        console.log('error' + error); }
+        console.log('error in defaultPlayerSettingsCondition edit videos' + error); }
 
   }
   defaultSettingValuesBoolean(event: boolean) { this.defaultSettingValue = this.disablePlayerSettingnew = event; }
@@ -694,7 +694,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
       const rgba = this.videoUtilService.transparancyControllBarColor(color, value);
       $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
       }catch(error){
-      this.xtremandLogger.error('error'+error);
+      this.xtremandLogger.error('error in changeTransperancyControllBar edit video'+error);
       this.clientError = true;
      }
   }

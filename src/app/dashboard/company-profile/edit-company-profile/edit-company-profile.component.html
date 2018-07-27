@@ -54,15 +54,15 @@
 						<div class="col-sm-4 col-xs-12 col-sm-offset-1">
 							<div class="portlet light border-radius-0 shadow">
 								<div class="portlet-body clearfix text-center" style="padding: 2em 0;">
-									<div class="profile-image-wrapper">
+									<div class="profile-image-wrapper" style="cursor:pointer"  (click)="imageClick()">
                     <span *ngIf="logoError" style="color: #f55d7a">{{logoErrorMessage}}</span>
                     <span *ngIf="!companyLogoImageUrlPath" style="color: #f55d7a; position: absolute;bottom: 5px;">* Please upload company logo</span>
 										<img *ngIf="!companyLogoImageUrlPath" src="assets/images/company-profile-logo.png" class="profile-image">
-											<img *ngIf="companyLogoImageUrlPath" [src]= "authenticationService.MEDIA_URL + companyLogoImageUrlPath" class="profile-image" (error)="errorHandler($event)">
+										<img *ngIf="companyLogoImageUrlPath" [src]= "authenticationService.MEDIA_URL + companyLogoImageUrlPath" class="profile-image" (error)="errorHandler($event)">
 											<div class="profile-overlay">
 												<label class="fileContainer">
-													<i class="fa fa-camera"></i>&nbsp;Upload company logo
-													<input type="file" ng2FileSelect [uploader]="companyLogoUploader" accept="image/jpeg,image/pjpeg,image/jpeg,image/pjpeg,image/png"
+													<i class="fa fa-camera"></i>&nbsp;<span *ngIf="!companyLogoImageUrlPath">Upload company logo</span><span *ngIf="companyLogoImageUrlPath">Change company logo</span>
+													<input id="companyLogo" type="file" ng2FileSelect [uploader]="companyLogoUploader" accept="image/jpeg,image/pjpeg,image/jpeg,image/pjpeg,image/png"
 															*ngIf="companyLogoUploader.queue.length==0" (change)="changeLogo($event)" title=" " #input/>
 												</label>
 											</div>

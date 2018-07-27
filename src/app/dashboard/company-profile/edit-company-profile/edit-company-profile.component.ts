@@ -214,7 +214,9 @@ export class EditCompanyProfileComponent implements OnInit {
 
         } )
     }
-
+    imageClick(){
+      $('#companyLogo').click();
+    }
 
     ngOnInit() {
         this.geoLocation();
