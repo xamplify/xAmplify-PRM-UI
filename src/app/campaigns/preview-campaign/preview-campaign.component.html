@@ -248,14 +248,13 @@
                             *ngIf="contactListPagination.totalRecords > 0">
                             <thead>
                               <tr>
-                                <th style="text-align: center;" class="sorting_desc" tabindex="0" aria-controls="user_list_tb" rowspan="1" colspan="1" aria-sort="descending"
-                                  aria-label="Date Uploaded: activate to sort column ascending">
+                                <th class="text-center" >
                                   Date Uploaded
                                 </th>
-                                <th style="text-align: center;" class="sorting" tabindex="0" aria-controls="user_list_tb" rowspan="1" colspan="1" aria-label="List Name: activate to sort column ascending">
+                                <th class="text-center">
                                   List Name
                                 </th>
-                                <th style="text-align: center;" class="sorting" tabindex="0" aria-controls="user_list_tb" rowspan="1" colspan="1" aria-label="Download: activate to sort column ascending">
+                                <th class="text-center">
                                   Preview
                                 </th>
                               </tr>
@@ -263,7 +262,10 @@
                             <tbody>
                               <tr role="row" *ngFor="let contacts of contactListPagination.pagedItems;let i = index" id="campaignContactListTable_{{contacts.id}}"
                                 (mouseover)='showContactsAlert(contacts.noOfContacts)' [attr.title]="emptyContactsMessage">
-                                <td class="text-center sorting_1">{{contacts.createdDate}}</td>
+                                <td class="text-center sorting_1">
+                                  <app-timestamp [isOnlyDate]="true" [dateAndTime]="contacts.createdDate"> </app-timestamp>
+
+                                </td>
                                 <td class="text-center" *ngIf="contacts.name?.length>50" title="{{contacts.name}}">
                                   {{contacts.name | slice:0:50}}...
                                 </td>
