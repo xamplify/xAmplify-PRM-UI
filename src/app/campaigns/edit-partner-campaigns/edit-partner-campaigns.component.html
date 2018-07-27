@@ -143,19 +143,19 @@
             <fieldset>
               <legend>Selected email template</legend>
               <div class="row m0" (click)="previewEmailTemplate(campaign.emailTemplate)" style="cursor: pointer;">
-                <div class="col-xs-4 p0">
+                <div class="col-xs-3">
                   <img src="{{campaign.emailTemplate.subject}}" height="100">
                 </div>
-                <div class="col-xs-8">
+                <div class="col-xs-9">
                   <a>
-                    <h4 class="ellipsis mt5 mb5 f-w-600" title="{{campaign.emailTemplate.name}}">{{campaign.emailTemplate.name | slice:0:25}}
+                    <h4 class="ellipsis mt5 mb5" style="color: #777676;font-weight: 500 !important;" title="{{campaign.emailTemplate.name}}">{{campaign.emailTemplate.name | slice:0:25}}
                       <span *ngIf="campaign.emailTemplate.name?.length>25">...</span>
                     </h4>
-                   <h5 class="m0" *ngIf="campaign.emailTemplate.type.toLocaleString() ==='PARTNER'" title="{{campaign.emailTemplate.vendorName}}">
+                   <h5 style="color: #656565;" class="m0" *ngIf="campaign.emailTemplate.type.toLocaleString() ==='PARTNER'" title="{{campaign.emailTemplate.vendorName}}">
                    		Shared By {{campaign.emailTemplate.vendorName | slice:0:15}}
                    		<span *ngIf="campaign.emailTemplate.vendorName?.length>15">...</span>
                    	</h5>
-                 	<h5 class="m0" *ngIf="campaign.emailTemplate.type.toLocaleString()!=='PARTNER'" title="{{campaign.emailTemplate.createdBy}}">
+                 	<h5 style="color: #656565;" class="m0" *ngIf="campaign.emailTemplate.type.toLocaleString()!=='PARTNER'" title="{{campaign.emailTemplate.createdBy}}">
                    		Created By {{campaign.emailTemplate.createdBy | slice:0:15}}
                    		<span *ngIf="campaign.emailTemplate.createdBy?.length>15">...</span>
                    	</h5>
@@ -211,19 +211,12 @@
                             <thead>
                               <tr>
                                 <td align="center">
-                                  <input type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" class="" id="checkAllExistingContacts"
+                                  <input type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" id="checkAllExistingContacts"
                                     [ngModelOptions]="{standalone: true}" />
                                 </td>
-                                <th style="text-align: center;" class="sorting_desc" tabindex="0" aria-controls="user_list_tb" rowspan="1" colspan="1" aria-sort="descending"
-                                  aria-label="Date Uploaded: activate to sort column ascending">
-                                  Date Uploaded
-                                </th>
-                                <th style="text-align: center;" class="sorting" tabindex="0" aria-controls="user_list_tb" rowspan="1" colspan="1" aria-label="List Name: activate to sort column ascending">
-                                  List Name
-                                </th>
-                                <th style="text-align: center;" class="sorting" tabindex="0" aria-controls="user_list_tb" rowspan="1" colspan="1" aria-label="Download: activate to sort column ascending">
-                                  Preview
-                                </th>
+                                <th class="text-center">Date Uploaded </th>
+                                <th class="text-center">  List Name </th>
+                                <th class="text-center">  Preview  </th>
                               </tr>
                             </thead>
                             <tbody>
@@ -242,13 +235,15 @@
                                   </div>
                                 </td>
 
-                                <td class="text-center sorting_1">{{contacts.createdDate}}</td>
-
-                                <td class="text-center" *ngIf="contacts.name?.length>50" title="{{contacts.name}}">
-                                  {{contacts.name | slice:0:50}}...
+                                <td class="text-center sorting_1">
+                                  <app-timestamp [isOnlyDate]="true" [dateAndTime]="contacts.createdDate"> </app-timestamp>
                                 </td>
 
-                                <td class="text-center" *ngIf="contacts.name?.length<=50" title="{{contacts.name}}">
+                                <td class="text-center" *ngIf="contacts.name?.length>15" title="{{contacts.name}}">
+                                  {{contacts.name | slice:0:15}}...
+                                </td>
+
+                                <td class="text-center" *ngIf="contacts.name?.length<=15" title="{{contacts.name}}">
                                   {{contacts.name}}
                                 </td>
                                 <td class="text-center">

@@ -1,5 +1,5 @@
 import { Component, OnInit,OnDestroy} from '@angular/core';
-import { ActivatedRoute,Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators} from '@angular/forms';
 import { Pagination } from '../../core/models/pagination';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
@@ -8,7 +8,6 @@ import { validateCampaignSchedule } from '../../form-validator';
 import { VideoFileService} from '../../videos/services/video-file.service';
 import { ContactService } from '../../contacts/services/contact.service';
 import { CampaignService } from '../services/campaign.service';
-import { UserService } from '../../core/services/user.service';
 import { EmailTemplateService } from '../../email-template/services/email-template.service';
 import { PagerService } from '../../core/services/pager.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
@@ -33,7 +32,7 @@ import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import { SocialService } from "../../social/services/social.service";
 import { Country } from '../../core/models/country';
 import { Timezone } from '../../core/models/timezone';
-import {Roles} from '../../core/models/roles';
+import { Roles } from '../../core/models/roles';
 import { Properties } from '../../common/models/properties';
 declare var swal, $, videojs , Metronic, Layout , Demo,flatpickr,CKEDITOR:any;
 
@@ -195,10 +194,10 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     isPartnerToo:boolean = false;
     httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
     /***********End Of Declation*************************/
-    constructor(private fb: FormBuilder,private route: ActivatedRoute,public refService:ReferenceService,
+    constructor(private fb: FormBuilder,public refService:ReferenceService,
                 private logger:XtremandLogger,private videoFileService:VideoFileService,
                 public authenticationService:AuthenticationService,private pagerService:PagerService,
-                private userService:UserService,public campaignService:CampaignService,private contactService:ContactService,
+                public campaignService:CampaignService,private contactService:ContactService,
                 private emailTemplateService:EmailTemplateService,private router:Router, private socialService: SocialService,
                 public callActionSwitch: CallActionSwitch, public videoUtilService: VideoUtilService,public properties:Properties
             ){

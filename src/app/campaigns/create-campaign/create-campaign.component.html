@@ -373,30 +373,6 @@
                                     </a> -->
                                     <app-video-thumbnail [videoFile]="savedVideoFile" (notifyParent)="showPreview($event)"></app-video-thumbnail>
 																	</td>
-
-																	<!-- --------------Title--------------------------- -->
-																	<!-- <td class="text-left">
-																		<div class="row">
-																			<div class="col-md-12" title="{{savedVideoFile.title}}">
-																				<p style="margin: 0;">
-																					<a href="javascript:void(0)" class="not-active">
-																						<b style="font-size: 13px;">{{savedVideoFile.title|slice:0:50}}
-                                                <span *ngIf="savedVideoFile.title?.length>50">...</span>
-                                            </b>
-																						<b style="font-size: 13px;" *ngIf="savedVideoFile.title?.length<=50">{{savedVideoFile.title}}</b>
-																					</a>
-																				</p>
-																				<p>by
-                                            <b>{{savedVideoFile.uploadedUserName | slice:0:20}}<span *ngIf="savedVideoFile.uploadedUserName?.length>20">...</span></b>
-																				</p>
-																				<p>
-																					<span>
-																					<app-timestamp [isOnlyDate]="true" [dateAndTime]="savedVideoFile.uploadedDate"> </app-timestamp>
-																					 </span>
-																				</p>
-																			</div>
-																		</div>
-																	</td> -->
 																	<!-- --------------Category--------------------------- -->
 																	<td class="text-center">{{savedVideoFile.category.name}}</td>
 																	<!-- --------------Published To--------------------------- -->
@@ -433,25 +409,6 @@
                                       [checked]="videoFile.id == selectedRow">
                                       <input  class="radio-button-css" *ngIf="videoFile.viewBy=='DRAFT'  && videoFile.id!==videoId" type="radio" name="videoFileId" [value]="videoFile.id" disabled="disabled" title="Video is in draft mode, please update the publish options to Library or Viewers.">
                                       <app-video-thumbnail [ngClass]="{'not-active':videoFile.viewBy=='DRAFT'}" [videoFile]="videoFile" (notifyParent)="showPreview($event)"></app-video-thumbnail>
-																		<!-- <div class="row">
-																			<div class="col-md-12">
-																				<p style="margin: 0;" title="{{videoFile.title}}">
-																					<a href="javascript:void(0)" class="not-active">
-																						<b style="font-size: 13px;"> {{videoFile.title|slice:0:50}}
-                                              <span *ngIf="videoFile.title?.length>50">...</span>
-																						</b>
-																					</a>
-																				</p>
-																				<p>by
-                                            <b>{{videoFile.uploadedUserName | slice:0:20}}<span *ngIf="videoFile.uploadedUserName?.length>20">...</span></b>
-																				</p>
-																				<p>
-																					<span >
-																					<app-timestamp [isOnlyDate]="true" [dateAndTime]="videoFile.uploadedDate"> </app-timestamp>
-																					</span>
-																				</p>
-																			</div>
-																		</div> -->
 																	</td>
 																	<!-- --------------Category--------------------------- -->
 																	<td class="text-center" *ngIf="videoFile.id!==videoId">	{{videoFile.category.name}}</td>
@@ -552,24 +509,6 @@
                                     </a> -->
                                     <app-video-thumbnail [videoFile]="savedVideoFile" (notifyParent)="showPreview($event)"></app-video-thumbnail>
 																	</td>
-																	<!-- <td class="text-left">
-																		<div class="row">
-																			<div class="col-md-12" title="{{savedVideoFile.title}}">
-																				<p style="margin: 0;">
-																					<a href="javascript:void(0)" class="not-active">
-																						<b style="font-size: 13px;" *ngIf="savedVideoFile.title?.length>50">{{savedVideoFile.title|slice:0:50}}....</b>
-																						<b style="font-size: 13px;" *ngIf="savedVideoFile.title?.length<=50">{{savedVideoFile.title}}</b>
-																					</a>
-																				</p>
-																				<p>by
-                                            <b>{{savedVideoFile.uploadedUserName | slice:0:20}}<span *ngIf="savedVideoFile.uploadedUserName?.length>20">...</span></b>
-																				</p>
-																				<p>
-																					<span>{{savedVideoFile.uploadedDate}}</span>
-																				</p>
-																			</div>
-																		</div>
-																	</td> -->
 																	<td class="text-center">	{{savedVideoFile.category.name}}</td>
 																	<td class="text-center"> <span class="view-by-banner">{{savedVideoFile.viewBy}}</span></td>
 																	<td class="text-center">
@@ -601,26 +540,6 @@
                                     </a> -->
                                     <app-video-thumbnail [ngClass]="{'not-active':videoFile.viewBy=='DRAFT'}" [videoFile]="videoFile" (notifyParent)="showPreview($event)"></app-video-thumbnail>
 																	</td>
-																	<!-- --------------Title--------------------------- -->
-																	<!-- <td class="text-left" *ngIf="videoFile.id!==videoId">
-																		<div class="row">
-																			<div class="col-md-12">
-																				<p style="margin: 0;" title="{{videoFile.title}}">
-																					<a href="javascript:void(0)" class="not-active">
-																						<b style="font-size: 13px;">{{videoFile.title|slice:0:50}}
-                                                <span *ngIf="videoFile.title?.length>50">...</span>
-                                            </b>
-																					</a>
-																				</p>
-																				<p>by
-																					<b>{{videoFile.uploadedUserName | slice:0:20}}<span *ngIf="videoFile.uploadedUserName?.length>20">...</span></b>
-																				</p>
-																				<p>
-																					<span>{{videoFile.uploadedDate}}</span>
-																				</p>
-																			</div>
-																		</div>
-																	</td> -->
 																	<!-- --------------Category--------------------------- -->
 																	<td class="text-center" *ngIf="videoFile.id!==videoId"> {{videoFile.category.name}}	</td>
 																	<!-- --------------Published To--------------------------- -->

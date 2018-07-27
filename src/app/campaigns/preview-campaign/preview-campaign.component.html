@@ -186,10 +186,10 @@
               <legend>Selected email template</legend>
               <h4 style="text-align: center;" *ngIf="selectedEmailTemplateId==0">No email template is selected</h4>
               <div class="row m0" (click)="previewEmailTemplate(campaign.emailTemplate)" style="cursor: pointer;" *ngIf="selectedEmailTemplateId>0">
-                <div class="col-xs-4 p0">
+                <div class="col-xs-3">
                   <img src="{{campaign.emailTemplate.subject}}" height="100">
                 </div>
-                <div class="col-xs-8">
+                <div class="col-xs-9">
                   <a>
                     <h4 class="ellipsis mt5 mb5 f-w-600" title="{{campaign.emailTemplate.name}}">{{campaign.emailTemplate.name | slice:0:25}}
                       <span *ngIf="campaign.emailTemplate.name?.length>25">...</span>
