@@ -1276,6 +1276,10 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
       this.isListView = !this.referenceService.isGridView;
       this.validateLaunchForm();
   }
+  isEven(n) {
+    if(n % 2 === 0){ return true;}
+      return false;
+  }
 
   goToCampaigns(){
       let type = this.campaign.campaignType.toString(1);

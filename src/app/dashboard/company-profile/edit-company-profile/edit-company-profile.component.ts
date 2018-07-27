@@ -753,7 +753,7 @@ export class EditCompanyProfileComponent implements OnInit {
         if ($.trim(this.companyProfile.emailId).length > 0) {
             if (!this.regularExpressions.EMAIL_ID_PATTERN.test(this.companyProfile.emailId)) {
                 this.addEmailIdError();
-                this.emailIdErrorMessage = "Invalid EmailId";
+                this.emailIdErrorMessage = "Please enter a valid email address.";
             } else {
                 this.removeEmailIdError();
             }
@@ -805,13 +805,13 @@ export class EditCompanyProfileComponent implements OnInit {
         if ($.trim(this.companyProfile.website).length > 0) {
             if (!this.regularExpressions.URL_PATTERN.test(this.companyProfile.website)) {
                 this.addWebSiteError();
-                this.websiteErrorMessage = "Invalid WebSite Url";
+                this.websiteErrorMessage = "Please enter a valid company’s URL.";
             } else {
                 this.removeWebSiteError();
             }
         } else {
             this.websiteError = true;
-            this.websiteErrorMessage = 'Please add your company’s URL';
+            this.websiteErrorMessage = 'Please add your company’s URL.';
         }
     }
 
