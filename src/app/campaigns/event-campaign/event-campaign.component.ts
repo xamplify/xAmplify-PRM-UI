@@ -174,6 +174,15 @@ export class EventCampaignComponent implements OnInit {
     this.eventCampaign.user.userId = this.loggedInUserId;
     this.eventCampaign.campaignScheduleType = launchOption;
     console.log(eventCampaign);
+    let scheduleTime:any;
+    if(eventCampaign.campaignScheduleType=="NOW" || eventCampaign.campaignScheduleType=="SAVE"){
+        eventCampaign.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        eventCampaign.launchTimeInString = this.campaignService.setLaunchTime();
+    }else{
+        eventCampaign.timeZone = $('#timezoneId option:selected').val();
+        eventCampaign.launchTimeInString = this.eventCampaign.launchTimeInString;
+    }
+    
 
     this.campaignService.createEventCampaign(eventCampaign)
       .subscribe(
