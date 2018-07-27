@@ -381,7 +381,10 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
         $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
         $("#email_template_preivew").modal('show');
     }
-
+    isEven(n) {
+      if(n % 2 === 0){ return true;}
+        return false;
+    }
     ngOnDestroy(){
       CKEDITOR.config.readOnly = false;
       $('#usersModal').modal('hide');
