@@ -99,7 +99,10 @@ export class LoginComponent implements OnInit, OnDestroy {
     redirectTo(user: User) {
         this.loading = false;
         const roles = user.roles;
-        if (user.hasCompany || roles.length === 1) {
+        
+        if(roles.length === 1 && roles[0].roleId === 1){
+            this.router.navigate(['/home/dashboard/admin-report']);  
+        }else if (user.hasCompany || roles.length === 1) {
             this.router.navigate([this.referenceService.homeRouter]);
         } else {
             this.router.navigate(['/home/dashboard/add-company-profile']);

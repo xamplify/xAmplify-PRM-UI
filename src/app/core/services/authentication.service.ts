@@ -33,6 +33,7 @@ export class AuthenticationService {
     module:Module = new Module();
     roleName: Roles= new Roles();
     isAddedByVendor = false;
+    selectedVendorId: number;
     constructor(private http: Http, private router: Router, private utilService: UtilService) {
         this.REST_URL = this.SERVER_URL + 'xtremand-rest/';
         this.MEDIA_URL = this.SERVER_URL + 'vod/';
@@ -271,6 +272,13 @@ export class AuthenticationService {
         }else{
             return false;
         }
+    }
+    
+    checkingLoggedInUserId( userId ) {
+        if ( userId === 1 ) {
+            userId = this.selectedVendorId;
+        }
+        return userId;
     }
 
 }

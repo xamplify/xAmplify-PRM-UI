@@ -11,11 +11,20 @@ import { AuthenticationService } from '../../core/services/authentication.servic
   styleUrls: ['./dashboard-stats.component.css']
 })
 export class DashboardStatsComponent implements OnInit {
-  dashboardReport: DashboardReport = new DashboardReport();
-  constructor(public router: Router, public dashboardService: DashboardService, public authenticationService: AuthenticationService) { }
+ 
+    dashboardReport: DashboardReport = new DashboardReport();
+  isAdmin: boolean;
+  constructor(public router: Router, public dashboardService: DashboardService, public authenticationService: AuthenticationService) { 
+  }
 
   dashboardReportsCount() {
-      this.dashboardService.loadDashboardReportsCount(this.authenticationService.getUserId())
+     
+      let userId = this.authenticationService.user.id;
+      userId = this.authenticationService.checkingLoggedInUserId(userId);
+      if(userId === 1){
+          this.isAdmin = true;
+      }
+      this.dashboardService.loadDashboardReportsCount(userId)
           .subscribe(
               data => {
                   this.dashboardReport.totalViews = data.totalVideoViewsCount;

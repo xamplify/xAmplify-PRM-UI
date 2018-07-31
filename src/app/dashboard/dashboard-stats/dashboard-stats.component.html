@@ -1,4 +1,5 @@
 	<!-- BEGIN DASHBOARD STATS -->
+<!-- 	<style> .disabled{ pointer-events:none;} </style> -->
 	<div class="row">
 		<!--  commented for future work -->
 		<!-- <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6">
@@ -13,7 +14,7 @@
 			</a>
 		</div> -->
 		<div [ngClass]="{'col-lg-3 col-md-3 col-sm-6 col-xs-12':(authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner()), 'col-lg-4 col-md-4 col-sm-4 col-xs-6':!(authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner())}">
-			<a class="dashboard-stat dashboard-stat-lighter yellow-gold" [routerLink]="['../../videos/manage']" [class.disabled]=" !authenticationService.user.hasCompany ? true : null">
+			<a class="dashboard-stat dashboard-stat-lighter yellow-gold" [routerLink]="['../../videos/manage']" [class.disabled]="true">
 				<div class="visual">
           <!-- <i class="fa fa-cloud-upload"></i> -->
           <img src="assets/images/white15.png" class="img-dash">

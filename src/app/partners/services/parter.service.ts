@@ -10,6 +10,7 @@ export class ParterService {
 
     constructor( public authenticationService: AuthenticationService, public httpClient: HttpClient ) { }
     partnerReports( userId: number ): Observable<any> {
+        userId = this.authenticationService.checkingLoggedInUserId(userId);
         const url = this.URL + 'partner/analytics?access_token=' + this.authenticationService.access_token +
             '&userId=' + userId;
         return this.httpClient.get( url )
@@ -26,6 +27,7 @@ export class ParterService {
             .catch( this.handleError );
     }
     partnerUserInteractionReports( userId: number, pagination: Pagination ): Observable<any> {
+        userId = this.authenticationService.checkingLoggedInUserId(userId);
         const url = this.URL + 'partner/campaigns?access_token=' + this.authenticationService.access_token +
             '&userId=' + userId
         return this.httpClient.post( url, pagination )

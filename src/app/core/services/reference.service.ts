@@ -98,8 +98,13 @@ export class ReferenceService {
     }
     getVideoTitles(): Observable<String[]> {
         const constUrl = this.authenticationService.REST_URL + 'videos/';
+        
+        let userId = this.authenticationService.user.id;
+        
+        userId = this.authenticationService.checkingLoggedInUserId(userId);
+        
         const url = constUrl + 'video-titles?access_token=' + this.authenticationService.access_token + '&userId=' +
-            this.authenticationService.user.id;
+        userId;
         return this.http.get(url, "")
             .map(this.extractData)
             .catch(this.handleError);

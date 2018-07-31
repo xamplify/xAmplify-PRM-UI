@@ -1,0 +1,11 @@
+.highletedRow{
+	cursor:pointer
+}
+
+.highletedRow:hover {
+	background-color:#a6d9f5;
+}
+
+.selectedRow {
+	background-color:#a6d9f5;
+}

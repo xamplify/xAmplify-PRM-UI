@@ -66,8 +66,13 @@ export class ContactService {
     }
 
     loadContactLists( pagination: Pagination ): Observable<ContactList[]> {
+       
+        let userId = this.authenticationService.user.id;
+        
+        userId = this.authenticationService.checkingLoggedInUserId(userId);
+        
         this.logger.info( "Service class loadContact() completed" );
-        return this._http.post( this.contactsUrl + '?userId='+this.authenticationService.getUserId() + "&access_token=" + this.authenticationService.access_token, pagination )
+        return this._http.post( this.contactsUrl + '?userId='+ userId + "&access_token=" + this.authenticationService.access_token, pagination )
             .map( this.extractData )
             .catch( this.handleError );
     }

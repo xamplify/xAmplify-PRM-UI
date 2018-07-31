@@ -1,0 +1,213 @@
+<div class="page-content ml0">
+	<div class="page-bar"> 
+		<ul class="page-breadcrumb">
+			<!-- <li>
+				<i class="fa fa-home"></i>
+				<a [routerLink]="referenceService.homeRouter">Home</a>
+				<i class="fa fa-angle-right"></i>
+			</li> -->
+			<li>
+			<i class="fa fa-th"></i>
+				<a (click)="detailsTielsView = false">Admin Report</a>
+			</li>
+			<li *ngIf="detailsTielsView">
+			<i class="fa fa-angle-right"></i>
+				<a>Vendor Report</a>
+			</li>
+		</ul>
+	</div>
+	<div class="row">
+		<div class="col-xs-12" *ngIf="!detailsTielsView">
+			<div class="page-bar">
+				<div class="table-responsive">
+					<table class='table tgrid'>
+						<thead>
+							<tr>
+								<th style="width: 20%;">NAME</th>
+								<th>COMPANY</th>
+								<th>STATUS</th>
+								<th class='text-center'>REGISTRATION DATE</th>
+								<th class='text-center'>LAST LOGIN</th>
+								<th class='text-center'>UPDATED TIME</th>
+							</tr>
+						</thead>
+						<tbody> 
+							<ng-container *ngFor="let report of vendorsDetails;let i = index"> <!-- this div for ngFor -->
+							<tr (click)="selectedVendorDetails(report)" class="highletedRow">
+								<td>
+								<app-user-info [userInfo]="report"> 
+								</app-user-info>
+								</td>
+								<td>{{report.companyName}}</td>
+								<td>{{report.userStatus}}</td>
+								<td align="center">
+								<app-timestamp [dateAndTime]="report.dateReg"> </app-timestamp>
+								</td>
+								<td align="center">
+								<app-timestamp [dateAndTime]="report.dateLastLogin"> </app-timestamp>
+								</td>
+								<td align="center">
+								<app-timestamp [dateAndTime]="report.updatedTime"> </app-timestamp>
+								</td>
+							</tr>
+							</ng-container>
+ 
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<app-pagination [pagination]="pagination" [type]="'admin-reports'"
+				(notifyParent)="setPage($event)"
+				(notifyParentDropDown)="onChangeAllContactUsers($event)"></app-pagination>
+		</div>
+
+
+
+		<section *ngIf="detailsTielsView">
+				<div class="clearfix"></div>
+				
+			<div class="page-bar">
+				<div class="table-responsive">
+					<table class='table tgrid'>
+						<thead>
+							<tr>
+								<th style="width: 20%;">NAME</th>
+								<th>COMPANY</th>
+								<th>STATUS</th>
+								<th class='text-center'>REGISTRATION DATE</th>
+								<th class='text-center'>LAST LOGIN</th>
+								<th class='text-center'>UPDATED TIME</th>
+							</tr>
+						</thead>
+						<tbody> 
+							<ng-container> <!-- this div for ngFor -->
+							<tr class="selectedRow">
+								<td>
+								<app-user-info [userInfo]="selectedVendorRow"> 
+								</app-user-info>
+								</td>
+								<td>{{selectedVendorRow.companyName}}</td>
+								<td>{{selectedVendorRow.userStatus}}</td>
+								<td align="center">
+								<app-timestamp [dateAndTime]="selectedVendorRow.dateReg"> </app-timestamp>
+								</td>
+								<td align="center">
+								<app-timestamp [dateAndTime]="selectedVendorRow.dateLastLogin"> </app-timestamp>
+								</td>
+								<td align="center">
+								<app-timestamp [dateAndTime]="selectedVendorRow.updatedTime"> </app-timestamp>
+								</td>
+							</tr>
+							</ng-container>
+ 
+						</tbody>
+					</table>
+				</div>
+			</div>
+				
+				
+				
+				<app-dashboard-stats></app-dashboard-stats>
+									<!-- <div class="row mt5 mb5">
+										<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+											<button class="btn-block dashboard-stat blue" [routerLink]="['../../campaigns/manage']">
+												<div class="visual">
+													<i class="fa fa-users"></i>
+												</div>
+												<div class="details">
+													<div class="number" style="font-weight: 300 !important;">{{selectedVendorsDetails.totalCampaignsCount}}</div>
+													<div class="desc" style="font-size:20px">Campaigns{{checkingContactTypeName}}s</div>
+												</div>
+												<span class="morePadding"> <a class="more" style="text-align: left;">
+														Detailed view <i class="m-icon-swapright m-icon-white"></i>
+												</a>
+												</span>
+											</button>
+										</div>
+										<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+											<button class="btn-block dashboard-stat green">
+												<div class="visual">
+													<i class="fa fa-eye"></i>
+												</div>
+												<div class="details">
+													<div class="number numberCss"
+														style="font-weight: 300 !important;">{{selectedVendorsDetails.totalVideosCount}}</div>
+													<div class="desc" style="font-size:20px">Videos {{checkingContactTypeName}}s</div>
+												</div>
+												<span class="morePadding"> <a class="more" style="text-align: left;">
+														Detailed view <i class="m-icon-swapright m-icon-white"></i>
+												</a>
+												</span>
+											</button>
+										</div>
+										<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+											<button class="btn-block dashboard-stat purple">
+												<div class="visual">
+													<i class="fa fa-eye-slash"></i>
+												</div>
+												<div class="details">
+													<div class="number" style="font-weight: 300 !important;">{{selectedVendorsDetails.totalcontactsCount}}</div>
+													<div class="desc" style="font-size:20px">Contacts
+														{{checkingContactTypeName}}s</div>
+												</div>
+												<span class="morePadding"> <a class="more" style="text-align: left;">
+														Detailed view <i class="m-icon-swapright m-icon-white"></i>
+												</a>
+												</span>
+											</button>
+										</div>
+										<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+											<button class="btn-block dashboard-stat yellow-gold">
+												<div class="visual">
+													<i class="fa fa-user-times"></i>
+												</div>
+												<div class="details">
+													<div class="number" style="font-weight: 300 !important;">{{selectedVendorsDetails.totalEmailTemplatesCount}}</div>
+													<div class="desc" style="font-size:20px">Email Templates
+														{{checkingContactTypeName}}s</div>
+												</div>
+												<span class="morePadding"> <a class="more" style="text-align: left;">
+														Detailed view <i class="m-icon-swapright m-icon-white"></i>
+												</a>
+												</span>
+											</button>
+										</div>
+										<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+											<button class="btn-block dashboard-stat red">
+												<div class="visual">
+													<i class="fa fa-times"></i>
+												</div>
+												<div class="details">
+													<div class="number" style="font-weight: 300 !important;">{{selectedVendorsDetails.totalSocialConnectionsCount}}</div>
+													<div class="desc" style="font-size:20px">Social Connections
+														{{checkingContactTypeName}}s</div>
+												</div>
+												<span class="morePadding"> <a class="more" style="text-align: left;">
+														Detailed view <i class="m-icon-swapright m-icon-white"></i>
+												</a>
+												</span>
+											</button>
+										</div>
+										<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+											<button class="btn-block dashboard-stat blue-soft">
+												<div class="visual">
+													<i class="fa fa-times"></i>
+												</div>
+												<div class="details">
+													<div class="number" style="font-weight: 300 !important;">{{selectedVendorsDetails.totalCompanyPartnersCount}}</div>
+													<div class="desc" style="font-size:20px">Partners
+														{{checkingContactTypeName}}s</div>
+												</div>
+												<span class="morePadding"> <a class="more" style="text-align: left;">
+														Detailed view <i class="m-icon-swapright m-icon-white"></i>
+												</a>
+												</span>
+											</button>
+										</div>
+									</div> -->
+				</section>
+		
+		
+		
+	</div>
+</div>

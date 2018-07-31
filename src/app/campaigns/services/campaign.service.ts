@@ -52,6 +52,7 @@ export class CampaignService {
     }
 
     listCampaign(pagination: Pagination, userId: number) {
+        userId = this.authenticationService.checkingLoggedInUserId(userId);
         var url = this.URL + "admin/listCampaign/" + userId + "?access_token=" + this.authenticationService.access_token;
         return this.http.post(url, pagination)
             .map(this.extractData)

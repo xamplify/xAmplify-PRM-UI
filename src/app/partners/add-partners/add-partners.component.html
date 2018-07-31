@@ -244,7 +244,7 @@ img:hover {
 			</button>
 			<ul class="dropdown-menu pull-right">
 				<li><a id="save_button" *ngIf="selectedAddPartnerOption != 5" (click)="saveContacts()">Save </a></li>
-				<li><a id="save_button" *ngIf="selectedAddPartnerOption != 5 || clipBoard" (click)="cancelPartners()">Cancel </a></li>
+				<li><a id="cancel_button" *ngIf="selectedAddPartnerOption != 5 || clipBoard" (click)="cancelPartners()">Cancel </a></li>
 				<li><a id="saveAs_button"
 					*ngIf="selectedAddPartnerOption == 5 && !clipBoard" (click)="editContactComponent.saveAs(); editContactComponent.addPartnerSave = true">Save
 						As </a></li>
@@ -540,7 +540,7 @@ img:hover {
 										</thead>
 										<tbody>
 											<ng-container
-												*ngFor="let contact of partners;let i = index">
+												*ngFor="let contact of partners;let i = index" id="listPartners">
 											<tr class='row_{{i}}'>
 											<td class="text-center" *ngIf="!isCampaignDraftContactList "><input
 																type="checkbox"
@@ -582,13 +582,13 @@ img:hover {
 												</td> -->
 												<td align="center">
 												<div class="actions-block">
-												<a *ngIf="!contact.signedUp" data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.partner_reSendMail}}" (click)="sendMail(contact.id)">
+												<a id="envolope_{{i}}" *ngIf="!contact.signedUp" data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.partner_reSendMail}}" (click)="sendMail(contact.id)">
 													<i class="fa fa-envelope"></i>
 												</a>
-												<a  data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.partner_edit}}" (click)="editUserDetails(contact)">
+												<a id="edit_{{i}}"  data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.partner_edit}}" (click)="editUserDetails(contact)">
 													<i class="fa fa-pencil-square-o"></i>
 												</a>
-												<a data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.partner_delete}}" (click)="deleteUserShowAlert(contact.id)">
+												<a id="delete_{{i}}" data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.partner_delete}}" (click)="deleteUserShowAlert(contact.id)">
 													<i class="fa fa-trash-o" style="color:#ff0000"></i>
 												</a>
 												</div>
