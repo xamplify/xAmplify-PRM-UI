@@ -72,7 +72,7 @@
 							<div class="col-sm-6">
 								<label style="float: left;">Country</label>
 								<br>
-                <select class="form-control" style="width: 100%" 	[ngClass]="{'has-error': eventError.eventCountryAndTimeZone && !eventCampaign.campaignEventTimes[0].countryId}"
+                <select class="form-control" style="width: 100%;cursor: pointer;" 	[ngClass]="{'has-error': eventError.eventCountryAndTimeZone && !eventCampaign.campaignEventTimes[0].countryId}"
                 [(ngModel)]="eventCampaign.campaignEventTimes[0].countryId" [ngModelOptions]="{standalone: true}" (change)="onChangeCountryCampaignEventTime($event.target.value)" (input)="eventCountryError()" (blur)="eventCountryError()">
 									<option *ngFor="let country of countries" [value]="country.id">{{country.name}}</option>
                 </select>
@@ -378,7 +378,7 @@
 														<td *ngIf="emailTemplate.createdBy?.length>25" title="{{emailTemplate.createdBy}}">{{emailTemplate.createdBy|slice:0:25}}....</td>
 														<td *ngIf="emailTemplate.createdBy?.length<=25" title="{{emailTemplate.createdBy}}">{{emailTemplate.createdBy}}</td>
 														<td>
-															<a *ngIf="!emailTemplate.draft" class="text-warning" (click)="getEmailTemplatePreview(emailTemplate)">
+															<a *ngIf="!emailTemplate.draft" class="text-warning" (click)="getEmailTemplatePreview(emailTemplate);$event.stopPropagation()">
 																<i class="fa fa-eye" style="padding-top: 3px; font-size: 20px;" title="" data-original-title="Preview"></i>
 															</a>
 														</td>
