@@ -5,11 +5,12 @@
 	</div>
 	<div class="page-bar">
 		<ul class="page-breadcrumb">
-			<li>
+			<li *ngIf="!authenticationService.isSuperAdmin">
 				<i class="fa fa-home"></i>
 				<a [routerLink]="refService.homeRouter">Home</a>
 				<i class="fa fa-angle-right"></i>
 			</li>
+			<li *ngIf="authenticationService.isSuperAdmin"><i class="fa fa-home"></i><a [routerLink]="['/home/dashboard/admin-report']">Admin Report</a><i class="fa fa-angle-right"></i></li>
 			<li>
 				<a>Manage Campaigns</a>
 			</li>

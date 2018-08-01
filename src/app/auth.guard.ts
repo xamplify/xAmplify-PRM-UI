@@ -136,7 +136,12 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         const isVendor =  roles.indexOf(this.roles.vendorRole)>-1;
         const isPartner = roles.indexOf(this.roles.companyPartnerRole)>-1;
         const orgAdmin =  roles.indexOf(this.roles.orgAdminRole)>-1;
-        if(isVendor && !isPartner){
+        const isSuperAdmin =  roles.indexOf(this.roles.superAdminRole)>-1;
+        if(isSuperAdmin){
+            this.router.navigate( ['/home/dashboard/admin-report'] );
+            return true;
+        }
+        else if(isVendor && !isPartner){
             return this.checkVendorAccessUrls(url, urlType);
         }
         else if(isPartner && !isVendor && !orgAdmin){

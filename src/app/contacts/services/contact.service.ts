@@ -100,15 +100,20 @@ export class ContactService {
     }
     
     listContactsByType(contactType: string, pagination: Pagination ){
+        let userId = this.authenticationService.user.id;
+        userId = this.authenticationService.checkLoggedInUserId(userId);
+        
         this.logger.info( "ContactService listContactsByType():  contactType=" + contactType );
-        return this._http.post( this.contactsUrl + "contacts?contactType="+ contactType + '&userId='+ this.authenticationService.getUserId() + "&access_token=" + this.authenticationService.access_token, pagination )
+        return this._http.post( this.contactsUrl + "contacts?contactType="+ contactType + '&userId='+ userId + "&access_token=" + this.authenticationService.access_token, pagination )
             .map( this.extractData )
             .catch( this.handleError );
     }
  
     loadContactsCount(isPartner: boolean) {
+        let userId = this.authenticationService.user.id;
+        userId = this.authenticationService.checkLoggedInUserId(userId);
         this.logger.info( "Service class loadContactCount() completed" );
-        return this._http.get( this.contactsUrl + "contacts_count?" + 'userId='+ this.authenticationService.getUserId() +"&isPartnerUserList=" + isPartner + "&access_token=" + this.authenticationService.access_token )
+        return this._http.get( this.contactsUrl + "contacts_count?" + 'userId='+ userId +"&isPartnerUserList=" + isPartner + "&access_token=" + this.authenticationService.access_token )
             .map( this.extractData )
             .catch( this.handleError );
     }

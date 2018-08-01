@@ -2,8 +2,9 @@
 	<!-- page-breadcrumb -->
 	<div class="page-bar" *ngIf="!showEdit">
 		<ul class="page-breadcrumb">
-			<li><i class="fa fa-home"></i> <a [routerLink]="referenceService.homeRouter">Home</a>
+			<li *ngIf="!authenticationService.isSuperAdmin"><i class="fa fa-home"></i> <a [routerLink]="referenceService.homeRouter">Home</a>
 				<i class="fa fa-angle-right"></i></li>
+		    <li *ngIf="authenticationService.isSuperAdmin"><i class="fa fa-home"></i><a [routerLink]="['/home/dashboard/admin-report']">Admin Report</a><i class="fa fa-angle-right"></i></li>
 			<li><a (click)="navigateToManageContacts()">Manage
 					{{checkingContactTypeName}}s</a> <i class="fa fa-angle-right"
 				*ngIf="! showListOfContactList"></i></li>
@@ -197,7 +198,7 @@
 													<th colspan="2" style="width: 50%">List Name</th>
 													<th>Created On</th>
 													<th class="text-center">Total {{checkingContactTypeName}}s</th>
-													<th class="text-center">Actions</th>
+													<th class="text-center" *ngIf="!authenticationService.isSuperAdmin">Actions</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -235,7 +236,7 @@
 													<app-timestamp [isOnlyDate]="true" [dateAndTime]="contactList.createdDate"> </app-timestamp>
 													</td>
 													<td class="text-center">{{contactList.noOfContacts}}</td>
-													<td>
+													<td *ngIf="!authenticationService.isSuperAdmin">
 														<div class="actions-block">
 															<a
 																*ngIf="(hasAllAccess || authenticationService.module.isVendor || (hasContactRole && loggedInUserId == contactList.uploadedUserId) || authenticationService.isOnlyPartner()) && !contactList.synchronisedList"
@@ -307,7 +308,7 @@
 											<h6 class="mt10 mb0">Total {{checkingContactTypeName}}s {{contactList.noOfContacts}}</h6>
 											<h6 class="mt10 mb0">Created date <app-timestamp [isOnlyDate]="true" [dateAndTime]="contactList.createdDate"> </app-timestamp>
 											</h6>
-											<div class="bar">
+											<div class="bar" *ngIf="!authenticationService.isSuperAdmin">
 											 <a [class.disabled]="!contactList.emailValidationInd"
 															*ngIf="(hasAllAccess || authenticationService.module.isVendor || (hasContactRole && loggedInUserId == contactList.uploadedUserId) || authenticationService.isOnlyPartner()) && !contactList.synchronisedList"
 															(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList)"
