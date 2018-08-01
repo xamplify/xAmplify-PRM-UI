@@ -36,7 +36,7 @@
 						</ul>
 					</li>
 
-					<li *ngIf="authService.module.isCompanyPartner && !authService.module.isVideo"  [ngClass]="{'active':  baseRoute === 'videos'}">
+					<li *ngIf="authService.module.isCompanyPartner && !authService.module.isVideo  && !authService.isOnlyPartner()"  [ngClass]="{'active':  baseRoute === 'videos'}">
 						<a [routerLink]="['./videos/manage']" [class.disabled]="!authService.user.hasCompany ?true:null">
 						<i class="fa fa-video-camera"></i>
 						<span class="title">Videos</span>
@@ -45,7 +45,7 @@
 						</a>
 					</li>
 
-					<li *ngIf="authService.module.isVideo"  [ngClass]="{'active':  baseRoute === 'videos'}">
+					<li *ngIf="authService.module.isVideo  && !authService.isOnlyPartner()"  [ngClass]="{'active':  baseRoute === 'videos'}">
 						<a>
 						<i class="fa fa-video-camera"></i>
 						<span class="title">Videos</span>
@@ -98,7 +98,7 @@
 						</a>
 					</li> -->
 
-					<li *ngIf="authService.module.isCompanyPartner && !authService.module.isEmailTemplate" [ngClass]="{'active':  baseRoute === 'emailtemplate'}">
+					<li *ngIf="authService.module.isCompanyPartner && !authService.module.isEmailTemplate && !authService.isOnlyPartner()" [ngClass]="{'active':  baseRoute === 'emailtemplate'}">
 						<a [routerLink]="['./emailtemplates']" [class.disabled]="!authService.user.hasCompany?true:null">
 						<i class="fa fa-envelope"></i>
 						<span class="title">Email Templates</span>
@@ -107,7 +107,7 @@
 						</a>
 					</li>
 
-					<li *ngIf="authService.module.isEmailTemplate" [ngClass]="{'active':  baseRoute === 'emailtemplate'}">
+					<li *ngIf="authService.module.isEmailTemplate && !authService.isOnlyPartner()" [ngClass]="{'active':  baseRoute === 'emailtemplate'}">
 						<a>
 						<i class="fa fa-envelope"></i>
 						<span class="title">Email Templates</span>
