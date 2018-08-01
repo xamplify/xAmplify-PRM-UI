@@ -188,6 +188,9 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
         if(this.campaignService.isExistingRedistributedCampaignName){
             this.editedCampaignName = this.campaign.campaignName;
         }
+        if(this.campaign.parentCampaignId==0 || this.campaign.parentCampaignId==undefined){
+            this.campaign.parentCampaignId = this.campaign.campaignId;
+        }
         const userProfile = this.authenticationService.userProfile;
         this.campaign.email = userProfile.emailId;
         if(userProfile.firstName !== undefined && userProfile.lastName !== undefined)
@@ -505,7 +508,8 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
             'country': country,
             'createdFromVideos': false,
             'nurtureCampaign':true,
-            'detailedAnalyticsShared':this.campaign.detailedAnalyticsShared
+            'detailedAnalyticsShared':this.campaign.detailedAnalyticsShared,
+            'parentCampaignId':this.campaign.parentCampaignId
         };
         return data;
     }
