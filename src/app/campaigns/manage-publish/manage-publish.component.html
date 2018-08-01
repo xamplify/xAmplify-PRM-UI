@@ -1,16 +1,16 @@
-<div class="page-content">
+<div class="page-content" [class.ml0]="authenticationService.isSuperAdmin()">
 	<div *ngIf="isScheduledCampaignLaunched" id="scheduleCompleted" class="alert alert-info alert-dismissable fade in">
 		<a (click)="refService.hideDiv('scheduleCompleted')" class="close" aria-label="close">x</a>
 		<strong>Editing This Scheduled Campaign Is Not Allowed As Campaign Already Launched</strong>
 	</div>
 	<div class="page-bar">
 		<ul class="page-breadcrumb">
-			<li *ngIf="!authenticationService.isSuperAdmin">
+			<li *ngIf="!authenticationService.isSuperAdmin()">
 				<i class="fa fa-home"></i>
 				<a [routerLink]="refService.homeRouter">Home</a>
 				<i class="fa fa-angle-right"></i>
 			</li>
-			<li *ngIf="authenticationService.isSuperAdmin"><i class="fa fa-home"></i><a [routerLink]="['/home/dashboard/admin-report']">Admin Report</a><i class="fa fa-angle-right"></i></li>
+			<li *ngIf="authenticationService.isSuperAdmin()"><i class="fa fa-home"></i><a [routerLink]="['/home/dashboard/admin-report']">Admin Report</a><i class="fa fa-angle-right"></i></li>
 			<li>
 				<a>Manage Campaigns</a>
 			</li>

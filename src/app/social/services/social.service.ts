@@ -73,7 +73,8 @@ export class SocialService {
   }
 
   listAccounts(userId: number, source: string, type: string) {
-    return this.http.get(this.URL + `social/accounts/${userId}/${source}/${type}?access_token=${this.authenticationService.access_token}`)
+      userId = this.authenticationService.checkLoggedInUserId(userId);
+      return this.http.get(this.URL + `social/accounts/${userId}/${source}/${type}?access_token=${this.authenticationService.access_token}`)
       .map(this.extractData)
       .catch(this.handleError);
   }

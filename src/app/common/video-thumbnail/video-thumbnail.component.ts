@@ -17,7 +17,7 @@ export class VideoThumbnailComponent implements OnInit {
   }
 
   showPlayVideo(videoFile){
-     if(!this.authenticationService.isSuperAdmin){
+     if(!this.authenticationService.isSuperAdmin()){
       this.notifyParent.emit(videoFile);
      }
   }

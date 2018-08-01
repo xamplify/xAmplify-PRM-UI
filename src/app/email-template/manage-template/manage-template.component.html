@@ -1,9 +1,9 @@
-<div class="page-content">
+<div class="page-content" [class.ml0]="authenticationService.isSuperAdmin()">
 <div class="page-bar">
 		<ul class="page-breadcrumb">
-			<li *ngIf="!authenticationService.isSuperAdmin"><i class="fa fa-home"></i> <a [routerLink]="refService.homeRouter">Home</a> <i
+			<li *ngIf="!authenticationService.isSuperAdmin()"><i class="fa fa-home"></i> <a [routerLink]="refService.homeRouter">Home</a> <i
 				class="fa fa-angle-right"></i></li>
-		<li *ngIf="authenticationService.isSuperAdmin"><i class="fa fa-home"></i><a [routerLink]="['/home/dashboard/admin-report']">Admin Report</a><i class="fa fa-angle-right"></i></li>
+		<li *ngIf="authenticationService.isSuperAdmin()"><i class="fa fa-home"></i><a [routerLink]="['/home/dashboard/admin-report']">Admin Report</a><i class="fa fa-angle-right"></i></li>
       <li style="color:#808080" *ngIf="!authenticationService.isOnlyPartner()">Manage Templates</li>
       <li style="color:#808080" *ngIf="authenticationService.isOnlyPartner()">View Templates</li>
 		</ul>

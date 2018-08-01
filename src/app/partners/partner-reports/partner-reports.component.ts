@@ -112,7 +112,7 @@ export class PartnerReportsComponent implements OnInit {
   getActivePartnerReports(){
       this.referenseService.loading(this.activeParnterHttpRequestLoader, true);
       this.activePartnersPagination.userId = this.loggedInUserId;
-      if(this.authenticationService.isSuperAdmin){
+      if(this.authenticationService.isSuperAdmin()){
           this.activePartnersPagination.userId = this.authenticationService.checkLoggedInUserId(this.activePartnersPagination.userId);
       }
       this.paginationType = 'ActivePartnerPagination';
@@ -347,7 +347,7 @@ export class PartnerReportsComponent implements OnInit {
   getInActivePartnerReports(pagination:Pagination){
       this.referenseService.loading(this.httpRequestLoader, true);
       pagination.userId =this.loggedInUserId;
-      if(this.authenticationService.isSuperAdmin){
+      if(this.authenticationService.isSuperAdmin()){
           pagination.userId = this.authenticationService.checkLoggedInUserId(pagination.userId);
       }
       this.parterService.getInActivePartnersAnalytics(pagination).subscribe(
