@@ -15,12 +15,12 @@ import { CampaignEventMedia } from '../models/campaign-event-media';
 import { Pagination } from '../../core/models/pagination';
 import { ContactList } from '../../contacts/models/contact-list';
 import { EmailTemplate } from '../../email-template/models/email-template';
-import { User } from '../../core/models/user';
 import { Country } from '../../core/models/country';
 import { Timezone } from '../../core/models/timezone';
 import { Properties } from '../../common/models/properties';
 import { Reply } from '../models/campaign-reply';
 import { CampaignEmailTemplate } from '../models/campaign-email-template';
+import { EventError } from '../models/event-error';
 
 declare var $, flatpickr, CKEDITOR;
 
@@ -28,7 +28,7 @@ declare var $, flatpickr, CKEDITOR;
   selector: 'app-event-campaign',
   templateUrl: './event-campaign.component.html',
   styleUrls: ['./event-campaign.component.css'],
-  providers: [PagerService, Pagination, CallActionSwitch, Properties]
+  providers: [PagerService, Pagination, CallActionSwitch, Properties,EventError]
 })
 export class EventCampaignComponent implements OnInit {
   emailTemplates: Array<EmailTemplate> = [];
@@ -55,7 +55,7 @@ export class EventCampaignComponent implements OnInit {
   paginationType: string;
 
   teamMemberEmailIds: any[] = [];
-  isFormSubmitted: boolean = false;
+  isFormSubmitted = false;
 
   constructor(public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
     private contactService: ContactService,
@@ -65,12 +65,13 @@ export class EventCampaignComponent implements OnInit {
     private pagerService: PagerService,
     private logger: XtremandLogger,
     private router: Router,
-    public properties: Properties) {
+    public properties: Properties, public eventError:EventError) {
     this.countries = this.referenceService.getCountries();
     this.listEmailTemplates();
     this.eventCampaign.emailTemplate = this.emailTemplates[0];
     this.eventCampaign.countryId = this.countries[0].id;
     this.eventCampaign.campaignEventTimes[0].countryId = this.countries[0].id;
+    CKEDITOR.config.height = '175';
   }
 
   ngOnInit() {
@@ -83,11 +84,37 @@ export class EventCampaignComponent implements OnInit {
       time_24hr: false,
       minDate: new Date(),
     });
-
-
     this.ckeConfig = {
       allowedContent: true,
     };
+  }
+  eventTitleError(){
+    this.eventError.eventTitleError = this.eventCampaign.campaign ? false: true;
+  }
+  eventHostByError(){
+    this.eventError.eventHostByError = this.eventCampaign.fromName? false:true;
+  }
+  eventStartTimeError(){
+    this.eventError.eventStartTimeError= this.eventCampaign.campaignEventTimes[0].startTimeString ?false:true ;
+  }
+  eventCountryError(){
+    this.eventError.eventCountryAndTimeZone = this.eventCampaign.campaignEventTimes[0].countryId ? false: true;
+  }
+  eventLocationError(){
+    if(!this.eventCampaign.onlineMeeting){
+    this.eventError.eventLocationError = this.eventCampaign.campaignLocation.location? false: true;
+    }
+  }
+  eventDescriptionError(){
+    this.eventError.eventDescription = this.eventCampaign.message ? false: true
+  }
+  onBlurValidation(){
+   this.eventTitleError();
+   this.eventHostByError();
+   this.eventStartTimeError();
+   this.eventCountryError();
+   this.eventLocationError();
+   this.eventDescriptionError();
   }
 
   /*****************LOAD CONTACTLISTS WITH PAGINATION START *****************/
@@ -172,6 +199,8 @@ export class EventCampaignComponent implements OnInit {
 
   createEventCampaign(eventCampaign: EventCampaign, launchOption: string) {
     this.isFormSubmitted = true;
+    this.onBlurValidation();
+    this.referenceService.goToTop();
     for (let userListId of eventCampaign.userListIds) {
       let contactList = new ContactList(userListId);
       eventCampaign.userLists.push(contactList);
@@ -378,7 +407,7 @@ export class EventCampaignComponent implements OnInit {
       },
       () => this.logger.info("Finished previewEventCampaignEmailTemplate()", emailTemplateId)
       )
-    
+
   }
 
   listEmailTemplates() {

@@ -1,9 +1,10 @@
+<style> a.disabled {  pointer-events: none;cursor: not-allowed; opacity: .7;}</style>
 <div class="page-content">
 	<div class="page-bar">
 		<ul class="page-breadcrumb">
 			<li>
-				<i class="fa fa-home"></i> 
-				<a [routerLink]="referenceService.homeRouter">Home</a> 
+				<i class="fa fa-home"></i>
+				<a [routerLink]="referenceService.homeRouter">Home</a>
 				<i class="fa fa-angle-right"></i>
 			</li>
 			<li>Event Based Campaign</li>
@@ -12,30 +13,31 @@
 	<div class="page-bar portlet light border-radius-0 shadow">
 		<div class="portlet-title">
 			<h4 class="pull-left m10 f-w-600 text-primary">Event Details</h4>
-		</div>
+    </div>
+    <!-- <div class="alert alert-danger"> Please complete * required fields</div> -->
 		<div class="portlet-body clearfix">
 			<section>
 			<div class="col-xs-12 col-sm-6">
-				<form class="form-horizontal">
+     			<form class="form-horizontal">
 					<div class="form-group">
 						<label for="eventTitle" class="col-sm-3 control-label">Event Title <span class=text-danger>*</span></label>
 						<div class="col-sm-9">
 						<input type="text" class="form-control" id="eventTitle" placeholder="Event Title" [(ngModel)]="eventCampaign.campaign" [ngModelOptions]="{standalone: true}"
-						[ngClass]="{'has-error': isFormSubmitted && !eventCampaign.campaign}">
-						<div class="text-danger" *ngIf="isFormSubmitted && !eventCampaign.campaign">Event Title is required</div>
+						[ngClass]="{'has-error': eventError.eventTitleError}" (input)="eventTitleError()" (blur)="eventTitleError()">
+						<div class="text-danger" *ngIf="eventError.eventTitleError">Event Title is required</div>
 					</div>
 					</div>
 					<div class="form-group">
 						<label for="hostedBy" class="col-sm-3 control-label">Hosted By <span class=text-danger>*</span></label>
 						<div class="col-sm-9">
 						<input type="text" class="form-control pull-left" style="width: 50%" placeholder="Hosted By" [(ngModel)]="eventCampaign.fromName" [ngModelOptions]="{standalone: true}"
-							[ngClass]="{'has-error': isFormSubmitted && !eventCampaign.fromName}">
+							[ngClass]="{'has-error': eventError.eventHostByError}" (input)="eventHostByError()"  (blur)="eventHostByError()">
 						<select class="form-control" style="width: 50%" [(ngModel)]="eventCampaign.email" [ngModelOptions]="{standalone: true}" (change)="setFromName()">
 							<option *ngFor="let teamMember of teamMemberEmailIds" [ngValue]="teamMember.emailId">
 								{{teamMember.emailId}}
 							</option>
 						</select>
-						<div class="text-danger" *ngIf="isFormSubmitted && !eventCampaign.fromName">Hosted By is required</div>
+						<div class="text-danger" *ngIf="eventError.eventHostByError">Hosted By is required</div>
 						</div>
 					</div>
 					<div class="form-group">
@@ -48,20 +50,20 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="eventDateTime" class="col-sm-3 control-label">Event Date/Time</label>
+						<label for="eventDateTime" class="col-sm-3 control-label">Event Date/Time <span class=text-danger>*</span></label>
 						<div class="col-sm-9 p0">
-							<div class="col-sm-6"><input type="text" id="startDatePicker" class="form-control flatpickr" placeholder="Start Time" 
-								[(ngModel)]="eventCampaign.campaignEventTimes[0].startTimeString" [ngModelOptions]="{standalone: true}" 
-								[ngClass]="{'has-error': isFormSubmitted && !eventCampaign.campaignEventTimes[0].startTimeString}"></div>
+							<div class="col-sm-6"><input type="text" id="startDatePicker" class="form-control flatpickr" placeholder="Start Time"
+								[(ngModel)]="eventCampaign.campaignEventTimes[0].startTimeString" [ngModelOptions]="{standalone: true}" (input)="eventStartTimeError()" (blur)="eventStartTimeError()"
+								[ngClass]="{'has-error': eventError.eventStartTimeError && !eventCampaign.campaignEventTimes[0].startTimeString}"></div>
 							<div class="col-sm-6">
-								<input type="text" id="enDatePicker" class="form-control flatpickr" placeholder="End Time" 
+								<input type="text" id="enDatePicker" [disabled]="eventCampaign.campaignEventTimes[0].allDay" class="form-control flatpickr" placeholder="End Time"
 								[(ngModel)]="eventCampaign.campaignEventTimes[0].endTimeString" [ngModelOptions]="{standalone: true}">
 							</div>
-							<div class="col-sm-6 text-danger" *ngIf="isFormSubmitted && !eventCampaign.campaignEventTimes[0].startTimeString">Please enter a valid start Date / Time</div>
+							<div class="col-sm-6 text-danger" *ngIf="eventError.eventStartTimeError &&!eventCampaign.campaignEventTimes[0].startTimeString">Please enter a valid start Date / Time</div>
 						<div class="clearfix">
 							<div class="col-sm-6">
-								<label> 
-									<input type="checkbox" [checked]="eventCampaign.campaignEventTimes[0].allDay" (change)="eventCampaign.campaignEventTimes[0].allDay = !eventCampaign.campaignEventTimes[0].allDay"> All Day 
+								<label>
+									<input type="checkbox" [checked]="eventCampaign.campaignEventTimes[0].allDay" (change)="eventCampaign.campaignEventTimes[0].allDay = !eventCampaign.campaignEventTimes[0].allDay"> All Day
 								</label>
 							</div>
 							<div class="col-sm-6">TIMEZONE</div>
@@ -70,9 +72,11 @@
 							<div class="col-sm-6">
 								<label style="float: left;">Country</label>
 								<br>
-								<select class="form-control" style="width: 100%" [(ngModel)]="eventCampaign.campaignEventTimes[0].countryId" [ngModelOptions]="{standalone: true}" (change)="onChangeCountryCampaignEventTime($event.target.value)">
+                <select class="form-control" style="width: 100%" 	[ngClass]="{'has-error': eventError.eventCountryAndTimeZone && !eventCampaign.campaignEventTimes[0].countryId}"
+                [(ngModel)]="eventCampaign.campaignEventTimes[0].countryId" [ngModelOptions]="{standalone: true}" (change)="onChangeCountryCampaignEventTime($event.target.value)" (input)="eventCountryError()" (blur)="eventCountryError()">
 									<option *ngFor="let country of countries" [value]="country.id">{{country.name}}</option>
-								</select>
+                </select>
+              	<div class="text-danger" *ngIf="eventError.eventCountryAndTimeZone && !eventCampaign.campaignEventTimes[0].countryId">Please select the country and timezone</div>
 							</div>
 							<div class="col-sm-6">
 								<label style="float: left;">TimeZone </label>
@@ -92,7 +96,7 @@
 							</div>
 						</div>
 						</div>
-					</div>					
+					</div>
 					<div class="form-group">
 						<label for="hostedBy" class="col-sm-3 control-label">Online Meeting</label>
 						<div class="col-sm-9">
@@ -104,8 +108,11 @@
 					</div>
 					<section *ngIf="!eventCampaign.onlineMeeting">
 						<div class="form-group">
-							<label for="hostedBy" class="col-sm-3 control-label">Location Name</label>
-							<div class="col-sm-9"><input type="text" class="form-control" id="eventDateTime" placeholder="My house, bar, etc" [(ngModel)]="eventCampaign.campaignLocation.location" [ngModelOptions]="{standalone: true}"></div>
+							<label for="hostedBy" class="col-sm-3 control-label">Location Name <span class="text-danger" style="position: absolute;">*</span></label>
+              <div class="col-sm-9"><input type="text" class="form-control" id="eventDateTime" (blur)="eventLocationError()" (input)="eventLocationError()"
+                 placeholder="My house, bar, etc" [ngClass]="{'has-error': eventError.eventLocationError}" [(ngModel)]="eventCampaign.campaignLocation.location" [ngModelOptions]="{standalone: true}">
+                 <div class="text-danger" *ngIf="eventError.eventLocationError">Location is required</div>
+                </div>
 						</div>
 						<div class="form-group">
 							<label for="hostedBy" class="col-sm-3 control-label">Address</label>
@@ -131,12 +138,13 @@
 								<i class="fa fa-times-circle" (click)="resetcampaignEventMedia()"></i>
 							</div>
 						</div>
-					</div>					
+					</div>
 
 					<div class="form-group">
-						<label for="hostedBy" class="col-sm-3 control-label">Event Description</label>
+						<label for="hostedBy" class="col-sm-3 control-label">Event Description <span class=text-danger>*</span></label>
 						<div class="col-sm-9">
-							<ckeditor [(ngModel)]="eventCampaign.message"  [ngModelOptions]="{standalone: true}" #myckeditor [config]="ckeConfig" debounce="500"></ckeditor>
+              <ckeditor [(ngModel)]="eventCampaign.message"  (blur)="eventDescriptionError()" (input)="eventDescriptionError()" [ngModelOptions]="{standalone: true}" #myckeditor [config]="ckeConfig" debounce="500"></ckeditor>
+              <div  class="text-danger" *ngIf="eventError.eventDescription"> Event message is required</div>
 						</div>
 					</div>
 					<div class="portlet light">
@@ -148,7 +156,7 @@
 							<div><label> <input type="checkbox" [checked]="eventCampaign.emailOpened" (change)="eventCampaign.emailOpened = !eventCampaign.emailOpened"> Notify me when email is opened </label></div>
 							<div><label> <input type="checkbox" [checked]="eventCampaign.inviteOthers" (change)="eventCampaign.inviteOthers = !eventCampaign.inviteOthers"> Invite others </label></div>
 						</div>
-					</div>					
+					</div>
 				</form>
 			</div>
 			<div class="col-xs-12 col-sm-6">
@@ -211,9 +219,15 @@
 										<td class='text-center m0'>
 											<input type='checkbox' id='{{contactList.id}}' (click)="highlightRow(contactList.id)">
 										</td>
-										<td> 
-											<h5 class='m0 f-w-600'>{{contactList.name}}</h5> 
-											<h6 class="pull-left mb0 mt5">By: {{contactList.uploadedBy}}</h6>
+										<td>
+											<h5 class='m0 f-w-600'>
+                        <span *ngIf="contactList.name?.length<=20">{{contactList.name}}</span>
+                        <span *ngIf="contactList.name?.length>20">{{contactList.name | slice:0:20}}...</span>
+                      </h5>
+											<h6 class="pull-left mb0 mt5" title="{{contactList.uploadedBy}}">By:
+                        <span *ngIf="contactList.uploadedBy?.length<=20">{{contactList.uploadedBy}}</span>
+                        <span *ngIf="contactList.uploadedBy?.length>20">{{contactList.uploadedBy | slice:0:20}}...</span>
+                      </h6>
 											<h6 class="pull-right mb0 mt5">On: {{contactList.createdDate}}</h6>
 										</td>
 										<td> <h6 class='m0 text-center f-w-600'>{{contactList.noOfContacts}}</h6> </td>
@@ -344,10 +358,10 @@
 															<input type="radio" name="reply-email-template" [value]="reply.emailTemplate.id" id="reply-{{i}}-{{reply.emailTemplate.id}}"
 																(click)="setReplyEmailTemplate(reply.emailTemplate.id,reply,i)" [checked]="reply.emailTemplate.id == reply.selectedEmailTemplateId">
 														</td>
-														<td *ngIf="reply.emailTemplate.name?.length>50" title="{{reply.emailTemplate.name}}">{{reply.emailTemplate.name|slice:0:50}}....</td>
-														<td *ngIf="reply.emailTemplate.name?.length<=50" title="{{reply.emailTemplate.name}}">{{reply.emailTemplate.name}}</td>
-														<td *ngIf="reply.emailTemplate.createdBy?.length>50" title="{{reply.emailTemplate.createdBy}}">{{reply.emailTemplate.createdBy|slice:0:50}}....</td>
-														<td *ngIf="reply.emailTemplate.createdBy?.length<=50" title="{{reply.emailTemplate.createdBy}}">{{reply.emailTemplate.createdBy}}</td>
+														<td *ngIf="reply.emailTemplate.name?.length>25" title="{{reply.emailTemplate.name}}">{{reply.emailTemplate.name|slice:0:25}}....</td>
+														<td *ngIf="reply.emailTemplate.name?.length<=25" title="{{reply.emailTemplate.name}}">{{reply.emailTemplate.name}}</td>
+														<td *ngIf="reply.emailTemplate.createdBy?.length>25" title="{{reply.emailTemplate.createdBy}}">{{reply.emailTemplate.createdBy|slice:0:25}}....</td>
+														<td *ngIf="reply.emailTemplate.createdBy?.length<=25" title="{{reply.emailTemplate.createdBy}}">{{reply.emailTemplate.createdBy}}</td>
 														<td><a class="text-warning"><i class="fa fa-eye" style="padding-top: 3px; font-size: 20px;" title="" data-original-title="Preview"></i></a></td>
 													</tr>
 												</ng-container>
@@ -359,10 +373,10 @@
 															 (click)="setReplyEmailTemplate(emailTemplate.id,reply,i,emailTemplate.draft)" [checked]="emailTemplate.id == reply.selectedEmailTemplateId">
 														<input *ngIf="emailTemplate.draft" title="draft template cannot be selected" disabled="disabled" type="radio" name="reply-email-template">
 														</td>
-														<td *ngIf="emailTemplate.name?.length>50" title="{{emailTemplate.name}}">{{emailTemplate.name|slice:0:50}}....</td>
-														<td *ngIf="emailTemplate.name?.length<=50" title="{{emailTemplate.name}}">{{emailTemplate.name}}</td>
-														<td *ngIf="emailTemplate.createdBy?.length>50" title="{{emailTemplate.createdBy}}">{{emailTemplate.createdBy|slice:0:50}}....</td>
-														<td *ngIf="emailTemplate.createdBy?.length<=50" title="{{emailTemplate.createdBy}}">{{emailTemplate.createdBy}}</td>
+														<td *ngIf="emailTemplate.name?.length>25" title="{{emailTemplate.name}}">{{emailTemplate.name|slice:0:25}}....</td>
+														<td *ngIf="emailTemplate.name?.length<=25" title="{{emailTemplate.name}}">{{emailTemplate.name}}</td>
+														<td *ngIf="emailTemplate.createdBy?.length>25" title="{{emailTemplate.createdBy}}">{{emailTemplate.createdBy|slice:0:25}}....</td>
+														<td *ngIf="emailTemplate.createdBy?.length<=25" title="{{emailTemplate.createdBy}}">{{emailTemplate.createdBy}}</td>
 														<td>
 															<a *ngIf="!emailTemplate.draft" class="text-warning" (click)="getEmailTemplatePreview(emailTemplate)">
 																<i class="fa fa-eye" style="padding-top: 3px; font-size: 20px;" title="" data-original-title="Preview"></i>
@@ -393,7 +407,7 @@
 					<div class="col-md-4">
 						<label style="float: left;">Date</label>
 						<br>
-						<input type="text" id="launchTimeInString" class="form-control flatpickr" placeholder="Launch Time" 
+						<input type="text" id="launchTimeInString" class="form-control flatpickr" placeholder="Launch Time"
 								[(ngModel)]="eventCampaign.launchTimeInString" [ngModelOptions]="{standalone: true}">
 					</div>
 					<div class="col-md-4">
@@ -447,9 +461,18 @@
 						</thead>
 						<tbody>
 							<tr *ngFor="let contact of contactsPagination.pagedItems">
-								<td>{{contact.emailId}}</td>
-								<td>{{contact.firstName}}</td>
-								<td>{{contact.lastName}}</td>
+                <td title="{{contact.emailId}}">
+                  <span *ngIf="contact.emailId?.length>25">{{contact.emailId | slice:0:25}}..</span>
+                  <span *ngIf="contact.emailId?.length<=25">{{contact.emailId}}</span>
+                </td>
+								<td title="{{contact.firstName}}">
+                    <span *ngIf="contact.firstName?.length>20">{{contact.firstName | slice:0:20}}..</span>
+                    <span *ngIf="contact.firstName?.length<=20">{{contact.firstName}}</span>
+                </td>
+								<td title="{{contact.lastName}}">
+                    <span *ngIf="contact.lastName?.length>20">{{contact.lastName | slice:0:20}}..</span>
+                    <span *ngIf="contact.lastName?.length<=20">{{contact.lastName}}</span>
+                </td>
 							</tr>
 						</tbody>
 					</table>
