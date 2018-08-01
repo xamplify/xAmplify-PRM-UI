@@ -56,6 +56,9 @@ export class EventCampaignComponent implements OnInit {
 
   teamMemberEmailIds: any[] = [];
   isFormSubmitted = false;
+  emailNotOpenedReplyDaysSum:number = 0;
+  emailOpenedReplyDaysSum:number = 0;
+  onClickScheduledDaysSum:number = 0;
 
   constructor(public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
     private contactService: ContactService,
@@ -106,7 +109,7 @@ export class EventCampaignComponent implements OnInit {
     }
   }
   eventDescriptionError(){
-    this.eventError.eventDescription = this.eventCampaign.message ? false: true
+    this.eventError.eventDescription = this.eventCampaign.message ? false: true;
   }
   onBlurValidation(){
    this.eventTitleError();
@@ -200,6 +203,7 @@ export class EventCampaignComponent implements OnInit {
   createEventCampaign(eventCampaign: EventCampaign, launchOption: string) {
     this.isFormSubmitted = true;
     this.onBlurValidation();
+    this.getRepliesData();
     this.referenceService.goToTop();
     for (let userListId of eventCampaign.userListIds) {
       let contactList = new ContactList(userListId);
@@ -425,4 +429,109 @@ export class EventCampaignComponent implements OnInit {
   onChangeCountry(countryId: number) {
     this.timezones = this.referenceService.getTimeZonesByCountryId(countryId);
   }
+  getRepliesData(){
+    for(var i=0;i<this.eventCampaign.campaignReplies.length;i++){
+        let reply = this.eventCampaign.campaignReplies[i];
+        $('#'+reply.divId).removeClass('portlet light dashboard-stat2 border-error');
+        this.removeStyleAttrByDivId('reply-days-'+reply.divId);
+        this.removeStyleAttrByDivId('send-time-'+reply.divId);
+        this.removeStyleAttrByDivId('message-'+reply.divId);
+        this.removeStyleAttrByDivId('reply-subject-'+reply.divId);
+        this.removeStyleAttrByDivId('email-template-'+reply.divId);
+        this.removeStyleAttrByDivId('reply-message-'+reply.divId);
+        $('#'+reply.divId).addClass('portlet light dashboard-stat2');
+        this.validateReplySubject(reply);
+        if(reply.actionId!==16 && reply.actionId!==17 && reply.actionId!==18){
+            this.validateReplyInDays(reply);
+            if(reply.actionId!==22 && reply.actionId!==23){
+                this.validateReplyTime(reply);
+            }
+            this.validateEmailTemplateForAddReply(reply);
+        }else{
+            this.validateEmailTemplateForAddReply(reply);
+        }
+        var errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
+        if(errorLength==0){
+            this.addEmailNotOpenedReplyDaysSum(reply, i);
+            this.addEmailOpenedReplyDaysSum(reply, i);
+        }
+        }
+    }
+
+    addEmailNotOpenedReplyDaysSum(reply:Reply,index:number){
+      if(reply.actionId==0){
+          if(index==0){
+              this.emailNotOpenedReplyDaysSum = reply.replyInDays;
+          }else{
+              this.emailNotOpenedReplyDaysSum = reply.replyInDays+this.emailNotOpenedReplyDaysSum;
+          }
+          reply.replyInDaysSum = this.emailNotOpenedReplyDaysSum;
+      }
+  }
+  addEmailOpenedReplyDaysSum(reply:Reply,index:number){
+      if(reply.actionId==13){
+          if(index==0){
+              this.emailOpenedReplyDaysSum = reply.replyInDays;
+          }else{
+              this.emailOpenedReplyDaysSum = reply.replyInDays+this.emailOpenedReplyDaysSum;
+          }
+          reply.replyInDaysSum = this.emailOpenedReplyDaysSum;
+      }
+  }
+        validateReplyInDays(reply:Reply){
+          if( reply.actionId!== 22 &&  reply.actionId!== 23 && reply.replyInDays==null){
+                  this.addReplyDaysErrorDiv(reply);
+            }else if(reply.actionId==22 ||reply.actionId==23 ){
+                if(reply.replyInDays==null || reply.replyInDays==0){
+                        this.addReplyDaysErrorDiv(reply);
+              }
+            }
+        }
+
+          addReplyDaysErrorDiv(reply:Reply){
+              this.addReplyDivError(reply.divId);
+              $('#reply-days-'+reply.divId).css('color','red');
+          }
+
+          validateReplyTime(reply:Reply){
+              if(reply.replyTime==undefined || reply.replyTime==null){
+                  this.addReplyDivError(reply.divId);
+                  $('#send-time-'+reply.divId).css('color','red');
+              }else{
+              //    reply.replyTime = this.campaignService.setAutoReplyDefaultTime(this.campaignLaunchForm.value.scheduleCampaign, reply.replyInDays,reply.replyTime,this.campaignLaunchForm.value.launchTime);
+                  reply.replyTimeInHoursAndMinutes = this.extractTimeFromDate(reply.replyTime);
+              }
+          }
+          extractTimeFromDate(replyTime){
+                //let dt = new Date(replyTime);
+                let dt = replyTime;
+                let hours = dt.getHours() > 9 ? dt.getHours() : '0' + dt.getHours();
+                let minutes = dt.getMinutes() > 9 ? dt.getMinutes() : '0' + dt.getMinutes();
+                return hours+":"+minutes;
+            }
+          validateReplySubject(reply:Reply){
+              if( reply.subject==null||reply.subject==undefined || $.trim(reply.subject).length==0){
+                  this.addReplyDivError(reply.divId);
+                  console.log("Added Reply Subject Eror");
+                  $('#reply-subject-'+reply.divId).css('color','red');
+              }
+          }
+
+          validateEmailTemplateForAddReply(reply:Reply){
+              if(reply.defaultTemplate && reply.selectedEmailTemplateId==0){
+                  $('#'+reply.divId).addClass('portlet light dashboard-stat2 border-error');
+                  $('#email-template-'+reply.divId).css('color','red');
+              }else if(!reply.defaultTemplate &&(reply.body==null || reply.body==undefined || $.trim(reply.body).length==0)){
+                  $('#'+reply.divId).addClass('portlet light dashboard-stat2 border-error');
+                  $('#reply-message-'+reply.divId).css('color','red');
+              }
+          }
+
+          addReplyDivError(divId:string){
+              $('#'+divId).addClass('portlet light dashboard-stat2 border-error');
+          }
+          removeStyleAttrByDivId(divId:string){
+              $('#'+divId).removeAttr("style");
+          }
+
 }
