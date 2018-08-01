@@ -165,6 +165,19 @@ export class AuthenticationService {
         console.error('error'+error);
       }
     }
+    
+    isSuperAdmin(){
+        try{
+          const roleNames = this.getRoles();
+          if(roleNames.length===1 && (roleNames.indexOf('ROLE_SUPER_ADMIN')>-1)){
+              return true;
+          }else{
+              return false;
+          }
+        }catch(error){
+          console.error('error'+error);
+        }
+      }
 
     isVendor(){
        try{
@@ -274,8 +287,8 @@ export class AuthenticationService {
         }
     }
     
-    checkingLoggedInUserId( userId ) {
-        if ( userId === 1 ) {
+    checkLoggedInUserId( userId ) {
+        if ( this.isSuperAdmin() ) {
             userId = this.selectedVendorId;
         }
         return userId;

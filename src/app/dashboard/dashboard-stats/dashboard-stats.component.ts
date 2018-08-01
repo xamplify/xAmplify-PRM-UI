@@ -20,7 +20,7 @@ export class DashboardStatsComponent implements OnInit {
   dashboardReportsCount() {
      
       let userId = this.authenticationService.user.id;
-      userId = this.authenticationService.checkingLoggedInUserId(userId);
+      userId = this.authenticationService.checkLoggedInUserId(userId);
       if(userId === 1){
           this.isAdmin = true;
       }

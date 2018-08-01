@@ -101,7 +101,7 @@ export class ReferenceService {
         
         let userId = this.authenticationService.user.id;
         
-        userId = this.authenticationService.checkingLoggedInUserId(userId);
+        userId = this.authenticationService.checkLoggedInUserId(userId);
         
         const url = constUrl + 'video-titles?access_token=' + this.authenticationService.access_token + '&userId=' +
         userId;

@@ -81,7 +81,7 @@ export class VideoFileService {
         let url: any
         let userId = this.authenticationService.user.id;
            
-        userId = this.authenticationService.checkingLoggedInUserId(userId);
+        userId = this.authenticationService.checkLoggedInUserId(userId);
         
         if (this.authenticationService.isOnlyPartner()) {
             url = this.URL + 'channel-videos/' + this.categoryNumber + '?userId=' + userId + '&access_token=' + this.authenticationService.access_token;

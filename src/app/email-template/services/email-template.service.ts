@@ -39,7 +39,7 @@ export class EmailTemplateService {
         console.log(pagination);
         try{
             
-            userId = this.authenticationService.checkingLoggedInUserId(userId);
+            userId = this.authenticationService.checkLoggedInUserId(userId);
             
             var url =this.URL+"admin/listEmailTemplates/"+userId+"?access_token="+this.authenticationService.access_token;
             return this.http.post(url, pagination)
