@@ -100,7 +100,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.loading = false;
         const roles = user.roles;
         
-        if(roles.length === 1 && roles[0].roleId === 1){
+        if(this.authenticationService.isSuperAdmin()){
             this.router.navigate(['/home/dashboard/admin-report']);  
         }else if (user.hasCompany || roles.length === 1) {
             this.router.navigate([this.referenceService.homeRouter]);
