@@ -64,7 +64,6 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.referenceService.loading(this.httpRequestLoader, true);
         this.isListView = ! this.referenceService.isGridView;
         this.defaultBannerMessageValues();
-        if(this.referenceService.defaultPlayerSettings.playerColor===undefined){ this.getDefaultVideoSettings(); }
         this.sortVideos = this.videoUtilService.sortVideos;
         if(this.authenticationService.isOnlyPartner()){
           this.sortVideos = this.sortVideos.concat([{ 'name': 'Company Name(ASC)', 'value': 'companyName-ASC' }]);
@@ -114,8 +113,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
        (<HTMLInputElement>document.getElementById('imagePathVideo'+videoFile.id)).src = videoFile.imagePath;
     }
     getDefaultVideoSettings(){
-     this.userService.getVideoDefaultSettings().subscribe((data)=>{ this.referenceService.defaultPlayerSettings = data;
-     });
+     this.userService.getVideoDefaultSettings().subscribe((data)=>{ this.referenceService.defaultPlayerSettings = data;});
     }
     ngOnInit() {
       try {
@@ -191,6 +189,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.loadVideos(this.pagination);
     }
     showEditVideo(video: SaveVideoFile) {
+        if(this.referenceService.defaultPlayerSettings.playerColor===undefined){ this.getDefaultVideoSettings(); }
         try{
         this.referenceService.loading(this.httpRequestLoader, true);
         this.xtremandLogger.log('show edit video method in mange videos ' + JSON.stringify(video));
