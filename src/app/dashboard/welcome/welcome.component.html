@@ -54,9 +54,9 @@ cursor: not-allowed;
 				</div>
 				<div class="col-sm-6 col-xs-12 block">
 					<div class="text-block">
-            <h1 style="color: #00B3B3" *ngIf="authenticationService.isVendor()">partners</h1>
+            <h1 style="color: #00B3B3" *ngIf="authenticationService.isVendor()">Partners</h1>
 						<p>{{welcome_text.contacts}}</p>
-						<div class="flex pull-left">
+						<div>
               <!-- [class.disabled]="!hasContactRole || !authenticationService.user.hasCompany ? true : null" -->
               <button class="btn btn-xs color2"  *ngIf="authenticationService.isVendor()" [routerLink]="['/home/partners/add']" >add partners</button>
 							<button type="button" class="btn btn-xs color2-invert" data-toggle="modal" [disabled]="true" data-target="#myModal">Tell me how</button>
@@ -67,13 +67,13 @@ cursor: not-allowed;
 			</div>
 
 
-			<div class="flex">
+			<div class="flex" *ngIf="!authenticationService.isOnlyPartner()">
 			<div class="col-sm-6 col-xs-12 block" *ngIf="authenticationService.isVendor()">
 					<div class="text-block">
 						<h1 style="color: #76c9ff">Videos</h1>
 						<p>{{welcome_text.videos}}</p>
-						<div class="flex pull-right">
-							<button *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdminPartner()|| authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.module.isVideo" class="btn btn-xs color1" [routerLink]="['/home/videos']" >upload video</button>
+						<div >
+							<button *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdminPartner()|| authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.module.isVideo" class="btn btn-xs color1" [routerLink]="['/home/videos']" >Upload video</button>
               <button *ngIf="authenticationService.isOnlyPartner() || !authenticationService.module.isVideo" class="btn btn-xs color1" [routerLink]="['/home/videos/manage']">View videos</button>
               <button type="button" class="btn btn-xs color1-invert" data-toggle="modal" [disabled]="true" data-target="#myModal">Tell me how</button>
 						</div>
@@ -126,8 +126,8 @@ cursor: not-allowed;
 					<div class="text-block">
 						<h1 style="color: #76c9ff">Videos</h1>
 						<p>{{welcome_text.videos}}</p>
-						<div class="flex pull-right">
-							<button *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdminPartner()|| authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.module.isVideo" class="btn btn-xs color1" [routerLink]="['/home/videos']" >upload video</button>
+						<div >
+							<button *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdminPartner()|| authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.module.isVideo" class="btn btn-xs color1" [routerLink]="['/home/videos']" >Upload video</button>
               <button *ngIf="authenticationService.isOnlyPartner() || !authenticationService.module.isVideo" class="btn btn-xs color1" [routerLink]="['/home/videos/manage']">View videos</button>
               <button type="button" class="btn btn-xs color1-invert" data-toggle="modal" [disabled]="true" data-target="#myModal">Tell me how</button>
 						</div>
@@ -135,14 +135,14 @@ cursor: not-allowed;
 				</div>
 
 			</div>
-			<div class="flex" *ngIf="!authenticationService.isVendor()">
+			<div class="flex">
 				<div class="col-sm-6 col-xs-12 block">
 					<div class="text-block">
             <h1 style="color: #00B3B3" *ngIf="!authenticationService.isVendor()">contacts</h1>
 						<p>{{welcome_text.contacts}}</p>
-						<div class="flex pull-left">
+						<div>
               <!-- [class.disabled]="!hasContactRole || !authenticationService.user.hasCompany ? true : null" -->
-              <button class="btn btn-xs color2"  *ngIf="!authenticationService.isVendor()" [routerLink]="['/home/contacts/add']" >add contacts</button>
+              <button class="btn btn-xs color2"  *ngIf="!authenticationService.isVendor()" [routerLink]="['/home/contacts/add']" >Add contacts</button>
 							<button type="button" class="btn btn-xs color2-invert" data-toggle="modal" [disabled]="true" data-target="#myModal">Tell me how</button>
 						</div>
 					</div>
@@ -151,7 +151,7 @@ cursor: not-allowed;
 					<img src="https://wistia.com/assets/product/video-seo/VideoSEO_2-2fc96034647ff7b9ecc5e0be9bac526f.png" style="max-width: 100%">
 				</div>
 			</div>
-			<div class="flex">
+			<div class="flex" *ngIf="!authenticationService.isOnlyPartner()">
 			<div class="col-sm-6 col-xs-12 block image-block">
 					<img src="https://wistia.com/assets/main/welcome/Marketing-bf8195807e780b9926a5dc125d763a62.svg">
 				</div>
@@ -159,8 +159,8 @@ cursor: not-allowed;
 					<div class="text-block">
 						<h1 style="color: #FBB23E">Templates</h1>
 						<p>{{welcome_text.templates}}</p>
-						<div class="flex pull-left">
-              <button *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdminPartner()|| authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.module.isVideo" class="btn btn-xs color1" [routerLink]="['/home/emailtemplates/select']" >create templates</button>
+						<div >
+              <button *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdminPartner()|| authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.module.isVideo" class="btn btn-xs color1" [routerLink]="['/home/emailtemplates/select']" >Create templates</button>
               <button *ngIf="authenticationService.isOnlyPartner() || !authenticationService.module.isVideo" class="btn btn-xs color1" [routerLink]="['/home/emailtemplates/manage']">View templates</button>
               <button type="button" class="btn btn-xs color4-invert" data-toggle="modal" [disabled]="true" data-target="#myModal">Tell me how</button>
 						</div>
@@ -173,9 +173,9 @@ cursor: not-allowed;
 					<div class="text-block">
 						<h1 style="color: #827596">campaigns</h1>
 						<p>{{welcome_text.campaigns}}</p>
-						<div class="flex pull-right">
-              <button *ngIf="!authenticationService.isOnlyPartner()" class="btn btn-xs color3" [routerLink]="['/home/campaigns']">create campaigns</button>
-              <button *ngIf="authenticationService.isOnlyPartner()" class="btn btn-xs color3" [routerLink]="['/home/campaigns/partner/all']">create campaigns</button>
+						<div >
+              <button *ngIf="!authenticationService.isOnlyPartner()" class="btn btn-xs color3" [routerLink]="['/home/campaigns']">Create campaigns</button>
+              <button *ngIf="authenticationService.isOnlyPartner()" class="btn btn-xs color3" [routerLink]="['/home/campaigns/partner/all']">Create campaigns</button>
 							<button type="button" class="btn btn-xs color3-invert" data-toggle="modal" [disabled]="true" data-target="#myModal">Tell me how</button>
 						</div>
 					</div>
@@ -184,7 +184,7 @@ cursor: not-allowed;
 					<img src="https://wistia.com/assets/features/secure-ddcc83774ec8351e9de6cec79f8ad49d.png">
 				</div>
 			</div>
-			<div class="flex" *ngIf="!authenticationService.isOnlyPartner()">
+			<div class="flex">
 				<div class="col-sm-6 col-xs-12 block image-block">
 					<img style="width: 320px; height:210px" src="assets/images/social-account-icons.jpg">
 				</div>
@@ -192,8 +192,8 @@ cursor: not-allowed;
 					<div class="text-block">
 						<h1 style="color: #76C9FF">Social Accounts</h1>
 						<p>{{welcome_text.socialMedia}}</p>
-						<div class="flex pull-right">
-							<button class="btn btn-xs color1" [routerLink]="['/home/social/manage/all']" [class.disabled]="!authenticationService.user.hasCompany ? true : null">connect</button>
+						<div >
+							<button class="btn btn-xs color1" [routerLink]="['/home/social/manage/all']" [class.disabled]="!authenticationService.user.hasCompany ? true : null">Connect</button>
 							<button type="button" class="btn btn-xs color1-invert" data-toggle="modal" [disabled]="true" data-target="#myModal">Tell me how</button>
 						</div>
 					</div>
@@ -207,8 +207,8 @@ cursor: not-allowed;
 					<div class="text-block">
 						<h1 style="color: #00B3B3">Analytics</h1>
 						<p>{{welcome_text.analytics}}</p>
-						<div class="flex pull-left">
-							<button class="btn btn-xs color2" [routerLink]="['/home/dashboard']" [class.disabled]="!authenticationService.user.hasCompany ? true : null">analytics</button>
+						<div>
+							<button class="btn btn-xs color2" [routerLink]="['/home/dashboard']" [class.disabled]="!authenticationService.user.hasCompany ? true : null">Analytics</button>
 							<button type="button" class="btn btn-xs color2-invert" data-toggle="modal" [disabled]="true" data-target="#myModal">Tell me how</button>
 						</div>
 					</div>

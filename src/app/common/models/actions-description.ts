@@ -21,6 +21,7 @@ export class ActionsDescription {
     video_delete = 'Delete Video';
     video_campaign = 'Create Campaign';
     video_report = 'Video Based Reports';
+    video_draft = 'Unavailable for Draft Videos';
 
    /* FOR EMAIL TEMPLATES*/
     template_edit = 'Edit Template';
