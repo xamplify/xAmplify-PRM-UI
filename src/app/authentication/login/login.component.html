@@ -36,8 +36,8 @@
 				<input id="password" class="form-control form-control-solid placeholder-no-fix passwordTag" [(ngModel)]="model.password" #password="ngModel"
 				 required type="password" autocomplete="off" placeholder="Password" name="password" (keypress)="eventHandler($event.keyCode)"
 				/>
-				 <span toggle="#password" class="fa fa-fw fa-eye field-icon toggle-password" (click)="showPassword()" *ngIf="!showInputPassword"></span>
-				 <span toggle="#password" class="fa fa-fw fa-eye-slash field-icon toggle-password" (click)="showPassword()"  *ngIf="showInputPassword"></span>
+				 <span toggle="#password"  title="Show Password" class="fa fa-fw fa-eye field-icon toggle-password" (click)="showPassword()" *ngIf="!showInputPassword && model.password"></span>
+				 <span toggle="#password"  title="Hide Password" class="fa fa-fw fa-eye-slash field-icon toggle-password" (click)="showPassword()"  *ngIf="showInputPassword && model.password"></span>
 			</div>
 			<button id="submitBitton" type="submit" class="btn btn-primary pull-right signin">Sign In</button>
 		</form>
