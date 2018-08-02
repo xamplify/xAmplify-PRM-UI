@@ -1,27 +1,30 @@
-<style>.disabled{ pointer-events: none;}</style>
-<div [hidden]="!processor.isProcessing">
-  <div class="loader-container">
-    <div class="loader"></div>
-    <img alt="logo" class="logo-default" src="assets/images/xamplify-logo.png">
-  </div>
-</div>
-
-<div [hidden]="processor.isProcessing" style="margin: 2em">
+<div class="container" [hidden]="processor.isProcessing" style="margin-top: 2em">
 <div class="alert alert-success alert-dismissible fade in" role="alert" *ngIf="responseMessage">
   <a type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="responseMessage = null">
       <span aria-hidden="true">×</span>
   </a> Thank you for the RSVP
 </div>
-<div class="portlet light border-radius-0">
-  <div class="portlet-title">
-    <h5>RSVP</h5>
-  </div>
-  <div class="portlet-body scrollbar launchedCampaignsMaster">
-    <button class="btn btn-primary" data-toggle="modal" data-target="#myModal" (click)="campaignRsvp.eventCampaignRsvp = 'YES'">Yes</button>
-    <button class="btn btn-primary" data-toggle="modal" data-target="#myModal" (click)="campaignRsvp.eventCampaignRsvp = 'NO'">No</button>
-    <button class="btn btn-primary" data-toggle="modal" data-target="#myModal" (click)="campaignRsvp.eventCampaignRsvp = 'MAYBE'">May Be</button>
+
+<div class="col-xs-12" *ngIf="eventcampaign">
+  <div class="portlet light">
+    <div class="portlet-title">
+      <h4 class="pull-left">Will you attend?</h4>
+      <div class="pull-right">
+        <button class="btn btn-secondary" data-toggle="modal" data-target="#myModal" (click)="campaignRsvp.eventCampaignRsvp = 'YES'">Yes</button>
+        <button class="btn btn-secondary" data-toggle="modal" data-target="#myModal" (click)="campaignRsvp.eventCampaignRsvp = 'NO'">No</button>
+        <button class="btn btn-secondary" data-toggle="modal" data-target="#myModal" (click)="campaignRsvp.eventCampaignRsvp = 'MAYBE'">May Be</button>
+      </div>
+    </div>
+    <div class="portlet-body event-details">
+      <h4 class="event-title">{{eventcampaign.campaign}}</h4>
+      <h5 [innerHTML]="eventcampaign.message"></h5>
+      <h4>HOST: {{eventcampaign.userDTO.emailId}}</h4>
+      <h4 class="uppercase"> {{ eventcampaign.launchTimeInString  |  date:'EEEE, MMMM d, y, h:mm a'}} </h4>
+    </div>
   </div>
 </div>
+
+
 </div>
 
 <!-- Modal -->
@@ -32,14 +35,14 @@
         <a class="close-circle" data-dismiss="modal">
           <i class="fa fa-times"></i>
         </a>
-        <h4 class="modal-title" id="myModalLabel">RSVP Option {{campaignRsvp.eventCampaignRsvp}}</h4>
+        <h4 class="modal-title" id="myModalLabel">You are RSVPing <span class="f-w-500">{{campaignRsvp.eventCampaignRsvp}}</span></h4>
       </div>
       <div class="modal-body">
         <textarea [(ngModel)]="campaignRsvp.message" [ngModelOptions]="{standalone: true}" placeholder="Your Message"></textarea>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal" (click)="campaignRsvp.message = null">Close</button>
-        <button type="button" class="btn btn-primary" (click)="saveEventCampaignRsvp()">Save changes</button>
+        <button type="button" class="btn btn-secondary" (click)="saveEventCampaignRsvp()">Save changes</button>
       </div>
     </div>
   </div>

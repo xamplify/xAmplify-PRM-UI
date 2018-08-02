@@ -2,3 +2,15 @@ button {
     min-width: 100px;
     border-radius: 30px !important;
 }
+.event-title {
+    font-family: Century Gothic;
+    font-size: 42px;
+    color: #95B101;
+    line-height: 51px;
+    text-align: center;
+}
+.event-details {
+    background-color: #f1f1f1;
+    border: none;
+    padding: inherit;
+}
