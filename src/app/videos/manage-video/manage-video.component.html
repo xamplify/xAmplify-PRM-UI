@@ -159,7 +159,7 @@
                    <div class="ribbon" >
                      <span>{{videoFile.viewBy}}</span>
                    </div>
-                   <div class="bar" *ngIf="!authenticationService.isSuperAdmin">
+                   <div class="bar" *ngIf="!authenticationService.isSuperAdmin()">
                      <div >
                       <ng-container  *ngIf="videoFileService.videoType==='myVideos'">
                         <a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor"
