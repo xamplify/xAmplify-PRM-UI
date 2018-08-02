@@ -32,8 +32,8 @@ export class ActionsDescription {
     campaign_edit = 'Edit Campaign';
     campaign_delete = 'Delete Campaign';
     campaign_preview = 'Preview Campaign';
-    campaign_report = 'Camapign Based Reports';
-    campaign_copy = 'Copy Camapign';
+    campaign_report = 'Campaign Based Reports';
+    campaign_copy = 'Copy Campaign';
 
     /* GLOBAL */
     listView = 'List View';

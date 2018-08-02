@@ -834,7 +834,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 this.homeComponent.getCategorisService();
                 this.refService.homeMethodsCalled = true;
             }
-            if(!this.refService.defaultPlayerSettings){
+            if(!this.refService.defaultPlayerSettings || this.refService.defaultPlayerSettings.playerColor===undefined){
                 this.homeComponent.getVideoDefaultSettings();
             }
             this.defaultSettings();

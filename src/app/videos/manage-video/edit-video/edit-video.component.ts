@@ -636,6 +636,10 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   defaultPlayerSettingsValues(event: boolean) {
       try {
+          if(this.defaultPlayerValues.playerColor===null || this.defaultPlayerValues.playerColor===undefined) {
+             this.defaultPlayerValues.playerColor='#fff';
+             this.defaultPlayerValues.controllerColor ='#111';
+             this.defaultPlayerValues.transparency=100;this.defaultPlayerValues.enableVideoController=true; }
           if (event) {
               this.defaultSettingValuesBoolean(event);
               this.brandLogoUrl = this.defaultPlayerValues.brandingLogoUri = this.defaultPlayerValues.companyProfile.companyLogoPath;
