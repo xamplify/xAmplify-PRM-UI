@@ -10,7 +10,7 @@
      <li *ngIf="authenticationService.isSuperAdmin"><i class="fa fa-home"></i><a [routerLink]="['/home/dashboard/admin-report']">Admin Report</a></li>
     </ul>
   </div>
-  <div class="row" style="display: flex;" [class.disabled]="authenticationService.isSuperAdmin">
+  <div class="row" style="display: flex;" [class.disabled]="authenticationService.isSuperAdmin()">
     <div class="col-xs-12">
       <div class="portlet-body">
         <div class="portlet light">
