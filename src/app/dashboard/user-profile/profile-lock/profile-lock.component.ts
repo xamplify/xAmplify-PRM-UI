@@ -20,6 +20,7 @@ export class ProfileLockComponent implements OnInit {
     error: string;
     loginDisabled = true;
     loading = false;
+    showInputPassword = false;
     socialProviders = [{ "name": "salesforce", "iconName": "salesforce" },
     { "name": "facebook", "iconName": "facebook" },
     { "name": "twitter", "iconName": "twitter" },
@@ -88,4 +89,15 @@ export class ProfileLockComponent implements OnInit {
         }
         console.log('error : ' + this.error);
     }
+    
+    showPassword(){
+        let inputPassword = <HTMLInputElement>document.getElementById('password');
+       if (inputPassword.type === "password") {
+           inputPassword.type = "text";
+           this.showInputPassword = true;
+       } else {
+           inputPassword.type = "password";
+           this.showInputPassword = false;
+       }
+   }
 }

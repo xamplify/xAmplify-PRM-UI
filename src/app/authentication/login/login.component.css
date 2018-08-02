@@ -6,13 +6,5 @@ a.forget-password:hover {color: #4db1e2;}
 .alert-danger{background-color:#ec6262}
 .alert{padding:10px}
 .alert-success,.alert-danger,.alert-warning>h5{font-size:14px}
-.text{padding-top: 12px;}
+.text{padding-top: 12px;} 
 .underlinetext:hover{text-decoration: underline !important}
-.field-icon {
-  float: right;
-  left: -6px;
-  margin-top: -28px;
-  position: relative;
-  z-index: 2;
-  cursor:pointer;
-}

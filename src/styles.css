@@ -819,3 +819,12 @@ b, strong {
     background-color: #000;
     border-radius: 0;
 }
+
+.field-icon {
+  float: right;
+  left: -6px;
+  margin-top: -28px;
+  position: relative;
+  z-index: 2;
+  cursor:pointer;
+}
