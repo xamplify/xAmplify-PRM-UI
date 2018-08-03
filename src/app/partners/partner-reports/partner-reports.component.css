@@ -64,6 +64,9 @@
 	text-align: left;
 }
 
+.center{
+	text-align: center;
+}
   
   .blur {
 	-webkit-filter: blur(1px);
