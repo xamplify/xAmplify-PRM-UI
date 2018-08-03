@@ -76,6 +76,11 @@ export class ReferenceService {
     coBrandingTag = "<img src='<Co-BrandingImgURL>'/> \n";
     public URL: string = this.authenticationService.REST_URL + 'admin/';
     hasClientError = false;
+    
+    showInputConfirmPassword = false;
+    showInputPassword = false;
+    showInputOldPassword = false;
+    
     constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,
         private router: Router, public deviceService: Ng2DeviceService) {
         console.log('reference service constructor');
@@ -1568,4 +1573,28 @@ export class ReferenceService {
      }
 
 
+     showPassword( text: any ) {
+         let inputPassword = <HTMLInputElement>document.getElementById( text );
+         if ( inputPassword.type === "password" ) {
+             inputPassword.type = "text";
+             if ( text === 'oldPassword' ) {
+                 this.showInputOldPassword = true;
+             } else if ( text === 'password') {
+                 this.showInputPassword = true;
+             }else {
+                 this.showInputConfirmPassword = true;
+             }
+         } else {
+             inputPassword.type = "password";
+             if( text === 'oldPassword' ) {
+                 this.showInputOldPassword = false;
+             }else if( text === 'password' ) {
+                 this.showInputPassword = false;
+             }else {
+                 this.showInputConfirmPassword = false;
+             }
+         }
+    }  
+     
+     
 }

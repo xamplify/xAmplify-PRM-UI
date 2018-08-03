@@ -31,8 +31,6 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
     vendorSignup = false;
     invalidVendor = false;
     mainLoader:boolean;
-    showInputPassword = false;
-    showInputConfirmPassword = false;
     customResponse: CustomResponse = new CustomResponse();
     formErrors = {
         'firstName': '',
@@ -203,26 +201,7 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
       this.mainLoader = false;
      }
   }
-    showPassword(text: any){
-        let inputPassword = <HTMLInputElement>document.getElementById(text);
-       if (inputPassword.type === "password") {
-           inputPassword.type = "text";
-           if( text === 'password'){
-           this.showInputPassword = true;
-           }else{
-               this.showInputConfirmPassword = true;
-           }
-       } else {
-           inputPassword.type = "password";
-           
-           if( text === 'password'){
-               this.showInputPassword = false;
-               }else{
-                   this.showInputConfirmPassword = false;
-               }
-       }
-   }
-    
+
     ngOnInit() {
       try{
         this.mainLoader = true;

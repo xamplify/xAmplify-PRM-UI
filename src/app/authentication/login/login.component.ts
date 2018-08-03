@@ -27,7 +27,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     loading = false;
     resendActiveMail = false;
     mainLoader:boolean;
-    showInputPassword = false;
     socialProviders = [{ "name": "salesforce", "iconName": "salesforce" },
     { "name": "facebook", "iconName": "facebook" },
     { "name": "twitter", "iconName": "twitter" },
@@ -128,18 +127,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       )
     } catch(error){ console.log('error'+error);}
     }
-    
-    showPassword(){
-         let inputPassword = <HTMLInputElement>document.getElementById('password');
-        if (inputPassword.type === "password") {
-            inputPassword.type = "text";
-            this.showInputPassword = true;
-        } else {
-            inputPassword.type = "password";
-            this.showInputPassword = false;
-        }
-    }
-    
+
     ngOnInit() {
      try{
      this.mainLoader = true;

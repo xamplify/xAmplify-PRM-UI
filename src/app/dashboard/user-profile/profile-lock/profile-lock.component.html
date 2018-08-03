@@ -22,8 +22,8 @@
 					</div>
 					<input id="password" class="form-control placeholder-no-fix" type="password" (input)="checkPassword(password)" [(ngModel)]="password" autocomplete="off"
 					 placeholder="Password" name="password" (keypress)="eventHandler($event.keyCode)" />
-				<span toggle="#password"  title="Show Password" class="fa fa-fw fa-eye field-icon toggle-password" (click)="showPassword()" *ngIf="!showInputPassword && password"></span>
-				 <span toggle="#password"  title="Hide Password" class="fa fa-fw fa-eye-slash field-icon toggle-password" (click)="showPassword()"  *ngIf="showInputPassword && password"></span>
+				<span toggle="#password"  title="Show Password" class="fa fa-fw fa-eye field-icon toggle-password" (click)="referenceService.showPassword('password')" *ngIf="!referenceService.showInputPassword && password"></span>
+				 <span toggle="#password"  title="Hide Password" class="fa fa-fw fa-eye-slash field-icon toggle-password" (click)="referenceService.showPassword('password')"  *ngIf="referenceService.showInputPassword && password"></span>
 					 
 				</div>
 				<div class="form-actions">

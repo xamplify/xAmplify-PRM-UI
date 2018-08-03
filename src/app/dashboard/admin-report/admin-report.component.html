@@ -1,11 +1,6 @@
 <div class="page-content ml0">
 	<div class="page-bar"> 
 		<ul class="page-breadcrumb">
-			<!-- <li>
-				<i class="fa fa-home"></i>
-				<a [routerLink]="referenceService.homeRouter">Home</a>
-				<i class="fa fa-angle-right"></i>
-			</li> -->
 			<li>
 			<i class="fa fa-home"></i>
 				<a (click)="detailsTielsView = false">Admin Report</a>
@@ -104,110 +99,8 @@
 					</table>
 				</div>
 			</div>
-				
-				
-				
-				<app-dashboard-stats></app-dashboard-stats>
-									<!-- <div class="row mt5 mb5">
-										<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-											<button class="btn-block dashboard-stat blue" [routerLink]="['../../campaigns/manage']">
-												<div class="visual">
-													<i class="fa fa-users"></i>
-												</div>
-												<div class="details">
-													<div class="number" style="font-weight: 300 !important;">{{selectedVendorsDetails.totalCampaignsCount}}</div>
-													<div class="desc" style="font-size:20px">Campaigns{{checkingContactTypeName}}s</div>
-												</div>
-												<span class="morePadding"> <a class="more" style="text-align: left;">
-														Detailed view <i class="m-icon-swapright m-icon-white"></i>
-												</a>
-												</span>
-											</button>
-										</div>
-										<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-											<button class="btn-block dashboard-stat green">
-												<div class="visual">
-													<i class="fa fa-eye"></i>
-												</div>
-												<div class="details">
-													<div class="number numberCss"
-														style="font-weight: 300 !important;">{{selectedVendorsDetails.totalVideosCount}}</div>
-													<div class="desc" style="font-size:20px">Videos {{checkingContactTypeName}}s</div>
-												</div>
-												<span class="morePadding"> <a class="more" style="text-align: left;">
-														Detailed view <i class="m-icon-swapright m-icon-white"></i>
-												</a>
-												</span>
-											</button>
-										</div>
-										<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-											<button class="btn-block dashboard-stat purple">
-												<div class="visual">
-													<i class="fa fa-eye-slash"></i>
-												</div>
-												<div class="details">
-													<div class="number" style="font-weight: 300 !important;">{{selectedVendorsDetails.totalcontactsCount}}</div>
-													<div class="desc" style="font-size:20px">Contacts
-														{{checkingContactTypeName}}s</div>
-												</div>
-												<span class="morePadding"> <a class="more" style="text-align: left;">
-														Detailed view <i class="m-icon-swapright m-icon-white"></i>
-												</a>
-												</span>
-											</button>
-										</div>
-										<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-											<button class="btn-block dashboard-stat yellow-gold">
-												<div class="visual">
-													<i class="fa fa-user-times"></i>
-												</div>
-												<div class="details">
-													<div class="number" style="font-weight: 300 !important;">{{selectedVendorsDetails.totalEmailTemplatesCount}}</div>
-													<div class="desc" style="font-size:20px">Email Templates
-														{{checkingContactTypeName}}s</div>
-												</div>
-												<span class="morePadding"> <a class="more" style="text-align: left;">
-														Detailed view <i class="m-icon-swapright m-icon-white"></i>
-												</a>
-												</span>
-											</button>
-										</div>
-										<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-											<button class="btn-block dashboard-stat red">
-												<div class="visual">
-													<i class="fa fa-times"></i>
-												</div>
-												<div class="details">
-													<div class="number" style="font-weight: 300 !important;">{{selectedVendorsDetails.totalSocialConnectionsCount}}</div>
-													<div class="desc" style="font-size:20px">Social Connections
-														{{checkingContactTypeName}}s</div>
-												</div>
-												<span class="morePadding"> <a class="more" style="text-align: left;">
-														Detailed view <i class="m-icon-swapright m-icon-white"></i>
-												</a>
-												</span>
-											</button>
-										</div>
-										<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-											<button class="btn-block dashboard-stat blue-soft">
-												<div class="visual">
-													<i class="fa fa-times"></i>
-												</div>
-												<div class="details">
-													<div class="number" style="font-weight: 300 !important;">{{selectedVendorsDetails.totalCompanyPartnersCount}}</div>
-													<div class="desc" style="font-size:20px">Partners
-														{{checkingContactTypeName}}s</div>
-												</div>
-												<span class="morePadding"> <a class="more" style="text-align: left;">
-														Detailed view <i class="m-icon-swapright m-icon-white"></i>
-												</a>
-												</span>
-											</button>
-										</div>
-									</div> -->
-				</section>
-		
-		
+			<app-dashboard-stats></app-dashboard-stats>
+		</section>
 		
 	</div>
 </div>

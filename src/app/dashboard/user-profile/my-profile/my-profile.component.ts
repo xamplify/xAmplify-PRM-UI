@@ -70,12 +70,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     logoLink = '';
     ngxloading: boolean;
     roleNames:string = "";
-    
-    showInputConfirmPassword = false;
-    showInputNewPassword = false;
-    showInputOldPassword = false;
-    
-    
     customResponse: CustomResponse = new CustomResponse();
     hasClientErrors:boolean = false;
     constructor(public videoFileService: VideoFileService, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
@@ -252,36 +246,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             this.logger.showClientErrors("my-profile.component.ts", "ngAfterViewInit()", error);
         }
     }
-    
-    
-    
-    /*showInputConfirmPassword = false;
-    showInputNewPassword = false;
-    showInputOldPassword = false;*/
-    
-    showPassword( text: any ) {
-        let inputPassword = <HTMLInputElement>document.getElementById( text );
-        if ( inputPassword.type === "password" ) {
-            inputPassword.type = "text";
-            if ( text === 'oldPassword' ) {
-                this.showInputOldPassword = true;
-            } else if ( text === 'newPassword') {
-                this.showInputNewPassword = true;
-            }else {
-                this.showInputConfirmPassword = true;
-            }
-        } else {
-            inputPassword.type = "password";
-            if( text === 'oldPassword' ) {
-                this.showInputOldPassword = false;
-            }else if( text === 'newPassword' ) {
-                this.showInputNewPassword = false;
-            }else {
-                this.showInputConfirmPassword = false;
-            }
-        }
-   }
-    
     
     ngAfterViewInit() {
         try{
