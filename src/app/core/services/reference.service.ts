@@ -76,11 +76,11 @@ export class ReferenceService {
     coBrandingTag = "<img src='<Co-BrandingImgURL>'/> \n";
     public URL: string = this.authenticationService.REST_URL + 'admin/';
     hasClientError = false;
-    
+
     showInputConfirmPassword = false;
     showInputPassword = false;
     showInputOldPassword = false;
-    
+
     constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,
         private router: Router, public deviceService: Ng2DeviceService) {
         console.log('reference service constructor');
@@ -94,6 +94,10 @@ export class ReferenceService {
              return true;
          }
     }
+    isSafariBrowser(){
+      this.deviceInfo = this.deviceService.getDeviceInfo();
+      if(this.deviceInfo.browser=== 'safari'){ return true; } else{ return false};
+    }
 
     getCategories(): Observable<Category[]> {
         const url = this.URL + 'categories?access_token=' + this.authenticationService.access_token;
@@ -103,11 +107,11 @@ export class ReferenceService {
     }
     getVideoTitles(): Observable<String[]> {
         const constUrl = this.authenticationService.REST_URL + 'videos/';
-        
+
         let userId = this.authenticationService.user.id;
-        
+
         userId = this.authenticationService.checkLoggedInUserId(userId);
-        
+
         const url = constUrl + 'video-titles?access_token=' + this.authenticationService.access_token + '&userId=' +
         userId;
         return this.http.get(url, "")
@@ -1594,7 +1598,7 @@ export class ReferenceService {
                  this.showInputConfirmPassword = false;
              }
          }
-    }  
-     
-     
+    }
+
+
 }

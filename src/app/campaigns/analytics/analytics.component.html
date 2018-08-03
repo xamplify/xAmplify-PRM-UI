@@ -348,8 +348,8 @@
 										<!-- <td class="td-chart"><h6>{{item.userEmail}}</h6></td> -->
 										<td class="td-chart">
 											<h6>
-											<app-timestamp [dateAndTime]="item.latestView"> </app-timestamp>
-											<span *ngIf="! item?.latestView">-</span></h6>
+											<app-timestamp *ngIf="item?.latestView" [dateAndTime]="item.latestView"> </app-timestamp>
+											<span *ngIf="!item?.latestView">-</span></h6>
 										</td>
 										<td class="td-chart">
 											<div class="bg-color" [style.width.%]="(item.viewsCount/maxViewsValue)*100" style="margin: 10px 0px;">
