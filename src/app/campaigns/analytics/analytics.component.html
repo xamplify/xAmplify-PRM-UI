@@ -541,8 +541,9 @@
 									</td>
 									<td>
 										<h6><!-- {{item.startTime | date: 'short'}} -->
-										<app-timestamp [dateAndTime]="item.startTime"> </app-timestamp>
-										</h6>
+                    <app-timestamp *ngIf="!referenceService.isSafariBrowser()" [dateAndTime]="item.startTime"> </app-timestamp>
+                    <span *ngIf="referenceService.isSafariBrowser()">{{item.startTime}}</span>
+                  </h6>
 									</td>
 									<td>
 										<h6><!-- {{item.endTime | date: 'short'}} -->
