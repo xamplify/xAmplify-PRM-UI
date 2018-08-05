@@ -57,8 +57,6 @@ export class CampaignService {
         return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);
-
-
     }
 
     getCampaignById(data: any) {
@@ -416,5 +414,7 @@ export class CampaignService {
             .map(this.extractData)
             .catch(this.handleError);       
     }
+    
+   
     
 }

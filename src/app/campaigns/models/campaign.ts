@@ -55,4 +55,5 @@ export class Campaign {
     launchedByVendor:boolean = false;
     partnerCompanyLogo:string = "";
     parentCampaignId:number = 0;
+    redistributedCount:number = 0;
 }

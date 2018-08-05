@@ -59,6 +59,12 @@ export class ParterService {
             .catch( this.handleError );
     }
     
+    listRedistributedCampaigns( campaignId: number, pagination: Pagination ): Observable<any> {
+        const url = this.URL + 'partner/list-re-distributed-campaigns/'+campaignId+'?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post( url, pagination )
+            .catch( this.handleError );
+    }
+    
     handleError( error: any ) {
         const errMsg = ( error.message ) ? error.message :
             error.status ? `${error.status} - ${error.statusText}` : 'Server   error';

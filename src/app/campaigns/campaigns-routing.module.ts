@@ -9,7 +9,7 @@ import { AnalyticsComponent } from "./analytics/analytics.component";
 import { PartnerCampaignsComponent } from "./partner-campaigns/partner-campaigns.component";
 import { EditPartnerCampaignsComponent } from "./edit-partner-campaigns/edit-partner-campaigns.component";
 import { PreviewCampaignComponent } from "./preview-campaign/preview-campaign.component";
-
+import { ReDistributedComponent } from './analytics/re-distributed/re-distributed.component';
 export const campaignRoutes: Routes = [
   { path: "", redirectTo: "select", pathMatch: "full" },
   { path: "select", component: SelectCampaignTypeComponent },
@@ -19,6 +19,7 @@ export const campaignRoutes: Routes = [
   { path: "edit", component: CreateCampaignComponent },
   { path: "manage", component: ManagePublishComponent },
   { path: ":campaignId/details", component: AnalyticsComponent },
+  { path: ":campaignId/re-distributed", component: ReDistributedComponent },
   { path: "partner", component: PartnerCampaignsComponent },
   { path: "partner/:type", component: PartnerCampaignsComponent },
   { path: "vendor/:type", component: PartnerCampaignsComponent },

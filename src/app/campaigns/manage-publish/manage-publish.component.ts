@@ -281,5 +281,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     showCampaignPreview(campaignId:number){
         this.router.navigate(['/home/campaigns/preview/'+campaignId]);
     }
+    goToRedistributedCampaigns(campaign:Campaign){
+        this.router.navigate(['/home/campaigns/'+campaign.campaignId+"/re-distributed"]);
+    }
 
 }
