@@ -93,34 +93,75 @@
                 <div class="caption">
                   <span class="caption-subject font-red-sunglo uppercase"> Partner Campaign Details</span>
                 </div>
-                   <div class="inputs" align="right" style="float: right">
-            <div class="portlet-input input-inline input-small">
+             	<div class="inputs" align="right" style="float: right">
+            	<div class="portlet-input input-inline input-small">
               <div class="input-icon right" style="position: relative;margin: -12px 0 0 0;">
-                <!-- <i class="icon-magnifier" (click)="searchInPartnerCampaignsUI()" style="cursor: pointer;"></i> -->
-                <!-- <input type="text" class="form-control" [(ngModel)]="partnerCampaignUISearchKey" [ngModelOptions]="{standalone: true}" placeholder="search..."> -->
                 <input type="text" style="height:34px;" class="form-control" [(ngModel)]="partnerCampaignUISearchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="partnerCampaignUISearch($event.keyCode)">
                 <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="partnerCampaignUISearchKey" (click)="partnerCampaignUISearchKey=''"></button>
-                <button type="submit" class="search-box-item-click" (click)="searchInPartnerCampaignsUI()"><i class="fa fa-search"></i></button>
+                <button type="submit" class="search-box-item-click" (click)="searchInListRedistributedThroughPartnerCampaign()"><i class="fa fa-search"></i></button>
               </div>
             </div>
-          </div>
+          	</div>
               </div>
                <app-list-loader  *ngIf="campaignUserInteractionHttpRequestLoader.isLoading"></app-list-loader>
               <div class="portlet-body"  *ngIf="!campaignUserInteractionHttpRequestLoader.isLoading">
                 <table class="table tgrid">
                   <thead>
+                  <tr>
                     <!-- <th>partner Company Name</th> -->
-                    <th class="center">partners</th>
+                    <th style="float: left;margin-left: 70px;">Vendors</th>
                     <th class="center-aligned">Campaign Name</th>
                      <th class="center-aligned">Redistributed Time</th>
-                    <th class="center">Analytics</th>
+                    <th class="center">Count</th>
+                    </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let item of pagination.pagedItems" style="cursor: pointer;" (click)="goToCampaignAnalytics(item)">
+                  <ng-container *ngFor="let item of pagination.pagedItems;let i=index" style="cursor: pointer;" (click)="goToCampaignAnalytics(item)">
+                  <tr>
                       <td><app-user-info [userInfo]="item" [isPartnerEntityInfo]="true" [isPartnerInfo]="true"></app-user-info></td>
                       <td>{{item.campaignName}}</td>
                        <td>
-                         <!-- {{item.redistributedTime |date:'MM/dd/yyyy @ h:mma' }} -->
+                          <app-timestamp [isOnlyDate]="false" [dateAndTime]="item.redistributedOn"> </app-timestamp>
+                       </td>
+                        <td>{{item.redistributedCampaignsCount}}
+                          <div style="text-align: center;position: relative;" class="actions-block" *ngIf="item.redistributedCampaignsCount> 0">
+                          <a title="View Redistributed Campaings" (click)="showRedistributedCampaings(item)">
+                            <i class="fa" [ngClass]="{'fa-plus': !item.expand, 'fa-minus': item.expand}"></i>
+                          </a>
+                        </div>
+                        </td>
+                    </tr> 
+                    <tr [ngClass]="{'hidden': !item.expand}">
+                    <td colspan="4">
+                  	<table class="table tgrid table-condensed" style="background-color: #463c2c24">
+                    <thead>
+                      <tr>
+                        <th style="float: left;margin-left: 70px;">Partners</th>
+                    	<th class="center-aligned">Campaign Name</th>
+                     	<th class="center-aligned">Launched On</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let redistributedCampaign of item.redistributedCampaigns" style="cursor: pointer;" (click)="goToCampaignAnalytics(redistributedCampaign)">
+                      <td><app-user-info [userInfo]="redistributedCampaign" [isPartnerEntityInfo]="true" [isPartnerInfo]="true"></app-user-info></td>
+                      <td>{{redistributedCampaign.campaignName}}</td>
+                       <td>
+                          <app-timestamp [isOnlyDate]="false" [dateAndTime]="redistributedCampaign.redistributedOn"> </app-timestamp>
+                       </td>
+                    </tr> 
+                    </tbody>
+                  </table>
+                  </td>
+                  </tr>
+                  
+                    
+                    
+                    
+                   <!--  <tr *ngFor="let item of pagination.pagedItems" style="cursor: pointer;" (click)="goToCampaignAnalytics(item)">
+                      <td><app-user-info [userInfo]="item" [isPartnerEntityInfo]="true" [isPartnerInfo]="true"></app-user-info></td>
+                      <td>{{item.campaignName}}</td>
+                       <td>
+                         {{item.redistributedTime |date:'MM/dd/yyyy @ h:mma' }}
                           <app-timestamp [isOnlyDate]="false" [dateAndTime]="item.redistributedTime"> </app-timestamp>
                        </td>
                       <td>
@@ -133,7 +174,8 @@
                         </a>
                        </div>
                       </td>
-                    </tr>
+                    </tr> -->
+                    </ng-container>
                   </tbody>
                 </table>
                 <div *ngIf="pagination.totalRecords==0" class="alert alert-info">

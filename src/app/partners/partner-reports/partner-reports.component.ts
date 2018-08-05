@@ -139,7 +139,7 @@ export class PartnerReportsComponent implements OnInit {
 
   partnerUserInteractionReports() {
       this.referenseService.loading( this.campaignUserInteractionHttpRequestLoader, true );
-      this.paginationType = 'UserInteraction';
+      this.paginationType = 'userInteraction';
       this.parterService.partnerUserInteractionReports( this.loggedInUserId, this.pagination ).subscribe(
           ( data: any ) => {
               this.pagination.totalRecords = data.totalRecords;
@@ -174,9 +174,9 @@ export class PartnerReportsComponent implements OnInit {
   }
 
   setPage(event) {
-    if (this.paginationType === 'UserInteraction') {
+    if (this.paginationType === 'userInteraction') {
       this.pagination.pageIndex = event.page;
-      this.partnerUserInteractionReports();
+      this.listRedistributedThroughPartnerCampaigns();
     } else if (this.paginationType === 'partnerInteraction') {
       this.campaignInteractionPagination.pageIndex = event.page;
       this.partnerCampaignInteraction(this.campaignId);
@@ -187,13 +187,13 @@ export class PartnerReportsComponent implements OnInit {
       }
   }
   closeModalPopUp() {
-    this.paginationType = 'UserInteraction';
+    this.paginationType = 'userInteraction';
     this.campaignInteractionPagination =  new Pagination();
   }
   paginationDropdown(event) {
-    if (this.paginationType === 'UserInteraction') {
+    if (this.paginationType == 'userInteraction') {
       this.pagination = event;
-      this.partnerUserInteractionReports();
+      this.listRedistributedThroughPartnerCampaigns();
     } else if (this.paginationType === 'partnerInteraction') {
       this.campaignInteractionPagination = event;
       this.partnerCampaignInteraction(this.campaignId);
@@ -203,21 +203,6 @@ export class PartnerReportsComponent implements OnInit {
   partnerCampaignUISearch(keyCode: any) {  if (keyCode === 13) {  this.searchInPartnerCampaignsUI(); } }
   inActivePartnersSearch(keyCode:any){if (keyCode === 13) {  this.searchInActivePartnerAnalytics(); }}
   searchPartnerCampaignKeyPress(keyCode:any,value:string){if (keyCode === 13) {  this.searchPartnerCampaigns(value); }}
-  ngOnInit() {
-      if(this.loggedInUserId>0){
-        this.paginationType = 'userInteraction';
-        this.homeComponent.getVideoDefaultSettings();
-        this.pagination.maxResults = 12;
-        this.campaignInteractionPagination.maxResults = 10;
-        this.partnerReportData();
-        this.partnerUserInteractionReports();
-        this.getActivePartnerReports();
-    }else{
-        this.router.navigate(['home/dashboard']);
-    }
-
-  }
-
 
 
   goToActivePartnersDiv(){
@@ -411,4 +396,54 @@ export class PartnerReportsComponent implements OnInit {
       this.referenseService.campaignType = campaign.campaignType;
       this.router.navigate(["/home/campaigns/"+campaign.campaignId+"/details"]);
   }
+  
+  
+  
+  /*************List Redistributed Through Partner Campaigns************/
+  listRedistributedThroughPartnerCampaigns() {
+      this.paginationType = 'userInteraction';
+      this.referenseService.loading( this.campaignUserInteractionHttpRequestLoader, true );
+      this.parterService.listRedistributedThroughPartnerCampaign( this.loggedInUserId, this.pagination ).subscribe(
+          ( response: any ) => {
+              console.log(response);
+              let data  = response.data;
+              this.pagination.totalRecords = data.totalRecords;
+              this.pagination = this.pagerService.getPagedItems( this.pagination, data.redistributedCampaigns);
+              this.referenseService.loading( this.campaignUserInteractionHttpRequestLoader, false );
+          },
+          ( error: any ) => { console.log( 'error got here' ) });
+  }
+  searchInListRedistributedThroughPartnerCampaign(){
+      this.pagination.pageIndex = 1;
+      this.pagination.searchKey = this.partnerCampaignUISearchKey;
+      this.listRedistributedThroughPartnerCampaigns();
+  }
+  showRedistributedCampaings(item:any){
+      this.pagination.pagedItems.forEach((element) => {
+          let campaignId = element.campaignId;
+          let clickedCampaignId = item.campaignId;
+          if(clickedCampaignId!=campaignId){
+              element.expand =false;
+          }
+        });
+      item.expand = !item.expand;
+  }
+  
+  
+  ngOnInit() {
+      if(this.loggedInUserId>0){
+        this.paginationType = 'userInteraction';
+        this.homeComponent.getVideoDefaultSettings();
+        this.pagination.maxResults = 12;
+        this.campaignInteractionPagination.maxResults = 10;
+        this.partnerReportData();
+        this.partnerUserInteractionReports();
+        this.getActivePartnerReports();
+        this.listRedistributedThroughPartnerCampaigns();
+    }else{
+        this.router.navigate(['home/dashboard']);
+    }
+
+  }
+  
 }
