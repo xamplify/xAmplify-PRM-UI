@@ -828,3 +828,14 @@ b, strong {
   z-index: 2;
   cursor:pointer;
 }
+
+@media all and (max-width: 768px) {
+  tr { display: block; border: 1px solid grey; padding: 1em; text-align: center; }
+  td { display: inline; padding: 0 .5em; }
+}
+
+td>br { display: none; }
+
+@media all and (max-width: 767px) {
+    td>br { display: block; }
+}
