@@ -9,7 +9,7 @@ import { Processor } from '../../core/models/processor';
 @Component({
     selector: 'app-verify-email',
     templateUrl: './verify-email.component.html',
-    styleUrls: ['./verify-email.component.css'],
+    styleUrls: ['./verify-email.component.css', '../../../assets/css/loader.css'],
     providers: [Properties, Processor]
 })
 export class VerifyEmailComponent implements OnInit {

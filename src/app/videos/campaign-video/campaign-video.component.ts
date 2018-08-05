@@ -22,7 +22,7 @@ declare var $, videojs: any;
 @Component({
     selector: 'app-public-video',
     templateUrl: './campaign-video.component.html',
-    styleUrls: ['./campaign-video.component.css'],
+    styleUrls: ['./campaign-video.component.css','../../../assets/css/loader.css'],
     providers: [XtremandLog,Processor]
 })
 export class CampaignVideoComponent implements OnInit, OnDestroy {
@@ -80,7 +80,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
     '<div class="col-xs-12 col-sm-12 col-md-12">' +
     '</div></div>';
     errorHtml:any;
-    
+
     constructor(public router: Router, public route: ActivatedRoute, public videoFileService: VideoFileService,
         public http: Http, public authenticationService: AuthenticationService, public referService: ReferenceService,
         public activatedRoute: ActivatedRoute, public xtremandLog: XtremandLog, public deviceService: Ng2DeviceService,
