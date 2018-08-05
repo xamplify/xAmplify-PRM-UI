@@ -116,7 +116,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                  <ng-container *ngFor="let item of pagination.pagedItems;let i=index" style="cursor: pointer;" (click)="goToCampaignAnalytics(item)">
+                  <ng-container *ngFor="let item of pagination.pagedItems;let i=index">
                   <tr>
                       <td><app-user-info [userInfo]="item" [isPartnerEntityInfo]="true" [isPartnerInfo]="true"></app-user-info></td>
                       <td>{{item.campaignName}}</td>
