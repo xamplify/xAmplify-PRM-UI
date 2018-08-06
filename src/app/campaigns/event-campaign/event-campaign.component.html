@@ -14,7 +14,7 @@
 		<div class="portlet-title">
 			<h4 class="pull-left m10 f-w-600 text-primary">Event Details</h4>
     </div>
-    <!-- <div class="alert alert-danger"> Please complete * required fields</div> -->
+    <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 		<div class="portlet-body clearfix">
 			<section>
 			<div class="col-xs-12 col-sm-6">
@@ -185,9 +185,10 @@
 				</div>
 				<div class="portlet light">
 					<div class="portlet-title">
-						<h4 class="pull-left f-w-600 text-primary">Select Invite Recipients</h4>
+						<h4 class="pull-left f-w-600 text-primary">Select Invite Recipients<span style="color:red">*</span></h4>
 					</div>
 					<div class="portlet-body clearfix">
+          <div class="alert-danger alert-error" *ngIf="eventCampaign.userListIds?.length === 0 && contactListsPagination.pagedItems">* Please select the contact list</div>
 					<section *ngIf="contactListsPagination.pagedItems?.length === 0">
 						<div class='alert alert-info' role='alert'>
 							<h4 class='m0'>You have not added any contact lists yet. Please add at least one list to your account</h4>

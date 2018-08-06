@@ -52,3 +52,7 @@
 	padding-top: 2em;
 	border: 1px solid rgb(243, 86, 93);
 }
+.alert-error{
+  padding: 7px;
+  font-size: 15px;
+}

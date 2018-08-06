@@ -21,6 +21,8 @@ import { Properties } from '../../common/models/properties';
 import { Reply } from '../models/campaign-reply';
 import { CampaignEmailTemplate } from '../models/campaign-email-template';
 import { EventError } from '../models/event-error';
+import { CustomResponse } from '../../common/models/custom-response';
+
 
 declare var $, flatpickr, CKEDITOR;
 
@@ -38,13 +40,14 @@ export class EventCampaignComponent implements OnInit {
   timezonesCampaignEventTime: Timezone[];
   timezones: Timezone[];
   allItems = [];
-  dataError: boolean = false;
-
+  dataError = false;
+  errorLength = 0;
+  showErrorMessage = false;
   launchOptions = ['NOW', 'SCHEDULE', 'SAVE'];
   selectedLaunchOption: string;
-
+  customResponse: CustomResponse = new CustomResponse();
   loggedInUserId: number;
-  isPartnerUserList: boolean = false;
+  isPartnerUserList = false;
   eventCampaign: EventCampaign = new EventCampaign();
   @ViewChild("myckeditor") ckeditor: any;
   ckeConfig: any;
@@ -56,9 +59,9 @@ export class EventCampaignComponent implements OnInit {
 
   teamMemberEmailIds: any[] = [];
   isFormSubmitted = false;
-  emailNotOpenedReplyDaysSum:number = 0;
-  emailOpenedReplyDaysSum:number = 0;
-  onClickScheduledDaysSum:number = 0;
+  emailNotOpenedReplyDaysSum = 0;
+  emailOpenedReplyDaysSum = 0;
+  onClickScheduledDaysSum = 0;
 
   constructor(public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
     private contactService: ContactService,
@@ -185,7 +188,6 @@ export class EventCampaignComponent implements OnInit {
   highlightRow(contactListId: number) {
     const isChecked = $('#' + contactListId).is(':checked');
     if (isChecked) {
-
       if (!this.eventCampaign.userListIds.includes(contactListId)) {
         this.eventCampaign.userListIds.push(contactListId);
       }
@@ -216,7 +218,6 @@ export class EventCampaignComponent implements OnInit {
     this.eventCampaign.user.userId = this.loggedInUserId;
     this.eventCampaign.campaignScheduleType = launchOption;
     console.log(eventCampaign);
-    let scheduleTime:any;
     if (eventCampaign.campaignScheduleType == "NOW" || eventCampaign.campaignScheduleType == "SAVE") {
       eventCampaign.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
       eventCampaign.launchTimeInString = this.campaignService.setLaunchTime();
@@ -227,6 +228,7 @@ export class EventCampaignComponent implements OnInit {
     eventCampaign.campaignEventTimes[0].timeZone = $('#timezoneIdCampaignEventTime option:selected').val();
     eventCampaign.campaignEventTimes[0].country = this.countries.find(x => x.id == eventCampaign.campaignEventTimes[0].countryId).name;
 
+    if(this.errorLength===0 && this.eventCampaign.userListIds && this.eventCampaign.message && eventCampaign.campaign && eventCampaign.campaignEventTimes[0].startTimeString && eventCampaign.campaignEventTimes[0].country!="Select Country"){
     this.campaignService.createEventCampaign(eventCampaign)
       .subscribe(
       response => {
@@ -234,14 +236,24 @@ export class EventCampaignComponent implements OnInit {
           this.router.navigate(["/home/campaigns/manage"]);
         } else {
           if (response.statusCode === 2016) {
-            this.campaignService.addErrorClassToDiv(response.data.emailErrorDivs);
-            this.campaignService.addErrorClassToDiv(response.data.websiteErrorDivs);
+            this.customResponse = new CustomResponse( 'ERROR', response.errorResponses[0].message, true );
+          }
+          else if(response.statusCode === 7000){
+            this.customResponse = new CustomResponse( 'ERROR', response.errorResponses[0].message, true );
           }
         }
       },
       error => console.log(error),
       () => console.log("Campaign Names Loaded")
       );
+    } else {
+      this.showErrorMessage = true;
+      if(eventCampaign.campaignEventTimes[0].country=="Select Country"){
+        this.customResponse = new CustomResponse( 'ERROR', 'Please select the valid country', true );
+      } else {
+      this.customResponse = new CustomResponse( 'ERROR', 'Please complete the * required fields', true );
+      }
+    }
   }
 
   listAllTeamMemberEmailIds() {
@@ -249,11 +261,11 @@ export class EventCampaignComponent implements OnInit {
       .subscribe(
       data => {
         console.log(data);
-        let self = this;
+        const self = this;
         $.each(data, function (index, value) {
           self.teamMemberEmailIds.push(data[index]);
         });
-        let teamMember = this.teamMemberEmailIds.filter((teamMember) => teamMember.id === this.loggedInUserId)[0];
+        const teamMember = this.teamMemberEmailIds.filter((teamMember) => teamMember.id === this.loggedInUserId)[0];
         this.eventCampaign.email = teamMember.emailId;
         this.eventCampaign.fromName = $.trim(teamMember.firstName + " " + teamMember.lastName);
         this.eventCampaign.hostedBy = this.eventCampaign.fromName + " [" + this.eventCampaign.email + "]";
@@ -271,7 +283,7 @@ export class EventCampaignComponent implements OnInit {
   }
 
   setFromName() {
-    let user = this.teamMemberEmailIds.filter((teamMember) => teamMember.emailId === this.eventCampaign.email)[0];
+    const user = this.teamMemberEmailIds.filter((teamMember) => teamMember.emailId === this.eventCampaign.email)[0];
     this.eventCampaign.fromName = $.trim(user.firstName + " " + user.lastName);
     this.setEmailIdAsFromName();
   }
@@ -280,7 +292,6 @@ export class EventCampaignComponent implements OnInit {
     const file: File = event.target.files[0];
     const formData: FormData = new FormData();
     formData.append('file', file, file.name);
-
     this.campaignService.uploadEventCampaignMedia(this.loggedInUserId, formData)
       .subscribe(
       data => {
@@ -299,7 +310,7 @@ export class EventCampaignComponent implements OnInit {
     this.reply = new Reply();
     let length = this.allItems.length;
     length = length + 1;
-    var id = 'reply-' + length;
+    const id = 'reply-' + length;
     this.reply.divId = id;
     this.reply.actionId = 0;
     this.reply.subject = this.referenceService.replaceMultipleSpacesWithSingleSpace(this.eventCampaign.campaign);
@@ -343,7 +354,7 @@ export class EventCampaignComponent implements OnInit {
         reply.showSelectedEmailTemplate = false;
       }
     } else {
-      let emailTemplateIds = reply.emailTemplatesPagination.pagedItems.map(function (a) { return a.id; });
+      const emailTemplateIds = reply.emailTemplatesPagination.pagedItems.map(function (a) { return a.id; });
       if (emailTemplateIds.indexOf(reply.selectedEmailTemplateIdForEdit) > -1) {
         reply.showSelectedEmailTemplate = true;
       } else {
@@ -358,12 +369,10 @@ export class EventCampaignComponent implements OnInit {
       console.log(this.eventCampaign.campaignReplies);
     }
     $('#' + divId).remove();
-    let index = divId.split('-')[1];
-    let editorName = 'editor' + index;
-    let errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
-    if (errorLength === 0) {
-      this.dataError = false;
-    }
+    const index = divId.split('-')[1];
+    const editorName = 'editor' + index;
+    this.errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
+    if (this.errorLength === 0) { this.dataError = false; }
   }
 
   spliceArray(arr: any, id: string) {
@@ -415,9 +424,9 @@ export class EventCampaignComponent implements OnInit {
   }
 
   listEmailTemplates() {
-    let emailTemplate1 = new EmailTemplate(); emailTemplate1.id = 1700; emailTemplate1.name = "event based template 1";
-    let emailTemplate2 = new EmailTemplate(); emailTemplate2.id = 1701; emailTemplate2.name = "event based template 2";
-    let emailTemplate3 = new EmailTemplate(); emailTemplate3.id = 1702; emailTemplate3.name = "event based template 3";
+    const emailTemplate1 = new EmailTemplate(); emailTemplate1.id = 1700; emailTemplate1.name = "event based template 1";
+    const emailTemplate2 = new EmailTemplate(); emailTemplate2.id = 1701; emailTemplate2.name = "event based template 2";
+    const emailTemplate3 = new EmailTemplate(); emailTemplate3.id = 1702; emailTemplate3.name = "event based template 3";
     this.emailTemplates.push(emailTemplate1);
     this.emailTemplates.push(emailTemplate2);
     this.emailTemplates.push(emailTemplate3);
@@ -430,8 +439,8 @@ export class EventCampaignComponent implements OnInit {
     this.timezones = this.referenceService.getTimeZonesByCountryId(countryId);
   }
   getRepliesData(){
-    for(var i=0;i<this.eventCampaign.campaignReplies.length;i++){
-        let reply = this.eventCampaign.campaignReplies[i];
+    for(let i=0;i<this.eventCampaign.campaignReplies.length;i++){
+        const reply = this.eventCampaign.campaignReplies[i];
         $('#'+reply.divId).removeClass('portlet light dashboard-stat2 border-error');
         this.removeStyleAttrByDivId('reply-days-'+reply.divId);
         this.removeStyleAttrByDivId('send-time-'+reply.divId);
@@ -450,8 +459,8 @@ export class EventCampaignComponent implements OnInit {
         }else{
             this.validateEmailTemplateForAddReply(reply);
         }
-        var errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
-        if(errorLength==0){
+        this.errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
+        if(this.errorLength==0){
             this.addEmailNotOpenedReplyDaysSum(reply, i);
             this.addEmailOpenedReplyDaysSum(reply, i);
         }
@@ -459,8 +468,8 @@ export class EventCampaignComponent implements OnInit {
     }
 
     addEmailNotOpenedReplyDaysSum(reply:Reply,index:number){
-      if(reply.actionId==0){
-          if(index==0){
+      if(reply.actionId===0){
+          if(index===0){
               this.emailNotOpenedReplyDaysSum = reply.replyInDays;
           }else{
               this.emailNotOpenedReplyDaysSum = reply.replyInDays+this.emailNotOpenedReplyDaysSum;
@@ -469,8 +478,8 @@ export class EventCampaignComponent implements OnInit {
       }
   }
   addEmailOpenedReplyDaysSum(reply:Reply,index:number){
-      if(reply.actionId==13){
-          if(index==0){
+      if(reply.actionId===13){
+          if(index===0){
               this.emailOpenedReplyDaysSum = reply.replyInDays;
           }else{
               this.emailOpenedReplyDaysSum = reply.replyInDays+this.emailOpenedReplyDaysSum;
@@ -480,12 +489,10 @@ export class EventCampaignComponent implements OnInit {
   }
         validateReplyInDays(reply:Reply){
           if( reply.actionId!== 22 &&  reply.actionId!== 23 && reply.replyInDays==null){
-                  this.addReplyDaysErrorDiv(reply);
-            }else if(reply.actionId==22 ||reply.actionId==23 ){
-                if(reply.replyInDays==null || reply.replyInDays==0){
-                        this.addReplyDaysErrorDiv(reply);
-              }
-            }
+                this.addReplyDaysErrorDiv(reply);
+            }else if(reply.actionId===22 ||reply.actionId===23 ){
+                if(reply.replyInDays==null || reply.replyInDays===0){ this.addReplyDaysErrorDiv(reply);}
+          }
         }
 
           addReplyDaysErrorDiv(reply:Reply){
@@ -527,11 +534,11 @@ export class EventCampaignComponent implements OnInit {
               }
           }
 
-          addReplyDivError(divId:string){
-              $('#'+divId).addClass('portlet light dashboard-stat2 border-error');
-          }
-          removeStyleAttrByDivId(divId:string){
-              $('#'+divId).removeAttr("style");
-          }
+        addReplyDivError(divId:string){
+            $('#'+divId).addClass('portlet light dashboard-stat2 border-error');
+        }
+        removeStyleAttrByDivId(divId:string){
+            $('#'+divId).removeAttr("style");
+        }
 
 }
