@@ -14,6 +14,7 @@ import { ReferenceService } from '../../core/services/reference.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { CountryNames } from '../../common/models/country-names';
 import { AuthenticationService } from '../../core/services/authentication.service';
+import { FormService } from './form';
 
 declare var $: any;
 
@@ -22,7 +23,7 @@ declare var $: any;
     templateUrl: './signup.component.html',
     styleUrls: ['./signup.component.css', '../../../assets/css/default.css', '../../../assets/css/authentication-page.css',
     '../../../assets/css/loader.css'],
-    providers: [User, CountryNames, RegularExpressions, Properties]
+    providers: [User, CountryNames, RegularExpressions, Properties, FormService]
 })
 export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
     signUpForm: FormGroup;
@@ -85,7 +86,7 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
     };
 
     constructor(private router: Router, public countryNames: CountryNames, public regularExpressions: RegularExpressions, public properties: Properties,
-        private formBuilder: FormBuilder, private signUpUser: User,public route:ActivatedRoute,
+        private formBuilder: FormBuilder, private signUpUser: User,public route:ActivatedRoute,public formService:FormService,
         private userService: UserService, public referenceService: ReferenceService,private xtremandLogger: XtremandLogger,public authenticationService:AuthenticationService) {
         if(this.router.url.includes('/v-signup')){ this.vendorSignup = true; } else { this.vendorSignup = false;}
           this.signUpForm = new FormGroup({
@@ -100,7 +101,34 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
     goToBack(){
       if(this.router.url.includes('/v-signup')) {  this.router.navigate(['/']); } else {  this.router.navigate(['/login']) }
     }
+
+    // firstNameError(){
+    //   if(!this.signUpUser.firstName && !this.signUpForm.value.firstName ) { this.formErrors.firstName = this.validationMessages.firstName.required; }
+    //   else { this.formErrors.firstName =''}
+    // }
+    // emailError(){
+    //   if(!this.signUpUser.emailId && !this.signUpForm.value.emailId) { this.formErrors.emailId = this.validationMessages.emailId.required; }
+    //   else { this.formErrors.emailId =''}
+    // }
+    // passwordError(){
+    //   if(!this.signUpUser.password && !this.signUpForm.value.password) { this.formErrors.password =this.validationMessages.password.required;  }
+    //   else { this.formErrors.password =''}
+    // }
+    // confirmValidation(){
+    //   if(!this.signUpForm.value.confirmPassword ) { this.formErrors.confirmPassword =this.validationMessages.confirmPassword.required;  }
+    // }
+    // validationAgree(){
+    //   if(!this.signUpForm.value.agree) { this.formErrors.agree = this.validationMessages.agree.required;}
+    // }
+  //  validationMessage(){
+  //    this.validationAgree();
+  //    this.confirmValidation();
+  //    this.passwordError();
+  //    this.emailError();
+  //    this.firstNameError();
+  //  }
     signUp() {
+      if (this.signUpForm.valid) {
         try{
         this.signUpUser = this.signUpForm.value;
         this.signUpUser.emailId = this.signUpUser.emailId.toLowerCase();
@@ -137,6 +165,45 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
                 () => this.xtremandLogger.log("Done")
             );
           }catch(error){ this.xtremandLogger.error('error'+error);}
+        } else {
+         // this.formErrors = this.formService.validateForm(this.signUpForm, this.formErrors, false)
+         if(!this.signUpForm.value.firstName && this.signUpForm.value.emailId && this.signUpForm.value.password && this.signUpForm.value.confirmPassword && this.signUpForm.value.agree) {
+           this.formErrors.firstName = 'First name is required.'
+          } else if(this.signUpForm.value.firstName && !this.signUpForm.value.emailId && this.signUpForm.value.password && this.signUpForm.value.confirmPassword && this.signUpForm.value.agree) {
+            this.formErrors.emailId = 'Email is required.'
+           }
+           else if(this.signUpForm.value.firstName && this.signUpForm.value.emailId && this.signUpForm.value.password && this.signUpForm.value.confirmPassword && !this.signUpForm.value.agree) {
+            this.formErrors.agree = 'You Must Agree to the Terms of Service & Privacy Policy.'
+           }
+           else if(this.signUpForm.value.firstName && this.signUpForm.value.emailId && !this.signUpForm.value.password && this.signUpForm.value.confirmPassword && this.signUpForm.value.agree) {
+            this.formErrors.password = 'Password is required.'
+           }
+           else if(this.signUpForm.value.firstName && !this.signUpForm.value.emailId && !this.signUpForm.value.password && !this.signUpForm.value.confirmPassword && !this.signUpForm.value.agree) {
+            this.formErrors.emailId = 'Email is required.'
+            this.formErrors.agree = 'You Must Agree to the Terms of Service & Privacy Policy.'
+            this.formErrors.password = 'Password is required.'
+            this.formErrors.confirmPassword = 'confirm password is required.'
+           }
+           else if(this.signUpForm.value.firstName && this.signUpForm.value.emailId && !this.signUpForm.value.password && !this.signUpForm.value.confirmPassword && !this.signUpForm.value.agree) {
+            this.formErrors.agree = 'You Must Agree to the Terms of Service & Privacy Policy.'
+            this.formErrors.password = 'Password is required.'
+            this.formErrors.confirmPassword = 'confirm password is required.'
+           }
+           else if(this.signUpForm.value.firstName && this.signUpForm.value.emailId && !this.signUpForm.value.password && !this.signUpForm.value.confirmPassword && this.signUpForm.value.agree) {
+            this.formErrors.password = 'Password is required.'
+            this.formErrors.confirmPassword = 'confirm password is required.'
+           }
+           else if(!this.signUpForm.value.firstName && !this.signUpForm.value.emailId && this.signUpForm.value.password && this.signUpForm.value.confirmPassword && !this.signUpForm.value.agree) {
+            this.formErrors.emailId = 'Password is required.';
+            this.formErrors.firstName = 'confirm password is required.';
+            this.formErrors.agree = 'You Must Agree to the Terms of Service & Privacy Policy.';
+           }
+          else {
+            this.isError =true;
+            setTimeout(()=>{ this.isError = false; },10000);
+          }
+
+        }
     }
 
     buildForm() {
@@ -201,6 +268,7 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
       this.mainLoader = false;
      }
   }
+
 
     ngOnInit() {
       try{

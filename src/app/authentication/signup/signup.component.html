@@ -13,7 +13,8 @@
       <h3 *ngIf="vendorSignup" class="text-white" style=" margin-bottom: 1.5em">Vendor Sign Up</h3>
       <h3 *ngIf="!vendorSignup" class="text-white" style=" margin-bottom: 1.5em">Sign Up</h3>
 			<div *ngIf="isError" class="alert alert-danger" (click)="toggleChild()">
-				<span>something went wrong. Please try again.</span>
+        <!-- <span>something went wrong. Please try again.</span> -->
+        <span>Please fill the details.</span>
 			</div>
 			<div class="form-group col-xs-6 p0" style="border-right: 1px solid #fff0;">
 				<label class="control-label visible-ie8 visible-ie9">First Name</label>
@@ -58,7 +59,7 @@
 			<div class="actions">
 				<button type="button" class="btn btn-default" (click)="goToBack()">
 					<i class="fa fa-arrow-left" aria-hidden="true" style="margin-right: 5px"></i>Back</button>
-				<button type="submit" id="register-submit-btn" [disabled]="!signUpForm.valid" class="btn btn-success uppercase pull-right signinTF" (click)="signUp()">Submit</button>
+				<button type="submit" id="register-submit-btn" class="btn btn-success uppercase pull-right signinTF" (click)="signUp()">Submit</button>
 			</div>
 		</form>
 	</div>
