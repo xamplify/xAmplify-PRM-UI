@@ -157,7 +157,11 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
 
     editCampaign(campaign:any) {
-        var obj = { 'campaignId': campaign.id }
+      if(campaign.campaignType.indexOf('EVENT') > -1) {
+
+       }
+      else {
+      var obj = { 'campaignId': campaign.id }
         this.campaignService.getCampaignById(obj)
             .subscribe(
                 data => {
@@ -188,7 +192,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 error => { this.logger.errorPage(error) },
                 () => console.log()
             )
-        this.isScheduledCampaignLaunched = false;
+           this.isScheduledCampaignLaunched = false;
+          }
     }
 
     confirmDeleteCampaign(id: number, position: number, name: string) {
