@@ -291,7 +291,7 @@
 			</div>
 		</div>
   </div>
-	<div class="row" *ngIf="isPartnerEnabledAnalyticsAccess">
+	<div class="row" [class.disabled]="!isPartnerEnabledAnalyticsAccess">
 		<div class="col-xs-12 col-sm-12 p-5x">
 			<div class="col-xs-12 p-5x">
           <div class="row" *ngIf="!campaignViews">

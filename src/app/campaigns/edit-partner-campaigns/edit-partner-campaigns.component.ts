@@ -183,6 +183,14 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
             }
         }
 
+    checkInteractiveData( text: any ) {
+        if ( text == "true" ) {
+            this.campaign.detailedAnalyticsShared = true;
+        } else {
+            this.campaign.detailedAnalyticsShared = false;
+        }
+    }
+    
     setCampaignData(result){
         this.campaign = result;
         if(this.campaignService.isExistingRedistributedCampaignName){
