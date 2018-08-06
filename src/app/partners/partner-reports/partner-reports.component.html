@@ -346,7 +346,7 @@
 										<th colspan="2" style="width: 50%">Campaign</th>
 										<th>Status</th>
 										<th>Created Date</th>
-										<th>Actions</th>
+										<th style="text-align:left">Actions</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -395,13 +395,13 @@
 										<td style="text-align: center">
                       <app-timestamp [isOnlyDate]="true" [dateAndTime]="campaign.createdDate"> </app-timestamp>
                     </td>
-										<td class="center">
+										<td>
+										<a data-rel="fancybox-button" (click)="goToCampaignAnalytics(campaign)" data-toggle="tooltip" data-placement="top" title="Campaign Based Reports" class='mr5'>
+												<i class="fa fa-line-chart"></i>
+										  </a>
 										 <a id="disabled-icon" class="blur" data-toggle="tooltip" data-placement="top" title="Data Sharing Disabled" *ngIf="!campaign.detailedAnalyticsShared && selectedTabIndex==2">
                         <img src="../assets/images/disabled-icon.png">
                       </a>
-										  <a data-rel="fancybox-button" (click)="goToCampaignAnalytics(campaign)" data-toggle="tooltip" data-placement="top" title="Campaign Based Reports" class='mr5'>
-												<i class="fa fa-line-chart"></i>
-										  </a>
 										</td>
 									</tr>
 								</tbody>
@@ -452,12 +452,12 @@
 												<span *ngIf="!campaign.launched && campaign.launchedOn?.length==0">Saved</span>
 											</div>
 											<div class="bar">
-											  <a id="disabled-icon" class="blur" data-toggle="tooltip" data-placement="top" title="Data Sharing Disabled" *ngIf="!campaign.detailedAnalyticsShared && selectedTabIndex==2">
-                          <img src="../assets/images/disabled-icon.png" style="margin-top: 9px;margin-left: 2px;">
-                       	</a>
 												<a (click)="goToCampaignAnalytics(campaign)" data-toggle="tooltip" data-placement="top" title="Campaign Based Reports">
 														<i class="fa fa-line-chart"></i>
 												</a>
+												<a id="disabled-icon" class="blur" data-toggle="tooltip" data-placement="top" title="Data Sharing Disabled" *ngIf="!campaign.detailedAnalyticsShared && selectedTabIndex==2">
+                          <img src="../assets/images/disabled-icon.png" style="margin-top: 9px;margin-left: 2px;">
+                       	</a>
 											</div>
 										</div>
 									</div>
