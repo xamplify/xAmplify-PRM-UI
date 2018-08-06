@@ -156,8 +156,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
 
     }
 
-    editCampaign(id: number) {
-        var obj = { 'campaignId': id }
+    editCampaign(campaign:any) {
+        var obj = { 'campaignId': campaign.id }
         this.campaignService.getCampaignById(obj)
             .subscribe(
                 data => {
@@ -173,7 +173,10 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                             this.campaignService.reDistributeCampaign = data;
                             this.campaignService.isExistingRedistributedCampaignName = true;
                             this.router.navigate(['/home/campaigns/re-distribute-campaign']);
-                        } else {
+                        } else if(campaign.campaignType == 'EVENT'){
+                          this.router.navigate(['/home/campaigns/event-edit']);
+                        }
+                        else {
                             this.refService.isEditNurtureCampaign = false;
                             this.router.navigate(["/home/campaigns/edit"]);
                         }
@@ -277,8 +280,12 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
       this.router.navigate(['/home/campaigns/'+campaign.campaignId+'/details']);
 
     }
-    showCampaignPreview(campaignId:number){
-        this.router.navigate(['/home/campaigns/preview/'+campaignId]);
+    showCampaignPreview(campaign:any){
+        if(campaign.campaignType.indexOf('EVENT')>-1){
+          this.router.navigate(['/home/campaigns/event-preview']);
+        } else {
+           this.router.navigate(['/home/campaigns/preview/'+campaign.campaignId]);
+        }
     }
 
 }

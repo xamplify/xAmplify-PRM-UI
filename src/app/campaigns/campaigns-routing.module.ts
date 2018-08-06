@@ -25,7 +25,9 @@ export const campaignRoutes: Routes = [
   { path: "vendor/:type", component: PartnerCampaignsComponent },
   { path: "re-distribute-campaign", component: EditPartnerCampaignsComponent },
   { path: "preview/:id", component: PreviewCampaignComponent },
-  { path: "event", component: EventCampaignComponent }
+  { path: "event", component: EventCampaignComponent },
+  { path: "event-preview", component: EventCampaignComponent },
+  { path: "event-edit", component: EventCampaignComponent }
 ];
 
 @NgModule({
