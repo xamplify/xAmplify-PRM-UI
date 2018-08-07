@@ -75,7 +75,7 @@ export class LoginComponent implements OnInit, OnDestroy {
                   const body = error['_body'];
                   if (body !== "") {
                       const response = JSON.parse(body);
-                      if (response.error_description === "Bad credentials" || response.error_description.includes('Username/password are wrong')) {
+                      if (response.error_description === "Bad credentials" ) {
                           this.setCustomeResponse("ERROR", this.properties.BAD_CREDENTIAL_ERROR);
                       } else if (response.error_description === "User is disabled") {
                         this.resendActiveMail = true;
@@ -83,6 +83,8 @@ export class LoginComponent implements OnInit, OnDestroy {
                      //   this.setCustomeResponse("ERROR", this.properties.USER_ACCOUNT_ACTIVATION_ERROR);
                       }else if(response.error_description ==="UserDetailsService returned null, which is an interface contract violation"){
                         this.setCustomeResponse("ERROR", this.properties.BAD_CREDENTIAL_ERROR);
+                      }else if (response.error_description === "The email address that you've entered doesn't match any account. Sign up for an account." ){
+                    	  this.setCustomeResponse("ERROR", this.properties.USER_ACCOUNT_DOESNOT_EXIST );
                       }
                   }
                   else {

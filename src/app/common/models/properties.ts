@@ -76,6 +76,7 @@ export class Properties {
     ACCOUNT_DEACTIVATE_SUCCESS = "OrgAdmin deactivation successfully done.";
 
     BAD_CREDENTIAL_ERROR = "Username or password is incorrect.";
+    USER_ACCOUNT_DOESNOT_EXIST = "The email address that you've entered doesn't match any account. Sign for an account.";
     USER_ACCOUNT_ACTIVATION_ERROR = "Your account has not been activated. Please check your inbox for our activation email.";
     EMPTY_CREDENTIAL_ERROR = "Username or password can't be empty.";
     RESEND_ACTIVATION_MAIL = 'Please check your inbox	for	our	account activation email.'
