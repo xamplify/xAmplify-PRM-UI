@@ -247,11 +247,11 @@
                             <span style="color:blue">Note: Max image size 10 MB</span><br/>
                           <span style="color:red">*Please upload your thumbnail.</span>
 												</p>
-												   <div *ngIf="imageUrlPath" class="img-wrap img-responsive img-thumbnail rounded-0" style="margin: 0px -4px;">
+												   <div *ngIf="imageUrlPath" class="thumbnail-wrapper img-wrap img-responsive img-thumbnail rounded-0" style="margin: 0px -4px;">
 														<span (click)="uploader.clearQueue();clearOwnThumbnail()">
 															<i class="fa fa-times-circle"></i>
 														</span>
-														<img [src]="imageUrlPath" style="height: 71px; width: auto;">
+														<img [src]="imageUrlPath">
 													</div>
 											</div>
 										</div>
@@ -380,9 +380,9 @@
 													  <input type="file" ng2FileSelect [uploader]="videoLogoUploader" accept=".jpg,.jpeg,.png" class="btn btn-primary"
 													   style="background: #00a6e8;width: 100%;" title=" " (change)="isFileCheck($event)">
                            </span>
-													<div *ngIf="brandLogoUrl" class="img-wrap img-responsive img-thumbnail rounded-0">
+													<div *ngIf="brandLogoUrl" class="thumbnail-wrapper img-wrap img-responsive img-thumbnail rounded-0">
 														<span (click)="clearLogo()"><i class="fa fa-times-circle"></i> </span>
-														<img [src]="authenticationService.MEDIA_URL + brandLogoUrl" style="height: 71px; width: auto;" (error)="errorHandler($event)">
+														<img [src]="authenticationService.MEDIA_URL + brandLogoUrl"  (error)="errorHandler($event)">
                           </div>
 													<div *ngIf="!brandLogoUrl" style="height: 11px;">
                               <span style="color:red">Please upload the video logo</span>
@@ -401,8 +401,8 @@
 											<div  [hidden]="!enableVideoLogo" *ngIf="disablePlayerSettingnew && brandLogoUrl" class="form-group" [class.disabledCss]="enableVideoLogo">
 												<label class="col-xs-5 control-label">Video Logo:</label>
 												<div class="col-xs-7">
-													<div *ngIf="brandLogoUrl" class="img-wrap img-responsive img-thumbnail rounded-0">
-														<img [src]="authenticationService.MEDIA_URL + brandLogoUrl" style="height: 71px; width: auto;opacity: 0.5;">
+													<div *ngIf="brandLogoUrl" class="thumbnail-wrapper img-wrap img-responsive img-thumbnail rounded-0">
+														<img [src]="authenticationService.MEDIA_URL + brandLogoUrl" style="opacity: 0.5;">
 													</div>
 												</div>
 											</div>
