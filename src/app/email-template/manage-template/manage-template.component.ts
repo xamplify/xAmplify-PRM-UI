@@ -48,12 +48,12 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
 
     sortByDropDown = [
         { 'name': 'Sort By', 'value': '' },
-        { 'name': 'Name(A-Z)', 'value': 'name-ASC' },
-        { 'name': 'Name(Z-A)', 'value': 'name-DESC' },
-        { 'name': 'Company Name(A-Z)', 'value': 'company-ASC' },
-        { 'name': 'Company Name(Z-A)', 'value': 'company-DESC' },
-        { 'name': 'Created Date(ASC)', 'value': 'createdTime-ASC' },
-        { 'name': 'Created Date(DESC)', 'value': 'createdTime-DESC' }
+        { 'name': 'Name (A-Z)', 'value': 'name-ASC' },
+        { 'name': 'Name (Z-A)', 'value': 'name-DESC' },
+        { 'name': 'Company Name (A-Z)', 'value': 'company-ASC' },
+        { 'name': 'Company Name (Z-A)', 'value': 'company-DESC' },
+        { 'name': 'Created Date (ASC)', 'value': 'createdTime-ASC' },
+        { 'name': 'Created Date (DESC)', 'value': 'createdTime-DESC' }
     ];
 
     numberOfItemsPerPage = [

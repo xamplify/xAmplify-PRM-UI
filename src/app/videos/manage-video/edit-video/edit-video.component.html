@@ -355,7 +355,7 @@
 													<div class="col-xs-2 col-sm-3 col-md-3" style="padding:0%;">{{valueRange}}</div>
 												</div>
 											</div>
-											<!-- cobra eding video logo -->
+											<!-- co branding video logo -->
 											<div class="form-group">
 													<label class="col-xs-5 col-sm-5 col-md-5 control-label" style="margin-top:-5px">Enable Video Logo & Url:</label>
 													<div class="col-xs-7 col-sm-7 col-md-7">
@@ -368,6 +368,14 @@
 												<div [hidden]="!enableVideoLogo" id="fileLogoSelectedid" *ngIf="!disablePlayerSettingnew" class="form-group" [class.disabledCss]="!enableVideoLogo">
 												<label class="col-xs-5 control-label">Video Logo:<font *ngIf="!brandLogoUrl" style="color: red"><b>*</b></font></label>
 												<div class="col-xs-7">
+                            <!-- <input type="file" *ngIf="!brandLogoUrl" (change)="fileChangeEvent($event)" />
+                            <image-cropper *ngIf="!brandLogoUrl" [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true"
+                            [aspectRatio]="4 / 3"  [resizeToWidth]="128"  format="png"
+                            (imageCroppedFile)="imageCroppedBase64($event)"
+                            (imageLoaded)="imageLoaded()"
+                            (loadImageFailed)="loadImageFailed()"></image-cropper>
+                           <img  [src]="croppedImage" />
+                           <button *ngIf="!brandLogoUrl" class="btn btn-primary" (click)="saveThumbnail()">submit</button> -->
 													 <span class="btn btn-css btn-file" *ngIf="!brandLogoUrl">Choose Logo
 													  <input type="file" ng2FileSelect [uploader]="videoLogoUploader" accept=".jpg,.jpeg,.png" class="btn btn-primary"
 													   style="background: #00a6e8;width: 100%;" title=" " (change)="isFileCheck($event)">

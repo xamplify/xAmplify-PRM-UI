@@ -38,10 +38,10 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         public totalRecords: number = 1;
         public searchKey: string = "";
     sortByDropDown = [
-        { 'name': 'Name(A-Z)', 'value': 'campaign-ASC' },
-        { 'name': 'Name(Z-A)', 'value': 'campaign-DESC' },
-        { 'name': 'Created Date(ASC)', 'value': 'createdTime-ASC' },
-        { 'name': 'Created Date(DESC)', 'value': 'createdTime-DESC' }
+        { 'name': 'Name (A-Z)', 'value': 'campaign-ASC' },
+        { 'name': 'Name (Z-A)', 'value': 'campaign-DESC' },
+        { 'name': 'Created Date (ASC)', 'value': 'createdTime-ASC' },
+        { 'name': 'Created Date (DESC)', 'value': 'createdTime-DESC' }
     ];
 
     numberOfItemsPerPage = [
