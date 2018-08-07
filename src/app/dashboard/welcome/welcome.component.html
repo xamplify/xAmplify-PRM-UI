@@ -48,27 +48,25 @@ cursor: not-allowed;
 		<div class="col-xs-12">
 
 
-		<div class="flex" *ngIf="authenticationService.isVendor()">
+		<div class="flex" *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdmin()">
 		<div class="col-sm-6 col-xs-12 block image-block">
 					<img src="https://wistia.com/assets/product/video-seo/VideoSEO_2-2fc96034647ff7b9ecc5e0be9bac526f.png" style="max-width: 100%">
 				</div>
 				<div class="col-sm-6 col-xs-12 block">
 					<div class="text-block">
-            <h1 style="color: #00B3B3" *ngIf="authenticationService.isVendor()">Partners</h1>
+            <h1 style="color: #00B3B3" >Partners</h1>
 						<p>{{welcome_text.contacts}}</p>
 						<div>
               <!-- [class.disabled]="!hasContactRole || !authenticationService.user.hasCompany ? true : null" -->
-              <button class="btn btn-xs color2"  *ngIf="authenticationService.isVendor()" [routerLink]="['/home/partners/add']" >add partners</button>
+              <button class="btn btn-xs color2 " [routerLink]="['/home/partners/add']" >add partners</button>
 							<button type="button" class="btn btn-xs color2-invert" data-toggle="modal" [disabled]="true" data-target="#myModal">Tell me how</button>
 						</div>
 					</div>
 				</div>
-
 			</div>
 
-
 			<div class="flex" *ngIf="!authenticationService.isOnlyPartner()">
-			<div class="col-sm-6 col-xs-12 block" *ngIf="authenticationService.isVendor()">
+			<div class="col-sm-6 col-xs-12 block" *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdmin()">
 					<div class="text-block">
 						<h1 style="color: #76c9ff">Videos</h1>
 						<p>{{welcome_text.videos}}</p>
@@ -122,7 +120,7 @@ cursor: not-allowed;
 					</div>
 				</div>
 
-				<div class="col-sm-6 col-xs-12 block" *ngIf="!authenticationService.isVendor()">
+				<div class="col-sm-6 col-xs-12 block" *ngIf="!authenticationService.isVendor() && !authenticationService.isOrgAdmin()">
 					<div class="text-block">
 						<h1 style="color: #76c9ff">Videos</h1>
 						<p>{{welcome_text.videos}}</p>
@@ -135,14 +133,14 @@ cursor: not-allowed;
 				</div>
 
 			</div>
-			<div class="flex">
+			<div class="flex" *ngIf="!authenticationService.isVendor() && !authenticationService.isOrgAdmin()">
 				<div class="col-sm-6 col-xs-12 block">
 					<div class="text-block">
-            <h1 style="color: #00B3B3" *ngIf="!authenticationService.isVendor()">contacts</h1>
+            <h1 style="color: #00B3B3" >contacts</h1>
 						<p>{{welcome_text.contacts}}</p>
 						<div>
               <!-- [class.disabled]="!hasContactRole || !authenticationService.user.hasCompany ? true : null" -->
-              <button class="btn btn-xs color2"  *ngIf="!authenticationService.isVendor()" [routerLink]="['/home/contacts/add']" >Add contacts</button>
+              <button class="btn btn-xs color2" [routerLink]="['/home/contacts/add']" >Add contacts</button>
 							<button type="button" class="btn btn-xs color2-invert" data-toggle="modal" [disabled]="true" data-target="#myModal">Tell me how</button>
 						</div>
 					</div>
@@ -150,7 +148,8 @@ cursor: not-allowed;
 				<div class="col-sm-6 col-xs-12 block image-block">
 					<img src="https://wistia.com/assets/product/video-seo/VideoSEO_2-2fc96034647ff7b9ecc5e0be9bac526f.png" style="max-width: 100%">
 				</div>
-			</div>
+      </div>
+
 			<div class="flex" *ngIf="!authenticationService.isOnlyPartner()">
 			<div class="col-sm-6 col-xs-12 block image-block">
 					<img src="https://wistia.com/assets/main/welcome/Marketing-bf8195807e780b9926a5dc125d763a62.svg">

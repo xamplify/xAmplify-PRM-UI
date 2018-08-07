@@ -188,43 +188,43 @@
 											</h5>
 										</td>
 										<td>
-<div class="pull-right">
-<div class="dropdown">
-	<i class="fa fa-ellipsis-v dropdown-toggle" data-toggle="dropdown"></i>
-	<ul class="dropdown-menu pull-right">
-		<ng-container *ngIf="!campaign.launched">
-				<li>
-					<a *ngIf="hasAllAccess || (campaign.launched==false&&hasCampaignRole && loggedInUserId==campaign.userId)
-						|| (!campaign.launched&&isOnlyPartner)  || authenticationService.module.isVendor" (click)="editCampaign(campaign.campaignId)"
-						data-toggle="tooltip" data-placement="top" title="{{actionsDescription.campaign_edit}}" class='mr5'>
-						<i class="fa fa-pencil-square-o"></i> Edit Campaign
-					</a>
-				</li>
-		</ng-container>
-		<ng-container *ngIf="campaign.launched">
-			<li>
-				<a *ngIf="  hasAllAccess || (hasStatsRole || hasCampaignRole) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor"
-					data-rel="fancybox-button" (click)="campaginRouter(campaign)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.campaign_report}}"
-					class='mr5'>
-					<i class="fa fa-line-chart"></i> Campaign Analytics
-				</a>
-			</li>
-			<li>
-				<a *ngIf=" (campaign.campaignType !== 'SOCIAL') && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor) && !campaign.nurtureCampaign"
-					data-rel="fancybox-button" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.campaign_copy}}" class='mr5' (click)="openSaveAsModal(campaign.campaignId, campaign.campaignName)">
-					<i class="fa fa-files-o"></i> Copy campaign
-				</a>
-			</li>
-		</ng-container>
-		<li>
-			<a *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor"
-				(click)="confirmDeleteCampaign(campaign.campaignId, i, campaign.campaignName)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.campaign_delete}}" data-rel="fancybox-button">
-				<i class="fa fa-trash"></i> Delete Campaign
-			</a>
-		</li>
-	</ul>
-</div>
-</div>
+                        <div class="pull-right">
+                        <div class="dropdown">
+                          <i class="fa fa-ellipsis-v dropdown-toggle" data-toggle="dropdown"></i>
+                          <ul class="dropdown-menu pull-right">
+                            <ng-container *ngIf="!campaign.launched">
+                                <li>
+                                  <a *ngIf="hasAllAccess || (campaign.launched==false&&hasCampaignRole && loggedInUserId==campaign.userId)
+                                    || (!campaign.launched&&isOnlyPartner)  || authenticationService.module.isVendor" (click)="editCampaign(campaign.campaignId)"
+                                    data-toggle="tooltip" data-placement="top" title="{{actionsDescription.campaign_edit}}" class='mr5'>
+                                    <i class="fa fa-pencil-square-o"></i> Edit Campaign
+                                  </a>
+                                </li>
+                            </ng-container>
+                            <ng-container *ngIf="campaign.launched">
+                              <li>
+                                <a *ngIf="  hasAllAccess || (hasStatsRole || hasCampaignRole) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor"
+                                  data-rel="fancybox-button" (click)="campaginRouter(campaign)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.campaign_report}}"
+                                  class='mr5'>
+                                  <i class="fa fa-line-chart"></i> Campaign Analytics
+                                </a>
+                              </li>
+                              <li>
+                                <a *ngIf=" (campaign.campaignType !== 'SOCIAL') && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor) && !campaign.nurtureCampaign"
+                                  data-rel="fancybox-button" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.campaign_copy}}" class='mr5' (click)="openSaveAsModal(campaign.campaignId, campaign.campaignName)">
+                                  <i class="fa fa-files-o"></i> Copy campaign
+                                </a>
+                              </li>
+                            </ng-container>
+                            <li>
+                              <a *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor"
+                                (click)="confirmDeleteCampaign(campaign.campaignId, i, campaign.campaignName)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.campaign_delete}}" data-rel="fancybox-button">
+                                <i class="fa fa-trash"></i> Delete Campaign
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                        </div>
 										</td>
 									</tr>
 								</tbody>
@@ -232,7 +232,7 @@
 						</div>
 					</section>
 					<div *ngIf="totalRecords <= 0 && isListView" class="alert alert-info">
-						<strong>No Campaigns Found</strong>
+						<strong>No campaigns found</strong>
 					</div>
 					<div class="tab-pane active" *ngIf="!isListView">
 						<div class="margin-top-10">
@@ -286,13 +286,13 @@
 													</a>
 												</ng-container>
 												<ng-container *ngIf="campaign.launched">
-												
+
 												<a *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) ||
 														 (loggedInUserId==campaign.userId) || authenticationService.module.isVendor) && campaign.redistributedCount>0"
                          								 (click)="goToRedistributedCampaigns(campaign)" data-toggle="tooltip" data-placement="top" title="Show Redistributed Campaigns">
 														<i style="color: white">{{campaign.redistributedCount}}</i>
 													</a>
-													
+
 													<a *ngIf="  hasAllAccess || (hasStatsRole || hasCampaignRole ) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor"
                          								 (click)="campaginRouter(campaign)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.campaign_report}}">
 														<i class="fa fa-line-chart"></i>
@@ -320,7 +320,7 @@
 						</div>
 						<!-- End of 24 -->
 						<div *ngIf="totalRecords <= 0 && !isListView" class="alert alert-info">
-							<strong>No Campaigns Found</strong>
+							<strong>No campaigns found</strong>
 						</div>
 					</div>
 					<div *ngIf="totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError" style="background:white">
