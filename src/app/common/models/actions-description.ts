@@ -1,7 +1,7 @@
 export class ActionsDescription {
 
    /* FOR CONTACTS*/
-    contact_list_edit = 'Edit List';
+    contact_list_edit = 'Preview / Edit List';
     contact_list_delete = 'Delete List';
     contact_list_saveAs = 'Copy And Save As A New List';
     contact_list_synchronize = 'Synchronize List';
