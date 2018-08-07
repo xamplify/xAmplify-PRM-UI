@@ -34,7 +34,20 @@
         </span>
 			</a>
 		</div>
-
+    <div *ngIf="!authenticationService.isOnlyPartner()" [ngClass]="{'col-lg-3 col-md-3 col-sm-6 col-xs-12':(authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner() ||  authenticationService.isOnlyPartner()), 'col-lg-4 col-md-4 col-sm-4 col-xs-6':!(authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner())}">
+			<a class="dashboard-stat dashboard-stat-lighter blue-soft" [routerLink]="['../../emailtemplates']" >
+				<div class="visual">
+            <i class="fa fa-envelope"></i>
+				</div>
+				<div class="details">
+					<div class="number">{{dashboardReport.toalEmailTemplates}}</div>
+					<div class="desc">Total Email Templates</div>
+        </div>
+        <span id="permhref" class="morePadding">
+          <a class="more"> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
+        </span>
+			</a>
+    </div>
 		<div [ngClass]="{'col-lg-3 col-md-3 col-sm-6 col-xs-12':(authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner() || authenticationService.isOnlyPartner()), 'col-lg-4 col-md-4 col-sm-4 col-xs-6':!(authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner())}">
 			<a class="dashboard-stat dashboard-stat-lighter purple-soft" (click)="navigateToManageContacts()" [class.disabled]="  !authenticationService.user.hasCompany ? true : null">
 				<div class="visual">
@@ -58,20 +71,7 @@
         </span>
 			</a>
     </div>
-		<div *ngIf="!authenticationService.isOnlyPartner()" [ngClass]="{'col-lg-3 col-md-3 col-sm-6 col-xs-12':(authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner() ||  authenticationService.isOnlyPartner()), 'col-lg-4 col-md-4 col-sm-4 col-xs-6':!(authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner())}">
-			<a class="dashboard-stat dashboard-stat-lighter blue-soft" [routerLink]="['../../emailtemplates']" >
-				<div class="visual">
-            <i class="fa fa-envelope"></i>
-				</div>
-				<div class="details">
-					<div class="number">{{dashboardReport.toalEmailTemplates}}</div>
-					<div class="desc">Total Email Templates</div>
-        </div>
-        <span id="permhref" class="morePadding">
-          <a class="more"> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
-        </span>
-			</a>
-    </div>
+
   <!-- working this -->
     <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" *ngIf="authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner()">
         <a class="dashboard-stat dashboard-stat-lighter blue-soft" [routerLink]="['/home/team/add-team']">

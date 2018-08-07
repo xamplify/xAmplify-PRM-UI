@@ -26,12 +26,12 @@ export class ActionsDescription {
    /* FOR EMAIL TEMPLATES*/
     template_edit = 'Edit Template';
     template_delete = 'Delete Template';
-    template_preview = 'Preview Template';
+    template_preview = 'View Template';
 
    /* FOR CAMPAIGNS*/
     campaign_edit = 'Edit Campaign';
     campaign_delete = 'Delete Campaign';
-    campaign_preview = 'Preview Campaign';
+    campaign_preview = 'View Campaign';
     campaign_report = 'Campaign Based Reports';
     campaign_copy = 'Copy Campaign';
 
