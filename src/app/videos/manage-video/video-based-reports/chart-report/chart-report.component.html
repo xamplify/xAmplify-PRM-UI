@@ -33,7 +33,7 @@
 							<th class="headerCss center" style="width: 50%;">TITLE</th>
 							<th class="headerCss center">VIEWS</th>
 							<th class="headerCss center uppercase">
-                  <span *ngIf="!daySort?.name">date</span>
+                  <!-- <span *ngIf="!daySort?.name">date</span> -->
                   <span *ngIf="daySort?.name==='Current Month'">date</span>
                   <span *ngIf="daySort?.name==='By Month'">Month</span>
                   <span *ngIf="daySort?.name==='By Quarter'">QUARTER</span>
@@ -49,10 +49,13 @@
               </td>
 							<td class="center">{{views}}</td>
 							<td class="center" >
-							<span *ngIf="daySort?.name!=='Current Month'">{{date}}</span>
-							<span *ngIf="daySort?.name==='Current Month'">
-							<app-timestamp [isOnlyDate]="true" [dateAndTime]="date"> </app-timestamp>
-							</span>
+                  <span *ngIf="daySort?.name==='Current Month'">
+                      {{date}}
+                      <!-- <app-timestamp [isOnlyDate]="true" [dateAndTime]="date"> </app-timestamp> -->
+                  </span>
+                  <span *ngIf="daySort?.name==='By Month'">{{date}} </span>
+                  <span *ngIf="daySort?.name==='By Quarter'">{{date}} </span>
+                  <span *ngIf="daySort?.name==='By Year'">{{date}} </span>
 							</td>
 						</tr>
 					</tbody>
@@ -105,10 +108,11 @@
 							<td class="center" >
 							<span *ngIf="daySort?.name!=='Current Month'">{{videoViews.date}}</span>
 							<span *ngIf="daySort?.name==='Current Month'">
-							<app-timestamp [isOnlyDate]="true" [dateAndTime]="videoViews.date"> </app-timestamp>
+                  {{videoViews.date}}
+							<!-- <app-timestamp [isOnlyDate]="true" [dateAndTime]="videoViews.date"> </app-timestamp> -->
 							</span>
 							</td>
-							
+
 							<td class="center">
 							<app-platform [userPlatform]="videoViews"> </app-platform>
 							</td>
