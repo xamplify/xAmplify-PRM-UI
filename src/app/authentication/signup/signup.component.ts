@@ -139,44 +139,16 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
             );
           }catch(error){ this.xtremandLogger.error('error'+error);}
         } else {
-         if(!this.signUpForm.value.firstName && this.signUpForm.value.emailId && this.signUpForm.value.password && this.signUpForm.value.confirmPassword && this.signUpForm.value.agree) {
-           this.formErrors.firstName = 'First name is required.'
-          } else if(this.signUpForm.value.firstName && !this.signUpForm.value.emailId && this.signUpForm.value.password && this.signUpForm.value.confirmPassword && this.signUpForm.value.agree) {
-            this.formErrors.emailId = 'Email is required.'
-           }
-           else if(this.signUpForm.value.firstName && this.signUpForm.value.emailId && this.signUpForm.value.password && this.signUpForm.value.confirmPassword && !this.signUpForm.value.agree) {
-            this.formErrors.agree = 'You Must Agree to the Terms of Service & Privacy Policy.'
-           }
-           else if(this.signUpForm.value.firstName && this.signUpForm.value.emailId && !this.signUpForm.value.password && this.signUpForm.value.confirmPassword && this.signUpForm.value.agree) {
-            this.formErrors.password = 'Password is required.'
-           }
-           else if(this.signUpForm.value.firstName && !this.signUpForm.value.emailId && !this.signUpForm.value.password && !this.signUpForm.value.confirmPassword && !this.signUpForm.value.agree) {
-            this.formErrors.emailId = 'Email is required.'
-            this.formErrors.agree = 'You Must Agree to the Terms of Service & Privacy Policy.'
-            this.formErrors.password = 'Password is required.'
-            this.formErrors.confirmPassword = 'confirm password is required.'
-           }
-           else if(this.signUpForm.value.firstName && this.signUpForm.value.emailId && !this.signUpForm.value.password && !this.signUpForm.value.confirmPassword && !this.signUpForm.value.agree) {
-            this.formErrors.agree = 'You Must Agree to the Terms of Service & Privacy Policy.'
-            this.formErrors.password = 'Password is required.'
-            this.formErrors.confirmPassword = 'confirm password is required.'
-           }
-           else if(this.signUpForm.value.firstName && this.signUpForm.value.emailId && !this.signUpForm.value.password && !this.signUpForm.value.confirmPassword && this.signUpForm.value.agree) {
-            this.formErrors.password = 'Password is required.'
-            this.formErrors.confirmPassword = 'confirm password is required.'
-           }
-           else if(!this.signUpForm.value.firstName && !this.signUpForm.value.emailId && this.signUpForm.value.password && this.signUpForm.value.confirmPassword && !this.signUpForm.value.agree) {
-            this.formErrors.emailId = 'Password is required.';
-            this.formErrors.firstName = 'confirm password is required.';
-            this.formErrors.agree = 'You Must Agree to the Terms of Service & Privacy Policy.';
-           }
-          else {
-            this.isError =true;
-            setTimeout(()=>{ this.isError = false; },10000);
-          }
+          this.checkValidationMessages()
         }
     }
-
+    checkValidationMessages(){
+      if(!this.signUpForm.value.firstName) {this.formErrors.firstName = this.validationMessages.firstName.required; }
+      if(!this.signUpForm.value.emailId) {this.formErrors.emailId = this.validationMessages.emailId.required; }
+      if(!this.signUpForm.value.password) { this.formErrors.password = this.validationMessages.password.required; }
+      if(!this.signUpForm.value.confirmPassword) { this.formErrors.confirmPassword =this.validationMessages.confirmPassword.required; }
+      if(!this.signUpForm.value.agree) { this.formErrors.agree = this.validationMessages.agree.required; }
+    }
     buildForm() {
         this.signUpForm = this.formBuilder.group({
             'emailId': [this.signUpUser.emailId, [Validators.required, Validators.pattern(this.regularExpressions.EMAIL_ID_PATTERN)]],
@@ -239,8 +211,6 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
       this.mainLoader = false;
      }
   }
-
-
     ngOnInit() {
       try{
         this.mainLoader = true;
