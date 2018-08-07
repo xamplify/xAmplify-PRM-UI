@@ -137,7 +137,9 @@
 							<tbody>
 							<ng-container *ngFor="let teamMember of teamMembers;let i=index">
 							<tr id="team-member-{{i}}">
-								<td><i class="fa fa-user" aria-hidden="true"></i>{{teamMember.emailId | lowercase}}</td>
+								<!-- <td><i class="fa fa-user" aria-hidden="true"></i>{{teamMember.emailId | lowercase}}</td> -->
+								<td><app-user-info [isPartnerEntityInfo]="true" [userInfo]="teamMember">
+								</app-user-info></td>
 								<ng-container *ngIf="!authenticationService.module.isVendor">
 									<td *ngIf="teamMember.all">
 										<switch [status]="teamMember.orgAdmin" [onText]="callActionSwitch.onTextValue"
@@ -249,9 +251,11 @@
 							<tbody>
 							<ng-container *ngFor="let teamMember of teamMembersList;let i=index">
 							<tr id="list-team-member-{{i}}">
-								<td>
+								<!-- <td>
 									<i class="fa fa-user" aria-hidden="true"></i>{{teamMember.emailId | lowercase}}
-								</td>
+								</td> -->
+								<td><app-user-info [isPartnerEntityInfo]="true" [userInfo]="teamMember">
+								</app-user-info></td>
 								<ng-container *ngIf="!authenticationService.module.isVendor">
 									<td *ngIf="teamMember.all">
 										<switch *ngIf="teamMember.status!='UNAPPROVED'"  [status]="teamMember.orgAdmin" [onText]="callActionSwitch.onTextValue"
