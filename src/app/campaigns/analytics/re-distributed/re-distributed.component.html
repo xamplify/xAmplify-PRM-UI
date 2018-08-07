@@ -48,18 +48,19 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let item of pagination.pagedItems" style="cursor: pointer;" (click)="goToCampaignAnalytics(item)">
+                    <tr *ngFor="let item of pagination.pagedItems" style="cursor: pointer;">
                       <td><app-user-info [userInfo]="item" [isPartnerEntityInfo]="true" [isPartnerInfo]="true"></app-user-info></td>
                       <td>{{item.campaignName}}</td>
                        <td>
                           <app-timestamp [isOnlyDate]="false" [dateAndTime]="item.redistributedOn"> </app-timestamp>
                        </td>
                       <td>
-                       <div class="actions-block" style="float: none;">
-                        <a  (click)="goToCampaignAnalytics(item)" data-toggle="tooltip" data-placement="top" title="Analytics">
-                          <i class="fa fa-line-chart"></i>
-                        </a>
-                       </div>
+                       <a data-rel="fancybox-button" (click)="goToCampaignAnalytics(item)" data-toggle="tooltip" data-placement="top" title="Campaign Based Reports" class='mr5'>
+							<i class="fa fa-line-chart"></i>
+						</a>
+						 <a id="disabled-icon" class="blur" data-toggle="tooltip" data-placement="top" title="Data Sharing Disabled" *ngIf="!item.dataSharingEnabled">
+                        	<img src="../assets/images/disabled-icon.png">
+                     	</a>
                       </td>
                     </tr>
                   </tbody>
