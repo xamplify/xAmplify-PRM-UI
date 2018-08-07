@@ -58,4 +58,6 @@ export class ReDistributedComponent implements OnInit {
   goToCampaignAnalytics(campaign){
       this.router.navigate(["/home/campaigns/"+campaign.campaignId+"/details"]);
   }
+  
+  partnerCampaignUISearch(keyCode: any) {  if (keyCode === 13) {  this.searchInListRedistributedThroughPartnerCampaign(); } }
 }

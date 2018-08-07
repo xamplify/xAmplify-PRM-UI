@@ -27,7 +27,8 @@
              	<div class="inputs" align="right" style="float: right">
             	<div class="portlet-input input-inline input-small">
               <div class="input-icon right" style="position: relative;margin: -12px 0 0 0;">
-                <input type="text" style="height:34px;" class="form-control" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="partnerCampaignUISearch($event.keyCode)">
+                <input type="text" style="height:34px;" class="form-control" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." 
+                		(keypress)="partnerCampaignUISearch($event.keyCode)">
                 <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey=''"></button>
                 <button type="submit" class="search-box-item-click" (click)="searchInListRedistributedThroughPartnerCampaign()"><i class="fa fa-search"></i></button>
               </div>
@@ -42,7 +43,7 @@
                     <!-- <th>partner Company Name</th> -->
                     <th style="float: left;margin-left: 70px;">Partners</th>
                     <th class="center-aligned">Campaign Name</th>
-                     <th class="center-aligned">Redistributed Time</th>
+                     <th class="center-aligned">Redistributed On</th>
                     <th class="center">Analytics</th>
                     </tr>
                   </thead>

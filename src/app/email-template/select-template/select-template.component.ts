@@ -269,11 +269,11 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
                },
                () => this.logger.info("Got Email Template")
            );
-       }else if(index==24 || index==1){
+       }else if(index==14 || index==1){
            //This is normal template
            this.emailTemplateService.isRegularUpload = true;
            this.router.navigate(["/home/emailtemplates/upload"]);
-       }else if(index==23 || index==0){
+       }else if(index==13 || index==0){
            //This is video template
            this.emailTemplateService.isRegularUpload = false;
            this.router.navigate(["/home/emailtemplates/upload"]);

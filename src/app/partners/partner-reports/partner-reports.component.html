@@ -111,8 +111,8 @@
                     <!-- <th>partner Company Name</th> -->
                     <th style="float: left;margin-left: 70px;">Vendors</th>
                     <th class="center-aligned">Campaign Name</th>
-                     <th class="center-aligned">Redistributed Time</th>
-                    <th class="center">Count</th>
+                     <th class="center-aligned">Launched On</th>
+                    <th class="center">#Redistributed</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -123,8 +123,9 @@
                        <td>
                           <app-timestamp [isOnlyDate]="false" [dateAndTime]="item.redistributedOn"> </app-timestamp>
                        </td>
-                        <td>{{item.redistributedCampaignsCount}}
-                          <div style="text-align: center;position: relative;" class="actions-block" *ngIf="item.redistributedCampaignsCount> 0">
+                        <td style="text-align: right;">{{item.redistributedCampaignsCount}}
+                          <div class="actions-block" style="text-align: center;position: relative;margin-right: 90px;margin-top: -7px;padding: 0px 5px;"
+                          		 *ngIf="item.redistributedCampaignsCount> 0">
                           <a title="View Redistributed Campaings" (click)="showRedistributedCampaings(item)">
                             <i class="fa" [ngClass]="{'fa-plus': !item.expand, 'fa-minus': item.expand}"></i>
                           </a>
@@ -138,7 +139,8 @@
                       <tr>
                         <th style="float: left;margin-left: 70px;">Partners</th>
                     	<th class="center-aligned">Campaign Name</th>
-                     	<th class="center-aligned">Launched On</th>
+                     	<th class="center-aligned">Redistributed On</th>
+                     	<th class="center-aligned">Analytics</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -147,6 +149,13 @@
                       <td>{{redistributedCampaign.campaignName}}</td>
                        <td>
                           <app-timestamp [isOnlyDate]="false" [dateAndTime]="redistributedCampaign.redistributedOn"> </app-timestamp>
+                       </td>
+                        <td>
+                       	 <div class="actions-block" style="float: none;">
+                        <a  (click)="referenseService.goToCampaignAnalytics(redistributedCampaign)" data-toggle="tooltip" data-placement="top" title="Analytics">
+                          <i class="fa fa-line-chart"></i>
+                        </a>
+                       </div>
                        </td>
                     </tr> 
                     </tbody>

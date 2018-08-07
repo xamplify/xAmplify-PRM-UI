@@ -1601,4 +1601,7 @@ export class ReferenceService {
     }
 
 
+     goToCampaignAnalytics(campaign){
+         this.router.navigate(["/home/campaigns/"+campaign.campaignId+"/details"]);
+     }
 }
