@@ -18,10 +18,10 @@
 		<li *ngIf="campaignRouter==='managecampaigns'"><a  [routerLink]="['/home/campaigns/manage']">Manage Campaigns</a><i class="fa fa-angle-right"></i></li>
     <li *ngIf="campaignRouter==='notification'"><a [routerLink]="['/home/dashboard/notifications']">Notifications</a><i class="fa fa-angle-right"></i></li>
     <li *ngIf="campaignRouter==='partnerAnalytics'"><a [routerLink]="['/home/partners/analytics']">Partner Analytics</a><i class="fa fa-angle-right"></i></li>
-    <li style="color: #888;" *ngIf="isPartnerEnabledAnalyticsAccess" title="{{campaign.campaignName}}">
+    <li style="color: #888;" *ngIf="isDataShare" title="{{campaign.campaignName}}">
       {{campaign.campaignName | slice: 0: 35}}<span *ngIf="campaign.campaignName?.length>35">...</span>
       <b *ngIf="isNavigatedThroughAnalytics" style="color:#0195da">(Data Sharing Enabled)</b></li>
-    <li style="color: #888;" *ngIf="!isPartnerEnabledAnalyticsAccess" title="{{campaign.campaignName}}">
+    <li style="color: #888;" *ngIf="!isDataShare" title="{{campaign.campaignName}}">
       {{campaign.campaignName | slice: 0: 35}}<span *ngIf="campaign.campaignName?.length>35">...</span>
       <b *ngIf="isNavigatedThroughAnalytics" style="color:#ed1d24">(Data Sharing Disabled)</b></li>
 	</ul>
@@ -34,8 +34,8 @@
 <ng-template #NOERROR>
 <app-analytics-loader *ngIf="mainLoader"></app-analytics-loader>
 	<div class="row" [hidden]="mainLoader || hasClientError">
-		<div class="pl10 pr10 col-xs-12" [ngClass]="{'col-sm-4': campaignType === 'VIDEO','forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}" *ngIf="campaignType === 'VIDEO' && campaign.selectedVideoId>0">
-			<a class="dashboard-stat dashboard-stat-lighter purple-soft" (click)="previewVideo(campaign.campaignVideoFile)" [class.disabled]="!isPartnerEnabledAnalyticsAccess ?true:null">
+		<div class="pl10 pr10 col-xs-12" [ngClass]="{'col-sm-4': campaignType === 'VIDEO','forbidden' :!isDataShare ?true:null}" *ngIf="campaignType === 'VIDEO' && campaign.selectedVideoId>0">
+			<a class="dashboard-stat dashboard-stat-lighter purple-soft" (click)="previewVideo(campaign.campaignVideoFile)" [class.disabled]="!isDataShare ?true:null">
 				<div class="visual">
 					<i class="fa fa-video-camera"></i>
 				</div>
@@ -45,7 +45,7 @@
 						<b class="m0" title={{campaign.campaignVideoFile.title}}>{{campaign.campaignVideoFile.title | slice: 0: 25}}</b>
 						<span *ngIf="campaign.campaignVideoFile.title?.length>25">...</span>
 					</div>
-         		 <div class="camp-desc" *ngIf="isPartnerEnabledAnalyticsAccess">
+         		 <div class="camp-desc" *ngIf="isDataShare">
 		            <span>Click for preview</span>
 		           </div>
 				</div>
@@ -69,8 +69,8 @@
 			</a>
 		</div>
 
-		<div class="pl10 pr10 col-xs-12" [ngClass]="{'col-sm-4': campaignType === 'VIDEO', 'col-sm-6': campaignType === 'EMAIL','forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null }" *ngIf="(campaignType === 'VIDEO' || campaignType === 'EMAIL') && campaign.selectedEmailTemplateId>0">
-			<a class="dashboard-stat dashboard-stat-lighter blue-soft" (click)="showEmailTemplatePreview(campaign.emailTemplate)" [class.disabled]="!isPartnerEnabledAnalyticsAccess ?true:null" >
+		<div class="pl10 pr10 col-xs-12" [ngClass]="{'col-sm-4': campaignType === 'VIDEO', 'col-sm-6': campaignType === 'EMAIL','forbidden' :!isDataShare ?true:null }" *ngIf="(campaignType === 'VIDEO' || campaignType === 'EMAIL') && campaign.selectedEmailTemplateId>0">
+			<a class="dashboard-stat dashboard-stat-lighter blue-soft" (click)="showEmailTemplatePreview(campaign.emailTemplate)" [class.disabled]="!isDataShare ?true:null" >
 					<div class="visual">
 						<i class="fa fa-envelope-open"></i>
 					</div>
@@ -80,7 +80,7 @@
 						  <b class="m0" title={{campaign.emailTemplate.name}}>{{campaign.emailTemplate.name | slice: 0: 25}}</b>
 						  <span *ngIf="campaign.emailTemplate.name?.length>25">...</span>
 						</div>
-						<div class="camp-desc" *ngIf="isPartnerEnabledAnalyticsAccess">
+						<div class="camp-desc" *ngIf="isDataShare">
 						 <span>Click for preview</span>
 						</div>
 					</div>
@@ -103,8 +103,8 @@
 				</a>
 		</div>
 
-		<div  class="pl10 pr10 col-xs-12" [ngClass]="{'col-sm-4': campaignType === 'VIDEO', 'col-sm-6': campaignType === 'EMAIL', 'col-sm-12': campaignType === 'SOCIAL','forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}">
-			<a class="dashboard-stat dashboard-stat-lighter green-soft" (click)="showContactListModal()" [class.disabled]="!isPartnerEnabledAnalyticsAccess ?true:null">
+		<div  class="pl10 pr10 col-xs-12" [ngClass]="{'col-sm-4': campaignType === 'VIDEO', 'col-sm-6': campaignType === 'EMAIL', 'col-sm-12': campaignType === 'SOCIAL','forbidden' :!isDataShareisDataShare ?true:null}">
+			<a class="dashboard-stat dashboard-stat-lighter green-soft" (click)="showContactListModal()" [class.disabled]="!isDataShare ?true:null">
 					<div class="visual">
 						<i class="fa fa-users"></i>
 					</div>
@@ -117,7 +117,7 @@
                  <span *ngIf="authenticationService.isVendor()">Partner Lists</span>
               </b>
 						</div>
-						<div class="camp-desc" *ngIf="isPartnerEnabledAnalyticsAccess">
+						<div class="camp-desc" *ngIf="isDataShare">
 							<span>Click for details</span>
 						</div>
 					</div>
@@ -134,9 +134,9 @@
 					<div><span style="float: right;font-size: 14px;color: #fff;background: #00a6e8;padding: 0px 17px;margin-right: 1px;margin-top:2px;">{{campaignType}} CAMPAIGN {{isPartnerCampaign}}</span>
 					</div>
 				</div>
-				<div class="portlet-body text-center" style="min-height: 300px;" [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}">
-					<app-worldmap *ngIf="renderMapData && isPartnerEnabledAnalyticsAccess" [worldMapData] = "renderMapData" (notifyParent)="clickWorldMapReports($event)"></app-worldmap>
-					<app-worldmap class="disabled" *ngIf="renderMapData && !isPartnerEnabledAnalyticsAccess" [worldMapData] = "renderMapData"></app-worldmap>
+				<div class="portlet-body text-center" style="min-height: 300px;" [ngClass]="{'forbidden' :!isDataShare ?true:null}">
+					<app-worldmap *ngIf="renderMapData && isDataShare" [worldMapData] = "renderMapData" (notifyParent)="clickWorldMapReports($event)"></app-worldmap>
+					<app-worldmap class="disabled" *ngIf="renderMapData && !isDataShare" [worldMapData] = "renderMapData"></app-worldmap>
 				</div>
 			</div>
 		</div>
@@ -158,8 +158,8 @@
 	</div>
 	<div class="col-xs-12 col-sm-6 p-5x emails-info" [hidden]="mainLoader || hasClientError" >
 		<div class="p-5x" [ngClass]="{'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO'}">
-			<button class="portlet light color1-invert crcb" (click)="downloadTypeName = 'campaignViews'" data-toggle="modal" data-target="#emailSentListModal" [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
-			 [disabled]="campaignReport.emailSentCount < 1 ||  !isPartnerEnabledAnalyticsAccess">
+			<button class="portlet light color1-invert crcb" (click)="downloadTypeName = 'campaignViews'" data-toggle="modal" data-target="#emailSentListModal" [ngClass]="{'forbidden' :!isDataShare ?true:null}"
+			 [disabled]="campaignReport.emailSentCount < 1 ||  (!isDataShare && !isPartnerEnabledAnalyticsAccess)">
 				<div class="portlet-body text-center">
 						<i class="fa fa-envelope"></i>
 					<h1>
@@ -169,9 +169,9 @@
 				</div>
 			</button>
 		</div>
-		<div class="p-5x" [hidden]="mainLoader || hasClientError"  [ngClass]="{'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO','forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}">
-			<button class="portlet light color1-invert crcb" (click)="emailActionList(campaign.campaignId, 'open', emailActionListPagination)"  [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
-			 [disabled]="campaignReport.emailOpenCount < 1 || !isPartnerEnabledAnalyticsAccess">
+		<div class="p-5x" [hidden]="mainLoader || hasClientError"  [ngClass]="{'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO','forbidden' :!isDataShare ?true:null}">
+			<button class="portlet light color1-invert crcb" (click)="emailActionList(campaign.campaignId, 'open', emailActionListPagination)"  [ngClass]="{'forbidden' :!isDataShare ?true:null}"
+			 [disabled]="campaignReport.emailOpenCount < 1 || !isDataShare">
 				<div class="portlet-body text-center">
 						<i class="fa fa-envelope-open"></i>
 					<h1>
@@ -181,9 +181,9 @@
 				</div>
 			</button>
 		</div>
-		<div class="p-5x" [hidden]="mainLoader || hasClientError"  [ngClass]="{'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO','forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}">
-			<button class="portlet light color1-invert crcb" (click)="emailActionList(campaign.campaignId, 'click', emailActionListPagination)"  [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
-			 [disabled]="campaignReport.emailClickedCount < 1 || !isPartnerEnabledAnalyticsAccess">
+		<div class="p-5x" [hidden]="mainLoader || hasClientError"  [ngClass]="{'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO','forbidden' :!isDataShare ?true:null}">
+			<button class="portlet light color1-invert crcb" (click)="emailActionList(campaign.campaignId, 'click', emailActionListPagination)"  [ngClass]="{'forbidden' :!isDataShare ?true:null}"
+			 [disabled]="campaignReport.emailClickedCount < 1 || !isDataShare">
 				<div class="portlet-body text-center">
 						<i class="fa fa-globe"></i>
 					<h1>
@@ -193,9 +193,9 @@
 				</div>
 			</button>
 		</div>
-		<div [hidden]="mainLoader || hasClientError"  class="col-xs-6 col-sm-3 p-5x" *ngIf="campaignType === 'VIDEO'" [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}">
-			<button class="portlet light color1-invert crcb" (click)="usersWatchList(campaign.campaignId, usersWatchListPagination)"  [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
-			 [disabled]="campaignReport.usersWatchCount < 1 || !isPartnerEnabledAnalyticsAccess">
+		<div [hidden]="mainLoader || hasClientError"  class="col-xs-6 col-sm-3 p-5x" *ngIf="campaignType === 'VIDEO'" [ngClass]="{'forbidden' :!isDataShare ?true:null}">
+			<button class="portlet light color1-invert crcb" (click)="usersWatchList(campaign.campaignId, usersWatchListPagination)"  [ngClass]="{'forbidden' :!isDataShare ?true:null}"
+			 [disabled]="campaignReport.usersWatchCount < 1 || !isDataShare">
 				<div class="portlet-body text-center">
 						<i class="fa fa-eye"></i>
 					<h1>
@@ -258,8 +258,8 @@
 						<span class="caption-subject font-red-sunglo uppercase" style="font-size: 15px !important;">Campaign Recipient Participation</span>
 					</div>
 				</div>
-				<div class="portlet-body flex clearfix" style="padding: 1.49em 0;" [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}">
-					<div class="col-xs-4 text-center" [class.disabled]="(campaignReport.lifetimeViewsCount < 1 || !isPartnerEnabledAnalyticsAccess) ? true : null">
+				<div class="portlet-body flex clearfix" style="padding: 1.49em 0;" [ngClass]="{'forbidden' :!isDataShare ?true:null}">
+					<div class="col-xs-4 text-center" [class.disabled]="(campaignReport.lifetimeViewsCount < 1 || !isDataShare) ? true : null">
 						<section class="percentage-circle" style="cursor: pointer" (click)="campaignViewsDonut('life-time')">
 							<app-donut-chart [percentageValue]="campaignReport.lifetimeViewsCount" [totalValue]="campaignReport.emailSentCount"> </app-donut-chart>
 							<h2 class="percentage-value" style="font-size: 23px;" *ngIf="campaignReport.emailSentCount!==0">{{campaignReport.lifetimeViewsCount*100/campaignReport.emailSentCount | number : '1.0-2'}}%</h2>
@@ -268,7 +268,7 @@
 						</section>
 						<h5 style="text-align: center; color: #00a6e8; margin-top: 3.5em;">Lifetime</h5>
 					</div>
-					<div class="col-xs-4 text-center" [class.disabled]="(campaignReport.thisMonthViewsCount < 1 || !isPartnerEnabledAnalyticsAccess) ? true : null" (click)="campaignViewsDonut('current-month')">
+					<div class="col-xs-4 text-center" [class.disabled]="(campaignReport.thisMonthViewsCount < 1 || !isDataShare) ? true : null" (click)="campaignViewsDonut('current-month')">
 						<section class="percentage-circle" style="cursor: pointer">
 							<app-donut-chart [percentageValue]="campaignReport.thisMonthViewsCount" [totalValue]="campaignReport.emailSentCount"> </app-donut-chart>
 							<h2 class="percentage-value" style="font-size: 23px;" *ngIf="campaignReport.emailSentCount!==0">{{campaignReport.thisMonthViewsCount*100/campaignReport.emailSentCount | number : '1.0-2'}}%</h2>
@@ -278,7 +278,7 @@
 						<h5 style="text-align: center; color: #00a6e8; margin-top: 3.5em;">This Month
 						</h5>
 					</div>
-					<div class="col-xs-4 text-center" [class.disabled]="(campaignReport.todayViewsCount < 1  || !isPartnerEnabledAnalyticsAccess)? true : null">
+					<div class="col-xs-4 text-center" [class.disabled]="(campaignReport.todayViewsCount < 1  || !isDataShare)? true : null">
 						<section class="percentage-circle" style="cursor: pointer" (click)="campaignViewsDonut('today')">
 							<app-donut-chart [percentageValue]="campaignReport.todayViewsCount" [totalValue]="campaignReport.emailSentCount"> </app-donut-chart>
 							<h2 class="percentage-value" style="font-size: 23px;" *ngIf="campaignReport.emailSentCount!==0">{{campaignReport.todayViewsCount*100/campaignReport.emailSentCount | number : '1.0-2'}}%</h2>
@@ -291,8 +291,8 @@
 			</div>
 		</div>
   </div>
-	<div class="row" [class.disabled]="!isPartnerEnabledAnalyticsAccess">
-		<div class="col-xs-12 col-sm-12 p-5x">
+	<div class="row"  *ngIf="!isDataShare">
+		<div class="col-xs-12 col-sm-12 p-5x" [class.disabled]="!isPartnerEnabledAnalyticsAccess">
 			<div class="col-xs-12 p-5x">
           <div class="row" *ngIf="!campaignViews">
               <div class="porlet light" style="background: white;">
@@ -334,7 +334,8 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr *ngFor="let item of campaignViews" (click)="userTimeline(item);">
+								<ng-container *ngFor="let item of campaignViews" >
+									<tr (click)="userTimeline(item);" *ngIf="item.viewsCount?.length > 0">
 										<td>
 										<app-user-info  [userInfo]="item"> </app-user-info>
 											<!-- here emailId coming as userMail -->
@@ -357,6 +358,7 @@
 											</div>
 										</td>
 									</tr>
+									</ng-container>
 								</tbody>
 							</table>
 						</div>

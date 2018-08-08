@@ -183,13 +183,13 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
             }
         }
 
-  /*  checkInteractiveData( text: any ) {
+    checkInteractiveData( text: any ) {
         if ( text == "true" ) {
             this.campaign.detailedAnalyticsShared = true;
         } else {
             this.campaign.detailedAnalyticsShared = false;
         }
-    }*/
+    }
     
     setCampaignData(result){
         this.campaign = result;
@@ -279,7 +279,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     }
 
     shareAnalytics(event:any){
-        this.campaign.detailedAnalyticsShared = event;
+        this.campaign.dataShare = event;
     }
 
     /*************************************************************Campaign Details***************************************************************************************/
@@ -516,6 +516,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
             'country': country,
             'createdFromVideos': false,
             'nurtureCampaign':true,
+            'dataShare':this.campaign.dataShare,
             'detailedAnalyticsShared':this.campaign.detailedAnalyticsShared,
             'parentCampaignId':this.campaign.parentCampaignId
         };

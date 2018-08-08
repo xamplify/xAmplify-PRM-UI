@@ -50,6 +50,7 @@ export class Campaign {
     scheduleType:string = "";
     nurtureCampaign = false;
     campaignScheduleType:string = "";
+    dataShare: boolean = false;
     detailedAnalyticsShared:boolean = false;
     vendorOrganizationId:number = 0;
     launchedByVendor:boolean = false;

@@ -74,6 +74,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   paginationType:string;
   videoFile: any;
   userWatchtotalRecords: number;
+  isDataShare = false;
   isPartnerEnabledAnalyticsAccess = false;
   isNavigatedThroughAnalytics = false;
   campaignRouter:any;
@@ -571,10 +572,12 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
         this.campaign = data;
         if(this.campaign.nurtureCampaign && this.campaign.userId!=this.loggedInUserId){
             this.isPartnerEnabledAnalyticsAccess = this.campaign.detailedAnalyticsShared;
+            this.isDataShare = this.campaign.dataShare;
             this.isNavigatedThroughAnalytics = true;
         }else{
             this.isNavigatedThroughAnalytics = false;
             this.isPartnerEnabledAnalyticsAccess = true;
+            this.isDataShare = true;
         }
         this.campaingContactLists = data.userLists;
         console.log(this.campaingContactLists);

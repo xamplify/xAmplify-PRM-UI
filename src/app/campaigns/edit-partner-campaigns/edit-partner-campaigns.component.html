@@ -87,16 +87,7 @@
                     <div class="email-options-checkbox-group email-options-notify">
                       <div class="email-options-checkbox clearfix">
                         <div class="col-sm-4">
-                      <!--   <label class="control-label" style="cursor:pointer" (click)="checkInteractiveData('false')">
-											<input name="options" type="radio"
-											 [checked]="!campaign.detailedAnalyticsShared" style="cursor:pointer">
-											 <strong>Interactive Data</strong>
-										</label>
-							<label class="radio-inline" style="cursor:pointer" (click)="checkInteractiveData('true')">
-													<input name="options" type="radio" [checked]="campaign.detailedAnalyticsShared" style="cursor:pointer" >
-													<strong>Full Data</strong>
-												</label> -->
-                          <switch [status]="campaign.detailedAnalyticsShared" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+                          <switch [status]="campaign.dataShare" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
                             [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch"
                             [size]="callActionSwitch.size" (statusChange)="shareAnalytics($event)">
                           </switch>
@@ -109,6 +100,17 @@
                           </label>
                         </div>
                       </div>
+                      <section *ngIf="campaign.dataShare">
+                       <label class="control-label" style="cursor:pointer" (click)="checkInteractiveData('false')">
+											<input name="options" type="radio"
+											 [checked]="!campaign.detailedAnalyticsShared" style="cursor:pointer">
+											 <strong>Interactive Data</strong>
+										</label>
+							<label class="radio-inline" style="cursor:pointer" (click)="checkInteractiveData('true')">
+													<input name="options" type="radio" [checked]="campaign.detailedAnalyticsShared" style="cursor:pointer" >
+													<strong>Full Data</strong>
+												</label>
+					  </section>
                     </div>
                   </div>
                 </div>
