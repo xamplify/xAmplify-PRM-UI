@@ -87,3 +87,8 @@ cursor: default;
     margin-top: 9px;
     margin-left: 2px;
 }
+.re-distributed-count{
+	font-weight: bold;
+	font-size: 15px;
+	font-size-adjust: inherit;
+}
