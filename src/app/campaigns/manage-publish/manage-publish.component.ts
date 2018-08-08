@@ -158,10 +158,22 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
 
     editCampaign(campaign:any) {
       if(campaign.campaignType.indexOf('EVENT') > -1) {
-
+        this.campaignService.getEventCampaignById(campaign.campaignId).subscribe(
+          (result:any)=>{
+           console.log(result);
+           this.campaignService.eventCampaign = result.data;
+           if(campaign.campaignType == 'EVENT'){
+            this.router.navigate(['/home/campaigns/event-edit']);
+           }
+          },
+          (error)=>{
+            console.log(error);
+           }
+        );
+        // this.campaignService.campaign = data;
        }
       else {
-      var obj = { 'campaignId': campaign.id }
+      var obj = { 'campaignId': campaign.campaignId }
         this.campaignService.getCampaignById(obj)
             .subscribe(
                 data => {
@@ -177,8 +189,6 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                             this.campaignService.reDistributeCampaign = data;
                             this.campaignService.isExistingRedistributedCampaignName = true;
                             this.router.navigate(['/home/campaigns/re-distribute-campaign']);
-                        } else if(campaign.campaignType == 'EVENT'){
-                          this.router.navigate(['/home/campaigns/event-edit']);
                         }
                         else {
                             this.refService.isEditNurtureCampaign = false;

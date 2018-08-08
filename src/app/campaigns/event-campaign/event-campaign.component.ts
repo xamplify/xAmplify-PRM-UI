@@ -74,9 +74,23 @@ export class EventCampaignComponent implements OnInit {
     public properties: Properties, public eventError:EventError) {
     this.countries = this.referenceService.getCountries();
     this.listEmailTemplates();
+    if(this.campaignService.eventCampaign!==undefined){
+      this.eventCampaign = this.campaignService.eventCampaign;
+      this.eventCampaign.emailTemplate = this.campaignService.eventCampaign.emailTemplateDTO;
+      this.eventCampaign.user = this.campaignService.eventCampaign.userDTO;
+      this.eventCampaign.userListIds = this.campaignService.eventCampaign.userListDTOs;
+      for(let i=0; i<this.countries.length;i++){
+        if(this.countries[i].name===this.campaignService.eventCampaign.campaignEventTimes[0].country){
+          this.eventCampaign.countryId = this.countries[i].id;
+          this.eventCampaign.campaignEventTimes[0].countryId = this.countries[i].id;
+          break;
+        }
+      }
+    }else {
     this.eventCampaign.emailTemplate = this.emailTemplates[0];
     this.eventCampaign.countryId = this.countries[0].id;
     this.eventCampaign.campaignEventTimes[0].countryId = this.countries[0].id;
+    }
     CKEDITOR.config.height = '175';
   }
 

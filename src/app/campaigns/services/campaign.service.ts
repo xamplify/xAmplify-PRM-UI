@@ -14,6 +14,7 @@ declare var swal, $, videojs, Metronic, Layout, Demo, TableManaged, Promise, jQu
 export class CampaignService {
 
     campaign: Campaign;
+    eventCampaign:any;
     reDistributeCampaign: Campaign;
     isExistingRedistributedCampaignName: boolean = false;
     componentName: string = "campaign.service.ts";
@@ -67,7 +68,7 @@ export class CampaignService {
     }
 
     getEventCampaignById(campaignId:any){
-      return this.http.post(this.URL + "campaign/ /get-event-campaign/"+campaignId+"?access_token=" + this.authenticationService.access_token,'')
+      return this.http.get(this.URL + "campaign/get-event-campaign/"+campaignId+"?access_token=" + this.authenticationService.access_token)
       .map(this.extractData)
       .catch(this.handleError);
     }
