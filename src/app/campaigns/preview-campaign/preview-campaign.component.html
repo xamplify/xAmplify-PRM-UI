@@ -127,7 +127,7 @@
                   <div class="col-sm-8" style="margin-bottom: 10px;">
                     <div class="email-options-checkbox-group email-options-notify">
                       <div class="email-options-checkbox clearfix">
-                       <label class="control-label">
+                      <!--  <label class="control-label">
 											<input name="options" type="radio" disabled="disabled"
 											 [checked]="!campaign.detailedAnalyticsShared">
 											 <strong>Interactive Data</strong>
@@ -135,8 +135,8 @@
 							<label class="radio-inline">
 													<input name="options" type="radio" [checked]="campaign.detailedAnalyticsShared" disabled="disabled" >
 													<strong>Full Data</strong>
-												</label>
-                        <!-- <div class="col-sm-4 ui-switch-custom-div">
+												</label> -->
+                        <div class="col-sm-4 ui-switch-custom-div">
                           <switch [disabled]="callActionSwitch.disabled" [status]="campaign.detailedAnalyticsShared" [onText]="callActionSwitch.onTextValue"
                             [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch"
                             [size]="callActionSwitch.size" (statusChange)="shareAnalytics($event)">
@@ -148,7 +148,7 @@
                               <i class="fa fa-question-circle" style="font-size: 20px;float: left;"></i>
                             </span>
                           </label>
-                        </div> -->
+                        </div>
                       </div>
                     </div>
                   </div>
