@@ -644,6 +644,7 @@ td>h5 {
 						<thead>
 							<tr>
                 <th class="headerCss center">NAME</th>
+                <th class="headerCss center" *ngIf="paginationType == 'clicked'">URL</th>
                 <th class="headerCss center" *ngIf="paginationType == 'open'">SUBJECT</th>
 								<th class="headerCss center">CAMPAIGN NAME</th>
 								<th class="headerCss center">DATE & TIME</th>
@@ -655,6 +656,10 @@ td>h5 {
 							<tr *ngFor="let emailClicked of pagination.pagedItems;let i = index">
 								<td>
 									<app-user-info [userInfo]="emailClicked"> </app-user-info>
+                </td>
+                <td class="center" *ngIf="paginationType =='clicked'">
+                  <h5  *ngIf="emailClicked.url" title="{{emailClicked.url}}">{{emailClicked.url | slice:0:30}} <span *ngIf="emailClicked.url?.length>30">...</span></h5>
+                  <h5  *ngIf="!emailClicked.url">Clicked on the video thumbnail</h5>
                 </td>
                 <td class="center" *ngIf="paginationType == 'open'">
                     <h5  title="{{emailClicked.subject}}">{{emailClicked.subject | slice:0:30}} <span *ngIf="emailClicked.subject?.length>30">...</span></h5>

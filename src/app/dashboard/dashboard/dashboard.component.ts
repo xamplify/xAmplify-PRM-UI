@@ -747,7 +747,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                   },
                     (error: any) => {
                         this.xtremandLogger.error(error);
-                        this.xtremandLogger.errorPage(error);
+                      //  this.xtremandLogger.errorPage(error);
                     });
         } catch (error) {
             this.xtremandLogger.error(error);
