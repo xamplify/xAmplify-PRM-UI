@@ -109,21 +109,33 @@
                   <thead>
                   <tr>
                     <!-- <th>partner Company Name</th> -->
-                    <th style="float: left;margin-left: 70px;">Vendors</th>
                     <th class="center-aligned">Campaign Name</th>
+                    <th class="center-aligned">Launched By (Vendor)</th>
                      <th class="center-aligned">Launched On</th>
                     <th class="center">#Redistributed</th>
                     </tr>
                   </thead>
                   <tbody>
                   <ng-container *ngFor="let item of pagination.pagedItems;let i=index">
-                  <tr>
-                      <td><app-user-info [userInfo]="item" [isPartnerEntityInfo]="true" [isPartnerInfo]="true"></app-user-info></td>
-                      <td>{{item.campaignName}}</td>
+                 <tr>
+                      <td class="re-distributed-count">{{item.campaignName}}</td>
+                       <td>
+                       	<h5 class='ellipsis' title="{{item.firstName}} {{item.lastName}}" style="margin: 7px 0 2px 0;font-weight: 400;">{{item.firstName | slice:0:20}}
+							<span *ngIf="item.firstName?.length>20">...</span>
+								&nbsp;{{item.lastName | slice:0:15}}
+							<span *ngIf="item.lastName?.length>15">...</span>
+						</h5>
+						<h6 class='m0' style="font-weight: 400;">
+							<a title="{{item.emailId}}">{{item.emailId | slice:0:30}}</a>
+							<span *ngIf="item.emailId?.length>30">...</span>
+						</h6>
+                       </td>
+                       <!-- <td><app-user-info [userInfo]="item" [isPartnerEntityInfo]="true" [isPartnerInfo]="true"></app-user-info></td> -->
                        <td>
                           <app-timestamp [isOnlyDate]="false" [dateAndTime]="item.redistributedOn"> </app-timestamp>
                        </td>
-                        <td style="text-align: right;">{{item.redistributedCampaignsCount}}
+                        <td style="text-align: right;">
+                        <font class="re-distributed-count">{{item.redistributedCampaignsCount}}</font>
                           <div class="actions-block" style="text-align: center;position: relative;margin-right: 90px;margin-top: -7px;padding: 0px 5px;"
                           		 *ngIf="item.redistributedCampaignsCount> 0">
                           <a title="View Redistributed Campaings" (click)="showRedistributedCampaings(item)">
@@ -131,7 +143,7 @@
                           </a>
                         </div>
                         </td>
-                    </tr> 
+                    </tr>
                     <tr [ngClass]="{'hidden': !item.expand}">
                     <td colspan="4">
                   	<table class="table tgrid table-condensed" style="background-color: #463c2c24">

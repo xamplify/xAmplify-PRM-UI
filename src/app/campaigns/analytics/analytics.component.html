@@ -20,7 +20,7 @@
     <li *ngIf="campaignRouter==='partnerAnalytics'"><a [routerLink]="['/home/partners/analytics']">Partner Analytics</a><i class="fa fa-angle-right"></i></li>
     <li style="color: #888;" *ngIf="isDataShare" title="{{campaign.campaignName}}">
       {{campaign.campaignName | slice: 0: 35}}<span *ngIf="campaign.campaignName?.length>35">...</span>
-      <b *ngIf="isNavigatedThroughAnalytics" style="color:#0195da">(Data Sharing Enabled)</b></li>
+      <b *ngIf="isNavigatedThroughAnalytics" style="color:#0195da">(Data Sharing Enabled)</b><b *ngIf="!isPartnerEnabledAnalyticsAccess">(Interactive Data)</b></li>
     <li style="color: #888;" *ngIf="!isDataShare" title="{{campaign.campaignName}}">
       {{campaign.campaignName | slice: 0: 35}}<span *ngIf="campaign.campaignName?.length>35">...</span>
       <b *ngIf="isNavigatedThroughAnalytics" style="color:#ed1d24">(Data Sharing Disabled)</b></li>
@@ -291,7 +291,7 @@
 			</div>
 		</div>
   </div>
-	<div class="row"  *ngIf="!isDataShare">
+	<div class="row"  *ngIf="isDataShare">
 		<div class="col-xs-12 col-sm-12 p-5x" [class.disabled]="!isPartnerEnabledAnalyticsAccess">
 			<div class="col-xs-12 p-5x">
           <div class="row" *ngIf="!campaignViews">
