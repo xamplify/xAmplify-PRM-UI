@@ -96,7 +96,7 @@ export class ReferenceService {
     }
     isSafariBrowser(){
       this.deviceInfo = this.deviceService.getDeviceInfo();
-      if(this.deviceInfo.browser=== 'safari'){ return true; } else{ return false};
+      if(this.deviceInfo.browser=== 'safari' || this.deviceInfo.browser==='ie'){ return true; } else{ return false};
     }
 
     getCategories(): Observable<Category[]> {

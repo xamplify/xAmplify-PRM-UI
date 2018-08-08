@@ -76,7 +76,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     videoPlayedSkipedInfo:any;
     logListName = "";
     videoTotalViews: number;
-   
+
     constructor(public authenticationService: AuthenticationService, public videoBaseReportService: VideoBaseReportService,
         public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService,
         public pagination: Pagination, public pagerService: PagerService, public router: Router) {
@@ -91,7 +91,8 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     }
 
     watchedByTenUserschartsDayStates(minutesWatched: any, names: any) {
-        const maxValue = Math.max.apply(null, minutesWatched);
+        let maxValue = Math.max.apply(null, minutesWatched);
+        if(maxValue<10){maxValue = 9}
         const self = this;
         const charts = [],
             $containers = $('#trellis td'),
@@ -161,8 +162,8 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                         text: null
                     },
                     min: 0,
-                    max:10
-                  //  max: maxValue  // findout maxmum,it is important
+                   // max:10
+                    max: maxValue+1  // findout maxmum,it is important
                 },
                 legend: {
                     enabled: false
