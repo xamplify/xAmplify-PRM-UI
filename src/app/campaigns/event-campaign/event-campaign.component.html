@@ -6,6 +6,10 @@
 				<i class="fa fa-home"></i>
 				<a [routerLink]="referenceService.homeRouter">Home</a>
 				<i class="fa fa-angle-right"></i>
+      </li>
+      <li>
+				<a [routerLink]="['/home/campaigns/select']">Select Campaign</a>
+				<i class="fa fa-angle-right"></i>
 			</li>
 			<li>Event Based Campaign</li>
 		</ul>
@@ -197,7 +201,7 @@
 					</section>
 					<section class="clearfix">
 						<div class="form-group m0 pull-right">
-							<h5 class="control-label font-purple-intense pr10 pull-left">Partner Contacts</h5>
+							<h5 class="control-label font-purple-intense pr10 pull-left">Partner Lists</h5>
 							<switch [status]="isPartnerUserList" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
 								[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
 								(statusChange)="toggleContactLists()">
@@ -210,8 +214,8 @@
 								<thead>
 									<tr>
 										<th>Select</th>
-										<th>Contact list name</th>
-										<th>No of Contacts</th>
+										<th>List Name</th>
+										<th>No.of Partners</th>
 										<th>Preview</th>
 									</tr>
 								</thead>
@@ -253,13 +257,13 @@
 							<label class="bold">
 								<input type="radio" value="eventCampaign.publicEventCampaign" [checked]="eventCampaign.publicEventCampaign" (change)="eventCampaign.publicEventCampaign = !eventCampaign.publicEventCampaign">Public page
 							</label>
-							<p class="ml10">Turn attendes into your biggest promoters by letting them share your event on facebook, twitter, linkedin and or any social media platform</p>
+							<p class="ml10">Turn invitees into your biggest promoters by letting them share your event on Facebook, Twitter, Linkedin and or any social media platform</p>
 						</div>
 						<div>
 							<label class="bold">
 								<input type="radio" value="!eventCampaign.publicEventCampaign" [checked]="!eventCampaign.publicEventCampaign" (change)="eventCampaign.publicEventCampaign = !eventCampaign.publicEventCampaign">Private page
 							</label>
-							<p class="ml10">Turn attendes into your biggest promoters by letting them share your event on facebook, twitter, linkedin and or any social media platform</p>
+							<p class="ml10">Make your event invitation-only(guests must receive an xAmplify invitation to attend/view)</p>
 						</div>
 					</div>
 				</div>

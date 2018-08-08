@@ -66,6 +66,12 @@ export class CampaignService {
             .catch(this.handleError);
     }
 
+    getEventCampaignById(campaignId:any){
+      return this.http.post(this.URL + "campaign/ /get-event-campaign/"+campaignId+"?access_token=" + this.authenticationService.access_token,'')
+      .map(this.extractData)
+      .catch(this.handleError);
+    }
+
     getParnterCampaignById(data: any) {
         return this.http.post(this.URL + "admin/getPartnerCampaignById?access_token=" + this.authenticationService.access_token, data)
             .map(this.extractData)
@@ -243,7 +249,7 @@ export class CampaignService {
     /*  listPartnerCampaigns(userId: number, campaignType: string){
           return this.http.get(this.URL+`campaign/partner-campaigns/${userId}?campaignType=${campaignType}&access_token=${this.authenticationService.access_token}`)
               .map(this.extractData)
-              .catch(this.handleError);        
+              .catch(this.handleError);
       }*/
 
 
@@ -430,7 +436,7 @@ export class CampaignService {
     getEventCampaignByAlias(alias: string) {
         return this.http.get(this.URL + `get-event-campaign-rsvp-alias/${alias}`)
             .map(this.extractData)
-            .catch(this.handleError);        
+            .catch(this.handleError);
     }
     saveEventCampaignRsvp(campaignRsvp: any) {
         return this.http.post(this.URL + `save-rsvp`, campaignRsvp)
