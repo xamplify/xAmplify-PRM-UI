@@ -166,7 +166,7 @@
                         	<a data-rel="fancybox-button" (click)="referenseService.goToCampaignAnalytics(redistributedCampaign)" data-toggle="tooltip" data-placement="top" title="Campaign Based Reports" class='mr5'>
 							<i class="fa fa-line-chart"></i>
 						</a>
-						 <a id="disabled-icon" class="blur" data-toggle="tooltip" data-placement="top" title="Data Sharing Disabled" *ngIf="!redistributedCampaign.dataSharingEnabled">
+						 <a id="disabled-icon" class="blur" data-toggle="tooltip" data-placement="top" title="Data Sharing Disabled" *ngIf="!redistributedCampaign.dataShare">
                         	<img src="../assets/images/disabled-icon.png">
                      	</a>
                        </td>
@@ -421,7 +421,7 @@
 										<a data-rel="fancybox-button" (click)="goToCampaignAnalytics(campaign)" data-toggle="tooltip" data-placement="top" title="Campaign Based Reports" class='mr5'>
 												<i class="fa fa-line-chart"></i>
 										  </a>
-										 <a id="disabled-icon" class="blur" data-toggle="tooltip" data-placement="top" title="Data Sharing Disabled" *ngIf="!campaign.detailedAnalyticsShared && selectedTabIndex==2">
+										 <a id="disabled-icon" class="blur" data-toggle="tooltip" data-placement="top" title="Data Sharing Disabled" *ngIf="!campaign.dataShare && selectedTabIndex==2">
                         					<img src="../assets/images/disabled-icon.png">
                      					 </a>
 										</td>
@@ -478,7 +478,7 @@
 														<i class="fa fa-line-chart"></i>
 												</a>
 												<a id="disabled-icon" class="blur" data-toggle="tooltip" data-placement="top" title="Data Sharing Disabled"
-														 *ngIf="!campaign.detailedAnalyticsShared && selectedTabIndex==2">
+														 *ngIf="!campaign.dataShare && selectedTabIndex==2">
                          							 <img src="../assets/images/disabled-icon.png" style="margin-top: 9px;margin-left: 2px;">
                        							</a>
 											</div>
