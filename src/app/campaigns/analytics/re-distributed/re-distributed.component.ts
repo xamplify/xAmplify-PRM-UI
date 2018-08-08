@@ -15,7 +15,7 @@ import { ReferenceService } from '../../../core/services/reference.service';
 })
 export class ReDistributedComponent implements OnInit {
 
-   campaignId:number = 0; 
+   campaignId:number = 0;
     pagination: Pagination = new Pagination();
     searchKey:string = "";
    constructor(public route: ActivatedRoute,public partnerService:ParterService,public referenceService:ReferenceService,
@@ -25,7 +25,7 @@ export class ReDistributedComponent implements OnInit {
       this.campaignId = this.route.snapshot.params['campaignId'];
       this.listRedistributedCampaigns();
   }
-  
+
   listRedistributedCampaigns(){
       this.referenceService.loading(this.httpRequestLoader, true );
       this.partnerService.listRedistributedCampaigns(this.campaignId,this.pagination).subscribe(
@@ -38,26 +38,27 @@ export class ReDistributedComponent implements OnInit {
           },
           ( error: any ) => { console.log( 'error got here' ) });
   }
-  
+
   paginationDropdown(event) {
       this.listRedistributedCampaigns();
     }
-  
+
   setPage(event) {
       this.pagination.pageIndex = event.page;
       this.listRedistributedCampaigns();
 
 
   }
-  
+
   searchInListRedistributedThroughPartnerCampaign(){
       this.pagination.pageIndex = 1;
       this.pagination.searchKey = this.searchKey;
       this.listRedistributedCampaigns();
   }
   goToCampaignAnalytics(campaign){
+      this.referenceService.campaignType = campaign.campaignType;
       this.router.navigate(["/home/campaigns/"+campaign.campaignId+"/details"]);
   }
-  
+
   partnerCampaignUISearch(keyCode: any) {  if (keyCode === 13) {  this.searchInListRedistributedThroughPartnerCampaign(); } }
 }
