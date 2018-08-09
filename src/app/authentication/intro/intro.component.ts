@@ -21,7 +21,7 @@ export class IntroComponent implements OnInit {
   zoom = 10;
   lat =  37.5483;
   lng = -121.9886;
-  markers = [{ lat: 37.5483, lng: -121.9886, label: "A", draggable: true }];
+  markers = [{ lat: 37.5483, lng: -121.9886, label: "A", draggable: false }];
   constructor(public authenticationService: AuthenticationService, public properties: Properties) {}
 
   clickedMarker(label: string, index: number) {
