@@ -28,8 +28,8 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     campaignSuccessMessage: string = "";
     loggedInUserId: number = 0;
     sortByDropDown = [
-        { 'name': 'Name(A-Z)', 'value': 'campaign-ASC' },
-        { 'name': 'Name(Z-A)', 'value': 'campaign-DESC' },
+        { 'name': 'Campaign Name(A-Z)', 'value': 'campaign-ASC' },
+        { 'name': 'Campaign Name(Z-A)', 'value': 'campaign-DESC' },
         { 'name': 'Company Name(A-Z)', 'value': 'company-ASC' },
         { 'name': 'Company Name(Z-A)', 'value': 'company-DESC' },
         { 'name': 'Date Received(ASC)', 'value': 'createdTime-ASC' },
