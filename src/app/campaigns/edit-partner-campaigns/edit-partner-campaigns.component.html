@@ -95,21 +95,26 @@
                         <div class="col-sm-8">
                           <label style="margin: 5px 0;">
                             <span style="cursor: pointer;color: #54a7e9;" title="{{properties.ENALEORDISABLE_VENDOR_MESSAGE}}">
-                              <i class="fa fa-question-circle" style="font-size: 20px;float: left;"></i>
+                              <i class="fa fa-question-circle" style="font-size: 18px;float: left;"></i>
                             </span>
                           </label>
                         </div>
                       </div>
-                      <section *ngIf="campaign.dataShare">
+                      <section *ngIf="campaign.dataShare" style="margin:14px 0 0 14px">
                        <label class="control-label" style="cursor:pointer" (click)="checkInteractiveData('false')">
 											<input name="options" type="radio"
 											 [checked]="!campaign.detailedAnalyticsShared" style="cursor:pointer">
 											 <strong>Interactive Data</strong>
 										</label>
-							<label class="radio-inline" style="cursor:pointer" (click)="checkInteractiveData('true')">
+							<label class="radio-inline" style="cursor:pointer; padding-left:30px; top: -2px;" (click)="checkInteractiveData('true')">
 													<input name="options" type="radio" [checked]="campaign.detailedAnalyticsShared" style="cursor:pointer" >
-													<strong>Full Data</strong>
+													<strong>All</strong>
 												</label>
+						<label>
+                            <span style="cursor: pointer;color: #54a7e9;position: relative; top: 1px;left: 6px;" title="Vendor's Access Your Campaign Analytics All or Interactive">
+                              <i class="fa fa-question-circle" style="font-size: 18px;"></i>
+                            </span>
+                          </label>
 					  </section>
                     </div>
                   </div>
