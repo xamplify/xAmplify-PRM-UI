@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { ReferenceService } from '../../core/services/reference.service';
 import { ContactService } from '../.././contacts/services/contact.service';
@@ -32,7 +32,7 @@ declare var $, flatpickr, CKEDITOR;
   styleUrls: ['./event-campaign.component.css'],
   providers: [PagerService, Pagination, CallActionSwitch, Properties,EventError]
 })
-export class EventCampaignComponent implements OnInit {
+export class EventCampaignComponent implements OnInit, OnDestroy {
   emailTemplates: Array<EmailTemplate> = [];
   campaignEmailTemplate: CampaignEmailTemplate = new CampaignEmailTemplate();
   reply: Reply = new Reply();
@@ -62,7 +62,7 @@ export class EventCampaignComponent implements OnInit {
   emailNotOpenedReplyDaysSum = 0;
   emailOpenedReplyDaysSum = 0;
   onClickScheduledDaysSum = 0;
-
+  userListIds:any = [];
   constructor(public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
     private contactService: ContactService,
     public campaignService: CampaignService,
@@ -78,7 +78,9 @@ export class EventCampaignComponent implements OnInit {
       this.eventCampaign = this.campaignService.eventCampaign;
       this.eventCampaign.emailTemplate = this.campaignService.eventCampaign.emailTemplateDTO;
       this.eventCampaign.user = this.campaignService.eventCampaign.userDTO;
-      this.eventCampaign.userListIds = this.campaignService.eventCampaign.userListDTOs;
+      if(this.eventCampaign.campaignReplies===undefined){ this.eventCampaign.campaignReplies = [];}
+      // this.eventCampaign.userListIds = this.campaignService.eventCampaign.userListDTOs;
+      this.eventCampaign.campaignEventTimes = this.campaignService.eventCampaign.campaignEventTimes;
       for(let i=0; i<this.countries.length;i++){
         if(this.countries[i].name===this.campaignService.eventCampaign.campaignEventTimes[0].country){
           this.eventCampaign.countryId = this.countries[i].id;
@@ -86,6 +88,13 @@ export class EventCampaignComponent implements OnInit {
           break;
         }
       }
+      for(let i=0; i< this.campaignService.eventCampaign.userListDTOs.length;i++){
+       this.userListIds.push(this.campaignService.eventCampaign.userListDTOs[i].id);
+      }
+      this.eventCampaign.userListIds = this.userListIds;
+      this.eventCampaign.userLists = [];
+      console.log(this.userListIds);
+
     }else {
     this.eventCampaign.emailTemplate = this.emailTemplates[0];
     this.eventCampaign.countryId = this.countries[0].id;
@@ -93,7 +102,6 @@ export class EventCampaignComponent implements OnInit {
     }
     CKEDITOR.config.height = '175';
   }
-
   ngOnInit() {
     this.loggedInUserId = this.authenticationService.getUserId();
     this.listAllTeamMemberEmailIds();
@@ -219,8 +227,9 @@ export class EventCampaignComponent implements OnInit {
   createEventCampaign(eventCampaign: EventCampaign, launchOption: string) {
     this.isFormSubmitted = true;
     this.onBlurValidation();
-    this.getRepliesData();
+    if(this.eventCampaign.campaignReplies && this.eventCampaign.campaignReplies.length>0){ this.getRepliesData(); }
     this.referenceService.goToTop();
+    // eventCampaign.userListIds = eventCampaign.userListIds
     for (let userListId of eventCampaign.userListIds) {
       let contactList = new ContactList(userListId);
       eventCampaign.userLists.push(contactList);
@@ -554,5 +563,9 @@ export class EventCampaignComponent implements OnInit {
         removeStyleAttrByDivId(divId:string){
             $('#'+divId).removeAttr("style");
         }
+
+   ngOnDestroy(): void {
+      this.campaignService.eventCampaign = undefined;
+   }
 
 }

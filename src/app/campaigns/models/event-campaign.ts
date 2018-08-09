@@ -2,7 +2,7 @@ import { EmailTemplate } from '../../email-template/models/email-template';
 import { Location } from './location';
 import { CampaignEventTime } from './campaign-event-time';
 import { CampaignEventMedia } from './campaign-event-media';
-import { Reply } from './campaign-reply'; 
+import { Reply } from './campaign-reply';
 import { User } from '../../core/models/user';
 import { ContactList } from '../../contacts/models/contact-list';
 
