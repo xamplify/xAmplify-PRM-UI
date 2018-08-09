@@ -6,14 +6,16 @@ import { PagerService } from '../../core/services/pager.service';
 import { ReferenceService } from '../../core/services/reference.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 
+declare var swal:any;
+
 @Component({
   selector: 'app-admin-report',
   templateUrl: './admin-report.component.html',
   styleUrls: ['./admin-report.component.css'],
   providers: [Pagination]
 })
-export class AdminReportComponent implements OnInit {
 
+export class AdminReportComponent implements OnInit {
     dashboardReport: DashboardReport = new DashboardReport();
     totalRecords: number;
     vendorsDetails: any;
@@ -64,7 +66,10 @@ public authenticationService: AuthenticationService) {
   
   selectedVendorDetails(selectedVendor:any){
       try {
-          this.selectedVendorRow = selectedVendor;
+          if(!selectedVendor.companyId){
+        	  swal("Vedor has signed up but not yet created company information.");
+          }else{
+    	  this.selectedVendorRow = selectedVendor;
           this.authenticationService.selectedVendorId = selectedVendor.id;
           this.dashboardService.loadDashboardReportsCount( selectedVendor.id )
               .subscribe(
@@ -76,6 +81,7 @@ public authenticationService: AuthenticationService) {
               error => console.error( error ),
               () => console.info( "selectedVendors reports() finished" )
               )
+          }
       } catch ( error ) {
           console.error( error, "adminReportComponent", "loadingSelectedVendorsDetails()" );
       }
