@@ -32,8 +32,8 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
         { 'name': 'Name(Z-A)', 'value': 'campaign-DESC' },
         { 'name': 'Company Name(A-Z)', 'value': 'company-ASC' },
         { 'name': 'Company Name(Z-A)', 'value': 'company-DESC' },
-        { 'name': 'Created Date(ASC)', 'value': 'createdTime-ASC' },
-        { 'name': 'Created Date(DESC)', 'value': 'createdTime-DESC' }
+        { 'name': 'Date Received(ASC)', 'value': 'createdTime-ASC' },
+        { 'name': 'Date Received(DESC)', 'value': 'createdTime-DESC' }
     ];
 
     numberOfItemsPerPage = [
