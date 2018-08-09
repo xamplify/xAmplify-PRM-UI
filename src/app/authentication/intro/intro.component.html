@@ -344,9 +344,10 @@
       [label]="m.label"
       [markerDraggable]="m.draggable"
       (dragEnd)="markerDragEnd(m, $event)">
-    <!-- <agm-info-window>
-      <strong>InfoWindow content</strong>
-    </agm-info-window> -->
+    <agm-info-window>
+      <strong>Framont,CA 94538</strong><br>
+      <strong>Phone: 5107701222</strong>
+    </agm-info-window>
   </agm-marker>
   <agm-circle [latitude]="lat" [longitude]="lng"
       [radius]="5000"
