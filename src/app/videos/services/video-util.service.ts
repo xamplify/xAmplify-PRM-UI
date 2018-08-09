@@ -30,8 +30,8 @@ export class VideoUtilService {
         { 'name': 'Title (Z-A)', 'value': 'title-DESC' },
         { 'name': 'Upload Date (ASC)', 'value': 'createdTime-ASC' },
         { 'name': 'Upload Date (DESC)', 'value': 'createdTime-DESC' },
-        { 'name': 'ViewBy (ASC)', 'value': 'viewBy-ASC' },
-        { 'name': 'ViewBy (DESC)', 'value': 'viewBy-DESC' },
+        { 'name': 'Type (ASC)', 'value': 'viewBy-ASC' },
+        { 'name': 'Type (DESC)', 'value': 'viewBy-DESC' },
     ];
     sortMonthDates = [{ 'name': 'Current Month', 'value': 'current-month' },
     { 'name': 'By Month', 'value': 'month' },
