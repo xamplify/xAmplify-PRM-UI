@@ -840,12 +840,23 @@ export class DashboardComponent implements OnInit, OnDestroy {
         for (let i = 0; i < this.dashboardReport.downloadEmailLogList.length; i++) {
             let date = new Date(this.dashboardReport.downloadEmailLogList[i].time);
             var object = {
-                "Email Id": this.dashboardReport.downloadEmailLogList[i].emailId,
                 "First Name": this.dashboardReport.downloadEmailLogList[i].firstName,
                 "Last Name": this.dashboardReport.downloadEmailLogList[i].lastName,
+                "Email Id": this.dashboardReport.downloadEmailLogList[i].emailId,
+                "Campaign Name": this.dashboardReport.downloadEmailLogList[i].campaignName,
                 "Date and Time": date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds(),
-                "Campaign Name": this.dashboardReport.downloadEmailLogList[i].campaignName
             }
+            if (this.paginationType == 'open') {
+                object["Subject"] = this.dashboardReport.downloadEmailLogList[i].subject;
+            }
+            if (this.paginationType == 'clicked') {
+                if(this.dashboardReport.downloadEmailLogList[i].url){
+                    object["URL"] = this.dashboardReport.downloadEmailLogList[i].url;
+                }else{
+                    object["URL"] = 'Clicked on the video thumbnail';
+                }
+            }
+            
 
             if (this.paginationType == 'clicked' || this.paginationType == 'watched') {
                 object["City"] = this.dashboardReport.downloadEmailLogList[i].city;
