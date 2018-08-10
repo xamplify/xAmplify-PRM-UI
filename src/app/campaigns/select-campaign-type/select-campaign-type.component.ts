@@ -54,6 +54,10 @@ export class SelectCampaignTypeComponent implements OnInit{
          this.refService.selectedCampaignType = "video";
          this.router.navigate(["/home/campaigns/create"]);
      }
+     createEventCampaign(){
+        this.refService.selectedCampaignType = "eventCampaign";
+        this.router.navigate(["/home/campaigns/event"]);
+     }
 
 
 }

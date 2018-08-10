@@ -158,19 +158,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
 
     editCampaign(campaign:any) {
       if(campaign.campaignType.indexOf('EVENT') > -1) {
-        this.campaignService.getEventCampaignById(campaign.campaignId).subscribe(
-          (result:any)=>{
-           console.log(result);
-           this.campaignService.eventCampaign = result.data;
-           if(campaign.campaignType == 'EVENT'){
-            this.router.navigate(['/home/campaigns/event-edit']);
-           }
-          },
-          (error)=>{
-            console.log(error);
-           }
-        );
-        // this.campaignService.campaign = data;
+            this.router.navigate(['/home/campaigns/event-edit/'+campaign.campaignId]);
        }
       else {
       var obj = { 'campaignId': campaign.campaignId }
@@ -297,7 +285,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
     showCampaignPreview(campaign:any){
         if(campaign.campaignType.indexOf('EVENT')>-1){
-          this.router.navigate(['/home/campaigns/event-preview']);
+          this.router.navigate(['/home/campaigns/event-preview/'+campaign.campaignId]);
         } else {
            this.router.navigate(['/home/campaigns/preview/'+campaign.campaignId]);
         }

@@ -27,16 +27,16 @@
 						<label for="eventTitle" class="col-sm-3 control-label">Event Title <span class=text-danger>*</span></label>
 						<div class="col-sm-9">
 						<input type="text" class="form-control" id="eventTitle" placeholder="Event Title" [(ngModel)]="eventCampaign.campaign" [ngModelOptions]="{standalone: true}"
-						[ngClass]="{'has-error': eventError.eventTitleError}" (input)="eventTitleError()" (blur)="eventTitleError()">
+						[ngClass]="{'has-error': eventError.eventTitleError}" (input)="eventTitleError()" (blur)="eventTitleError()" [attr.disabled]="isPreviewEvent? '' : null">
 						<div class="text-danger" *ngIf="eventError.eventTitleError">Event Title is required</div>
 					</div>
 					</div>
 					<div class="form-group">
 						<label for="hostedBy" class="col-sm-3 control-label">Hosted By <span class=text-danger>*</span></label>
 						<div class="col-sm-9">
-						<input type="text" class="form-control pull-left" style="width: 50%" placeholder="Hosted By" [(ngModel)]="eventCampaign.fromName" [ngModelOptions]="{standalone: true}"
+						<input type="text" [attr.disabled]="isPreviewEvent? '' : null" class="form-control pull-left" style="width: 50%" placeholder="Hosted By" [(ngModel)]="eventCampaign.fromName" [ngModelOptions]="{standalone: true}"
 							[ngClass]="{'has-error': eventError.eventHostByError}" (input)="eventHostByError()"  (blur)="eventHostByError()">
-						<select class="form-control" style="width: 50%" [(ngModel)]="eventCampaign.email" [ngModelOptions]="{standalone: true}" (change)="setFromName()">
+						<select [attr.disabled]="isPreviewEvent? '' : null" class="form-control" style="width: 50%" [(ngModel)]="eventCampaign.email" [ngModelOptions]="{standalone: true}" (change)="setFromName()">
 							<option *ngFor="let teamMember of teamMemberEmailIds" [ngValue]="teamMember.emailId">
 								{{teamMember.emailId}}
 							</option>
@@ -48,7 +48,7 @@
 						<label for="hostedBy" class="col-sm-3 control-label">Partner Campaign</label>
 						<div class="col-sm-9">
 							<switch [status]="eventCampaign.channelCampaign" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-								[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
+								[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size" [disabled]="isPreviewEvent"
 								(statusChange)="eventCampaign.channelCampaign = !eventCampaign.channelCampaign">
 							</switch>
 						</div>
@@ -56,18 +56,18 @@
 					<div class="form-group">
 						<label for="eventDateTime" class="col-sm-3 control-label">Event Date/Time <span class=text-danger>*</span></label>
 						<div class="col-sm-9 p0">
-							<div class="col-sm-6"><input type="text" id="startDatePicker" class="form-control flatpickr" placeholder="Start Time"
+							<div class="col-sm-6"><input [attr.disabled]="isPreviewEvent? '' : null" type="text" id="startDatePicker" class="form-control flatpickr" placeholder="Start Time"
 								[(ngModel)]="eventCampaign.campaignEventTimes[0].startTimeString" [ngModelOptions]="{standalone: true}" (input)="eventStartTimeError()" (blur)="eventStartTimeError()"
 								[ngClass]="{'has-error': eventError.eventStartTimeError && !eventCampaign.campaignEventTimes[0].startTimeString}"></div>
 							<div class="col-sm-6">
-								<input type="text" id="enDatePicker" [disabled]="eventCampaign.campaignEventTimes[0].allDay" class="form-control flatpickr" placeholder="End Time"
+								<input type="text" id="enDatePicker" [attr.disabled]="isPreviewEvent? '' : null" [disabled]="eventCampaign.campaignEventTimes[0].allDay" class="form-control flatpickr" placeholder="End Time"
 								[(ngModel)]="eventCampaign.campaignEventTimes[0].endTimeString" [ngModelOptions]="{standalone: true}">
 							</div>
 							<div class="col-sm-6 text-danger" *ngIf="eventError.eventStartTimeError &&!eventCampaign.campaignEventTimes[0].startTimeString">Please enter a valid start Date / Time</div>
 						<div class="clearfix">
 							<div class="col-sm-6">
 								<label>
-									<input type="checkbox" [checked]="eventCampaign.campaignEventTimes[0].allDay" (change)="eventCampaign.campaignEventTimes[0].allDay = !eventCampaign.campaignEventTimes[0].allDay"> All Day
+									<input type="checkbox" [attr.disabled]="isPreviewEvent? '' : null" [checked]="eventCampaign.campaignEventTimes[0].allDay" (change)="eventCampaign.campaignEventTimes[0].allDay = !eventCampaign.campaignEventTimes[0].allDay"> All Day
 								</label>
 							</div>
 							<div class="col-sm-6">TIMEZONE</div>
@@ -76,7 +76,7 @@
 							<div class="col-sm-6">
 								<label style="float: left;">Country</label>
 								<br>
-                <select class="form-control" style="width: 100%;cursor: pointer;" 	[ngClass]="{'has-error': eventError.eventCountryAndTimeZone && !eventCampaign.campaignEventTimes[0].countryId}"
+                <select [attr.disabled]="isPreviewEvent? '' : null" class="form-control" style="width: 100%;cursor: pointer;" 	[ngClass]="{'has-error': eventError.eventCountryAndTimeZone && !eventCampaign.campaignEventTimes[0].countryId}"
                 [(ngModel)]="eventCampaign.campaignEventTimes[0].countryId" [ngModelOptions]="{standalone: true}" (change)="onChangeCountryCampaignEventTime($event.target.value)" (input)="eventCountryError()" (blur)="eventCountryError()">
 									<option *ngFor="let country of countries" [value]="country.id">{{country.name}}</option>
                 </select>
@@ -85,7 +85,7 @@
 							<div class="col-sm-6">
 								<label style="float: left;">TimeZone </label>
 								<br>
-								<select class="form-control" style="width: 100%" [(ngModel)]="eventCampaign.campaignEventTimes[0].timeZone" [ngModelOptions]="{standalone: true}" id="timezoneIdCampaignEventTime">
+								<select [attr.disabled]="isPreviewEvent? '' : null" class="form-control" style="width: 100%" [(ngModel)]="eventCampaign.campaignEventTimes[0].timeZone" [ngModelOptions]="{standalone: true}" id="timezoneIdCampaignEventTime">
 									<ng-container *ngIf="timezonesCampaignEventTime?.length==1">
 										<option *ngFor="let timeZone of timezonesCampaignEventTime" [value]="timeZone.timezoneId" [selected]="eventCampaign.campaignEventTimes[0].countryId == timeZone.countryId">
 											{{timeZone.cityName}}
@@ -104,7 +104,7 @@
 					<div class="form-group">
 						<label for="hostedBy" class="col-sm-3 control-label">Online Meeting</label>
 						<div class="col-sm-9">
-							<switch [status]="eventCampaign.onlineMeeting" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+							<switch [disabled]="isPreviewEvent" [status]="eventCampaign.onlineMeeting" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
 								[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
 								(statusChange)="eventCampaign.onlineMeeting = !eventCampaign.onlineMeeting">
 							</switch>
@@ -113,18 +113,18 @@
 					<section *ngIf="!eventCampaign.onlineMeeting">
 						<div class="form-group">
 							<label for="hostedBy" class="col-sm-3 control-label">Location Name <span class="text-danger" style="position: absolute;">*</span></label>
-              <div class="col-sm-9"><input type="text" class="form-control" id="eventDateTime" (blur)="eventLocationError()" (input)="eventLocationError()"
+              <div class="col-sm-9"><input type="text" [attr.disabled]="isPreviewEvent? '' : null" class="form-control" id="eventDateTime" (blur)="eventLocationError()" (input)="eventLocationError()"
                  placeholder="My house, bar, etc" [ngClass]="{'has-error': eventError.eventLocationError}" [(ngModel)]="eventCampaign.campaignLocation.location" [ngModelOptions]="{standalone: true}">
                  <div class="text-danger" *ngIf="eventError.eventLocationError">Location is required</div>
                 </div>
 						</div>
 						<div class="form-group">
 							<label for="hostedBy" class="col-sm-3 control-label">Address</label>
-							<div class="col-sm-9"><input type="text" class="form-control" id="eventDateTime" placeholder="Street Address" [(ngModel)]="eventCampaign.campaignLocation.street" [ngModelOptions]="{standalone: true}"></div>
+							<div class="col-sm-9"><input type="text" [attr.disabled]="isPreviewEvent? '' : null" class="form-control" id="eventDateTime" placeholder="Street Address" [(ngModel)]="eventCampaign.campaignLocation.street" [ngModelOptions]="{standalone: true}"></div>
 							<div class="col-sm-offset-3 col-sm-9 pt10">
-								<div class="col-sm-4 p0"><input type="text" class="form-control" id="city" placeholder="City" [(ngModel)]="eventCampaign.campaignLocation.city" [ngModelOptions]="{standalone: true}"></div>
-								<div class="col-sm-4 p0"><input type="text" class="form-control" id="state" placeholder="State" [(ngModel)]="eventCampaign.campaignLocation.state" [ngModelOptions]="{standalone: true}"></div>
-								<div class="col-sm-4 p0"><input type="text" class="form-control" id="zip" placeholder="Zip" [(ngModel)]="eventCampaign.campaignLocation.zip" [ngModelOptions]="{standalone: true}"></div>
+								<div class="col-sm-4 p0"><input type="text" [attr.disabled]="isPreviewEvent? '' : null" class="form-control" id="city" placeholder="City" [(ngModel)]="eventCampaign.campaignLocation.city" [ngModelOptions]="{standalone: true}"></div>
+								<div class="col-sm-4 p0"><input type="text" [attr.disabled]="isPreviewEvent? '' : null" class="form-control" id="state" placeholder="State" [(ngModel)]="eventCampaign.campaignLocation.state" [ngModelOptions]="{standalone: true}"></div>
+								<div class="col-sm-4 p0"><input type="text" [attr.disabled]="isPreviewEvent? '' : null" class="form-control" id="zip" placeholder="Zip" [(ngModel)]="eventCampaign.campaignLocation.zip" [ngModelOptions]="{standalone: true}"></div>
 							</div>
 						</div>
 					</section>
@@ -134,20 +134,20 @@
 							<label class="upload-media-wrapper" *ngIf="! eventCampaign.campaignEventMedias[0].filePath">
 								<i class="fa fa-camera" aria-hidden="true"></i>
 								<b>Add Event Image</b>
-								<input type="file" (change)="fileChange($event)" #input name="media[]" accept="image/gif,image/jpeg,image/jpg,image/png"
+								<input type="file" [attr.disabled]="isPreviewEvent? '' : null" (change)="fileChange($event)" #input name="media[]" accept="image/gif,image/jpeg,image/jpg,image/png"
 								 class="file-input js-tooltip" data-original-title="Add photo">
 							</label>
-							<div class="uploaded-media-wrapper" *ngIf="eventCampaign.campaignEventMedias[0].filePath">
+							<div [attr.disabled]="isPreviewEvent? '' : null" class="uploaded-media-wrapper" *ngIf="eventCampaign.campaignEventMedias[0].filePath">
 								<img src="{{eventCampaign.campaignEventMedias[0].filePath}}">
-								<i class="fa fa-times-circle" (click)="resetcampaignEventMedia()"></i>
+								<i [class.disabled]="isPreviewEvent? '' : null" class="fa fa-times-circle" (click)="resetcampaignEventMedia()"></i>
 							</div>
 						</div>
 					</div>
 
 					<div class="form-group">
 						<label for="hostedBy" class="col-sm-3 control-label">Event Description <span class=text-danger>*</span></label>
-						<div class="col-sm-9">
-              <ckeditor [(ngModel)]="eventCampaign.message"  (blur)="eventDescriptionError()" (input)="eventDescriptionError()" [ngModelOptions]="{standalone: true}" #myckeditor [config]="ckeConfig" debounce="500"></ckeditor>
+						<div class="col-sm-9" [attr.disabled]="isPreviewEvent? '' : null">
+              <ckeditor [attr.disabled]="isPreviewEvent? '' : null" [(ngModel)]="eventCampaign.message"  (blur)="eventDescriptionError()" (input)="eventDescriptionError()" [ngModelOptions]="{standalone: true}" #myckeditor [config]="ckeConfig" debounce="500"></ckeditor>
               <div  class="text-danger" *ngIf="eventError.eventDescription"> Event message is required</div>
 						</div>
 					</div>
@@ -155,10 +155,10 @@
 						<div class="portlet-title">
 							<h4 class="pull-left f-w-600 text-primary">Event settings</h4>
 						</div>
-						<div class="portlet-body clearfix">
-							<div><label> <input type="checkbox" [checked]="eventCampaign.rsvpReceived" (change)="eventCampaign.rsvpReceived = !eventCampaign.rsvpReceived"> Notify me when guests RSVP </label></div>
-							<div><label> <input type="checkbox" [checked]="eventCampaign.emailOpened" (change)="eventCampaign.emailOpened = !eventCampaign.emailOpened"> Notify me when email is opened </label></div>
-							<div><label> <input type="checkbox" [checked]="eventCampaign.inviteOthers" (change)="eventCampaign.inviteOthers = !eventCampaign.inviteOthers"> Invite others </label></div>
+						<div class="portlet-body clearfix" [attr.disabled]="isPreviewEvent">
+							<div><label> <input type="checkbox" [attr.disabled]="isPreviewEvent? '' : null" [checked]="eventCampaign.rsvpReceived" (change)="eventCampaign.rsvpReceived = !eventCampaign.rsvpReceived"> Notify me when guests RSVP </label></div>
+							<div><label> <input type="checkbox" [attr.disabled]="isPreviewEvent? '' : null" [checked]="eventCampaign.emailOpened" (change)="eventCampaign.emailOpened = !eventCampaign.emailOpened"> Notify me when email is opened </label></div>
+							<div><label> <input type="checkbox" [attr.disabled]="isPreviewEvent? '' : null" [checked]="eventCampaign.inviteOthers" (change)="eventCampaign.inviteOthers = !eventCampaign.inviteOthers"> Invite others </label></div>
 						</div>
 					</div>
 				</form>
@@ -178,7 +178,7 @@
 							</tr>
 							<ng-container *ngFor="let emailTemplate of emailTemplates">
 							<tr>
-								<td class="text-center"><input type="radio" value="emailTemplate.id" [checked]="eventCampaign.emailTemplate.id === emailTemplate.id" (change)="eventCampaign.emailTemplate = emailTemplate"></td>
+								<td class="text-center"><input type="radio" [attr.disabled]="isPreviewEvent? '' : null" value="emailTemplate.id" [checked]="eventCampaign.emailTemplate.id === emailTemplate.id" (change)="eventCampaign.emailTemplate = emailTemplate"></td>
 								<td>{{emailTemplate.name}}</td>
 								<td class="text-center"><a><i class="fa fa-eye" aria-hidden="true" (click)="previewEventCampaignEmailTemplate(emailTemplate.id);"></i></a> </td>
 							</tr>
@@ -222,7 +222,7 @@
 								<tbody>
 									<tr *ngFor="let contactList of contactListsPagination.pagedItems; let i=index;">
 										<td class='text-center m0'>
-											<input type='checkbox' id='{{contactList.id}}' [checked]="userListIds.indexOf(contactList.id)>-1" (click)="highlightRow(contactList.id)">
+											<input [attr.disabled]="isPreviewEvent? '' : null" type='checkbox' id='{{contactList.id}}' [checked]="userListIds.indexOf(contactList.id)>-1" (click)="highlightRow(contactList.id)">
 										</td>
 										<td>
 											<h5 class='m0 f-w-600'>
@@ -255,13 +255,13 @@
 					<div class="portlet-body clearfix">
 						<div>
 							<label class="bold">
-								<input type="radio" value="eventCampaign.publicEventCampaign" [checked]="eventCampaign.publicEventCampaign" (change)="eventCampaign.publicEventCampaign = !eventCampaign.publicEventCampaign">Public page
+								<input [attr.disabled]="isPreviewEvent? '' : null" type="radio" value="eventCampaign.publicEventCampaign" [checked]="eventCampaign.publicEventCampaign" (change)="eventCampaign.publicEventCampaign = !eventCampaign.publicEventCampaign">Public page
 							</label>
 							<p class="ml10">Turn invitees into your biggest promoters by letting them share your event on Facebook, Twitter, Linkedin and or any social media platform</p>
 						</div>
 						<div>
 							<label class="bold">
-								<input type="radio" value="!eventCampaign.publicEventCampaign" [checked]="!eventCampaign.publicEventCampaign" (change)="eventCampaign.publicEventCampaign = !eventCampaign.publicEventCampaign">Private page
+								<input [attr.disabled]="isPreviewEvent? '' : null" type="radio" value="!eventCampaign.publicEventCampaign" [checked]="!eventCampaign.publicEventCampaign" (change)="eventCampaign.publicEventCampaign = !eventCampaign.publicEventCampaign">Private page
 							</label>
 							<p class="ml10">Make your event invitation-only(guests must receive an xAmplify invitation to attend/view)</p>
 						</div>
@@ -270,7 +270,7 @@
 			</div>
 			</section>
 			<div class="col-xs-12 p0 mb10">
-				<a class="btn btn-warning btn-block" (click)="addReplyRows()">
+				<a class="btn btn-warning btn-block" [attr.disabled]="isPreviewEvent? '' : null" (click)="addReplyRows()">
 					<i class="fa fa-plus-square p0" style="margin: 0 5px;"></i>{{properties.ADD_AUTO_RESPONSE_EMAIL}}
 				</a>
 			</div>
@@ -284,12 +284,12 @@
             			</div>
 						<div class="col-xs-5 pull-right">
 							<label class="switch-choose">Choose Template</label>
-							<switch class="switch-choose" [status]="reply.defaultTemplate" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+							<switch class="switch-choose" [disabled]="isPreviewEvent" [status]="reply.defaultTemplate" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
 								[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
 								(statusChange)="selectReplyEmailBody($event,i,reply)">
 							</switch>
-							<button type="button" class="btn btn-danger button-blue" (click)="remove(reply.divId,'replies')"><span class="glyphicon glyphicon-trash"></span></button>
-							<button type="button" class="btn btn-primary button-blue"  (click)="addReplyRows()"><span class="glyphicon glyphicon-plus"></span></button>
+							<button [disabled]="isPreviewEvent" type="button" class="btn btn-danger button-blue" (click)="remove(reply.divId,'replies')"><span class="glyphicon glyphicon-trash"></span></button>
+							<button [disabled]="isPreviewEvent" type="button" class="btn btn-primary button-blue"  (click)="addReplyRows()"><span class="glyphicon glyphicon-plus"></span></button>
 						</div>
 					</div>
 					<div class="row">
@@ -298,7 +298,7 @@
 					<div class="col-xs-4" style="padding:0">
 						<div class="col-xs-12" style="margin-bottom: 6px;">
 							<label style="cursor: default;" for="reason">Reason</label>
-							<select class="form-control" name="actionId" [(ngModel)]="reply.actionId">
+							<select class="form-control" name="actionId" [(ngModel)]="reply.actionId" [attr.disabled]="isPreviewEvent? '' : null">
 								<option [value]="0" [selected]="reply.actionId ==0">Email is not opened</option>
 								<option [value]="13" [selected]="reply.actionId==13">Email is opened</option>
 								<option [value]="16" [selected]="reply.actionId ==16">Send immediately after email is opened</option>
@@ -318,16 +318,16 @@
 								<label style="cursor: default;" for="days" *ngIf="reply.actionId!=22 && reply.actionId!=23" id="reply-days-{{reply.divId}}">Reply In X Days
 									<b style="color: red">*</b>
 								</label>
-								<input type="number" class="form-control" name="days" placeholder="Days" [(ngModel)]="reply.replyInDays" min="0" oninput="validity.valid||(value='');">
+								<input [attr.disabled]="isPreviewEvent? '' : null" type="number" class="form-control" name="days" placeholder="Days" [(ngModel)]="reply.replyInDays" min="0" oninput="validity.valid||(value='');">
 							</div>
 							<div class="col-xs-12 time-col " *ngIf="reply.actionId!=22 && reply.actionId!=23 ">
 								<div class="col-xs-2" style="cursor: default;"><span for="time" id="send-time-{{reply.divId}}" class="time-picker-css">At<b style="color: red">*</b></span></div>
-								<div class="col-xs-10" style="height: 66px;"><timepicker [(ngModel)]="reply.replyTime" name="time" [hourStep]="1" [minuteStep]="1"></timepicker></div>
+								<div class="col-xs-10" style="height: 66px;"><timepicker [attr.disabled]="isPreviewEvent" [(ngModel)]="reply.replyTime" name="time" [hourStep]="1" [minuteStep]="1"></timepicker></div>
 							</div>
 						</div>
 						<div class="col-xs-12">
 							<label style="cursor: default;" for="time" id="reply-subject-{{reply.divId}}">Subject<b style="color: red">*</b></label>
-							<input type="text" class="form-control" name="subject" [(ngModel)]="reply.subject" placeholder="Subject" maxlength="50">
+							<input [attr.disabled]="isPreviewEvent? '' : null" type="text" class="form-control" name="subject" [(ngModel)]="reply.subject" placeholder="Subject" maxlength="50">
 						</div>
 					</div>
 							<div class="col-xs-8">
@@ -336,8 +336,8 @@
 										<label style="cursor: default;" for="days" id="reply-message-{{reply.divId}}">Message <b style="color: red">*</b>
 										</label>
 									</div>
-									<div>
-										<ckeditor [(ngModel)]="reply.body" name="body"></ckeditor>
+									<div [class.disabled]="isPreviewEvent? '' : null">
+										<ckeditor [attr.disabled]="isPreviewEvent? '' : null" [(ngModel)]="reply.body" name="body"></ckeditor>
 									</div>
 								</div>
 								<div id="reply-email-template-{{i}}" *ngIf="reply.defaultTemplate">
@@ -360,7 +360,7 @@
 												<ng-container *ngIf="!isAdd && reply.emailTemplatesPagination.totalRecords>0 && reply.emailTemplatesPagination.pageIndex==1 && reply.selectedEmailTemplateIdForEdit>0 && reply.showSelectedEmailTemplate ">
 													<tr (click)="setReplyEmailTemplate(reply.emailTemplate.id,reply,i)" [class.active]="reply.emailTemplate.id==reply.selectedEmailTemplateId">
 														<td>
-															<input type="radio" name="reply-email-template" [value]="reply.emailTemplate.id" id="reply-{{i}}-{{reply.emailTemplate.id}}"
+															<input [attr.disabled]="isPreviewEvent? '' : null" type="radio" name="reply-email-template" [value]="reply.emailTemplate.id" id="reply-{{i}}-{{reply.emailTemplate.id}}"
 																(click)="setReplyEmailTemplate(reply.emailTemplate.id,reply,i)" [checked]="reply.emailTemplate.id == reply.selectedEmailTemplateId">
 														</td>
 														<td *ngIf="reply.emailTemplate.name?.length>25" title="{{reply.emailTemplate.name}}">{{reply.emailTemplate.name|slice:0:25}}....</td>
@@ -374,9 +374,9 @@
 													<tr (click)="setReplyEmailTemplate(emailTemplate.id,reply,i,emailTemplate.draft)" [class.active]="emailTemplate.id==reply.selectedEmailTemplateId"
 														*ngIf="reply.selectedEmailTemplateIdForEdit!=emailTemplate.id">
 														<td>
-															<input *ngIf="!emailTemplate.draft" type="radio" name="reply-email-template" [value]="emailTemplate.id" id="reply-{{i}}-{{emailTemplate.id}}"
+															<input [attr.disabled]="isPreviewEvent? '' : null" *ngIf="!emailTemplate.draft" type="radio" name="reply-email-template" [value]="emailTemplate.id" id="reply-{{i}}-{{emailTemplate.id}}"
 															 (click)="setReplyEmailTemplate(emailTemplate.id,reply,i,emailTemplate.draft)" [checked]="emailTemplate.id == reply.selectedEmailTemplateId">
-														<input *ngIf="emailTemplate.draft" title="draft template cannot be selected" disabled="disabled" type="radio" name="reply-email-template">
+														<input [class.disabled]="isPreviewEvent" *ngIf="emailTemplate.draft" title="draft template cannot be selected" disabled="disabled" type="radio" name="reply-email-template">
 														</td>
 														<td *ngIf="emailTemplate.name?.length>25" title="{{emailTemplate.name}}">{{emailTemplate.name|slice:0:25}}....</td>
 														<td *ngIf="emailTemplate.name?.length<=25" title="{{emailTemplate.name}}">{{emailTemplate.name}}</td>
@@ -404,28 +404,28 @@
       </div>
       </fieldset>
 			<div class="portlet light dashboard-stat2 col-xs-12">
-				<div class="col-xs-4"><button class='btn btn-block btn-primary' (click)="createEventCampaign(eventCampaign, 'NOW')">Now</button></div>
-				<div class="col-xs-4"><button class='btn btn-block btn-primary' (click)="selectedLaunchOption = 'SCHEDULE'">Schedule</button></div>
-				<div class="col-xs-4"><button class='btn btn-block btn-primary' (click)="createEventCampaign(eventCampaign, 'SAVE')">Save</button></div>
+				<div class="col-xs-4" ><button [disabled]="isPreviewEvent"  class='btn btn-block btn-primary' (click)="createEventCampaign(eventCampaign, 'NOW')">Now</button></div>
+				<div class="col-xs-4"><button [disabled]="isPreviewEvent"  class='btn btn-block btn-primary' (click)="selectedLaunchOption = 'SCHEDULE'">Schedule</button></div>
+				<div class="col-xs-4"><button [disabled]="isPreviewEvent"  class='btn btn-block btn-primary' (click)="createEventCampaign(eventCampaign, 'SAVE')">Save</button></div>
 
 				<div class="col-md-12" style="margin-left: -17px;margin-top: 12px;" [hidden]="selectedLaunchOption!='SCHEDULE'">
 					<div class="col-md-4">
 						<label style="float: left;">Date</label>
 						<br>
-						<input type="text" id="launchTimeInString" class="form-control flatpickr" placeholder="Launch Time"
+						<input [attr.disabled]="isPreviewEvent? '' : null"  type="text" id="launchTimeInString" class="form-control flatpickr" placeholder="Launch Time"
 								[(ngModel)]="eventCampaign.launchTimeInString" [ngModelOptions]="{standalone: true}">
 					</div>
 					<div class="col-md-4">
 						<label style="float: left;">Country</label>
 						<br>
-						<select class="form-control" style="width: 100%" [(ngModel)]="eventCampaign.countryId" [ngModelOptions]="{standalone: true}" (change)="onChangeCountry($event.target.value)" id="countryName">
+						<select [attr.disabled]="isPreviewEvent? '' : null" class="form-control" style="width: 100%" [(ngModel)]="eventCampaign.countryId" [ngModelOptions]="{standalone: true}" (change)="onChangeCountry($event.target.value)" id="countryName">
 							<option *ngFor="let country of countries" [value]="country.id">{{country.name}}</option>
 						</select>
 					</div>
 					<div class="col-md-4">
 						<label style="float: left;">TimeZone </label>
 						<br>
-						<select class="form-control" style="width: 100%" [(ngModel)]="eventCampaign.timeZone" [ngModelOptions]="{standalone: true}" id="timezoneId">
+						<select [attr.disabled]="isPreviewEvent? '' : null" class="form-control" style="width: 100%" [(ngModel)]="eventCampaign.timeZone" [ngModelOptions]="{standalone: true}" id="timezoneId">
 							<ng-container *ngIf="timezones?.length==1">
 								<option *ngFor="let timeZone of timezones" [value]="timeZone.timezoneId" [selected]="eventCampaign.countryId == timeZone.countryId">
 									{{timeZone.cityName}}

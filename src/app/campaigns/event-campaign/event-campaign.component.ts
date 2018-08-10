@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
+import { Router, ActivatedRoute} from '@angular/router';
 import { ReferenceService } from '../../core/services/reference.service';
 import { ContactService } from '../.././contacts/services/contact.service';
 import { CampaignService } from '../../campaigns/services/campaign.service';
@@ -32,7 +32,7 @@ declare var $, flatpickr, CKEDITOR;
   styleUrls: ['./event-campaign.component.css'],
   providers: [PagerService, Pagination, CallActionSwitch, Properties,EventError]
 })
-export class EventCampaignComponent implements OnInit, OnDestroy {
+export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   emailTemplates: Array<EmailTemplate> = [];
   campaignEmailTemplate: CampaignEmailTemplate = new CampaignEmailTemplate();
   reply: Reply = new Reply();
@@ -63,6 +63,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy {
   emailOpenedReplyDaysSum = 0;
   onClickScheduledDaysSum = 0;
   userListIds:any = [];
+  isPreviewEvent = false;
   constructor(public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
     private contactService: ContactService,
     public campaignService: CampaignService,
@@ -70,41 +71,56 @@ export class EventCampaignComponent implements OnInit, OnDestroy {
     public emailTemplateService: EmailTemplateService,
     private pagerService: PagerService,
     private logger: XtremandLogger,
-    private router: Router,
+    private router: Router, public activatedRoute:ActivatedRoute,
     public properties: Properties, public eventError:EventError) {
     this.countries = this.referenceService.getCountries();
     this.listEmailTemplates();
-    if(this.campaignService.eventCampaign!==undefined){
-      this.eventCampaign = this.campaignService.eventCampaign;
-      this.eventCampaign.emailTemplate = this.campaignService.eventCampaign.emailTemplateDTO;
-      this.eventCampaign.user = this.campaignService.eventCampaign.userDTO;
-      if(this.eventCampaign.campaignReplies===undefined){ this.eventCampaign.campaignReplies = [];}
-      // this.eventCampaign.userListIds = this.campaignService.eventCampaign.userListDTOs;
-      this.eventCampaign.campaignEventTimes = this.campaignService.eventCampaign.campaignEventTimes;
-      for(let i=0; i<this.countries.length;i++){
-        if(this.countries[i].name===this.campaignService.eventCampaign.campaignEventTimes[0].country){
-          this.eventCampaign.countryId = this.countries[i].id;
-          this.eventCampaign.campaignEventTimes[0].countryId = this.countries[i].id;
-          break;
+    CKEDITOR.config.height = '175';
+    this.isPreviewEvent = this.router.url.includes('/home/campaigns/event-preview')? true: false;
+     if(this.isPreviewEvent){
+       CKEDITOR.config.readOnly = true;
+      } else {
+        CKEDITOR.config.readOnly = false;
+      }
+  }
+  ngOnInit() {
+    if (this.referenceService.selectedCampaignType!=='eventCampaign' && this.router.url.includes('/home/campaigns/event') && !this.activatedRoute.snapshot.params['id']) {
+      console.log( "This page is reloaded" );
+      this.router.navigate(['/home/campaigns/select']);
+    }
+    else if(this.activatedRoute.snapshot.params['id']){
+      const alias = this.activatedRoute.snapshot.params['id'];
+      this.campaignService.getEventCampaignById(alias).subscribe(
+        (result)=>{
+        this.campaignService.eventCampaign = result.data;
+        this.eventCampaign = result.data;
+        this.eventCampaign.emailTemplate = result.data.emailTemplateDTO;
+        this.eventCampaign.user = result.data.userDTO;
+        if(result.data.campaignReplies===undefined){ this.eventCampaign.campaignReplies = [];}
+        // this.eventCampaign.userListIds = this.campaignService.eventCampaign.userListDTOs;
+        this.eventCampaign.campaignEventTimes = result.data.campaignEventTimes;
+        for(let i=0; i<this.countries.length;i++){
+          if(this.countries[i].name=== result.data.campaignEventTimes[0].country){
+            this.eventCampaign.countryId = this.countries[i].id;
+            this.eventCampaign.campaignEventTimes[0].countryId = this.countries[i].id;
+            break;
+          }
         }
-      }
-      for(let i=0; i< this.campaignService.eventCampaign.userListDTOs.length;i++){
-       this.userListIds.push(this.campaignService.eventCampaign.userListDTOs[i].id);
-      }
-      this.eventCampaign.userListIds = this.userListIds;
-      this.eventCampaign.userLists = [];
-      console.log(this.userListIds);
-
-    }else {
+        for(let i=0; i< result.data.userListDTOs.length;i++){
+         this.userListIds.push(result.data.userListDTOs[i].id);
+        }
+        this.eventCampaign.userListIds = this.userListIds;
+        this.eventCampaign.userLists = [];
+        console.log(this.userListIds);
+      });
+    }
+    else{
     this.eventCampaign.emailTemplate = this.emailTemplates[0];
     this.eventCampaign.countryId = this.countries[0].id;
     this.eventCampaign.campaignEventTimes[0].countryId = this.countries[0].id;
     }
-    CKEDITOR.config.height = '175';
-  }
-  ngOnInit() {
     this.loggedInUserId = this.authenticationService.getUserId();
-    this.listAllTeamMemberEmailIds();
+
     this.loadContactLists(this.contactListsPagination);
     flatpickr('.flatpickr', {
       enableTime: true,
@@ -115,6 +131,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy {
     this.ckeConfig = {
       allowedContent: true,
     };
+  }
+  ngAfterViewInit() {
+    this.listAllTeamMemberEmailIds();
   }
   eventTitleError(){
     this.eventError.eventTitleError = this.eventCampaign.campaign ? false: true;
@@ -566,6 +585,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy {
 
    ngOnDestroy(): void {
       this.campaignService.eventCampaign = undefined;
+      CKEDITOR.config.readOnly = false;
    }
 
 }
