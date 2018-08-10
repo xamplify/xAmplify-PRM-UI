@@ -143,8 +143,8 @@
 								 class="file-input js-tooltip" data-original-title="Add photo">
 							</label>
 							<div [attr.disabled]="isPreviewEvent? '' : null" class="uploaded-media-wrapper" *ngIf="eventCampaign.campaignEventMedias[0].filePath">
-								<img src="{{eventCampaign.campaignEventMedias[0].filePath}}">
-								<i [class.disabled]="isPreviewEvent? '' : null" class="fa fa-times-circle" (click)="resetcampaignEventMedia()"></i>
+								<img src="{{eventCampaign.campaignEventMedias[0].filePath}}" [attr.disabled]="isPreviewEvent? '' : null">
+								<i *ngIf="!isPreviewEvent" class="fa fa-times-circle" (click)="resetcampaignEventMedia()"></i>
 							</div>
 						</div>
 					</div>

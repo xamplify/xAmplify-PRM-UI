@@ -290,7 +290,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
        'timeZone': eventCampaign.timeZone,
        'campaignScheduleType': eventCampaign.campaignScheduleType,
        'campaignLocation': eventCampaign.campaignLocation,
-       'campaignEventMedias': [{"filePath":""}],
+       'campaignEventMedias': [{"filePath": eventCampaign.campaignEventMedias[0].filePath}],
        'campaignEventTimes': eventCampaign.campaignEventTimes,
        'country': eventCampaign.campaignEventTimes[0].country,
        'publicEventCampaign': eventCampaign.publicEventCampaign,
@@ -316,7 +316,18 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
             this.customResponse = new CustomResponse( 'ERROR', response.errorResponses[0].message, true );
           }
           else if(response.statusCode === 7000){
-            this.customResponse = new CustomResponse( 'ERROR', response.errorResponses[0].message, true );
+            if(response.errorResponses[0].field =='campaign' && response.errorResponses[0].message=='Already Exists'){
+              this.customResponse = new CustomResponse( 'ERROR', 'Campaign name is already exists.', true );
+            }
+            else if(response.errorResponses[0].field =='eventEndTimeString'){
+              this.customResponse = new CustomResponse( 'ERROR', response.errorResponses[0].message, true );
+            }
+            else if(response.errorResponses[0].field ="eventStartTimeString"){
+              this.customResponse = new CustomResponse( 'ERROR', 'Please change the start time, its already over.', true );
+            }
+            else {
+              this.customResponse = new CustomResponse( 'ERROR', response.errorResponses[0].message, true );
+            }
           }
         }
       },
