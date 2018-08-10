@@ -101,6 +101,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
         this.eventCampaign.emailTemplate = result.data.emailTemplateDTO;
         this.eventCampaign.user = result.data.userDTO;
         if(result.data.campaignReplies===undefined){ this.eventCampaign.campaignReplies = [];}
+        else {this.getRepliesData(); }
         // this.eventCampaign.userListIds = this.campaignService.eventCampaign.userListDTOs;
         this.eventCampaign.campaignEventTimes = result.data.campaignEventTimes;
         for(let i=0; i<this.countries.length;i++){
@@ -248,7 +249,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     this.contactsPagination = new Pagination();
   }
 
-  createEventCampaign(eventCampaign: EventCampaign, launchOption: string) {
+  createEventCampaign(eventCampaign: any, launchOption: string) {
     this.isFormSubmitted = true;
     this.onBlurValidation();
     if(this.eventCampaign.campaignReplies && this.eventCampaign.campaignReplies.length>0){ this.getRepliesData(); }
@@ -275,6 +276,35 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     eventCampaign.campaignEventTimes[0].timeZone = $('#timezoneIdCampaignEventTime option:selected').val();
     eventCampaign.campaignEventTimes[0].country = this.countries.find(x => x.id == eventCampaign.campaignEventTimes[0].countryId).name;
 
+    if(eventCampaign.id){
+     const customEventCampaign = {
+       'campaign': this.eventCampaign.campaign,
+       'user':eventCampaign.user,
+       'message':eventCampaign.message,
+       'channelCampaign':eventCampaign.channelCampaign,
+       'emailOpened':eventCampaign.emailOpened,
+       'socialSharingIcons':eventCampaign.socialSharingIcons,
+       'fromName': eventCampaign.fromName,
+       'launchTimeInString':eventCampaign.launchTimeInString,
+       'emailTemplate':eventCampaign.emailTemplate,
+       'timeZone': eventCampaign.timeZone,
+       'campaignScheduleType': eventCampaign.campaignScheduleType,
+       'campaignLocation': eventCampaign.campaignLocation,
+       'campaignEventMedias': [{"filePath":""}],
+       'campaignEventTimes': eventCampaign.campaignEventTimes,
+       'country': eventCampaign.campaignEventTimes[0].country,
+       'publicEventCampaign': eventCampaign.publicEventCampaign,
+       'toPartner':eventCampaign.toPartner,
+       'inviteOthers':eventCampaign.inviteOthers,
+       'rsvpReceived':eventCampaign.rsvpReceived,
+       'onlineMeeting':eventCampaign.onlineMeeting,
+       'userLists' : eventCampaign.userLists,
+       'campaignReplies': eventCampaign.campaignReplies,
+     }
+     eventCampaign = customEventCampaign;
+    }
+
+
     if(this.errorLength===0 && this.eventCampaign.userListIds && this.eventCampaign.message && eventCampaign.campaign && eventCampaign.campaignEventTimes[0].startTimeString && eventCampaign.campaignEventTimes[0].country!="Select Country"){
     this.campaignService.createEventCampaign(eventCampaign)
       .subscribe(
@@ -296,7 +326,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     } else {
       this.showErrorMessage = true;
       if(eventCampaign.campaignEventTimes[0].country=="Select Country"){
-        this.customResponse = new CustomResponse( 'ERROR', 'Please select the valid country', true );
+       // this.customResponse = new CustomResponse( 'ERROR', 'Please select the valid country', true );
       } else {
       this.customResponse = new CustomResponse( 'ERROR', 'Please complete the * required fields', true );
       }
@@ -552,7 +582,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
                   this.addReplyDivError(reply.divId);
                   $('#send-time-'+reply.divId).css('color','red');
               }else{
-              //    reply.replyTime = this.campaignService.setAutoReplyDefaultTime(this.campaignLaunchForm.value.scheduleCampaign, reply.replyInDays,reply.replyTime,this.campaignLaunchForm.value.launchTime);
+                  reply.replyTime = this.campaignService.setAutoReplyDefaultTime(this.eventCampaign.campaignScheduleType, reply.replyInDays,reply.replyTime,this.eventCampaign.launchTimeInString);
                   reply.replyTimeInHoursAndMinutes = this.extractTimeFromDate(reply.replyTime);
               }
           }
