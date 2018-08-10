@@ -124,6 +124,29 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     this.referenceService.loading(this.httpRequestLoader, true);
     this.downloadTypeName = this.paginationType = 'campaignViews';
     this.listTotalCampaignViews(campaignId);
+    
+    if(!this.campaign.detailedAnalyticsShared && this.campaign.dataShare){
+        pagination.campaignId = campaignId;
+        pagination.campaignType = "VIDEO";
+        this.campaignService.listCampaignInteractiveViews(pagination)
+        .subscribe(
+        data => {
+          this.campaignViews = data;
+          const views = [];
+          for (let i = 0; i < data.campaignviews.length; i++) {
+            views.push(data.campaignviews[i].viewsCount)
+          }
+          this.maxViewsValue = Math.max.apply(null, views);
+          this.campaignViewsPagination.totalRecords = this.campaignReport.emailSentCount;
+          console.log(this.campaignReport)
+          this.campaignViewsPagination = this.pagerService.getPagedItems(this.campaignViewsPagination, this.campaignViews);
+          this.loading = false;
+          this.referenceService.loading(this.httpRequestLoader, false);
+        },
+        error => console.log(error),
+        () => console.log()
+        )
+    }else{
     this.campaignService.listCampaignViews(campaignId, pagination)
       .subscribe(
       data => {
@@ -142,6 +165,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       error => console.log(error),
       () => console.log()
       )
+    }
     }catch(error){ this.xtremandLogger.error('error'+error);}
   }
 
@@ -606,6 +630,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
             this.campaignType = 'EMAIL';
           }
         }
+        this.getEmailSentCount(this.campaignId);
         this.loading = false;
       }
       )
@@ -936,7 +961,6 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     this.emailActionListPagination.pageIndex = 1;
     this.campaignId = this.route.snapshot.params['campaignId'];
     this.getCampaignById(this.campaignId);
-    this.getEmailSentCount(this.campaignId);
     this.getEmailLogCountByCampaign(this.campaignId);
     this.pagination.pageIndex = 1;
     if (this.isTimeLineView === true) {
