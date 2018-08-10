@@ -7,10 +7,15 @@
 				<a [routerLink]="referenceService.homeRouter">Home</a>
 				<i class="fa fa-angle-right"></i>
       </li>
-      <li>
+      <li *ngIf="!eventRouterPage">
 				<a [routerLink]="['/home/campaigns/select']">Select Campaign</a>
 				<i class="fa fa-angle-right"></i>
-			</li>
+      </li>
+      <li>
+				<a *ngIf="eventRouterPage" [routerLink]="['/home/campaigns/manage']">Manage Campaigns</a>
+				<i class="fa fa-angle-right"></i>
+      </li>
+
 			<li>Event Based Campaign</li>
 		</ul>
 	</div>

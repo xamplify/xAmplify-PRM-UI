@@ -64,6 +64,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   onClickScheduledDaysSum = 0;
   userListIds:any = [];
   isPreviewEvent = false;
+  eventRouterPage = false;
+
   constructor(public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
     private contactService: ContactService,
     public campaignService: CampaignService,
@@ -89,6 +91,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
       this.router.navigate(['/home/campaigns/select']);
     }
     else if(this.activatedRoute.snapshot.params['id']){
+      this.eventRouterPage =true;
       const alias = this.activatedRoute.snapshot.params['id'];
       this.campaignService.getEventCampaignById(alias).subscribe(
         (result)=>{
