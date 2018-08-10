@@ -101,7 +101,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
         this.eventCampaign.emailTemplate = result.data.emailTemplateDTO;
         this.eventCampaign.user = result.data.userDTO;
         if(result.data.campaignReplies===undefined){ this.eventCampaign.campaignReplies = [];}
-        else {this.getRepliesData(); }
+        else {this.getCampaignReplies(this.eventCampaign); }
         // this.eventCampaign.userListIds = this.campaignService.eventCampaign.userListDTOs;
         this.eventCampaign.campaignEventTimes = result.data.campaignEventTimes;
         for(let i=0; i<this.countries.length;i++){
@@ -515,6 +515,30 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   onChangeCountry(countryId: number) {
     this.timezones = this.referenceService.getTimeZonesByCountryId(countryId);
   }
+  getCampaignReplies(campaign: EventCampaign) {
+    if(campaign.campaignReplies!=undefined){
+        this.eventCampaign.campaignReplies = campaign.campaignReplies;
+        for(var i=0;i<this.eventCampaign.campaignReplies.length;i++){
+            let reply = this.eventCampaign.campaignReplies[i];
+            if(reply.defaultTemplate){
+                reply.selectedEmailTemplateIdForEdit = reply.selectedEmailTemplateId;
+            }
+            reply.emailTemplatesPagination = new Pagination();
+            reply.replyTime = this.campaignService.setHoursAndMinutesToAutoReponseReplyTimes(reply.replyTimeInHoursAndMinutes);
+            if($.trim(reply.subject).length==0){
+             //   reply.subject = campaign.subjectLine;
+            }
+            let length = this.allItems.length;
+            length = length+1;
+            var id = 'reply-'+length;
+            reply.divId = id;
+            this.allItems.push(id);
+            this.loadEmailTemplatesForAddReply(reply);
+        }
+    }
+
+ }
+
   getRepliesData(){
     for(let i=0;i<this.eventCampaign.campaignReplies.length;i++){
         const reply = this.eventCampaign.campaignReplies[i];
