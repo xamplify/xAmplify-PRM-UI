@@ -97,6 +97,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
         (result)=>{
         this.campaignService.eventCampaign = result.data;
         this.eventCampaign = result.data;
+        console.log( this.eventCampaign);
         this.eventCampaign.emailTemplate = result.data.emailTemplateDTO;
         this.eventCampaign.user = result.data.userDTO;
         if(result.data.campaignReplies===undefined){ this.eventCampaign.campaignReplies = [];}
@@ -109,6 +110,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
             break;
           }
         }
+        this.onChangeCountryCampaignEventTime(this.eventCampaign.campaignEventTimes[0].countryId)
         for(let i=0; i< result.data.userListDTOs.length;i++){
          this.userListIds.push(result.data.userListDTOs[i].id);
         }
