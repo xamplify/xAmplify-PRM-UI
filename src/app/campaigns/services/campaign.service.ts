@@ -217,6 +217,7 @@ export class CampaignService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+    
     donutCampaignInnerViews(campaignId: number, timePeriod: string, pagination: Pagination) {
         const url = this.URL + 'campaign/' + campaignId + '/' + timePeriod + '/views-detail-report?access_token=' + this.authenticationService.access_token;
         return this.http.post(url, pagination)
@@ -261,6 +262,20 @@ export class CampaignService {
             .catch(this.handleError);
 
 
+    }
+    
+    getEventCampaignDetailsByCampaignId(campaignId: number) {
+        const url = this.URL + 'campaign/' + campaignId + '/rsvp-details?access_token=' + this.authenticationService.access_token;
+        return this.http.get(url)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    
+    getEventCampaignDetailAnalytics(campaignId: number, resposeType: any) {
+        const url = this.URL + 'campaign/' + campaignId + '/rsvp-user-details/'+ resposeType +'?access_token=' + this.authenticationService.access_token;
+        return this.http.get(url)
+            .map(this.extractData)
+            .catch(this.handleError);
     }
 
     getCampaignPartnerByCampaignIdAndUserId(campaignId: number, userId: number) {

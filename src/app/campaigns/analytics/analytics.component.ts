@@ -81,6 +81,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   loading =false;
   mainLoader = false;
   logListName = "";
+  rsvpDetailsList: any;
   httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
   sortByDropDown = [
                     { 'name': 'Sort By', 'value': '' },
@@ -594,7 +595,11 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
           } else if (campaignType.includes('SOCIAL')) {
             this.campaignType = 'SOCIAL';
             this.getSocialCampaignByCampaignId(campaignId);
-          } else {
+          } else if (campaignType.includes('EVENT')) {
+              this.campaignType = 'EVENT';
+              this.campaign.selectedEmailTemplateId = this.campaign.emailTemplate.id;
+              this.getEventCampaignByCampaignId(campaignId);
+            } else {
             this.campaignType = 'EMAIL';
           }
         }
@@ -620,6 +625,46 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       this.xtremandLogger.error('error'+error)
     }
   }
+  
+  getEventCampaignByCampaignId(campaignId: number) {
+      try{
+          this.loading = true;
+            this.campaignService.getEventCampaignDetailsByCampaignId(campaignId)
+            .subscribe(
+            data => {
+              console.log(data);
+              this.campaignReport.totalYesCount = data.YES;
+              this.campaignReport.totalMayBeCount = data.MAYBE;
+              this.campaignReport.totalNoCount = data.NO;
+              this.campaignReport.totalNotYetRespondedCount = data.notYetResponded;
+              this.loading = false;
+            },
+            error => this.xtremandLogger.error(error),
+            () => { }
+            )
+          }catch(error){
+            this.xtremandLogger.error('error'+error)
+          }
+        }
+        
+  getRsvpDetails(responseType: any){
+      try{
+          this.loading = true;
+            this.campaignService.getEventCampaignDetailAnalytics( this.campaign.campaignId, responseType )
+            .subscribe(
+            data => {
+              console.log(data);
+              this.loading = false;
+              this.rsvpDetailsList = data;
+            },
+            error => this.xtremandLogger.error(error),
+            () => { }
+            )
+          }catch(error){
+            this.xtremandLogger.error('error'+error)
+          }
+  }
+  
 
   resetTopNavBarValue() {
     try{

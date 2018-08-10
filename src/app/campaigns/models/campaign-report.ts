@@ -25,4 +25,9 @@ export class CampaignReport {
     emailActionType: string;
     emailLogs: Array<EmailLog>;
     totalEmailActionList: any;
+
+    totalYesCount: number = 0;
+    totalNoCount: number = 0;
+    totalMayBeCount: number = 0;
+    totalNotYetRespondedCount: number = 0;
 }
