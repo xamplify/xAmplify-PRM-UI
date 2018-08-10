@@ -75,7 +75,8 @@
                      <thead>
                        <tr>
                          <th colspan="1" style="width: 50%">Videos</th>
-                         <th class="text-center">Type</th>
+                         <!-- <th class="text-center">Type</th> -->
+                         <th class="text-center">Category</th>
                          <th class="text-center">Upload Date</th>
                          <th class="text-center" *ngIf="!authenticationService.isSuperAdmin()"><span [hidden]="authenticationService.isOnlyPartner()">Actions</span></th>
                        </tr>
@@ -86,7 +87,8 @@
                         <app-video-thumbnail [videoFile]="videoFile" (notifyParent)="showPlayVideo($event)"></app-video-thumbnail>
                         </td>
                          <td class="text-center">
-                           <span class='view-by-banner'>{{videoFile.viewBy}}</span>
+                           <!-- <span class='view-by-banner'>{{videoFile.viewBy}}</span> -->
+                           <span >{{videoFile.category.name}}</span>
                          </td>
                          <td class="text-center">
                          <app-timestamp [isOnlyDate]="true" [dateAndTime]="videoFile.uploadedDate"> </app-timestamp>

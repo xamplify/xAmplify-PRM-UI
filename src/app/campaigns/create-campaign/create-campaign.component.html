@@ -335,8 +335,8 @@
 																</span>
 															</th>
 															<th style="text-align: center;width: 24%;"  *ngIf="campaign.createdFromVideos">Category</th>
-															<th style="text-align: center;width: 18%;"  *ngIf="!campaign.createdFromVideos">
-																<span class="filter_column filter_select">
+															<th style="text-align: center;width: 18%;"  *ngIf="!campaign.createdFromVideos">Upload Date
+																<span class="filter_column filter_select" *ngIf="false">
 																	<select class="form-control" (change)="filterVideosByType($event)">
 																		<option value="" class="search_init">Type</option>
 																		<option value="PRIVATE">PRIVATE</option>
@@ -345,8 +345,9 @@
 																	</select>
 																</span>
 															</th>
-															<th style="text-align: center;width: 18%;" *ngIf="campaign.createdFromVideos">Type</th>
-															<th style="text-align: center;width: 13%;">Status</th>
+															<!-- <th style="text-align: center;width: 18%;" *ngIf="campaign.createdFromVideos">Type</th> -->
+                            	<th style="text-align: center;width: 18%;" *ngIf="campaign.createdFromVideos">Upload Date</th>
+                              <th style="text-align: center;width: 13%;">Status</th>
 														</tr>
 													</thead>
 													<tbody class="row_selected">
@@ -376,7 +377,10 @@
 																	<!-- --------------Category--------------------------- -->
 																	<td class="text-center">{{savedVideoFile.category.name}}</td>
 																	<!-- --------------Published To--------------------------- -->
-																	<td class="text-center"><span class="view-by-banner">{{savedVideoFile.viewBy}}</span></td>
+																	<td class="text-center">
+                                    <!-- <span class="view-by-banner">{{savedVideoFile.viewBy}}</span> -->
+                                    <app-timestamp [isOnlyDate]="true" [dateAndTime]="savedVideoFile.uploadedDate"> </app-timestamp>
+                                  </td>
 																	<!-- --------------Status--------------------------- -->
 																	<td class="text-center">
 																		<img src="assets/images/draft.png" *ngIf="savedVideoFile.viewBy=='DRAFT'">
@@ -413,7 +417,11 @@
 																	<!-- --------------Category--------------------------- -->
 																	<td class="text-center" *ngIf="videoFile.id!==videoId">	{{videoFile.category.name}}</td>
 																	<!-- --------------Published To--------------------------- -->
-																	<td class="text-center" *ngIf="videoFile.id!==videoId"> <span class="view-by-banner">{{videoFile.viewBy}}</span></td>
+																	<td class="text-center" *ngIf="videoFile.id!==videoId">
+                                     <!-- <span class="view-by-banner">{{videoFile.viewBy}}</span> -->
+                                     <app-timestamp [isOnlyDate]="true" [dateAndTime]="videoFile.uploadedDate"> </app-timestamp>
+
+                                    </td>
 																	<!-- --------------Status--------------------------- -->
 																	<td class="text-center" *ngIf="videoFile.id!==videoId">
 																		<img src="assets/images/draft.png" *ngIf="videoFile.viewBy=='DRAFT'">
@@ -469,8 +477,8 @@
 																</span>
 															</th>
 															<th style="width: 24%;" class="text-center" *ngIf="campaign.createdFromVideos">Category</th>
-															<th style="width: 18%"  class="text-center" *ngIf="!campaign.createdFromVideos">
-																<span class="filter_column filter_select">
+															<th style="width: 18%"  class="text-center" *ngIf="!campaign.createdFromVideos">Upload Date
+																<span class="filter_column filter_select" *ngIf="false">
 																	<select class="form-control" (change)="filterPartnerVideosByType($event)">
 																		<option value="" class="search_init">Type</option>
 																		<option value="PRIVATE">PRIVATE</option>
@@ -479,8 +487,9 @@
 																	</select>
 																</span>
 															</th>
-															<th style="width: 18%;" class="text-center" *ngIf="campaign.createdFromVideos">Type</th>
-															<th style="width: 13%;" class="text-center">Status</th>
+															<!-- <th style="width: 18%;" class="text-center" *ngIf="campaign.createdFromVideos">Type</th> -->
+                              <th style="width: 18%;" class="text-center" *ngIf="campaign.createdFromVideos">Upload Date</th>
+                              <th style="width: 13%;" class="text-center">Status</th>
 														</tr>
 													</thead>
 													<tbody class="row_selected">
@@ -510,7 +519,10 @@
                                     <app-video-thumbnail [videoFile]="savedVideoFile" (notifyParent)="showPreview($event)"></app-video-thumbnail>
 																	</td>
 																	<td class="text-center">	{{savedVideoFile.category.name}}</td>
-																	<td class="text-center"> <span class="view-by-banner">{{savedVideoFile.viewBy}}</span></td>
+																	<td class="text-center">
+                                    <!-- <span class="view-by-banner">{{savedVideoFile.viewBy}}</span> -->
+                                    <app-timestamp [isOnlyDate]="true" [dateAndTime]="savedVideoFile.uploadedDate"> </app-timestamp>
+                                  </td>
 																	<td class="text-center">
 																		<img src="assets/images/draft.png" *ngIf="savedVideoFile.viewBy=='DRAFT'">
 																		<img src="assets/images/success.png" *ngIf="savedVideoFile.viewBy!='DRAFT'">
@@ -543,7 +555,10 @@
 																	<!-- --------------Category--------------------------- -->
 																	<td class="text-center" *ngIf="videoFile.id!==videoId"> {{videoFile.category.name}}	</td>
 																	<!-- --------------Published To--------------------------- -->
-																	<td class="text-center" *ngIf="videoFile.id!==videoId"><span class="view-by-banner">{{videoFile.viewBy}}</span></td>
+																	<td class="text-center" *ngIf="videoFile.id!==videoId">
+                                    <!-- <span class="view-by-banner">{{videoFile.viewBy}}</span> -->
+                                    <app-timestamp [isOnlyDate]="true" [dateAndTime]="videoFile.uploadedDate"> </app-timestamp>
+                                  </td>
 																	<!-- --------------Status--------------------------- -->
 																	<td class="text-center" *ngIf="videoFile.id!==videoId">
 																		<img src="assets/images/draft.png" *ngIf="videoFile.viewBy=='DRAFT'">
