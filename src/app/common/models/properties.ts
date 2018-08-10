@@ -12,7 +12,7 @@ export class Properties {
     NO_USERS_SELECT_ERROR = "You have not selected any user.";
     //FOR CONTACTS
     FILE_TYPE_ERROR = "File type not allowed please select the .csv file only."
-    CONTACT_LIST_CREATE_SUCCESS = "Your contact list has been created successfully.";
+    CONTACT_LIST_CREATE_SUCCESS = "Your contact list has been created successfully and we are processing your contact list";
     CONTACT_LIST_CREATE_ERROR = "An error occured while creating your contact list.";
 
     CONTACT_LIST_UPDATE_SUCCESS = "Your contact list has been updated successfully.";
@@ -44,7 +44,7 @@ export class Properties {
     SOCIAL_ACCOUNT_REMOVED_ERROR = "An error occured while removing your social Account.";
 
     /* For Partners*/
-    PARTNER_LIST_CREATE_SUCCESS = "Your partner list has been created successfully.";
+    PARTNER_LIST_CREATE_SUCCESS = "Your partner list has been created successfully and we are processing your partner list";
     PARTNER_LIST_NAME_UPDATE_SUCCESS = "Your partner list name has been updated successfully.";
 
     PARTNER_LIST_SYNCHRONIZATION_SUCCESS = "Your Parntner List has been synchronized successfully.";
