@@ -125,6 +125,12 @@ export class CampaignService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+    
+    listCampaignInteractiveViews(pagination: Pagination) {
+        return this.http.post(this.URL + 'campaign/interactive-views?access_token=' + this.authenticationService.access_token, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 
     getCampaignViewsReportDurationWise(campaignId: number) {
         return this.http.get(this.URL + 'campaign/total-views/' + campaignId + '?access_token=' + this.authenticationService.access_token)
