@@ -67,7 +67,7 @@
 			</a>
 		</div>
 
-		<div class="pl10 pr10 col-xs-12" [ngClass]="{'col-sm-4': campaignType === 'VIDEO', 'col-sm-6': campaignType === 'EMAIL','forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null }" *ngIf="(campaignType === 'VIDEO' || campaignType === 'EMAIL' || campaignType === 'EVENT') && campaign.selectedEmailTemplateId>0">
+		<div class="pl10 pr10 col-xs-12" [ngClass]="{'col-sm-4': campaignType === 'VIDEO','col-xs-6': campaignType === 'EVENT', 'col-sm-6': campaignType === 'EMAIL','forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null }" *ngIf="(campaignType === 'VIDEO' || campaignType === 'EMAIL' || campaignType === 'EVENT') && campaign.selectedEmailTemplateId>0">
 			<a class="dashboard-stat dashboard-stat-lighter blue-soft" (click)="showEmailTemplatePreview(campaign.emailTemplate)" [class.disabled]="!isPartnerEnabledAnalyticsAccess ?true:null" >
 					<div class="visual">
 						<i class="fa fa-envelope-open"></i>
@@ -101,7 +101,7 @@
 				</a>
 		</div>
 
-		<div  class="pl10 pr10 col-xs-12" [ngClass]="{'col-sm-4': campaignType === 'VIDEO', 'col-sm-6': campaignType === 'EMAIL', 'col-sm-12': campaignType === 'SOCIAL','forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}">
+		<div  class="pl10 pr10 col-xs-12" [ngClass]="{'col-sm-4': campaignType === 'VIDEO','col-xs-6': campaignType === 'EVENT', 'col-sm-6': campaignType === 'EMAIL', 'col-sm-12': campaignType === 'SOCIAL','forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}">
 			<a class="dashboard-stat dashboard-stat-lighter green-soft" (click)="showContactListModal()" [class.disabled]="!isPartnerEnabledAnalyticsAccess ?true:null">
 					<div class="visual">
 						<i class="fa fa-users"></i>
@@ -753,7 +753,10 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i class="fa fa-times"></i></a>
-				<h4 class="modal-title" id="rsvpModalbody" >Details</h4>
+				<h4 class="modal-title" *ngIf="rsvpResposeType === 'YES'">People who have says YES</h4>
+				<h4 class="modal-title" *ngIf="rsvpResposeType === 'NO'">People who have says NO</h4>
+				<h4 class="modal-title" *ngIf="rsvpResposeType === 'MAYBE'">People who have says MAYBE</h4>
+				<h4 class="modal-title" *ngIf="rsvpResposeType === 'NOTYETRESPONDED'">People who have says NOTYETRESPONDED</h4>
 				<div class="btn-group pull-right" style="margin-top: -4px; cursor:pointer; color: #7d8c98">
 					<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none;margin-top: -15px;padding-right: 10px;margin-right: 21px; float:right;">
 					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
@@ -771,7 +774,7 @@
 						<table class="table tgrid">
 							<thead>
 								<tr>
-									<th style="font-size: 12px; font-weight: 500;">NAME</th>
+									<th style="font-size: 12px; font-weight: 500;" style="text-align: center">NAME</th>
 									<th style="font-size: 12px; font-weight: 500;">MESSAGE</th>
 								</tr>
 							</thead>

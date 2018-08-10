@@ -82,6 +82,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   mainLoader = false;
   logListName = "";
   rsvpDetailsList: any;
+  rsvpResposeType = '';
   httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
   sortByDropDown = [
                     { 'name': 'Sort By', 'value': '' },
@@ -650,6 +651,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   getRsvpDetails(responseType: any){
       try{
           this.loading = true;
+          this.rsvpResposeType = responseType;
             this.campaignService.getEventCampaignDetailAnalytics( this.campaign.campaignId, responseType )
             .subscribe(
             data => {
