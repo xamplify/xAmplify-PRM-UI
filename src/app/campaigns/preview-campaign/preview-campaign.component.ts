@@ -24,6 +24,7 @@ import { Timezone } from '../../core/models/timezone';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { CampaignContact } from '../models/campaign-contact';
 import { Properties } from '../../common/models/properties';
+import { Roles } from '../../core/models/roles';
 declare var $,CKEDITOR:any;
 
 @Component({
@@ -87,9 +88,10 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     invalidScheduleTimeError:string = "";
     httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
     loggedInUserId:number = 0;
-    contactType:string = "contacts";
+    contactType:string = "";
     listName:string;
-
+    roleName: Roles= new Roles();
+    showContactType:boolean = false;
     constructor(
             private route: ActivatedRoute,
             private campaignService: CampaignService,
@@ -109,6 +111,15 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
             CKEDITOR.config.height = '100';
            this.getCampaignById();
            CKEDITOR.config.readOnly = true;
+           const roles = this.authenticationService.getRoles();
+           let isVendor = roles.indexOf(this.roleName.vendorRole)>-1;
+           if(this.authenticationService.isOrgAdmin() || (!this.authenticationService.isAddedByVendor && !isVendor)){
+               this.contactType = " partner(s) / recepient(s) ";
+               this.showContactType = true;
+           }else if(isVendor|| this.authenticationService.isAddedByVendor){
+               this.contactType = "partner(s)";
+               this.showContactType = false;
+           }
         }
     selectReplyEmailBody(i,e){}
     selectClickEmailBody(i,r,e){}
@@ -129,11 +140,11 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     setCampaignData(result){
         this.campaign = result;
         console.log(this.campaign);
-        if(this.campaign.channelCampaign || this.campaign.launchedByVendor){
+        /*if(this.campaign.channelCampaign || this.campaign.launchedByVendor){
             this.contactType = "partner";
         }else{
             this.contactType ="contact";
-        }
+        }*/
         if(this.campaign.userListIds.length>0){
             this.loadContactList(this.contactListPagination);
         }
