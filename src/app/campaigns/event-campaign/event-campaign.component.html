@@ -66,10 +66,13 @@
 								[ngClass]="{'has-error': eventError.eventStartTimeError && !eventCampaign.campaignEventTimes[0].startTimeString}"></div>
 							<div class="col-sm-6">
 								<input type="text" id="enDatePicker" [attr.disabled]="isPreviewEvent? '' : null" [disabled]="eventCampaign.campaignEventTimes[0].allDay" class="form-control flatpickr" placeholder="End Time"
-								[(ngModel)]="eventCampaign.campaignEventTimes[0].endTimeString" [ngModelOptions]="{standalone: true}">
+                [(ngModel)]="eventCampaign.campaignEventTimes[0].endTimeString" [ngModelOptions]="{standalone: true}" (input)="eventEndTimeError()" (blur)="eventEndTimeError()"
+                [ngClass]="{'has-error': eventError.eventEndDateError && !eventCampaign.campaignEventTimes[0].endTimeString && !eventCampaign.campaignEventTimes[0].allDay}">
 							</div>
 							<div class="col-sm-6 text-danger" *ngIf="eventError.eventStartTimeError &&!eventCampaign.campaignEventTimes[0].startTimeString">Please enter a valid start Date / Time</div>
-						<div class="clearfix">
+              <div class="col-sm-6 text-danger" *ngIf="eventError.eventSameDateError && !eventCampaign.campaignEventTimes[0].allDay"> start Date / Time and end Date / Time should not be same</div>
+
+              <div class="clearfix">
 							<div class="col-sm-6">
 								<label>
 									<input type="checkbox" [attr.disabled]="isPreviewEvent? '' : null" [checked]="eventCampaign.campaignEventTimes[0].allDay" (change)="eventCampaign.campaignEventTimes[0].allDay = !eventCampaign.campaignEventTimes[0].allDay"> All Day
@@ -207,7 +210,7 @@
 					<section class="clearfix">
 						<div class="form-group m0 pull-right">
 							<h5 class="control-label font-purple-intense pr10 pull-left">Partner Lists</h5>
-							<switch [status]="isPartnerUserList" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+							<switch [status]="isPartnerUserList" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [disabled]="isPreviewEvent"
 								[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
 								(statusChange)="toggleContactLists()">
 							</switch>
@@ -215,7 +218,7 @@
 					</section>
 					<section *ngIf="contactListsPagination.pagedItems?.length !== 0">
 						<div class="table-responsive">
-							<table class="table table-condensed table-hover table-bordered table-striped" id='contact-list-table'>
+							<table class="table table-condensed table-hover table-bordered table-striped" id='contact-list-table' 	[ngClass]="{'has-error': eventError.eventContactError}">
 								<thead>
 									<tr>
 										<th>Select</th>
@@ -275,7 +278,10 @@
 			</div>
 			</section>
 			<div class="col-xs-12 p0 mb10">
-				<a class="btn btn-warning btn-block" [attr.disabled]="isPreviewEvent? '' : null" (click)="addReplyRows()">
+				<a *ngIf="!isPreviewEvent" class="btn btn-warning btn-block" (click)="addReplyRows()">
+					<i class="fa fa-plus-square p0" style="margin: 0 5px;"></i>{{properties.ADD_AUTO_RESPONSE_EMAIL}}
+        </a>
+        <a *ngIf="isPreviewEvent" class="btn btn-warning btn-block" [attr.disabled]="isPreviewEvent? '' : null">
 					<i class="fa fa-plus-square p0" style="margin: 0 5px;"></i>{{properties.ADD_AUTO_RESPONSE_EMAIL}}
 				</a>
 			</div>

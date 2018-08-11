@@ -149,6 +149,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   }
   eventStartTimeError(){
     this.eventError.eventStartTimeError= this.eventCampaign.campaignEventTimes[0].startTimeString ?false:true ;
+    // this.eventSameDateError();
   }
   eventCountryError(){
     this.eventError.eventCountryAndTimeZone = this.eventCampaign.campaignEventTimes[0].countryId ? false: true;
@@ -156,18 +157,47 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   eventLocationError(){
     if(!this.eventCampaign.onlineMeeting){
     this.eventError.eventLocationError = this.eventCampaign.campaignLocation.location? false: true;
-    }
+    } else { this.eventError.eventLocationError = false;}
   }
   eventDescriptionError(){
     this.eventError.eventDescription = this.eventCampaign.message ? false: true;
+  }
+  eventContactListError(){
+    this.eventError.eventContactError = this.eventCampaign.userListIds.length>0 ? false: true;
+  }
+  eventEndTimeError(){
+  if(!this.eventCampaign.campaignEventTimes[0].allDay){
+    this.eventError.eventEndDateError = this.eventCampaign.campaignEventTimes[0].endTimeString ? false: true;
+   } else {
+    this.eventError.eventEndDateError = false;
+   }
+   this.eventSameDateError();
+  }
+  eventSameDateError(){
+    if(this.eventCampaign.campaignEventTimes[0].endTimeString && !this.eventCampaign.campaignEventTimes[0].allDay && this.eventCampaign.campaignEventTimes[0].endTimeString===this.eventCampaign.campaignEventTimes[0].startTimeString){
+    //  this.eventError.eventEndDateError = true;
+    //  this.eventError.eventStartTimeError = true;
+     this.eventError.eventSameDateError = true;
+    } else {
+      // this.eventError.eventEndDateError = false;
+      // this.eventError.eventStartTimeError = false;
+      this.eventError.eventSameDateError = false;
+     // if(this.eventCampaign.campaignEventTimes[0].allDay){this.eventCampaign.campaignEventTimes[0].endTimeString = undefined;}
+
+    }
+
   }
   onBlurValidation(){
    this.eventTitleError();
    this.eventHostByError();
    this.eventStartTimeError();
+   this.eventEndTimeError();
    this.eventCountryError();
    this.eventLocationError();
    this.eventDescriptionError();
+   this.eventContactListError();
+   this.eventSameDateError();
+
   }
 
   /*****************LOAD CONTACTLISTS WITH PAGINATION START *****************/
@@ -227,6 +257,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     else if (this.paginationType === 'contactlists') { this.loadContactLists(pagination); }
   }
   toggleContactLists() {
+    this.userListIds = this.eventCampaign.userListIds;
     this.isPartnerUserList = !this.isPartnerUserList;
     this.contactListsPagination.pageIndex = 1;
     this.loadContactLists(this.contactListsPagination);
@@ -237,16 +268,27 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     if (isChecked) {
       if (!this.eventCampaign.userListIds.includes(contactListId)) {
         this.eventCampaign.userListIds.push(contactListId);
+        this.eventError.eventContactError = false;
       }
       $('#' + contactListId).parent().closest('tr').addClass('highlight');
     } else {
       this.eventCampaign.userListIds.splice($.inArray(contactListId, this.eventCampaign.userListIds), 1);
       $('#' + contactListId).parent().closest('tr').removeClass('highlight');
+      if(this.eventCampaign.userListIds.length===0){  this.eventError.eventContactError = true;}
     }
   }
   closeModal() {
     this.paginationType = 'contactlists';
     this.contactsPagination = new Pagination();
+  }
+
+  validForm(eventCampaign:any){
+   if(!this.eventError.eventSameDateError && !this.eventError.eventEndDateError && !this.eventError.eventTitleError && !this.eventError.eventDateError && !this.eventError.eventHostByError
+    && !this.eventError.eventLocationError && !this.eventError.eventDateError && !this.eventError.eventDescription &&
+    eventCampaign.message && eventCampaign.campaign && eventCampaign.campaignEventTimes[0].startTimeString &&
+    eventCampaign.campaignEventTimes[0].country!="Select Country" && this.errorLength===0 &&
+    this.isFormSubmitted && eventCampaign.userListIds.length>0){ return true;}
+   else { return false;}
   }
 
   createEventCampaign(eventCampaign: any, launchOption: string) {
@@ -283,6 +325,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
        'user':eventCampaign.user,
        'message':eventCampaign.message,
        'channelCampaign':eventCampaign.channelCampaign,
+       'countryId': eventCampaign.countryId,
+       'email':eventCampaign.email,
        'emailOpened':eventCampaign.emailOpened,
        'socialSharingIcons':eventCampaign.socialSharingIcons,
        'fromName': eventCampaign.fromName,
@@ -300,14 +344,15 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
        'rsvpReceived':eventCampaign.rsvpReceived,
        'onlineMeeting':eventCampaign.onlineMeeting,
        'userLists' : eventCampaign.userLists,
+       'userListIds':eventCampaign.userListIds,
        'campaignReplies': eventCampaign.campaignReplies,
      }
      eventCampaign = customEventCampaign;
     }
 
-
-    if(this.errorLength===0 && this.eventCampaign.userListIds && this.eventCampaign.message && eventCampaign.campaign && eventCampaign.campaignEventTimes[0].startTimeString && eventCampaign.campaignEventTimes[0].country!="Select Country"){
-    this.campaignService.createEventCampaign(eventCampaign)
+    if(this.validForm(eventCampaign) && this.isFormSubmitted){
+      // alert('success');
+      this.campaignService.createEventCampaign(eventCampaign)
       .subscribe(
       response => {
         if (response.statusCode === 2000) {
@@ -322,9 +367,11 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
             }
             else if(response.errorResponses[0].field =='eventEndTimeString'){
               this.customResponse = new CustomResponse( 'ERROR', response.errorResponses[0].message, true );
+
             }
             else if(response.errorResponses[0].field ="eventStartTimeString"){
               this.customResponse = new CustomResponse( 'ERROR', 'Please change the start time, its already over.', true );
+              this.eventError.eventDateError = true;
             }
             else {
               this.customResponse = new CustomResponse( 'ERROR', response.errorResponses[0].message, true );
