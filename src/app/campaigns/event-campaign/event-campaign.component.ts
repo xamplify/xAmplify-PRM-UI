@@ -278,6 +278,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
 
     if(eventCampaign.id){
      const customEventCampaign = {
+       'id':eventCampaign.id,
        'campaign': this.eventCampaign.campaign,
        'user':eventCampaign.user,
        'message':eventCampaign.message,
