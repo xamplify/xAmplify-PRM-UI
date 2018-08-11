@@ -638,9 +638,9 @@
 															<!-- selectedContactListIds?.length==contactsPagination.pagedItems.length [checked]="isAllChecked()"-->
 															<input type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" id="checkAllExistingContacts"/>
 														</td>
-														<th style="text-align: center;">Date Uploaded	</th>
-														<th style="text-align: center;">List Name	</th>
+														<th style="text-align: center;">List Name</th>
 														<th style="text-align: center;" *ngIf="showContactType">Type</th>
+														<th style="text-align: center;">Date Uploaded</th>
 														<th style="text-align: center;">Preview </th>
 													</tr>
 												</thead>
@@ -657,9 +657,6 @@
 																<input type="checkbox" disabled="disabled" title="Contacts are in progress">
 															</div>
 														</td>
-														<td class="text-center sorting_1">
-                              <app-timestamp [isOnlyDate]="true" [dateAndTime]="contacts.createdDate"> </app-timestamp>
-                            </td>
 														<td class="text-center" *ngIf="contacts.name?.length>50" title="{{contacts.name}}">
 															{{contacts.name | slice:0:50}}...
 														</td>
@@ -674,6 +671,9 @@
 																Contacts
 															</ng-container>
 														</td>
+														<td class="text-center sorting_1">
+                             						 		<app-timestamp [isOnlyDate]="true" [dateAndTime]="contacts.createdDate"> </app-timestamp>
+                            							</td>
 														<td class="text-center">
 															<a  (click)="$event.stopPropagation();loadUsers(contactsPagination.pagedItems[i].id,contactsUsersPagination,contacts.name)">
 																<i class="fa fa-eye" style="color: #008fd5;padding-top: 3px; font-size: 20px;" title="" data-original-title="Preview"></i>
