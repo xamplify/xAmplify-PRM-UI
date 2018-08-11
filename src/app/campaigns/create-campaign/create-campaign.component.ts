@@ -135,6 +135,10 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     isHeaderCheckBoxChecked:boolean = false;
     emptyContactsMessage:string = "";
     contactSearchInput:string = "";
+    contactListTabName:string = "";
+    contactListSelectMessage:string = "";
+    emptyContactListMessage:string = "";
+    showContactType:boolean = false;
    /***********Email Template*************************/
     campaignEmailTemplates: Array<EmailTemplate>;
     campaignDefaultEmailTemplates: Array<EmailTemplate>;
@@ -210,7 +214,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         CKEDITOR.config.height = '100';
         this.isPartnerToo = this.authenticationService.checkIsPartnerToo();
         this.countries = this.refService.getCountries();
-        this.contactsPagination.filterKey = "isPartnerUserList";
+       // this.contactsPagination.filterKey = "isPartnerUserList";
         this.campaign = new Campaign();
         this.savedVideoFile = new SaveVideoFile();
         this.launchVideoPreview = new SaveVideoFile();
@@ -497,12 +501,27 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
 
     loadContacts(){
         const roles = this.authenticationService.getRoles();
-        //roles.length==2 && roles.indexOf(this.roleName.userRole)>-1 && roles.indexOf(this.roleName.vendorRole)>-1
-        if(roles.indexOf(this.roleName.vendorRole)>-1 || this.authenticationService.isAddedByVendor){
+        let isVendor = roles.indexOf(this.roleName.vendorRole)>-1;
+        if(this.authenticationService.isOrgAdmin() || (!this.authenticationService.isAddedByVendor && !isVendor)){
+            this.contactListTabName = "Partners & Recepients";
+            this.contactListSelectMessage = "Select the partner(s) / recepient(s) to be used in this campaign";
+            this.emptyContactListMessage = "No partner(s) / recepient(s) found";
+            this.showContactType = true;
+            this.contactsPagination.filterValue = false;
+            this.contactsPagination.filterKey = null;
+        }else if(isVendor|| this.authenticationService.isAddedByVendor){
+            this.contactListTabName = "Partners";
+            this.emptyContactListMessage = "No partner(s) found";
+            this.contactListSelectMessage = "Select the partner(s) to be used in this campaign";
+            this.contactsPagination.filterValue = true;
+            this.contactsPagination.filterKey = "isPartnerUserList";
+            this.showContactType = false;
+        }
+        /*if(roles.indexOf(this.roleName.vendorRole)>-1 || this.authenticationService.isAddedByVendor){
             this.contactsPagination.filterValue = true;
         }else{
             this.contactsPagination.filterValue = this.campaign.channelCampaign;
-        }
+        }*/
         this.loadCampaignContacts(this.contactsPagination);
     }
 
@@ -635,18 +654,18 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     }
     setChannelCampaign(event:any){
         this.campaign.channelCampaign = event;
-        const roles = this.authenticationService.getRoles();
+       /* const roles = this.authenticationService.getRoles();
         if(roles.indexOf(this.roleName.vendorRole)<0){
             this.selectedContactListIds = [];
             this.isContactList = false;
-        }
+        }*/
         if(event){
             this.removeTemplateAndAutoResponse();
             this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.NONE;
             this.loadEmailTemplates(this.emailTemplatesPagination);
-            this.loadContacts();
+           // this.loadContacts();
         }else{
-            this.loadContacts();
+           // this.loadContacts();
             this.setCoBrandingLogo(event);
             this.removePartnerRules();
 
@@ -1063,9 +1082,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 var items = $.grep(this.selectedContactListIds, function(element) {
                     return $.inArray(element, contactIds ) !== -1;
                 });
-                console.log(contactIds);
-                console.log(items);
-               console.log(items.length+"::::::::::::"+contactIds.length);//items.length==contactsPagination.maxResults ||
                 if(items.length==contactIds.length){
                     this.isHeaderCheckBoxChecked = true;
                 }else{

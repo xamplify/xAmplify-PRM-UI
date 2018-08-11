@@ -59,8 +59,7 @@
 							<span>
 								<i class="fa fa-users"></i>
 							</span>
-							<h5 class="hidden-xs" *ngIf="!authenticationService.module.isVendor && !authenticationService.isAddedByVendor">Recipients</h5>
-							<h5 class="hidden-xs" *ngIf="authenticationService.module.isVendor || authenticationService.isAddedByVendor">Partner</h5>
+							<h5 class="hidden-xs">{{contactListTabName}}</h5>
 						</div>
 					</div>
 
@@ -70,8 +69,7 @@
 							<span>
 								<i class="fa fa-users"></i>
 							</span>
-							<h5 class="hidden-xs" *ngIf="!authenticationService.module.isVendor && !authenticationService.isAddedByVendor">Contact Lists</h5>
-							<h5 class="hidden-xs" *ngIf="authenticationService.module.isVendor || authenticationService.isAddedByVendor">Partner</h5>
+							<h5 class="hidden-xs">{{contactListTabName}}</h5>
 						</div>
 					</div>
 					<div *ngIf="!isCampaignDetailsFormValid||!isVideo||!isContactList" [attr.class]="disableTabClass" [ngStyle]="{ 'width': width }">
@@ -612,8 +610,7 @@
 								<app-error-pages *ngIf="campaignContact.httpRequestLoader.isServerError"></app-error-pages>
 								<ng-container *ngIf="!campaignContact.httpRequestLoader.isLoading && !campaignContact.httpRequestLoader.isServerError">
 									<div id="user_list_tb_wrapper" class="dataTables_wrapper form-inline no-footer" style="padding:10px">
-										<div class="note-vid pull-left" *ngIf="authenticationService.module.isVendor || authenticationService.isAddedByVendor">Select the Partner list(s) to be used in this campaign</div>
-										<div class="note-vid pull-left" *ngIf="!authenticationService.module.isVendor && !authenticationService.isAddedByVendor">Select the Contact list(s) to be used in this campaign</div>
+										<div class="note-vid pull-left">{{contactListSelectMessage}}</div>
 										<div class="inputs" align="right" style="float: right;">
 											<div class="portlet-input input-inline" style="position: relative;top: -6px;">
 												<div class="input-icon right">
@@ -643,6 +640,7 @@
 														</td>
 														<th style="text-align: center;">Date Uploaded	</th>
 														<th style="text-align: center;">List Name	</th>
+														<th style="text-align: center;" *ngIf="showContactType">Type</th>
 														<th style="text-align: center;">Preview </th>
 													</tr>
 												</thead>
@@ -667,6 +665,14 @@
 														</td>
 														<td class="text-center" *ngIf="contacts.name?.length<=50" title="{{contacts.name}}">
 															{{contacts.name}}
+														</td>
+														<td *ngIf="showContactType">
+															<ng-container *ngIf="contacts.partnerUserList">
+																Partners
+															</ng-container>
+															<ng-container *ngIf="!contacts.partnerUserList">
+																Contacts
+															</ng-container>
 														</td>
 														<td class="text-center">
 															<a  (click)="$event.stopPropagation();loadUsers(contactsPagination.pagedItems[i].id,contactsUsersPagination,contacts.name)">

@@ -35,6 +35,7 @@ export class Campaign {
     campaignReplies: Array<Reply>;
     campaignUrls: Array<Url>;
     channelCampaign = false;
+    throughPartner:boolean = false;
     enableCoBrandingLogo = false;
     partnerVideoSelected = false;
 
