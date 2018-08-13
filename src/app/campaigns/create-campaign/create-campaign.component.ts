@@ -502,20 +502,11 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     loadContacts(){
         const roles = this.authenticationService.getRoles();
         let isVendor = roles.indexOf(this.roleName.vendorRole)>-1;
-        if(this.authenticationService.isOrgAdmin() || (!this.authenticationService.isAddedByVendor && !isVendor)){
-            this.contactListTabName = "Partners & Recepients";
-            this.contactListSelectMessage = "Select the partner(s) / recepient(s) to be used in this campaign";
-            this.emptyContactListMessage = "No partner(s) / recepient(s) found";
-            this.showContactType = true;
-            this.contactsPagination.filterValue = false;
-            this.contactsPagination.filterKey = null;
+        if((this.authenticationService.isOrgAdmin() || (!this.authenticationService.isAddedByVendor && !isVendor)) && !this.campaign.channelCampaign){
+            this.setOrgAdminReceipients();
+           
         }else if(isVendor|| this.authenticationService.isAddedByVendor){
-            this.contactListTabName = "Partners";
-            this.emptyContactListMessage = "No partner(s) found";
-            this.contactListSelectMessage = "Select the partner(s) to be used in this campaign";
-            this.contactsPagination.filterValue = true;
-            this.contactsPagination.filterKey = "isPartnerUserList";
-            this.showContactType = false;
+           this.setVendorPartnersData();
         }
         /*if(roles.indexOf(this.roleName.vendorRole)>-1 || this.authenticationService.isAddedByVendor){
             this.contactsPagination.filterValue = true;
@@ -524,6 +515,25 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         }*/
         this.loadCampaignContacts(this.contactsPagination);
     }
+    
+    setVendorPartnersData(){
+        this.contactListTabName = "Partners";
+        this.emptyContactListMessage = "No partner(s) found";
+        this.contactListSelectMessage = "Select the partner(s) to be used in this campaign";
+        this.contactsPagination.filterValue = true;
+        this.contactsPagination.filterKey = "isPartnerUserList";
+        this.showContactType = false;
+    }
+    
+    setOrgAdminReceipients(){
+        this.contactListTabName = "Partners & Recipients";
+        this.contactListSelectMessage = "Select the partner(s) / recipient(s) to be used in this campaign";
+        this.emptyContactListMessage = "No partner(s) / recipient(s) found";
+        this.showContactType = true;
+        this.contactsPagination.filterValue = false;
+        this.contactsPagination.filterKey = null;
+    }
+    
 
     /******************************************Pagination Related Code******************************************/
     setPage(pageIndex:number,module:string){
@@ -652,23 +662,34 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     setEmailOpened(event:any){
         this.campaign.emailOpened = event;
     }
+    
     setChannelCampaign(event:any){
         this.campaign.channelCampaign = event;
-       /* const roles = this.authenticationService.getRoles();
-        if(roles.indexOf(this.roleName.vendorRole)<0){
+       /* if(roles.indexOf(this.roleName.vendorRole)<0){
             this.selectedContactListIds = [];
             this.isContactList = false;
         }*/
+       
+        this.clearSelectedContactList();
         if(event){
             this.removeTemplateAndAutoResponse();
             this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.NONE;
             this.loadEmailTemplates(this.emailTemplatesPagination);
-           // this.loadContacts();
+            this.loadContacts();
         }else{
-           // this.loadContacts();
+            this.loadContacts();
             this.setCoBrandingLogo(event);
             this.removePartnerRules();
 
+        }
+    }
+    
+    clearSelectedContactList(){
+        const roles = this.authenticationService.getRoles();
+        let isVendor = roles.indexOf(this.roleName.vendorRole)>-1;
+        if(this.authenticationService.isOrgAdmin() || (!this.authenticationService.isAddedByVendor && !isVendor)){
+            this.selectedContactListIds = [];
+            this.isContactList = false;
         }
     }
 
