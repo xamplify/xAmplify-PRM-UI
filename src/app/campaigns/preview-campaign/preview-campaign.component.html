@@ -10,7 +10,8 @@
           <i class="fa fa-angle-right"></i>
         </li>
         <li>
-          <a [routerLink]="referenceService.manageCampaignsRouter">Manage Campaigns</a>
+        <a *ngIf="referenceService.isRedistributionCampaignPage" [routerLink]="'/home/campaigns/partner/all'" (click)="referenceService.isRedistributionCampaignPage = false">Campaigns shared by Vendors</a>
+           <a *ngIf="!referenceService.isRedistributionCampaignPage" [routerLink]="referenceService.manageCampaignsRouter">Manage Campaigns</a>
           <i class="fa fa-angle-right"></i>
         </li>
         <li>
@@ -21,7 +22,10 @@
 
     <div class="portlet light shadow">
       <div class="portlet-title">
-        <a class="close-circle pull-right" data-dismiss="modal" [routerLink]="referenceService.manageCampaignsRouter">
+        <a *ngIf="!referenceService.isRedistributionCampaignPage" class="close-circle pull-right" data-dismiss="modal" [routerLink]="referenceService.manageCampaignsRouter">
+          <i class="fa fa-times"></i>
+        </a>
+         <a *ngIf="referenceService.isRedistributionCampaignPage" class="close-circle pull-right" data-dismiss="modal" [routerLink]="'/home/campaigns/partner/all'" (click)="referenceService.isRedistributionCampaignPage = false">
           <i class="fa fa-times"></i>
         </a>
       </div>

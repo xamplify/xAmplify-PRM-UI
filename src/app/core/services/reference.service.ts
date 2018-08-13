@@ -70,6 +70,7 @@ export class ReferenceService {
     isPlayVideo = false;
     isDownloadCsvFile: boolean;
     vendorDetails: any;
+    isRedistributionCampaignPage: boolean = false;
     campaignType = 'REGULAR';
     videoTag = "<a href='<SocialUbuntuURL>'>\n   <img src='<SocialUbuntuImgURL>'/> \n </a> \n";
     emailMergeTags = "  For First Name : {{firstName}} \n  For Last Name : {{lastName}} \n  For Full Name : {{fullName}} |n For Email Id : {{emailId}}";

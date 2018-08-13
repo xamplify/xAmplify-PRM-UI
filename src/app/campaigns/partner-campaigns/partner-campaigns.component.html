@@ -112,8 +112,11 @@
 											</span>
 										</td>
 										<td>
-											<div class="actions-block" style="text-align: center !important; margin: 0 12px;">
-												<a (click)="reDistributeCampaign(campaign)" title="Redistribute Campaign" data-rel="fancybox-button" >
+											<div class="actions-block" style="text-align: center !important; margin: 0 40px;">
+												<a (click)="showCampaignPreview(campaign.campaignId)" data-toggle="tooltip" data-placement="top" title="preview campaign">
+													<i class="fa fa-eye mr5"></i>
+                        </a>
+												<a (click)="reDistributeCampaign(campaign)" data-toggle="tooltip" data-placement="top" title="Redistribute Campaign" data-rel="fancybox-button" >
                             <i class="fa fa-clone"></i>
                         </a>
                         <a class="hidden"><i class="fa fa-trash"></i></a>

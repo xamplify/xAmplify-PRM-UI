@@ -175,6 +175,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     }
 
     showCampaignPreview(campaignId:number){
+        this.referenceService.isRedistributionCampaignPage = true;
         this.router.navigate(['/home/campaigns/preview/'+campaignId]);
     }
 
