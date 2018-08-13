@@ -415,11 +415,11 @@
       </div>
       </fieldset>
 			<div class="portlet light dashboard-stat2 col-xs-12">
-				<div class="col-xs-4" ><button [disabled]="isPreviewEvent"  class='btn btn-block btn-primary' (click)="createEventCampaign(eventCampaign, 'NOW')">Now</button></div>
-				<div class="col-xs-4"><button [disabled]="isPreviewEvent"  class='btn btn-block btn-primary' (click)="selectedLaunchOption = 'SCHEDULE'">Schedule</button></div>
+				<div class="col-xs-4"><button [disabled]="isPreviewEvent"  class='btn btn-block btn-primary' (click)="createEventCampaign(eventCampaign, 'NOW')">Now</button></div>
+				<div class="col-xs-4"><button [disabled]="isPreviewEvent"  class='btn btn-block btn-primary' (click)="setScheduleEvent()">Schedule</button></div>
 				<div class="col-xs-4"><button [disabled]="isPreviewEvent"  class='btn btn-block btn-primary' (click)="createEventCampaign(eventCampaign, 'SAVE')">Save</button></div>
 
-				<div class="col-md-12" style="margin-left: -17px;margin-top: 12px;" [hidden]="selectedLaunchOption!='SCHEDULE'">
+				<div class="col-md-12" style="margin-left: -17px;margin-top: 12px;" [hidden]="!isSelectedSchedule">
 					<div class="col-md-4">
 						<label style="float: left;">Date</label>
 						<br>

@@ -65,6 +65,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   userListIds:any = [];
   isPreviewEvent = false;
   eventRouterPage = false;
+  isSelectedSchedule = false;
 
   constructor(public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
     private contactService: ContactService,
@@ -257,7 +258,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     else if (this.paginationType === 'contactlists') { this.loadContactLists(pagination); }
   }
   toggleContactLists() {
-    this.userListIds = this.eventCampaign.userListIds;
+    this.userListIds = this.eventCampaign.userListIds = [];
+    this.eventError.eventContactError = true;
     this.isPartnerUserList = !this.isPartnerUserList;
     this.contactListsPagination.pageIndex = 1;
     this.loadContactLists(this.contactListsPagination);
@@ -289,6 +291,13 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     eventCampaign.campaignEventTimes[0].country!="Select Country" && this.errorLength===0 &&
     this.isFormSubmitted && eventCampaign.userListIds.length>0){ return true;}
    else { return false;}
+  }
+
+  setScheduleEvent(){
+    this.isSelectedSchedule = !this.isSelectedSchedule;
+    if(this.isSelectedSchedule) { this.selectedLaunchOption = 'SCHEDULE';
+    this.timezones = this.referenceService.getTimeZonesByCountryId(this.eventCampaign.countryId);
+    }
   }
 
   createEventCampaign(eventCampaign: any, launchOption: string) {
@@ -645,9 +654,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
               this.emailOpenedReplyDaysSum = reply.replyInDays+this.emailOpenedReplyDaysSum;
           }
           reply.replyInDaysSum = this.emailOpenedReplyDaysSum;
+          }
       }
-  }
-        validateReplyInDays(reply:Reply){
+       validateReplyInDays(reply:Reply){
           if( reply.actionId!== 22 &&  reply.actionId!== 23 && reply.replyInDays==null){
                 this.addReplyDaysErrorDiv(reply);
             }else if(reply.actionId===22 ||reply.actionId===23 ){
