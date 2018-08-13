@@ -420,7 +420,8 @@
 							<thead>
 								<tr>
 									<th class="center headerCss" style="width: 36%;">NAME</th>
-									<th class="text-center headerCss" style="width: 41%;">DATE and TIME</th>
+									<th class="text-center headerCss" style="width: 41%;">START TIME</th>
+									<th class="text-center headerCss" style="width: 41%;">END TIME</th>
 									<th class="center headerCss">DEVICE</th>
 								</tr>
 							</thead>
@@ -433,6 +434,11 @@
 									<td class="center">
 										<h5>
 										<app-timestamp [dateAndTime]="item.date"> </app-timestamp>
+										</h5>
+									</td>
+									<td class="center">
+										<h5>
+										<app-timestamp [dateAndTime]="item.endTime"> </app-timestamp>
 										</h5>
 									</td>
 									<td class="center">
@@ -461,7 +467,8 @@
 							<thead>
 								<tr>
 									<th class="center headerCss" style="width: 36%;">NAME</th>
-									<th class="text-center headerCss"  style="width: 41%;">DATE and TIME</th>
+									<th class="text-center headerCss"  style="width: 41%;">START TIME</th>
+									<th class="text-center headerCss" style="width: 41%;">END TIME</th>
 									<th class="center headerCss">DEVICE</th>
 								</tr>
 							</thead>
@@ -474,6 +481,11 @@
 									<td class="center">
 										<h5>
 										<app-timestamp [dateAndTime]="item.date"> </app-timestamp>
+										</h5>
+									</td>
+									<td class="center">
+										<h5>
+										<app-timestamp [dateAndTime]="item.endTime"> </app-timestamp>
 										</h5>
 									</td>
 									<td class="center">
