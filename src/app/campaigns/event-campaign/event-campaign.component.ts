@@ -90,6 +90,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     if (this.referenceService.selectedCampaignType!=='eventCampaign' && this.router.url.includes('/home/campaigns/event') && !this.activatedRoute.snapshot.params['id']) {
       console.log( "This page is reloaded" );
       this.router.navigate(['/home/campaigns/select']);
+
     }
     else if(this.activatedRoute.snapshot.params['id']){
       this.eventRouterPage =true;
@@ -286,7 +287,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
 
   validForm(eventCampaign:any){
    if(!this.eventError.eventSameDateError && !this.eventError.eventEndDateError && !this.eventError.eventTitleError && !this.eventError.eventDateError && !this.eventError.eventHostByError
-    && !this.eventError.eventLocationError && !this.eventError.eventDateError && !this.eventError.eventDescription &&
+    && !this.eventError.eventLocationError && !this.eventError.eventDescription &&
     eventCampaign.message && eventCampaign.campaign && eventCampaign.campaignEventTimes[0].startTimeString &&
     eventCampaign.campaignEventTimes[0].country!="Select Country" && this.errorLength===0 &&
     this.isFormSubmitted && eventCampaign.userListIds.length>0){ return true;}
@@ -299,23 +300,26 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     this.timezones = this.referenceService.getTimeZonesByCountryId(this.eventCampaign.countryId);
     }
   }
+  scheduleCampaign(){
+    this.referenceService.campaignSuccessMessage = "SCHEDULE";
+    this.createEventCampaign(this.eventCampaign,'SCHEDULE');
+  }
 
   createEventCampaign(eventCampaign: any, launchOption: string) {
     this.isFormSubmitted = true;
     this.onBlurValidation();
     if(this.eventCampaign.campaignReplies && this.eventCampaign.campaignReplies.length>0){ this.getRepliesData(); }
     this.referenceService.goToTop();
-    // eventCampaign.userListIds = eventCampaign.userListIds
     for (let userListId of eventCampaign.userListIds) {
       let contactList = new ContactList(userListId);
       eventCampaign.userLists.push(contactList);
     }
-    this.eventCampaign.campaignReplies.forEach((item, index) => {
+    eventCampaign.campaignReplies.forEach((item, index) => {
       console.log(item); // 9, 2, 5
       console.log(index); // 0, 1, 2
     });
-    this.eventCampaign.user.userId = this.loggedInUserId;
-    this.eventCampaign.campaignScheduleType = launchOption;
+     eventCampaign.user.userId = this.loggedInUserId;
+     eventCampaign.campaignScheduleType = launchOption;
     console.log(eventCampaign);
     if (eventCampaign.campaignScheduleType == "NOW" || eventCampaign.campaignScheduleType == "SAVE") {
       eventCampaign.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -358,6 +362,10 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
      }
      eventCampaign = customEventCampaign;
     }
+    eventCampaign.campaignLocation.id = null;
+    eventCampaign.campaignEventTimes[0].id = null;
+    eventCampaign.campaignEventMedias[0].id = null;
+    eventCampaign.user.id = null;
 
     if(this.validForm(eventCampaign) && this.isFormSubmitted){
       // alert('success');
@@ -366,6 +374,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
       response => {
         if (response.statusCode === 2000) {
           this.router.navigate(["/home/campaigns/manage"]);
+          this.referenceService.campaignSuccessMessage = launchOption;
         } else {
           if (response.statusCode === 2016) {
             this.customResponse = new CustomResponse( 'ERROR', response.errorResponses[0].message, true );
@@ -380,7 +389,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
             }
             else if(response.errorResponses[0].field ="eventStartTimeString"){
               this.customResponse = new CustomResponse( 'ERROR', 'Please change the start time, its already over.', true );
-              this.eventError.eventDateError = true;
+              // this.eventError.eventDateError = true;
             }
             else {
               this.customResponse = new CustomResponse( 'ERROR', response.errorResponses[0].message, true );
