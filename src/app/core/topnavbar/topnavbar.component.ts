@@ -16,7 +16,7 @@ import { Properties } from '../../common/models/properties';
   providers: [Properties]
 })
 export class TopnavbarComponent implements OnInit {
-
+  currentUrl: string;
   roleName: Roles = new Roles();
   isUser = false;
   @Input() model = { 'displayName': '', 'profilePicutrePath': 'assets/admin/pages/media/profile/icon-user-default.png' };
@@ -24,6 +24,7 @@ export class TopnavbarComponent implements OnInit {
     public socialService: SocialService, public authenticationService: AuthenticationService,
     public refService: ReferenceService, public logger: XtremandLogger,public properties: Properties) {
     try{
+    this.currentUrl = this.router.url;
     const userName = this.authenticationService.user.emailId;
     if (this.refService.topNavbarUserService === false || this.utilService.topnavBareLoading === false) {
       this.refService.topNavbarUserService = true;
