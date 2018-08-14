@@ -57,6 +57,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     dataError = false;
     emailTemplateHrefLinks: any[] = [];
     enableWorkFlow = true;
+    channelCampaignFieldName:string = "";
     /***************Contact List************************/
     isContactList:boolean = false;
     contactListBorderColor:string = "silver";
@@ -111,15 +112,6 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
             CKEDITOR.config.height = '100';
            this.getCampaignById();
            CKEDITOR.config.readOnly = true;
-           const roles = this.authenticationService.getRoles();
-           let isVendor = roles.indexOf(this.roleName.vendorRole)>-1;
-           if(this.authenticationService.isOrgAdmin() || (!this.authenticationService.isAddedByVendor && !isVendor)){
-               this.contactType = " partner(s) / recepient(s) ";
-               this.showContactType = true;
-           }else if(isVendor|| this.authenticationService.isAddedByVendor){
-               this.contactType = "partner(s)";
-               this.showContactType = false;
-           }
         }
     selectReplyEmailBody(i,e){}
     selectClickEmailBody(i,r,e){}
@@ -180,6 +172,30 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
         this.referenceService.stopLoader(this.httpRequestLoader);
         this.getCampaignReplies(this.campaign);
         this.getCampaignUrls(this.campaign);
+        
+        
+        const roles = this.authenticationService.getRoles();
+        let isVendor = roles.indexOf(this.roleName.vendorRole)>-1;
+        let isOrgAdmin = this.authenticationService.isOrgAdmin() || (!this.authenticationService.isAddedByVendor && !isVendor);
+        
+        if(isOrgAdmin){
+            this.channelCampaignFieldName = "To Recipient";
+        }else{
+            this.channelCampaignFieldName = "To Partner";
+        }
+        if(isOrgAdmin){
+            if(this.campaign.channelCampaign){
+                this.contactType = "partner(s)";
+                this.showContactType = false;
+            }else{
+                this.contactType = " partner(s) / recepient(s) ";
+                this.showContactType = true;
+            }
+            
+        }else if(isVendor|| this.authenticationService.isAddedByVendor){
+            this.contactType = "partner(s)";
+            this.showContactType = false;
+        }
     }
 
     onSelect(countryId) {

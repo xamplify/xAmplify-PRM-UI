@@ -97,6 +97,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     messageDivClass:string = this.formGroupClass;
     campaignType:string = "";
     isCampaignDetailsFormValid:boolean = false;
+    channelCampaignFieldName:string = "";
+    TO_PARTNER_MESSAGE:string = "";
     /************Video******************/
     isVideo:boolean = false;
     isCampaignDraftVideo:boolean = false;
@@ -502,19 +504,25 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     loadContacts(){
         const roles = this.authenticationService.getRoles();
         let isVendor = roles.indexOf(this.roleName.vendorRole)>-1;
-        if((this.authenticationService.isOrgAdmin() || (!this.authenticationService.isAddedByVendor && !isVendor)) && !this.campaign.channelCampaign){
-            this.setOrgAdminReceipients();
-           
+        let isOrgAdmin = this.authenticationService.isOrgAdmin() || (!this.authenticationService.isAddedByVendor && !isVendor);
+        if(isOrgAdmin){
+            this.channelCampaignFieldName = "To Recipient";
+        }else{
+            this.channelCampaignFieldName = "To Partner";
+        }
+        if(isOrgAdmin){
+            if(this.campaign.channelCampaign){
+                this.setVendorPartnersData();
+            }else{
+                this.setOrgAdminReceipients();
+            }
+            
         }else if(isVendor|| this.authenticationService.isAddedByVendor){
            this.setVendorPartnersData();
         }
-        /*if(roles.indexOf(this.roleName.vendorRole)>-1 || this.authenticationService.isAddedByVendor){
-            this.contactsPagination.filterValue = true;
-        }else{
-            this.contactsPagination.filterValue = this.campaign.channelCampaign;
-        }*/
         this.loadCampaignContacts(this.contactsPagination);
     }
+    
     
     setVendorPartnersData(){
         this.contactListTabName = "Partners";
@@ -523,6 +531,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.contactsPagination.filterValue = true;
         this.contactsPagination.filterKey = "isPartnerUserList";
         this.showContactType = false;
+        this.TO_PARTNER_MESSAGE = "To Partner: Send a campaign intended just for your Partners";
     }
     
     setOrgAdminReceipients(){
@@ -532,6 +541,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.showContactType = true;
         this.contactsPagination.filterValue = false;
         this.contactsPagination.filterKey = null;
+        this.TO_PARTNER_MESSAGE = "To Recipient: Send a campaign intended just for your Partners/ Contacts";
     }
     
 

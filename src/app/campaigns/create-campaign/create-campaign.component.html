@@ -145,9 +145,9 @@
 																</switch>
 															</div>
 															<div class="col-sm-11" style="padding: 0; margin-left: 100px;margin-top: -32px">
-															<label  *ngIf="!campaign.channelCampaign" title="{{properties.TO_PARTNER_MESSAGE}}"><b>To Recipient(s)</b></label>
-															<label  *ngIf="campaign.channelCampaign" title="{{properties.TO_PARTNER_MESSAGE}}">To Recipient(s)</label>
-															<span style="cursor: pointer;color: #54a7e9;" title="{{properties.TO_PARTNER_MESSAGE}}&#013;{{properties.THROUGH_PARTNER_MESSAGE}}">
+															<label  *ngIf="!campaign.channelCampaign" title="{{TO_PARTNER_MESSAGE}}"><b>{{channelCampaignFieldName}}</b></label>
+															<label  *ngIf="campaign.channelCampaign" title="{{TO_PARTNER_MESSAGE}}">{{channelCampaignFieldName}}</label>
+															<span style="cursor: pointer;color: #54a7e9;" title="{{TO_PARTNER_MESSAGE}}&#013;{{properties.THROUGH_PARTNER_MESSAGE}}">
 																	<i class="fa fa-question-circle" style="font-size: 20px;float: left;margin: -18px 0 0 15px;"></i>
 															</span>
 															</div>
@@ -624,8 +624,9 @@
 												<tr>
 													<td colspan="5">
 														<div class="alert alert-info">
-															<strong *ngIf="authenticationService.module.isVendor || authenticationService.isAddedByVendor">No partners found</strong>
-															<strong *ngIf="!authenticationService.module.isVendor && !authenticationService.isAddedByVendor">No contacts found</strong>
+															<!-- <strong *ngIf="authenticationService.module.isVendor || authenticationService.isAddedByVendor">No partners found</strong>
+															<strong *ngIf="!authenticationService.module.isVendor && !authenticationService.isAddedByVendor">No contacts found</strong> -->
+															<strong>{{emptyContactListMessage}}</strong>
 														</div>
 													</td>
 												</tr>
