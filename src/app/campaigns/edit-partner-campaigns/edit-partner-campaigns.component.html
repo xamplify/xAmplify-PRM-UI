@@ -82,8 +82,8 @@
                     (input)="validateForm();validateField('preHeader');" maxlength="200" />
                 </div>
                 <div class="form-group">
-                  <label class="control-label col-sm-4">Data Sharing</label>
-                  <div class="col-sm-8" style="margin-bottom: 10px;">
+                  <label class="control-label col-sm-3 p0">Data Sharing</label>
+                  <div class="col-sm-9" style="margin-bottom: 10px;">
                     <div class="email-options-checkbox-group email-options-notify">
                       <div class="email-options-checkbox clearfix">
                         <div class="col-sm-4">
@@ -104,14 +104,14 @@
                        <label class="control-label" style="cursor:pointer" (click)="checkInteractiveData('false')">
 											<input name="options" type="radio"
 											 [checked]="!campaign.detailedAnalyticsShared" style="cursor:pointer">
-											 <strong>Interactive Data</strong>
+											 <strong>Active participants</strong>
 										</label>
 							<label class="radio-inline" style="cursor:pointer; padding-left:30px; top: -2px;" (click)="checkInteractiveData('true')">
 													<input name="options" type="radio" [checked]="campaign.detailedAnalyticsShared" style="cursor:pointer" >
-													<strong>All</strong>
+													<strong>All participants</strong>
 												</label>
 						<label>
-                            <span style="cursor: pointer;color: #54a7e9;position: relative; top: 1px;left: 6px;" title="Vendor's Access Your Campaign Analytics All or Interactive">
+                            <span style="cursor: pointer;color: #54a7e9;position: relative; top: 1px;left: 6px;" title="Active participants - share only the recipients that have interacted with your campaign &#013;All participants - share all campaign recipient data">
                               <i class="fa fa-question-circle" style="font-size: 18px;"></i>
                             </span>
                           </label>
@@ -120,8 +120,8 @@
                   </div>
                 </div>
                 <div class="form-group">
-                  <label class="control-label col-sm-4">Notify Me When</label>
-                  <div class="col-sm-8">
+                  <label class="control-label col-sm-3 p0">Notify Me When</label>
+                  <div class="col-sm-9">
                     <div class="email-options-checkbox-group email-options-notify">
                       <div class="email-options-checkbox clearfix">
                         <div class="col-sm-4 ui-switch-custom-div">
