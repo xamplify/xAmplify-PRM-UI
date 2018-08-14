@@ -78,13 +78,22 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     public properties: Properties, public eventError:EventError) {
     this.countries = this.referenceService.getCountries();
     this.listEmailTemplates();
-    CKEDITOR.config.height = '175';
+    CKEDITOR.config.height = '100';
     this.isPreviewEvent = this.router.url.includes('/home/campaigns/event-preview')? true: false;
      if(this.isPreviewEvent){
        CKEDITOR.config.readOnly = true;
       } else {
         CKEDITOR.config.readOnly = false;
       }
+  }
+  toggleRsvp(){
+    this.eventCampaign.rsvpReceived = !this.eventCampaign.rsvpReceived;
+  }
+  toggleEmailOpened(){
+    this.eventCampaign.emailOpened = !this.eventCampaign.emailOpened;
+  }
+  toggleInviteOthers(){
+    this.eventCampaign.inviteOthers = !this.eventCampaign.inviteOthers;
   }
   ngOnInit() {
     if (this.referenceService.selectedCampaignType!=='eventCampaign' && this.router.url.includes('/home/campaigns/event') && !this.activatedRoute.snapshot.params['id']) {
@@ -443,7 +452,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   }
 
   fileChange(event: any) {
-    const file: File = event.target.files[0];
+    let file: File;
+    if(event.target.files) { file = event.target.files[0]; }
+    else if( event.dataTransfer.files) { file = event.dataTransfer.files[0]; }
     const formData: FormData = new FormData();
     formData.append('file', file, file.name);
     this.campaignService.uploadEventCampaignMedia(this.loggedInUserId, formData)

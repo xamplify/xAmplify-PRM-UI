@@ -7,6 +7,7 @@
     width: 100%;
     text-align: center;
     cursor: pointer;
+    background: #f8f8f8;
 }
 .upload-media-wrapper input[type=file] {
     display: block;
@@ -55,8 +56,34 @@
 .alert-error{
   padding: 7px;
   font-size: 15px;
+  margin-top: -9px;
+  margin-bottom: 3px;
 }
-.schedule-css{
-  text-align: center;
-  margin-top: 7px;
+.labal-css{
+  color: #2c3f52;
+  font-weight: 600;
+  margin-top: 4px;
+}
+.title-css{
+  color: #2a3f54;
+  font-size: 19px;
+}
+.auto-response{
+  font-size: 13px;
+  font-weight: 600;
+}
+.custom-change-css{
+  background: #eaeaea;
+  border-radius: 0;
+  width: 102%;
+  position: relative;
+  top: -10px;
+  margin-bottom: -16px;
+  right: 10px;
+}
+.button-blue{
+  position: relative;
+  background: #888a8c !important;
+  top: 6px;
+  font-size: 4px;
 }
