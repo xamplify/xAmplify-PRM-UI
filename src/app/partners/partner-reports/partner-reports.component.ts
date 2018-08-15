@@ -200,7 +200,6 @@ export class PartnerReportsComponent implements OnInit {
     }
   }
   activePartnerSearch(keyCode: any) {  if (keyCode === 13) {  this.searchActivePartnerAnalytics(); } }
-  partnerCampaignUISearch(keyCode: any) {  if (keyCode === 13) {  this.searchInPartnerCampaignsUI(); } }
   inActivePartnersSearch(keyCode:any){if (keyCode === 13) {  this.searchInActivePartnerAnalytics(); }}
   searchPartnerCampaignKeyPress(keyCode:any,value:string){if (keyCode === 13) {  this.searchPartnerCampaigns(value); }}
 
@@ -209,6 +208,7 @@ export class PartnerReportsComponent implements OnInit {
       this.sortOption = new SortOption();
       this.selectedTabIndex = 0;
       this.httpRequestLoader = new HttpRequestLoader();
+      this.pagination = new Pagination();
       $('#through-partner-div').hide();
       $('#inactive-partners-div').hide();
       $('#active-partner-div').show();
@@ -268,6 +268,9 @@ export class PartnerReportsComponent implements OnInit {
       if("through-partner"==type){
           this.throughPartnerCampaignPagination.pageIndex = event.page;
           this.listThroughPartnerCampaigns(this.throughPartnerCampaignPagination);
+      }else if("partner-campaign-details"==type){
+          this.pagination.pageIndex = event.page;
+          this.listRedistributedThroughPartnerCampaigns();
       }
 
   }
@@ -275,6 +278,8 @@ export class PartnerReportsComponent implements OnInit {
   searchPartnerCampaigns(type:string) {
       if("through-partner"==type){
           this.getAllFilteredResults(this.throughPartnerCampaignPagination,type);
+      }else if("partner-campaign-details"==type){
+          this.getAllFilteredResults(this.pagination,type);
       }
 
   }
@@ -283,6 +288,8 @@ export class PartnerReportsComponent implements OnInit {
       this.sortOption.selectedSortedOption = text;
       if("through-partner"==type){
           this.getAllFilteredResults(this.throughPartnerCampaignPagination,type);
+      }else if("partner-campaign-details"==type){
+          this.getAllFilteredResults(this.pagination,type);
       }
 
   }
@@ -291,8 +298,8 @@ export class PartnerReportsComponent implements OnInit {
       this.sortOption.itemsSize = items;
       if("through-partner"==type){
           this.getAllFilteredResults(this.throughPartnerCampaignPagination,type);
-      }else{
-
+      }else if("partner-campaign-details"==type){
+          this.getAllFilteredResults(this.pagination,type);
       }
 
   }
@@ -300,23 +307,31 @@ export class PartnerReportsComponent implements OnInit {
   getAllFilteredResults(pagination: Pagination,type:string) {
       pagination.pageIndex = 1;
       pagination.searchKey = this.sortOption.searchKey;
-      let sortedValue = this.sortOption.selectedSortedOption.value;
-      if (sortedValue != "") {
-          let options: string[] = sortedValue.split("-");
-          pagination.sortcolumn = options[0];
-          pagination.sortingOrder = options[1];
-      }
-
       if (this.sortOption.itemsSize.value == 0) {
           pagination.maxResults = pagination.totalRecords;
       } else {
           pagination.maxResults = this.sortOption.itemsSize.value;
       }
       if("through-partner"==type){
+          let sortedValue = this.sortOption.selectedSortedOption.value;
+          this.setSortColumns(pagination, sortedValue);
           this.listThroughPartnerCampaigns(pagination);
+      }else if("partner-campaign-details"==type){
+          let sortedValue = this.sortOption.defaultSortOption.value;
+          this.setSortColumns(pagination, sortedValue);
+          this.pagination = pagination;
+          this.listRedistributedThroughPartnerCampaigns();
       }
   }
 
+  setSortColumns(pagination:Pagination,sortedValue:any){
+      if (sortedValue != "") {
+          let options: string[] = sortedValue.split("-");
+          pagination.sortcolumn = options[0];
+          pagination.sortingOrder = options[1];
+      }
+  }
+  
   /************************InActive Partners Tab********************/
   goToInActivePartnersDiv(){
       this.sortOption = new SortOption();
@@ -434,11 +449,11 @@ export class PartnerReportsComponent implements OnInit {
       if(this.loggedInUserId>0){
         this.paginationType = 'userInteraction';
         this.homeComponent.getVideoDefaultSettings();
-        this.pagination.maxResults = 12;
         this.campaignInteractionPagination.maxResults = 10;
         this.partnerReportData();
         this.partnerUserInteractionReports();
         this.getActivePartnerReports();
+        this.pagination.maxResults = 12;
         this.listRedistributedThroughPartnerCampaigns();
     }else{
         this.router.navigate(['home/dashboard']);
