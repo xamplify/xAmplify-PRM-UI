@@ -170,8 +170,8 @@
 							<li *ngIf="(refService.hasAllAccess() || authenticationService.module.isVendor ||   authenticationService.module.isCompanyPartner)&& authenticationService.user.hasCompany">
 								<a [routerLink]="['/home/social/manage/all']"> <i class="fa fa-cog" aria-hidden="true"></i>Social Accounts</a>
 							</li>
-							
-							
+
+
 							<li *ngIf="currentUrl.endsWith('welcome')">
 								<a [routerLink]="['/home/dashboard']">
 								<i class="fa fa-paper-plane-o" aria-hidden="true"></i>Dashboard</a>
@@ -180,11 +180,13 @@
 								<a [routerLink]="['/home/dashboard/welcome']">
 								<i class="fa fa-paper-plane-o" aria-hidden="true"></i>Welcome</a>
 							</li>
-							
+
 							<li *ngIf="(!currentUrl.endsWith('dashboard')) && (!currentUrl.endsWith('welcome'))">
-								<a [routerLink]="['/home/dashboard/'+refService.userDefaultPage.toLowerCase()]">
+								<a *ngIf="refService.userDefaultPage==='WELCOME'" [routerLink]="['/home/dashboard/'+refService.userDefaultPage.toLowerCase()]">
 								<i class="fa fa-paper-plane-o" aria-hidden="true"></i>{{refService.userDefaultPage.toLowerCase()}}</a>
-							</li>
+                <a *ngIf="refService.userDefaultPage==='DASHBOARD'" [routerLink]="['/home/'+refService.userDefaultPage.toLowerCase()]">
+                  <i class="fa fa-paper-plane-o" aria-hidden="true"></i>{{refService.userDefaultPage.toLowerCase()}}</a>
+              </li>
 							<li id="lockscreen"><a [routerLink]="['/userlock']"> <i
 									class="icon-lock"></i> Lock Screen
 							</a></li>
