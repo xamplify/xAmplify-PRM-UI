@@ -80,6 +80,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   endDatePassError = false;
   currentDate:any;
   scheduleCampaignError = '';
+  parternUserListIds = [];
 
   constructor(public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
     private contactService: ContactService,
@@ -335,9 +336,18 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     else if (this.paginationType === 'contactlists') { this.loadContactLists(pagination); }
   }
   toggleContactLists() {
-    this.userListIds = this.eventCampaign.userListIds = [];
+
     this.eventError.eventContactError = true;
     this.isPartnerUserList = !this.isPartnerUserList;
+    if(this.isPartnerUserList) {
+     if(this.parternUserListIds.length>0) { this.userListIds = [];
+      this.eventError.eventContactError = false;
+    }
+    }
+    else {if(this.userListIds.length>0) { this.parternUserListIds = [];
+        this.eventError.eventContactError = false;}
+    }
+
     this.contactListsPagination.pageIndex = 1;
     this.loadContactLists(this.contactListsPagination);
   }
@@ -345,17 +355,35 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   highlightRow(contactListId: number) {
     const isChecked = $('#' + contactListId).is(':checked');
     if (isChecked) {
-      if (!this.eventCampaign.userListIds.includes(contactListId)) {
-        this.eventCampaign.userListIds.push(contactListId);
+      if (!this.userListIds.includes(contactListId)) {
+        this.userListIds.push(contactListId);
+        this.parternUserListIds = []
         this.eventError.eventContactError = false;
       }
       $('#' + contactListId).parent().closest('tr').addClass('highlight');
     } else {
-      this.eventCampaign.userListIds.splice($.inArray(contactListId, this.eventCampaign.userListIds), 1);
+      this.userListIds.splice($.inArray(contactListId, this.userListIds), 1);
       $('#' + contactListId).parent().closest('tr').removeClass('highlight');
-      if(this.eventCampaign.userListIds.length===0){  this.eventError.eventContactError = true;}
+      if(this.userListIds.length===0){  this.eventError.eventContactError = true;}
     }
   }
+
+  partnerHighlightRow(contactListId: number) {
+    const isChecked = $('#' + contactListId).is(':checked');
+    if (isChecked) {
+      if (!this.parternUserListIds.includes(contactListId)) {
+        this.parternUserListIds.push(contactListId);
+        this.eventError.eventContactError = false;
+        this.userListIds = []
+      }
+      $('#' + contactListId).parent().closest('tr').addClass('highlight');
+    } else {
+      this.eventCampaign.userListIds.splice($.inArray(contactListId, this.parternUserListIds), 1);
+      $('#' + contactListId).parent().closest('tr').removeClass('highlight');
+      if(this.parternUserListIds.length===0){  this.eventError.eventContactError = true;}
+    }
+  }
+
   closeModal() {
     this.paginationType = 'contactlists';
     this.contactsPagination = new Pagination();
@@ -454,6 +482,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   }
   createEventCampaign(eventCampaign: any, launchOption: string) {
     this.isFormSubmitted = true;
+    if(this.isPartnerUserList) {eventCampaign.userListIds = this.parternUserListIds; }
+    else { eventCampaign.userListIds = this.userListIds; }
+
     this.onBlurValidation();
     eventCampaign.campaignScheduleType = launchOption;
     eventCampaign.campaignReplies.forEach((item, index) => {
