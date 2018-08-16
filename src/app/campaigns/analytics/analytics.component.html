@@ -161,11 +161,11 @@
 						<b>{{campaignReport.totalMayBeCount}}</b>
 					</h1>
 					<h5>Total Says MayBe</h5>
-				</div>
+				</div> 
 			</button>
 		</div>
 		<div [hidden]="mainLoader"  class="col-xs-3 p-5x">
-			<button class="portlet light color1-invert crcb" data-toggle="modal" data-target="#rsvpDetailsModal" (click)="getRsvpDetails('NOTYETRESPONDED')"  [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
+			<button class="portlet light color1-invert crcb" data-toggle="modal" data-target="#rsvpDetailsModal" (click)="getRsvpDetails('NOTYET')"  [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
 			 [disabled]="campaignReport.totalNotYetRespondedCount < 1 || !isPartnerEnabledAnalyticsAccess">
 				<div class="portlet-body text-center">
 						<i class="fa fa-eye"></i>
@@ -363,6 +363,7 @@
 			</div>
 		</div>
   </div>
+
 	<div class="row" *ngIf="isPartnerEnabledAnalyticsAccess">
 		<div class="col-xs-12 col-sm-12 p-5x">
 			<div class="col-xs-12 p-5x">
@@ -437,7 +438,7 @@
 			</div>
 		</div>
 	</div>
-	</section>
+	  </section>
 
 </ng-template>
 </div>

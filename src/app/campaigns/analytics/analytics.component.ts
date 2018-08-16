@@ -651,6 +651,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   getRsvpDetails(responseType: any){
       try{
           this.loading = true;
+          this.downloadTypeName = 'rsvp';
           this.rsvpResposeType = responseType;
             this.campaignService.getEventCampaignDetailAnalytics( this.campaign.campaignId, responseType )
             .subscribe(
@@ -844,7 +845,11 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     } else if (this.downloadTypeName === 'worldMap') {
         this.logListName = 'World_Map_logs.csv';
       this.downloadCsvList = this.worldMapUserTotalData;
+    } else if(this.downloadTypeName === 'rsvp'){
+        this.logListName = 'People who says '+ this.rsvpResposeType +' log.csv';
+        this.downloadCsvList = this.rsvpDetailsList;
     }
+        
 
     this.downloadDataList.length = 0;
     for (let i = 0; i < this.downloadCsvList.length; i++) {
@@ -895,6 +900,12 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
         object["Device"] = this.downloadCsvList[i].deviceType;
         object["Location"] = this.downloadCsvList[i].location;
       }
+      
+      if (this.downloadTypeName === 'rsvp') {
+          object["Email Id"] = this.downloadCsvList[i].emailId;
+          object["Message"] = this.downloadCsvList[i].message;
+      }
+      
       this.downloadDataList.push(object);
     }
 
