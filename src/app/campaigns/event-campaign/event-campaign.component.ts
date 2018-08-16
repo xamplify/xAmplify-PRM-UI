@@ -400,18 +400,20 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   scheduleTimeError(){
     let currentDate:any;
     let scheduleTime:any;
+    let startDate:any;
+    startDate = Date.parse(this.eventCampaign.campaignEventTimes[0].startTimeString);
     this.eventError.scheduleTimeError = this.eventCampaign.launchTimeInString ?false:true ;
     currentDate = new Date().getTime();
     scheduleTime = Date.parse(this.eventCampaign.launchTimeInString);
-    if(scheduleTime > currentDate) {
-    this.eventError.scheduleTimeError = false;
-    this.scheduleCampaignError = 'Schedule time is should be greater than today time';
+    if(scheduleTime > currentDate &&  scheduleTime > startDate) {
+    this.eventError.scheduleTimeError = true;
+    this.scheduleCampaignError = 'Schedule time is should be greater than today and start Date time';
     } else if(scheduleTime < currentDate){
     this.eventError.scheduleTimeError = true;
     this.scheduleCampaignError = 'Schedule time is already over';
    } else {
-     this.eventError.scheduleTimeError = true;
-    this.scheduleCampaignError = 'please select the Schedule time';
+     this.eventError.scheduleTimeError = false;
+    this.scheduleCampaignError = '';
    }
   }
   setScheduleEvent(){
