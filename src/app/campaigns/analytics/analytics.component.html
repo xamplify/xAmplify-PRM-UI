@@ -132,7 +132,7 @@
 			<button class="portlet light color1-invert crcb" (click)="getRsvpDetails('YES')" data-toggle="modal" data-target="#rsvpDetailsModal" [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
 			 [disabled]="campaignReport.totalYesCount < 1 ||  !isPartnerEnabledAnalyticsAccess">
 				<div class="portlet-body text-center">
-						<i class="fa fa-envelope"></i>
+						<i class="fa fa-check-circle"></i>
 					<h1>
 						<b>{{this.campaignReport.totalYesCount}}</b>
 					</h1>
@@ -144,7 +144,7 @@
 			<button class="portlet light color1-invert crcb" data-toggle="modal" data-target="#rsvpDetailsModal" (click)="getRsvpDetails('NO')"  [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
 			 [disabled]="campaignReport.totalNoCount < 1 || !isPartnerEnabledAnalyticsAccess">
 				<div class="portlet-body text-center">
-						<i class="fa fa-envelope-open"></i>
+						<i class="fa fa-times-circle"></i>
 					<h1>
 						<b>{{campaignReport.totalNoCount}}</b>
 					</h1>
@@ -156,7 +156,7 @@
 			<button class="portlet light color1-invert crcb" data-toggle="modal" data-target="#rsvpDetailsModal" (click)="getRsvpDetails('MAYBE')"  [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
 			 [disabled]="campaignReport.totalMayBeCount < 1 || !isPartnerEnabledAnalyticsAccess">
 				<div class="portlet-body text-center">
-						<i class="fa fa-globe"></i>
+						<i class="fa fa-minus-circle"></i>
 					<h1>
 						<b>{{campaignReport.totalMayBeCount}}</b>
 					</h1>
@@ -168,7 +168,7 @@
 			<button class="portlet light color1-invert crcb" data-toggle="modal" data-target="#rsvpDetailsModal" (click)="getRsvpDetails('NOTYET')"  [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
 			 [disabled]="campaignReport.totalNotYetRespondedCount < 1 || !isPartnerEnabledAnalyticsAccess">
 				<div class="portlet-body text-center">
-						<i class="fa fa-eye"></i>
+						<i class="fa fa-eye-slash"></i>
 					<h1>
 						<b>{{campaignReport.totalNotYetRespondedCount}}</b>
 					</h1>
