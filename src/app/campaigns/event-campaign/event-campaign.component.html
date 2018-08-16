@@ -31,8 +31,9 @@
 						<label for="eventTitle" class="col-sm-3 labal-css">Event Title <span class=text-danger>*</span></label>
 						<div class="col-sm-9">
 						<input type="text" class="form-control" id="eventTitle" placeholder="Event Title" [(ngModel)]="eventCampaign.campaign" [ngModelOptions]="{standalone: true}"
-						[ngClass]="{'has-error': eventError.eventTitleError}" (input)="eventTitleError()" (blur)="eventTitleError()" [attr.disabled]="isPreviewEvent? '' : null">
-						<div class="text-danger" *ngIf="eventError.eventTitleError">Event Title is required</div>
+						[ngClass]="{'has-error': eventError.eventTitleError}" (input)="validateCampaignName(eventCampaign.campaign)" (blur)="eventTitleError()" [attr.disabled]="isPreviewEvent? '' : null">
+            <div class="text-danger" *ngIf="eventError.eventTitleError">Event Title is required</div>
+            <div class="text-danger" *ngIf="!isValidCampaignName && eventCampaign.campaign?.length>0" style="color: red">Title already Exists</div>
 					</div>
 					</div>
 					<div class="form-group">
@@ -282,7 +283,7 @@
                   <h4 class="pull-left f-w-600">Pick an email template</h4>
                 </div>
                 <div class="portlet-body clearfix">
-                  <div class="table-responsive">
+                  <div class="table-responsive" *ngIf="true">
                     <table class="table table-striped table-condensed table-bordered">
                     <tr>
                       <th>Select</th>
@@ -298,6 +299,37 @@
                     </ng-container>
                     </table>
                   </div>
+                  <!-- <div *ngFor="let emailTemplate of emailTemplates ;let i =index">
+                    	<div class="mix-grid">
+                    <div class="col-md-3 col-sm-4 mix category_1 mix_all" style="display: block; opacity: 1; margin-top: -11px;">
+                        <div class="mix-inner css" [class.template-selected]="emailTemplate.id == selectedEmailTemplateRow">
+                          <img class="img-responsive center-block" src="{{emailTemplate.subject}}" alt="{{emailTemplate.name}}" id="emailtemplate-image">
+                          <div class="mix-details" id="mix-details" style="height:199px">
+                            <h4 class="ellipsis" title="{{emailTemplate.name}}" style="margin-top: 14px;">{{emailTemplate.name}}</h4>
+                            <div style="top: 2%; position: relative; margin-left: 5px;">
+                            </div>
+                            <div id="template-action-div">
+                              <a class="mix-preview4 icons-css" title="Select" data-rel="" *ngIf="emailTemplate.id!=selectedEmailTemplateRow" (click)="setEmailTemplate(emailTemplate)">
+                                <i class="fa fa-check-circle" id="fa-font-size"></i>
+                              </a>
+                              <a class="mix-preview4 icons-css" title="Select" data-rel="" *ngIf="emailTemplate.id==selectedEmailTemplateRow">
+                                <i class="fa fa-ban" id="fa-font-size"></i>
+                              </a>
+                              <a class="mix-preview6 icons-css" title="Preview" data-rel="" (click)="previewEventCampaignEmailTemplate(emailTemplate.id);">
+                                <i class="fa fa-eye" id="fa-font-size"></i>
+                              </a>
+                            </div>
+                              <span align="left" class="template-created-by-label" title="Admin">
+                                <b >Admin</b>
+                              </span>
+                              <span align="left" class="template-created-by-value">
+                                <b>Created By</b>
+                              </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    </div> -->
                 </div>
               </div>
         </div>

@@ -22,15 +22,15 @@ import { Reply } from '../models/campaign-reply';
 import { CampaignEmailTemplate } from '../models/campaign-email-template';
 import { EventError } from '../models/event-error';
 import { CustomResponse } from '../../common/models/custom-response';
+import { HttpRequestLoader } from '../../core/models/http-request-loader';
 
-
-declare var $, flatpickr, CKEDITOR;
+declare var $,swal, flatpickr, CKEDITOR;
 
 @Component({
   selector: 'app-event-campaign',
   templateUrl: './event-campaign.component.html',
   styleUrls: ['./event-campaign.component.css'],
-  providers: [PagerService, Pagination, CallActionSwitch, Properties,EventError]
+  providers: [PagerService, Pagination, CallActionSwitch, Properties,EventError,HttpRequestLoader]
 })
 export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   emailTemplates: Array<EmailTemplate> = [];
@@ -66,6 +66,15 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   isPreviewEvent = false;
   eventRouterPage = false;
   isSelectedSchedule = false;
+  selectedEmailTemplateRow: any;
+  isLaunched = false;
+  hasInternalError = false;
+  isReloaded = false;
+  isAdd = true;
+  httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
+  isValidCampaignName = false;
+  names: string[] = [];
+  editedCampaignName = '';
 
   constructor(public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
     private contactService: ContactService,
@@ -95,19 +104,51 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   toggleInviteOthers(){
     this.eventCampaign.inviteOthers = !this.eventCampaign.inviteOthers;
   }
+  setEmailTemplate(emailTemplate:any){
+   this.selectedEmailTemplateRow = emailTemplate.id;
+  }
+  loadCampaignNames(userId:number){
+    this.campaignService.getCampaignNames(userId).subscribe(data => { this.names.push(data); },
+    error => console.log( error ), () => console.log( "Campaign Names Loaded" ) );
+}
+  validateCampaignName(campaignName:string){
+     this.eventTitleError();
+     const lowerCaseCampaignName = $.trim(campaignName.toLowerCase());//Remove all spaces
+     const list = this.names[0];
+     if(this.isAdd){
+         if($.inArray(lowerCaseCampaignName, list) > -1){
+             this.isValidCampaignName = false;
+         }else{
+             this.isValidCampaignName = true;
+         }
+     }else{
+         console.log(this.editedCampaignName.toLowerCase()+":::::::::"+lowerCaseCampaignName);
+         if($.inArray(lowerCaseCampaignName, list) > -1 && this.editedCampaignName.toLowerCase()!=lowerCaseCampaignName){
+             this.isValidCampaignName = false;
+         }else{
+             this.isValidCampaignName = true;
+         }
+     }
+ }
+
   ngOnInit() {
+    this.loggedInUserId = this.authenticationService.getUserId();
+    this.loadCampaignNames( this.loggedInUserId );
     if (this.referenceService.selectedCampaignType!=='eventCampaign' && this.router.url.includes('/home/campaigns/event') && !this.activatedRoute.snapshot.params['id']) {
       console.log( "This page is reloaded" );
       this.router.navigate(['/home/campaigns/select']);
-
+        this.isReloaded = true;
     }
     else if(this.activatedRoute.snapshot.params['id']){
+      this.isAdd = false;
       this.eventRouterPage =true;
       const alias = this.activatedRoute.snapshot.params['id'];
       this.campaignService.getEventCampaignById(alias).subscribe(
         (result)=>{
         this.campaignService.eventCampaign = result.data;
         this.eventCampaign = result.data;
+        this.editedCampaignName = this.eventCampaign.campaign;
+        this.validateCampaignName(this.eventCampaign.campaign);
         console.log( this.eventCampaign);
         this.eventCampaign.emailTemplate = result.data.emailTemplateDTO;
         this.eventCampaign.user = result.data.userDTO;
@@ -115,6 +156,12 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
         else {this.getCampaignReplies(this.eventCampaign); }
         // this.eventCampaign.userListIds = this.campaignService.eventCampaign.userListDTOs;
         this.eventCampaign.campaignEventTimes = result.data.campaignEventTimes;
+        if(!this.eventCampaign.campaignEventTimes[0]){
+          this.eventCampaign.campaignEventTimes = [];
+          this.eventCampaign.campaignEventTimes[0].startTimeString = new Date().toDateString();
+          this.eventCampaign.campaignEventTimes[0].endTimeString =  new Date().toDateString();
+        }
+        if( this.eventCampaign.campaignEventTimes[0].countryId===undefined) { this.eventCampaign.campaignEventTimes[0].countryId=0; }
         for(let i=0; i<this.countries.length;i++){
           if(this.countries[i].name=== result.data.campaignEventTimes[0].country){
             this.eventCampaign.countryId = this.countries[i].id;
@@ -135,9 +182,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     this.eventCampaign.emailTemplate = this.emailTemplates[0];
     this.eventCampaign.countryId = this.countries[0].id;
     this.eventCampaign.campaignEventTimes[0].countryId = this.countries[0].id;
-    }
-    this.loggedInUserId = this.authenticationService.getUserId();
-
+  }
     this.loadContactLists(this.contactListsPagination);
     flatpickr('.flatpickr', {
       enableTime: true,
@@ -159,8 +204,12 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     this.eventError.eventHostByError = this.eventCampaign.fromName? false:true;
   }
   eventStartTimeError(){
+    // let newDate = new Date();
+    // let inewDate = newDate.toLocaleString();
+    // alert(Date.parse(inewDate.substring(0,inewDate.length-6)))
+    // let date = Date.parse(this.eventCampaign.campaignEventTimes[0].startTimeString);
+    // alert(date);
     this.eventError.eventStartTimeError= this.eventCampaign.campaignEventTimes[0].startTimeString ?false:true ;
-    // this.eventSameDateError();
   }
   eventCountryError(){
     this.eventError.eventCountryAndTimeZone = this.eventCampaign.campaignEventTimes[0].countryId ? false: true;
@@ -313,78 +362,86 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     this.referenceService.campaignSuccessMessage = "SCHEDULE";
     this.createEventCampaign(this.eventCampaign,'SCHEDULE');
   }
-
-  createEventCampaign(eventCampaign: any, launchOption: string) {
-    this.isFormSubmitted = true;
-    this.onBlurValidation();
+  getCampaignData(eventCampaign:any){
+    eventCampaign.user.userId = this.loggedInUserId;
     if(this.eventCampaign.campaignReplies && this.eventCampaign.campaignReplies.length>0){ this.getRepliesData(); }
-    this.referenceService.goToTop();
     for (let userListId of eventCampaign.userListIds) {
       let contactList = new ContactList(userListId);
       eventCampaign.userLists.push(contactList);
     }
+   console.log(eventCampaign);
+   if (eventCampaign.campaignScheduleType == "NOW" || eventCampaign.campaignScheduleType == "SAVE") {
+     eventCampaign.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+     eventCampaign.launchTimeInString = this.campaignService.setLaunchTime();
+   } else {
+     eventCampaign.timeZone = $('#timezoneId option:selected').val();
+   }
+   eventCampaign.campaign = this.referenceService.replaceMultipleSpacesWithSingleSpace(eventCampaign.campaign);
+   eventCampaign.fromName = this.referenceService.replaceMultipleSpacesWithSingleSpace(eventCampaign.fromName);
+
+   eventCampaign.campaignEventTimes[0].timeZone = $('#timezoneIdCampaignEventTime option:selected').val();
+   eventCampaign.campaignEventTimes[0].country = this.countries.find(x => x.id == eventCampaign.campaignEventTimes[0].countryId).name;
+
+   if(eventCampaign.id){
+    const customEventCampaign = {
+      'id':eventCampaign.id,
+      'campaign': this.referenceService.replaceMultipleSpacesWithSingleSpace(this.eventCampaign.campaign),
+      'user':eventCampaign.user,
+      'message':eventCampaign.message,
+      'channelCampaign':eventCampaign.channelCampaign,
+      'countryId': eventCampaign.countryId,
+      'email':eventCampaign.email,
+      'emailOpened':eventCampaign.emailOpened,
+      'socialSharingIcons':eventCampaign.socialSharingIcons,
+      'fromName': this.referenceService.replaceMultipleSpacesWithSingleSpace(eventCampaign.fromName),
+      'launchTimeInString':eventCampaign.launchTimeInString,
+      'emailTemplate':eventCampaign.emailTemplate,
+      'timeZone': eventCampaign.timeZone,
+      'campaignScheduleType': eventCampaign.campaignScheduleType,
+      'campaignLocation': eventCampaign.campaignLocation,
+      'campaignEventMedias': [{"filePath": eventCampaign.campaignEventMedias[0].filePath}],
+      'campaignEventTimes': eventCampaign.campaignEventTimes,
+      'country': eventCampaign.campaignEventTimes[0].country,
+      'publicEventCampaign': eventCampaign.publicEventCampaign,
+      'toPartner':eventCampaign.toPartner,
+      'inviteOthers':eventCampaign.inviteOthers,
+      'rsvpReceived':eventCampaign.rsvpReceived,
+      'onlineMeeting':eventCampaign.onlineMeeting,
+      'userLists' : eventCampaign.userLists,
+      'userListIds':eventCampaign.userListIds,
+      'campaignReplies': eventCampaign.campaignReplies,
+    }
+    eventCampaign = customEventCampaign;
+   }
+   return eventCampaign;
+  }
+  createEventCampaign(eventCampaign: any, launchOption: string) {
+    this.isFormSubmitted = true;
+    this.onBlurValidation();
+    eventCampaign.campaignScheduleType = launchOption;
     eventCampaign.campaignReplies.forEach((item, index) => {
       console.log(item); // 9, 2, 5
       console.log(index); // 0, 1, 2
     });
-     eventCampaign.user.userId = this.loggedInUserId;
-     eventCampaign.campaignScheduleType = launchOption;
-    console.log(eventCampaign);
-    if (eventCampaign.campaignScheduleType == "NOW" || eventCampaign.campaignScheduleType == "SAVE") {
-      eventCampaign.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-      eventCampaign.launchTimeInString = this.campaignService.setLaunchTime();
-    } else {
-      eventCampaign.timeZone = $('#timezoneId option:selected').val();
-    }
-
-    eventCampaign.campaignEventTimes[0].timeZone = $('#timezoneIdCampaignEventTime option:selected').val();
-    eventCampaign.campaignEventTimes[0].country = this.countries.find(x => x.id == eventCampaign.campaignEventTimes[0].countryId).name;
-
-    if(eventCampaign.id){
-     const customEventCampaign = {
-       'id':eventCampaign.id,
-       'campaign': this.eventCampaign.campaign,
-       'user':eventCampaign.user,
-       'message':eventCampaign.message,
-       'channelCampaign':eventCampaign.channelCampaign,
-       'countryId': eventCampaign.countryId,
-       'email':eventCampaign.email,
-       'emailOpened':eventCampaign.emailOpened,
-       'socialSharingIcons':eventCampaign.socialSharingIcons,
-       'fromName': eventCampaign.fromName,
-       'launchTimeInString':eventCampaign.launchTimeInString,
-       'emailTemplate':eventCampaign.emailTemplate,
-       'timeZone': eventCampaign.timeZone,
-       'campaignScheduleType': eventCampaign.campaignScheduleType,
-       'campaignLocation': eventCampaign.campaignLocation,
-       'campaignEventMedias': [{"filePath": eventCampaign.campaignEventMedias[0].filePath}],
-       'campaignEventTimes': eventCampaign.campaignEventTimes,
-       'country': eventCampaign.campaignEventTimes[0].country,
-       'publicEventCampaign': eventCampaign.publicEventCampaign,
-       'toPartner':eventCampaign.toPartner,
-       'inviteOthers':eventCampaign.inviteOthers,
-       'rsvpReceived':eventCampaign.rsvpReceived,
-       'onlineMeeting':eventCampaign.onlineMeeting,
-       'userLists' : eventCampaign.userLists,
-       'userListIds':eventCampaign.userListIds,
-       'campaignReplies': eventCampaign.campaignReplies,
-     }
-     eventCampaign = customEventCampaign;
-    }
+    eventCampaign =  this.getCampaignData(eventCampaign)
     eventCampaign.campaignLocation.id = null;
     eventCampaign.campaignEventTimes[0].id = null;
     eventCampaign.campaignEventMedias[0].id = null;
     eventCampaign.user.id = null;
 
     if(this.validForm(eventCampaign) && this.isFormSubmitted){
-      // alert('success');
+      this.referenceService.startLoader(this.httpRequestLoader);
       this.campaignService.createEventCampaign(eventCampaign)
       .subscribe(
       response => {
+        this.referenceService.goToTop();
         if (response.statusCode === 2000) {
+          this.isLaunched = true;
+          this.referenceService.stopLoader(this.httpRequestLoader);
           this.router.navigate(["/home/campaigns/manage"]);
           this.referenceService.campaignSuccessMessage = launchOption;
         } else {
+          this.referenceService.stopLoader(this.httpRequestLoader);
           if (response.statusCode === 2016) {
             this.customResponse = new CustomResponse( 'ERROR', response.errorResponses[0].message, true );
           }
@@ -410,6 +467,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
       () => console.log("Campaign Names Loaded")
       );
     } else {
+      this.referenceService.goToTop();
       this.showErrorMessage = true;
       if(eventCampaign.campaignEventTimes[0].country=="Select Country"){
        // this.customResponse = new CustomResponse( 'ERROR', 'Please select the valid country', true );
@@ -665,8 +723,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
           }
           reply.replyInDaysSum = this.emailNotOpenedReplyDaysSum;
       }
-  }
-  addEmailOpenedReplyDaysSum(reply:Reply,index:number){
+     }
+      addEmailOpenedReplyDaysSum(reply:Reply,index:number){
       if(reply.actionId===13){
           if(index===0){
               this.emailOpenedReplyDaysSum = reply.replyInDays;
@@ -729,10 +787,84 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
         removeStyleAttrByDivId(divId:string){
             $('#'+divId).removeAttr("style");
         }
+        getTodayTime(){
+          let newDate:any = new Date().toLocaleString();
+          newDate = newDate.substring(0,newDate.length-6);
+          newDate = newDate.replace(',','');
+          return newDate;
+        }
+        saveCampaignOnDestroy(){
+          const eventCampaign = this.getCampaignData(this.eventCampaign);
+          eventCampaign.campaignLocation.id = null;
+          eventCampaign.campaignEventTimes[0].id = null;
+          eventCampaign.campaignEventMedias[0].id = null;
+          eventCampaign.user.id = null;
+          if(!eventCampaign.campaignEventTimes[0].startTimeString) {  eventCampaign.campaignEventTimes[0].startTimeString = this.getTodayTime();}
+          if(!eventCampaign.campaignEventTimes[0].endTimeString){ eventCampaign.campaignEventTimes[0].endTimeString = this.getTodayTime(); }
+          if( this.eventCampaign.campaignEventTimes[0].countryId===undefined) { this.eventCampaign.campaignEventTimes[0].countryId=0; }
+          const errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
+          if(errorLength===0){
+              this.dataError = false;
+              this.campaignService.createEventCampaign(eventCampaign)
+              .subscribe(
+                response => {
+                  console.log(response);
+                  if(response.statusCode === 2000){
+                      this.isLaunched = true;
+                      this.reInitialize();
+                      if("/home/campaigns/manage"===this.router.url){
+                        this.router.navigate(["/home/campaigns/manage"]);
+                      }
+                  }
+              },
+              error => {
+                  this.hasInternalError = true;
+                  this.logger.error("error in saveCampaignOnDestroy()", error);
+              },
+              () => this.logger.info("Finished saveCampaignOnDestroy()")
+          );
+          }
+      return false;
+      }
 
-   ngOnDestroy(): void {
-      this.campaignService.eventCampaign = undefined;
-      CKEDITOR.config.readOnly = false;
-   }
+    reInitialize(){
+      this.referenceService.selectedCampaignType = "";
+      this.eventCampaign.userListIds = [];
+      this.campaignService.campaign = undefined;
+    }
+
+   ngOnDestroy() {
+    this.campaignService.eventCampaign = undefined;
+    CKEDITOR.config.readOnly = false;
+    if(!this.hasInternalError && this.router.url!="/"){
+        if(!this.isReloaded){
+            if(!this.isLaunched){
+                if(this.isAdd){
+                    this.saveCampaignOnDestroy();
+                }else{
+                    let self = this;
+                    swal( {
+                        title: 'Are you sure?',
+                        text: "You have unchanged Campaign data",
+                        type: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#54a7e9',
+                        cancelButtonColor: '#999',
+                        confirmButtonText: 'Yes, Save it!'
+
+                    }).then(function() {
+                            self.saveCampaignOnDestroy();
+                    },function (dismiss) {
+                        if (dismiss === 'cancel') {
+                            self.reInitialize();
+                        }
+                    })
+                }
+             }
+        }
+     }
+    $('#contactsModal').modal('hide');
+    $('#show_email_template_preivew').modal('hide');
+ }
 
 }

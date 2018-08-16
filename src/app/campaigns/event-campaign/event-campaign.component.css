@@ -87,3 +87,6 @@
   top: 6px;
   font-size: 4px;
 }
+.template-selected {
+	background-color: #6dcff6 !important;
+}
