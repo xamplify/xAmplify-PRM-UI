@@ -353,8 +353,10 @@
 											<span *ngIf="!item?.latestView">-</span></h6>
 										</td>
 										<td class="td-chart">
-											<div class="bg-color" [style.width.%]="(item.viewsCount/maxViewsValue)*100" style="margin: 10px 0px;">
-												<h1 style="text-align: center;vertical-align: middle;color:white;font-size: 17px;">{{item.viewsCount}}</h1>
+											<div class="progress">
+												<div class="progress-bar progress-bar-success" [ngClass]="{'special-progress-bar' : item.viewsCount === 0 }" role="progressbar" [style.width.%]="(item.viewsCount/maxViewsValue)*100">
+													<span>{{item.viewsCount}}</span>
+												</div>
 											</div>
 										</td>
 									</tr>

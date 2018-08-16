@@ -1,3 +1,10 @@
+.special-progress-bar {
+	width: 100% !important;
+	height: 0;
+}
+.special-progress-bar span {
+	color: black;
+}
 .modal-title { font-weight: 600; color: #888;}
 a.disabled {
 	pointer-events: none;

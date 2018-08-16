@@ -839,3 +839,7 @@ td>br { display: none; }
 @media all and (max-width: 767px) {
     td>br { display: block; }
 }
+.progress {
+	margin-bottom: 0 !important;
+	border-radius: 0 !important;
+}
