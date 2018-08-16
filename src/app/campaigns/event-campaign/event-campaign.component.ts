@@ -79,6 +79,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   endDatePassedError = '';
   endDatePassError = false;
   currentDate:any;
+  scheduleCampaignError = '';
 
   constructor(public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
     private contactService: ContactService,
@@ -246,10 +247,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
    this.eventSameDateError();
   }
   eventSameDateError(){
-    this.currentDate = new Date().getTime();
     let endDate = Date.parse(this.eventCampaign.campaignEventTimes[0].endTimeString);
     let startDate = Date.parse(this.eventCampaign.campaignEventTimes[0].startTimeString);
-    if(this.eventCampaign.campaignEventTimes[0].endTimeString && !this.eventCampaign.campaignEventTimes[0].allDay && this.currentDate===endDate){
+    if(this.eventCampaign.campaignEventTimes[0].endTimeString && !this.eventCampaign.campaignEventTimes[0].allDay && startDate===endDate){
      this.eventError.eventSameDateError = true;
      this.endDatePassedError = 'start Date / Time and end Date / Time should not be same';
     } else if(startDate > endDate){
@@ -369,7 +369,23 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     this.isFormSubmitted && eventCampaign.userListIds.length>0){ return true;}
    else { return false;}
   }
-
+  scheduleTimeError(){
+    let currentDate:any;
+    let scheduleTime:any;
+    this.eventError.scheduleTimeError = this.eventCampaign.launchTimeInString ?false:true ;
+    currentDate = new Date().getTime();
+    scheduleTime = Date.parse(this.eventCampaign.launchTimeInString);
+    if(scheduleTime > currentDate) {
+    this.eventError.scheduleTimeError = false;
+    this.scheduleCampaignError = 'Schedule time is should be greater than today time';
+    } else if(scheduleTime < currentDate){
+    this.eventError.scheduleTimeError = true;
+    this.scheduleCampaignError = 'Schedule time is already over';
+   } else {
+     this.eventError.scheduleTimeError = true;
+    this.scheduleCampaignError = 'please select the Schedule time';
+   }
+  }
   setScheduleEvent(){
     this.isSelectedSchedule = !this.isSelectedSchedule;
     if(this.isSelectedSchedule) { this.selectedLaunchOption = 'SCHEDULE';
@@ -378,7 +394,10 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   }
   scheduleCampaign(){
     this.referenceService.campaignSuccessMessage = "SCHEDULE";
-    this.createEventCampaign(this.eventCampaign,'SCHEDULE');
+    if(!this.eventError.scheduleTimeError && this.eventCampaign.countryId) {
+      this.createEventCampaign(this.eventCampaign,'SCHEDULE');
+    }
+
   }
   getCampaignData(eventCampaign:any){
     eventCampaign.user.userId = this.loggedInUserId;

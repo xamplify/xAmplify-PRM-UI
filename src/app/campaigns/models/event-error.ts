@@ -9,4 +9,5 @@ export class EventError{
   eventDescription = false;
   eventContactError = false;
   eventSameDateError= false;
+  scheduleTimeError = false;
 }

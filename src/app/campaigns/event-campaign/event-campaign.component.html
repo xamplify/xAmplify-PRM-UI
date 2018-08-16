@@ -479,12 +479,14 @@
 				<div class="col-md-12" style="margin-top: 12px;" [hidden]="!isSelectedSchedule">
 					<div class="col-md-3">
 						<input [attr.disabled]="isPreviewEvent? '' : null"  type="text" id="launchTimeInString" class="form-control flatpickr" placeholder="Launch Time"
-								[(ngModel)]="eventCampaign.launchTimeInString" [ngModelOptions]="{standalone: true}">
+                [(ngModel)]="eventCampaign.launchTimeInString" [ngModelOptions]="{standalone: true}" (input)="scheduleTimeError()" (blur)="scheduleTimeError()">
+                <div class="text-danger" *ngIf="eventError.scheduleTimeError">{{scheduleCampaignError}}</div>
 					</div>
 					<div class="col-md-3">
 						<select [attr.disabled]="isPreviewEvent? '' : null" class="form-control" style="width: 100%" [(ngModel)]="eventCampaign.countryId" [ngModelOptions]="{standalone: true}" (change)="onChangeCountry($event.target.value)" id="countryName">
 							<option *ngFor="let country of countries" [value]="country.id">{{country.name}}</option>
-						</select>
+            </select>
+            <div class="text-danger" *ngIf="!eventCampaign.countryId">please select the country</div>
 					</div>
 					<div class="col-md-3">
 						<select [attr.disabled]="isPreviewEvent? '' : null" class="form-control" style="width: 100%" [(ngModel)]="eventCampaign.timeZone" [ngModelOptions]="{standalone: true}" id="timezoneId">
@@ -498,7 +500,7 @@
 									{{timeZone.cityName}}
 								</option>
 							</ng-container>
-						</select>
+            </select>
           </div>
           <div class="col-md-3 custom-center"><button type="button" class="btn btn-primary" (click)="scheduleCampaign()">Schedule</button></div>
         </div>
