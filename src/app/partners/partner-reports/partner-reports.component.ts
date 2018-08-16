@@ -176,7 +176,7 @@ export class PartnerReportsComponent implements OnInit {
   setPage(event) {
     if (this.paginationType === 'userInteraction') {
       this.pagination.pageIndex = event.page;
-      this.listRedistributedThroughPartnerCampaigns();
+      this.listRedistributedThroughPartnerCampaigns(this.pagination);
     } else if (this.paginationType === 'partnerInteraction') {
       this.campaignInteractionPagination.pageIndex = event.page;
       this.partnerCampaignInteraction(this.campaignId);
@@ -193,7 +193,7 @@ export class PartnerReportsComponent implements OnInit {
   paginationDropdown(event) {
     if (this.paginationType == 'userInteraction') {
       this.pagination = event;
-      this.listRedistributedThroughPartnerCampaigns();
+      this.listRedistributedThroughPartnerCampaigns(this.pagination);
     } else if (this.paginationType === 'partnerInteraction') {
       this.campaignInteractionPagination = event;
       this.partnerCampaignInteraction(this.campaignId);
@@ -207,11 +207,12 @@ export class PartnerReportsComponent implements OnInit {
   goToActivePartnersDiv(){
       this.sortOption = new SortOption();
       this.selectedTabIndex = 0;
-      this.httpRequestLoader = new HttpRequestLoader();
+      this.campaignUserInteractionHttpRequestLoader = new HttpRequestLoader();
       this.pagination = new Pagination();
       $('#through-partner-div').hide();
       $('#inactive-partners-div').hide();
       $('#active-partner-div').show();
+      this.listRedistributedThroughPartnerCampaigns(this.pagination);
   }
 
   /****************************Through Partner Analytics**************************/
@@ -237,6 +238,7 @@ export class PartnerReportsComponent implements OnInit {
       this.throughPartnerCampaignPagination.reDistributedPartnerAnalytics = true;
       this.listThroughPartnerCampaigns(this.throughPartnerCampaignPagination);
   }
+  
 
   listThroughPartnerCampaigns(pagination: Pagination) {
       this.referenseService.loading(this.httpRequestLoader, true);
@@ -270,7 +272,7 @@ export class PartnerReportsComponent implements OnInit {
           this.listThroughPartnerCampaigns(this.throughPartnerCampaignPagination);
       }else if("partner-campaign-details"==type){
           this.pagination.pageIndex = event.page;
-          this.listRedistributedThroughPartnerCampaigns();
+          this.listRedistributedThroughPartnerCampaigns(this.pagination);
       }
 
   }
@@ -319,8 +321,7 @@ export class PartnerReportsComponent implements OnInit {
       }else if("partner-campaign-details"==type){
           let sortedValue = this.sortOption.defaultSortOption.value;
           this.setSortColumns(pagination, sortedValue);
-          this.pagination = pagination;
-          this.listRedistributedThroughPartnerCampaigns();
+          this.listRedistributedThroughPartnerCampaigns(pagination);
       }
   }
 
@@ -415,23 +416,19 @@ export class PartnerReportsComponent implements OnInit {
   
   
   /*************List Redistributed Through Partner Campaigns************/
-  listRedistributedThroughPartnerCampaigns() {
+  listRedistributedThroughPartnerCampaigns(pagination:Pagination) {
       this.paginationType = 'userInteraction';
       this.referenseService.loading( this.campaignUserInteractionHttpRequestLoader, true );
-      this.parterService.listRedistributedThroughPartnerCampaign( this.loggedInUserId, this.pagination ).subscribe(
+      this.parterService.listRedistributedThroughPartnerCampaign( this.loggedInUserId, pagination ).subscribe(
           ( response: any ) => {
               console.log(response);
               let data  = response.data;
-              this.pagination.totalRecords = data.totalRecords;
-              this.pagination = this.pagerService.getPagedItems( this.pagination, data.redistributedCampaigns);
+              this.sortOption.totalRecords = data.totalRecords;
+              pagination.totalRecords = data.totalRecords;
+              pagination = this.pagerService.getPagedItems(pagination, data.redistributedCampaigns);
               this.referenseService.loading( this.campaignUserInteractionHttpRequestLoader, false );
           },
           ( error: any ) => { console.log( 'error got here' ) });
-  }
-  searchInListRedistributedThroughPartnerCampaign(){
-      this.pagination.pageIndex = 1;
-      this.pagination.searchKey = this.partnerCampaignUISearchKey;
-      this.listRedistributedThroughPartnerCampaigns();
   }
   showRedistributedCampaings(item:any){
       this.pagination.pagedItems.forEach((element) => {
@@ -454,7 +451,7 @@ export class PartnerReportsComponent implements OnInit {
         this.partnerUserInteractionReports();
         this.getActivePartnerReports();
         this.pagination.maxResults = 12;
-        this.listRedistributedThroughPartnerCampaigns();
+        this.listRedistributedThroughPartnerCampaigns(this.pagination);
     }else{
         this.router.navigate(['home/dashboard']);
     }
