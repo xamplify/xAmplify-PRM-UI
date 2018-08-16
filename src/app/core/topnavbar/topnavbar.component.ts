@@ -113,6 +113,7 @@ export class TopnavbarComponent implements OnInit {
   }
 
   logout() {
+    this.refService.userDefaultPage = 'NoneOf';
     this.authenticationService.logout();
     this.router.navigate(['/']);
   }
