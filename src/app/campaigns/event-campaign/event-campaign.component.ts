@@ -75,6 +75,10 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   isValidCampaignName = false;
   names: string[] = [];
   editedCampaignName = '';
+  datePassedError = '';
+  endDatePassedError = '';
+  endDatePassError = false;
+  currentDate:any;
 
   constructor(public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
     private contactService: ContactService,
@@ -204,12 +208,20 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     this.eventError.eventHostByError = this.eventCampaign.fromName? false:true;
   }
   eventStartTimeError(){
-    // let newDate = new Date();
-    // let inewDate = newDate.toLocaleString();
-    // alert(Date.parse(inewDate.substring(0,inewDate.length-6)))
-    // let date = Date.parse(this.eventCampaign.campaignEventTimes[0].startTimeString);
-    // alert(date);
-    this.eventError.eventStartTimeError= this.eventCampaign.campaignEventTimes[0].startTimeString ?false:true ;
+     let currentDate:any;
+     let startDate:any;
+     this.eventError.eventStartTimeError= this.eventCampaign.campaignEventTimes[0].startTimeString ?false:true ;
+     currentDate = new Date().getTime();
+     startDate = Date.parse(this.eventCampaign.campaignEventTimes[0].startTimeString);
+     if(startDate < currentDate) {
+      this.eventError.eventStartTimeError = true;
+      this.datePassedError = 'Start Date / Time  already over';
+      }
+      else if( startDate > currentDate){
+        this.eventError.eventStartTimeError = false;
+        this.datePassedError= '';
+      } else { this.eventError.eventStartTimeError = false;
+        this.datePassedError= '';}
   }
   eventCountryError(){
     this.eventError.eventCountryAndTimeZone = this.eventCampaign.campaignEventTimes[0].countryId ? false: true;
@@ -234,16 +246,22 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
    this.eventSameDateError();
   }
   eventSameDateError(){
-    if(this.eventCampaign.campaignEventTimes[0].endTimeString && !this.eventCampaign.campaignEventTimes[0].allDay && this.eventCampaign.campaignEventTimes[0].endTimeString===this.eventCampaign.campaignEventTimes[0].startTimeString){
-    //  this.eventError.eventEndDateError = true;
-    //  this.eventError.eventStartTimeError = true;
+    this.currentDate = new Date().getTime();
+    let endDate = Date.parse(this.eventCampaign.campaignEventTimes[0].endTimeString);
+    let startDate = Date.parse(this.eventCampaign.campaignEventTimes[0].startTimeString);
+    if(this.eventCampaign.campaignEventTimes[0].endTimeString && !this.eventCampaign.campaignEventTimes[0].allDay && this.currentDate===endDate){
      this.eventError.eventSameDateError = true;
-    } else {
-      // this.eventError.eventEndDateError = false;
-      // this.eventError.eventStartTimeError = false;
+     this.endDatePassedError = 'start Date / Time and end Date / Time should not be same';
+    } else if(startDate > endDate){
+      this.eventError.eventSameDateError = true;
+      this.endDatePassError = true;
+      this.endDatePassedError = 'End Date / Time should not less than start Date / Time ';
+    }
+     else {
+      this.endDatePassError = false;
       this.eventError.eventSameDateError = false;
+      this.endDatePassedError = '';
      // if(this.eventCampaign.campaignEventTimes[0].allDay){this.eventCampaign.campaignEventTimes[0].endTimeString = undefined;}
-
     }
 
   }
@@ -344,7 +362,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   }
 
   validForm(eventCampaign:any){
-   if(!this.eventError.eventSameDateError && !this.eventError.eventEndDateError && !this.eventError.eventTitleError && !this.eventError.eventDateError && !this.eventError.eventHostByError
+   if(!this.eventError.eventStartTimeError &&!this.eventError.eventSameDateError && !this.eventError.eventEndDateError && !this.eventError.eventTitleError && !this.eventError.eventDateError && !this.eventError.eventHostByError
     && !this.eventError.eventLocationError && !this.eventError.eventDescription &&
     eventCampaign.message && eventCampaign.campaign && eventCampaign.campaignEventTimes[0].startTimeString &&
     eventCampaign.campaignEventTimes[0].country!="Select Country" && this.errorLength===0 &&
@@ -836,7 +854,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
    ngOnDestroy() {
     this.campaignService.eventCampaign = undefined;
     CKEDITOR.config.readOnly = false;
-    if(!this.hasInternalError && this.router.url!="/"){
+    if(!this.hasInternalError && this.router.url!=="/"){
         if(!this.isReloaded){
             if(!this.isLaunched){
                 if(this.isAdd){

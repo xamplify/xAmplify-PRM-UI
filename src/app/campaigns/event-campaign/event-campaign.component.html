@@ -73,9 +73,10 @@
 								<input type="text" id="enDatePicker" [attr.disabled]="isPreviewEvent? '' : null" [disabled]="eventCampaign.campaignEventTimes[0].allDay" class="form-control flatpickr" placeholder="End Time"
                 [(ngModel)]="eventCampaign.campaignEventTimes[0].endTimeString" [ngModelOptions]="{standalone: true}" (input)="eventEndTimeError()" (blur)="eventEndTimeError()"
                 [ngClass]="{'has-error': eventError.eventEndDateError && !eventCampaign.campaignEventTimes[0].endTimeString && !eventCampaign.campaignEventTimes[0].allDay}">
-							</div>
-							<div class="col-sm-6 text-danger" *ngIf="eventError.eventStartTimeError &&!eventCampaign.campaignEventTimes[0].startTimeString">Please enter a valid start Date / Time</div>
-              <div class="col-sm-6 text-danger" *ngIf="eventError.eventSameDateError && !eventCampaign.campaignEventTimes[0].allDay"> start Date / Time and end Date / Time should not be same</div>
+              </div>
+              <div class="col-sm-12 text-danger" *ngIf="endDatePassError">{{endDatePassedError}}</div>
+              <div class="col-sm-12 text-danger" *ngIf="eventError.eventStartTimeError &&!eventCampaign.campaignEventTimes[0].startTimeString">Please enter a valid start Date / Time</div>
+              <div class="col-sm-12 text-danger" *ngIf="eventError.eventStartTimeError">{{datePassedError}}</div>
 							<div class="col-sm-12">
 								<input type="checkbox" [attr.disabled]="isPreviewEvent? '' : null" [checked]="eventCampaign.campaignEventTimes[0].allDay" (change)="eventCampaign.campaignEventTimes[0].allDay = !eventCampaign.campaignEventTimes[0].allDay"> All Day
 							</div>
