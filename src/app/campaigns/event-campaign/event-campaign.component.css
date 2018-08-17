@@ -88,5 +88,6 @@
   font-size: 4px;
 }
 .template-selected {
-	background-color: #6dcff6 !important;
+  background-color: #6dcff6 !important;
+  border: 1px solid #008fd5 !important;
 }

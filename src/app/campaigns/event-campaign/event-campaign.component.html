@@ -286,7 +286,7 @@
                   <h4 class="pull-left f-w-600">Pick an email template</h4>
                 </div>
                 <div class="portlet-body clearfix">
-                  <div class="table-responsive" *ngIf="true">
+                  <div class="table-responsive" *ngIf="false">
                     <table class="table table-striped table-condensed table-bordered">
                     <tr>
                       <th>Select</th>
@@ -302,37 +302,32 @@
                     </ng-container>
                     </table>
                   </div>
-                  <!-- <div *ngFor="let emailTemplate of emailTemplates ;let i =index">
-                    	<div class="mix-grid">
-                    <div class="col-md-3 col-sm-4 mix category_1 mix_all" style="display: block; opacity: 1; margin-top: -11px;">
-                        <div class="mix-inner css" [class.template-selected]="emailTemplate.id == selectedEmailTemplateRow">
-                          <img class="img-responsive center-block" src="{{emailTemplate.subject}}" alt="{{emailTemplate.name}}" id="emailtemplate-image">
-                          <div class="mix-details" id="mix-details" style="height:199px">
-                            <h4 class="ellipsis" title="{{emailTemplate.name}}" style="margin-top: 14px;">{{emailTemplate.name}}</h4>
-                            <div style="top: 2%; position: relative; margin-left: 5px;">
+
+                    <div class="mix-grid">
+                      <div *ngFor="let emailTemplate of emailTemplates" id="emailTemplateListDiv_{{emailTemplate.id}}">
+                        <div class="col-md-3 col-sm-4 mix category_1 mix_all" style="display: block; opacity: 1;">
+                            <div class="mix-inner css" [class.template-selected]="emailTemplate.id == selectedEmailTemplateRow">
+                            <img class="img-responsive center-block" src="assets/images/event-template.png" alt="{{emailTemplate.name}}" id="emailtemplate-image" style="height: 187px;width: 190px;">
+                            <div class="mix-details" id="mix-details" style="height:187px">
+                              <h4 class="ellipsis" title="{{emailTemplate.name}}" style="margin-top: 14px;">{{emailTemplate.name}}</h4>
+                              <div style="top: 2%; position: relative; margin-left: 5px;">
+                              </div>
+                              <div id="template-action-div" style="margin-top: 60px;">
+                                <a class="mix-preview4 icons-css" title="Select" data-rel="" *ngIf="emailTemplate.id!=selectedEmailTemplateRow && !isPreviewEvent" (click)="setEmailTemplate(emailTemplate)">
+                                  <i class="fa fa-check-circle" id="fa-font-size"></i>
+                                </a>
+                                <a class="mix-preview4 icons-css" title="Select" data-rel="" *ngIf="emailTemplate.id==selectedEmailTemplateRow">
+                                  <i class="fa fa-ban" id="fa-font-size"></i>
+                                </a>
+                                <a class="mix-preview6 icons-css" title="Preview" data-rel="" (click)="previewEventCampaignEmailTemplate(emailTemplate.id)">
+                                  <i class="fa fa-eye" id="fa-font-size"></i>
+                                </a>
+                              </div>
                             </div>
-                            <div id="template-action-div">
-                              <a class="mix-preview4 icons-css" title="Select" data-rel="" *ngIf="emailTemplate.id!=selectedEmailTemplateRow" (click)="setEmailTemplate(emailTemplate)">
-                                <i class="fa fa-check-circle" id="fa-font-size"></i>
-                              </a>
-                              <a class="mix-preview4 icons-css" title="Select" data-rel="" *ngIf="emailTemplate.id==selectedEmailTemplateRow">
-                                <i class="fa fa-ban" id="fa-font-size"></i>
-                              </a>
-                              <a class="mix-preview6 icons-css" title="Preview" data-rel="" (click)="previewEventCampaignEmailTemplate(emailTemplate.id);">
-                                <i class="fa fa-eye" id="fa-font-size"></i>
-                              </a>
-                            </div>
-                              <span align="left" class="template-created-by-label" title="Admin">
-                                <b >Admin</b>
-                              </span>
-                              <span align="left" class="template-created-by-value">
-                                <b>Created By</b>
-                              </span>
                           </div>
                         </div>
                       </div>
-                    </div>
-                    </div> -->
+                      </div>
                 </div>
               </div>
         </div>

@@ -157,6 +157,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
         this.validateCampaignName(this.eventCampaign.campaign);
         console.log( this.eventCampaign);
         this.eventCampaign.emailTemplate = result.data.emailTemplateDTO;
+        this.selectedEmailTemplateRow = this.eventCampaign.emailTemplate.id;
         this.eventCampaign.user = result.data.userDTO;
         if(result.data.campaignReplies===undefined){ this.eventCampaign.campaignReplies = [];}
         else {this.getCampaignReplies(this.eventCampaign); }
@@ -407,7 +408,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     scheduleTime = Date.parse(this.eventCampaign.launchTimeInString);
     if(scheduleTime > currentDate &&  scheduleTime > startDate) {
     this.eventError.scheduleTimeError = true;
-    this.scheduleCampaignError = 'Schedule time is should be greater than today and start Date time';
+    this.scheduleCampaignError = 'Schedule time is should be greater than today and less than start Date time';
     } else if(scheduleTime < currentDate){
     this.eventError.scheduleTimeError = true;
     this.scheduleCampaignError = 'Schedule time is already over';
@@ -720,9 +721,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     const emailTemplate1 = new EmailTemplate(); emailTemplate1.id = 1700; emailTemplate1.name = "event based template 1";
     const emailTemplate2 = new EmailTemplate(); emailTemplate2.id = 1701; emailTemplate2.name = "event based template 2";
     const emailTemplate3 = new EmailTemplate(); emailTemplate3.id = 1702; emailTemplate3.name = "event based template 3";
-    this.emailTemplates.push(emailTemplate1);
-    this.emailTemplates.push(emailTemplate2);
-    this.emailTemplates.push(emailTemplate3);
+    this.emailTemplates.push(emailTemplate1, emailTemplate2,emailTemplate3);
   }
 
   onChangeCountryCampaignEventTime(countryId: number) {
@@ -907,30 +906,30 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     this.campaignService.eventCampaign = undefined;
     CKEDITOR.config.readOnly = false;
     if(!this.hasInternalError && this.router.url!=="/"){
-        if(!this.isReloaded){
-            if(!this.isLaunched){
-                if(this.isAdd){
-                    this.saveCampaignOnDestroy();
-                }else{
-                    let self = this;
-                    swal( {
-                        title: 'Are you sure?',
-                        text: "You have unchanged Campaign data",
-                        type: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#54a7e9',
-                        cancelButtonColor: '#999',
-                        confirmButtonText: 'Yes, Save it!'
+     if(!this.isReloaded){
+      if(!this.isLaunched){
+          if(this.isAdd){
+              this.saveCampaignOnDestroy();
+          }else{
+              let self = this;
+              swal( {
+                  title: 'Are you sure?',
+                  text: "You have unchanged Campaign data",
+                  type: 'warning',
+                  showCancelButton: true,
+                  confirmButtonColor: '#54a7e9',
+                  cancelButtonColor: '#999',
+                  confirmButtonText: 'Yes, Save it!'
 
-                    }).then(function() {
-                            self.saveCampaignOnDestroy();
-                    },function (dismiss) {
-                        if (dismiss === 'cancel') {
-                            self.reInitialize();
-                        }
-                    })
+              }).then(function() {
+                      self.saveCampaignOnDestroy();
+              },function (dismiss) {
+                if (dismiss === 'cancel') {
+                    self.reInitialize();
                 }
-             }
+            })
+          }
+         }
         }
      }
     $('#contactsModal').modal('hide');
