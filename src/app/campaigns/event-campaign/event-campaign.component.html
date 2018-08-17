@@ -55,13 +55,19 @@
               </div>
             </div>
 					<div class="form-group">
-						<label for="hostedBy" class="col-sm-3 labal-css">Partner Campaign</label>
-						<div class="col-sm-9">
+						<label for="hostedBy" class="col-sm-3 labal-css">Through Partner</label>
+						<div class="col-sm-3">
 							<switch [status]="eventCampaign.channelCampaign" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
 								[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size" [disabled]="isPreviewEvent"
 								(statusChange)="eventCampaign.channelCampaign = !eventCampaign.channelCampaign">
 							</switch>
-						</div>
+            </div>
+            <label for="hostedBy" class="col-sm-2 labal-css p0">To Partner</label>
+            <div class="col-sm-3" style="padding: 0;margin-top: 5px;">
+            <span style="cursor: pointer;color: #54a7e9;" title="{{properties.TO_PARTNER_MESSAGE}}&#013;{{properties.THROUGH_PARTNER_MESSAGE}}">
+              <i class="fa fa-question-circle" ></i>
+          </span>
+          </div>
 					</div>
 					<div class="form-group">
 						<label for="eventDateTime" class="col-sm-3 labal-css">Event Date/Time <span class=text-danger>*</span></label>
@@ -146,7 +152,6 @@
           </div>
           <div class="portlet-body clearfix" [attr.disabled]="isPreviewEvent">
             <div><label>
-              <!-- <input type="checkbox" [attr.disabled]="isPreviewEvent? '' : null" [checked]="eventCampaign.rsvpReceived" (change)="eventCampaign.rsvpReceived = !eventCampaign.rsvpReceived"> -->
               <switch [status]="eventCampaign.rsvpReceived" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [disabled]="isPreviewEvent"
               [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
               (statusChange)="eventCampaign.rsvpReceived = !eventCampaign.rsvpReceived">
@@ -154,14 +159,12 @@
               Notify me when guests RSVP
               </label></div>
             <div><label>
-               <!-- <input type="checkbox" [attr.disabled]="isPreviewEvent? '' : null" [checked]="eventCampaign.emailOpened" (change)="eventCampaign.emailOpened = !eventCampaign.emailOpened"> -->
                <switch [status]="eventCampaign.emailOpened" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [disabled]="isPreviewEvent"
                [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
                (statusChange)="eventCampaign.emailOpened = !eventCampaign.emailOpened">
              </switch>
                Notify me when email is opened </label></div>
             <div><label>
-              <!-- <input type="checkbox" [attr.disabled]="isPreviewEvent? '' : null" [checked]="eventCampaign.inviteOthers" (change)="eventCampaign.inviteOthers = !eventCampaign.inviteOthers"> -->
               <switch [status]="eventCampaign.inviteOthers" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [disabled]="isPreviewEvent"
               [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
               (statusChange)="eventCampaign.inviteOthers = !eventCampaign.inviteOthers">
