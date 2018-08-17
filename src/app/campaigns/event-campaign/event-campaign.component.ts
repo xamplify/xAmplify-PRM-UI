@@ -10,7 +10,6 @@ import { EmailTemplateService } from '../../email-template/services/email-templa
 
 import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import { EventCampaign } from '../models/event-campaign';
-import { CampaignEventTime } from '../models/campaign-event-time';
 import { CampaignEventMedia } from '../models/campaign-event-media';
 import { Pagination } from '../../core/models/pagination';
 import { ContactList } from '../../contacts/models/contact-list';
@@ -47,7 +46,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   selectedLaunchOption: string;
   customResponse: CustomResponse = new CustomResponse();
   loggedInUserId: number;
-  isPartnerUserList = false;
+  isPartnerUserList = true;  // changed for code ,, future it may change
   eventCampaign: EventCampaign = new EventCampaign();
   @ViewChild("myckeditor") ckeditor: any;
   ckeConfig: any;
@@ -66,7 +65,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   isPreviewEvent = false;
   eventRouterPage = false;
   isSelectedSchedule = false;
-  selectedEmailTemplateRow: any;
   isLaunched = false;
   hasInternalError = false;
   isReloaded = false;
@@ -95,23 +93,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     this.listEmailTemplates();
     CKEDITOR.config.height = '100';
     this.isPreviewEvent = this.router.url.includes('/home/campaigns/event-preview')? true: false;
-     if(this.isPreviewEvent){
-       CKEDITOR.config.readOnly = true;
-      } else {
-        CKEDITOR.config.readOnly = false;
-      }
-  }
-  toggleRsvp(){
-    this.eventCampaign.rsvpReceived = !this.eventCampaign.rsvpReceived;
-  }
-  toggleEmailOpened(){
-    this.eventCampaign.emailOpened = !this.eventCampaign.emailOpened;
-  }
-  toggleInviteOthers(){
-    this.eventCampaign.inviteOthers = !this.eventCampaign.inviteOthers;
-  }
-  setEmailTemplate(emailTemplate:any){
-   this.selectedEmailTemplateRow = emailTemplate.id;
+    CKEDITOR.config.readOnly = this.isPreviewEvent ? true: false;
   }
   loadCampaignNames(userId:number){
     this.campaignService.getCampaignNames(userId).subscribe(data => { this.names.push(data); },
@@ -157,7 +139,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
         this.validateCampaignName(this.eventCampaign.campaign);
         console.log( this.eventCampaign);
         this.eventCampaign.emailTemplate = result.data.emailTemplateDTO;
-        this.selectedEmailTemplateRow = this.eventCampaign.emailTemplate.id;
         this.eventCampaign.user = result.data.userDTO;
         if(result.data.campaignReplies===undefined){ this.eventCampaign.campaignReplies = [];}
         else {this.getCampaignReplies(this.eventCampaign); }
@@ -178,9 +159,10 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
         }
         this.onChangeCountryCampaignEventTime(this.eventCampaign.campaignEventTimes[0].countryId)
         for(let i=0; i< result.data.userListDTOs.length;i++){
-         this.userListIds.push(result.data.userListDTOs[i].id);
+       //  this.userListIds.push(result.data.userListDTOs[i].id);
+         this.parternUserListIds.push(result.data.userListDTOs[i].id);
         }
-        this.eventCampaign.userListIds = this.userListIds;
+        this.eventCampaign.userListIds = this.parternUserListIds;
         this.eventCampaign.userLists = [];
         console.log(this.userListIds);
       });
@@ -213,18 +195,17 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   eventStartTimeError(){
      let currentDate:any;
      let startDate:any;
-     this.eventError.eventStartTimeError= this.eventCampaign.campaignEventTimes[0].startTimeString ?false:true ;
      currentDate = new Date().getTime();
      startDate = Date.parse(this.eventCampaign.campaignEventTimes[0].startTimeString);
-     if(startDate < currentDate) {
-      this.eventError.eventStartTimeError = true;
-      this.datePassedError = 'Start Date / Time  already over';
-      }
-      else if( startDate > currentDate){
-        this.eventError.eventStartTimeError = false;
-        this.datePassedError= '';
-      } else { this.eventError.eventStartTimeError = false;
-        this.datePassedError= '';}
+     if(startDate < currentDate) { this.setStartTimeErrorMessage(true, 'Start Date / Time is already over.');}
+     else if( startDate > currentDate){ this.setStartTimeErrorMessage(false, '');}
+     else if(this.eventCampaign.campaignEventTimes[0].startTimeString){
+        this.setStartTimeErrorMessage(true, 'Please select the start Date and time.'); }
+     else { this.setStartTimeErrorMessage(false, ''); }
+  }
+  setStartTimeErrorMessage(event:boolean, mesg:string){
+    this.eventError.eventStartTimeError = event;
+    this.datePassedError = mesg;
   }
   eventCountryError(){
     this.eventError.eventCountryAndTimeZone = this.eventCampaign.campaignEventTimes[0].countryId ? false: true;
@@ -249,8 +230,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
    this.eventSameDateError();
   }
   eventSameDateError(){
-    let endDate = Date.parse(this.eventCampaign.campaignEventTimes[0].endTimeString);
-    let startDate = Date.parse(this.eventCampaign.campaignEventTimes[0].startTimeString);
+    const endDate = Date.parse(this.eventCampaign.campaignEventTimes[0].endTimeString);
+    const startDate = Date.parse(this.eventCampaign.campaignEventTimes[0].startTimeString);
     if(this.eventCampaign.campaignEventTimes[0].endTimeString && !this.eventCampaign.campaignEventTimes[0].allDay && startDate===endDate){
      this.eventError.eventSameDateError = true;
      this.endDatePassedError = 'start Date / Time and end Date / Time should not be same';
@@ -263,9 +244,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
       this.endDatePassError = false;
       this.eventError.eventSameDateError = false;
       this.endDatePassedError = '';
-     // if(this.eventCampaign.campaignEventTimes[0].allDay){this.eventCampaign.campaignEventTimes[0].endTimeString = undefined;}
     }
-
   }
   onBlurValidation(){
    this.eventTitleError();
@@ -277,7 +256,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
    this.eventDescriptionError();
    this.eventContactListError();
    this.eventSameDateError();
-
   }
 
   /*****************LOAD CONTACTLISTS WITH PAGINATION START *****************/
