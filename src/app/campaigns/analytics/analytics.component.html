@@ -127,7 +127,20 @@
 	
 	
 	<section *ngIf="campaignType === 'EVENT'">
-		<div class="col-xs-12 col-sm-12 p-5x emails-info" [hidden]="mainLoader" >
+		<div class="col-xs-12 col-sm-5 p-5x">
+		<div class="p-5x">
+			<div class="portlet light" style="min-height: 118px;">
+				<div class="portlet-body clearfix">
+					<div class="col-xs-12">
+						<span class="btn btn-sm btn-primary pull-right">{{campaignType}} CAMPAIGN {{isPartnerCampaign}}</span>
+						<h4>{{campaign.campaignName}}</h4>
+						<h5 class="text-info mb10">{{campaign.launchTime | date: 'fullDate'}}</h5>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+		<div class="col-xs-12 col-sm-7 p-5x emails-info" [hidden]="mainLoader" >
 		<div class="p-5x" class="col-xs-3">
 			<button class="portlet light color1-invert crcb" (click)="getRsvpDetails('YES')" data-toggle="modal" data-target="#rsvpDetailsModal" [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
 			 [disabled]="campaignReport.totalYesCount < 1 ||  !isPartnerEnabledAnalyticsAccess">
@@ -363,6 +376,8 @@
 			</div>
 		</div>
   </div>
+  
+   </section>
 
 	<div class="row" *ngIf="isPartnerEnabledAnalyticsAccess">
 		<div class="col-xs-12 col-sm-12 p-5x">
@@ -438,7 +453,7 @@
 			</div>
 		</div>
 	</div>
-	  </section>
+	 
 
 </ng-template>
 </div>
@@ -757,7 +772,7 @@
 				<h4 class="modal-title" *ngIf="rsvpResposeType === 'YES'">People who have says YES</h4>
 				<h4 class="modal-title" *ngIf="rsvpResposeType === 'NO'">People who have says NO</h4>
 				<h4 class="modal-title" *ngIf="rsvpResposeType === 'MAYBE'">People who have says MAYBE</h4>
-				<h4 class="modal-title" *ngIf="rsvpResposeType === 'NOTYETRESPONDED'">People who have says NOTYETRESPONDED</h4>
+				<h4 class="modal-title" *ngIf="rsvpResposeType === 'NOTYET'">People who have says NOTYETRESPONDED</h4>
 				<div class="btn-group pull-right" style="margin-top: -4px; cursor:pointer; color: #7d8c98">
 					<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none;margin-top: -15px;padding-right: 10px;margin-right: 21px; float:right;">
 					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
