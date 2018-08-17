@@ -199,7 +199,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
      startDate = Date.parse(this.eventCampaign.campaignEventTimes[0].startTimeString);
      if(startDate < currentDate) { this.setStartTimeErrorMessage(true, 'Start Date / Time is already over.');}
      else if( startDate > currentDate){ this.setStartTimeErrorMessage(false, '');}
-     else if(this.eventCampaign.campaignEventTimes[0].startTimeString){
+     else if(!this.eventCampaign.campaignEventTimes[0].startTimeString){
         this.setStartTimeErrorMessage(true, 'Please select the start Date and time.'); }
      else { this.setStartTimeErrorMessage(false, ''); }
   }
@@ -377,31 +377,25 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
    else { return false;}
   }
   scheduleTimeError(){
-    let currentDate:any;
-    let scheduleTime:any;
-    let startDate:any;
-    startDate = Date.parse(this.eventCampaign.campaignEventTimes[0].startTimeString);
-    this.eventError.scheduleTimeError = this.eventCampaign.launchTimeInString ?false:true ;
-    currentDate = new Date().getTime();
-    scheduleTime = Date.parse(this.eventCampaign.launchTimeInString);
+    const startDate = Date.parse(this.eventCampaign.campaignEventTimes[0].startTimeString);
+    const currentDate = new Date().getTime();
+    const scheduleTime = Date.parse(this.eventCampaign.launchTimeInString);
     if(scheduleTime > currentDate &&  scheduleTime > startDate) {
-    this.eventError.scheduleTimeError = true;
-    this.scheduleCampaignError = 'Schedule time is should be greater than today and less than start Date time';
-    } else if(scheduleTime < currentDate){
-    this.eventError.scheduleTimeError = true;
-    this.scheduleCampaignError = 'Schedule time is already over';
-   } else {
-     this.eventError.scheduleTimeError = false;
-    this.scheduleCampaignError = '';
-   }
+      this.setScheduleErrorMesg(true,'Schedule time is should be greater than today and less than start Date time'); }
+    else if(scheduleTime < currentDate){ this.setScheduleErrorMesg(true,'Schedule time is already over');}
+    else if(!this.eventCampaign.launchTimeInString) {  this.setScheduleErrorMesg(true,'Schedule time is required');}
+    else { this.setScheduleErrorMesg(false,''); }
   }
+  setScheduleErrorMesg(event:boolean,mesg:string){ this.eventError.scheduleTimeError = event; this.scheduleCampaignError = mesg;}
   setScheduleEvent(){
     this.isSelectedSchedule = !this.isSelectedSchedule;
+    this.scheduleTimeError();
     if(this.isSelectedSchedule) { this.selectedLaunchOption = 'SCHEDULE';
     this.timezones = this.referenceService.getTimeZonesByCountryId(this.eventCampaign.countryId);
     }
   }
   scheduleCampaign(){
+    this.scheduleTimeError();
     this.referenceService.campaignSuccessMessage = "SCHEDULE";
     if(!this.eventError.scheduleTimeError && this.eventCampaign.countryId) {
       this.createEventCampaign(this.eventCampaign,'SCHEDULE');
@@ -468,10 +462,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
 
     this.onBlurValidation();
     eventCampaign.campaignScheduleType = launchOption;
-    eventCampaign.campaignReplies.forEach((item, index) => {
-      console.log(item); // 9, 2, 5
-      console.log(index); // 0, 1, 2
-    });
     eventCampaign =  this.getCampaignData(eventCampaign)
     eventCampaign.campaignLocation.id = null;
     eventCampaign.campaignEventTimes[0].id = null;

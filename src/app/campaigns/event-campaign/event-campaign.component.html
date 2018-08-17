@@ -81,7 +81,6 @@
                 [ngClass]="{'has-error': eventError.eventEndDateError && !eventCampaign.campaignEventTimes[0].endTimeString && !eventCampaign.campaignEventTimes[0].allDay}">
               </div>
               <div class="col-sm-12 text-danger" *ngIf="endDatePassError">{{endDatePassedError}}</div>
-              <div class="col-sm-12 text-danger" *ngIf="eventError.eventStartTimeError &&!eventCampaign.campaignEventTimes[0].startTimeString">Please enter a valid start Date / Time</div>
               <div class="col-sm-12 text-danger" *ngIf="eventError.eventStartTimeError">{{datePassedError}}</div>
               <div class="col-sm-12 text-danger" *ngIf="!eventError.eventStartTimeError && eventError.eventSameDateError">{{endDatePassedError}}</div>
               <div class="col-sm-12">
@@ -177,17 +176,19 @@
             <h4 class="pull-left f-w-600">Listing privacy</h4>
           </div>
           <div class="portlet-body clearfix">
-            <div>
-              <label class="bold">
-                <input [attr.disabled]="isPreviewEvent? '' : null" type="radio" value="eventCampaign.publicEventCampaign" [checked]="eventCampaign.publicEventCampaign" (change)="eventCampaign.publicEventCampaign = !eventCampaign.publicEventCampaign">Public page
+            <div class="col-xs-12">
+              <label class="bold" class="col-md-1 p0">
+                <input [attr.disabled]="isPreviewEvent? '' : null" type="radio" value="eventCampaign.publicEventCampaign" [checked]="eventCampaign.publicEventCampaign" (change)="eventCampaign.publicEventCampaign = !eventCampaign.publicEventCampaign">
               </label>
-              <p class="ml10">Turn invitees into your biggest promoters by letting them share your event on Facebook, Twitter, Linkedin and or any social media platform</p>
+              <label class="col-md-2 p0"><img src="assets/images/public-event.png"></label>
+              <div class="col-md-9 p0"><b>Public page</b><br><p >Turn invitees into your biggest promoters by letting them share your event on Facebook, Twitter, Linkedin and or any social media platform</p></div>
             </div>
-            <div>
-              <label class="bold">
-                <input [attr.disabled]="isPreviewEvent? '' : null" type="radio" value="!eventCampaign.publicEventCampaign" [checked]="!eventCampaign.publicEventCampaign" (change)="eventCampaign.publicEventCampaign = !eventCampaign.publicEventCampaign">Private page
+            <div class="col-xs-12">
+              <label class="bold"  class="col-md-1 p0">
+                <input [attr.disabled]="isPreviewEvent? '' : null" type="radio" value="!eventCampaign.publicEventCampaign" [checked]="!eventCampaign.publicEventCampaign" (change)="eventCampaign.publicEventCampaign = !eventCampaign.publicEventCampaign">
               </label>
-              <p class="ml10">Make your event invitation-only(guests must receive an xAmplify invitation to attend/view)</p>
+              <label class="col-md-2 p0"><img src="assets/images/private-event.png"></label>
+              <div class="col-md-9 p0"><b>Private page</b><br><p >Make your event invitation-only(guests must receive an xAmplify invitation to attend/view)</p></div>
             </div>
           </div>
         </div>
@@ -476,7 +477,7 @@
 				<div class="col-xs-4"><button [disabled]="isPreviewEvent"  class='btn btn-block btn-primary' (click)="createEventCampaign(eventCampaign, 'NOW')">Now</button></div>
 				<div class="col-xs-4"><button [disabled]="isPreviewEvent"  class='btn btn-block btn-primary' (click)="setScheduleEvent()">Schedule</button></div>
 				<div class="col-xs-4"><button [disabled]="isPreviewEvent"  class='btn btn-block btn-primary' (click)="createEventCampaign(eventCampaign, 'SAVE')">Save</button></div>
-
+      </div>
 				<div class="col-md-12" style="margin-top: 12px;" [hidden]="!isSelectedSchedule">
 					<div class="col-md-3">
 						<input [attr.disabled]="isPreviewEvent? '' : null"  type="text" id="launchTimeInString" class="form-control flatpickr" placeholder="Launch Time"
@@ -487,7 +488,7 @@
 						<select [attr.disabled]="isPreviewEvent? '' : null" class="form-control" style="width: 100%" [(ngModel)]="eventCampaign.countryId" [ngModelOptions]="{standalone: true}" (change)="onChangeCountry($event.target.value)" id="countryName">
 							<option *ngFor="let country of countries" [value]="country.id">{{country.name}}</option>
             </select>
-            <div class="text-danger" *ngIf="!eventCampaign.countryId">please select the country</div>
+            <div class="text-danger" *ngIf="!eventCampaign.countryId">Please select the country.</div>
 					</div>
 					<div class="col-md-3">
 						<select [attr.disabled]="isPreviewEvent? '' : null" class="form-control" style="width: 100%" [(ngModel)]="eventCampaign.timeZone" [ngModelOptions]="{standalone: true}" id="timezoneId">
@@ -505,7 +506,7 @@
           </div>
           <div class="col-md-3 custom-center"><button type="button" class="btn btn-primary" (click)="scheduleCampaign()">Schedule</button></div>
         </div>
-			</div>
+
 		</div>
 	</div>
 </div>
