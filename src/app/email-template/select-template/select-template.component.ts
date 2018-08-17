@@ -145,10 +145,13 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
         try{
             this.filteredEmailTemplates = new Array<EmailTemplate>();
             this.selectedTemplateTypeIndex = index;
-            for(var i=0;i<this.allEmailTemplates.length;i++){
+            for(var i=0;i< this.allEmailTemplates.length;i++){
                 var isBeeRegularTemplate = this.allEmailTemplates[i].beeRegularTemplate;
                 if(isBeeRegularTemplate){
-                    if(this.allEmailTemplates[i].name.indexOf('Rich')>-1){
+                    /*if(this.allEmailTemplates[i].name.indexOf('Rich')>-1){
+                        this.filteredEmailTemplates.push(this.allEmailTemplates[i]);
+                    }*/
+                    if(this.allEmailTemplates[i].id === 325 || this.allEmailTemplates[i].id === 307 || this.allEmailTemplates[i].id === 359 || this.allEmailTemplates[i].id === 360){
                         this.filteredEmailTemplates.push(this.allEmailTemplates[i]);
                     }
                 }
@@ -185,10 +188,13 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
         try{
             this.filteredEmailTemplates = new Array<EmailTemplate>();
             this.selectedTemplateTypeIndex = index;
-            for(var i=0;i<this.allEmailTemplates.length;i++){
+            for(var i=0;i< this.allEmailTemplates.length;i++){
                 var isBeeVideoTemplate = this.allEmailTemplates[i].beeVideoTemplate;
                 if(isBeeVideoTemplate){
-                    if(this.allEmailTemplates[i].name.indexOf('Rich')>-1){
+                    /*if(this.allEmailTemplates[i].name.indexOf('Rich')>-1){
+                        this.filteredEmailTemplates.push(this.allEmailTemplates[i]);
+                    }*/
+                    if(this.allEmailTemplates[i].id === 362 || this.allEmailTemplates[i].id === 369 || this.allEmailTemplates[i].id === 356 || this.allEmailTemplates[i].id === 365){
                         this.filteredEmailTemplates.push(this.allEmailTemplates[i]);
                     }
                 }
