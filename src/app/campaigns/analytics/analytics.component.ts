@@ -131,17 +131,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
         this.campaignService.listCampaignInteractiveViews(pagination)
         .subscribe(
         data => {
-          this.campaignViews = data;
-          const views = [];
-          for (let i = 0; i < data.campaignviews.length; i++) {
-            views.push(data.campaignviews[i].viewsCount)
-          }
-          this.maxViewsValue = Math.max.apply(null, views);
-          this.campaignViewsPagination.totalRecords = this.campaignReport.emailSentCount;
-          console.log(this.campaignReport)
-          this.campaignViewsPagination = this.pagerService.getPagedItems(this.campaignViewsPagination, this.campaignViews);
-          this.loading = false;
-          this.referenceService.loading(this.httpRequestLoader, false);
+          this.listCampaignViewsDataInsert(data);
         },
         error => console.log(error),
         () => console.log()
@@ -150,23 +140,27 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     this.campaignService.listCampaignViews(campaignId, pagination)
       .subscribe(
       data => {
-        this.campaignViews = data.campaignviews;
-        const views = [];
-        for (let i = 0; i < data.campaignviews.length; i++) {
-          views.push(data.campaignviews[i].viewsCount)
-        }
-        this.maxViewsValue = Math.max.apply(null, views);
-        this.campaignViewsPagination.totalRecords = this.campaignReport.emailSentCount;
-        console.log(this.campaignReport)
-        this.campaignViewsPagination = this.pagerService.getPagedItems(this.campaignViewsPagination, this.campaignViews);
-        this.loading = false;
-        this.referenceService.loading(this.httpRequestLoader, false);
+        this.listCampaignViewsDataInsert(data);
       },
       error => console.log(error),
       () => console.log()
       )
     }
     }catch(error){ this.xtremandLogger.error('error'+error);}
+  }
+  
+  listCampaignViewsDataInsert(data: any){
+      this.campaignViews = data;
+      const views = [];
+      for (let i = 0; i < data.length; i++) {
+        views.push(data[i].viewsCount)
+      }
+      this.maxViewsValue = Math.max.apply(null, views);
+      this.campaignViewsPagination.totalRecords = this.campaignReport.emailSentCount;
+      console.log(this.campaignReport)
+      this.campaignViewsPagination = this.pagerService.getPagedItems(this.campaignViewsPagination, this.campaignViews);
+      this.loading = false;
+      this.referenceService.loading(this.httpRequestLoader, false);
   }
 
   getCampaignViewsReportDurationWise(campaignId: number) {
