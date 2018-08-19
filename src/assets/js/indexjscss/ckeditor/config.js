@@ -24,6 +24,8 @@ CKEDITOR.editorConfig = function( config ) {
 		{ name: 'styles' },
 		{ name: 'colors' },
 		{ name: 'about' }
+		  // Add strinsert plugin
+		//{ name: 'strinsert' }
 	];
 
 	// Remove some buttons provided by the standard plugins, which are
@@ -35,4 +37,16 @@ CKEDITOR.editorConfig = function( config ) {
 
 	// Simplify the dialog windows.
 	config.removeDialogTabs = 'image:advanced;link:advanced';
+	
+	config.extraPlugins = 'strinsert';
+	
+	config.strinsert_strings = [
+	                            {'value': '{{firstName}}', 'name': 'First name'},
+	                            {'value': '{{lastName}}', 'name': 'Last name'},
+	                            {'value': '{{fullName}}', 'name': 'Full name'},
+	                            {'value': '{{emailId}}', 'name': 'Email id'},
+	                            {'value': '{{companyName}}', 'name': 'Company name'},
+	                        ];
+	                        config.strinsert_button_label = 'Merge Tags';
+	                        config.strinsert_button_title = config.strinsert_button_voice = 'Insert Merge Tag(s)';
 };
