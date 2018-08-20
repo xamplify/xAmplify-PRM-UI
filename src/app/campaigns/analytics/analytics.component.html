@@ -127,6 +127,7 @@
 	
 	
 	<section *ngIf="campaignType === 'EVENT'">
+	<app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
 		<div class="col-xs-12 col-sm-5 p-5x">
 		<div class="p-5x">
 			<div class="portlet light" style="min-height: 118px;">
