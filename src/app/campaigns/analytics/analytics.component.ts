@@ -43,6 +43,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   customResponse: CustomResponse = new CustomResponse();
 
   campaignViewsPagination: Pagination = new Pagination();
+  contactListInfoPagination: Pagination = new Pagination();
   emailActionListPagination: Pagination = new Pagination();
   usersWatchListPagination: Pagination = new Pagination();
   emailLogPagination: Pagination = new Pagination();
@@ -429,7 +430,11 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     } else if (event.type === 'usersWatch') {
         this.usersWatchListPagination.pageIndex = event.page;
         this.usersWatchList(this.campaign.campaignId, this.usersWatchListPagination);
-    } else {
+    }else if (event.type === 'contactListInfo') {
+        this.contactListInfoPagination.pageIndex = event.page;
+        this.getListOfContacts(this.contactListId);
+    }
+    else {
       this.pagination.pageIndex = event.page;
        this.callPaginationValues(event.type);
      }
@@ -925,6 +930,8 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
            data => {
             this.campaingContactListValues = data.listOfUsers;
             this.loading = false;
+            this.contactListInfoPagination.totalRecords = data.totalRecords;
+            this.contactListInfoPagination = this.pagerService.getPagedItems(this.contactListInfoPagination, this.campaingContactListValues);
             $("#show_contact-list-info").modal('show');
           },
           (error:any)=>{this.xtremandLogger.error('error'+error); })

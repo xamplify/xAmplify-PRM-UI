@@ -400,7 +400,7 @@ export class CampaignService {
 
     setAutoReplyDefaultTime(campaignType:string,replyInDays:number,replyTime:Date,scheduleTime:any){
         let currentTime = new Date();
-        let isValid = (replyInDays==0 && replyTime.getTime()<currentTime.getTime());
+        let isValid = (replyInDays==0 && replyTime.getTime()< currentTime.getTime());
         if("NOW"===campaignType && isValid){
             return currentTime;
         }else if("SCHEDULE"===campaignType && isValid){
