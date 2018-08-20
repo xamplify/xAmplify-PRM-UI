@@ -730,11 +730,11 @@
 								<li class="filter" (click)="filterTemplates('NONE',0)" [class.emailtemplate-selected]="0 == selectedEmailTemplateTypeIndex"
 								 *ngIf="!isOnlyPartner">All Email Templates</li>
 								<!-- <li class="filter" (click)="filterTemplates('BASIC',1)" *ngIf="campaignType=='regular' && !isOnlyPartner" [class.emailtemplate-selected]="1 == selectedEmailTemplateTypeIndex">Basic Templates</li> -->
-								<li class="filter" (click)="filterTemplates('RICH',2)" *ngIf="campaignType=='regular' && !isOnlyPartner" [class.emailtemplate-selected]="2 == selectedEmailTemplateTypeIndex">Rich Templates</li>
+								<li class="filter" (click)="filterTemplates('RICH',2)" *ngIf="campaignType=='regular' && !isOnlyPartner" [class.emailtemplate-selected]="2 == selectedEmailTemplateTypeIndex">Basic Templates</li>
 								<li class="filter" (click)="filterTemplates('UPLOADED',3)" *ngIf="campaignType=='regular' && !isOnlyPartner" [class.emailtemplate-selected]="3 == selectedEmailTemplateTypeIndex">Uploaded Regular Templates</li>
 
 								<!-- <li class="filter" (click)="filterTemplates('BASIC',4)" *ngIf="campaignType=='video' && !isOnlyPartner" [class.emailtemplate-selected]="4== selectedEmailTemplateTypeIndex">Basic Video Templates</li> -->
-								<li class="filter" (click)="filterTemplates('RICH',5)" *ngIf="campaignType=='video' && !isOnlyPartner" [class.emailtemplate-selected]="5== selectedEmailTemplateTypeIndex">RichVideo Templates</li>
+								<li class="filter" (click)="filterTemplates('RICH',5)" *ngIf="campaignType=='video' && !isOnlyPartner" [class.emailtemplate-selected]="5== selectedEmailTemplateTypeIndex">Video Templates</li>
 								<li class="filter" (click)="filterTemplates('UPLOADED',6)" *ngIf="campaignType=='video' && !isOnlyPartner" [class.emailtemplate-selected]="6== selectedEmailTemplateTypeIndex">Uploaded Video Templates</li>
 								<li class="filter" (click)="filterTemplates('PARTNER',7)" [class.emailtemplate-selected]="7== selectedEmailTemplateTypeIndex"
 								 *ngIf="!isOnlyPartner && isPartnerToo">Partner Templates</li>
