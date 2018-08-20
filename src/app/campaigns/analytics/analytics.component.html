@@ -791,7 +791,7 @@
 						<table class="table tgrid">
 							<thead>
 								<tr>
-									<th style="font-size: 12px; font-weight: 500;" style="text-align: center">NAME</th>
+									<th style="font-size: 12px; font-weight: 500;" style="width:35%">NAME</th>
 									<th style="font-size: 12px; font-weight: 500;">MESSAGE</th>
 								</tr>
 							</thead>
@@ -802,6 +802,7 @@
 									</td>
 									<td>
 										<h6>{{item.message}}</h6>
+										<h6 *ngIf="!item.message" style="text-align:center"><b>-</b></h6>
 									</td>
 								</tr>
 							</tbody>
