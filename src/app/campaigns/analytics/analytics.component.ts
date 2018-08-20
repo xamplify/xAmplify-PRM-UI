@@ -302,18 +302,18 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       .subscribe(
       data => {
         console.log(data);
-        this.campaignBarViews = data.campaignviews;
+        this.campaignBarViews = data;
         const names = [];
         const views = [];
-        for (let i = 0; i < data.campaignviews.length; i++) {
-          const firstName = data.campaignviews[i].firstName ? data.campaignviews[i].firstName : "";
-          const lastName =  data.campaignviews[i].lastName ? data.campaignviews[i].lastName : "";
-          names.push( "<b>"+firstName + " "+ lastName + '</b><br/>' + data.campaignviews[i].emailId);
-          views.push(data.campaignviews[i].viewsCount)
+        for (let i = 0; i < this.campaignBarViews.length; i++) {
+          const firstName = this.campaignBarViews[i].firstName ? this.campaignBarViews[i].firstName : "";
+          const lastName =  this.campaignBarViews[i].lastName ? this.campaignBarViews[i].lastName : "";
+          names.push( "<b>"+firstName + " "+ lastName + '</b><br/>' + this.campaignBarViews[i].emailId);
+          views.push(this.campaignBarViews[i].viewsCount)
         }
         this.maxViewsValue = Math.max.apply(null, views);
         this.pagination.totalRecords = this.campaignReport.emailSentCount;
-        this.pagination = this.pagerService.getPagedItems(this.pagination, data.campaignviews);
+        this.pagination = this.pagerService.getPagedItems(this.pagination, this.campaignBarViews);
         console.log(this.pagination);
         this.campaignViewsCountBarchart(names, views);
         this.referenceService.goToTop();
@@ -779,7 +779,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       this.campaignService.listCampaignViews(campaignId, this.campaignTotalViewsPagination)
       .subscribe(
       data => {
-        this.campaignTotalViewsData = data.campaignviews;
+        this.campaignTotalViewsData = data;
         try {
           const self = this;
           this.selectedRow = this.campaignTotalViewsData.find(function (obj) { return obj.emailId === self.selectedRow.emailId; });

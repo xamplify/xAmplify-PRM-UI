@@ -464,7 +464,7 @@
 				<img *ngIf="emailLog.actionId == 13" alt="opened" src="assets/images/opened.png">
 				<img *ngIf="emailLog.actionId == 14" alt="clicked" src="assets/images/clicked.png">
 				<img *ngIf="emailLog.actionId == 15" alt="clicked" src="assets/images/clicked.png">
-				<img *ngIf="emailLog.actionId == 1" alt="watched" src="assets/images/video.png">
+				<img *ngIf="emailLog.actionId == 1 || emailLog.actionId == 10" alt="watched" src="assets/images/video.png">
 		  	</div>
           <div class="timeline-panel">
             <div class="timeline-heading">
@@ -483,8 +483,12 @@
 					<span *ngIf="emailLog.actionId == 15">
 					Clicked on the URL
 					<span class="f-w-600" *ngIf="emailLog.url"><a href="{{emailLog.url}}" target="_blank" title="{{emailLog.url}}">{{emailLog.url | slice:0:30}}<span *ngIf="emailLog.url?.length>30">...</span></a></span>
-					</span>
-					<span *ngIf="emailLog.actionId == 1"><span class="f-w-600" title="{{campaign.campaignVideoFile.title}}">{{campaign.campaignVideoFile.title | slice:0:30}} <span *ngIf="campaign.campaignVideoFile.title?.length>30">...</span></span> played</span> at {{emailLog.time | date: 'shortTime'}}
+					</span> 
+					<span *ngIf="emailLog.actionId == 1 || emailLog.actionId == 10">
+						<span class="f-w-600" title="{{campaign.campaignVideoFile.title}}">{{campaign.campaignVideoFile.title | slice:0:30}} 
+							<span *ngIf="campaign.campaignVideoFile.title?.length>30">...</span>
+						</span> <span *ngIf="emailLog.actionId == 10">re-</span>played
+					</span> at {{emailLog.time | date: 'shortTime'}}
 				</h5>
 			  	<span *ngIf="emailLog.countryCode">
 				  	<h6>
