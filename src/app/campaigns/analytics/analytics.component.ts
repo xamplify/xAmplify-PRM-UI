@@ -905,7 +905,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
         this.loading = true;
         this.getListOfContacts(this.campaingContactLists[0].id);
     }
-    getListOfContacts(id:number){
+    /*getListOfContacts(id:number){
     try{
       this.contactListId = id;
      this.contactService.loadUsersOfContactList(id, this.pagination).subscribe(
@@ -916,7 +916,20 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       },
       (error:any)=>{this.xtremandLogger.error('error'+error); })
     }catch(error) { this.xtremandLogger.error('error'+error);}
-  }
+  }*/
+    
+   getListOfContacts(id:number){
+        try{
+          this.contactListId = id;
+         this.campaignService.loadUsersOfContactList(id,this.campaignId, this.pagination).subscribe(
+           data => {
+            this.campaingContactListValues = data.listOfUsers;
+            this.loading = false;
+            $("#show_contact-list-info").modal('show');
+          },
+          (error:any)=>{this.xtremandLogger.error('error'+error); })
+        }catch(error) { this.xtremandLogger.error('error'+error);}
+     }
 
   getSortedResult(campaignId: number,event:any){
     this.emailActionListPagination = this.utilService.sortOptionValues(event,this.emailActionListPagination);

@@ -421,6 +421,11 @@ export class CampaignService {
             .catch(this.handleError);       
     }
     
+    loadUsersOfContactList( contactListId: number, campaignId:number, pagination: Pagination ) {
+        return this.http.post( this.URL+'campaign/users-info/'+campaignId+"/" + contactListId+'?access_token=' + this.authenticationService.access_token, pagination )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
    
     
 }
