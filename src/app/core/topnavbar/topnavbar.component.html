@@ -172,16 +172,16 @@
 							</li>
 
 
-							<li *ngIf="currentUrl.endsWith('welcome')">
+							<li *ngIf="currentUrl.endsWith('welcome') && authenticationService.user.hasCompany">
 								<a [routerLink]="['/home/dashboard']">
 								<i class="fa fa-paper-plane-o" aria-hidden="true"></i>Dashboard</a>
 							</li>
-							<li *ngIf="currentUrl.endsWith('dashboard')">
+							<li *ngIf="currentUrl.endsWith('dashboard') && authenticationService.user.hasCompany">
 								<a [routerLink]="['/home/dashboard/welcome']">
 								<i class="fa fa-paper-plane-o" aria-hidden="true"></i>Welcome</a>
 							</li>
 
-							<li *ngIf="(!currentUrl.endsWith('dashboard')) && (!currentUrl.endsWith('welcome'))">
+							<li *ngIf="(!currentUrl.endsWith('dashboard')) && (!currentUrl.endsWith('welcome')) && authenticationService.user.hasCompany">
 								<a *ngIf="refService.userDefaultPage==='WELCOME'" [routerLink]="['/home/dashboard/'+refService.userDefaultPage.toLowerCase()]">
 								<i class="fa fa-paper-plane-o" aria-hidden="true"></i>{{refService.userDefaultPage.toLowerCase()}}</a>
                 <a *ngIf="refService.userDefaultPage==='DASHBOARD'" [routerLink]="['/home/'+refService.userDefaultPage.toLowerCase()]">
