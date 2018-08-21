@@ -9,10 +9,14 @@
       }   *
       #bee-plugin-container {
         position: absolute;
-        top:0px;
+        top: 80px;
+    	bottom: 36px;
+    	left: 213px;
+    	right: 18px;
+       /*  top:0px;
         bottom:30px;
         left:194px;
-        right:0px;
+        right:0px; */
       }
       #integrator-bottom-bar {
         position: absolute;
