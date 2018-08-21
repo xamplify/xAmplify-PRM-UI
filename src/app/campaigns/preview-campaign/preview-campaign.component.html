@@ -240,7 +240,7 @@
                   <h4 class="pull-left" *ngIf="selectedUserlistIds.length>1">{{selectedUserlistIds.length}} {{contactType}} lists are selected</h4>
                 </div>
               </div>
-              <div id="campaign-contact-list" *ngIf="selectedUserlistIds.length>0">
+              <div id="campaign-contact-list" *ngIf="selectedUserlistIds.length>0 && !referenceService.isRedistributionCampaignPage">
                 <div >
                   <div class="row pb10" id="user_list_table_view">
                     <!-- <app-loader [model]="campaignContact.httpRequestLoader.isHorizontalCss" *ngIf="campaignContact.httpRequestLoader.isLoading"></app-loader> -->
