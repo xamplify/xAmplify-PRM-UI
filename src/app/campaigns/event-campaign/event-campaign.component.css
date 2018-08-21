@@ -1,3 +1,4 @@
+.form-control { border:1px solid #CCC !important;}
 .text-danger {
     color: #e62f2e!important;
 }
@@ -7,8 +8,10 @@
     width: 100%;
     text-align: center;
     cursor: pointer;
-    background: #f8f8f8;
+    background: #f8f8f8; min-height:150px;
 }
+.upload-media-wrapper span{ font-size:11px;}
+
 .upload-media-wrapper input[type=file] {
     display: block;
     width: auto;
@@ -16,10 +19,10 @@
     position: absolute;
 }
 .upload-media-wrapper i.fa-camera {
-    font-size: 30px;
+    font-size: 60px;
     color: #a5a5a5;
     display: grid;
-    margin: 10px;
+    margin: 35px auto 25px;
 }
 
 .uploaded-media-wrapper {
@@ -91,3 +94,13 @@
   background-color: #6dcff6 !important;
   border: 1px solid #008fd5 !important;
 }
+.boxes {padding:0 !important}
+.boxes .portlet-title { font-weight: 600 !important; background:#b3b2b2 !important; margin-bottom:0 !important; border-radius: 0 !important; min-height: auto !important; padding-left:10px !important;}
+.boxes .portlet-title h4 {font-size: 14px !important;}
+.boxes .portlet-body {padding:15px !important; }
+
+.boxes ul {margin:0 !important; padding:0 !important}
+.boxes ul li {list-style: none; margin-bottom:5px;}
+.boxes ul li:last-child {margin-bottom:0px;}
+a.icons-link {margin-right:10px; background:#428bca; color:#FFF; font-size:11px; font-weight:bold; padding:8px 15px;}
+a.icons-link:hover {background:  #357ebd;}

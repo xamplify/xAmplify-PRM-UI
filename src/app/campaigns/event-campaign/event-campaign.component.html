@@ -145,51 +145,55 @@
 				</form>
 			</div>
 			<div class="col-xs-12 col-sm-5">
-        <div class="portlet light">
+        <div class="boxes portlet light">
           <div class="portlet-title">
-            <h4 class="pull-left f-w-600">Event settings</h4>
+            <h4 class="pull-left f-w-600">Event Settings</h4>
           </div>
           <div class="portlet-body clearfix" [attr.disabled]="isPreviewEvent">
-            <div><label>
+            <ul>
+            <li><label>
               <switch [status]="eventCampaign.rsvpReceived" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [disabled]="isPreviewEvent"
               [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
               (statusChange)="eventCampaign.rsvpReceived = !eventCampaign.rsvpReceived">
             </switch>
               Notify me when guests RSVP
-              </label></div>
-            <div><label>
+              </label></li>
+            <li><label>
                <switch [status]="eventCampaign.emailOpened" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [disabled]="isPreviewEvent"
                [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
                (statusChange)="eventCampaign.emailOpened = !eventCampaign.emailOpened">
              </switch>
-               Notify me when email is opened </label></div>
-            <div><label>
+               Notify me when email is opened </label></li>
+            <li><label>
               <switch [status]="eventCampaign.inviteOthers" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [disabled]="isPreviewEvent"
               [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
               (statusChange)="eventCampaign.inviteOthers = !eventCampaign.inviteOthers">
             </switch>
-              Invite others </label></div>
+              Invite others </label></li>
+            </ul>
           </div>
          </div>
-        <div class="portlet light">
+        <div class="boxes portlet light">
           <div class="portlet-title">
-            <h4 class="pull-left f-w-600">Listing privacy</h4>
+            <h4 class="pull-left f-w-600">Listing Privacy</h4>
           </div>
           <div class="portlet-body clearfix">
-            <div class="col-xs-12">
-              <label class="bold" class="col-md-1 p0">
+              <ul>
+                <li>
+              <label class="col-md-1 p0">
                 <input [attr.disabled]="isPreviewEvent? '' : null" type="radio" value="eventCampaign.publicEventCampaign" [checked]="eventCampaign.publicEventCampaign" (change)="eventCampaign.publicEventCampaign = !eventCampaign.publicEventCampaign">
               </label>
               <label class="col-md-2 p0"><img src="assets/images/public-event.png"></label>
               <div class="col-md-9 p0"><b>Public page</b><br><p >Turn invitees into your biggest promoters by letting them share your event on Facebook, Twitter, Linkedin and or any social media platform</p></div>
-            </div>
-            <div class="col-xs-12">
-              <label class="bold"  class="col-md-1 p0">
+            </li>
+            <li>
+              <label  class="col-md-1 p0">
                 <input [attr.disabled]="isPreviewEvent? '' : null" type="radio" value="!eventCampaign.publicEventCampaign" [checked]="!eventCampaign.publicEventCampaign" (change)="eventCampaign.publicEventCampaign = !eventCampaign.publicEventCampaign">
               </label>
               <label class="col-md-2 p0"><img src="assets/images/private-event.png"></label>
               <div class="col-md-9 p0"><b>Private page</b><br><p >Make your event invitation-only(guests must receive an xAmplify invitation to attend/view)</p></div>
-            </div>
+            </li>
+           </ul>
           </div>
         </div>
       </div>
@@ -197,13 +201,13 @@
         	<div class="form-group">
               <label for="hostedBy" class="col-sm-2 labal-css">Event Image</label>
               <div class="col-sm-10" (drop)="fileChange($event)">
-                <label class="upload-media-wrapper" *ngIf="! eventCampaign.campaignEventMedias[0].filePath" >
+                <div class="upload-media-wrapper" *ngIf="! eventCampaign.campaignEventMedias[0].filePath" >
                   <i class="fa fa-camera" aria-hidden="true"></i>
                   <b>Add Event Image</b><br>
-                  <span>choose a compelling image that brings your event to life</span>
+                  <span>Choose a compelling image that brings your event to life</span>
                   <input type="file" [attr.disabled]="isPreviewEvent? '' : null" (change)="fileChange($event)" #input name="media[]" accept="image/gif,image/jpeg,image/jpg,image/png"
                    class="file-input js-tooltip" data-original-title="Add photo">
-                </label>
+                </div>
                 <div [attr.disabled]="isPreviewEvent? '' : null" class="uploaded-media-wrapper" *ngIf="eventCampaign.campaignEventMedias[0].filePath">
                   <img src="{{eventCampaign.campaignEventMedias[0].filePath}}" [attr.disabled]="isPreviewEvent? '' : null">
                   <i *ngIf="!isPreviewEvent" class="fa fa-times-circle" (click)="resetcampaignEventMedia()"></i>
@@ -211,16 +215,16 @@
               </div>
             </div>
             <div class="form-group">
-              <label for="hostedBy" class="col-sm-2 labal-css">Event Description <span class=text-danger>*</span></label>
-              <div class="col-sm-10" [attr.disabled]="isPreviewEvent? '' : null">
+              <label for="hostedBy" class="col-sm-2 labal-css" style="margin-top:10px;">Event Description <span class=text-danger>*</span></label>
+              <div class="col-sm-10" [attr.disabled]="isPreviewEvent? '' : null" style="margin-top:10px;">
                 <ckeditor [attr.disabled]="isPreviewEvent? '' : null" [(ngModel)]="eventCampaign.message"  (blur)="eventDescriptionError()" (input)="eventDescriptionError()" [ngModelOptions]="{standalone: true}" #myckeditor [config]="ckeConfig" debounce="500"></ckeditor>
                 <div  class="text-danger" *ngIf="eventError.eventDescription"> Event message is required</div>
               </div>
             </div>
         </div>
       </section>
-      <div class="col-xs-12 p0 mb10">
-        	<div class="portlet light">
+      <div class="col-xs-12 mb10">
+        	<div class="boxes portlet light">
               <div class="portlet-title">
                 <h4 class="pull-left f-w-600">Select Invite Recipients<span style="color:red">*</span></h4>
                  <section >
@@ -261,9 +265,9 @@
                           <input *ngIf="isPartnerUserList" [attr.disabled]="isPreviewEvent? '' : null" type='checkbox' id='{{contactList.id}}' [checked]="parternUserListIds.indexOf(contactList.id)>-1" (click)="partnerHighlightRow(contactList.id)">
                         </td>
                         <td>
-                          <h5 class='m0 f-w-600'>
-                            <span *ngIf="contactList.name?.length<=20">{{contactList.name}}</span>
-                            <span *ngIf="contactList.name?.length>20">{{contactList.name | slice:0:20}}...</span>
+                          <h5 class='m0 f-w-600' title="{{contactList.name}}">
+                            <span *ngIf="contactList.name?.length<=30">{{contactList.name}}</span>
+                            <span *ngIf="contactList.name?.length>30">{{contactList.name | slice:0:30}}...</span>
                           </h5>
                           <h6 class="pull-left mb0 mt5" title="{{contactList.uploadedBy}}">By:
                             <span *ngIf="contactList.uploadedBy?.length<=20">{{contactList.uploadedBy}}</span>
@@ -285,10 +289,10 @@
               </div>
             </div>
         </div>
-        <div class="col-xs-12 p0 mb10">
-          	<div class="portlet light">
+        <div class="col-xs-12 mb10">
+          	<div class="boxes portlet light">
                 <div class="portlet-title">
-                  <h4 class="pull-left f-w-600">Pick an email template</h4>
+                  <h4 class="pull-left f-w-600">Pick an Email Template</h4>
                 </div>
                 <div class="portlet-body clearfix">
                   <div class="table-responsive" *ngIf="false">
@@ -312,31 +316,33 @@
                       <div *ngFor="let emailTemplate of emailTemplates" id="emailTemplateListDiv_{{emailTemplate.id}}">
                         <div class="col-md-3 col-sm-4 mix category_1 mix_all" style="display: block; opacity: 1;">
                             <div class="mix-inner css" [class.template-selected]="eventCampaign.emailTemplate.id === emailTemplate.id">
-                            <img class="img-responsive center-block" src="assets/images/event-template.png" alt="{{emailTemplate.name}}" id="emailtemplate-image" style="height: 187px;width: 190px;">
-                            <div class="mix-details" id="mix-details" style="height:187px">
-                              <h4 class="ellipsis" title="{{emailTemplate.name}}" style="margin-top: 14px;">{{emailTemplate.name}}</h4>
+                            <img class="img-responsive center-block" src="assets/images/event-template.png" alt="{{emailTemplate.name}}" id="emailtemplate-image">
+                            <h4 class="ellipsis" title="{{emailTemplate.name}}" style="margin-top: 14px;">{{emailTemplate.name}}</h4>
+                            <div class="mix-details" id="mix-details">
+
                               <div style="top: 2%; position: relative; margin-left: 5px;">
                               </div>
                               <div id="template-action-div" style="margin-top: 60px;">
-                                <a class="mix-preview4 icons-css" title="Select" data-rel="" *ngIf="eventCampaign.emailTemplate.id !== emailTemplate.id && !isPreviewEvent" (click)="eventCampaign.emailTemplate = emailTemplate;">
-                                  <i class="fa fa-check-circle" id="fa-font-size"></i>
+                                <a class="icons-link" title="Select" data-rel="" *ngIf="eventCampaign.emailTemplate.id !== emailTemplate.id && !isPreviewEvent" (click)="eventCampaign.emailTemplate = emailTemplate;">
+                                  <i class="fa fa-check-circle" id="fa-font-size"></i> Select
                                 </a>
-                                <a class="mix-preview4 icons-css" title="Select" data-rel="" *ngIf="eventCampaign.emailTemplate.id === emailTemplate.id">
-                                  <i class="fa fa-ban" id="fa-font-size"></i>
+                                <a class="icons-link" title="Select" data-rel="" *ngIf="eventCampaign.emailTemplate.id === emailTemplate.id">
+                                  <i class="fa fa-ban" id="fa-font-size"></i> Selected
                                 </a>
-                                <a class="mix-preview6 icons-css" title="Preview" data-rel="" (click)="previewEventCampaignEmailTemplate(emailTemplate.id)">
-                                  <i class="fa fa-eye" id="fa-font-size"></i>
+                                <a class="icons-link" title="Preview" data-rel="" (click)="previewEventCampaignEmailTemplate(emailTemplate.id)">
+                                  <i class="fa fa-eye" id="fa-font-size"></i> Preview
                                 </a>
                               </div>
                             </div>
                           </div>
+
                         </div>
                       </div>
                       </div>
                 </div>
               </div>
         </div>
-			<div class="col-xs-12 p0 mb10">
+			<div class="col-xs-12 mb10">
         <fieldset class="col-xs-12">
           <legend style="color: #2c3f52;">Add Your Work Flow</legend>
           <div style="margin-bottom:70px;">
@@ -519,7 +525,10 @@
 				<a class="close-circle" data-dismiss="modal" (click)="closeModal()">
 					<i class="fa fa-times"></i>
 				</a>
-				<h4 id="contactsModalLabel" class="modal-title caption-subject font-red-sunglo">{{previewContactList.name}}</h4>
+				<h4 id="contactsModalLabel" class="modal-title caption-subject font-red-sunglo">
+          <span *ngIf="previewContactList.name?.length<20">{{previewContactList.name}}</span>
+          <span *ngIf="previewContactList.name?.length>20">{{previewContactList.name | slice:0:20}}</span>
+        </h4>
 			</div>
 			<div class="modal-body">
 				<div class="table-responsive">

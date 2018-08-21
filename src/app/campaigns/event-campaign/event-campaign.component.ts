@@ -46,7 +46,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   selectedLaunchOption: string;
   customResponse: CustomResponse = new CustomResponse();
   loggedInUserId: number;
-  isPartnerUserList = true;  // changed for code ,, future it may change
+  isPartnerUserList: boolean;  // changed for code ,, future it may change
   eventCampaign: EventCampaign = new EventCampaign();
   @ViewChild("myckeditor") ckeditor: any;
   ckeConfig: any;
@@ -79,6 +79,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   currentDate:any;
   scheduleCampaignError = '';
   parternUserListIds = [];
+  reDistributeEvent = false;
 
   constructor(public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
     private contactService: ContactService,
@@ -94,6 +95,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     CKEDITOR.config.height = '100';
     this.isPreviewEvent = this.router.url.includes('/home/campaigns/event-preview')? true: false;
     CKEDITOR.config.readOnly = this.isPreviewEvent ? true: false;
+    this.reDistributeEvent = this.router.url.includes('/home/campaigns/re-distribute-event')? true: false;
+    if(this.reDistributeEvent) { this.isPartnerUserList = false; } else { this.isPartnerUserList = true; }
   }
   loadCampaignNames(userId:number){
     this.campaignService.getCampaignNames(userId).subscribe(data => { this.names.push(data); },
@@ -158,11 +161,14 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
           }
         }
         this.onChangeCountryCampaignEventTime(this.eventCampaign.campaignEventTimes[0].countryId)
+        if(this.reDistributeEvent){ this.isPartnerUserList = false;}
+
         for(let i=0; i< result.data.userListDTOs.length;i++){
-       //  this.userListIds.push(result.data.userListDTOs[i].id);
-         this.parternUserListIds.push(result.data.userListDTOs[i].id);
+         if(this.reDistributeEvent) { this.userListIds.push(result.data.userListDTOs[i].id); }
+         if(!this.reDistributeEvent) { this.parternUserListIds.push(result.data.userListDTOs[i].id); }
         }
-        this.eventCampaign.userListIds = this.parternUserListIds;
+        if(this.reDistributeEvent){  this.eventCampaign.userListIds = this.parternUserListIds;
+        } else {  this.eventCampaign.userListIds = this.userListIds; }
         this.eventCampaign.userLists = [];
         console.log(this.userListIds);
       });
@@ -468,8 +474,11 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     eventCampaign.campaignEventMedias[0].id = null;
     eventCampaign.user.id = null;
 
+    if(this.reDistributeEvent) { eventCampaign.parentCampaignId = this.activatedRoute.snapshot.params['id'];}
+
     if(this.validForm(eventCampaign) && this.isFormSubmitted){
       this.referenceService.startLoader(this.httpRequestLoader);
+      console.log(eventCampaign);
       this.campaignService.createEventCampaign(eventCampaign)
       .subscribe(
       response => {
@@ -873,7 +882,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
    ngOnDestroy() {
     this.campaignService.eventCampaign = undefined;
     CKEDITOR.config.readOnly = false;
-    if(!this.hasInternalError && this.router.url!=="/"){
+    if(!this.hasInternalError && this.router.url!=="/" && !this.isPreviewEvent && !this.reDistributeEvent){
      if(!this.isReloaded){
       if(!this.isLaunched){
           if(this.isAdd){

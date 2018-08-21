@@ -78,6 +78,8 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
             pagination.campaignType="VIDEO";
         }else if(this.campaignType=="social"){
             pagination.campaignType = "SOCIAL";
+        }else if(this.campaignType=="event"){
+          pagination.campaignType = "EVENT";
         }else{
             pagination.campaignType = "NONE";
         }
@@ -174,8 +176,12 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
         }
     }
 
-    showCampaignPreview(campaignId:number){
-        this.router.navigate(['/home/campaigns/preview/'+campaignId]);
+    showCampaignPreview(campaign:any){
+        if(campaign.campaignType == 'EVENT') {
+          this.router.navigate(['/home/campaigns/event-preview/'+campaign.campaignId]);
+        } else {
+          this.router.navigate(['/home/campaigns/preview/'+campaign.campaignId]);
+        }
     }
 
     navigateSocialCampaign(campaign:any) {
@@ -188,11 +194,17 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
                 () => console.log()
             )
     }
+    listCampaigns(event){
+
+    }
 
     reDistributeCampaign(campaign:any){
         if(campaign.campaignType.indexOf('SOCIAL') > -1){
             this.navigateSocialCampaign(campaign);
-        } else {
+        } else if(campaign.campaignType.indexOf('EVENT') > -1) {
+          this.router.navigate(['/home/campaigns/re-distribute-event/'+campaign.campaignId]);
+        }
+        else {
         const data = { 'campaignId': campaign.campaignId,'userId':this.loggedInUserId }
         this.campaignService.getParnterCampaignById(data)
             .subscribe(
