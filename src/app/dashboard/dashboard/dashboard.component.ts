@@ -555,7 +555,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     return obj.id === parseInt(campaignsArray[i], 10);
                 });
                 console.log(result);
-                this.launchedCampaignsChild.push(result[0]);
+                if(result[0]){ this.launchedCampaignsChild.push(result[0]); }
             }
             this.launchedCampaignsMaster = this.launchedCampaignsMaster.filter(x => this.launchedCampaignsChild.indexOf(x) < 0);
         }
@@ -731,7 +731,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
         try {
             this.dashboardService.getCampaignsHeatMapDetails(this.heatMapSort.value).
                 subscribe(result => {
-                    debugger;
                     this.xtremandLogger.log(result.heatMapData);
                     this.heatMapData = result.heatMapData;
                     if (!this.isFullscreenToggle) { this.generatHeatMap(this.heatMapData, 'dashboard-heat-map');

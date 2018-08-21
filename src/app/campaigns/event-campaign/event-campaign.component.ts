@@ -474,7 +474,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     eventCampaign.campaignEventMedias[0].id = null;
     eventCampaign.user.id = null;
 
-    if(this.reDistributeEvent) { eventCampaign.parentCampaignId = this.activatedRoute.snapshot.params['id'];}
+    if(this.reDistributeEvent) {
+      eventCampaign.parentCampaignId = this.activatedRoute.snapshot.params['id'];
+      eventCampaign.id = null;}
 
     if(this.validForm(eventCampaign) && this.isFormSubmitted){
       this.referenceService.startLoader(this.httpRequestLoader);
