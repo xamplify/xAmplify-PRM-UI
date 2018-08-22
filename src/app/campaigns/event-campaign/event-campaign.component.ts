@@ -429,7 +429,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
 
    eventCampaign.campaignEventTimes[0].timeZone = $('#timezoneIdCampaignEventTime option:selected').val();
    eventCampaign.campaignEventTimes[0].country = this.countries.find(x => x.id == eventCampaign.campaignEventTimes[0].countryId).name;
-
+   eventCampaign.toPartner = !eventCampaign.channelCampaign;
    if(eventCampaign.id){
     const customEventCampaign = {
       'id':eventCampaign.id,

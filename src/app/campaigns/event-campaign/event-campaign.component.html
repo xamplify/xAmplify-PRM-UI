@@ -313,8 +313,8 @@
                       <section  style="min-height: 250px;">
                         <div class="col-xs-6 col-sm-3" *ngFor="let emailTemplate of emailTemplates ;let i =index" >
                         <div class="grid-box p0">
-                          <div class="video-thumbnail-wrapper">
-                              <img class="img-responsive center-block" src="assets/images/event-template.png" alt="{{emailTemplate.name}}" id="emailtemplate-image" style="width: 100%;">
+                          <div class="video-thumbnail-wrapper" [class.template-selected]="eventCampaign.emailTemplate.id === emailTemplate.id">
+                              <img class="img-responsive center-block" src="assets/images/event-template.png" alt="{{emailTemplate.name}}" id="emailtemplate-image" style="width: 100%;" >
                           </div>
                              <span class="ellipsis video-title" title="{{emailTemplate.name}}">{{emailTemplate.name}}</span>
                           <div class="bar-event">
