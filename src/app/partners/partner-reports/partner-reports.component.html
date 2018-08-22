@@ -143,7 +143,7 @@
                         <font class="re-distributed-count">{{item.redistributedCampaignsCount}}</font>
                           <div class="actions-block" style="text-align: center;position: relative;margin-right: 90px;margin-top: -7px;padding: 0px 5px;"
                           		 *ngIf="item.redistributedCampaignsCount> 0">
-                          <a title="View Redistributed Campaings" (click)="showRedistributedCampaings(item)">
+                          <a title="View Redistributed Campaigns" (click)="showRedistributedCampaings(item)">
                             <i class="fa" [ngClass]="{'fa-plus': !item.expand, 'fa-minus': item.expand}"></i>
                           </a>
                         </div>
