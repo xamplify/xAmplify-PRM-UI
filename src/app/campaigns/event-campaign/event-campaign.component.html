@@ -311,18 +311,15 @@
                     </ng-container>
                     </table>
                   </div>
-
-                    <div class="mix-grid">
-                      <div *ngFor="let emailTemplate of emailTemplates" id="emailTemplateListDiv_{{emailTemplate.id}}">
-                        <div class="col-md-3 col-sm-4 mix category_1 mix_all" style="display: block; opacity: 1;">
-                            <div class="mix-inner css" [class.template-selected]="eventCampaign.emailTemplate.id === emailTemplate.id">
-                            <img class="img-responsive center-block" src="assets/images/event-template.png" alt="{{emailTemplate.name}}" id="emailtemplate-image">
-                            <h4 class="ellipsis" title="{{emailTemplate.name}}" style="margin-top: 14px;">{{emailTemplate.name}}</h4>
-                            <div class="mix-details" id="mix-details">
-
-                              <div style="top: 2%; position: relative; margin-left: 5px;">
-                              </div>
-                              <div id="template-action-div" style="margin-top: 60px;">
+                      <section  style="min-height: 250px;">
+                        <div class="col-xs-6 col-sm-3" *ngFor="let emailTemplate of emailTemplates ;let i =index" >
+                        <div class="grid-box p0">
+                          <div class="video-thumbnail-wrapper">
+                              <img class="img-responsive center-block" src="assets/images/event-template.png" alt="{{emailTemplate.name}}" id="emailtemplate-image">
+                          </div>
+                             <span class="ellipsis video-title" title="{{emailTemplate.name}}">{{emailTemplate.name}}</span>
+                          <div class="bar-event">
+                            <div>
                                 <a class="icons-link" title="Select" data-rel="" *ngIf="eventCampaign.emailTemplate.id !== emailTemplate.id && !isPreviewEvent" (click)="eventCampaign.emailTemplate = emailTemplate;">
                                   <i class="fa fa-check-circle" id="fa-font-size"></i> Select
                                 </a>
@@ -332,13 +329,11 @@
                                 <a class="icons-link" title="Preview" data-rel="" (click)="previewEventCampaignEmailTemplate(emailTemplate.id)">
                                   <i class="fa fa-eye" id="fa-font-size"></i> Preview
                                 </a>
-                              </div>
                             </div>
                           </div>
-
                         </div>
                       </div>
-                      </div>
+                  </section>
                 </div>
               </div>
         </div>
