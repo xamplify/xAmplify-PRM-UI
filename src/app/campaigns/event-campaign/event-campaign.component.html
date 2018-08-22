@@ -197,19 +197,19 @@
         </div>
       </div>
       <div class="col-xs-12 p0 mb10">
-        	<div class="form-group">
-              <label for="hostedBy" class="col-sm-2 labal-css">Event Image</label>
+        	<div class="form-group"  (click)="imageClick()">
+              <label for="Event Image" class="col-sm-2 labal-css">Event Image</label>
               <div class="col-sm-10" (drop)="fileChange($event)">
                 <div class="upload-media-wrapper" *ngIf="! eventCampaign.campaignEventMedias[0].filePath" >
                   <i class="fa fa-camera" aria-hidden="true"></i>
                   <b>Add Event Image</b><br>
                   <span>Choose a compelling image that brings your event to life</span>
                   <input type="file" [attr.disabled]="isPreviewEvent? '' : null" (change)="fileChange($event)" #input name="media[]" accept="image/gif,image/jpeg,image/jpg,image/png"
-                   class="file-input js-tooltip" data-original-title="Add photo">
+                   class="file-input js-tooltip" data-original-title="Add photo" id="eventImage">
                 </div>
                 <div [attr.disabled]="isPreviewEvent? '' : null" class="uploaded-media-wrapper" *ngIf="eventCampaign.campaignEventMedias[0].filePath">
                   <img src="{{eventCampaign.campaignEventMedias[0].filePath}}" [attr.disabled]="isPreviewEvent? '' : null">
-                  <i *ngIf="!isPreviewEvent" class="fa fa-times-circle" (click)="resetcampaignEventMedia()"></i>
+                  <i *ngIf="!isPreviewEvent" class="fa fa-times-circle" (click)="$event.stopPropagation();resetcampaignEventMedia()"></i>
                 </div>
               </div>
             </div>

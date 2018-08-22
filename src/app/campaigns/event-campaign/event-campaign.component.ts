@@ -121,7 +121,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
          }
      }
  }
-
+ imageClick(){
+  $('#eventImage').click();
+ }
   ngOnInit() {
     this.loggedInUserId = this.authenticationService.getUserId();
     this.loadCampaignNames( this.loggedInUserId );
