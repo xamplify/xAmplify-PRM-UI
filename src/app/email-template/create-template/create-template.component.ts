@@ -23,6 +23,7 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
     clickedButtonName:string = "";
     videoGif:string = "xtremand-video.gif";
     coBraningImage:string = "co-branding.png";
+    loadTemplate = false;
     constructor(private emailTemplateService:EmailTemplateService,
                private router:Router, private logger :XtremandLogger,
                 private authenticationService:AuthenticationService,public refService:ReferenceService) {
@@ -254,7 +255,7 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
 	                  }else{
 	                      bee.start(template);
 	                  }
-
+                   self.loadTemplate = true;
 	              });
 	          });
 	        });
