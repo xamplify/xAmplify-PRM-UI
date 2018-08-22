@@ -80,9 +80,8 @@
                 [(ngModel)]="eventCampaign.campaignEventTimes[0].endTimeString" [ngModelOptions]="{standalone: true}" (input)="eventEndTimeError()" (blur)="eventEndTimeError()"
                 [ngClass]="{'has-error': eventError.eventEndDateError && !eventCampaign.campaignEventTimes[0].endTimeString && !eventCampaign.campaignEventTimes[0].allDay}">
               </div>
-              <div class="col-sm-12 text-danger" *ngIf="endDatePassError">{{endDatePassedError}}</div>
               <div class="col-sm-12 text-danger" *ngIf="eventError.eventStartTimeError">{{datePassedError}}</div>
-              <div class="col-sm-12 text-danger" *ngIf="!eventError.eventStartTimeError && eventError.eventSameDateError">{{endDatePassedError}}</div>
+              <div class="col-sm-12 text-danger" *ngIf="(!eventError.eventStartTimeError && eventError.eventSameDateError) || endDatePassError">{{endDatePassedError}}</div>
               <div class="col-sm-12">
 								<input type="checkbox" [attr.disabled]="isPreviewEvent? '' : null" [checked]="eventCampaign.campaignEventTimes[0].allDay" (change)="eventCampaign.campaignEventTimes[0].allDay = !eventCampaign.campaignEventTimes[0].allDay"> All Day
 							</div>
@@ -315,7 +314,7 @@
                         <div class="col-xs-6 col-sm-3" *ngFor="let emailTemplate of emailTemplates ;let i =index" >
                         <div class="grid-box p0">
                           <div class="video-thumbnail-wrapper">
-                              <img class="img-responsive center-block" src="assets/images/event-template.png" alt="{{emailTemplate.name}}" id="emailtemplate-image">
+                              <img class="img-responsive center-block" src="assets/images/event-template.png" alt="{{emailTemplate.name}}" id="emailtemplate-image" style="width: 100%;">
                           </div>
                              <span class="ellipsis video-title" title="{{emailTemplate.name}}">{{emailTemplate.name}}</span>
                           <div class="bar-event">

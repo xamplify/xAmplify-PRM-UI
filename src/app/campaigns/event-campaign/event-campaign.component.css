@@ -114,8 +114,11 @@ a.icons-link {
 }
 a.icons-link:hover {background:  #357ebd;}
 .grid-box {
-	height: 180px;
+  width: 100%;
 	background-color: #fff;
+}
+.grid-box img {
+  margin: 0;
 }
 .video-thumbnail-wrapper{
 	position: relative;
@@ -126,8 +129,6 @@ a.icons-link:hover {background:  #357ebd;}
 }
 .bar-event {
 	transition: visibility 0s, opacity 0.2s linear;
-  margin-bottom: -49px;
-  margin-left: 13px;
 }
 .bar-event{
   background: #54a7e9;
