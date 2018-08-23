@@ -19,7 +19,7 @@
 		</ul>
 	</div>
 	<div class="page-bar portlet light border-radius-0 shadow">
-		<div class="portlet-title">
+		<div class="portlet-title" style="background: #ccc !important;border-radius: 0;">
 			<h4 class="pull-left m10 f-w-600 title-css">Event Details</h4>
     </div>
     <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
@@ -178,20 +178,22 @@
           </div>
           <div class="portlet-body clearfix">
               <ul>
+                <li style="border-bottom:1px solid #CCC; margin-bottom:10px;">
+                   <label class="col-md-1 p0" style="margin-top: 11px;cursor:pointer">
+                     <input [attr.disabled]="isPreviewEvent? '' : null" type="radio" value="eventCampaign.publicEventCampaign" [checked]="eventCampaign.publicEventCampaign" (change)="eventCampaign.publicEventCampaign = !eventCampaign.publicEventCampaign">
+                   </label>
+                  <label class="col-md-2 p0"><img src="assets/images/public-event.png"></label>
+                  <div class="col-md-9 p0" ><b>Public page</b><br><p >Turn invitees into your biggest promoters by letting them share your event on Facebook, Twitter, Linkedin and or any social media platform</p></div>
+                <div style="clear:both"></div>
+                </li>
+
                 <li>
-              <label class="col-md-1 p0">
-                <input [attr.disabled]="isPreviewEvent? '' : null" type="radio" value="eventCampaign.publicEventCampaign" [checked]="eventCampaign.publicEventCampaign" (change)="eventCampaign.publicEventCampaign = !eventCampaign.publicEventCampaign">
-              </label>
-              <label class="col-md-2 p0"><img src="assets/images/public-event.png"></label>
-              <div class="col-md-9 p0"><b>Public page</b><br><p >Turn invitees into your biggest promoters by letting them share your event on Facebook, Twitter, Linkedin and or any social media platform</p></div>
-            </li>
-            <li>
-              <label  class="col-md-1 p0">
-                <input [attr.disabled]="isPreviewEvent? '' : null" type="radio" value="!eventCampaign.publicEventCampaign" [checked]="!eventCampaign.publicEventCampaign" (change)="eventCampaign.publicEventCampaign = !eventCampaign.publicEventCampaign">
-              </label>
-              <label class="col-md-2 p0"><img src="assets/images/private-event.png"></label>
-              <div class="col-md-9 p0"><b>Private page</b><br><p >Make your event invitation-only(guests must receive an xAmplify invitation to attend/view)</p></div>
-            </li>
+                    <label  class="col-md-1 p0" style="margin-top: 11px;cursor: pointer;">
+                      <input [attr.disabled]="isPreviewEvent? '' : null" type="radio" value="!eventCampaign.publicEventCampaign" [checked]="!eventCampaign.publicEventCampaign" (change)="eventCampaign.publicEventCampaign = !eventCampaign.publicEventCampaign">
+                    </label>
+                    <label class="col-md-2 p0 "><img src="assets/images/private-event.png"></label>
+                    <div class="col-md-9 p0"><b>Private page</b><br><p >Make your event invitation-only(guests must receive an xAmplify invitation to attend/view)</p></div>
+                </li>
            </ul>
           </div>
         </div>
@@ -246,12 +248,11 @@
               </section>
               <section *ngIf="contactListsPagination.pagedItems?.length !== 0">
                 <div class="table-responsive">
-                  <table class="table table-condensed table-hover table-bordered table-striped" id='contact-list-table' 	[ngClass]="{'has-error': eventError.eventContactError}">
+                  <table class="table tgrid" id='contact-list-table' 	[ngClass]="{'has-error': eventError.eventContactError}">
                     <thead>
                       <tr>
                         <th class="custom-center">Select</th>
                         <th class="custom-center">List Name</th>
-                        <th class="custom-center">Created On</th>
                         <th class="custom-center">No.of Partners</th>
                         <th class="custom-center">Preview</th>
                       </tr>
@@ -264,17 +265,17 @@
                           <input *ngIf="isPartnerUserList" [attr.disabled]="isPreviewEvent? '' : null" type='checkbox' id='{{contactList.id}}' [checked]="parternUserListIds.indexOf(contactList.id)>-1" (click)="partnerHighlightRow(contactList.id)">
                         </td>
                         <td>
-                          <h5 class='m0 f-w-600' title="{{contactList.name}}">
-                            <span *ngIf="contactList.name?.length<=30">{{contactList.name}}</span>
-                            <span *ngIf="contactList.name?.length>30">{{contactList.name | slice:0:30}}...</span>
+                          <h5 class='m0 f-w-600 table-color' title="{{contactList.name}}">
+                            <span *ngIf="contactList.name?.length<=50">{{contactList.name}}</span>
+                            <span *ngIf="contactList.name?.length>50">{{contactList.name | slice:0:50}}...</span>
                           </h5>
-                          <h6 class="pull-left mb0 mt5" title="{{contactList.uploadedBy}}">By:
-                            <span *ngIf="contactList.uploadedBy?.length<=20">{{contactList.uploadedBy}}</span>
-                            <span *ngIf="contactList.uploadedBy?.length>20">{{contactList.uploadedBy | slice:0:20}}...</span>
+                          <h6 class="pull-left mb0 mt5 table-color" title="{{contactList.uploadedBy}}">
+                            <span *ngIf="contactList.uploadedBy?.length<=30">By: {{contactList.uploadedBy}}</span>
+                            <span *ngIf="contactList.uploadedBy?.length>30">By: {{contactList.uploadedBy | slice:0:30}}...</span>
+                            Created On:<span>{{contactList.createdDate}}</span>
                           </h6>
                         </td>
-                        <td> <h6 class="custom-center">{{contactList.createdDate}}</h6></td>
-                        <td> <h6 class='m0 text-center f-w-600'>{{contactList.noOfContacts}}</h6> </td>
+                        <td> <h6 class='m0 text-center f-w-600 table-color'>{{contactList.noOfContacts}}</h6> </td>
                         <td class='text-center m0'>
                           <a>	<i class="fa fa-eye" aria-hidden="true" (click)="loadContactsOnPreview(contactList, contactsPagination);"></i></a>
                         </td>
@@ -282,7 +283,7 @@
                     </tbody>
                   </table>
                 </div>
-                <app-pagination [pagination]="contactListsPagination" [type]="'contactlists'" (notifyParent)="setPage($event)"
+                <app-pagination style="position: relative;left: -9px;" [pagination]="contactListsPagination" [type]="'contactlists'" (notifyParent)="setPage($event)"
                  (notifyParentDropDown)="paginationDropDown($event)"></app-pagination>
               </section>
               </div>
@@ -316,7 +317,7 @@
                           <div class="video-thumbnail-wrapper" [class.template-selected]="eventCampaign.emailTemplate.id === emailTemplate.id">
                               <img class="img-responsive center-block" src="assets/images/event-template.png" alt="{{emailTemplate.name}}" id="emailtemplate-image" style="width: 100%;" >
                           </div>
-                             <span class="ellipsis video-title" title="{{emailTemplate.name}}">{{emailTemplate.name}}</span>
+                             <span class="ellipsis event-title" title="{{emailTemplate.name}}">{{emailTemplate.name}}</span>
                           <div class="bar-event">
                             <div>
                                 <a class="icons-link" title="Select" data-rel="" *ngIf="eventCampaign.emailTemplate.id !== emailTemplate.id && !isPreviewEvent" (click)="eventCampaign.emailTemplate = emailTemplate;">
@@ -345,12 +346,12 @@
           <div class="col-xs-6 auto-response" *ngIf="isPreviewEvent" style="margin-left: 37%;"><a [attr.disabled]="isPreviewEvent? '' : null">Click Here</a> to Auto Response your email</div>
           </div>
           <div *ngFor="let reply of eventCampaign.campaignReplies;let i=index">
-          <div class="portlet light dashboard-stat2" id="{{reply.divId}}">
+          <div class="portlet light dashboard-stat2" id="{{reply.divId}}" style="min-height: 320px;">
             <div class="portlet-title custom-change-css">
-              <div class="col-xs-7">
-                <h4 class="text-left"><b>Add an Auto-response to your e-mail-{{i+1}}</b></h4>
-                    </div>
-              <div class="col-xs-5 pull-right">
+              <div class="col-xs-7" style="font-size: 15px;">
+                  <h4 class="text-left auto-res">Add an Auto-response to your e-mail-{{i+1}}</h4>
+              </div>
+              <div class="col-xs-5 pull-right"  style="text-align:right">
                 <label class="switch-choose">Choose Template</label>
                 <switch class="switch-choose" [disabled]="isPreviewEvent" [status]="reply.defaultTemplate" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
                   [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
@@ -389,11 +390,11 @@
                   <input [attr.disabled]="isPreviewEvent? '' : null" type="number" class="form-control" name="days" placeholder="Days" [(ngModel)]="reply.replyInDays" min="0" oninput="validity.valid||(value='');">
                 </div>
                 <div class="col-xs-12 time-col " *ngIf="reply.actionId!=22 && reply.actionId!=23 ">
-                  <div class="col-xs-2" style="cursor: default;"><span for="time" id="send-time-{{reply.divId}}" class="time-picker-css">At<b style="color: red">*</b></span></div>
+                  <div class="col-xs-2" style="cursor: default; position: relative; top: 28px;"><span for="time" id="send-time-{{reply.divId}}" class="time-picker-css">At<b style="color: red">*</b></span></div>
                   <div class="col-xs-10" style="height: 66px;"><timepicker [attr.disabled]="isPreviewEvent" [(ngModel)]="reply.replyTime" name="time" [hourStep]="1" [minuteStep]="1"></timepicker></div>
                 </div>
               </div>
-              <div class="col-xs-12">
+              <div class="col-xs-12" style="position: relative; top: 11px;">
                 <label style="cursor: default;" for="time" id="reply-subject-{{reply.divId}}">Subject<b style="color: red">*</b></label>
                 <input [attr.disabled]="isPreviewEvent? '' : null" type="text" class="form-control" name="subject" [(ngModel)]="reply.subject" placeholder="Subject" maxlength="50">
               </div>
@@ -418,40 +419,40 @@
                       <table class="table tgrid">
                         <thead>
                           <tr>
-                            <th>Select</th>
-                            <th>Name</th>
-                            <th>Uploaded By</th>
-                            <th>Preview</th>
+                            <th class="custom-center">Select</th>
+                            <th class="custom-center">Name</th>
+                            <th class="custom-center">Uploaded By</th>
+                            <th class="custom-center">Preview</th>
                           </tr>
                         </thead>
                         <tbody>
                           <ng-container *ngIf="!isAdd && reply.emailTemplatesPagination.totalRecords>0 && reply.emailTemplatesPagination.pageIndex==1 && reply.selectedEmailTemplateIdForEdit>0 && reply.showSelectedEmailTemplate ">
                             <tr (click)="setReplyEmailTemplate(reply.emailTemplate.id,reply,i)" [class.active]="reply.emailTemplate.id==reply.selectedEmailTemplateId">
-                              <td>
+                              <td class="custom-center">
                                 <input [attr.disabled]="isPreviewEvent? '' : null" type="radio" name="reply-email-template" [value]="reply.emailTemplate.id" id="reply-{{i}}-{{reply.emailTemplate.id}}"
                                   (click)="setReplyEmailTemplate(reply.emailTemplate.id,reply,i)" [checked]="reply.emailTemplate.id == reply.selectedEmailTemplateId">
                               </td>
-                              <td *ngIf="reply.emailTemplate.name?.length>25" title="{{reply.emailTemplate.name}}">{{reply.emailTemplate.name|slice:0:25}}....</td>
-                              <td *ngIf="reply.emailTemplate.name?.length<=25" title="{{reply.emailTemplate.name}}">{{reply.emailTemplate.name}}</td>
-                              <td *ngIf="reply.emailTemplate.createdBy?.length>25" title="{{reply.emailTemplate.createdBy}}">{{reply.emailTemplate.createdBy|slice:0:25}}....</td>
-                              <td *ngIf="reply.emailTemplate.createdBy?.length<=25" title="{{reply.emailTemplate.createdBy}}">{{reply.emailTemplate.createdBy}}</td>
-                              <td><a class="text-warning"><i class="fa fa-eye" style="padding-top: 3px; font-size: 20px;" title="" data-original-title="Preview"></i></a></td>
+                              <td class="custom-center" *ngIf="reply.emailTemplate.name?.length>25" title="{{reply.emailTemplate.name}}">{{reply.emailTemplate.name|slice:0:25}}....</td>
+                              <td class="custom-center" *ngIf="reply.emailTemplate.name?.length<=25" title="{{reply.emailTemplate.name}}">{{reply.emailTemplate.name}}</td>
+                              <td class="custom-center" *ngIf="reply.emailTemplate.createdBy?.length>25" title="{{reply.emailTemplate.createdBy}}">{{reply.emailTemplate.createdBy|slice:0:25}}....</td>
+                              <td class="custom-center" *ngIf="reply.emailTemplate.createdBy?.length<=25" title="{{reply.emailTemplate.createdBy}}">{{reply.emailTemplate.createdBy}}</td>
+                              <td class="custom-center"><a ><i class="fa fa-eye" style="padding-top: 3px; font-size: 20px;" title="" data-original-title="Preview"></i></a></td>
                             </tr>
                           </ng-container>
                           <ng-container *ngFor="let emailTemplate of reply.emailTemplatesPagination.pagedItems ;let e =index">
                             <tr (click)="setReplyEmailTemplate(emailTemplate.id,reply,i,emailTemplate.draft)" [class.active]="emailTemplate.id==reply.selectedEmailTemplateId"
                               *ngIf="reply.selectedEmailTemplateIdForEdit!=emailTemplate.id">
-                              <td>
+                              <td class="custom-center">
                                 <input [attr.disabled]="isPreviewEvent? '' : null" *ngIf="!emailTemplate.draft" type="radio" name="reply-email-template" [value]="emailTemplate.id" id="reply-{{i}}-{{emailTemplate.id}}"
                                  (click)="setReplyEmailTemplate(emailTemplate.id,reply,i,emailTemplate.draft)" [checked]="emailTemplate.id == reply.selectedEmailTemplateId">
                               <input [class.disabled]="isPreviewEvent" *ngIf="emailTemplate.draft" title="draft template cannot be selected" disabled="disabled" type="radio" name="reply-email-template">
                               </td>
-                              <td *ngIf="emailTemplate.name?.length>25" title="{{emailTemplate.name}}">{{emailTemplate.name|slice:0:25}}....</td>
-                              <td *ngIf="emailTemplate.name?.length<=25" title="{{emailTemplate.name}}">{{emailTemplate.name}}</td>
-                              <td *ngIf="emailTemplate.createdBy?.length>25" title="{{emailTemplate.createdBy}}">{{emailTemplate.createdBy|slice:0:25}}....</td>
-                              <td *ngIf="emailTemplate.createdBy?.length<=25" title="{{emailTemplate.createdBy}}">{{emailTemplate.createdBy}}</td>
-                              <td>
-                                <a *ngIf="!emailTemplate.draft" class="text-warning" (click)="getEmailTemplatePreview(emailTemplate);$event.stopPropagation()">
+                              <td class="custom-center" *ngIf="emailTemplate.name?.length>25" title="{{emailTemplate.name}}">{{emailTemplate.name|slice:0:25}}....</td>
+                              <td class="custom-center" *ngIf="emailTemplate.name?.length<=25" title="{{emailTemplate.name}}">{{emailTemplate.name}}</td>
+                              <td class="custom-center" *ngIf="emailTemplate.createdBy?.length>25" title="{{emailTemplate.createdBy}}">{{emailTemplate.createdBy|slice:0:25}}....</td>
+                              <td class="custom-center" *ngIf="emailTemplate.createdBy?.length<=25" title="{{emailTemplate.createdBy}}">{{emailTemplate.createdBy}}</td>
+                              <td class="custom-center">
+                                <a *ngIf="!emailTemplate.draft" (click)="getEmailTemplatePreview(emailTemplate);$event.stopPropagation()">
                                   <i class="fa fa-eye" style="padding-top: 3px; font-size: 20px;" title="" data-original-title="Preview"></i>
                                 </a>
                               </td>
@@ -551,7 +552,7 @@
 							</tr>
 						</tbody>
 					</table>
-					<app-pagination *ngIf="contactsPagination.pagedItems?.length > 0" [pagination]="contactsPagination" [type]="'updatestatuscontacts'"
+					<app-pagination  *ngIf="contactsPagination.pagedItems?.length > 0" [pagination]="contactsPagination" [type]="'updatestatuscontacts'"
 					 (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropDown($event)"></app-pagination>
 				</div>
 			</div>

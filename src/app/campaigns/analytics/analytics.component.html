@@ -122,11 +122,11 @@
 				</a>
 			</div>
 	</div>
-	
-	
-	
-	
-	<section *ngIf="campaignType === 'EVENT'">
+
+
+
+
+	<section *ngIf="campaignType === 'EVENT'" [hidden]="mainLoader">
 		<div class="col-xs-12 col-sm-5 p-5x">
 		<div class="p-5x">
 			<div class="portlet light" style="min-height: 118px;">
@@ -174,7 +174,7 @@
 						<b>{{campaignReport.totalMayBeCount}}</b>
 					</h1>
 					<h5>Total Says MayBe</h5>
-				</div> 
+				</div>
 			</button>
 		</div>
 		<div [hidden]="mainLoader"  class="col-xs-3 p-5x">
@@ -191,25 +191,25 @@
 		</div>
 	</div>
 	</section>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	<section *ngIf="campaignType !== 'EVENT'">
 	<div class="col-xs-12 col-sm-6 p-5x" [hidden]="campaignType !== 'VIDEO' || mainLoader">
 		<div class="p-5x">
@@ -376,7 +376,7 @@
 			</div>
 		</div>
   </div>
-  
+
    </section>
 
 	<div class="row" *ngIf="isPartnerEnabledAnalyticsAccess">
@@ -453,7 +453,7 @@
 			</div>
 		</div>
 	</div>
-	 
+
 
 </ng-template>
 </div>

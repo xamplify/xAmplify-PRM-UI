@@ -10,7 +10,7 @@
     cursor: pointer;
     background: #f8f8f8; min-height:150px;
 }
-.upload-media-wrapper span{ font-size:11px;}
+.upload-media-wrapper span{ font-size:12px;}
 
 .upload-media-wrapper input[type=file] {
     display: block;
@@ -92,10 +92,10 @@
 }
 .template-selected {
   background-color: #6dcff6 !important;
-  border: 1px solid #008fd5 !important;
+  border: 3px solid #008fd5 !important;
 }
 .boxes {padding:0 !important}
-.boxes .portlet-title { font-weight: 600 !important; background:#b3b2b2 !important; margin-bottom:0 !important; border-radius: 0 !important; min-height: auto !important; padding-left:10px !important;}
+.boxes .portlet-title { font-weight: 600 !important; background:#eaeaea !important; margin-bottom:0 !important; border-radius: 0 !important; min-height: auto !important; padding-left:10px !important;}
 .boxes .portlet-title h4 {font-size: 14px !important;}
 .boxes .portlet-body {padding:15px !important; }
 
@@ -117,9 +117,7 @@ a.icons-link:hover {background:  #357ebd;}
   width: 100%;
 	background-color: #fff;
 }
-.grid-box img {
-  margin: 0;
-}
+.grid-box img {  margin: 0;}
 .video-thumbnail-wrapper{
 	position: relative;
   height: auto;
@@ -127,11 +125,9 @@ a.icons-link:hover {background:  #357ebd;}
   max-width: 100%;
 	margin: 0 auto;
 }
-.bar-event {
-	transition: visibility 0s, opacity 0.2s linear;
-}
+.bar-event { 	transition: visibility 0s, opacity 0.2s linear;}
 .bar-event{
-  background: #54a7e9;
+  background:#8e8e8e;
   width: 100%;
   height: 50px;
   position: absolute;
@@ -140,10 +136,12 @@ a.icons-link:hover {background:  #357ebd;}
   opacity: 0;
   transition: visibility 0s, opacity 0.5s linear;
 }
-.grid-box:hover > .bar-event {
-  visibility: visible;
-  opacity: 1;
-}
-.bar-event .fa {
-  color: #FFF;
-}
+.grid-box:hover > .bar-event { visibility: visible; opacity: 1; }
+.bar-event .fa { color: #FFF;}
+.button-blue{ position: relative; background: #888a8c !important; top: 6px; font-size: 4px;}
+.switch-choose{  position: relative; top: 6px;}
+.colorBlue{ background: #808080;}
+.colorRed { background: #5bb1d4;}
+.event-title{ margin-top: 7px; font-weight: 600;}
+.auto-res {  font-weight: 600; font-size: 15px;}
+.table-color{ color: #6d6d6d !important;}
