@@ -139,14 +139,19 @@
 													 data-rel="fancybox-button" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.campaign_copy}}" class='mr5' (click)="openSaveAsModal(campaign.campaignId, campaign.campaignName)">
 														<i class="fa fa-files-o"></i>
 													</a>
+													 <a *ngIf=" (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor) && campaign.channelCampaign"
+						                       		 (click)="goToPreviewPartners(campaign)" 
+						                       		 data-toggle="tooltip" data-placement="top" title="{{actionsDescription.campaign_preview_partner}}" data-rel="fancybox-button">
+						                         		<i class="fa fa-handshake-o" id="delete-partner"></i>
+						                       		</a>
 												</ng-container>
 												<a (click)="showCampaignPreview(campaign.campaignId)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.campaign_preview}}">
 													<i class="fa fa-eye mr5"></i>
-                        </a>
-                        <a *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor"
-                        (click)="confirmDeleteCampaign(campaign.campaignId, i, campaign.campaignName)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.campaign_delete}}" data-rel="fancybox-button">
-                         <i class="fa fa-trash"></i>
-                       </a>
+                      						  </a>
+						                        <a *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor"
+						                       		 (click)="confirmDeleteCampaign(campaign.campaignId, i, campaign.campaignName)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.campaign_delete}}" data-rel="fancybox-button">
+						                         <i class="fa fa-trash"></i>
+						                       </a>
 											</div>
 										</td>
 									</tr>
@@ -301,6 +306,11 @@
 													 data-rel="fancybox-button" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.campaign_copy}}" class='mr5' (click)="openSaveAsModal(campaign.campaignId, campaign.campaignName)">
 														<i class="fa fa-files-o"></i>
 													</a>
+													 <a *ngIf=" (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor) && campaign.channelCampaign"
+						                       		 (click)="goToPreviewPartners(campaign)" 
+						                       		 data-toggle="tooltip" data-placement="top" title="{{actionsDescription.campaign_preview_partner}}" data-rel="fancybox-button">
+						                         		<i class="fa fa-handshake-o" id="delete-partner"></i>
+						                       		</a>
 													<!-- <a *ngIf="isOnlyPartner" data-rel="fancybox-button" (click)="openSaveAsModal(campaign.campaignId, campaign.campaignName)" title="Save As">
 														<i class="fa fa-files-o"></i>
 													</a> -->

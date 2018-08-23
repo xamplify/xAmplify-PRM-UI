@@ -1,0 +1,80 @@
+<div class="page-content">
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+      <li *ngIf="!authenticationService.isSuperAdmin()">
+        <i class="fa fa-home"></i>
+        <a [routerLink]="refService.homeRouter">Home</a>
+        <i class="fa fa-angle-right"></i>
+      </li>
+       <li>
+      		<a [routerLink]="['/home/campaigns/manage']">Manage Campaigns</a><i class="fa fa-angle-right"></i>
+      	</li>
+      <li>
+        <a>Campaign Partners</a>
+      </li>
+    </ul>
+  </div>
+<div class="row">
+          <div class="col-xs-12 p5">
+            <div class="portlet light">
+              <div class="portlet-title">
+                <div class="caption">
+                  <span class="caption-subject font-red-sunglo uppercase">Partners List</span>
+                </div>
+                <div class="inputs" align="right" style="float: right">
+					<div style="float: left;">
+						<select class="form-control" [(ngModel)]="sortOption.campaignPartnersRemoveAccessDefaultSortOption" (ngModelChange)="sortBy($event)" style="position: relative;right: -3px;">
+							<option *ngFor="let option of sortOption.campaignPartnersRemoveAccessSortDropDown" [ngValue]="option">{{option.name}}</option>
+						</select>
+					</div>
+					<div class="portlet-input input-inline input-small" style="margin-right: 10px;">
+						<div class="input-icon right" style="position: relative;right: -11px;">
+							<input type="text"  style="height:34px;" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="searchOnKeyPress($event.keyCode)">
+					            <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey=''"></button>
+					            <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search"></i></button>
+	               		</div>
+					</div>
+				</div>
+              </div>
+               <app-list-loader  *ngIf="campaignPartnerLoader.isLoading"></app-list-loader>
+               <app-response-message [customResponse]="partnerActionResponse" *ngIf="partnerActionResponse.isVisible"></app-response-message>
+              <div class="portlet-body"  *ngIf="!campaignPartnerLoader.isLoading">
+               <table class="table table-striped table-hover table-bordered" id="campaign-partner-table">
+							<thead>
+								<tr>
+									<th>EMAIL ID</th>
+									<th>FIRST NAME</th>
+									<th>LAST NAME</th>
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr *ngFor="let partner of partnersPagination.pagedItems;let i=index">
+									<td>{{partner.emailId}}</td>
+									<td>{{partner.firstName}}</td>
+									<td>{{partner.lastName}}</td>
+									<td>
+										<a (click)="confirmDeletePartnerById(partner,i)"  data-toggle="tooltip" data-placement="top" title="{{actionsDescription.campaign_delete_partner}}">
+											<i class="fa fa-trash"></i>
+										</a>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+              </div>
+              	<div *ngIf="sortOption.totalRecords > 0 && !campaignPartnerLoader.isLoading && !campaignPartnerLoader.isServerError" style="background:white">
+						<div *ngIf="partnersPagination.pagedItems.length !== 0">
+							<app-pagination [pagination]="partnersPagination"  [isDropdown]="true"
+							 (notifyParent)="setPage($event)"
+							  (notifyParentDropDown)="listPartners($event)">
+							</app-pagination>
+							<select class="form-control" style="float: right; width: auto;" [(ngModel)]="sortOption.itemsSize"
+								 (ngModelChange)="paginationDropdown($event)">
+								<option *ngFor="let itemPerPage of sortOption.numberOfItemsPerPage" [ngValue]="itemPerPage">{{itemPerPage.name}}</option>
+							</select>
+						</div>
+					</div>
+            </div>
+          </div>
+        </div>
+</div>

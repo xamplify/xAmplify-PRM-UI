@@ -3,7 +3,7 @@ import { Http, Response } from '@angular/http';
 import { SaveVideoFile } from '../../videos/models/save-video-file';
 import { AuthenticationService } from './authentication.service';
 import { Observable } from 'rxjs/Observable';
-import { Router } from '@angular/router';
+import { Router,ActivatedRoute } from '@angular/router';
 import { Category } from '../../videos/models/category';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { DefaultVideoPlayer } from '../../videos/models/default-video-player';
@@ -81,9 +81,8 @@ export class ReferenceService {
     showInputConfirmPassword = false;
     showInputPassword = false;
     showInputOldPassword = false;
-
     constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,
-        private router: Router, public deviceService: Ng2DeviceService) {
+        private router: Router, public deviceService: Ng2DeviceService,private route:ActivatedRoute) {
         console.log('reference service constructor');
     }
     getBrowserInfoForNativeSet(){
@@ -1606,4 +1605,6 @@ export class ReferenceService {
          this.campaignType = campaign.campaignType;
          this.router.navigate(["/home/campaigns/"+campaign.campaignId+"/details"]);
      }
+     
+    
 }

@@ -20,6 +20,17 @@ export class SortOption {
                                                           
          ];
 
+    campaignPartnersRemoveAccessSortDropDown = [
+                                                { 'name': 'Email ID(A-Z)', 'value': 'emailId-ASC' },
+                                                { 'name': 'Email ID(Z-A)', 'value': 'emailId-DESC' },
+                                                { 'name': 'First Name(ASC)', 'value': 'firstName-ASC' },
+                                                { 'name': 'First Name(DESC)', 'value': 'firstName-DESC' },
+                                                { 'name': 'Last Name(ASC)', 'value': 'lastName-ASC' },
+                                                { 'name': 'Last Name(DESC)', 'value': 'lastName-DESC' }
+                                                
+                                                
+              ];
+    
     numberOfItemsPerPage = [
         { 'name': '12', 'value': '12' },
         { 'name': '24', 'value': '24' },
@@ -28,6 +39,7 @@ export class SortOption {
     ]
     public selectedSortedOption: any = this.sortByDropDown[3];
     public defaultSortOption:any = this.partnerCampaignDetailsSortDropDown[5];
+    public  campaignPartnersRemoveAccessDefaultSortOption:any = this.campaignPartnersRemoveAccessSortDropDown[0];
     public itemsSize: any = this.numberOfItemsPerPage[0];
     isListView: boolean = false;
     selectedCampaignTypeIndex:number = 0;

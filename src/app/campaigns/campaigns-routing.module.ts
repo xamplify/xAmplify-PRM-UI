@@ -10,6 +10,7 @@ import { PartnerCampaignsComponent } from "./partner-campaigns/partner-campaigns
 import { EditPartnerCampaignsComponent } from "./edit-partner-campaigns/edit-partner-campaigns.component";
 import { PreviewCampaignComponent } from "./preview-campaign/preview-campaign.component";
 import { ReDistributedComponent } from './analytics/re-distributed/re-distributed.component';
+import { PreviewPartnersComponent } from './preview-partners/preview-partners.component';
 export const campaignRoutes: Routes = [
   { path: "", redirectTo: "select", pathMatch: "full" },
   { path: "select", component: SelectCampaignTypeComponent },
@@ -24,7 +25,8 @@ export const campaignRoutes: Routes = [
   { path: "partner/:type", component: PartnerCampaignsComponent },
   { path: "vendor/:type", component: PartnerCampaignsComponent },
   { path: "re-distribute-campaign", component: EditPartnerCampaignsComponent },
-  { path: "preview/:id", component: PreviewCampaignComponent }
+  { path: "preview/:id", component: PreviewCampaignComponent },
+  { path: ":campaignId/remove-access", component: PreviewPartnersComponent }
 ];
 
 @NgModule({

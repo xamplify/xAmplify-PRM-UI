@@ -34,6 +34,8 @@ export class ActionsDescription {
     campaign_preview = 'View Campaign';
     campaign_report = 'Campaign Based Reports';
     campaign_copy = 'Copy Campaign';
+    campaign_preview_partner = 'Preview & Delete Partner(s)'
+    campaign_delete_partner = 'Delete Partner';
 
     /* GLOBAL */
     listView = 'List View';

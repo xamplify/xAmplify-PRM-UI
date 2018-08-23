@@ -55,6 +55,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     public itemsSize: any = this.numberOfItemsPerPage[0];
 
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
+    campaignPartnerLoader: HttpRequestLoader = new HttpRequestLoader();
     isListView: boolean = false;
 
     public isError: boolean = false;
@@ -62,7 +63,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     saveAsCampaignName = '';
     isOnlyPartner: boolean = false;
     customResponse: CustomResponse = new CustomResponse();
-
+    partnerActionResponse:CustomResponse = new CustomResponse();
+    partnersPagination:Pagination = new Pagination();
     constructor(private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService:UtilService, public actionsDescription: ActionsDescription,
         public refService: ReferenceService, private userService: UserService, public authenticationService: AuthenticationService) {
@@ -284,5 +286,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     goToRedistributedCampaigns(campaign:Campaign){
         this.router.navigate(['/home/campaigns/'+campaign.campaignId+"/re-distributed"]);
     }
-
+    goToPreviewPartners(campaign:Campaign){
+        this.router.navigate(['/home/campaigns/'+campaign.campaignId+"/remove-access"]);
+    }
 }
