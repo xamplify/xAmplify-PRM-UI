@@ -54,7 +54,7 @@
               </select>
               </div>
             </div>
-					<div class="form-group">
+					<div class="form-group" *ngIf="!authenticationService.isOnlyPartner()">
 						<label for="hostedBy" class="col-sm-3 labal-css">Through Partner</label>
 						<div class="col-sm-3">
 							<switch [status]="eventCampaign.channelCampaign" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"

@@ -411,6 +411,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
 
   }
   getCampaignData(eventCampaign:any){
+    if(this.authenticationService.isOnlyPartner()){ eventCampaign.channelCampaign = false; }
     eventCampaign.user.userId = this.loggedInUserId;
     if(this.eventCampaign.campaignReplies && this.eventCampaign.campaignReplies.length>0){ this.getRepliesData(); }
     for (let userListId of eventCampaign.userListIds) {
