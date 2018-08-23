@@ -126,7 +126,7 @@
                    </div>
                  </section>
                  <section [hidden]="isListView">
-                 <div class="col-xs-6 col-sm-3" *ngFor="let videoFile of pagination.pagedItems ;let i =index">
+                 <div class="col-xs-12 col-sm-4 col-md-3" *ngFor="let videoFile of pagination.pagedItems ;let i =index">
                  <div class="grid-box p0" *ngIf="pagination.pagedItems && !httpRequestLoader.isLoading && !referenceService.isPlayVideo" (mouseenter) ="mouseEnter(videoFile)" (mouseleave) ="mouseLeave(videoFile)">
                    <div class="video-thumbnail-wrapper">
                      <img *ngIf="authenticationService.isSuperAdmin()" id="imagePathVideo{{videoFile.id}}" class="video-thumbnail" src="{{videoFile.imagePath}}" style="width:100%" (error)="videoUtilService.errorVideoHandler($event)" >
@@ -202,7 +202,8 @@
                </div>
              </div>
            </div>
-           <div [hidden]="httpRequestLoader.isLoading" class="clearfix" *ngIf="pagination.pagedItems.length !== 0 && !referenceService.isPlayVideo">
+           <div class="clearfix"></div>
+           <div [hidden]="httpRequestLoader.isLoading" *ngIf="pagination.pagedItems.length !== 0 && !referenceService.isPlayVideo">
             <app-pagination [pagination]="pagination" [type]="'managaVideos'"
              (notifyParent)="setPage($event)" (notifyParentDropDown)="loadVideos($event)"></app-pagination>
             </div>
