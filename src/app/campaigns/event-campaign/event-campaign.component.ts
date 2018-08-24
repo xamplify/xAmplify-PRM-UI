@@ -97,6 +97,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     CKEDITOR.config.readOnly = this.isPreviewEvent ? true: false;
     this.reDistributeEvent = this.router.url.includes('/home/campaigns/re-distribute-event')? true: false;
     if(this.reDistributeEvent) { this.isPartnerUserList = false; } else { this.isPartnerUserList = true; }
+    if(this.authenticationService.isOnlyPartner()) {  this.isPartnerUserList = false; }
   }
   loadCampaignNames(userId:number){
     this.campaignService.getCampaignNames(userId).subscribe(data => { this.names.push(data); },
@@ -140,6 +141,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
         (result)=>{
         this.campaignService.eventCampaign = result.data;
         this.eventCampaign = result.data;
+        if(result.data.parentCampaignId) { this.isPartnerUserList = false;}
         this.editedCampaignName = this.eventCampaign.campaign;
         this.validateCampaignName(this.eventCampaign.campaign);
         console.log( this.eventCampaign);
@@ -166,21 +168,32 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
         if(this.reDistributeEvent){ this.isPartnerUserList = false;}
 
         for(let i=0; i< result.data.userListDTOs.length;i++){
-         if(this.reDistributeEvent) { this.userListIds.push(result.data.userListDTOs[i].id); }
+         if(this.reDistributeEvent || this.authenticationService.isOnlyPartner()) { this.userListIds.push(result.data.userListDTOs[i].id); }
          if(!this.reDistributeEvent) { this.parternUserListIds.push(result.data.userListDTOs[i].id); }
         }
         if(this.reDistributeEvent){  this.eventCampaign.userListIds = this.parternUserListIds;
         } else {  this.eventCampaign.userListIds = this.userListIds; }
+
+        if(this.reDistributeEvent){ this.eventCampaign.userListIds = []; this.userListIds = [];this.parternUserListIds = []; }
         this.eventCampaign.userLists = [];
         console.log(this.userListIds);
-      });
+
+        if(this.isPreviewEvent){
+          for(let i=0; i< result.data.userListDTOs.length;i++){
+
+          }
+        }
+        this.loadContactLists(this.contactListsPagination);
+      }
+    );
     }
     else{
     this.eventCampaign.emailTemplate = this.emailTemplates[0];
     this.eventCampaign.countryId = this.countries[0].id;
     this.eventCampaign.campaignEventTimes[0].countryId = this.countries[0].id;
-  }
     this.loadContactLists(this.contactListsPagination);
+  }
+
     flatpickr('.flatpickr', {
       enableTime: true,
       dateFormat: 'm/d/Y H:i',
@@ -480,6 +493,10 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     if(this.reDistributeEvent) {
       eventCampaign.parentCampaignId = this.activatedRoute.snapshot.params['id'];
       eventCampaign.id = null;}
+
+    delete eventCampaign.emailTemplateDTO;
+    delete eventCampaign.userDTO
+    delete eventCampaign.userListDTOs
 
     if(this.validForm(eventCampaign) && this.isFormSubmitted){
       this.referenceService.startLoader(this.httpRequestLoader);

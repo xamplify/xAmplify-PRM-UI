@@ -261,7 +261,6 @@
                       <tr *ngFor="let contactList of contactListsPagination.pagedItems; let i=index;">
                         <td class='text-center m0'>
                           <input *ngIf="!isPartnerUserList" [attr.disabled]="isPreviewEvent? '' : null" type='checkbox' id='{{contactList.id}}' [checked]="userListIds.indexOf(contactList.id)>-1" (click)="highlightRow(contactList.id)">
-
                           <input *ngIf="isPartnerUserList" [attr.disabled]="isPreviewEvent? '' : null" type='checkbox' id='{{contactList.id}}' [checked]="parternUserListIds.indexOf(contactList.id)>-1" (click)="partnerHighlightRow(contactList.id)">
                         </td>
                         <td>

@@ -13,6 +13,7 @@ import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { CustomResponse } from '../../common/models/custom-response';
 import { UtilService } from '../../core/services/util.service';
 import { ContactList } from '../../contacts/models/contact-list';
+import { EventCampaign } from '../models/event-campaign';
 
 declare var swal, $: any;
 
@@ -283,7 +284,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         });
     }
 
-    setSaveAsEventCampaign(campaignData:any){
+    setSaveAsEventCampaign(campaignData:EventCampaign){
       campaignData.campaign = this.saveAsCampaignName;
       campaignData.id = null;
       campaignData.campaignScheduleType = "SAVE";
@@ -298,6 +299,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
       campaignData['email'] = campaignData.user.emailId;
       campaignData['fromName'] = campaignData.user.emailId;
       campaignData.user.id = null;
+      campaignData.user.userId = this.loggedInUserId;
       campaignData.country = campaignData.campaignEventTimes[0].country;
       for(let i=0; i< campaignData.userListDTOs.length;i++){
        campaignData.userListIds.push(campaignData.userListDTOs[i].id);
@@ -309,7 +311,6 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
       delete campaignData.userDTO;
       delete campaignData.userListDTOs;
       delete campaignData.emailTemplateDTO;
-      delete campaignData.userDTO;
       console.log(campaignData);
       this.campaignService.createEventCampaign(campaignData).subscribe((data:any)=>{
         console.log(data);

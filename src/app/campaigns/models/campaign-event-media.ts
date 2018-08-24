@@ -1,3 +1,4 @@
-export class CampaignEventMedia { 
+export class CampaignEventMedia {
+    id:number;
     filePath: string;
 }

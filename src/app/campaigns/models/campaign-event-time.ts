@@ -1,4 +1,5 @@
 export class CampaignEventTime {
+    id:number;
     startTimeString: string;
     endTimeString: string;
     timeZone: string;
