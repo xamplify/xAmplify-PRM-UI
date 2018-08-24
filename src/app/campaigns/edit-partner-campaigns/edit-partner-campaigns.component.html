@@ -326,10 +326,10 @@
                             </div>
                             <div class="col-xs-5" style="text-align:right">
                               <label class="switch-choose"  style="color:#fff">Choose Template</label>
-                              <switch class="switch-choose" [status]="reply.defaultTemplate" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+                             <!--  <switch class="switch-choose" [status]="reply.defaultTemplate" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
                                 [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch"
                                 [size]="callActionSwitch.size" (statusChange)="selectReplyEmailBody($event,i,reply)">
-                              </switch>
+                              </switch> -->
                               <button type="button" class="btn btn-danger button-blue" (click)="remove(reply.divId,'replies')">
                                 <span class="glyphicon glyphicon-trash"></span>
                               </button>
@@ -387,135 +387,15 @@
                                   </div>
                                 </div>
                                 <div class="col-xs-8">
-                                  <div id="ck-editor-{{i}}" *ngIf="!reply.defaultTemplate">
+                                  <div id="ck-editor-{{i}}">
                                     <div>
                                       <label style="cursor:default" for="days" id="reply-message-{{reply.divId}}">Message
                                         <b style="color: red">*</b>
                                       </label>
                                     </div>
                                     <div>
-                                      <ckeditor [(ngModel)]="reply.body" name="body"></ckeditor>
+                                      <ckeditor  [(ngModel)]="reply.body" name="body"></ckeditor>
                                     </div>
-                                  </div>
-                                  <div id="reply-email-template-{{i}}" *ngIf="reply.defaultTemplate">
-                                    <div class="form-group" style="margin-left: 1px;">
-                                      <label for="days" id="email-template-{{reply.divId}}">Select Email Template
-                                        <b style="color: red">*</b>
-                                      </label>
-                                    </div>
-                                    <div class="portlet-title">
-                                      <div class="caption">
-                                        <div class="row">
-                                          <div class="col-xs-12 col-sm-8 text-left">
-                                            <ul class="mix-filter" *ngIf="!isOnlyPartner">
-                                              <li class="filter" (click)="filterReplyTemplates('NONE',0,reply)" [class.emailtemplate-selected]="0 == reply.selectedEmailTemplateTypeIndex">All Email Templates</li>
-                                              <li class="filter" (click)="filterReplyTemplates('BASIC',1,reply)" [class.emailtemplate-selected]="1 == reply.selectedEmailTemplateTypeIndex">Basic Templates</li>
-                                              <li class="filter" (click)="filterReplyTemplates('RICH',2,reply)" [class.emailtemplate-selected]="2 == reply.selectedEmailTemplateTypeIndex">Rich Templates</li>
-                                              <li class="filter" (click)="filterReplyTemplates('UPLOADED',3,reply)" [class.emailtemplate-selected]="3 == reply.selectedEmailTemplateTypeIndex">Uploaded Regular Templates</li>
-                                              <li class="filter" (click)="filterReplyTemplates('PARTNER',7,reply)" [class.emailtemplate-selected]="7== reply.selectedEmailTemplateTypeIndex">Partner Templates</li>
-                                            </ul>
-                                          </div>
-                                          <div class="col-xs-12 col-sm-4">
-                                            <div class="input-icon right" style="cursor:pointer;">
-                                              <!-- <i class="icon-magnifier" style="cursor:pointer;font-size:18px;" (click)="searchReplyEmailTemplate(reply)"></i>
-                                              <input type="text" [(ngModel)]="reply.emailTemplateSearchInput" [ngModelOptions]="{standalone: true}" class="form-control"
-                                                placeholder="search..."> -->
-                                                <input type="text" [(ngModel)]="reply.emailTemplateSearchInput" [ngModelOptions]="{standalone: true}" class="form-control"
-                                                placeholder="Search for a Video" (keypress)="searchReplyEmailTemplateKey($event.keyCode,reply)">
-                                                <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="reply.emailTemplateSearchInput" (click)="reply.emailTemplateSearchInput=''"></button>
-                                                <button type="submit" class="search-box-item-click" (click)="searchReplyEmailTemplate(reply)"><i class="fa fa-search"></i></button>
-
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <app-loader [model]="campaignEmailTemplate.httpRequestLoader.isHorizontalCss" *ngIf="campaignEmailTemplate.httpRequestLoader.isLoading"></app-loader>
-                                    <app-error-pages *ngIf="campaignEmailTemplate.httpRequestLoader.isServerError"></app-error-pages>
-                                    <ng-container *ngIf="!campaignEmailTemplate.httpRequestLoader.isLoading && !campaignEmailTemplate.httpRequestLoader.isServerError">
-                                      <table class="table tgrid">
-                                        <thead>
-                                          <tr>
-                                            <th class="text-center"></th>
-                                            <th class="text-center">Name</th>
-                                            <th class="text-center">Uploaded By</th>
-                                            <th class="text-center">Preview</th>
-                                          </tr>
-                                        </thead>
-                                        <tbody>
-                                          <ng-container *ngIf="reply.emailTemplatesPagination.totalRecords>0 && reply.emailTemplatesPagination.pageIndex==1 && reply.selectedEmailTemplateIdForEdit>0 && reply.showSelectedEmailTemplate ">
-                                            <tr (click)="setReplyEmailTemplate(reply.emailTemplate.id,reply,i)" [class.active]="reply.emailTemplate.id==reply.selectedEmailTemplateId">
-                                              <td>
-                                                <input type="radio" name="reply-email-template" [value]="reply.emailTemplate.id" id="reply-{{i}}-{{reply.emailTemplate.id}}"
-                                                  (click)="setReplyEmailTemplate(reply.emailTemplate.id,reply,i)" [checked]="reply.emailTemplate.id == reply.selectedEmailTemplateId">
-                                              </td>
-                                              <td *ngIf="reply.emailTemplate.name?.length>20" title="{{reply.emailTemplate.name}}">{{reply.emailTemplate.name|slice:0:20}}....</td>
-                                              <td *ngIf="reply.emailTemplate.name?.length<=20" title="{{reply.emailTemplate.name}}">{{reply.emailTemplate.name}}</td>
-                                              <td *ngIf="reply.emailTemplate.createdBy?.length>20" title="{{reply.emailTemplate.createdBy}}">{{reply.emailTemplate.createdBy|slice:0:20}}....</td>
-                                              <td *ngIf="reply.emailTemplate.createdBy?.length<=20" title="{{reply.emailTemplate.createdBy}}">{{reply.emailTemplate.createdBy}}</td>
-                                              <td>
-                                                <div class="actions-block">
-                                                  <a class="mr5" (click)="getEmailTemplatePreview(reply.emailTemplate)">
-                                                    <i class="fa fa-eye" title="Preview" data-original-title="Preview"></i>
-                                                  </a>
-                                                  <a class="hidden">
-                                                    <i class="fa fa-trash"></i>
-                                                  </a>
-                                                </div>
-                                              </td>
-                                            </tr>
-                                          </ng-container>
-                                          <ng-container *ngFor="let emailTemplate of reply.emailTemplatesPagination.pagedItems ;let e =index">
-                                            <tr (click)="setReplyEmailTemplate(emailTemplate.id,reply,i)" [class.active]="emailTemplate.id==reply.selectedEmailTemplateId"
-                                              *ngIf="reply.selectedEmailTemplateIdForEdit!=emailTemplate.id">
-                                              <!-- -->
-                                              <td>
-                                                <input type="radio" name="reply-email-template" [value]="emailTemplate.id" id="reply-{{i}}-{{emailTemplate.id}}" (click)="setReplyEmailTemplate(emailTemplate.id,reply,i)"
-                                                  [checked]="emailTemplate.id == reply.selectedEmailTemplateId">
-                                              </td>
-                                              <td *ngIf="emailTemplate.name?.length>20" title="{{emailTemplate.name}}">{{emailTemplate.name|slice:0:20}}....</td>
-                                              <td *ngIf="emailTemplate.name?.length<=20" title="{{emailTemplate.name}}">{{emailTemplate.name}}</td>
-                                              <td *ngIf="emailTemplate.createdBy?.length>20" title="{{emailTemplate.createdBy}}">{{emailTemplate.createdBy|slice:0:20}}....</td>
-                                              <td *ngIf="emailTemplate.createdBy?.length<=20" title="{{emailTemplate.createdBy}}">{{emailTemplate.createdBy}}</td>
-                                              <td>
-                                                <div class="actions-block">
-                                                  <a class="mr5" (click)="getEmailTemplatePreview(emailTemplate)">
-                                                    <i class="fa fa-eye" title="Preview" data-original-title="Preview"></i>
-                                                  </a>
-                                                  <a class="hidden">
-                                                    <i class="fa fa-trash"></i>
-                                                  </a>
-                                                </div>
-                                              </td>
-                                            </tr>
-                                          </ng-container>
-                                        </tbody>
-                                      </table>
-                                      <div *ngIf="reply.emailTemplatesPagination.totalRecords==0" class="alert alert-info">
-                                        <strong>No Email Templates found</strong>
-                                      </div>
-                                      <div *ngIf="reply.emailTemplatesPagination.totalRecords>0 && !campaignEmailTemplate.httpRequestLoader.isLoading && !campaignEmailTemplate.httpRequestLoader.isServerError"
-                                        style="float: left;">
-                                        <ul *ngIf="reply.emailTemplatesPagination.pager.pages && reply.emailTemplatesPagination.pager.pages.length" class="pagination">
-                                          <li [ngClass]="{disabled:reply.emailTemplatesPagination.pager.currentPage === 1}">
-                                            <a (click)="paginateEmailTemplateRows(1,reply)" [class.disabled]="reply.emailTemplatesPagination.pager.currentPage === 1">First</a>
-                                          </li>
-                                          <li [ngClass]="{disabled:reply.emailTemplatesPagination.pager.currentPage === 1}">
-                                            <a (click)="paginateEmailTemplateRows(reply.emailTemplatesPagination.pager.currentPage - 1,reply)" [class.disabled]="reply.emailTemplatesPagination.pager.currentPage === 1">Previous</a>
-                                          </li>
-                                          <li *ngFor="let page of reply.emailTemplatesPagination.pager.pages" [ngClass]="{active:reply.emailTemplatesPagination.pager.currentPage === page}">
-                                            <!-- [ngClass]="{active:reply.emailTemplatesPagination.pager.currentPage === page}" -->
-                                            <a (click)="paginateEmailTemplateRows(page,reply)" [class.disabled]="reply.emailTemplatesPagination.pager.currentPage === page">{{page}}</a>
-                                          </li>
-                                          <li [ngClass]="{disabled:reply.emailTemplatesPagination.pager.currentPage === reply.emailTemplatesPagination.pager.totalPages}">
-                                            <a (click)="paginateEmailTemplateRows(reply.emailTemplatesPagination.pager.currentPage + 1,reply)" [class.disabled]="reply.emailTemplatesPagination.pager.currentPage === reply.emailTemplatesPagination.pager.totalPages">Next</a>
-                                          </li>
-                                          <li [ngClass]="{disabled:reply.emailTemplatesPagination.pager.currentPage === reply.emailTemplatesPagination.pager.totalPages}">
-                                            <a (click)="paginateEmailTemplateRows(reply.emailTemplatesPagination.pager.totalPages,reply)" [class.disabled]="reply.emailTemplatesPagination.pager.currentPage === reply.emailTemplatesPagination.pager.totalPages">Last</a>
-                                          </li>
-                                        </ul>
-                                      </div>
-                                    </ng-container>
                                   </div>
                                 </div>
                               </div>
@@ -536,11 +416,11 @@
                               </h4>
                             </div>
                             <div class="col-xs-5" style="text-align:right">
-                              <label class="switch-choose"  style="color:#fff">Choose Template</label>
+                             <!--  <label class="switch-choose"  style="color:#fff">Choose Template</label>
                               <switch class="switch-choose" [status]="url.defaultTemplate" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
                                 [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch"
                                 [size]="callActionSwitch.size" (statusChange)="selectClickEmailBody($event,i,url)">
-                              </switch>
+                              </switch> -->
                               <button type="button" class="btn btn-danger button-blue" (click)="remove(url.divId,'url')">
                                 <span class="glyphicon glyphicon-trash"></span>
                               </button>
@@ -600,132 +480,13 @@
                                 </div>
 
                                 <div class="col-xs-8">
-                                  <div id="ck-editor-{{i}}" *ngIf="!url.defaultTemplate">
+                                  <div id="ck-editor-{{i}}">
                                     <label for="days" id="click-message-{{url.divId}}">Message
                                       <b style="color: red">*</b>
                                     </label>
                                     <div>
                                       <ckeditor [(ngModel)]="url.body" name="body"></ckeditor>
                                     </div>
-                                  </div>
-                                  <div id="url-email-template-{{i}}" *ngIf="url.defaultTemplate">
-                                    <div class="form-group" style="margin-left: 1px;margin-top: 8px;">
-                                      <label for="days" id="click-email-template-{{url.divId}}">Select Email Template
-                                        <b style="color: red">*</b>
-                                      </label>
-                                    </div>
-                                    <div class="portlet-title">
-                                      <div class="caption">
-                                        <div class="row">
-                                          <div class="col-xs-12 col-sm-8 text-left">
-                                            <ul class="mix-filter" *ngIf="!isOnlyPartner">
-                                              <li class="filter" (click)="filterClickTemplates('NONE',0,url)" [class.emailtemplate-selected]="0 == url.selectedEmailTemplateTypeIndex">All Email Templates</li>
-                                              <li class="filter" (click)="filterClickTemplates('BASIC',1,url)" *ngIf="campaignType=='REGULAR'" [class.emailtemplate-selected]="1 == url.selectedEmailTemplateTypeIndex">Basic Templates</li>
-                                              <li class="filter" (click)="filterClickTemplates('RICH',2,url)" *ngIf="campaignType=='REGULAR'" [class.emailtemplate-selected]="2 == url.selectedEmailTemplateTypeIndex">Rich Templates</li>
-                                              <li class="filter" (click)="filterClickTemplates('UPLOADED',3,url)" *ngIf="campaignType=='REGULAR'" [class.emailtemplate-selected]="3 == url.selectedEmailTemplateTypeIndex">Uploaded Regular Templates</li>
-                                              <li class="filter" (click)="filterClickTemplates('PARTNER',7,url)" [class.emailtemplate-selected]="7== url.selectedEmailTemplateTypeIndex">Partner Templates</li>
-                                            </ul>
-                                          </div>
-                                          <div class="col-xs-12 col-sm-4">
-                                            <div class="input-icon right" style="cursor:pointer">
-                                              <!-- <i class="icon-magnifier" style="cursor:pointer;font-size:18px;" (click)="searchClickEmailTemplate(url)"></i>
-                                              <input type="text" [(ngModel)]="url.emailTemplateSearchInput" [ngModelOptions]="{standalone: true}" class="form-control"
-                                                placeholder="search..."> -->
-                                                <input type="text" [(ngModel)]="url.emailTemplateSearchInput" [ngModelOptions]="{standalone: true}" class="form-control"
-                                                placeholder="Search for a Video" (keypress)="searchClickEmailTemplateKey($event.keyCode,url)">
-                                                <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="url.emailTemplateSearchInput" (click)="url.emailTemplateSearchInput=''"></button>
-                                                <button type="submit" class="search-box-item-click" (click)="searchClickEmailTemplate(url)"><i class="fa fa-search"></i></button>
-
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <app-loader [model]="campaignEmailTemplate.httpRequestLoader.isHorizontalCss" *ngIf="campaignEmailTemplate.httpRequestLoader.isLoading"></app-loader>
-                                    <app-error-pages *ngIf="campaignEmailTemplate.httpRequestLoader.isServerError"></app-error-pages>
-                                    <ng-container *ngIf="!campaignEmailTemplate.httpRequestLoader.isLoading && !campaignEmailTemplate.httpRequestLoader.isServerError">
-                                      <table class="table tgrid">
-                                        <thead>
-                                          <tr>
-                                            <th class="text-center"></th>
-                                            <th class="text-center">Name</th>
-                                            <th class="text-center">Uploaded By</th>
-                                            <th class="text-center">Preview</th>
-                                          </tr>
-                                        </thead>
-                                        <tbody>
-                                          <ng-container *ngIf="url.emailTemplatesPagination.totalRecords>0 && url.emailTemplatesPagination.pageIndex==1 && url.selectedEmailTemplateIdForEdit>0 && url.showSelectedEmailTemplate ">
-                                            <tr (click)="setClickEmailTemplate(url.emailTemplate.id,url,i)" [class.active]="url.emailTemplate.id==url.selectedEmailTemplateId">
-                                              <td>
-                                                <input type="radio" name="url-email-template" [value]="url.emailTemplate.id" id="url-{{i}}-{{url.emailTemplate.id}}" (click)="setClickEmailTemplate(url.emailTemplate.id,url,i)"
-                                                  [checked]="url.emailTemplate.id == url.selectedEmailTemplateId">
-                                              </td>
-                                              <td *ngIf="url.emailTemplate.name?.length>20" title="{{url.emailTemplate.name}}">{{url.emailTemplate.name|slice:0:20}}....</td>
-                                              <td *ngIf="url.emailTemplate.name?.length<=20" title="{{url.emailTemplate.name}}">{{url.emailTemplate.name}}</td>
-                                              <td *ngIf="url.emailTemplate.createdBy?.length>20" title="{{url.emailTemplate.createdBy}}">{{url.emailTemplate.createdBy|slice:0:20}}....</td>
-                                              <td *ngIf="url.emailTemplate.createdBy?.length<=20" title="{{url.emailTemplate.createdBy}}">{{url.emailTemplate.createdBy}}</td>
-                                              <td>
-                                                <div class="actions-block">
-                                                  <a class="mr5" (click)="getEmailTemplatePreview(url.emailTemplate)">
-                                                    <i class="fa fa-eye" title="Preview" data-original-title="Preview"></i>
-                                                  </a>
-                                                  <a class="hidden">
-                                                    <i class="fa fa-trash"></i>
-                                                  </a>
-                                                </div>
-                                              </td>
-                                            </tr>
-                                          </ng-container>
-                                          <ng-container *ngFor="let emailTemplate of url.emailTemplatesPagination.pagedItems ;let e =index">
-                                            <tr (click)="setClickEmailTemplate(emailTemplate.id,url,i)" [class.active]="emailTemplate.id==url.selectedEmailTemplateId"
-                                              *ngIf="url.selectedEmailTemplateIdForEdit!=emailTemplate.id">
-                                              <td>
-                                                <input type="radio" name="url-email-template" [value]="emailTemplate.id" id="url-{{i}}-{{emailTemplate.id}}" (click)="setClickEmailTemplate(emailTemplate.id,url,i)"
-                                                  [checked]="emailTemplate.id == url.selectedEmailTemplateId">
-                                              </td>
-                                              <td *ngIf="emailTemplate.name?.length>20" title="{{emailTemplate.name}}">{{emailTemplate.name|slice:0:20}}....</td>
-                                              <td *ngIf="emailTemplate.name?.length<=20" title="{{emailTemplate.name}}">{{emailTemplate.name}}</td>
-                                              <td *ngIf="emailTemplate.createdBy?.length>20" title="{{emailTemplate.createdBy}}">{{emailTemplate.createdBy|slice:0:20}}....</td>
-                                              <td *ngIf="emailTemplate.createdBy?.length<=20" title="{{emailTemplate.createdBy}}">{{emailTemplate.createdBy}}</td>
-                                              <td>
-                                                <div class="actions-block">
-                                                  <a class="mr5" (click)="getEmailTemplatePreview(emailTemplate)">
-                                                    <i class="fa fa-eye" title="Preview" data-original-title="Preview"></i>
-                                                  </a>
-                                                  <a class="hidden">
-                                                    <i class="fa fa-trash"></i>
-                                                  </a>
-                                                </div>
-                                              </td>
-                                            </tr>
-                                          </ng-container>
-                                        </tbody>
-                                      </table>
-                                      <div *ngIf="url.emailTemplatesPagination.totalRecords==0" class="alert alert-info">
-                                        <strong>No email templates found</strong>
-                                      </div>
-                                      <div *ngIf="url.emailTemplatesPagination.totalRecords>0 && !campaignEmailTemplate.httpRequestLoader.isLoading && !campaignEmailTemplate.httpRequestLoader.isServerError"
-                                        style="float: left;">
-                                        <ul *ngIf="url.emailTemplatesPagination.pager.pages && url.emailTemplatesPagination.pager.pages.length" class="pagination">
-                                          <li [ngClass]="{disabled:url.emailTemplatesPagination.pager.currentPage === 1}">
-                                            <a (click)="paginateClickEmailTemplateRows(1,url)" [class.disabled]="url.emailTemplatesPagination.pager.currentPage === 1">First</a>
-                                          </li>
-                                          <li [ngClass]="{disabled:url.emailTemplatesPagination.pager.currentPage === 1}">
-                                            <a (click)="paginateClickEmailTemplateRows(url.emailTemplatesPagination.pager.currentPage - 1,url)" [class.disabled]="url.emailTemplatesPagination.pager.currentPage === 1">Previous</a>
-                                          </li>
-                                          <li *ngFor="let page of url.emailTemplatesPagination.pager.pages" [ngClass]="{active:url.emailTemplatesPagination.pager.currentPage === page}">
-                                            <!-- [ngClass]="{active:url.emailTemplatesPagination.pager.currentPage === page}" -->
-                                            <a (click)="paginateClickEmailTemplateRows(page,url)" [class.disabled]="url.emailTemplatesPagination.pager.currentPage === page">{{page}}</a>
-                                          </li>
-                                          <li [ngClass]="{disabled:url.emailTemplatesPagination.pager.currentPage === url.emailTemplatesPagination.pager.totalPages}">
-                                            <a (click)="paginateClickEmailTemplateRows(url.emailTemplatesPagination.pager.currentPage + 1,url)" [class.disabled]="url.emailTemplatesPagination.pager.currentPage === url.emailTemplatesPagination.pager.totalPages">Next</a>
-                                          </li>
-                                          <li [ngClass]="{disabled:url.emailTemplatesPagination.pager.currentPage === url.emailTemplatesPagination.pager.totalPages}">
-                                            <a (click)="paginateClickEmailTemplateRows(url.emailTemplatesPagination.pager.totalPages,url)" [class.disabled]="url.emailTemplatesPagination.pager.currentPage === url.emailTemplatesPagination.pager.totalPages">Last</a>
-                                          </li>
-                                        </ul>
-                                      </div>
-                                    </ng-container>
                                   </div>
                                 </div>
                               </div>

@@ -172,7 +172,10 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     }
     checkPartnerAccessUrls(url:string,urlType:string):boolean{
       try{
-      if(this.authenticationService.user.hasCompany && !(url.includes('/home/videos') || url.includes('/home/campaigns/create') || url.includes('/home/campaigns/select') || url.includes('/home/emailtemplates') || url.includes('/home/emailtemplates') || url.includes('/home/partners/add') || url.includes('/home/partners/manage'))){
+      if(this.authenticationService.user.hasCompany || url.includes('home/campaigns/re-distribute-campaign')
+              && !(url.includes('/home/videos') || url.includes('/home/campaigns/create') || url.includes('/home/campaigns/select') 
+                      || url.includes('/home/emailtemplates') || url.includes('/home/emailtemplates') || url.includes('/home/partners/add')
+                      || url.includes('/home/partners/manage'))){
         return true;
       }else{
         return this.goToAccessDenied();
