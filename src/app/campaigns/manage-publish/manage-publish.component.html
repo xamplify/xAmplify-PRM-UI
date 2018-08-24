@@ -124,7 +124,7 @@
 														<i class="fa fa-line-chart"></i>
 													</a>
 													<a *ngIf=" (campaign.campaignType !== 'SOCIAL') && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor) && !campaign.nurtureCampaign"
-													 data-rel="fancybox-button" title="Copy campaign" class='mr5' (click)="openSaveAsModal(campaign.campaignId, campaign.campaignName)">
+													 data-rel="fancybox-button" title="Copy campaign" class='mr5' (click)="openSaveAsModal(campaign)">
 														<i class="fa fa-files-o"></i>
 													</a>
 												</ng-container>
@@ -202,7 +202,7 @@
                             </li>
                             <li>
                               <a *ngIf=" (campaign.campaignType !== 'SOCIAL') && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor) && !campaign.nurtureCampaign"
-                                data-rel="fancybox-button" title="Copy campaign" class='mr5' (click)="openSaveAsModal(campaign.campaignId, campaign.campaignName)">
+                                data-rel="fancybox-button" title="Copy campaign" class='mr5' (click)="openSaveAsModal(campaign)">
                                 <i class="fa fa-files-o"></i> Copy campaign
                               </a>
                             </li>
@@ -275,7 +275,7 @@
 														<i class="fa fa-line-chart"></i>
 													</a>
 													<a *ngIf=" (campaign.campaignType !== 'SOCIAL') && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor) && !campaign.nurtureCampaign"
-													 data-rel="fancybox-button" title="Copy campaign" class='mr5' (click)="openSaveAsModal(campaign.campaignId, campaign.campaignName)">
+													 data-rel="fancybox-button" title="Copy campaign" class='mr5' (click)="openSaveAsModal(campaign)">
 														<i class="fa fa-files-o"></i>
 													</a>
 													<!-- <a *ngIf="isOnlyPartner" data-rel="fancybox-button" (click)="openSaveAsModal(campaign.campaignId, campaign.campaignName)" title="Save As">
