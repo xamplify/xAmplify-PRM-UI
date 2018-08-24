@@ -43,12 +43,12 @@ export class DashboardStatsComponent implements OnInit {
   }
 
   navigateToManageContacts() {
-    if (this.authenticationService.isVendor()) {
+    if (this.authenticationService.isVendor() || this.authenticationService.isSuperAdmin()) {
       this.router.navigate(["/home/team/add-team"]);
-    } else if (this.authenticationService.isAddedByVendor) {
+    } else if (this.authenticationService.isAddedByVendor && !this.authenticationService.isSuperAdmin()) {
       // this.router.navigate(['/home/partners/manage']);
       this.router.navigate(["/home/team/add-team"]);
-    } else if (!this.authenticationService.isVendor()) {
+    } else if (!this.authenticationService.isVendor() && !this.authenticationService.isSuperAdmin()) {
       this.router.navigate(["/home/contacts/manage"]);
     }
   }

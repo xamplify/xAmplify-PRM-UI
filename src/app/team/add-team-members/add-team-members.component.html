@@ -1,16 +1,14 @@
 <style type="text/css">
-  a.disabled { pointer-events: none; cursor: not-allowed; }
+  .disabled { pointer-events: none; cursor: not-allowed; }
 </style>
-<div class="page-content" [style.background-color]="referenceService.pageContnetBgColor">
+<div class="page-content" [style.background-color]="referenceService.pageContnetBgColor" [class.ml0]="authenticationService.isSuperAdmin()">
 	<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 <!-- <app-loader [model]="httpRequestLoader." *ngIf="httpRequestLoader.isLoading"></app-loader> -->
 	<div class="page-bar">
 		<ul class="page-breadcrumb">
-			<li>
-				<i class="fa fa-home"></i>
-				<a [routerLink]="referenceService.homeRouter">Home</a>
-				<i	class="fa fa-angle-right"></i>
-			</li>
+			<li *ngIf="!authenticationService.isSuperAdmin()"><i class="fa fa-home"></i> <a [routerLink]="referenceService.homeRouter">Home</a>
+			<i class="fa fa-angle-right"></i></li>
+		    <li *ngIf="authenticationService.isSuperAdmin()"><i class="fa fa-home"></i><a [routerLink]="['/home/dashboard/admin-report']">Admin Report</a><i class="fa fa-angle-right"></i></li>
 			<li>
 				<a>Add/Manage Team Members</a>
 			</li>
@@ -37,7 +35,7 @@
 		</div>
 	<!-- BEGIN PAGE CONTENT-->
 	<div class="row">
-			<div class="clearfix">
+			<div class="clearfix" [class.disabled]="authenticationService.isSuperAdmin()">
 				<section class="clearfix">
 				<div class="col-xs-6 col-sm-3">
 						<div class="btn-xs btn-info fileinput-button btn-block rounded-0" style="overflow: hidden;position: relative;"  *ngIf="!isAddTeamMember && !isUploadCsv">
@@ -249,8 +247,8 @@
 							</thead>
 							<ng-container *ngIf="pagination.totalRecords>0 && teamMemberUi.emptyTable">
 							<tbody>
-							<ng-container *ngFor="let teamMember of teamMembersList;let i=index">
-							<tr id="list-team-member-{{i}}">
+							<ng-container *ngFor="let teamMember of teamMembersList;let i=index"> 
+							<tr id="list-team-member-{{i}}" [class.disabled]="authenticationService.isSuperAdmin()">
 								<!-- <td>
 									<i class="fa fa-user" aria-hidden="true"></i>{{teamMember.emailId | lowercase}}
 								</td> -->
@@ -358,7 +356,7 @@
 		                       </ul>
 					</div>
 					<!-- -----------End Of Pagination-------------- -->
-					<div class="pull-right" style="margin-top: 9px;" *ngIf="pagination.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+					<div class="pull-right" style="margin-top: 9px;" *ngIf="pagination.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError" [class.disabled]="authenticationService.isSuperAdmin()">
 						<button class="btn btn-primary" (click)="update()">Update</button>
 					</div>
 				</div>
