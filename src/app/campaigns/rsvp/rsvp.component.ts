@@ -18,6 +18,7 @@ export class RsvpComponent implements OnInit {
   eventcampaign: any;
   campaignRsvp: CampaignRsvp = new CampaignRsvp();
   responseMessage: string;
+  isRsvp = false;
 
   constructor(private route: ActivatedRoute, public campaignService: CampaignService, public processor:Processor) { }
 
@@ -26,6 +27,7 @@ export class RsvpComponent implements OnInit {
       .subscribe(
       response => {
         this.eventcampaign = response;
+        this.isRsvp = this.eventcampaign.campaignEventRsvps ? true: false;
         this.campaignRsvp.alias = this.alias;
         this.processor.remove(this.processor);
       },
@@ -43,6 +45,7 @@ export class RsvpComponent implements OnInit {
       response => {
         $('#myModal').modal('hide');
         this.responseMessage = 'Thank you for the RSVP';
+        this.getEventCampaign(this.alias);
       },
       error => {
         console.log(error);
