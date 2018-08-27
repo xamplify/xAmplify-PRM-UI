@@ -22,24 +22,6 @@ export class LeftsidebarComponent implements OnInit {
 
     updateLeftSideBar(location:Location){
         this.location = location;
-        const url = this.location.path();
-        if ( url.indexOf('dashboard') >= 0) {
-            this.baseRoute = 'dashboard';
-        } else if ( url.indexOf('videos') >= 0) {
-            this.baseRoute = 'videos';
-        } else if ( url.indexOf('contacts') >= 0) {
-            this.baseRoute = 'contacts';
-        } else if ( url.indexOf('partners') >= 0) {
-            this.baseRoute = 'partners';
-        } else if ( url.indexOf('emailtemplate') >= 0) {
-            this.baseRoute = 'emailtemplate';
-        } else if ( url.indexOf('campaigns') >= 0) {
-            this.baseRoute = 'campaigns';
-        } else if ( url.indexOf('team') >= 0) {
-            this.baseRoute = 'team';
-        } else if ( url.indexOf('upgrade') >= 0) {
-            this.baseRoute = 'upgrade';
-        }
         const roles = this.authService.getRoles();
         if (roles.indexOf(this.roleName.campaignRole) > -1 ||
             roles.indexOf(this.roleName.orgAdminRole) > -1 ||

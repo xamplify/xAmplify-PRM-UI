@@ -36,7 +36,10 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             this.authenticationService.user.roles =  JSON.parse( currentUser )['roles'];
             this.authenticationService.user.hasCompany =  JSON.parse( currentUser )['hasCompany'];
             this.getUserByUserName(userName);
-            if(url.indexOf("/dashboard")<0){
+            if(!this.authenticationService.user.hasCompany && url === "/home/dashboard") {
+              this.goToAccessDenied();
+            }
+            else if(url.indexOf("/dashboard")<0){
                return this.secureUrlByRole(url);
             }else{
                 if(url.indexOf("/myprofile")>-1){
@@ -173,7 +176,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     checkPartnerAccessUrls(url:string,urlType:string):boolean{
       try{
       if(this.authenticationService.user.hasCompany || url.includes('home/campaigns/re-distribute-campaign')
-              && !(url.includes('/home/videos') || url.includes('/home/campaigns/create') || url.includes('/home/campaigns/select') 
+              && !(url.includes('/home/videos') || url.includes('/home/campaigns/create') || url.includes('/home/campaigns/select')
                       || url.includes('/home/emailtemplates') || url.includes('/home/emailtemplates') || url.includes('/home/partners/add')
                       || url.includes('/home/partners/manage'))){
         return true;

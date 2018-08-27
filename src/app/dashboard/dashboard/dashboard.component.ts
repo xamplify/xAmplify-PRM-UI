@@ -561,7 +561,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     return obj.id === parseInt(campaignsArray[i], 10);
                 });
                 console.log(result);
-                this.launchedCampaignsChild.push(result[0]);
+                if(result[0]){ this.launchedCampaignsChild.push(result[0]); }
             }
             this.launchedCampaignsMaster = this.launchedCampaignsMaster.filter(x => this.launchedCampaignsChild.indexOf(x) < 0);
         }
@@ -856,7 +856,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     object["URL"] = 'Clicked on the video thumbnail';
                 }
             }
-            
+
 
             if (this.paginationType == 'clicked' || this.paginationType == 'watched') {
                 object["City"] = this.dashboardReport.downloadEmailLogList[i].city;

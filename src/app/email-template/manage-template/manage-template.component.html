@@ -19,7 +19,7 @@
 	</div>
 	<div class="row">
 		<div class="col-md-12">
-			<div class="portlet light clearfix">
+			<div class="portlet light clearfix" style="min-height: 644px;">
 				<div class="portlet-title"><!--  -->
 					<div class="row">
 						<div class="colxs-12 col-sm-9">
@@ -46,9 +46,6 @@
 							</ng-container>
 							<div class="portlet-input input-inline input-small">
 								<div class="input-icon right">
-									<!-- <i class="icon-magnifier"  (click)="searchTemplates()" style="cursor: pointer;"></i>
-									<input type="search"
-									 class="form-control" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"  placeholder="search..."> -->
                    <input type="text" class="form-control" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="eventHandler($event.keyCode)">
                    <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey=''"></button>
                    <button type="submit" class="search-box-item-click" (click)="searchTemplates()"><i class="fa fa-search"></i></button>
@@ -65,7 +62,7 @@
             <section [hidden]="!isListView">
 						<ng-container *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError ">
 						<div class="table-responsive">
-						<table class='table tgrid table-hover table-sm hidden-xs'>
+						<table class='table tgrid table-hover table-sm hidden-xs'  *ngIf="pagination.pagedItems?.length>0">
 							<thead>
 								<tr>
 									<th colspan="2" style="width: 45%">Email Template List</th>

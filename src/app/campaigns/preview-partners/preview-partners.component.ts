@@ -73,7 +73,7 @@ export class PreviewPartnersComponent implements OnInit {
         }else{
             this.partnerActionResponse = new CustomResponse( 'ERROR', "Atleast one partner should be active", true );
         }
-        
+
 
     }
 
@@ -96,7 +96,7 @@ export class PreviewPartnersComponent implements OnInit {
         this.sortOption.itemsSize = items;
         this.getAllFilteredResults(this.partnersPagination);
     }
-    
+
     getAllFilteredResults(pagination: Pagination) {
         pagination.pageIndex = 1;
         pagination.searchKey = this.sortOption.searchKey;
@@ -113,18 +113,18 @@ export class PreviewPartnersComponent implements OnInit {
         }
         this.listPartners(pagination);
     }
-    
+
     setPage(event:any){
         this.partnersPagination.pageIndex = event.page;
         this.listPartners(this.partnersPagination);
     }
-    
+
     sortBy(text:any){
         this.sortOption.campaignPartnersRemoveAccessDefaultSortOption = text;
         this.getAllFilteredResults(this.partnersPagination);
     }
-    
-    searchOnKeyPress(keyCode:any,value:string){if (keyCode === 13) {  this.search(); }}
+
+    searchOnKeyPress(keyCode:any){if (keyCode === 13) {  this.search(); }}
 
     search(){
         this.getAllFilteredResults(this.partnersPagination);
