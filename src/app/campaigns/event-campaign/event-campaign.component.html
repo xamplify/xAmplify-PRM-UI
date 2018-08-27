@@ -227,7 +227,7 @@
       <div class="col-xs-12 mb10">
         	<div class="boxes portlet light">
               <div class="portlet-title">
-                <h4 class="pull-left f-w-600">Select Invite Recipients<span style="color:red">*</span></h4>
+                <h4 class="pull-left f-w-600">Select<span *ngIf="isPreviewEvent">ed</span> Invite Recipients<span style="color:red">*</span></h4>
                  <section >
                     <div class="form-group m0 pull-right" [hidden]="true">
                       <h5 class="labal-css pr10 pull-left" style="font-size: 14px;">Partner Lists</h5>
@@ -239,14 +239,14 @@
                   </section>
               </div>
               <div class="portlet-body clearfix">
-              <div class="alert-danger alert-error" *ngIf="eventError.eventContactError">* Please select the contact list</div>
-              <section *ngIf="contactListsPagination.pagedItems?.length === 0">
+              <div class="alert-danger alert-error" *ngIf="eventError.eventContactError">* Please select the <span *ngIf="!authenticationService.isOnlyPartner();else listHeader">contact</span><ng-template #listHeader>partner</ng-template> list</div>
+              <section *ngIf="(isPreviewEvent && (userListIds?.length==0 && parternUserListIds?.length==0)) || contactListsPagination.pagedItems?.length === 0;else contactList">
                 <div class='alert alert-info' role='alert'>
-                  <h4 class='m0'>You have not added any contact lists yet. Please add at least one list to your account</h4>
+                  <h4 class='m0'>You have not selected any <span *ngIf="authenticationService.isOnlyPartner();else listPartner">contact</span><ng-template #listPartner>partner</ng-template> lists yet.</h4>
                 </div>
-                <a class='btn btn-info' style="color: #fff;" [routerLink]="['/home/contacts/add']">Add Contacts</a>
+                <!-- <a class='btn btn-info' style="color: #fff;" [routerLink]="['/home/contacts/add']">Add Contacts</a> -->
               </section>
-              <section *ngIf="contactListsPagination.pagedItems?.length !== 0">
+              <ng-template #contactList>
                 <div class="table-responsive">
                   <table class="table tgrid" id='contact-list-table' 	[ngClass]="{'has-error': eventError.eventContactError}">
                     <thead>
@@ -260,7 +260,7 @@
                     <tbody>
                       <tr *ngFor="let contactList of contactListsPagination.pagedItems; let i=index;">
                         <td class='text-center m0'>
-                          <input *ngIf="!isPartnerUserList" [attr.disabled]="isPreviewEvent? '' : null" type='checkbox' id='{{contactList.id}}' [checked]="userListIds.indexOf(contactList.id)>-1" (click)="highlightRow(contactList.id)">
+                          <input *ngIf="!isPartnerUserList " [attr.disabled]="isPreviewEvent? '' : null" type='checkbox' id='{{contactList.id}}' [checked]="userListIds.indexOf(contactList.id)>-1" (click)="highlightRow(contactList.id)">
                           <input *ngIf="isPartnerUserList" [attr.disabled]="isPreviewEvent? '' : null" type='checkbox' id='{{contactList.id}}' [checked]="parternUserListIds.indexOf(contactList.id)>-1" (click)="partnerHighlightRow(contactList.id)">
                         </td>
                         <td>
@@ -284,14 +284,14 @@
                 </div>
                 <app-pagination style="position: relative;left: -9px;" [pagination]="contactListsPagination" [type]="'contactlists'" (notifyParent)="setPage($event)"
                  (notifyParentDropDown)="paginationDropDown($event)"></app-pagination>
-              </section>
+              </ng-template>
               </div>
             </div>
         </div>
         <div class="col-xs-12 mb10">
           	<div class="boxes portlet light">
                 <div class="portlet-title">
-                  <h4 class="pull-left f-w-600">Pick an Email Template</h4>
+                  <h4 class="pull-left f-w-600">Select<span *ngIf="isPreviewEvent || reDistributeEvent">ed</span> an Email Template</h4>
                 </div>
                 <div class="portlet-body clearfix">
                   <div class="table-responsive" *ngIf="false">

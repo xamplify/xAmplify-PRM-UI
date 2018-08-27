@@ -183,6 +183,14 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
 
           }
         }
+
+        if(this.authenticationService.isOnlyPartner()){
+          const emailTemplates:any = [];
+          this.emailTemplates.forEach((element,index)=>{
+            if(element.id === this.eventCampaign.emailTemplate.id){ emailTemplates.push(element);}
+          });
+          this.emailTemplates = emailTemplates;
+        }
         this.loadContactLists(this.contactListsPagination);
       }
     );
@@ -290,12 +298,27 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
       (data: any) => {
         contactListsPagination.totalRecords = data.totalRecords;
         contactListsPagination = this.pagerService.getPagedItems(contactListsPagination, data.listOfUserLists);
+        if(this.isPreviewEvent && this.authenticationService.isOnlyPartner()){
+          const contactsAll:any = [];
+          this.contactListsPagination.pagedItems.forEach((element, index) => {
+              if(this.authenticationService.isOnlyPartner() && element.id ===this.userListIds[index]) {
+                contactsAll.push(this.contactListsPagination.pagedItems[index]);
+              }
+              if(!this.authenticationService.isOnlyPartner() && element.id ===this.parternUserListIds[index]) {
+                contactsAll.push(this.contactListsPagination.pagedItems[index]);
+              }
+            });
+            this.contactListsPagination.pagedItems = contactsAll;
+           }
       },
       (error: any) => {
         this.logger.error(error);
       },
-      () => this.logger.info('MangeContactsComponent loadContactLists() finished')
-      );
+      () => {
+        this.logger.info('event campaign page loadContactLists() finished');
+
+        }
+     );
   }
 
   /*****************LOAD CONTACTLISTS WITH PAGINATION END *****************/
