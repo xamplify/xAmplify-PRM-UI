@@ -27,7 +27,7 @@ export class RsvpComponent implements OnInit {
       .subscribe(
       response => {
         this.eventcampaign = response;
-        this.isRsvp = this.eventcampaign.campaignEventRsvps ? true: false;
+        this.isRsvp = this.eventcampaign.campaignEventRsvps.length>0 ? true: false;
         this.campaignRsvp.alias = this.alias;
         this.processor.remove(this.processor);
       },

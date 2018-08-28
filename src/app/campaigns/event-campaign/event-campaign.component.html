@@ -294,22 +294,6 @@
                   <h4 class="pull-left f-w-600">Select<span *ngIf="isPreviewEvent || reDistributeEvent">ed</span> an Email Template</h4>
                 </div>
                 <div class="portlet-body clearfix">
-                  <div class="table-responsive" *ngIf="false">
-                    <table class="table table-striped table-condensed table-bordered">
-                    <tr>
-                      <th>Select</th>
-                      <th>Email Template</th>
-                      <th>Preview</th>
-                    </tr>
-                    <ng-container *ngFor="let emailTemplate of emailTemplates">
-                    <tr>
-                      <td class="text-center"><input type="radio" [attr.disabled]="isPreviewEvent? '' : null" value="emailTemplate.id" [checked]="eventCampaign.emailTemplate.id === emailTemplate.id" (change)="eventCampaign.emailTemplate = emailTemplate"></td>
-                      <td>{{emailTemplate.name}}</td>
-                      <td class="text-center"><a><i class="fa fa-eye" aria-hidden="true" (click)="previewEventCampaignEmailTemplate(emailTemplate.id);"></i></a> </td>
-                    </tr>
-                    </ng-container>
-                    </table>
-                  </div>
                       <section  style="min-height: 250px;">
                         <div class="col-xs-6 col-sm-3" *ngFor="let emailTemplate of emailTemplates ;let i =index" >
                         <div class="grid-box p0">
