@@ -1,4 +1,5 @@
 <div class="page-content ml0">
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 	<div class="page-bar"> 
 		<ul class="page-breadcrumb">
 			<li>
@@ -13,7 +14,8 @@
 	</div>
 	<div class="row">
 		<div class="col-xs-12" *ngIf="!detailsTielsView">
-			<div class="page-bar">
+		 <app-list-loader [rowsCount]="12" *ngIf="isListLoading"></app-list-loader>
+			<div class="page-bar"  *ngIf="!isListLoading">
 				<div class="table-responsive">
 					<table class='table tgrid'>
 						<thead>

@@ -5,6 +5,7 @@ import { Pagination } from '../../core/models/pagination';
 import { PagerService } from '../../core/services/pager.service';
 import { ReferenceService } from '../../core/services/reference.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
+import { HttpRequestLoader } from '../../core/models/http-request-loader';
 
 declare var swal:any;
 
@@ -12,16 +13,19 @@ declare var swal:any;
   selector: 'app-admin-report',
   templateUrl: './admin-report.component.html',
   styleUrls: ['./admin-report.component.css'],
-  providers: [Pagination]
+  providers: [Pagination, HttpRequestLoader]
 })
 
 export class AdminReportComponent implements OnInit {
     dashboardReport: DashboardReport = new DashboardReport();
+    public httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
     totalRecords: number;
     vendorsDetails: any;
     selectedVendorsDetails: any;
     detailsTielsView = false;
     selectedVendorRow: any;
+    loading = false;
+    isListLoading = false;
     
   constructor( public dashboardService: DashboardService, public pagination: Pagination , public pagerService: PagerService, public referenceService: ReferenceService,
 public authenticationService: AuthenticationService) {
@@ -31,6 +35,7 @@ public authenticationService: AuthenticationService) {
   
   getVendorsDetails() {
       try {
+          this.isListLoading = true;
           this.dashboardService.getVendorsList( this.pagination )
               .subscribe(
               ( data: any ) => {
@@ -39,6 +44,7 @@ public authenticationService: AuthenticationService) {
                   this.vendorsDetails = data.data;
                   this.pagination.totalRecords = this.totalRecords;
                   this.pagination = this.pagerService.getPagedItems( this.pagination, this.vendorsDetails );
+                  this.isListLoading = false;
               },
               error => console.error( error ),
               () => console.info( "vendors reports() finished" )
@@ -66,8 +72,10 @@ public authenticationService: AuthenticationService) {
   
   selectedVendorDetails(selectedVendor:any){
       try {
+          this.loading = true;
           if(!selectedVendor.companyId){
-        	  swal("Vedor has signed up but not yet created company information.");
+              this.loading = false;
+              swal("Vedor has signed up but not yet created company information.");
           }else{
     	  this.selectedVendorRow = selectedVendor;
           this.authenticationService.selectedVendorId = selectedVendor.id;
@@ -77,9 +85,13 @@ public authenticationService: AuthenticationService) {
                   console.log( data );
                   this.selectedVendorsDetails = data;
                  this.detailsTielsView = true;
+                 this.loading = false;
               },
               error => console.error( error ),
-              () => console.info( "selectedVendors reports() finished" )
+              () => {
+                  this.loading = false;
+                  console.info( "selectedVendors reports() finished" )
+                  }
               )
           }
       } catch ( error ) {
