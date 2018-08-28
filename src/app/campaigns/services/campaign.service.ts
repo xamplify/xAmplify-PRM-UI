@@ -277,6 +277,20 @@ export class CampaignService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+    
+    getRedistributionEventCampaignDetailAnalytics(campaignId: number, resposeType: any, userId: number) {
+        const url = this.URL + 'campaign/' + campaignId + '/' + userId + '/rsvp-user-details/'+ resposeType +'?access_token=' + this.authenticationService.access_token;
+        return this.http.get(url)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    
+    getRestributionEventCampaignAnalytics(campaignId: number, userId: number) {
+        const url = this.URL + 'campaign/' + campaignId + "/" + userId + '/rsvp-details?access_token=' + this.authenticationService.access_token;
+        return this.http.get(url)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 
     getCampaignPartnerByCampaignIdAndUserId(campaignId: number, userId: number) {
         return this.http.get(this.URL + `campaign/partner-campaign/${campaignId}/${userId}?access_token=${this.authenticationService.access_token}`)

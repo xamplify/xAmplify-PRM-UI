@@ -458,6 +458,84 @@
 </ng-template>
 </div>
 
+
+
+<section *ngIf="campaignType === 'EVENT'">
+<div id="timeline-view" class="page-content" *ngIf="isTimeLineView">
+	<div class="page-bar" style="min-height: 572px;">
+		<a (click)="resetTopNavBarValue()" class="pull-right close-circle" style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;"> <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;"
+			aria-hidden="true"></span></a>
+	<div class="col-xs-12 col-sm-5 p-5x">
+		<div class="p-5x">
+			<div class="portlet light" style="min-height: 118px;position: relative;top: 42px;">
+				<div class="portlet-body clearfix">
+					<div class="col-xs-12">
+						<span class="btn btn-sm btn-primary pull-right">{{campaignType}} CAMPAIGN {{isPartnerCampaign}}</span>
+						<h4>{{campaign.campaignName}}</h4>
+						<h5 class="text-info mb10">{{campaign.launchTime | date: 'fullDate'}}</h5>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+		<div class="col-xs-12 col-sm-7 p-5x emails-info" [hidden]="mainLoader" >
+		<div class="p-5x" class="col-xs-3">
+			<button class="portlet light color1-invert crcb" (click)="getRsvpDetails('YES','reDistribution')" data-toggle="modal" data-target="#rsvpDetailsModal" [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
+			 [disabled]="campaignReport.redistributionTotalYesCount < 1 ||  !isPartnerEnabledAnalyticsAccess">
+				<div class="portlet-body text-center">
+						<i class="fa fa-check-circle"></i>
+					<h1>
+						<b>{{this.campaignReport.redistributionTotalYesCount}}</b>
+					</h1>
+					<h5>Total Says Yes</h5>
+				</div>
+			</button>
+		</div>
+		<div class="p-5x" [hidden]="mainLoader"class="col-xs-3">
+			<button class="portlet light color1-invert crcb" data-toggle="modal" data-target="#rsvpDetailsModal" (click)="getRsvpDetails('NO', 'reDistribution')"  [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
+			 [disabled]="campaignReport.redistributionTotalNoCount < 1 || !isPartnerEnabledAnalyticsAccess">
+				<div class="portlet-body text-center">
+						<i class="fa fa-times-circle"></i>
+					<h1>
+						<b>{{campaignReport.redistributionTotalNoCount}}</b>
+					</h1>
+					<h5>Total Says No</h5>
+				</div>
+			</button>
+		</div>
+		<div class="p-5x" [hidden]="mainLoader"  class="col-xs-3">
+			<button class="portlet light color1-invert crcb" data-toggle="modal" data-target="#rsvpDetailsModal" (click)="getRsvpDetails('MAYBE','reDistribution')"  [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
+			 [disabled]="campaignReport.redistributionTotalMayBeCount < 1 || !isPartnerEnabledAnalyticsAccess">
+				<div class="portlet-body text-center">
+						<i class="fa fa-minus-circle"></i>
+					<h1>
+						<b>{{campaignReport.redistributionTotalMayBeCount}}</b>
+					</h1>
+					<h5>Total Says MayBe</h5>
+				</div>
+			</button>
+		</div>
+		<div [hidden]="mainLoader"  class="col-xs-3 p-5x">
+			<button class="portlet light color1-invert crcb" data-toggle="modal" data-target="#rsvpDetailsModal" (click)="getRsvpDetails('NOTYET', 'reDistribution')"  [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
+			 [disabled]="campaignReport.redistributionTotalNotYetRespondedCount < 1 || !isPartnerEnabledAnalyticsAccess">
+				<div class="portlet-body text-center">
+						<i class="fa fa-eye-slash"></i>
+					<h1>
+						<b>{{campaignReport.redistributionTotalNotYetRespondedCount}}</b>
+					</h1>
+					<h5>Not yet responded</h5>
+				</div>
+			</button>
+		</div>
+	</div>
+
+	</div>
+</div>
+</section>
+
+
+
+
 <section *ngIf="campaignType !== 'EVENT'">
 <div id="timeline-view" class="page-content" *ngIf="isTimeLineView">
 	<div class="page-bar">

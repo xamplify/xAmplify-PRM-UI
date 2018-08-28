@@ -81,7 +81,9 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   loading =false;
   mainLoader = false;
   logListName = "";
+  selectedRsvpPartnerId: number = 0;
   rsvpDetailsList: any;
+  reDistributionRsvpDetails: any;
   rsvpResposeType = '';
   httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
   sortByDropDown = [
@@ -509,6 +511,9 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     this.loading = true;
      this.listEmailLogsByCampaignAndUser(campaignViews.campaignId, campaignViews.userId);
     this.getTotalTimeSpentOfCampaigns(campaignViews.userId, campaignViews.campaignId);
+    if(this.campaignType==='EVENT'){
+        this.redistributionCampaignsDetails(campaignViews);
+    }
     this.selectedRow = campaignViews;
     this.isTimeLineView = !this.isTimeLineView;
     if (!this.barChartCliked) {
@@ -648,17 +653,54 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
           }
         }
         
-  getRsvpDetails(responseType: any){
+  getRsvpDetails(responseType: any, detailType:any){
       try{
           this.loading = true;
           this.downloadTypeName = 'rsvp';
           this.rsvpResposeType = responseType;
-            this.campaignService.getEventCampaignDetailAnalytics( this.campaign.campaignId, responseType )
+            
+          if(detailType === 'reDistribution'){
+              this.campaignService.getRedistributionEventCampaignDetailAnalytics( this.campaign.campaignId, responseType, this.selectedRsvpPartnerId )
+              .subscribe(
+              data => {
+                console.log(data);
+                this.loading = false;
+                this.rsvpDetailsList = data;
+              },
+              error => this.xtremandLogger.error(error),
+              () => { }
+              ) 
+          }else{
+          this.campaignService.getEventCampaignDetailAnalytics( this.campaign.campaignId, responseType )
             .subscribe(
             data => {
               console.log(data);
               this.loading = false;
               this.rsvpDetailsList = data;
+            },
+            error => this.xtremandLogger.error(error),
+            () => { }
+            )
+          }
+          }catch(error){
+            this.xtremandLogger.error('error'+error)
+          }
+  }
+  
+  redistributionCampaignsDetails(campaignViews:any){
+      try{
+          this.loading = true;
+          this.selectedRsvpPartnerId = campaignViews.userId;
+         // this.downloadTypeName = 'rsvp';
+            this.campaignService.getRestributionEventCampaignAnalytics( this.campaign.campaignId, campaignViews.userId )
+            .subscribe(
+            data => {
+              console.log(data);
+              this.campaignReport.redistributionTotalYesCount = data.YES;
+              this.campaignReport.redistributionTotalMayBeCount = data.MAYBE;
+              this.campaignReport.redistributionTotalNoCount = data.NO;
+              this.campaignReport.redistributionTotalNotYetRespondedCount = data.notYetResponded;
+              this.loading = false;
             },
             error => this.xtremandLogger.error(error),
             () => { }
