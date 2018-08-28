@@ -10,8 +10,10 @@
           <i class="fa fa-angle-right"></i>
         </li>
         <li>
-        <a *ngIf="referenceService.isRedistributionCampaignPage" [routerLink]="'/home/campaigns/partner/all'" (click)="referenceService.isRedistributionCampaignPage = false">Campaigns shared by Vendors</a>
-           <a *ngIf="!referenceService.isRedistributionCampaignPage" [routerLink]="referenceService.manageCampaignsRouter">Manage Campaigns</a>
+          <a *ngIf="referenceService.isRedistributionCampaignPage" [routerLink]="'/home/campaigns/partner/all'" (click)="referenceService.isRedistributionCampaignPage = false">Campaigns
+            shared by Vendors</a>
+          <a *ngIf="!referenceService.isRedistributionCampaignPage" [routerLink]="referenceService.manageCampaignsRouter">Manage
+            Campaigns</a>
           <i class="fa fa-angle-right"></i>
         </li>
         <li>
@@ -25,7 +27,8 @@
         <a *ngIf="!referenceService.isRedistributionCampaignPage" class="close-circle pull-right" data-dismiss="modal" [routerLink]="referenceService.manageCampaignsRouter">
           <i class="fa fa-times"></i>
         </a>
-         <a *ngIf="referenceService.isRedistributionCampaignPage" class="close-circle pull-right" data-dismiss="modal" [routerLink]="'/home/campaigns/partner/all'" (click)="referenceService.isRedistributionCampaignPage = false">
+        <a *ngIf="referenceService.isRedistributionCampaignPage" class="close-circle pull-right" data-dismiss="modal" [routerLink]="'/home/campaigns/partner/all'"
+          (click)="referenceService.isRedistributionCampaignPage = false">
           <i class="fa fa-times"></i>
         </a>
       </div>
@@ -132,8 +135,8 @@
                     <div class="email-options-checkbox-group email-options-notify">
                       <div class="email-options-checkbox clearfix">
                         <div class="col-sm-4 ui-switch-custom-div">
-                          <switch [disabled]="callActionSwitch.disabled" [status]="campaign.dataShare" [onText]="callActionSwitch.onTextValue"
-                            [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch"
+                          <switch [disabled]="callActionSwitch.disabled" [status]="campaign.dataShare" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+                            [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch"
                             [size]="callActionSwitch.size" (statusChange)="shareAnalytics($event)">
                           </switch>
                         </div>
@@ -145,24 +148,23 @@
                           </label>
                         </div>
                       </div>
-                      
-                       <section *ngIf="campaign.dataShare" style="margin:14px 0 0 14px">
-                       <label class="control-label" style="cursor:pointer">
-											<input name="options" type="radio"
-											 [checked]="!campaign.detailedAnalyticsShared" style="cursor:pointer">
-											 <strong>Active participants</strong>
-										</label>
-							<label class="radio-inline" style="cursor:pointer; padding-left:30px; top: -2px;">
-													<input name="options" type="radio" [checked]="campaign.detailedAnalyticsShared" style="cursor:pointer" >
-													<strong>All participants</strong>
-												</label>
-						<label>
-                            <span style="cursor: pointer;color: #54a7e9;position: relative; top: 1px;left: 6px;" title="Active participants - share only the recipients that have interacted with your campaign &#013;All participants - share all campaign recipient data">
-                              <i class="fa fa-question-circle" style="font-size: 18px;"></i>
-                            </span>
-                          </label>
-					  </section>
-                      
+
+                      <section *ngIf="campaign.dataShare" style="margin:14px 0 0 14px">
+                        <label class="control-label" style="cursor:pointer">
+                          <input name="options" type="radio" [checked]="!campaign.detailedAnalyticsShared" style="cursor:pointer">
+                          <strong>Active participants</strong>
+                        </label>
+                        <label class="radio-inline" style="cursor:pointer; padding-left:30px; top: -2px;">
+                          <input name="options" type="radio" [checked]="campaign.detailedAnalyticsShared" style="cursor:pointer">
+                          <strong>All participants</strong>
+                        </label>
+                        <label>
+                          <span style="cursor: pointer;color: #54a7e9;position: relative; top: 1px;left: 6px;" title="Active participants - share only the recipients that have interacted with your campaign &#013;All participants - share all campaign recipient data">
+                            <i class="fa fa-question-circle" style="font-size: 18px;"></i>
+                          </span>
+                        </label>
+                      </section>
+
                     </div>
                   </div>
                 </div>
@@ -213,17 +215,18 @@
                 </div>
                 <div class="col-xs-9">
                   <a>
-                    <h4 class="ellipsis mt5 mb5 f-w-600" title="{{campaign.emailTemplate.name}}">{{campaign.emailTemplate.name | slice:0:25}}
+                    <h4 class="ellipsis mt5 mb5 f-w-600" title="{{campaign.emailTemplate.name}}">{{campaign.emailTemplate.name
+                      | slice:0:25}}
                       <span *ngIf="campaign.emailTemplate.name?.length>25">...</span>
                     </h4>
-                     <h5 class="m0" *ngIf="campaign.emailTemplate.type=='PARTNER'" title="{{campaign.emailTemplate.vendorName}}">
-                   		Shared By {{campaign.emailTemplate.vendorName | slice:0:15}}
-                   		<span *ngIf="campaign.emailTemplate.vendorName?.length>15">...</span>
-                   	</h5>
-                   	<h5 class="m0" *ngIf="campaign.emailTemplate.type!='PARTNER'" title="{{campaign.emailTemplate.createdBy}}">
-                   		Created By {{campaign.emailTemplate.createdBy | slice:0:15}}
-                   		<span *ngIf="campaign.emailTemplate.createdBy?.length>15">...</span>
-                   	</h5>
+                    <h5 class="m0" *ngIf="campaign.emailTemplate.type.toLocaleString()=='PARTNER'" title="{{campaign.emailTemplate.vendorName}}">
+                      Shared By {{campaign.emailTemplate.vendorName | slice:0:15}}
+                      <span *ngIf="campaign.emailTemplate.vendorName?.length>15">...</span>
+                    </h5>
+                    <h5 class="m0" *ngIf="campaign.emailTemplate.type.toLocaleString() !='PARTNER'" title="{{campaign.emailTemplate.createdBy}}">
+                      Created By {{campaign.emailTemplate.createdBy | slice:0:15}}
+                      <span *ngIf="campaign.emailTemplate.createdBy?.length>15">...</span>
+                    </h5>
                   </a>
                 </div>
               </div>
@@ -236,12 +239,14 @@
                 </div>
                 <div class="col-xs-8" style="top: 1em;">
                   <h4 class="pull-left" *ngIf="selectedUserlistIds.length==0">No {{contactType}} list is selected</h4>
-                  <h4 class="pull-left" *ngIf="selectedUserlistIds.length==1">{{selectedUserlistIds.length}} {{contactType}} list is selected</h4>
-                  <h4 class="pull-left" *ngIf="selectedUserlistIds.length>1">{{selectedUserlistIds.length}} {{contactType}} lists are selected</h4>
+                  <h4 class="pull-left" *ngIf="selectedUserlistIds.length==1">{{selectedUserlistIds.length}} {{contactType}}
+                    list is selected</h4>
+                  <h4 class="pull-left" *ngIf="selectedUserlistIds.length>1">{{selectedUserlistIds.length}} {{contactType}}
+                    lists are selected</h4>
                 </div>
               </div>
               <div id="campaign-contact-list" *ngIf="selectedUserlistIds.length>0 && !referenceService.isRedistributionCampaignPage">
-                <div >
+                <div>
                   <div class="row pb10" id="user_list_table_view">
                     <!-- <app-loader [model]="campaignContact.httpRequestLoader.isHorizontalCss" *ngIf="campaignContact.httpRequestLoader.isLoading"></app-loader> -->
                     <app-list-loader *ngIf="campaignContact.httpRequestLoader.isLoading" [rowsCount]="3"></app-list-loader>
@@ -272,7 +277,7 @@
                               <tr>
                                 <th class="text-center">List Name</th>
                                 <th style="text-align: center;" *ngIf="showContactType">Type</th>
-                                 <th class="text-center">Date Uploaded</th>
+                                <th class="text-center">Date Uploaded</th>
                                 <th class="text-center">Preview</th>
                               </tr>
                             </thead>
@@ -286,14 +291,14 @@
                                   {{contacts.name}}
                                 </td>
                                 <td *ngIf="showContactType">
-									<ng-container *ngIf="contacts.partnerUserList">
-										Partners
-									</ng-container>
-									<ng-container *ngIf="!contacts.partnerUserList">
-										Contacts
-									</ng-container>
-								</td>
-								 <td class="text-center sorting_1">
+                                  <ng-container *ngIf="contacts.partnerUserList">
+                                    Partners
+                                  </ng-container>
+                                  <ng-container *ngIf="!contacts.partnerUserList">
+                                    Contacts
+                                  </ng-container>
+                                </td>
+                                <td class="text-center sorting_1">
                                   <app-timestamp [isOnlyDate]="true" [dateAndTime]="contacts.createdDate"> </app-timestamp>
 
                                 </td>
@@ -325,7 +330,8 @@
               <div class="row">
                 <div class="col-xs-6"></div>
                 <div class="col-xs-6 text-right pb10" style="margin-top: 10px;">
-                  <h5 class="control-label font-purple-intense pr10" style="display: inline-block;" *ngIf="campaign.nurtureCampaign">Enable work flow</h5>
+                  <h5 class="control-label font-purple-intense pr10" style="display: inline-block;" *ngIf="campaign.nurtureCampaign">Enable
+                    work flow</h5>
                   <switch *ngIf="campaign.nurtureCampaign" [disabled]="callActionSwitch.disabled" [status]="enableWorkFlow" [onText]="callActionSwitch.onTextValue"
                     [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch"
                     [size]="callActionSwitch.size" (statusChange)="enableWorkFlow = !enableWorkFlow">
@@ -378,11 +384,14 @@
                                     <select class="form-control" name="actionId" [(ngModel)]="reply.actionId" disabled="disabled">
                                       <option [value]="0" [selected]="reply.actionId ==0">Email is not opened</option>
                                       <option [value]="13" [selected]="reply.actionId==13">Email is opened</option>
-                                      <option [value]="16" [selected]="reply.actionId ==16">Send immediately after email is opened</option>
-                                      <option [value]="22" [selected]="reply.actionId ==22">Send if partner email is not used</option>
+                                      <option [value]="16" [selected]="reply.actionId ==16">Send immediately after email
+                                        is opened</option>
+                                      <option [value]="22" [selected]="reply.actionId ==22">Send if partner email is not
+                                        used</option>
                                       <ng-container *ngIf="campaignType=='VIDEO'">
                                         <option [value]="1" [selected]="reply.actionId==1"> Video is played</option>
-                                        <option [value]="17" [selected]="reply.actionId==17"> Send immediately after video is played</option>
+                                        <option [value]="17" [selected]="reply.actionId==17"> Send immediately after video
+                                          is played</option>
                                         <option [value]="18" [selected]="reply.actionId==18">Video is not played</option>
                                         <option [value]="23" [selected]="reply.actionId ==23"> Video is not redistributed</option>
                                       </ng-container>
@@ -390,13 +399,15 @@
                                   </div>
                                   <div *ngIf="reply.actionId!=16 && reply.actionId!=17 && reply.actionId!=18">
                                     <div class="col-xs-12" style="margin-top:6px;">
-                                      <label for="days" *ngIf="reply.actionId==22 || reply.actionId==23 " id="reply-days-{{reply.divId}}">Reply In X Days
+                                      <label for="days" *ngIf="reply.actionId==22 || reply.actionId==23 " id="reply-days-{{reply.divId}}">Reply
+                                        In X Days
                                         <b style="color: red">*</b>
                                         <font>
                                           <b>(Minimum 1 Day)</b>
                                         </font>
                                       </label>
-                                      <label for="days" *ngIf="reply.actionId!=22 && reply.actionId!=23" id="reply-days-{{reply.divId}}">Reply In X Days
+                                      <label for="days" *ngIf="reply.actionId!=22 && reply.actionId!=23" id="reply-days-{{reply.divId}}">Reply
+                                        In X Days
                                         <b style="color: red">*</b>
                                       </label>
                                       <input disabled="disabled" type="number" class="form-control" name="days" placeholder="Days" [(ngModel)]="reply.replyInDays"
@@ -641,7 +652,7 @@
               <div>
                 <div class="btn-group btn-group-justified">
                   <label class="btn btn-primary" style="border: 1px solid #fff;">
-                    <input disabled="disabled" checked="checked" type="radio" class="text-center" style=" margin-right:1.5em; " /> {{campaign.campaignScheduleType}}
+                    <input disabled="disabled" checked="checked" type="radio" class="text-center" style=" margin-right:1.5em; " />                    {{campaign.campaignScheduleType}}
                   </label>
                 </div>
                 <div class="col-md-12" style="margin-left: -17px;margin-top: 12px;" *ngIf="campaign.campaignScheduleType=='SCHEDULE'">
@@ -757,25 +768,9 @@
       </div>
       <div class="modal-body" id="users-modal-body">
       </div>
-      <ul *ngIf="contactsUsersPagination.pager.pages && contactsUsersPagination.pager.pages.length" class="pagination pull-left"
-        style="margin-left: 10px;">
-        <li [ngClass]="{disabled:contactsUsersPagination.pager.currentPage === 1}">
-          <a (click)="setPage(1)">First</a>
-        </li>
-        <li [ngClass]="{disabled:contactsUsersPagination.pager.currentPage === 1}">
-          <a (click)="setPage(contactsUsersPagination.pager.currentPage - 1)">Previous</a>
-        </li>
-        <li *ngFor="let page of contactsUsersPagination.pager.pages" [ngClass]="{active:contactsUsersPagination.pager.currentPage === page}">
-          <a (click)="setPage(page)" [class.disabled]="contactsUsersPagination.pager.currentPage === page">{{page}}</a>
-        </li>
-        <li [ngClass]="{disabled:contactsUsersPagination.pager.currentPage === contactsUsersPagination.pager.totalPages}">
-          <a (click)="setPage(contactsUsersPagination.pager.currentPage + 1)">Next</a>
-        </li>
-        <li [ngClass]="{disabled:contactsUsersPagination.pager.currentPage ===contactsUsersPagination.pager.totalPages}">
-          <a (click)="setPage(contactsUsersPagination.pager.totalPages)">Last</a>
-        </li>
-      </ul>
       <div class="modal-footer">
+        <app-pagination style="margin-left: -9px;float: left;" [pagination]="contactsUsersPagination" [type]="'previewcampaign'"
+          [isDropdown]="true" (notifyParent)="setPage($event)"></app-pagination>
         <button type="button" (click)="closeModelPopup()" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>

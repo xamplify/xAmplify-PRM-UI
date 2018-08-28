@@ -1,5 +1,5 @@
 import { Component, OnInit,OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { EmailTemplate } from '../../email-template/models/email-template';
@@ -9,7 +9,6 @@ import { ReferenceService } from '../../core/services/reference.service';
 import { PagerService } from '../../core/services/pager.service';
 import { CampaignService } from '../services/campaign.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
-import { EmailTemplateService } from '../../email-template/services/email-template.service';
 import { ContactService } from '../../contacts/services/contact.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { validateCampaignSchedule } from '../../form-validator';
@@ -21,7 +20,6 @@ import { Url } from '../models/campaign-url';
 import { Pagination } from '../../core/models/pagination';
 import { Country } from '../../core/models/country';
 import { Timezone } from '../../core/models/timezone';
-import { EmailTemplateType } from '../../email-template/models/email-template-type';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { CampaignContact } from '../models/campaign-contact';
 import { Properties } from '../../common/models/properties';
@@ -158,13 +156,11 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     loading = false;
 
     constructor(private router: Router,
-            private route: ActivatedRoute,
             public campaignService: CampaignService,
             private authenticationService: AuthenticationService,
             private contactService: ContactService,
             public referenceService: ReferenceService,
             private pagerService: PagerService,
-            private emailTemplateService: EmailTemplateService,
             public callActionSwitch: CallActionSwitch,
             private formBuilder: FormBuilder,
             public properties:Properties,
@@ -190,7 +186,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
             this.campaign.detailedAnalyticsShared = false;
         }
     }
-    
+
     setCampaignData(result){
         this.campaign = result;
         if(this.campaignService.isExistingRedistributedCampaignName){
@@ -212,7 +208,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
 
         this.getCampaignReplies(this.campaign);
         this.getCampaignUrls(this.campaign);
-        
+
         this.loadContactList(this.contactListPagination);
         this.getAnchorLinksFromEmailTemplate(this.campaign.emailTemplate.body);
         this.selectedEmailTemplateId = this.campaign.emailTemplate.id;
@@ -731,7 +727,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
 
      }
 
-    
+
     getCampaignUrls(campaign:Campaign){
         if(campaign.campaignUrls!=undefined){
             this.urls = campaign.campaignUrls;
@@ -749,8 +745,8 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
         }
 
     }
-    
-    
+
+
     extractTimeFromDate(replyTime){
         //let dt = new Date(replyTime);
         let dt = replyTime;
@@ -1104,9 +1100,10 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
       this.router.navigate(['/home/campaigns/partner/' + type.toLowerCase()]);
   }
 
-  setPage(pageIndex:number){
-      this.contactsUsersPagination.pageIndex = pageIndex;
-      this.loadUsers(0,this.contactsUsersPagination,this.listName);
+  setPage(event: any) {
+    this.xtremandLogger.log(event.page, event.type);
+    this.contactsUsersPagination.pageIndex = event.page;
+    this.loadUsers(0,this.contactsUsersPagination,this.listName);
   }
 
   launchCampaign() {

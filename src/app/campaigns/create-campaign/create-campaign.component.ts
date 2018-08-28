@@ -516,14 +516,14 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             }else{
                 this.setOrgAdminReceipients();
             }
-            
+
         }else if(isVendor|| this.authenticationService.isAddedByVendor){
            this.setVendorPartnersData();
         }
         this.loadCampaignContacts(this.contactsPagination);
     }
-    
-    
+
+
     setVendorPartnersData(){
         this.contactListTabName = "Partners";
         this.emptyContactListMessage = "No partner(s) found";
@@ -533,7 +533,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.showContactType = false;
         this.TO_PARTNER_MESSAGE = "To Partner: Send a campaign intended just for your Partners";
     }
-    
+
     setOrgAdminReceipients(){
         this.contactListTabName = "Partners & Recipients";
         this.contactListSelectMessage = "Select the partner(s) / recipient(s) to be used in this campaign";
@@ -543,7 +543,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.contactsPagination.filterKey = null;
         this.TO_PARTNER_MESSAGE = "To Recipient: Send a campaign intended just for your Partners/ Contacts";
     }
-    
+
 
     /******************************************Pagination Related Code******************************************/
     setPage(pageIndex:number,module:string){
@@ -571,7 +571,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         }
 
     }
-
+    setPagePagination(event:any){ this.setPage(event.page, event.type);}
     /*************************************************************Campaign Details***************************************************************************************/
     isValidEmail:boolean = false;
     isValidCampaignName:boolean = true;
@@ -672,14 +672,14 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     setEmailOpened(event:any){
         this.campaign.emailOpened = event;
     }
-    
+
     setChannelCampaign(event:any){
         this.campaign.channelCampaign = event;
        /* if(roles.indexOf(this.roleName.vendorRole)<0){
             this.selectedContactListIds = [];
             this.isContactList = false;
         }*/
-       
+
         this.clearSelectedContactList();
         if(event){
             this.removeTemplateAndAutoResponse();
@@ -693,7 +693,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
 
         }
     }
-    
+
     clearSelectedContactList(){
         const roles = this.authenticationService.getRoles();
         let isVendor = roles.indexOf(this.roleName.vendorRole)>-1;

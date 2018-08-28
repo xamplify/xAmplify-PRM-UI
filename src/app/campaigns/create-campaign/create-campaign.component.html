@@ -759,7 +759,7 @@
                           <div  *ngIf="!isAdd && isCampaignDraftEmailTemplate && emailTemplatesPagination.totalRecords>0 && emailTemplatesPagination.pageIndex==1 ">
                             <div class="col-md-3 col-sm-4 mix category_1 mix_all" style="display: block; opacity: 1; margin-top: -11px;">
                               <div id="container">
-                                <h3 *ngIf="campaign.emailTemplate.type=='PARTNER'" style="width: 21%">
+                                <h3 *ngIf="campaign.emailTemplate.type.toLocaleString()=='PARTNER'" style="width: 21%">
 												    		{{campaign.emailTemplate.type}}
 												    		<span class="arrow"></span>
 												   	</h3>
@@ -787,7 +787,7 @@
 														<span align="right" title="upladed date" class="template-created-on-value">
 															<b>{{campaign.emailTemplate.createdDate}}</b>
 														</span>
-														<ng-container *ngIf="campaign.emailTemplate.type!='PARTNER'">
+														<ng-container *ngIf="campaign.emailTemplate.type.toLocaleString()!='PARTNER'">
 															<span align="left" class="template-created-by-label" title="{{campaign.emailTemplate.createdBy}}">
 																<b *ngIf="campaign.emailTemplate.createdBy?.length>12">{{campaign.emailTemplate.createdBy|slice:0:12}}....</b>
 																<b *ngIf="campaign.emailTemplate.createdBy?.length<=12">{{campaign.emailTemplate.createdBy}}</b>
@@ -796,7 +796,7 @@
 																<b>Created By</b>
 															</span>
 														</ng-container>
-														<ng-container *ngIf="campaign.emailTemplate.type=='PARTNER'">
+														<ng-container *ngIf="campaign.emailTemplate.type.toLocaleString()=='PARTNER'">
 															<span align="left" class="template-created-by-label" title="{{campaign.emailTemplate.vendorName}}">
 																<b *ngIf="campaign.emailTemplate.vendorName?.length>13">{{campaign.emailTemplate.vendorName|slice:0:13}}....</b>
 																<b *ngIf="campaign.emailTemplate.vendorName?.length<=13">{{campaign.emailTemplate.vendorName}}</b>
@@ -1564,7 +1564,7 @@
 					</div>
 					<div class="modal-body" id="users-modal-body">
 					</div>
-					<ul *ngIf="contactsUsersPagination.pager.pages && contactsUsersPagination.pager.pages.length" class="pagination pull-left"
+					<!-- <ul *ngIf="contactsUsersPagination.pager.pages && contactsUsersPagination.pager.pages.length" class="pagination pull-left"
 					 style="margin-left: 10px;">
 						<li [ngClass]="{disabled:contactsUsersPagination.pager.currentPage === 1}">
 							<a (click)="setPage(1,'contactUsers')">First</a>
@@ -1581,8 +1581,10 @@
 						<li [ngClass]="{disabled:contactsUsersPagination.pager.currentPage ===contactsUsersPagination.pager.totalPages}">
 							<a (click)="setPage(contactsUsersPagination.pager.totalPages,'contactUsers')">Last</a>
 						</li>
-					</ul>
+					</ul> -->
 					<div class="modal-footer">
+              <app-pagination style="float: left;" [pagination]="contactsUsersPagination" [type]="'contactUsers'" [isDropdown]="true"
+             (notifyParent)="setPagePagination($event)"></app-pagination>
 						<button type="button" (click)="closeModelPopup()" class="btn btn-default" data-dismiss="modal">Close</button>
 					</div>
 				</div>

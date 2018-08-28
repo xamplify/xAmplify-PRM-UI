@@ -172,12 +172,12 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
         this.referenceService.stopLoader(this.httpRequestLoader);
         this.getCampaignReplies(this.campaign);
         this.getCampaignUrls(this.campaign);
-        
-        
+
+
         const roles = this.authenticationService.getRoles();
         let isVendor = roles.indexOf(this.roleName.vendorRole)>-1;
         let isOrgAdmin = this.authenticationService.isOrgAdmin() || (!this.authenticationService.isAddedByVendor && !isVendor);
-        
+
         if(isOrgAdmin){
             this.channelCampaignFieldName = "To Recipient";
         }else{
@@ -191,7 +191,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
                 this.contactType = " partner(s) / recepient(s) ";
                 this.showContactType = true;
             }
-            
+
         }else if(isVendor|| this.authenticationService.isAddedByVendor){
             this.contactType = "partner(s)";
             this.showContactType = false;
@@ -519,8 +519,8 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
   }
 
 
-  setPage(pageIndex:number){
-      this.contactsUsersPagination.pageIndex = pageIndex;
+  setPage(event:any){
+      this.contactsUsersPagination.pageIndex = event.page;
       this.loadUsers(0,this.contactsUsersPagination,this.listName);
   }
 
