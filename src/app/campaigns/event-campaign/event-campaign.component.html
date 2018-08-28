@@ -17,8 +17,9 @@
       </li>
 			<li>Event Based Campaign</li>
 		</ul>
-	</div>
-	<div class="page-bar portlet light border-radius-0 shadow">
+  </div>
+  <app-list-loader [rowsCount]="6" *ngIf="loader"></app-list-loader>
+	<div class="page-bar portlet light border-radius-0 shadow" [hidden]="loader">
 		<div class="portlet-title" style="background: #ccc !important;border-radius: 0;">
 			<h4 class="pull-left m10 f-w-600 title-css">Event Details</h4>
     </div>
@@ -57,8 +58,8 @@
 					<div class="form-group" *ngIf="!authenticationService.isOnlyPartner()">
 						<label for="hostedBy" class="col-sm-3 labal-css">Through Partner</label>
 						<div class="col-sm-3">
-							<switch [status]="eventCampaign.channelCampaign" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-								[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size" [disabled]="isPreviewEvent"
+							<switch [status]="eventCampaign.channelCampaign" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.onTextValue"
+								[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onGreenColorSwitch" [size]="callActionSwitch.size" [disabled]="isPreviewEvent"
 								(statusChange)="eventCampaign.channelCampaign = !eventCampaign.channelCampaign">
 							</switch>
             </div>
@@ -95,8 +96,7 @@
                   [(ngModel)]="eventCampaign.campaignEventTimes[0].countryId" [ngModelOptions]="{standalone: true}" (change)="onChangeCountryCampaignEventTime($event.target.value)" (input)="eventCountryError()" (blur)="eventCountryError()">
                     <option *ngFor="let country of countries" [value]="country.id">{{country.name}}</option>
                   </select>
-                  <div class="text-danger" *ngIf="eventError.eventCountryAndTimeZone && !eventCampaign.campaignEventTimes[0].countryId">Please select the country and timezone</div>
-                </div>
+                 </div>
                 <div class="col-sm-6">
                   <select [attr.disabled]="isPreviewEvent? '' : null" class="form-control" style="width: 100%" [(ngModel)]="eventCampaign.campaignEventTimes[0].timeZone" [ngModelOptions]="{standalone: true}" id="timezoneIdCampaignEventTime">
                     <option *ngIf="!timezonesCampaignEventTime" value="" disabled selected>Select TimeZone...</option>
@@ -112,6 +112,7 @@
                     </ng-container>
                   </select>
                 </div>
+                <div class="text-danger" style="margin-left: 15px;" *ngIf="eventError.eventCountryAndTimeZone && !eventCampaign.campaignEventTimes[0].countryId">Please select the country and timezone</div>
               </div>
             </div>
 					<div class="form-group">
@@ -179,8 +180,8 @@
           <div class="portlet-body clearfix">
               <ul>
                 <li style="border-bottom:1px solid #CCC; margin-bottom:10px;">
-                   <label class="col-md-1 p0" style="margin-top: 11px;cursor:pointer">
-                     <input [attr.disabled]="isPreviewEvent? '' : null" type="radio" value="eventCampaign.publicEventCampaign" [checked]="eventCampaign.publicEventCampaign" (change)="eventCampaign.publicEventCampaign = !eventCampaign.publicEventCampaign">
+                   <label class="col-md-1 p0" style="margin-top: 17px;cursor:pointer">
+                     <input style="cursor: pointer;" [attr.disabled]="isPreviewEvent? '' : null" type="radio" value="eventCampaign.publicEventCampaign" [checked]="eventCampaign.publicEventCampaign" (change)="eventCampaign.publicEventCampaign = !eventCampaign.publicEventCampaign">
                    </label>
                   <label class="col-md-2 p0"><img src="assets/images/public-event.png"></label>
                   <div class="col-md-9 p0" ><b>Public page</b><br><p >Turn invitees into your biggest promoters by letting them share your event on Facebook, Twitter, Linkedin and or any social media platform</p></div>
@@ -188,8 +189,8 @@
                 </li>
 
                 <li>
-                    <label  class="col-md-1 p0" style="margin-top: 11px;cursor: pointer;">
-                      <input [attr.disabled]="isPreviewEvent? '' : null" type="radio" value="!eventCampaign.publicEventCampaign" [checked]="!eventCampaign.publicEventCampaign" (change)="eventCampaign.publicEventCampaign = !eventCampaign.publicEventCampaign">
+                    <label  class="col-md-1 p0" style="margin-top: 17px;cursor: pointer;">
+                      <input style="cursor: pointer;" [attr.disabled]="isPreviewEvent? '' : null" type="radio" value="!eventCampaign.publicEventCampaign" [checked]="!eventCampaign.publicEventCampaign" (change)="eventCampaign.publicEventCampaign = !eventCampaign.publicEventCampaign">
                     </label>
                     <label class="col-md-2 p0 "><img src="assets/images/private-event.png"></label>
                     <div class="col-md-9 p0"><b>Private page</b><br><p >Make your event invitation-only(guests must receive an xAmplify invitation to attend/view)</p></div>

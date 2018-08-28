@@ -80,6 +80,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   scheduleCampaignError = '';
   parternUserListIds = [];
   reDistributeEvent = false;
+  loader = false;
 
   constructor(public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
     private contactService: ContactService,
@@ -401,7 +402,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
       }
       $('#' + contactListId).parent().closest('tr').addClass('highlight');
     } else {
-      this.eventCampaign.userListIds.splice($.inArray(contactListId, this.parternUserListIds), 1);
+      this.parternUserListIds.splice($.inArray(contactListId, this.parternUserListIds), 1);
       $('#' + contactListId).parent().closest('tr').removeClass('highlight');
       if(this.parternUserListIds.length===0){  this.eventError.eventContactError = true;}
     }
@@ -501,6 +502,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
    return eventCampaign;
   }
   createEventCampaign(eventCampaign: any, launchOption: string) {
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.loader = true;
     this.isFormSubmitted = true;
     if(this.isPartnerUserList) {eventCampaign.userListIds = this.parternUserListIds; }
     else { eventCampaign.userListIds = this.userListIds; }
@@ -527,13 +530,13 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
       this.campaignService.createEventCampaign(eventCampaign)
       .subscribe(
       response => {
-        this.referenceService.goToTop();
         if (response.statusCode === 2000) {
           this.isLaunched = true;
           this.referenceService.stopLoader(this.httpRequestLoader);
           this.router.navigate(["/home/campaigns/manage"]);
           this.referenceService.campaignSuccessMessage = launchOption;
         } else {
+          this.loader = false;
           this.referenceService.stopLoader(this.httpRequestLoader);
           if (response.statusCode === 2016) {
             this.customResponse = new CustomResponse( 'ERROR', response.errorResponses[0].message, true );
@@ -556,12 +559,12 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
           }
         }
       },
-      error => console.log(error),
-      () => console.log("Campaign Names Loaded")
-      );
+      (error:any) => { this.loader = false; console.log(error); },
+      () => console.log("Campaign Names Loaded") );
     } else {
       this.referenceService.goToTop();
       this.showErrorMessage = true;
+      this.loader = false;
       if(eventCampaign.campaignEventTimes[0].country=="Select Country"){
        // this.customResponse = new CustomResponse( 'ERROR', 'Please select the valid country', true );
       } else {
