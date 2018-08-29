@@ -787,12 +787,9 @@ legend {
 b, strong {
     font-weight: 600 !important;
 }
-/* prevent scrolling page in mac os */
-/* html {
-  overflow: hidden;
-  height: 100%;
+.flatpickr-months{
+  background: #1bbc9b;
 }
-body {
-  height: 100%;
-  overflow: auto;
-} */
+.flatpickr-current-month{
+  padding:0 !important;
+ }
