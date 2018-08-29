@@ -223,33 +223,17 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     this.eventError.eventHostByError = this.eventCampaign.fromName? false:true;
   }
   eventStartTimeError(){
-     let currentDate:any;
-     let startDate:any;
-     currentDate = new Date().getTime();
-     startDate = Date.parse(this.eventCampaign.campaignEventTimes[0].startTimeString);
+     const currentDate = new Date().getTime();
+     const startDate = Date.parse(this.eventCampaign.campaignEventTimes[0].startTimeString);
      if(startDate < currentDate) { this.setStartTimeErrorMessage(true, 'Start Date / Time is already over.');}
      else if( startDate > currentDate){ this.setStartTimeErrorMessage(false, '');}
-     else if(!this.eventCampaign.campaignEventTimes[0].startTimeString){
-        this.setStartTimeErrorMessage(true, 'Please select the start Date and time.'); }
+     else if(!this.eventCampaign.campaignEventTimes[0].startTimeString){this.setStartTimeErrorMessage(true, 'Please select the start Date and time.'); }
      else { this.setStartTimeErrorMessage(false, ''); }
+     this.eventSameDateError();
   }
   setStartTimeErrorMessage(event:boolean, mesg:string){
     this.eventError.eventStartTimeError = event;
     this.datePassedError = mesg;
-  }
-  eventCountryError(){
-    this.eventError.eventCountryAndTimeZone = this.eventCampaign.campaignEventTimes[0].countryId ? false: true;
-  }
-  eventLocationError(){
-    if(!this.eventCampaign.onlineMeeting){
-    this.eventError.eventLocationError = this.eventCampaign.campaignLocation.location? false: true;
-    } else { this.eventError.eventLocationError = false;}
-  }
-  eventDescriptionError(){
-    this.eventError.eventDescription = this.eventCampaign.message ? false: true;
-  }
-  eventContactListError(){
-    this.eventError.eventContactError = this.eventCampaign.userListIds.length>0 ? false: true;
   }
   eventEndTimeError(){
   if(!this.eventCampaign.campaignEventTimes[0].allDay){
@@ -265,16 +249,23 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     if(this.eventCampaign.campaignEventTimes[0].endTimeString && !this.eventCampaign.campaignEventTimes[0].allDay && startDate===endDate){
      this.eventError.eventSameDateError = true;
      this.endDatePassedError = 'start Date / Time and end Date / Time should not be same';
-    } else if(startDate > endDate){
-      this.eventError.eventSameDateError = true;
-      this.endDatePassError = true;
-      this.endDatePassedError = 'End Date / Time should not less than start Date / Time ';
-    }
-     else {
-      this.endDatePassError = false;
-      this.eventError.eventSameDateError = false;
-      this.endDatePassedError = '';
-    }
+    } else if(startDate > endDate){ this.setSameDateErrorMesg(true,true,'The event must end after the start date and time.');
+    } else { this.setSameDateErrorMesg(false,false,''); }
+  }
+  setSameDateErrorMesg(endDate,sameDate,mesg){ this.endDatePassError = endDate; this.eventError.eventSameDateError = sameDate;this.endDatePassedError = mesg;}
+  eventLocationError(){
+    if(!this.eventCampaign.onlineMeeting){
+    this.eventError.eventLocationError = this.eventCampaign.campaignLocation.location? false: true;
+    } else { this.eventError.eventLocationError = false;}
+  }
+  eventCountryError(){
+    this.eventError.eventCountryAndTimeZone = this.eventCampaign.campaignEventTimes[0].countryId ? false: true;
+  }
+  eventDescriptionError(){
+    this.eventError.eventDescription = this.eventCampaign.message ? false: true;
+  }
+  eventContactListError(){
+    this.eventError.eventContactError = this.eventCampaign.userListIds.length>0 ? false: true;
   }
   onBlurValidation(){
    this.eventTitleError();
@@ -511,7 +502,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     this.onBlurValidation();
     eventCampaign.campaignScheduleType = launchOption;
     eventCampaign =  this.getCampaignData(eventCampaign)
-    eventCampaign.campaignLocation.id = null;
+    if(!eventCampaign.id) { eventCampaign.campaignLocation.id = null; }
     eventCampaign.campaignEventTimes[0].id = null;
     eventCampaign.campaignEventMedias[0].id = null;
     eventCampaign.user.id = null;
@@ -890,7 +881,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
         }
         saveCampaignOnDestroy(){
           const eventCampaign = this.getCampaignData(this.eventCampaign);
-          eventCampaign.campaignLocation.id = null;
+          if(!eventCampaign.id) { eventCampaign.campaignLocation.id = null; }
           eventCampaign.campaignEventTimes[0].id = null;
           eventCampaign.campaignEventMedias[0].id = null;
           eventCampaign.user.id = null;

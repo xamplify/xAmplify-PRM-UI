@@ -73,11 +73,11 @@
 					<div class="form-group">
 						<label for="eventDateTime" class="col-sm-3 labal-css">Event Date/Time <span class=text-danger>*</span></label>
 						<div class="col-sm-9 p0">
-							<div class="col-sm-6"><input [attr.disabled]="isPreviewEvent? '' : null" type="text" id="startDatePicker" class="form-control flatpickr" placeholder="Start Time"
+							<div class="col-sm-6"><input [attr.disabled]="isPreviewEvent? '' : null" type="text" id="startDatePicker" class="form-control flatpickr" placeholder="Start"
 								[(ngModel)]="eventCampaign.campaignEventTimes[0].startTimeString" [ngModelOptions]="{standalone: true}" (input)="eventStartTimeError()" (blur)="eventStartTimeError()"
 								[ngClass]="{'has-error': eventError.eventStartTimeError && !eventCampaign.campaignEventTimes[0].startTimeString}"></div>
 							<div class="col-sm-6">
-								<input type="text" id="enDatePicker" [attr.disabled]="isPreviewEvent? '' : null" [disabled]="eventCampaign.campaignEventTimes[0].allDay" class="form-control flatpickr" placeholder="End Time"
+								<input type="text" id="enDatePicker" [attr.disabled]="isPreviewEvent? '' : null" [disabled]="eventCampaign.campaignEventTimes[0].allDay" class="form-control flatpickr" placeholder="End"
                 [(ngModel)]="eventCampaign.campaignEventTimes[0].endTimeString" [ngModelOptions]="{standalone: true}" (input)="eventEndTimeError()" (blur)="eventEndTimeError()"
                 [ngClass]="{'has-error': eventError.eventEndDateError && !eventCampaign.campaignEventTimes[0].endTimeString && !eventCampaign.campaignEventTimes[0].allDay}">
               </div>
@@ -184,7 +184,7 @@
                      <input style="cursor: pointer;" [attr.disabled]="isPreviewEvent? '' : null" type="radio" value="eventCampaign.publicEventCampaign" [checked]="eventCampaign.publicEventCampaign" (change)="eventCampaign.publicEventCampaign = !eventCampaign.publicEventCampaign">
                    </label>
                   <label class="col-md-2 p0"><img src="assets/images/public-event.png"></label>
-                  <div class="col-md-9 p0" ><b>Public page</b><br><p >Turn invitees into your biggest promoters by letting them share your event on Facebook, Twitter, Linkedin and or any social media platform</p></div>
+                  <div class="col-md-9 p0" ><b>Public page</b><br><p >Turn invitees into your biggest promoters by letting them share your event on Facebook, Twitter, Linkedin and or other media platform</p></div>
                 <div style="clear:both"></div>
                 </li>
 
@@ -193,7 +193,7 @@
                       <input style="cursor: pointer;" [attr.disabled]="isPreviewEvent? '' : null" type="radio" value="!eventCampaign.publicEventCampaign" [checked]="!eventCampaign.publicEventCampaign" (change)="eventCampaign.publicEventCampaign = !eventCampaign.publicEventCampaign">
                     </label>
                     <label class="col-md-2 p0 "><img src="assets/images/private-event.png"></label>
-                    <div class="col-md-9 p0"><b>Private page</b><br><p >Make your event invitation-only(guests must receive an xAmplify invitation to attend/view)</p></div>
+                    <div class="col-md-9 p0"><b>Private page</b><br><p >Make your event invitation-only (guests must receive an xAmplify invitation to attend/view)</p></div>
                 </li>
            </ul>
           </div>
@@ -326,8 +326,8 @@
           <legend style="color: #2c3f52;">Add Your Work Flow</legend>
           <div style="margin-bottom:70px;">
           <div class="col-xs-6" style="margin-left: 45.666667%;"><img src="assets/images/icon1.png"> </div><br>
-          <div class="col-xs-6 auto-response" *ngIf="!isPreviewEvent" style="margin-left: 37%;"><a (click)="addReplyRows()">Click Here</a> to Auto Response your email</div>
-          <div class="col-xs-6 auto-response" *ngIf="isPreviewEvent" style="margin-left: 37%;"><a [attr.disabled]="isPreviewEvent? '' : null">Click Here</a> to Auto Response your email</div>
+          <div class="col-xs-6 auto-response" *ngIf="!isPreviewEvent" style="margin-left: 37%;"><a (click)="addReplyRows()">Click Here</a> to add a auto response to your email</div>
+          <div class="col-xs-6 auto-response" *ngIf="isPreviewEvent" style="margin-left: 37%;"><a [attr.disabled]="isPreviewEvent? '' : null">Click Here</a> to add a auto response to your email</div>
           </div>
           <div *ngFor="let reply of eventCampaign.campaignReplies;let i=index">
           <div class="portlet light dashboard-stat2" id="{{reply.divId}}" style="min-height: 320px;">
@@ -357,9 +357,9 @@
                   <option [value]="16" [selected]="reply.actionId ==16">Send immediately after email is opened</option>
                   <option [value]="24" [selected]="reply.actionId ==24">If partner has not shared event</option>
                   <option [value]="25" [selected]="reply.actionId ==25">Send email if RSVP Yes</option>
-                  <option [value]="26" [selected]="reply.actionId ==26">Send email If RSVP NO</option>
-                  <option [value]="27" [selected]="reply.actionId ==27">Send email If RSVP MAY BE</option>
-                  <option [value]="28" [selected]="reply.actionId ==28">Send thanks email after event</option>
+                  <option [value]="26" [selected]="reply.actionId ==26">Send email If RSVP No</option>
+                  <option [value]="27" [selected]="reply.actionId ==27">Send email If RSVP Maybe</option>
+                  <option [value]="28" [selected]="reply.actionId ==28">Send after event</option>
                 </select>
               </div>
               <div *ngIf="reply.actionId == 0 || reply.actionId == 13 || reply.actionId == 24">
@@ -504,14 +504,14 @@
 				<a class="close-circle" data-dismiss="modal" (click)="closeModal()">
 					<i class="fa fa-times"></i>
 				</a>
-				<h4 id="contactsModalLabel" class="modal-title caption-subject font-red-sunglo">
+				<h4 id="contactsModalLabel" class="modal-title caption-subject font-red-sunglo" style="font-weight: 600;color: #635e5e !important;">
           <span *ngIf="previewContactList.name?.length<20">{{previewContactList.name}}</span>
           <span *ngIf="previewContactList.name?.length>20">{{previewContactList.name | slice:0:20}}</span>
         </h4>
 			</div>
 			<div class="modal-body">
 				<div class="table-responsive">
-					<table class="table table-bordered table-striped table-hover">
+					<table class="table tgrid">
 						<thead>
 							<tr>
 								<th>Email Address</th>
@@ -536,7 +536,7 @@
 							</tr>
 						</tbody>
 					</table>
-					<app-pagination  *ngIf="contactsPagination.pagedItems?.length > 0" [pagination]="contactsPagination" [type]="'updatestatuscontacts'"
+					<app-pagination style="position: relative;left: -10px;" *ngIf="contactsPagination.pagedItems?.length > 0" [pagination]="contactsPagination" [type]="'updatestatuscontacts'"
 					 (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropDown($event)"></app-pagination>
 				</div>
 			</div>
