@@ -843,3 +843,12 @@ td>br { display: none; }
 	margin-bottom: 0 !important;
 	border-radius: 0 !important;
 }
+.flatpickr-months{
+  background: #1bbc9b;
+}
+.flatpickr-current-month{
+  padding:0 !important;
+ }
+ .flatpickr-month{
+   color:#fff !important;
+ }
