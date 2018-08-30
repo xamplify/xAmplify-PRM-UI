@@ -81,6 +81,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   parternUserListIds = [];
   reDistributeEvent = false;
   loader = false;
+  isEditCampaign = false;
 
   constructor(public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
     private contactService: ContactService,
@@ -95,6 +96,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     this.listEmailTemplates();
     CKEDITOR.config.height = '100';
     this.isPreviewEvent = this.router.url.includes('/home/campaigns/event-preview')? true: false;
+    this.isEditCampaign = this.router.url.includes('/home/campaigns/event-edit')? true: false;
     CKEDITOR.config.readOnly = this.isPreviewEvent ? true: false;
     this.reDistributeEvent = this.router.url.includes('/home/campaigns/re-distribute-event')? true: false;
     if(this.reDistributeEvent) { this.isPartnerUserList = false; } else { this.isPartnerUserList = true; }
@@ -237,8 +239,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   }
   eventEndTimeError(){
   if(!this.eventCampaign.campaignEventTimes[0].allDay){
-    this.eventError.eventEndDateError = this.eventCampaign.campaignEventTimes[0].endTimeString ? false: true;
-   } else {
+    this.eventError.eventEndDateError = !this.eventCampaign.campaignEventTimes[0].endTimeString ? true: false;
+    this.datePassedError = 'The End Date is required.'
+  } else {
     this.eventError.eventEndDateError = false;
    }
    this.eventSameDateError();
@@ -349,6 +352,12 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   paginationDropDown(pagination: Pagination) {
     if (this.paginationType === 'contacts') { this.loadContacts(this.previewContactList, pagination); }
     else if (this.paginationType === 'contactlists') { this.loadContactLists(pagination); }
+  }
+  changeAllDay(){
+    this.eventCampaign.campaignEventTimes[0].allDay = !this.eventCampaign.campaignEventTimes[0].allDay;
+    if(this.eventCampaign.campaignEventTimes[0].allDay && this.eventCampaign.campaignEventTimes[0].endTimeString){
+      this.eventCampaign.campaignEventTimes[0].endTimeString = '';
+    }
   }
   toggleContactLists() {
 
@@ -502,7 +511,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     this.onBlurValidation();
     eventCampaign.campaignScheduleType = launchOption;
     eventCampaign =  this.getCampaignData(eventCampaign)
-    if(!eventCampaign.id) { eventCampaign.campaignLocation.id = null; }
+    if(this.isEditCampaign && !eventCampaign.onlineMeeting) {  }
+    else {  eventCampaign.campaignLocation.id = null;}
     eventCampaign.campaignEventTimes[0].id = null;
     eventCampaign.campaignEventMedias[0].id = null;
     eventCampaign.user.id = null;
