@@ -793,3 +793,6 @@ b, strong {
 .flatpickr-current-month{
   padding:0 !important;
  }
+ .flatpickr-month{
+   color:#fff !important;
+ }
