@@ -1,23 +1,27 @@
-		
-<div class="page-content" [style.background-color]="refService.pageContnetBgColor" >
-
-<app-loader [model]="httpRequestLoader.isHorizontalCss" *ngIf="httpRequestLoader.isLoading"></app-loader>
-	<ng-container *ngIf="!httpRequestLoader.isLoading">
-		<div id="bee-plugin-container" [ngClass]="{'page-bar portlet light border-radius-0 shadow':loadTemplate}">
-		
-			<ul class="page-breadcrumb" *ngIf="loadTemplate">
-				<li>
-					<i class="fa fa-home"></i>
-					<a [routerLink]="refService.homeRouter">Home</a>
-					<i class="fa fa-angle-right"></i>
-				</li>
-				<li><a [routerLink]="['../../emailtemplates/select']">Select Templates</a>
-					<i class="fa fa-angle-right"></i></li>
-				<li>
-					<a>Create Template</a>
-				</li>
-			</ul>
-			</div>
-	</ng-container>
-
-</div>			
+<div class="page-content" [style.background-color]="refService.pageContnetBgColor">
+   <app-loader [model]="httpRequestLoader.isHorizontalCss" *ngIf="httpRequestLoader.isLoading"></app-loader>
+   <ng-container *ngIf="!httpRequestLoader.isLoading">
+      <div class="row">
+         <div class="col-xs-12">
+            <div class="tile">
+               <div class="page-bar">
+                  <ul class="page-breadcrumb" *ngIf="loadTemplate">
+                     <li>
+                        <i class="fa fa-home"></i>
+                        <a [routerLink]="refService.homeRouter">Home</a>
+                        <i class="fa fa-angle-right"></i>
+                     </li>
+                     <li><a [routerLink]="['../../emailtemplates/select']">Select Templates</a>
+                        <i class="fa fa-angle-right"></i>
+                     </li>
+                     <li>
+                        <a>Create Template</a>
+                     </li>
+                  </ul>
+                  <div id="bee-plugin-container"></div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </ng-container>
+</div>
