@@ -573,7 +573,6 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
 
     validateReplyBody(reply:Reply){
         if(reply.body==null || reply.body==undefined || $.trim(reply.body).length==0){
-            alert("eror");
             $('#'+reply.divId).addClass('portlet light dashboard-stat2 border-error');
             $('#reply-message-'+reply.divId).css('color','red');
         }
