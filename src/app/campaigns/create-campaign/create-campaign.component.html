@@ -429,10 +429,14 @@
 															</ng-container>
 														</ng-container>
 													</tbody>
-												</table>
-												<div *ngIf="!isvideoThere && !campaignVideo.httpRequestLoader.isLoading && !campaignVideo.httpRequestLoader.isServerError && !campaign.createdFromVideos ">
+                        </table>
+                        <div [hidden]="isvideoThere && campaignVideo.httpRequestLoader.isLoading && campaignVideo.httpRequestLoader.isServerError && campaign.createdFromVideos">
+                        <app-pagination  style="position: relative;left: -368px;" [hidden]="campaignVideo.httpRequestLoader.isLoading || campaignVideo.httpRequestLoader.isServerError" [pagination]="videosPagination" [type]="'videos'"
+                        (notifyParent)="setPagePagination($event)" (notifyParentDropDown)="loadCampaignVideos($event)"></app-pagination>
+                        </div>
+												<!-- <div *ngIf="!isvideoThere && !campaignVideo.httpRequestLoader.isLoading && !campaignVideo.httpRequestLoader.isServerError && !campaign.createdFromVideos "> -->
 													<!--pager here  -->
-													<ul *ngIf="videosPagination.pager.pages && videosPagination.pager.pages.length" class="pagination">
+													<!-- <ul *ngIf="videosPagination.pager.pages && videosPagination.pager.pages.length" class="pagination">
 														<li [ngClass]="{disabled:videosPagination.pager.currentPage === 1}">
 															<a (click)="setPage(1,'videos')" [class.disabled]="videosPagination.pager.currentPage === 1">First</a>
 														</li>
@@ -448,9 +452,9 @@
 														<li [ngClass]="{disabled:videosPagination.pager.currentPage === videosPagination.pager.totalPages}">
 															<a (click)="setPage(videosPagination.pager.totalPages,'videos')" [class.disabled]="videosPagination.pager.currentPage === videosPagination.pager.totalPages">Last</a>
 														</li>
-													</ul>
+													</ul> -->
 													<!-- pager end here -->
-												</div>
+												<!-- </div> -->
 											</div>
 										</div>
 										<!-- ----Partner Videos Start Here -->
@@ -567,9 +571,8 @@
 														</ng-container>
 													</tbody>
 												</table>
-												<div *ngIf="!isPartnerVideoExists && !campaignVideo.httpRequestLoader.isLoading && !campaignVideo.httpRequestLoader.isServerError && !campaign.createdFromVideos">
-													<!--pager here  -->
-													<ul *ngIf="channelVideosPagination.pager.pages && channelVideosPagination.pager.pages.length" class="pagination">
+												<div [hidden]="isPartnerVideoExists && campaignVideo.httpRequestLoader.isLoading && campaignVideo.httpRequestLoader.isServerError && campaign.createdFromVideos">
+													<!-- <ul *ngIf="channelVideosPagination.pager.pages && channelVideosPagination.pager.pages.length" class="pagination">
 														<li [ngClass]="{disabled:channelVideosPagination.pager.currentPage === 1}">
 															<a (click)="setPage(1,'partner-videos')" [class.disabled]="channelVideosPagination.pager.currentPage === 1">First</a>
 														</li>
@@ -585,8 +588,9 @@
 														<li [ngClass]="{disabled:channelVideosPagination.pager.currentPage === channelVideosPagination.pager.totalPages}">
 															<a (click)="setPage(channelVideosPagination.pager.totalPages,'partner-videos')" [class.disabled]="channelVideosPagination.pager.currentPage === channelVideosPagination.pager.totalPages">Last</a>
 														</li>
-													</ul>
-													<!-- pager end here -->
+                          </ul> -->
+                          <app-pagination style="position: relative;left: -368px;" [hidden]="campaignVideo.httpRequestLoader.isLoading && campaignVideo.httpRequestLoader.isServerError" [pagination]="channelVideosPagination" [type]="'partner-videos'"
+                          (notifyParent)="setPagePagination($event)" (notifyParentDropDown)="loadPartnerVideos($event)"></app-pagination>
 												</div>
 											</div>
 										</div>
@@ -641,7 +645,7 @@
 														</td>
 														<th style="text-align: center;">List Name</th>
 														<th style="text-align: center;" *ngIf="showContactType">Type</th>
-														<th style="text-align: center;">Date Uploaded</th>
+														<th style="text-align: center;">Uploaded Date</th>
 														<th style="text-align: center;">Preview </th>
 													</tr>
 												</thead>
@@ -673,8 +677,8 @@
 															</ng-container>
 														</td>
 														<td class="text-center sorting_1">
-                             						 		<app-timestamp [isOnlyDate]="true" [dateAndTime]="contacts.createdDate"> </app-timestamp>
-                            							</td>
+                             		<app-timestamp [isOnlyDate]="true" [dateAndTime]="contacts.createdDate"> </app-timestamp>
+                            </td>
 														<td class="text-center">
 															<a  (click)="$event.stopPropagation();loadUsers(contactsPagination.pagedItems[i].id,contactsUsersPagination,contacts.name)">
 																<i class="fa fa-eye" style="color: #008fd5;padding-top: 3px; font-size: 20px;" title="" data-original-title="Preview"></i>
@@ -684,7 +688,7 @@
 												</tbody>
 											</table>
 											<div *ngIf="contactsPagination.totalRecords > 0 && !campaignContact.httpRequestLoader.isLoading && !campaignContact.httpRequestLoader.isServerError">
-												<ul *ngIf="contactsPagination.pager.pages && contactsPagination.pager.pages.length" class="pagination pull-left">
+												<!-- <ul *ngIf="contactsPagination.pager.pages && contactsPagination.pager.pages.length" class="pagination pull-left">
 													<li [ngClass]="{disabled:contactsPagination.pager.currentPage === 1}">
 														<a (click)="setPage(1,'contacts')" [class.disabled]="contactsPagination.pager.currentPage === 1">First</a>
 													</li>
@@ -700,7 +704,9 @@
 													<li [ngClass]="{disabled:contactsPagination.pager.currentPage === contactsPagination.pager.totalPages}">
 														<a (click)="setPage(contactsPagination.pager.totalPages,'contacts')" [class.disabled]="contactsPagination.pager.currentPage === contactsPagination.pager.totalPages">Last</a>
 													</li>
-												</ul>
+                        </ul> -->
+                        <app-pagination style="float: left; position: relative;left: -10px;" [pagination]="contactsPagination" [type]="'contacts'"
+                        (notifyParent)="setPagePagination($event)" [isDropdown]="true"></app-pagination>
 
 												<select class="btn btn-default" style="margin-left:150px;margin-bottom:47px;float: right;" [(ngModel)]="contactItemsSize"
 												 (ngModelChange)="getNumberOfContactItemsPerPage($event)">
@@ -826,7 +832,9 @@
 											<div class="mix-inner css" [class.template-selected]="emailTemplate.id == selectedEmailTemplateRow">
 												<img class="img-responsive center-block" src="{{emailTemplate.subject}}" alt="{{emailTemplate.name}}" id="emailtemplate-image">
 												<div class="mix-details" id="mix-details" style="height:199px">
-													<h4 class="ellipsis" title="{{emailTemplate.name}}" style="margin-top: 14px;">{{emailTemplate.name}}</h4>
+                          <h4 class="ellipsis" title="{{emailTemplate.name}}" style="margin-top: 14px;">
+                            <span *ngIf="emailTemplate.name?.length<25">{{emailTemplate.name}}</span>
+                            <span *ngIf="emailTemplate.name?.length>25">{{emailTemplate.name |slice:0:28}}...</span></h4>
 													<div style="top: 2%; position: relative; margin-left: 5px;">
 													</div>
 													<div id="template-action-div" *ngIf="!emailTemplate.draft">
@@ -876,8 +884,8 @@
 				<div *ngIf="emailTemplatesPagination.totalRecords==0" class="alert alert-info">
 					<strong>No email templates found</strong>
 				</div>
-				<div *ngIf="emailTemplatesPagination.totalRecords>0 && !campaignEmailTemplate.httpRequestLoader.isLoading && !campaignEmailTemplate.httpRequestLoader.isServerError">
-					<ul *ngIf="emailTemplatesPagination.pager.pages && emailTemplatesPagination.pager.pages.length" class="pagination">
+				<div  style="position: relative;top: -3px;" [hidden]="emailTemplatesPagination.totalRecords<0 || campaignEmailTemplate.httpRequestLoader.isLoading || campaignEmailTemplate.httpRequestLoader.isServerError">
+					<!-- <ul *ngIf="emailTemplatesPagination.pager.pages && emailTemplatesPagination.pager.pages.length" class="pagination">
 						<li [ngClass]="{disabled:emailTemplatesPagination.pager.currentPage === 1}">
 							<a (click)="setPage(1,'emailTemplates')" [class.disabled]="emailTemplatesPagination.pager.currentPage === 1">First</a>
 						</li>
@@ -893,8 +901,11 @@
 						<li [ngClass]="{disabled:emailTemplatesPagination.pager.currentPage === emailTemplatesPagination.pager.totalPages}">
 							<a (click)="setPage(emailTemplatesPagination.pager.totalPages,'emailTemplates')" [class.disabled]="emailTemplatesPagination.pager.currentPage === emailTemplatesPagination.pager.totalPages">Last</a>
 						</li>
-					</ul>
-				</div>
+          </ul> -->
+          <app-pagination style="position: relative;left: -355px;" [pagination]="emailTemplatesPagination" [type]="'emailTemplates'"
+          (notifyParent)="setPagePagination($event)"  (notifyParentDropDown)="loadPaginationDropdownTemplates($event)"></app-pagination>
+
+        </div>
 				<button type="button" class="btn btn-default pull-left" (click)="resetActive($event, 40, 'step-4')">Previous</button>
 				<button type="submit" class=" btn green pull-right" (click)="resetActive($event, 40, 'step-6');addUserEmailIds();" [disabled]="!isEmailTemplate"
 					title="Please Select Email Template">Next</button>
@@ -908,24 +919,23 @@
 				<!-- End of step 5 -->
 				<!-- -------------------------------------Launch Tab--------------------------------------------------------- -->
 				<div class="row setup-content step hiddenStepInfo" id="step-6">
-
-							<div class="alert alert-danger error-div" *ngIf="invalidScheduleTime" id="invalidScheduleTimeDiv">
-								<strong>{{invalidScheduleTimeError}}</strong>
-							</div>
-							<form role="form" [formGroup]="campaignLaunchForm" (ngSubmit)="launchCampaign();" class="form-horizontal form-bordered form-label-stripped">
-								<div class="col-xs-12">
-										<fieldset>
-											<legend>Preview Before Publishing</legend>
-									<div class="row">
-										<!-- <div class="portlet title">
-											<h4 style="text-align: left;margin-left: 15px;font-weight: 600;color: #999;">Preview Before Publishing</h4>
-										</div> -->
-										<div class="col-xs-12">
-					<div class="portlet light clearfix" style="padding:5px;background: #eaeaea;">
-						<button type="button" class="btn green square-button pull-right" (click)="socialStatus.isEnable = !socialStatus.isEnable"
+          <div class="alert alert-danger error-div" *ngIf="invalidScheduleTime" id="invalidScheduleTimeDiv">
+            <strong>{{invalidScheduleTimeError}}</strong>
+          </div>
+          <form role="form" [formGroup]="campaignLaunchForm" (ngSubmit)="launchCampaign();" class="form-horizontal form-bordered form-label-stripped">
+            <div class="col-xs-12">
+						<fieldset>
+						<legend>Preview Before Publishing</legend>
+						<div class="row">
+            <!-- <div class="portlet title">
+              <h4 style="text-align: left;margin-left: 15px;font-weight: 600;color: #999;">Preview Before Publishing</h4>
+            </div> -->
+						<div class="col-xs-12">
+					  <div class="portlet light clearfix" style="padding:5px;background: #eaeaea;">
+					  	<button type="button" class="btn green square-button pull-right" (click)="socialStatus.isEnable = !socialStatus.isEnable"
 							style="padding: 5px 0;">
 							<i class="fa fa-share-alt fa-social" style="margin: 0 5px;"></i> Social Share</button>
-						<div class="border-none" *ngIf="socialStatus.isEnable">
+					  	<div class="border-none" *ngIf="socialStatus.isEnable">
 							<div *ngIf="socialStatus.socialStatusProviders?.length == 0">
 								<h2 class="text-warning" style="font-size: 22px !important;">
 									<i class="fa fa-exclamation-triangle" aria-hidden="true" style="font-size: 16px !important;"></i> No accounts found.</h2>

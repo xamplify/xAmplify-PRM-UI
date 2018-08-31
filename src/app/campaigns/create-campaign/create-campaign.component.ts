@@ -559,19 +559,19 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.loadUsers(this.id,this.contactsUsersPagination,this.listName);
         }else if(module=="emailTemplates"){
             this.emailTemplatesPagination.pageIndex = pageIndex;
-            if(this.isOnlyPartner){
-                this.loadPartnerEmailTemplates(this.emailTemplatesPagination);
-            }else{
-                this.loadEmailTemplates(this.emailTemplatesPagination);
-            }
-
+            this.emailTemplatesLoad();
         }else if(module=="partner-videos"){
             this.channelVideosPagination.pageIndex  = pageIndex;
             this.loadPartnerVideos(this.channelVideosPagination);
         }
 
     }
+    emailTemplatesLoad(){
+      if(this.isOnlyPartner){this.loadPartnerEmailTemplates(this.emailTemplatesPagination);
+      }else{ this.loadEmailTemplates(this.emailTemplatesPagination); }
+    }
     setPagePagination(event:any){ this.setPage(event.page, event.type);}
+    loadPaginationDropdownTemplates(event:Pagination){ this.emailTemplatesLoad();}
     /*************************************************************Campaign Details***************************************************************************************/
     isValidEmail:boolean = false;
     isValidCampaignName:boolean = true;

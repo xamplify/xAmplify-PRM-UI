@@ -130,3 +130,8 @@ background: #ffffff;
 .margin-css{
   margin-bottom: 3px;
 }
+.custom-pagination {
+  position: relative;
+  top: 0px;
+  margin-left: -6px;
+}

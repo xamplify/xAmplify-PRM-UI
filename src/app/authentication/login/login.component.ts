@@ -75,7 +75,7 @@ export class LoginComponent implements OnInit, OnDestroy {
                   const body = error['_body'];
                   if (body !== "") {
                       const response = JSON.parse(body);
-                      if (response.error_description === "Bad credentials" ) {
+                      if (response.error_description === "Bad credentials" || response.error_description ==="Username/password are wrong") {
                           this.setCustomeResponse("ERROR", this.properties.BAD_CREDENTIAL_ERROR);
                       } else if (response.error_description === "User is disabled") {
                         this.resendActiveMail = true;
@@ -101,9 +101,9 @@ export class LoginComponent implements OnInit, OnDestroy {
     redirectTo(user: User) {
         this.loading = false;
         const roles = user.roles;
-        
+
         if(this.authenticationService.isSuperAdmin()){
-            this.router.navigate(['/home/dashboard/admin-report']);  
+            this.router.navigate(['/home/dashboard/admin-report']);
         }else if (user.hasCompany || roles.length === 1) {
             this.router.navigate([this.referenceService.homeRouter]);
         } else {
