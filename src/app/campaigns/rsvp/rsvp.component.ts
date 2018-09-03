@@ -64,6 +64,7 @@ export class RsvpComponent implements OnInit {
   }
 
   saveEventCampaignRsvp() {
+    this.campaignRsvp.additionalCount = this.totalGuests;
     this.campaignService.saveEventCampaignRsvp(this.campaignRsvp)
       .subscribe(
       response => {
