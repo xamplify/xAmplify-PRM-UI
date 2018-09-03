@@ -128,8 +128,8 @@ export class CampaignService {
             .catch(this.handleError);
     }
 
-    listCampaignViews(campaignId: number, pagination: Pagination) {
-        return this.http.post(this.URL + 'campaign/views/' + campaignId + '?access_token=' + this.authenticationService.access_token, pagination)
+    listCampaignViews(campaignId: number, pagination: Pagination, isChannelCampaign: boolean) {
+        return this.http.post(this.URL + 'campaign/views/' + campaignId + '/'+ isChannelCampaign + '?access_token=' + this.authenticationService.access_token, pagination)
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -264,22 +264,22 @@ export class CampaignService {
 
     }
     
-    getEventCampaignDetailsByCampaignId(campaignId: number) {
-        const url = this.URL + 'campaign/' + campaignId + '/rsvp-details?access_token=' + this.authenticationService.access_token;
+    getEventCampaignDetailsByCampaignId(campaignId: number, isChannelCampaign: boolean) {
+        const url = this.URL + 'campaign/' + campaignId + '/rsvp-details?access_token=' + this.authenticationService.access_token + '&channelCampaign=' + isChannelCampaign;
         return this.http.get(url)
             .map(this.extractData)
             .catch(this.handleError);
     }
     
-    getEventCampaignDetailAnalytics(campaignId: number, resposeType: any) {
-        const url = this.URL + 'campaign/' + campaignId + '/rsvp-user-details/'+ resposeType +'?access_token=' + this.authenticationService.access_token;
+    getEventCampaignDetailAnalytics(campaignId: number, resposeType: any, isChannelCampaign: boolean) {
+        const url = this.URL + 'campaign/' + campaignId + '/rsvp-user-details/'+ resposeType +'?access_token=' + this.authenticationService.access_token + '&channelCampaign=' + isChannelCampaign;
         return this.http.get(url)
             .map(this.extractData)
             .catch(this.handleError);
     }
     
-    getRedistributionEventCampaignDetailAnalytics(campaignId: number, resposeType: any, userId: number) {
-        const url = this.URL + 'campaign/' + campaignId + '/' + userId + '/rsvp-user-details/'+ resposeType +'?access_token=' + this.authenticationService.access_token;
+    getRedistributionEventCampaignDetailAnalytics(campaignId: number, resposeType: any, userId: number, isChannelCampaign: boolean) {
+        const url = this.URL + 'campaign/' + campaignId + '/' + userId + '/rsvp-user-details/'+ resposeType +'?access_token=' + this.authenticationService.access_token + '&channelCampaign=' + isChannelCampaign;
         return this.http.get(url)
             .map(this.extractData)
             .catch(this.handleError);

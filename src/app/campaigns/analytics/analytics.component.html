@@ -9,9 +9,12 @@
 	}
 .btn-social { color: #fff;}
 </style>
+<app-detail-view *ngIf="showRsvpDetails" [detailType]="rsvpResposeType" [details]="rsvpDetailsList"></app-detail-view>
 <!-- <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading> -->
-<div class="page-content" *ngIf="!isTimeLineView">
-<div class="page-bar square-box" style="margin: 0 10px 15px;border-radius: 0;">
+
+<div class="page-content" *ngIf="!isTimeLineView && !showRsvpDetails">
+
+<div class="page-bar square-box" style="margin: 0 0px 15px;border-radius: 0;">
 	<ul class="page-breadcrumb">
 		<li><i class="fa fa-home"></i> <a [routerLink]="referenceService.homeRouter">Home</a> <i class="fa fa-angle-right"></i></li>
 		<li *ngIf="campaignRouter==='managecampaigns'"><a  [routerLink]="['/home/campaigns/manage']">Manage Campaigns</a><i class="fa fa-angle-right"></i></li>
@@ -26,6 +29,8 @@
 	</ul>
 <!--<app-analytics-loader [campaignType]="campaignType" *ngIf="loading"></app-analytics-loader>-->
 </div>
+<div class="portlet light">
+<div class="portlet-body">
 <div *ngIf="customResponse.responseType === 'ERROR'; else NOERROR" class="m10">
 	<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 </div>
@@ -127,9 +132,12 @@
 
 
 	<section *ngIf="campaignType === 'EVENT'" [hidden]="mainLoader">
+	<div class="col-xs-12">
+		<h4 class="pull-left">Your Campaign Total Response</h4>
+		</div>
 		<div class="col-xs-12 col-sm-5 p-5x">
 		<div class="p-5x">
-			<div class="portlet light" style="min-height: 118px;">
+			<div class="portlet light">
 				<div class="portlet-body clearfix">
 					<div class="col-xs-12">
 						<span class="btn btn-sm btn-primary pull-right">{{campaignType}} CAMPAIGN {{isPartnerCampaign}}</span>
@@ -141,72 +149,105 @@
 		</div>
 	</div>
 		<div class="col-xs-12 col-sm-7 p-5x emails-info" [hidden]="mainLoader" >
-		<div class="p-5x" class="col-xs-3">
-			<button class="portlet light color1-invert crcb" (click)="getRsvpDetails('YES')" data-toggle="modal" data-target="#rsvpDetailsModal" [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
+		<div class="col-xs-3">
+			<button class="portlet light color1-invert crcb" (click)="getRsvpDetails('YES')" [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
 			 [disabled]="campaignReport.totalYesCount < 1 ||  !isPartnerEnabledAnalyticsAccess">
 				<div class="portlet-body text-center">
 						<i class="fa fa-check-circle"></i>
 					<h1>
 						<b>{{this.campaignReport.totalYesCount}}</b>
+					
+					<span>Yes</span>
 					</h1>
-					<h5>Total Says Yes</h5>
 				</div>
 			</button>
 		</div>
-		<div class="p-5x" [hidden]="mainLoader"class="col-xs-3">
-			<button class="portlet light color1-invert crcb" data-toggle="modal" data-target="#rsvpDetailsModal" (click)="getRsvpDetails('NO')"  [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
+		<div [hidden]="mainLoader"class="col-xs-3">
+			<button class="portlet light color1-invert crcb" (click)="getRsvpDetails('NO')"  [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
 			 [disabled]="campaignReport.totalNoCount < 1 || !isPartnerEnabledAnalyticsAccess">
 				<div class="portlet-body text-center">
 						<i class="fa fa-times-circle"></i>
 					<h1>
 						<b>{{campaignReport.totalNoCount}}</b>
+						<span>No</span>
 					</h1>
-					<h5>Total Says No</h5>
+					
 				</div>
 			</button>
 		</div>
-		<div class="p-5x" [hidden]="mainLoader"  class="col-xs-3">
-			<button class="portlet light color1-invert crcb" data-toggle="modal" data-target="#rsvpDetailsModal" (click)="getRsvpDetails('MAYBE')"  [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
+		<div [hidden]="mainLoader"  class="col-xs-3">
+			<button class="portlet light color1-invert crcb" (click)="getRsvpDetails('MAYBE')"  [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
 			 [disabled]="campaignReport.totalMayBeCount < 1 || !isPartnerEnabledAnalyticsAccess">
 				<div class="portlet-body text-center">
-						<i class="fa fa-minus-circle"></i>
+						<i class="fa fa-question-circle"></i>
 					<h1>
 						<b>{{campaignReport.totalMayBeCount}}</b>
+						<span>MayBe</span>
 					</h1>
-					<h5>Total Says MayBe</h5>
+					
 				</div>
 			</button>
 		</div>
-		<div [hidden]="mainLoader"  class="col-xs-3 p-5x">
-			<button class="portlet light color1-invert crcb" data-toggle="modal" data-target="#rsvpDetailsModal" (click)="getRsvpDetails('NOTYET')"  [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
+		<div [hidden]="mainLoader"  class="col-xs-3">
+			<button class="portlet light color1-invert crcb" (click)="getRsvpDetails('NOTYET')"  [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
 			 [disabled]="campaignReport.totalNotYetRespondedCount < 1 || !isPartnerEnabledAnalyticsAccess">
 				<div class="portlet-body text-center">
-						<i class="fa fa-eye-slash"></i>
+						<i class="fa fa-exclamation-circle"></i>
 					<h1>
 						<b>{{campaignReport.totalNotYetRespondedCount}}</b>
+					
+					<span>Not yet</span>
 					</h1>
-					<h5>Not yet responded</h5>
 				</div>
 			</button>
 		</div>
 	</div>
 	</section>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	
+	
+	<section *ngIf="campaignType === 'EVENT' && isChannelCampaign" [hidden]="mainLoader">
+		<div class="col-xs-12">
+		<h4 class="pull-left">Your Partners Response</h4>
+		</div>
+		<div class="col-xs-12">
+			<div class="row">
+					<div class="table-responsive">
+ 					<ng-container>
+						<table class="table tgrid">
+							<thead>
+								<tr>
+									<th style="font-size: 12px; font-weight: 500;">RESPONSE DETAILS</th>
+									<th style="font-size: 12px; font-weight: 500;">YES</th>
+									<th style="font-size: 12px; font-weight: 500;">NO</th>
+									<th style="font-size: 12px; font-weight: 500;">MAY BE</th>
+									<th style="font-size: 12px; font-weight: 500;">NOT YET</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>
+										Partners Response
+									</td>
+									<td>
+										<h6>{{campaignReport.partnersYesCount}}</h6>
+									</td>
+									<td>
+										<h6>{{campaignReport.partnersNoCount}}</h6>
+									</td>
+									<td>
+										<h6>{{campaignReport.partnersMayBeCount}}</h6>
+									</td>
+									<td class="center">
+									{{campaignReport.partnersNotYetRespondedCount}}
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						</ng-container>
+					</div>
+				</div>
+	</div>
+	</section>
 
 
 
@@ -230,7 +271,7 @@
 	</div>
 	<div class="col-xs-12 col-sm-6 p-5x" [hidden]="mainLoader" *ngIf="campaignType !== 'VIDEO'">
 		<div class="p-5x">
-			<div class="portlet light" style="min-height: 118px;">
+			<div class="portlet light">
 				<div class="portlet-body clearfix">
 					<div class="col-xs-12">
 						<span class="btn btn-sm btn-primary pull-right">{{campaignType}} CAMPAIGN {{isPartnerCampaign}}</span>
@@ -394,10 +435,11 @@
 						<div class="caption">
 							<span class="caption-subject font-red-sunglo" style="font-size: 15px !important;">
 								<span *ngIf="campaignType==='VIDEO'">TOTAL VIEWS FOR THIS CAMPAIGN</span>
-								<span *ngIf="campaignType!=='VIDEO'">TOTAL EMAIL OPENED FOR THIS CAMPAIGN</span>
+								<span *ngIf="campaignType!=='VIDEO' && campaignType!=='EVENT'">TOTAL EMAIL OPENED FOR THIS CAMPAIGN</span>
+								<span *ngIf="campaignType === 'EVENT'">RE DISTRIBUTION PARTNER CAMAPAIGN ANALYTICS</span>
 							</span>
 						</div>
-						<div class="btn-group pull-right" style="margin-top: -4px; cursor:pointer; color: #7d8c98">
+						<div class="btn-group pull-right" style="margin-top: -10px; cursor:pointer; color: #7d8c98">
 							<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none;margin-top: 14px;margin-right: 21px; float:right;">
                 <i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
               </span>
@@ -412,12 +454,18 @@
 							<table class="table tgrid">
 								<thead>
 									<tr>
-										<th style="font-size: 12px;font-weight: 500;">NAME</th>
-										<th style="font-size: 12px;font-weight: 500;">CAMPAIGN NAME</th>
-										<th style="font-size: 12px;font-weight: 500;">LATEST VIEW</th>
-										<th style="font-size: 12px;font-weight: 500;">
-											<span *ngIf="campaignType==='VIDEO'">TOTAL VIEWS</span>
-											<span *ngIf="campaignType!=='VIDEO'">TOTAL EMAIL OPENED</span>
+										<th style="font-size: 12px;font-weight: 500; width: 25%;">Name</th>
+										<th style="font-size: 12px;font-weight: 500;">Campaign Name</th>
+									<!-- 	<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='EVENT'">Redistribution Time</th> -->
+										<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='EVENT' && isChannelCampaign">Yes</th>
+										<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='EVENT' && isChannelCampaign">No</th>
+										<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='EVENT' && isChannelCampaign">May Be</th>
+										<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='EVENT' && isChannelCampaign">Not Yet</th>
+										<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='EVENT' && !isChannelCampaign">Response Type</th>
+										<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='VIDEO' || campaignType!=='EVENT'">Latest View</th>
+										<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType!=='EVENT'">
+											<span *ngIf="campaignType==='VIDEO'">Total Views</span>
+											<span *ngIf="campaignType!=='VIDEO'">Total Email Opened</span>
 										</th>
 									</tr>
 								</thead>
@@ -433,11 +481,19 @@
                       </h6>
 											<h4 *ngIf="item.campaignName==null">-</h4>
 										</td>
+									<!-- 	<td class="text-center" *ngIf="campaignType==='EVENT'">20 August</td> -->
+										<td class="text-center" *ngIf="campaignType==='EVENT' && isChannelCampaign">{{item.rsvpMap.YES}}</td>
+										<td class="text-center" *ngIf="campaignType==='EVENT' && isChannelCampaign">{{item.rsvpMap.NO}}</td>
+										<td class="text-center" *ngIf="campaignType==='EVENT' && isChannelCampaign">{{item.rsvpMap.MAYBE}}</td>
+										<td class="text-center" *ngIf="campaignType==='EVENT' && isChannelCampaign">{{item.rsvpMap.notYetResponded}}</td>
+										<td class="text-center" *ngIf="campaignType==='EVENT' && !isChannelCampaign">{{item.rsvpMap.responseType}}
+										<span *ngIf="item.rsvpMap.responseType === null"><b>-</b></span>
+										</td>
 										<!-- <td class="td-chart"><h6>{{item.userEmail}}</h6></td> -->
-										<td class="td-chart">
+										<td class="td-chart" *ngIf="campaignType!=='EVENT'">
 											<h6>{{item.latestView |date:'MM/dd/yyyy @ h:mma'}}<span *ngIf="! item?.latestView">-</span></h6>
 										</td>
-										<td class="td-chart">
+										<td class="td-chart" *ngIf="campaignType!=='EVENT'">
 											<div class="bg-color" [style.width.%]="(item.viewsCount/maxViewsValue)*100" style="margin: 10px 0px;">
 												<h1 style="text-align: center;vertical-align: middle;color:white;font-size: 17px;">{{item.viewsCount}}</h1>
 											</div>
@@ -457,6 +513,8 @@
 
 </ng-template>
 </div>
+</div>
+</div>
 
 
 
@@ -467,7 +525,7 @@
 			aria-hidden="true"></span></a>
 	<div class="col-xs-12 col-sm-5 p-5x">
 		<div class="p-5x">
-			<div class="portlet light" style="min-height: 118px;position: relative;top: 42px;">
+			<div class="portlet light" style="position: relative;top: 42px;">
 				<div class="portlet-body clearfix">
 					<div class="col-xs-12">
 						<span class="btn btn-sm btn-primary pull-right">{{campaignType}} CAMPAIGN {{isPartnerCampaign}}</span>
@@ -507,7 +565,7 @@
 			<button class="portlet light color1-invert crcb" data-toggle="modal" data-target="#rsvpDetailsModal" (click)="getRsvpDetails('MAYBE','reDistribution')"  [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
 			 [disabled]="campaignReport.redistributionTotalMayBeCount < 1 || !isPartnerEnabledAnalyticsAccess">
 				<div class="portlet-body text-center">
-						<i class="fa fa-minus-circle"></i>
+						<i class="fa fa-question-circle"></i>
 					<h1>
 						<b>{{campaignReport.redistributionTotalMayBeCount}}</b>
 					</h1>
@@ -519,7 +577,7 @@
 			<button class="portlet light color1-invert crcb" data-toggle="modal" data-target="#rsvpDetailsModal" (click)="getRsvpDetails('NOTYET', 'reDistribution')"  [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
 			 [disabled]="campaignReport.redistributionTotalNotYetRespondedCount < 1 || !isPartnerEnabledAnalyticsAccess">
 				<div class="portlet-body text-center">
-						<i class="fa fa-eye-slash"></i>
+						<i class="fa fa-exclamation-circle"></i>
 					<h1>
 						<b>{{campaignReport.redistributionTotalNotYetRespondedCount}}</b>
 					</h1>
@@ -528,8 +586,53 @@
 			</button>
 		</div>
 	</div>
+	
+	
+	
+		<div class="col-xs-12" style="padding: 10px 0px 5px 16px;">
+				<h4 class="pull-left" *ngIf="rsvpResposeType === 'YES'">People who have says YES</h4>
+				<h4 class="pull-left" *ngIf="rsvpResposeType === 'NO'">People who have says NO</h4>
+				<h4 class="pull-left" *ngIf="rsvpResposeType === 'MAYBE'">People who have says MAY BE</h4>
+				<h4 class="pull-left" *ngIf="rsvpResposeType === 'NOTYET'">People who NOT YET RESPONDED</h4>
+    </div>
+    
+    <div class="col-xs-12">
+					<div class="table-responsive">
+					<!--  <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader> -->
+				 	<ng-container>
+						<table class="table tgrid">
+							<thead>
+								<tr>
+									<th style="font-size: 12px; font-weight: 500;" style="width:50%">NAME</th>
+									<th style="font-size: 12px; font-weight: 500;">MESSAGE</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr *ngFor="let item of rsvpDetailsList">
+									<td>
+										<app-user-info  [userInfo]="item"> </app-user-info>
+									</td>
+									<td>
+										<h6>{{item.message}}</h6>
+										<h6 *ngIf="!item.message" style="text-align:center"><b>-</b></h6>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						</ng-container>
+						<!-- <app-pagination [pagination]="campaignViewsPagination"
+						 [type]="'campaignViews'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination> -->
+					</div>
+				</div>
+	
+	
+	
 
 	</div>
+	
+
+	
+	
 </div>
 </section>
 
@@ -841,7 +944,7 @@
 
 
 <!-- RSVP showing details modal -->
-<div class="modal fade" id="rsvpDetailsModal" tabindex="-1" role="dialog" aria-labelledby="emailSentListModalLabel" data-backdrop="static"
+<!-- <div class="modal fade" id="rsvpDetailsModal" tabindex="-1" role="dialog" aria-labelledby="emailSentListModalLabel" data-backdrop="static"
  data-keyboard="false">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
@@ -863,7 +966,7 @@
 			<div class="modal-body">
 				<div class="row">
 					<div class="table-responsive">
-					<!--  <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader> -->
+					 <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
 				 	<ng-container>
 						<table class="table tgrid">
 							<thead>
@@ -885,15 +988,15 @@
 							</tbody>
 						</table>
 						</ng-container>
-						<!-- <app-pagination [pagination]="campaignViewsPagination"
-						 [type]="'campaignViews'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination> -->
+						<app-pagination [pagination]="campaignViewsPagination"
+						 [type]="'campaignViews'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
-
+ -->
 
 <!-- Email Sent List Modal -->
 <div class="modal fade" id="emailSentListModal" tabindex="-1" role="dialog" aria-labelledby="emailSentListModalLabel" data-backdrop="static"

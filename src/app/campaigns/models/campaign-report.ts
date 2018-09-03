@@ -31,6 +31,11 @@ export class CampaignReport {
     totalMayBeCount: number = 0;
     totalNotYetRespondedCount: number = 0;
 
+    partnersYesCount: number = 0;
+    partnersNoCount: number = 0;
+    partnersMayBeCount: number = 0;
+    partnersNotYetRespondedCount: number = 0;
+
     redistributionTotalYesCount: number = 0;
     redistributionTotalNoCount: number = 0;
     redistributionTotalMayBeCount: number = 0;

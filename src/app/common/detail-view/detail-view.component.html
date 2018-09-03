@@ -1,0 +1,52 @@
+<section>
+<div id="timeline-view" class="page-content">
+	<div class="page-bar" style="min-height: 572px;">
+		<div class="col-xs-12" style="padding: 10px 0px 5px 16px;">
+				<h4 class="pull-left" *ngIf="detailType === 'YES'">People who have says YES</h4>
+				<h4 class="pull-left" *ngIf="detailType === 'NO'">People who have says NO</h4>
+				<h4 class="pull-left" *ngIf="detailType === 'MAYBE'">People who have says MAY BE</h4>
+				<h4 class="pull-left" *ngIf="detailType === 'NOTYET'">People who NOT YET RESPONDED</h4>
+				<a (click)="analyticsComponent.showRsvpDetails = false" class="pull-right close-circle" style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;"> <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;"
+			aria-hidden="true"></span></a>
+				<div class="btn-group pull-right" style="margin: 28px 4px 0px 0px; cursor:pointer; color: #7d8c98">
+					<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none;margin: -15px;padding-right: 10px;float:right;">
+					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
+				</span>
+					<ul class="dropdown-menu pull-right">
+						<li><a id="delete_button" (click)="downloadEmailLogs()"> Export To Excel </a></li>
+					</ul>
+				</div>
+    </div>
+    
+    <div class="col-xs-12">
+					<div class="table-responsive">
+					<!--  <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader> -->
+				 	<ng-container>
+						<table class="table tgrid">
+							<thead>
+								<tr>
+									<th style="font-size: 12px; font-weight: 500;" style="width:50%">NAME</th>
+									<th style="font-size: 12px; font-weight: 500;">MESSAGE</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr *ngFor="let item of details">
+									<td>
+										<app-user-info  [userInfo]="item"> </app-user-info>
+									</td>
+									<td>
+										<h6>{{item.message}}</h6>
+										<h6 *ngIf="!item.message" style="text-align:center"><b>-</b></h6>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						</ng-container>
+						<!-- <app-pagination [pagination]="campaignViewsPagination"
+						 [type]="'campaignViews'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination> -->
+					</div>
+				</div>
+	</div>
+</div>
+</section>
+

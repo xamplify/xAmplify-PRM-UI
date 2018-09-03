@@ -30,6 +30,7 @@ declare var $, Highcharts: any;
 export class AnalyticsComponent implements OnInit , OnDestroy{
   isTimeLineView: boolean;
   campaign: Campaign;
+  isChannelCampaign: boolean;
   selectedRow: any = new Object();
   videoLength: number;
   campaignViews: any;
@@ -82,6 +83,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   mainLoader = false;
   logListName = "";
   selectedRsvpPartnerId: number = 0;
+  showRsvpDetails = false;
   rsvpDetailsList: any;
   reDistributionRsvpDetails: any;
   rsvpResposeType = '';
@@ -124,7 +126,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       this.referenceService.loading(this.httpRequestLoader, true);
       this.downloadTypeName = this.paginationType = 'campaignViews';
     this.listTotalCampaignViews(campaignId);
-    this.campaignService.listCampaignViews(campaignId, pagination)
+    this.campaignService.listCampaignViews(campaignId, pagination, this.isChannelCampaign)
       .subscribe(
       data => {
         this.campaignViews = data.campaignviews;
@@ -279,7 +281,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     try{
     this.loading = true;
     this.paginationType = 'viewsBarChart';
-    this.campaignService.listCampaignViews(campaignId, pagination)
+    this.campaignService.listCampaignViews(campaignId, pagination, this.isChannelCampaign)
       .subscribe(
       data => {
         console.log(data);
@@ -571,6 +573,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       .subscribe(
       data => {
         this.campaign = data;
+        this.isChannelCampaign = data.channelCampaign;
         if(this.campaign.nurtureCampaign && this.campaign.userId!=this.loggedInUserId){
             this.isPartnerEnabledAnalyticsAccess = this.campaign.detailedAnalyticsShared;
             this.isNavigatedThroughAnalytics = true;
@@ -610,6 +613,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
           }
         }
         this.loading = false;
+        this.getEmailSentCount(this.campaignId);
       }
       )
     } catch(error){this.xtremandLogger.error(error); }
@@ -635,7 +639,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   getEventCampaignByCampaignId(campaignId: number) {
       try{
           this.loading = true;
-            this.campaignService.getEventCampaignDetailsByCampaignId(campaignId)
+            this.campaignService.getEventCampaignDetailsByCampaignId(campaignId, this.isChannelCampaign)
             .subscribe(
             data => {
               console.log(data);
@@ -643,6 +647,27 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
               this.campaignReport.totalMayBeCount = data.MAYBE;
               this.campaignReport.totalNoCount = data.NO;
               this.campaignReport.totalNotYetRespondedCount = data.notYetResponded;
+              this.getPartnersResponeCount(campaignId);
+              this.loading = false;
+            },
+            error => this.xtremandLogger.error(error),
+            () => { }
+            )
+          }catch(error){
+            this.xtremandLogger.error('error'+error)
+          }
+        }
+  
+  getPartnersResponeCount(campaignId: number) {
+      try{
+            this.campaignService.getEventCampaignDetailsByCampaignId(campaignId, false)
+            .subscribe(
+            data => {
+              console.log(data);
+              this.campaignReport.partnersYesCount = data.YES;
+              this.campaignReport.partnersMayBeCount = data.MAYBE;
+              this.campaignReport.partnersNoCount = data.NO;
+              this.campaignReport.partnersNotYetRespondedCount = data.notYetResponded;
               this.loading = false;
             },
             error => this.xtremandLogger.error(error),
@@ -658,9 +683,8 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
           this.loading = true;
           this.downloadTypeName = 'rsvp';
           this.rsvpResposeType = responseType;
-            
           if(detailType === 'reDistribution'){
-              this.campaignService.getRedistributionEventCampaignDetailAnalytics( this.campaign.campaignId, responseType, this.selectedRsvpPartnerId )
+              this.campaignService.getRedistributionEventCampaignDetailAnalytics( this.campaign.campaignId, responseType, this.selectedRsvpPartnerId, this.isChannelCampaign )
               .subscribe(
               data => {
                 console.log(data);
@@ -671,7 +695,8 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
               () => { }
               ) 
           }else{
-          this.campaignService.getEventCampaignDetailAnalytics( this.campaign.campaignId, responseType )
+              this.showRsvpDetails = true;
+              this.campaignService.getEventCampaignDetailAnalytics( this.campaign.campaignId, responseType, this.isChannelCampaign )
             .subscribe(
             data => {
               console.log(data);
@@ -700,6 +725,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
               this.campaignReport.redistributionTotalMayBeCount = data.MAYBE;
               this.campaignReport.redistributionTotalNoCount = data.NO;
               this.campaignReport.redistributionTotalNotYetRespondedCount = data.notYetResponded;
+              this.getRsvpDetails('YES', 'reDistribution');
               this.loading = false;
             },
             error => this.xtremandLogger.error(error),
@@ -834,7 +860,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       this.loading = true;
       this.downloadTypeName ='campaignViews';
       this.campaignTotalViewsPagination.maxResults = this.campaignReport.emailSentCount;
-      this.campaignService.listCampaignViews(campaignId, this.campaignTotalViewsPagination)
+      this.campaignService.listCampaignViews(campaignId, this.campaignTotalViewsPagination,  this.isChannelCampaign)
       .subscribe(
       data => {
         this.campaignTotalViewsData = data.campaignviews;
@@ -1029,7 +1055,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     this.emailActionListPagination.pageIndex = 1;
     this.campaignId = this.route.snapshot.params['campaignId'];
     this.getCampaignById(this.campaignId);
-    this.getEmailSentCount(this.campaignId);
+   /* this.getEmailSentCount(this.campaignId);*/
     this.getEmailLogCountByCampaign(this.campaignId);
     this.pagination.pageIndex = 1;
     if (this.isTimeLineView === true) {
