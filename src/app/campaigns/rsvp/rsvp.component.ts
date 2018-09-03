@@ -51,7 +51,11 @@ export class RsvpComponent implements OnInit {
     templateBody = templateBody.replace('EVENT_TITLE', this.eventcampaign.campaign);
     templateBody = templateBody.replace('EVENT_START_TIME', this.eventcampaign.campaignEventTimes[0].startTimeString);
     templateBody = templateBody.replace('EVENT_END_TIME', this.eventcampaign.campaignEventTimes[0].endTimeString);
-    templateBody = templateBody.replace('EVENT_LOCATION', 'Location: '+this.eventcampaign.campaignLocation.location);
+    if(this.eventcampaign.campaignLocation.location){
+      templateBody = templateBody.replace('EVENT_LOCATION', 'Location: '+this.eventcampaign.campaignLocation.location);
+    }else {
+      templateBody = templateBody.replace('EVENT_LOCATION', '');
+    }
     templateBody = templateBody.replace('EVENT_DESCRIPTION', 'Message:'+this.eventcampaign.message);
 
     templateBody = templateBody.replace('href="LINK_YES"',"hidden");
