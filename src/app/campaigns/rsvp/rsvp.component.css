@@ -19,19 +19,6 @@ button {
   border-radius: 0px !important;
   font-size: 15px !important;
 }
-.text-line {
-  margin-bottom: 6px;
-  margin-left: 7px;
-  background-color: transparent;
-  outline: none;
-  outline-style: none;
-  outline-offset: 0;
-  border-top: none;
-  border-left: none;
-  border-right: none;
-  border-bottom: 1px solid #8c8b8b;
-  padding: 0px 11px;
-}
 .totalguests {
   margin-left: -3px;
   background: #ffffff;
@@ -39,4 +26,9 @@ button {
 }
 .selectedType{
   background: #95b101;
+}
+.alertDanger{
+  margin: 9px 8px;
+  position: relative;
+  left: -7px;
 }

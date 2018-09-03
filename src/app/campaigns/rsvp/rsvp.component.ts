@@ -31,11 +31,12 @@ export class RsvpComponent implements OnInit {
   getEventCampaign (alias: string) {
     this.campaignService.getEventCampaignByAlias(alias)
       .subscribe(
-      response => {
+      (response:any) => {
         this.eventcampaign = response;
         this.dataContainer.nativeElement.innerHTML = this.addURLs(this.eventcampaign.emailTemplateDTO.body);
         this.isRsvp = this.eventcampaign.campaignEventRsvps.length>0 ? true: false;
         this.campaignRsvp.alias = this.alias;
+        this.replyUserName = response.targetUserDTO.firstName;
         this.processor.remove(this.processor);
       },
       error => {
