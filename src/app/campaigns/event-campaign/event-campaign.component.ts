@@ -74,6 +74,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   names: string[] = [];
   editedCampaignName = '';
   datePassedError = '';
+  endDateErrorMesg = '';
   endDatePassedError = '';
   endDatePassError = false;
   currentDate:any;
@@ -229,7 +230,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
      const startDate = Date.parse(this.eventCampaign.campaignEventTimes[0].startTimeString);
      if(startDate < currentDate) { this.setStartTimeErrorMessage(true, 'Start Date / Time is already over.');}
      else if( startDate > currentDate){ this.setStartTimeErrorMessage(false, '');}
-     else if(!this.eventCampaign.campaignEventTimes[0].startTimeString){this.setStartTimeErrorMessage(true, 'Please select the start Date and time.'); }
+     else if(!this.eventCampaign.campaignEventTimes[0].startTimeString){this.setStartTimeErrorMessage(true, 'The start Date is required'); }
      else { this.setStartTimeErrorMessage(false, ''); }
      this.eventSameDateError();
   }
@@ -240,9 +241,10 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   eventEndTimeError(){
   if(!this.eventCampaign.campaignEventTimes[0].allDay){
     this.eventError.eventEndDateError = !this.eventCampaign.campaignEventTimes[0].endTimeString ? true: false;
-    this.datePassedError = 'The End Date is required.'
+    this.endDateErrorMesg = 'The End Date is required.'
   } else {
     this.eventError.eventEndDateError = false;
+    this.endDateErrorMesg = '';
    }
    this.eventSameDateError();
   }
@@ -357,6 +359,14 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     this.eventCampaign.campaignEventTimes[0].allDay = !this.eventCampaign.campaignEventTimes[0].allDay;
     if(this.eventCampaign.campaignEventTimes[0].allDay && this.eventCampaign.campaignEventTimes[0].endTimeString){
       this.eventCampaign.campaignEventTimes[0].endTimeString = '';
+      this.eventError.eventDateError = false;
+    } else if(this.eventCampaign.campaignEventTimes[0].allDay){
+      this.endDateErrorMesg = '';
+      this.eventError.eventEndDateError = false;
+    }
+     else {
+      this.endDateErrorMesg = 'The End date is required';
+      this.eventError.eventEndDateError = true;
     }
   }
   toggleContactLists() {

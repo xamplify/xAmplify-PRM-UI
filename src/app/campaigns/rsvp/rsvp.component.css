@@ -1,16 +1,42 @@
 button {
-    min-width: 100px;
-    border-radius: 30px !important;
+  min-width: 100px;
+  border-radius: 30px !important;
 }
 .event-title {
-    font-family: Century Gothic;
-    font-size: 42px;
-    color: #95B101;
-    line-height: 51px;
-    text-align: center;
+  font-family: Century Gothic;
+  font-size: 32px;
+  color: #95b101;
+  line-height: 51px;
+  text-align: center;
 }
 .event-details {
-    background-color: #f1f1f1;
-    border: none;
-    padding: inherit;
+  background-color: #f1f1f1;
+  border: none;
+  padding: inherit;
+}
+.default-btn-css {
+  min-width: 0px !important;
+  border-radius: 0px !important;
+  font-size: 15px !important;
+}
+.text-line {
+  margin-bottom: 6px;
+  margin-left: 7px;
+  background-color: transparent;
+  outline: none;
+  outline-style: none;
+  outline-offset: 0;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 1px solid #8c8b8b;
+  padding: 0px 11px;
+}
+.totalguests {
+  margin-left: -3px;
+  background: #ffffff;
+  border: 0.23px solid #ece8e8;
+}
+.selectedType{
+  background: #95b101;
 }
