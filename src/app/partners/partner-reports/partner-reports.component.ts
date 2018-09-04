@@ -174,14 +174,14 @@ export class PartnerReportsComponent implements OnInit {
   }
 
   setPage(event) {
-    if (this.paginationType === 'userInteraction') {
+   if (event.type === 'userInteraction') {
       this.pagination.pageIndex = event.page;
       this.listRedistributedThroughPartnerCampaigns(this.pagination);
-    } else if (this.paginationType === 'partnerInteraction') {
+    } else if (event.type === 'partnerInteraction') {
       this.campaignInteractionPagination.pageIndex = event.page;
       this.partnerCampaignInteraction(this.campaignId);
     }
-    else if (this.paginationType === 'ActivePartnerPagination') {
+    else if (event.type === 'ActivePartnerPagination') {
         this.activePartnersPagination.pageIndex = event.page;
         this.getActivePartnerReports();
       }
@@ -189,6 +189,10 @@ export class PartnerReportsComponent implements OnInit {
   closeModalPopUp() {
     this.paginationType = 'userInteraction';
     this.campaignInteractionPagination =  new Pagination();
+  }
+  totalActivePartners(event){
+    this.activePartnersPagination = event;
+    this.getActivePartnerReports();
   }
   paginationDropdown(event) {
     if (this.paginationType == 'userInteraction') {
@@ -238,7 +242,7 @@ export class PartnerReportsComponent implements OnInit {
       this.throughPartnerCampaignPagination.reDistributedPartnerAnalytics = true;
       this.listThroughPartnerCampaigns(this.throughPartnerCampaignPagination);
   }
-  
+
 
   listThroughPartnerCampaigns(pagination: Pagination) {
       this.referenseService.loading(this.httpRequestLoader, true);
@@ -332,7 +336,7 @@ export class PartnerReportsComponent implements OnInit {
           pagination.sortingOrder = options[1];
       }
   }
-  
+
   /************************InActive Partners Tab********************/
   goToInActivePartnersDiv(){
       this.sortOption = new SortOption();
@@ -412,9 +416,9 @@ export class PartnerReportsComponent implements OnInit {
       this.referenseService.campaignType = campaign.campaignType;
       this.router.navigate(["/home/campaigns/"+campaign.campaignId+"/details"]);
   }
-  
-  
-  
+
+
+
   /*************List Redistributed Through Partner Campaigns************/
   listRedistributedThroughPartnerCampaigns(pagination:Pagination) {
       this.paginationType = 'userInteraction';
@@ -440,8 +444,8 @@ export class PartnerReportsComponent implements OnInit {
         });
       item.expand = !item.expand;
   }
-  
-  
+
+
   ngOnInit() {
       if(this.loggedInUserId>0){
         this.paginationType = 'userInteraction';
@@ -457,5 +461,5 @@ export class PartnerReportsComponent implements OnInit {
     }
 
   }
-  
+
 }
