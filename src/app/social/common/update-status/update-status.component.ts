@@ -1,30 +1,27 @@
-import {Component, OnInit, Input, Output, EventEmitter, OnDestroy} from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router';
+import { Component, OnInit, Input,OnDestroy } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { XtremandLogger } from '../../../error-pages/xtremand-logger.service';
-import {SaveVideoFile} from '../../../videos/models/save-video-file';
+import { SaveVideoFile } from '../../../videos/models/save-video-file';
 
-import {SocialStatusDto} from '../../models/social-status-dto';
-import {SocialStatus} from '../../models/social-status';
-import {SocialStatusContent} from '../../models/social-status-content';
-import {SocialStatusProvider} from '../../models/social-status-provider';
+import { SocialStatusDto } from '../../models/social-status-dto';
+import { SocialStatus } from '../../models/social-status';
+import { SocialStatusContent } from '../../models/social-status-content';
+import { SocialStatusProvider } from '../../models/social-status-provider';
 
-import {ContactList} from '../../../contacts/models/contact-list';
-import {Campaign} from '../../../campaigns/models/campaign';
+import { ContactList} from '../../../contacts/models/contact-list';
+import { CustomResponse } from '../../../core/models/custom-response';
+import { ResponseType } from '../../../core/models/response-type';
 
-import {CustomResponse} from '../../../core/models/custom-response';
-import {ResponseType} from '../../../core/models/response-type';
-
-import {AuthenticationService} from '../../../core/services/authentication.service';
-import {PagerService} from '../../../core/services/pager.service';
-import {SocialService} from '../../services/social.service';
-import {TwitterService} from '../../services/twitter.service';
-import {FacebookService} from '../../services/facebook.service';
-import {VideoFileService} from '../.././../videos/services/video-file.service';
-import {ContactService} from '../.././../contacts/services/contact.service';
-import {VideoUtilService} from '../../../videos/services/video-util.service';
-import {Pagination} from '../../../core/models/pagination';
-import {CallActionSwitch} from '../../../videos/models/call-action-switch';
+import { AuthenticationService } from '../../../core/services/authentication.service';
+import { PagerService } from '../../../core/services/pager.service';
+import { SocialService } from '../../services/social.service';
+import { VideoFileService } from '../.././../videos/services/video-file.service';
+import { ContactService } from '../.././../contacts/services/contact.service';
+import { VideoUtilService } from '../../../videos/services/video-util.service';
+import { Pagination } from '../../../core/models/pagination';
+import { CallActionSwitch } from '../../../videos/models/call-action-switch';
 import { ReferenceService } from '../../../core/services/reference.service';
+import { Properties } from '../../../common/models/properties';
 
 declare var $, flatpickr, videojs: any;
 
@@ -32,7 +29,7 @@ declare var $, flatpickr, videojs: any;
   selector: 'app-update-status',
   templateUrl: './update-status.component.html',
   styleUrls: ['./update-status.component.css', '../../../../assets/css/video-css/video-js.custom.css'],
-  providers: [PagerService, Pagination, CallActionSwitch]
+  providers: [PagerService, Pagination, CallActionSwitch,Properties]
 })
 export class UpdateStatusComponent implements OnInit, OnDestroy {
   @Input('isSocialCampaign') isSocialCampaign = false;
@@ -44,21 +41,24 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   userId: number;
   socialStatus = new SocialStatus();
   previewContactList = new ContactList();
-  socialStatusDtos = new Array<SocialStatusDto>();
+  socialStatusDtos = new Array<any>();
   customResponse = new CustomResponse();
 
   contactListsPagination: Pagination = new Pagination();
   contactsPagination: Pagination = new Pagination();
   videosPagination: Pagination = new Pagination();
   paginationType: string;
+  location:any;
+  channelCampaign: boolean;
 
-  constructor(private socialService: SocialService, private twitterService: TwitterService,
-    private facebookService: FacebookService, private videoFileService: VideoFileService,
+  constructor(private socialService: SocialService,
+    private videoFileService: VideoFileService, public properties:Properties,
     public authenticationService: AuthenticationService, private contactService: ContactService,
     private pagerService: PagerService, private router: Router, public videoUtilService: VideoUtilService,
     private logger: XtremandLogger, public callActionSwitch: CallActionSwitch, private route: ActivatedRoute,
-    public referenceService:ReferenceService)
-    {
+    public referenceService:ReferenceService){
+    this.channelCampaign = true;
+    this.location = this.router.url;
     this.resetCustomResponse();
     this.userId = this.authenticationService.getUserId();
     this.socialStatus.userId = this.userId;
@@ -67,7 +67,9 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     this.customResponse.type = null;
     this.customResponse.statusText = null;
   }
-
+  changeChannelCampaign(){
+    this.channelCampaign = !this.channelCampaign;
+  }
   setCustomResponse(type: ResponseType, statusText: string) {
     this.customResponse.type = type;
     this.customResponse.statusText = statusText;
@@ -167,7 +169,6 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   }
 
   removeItem(i: number, socialStatusContent: SocialStatusContent) {
-    debugger;
     this.resetCustomResponse();
     console.log(socialStatusContent + '' + i);
     this.socialService.removeMedia(socialStatusContent.fileName)

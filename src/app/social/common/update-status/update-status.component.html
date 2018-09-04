@@ -6,7 +6,12 @@
 				<a [routerLink]="referenceService.homeRouter">Home</a>
 				<i class="fa fa-angle-right"></i>
 			</li>
-			<li>Update Status</li>
+      <li *ngIf="location.includes('/social/update-status')" style="color: #808680;">Update Status</li>
+      <ng-container *ngIf="location.includes('/campaigns/social')">
+      <li style="color: #808680;"><a  [routerLink]="['/home/campaigns/select']">Select Campaign</a></li>
+      <i class="fa fa-angle-right" style="color: #808680;"></i>
+      <li style="color: #808680;"><a>Create Campaign</a></li>
+      </ng-container>
 		</ul>
 	</div>
 	<div class="row">
@@ -48,7 +53,7 @@
 					<a class="btn btn-update-status" [routerLink]="['/home/social/manage/all']" style="border: 1px solid;">Manage Accounts</a>
 				</div>
 			</div>
-			<div class="col-sm-12 alert alert-info rounded-0">
+			<div class="col-sm-12 alert alert-info rounded-0 custom-alert">
 				<h5>You may include up to 4 photos or 1 video in a Tweet.</h5>
 				<h5>
 					<strong>Image specifications:</strong>
@@ -71,25 +76,39 @@
 
 		<div class="col-md-9 col-sm-12" *ngIf='socialStatus.socialStatusProviders?.length === 0'>
 			<div class='alert alert-info'>
-				<h4 class='m0 bold'>
-					<i class="fa fa-exclamation-circle pr10" aria-hidden="true"></i> You have not added any social accounts.</h4>
+				<h4 class='m0 bold'><i class="fa fa-exclamation-circle pr10" aria-hidden="true"></i> You have not added any social accounts.</h4>
 			</div>
 		</div>
 		<div class="col-md-9 col-sm-12" [ngClass]="{'disabled-div': socialStatus.socialStatusProviders?.length === 0}" id="us-right">
 			<div class="col-sm-12 dashboard-stat2 p0 clearfix" *ngIf="isSocialCampaign">
 				<div class="portlet-body clearfix p10">
-					<div class="form-group m0 pull-right">
+					<div class="form-group pull-right">
 						<h5 class="control-label font-purple-intense pr10">Notify Me When Email is opened</h5>
 						<switch [status]="socialStatus.emailOpened" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
 						 [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
 						 (statusChange)="socialStatus.emailOpened = !socialStatus.emailOpened">
 						</switch>
 					</div>
-					<div class="form-group m0">
+					<div class="form-group">
 						<label for="campaignName">
 							<h6 class="caption-subject font-red-sunglo uppercase bold mt0">Campaign</h6>
 						</label>
 						<input type="text" class="form-control input-lg" id="campaignName" placeholder="Campaign Name" [(ngModel)]="socialStatus.campaignName">
+          </div>
+          <div class="form-group" *ngIf="!authenticationService.isOnlyPartner()">
+						<label for="hostedBy" class="col-sm-3 labal-css" >Through Partner</label>
+						<div class="col-sm-3">
+							<switch [status]="channelCampaign" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.onTextValue"
+								[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onGreenColorSwitch" [size]="callActionSwitch.size"
+								(statusChange)="changeChannelCampaign()">
+							</switch>
+            </div>
+            <label for="hostedBy" class="col-sm-2 labal-css p0">To Partner</label>
+            <div class="col-sm-3" style="padding: 0;margin-top: 5px;">
+            <span style="cursor: pointer;color: #54a7e9;" title="{{properties.TO_PARTNER_MESSAGE}}&#013;{{properties.THROUGH_PARTNER_MESSAGE}}">
+              <i class="fa fa-question-circle" ></i>
+          </span>
+          </div>
 					</div>
 				</div>
 			</div>
@@ -276,14 +295,14 @@
 					</section>
 					<section *ngIf="contactListsPagination.pagedItems?.length !== 0">
 						<div class="table-responsive">
-							<table class="table table-condensed table-hover table-bordered table-striped" id='contact-list-table'>
+							<table class="table tgrid" id='contact-list-table'>
 								<thead>
 									<tr>
 										<th>Select</th>
-										<th>Contact list name</th>
-										<th>Created by</th>
-										<th>Created time</th>
-										<th>No of Contacts</th>
+										<th class="text-center">List Name</th>
+										<!-- <th>Created by</th> -->
+										<!-- <th>Created time</th> -->
+										<th>No.of Recipients</th>
 										<th>Preview</th>
 									</tr>
 								</thead>
@@ -292,10 +311,26 @@
 										<td class='text-center m0'>
 											<input type='checkbox' id='{{contactList.id}}' (click)="highlightRow(contactList.id)">
 										</td>
-										<td> <h5 class='m0'>{{contactList.name}}</h5> </td>
-										<td> <h6 class='m0'>{{contactList.uploadedBy}}</h6> </td>
-										<td> <h6 class='m0'>{{contactList.createdDate}}</h6> </td>
-										<td> <h6 class='m0'>{{contactList.noOfContacts}}</h6> </td>
+										<!-- <td> <h5 class='m0'>{{contactList.name}}</h5> </td>
+                    <td> <h6 class='m0' title="{{contactList.uploadedBy}}">
+                      <span *ngIf="contactList.uploadedBy?.length<25">By:{{contactList.uploadedBy}}</span>
+                      <span *ngIf="contactList.uploadedBy?.length>25">By:{{contactList.uploadedBy |slice:0:25 }}...</span>
+                    </h6> </td> -->
+
+                    <td>
+                        <h5 title="{{contactList.name}}">
+                          <span *ngIf="contactList.name?.length<=50">{{contactList.name}}</span>
+                          <span *ngIf="contactList.name?.length>50">{{contactList.name | slice:0:50}}...</span>
+                        </h5><br>
+                        <h6 title="{{contactList.uploadedBy}}">
+                          <span *ngIf="contactList.uploadedBy?.length<=30">By: {{contactList.uploadedBy}}</span>
+                          <span *ngIf="contactList.uploadedBy?.length>30">By: {{contactList.uploadedBy | slice:0:30}}...</span>
+                          Created On:<span>{{contactList.createdDate}}</span>
+                        </h6>
+                      </td>
+
+										<!-- <td> <h6 class='m0'>{{contactList.createdDate}}</h6> </td> -->
+										<td class="text-center"> <h6 class='m0'>{{contactList.noOfContacts}}</h6> </td>
 										<td class='text-center m0'>
 											<a>	<i class="fa fa-eye" aria-hidden="true" (click)="loadContactsOnPreview(contactList, contactsPagination);"></i></a>
 										</td>
@@ -348,15 +383,13 @@
 												<img alt="{{video.title}}" src="{{video.imagePath}}" height="24px" width="auto" class='pl10 align-middle'>
 											</td>
 											<td (click)="previewVideo(video)">
-												<h5>{{video.title}}</h5>
+												<h5>{{video.title | slice:0:40}}<span *ngIf="video.title?.length>40">...</span></h5>
 												<h6 style="margin: 3px 0 0 0">{{video.videoLength}}</h6>
 											</td>
-											<!--
-		                                        <td>
-		                                            <i class="fa fa-upload" aria-hidden="true" *ngIf="video.videoLengthInSeconds <= 30" data-toggle="tooltip" data-placement="top" title="Video is Eligible for Upload"></i>
-		                                            <i class="fa fa-retweet" aria-hidden="true" *ngIf="video.videoLengthInSeconds > 30" data-toggle="tooltip" data-placement="top" title="Video is Not Eligible for Upload"></i>
-		                                        </td>
-	                                         -->
+											<!--<td>
+                            <i class="fa fa-upload" aria-hidden="true" *ngIf="video.videoLengthInSeconds <= 30" data-toggle="tooltip" data-placement="top" title="Video is Eligible for Upload"></i>
+                            <i class="fa fa-retweet" aria-hidden="true" *ngIf="video.videoLengthInSeconds > 30" data-toggle="tooltip" data-placement="top" title="Video is Not Eligible for Upload"></i>
+                      </td>-->
 										</tr>
 									</tbody>
 								</table>
@@ -369,7 +402,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" (click)="closeListVideosModal()">Close</button>
-					<button type="button" class="btn btn-primary" (click)="addVideo()">Select</button>
+					<button type="button" class="btn btn-primary" style="color:white" (click)="addVideo()">Select</button>
 				</div>
 			</div>
 		</div>
@@ -390,7 +423,7 @@
 			</div>
 			<div class="modal-body">
 				<div class="table-responsive">
-					<table class="table table-bordered table-striped table-hover">
+					<table class="table tgrid">
 						<thead>
 							<tr>
 								<th>Email Address</th>

@@ -487,3 +487,11 @@ h5 {
 	color: #00a6e8;
 	cursor: pointer
 }
+.labal-css{
+  color: #888;
+  margin-top: 4px;
+}
+.custom-alert{
+  background-color: #ffffff;
+  border-color: #bfbfbf;
+}
