@@ -543,4 +543,10 @@ tr>td>h6 {
 .emails-info h1 {margin-top: 15px; margin-bottom: 0}
 .emails-info h1, .emails-info span {font-size:18px; font-weight:bold}
 .emails-info button { min-height: 92px;}
-
+.selectedBox{
+	background-color:#00a6e8;
+	color: white;
+}
+ .marginleft5{
+     margin-left: 22px;
+ }

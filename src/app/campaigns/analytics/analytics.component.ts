@@ -716,6 +716,10 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       try{
           this.loading = true;
           this.selectedRsvpPartnerId = campaignViews.userId;
+          this.campaignReport.selectedPartnerFirstName = campaignViews.firstName;
+          this.campaignReport.selectedPartnerLastName = campaignViews.lastName;
+          this.campaignReport.selectedPartnerEmailId = campaignViews.emailId;
+          
          // this.downloadTypeName = 'rsvp';
             this.campaignService.getRestributionEventCampaignAnalytics( this.campaign.campaignId, campaignViews.userId )
             .subscribe(

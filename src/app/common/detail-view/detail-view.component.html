@@ -27,6 +27,7 @@
 								<tr>
 									<th style="font-size: 12px; font-weight: 500;" style="width:50%">NAME</th>
 									<th style="font-size: 12px; font-weight: 500;">MESSAGE</th>
+									<th style="font-size: 12px; font-weight: 500;">TIME</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -38,6 +39,7 @@
 										<h6>{{item.message}}</h6>
 										<h6 *ngIf="!item.message" style="text-align:center"><b>-</b></h6>
 									</td>
+									<td> <h6>{{item.responseTime | date: 'short'}}</h6></td>
 								</tr>
 							</tbody>
 						</table>
