@@ -220,8 +220,8 @@
 							<div class="portlet title" style="min-height: 48px;">
 								<img class="pull-left mr10" src="{{socialStatusProvider.socialConnection.profileImage}}" style="width: 48px; height: 48px;">
 								<h5>
-									<span *ngIf="socialStatusProvider.socialConnection.source ==='TWITTER'">{{socialStatusProvider.socialConnection.profileName}}</span>
-									<span *ngIf="socialStatusProvider.socialConnection.source !=='TWITTER'">{{socialStatusProvider.socialConnection.firstName}}</span>
+									<span *ngIf="socialStatusProvider.socialConnection.source !=='GOOGLE'">{{socialStatusProvider.socialConnection.profileName}}</span>
+									<span *ngIf="socialStatusProvider.socialConnection.source ==='GOOGLE'">{{socialStatusProvider.socialConnection.firstName}}</span>
 								</h5>
 								<h5>{{socialStatus.scheduledTimeUser | date: 'short'}}</h5>
 								<span [ngClass]="{'ribbon-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK',
@@ -460,6 +460,19 @@
 								</div>
 							</a>
 						</div>
+						<div class="col-sm-3 col-xs-6" *ngIf="campaignType==='SOCIAL'">
+							<a class="text-center">
+								<div><img src="assets/images/social-icons.jpg" style="margin: 0px 15px;width: auto;height: 52px;"></div>
+								<div>Social Accounts</div>
+								<div class="number">
+									<ng-container *ngFor="let socialStatus of socialStatus.socialStatusList">
+										<ng-container *ngIf="socialStatus.userId === selectedRow.userId">
+											<span>{{socialStatus.socialStatusProviders.length}}</span>
+										</ng-container>
+									</ng-container>
+								</div>
+							</a>
+						</div>
 					</div>
 				</div>
 
@@ -528,6 +541,45 @@
           </div>
         </li>
        </ul>
+            <div class="timeline-body" style="width: 90%; float: right">
+				<ng-container *ngIf="campaignType == 'SOCIAL'">
+					<ng-container *ngFor="let socialStatus of socialStatus.socialStatusList">
+						<ng-container *ngIf="socialStatus.userId === selectedRow.userId">						
+						<span *ngFor="let socialStatusProvider of socialStatus.socialStatusProviders">
+							<div class="portlet light">
+								<div class="portlet title" style="min-height: 48px; position: relative;">
+									<img class="pull-left mr10" src="{{socialStatusProvider.socialConnection.profileImage}}" style="width: 48px; height: 48px;">
+									<h5>
+										<span *ngIf="socialStatusProvider.socialConnection.source !=='GOOGLE'">{{socialStatusProvider.socialConnection.profileName}}</span>
+										<span *ngIf="socialStatusProvider.socialConnection.source ==='GOOGLE'">{{socialStatusProvider.socialConnection.firstName}}</span>
+									</h5>
+									<h5>{{socialStatus.scheduledTimeUser | date: 'short'}}</h5>
+									<span [ngClass]="{'ribbon-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK',
+										'ribbon-twitter': socialStatusProvider.socialConnection.source ==='TWITTER',
+										'ribbon-linkedin': socialStatusProvider.socialConnection.source ==='LINKEDIN',
+										'ribbon-google': socialStatusProvider.socialConnection.source ==='GOOGLE'}" style="position: absolute;right: 0;top: 0;">
+									<i class="fa fa-social pull-right" [ngClass]="{'fa-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK',
+										'fa-twitter': socialStatusProvider.socialConnection.source ==='TWITTER',
+										'fa-linkedin': socialStatusProvider.socialConnection.source ==='LINKEDIN',
+										'fa-google': socialStatusProvider.socialConnection.source ==='GOOGLE'}"></i>
+								</span>
+								</div>
+								<div class="portlet body">
+									<h4>{{socialStatus.statusMessage}}</h4>
+									<div *ngFor="let socialStatusContent of socialStatus.socialStatusContents">
+										<img async *ngIf="socialStatusContent.fileType === 'image'" src="{{authenticationService.MEDIA_URL}}{{socialStatusContent.filePath}}?access_token={{authenticationService.access_token}}"
+										style="height: 240px; width: auto;">
+										<video *ngIf="socialStatusContent.fileType == 'video'" width="160" height="80">
+											<source src="{{socialStatusContent.filePath}}" type="video/mp4">
+										</video>
+									</div>
+								</div>
+							</div>							
+						</span>
+						</ng-container>
+					</ng-container>
+				</ng-container>
+            </div>
 			</div>
 		</div>
 	</div>
