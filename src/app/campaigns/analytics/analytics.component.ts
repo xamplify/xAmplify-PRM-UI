@@ -930,6 +930,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       let endTime = new Date(this.downloadCsvList[i].endTime);
       let sentTime = new Date(this.campaign.launchTime);
       let latestView = new Date(this.downloadCsvList[i].latestView);
+      let responseTime = new Date(this.downloadCsvList[i].responseTime);
 
       var object = {
         "First Name": this.downloadCsvList[i].firstName,
@@ -947,9 +948,16 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       if (this.downloadTypeName === 'campaignViews') {
         object["Email Id"] = this.downloadCsvList[i].emailId;
         object["Campaign Name"] = this.downloadCsvList[i].campaignName;
+        if(this.campaignType === 'EVENT'){
+            object["Yes"] = this.downloadCsvList[i].rsvpMap.YES;
+            object["No"] = this.downloadCsvList[i].rsvpMap.NO;
+            object["May Be"] = this.downloadCsvList[i].rsvpMap.MAYBE;
+            object["Not Yet"] = this.downloadCsvList[i].rsvpMap.notYetResponded;
+        }else{
         object["Sent Time"] = sentTime.toDateString() + ' ' + sentTime.getHours() + ':' + sentTime.getMinutes() + ':' + sentTime.getSeconds();
         object["Latest View"] = latestView.toDateString() + ' ' + latestView.getHours() + ':' + latestView.getMinutes() + ':' + latestView.getSeconds();
-      }
+        }
+        }
 
       if (this.downloadTypeName === 'usersWatchedList') {
         object["Email Id"] = this.downloadCsvList[i].emailId;
@@ -976,6 +984,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       if (this.downloadTypeName === 'rsvp') {
           object["Email Id"] = this.downloadCsvList[i].emailId;
           object["Message"] = this.downloadCsvList[i].message;
+          object["Response Time"] = responseTime.toDateString() + ' ' + responseTime.getHours() + ':' + responseTime.getMinutes() + ':' + responseTime.getSeconds();;
       }
       
       this.downloadDataList.push(object);

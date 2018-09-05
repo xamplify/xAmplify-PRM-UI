@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { AnalyticsComponent } from "../../campaigns/analytics/analytics.component";
+import { ReferenceService } from '../../core/services/reference.service';
 
 @Component({
   selector: 'app-detail-view',
@@ -10,8 +11,8 @@ export class DetailViewComponent implements OnInit {
     @Input() detailType: any;
     @Input() details: any;
     
-  constructor(public analyticsComponent: AnalyticsComponent) { }
-
+  constructor(public analyticsComponent: AnalyticsComponent, public referenceService: ReferenceService) { }
+ 
   ngOnInit() {
   }
 
