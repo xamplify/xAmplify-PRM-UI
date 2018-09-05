@@ -132,7 +132,7 @@
 													<span class="pull-left" *ngIf="!isValidCampaignName &&campaign.campaignName?.length>0" style="color: red">Already Exists</span>
 												</div>
 											</div>
-											<div class="form-group" *ngIf="!isOnlyPartner">
+											<div class="form-group" *ngIf="!isOnlyPartner" style="margin-top: -12px;">
 												<label class="control-label col-sm-4" *ngIf="campaign.channelCampaign" title="{{properties.THROUGH_PARTNER_MESSAGE}}"><b>Through Partner</b></label>
 												<label  class="control-label col-sm-4" *ngIf="!campaign.channelCampaign" title="{{properties.THROUGH_PARTNER_MESSAGE}}">Through Partner</label>
 												<div class="col-sm-8">
@@ -392,19 +392,6 @@
 																 [class.active]="(videoFile.id == selectedRow && videoFile.viewBy!=='DRAFT')" [attr.title]="draftMessage"
 																 (mouseover)='showToolTip(videoFile.viewBy)'>
 																	<!-- --------------Thumbnail--------------------------- -->
-																	<!-- <td style="text-align: center;" *ngIf="videoFile.viewBy!='DRAFT' && videoFile.id!==videoId">
-																		<input [hidden]="true" type="radio" name="videoFileId" [value]="videoFile.id" (click)="setClickedRow(videoFile,'my-videos')" id="campaign_video_id_{{videoFile.id}}"
-																		 [checked]="videoFile.id == selectedRow">
-																		<a (click)="$event.stopPropagation();showPreview(videoFile)" lang="{{videoFile.id}}">
-																			<img src="{{videoFile.imagePath}}" width="100px" height="50px"  (error)="videoUtilService.errorVideoHandler($event)">
-																		</a>
-																	</td> -->
-																	<!-- <td style="text-align: center;" *ngIf="videoFile.viewBy=='DRAFT'  && videoFile.id!==videoId">
-																		<input [hidden]="true" type="radio" name="videoFileId" [value]="videoFile.id" disabled="disabled" title="Video is in draft mode, please update the publish options to Library or Viewers.">
-																		<a href="javascript:void(0)" class="not-active">
-																			<img src="{{videoFile.imagePath}}" width="100px" height="50px"  (error)="videoUtilService.errorVideoHandler($event)">
-																		</a>
-																	</td> -->
 																	<!-- --------------Title--------------------------- -->
 																	<td *ngIf="videoFile.id!==videoId">
                                       <input  class="radio-button-css" *ngIf="videoFile.viewBy!='DRAFT' && videoFile.id!==videoId" type="radio" name="videoFileId" [value]="videoFile.id" (click)="setClickedRow(videoFile,'my-videos')" id="campaign_video_id_{{videoFile.id}}"
@@ -434,27 +421,6 @@
                         <app-pagination  style="position: relative;left: -368px;" [hidden]="campaignVideo.httpRequestLoader.isLoading || campaignVideo.httpRequestLoader.isServerError" [pagination]="videosPagination" [type]="'videos'"
                         (notifyParent)="setPagePagination($event)" (notifyParentDropDown)="loadCampaignVideos($event)"></app-pagination>
                         </div>
-												<!-- <div *ngIf="!isvideoThere && !campaignVideo.httpRequestLoader.isLoading && !campaignVideo.httpRequestLoader.isServerError && !campaign.createdFromVideos "> -->
-													<!--pager here  -->
-													<!-- <ul *ngIf="videosPagination.pager.pages && videosPagination.pager.pages.length" class="pagination">
-														<li [ngClass]="{disabled:videosPagination.pager.currentPage === 1}">
-															<a (click)="setPage(1,'videos')" [class.disabled]="videosPagination.pager.currentPage === 1">First</a>
-														</li>
-														<li [ngClass]="{disabled:videosPagination.pager.currentPage === 1}">
-															<a (click)="setPage(videosPagination.pager.currentPage - 1,'videos')" [class.disabled]="videosPagination.pager.currentPage === 1">Previous</a>
-														</li>
-														<li *ngFor="let page of videosPagination.pager.pages" [ngClass]="{active:videosPagination.pager.currentPage === page}">
-															<a (click)="setPage(page,'videos')" [class.disabled]="videosPagination.pager.currentPage === page">{{page}}</a>
-														</li>
-														<li [ngClass]="{disabled:videosPagination.pager.currentPage === videosPagination.pager.totalPages}">
-															<a (click)="setPage(videosPagination.pager.currentPage + 1,'videos')" [class.disabled]="videosPagination.pager.currentPage === videosPagination.pager.totalPages">Next</a>
-														</li>
-														<li [ngClass]="{disabled:videosPagination.pager.currentPage === videosPagination.pager.totalPages}">
-															<a (click)="setPage(videosPagination.pager.totalPages,'videos')" [class.disabled]="videosPagination.pager.currentPage === videosPagination.pager.totalPages">Last</a>
-														</li>
-													</ul> -->
-													<!-- pager end here -->
-												<!-- </div> -->
 											</div>
 										</div>
 										<!-- ----Partner Videos Start Here -->
@@ -572,23 +538,6 @@
 													</tbody>
 												</table>
 												<div [hidden]="isPartnerVideoExists && campaignVideo.httpRequestLoader.isLoading && campaignVideo.httpRequestLoader.isServerError && campaign.createdFromVideos">
-													<!-- <ul *ngIf="channelVideosPagination.pager.pages && channelVideosPagination.pager.pages.length" class="pagination">
-														<li [ngClass]="{disabled:channelVideosPagination.pager.currentPage === 1}">
-															<a (click)="setPage(1,'partner-videos')" [class.disabled]="channelVideosPagination.pager.currentPage === 1">First</a>
-														</li>
-														<li [ngClass]="{disabled:channelVideosPagination.pager.currentPage === 1}">
-															<a (click)="setPage(channelVideosPagination.pager.currentPage - 1,'partner-videos')" [class.disabled]="channelVideosPagination.pager.currentPage === 1">Previous</a>
-														</li>
-														<li *ngFor="let page of channelVideosPagination.pager.pages" [ngClass]="{active:channelVideosPagination.pager.currentPage === page}">
-															<a (click)="setPage(page,'partner-videos')">{{page}}</a>
-														</li>
-														<li [ngClass]="{disabled:channelVideosPagination.pager.currentPage === channelVideosPagination.pager.totalPages}">
-															<a (click)="setPage(channelVideosPagination.pager.currentPage + 1,'partner-videos')" [class.disabled]="channelVideosPagination.pager.currentPage === channelVideosPagination.pager.totalPages">Next</a>
-														</li>
-														<li [ngClass]="{disabled:channelVideosPagination.pager.currentPage === channelVideosPagination.pager.totalPages}">
-															<a (click)="setPage(channelVideosPagination.pager.totalPages,'partner-videos')" [class.disabled]="channelVideosPagination.pager.currentPage === channelVideosPagination.pager.totalPages">Last</a>
-														</li>
-                          </ul> -->
                           <app-pagination style="position: relative;left: -368px;" [hidden]="campaignVideo.httpRequestLoader.isLoading && campaignVideo.httpRequestLoader.isServerError" [pagination]="channelVideosPagination" [type]="'partner-videos'"
                           (notifyParent)="setPagePagination($event)" (notifyParentDropDown)="loadPartnerVideos($event)"></app-pagination>
 												</div>
@@ -688,23 +637,6 @@
 												</tbody>
 											</table>
 											<div *ngIf="contactsPagination.totalRecords > 0 && !campaignContact.httpRequestLoader.isLoading && !campaignContact.httpRequestLoader.isServerError">
-												<!-- <ul *ngIf="contactsPagination.pager.pages && contactsPagination.pager.pages.length" class="pagination pull-left">
-													<li [ngClass]="{disabled:contactsPagination.pager.currentPage === 1}">
-														<a (click)="setPage(1,'contacts')" [class.disabled]="contactsPagination.pager.currentPage === 1">First</a>
-													</li>
-													<li [ngClass]="{disabled:contactsPagination.pager.currentPage === 1}">
-														<a (click)="setPage(contactsPagination.pager.currentPage - 1,'contacts')" [class.disabled]="contactsPagination.pager.currentPage === 1">Previous</a>
-													</li>
-													<li *ngFor="let page of contactsPagination.pager.pages" [ngClass]="{disabled:contactsPagination.pager.currentPage === page}">
-														<a (click)="setPage(page,'contacts')" [class.disabled]="contactsPagination.pager.currentPage === page">{{page}}</a>
-													</li>
-													<li [ngClass]="{disabled:contactsPagination.pager.currentPage === contactsPagination.pager.totalPages}">
-														<a (click)="setPage(contactsPagination.pager.currentPage + 1,'contacts')" [class.disabled]="contactsPagination.pager.currentPage === contactsPagination.pager.totalPages">Next</a>
-													</li>
-													<li [ngClass]="{disabled:contactsPagination.pager.currentPage === contactsPagination.pager.totalPages}">
-														<a (click)="setPage(contactsPagination.pager.totalPages,'contacts')" [class.disabled]="contactsPagination.pager.currentPage === contactsPagination.pager.totalPages">Last</a>
-													</li>
-                        </ul> -->
                         <app-pagination style="float: left; position: relative;left: -10px;" [pagination]="contactsPagination" [type]="'contacts'"
                         (notifyParent)="setPagePagination($event)" [isDropdown]="true"></app-pagination>
 
@@ -885,26 +817,8 @@
 					<strong>No email templates found</strong>
 				</div>
 				<div  style="position: relative;top: -3px;" [hidden]="emailTemplatesPagination.totalRecords<0 || campaignEmailTemplate.httpRequestLoader.isLoading || campaignEmailTemplate.httpRequestLoader.isServerError">
-					<!-- <ul *ngIf="emailTemplatesPagination.pager.pages && emailTemplatesPagination.pager.pages.length" class="pagination">
-						<li [ngClass]="{disabled:emailTemplatesPagination.pager.currentPage === 1}">
-							<a (click)="setPage(1,'emailTemplates')" [class.disabled]="emailTemplatesPagination.pager.currentPage === 1">First</a>
-						</li>
-						<li [ngClass]="{disabled:emailTemplatesPagination.pager.currentPage === 1}">
-							<a (click)="setPage(emailTemplatesPagination.pager.currentPage - 1,'emailTemplates')" [class.disabled]="emailTemplatesPagination.pager.currentPage === 1">Previous</a>
-						</li>
-						<li *ngFor="let page of emailTemplatesPagination.pager.pages" [ngClass]="{active:emailTemplatesPagination.pager.currentPage === page}">
-							<a (click)="setPage(page,'emailTemplates')" [class.disabled]="emailTemplatesPagination.pager.currentPage === page">{{page}}</a>
-						</li>
-						<li [ngClass]="{disabled:emailTemplatesPagination.pager.currentPage === emailTemplatesPagination.pager.totalPages}">
-							<a (click)="setPage(emailTemplatesPagination.pager.currentPage + 1,'emailTemplates')" [class.disabled]="emailTemplatesPagination.pager.currentPage === emailTemplatesPagination.pager.totalPages">Next</a>
-						</li>
-						<li [ngClass]="{disabled:emailTemplatesPagination.pager.currentPage === emailTemplatesPagination.pager.totalPages}">
-							<a (click)="setPage(emailTemplatesPagination.pager.totalPages,'emailTemplates')" [class.disabled]="emailTemplatesPagination.pager.currentPage === emailTemplatesPagination.pager.totalPages">Last</a>
-						</li>
-          </ul> -->
           <app-pagination style="position: relative;left: -355px;" [pagination]="emailTemplatesPagination" [type]="'emailTemplates'"
           (notifyParent)="setPagePagination($event)"  (notifyParentDropDown)="loadPaginationDropdownTemplates($event)"></app-pagination>
-
         </div>
 				<button type="button" class="btn btn-default pull-left" (click)="resetActive($event, 40, 'step-4')">Previous</button>
 				<button type="submit" class=" btn green pull-right" (click)="resetActive($event, 40, 'step-6');addUserEmailIds();" [disabled]="!isEmailTemplate"
@@ -1574,24 +1488,6 @@
 					</div>
 					<div class="modal-body" id="users-modal-body">
 					</div>
-					<!-- <ul *ngIf="contactsUsersPagination.pager.pages && contactsUsersPagination.pager.pages.length" class="pagination pull-left"
-					 style="margin-left: 10px;">
-						<li [ngClass]="{disabled:contactsUsersPagination.pager.currentPage === 1}">
-							<a (click)="setPage(1,'contactUsers')">First</a>
-						</li>
-						<li [ngClass]="{disabled:contactsUsersPagination.pager.currentPage === 1}">
-							<a (click)="setPage(contactsUsersPagination.pager.currentPage - 1,'contactUsers')">Previous</a>
-						</li>
-						<li *ngFor="let page of contactsUsersPagination.pager.pages" [ngClass]="{active:contactsUsersPagination.pager.currentPage === page}">
-							<a (click)="setPage(page,'contactUsers')" [class.disabled]="contactsUsersPagination.pager.currentPage === page">{{page}}</a>
-						</li>
-						<li [ngClass]="{disabled:contactsUsersPagination.pager.currentPage === contactsUsersPagination.pager.totalPages}">
-							<a (click)="setPage(contactsUsersPagination.pager.currentPage + 1,'contactUsers')">Next</a>
-						</li>
-						<li [ngClass]="{disabled:contactsUsersPagination.pager.currentPage ===contactsUsersPagination.pager.totalPages}">
-							<a (click)="setPage(contactsUsersPagination.pager.totalPages,'contactUsers')">Last</a>
-						</li>
-					</ul> -->
 					<div class="modal-footer">
               <app-pagination style="float: left;" [pagination]="contactsUsersPagination" [type]="'contactUsers'" [isDropdown]="true"
              (notifyParent)="setPagePagination($event)"></app-pagination>

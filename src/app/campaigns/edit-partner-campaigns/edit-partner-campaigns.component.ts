@@ -1121,6 +1121,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
               response => {
                   if (response.statusCode == 2000) {
                       this.referenceService.campaignSuccessMessage = data.scheduleCampaign;
+                      this.referenceService.launchedCampaignType = this.campaignType;
                       this.campaign = null;
                       this.router.navigate(["/home/campaigns/manage"]);
                   } else {

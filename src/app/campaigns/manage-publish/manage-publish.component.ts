@@ -151,7 +151,18 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         try {
             this.isListView = !this.refService.isGridView;
             this.pagination.maxResults = 12;
-            this.listCampaign(this.pagination);
+            if(this.refService.launchedCampaignType ==='VIDEO' || this.refService.launchedCampaignType ==='video')
+            {
+              this.filterCampaigns('VIDEO', 2);
+            } else if(this.refService.launchedCampaignType ==='REGULAR' || this.refService.launchedCampaignType ==='regular'){
+              this.filterCampaigns('REGULAR',1);
+            }
+            else if(this.refService.launchedCampaignType ==='SOCIAL') {
+              this.filterCampaigns('SOCIAL',3);
+            }
+            else {
+              this.listCampaign(this.pagination);
+            }
 
         } catch (error) {
             this.logger.error("error in manage-publish-component init() ", error);

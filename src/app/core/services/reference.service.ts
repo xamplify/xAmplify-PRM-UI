@@ -81,6 +81,8 @@ export class ReferenceService {
     showInputConfirmPassword = false;
     showInputPassword = false;
     showInputOldPassword = false;
+    launchedCampaignType = '';
+
     constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,
         private router: Router, public deviceService: Ng2DeviceService,private route:ActivatedRoute) {
         console.log('reference service constructor');
@@ -1605,6 +1607,6 @@ export class ReferenceService {
          this.campaignType = campaign.campaignType;
          this.router.navigate(["/home/campaigns/"+campaign.campaignId+"/details"]);
      }
-     
-    
+
+
 }

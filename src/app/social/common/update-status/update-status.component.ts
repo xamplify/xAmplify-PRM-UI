@@ -316,6 +316,13 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
         data => {
           this.setCustomResponse(ResponseType.Success, 'Status posted Successfully');
           this.socialStatus.campaignName = null;
+          this.referenceService.campaignSuccessMessage = 'NOW'
+          this.referenceService.launchedCampaignType = 'SOCIAL';
+          if(this.authenticationService.isOnlyPartner()) {
+            this.router.navigate(['home/campaigns/partner/social']); }
+          else {
+            this.router.navigate(['/home/campaigns/manage']);
+          }
           $('input:checkbox').removeAttr('checked');
           $('#contact-list-table tr').removeClass("highlight");
         },

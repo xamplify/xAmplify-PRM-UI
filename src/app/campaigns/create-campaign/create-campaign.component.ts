@@ -2429,6 +2429,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
              response => {
                  if(response.statusCode==2000){
                      this.refService.campaignSuccessMessage = data.scheduleCampaign;
+                     this.refService.launchedCampaignType = this.campaignType;
                      this.isLaunched = true;
                      this.reInitialize();
                      this.router.navigate(["/home/campaigns/manage"]);
