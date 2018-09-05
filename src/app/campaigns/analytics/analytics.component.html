@@ -154,7 +154,7 @@
 			<button class="portlet light color1-invert crcb" (click)="getRsvpDetails('NO')"  [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
 			 [disabled]="campaignReport.totalNoCount < 1 || !isPartnerEnabledAnalyticsAccess">
 				<div class="portlet-body text-center">
-						<i class="fa fa-envelope-o"></i>
+						<i class="fa fa-envelope"></i>
 					<h1>
 						<b>{{campaignReport.totalNoCount}}</b>
 						<span>Opened</span>
@@ -229,6 +229,7 @@
 									<th style="font-size: 12px; font-weight: 500;">NO</th>
 									<th style="font-size: 12px; font-weight: 500;">MAY BE</th>
 									<th style="font-size: 12px; font-weight: 500;">NOT YET</th>
+									<th style="font-size: 12px; font-weight: 500;">ADDITIONAL</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -246,7 +247,10 @@
 										<h6>{{campaignReport.partnersMayBeCount}}</h6>
 									</td>
 									<td class="center">
-									{{campaignReport.partnersNotYetRespondedCount}}
+									{{campaignReport.additionalCount}}
+									</td>
+									<td class="center">
+									{{campaignReport.additionalCount}}
 									</td>
 								</tr>
 							</tbody>
@@ -482,6 +486,7 @@
 										<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='EVENT' && isChannelCampaign">May Be</th>
 										<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='EVENT' && isChannelCampaign">Not Yet</th>
 										<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='EVENT' && !isChannelCampaign">Response Type</th>
+										<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='EVENT' && isChannelCampaign">Additional</th>
 										<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='VIDEO' || campaignType!=='EVENT'">Latest View</th>
 										<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType!=='EVENT'">
 											<span *ngIf="campaignType==='VIDEO'">Total Views</span>
@@ -509,6 +514,7 @@
 										<td class="text-center" *ngIf="campaignType==='EVENT' && !isChannelCampaign">{{item.rsvpMap.responseType}}
 										<span *ngIf="item.rsvpMap.responseType === null"><b>-</b></span>
 										</td>
+										<td class="text-center" *ngIf="campaignType==='EVENT' && isChannelCampaign">{{item.rsvpMap.additionalCount}}</td>
 										<!-- <td class="td-chart"><h6>{{item.userEmail}}</h6></td> -->
 										<td class="td-chart" *ngIf="campaignType!=='EVENT'">
 											<h6>{{item.latestView |date:'MM/dd/yyyy @ h:mma'}}<span *ngIf="! item?.latestView">-</span></h6>
@@ -562,7 +568,7 @@
 			<button class="portlet light color1-invert crcb" (click)="getRsvpDetails('NO')"  [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
 			 [disabled]="campaignReport.totalNoCount < 1 || !isPartnerEnabledAnalyticsAccess">
 				<div class="portlet-body text-center">
-						<i class="fa fa-envelope-o"></i>
+						<i class="fa fa-envelope"></i>
 					<h1>
 						<b>{{campaignReport.redistributionTotalYesCount}}</b>
 						<span>Opened</span>
@@ -640,6 +646,7 @@
 									<th style="font-size: 12px; font-weight: 500;" style="width:50%">NAME</th>
 									<th style="font-size: 12px; font-weight: 500;">MESSAGE</th>
 									<th style="font-size: 12px; font-weight: 500;">TIME</th>
+									<th style="font-size: 12px; font-weight: 500;">ADDITIONAL</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -652,6 +659,7 @@
 										<h6 *ngIf="!item.message" style="text-align:center"><b>-</b></h6>
 									</td>
 									<td><h6>{{item.responseTime | date: 'short'}}</h6> </td>
+									<td class="center">{{item.additionalCount}}</td>
 								</tr>
 							</tbody>
 						</table>

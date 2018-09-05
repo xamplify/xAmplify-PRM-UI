@@ -668,6 +668,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
               this.campaignReport.partnersMayBeCount = data.MAYBE;
               this.campaignReport.partnersNoCount = data.NO;
               this.campaignReport.partnersNotYetRespondedCount = data.notYetResponded;
+              this.campaignReport.additionalCount = data.additionalCount;
               this.loading = false;
             },
             error => this.xtremandLogger.error(error),
