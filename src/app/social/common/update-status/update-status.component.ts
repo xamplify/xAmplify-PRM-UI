@@ -62,6 +62,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     this.resetCustomResponse();
     this.userId = this.authenticationService.getUserId();
     this.socialStatus.userId = this.userId;
+    this.socialStatus.userListIds = []
   }
   resetCustomResponse() {
     this.customResponse.type = null;
@@ -69,6 +70,24 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   }
   changeChannelCampaign(){
     this.channelCampaign = !this.channelCampaign;
+    this.contactListsPagination.maxResults = 12;
+    if(!this.channelCampaign){
+      this.loadAllContactLists(this.contactListsPagination);
+    } else {
+      this.loadContactLists(this.contactListsPagination);
+    }
+  }
+  loadAllContactLists(contactListsPagination:Pagination){
+    this.paginationType = 'loadAllContacts';
+    contactListsPagination.filterKey = null;
+    contactListsPagination.filterValue = null;
+    this.contactService.loadAllContacts(this.userId,contactListsPagination).subscribe(data=>{
+      contactListsPagination.totalRecords = data.totalRecords;
+      contactListsPagination = this.pagerService.getPagedItems(contactListsPagination, data.listOfUserLists);
+    },
+    error=> {
+      console.log(error);
+    });
   }
   setCustomResponse(type: ResponseType, statusText: string) {
     this.customResponse.type = type;
@@ -269,7 +288,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
       if ( !this.socialStatus.campaignName ) {
           isValid = false;
           this.setCustomResponse( ResponseType.Warning, 'Please provide campaign name' );
-      } else if ( this.socialStatus.campaignName && this.socialStatus.userListIds.length === 0 ) {
+      } else if ( this.socialStatus.campaignName && this.socialStatus.userListIds.length === 0 && !this.authenticationService.isOnlyPartner() ) {
           isValid = false;
           this.setCustomResponse( ResponseType.Warning, 'Please select contact lists' );
       }
@@ -452,9 +471,10 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 
   loadContactLists(contactListsPagination: Pagination) {
     this.paginationType = 'updatestatuscontactlists';
-    this.contactListsPagination.filterKey = 'isPartnerUserList';
-    this.contactListsPagination.filterValue = this.socialStatus.isPartner;
-    this.contactService.loadContactLists(contactListsPagination)
+     if(this.authenticationService.isOnlyPartner()) { this.socialStatus.isPartner = false;}
+     this.contactListsPagination.filterKey = 'isPartnerUserList';
+     this.contactListsPagination.filterValue = this.socialStatus.isPartner; /// if its true normal contacts wil come, partner contacts for false
+     this.contactService.loadContactLists(contactListsPagination)
       .subscribe(
       (data: any) => {
         contactListsPagination.totalRecords = data.totalRecords;
@@ -495,9 +515,13 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     this.contactsPagination.pageIndex = event.page;
     this.loadContacts(this.previewContactList, this.contactsPagination);
    }
-   else if(event.type === 'updatestatuscontactlists'){
+   else if(event.type === 'updatestatuscontactlists' && this.paginationType !== 'loadAllContacts'){
     this.contactListsPagination.pageIndex = event.page;
     this.loadContactLists(this.contactListsPagination);
+   }
+   else if(event.type === 'updatestatuscontactlists' && this.paginationType === 'loadAllContacts'){
+    this.contactListsPagination.pageIndex = event.page;
+    this.loadAllContactLists(this.contactListsPagination);
    }
    else if(event.type ==='updatestatusvideos'){
     this.videosPagination.pageIndex = event.page;
@@ -508,6 +532,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     if(this.paginationType ==='updatestatuscontacts'){ this.loadContacts(this.previewContactList, pagination);}
     else if(this.paginationType === 'updatestatuscontactlists'){ this.loadContactLists(pagination); }
     else if(this.paginationType ==='updatestatusvideos'){ this.listVideos(pagination);}
+    else if(this.paginationType==='loadAllContacts') {this.loadAllContactLists(pagination) }
   }
   closeModal(){
     this.paginationType = 'updatestatuscontactlists';

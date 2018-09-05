@@ -7,10 +7,13 @@
 				<i class="fa fa-angle-right"></i>
 			</li>
       <li *ngIf="location.includes('/social/update-status')" style="color: #808680;">Update Status</li>
-      <ng-container *ngIf="location.includes('/campaigns/social')">
+      <ng-container *ngIf="location.includes('/campaigns/social') && !authenticationService.isOnlyPartner()">
       <li style="color: #808680;"><a  [routerLink]="['/home/campaigns/select']">Select Campaign</a></li>
-      <i class="fa fa-angle-right" style="color: #808680;"></i>
-      <li style="color: #808680;"><a>Create Campaign</a></li>
+      <i class="fa fa-angle-right color-bread" ></i>
+      <li class="color-bread"><a>Create Campaign</a></li>
+      </ng-container>
+      <ng-container *ngIf="authenticationService.isOnlyPartner()">
+          <li class="color-bread"><a>Redistribute Campaign</a></li>
       </ng-container>
 		</ul>
 	</div>
@@ -284,7 +287,7 @@
 						</div>
 					</ng-container>
 					<div class="form-group m0">
-						<h6 class="caption-subject font-red-sunglo uppercase bold mt0">Contact Lists</h6>
+						<h6 class="caption-subject font-red-sunglo uppercase bold mt0">Recipient Lists</h6>
 					</div>
 
 					<section *ngIf="contactListsPagination.pagedItems?.length === 0">
@@ -309,7 +312,7 @@
 								<tbody>
 									<tr *ngFor="let contactList of contactListsPagination.pagedItems">
 										<td class='text-center m0'>
-											<input type='checkbox' id='{{contactList.id}}' (click)="highlightRow(contactList.id)">
+											<input type='checkbox' id='{{contactList.id}}' (click)="highlightRow(contactList.id)" [checked]="socialStatus.userListIds.indexOf(contactList.id)>-1">
 										</td>
 										<!-- <td> <h5 class='m0'>{{contactList.name}}</h5> </td>
                     <td> <h6 class='m0' title="{{contactList.uploadedBy}}">
@@ -419,7 +422,7 @@
 				<a class="close-circle" data-dismiss="modal" (click)="closeModal()">
 					<i class="fa fa-times"></i>
 				</a>
-				<h4 id="contactsModalLabel" class="modal-title caption-subject font-red-sunglo">{{previewContactList.name}}</h4>
+				<h4 id="contactsModalLabel" class="modal-title caption-subject font-red-sunglo">{{previewContactList.name | slice:0:35}}<span *ngIf="previewContactList.name?.length>35">...</span></h4>
 			</div>
 			<div class="modal-body">
 				<div class="table-responsive">
@@ -439,7 +442,7 @@
 							</tr>
 						</tbody>
 					</table>
-					<app-pagination *ngIf="contactsPagination.pagedItems?.length > 0" [pagination]="contactsPagination" [type]="'updatestatuscontacts'"
+					<app-pagination  style="margin-left: -10px;" *ngIf="contactsPagination.pagedItems?.length > 0" [pagination]="contactsPagination" [type]="'updatestatuscontacts'"
 					 (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropDown($event)"></app-pagination>
 				</div>
 			</div>
