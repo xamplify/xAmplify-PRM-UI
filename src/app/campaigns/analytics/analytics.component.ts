@@ -16,9 +16,11 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 import { PagerService } from '../../core/services/pager.service';
 import { ReferenceService } from '../../core/services/reference.service';
 import { SocialService } from '../../social/services/social.service';
+import { TwitterService } from '../../social/services/twitter.service';
 import { ContactService } from '../../contacts/services/contact.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
-
+import { SocialStatusProvider } from '../../social/models/social-status-provider';
+import { Tweet } from '../../social/models/tweet';
 declare var $, Highcharts: any;
 
 @Component({
@@ -95,9 +97,10 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
                     { 'name': 'Time(DESC)', 'value': 'time-DESC' }
                 ];
   public selectedSortedOption: any = this.sortByDropDown[this.sortByDropDown.length-1];
+  tweets: Array<Tweet> = new Array<Tweet>();
   constructor(private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
     public authenticationService: AuthenticationService, public pagerService: PagerService, public pagination: Pagination,
-    public referenceService: ReferenceService, public contactService: ContactService, public videoUtilService: VideoUtilService, public xtremandLogger:XtremandLogger) {
+    public referenceService: ReferenceService, public contactService: ContactService, public videoUtilService: VideoUtilService, public xtremandLogger:XtremandLogger, private twitterService: TwitterService) {
       try{
       this.campaignRouter = this.utilService.getRouterLocalStorage();
       this.isTimeLineView = false;
@@ -643,10 +646,19 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       .subscribe(
       data => {
         this.socialStatus = data;
+
+
         this.loading = false;
       },
       error => this.xtremandLogger.error(error),
-      () => { }
+      () => {
+        let self = this;
+          this.socialStatus.socialStatusProviders.forEach(function (element) {
+          if (element.socialConnection.source === 'TWITTER') {
+            self.getTweet(element);
+          }
+        });
+      }
       )
     }catch(error){
       this.xtremandLogger.error('error'+error)
@@ -966,6 +978,15 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
         this.xtremandLogger.error('Error in listEmailLogsByCampaignIdUserIdActionType: ' + error);
       }
     }
+  }
+
+  getTweet(socialStatusProvider: SocialStatusProvider) {
+    this.twitterService.getTweet(socialStatusProvider.socialConnection, socialStatusProvider.statusId)
+      .subscribe(
+      data => {this.tweets.push(data)},
+      error => console.log(error),
+      () => { }
+      )
   }
 
   ngOnInit() {

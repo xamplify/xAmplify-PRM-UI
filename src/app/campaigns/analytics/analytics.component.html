@@ -215,37 +215,37 @@
 					</div>
 				</div>
 				<div class="portlet-body clearfix">
-					<div class='col-xs-12 col-sm-6'>
-						<h5>Social status content</h5>
-						<textarea disabled class="form-control form-group rounded-0 mb5" maxlength="140">{{socialStatus.statusMessage}}</textarea>
-						<div *ngFor="let socialStatusContent of socialStatus.socialStatusContents">
-							<img async *ngIf="socialStatusContent.fileType === 'image'" src="{{authenticationService.MEDIA_URL}}{{socialStatusContent.filePath}}?access_token={{authenticationService.access_token}}"
-							 style="height: 240px; width: auto;">
-							<video *ngIf="socialStatusContent.fileType == 'video'" width="160" height="80">
-								<source src="{{socialStatusContent.filePath}}" type="video/mp4">
-							</video>
-						</div>
-					</div>
-					<div class='col-xs-12 col-sm-6'>
-						<h5>Selected Accounts</h5>
-						<span *ngFor="let socialStatusProvider of socialStatus.socialStatusProviders" style="padding-right: 5px">
-							<div class="btn btn-social" [ngClass]="{
-										'btn-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK',
-										'btn-twitter': socialStatusProvider.socialConnection.source ==='TWITTER',
-										'btn-linkedin': socialStatusProvider.socialConnection.source ==='LINKEDIN',
-										'btn-google': socialStatusProvider.socialConnection.source ==='GOOGLE'}">
-
-								<i class="fa" [ngClass]="{
-												'fa-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK',
-												'fa-twitter': socialStatusProvider.socialConnection.source ==='TWITTER',
-												'fa-linkedin': socialStatusProvider.socialConnection.source ==='LINKEDIN',
-												'fa-google': socialStatusProvider.socialConnection.source ==='GOOGLE'}"></i>
-								<span *ngIf="socialStatusProvider.socialConnection.profileName">{{socialStatusProvider.socialConnection.profileName}}</span>
-								<span *ngIf="!socialStatusProvider.socialConnection.profileName">{{socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatusProvider.socialConnection.lastName}}</span>
-
+					<span *ngFor="let socialStatusProvider of socialStatus.socialStatusProviders">
+						<div class="portlet light m10 col-xs-4">
+							<div class="portlet title" style="min-height: 48px;">
+								<img class="pull-left mr10" src="{{socialStatusProvider.socialConnection.profileImage}}" style="width: 48px; height: 48px;">
+								<h5>
+									<span *ngIf="socialStatusProvider.socialConnection.source ==='TWITTER'">{{socialStatusProvider.socialConnection.profileName}}</span>
+									<span *ngIf="socialStatusProvider.socialConnection.source !=='TWITTER'">{{socialStatusProvider.socialConnection.firstName}}</span>
+								</h5>
+								<h5>{{socialStatus.scheduledTimeUser | date: 'short'}}</h5>
+								<span [ngClass]="{'ribbon-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK',
+									'ribbon-twitter': socialStatusProvider.socialConnection.source ==='TWITTER',
+									'ribbon-linkedin': socialStatusProvider.socialConnection.source ==='LINKEDIN',
+									'ribbon-google': socialStatusProvider.socialConnection.source ==='GOOGLE'}" style="position: absolute;right: 10px;top: 10px;">
+								<i class="fa fa-social pull-right" [ngClass]="{'fa-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK',
+									'fa-twitter': socialStatusProvider.socialConnection.source ==='TWITTER',
+									'fa-linkedin': socialStatusProvider.socialConnection.source ==='LINKEDIN',
+									'fa-google': socialStatusProvider.socialConnection.source ==='GOOGLE'}"></i>
+							</span>
 							</div>
-						</span>
-					</div>
+							<div class="portlet body">
+								<h4>{{socialStatus.statusMessage}}</h4>
+								<div *ngFor="let socialStatusContent of socialStatus.socialStatusContents">
+									<img async *ngIf="socialStatusContent.fileType === 'image'" src="{{authenticationService.MEDIA_URL}}{{socialStatusContent.filePath}}?access_token={{authenticationService.access_token}}"
+									style="height: 240px; width: auto;">
+									<video *ngIf="socialStatusContent.fileType == 'video'" width="160" height="80">
+										<source src="{{socialStatusContent.filePath}}" type="video/mp4">
+									</video>
+								</div>
+							</div>
+						</div>							
+					</span>
 				</div>
 			</div>
 		</div>
@@ -328,8 +328,9 @@
 										<th style="font-size: 12px;font-weight: 500;">CAMPAIGN NAME</th>
 										<th style="font-size: 12px;font-weight: 500;">LATEST VIEW</th>
 										<th style="font-size: 12px;font-weight: 500;">
-											<span *ngIf="campaignType==='VIDEO'">TOTAL VIEWS</span>
-											<span *ngIf="campaignType!=='VIDEO'">TOTAL EMAIL OPENED</span>
+											<span *ngIf="campaignType === 'VIDEO'">TOTAL VIEWS</span>
+											<span *ngIf="campaignType === 'REGULAR'">TOTAL EMAIL OPENED</span>
+											<span *ngIf="campaignType === 'SOCIAL'">Redistributed Social Accounts</span>
 										</th>
 									</tr>
 								</thead>
@@ -353,11 +354,34 @@
 											<span *ngIf="!item?.latestView">-</span></h6>
 										</td>
 										<td class="td-chart">
-											<div class="progress">
+											<div class="progress" *ngIf="campaignType !== 'SOCIAL'">
 												<div class="progress-bar progress-bar-success" [ngClass]="{'special-progress-bar' : item.viewsCount === 0 }" role="progressbar" [style.width.%]="(item.viewsCount/maxViewsValue)*100">
 													<span>{{item.viewsCount}}</span>
 												</div>
 											</div>
+											<ng-container *ngIf="campaignType == 'SOCIAL'">
+												<ng-container *ngFor="let socialStatus of socialStatus.socialStatusList">
+													<ng-container *ngIf="socialStatus.userId === item.userId">
+													<ng-container *ngFor="let socialStatusProvider of socialStatus.socialStatusProviders">
+													<div class="btn btn-social" [ngClass]="{
+																'btn-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK',
+																'btn-twitter': socialStatusProvider.socialConnection.source ==='TWITTER',
+																'btn-linkedin': socialStatusProvider.socialConnection.source ==='LINKEDIN',
+																'btn-google': socialStatusProvider.socialConnection.source ==='GOOGLE'}">
+
+														<i class="fa" [ngClass]="{
+																		'fa-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK',
+																		'fa-twitter': socialStatusProvider.socialConnection.source ==='TWITTER',
+																		'fa-linkedin': socialStatusProvider.socialConnection.source ==='LINKEDIN',
+																		'fa-google': socialStatusProvider.socialConnection.source ==='GOOGLE'}"></i>
+														<span *ngIf="socialStatusProvider.socialConnection.profileName">{{socialStatusProvider.socialConnection.profileName}}</span>
+														<span *ngIf="!socialStatusProvider.socialConnection.profileName">{{socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatusProvider.socialConnection.lastName}}</span>
+
+													</div>
+													</ng-container>
+													</ng-container>
+												</ng-container>
+											</ng-container>
 										</td>
 									</tr>
 									</ng-container>
