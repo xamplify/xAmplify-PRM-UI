@@ -1,4 +1,5 @@
-<style> a.disabled {  pointer-events: none;cursor: not-allowed; opacity: .7;}</style>
+<style> a.disabled {  pointer-events: none;cursor: not-allowed; opacity: .7;}
+.disabled {pointer-events: none;opacity: .7;} </style>
 <div class="page-content">
 	<div class="page-bar">
 		<ul class="page-breadcrumb">
@@ -40,7 +41,7 @@
 					<div class="form-group">
 						<label for="hostedBy" class="col-sm-3 labal-css">Hosted By <span class=text-danger>*</span></label>
 						<div class="col-sm-9">
-						<input type="text" [attr.disabled]="isPreviewEvent? '' : null" class="form-control pull-left" placeholder="Hosted By" [(ngModel)]="eventCampaign.fromName" [ngModelOptions]="{standalone: true}"
+						<input type="text" [attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null" class="form-control pull-left" placeholder="Hosted By" [(ngModel)]="eventCampaign.fromName" [ngModelOptions]="{standalone: true}"
 							[ngClass]="{'has-error': eventError.eventHostByError}" (input)="eventHostByError()"  (blur)="eventHostByError()">
 					  	<div class="text-danger" *ngIf="eventError.eventHostByError">Hosted By is required</div>
 					   </div>
@@ -48,7 +49,7 @@
           <div class="form-group">
               <label for="hostedBy" class="col-sm-3 labal-css">From Email</label>
               <div class="col-sm-9">
-              <select [attr.disabled]="isPreviewEvent? '' : null" class="form-control"  [(ngModel)]="eventCampaign.email" [ngModelOptions]="{standalone: true}" (change)="setFromName()">
+              <select [attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null" class="form-control"  [(ngModel)]="eventCampaign.email" [ngModelOptions]="{standalone: true}" (change)="setFromName()">
                 <option *ngFor="let teamMember of teamMemberEmailIds" [ngValue]="teamMember.emailId">
                   {{teamMember.emailId}}
                 </option>
@@ -59,7 +60,7 @@
 						<label for="hostedBy" class="col-sm-3 labal-css">Through Partner</label>
 						<div class="col-sm-3">
 							<switch [status]="eventCampaign.channelCampaign" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.onTextValue"
-								[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onGreenColorSwitch" [size]="callActionSwitch.size" [disabled]="isPreviewEvent"
+								[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onGreenColorSwitch" [size]="callActionSwitch.size" [disabled]="isPreviewEvent || reDistributeEvent"
 								(statusChange)="eventCampaign.channelCampaign = !eventCampaign.channelCampaign">
 							</switch>
             </div>
@@ -73,20 +74,20 @@
 					<div class="form-group">
 						<label for="eventDateTime" class="col-sm-3 labal-css">Event Date/Time <span class=text-danger>*</span></label>
 						<div class="col-sm-9 p0">
-							<div class="col-sm-6"><input [attr.disabled]="isPreviewEvent? '' : null" type="text" id="startDatePicker" class="form-control flatpickr" placeholder="Start"
+							<div class="col-sm-6"><input [attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null" type="text" id="startDatePicker" class="form-control flatpickr" placeholder="Start"
 								[(ngModel)]="eventCampaign.campaignEventTimes[0].startTimeString" [ngModelOptions]="{standalone: true}" (input)="eventStartTimeError()" (blur)="eventStartTimeError()"
                 [ngClass]="{'has-error': eventError.eventStartTimeError && !eventCampaign.campaignEventTimes[0].startTimeString}">
                 <div class="col-sm-12 text-danger" style="padding:0" *ngIf="eventError.eventStartTimeError">{{datePassedError}}</div>
               </div>
 							<div class="col-sm-6">
-								<input type="text" id="enDatePicker" [attr.disabled]="isPreviewEvent? '' : null" [disabled]="eventCampaign.campaignEventTimes[0].allDay" class="form-control flatpickr" placeholder="End"
+								<input type="text" id="enDatePicker" [attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null" [disabled]="eventCampaign.campaignEventTimes[0].allDay" class="form-control flatpickr" placeholder="End"
                 [(ngModel)]="eventCampaign.campaignEventTimes[0].endTimeString" [ngModelOptions]="{standalone: true}" (input)="eventEndTimeError()" (blur)="eventEndTimeError()"
                 [ngClass]="{'has-error': eventError.eventEndDateError,'opacityCss':eventCampaign.campaignEventTimes[0].allDay}">
                 <div class="col-sm-12 text-danger" style="padding:0" *ngIf="eventError.eventEndDateError">{{endDateErrorMesg}}</div>
               </div>
               <div class="col-sm-12 text-danger" *ngIf="(!eventError.eventStartTimeError && eventError.eventSameDateError) || endDatePassError">{{endDatePassedError}}</div>
               <div class="col-sm-12">
-								<input type="checkbox" [attr.disabled]="isPreviewEvent? '' : null" [checked]="eventCampaign.campaignEventTimes[0].allDay" (change)="changeAllDay()"> All Day
+								<input type="checkbox" [attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null" [checked]="eventCampaign.campaignEventTimes[0].allDay" (change)="changeAllDay()"> All Day
 							</div>
 						</div>
           </div>
@@ -94,13 +95,13 @@
               <label for="Time Zone" class="col-sm-3 labal-css">Time Zone <span class=text-danger>*</span></label>
                 <div class="col-sm-9 p0">
                 <div class="col-sm-6">
-                  <select [attr.disabled]="isPreviewEvent? '' : null" class="form-control" style="width: 100%;cursor: pointer;" 	[ngClass]="{'has-error': eventError.eventCountryAndTimeZone && !eventCampaign.campaignEventTimes[0].countryId}"
+                  <select [attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null" class="form-control" style="width: 100%;cursor: pointer;" 	[ngClass]="{'has-error': eventError.eventCountryAndTimeZone && !eventCampaign.campaignEventTimes[0].countryId}"
                   [(ngModel)]="eventCampaign.campaignEventTimes[0].countryId" [ngModelOptions]="{standalone: true}" (change)="onChangeCountryCampaignEventTime($event.target.value)" (input)="eventCountryError()" (blur)="eventCountryError()">
                     <option *ngFor="let country of countries" [value]="country.id">{{country.name}}</option>
                   </select>
                  </div>
                 <div class="col-sm-6">
-                  <select [attr.disabled]="isPreviewEvent? '' : null" class="form-control" style="width: 100%" [(ngModel)]="eventCampaign.campaignEventTimes[0].timeZone" [ngModelOptions]="{standalone: true}" id="timezoneIdCampaignEventTime">
+                  <select [attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null" class="form-control" style="width: 100%" [(ngModel)]="eventCampaign.campaignEventTimes[0].timeZone" [ngModelOptions]="{standalone: true}" id="timezoneIdCampaignEventTime">
                     <option *ngIf="!timezonesCampaignEventTime" value="" disabled selected>Select TimeZone...</option>
                     <ng-container *ngIf="timezonesCampaignEventTime?.length==1">
                       <option *ngFor="let timeZone of timezonesCampaignEventTime" [value]="timeZone.timezoneId" [selected]="eventCampaign.campaignEventTimes[0].countryId == timeZone.countryId">
@@ -120,7 +121,7 @@
 					<div class="form-group">
 						<label for="hostedBy" class="col-sm-3 labal-css">Online Meeting</label>
 						<div class="col-sm-9">
-							<switch [disabled]="isPreviewEvent" [status]="eventCampaign.onlineMeeting" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+							<switch [disabled]="(isPreviewEvent || reDistributeEvent)" [status]="eventCampaign.onlineMeeting" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
 								[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
 								(statusChange)="eventCampaign.onlineMeeting = !eventCampaign.onlineMeeting">
 							</switch>
@@ -129,18 +130,18 @@
 					<section *ngIf="!eventCampaign.onlineMeeting">
 						<div class="form-group">
 							<label for="hostedBy" class="col-sm-3 labal-css">Location Name <span class="text-danger" style="position: absolute;">*</span></label>
-              <div class="col-sm-9"><input type="text" [attr.disabled]="isPreviewEvent? '' : null" class="form-control" id="eventDateTime" (blur)="eventLocationError()" (input)="eventLocationError()"
+              <div class="col-sm-9"><input type="text" [attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null" class="form-control" id="eventDateTime" (blur)="eventLocationError()" (input)="eventLocationError()"
                  placeholder="My house, bar, etc" [ngClass]="{'has-error': eventError.eventLocationError}" [(ngModel)]="eventCampaign.campaignLocation.location" [ngModelOptions]="{standalone: true}">
                  <div class="text-danger" *ngIf="eventError.eventLocationError">Location is required</div>
                 </div>
 						</div>
 						<div class="form-group">
 							<label for="hostedBy" class="col-sm-3 labal-css">Address</label>
-							<div class="col-sm-9"><input type="text" [attr.disabled]="isPreviewEvent? '' : null" class="form-control" id="eventDateTime" placeholder="Street Address" [(ngModel)]="eventCampaign.campaignLocation.street" [ngModelOptions]="{standalone: true}"></div>
+							<div class="col-sm-9"><input type="text" [attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null" class="form-control" id="eventDateTime" placeholder="Street Address" [(ngModel)]="eventCampaign.campaignLocation.street" [ngModelOptions]="{standalone: true}"></div>
 							<div class="col-sm-offset-3 col-sm-9 pt10">
-								<div class="col-sm-4 p0"><input type="text" [attr.disabled]="isPreviewEvent? '' : null" class="form-control" id="city" placeholder="City" [(ngModel)]="eventCampaign.campaignLocation.city" [ngModelOptions]="{standalone: true}"></div>
-								<div class="col-sm-4 p0"><input type="text" [attr.disabled]="isPreviewEvent? '' : null" class="form-control" id="state" placeholder="State" [(ngModel)]="eventCampaign.campaignLocation.state" [ngModelOptions]="{standalone: true}"></div>
-								<div class="col-sm-4 p0"><input type="text" [attr.disabled]="isPreviewEvent? '' : null" class="form-control" id="zip" placeholder="Zip" [(ngModel)]="eventCampaign.campaignLocation.zip" [ngModelOptions]="{standalone: true}"></div>
+								<div class="col-sm-4 p0"><input type="text" [attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null" class="form-control" id="city" placeholder="City" [(ngModel)]="eventCampaign.campaignLocation.city" [ngModelOptions]="{standalone: true}"></div>
+								<div class="col-sm-4 p0"><input type="text" [attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null" class="form-control" id="state" placeholder="State" [(ngModel)]="eventCampaign.campaignLocation.state" [ngModelOptions]="{standalone: true}"></div>
+								<div class="col-sm-4 p0"><input type="text" [attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null" class="form-control" id="zip" placeholder="Zip" [(ngModel)]="eventCampaign.campaignLocation.zip" [ngModelOptions]="{standalone: true}"></div>
 							</div>
 						</div>
 					</section>
@@ -151,23 +152,23 @@
           <div class="portlet-title">
             <h4 class="pull-left f-w-600">Event Settings</h4>
           </div>
-          <div class="portlet-body clearfix" [attr.disabled]="isPreviewEvent">
+          <div class="portlet-body clearfix" [attr.disabled]="(isPreviewEvent || reDistributeEvent)">
             <ul>
             <li><label>
-              <switch [status]="eventCampaign.rsvpReceived" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [disabled]="isPreviewEvent"
+              <switch [status]="eventCampaign.rsvpReceived" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [disabled]="isPreviewEvent || reDistributeEvent"
               [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
               (statusChange)="eventCampaign.rsvpReceived = !eventCampaign.rsvpReceived">
             </switch>
               Notify me when guests RSVP
               </label></li>
             <li><label>
-               <switch [status]="eventCampaign.emailOpened" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [disabled]="isPreviewEvent"
+               <switch [status]="eventCampaign.emailOpened" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [disabled]="isPreviewEvent || reDistributeEvent"
                [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
                (statusChange)="eventCampaign.emailOpened = !eventCampaign.emailOpened">
              </switch>
                Notify me when email is opened </label></li>
             <li><label>
-              <switch [status]="eventCampaign.inviteOthers" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [disabled]="isPreviewEvent"
+              <switch [status]="eventCampaign.inviteOthers" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [disabled]="(isPreviewEvent || reDistributeEvent) || reDistributeEvent"
               [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
               (statusChange)="eventCampaign.inviteOthers = !eventCampaign.inviteOthers">
             </switch>
@@ -183,7 +184,7 @@
               <ul>
                 <li style="border-bottom:1px solid #CCC; margin-bottom:10px;">
                    <label class="col-md-1 p0" style="margin-top: 17px;cursor:pointer">
-                     <input style="cursor: pointer;" [attr.disabled]="isPreviewEvent? '' : null" type="radio" value="eventCampaign.publicEventCampaign" [checked]="eventCampaign.publicEventCampaign" (change)="eventCampaign.publicEventCampaign = !eventCampaign.publicEventCampaign">
+                     <input style="cursor: pointer;" [attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null" type="radio" value="eventCampaign.publicEventCampaign" [checked]="eventCampaign.publicEventCampaign" (change)="eventCampaign.publicEventCampaign = !eventCampaign.publicEventCampaign">
                    </label>
                   <label class="col-md-2 p0"><img src="assets/images/public-event.png"></label>
                   <div class="col-md-9 p0" ><b>Public page</b><br><p >Turn invitees into your biggest promoters by letting them share your event on Facebook, Twitter, Linkedin and or other media platform</p></div>
@@ -192,7 +193,7 @@
 
                 <li>
                     <label  class="col-md-1 p0" style="margin-top: 17px;cursor: pointer;">
-                      <input style="cursor: pointer;" [attr.disabled]="isPreviewEvent? '' : null" type="radio" value="!eventCampaign.publicEventCampaign" [checked]="!eventCampaign.publicEventCampaign" (change)="eventCampaign.publicEventCampaign = !eventCampaign.publicEventCampaign">
+                      <input style="cursor: pointer;" [attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null" type="radio" value="!eventCampaign.publicEventCampaign" [checked]="!eventCampaign.publicEventCampaign" (change)="eventCampaign.publicEventCampaign = !eventCampaign.publicEventCampaign">
                     </label>
                     <label class="col-md-2 p0 "><img src="assets/images/private-event.png"></label>
                     <div class="col-md-9 p0"><b>Private page</b><br><p >Make your event invitation-only (guests must receive an xAmplify invitation to attend/view)</p></div>
@@ -209,19 +210,19 @@
                   <i class="fa fa-camera" aria-hidden="true"></i>
                   <b>Add Event Image</b><br>
                   <span>Choose a compelling image that brings your event to life</span>
-                  <input type="file" [attr.disabled]="isPreviewEvent? '' : null" (change)="fileChange($event)" #input name="media[]" accept="image/gif,image/jpeg,image/jpg,image/png"
+                  <input type="file" [attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null" (change)="fileChange($event)" #input name="media[]" accept="image/gif,image/jpeg,image/jpg,image/png"
                    class="file-input js-tooltip" data-original-title="Add photo" id="eventImage">
                 </div>
-                <div [attr.disabled]="isPreviewEvent? '' : null" class="uploaded-media-wrapper" *ngIf="eventCampaign.campaignEventMedias[0].filePath">
+                <div [attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null" class="uploaded-media-wrapper" *ngIf="eventCampaign.campaignEventMedias[0].filePath">
                   <img src="{{eventCampaign.campaignEventMedias[0].filePath}}" [attr.disabled]="isPreviewEvent? '' : null">
-                  <i *ngIf="!isPreviewEvent" class="fa fa-times-circle" (click)="$event.stopPropagation();resetcampaignEventMedia()"></i>
+                  <i *ngIf="!(isPreviewEvent || reDistributeEvent)" class="fa fa-times-circle" (click)="$event.stopPropagation();resetcampaignEventMedia()"></i>
                 </div>
               </div>
             </div>
             <div class="form-group">
               <label for="hostedBy" class="col-sm-2 labal-css" style="margin-top:10px;">Event Description <span class=text-danger>*</span></label>
-              <div class="col-sm-10" [attr.disabled]="isPreviewEvent? '' : null" style="margin-top:10px;">
-                <ckeditor [attr.disabled]="isPreviewEvent? '' : null" [(ngModel)]="eventCampaign.message"  (blur)="eventDescriptionError()" (input)="eventDescriptionError()" [ngModelOptions]="{standalone: true}" #myckeditor [config]="ckeConfig" debounce="500"></ckeditor>
+              <div class="col-sm-10" [ngClass]="{'disabled':(isPreviewEvent || reDistributeEvent)}" style="margin-top:10px;">
+                <ckeditor [class.disabled]="(isPreviewEvent || reDistributeEvent)" [(ngModel)]="eventCampaign.message"  (blur)="eventDescriptionError()" (input)="eventDescriptionError()" [ngModelOptions]="{standalone: true}" #myckeditor [config]="ckeConfig" debounce="500"></ckeditor>
                 <div  class="text-danger" *ngIf="eventError.eventDescription"> Event message is required</div>
               </div>
             </div>
@@ -256,7 +257,7 @@
                       <tr>
                         <th class="custom-center">Select</th>
                         <th class="custom-center">List Name</th>
-                        <th class="custom-center">No.of Partners</th>
+                        <th class="custom-center">No.of Recipients</th>
                         <th class="custom-center">Preview</th>
                       </tr>
                     </thead>
@@ -294,7 +295,7 @@
         <div class="col-xs-12 mb10">
           	<div class="boxes portlet light">
                 <div class="portlet-title">
-                  <h4 class="pull-left f-w-600">Select<span *ngIf="isPreviewEvent || reDistributeEvent">ed</span> an Email Template</h4>
+                  <h4 class="pull-left f-w-600">Select<span *ngIf="isPreviewEvent">ed</span> an Email Template</h4>
                 </div>
                 <div class="portlet-body clearfix">
                       <section  style="min-height: 250px;">
@@ -332,7 +333,7 @@
           <div class="col-xs-6 auto-response" *ngIf="isPreviewEvent" style="margin-left: 37%;"><a [attr.disabled]="isPreviewEvent? '' : null">Click Here</a> to add a auto response to your email</div>
           </div>
           <div *ngFor="let reply of eventCampaign.campaignReplies;let i=index">
-          <div class="portlet light dashboard-stat2" id="{{reply.divId}}" style="min-height: 320px;">
+          <div class="portlet light dashboard-stat2" id="{{reply.divId}}" style="min-height: 320px;" [class.disabled]="reply.body && reDistributeEvent && reply.id">
             <div class="portlet-title custom-change-css">
               <div class="col-xs-7" style="font-size: 15px;">
                   <h4 class="text-left auto-res">Add an Auto-response to your e-mail-{{i+1}}</h4>

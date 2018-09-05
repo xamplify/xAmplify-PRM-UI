@@ -152,7 +152,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
         this.eventCampaign.emailTemplate = result.data.emailTemplateDTO;
         this.eventCampaign.user = result.data.userDTO;
         if(result.data.campaignReplies===undefined){ this.eventCampaign.campaignReplies = [];}
-        else {this.getCampaignReplies(this.eventCampaign); }
+        else {this.getCampaignReplies(this.eventCampaign);}
         // this.eventCampaign.userListIds = this.campaignService.eventCampaign.userListDTOs;
         this.eventCampaign.campaignEventTimes = result.data.campaignEventTimes;
         if(!this.eventCampaign.campaignEventTimes[0]){
