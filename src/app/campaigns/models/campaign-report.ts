@@ -7,6 +7,7 @@ export class CampaignReport {
     campaignReportOption: string = 'RECENT';
     response: string;
     responseMessage: string;
+    selectedPartnerId: number =0;
 
     emailOpenCount: number = 0;
     emailClickedCount: number = 0;
@@ -30,6 +31,7 @@ export class CampaignReport {
     totalNoCount: number = 0;
     totalMayBeCount: number = 0;
     totalNotYetRespondedCount: number = 0;
+    totalEmailOpenCount: number = 0;
 
     partnersYesCount: number = 0;
     partnersNoCount: number = 0;
@@ -41,6 +43,7 @@ export class CampaignReport {
     redistributionTotalNoCount: number = 0;
     redistributionTotalMayBeCount: number = 0;
     redistributionTotalNotYetRespondedCount: number = 0;
+    redistributionTotalEmailOpenCount: number = 0;
 
     selectedPartnerFirstName: string;
     selectedPartnerLastName: string;

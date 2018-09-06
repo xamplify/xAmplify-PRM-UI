@@ -647,6 +647,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
               this.campaignReport.totalMayBeCount = data.MAYBE;
               this.campaignReport.totalNoCount = data.NO;
               this.campaignReport.totalNotYetRespondedCount = data.notYetResponded;
+              this.campaignReport.totalEmailOpenCount = data.emailOpenedCount;
               this.getPartnersResponeCount(campaignId);
               this.loading = false;
             },
@@ -678,6 +679,42 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
             this.xtremandLogger.error('error'+error)
           }
         }
+  
+  getRsvpEmailOpenDetails(detailType: any){
+      try{
+      this.loading = true;
+      this.downloadTypeName = 'rsvp';
+      this.rsvpResposeType = "email open";
+      if(detailType === 'reDistribution'){
+          this.campaignService.getEventCampaignRedistributionEmailOpenDetails( this.campaign.campaignId, this.campaignReport.selectedPartnerEmailId )
+          .subscribe(
+          data => {
+            console.log(data);
+            this.loading = false;
+            this.rsvpDetailsList = data;
+          },
+          error => this.xtremandLogger.error(error),
+          () => { }
+          ) 
+      }else{
+          this.showRsvpDetails = true;
+          this.campaignService.getEventCampaignEmailOpenDetails( this.campaign.campaignId, this.isChannelCampaign )
+          .subscribe(
+          data => {
+            console.log(data);
+            this.loading = false;
+            this.rsvpDetailsList = data;
+          },
+          error => this.xtremandLogger.error(error),
+          () => { }
+          ) 
+      }
+      }catch(error){
+        this.xtremandLogger.error('error'+error)
+   }
+  }
+  
+  
         
   getRsvpDetails(responseType: any, detailType:any){
       try{
@@ -720,6 +757,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
           this.campaignReport.selectedPartnerFirstName = campaignViews.firstName;
           this.campaignReport.selectedPartnerLastName = campaignViews.lastName;
           this.campaignReport.selectedPartnerEmailId = campaignViews.emailId;
+          this.campaignReport.selectedPartnerEmailId = campaignViews.userId;
           
          // this.downloadTypeName = 'rsvp';
             this.campaignService.getRestributionEventCampaignAnalytics( this.campaign.campaignId, campaignViews.userId )
@@ -730,6 +768,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
               this.campaignReport.redistributionTotalMayBeCount = data.MAYBE;
               this.campaignReport.redistributionTotalNoCount = data.NO;
               this.campaignReport.redistributionTotalNotYetRespondedCount = data.notYetResponded;
+              this.campaignReport.redistributionTotalEmailOpenCount = data.emailOpenedCount;
               this.getRsvpDetails('YES', 'reDistribution');
               this.loading = false;
             },
