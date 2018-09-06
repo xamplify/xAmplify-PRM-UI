@@ -11,4 +11,7 @@ export class TweetComponent implements OnInit {
 
   ngOnInit() {
   }
+  populateReplyModalContent(id, fromUser, text){
+
+  }
 }
