@@ -684,7 +684,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         if(event){
             this.removeTemplateAndAutoResponse();
             this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.NONE;
-            this.loadEmailTemplates(this.emailTemplatesPagination);
+            this.setCoBrandingLogo(event);
+           // this.loadEmailTemplates(this.emailTemplatesPagination);
             this.loadContacts();
         }else{
             this.loadContacts();
