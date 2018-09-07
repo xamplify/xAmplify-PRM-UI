@@ -691,7 +691,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.loadContacts();
             this.setCoBrandingLogo(event);
             this.removePartnerRules();
-
         }
     }
 
@@ -1514,22 +1513,24 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         $("#email-template-title").empty();
         $("#email-template-title").append(emailTemplateName);
         $('#email-template-title').prop('title',emailTemplate.name);
-        if(this.campaignType=='video'){
+        let updatedBody = this.refService.showEmailTemplatePreview(this.campaign, this.campaignType, this.launchVideoPreview.gifImagePath, emailTemplate.body);
+       /* if(this.campaignType=='video'){
             let selectedVideoGifPath = this.launchVideoPreview.gifImagePath;
-            let updatedBody = emailTemplate.body.replace("<SocialUbuntuImgURL>",selectedVideoGifPath);
+            updatedBody = emailTemplate.body.replace("<SocialUbuntuImgURL>",selectedVideoGifPath);
             updatedBody = updatedBody.replace("&lt;SocialUbuntuURL&gt;","javascript:void(0)");
             updatedBody = updatedBody.replace("<SocialUbuntuURL>","javascript:void(0)");
             updatedBody = updatedBody.replace("https://dummyurl.com","javascript:void(0)");
             updatedBody = updatedBody.replace("https://xamp.io/vod/images/xtremand-video.gif",selectedVideoGifPath);
             updatedBody = updatedBody.replace("&lt;SocialUbuntuImgURL&gt;",selectedVideoGifPath);
-            $("#htmlContent").append(updatedBody);
         }else{
-            let updatedBody = emailTemplate.body.replace("<div id=\"video-tag\">","<div id=\"video-tag\" style=\"display:none\">");
-            $("#htmlContent").append(updatedBody);
+            updatedBody = emailTemplate.body.replace("<div id=\"video-tag\">","<div id=\"video-tag\" style=\"display:none\">");
         }
+        if(!this.campaign.enableCoBrandingLogo){
+            updatedBody = updatedBody.replace("<a href=\"https://dummycobrandingurl.com\"","<a href=\"https://dummycobrandingurl.com\" style=\"display:none\"");
+        }*/
+        $("#htmlContent").append(updatedBody);
         $('.modal .modal-body').css('overflow-y', 'auto');
         $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
-        console.log(body);
         $("#show_email_template_preivew").modal('show');
     }
     filterTemplates(type:string,index:number){

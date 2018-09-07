@@ -391,7 +391,8 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
         $("#email-template-title").empty();
         $("#email-template-title").append(emailTemplateName);
         $('#email-template-title').prop('title', emailTemplate.name);
-        if (this.campaignType == 'video') {
+        let updatedBody = this.referenceService.showEmailTemplatePreview(this.campaign, this.campaignType, this.campaign.campaignVideoFile.gifImagePath, emailTemplate.body);
+     /*   if (this.campaignType == 'video') {
             let selectedVideoGifPath = this.campaign.campaignVideoFile.gifImagePath;
             let updatedBody = emailTemplate.body.replace("<SocialUbuntuImgURL>", selectedVideoGifPath);
             updatedBody = updatedBody.replace("&lt;SocialUbuntuURL&gt;", "javascript:void(0)");
@@ -403,7 +404,8 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
         } else {
             let updatedBody = emailTemplate.body.replace("<div id=\"video-tag\">", "<div id=\"video-tag\" style=\"display:none\">");
             $("#email-template-content").append(updatedBody);
-        }
+        }*/
+        $("#email-template-content").append(updatedBody);
         $('.modal .modal-body').css('overflow-y', 'auto');
         $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
         $("#email_template_preivew").modal('show');

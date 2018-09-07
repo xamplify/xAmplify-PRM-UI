@@ -1538,9 +1538,13 @@ export class ReferenceService {
          } else {
              updatedBody = body.replace("<div id=\"video-tag\">", "<div id=\"video-tag\" style=\"display:none\">");
          }
+         if(!campaign.enableCoBrandingLogo){
+             updatedBody = updatedBody.replace("<a href=\"https://dummycobrandingurl.com\"","<a href=\"https://dummycobrandingurl.com\" style=\"display:none\"");
+         }
          if(campaign.nurtureCampaign ||userProfile.id!=campaign.userId){
              updatedBody = this.replacePartnerLogo(updatedBody,partnerLogo,partnerCompanyUrl,campaign);
          }
+         
          $("#email-template-content").append(updatedBody);
          $('.modal .modal-body').css('overflow-y', 'auto');
          $("#email_template_preivew").modal('show');
@@ -1608,5 +1612,24 @@ export class ReferenceService {
          this.router.navigate(["/home/campaigns/"+campaign.campaignId+"/details"]);
      }
 
+     
+     showEmailTemplatePreview(campaign:Campaign,campaignType:string,selectedVideoGifPath:string,emailTemplateBody:string){
+         let updatedBody = "";
+         if(this.campaignType=='video'){
+             updatedBody = emailTemplateBody.replace("<SocialUbuntuImgURL>",selectedVideoGifPath);
+             updatedBody = updatedBody.replace("&lt;SocialUbuntuURL&gt;","javascript:void(0)");
+             updatedBody = updatedBody.replace("<SocialUbuntuURL>","javascript:void(0)");
+             updatedBody = updatedBody.replace("https://dummyurl.com","javascript:void(0)");
+             updatedBody = updatedBody.replace("https://xamp.io/vod/images/xtremand-video.gif",selectedVideoGifPath);
+             updatedBody = updatedBody.replace("&lt;SocialUbuntuImgURL&gt;",selectedVideoGifPath);
+         }else{
+             updatedBody = emailTemplateBody.replace("<div id=\"video-tag\">","<div id=\"video-tag\" style=\"display:none\">");
+         }
+         if(!campaign.enableCoBrandingLogo){
+             updatedBody = updatedBody.replace("<a href=\"https://dummycobrandingurl.com\"","<a href=\"https://dummycobrandingurl.com\" style=\"display:none\"");
+         }
+         return updatedBody;
+     }
+    
 
 }
