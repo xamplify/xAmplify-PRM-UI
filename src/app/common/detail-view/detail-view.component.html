@@ -53,8 +53,12 @@
 							</tbody>
 						</table>
 						</ng-container>
-						<!-- <app-pagination [pagination]="campaignViewsPagination"
-						 [type]="'campaignViews'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination> -->
+						<app-pagination *ngIf="detailType === 'email open'" [pagination]="analyticsComponent.eventCampaingEmailOpenPagination"
+						 [type]="'emailOpenPagination'" (notifyParent)="analyticsComponent.setPage($event)" (notifyParentDropDown)="analyticsComponent.paginationDropdown($event)"></app-pagination>
+					
+					<app-pagination *ngIf="detailType !== 'email open'" [pagination]="analyticsComponent.evenCamapignRsvpDetailPagination"
+						 [type]="'rsvpDetailPagination'" (notifyParent)="analyticsComponent.setPage($event)" (notifyParentDropDown)="analyticsComponent.paginationDropdown($event)"></app-pagination>
+					
 					</div>
 				</div>
 	</div>
