@@ -114,6 +114,8 @@ export class TopnavbarComponent implements OnInit {
 
   logout() {
     this.refService.userDefaultPage = 'NoneOf';
+    this.refService.isSidebarClosed = false;
+    document.body.className = 'login page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-sidebar-closed-hide-logo';
     this.authenticationService.logout();
     this.router.navigate(['/']);
   }

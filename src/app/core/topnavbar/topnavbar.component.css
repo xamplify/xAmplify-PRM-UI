@@ -8,7 +8,7 @@
 }
 
 /* CSS Added Nagesh */
-.btn-header{    
+.btn-header{
 padding: 7px 15px;
     margin-right: -15px;
     position: relative;
@@ -18,13 +18,13 @@ padding: 7px 15px;
     color: white;
 }
 
-.btn-header:hover{    
+.btn-header:hover{
     background-color: #2b85b4;
 }
 
 .page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-toggle .badge.badge-default{
     background-color: #00a8e7 !important;}
-    
+
     a.disabled{
     pointer-events: none;
     }
@@ -39,4 +39,11 @@ padding: 7px 15px;
     height: 40px;
     width: 40px;
     border: 1px solid #ccc;
+}
+.side-bar{
+  position: relative;
+  right: -42px;
+  top: 24px;
+  cursor: pointer;
+  color: #a8adad;
 }

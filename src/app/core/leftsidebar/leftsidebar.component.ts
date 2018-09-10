@@ -4,6 +4,8 @@ import {Router} from '@angular/router';
 import {AuthenticationService} from '../../core/services/authentication.service';
 import {Roles} from '../../core/models/roles';
 import {ReferenceService} from '../../core/services/reference.service';
+declare var $:any;
+
 @Component({
   selector: 'app-leftsidebar',
   templateUrl: './leftsidebar.component.html',
@@ -16,11 +18,13 @@ export class LeftsidebarComponent implements OnInit {
     enableLink = true;
     roleName: Roles= new Roles();
     isOnlyPartner:boolean = false;
-    constructor(location: Location, public authService: AuthenticationService, private refService: ReferenceService,private router:Router) {
+    constructor(location: Location, public authService: AuthenticationService, public refService: ReferenceService,private router:Router) {
         this.updateLeftSideBar(location);
     }
 
     updateLeftSideBar(location:Location){
+      //  this.refService.isSidebarClosed = false;
+      //  document.body.className = 'login page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-sidebar-closed-hide-logo';
         this.location = location;
         const roles = this.authService.getRoles();
         if (roles.indexOf(this.roleName.campaignRole) > -1 ||

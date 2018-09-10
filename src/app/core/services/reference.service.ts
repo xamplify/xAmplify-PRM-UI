@@ -70,14 +70,14 @@ export class ReferenceService {
     isPlayVideo = false;
     isDownloadCsvFile: boolean;
     vendorDetails: any;
-    isRedistributionCampaignPage: boolean = false;
+    isRedistributionCampaignPage = false;
     campaignType = 'REGULAR';
     videoTag = "<a href='<SocialUbuntuURL>'>\n   <img src='<SocialUbuntuImgURL>'/> \n </a> \n";
     emailMergeTags = "  For First Name : {{firstName}} \n  For Last Name : {{lastName}} \n  For Full Name : {{fullName}} |n For Email Id : {{emailId}}";
     coBrandingTag = "<img src='<Co-BrandingImgURL>'/> \n";
-    public URL: string = this.authenticationService.REST_URL + 'admin/';
+    URL: string = this.authenticationService.REST_URL + 'admin/';
     hasClientError = false;
-
+    isSidebarClosed = false;
     showInputConfirmPassword = false;
     showInputPassword = false;
     showInputOldPassword = false;
@@ -1544,7 +1544,7 @@ export class ReferenceService {
          if(campaign.nurtureCampaign ||userProfile.id!=campaign.userId){
              updatedBody = this.replacePartnerLogo(updatedBody,partnerLogo,partnerCompanyUrl,campaign);
          }
-         
+
          $("#email-template-content").append(updatedBody);
          $('.modal .modal-body').css('overflow-y', 'auto');
          $("#email_template_preivew").modal('show');
@@ -1612,7 +1612,7 @@ export class ReferenceService {
          this.router.navigate(["/home/campaigns/"+campaign.campaignId+"/details"]);
      }
 
-     
+
      showEmailTemplatePreview(campaign:Campaign,campaignType:string,selectedVideoGifPath:string,emailTemplateBody:string){
          let updatedBody = "";
          if(this.campaignType=='video'){
@@ -1630,6 +1630,13 @@ export class ReferenceService {
          }
          return updatedBody;
      }
-    
+
+     changeSideBar(){
+      this.isSidebarClosed = !this.isSidebarClosed;
+      if(!this.isSidebarClosed){ document.body.className = 'login page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-sidebar-closed-hide-logo';
+      }else { document.body.className = 'login page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-sidebar-closed-hide-logo page-sidebar-closed';
+      }
+    }
+
 
 }
