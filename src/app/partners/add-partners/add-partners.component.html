@@ -503,7 +503,7 @@ img:hover {
 																[ngModelOptions]="{standalone: true}"
 																class="form-control" placeholder="Search for a Partner" (keypress)="eventHandler($event.keyCode)">
 														<button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey=''"></button>
-														<button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search"></i></button>						
+														<button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search"></i></button>
 														</div>
 													</div>
 												</div>
@@ -622,7 +622,8 @@ img:hover {
 				<app-pagination [pagination]="pagination" [type]="'contacts'" (notifyParent)="setPage($event)"
 				(notifyParentDropDown)="onChangeAllPartnerUsers($event)"></app-pagination>
 			</div>
-		</div>
+    </div>
+    <app-scroll-top></app-scroll-top>
 	</div>
 
 	<!-- Modal -->
@@ -796,7 +797,7 @@ img:hover {
 	</div>
 
 <div class="modal" id="settingSocialNetworkPartner" tabindex="-1" role="dialog"
-	aria-labelledby="settingSocialNetworkModalLabel1" data-keyboard="false" data-toggle="modal" data-target="settingSocialNetworkPartner" 
+	aria-labelledby="settingSocialNetworkModalLabel1" data-keyboard="false" data-toggle="modal" data-target="settingSocialNetworkPartner"
 	data-backdrop="static">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">

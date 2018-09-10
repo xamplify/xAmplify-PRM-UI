@@ -34,7 +34,7 @@
 
 								<!-- 	<div class="page-bar m0">
 										<div class="page-toolbar">
-											Removed serarch and sort from here 
+											Removed serarch and sort from here
 										</div>
 									</div> -->
 									<!-- END DASHBOARD STATS -->
@@ -136,7 +136,7 @@
 												</li>
 
 										</ul>
-										
+
 										<div class="btn-group pull-right">
 												<ng-container class='m10'>
 												<button class="btn btn-xs" [disabled]="isListView"
@@ -167,14 +167,14 @@
 																[ngModelOptions]="{standalone: true}"
 																(input)="searchKeyValue('contactList')"
 																class="form-control" placeholder="Search For a List" (keypress)="eventHandler($event.keyCode)">
-														
+
 														<button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey=''"></button>
 														<button type="submit" class="search-box-item-click" (click)="search('contactList')"><i class="fa fa-search"></i></button>
 														</div>
 													</div>
 												</div>
 											</div>
-										
+
 										</div>
 									<app-response-message [customResponse]="customResponse"
 										*ngIf="customResponse.isVisible"></app-response-message>
@@ -220,7 +220,7 @@
 													</td>
 													<td>
 													<h4 class="ellipsis" title="{{contactList.name}}">
-															{{contactList.name | slice:0:50}} 
+															{{contactList.name | slice:0:50}}
 															<span *ngIf="contactList.name?.length>50">...</span>
 														</h4>
 														<h5 class='m0 ellipsis'  title="{{contactList.uploadedBy}}">
@@ -242,18 +242,18 @@
 																*ngIf="(hasAllAccess || authenticationService.module.isVendor || (hasContactRole && loggedInUserId == contactList.uploadedUserId) || authenticationService.isOnlyPartner()) && !contactList.synchronisedList"
 																(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.synchronisedList)"
 																data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_list_edit}}"> <i class="fa fa-pencil-square-o"></i>
-															</a> 
-															
+															</a>
+
 															<a *ngIf="!hasAllAccess && loggedInUserId != contactList.uploadedUserId && !authenticationService.module.isVendor || contactList.synchronisedList"
 																(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.synchronisedList)"
 																data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_list_info}}"> <i
 																class="glyphicon glyphicon-info-sign"></i>
 															</a>
-															
+
 															<a data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_list_saveAs}}"
 																(click)="saveAsNewList(contactList.id,contactList.name)">
 																<i class="fa fa-files-o"></i>
-															</a> 
+															</a>
 															 <a (click)="downloadContactList(contactList.id, contactList.name)"
 																data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_list_download}}" data-rel="fancybox-button"> <i
 																class="fa fa-cloud-download"></i>
@@ -534,7 +534,7 @@
 													[ngModelOptions]="{standalone: true}"
 													(input)="searchKeyValue('contacts')" class="form-control"
 													placeholder="Search For {{checkingContactTypeName}}" (keypress)="eventHandler($event.keyCode)">
-													
+
 													<button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey=''"></button>
 														<button type="submit" class="search-box-item-click" (click)="search('contacts')"><i class="fa fa-search"></i></button>
 											</div>
@@ -715,7 +715,7 @@
 			</div>
 		</div>
 	</div>
-
+  <app-scroll-top></app-scroll-top>
 </div>
 
 <div id="filterModal" class="modal fade" role="dialog"

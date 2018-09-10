@@ -1,6 +1,6 @@
 <div class="page-content ml0">
 <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-	<div class="page-bar"> 
+	<div class="page-bar">
 		<ul class="page-breadcrumb">
 			<li>
 			<i class="fa fa-home"></i>
@@ -28,11 +28,11 @@
 								<th class='text-center'>UPDATED TIME</th>
 							</tr>
 						</thead>
-						<tbody> 
+						<tbody>
 							<ng-container *ngFor="let report of vendorsDetails;let i = index"> <!-- this div for ngFor -->
 							<tr (click)="selectedVendorDetails(report)" class="highletedRow">
 								<td>
-								<app-user-info [userInfo]="report"> 
+								<app-user-info [userInfo]="report">
 								</app-user-info>
 								</td>
 								<td>{{report.companyName}}</td>
@@ -48,7 +48,7 @@
 								</td>
 							</tr>
 							</ng-container>
- 
+
 						</tbody>
 					</table>
 				</div>
@@ -62,7 +62,7 @@
 
 		<section *ngIf="detailsTielsView">
 				<div class="clearfix"></div>
-				
+
 			<div class="page-bar">
 				<div class="table-responsive">
 					<table class='table tgrid'>
@@ -76,11 +76,11 @@
 								<th class='text-center'>UPDATED TIME</th>
 							</tr>
 						</thead>
-						<tbody> 
+						<tbody>
 							<ng-container> <!-- this div for ngFor -->
 							<tr class="selectedRow">
 								<td>
-								<app-user-info [userInfo]="selectedVendorRow"> 
+								<app-user-info [userInfo]="selectedVendorRow">
 								</app-user-info>
 								</td>
 								<td>{{selectedVendorRow.companyName}}</td>
@@ -96,13 +96,14 @@
 								</td>
 							</tr>
 							</ng-container>
- 
+
 						</tbody>
 					</table>
 				</div>
 			</div>
 			<app-dashboard-stats></app-dashboard-stats>
 		</section>
-		
-	</div>
+
+  </div>
+  <app-scroll-top></app-scroll-top>
 </div>

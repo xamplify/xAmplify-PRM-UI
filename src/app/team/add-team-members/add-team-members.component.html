@@ -247,7 +247,7 @@
 							</thead>
 							<ng-container *ngIf="pagination.totalRecords>0 && teamMemberUi.emptyTable">
 							<tbody>
-							<ng-container *ngFor="let teamMember of teamMembersList;let i=index"> 
+							<ng-container *ngFor="let teamMember of teamMembersList;let i=index">
 							<tr id="list-team-member-{{i}}" [class.disabled]="authenticationService.isSuperAdmin()">
 								<!-- <td>
 									<i class="fa fa-user" aria-hidden="true"></i>{{teamMember.emailId | lowercase}}
@@ -436,5 +436,5 @@
     </div>
   </div>
 </div>
-
+<app-scroll-top></app-scroll-top>
 </div>
