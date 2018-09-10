@@ -142,7 +142,8 @@
 				<div class="portlet-body clearfix">
 					<div class="col-xs-12">
 						<span class="btn btn-sm btn-primary pull-right">{{campaignType}} CAMPAIGN {{isPartnerCampaign}}</span>
-						<h4>{{campaign.campaignName}}</h4>
+						<h4 title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:16}} <span *ngIf="campaign.campaignName?.length>16">...</span>
+						</h4>
 						<h5 class="text-info mb10">{{campaign.launchTime | date: 'fullDate'}}</h5>
 					</div>
 				</div>
@@ -225,17 +226,21 @@
 							<thead>
 								<tr>
 									<th style="font-size: 12px; font-weight: 500;">RESPONSE DETAILS</th>
+									<th style="font-size: 12px; font-weight: 500;">EMAIL OPENED</th>
 									<th style="font-size: 12px; font-weight: 500;">YES</th>
 									<th style="font-size: 12px; font-weight: 500;">NO</th>
 									<th style="font-size: 12px; font-weight: 500;">MAY BE</th>
 									<th style="font-size: 12px; font-weight: 500;">NOT YET</th>
-									<th style="font-size: 12px; font-weight: 500;">ADDITIONAL</th>
+									<th style="font-size: 12px; font-weight: 500;">PLUS GUESTS</th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr>
 									<td>
 										Your Partners Response
+									</td>
+									<td>
+										<h6>{{campaignReport.partnersEmailOpenedCount}}</h6>
 									</td>
 									<td>
 										<h6>{{campaignReport.partnersYesCount}}</h6>
@@ -481,12 +486,13 @@
 										<th style="font-size: 12px;font-weight: 500; width: 25%;">Name</th>
 										<th style="font-size: 12px;font-weight: 500;">Campaign Name</th>
 									<!-- 	<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='EVENT'">Redistribution Time</th> -->
+									<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='EVENT' && isChannelCampaign"> email opened</th>
 										<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='EVENT' && isChannelCampaign">Yes</th>
 										<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='EVENT' && isChannelCampaign">No</th>
 										<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='EVENT' && isChannelCampaign">May Be</th>
 										<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='EVENT' && isChannelCampaign">Not Yet</th>
 										<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='EVENT' && !isChannelCampaign">Response Type</th>
-										<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='EVENT' && isChannelCampaign">Additional</th>
+										<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='EVENT' && isChannelCampaign">Plus Guests</th>
 										<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='VIDEO' || campaignType!=='EVENT'">Latest View</th>
 										<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType!=='EVENT'">
 											<span *ngIf="campaignType==='VIDEO'">Total Views</span>
@@ -507,6 +513,7 @@
 											<h4 *ngIf="item.campaignName==null">-</h4>
 										</td>
 									<!-- 	<td class="text-center" *ngIf="campaignType==='EVENT'">20 August</td> -->
+									<td class="text-center" *ngIf="campaignType==='EVENT' && isChannelCampaign">{{item.rsvpMap.emailOpenedCount}}</td>
 										<td class="text-center" *ngIf="campaignType==='EVENT' && isChannelCampaign">{{item.rsvpMap.YES}}</td>
 										<td class="text-center" *ngIf="campaignType==='EVENT' && isChannelCampaign">{{item.rsvpMap.NO}}</td>
 										<td class="text-center" *ngIf="campaignType==='EVENT' && isChannelCampaign">{{item.rsvpMap.MAYBE}}</td>
@@ -554,9 +561,10 @@
 			<div class="portlet light" style="position: relative;top: 42px;">
 				<div class="portlet-body clearfix">
 					<div class="col-xs-12">
-						<span class="btn btn-sm btn-primary pull-right">{{campaign.campaignName}}</span>
-						<h4 class="m0">{{campaignReport.selectedPartnerFirstName}} {{campaignReport.selectedPartnerLastName}}</h4>
-						<h4 class="m0">{{campaignReport.selectedPartnerEmailId}}</h4>
+						<span class="btn btn-sm btn-primary pull-right" title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:20}} <span *ngIf="campaign.campaignName?.length>20">...</span></span>
+						<h4 class="m0" title="{{campaignReport.selectedPartnerFirstName}}">{{campaignReport.selectedPartnerFirstName | slice:0:20}} <span *ngIf="campaignReport.selectedPartnerFirstName?.length>20">...</span></h4>
+						<h4 title="{{campaignReport.selectedPartnerLastName}}">{{campaignReport.selectedPartnerLastName | slice:0:20}} <span *ngIf="campaignReport.selectedPartnerLastName?.length>20">...</span></h4>
+						<h4 class="m0" title="{{campaignReport.selectedPartnerEmailId}}">{{campaignReport.selectedPartnerEmailId}} <!-- <span *ngIf="campaignReport.selectedPartnerEmailId?.length>25">...</span> --></h4>
 						<h5 class="text-info" style="margin-bottom: 0;">{{campaign.launchTime | date: 'fullDate'}}</h5>
 					</div>
 				</div>
@@ -649,7 +657,7 @@
 									<th style="font-size: 12px; font-weight: 500;" *ngIf="rsvpResposeType === 'email open'">CAMPAIGN NAME</th>
 									<th style="font-size: 12px; font-weight: 500;" *ngIf="rsvpResposeType === 'email open'">SUBJECT</th>
 									<th style="font-size: 12px; font-weight: 500;">TIME</th>
-									<th style="font-size: 12px; font-weight: 500;" *ngIf="rsvpResposeType !== 'email open'">ADDITIONAL</th>
+									<th style="font-size: 12px; font-weight: 500;" *ngIf="rsvpResposeType !== 'email open'">PLUS GUESTS</th>
 								</tr>
 							</thead>
 							<tbody>
