@@ -671,10 +671,10 @@
 							</tbody>
 						</table>
 						</ng-container>
-						<app-pagination *ngIf="detailType !== 'email open'" [pagination]="evenCamapignRsvpDetailPagination"
+						<app-pagination [pagination]="rsvpDetailAnalyticsPagination"
 						 [type]="'rsvpDetailsPagination'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
-						<app-pagination *ngIf="detailType === 'email open'" [pagination]="eventCampaingEmailOpenPagination"
-						 [type]="'emailOpenPagination'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
+						<!-- <app-pagination [hidden]="detailType === 'email open'" [pagination]="eventCampaingEmailOpenPagination"
+						 [type]="'emailOpenPagination'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination> -->
 					</div>
 				</div>
 	
