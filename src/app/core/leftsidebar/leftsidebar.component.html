@@ -108,13 +108,13 @@
 					</li>
 
 					<li *ngIf="authService.module.isEmailTemplate && !authService.isOnlyPartner()" [ngClass]="{'active':location.path().includes('emailtemplate')}">
-						<a  href="javascript:;" [ngStyle]="{'min-width':refService.isSidebarClosed ? '104%' : '100%' }">
+						<a  href="javascript:;"  >
 						<i class="fa fa-envelope"></i>
 						<span class="title">Email Templates</span>
 						<span class="arrow "></span>
 						<span class="selected"></span>
 						</a>
-						<ul class="sub-menu"  [ngStyle]="{'min-width':refService.isSidebarClosed ? '82%' : '106%' }">
+						<ul class="sub-menu"  [ngStyle]="{'min-width':refService.isSidebarClosed ? '82%' : '105%' }">
 						<li>
 							  <a [routerLink]="['./emailtemplates/select']" >
 								<i class="fa fa-envelope"></i>
