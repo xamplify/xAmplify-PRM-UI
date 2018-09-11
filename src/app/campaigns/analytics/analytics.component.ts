@@ -421,10 +421,10 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
         this.usersWatchList(this.campaign.campaignId, this.usersWatchListPagination);
     }else if (event.type === 'emailOpenPagination') {
         this.rsvpDetailAnalyticsPagination.pageIndex = event.page;
-        this.getRsvpEmailOpenDetails(this.rsvpResposeType);
+        this.getRsvpEmailOpenDetails();
     }else if (event.type === 'rsvpDetailPagination') {
         this.rsvpDetailAnalyticsPagination.pageIndex = event.page;
-        this.getRsvpDetails(this.rsvpResposeType, this.rsvpDetailType);
+        this.getRsvpDetails(this.rsvpResposeType);
     }
     else {
       this.pagination.pageIndex = event.page;
@@ -448,10 +448,10 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     }
     else if (event.type === 'emailOpenPagination') {
         this.rsvpDetailAnalyticsPagination = pagination;
-        this.getRsvpEmailOpenDetails(this.rsvpResposeType);
+        this.getRsvpEmailOpenDetails();
     }else if (event.type === 'rsvpDetailPagination') {
         this.rsvpDetailAnalyticsPagination = pagination;
-        this.getRsvpDetails(this.rsvpResposeType, this.rsvpDetailType);
+        this.getRsvpDetails(this.rsvpResposeType);
     }
     else {
     this.pagination = pagination;
@@ -701,12 +701,12 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
           }
         }
   
-  getRsvpEmailOpenDetails(detailType: any){
+  getRsvpEmailOpenDetails(){
       try{
       this.loading = true;
       this.downloadTypeName = 'rsvp';
       this.rsvpResposeType = "email open";
-      if(detailType === 'reDistribution'){
+      if(this.rsvpDetailType === 'reDistribution'){
           this.campaignService.getEventCampaignRedistributionEmailOpenDetails( this.campaign.campaignId, this.campaignReport.selectedPartnerEmailId, this.rsvpDetailAnalyticsPagination )
           .subscribe(
           data => {
@@ -719,7 +719,21 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
           error => this.xtremandLogger.error(error),
           () => { }
           ) 
-      }else{
+      }else if(this.rsvpDetailType === 'partnerRsvp'){
+          this.campaignService.getEventCampaignEmailOpenDetails( this.campaign.campaignId, false, this.rsvpDetailAnalyticsPagination )
+          .subscribe(
+          data => {
+            console.log(data);
+            this.loading = false;
+            this.rsvpDetailsList = data.data;
+            this.rsvpDetailAnalyticsPagination.totalRecords = data.totalRecords;
+            this.rsvpDetailAnalyticsPagination = this.pagerService.getPagedItems(this.rsvpDetailAnalyticsPagination, data.data);
+          },
+          error => this.xtremandLogger.error(error),
+          () => { }
+          ) 
+      }
+      else{
           this.showRsvpDetails = true;
           this.campaignService.getEventCampaignEmailOpenDetails( this.campaign.campaignId, this.isChannelCampaign, this.rsvpDetailAnalyticsPagination )
           .subscribe(
@@ -739,16 +753,38 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
    }
   }
   
-  
+  getPartnerCampaingRsvpDetails(){
+      this.campaignReport.redistributionTotalYesCount = this.campaignReport.partnersYesCount;
+      this.campaignReport.redistributionTotalMayBeCount = this.campaignReport.partnersMayBeCount;
+      this.campaignReport.redistributionTotalNoCount = this.campaignReport.partnersNoCount;
+      this.campaignReport.redistributionTotalNotYetRespondedCount = this.campaignReport.partnersNotYetRespondedCount;
+      this.campaignReport.redistributionTotalEmailOpenCount = this.campaignReport.partnersEmailOpenedCount;
+      this.isTimeLineView = true;
+      this.rsvpDetailType = 'partnerRsvp';
+      this.getRsvpDetails("YES");
+  }
         
-  getRsvpDetails(responseType: any, detailType:any){
+  getRsvpDetails(responseType: any){
       try{
           this.loading = true;
           this.downloadTypeName = 'rsvp';
-          this.rsvpDetailType = detailType;
+          //this.rsvpDetailType = detailType;
           this.rsvpResposeType = responseType;
-          if(detailType === 'reDistribution'){
+          if(this.rsvpDetailType === 'reDistribution'){
               this.campaignService.getRedistributionEventCampaignDetailAnalytics( this.campaign.campaignId, responseType, this.selectedRsvpPartnerId, this.isChannelCampaign, this.rsvpDetailAnalyticsPagination )
+              .subscribe(
+              data => {
+                console.log(data);
+                this.loading = false;
+                this.rsvpDetailsList = data.data;
+                this.rsvpDetailAnalyticsPagination.totalRecords = data.totalRecords;
+                this.rsvpDetailAnalyticsPagination = this.pagerService.getPagedItems(this.rsvpDetailAnalyticsPagination, data.data);
+              },
+              error => this.xtremandLogger.error(error),
+              () => { }
+              )  
+          }else if(this.rsvpDetailType === 'partnerRsvp'){
+              this.campaignService.getEventCampaignDetailAnalytics( this.campaign.campaignId, responseType, false, this.rsvpDetailAnalyticsPagination )
               .subscribe(
               data => {
                 console.log(data);
@@ -799,7 +835,8 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
               this.campaignReport.redistributionTotalNoCount = data.NO;
               this.campaignReport.redistributionTotalNotYetRespondedCount = data.notYetResponded;
               this.campaignReport.redistributionTotalEmailOpenCount = data.emailOpenedCount;
-              this.getRsvpDetails('YES', 'reDistribution');
+              this.rsvpDetailType = 'reDistribution';
+              this.getRsvpDetails('YES');
               this.loading = false;
             },
             error => this.xtremandLogger.error(error),
