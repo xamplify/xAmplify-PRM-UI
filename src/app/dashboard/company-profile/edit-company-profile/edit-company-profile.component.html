@@ -139,7 +139,7 @@
 							</div>
 							<div class="form-group" [attr.class]="aboutUsDivClass">
 								<label class="control-label">About Us <font	style="color: #f55d7a"><b>*</b></font></label>
-								<textarea class="form-control" rows="3" cols="5" placeholder="About Us" name="aboutUs" id="aboutUs" style="resize: none" [(ngModel)]="companyProfile.aboutUs" (input)="validateEmptySpace('aboutUs')" (blur)="validateEmptySpace('aboutUs')"></textarea>
+								<textarea class="form-control" rows="3" cols="5" maxlength="1000" placeholder="About Us" name="aboutUs" id="aboutUs" style="resize: none" [(ngModel)]="companyProfile.aboutUs" (input)="validateEmptySpace('aboutUs')" (blur)="validateEmptySpace('aboutUs')"></textarea>
 								<span *ngIf="aboutUsError"  style="color: #f55d7a">{{aboutUsErrorMessage}}</span>
 							</div>
 							<div class="panel-group">
