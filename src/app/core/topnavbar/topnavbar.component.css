@@ -40,10 +40,3 @@ padding: 7px 15px;
     width: 40px;
     border: 1px solid #ccc;
 }
-.side-bar{
-  position: relative;
-  right: -42px;
-  top: 24px;
-  cursor: pointer;
-  color: #a8adad;
-}

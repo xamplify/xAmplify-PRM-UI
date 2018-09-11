@@ -839,6 +839,28 @@ td>br { display: none; }
 @media all and (max-width: 767px) {
     td>br { display: block; }
 }
+
+@media (min-width: 991px) {
+.side-bar {
+  position: relative;
+  right: -42px;
+  top: 24px;
+  cursor: pointer;
+  color: #a8adad;
+  display: block;
+}
+}
+@media ( max-width : 991px) {
+.side-bar{
+  position: relative;
+  right: -42px;
+  top: 24px;
+  cursor: pointer;
+  color: #a8adad;
+  display: none;
+}
+}
+
 .progress {
 	margin-bottom: 0 !important;
 	border-radius: 0 !important;

@@ -14,7 +14,7 @@
 					</li>
 
 					<li *ngIf="(authService.module.isOrgAdmin && authService.user.hasCompany) || authService.module.isVendor || authService.isAddedByVendor" [ngClass]="{'active': location.path().includes('partners')}">
-						<a>
+						<a href="javascript:;">
 						<i class="fa fa-handshake-o"></i>
 						<span class="title">Partners</span>
 						<span class="arrow "></span>
@@ -37,7 +37,7 @@
 					</li>
 
 					<li *ngIf="authService.module.isCompanyPartner && !authService.module.isVideo  && !authService.isOnlyPartner()"  [ngClass]="{'active': location.path().includes('videos')}">
-						<a [routerLink]="['./videos/manage']">
+						<a  [routerLink]="['./videos/manage']">
 						<i class="fa fa-video-camera"></i>
 						<span class="title">Videos</span>
 						<span class="arrow "></span>
@@ -46,7 +46,7 @@
 					</li>
 
 					<li *ngIf="authService.module.isVideo  && !authService.isOnlyPartner()" [ngClass]="{'active': location.path().includes('videos')}">
-						<a>
+						<a href="javascript:;">
 						<i class="fa fa-video-camera"></i>
 						<span class="title">Videos</span>
 						<span class="arrow "></span>
@@ -68,7 +68,7 @@
 						</ul>
 					</li>
 					<li *ngIf="(authService.module.isContact ||authService.module.isCompanyPartner)&& !authService.isAddedByVendor"  [ngClass]="{'active': location.path().includes('contacts')}">
-						<a>
+						<a  href="javascript:;">
 						<i class="fa fa-list-ul"></i>
 						<span class="title">Contacts</span>
 						<span class="arrow "></span>
@@ -108,13 +108,13 @@
 					</li>
 
 					<li *ngIf="authService.module.isEmailTemplate && !authService.isOnlyPartner()" [ngClass]="{'active':location.path().includes('emailtemplate')}">
-						<a>
+						<a  href="javascript:;" [ngStyle]="{'min-width':refService.isSidebarClosed ? '104%' : '100%' }">
 						<i class="fa fa-envelope"></i>
 						<span class="title">Email Templates</span>
 						<span class="arrow "></span>
 						<span class="selected"></span>
 						</a>
-						<ul class="sub-menu" style="width: 105%" >
+						<ul class="sub-menu"  [ngStyle]="{'min-width':refService.isSidebarClosed ? '82%' : '106%' }">
 						<li>
 							  <a [routerLink]="['./emailtemplates/select']" >
 								<i class="fa fa-envelope"></i>
@@ -132,7 +132,7 @@
 
 
 					<li *ngIf="authService.module.isCampaign || authService.module.isCompanyPartner" [ngClass]="{'active': location.path().includes('campaigns')}">
-						<a>
+						<a  href="javascript:;">
 						<i class="fa fa-bullhorn"></i>
 						<span class="title">Campaign</span>
 						<span class="arrow "></span>
