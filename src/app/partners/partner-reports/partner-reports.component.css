@@ -92,3 +92,13 @@ cursor: default;
 	font-size: 15px;
 	font-size-adjust: inherit;
 }
+
+.re-distributed-high-level{
+	width: 100px;
+	height: 50px;
+	cursor: default;
+	border-color: black;
+}
+.sky-blue{
+	color:#00a6e8
+}
