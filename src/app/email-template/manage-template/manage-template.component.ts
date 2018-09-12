@@ -248,6 +248,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
     }
 
     deleteEmailTemplate( id: number,name:string ) {
+      this.refService.loading(this.httpRequestLoader, true);
        this.refService.goToTop();
         this.isEmailTemplateDeleted = false;
         this.isCampaignEmailTemplate = false;
@@ -273,6 +274,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
                     });
                     let message = "Please delete associated campaign(s)<br><br>"+campaignNames;
                     this.customResponse = new CustomResponse('ERROR',message,true );
+                    this.refService.loading(this.httpRequestLoader, false);
                 }
 
             },
