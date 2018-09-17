@@ -138,7 +138,7 @@
 										</ul>
 
 										<div class="btn-group pull-right">
-												<ng-container class='m10'>
+												<ng-container class='m10' *ngIf="!referenceService.isMobileScreenSize()">
 												<button class="btn btn-xs" [disabled]="isListView"
 													(click)="isListView = true" title="List View">
 													<i class="fa fa-th-list p10" aria-hidden="true"></i>
