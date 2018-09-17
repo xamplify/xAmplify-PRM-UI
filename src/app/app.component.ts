@@ -1,14 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { SlimLoadingBarService } from 'ng2-slim-loading-bar';
-declare var QuickSidebar: any;
+declare var QuickSidebar, $: any;
 
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewInit {
 
     constructor(private slimLoadingBarService: SlimLoadingBarService, private router: Router) {
         // logger.level = logger.Level.LOG;
@@ -26,4 +26,9 @@ export class AppComponent implements OnInit {
             }
         });
     }
+    
+    ngAfterViewInit(){
+        $('body').tooltip({ selector: '[data-toggle="tooltip"]' });
+        }
+
 }

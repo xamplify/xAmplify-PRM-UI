@@ -14,6 +14,7 @@ import { CustomResponse } from '../../common/models/custom-response';
 import { UtilService } from '../../core/services/util.service';
 import { ContactList } from '../../contacts/models/contact-list';
 import { EventCampaign } from '../models/event-campaign';
+import { ActionsDescription } from '../../common/models/actions-description';
 
 declare var swal, $: any;
 
@@ -21,7 +22,7 @@ declare var swal, $: any;
     selector: 'app-manage-publish',
     templateUrl: './manage-publish.component.html',
     styleUrls: ['./manage-publish.component.css'],
-    providers: [Pagination, HttpRequestLoader]
+    providers: [Pagination, HttpRequestLoader, ActionsDescription]
 })
 export class ManagePublishComponent implements OnInit, OnDestroy {
     campaigns: Campaign[];
@@ -38,10 +39,10 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         public totalRecords: number = 1;
         public searchKey: string = "";
     sortByDropDown = [
-        { 'name': 'Name(A-Z)', 'value': 'campaign-ASC' },
-        { 'name': 'Name(Z-A)', 'value': 'campaign-DESC' },
-        { 'name': 'Created Date(ASC)', 'value': 'createdTime-ASC' },
-        { 'name': 'Created Date(DESC)', 'value': 'createdTime-DESC' }
+        { 'name': 'Name (A-Z)', 'value': 'campaign-ASC' },
+        { 'name': 'Name (Z-A)', 'value': 'campaign-DESC' },
+        { 'name': 'Created Date (ASC)', 'value': 'createdTime-ASC' },
+        { 'name': 'Created Date (DESC)', 'value': 'createdTime-DESC' }
     ];
 
     numberOfItemsPerPage = [
@@ -55,6 +56,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     public itemsSize: any = this.numberOfItemsPerPage[0];
 
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
+    campaignPartnerLoader: HttpRequestLoader = new HttpRequestLoader();
     isListView: boolean = false;
 
     public isError: boolean = false;
@@ -63,9 +65,10 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     isOnlyPartner: boolean = false;
     customResponse: CustomResponse = new CustomResponse();
     saveAsCampaignInfo :any;
-
+    partnerActionResponse:CustomResponse = new CustomResponse();
+    partnersPagination:Pagination = new Pagination();
     constructor(private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
-        public pagination: Pagination, private pagerService: PagerService, public utilService:UtilService,
+        public pagination: Pagination, private pagerService: PagerService, public utilService:UtilService, public actionsDescription: ActionsDescription,
         public refService: ReferenceService, private userService: UserService, public authenticationService: AuthenticationService) {
         this.loggedInUserId = this.authenticationService.getUserId();
         this.utilService.setRouterLocalStorage('managecampaigns');
@@ -144,14 +147,24 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         }
         this.listCampaign(this.pagination);
     }
-
-
+    eventHandler(keyCode: any) {  if (keyCode === 13) {  this.searchCampaigns(); } }
 
     ngOnInit() {
         try {
             this.isListView = !this.refService.isGridView;
             this.pagination.maxResults = 12;
-            this.listCampaign(this.pagination);
+            if(this.refService.launchedCampaignType ==='VIDEO' || this.refService.launchedCampaignType ==='video')
+            {
+              this.filterCampaigns('VIDEO', 2);
+            } else if(this.refService.launchedCampaignType ==='REGULAR' || this.refService.launchedCampaignType ==='regular'){
+              this.filterCampaigns('REGULAR',1);
+            }
+            else if(this.refService.launchedCampaignType ==='SOCIAL') {
+              this.filterCampaigns('SOCIAL',3);
+            }
+            else {
+              this.listCampaign(this.pagination);
+            }
 
         } catch (error) {
             this.logger.error("error in manage-publish-component init() ", error);
@@ -344,5 +357,10 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
            this.router.navigate(['/home/campaigns/preview/'+campaign.campaignId]);
         }
     }
-
+    goToRedistributedCampaigns(campaign:Campaign){
+        this.router.navigate(['/home/campaigns/'+campaign.campaignId+"/re-distributed"]);
+    }
+    goToPreviewPartners(campaign:Campaign){
+        this.router.navigate(['/home/campaigns/'+campaign.campaignId+"/remove-access"]);
+    }
 }

@@ -17,6 +17,7 @@ import { PieChartGeoDistributionComponent } from './pie-chart-geo-distribution/p
 import { TwitterAreaChartComponent } from './twitter-area-chart/twitter-area-chart.component';
 import { ProfileCardComponent } from './profile-card/profile-card.component';
 import { HeaderComponent } from './header/header.component';
+import { TweetComponent } from './tweet/tweet.component';
 
 @NgModule({
   imports: [
@@ -24,6 +25,6 @@ import { HeaderComponent } from './header/header.component';
   ],
   declarations: [TwitterProfileComponent, TwitterTweetsComponent, TwitterFriendsComponent, TwitterFollowersComponent,
     TwitterAnalyticsComponent, LineChartComponent, NewFansLineChartComponent, PieChartGeoDistributionComponent,
-    TwitterAreaChartComponent, TwitterHomeComponent, TwitterTrendsComponent,ProfileCardComponent, HeaderComponent]
+    TwitterAreaChartComponent, TwitterHomeComponent, TwitterTrendsComponent,ProfileCardComponent, HeaderComponent, TweetComponent]
 })
 export class TwitterModule { }

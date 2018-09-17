@@ -8,12 +8,18 @@ import { Component, OnInit, Input } from "@angular/core";
 export class ListLoaderComponent implements OnInit {
   @Input() rowsCount: any;
   icons: any;
+  page = "";
   constructor() {}
    ngOnInit() {
     if (this.rowsCount === 3) {
       this.rowsCount = [0, 1, 2];
       this.icons = [0];
-    } else {
+    } else if(this.rowsCount === 12){
+        this.rowsCount = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+        this.page = "Admin";
+        this.icons = [];
+    }
+    else {
       this.rowsCount = [0, 1, 2, 3, 4, 5];
       this.icons = [0, 1, 2];
     }

@@ -8,6 +8,6 @@ export class DashBoardPage extends LoginPage {
   }
   gotoDashoardPage(){
     browser.waitForAngularEnabled(false);
-    return element(by.xpath('/html/body/app-root/app-home/div/app-leftsidebar/div/div/ul/li[1]/a')).click();
+    return element.all(by.xpath('/html/body/app-root/app-home/div/app-leftsidebar/div/div/ul/li[1]/a')).click();
   }
 }

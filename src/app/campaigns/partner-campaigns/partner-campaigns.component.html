@@ -13,8 +13,15 @@
 			<li *ngIf="role === 'Vendor'">
 				<a [routerLink]="['/home/dashboard/vendors']">Campaigns From Vendor</a>
       </li>
+      <li *ngIf="role === 'Vendor'">
+        <a [routerLink]="['/home/dashboard/vendors']">Your Vendors</a>
+        <i class="fa fa-angle-right"></i>
+			</li>
+			<li *ngIf="role === 'Vendor'">
+				<a >Campaigns</a>
+			</li>
 			<li *ngIf="role === 'Partner'">
-				<a [routerLink]="referenceService.homeRouter">Campaigns shared by Vendor</a>
+				<a >Campaigns shared by Vendors</a>
 			</li>
 		</ul>
 	</div>
@@ -112,13 +119,17 @@
 											<span align="right">
 												<b>Received On</b>
 											</span>
-											<span align="right" title="Received On">
-												<b>{{campaign.launchedOn}}</b>
+											<span align="right" title="Received On"><b>
+                          <app-timestamp [isOnlyDate]="false" [dateAndTime]="campaign.launchedOn"> </app-timestamp>
+                        </b>
 											</span>
 										</td>
 										<td style="text-align: center">
 										  <div class="actions-block" style="text-align: center !important; margin: 0 40px;">
 												<a (click)="showCampaignPreview(campaign)" data-toggle="tooltip" data-placement="top" title="Preview Campaign">
+										<td>
+											<div class="actions-block" style="text-align: center !important; margin: 0 40px;">
+												<a (click)="showCampaignPreview(campaign.campaignId)" data-toggle="tooltip" data-placement="top" title="Preview Campaign">
 													<i class="fa fa-eye mr5"></i>
                         </a>
 												<a (click)="reDistributeCampaign(campaign)" data-toggle="tooltip" data-placement="top" title="Redistribute Campaign" data-rel="fancybox-button" >
@@ -152,7 +163,9 @@
 											</h4>
                       <h5 [title]="campaign.createdBy">By <b>{{campaign.createdBy | slice:0:15}}<span *ngIf="campaign.createdBy?.length>15">...</span></b></h5>
 											<h5 [title]="campaign.companyName">From <b>{{campaign.companyName | slice:0:15}}<span *ngIf="campaign.companyName?.length>15">...</span></b></h5>
-											<h6>Received On <b>{{campaign.launchedOn}}</b></h6>
+											<h6 style="margin: 4px;">Received On <b>
+                        <app-timestamp [isOnlyDate]="false" [dateAndTime]="campaign.launchedOn"> </app-timestamp>
+                      </b></h6>
 											<div class="bookmark-ribbon">
 												<span style="margin: 0px -7px; font-size: 17px; color: white;">
 													<i *ngIf="campaign.campaignType.indexOf('VIDEO') > -1" class="fa fa-video-camera" aria-hidden="true"></i>
@@ -162,6 +175,9 @@
 												</span>
 											</div>
 											<div class="bar">
+											<a (click)="showCampaignPreview(campaign.campaignId)" data-toggle="tooltip" data-placement="top" title="preview campaign">
+													<i class="fa fa-eye mr4"></i>
+                                                 </a>
 												<a (click)="reDistributeCampaign(campaign)" title="Redistribute Campaign" data-rel="fancybox-button">
 													<i class="fa fa-clone"></i>
 												</a>
@@ -178,7 +194,7 @@
 					</div>
 					<div *ngIf="totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError" style="background:white">
 						<div *ngIf="pagination.pagedItems.length !== 0">
-							<app-pagination [pagination]="pagination" [type]="'campaign'" [isDropdown]="true" (notifyParent)="setPage($event)" (notifyParentDropDown)="listCampaigns($event)"></app-pagination>
+							<app-pagination [pagination]="pagination" [type]="'campaign'" [isDropdown]="true" (notifyParent)="setPage($event)"></app-pagination>
 							<select class="form-control" style="float: right; width: auto;" [(ngModel)]="itemsSize" (ngModelChange)="getNumberOfItemsPerPage($event)">
 								<option *ngFor="let itemPerPage of numberOfItemsPerPage" [ngValue]="itemPerPage">{{itemPerPage.name}}</option>
 							</select>
@@ -190,6 +206,7 @@
 		</div>
 	</div>
 	<!-- <div *ngIf="totalRecords <= 0"  class="alert alert-info"><strong>No Campaigns Found</strong></div> -->
+  <app-scroll-top></app-scroll-top>
 </div>
 
 

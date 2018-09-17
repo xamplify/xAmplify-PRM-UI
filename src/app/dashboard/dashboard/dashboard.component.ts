@@ -733,12 +733,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 subscribe(result => {
                     this.xtremandLogger.log(result.heatMapData);
                     this.heatMapData = result.heatMapData;
+                    this.heatMapData.forEach(element => {
+                      element.name = element.name.length>25 ? element.name.substring(0,25)+"..." : element.name;
+                    });
                     if (!this.isFullscreenToggle) { this.generatHeatMap(this.heatMapData, 'dashboard-heat-map');
                     } else { this.generatHeatMap(this.heatMapData, 'heat-map-data'); }
-                },
+                  },
                     (error: any) => {
                         this.xtremandLogger.error(error);
-                        this.xtremandLogger.errorPage(error);
+                      //  this.xtremandLogger.errorPage(error);
                     });
         } catch (error) {
             this.xtremandLogger.error(error);
@@ -837,6 +840,17 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 "Date and Time": date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds(),
                 "Campaign Name": this.dashboardReport.downloadEmailLogList[i].campaignName
             }
+            if (this.paginationType == 'open') {
+                object["Subject"] = this.dashboardReport.downloadEmailLogList[i].subject;
+            }
+            if (this.paginationType == 'clicked') {
+                if(this.dashboardReport.downloadEmailLogList[i].url){
+                    object["URL"] = this.dashboardReport.downloadEmailLogList[i].url;
+                }else{
+                    object["URL"] = 'Clicked on the video thumbnail';
+                }
+            }
+
 
             if (this.paginationType == 'clicked' || this.paginationType == 'watched') {
                 object["City"] = this.dashboardReport.downloadEmailLogList[i].city;

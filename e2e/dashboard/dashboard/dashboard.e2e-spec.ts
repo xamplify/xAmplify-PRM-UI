@@ -8,8 +8,10 @@ describe("Dashboard Test", () => {
     beforeAll(() => {
       dashBoardPage = new DashBoardPage();
       //  dashBoardPage.getLoginPagetButtonWithXpath();
+      if(dashBoardPage.getUserNameTF().isPresent()){
       dashBoardPage.navigateToLogin();
       dashBoardPage.login();
+      }
     });
 
     it("should have dashboard page", () => {

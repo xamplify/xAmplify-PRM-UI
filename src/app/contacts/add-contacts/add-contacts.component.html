@@ -32,7 +32,7 @@
 img:hover {
 	-webkit-filter: grayscale(0%);
 	/* background-image: url('assets/images/crm/dynamics.png'); */
-	background-color: #4dff4d;
+	background-color: #3598dc;
 	filter: grayscale(0%);
 	opacity: 2;
 }
@@ -102,7 +102,7 @@ img:hover {
 			<li><i class="fa fa-home"></i> <a [routerLink]="referenceService.homeRouter" >Home</a>
 				<i class="fa fa-angle-right"></i></li>
 			<li style="color: #888">Add {{checkingContactTypeName}}s</li>
-		
+
 		</ul>
 		<div align="right" style="margin-top: 2px;">
 			<a (click)="downloadEmptyCsv()">
@@ -180,7 +180,7 @@ img:hover {
 													[class.disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 2 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5">
 													<img
 													[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :sfImageBlur==true}"
-													src="assets/images/crm/sf.png" class="salesForceImageClass"
+													src="assets/images/crm/sf.png" class="salesForceImageClass" data-toggle="tooltip" data-placement="bottom"
 													title="Click here to access contacts from your Salesforce account"
 													height="86" width="90">
 												</a> <a *ngIf="sfImageBlur" id="salesforceContact_button"
@@ -189,7 +189,7 @@ img:hover {
 													[class.disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5">
 													<img
 													[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :sfImageBlur==true}"
-													src="assets/images/crm/sf.png" class="salesForceImageClass"
+													src="assets/images/crm/sf.png" class="salesForceImageClass" data-toggle="tooltip" data-placement="bottom"
 													title="Click here to access contacts from your Salesforce account"
 													height="86" width="90"
 													onmouseover="this.src='assets/images/crm/connecting.png';"
@@ -216,7 +216,7 @@ img:hover {
 													[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5">
 													<img
 													[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :googleImageBlur==true}"
-													src="assets/images/crm/google.png" class="googleImageClass"
+													src="assets/images/crm/google.png" class="googleImageClass" data-toggle="tooltip" data-placement="bottom"
 													title="Click here to access contacts from your Google contacts"
 													height="86" width="90"
 													onmouseover="this.src='assets/images/crm/connecting.png';"
@@ -227,7 +227,7 @@ img:hover {
 													[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5">
 													<img
 													[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :googleImageBlur==true}"
-													src="assets/images/crm/google.png" class="googleImageClass"
+													src="assets/images/crm/google.png" class="googleImageClass" data-toggle="tooltip" data-placement="bottom"
 													title="Click here to access contacts from your Google contacts"
 													height="86" width="90">
 												</a>
@@ -253,7 +253,7 @@ img:hover {
 													[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5">
 													<img
 													[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}"
-													src="assets/images/crm/Zoho.png" class="zohoImageClass"
+													src="assets/images/crm/Zoho.png" class="zohoImageClass" data-toggle="tooltip" data-placement="bottom"
 													title="Click here to access contacts from your Zoho account"
 													height="86" width="90"
 													onmouseover="this.src='assets/images/crm/connecting.png';"
@@ -264,7 +264,7 @@ img:hover {
 													[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5">
 													<img
 													[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}"
-													src="assets/images/crm/Zoho.png" class="zohoImageClass"
+													src="assets/images/crm/Zoho.png" class="zohoImageClass" data-toggle="tooltip" data-placement="bottom"
 													title="Click here to access contacts from your Zoho account"
 													height="86" width="90">
 												</a>
@@ -287,7 +287,7 @@ img:hover {
 												<a id="microsoftContact_button"
 													style="background-color: white"> <img
 													src="assets/images/crm/dynamicsCmgSoon.png"
-													class="imageClass imageblur mdImageClass"
+													class="imageClass imageblur mdImageClass" data-toggle="tooltip" data-placement="bottom"
 													title="Click here to access contacts from your Microsoft CRM account"
 													height="86" width="90" style="margin-bottom: 18px"
 													>
@@ -701,7 +701,8 @@ img:hover {
 			</form>
 		</div>
 	</div>
-	<!-- END PAGE CONTENT-->
+  <!-- END PAGE CONTENT-->
+  <app-scroll-top></app-scroll-top>
 </div>
 
 <!-- MODALS -->
@@ -889,7 +890,7 @@ img:hover {
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header" style="border-bottom: none;">
-				<!-- <button type="button" class="close" 
+				<!-- <button type="button" class="close"
 						data-dismiss="modal">&times;</button> -->
 				<a class="close-circle" data-dismiss="modal"><i
 					class="fa fa-times"></i></a>

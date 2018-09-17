@@ -1,30 +1,27 @@
-import {Component, OnInit, Input, Output, EventEmitter, OnDestroy} from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router';
+import { Component, OnInit, Input,OnDestroy } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { XtremandLogger } from '../../../error-pages/xtremand-logger.service';
-import {SaveVideoFile} from '../../../videos/models/save-video-file';
+import { SaveVideoFile } from '../../../videos/models/save-video-file';
 
-import {SocialStatusDto} from '../../models/social-status-dto';
-import {SocialStatus} from '../../models/social-status';
-import {SocialStatusContent} from '../../models/social-status-content';
-import {SocialStatusProvider} from '../../models/social-status-provider';
+import { SocialStatusDto } from '../../models/social-status-dto';
+import { SocialStatus } from '../../models/social-status';
+import { SocialStatusContent } from '../../models/social-status-content';
+import { SocialStatusProvider } from '../../models/social-status-provider';
 
-import {ContactList} from '../../../contacts/models/contact-list';
-import {Campaign} from '../../../campaigns/models/campaign';
+import { ContactList} from '../../../contacts/models/contact-list';
+import { CustomResponse } from '../../../core/models/custom-response';
+import { ResponseType } from '../../../core/models/response-type';
 
-import {CustomResponse} from '../../../core/models/custom-response';
-import {ResponseType} from '../../../core/models/response-type';
-
-import {AuthenticationService} from '../../../core/services/authentication.service';
-import {PagerService} from '../../../core/services/pager.service';
-import {SocialService} from '../../services/social.service';
-import {TwitterService} from '../../services/twitter.service';
-import {FacebookService} from '../../services/facebook.service';
-import {VideoFileService} from '../.././../videos/services/video-file.service';
-import {ContactService} from '../.././../contacts/services/contact.service';
-import {VideoUtilService} from '../../../videos/services/video-util.service';
-import {Pagination} from '../../../core/models/pagination';
-import {CallActionSwitch} from '../../../videos/models/call-action-switch';
+import { AuthenticationService } from '../../../core/services/authentication.service';
+import { PagerService } from '../../../core/services/pager.service';
+import { SocialService } from '../../services/social.service';
+import { VideoFileService } from '../.././../videos/services/video-file.service';
+import { ContactService } from '../.././../contacts/services/contact.service';
+import { VideoUtilService } from '../../../videos/services/video-util.service';
+import { Pagination } from '../../../core/models/pagination';
+import { CallActionSwitch } from '../../../videos/models/call-action-switch';
 import { ReferenceService } from '../../../core/services/reference.service';
+import { Properties } from '../../../common/models/properties';
 
 declare var $, flatpickr, videojs: any;
 
@@ -32,7 +29,7 @@ declare var $, flatpickr, videojs: any;
   selector: 'app-update-status',
   templateUrl: './update-status.component.html',
   styleUrls: ['./update-status.component.css', '../../../../assets/css/video-css/video-js.custom.css'],
-  providers: [PagerService, Pagination, CallActionSwitch]
+  providers: [PagerService, Pagination, CallActionSwitch,Properties]
 })
 export class UpdateStatusComponent implements OnInit, OnDestroy {
   @Input('isSocialCampaign') isSocialCampaign = false;
@@ -44,30 +41,54 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   userId: number;
   socialStatus = new SocialStatus();
   previewContactList = new ContactList();
-  socialStatusDtos = new Array<SocialStatusDto>();
+  socialStatusDtos = new Array<any>();
   customResponse = new CustomResponse();
 
   contactListsPagination: Pagination = new Pagination();
   contactsPagination: Pagination = new Pagination();
   videosPagination: Pagination = new Pagination();
   paginationType: string;
+  location:any;
+  channelCampaign: boolean;
 
-  constructor(private socialService: SocialService, private twitterService: TwitterService,
-    private facebookService: FacebookService, private videoFileService: VideoFileService,
+  constructor(private socialService: SocialService,
+    private videoFileService: VideoFileService, public properties:Properties,
     public authenticationService: AuthenticationService, private contactService: ContactService,
     private pagerService: PagerService, private router: Router, public videoUtilService: VideoUtilService,
     private logger: XtremandLogger, public callActionSwitch: CallActionSwitch, private route: ActivatedRoute,
-    public referenceService:ReferenceService)
-    {
+    public referenceService:ReferenceService){
+    this.channelCampaign = true;
+    this.location = this.router.url;
     this.resetCustomResponse();
     this.userId = this.authenticationService.getUserId();
     this.socialStatus.userId = this.userId;
+    this.socialStatus.userListIds = []
   }
   resetCustomResponse() {
     this.customResponse.type = null;
     this.customResponse.statusText = null;
   }
-
+  changeChannelCampaign(){
+    this.channelCampaign = !this.channelCampaign;
+    this.contactListsPagination.maxResults = 12;
+    if(!this.channelCampaign){
+      this.loadAllContactLists(this.contactListsPagination);
+    } else {
+      this.loadContactLists(this.contactListsPagination);
+    }
+  }
+  loadAllContactLists(contactListsPagination:Pagination){
+    this.paginationType = 'loadAllContacts';
+    contactListsPagination.filterKey = null;
+    contactListsPagination.filterValue = null;
+    this.contactService.loadAllContacts(this.userId,contactListsPagination).subscribe(data=>{
+      contactListsPagination.totalRecords = data.totalRecords;
+      contactListsPagination = this.pagerService.getPagedItems(contactListsPagination, data.listOfUserLists);
+    },
+    error=> {
+      console.log(error);
+    });
+  }
   setCustomResponse(type: ResponseType, statusText: string) {
     this.customResponse.type = type;
     this.customResponse.statusText = statusText;
@@ -167,7 +188,6 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   }
 
   removeItem(i: number, socialStatusContent: SocialStatusContent) {
-    debugger;
     this.resetCustomResponse();
     console.log(socialStatusContent + '' + i);
     this.socialService.removeMedia(socialStatusContent.fileName)
@@ -268,7 +288,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
       if ( !this.socialStatus.campaignName ) {
           isValid = false;
           this.setCustomResponse( ResponseType.Warning, 'Please provide campaign name' );
-      } else if ( this.socialStatus.campaignName && this.socialStatus.userListIds.length === 0 ) {
+      } else if ( this.socialStatus.campaignName && this.socialStatus.userListIds.length === 0 && !this.authenticationService.isOnlyPartner() ) {
           isValid = false;
           this.setCustomResponse( ResponseType.Warning, 'Please select contact lists' );
       }
@@ -296,6 +316,13 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
         data => {
           this.setCustomResponse(ResponseType.Success, 'Status posted Successfully');
           this.socialStatus.campaignName = null;
+          this.referenceService.campaignSuccessMessage = 'NOW'
+          this.referenceService.launchedCampaignType = 'SOCIAL';
+          if(this.authenticationService.isOnlyPartner()) {
+            this.router.navigate(['home/campaigns/partner/social']); }
+          else {
+            this.router.navigate(['/home/campaigns/manage']);
+          }
           $('input:checkbox').removeAttr('checked');
           $('#contact-list-table tr').removeClass("highlight");
         },
@@ -451,9 +478,10 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 
   loadContactLists(contactListsPagination: Pagination) {
     this.paginationType = 'updatestatuscontactlists';
-    this.contactListsPagination.filterKey = 'isPartnerUserList';
-    this.contactListsPagination.filterValue = this.socialStatus.isPartner;
-    this.contactService.loadContactLists(contactListsPagination)
+     if(this.authenticationService.isOnlyPartner()) { this.socialStatus.isPartner = false;}
+     this.contactListsPagination.filterKey = 'isPartnerUserList';
+     this.contactListsPagination.filterValue = this.socialStatus.isPartner; /// if its true normal contacts wil come, partner contacts for false
+     this.contactService.loadContactLists(contactListsPagination)
       .subscribe(
       (data: any) => {
         contactListsPagination.totalRecords = data.totalRecords;
@@ -494,9 +522,13 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     this.contactsPagination.pageIndex = event.page;
     this.loadContacts(this.previewContactList, this.contactsPagination);
    }
-   else if(event.type === 'updatestatuscontactlists'){
+   else if(event.type === 'updatestatuscontactlists' && this.paginationType !== 'loadAllContacts'){
     this.contactListsPagination.pageIndex = event.page;
     this.loadContactLists(this.contactListsPagination);
+   }
+   else if(event.type === 'updatestatuscontactlists' && this.paginationType === 'loadAllContacts'){
+    this.contactListsPagination.pageIndex = event.page;
+    this.loadAllContactLists(this.contactListsPagination);
    }
    else if(event.type ==='updatestatusvideos'){
     this.videosPagination.pageIndex = event.page;
@@ -507,6 +539,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     if(this.paginationType ==='updatestatuscontacts'){ this.loadContacts(this.previewContactList, pagination);}
     else if(this.paginationType === 'updatestatuscontactlists'){ this.loadContactLists(pagination); }
     else if(this.paginationType ==='updatestatusvideos'){ this.listVideos(pagination);}
+    else if(this.paginationType==='loadAllContacts') {this.loadAllContactLists(pagination) }
   }
   closeModal(){
     this.paginationType = 'updatestatuscontactlists';

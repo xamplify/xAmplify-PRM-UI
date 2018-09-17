@@ -18,21 +18,18 @@ export class BubbleChartComponent implements OnInit {
 
       getCampaignUserWatchedMinutesCountes(campaignId: number, campaignType) {
         console.log(this.campaignType);
-        const colors =['#d0e4f8','#d1d190','#dbdbdc','#ebb995','#e1efec','#b9acbb', '#c9a8ca','#d9c997','#d2e6f9','#f0cdfc'];
+       // const colors =['#d0e4f8','#d1d190','#dbdbdc','#ebb995','#e1efec','#b9acbb', '#c9a8ca','#d9c997','#d2e6f9','#f0cdfc'];
         this.campaignService.getCampaignUserWatchedMinutes(campaignId, campaignType)
-                .subscribe(
-                data => {
+              .subscribe( data => {
                 this.names = data.names;
               //  const names=  [ "PALLAVI",  "pavan","RAFI", "sravan", "santhosh","Manas","k", "HANUMANTHA","asdg", "yeerye" ];
-                const colors =['#d0e4f8','#d1d190','#dbdbdc','#ebb995','#e1efec','#b9acbb', '#c9a8ca','#d9c997','#d2e6f9','#f0cdfc'];
-
-    this.names.forEach((element, index) => {
-      element.description = this.videoUtilService.truncateHourZeros(element.description);
-      element.firstName = element.firstName === "null" ? "" : element.firstName;
-      element.lastName = element.lastName === "null" ? "" : element.lastName;
-      element.color = colors[index];
-    });
-
+                 const colors =['#d0e4f8','#d1d190','#dbdbdc','#ebb995','#e1efec','#b9acbb', '#c9a8ca','#d9c997','#d2e6f9','#f0cdfc'];
+                 this.names.forEach((element, index) => {
+                  element.description = this.videoUtilService.truncateHourZeros(element.description);
+                  element.firstName = element.firstName === "null" ? "" : element.firstName;
+                  element.lastName = element.lastName === "null" ? "" : element.lastName;
+                  element.color = colors[index];
+                 });
                 this.bubbleChart(this.names, data.legend, data.values);
                 },
                 error => console.log(error),

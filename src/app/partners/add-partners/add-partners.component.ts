@@ -3,6 +3,7 @@ import { User } from '../../core/models/user';
 import { EditUser } from '../../contacts/models/edit-user';
 import { CustomResponse } from '../../common/models/custom-response';
 import { Properties } from '../../common/models/properties';
+import { ActionsDescription } from '../../common/models/actions-description';
 import { CountryNames } from '../../common/models/country-names';
 import { Pagination } from '../../core/models/pagination';
 import { SocialPagerService } from '../../contacts/services/social-pager.service';
@@ -28,7 +29,7 @@ declare var $, Papa, swal: any;
         '../../../assets/global/plugins/jquery-file-upload/css/jquery.fileupload-ui.css', '../../../assets/css/numbered-textarea.css',
         '../../../assets/css/phone-number-plugin.css'],
     providers: [Pagination, SocialPagerService, EditContactsComponent, ManageContactsComponent, CountryNames,
-        Properties, RegularExpressions, PaginationComponent, TeamMemberService]
+        Properties, RegularExpressions, PaginationComponent, TeamMemberService, ActionsDescription]
 })
 export class AddPartnersComponent implements OnInit, OnDestroy {
     loggedInUserId: number;
@@ -125,7 +126,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     constructor( public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
         public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
         public referenceService: ReferenceService, public countryNames: CountryNames, public paginationComponent: PaginationComponent,
-        public contactService: ContactService, public properties: Properties, public regularExpressions: RegularExpressions,
+        public contactService: ContactService, public properties: Properties, public actionsDescription: ActionsDescription, public regularExpressions: RegularExpressions,
         public pagination: Pagination, public pagerService: PagerService, public xtremandLogger: XtremandLogger, public teamMemberService: TeamMemberService ) {
 
         this.user = new User();
@@ -844,6 +845,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                     event.mobileNumber = "";
                 }
             }
+            
+            if ( event.country === "Select Country" ) {
+                event.country = null;
+            }
+            
             this.editUser.user = event;
             // $( "#addPartnerModal .close" ).click()
             this.addPartnerModalClose();
@@ -1789,7 +1795,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     sendMail( partnerId: number ) {
         try {
             this.loading = true;
-            this.contactService.mailSend( partnerId )
+            this.contactService.mailSend( partnerId, this.partnerListId )
                 .subscribe(
                 data => {
                     console.log( data );
@@ -1894,8 +1900,13 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         this.openCampaignModal = false;
         this.contactListAssociatedCampaignsList.length = 0;
     }
+    
+    eventHandler( keyCode: any ) { if ( keyCode === 13 ) { this.search(); } }
 
-
+/*    ngAfterViewInit(){
+        $('body').tooltip({ selector: '[data-toggle="tooltip"]' });
+        }
+*/
     ngOnInit() {
         try {
             this.socialContactImage();

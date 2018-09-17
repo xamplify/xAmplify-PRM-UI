@@ -1,3 +1,10 @@
+.special-progress-bar {
+	width: 100% !important;
+	height: 0;
+}
+.special-progress-bar span {
+	color: black;
+}
 .modal-title { font-weight: 600; color: #888;}
 a.disabled {
 	pointer-events: none;
@@ -537,7 +544,6 @@ tr>td>h6 {
             right: auto;
         }
 }
-
 .emails-info h1 span{font-size:14px;}
 .emails-info i {font-size:30px;}
 .emails-info h1 {margin-top: 15px; margin-bottom: 0}
@@ -553,3 +559,9 @@ tr>td>h6 {
  .highlet{
  color: #00a6e8;
  }
+.client-error{
+  color: red;
+  position: relative;
+  left: 10px;
+  font-size: 15px;
+}

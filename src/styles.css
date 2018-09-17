@@ -790,6 +790,87 @@ b, strong {
 .flatpickr-months{
   background: #1bbc9b;
 }
+
+.search-box-item-click{
+  font-size: 16px;
+  top: 1px;
+  right: 1px;
+  position: absolute;
+  background: #dbe4db;
+  width: 39px;
+}
+.search-box-item-clear{
+  cursor: pointer;
+  pointer-events: all;
+  width: 25px !important;
+  right: 40px !important;
+  top: 6px !important;
+  background: #ffffff !important;
+  color: #008fd5 !important;
+  font-size: 13px !important;
+  position: absolute !important;
+}
+.search-box-item-clear:hover {
+  background-color: #ffffff;
+}
+
+.tooltip-inner {
+    max-width: 200px;
+    padding: 7px 14px;
+    color: #fff;
+    text-align: center;
+    background-color: #000;
+    border-radius: 0;
+}
+
+.field-icon {
+  float: right;
+  left: -6px;
+  margin-top: -28px;
+  position: relative;
+  z-index: 2;
+  cursor:pointer;
+}
+
+@media all and (max-width: 768px) {
+  tr { display: block; border: 1px solid grey; padding: 1em; text-align: center; }
+  td { display: inline; padding: 0 .5em; }
+}
+
+td>br { display: none; }
+
+@media all and (max-width: 767px) {
+    td>br { display: block; }
+}
+
+@media (min-width: 991px) {
+.side-bar {
+  position: relative;
+  right: -42px;
+  top: 24px;
+  cursor: pointer;
+  color: #a8adad;
+  display: block;
+}
+}
+@media ( max-width : 991px) {
+.side-bar{
+  position: relative;
+  right: -42px;
+  top: 24px;
+  cursor: pointer;
+  color: #a8adad;
+  display: none;
+}
+}
+
+.progress {
+	margin-bottom: 0 !important;
+	border-radius: 0 !important;
+}
+.flatpickr-months{
+  background: #1bbc9b;
+}
 .flatpickr-current-month{
   padding:0 !important;
  }

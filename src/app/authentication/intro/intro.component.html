@@ -70,7 +70,7 @@
     <div class="row">
       <div class="col-md-12">
         <h1 lang="en">Experience the new way of ecosystem marketing</h1>
-        <p style="color: #fff;" lang="en">Whether you’ve been spent years cultivating your network or are just testing the waters, xAmplify provides you with a digital platform that allows you to engage and equip your partners, solidifying relationships and driving sales like never before.</p>
+        <p style="color: #fff;" lang="en">Whether you've spent years cultivating your network or are just testing the waters, {{properties.APP_WEBSITE}} provides you with a digital platform that allows you to engage and equip your partners, solidifying relationships and driving sales like never before.</p>
         <div class="play-btn"> <a href="/embed/sb63hg" class="play litebox-hero"><img src="/assets/images/play-btn.png" alt="play"></a> </div>
         <div class="cta-btn"> <a routerLink="/v-signup" class="btn" lang="en">REGISTER <span style="font-size: 14px; color: #333; font-weight: 500;">(beta
 				signup)</span></a>
@@ -93,15 +93,15 @@
     <div class="row">
       <div class="col-sm-4"> <img src="/assets/images/benefits-1.png" alt="benefits of product">
         <h4 lang="en">Empower Your Strategic Network</h4>
-        <p lang="en">xAmplify lets you create a one-stop-shop for your partners to access your digital and social media content, allowing them to easily create multi-touch campaigns for their unique audience. </p>
+        <p lang="en">{{properties.APP_WEBSITE}} lets you create a one-stop-shop for your partners to access your digital and social media content, allowing them to easily create multi-touch campaigns for their unique audience. </p>
       </div>
       <div class="col-sm-4"> <img src="/assets/images/benefits-2.png" alt="benefits of product">
         <h4 lang="en">No Fuss, No Muss Sharing</h4>
-        <p>Effective sharing and communication doesn’t need to be complicated. xAmplify gives you a simple, straightforward approach to getting your content out to your Partners. </p>
+        <p>Effective sharing and communication doesn’t need to be complicated. {{properties.APP_WEBSITE}} gives you a simple, straightforward approach to getting your content out to your Partners. </p>
       </div>
       <div class="col-sm-4"> <img src="/assets/images/benefits-3.png" alt="benefits of product">
         <h4 lang="en">Gain Better Insights</h4>
-        <p lang="en">With both top-level and partner-level analtyics, knowledge abounds in xAmplify. You learn more about your Channel Network, partners learn more about their audience. Win-win. </p>
+        <p lang="en">With both top-level and partner-level analtyics, knowledge abounds in {{properties.APP_WEBSITE}}. You learn more about your Channel Network, partners learn more about their audience. Win-win. </p>
       </div>
     </div>
   </div>
@@ -121,7 +121,7 @@
       <div class="col-md-5 col-md-pull-7">
         <article>
           <h2 lang="en">Strengthen Your Strategic Alliances</h2>
-          <p lang="en">xAmplify is a great way to cultivate your business relationships. You’re providing your Partners with a digital platform that will help you both succeed.</p>
+          <p lang="en">{{properties.APP_WEBSITE}} is a great way to cultivate your business relationships. You’re providing your Partners with a digital platform that will help you both succeed.</p>
           <ul>
             <li lang="en">Equip your Partners with content and tools to help them thrive</li>
             <li lang="en">Increase Partner engagement </li>
@@ -304,12 +304,12 @@
 <section class="cta-section section-spacing text-center">
   <div class="container">
     <header class="section-header">
-      <h2 lang="en">Try xAmplify Today!</h2>
+      <h2 lang="en">Try {{properties.APP_WEBSITE}} Today!</h2>
       <h3 lang="en">Limited signup only. Order today before the discount period ends.</h3>
     </header>
     <div class="row">
       <div class="col-md-12"> <a href="" class="btn" lang="en">GET STARTED</a>
-        <p lang="en">Have a question? Give us a call <a href="tel:+16582144789"> 658-214-4789</a>.</p>
+        <p lang="en">Have a question? Give us a call <a href="tel:+5107701222">5107701222</a>.</p>
       </div>
     </div>
   </div>
@@ -344,9 +344,11 @@
       [label]="m.label"
       [markerDraggable]="m.draggable"
       (dragEnd)="markerDragEnd(m, $event)">
-    <!-- <agm-info-window>
-      <strong>InfoWindow content</strong>
-    </agm-info-window> -->
+    <agm-info-window>
+      <strong>42840 Christy St,</strong><br>
+      <strong>Fremont,CA 94538</strong><br>
+      <strong>Phone: 5107701222</strong>
+    </agm-info-window>
   </agm-marker>
   <agm-circle [latitude]="lat" [longitude]="lng"
       [radius]="5000"
@@ -389,7 +391,7 @@
       <div class="col-md-4">
         <p class="footer-links"><a [routerLink]="['./terms-conditions']" lang="en">Terms of Use</a> <a [routerLink]="['./privacy-policy']" lang="en">Privacy Policy</a></p>
       </div>
-      <div class="col-md-4"> <small lang="en">&copy; 2018 Xamplify. All rights reserved.</small></div>
+      <div class="col-md-4"> <small lang="en">&copy; 2018 {{properties.APP_WEBSITE}}. All rights reserved.</small></div>
       <div class="col-md-4">
         <!--social-->
 

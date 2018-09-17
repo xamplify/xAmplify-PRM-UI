@@ -1,10 +1,12 @@
 import { Component, OnInit,ViewChild,ElementRef } from "@angular/core";
 import { AuthenticationService } from "../../core/services/authentication.service";
+import { Properties } from '../../common/models/properties';
 
 @Component({
   selector: "app-intro",
   templateUrl: "./intro.component.html",
-  styleUrls: ["./intro.component.css"]
+  styleUrls: ["./intro.component.css"],
+  providers: [Properties]
 })
 export class IntroComponent implements OnInit {
 
@@ -17,10 +19,10 @@ export class IntroComponent implements OnInit {
   navbar: any;
   sticky: any;
   zoom = 10;
-  lat = 40.7143528;
-  lng = -74.0059731;
-  markers = [{ lat: 40.7143528, lng: -74.0059731, label: "A", draggable: true }];
-  constructor(public authenticationService: AuthenticationService) {}
+  lat =  37.5483;
+  lng = -121.9886;
+  markers = [{ lat: 37.5483, lng: -121.9886, label: "A", draggable: false }];
+  constructor(public authenticationService: AuthenticationService, public properties: Properties) {}
 
   clickedMarker(label: string, index: number) {
     console.log(`clicked the marker: ${label || index}`);

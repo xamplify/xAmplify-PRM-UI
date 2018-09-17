@@ -236,3 +236,14 @@ td h5 {
 .dropdown {
     margin-right: 1em;
 }
+#delete-partner{
+	margin: 4px;
+	color: red;
+	margin-left: 2px;
+}
+#campaign-partner-table  td {
+	text-align: center;
+}
+#campaign-partner-table th {
+	text-align: center;
+}

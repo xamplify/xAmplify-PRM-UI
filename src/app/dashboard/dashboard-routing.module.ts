@@ -15,6 +15,7 @@ import { EditCompanyProfileComponent } from "./company-profile/edit-company-prof
 import { ReportsComponent } from "./dashboard/reports/reports.component";
 import { NotificationsComponent } from "../core/notifications/notifications.component";
 import { VendorReportsComponent } from "./vendor-reports/vendor-reports.component";
+import { AdminReportComponent } from './admin-report/admin-report.component';
 
 const routes: Routes = [
   { path: "", component: DashboardComponent },
@@ -31,7 +32,8 @@ const routes: Routes = [
   { path: "edit-company-profile", component: EditCompanyProfileComponent },
   { path: "reports", component: ReportsComponent },
   { path: "notifications", component: NotificationsComponent },
-  { path: 'vendors',component:VendorReportsComponent}
+  { path: 'vendors',component:VendorReportsComponent},
+  { path: 'admin-report',component:AdminReportComponent}
 ];
 @NgModule({
   imports: [RouterModule.forChild(routes)],

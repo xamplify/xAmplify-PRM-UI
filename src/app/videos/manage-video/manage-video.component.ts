@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { SaveVideoFile } from '.././models/save-video-file';
 import { Category } from '.././models/category';
@@ -14,6 +14,8 @@ import { HomeComponent } from '../../core/home/home.component';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { UtilService } from '../../core/services/util.service';
 import { CustomResponse } from '../../common/models/custom-response';
+import { ActionsDescription } from '../../common/models/actions-description';
+import { UserService } from '../../core/services/user.service';
 
 declare var swal, QuickSidebar, $: any;
 
@@ -21,7 +23,7 @@ declare var swal, QuickSidebar, $: any;
     selector: 'app-manage-video',
     templateUrl: './manage-video.component.html',
     styleUrls: ['./manage-video.component.css'],
-    providers: [Pagination, HttpRequestLoader, HomeComponent]
+    providers: [Pagination, HttpRequestLoader, HomeComponent,ActionsDescription]
 })
 export class ManageVideoComponent implements OnInit, OnDestroy {
     manageVideos = true;
@@ -53,22 +55,43 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
 
     constructor(public videoFileService: VideoFileService, public referenceService: ReferenceService,
         public authenticationService: AuthenticationService, public videoUtilService: VideoUtilService,
-        public pagerService: PagerService, public pagination: Pagination, public router: Router,
-        public xtremandLogger: XtremandLogger, public homeComponent: HomeComponent, public utilService:UtilService) {
+        public pagerService: PagerService, public pagination: Pagination, public router: Router,public userService:UserService,
+        public xtremandLogger: XtremandLogger, public homeComponent: HomeComponent, public utilService:UtilService, public actionsDescription:ActionsDescription) {
         this.xtremandLogger.log('MangeVideosComponent : constructor ');
+        try{
         this.loggedInUserId = this.authenticationService.getUserId();
         this.loggedUserName = this.authenticationService.user.emailId;
+        this.referenceService.loading(this.httpRequestLoader, true);
+        this.isListView = ! this.referenceService.isGridView;
         this.defaultBannerMessageValues();
         this.sortVideos = this.videoUtilService.sortVideos;
         if(this.authenticationService.isOnlyPartner()){
-          this.sortVideos = this.sortVideos.concat([{ 'name': 'Company Name(ASC)', 'value': 'companyName-ASC' }]);
-          this.sortVideos = this.sortVideos.concat([{ 'name': 'Company Name(DESC)', 'value': 'companyName-DESC'}]);
+          this.sortVideos = this.sortVideos.concat([{ 'name': 'Company Name (A-Z)', 'value': 'companyName-ASC' }]);
+          this.sortVideos = this.sortVideos.concat([{ 'name': 'Company Name (Z-A)', 'value': 'companyName-DESC'}]);
         }
         this.videoSort = this.sortVideos[0];
         this.categoryNum = this.videoFileService.categoryNumber = 0;
         this.videoType = this.videoTypes[0];
         this.videoFileService.videoType = this.videoTypes[0].value;
         if(this.authenticationService.isOnlyPartner()){ this.videoFileService.videoType = 'partnerVideos'; }
+
+        if (this.videoFileService.actionValue === 'Save') {
+          this.referenceService.loading(this.httpRequestLoader, true);
+          this.showVideosPage(false, true, false, false);
+          this.referenceService.loading(this.httpRequestLoader, false);
+          this.showMessage = this.videoFileService.showSave; // true
+          this.showUpdatevalue = this.videoFileService.showUpadte; // false
+          }
+          if (this.videoFileService.actionValue !== 'Save' || this.videoFileService.actionValue === undefined) {
+              this.showVideosPage(true, false, false, false);
+              this.defaultBannerMessageValues();
+          }
+          this.checkTotalRecords = true;
+          this.loadVideos(this.pagination);
+          if (this.videoUtilService.selectedVideo) {
+              this.showCampaignVideoReport(this.videoUtilService.selectedVideo);
+          }
+      } catch(error){this.xtremandLogger.error('error in manage videos contructor:'+error); this.referenceService.hasClientError = true;}
     }
     defaultBannerMessageValues() {
         this.showMessage = this.showUpdatevalue = false;
@@ -83,12 +106,18 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.videoFileService.videoType = videoType.value;
         this.loadVideos(this.pagination);
     }
-    mouseEnter(event, videoFile){ event.target.src = videoFile.gifImagePath; }
-    mouseLeave(event, videoFile){ event.target.src = videoFile.imagePath; }
+    mouseEnter(videoFile){
+      (<HTMLInputElement>document.getElementById('imagePathVideo'+videoFile.id)).src = videoFile.gifImagePath;
+    }
+    mouseLeave(videoFile){
+       (<HTMLInputElement>document.getElementById('imagePathVideo'+videoFile.id)).src = videoFile.imagePath;
+    }
+    getDefaultVideoSettings(){
+     this.userService.getVideoDefaultSettings().subscribe((data)=>{ this.referenceService.defaultPlayerSettings = data;});
+    }
     ngOnInit() {
       try {
         this.pagination.maxResults = 12;
-        this.isListView = ! this.referenceService.isGridView;
         QuickSidebar.init();
         this.hasVideoRole = this.referenceService.hasRole(this.referenceService.roles.videRole);
         this.hasStatsRole = this.referenceService.hasRole(this.referenceService.roles.statsRole);
@@ -102,22 +131,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         }
         this.xtremandLogger.log(this.referenceService.videoTitles);
         this.xtremandLogger.log('MangeVideosComponent ngOnInit()');
-            if (this.videoFileService.actionValue === 'Save') {
-                this.referenceService.loading(this.httpRequestLoader, true);
-                this.showVideosPage(false, true, false, false);
-                this.referenceService.loading(this.httpRequestLoader, false);
-                this.showMessage = this.videoFileService.showSave; // true
-                this.showUpdatevalue = this.videoFileService.showUpadte; // false
-            }
-            if (this.videoFileService.actionValue !== 'Save' || this.videoFileService.actionValue === undefined) {
-                this.showVideosPage(true, false, false, false);
-                this.defaultBannerMessageValues();
-            }
-            this.checkTotalRecords = true;
-            this.loadVideos(this.pagination);
-            if (this.videoUtilService.selectedVideo) {
-                this.showCampaignVideoReport(this.videoUtilService.selectedVideo);
-            }
+
         } catch (error) {
             this.xtremandLogger.error('error in ng oninit :' + error);
         }
@@ -175,6 +189,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.loadVideos(this.pagination);
     }
     showEditVideo(video: SaveVideoFile) {
+        if(this.referenceService.defaultPlayerSettings.playerColor===undefined){ this.getDefaultVideoSettings(); }
         try{
         this.referenceService.loading(this.httpRequestLoader, true);
         this.xtremandLogger.log('show edit video method in mange videos ' + JSON.stringify(video));
@@ -267,13 +282,11 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                 this.pagination.pagedItems.splice(position, 1);
                 this.defaultBannerMessageValues();
                 this.showVideoFileName = videoName;
-                this.showVideoFileName = '"'+this.showVideoFileName.substr(0,50)+'" deleted successfully';
+                this.showVideoFileName = '"'+this.showVideoFileName.substr(0,50)+'" deleted successfully.';
                 this.customResponse = new CustomResponse( 'SUCCESS', this.showVideoFileName, true );
+                this.homeComponent.getVideoTitles();
                 $('html,body').animate({ scrollTop: 0 }, 'slow');
-                if (this.pagination.pagedItems.length === 0) {
-                    this.pagination.pageIndex = 1;
-                    this.loadVideos(this.pagination);
-                }
+                this.loadVideos(this.pagination);
             },
             (error: any) => {
                 try{
@@ -343,11 +356,11 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
             this.showVideoFileName = videoFile.title;
         }
         if(this.showMessage){
-            this.showVideoFileName = '"'+this.showVideoFileName.substr(0,50) +'" saved successfully';
+            this.showVideoFileName = '"'+this.showVideoFileName.substr(0,50) +'" saved successfully.';
             this.customResponse = new CustomResponse( 'SUCCESS', this.showVideoFileName, true );
 
          } else if(this.showUpdatevalue){
-            this.showVideoFileName = '"'+this.showVideoFileName.substr(0,50) +'" settings updated successfully';
+            this.showVideoFileName = '"'+this.showVideoFileName.substr(0,50) +'" settings updated successfully.';
             this.customResponse = new CustomResponse( 'SUCCESS', this.showVideoFileName, true );
          }
         this.xtremandLogger.info('update method called ' + this.showVideoFileName);

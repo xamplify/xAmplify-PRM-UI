@@ -3,7 +3,7 @@ export class Properties {
     /*App Info*/
     COMPANY_LOGO = 'assets/images/xamplify-logo.png'
     BOTTOM_MESSAGE = '&copy; 2018 xAmplify. All rights reserved.'
-    APP_WEBSITE = 'xamplify';
+    APP_WEBSITE = 'xAmplify';
     APP_WELCOME_MESSAGE = 'Welcome to xAmplify';
     APP_Xamplify_URL="https://xamplify.io"
 
@@ -12,7 +12,7 @@ export class Properties {
     NO_USERS_SELECT_ERROR = "You have not selected any user.";
     //FOR CONTACTS
     FILE_TYPE_ERROR = "File type not allowed please select the .csv file only."
-    CONTACT_LIST_CREATE_SUCCESS = "Your contact list has been created successfully.";
+    CONTACT_LIST_CREATE_SUCCESS = "Your contact list has been created successfully and we are processing your contact list";
     CONTACT_LIST_CREATE_ERROR = "An error occured while creating your contact list.";
 
     CONTACT_LIST_UPDATE_SUCCESS = "Your contact list has been updated successfully.";
@@ -44,7 +44,7 @@ export class Properties {
     SOCIAL_ACCOUNT_REMOVED_ERROR = "An error occured while removing your social Account.";
 
     /* For Partners*/
-    PARTNER_LIST_CREATE_SUCCESS = "Your partner list has been created successfully.";
+    PARTNER_LIST_CREATE_SUCCESS = "Your partner list has been created successfully and we are processing your partner list";
     PARTNER_LIST_NAME_UPDATE_SUCCESS = "Your partner list name has been updated successfully.";
 
     PARTNER_LIST_SYNCHRONIZATION_SUCCESS = "Your Parntner List has been synchronized successfully.";
@@ -76,10 +76,11 @@ export class Properties {
     ACCOUNT_DEACTIVATE_SUCCESS = "OrgAdmin deactivation successfully done.";
 
     BAD_CREDENTIAL_ERROR = "Username or password is incorrect.";
+    USER_ACCOUNT_DOESNOT_EXIST = "The email address that you've entered doesn't match any account. Sign for an account.";
     USER_ACCOUNT_ACTIVATION_ERROR = "Your account has not been activated. Please check your inbox for our activation email.";
     EMPTY_CREDENTIAL_ERROR = "Username or password can't be empty.";
     RESEND_ACTIVATION_MAIL = 'Please check your inbox	for	our	account activation email.'
-    SOMTHING_WENT_WRONG = 'Something went worng. Please try again.';
+    SOMTHING_WENT_WRONG = 'Something went wrong. Please try again.';
     /* User */
     PROCESS_REQUEST_SUCCESS = "Your request has been successfully processed.";
     PROCESS_REQUEST_ERROR = "An error occurred while processing your request.";
@@ -93,7 +94,7 @@ export class Properties {
     /* campaign */
     ADD_AUTO_RESPONSE_WEBSITE = 'Auto-responses to a website visit'
     ADD_AUTO_RESPONSE_EMAIL = 'Auto-responses to your email'
-    TO_PARTNER_MESSAGE = 'To Partner: Send a campaign intended just for your Partners';
+    TO_PARTNER_MESSAGE = 'To Recipient(s): Send a campaign intended just for your Partner(s)/ Contact(s)';
     THROUGH_PARTNER_MESSAGE = 'Through Partner: Send a campaign that your Partners can redistribute';
     ENALEORDISABLE_VENDOR_MESSAGE='Enable/disable the Vendor’s access to your campaign analytics'
 }

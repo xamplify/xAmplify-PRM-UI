@@ -1,10 +1,11 @@
-<div class="page-content">
+<div class="page-content" [class.ml0]="authenticationService.isSuperAdmin()">
 <div class="page-bar">
 		<ul class="page-breadcrumb">
-			<li><i class="fa fa-home"></i> <a [routerLink]="refService.homeRouter">Home</a> <i
+			<li *ngIf="!authenticationService.isSuperAdmin()"><i class="fa fa-home"></i> <a [routerLink]="refService.homeRouter">Home</a> <i
 				class="fa fa-angle-right"></i></li>
-			<li style="color:#808080">Manage Templates
-			</li>
+		<li *ngIf="authenticationService.isSuperAdmin()"><i class="fa fa-home"></i><a [routerLink]="['/home/dashboard/admin-report']">Admin Report</a><i class="fa fa-angle-right"></i></li>
+      <li style="color:#808080" *ngIf="!authenticationService.isOnlyPartner()">Manage Templates</li>
+      <li style="color:#808080" *ngIf="authenticationService.isOnlyPartner()">View Templates</li>
 		</ul>
 		<div style="float: right;">
 				<select class="form-control" [(ngModel)]="selectedSortedOption" (ngModelChange)="getSortedResult($event)" style="position: relative;right: 10px;top: 2px;">
@@ -18,17 +19,17 @@
 	</div>
 	<div class="row">
 		<div class="col-md-12">
-			<div class="portlet light clearfix">
+			<div class="portlet light clearfix" style="min-height: 644px;">
 				<div class="portlet-title"><!--  -->
 					<div class="row">
 						<div class="colxs-12 col-sm-9">
 						<div *ngIf="!isOnlyPartner">
 							<ul class="mix-filter" >
 								<li class="filter" (click)="filterTemplates('NONE',false,0)" [class.emailtemplate-selected]="0 == selectedTemplateTypeIndex" >All</li>
-								<li class="filter" (click)="filterTemplates('BASIC',false,1)" [class.emailtemplate-selected]="1 == selectedTemplateTypeIndex"> Basic</li>
-								<li class="filter" (click)="filterTemplates('RICH',false,2)" [class.emailtemplate-selected]="2 == selectedTemplateTypeIndex">Rich</li>
-								<li class="filter" (click)="filterTemplates('BASIC',true,3)" [class.emailtemplate-selected]="3 == selectedTemplateTypeIndex">Basic Video</li>
-								<li class="filter" (click)="filterTemplates('RICH',true,4)" [class.emailtemplate-selected]="4 == selectedTemplateTypeIndex">Rich Video</li>
+								<!-- <li class="filter" (click)="filterTemplates('BASIC',false,1)" [class.emailtemplate-selected]="1 == selectedTemplateTypeIndex"> Basic</li> -->
+								<li class="filter" (click)="filterTemplates('RICH',false,2)" [class.emailtemplate-selected]="2 == selectedTemplateTypeIndex">Basic</li>
+								<!-- <li class="filter" (click)="filterTemplates('BASIC',true,3)" [class.emailtemplate-selected]="3 == selectedTemplateTypeIndex">Basic Video</li> -->
+								<li class="filter" (click)="filterTemplates('RICH',true,4)" [class.emailtemplate-selected]="4 == selectedTemplateTypeIndex">Video</li>
 								<li class="filter" (click)="filterTemplates('UPLOADED',false,5)"[class.emailtemplate-selected]="5 == selectedTemplateTypeIndex">Uploaded</li>
 								<li *ngIf="isPartnerToo" class="filter" (click)="filterTemplates('PARTNER',false,6)"[class.emailtemplate-selected]="6 == selectedTemplateTypeIndex">Partner</li>
 								<li class="filter" (click)="filterTemplates('REGULAR_CO_BRANDING',false,7)"[class.emailtemplate-selected]="7 == selectedTemplateTypeIndex">Email Co-Branding</li>
@@ -45,10 +46,10 @@
 							</ng-container>
 							<div class="portlet-input input-inline input-small">
 								<div class="input-icon right">
-									<i class="icon-magnifier"  (click)="searchTemplates()" style="cursor: pointer;"></i>
-									<input type="search"
-									 class="form-control" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"  placeholder="search...">
-								</div>
+                   <input type="text" class="form-control" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="eventHandler($event.keyCode)">
+                   <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey=''"></button>
+                   <button type="submit" class="search-box-item-click" (click)="searchTemplates()"><i class="fa fa-search"></i></button>
+                  </div>
 							 </div>
 					   	</div>
 						 </div>
@@ -61,7 +62,7 @@
             <section [hidden]="!isListView">
 						<ng-container *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError ">
 						<div class="table-responsive">
-						<table class='table tgrid table-hover table-sm hidden-xs'>
+						<table class='table tgrid table-hover table-sm hidden-xs'  *ngIf="pagination.pagedItems?.length>0">
 							<thead>
 								<tr>
 									<th colspan="2" style="width: 45%">Email Template List</th>
@@ -99,16 +100,18 @@
 									<td>
 										<h5 class="view-banner" style="width: 115%;">{{emailTemplate.emailTemplateType}}</h5>
 									</td>
-									<td  style="text-align: center;">{{emailTemplate.createdDate}}</td>
+									<td  style="text-align: center;">
+									<app-timestamp [isOnlyDate]="true" [dateAndTime]="emailTemplate.createdDate"> </app-timestamp>
+									</td>
 									<td style="width: 14%">
 										<div class="actions-block">
-											<a (click)="edit(emailTemplate.id)" title="Edit" *ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  || authenticationService.module.isVendor) && emailTemplate.type!='PARTNER'">
+											<a (click)="edit(emailTemplate.id)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_edit}}" *ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  || authenticationService.module.isVendor) && emailTemplate.type!='PARTNER'">
 												<i class="fa fa-pencil-square-o"></i>
 											</a>
-											<a  *ngIf= "!emailTemplate.draft" (click)="showPreview(emailTemplate)" title="Preview">
+											<a  *ngIf= "!emailTemplate.draft" (click)="showPreview(emailTemplate)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_preview}}">
 												<i class="fa fa-eye mr5"></i>
 											</a>
-											<a id="template-delete" (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)" title="Delete"
+											<a id="template-delete" (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_delete}}"
 												*ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  ||authenticationService.module.isVendor) && emailTemplate.type!='PARTNER' ">
 												<i class="fa fa-trash"></i>
 											</a>
@@ -125,10 +128,16 @@
 						<div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let emailTemplate of pagination.pagedItems ;let i =index" id="emailTemplateListDiv_{{emailTemplate.id}}">
 							<div class="grid-box">
 								<img  src="{{emailTemplate.subject}}" alt="{{emailTemplate.name}}">
-								<h4 class="ellipsis" title="{{emailTemplate.name}}">{{emailTemplate.name}}</h4>
+                <h4 class="ellipsis mt5 mb5 f-w-600" title="{{emailTemplate.name}}">{{emailTemplate.name | slice:0:25}}
+                    <span *ngIf="emailTemplate.name?.length>25">...</span>
+                  </h4>
 								<div>
-									<h6 *ngIf="emailTemplate.type=='PARTNER'">Shared On <b>{{emailTemplate.createdDate}}</b></h6>
-									<h6 *ngIf="emailTemplate.type!='PARTNER'">Created On <b>{{emailTemplate.createdDate}}</b></h6>
+									<h6 *ngIf="emailTemplate.type=='PARTNER'">Shared On <b>
+									<app-timestamp [isOnlyDate]="true" [dateAndTime]="emailTemplate.createdDate"> </app-timestamp>
+									</b></h6>
+									<h6 *ngIf="emailTemplate.type!='PARTNER'">Created On <b>
+									<app-timestamp [isOnlyDate]="true" [dateAndTime]="emailTemplate.createdDate"> </app-timestamp>
+									</b></h6>
 									<ng-container *ngIf="emailTemplate.type!='PARTNER'">
 										<h6 title="{{emailTemplate.createdBy}}">By
 										<b *ngIf="emailTemplate.createdBy?.length>17">{{emailTemplate.createdBy|slice:0:17}}..</b>
@@ -158,14 +167,14 @@
 
 								</div>
 								<div class="bar">
-                  					<a  (click)="edit(emailTemplate.id)" title="Edit"
+                  					<a  (click)="edit(emailTemplate.id)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_edit}}"
 										*ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  || authenticationService.module.isVendor) && emailTemplate.type!='PARTNER'">
 										<i class="fa fa-pencil-square-o"></i>
 									</a>
-									<a *ngIf="!emailTemplate.draft" (click)="showPreview(emailTemplate)" title="Preview">
+									<a *ngIf="!emailTemplate.draft" (click)="showPreview(emailTemplate)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_preview}}">
 										<i class="fa fa-eye"></i>
 									</a>
-									<a (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)" title="Delete"
+									<a (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_delete}}"
 										*ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)||authenticationService.module.isVendor) && emailTemplate.type!='PARTNER' ">
 										<i class="fa fa-trash"></i>
 									</a>
@@ -216,5 +225,6 @@
 							</div>
 						</div>
 					</div>
-				</div>
+        </div>
+        <app-scroll-top></app-scroll-top>
    </div>

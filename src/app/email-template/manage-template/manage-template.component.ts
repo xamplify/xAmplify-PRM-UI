@@ -13,6 +13,7 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { CustomResponse } from '../../common/models/custom-response';
+import { ActionsDescription } from '../../common/models/actions-description';
 
 declare var Metronic,$, Layout, Demo, swal: any;
 
@@ -20,7 +21,7 @@ declare var Metronic,$, Layout, Demo, swal: any;
     selector: 'app-manage-template',
     templateUrl: './manage-template.component.html',
     styleUrls: ['./manage-template.component.css', '../../../assets/css/video-css/ribbons.css'],
-    providers: [Pagination,HttpRequestLoader]
+    providers: [Pagination,HttpRequestLoader, ActionsDescription]
 })
 export class ManageTemplateComponent implements OnInit,OnDestroy {
     isPreview = false;
@@ -47,12 +48,12 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
 
     sortByDropDown = [
         { 'name': 'Sort By', 'value': '' },
-        { 'name': 'Name(A-Z)', 'value': 'name-ASC' },
-        { 'name': 'Name(Z-A)', 'value': 'name-DESC' },
-        { 'name': 'Company Name(A-Z)', 'value': 'company-ASC' },
-        { 'name': 'Company Name(Z-A)', 'value': 'company-DESC' },
-        { 'name': 'Created Date(ASC)', 'value': 'createdTime-ASC' },
-        { 'name': 'Created Date(DESC)', 'value': 'createdTime-DESC' }
+        { 'name': 'Name (A-Z)', 'value': 'name-ASC' },
+        { 'name': 'Name (Z-A)', 'value': 'name-DESC' },
+        { 'name': 'Company Name (A-Z)', 'value': 'company-ASC' },
+        { 'name': 'Company Name (Z-A)', 'value': 'company-DESC' },
+        { 'name': 'Created Date (ASC)', 'value': 'createdTime-ASC' },
+        { 'name': 'Created Date (DESC)', 'value': 'createdTime-DESC' }
     ];
 
     numberOfItemsPerPage = [
@@ -71,7 +72,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
     customResponse: CustomResponse = new CustomResponse();
     isListView: boolean = false;
     constructor( private emailTemplateService: EmailTemplateService, private userService: UserService, private router: Router,
-        private pagerService: PagerService, public refService: ReferenceService,
+        private pagerService: PagerService, public refService: ReferenceService, public actionsDescription: ActionsDescription,
         public pagination: Pagination,public authenticationService:AuthenticationService,private logger:XtremandLogger) {
         this.loggedInUserId = this.authenticationService.getUserId();
         this.isPartnerToo = this.authenticationService.checkIsPartnerToo();
@@ -203,6 +204,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
 
     }
 
+    eventHandler(keyCode: any) {  if (keyCode === 13) {  this.searchTemplates(); } }
 
     ngOnInit() {
         try {
@@ -246,6 +248,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
     }
 
     deleteEmailTemplate( id: number,name:string ) {
+      this.refService.loading(this.httpRequestLoader, true);
        this.refService.goToTop();
         this.isEmailTemplateDeleted = false;
         this.isCampaignEmailTemplate = false;
@@ -271,6 +274,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
                     });
                     let message = "Please delete associated campaign(s)<br><br>"+campaignNames;
                     this.customResponse = new CustomResponse('ERROR',message,true );
+                    this.refService.loading(this.httpRequestLoader, false);
                 }
 
             },

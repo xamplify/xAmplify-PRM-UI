@@ -10,7 +10,8 @@ import { PartnerCampaignsComponent } from "./partner-campaigns/partner-campaigns
 import { EditPartnerCampaignsComponent } from "./edit-partner-campaigns/edit-partner-campaigns.component";
 import { PreviewCampaignComponent } from "./preview-campaign/preview-campaign.component";
 import { EventCampaignComponent } from './event-campaign/event-campaign.component';
-
+import { ReDistributedComponent } from './analytics/re-distributed/re-distributed.component';
+import { PreviewPartnersComponent } from './preview-partners/preview-partners.component';
 export const campaignRoutes: Routes = [
   { path: "", redirectTo: "select", pathMatch: "full" },
   { path: "select", component: SelectCampaignTypeComponent },
@@ -20,6 +21,7 @@ export const campaignRoutes: Routes = [
   { path: "edit", component: CreateCampaignComponent },
   { path: "manage", component: ManagePublishComponent },
   { path: ":campaignId/details", component: AnalyticsComponent },
+  { path: ":campaignId/re-distributed", component: ReDistributedComponent },
   { path: "partner", component: PartnerCampaignsComponent },
   { path: "partner/:type", component: PartnerCampaignsComponent },
   { path: "vendor/:type", component: PartnerCampaignsComponent },
@@ -29,6 +31,7 @@ export const campaignRoutes: Routes = [
   { path: "event-preview/:id", component: EventCampaignComponent },
   { path: "event-edit/:id", component: EventCampaignComponent },
   { path: "re-distribute-event/:id", component: EventCampaignComponent },
+  { path: ":campaignId/remove-access", component: PreviewPartnersComponent }
 ];
 
 @NgModule({

@@ -27,7 +27,7 @@
 							<div class="progress-bar"></div>
 						</div>
 						<a class="smpl-step-icon"><i class="fa fa-check"></i></a>
-						<div class="smpl-step-info text-center">Sign up</div>
+						<div class="smpl-step-info text-center" style="margin-top: 3px;">Sign up</div>
 					</div>
 
 					<div class="col-xs-4 smpl-step-step" [ngClass]="{'complete': !companyProfile.isAdd}">
@@ -35,18 +35,19 @@
 							<div class="progress-bar"></div>
 						</div>
 						<a class="smpl-step-icon"><i class="fa fa-user"></i></a>
-						<div class="smpl-step-info text-center">Complete your company profile</div>
+						<div class="smpl-step-info text-center" style="margin-top: 3px;">Complete your company profile</div>
 					</div>
 
-					<div class="col-xs-4 smpl-step-step disabled">
+					<div class="col-xs-4 smpl-step-step" [ngClass]="{'disabled':!authenticationService.user.hasCompany}">
 						<div class="progress">
 							<div class="progress-bar"></div>
 						</div>
-						<a class="smpl-step-icon"><i class="fa fa-play"></i></a>
-						<div class="smpl-step-info text-center">Start xAmplify</div>
+            <a class="smpl-step-icon" *ngIf="authenticationService.user.hasCompany" [routerLink]="['/home/dashboard']"><i class="fa fa-play" style="color:white"></i></a>
+            <a class="smpl-step-icon" *ngIf="!authenticationService.user.hasCompany"><i class="fa fa-play" style="color:white"></i></a>
+						<div class="smpl-step-info text-center"  style="margin-top: 3px;">Start {{properties.APP_WEBSITE}}</div>
 					</div>
 				</div>
-				<h1 class="text-center" style="margin: 1em;color: #888888;">Let's get started on your company profile.</h1>
+				<h1 class="text-center" style="font-size: 26px;color: #888888;">Let's get started on your company profile.</h1>
 				<img src="/assets/images/dotted-arrow.png" class="img-responsive" style="margin-bottom: 3em;">
 			<div [hidden]="processor.isProcessing">
 				<form role="form" id="company-profile-form">
@@ -54,15 +55,15 @@
 						<div class="col-sm-4 col-xs-12 col-sm-offset-1">
 							<div class="portlet light border-radius-0 shadow">
 								<div class="portlet-body clearfix text-center" style="padding: 2em 0;">
-									<div class="profile-image-wrapper">
+									<div class="profile-image-wrapper" style="cursor:pointer"  (click)="imageClick()">
                     <span *ngIf="logoError" style="color: #f55d7a">{{logoErrorMessage}}</span>
                     <span *ngIf="!companyLogoImageUrlPath" style="color: #f55d7a; position: absolute;bottom: 5px;">* Please upload company logo</span>
 										<img *ngIf="!companyLogoImageUrlPath" src="assets/images/company-profile-logo.png" class="profile-image">
-											<img *ngIf="companyLogoImageUrlPath" [src]= "authenticationService.MEDIA_URL + companyLogoImageUrlPath" class="profile-image">
+										<img *ngIf="companyLogoImageUrlPath" [src]= "authenticationService.MEDIA_URL + companyLogoImageUrlPath" class="profile-image" (error)="errorHandler($event)">
 											<div class="profile-overlay">
 												<label class="fileContainer">
-													<i class="fa fa-camera"></i>&nbsp;Upload company logo
-													<input type="file" ng2FileSelect [uploader]="companyLogoUploader" accept="image/jpeg,image/pjpeg,image/jpeg,image/pjpeg,image/png"
+													<i class="fa fa-camera"></i>&nbsp;<span *ngIf="!companyLogoImageUrlPath">Upload company logo</span><span *ngIf="companyLogoImageUrlPath">Change company logo</span>
+													<input id="companyLogo" type="file" ng2FileSelect [uploader]="companyLogoUploader" accept="image/jpeg,image/pjpeg,image/jpeg,image/pjpeg,image/png"
 															*ngIf="companyLogoUploader.queue.length==0" (change)="changeLogo($event)" title=" " #input/>
 												</label>
 											</div>
@@ -138,7 +139,7 @@
 							</div>
 							<div class="form-group" [attr.class]="aboutUsDivClass">
 								<label class="control-label">About Us <font	style="color: #f55d7a"><b>*</b></font></label>
-								<textarea class="form-control" rows="3" cols="5" placeholder="About Us" name="aboutUs" id="aboutUs" style="resize: none" [(ngModel)]="companyProfile.aboutUs" (input)="validateEmptySpace('aboutUs')" (blur)="validateEmptySpace('aboutUs')"></textarea>
+								<textarea class="form-control" rows="3" cols="5" maxlength="1000" placeholder="About Us" name="aboutUs" id="aboutUs" style="resize: none" [(ngModel)]="companyProfile.aboutUs" (input)="validateEmptySpace('aboutUs')" (blur)="validateEmptySpace('aboutUs')"></textarea>
 								<span *ngIf="aboutUsError"  style="color: #f55d7a">{{aboutUsErrorMessage}}</span>
 							</div>
 							<div class="panel-group">

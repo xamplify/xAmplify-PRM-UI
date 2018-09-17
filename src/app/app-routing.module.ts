@@ -30,6 +30,7 @@ import { RsvpComponent } from './campaigns/rsvp/rsvp.component';
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'signup', component: SignupComponent },
+    { path: 'signup/:alias', component: SignupComponent },
     { path: 'v-signup', component: SignupComponent},
     { path: 'forgot-password', component: ForgotPasswordComponent },
     { path: 'register/verifyemail/user', component: VerifyEmailComponent },

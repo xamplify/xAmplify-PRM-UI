@@ -1,9 +1,10 @@
-<div class="page-content">
+<div class="page-content" [class.ml0]="authenticationService.isSuperAdmin()">
 	<!-- page-breadcrumb -->
 	<div class="page-bar" *ngIf="!showEdit">
 		<ul class="page-breadcrumb">
-			<li><i class="fa fa-home"></i> <a [routerLink]="referenceService.homeRouter">Home</a>
+			<li *ngIf="!authenticationService.isSuperAdmin()"><i class="fa fa-home"></i> <a [routerLink]="referenceService.homeRouter">Home</a>
 				<i class="fa fa-angle-right"></i></li>
+		    <li *ngIf="authenticationService.isSuperAdmin()"><i class="fa fa-home"></i><a [routerLink]="['/home/dashboard/admin-report']">Admin Report</a><i class="fa fa-angle-right"></i></li>
 			<li><a (click)="navigateToManageContacts()">Manage
 					{{checkingContactTypeName}}s</a> <i class="fa fa-angle-right"
 				*ngIf="! showListOfContactList"></i></li>
@@ -13,7 +14,7 @@
 					{{checkingContactTypeName}}s</span></li>
 			<li
 				*ngIf="! showListOfContactList && contactsByType.selectedCategory == 'non-active'"><span
-				class="capitalize">Inactive {{checkingContactTypeName}}s</span></li>
+				class="capitalize">Unregistered {{checkingContactTypeName}}s</span></li>
 		</ul>
 	</div>
 
@@ -31,52 +32,11 @@
 								<div class="tab-pane active">
 									<!-- BEGIN FILTER -->
 
-									<div class="page-bar m0">
-										<!-- <ul class="page-breadcrumb">
-											<li style="font-size: 16px; color: #888888">Your {{checkingContactTypeName}} Lists
-												</li>
-
-										</ul> -->
+								<!-- 	<div class="page-bar m0">
 										<div class="page-toolbar">
-											<div class="btn-group pull-right">
-												<ng-container class='m10'>
-												<button class="btn btn-xs" [disabled]="isListView"
-													(click)="isListView = true" title="List View">
-													<i class="fa fa-th-list p10" aria-hidden="true"></i>
-												</button>
-												<button class="btn btn-xs" [disabled]="!isListView"
-													(click)="isListView = false" title="Grid View">
-													<i class="fa fa-th-large p10" aria-hidden="true"></i>
-												</button>
-												</ng-container>
-												<div class="inputs" align="right" style="float: right">
-													<div style="float: left; margin: 0 10px;">
-														<select class="form-control" [(ngModel)]="sortOption"
-															(ngModelChange)="sortByOption($event, 'contactList')">
-															<ng-container
-																*ngFor="let sort of sortOptions; let i = index">
-															<option *ngIf="i == 0" [ngValue]="sort">{{sort.name}}</option>
-															<option *ngIf="sort.for == 'contactList'"
-																[ngValue]="sort">{{sort.name}}</option>
-															</ng-container>
-														</select>
-													</div>
-													<div class="portlet-input input-inline input-small">
-														<div class="input-icon right"
-															style="width: 106%; left: -4px;">
-															<i class="icon-magnifier"
-																style="cursor: pointer; font-size: 18px;"
-																(click)="search('contactList')"> </i> <input type="text"
-																[(ngModel)]="searchKey"
-																[ngModelOptions]="{standalone: true}"
-																(input)="searchKeyValue('contactList')"
-																class="form-control" placeholder="Search For a List">
-														</div>
-													</div>
-												</div>
-											</div>
+											Removed serarch and sort from here
 										</div>
-									</div>
+									</div> -->
 									<!-- END DASHBOARD STATS -->
 									<div class="clearfix"></div>
 									<div class="row mt5 mb5">
@@ -176,6 +136,45 @@
 												</li>
 
 										</ul>
+
+										<div class="btn-group pull-right">
+												<ng-container class='m10'>
+												<button class="btn btn-xs" [disabled]="isListView"
+													(click)="isListView = true" title="List View">
+													<i class="fa fa-th-list p10" aria-hidden="true"></i>
+												</button>
+												<button class="btn btn-xs" [disabled]="!isListView"
+													(click)="isListView = false" title="Grid View">
+													<i class="fa fa-th-large p10" aria-hidden="true"></i>
+												</button>
+												</ng-container>
+												<div class="inputs sort-class" align="right" style="float: right">
+													<div style="float: left; margin: 0 10px;">
+														<select class="form-control" [(ngModel)]="sortOption"
+															(ngModelChange)="sortByOption($event, 'contactList')">
+															<ng-container
+																*ngFor="let sort of sortOptions; let i = index">
+															<option *ngIf="i == 0" [ngValue]="sort">{{sort.name}}</option>
+															<option *ngIf="sort.for == 'contactList'"
+																[ngValue]="sort">{{sort.name}}</option>
+															</ng-container>
+														</select>
+													</div>
+													<div class="portlet-input input-inline search-class">
+														<div class="input-icon right">
+															 <input type="text"
+																[(ngModel)]="searchKey"
+																[ngModelOptions]="{standalone: true}"
+																(input)="searchKeyValue('contactList')"
+																class="form-control" placeholder="Search For a List" (keypress)="eventHandler($event.keyCode)">
+
+														<button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey=''"></button>
+														<button type="submit" class="search-box-item-click" (click)="search('contactList')"><i class="fa fa-search"></i></button>
+														</div>
+													</div>
+												</div>
+											</div>
+
 										</div>
 									<app-response-message [customResponse]="customResponse"
 										*ngIf="customResponse.isVisible"></app-response-message>
@@ -199,7 +198,7 @@
 													<th colspan="2" style="width: 50%">List Name</th>
 													<th>Created On</th>
 													<th class="text-center">Total {{checkingContactTypeName}}s</th>
-													<th class="text-center">Actions</th>
+													<th class="text-center" *ngIf="!authenticationService.isSuperAdmin()">Actions</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -221,7 +220,7 @@
 													</td>
 													<td>
 													<h4 class="ellipsis" title="{{contactList.name}}">
-															{{contactList.name | slice:0:50}} 
+															{{contactList.name | slice:0:50}}
 															<span *ngIf="contactList.name?.length>50">...</span>
 														</h4>
 														<h5 class='m0 ellipsis'  title="{{contactList.uploadedBy}}">
@@ -233,39 +232,41 @@
 														<span *ngIf="contactList.companyName?.length>50">...</span>
 														</h5>
 													</td>
-													<td>{{contactList.createdDate}}</td>
-													<td class="text-center">{{contactList.noOfContacts}}</td>
 													<td>
+													<app-timestamp [isOnlyDate]="true" [dateAndTime]="contactList.createdDate"> </app-timestamp>
+													</td>
+													<td class="text-center">{{contactList.noOfContacts}}</td>
+													<td *ngIf="!authenticationService.isSuperAdmin()">
 														<div class="actions-block">
 															<a
 																*ngIf="(hasAllAccess || authenticationService.module.isVendor || (hasContactRole && loggedInUserId == contactList.uploadedUserId) || authenticationService.isOnlyPartner()) && !contactList.synchronisedList"
 																(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.synchronisedList)"
-																title="Edit List"> <i class="fa fa-pencil-square-o"></i>
-															</a> 
-															
+																data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_list_edit}}"> <i class="fa fa-pencil-square-o"></i>
+															</a>
+
 															<a *ngIf="!hasAllAccess && loggedInUserId != contactList.uploadedUserId && !authenticationService.module.isVendor || contactList.synchronisedList"
 																(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.synchronisedList)"
-																title="ContactList Info"> <i
+																data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_list_info}}"> <i
 																class="glyphicon glyphicon-info-sign"></i>
 															</a>
-															
-															<a title="Copy and save as a new list"
+
+															<a data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_list_saveAs}}"
 																(click)="saveAsNewList(contactList.id,contactList.name)">
 																<i class="fa fa-files-o"></i>
-															</a> 
+															</a>
 															 <a (click)="downloadContactList(contactList.id, contactList.name)"
-																title="Download List" data-rel="fancybox-button"> <i
+																data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_list_download}}" data-rel="fancybox-button"> <i
 																class="fa fa-cloud-download"></i>
 															</a>
 															<span *ngIf="contactList.synchronisedList == true">
-																<a title="sychronizeContactList"
+																<a data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_list_synchronize}}"
 																*ngIf="hasAllAccess || authenticationService.module.isVendor|| (hasContactRole && loggedInUserId==contactList.uploadedUserId)"
 																(click)="synchronizeContactList(contactList.id,contactList.socialNetwork)">
 																	<i class="fa fa-refresh" aria-hidden="true"></i>
 															</a>
 															</span>
 															<a *ngIf="(hasAllAccess || authenticationService.module.isVendor || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner()) && !contactList.defaultPartnerList"
-																(click)="showAlert(contactList.id)" title="Delete List">
+																(click)="showAlert(contactList.id)" data-toggle="tooltip" data-placement="top"  title="{{actionsDescription.contact_list_delete}}">
 																<i class="fa fa-trash"></i>
 															</a>
 														</div>
@@ -305,22 +306,23 @@
 											<span *ngIf="contactList.companyName?.length>30">...</span>
 											</h6>
 											<h6 class="mt10 mb0">Total {{checkingContactTypeName}}s {{contactList.noOfContacts}}</h6>
-											<h6 class="mt10 mb0">Created date {{contactList.createdDate}}</h6>
-											<div class="bar">
+											<h6 class="mt10 mb0">Created date <app-timestamp [isOnlyDate]="true" [dateAndTime]="contactList.createdDate"> </app-timestamp>
+											</h6>
+											<div class="bar" *ngIf="!authenticationService.isSuperAdmin()">
 											 <a [class.disabled]="!contactList.emailValidationInd"
 															*ngIf="(hasAllAccess || authenticationService.module.isVendor || (hasContactRole && loggedInUserId == contactList.uploadedUserId) || authenticationService.isOnlyPartner()) && !contactList.synchronisedList"
 															(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList)"
-															title="Edit List" data-rel="fancybox-button"> <i
+															 data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_list_edit}}" data-rel="fancybox-button"> <i
 															class="fa fa-pencil-square-o"></i>
 														</a> <a
 															[class.disabled]="!contactList.emailValidationInd"
 															*ngIf="(!hasAllAccess && loggedInUserId != contactList.uploadedUserId && !authenticationService.module.isVendor) || contactList.synchronisedList"
 															(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList)"
-															title="ContactList Info" data-rel="fancybox-button">
-															<i class="glyphicon glyphicon-info-sign"></i>
+															 data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_list_info}}" data-rel="fancybox-button">
+															<i class="glyphicon glyphicon-info-sign" style="color: white;"></i>
 														</a>
 														<a
-															title="Copy and save as a new list"
+															data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_list_saveAs}}"
 															(click)="saveAsNewList(contactList.id,contactList.name)"
 															[class.disabled]="!contactList.emailValidationInd"
 															data-rel="fancybox-button" style="left: 60%;">
@@ -329,11 +331,11 @@
 														</a>
 														<a [class.disabled]="!contactList.emailValidationInd"
 															(click)="downloadContactList(contactList.id, contactList.name)"
-															title="Download List" data-rel="fancybox-button"> <i
+															data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_list_download}}" data-rel="fancybox-button"> <i
 															class="fa fa-cloud-download"></i>
 														</a>
 														<ng-container *ngIf="contactList.synchronisedList == true">
-														<a title="sychronizeContactList"
+														<a data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_list_synchronize}}"
 															[class.disabled]="!contactList.emailValidationInd"
 															*ngIf="hasAllAccess || authenticationService.module.isVendor || (hasContactRole && loggedInUserId==contactList.uploadedUserId)"
 															(click)="synchronizeContactList(contactList.id,contactList.socialNetwork)"
@@ -345,7 +347,7 @@
 													 <a
 															[class.disabled]="!contactList.emailValidationInd"
 															*ngIf="(hasAllAccess || authenticationService.module.isVendor || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner()) && !contactList.defaultPartnerList"
-															(click)="showAlert(contactList.id)" title="Delete List"
+															(click)="showAlert(contactList.id)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_list_delete}}"
 															data-rel="fancybox-button" lang="{{contactList.id}}">
 															<i class="fa fa-trash"></i>
 														</a>
@@ -515,7 +517,7 @@
 											<i class="fa fa-times" aria-hidden="true"
 												style="color: red; margin-left: -12px;"></i>
 										</div>
-										<div style="float: left; margin-right: 37px">
+										<div style="float: left; margin-right: 10px">
 											<select class="form-control" [(ngModel)]="sortOption"
 												(ngModelChange)="sortByOption($event, 'contacts')">
 												<ng-container
@@ -525,16 +527,16 @@
 												</ng-container>
 											</select>
 										</div>
-										<div class="portlet-input input-inline input-small">
-											<div class="input-icon right"
-												style="width: 122%; left: -29px;">
-												<i class="icon-magnifier"
-													style="cursor: pointer; font-size: 18px;"
-													(click)="search('contacts')"> </i> <input type="text"
+										<div class="portlet-input input-inline">
+											<div class="input-icon right">
+											 <input type="text"
 													[(ngModel)]="searchKey"
 													[ngModelOptions]="{standalone: true}"
 													(input)="searchKeyValue('contacts')" class="form-control"
-													placeholder="Search For {{checkingContactTypeName}}">
+													placeholder="Search For {{checkingContactTypeName}}" (keypress)="eventHandler($event.keyCode)">
+
+													<button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey=''"></button>
+														<button type="submit" class="search-box-item-click" (click)="search('contacts')"><i class="fa fa-search"></i></button>
 											</div>
 										</div>
 									</div>
@@ -562,7 +564,7 @@
 											<i class="fa fa-edit"></i> <span class="capitalize"
 												*ngIf="contactsByType.selectedCategory !='non-active'">{{contactsByType.selectedCategory}}
 												{{checkingContactTypeName}}s List</span> <span class="capitalize"
-												*ngIf="contactsByType.selectedCategory =='non-active'">Inactive
+												*ngIf="contactsByType.selectedCategory =='non-active'">Unregistered
 												{{checkingContactTypeName}}s List</span>
 										</div>
 										<div class="btn-group pull-right"
@@ -612,6 +614,7 @@
 														<th>Phone</th>
 														<th>Job Title</th>
 														<th>ADDRESS</th>
+														<th *ngIf="isPartner && contactsByType.selectedCategory == 'non-active'">ACTIONS</th>
 														<!-- <th>MORE</th> -->
 													</tr>
 												</thead>
@@ -660,9 +663,15 @@
 														</td>
 														<td>
 															<h5 *ngIf="contact?.address" class='mb0'>{{contact.address}}</h5>
-															<h5 class='mb0'>{{contact.city}},&nbsp;{{contact.state}}</h5>
-															<h5 *ngIf="contact?.zipCode || contact.country" class='mt0'>{{contact.zipCode}},&nbsp;{{contact.country}}</h5>
+															<h5 class='mb0'>{{contact.city}}<span *ngIf="contact?.city && contact.state">,&nbsp;</span>{{contact.state}}</h5>
+															<h5 *ngIf="contact?.zipCode || contact.country" class='mt0'>{{contact.zipCode}}<span *ngIf="contact?.zipCode && contact.country">,&nbsp;</span>{{contact.country}}</h5>
 														</td>
+														<td align="center" *ngIf="isPartner && contactsByType.selectedCategory == 'non-active'">
+												<div class="actions-block">
+												<a *ngIf="!contact.signedUp" data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.partner_reSendMail}}" (click)="sendMail(contact.id)">
+													<i class="fa fa-envelope"></i>
+												</a></div>
+												</td>
 														<!-- <td>
 															<button id='more_less_button_{{i}}'
 																(click)="contact.isShowDetails = ! contact.isShowDetails">
@@ -706,7 +715,7 @@
 			</div>
 		</div>
 	</div>
-
+  <app-scroll-top></app-scroll-top>
 </div>
 
 <div id="filterModal" class="modal fade" role="dialog"

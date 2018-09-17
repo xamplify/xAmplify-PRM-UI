@@ -3,7 +3,6 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { LogService } from "../../core/services/log.service";
 import { UtilService } from "../../core/services/util.service";
 import { Ng2DeviceService } from "ng2-device-detector";
-import { ReferenceService } from "../../core/services/reference.service";
 
 @Component({
   selector: "app-log-email-click",
@@ -27,7 +26,6 @@ export class LogEmailClickComponent implements OnInit {
     private logService: LogService,
     private utilService: UtilService,
     private deviceService: Ng2DeviceService,
-    private referenceService: ReferenceService
   ) {}
 
   logEmailUrlClicks() {
@@ -68,10 +66,14 @@ export class LogEmailClickComponent implements OnInit {
             var body = result["_body"];
             var resp = JSON.parse(body);
             let url = resp.url;
-            if (!(url.startsWith("http") || url.startsWith("https"))) {
-              url = "http://" + url;
+            if (url && (url.startsWith("http://") || url.startsWith("https://"))) {
+              window.location.href = url;
+            } else if (url && !(url.startsWith("http://") || url.startsWith("https://"))) {
+              url = 'http://'+ url;
+              window.location.href = url;
             }
-            window.location.href = url;
+            else{ this.router.navigate(['home/notfound']);}
+
           });
       },
       error => console.log(error)

@@ -22,6 +22,8 @@ import { LoadingModule } from 'ngx-loading';
 import { AnalyticsLoaderComponent } from './loader/analytics-loader/analytics-loader.component';
 import { VideoThumbnailComponent } from './video-thumbnail/video-thumbnail.component';
 import { DetailViewComponent } from './detail-view/detail-view.component';
+import { TimestampComponent } from './timestamp/timestamp.component';
+import { ScrollTopComponent } from './scroll-top/scroll-top.component';
 
 @NgModule({
   imports: [CommonModule, FormsModule,LoadingModule],
@@ -33,5 +35,10 @@ import { DetailViewComponent } from './detail-view/detail-view.component';
     BarChartComponent, EmbedModalComponent, UserInfoComponent, LocationComponent, PlatformComponent,
     ResponseMessageComponent, PreviewVideoComponent,PieChartComponent, ListLoaderComponent, GridLoaderComponent, PlayVideoLoaderComponent,
     ExportCsvComponent,LoadingModule,AnalyticsLoaderComponent,VideoThumbnailComponent, DetailViewComponent]
+                 PlayVideoLoaderComponent, GridLoaderComponent, ExportCsvComponent, AnalyticsLoaderComponent, VideoThumbnailComponent, TimestampComponent, ScrollTopComponent],
+  exports: [DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent,
+    BarChartComponent, EmbedModalComponent, UserInfoComponent, LocationComponent, PlatformComponent,
+    ResponseMessageComponent, PreviewVideoComponent,PieChartComponent, ListLoaderComponent, GridLoaderComponent, PlayVideoLoaderComponent,
+    ExportCsvComponent,LoadingModule,AnalyticsLoaderComponent,VideoThumbnailComponent, TimestampComponent, ScrollTopComponent]
 })
 export class CommonComponentModule { }

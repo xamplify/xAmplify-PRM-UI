@@ -75,6 +75,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     paginationType:string;
     videoPlayedSkipedInfo:any;
     logListName = "";
+    videoTotalViews: number;
 
     constructor(public authenticationService: AuthenticationService, public videoBaseReportService: VideoBaseReportService,
         public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService,
@@ -90,7 +91,8 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     }
 
     watchedByTenUserschartsDayStates(minutesWatched: any, names: any) {
-        const maxValue = Math.max.apply(null, minutesWatched);
+        let maxValue = Math.max.apply(null, minutesWatched);
+        if(maxValue<10){maxValue = 9}
         const self = this;
         const charts = [],
             $containers = $('#trellis td'),
@@ -160,8 +162,8 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                         text: null
                     },
                     min: 0,
-                    max:10
-                  //  max: maxValue  // findout maxmum,it is important
+                   // max:10
+                    max: maxValue+1  // findout maxmum,it is important
                 },
                 legend: {
                     enabled: false
@@ -180,8 +182,8 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         let xAxis = ' ';
         let yAxis = ' ';
         if(skipped.length>0 || views.length>0) {
-          xAxis = 'minutes';
-          yAxis='views'
+          xAxis = 'Seconds';
+          yAxis='Views'
         }
         const self = this;
         Highcharts.chart('video-skipped', {
@@ -198,6 +200,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
               }
           }],
             yAxis: [{
+              allowDecimals: false,
               title: {
                   text: yAxis,
               }
@@ -398,6 +401,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                     console.log(result);
                     this.watchedFully = result.video_views_count_data.watchedfullypercentage;
                     this.minutesWatchedUsers = result.video_views_count_data.minutesWatched.length;
+                    this.videoTotalViews = result.video_views_count_data.totalViewsCount;
                      const maxValue = Math.max.apply(null, result.video_views_count_data.minutesWatched);
                      const obj = { 'result': result, 'type': 'videobasedreport','maxValue': maxValue };
                      this.trellisBarChartData = obj;

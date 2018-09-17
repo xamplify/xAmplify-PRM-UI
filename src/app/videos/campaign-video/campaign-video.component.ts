@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
@@ -22,7 +22,7 @@ declare var $, videojs: any;
 @Component({
     selector: 'app-public-video',
     templateUrl: './campaign-video.component.html',
-    styleUrls: ['./campaign-video.component.css'],
+    styleUrls: ['./campaign-video.component.css','../../../assets/css/loader.css'],
     providers: [XtremandLog,Processor]
 })
 export class CampaignVideoComponent implements OnInit, OnDestroy {
@@ -69,6 +69,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
     logoLink: string;
     logoImageUrlPath: string;
     templateName: string;
+    customCampaignError = 'Sorry !This campaign has been removed.'
     campaignVideoTemplate = '<h3 style="color:blue;text-align: center;">Your campaign has been Launched successfully<h3>' +
     '<div class="portlet light">' +
     ' <div class="portlet-body clearfix">' +
@@ -78,10 +79,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
     '<div id="title" class="col-xs-12" style="padding:0"></div>' +
     '<div class="col-xs-12 col-sm-12 col-md-12">' +
     '</div></div>';
-
-    errorHtml =  '<div class="page-content"><div class="portlet light" style="border: navajowhite;">' +
-    ' <div class="portlet-body clearfix">' +
-    '<h3 style="color: blue;text-align: center;margin-top: 150px;font-weight: bold;" >Sorry! This campaign has been removed</h3></div></div></div>';
+    errorHtml:any;
 
     constructor(public router: Router, public route: ActivatedRoute, public videoFileService: VideoFileService,
         public http: Http, public authenticationService: AuthenticationService, public referService: ReferenceService,
@@ -91,6 +89,12 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
         this.xtremandLogger.log('url is on angular 2' + document.location.href);
         this.publicRouterUrl = document.location.href;
         this.logVideoViewValue = true;
+    }
+    errorMessage(){
+    	  this.errorHtml =  '<div class="page-content"><div class="portlet light" style="border: navajowhite;">' +
+    	    ' <div class="portlet-body clearfix">' +
+    	    '<h3 style="color: blue;text-align: center;margin-top: 150px;font-weight: bold;" >'+this.customCampaignError+'</h3></div></div></div>';
+
     }
     deviceDectorInfo() {
         console.log('device info in component');
@@ -197,7 +201,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                            // updatedBody = updatedBody.replace("video-tag", "newPlayerVideo");
                             updatedBody = updatedBody.replace('<div id="video-tag"></div>', '<div id="newPlayerVideo">'+
                             '<div id="overlay-logo-bee"><a href='+this.logoLink+' target="_blank" >'+
-                            '<img id="image"  style="position: relative; top: 47px; width: 63px;z-index: 9;left: 388px;" src='+this.authenticationService.MEDIA_URL + this.logoImageUrlPath+'></a></div></div>');
+                            '<img id="image"  style="position: absolute;top: 45px;width: 68px; z-index: 9;right: 29px;" src='+this.authenticationService.MEDIA_URL + this.logoImageUrlPath+'></a></div></div>');
                             this.templatehtml = updatedBody;
                             checkVideoTag = 'default';
                             document.getElementById('para').innerHTML = this.templatehtml;
@@ -289,6 +293,9 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                         this.processor.remove(this.processor);
                         this.xtremandLogger.error('campagin video Component : cmapaign video File method():' + error);
                         this.xtremandLogger.error(error);
+                        //this.customCampaignError = error._body;
+                        this.customCampaignError = JSON.parse(error._body).message;
+                        this.errorMessage();
                         document.getElementById('para').innerHTML = this.errorHtml;
                     }
                     );
@@ -352,7 +359,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
             });
     }
     logVideoViewsCount() {
-        this.videoFileService.logVideoViews(this.campaignVideoFile.alias).subscribe(
+        this.videoFileService.logVideoViews(this.campaignVideoFile.alias,this.alias).subscribe(
             (result: any) => {
                 console.log('successfully logged view count');
             });
@@ -442,7 +449,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                     selfPanorama.videoFileService.pauseAction = false;
                     selfPanorama.xtremandLog.startDuration = 0;
                     selfPanorama.xtremandLog.stopDuration = 0;
-                    this.play();
+                   // this.play();
                     $('.video-js .vjs-control-bar .vjs-VR-control').css('cssText', 'color:' + selfPanorama.campaignVideoFile.playerColor + '!important');
                 });
                 player.on('play', function () {
@@ -581,7 +588,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
         const overrideNativeValue = this.referService.getBrowserInfoForNativeSet();
             this.videoJSplayer = videojs('videoId', {
                 "controls": true,
-                "autoplay": true,
+                "autoplay": false,
                 "preload": "auto",
                 html5: {
                     hls: {

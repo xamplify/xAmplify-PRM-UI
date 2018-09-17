@@ -20,14 +20,20 @@
 	}
 
 </style>
-<div  [hidden]='!embedVideoFile' class="portlet light clearfix" style="background: white; box-shadow: 0 0 0px rgba(0,0,0,.4)!important;">
+<div [hidden]="embedVideoFile">
+  <div class="loader-container">
+    <div class="loader"></div>
+    <img  alt="logo" class="logo-default" src="assets/images/xamplify-logo.png">
+  </div>
+</div>
+<div [hidden]='!embedVideoFile' class="portlet light clearfix" style="background: white; box-shadow: 0 0 0px rgba(0,0,0,.4)!important;">
 	<div class="portlet-body clearfix">
 		<div class="col-md-6" style="padding:0">
 			<div>
 				<div id="overLayImage"></div>
 				<div id="overlay-logo"  class="video-js"  [ngClass]="{'logoCss':!fullScreenMode , 'logoFullscreen' :fullScreenMode}" >
 					<a [href]="logoLink"  target="_blank" [class.disabled]="logoLink===null">
-						<img *ngIf="logoImageUrlPath"  [src]="authenticationService.MEDIA_URL + logoImageUrlPath" class="img-responsive" >
+						<img *ngIf="logoImageUrlPath"  [src]="authenticationService.MEDIA_URL + logoImageUrlPath" class="img-responsive imageClass" >
 					</a>
 				</div>
 				<div id="newPlayerVideo"></div>

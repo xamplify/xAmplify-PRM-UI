@@ -21,6 +21,8 @@ import { PartnerCampaignsComponent } from "./partner-campaigns/partner-campaigns
 import { EditPartnerCampaignsComponent } from "./edit-partner-campaigns/edit-partner-campaigns.component";
 import { PreviewCampaignComponent } from "./preview-campaign/preview-campaign.component";
 import { EventCampaignComponent } from './event-campaign/event-campaign.component'; 
+import { ReDistributedComponent } from './analytics/re-distributed/re-distributed.component';
+import { PreviewPartnersComponent } from './preview-partners/preview-partners.component';
 
 @NgModule({
   imports: [
@@ -43,7 +45,8 @@ import { EventCampaignComponent } from './event-campaign/event-campaign.componen
     EditPartnerCampaignsComponent,
     PreviewCampaignComponent,
     EventCampaignComponent,
-    /*,CkEditor*/
+    ReDistributedComponent,
+    PreviewPartnersComponent
   ],
   exports: [],
   providers: [ContactService, VideoFileService, EmailTemplateService]

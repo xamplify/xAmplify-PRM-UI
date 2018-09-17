@@ -34,4 +34,8 @@ export class User {
     vendorSignUp: boolean = false;
     companyLogo: string = "";
 
+    companyName:string = "";
+    vendorSignUp:boolean = false;
+    companyLogo:string = "";
+    hasPassword = false;
 }

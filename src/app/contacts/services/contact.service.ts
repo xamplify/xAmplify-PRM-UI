@@ -30,7 +30,7 @@ export class ContactService {
     public salesforceContact: SalesforceContact;
     public salesforceListViewContact: SalesforceListViewContact;
     isContactModalPopup = false;
-    
+
     socialProviderName = "";
     public pagination: Pagination;
     allPartners: User[];
@@ -45,14 +45,14 @@ export class ContactService {
     constructor( private authenticationService: AuthenticationService, private _http: Http, private logger: XtremandLogger, private activatedRoute: ActivatedRoute, private refService: ReferenceService ) {
         console.log( logger );
     }
-    
+
     loadUsersOfContactList( contactListId: number, pagination: Pagination ) {
     	//pagination.criterias = criterias;
     	return this._http.post( this.contactsUrl + contactListId + "/contacts?access_token=" + this.authenticationService.access_token, pagination )
             .map( this.extractData )
             .catch( this.handleError );
     }
-    
+
     defaultPartnerList(userId: number){
         return this._http.get( this.url + `default-partner-list/${userId}?access_token=${this.authenticationService.access_token}` )
         .map( this.extractData )
@@ -66,67 +66,79 @@ export class ContactService {
     }
 
     loadContactLists( pagination: Pagination ): Observable<ContactList[]> {
+
+        let userId = this.authenticationService.user.id;
+
+        userId = this.authenticationService.checkLoggedInUserId(userId);
+
         this.logger.info( "Service class loadContact() completed" );
-        return this._http.post( this.contactsUrl + '?userId='+this.authenticationService.getUserId() + "&access_token=" + this.authenticationService.access_token, pagination )
+        return this._http.post( this.contactsUrl + '?userId='+ userId + "&access_token=" + this.authenticationService.access_token, pagination )
             .map( this.extractData )
             .catch( this.handleError );
     }
-    
+
     loadCampaignContactsList( pagination: Pagination ): Observable<ContactList[]> {
         return this._http.post( this.contactsUrl +"campaign-user-lists"+ "?access_token=" + this.authenticationService.access_token, pagination )
             .map( this.extractData )
             .catch( this.handleError );
     }
-    
+
     unlinkSocailAccount(socialNetwork: string, isDeleteContactList:boolean): Observable<ContactList[]> {
         this.logger.info( "unlinkSocailAccount() method invoked" );
         return this._http.get( this.authenticationService.REST_URL + "unlink-account?" + "access_token=" + this.authenticationService.access_token + '&userId='+ this.authenticationService.getUserId() + '&socialNetwork='+ socialNetwork + '&deleteContactList=' + isDeleteContactList)
             .map( this.extractData )
             .catch( this.handleErrorDelete );
     }
-    
+
     loadContactListsNames(): Observable<ContactList[]> {
+        let userId = this.authenticationService.user.id;
+        userId = this.authenticationService.checkLoggedInUserId(userId);
         this.logger.info( "Service class loadContactsNames() completed" );
-        return this._http.get( this.contactsUrl + "names?" + 'userId='+ this.authenticationService.getUserId() + "&access_token=" + this.authenticationService.access_token)
+        return this._http.get( this.contactsUrl + "names?" + 'userId='+ userId + "&access_token=" + this.authenticationService.access_token)
             .map( this.extractData )
             .catch( this.handleError );
     }
-    
+
     listContactsByType(contactType: string, pagination: Pagination ){
+        let userId = this.authenticationService.user.id;
+        userId = this.authenticationService.checkLoggedInUserId(userId);
+
         this.logger.info( "ContactService listContactsByType():  contactType=" + contactType );
-        return this._http.post( this.contactsUrl + "contacts?contactType="+ contactType + '&userId='+ this.authenticationService.getUserId() + "&access_token=" + this.authenticationService.access_token, pagination )
+        return this._http.post( this.contactsUrl + "contacts?contactType="+ contactType + '&userId='+ userId + "&access_token=" + this.authenticationService.access_token, pagination )
             .map( this.extractData )
             .catch( this.handleError );
     }
- 
+
     loadContactsCount(isPartner: boolean) {
+        let userId = this.authenticationService.user.id;
+        userId = this.authenticationService.checkLoggedInUserId(userId);
         this.logger.info( "Service class loadContactCount() completed" );
-        return this._http.get( this.contactsUrl + "contacts_count?" + 'userId='+ this.authenticationService.getUserId() +"&isPartnerUserList=" + isPartner + "&access_token=" + this.authenticationService.access_token )
+        return this._http.get( this.contactsUrl + "contacts_count?" + 'userId='+ userId +"&isPartnerUserList=" + isPartner + "&access_token=" + this.authenticationService.access_token )
             .map( this.extractData )
             .catch( this.handleError );
     }
-    
+
     listOfSelectedContactListByType(contactListId: number,contactType: string, pagination: Pagination ){
         this.logger.info( "ContactService listContactsByType():  contactType=" + contactType );
         return this._http.post( this.contactsUrl  + contactListId + "/contacts?contactType="+ contactType + "&access_token=" + this.authenticationService.access_token, pagination )
             .map( this.extractData )
             .catch( this.handleError );
     }
-    
+
     contactListAssociatedCampaigns(contactListId: number ){
         this.logger.info( "ContactService ContactListAssociatedCampaigns():  contactListID=" + contactListId );
         return this._http.get( this.authenticationService.REST_URL + "campaign/launched-campaigns/" + contactListId + "?access_token=" + this.authenticationService.access_token )
             .map( this.extractData )
             .catch( this.handleError );
     }
-    
+
     listOrgAdmins(){
         this.logger.info( "ContactService LoadListOrgAdmins()");
         return this._http.get( this.url + "listOrgAdminEmailIdsForOrganization/" + this.authenticationService.getUserId() + "?access_token="+this.authenticationService.access_token )
             .map( this.extractData )
             .catch( this.handleError );
     }
-    
+
     sendCampaignEmails( campaigDetails:any ) {
         var requestoptions = new RequestOptions( {
             body:  campaigDetails,
@@ -142,7 +154,7 @@ export class ContactService {
             .map( this.extractData )
             .catch( this.handleError );
     }
- 
+
     deleteContactList( contactListId: number ) {
         return this._http.post( this.contactsUrl + contactListId + "/remove?access_token=" + this.authenticationService.access_token, +"" )
             .map( this.extractData )
@@ -183,7 +195,7 @@ export class ContactService {
             .map( this.extractData )
             .catch( this.handleError );
     }
-    
+
     updateContactListUser( contactListId: number, editUser: EditUser ): Observable<any> {
         var requestoptions = new RequestOptions( {
             body: editUser,
@@ -198,7 +210,7 @@ export class ContactService {
             .map(( response: any ) => response.json() )
            .catch( this.handleError);
     }
-    
+
     updateContactListName( updatingObject: any ): Observable<any> {
         var newUrl = this.contactsUrl + 'rename?access_token=' + this.authenticationService.access_token;
         this.logger.info( newUrl );
@@ -227,7 +239,7 @@ export class ContactService {
         return this._http.get( this.contactsUrl +  contactListId + "/download?access_token=" + this.authenticationService.access_token)
             .map(( response: any ) => response );
     }
-    
+
     socialContactImages() {
         this.logger.info(this.authenticationService.REST_URL + "checkauthentication?access_token=" + this.authenticationService.access_token+"&userId=" + this.authenticationService.getUserId());
         return this._http.get( this.authenticationService.REST_URL + "checkauthentication?access_token=" + this.authenticationService.access_token+"&userId=" + this.authenticationService.getUserId())
@@ -315,7 +327,7 @@ export class ContactService {
             .map( this.extractData )
             .catch( this.handleError );
     }
-    
+
     getZohoAutherizedContacts( socialContact: SocialContact ) {
         this.logger.info( "get zoho contacts :" + socialContact );
         //this.successMessage = true;
@@ -340,7 +352,7 @@ export class ContactService {
             .map( this.extractData )
             .catch( this.handleError );
     }
-    
+
     socialContactsCallback(): Observable<String> {
         let queryParam: string;
         this.activatedRoute.queryParams.subscribe(
@@ -403,12 +415,18 @@ export class ContactService {
             .map( this.extractData )
             .catch( this.handleError );
     }
-    
-    mailSend(partnerId: number) {
+
+    mailSend(partnerId: number, partnerListId: number) {
         this.logger.info( this.contactsUrl + "send-partner-mail?access_token=" + this.authenticationService.access_token +"&partnerId=" + partnerId +"&customerId=" + this.authenticationService.getUserId());
-        return this._http.get( this.contactsUrl + "send-partner-mail?access_token=" + this.authenticationService.access_token +"&partnerId=" + partnerId +"&customerId=" + this.authenticationService.getUserId())
+        return this._http.get( this.contactsUrl + "send-partner-mail?access_token=" + this.authenticationService.access_token +"&partnerId=" + partnerId +"&customerId=" + this.authenticationService.getUserId() + "&userListId=" + partnerListId )
             .map( this.extractData )
             .catch( this.handleError );
+    }
+
+    loadAllContacts(userId:number, pagination:Pagination){
+      return this._http.post( this.contactsUrl + "?userId="+userId+"&access_token=" + this.authenticationService.access_token, pagination)
+      .map( this.extractData )
+      .catch( this.handleError );
     }
 
     extractData( res: Response ) {
@@ -422,7 +440,7 @@ export class ContactService {
             error.status ? `${error.status} - ${error.statusText}` : 'Server   error';
         return Observable.throw( error );
     }
-    
+
     handleErrorDelete( error: any ) {
         const errMsg = ( error.message ) ? error.message :
         error.status ? `${error.status} - ${error.statusText}` : 'Server   error';

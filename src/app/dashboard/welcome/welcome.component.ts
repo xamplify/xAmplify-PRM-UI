@@ -3,10 +3,10 @@ import { Properties } from '../../common/models/properties';
 import { UserService } from '../../core/services/user.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { ReferenceService } from '../../core/services/reference.service';
-import { DashboardService } from '../dashboard.service';
 
 import { UserDefaultPage } from '../../core/models/user-default-page';
 import { DashboardReport } from '../../core/models/dashboard-report';
+import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 declare var $:any;
 
 @Component({
@@ -50,8 +50,7 @@ export class WelcomeComponent implements OnInit, OnDestroy {
         private userService: UserService,
         public authenticationService: AuthenticationService,
         private referenceService: ReferenceService,
-        private dashboardService: DashboardService,
-        public properties: Properties
+        public properties: Properties, public xtremandLogger:XtremandLogger
     ) {
         this.dashboardReport = new DashboardReport();
         this.userDefaultPage = new UserDefaultPage();
@@ -71,6 +70,7 @@ export class WelcomeComponent implements OnInit, OnDestroy {
     }
 
     getDefaultPage(userId: number) {
+      try{
         this.userService.getUserDefaultPage(userId)
             .subscribe(
                 data => {
@@ -83,11 +83,16 @@ export class WelcomeComponent implements OnInit, OnDestroy {
                         console.log('data undefined in welcome page');
                     }
                 },
-                error => console.log(error),
+                error => {
+                  this.xtremandLogger.error(error);
+                  this.xtremandLogger.errorPage(error);},
                 () => { }
             );
+          }catch(error){ this.xtremandLogger.error(error);
+            this.xtremandLogger.errorPage(error); }
     }
     setWelcomeAsDefaultPage(event: any) {
+      try{
         this.referenceService.userDefaultPage = event ? 'WELCOME' : 'DASHBOARD';
         this.userService.setUserDefaultPage(this.authenticationService.getUserId(), this.referenceService.userDefaultPage)
             .subscribe(
@@ -102,13 +107,17 @@ export class WelcomeComponent implements OnInit, OnDestroy {
                 },
                 () => { }
             );
+          }catch(error){ console.log(error);}
     }
 
     ngOnInit() {
+      try{
         this.loggedInUserId = this.authenticationService.getUserId();
         this.getDefaultPage(this.loggedInUserId);
         this.welcome_text = this.authenticationService.isOnlyPartner() ? this.partner_welcome_text: this.vendor_welcome_text;
-    }
+      }catch(error){ console.log(error);this.xtremandLogger.error(error);
+        this.xtremandLogger.errorPage(error);}
+  }
     ngOnDestroy(){
       $('#myModal').modal('hide');
     }

@@ -1,7 +1,8 @@
 	<!-- BEGIN DASHBOARD STATS -->
+<!-- 	<style> .disabled{ pointer-events:none;} </style> -->
 	<div class="row">
 		<!--  commented for future work -->
-		<!-- <div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
+		<!-- <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6">
 			<a class="dashboard-stat dashboard-stat-lighter red-soft" [routerLink]="['./views_report']" [class.disabled]="!hasStatsRole  || !authenticationService.user.hasCompany? true : null">
 				<div class="visual">
 					<i class="fa fa-eye"></i>
@@ -12,8 +13,8 @@
 				</div>
 			</a>
 		</div> -->
-		<div class="col-lg-4 col-md-4 col-sm-3 col-xs-6">
-			<a class="dashboard-stat dashboard-stat-lighter yellow-gold" [routerLink]="['../../videos/manage']" [class.disabled]=" !authenticationService.user.hasCompany ? true : null">
+		<div *ngIf="!authenticationService.isOnlyPartner()" [ngClass]="{'col-lg-3 col-md-3 col-sm-6 col-xs-12':(authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner() || authenticationService.isOnlyPartner()), 'col-lg-4 col-md-4 col-sm-4 col-xs-6':!(authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner())}">
+			<a class="dashboard-stat dashboard-stat-lighter yellow-gold" [routerLink]="['../../videos/manage']" [class.disabled]="true">
 				<div class="visual">
           <!-- <i class="fa fa-cloud-upload"></i> -->
           <img src="assets/images/white15.png" class="img-dash">
@@ -33,34 +34,10 @@
         </span>
 			</a>
 		</div>
-
-		<div class="col-lg-4 col-md-4 col-sm-3 col-xs-6">
-			<a class="dashboard-stat dashboard-stat-lighter purple-soft" (click)="navigateToManageContacts()" [class.disabled]="  !authenticationService.user.hasCompany ? true : null">
+    <div *ngIf="!authenticationService.isOnlyPartner()" [ngClass]="{'col-lg-3 col-md-3 col-sm-6 col-xs-12':(authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner() ||  authenticationService.isOnlyPartner()), 'col-lg-4 col-md-4 col-sm-4 col-xs-6':!(authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner())}">
+			<a class="dashboard-stat dashboard-stat-lighter blue-soft" [routerLink]="['../../emailtemplates']" >
 				<div class="visual">
-					<i class="fa fa-users"></i>
-				</div>
-				<div class="details">
-          <div class="number" *ngIf="!this.authenticationService.isVendor() && !authenticationService.isAddedByVendor">{{dashboardReport.totalContacts}}</div>
-          <div class="number" *ngIf="this.authenticationService.isVendor() && !authenticationService.isAddedByVendor">{{dashboardReport.totalTeamMembers}}</div>
-          <div class="number" *ngIf="authenticationService.isAddedByVendor">
-            <!-- <span *ngIf="dashboardReport.totalCompanyPartnersCount; else count">{{dashboardReport.totalCompanyPartnersCount}}</span> -->
-            <span *ngIf="dashboardReport.totalTeamMembers; else count">{{dashboardReport.totalTeamMembers}}</span>
-            <ng-template #count>0</ng-template>
-          </div>
-					<div class="desc" *ngIf="!this.authenticationService.isVendor() && !authenticationService.isAddedByVendor">Total Contacts</div>
-					<div class="desc" *ngIf="this.authenticationService.isVendor() && !authenticationService.isAddedByVendor">Team Members</div>
-          <div class="desc" *ngIf="authenticationService.isAddedByVendor">Team Members</div>
-          <!-- Total Partners -->
-        </div>
-        <span  class="morePadding">
-          <a class="more"> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
-        </span>
-			</a>
-		</div>
-		<div class="col-lg-4 col-md-4 col-sm-3 col-xs-6">
-			<a class="dashboard-stat dashboard-stat-lighter blue-soft" [routerLink]="['../../emailtemplates']" [class.disabled]="  !authenticationService.user.hasCompany ? true : null">
-				<div class="visual">
-					<i class="fa fa-smile-o"></i>
+            <i class="fa fa-envelope"></i>
 				</div>
 				<div class="details">
 					<div class="number">{{dashboardReport.toalEmailTemplates}}</div>
@@ -70,9 +47,52 @@
           <a class="more"> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
         </span>
 			</a>
-		</div>
-		<div class="col-lg-4 col-md-4 col-sm-3 col-xs-6">
-			<a class="dashboard-stat dashboard-stat-lighter green-soft" [routerLink]="['../../campaigns/manage']" [class.disabled]=" !authenticationService.user.hasCompany ? true : null">
+    </div>
+		<div [ngClass]="{'col-lg-3 col-md-3 col-sm-6 col-xs-12':(authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner() || authenticationService.isOnlyPartner()), 'col-lg-4 col-md-4 col-sm-4 col-xs-6':!(authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner())}">
+			<a class="dashboard-stat dashboard-stat-lighter purple-soft" (click)="navigateToManageContacts()" [class.disabled]="  !authenticationService.user.hasCompany ? true : null">
+				<div class="visual">
+					<i class="fa fa-users"></i>
+				</div>
+				<div class="details">
+          <div class="number" *ngIf="!this.authenticationService.isVendor() && !authenticationService.isAddedByVendor && !authenticationService.isSuperAdmin()">{{dashboardReport.totalContacts}}</div>
+          <div class="number" *ngIf="(this.authenticationService.isVendor() && !authenticationService.isAddedByVendor) || authenticationService.isSuperAdmin()">{{dashboardReport.totalTeamMembers}}</div>
+          <div class="number" *ngIf="authenticationService.isAddedByVendor">
+            <!-- <span *ngIf="dashboardReport.totalCompanyPartnersCount; else count">{{dashboardReport.totalCompanyPartnersCount}}</span> -->
+            <span *ngIf="dashboardReport.totalTeamMembers; else count">{{dashboardReport.totalTeamMembers}}</span>
+            <ng-template #count>0</ng-template>
+          </div>
+					<div class="desc" *ngIf="!this.authenticationService.isVendor() && !authenticationService.isAddedByVendor && !authenticationService.isSuperAdmin()">Total Contacts</div>
+					<div class="desc" *ngIf="(this.authenticationService.isVendor() && !authenticationService.isAddedByVendor) || authenticationService.isSuperAdmin()">Team Members</div>
+          <div class="desc" *ngIf="authenticationService.isAddedByVendor">Team Members</div>
+          <!-- Total Partners -->
+        </div>
+        <span  class="morePadding">
+          <a class="more"> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
+        </span>
+			</a>
+    </div>
+
+  <!-- working this -->
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" *ngIf="authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner()">
+        <a class="dashboard-stat dashboard-stat-lighter blue-soft" [routerLink]="['/home/team/add-team']">
+          <div class="visual">
+              <i class="fa fa-users"></i>
+          </div>
+          <div class="details">
+            <div class="number">
+                <span *ngIf="dashboardReport.totalTeamMembers; else teams">{{dashboardReport.totalTeamMembers}}</span>
+                <ng-template #teams>0</ng-template>
+            </div>
+            <div class="desc">Team Members</div>
+          </div>
+          <span id="permhref" class="morePadding">
+            <a class="more"> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
+          </span>
+        </a>
+      </div>
+<!--  workign--------closed  -->
+		<div [ngClass]="{'col-lg-3 col-md-3 col-sm-6 col-xs-12':(authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner() || authenticationService.isOnlyPartner()), 'col-lg-4 col-md-4 col-sm-4 col-xs-6':!(authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner())}">
+			<a class="dashboard-stat dashboard-stat-lighter green-soft" [routerLink]="['../../campaigns/manage']" >
 				<div class="visual">
 					<i class="fa fa-bullhorn"></i>
 				</div>
@@ -85,7 +105,7 @@
         </span>
 			</a>
 		</div>
-		<div class="col-lg-4 col-md-4 col-sm-3 col-xs-6" [class.disabled]="!authenticationService.user.hasCompany ? true : null">
+		<div [ngClass]="{'col-lg-3 col-md-3 col-sm-6 col-xs-12':(authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner() ||  authenticationService.isOnlyPartner()), 'col-lg-4 col-md-4 col-sm-4 col-xs-6':!(authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner())}" >
 			<a class="dashboard-stat dashboard-stat-lighter blue-sharp" [routerLink]="['/home/social/manage/all']">
 				<div class="visual">
 					<i class="fa fa-share"></i>
@@ -99,7 +119,7 @@
         </span>
 			</a>
 		</div>
-		<div class="col-lg-4 col-md-4 col-sm-3 col-xs-6"  [class.disabled]="!authenticationService.user.hasCompany? true : null">
+		<div [ngClass]="{'col-lg-3 col-md-3 col-sm-6 col-xs-12':(authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner() ||  authenticationService.isOnlyPartner()), 'col-lg-4 col-md-4 col-sm-4 col-xs-6':!(authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner())}" >
 			<a class="dashboard-stat dashboard-stat-lighter red-soft" (click)="navigateToPartner()" >
 				<div class="visual">
 					<i class="fa fa-handshake-o"></i>
@@ -124,6 +144,25 @@
           <a class="more"> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
         </span>
 			</a>
-		</div>
+    </div>
+    <!-- working this -->
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12"  *ngIf="authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner()">
+        <a class="dashboard-stat dashboard-stat-lighter purple-soft" [routerLink]="['/home/dashboard/vendors']" >
+          <div class="visual">
+            <i class="fa fa-smile-o"></i>
+          </div>
+          <div class="details">
+            <div class="number">
+                <span *ngIf="dashboardReport.vendorsCount; else vendorsEmpty">{{dashboardReport.vendorsCount}} </span>
+                <ng-template #vendorsEmpty>0</ng-template>
+            </div>
+            <div class="desc">Total Vendors</div>
+          </div>
+          <span id="permhref" class="morePadding">
+            <a class="more"> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
+          </span>
+        </a>
+      </div>
+      <!-- working closed -->
 	</div>
 	<!-- END DASHBOARD STATS -->

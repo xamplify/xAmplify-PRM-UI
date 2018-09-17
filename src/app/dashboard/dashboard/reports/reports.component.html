@@ -51,7 +51,9 @@
 								<td class="center">{{view.videoTitle | slice:0:20}}<span *ngIf="view.videoTitle?.length>20">...</span></td>
 								<td class="center" *ngIf="reportName==='views'">{{view.viewsCount}}</td>
 								<td class="center" *ngIf="reportName!=='views'">{{view.minutesWatchedValue}}</td>
-								<td class="center">{{view.date}}</td>
+								<td class="center">
+								<app-timestamp [isOnlyDate]="true" [dateAndTime]="view.date"> </app-timestamp>
+								</td>
 							</tr>
 						</ng-container>
 					</tbody>
@@ -104,7 +106,9 @@
 								</div>
 							</td>
 							<td [title]="videoViews.videoTitle" class="center">{{videoViews.videoTitle | slice:0:20}} <span *ngIf="videoViews.videoTitle?.length>20">...</span></td>
-							<td class="center">{{videoViews.date |date:'MM/dd/yyyy @ h:mma'}}</td>
+							<td class="center">
+							<app-timestamp [dateAndTime]="videoViews.date"> </app-timestamp>
+							</td>
 						</tr>
 					</ng-container>
 				</tbody>
@@ -113,4 +117,5 @@
 		</div>
 	</div>
 	<app-export-csv *ngIf="referenceService.isDownloadCsvFile" [downloadListDetails]="downloadDataList" [downloadListName]="logListName"> </app-export-csv>
+  <app-scroll-top></app-scroll-top>
 </div>

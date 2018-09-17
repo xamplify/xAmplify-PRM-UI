@@ -36,7 +36,10 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             this.authenticationService.user.roles =  JSON.parse( currentUser )['roles'];
             this.authenticationService.user.hasCompany =  JSON.parse( currentUser )['hasCompany'];
             this.getUserByUserName(userName);
-            if(url.indexOf("/dashboard")<0){
+            if(!this.authenticationService.user.hasCompany && url === "/home/dashboard") {
+              this.goToAccessDenied();
+            }
+            else if(url.indexOf("/dashboard")<0){
                return this.secureUrlByRole(url);
             }else{
                 if(url.indexOf("/myprofile")>-1){
@@ -136,7 +139,12 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         const isVendor =  roles.indexOf(this.roles.vendorRole)>-1;
         const isPartner = roles.indexOf(this.roles.companyPartnerRole)>-1;
         const orgAdmin =  roles.indexOf(this.roles.orgAdminRole)>-1;
-        if(isVendor && !isPartner){
+        const isSuperAdmin =  roles.indexOf(this.roles.superAdminRole)>-1;
+        if(isSuperAdmin){
+            this.router.navigate( ['/home/dashboard/admin-report'] );
+            return true;
+        }
+        else if(isVendor && !isPartner){
             return this.checkVendorAccessUrls(url, urlType);
         }
         else if(isPartner && !isVendor && !orgAdmin){
@@ -167,7 +175,10 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     }
     checkPartnerAccessUrls(url:string,urlType:string):boolean{
       try{
-      if(this.authenticationService.user.hasCompany && !(url.includes('/home/videos/upload') || url.includes('/home/campaigns/create') || url.includes('/home/campaigns/select') || url.includes('/home/emailtemplates/create') || url.includes('/home/emailtemplates/select') || url.includes('/home/partners/add') || url.includes('/home/partners/manage'))){
+      if(this.authenticationService.user.hasCompany || url.includes('home/campaigns/re-distribute-campaign')
+              && !(url.includes('/home/videos') || url.includes('/home/campaigns/create') || url.includes('/home/campaigns/select')
+                      || url.includes('/home/emailtemplates') || url.includes('/home/emailtemplates') || url.includes('/home/partners/add')
+                      || url.includes('/home/partners/manage'))){
         return true;
       }else{
         return this.goToAccessDenied();

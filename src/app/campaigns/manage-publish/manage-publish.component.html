@@ -1,15 +1,16 @@
-<div class="page-content">
+<div class="page-content" [class.ml0]="authenticationService.isSuperAdmin()">
 	<div *ngIf="isScheduledCampaignLaunched" id="scheduleCompleted" class="alert alert-info alert-dismissable fade in">
 		<a (click)="refService.hideDiv('scheduleCompleted')" class="close" aria-label="close">x</a>
 		<strong>Editing This Scheduled Campaign Is Not Allowed As Campaign Already Launched</strong>
 	</div>
 	<div class="page-bar">
 		<ul class="page-breadcrumb">
-			<li>
+			<li *ngIf="!authenticationService.isSuperAdmin()">
 				<i class="fa fa-home"></i>
 				<a [routerLink]="refService.homeRouter">Home</a>
 				<i class="fa fa-angle-right"></i>
 			</li>
+			<li *ngIf="authenticationService.isSuperAdmin()"><i class="fa fa-home"></i><a [routerLink]="['/home/dashboard/admin-report']">Admin Report</a><i class="fa fa-angle-right"></i></li>
 			<li>
 				<a>Manage Campaigns</a>
 			</li>
@@ -21,7 +22,7 @@
 	<div class="row">
 		<div class="col-md-12">
 			<div class="tabbable tabbable-custom tabbable-noborder">
-				<div class="tab-content">
+				<div class="tab-content" style="min-height: 677px;">
 					<div class="page-bar m10">
 						<ul class="mix-filter col-xs-6 p0 m0">
 							<li style="background: white; color: #616161;cursor: default;font-size: 14px;">Campaign Type:</li>
@@ -50,9 +51,11 @@
 									</div>
 									<div class="portlet-input input-inline input-small">
 										<div class="input-icon right" style="position: relative;right: -11px;">
-											<i class="icon-magnifier" (click)="searchCampaigns()" style="cursor: pointer;"></i>
-											<input type="text" class="form-control" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" placeholder="search...">
-										</div>
+											<!-- <i class="icon-magnifier" (click)="searchCampaigns()" style="cursor: pointer;"></i>-->
+											<input type="text" class="form-control" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="eventHandler($event.keyCode)">
+                      <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey=''"></button>
+                      <button type="submit" class="search-box-item-click" (click)="searchCampaigns()"><i class="fa fa-search"></i></button>
+                    </div>
 									</div>
 								</div>
 							</div>
@@ -66,10 +69,10 @@
 							<table class='table tgrid table-hover table-sm hidden-xs' *ngIf="isListView">
 								<thead>
 									<tr>
-										<th colspan="2" style="width: 45%">Campaign</th>
-										<th class="center">Status</th>
-										<th class="center">Created Date</th>
-										<th class="center">Actions</th>
+                      <th colspan="2" style="width: 30%">Campaign</th>
+                      <th class="center" style="width: 28%">Status</th>
+                      <th class="center" style="width: 20%">Created Date</th>
+                      <th class="center" style="width: 22%">Actions</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -88,12 +91,13 @@
 												<img [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/event-campaign.png" alt="Event Campaign">
 											</ng-container>
                     					</td>
-                    <td>
-											<h4 class="ellipsis campaign-title" title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:20}}
-													<span *ngIf="campaign.campaignName?.length>20">...</span>
+                     <td>
+											<h4 class="ellipsis campaign-title" title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:36}}
+													<span *ngIf="campaign.campaignName?.length>36">...</span>
 											</h4>
 											<h5 [title]="campaign.createdBy">By <b>{{campaign.createdBy | slice:0:35 }}<span *ngIf="campaign.createdBy?.length>35">...</span></b></h5>
 											<h5 [title]="campaign.companyName">From <b>{{campaign.companyName | slice:0:20 }}<span *ngIf="campaign.companyName?.length>20">...</span></b></h5>
+											<h5 *ngIf="campaign.nurtureCampaign" [title]="campaign.vendorOrganizationName">Originated By <b>{{campaign.vendorOrganizationName | slice:0:20 }}<span *ngIf="campaign.vendorOrganizationName?.length>20">...</span></b></h5>
 										</td>
 										<td class="center">
 											<span align="right">
@@ -103,23 +107,37 @@
 											</span>
 											<span align="right" title="Upload Date">
 												<!-- <b *ngIf="campaign.launched || !campaign.launched && campaign.launchedOn?.length > 0">{{campaign.launchedOn}}</b> -->
-												<b *ngIf="campaign.scheduleType=='NOW' || campaign.scheduleType=='SCHEDULE'">{{campaign.launchedOn}}</b>
-												<b *ngIf="campaign.scheduleType=='SAVE'">{{campaign.startTime}}</b>
+												<b *ngIf="campaign.scheduleType=='NOW' || campaign.scheduleType=='SCHEDULE'">
+                        <app-timestamp *ngIf="!refService.isSafariBrowser()" [isOnlyDate]="true" [dateAndTime]="campaign.launchedOn"> </app-timestamp>
+                        <span *ngIf="refService.isSafariBrowser()">{{campaign.launchedOn}}</span>
+												</b>
+												<b *ngIf="campaign.scheduleType=='SAVE'">
+												<app-timestamp *ngIf="!refService.isSafariBrowser()" [isOnlyDate]="true" [dateAndTime]="campaign.startTime"> </app-timestamp>
+                        <span *ngIf="refService.isSafariBrowser()">{{campaign.startTime}}</span>
+                      </b>
 											</span>
 										</td>
-										<td class="center">{{campaign.createdDate}}</td>
+										<td class="center">
+										<app-timestamp [isOnlyDate]="true" [dateAndTime]="campaign.createdDate"> </app-timestamp>
+										</td>
 										<td class="center">
 											<div class="actions-block">
 												<ng-container *ngIf="!campaign.launched">
 													<a *ngIf="hasAllAccess || (campaign.launched==false&&hasCampaignRole && loggedInUserId==campaign.userId)
+
 												|| (!campaign.launched&&isOnlyPartner)  || authenticationService.module.isVendor" (click)="editCampaign(campaign)"
 													 title="Edit Campaign" class='mr5'>
 														<i class="fa fa-pencil-square-o"></i>
 													</a>
 												</ng-container>
 												<ng-container *ngIf="campaign.launched">
+												<a *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) ||
+														 (loggedInUserId==campaign.userId) || authenticationService.module.isVendor) && campaign.redistributedCount>0"
+                         								 (click)="goToRedistributedCampaigns(campaign)" data-toggle="tooltip" data-placement="top" title="Show Redistributed Campaigns">
+														<span style="position: relative;top: 3px;"><b>{{campaign.redistributedCount}}</b></span>
+													</a>
 													<a *ngIf="  hasAllAccess || (hasStatsRole || hasCampaignRole) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor"
-													 data-rel="fancybox-button" (click)="campaginRouter(campaign)" title="Campaign Based Reports"
+													 data-rel="fancybox-button" (click)="campaginRouter(campaign)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.campaign_report}}"
 													 class='mr5'>
 														<i class="fa fa-line-chart"></i>
 													</a>
@@ -127,14 +145,19 @@
 													 data-rel="fancybox-button" title="Copy campaign" class='mr5' (click)="openSaveAsModal(campaign)">
 														<i class="fa fa-files-o"></i>
 													</a>
+													 <a *ngIf=" (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor) && campaign.channelCampaign"
+						                       		 (click)="goToPreviewPartners(campaign)"
+						                       		 data-toggle="tooltip" data-placement="top" title="{{actionsDescription.campaign_preview_partner}}" data-rel="fancybox-button">
+						                         		<i class="fa fa-handshake-o" id="delete-partner"></i>
+						                       		</a>
 												</ng-container>
 												<a (click)="showCampaignPreview(campaign)" title="Preview">
 													<i class="fa fa-eye mr5"></i>
-                        </a>
-                        <a *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor"
-                        (click)="confirmDeleteCampaign(campaign.campaignId, i, campaign.campaignName)" title="Delete Campaign" data-rel="fancybox-button">
-                         <i class="fa fa-trash"></i>
-                       </a>
+                      						  </a>
+						                        <a *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor"
+						                       		 (click)="confirmDeleteCampaign(campaign.campaignId, i, campaign.campaignName)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.campaign_delete}}" data-rel="fancybox-button">
+						                         <i class="fa fa-trash"></i>
+						                       </a>
 											</div>
 										</td>
 									</tr>
@@ -223,7 +246,7 @@
 						</div>
 					</section>
 					<div *ngIf="totalRecords <= 0 && isListView" class="alert alert-info">
-						<strong>No Campaigns Found</strong>
+						<strong>No campaigns found</strong>
 					</div>
 					<div class="tab-pane active" *ngIf="!isListView">
 						<div class="margin-top-10">
@@ -245,8 +268,15 @@
 												<span *ngIf="!campaign.launched && campaign.launchedOn?.length==0">Saved On</span>
 											</span>
 											<span title="Upload date"><b>
-												<span *ngIf="campaign.scheduleType=='NOW' || campaign.scheduleType=='SCHEDULE'">{{campaign.launchedOn}}</span>
-												<span *ngIf="campaign.scheduleType=='SAVE'">{{campaign.startTime}}</span></b>
+												<span *ngIf="campaign.scheduleType=='NOW' || campaign.scheduleType=='SCHEDULE'">
+                        <app-timestamp *ngIf="!refService.isSafariBrowser()" [isOnlyDate]="true" [dateAndTime]="campaign.launchedOn"> </app-timestamp>
+                        <span *ngIf="refService.isSafariBrowser()">{{campaign.launchedOn}}</span>
+                      </span>
+												<span *ngIf="campaign.scheduleType=='SAVE'">
+												<app-timestamp *ngIf="!refService.isSafariBrowser()" [isOnlyDate]="true" [dateAndTime]="campaign.startTime"> </app-timestamp>
+                        <span *ngIf="refService.isSafariBrowser()" >{{campaign.startTime}}</span>
+                      </span>
+                      </b>
 											</span>
 											</h6>
 											<div class="bookmark-ribbon">
@@ -270,14 +300,26 @@
 													</a>
 												</ng-container>
 												<ng-container *ngIf="campaign.launched">
+
+												<a *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) ||
+														 (loggedInUserId==campaign.userId) || authenticationService.module.isVendor) && campaign.redistributedCount>0"
+                         								 (click)="goToRedistributedCampaigns(campaign)" data-toggle="tooltip" data-placement="top" title="Show Redistributed Campaigns">
+														<i style="color: white">{{campaign.redistributedCount}}</i>
+													</a>
+
 													<a *ngIf="  hasAllAccess || (hasStatsRole || hasCampaignRole ) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor"
-                          (click)="campaginRouter(campaign)" title="Campaign Based Reports">
+                         								 (click)="campaginRouter(campaign)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.campaign_report}}">
 														<i class="fa fa-line-chart"></i>
 													</a>
 													<a *ngIf=" (campaign.campaignType !== 'SOCIAL') && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor) && !campaign.nurtureCampaign"
 													 data-rel="fancybox-button" title="Copy campaign" class='mr5' (click)="openSaveAsModal(campaign)">
 														<i class="fa fa-files-o"></i>
 													</a>
+													 <a *ngIf=" (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor) && campaign.channelCampaign"
+						                       		 (click)="goToPreviewPartners(campaign)"
+						                       		 data-toggle="tooltip" data-placement="top" title="{{actionsDescription.campaign_preview_partner}}" data-rel="fancybox-button">
+						                         		<i class="fa fa-handshake-o" id="delete-partner"></i>
+						                       		</a>
 													<!-- <a *ngIf="isOnlyPartner" data-rel="fancybox-button" (click)="openSaveAsModal(campaign.campaignId, campaign.campaignName)" title="Save As">
 														<i class="fa fa-files-o"></i>
 													</a> -->
@@ -286,7 +328,7 @@
 														<i class="fa fa-eye mr5"></i>
 												  </a>
 													<a *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor"
-														(click)="confirmDeleteCampaign(campaign.campaignId, i, campaign.campaignName)" title="Delete Campaign">
+														(click)="confirmDeleteCampaign(campaign.campaignId, i, campaign.campaignName)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.campaign_delete}}">
 														<i class="fa fa-trash"></i>
 													</a>
 											</div>
@@ -297,7 +339,7 @@
 						</div>
 						<!-- End of 24 -->
 						<div *ngIf="totalRecords <= 0 && !isListView" class="alert alert-info">
-							<strong>No Campaigns Found</strong>
+							<strong>No campaigns found</strong>
 						</div>
 					</div>
 					<div *ngIf="totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError" style="background:white">
@@ -315,6 +357,7 @@
 		</div>
 	</div>
 	<!-- <div *ngIf="totalRecords <= 0"  class="alert alert-info"><strong>No Campaigns Found</strong></div> -->
+  <app-scroll-top></app-scroll-top>
 </div>
 
 
@@ -323,7 +366,7 @@
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h4 class="modal-title f-w-600" id="saveAsModalLabel">Copy campaign</h4>
+				<h4 class="modal-title f-w-600" id="saveAsModalLabel">Copy Campaign</h4>
 				<button type="button" class="close-circle" data-dismiss="modal" style=" position: relative;top: -24px;">
 					<i class="fa fa-times"></i>
 				</button>

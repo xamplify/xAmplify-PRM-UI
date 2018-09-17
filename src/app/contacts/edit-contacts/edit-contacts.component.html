@@ -11,7 +11,7 @@
 		</i>
 		<span class="capitalize" *ngIf="contactsByType.selectedCategory != 'non-active'">{{contactsByType.selectedCategory}}
 		   {{checkingContactTypeName}}s</span>
-		<span class="capitalize" *ngIf="contactsByType.selectedCategory == 'non-active'">Inactive
+		<span class="capitalize" *ngIf="contactsByType.selectedCategory == 'non-active'">Unregistered
 		   {{checkingContactTypeName}}s</span>
 		</li>
 	</ul>
@@ -32,11 +32,11 @@
 
 						<div class="page-bar m0">
 							<div class="page-breadcrumb">
-								<span *ngIf="!isDefaultPartnerList" title="Edit Contact list Name" style="cursor:pointer;font-size: 16px; font-family: Open Sans; color: #989292;"
+								<span *ngIf="!isDefaultPartnerList" data-toggle="tooltip" data-placement="top" title="Edit Contact list Name" style="cursor:pointer;font-size: 16px; font-family: Open Sans; color: #989292;"
 								(click)="updateContactListNameAlert()">
 								<span class="ellipsis" title="{{selectedContactListName}}">{{selectedContactListName | slice:0:30}}
 												<span *ngIf="selectedContactListName?.length>30">...</span>
-									<span *ngIf="!isDefaultPartnerList">List</span>
+									<!-- <span *ngIf="!isDefaultPartnerList">List</span> -->
 									</span>
 									</span>
 									<span *ngIf="isDefaultPartnerList"
@@ -45,72 +45,6 @@
 								<div *ngIf="!isDefaultPartnerList" style="color: #4d5b69;text-align: right;margin-right: -19px;">
 									<i class="fa fa-pencil" aria-hidden="true"></i>
 									</div>
-							</div>
-							<div class="page-toolbar">
-								<div *ngIf="!isSegmentation" (click)="modelForSeg()"
-									style="float: left; cursor: pointer; margin-right: 10px"
-									data-toggle="modal" data-target="#filterModal">
-									<i class="fa fa-filter" aria-hidden="true"
-										style="color: #0095da; font-size: 30px; margin-top: 10px;"></i>
-								</div>
-								<div *ngIf="isSegmentation" (click)="removeSegmentation()"
-									style="float: left; cursor: pointer; margin-right: 10px">
-									<i class="fa fa-filter" aria-hidden="true"
-										style="color: red; font-size: 30px; margin-top: 10px;"></i> <i
-										class="fa fa-times" aria-hidden="true"
-										style="color: red; margin-left: -12px;"></i>
-								</div>
-								<div class="btn-group pull-right" *ngIf="showEditContactData">
-									<div class="inputs" align="right" style="float: right">
-
-										<div class="inputs" align="right" style="float: right">
-											<div style="float: left; margin-right: 10px; width: 50%">
-												<select class="form-control" [(ngModel)]="sortOption"
-													(ngModelChange)="sortByOption($event)">
-													<ng-container
-														*ngFor="let sort of sortOptions; let i = index">
-													<option [ngValue]="sort">{{sort.name}}</option>
-													</ng-container>
-												</select>
-											</div>
-											<div class="portlet-input input-inline input-small">
-												<div class="input-icon right"  style="width: 106%;left: -4px;">
-													<i class="icon-magnifier"
-														style="cursor: pointer; font-size: 18px;"
-														(click)="search('contactList')"></i> <input type="text"
-														[(ngModel)]="searchKey"
-														[ngModelOptions]="{standalone: true}"
-														class="form-control" placeholder="Search For {{checkingContactTypeName}}">
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="page-toolbar" *ngIf="!showEditContactData">
-									<div class="btn-group pull-right">
-										<div class="inputs" align="right" style="float: right">
-											<div style="float: left; margin-right: 10px; width: 50%">
-												<select class="form-control" [(ngModel)]="sortOption"
-													(ngModelChange)="sortByOption($event)">
-													<ng-container
-														*ngFor="let sort of sortOptions; let i = index">
-													<option [ngValue]="sort">{{sort.name}}</option>
-													</ng-container>
-												</select>
-											</div>
-											<div class="portlet-input input-inline input-small">
-												<div class="input-icon right"  style="width: 106%;left: -4px;">
-													<i class="icon-magnifier"
-														style="cursor: pointer; font-size: 18px;"
-														(click)="search('contactList')"></i> <input type="text"
-														[(ngModel)]="searchKey"
-														[ngModelOptions]="{standalone: true}"
-														class="form-control" placeholder="Search For {{checkingContactTypeName}}">
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
 							</div>
 							<!-- END DASHBOARD STATS -->
 							<div class="clearfix"></div>
@@ -220,12 +154,38 @@
 									<div class="caption">
 										<i class="fa fa-edit"></i>List of {{checkingContactTypeName}}s
 									</div>
+									<div class="color-grey" style="margin-top:4px">
+											<div *ngIf="!isSynchronizationList">
+														<button id="cancel_button"[disabled]="selectedAddContactsOption == 8 && !clickBoard" class="btn pull-right"
+															(click)="cancelContacts()" style="margin-left: 5px;">
+															Cancel<i class="fa fa-cancel"></i>
+														</button>
+													</div>
+													<div class="btn-group pull-right">
+														<button class="btn dropdown-toggle"
+															id="save&delete_button" data-toggle="dropdown">
+															Actions <i class="fa fa-angle-down"></i>
+														</button>
+														<ul class="dropdown-menu pull-right">
+															<li><a *ngIf="selectedAddContactsOption != 8" id="save_button" (click)="saveContacts()">Save
+															</a></li>
+															<li><a id="saveAs_button"
+																*ngIf="selectedAddContactsOption == 8"
+																(click)="saveAs()">Save As </a></li>
+															<li><a id="exportToExcel"
+																*ngIf="selectedAddContactsOption == 8"
+																(click)="downloadList()">Export To Excel</a></li>
+															<li><a id="delete_button"
+																*ngIf="(selectedAddContactsOption == 8 || selectedAddContactsOption == 9 && selectedContactListIds?.length != 0) && !isSynchronizationList"
+																(click)="showAlert(selectedContactListId)"> Delete</a></li>
+														</ul>
+													</div>
+													</div>
 								</div>
 								<div class="portlet-body">
-									<div class="table-toolbar"
-										*ngIf="hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId) || authenticationService.isOnlyPartner() || authenticationService.isVendorPartner() || authenticationService.isVendor()">
+									<div class="table-toolbar">
 										<div class="clearfix">
-											<div class="col-sm-8">
+											<div class="col-sm-6" *ngIf="hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId) || authenticationService.isOnlyPartner() || authenticationService.isVendorPartner() || authenticationService.isVendor()">
 												<div class="btn-group" *ngIf="!isSynchronizationList">
 													<button id="add_contact" class="btn green"
 														(click)="addContactModalOpen()"
@@ -257,35 +217,49 @@
 													</div>
 												</div>
 											</div>
-											<div class="col-sm-4" style="top: 9px">
-												<div>
-													<div *ngIf="!isSynchronizationList">
-														<button id="cancel_button"[disabled]="selectedAddContactsOption == 8 && !clickBoard" class="btn pull-right"
-															(click)="cancelContacts()" style="margin-left: 5px;">
-															Cancel<i class="fa fa-cancel"></i>
-														</button>
-													</div>
-													<div class="btn-group pull-right">
-														<button class="btn dropdown-toggle"
-															id="save&delete_button" data-toggle="dropdown">
-															Actions <i class="fa fa-angle-down"></i>
-														</button>
-														<ul class="dropdown-menu pull-right">
-															<li><a *ngIf="selectedAddContactsOption != 8" id="save_button" (click)="saveContacts()">Save
-															</a></li>
-															<li><a id="saveAs_button"
-																*ngIf="selectedAddContactsOption == 8"
-																(click)="saveAs()">Save As </a></li>
-															<li><a id="exportToExcel"
-																*ngIf="selectedAddContactsOption == 8"
-																(click)="downloadList()">Export To Excel</a></li>
-															<li><a id="delete_button"
-																*ngIf="(selectedAddContactsOption == 8 || selectedAddContactsOption == 9 && selectedContactListIds?.length != 0) && !isSynchronizationList"
-																(click)="showAlert(selectedContactListId)"> Delete</a></li>
-														</ul>
-													</div>
+							 	<div class="col-sm-6" style="margin-top: 10px;">
+								<div *ngIf="!isSegmentation" (click)="modelForSeg()"
+									style="float: left; cursor: pointer; margin-left: 50px;"
+									data-toggle="modal" data-target="#filterModal">
+									<i class="fa fa-filter" aria-hidden="true"
+										style="color: #0095da; font-size: 30px; margin-top: 10px;"></i>
+								</div>
+								<div *ngIf="isSegmentation" (click)="removeSegmentation()"
+									style="float: left; cursor: pointer; margin-left: 50px;">
+									<i class="fa fa-filter" aria-hidden="true"
+										style="color: red; font-size: 30px; margin-top: 10px;"></i> <i
+										class="fa fa-times" aria-hidden="true"
+										style="color: red; margin-left: -12px;"></i>
+								</div>
+								<div class="btn-group pull-right" *ngIf="showEditContactData">
+									<div class="inputs" align="right" style="float: right">
+
+										<div class="inputs" align="right" style="float: right">
+											<div style="float: left; margin-right: 10px;">
+												<select class="form-control" [(ngModel)]="sortOption"
+													(ngModelChange)="sortByOption($event)">
+													<ng-container
+														*ngFor="let sort of sortOptions; let i = index">
+													<option [ngValue]="sort">{{sort.name}}</option>
+													</ng-container>
+												</select>
+											</div>
+											<div class="portlet-input input-inline">
+												<div class="input-icon right">
+													<input type="text"
+														[(ngModel)]="searchKey"
+														[ngModelOptions]="{standalone: true}"
+														class="form-control" placeholder="Search For {{checkingContactTypeName}}" (keypress)="eventHandler($event.keyCode)">
+												<button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey=''"></button>
+														<button type="submit" class="search-box-item-click" (click)="search('contactList')"><i class="fa fa-search"></i></button>
+												
 												</div>
 											</div>
+										</div>
+									</div>
+								</div>
+								</div>
+
 										</div>
 									</div>
 
@@ -592,7 +566,8 @@
 															</td>
 															<td align="center">
 																<h5 *ngIf="contact?.address" class='mb0'>{{contact.address}}</h5>
-																<h5 *ngIf="contact?.city || contact.country" class='mt0'>{{contact.city}}<span *ngIf="contact.city">,&nbsp;</span>{{contact.country}}</h5>
+																<h5 class='mb0'>{{contact.city}}<span *ngIf="contact.city && contact.state">,&nbsp;</span>{{contact.state}}</h5>
+																<h5 *ngIf="contact?.zipCode || contact.country" class='mt0'>{{contact.zipCode}}<span *ngIf="contact.zipCode && contact.country">,&nbsp;</span>{{contact.country}}</h5>
 															</td>
 															<!-- <td align="center">
 																<button id='more_less_button_{{i}}'
@@ -603,10 +578,10 @@
 															</td> -->
 															<td align="center" *ngIf="(hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId) || authenticationService.isOnlyPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()) && !isSynchronizationList">
 															<div class="actions-block">
-															  	<a (click)="editUserDetails(contact)">
+															  	<a data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_edit}} {{checkingContactTypeName}}" (click)="editUserDetails(contact)">
 																  	<i class="fa fa-pencil-square-o"></i>
 																 </a>
-																<a (click)="deleteUserShowAlert(contact.id)">	<i class="fa fa-trash-o"></i>	</a>
+																<a data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_delete}} {{checkingContactTypeName}}" (click)="deleteUserShowAlert(contact.id)">	<i class="fa fa-trash-o"></i>	</a>
 															</div>
 															</td>
 															<ng-template #NA>N/A</ng-template>
@@ -663,7 +638,7 @@
 								<div class="caption">
 									<span class="capitalize" *ngIf="contactsByType.selectedCategory != 'non-active'">{{contactsByType.selectedCategory}}
 										{{checkingContactTypeName}} List</span>
-									<span class="capitalize" *ngIf="contactsByType.selectedCategory == 'non-active'">Inactive
+									<span class="capitalize" *ngIf="contactsByType.selectedCategory == 'non-active'">Unregistered
 										{{checkingContactTypeName}} List</span>
 								</div>
 								<div class="btn-group pull-right"
@@ -681,6 +656,36 @@
 								</div>
 							</div>
 							<div class="portlet-body">
+							
+									<div class="page-bar" *ngIf="!showEditContactData">
+									<div class="btn-group pull-right">
+										<div class="inputs" align="right" style="float: right">
+											<div style="float: left; margin-right: 10px;">
+												<select class="form-control" [(ngModel)]="sortOption"
+													(ngModelChange)="sortByOption($event)">
+													<ng-container
+														*ngFor="let sort of sortOptions; let i = index">
+													<option [ngValue]="sort">{{sort.name}}</option>
+													</ng-container>
+												</select>
+											</div>
+											<div class="portlet-input input-inline">
+												<div class="input-icon right">
+													<!-- <i class="icon-magnifier"
+														style="cursor: pointer; font-size: 18px;"
+														(click)="search('contactList')"></i> --> <input type="text"
+														[(ngModel)]="searchKey"
+														[ngModelOptions]="{standalone: true}"
+														class="form-control" placeholder="Search For {{checkingContactTypeName}}" (keypress)="eventHandler($event.keyCode)">
+														<button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey=''"></button>
+														<button type="submit" class="search-box-item-click" (click)="search('contacts')"><i class="fa fa-search"></i></button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							
+							
 								<div class="table-responsive">
 									<app-loader [model]="httpRequestLoader.isHorizontalCss"
 										*ngIf="httpRequestLoader.isLoading"></app-loader>
@@ -699,6 +704,7 @@
 												<th>PHONE</th>
 												<th>JOB TITLE</th>
 												<th>ADDRESS</th>
+												<th *ngIf="isPartner && contactsByType.selectedCategory == 'non-active'">ACTIONS</th>
 												<!-- <th>MORE</th> -->
 											</tr>
 										</thead>
@@ -737,9 +743,15 @@
 												</td>
 												<td>
 													<h5 *ngIf="allcontacts?.address" class='mb0'>{{allcontacts.address}}</h5>
-													<h5 class='mb0'>{{allcontacts.city}},&nbsp;{{allcontacts.state}}</h5>
+													<h5 class='mb0'>{{allcontacts.city}}<span *ngIf="allcontacts.city && allcontacts.state">,&nbsp;</span>{{allcontacts.state}}</h5>
 													<h5 *ngIf="allcontacts?.zipCode || allcontacts.country"
-														class='mt0'>{{allcontacts.zipCode}},&nbsp;{{allcontacts.country}}</h5>
+														class='mt0'>{{allcontacts.zipCode}}<span *ngIf="allcontacts.zipCode && allcontacts.country">,&nbsp;</span>{{allcontacts.country}}</h5>
+												</td>
+													<td align="center" *ngIf="isPartner && contactsByType.selectedCategory == 'non-active'">
+												<div class="actions-block">
+												<a *ngIf="!allcontacts.signedUp" data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.partner_reSendMail}}" (click)="sendMail(allcontacts.id)">
+													<i class="fa fa-envelope"></i>
+												</a></div>
 												</td>
 												<!-- <td>
 													<button id='more_less_button_{{i}}'

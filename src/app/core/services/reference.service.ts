@@ -3,7 +3,7 @@ import { Http, Response } from '@angular/http';
 import { SaveVideoFile } from '../../videos/models/save-video-file';
 import { AuthenticationService } from './authentication.service';
 import { Observable } from 'rxjs/Observable';
-import { Router } from '@angular/router';
+import { Router,ActivatedRoute } from '@angular/router';
 import { Category } from '../../videos/models/category';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { DefaultVideoPlayer } from '../../videos/models/default-video-player';
@@ -42,7 +42,7 @@ export class ReferenceService {
     topNavBarNotificationDetails: any = new Object();
     roles: Roles = new Roles();
     topNavBarUserDetails = { 'displayName': '....', 'profilePicutrePath': 'assets/admin/pages/media/profile/icon-user-default.png' };
-    userDefaultPage = 'welcome';
+    userDefaultPage = '';
     hasCompany = false;
     formGroupClass = "form-group";
     errorClass = "form-group has-error has-feedback";
@@ -70,13 +70,21 @@ export class ReferenceService {
     isPlayVideo = false;
     isDownloadCsvFile: boolean;
     vendorDetails: any;
+    isRedistributionCampaignPage = false;
     campaignType = 'REGULAR';
     videoTag = "<a href='<SocialUbuntuURL>'>\n   <img src='<SocialUbuntuImgURL>'/> \n </a> \n";
     emailMergeTags = "  For First Name : {{firstName}} \n  For Last Name : {{lastName}} \n  For Full Name : {{fullName}} |n For Email Id : {{emailId}}";
     coBrandingTag = "<img src='<Co-BrandingImgURL>'/> \n";
-    public URL: string = this.authenticationService.REST_URL + 'admin/';
+    URL: string = this.authenticationService.REST_URL + 'admin/';
+    hasClientError = false;
+    isSidebarClosed = false;
+    showInputConfirmPassword = false;
+    showInputPassword = false;
+    showInputOldPassword = false;
+    launchedCampaignType = '';
+
     constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,
-        private router: Router, public deviceService: Ng2DeviceService) {
+        private router: Router, public deviceService: Ng2DeviceService,private route:ActivatedRoute) {
         console.log('reference service constructor');
     }
     getBrowserInfoForNativeSet(){
@@ -88,6 +96,10 @@ export class ReferenceService {
              return true;
          }
     }
+    isSafariBrowser(){
+      this.deviceInfo = this.deviceService.getDeviceInfo();
+      if(this.deviceInfo.browser=== 'safari' || this.deviceInfo.browser==='ie'){ return true; } else{ return false};
+    }
 
     getCategories(): Observable<Category[]> {
         const url = this.URL + 'categories?access_token=' + this.authenticationService.access_token;
@@ -97,8 +109,13 @@ export class ReferenceService {
     }
     getVideoTitles(): Observable<String[]> {
         const constUrl = this.authenticationService.REST_URL + 'videos/';
+
+        let userId = this.authenticationService.user.id;
+
+        userId = this.authenticationService.checkLoggedInUserId(userId);
+
         const url = constUrl + 'video-titles?access_token=' + this.authenticationService.access_token + '&userId=' +
-            this.authenticationService.user.id;
+        userId;
         return this.http.get(url, "")
             .map(this.extractData)
             .catch(this.handleError);
@@ -1521,9 +1538,13 @@ export class ReferenceService {
          } else {
              updatedBody = body.replace("<div id=\"video-tag\">", "<div id=\"video-tag\" style=\"display:none\">");
          }
+         if(!campaign.enableCoBrandingLogo){
+             updatedBody = updatedBody.replace("<a href=\"https://dummycobrandingurl.com\"","<a href=\"https://dummycobrandingurl.com\" style=\"display:none\"");
+         }
          if(campaign.nurtureCampaign ||userProfile.id!=campaign.userId){
              updatedBody = this.replacePartnerLogo(updatedBody,partnerLogo,partnerCompanyUrl,campaign);
          }
+
          $("#email-template-content").append(updatedBody);
          $('.modal .modal-body').css('overflow-y', 'auto');
          $("#email_template_preivew").modal('show');
@@ -1560,6 +1581,62 @@ export class ReferenceService {
          });
          return emailTemplateHrefLinks = this.removeDuplicates(emailTemplateHrefLinks);
      }
+
+
+     showPassword( text: any ) {
+         let inputPassword = <HTMLInputElement>document.getElementById( text );
+         if ( inputPassword.type === "password" ) {
+             inputPassword.type = "text";
+             if ( text === 'oldPassword' ) {
+                 this.showInputOldPassword = true;
+             } else if ( text === 'password') {
+                 this.showInputPassword = true;
+             }else {
+                 this.showInputConfirmPassword = true;
+             }
+         } else {
+             inputPassword.type = "password";
+             if( text === 'oldPassword' ) {
+                 this.showInputOldPassword = false;
+             }else if( text === 'password' ) {
+                 this.showInputPassword = false;
+             }else {
+                 this.showInputConfirmPassword = false;
+             }
+         }
+    }
+
+
+     goToCampaignAnalytics(campaign){
+         this.campaignType = campaign.campaignType;
+         this.router.navigate(["/home/campaigns/"+campaign.campaignId+"/details"]);
+     }
+
+
+     showEmailTemplatePreview(campaign:Campaign,campaignType:string,selectedVideoGifPath:string,emailTemplateBody:string){
+         let updatedBody = "";
+         if(this.campaignType=='video'){
+             updatedBody = emailTemplateBody.replace("<SocialUbuntuImgURL>",selectedVideoGifPath);
+             updatedBody = updatedBody.replace("&lt;SocialUbuntuURL&gt;","javascript:void(0)");
+             updatedBody = updatedBody.replace("<SocialUbuntuURL>","javascript:void(0)");
+             updatedBody = updatedBody.replace("https://dummyurl.com","javascript:void(0)");
+             updatedBody = updatedBody.replace("https://xamp.io/vod/images/xtremand-video.gif",selectedVideoGifPath);
+             updatedBody = updatedBody.replace("&lt;SocialUbuntuImgURL&gt;",selectedVideoGifPath);
+         }else{
+             updatedBody = emailTemplateBody.replace("<div id=\"video-tag\">","<div id=\"video-tag\" style=\"display:none\">");
+         }
+         if(!campaign.enableCoBrandingLogo){
+             updatedBody = updatedBody.replace("<a href=\"https://dummycobrandingurl.com\"","<a href=\"https://dummycobrandingurl.com\" style=\"display:none\"");
+         }
+         return updatedBody;
+     }
+
+     changeSideBar(){
+      this.isSidebarClosed = !this.isSidebarClosed;
+      if(!this.isSidebarClosed){ document.body.className = 'login page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-sidebar-closed-hide-logo';
+      }else { document.body.className = 'login page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-sidebar-closed-hide-logo page-sidebar-closed';
+      }
+    }
 
 
 }

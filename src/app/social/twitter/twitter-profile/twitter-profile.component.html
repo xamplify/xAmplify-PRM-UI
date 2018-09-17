@@ -251,48 +251,9 @@
 </div>
 
 <div class="col-md-5 col-sm-12 col-xs-12">
-<div class="js-stream-item stream-item stream-item" *ngFor="let item of tweets">
-	  <div class="tweet js-stream-tweet js-actionable-tweet js-profile-popup-actionable original-tweet js-original-tweet">
-	    <div class="content" style="width: auto; margin: auto;padding: 10px;background-color: #FFF;">
-	<div id="content-{{item.id}}">
-	<div class="stream-item-header">
-	          <a class="account-group js-account-group js-action-profile js-user-profile-link js-nav" href="https://twitter.com/{{item.fromUser}}" target="_blank">
-	    <img class="avatar js-action-profile-avatar" src="{{item.profileImageUrl}}" alt="{{item.fromUser}}" style="margin: 5px;">
-	    <strong class="fullname js-action-profile-name show-popup-with-id">{{item.user.name}}</strong>
-	    <span>&rlm;</span><span class="username js-action-profile-name"><s>@</s><b>{{item.fromUser}}</b></span>
-	  </a>
-	        <small class="time">
-	  <span class="_timestamp js-short-timestamp js-relative-timestamp">{{item.createdAt | date: 'short'}}</span>
-	</small>
-	</div>
-	<div class="js-tweet-text-container">
-	  <p class="TweetTextSize TweetTextSize--16px js-tweet-text tweet-text" lang="en" [innerHTML]="item.text"><</p>
-	<div class="AdaptiveMedia is-square" *ngIf="item.entities.media.length > 0">
-	    <div class="AdaptiveMedia-container js-adaptive-media-container">
-	        <div class="AdaptiveMedia-singlePhoto">
-				<div class="AdaptiveMedia-photoContainer js-adaptive-photo " data-element-context="platform_photo_card">
-				  <img src="{{item.entities.media[0].mediaSecureUrl}}" alt="" style="width: 100%; top: -0px;">
-				</div>
-			</div>
-	    </div>
-	  </div>
-	</div>
-	</div>
-	<div class="stream-item-footer" style="margin-top: 2em;">
-	<button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement=bottom title="Like" style="margin-left:1em;">
-	  <i class="fa fa-heart" aria-hidden="true" ></i>&nbsp;&nbsp;{{item.favoriteCount}}
-	</button>
-	<button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement=bottom title="Retweet" style="margin-left:1em;">
-	  <i class="fa fa-retweet" aria-hidden="true" ></i>&nbsp;&nbsp;{{item.retweetCount}}
-	</button>
-	<button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement=bottom title="Reply" data-toggle="modal" data-target="#replyModal" style="margin-left:1em;"
-		(click)="populateReplyModalContent(item.id, item.fromUser, item.text)">
-	  <i class="fa fa-reply" aria-hidden="true"></i>
-	</button>
-	</div>
-	    </div>
-	  </div>
-	</div>
+		<ng-container *ngFor="let tweet of tweets">
+			<app-tweet [tweet]="tweet"></app-tweet>
+		</ng-container>
 </div>
 </div>
 </div>

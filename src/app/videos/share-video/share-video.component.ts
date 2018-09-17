@@ -23,7 +23,7 @@ declare var $, videojs: any;
     selector: 'app-share-video',
     templateUrl: './share-video.component.html',
     styleUrls: ['./share-video.component.css', '../../../assets/css/video-css/call-action.css',
-    '../../../assets/css/video-css/video-js.custom.css'],
+    '../../../assets/css/video-css/video-js.custom.css','../../../assets/css/loader.css'],
     providers: [VideoUtilService, XtremandLog]
 })
 export class ShareVideoComponent implements OnInit, OnDestroy {
@@ -269,8 +269,8 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                     if (isValid === 'StartOftheVideo') {
                         $('#videoId').append($('#overlay-modal').show());
                     } else if (isValid !== 'StartOftheVideo') {
-                        $('#overlay-modal').hide(); player.play();
-                    } else { $('#overlay-modal').hide(); player.play(); }
+                        $('#overlay-modal').hide();
+                    } else { $('#overlay-modal').hide(); }
                     $('#skipOverlay').click(function () {
                         isCallActionthere = false;
                         $('#overlay-modal').hide();
@@ -479,7 +479,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                             $('#videoId').append($('#overlay-modal').show());
                         } else if (isValid !== 'StartOftheVideo') {
                           //  $('.vjs-big-play-button').css('display', 'none');
-                            $('#overlay-modal').hide(); player.play();
+                            $('#overlay-modal').hide();
                         } else { $('#overlay-modal').hide(); }
                         $('#skipOverlay').click(function () {
                             isCallActionthere = false;
@@ -776,7 +776,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
             });
     }
     logVideoViewsCount() {
-        this.videoFileService.logVideoViews(this.embedVideoFile.alias).subscribe(
+        this.videoFileService.logVideoViews(this.embedVideoFile.alias,this.shortnerUrlAlias).subscribe(
             (result: any) => {
                 console.log('successfully logged view count');
             });

@@ -37,10 +37,11 @@ a.disabled {
 img:hover {
 	-webkit-filter: grayscale(0%);
 	/* background-image: url('assets/images/crm/dynamics.png'); */
-	background-color: #4dff4d;
+	background-color: #3598dc;
 	filter: grayscale(0%);
 	opacity: 2;
 }
+
 </style>
 
 <div class="page-content">
@@ -121,7 +122,7 @@ img:hover {
 							[class.disabled]="selectedAddPartnerOption != 5 || selectedAddPartnerOption == 7">
 										<img
 										[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :sfImageBlur==true}"
-										src="assets/images/crm/sf.png" class="salesForceImageClass"
+										src="assets/images/crm/sf.png" class="salesForceImageClass" data-toggle="tooltip" data-placement="bottom"
 										title="Click here to access contacts from your Salesforce account"
 										height="86" width="90">
 									</a> <a *ngIf="sfImageBlur" id="salesforceContact_button"
@@ -129,7 +130,7 @@ img:hover {
 							[class.disabled]="selectedAddPartnerOption != 5 || selectedAddPartnerOption == 7">
 										<img
 										[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :sfImageBlur==true}"
-										src="assets/images/crm/sf.png" class="salesForceImageClass"
+										src="assets/images/crm/sf.png" class="salesForceImageClass" data-toggle="tooltip" data-placement="bottom"
 										title="Click here to access contacts from your Salesforce account"
 										height="86" width="90"
 										onmouseover="this.src='assets/images/crm/connecting.png';"
@@ -154,7 +155,7 @@ img:hover {
 							[class.disabled]="selectedAddPartnerOption != 5 || selectedAddPartnerOption == 3">
 										<img
 										[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :googleImageBlur==true}"
-										src="assets/images/crm/google.png" class="googleImageClass"
+										src="assets/images/crm/google.png" class="googleImageClass" data-toggle="tooltip" data-placement="bottom"
 										title="Click here to access contacts from your Google contacts"
 										height="86" width="90"
 										onmouseover="this.src='assets/images/crm/connecting.png';"
@@ -164,7 +165,7 @@ img:hover {
 							[class.disabled]="selectedAddPartnerOption != 5 || selectedAddPartnerOption == 3">
 										<img
 										[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :googleImageBlur==true}"
-										src="assets/images/crm/google.png" class="googleImageClass"
+										src="assets/images/crm/google.png" class="googleImageClass" data-toggle="tooltip" data-placement="bottom"
 										title="Click here to access contacts from your Google contacts"
 										height="86" width="90">
 									</a>
@@ -189,7 +190,7 @@ img:hover {
 							[class.disabled]="selectedAddPartnerOption != 5 || selectedAddPartnerOption == 6">
 										<img
 										[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}"
-										src="assets/images/crm/Zoho.png" class="zohoImageClass"
+										src="assets/images/crm/Zoho.png" class="zohoImageClass" data-toggle="tooltip" data-placement="bottom"
 										title="Click here to access contacts from your Zoho account"
 										height="86" width="90"
 										onmouseover="this.src='assets/images/crm/connecting.png';"
@@ -200,7 +201,7 @@ img:hover {
 							[class.disabled]="selectedAddPartnerOption != 5 || selectedAddPartnerOption == 6">
 										<img
 										[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}"
-										src="assets/images/crm/Zoho.png" class="zohoImageClass"
+										src="assets/images/crm/Zoho.png" class="zohoImageClass" data-toggle="tooltip" data-placement="bottom"
 										title="Click here to access contacts from your Zoho account"
 										height="86" width="90">
 									</a>
@@ -220,7 +221,7 @@ img:hover {
 								<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
 									<a id="microsoftContact_button" style="background-color: white">
 										<img src="assets/images/crm/dynamicsCmgSoon.png"
-										class="imageClass imageblur mdImageClass"
+										class="imageClass imageblur mdImageClass" data-toggle="tooltip" data-placement="bottom"
 										title="Click here to access contacts from your Microsoft CRM account"
 										height="86" width="90" style="margin-bottom: 18px"
 										>
@@ -243,7 +244,7 @@ img:hover {
 			</button>
 			<ul class="dropdown-menu pull-right">
 				<li><a id="save_button" *ngIf="selectedAddPartnerOption != 5" (click)="saveContacts()">Save </a></li>
-				<li><a id="save_button" *ngIf="selectedAddPartnerOption != 5 || clipBoard" (click)="cancelPartners()">Cancel </a></li>
+				<li><a id="cancel_button" *ngIf="selectedAddPartnerOption != 5 || clipBoard" (click)="cancelPartners()">Cancel </a></li>
 				<li><a id="saveAs_button"
 					*ngIf="selectedAddPartnerOption == 5 && !clipBoard" (click)="editContactComponent.saveAs(); editContactComponent.addPartnerSave = true">Save
 						As </a></li>
@@ -495,14 +496,14 @@ img:hover {
 															</ng-container>
 														</select>
 													</div>
-													<div class="portlet-input input-inline input-small">
-														<div class="input-icon right" style="width:106%">
-															<i class="icon-magnifier"
-																style="cursor: pointer; font-size: 18px;"
-																(click)="search()"> </i> <input type="text"
+													<div class="portlet-input input-inline">
+														<div class="input-icon right">
+															 <input type="text"
 																[(ngModel)]="searchKey"
 																[ngModelOptions]="{standalone: true}"
-																class="form-control" placeholder="Search for a Partner">
+																class="form-control" placeholder="Search for a Partner" (keypress)="eventHandler($event.keyCode)">
+														<button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey=''"></button>
+														<button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search"></i></button>
 														</div>
 													</div>
 												</div>
@@ -529,17 +530,17 @@ img:hover {
 																name="all" [(ngModel)]="editContactComponent.isHeaderCheckBoxChecked"
 																(change)="editContactComponent.checkAll($event)"
 																id="checkAllExistingContacts"/></th>
-												<th style="width: 25%;">Entity info</th>
-												<th>PHONE</th>
+												<th style="width: 20%;">Entity info</th>
+												<th style="width: 26%;">PHONE</th>
 												<th>JOB TITLE</th>
 												<th class='text-center'>ADDRESS</th>
 												<!-- <th class='text-center'>MORE</th> -->
-												<th class='text-center'>ACTIONS</th>
+												<th class='text-center' style="width: 15%;">ACTIONS</th>
 											</tr>
 										</thead>
 										<tbody>
 											<ng-container
-												*ngFor="let contact of partners;let i = index">
+												*ngFor="let contact of partners;let i = index" id="listPartners">
 											<tr class='row_{{i}}'>
 											<td class="text-center" *ngIf="!isCampaignDraftContactList "><input
 																type="checkbox"
@@ -562,15 +563,15 @@ img:hover {
 													</div>
 												</td>
 												<td>
-													<h5 class='mb0' title="{{contact.jobTitle}}">{{contact.jobTitle | slice:0:25}}
-													<span *ngIf="contact.jobTitle?.length>25">...</span>
+													<h5 class='mb0' title="{{contact.jobTitle}}">{{contact.jobTitle | slice:0:20}}
+													<span *ngIf="contact.jobTitle?.length>20">...</span>
 													</h5>
 													<!-- <h6 class='mt0'>{{contact.contactCompany}}</h6> -->
 												</td>
 												<td align="center">
 													<h5 *ngIf="contact?.address" class='mb0'>{{contact.address}}</h5>
-													<h5 class='mb0'>{{contact.city}},&nbsp;{{contact.state}}</h5>
-													<h5 *ngIf="contact?.zipCode || contact.country" class='mt0'>{{contact.zipCode}}<span *ngIf="contact.city">,&nbsp;</span>{{contact.country}}</h5>
+													<h5 class='mb0'>{{contact.city}}<span *ngIf="contact.city && contact.state">,&nbsp;</span>{{contact.state}}</h5>
+													<h5 *ngIf="contact?.zipCode || contact.country" class='mt0'>{{contact.zipCode}}<span *ngIf="contact.zipCode && contact.country">,&nbsp;</span>{{contact.country}}</h5>
 												</td>
 												<!-- <td align="center">
 													<button id='more_less_button_{{i}}'
@@ -581,13 +582,13 @@ img:hover {
 												</td> -->
 												<td align="center">
 												<div class="actions-block">
-												<a *ngIf="!contact.signedUp" title="Resend registration email" (click)="sendMail(contact.id)">
+												<a id="envolope_{{i}}" *ngIf="!contact.signedUp" data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.partner_reSendMail}}" (click)="sendMail(contact.id)">
 													<i class="fa fa-envelope"></i>
 												</a>
-												<a title="Edit Partner" (click)="editUserDetails(contact)">
-													<i class="fa fa-pencil-square-o" ></i>
+												<a id="edit_{{i}}"  data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.partner_edit}}" (click)="editUserDetails(contact)">
+													<i class="fa fa-pencil-square-o"></i>
 												</a>
-												<a title="Delete partner" (click)="deleteUserShowAlert(contact.id)">
+												<a id="delete_{{i}}" data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.partner_delete}}" (click)="deleteUserShowAlert(contact.id)">
 													<i class="fa fa-trash-o" style="color:#ff0000"></i>
 												</a>
 												</div>
@@ -621,7 +622,8 @@ img:hover {
 				<app-pagination [pagination]="pagination" [type]="'contacts'" (notifyParent)="setPage($event)"
 				(notifyParentDropDown)="onChangeAllPartnerUsers($event)"></app-pagination>
 			</div>
-		</div>
+    </div>
+    <app-scroll-top></app-scroll-top>
 	</div>
 
 	<!-- Modal -->
@@ -795,7 +797,7 @@ img:hover {
 	</div>
 
 <div class="modal" id="settingSocialNetworkPartner" tabindex="-1" role="dialog"
-	aria-labelledby="settingSocialNetworkModalLabel1" data-keyboard="false" data-toggle="modal" data-target="settingSocialNetworkPartner" 
+	aria-labelledby="settingSocialNetworkModalLabel1" data-keyboard="false" data-toggle="modal" data-target="settingSocialNetworkPartner"
 	data-backdrop="static">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">

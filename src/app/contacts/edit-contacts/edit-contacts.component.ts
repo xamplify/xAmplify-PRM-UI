@@ -5,6 +5,7 @@ import { Criteria } from '../models/criteria';
 import { EditUser } from '../models/edit-user';
 import { CustomResponse } from '../../common/models/custom-response';
 import { Properties } from '../../common/models/properties';
+import { ActionsDescription } from '../../common/models/actions-description';
 import { AddContactsOption } from '../models/contact-option';
 import { User } from '../../core/models/user';
 import { Router } from '@angular/router';
@@ -30,7 +31,7 @@ declare var Metronic, Promise, Layout, Demo, swal, Portfolio, $, Papa: any;
     styleUrls: ['../../../assets/css/button.css',
         '../../../assets/css/numbered-textarea.css',
         './edit-contacts.component.css', '../../../assets/css/phone-number-plugin.css'],
-    providers: [Pagination, HttpRequestLoader, CountryNames, Properties, RegularExpressions, TeamMemberService]
+    providers: [Pagination, HttpRequestLoader, CountryNames, Properties, ActionsDescription, RegularExpressions, TeamMemberService]
 })
 export class EditContactsComponent implements OnInit, OnDestroy {
     @Input() contacts: User[];
@@ -148,6 +149,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     contactAllDetails = [];
     openCampaignModal = false;
     logListName = "";
+    searchContactType = "";
 
     filterOptions = [
         { 'name': '', 'value': 'Field Name*' },
@@ -172,7 +174,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
     constructor( public refService: ReferenceService, public contactService: ContactService, private manageContact: ManageContactsComponent,
         public authenticationService: AuthenticationService, private router: Router, public countryNames: CountryNames,
-        public regularExpressions: RegularExpressions,
+        public regularExpressions: RegularExpressions, public actionsDescription: ActionsDescription,
         private pagerService: PagerService, public pagination: Pagination, public xtremandLogger: XtremandLogger, public properties: Properties,
         public teamMemberService: TeamMemberService ) {
 
@@ -1566,6 +1568,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     }
 
     search( searchType: string ) {
+        
+        this.searchContactType = this.searchContactType;
         try {
             if ( this.currentContactType == "all_contacts" ) {
                 this.pagination.searchKey = this.searchKey;
@@ -1656,7 +1660,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                 input: 'text',
                 inputValue: this.contactListName + '_copy',
                 showCancelButton: true,
-                confirmButtonText: 'Submit',
+                confirmButtonText: 'Save',
                 allowOutsideClick: false,
                 preConfirm: function( name: any ) {
                     return new Promise( function() {
@@ -1926,6 +1930,11 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                     event.mobileNumber = "";
                 }
             }
+            
+            if ( event.country === "Select Country" ) {
+                event.country = null;
+            }
+            
             this.editUser.user = event;
             this.addContactModalClose();
             this.contactService.updateContactListUser( this.selectedContactListId, this.editUser )
@@ -2219,7 +2228,28 @@ export class EditContactsComponent implements OnInit, OnDestroy {
         this.contactsByType.contactListAssociatedCampaigns.length = 0;
     }
 
+    eventHandler( keyCode: any ) { if ( keyCode === 13 ) { this.search(this.searchContactType); } }
 
+    sendMail( partnerId: number ) {
+        try {
+            this.contactService.mailSend( partnerId, this.selectedContactListId )
+                .subscribe(
+                data => {
+                    console.log( data );
+                    if ( data.message == "success" ) {
+                        this.customResponse = new CustomResponse( 'SUCCESS', this.properties.EMAIL_SENT_SUCCESS, true );
+                    }
+                },
+                ( error: any ) => {
+                    this.xtremandLogger.error( error );
+                },
+                () => this.xtremandLogger.log( "Manage Partner component Mail send method successfull" )
+                );
+        } catch ( error ) {
+            this.xtremandLogger.error( error, "addPartnerComponent", "resending Partner email" );
+        }
+    }
+    
     ngOnInit() {
         try {
             this.loadContactListsNames();

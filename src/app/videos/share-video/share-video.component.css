@@ -20,28 +20,38 @@
 }
 
 .videoViews{
-    border-bottom: 1px solid #c3c0c0;
-    margin-bottom: 10px; width: 50%;
-	text-align: right;
+  border-bottom: 1px solid #c3c0c0;
+  margin-bottom: 10px; width: 50%;
+  text-align: right;
 }
 .viewsh4{
     color: #777;font-weight: 500;margin: 5px;
 }
 .logoCss{
     position: absolute;
-    width: 91px;
-    height: 1px;
-    right: 20px;
-    top: 22px;
-    background: transparent;
-    z-index: 99;
+    width: 91px !important;
+    height: 1px !important;
+    right: 20px !important;
+    top: 22px !important;
+    background: transparent !important;
+    z-index: 99 !important;
 }
 .logoFullscreen{
     position: absolute;
-    top: 15px;
-    width: 91px;
-    height: 58px;
-    right: 17px;
-    background: transparent;
-    z-index: 99;
+    top: 15px !important;
+    width: 91px !important;
+    height: 58px !important;
+    right: 17px !important;
+    background: transparent !important;
+    z-index: 99 !important;
+}
+.imageClass{
+    position: absolute;
+    width: 91px !important;
+    height: 50px !important;
+    right: 20px !important;
+    top: 1px !important;
+    z-index: 99 !important;
+    filter: none !important;
+    left: 1px !important;
 }

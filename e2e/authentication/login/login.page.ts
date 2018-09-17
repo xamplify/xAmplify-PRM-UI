@@ -44,14 +44,28 @@ export class LoginPage extends BasePage {
     this.getUserNameTF().clear();
     this.getPasswordTF().clear();
     browser.waitForAngularEnabled(false);
-    this.getUserNameTF().sendKeys("ksathish@stratapps.com");
-    this.getPasswordTF().sendKeys("Sathish@123");
+    this.getUserNameTF().sendKeys(browser.params.userName);
+    this.getPasswordTF().sendKeys(browser.params.password);
     this.getLoginButton().click();
+  }
+  getProfileDropdown(){
+    element.all(by.xpath('//*[@id="headerdropDownLi"]')).click();
   }
   logout() {
     browser.waitForAngularEnabled(false);
-    element.all(by.xpath('//*[@id="headerdropDownLi"]')).click();
+    this.getProfileDropdown();
     browser.waitForAngularEnabled(false);
-    element.all(by.xpath('//*[@id="logoutButton"]')).click();
+    element.all(by.xpath('//*[@id="logoutButton"]/a')).click();
   }
+  loginLogoutCheck(){
+    this.navigateToLogin();
+    let displayed;
+    this.getUserNameTF().isPresent().then(function(visible) { displayed = visible });
+     if(!displayed){  console.log('logout is not happend');
+     } else { this.login();}
+     if(this.getLoginButton().isPresent()){
+      this.login();
+     }
+  }
+
 }

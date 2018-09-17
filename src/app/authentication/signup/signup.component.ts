@@ -1,6 +1,6 @@
-import { Component, OnInit, OnDestroy} from '@angular/core';
-import { Router } from '@angular/router';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Component, OnInit, OnDestroy, AfterViewInit} from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 
 import { User } from '../../core/models/user';
 import { RegularExpressions } from '../../common/models/regular-expressions';
@@ -24,7 +24,7 @@ declare var $: any;
     '../../../assets/css/loader.css'],
     providers: [User, CountryNames, RegularExpressions, Properties]
 })
-export class SignupComponent implements OnInit, OnDestroy {
+export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
     signUpForm: FormGroup;
     loading = false;
     isError = false;
@@ -85,15 +85,23 @@ export class SignupComponent implements OnInit, OnDestroy {
     };
 
     constructor(private router: Router, public countryNames: CountryNames, public regularExpressions: RegularExpressions, public properties: Properties,
-        private formBuilder: FormBuilder, private signUpUser: User,
+        private formBuilder: FormBuilder, private signUpUser: User,public route:ActivatedRoute,
         private userService: UserService, public referenceService: ReferenceService,private xtremandLogger: XtremandLogger,public authenticationService:AuthenticationService) {
-        this.buildForm();
         if(this.router.url.includes('/v-signup')){ this.vendorSignup = true; } else { this.vendorSignup = false;}
+          this.signUpForm = new FormGroup({
+            firstName: new FormControl(),
+            lastName: new FormControl(),
+            emailId: new FormControl(),
+            password: new FormControl(),
+            confirmPassword: new FormControl(),
+            agree : new FormControl()
+        });
     }
     goToBack(){
       if(this.router.url.includes('/v-signup')) {  this.router.navigate(['/']); } else {  this.router.navigate(['/login']) }
     }
     signUp() {
+      if (this.signUpForm.valid) {
         try{
         this.signUpUser = this.signUpForm.value;
         this.signUpUser.emailId = this.signUpUser.emailId.toLowerCase();
@@ -130,8 +138,17 @@ export class SignupComponent implements OnInit, OnDestroy {
                 () => this.xtremandLogger.log("Done")
             );
           }catch(error){ this.xtremandLogger.error('error'+error);}
+        } else {
+          this.checkValidationMessages()
+        }
     }
-
+    checkValidationMessages(){
+      if(!this.signUpForm.value.firstName) {this.formErrors.firstName = this.validationMessages.firstName.required; }
+      if(!this.signUpForm.value.emailId) {this.formErrors.emailId = this.validationMessages.emailId.required; }
+      if(!this.signUpForm.value.password) { this.formErrors.password = this.validationMessages.password.required; }
+      if(!this.signUpForm.value.confirmPassword) { this.formErrors.confirmPassword =this.validationMessages.confirmPassword.required; }
+      if(!this.signUpForm.value.agree) { this.formErrors.agree = this.validationMessages.agree.required; }
+    }
     buildForm() {
         this.signUpForm = this.formBuilder.group({
             'emailId': [this.signUpUser.emailId, [Validators.required, Validators.pattern(this.regularExpressions.EMAIL_ID_PATTERN)]],
@@ -176,16 +193,45 @@ export class SignupComponent implements OnInit, OnDestroy {
     validEmail(event:any){
       this.invalidVendor = false;
     }
+    getUserDatails(alias:string){
+      try{
+       this.userService.getSingUpUserDatails(alias).subscribe((data)=>{
+       this.signUpUser.firstName = data.firstName;
+       this.signUpUser.lastName = data.lastName;
+       this.signUpUser.emailId = data.emailId;
+       this.buildForm();
+     },
+    (error)=>{   this.mainLoader = false;this.xtremandLogger.error('error in signup page'+error);}
+    );
+    }catch(error){
+      this.signUpUser.firstName = '';
+      this.signUpUser.lastName = '';
+      this.signUpUser.emailId = '';
+      this.buildForm(); this.xtremandLogger.error('error in signup page'+error);
+      this.mainLoader = false;
+     }
+  }
     ngOnInit() {
-        try{
-        $("[rel='tooltip']").tooltip();
+      try{
         this.mainLoader = true;
         this.authenticationService.navigateToDashboardIfUserExists();
         setTimeout(()=>{  this.mainLoader = false;},900);
-        }catch(error){this.xtremandLogger.error('error'+error); }
+        if(this.router.url.includes('/signup/')){
+            let alias = this.route.snapshot.params['alias'];
+            this.getUserDatails(alias);
+        }
+        else {
+          this.buildForm();
+          this.mainLoader = false;
+        }
+      }catch(error){  this.mainLoader = false;this.xtremandLogger.error('error'+error); }
+    }
+    ngAfterViewInit(){
+      $('body').tooltip({ selector: '[data-toggle="tooltip"]' });
     }
     ngOnDestroy(){
       this.invalidVendor = false;
+      this.mainLoader = false;
     }
 
 }

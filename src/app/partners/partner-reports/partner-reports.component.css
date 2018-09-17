@@ -64,6 +64,9 @@
 	text-align: left;
 }
 
+.center{
+	text-align: center;
+}
   
   .blur {
 	-webkit-filter: blur(1px);
@@ -83,4 +86,19 @@ cursor: default;
 	background-color: white;
     margin-top: 9px;
     margin-left: 2px;
+}
+.re-distributed-count{
+	font-weight: bold;
+	font-size: 15px;
+	font-size-adjust: inherit;
+}
+
+.re-distributed-high-level{
+	width: 100px;
+	height: 50px;
+	cursor: default;
+	border-color: black;
+}
+.sky-blue{
+	color:#00a6e8
 }

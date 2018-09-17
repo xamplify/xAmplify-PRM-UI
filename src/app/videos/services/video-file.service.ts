@@ -79,13 +79,17 @@ export class VideoFileService {
     loadVideoFiles(pagination: Pagination): Observable<SaveVideoFile[]> {
         console.log(pagination);
         let url: any
+        let userId = this.authenticationService.user.id;
+           
+        userId = this.authenticationService.checkLoggedInUserId(userId);
+        
         if (this.authenticationService.isOnlyPartner()) {
-            url = this.URL + 'channel-videos/' + this.categoryNumber + '?userId=' + this.authenticationService.user.id + '&access_token=' + this.authenticationService.access_token;
+            url = this.URL + 'channel-videos/' + this.categoryNumber + '?userId=' + userId + '&access_token=' + this.authenticationService.access_token;
         } else {
             if (this.videoType === 'myVideos') {
-                url = this.URL + this.categoryNumber + '?userId=' + this.authenticationService.user.id + '&access_token=' + this.authenticationService.access_token;
+                url = this.URL + this.categoryNumber + '?userId=' + userId + '&access_token=' + this.authenticationService.access_token;
             } else if (this.videoType === 'partnerVideos') {
-                url = this.URL + 'channel-videos/' + this.categoryNumber + '?userId=' + this.authenticationService.user.id + '&access_token=' + this.authenticationService.access_token;
+                url = this.URL + 'channel-videos/' + this.categoryNumber + '?userId=' + userId + '&access_token=' + this.authenticationService.access_token;
             }
             else { console.log('load videos not called'); }
         }
@@ -220,9 +224,9 @@ export class VideoFileService {
             console.log('error comes here');
         }
     }
-    logVideoViews(alias: string) {
-        const url = this.authenticationService.REST_URL + 'admin/video/increment_view?alias=' + alias;
-        return this.http.post(url, '')
+    logVideoViews(alias: string,urlAlias:string) {
+        const url = this.authenticationService.REST_URL + 'admin/video/increment_view?alias=' + alias+ '&urlAlias='+ urlAlias;
+        return this.http.post(url,'')
             .map(this.extractData)
             .catch(this.handleErrorLogAction);
     }
