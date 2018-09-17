@@ -1,50 +1,19 @@
-  * {
-        margin:0px;
-        padding:0px;
-      } 
-       body {
-        overflow:hidden;
-        background-color: #CCCCCC;
-        color:#000000;
-      }   *
-      #bee-plugin-container {
-        position: absolute;
-        top:0px;
-        bottom:30px;
-        left:194px;
-        right:0px;
-      }
-      #integrator-bottom-bar {
-        position: absolute;
-        height: 25px;
-        bottom:0px;
-        left:5px;
-        right:0px;
-      }
-      
-      .div-loader {
-    padding: 5px 5px 10px 10px;
-    background-color: #fff;
-    box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.4);
-    border-radius: 0;
-    margin: 1em;
-    height:500px;
-    position: relative;
+#bee-plugin-container {
+    height: 935px;
 }
 
-
-#process-loader{
-	position: absolute;
-    margin: auto;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-   border: 5px solid #f3f3f3;
-  border-radius: 50%;
-  border-top: 5px solid #3498db;
-  width: 80px;
-  height: 80px;
-  -webkit-animation: spin 2s linear infinite;
-  animation: spin 2s linear infinite;
+.tile {
+    min-height: 1000px;
+    position: relative;
+    background: #ffffff;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+    margin-bottom: 10px;
+    transition: all 0.3s ease-in-out;
+    padding: 15px;
+}
+.page-bar .page-breadcrumb {
+  padding: 0 0 10px;
+}
+.top-bar-left .title {
+  display: none;
 }

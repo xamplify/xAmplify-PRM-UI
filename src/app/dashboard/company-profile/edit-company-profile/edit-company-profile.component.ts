@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder } from "@angular/forms";
 import { Router } from '@angular/router';
 import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
@@ -21,7 +21,7 @@ import { CustomResponse } from '../../../common/models/custom-response';
 import { SaveVideoFile } from '../../../videos/models/save-video-file';
 import { Properties } from '../../../common/models/properties';
 
-declare var $: any;
+declare var $,swal: any;
 
 @Component({
     selector: 'app-edit-company-profile',
@@ -30,7 +30,7 @@ declare var $: any;
                 '../../../../assets/css/phone-number-plugin.css'],
     providers: [Processor, CountryNames, RegularExpressions, Properties]
 })
-export class EditCompanyProfileComponent implements OnInit {
+export class EditCompanyProfileComponent implements OnInit, OnDestroy {
     customResponse: CustomResponse = new CustomResponse();
     isLoading = false;
     loaderHeight = "";
@@ -121,6 +121,9 @@ export class EditCompanyProfileComponent implements OnInit {
     ngxloading = false;
     maxFileSize:number = 10;
     profileCompleted = 50;
+    formUpdated = true;
+    tempCompanyProfile = [];
+
     constructor(private logger: XtremandLogger, public authenticationService: AuthenticationService, private fb: FormBuilder,
         private companyProfileService: CompanyProfileService, public homeComponent: HomeComponent,
         public refService: ReferenceService, private router: Router, public processor: Processor, public countryNames: CountryNames,
@@ -214,7 +217,9 @@ export class EditCompanyProfileComponent implements OnInit {
 
         } )
     }
-
+    imageClick(){
+      $('#companyLogo').click();
+    }
 
     ngOnInit() {
         this.geoLocation();
@@ -233,22 +238,10 @@ export class EditCompanyProfileComponent implements OnInit {
         this.ngxloading = true;
         this.refService.goToTop();
         $('#saveOrUpdateCompanyButton').prop('disabled', true);
-        this.validateEmptySpace('companyName');
         this.validateEmptySpace('companyProfileName');
-        this.validateEmptySpace('aboutUs');
         this.validateNames(this.companyProfile.companyName)
         this.validateProfileNames(this.companyProfile.companyProfileName);
-        this.validateEmptySpace('aboutUs');
-        this.validatePattern('phone');
-        this.validatePattern('website');
-        this.validatePattern('facebook');
-        this.validatePattern('googlePlusLink');
-        this.validatePattern('linkedInLink');
-        this.validatePattern('twitterLink');
-        this.validatePattern('city');
-        this.validatePattern('state');
-        this.validatePattern('emailId');
-        this.validateCompanyLogo();
+        this.checkValidations();
         if (!this.companyNameError && !this.companyProfileNameError && !this.emailIdError && !this.tagLineError && !this.phoneError && !this.websiteError
             && !this.facebookLinkError && !this.googlePlusLinkError && !this.twitterLinkError && !this.linkedinLinkError && !this.cityError && !this.stateError && !this.countryError &&
             !this.zipError && !this.logoError) {
@@ -264,6 +257,7 @@ export class EditCompanyProfileComponent implements OnInit {
                         this.message = data.message;
                         if(this.message==='Company Profile Info Added Successfully') {
                           this.message = 'Company Profile saved successfully';
+                          this.formUpdated = false;
                         }
                         $('#info').hide();
                         $('#edit-sucess').show(600);
@@ -344,20 +338,7 @@ export class EditCompanyProfileComponent implements OnInit {
         $('#company-profile-error-div').hide();
         $('#edit-sucess').hide();
         $('#saveOrUpdateCompanyButton').prop('disabled', true);
-        this.validateEmptySpace('companyName');
-        this.validateNames(this.companyProfile.companyName);
-        this.validateEmptySpace('aboutUs');
-        this.validatePattern('emailId');
-        this.validatePattern('phone');
-        this.validatePattern('website');
-        this.validatePattern('facebook');
-        this.validatePattern('googlePlusLink');
-        this.validatePattern('linkedInLink');
-        this.validatePattern('twitterLink');
-        this.validatePattern('city');
-        this.validatePattern('state');
-        this.validatePattern('emailId');
-        this.validateCompanyLogo();
+        this.checkValidations();
         let errorLength = $('div.form-group.has-error.has-feedback').length;
         if (!this.companyNameError && !this.companyProfileNameError && !this.emailIdError && !this.tagLineError && !this.phoneError && !this.websiteError
             && !this.facebookLinkError && !this.googlePlusLinkError && !this.twitterLinkError && !this.linkedinLinkError && !this.cityError && !this.stateError && !this.countryError &&
@@ -373,9 +354,11 @@ export class EditCompanyProfileComponent implements OnInit {
             this.companyProfileService.update(this.companyProfile, this.loggedInUserId)
                 .subscribe(
                     data => {
+
                         this.message = data.message;
                         if(this.message ==='Company Profile Info Updated Successfully'){
                           this.message = 'Company Profile updated successfully'
+                          this.formUpdated = false;
                         }
                         $('#company-profile-error-div').hide();
                         $('#info').hide();
@@ -396,12 +379,52 @@ export class EditCompanyProfileComponent implements OnInit {
         }
     }
 
+    checkValidations(){
+      this.validateEmptySpace('companyName');
+      this.validateNames(this.companyProfile.companyName);
+      this.validateEmptySpace('aboutUs');
+      this.validatePattern('emailId');
+      this.validatePattern('phone');
+      this.validatePattern('website');
+      this.validatePattern('facebook');
+      this.validatePattern('googlePlusLink');
+      this.validatePattern('linkedInLink');
+      this.validatePattern('twitterLink');
+      this.validatePattern('city');
+      this.validatePattern('state');
+      this.validatePattern('emailId');
+      this.validateCompanyLogo();
+    }
+
+    saveCompanyProfileOnDestroy(){
+      this.checkValidations();
+      this.aboutUsError = this.companyProfile.aboutUs? false: true;
+      let errorLength = $('div.form-group.has-error.has-feedback').length;
+      if (!this.companyNameError && !this.companyProfileNameError && !this.emailIdError && !this.tagLineError && !this.phoneError && !this.websiteError
+          && !this.facebookLinkError && !this.googlePlusLinkError && !this.twitterLinkError && !this.linkedinLinkError && !this.cityError && !this.stateError && !this.countryError &&
+          !this.zipError && !this.aboutUsError && !this.logoError) {
+        if(this.companyProfile.phone) { this.companyProfile.phone = this.companyProfile.phone.length <6 ? "": this.companyProfile.phone;}
+       this.companyProfileService.update(this.companyProfile, this.loggedInUserId)
+        .subscribe(
+            data => {
+                this.message = data.message;
+                if(this.message ==='Company Profile Info Updated Successfully'){
+                  this.logger.log('success');
+                }
+            },
+            error => { this.ngxloading = false;
+                this.logger.errorPage(error) ; this.logger.log('failed');},
+            () => { this.logger.info("Completed saveOrUpdate()") }
+        );
+      }
+    }
     getCompanyProfileByUserId() {
         this.companyProfileService.getByUserId(this.loggedInUserId)
             .subscribe(
                 data => {
                     if (data.data != undefined) {
                         this.companyProfile = data.data;
+                        this.tempCompanyProfile.push(this.companyProfile);
                         if ($.trim(this.companyProfile.companyLogoPath).length > 0) {
                             this.companyLogoImageUrlPath = this.companyProfile.companyLogoPath;
                         }
@@ -751,7 +774,7 @@ export class EditCompanyProfileComponent implements OnInit {
         if ($.trim(this.companyProfile.emailId).length > 0) {
             if (!this.regularExpressions.EMAIL_ID_PATTERN.test(this.companyProfile.emailId)) {
                 this.addEmailIdError();
-                this.emailIdErrorMessage = "Invalid EmailId";
+                this.emailIdErrorMessage = "Please enter a valid email address.";
             } else {
                 this.removeEmailIdError();
             }
@@ -803,13 +826,13 @@ export class EditCompanyProfileComponent implements OnInit {
         if ($.trim(this.companyProfile.website).length > 0) {
             if (!this.regularExpressions.URL_PATTERN.test(this.companyProfile.website)) {
                 this.addWebSiteError();
-                this.websiteErrorMessage = "Invalid WebSite Url";
+                this.websiteErrorMessage = "Please enter a valid company’s URL.";
             } else {
                 this.removeWebSiteError();
             }
         } else {
             this.websiteError = true;
-            this.websiteErrorMessage = 'Please add your company’s URL';
+            this.websiteErrorMessage = 'Please add your company’s URL.';
         }
     }
 
@@ -873,6 +896,30 @@ export class EditCompanyProfileComponent implements OnInit {
         } else {
             this.removeCountryError();
         }
+    }
+
+    isFormUpdated(){
+     console.log(this.companyProfile);
+     console.log(this.tempCompanyProfile);
+      if((this.companyProfile.companyLogoPath !== this.tempCompanyProfile[0].companyLogoPath) ||
+         (this.companyProfile.companyProfileName !== this.tempCompanyProfile[0].companyProfileName) ||
+         (this.companyProfile.companyName !== this.tempCompanyProfile[0].companyName) ||
+         (this.companyProfile.emailId !== this.tempCompanyProfile[0].emailId) ||
+         (this.companyProfile.phone !== this.tempCompanyProfile[0].phone) ||
+         (this.companyProfile.website !== this.tempCompanyProfile[0].website) ||
+         (this.companyProfile.facebookLink !== this.tempCompanyProfile[0].facebookLink) ||
+         (this.companyProfile.twitterLink !== this.tempCompanyProfile[0].twitterLink) ||
+         (this.companyProfile.linkedInLink !== this.tempCompanyProfile[0].linkedInLink) ||
+         (this.companyProfile.googlePlusLink !== this.tempCompanyProfile[0].googlePlusLink) ||
+         (this.companyProfile.tagLine !== this.tempCompanyProfile[0].tagLine) ||
+         (this.companyProfile.city !== this.tempCompanyProfile[0].city) ||
+         (this.companyProfile.state !== this.tempCompanyProfile[0].state) ||
+         (this.companyProfile.country !== this.tempCompanyProfile[0].country) ||
+         (this.companyProfile.zip !== this.tempCompanyProfile[0].zip) ||
+         (this.companyProfile.aboutUs !== this.tempCompanyProfile[0].aboutUs) ||
+         (this.companyProfile.street !== this.tempCompanyProfile[0].street)
+       ) { return true  }
+      return false;
     }
 
     validatePattern(column: string) {
@@ -948,4 +995,28 @@ export class EditCompanyProfileComponent implements OnInit {
                 () => { this.logger.info("Completed getCompanyProfileByUserId()") }
             );
     }
+
+   ngOnDestroy(): void {
+     if(this.authenticationService.user.hasCompany && this.router.url!="/" && this.formUpdated && this.isFormUpdated()) {
+       const self = this;
+       swal( {
+           title: 'Are you sure?',
+           text: "You have unchanged company profile data",
+           type: 'warning',
+           showCancelButton: true,
+           confirmButtonColor: '#54a7e9',
+           cancelButtonColor: '#999',
+           confirmButtonText: 'Yes, Save it!'
+
+       }).then(function() {
+               self.saveCompanyProfileOnDestroy();
+       },function (dismiss) {
+           if (dismiss == 'cancel') {
+
+           }
+       })
+
+     }
+   }
+
 }

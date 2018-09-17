@@ -175,25 +175,17 @@ export class ChartReportComponent implements OnInit, OnDestroy {
             var object = {
                     'First Name': this.downloadCsvList[i].firstName,
                     'Last Name': this.downloadCsvList[i].lastName,
-                    'Email Id': this.downloadCsvList[i].name,
-                    'Video Title': this.downloadCsvList[i].videoTitle,
+                    'Email Id': this.downloadCsvList[i].emailId,
                     'Views': this.downloadCsvList[i].views,
                     'Date': this.downloadCsvList[i].date,
                     'Device': this.downloadCsvList[i].device,
-                    'Location': this.downloadCsvList[i].location,
+                    'City': this.downloadCsvList[i].city,
+                    'State': this.downloadCsvList[i].state,
+                    'Country': this.downloadCsvList[i].country,
             }
             this.downloadDataList.push( object );
         }
-        var csvData = this.referenceService.convertToCSV( this.downloadDataList );
-        var a = document.createElement( "a" );
-        a.setAttribute( 'style', 'display:none;' );
-        document.body.appendChild( a );
-        var blob = new Blob( [csvData], { type: 'text/csv' });
-        var url = window.URL.createObjectURL( blob );
-        a.href = url;
-        a.download = 'Video_Chart_Statestics.csv';
-        a.click();
-        return 'success';
+        this.referenceService.isDownloadCsvFile = true;
     }
 
 

@@ -38,10 +38,10 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         public totalRecords: number = 1;
         public searchKey: string = "";
     sortByDropDown = [
-        { 'name': 'Name(A-Z)', 'value': 'campaign-ASC' },
-        { 'name': 'Name(Z-A)', 'value': 'campaign-DESC' },
-        { 'name': 'Created Date(ASC)', 'value': 'createdTime-ASC' },
-        { 'name': 'Created Date(DESC)', 'value': 'createdTime-DESC' }
+        { 'name': 'Name (A-Z)', 'value': 'campaign-ASC' },
+        { 'name': 'Name (Z-A)', 'value': 'campaign-DESC' },
+        { 'name': 'Created Date (ASC)', 'value': 'createdTime-ASC' },
+        { 'name': 'Created Date (DESC)', 'value': 'createdTime-DESC' }
     ];
 
     numberOfItemsPerPage = [
@@ -55,6 +55,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     public itemsSize: any = this.numberOfItemsPerPage[0];
 
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
+    campaignPartnerLoader: HttpRequestLoader = new HttpRequestLoader();
     isListView: boolean = false;
 
     public isError: boolean = false;
@@ -62,7 +63,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     saveAsCampaignName = '';
     isOnlyPartner: boolean = false;
     customResponse: CustomResponse = new CustomResponse();
-
+    partnerActionResponse:CustomResponse = new CustomResponse();
+    partnersPagination:Pagination = new Pagination();
     constructor(private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService:UtilService, public actionsDescription: ActionsDescription,
         public refService: ReferenceService, private userService: UserService, public authenticationService: AuthenticationService) {
@@ -149,7 +151,18 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         try {
             this.isListView = !this.refService.isGridView;
             this.pagination.maxResults = 12;
-            this.listCampaign(this.pagination);
+            if(this.refService.launchedCampaignType ==='VIDEO' || this.refService.launchedCampaignType ==='video')
+            {
+              this.filterCampaigns('VIDEO', 2);
+            } else if(this.refService.launchedCampaignType ==='REGULAR' || this.refService.launchedCampaignType ==='regular'){
+              this.filterCampaigns('REGULAR',1);
+            }
+            else if(this.refService.launchedCampaignType ==='SOCIAL') {
+              this.filterCampaigns('SOCIAL',3);
+            }
+            else {
+              this.listCampaign(this.pagination);
+            }
 
         } catch (error) {
             this.logger.error("error in manage-publish-component init() ", error);
@@ -281,5 +294,10 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     showCampaignPreview(campaignId:number){
         this.router.navigate(['/home/campaigns/preview/'+campaignId]);
     }
-
+    goToRedistributedCampaigns(campaign:Campaign){
+        this.router.navigate(['/home/campaigns/'+campaign.campaignId+"/re-distributed"]);
+    }
+    goToPreviewPartners(campaign:Campaign){
+        this.router.navigate(['/home/campaigns/'+campaign.campaignId+"/remove-access"]);
+    }
 }

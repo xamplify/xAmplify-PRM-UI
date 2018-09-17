@@ -75,7 +75,7 @@ export class LoginComponent implements OnInit, OnDestroy {
                   const body = error['_body'];
                   if (body !== "") {
                       const response = JSON.parse(body);
-                      if (response.error_description === "Bad credentials" || response.error_description.includes('Username/password are wrong')) {
+                      if (response.error_description === "Bad credentials" || response.error_description ==="Username/password are wrong") {
                           this.setCustomeResponse("ERROR", this.properties.BAD_CREDENTIAL_ERROR);
                       } else if (response.error_description === "User is disabled") {
                         this.resendActiveMail = true;
@@ -83,6 +83,8 @@ export class LoginComponent implements OnInit, OnDestroy {
                      //   this.setCustomeResponse("ERROR", this.properties.USER_ACCOUNT_ACTIVATION_ERROR);
                       }else if(response.error_description ==="UserDetailsService returned null, which is an interface contract violation"){
                         this.setCustomeResponse("ERROR", this.properties.BAD_CREDENTIAL_ERROR);
+                      }else if (response.error_description === "The email address that you've entered doesn't match any account. Sign up for an account." ){
+                    	  this.setCustomeResponse("ERROR", this.properties.USER_ACCOUNT_DOESNOT_EXIST );
                       }
                   }
                   else {
@@ -99,7 +101,10 @@ export class LoginComponent implements OnInit, OnDestroy {
     redirectTo(user: User) {
         this.loading = false;
         const roles = user.roles;
-        if (user.hasCompany || roles.length === 1) {
+
+        if(this.authenticationService.isSuperAdmin()){
+            this.router.navigate(['/home/dashboard/admin-report']);
+        }else if (user.hasCompany || roles.length === 1) {
             this.router.navigate([this.referenceService.homeRouter]);
         } else {
             this.router.navigate(['/home/dashboard/add-company-profile']);
@@ -124,6 +129,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       )
     } catch(error){ console.log('error'+error);}
     }
+
     ngOnInit() {
      try{
      this.mainLoader = true;

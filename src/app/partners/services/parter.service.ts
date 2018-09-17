@@ -10,6 +10,7 @@ export class ParterService {
 
     constructor( public authenticationService: AuthenticationService, public httpClient: HttpClient ) { }
     partnerReports( userId: number ): Observable<any> {
+        userId = this.authenticationService.checkLoggedInUserId(userId);
         const url = this.URL + 'partner/analytics?access_token=' + this.authenticationService.access_token +
             '&userId=' + userId;
         return this.httpClient.get( url )
@@ -26,6 +27,7 @@ export class ParterService {
             .catch( this.handleError );
     }
     partnerUserInteractionReports( userId: number, pagination: Pagination ): Observable<any> {
+        userId = this.authenticationService.checkLoggedInUserId(userId);
         const url = this.URL + 'partner/campaigns?access_token=' + this.authenticationService.access_token +
             '&userId=' + userId
         return this.httpClient.post( url, pagination )
@@ -48,6 +50,19 @@ export class ParterService {
         const url = this.URL + 'partner/send-in-active-reminder-email?access_token=' + this.authenticationService.access_token;
         return this.httpClient.post( url, user )
         .catch( this.handleError );
+    }
+    
+    listRedistributedThroughPartnerCampaign( userId: number, pagination: Pagination ): Observable<any> {
+        userId = this.authenticationService.checkLoggedInUserId(userId);
+        const url = this.URL + 'partner/list-re-distributed-partner-campaigns/'+userId+'?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post( url, pagination )
+            .catch( this.handleError );
+    }
+    
+    listRedistributedCampaigns( campaignId: number, pagination: Pagination ): Observable<any> {
+        const url = this.URL + 'partner/list-re-distributed-campaigns/'+campaignId+'?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post( url, pagination )
+            .catch( this.handleError );
     }
     
     handleError( error: any ) {

@@ -1,8 +1,9 @@
-<div class="page-content">
+<div class="page-content" [class.ml0]="authenticationService.isSuperAdmin()">
 <div class="page-bar">
 		<ul class="page-breadcrumb">
-			<li><i class="fa fa-home"></i> <a [routerLink]="refService.homeRouter">Home</a> <i
+			<li *ngIf="!authenticationService.isSuperAdmin()"><i class="fa fa-home"></i> <a [routerLink]="refService.homeRouter">Home</a> <i
 				class="fa fa-angle-right"></i></li>
+		<li *ngIf="authenticationService.isSuperAdmin()"><i class="fa fa-home"></i><a [routerLink]="['/home/dashboard/admin-report']">Admin Report</a><i class="fa fa-angle-right"></i></li>
       <li style="color:#808080" *ngIf="!authenticationService.isOnlyPartner()">Manage Templates</li>
       <li style="color:#808080" *ngIf="authenticationService.isOnlyPartner()">View Templates</li>
 		</ul>
@@ -18,17 +19,17 @@
 	</div>
 	<div class="row">
 		<div class="col-md-12">
-			<div class="portlet light clearfix">
+			<div class="portlet light clearfix" style="min-height: 644px;">
 				<div class="portlet-title"><!--  -->
 					<div class="row">
 						<div class="colxs-12 col-sm-9">
 						<div *ngIf="!isOnlyPartner">
 							<ul class="mix-filter" >
 								<li class="filter" (click)="filterTemplates('NONE',false,0)" [class.emailtemplate-selected]="0 == selectedTemplateTypeIndex" >All</li>
-								<li class="filter" (click)="filterTemplates('BASIC',false,1)" [class.emailtemplate-selected]="1 == selectedTemplateTypeIndex"> Basic</li>
-								<li class="filter" (click)="filterTemplates('RICH',false,2)" [class.emailtemplate-selected]="2 == selectedTemplateTypeIndex">Rich</li>
-								<li class="filter" (click)="filterTemplates('BASIC',true,3)" [class.emailtemplate-selected]="3 == selectedTemplateTypeIndex">Basic Video</li>
-								<li class="filter" (click)="filterTemplates('RICH',true,4)" [class.emailtemplate-selected]="4 == selectedTemplateTypeIndex">Rich Video</li>
+								<!-- <li class="filter" (click)="filterTemplates('BASIC',false,1)" [class.emailtemplate-selected]="1 == selectedTemplateTypeIndex"> Basic</li> -->
+								<li class="filter" (click)="filterTemplates('RICH',false,2)" [class.emailtemplate-selected]="2 == selectedTemplateTypeIndex">Basic</li>
+								<!-- <li class="filter" (click)="filterTemplates('BASIC',true,3)" [class.emailtemplate-selected]="3 == selectedTemplateTypeIndex">Basic Video</li> -->
+								<li class="filter" (click)="filterTemplates('RICH',true,4)" [class.emailtemplate-selected]="4 == selectedTemplateTypeIndex">Video</li>
 								<li class="filter" (click)="filterTemplates('UPLOADED',false,5)"[class.emailtemplate-selected]="5 == selectedTemplateTypeIndex">Uploaded</li>
 								<li *ngIf="isPartnerToo" class="filter" (click)="filterTemplates('PARTNER',false,6)"[class.emailtemplate-selected]="6 == selectedTemplateTypeIndex">Partner</li>
 								<li class="filter" (click)="filterTemplates('REGULAR_CO_BRANDING',false,7)"[class.emailtemplate-selected]="7 == selectedTemplateTypeIndex">Email Co-Branding</li>
@@ -45,9 +46,6 @@
 							</ng-container>
 							<div class="portlet-input input-inline input-small">
 								<div class="input-icon right">
-									<!-- <i class="icon-magnifier"  (click)="searchTemplates()" style="cursor: pointer;"></i>
-									<input type="search"
-									 class="form-control" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"  placeholder="search..."> -->
                    <input type="text" class="form-control" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="eventHandler($event.keyCode)">
                    <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey=''"></button>
                    <button type="submit" class="search-box-item-click" (click)="searchTemplates()"><i class="fa fa-search"></i></button>
@@ -64,7 +62,7 @@
             <section [hidden]="!isListView">
 						<ng-container *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError ">
 						<div class="table-responsive">
-						<table class='table tgrid table-hover table-sm hidden-xs'>
+						<table class='table tgrid table-hover table-sm hidden-xs'  *ngIf="pagination.pagedItems?.length>0">
 							<thead>
 								<tr>
 									<th colspan="2" style="width: 45%">Email Template List</th>
@@ -227,5 +225,6 @@
 							</div>
 						</div>
 					</div>
-				</div>
+        </div>
+        <app-scroll-top></app-scroll-top>
    </div>

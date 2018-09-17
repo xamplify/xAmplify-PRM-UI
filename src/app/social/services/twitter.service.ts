@@ -28,8 +28,7 @@ export class TwitterService {
     }
     
     appendQueryParameters( socialConnection: SocialConnection ) {
-        return '?access_token=' + this.authService.access_token
-            + '&oAuthTokenValue=' + socialConnection.oAuthTokenValue + '&oAuthTokenSecret=' + socialConnection.oAuthTokenSecret;
+        return `?access_token=${this.authService.access_token}&oAuthTokenValue=${socialConnection.oAuthTokenValue}&oAuthTokenSecret=${socialConnection.oAuthTokenSecret}`;
     }
     
     updateStatus(status: string) {
@@ -63,8 +62,8 @@ export class TwitterService {
             .catch(this.handleError);
     }
 
-    getTweet(socialConnection: SocialConnection, tweetId: number): Observable<Tweet> {
-        return this.http.get(this.URL + 'tweet' + this.appendQueryParameters(socialConnection) + '&tweetId=' + tweetId)
+    getTweet(socialConnection: SocialConnection, tweetId: string): Observable<Tweet> {
+        return this.http.get(this.URL + `tweets/${tweetId}` + this.appendQueryParameters(socialConnection))
             .map(this.extractData)
             .catch(this.handleError);
     }

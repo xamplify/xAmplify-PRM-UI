@@ -102,7 +102,7 @@ img:hover {
 			<li><i class="fa fa-home"></i> <a [routerLink]="referenceService.homeRouter" >Home</a>
 				<i class="fa fa-angle-right"></i></li>
 			<li style="color: #888">Add {{checkingContactTypeName}}s</li>
-		
+
 		</ul>
 		<div align="right" style="margin-top: 2px;">
 			<a (click)="downloadEmptyCsv()">
@@ -701,7 +701,8 @@ img:hover {
 			</form>
 		</div>
 	</div>
-	<!-- END PAGE CONTENT-->
+  <!-- END PAGE CONTENT-->
+  <app-scroll-top></app-scroll-top>
 </div>
 
 <!-- MODALS -->
@@ -889,7 +890,7 @@ img:hover {
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header" style="border-bottom: none;">
-				<!-- <button type="button" class="close" 
+				<!-- <button type="button" class="close"
 						data-dismiss="modal">&times;</button> -->
 				<a class="close-circle" data-dismiss="modal"><i
 					class="fa fa-times"></i></a>

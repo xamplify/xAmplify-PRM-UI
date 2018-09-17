@@ -47,4 +47,11 @@ a.disabled{pointer-events:none;cursor:not-allowed}
 .center{
   text-align: center;
 }
+
+.color-grey{
+	color: grey !important;
+}
+/* .color-grey:hover{
+	color: black !important;
+} */
  

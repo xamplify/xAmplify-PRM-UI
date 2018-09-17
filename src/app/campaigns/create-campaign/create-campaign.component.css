@@ -1039,10 +1039,15 @@ legend{display: block; width: auto; padding: 0 10px; margin-bottom: 0; font-size
 	cursor: default;
 }
 .custom-change-css{
-  width: 100%;
+  /* width: 100%; */
   background: #eaeaea;
   border-radius: 0;
-  padding: 10px 20px;
+  /* padding: 10px 20px; */
+  width: 102%;
+  position: relative;
+  top: -24px;
+  margin-bottom: -16px;
+  right: 10px;
 }
 .time-picker-css{
   margin-top: 30px;
@@ -1052,7 +1057,7 @@ legend{display: block; width: auto; padding: 0 10px; margin-bottom: 0; font-size
 }
 .button-blue{
   position: relative;
-  background: #8395a7 !important;
+  background: #888a8c !important;
   top: 6px;
   font-size: 4px;
 }
@@ -1067,3 +1072,16 @@ legend{display: block; width: auto; padding: 0 10px; margin-bottom: 0; font-size
   position: relative;
 }
 .view-by-banner{padding: 2px 5px;	background-color: #5bb2f5;	color: #fff;}
+.radio-button-css{
+  float: left;
+  position: relative;
+  top: 31px;
+  left: -7px;
+  cursor: pointer;
+}
+.colorBlue{
+background: #808080;
+}
+.colorRed{
+background: #5bb1d4;
+}

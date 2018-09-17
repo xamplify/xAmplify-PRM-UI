@@ -48,12 +48,12 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
 
     sortByDropDown = [
         { 'name': 'Sort By', 'value': '' },
-        { 'name': 'Name(A-Z)', 'value': 'name-ASC' },
-        { 'name': 'Name(Z-A)', 'value': 'name-DESC' },
-        { 'name': 'Company Name(A-Z)', 'value': 'company-ASC' },
-        { 'name': 'Company Name(Z-A)', 'value': 'company-DESC' },
-        { 'name': 'Created Date(ASC)', 'value': 'createdTime-ASC' },
-        { 'name': 'Created Date(DESC)', 'value': 'createdTime-DESC' }
+        { 'name': 'Name (A-Z)', 'value': 'name-ASC' },
+        { 'name': 'Name (Z-A)', 'value': 'name-DESC' },
+        { 'name': 'Company Name (A-Z)', 'value': 'company-ASC' },
+        { 'name': 'Company Name (Z-A)', 'value': 'company-DESC' },
+        { 'name': 'Created Date (ASC)', 'value': 'createdTime-ASC' },
+        { 'name': 'Created Date (DESC)', 'value': 'createdTime-DESC' }
     ];
 
     numberOfItemsPerPage = [
@@ -248,6 +248,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
     }
 
     deleteEmailTemplate( id: number,name:string ) {
+      this.refService.loading(this.httpRequestLoader, true);
        this.refService.goToTop();
         this.isEmailTemplateDeleted = false;
         this.isCampaignEmailTemplate = false;
@@ -273,6 +274,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
                     });
                     let message = "Please delete associated campaign(s)<br><br>"+campaignNames;
                     this.customResponse = new CustomResponse('ERROR',message,true );
+                    this.refService.loading(this.httpRequestLoader, false);
                 }
 
             },

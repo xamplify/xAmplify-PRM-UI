@@ -2,7 +2,7 @@ import * as _ from 'underscore';
 import {Pagination} from '../models/pagination';
 
 export class PagerService {
-   
+
     getPager(totalItems: number, currentPage: number , pageSize: number) {
         // calculate total pages
         let totalPages = Math.ceil(totalItems / pageSize);
@@ -46,9 +46,9 @@ export class PagerService {
             pages: pages
         };
     }
-    
-    
-    
+
+
+
     getPagedItems(pagination:Pagination,list:any[]){
         try{
             let pager = this.getPager(pagination.totalRecords, pagination.pageIndex, pagination.maxResults);
@@ -57,17 +57,18 @@ export class PagerService {
            pagination.pagedItems = list.slice(startIndex, endIndex);
            pagination.pager = pager;
            return pagination;
-           
+
         }catch(error){
-            alert(error);
+           // alert(error);
+           console.error(error);
         }
     }
-    
+
     goToAnotherPage(pagination:Pagination,list:any[]){
         if (pagination.pageIndex < 1 || pagination.pageIndex > pagination.pager.totalPages) {
             return;
         }
     }
-    
-    
+
+
 }

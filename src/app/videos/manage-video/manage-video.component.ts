@@ -15,6 +15,7 @@ import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { UtilService } from '../../core/services/util.service';
 import { CustomResponse } from '../../common/models/custom-response';
 import { ActionsDescription } from '../../common/models/actions-description';
+import { UserService } from '../../core/services/user.service';
 
 declare var swal, QuickSidebar, $: any;
 
@@ -54,9 +55,10 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
 
     constructor(public videoFileService: VideoFileService, public referenceService: ReferenceService,
         public authenticationService: AuthenticationService, public videoUtilService: VideoUtilService,
-        public pagerService: PagerService, public pagination: Pagination, public router: Router,
+        public pagerService: PagerService, public pagination: Pagination, public router: Router,public userService:UserService,
         public xtremandLogger: XtremandLogger, public homeComponent: HomeComponent, public utilService:UtilService, public actionsDescription:ActionsDescription) {
         this.xtremandLogger.log('MangeVideosComponent : constructor ');
+        try{
         this.loggedInUserId = this.authenticationService.getUserId();
         this.loggedUserName = this.authenticationService.user.emailId;
         this.referenceService.loading(this.httpRequestLoader, true);
@@ -64,8 +66,8 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.defaultBannerMessageValues();
         this.sortVideos = this.videoUtilService.sortVideos;
         if(this.authenticationService.isOnlyPartner()){
-          this.sortVideos = this.sortVideos.concat([{ 'name': 'Company Name(ASC)', 'value': 'companyName-ASC' }]);
-          this.sortVideos = this.sortVideos.concat([{ 'name': 'Company Name(DESC)', 'value': 'companyName-DESC'}]);
+          this.sortVideos = this.sortVideos.concat([{ 'name': 'Company Name (A-Z)', 'value': 'companyName-ASC' }]);
+          this.sortVideos = this.sortVideos.concat([{ 'name': 'Company Name (Z-A)', 'value': 'companyName-DESC'}]);
         }
         this.videoSort = this.sortVideos[0];
         this.categoryNum = this.videoFileService.categoryNumber = 0;
@@ -89,7 +91,8 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
           if (this.videoUtilService.selectedVideo) {
               this.showCampaignVideoReport(this.videoUtilService.selectedVideo);
           }
-      }
+      } catch(error){this.xtremandLogger.error('error in manage videos contructor:'+error); this.referenceService.hasClientError = true;}
+    }
     defaultBannerMessageValues() {
         this.showMessage = this.showUpdatevalue = false;
     }
@@ -108,6 +111,9 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
     }
     mouseLeave(videoFile){
        (<HTMLInputElement>document.getElementById('imagePathVideo'+videoFile.id)).src = videoFile.imagePath;
+    }
+    getDefaultVideoSettings(){
+     this.userService.getVideoDefaultSettings().subscribe((data)=>{ this.referenceService.defaultPlayerSettings = data;});
     }
     ngOnInit() {
       try {
@@ -183,6 +189,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.loadVideos(this.pagination);
     }
     showEditVideo(video: SaveVideoFile) {
+        if(this.referenceService.defaultPlayerSettings.playerColor===undefined){ this.getDefaultVideoSettings(); }
         try{
         this.referenceService.loading(this.httpRequestLoader, true);
         this.xtremandLogger.log('show edit video method in mange videos ' + JSON.stringify(video));

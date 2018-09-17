@@ -1660,7 +1660,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                 input: 'text',
                 inputValue: this.contactListName + '_copy',
                 showCancelButton: true,
-                confirmButtonText: 'Submit',
+                confirmButtonText: 'Save',
                 allowOutsideClick: false,
                 preConfirm: function( name: any ) {
                     return new Promise( function() {

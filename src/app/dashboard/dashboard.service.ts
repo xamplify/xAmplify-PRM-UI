@@ -150,6 +150,15 @@ export class DashboardService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+    
+    
+    getVendorsList(pagination: Pagination) {
+        const url = this.authenticationService.REST_URL+ 'superadmin/analytics?access_token=' + this.authenticationService.access_token;
+        return this.http.post(url, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    
     private extractData(res: Response) {
         let body = res.json();
         // console.log("response.json(): "+body);

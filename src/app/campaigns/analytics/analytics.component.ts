@@ -16,9 +16,11 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 import { PagerService } from '../../core/services/pager.service';
 import { ReferenceService } from '../../core/services/reference.service';
 import { SocialService } from '../../social/services/social.service';
+import { TwitterService } from '../../social/services/twitter.service';
 import { ContactService } from '../../contacts/services/contact.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
-
+import { SocialStatusProvider } from '../../social/models/social-status-provider';
+import { Tweet } from '../../social/models/tweet';
 declare var $, Highcharts: any;
 
 @Component({
@@ -43,6 +45,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   customResponse: CustomResponse = new CustomResponse();
 
   campaignViewsPagination: Pagination = new Pagination();
+  contactListInfoPagination: Pagination = new Pagination();
   emailActionListPagination: Pagination = new Pagination();
   usersWatchListPagination: Pagination = new Pagination();
   emailLogPagination: Pagination = new Pagination();
@@ -74,6 +77,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   paginationType:string;
   videoFile: any;
   userWatchtotalRecords: number;
+  isDataShare = false;
   isPartnerEnabledAnalyticsAccess = false;
   isNavigatedThroughAnalytics = false;
   campaignRouter:any;
@@ -93,9 +97,10 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
                     { 'name': 'Time(DESC)', 'value': 'time-DESC' }
                 ];
   public selectedSortedOption: any = this.sortByDropDown[this.sortByDropDown.length-1];
+  tweets: Array<Tweet> = new Array<Tweet>();
   constructor(private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
     public authenticationService: AuthenticationService, public pagerService: PagerService, public pagination: Pagination,
-    public referenceService: ReferenceService, public contactService: ContactService, public videoUtilService: VideoUtilService, public xtremandLogger:XtremandLogger) {
+    public referenceService: ReferenceService, public contactService: ContactService, public videoUtilService: VideoUtilService, public xtremandLogger:XtremandLogger, private twitterService: TwitterService) {
       try{
       this.campaignRouter = this.utilService.getRouterLocalStorage();
       this.isTimeLineView = false;
@@ -123,25 +128,43 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     this.referenceService.loading(this.httpRequestLoader, true);
     this.downloadTypeName = this.paginationType = 'campaignViews';
     this.listTotalCampaignViews(campaignId);
+    
+    if(!this.campaign.detailedAnalyticsShared && this.campaign.dataShare){
+        pagination.campaignId = campaignId;
+        pagination.campaignType = "VIDEO";
+        this.campaignService.listCampaignInteractiveViews(pagination)
+        .subscribe(
+        data => {
+          this.listCampaignViewsDataInsert(data);
+        },
+        error => console.log(error),
+        () => console.log()
+        )
+    }else{
     this.campaignService.listCampaignViews(campaignId, pagination)
       .subscribe(
       data => {
-        this.campaignViews = data.campaignviews;
-        const views = [];
-        for (let i = 0; i < data.campaignviews.length; i++) {
-          views.push(data.campaignviews[i].viewsCount)
-        }
-        this.maxViewsValue = Math.max.apply(null, views);
-        this.campaignViewsPagination.totalRecords = this.campaignReport.emailSentCount;
-        console.log(this.campaignReport)
-        this.campaignViewsPagination = this.pagerService.getPagedItems(this.campaignViewsPagination, this.campaignViews);
-        this.loading = false;
-        this.referenceService.loading(this.httpRequestLoader, false);
+        this.listCampaignViewsDataInsert(data);
       },
       error => console.log(error),
       () => console.log()
       )
+    }
     }catch(error){ this.xtremandLogger.error('error'+error);}
+  }
+  
+  listCampaignViewsDataInsert(data: any){
+      this.campaignViews = data;
+      const views = [];
+      for (let i = 0; i < data.length; i++) {
+        views.push(data[i].viewsCount)
+      }
+      this.maxViewsValue = Math.max.apply(null, views);
+      this.campaignViewsPagination.totalRecords = this.campaignReport.emailSentCount;
+      console.log(this.campaignReport)
+      this.campaignViewsPagination = this.pagerService.getPagedItems(this.campaignViewsPagination, this.campaignViews);
+      this.loading = false;
+      this.referenceService.loading(this.httpRequestLoader, false);
   }
 
   getCampaignViewsReportDurationWise(campaignId: number) {
@@ -282,18 +305,18 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       .subscribe(
       data => {
         console.log(data);
-        this.campaignBarViews = data.campaignviews;
+        this.campaignBarViews = data;
         const names = [];
         const views = [];
-        for (let i = 0; i < data.campaignviews.length; i++) {
-          const firstName = data.campaignviews[i].firstName ? data.campaignviews[i].firstName : "";
-          const lastName =  data.campaignviews[i].lastName ? data.campaignviews[i].lastName : "";
-          names.push( "<b>"+firstName + " "+ lastName + '</b><br/>' + data.campaignviews[i].emailId);
-          views.push(data.campaignviews[i].viewsCount)
+        for (let i = 0; i < this.campaignBarViews.length; i++) {
+          const firstName = this.campaignBarViews[i].firstName ? this.campaignBarViews[i].firstName : "";
+          const lastName =  this.campaignBarViews[i].lastName ? this.campaignBarViews[i].lastName : "";
+          names.push( "<b>"+firstName + " "+ lastName + '</b><br/>' + this.campaignBarViews[i].emailId);
+          views.push(this.campaignBarViews[i].viewsCount)
         }
         this.maxViewsValue = Math.max.apply(null, views);
         this.pagination.totalRecords = this.campaignReport.emailSentCount;
-        this.pagination = this.pagerService.getPagedItems(this.pagination, data.campaignviews);
+        this.pagination = this.pagerService.getPagedItems(this.pagination, this.campaignBarViews);
         console.log(this.pagination);
         this.campaignViewsCountBarchart(names, views);
         this.referenceService.goToTop();
@@ -410,7 +433,11 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     } else if (event.type === 'usersWatch') {
         this.usersWatchListPagination.pageIndex = event.page;
         this.usersWatchList(this.campaign.campaignId, this.usersWatchListPagination);
-    } else {
+    }else if (event.type === 'contactListInfo') {
+        this.contactListInfoPagination.pageIndex = event.page;
+        this.getListOfContacts(this.contactListId);
+    }
+    else {
       this.pagination.pageIndex = event.page;
        this.callPaginationValues(event.type);
      }
@@ -571,10 +598,12 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
         this.campaign = data;
         if(this.campaign.nurtureCampaign && this.campaign.userId!=this.loggedInUserId){
             this.isPartnerEnabledAnalyticsAccess = this.campaign.detailedAnalyticsShared;
+            this.isDataShare = this.campaign.dataShare;
             this.isNavigatedThroughAnalytics = true;
         }else{
             this.isNavigatedThroughAnalytics = false;
             this.isPartnerEnabledAnalyticsAccess = true;
+            this.isDataShare = true;
         }
         this.campaingContactLists = data.userLists;
         console.log(this.campaingContactLists);
@@ -603,6 +632,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
             this.campaignType = 'EMAIL';
           }
         }
+        this.getEmailSentCount(this.campaignId);
         this.loading = false;
       }
       )
@@ -616,10 +646,19 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       .subscribe(
       data => {
         this.socialStatus = data;
+
+
         this.loading = false;
       },
       error => this.xtremandLogger.error(error),
-      () => { }
+      () => {
+        let self = this;
+          this.socialStatus.socialStatusProviders.forEach(function (element) {
+          if (element.socialConnection.source === 'TWITTER') {
+            self.getTweet(element);
+          }
+        });
+      }
       )
     }catch(error){
       this.xtremandLogger.error('error'+error)
@@ -752,7 +791,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       this.campaignService.listCampaignViews(campaignId, this.campaignTotalViewsPagination)
       .subscribe(
       data => {
-        this.campaignTotalViewsData = data.campaignviews;
+        this.campaignTotalViewsData = data;
         try {
           const self = this;
           this.selectedRow = this.campaignTotalViewsData.find(function (obj) { return obj.emailId === self.selectedRow.emailId; });
@@ -883,7 +922,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
         this.loading = true;
         this.getListOfContacts(this.campaingContactLists[0].id);
     }
-    getListOfContacts(id:number){
+    /*getListOfContacts(id:number){
     try{
       this.contactListId = id;
      this.contactService.loadUsersOfContactList(id, this.pagination).subscribe(
@@ -894,7 +933,22 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       },
       (error:any)=>{this.xtremandLogger.error('error'+error); })
     }catch(error) { this.xtremandLogger.error('error'+error);}
-  }
+  }*/
+    
+   getListOfContacts(id:number){
+        try{
+          this.contactListId = id;
+         this.campaignService.loadUsersOfContactList(id,this.campaignId, this.pagination).subscribe(
+           data => {
+            this.campaingContactListValues = data.listOfUsers;
+            this.loading = false;
+            this.contactListInfoPagination.totalRecords = data.totalRecords;
+            this.contactListInfoPagination = this.pagerService.getPagedItems(this.contactListInfoPagination, this.campaingContactListValues);
+            $("#show_contact-list-info").modal('show');
+          },
+          (error:any)=>{this.xtremandLogger.error('error'+error); })
+        }catch(error) { this.xtremandLogger.error('error'+error);}
+     }
 
   getSortedResult(campaignId: number,event:any){
     this.emailActionListPagination = this.utilService.sortOptionValues(event,this.emailActionListPagination);
@@ -926,6 +980,15 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     }
   }
 
+  getTweet(socialStatusProvider: SocialStatusProvider) {
+    this.twitterService.getTweet(socialStatusProvider.socialConnection, socialStatusProvider.statusId)
+      .subscribe(
+      data => {this.tweets.push(data)},
+      error => console.log(error),
+      () => { }
+      )
+  }
+
   ngOnInit() {
     try{
     this.mainLoader = true;
@@ -933,7 +996,6 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     this.emailActionListPagination.pageIndex = 1;
     this.campaignId = this.route.snapshot.params['campaignId'];
     this.getCampaignById(this.campaignId);
-    this.getEmailSentCount(this.campaignId);
     this.getEmailLogCountByCampaign(this.campaignId);
     this.pagination.pageIndex = 1;
     if (this.isTimeLineView === true) {

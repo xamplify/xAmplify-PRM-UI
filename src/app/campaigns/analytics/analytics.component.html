@@ -10,17 +10,18 @@
 .btn-social { color: #fff;}
 </style>
 <!-- <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading> -->
-<div class="page-content" *ngIf="!isTimeLineView">
+<div class="page-content" *ngIf="!isTimeLineView" [class.ml0]="authenticationService.isSuperAdmin()">
 <div class="page-bar square-box" style="margin: 0 10px 15px;border-radius: 0;">
 	<ul class="page-breadcrumb">
-		<li><i class="fa fa-home"></i> <a [routerLink]="referenceService.homeRouter">Home</a> <i class="fa fa-angle-right"></i></li>
+		<li *ngIf="!authenticationService.isSuperAdmin()"><i class="fa fa-home"></i> <a [routerLink]="referenceService.homeRouter">Home</a> <i class="fa fa-angle-right"></i></li>
+		 <li *ngIf="authenticationService.isSuperAdmin()"><i class="fa fa-home"></i><a [routerLink]="['/home/dashboard/admin-report']">Admin Report</a><i class="fa fa-angle-right"></i></li>
 		<li *ngIf="campaignRouter==='managecampaigns'"><a  [routerLink]="['/home/campaigns/manage']">Manage Campaigns</a><i class="fa fa-angle-right"></i></li>
     <li *ngIf="campaignRouter==='notification'"><a [routerLink]="['/home/dashboard/notifications']">Notifications</a><i class="fa fa-angle-right"></i></li>
     <li *ngIf="campaignRouter==='partnerAnalytics'"><a [routerLink]="['/home/partners/analytics']">Partner Analytics</a><i class="fa fa-angle-right"></i></li>
-    <li style="color: #888;" *ngIf="isPartnerEnabledAnalyticsAccess" title="{{campaign.campaignName}}">
+    <li style="color: #888;" *ngIf="isDataShare" title="{{campaign.campaignName}}">
       {{campaign.campaignName | slice: 0: 35}}<span *ngIf="campaign.campaignName?.length>35">...</span>
-      <b *ngIf="isNavigatedThroughAnalytics" style="color:#0195da">(Data Sharing Enabled)</b></li>
-    <li style="color: #888;" *ngIf="!isPartnerEnabledAnalyticsAccess" title="{{campaign.campaignName}}">
+      <b *ngIf="isNavigatedThroughAnalytics" style="color:#0195da">(Data Sharing Enabled)</b><b *ngIf="!isPartnerEnabledAnalyticsAccess" style="color:#0195da">(Interactive Data)</b></li>
+    <li style="color: #888;" *ngIf="!isDataShare" title="{{campaign.campaignName}}">
       {{campaign.campaignName | slice: 0: 35}}<span *ngIf="campaign.campaignName?.length>35">...</span>
       <b *ngIf="isNavigatedThroughAnalytics" style="color:#ed1d24">(Data Sharing Disabled)</b></li>
 	</ul>
@@ -33,8 +34,8 @@
 <ng-template #NOERROR>
 <app-analytics-loader *ngIf="mainLoader"></app-analytics-loader>
 	<div class="row" [hidden]="mainLoader || hasClientError">
-		<div class="pl10 pr10 col-xs-12" [ngClass]="{'col-sm-4': campaignType === 'VIDEO','forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}" *ngIf="campaignType === 'VIDEO' && campaign.selectedVideoId>0">
-			<a class="dashboard-stat dashboard-stat-lighter purple-soft" (click)="previewVideo(campaign.campaignVideoFile)" [class.disabled]="!isPartnerEnabledAnalyticsAccess ?true:null">
+		<div class="pl10 pr10 col-xs-12" [ngClass]="{'col-sm-4': campaignType === 'VIDEO','forbidden' :!isDataShare ?true:null}" *ngIf="campaignType === 'VIDEO' && campaign.selectedVideoId>0">
+			<a class="dashboard-stat dashboard-stat-lighter purple-soft" (click)="previewVideo(campaign.campaignVideoFile)" [class.disabled]="!isPartnerEnabledAnalyticsAccess">
 				<div class="visual">
 					<i class="fa fa-video-camera"></i>
 				</div>
@@ -44,7 +45,7 @@
 						<b class="m0" title={{campaign.campaignVideoFile.title}}>{{campaign.campaignVideoFile.title | slice: 0: 25}}</b>
 						<span *ngIf="campaign.campaignVideoFile.title?.length>25">...</span>
 					</div>
-         		 <div class="camp-desc" *ngIf="isPartnerEnabledAnalyticsAccess">
+         		 <div class="camp-desc" *ngIf="isDataShare">
 		            <span>Click for preview</span>
 		           </div>
 				</div>
@@ -68,8 +69,8 @@
 			</a>
 		</div>
 
-		<div class="pl10 pr10 col-xs-12" [ngClass]="{'col-sm-4': campaignType === 'VIDEO', 'col-sm-6': campaignType === 'EMAIL','forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null }" *ngIf="(campaignType === 'VIDEO' || campaignType === 'EMAIL') && campaign.selectedEmailTemplateId>0">
-			<a class="dashboard-stat dashboard-stat-lighter blue-soft" (click)="showEmailTemplatePreview(campaign.emailTemplate)" [class.disabled]="!isPartnerEnabledAnalyticsAccess ?true:null" >
+		<div class="pl10 pr10 col-xs-12" [ngClass]="{'col-sm-4': campaignType === 'VIDEO', 'col-sm-6': campaignType === 'EMAIL','forbidden' :!isDataShare ?true:null }" *ngIf="(campaignType === 'VIDEO' || campaignType === 'EMAIL') && campaign.selectedEmailTemplateId>0">
+			<a class="dashboard-stat dashboard-stat-lighter blue-soft" (click)="showEmailTemplatePreview(campaign.emailTemplate)" [class.disabled]="!isPartnerEnabledAnalyticsAccess" >
 					<div class="visual">
 						<i class="fa fa-envelope-open"></i>
 					</div>
@@ -79,7 +80,7 @@
 						  <b class="m0" title={{campaign.emailTemplate.name}}>{{campaign.emailTemplate.name | slice: 0: 25}}</b>
 						  <span *ngIf="campaign.emailTemplate.name?.length>25">...</span>
 						</div>
-						<div class="camp-desc" *ngIf="isPartnerEnabledAnalyticsAccess">
+						<div class="camp-desc" *ngIf="isDataShare">
 						 <span>Click for preview</span>
 						</div>
 					</div>
@@ -102,8 +103,8 @@
 				</a>
 		</div>
 
-		<div  class="pl10 pr10 col-xs-12" [ngClass]="{'col-sm-4': campaignType === 'VIDEO', 'col-sm-6': campaignType === 'EMAIL', 'col-sm-12': campaignType === 'SOCIAL','forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}">
-			<a class="dashboard-stat dashboard-stat-lighter green-soft" (click)="showContactListModal()" [class.disabled]="!isPartnerEnabledAnalyticsAccess ?true:null">
+		<div  class="pl10 pr10 col-xs-12" [ngClass]="{'col-sm-4': campaignType === 'VIDEO', 'col-sm-6': campaignType === 'EMAIL', 'col-sm-12': campaignType === 'SOCIAL','forbidden' :!isDataShareisDataShare ?true:null}">
+			<a class="dashboard-stat dashboard-stat-lighter green-soft" (click)="showContactListModal()" [class.disabled]="!isPartnerEnabledAnalyticsAccess">
 					<div class="visual">
 						<i class="fa fa-users"></i>
 					</div>
@@ -116,7 +117,7 @@
                  <span *ngIf="authenticationService.isVendor()">Partner Lists</span>
               </b>
 						</div>
-						<div class="camp-desc" *ngIf="isPartnerEnabledAnalyticsAccess">
+						<div class="camp-desc" *ngIf="isDataShare">
 							<span>Click for details</span>
 						</div>
 					</div>
@@ -133,9 +134,9 @@
 					<div><span style="float: right;font-size: 14px;color: #fff;background: #00a6e8;padding: 0px 17px;margin-right: 1px;margin-top:2px;">{{campaignType}} CAMPAIGN {{isPartnerCampaign}}</span>
 					</div>
 				</div>
-				<div class="portlet-body text-center" style="min-height: 300px;" [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}">
-					<app-worldmap *ngIf="renderMapData && isPartnerEnabledAnalyticsAccess" [worldMapData] = "renderMapData" (notifyParent)="clickWorldMapReports($event)"></app-worldmap>
-					<app-worldmap class="disabled" *ngIf="renderMapData && !isPartnerEnabledAnalyticsAccess" [worldMapData] = "renderMapData"></app-worldmap>
+				<div class="portlet-body text-center" style="min-height: 300px;" [ngClass]="{'forbidden' :!isDataShare ?true:null}">
+					<app-worldmap *ngIf="renderMapData && isDataShare" [worldMapData] = "renderMapData" (notifyParent)="clickWorldMapReports($event)"></app-worldmap>
+					<app-worldmap class="disabled" *ngIf="renderMapData && !isDataShare" [worldMapData] = "renderMapData"></app-worldmap>
 				</div>
 			</div>
 		</div>
@@ -157,8 +158,8 @@
 	</div>
 	<div class="col-xs-12 col-sm-6 p-5x emails-info" [hidden]="mainLoader || hasClientError" >
 		<div class="p-5x" [ngClass]="{'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO'}">
-			<button class="portlet light color1-invert crcb" (click)="downloadTypeName = 'campaignViews'" data-toggle="modal" data-target="#emailSentListModal" [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
-			 [disabled]="campaignReport.emailSentCount < 1 ||  !isPartnerEnabledAnalyticsAccess">
+			<button class="portlet light color1-invert crcb" (click)="downloadTypeName = 'campaignViews'" data-toggle="modal" data-target="#emailSentListModal" [ngClass]="{'forbidden' :!isDataShare ?true:null}"
+			 [disabled]="campaignReport.emailSentCount < 1 || !isPartnerEnabledAnalyticsAccess">
 				<div class="portlet-body text-center">
 						<i class="fa fa-envelope"></i>
 					<h1>
@@ -168,21 +169,21 @@
 				</div>
 			</button>
 		</div>
-		<div class="p-5x" [hidden]="mainLoader || hasClientError"  [ngClass]="{'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO','forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}">
-			<button class="portlet light color1-invert crcb" (click)="emailActionList(campaign.campaignId, 'open', emailActionListPagination)"  [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
-			 [disabled]="campaignReport.emailOpenCount < 1 || !isPartnerEnabledAnalyticsAccess">
+		<div class="p-5x" [hidden]="mainLoader || hasClientError"  [ngClass]="{'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO','forbidden' :!isDataShare ?true:null}">
+			<button class="portlet light color1-invert crcb" (click)="emailActionList(campaign.campaignId, 'open', emailActionListPagination)"  [ngClass]="{'forbidden' :!isDataShare ?true:null}"
+			 [disabled]="campaignReport.emailOpenCount < 1 || !isDataShare">
 				<div class="portlet-body text-center">
 						<i class="fa fa-envelope-open"></i>
 					<h1>
 						<b>{{campaignReport.emailOpenCount}}</b>
 					</h1>
-					<h5>Emails Opened</h5>
+					<h5>Active Recipients</h5>
 				</div>
 			</button>
 		</div>
-		<div class="p-5x" [hidden]="mainLoader || hasClientError"  [ngClass]="{'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO','forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}">
-			<button class="portlet light color1-invert crcb" (click)="emailActionList(campaign.campaignId, 'click', emailActionListPagination)"  [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
-			 [disabled]="campaignReport.emailClickedCount < 1 || !isPartnerEnabledAnalyticsAccess">
+		<div class="p-5x" [hidden]="mainLoader || hasClientError"  [ngClass]="{'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO','forbidden' :!isDataShare ?true:null}">
+			<button class="portlet light color1-invert crcb" (click)="emailActionList(campaign.campaignId, 'click', emailActionListPagination)"  [ngClass]="{'forbidden' :!isDataShare ?true:null}"
+			 [disabled]="campaignReport.emailClickedCount < 1 || !isDataShare">
 				<div class="portlet-body text-center">
 						<i class="fa fa-globe"></i>
 					<h1>
@@ -192,9 +193,9 @@
 				</div>
 			</button>
 		</div>
-		<div [hidden]="mainLoader || hasClientError"  class="col-xs-6 col-sm-3 p-5x" *ngIf="campaignType === 'VIDEO'" [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}">
-			<button class="portlet light color1-invert crcb" (click)="usersWatchList(campaign.campaignId, usersWatchListPagination)"  [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
-			 [disabled]="campaignReport.usersWatchCount < 1 || !isPartnerEnabledAnalyticsAccess">
+		<div [hidden]="mainLoader || hasClientError"  class="col-xs-6 col-sm-3 p-5x" *ngIf="campaignType === 'VIDEO'" [ngClass]="{'forbidden' :!isDataShare ?true:null}">
+			<button class="portlet light color1-invert crcb" (click)="usersWatchList(campaign.campaignId, usersWatchListPagination)"  [ngClass]="{'forbidden' :!isDataShare ?true:null}"
+			 [disabled]="campaignReport.usersWatchCount < 1 || !isDataShare">
 				<div class="portlet-body text-center">
 						<i class="fa fa-eye"></i>
 					<h1>
@@ -214,37 +215,37 @@
 					</div>
 				</div>
 				<div class="portlet-body clearfix">
-					<div class='col-xs-12 col-sm-6'>
-						<h5>Social status content</h5>
-						<textarea disabled class="form-control form-group rounded-0 mb5" maxlength="140">{{socialStatus.statusMessage}}</textarea>
-						<div *ngFor="let socialStatusContent of socialStatus.socialStatusContents">
-							<img async *ngIf="socialStatusContent.fileType === 'image'" src="{{authenticationService.MEDIA_URL}}{{socialStatusContent.filePath}}?access_token={{authenticationService.access_token}}"
-							 style="height: 240px; width: auto;">
-							<video *ngIf="socialStatusContent.fileType == 'video'" width="160" height="80">
-								<source src="{{socialStatusContent.filePath}}" type="video/mp4">
-							</video>
-						</div>
-					</div>
-					<div class='col-xs-12 col-sm-6'>
-						<h5>Selected Accounts</h5>
-						<span *ngFor="let socialStatusProvider of socialStatus.socialStatusProviders" style="padding-right: 5px">
-							<div class="btn btn-social" [ngClass]="{
-										'btn-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK',
-										'btn-twitter': socialStatusProvider.socialConnection.source ==='TWITTER',
-										'btn-linkedin': socialStatusProvider.socialConnection.source ==='LINKEDIN',
-										'btn-google': socialStatusProvider.socialConnection.source ==='GOOGLE'}">
-
-								<i class="fa" [ngClass]="{
-												'fa-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK',
-												'fa-twitter': socialStatusProvider.socialConnection.source ==='TWITTER',
-												'fa-linkedin': socialStatusProvider.socialConnection.source ==='LINKEDIN',
-												'fa-google': socialStatusProvider.socialConnection.source ==='GOOGLE'}"></i>
-								<span *ngIf="socialStatusProvider.socialConnection.profileName">{{socialStatusProvider.socialConnection.profileName}}</span>
-								<span *ngIf="!socialStatusProvider.socialConnection.profileName">{{socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatusProvider.socialConnection.lastName}}</span>
-
+					<span *ngFor="let socialStatusProvider of socialStatus.socialStatusProviders">
+						<div class="portlet light m10 col-xs-4">
+							<div class="portlet title" style="min-height: 48px;">
+								<img class="pull-left mr10" src="{{socialStatusProvider.socialConnection.profileImage}}" style="width: 48px; height: 48px;">
+								<h5>
+									<span *ngIf="socialStatusProvider.socialConnection.source !=='GOOGLE'">{{socialStatusProvider.socialConnection.profileName}}</span>
+									<span *ngIf="socialStatusProvider.socialConnection.source ==='GOOGLE'">{{socialStatusProvider.socialConnection.firstName}}</span>
+								</h5>
+								<h5>{{socialStatus.scheduledTimeUser | date: 'short'}}</h5>
+								<span [ngClass]="{'ribbon-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK',
+									'ribbon-twitter': socialStatusProvider.socialConnection.source ==='TWITTER',
+									'ribbon-linkedin': socialStatusProvider.socialConnection.source ==='LINKEDIN',
+									'ribbon-google': socialStatusProvider.socialConnection.source ==='GOOGLE'}" style="position: absolute;right: 10px;top: 10px;">
+								<i class="fa fa-social pull-right" [ngClass]="{'fa-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK',
+									'fa-twitter': socialStatusProvider.socialConnection.source ==='TWITTER',
+									'fa-linkedin': socialStatusProvider.socialConnection.source ==='LINKEDIN',
+									'fa-google': socialStatusProvider.socialConnection.source ==='GOOGLE'}"></i>
+							</span>
 							</div>
-						</span>
-					</div>
+							<div class="portlet body">
+								<h4>{{socialStatus.statusMessage}}</h4>
+								<div *ngFor="let socialStatusContent of socialStatus.socialStatusContents">
+									<img async *ngIf="socialStatusContent.fileType === 'image'" src="{{authenticationService.MEDIA_URL}}{{socialStatusContent.filePath}}?access_token={{authenticationService.access_token}}"
+									style="height: 240px; width: auto;">
+									<video *ngIf="socialStatusContent.fileType == 'video'" width="160" height="80">
+										<source src="{{socialStatusContent.filePath}}" type="video/mp4">
+									</video>
+								</div>
+							</div>
+						</div>							
+					</span>
 				</div>
 			</div>
 		</div>
@@ -257,8 +258,8 @@
 						<span class="caption-subject font-red-sunglo uppercase" style="font-size: 15px !important;">Campaign Recipient Participation</span>
 					</div>
 				</div>
-				<div class="portlet-body flex" style="padding: 1.49em 0;" [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}">
-					<div class="col-xs-4 text-center" [class.disabled]="(campaignReport.lifetimeViewsCount < 1 || !isPartnerEnabledAnalyticsAccess) ? true : null">
+				<div class="portlet-body flex clearfix" style="padding: 1.49em 0;" [ngClass]="{'forbidden' :!isDataShare ?true:null}">
+					<div class="col-xs-4 text-center" [class.disabled]="(campaignReport.lifetimeViewsCount < 1 || !isDataShare) ? true : null">
 						<section class="percentage-circle" style="cursor: pointer" (click)="campaignViewsDonut('life-time')">
 							<app-donut-chart [percentageValue]="campaignReport.lifetimeViewsCount" [totalValue]="campaignReport.emailSentCount"> </app-donut-chart>
 							<h2 class="percentage-value" style="font-size: 23px;" *ngIf="campaignReport.emailSentCount!==0">{{campaignReport.lifetimeViewsCount*100/campaignReport.emailSentCount | number : '1.0-2'}}%</h2>
@@ -267,7 +268,7 @@
 						</section>
 						<h5 style="text-align: center; color: #00a6e8; margin-top: 3.5em;">Lifetime</h5>
 					</div>
-					<div class="col-xs-4 text-center" [class.disabled]="(campaignReport.thisMonthViewsCount < 1 || !isPartnerEnabledAnalyticsAccess) ? true : null" (click)="campaignViewsDonut('current-month')">
+					<div class="col-xs-4 text-center" [class.disabled]="(campaignReport.thisMonthViewsCount < 1 || !isDataShare) ? true : null" (click)="campaignViewsDonut('current-month')">
 						<section class="percentage-circle" style="cursor: pointer">
 							<app-donut-chart [percentageValue]="campaignReport.thisMonthViewsCount" [totalValue]="campaignReport.emailSentCount"> </app-donut-chart>
 							<h2 class="percentage-value" style="font-size: 23px;" *ngIf="campaignReport.emailSentCount!==0">{{campaignReport.thisMonthViewsCount*100/campaignReport.emailSentCount | number : '1.0-2'}}%</h2>
@@ -277,7 +278,7 @@
 						<h5 style="text-align: center; color: #00a6e8; margin-top: 3.5em;">This Month
 						</h5>
 					</div>
-					<div class="col-xs-4 text-center" [class.disabled]="(campaignReport.todayViewsCount < 1  || !isPartnerEnabledAnalyticsAccess)? true : null">
+					<div class="col-xs-4 text-center" [class.disabled]="(campaignReport.todayViewsCount < 1  || !isDataShare)? true : null">
 						<section class="percentage-circle" style="cursor: pointer" (click)="campaignViewsDonut('today')">
 							<app-donut-chart [percentageValue]="campaignReport.todayViewsCount" [totalValue]="campaignReport.emailSentCount"> </app-donut-chart>
 							<h2 class="percentage-value" style="font-size: 23px;" *ngIf="campaignReport.emailSentCount!==0">{{campaignReport.todayViewsCount*100/campaignReport.emailSentCount | number : '1.0-2'}}%</h2>
@@ -290,7 +291,7 @@
 			</div>
 		</div>
   </div>
-	<div class="row" *ngIf="isPartnerEnabledAnalyticsAccess">
+	<div class="row"  *ngIf="isDataShare">
 		<div class="col-xs-12 col-sm-12 p-5x">
 			<div class="col-xs-12 p-5x">
           <div class="row" *ngIf="!campaignViews">
@@ -327,13 +328,15 @@
 										<th style="font-size: 12px;font-weight: 500;">CAMPAIGN NAME</th>
 										<th style="font-size: 12px;font-weight: 500;">LATEST VIEW</th>
 										<th style="font-size: 12px;font-weight: 500;">
-											<span *ngIf="campaignType==='VIDEO'">TOTAL VIEWS</span>
-											<span *ngIf="campaignType!=='VIDEO'">TOTAL EMAIL OPENED</span>
+											<span *ngIf="campaignType === 'VIDEO'">TOTAL VIEWS</span>
+											<span *ngIf="campaignType === 'REGULAR'">TOTAL EMAIL OPENED</span>
+											<span *ngIf="campaignType === 'SOCIAL'">Redistributed Social Accounts</span>
 										</th>
 									</tr>
 								</thead>
 								<tbody>
-									<tr *ngFor="let item of campaignViews" (click)="userTimeline(item);">
+								<ng-container *ngFor="let item of campaignViews" >
+									<tr (click)="userTimeline(item);">
 										<td>
 										<app-user-info  [userInfo]="item"> </app-user-info>
 											<!-- here emailId coming as userMail -->
@@ -347,15 +350,41 @@
 										<!-- <td class="td-chart"><h6>{{item.userEmail}}</h6></td> -->
 										<td class="td-chart">
 											<h6>
-											<app-timestamp [dateAndTime]="item.latestView"> </app-timestamp>
-											<span *ngIf="! item?.latestView">-</span></h6>
+											<app-timestamp *ngIf="item?.latestView" [dateAndTime]="item.latestView"> </app-timestamp>
+											<span *ngIf="!item?.latestView">-</span></h6>
 										</td>
 										<td class="td-chart">
-											<div class="bg-color" [style.width.%]="(item.viewsCount/maxViewsValue)*100" style="margin: 10px 0px;">
-												<h1 style="text-align: center;vertical-align: middle;color:white;font-size: 17px;">{{item.viewsCount}}</h1>
+											<div class="progress" *ngIf="campaignType !== 'SOCIAL'">
+												<div class="progress-bar progress-bar-success" [ngClass]="{'special-progress-bar' : item.viewsCount === 0 }" role="progressbar" [style.width.%]="(item.viewsCount/maxViewsValue)*100">
+													<span>{{item.viewsCount}}</span>
+												</div>
 											</div>
+											<ng-container *ngIf="campaignType == 'SOCIAL'">
+												<ng-container *ngFor="let socialStatus of socialStatus.socialStatusList">
+													<ng-container *ngIf="socialStatus.userId === item.userId">
+													<ng-container *ngFor="let socialStatusProvider of socialStatus.socialStatusProviders">
+													<div class="btn btn-social" [ngClass]="{
+																'btn-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK',
+																'btn-twitter': socialStatusProvider.socialConnection.source ==='TWITTER',
+																'btn-linkedin': socialStatusProvider.socialConnection.source ==='LINKEDIN',
+																'btn-google': socialStatusProvider.socialConnection.source ==='GOOGLE'}">
+
+														<i class="fa" [ngClass]="{
+																		'fa-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK',
+																		'fa-twitter': socialStatusProvider.socialConnection.source ==='TWITTER',
+																		'fa-linkedin': socialStatusProvider.socialConnection.source ==='LINKEDIN',
+																		'fa-google': socialStatusProvider.socialConnection.source ==='GOOGLE'}"></i>
+														<span *ngIf="socialStatusProvider.socialConnection.profileName">{{socialStatusProvider.socialConnection.profileName}}</span>
+														<span *ngIf="!socialStatusProvider.socialConnection.profileName">{{socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatusProvider.socialConnection.lastName}}</span>
+
+													</div>
+													</ng-container>
+													</ng-container>
+												</ng-container>
+											</ng-container>
 										</td>
 									</tr>
+									</ng-container>
 								</tbody>
 							</table>
 						</div>
@@ -371,7 +400,7 @@
 </div>
 
 
-<div id="timeline-view" class="page-content" *ngIf="isTimeLineView">
+<div id="timeline-view" class="page-content" *ngIf="isTimeLineView" [class.ml0]="authenticationService.isSuperAdmin()">
 	<div class="page-bar">
 		<a (click)="resetTopNavBarValue()" class="pull-right close-circle" style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;"> <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;"
 			aria-hidden="true"></span></a>
@@ -431,6 +460,19 @@
 								</div>
 							</a>
 						</div>
+						<div class="col-sm-3 col-xs-6" *ngIf="campaignType==='SOCIAL'">
+							<a class="text-center">
+								<div><img src="assets/images/social-icons.jpg" style="margin: 0px 15px;width: auto;height: 52px;"></div>
+								<div>Social Accounts</div>
+								<div class="number">
+									<ng-container *ngFor="let socialStatus of socialStatus.socialStatusList">
+										<ng-container *ngIf="socialStatus.userId === selectedRow.userId">
+											<span>{{socialStatus.socialStatusProviders.length}}</span>
+										</ng-container>
+									</ng-container>
+								</div>
+							</a>
+						</div>
 					</div>
 				</div>
 
@@ -459,7 +501,7 @@
 				<img *ngIf="emailLog.actionId == 13" alt="opened" src="assets/images/opened.png">
 				<img *ngIf="emailLog.actionId == 14" alt="clicked" src="assets/images/clicked.png">
 				<img *ngIf="emailLog.actionId == 15" alt="clicked" src="assets/images/clicked.png">
-				<img *ngIf="emailLog.actionId == 1" alt="watched" src="assets/images/video.png">
+				<img *ngIf="emailLog.actionId == 1 || emailLog.actionId == 10" alt="watched" src="assets/images/video.png">
 		  	</div>
           <div class="timeline-panel">
             <div class="timeline-heading">
@@ -478,8 +520,12 @@
 					<span *ngIf="emailLog.actionId == 15">
 					Clicked on the URL
 					<span class="f-w-600" *ngIf="emailLog.url"><a href="{{emailLog.url}}" target="_blank" title="{{emailLog.url}}">{{emailLog.url | slice:0:30}}<span *ngIf="emailLog.url?.length>30">...</span></a></span>
-					</span>
-					<span *ngIf="emailLog.actionId == 1"><span class="f-w-600" title="{{campaign.campaignVideoFile.title}}">{{campaign.campaignVideoFile.title | slice:0:30}} <span *ngIf="campaign.campaignVideoFile.title?.length>30">...</span></span> played</span> at {{emailLog.time | date: 'shortTime'}}
+					</span> 
+					<span *ngIf="emailLog.actionId == 1 || emailLog.actionId == 10">
+						<span class="f-w-600" title="{{campaign.campaignVideoFile.title}}">{{campaign.campaignVideoFile.title | slice:0:30}} 
+							<span *ngIf="campaign.campaignVideoFile.title?.length>30">...</span>
+						</span> <span *ngIf="emailLog.actionId == 10">re-</span>played
+					</span> at {{emailLog.time | date: 'shortTime'}}
 				</h5>
 			  	<span *ngIf="emailLog.countryCode">
 				  	<h6>
@@ -495,6 +541,45 @@
           </div>
         </li>
        </ul>
+            <div class="timeline-body" style="width: 90%; float: right">
+				<ng-container *ngIf="campaignType == 'SOCIAL'">
+					<ng-container *ngFor="let socialStatus of socialStatus.socialStatusList">
+						<ng-container *ngIf="socialStatus.userId === selectedRow.userId">						
+						<span *ngFor="let socialStatusProvider of socialStatus.socialStatusProviders">
+							<div class="portlet light">
+								<div class="portlet title" style="min-height: 48px; position: relative;">
+									<img class="pull-left mr10" src="{{socialStatusProvider.socialConnection.profileImage}}" style="width: 48px; height: 48px;">
+									<h5>
+										<span *ngIf="socialStatusProvider.socialConnection.source !=='GOOGLE'">{{socialStatusProvider.socialConnection.profileName}}</span>
+										<span *ngIf="socialStatusProvider.socialConnection.source ==='GOOGLE'">{{socialStatusProvider.socialConnection.firstName}}</span>
+									</h5>
+									<h5>{{socialStatus.scheduledTimeUser | date: 'short'}}</h5>
+									<span [ngClass]="{'ribbon-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK',
+										'ribbon-twitter': socialStatusProvider.socialConnection.source ==='TWITTER',
+										'ribbon-linkedin': socialStatusProvider.socialConnection.source ==='LINKEDIN',
+										'ribbon-google': socialStatusProvider.socialConnection.source ==='GOOGLE'}" style="position: absolute;right: 0;top: 0;">
+									<i class="fa fa-social pull-right" [ngClass]="{'fa-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK',
+										'fa-twitter': socialStatusProvider.socialConnection.source ==='TWITTER',
+										'fa-linkedin': socialStatusProvider.socialConnection.source ==='LINKEDIN',
+										'fa-google': socialStatusProvider.socialConnection.source ==='GOOGLE'}"></i>
+								</span>
+								</div>
+								<div class="portlet body">
+									<h4>{{socialStatus.statusMessage}}</h4>
+									<div *ngFor="let socialStatusContent of socialStatus.socialStatusContents">
+										<img async *ngIf="socialStatusContent.fileType === 'image'" src="{{authenticationService.MEDIA_URL}}{{socialStatusContent.filePath}}?access_token={{authenticationService.access_token}}"
+										style="height: 240px; width: auto;">
+										<video *ngIf="socialStatusContent.fileType == 'video'" width="160" height="80">
+											<source src="{{socialStatusContent.filePath}}" type="video/mp4">
+										</video>
+									</div>
+								</div>
+							</div>							
+						</span>
+						</ng-container>
+					</ng-container>
+				</ng-container>
+            </div>
 			</div>
 		</div>
 	</div>
@@ -540,8 +625,9 @@
 									</td>
 									<td>
 										<h6><!-- {{item.startTime | date: 'short'}} -->
-										<app-timestamp [dateAndTime]="item.startTime"> </app-timestamp>
-										</h6>
+                    <app-timestamp *ngIf="!referenceService.isSafariBrowser()" [dateAndTime]="item.startTime"> </app-timestamp>
+                    <span *ngIf="referenceService.isSafariBrowser()">{{item.startTime}}</span>
+                  </h6>
 									</td>
 									<td>
 										<h6><!-- {{item.endTime | date: 'short'}} -->
@@ -945,6 +1031,7 @@
 						  </tr>
 						</tbody>
 					</table>
+					<app-pagination  [pagination]="contactListInfoPagination" [type]="'contactListInfo'" (notifyParent)="setPage($event)" [isDropdown]="true"></app-pagination>
 					</div>
 				</div>
 				</div>

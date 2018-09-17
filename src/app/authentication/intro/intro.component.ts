@@ -19,9 +19,9 @@ export class IntroComponent implements OnInit {
   navbar: any;
   sticky: any;
   zoom = 10;
-  lat = 40.7143528;
-  lng = -74.0059731;
-  markers = [{ lat: 40.7143528, lng: -74.0059731, label: "A", draggable: true }];
+  lat =  37.5483;
+  lng = -121.9886;
+  markers = [{ lat: 37.5483, lng: -121.9886, label: "A", draggable: false }];
   constructor(public authenticationService: AuthenticationService, public properties: Properties) {}
 
   clickedMarker(label: string, index: number) {

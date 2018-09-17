@@ -43,10 +43,13 @@ fieldset {
 	cursor: default;
 }
 .custom-change-css{
-  width: 100%;
   background: #eaeaea;
   border-radius: 0;
-  padding: 10px 20px;
+  width: 102%;
+  position: relative;
+  top: -24px;
+  margin-bottom: -16px;
+  right: 10px;
 }
 .time-picker-css{
   position: relative;
@@ -74,3 +77,9 @@ fieldset {
   right: -17px;
   position: relative;
 }
+.colorBlue{
+  background: #808080;
+  }
+  .colorRed{
+  background: #5bb1d4;
+  }

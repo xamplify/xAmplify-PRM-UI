@@ -819,3 +819,58 @@ b, strong {
     background-color: #000;
     border-radius: 0;
 }
+
+.field-icon {
+  float: right;
+  left: -6px;
+  margin-top: -28px;
+  position: relative;
+  z-index: 2;
+  cursor:pointer;
+}
+
+@media all and (max-width: 768px) {
+  tr { display: block; border: 1px solid grey; padding: 1em; text-align: center; }
+  td { display: inline; padding: 0 .5em; }
+}
+
+td>br { display: none; }
+
+@media all and (max-width: 767px) {
+    td>br { display: block; }
+}
+
+@media (min-width: 991px) {
+.side-bar {
+  position: relative;
+  right: -42px;
+  top: 24px;
+  cursor: pointer;
+  color: #a8adad;
+  display: block;
+}
+}
+@media ( max-width : 991px) {
+.side-bar{
+  position: relative;
+  right: -42px;
+  top: 24px;
+  cursor: pointer;
+  color: #a8adad;
+  display: none;
+}
+}
+
+.progress {
+	margin-bottom: 0 !important;
+	border-radius: 0 !important;
+}
+.flatpickr-months{
+  background: #1bbc9b;
+}
+.flatpickr-current-month{
+  padding:0 !important;
+ }
+ .flatpickr-month{
+   color:#fff !important;
+ }

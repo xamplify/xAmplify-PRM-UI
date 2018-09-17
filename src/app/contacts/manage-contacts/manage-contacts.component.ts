@@ -1285,7 +1285,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
                 title: this.checkingContactTypeName + ' List Name',
                 input: 'text',
                 showCancelButton: true,
-                confirmButtonText: 'Submit',
+                confirmButtonText: 'Save',
                 allowOutsideClick: false,
                 preConfirm: function( name: any ) {
                     return new Promise( function() {
@@ -1327,7 +1327,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
                 input: 'text',
                 inputValue: contactListName + '_copy',
                 showCancelButton: true,
-                confirmButtonText: 'Submit',
+                confirmButtonText: 'Save',
                 allowOutsideClick: false,
                 preConfirm: function( name: any ) {
                     return new Promise( function() {

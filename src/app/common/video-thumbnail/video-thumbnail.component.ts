@@ -17,7 +17,9 @@ export class VideoThumbnailComponent implements OnInit {
   }
 
   showPlayVideo(videoFile){
-   this.notifyParent.emit(videoFile);
+     if(!this.authenticationService.isSuperAdmin()){
+      this.notifyParent.emit(videoFile);
+     }
   }
   mouseEnter(event){ event.target.src = this.videoFile.gifImagePath;}
   mouseLeave(event){ event.target.src = this.videoFile.imagePath;}

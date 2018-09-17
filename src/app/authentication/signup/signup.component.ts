@@ -101,6 +101,7 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
       if(this.router.url.includes('/v-signup')) {  this.router.navigate(['/']); } else {  this.router.navigate(['/login']) }
     }
     signUp() {
+      if (this.signUpForm.valid) {
         try{
         this.signUpUser = this.signUpForm.value;
         this.signUpUser.emailId = this.signUpUser.emailId.toLowerCase();
@@ -137,8 +138,17 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
                 () => this.xtremandLogger.log("Done")
             );
           }catch(error){ this.xtremandLogger.error('error'+error);}
+        } else {
+          this.checkValidationMessages()
+        }
     }
-
+    checkValidationMessages(){
+      if(!this.signUpForm.value.firstName) {this.formErrors.firstName = this.validationMessages.firstName.required; }
+      if(!this.signUpForm.value.emailId) {this.formErrors.emailId = this.validationMessages.emailId.required; }
+      if(!this.signUpForm.value.password) { this.formErrors.password = this.validationMessages.password.required; }
+      if(!this.signUpForm.value.confirmPassword) { this.formErrors.confirmPassword =this.validationMessages.confirmPassword.required; }
+      if(!this.signUpForm.value.agree) { this.formErrors.agree = this.validationMessages.agree.required; }
+    }
     buildForm() {
         this.signUpForm = this.formBuilder.group({
             'emailId': [this.signUpUser.emailId, [Validators.required, Validators.pattern(this.regularExpressions.EMAIL_ID_PATTERN)]],

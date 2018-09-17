@@ -19,14 +19,14 @@
 						<div>
 							<ul class="mix-filter">
 								<li class="filter" (click)="showAllTemplates(0)" [class.emailtemplate-selected]="0 == selectedTemplateTypeIndex">All</li>
-								<li class="filter" (click)="showBasicTemplates(1)" [class.emailtemplate-selected]="1 == selectedTemplateTypeIndex">Basic</li>
-								<li class="filter" (click)="showRichTemplates(2)" [class.emailtemplate-selected]="2 == selectedTemplateTypeIndex">Rich</li>
-								<li class="filter" (click)="showBasicVideoTemplates(3)" [class.emailtemplate-selected]="3 == selectedTemplateTypeIndex">Basic Video</li>
-								<li class="filter" (click)="showRichVideoTemplates(4)" [class.emailtemplate-selected]="4 == selectedTemplateTypeIndex">Rich Video</li>
-								<li class="filter" (click)="showUploadTemplates(5)" [class.emailtemplate-selected]="5 == selectedTemplateTypeIndex">Upload Custom</li>
+								<!-- <li class="filter" (click)="showBasicTemplates(1)" [class.emailtemplate-selected]="1 == selectedTemplateTypeIndex">Basic</li> -->
+								<li class="filter" (click)="showRichTemplates(2)" [class.emailtemplate-selected]="2 == selectedTemplateTypeIndex">Basic</li>
+								<!-- <li class="filter" (click)="showBasicVideoTemplates(3)" [class.emailtemplate-selected]="3 == selectedTemplateTypeIndex">Basic Video</li> -->
+								<li class="filter" (click)="showRichVideoTemplates(4)" [class.emailtemplate-selected]="4 == selectedTemplateTypeIndex">Video</li>
 								<li class="filter" (click)="showRegularCoBrandingTemplates(6)" [class.emailtemplate-selected]="6 == selectedTemplateTypeIndex">Email Co-Branding</li>
 								<li class="filter" (click)="showVideoCoBrandingTemplates(7)" [class.emailtemplate-selected]="7 == selectedTemplateTypeIndex">Video Co-Branding</li>
 								<li class="filter" (click)="showCampaignDefaultTemplates(8)" [class.emailtemplate-selected]="8 == selectedTemplateTypeIndex">Default</li>
+								<li class="filter" (click)="showUploadTemplates(5)" [class.emailtemplate-selected]="5 == selectedTemplateTypeIndex">Upload Custom</li>
 								<li class="filter" style="display: none;">Own Template</li>
 							</ul>
 						</div>
@@ -49,6 +49,7 @@
 				<div class="portlet-body">
 					<div class="row">
 					<app-grid-loader *ngIf="httpRequestLoader.isLoading"></app-grid-loader>
+					<app-grid-loader *ngIf="httpRequestLoader.isLoading"></app-grid-loader>
 					<app-error-pages *ngIf="httpRequestLoader.isServerError"></app-error-pages>
 						<div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let beeRegularTemplate of filteredEmailTemplates | filterBy: templateFilter;let i=index">
 							<div class="grid-box">
@@ -66,7 +67,8 @@
 			</div>
 			<!-- END PAGE CONTENT-->
 		</div>
-	</div>
+  </div>
+  <app-scroll-top></app-scroll-top>
 </div>
 	<div class="modal" id="show_email_template_preivew">
 					<div class="modal-dialog modal-lg" style="width: 75%;">
@@ -83,7 +85,8 @@
 									class="btn btn-default" style="float: right">Close</a>
 							</div>
 						</div>
-					</div>
+          </div>
+
 				</div>
 
 	<!-- END CONTENT -->

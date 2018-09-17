@@ -834,7 +834,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 this.homeComponent.getCategorisService();
                 this.refService.homeMethodsCalled = true;
             }
-            if(!this.refService.defaultPlayerSettings){
+            if(!this.refService.defaultPlayerSettings || this.refService.defaultPlayerSettings.playerColor===undefined){
                 this.homeComponent.getVideoDefaultSettings();
             }
             this.defaultSettings();
@@ -856,7 +856,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         }
         this.isChecked = false;
         if ((this.isProgressBar || this.uploadeRecordVideo  || this.cloudStorageSelected || this.processing )
-            && this.errorIsThere === false) {
+            && this.errorIsThere === false && (this.router.url !=='/')) {
             this.redirectPge = true;
             this.videoFileService.isProgressBar = true;
           //  $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:1');

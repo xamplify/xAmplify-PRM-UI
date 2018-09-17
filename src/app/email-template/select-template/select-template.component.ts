@@ -145,10 +145,13 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
         try{
             this.filteredEmailTemplates = new Array<EmailTemplate>();
             this.selectedTemplateTypeIndex = index;
-            for(var i=0;i<this.allEmailTemplates.length;i++){
+            for(var i=0;i< this.allEmailTemplates.length;i++){
                 var isBeeRegularTemplate = this.allEmailTemplates[i].beeRegularTemplate;
                 if(isBeeRegularTemplate){
-                    if(this.allEmailTemplates[i].name.indexOf('Rich')>-1){
+                    /*if(this.allEmailTemplates[i].name.indexOf('Rich')>-1){
+                        this.filteredEmailTemplates.push(this.allEmailTemplates[i]);
+                    }*/
+                    if(this.allEmailTemplates[i].id === 325 || this.allEmailTemplates[i].id === 307 || this.allEmailTemplates[i].id === 359 || this.allEmailTemplates[i].id === 360){
                         this.filteredEmailTemplates.push(this.allEmailTemplates[i]);
                     }
                 }
@@ -185,10 +188,13 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
         try{
             this.filteredEmailTemplates = new Array<EmailTemplate>();
             this.selectedTemplateTypeIndex = index;
-            for(var i=0;i<this.allEmailTemplates.length;i++){
+            for(var i=0;i< this.allEmailTemplates.length;i++){
                 var isBeeVideoTemplate = this.allEmailTemplates[i].beeVideoTemplate;
                 if(isBeeVideoTemplate){
-                    if(this.allEmailTemplates[i].name.indexOf('Rich')>-1){
+                    /*if(this.allEmailTemplates[i].name.indexOf('Rich')>-1){
+                        this.filteredEmailTemplates.push(this.allEmailTemplates[i]);
+                    }*/
+                    if(this.allEmailTemplates[i].id === 362 || this.allEmailTemplates[i].id === 369 || this.allEmailTemplates[i].id === 356 || this.allEmailTemplates[i].id === 365){
                         this.filteredEmailTemplates.push(this.allEmailTemplates[i]);
                     }
                 }
@@ -260,6 +266,7 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
            this.emailTemplateService.getById(id)
            .subscribe(
                (data:any) => {
+                data.jsonBody = data.jsonBody.replace("https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL + this.refService.defaultPlayerSettings.companyProfile.companyLogoPath);
                 this.emailTemplateService.emailTemplate = data;
                    this.router.navigate(["/home/emailtemplates/create"]);
                },
@@ -269,11 +276,11 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
                },
                () => this.logger.info("Got Email Template")
            );
-       }else if(index==24 || index==1){
+       }else if(index==14 || index==1){
            //This is normal template
            this.emailTemplateService.isRegularUpload = true;
            this.router.navigate(["/home/emailtemplates/upload"]);
-       }else if(index==23 || index==0){
+       }else if(index==13 || index==0){
            //This is video template
            this.emailTemplateService.isRegularUpload = false;
            this.router.navigate(["/home/emailtemplates/upload"]);

@@ -1,7 +1,7 @@
 import { by, browser, element } from "protractor";
 import { MyProfilePage } from "./my-profile.po";
 
-describe("My profile Page Test", () => {
+xdescribe("My profile Page Test", () => {
   let myProfilePage: MyProfilePage;
 
   describe("my profile page should work fine", () => {

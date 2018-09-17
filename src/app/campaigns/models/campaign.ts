@@ -35,6 +35,7 @@ export class Campaign {
     campaignReplies: Array<Reply>;
     campaignUrls: Array<Url>;
     channelCampaign = false;
+    throughPartner:boolean = false;
     enableCoBrandingLogo = false;
     partnerVideoSelected = false;
 
@@ -50,8 +51,11 @@ export class Campaign {
     scheduleType:string = "";
     nurtureCampaign = false;
     campaignScheduleType:string = "";
+    dataShare: boolean = false;
     detailedAnalyticsShared:boolean = false;
     vendorOrganizationId:number = 0;
     launchedByVendor:boolean = false;
     partnerCompanyLogo:string = "";
+    parentCampaignId:number = 0;
+    redistributedCount:number = 0;
 }

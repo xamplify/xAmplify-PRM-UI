@@ -38,7 +38,10 @@ export class DefaultPageComponent implements OnInit {
    }
 
     goToWelcomePage(){
-        if(this.authenticationService.user.hasCompany){
+        if(this.authenticationService.isSuperAdmin()){
+            this.router.navigate(['/home/dashboard/admin-report']);
+        }
+        else if(this.authenticationService.user.hasCompany){
             this.router.navigate(['/home/dashboard/welcome']);
         }else{
             this.router.navigate(['/home/dashboard/add-company-profile']);
@@ -46,7 +49,10 @@ export class DefaultPageComponent implements OnInit {
     }
 
     goToDashBoard(){
-        if(this.authenticationService.user.hasCompany){
+        if(this.authenticationService.isSuperAdmin()){
+            this.router.navigate(['/home/dashboard/admin-report']);
+        }
+        else if(this.authenticationService.user.hasCompany){
             this.router.navigate(['/home/dashboard']);
         }else{
             this.router.navigate(['/home/dashboard/add-company-profile']);

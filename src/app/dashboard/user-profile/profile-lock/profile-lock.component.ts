@@ -16,7 +16,7 @@ export class ProfileLockComponent implements OnInit {
     userProfileImage = 'assets/admin/pages/media/profile/icon-user-default.png';
     userData: User;
     displayName: string;
-    password: string;
+    password: any;
     error: string;
     loginDisabled = true;
     loading = false;
@@ -30,8 +30,8 @@ export class ProfileLockComponent implements OnInit {
         this.password = '';
     }
     errorHandler(event:any){ event.target.src='assets/admin/pages/media/profile/icon-user-default.png';}
-    checkPassword(password: string) {
-        if (password.replace(/\s/g, '').length === 0) {
+    checkPassword() {
+        if (this.password.replace(/\s/g, '').length === 0) {
             this.loginDisabled = true;
         } else {
         this.loginDisabled = false;
@@ -88,4 +88,5 @@ export class ProfileLockComponent implements OnInit {
         }
         console.log('error : ' + this.error);
     }
+
 }

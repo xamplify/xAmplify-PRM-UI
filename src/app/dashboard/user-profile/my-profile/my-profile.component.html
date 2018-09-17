@@ -276,17 +276,26 @@ input:checked + .slider-new:before {
 													<form [formGroup]="updatePasswordForm" (ngSubmit)="updatePassword()" autocomplete="off">
 														<div class="form-group" *ngIf="userData.hasPassword">
 															<label class="control-label">Current Password</label>
-															<input type="password" [class]="className"  formControlName="oldPassword" required="required"/>
+															<input id="oldPassword" type="password" [class]="className"  formControlName="oldPassword" required="required"/>
+															<span toggle="#oldPassword"  title="Show Password" class="fa fa-fw fa-eye field-icon toggle-password" (click)="referenceService.showPassword('oldPassword')"  *ngIf="!referenceService.showInputOldPassword && updatePasswordForm.get('oldPassword').value" style="left:-30px !important"></span>
+				 											<span toggle="#oldPassword"  title="Hide Password" class="fa fa-fw fa-eye-slash field-icon toggle-password" (click)="referenceService.showPassword('oldPassword')"  *ngIf="referenceService.showInputOldPassword && updatePasswordForm.get('oldPassword').value" style="left:-30px !important"></span>
+
 															<div *ngIf="formErrors.oldPassword" class="alert alert-danger">{{formErrors.oldPassword}}</div>
 														</div>
 														<div class="form-group">
 															<label class="control-label">New Password</label>
-															<input type="password" class="form-control"  formControlName="newPassword" required="required"/>
+															<input id="password" type="password" class="form-control"  formControlName="newPassword" required="required"/>
+															<span toggle="#password"  title="Show Password" class="fa fa-fw fa-eye field-icon toggle-password" (click)="referenceService.showPassword('password')"  *ngIf="!referenceService.showInputPassword && updatePasswordForm.get('newPassword').value" style="left:-30px !important"></span>
+				 											<span toggle="#password"  title="Hide Password" class="fa fa-fw fa-eye-slash field-icon toggle-password" (click)="referenceService.showPassword('password')"  *ngIf="referenceService.showInputPassword && updatePasswordForm.get('newPassword').value" style="left:-30px !important"></span>
+
 															<div *ngIf="formErrors.newPassword" class="alert alert-danger">{{formErrors.newPassword}}</div>
 														</div>
 														<div class="form-group">
 															<label class="control-label">Re-type New Password</label>
-															<input type="password" class="form-control"  formControlName="confirmNewPassword" required="required"/>
+															<input id="comfirmPassword" type="password" class="form-control"  formControlName="confirmNewPassword" required="required"/>
+															<span toggle="#comfirmPassword"  title="Show Password" class="fa fa-fw fa-eye field-icon toggle-password" (click)="referenceService.showPassword('comfirmPassword')"  *ngIf="!referenceService.showInputConfirmPassword && updatePasswordForm.get('confirmNewPassword').value" style="left:-30px !important"></span>
+				 											<span toggle="#comfirmPassword"  title="Hide Password" class="fa fa-fw fa-eye-slash field-icon toggle-password" (click)="referenceService.showPassword('comfirmPassword')"  *ngIf="referenceService.showInputConfirmPassword && updatePasswordForm.get('confirmNewPassword').value" style="left:-30px !important"></span>
+
 															<div *ngIf="formErrors.confirmNewPassword" class="alert alert-danger">{{formErrors.confirmNewPassword}}</div>
 															<div *ngIf="updatePasswordForm.hasError('mismatchedPasswords')" class="alert alert-danger">Passwords do not match.</div>
 														</div>
@@ -474,7 +483,8 @@ input:checked + .slider-new:before {
 					</div>
 				</div>
 				<!-- END PAGE CONTENT-->
-			</div>
+      </div>
+      <app-scroll-top></app-scroll-top>
 			</div>
 			<div class="page-content" *ngIf="hasClientErrors">
 				<h5 style="color: red">Something went wrong.please contact admin</h5>

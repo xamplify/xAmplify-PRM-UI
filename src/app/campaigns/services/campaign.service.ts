@@ -52,12 +52,11 @@ export class CampaignService {
     }
 
     listCampaign(pagination: Pagination, userId: number) {
+        userId = this.authenticationService.checkLoggedInUserId(userId);
         var url = this.URL + "admin/listCampaign/" + userId + "?access_token=" + this.authenticationService.access_token;
         return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);
-
-
     }
 
     getCampaignById(data: any) {
@@ -123,6 +122,12 @@ export class CampaignService {
 
     listCampaignViews(campaignId: number, pagination: Pagination) {
         return this.http.post(this.URL + 'campaign/views/' + campaignId + '?access_token=' + this.authenticationService.access_token, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    
+    listCampaignInteractiveViews(pagination: Pagination) {
+        return this.http.post(this.URL + 'campaign/interactive-views?access_token=' + this.authenticationService.access_token, pagination)
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -224,7 +229,7 @@ export class CampaignService {
     }    
     getCampaignUsersWatchedInfo(campaignId:number, countryCode: string, pagination: Pagination){
         const url = this.URL+'campaign/'+campaignId+'/countrywise-users-report?access_token='+this.authenticationService.access_token+'&countryCode='+countryCode; 
-      return this.http.post(url, pagination)
+        return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);
     }    
@@ -260,6 +265,35 @@ export class CampaignService {
         return this.http.get(this.URL+`campaign/partner-campaign/${campaignId}/${userId}?access_token=${this.authenticationService.access_token}`)
             .map(this.extractData)
             .catch(this.handleError);        
+    }
+    
+    listEmailLogsByCampaignIdUserIdActionType (campaignId: number, userId: number, actionType: string) {
+        return this.http.get(this.URL+`campaign/list-emaillogs-history/${campaignId}/${userId}/${actionType}?access_token=${this.authenticationService.access_token}`)
+            .map(this.extractData)
+            .catch(this.handleError);       
+    }
+    
+    loadUsersOfContactList( contactListId: number, campaignId:number, pagination: Pagination ) {
+        return this.http.post( this.URL+'campaign/users-info/'+campaignId+"/" + contactListId+'?access_token=' + this.authenticationService.access_token, pagination )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+    listCampaignPartners(pagination: Pagination, campaignId: number) {
+        var url = this.URL + "campaign/list-partners-by-campaign-id/" + campaignId + "?access_token=" + this.authenticationService.access_token;
+        return this.http.post(url, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+
+
+    }
+    
+    deletePartner(partner:any) {
+        const url = this.URL + "campaign/delete-campaign-partner?access_token=" + this.authenticationService.access_token; 
+        return this.http.post(url, partner)
+            .map(this.extractData)
+            .catch(this.handleError);
+        
+        
     }
 
     private extractData(res: Response) {
@@ -395,7 +429,7 @@ export class CampaignService {
 
     setAutoReplyDefaultTime(campaignType:string,replyInDays:number,replyTime:Date,scheduleTime:any){
         let currentTime = new Date();
-        let isValid = (replyInDays==0 && replyTime.getTime()<currentTime.getTime());
+        let isValid = (replyInDays==0 && replyTime.getTime()< currentTime.getTime());
         if("NOW"===campaignType && isValid){
             return currentTime;
         }else if("SCHEDULE"===campaignType && isValid){
@@ -410,10 +444,6 @@ export class CampaignService {
         }
     }
 
-    listEmailLogsByCampaignIdUserIdActionType (campaignId: number, userId: number, actionType: string) {
-        return this.http.get(this.URL+`campaign/list-emaillogs-history/${campaignId}/${userId}/${actionType}?access_token=${this.authenticationService.access_token}`)
-            .map(this.extractData)
-            .catch(this.handleError);       
-    }
+ 
     
 }

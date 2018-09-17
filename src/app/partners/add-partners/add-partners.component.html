@@ -244,7 +244,7 @@ img:hover {
 			</button>
 			<ul class="dropdown-menu pull-right">
 				<li><a id="save_button" *ngIf="selectedAddPartnerOption != 5" (click)="saveContacts()">Save </a></li>
-				<li><a id="save_button" *ngIf="selectedAddPartnerOption != 5 || clipBoard" (click)="cancelPartners()">Cancel </a></li>
+				<li><a id="cancel_button" *ngIf="selectedAddPartnerOption != 5 || clipBoard" (click)="cancelPartners()">Cancel </a></li>
 				<li><a id="saveAs_button"
 					*ngIf="selectedAddPartnerOption == 5 && !clipBoard" (click)="editContactComponent.saveAs(); editContactComponent.addPartnerSave = true">Save
 						As </a></li>
@@ -503,7 +503,7 @@ img:hover {
 																[ngModelOptions]="{standalone: true}"
 																class="form-control" placeholder="Search for a Partner" (keypress)="eventHandler($event.keyCode)">
 														<button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey=''"></button>
-														<button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search"></i></button>						
+														<button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search"></i></button>
 														</div>
 													</div>
 												</div>
@@ -540,7 +540,7 @@ img:hover {
 										</thead>
 										<tbody>
 											<ng-container
-												*ngFor="let contact of partners;let i = index">
+												*ngFor="let contact of partners;let i = index" id="listPartners">
 											<tr class='row_{{i}}'>
 											<td class="text-center" *ngIf="!isCampaignDraftContactList "><input
 																type="checkbox"
@@ -582,13 +582,13 @@ img:hover {
 												</td> -->
 												<td align="center">
 												<div class="actions-block">
-												<a *ngIf="!contact.signedUp" data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.partner_reSendMail}}" (click)="sendMail(contact.id)">
+												<a id="envolope_{{i}}" *ngIf="!contact.signedUp" data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.partner_reSendMail}}" (click)="sendMail(contact.id)">
 													<i class="fa fa-envelope"></i>
 												</a>
-												<a  data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.partner_edit}}" (click)="editUserDetails(contact)">
+												<a id="edit_{{i}}"  data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.partner_edit}}" (click)="editUserDetails(contact)">
 													<i class="fa fa-pencil-square-o"></i>
 												</a>
-												<a data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.partner_delete}}" (click)="deleteUserShowAlert(contact.id)">
+												<a id="delete_{{i}}" data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.partner_delete}}" (click)="deleteUserShowAlert(contact.id)">
 													<i class="fa fa-trash-o" style="color:#ff0000"></i>
 												</a>
 												</div>
@@ -622,7 +622,8 @@ img:hover {
 				<app-pagination [pagination]="pagination" [type]="'contacts'" (notifyParent)="setPage($event)"
 				(notifyParentDropDown)="onChangeAllPartnerUsers($event)"></app-pagination>
 			</div>
-		</div>
+    </div>
+    <app-scroll-top></app-scroll-top>
 	</div>
 
 	<!-- Modal -->
@@ -796,7 +797,7 @@ img:hover {
 	</div>
 
 <div class="modal" id="settingSocialNetworkPartner" tabindex="-1" role="dialog"
-	aria-labelledby="settingSocialNetworkModalLabel1" data-keyboard="false" data-toggle="modal" data-target="settingSocialNetworkPartner" 
+	aria-labelledby="settingSocialNetworkModalLabel1" data-keyboard="false" data-toggle="modal" data-target="settingSocialNetworkPartner"
 	data-backdrop="static">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">

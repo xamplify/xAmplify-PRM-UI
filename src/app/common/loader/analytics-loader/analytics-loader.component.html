@@ -35,7 +35,7 @@
   </div>
 </div>
 
-<div class="row m10" style="background: #fff" *ngIf="referenceService.campaignType === 'REGULAR' || referenceService.campaignType === 'SOCIAL'">
+<div class="row m10" style="background: #fff" *ngIf="referenceService.campaignType === 'REGULAR' || referenceService.campaignType === 'SOCIAL' || referenceService.campaignType === undefined  || referenceService.campaignType === null">
   <div class="col-xs-12 p0">
     <div class="col-sm-6" *ngIf="referenceService.campaignType !== 'SOCIAL'">
       <div class='text-input__loading--line rect-box box-custom'></div>

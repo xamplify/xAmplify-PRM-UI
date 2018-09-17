@@ -246,6 +246,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             this.logger.showClientErrors("my-profile.component.ts", "ngAfterViewInit()", error);
         }
     }
+    
     ngAfterViewInit() {
         try{
             if (this.currentUser.roles.length > 1 && this.authenticationService.hasCompany()) {

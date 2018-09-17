@@ -70,7 +70,7 @@
     <div class="row">
       <div class="col-md-12">
         <h1 lang="en">Experience the new way of ecosystem marketing</h1>
-        <p style="color: #fff;" lang="en">Whether you’ve been spent years cultivating your network or are just testing the waters, {{properties.APP_WEBSITE}} provides you with a digital platform that allows you to engage and equip your partners, solidifying relationships and driving sales like never before.</p>
+        <p style="color: #fff;" lang="en">Whether you've spent years cultivating your network or are just testing the waters, {{properties.APP_WEBSITE}} provides you with a digital platform that allows you to engage and equip your partners, solidifying relationships and driving sales like never before.</p>
         <div class="play-btn"> <a href="/embed/sb63hg" class="play litebox-hero"><img src="/assets/images/play-btn.png" alt="play"></a> </div>
         <div class="cta-btn"> <a routerLink="/v-signup" class="btn" lang="en">REGISTER <span style="font-size: 14px; color: #333; font-weight: 500;">(beta
 				signup)</span></a>
@@ -309,7 +309,7 @@
     </header>
     <div class="row">
       <div class="col-md-12"> <a href="" class="btn" lang="en">GET STARTED</a>
-        <p lang="en">Have a question? Give us a call <a href="tel:+16582144789"> 658-214-4789</a>.</p>
+        <p lang="en">Have a question? Give us a call <a href="tel:+5107701222">5107701222</a>.</p>
       </div>
     </div>
   </div>
@@ -344,9 +344,11 @@
       [label]="m.label"
       [markerDraggable]="m.draggable"
       (dragEnd)="markerDragEnd(m, $event)">
-    <!-- <agm-info-window>
-      <strong>InfoWindow content</strong>
-    </agm-info-window> -->
+    <agm-info-window>
+      <strong>42840 Christy St,</strong><br>
+      <strong>Fremont,CA 94538</strong><br>
+      <strong>Phone: 5107701222</strong>
+    </agm-info-window>
   </agm-marker>
   <agm-circle [latitude]="lat" [longitude]="lng"
       [radius]="5000"

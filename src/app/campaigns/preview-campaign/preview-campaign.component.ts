@@ -24,6 +24,7 @@ import { Timezone } from '../../core/models/timezone';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { CampaignContact } from '../models/campaign-contact';
 import { Properties } from '../../common/models/properties';
+import { Roles } from '../../core/models/roles';
 declare var $,CKEDITOR:any;
 
 @Component({
@@ -56,6 +57,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     dataError = false;
     emailTemplateHrefLinks: any[] = [];
     enableWorkFlow = true;
+    channelCampaignFieldName:string = "";
     /***************Contact List************************/
     isContactList:boolean = false;
     contactListBorderColor:string = "silver";
@@ -87,9 +89,10 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     invalidScheduleTimeError:string = "";
     httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
     loggedInUserId:number = 0;
-    contactType:string = "contacts";
+    contactType:string = "";
     listName:string;
-
+    roleName: Roles= new Roles();
+    showContactType:boolean = false;
     constructor(
             private route: ActivatedRoute,
             private campaignService: CampaignService,
@@ -129,11 +132,11 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     setCampaignData(result){
         this.campaign = result;
         console.log(this.campaign);
-        if(this.campaign.channelCampaign || this.campaign.launchedByVendor){
+        /*if(this.campaign.channelCampaign || this.campaign.launchedByVendor){
             this.contactType = "partner";
         }else{
             this.contactType ="contact";
-        }
+        }*/
         if(this.campaign.userListIds.length>0){
             this.loadContactList(this.contactListPagination);
         }
@@ -169,6 +172,30 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
         this.referenceService.stopLoader(this.httpRequestLoader);
         this.getCampaignReplies(this.campaign);
         this.getCampaignUrls(this.campaign);
+
+
+        const roles = this.authenticationService.getRoles();
+        let isVendor = roles.indexOf(this.roleName.vendorRole)>-1;
+        let isOrgAdmin = this.authenticationService.isOrgAdmin() || (!this.authenticationService.isAddedByVendor && !isVendor);
+
+        if(isOrgAdmin){
+            this.channelCampaignFieldName = "To Recipient";
+        }else{
+            this.channelCampaignFieldName = "To Partner";
+        }
+        if(isOrgAdmin){
+            if(this.campaign.channelCampaign){
+                this.contactType = "partner(s)";
+                this.showContactType = false;
+            }else{
+                this.contactType = " partner(s) / recepient(s) ";
+                this.showContactType = true;
+            }
+
+        }else if(isVendor|| this.authenticationService.isAddedByVendor){
+            this.contactType = "partner(s)";
+            this.showContactType = false;
+        }
     }
 
     onSelect(countryId) {
@@ -364,7 +391,8 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
         $("#email-template-title").empty();
         $("#email-template-title").append(emailTemplateName);
         $('#email-template-title').prop('title', emailTemplate.name);
-        if (this.campaignType == 'video') {
+        let updatedBody = this.referenceService.showEmailTemplatePreview(this.campaign, this.campaignType, this.campaign.campaignVideoFile.gifImagePath, emailTemplate.body);
+     /*   if (this.campaignType == 'video') {
             let selectedVideoGifPath = this.campaign.campaignVideoFile.gifImagePath;
             let updatedBody = emailTemplate.body.replace("<SocialUbuntuImgURL>", selectedVideoGifPath);
             updatedBody = updatedBody.replace("&lt;SocialUbuntuURL&gt;", "javascript:void(0)");
@@ -376,12 +404,16 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
         } else {
             let updatedBody = emailTemplate.body.replace("<div id=\"video-tag\">", "<div id=\"video-tag\" style=\"display:none\">");
             $("#email-template-content").append(updatedBody);
-        }
+        }*/
+        $("#email-template-content").append(updatedBody);
         $('.modal .modal-body').css('overflow-y', 'auto');
         $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
         $("#email_template_preivew").modal('show');
     }
-
+    isEven(n) {
+      if(n % 2 === 0){ return true;}
+        return false;
+    }
     ngOnDestroy(){
       CKEDITOR.config.readOnly = false;
       $('#usersModal').modal('hide');
@@ -489,8 +521,8 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
   }
 
 
-  setPage(pageIndex:number){
-      this.contactsUsersPagination.pageIndex = pageIndex;
+  setPage(event:any){
+      this.contactsUsersPagination.pageIndex = event.page;
       this.loadUsers(0,this.contactsUsersPagination,this.listName);
   }
 

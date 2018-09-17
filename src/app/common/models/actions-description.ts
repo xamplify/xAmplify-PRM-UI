@@ -1,7 +1,7 @@
 export class ActionsDescription {
 
    /* FOR CONTACTS*/
-    contact_list_edit = 'Edit List';
+    contact_list_edit = 'Preview / Edit List';
     contact_list_delete = 'Delete List';
     contact_list_saveAs = 'Copy And Save As A New List';
     contact_list_synchronize = 'Synchronize List';
@@ -21,18 +21,21 @@ export class ActionsDescription {
     video_delete = 'Delete Video';
     video_campaign = 'Create Campaign';
     video_report = 'Video Based Reports';
+    video_draft = 'Unavailable for Draft Videos';
 
    /* FOR EMAIL TEMPLATES*/
     template_edit = 'Edit Template';
     template_delete = 'Delete Template';
-    template_preview = 'Preview Template';
+    template_preview = 'View Template';
 
    /* FOR CAMPAIGNS*/
     campaign_edit = 'Edit Campaign';
     campaign_delete = 'Delete Campaign';
-    campaign_preview = 'Preview Campaign';
-    campaign_report = 'Camapign Based Reports';
-    campaign_copy = 'Copy Camapign';
+    campaign_preview = 'View Campaign';
+    campaign_report = 'Campaign Based Reports';
+    campaign_copy = 'Copy Campaign';
+    campaign_preview_partner = 'Preview & Delete Partner(s)'
+    campaign_delete_partner = 'Delete Partner';
 
     /* GLOBAL */
     listView = 'List View';

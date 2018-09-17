@@ -57,7 +57,10 @@
 						<h5 style="margin-top: 122px;font-weight: 400;">Watched completely</h5>
 					</div>
 					<div class="col-xs-12 col-sm-12 col-md-3 text-center">
-						<h1 style="margin-top: 48px;">{{videoUtilService.nFormatter(selectedVideo.views)}}</h1>
+						<h1 style="margin-top: 48px;">
+            <span *ngIf="videoTotalViews">{{videoUtilService.nFormatter(videoTotalViews)}}</span>
+            <span *ngIf="!videoTotalViews">0</span>
+            </h1>
 						<h5 style="margin-top: 8.8em; font-weight: 400;">Total views</h5>
 					</div>
 				</div>
@@ -417,7 +420,8 @@
 							<thead>
 								<tr>
 									<th class="center headerCss" style="width: 36%;">NAME</th>
-									<th class="text-center headerCss" style="width: 41%;">DATE and TIME</th>
+									<th class="text-center headerCss" style="width: 41%;">START TIME</th>
+									<th class="text-center headerCss" style="width: 41%;">END TIME</th>
 									<th class="center headerCss">DEVICE</th>
 								</tr>
 							</thead>
@@ -430,6 +434,11 @@
 									<td class="center">
 										<h5>
 										<app-timestamp [dateAndTime]="item.date"> </app-timestamp>
+										</h5>
+									</td>
+									<td class="center">
+										<h5>
+										<app-timestamp [dateAndTime]="item.endTime"> </app-timestamp>
 										</h5>
 									</td>
 									<td class="center">
@@ -458,7 +467,8 @@
 							<thead>
 								<tr>
 									<th class="center headerCss" style="width: 36%;">NAME</th>
-									<th class="text-center headerCss"  style="width: 41%;">DATE and TIME</th>
+									<th class="text-center headerCss"  style="width: 41%;">START TIME</th>
+									<th class="text-center headerCss" style="width: 41%;">END TIME</th>
 									<th class="center headerCss">DEVICE</th>
 								</tr>
 							</thead>
@@ -471,6 +481,11 @@
 									<td class="center">
 										<h5>
 										<app-timestamp [dateAndTime]="item.date"> </app-timestamp>
+										</h5>
+									</td>
+									<td class="center">
+										<h5>
+										<app-timestamp [dateAndTime]="item.endTime"> </app-timestamp>
 										</h5>
 									</td>
 									<td class="center">

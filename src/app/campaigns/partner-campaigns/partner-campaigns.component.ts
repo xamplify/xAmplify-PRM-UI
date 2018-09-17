@@ -28,12 +28,12 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     campaignSuccessMessage: string = "";
     loggedInUserId: number = 0;
     sortByDropDown = [
-        { 'name': 'Name(A-Z)', 'value': 'campaign-ASC' },
-        { 'name': 'Name(Z-A)', 'value': 'campaign-DESC' },
+        { 'name': 'Campaign Name(A-Z)', 'value': 'campaign-ASC' },
+        { 'name': 'Campaign Name(Z-A)', 'value': 'campaign-DESC' },
         { 'name': 'Company Name(A-Z)', 'value': 'company-ASC' },
         { 'name': 'Company Name(Z-A)', 'value': 'company-DESC' },
-        { 'name': 'Created Date(ASC)', 'value': 'createdTime-ASC' },
-        { 'name': 'Created Date(DESC)', 'value': 'createdTime-DESC' }
+        { 'name': 'Date Received(ASC)', 'value': 'createdTime-ASC' },
+        { 'name': 'Date Received(DESC)', 'value': 'createdTime-DESC' }
     ];
 
     numberOfItemsPerPage = [
@@ -175,6 +175,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     }
 
     showCampaignPreview(campaignId:number){
+        this.referenceService.isRedistributionCampaignPage = true;
         this.router.navigate(['/home/campaigns/preview/'+campaignId]);
     }
 

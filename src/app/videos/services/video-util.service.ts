@@ -26,12 +26,12 @@ export class VideoUtilService {
     errorNullMesg = 'Uh oh! Looks like something went wrong during the video upload. Please try again';
     sortVideos = [
         { 'name': 'Sort By', 'value': '' },
-        { 'name': 'Title(A-Z)', 'value': 'title-ASC' },
-        { 'name': 'Title(Z-A)', 'value': 'title-DESC' },
-        { 'name': 'Upload Date(ASC)', 'value': 'createdTime-ASC' },
-        { 'name': 'Upload Date(DESC)', 'value': 'createdTime-DESC' },
-        { 'name': 'ViewBy(ASC)', 'value': 'viewBy-ASC' },
-        { 'name': 'ViewBy(DESC)', 'value': 'viewBy-DESC' },
+        { 'name': 'Title (A-Z)', 'value': 'title-ASC' },
+        { 'name': 'Title (Z-A)', 'value': 'title-DESC' },
+        { 'name': 'Upload Date (ASC)', 'value': 'createdTime-ASC' },
+        { 'name': 'Upload Date (DESC)', 'value': 'createdTime-DESC' },
+        // { 'name': 'Type (ASC)', 'value': 'viewBy-ASC' },
+        // { 'name': 'Type (DESC)', 'value': 'viewBy-DESC' },
     ];
     sortMonthDates = [{ 'name': 'Current Month', 'value': 'current-month' },
     { 'name': 'By Month', 'value': 'month' },

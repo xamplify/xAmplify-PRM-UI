@@ -11,4 +11,5 @@ export class Roles {
   companyPartnerRole = 'ROLE_COMPANY_PARTNER';
   vendorRole = 'ROLE_VENDOR';
   userRole = 'ROLE_USER';
+  superAdminRole = 'ROLE_SUPER_ADMIN';
 }

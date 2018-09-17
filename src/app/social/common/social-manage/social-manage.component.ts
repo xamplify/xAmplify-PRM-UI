@@ -18,7 +18,7 @@ export class SocialManageComponent implements OnInit, OnDestroy {
     response: any;
     httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
     constructor( private route: ActivatedRoute, private socialService: SocialService,
-        private authenticationService: AuthenticationService, public referenceService:ReferenceService ) { }
+        public authenticationService: AuthenticationService, public referenceService:ReferenceService ) { }
 
     listAccounts( userId: number, providerName: string ) {
         this.referenceService.loading(this.httpRequestLoader, true);
