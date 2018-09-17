@@ -12,8 +12,9 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { CustomResponse } from '../../common/models/custom-response';
 import { UtilService } from '../../core/services/util.service';
+import { ContactList } from '../../contacts/models/contact-list';
+import { EventCampaign } from '../models/event-campaign';
 import { ActionsDescription } from '../../common/models/actions-description';
-
 
 declare var swal, $: any;
 
@@ -63,6 +64,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     saveAsCampaignName = '';
     isOnlyPartner: boolean = false;
     customResponse: CustomResponse = new CustomResponse();
+    saveAsCampaignInfo :any;
     partnerActionResponse:CustomResponse = new CustomResponse();
     partnersPagination:Pagination = new Pagination();
     constructor(private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
@@ -170,8 +172,12 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
 
     }
 
-    editCampaign(id: number) {
-        var obj = { 'campaignId': id }
+    editCampaign(campaign:any) {
+      if(campaign.campaignType.indexOf('EVENT') > -1) {
+            this.router.navigate(['/home/campaigns/event-edit/'+campaign.campaignId]);
+       }
+      else {
+      var obj = { 'campaignId': campaign.campaignId }
         this.campaignService.getCampaignById(obj)
             .subscribe(
                 data => {
@@ -187,7 +193,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                             this.campaignService.reDistributeCampaign = data;
                             this.campaignService.isExistingRedistributedCampaignName = true;
                             this.router.navigate(['/home/campaigns/re-distribute-campaign']);
-                        } else {
+                        }
+                        else {
                             this.refService.isEditNurtureCampaign = false;
                             this.router.navigate(["/home/campaigns/edit"]);
                         }
@@ -199,7 +206,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 error => { this.logger.errorPage(error) },
                 () => console.log()
             )
-        this.isScheduledCampaignLaunched = false;
+           this.isScheduledCampaignLaunched = false;
+          }
     }
 
     confirmDeleteCampaign(id: number, position: number, name: string) {
@@ -246,13 +254,18 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         swal.close();
 
     }
-    openSaveAsModal(id: number, name: string) {
+    openSaveAsModal(campaign:any) {
         $('#saveAsModal').modal('show');
-        this.saveAsCampaignId = id;
-        this.saveAsCampaignName = name + "_copy";
+        this.saveAsCampaignId = campaign.campaignId;
+        this.saveAsCampaignName = campaign.campaignName + "_copy";
+        this.saveAsCampaignInfo = campaign;
     }
 
     saveAsCampaign() {
+        if(this.saveAsCampaignInfo.campaignType =='EVENT') {
+          this.saveAsEventCampaign(this.saveAsCampaignInfo);
+        }
+        else {
         console.log(this.saveAsCampaignId + '-' + this.saveAsCampaignName);
         let campaign = new Campaign();
         campaign.campaignName = this.saveAsCampaignName;
@@ -273,9 +286,55 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 error => { $('#saveAsModal').modal('hide'); this.logger.errorPage(error) },
                 () => console.log("saveAsCampaign Successfully")
             );
+          }
+    }
+    saveAsEventCampaign(saveAsCampaign:any){
+      this.campaignService.getEventCampaignById(saveAsCampaign.campaignId).subscribe(
+        (data)=>{
+          console.log(data);
+          this.saveAsCampaignInfo = data.data;
+          this.setSaveAsEventCampaign(data.data);
+        });
     }
 
-
+    setSaveAsEventCampaign(campaignData:EventCampaign){
+      campaignData.campaign = this.saveAsCampaignName;
+      campaignData.id = null;
+      campaignData.campaignScheduleType = "SAVE";
+      campaignData.campaignLocation.id = null;
+      campaignData.campaignEventTimes[0].id = null;
+      campaignData.campaignEventMedias[0].id = null;
+      campaignData['emailTemplate'] = campaignData.emailTemplateDTO;
+      campaignData["user"] = campaignData.userDTO;
+      campaignData['countryId'] = 0;
+      campaignData["userListIds"] = [];
+      campaignData['userLists'] = [];
+      campaignData['email'] = campaignData.user.emailId;
+      campaignData['fromName'] = campaignData.user.emailId;
+      campaignData.user.id = null;
+      campaignData.user.userId = this.loggedInUserId;
+      campaignData.country = campaignData.campaignEventTimes[0].country;
+      for(let i=0; i< campaignData.userListDTOs.length;i++){
+       campaignData.userListIds.push(campaignData.userListDTOs[i].id);
+      }
+      for (let userListId of campaignData.userListIds) {
+        let contactList = new ContactList(userListId);
+        campaignData.userLists.push(contactList);
+      }
+      delete campaignData.userDTO;
+      delete campaignData.userListDTOs;
+      delete campaignData.emailTemplateDTO;
+      console.log(campaignData);
+      this.campaignService.createEventCampaign(campaignData).subscribe((data:any)=>{
+        console.log(data);
+        this.campaignSuccessMessage = "Campaign copied successfully";
+        $('#lanchSuccess').show(600);
+        $('#saveAsModal').modal('hide');
+        this.showMessageOnTop();
+        this.listCampaign(this.pagination);
+        console.log("saveAsCampaign Successfully")
+      })
+    }
     filterCampaigns(type: string, index: number) {
         this.selectedCampaignTypeIndex = index;//This is to highlight the tab
         this.pagination.pageIndex = 1;
@@ -291,8 +350,12 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
       this.router.navigate(['/home/campaigns/'+campaign.campaignId+'/details']);
 
     }
-    showCampaignPreview(campaignId:number){
-        this.router.navigate(['/home/campaigns/preview/'+campaignId]);
+    showCampaignPreview(campaign:any){
+        if(campaign.campaignType.indexOf('EVENT')>-1){
+          this.router.navigate(['/home/campaigns/event-preview/'+campaign.campaignId]);
+        } else {
+           this.router.navigate(['/home/campaigns/preview/'+campaign.campaignId]);
+        }
     }
     goToRedistributedCampaigns(campaign:Campaign){
         this.router.navigate(['/home/campaigns/'+campaign.campaignId+"/re-distributed"]);

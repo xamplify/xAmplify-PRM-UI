@@ -21,6 +21,7 @@ import { ExportCsvComponent } from './export/export-csv/export-csv.component';
 import { LoadingModule } from 'ngx-loading';
 import { AnalyticsLoaderComponent } from './loader/analytics-loader/analytics-loader.component';
 import { VideoThumbnailComponent } from './video-thumbnail/video-thumbnail.component';
+import { DetailViewComponent } from './detail-view/detail-view.component';
 import { TimestampComponent } from './timestamp/timestamp.component';
 import { ScrollTopComponent } from './scroll-top/scroll-top.component';
 
@@ -29,6 +30,11 @@ import { ScrollTopComponent } from './scroll-top/scroll-top.component';
   declarations: [DonutChartComponent, PaginationComponent, WorldmapComponent,PieChartComponent,
                  BarChartComponent, EmbedModalComponent, EmbedModalComponent, UserInfoComponent, LocationComponent,
                  PlatformComponent, ResponseMessageComponent, PreviewVideoComponent, ContactsCampaignsMailsComponent, ListLoaderComponent,
+                 PlayVideoLoaderComponent, GridLoaderComponent, ExportCsvComponent, AnalyticsLoaderComponent, VideoThumbnailComponent, DetailViewComponent],
+  exports: [DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent,
+    BarChartComponent, EmbedModalComponent, UserInfoComponent, LocationComponent, PlatformComponent,
+    ResponseMessageComponent, PreviewVideoComponent,PieChartComponent, ListLoaderComponent, GridLoaderComponent, PlayVideoLoaderComponent,
+    ExportCsvComponent,LoadingModule,AnalyticsLoaderComponent,VideoThumbnailComponent, DetailViewComponent]
                  PlayVideoLoaderComponent, GridLoaderComponent, ExportCsvComponent, AnalyticsLoaderComponent, VideoThumbnailComponent, TimestampComponent, ScrollTopComponent],
   exports: [DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent,
     BarChartComponent, EmbedModalComponent, UserInfoComponent, LocationComponent, PlatformComponent,

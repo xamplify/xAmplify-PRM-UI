@@ -20,6 +20,7 @@ import { BubbleChartComponent } from "./analytics/bubble-chart/bubble-chart.comp
 import { PartnerCampaignsComponent } from "./partner-campaigns/partner-campaigns.component";
 import { EditPartnerCampaignsComponent } from "./edit-partner-campaigns/edit-partner-campaigns.component";
 import { PreviewCampaignComponent } from "./preview-campaign/preview-campaign.component";
+import { EventCampaignComponent } from './event-campaign/event-campaign.component'; 
 import { ReDistributedComponent } from './analytics/re-distributed/re-distributed.component';
 import { PreviewPartnersComponent } from './preview-partners/preview-partners.component';
 
@@ -43,10 +44,11 @@ import { PreviewPartnersComponent } from './preview-partners/preview-partners.co
     PartnerCampaignsComponent,
     EditPartnerCampaignsComponent,
     PreviewCampaignComponent,
+    EventCampaignComponent,
     ReDistributedComponent,
     PreviewPartnersComponent
-    /*,CkEditor*/
   ],
+  exports: [],
   providers: [ContactService, VideoFileService, EmailTemplateService]
 })
 export class CampaignsModule {}

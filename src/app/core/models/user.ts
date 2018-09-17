@@ -26,10 +26,14 @@ export class User {
     userListIds: number[];
     alias: string;
     userDefaultPage: string;
-    roles:Array<Role> = new Array<Role>();
-    hasCompany:boolean = false;
+    roles: Array<Role> = new Array<Role>();
+    hasCompany: boolean = false;
 
     isShowDetails = false;
+    companyName: string = "";
+    vendorSignUp: boolean = false;
+    companyLogo: string = "";
+
     companyName:string = "";
     vendorSignUp:boolean = false;
     companyLogo:string = "";

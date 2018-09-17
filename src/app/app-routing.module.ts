@@ -25,6 +25,7 @@ import { VerifyEmailComponent } from './authentication/verify-email/verify-email
 import { CompanyPageComponent } from './dashboard/company-profile/company-page/company-page.component';
 import { IntroComponent } from './authentication/intro/intro.component';
 import { TermsConditonComponent } from 'app/authentication/terms-conditon/terms-conditon.component';
+import { RsvpComponent } from './campaigns/rsvp/rsvp.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -65,6 +66,7 @@ export const routes: Routes = [
     { path: 'log/unsubscribe-user', component: LogUnsubscribeComponent },
     { path: 'su', component: ServiceUnavailableComponent },
     { path: 'access-denied', component: AccessDeniedComponent },
+    { path: 'rsvp/:alias', component: RsvpComponent },
     { path: '**', component: PageNotFoundComponent},
 ];
 

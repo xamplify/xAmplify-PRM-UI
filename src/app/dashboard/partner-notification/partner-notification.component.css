@@ -1,8 +1,10 @@
 .notification-box {
 	position: relative;
 	text-align: center;
-	margin: 10px 0 15px 0;
-	padding: 10px;
+	/* margin: 10px 0 15px 0;
+  padding: 10px; */
+  margin: 1px 0 14px 0;
+  padding: 1px;
 	cursor: pointer
 }
 

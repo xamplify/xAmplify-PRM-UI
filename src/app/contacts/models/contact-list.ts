@@ -21,4 +21,7 @@ export class ContactList {
     lastName: string;
     isPartnerUserList: boolean;
     companyName: string;
+    constructor(id?: number) {
+        this.id = id;
+    }
 }
