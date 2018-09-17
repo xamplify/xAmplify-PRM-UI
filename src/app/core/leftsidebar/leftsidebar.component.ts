@@ -1,23 +1,30 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, DoCheck} from '@angular/core';
 import {Location} from '@angular/common';
 import {Router} from '@angular/router';
 import {AuthenticationService} from '../../core/services/authentication.service';
 import {Roles} from '../../core/models/roles';
 import {ReferenceService} from '../../core/services/reference.service';
-declare var $:any;
+declare var window:any;
 
 @Component({
   selector: 'app-leftsidebar',
   templateUrl: './leftsidebar.component.html',
   styleUrls: ['./leftsidebar.component.css']
 })
-export class LeftsidebarComponent implements OnInit {
+export class LeftsidebarComponent implements OnInit, DoCheck {
 
     location: Location;
     baseRoute: string;
     enableLink = true;
     roleName: Roles= new Roles();
     isOnlyPartner:boolean = false;
+
+    emailtemplates = false;
+    campaigns = false;
+    videos = false;
+    contacts = false;
+    partners = false;
+
     constructor(location: Location, public authService: AuthenticationService, public refService: ReferenceService,private router:Router) {
         this.updateLeftSideBar(location);
     }
@@ -77,9 +84,33 @@ export class LeftsidebarComponent implements OnInit {
     }
 
   ngOnInit() {
-      this.isOnlyPartner = this.authService.isOnlyPartner();
+    this.isOnlyPartner = this.authService.isOnlyPartner();
   }
-
+  ngDoCheck(){
+    if(window.innerWidth > 990) { this.clearSubMenuValues(false,false,false,false,false); }
+  }
+  openOrCloseTabs(urlType:string){
+   if(window.innerWidth < 990) {
+    if(urlType ==='emailtemplates') {
+     this.emailtemplates = this.router.url.includes('emailtemplates') ? true:(this.emailtemplates= !this.emailtemplates);
+     this.clearSubMenuValues(this.emailtemplates,false,false,false,false); }
+    else if(urlType ==='contacts') {
+     this.contacts = this.router.url.includes('contacts') ? true: (this.contacts = !this.contacts);
+     this.clearSubMenuValues(false,false,false,this.contacts,false); }
+    else if(urlType ==='partners') {
+       this.partners = this.router.url.includes('partners') ? true: (this.partners = !this.partners);
+       this.clearSubMenuValues(false,false,false,false,this.partners); }
+    else if(urlType ==='campaigns') {
+      this.campaigns = this.router.url.includes('campaigns') ? true: (this.campaigns = !this.campaigns);
+      this.clearSubMenuValues(false,this.campaigns,false,false,false); }
+    else if(urlType ==='videos') {
+      this.videos = this.router.url.includes('videos') ? true: (this.videos = !this.videos);
+      this.clearSubMenuValues(false,false,this.videos,false,false); }
+   }
+  }
+  clearSubMenuValues(emailTemplate,campaigs,videos,contacts,partners){
+    this.emailtemplates =  emailTemplate; this.campaigns = campaigs; this.videos = videos; this.contacts = contacts;this.partners = partners;
+  }
   logout(){
       this.authService.logout();
       this.router.navigate(['/login']);
