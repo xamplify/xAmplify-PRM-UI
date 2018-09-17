@@ -96,6 +96,10 @@ export class ReferenceService {
              return true;
          }
     }
+    isMobileScreenSize(){
+     if(window.innerWidth < 768){  return true; }
+     return false;
+    }
     isSafariBrowser(){
       this.deviceInfo = this.deviceService.getDeviceInfo();
       if(this.deviceInfo.browser=== 'safari' || this.deviceInfo.browser==='ie'){ return true; } else{ return false};

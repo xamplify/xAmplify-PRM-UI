@@ -5,19 +5,19 @@
   </style>
 <ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination" style="margin: 0px 0px 0px 10px;">
   <li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
-    <a (click)="setPage(1)" [class.disabled]="pagination.pager.currentPage === 1">First</a>
+    <a (click)="setPage(1)" [class.disabled]="pagination.pager.currentPage === 1"><span class="hidden-xs">First</span><span *ngIf="referenceService.isMobileScreenSize()"><i class="fa fa-angle-double-left"></i></span></a>
   </li>
   <li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
-    <a (click)="setPage(pagination.pager.currentPage - 1)" [class.disabled]="pagination.pager.currentPage === 1">Previous</a>
+    <a (click)="setPage(pagination.pager.currentPage - 1)" [class.disabled]="pagination.pager.currentPage === 1"><span class="hidden-xs">Previous</span><span *ngIf="referenceService.isMobileScreenSize()"><i class="fa fa-angle-left"></i></span></a>
   </li>
   <li *ngFor="let page of pagination.pager.pages" [ngClass]="{active:pagination.pager.currentPage === page}">
     <a (click)="setPage(page)" [class.disabled]="pagination.pager.currentPage === page">{{page}}</a>
   </li>
   <li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
-    <a (click)="setPage(pagination.pager.currentPage + 1)" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Next</a>
+    <a (click)="setPage(pagination.pager.currentPage + 1)" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages"><span class="hidden-xs">Next</span><span *ngIf="referenceService.isMobileScreenSize()"><i class="fa fa-angle-right"></i></span></a>
   </li>
   <li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
-    <a (click)="setPage(pagination.pager.totalPages)" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Last</a>
+    <a (click)="setPage(pagination.pager.totalPages)" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages"><span class="hidden-xs">Last</span><span *ngIf="referenceService.isMobileScreenSize()"><i class="fa fa-angle-double-right"></i></span></a>
   </li>
 </ul>
 
