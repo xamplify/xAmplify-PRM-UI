@@ -120,17 +120,19 @@
                   <!-- <th>partner Company Name</th> -->
                   <th class="center-aligned">Campaign Name</th>
                   <th class="center-aligned">Launched By (Vendor)</th>
-                   <th class="center">Total Recipients</th>
-                   <th class="center">Active Recipients</th>
-                   <th class="center">Clicked URL</th>
-                   <th class="center">Views</th>
+                   <th class="center">Total Recipients <i class="fa fa-envelope sky-blue"></i></th>
+                   <th class="center">Active Recipients <i class="fa fa-envelope-open sky-blue"></i></th>
+                   <th class="center">Clicked URL <i class="fa fa-globe sky-blue"></i></th>
+                   <th class="center">Views <i class="fa fa-eye sky-blue"></i></th>
                   <th class="center">#Redistributed</th>
                 </tr>
               </thead>
               <tbody>
                 <ng-container *ngFor="let item of pagination.pagedItems;let i=index">
                   <tr>
-                    <td class="re-distributed-count">{{item.campaignName}}</td>
+                    <td class="re-distributed-count" title="{{item.campaignName}}">{{item.campaignName | slice:0:20}}
+                     	<span *ngIf="item.campaignName?.length>20">...</span>
+                    </td>
                     <td>
                       <h5 class='ellipsis' title="{{item.firstName}} {{item.lastName}}" style="margin: 7px 0 2px 0;font-weight: 400;">{{item.firstName
                         | slice:0:20}}
@@ -148,7 +150,6 @@
                     	<div>
 							<button class="btn btn-default btn-xs re-distributed-high-level">
 								<div class="portlet-body text-center">
-										<i class="fa fa-envelope sky-blue"></i>
 									<h4>
 										<b class="sky-blue">{{item.totalRecipients}}</b>
 									</h4>
@@ -160,7 +161,6 @@
                      	<div>
 							<button class="btn btn-default btn-xs re-distributed-high-level">
 								<div class="portlet-body text-center">
-										<i class="fa fa-envelope-open sky-blue"></i>
 									<h4>
 										<b class="sky-blue">{{item.activeRecipients}}</b>
 									</h4>
@@ -172,7 +172,6 @@
                     	<div>
 							<button class="btn btn-default btn-xs re-distributed-high-level">
 								<div class="portlet-body text-center">
-										<i class="fa fa-globe sky-blue"></i>
 									<h4>
 										<b class="sky-blue">{{item.clickedUrls}}</b>
 									</h4>
@@ -184,7 +183,6 @@
                       	<div>
 							<button class="btn btn-default btn-xs re-distributed-high-level">
 								<div class="portlet-body text-center">
-										<i class="fa fa-eye sky-blue"></i>
 									<h4>
 										<b class="sky-blue">{{item.views}}</b>
 									</h4>
@@ -194,8 +192,7 @@
                    	</td>
                     <td style="text-align: right;">
                       <font class="re-distributed-count">{{item.redistributedCampaignsCount}}</font>
-                      <div class="actions-block" style="text-align: center;position: relative;margin-right: 90px;margin-top: -7px;padding: 0px 5px;"
-                        *ngIf="item.redistributedCampaignsCount> 0">
+                      <div class="actions-block redistribute-count"   *ngIf="item.redistributedCampaignsCount> 0">
                         <a title="View Redistributed Campaigns" (click)="showRedistributedCampaings(item)">
                           <i class="fa" [ngClass]="{'fa-plus': !item.expand, 'fa-minus': item.expand}"></i>
                         </a>
@@ -232,53 +229,33 @@
 							</div>
                             </td>
                             <td class="center">
-                    	<div>
-							<button class="btn btn-default btn-xs re-distributed-high-level">
-								<div class="portlet-body text-center">
-										<i class="fa fa-envelope sky-blue"></i>
-									<h4>
-										<b class="sky-blue">{{redistributedCampaign.totalRecipients}}</b>
-									</h4>
+		                    	<div class="actions-block float-none">
+		                    		<a data-toggle="tooltip" data-placement="top" class="child-campaigns">
+										<span style="position: relative;top: 3px;"><b>{{redistributedCampaign.totalRecipients}}</b></span>
+									</a>
 								</div>
-							</button>
-						</div>
-                     </td>
-                      <td class="center">
-                     	<div>
-							<button class="btn btn-default btn-xs re-distributed-high-level">
-								<div class="portlet-body text-center">
-										<i class="fa fa-envelope-open sky-blue"></i>
-									<h4>
-										<b class="sky-blue">{{redistributedCampaign.activeRecipients}}</b>
-									</h4>
+                     		</td>
+		                      <td class="center">
+		                     	<div class="actions-block float-none">
+		                    		<a data-toggle="tooltip" data-placement="top" class="child-campaigns">
+										<span style="position: relative;top: 3px;"><b>{{redistributedCampaign.activeRecipients}}</b></span>
+									</a>
 								</div>
-							</button>
-						</div>
-                     </td>
-                     <td class="center">
-                    	<div>
-							<button class="btn btn-default btn-xs re-distributed-high-level">
-								<div class="portlet-body text-center">
-										<i class="fa fa-globe sky-blue"></i>
-									<h4>
-										<b class="sky-blue">{{redistributedCampaign.clickedUrls}}</b>
-									</h4>
+		                     </td>
+		                     <td class="center">
+		                    	<div class="actions-block float-none">
+		                    		<a data-toggle="tooltip" data-placement="top" class="child-campaigns">
+										<span style="position: relative;top: 3px;"><b>{{redistributedCampaign.clickedUrls}}</b></span>
+									</a>
 								</div>
-							</button>
-						</div>
-                    </td>
-                     <td class="center">
-                      	<div>
-							<button class="btn btn-default btn-xs re-distributed-high-level">
-								<div class="portlet-body text-center">
-										<i class="fa fa-eye sky-blue"></i>
-									<h4>
-										<b class="sky-blue">{{redistributedCampaign.views}}</b>
-									</h4>
+		                    </td>
+		                     <td class="center">
+		                      	<div class="actions-block float-none">
+		                    		<a data-toggle="tooltip" data-placement="top" class="child-campaigns">
+										<span style="position: relative;top: 3px;"><b>{{redistributedCampaign.views}}</b></span>
+									</a>
 								</div>
-							</button>
-						</div>
-                   	</td>
+		                   	</td>
                             <td>
                               <a data-rel="fancybox-button" (click)="referenseService.goToCampaignAnalytics(redistributedCampaign)" data-toggle="tooltip"
                                 data-placement="top" title="Campaign Based Reports" class='mr5'>

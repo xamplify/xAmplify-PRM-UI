@@ -215,8 +215,8 @@ export class PartnerReportsComponent implements OnInit {
       this.pagination = new Pagination();
       $('#through-partner-div').hide();
       $('#inactive-partners-div').hide();
-      $('#active-partner-div').show();
       this.listRedistributedThroughPartnerCampaigns(this.pagination);
+      $('#active-partner-div').show();
   }
 
   /****************************Through Partner Analytics**************************/
@@ -355,6 +355,7 @@ export class PartnerReportsComponent implements OnInit {
       if(this.authenticationService.isSuperAdmin()){
           pagination.userId = this.authenticationService.checkLoggedInUserId(pagination.userId);
       }
+      console.log(pagination);
       this.parterService.getInActivePartnersAnalytics(pagination).subscribe(
               (response: any) => {
                pagination.totalRecords = response.totalRecords;
@@ -365,15 +366,17 @@ export class PartnerReportsComponent implements OnInit {
                pagination = this.pagerService.getPagedItems(pagination, response.inactivePartnerList);
                this.referenseService.loading(this.httpRequestLoader, false);
               },
-              (error: any) => { console.log("error")});
+              (error: any) => { 
+                  this.xtremandLogger.errorPage(error)
+              });
   }
 
-  setInActivePartnesPage( pageIndex:number ) {
+  setInActivePartnesPage( event:any) {
       try {
-          this.inActivePartnersPagination.pageIndex = pageIndex;
+          this.inActivePartnersPagination.pageIndex = event.page;
           this.getInActivePartnerReports(this.inActivePartnersPagination);
       } catch ( error ) {
-          this.referenseService.showError( error, "setPage", "partner-reports.component.ts" )
+          this.referenseService.showError( error, "setInActivePartnesPage", "partner-reports.component.ts" )
       }
   }
 
