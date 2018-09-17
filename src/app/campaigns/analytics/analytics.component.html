@@ -554,7 +554,7 @@
 <section *ngIf="campaignType === 'EVENT'">
 <div id="timeline-view" class="page-content" *ngIf="isTimeLineView">
 	<div class="page-bar" style="min-height: 572px;">
-		<a (click)="resetTopNavBarValue()" class="pull-right close-circle" style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;"> <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;"
+		<a (click)="resetTopNavBarValue(); rsvpDetailType = ''" class="pull-right close-circle" style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;"> <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;"
 			aria-hidden="true"></span></a>
 	<div class="col-xs-12 col-sm-5 p-5x">
 		<div class="p-5x">

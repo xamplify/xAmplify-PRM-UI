@@ -1025,7 +1025,11 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
         this.logListName = 'World_Map_logs.csv';
       this.downloadCsvList = this.worldMapUserTotalData;
     } else if(this.downloadTypeName === 'rsvp'){
+        if(this.rsvpResposeType === 'email open'){
+            this.logListName = 'People who opened mail log.csv';
+        }else{
         this.logListName = 'People who says '+ this.rsvpResposeType +' log.csv';
+        }
         this.downloadCsvList = this.rsvpDetailsList;
     }
         
@@ -1060,6 +1064,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
             object["No"] = this.downloadCsvList[i].rsvpMap.NO;
             object["May Be"] = this.downloadCsvList[i].rsvpMap.MAYBE;
             object["Not Yet"] = this.downloadCsvList[i].rsvpMap.notYetResponded;
+            object["Plus Guests"] = this.downloadCsvList[i].rsvpMap.additionalCount;
         }else{
         object["Sent Time"] = sentTime.toDateString() + ' ' + sentTime.getHours() + ':' + sentTime.getMinutes() + ':' + sentTime.getSeconds();
         object["Latest View"] = latestView.toDateString() + ' ' + latestView.getHours() + ':' + latestView.getMinutes() + ':' + latestView.getSeconds();
@@ -1090,9 +1095,16 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       
       if (this.downloadTypeName === 'rsvp') {
           object["Email Id"] = this.downloadCsvList[i].emailId;
-          object["Message"] = this.downloadCsvList[i].message;
-          object["Response Time"] = responseTime.toDateString() + ' ' + responseTime.getHours() + ':' + responseTime.getMinutes() + ':' + responseTime.getSeconds();;
-      }
+          if(this.rsvpResposeType === 'email open'){
+              object["Campaign Name"] = this.downloadCsvList[i].campaignName;
+              object["Subject"] = this.downloadCsvList[i].subject;
+              object["Time"] = date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();;
+          }else{
+              object["Message"] = this.downloadCsvList[i].message;
+              object["Response Time"] = responseTime.toDateString() + ' ' + responseTime.getHours() + ':' + responseTime.getMinutes() + ':' + responseTime.getSeconds();
+              object["Plus Guests"] = this.downloadCsvList[i].additionalCount;
+          }
+         }
       
       this.downloadDataList.push(object);
     }
