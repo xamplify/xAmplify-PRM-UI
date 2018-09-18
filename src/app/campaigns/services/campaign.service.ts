@@ -235,9 +235,6 @@ export class CampaignService {
             .map(this.extractData)
             .catch(this.handleError);
     }
-    getCampaignUsersWatchedInfo(campaignId: number, countryCode: string, pagination: Pagination) {
-        const url = this.URL + 'campaign/' + campaignId + '/countrywise-users-report?access_token=' + this.authenticationService.access_token + '&countryCode=' + countryCode;
-    }    
     getCampaignUsersWatchedInfo(campaignId:number, countryCode: string, pagination: Pagination){
         const url = this.URL+'campaign/'+campaignId+'/countrywise-users-report?access_token='+this.authenticationService.access_token+'&countryCode='+countryCode; 
         return this.http.post(url, pagination)
@@ -318,12 +315,6 @@ export class CampaignService {
         return this.http.get(this.URL + `campaign/partner-campaign/${campaignId}/${userId}?access_token=${this.authenticationService.access_token}`)
             .map(this.extractData)
             .catch(this.handleError);
-    }
-    
-    listEmailLogsByCampaignIdUserIdActionType (campaignId: number, userId: number, actionType: string) {
-        return this.http.get(this.URL+`campaign/list-emaillogs-history/${campaignId}/${userId}/${actionType}?access_token=${this.authenticationService.access_token}`)
-            .map(this.extractData)
-            .catch(this.handleError);       
     }
     
     loadUsersOfContactList( contactListId: number, campaignId:number, pagination: Pagination ) {
@@ -480,21 +471,19 @@ export class CampaignService {
         return links;
     }
 
-    setAutoReplyDefaultTime(campaignType: string, replyInDays: number, replyTime: Date, scheduleTime: any) {
+    setAutoReplyDefaultTime(campaignType:string,replyInDays:number,replyTime:Date,scheduleTime:any){
         let currentTime = new Date();
-        let isValid = (replyInDays == 0 && replyTime.getTime() < currentTime.getTime());
-        if ("NOW" === campaignType && isValid) {
         let isValid = (replyInDays==0 && replyTime.getTime()< currentTime.getTime());
         if("NOW"===campaignType && isValid){
             return currentTime;
-        } else if ("SCHEDULE" === campaignType && isValid) {
+        }else if("SCHEDULE"===campaignType && isValid){
             let date = $.trim(scheduleTime.split(' ')[0]);
-            if (this.extractTodayDateAsString() == date) {
+            if(this.extractTodayDateAsString()==date){
                 return currentTime;
-            } else {
+            }else{
                 return replyTime;
             }
-        } else {
+        }else{
             return replyTime;
         }
     }

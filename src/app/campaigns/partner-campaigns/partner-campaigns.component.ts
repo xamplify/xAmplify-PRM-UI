@@ -182,10 +182,11 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
         } else {
           this.router.navigate(['/home/campaigns/preview/'+campaign.campaignId]);
         }
-    showCampaignPreview(campaignId:number){
-        this.referenceService.isRedistributionCampaignPage = true;
-        this.router.navigate(['/home/campaigns/preview/'+campaignId]);
     }
+//    showCampaignPreview(campaignId:number){
+//        this.referenceService.isRedistributionCampaignPage = true;
+//        this.router.navigate(['/home/campaigns/preview/'+campaignId]);
+//    }
 
     navigateSocialCampaign(campaign:any) {
         this.socialService.getSocialCampaignByCampaignId( campaign.campaignId )
