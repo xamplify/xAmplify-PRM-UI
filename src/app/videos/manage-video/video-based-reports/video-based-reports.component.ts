@@ -687,13 +687,15 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                 object["Location"] = this.downloadCsvList[i].location;
             }
             else if (this.downloadTypeName === 'playedDuration') {
-                object["Email Id"] = this.downloadCsvList[i].name;
-                object["Date and Time"] = date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+                object["Email Id"] = this.downloadCsvList[i].emailId;
+                object["Start Time"] = date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+                object["End Time"] = endTime.toDateString() + ' ' + endTime.getHours() + ':' + endTime.getMinutes() + ':' + endTime.getSeconds();
                 object["Device"] = this.downloadCsvList[i].device;
             }
             else if (this.downloadTypeName === 'skippedDuration') {
-                object["Email Id"] = this.downloadCsvList[i].name;
-                object["Date and Time"] = date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+                object["Email Id"] = this.downloadCsvList[i].emailId;
+                object["Start Time"] = date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+                object["End Time"] = endTime.toDateString() + ' ' + endTime.getHours() + ':' + endTime.getMinutes() + ':' + endTime.getSeconds();
                 object["Device"] = this.downloadCsvList[i].device;
             }
             this.downloadDataList.push(object);
