@@ -240,9 +240,11 @@
 								<div style="display: inline">
                   <div>
                     <div class="col-xs-6"><h4 style="position: relative;left: -14px;">Related Videos:</h4></div>
-                    <div class="col-xs-6 list-grid" style="text-align: right; margin-bottom: 7px;z-index: 999;">
+                    <div class="col-xs-6 list-grid" style="text-align: right;z-index: 999;" [ngStyle]="{'margin-bottom': referenceService.isMobileScreenSize() ? '38px': '7px'}">
+                      <div [hidden]="referenceService.isMobileScreenSize()">
                       <button class="btn btn-xs" [disabled]="isListView" (click)="isListView = true" title="List View"><i class="fa fa-th-list p10" aria-hidden="true"></i></button>
                       <button class="btn btn-xs" [disabled]="!isListView" (click)="isListView = false" title="Grid View"><i class="fa fa-th-large p10" aria-hidden="true"></i></button>
+                      </div>
                     </div>
                   </div>
 									<div>
@@ -287,7 +289,7 @@
 									</div>
 								</div>
 								<div *ngIf="showRelatedMessage == false" style=" position: relative;bottom: -14px;">
-									<app-pagination [pagination]="pagination" [type]="'playvideos'" (notifyParent)="setPage($event)" (notifyParentDropDown)="loadAllVideos($event)"></app-pagination>
+									<app-pagination style="position: relative;left: -20px;" [pagination]="pagination" [type]="'playvideos'" (notifyParent)="setPage($event)" (notifyParentDropDown)="loadAllVideos($event)"></app-pagination>
 								</div>
 								<p *ngIf="showRelatedMessage" class="notFoundVideo">No Related videos Found</p>
 							</div>

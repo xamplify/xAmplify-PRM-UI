@@ -78,7 +78,8 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.loggedInUserId = this.authenticationService.getUserId();
         this.hasVideoRole = this.referenceService.hasRole(this.referenceService.roles.videRole);
         this.hasAllAccess = this.referenceService.hasAllAccess();
-        this.isListView = ! this.referenceService.isGridView;
+        if(this.referenceService.isMobileScreenSize()){ this.isListView = true; }
+        else  { this.isListView = ! this.referenceService.isGridView; }
         //vjs-user-inactive
 
     }
