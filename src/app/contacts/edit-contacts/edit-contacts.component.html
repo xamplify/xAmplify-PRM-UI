@@ -194,7 +194,8 @@
 														One at a Time
 														<i class="fa fa-plus" style="font-size: 12px; margin-left: 5px;"></i>
 													</button>
-												</div>
+                        </div>
+                        <ng-container *ngIf="!refService.isMobileScreenSize()">
 												<div class="btn-group" *ngIf="!isSynchronizationList">
 													<button id="copyFrom_clipboard" class="btn green"
 														[disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 2 || selectedAddContactsOption == 9"
@@ -215,7 +216,8 @@
 															(change)="fileChange(input)" accept=".csv" #input
 															[disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 9" />
 													</div>
-												</div>
+                        </div>
+                        </ng-container>
 											</div>
 							 	<div class="col-sm-6" style="margin-top: 10px;">
 								<div *ngIf="!isSegmentation" (click)="modelForSeg()"
@@ -252,7 +254,7 @@
 														class="form-control" placeholder="Search For {{checkingContactTypeName}}" (keypress)="eventHandler($event.keyCode)">
 												<button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey=''"></button>
 														<button type="submit" class="search-box-item-click" (click)="search('contactList')"><i class="fa fa-search"></i></button>
-												
+
 												</div>
 											</div>
 										</div>
@@ -656,7 +658,7 @@
 								</div>
 							</div>
 							<div class="portlet-body">
-							
+
 									<div class="page-bar" *ngIf="!showEditContactData">
 									<div class="btn-group pull-right">
 										<div class="inputs" align="right" style="float: right">
@@ -684,8 +686,8 @@
 										</div>
 									</div>
 								</div>
-							
-							
+
+
 								<div class="table-responsive">
 									<app-loader [model]="httpRequestLoader.isHorizontalCss"
 										*ngIf="httpRequestLoader.isLoading"></app-loader>

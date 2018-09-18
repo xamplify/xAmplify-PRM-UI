@@ -166,8 +166,8 @@
 									</ng-container>
 
 								</div>
-								<div class="bar">
-                  					<a  (click)="edit(emailTemplate.id)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_edit}}"
+								<div class="bar" [class.mobileOpacity]="refService.isMobileScreenSize()">
+                  		<a  (click)="edit(emailTemplate.id)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_edit}}"
 										*ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  || authenticationService.module.isVendor) && emailTemplate.type!='PARTNER'">
 										<i class="fa fa-pencil-square-o"></i>
 									</a>

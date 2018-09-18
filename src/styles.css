@@ -874,3 +874,7 @@ td>br { display: none; }
  .flatpickr-month{
    color:#fff !important;
  }
+.mobileOpacity{
+  opacity: 1;
+  visibility: inherit;
+}

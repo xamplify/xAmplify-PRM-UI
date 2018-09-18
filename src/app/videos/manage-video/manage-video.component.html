@@ -62,7 +62,7 @@
                <!-- <app-play-video-loader [isPlaying]="true" *ngIf="editVideoLoader"></app-play-video-loader> -->
                <app-grid-loader *ngIf="httpRequestLoader.isLoading && !isListView  && !referenceService.isPlayVideo"></app-grid-loader>
                <app-list-loader *ngIf="httpRequestLoader.isLoading && isListView && !referenceService.isPlayVideo"></app-list-loader>
-                 <div class="margin-top-10">
+                 <div class="margin-top-10 row">
                  <div *ngIf="!httpRequestLoader.isLoading  && !referenceService.isPlayVideo">
                    <div *ngIf="pagination.pagedItems.length == 0" style="position: relative; top: 16px; width: 100%;" class="col-md-9 alert alert-info alert-dismissable">
                      <a class="close" data-dismiss="alert" aria-label="close"></a>
@@ -161,7 +161,7 @@
                    <div class="ribbon" >
                      <span>{{videoFile.viewBy}}</span>
                    </div>
-                   <div class="bar" *ngIf="!authenticationService.isSuperAdmin()">
+                   <div class="bar" *ngIf="!authenticationService.isSuperAdmin()" [class.mobileOpacity]="referenceService.isMobileScreenSize()">
                      <div >
                       <ng-container  *ngIf="videoFileService.videoType==='myVideos'">
                         <a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor"

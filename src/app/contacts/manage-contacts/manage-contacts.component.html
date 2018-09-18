@@ -40,7 +40,7 @@
 									<!-- END DASHBOARD STATS -->
 									<div class="clearfix"></div>
 									<div class="row mt5 mb5">
-										<div class="col-sm-5ths">
+										<div class="col-sm-5ths margin-top-10">
 											<button class="btn-block dashboard-stat blue"
 												(click)="listContactsByType('all')"
 												[disabled]="contactsByType.allContactsCount == 0">
@@ -57,7 +57,7 @@
 												</span>
 											</button>
 										</div>
-										<div class="col-sm-5ths">
+										<div class="col-sm-5ths margin-top-10">
 											<button class="btn-block dashboard-stat green"
 												(click)="listContactsByType('active')"
 												[disabled]="contactsByType.activeContactsCount == 0">
@@ -75,7 +75,7 @@
 												</span>
 											</button>
 										</div>
-										<div class="col-sm-5ths">
+										<div class="col-sm-5ths margin-top-10">
 											<button class="btn-block dashboard-stat purple"
 												(click)="listContactsByType('non-active')"
 												[disabled]="contactsByType.inactiveContactsCount == 0">
@@ -93,7 +93,7 @@
 												</span>
 											</button>
 										</div>
-										<div class="col-sm-5ths">
+										<div class="col-sm-5ths margin-top-10">
 											<button class="btn-block dashboard-stat yellow-gold"
 												(click)="listContactsByType('invalid')"
 												[disabled]="contactsByType.invalidContactsCount == 0">
@@ -111,7 +111,7 @@
 												</span>
 											</button>
 										</div>
-										<div class="col-sm-5ths">
+										<div class="col-sm-5ths margin-top-10">
 											<button class="btn-block dashboard-stat red"
 												(click)="listContactsByType('unsubscribe')"
 												[disabled]="contactsByType.unsubscribedContactsCount == 0">
@@ -308,7 +308,7 @@
 											<h6 class="mt10 mb0">Total {{checkingContactTypeName}}s {{contactList.noOfContacts}}</h6>
 											<h6 class="mt10 mb0">Created date <app-timestamp [isOnlyDate]="true" [dateAndTime]="contactList.createdDate"> </app-timestamp>
 											</h6>
-											<div class="bar" *ngIf="!authenticationService.isSuperAdmin()">
+											<div class="bar" *ngIf="!authenticationService.isSuperAdmin()" [class.mobileOpacity]="referenceService.isMobileScreenSize()">
 											 <a [class.disabled]="!contactList.emailValidationInd"
 															*ngIf="(hasAllAccess || authenticationService.module.isVendor || (hasContactRole && loggedInUserId == contactList.uploadedUserId) || authenticationService.isOnlyPartner()) && !contactList.synchronisedList"
 															(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList)"
