@@ -55,8 +55,8 @@
 							<h6>Add Team Member</h6>
 						</button>
 					</div>
-					<div  align="right" style="margin-right:20px;">
-						<a class="btn btn-success" (click)="downloadEmptyCsv()" download style="color: white;">Download Csv File</a>
+					<div class="col-xs-12 col-sm-3">
+						<a class="btn btn-success" (click)="downloadEmptyCsv()" download [ngClass]="{'downlaod-css':!referenceService.isMobileScreenSize(),'downlaod-css-mobile':referenceService.isMobileScreenSize()}">Download Csv Template</a>
 					</div>
 				</section>
 			</div>
