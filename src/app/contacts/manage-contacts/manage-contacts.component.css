@@ -20,21 +20,8 @@ a.disabled{pointer-events:none;cursor:not-allowed}
 100%{-webkit-transform:rotate (360deg);transform:rotate (360deg)}
 .btn-tools{font-size:28px;color:#FFF;margin-top:10px;cursor:pointer}
 .dashboard-stat .details .number{font-weight:600!important}
-.loaderGif{
-	height: 57px;
-    position: relative;
-    top: -52px;
-    right: -81px;
-}
-#container {
-	width: 511px;
-    padding-top: 0;
-    position: absolute;
-	top: -1px;
-	left: -4px;
-	font-family: helvetica, arial, sans-serif;
-}
-
+.loaderGif{ height: 57px; position: relative; top: -52px; right: -81px;}
+#container { width: 511px;  padding-top: 0;   position: absolute; top: -1px;left: -4px;	font-family: helvetica, arial, sans-serif;}
 h3 {
 	background: #337ab7;
 	background: -moz-linear-gradient(top, #e3e3e3, #c8c8c8);
@@ -63,36 +50,18 @@ h3 {
 	left: 0;
 	position: absolute;
 }
-.numberCss {
-	font-weight: 300 !important;
-}
-.dashboard-stat .more{
-    bottom: -5px;
-    position: relative;}
-    .dashboard-stat .visual{height:60px}
-    .dashboard-stat .details .number {
-    padding-top: 10px;}
-    
-.imageClassCss{
-	width: 60px;
-	margin: 0px;
-}
-.disabled {
-	pointer-events: none;
-	opacity: 0.7;
-}
-
-.isProcessing {
-	pointer-events: none;
-	opacity: 0.4;
-}
-
-.saveAsCustomeCss{
-    position:absolute;
-    left: 60% !important;
-    top: -64px !important;
-
-}
-.center{
-  text-align: center;
-}
+.numberCss { 	font-weight: 300 !important;}
+.dashboard-stat .more{  bottom: -5px; position: relative;}
+.dashboard-stat .visual{height:60px}
+.dashboard-stat .details .number {  padding-top: 10px;}
+.imageClassCss{ width: 60px; margin: 0px;}
+.disabled { pointer-events: none; opacity: 0.7; }
+.isProcessing {	pointer-events: none;	opacity: 0.4;}
+.saveAsCustomeCss{ position:absolute;  left: 60% !important; top: -64px !important;}
+.center{ text-align: center;}
+.search-css{  margin: 0 10px; float: left;}
+.mobile-css{float: left;width: 100%;}
+.mobileSorting{ float: right; margin-right: 1px;}
+.sortingContacts {float: left; margin-right: 10px; }
+.filter-css{  left: 85px; top: 3px;cursor: pointer }
+.mobile-view-filter{ left: 0px; top: 0px;cursor: pointer}

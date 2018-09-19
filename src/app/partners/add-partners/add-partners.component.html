@@ -57,10 +57,8 @@ img:hover {
 		</ul>
 		<div align="right" style="margin-top: 2px;">
 			 <a (click)="downloadEmptyCsv()">
-				<button type="button" class="btn green" download
-					style="color: #ffffff;">
-					<span class="hidden-xs">Download Partner CSV Template</span><i class="fa fa-cloud-download" aria-hidden="true"
-						style="margin-left: 5px"></i>
+				<button type="button" class="btn green" download	style="color: #ffffff;" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
+					Download Partner CSV Template<i class="fa fa-cloud-download" aria-hidden="true" style="margin-left: 5px"></i>
 				</button>
 			</a>
 		</div>
@@ -239,8 +237,8 @@ img:hover {
 						</div>
 			</form>
 		</div>
-		<div class="btn-group pull-right" style="padding-bottom:10px">
-      <span style=" float: left; position: relative;left: -33px;" *ngIf="referenceService.isMobileScreenSize()">
+		<div class="btn-group pull-right" style="padding-bottom:10px;width:100%">
+      <span style=" float: left; width:70%" *ngIf="referenceService.isMobileScreenSize()">
           <select class="form-control" [(ngModel)]="sortOption" (ngModelChange)="sortByOption($event)">
             <ng-container *ngFor="let sort of sortOptions; let i = index">
               <option [ngValue]="sort">{{sort.name}}</option>
@@ -248,7 +246,7 @@ img:hover {
           </select>
         </span>
 
-      <button class="btn dropdown-toggle" id="save&delete_button" style="color: white;" [ngStyle]="{'background-color': !referenceService.isMobileScreenSize() ? '#26a69a': '#fff' }"
+      <button class="btn dropdown-toggle" id="save&delete_button" style="color: white;float: right;" [ngStyle]="{'background-color': !referenceService.isMobileScreenSize() ? '#26a69a': '#fff' }"
 				data-toggle="dropdown">
         <span *ngIf="!referenceService.isMobileScreenSize()">Actions <i class="fa fa-angle-down"></i></span>
         <span *ngIf="referenceService.isMobileScreenSize()"><i style="font-size: 25px; color: #3598dc;" class="fa fa-cog"></i></span>

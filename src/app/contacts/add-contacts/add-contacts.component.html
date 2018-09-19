@@ -106,8 +106,8 @@ img:hover {
 		</ul>
 		<div align="right" style="margin-top: 2px;">
 			<a (click)="downloadEmptyCsv()">
-				<button type="button" class="btn green" download 	style="color: #ffffff;">
-        <span class="hidden-xs">Download Contact CSV Template</span>
+				<button type="button" class="btn green" download 	style="color: #ffffff;" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
+         Download Contact CSV Template
           <i class="fa fa-cloud-download" aria-hidden="true" style="margin-left: 5px"></i>
 				</button>
 			</a>
