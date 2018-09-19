@@ -86,12 +86,14 @@ export class VideoUtilService {
         return validation.test(email);
     }
     transparancyControllBarColor(color: string, value: number) {
-        if (color.includes('rgba')) { color = this.convertRgbToHex(color); }
+      if(color && value){
+      if (color.includes('rgba')) { color = this.convertRgbToHex(color); }
         if (color === '#fff') {
             color = '#fbfbfb';
         } else if (color === '#ccc') { color = '#cccddd'; }
         const rgba = this.convertHexToRgba(color, value);
         return rgba;
+      }
     }
     convertHexToRgba(hex: string, opacity: number) {
         hex = hex.replace('#', '');

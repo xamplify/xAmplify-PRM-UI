@@ -244,7 +244,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.isCampaignDeleted = false;
         this.refService.campaignSuccessMessage = "";
         swal.close();
-
+        $('#saveAsModal').modal('hide');
+        $('#campaignFilterModal').modal('hide');
     }
     openSaveAsModal(id: number, name: string) {
         $('#saveAsModal').modal('show');
