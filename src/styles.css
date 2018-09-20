@@ -665,6 +665,18 @@ legend {
   opacity: 0;
   transition: visibility 0s, opacity 0.5s linear;
 }
+@media only screen and (max-width: 768px) {
+  .bar{
+    background: #54a7e9;
+    width: 100%;
+    height: 50px;
+    position: absolute;
+    bottom:0px;
+    visibility: inherit;
+    opacity: 1;
+    transition: visibility 0s, opacity 0.5s linear;
+  }
+}
 .grid-box:hover > .bar {
   visibility: visible;
   opacity: 1;
@@ -874,7 +886,3 @@ td>br { display: none; }
  .flatpickr-month{
    color:#fff !important;
  }
-.mobileOpacity{
-  opacity: 1;
-  visibility: inherit;
-}

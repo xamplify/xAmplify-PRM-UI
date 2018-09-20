@@ -28,14 +28,13 @@
                        <select class="form-control select-option" [(ngModel)]="categoryNum" (ngModelChange)="getCategoryNumber()">
                           <option  [value]="0" >All Categories</option>
                           <option *ngFor="let category of categories" [ngValue]="category.id" [selected]="category.id==pagination.videoCategoryId">{{category.name}}</option>
-                        </select>
+                       </select>
                      </div>
-                     <div class="col-xs-12 col-md-3">
-                     </div>
+                     <div class="col-xs-12 col-sm-6 col-md-3"></div>
                      <div class="col-xs-6 col-sm-3 col-md-3 p0 flex">
-                       <ng-container class='m10' *ngIf="!referenceService.isMobileScreenSize()">
-                         <button class="btn btn-xs" [disabled]="isListView" (click)="isListView = true"><i class="fa fa-th-list p10" aria-hidden="true"></i></button>
-                         <button class="btn btn-xs" [disabled]="!isListView" (click)="isListView = false"><i class="fa fa-th-large p10" aria-hidden="true"></i></button>
+                       <ng-container class='m10'>
+                         <button class="btn btn-xs hidden-xs" [disabled]="isListView" (click)="isListView = true"><i class="fa fa-th-list p10" aria-hidden="true"></i></button>
+                         <button class="btn btn-xs hidden-xs" [disabled]="!isListView" (click)="isListView = false"><i class="fa fa-th-large p10" aria-hidden="true"></i></button>
                        </ng-container>
 
                        <select class="form-control ml5" style="cursor: pointer" [(ngModel)]="videoSort" (ngModelChange)="selectedSortByValue($event)">
@@ -131,10 +130,8 @@
                    <div class="video-thumbnail-wrapper">
                      <img *ngIf="authenticationService.isSuperAdmin()" id="imagePathVideo{{videoFile.id}}" class="video-thumbnail" src="{{videoFile.imagePath}}" style="width:100%" (error)="videoUtilService.errorVideoHandler($event)" >
                        <i *ngIf="authenticationService.isSuperAdmin()" class="fa fa-play-circle" ></i>
-
                        <img *ngIf="!authenticationService.isSuperAdmin()" id="imagePathVideo{{videoFile.id}}" class="video-thumbnail" (click)="showPlayVideo(videoFile)" src="{{videoFile.imagePath}}" style="width:100%" (error)="videoUtilService.errorVideoHandler($event)" >
                        <i *ngIf="!authenticationService.isSuperAdmin()" class="fa fa-play-circle" (click)="showPlayVideo(videoFile)"></i>
-
                        <span class="views-count" title="views"><i class="fa fa-eye"></i>&nbsp;{{videoFile.views}}</span>
                        <span class="video-duration"  title="Video Length">{{videoUtilService.truncateHourZeros(videoFile.videoLength)}}</span>
                    </div>
@@ -161,7 +158,7 @@
                    <div class="ribbon" >
                      <span>{{videoFile.viewBy}}</span>
                    </div>
-                   <div class="bar" *ngIf="!authenticationService.isSuperAdmin()" [class.mobileOpacity]="referenceService.isMobileScreenSize()">
+                   <div class="bar" *ngIf="!authenticationService.isSuperAdmin()">
                      <div >
                       <ng-container  *ngIf="videoFileService.videoType==='myVideos'">
                         <a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor"

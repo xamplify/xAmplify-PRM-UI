@@ -640,7 +640,7 @@
                         <app-pagination style="float: left; position: relative;left: -10px;" [pagination]="contactsPagination" [type]="'contacts'"
                         (notifyParent)="setPagePagination($event)" [isDropdown]="true"></app-pagination>
 
-												<select class="btn btn-default" style="margin-left:150px;margin-bottom:47px;float: right;" [(ngModel)]="contactItemsSize"
+												<select class="btn btn-default" style="float: right;" [(ngModel)]="contactItemsSize"
 												 (ngModelChange)="getNumberOfContactItemsPerPage($event)">
 													<option *ngFor="let itemPerPage of numberOfContactsPerPage" [ngValue]="itemPerPage">
 														{{itemPerPage.name}}
