@@ -397,9 +397,9 @@ export class PartnerReportsComponent implements OnInit {
      user.emailId = item.emailId;
      user.firstName = item.firstName;
      user.lastName = item.lastName;
-     user.id = this.loggedInUserId;
+     user.id = item.partnerId;
       this.referenseService.loading(this.httpRequestLoader, true);
-      this.parterService.sendPartnerReminderEmail(user).subscribe(
+      this.parterService.sendPartnerReminderEmail(user, this.loggedInUserId).subscribe(
               (response: any) => {
                 if(response.statusCode==2017){
                     this.customResponse = new CustomResponse( 'SUCCESS','Email sent successfully.', true );

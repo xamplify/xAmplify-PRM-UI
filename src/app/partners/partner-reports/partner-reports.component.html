@@ -399,12 +399,16 @@
             <table class="table tgrid">
               <thead>
                 <th class="center-aligned">partners</th>
+                <th class="center-aligned">LAST REMINDER EMAIL</th>
                 <th align="right">Actions</th>
               </thead>
               <tbody>
                 <tr *ngFor="let item of inActivePartnersPagination.pagedItems" style="cursor: pointer;">
                   <td>
                     <app-user-info [userInfo]="item" [isPartnerEntityInfo]="true" [isPartnerInfo]="true"></app-user-info>
+                  </td>
+                     <td>
+                   {{item.time}}
                   </td>
                   <td (click)="sendPartnerReminder(item)">
                     <div class="actions-block">

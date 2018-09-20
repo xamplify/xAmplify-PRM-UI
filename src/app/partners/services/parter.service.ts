@@ -46,8 +46,8 @@ export class ParterService {
             .catch( this.handleError );
     }
 
-    sendPartnerReminderEmail(user:User) {
-        const url = this.URL + 'partner/send-in-active-reminder-email?access_token=' + this.authenticationService.access_token;
+    sendPartnerReminderEmail(user:User, vendorId:number) {
+        const url = this.URL + 'partner/send-in-active-reminder-email/'+vendorId+'?access_token=' + this.authenticationService.access_token;
         return this.httpClient.post( url, user )
         .catch( this.handleError );
     }
