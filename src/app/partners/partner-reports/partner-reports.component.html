@@ -399,7 +399,7 @@
             <table class="table tgrid">
               <thead>
                 <th class="center-aligned">partners</th>
-                <th class="center-aligned">LAST REMINDER EMAIL</th>
+                <th class="center-aligned">LAST REMINDER SENT</th>
                 <th align="right">Actions</th>
               </thead>
               <tbody>
@@ -408,7 +408,8 @@
                     <app-user-info [userInfo]="item" [isPartnerEntityInfo]="true" [isPartnerInfo]="true"></app-user-info>
                   </td>
                      <td>
-                   {{item.time}}
+                   <h4>{{item.time}}</h4>
+                   <h4 *ngIf="!item.time"><b>-</b></h4>
                   </td>
                   <td (click)="sendPartnerReminder(item)">
                     <div class="actions-block">
