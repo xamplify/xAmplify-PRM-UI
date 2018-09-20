@@ -589,7 +589,7 @@
 					<div class="col-xs-12" *ngIf="rsvpDetailType !== 'partnerRsvp'">
 						<span class="btn btn-sm btn-primary pull-right" title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:20}} <span *ngIf="campaign.campaignName?.length>20">...</span></span>
 						<h4 class="m0" title="{{campaignReport.selectedPartnerFirstName}}">{{campaignReport.selectedPartnerFirstName | slice:0:20}} <span *ngIf="campaignReport.selectedPartnerFirstName?.length>20">...</span></h4>
-						<h4 title="{{campaignReport.selectedPartnerLastName}}">{{campaignReport.selectedPartnerLastName | slice:0:20}} <span *ngIf="campaignReport.selectedPartnerLastName?.length>20">...</span></h4>
+						<h4 class="m0" title="{{campaignReport.selectedPartnerLastName}}">{{campaignReport.selectedPartnerLastName | slice:0:20}} <span *ngIf="campaignReport.selectedPartnerLastName?.length>20">...</span></h4>
 						<h4 class="m0" title="{{campaignReport.selectedPartnerEmailId}}">{{campaignReport.selectedPartnerEmailId}} <!-- <span *ngIf="campaignReport.selectedPartnerEmailId?.length>25">...</span> --></h4>
 						<h5 class="text-info" style="margin-bottom: 0;">{{campaign.launchTime | date: 'fullDate'}}</h5>
 					</div>
