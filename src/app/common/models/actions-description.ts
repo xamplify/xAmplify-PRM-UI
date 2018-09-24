@@ -40,4 +40,10 @@ export class ActionsDescription {
     /* GLOBAL */
     listView = 'List View';
     gridView = 'Grid View';
+    
+    
+    /***Content Management****/
+    delete_item = 'Delete';
+    preview_item = 'Preview';
+    
 }

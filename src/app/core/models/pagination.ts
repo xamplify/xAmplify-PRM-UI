@@ -29,5 +29,6 @@ export class Pagination {
 	throughPartnerAnalytics:boolean = false;
 	reDistributedPartnerAnalytics:boolean= false;
 	throughPartner:boolean = false;
+	isListView:boolean = false;
 
 }
