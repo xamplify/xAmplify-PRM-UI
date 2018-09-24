@@ -241,6 +241,12 @@ td h5 {
 	color: red;
 	margin-left: 2px;
 }
+
+#partner-icon{
+	margin: 4px;
+	margin-left: 2px;
+}
+
 #campaign-partner-table  td {
 	text-align: center;
 }

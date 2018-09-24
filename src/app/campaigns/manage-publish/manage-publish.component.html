@@ -70,8 +70,8 @@
 									<tr>
                       <th colspan="2" style="width: 30%">Campaign</th>
                       <th class="center" style="width: 28%">Status</th>
-                      <th class="center" style="width: 20%">Created Date</th>
-                      <th class="center" style="width: 22%">Actions</th>
+                      <th class="center" style="width: 15%">Created Date</th>
+                      <th class="center" style="width: 25%">Actions</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -143,7 +143,7 @@
 													 <a *ngIf=" (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor) && campaign.channelCampaign"
 						                       		 (click)="goToPreviewPartners(campaign)"
 						                       		 data-toggle="tooltip" data-placement="top" title="{{actionsDescription.campaign_preview_partner}}" data-rel="fancybox-button">
-						                         		<i class="fa fa-handshake-o" id="delete-partner"></i>
+						                         		<i class="fa fa-handshake-o" id="partner-icon"></i>
 						                       		</a>
 												</ng-container>
 												<a (click)="showCampaignPreview(campaign.campaignId)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.campaign_preview}}">
@@ -310,7 +310,7 @@
 													 <a *ngIf=" (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor) && campaign.channelCampaign"
 						                       		 (click)="goToPreviewPartners(campaign)"
 						                       		 data-toggle="tooltip" data-placement="top" title="{{actionsDescription.campaign_preview_partner}}" data-rel="fancybox-button">
-						                         		<i class="fa fa-handshake-o" id="delete-partner"></i>
+						                         		<i class="fa fa-handshake-o" id="partner-icon"></i>
 						                       		</a>
 													<!-- <a *ngIf="isOnlyPartner" data-rel="fancybox-button" (click)="openSaveAsModal(campaign.campaignId, campaign.campaignName)" title="Save As">
 														<i class="fa fa-files-o"></i>
