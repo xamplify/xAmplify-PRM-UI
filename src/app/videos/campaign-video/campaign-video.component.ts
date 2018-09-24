@@ -384,7 +384,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
         const selfPanorama = this;
         const player = videojs('videoId', {
              "controls": true,
-             "autoplay": false,
+           //  "autoplay": false,
              "preload": "auto",
              "customControlsOnMobile": true,
              "nativeControlsForTouch": true
@@ -449,7 +449,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                     selfPanorama.videoFileService.pauseAction = false;
                     selfPanorama.xtremandLog.startDuration = 0;
                     selfPanorama.xtremandLog.stopDuration = 0;
-                   // this.play();
+                    this.play();
                     $('.video-js .vjs-control-bar .vjs-VR-control').css('cssText', 'color:' + selfPanorama.campaignVideoFile.playerColor + '!important');
                 });
                 player.on('play', function () {
@@ -576,7 +576,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
         $('.p-video').remove();
         this.videoUtilService.normalVideoJsFiles();
         this.is360Value = false;
-        const str = '<video id="videoId" poster=' + this.posterImagePath + '  preload="none"  class="video-js vjs-default-skin" controls></video>';
+        const str = '<video id="videoId" poster=' + this.posterImagePath + '  preload="none"  class="video-js vjs-default-skin" muted="muted" controls></video>';
         $('#newPlayerVideo').append(str);
         this.videoUrl = this.campaignVideoFile.videoPath;
         this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
@@ -587,9 +587,9 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
         const self = this;
         const overrideNativeValue = this.referService.getBrowserInfoForNativeSet();
             this.videoJSplayer = videojs('videoId', {
-                "controls": true,
-                "autoplay": false,
-                "preload": "auto",
+                // "controls": true,
+                // "autoplay": false,
+                // "preload": "auto",
                 html5: {
                     hls: {
                         overrideNative: overrideNativeValue
@@ -602,13 +602,14 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                     let startDuration;
                     self.replyVideo = false;
                     const document: any = window.document;
+                    $('.video-js .vjs-tech').css('width', '100%');
+                    $('.video-js .vjs-tech').css('height', '100%');
                     this.ready(function () {
                         self.videoFileService.pauseAction = false;
                         self.xtremandLog.startDuration = 0;
                         self.xtremandLog.stopDuration = 0;
-                        $('.video-js .vjs-control-bar .vjs-VR-control').css('cssText', 'color:' + self.campaignVideoFile.playerColor + '!important');
-                        $('.video-js .vjs-tech').css('width', '100%');
-                        $('.video-js .vjs-tech').css('height', '100%');
+                     //   $('.video-js .vjs-control-bar .vjs-VR-control').css('cssText', 'color:' + self.campaignVideoFile.playerColor + '!important');
+                        player.play();
                     });
                     this.on('play', function () {
                         self.videoFileService.pauseAction = false;

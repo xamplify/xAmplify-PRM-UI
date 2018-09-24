@@ -55,3 +55,18 @@
     filter: none !important;
     left: 1px !important;
 }
+
+.share-overlay{
+  height: 360px; width: 100% !important; color:white !important; background-color:rgba(29, 25, 25, 0.72);
+}
+.embed-overlay{
+  height: 100% !important; width: 100% !important; color:white !important; background-color:rgba(29, 25, 25, 0.72);
+}
+.padding-videos{
+  padding: 5px 5px 10px 10px;
+  margin: 0 auto !important;
+  width: min-content;
+}
+.center-div{
+    margin: 0 auto;
+}
