@@ -18,19 +18,23 @@ declare var Metronic,$, Layout, Demo, swal: any;
   selector: 'app-content-management',
   templateUrl: './content-management.component.html',
   styleUrls: ['./content-management.component.css'],
-  providers: [Pagination,HttpRequestLoader, ActionsDescription]
+  providers: [Pagination,HttpRequestLoader, ActionsDescription,ContentManagement]
 })
 export class ContentManagementComponent implements OnInit {
     loggedInUserId:number = 0;
     httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
     customResponse: CustomResponse = new CustomResponse();
-    list:string[]=[];
+    list:any[]=[];
     isPreviewed:boolean = false;
     filePath:string = "";
     previewFile:any = "";
+    exisitingFileNames:string[] = [];
+    existingFileName:string  = "";
+    awsFileKeys:string[] = [];
   constructor(private router: Router, private pagerService: PagerService, public referenceService: ReferenceService, 
               public actionsDescription: ActionsDescription,public pagination: Pagination,
-              public authenticationService:AuthenticationService,private logger:XtremandLogger,private emailTemplateService:EmailTemplateService) { 
+              public authenticationService:AuthenticationService,private logger:XtremandLogger,
+              private emailTemplateService:EmailTemplateService,private contentManagement:ContentManagement) { 
               this.loggedInUserId = this.authenticationService.getUserId();
       
   }
@@ -41,10 +45,12 @@ export class ContentManagementComponent implements OnInit {
           this.emailTemplateService.listAwsFiles( pagination, this.loggedInUserId)
               .subscribe(
               ( data: any ) => {
-                  console.log(data);
                   this.list = data;
-                  /*pagination.totalRecords = data.totalRecords;
-                  pagination = this.pagerService.getPagedItems( pagination, data.emailTemplates );*/
+                  if(this.list.length>0){
+                      this.exisitingFileNames = this.list.map(function(a) {return a.fileName.toLowerCase();});
+                  }else{
+                      this.customResponse = new CustomResponse( 'INFO', "No records found", true );
+                  }
                   this.referenceService.loading(this.httpRequestLoader, false);
               },
               ( error: string ) => {this.logger.errorPage(error);
@@ -61,7 +67,7 @@ export class ContentManagementComponent implements OnInit {
       this.isPreviewed = false;
   }
   /************Delete******/
-  delete(file:any){
+  delete(file:ContentManagement){
       let self = this;
       swal({
           title: 'Are you sure?',
@@ -72,7 +78,8 @@ export class ContentManagementComponent implements OnInit {
           swalCancelButtonColor: '#999',
           confirmButtonText: 'Yes, delete it!'
       }).then(function () {
-          self.deleteFile(file);
+          self.contentManagement = file;
+          self.deleteFile(self.contentManagement);
       }, function (dismiss: any) {
           console.log('you clicked on option' + dismiss);
       });
@@ -81,8 +88,10 @@ export class ContentManagementComponent implements OnInit {
   
   deleteFile( file: ContentManagement ) {
       this.customResponse.isVisible = false;
+      this.awsFileKeys.push(file.fileName);
       this.referenceService.loading(this.httpRequestLoader, true);
       file.userId = this.loggedInUserId;
+      file.awsFileKeys = this.awsFileKeys;
       this.emailTemplateService.deleteFile( file )
           .subscribe(
           data => {
@@ -101,36 +110,47 @@ export class ContentManagementComponent implements OnInit {
       this.customResponse.isVisible = false;
       try{
           this.referenceService.loading(this.httpRequestLoader, true);
-          this.customResponse = new CustomResponse( 'INFO', "Uploading the file.Please wait...", true );
-          let file: File;
-          if ( event.target.files ) { file = event.target.files[0]; }
-          else if ( event.dataTransfer.files ) { file = event.dataTransfer.files[0]; }
+          this.customResponse = new CustomResponse( 'INFO', "Uploading in progress.Please wait...", true );
+          let files: Array<File>;
+          if ( event.target.files ) { 
+              files = event.target.files;
+           }
+          else if ( event.dataTransfer.files ) {
+              files = event.dataTransfer.files;
+            }
           const formData: FormData = new FormData();
-          formData.append( 'file', file, file.name );
-          this.emailTemplateService.uploadFile(this.loggedInUserId, formData)
-          .subscribe(
-          data => {
-             if(data.statusCode==1020){
-                 const message = file.name + ' uploaded successfully';
-                 this.customResponse = new CustomResponse( 'SUCCESS', message, true );
-                 this.listItems(this.pagination);
-             }else{
-                 let message = data.message;
-                 this.customResponse = new CustomResponse( 'ERROR', message, true );
-             }
-             this.referenceService.loading(this.httpRequestLoader, false);
-          },
-          ( error: string ) => {
-              this.logger.errorPage( error );
-          }
-          );
+            $.each(files,function(index,file){
+                formData.append('files', file, file.name);
+            });
+            this.uploadToServer(formData);
       }catch(error){
           this.referenceService.loading(this.httpRequestLoader, false);
           this.customResponse = new CustomResponse( 'ERROR', "Unable to upload file", true );
       }
      
-      
   }
+  
+  
+  uploadToServer(formData:FormData){
+      this.emailTemplateService.uploadFile(this.loggedInUserId, formData)
+      .subscribe(
+      data => {
+         if(data.statusCode==1020){
+             const message = ' files uploaded successfully';
+             this.customResponse = new CustomResponse( 'SUCCESS', message, true );
+             this.listItems(this.pagination);
+         }else{
+             let message = data.message;
+             this.customResponse = new CustomResponse( 'ERROR', message, true );
+         }
+         this.referenceService.loading(this.httpRequestLoader, false);
+      },
+      ( error: string ) => {
+          this.logger.errorPage( error );
+      }
+      );
+  }
+  /*******Validate Existing filename**********/
   
   ngOnInit() {
       this.listItems(this.pagination);

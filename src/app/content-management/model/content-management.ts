@@ -7,5 +7,6 @@ export class ContentManagement {
     fileName:string = "";
     lastModifiedDate:Date;
     type:string = "";
+    awsFileKeys:string[]=[];
 
 }
