@@ -70,7 +70,9 @@ export class DefaultPageComponent implements OnInit {
     ngOnInit() {
         const userId = this.authenticationService.user.id;
         this.getDefaultPage(userId);
-        this.isGridView(userId);
+        if(!this.referenceService.isMobileScreenSize()){
+        this.isGridView(userId); }
+        else { this.referenceService.isGridView = true; }
     }
 
 }

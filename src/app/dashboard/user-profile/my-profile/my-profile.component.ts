@@ -220,7 +220,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         try {
             this.geoLocation();
             this.videoUtilService.normalVideoJsFiles();
-            this.isGridView(this.authenticationService.getUserId());
+            if(!this.referenceService.isMobileScreenSize()){
+              this.isGridView(this.authenticationService.getUserId()); }
+            else { this.referenceService.isGridView = true; }
             this.validateUpdatePasswordForm();
             this.validateUpdateUserProfileForm();
             this.userData.displayName = this.userData.firstName ? this.userData.firstName : this.userData.emailId;
@@ -246,7 +248,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             this.logger.showClientErrors("my-profile.component.ts", "ngAfterViewInit()", error);
         }
     }
-    
+
     ngAfterViewInit() {
         try{
             if (this.currentUser.roles.length > 1 && this.authenticationService.hasCompany()) {

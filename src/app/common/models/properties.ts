@@ -96,5 +96,9 @@ export class Properties {
     ADD_AUTO_RESPONSE_EMAIL = 'Auto-responses to your email'
     TO_PARTNER_MESSAGE = 'To Recipient(s): Send a campaign intended just for your Partner(s)/ Contact(s)';
     THROUGH_PARTNER_MESSAGE = 'Through Partner: Send a campaign that your Partners can redistribute';
-    ENALEORDISABLE_VENDOR_MESSAGE='Enable/disable the Vendor’s access to your campaign analytics'
+    ENALEORDISABLE_VENDOR_MESSAGE='Enable/disable the Vendor’s access to your campaign analytics';
+    
+    /****BEE ClientId/Client Secret********/
+    clientId = '18ff022e-fa4e-47e7-b497-39a12ca4600a';
+    clientSecret = 'FPzc1oxLx3zFjvwrma82TWiP0o3tk1yRVDwyAQqrIZ6jbfdssVo';
 }

@@ -170,61 +170,64 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
          { name: 'Full Name', value: '{{fullName}}' },
          { name: 'Email Id', value: '{{emailId}}' },
          { name: 'Company Name', value: '{{companyName}}' }];
+       if(refService.defaultPlayerSettings!=null){
+           var beeUserId = "bee-"+self.refService.defaultPlayerSettings.companyProfile.id;
+           var beeConfig = {
+             uid: beeUserId,
+             container: 'bee-plugin-container',
+             autosave: 15,
+             language: 'en-US',
+             mergeTags: mergeTags,
+             onSave: function(jsonFile, htmlFile) {
+                 save(jsonFile, htmlFile);
+             },
+             onSaveAsTemplate: function(jsonFile) { // + thumbnail?
+               //save('newsletter-template.json', jsonFile);
+             },
+             onAutoSave: function(jsonFile) { // + thumbnail?
+               console.log(new Date().toISOString() + ' autosaving...');
+               window.localStorage.setItem('newsletter.autosave', jsonFile);
+               self.emailTemplate.jsonBody = jsonFile;
+             },
+             onSend: function(htmlFile) {
+               //write your send test function here
+               console.log(htmlFile);
+             },
+             onError: function(errorMessage) { swal("","Unable to load bee template:"+errorMessage,"error");
+             }
+           };
 
-	      var beeUserId = "bee-"+self.loggedInUserId;
-	      var beeConfig = {
-	        uid: beeUserId,
-	        container: 'bee-plugin-container',
-	        autosave: 15,
-	        language: 'en-US',
-	        mergeTags: mergeTags,
-	        onSave: function(jsonFile, htmlFile) {
-	            save(jsonFile, htmlFile);
-	        },
-	        onSaveAsTemplate: function(jsonFile) { // + thumbnail?
-	          //save('newsletter-template.json', jsonFile);
-	        },
-	        onAutoSave: function(jsonFile) { // + thumbnail?
-	          console.log(new Date().toISOString() + ' autosaving...');
-	          window.localStorage.setItem('newsletter.autosave', jsonFile);
-	          self.emailTemplate.jsonBody = jsonFile;
-	        },
-	        onSend: function(htmlFile) {
-	          //write your send test function here
-	          console.log(htmlFile);
-	        },
-	        onError: function(errorMessage) { swal("","Unable to load bee template:"+errorMessage,"error");
-	        }
-	      };
-
-	      var bee = null;
-	      request(
-	        'POST',
-	        'https://auth.getbee.io/apiauth',
-	        'grant_type=password&client_id=6639d69f-523f-44ca-b809-a00daa26b367&client_secret=XnD77klwAeUFvYS66CbHMd107DMS441Etg9cCOVc63LTYko8NHa',
-	        'application/x-www-form-urlencoded',
-	        function(token:any) {
-	          BeePlugin.create(token, beeConfig, function(beePluginInstance:any) {
-	            bee = beePluginInstance;
-	            request(
-	              'GET',
-	              'https://rsrc.getbee.io/api/templates/m-bee',
-	              null,
-	              null,
-	              function(template:any) {
-	                  if(emailTemplateService.emailTemplate!=undefined){
-	                      var body = emailTemplateService.emailTemplate.jsonBody;
-	                      self.emailTemplate.jsonBody = body;
-	                      var jsonBody = JSON.parse(body);
-	                      bee.load(jsonBody);
-	                      bee.start(jsonBody);
-	                  }else{
-	                      bee.start(template);
-	                  }
-                   self.loadTemplate = true;
-	              });
-	          });
-	        });
+           var bee = null;
+           request(
+             'POST',
+             'https://auth.getbee.io/apiauth',
+             'grant_type=password&client_id=18ff022e-fa4e-47e7-b497-39a12ca4600a&client_secret=FPzc1oxLx3zFjvwrma82TWiP0o3tk1yRVDwyAQqrIZ6jbfdssVo',
+             'application/x-www-form-urlencoded',
+             function(token:any) {
+               BeePlugin.create(token, beeConfig, function(beePluginInstance:any) {
+                 bee = beePluginInstance;
+                 request(
+                   'GET',
+                   'https://rsrc.getbee.io/api/templates/m-bee',
+                   null,
+                   null,
+                   function(template:any) {
+                       if(emailTemplateService.emailTemplate!=undefined){
+                           var body = emailTemplateService.emailTemplate.jsonBody;
+                           self.emailTemplate.jsonBody = body;
+                           var jsonBody = JSON.parse(body);
+                           bee.load(jsonBody);
+                           bee.start(jsonBody);
+                       }else{
+                           bee.start(template);
+                       }
+                    self.loadTemplate = true;
+                   });
+               });
+             });
+       }
+       
+	    
 
     	}//End Of Constructor
 
@@ -275,6 +278,7 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
           emailTemplate.name = $.trim($('#templateNameId').val());
       }
       emailTemplate.id = emailTemplateService.emailTemplate.id;
+      console.log(emailTemplate);
       emailTemplateService.update(emailTemplate) .subscribe(
           data => {
               this.refService.stopLoader(this.httpRequestLoader);

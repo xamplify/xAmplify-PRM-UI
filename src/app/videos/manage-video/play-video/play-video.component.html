@@ -1,11 +1,3 @@
-<style type="text/css">
-	.overlaySet {
-		margin-top: -372px;
-	}
-	a.disabled {
-		pointer-events: none;
-	}
-</style>
 <div class="portlet light">
 	<div class="portlet-body">
 		<div class="row margin-bottom-30">
@@ -25,7 +17,7 @@
 				</div>
 				<div id="modalDialog" [hidden]="isVideoChanged"></div>
 				<!-- modal popup  -->
-				<div id="overlay-modal" class="video-js overlay is360video"  [hidden]="isVideoChanged" [class.overlaySet]="overLaySet==false" style="height: 360px; width: 100% !important;color:white !important; background-color:rgba(29, 25, 25, 0.72);">
+				<div id="overlay-modal" class="video-js overlay is360video custom-overlay" [hidden]="isVideoChanged" [class.overlaySet]="!overLaySet">
 					<form #f="ngForm" novalidate>
 						<div class="col-xs-12 overlay-main" [ngClass]="{'bottomCss':fullScreenMode}">
 							<h2 class="upper-text-heading upperText">{{selectedVideo.upperText}}</h2>
@@ -240,15 +232,17 @@
 								<div style="display: inline">
                   <div>
                     <div class="col-xs-6"><h4 style="position: relative;left: -14px;">Related Videos:</h4></div>
-                    <div class="col-xs-6 list-grid" style="text-align: right; margin-bottom: 7px;z-index: 999;">
-                      <button class="btn btn-xs" [disabled]="isListView" (click)="isListView = true" title="List View"><i class="fa fa-th-list p10" aria-hidden="true"></i></button>
-                      <button class="btn btn-xs" [disabled]="!isListView" (click)="isListView = false" title="Grid View"><i class="fa fa-th-large p10" aria-hidden="true"></i></button>
+                    <div class="col-xs-6">
+                      <div>
+                      <button class="btn btn-xs hidden-xs" [disabled]="isListView" (click)="isListView = true" title="List View"><i class="fa fa-th-list p10" aria-hidden="true"></i></button>
+                      <button class="btn btn-xs hidden-xs" [disabled]="!isListView" (click)="isListView = false" title="Grid View"><i class="fa fa-th-large p10" aria-hidden="true"></i></button>
+                      </div>
                     </div>
                   </div>
 									<div>
 										<div class="row mix-grid" style="margin-top: 10px">
                       <app-play-video-loader [playVideo]="true" *ngIf="httpRequestLoader.isLoading"></app-play-video-loader>
-											<div *ngIf="allVideos && !httpRequestLoader.isLoading">
+											<div *ngIf="allVideos && !httpRequestLoader.isLoading" style="margin-top: 42px;">
                         <ng-container *ngFor="let videoFile of pagination.pagedItems; let i = index;">
 												<div *ngIf="!isListView" class="col-md-6 col-sm-8 mix category_1 mix_all" style="display:block; opacity: 1;" >
 													<div class="mix-inner">
@@ -287,7 +281,7 @@
 									</div>
 								</div>
 								<div *ngIf="showRelatedMessage == false" style=" position: relative;bottom: -14px;">
-									<app-pagination [pagination]="pagination" [type]="'playvideos'" (notifyParent)="setPage($event)" (notifyParentDropDown)="loadAllVideos($event)"></app-pagination>
+									<app-pagination style="position: relative;left: -20px;" [pagination]="pagination" [type]="'playvideos'" (notifyParent)="setPage($event)" (notifyParentDropDown)="loadAllVideos($event)"></app-pagination>
 								</div>
 								<p *ngIf="showRelatedMessage" class="notFoundVideo">No Related videos Found</p>
 							</div>

@@ -20,6 +20,7 @@ export class EmbedModalComponent implements OnInit, OnDestroy {
   videosize = '640 × 360';
   embedFullScreen = 'allowfullscreen';
   isFullscreen: boolean;
+  embedVideoSrcPath:string;
 
   constructor(public videoUtilService: VideoUtilService, public videoFileService: VideoFileService,
     public authenticationService: AuthenticationService) {
@@ -66,6 +67,7 @@ export class EmbedModalComponent implements OnInit, OnDestroy {
     this.videoFileService.getShortnerUrlAlias(video.viewBy, video.alias)
       .subscribe((result: any) => {
         this.embedSrcPath = this.authenticationService.SERVER_URL + 'embed/' + result.alias;
+        this.embedVideoSrcPath = this.authenticationService.APP_URL + 'embed/' + result.alias;
         this.shareMetaTags(this.embedSrcPath);
         if(type ==='modal'){
         if (this.embedSrcPath) { $('#myModal').show();} }

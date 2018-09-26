@@ -219,7 +219,7 @@ input:checked + .slider-new:before {
 												<li>
 													<a href="#tab_1_3" data-toggle="tab" (click)="clearCustomResponse()">Change Password</a>
 												</li>
-												<li>
+												<li class="hidden-xs">
 													<a href="#tab_1_4" data-toggle="tab" (click)="clearCustomResponse()">Settings</a>
 												</li>
 												<li *ngIf="hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()" (click)="videojsCall()">
@@ -306,7 +306,7 @@ input:checked + .slider-new:before {
 													</form>
 												</div>
 												<!-- PRIVACY SETTINGS TAB -->
-												<div class="tab-pane" id="tab_1_4">
+												<div class="tab-pane hidden-xs" id="tab_1_4">
 													<form action="#">
 														<table class="table table-light">
 														<tr>

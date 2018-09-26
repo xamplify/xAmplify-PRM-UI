@@ -53,29 +53,20 @@
 .videoViews{
     border-bottom: 1px solid #c3c0c0;
     margin-bottom: 10px; width: 50%;
-	text-align: right;
+    text-align: right;
 }
 .viewsh4{
     color: #777;font-weight: 500;margin: 5px;
 }
-.bottomCss {
-    bottom: -183px;
-}
+.bottomCss {  bottom: -183px; }
 .videojs-logo-play{
     position: absolute;
     top: 15px;
     right: 34px;
     width: 75px;
 }
-
-.imagePath {
-    height: 111px;
-    width: 100%;
-}
-
-.is360video {
-    z-index: 900;
-}
+.imagePath {  height: 111px; width: 100%; }
+.is360video {  z-index: 900; }
 textarea {
     resize: none;
     max-height: 100%;
@@ -108,7 +99,21 @@ textarea {
   font-size: 18px;
   font-weight: 500;
 }
-.list-grid{
-  position: relative;
-  right: -14px;
+
+.overlaySet { margin-top: -372px; height: 360px !important;}
+@media only screen and (max-width: 600px) {
+  .overlaySet { margin-top: -272px; height: 260px !important;}
+}
+@media only screen and (min-width: 600px) {
+  .overlaySet { margin-top: -272px; height: 260px !important;}
+}
+@media only screen and (min-width: 768px){
+.overlaySet { margin-top: -272px; height: 260px !important;}
+}
+@media only screen and (min-width: 992px) {
+  .overlaySet { margin-top: -372px; height: 360px !important;}
+}
+a.disabled { pointer-events: none; }
+.custom-overlay{
+  width: 100% !important;color:white !important; background-color:rgba(29, 25, 25, 0.72);
 }

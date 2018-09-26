@@ -16,6 +16,17 @@ min-height: 100%;
 min-width: 100%;
 padding: 10px;
 }
+
+@media only screen and (max-width:600px){
+  #my-video{  height:160px; width: 287px }
+}
+@media only screen and (min-width:768px){
+  #my-video{  height:160px; width: 217px; }
+}
+@media only screen and (min-width:992px){
+  #my-video{  height:160px; width: auto; }
+}
+
 .upload-video{
 font-weight: 500;
 color: white;
@@ -66,7 +77,7 @@ margin-left: 19px;
 }
 .loaderSymbol{
 height: 49px;
-margin-top: -15px;
+margin-top: -5px;
 margin-left: -2px;
 color: black;
 border-color: #000000;
@@ -111,23 +122,62 @@ width: 100% ;height:55px;line-height:16px; font-size: 14px;
 border-radius: 0
 }
 #file-upload { width:0; height:0; }
-.box-border{border: 1px solid #54a7e9;
-overflow: hidden;
-padding: 37px 16px;
-margin: 0;
+.box-border{ border: 1px solid #54a7e9; overflow: hidden; padding: 37px 16px; margin: 0; }
+@media only screen and (max-width:600px){
+  .box-border{ border: 1px solid #54a7e9; overflow: hidden; padding: 30px 16px; margin: 0; }
 }
+@media only screen and (min-width:768px){
+  .box-border{ border: 1px solid #54a7e9; overflow: hidden; padding: 43px 0px; margin: 0; }
+}
+@media only screen and (min-width:992px){
+  .box-border{ border: 1px solid #54a7e9; overflow: hidden; padding: 37px 16px; margin: 0; }
+}
+.margin-top-16{ margin-top: 0px;}
+@media only screen and (max-width:600px){
+  .margin-top-16 {margin-top: 16px; }
+}
+@media only screen and (min-width:992px){
+.pc0 { padding-left:0!important;}
+.pu0 { padding-right:0!important}
+}
+
 .portlet.light {padding: 10px;min-height: 580px;}
 .upload-video-css {
-    padding: 20px;
+    /* padding: 20px;
     margin-bottom: 15px;
     border: 1px solid #e0e0e0;
-    box-shadow: 0 0 1px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.2); */
+    padding:0;
+    margin-bottom: 9px;
 }
 .customDisableCss {
     cursor: not-allowed !important;
     opacity: 0.6;
     pointer-events: none;
 }
-.imageClass{
-  height: 38px;
+.upload-button{
+  padding: 22px 71px;
 }
+@media only screen and (max-width:600px){
+  .upload-button{ padding: 14px 30px;}
+}
+@media only screen and (min-width:992px){
+  .upload-button{ padding: 48px 20px;  }
+}
+@media only screen and (min-width:768px){
+  .upload-button{ padding: 17px 94px;  }
+}
+@media only screen and (min-width:600px){
+  .upload-button{ padding: 19px 23px; }
+}
+
+@media only screen and (max-width:600px){
+  .video-padding{ cursor: pointer;}
+}
+@media only screen and (min-width:992px){
+  .video-padding{ padding: 0;  }
+}
+@media only screen and (min-width:768px){
+  .video-padding{ padding: 0;  }
+}
+

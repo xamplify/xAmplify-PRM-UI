@@ -505,7 +505,8 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                       $('.vjs-big-play-button').css('display', 'none');
                       newThis.showEditModalDialog();
                   } else if (isValid !== 'StartOftheVideo') {
-                      $('#overlay-modal').hide(); player.play();
+                      $('#overlay-modal').hide();
+                      player.play();
                       setTimeout(()=>{ player.pause();},2);
                   } else {
                       $('#overlay-modal').hide();
@@ -884,8 +885,16 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   showEditModalDialog() {
       if(this.videoJSplayer){
-          this.videoJSplayer.play();
-          setTimeout(()=>{ this.videoJSplayer.pause();}, 1);
+       const self = this;
+       const playPromise =  this.videoJSplayer.play();
+        if (playPromise !== undefined) {
+          playPromise.then(_ => {
+            self.videoJSplayer.pause();
+          })
+          .catch(error => {console.log('error in'+error);});
+        }
+          // this.videoJSplayer.play();
+          // setTimeout(()=>{ this.videoJSplayer.pause();}, 1);
       }
       $('#overLayDialog').append($('#overlay-modal').show());
   }
@@ -975,16 +984,27 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                   const document: any = window.document;
                   let isCallActionthere = false;
                   this.ready(function () {
+                     var playPromise = player.play();
                       $('#overLayImage').append($('#overlay-logo').show());
                       if (isValid === 'StartOftheVideo') {
                           $('.video-js.vjs-default-skin .vjs-big-play-button').css('display', 'none');
-                          player.play();
-                          player.pause();
                           callactionValue.showEditModalDialog();
                       } else if (isValid !== 'StartOftheVideo') {
-                          $('#overlay-modal').hide(); player.play();
-                          setTimeout(()=>{ player.pause();},2);
-                      } else { $('#overlay-modal').hide(); setTimeout(()=>{ player.pause();},2);
+                          $('#overlay-modal').hide();
+                          if (playPromise !== undefined) {
+                            playPromise.then(_ => {  player.pause(); })
+                            .catch(error => {console.log('error in'+error);});
+                          }
+                          // player.play();
+                          // setTimeout(()=>{ player.pause();},5);
+                      } else {
+                         $('#overlay-modal').hide();
+                         if (playPromise !== undefined) {
+                          playPromise.then(_ => {  player.pause(); })
+                          .catch(error => {console.log('error in'+error);});
+                         }
+                        //  player.play();
+                        //  setTimeout(()=>{ player.pause();},5);
                       }
                       $('#skipOverlay').click(function () {
                           isCallActionthere = false;

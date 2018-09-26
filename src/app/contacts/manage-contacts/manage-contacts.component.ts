@@ -97,9 +97,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
     isValidContactName: boolean;
     noSaveButtonDisable: boolean;
     public totalRecords: number;
-    
+
     searchContactType = "";
-    
+
     public zohoImage: string = 'assets/admin/pages/media/works/zoho-contacts.png';
     public googleImage: string = 'assets/admin/pages/media/works/google-contacts.png';
     public salesforceImage: string = 'assets/admin/pages/media/works/salesforce-contacts.png';
@@ -161,7 +161,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
     logListName = "";
 
     constructor( public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
-        private pagerService: PagerService, private pagination: Pagination, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,
+        private pagerService: PagerService, public pagination: Pagination, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,
         public actionsDescription: ActionsDescription) {
 
         let currentUrl = this.router.url;
@@ -241,13 +241,13 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
                     } else {
                         pagination.totalRecords = this.totalRecords;
                         pagination = this.pagerService.getPagedItems( pagination, this.contactLists );
-                        
+
                         for( let i=0; i< data.listOfUserLists.length; i++ ){
                             if( data.listOfUserLists[i].defaultPartnerList){
                                 this.defaultPartnerListId = data.listOfUserLists[i].id;
                             }
                         }
-                        
+
                     }
                     if ( this.contactLists.length == 0 ) {
                         this.resetResponse();
@@ -1401,7 +1401,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
     }
 
     eventHandler( keyCode: any ) { if ( keyCode === 13 ) { this.search(this.searchContactType); } }
-    
+
     sendMail( partnerId: number ) {
         try {
             this.contactService.mailSend( partnerId, this.defaultPartnerListId )
@@ -1421,10 +1421,10 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
         } catch ( error ) {
             this.xtremandLogger.error( error, "addPartnerComponent", "resending Partner email" );
         }
-       
+
     }
-    
-    
+
+
     ngAfterViewInit() {
     }
 

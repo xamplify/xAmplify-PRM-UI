@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Pagination } from '../../core/models/pagination';
+import { ReferenceService } from '../../core/services/reference.service';
 
 @Component({
   selector: 'app-pagination',
@@ -17,7 +18,7 @@ export class PaginationComponent implements OnInit {
   numberPerPage = [{ 'name': '12', 'value': 12 }, { 'name': '24', 'value': 24 }, { 'name': '48', 'value': 48 },
   { 'name': 'All', 'value': 0 }];
 
-  constructor() {
+  constructor(public referenceService:ReferenceService) {
     this.notifyParent = new EventEmitter<any>();
     this.notifyParentDropDown = new EventEmitter<any>();
     this.pageNumber = this.numberPerPage[0];

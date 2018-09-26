@@ -54,4 +54,13 @@ a.disabled{pointer-events:none;cursor:not-allowed}
 /* .color-grey:hover{
 	color: black !important;
 } */
- 
+@media only screen and (max-width:768px){ .filterModal-size{ width: 96%;} }
+@media only screen and (min-width:768px){ .filterModal-size{ width: 53%;} }
+
+@media only screen and (max-width:768px){ .filter-delete{ left: 0; top: 0; cursor: pointer; } }
+@media only screen and (min-width:768px){ .filter-delete{ left: 85px; top: 3px; cursor: pointer; } }
+
+
+
+
+

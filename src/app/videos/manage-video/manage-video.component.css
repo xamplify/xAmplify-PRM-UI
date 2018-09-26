@@ -119,6 +119,17 @@ background: #ffffff;
     left: 50%;
     transform: translate(-50%,-50%);
 }
+@media only screen and (max-width:768px){
+  .fa.fa-play-circle{
+    visibility: visible;
+    font-size: 4em;
+    color: #ffffff;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+}
 .bar {
 	transition: visibility 0s, opacity 0.2s linear;
     bottom: 0;
