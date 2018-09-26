@@ -22,7 +22,7 @@
            <div class="tab-content" style="min-height: 715px;">
              <div class="tab-pane active m10">
                <div class="page-toolbar">
-                 <div *ngIf="!httpRequestLoader.isLoading  && !referenceService.isPlayVideo" class="btn-group pull-right col-xs-12 col-sm-12 col-md-12" style="padding:0" [ngClass]="{'margin-css':!authenticationService.isOrgAdminPartner() || !authenticationService.isVendorPartner()}">
+                 <div *ngIf="!httpRequestLoader.isLoading  && !referenceService.isPlayVideo" class="btn-group pull-right col-xs-12 p0" [ngClass]="{'margin-css':!authenticationService.isOrgAdminPartner() || !authenticationService.isVendorPartner()}">
                    <div class="inputs" align="right">
                      <div style="padding:0" class="col-xs-12 col-sm-6 col-md-3">
                        <select class="form-control select-option" [(ngModel)]="categoryNum" (ngModelChange)="getCategoryNumber()">
@@ -69,11 +69,11 @@
                    </div>
                  </div>
                  <section [hidden]="!isListView">
-                 <div class="table-responsive" style="overflow-x: inherit;"  *ngIf="pagination.pagedItems && !httpRequestLoader.isLoading  && !referenceService.isPlayVideo">
+                 <div class="table-responsive" style="overflow-x: inherit; padding:15px;"  *ngIf="pagination.pagedItems && !httpRequestLoader.isLoading  && !referenceService.isPlayVideo">
                    <table class='table tgrid' *ngIf="pagination.pagedItems.length !== 0">
                      <thead>
-                       <tr>
-                         <th colspan="1">Videos</th>
+                       <tr class="hidden-xs">
+                         <th colspan="1" style="width:50%">Videos</th>
                          <!-- <th class="text-center">Type</th> -->
                          <th class="text-center">Category</th>
                          <th class="text-center">Upload Date</th>
@@ -85,11 +85,11 @@
                         <td>
                         <app-video-thumbnail class="pull-left" [videoFile]="videoFile" (notifyParent)="showPlayVideo($event)"></app-video-thumbnail>
                         </td>
-                         <td class="text-center">
+                         <td class="text-center hidden-xs">
                            <!-- <span class='view-by-banner'>{{videoFile.viewBy}}</span> -->
                            <span >{{videoFile.category.name}}</span>
                          </td>
-                         <td class="text-center">
+                         <td class="text-center hidden-xs" >
                          <app-timestamp [isOnlyDate]="true" [dateAndTime]="videoFile.uploadedDate"> </app-timestamp>
                          </td>
                          <td *ngIf="!authenticationService.isSuperAdmin()">
@@ -125,7 +125,7 @@
                    </div>
                  </section>
                  <section [hidden]="isListView">
-                 <div class="col-xs-12 col-sm-4 col-md-3" *ngFor="let videoFile of pagination.pagedItems ;let i =index">
+                 <div class="col-xs-12 col-sm-4 col-md-4 col-lg-3" *ngFor="let videoFile of pagination.pagedItems ;let i =index">
                  <div class="grid-box p0" *ngIf="pagination.pagedItems && !httpRequestLoader.isLoading && !referenceService.isPlayVideo" (mouseenter) ="mouseEnter(videoFile)" (mouseleave) ="mouseLeave(videoFile)">
                    <div class="video-thumbnail-wrapper">
                      <img *ngIf="authenticationService.isSuperAdmin()" id="imagePathVideo{{videoFile.id}}" class="video-thumbnail" src="{{videoFile.imagePath}}" style="width:100%" (error)="videoUtilService.errorVideoHandler($event)" >

@@ -630,16 +630,30 @@ legend {
 .text-white{color: #fff !important;}
 
 
-
-.grid-box {
-  background: #f1f1f1;
-  height: auto;
-  width: 100%;
-  margin: 10px 0;
-  text-align: center;
-  position: relative;
-  padding: 1em 0;
+@media only screen and (max-width:600px) {
+  .grid-box {
+    background: #f1f1f1;
+    height: 258px !important;
+    width: 100%;
+    margin: 10px 0;
+    text-align: center;
+    position: relative;
+    padding: 1em 0;
+  }
 }
+
+@media only screen and (min-width:992px) {
+  .grid-box {
+    background: #f1f1f1;
+    height: auto;
+    width: 100%;
+    margin: 10px 0;
+    text-align: center;
+    position: relative;
+    padding: 1em 0;
+  }
+}
+
 
 .grid-box img{
   margin: 1em;
@@ -665,7 +679,7 @@ legend {
   opacity: 0;
   transition: visibility 0s, opacity 0.5s linear;
 }
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 1200px) {
   .bar{
     background: #54a7e9;
     width: 100%;
@@ -742,9 +756,9 @@ legend {
 	right: 5px; top:0px;
     width: 0px;
     height: 38px;
-    border-right: 16px solid #00a6e8;
-    border-left: 16px solid #00a6e8;
-    border-bottom: 13px solid transparent;
+    border-right: 15px solid #00a6e8;
+    border-left: 15px solid #00a6e8;
+    border-bottom: 15px solid transparent;
 }
 .ribbon.active > span {
     background-color: #31cd2c;
@@ -823,13 +837,14 @@ b, strong {
   background-color: #ffffff;
 }
 
-.tooltip-inner {
+.tooltip > .tooltip-inner{
     max-width: 200px;
     padding: 7px 14px;
     color: #fff;
     text-align: center;
-    background-color: #000;
+    /* background-color: #4d96f3; */
     border-radius: 0;
+    font-family: Century Gothic;
 }
 
 .field-icon {

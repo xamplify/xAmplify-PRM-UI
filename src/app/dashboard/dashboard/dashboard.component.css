@@ -233,15 +233,6 @@ h1.bold {
 #ThirdCampaignBarchart{
 	    height: 300px !important;
 }
-.bookmark-ribbon{
-	position: absolute;
-	right: 5px; top:0px;
-    width: 0px;
-    height: 38px;
-    border-right: 16px solid #00a6e8;
-    border-left: 16px solid #00a6e8;
-    border-bottom: 13px solid transparent;
-}
 .campaign-box{position: relative}
 .profile-name{font-weight: 600;margin: 0 0 5px 0; font-size: 14px;}
 .profile-details b{color: #333;}

@@ -185,7 +185,7 @@
 								<div class="portlet-body">
 									<div class="table-toolbar">
 										<div class="clearfix">
-											<div class="col-sm-6" *ngIf="hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId) || authenticationService.isOnlyPartner() || authenticationService.isVendorPartner() || authenticationService.isVendor()">
+											<div class="col-sm-12 col-md-6 p0" *ngIf="hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId) || authenticationService.isOnlyPartner() || authenticationService.isVendorPartner() || authenticationService.isVendor()">
 												<div class="btn-group" *ngIf="!isSynchronizationList">
 													<button id="add_contact" class="btn green"
 														(click)="addContactModalOpen()"
@@ -219,7 +219,7 @@
                         </div>
                         </ng-container>
 											</div>
-							 	<div class="col-sm-6" style="margin-top: 10px;">
+							 	<div class="col-sm-12 col-md-6 p0" style="margin-top: 10px;">
 								<div *ngIf="!isSegmentation" (click)="modelForSeg()"
 									style="float: left; cursor: pointer; margin-left: 50px;"
 									data-toggle="modal" data-target="#filterModal">
@@ -350,7 +350,7 @@
 													[ngModelOptions]="{standalone: true}"
 													style="min-width: 100%; max-width: 100%; height: 150px; font-size: 12px; line-height: 1.4;"
 													required="required">
-							</textarea>
+						           	</textarea>
 											</div>
 											<div class="col-sm-5">
 												<span id="clipBoardValidationMessage"></span>
@@ -451,12 +451,12 @@
 									</div>
 									<app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
 									<div class="clearfix">
-										<div class="col-xs-12">
+										<div class="col-xs-12 p0">
 											<div class="table-responsive">
 												<table class='table tgrid'
 													*ngIf="(contacts?.length > 0) && isShowUsers && !httpRequestLoader.isLoading">
 													<thead>
-														<tr>
+														<tr class="hidden-xs">
 															<th class='text-center'><input type="checkbox"
 																name="all" [(ngModel)]="isHeaderCheckBoxChecked"
 																(change)="checkAll($event)"
@@ -475,24 +475,23 @@
 														<ng-container
 															*ngFor="let newContact of users; let i = index">
 														<tr class='row_{{i}}' style="background-color: #73c5be;">
-															<td align="center"><input type="checkbox"
-																checked="newContact.checked"></td>
+															<td align="center"><input type="checkbox" checked="newContact.checked"></td>
 															<td *ngIf="isPartner">
 															<app-user-info [isPartnerEntityInfo]="true" [isPartnerInfo]="true" [userInfo]="newContact"> </app-user-info>
 															</td>
 															<td>
 															<app-user-info  [userInfo]="newContact"> </app-user-info>
 															</td>
-															<td>
+															<td class="hidden-xs">
 															<div *ngIf="newContact.mobileNumber" [class.disabled]="true" style="pointer-events: none !important; cursor: auto;">
-													<int-phone-prefix [(ngModel)]="newContact.mobileNumber"  [ngModelOptions]="{standalone: true}"></int-phone-prefix>
-													</div>
+                              <int-phone-prefix [(ngModel)]="newContact.mobileNumber"  [ngModelOptions]="{standalone: true}"></int-phone-prefix>
+                              </div>
 																<!-- <h5>
 																	<span *ngIf="newContact?.mobileNumber; else NA"
 																		class="textWhite">{{newContact.mobileNumber}}</span>
 																</h5> -->
 															</td>
-															<td>
+															<td class="hidden-xs">
 																<h5 class='mb0 textWhite ellipsis' title="{{newContact.jobTitle}}">{{newContact.jobTitle | slice:0:25}}
 																<span *ngIf="newContact.jobTitle?.length>25">...</span>
 																</h5>
@@ -500,7 +499,7 @@
 																<span *ngIf="newContact.contactCompany?.length>25">...</span>
 																</h6>
 															</td>
-															<td>
+															<td class="hidden-xs">
 																<h5 *ngIf="newContact?.address" class='mb0 textWhite'>{{newContact.address}}</h5>
 																<h5 class='mb0 textWhite'>{{newContact.city}},&nbsp;{{newContact.state}}</h5>
 																<h5 *ngIf="newContact?.zipCode || newContact.country"
@@ -552,7 +551,7 @@
 															<td *ngIf="!isPartner">
 															<app-user-info  [userInfo]="contact"> </app-user-info>
 															</td>
-															<td>
+															<td class="hidden-xs">
 															<div *ngIf="contact.mobileNumber" [class.disabled]="true" style="pointer-events: none !important; cursor: auto;">
 													<int-phone-prefix [(ngModel)]="contact.mobileNumber"  [ngModelOptions]="{standalone: true}"></int-phone-prefix>
 													</div>
@@ -560,13 +559,13 @@
 																	<span *ngIf="contact?.mobileNumber; else NA">{{contact.mobileNumber}}</span>
 																</h5> -->
 															</td>
-															<td>
+															<td class="hidden-xs">
 																<h5 class='mb0 ellipsis' title="{{contact.jobTitle}}">{{contact.jobTitle | slice:0:25}}
 																<span *ngIf="contact.jobTitle?.length>25">...</span>
 																</h5>
 																<!-- <h6 class='mt0' *ngIf="!isPartner">{{contact.contactCompany}}</h6> -->
 															</td>
-															<td align="center">
+															<td align="center" class="hidden-xs">
 																<h5 *ngIf="contact?.address" class='mb0'>{{contact.address}}</h5>
 																<h5 class='mb0'>{{contact.city}}<span *ngIf="contact.city && contact.state">,&nbsp;</span>{{contact.state}}</h5>
 																<h5 *ngIf="contact?.zipCode || contact.country" class='mt0'>{{contact.zipCode}}<span *ngIf="contact.zipCode && contact.country">,&nbsp;</span>{{contact.country}}</h5>
@@ -811,7 +810,7 @@
 	<!-- BEGIN PAGE CONTENT-->
 <div id="filterModal" class="modal fade" role="dialog"
 		data-backdrop="static" data-keyboard="false">
-		<div class="modal-dialog" style="width: 53%;">
+		<div class="modal-dialog filterModal-size">
 
 			<!-- Modal content-->
 			<div class="modal-content">
@@ -844,14 +843,11 @@
 											</select>
 										</div>
 										<div class="form-group col-sm-3">
-											<input type="text" class="form-control" placeholder="value*"
-												[(ngModel)]="criterias[i].value1" required>
+											<input type="text" class="form-control" placeholder="value*"	[(ngModel)]="criterias[i].value1" required>
 										</div>
-										<div class="form-group col-sm-2"
-											style="left: 85px; top: 3px; cursor: pointer;">
-											<span (click)="cancelSegmentationRow(i)"> <i
-												class="fa fa-trash-o" aria-hidden="true"
-												style="color: red; font-size: 26px; margin-top: 6px"></i>
+										<div class="form-group col-sm-2 filter-delete">
+											<span (click)="cancelSegmentationRow(i)">
+                         <i class="fa fa-trash-o" aria-hidden="true" 	style="color: red; font-size: 26px; margin-top: 6px"></i>
 											</span>
 										</div>
 									</div>

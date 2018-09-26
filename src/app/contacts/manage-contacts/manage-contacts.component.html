@@ -189,9 +189,9 @@
 
 								<section [hidden]="!isListView"
 									*ngIf="pagination.pagedItems?.length != 0 && !httpRequestLoader.isLoading">
-									<div class="table-responsive">
+									<div class="table-responsive" style="margin-top:7px">
 										<table class='table tgrid'>
-											<thead>
+											<thead class="hidden-xs">
 												<tr>
 													<th colspan="2" style="width: 50%">List Name</th>
 													<th>Created On</th>
@@ -202,7 +202,8 @@
 											<tbody>
 												<tr *ngFor="let contactList of pagination.pagedItems"
 													[class.isProcessing]="!contactList.emailValidationInd">
-													<td style="width: 10%;"><img
+                          <td style="width: 10%;" class="hidden-xs">
+                            <img
 														*ngIf="contactList.socialNetwork=='ZOHO'"
 														src="{{zohoImage}}" alt="zoho" style="height: 70px;">
 														<img *ngIf="contactList.socialNetwork=='GOOGLE'"
@@ -227,13 +228,17 @@
 															</span>
 														</h5>
 														<h5 class="mb0 ellipsis" title="{{contactList.companyName}}"><b>{{contactList.companyName | slice:0:50}}</b>
-														<span *ngIf="contactList.companyName?.length>50">...</span>
-														</h5>
+                            <span *ngIf="contactList.companyName?.length>50">...</span>
+                            <h5 class="mb0 ellipsis hidden-sm hidden-md hidden-lg">
+                                <span class="mb0">Total {{checkingContactTypeName}}s: {{contactList.noOfContacts}}</span><br>
+                              	<span class="mb0">Created On:<app-timestamp [isOnlyDate]="true" [dateAndTime]="contactList.createdDate"> </app-timestamp></span>
+                            </h5>
+                            </h5>
 													</td>
-													<td>
+													<td class="hidden-xs">
 													<app-timestamp [isOnlyDate]="true" [dateAndTime]="contactList.createdDate"> </app-timestamp>
 													</td>
-													<td class="text-center">{{contactList.noOfContacts}}</td>
+													<td class="text-center hidden-xs">{{contactList.noOfContacts}}</td>
 													<td *ngIf="!authenticationService.isSuperAdmin()">
 														<div class="actions-block">
 															<a
@@ -509,9 +514,9 @@
 														<th style="width: 25%" *ngIf="!isPartner">NAME</th>
 														<th style="width: 25%" *ngIf="isPartner">Entity info</th>
 														<th>Phone</th>
-														<th>Job Title</th>
-														<th>ADDRESS</th>
-														<th *ngIf="isPartner && contactsByType.selectedCategory == 'non-active'">ACTIONS</th>
+														<th class="text-center">Job Title</th>
+														<th class="text-center">ADDRESS</th>
+														<th class="text-center" *ngIf="isPartner && contactsByType.selectedCategory == 'non-active'">ACTIONS</th>
 														<!-- <th>MORE</th> -->
 													</tr>
 												</thead>
@@ -542,23 +547,23 @@
 														<td *ngIf="isPartner"><app-user-info [isPartnerEntityInfo]="true" [isPartnerInfo]="true" [userInfo]="contact">
 															</app-user-info></td>
 														<td *ngIf="!isPartner">
-														<app-user-info [isPartnerEntityInfo]="true" [userInfo]="contact">
-															</app-user-info></td>
-														<td>
-														<div *ngIf="contact.mobileNumber" [class.disabled]="true" style="pointer-events: none !important; cursor: auto;">
-													<int-phone-prefix [(ngModel)]="contact.mobileNumber"  [ngModelOptions]="{standalone: true}"></int-phone-prefix>
-													</div>
-															<!-- <h5>
-																<span *ngIf="contact?.mobileNumber; else NA">{{contact.mobileNumber}}</span>
-															</h5> -->
+														<app-user-info [isPartnerEntityInfo]="true" [userInfo]="contact"></app-user-info>
+                            </td>
+														<td >
+                              <div *ngIf="contact.mobileNumber" [class.disabled]="true" style="pointer-events: none !important; cursor: auto;">
+                              <int-phone-prefix [(ngModel)]="contact.mobileNumber"  [ngModelOptions]="{standalone: true}"></int-phone-prefix>
+                              </div>
+                              <!-- <h5>
+                                <span *ngIf="contact?.mobileNumber; else NA">{{contact.mobileNumber}}</span>
+                              </h5> -->
 														</td>
-														<td>
+														<td class="text-center">
 															<h5 class='mb0 ellipsis' title="{{contact.jobTitle}}">{{contact.jobTitle | slice:0:25}}
 															<span *ngIf="contact.jobTitle?.length>25">...</span>
 															</h5>
 															<!-- <h6 class='mt0' *ngIf="!isPartner">{{contact.contactCompany}}</h6> -->
 														</td>
-														<td>
+														<td class="text-center">
 															<h5 *ngIf="contact?.address" class='mb0'>{{contact.address}}</h5>
 															<h5 class='mb0'>{{contact.city}}<span *ngIf="contact?.city && contact.state">,&nbsp;</span>{{contact.state}}</h5>
 															<h5 *ngIf="contact?.zipCode || contact.country" class='mt0'>{{contact.zipCode}}<span *ngIf="contact?.zipCode && contact.country">,&nbsp;</span>{{contact.country}}</h5>

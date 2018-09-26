@@ -534,9 +534,9 @@ img:hover {
 								<div class="table-responsive">
 									<table class='table tgrid'>
 										<thead *ngIf="pagination.pagedItems?.length != 0">
-											<tr>
-											<th class='text-center'><input type="checkbox"
-																name="all" [(ngModel)]="editContactComponent.isHeaderCheckBoxChecked"
+											<tr class="hidden-xs">
+											<th class='text-center'>
+                        <input type="checkbox" 	name="all" [(ngModel)]="editContactComponent.isHeaderCheckBoxChecked"
 																(change)="editContactComponent.checkAll($event)"
 																id="checkAllExistingContacts"/></th>
 												<th style="width: 20%;">Entity info</th>
@@ -562,7 +562,7 @@ img:hover {
 												<td>
 													<app-user-info [isPartnerEntityInfo]="true" [isPartnerInfo]="true"  [userInfo]="contact"> </app-user-info>
 												</td>
-												<td>
+												<td class="hidden-xs">
 											<!-- 	<img
 													src="https://lipis.github.io/flag-icon-css/flags/4x3/in.svg"
 													width="15px"> -->
@@ -571,13 +571,13 @@ img:hover {
 													<int-phone-prefix [(ngModel)]="contact.mobileNumber"  [ngModelOptions]="{standalone: true}"></int-phone-prefix>
 													</div>
 												</td>
-												<td>
+												<td class="hidden-xs">
 													<h5 class='mb0' title="{{contact.jobTitle}}">{{contact.jobTitle | slice:0:20}}
 													<span *ngIf="contact.jobTitle?.length>20">...</span>
 													</h5>
 													<!-- <h6 class='mt0'>{{contact.contactCompany}}</h6> -->
 												</td>
-												<td align="center">
+												<td align="center" class="hidden-xs">
 													<h5 *ngIf="contact?.address" class='mb0'>{{contact.address}}</h5>
 													<h5 class='mb0'>{{contact.city}}<span *ngIf="contact.city && contact.state">,&nbsp;</span>{{contact.state}}</h5>
 													<h5 *ngIf="contact?.zipCode || contact.country" class='mt0'>{{contact.zipCode}}<span *ngIf="contact.zipCode && contact.country">,&nbsp;</span>{{contact.country}}</h5>
