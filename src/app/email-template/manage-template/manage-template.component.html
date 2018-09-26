@@ -62,19 +62,20 @@
             <section [hidden]="!isListView">
 						<ng-container *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError ">
 						<div class="table-responsive">
-						<table class='table tgrid table-hover table-sm hidden-xs'  *ngIf="pagination.pagedItems?.length>0">
+						<table class='table tgrid table-hover table-sm'  *ngIf="pagination.pagedItems?.length>0">
 							<thead>
 								<tr>
-									<th colspan="2" style="width: 45%">Email Template List</th>
-									<th style="text-align: center;" *ngIf="!authenticationService.isVendor()">Vendor Company Name</th>
-									<th style="text-align: center;">Type</th>
-									<th style="text-align: center;">Created Date</th>
-									<th style="text-align: center;">Actions</th>
+                  <th class="visible-xs" colspan="1" style="width: 45%">Email Template List</th>
+                  <th class="visible-sm visible-md visible-lg" colspan="2" style="width: 45%">Email Template List</th>
+									<th class="hidden-xs text-center" *ngIf="!authenticationService.isVendor()">Vendor Company Name</th>
+									<th class="hidden-xs text-center">Type</th>
+									<th class="hidden-xs text-center">Created Date</th>
+									<th class="text-center">Actions</th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr *ngFor="let emailTemplate of pagination.pagedItems ;let i =index">
-									<td style="width: 10%;">
+									<td class="hidden-xs" style="width: 10%;">
 										<img src="{{emailTemplate.subject}}" alt="{{emailTemplate.name}}">
 									</td>
 									<td>
@@ -93,14 +94,14 @@
 									<h5 class="view-banner" *ngIf="emailTemplate.type=='PARTNER'">PARTNER</h5>
 									<h5 class="view-banner" *ngIf="(emailTemplate.regularCoBrandingTemplate||emailTemplate.videoCoBrandingTemplate) &&emailTemplate.type=='UPLOADED' ">CO-BRANDED</h5>
 									</td>
-									<td style="text-align: center;" *ngIf="!authenticationService.isVendor()">
+									<td class="hidden-xs text-center" *ngIf="!authenticationService.isVendor()">
 										<h5 style="width: auto;" *ngIf="emailTemplate.type=='PARTNER'"><b>{{emailTemplate.vendorOrganizationName}}</b></h5>
 										<h5 style="width: auto;" *ngIf="emailTemplate.type!='PARTNER'"><b>-</b></h5>
 									</td>
-									<td>
+									<td  class="hidden-xs">
 										<h5 class="view-banner" style="width: 115%;">{{emailTemplate.emailTemplateType}}</h5>
 									</td>
-									<td  style="text-align: center;">
+									<td class="hidden-xs text-center" >
 									<app-timestamp [isOnlyDate]="true" [dateAndTime]="emailTemplate.createdDate"> </app-timestamp>
 									</td>
 									<td style="width: 14%">
@@ -210,7 +211,7 @@
 	</div>
 
 			<div class="modal" id="show_email_template_preivew">
-					<div class="modal-dialog modal-lg" style="width: 75%;">
+					<div class="modal-dialog modal-lg modal-template">
 						<div class="modal-content">
 							<div class="modal-header">
 								<button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>

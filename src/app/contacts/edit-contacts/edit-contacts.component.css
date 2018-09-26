@@ -59,6 +59,8 @@ a.disabled{pointer-events:none;cursor:not-allowed}
 
 @media only screen and (max-width:768px){ .filter-delete{ left: 0; top: 0; cursor: pointer; } }
 @media only screen and (min-width:768px){ .filter-delete{ left: 85px; top: 3px; cursor: pointer; } }
+@media only screen and (max-width:768px){ .row-css {  margin-right: 0px; margin-left: 0px; padding:0 } }
+@media only screen and (min-width:768px){ .row-css {  margin-right: -15px; margin-left: -15px; } }
 
 
 
