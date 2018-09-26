@@ -8,6 +8,7 @@ import { XtremandLogger } from '../error-pages/xtremand-logger.service';
 import { CustomResponse } from '../common/models/custom-response';
 import { ActionsDescription } from '../common/models/actions-description';
 import { AuthenticationService } from '../core/services/authentication.service';
+import { SocialPagerService } from '../contacts/services/social-pager.service';
 
 import { EmailTemplateService } from '../email-template/services/email-template.service';
 import {ContentManagement} from './model/content-management';
@@ -18,7 +19,7 @@ declare var Metronic,$, Layout, Demo, swal: any;
   selector: 'app-content-management',
   templateUrl: './content-management.component.html',
   styleUrls: ['./content-management.component.css'],
-  providers: [Pagination,HttpRequestLoader, ActionsDescription,ContentManagement]
+  providers: [Pagination,HttpRequestLoader, ActionsDescription,ContentManagement, SocialPagerService]
 })
 export class ContentManagementComponent implements OnInit {
     loggedInUserId:number = 0;
@@ -31,13 +32,33 @@ export class ContentManagementComponent implements OnInit {
     exisitingFileNames:string[] = [];
     existingFileName:string  = "";
     awsFileKeys:string[] = [];
+    pager: any = {};
+    pagedItems: any[];
+    pageSize: number = 12;
   constructor(private router: Router, private pagerService: PagerService, public referenceService: ReferenceService, 
-              public actionsDescription: ActionsDescription,public pagination: Pagination,
+              public actionsDescription: ActionsDescription,public pagination: Pagination, public socialPagerService: SocialPagerService,
               public authenticationService:AuthenticationService,private logger:XtremandLogger,
               private emailTemplateService:EmailTemplateService,private contentManagement:ContentManagement) { 
               this.loggedInUserId = this.authenticationService.getUserId();
       
   }
+  
+  
+  setPage( page: number ) {
+      try {
+          if ( page < 1 || page > this.pager.totalPages ) {
+              return;
+          }
+
+          this.pager = this.socialPagerService.getPager( this.list.length, page, this.pageSize );
+          this.pagedItems = this.list.slice( this.pager.startIndex, this.pager.endIndex + 1 );
+
+      } catch ( error ) {
+          console.error( error, "content management setPage()." )
+      }
+
+  }
+  
 
   /**************List Items************************/
   listItems( pagination: Pagination ) {
@@ -52,6 +73,7 @@ export class ContentManagementComponent implements OnInit {
                       this.customResponse = new CustomResponse( 'INFO', "No records found", true );
                   }
                   this.referenceService.loading(this.httpRequestLoader, false);
+                  this.setPage( 1 );
               },
               ( error: string ) => {this.logger.errorPage(error);
               }
@@ -90,7 +112,7 @@ export class ContentManagementComponent implements OnInit {
       this.customResponse.isVisible = false;
       this.awsFileKeys.push(file.fileName);
       this.referenceService.loading(this.httpRequestLoader, true);
-      file.userId = this.loggedInUserId;
+      file.userId = this.loggedInUserId; 
       file.awsFileKeys = this.awsFileKeys;
       this.emailTemplateService.deleteFile( file )
           .subscribe(
