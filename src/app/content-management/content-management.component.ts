@@ -35,6 +35,8 @@ export class ContentManagementComponent implements OnInit {
     pager: any = {};
     pagedItems: any[];
     pageSize: number = 12;
+    selectedFiles = [];
+    selectedFileIds= [];
   constructor(private router: Router, private pagerService: PagerService, public referenceService: ReferenceService, 
               public actionsDescription: ActionsDescription,public pagination: Pagination, public socialPagerService: SocialPagerService,
               public authenticationService:AuthenticationService,private logger:XtremandLogger,
@@ -57,6 +59,22 @@ export class ContentManagementComponent implements OnInit {
           console.error( error, "content management setPage()." )
       }
 
+  }
+  
+  getSelectedFiles(file: any, id: number, event: any){
+      let isChecked = $( '#row_'+ id ).is( ':checked' );
+      if ( isChecked ) {
+          this.selectedFiles.push(file);
+          this.selectedFileIds.push(id); 
+      }else{
+          this.selectedFileIds.splice( $.inArray( id, this.selectedFileIds ), 1 );
+          this.selectedFiles.splice( $.inArray( id, this.selectedFiles ), 1 );
+      }
+    /*  for(let i=0; i<=this.selectedFiles.length; i++){
+          if(this.selectedFiles.fileName === file.fileName){
+              this.selectedFiles.slice(file);
+          }
+      }*/
   }
   
 

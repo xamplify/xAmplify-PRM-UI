@@ -129,7 +129,7 @@
 						</ul>
 					</li>
 
-					<li *ngIf="authService.user.hasCompany" [ngClass]="{'active':location.path().includes('content')}">
+					<li *ngIf="authService.user.hasCompany" style="display: none;" [ngClass]="{'active':location.path().includes('content')}">
 						<a [routerLink]="['./content-management']">
 						<i class="fa fa-file-text-o"></i>
 						<span class="title">Content Management</span>
