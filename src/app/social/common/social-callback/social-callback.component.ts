@@ -35,8 +35,8 @@ export class SocialCallbackComponent implements OnInit {
                         client_id = "3MVG9ZL0ppGP5UrD8Ne7RAUL7u6QpApHOZv3EY_qRFttg9c1L2GtSyEqiM8yU8tT3kolxyXZ7FOZfp1V_xQ4l";
                         client_secret = "8542957351694434668";
                     } else if ( providerName === "google" ) {
-                        client_id = "733045589374-1u3eb2b1v5g8hsoql2f4qjr5kugkv51b.apps.googleusercontent.com";
-                        client_secret = "dw8gUNgnPRqOV7V7aUuMUxye";
+                        client_id = "1026586663522-tv2c457u9h9bj4ikc47u29g321dkjg6m.apps.googleusercontent.com";
+                        client_secret = "yKAddi6F_xkiERVCnWna3bXT";
                     } else if ( providerName === "facebook" ) {
                         client_id = "1348853938538956";
                         client_secret = "69202865ccc82e3cf43a5aa097c4e7bf";
