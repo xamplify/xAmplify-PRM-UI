@@ -253,7 +253,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     const startDate = Date.parse(this.eventCampaign.campaignEventTimes[0].startTimeString);
     if(this.eventCampaign.campaignEventTimes[0].endTimeString && !this.eventCampaign.campaignEventTimes[0].allDay && startDate===endDate){
      this.eventError.eventSameDateError = true;
-     this.endDatePassedError = 'start Date / Time and end Date / Time should not be same';
+     this.endDatePassedError = 'The event must end after the start date and time';
     } else if(startDate > endDate){ this.setSameDateErrorMesg(true,true,'The event must end after the start date and time.');
     } else { this.setSameDateErrorMesg(false,false,''); }
   }

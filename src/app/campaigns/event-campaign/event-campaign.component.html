@@ -57,14 +57,14 @@
               </div>
             </div>
 					<div class="form-group" *ngIf="!authenticationService.isOnlyPartner()">
-						<label for="hostedBy" class="col-sm-3 labal-css">Through Partner</label>
-						<div class="col-sm-3">
+						<label for="Throughpartner" class="col-sm-3 labal-css">Through Partner</label>
+						<div class="col-sm-2">
 							<switch [status]="eventCampaign.channelCampaign" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.onTextValue"
 								[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onGreenColorSwitch" [size]="callActionSwitch.size" [disabled]="isPreviewEvent || reDistributeEvent"
 								(statusChange)="eventCampaign.channelCampaign = !eventCampaign.channelCampaign">
 							</switch>
             </div>
-            <label for="hostedBy" class="col-sm-2 labal-css p0">To Partner</label>
+            <label for="toPartner" class="col-sm-3 labal-css">To Partner</label>
             <div class="col-sm-3" style="padding: 0;margin-top: 5px;">
             <span style="cursor: pointer;color: #54a7e9;" title="{{properties.TO_PARTNER_MESSAGE}}&#013;{{properties.THROUGH_PARTNER_MESSAGE}}">
               <i class="fa fa-question-circle" ></i>
@@ -187,7 +187,7 @@
                      <input style="cursor: pointer;" [attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null" type="radio" value="eventCampaign.publicEventCampaign" [checked]="eventCampaign.publicEventCampaign" (change)="eventCampaign.publicEventCampaign = !eventCampaign.publicEventCampaign">
                    </label>
                   <label class="col-md-2 p0"><img src="assets/images/public-event.png"></label>
-                  <div class="col-md-9 p0" ><b>Public page</b><br><p >Turn invitees into your biggest promoters by letting them share your event on Facebook, Twitter, Linkedin and or other media platform</p></div>
+                  <div class="col-md-9 p0" ><b>Public page</b><br><p >Turn invitees into your biggest promoters by letting them share your event on Facebook, Twitter, LinkedIn and or other media platform</p></div>
                 <div style="clear:both"></div>
                 </li>
 
@@ -246,7 +246,7 @@
               <div class="alert-danger alert-error" *ngIf="eventError.eventContactError">* Please select the <span *ngIf="!authenticationService.isOnlyPartner();else listHeader">contact</span><ng-template #listHeader>partner</ng-template> list</div>
               <section *ngIf="(isPreviewEvent && (userListIds?.length==0 && parternUserListIds?.length==0)) || contactListsPagination.pagedItems?.length === 0;else contactList">
                 <div class='alert alert-info' role='alert'>
-                  <h4 class='m0'>You have not selected any <span *ngIf="authenticationService.isOnlyPartner();else listPartner">contact</span><ng-template #listPartner>partner</ng-template> lists yet.</h4>
+                  <h4 class='m0'>You have not added any <span *ngIf="authenticationService.isOnlyPartner();else listPartner">contact</span><ng-template #listPartner>partner</ng-template> lists yet.</h4>
                 </div>
                 <!-- <a class='btn btn-info' style="color: #fff;" [routerLink]="['/home/contacts/add']">Add Contacts</a> -->
               </section>
@@ -328,9 +328,12 @@
         <fieldset class="col-xs-12">
           <legend style="color: #2c3f52;">Add Your Work Flow</legend>
           <div style="margin-bottom:70px;">
-          <div class="col-xs-6" style="margin-left: 45.666667%;"><img src="assets/images/icon1.png"> </div><br>
-          <div class="col-xs-6 auto-response" *ngIf="!isPreviewEvent" style="margin-left: 37%;"><a (click)="addReplyRows()">Click Here</a> to add a auto response to your email</div>
-          <div class="col-xs-6 auto-response" *ngIf="isPreviewEvent" style="margin-left: 37%;"><a [attr.disabled]="isPreviewEvent? '' : null">Click Here</a> to add a auto response to your email</div>
+          <div class="col-xs-6" style="margin-left: 45.666667%;">
+            <img *ngIf="!isPreviewEvent" src="assets/images/icon1.png" (click)="addReplyRows()">
+            <img *ngIf="isPreviewEvent" src="assets/images/icon1.png">
+          </div><br>
+          <div class="col-xs-6 auto-response" *ngIf="!isPreviewEvent" style="margin-left: 37%;"><a (click)="addReplyRows()">Click Here</a> to add an auto reauto response to your email</div>
+          <div class="col-xs-6 auto-response" *ngIf="isPreviewEvent" style="margin-left: 37%;"><a style="cursor: default;" [attr.disabled]="isPreviewEvent? '' : null">Click Here</a> to add a auto response to your email</div>
           </div>
           <div *ngFor="let reply of eventCampaign.campaignReplies;let i=index">
           <div class="portlet light dashboard-stat2" id="{{reply.divId}}" style="min-height: 320px;" [class.disabled]="reply.body && reDistributeEvent && reply.id">
