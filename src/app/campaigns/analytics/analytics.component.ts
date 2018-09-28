@@ -154,7 +154,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
         () => console.log()
         )
     }else{
-    this.campaignService.listCampaignViews(campaignId, pagination)
+    this.campaignService.listCampaignViews(campaignId, pagination, this.isChannelCampaign)
       .subscribe(
       data => {
         this.listCampaignViewsDataInsert(data);
@@ -167,10 +167,10 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   }
   
   listCampaignViewsDataInsert(data: any){
-      this.campaignViews = data;
+      this.campaignViews = data.campaignviews;
       const views = [];
       for (let i = 0; i < data.length; i++) {
-        views.push(data[i].viewsCount)
+        views.push(data.campaignviews[i].viewsCount)
       }
       this.maxViewsValue = Math.max.apply(null, views);
       this.campaignViewsPagination.totalRecords = this.campaignReport.emailSentCount;
@@ -318,7 +318,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       .subscribe(
       data => {
         console.log(data);
-        this.campaignBarViews = data;
+        this.campaignBarViews = data.campaignviews;
         const names = [];
         const views = [];
         for (let i = 0; i < this.campaignBarViews.length; i++) {
@@ -1012,18 +1012,18 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
 
   listTotalCampaignViews(campaignId: number) {
     try{
-      this.loading = true;
+      //this.loading = true;
       this.downloadTypeName ='campaignViews';
       this.campaignTotalViewsPagination.maxResults = this.campaignReport.emailSentCount;
       this.campaignService.listCampaignViews(campaignId, this.campaignTotalViewsPagination,  this.isChannelCampaign)
       .subscribe(
       data => {
-        this.campaignTotalViewsData = data;
-        try {
+        this.campaignTotalViewsData = data.campaignviews;
+       /* try {
           const self = this;
           this.selectedRow = this.campaignTotalViewsData.find(function (obj) { return obj.emailId === self.selectedRow.emailId; });
           this.loading = false;
-        } catch (err) { console.log(err); }
+        } catch (err) { console.log(err); }*/
       },
       error => console.log(error),
       () => console.log()

@@ -30,12 +30,9 @@ export class User {
     hasCompany: boolean = false;
 
     isShowDetails = false;
-    companyName: string = "";
-    vendorSignUp: boolean = false;
     companyLogo: string = "";
 
     companyName:string = "";
     vendorSignUp:boolean = false;
-    companyLogo:string = "";
     hasPassword = false;
 }
