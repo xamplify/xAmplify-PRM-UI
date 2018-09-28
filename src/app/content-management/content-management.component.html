@@ -34,6 +34,7 @@
                          <option *ngFor="let sort of sortVideos" [ngValue]="sort"> {{sort.name}} </option>
                        </select> -->
                      </div>
+                     <button type="button" class="btn btn-danger" *ngIf="selectedFileIds?.length>1" (click)="delete()">Delete</button>
                      <div class="col-xs-6 col-sm-3 col-md-3 col-md-3 pull-right" style="padding-right:0">
                        <div style="cursor:pointer">
                          <!-- <i class="icon-magnifier" style="cursor:pointer;font-size:18px;" (click)="searchVideoTitelName()"></i> -->
