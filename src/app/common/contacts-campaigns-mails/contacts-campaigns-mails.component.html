@@ -20,9 +20,9 @@
 								style="font-weight: 400; font-size: 12px;">CAMPAIGN NAME</th>
 							<th class='text-center'
 								style="font-weight: 400; font-size: 12px;">CAMPAIGN TYPE</th>
-							<th class='text-center'
+							<th class='text-center hidden-xs'
 								style="font-weight: 400; font-size: 12px;">CREATED BY</th>
-							<th class='text-center'
+							<th class='text-center hidden-xs'
 								style="font-weight: 400; font-size: 12px;">LAUNCHED ON</th>
 						</tr>
 					</thead>
@@ -38,10 +38,10 @@
 							<span *ngIf="campaign.campaignName?.length>18">...</span>
 							</td>
 							<td align="center">{{campaign.campaignType}}</td>
-							<td align="center" title="{{campaign.fromName}}">{{campaign.fromName | slice:0:15}}
+							<td align="center" class="hidden-xs" title="{{campaign.fromName}}">{{campaign.fromName | slice:0:15}}
 							<span *ngIf="campaign.campaignName?.length>15">...</span>
 							</td>
-							<td align="center">
+							<td align="center" class="hidden-xs">
 							<app-timestamp [dateAndTime]="campaign.launchTime"> </app-timestamp>
 							</td>
 						</tr>

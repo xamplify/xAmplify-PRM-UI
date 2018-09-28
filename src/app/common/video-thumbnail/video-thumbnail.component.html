@@ -30,10 +30,11 @@
             <span *ngIf="videoFile.uploadedUserName?.length>20">...</span>
         </span>
       </span>
-      <h6 class='f-w-600'  (click)="showPlayVideo(videoFile)">
+      <h6 class='f-w-600 views-draft'  (click)="showPlayVideo(videoFile)">
         <span *ngIf="videoFile.views">{{videoFile.views}}</span>
         <span  *ngIf="!videoFile.views">0</span>
         views</h6>
+        <h5 *ngIf="videoFile.viewBy=='DRAFT'" class="draft-video"> DRAFT</h5>
     </a>
   </div>
 </div>

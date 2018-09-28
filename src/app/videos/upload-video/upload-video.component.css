@@ -24,7 +24,7 @@ padding: 10px;
   #my-video{  height:160px; width: 217px; }
 }
 @media only screen and (min-width:992px){
-  #my-video{  height:160px; width: auto; }
+  #my-video{  height:160px; width:290px;}
 }
 
 .upload-video{
@@ -76,22 +76,22 @@ margin-right: 304px;
 margin-left: 19px;
 }
 .loaderSymbol{
-height: 49px;
-margin-top: -5px;
-margin-left: -2px;
-color: black;
-border-color: #000000;
+  height: 63px;
+  margin-top: -5px;
+  margin-left: -2px;
+  color: black;
+  border-color: #000000;
 }
 .p-tag-loaderCss {
-top: -63px;
-position: relative;
-left: 36px;
+  top: -70px;
+  position: relative;
+  left: 31px;
 }
 .loader-image-tag {
-width: 64px;
-top: -22px;
-left: -23px;
-position: relative;
+  width: 64px;
+  top: -16px;
+  left: -18px;
+  position: relative;
 }
 .h2text {
 font-weight: bold;color:blue;
@@ -124,10 +124,10 @@ border-radius: 0
 #file-upload { width:0; height:0; }
 .box-border{ border: 1px solid #54a7e9; padding: 37px 16px; margin: 0; }
 @media only screen and (max-width:600px){
-  .box-border{ border: 1px solid #54a7e9; padding: 30px 16px; margin: 0; }
+  .box-border{  min-height: 257px; border: 1px solid #54a7e9; padding: 30px 16px; margin: 0; }
 }
 @media only screen and (min-width:768px){
-  .box-border{ border: 1px solid #54a7e9; padding: 43px 0px; margin: 0; }
+  .box-border{ margin: 0; min-height: 192px; border: 1px solid #54a7e9; padding: 51px 0; }
 }
 @media only screen and (min-width:992px){
   .box-border{ border: 1px solid #54a7e9; min-height: 181px; padding: 37px 16px; margin: 0; }

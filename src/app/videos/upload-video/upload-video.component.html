@@ -77,13 +77,17 @@
 							<span class="glyphicon glyphicon-trash"></span> Remove all
 						</button> </div>
 				</div>
-				<br />
+        <br />
 				<div class="col-xs-12">
 					<div *ngIf="processing" class="row">
-						<div class="alert alert-success alertMessageCustom loaderSymbol" style="background: #dff0d8">
+						<!-- <div class="alert alert-success alertMessageCustom loaderSymbol" style="background: #dff0d8">
 							<img src="assets/images/loadbar.gif" class="loader-image-tag">
-							<p class="p-tag-loaderCss">Your video has been uploaded. Give us just a moment to process it.</p>
-						</div>
+                <p class="p-tag-loaderCss">Your video has been uploaded. Give us just a moment to process it</p>
+            </div> -->
+            <div class="alert alert-success alertMessageCustom loaderSymbol" style="background: #dff0d8">
+              <span><img src="assets/images/loadbar.gif" class="loader-image-tag"></span>
+              <span style="position: absolute;left: 51px;">Your video has been uploaded. Take a break, We’ll	process your video in	the background, will notify the status through an email and save it in draft	mode for when you return, Just look for	it in the	“Manage	Videos”	section</span>
+            </div>
 					</div>
 					<div style="position: relative; top:-17px;" *ngIf="!processing">
 					<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
