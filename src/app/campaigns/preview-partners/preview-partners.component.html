@@ -39,7 +39,7 @@
                <app-list-loader  *ngIf="campaignPartnerLoader.isLoading"></app-list-loader>
                <app-response-message [customResponse]="partnerActionResponse" *ngIf="partnerActionResponse.isVisible"></app-response-message>
               <div class="portlet-body"  *ngIf="!campaignPartnerLoader.isLoading">
-               <table class="table table-striped table-hover table-bordered" id="campaign-partner-table">
+               <table class="table tgrid" id="campaign-partner-table">
 							<thead>
 								<tr>
 									<th>EMAIL ID</th>
