@@ -456,16 +456,16 @@
 												<table class='table tgrid'
 													*ngIf="(contacts?.length > 0) && isShowUsers && !httpRequestLoader.isLoading">
 													<thead>
-														<tr class="hidden-xs">
+														<tr>
 															<th class='text-center'><input type="checkbox"
 																name="all" [(ngModel)]="isHeaderCheckBoxChecked"
 																(change)="checkAll($event)"
 																id="checkAllExistingContacts"/></th>
 															<th style="width: 25%" *ngIf="isPartner">Entity info</th>
 															<th style="width: 25%" *ngIf="!isPartner">NAME</th>
-															<th>PHONE</th>
-															<th>JOB TITLE</th>
-															<th class='text-center'>ADDRESS</th>
+															<th class="hidden-xs">PHONE</th>
+															<th class="hidden-xs">JOB TITLE</th>
+															<th class='text-center hidden-xs'>ADDRESS</th>
 															<!-- <th class='text-center'>MORE</th> -->
 															<th class='text-center' *ngIf="(hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId) || authenticationService.isOnlyPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()) && !isSynchronizationList">ACTIONS</th>
 														</tr>
@@ -617,10 +617,9 @@
 					</div>
 				</div>
 
-				<div class="row col-xs-12" *ngIf="showAllContactData">
+				<div class="row-css col-xs-12" *ngIf="showAllContactData">
 					<div class="col-xs-12">
-						<div
-							*ngIf="!contactsByType.isLoading && contactsByType.contacts?.length == 0"
+						<div *ngIf="!contactsByType.isLoading && contactsByType.contacts?.length == 0"
 							class="alert alert-info">
 							<h4>No results found</h4>
 						</div>
@@ -702,9 +701,9 @@
 													id="checkAllExistingInvalidContacts" /></th>
 												<th style="width: 25%" *ngIf="isPartner">Entity info</th>
 												<th style="width: 25%" *ngIf="!isPartner">NAME</th>
-												<th>PHONE</th>
-												<th>JOB TITLE</th>
-												<th>ADDRESS</th>
+												<th class="hidden-xs">PHONE</th>
+												<th class="hidden-xs">JOB TITLE</th>
+												<th class="hidden-xs">ADDRESS</th>
 												<th *ngIf="isPartner && contactsByType.selectedCategory == 'non-active'">ACTIONS</th>
 												<!-- <th>MORE</th> -->
 											</tr>
@@ -728,7 +727,7 @@
 												<td *ngIf="!isPartner">
 													<app-user-info  [userInfo]="allcontacts"> </app-user-info>
 												</td>
-												<td>
+												<td class="hidden-xs">
 												<div *ngIf="allcontacts.mobileNumber" [class.disabled]="true" style="pointer-events: none !important; cursor: auto;">
 													<int-phone-prefix [(ngModel)]="allcontacts.mobileNumber"  [ngModelOptions]="{standalone: true}"></int-phone-prefix>
 													</div>
@@ -736,23 +735,24 @@
 														<span *ngIf="allcontacts?.mobileNumber; else NA">{{allcontacts.mobileNumber}}</span>
 													</h5> -->
 												</td>
-												<td>
+												<td class="hidden-xs">
 													<h5 class='mb0 ellipsis' title="{{allcontacts.jobTitle}}" >{{allcontacts.jobTitle | slice:0:25}}
 													<span *ngIf="allcontacts.jobTitle?.length>25">...</span>
 													</h5>
 													<!-- <h6 class='mt0' *ngIf="!isPartner">{{allcontacts.contactCompany}}</h6> -->
 												</td>
-												<td>
+												<td class="hidden-xs">
 													<h5 *ngIf="allcontacts?.address" class='mb0'>{{allcontacts.address}}</h5>
 													<h5 class='mb0'>{{allcontacts.city}}<span *ngIf="allcontacts.city && allcontacts.state">,&nbsp;</span>{{allcontacts.state}}</h5>
 													<h5 *ngIf="allcontacts?.zipCode || allcontacts.country"
 														class='mt0'>{{allcontacts.zipCode}}<span *ngIf="allcontacts.zipCode && allcontacts.country">,&nbsp;</span>{{allcontacts.country}}</h5>
 												</td>
 													<td align="center" *ngIf="isPartner && contactsByType.selectedCategory == 'non-active'">
-												<div class="actions-block">
-												<a *ngIf="!allcontacts.signedUp" data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.partner_reSendMail}}" (click)="sendMail(allcontacts.id)">
-													<i class="fa fa-envelope"></i>
-												</a></div>
+                            <div class="actions-block">
+                            <a *ngIf="!allcontacts.signedUp" data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.partner_reSendMail}}" (click)="sendMail(allcontacts.id)">
+                              <i class="fa fa-envelope"></i>
+                            </a>
+                          </div>
 												</td>
 												<!-- <td>
 													<button id='more_less_button_{{i}}'

@@ -191,11 +191,12 @@
 									*ngIf="pagination.pagedItems?.length != 0 && !httpRequestLoader.isLoading">
 									<div class="table-responsive" style="margin-top:7px">
 										<table class='table tgrid'>
-											<thead class="hidden-xs">
+											<thead>
 												<tr>
-													<th colspan="2" style="width: 50%">List Name</th>
-													<th>Created On</th>
-													<th class="text-center">Total {{checkingContactTypeName}}s</th>
+                          <th class="hidden-xs" colspan="2" style="width: 50%">List Name</th>
+                          <th class="visible-xs" colspan="1" style="width: 50%">List Info</th>
+													<th class="hidden-xs">Created On</th>
+													<th class="text-center hidden-xs">Total {{checkingContactTypeName}}s</th>
 													<th class="text-center" *ngIf="!authenticationService.isSuperAdmin()">Actions</th>
 												</tr>
 											</thead>
@@ -502,20 +503,20 @@
 															*ngIf="contactsByType.selectedCategory == 'all'"><input
 															type="checkbox" name="all"
 															[(ngModel)]="isHeaderCheckBoxChecked"
-															(change)="checkAll($event)" class=""
+															(change)="checkAll($event)"
 															id="checkAllExistingContacts" /></td>
 														<td align="center"
 															*ngIf="contactsByType.selectedCategory == 'invalid'">
 															<input type="checkbox" name="all"
 															[(ngModel)]="isInvalidHeaderCheckBoxChecked"
-															(change)="checkAllInvalidContacts($event)" class=""
+															(change)="checkAllInvalidContacts($event)"
 															id="checkAllExistingInvalidContacts" />
 														</td>
 														<th style="width: 25%" *ngIf="!isPartner">NAME</th>
 														<th style="width: 25%" *ngIf="isPartner">Entity info</th>
-														<th>Phone</th>
-														<th class="text-center">Job Title</th>
-														<th class="text-center">ADDRESS</th>
+														<th class="hidden-xs">Phone</th>
+														<th class="text-center hidden-xs">Job Title</th>
+														<th class="text-center hidden-xs">ADDRESS</th>
 														<th class="text-center" *ngIf="isPartner && contactsByType.selectedCategory == 'non-active'">ACTIONS</th>
 														<!-- <th>MORE</th> -->
 													</tr>
@@ -549,7 +550,7 @@
 														<td *ngIf="!isPartner">
 														<app-user-info [isPartnerEntityInfo]="true" [userInfo]="contact"></app-user-info>
                             </td>
-														<td >
+														<td class="hidden-xs">
                               <div *ngIf="contact.mobileNumber" [class.disabled]="true" style="pointer-events: none !important; cursor: auto;">
                               <int-phone-prefix [(ngModel)]="contact.mobileNumber"  [ngModelOptions]="{standalone: true}"></int-phone-prefix>
                               </div>
@@ -557,23 +558,24 @@
                                 <span *ngIf="contact?.mobileNumber; else NA">{{contact.mobileNumber}}</span>
                               </h5> -->
 														</td>
-														<td class="text-center">
+														<td class="text-center hidden-xs">
 															<h5 class='mb0 ellipsis' title="{{contact.jobTitle}}">{{contact.jobTitle | slice:0:25}}
 															<span *ngIf="contact.jobTitle?.length>25">...</span>
 															</h5>
 															<!-- <h6 class='mt0' *ngIf="!isPartner">{{contact.contactCompany}}</h6> -->
 														</td>
-														<td class="text-center">
+														<td class="text-center hidden-xs">
 															<h5 *ngIf="contact?.address" class='mb0'>{{contact.address}}</h5>
 															<h5 class='mb0'>{{contact.city}}<span *ngIf="contact?.city && contact.state">,&nbsp;</span>{{contact.state}}</h5>
 															<h5 *ngIf="contact?.zipCode || contact.country" class='mt0'>{{contact.zipCode}}<span *ngIf="contact?.zipCode && contact.country">,&nbsp;</span>{{contact.country}}</h5>
 														</td>
-														<td align="center" *ngIf="isPartner && contactsByType.selectedCategory == 'non-active'">
-												<div class="actions-block">
-												<a *ngIf="!contact.signedUp" data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.partner_reSendMail}}" (click)="sendMail(contact.id)">
-													<i class="fa fa-envelope"></i>
-												</a></div>
-												</td>
+													 	<td align="center" *ngIf="isPartner && contactsByType.selectedCategory == 'non-active'">
+                              <div class="actions-block">
+                              <a *ngIf="!contact.signedUp" data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.partner_reSendMail}}" (click)="sendMail(contact.id)">
+                                <i class="fa fa-envelope"></i>
+                              </a>
+                            </div>
+												    </td>
 														<!-- <td>
 															<button id='more_less_button_{{i}}'
 																(click)="contact.isShowDetails = ! contact.isShowDetails">

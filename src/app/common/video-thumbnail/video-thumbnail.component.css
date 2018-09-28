@@ -40,3 +40,14 @@
 .title-div > h5 {
   font-size: 12px;
 }
+.draft-video{
+  background-color: #f76c1a;
+  color: white;
+  width: 36%;
+  padding: 1px;
+  text-align: center;
+}
+.views-draft{
+  margin-top: 3px;
+  margin-bottom: -4px;
+}

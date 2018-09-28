@@ -534,15 +534,15 @@ img:hover {
 								<div class="table-responsive">
 									<table class='table tgrid'>
 										<thead *ngIf="pagination.pagedItems?.length != 0">
-											<tr class="hidden-xs">
+											<tr>
 											<th class='text-center'>
                         <input type="checkbox" 	name="all" [(ngModel)]="editContactComponent.isHeaderCheckBoxChecked"
 																(change)="editContactComponent.checkAll($event)"
 																id="checkAllExistingContacts"/></th>
 												<th style="width: 20%;">Entity info</th>
-												<th style="width: 26%;">PHONE</th>
-												<th>JOB TITLE</th>
-												<th class='text-center'>ADDRESS</th>
+												<th style="width: 26%;" class="hidden-xs">PHONE</th>
+												<th class="hidden-xs">JOB TITLE</th>
+												<th class='text-center hidden-xs'>ADDRESS</th>
 												<!-- <th class='text-center'>MORE</th> -->
 												<th class='text-center' style="width: 15%;">ACTIONS</th>
 											</tr>
