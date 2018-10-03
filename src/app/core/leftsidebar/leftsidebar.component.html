@@ -129,7 +129,7 @@
 						</ul>
 					</li>
 
-					<li *ngIf="authService.user.hasCompany" style="display: none;" [ngClass]="{'active':location.path().includes('content')}">
+					<li *ngIf="authService.user.hasCompany" [ngClass]="{'active':location.path().includes('content')}">
 						<a [routerLink]="['./content-management']">
 						<i class="fa fa-file-text-o"></i>
 						<span class="title">Content Management</span>
@@ -176,15 +176,15 @@
 						<span class="selected"></span>
 						</a>
 					</li>
-					<li *ngIf="authService.module.isOrgAdmin || authService.module.isVendor" [ngClass]="{'active':location.path().includes('upgrade')}">
+					<!-- <li *ngIf="authService.module.isOrgAdmin || authService.module.isVendor" [ngClass]="{'active':location.path().includes('upgrade')}">
             <a style="cursor:not-allowed">
-              <!-- [routerLink]="['./upgrade']" -->
+              [routerLink]="['./upgrade']"
 						<i class="fa fa-arrow-circle-up"></i>
 						<span class="title">Upgrade</span>
 						<span class="arrow "></span>
 						<span class="selected"></span>
 						</a>
-					</li>
+					</li> -->
 					<li *ngIf="false">
 						<a [routerLink]="['/home/dashboard/welcome']">
 						<i class="fa fa-question-circle"></i>
