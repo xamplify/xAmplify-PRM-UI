@@ -565,3 +565,9 @@ label {
     -ms-transform: rotate(-50deg);
     transform: rotate(-50deg);
 }
+
+.list-content-table{
+	overflow-x: inherit;
+    padding: 15px;
+    margin-top: 36px;
+}

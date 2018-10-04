@@ -54,7 +54,7 @@
        					<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
        			</div>
                  <section [hidden]="!pagination.isListView">
-                 <div class="table-responsive" style="overflow-x: inherit;"> <!-- *ngIf="pagination.pagedItems && !httpRequestLoader.isLoading" -->
+                 <div class="table-responsive list-content-table"> <!-- *ngIf="pagination.pagedItems && !httpRequestLoader.isLoading" -->
                    <table class="table tgrid"><!-- *ngIf="pagination.pagedItems.length !== 0" -->
                      <thead>
                        <tr>
