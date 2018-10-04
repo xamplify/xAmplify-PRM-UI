@@ -83,6 +83,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   reDistributeEvent = false;
   loader = false;
   isEditCampaign = false;
+  checkLaunchOption='NOW';
 
   constructor(public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
     private contactService: ContactService,
@@ -253,7 +254,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     const startDate = Date.parse(this.eventCampaign.campaignEventTimes[0].startTimeString);
     if(this.eventCampaign.campaignEventTimes[0].endTimeString && !this.eventCampaign.campaignEventTimes[0].allDay && startDate===endDate){
      this.eventError.eventSameDateError = true;
-     this.endDatePassedError = 'start Date / Time and end Date / Time should not be same';
+     this.endDatePassedError = 'The event must end after the start date and time';
     } else if(startDate > endDate){ this.setSameDateErrorMesg(true,true,'The event must end after the start date and time.');
     } else { this.setSameDateErrorMesg(false,false,''); }
   }
@@ -444,6 +445,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   setScheduleErrorMesg(event:boolean,mesg:string){ this.eventError.scheduleTimeError = event; this.scheduleCampaignError = mesg;}
   setScheduleEvent(){
     this.isSelectedSchedule = !this.isSelectedSchedule;
+    this.checkLaunchOption = 'SCHEDULE';
     this.scheduleTimeError();
     if(this.isSelectedSchedule) { this.selectedLaunchOption = 'SCHEDULE';
     this.timezones = this.referenceService.getTimeZonesByCountryId(this.eventCampaign.countryId);
