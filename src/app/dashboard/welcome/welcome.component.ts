@@ -7,6 +7,8 @@ import { ReferenceService } from '../../core/services/reference.service';
 import { UserDefaultPage } from '../../core/models/user-default-page';
 import { DashboardReport } from '../../core/models/dashboard-report';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
+import { DomSanitizer } from '@angular/platform-browser';
+
 declare var $:any;
 
 @Component({
@@ -45,12 +47,21 @@ export class WelcomeComponent implements OnInit, OnDestroy {
         "analytics": "Manage, monitor, and measure various aspects of your campaigns."
     }
     welcome_text: any;
+    videoUrl: any;
+    uploadVideoUrl = 'https://xamplify.io/embed/2B4Iiu';
+    addPartnerCreateUrl = 'https://xamplify.io/embed/Kxdzr3';
+    addTeamMemberUrl = 'https://xamplify.io/embed/spPumv';
+    createEmailTemplateUrl = 'https://xamplify.io/embed/ONlGz7';
+    createCampaignUrl = 'https://xamplify.io/embed/5SxI8V';
+    redistributeCampaignUrl='https://xamplify.io/embed/h1Y6O9';
+    addContactsUrl = 'https://xamplify.io/embed/epPjw1';
 
     constructor(
         private userService: UserService,
         public authenticationService: AuthenticationService,
         private referenceService: ReferenceService,
-        public properties: Properties, public xtremandLogger:XtremandLogger
+        public properties: Properties, public xtremandLogger:XtremandLogger,
+        public sanitizer:DomSanitizer
     ) {
         this.dashboardReport = new DashboardReport();
         this.userDefaultPage = new UserDefaultPage();
@@ -68,7 +79,10 @@ export class WelcomeComponent implements OnInit, OnDestroy {
         }
 
     }
-
+    showHowToVideo(url){
+      this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+      $('#myModal').modal('show');
+    }
     getDefaultPage(userId: number) {
       try{
         this.userService.getUserDefaultPage(userId)
