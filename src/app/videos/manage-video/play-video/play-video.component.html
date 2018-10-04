@@ -323,13 +323,14 @@
 							<div class="mix-inner">
 								<img class="img-responsive" src="{{videoFile.imagePath}}"
 									(error)="videoUtilService.errorVideoHandler($event)"
-									class="imagePath">
+									class="imagePath" (click)="showVideo(videoFile)" style="cursor:pointer">
+									<a class="mix-preview" style="position:relative;top:-66px;left:80px"
+										title="play video" data-rel=""> <i class="fa fa-play" (click)="showVideo(videoFile)"
+										></i>
+									</a>
 								<div class="mix-details">
 									<h4 title={{videoFile.title}}>{{titleCheckLength(videoFile.title)}}</h4>
-									<a class="mix-preview" (click)="showVideo(videoFile)"
-										title="play video" data-rel=""> <i class="fa fa-play"
-										style="margin-right: 0px"></i>
-									</a> <span align="right"
+									 <span align="right"
 										style="bottom: 4px; float: right; position: absolute; right: 10px;">{{videoUtilService.truncateHourZeros(videoFile.videoLength)}}</span>
 									<span align="left"
 										style="bottom: 17px; left: 10px; position: absolute;">#{{videoFile.views}}</span>
