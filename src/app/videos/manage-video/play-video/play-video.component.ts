@@ -87,6 +87,13 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         else {  this.videoWidth = '360px';}
         //vjs-user-inactive
     }
+    mouseEnterVideo(){
+      (<HTMLInputElement>document.getElementById('imagePath'+this.selectedVideo.id)).src =  this.selectedVideo.gifImagePath;
+    }
+    mouseLeaveVideo(){
+      (<HTMLInputElement>document.getElementById('imagePath'+this.selectedVideo.id)).src =  this.selectedVideo.imagePath;
+    }
+
     checkCallToActionAvailable() {
         if (this.selectedVideo.startOfVideo && this.selectedVideo.callACtion) {
             this.callAction.overLayValue = 'StartOftheVideo';

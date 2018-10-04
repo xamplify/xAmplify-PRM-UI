@@ -310,8 +310,8 @@
 				</div>
 
 				<div class="row vid-thumbnails">
-				
-				<div class="col-md-12">		
+
+				<div class="col-md-12 p0">
 					<app-play-video-loader [playVideo]="true"
 						*ngIf="httpRequestLoader.isLoading"></app-play-video-loader>
 					<div *ngIf="allVideos && !httpRequestLoader.isLoading">
@@ -328,14 +328,14 @@
 										title="play video" data-rel=""> <i class="fa fa-play" (click)="showVideo(videoFile)"
 										></i>
 									</a>
-								<div class="mix-details">
+								<div class="mix-details" style="margin-top: -20px;">
 									<h4 title={{videoFile.title}}>{{titleCheckLength(videoFile.title)}}</h4>
 									 <span align="right"
 										style="bottom: 4px; float: right; position: absolute; right: 10px;">{{videoUtilService.truncateHourZeros(videoFile.videoLength)}}</span>
 									<span align="left"
-										style="bottom: 17px; left: 10px; position: absolute;">#{{videoFile.views}}</span>
+										style="bottom: 17px; position: absolute;">#{{videoFile.views}}</span>
 									<br> <span align="left"
-										style="bottom: 3px; left: 10px; position: absolute;"> <span
+										style="bottom: 3px;  position: absolute;"> <span
 										*ngIf="!authenticationService.isOnlyPartner()"> <span
 											class="video-uploaded-by"
 											*ngIf="videoFileService.videoType==='myVideos'"
@@ -369,21 +369,21 @@
 						</ng-container>
 					</div>
 				</div></div>
-				
+
 				<!-- END FILTER -->
 
 
 
 
 				<div *ngIf="showRelatedMessage == false" class="row">
-				
-				<div class="col-md-12">				
+
+				<div class="col-md-12">
 					<app-pagination
 						[pagination]="pagination" [type]="'playvideos'"
 						(notifyParent)="setPage($event)"
-						(notifyParentDropDown)="loadAllVideos($event)"></app-pagination>				
+						(notifyParentDropDown)="loadAllVideos($event)"></app-pagination>
 				</div>
-				
+
 				</div>
 				<p *ngIf="showRelatedMessage" class="notFoundVideo">No Related
 					videos Found</p>
