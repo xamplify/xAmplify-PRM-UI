@@ -86,6 +86,7 @@ export class PreviewVideoComponent implements OnInit, OnDestroy {
             $( "#videoId" ).css( "width", "550px" );
             $( "#videoId" ).css( "height", "310px" );
             $( "#videoId" ).css( "max-width", "100%" );
+            $( "#videoId" ).css( "margin", "0 auto" );
         } else {
             console.log( "Loaded Normal Video" );
             $( '.p-video' ).remove();
@@ -99,6 +100,7 @@ export class PreviewVideoComponent implements OnInit, OnDestroy {
             $( "#videoId" ).css( "width", "550px" );
             $( "#videoId" ).css( "height", "310px" );
             $( "#videoId" ).css( "max-width", "100%" );
+            $( "#videoId" ).css( "margin", "0 auto" );
             var document: any = window.document;
             const overrideNativeValue = this.referenceService.getBrowserInfoForNativeSet();
             this.videoJSplayer = videojs( "videoId", {
