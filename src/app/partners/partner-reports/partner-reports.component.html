@@ -192,8 +192,8 @@
                    	</td>
                     <td style="text-align: right;">
                       <font class="re-distributed-count">{{item.redistributedCampaignsCount}}</font>
-                      <div class="actions-block redistribute-count"   *ngIf="item.redistributedCampaignsCount> 0">
-                        <a title="View Redistributed Campaigns" (click)="showRedistributedCampaings(item)">
+                      <div class="actions-block redistribute-count" data-toggle="tooltip" data-placement="top" title="View Redistributed Campaigns"  *ngIf="item.redistributedCampaignsCount> 0">
+                        <a (click)="showRedistributedCampaings(item)">
                           <i class="fa" [ngClass]="{'fa-plus': !item.expand, 'fa-minus': item.expand}"></i>
                         </a>
                       </div>
