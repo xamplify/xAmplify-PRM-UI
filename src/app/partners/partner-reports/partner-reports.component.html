@@ -144,7 +144,9 @@
                         <a title="{{item.emailId}}">{{item.emailId | slice:0:30}}</a>
                         <span *ngIf="item.emailId?.length>30">...</span>
                       </h6>
-                      	<h5 style="font-weight: 600; color: #676767;"><app-timestamp [isOnlyDate]="false" [dateAndTime]="item.redistributedOn"> </app-timestamp></h5>
+                      	<h5 style="font-weight: 600; color: #676767;">
+                      	{{item.redistributedOn | date}} {{item.redistributedOn | date:'shortTime'}}
+                      	<!-- <app-timestamp [isOnlyDate]="false" [dateAndTime]="item.redistributedOn"> </app-timestamp> --></h5>
                     </td>
                     <td class="center">
                     	<div>
@@ -406,9 +408,10 @@
                 <tr *ngFor="let item of inActivePartnersPagination.pagedItems" style="cursor: pointer;">
                   <td>
                     <app-user-info [userInfo]="item" [isPartnerEntityInfo]="true" [isPartnerInfo]="true"></app-user-info>
-                  </td>
+                  </td> 
                   <td class="hidden-xs">
-                   <h4>{{item.time}}</h4>
+                   <!-- <app-timestamp [isOnlyDate]="false" [dateAndTime]="item.time"> </app-timestamp> -->
+                   {{item.time | date}} {{item.time | date:'shortTime'}}
                    <h4 *ngIf="!item.time"><b>-</b></h4>
                   </td>
                   <td (click)="sendPartnerReminder(item)">
