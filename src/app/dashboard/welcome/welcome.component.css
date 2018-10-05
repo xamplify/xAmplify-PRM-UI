@@ -211,3 +211,13 @@ h3 {
   width: 859px !important;
   outline: none;
 }
+
+.videoId-dimensions {
+  height: 485px !important;
+  width: 859px !important;
+}
+
+.videoId-dimensions.vjs-fluid {
+  padding-top: 56.25%;
+}
+

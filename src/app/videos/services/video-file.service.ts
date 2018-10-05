@@ -8,6 +8,7 @@ import { Category } from '../models/category';
 import { Pagination } from '../../core/models/pagination';
 import { XtremandLog } from '../models/xtremand-log';
 import { User } from '../../core/models/user';
+import { environment } from 'environments/environment.prod';
 
 @Injectable()
 export class VideoFileService {
@@ -80,9 +81,9 @@ export class VideoFileService {
         console.log(pagination);
         let url: any
         let userId = this.authenticationService.user.id;
-           
+
         userId = this.authenticationService.checkLoggedInUserId(userId);
-        
+
         if (this.authenticationService.isOnlyPartner()) {
             url = this.URL + 'channel-videos/' + this.categoryNumber + '?userId=' + userId + '&access_token=' + this.authenticationService.access_token;
         } else {
@@ -127,8 +128,15 @@ export class VideoFileService {
         console.log(shortnerUrlAlias);
         const url = this.URL + 'video-by-shortenerurlalias?shortenUrlAlias=' + shortnerUrlAlias;
         return this.http.get(url, '')
-            .map(this.extractData)
-            .catch(this.handleError);
+          .map(this.extractData)
+          .catch(this.handleError);
+    }
+    getVideoByShortenerUrlAliasXamplify(shortnerUrlAlias: string): Observable<SaveVideoFile> {
+      console.log(shortnerUrlAlias);
+      const url = environment.SERVER_URL+'xtremand-rest/videos/' + 'video-by-shortenerurlalias?shortenUrlAlias=' + shortnerUrlAlias;
+      return this.http.get(url, '')
+        .map(this.extractData)
+        .catch(this.handleError);
     }
     getShortnerUrlAlias(viewBy: string, alias: string) {
         let isChannelVideo: boolean;
