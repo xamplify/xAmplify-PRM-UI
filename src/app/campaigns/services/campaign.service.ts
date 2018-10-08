@@ -132,7 +132,7 @@ export class CampaignService {
             .map(this.extractData)
             .catch(this.handleError);
     }
-    
+
     listCampaignInteractiveViews(pagination: Pagination) {
         return this.http.post(this.URL + 'campaign/interactive-views?access_token=' + this.authenticationService.access_token, pagination)
             .map(this.extractData)
@@ -222,7 +222,7 @@ export class CampaignService {
             .map(this.extractData)
             .catch(this.handleError);
     }
-    
+
     donutCampaignInnerViews(campaignId: number, timePeriod: string, pagination: Pagination) {
         const url = this.URL + 'campaign/' + campaignId + '/' + timePeriod + '/views-detail-report?access_token=' + this.authenticationService.access_token;
         return this.http.post(url, pagination)
@@ -236,7 +236,7 @@ export class CampaignService {
             .catch(this.handleError);
     }
     getCampaignUsersWatchedInfo(campaignId:number, countryCode: string, pagination: Pagination){
-        const url = this.URL+'campaign/'+campaignId+'/countrywise-users-report?access_token='+this.authenticationService.access_token+'&countryCode='+countryCode; 
+        const url = this.URL+'campaign/'+campaignId+'/countrywise-users-report?access_token='+this.authenticationService.access_token+'&countryCode='+countryCode;
         return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);
@@ -268,42 +268,42 @@ export class CampaignService {
 
 
     }
-    
+
     getEventCampaignDetailsByCampaignId(campaignId: number, isChannelCampaign: boolean) {
         const url = this.URL + 'campaign/' + campaignId + '/rsvp-details?access_token=' + this.authenticationService.access_token + '&channelCampaign=' + isChannelCampaign;
         return this.http.get(url)
             .map(this.extractData)
             .catch(this.handleError);
     }
-    
+
     getEventCampaignDetailAnalytics(campaignId: number, resposeType: any, isChannelCampaign: boolean, pagination: Pagination) {
         const url = this.URL + 'campaign/' + campaignId + '/rsvp-user-details/'+ resposeType +'?access_token=' + this.authenticationService.access_token + '&channelCampaign=' + isChannelCampaign;
         return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);
     }
-    
+
     getRedistributionEventCampaignDetailAnalytics(campaignId: number, resposeType: any, userId: number, isChannelCampaign: boolean, pagination: Pagination) {
         const url = this.URL + 'campaign/' + campaignId + '/' + userId + '/rsvp-user-details/'+ resposeType +'?access_token=' + this.authenticationService.access_token + '&channelCampaign=' + isChannelCampaign;
         return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);
     }
-    
+
     getRestributionEventCampaignAnalytics(campaignId: number, userId: number) {
         const url = this.URL + 'campaign/' + campaignId + "/" + userId + '/rsvp-details?access_token=' + this.authenticationService.access_token;
         return this.http.get(url)
             .map(this.extractData)
             .catch(this.handleError);
     }
-    
+
     getEventCampaignEmailOpenDetails(campaignId: number, isChannelCampaign: boolean, pagination: Pagination) {
         const url = this.URL + 'campaign/' + campaignId + "/rsvp-email-open-details?access_token=" + this.authenticationService.access_token + "&channelCampaign=" + isChannelCampaign;
         return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);
     }
-    
+
     getEventCampaignRedistributionEmailOpenDetails(campaignId: number, userId: any, pagination: Pagination) {
         const url = this.URL + 'campaign/' + campaignId +'/'+ userId + "/rsvp-email-open-details?access_token=" + this.authenticationService.access_token;
         return this.http.post(url, pagination)
@@ -316,7 +316,6 @@ export class CampaignService {
             .map(this.extractData)
             .catch(this.handleError);
     }
-    
     loadUsersOfContactList( contactListId: number, campaignId:number, pagination: Pagination ) {
         return this.http.post( this.URL+'campaign/users-info/'+campaignId+"/" + contactListId+'?access_token=' + this.authenticationService.access_token, pagination )
             .map( this.extractData )
@@ -330,14 +329,14 @@ export class CampaignService {
 
 
     }
-    
+
     deletePartner(partner:any) {
-        const url = this.URL + "campaign/delete-campaign-partner?access_token=" + this.authenticationService.access_token; 
+        const url = this.URL + "campaign/delete-campaign-partner?access_token=" + this.authenticationService.access_token;
         return this.http.post(url, partner)
             .map(this.extractData)
             .catch(this.handleError);
-        
-        
+
+
     }
 
     private extractData(res: Response) {

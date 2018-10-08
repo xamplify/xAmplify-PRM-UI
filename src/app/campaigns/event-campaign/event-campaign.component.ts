@@ -83,7 +83,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   reDistributeEvent = false;
   loader = false;
   isEditCampaign = false;
-  checkLaunchOption='NOW';
+  checkLaunchOption:string;
 
   constructor(public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
     private contactService: ContactService,
@@ -450,6 +450,10 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     if(this.isSelectedSchedule) { this.selectedLaunchOption = 'SCHEDULE';
     this.timezones = this.referenceService.getTimeZonesByCountryId(this.eventCampaign.countryId);
     }
+  }
+  setLaunchOptions(options:any){
+    this.checkLaunchOption = options;
+    if(this.checkLaunchOption=='SCHEDULE'){ this.setScheduleEvent();}
   }
   scheduleCampaign(){
     this.scheduleTimeError();

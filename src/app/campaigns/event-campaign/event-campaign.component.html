@@ -214,8 +214,10 @@
                      class="file-input js-tooltip" data-original-title="Add photo" id="eventImage">
                   </div>
                   <div [attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null" class="uploaded-media-wrapper" *ngIf="eventCampaign.campaignEventMedias[0].filePath">
+                    <span class="uploaded-span">
                     <img src="{{eventCampaign.campaignEventMedias[0].filePath}}" [attr.disabled]="isPreviewEvent? '' : null">
-                    <i *ngIf="!(isPreviewEvent || reDistributeEvent)" class="fa fa-times-circle" (click)="$event.stopPropagation();resetcampaignEventMedia()"></i>
+                    <i *ngIf="!(isPreviewEvent || reDistributeEvent)" class="fa fa-times-circle time-circle" (click)="$event.stopPropagation();resetcampaignEventMedia()"></i>
+                   </span>
                   </div>
                 </div>
               </div>
@@ -469,7 +471,7 @@
             <div class="btn-group btn-group-justified">
                <ng-container *ngFor="let options of launchOptions">
                   <label class="btn btn-primary" style="border: 1px solid #fff;" [class.disabled]="isPreviewEvent" >
-                    <input type="radio" class="text-center"  name="scheduleCampaign" [value]="options" (click)="checkLaunchOption = options" ngDefaultControl
+                    <input type="radio" class="text-center"  name="scheduleCampaign" [value]="options" (click)="setLaunchOptions(options)" ngDefaultControl
                     style=" margin-right:1.5em; " />{{options}}
                   </label>
                </ng-container>
