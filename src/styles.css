@@ -813,6 +813,9 @@ legend {
 b, strong {
     font-weight: 600 !important;
 }
+.flatpickr-months{
+  background: #1bbc9b;
+}
 
 .search-box-item-click{
   font-size: 16px;

@@ -7,6 +7,9 @@ import { ReferenceService } from '../../core/services/reference.service';
 import { UserDefaultPage } from '../../core/models/user-default-page';
 import { DashboardReport } from '../../core/models/dashboard-report';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
+import { DomSanitizer } from '@angular/platform-browser';
+import { VideoFileService } from '../../videos/services/video-file.service';
+
 declare var $:any;
 
 @Component({
@@ -45,12 +48,23 @@ export class WelcomeComponent implements OnInit, OnDestroy {
         "analytics": "Manage, monitor, and measure various aspects of your campaigns."
     }
     welcome_text: any;
+    videoUrl: any;
+    uploadVideoUrl = 'https://xamplify.io/embed/2B4Iiu';
+    addPartnerCreateUrl = 'https://xamplify.io/embed/Kxdzr3';
+    addTeamMemberUrl = 'https://xamplify.io/embed/spPumv';
+    createEmailTemplateUrl = 'https://xamplify.io/embed/ONlGz7';
+    createCampaignUrl = 'https://xamplify.io/embed/5SxI8V';
+    redistributeCampaignUrl='https://xamplify.io/embed/h1Y6O9';
+    addContactsUrl = 'https://xamplify.io/embed/epPjw1';
+
+    videoFile:any;
 
     constructor(
         private userService: UserService,
         public authenticationService: AuthenticationService,
         private referenceService: ReferenceService,
-        public properties: Properties, public xtremandLogger:XtremandLogger
+        public properties: Properties, public xtremandLogger:XtremandLogger,
+        public sanitizer:DomSanitizer, public videoFileService: VideoFileService
     ) {
         this.dashboardReport = new DashboardReport();
         this.userDefaultPage = new UserDefaultPage();
@@ -61,6 +75,7 @@ export class WelcomeComponent implements OnInit, OnDestroy {
         this.hasStatsRole = this.referenceService.hasRole(this.referenceService.roles.statsRole);
         this.hasSocialStatusRole = this.referenceService.hasRole(this.referenceService.roles.socialShare);
 
+
         if(authenticationService.module.isVendor || authenticationService.isAddedByVendor){
             this.contactOrPartnerLink =  "/home/partners/manage";
         }else{
@@ -68,7 +83,20 @@ export class WelcomeComponent implements OnInit, OnDestroy {
         }
 
     }
+    closeModal(event: any){
+      console.log('closed modal'+event);
+      this.videoFile = undefined;
+    }
 
+    showHowToVideo(url){
+      // this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+      this.videoUrl = url;
+      this.getVideo(this.videoUrl.substring(this.videoUrl.length - 6));
+    }
+    getVideo(shortnerUrlAlias: string) {
+      this.videoFileService.getVideoByShortenerUrlAliasXamplify(shortnerUrlAlias)
+            .subscribe((result:any)=>{  this.videoFile = result; });
+     }
     getDefaultPage(userId: number) {
       try{
         this.userService.getUserDefaultPage(userId)

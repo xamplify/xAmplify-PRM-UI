@@ -1,0 +1,34 @@
+button {
+  min-width: 100px;
+  border-radius: 30px !important;
+}
+.event-title {
+  font-family: Century Gothic;
+  font-size: 32px;
+  color: #95b101;
+  line-height: 51px;
+  text-align: center;
+}
+.event-details {
+  background-color: #f1f1f1;
+  border: none;
+  padding: inherit;
+}
+.default-btn-css {
+  min-width: 0px !important;
+  border-radius: 0px !important;
+  font-size: 15px !important;
+}
+.totalguests {
+  margin-left: -3px;
+  background: #ffffff;
+  border: 0.23px solid #ece8e8;
+}
+.selectedType{
+  background: #95b101;
+}
+.alertDanger{
+  margin: 9px 8px;
+  position: relative;
+  left: -7px;
+}

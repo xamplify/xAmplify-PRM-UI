@@ -147,7 +147,7 @@ h3 {
 
 @media only screen and (min-width: 600px) {
     .text-block {
-		padding: 2em; 
+		padding: 2em;
 		text-align: center;
 	}
 	.text-block p {
@@ -170,7 +170,7 @@ h3 {
 	}
 	.image-block {
 		margin: 4em;
-	}	
+	}
 }
 
 @media screen and (max-width: 600px) {
@@ -193,3 +193,31 @@ h3 {
 		border-bottom: 1px solid #f1f1f1;
 	}
 }
+.container-video {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 56.25%;
+}
+.video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+#videoId{
+  height: 485px !important;
+  width: 859px !important;
+  outline: none;
+}
+
+.videoId-dimensions {
+  height: 485px !important;
+  width: 859px !important;
+}
+
+.videoId-dimensions.vjs-fluid {
+  padding-top: 56.25%;
+}
+

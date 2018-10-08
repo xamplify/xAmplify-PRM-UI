@@ -79,8 +79,8 @@ export class PreviewVideoComponent implements OnInit, OnDestroy {
                 clickAndDrag: true,
                 clickToToggle: true,
                 callback: function() {
-                    player.ready();
-                     videoSelf.videoControllColors( videoFile );
+                    player.ready(function () { this.play();});
+                    videoSelf.videoControllColors( videoFile );
                 }
             } );
             $( "#videoId" ).css( "width", "550px" );
@@ -104,6 +104,8 @@ export class PreviewVideoComponent implements OnInit, OnDestroy {
             var document: any = window.document;
             const overrideNativeValue = this.referenceService.getBrowserInfoForNativeSet();
             this.videoJSplayer = videojs( "videoId", {
+              "controls": true,
+              "autoplay": true,
                 html5: {
                     hls: {
                         overrideNative: overrideNativeValue

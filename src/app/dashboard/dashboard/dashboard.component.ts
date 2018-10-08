@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
 
 import { Properties } from '../../common/models/properties';
 import { SocialConnection } from '../../social/models/social-connection';
@@ -30,7 +31,7 @@ declare var Metronic, $, Layout, Demo, Index, QuickSidebar, Highcharts, Tasks: a
     selector: 'app-dashboard',
     templateUrl: './dashboard.component.html',
     styleUrls: ['./dashboard.component.css'],
-    providers: [DashboardService, Pagination, Properties]
+    providers: [DashboardService, Pagination, DatePipe, Properties]
 })
 export class DashboardComponent implements OnInit, OnDestroy {
 
@@ -81,7 +82,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         public facebookService: FacebookService, public socialService: SocialService, public emailTemplateService: EmailTemplateService,
         public authenticationService: AuthenticationService, public utilService: UtilService, public userService: UserService,
         public campaignService: CampaignService, public referenceService: ReferenceService,
-        public pagerService: PagerService, public xtremandLogger: XtremandLogger, public properties: Properties) {
+        public pagerService: PagerService, public xtremandLogger: XtremandLogger, public datePipe: DatePipe, public properties: Properties) {
         this.hasCampaignRole = this.referenceService.hasRole(this.referenceService.roles.campaignRole);
         this.hasStatsRole = this.referenceService.hasRole(this.referenceService.roles.statsRole);
         this.hasSocialStatusRole = this.referenceService.hasRole(this.referenceService.roles.socialShare);
@@ -130,8 +131,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
         const offsetValues = dates;
         $('#sparkline_bar').sparkline(myvalues, {
             type: 'bar',
-            width: '70',
-            barWidth: 3,
+            width: '100',
+            barWidth: 5,
             height: '55',
             barColor: '#35aa47',
             negBarColor: '#e02222',
@@ -163,8 +164,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
         const offsetValues = dates;
         $('#sparkline_bar2').sparkline(myvalues, {
             type: 'bar',
-            width: '70',
-            barWidth: 3,
+            width: '100',
+            barWidth: 5,
             height: '55',
             barColor: '#35aa47',
             negBarColor: '#e02222',
@@ -186,8 +187,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
         const offsetValues = dates;
         $('#sparkline_line').sparkline(myvalues, {
             type: 'line',
-            width: '70',
-            barWidth: 3,
+            width: '100',
+            barWidth: 5,
             height: '55',
             barColor: '#35aa47',
             negBarColor: '#e02222',
@@ -209,7 +210,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             exporting: { enabled: false },
             tooltip: {
                 formatter: function () {
-                    return 'Campaign Name: <b>' + this.point.name.substring(0, 45) + '.' + '</b><br> Email Open Count: <b>' + this.point.value + '</b>' +
+                    return 'Campaign Name: <b>' + this.point.name + '</b><br> Email Open Count: <b>' + this.point.value + '</b>' +
                         '<br> Interaction : <b>' + this.point.interactionPercentage + '%</b><br>Launch Date:<b>' + this.point.launchTime + '</b>';
                 }
             },
@@ -469,7 +470,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     getDefaultPage(userId: number) {
-      try{
         this.userService.getUserDefaultPage(userId)
             .subscribe(
                 data => {
@@ -478,15 +478,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
                         this.referenceService.userDefaultPage = 'DASHBOARD';
                     }
                 },
-                error => {
-                  this.xtremandLogger.error(error);
-                  this.xtremandLogger.errorPage(error);},
+                error => console.log(error),
                 () => { }
             );
-          } catch(error){
-            this.xtremandLogger.error(error);
-            this.xtremandLogger.errorPage(error);
-          }
     }
 
     setDashboardAsDefaultPage(event: any) {
@@ -840,11 +834,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
         for (let i = 0; i < this.dashboardReport.downloadEmailLogList.length; i++) {
             let date = new Date(this.dashboardReport.downloadEmailLogList[i].time);
             var object = {
+                "Email Id": this.dashboardReport.downloadEmailLogList[i].emailId,
                 "First Name": this.dashboardReport.downloadEmailLogList[i].firstName,
                 "Last Name": this.dashboardReport.downloadEmailLogList[i].lastName,
-                "Email Id": this.dashboardReport.downloadEmailLogList[i].emailId,
-                "Campaign Name": this.dashboardReport.downloadEmailLogList[i].campaignName,
                 "Date and Time": date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds(),
+                "Campaign Name": this.dashboardReport.downloadEmailLogList[i].campaignName
             }
             if (this.paginationType == 'open') {
                 object["Subject"] = this.dashboardReport.downloadEmailLogList[i].subject;
