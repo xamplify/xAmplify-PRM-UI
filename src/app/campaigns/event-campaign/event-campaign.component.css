@@ -26,14 +26,23 @@
 }
 
 .uploaded-media-wrapper {
-    height: 100px;
+    /* height: 100px;
     padding: 10px;
     border: 1px solid #eee;
+    text-align: center; */
+    height: 150px;
+    padding: 5px;
+    border: 1px solid #dedddd;
     text-align: center;
+    background-color: #f8f8f8;
 }
 .uploaded-media-wrapper img {
     height: 100%;
     width: auto;
+
+    left: 178px;
+    right: -5px;
+    top: 10px;
 }
 .uploaded-media-wrapper i {
     position: absolute;
