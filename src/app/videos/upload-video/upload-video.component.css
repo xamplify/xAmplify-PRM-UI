@@ -81,6 +81,8 @@ margin-left: 19px;
   margin-left: -2px;
   color: black;
   border-color: #000000;
+  background: #dff0d8;
+  position: relative;
 }
 .p-tag-loaderCss {
   top: -70px;
@@ -89,9 +91,13 @@ margin-left: 19px;
 }
 .loader-image-tag {
   width: 64px;
-  top: -16px;
-  left: -18px;
-  position: relative;
+  top: 0px;
+  left: -8px;
+  position: absolute;
+}
+.loader-text{
+  position: absolute;
+  left: 49px;
 }
 .h2text {
 font-weight: bold;color:blue;

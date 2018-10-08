@@ -41,8 +41,8 @@
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar-collapse-1" aria-expanded="false"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
       <a class="navbar-brand" routerLink="/" style="background: none;">
-        <img class="logo-nav" alt="logo" src="/assets/images/xamplify-logo.png">
-        <img class="logo-head" alt="logo" src="/assets/images/xamplify-logo3.png">
+        <img class="logo-nav" alt="logo" style="height: 54px;" src="/assets/images/xamplify-logo.png">
+        <img class="logo-head" alt="logo" style="height: 50px;" src="/assets/images/xamplify-logo3.png">
       </a>
     </div>
     <div class="collapse navbar-collapse" id="bs-navbar-collapse-1">
@@ -83,15 +83,35 @@
 
 </header>
 
-
-
 <!--benefits end-->
 
 <!--Features-->
 
-<div class="features section-spacing" style="padding-bottom: 0 !important;">
+<section class="benefits section-spacing text-center" #features id="features" style="background: #f7f7f7 !important;padding-bottom: 0;">
   <div class="container">
-    <!--feature 1-->
+    <header class="section-header">
+      <h2 lang="en">Strengthen Your Channel Strategy</h2>
+      <h3 lang="en">Give your Partners real ready-to-go content. </h3>
+    </header>
+    <div class="row">
+      <div class="col-sm-4"> <img src="/assets/images/benefits-1.png" alt="benefits of product">
+        <h4 lang="en">Empower Your Network</h4>
+        <p lang="en">{{properties.APP_WEBSITE}} provides a platform for your partners to access digital and social media content, allowing them to easily create multi-touch, co-branded campaigns for their unique audience.</p>
+      </div>
+      <div class="col-sm-4"> <img src="/assets/images/benefits-2.png" alt="benefits of product">
+        <h4 lang="en">Customizable Content Access and Sharing</h4>
+        <p>Easily communicate and share targeted collateral with your Partners. {{properties.APP_WEBSITE}} gives you a simple, straightforward platform to develop email campaigns that convey your message and provide up-to-date content.</p>
+      </div>
+      <div class="col-sm-4"> <img src="/assets/images/benefits-3.png" alt="benefits of product">
+        <h4 lang="en">Complete Insight on Partner Engagement</h4>
+        <p lang="en">With both top-level and partner-level analytics, you have access to data that allows you to learn more about your Channel . Partners also receive their own host of analytics so they can learn more about their audience. </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- <div class="features section-spacing" style="padding-bottom: 0 !important;">
+  <div class="container">
     <div class="row">
       <div class="col-md-7 col-md-push-5 text-center"> <img src="/assets/images/feature-1.png" alt="feature"> </div>
       <div class="col-md-5 col-md-pull-7">
@@ -108,48 +128,42 @@
         </article>
       </div>
     </div>
-    <!--feature 1 end-->
     </div>
-  </div>
-
-    <section class="benefits section-spacing text-center" #features id="features" style="background: #f7f7f7 !important;padding: 0!important;">
-      <div class="container">
-        <header class="section-header">
-          <h2 lang="en">A Powerful Channel Marketing Platform</h2>
-          <h3 lang="en">Give your Partners real ready-to-go content. </h3>
-        </header>
-        <div class="row">
-          <div class="col-sm-4"> <img src="/assets/images/benefits-1.png" alt="benefits of product">
-            <h4 lang="en">Empower Your Channel</h4>
-            <p lang="en">{{properties.APP_WEBSITE}} provides a platform for your partners to access digital and social media content, allowing them to easily create multi-touch, co-branded campaigns for their unique audience. </p>
-          </div>
-          <div class="col-sm-4"> <img src="/assets/images/benefits-2.png" alt="benefits of product">
-            <h4 lang="en">Full Content Access and Sharing</h4>
-            <p>Easily communicate and share targeted collateral with your Partners. {{properties.APP_WEBSITE}} gives you a simple, straightforward platform to develop email campaigns that convey your message and provide up-to-date content. </p>
-          </div>
-          <div class="col-sm-4"> <img src="/assets/images/benefits-3.png" alt="benefits of product">
-            <h4 lang="en">Complete Insight on Partner Engagement</h4>
-            <p lang="en">With both top-level and partner-level analytics, reports are easy to develop and use for Partner reviews. You learn more about your Channel, Partners learn more about their audience. </p>
-          </div>
-        </div>
-      </div>
-    </section>
+  </div> -->
 
     <div class="features section-spacing">
     <div class="container">
     <!--feature 2-->
     <div class="row">
+      <div class="col-md-7 col-md-push-5 text-center"> <img src="/assets/images/feature-1.png" alt="feature"> </div>
+      <div class="col-md-5 col-md-pull-7">
+        <article style="margin-top: 0 !important;">
+          <h2 lang="en">A Powerful Channel Marketing Platform</h2>
+          <p lang="en">{{properties.APP_WEBSITE}} allows you to nurture and grow your channel with outreach campaigns that are easy to develop, manage, and redistribute. Real-time analytics let you and your partners track level of engagement and activity.
+            Provide your Partners with a digital platform that helps both of you succeed.
+            </p>
+          <ul>
+            <li lang="en">Equip your Partners with content and marketing tools to help them grow their business and drive mutual lead-gen and revenue</li>
+            <li lang="en">Increase Partner engagement with easy-to-use campaigns and social media tools</li>
+            <li lang="en">Unify your message across a broader audience</li>
+            <li lang="en">Create a more effective and successful Partner Channel</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+
+    <div class="row">
       <div class="col-md-7 text-center"> <img src="/assets/images/feature-2.png" alt="feature"> </div>
       <div class="col-md-5">
         <article style="margin-top: 0 !important;">
-          <h2 lang="en">Powerful but Easy Campaign Management</h2>
-          <p lang="en">{{properties.APP_WEBSITE}} is designed to let you get your branded message out to your network with just a few simple steps. Your Partners benefit from a similar interface that allows them to quickly and easily forward your content with just 4 clicks.</p>
+          <h2 lang="en">Intuitive Campaign Creation and Management</h2>
+          <p lang="en">{{properties.APP_WEBSITE}} is designed to let you get your branded message out to your network with just a few simple steps. Your Partners benefit from a similar interface that allows them to quickly and easily forward your content with as few as 5 clicks.</p>
           <ul>
-            <li lang="en">Add your Partners – via CSV file or CRM integration</li>
+            <li lang="en">Add your Partners via CSV file or CRM integration</li>
             <li lang="en">Upload a video if desired</li>
-            <li lang="en">Easily create an eye-catching email template with custom design and content</li>
+            <li lang="en">Create an eye-catching email template with our easy-to-use design engine </li>
             <li lang="en">Set your parameters and launch your campaign</li>
-            <li lang="en">Partners receive the campaign, make 4 easy selections and re-send the campaign to their customers</li>
+            <li lang="en">Partners receive the campaign and can redistribute it in minutes.</li>
           </ul>
         </article>
       </div>
@@ -162,11 +176,11 @@
       <div class="col-md-5 col-md-pull-7">
         <article style="margin-top: 0 !important;">
           <h2 lang="en">In-depth Analytics</h2>
-          <p lang="en">Use the Analytics to garner new insights and understanding about your Channel and their audience. Your Partners can use the data to gauge response to the content, develop their pipeline and close more deals</p>
+          <p lang="en">Use the Analytics to garner new insights and understanding about your Channel and their audience. Your Partners can use the data to gauge response to the content, develop their pipeline and close more deals.</p>
           <ul>
-            <li lang="en">Cultivate and Evaluate your Partner Network – provide more bandwidth to support your engaged Partners </li>
+            <li lang="en">Cultivate and evaluate your Partner Network by providing more bandwidth to support your engaged Partners</li>
             <li lang="en">Analyze the effectiveness of certain campaigns based on downstream activity</li>
-            <li lang="en">Discover ways to fine-tune your message with reports on video view-time and opened emails</li>
+            <li lang="en">Analyze the effectiveness of certain campaigns based on downstream activity</li>
           </ul>
         </article>
       </div>
