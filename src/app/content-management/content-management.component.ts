@@ -37,6 +37,8 @@ export class ContentManagementComponent implements OnInit {
     pageSize: number = 12;
     selectedFiles = [];
     selectedFileIds = [];
+    loader = false;
+    loaderWidth: number = 30;
     constructor( private router: Router, private pagerService: PagerService, public referenceService: ReferenceService,
         public actionsDescription: ActionsDescription, public pagination: Pagination, public socialPagerService: SocialPagerService,
         public authenticationService: AuthenticationService, private logger: XtremandLogger,
@@ -62,7 +64,7 @@ export class ContentManagementComponent implements OnInit {
     }
 
     getSelectedFiles( file: any, id: any, event: any ) {
-        let isChecked = $( '#row_' + id ).is( ':checked' );
+        let isChecked = $( '#' + id ).is( ':checked' );
         if ( isChecked ) {
             this.selectedFiles.push( file );
             this.selectedFileIds.push( id );
@@ -84,6 +86,12 @@ export class ContentManagementComponent implements OnInit {
         this.emailTemplateService.listAwsFiles( pagination, this.loggedInUserId )
             .subscribe(
             ( data: any ) => {
+                
+                for(var i=0;i< data.length; i++){
+                    data[i]["id"] = i;
+                }
+                
+                
                 this.list = data;
                 if ( this.list.length > 0 ) {
                     this.exisitingFileNames = this.list.map( function( a ) { return a.fileName.toLowerCase(); });
@@ -168,7 +176,9 @@ export class ContentManagementComponent implements OnInit {
         this.customResponse.isVisible = false;
         try {
             this.referenceService.loading( this.httpRequestLoader, true );
-            this.customResponse = new CustomResponse( 'INFO', "Uploading in progress.Please wait...", true );
+            //this.customResponse = new CustomResponse( 'INFO', "Uploading in progress.Please wait...", true );
+            this.loader = true;
+            this.loaderWidth = 60;
             let files: Array<File>;
             if ( event.target.files ) {
                 files = event.target.files;
@@ -181,6 +191,7 @@ export class ContentManagementComponent implements OnInit {
                 formData.append( 'files', file, file.name );
             });
             this.uploadToServer( formData );
+            this.loaderWidth= 99;
         } catch ( error ) {
             this.referenceService.loading( this.httpRequestLoader, false );
             this.customResponse = new CustomResponse( 'ERROR', "Unable to upload file", true );
@@ -190,10 +201,12 @@ export class ContentManagementComponent implements OnInit {
 
 
     uploadToServer( formData: FormData ) {
+       this.loaderWidth = 91;
         this.emailTemplateService.uploadFile( this.loggedInUserId, formData )
             .subscribe(
             data => {
                 if ( data.statusCode == 1020 ) {
+                   this.loader = false;
                     const message = ' files uploaded successfully';
                     this.customResponse = new CustomResponse( 'SUCCESS', message, true );
                     this.listItems( this.pagination );

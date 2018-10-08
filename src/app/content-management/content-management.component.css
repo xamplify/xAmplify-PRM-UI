@@ -571,3 +571,13 @@ label {
     padding: 15px;
     margin-top: 36px;
 }
+.upload-button-class{
+	color: white !important;
+    background-color: #428bca !important;
+    cursor: pointer;
+}
+
+.upload-button-class:hover{
+	color: white !important;
+    background-color: #0f5796 !important;
+}
