@@ -33,6 +33,7 @@ export class WorldmapComponent implements OnInit {
 
       mapNavigation: {
         enabled: true,
+        enableMouseWheelZoom: false,
         buttonOptions: {
           verticalAlign: 'bottom'
         }

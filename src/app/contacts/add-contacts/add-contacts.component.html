@@ -106,10 +106,9 @@ img:hover {
 		</ul>
 		<div align="right" style="margin-top: 2px;">
 			<a (click)="downloadEmptyCsv()">
-				<button type="button" class="btn green" download
-					style="color: #ffffff;">
-					Download Contact CSV Template<i class="fa fa-cloud-download" aria-hidden="true"
-						style="margin-left: 5px"></i>
+				<button type="button" class="btn green" download 	style="color: #ffffff;" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
+         Download Contact CSV Template
+          <i class="fa fa-cloud-download" aria-hidden="true" style="margin-left: 5px"></i>
 				</button>
 			</a>
 		</div>
@@ -122,7 +121,7 @@ img:hover {
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
 						style="min-height: 570px">
 						<div class="row">
-							<div class="col-xs-6 col-sm-12 col-md-12 col-lg-6">
+							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
 								<div class="portlet light add-options">
 										<!-- Add your {{checkingContactTypeName}}s with given options -->
 									<div class="portlet-title">
@@ -137,7 +136,8 @@ img:hover {
 													 <!-- <span>Add {{checkingContactTypeName}}</span> -->
 													 <span>One at a time</span>
 												</button>
-											</div>
+                      </div>
+                      <ng-container *ngIf="!referenceService.isMobileScreenSize()">
 											<div class="col-xs-12 col-sm-4 col-md-4">
 												<button class="btn-success btn-block" id="copyFromClipBoard"
 													(click)="copyFromClipboard()"
@@ -158,7 +158,8 @@ img:hover {
 														#input
 														[disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || selectedAddContactsOption == 2" />
 												</div>
-											</div>
+                      </div>
+                    </ng-container>
 
 											<!-- The global file processing state -->
 											<span class="fileupload-process"> </span>
@@ -168,12 +169,12 @@ img:hover {
 									</div>
 								</div>
 							</div>
-							<div class="col-xs-6 col-sm-12 col-md-12 col-lg-6">
+							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
 								<div class="portlet light cloud-services">
 									<div class="portlet-title">Import contacts from the cloud:</div>
 									<div class="portlet-body">
 										<div class="row">
-											<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+											<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
 												<a *ngIf="sfImageNormal" id="salesforceContact_buttonNormal"
 													style="background-color: white"
 													(click)="salesforceContacts()"
@@ -210,7 +211,7 @@ img:hover {
 										</a>
 									</div>
 											</div>
-											<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+											<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
 												<a *ngIf="googleImageBlur" id="googleContact_button"
 													style="background-color: white" (click)="googleContacts()"
 													[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5">
@@ -246,7 +247,7 @@ img:hover {
 										</a>
 									</div>
 											</div>
-											<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+											<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
 												<a *ngIf="zohoImageBlur" id="zohoContact_button"
 													style="background-color: white"
 													(click)="checkingZohoContactsAuthentication()"
@@ -283,7 +284,7 @@ img:hover {
 										</a>
 									</div>
 											</div>
-											<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+											<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
 												<a id="microsoftContact_button"
 													style="background-color: white"> <img
 													src="assets/images/crm/dynamicsCmgSoon.png"

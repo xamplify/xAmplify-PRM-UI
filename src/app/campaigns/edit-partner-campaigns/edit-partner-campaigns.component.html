@@ -277,7 +277,7 @@
                     <div *ngIf="contactListPagination.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError" style="background:white">
                       <div *ngIf="contactListPagination.pagedItems.length !== 0">
                         <app-pagination [pagination]="contactListPagination" [type]="'contacts'" (notifyParent)="setContactPage($event)" (notifyParentDropDown)="loadContactList($event)"
-                          style="margin-left: -10px;"></app-pagination>
+                        ></app-pagination>
                       </div>
                     </div>
                   </div>

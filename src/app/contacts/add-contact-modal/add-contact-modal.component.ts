@@ -1,10 +1,11 @@
 import { Component, OnInit, Input, Output, EventEmitter,AfterViewInit,OnDestroy } from '@angular/core';
 import { User } from '../../core/models/user';
-import {Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { CountryNames } from '../../common/models/country-names';
 import { RegularExpressions } from '../../common/models/regular-expressions';
 import { ContactService } from '../../contacts/services/contact.service';
 import { VideoFileService } from '../../videos/services/video-file.service'
+import { ReferenceService } from '../../core/services/reference.service';
 declare var $: any;
 
 @Component( {
@@ -34,7 +35,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     locationCountry = '';
 
     constructor( public countryNames: CountryNames, public regularExpressions: RegularExpressions,public router:Router,
-                 public contactService: ContactService, public videoFileService: VideoFileService ) {
+                 public contactService: ContactService, public videoFileService: VideoFileService, public referenceService:ReferenceService ) {
         this.notifyParent = new EventEmitter();
         this.isPartner = this.router.url.includes('home/contacts')? false: true;
 
@@ -184,7 +185,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
            console.error( error, "addcontactOneAttimeModalComponent()", "ngOnInit()" );
        }
     }
-       
+
     ngAfterViewInit(){
     }
     ngOnDestroy(){

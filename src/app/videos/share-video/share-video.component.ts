@@ -153,6 +153,18 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
             });
           }catch(error){ this.xtremandLogger.error('error');}
     }
+    setVideoIdHeightWidth() {
+        const height = this.shareUrl.includes('embed')? window.innerHeight-9: '360px';
+        const width = this.shareUrl.includes('embed')? window.innerWidth-9: '640px';
+        $('#videoId').css('height', height);
+        $('#videoId').css('width', width);
+    }
+    setOverlayModalHeightWidth() {
+        const height = this.shareUrl.includes('embed')? window.innerHeight: '360px';
+        const width = this.shareUrl.includes('embed')? window.innerWidth: '640px';
+        $('#overlay-modal').css('width', width);
+        $('#overlay-modal').css('height', height);
+    }
     ngOnInit() {
        try{
        //  this.setConfirmUnload(true);
@@ -183,7 +195,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
     }
     checkingCallToActionValues() {
         if (this.callAction.isFistNameChecked === true && this.videoUtilService.validateEmail(this.callAction.email_id)
-            && this.callAction.firstName.length !== 0 && this.callAction.lastName.length !== 0) {
+            && this.callAction.firstName && this.callAction.lastName) {
             this.callAction.isOverlay = false;
             console.log(this.callAction.email_id + 'mail ' + this.callAction.firstName + ' and last property ' + this.callAction.lastName);
         } else if (this.callAction.isFistNameChecked === false && this.videoUtilService.validateEmail(this.callAction.email_id)) {
@@ -205,7 +217,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
         const player360 = this;
         const player = videojs('videoId', {
              "controls": true,
-             "autoplay": false,
+            // "autoplay": false,
              "preload": "auto",
              "customControlsOnMobile": true,
              "nativeControlsForTouch": true
@@ -268,8 +280,10 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                      $('.video-js .vjs-control-bar .vjs-VR-control').css('cssText', 'color:' + player360.embedVideoFile.playerColor + '!important');
                     if (isValid === 'StartOftheVideo') {
                         $('#videoId').append($('#overlay-modal').show());
+                        player.pause();
                     } else if (isValid !== 'StartOftheVideo') {
                         $('#overlay-modal').hide();
+                        player.play();
                     } else { $('#overlay-modal').hide(); }
                     $('#skipOverlay').click(function () {
                         isCallActionthere = false;
@@ -411,15 +425,17 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                         player360.fullScreenMode = true;
                         $('#videoId').append($('#overlay-logo').show());
                     } else if (event === "FullscreenOff") {
-                        $("#videoId").css("width", "auto");
-                        $("#videoId").css("height", "348px");
+                        // $("#videoId").css("width", window.innerWidth);
+                        // $("#videoId").css("height", window.innerHeight);
+                        player360.setVideoIdHeightWidth();
                         player360.fullScreenMode = false;
                         player360.overLaySet = false;
                         if (isCallActionthere === true) {
                             player360.overLaySet = false;
                             player360.fullScreenMode = false;
-                            $("#overlay-modal").css("width", "auto");
-                            $("#overlay-modal").css("height", "348px");
+                            // $("#overlay-modal").css("width", window.innerWidth);
+                            // $("#overlay-modal").css("height", window.innerHeight);
+                            player360.setOverlayModalHeightWidth();
                             $('#videoId').append($('#overlay-modal').hide());
                             //  player360.showEditModalDialog();
                         }
@@ -429,28 +445,28 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                 });
             }
         });
-        $('#videoId').css('width', 'auto');
-        $('#videoId').css('height', '348px');
+        // $('#videoId').css('width', window.innerWidth);
+        // $('#videoId').css('height', window.innerHeight);
+        this.setVideoIdHeightWidth();
     }
     playNormalVideo() {
         $('.p-video').remove();
         this.videoUtilService.normalVideoJsFiles();
         this.is360Value = false;
-        const str = '<video id="videoId" poster=' + this.posterImagePath + '  preload="none"  class="video-js vjs-default-skin" controls></video>';
+        const str = '<video id="videoId" poster=' + this.posterImagePath + '  preload="none"  class="video-js vjs-default-skin" muted="muted" controls></video>';
         $('#newPlayerVideo').append(str);
         this.videoUrl = this.embedVideoFile.videoPath;
         this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
         this.videoUrl = this.videoUrl + '_mobinar.m3u8';  // need to remove it
         $('#newPlayerVideo video').append('<source src=' + this.videoUrl + ' type="application/x-mpegURL">');
-        $('#videoId').css('height', '348px');
-        $('#videoId').css('width', 'auto');
+        this.setVideoIdHeightWidth();
         $('.video-js .vjs-tech').css('width', '100%');
         $('.video-js .vjs-tech').css('height', '100%');
         const self = this;
         const overrideNativeValue = this.referService.getBrowserInfoForNativeSet();
             this.videoJSplayer = videojs('videoId', {
                 "controls": true,
-                "autoplay": false,
+                //"autoplay": false,
                 "preload": "auto",
                 html5: {
                     hls: {
@@ -477,10 +493,12 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                         if (isValid === 'StartOftheVideo') {
                             $('.vjs-big-play-button').css('display', 'none');
                             $('#videoId').append($('#overlay-modal').show());
+                            player.pause();
                         } else if (isValid !== 'StartOftheVideo') {
                           //  $('.vjs-big-play-button').css('display', 'none');
                             $('#overlay-modal').hide();
-                        } else { $('#overlay-modal').hide(); }
+                            player.play();
+                        } else { $('#overlay-modal').hide();  player.play(); }
                         $('#skipOverlay').click(function () {
                             isCallActionthere = false;
                             $('#overlay-modal').hide();
@@ -588,8 +606,9 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                                 isCallActionthere = true;
                                 self.overLaySet = true;
                                 self.fullScreenMode = true;
-                                $("#videoId").css("width", "auto");
-                                $("#videoId").css("height", "348px");
+                                // $("#videoId").css("width", window.innerWidth);
+                                // $("#videoId").css("height", window.innerHeight);
+                                self.setVideoIdHeightWidth();
                                 $("#overlay-modal").css("width", "100%");
                                 $("#overlay-modal").css("height", "100%");
                                 $('#videoId').append($('#overlay-modal').show());
@@ -628,15 +647,17 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                             self.fullScreenMode = true;
                             $('#videoId').append($('#overlay-logo').show());
                         } else if (event === "FullscreenOff") {
-                            $("#videoId").css("width", "auto");
-                            $("#videoId").css("height", "348px");
+                            // $("#videoId").css("width",  window.innerWidth);
+                            // $("#videoId").css("height", window.innerHeight);
+                            self.setVideoIdHeightWidth();
                             self.fullScreenMode = false;
                             self.overLaySet = false;
                             if (isCallActionthere === true) {
                                 self.overLaySet = false;
                                 self.fullScreenMode = false;
-                                $("#overlay-modal").css("width", "auto");
-                                $("#overlay-modal").css("height", "348px");
+                                // $("#overlay-modal").css("width",  window.innerWidth);
+                                // $("#overlay-modal").css("height", window.innerHeight);
+                                self.setOverlayModalHeightWidth();
                                 $('#videoId').append($('#overlay-modal').show());
                             }
                         }

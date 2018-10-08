@@ -57,10 +57,8 @@ img:hover {
 		</ul>
 		<div align="right" style="margin-top: 2px;">
 			 <a (click)="downloadEmptyCsv()">
-				<button type="button" class="btn green" download
-					style="color: #ffffff;">
-					Download Partner CSV Template<i class="fa fa-cloud-download" aria-hidden="true"
-						style="margin-left: 5px"></i>
+				<button type="button" class="btn green" download	style="color: #ffffff;" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
+					Download Partner CSV Template<i class="fa fa-cloud-download" aria-hidden="true" style="margin-left: 5px"></i>
 				</button>
 			</a>
 		</div>
@@ -69,7 +67,7 @@ img:hover {
 		<div class="portlet-body">
 			<form #f="ngForm">
 									<div class="row">
-							<div class="col-xs-6 col-sm-12 col-md-12 col-lg-6">
+							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
 								<div class="portlet light add-options">
 								<div class="portlet-title"> How would you like to add your Partners?</div>
 								<div class="portlet-body">
@@ -81,7 +79,8 @@ img:hover {
 											<i class="fa fa-user-plus"></i>
 											<span>One at a Time</span>
 										</button>
-									</div>
+                  </div>
+                  <ng-container  *ngIf="!referenceService.isMobileScreenSize()">
 									<div class="col-xs-12 col-sm-4 col-md-4">
 										<button class="btn-success btn-block" id="copyFromClipBoard"
 											(click)="copyFromClipboard()"
@@ -99,7 +98,8 @@ img:hover {
 									(change)="fileChange(input)" accept=".csv" #input
 									[disabled]="selectedAddPartnerOption != 5" />
 										</div>
-									</div>
+                  </div>
+                  </ng-container>
 
 
 								<!-- The global file processing state -->
@@ -110,13 +110,13 @@ img:hover {
 								</div>
 								</div>
 							</div>
-							<div class="col-xs-6 col-sm-12 col-md-12 col-lg-6">
+							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
 									<div class="portlet light cloud-services">
 									<div class="portlet-title">Import Partners from the cloud:</div>
 									<div class="portlet-body">
 									<div class="row">
 
-											<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+											<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
 									<a *ngIf="sfImageNormal" id="salesforceContact_buttonNormal"
 										style="background-color: white" (click)="salesforceContacts()"
 							[class.disabled]="selectedAddPartnerOption != 5 || selectedAddPartnerOption == 7">
@@ -149,7 +149,7 @@ img:hover {
 										</a>
 									</div>
 								</div>
-								<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+								<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
 									<a *ngIf="googleImageBlur" id="googleContact_button"
 										style="background-color: white" (click)="googleContacts()"
 							[class.disabled]="selectedAddPartnerOption != 5 || selectedAddPartnerOption == 3">
@@ -183,7 +183,7 @@ img:hover {
 										</a>
 									</div>
 								</div>
-								<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+								<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
 									<a *ngIf="zohoImageBlur" id="zohoContact_button"
 										style="background-color: white"
 										(click)="checkingZohoContactsAuthentication()"
@@ -218,7 +218,7 @@ img:hover {
 										</a>
 									</div>
 								</div>
-								<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+								<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
 									<a id="microsoftContact_button" style="background-color: white">
 										<img src="assets/images/crm/dynamicsCmgSoon.png"
 										class="imageClass imageblur mdImageClass" data-toggle="tooltip" data-placement="bottom"
@@ -237,10 +237,19 @@ img:hover {
 						</div>
 			</form>
 		</div>
-		<div class="btn-group pull-right" style="padding-bottom:10px">
-			<button class="btn dropdown-toggle" id="save&delete_button" style="background-color: #26a69a; color: white;"
+		<div class="btn-group pull-right" style="padding-bottom:10px;width:100%">
+      <span style=" float: left; width:70%" *ngIf="referenceService.isMobileScreenSize()">
+          <select class="form-control" [(ngModel)]="sortOption" (ngModelChange)="sortByOption($event)">
+            <ng-container *ngFor="let sort of sortOptions; let i = index">
+              <option [ngValue]="sort">{{sort.name}}</option>
+            </ng-container>
+          </select>
+        </span>
+
+      <button class="btn dropdown-toggle" id="save&delete_button" style="color: white;float: right;" [ngStyle]="{'background-color': !referenceService.isMobileScreenSize() ? '#26a69a': '#fff' }"
 				data-toggle="dropdown">
-				Actions <i class="fa fa-angle-down"></i>
+        <span *ngIf="!referenceService.isMobileScreenSize()">Actions <i class="fa fa-angle-down"></i></span>
+        <span *ngIf="referenceService.isMobileScreenSize()"><i style="font-size: 25px; color: #3598dc;" class="fa fa-cog"></i></span>
 			</button>
 			<ul class="dropdown-menu pull-right">
 				<li><a id="save_button" *ngIf="selectedAddPartnerOption != 5" (click)="saveContacts()">Save </a></li>
@@ -252,7 +261,13 @@ img:hover {
 					*ngIf="selectedAddPartnerOption == 5 && pagination.pagedItems?.length != 0 && !clipBoard" (click)="downloadPartnerList()">Export
 						To Excel</a></li>
 			</ul>
-		</div>
+    </div>
+    <div class="col-xs-12 p0"   *ngIf="referenceService.isMobileScreenSize()">
+        <input type="text"  [(ngModel)]="searchKey"  [ngModelOptions]="{standalone: true}"
+        class="form-control" placeholder="Search for a Partner" (keypress)="eventHandler($event.keyCode)">
+        <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey=''"></button>
+        <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search"></i></button>
+    </div>
 	<div class="col-xs-12" style="padding: 0 0 10px 0">
 		<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 	</div>
@@ -478,35 +493,29 @@ img:hover {
 		</div>
 
 		<div class="clearfix">
-			<div class="col-xs-12" style="width: 103%; left: -18px;"
+			<div class="col-xs-12" [class.p0]="referenceService.isMobileScreenSize()" style="width: 103%;" [ngStyle]="{'left': !referenceService.isMobileScreenSize() ? '-18px': '-3px' }"
 				*ngIf="selectedAddPartnerOption == 5">
 				<!-- BEGIN EXAMPLE TABLE PORTLET-->
 				<div class="portlet box blue">
 					<div class="portlet-title">
-						<div class="caption">
-							<i class="fa fa-edit" style="font-size: 19px;"></i>List of Partners
-						</div>
-						<div class="inputs" align="right" style="float: right; padding: 4px">
-													<div style="float: left; margin: 0 10px;">
-														<select class="form-control" [(ngModel)]="sortOption"
-															(ngModelChange)="sortByOption($event)">
-															<ng-container
-																*ngFor="let sort of sortOptions; let i = index">
-															<option [ngValue]="sort">{{sort.name}}</option>
-															</ng-container>
-														</select>
-													</div>
-													<div class="portlet-input input-inline">
-														<div class="input-icon right">
-															 <input type="text"
-																[(ngModel)]="searchKey"
-																[ngModelOptions]="{standalone: true}"
-																class="form-control" placeholder="Search for a Partner" (keypress)="eventHandler($event.keyCode)">
-														<button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey=''"></button>
-														<button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search"></i></button>
-														</div>
-													</div>
-												</div>
+						<div class="caption"> <i class="fa fa-edit" style="font-size: 19px;"></i>List of Partners</div>
+						<div class="inputs" align="right" style="float: right; padding: 4px"  *ngIf="!referenceService.isMobileScreenSize()">
+            <div style="float: left; margin: 0 10px;">
+              <select class="form-control" [(ngModel)]="sortOption" (ngModelChange)="sortByOption($event)">
+                <ng-container *ngFor="let sort of sortOptions; let i = index">
+                  <option [ngValue]="sort">{{sort.name}}</option>
+                </ng-container>
+              </select>
+            </div>
+            <div class="portlet-input input-inline">
+              <div class="input-icon right">
+                  <input type="text"  [(ngModel)]="searchKey"  [ngModelOptions]="{standalone: true}"
+                   class="form-control" placeholder="Search for a Partner" (keypress)="eventHandler($event.keyCode)">
+              <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey=''"></button>
+              <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search"></i></button>
+              </div>
+            </div>
+          </div>
 					</div>
 					<div class="portlet-body">
 						<div class="btn-group pull-right"
@@ -526,14 +535,14 @@ img:hover {
 									<table class='table tgrid'>
 										<thead *ngIf="pagination.pagedItems?.length != 0">
 											<tr>
-											<th class='text-center'><input type="checkbox"
-																name="all" [(ngModel)]="editContactComponent.isHeaderCheckBoxChecked"
+											<th class='text-center'>
+                        <input type="checkbox" 	name="all" [(ngModel)]="editContactComponent.isHeaderCheckBoxChecked"
 																(change)="editContactComponent.checkAll($event)"
 																id="checkAllExistingContacts"/></th>
 												<th style="width: 20%;">Entity info</th>
-												<th style="width: 26%;">PHONE</th>
-												<th>JOB TITLE</th>
-												<th class='text-center'>ADDRESS</th>
+												<th style="width: 26%;" class="hidden-xs">PHONE</th>
+												<th class="hidden-xs">JOB TITLE</th>
+												<th class='text-center hidden-xs'>ADDRESS</th>
 												<!-- <th class='text-center'>MORE</th> -->
 												<th class='text-center' style="width: 15%;">ACTIONS</th>
 											</tr>
@@ -553,7 +562,7 @@ img:hover {
 												<td>
 													<app-user-info [isPartnerEntityInfo]="true" [isPartnerInfo]="true"  [userInfo]="contact"> </app-user-info>
 												</td>
-												<td>
+												<td class="hidden-xs">
 											<!-- 	<img
 													src="https://lipis.github.io/flag-icon-css/flags/4x3/in.svg"
 													width="15px"> -->
@@ -562,13 +571,13 @@ img:hover {
 													<int-phone-prefix [(ngModel)]="contact.mobileNumber"  [ngModelOptions]="{standalone: true}"></int-phone-prefix>
 													</div>
 												</td>
-												<td>
+												<td class="hidden-xs">
 													<h5 class='mb0' title="{{contact.jobTitle}}">{{contact.jobTitle | slice:0:20}}
 													<span *ngIf="contact.jobTitle?.length>20">...</span>
 													</h5>
 													<!-- <h6 class='mt0'>{{contact.contactCompany}}</h6> -->
 												</td>
-												<td align="center">
+												<td align="center" class="hidden-xs">
 													<h5 *ngIf="contact?.address" class='mb0'>{{contact.address}}</h5>
 													<h5 class='mb0'>{{contact.city}}<span *ngIf="contact.city && contact.state">,&nbsp;</span>{{contact.state}}</h5>
 													<h5 *ngIf="contact?.zipCode || contact.country" class='mt0'>{{contact.zipCode}}<span *ngIf="contact.zipCode && contact.country">,&nbsp;</span>{{contact.country}}</h5>

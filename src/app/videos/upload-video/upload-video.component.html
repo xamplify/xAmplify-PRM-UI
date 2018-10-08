@@ -59,41 +59,46 @@
 	<!-- record modal popup end  -->
 	<div class="portlet light">
 		<div class="portlet-body">
-			<div class="row">
-				<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-					<div *ngIf="MultipleVideo" class="addfiles" style="float: left; width: 113px;">
+			<div >
+				<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" *ngIf="MultipleVideo">
+					<div class="addfiles" style="float: left; width: 113px;">
 						<div class="btn green fileinput-button"><span> <i class="fa fa-plus"></i>Add A Video</span>
 							<input type="file" ng2FileSelect [uploader]="uploader" accept=".mp4,.mpg,.m4v,.flv,.avi,.mov,.wmv,.divx,.f4v,.mpeg,.vob, .mkv"
 							 [class.customDisableCss]="isFileProgress==true" *ngIf="uploader.queue.length==0" [disabled]="loading==true||isDisable == true || isSelectedVideo == true"
 							 (change)="fileSizeCheck($event)" title=" " #input />
 						</div>
 					</div>
-					<div *ngIf="MultipleVideo" style="float: left; width: 113px;">
+					<div style="float: left; width: 113px;">
 						<button type="button" class="btn btn-success btn-s" (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length || loading==true">
 							<span class="glyphicon glyphicon-upload"></span> Upload all
 						</button> </div>
-					<div *ngIf="MultipleVideo" style="float: left; width: 113px;">
+					<div  style="float: left; width: 113px;">
 						<button type="button" class="btn btn-danger btn-s" (click)="uploader.clearQueue();removefileUploadVideo()" [disabled]="!uploader.queue.length || loading==true">
 							<span class="glyphicon glyphicon-trash"></span> Remove all
 						</button> </div>
 				</div>
-				<br />
+        <br />
 				<div class="col-xs-12">
-					<div *ngIf="processing">
-						<div class="alert alert-success alertMessageCustom loaderSymbol" style="background: #dff0d8">
+					<div *ngIf="processing" class="row">
+						<!-- <div class="alert alert-success alertMessageCustom loaderSymbol" style="background: #dff0d8">
 							<img src="assets/images/loadbar.gif" class="loader-image-tag">
-							<p class="p-tag-loaderCss">Your video has been uploaded. Give us just a moment to process it.</p>
-						</div>
+                <p class="p-tag-loaderCss">Your video has been uploaded. Give us just a moment to process it</p>
+            </div> -->
+            <div class="alert alert-success alertMessageCustom loaderSymbol">
+              <span><img src="assets/images/loadbar.gif" class="loader-image-tag"></span>
+              <span class="loader-text">
+                Your video has been uploaded and is now being processed. If you'd like to take a break, we'll continue processing it in the background. We will send you an email when your video is ready.</span>
+            </div>
 					</div>
 					<div style="position: relative; top:-17px;" *ngIf="!processing">
 					<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 		           </div>
 					<!-- changes   -->
-					<div class="col-xs-12" [ngClass]="{'upload-video-css': uploader.queue.length !== 0}">
+					<div class="col-xs-12 row" [ngClass]="{'upload-video-css': uploader.queue.length !== 0}">
 						<div *ngIf="isDisable==false">
 							<div *ngFor="let item of uploader.queue">
-								<div class="col-xs-12 col-sm-4 mo p0">
-									<video *ngIf="!videoDisabled && browserInfo!=='safari'" id="my-video" style="margin: -7px;" controls preload="auto" width="250" height="150">
+								<div class="col-xs-12 col-sm-4 col-md-4 video-padding">
+									<video *ngIf="!videoDisabled && browserInfo!=='safari'" id="my-video" controls preload="auto">
 										<source [src]='videoPreviewPath' type='video/mp4'>
 										<source [src]='videoPreviewPath' type='video/quicktime'>
 										<source [src]="videoPreviewPath" type='video/x-msvideo'>
@@ -101,9 +106,10 @@
 										<source [src]="videoPreviewPath" type='video/dvd'>
 										<source [src]="videoPreviewPath" type='video/xvid'>
 									</video>
-									<img *ngIf="!previewDisabled || browserInfo==='safari'" src="assets/images/no-preview.jpg" style="border: 2px solid #00a6e8;" width="250" height="150">
-								</div>
-								<div class="col-xs-12 col-sm-4" style="padding: 10px 0;">
+									<img *ngIf="!previewDisabled || browserInfo==='safari'" src="assets/images/no-preview.jpg" style="border: 2px solid #00a6e8;" id="my-video">
+                </div>
+                <div class="col-xs-12 col-sm-8 col-md-8">
+								<div class="col-xs-12 col-sm-12 col-md-6">
 									<h3 [title]="item?.file?.name" style=" color: #00a6e8;font-weight: 550;font-size: 19px; ">{{ trimVideoTitle(item?.file?.name) }}</h3>
 									<h5 style="font-weight: 700;color: #929292;letter-spacing: 1px;">{{(item?.file?.size/1024/1024).toFixed(2) }} MB</h5>
 									<div class="progress">
@@ -113,7 +119,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="col-xs-12 col-sm-4" nowrap style="float: right;padding: 45px 0;">
+								<div class="col-xs-12 col-sm-12 col-md-6 upload-button" nowrap style="float: right;">
 									<button class="text-center" style="background-color:white; cursor:default">
 											<span *ngIf="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
 											<span *ngIf="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
@@ -125,7 +131,8 @@
 									<button type="button" class="btn btn-danger btn-sm" [disabled]="loading==true" (click)="item.remove();removefileUploadVideo()">
 											<span class="glyphicon glyphicon-trash"></span> Remove
 										</button>
-								</div>
+                </div>
+                </div>
 							</div>
 						</div>
 					</div>
@@ -135,7 +142,7 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-xs-12 col-sm-6 pr0">
+				<div class="col-xs-12 col-sm-6 pu0" >
 					<div [class.customDisableCss]='isDisable==true || isFileProgress ==true || isSelectedVideo ==true' ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
 					 (fileOver)="fileOverBase($event)" (onFileDrop)="fileDropPreview($event)" [uploader]="uploader" class="well my-drop-zone"
 					 style="position: relative; background-color: #00a6e8; cursor:pointer; margin-bottom:0" (click)="dropClick()">
@@ -150,29 +157,28 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-xs-12 col-sm-6 pl0">
+				<div class="col-xs-12 col-sm-6 pc0">
 					<div class="box-border">
-					<div class="col-sm-3" [class.customDisableCss]='uploader.queue.length'>
+					<div class="col-xs-6 col-sm-3 text-center" [class.customDisableCss]='uploader.queue.length'>
 						<img src="assets/images/record.png"  data-toggle="tooltip" data-placement="bottom" title="Click here to Record from computer acttached camera" (click)="cameraChange()"
 						 height="70" width="auto" class="camera" style=" border: 5px; margin: 10px;" onMouseOver="this.style.opacity= 1" onMouseOut="this.style.opacity= 0.7">
 						<div style="font-weight: 600;color: #ea7b92; margin: 9px 12px;">WebCam</div>
 					</div>
-					<div class="col-sm-3" [class.customDisableCss]='uploader.queue.length'>
+					<div class="col-xs-6 col-sm-3 text-center" [class.customDisableCss]='uploader.queue.length'>
 						<img src="assets/images/Dropbox.png" class="dropBox"  data-toggle="tooltip" data-placement="bottom" title="Click here to access videos from your Dropbox account" (click)="dropBoxChange()"
 						 height="70" width="auto" style="cursor:pointer; border: 1px; margin: 10px;" onMouseOver="this.style.opacity= 1" onMouseOut="this.style.opacity= 0.7">
 						<div style="font-weight: 600;color: #55bede;margin: 9px 13px;">DropBox</div>
 					</div>
-					<div class="col-sm-3" [class.customDisableCss]='uploader.queue.length'>
+					<div class="col-xs-6 col-sm-3 text-center margin-top-16" [class.customDisableCss]='uploader.queue.length'>
 						<img src="assets/images/box.png" class="box"  data-toggle="tooltip" data-placement="bottom" title="Click here to access videos from your Box.com account" (click)="boxChange()"
 						 height="70" width="auto" style="cursor:pointer; border: 1px; margin: 10px;" onMouseOver="this.style.opacity= 1" onMouseOut="this.style.opacity= 0.7">
 						<div style="font-weight: 600;margin: 9px 24px;color: #6eabd7;">Box</div>
 					</div>
-					<div class="col-sm-3" [class.customDisableCss]='uploader.queue.length'>
+					<div class="col-xs-6 col-sm-3 text-center margin-top-16" [class.customDisableCss]='uploader.queue.length'>
 						<img src="assets/images/GoogleDrive.png"  data-toggle="tooltip" data-placement="bottom" class="googleDrive" title="Click here to access videos from your GoogleDrive account"
 						 (click)="googleDriveChange()" height="70" width="auto" style="cursor: pointer; border: 1px; margin: 10px;" onMouseOver="this.style.opacity= 1"
 						 onMouseOut="this.style.opacity= 0.7">
 						<div style="font-weight: 600; color: #eec24c; margin: 9px 3px">GoogleDrive</div>
-
           </div>
           <!-- commented for future work -->
 					<!-- <div class="col-sm-5ths" [class.customDisableCss]='uploader.queue.length'>
@@ -190,7 +196,7 @@
 					<h3 class="panel-title">**Notes</h3>
         </div>
         <!-- class="panel-body" -->
-				<div style="position: relative;right: 21px;">
+				<div style="position: relative;right: 10px;">
 					<ul style="color:#4c4b4b;">
 						<li>Maximum video file size is {{maxVideoSize}} MB. For larger files please <a  href="mailto:admin@xamplify.io" target="_top">contact us</a>.</li>
 						<li>Supported video file types are <b>mp4, mpg, m4v, flv, avi, mov, wmv, divx, f4v, mpeg, vob, mkv </b>.</li>

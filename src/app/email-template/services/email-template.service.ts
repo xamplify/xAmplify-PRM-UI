@@ -8,7 +8,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
 import {Pagination} from '../../core/models/pagination';
 import {ReferenceService} from "../../core/services/reference.service";
-
+import {ContentManagement} from '../../content-management/model/content-management';
 @Injectable()
 export class EmailTemplateService {
 
@@ -95,6 +95,12 @@ export class EmailTemplateService {
         .catch(this.handleError);
     }
     
+    deleteFile(file:ContentManagement){
+        return this.http.post(this.URL+"email-template/aws/delete?access_token="+this.authenticationService.access_token,file)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+    
     getAvailableNames(userId:number){
         return this.http.get(this.URL+"admin/listEmailTemplateNames/"+userId+"?access_token="+this.authenticationService.access_token,"")
         .map(this.extractData)
@@ -106,21 +112,26 @@ export class EmailTemplateService {
         .map(this.extractData)
         .catch(this.handleError);
     }
+    
+    listAwsFiles(pagination:Pagination,userId:number){
+        try{
+            var url =this.URL+"email-template/aws/list-items/"+userId+"?access_token="+this.authenticationService.access_token;
+            return this.http.get(url)
+            .map(this.extractData)
+            .catch(this.handleError); 
+        }catch(error){
+           this.refService.showError(error, "Error in listAwsFiles() in emailTemplate.service.ts","");
+        }
+        
+    }
  
     
-    uploadZip(formData:FormData){
-        let userId =  6;
-        alert("110");
-        let headers = new Headers();
-        headers.append('Content-Type', 'multipart/form-data');
-       // headers.append('Accept', 'application/json');
-       // headers.append('processData','false');
-        let options = new RequestOptions({ headers: headers });
-        var url =this.URL+"admin/upload-zip?access_token="+this.authenticationService.access_token;
-        return this.http.post(url,formData,options)
-        .map(this.extractData)
-        .catch(this.handleError);
+    uploadFile(userId: number, formData: FormData) {
+        return this.http.post(this.URL + `email-template/aws/upload/?userId=${userId}&access_token=${this.authenticationService.access_token}`, formData)
+            .map(this.extractData)
+            .catch(this.handleError);
     }
+    
     
     private extractData( res: Response ) {
         let body = res.json();

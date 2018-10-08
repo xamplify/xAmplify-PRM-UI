@@ -721,7 +721,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
     onAuthApiLoad() {
         window['gapi'].auth.authorize(
             {
-                'client_id': '516784406032-okvpndbvngrrev2vq0gdd3n2tng5joq8.apps.googleusercontent.com',
+                'client_id': '982456748855-68ip6tueqej7757qsg1l0dd09jqh0qgs.apps.googleusercontent.com',
                 'scope': ['https://www.googleapis.com/auth/drive.readonly'],
                 'immediate': false
             },
@@ -749,7 +749,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 .enableFeature(google.picker.Feature.NAV_HIDDEN)
                 .setOAuthToken(this.tempr)
                 .addView(google.picker.ViewId.DOCS_VIDEOS)
-                .setDeveloperKey('AIzaSyA2md7KHqFuUp5U4tRa_MqySNrxzR6mGJQ')
+                .setDeveloperKey('AIzaSyAcKKG96_VqvM9n-6qGgAxgsJrRztLSYAI')
                 .setCallback(self.pickerCallback.bind(this))
                 .build();
             self.picker.setVisible(true);

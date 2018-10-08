@@ -229,9 +229,11 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
 
     deleteCampaign(id: number, position: number, campaignName: string) {
+        this.refService.loading(this.httpRequestLoader, true);       
         this.campaignService.delete(id)
             .subscribe(
                 data => {
+                    this.refService.loading(this.httpRequestLoader, false);
                     this.isCampaignDeleted = true;
                     // $('#campaignListDiv_' + id).remove();
                     //  setTimeout(function() { $("#deleteSuccess").slideUp(500); }, 5000);
@@ -252,7 +254,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.isCampaignDeleted = false;
         this.refService.campaignSuccessMessage = "";
         swal.close();
-
+        $('#saveAsModal').modal('hide');
+        $('#campaignFilterModal').modal('hide');
     }
     openSaveAsModal(campaign:any) {
         $('#saveAsModal').modal('show');

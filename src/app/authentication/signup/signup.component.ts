@@ -73,6 +73,7 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
         'password': {
             'required': 'Password is required.',
             'minlength': '',
+            'maxlength': "Password shouldn't exceed 20 characters",
             'pattern': 'Use 6 or more characters with a mix of letters, numbers & symbols'
         },
         'confirmPassword': {
@@ -142,6 +143,15 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
           this.checkValidationMessages()
         }
     }
+    
+    checkPassword(){
+        if(this.signUpForm.value.password.length > 20){
+            this.formErrors.password = this.validationMessages.password.maxlength; 
+        }else if( this.signUpForm.value.password.includes(" ") ){
+            this.formErrors.password = "Password shouldn't contain spaces"
+        }
+    }
+    
     checkValidationMessages(){
       if(!this.signUpForm.value.firstName) {this.formErrors.firstName = this.validationMessages.firstName.required; }
       if(!this.signUpForm.value.emailId) {this.formErrors.emailId = this.validationMessages.emailId.required; }
@@ -152,7 +162,7 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
     buildForm() {
         this.signUpForm = this.formBuilder.group({
             'emailId': [this.signUpUser.emailId, [Validators.required, Validators.pattern(this.regularExpressions.EMAIL_ID_PATTERN)]],
-            'password': [this.signUpUser.password, [Validators.required, Validators.minLength(6), Validators.pattern(this.regularExpressions.PASSWORD_PATTERN)]],
+            'password': [this.signUpUser.password, [Validators.required, Validators.minLength(6),Validators.maxLength(20), Validators.pattern(this.regularExpressions.PASSWORD_PATTERN)]],
             'confirmPassword': [null, [Validators.required, Validators.pattern(this.regularExpressions.PASSWORD_PATTERN)]],
             'agree': [false, Validators.required],
             'firstName': [this.signUpUser.firstName, Validators.required],

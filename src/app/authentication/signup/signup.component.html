@@ -1,6 +1,6 @@
 <div class="loader-container" *ngIf="mainLoader">
   <div class="loader"></div>
-  <img alt="logo" class="logo-default" src="assets/images/xamplify-logo.png">
+  <img alt="logo" class="logo-default" style="height: 54px;" src="assets/images/xamplify-logo.png">
 </div>
 <div *ngIf="!mainLoader">
 <app-video></app-video>
@@ -33,11 +33,11 @@
 			</div>
 			<div class="form-group has-feedback" style="position: relative">
 				<label class="control-label visible-ie8 visible-ie9">Password</label>
-				<input formControlName="password" id="password" class="form-control placeholder-no-fix passwordTF" type="password" autocomplete="off" placeholder="Password"
+				<input formControlName="password" id="password" class="form-control placeholder-no-fix passwordTF"  (input)="checkPassword()" type="password" autocomplete="off" placeholder="Password"
 				 required />
 				  <span toggle="#password"  title="Show Password" class="fa fa-fw fa-eye field-icon toggle-password" (click)="referenceService.showPassword('password')"  *ngIf="!referenceService.showInputPassword && signUpForm.get('password').value" style="left:-30px !important"></span>
 				 <span toggle="#password"  title="Hide Password" class="fa fa-fw fa-eye-slash field-icon toggle-password" (click)="referenceService.showPassword('password')"  *ngIf="referenceService.showInputPassword && signUpForm.get('password').value" style="left:-30px !important"></span>
-				 <i class="fa fa-question-circle"  data-toggle="tooltip" data-placement="left" title="Use 6 or more characters with a mix of letters, numbers & symbols"></i>
+				 <i class="fa fa-question-circle"  data-toggle="tooltip" data-placement="left" title="Minimum 6, maximum 20 charactores required & spaces are not allowed and password should be mix of letters, numbers and symbols"></i>
 				<div *ngIf="formErrors.password" class="alert alert-danger">{{ formErrors.password }}</div>
 			</div>
 			<div class="form-group has-feedback">

@@ -167,28 +167,28 @@
 							</a></li>
 							<li *ngIf="!authenticationService.isSuperAdmin()"><!-- *ngIf="(authenticationService.module.isOrgAdmin || isUser)" -->
 								<a [routerLink]="['/home/dashboard/edit-company-profile']"> <i
-									class="fa fa-building-o"></i>Company Profile
+									class="fa fa-building-o"></i> Company Profile
 							</a>
 							</li>
 							<li *ngIf="(refService.hasAllAccess() || authenticationService.module.isVendor ||   authenticationService.module.isCompanyPartner)&& authenticationService.user.hasCompany">
-								<a [routerLink]="['/home/social/manage/all']"> <i class="fa fa-cog" aria-hidden="true"></i>Social Accounts</a>
+								<a [routerLink]="['/home/social/manage/all']"> <i class="fa fa-cog" aria-hidden="true"></i> Social Accounts</a>
 							</li>
 
 
 							<li *ngIf="currentUrl.endsWith('welcome') && authenticationService.user.hasCompany">
 								<a [routerLink]="['/home/dashboard']">
-								<i class="fa fa-paper-plane-o" aria-hidden="true"></i>Dashboard</a>
+								<i class="fa fa-paper-plane-o" aria-hidden="true"></i> Dashboard</a>
 							</li>
 							<li *ngIf="currentUrl.endsWith('dashboard') && authenticationService.user.hasCompany">
 								<a [routerLink]="['/home/dashboard/welcome']">
-								<i class="fa fa-paper-plane-o" aria-hidden="true"></i>Welcome</a>
+								<i class="fa fa-paper-plane-o" aria-hidden="true"></i> Welcome</a>
 							</li>
 
 							<li *ngIf="(!currentUrl.endsWith('dashboard')) && (!currentUrl.endsWith('welcome')) && authenticationService.user.hasCompany">
 								<a *ngIf="refService.userDefaultPage==='WELCOME'" [routerLink]="['/home/dashboard/'+refService.userDefaultPage.toLowerCase()]">
-								<i class="fa fa-paper-plane-o" aria-hidden="true"></i>{{refService.userDefaultPage.toLowerCase()}}</a>
+								<i class="fa fa-paper-plane-o" aria-hidden="true"></i> Welcome</a>
                 <a *ngIf="refService.userDefaultPage==='DASHBOARD'" [routerLink]="['/home/'+refService.userDefaultPage.toLowerCase()]">
-                  <i class="fa fa-paper-plane-o" aria-hidden="true"></i>{{refService.userDefaultPage.toLowerCase()}}</a>
+                  <i class="fa fa-paper-plane-o" aria-hidden="true"></i> Dashboard</a>
               </li>
 							<li id="lockscreen"><a [routerLink]="['/userlock']"> <i
 									class="icon-lock"></i> Lock Screen

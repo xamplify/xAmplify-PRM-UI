@@ -109,7 +109,7 @@
 							<h4 class="viewsh4">{{saveVideoFile.views}} views</h4>
 						</span>
 					</div>
-					<div *ngIf="likes" class="col-xs-12" style="padding: 0;">
+					<div [hidden]="true" *ngIf="likes" class="col-xs-12" style="padding: 0;">
 						<span class="pull-right">
 							<button style="color: #337ab7; background: #fff;" (click)="likesValuesDemo()">
 								<a style="color: #337ab7; background: #fff; text-decoration: none;" title="I like this">

@@ -1,12 +1,12 @@
 export class ActionsDescription {
 
    /* FOR CONTACTS*/
-    contact_list_edit = 'Preview / Edit List';
-    contact_list_delete = 'Delete List';
-    contact_list_saveAs = 'Copy And Save As A New List';
+    contact_list_edit = 'Preview or edit list';
+    contact_list_delete = 'Delete list';
+    contact_list_saveAs = 'Copy and save';
     contact_list_synchronize = 'Synchronize List';
     contact_list_info = 'List Info';
-    contact_list_download = 'Download List';
+    contact_list_download = 'Download list';
 
     contact_edit = 'Edit';
     contact_delete = 'Delete'
@@ -40,4 +40,10 @@ export class ActionsDescription {
     /* GLOBAL */
     listView = 'List View';
     gridView = 'Grid View';
+    
+    
+    /***Content Management****/
+    delete_item = 'Delete';
+    preview_item = 'Preview';
+    
 }

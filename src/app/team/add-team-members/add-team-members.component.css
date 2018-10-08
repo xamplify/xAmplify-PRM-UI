@@ -1,26 +1,12 @@
-table th, table td {
-	text-align: center;
-}
-
-table>tbody>tr>td {
-	border-top: none;
-}
-
-table td:first-child, table th:first-child
-	{
-	text-align: left
-}
- 
-.fa-user {
-	padding-right: 10px;
-}
+table th, table td { text-align: center;}
+table>tbody>tr>td { border-top: none; }
+table td:first-child, table th:first-child { 	text-align: left }
+.fa-user { padding-right: 10px; }
 /*
 .fa-times {
 	color: #F3565D;
 } */
-.red{
-	color: #F3565D !important;
-}
+.red{ 	color: #F3565D !important; }
 
 hr {
 	padding: 5px 0;
@@ -133,12 +119,12 @@ hr {
 }
 
 @-webkit-keyframes animatebottom {
-  from { bottom:-100px; opacity:0 } 
+  from { bottom:-100px; opacity:0 }
   to { bottom:0px; opacity:1 }
 }
 
-@keyframes animatebottom { 
-  from{ bottom:-100px; opacity:0 } 
+@keyframes animatebottom {
+  from{ bottom:-100px; opacity:0 }
   to{ bottom:0; opacity:1 }
 }
 .file-upload{
@@ -199,4 +185,6 @@ img:hover {
 	-ms-filter: blur(0px);
 	filter: blur(0px);
 }
+.downlaod-css{ width:unset; color:white;}
+.downlaod-css-mobile{ width:100%; color:white; margin-top: 5px }
 

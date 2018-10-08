@@ -115,10 +115,10 @@
 						</a>
 						<ul class="sub-menu"  [ngStyle]="{'min-width':refService.isSidebarClosed ? '82%' : '105%', 'display': emailtemplates? 'block': 'none' }">
 						<li>
-							  <a [routerLink]="['./emailtemplates/select']" >
-								<i class="fa fa-envelope"></i>
-								<span class="title">Create Email Template</span>
-								</a>
+						  <a [routerLink]="['./emailtemplates/select']" >
+							<i class="fa fa-envelope"></i>
+							<span class="title">Create Email Template</span>
+							</a>
 						</li>
 						<li>
               <a [routerLink]="['./emailtemplates']">
@@ -128,7 +128,6 @@
 						</li>
 						</ul>
 					</li>
-
 
 					<li *ngIf="authService.module.isCampaign || authService.module.isCompanyPartner" [ngClass]="{'active': location.path().includes('campaigns')}">
 						<a  href="javascript:;" (click)="openOrCloseTabs('campaigns')" >
@@ -165,15 +164,15 @@
 						<span class="selected"></span>
 						</a>
 					</li>
-					<li *ngIf="authService.module.isOrgAdmin || authService.module.isVendor" [ngClass]="{'active':location.path().includes('upgrade')}">
+					<!-- <li *ngIf="authService.module.isOrgAdmin || authService.module.isVendor" [ngClass]="{'active':location.path().includes('upgrade')}">
             <a style="cursor:not-allowed">
-              <!-- [routerLink]="['./upgrade']" -->
+              [routerLink]="['./upgrade']"
 						<i class="fa fa-arrow-circle-up"></i>
 						<span class="title">Upgrade</span>
 						<span class="arrow "></span>
 						<span class="selected"></span>
 						</a>
-					</li>
+					</li> -->
 					<li *ngIf="false">
 						<a [routerLink]="['/home/dashboard/welcome']">
 						<i class="fa fa-question-circle"></i>

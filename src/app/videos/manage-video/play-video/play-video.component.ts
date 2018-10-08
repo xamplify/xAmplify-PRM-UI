@@ -69,6 +69,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     isVideoChanged = false;
     fullTitle = false;
     isListView = false;
+    videoWidth: string;
     constructor(public authenticationService: AuthenticationService, public videoFileService: VideoFileService,
         public videoUtilService: VideoUtilService, public pagination: Pagination, public xtremandLog: XtremandLog,
         public deviceService: Ng2DeviceService, public xtremandLogger: XtremandLogger,public userService: UserService,
@@ -78,10 +79,21 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.loggedInUserId = this.authenticationService.getUserId();
         this.hasVideoRole = this.referenceService.hasRole(this.referenceService.roles.videRole);
         this.hasAllAccess = this.referenceService.hasAllAccess();
-        this.isListView = ! this.referenceService.isGridView;
-        //vjs-user-inactive
+        if(this.referenceService.isMobileScreenSize()){ this.isListView = true;}
+        else { this.isListView = ! this.referenceService.isGridView; }
 
+        if(window.innerHeight<= 600 || window.innerWidth<= 768 ){ this.videoWidth = '260px'; }
+        else if(window.innerWidth <= 992) {  this.videoWidth = '360px';}
+        else {  this.videoWidth = '360px';}
+        //vjs-user-inactive
     }
+    mouseEnterVideo(){
+      (<HTMLInputElement>document.getElementById('imagePath'+this.selectedVideo.id)).src =  this.selectedVideo.gifImagePath;
+    }
+    mouseLeaveVideo(){
+      (<HTMLInputElement>document.getElementById('imagePath'+this.selectedVideo.id)).src =  this.selectedVideo.imagePath;
+    }
+
     checkCallToActionAvailable() {
         if (this.selectedVideo.startOfVideo && this.selectedVideo.callACtion) {
             this.callAction.overLayValue = 'StartOftheVideo';
@@ -309,7 +321,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         $('#newPlayerVideo video').append('<source src=' + this.videoUrl + ' type="application/x-mpegURL">');
        // this.videoUrl = this.videoUrl + '.mp4?access_token=' + this.authenticationService.access_token;
        // $('#newPlayerVideo video').append('<source src="' + this.videoUrl + '" type="video/mp4">');
-        $('#videoId').css('height', '360px');
+        $('#videoId').css('height', this.videoWidth);
         $('#videoId').css('width', 'auto');
         const player = videojs('videoId').ready(function () {
             this.hotkeys({
@@ -493,17 +505,17 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                         $('#videoId').append($('#overlay-logo').show());
                     } else if (event === 'FullscreenOff') {
                         $('#videoId').css('width', 'auto');
-                        $('#videoId').css('height', '360px');
+                        $('#videoId').css('height', self.videoWidth);
                         self.fullScreenMode = false;
                         $('#overLayImage').append($('#overlay-logo').show());
                         if (isCallActionthere === true) {
                             self.overLaySet = false;
                             $('#overlay-modal').css('width', 'auto');
-                            $('#overlay-modal').css('height', '360px');
+                            $('#overlay-modal').css('height', self.videoWidth);
                             $('#videoId').append($('#overlay-modal').hide());
                             self.showOverlayModal();
                             $('#overlay-modal').css('width', '100%');
-                            $('#overlay-modal').css('height', '360px');
+                            $('#overlay-modal').css('height', self.videoWidth);
                         }
                     }
                 });
@@ -511,7 +523,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             }
         });
         $('#videoId').css('width', 'auto');
-        $('#videoId').css('height', '360px');
+        $('#videoId').css('height', this.videoWidth);
     }
     playNormalVideoFiles() {
         $('.p-video').remove();
@@ -520,7 +532,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     playNormalVideo() {
         const str = '<video id=videoId  poster=' + this.posterImg + ' preload="none"  class="video-js vjs-default-skin" controls ></video>';
         $('#newPlayerVideo').append(str);
-        $('#videoId').css('height', '360px');
+        $('#videoId').css('height', this.videoWidth);
         $('#videoId').css('width', 'auto');
         this.videoUrl = this.selectedVideo.videoPath;
         this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
@@ -676,7 +688,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                     $('#videoId').append($('#overlay-logo').show());
                 } else if (event === 'FullscreenOff') {
                     $('#videoId').css('width', 'auto');
-                    $('#videoId').css('height', '360px');
+                    $('#videoId').css('height', self.videoWidth);
                     self.fullScreenMode = false;
                     self.overLaySet = false;
                     $('#overLayImage').append($('#overlay-logo').show());
@@ -684,11 +696,11 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                         self.overLaySet = false;
                         self.fullScreenMode = false;
                         $('#overlay-modal').css('width', 'auto');
-                        $('#overlay-modal').css('height', '360px');
+                        $('#overlay-modal').css('height', self.videoWidth);
                         $('#videoId').append($('#overlay-modal').hide());
                         self.showOverlayModal();
                         $('#overlay-modal').css('width', '100%');
-                        $('#overlay-modal').css('height', '360px');
+                        $('#overlay-modal').css('height', self.videoWidth);
                     }
                 }
             });
