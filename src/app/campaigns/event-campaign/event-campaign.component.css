@@ -146,3 +146,7 @@ a.icons-link:hover {background:  #357ebd;}
 .auto-res {  font-weight: 600; font-size: 15px;}
 .table-color{ color: #6d6d6d !important;}
 .opacityCss { opacity: 0.5;}
+.center-block{
+  text-align: center;
+  margin: 13px 0;
+}
