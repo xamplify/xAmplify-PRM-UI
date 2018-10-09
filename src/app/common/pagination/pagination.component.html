@@ -3,16 +3,7 @@
     pointer-events: none;
   }
   </style>
-  
-  <div *ngIf="(pagination.pager.pages && pagination.pager.pages.length) && !isDropdown" style="float: right;font-size: 15px;">
-  	<select class="form-control" style="cursor: pointer" [(ngModel)]="pageNumber" (ngModelChange)="selectedPageNumber($event.value)">
-      <option *ngFor="let pageNo of numberPerPage" [ngValue]="pageNo"> {{pageNo.name}}</option>
-    </select>
-</div>
-  
-  
-  
-<ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination">
+<ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination" style="margin: 0px 0px 0px 10px;">
   <li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
     <a (click)="setPage(1)" [class.disabled]="pagination.pager.currentPage === 1"><span><i class="fa fa-angle-double-left"></i><span class="hidden-xs hidden-sm">First</span></span></a>
   </li>
@@ -31,4 +22,8 @@
 </ul>
 
 
-
+<div *ngIf="(pagination.pager.pages && pagination.pager.pages.length) && !isDropdown" style="float: right;font-size: 15px;">
+  	<select class="form-control" style="cursor: pointer" [(ngModel)]="pageNumber" (ngModelChange)="selectedPageNumber($event.value)">
+      <option *ngFor="let pageNo of numberPerPage" [ngValue]="pageNo"> {{pageNo.name}}</option>
+    </select>
+</div>

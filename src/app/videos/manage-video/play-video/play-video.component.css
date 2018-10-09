@@ -117,5 +117,3 @@ a.disabled { pointer-events: none; }
 .custom-overlay{
   width: 100% !important;color:white !important; background-color:rgba(29, 25, 25, 0.72);
 }
-
-.vid-thumbnails{ margin:15px 0;}
