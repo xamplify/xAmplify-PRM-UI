@@ -104,6 +104,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     if(this.reDistributeEvent) { this.isPartnerUserList = false; } else { this.isPartnerUserList = true; }
     if(this.authenticationService.isOnlyPartner()) {  this.isPartnerUserList = false; }
   }
+  isEven(n) { if(n % 2 === 0){ return true;} return false;}
   loadCampaignNames(userId:number){
     this.campaignService.getCampaignNames(userId).subscribe(data => { this.names.push(data); },
     error => console.log( error ), () => console.log( "Campaign Names Loaded" ) );
