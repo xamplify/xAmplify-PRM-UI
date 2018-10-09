@@ -26,9 +26,9 @@
     <img  alt="logo" class="logo-default" src="assets/images/xamplify-logo.png">
   </div>
 </div>
-<div [hidden]='!embedVideoFile' class="clearfix" [ngClass]="{'padding-videos': shareUrl.includes('videos')}">
+<div [hidden]='!embedVideoFile' class="clearfix" [ngClass]="{'padding-videos': shareUrl.includes('share')}">
 	<div class="portlet-body clearfix">
-		<div style="padding:0" [ngClass]="{'col-md-12': shareUrl.includes('embed'), 'center-div': shareUrl.includes('videos')}">
+		<div style="padding:0" [ngClass]="{'col-md-12': shareUrl.includes('embed'), 'center-div': shareUrl.includes('share')}">
 			<div>
 				<div id="overLayImage"></div>
 				<div id="overlay-logo"  class="video-js"  [ngClass]="{'logoCss':!fullScreenMode , 'logoFullscreen' :fullScreenMode}" >
@@ -39,7 +39,7 @@
 				<div id="newPlayerVideo"></div>
 			</div>
 			<div id="overLayDialog"></div>
-			<div id="overlay-modal" class="video-js is360video" style="padding:5em;" [ngClass]="{'embed-overlay':shareUrl.includes('embed'), 'share-overlay': shareUrl.includes('videos')}">
+			<div id="overlay-modal" class="video-js is360video" style="padding:5em;" [ngClass]="{'embed-overlay':shareUrl.includes('embed'), 'share-overlay': shareUrl.includes('share')}">
 				<form #f="ngForm" novalidate>
 					<div class="col-md-12 overlay-main" [ngClass]="{'bottomCss':fullScreenMode === true}">
 						<h2 class="upper-text-heading upperText">{{upperTextValue}}</h2>
@@ -72,18 +72,18 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-xs-12" style="padding:0" *ngIf="shareUrl.includes('videos')">
+			<div class="col-xs-12" style="padding:0" *ngIf="shareUrl.includes('share')">
 				<h3 style="word-break: break-all;color:#777">{{title}}</h3>
 			</div>
 
-			<div class="col-xs-12" style="padding:0" *ngIf="shareUrl.includes('videos')">
+			<div class="col-xs-12" style="padding:0" *ngIf="shareUrl.includes('share')">
 				<strong>Uploaded on :{{uploadedDate}}</strong>
 				<p align="justify" style="word-break: break-all;"> {{description}}</p>
 			</div>
-			<div class="col-xs-12" style="padding:0" *ngIf="shareUrl.includes('videos')">
+			<div class="col-xs-12" style="padding:0" *ngIf="shareUrl.includes('share')">
 				<p align="justify">Category : {{categoryName}}</p>
 			</div>
-			<div class="col-xs-12" style="padding:0" *ngIf="shareUrl.includes('videos')">
+			<div class="col-xs-12" style="padding:0" *ngIf="shareUrl.includes('share')">
 			  <!-- <share-buttons (closed)="sharedSuccess()" [exclude]="['reddit']" [url]="shareUrl" [image]="imgURL" [title]="title" [description]="description"></share-buttons> -->
 		      <!-- <share-buttons (popUpClosed)="sharedSuccess()" [url]="shareUrl" [image]="imgURL" [title]="title" [description]="description"></share-buttons> -->
 		     <!-- <share-buttons (popUpClosed)="sharedSuccess()" [url]="'https://aravindu.com/embed/'+shortnerUrlAlias"></share-buttons> -->
@@ -94,4 +94,4 @@
 		</div>
 	</div>
 </div>
-<div class="col-md-6" *ngIf="shareUrl.includes('videos')"> </div>
+<div class="col-md-6" *ngIf="shareUrl.includes('share')"> </div>

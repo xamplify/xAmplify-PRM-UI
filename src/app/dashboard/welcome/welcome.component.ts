@@ -49,12 +49,12 @@ export class WelcomeComponent implements OnInit, OnDestroy {
     }
     welcome_text: any;
     videoUrl: any;
-    uploadVideoUrl = 'https://xamplify.io/embed/2B4Iiu';
-    addPartnerCreateUrl = 'https://xamplify.io/embed/Kxdzr3';
+    uploadVideoUrl = 'https://xamplify.io/embed/JFpLwU';
+    addPartnerCreateUrl = 'https://xamplify.io/embed/mexS7o';
     addTeamMemberUrl = 'https://xamplify.io/embed/spPumv';
-    createEmailTemplateUrl = 'https://xamplify.io/embed/ONlGz7';
-    createCampaignUrl = 'https://xamplify.io/embed/5SxI8V';
-    redistributeCampaignUrl='https://xamplify.io/embed/h1Y6O9';
+    createEmailTemplateUrl = 'https://xamplify.io/embed/rmFHF6';
+    createCampaignUrl = 'https://xamplify.io/embed/Oen4LJ';
+    redistributeCampaignUrl='https://xamplify.io/embed/W4UacK';
     addContactsUrl = 'https://xamplify.io/embed/epPjw1';
 
     videoFile:any;

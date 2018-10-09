@@ -159,8 +159,8 @@ cursor: not-allowed;
 						<h1 style="color: #FBB23E">Templates</h1>
 						<p>{{welcome_text.templates}}</p>
 						<div >
-              <button *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdminPartner()|| authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.module.isVideo" class="btn btn-xs color1" [routerLink]="['/home/emailtemplates/select']" >Create templates</button>
-              <button *ngIf="authenticationService.isOnlyPartner() || !authenticationService.module.isVideo" class="btn btn-xs color1" [routerLink]="['/home/emailtemplates/manage']">View templates</button>
+              <button *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdminPartner()|| authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.module.isVideo" class="btn btn-xs color4" [routerLink]="['/home/emailtemplates/select']" >Create templates</button>
+              <button *ngIf="authenticationService.isOnlyPartner() || !authenticationService.module.isVideo" class="btn btn-xs color4" [routerLink]="['/home/emailtemplates/manage']">View templates</button>
               <button type="button" class="btn btn-xs color4-invert" data-toggle="modal" (click)="showHowToVideo(createEmailTemplateUrl)">Tell me how</button>
 						</div>
 					</div>
@@ -182,7 +182,24 @@ cursor: not-allowed;
 				<div class="col-sm-6 col-xs-12 block image-block">
 					<img src="https://wistia.com/assets/features/secure-ddcc83774ec8351e9de6cec79f8ad49d.png">
 				</div>
-			</div>
+      </div>
+      <div class="flex" *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdminPartner() || authenticationService.isVendorPartner()|| authenticationService.isOrgAdmin() ||authenticationService.isOrgAdmin()">
+          <div class="col-sm-6 col-xs-12 block image-block">
+            <img src="https://wistia.com/assets/product/video-seo/VideoSEO_2-2fc96034647ff7b9ecc5e0be9bac526f.png" style="max-width: 100%">
+          </div>
+          <div class="col-sm-6 col-xs-12 block">
+                <div class="text-block">
+                  <h1 style="color: #00B3B3" >Team members</h1>
+                  <p>Team members can add various content, modify content, , view the entire workspace based on given role, and add or remove team member. You can grant more limited access by adding someone as a orgadmin on to the space</p>
+                  <div>
+                    <!-- [class.disabled]="!hasContactRole || !authenticationService.user.hasCompany ? true : null" -->
+                    <button class="btn btn-xs color2" [routerLink]="['/home/team/add-team']" >Add team member</button>
+                    <button type="button" class="btn btn-xs color2-invert" data-toggle="modal" (click)="showHowToVideo(addTeamMemberUrl)">Tell me how</button>
+                  </div>
+                </div>
+              </div>
+        </div>
+
 			<div class="flex">
 				<div class="col-sm-6 col-xs-12 block image-block">
 					<img style="width: 320px; height:210px" src="assets/images/social-account-icons.jpg">

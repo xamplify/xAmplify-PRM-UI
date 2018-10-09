@@ -58,7 +58,7 @@ export const routes: Routes = [
     { path: 'logout', component: LoginComponent },
     { path: ':social/login', component: SocialLoginComponent },
     { path: ':social/callback', component: SocialCallbackComponent },
-    { path: 'videos/:alias', component: ShareVideoComponent },
+    { path: 'share/:alias', component: ShareVideoComponent },
     { path: 'embed/:alias', component: ShareVideoComponent },
     { path: 'showCampaignVideo/:alias', component: CampaignVideoComponent },
     { path: 'showCampaignEmail/:alias', component: LogRegularCampaignComponent },
