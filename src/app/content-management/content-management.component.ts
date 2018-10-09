@@ -64,7 +64,23 @@ export class ContentManagementComponent implements OnInit {
     }
 
     getSelectedFiles( file: any, id: any, event: any ) {
-        let isChecked = $( '#' + id ).is( ':checked' );
+        let isChecked = $( '#grid_' + id ).is( ':checked' );
+        if ( isChecked ) {
+            this.selectedFiles.push( file );
+            this.selectedFileIds.push( id );
+        } else {
+            for ( let i = 0; i <= this.selectedFileIds.length; i++ ) {
+                if ( id === this.selectedFileIds[i] ) {
+                    this.selectedFiles.slice( file );
+                    this.selectedFileIds.splice( $.inArray( id, this.selectedFileIds ), 1 );
+                    this.selectedFiles.splice( $.inArray( id, this.selectedFiles ), 1 );
+                }
+            }
+        }
+    }
+    
+    getSelectedListViewFiles( file: any, id: any, event: any ) {
+        let isChecked = $( '#list_' + id ).is( ':checked' );
         if ( isChecked ) {
             this.selectedFiles.push( file );
             this.selectedFileIds.push( id );
@@ -79,6 +95,9 @@ export class ContentManagementComponent implements OnInit {
         }
     }
 
+    checkListViewCheckboxes(){
+        return null;
+    }
 
     /**************List Items************************/
     listItems( pagination: Pagination ) {

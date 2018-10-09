@@ -64,7 +64,7 @@
 											<ng-container class='m10'>
 											<button class="btn btn-xs hidden-xs"
 												[disabled]="pagination.isListView"
-												(click)="pagination.isListView = true">
+												(click)="pagination.isListView = true; checkListViewCheckboxes()">
 												<i class="fa fa-th-list p10" aria-hidden="true"></i>
 											</button>
 											<button class="btn btn-xs hidden-xs"
@@ -135,8 +135,12 @@
 											</thead>
 											<tbody>
 												<tr *ngFor="let file of pagedItems;let i =index">
-													<td><input type="checkbox" name="vehicle1"
-														value="Bike"></td>
+													<td><input (click)="getSelectedListViewFiles(file,file.id, $event)" class=""
+															type="checkbox"
+															[checked]="selectedFileIds.indexOf(file.id)>-1"
+															value="{{file.fileName}}" id="list_{{file.id}}">
+															<!-- <input type="checkbox"> -->
+															</td>
 													<td>
 														<div class="clearfix">
 															<div class='thumbnail-wrapper'>
@@ -208,8 +212,8 @@
 													<span class="select-box"> <label> <input
 															(click)="getSelectedFiles(file,file.id, $event)" class=""
 															type="checkbox"
-															[checked]="selectedFiles.indexOf(file.fileName)>-1"
-															value="{{file.fileName}}" id="{{file.id}}">
+															[checked]="selectedFileIds.indexOf(file.id)>-1"
+															value="{{file.fileName}}" id="grid_{{file.id}}">
 													</label>
 													</span> <span class="ng-scope"> <a
 														class="item__preview item__preview--image img-container custom"
