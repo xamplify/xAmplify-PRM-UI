@@ -35,16 +35,21 @@
 									style="padding: 0"
 									[ngClass]="{'margin-css':!authenticationService.isOrgAdminPartner() || !authenticationService.isVendorPartner()}">
 									<div class="inputs" align="right">
-										<div class="upload-btn-wrapper">
-											<button class="btn upload-button-class">Upload a file</button>
-											<input type="file" name="file" title="Upload a file"
+										<span style="display:none">
+											<input type="file" id="uploadFile" name="file" title="Upload a file"
 												(change)="upload($event)" multiple="multiple" />
-										</div>
-										<div class="col-xs-12 col-sm-6 col-md-3"></div>
-										<div class="col-xs-6 col-sm-3 col-md-3 p0 flex">
+										</span>
+										
+										
+										<div class="col-xs-12 col-sm-6 col-md-3 p0">
+										<button class="btn btn-primary pull-left" (click)="imageClick()">Upload a file<i class="fa fa-upload" aria-hidden="true"
+															style="font-size: 12px; margin-left: 5px;"></i></button>
 										<button type="button" class="btn btn-danger"
 											*ngIf="selectedFileIds?.length>1" (click)="delete()">Delete</button>
-											<!-- <ng-container class='m10'>
+										</div>
+									<!-- 	<div class="col-xs-6 col-sm-3 col-md-3 p0 flex">
+										
+											<ng-container class='m10'>
 											<button class="btn btn-xs hidden-xs"
 												[disabled]="pagination.isListView"
 												(click)="pagination.isListView = true">
@@ -55,11 +60,11 @@
 												(click)="pagination.isListView = false">
 												<i class="fa fa-th-large p10" aria-hidden="true"></i>
 											</button>
-											</ng-container> -->
-											<!--  <select class="form-control ml5" style="cursor: pointer" [(ngModel)]="videoSort" (ngModelChange)="selectedSortByValue($event)">
+											</ng-container>
+											 <select class="form-control ml5" style="cursor: pointer" [(ngModel)]="videoSort" (ngModelChange)="selectedSortByValue($event)">
                          <option *ngFor="let sort of sortVideos" [ngValue]="sort"> {{sort.name}} </option>
-                       </select> -->
-										</div>
+                       </select>
+										</div> -->
 											
 											<ng-container class='m10'>
 											<button class="btn btn-xs hidden-xs"

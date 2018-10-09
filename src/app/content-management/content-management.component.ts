@@ -18,7 +18,7 @@ declare var Metronic, $, Layout, Demo, swal: any;
 @Component( {
     selector: 'app-content-management',
     templateUrl: './content-management.component.html',
-    styleUrls: ['./content-management.component.css'],
+    styleUrls: ['../../assets/css/button.css','./content-management.component.css'],
     providers: [Pagination, HttpRequestLoader, ActionsDescription, ContentManagement, SocialPagerService]
 })
 export class ContentManagementComponent implements OnInit {
@@ -47,7 +47,9 @@ export class ContentManagementComponent implements OnInit {
 
     }
 
-
+    imageClick(){
+        $('#uploadFile').click();
+    }
     setPage( page: number ) {
         try {
             if ( page < 1 || page > this.pager.totalPages ) {
