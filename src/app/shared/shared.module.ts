@@ -17,6 +17,7 @@ import { LoadingModule } from 'ngx-loading';
 
 import { LoaderComponent } from '../loader/loader.component';
 import { UpdateStatusComponent } from '../social/common/update-status/update-status.component';
+import { SocialStatusComponent } from '../social/common/social-status/social-status.component';
 import { ConnectAccountsComponent } from '../social/common/connect-accounts/connect-accounts.component';
 import { SocialLoaderComponent } from '../social/common/social-loader/social-loader.component';
 import { CommonComponentModule } from '../common/common.module';
@@ -25,11 +26,11 @@ import { CommonComponentModule } from '../common/common.module';
         imports: [CommonModule, RouterModule, FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,
                   TagInputModule, HttpModule, Ng2FilterPipeModule, ColorPickerModule, TimepickerModule.forRoot(),
                   BootstrapSwitchModule.forRoot(), TimezonePickerModule, LoadingModule, CommonComponentModule ],
-        declarations: [LoaderComponent, UpdateStatusComponent, ConnectAccountsComponent, SocialLoaderComponent],
+        declarations: [LoaderComponent, UpdateStatusComponent, SocialStatusComponent, ConnectAccountsComponent, SocialLoaderComponent],
         exports: [FileSelectDirective, FileDropDirective, FormsModule, CommonModule, RouterModule, ColorPickerModule,
                   FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule, TagInputModule,
                   HttpModule, Ng2FilterPipeModule, LoaderComponent, TimepickerModule,
-                  BootstrapSwitchModule, TimezonePickerModule, UpdateStatusComponent, ConnectAccountsComponent, LoadingModule, SocialLoaderComponent
+                  BootstrapSwitchModule, TimezonePickerModule, UpdateStatusComponent, SocialStatusComponent, ConnectAccountsComponent, LoadingModule, SocialLoaderComponent
                 ],
         providers: [],
 })

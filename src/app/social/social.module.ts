@@ -17,7 +17,6 @@ import { FacebookInsightFansCountryComponent } from './facebook/facebook-insight
 import { FacebookReactionsComponent } from './facebook/facebook-reactions/facebook-reactions.component';
 import { FacebookCommentsComponent } from './facebook/facebook-comments/facebook-comments.component';
 
-
 @NgModule( {
     imports: [CommonModule, SharedModule, SocialRoutingModule, FormsModule, CommonComponentModule],
     declarations: [SocialManageComponent, FacebookAccountsComponent, FacebookPostsComponent, FacebookAnalyticsComponent,
