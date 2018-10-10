@@ -58,8 +58,8 @@
 	</div>
 	<!-- record modal popup end  -->
 	<div class="portlet light">
-		<div class="portlet-body">
-			<div >
+		<div class="portlet-body mt-5">
+			<div>
 				<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" *ngIf="MultipleVideo">
 					<div class="addfiles" style="float: left; width: 113px;">
 						<div class="btn green fileinput-button"><span> <i class="fa fa-plus"></i>Add A Video</span>
@@ -77,14 +77,9 @@
 							<span class="glyphicon glyphicon-trash"></span> Remove all
 						</button> </div>
 				</div>
-        <br />
 				<div class="col-xs-12">
 					<div *ngIf="processing" class="row">
-						<!-- <div class="alert alert-success alertMessageCustom loaderSymbol" style="background: #dff0d8">
-							<img src="assets/images/loadbar.gif" class="loader-image-tag">
-                <p class="p-tag-loaderCss">Your video has been uploaded. Give us just a moment to process it</p>
-            </div> -->
-            <div class="alert alert-success alertMessageCustom loaderSymbol">
+            <div class="alert alert-success alertMessageCustom loaderSymbol mb10">
               <span><img src="assets/images/loadbar.gif" class="loader-image-tag"></span>
               <span class="loader-text">
                 Your video has been uploaded and is now being processed. If you'd like to take a break, we'll continue processing it in the background. We will send you an email when your video is ready.</span>

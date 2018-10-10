@@ -43,11 +43,13 @@
 .draft-video{
   background-color: #f76c1a;
   color: white;
-  width: 36%;
+  width: fit-content;
   padding: 1px;
   text-align: center;
+  margin-top: 6px;
 }
 .views-draft{
   margin-top: 3px;
   margin-bottom: -4px;
 }
+.mt7{ margin-top: 7px;}
