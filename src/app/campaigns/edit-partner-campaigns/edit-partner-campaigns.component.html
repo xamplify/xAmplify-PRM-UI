@@ -166,11 +166,11 @@
                       | slice:0:25}}
                       <span *ngIf="campaign.emailTemplate.name?.length>25">...</span>
                     </h4>
-                    <h5 style="color: #656565;" class="m0" *ngIf="campaign.emailTemplate.type.toLocaleString() ==='PARTNER'" title="{{campaign.emailTemplate.vendorName}}">
+                    <h5 style="color: #656565;" class="m0" *ngIf="campaign.emailTemplate?.type?.toLocaleString() ==='PARTNER'" title="{{campaign.emailTemplate.vendorName}}">
                       Shared By {{campaign.emailTemplate.vendorName | slice:0:15}}
                       <span *ngIf="campaign.emailTemplate.vendorName?.length>15">...</span>
                     </h5>
-                    <h5 style="color: #656565;" class="m0" *ngIf="campaign.emailTemplate.type.toLocaleString()!=='PARTNER'" title="{{campaign.emailTemplate.createdBy}}">
+                    <h5 style="color: #656565;" class="m0" *ngIf="campaign.emailTemplate?.type?.toLocaleString()!=='PARTNER'" title="{{campaign.emailTemplate.createdBy}}">
                       Created By {{campaign.emailTemplate.createdBy | slice:0:15}}
                       <span *ngIf="campaign.emailTemplate.createdBy?.length>15">...</span>
                     </h5>

@@ -140,8 +140,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     this.referenceService.loading(this.httpRequestLoader, true);
     this.downloadTypeName = this.paginationType = 'campaignViews';
     this.listTotalCampaignViews(campaignId);
-    this.campaignService.listCampaignViews(campaignId, pagination, this.isChannelCampaign)
-    
+
     if(!this.campaign.detailedAnalyticsShared && this.campaign.dataShare){
         pagination.campaignId = campaignId;
         pagination.campaignType = "VIDEO";
@@ -157,7 +156,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     this.campaignService.listCampaignViews(campaignId, pagination, this.isChannelCampaign)
       .subscribe(
       data => {
-        this.listCampaignViewsDataInsert(data);
+        this.listCampaignViewsDataInsert(data.campaignviews);
       },
       error => console.log(error),
       () => console.log()
@@ -165,11 +164,12 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     }
     }catch(error){ this.xtremandLogger.error('error'+error);}
   }
-  
+
   listCampaignViewsDataInsert(data: any){
-      this.campaignViews = data.campaignviews;
+    if(data.hasOwnProperty('campaignviews')){ this.campaignViews = data.campaignviews; }
+    else {this.campaignViews = data; }
       const views = [];
-      for (let i = 0; i < data.length; i++) {
+      for (let i = 0; i < this.campaignViews.length; i++) {
         views.push(data.campaignviews[i].viewsCount)
       }
       this.maxViewsValue = Math.max.apply(null, views);
@@ -699,7 +699,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       this.xtremandLogger.error('error'+error)
     }
   }
-  
+
   getEventCampaignByCampaignId(campaignId: number) {
       try{
           this.loading = true;
@@ -722,7 +722,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
             this.xtremandLogger.error('error'+error)
           }
         }
-  
+
   getPartnersResponeCount(campaignId: number) {
       try{
             this.campaignService.getEventCampaignDetailsByCampaignId(campaignId, false)
@@ -744,7 +744,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
             this.xtremandLogger.error('error'+error)
           }
         }
-  
+
   getRsvpEmailOpenDetails(){
       try{
       this.loading = true;
@@ -762,7 +762,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
           },
           error => this.xtremandLogger.error(error),
           () => { }
-          ) 
+          )
       }else if(this.rsvpDetailType === 'partnerRsvp'){
           this.campaignService.getEventCampaignEmailOpenDetails( this.campaign.campaignId, false, this.rsvpDetailAnalyticsPagination )
           .subscribe(
@@ -775,7 +775,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
           },
           error => this.xtremandLogger.error(error),
           () => { }
-          ) 
+          )
       }
       else{
           this.showRsvpDetails = true;
@@ -790,13 +790,13 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
           },
           error => this.xtremandLogger.error(error),
           () => { }
-          ) 
+          )
       }
       }catch(error){
         this.xtremandLogger.error('error'+error)
    }
   }
-  
+
   getPartnerCampaingRsvpDetails(){
       this.campaignReport.redistributionTotalYesCount = this.campaignReport.partnersYesCount;
       this.campaignReport.redistributionTotalMayBeCount = this.campaignReport.partnersMayBeCount;
@@ -807,7 +807,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       this.rsvpDetailType = 'partnerRsvp';
       this.getRsvpDetails("YES");
   }
-        
+
   getRsvpDetails(responseType: any){
       try{
           this.loading = true;
@@ -826,7 +826,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
               },
               error => this.xtremandLogger.error(error),
               () => { }
-              )  
+              )
           }else if(this.rsvpDetailType === 'partnerRsvp'){
               this.campaignService.getEventCampaignDetailAnalytics( this.campaign.campaignId, responseType, false, this.rsvpDetailAnalyticsPagination )
               .subscribe(
@@ -839,7 +839,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
               },
               error => this.xtremandLogger.error(error),
               () => { }
-              )  
+              )
           }else{
               this.showRsvpDetails = true;
               this.campaignService.getEventCampaignDetailAnalytics( this.campaign.campaignId, responseType, this.isChannelCampaign, this.rsvpDetailAnalyticsPagination )
@@ -859,7 +859,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
             this.xtremandLogger.error('error'+error)
           }
   }
-  
+
   redistributionCampaignsDetails(campaignViews:any){
       try{
           this.loading = true;
@@ -868,7 +868,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
           this.campaignReport.selectedPartnerLastName = campaignViews.lastName;
           this.campaignReport.selectedPartnerEmailId = campaignViews.emailId;
           this.campaignReport.selectedPartnerEmailId = campaignViews.userId;
-          
+
          // this.downloadTypeName = 'rsvp';
             this.campaignService.getRestributionEventCampaignAnalytics( this.campaign.campaignId, campaignViews.userId )
             .subscribe(
@@ -890,7 +890,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
             this.xtremandLogger.error('error'+error)
           }
   }
-  
+
 
   resetTopNavBarValue() {
     try{
@@ -1076,7 +1076,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
         }
         this.downloadCsvList = this.rsvpDetailsList;
     }
-        
+
 
     this.downloadDataList.length = 0;
     for (let i = 0; i < this.downloadCsvList.length; i++) {
@@ -1136,7 +1136,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
         object["Device"] = this.downloadCsvList[i].deviceType;
         object["Location"] = this.downloadCsvList[i].location;
       }
-      
+
       if (this.downloadTypeName === 'rsvp') {
           object["Email Id"] = this.downloadCsvList[i].emailId;
           if(this.rsvpResposeType === 'email open'){
@@ -1149,7 +1149,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
               object["Plus Guests"] = this.downloadCsvList[i].additionalCount;
           }
          }
-      
+
       this.downloadDataList.push(object);
     }
 
@@ -1192,7 +1192,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       (error:any)=>{this.xtremandLogger.error('error'+error); })
     }catch(error) { this.xtremandLogger.error('error'+error);}
   }*/
-    
+
    getListOfContacts(id:number){
         try{
           this.contactListId = id;

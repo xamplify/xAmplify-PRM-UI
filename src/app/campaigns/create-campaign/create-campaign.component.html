@@ -697,8 +697,8 @@
                           <div  *ngIf="!isAdd && isCampaignDraftEmailTemplate && emailTemplatesPagination.totalRecords>0 && emailTemplatesPagination.pageIndex==1 ">
                             <div class="col-md-3 col-sm-4 mix category_1 mix_all" style="display: block; opacity: 1; margin-top: -11px;">
                               <div id="container">
-                                <h3 *ngIf="campaign.emailTemplate.type.toLocaleString()=='PARTNER'" style="width: 21%">
-												    		{{campaign.emailTemplate.type}}
+                                <h3 *ngIf="campaign.emailTemplate?.type?.toLocaleString()=='PARTNER'" style="width: 21%">
+												    		{{campaign.emailTemplate?.type}}
 												    		<span class="arrow"></span>
 												   	</h3>
 											 	</div>
@@ -725,7 +725,7 @@
 														<span align="right" title="upladed date" class="template-created-on-value">
 															<b>{{campaign.emailTemplate.createdDate}}</b>
 														</span>
-														<ng-container *ngIf="campaign.emailTemplate.type.toLocaleString()!='PARTNER'">
+														<ng-container *ngIf="campaign.emailTemplate?.type?.toLocaleString()!='PARTNER'">
 															<span align="left" class="template-created-by-label" title="{{campaign.emailTemplate.createdBy}}">
 																<b *ngIf="campaign.emailTemplate.createdBy?.length>12">{{campaign.emailTemplate.createdBy|slice:0:12}}....</b>
 																<b *ngIf="campaign.emailTemplate.createdBy?.length<=12">{{campaign.emailTemplate.createdBy}}</b>
@@ -734,7 +734,7 @@
 																<b>Created By</b>
 															</span>
 														</ng-container>
-														<ng-container *ngIf="campaign.emailTemplate.type.toLocaleString()=='PARTNER'">
+														<ng-container *ngIf="campaign.emailTemplate?.type?.toLocaleString()=='PARTNER'">
 															<span align="left" class="template-created-by-label" title="{{campaign.emailTemplate.vendorName}}">
 																<b *ngIf="campaign.emailTemplate.vendorName?.length>13">{{campaign.emailTemplate.vendorName|slice:0:13}}....</b>
 																<b *ngIf="campaign.emailTemplate.vendorName?.length<=13">{{campaign.emailTemplate.vendorName}}</b>
