@@ -1,25 +1,3 @@
-<!--
-<app-video></app-video>
-<div class="container">
-	<div class="jumbotron">
-		<h1 class="text-center">
-			Experience the new way of<br> ecosystem marketing.
-		</h1>
-	</div>
-
-	<div class="text-center">
-		<a [routerLink]="['/v-signup']" class="btn btn-danger btn-lg"
-			style="line-height: 1">REGISTER<br>
-		<span style="font-size: 14px; color: #333; font-weight: 500;">(beta
-				signup)</span></a> <a [routerLink]="['/login']" class="btn btn-primary btn-lg"
-			style="line-height: 35px">LOGIN</a>
-		<div class="clearfix"></div>
-		<br>
-	</div>
-</div>
--->
-
-
 <!--hero section-->
 <div class="loader-container" [hidden]="!mainLoader">
   <div class="loader"></div>
@@ -30,7 +8,7 @@
 
   <!--HTML5 Video-->
 <video autoplay poster="/assets/images/login_background_big.jpg" id="bgvid" loop>
-  <source src="https://hls.mobinar.com/vod/videos/343/04042016/Final51459808822437.mp4" type="video/mp4">
+  <source src="https://xamp.io/vod/videos/16700/26092018/xAmplifwebsitevideo1538008387493.mp4" type="video/mp4">
 </video>
   <!--HTML5 Video end-->
 
@@ -42,7 +20,7 @@
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar-collapse-1" aria-expanded="false"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
       <a class="navbar-brand" routerLink="/" style="background: none;">
         <img class="logo-nav" alt="logo" style="height: 54px;" src="/assets/images/xamplify-logo.png">
-        <img class="logo-head" alt="logo" style="height: 50px;" src="/assets/images/xamplify-logo3.png">
+        <img class="logo-head" alt="logo" style="height: 50px;" src="/assets/images/xamplify-logo-new.png">
       </a>
     </div>
     <div class="collapse navbar-collapse" id="bs-navbar-collapse-1">
@@ -69,9 +47,14 @@
   <section class="container text-center welcome-message">
     <div class="row">
       <div class="col-md-12">
+        <br>
         <h1 lang="en">Experience the new way of ecosystem marketing</h1>
+        <br>
         <p style="color: #fff;" lang="en">Whether you've spent years cultivating your network or are just testing the waters, {{properties.APP_WEBSITE}} provides you with a digital platform that allows you to engage and equip your partners, solidifying relationships and driving sales like never before.</p>
-        <div class="play-btn"> <a href="/embed/sb63hg" class="play litebox-hero"><img src="/assets/images/play-btn.png" alt="play"></a> </div>
+        <div class="play-btn"  style="padding: 1em;">
+          <a *ngIf="false" href="/embed/sb63hg" class="play litebox-hero"><img src="/assets/images/play-btn.png" alt="play"></a>
+         </div>
+         <br>
         <div class="cta-btn"> <a routerLink="/v-signup" class="btn" lang="en">REGISTER <span style="font-size: 14px; color: #333; font-weight: 500;">(free trail)</span></a>
           <!--<p lang="en"><span class="total-number-1">0</span>K Worldwide Signups</p>-->
         </div>
@@ -193,8 +176,8 @@
 
 <!--Video section-->
 
-<section class="video-tour text-center" id="preview">
-  <div class="play-btn"> <a href="/embed/sb63hg" class="play litebox-tour"><img src="/assets/images/play-btn-vs.png" alt="play"></a>
+<section class="video-tour text-center" id="preview" [hidden]="true">
+  <div class="play-btn"> <a href="/embed/sb63hg" class="play litebox-tour"><img  src="/assets/images/play-btn-vs.png" alt="play"></a>
     <h2 lang="en">Video Preview Of Product</h2>
   </div>
 
