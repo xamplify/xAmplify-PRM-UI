@@ -140,7 +140,6 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     this.referenceService.loading(this.httpRequestLoader, true);
     this.downloadTypeName = this.paginationType = 'campaignViews';
     this.listTotalCampaignViews(campaignId);
-    this.campaignService.listCampaignViews(campaignId, pagination, this.isChannelCampaign)
 
     if(!this.campaign.detailedAnalyticsShared && this.campaign.dataShare){
         pagination.campaignId = campaignId;
@@ -157,7 +156,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     this.campaignService.listCampaignViews(campaignId, pagination, this.isChannelCampaign)
       .subscribe(
       data => {
-        this.listCampaignViewsDataInsert(data);
+        this.listCampaignViewsDataInsert(data.campaignviews);
       },
       error => console.log(error),
       () => console.log()
@@ -166,8 +165,10 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     }catch(error){ this.xtremandLogger.error('error'+error);}
   }
 
-  listCampaignViewsDataInsert(data: any){
-      this.campaignViews = data.campaignviews;
+  listCampaignViewsDataInsert(campaignviews: any){
+      this.campaignViews= campaignviews;
+      // if(data.hasOwnProperty('campaignviews')){ this.campaignViews = data.campaignviews; }
+      // else {this.campaignViews = data; }
       const views = [];
       for (let i = 0; i <  this.campaignViews.length; i++) {
         views.push( this.campaignViews[i].viewsCount)
