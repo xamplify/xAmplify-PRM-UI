@@ -104,7 +104,7 @@ img:hover {
 			<li style="color: #888">Add {{checkingContactTypeName}}s</li>
 
 		</ul>
-		<div align="right" style="margin-top: 2px;">
+		<div align="right" style="margin-top: 2px;" class="hidden-xs">
 			<a (click)="downloadEmptyCsv()">
 				<button type="button" class="btn green" download 	style="color: #ffffff;" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
          Download Contact CSV Template
