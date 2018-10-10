@@ -107,13 +107,19 @@
 					</li>
 
 					<li *ngIf="authService.module.isEmailTemplate && !authService.isOnlyPartner()" [ngClass]="{'active':location.path().includes('emailtemplate')}">
-						<a  href="javascript:;" (click)="openOrCloseTabs('emailtemplates')" >
+						<a class="hidden-xs" href="javascript:;" (click)="openOrCloseTabs('emailtemplates')" >
 						<i class="fa fa-envelope"></i>
 						<span class="title">Email Templates</span>
 						<span class="arrow "></span>
 						<span class="selected"></span>
-						</a>
-						<ul class="sub-menu"  [ngStyle]="{'min-width':refService.isSidebarClosed ? '82%' : '105%', 'display': emailtemplates? 'block': 'none' }">
+            </a>
+            <a class="visible-xs" [routerLink]="['./emailtemplates']" >
+                <i class="fa fa-envelope"></i>
+                <span class="title">Email Templates</span>
+                <span class="arrow "></span>
+                <span class="selected"></span>
+             </a>
+						<ul class="sub-menu hidden-xs"  [ngStyle]="{'min-width':refService.isSidebarClosed ? '82%' : '105%', 'display': emailtemplates? 'block': 'none' }">
 						<li>
 						  <a [routerLink]="['./emailtemplates/select']" >
 							<i class="fa fa-envelope"></i>
