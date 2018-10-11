@@ -587,3 +587,10 @@ label {
 	color: white !important;
     background-color: #0f5796 !important;
 }
+.search-input-button{
+	position: relative;
+    top: -33px;
+    width: 40px;
+    height: 32px;
+    left: -1px;
+}

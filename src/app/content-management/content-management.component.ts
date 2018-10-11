@@ -39,6 +39,20 @@ export class ContentManagementComponent implements OnInit {
     selectedFileIds = [];
     loader = false;
     loaderWidth: number = 30;
+    searchTitle: any;
+    searchList: any;
+    sortList: any;
+    paginatedList: any;
+    
+    sortOptions = [
+                   { 'name': 'Sort By', 'value': ''},
+                   { 'name': 'File Name(A-Z)', 'value': 'fileName'},
+                   { 'name': 'File Name(Z-A)', 'value': 'fileName'},
+                   { 'name': 'Upload Date(ASD)', 'value': 'lastModifiedDate'},
+                   { 'name': 'Upload Date(DSD)', 'value': 'lastModifiedDate'},
+ ];
+    sortOption: any = this.sortOptions[0];
+    
     constructor( private router: Router, private pagerService: PagerService, public referenceService: ReferenceService,
         public actionsDescription: ActionsDescription, public pagination: Pagination, public socialPagerService: SocialPagerService,
         public authenticationService: AuthenticationService, private logger: XtremandLogger,
@@ -46,18 +60,51 @@ export class ContentManagementComponent implements OnInit {
         this.loggedInUserId = this.authenticationService.getUserId();
 
     }
-
+    
+    
+    sortByOption( event: any) {
+        try {
+            this.sortOption = event;
+           
+            if ( event.name == "Upload Date(ASD)" ) {
+                this.sortList = this.list.sort(( a, b ) => new Date( b.lastModifiedDate ).getTime() - new Date( a.lastModifiedDate ).getTime() );
+            } else if ( event.name == "Upload Date(DSD)" ) {
+                this.sortList = this.list.sort(( a, b ) =>  new Date( a.lastModifiedDate ).getTime() - new Date( b.lastModifiedDate ).getTime() );
+            }  else if ( event.name == "File Name(A-Z)" ) {
+                this.sortList = this.list.sort((a,b)=> {return a.fileName.localeCompare(b.fileName)});
+            } else if ( event.name == "File Name(Z-A)" ) {
+                this.sortList = this.list.sort((a,b)=> {return b.fileName.localeCompare(a.fileName)});
+            } 
+            
+            this.paginatedList = this.sortList;
+            this.setPage( 1 );
+            
+        } catch ( error ) {
+            console.error( error, "contentManagement", "sorting()" );
+        }
+    }
+    
     imageClick(){
         $('#uploadFile').click();
     }
+    
+    searchFile(){
+        this.searchList = this.list.filter(o => o.fileName.includes(this.searchTitle));
+        this.paginatedList = this.searchList;
+        this.setPage( 1 );
+        
+        
+    }
+    
+    
     setPage( page: number ) {
         try {
             if ( page < 1 || page > this.pager.totalPages ) {
                 return;
             }
 
-            this.pager = this.socialPagerService.getPager( this.list.length, page, this.pageSize );
-            this.pagedItems = this.list.slice( this.pager.startIndex, this.pager.endIndex + 1 );
+            this.pager = this.socialPagerService.getPager( this.paginatedList.length, page, this.pageSize );
+            this.pagedItems = this.paginatedList.slice( this.pager.startIndex, this.pager.endIndex + 1 );
 
         } catch ( error ) {
             console.error( error, "content management setPage()." )
@@ -113,14 +160,18 @@ export class ContentManagementComponent implements OnInit {
                 }
                 
                 
-                this.list = data;
+               this.list = data;
+               this.searchList = data;
+               this.sortList = data;
                 if ( this.list.length > 0 ) {
                     this.exisitingFileNames = this.list.map( function( a ) { return a.fileName.toLowerCase(); });
                 } else {
                     this.customResponse = new CustomResponse( 'INFO', "No records found", true );
                 }
                 this.referenceService.loading( this.httpRequestLoader, false );
+                this.paginatedList = this.list;
                 this.setPage( 1 );
+                
             },
             ( error: string ) => {
                 this.logger.errorPage( error );
