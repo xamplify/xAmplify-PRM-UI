@@ -165,12 +165,11 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     }catch(error){ this.xtremandLogger.error('error'+error);}
   }
 
-  listCampaignViewsDataInsert(data: any){
-    if(data.hasOwnProperty('campaignviews')){ this.campaignViews = data.campaignviews; }
-    else {this.campaignViews = data; }
+  listCampaignViewsDataInsert(campaignviews: any){
+      this.campaignViews= campaignviews;
       const views = [];
       for (let i = 0; i < this.campaignViews.length; i++) {
-        views.push(data.campaignviews[i].viewsCount)
+        views.push(this.campaignViews[i].viewsCount)
       }
       this.maxViewsValue = Math.max.apply(null, views);
       this.campaignViewsPagination.totalRecords = this.campaignReport.emailSentCount;
