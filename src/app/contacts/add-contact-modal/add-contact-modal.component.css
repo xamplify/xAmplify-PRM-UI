@@ -20,3 +20,9 @@
 /deep/ .input-group > .form-control:focus {
     border-color: #e5e5e5;
 } */
+@media only screen and (max-width:600px){ .email-xs{ left: 4px}}
+@media only screen and (min-width:601px){.email-xs{ left: 6px}}
+
+@media only screen and (max-width:600px){ .padding-mobile{ padding:0}}
+@media only screen and (min-width:601px){.padding-mobile{ padding:non;}}
+
