@@ -75,12 +75,9 @@ margin-bottom: 20px;
 margin-right: 304px;
 margin-left: 19px;
 }
-.loaderSymbol{
-  height: 63px;
-  margin-top: -5px;
-  margin-left: -2px;
-  color: black;
-  border-color: #000000;
+.loaderSymbol{ height: 63px;color: black; border-color: #000000; background: #dff0d8;}
+@media only screen and (max-width:600px){
+.loaderSymbol{ height: 130px;color: black; border-color: #000000; background: #dff0d8;}
 }
 .p-tag-loaderCss {
   top: -70px;
@@ -133,10 +130,6 @@ border-radius: 0
 @media only screen and (min-width:992px){
   .box-border{ border: 1px solid #54a7e9; min-height: 181px; padding: 37px 16px; margin: 0; }
 }
-.margin-top-16{ margin-top: 0px;}
-@media only screen and (max-width:600px){
-  .margin-top-16 {margin-top: 0px; }
-}
 @media only screen and (min-width:992px){
 .pc0 { padding-left:0!important;}
 .pu0 { padding-right:0!important}
@@ -182,4 +175,4 @@ border-radius: 0
   .video-padding{ padding: 0;  }
 }
 .mt-5{margin-top: -5px!important;}
-
+.text-css{position: absolute;left: 57px;top: 13px;}
