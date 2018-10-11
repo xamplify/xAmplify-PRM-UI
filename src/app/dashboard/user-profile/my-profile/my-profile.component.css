@@ -181,4 +181,4 @@ a:hover{ text-decoration:none}
     cursor: pointer;
     width: 32px;
 }
-
+.left-css{ position: relative; left: -19px;}

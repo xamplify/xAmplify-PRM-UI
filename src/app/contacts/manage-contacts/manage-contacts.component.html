@@ -361,7 +361,7 @@
 								</div>
 								<div id="pagination">
 									<!--pager here  -->
-									<app-pagination [hidden]="httpRequestLoader.isLoading" [pagination]="pagination" [type]="'contacts'"
+                  	<app-pagination style="position:relative;top:-9px;" style="position:relative;top:-9px;" [hidden]="httpRequestLoader.isLoading" [pagination]="pagination" [type]="'contacts'"
 
 										(notifyParent)="setPage($event)"
 										(notifyParentDropDown)="loadContactLists($event)"></app-pagination>
@@ -606,7 +606,7 @@
 									</div>
 								</div>
 
-								<app-pagination [pagination]="contactsByType.pagination" [hidden]="contactsByType.isLoading"
+								<app-pagination style="position:relative;top:-9px;" [pagination]="contactsByType.pagination" [hidden]="contactsByType.isLoading"
 									[type]="contactsByType.selectedCategory"
 									(notifyParent)="setPage($event)"
 									(notifyParentDropDown)="onChangeAllContactUsers($event)"></app-pagination>
