@@ -212,18 +212,18 @@ input:checked + .slider-new:before {
 												<i class="icon-globe theme-font hide"></i>
 												<span class="caption-subject font-blue-madison bold uppercase">Account Profile</span>
 											</div>
-											<ul class="nav nav-tabs">
+											<ul class="nav nav-tabs left-css">
 												<li class="active">
 													<a href="#tab_1_1" data-toggle="tab" (click)="clearCustomResponse()">Personal Info</a>
 												</li>
 												<li>
-													<a href="#tab_1_3" data-toggle="tab" (click)="clearCustomResponse()">Change Password</a>
+													<a href="#tab_1_3" data-toggle="tab" (click)="clearCustomResponse()"><span class="hidden-xs">Change</span> Password</a>
 												</li>
 												<li class="hidden-xs">
 													<a href="#tab_1_4" data-toggle="tab" (click)="clearCustomResponse()">Settings</a>
 												</li>
 												<li *ngIf="hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()" (click)="videojsCall()">
-													<a href="#tab_1_5" data-toggle="tab">Default Player Settings</a>
+													<a href="#tab_1_5" data-toggle="tab"><span class="hidden-xs">Default</span> Player Settings</a>
 												</li>
 											</ul>
 										</div>

@@ -1,5 +1,5 @@
 <video autoplay poster="assets/js/indexjscss/login-background/login_background_big.jpg" id="bgvid" loop>
-  <source src="https://hls.mobinar.com/vod/videos/343/04042016/Final51459808822437.mp4" type="video/mp4">
+  <source src="https://xamp.io/vod/videos/16700/26092018/xAmplifwebsitevideo1538008387493.mp4" type="video/mp4">
 </video>
 <div class="page-lock">
 	<div class="page-logo">
@@ -20,7 +20,7 @@
 					<div *ngIf="error" class="alert alert-custom">
 						<span style="position: relative; top: -3px;">{{error}}</span>
 					</div>
-					<input id="password" class="form-control placeholder-no-fix" type="password" (input)="checkPassword()" [(ngModel)]="password" autocomplete="off"
+					<input id="password" class="form-control placeholder-no-fix password-width" type="password" (input)="checkPassword()" [(ngModel)]="password" autocomplete="off"
 					 placeholder="Password" name="password" (keypress)="eventHandler($event.keyCode)" />
 				<span toggle="#password"  title="Show Password" class="fa fa-fw fa-eye field-icon toggle-password" (click)="referenceService.showPassword('password')" *ngIf="!referenceService.showInputPassword && password"></span>
 				 <span toggle="#password"  title="Hide Password" class="fa fa-fw fa-eye-slash field-icon toggle-password" (click)="referenceService.showPassword('password')"  *ngIf="referenceService.showInputPassword && password"></span>

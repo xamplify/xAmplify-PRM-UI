@@ -170,7 +170,7 @@ img:hover {
 								</div>
 							</div>
 							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
-								<div class="portlet light cloud-services">
+								<div class="portlet light cloud-services pb0">
 									<div class="portlet-title">Import contacts from the cloud:</div>
 									<div class="portlet-body">
 										<div class="row">
@@ -428,8 +428,8 @@ img:hover {
 									<thead>
 										<tr>
 											<th>EMAILID</th>
-											<th>FIRST NAME</th>
-											<th>LAST NAME</th>
+											<th class="hidden-xs">FIRST NAME</th>
+											<th class="hidden-xs">LAST NAME</th>
 											<th>MORE</th>
 											<th>CANCEL</th>
 										</tr>
@@ -439,8 +439,8 @@ img:hover {
 											*ngFor="let newContact of newUsers; let i = index">
 										<tr class='row_{{i}}'>
 											<td>{{newContact.emailId}}</td>
-											<td>{{newContact.firstName}}</td>
-											<td>{{newContact.lastName}}</td>
+											<td  class="hidden-xs">{{newContact.firstName}}</td>
+											<td  class="hidden-xs">{{newContact.lastName}}</td>
 											<td>
 												<button id='more_less_button_{{i}}'
 													(click)="newContact.isShowDetails = ! newContact.isShowDetails">
