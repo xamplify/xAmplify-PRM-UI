@@ -167,8 +167,6 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
 
   listCampaignViewsDataInsert(campaignviews: any){
       this.campaignViews= campaignviews;
-      // if(data.hasOwnProperty('campaignviews')){ this.campaignViews = data.campaignviews; }
-      // else {this.campaignViews = data; }
       const views = [];
       for (let i = 0; i <  this.campaignViews.length; i++) {
         views.push( this.campaignViews[i].viewsCount)

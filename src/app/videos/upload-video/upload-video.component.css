@@ -124,7 +124,8 @@ border-radius: 0
 #file-upload { width:0; height:0; }
 .box-border{ border: 1px solid #54a7e9; padding: 37px 16px; margin: 0; }
 @media only screen and (max-width:600px){
-  .box-border{  min-height: 257px; border: 1px solid #54a7e9; padding: 30px 16px; margin: 0; }
+  /* .box-border{  min-height: 257px; border: 1px solid #54a7e9; padding: 30px 16px; margin: 0; } */
+  .box-border{ min-height: 179px; border: 1px solid #54a7e9; margin: 0; padding: 43px 0;}
 }
 @media only screen and (min-width:768px){
   .box-border{ margin: 0; min-height: 192px; border: 1px solid #54a7e9; padding: 51px 0; }
@@ -134,7 +135,7 @@ border-radius: 0
 }
 .margin-top-16{ margin-top: 0px;}
 @media only screen and (max-width:600px){
-  .margin-top-16 {margin-top: 16px; }
+  .margin-top-16 {margin-top: 0px; }
 }
 @media only screen and (min-width:992px){
 .pc0 { padding-left:0!important;}
