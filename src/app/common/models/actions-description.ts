@@ -4,7 +4,7 @@ export class ActionsDescription {
     contact_list_edit = 'Preview or edit list';
     contact_list_delete = 'Delete list';
     contact_list_saveAs = 'Copy and save';
-    contact_list_synchronize = 'Synchronize List';
+    contact_list_synchronize = 'Synchronize list';
     contact_list_info = 'List Info';
     contact_list_download = 'Download list';
 
@@ -12,30 +12,30 @@ export class ActionsDescription {
     contact_delete = 'Delete'
 
    /* FOR PARTNERS*/
-    partner_edit = 'Edit Partner';
-    partner_delete = 'Delete Partner';
-    partner_reSendMail = 'Resend Registration Email';
+    partner_edit = 'Edit partner';
+    partner_delete = 'Delete partner';
+    partner_reSendMail = 'Resend registration email';
 
     /* FOR VIDEOS*/
-    video_edit = 'Edit Video';
-    video_delete = 'Delete Video';
-    video_campaign = 'Create Campaign';
-    video_report = 'Video Based Reports';
-    video_draft = 'Unavailable for Draft Videos';
+    video_edit = 'Edit video';
+    video_delete = 'Delete video';
+    video_campaign = 'Create campaign';
+    video_report = 'Video based reports';
+    video_draft = 'Unavailable for draft videos';
 
    /* FOR EMAIL TEMPLATES*/
-    template_edit = 'Edit Template';
-    template_delete = 'Delete Template';
-    template_preview = 'View Template';
+    template_edit = 'Edit template';
+    template_delete = 'Delete template';
+    template_preview = 'View template';
 
    /* FOR CAMPAIGNS*/
-    campaign_edit = 'Edit Campaign';
-    campaign_delete = 'Delete Campaign';
-    campaign_preview = 'View Campaign';
-    campaign_report = 'Campaign Based Reports';
-    campaign_copy = 'Copy Campaign';
-    campaign_preview_partner = 'Preview & Delete Partner(s)'
-    campaign_delete_partner = 'Delete Partner';
+    campaign_edit = 'Edit campaign';
+    campaign_delete = 'Delete campaign';
+    campaign_preview = 'View campaign';
+    campaign_report = 'Campaign based reports';
+    campaign_copy = 'Copy campaign';
+    campaign_preview_partner = 'Preview & Delete partner(s)'
+    campaign_delete_partner = 'Delete partner';
 
     /* GLOBAL */
     listView = 'List View';
