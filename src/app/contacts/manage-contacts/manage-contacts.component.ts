@@ -111,8 +111,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
         { 'name': 'List name (Z-A)', 'value': 'name-DESC', 'for': 'contactList' },
         { 'name': 'Creation date (ASC)', 'value': 'createdTime-ASC', 'for': 'contactList' },
         { 'name': 'Creation date (DESC)', 'value': 'createdTime-DESC', 'for': 'contactList' },
-        { 'name': 'Company name (ASC)', 'value': 'contactCompany-ASC', 'for': 'contactList' },
-        { 'name': 'Company name (DESC)', 'value': 'contactCompany-DESC', 'for': 'contactList' },
 
         { 'name': 'Email (A-Z)', 'value': 'emailId-ASC', 'for': 'contacts' },
         { 'name': 'Email (Z-A)', 'value': 'emailId-DESC', 'for': 'contacts' },
@@ -120,10 +118,13 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
         { 'name': 'First name (DESC)', 'value': 'firstName-DESC', 'for': 'contacts' },
         { 'name': 'Last name (ASC)', 'value': 'lastName-ASC', 'for': 'contacts' },
         { 'name': 'Last name (DESC)', 'value': 'lastName-DESC', 'for': 'contacts' },
-        { 'name': 'Company name (ASC)', 'value': 'contactCompany-ASC', 'for': 'contacts' },
-        { 'name': 'Company name (DESC)', 'value': 'contactCompany-DESC', 'for': 'contacts' },
+        
     ];
 
+/*    .......company name sorting......
+    { 'name': 'Company name (ASC)', 'value': 'contactCompany-ASC', 'for': 'contacts' },
+    { 'name': 'Company name (DESC)', 'value': 'contactCompany-DESC', 'for': 'contacts' },*/
+    
     sortOptionsForPagination = [
         { 'name': '10', 'value': '10' },
         { 'name': '25', 'value': '25' },

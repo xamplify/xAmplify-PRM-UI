@@ -9,9 +9,11 @@
 				class="fa fa-angle-right"> </i>Edit {{checkingContactTypeName}}s</a></li>
 		<li *ngIf="! showEditContactData"><i class="fa fa-angle-right">
 		</i>
-		<span class="capitalize" *ngIf="contactsByType.selectedCategory != 'non-active'">{{contactsByType.selectedCategory}}
+		<span class="capitalize" *ngIf="contactsByType.selectedCategory != 'non-active' && contactsByType.selectedCategory != 'active'">{{contactsByType.selectedCategory}}
 		   {{checkingContactTypeName}}s</span>
 		<span class="capitalize" *ngIf="contactsByType.selectedCategory == 'non-active'">Unregistered
+		   {{checkingContactTypeName}}s</span>
+		  <span class="capitalize" *ngIf="contactsByType.selectedCategory == 'active'">Registered
 		   {{checkingContactTypeName}}s</span>
 		</li>
 	</ul>
@@ -75,7 +77,7 @@
 										</div>
 										<div class="details">
 											<div class="number">{{contactsByType.activeContactsCount}}</div>
-											<div class="desc" style="font-size:20px">Active <!-- {{checkingContactTypeName}}s --></div>
+											<div class="desc" style="font-size:20px">Registered <!-- {{checkingContactTypeName}}s --></div>
 										</div>
 										<span class="morePadding"> <a class="more" style="text-align: left;">
 														Detailed view <i class="m-icon-swapright m-icon-white"></i>
@@ -636,9 +638,11 @@
 						<div class="portlet box blue">
 							<div class="portlet-title">
 								<div class="caption">
-									<span class="capitalize" *ngIf="contactsByType.selectedCategory != 'non-active'">{{contactsByType.selectedCategory}}
+									<span class="capitalize" *ngIf="contactsByType.selectedCategory != 'non-active' && contactsByType.selectedCategory != 'active'">{{contactsByType.selectedCategory}}
 										{{checkingContactTypeName}} List</span>
 									<span class="capitalize" *ngIf="contactsByType.selectedCategory == 'non-active'">Unregistered
+										{{checkingContactTypeName}} List</span>
+									<span class="capitalize" *ngIf="contactsByType.selectedCategory == 'active'">Registered
 										{{checkingContactTypeName}} List</span>
 								</div>
 								<div class="btn-group pull-right"
