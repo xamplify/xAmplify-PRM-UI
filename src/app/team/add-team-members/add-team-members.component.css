@@ -185,6 +185,6 @@ img:hover {
 	-ms-filter: blur(0px);
 	filter: blur(0px);
 }
-.downlaod-css{ width:unset; color:white;}
+.downlaod-css{ width:unset; color:white; left: 84px; position: absolute;}
 .downlaod-css-mobile{ width:100%; color:white; margin-top: 5px }
 
