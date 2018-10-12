@@ -131,5 +131,9 @@ svg {
 .fileContainer [type=file] {
     cursor: pointer;
 }
-
-
+@media only screen  and (min-width:601px) {
+.heading-text{ font-size: 26px;color: #888888;}
+}
+@media only screen  and (max-width:600px) {
+  .heading-text{ font-size: 16px;color: #888888;}
+}

@@ -55,7 +55,7 @@
 						<li>
 						    <a  [routerLink]="['./videos']">
 							  	<i class="fa fa-file-video-o"></i>
-							  	<span class="title">Upload videos</span>
+							  	<span class="title">Upload Videos</span>
 								</a>
 						</li>
 						<li>
@@ -106,14 +106,20 @@
 						</a>
 					</li>
 
-					<li *ngIf="authService.module.isEmailTemplate && !authService.isOnlyPartner()" [ngClass]="{'active':location.path().includes('emailtemplate')}">
-						<a  href="javascript:;" (click)="openOrCloseTabs('emailtemplates')" >
+          <li *ngIf="authService.module.isEmailTemplate && !authService.isOnlyPartner()" [ngClass]="{'active':location.path().includes('emailtemplate')}">
+						<a class="hidden-xs" href="javascript:;" (click)="openOrCloseTabs('emailtemplates')" >
 						<i class="fa fa-envelope"></i>
 						<span class="title">Email Templates</span>
 						<span class="arrow "></span>
 						<span class="selected"></span>
-						</a>
-						<ul class="sub-menu"  [ngStyle]="{'min-width':refService.isSidebarClosed ? '82%' : '105%', 'display': emailtemplates? 'block': 'none' }">
+            </a>
+            <a class="visible-xs" [routerLink]="['./emailtemplates']" >
+                <i class="fa fa-envelope"></i>
+                <span class="title">Email Templates</span>
+                <span class="arrow "></span>
+                <span class="selected"></span>
+             </a>
+						<ul class="sub-menu hidden-xs"  [ngStyle]="{'min-width':refService.isSidebarClosed ? '82%' : '105%', 'display': emailtemplates? 'block': 'none' }">
 						<li>
 						  <a [routerLink]="['./emailtemplates/select']" >
 							<i class="fa fa-envelope"></i>
@@ -121,13 +127,13 @@
 							</a>
 						</li>
 						<li>
-			              <a [routerLink]="['./emailtemplates']">
-			                <i class="fa fa-list"></i>
-			                <span class="title">Manage Email Templates</span>
-			              </a>
+              <a [routerLink]="['./emailtemplates']">
+                <i class="fa fa-list"></i>
+                <span class="title">Manage Email Templates</span>
+              </a>
 						</li>
 						</ul>
-					</li>
+          </li>
 
 					<li *ngIf="authService.user.hasCompany" style="display: none;" [ngClass]="{'active':location.path().includes('content')}">
 						<a [routerLink]="['./content-management']">
@@ -176,15 +182,14 @@
 						<span class="selected"></span>
 						</a>
 					</li>
-					<li *ngIf="authService.module.isOrgAdmin || authService.module.isVendor" [ngClass]="{'active':location.path().includes('upgrade')}">
+					<!-- <li *ngIf="authService.module.isOrgAdmin || authService.module.isVendor" [ngClass]="{'active':location.path().includes('upgrade')}">
             <a style="cursor:not-allowed">
-              <!-- [routerLink]="['./upgrade']" -->
 						<i class="fa fa-arrow-circle-up"></i>
 						<span class="title">Upgrade</span>
 						<span class="arrow "></span>
 						<span class="selected"></span>
 						</a>
-					</li>
+					</li> -->
 					<li *ngIf="false">
 						<a [routerLink]="['/home/dashboard/welcome']">
 						<i class="fa fa-question-circle"></i>

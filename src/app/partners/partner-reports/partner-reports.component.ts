@@ -215,8 +215,9 @@ export class PartnerReportsComponent implements OnInit {
       this.pagination = new Pagination();
       $('#through-partner-div').hide();
       $('#inactive-partners-div').hide();
-      this.listRedistributedThroughPartnerCampaigns(this.pagination);
+      // this.listRedistributedThroughPartnerCampaigns(this.pagination);
       $('#active-partner-div').show();
+      $("#redistribute-partners-div").hide();
   }
 
   /****************************Through Partner Analytics**************************/
@@ -227,20 +228,24 @@ export class PartnerReportsComponent implements OnInit {
       $('#active-partner-div').hide();
       $('#inactive-partners-div').hide()
       $("#through-partner-div").show();
+      $("#redistribute-partners-div").hide();
       this.throughPartnerCampaignPagination.throughPartnerAnalytics = true;
       this.listThroughPartnerCampaigns(this.throughPartnerCampaignPagination);
   }
 
   /***************************Re Distributed**************************/
   goToReDistributedPartnersDiv(){
-      this.throughPartnerCampaignPagination = new Pagination();
+    // this.throughPartnerCampaignPagination = new Pagination();
       this.sortOption = new SortOption();
       this.selectedTabIndex = 2;
+      this.pagination.maxResults = 12;
       $('#active-partner-div').hide();
       $('#inactive-partners-div').hide()
-      $("#through-partner-div").show();
-      this.throughPartnerCampaignPagination.reDistributedPartnerAnalytics = true;
-      this.listThroughPartnerCampaigns(this.throughPartnerCampaignPagination);
+      $("#through-partner-div").hide();
+      $("#redistribute-partners-div").show();
+      this.listRedistributedThroughPartnerCampaigns(this.pagination);
+      // this.throughPartnerCampaignPagination.reDistributedPartnerAnalytics = true;
+      // this.listThroughPartnerCampaigns(this.throughPartnerCampaignPagination);
   }
 
 
@@ -345,6 +350,7 @@ export class PartnerReportsComponent implements OnInit {
       $('#through-partner-div').hide();
       $('#active-partner-div').hide();
       $('#inactive-partners-div').show();
+      $("#redistribute-partners-div").hide();
       this.inActivePartnersPagination.maxResults = 12;
       this.getInActivePartnerReports(this.inActivePartnersPagination);
   }
@@ -366,7 +372,7 @@ export class PartnerReportsComponent implements OnInit {
                pagination = this.pagerService.getPagedItems(pagination, response.inactivePartnerList);
                this.referenseService.loading(this.httpRequestLoader, false);
               },
-              (error: any) => { 
+              (error: any) => {
                   this.xtremandLogger.errorPage(error)
               });
   }

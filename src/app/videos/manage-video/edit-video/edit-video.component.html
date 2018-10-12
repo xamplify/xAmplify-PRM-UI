@@ -199,7 +199,7 @@
 											<span class="pull-left" style="margin-top: 13px;margin-left: -21px;cursor: pointer;color: #54a7e9;" data-toggle="tooltip" data-placement="bottom" title="Add tags to your video and click enter">
 												<i class="fa fa-question-circle" style="font-size: 20px"></i>
 											</span>
-											<tag-input [(ngModel)]="itemOfTags" [ngModelOptions]="{standalone: true}" [theme]="'foundation-theme'" [placeholder]="'Add Tag and Enter'" [secondaryPlaceholder]="'Add Tag and Enter'"
+											<tag-input [(ngModel)]="itemOfTags" [ngModelOptions]="{standalone: true}" [theme]="'foundation-theme'" [placeholder]="'Add Tag and Enter'" [secondaryPlaceholder]="'Add a tag and press Enter'"
 											 placeholder='Add Tag and Enter' [validators]="validatorsTag" required></tag-input>
 											<div *ngIf="itemOfTags?.length===0 || itemOfTags===null" style="color:red">Please add a tag for your video.</div>
 										</div>
@@ -376,7 +376,7 @@
                             (loadImageFailed)="loadImageFailed()"></image-cropper>
                            <img  [src]="croppedImage" />
                            <button *ngIf="!brandLogoUrl" class="btn btn-primary" (click)="saveThumbnail()">submit</button> -->
-													 <span class="btn btn-css btn-file" *ngIf="!brandLogoUrl">Choose Logo
+													 <span class="btn btn-css btn-file" *ngIf="!brandLogoUrl">Select Logo
 													  <input type="file" ng2FileSelect [uploader]="videoLogoUploader" accept=".jpg,.jpeg,.png" class="btn btn-primary"
 													   style="background: #00a6e8;width: 100%;" title=" " (change)="isFileCheck($event)">
                            </span>
@@ -385,7 +385,7 @@
 														<img [src]="authenticationService.MEDIA_URL + brandLogoUrl"  (error)="errorHandler($event)">
                           </div>
 													<div *ngIf="!brandLogoUrl" style="height: 11px;">
-                              <span style="color:red">Please upload the video logo</span>
+                              <span style="color:red">Please upload a logo</span>
                               <p style="color: blue;">Note:Max image size 10 MB</p>
 													</div>
 												</div>
