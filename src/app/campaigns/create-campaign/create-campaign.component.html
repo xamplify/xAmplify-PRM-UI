@@ -307,11 +307,11 @@
 											<ng-container *ngIf="!campaign.createdFromVideos">
 												<div class="input-icon right pull-right m10" *ngIf="isMyVideosActive">
 													<i class="icon-magnifier" (click)="searchVideo()" style="cursor: pointer;"></i>
-													<input type="text" class="form-control" placeholder="Search in My Videos" [(ngModel)]="videoSearchInput" [ngModelOptions]="{standalone: true}">
+													<input type="text" class="form-control" placeholder="Search for a video" [(ngModel)]="videoSearchInput" [ngModelOptions]="{standalone: true}">
 												</div>
 												<div class="input-icon right pull-right m10" *ngIf="!isMyVideosActive">
 													<i class="icon-magnifier" (click)="searchChannelVideo()" style="cursor: pointer;"></i>
-													<input type="text" class="form-control" placeholder="Search in Partner Videos" [(ngModel)]="channelVideoSearchInput" [ngModelOptions]="{standalone: true}">
+													<input type="text" class="form-control" placeholder="Search for a video" [(ngModel)]="channelVideoSearchInput" [ngModelOptions]="{standalone: true}">
 												</div>
 											</ng-container>
 										</div>
