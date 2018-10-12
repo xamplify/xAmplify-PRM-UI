@@ -66,6 +66,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
     seekbarTimestored = 0;
     logoImageUrlPath: string;
     logoLink: string;
+    errorMessage:string;
 
     constructor(public router: Router, public route: ActivatedRoute, public videoFileService: VideoFileService,
         public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger, public http: Http,
@@ -149,7 +150,8 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                 this.embedVideoFile.viewBy = this.embedVideoFile.viewBy.toLowerCase();
             }, (error: any) => {
                 this.xtremandLogger.error(error);
-                this.router.navigate(['/no-videos-found']);
+                this.errorMessage = JSON.parse(error._body).message;
+               // this.router.navigate(['/no-videos-found']);
             });
           }catch(error){ this.xtremandLogger.error('error');}
     }
