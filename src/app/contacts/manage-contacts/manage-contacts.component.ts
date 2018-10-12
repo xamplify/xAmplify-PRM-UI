@@ -106,22 +106,22 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
     public normalImage: string = 'assets/admin/pages/media/works/contacts.png';
 
     sortOptions = [
-        { 'name': 'Sort By', 'value': '', 'for': '' },
-        { 'name': 'Name(A-Z)', 'value': 'name-ASC', 'for': 'contactList' },
-        { 'name': 'Name(Z-A)', 'value': 'name-DESC', 'for': 'contactList' },
-        { 'name': 'Created Time(ASC)', 'value': 'createdTime-ASC', 'for': 'contactList' },
-        { 'name': 'Created Time(DESC)', 'value': 'createdTime-DESC', 'for': 'contactList' },
-        { 'name': 'Company Name(ASC)', 'value': 'contactCompany-ASC', 'for': 'contactList' },
-        { 'name': 'Company Name(DESC)', 'value': 'contactCompany-DESC', 'for': 'contactList' },
+        { 'name': 'Sort by', 'value': '', 'for': '' },
+        { 'name': 'List name (A-Z)', 'value': 'name-ASC', 'for': 'contactList' },
+        { 'name': 'List name (Z-A)', 'value': 'name-DESC', 'for': 'contactList' },
+        { 'name': 'Creation date (ASC)', 'value': 'createdTime-ASC', 'for': 'contactList' },
+        { 'name': 'Creation date (DESC)', 'value': 'createdTime-DESC', 'for': 'contactList' },
+        { 'name': 'Company name (ASC)', 'value': 'contactCompany-ASC', 'for': 'contactList' },
+        { 'name': 'Company name (DESC)', 'value': 'contactCompany-DESC', 'for': 'contactList' },
 
-        { 'name': 'Email(A-Z)', 'value': 'emailId-ASC', 'for': 'contacts' },
-        { 'name': 'Email(Z-A)', 'value': 'emailId-DESC', 'for': 'contacts' },
-        { 'name': 'First Name(ASC)', 'value': 'firstName-ASC', 'for': 'contacts' },
-        { 'name': 'First Name(DESC)', 'value': 'firstName-DESC', 'for': 'contacts' },
-        { 'name': 'Last Name(ASC)', 'value': 'lastName-ASC', 'for': 'contacts' },
-        { 'name': 'Last Name(DESC)', 'value': 'lastName-DESC', 'for': 'contacts' },
-        { 'name': 'Company Name(ASC)', 'value': 'contactCompany-ASC', 'for': 'contacts' },
-        { 'name': 'Company Name(DESC)', 'value': 'contactCompany-DESC', 'for': 'contacts' },
+        { 'name': 'Email (A-Z)', 'value': 'emailId-ASC', 'for': 'contacts' },
+        { 'name': 'Email (Z-A)', 'value': 'emailId-DESC', 'for': 'contacts' },
+        { 'name': 'First name (ASC)', 'value': 'firstName-ASC', 'for': 'contacts' },
+        { 'name': 'First name (DESC)', 'value': 'firstName-DESC', 'for': 'contacts' },
+        { 'name': 'Last name (ASC)', 'value': 'lastName-ASC', 'for': 'contacts' },
+        { 'name': 'Last name (DESC)', 'value': 'lastName-DESC', 'for': 'contacts' },
+        { 'name': 'Company name (ASC)', 'value': 'contactCompany-ASC', 'for': 'contacts' },
+        { 'name': 'Company name (DESC)', 'value': 'contactCompany-DESC', 'for': 'contacts' },
     ];
 
     sortOptionsForPagination = [
