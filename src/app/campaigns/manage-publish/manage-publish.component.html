@@ -101,11 +101,15 @@
 										</td>
 										<td class="center">
 											<span align="right">
-												<b *ngIf="campaign.launched">Launched On</b>
-												<!-- <b *ngIf="!campaign.launched && campaign.launchedOn?.length > 0 ">Scheduled For</b>
-                        <b *ngIf="!campaign.launched && campaign.launchedOn?.length==0">Saved On</b> -->
+                        <b *ngIf="campaign.launched">Launched On</b>
+                        <ng-container *ngIf="!campaign.launched && campaign.scheduleType!=='SCHEDULE' && campaign.scheduleType!=='SAVE'">
+                        <b *ngIf="!campaign.launched && campaign.launchedOn?.length > 0">Scheduled For</b>
+                        <b *ngIf="!campaign.launched && campaign.launchedOn?.length==0">Saved On</b>
+                        </ng-container>
+                        <ng-container *ngIf="!campaign.launched && campaign.scheduleType">
                         <b *ngIf="!campaign.launched && campaign.scheduleType==='SCHEDULE'">Scheduled For</b>
-												<b *ngIf="!campaign.launched && campaign.scheduleType==='SAVE'">Saved On</b>
+                        <b *ngIf="!campaign.launched && campaign.scheduleType==='SAVE'">Saved On</b>
+                        </ng-container>
 											</span>
 											<span align="right" title="Upload Date">
 												<!-- <b *ngIf="campaign.launched || !campaign.launched && campaign.launchedOn?.length > 0">{{campaign.launchedOn}}</b> -->

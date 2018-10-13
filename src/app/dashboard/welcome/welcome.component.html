@@ -119,8 +119,7 @@ cursor: not-allowed;
 						</a>
 					</div>
 				</div>
-
-				<div class="col-sm-6 col-xs-12 block" *ngIf="!authenticationService.isVendor() && !authenticationService.isOrgAdmin()">
+		   	<div class="col-sm-6 col-xs-12 block" *ngIf="!authenticationService.isVendor() && !authenticationService.isOrgAdmin()">
 					<div class="text-block">
 						<h1 style="color: #76c9ff">Videos</h1>
 						<p>{{welcome_text.videos}}</p>
@@ -132,7 +131,8 @@ cursor: not-allowed;
 					</div>
 				</div>
       </div>
-      <div class="divider" *ngIf="!authenticationService.isVendor() && !authenticationService.isOrgAdmin()"></div>
+      <div class="divider" *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdmin()"></div>
+      <div class="divider" *ngIf="!authenticationService.isVendor() && !authenticationService.isOrgAdmin() && !authenticationService.isOnlyPartner()"></div>
 			<div class="flex" *ngIf="!authenticationService.isVendor() && !authenticationService.isOrgAdmin()">
         <div class="col-sm-6 col-xs-12 block image-block" *ngIf="authenticationService.isOnlyPartner()">
 					<img src="https://wistia.com/assets/product/video-seo/VideoSEO_2-2fc96034647ff7b9ecc5e0be9bac526f.png" style="max-width: 100%;height: 183px; ">
