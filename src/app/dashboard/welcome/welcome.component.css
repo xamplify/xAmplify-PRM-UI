@@ -220,4 +220,9 @@ h3 {
 .videoId-dimensions.vjs-fluid {
   padding-top: 56.25%;
 }
-
+.social-analytics{
+  width: 319px;
+  height: 218px;
+  float: right;
+  margin-top: -12px;
+}
