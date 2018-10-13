@@ -64,7 +64,7 @@ cursor: not-allowed;
 					</div>
 				</div>
 			</div>
-
+      <div class="divider" *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdmin()"></div>
 			<div class="flex" *ngIf="!authenticationService.isOnlyPartner()">
 			<div class="col-sm-6 col-xs-12 block" *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdmin()">
 					<div class="text-block">
@@ -131,8 +131,8 @@ cursor: not-allowed;
 						</div>
 					</div>
 				</div>
-
-			</div>
+      </div>
+      <div class="divider" *ngIf="!authenticationService.isVendor() && !authenticationService.isOrgAdmin()"></div>
 			<div class="flex" *ngIf="!authenticationService.isVendor() && !authenticationService.isOrgAdmin()">
         <div class="col-sm-6 col-xs-12 block image-block" *ngIf="authenticationService.isOnlyPartner()">
 					<img src="https://wistia.com/assets/product/video-seo/VideoSEO_2-2fc96034647ff7b9ecc5e0be9bac526f.png" style="max-width: 100%;height: 183px; ">
@@ -152,6 +152,7 @@ cursor: not-allowed;
 					<img src="https://wistia.com/assets/product/video-seo/VideoSEO_2-2fc96034647ff7b9ecc5e0be9bac526f.png" style="max-width: 100%;height: 183px;margin: -10px 126px; ">
 				</div>
       </div>
+      <div class="divider"  *ngIf="!authenticationService.isVendor() && !authenticationService.isOrgAdmin()"></div>
 
 			<div class="flex" *ngIf="!authenticationService.isOnlyPartner()">
 			<div class="col-sm-6 col-xs-12 block image-block">
@@ -168,8 +169,8 @@ cursor: not-allowed;
 						</div>
 					</div>
 				</div>
-
       </div>
+      <div class="divider" *ngIf="!authenticationService.isOnlyPartner()"></div>
       <div class="flex">
 				<div class="col-sm-6 col-xs-12 block">
 					<div class="text-block">
@@ -186,6 +187,8 @@ cursor: not-allowed;
 					<img src="https://wistia.com/assets/features/secure-ddcc83774ec8351e9de6cec79f8ad49d.png" style="height: 203px;float: right;margin-top: -18px;">
 				</div>
       </div>
+      <div class="divider"></div>
+
       <div class="flex" *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdminPartner() || authenticationService.isVendorPartner()|| authenticationService.isOrgAdmin() ||authenticationService.isOrgAdmin()">
           <div class="col-sm-6 col-xs-12 block image-block">
             <img src="https://wistia.com/assets/product/video-seo/VideoSEO_2-2fc96034647ff7b9ecc5e0be9bac526f.png" style="max-width: 100%;height: 202px;margin-top: -10px;">
@@ -202,7 +205,7 @@ cursor: not-allowed;
                 </div>
               </div>
         </div>
-
+     <div class="divider" *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdminPartner() || authenticationService.isVendorPartner()|| authenticationService.isOrgAdmin() ||authenticationService.isOrgAdmin()"></div>
 			<div class="flex">
         <div class="col-sm-6 col-xs-12 block image-block" *ngIf="authenticationService.isOnlyPartner()">
 					<img class="social-analytics" style="float: left !important;" src="assets/images/social-account-icons.jpg">
@@ -220,7 +223,9 @@ cursor: not-allowed;
         <div class="col-sm-6 col-xs-12 block image-block" [hidden]="authenticationService.isOnlyPartner()">
 					<img class="social-analytics" src="assets/images/social-account-icons.jpg">
 				</div>
-			</div>
+      </div>
+      <div class="divider" ></div>
+
 			<div class="flex">
 			<div class="col-sm-6 col-xs-12 block image-block" *ngIf="authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner()">
 					<img src="https://wistia.com/assets/main/welcome/Marketing-bf8195807e780b9926a5dc125d763a62.svg" style="height: 200px;;">
