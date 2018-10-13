@@ -197,8 +197,12 @@
 												<span *ngIf="campaign.launched">Launched On </span>
 												<span *ngIf="!campaign.launched && campaign.launchedOn?.length > 0">Scheduled For </span>
 												<span *ngIf="!campaign.launched && campaign.launchedOn?.length==0">Saved On </span>
-												<span *ngIf="campaign.scheduleType=='NOW' || campaign.scheduleType=='SCHEDULE'">{{campaign.launchedOn}}</span>
-												<span *ngIf="campaign.scheduleType=='SAVE'">{{campaign.startTime}}</span>
+												<span *ngIf="campaign.scheduleType=='NOW' || campaign.scheduleType=='SCHEDULE'"><!-- {{campaign.launchedOn}} -->
+												<app-timestamp [isOnlyDate]="false" [dateAndTime]="campaign.launchedOn"> </app-timestamp>
+												</span>
+												<span *ngIf="campaign.scheduleType=='SAVE'"><!-- {{campaign.startTime}} -->
+												<app-timestamp [isOnlyDate]="false" [dateAndTime]="campaign.startTime"> </app-timestamp>
+												</span>
 											</h5>
 										</td>
 										<td>
