@@ -316,7 +316,7 @@
                     </div>
                     <!-- Content Should Come here ------------ -->
                     <fieldset *ngIf="replies?.length>0">
-                      <legend>{{properties.ADD_AUTO_RESPONSE_EMAIL}}</legend>
+                      <legend style="padding: 15px 10px;">{{properties.ADD_AUTO_RESPONSE_EMAIL}}</legend>
                       <div *ngFor="let reply of replies;let i=index">
                         <div class="portlet light dashboard-stat2" id="{{reply.divId}}">
                           <div class="portlet-title custom-change-css" [ngClass]="{'colorBlue':isEven(i+1), 'colorRed':!isEven(i+1)}">
@@ -326,7 +326,7 @@
                               </h4>
                             </div>
                             <div class="col-xs-5" style="text-align:right">
-                              <label class="switch-choose" style="color:#fff">Choose Template</label>
+                             <!--  <label class="switch-choose" style="color:#fff">Choose Template</label> -->
                               <!--  <switch class="switch-choose" [status]="reply.defaultTemplate" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
                                 [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch"
                                 [size]="callActionSwitch.size" (statusChange)="selectReplyEmailBody($event,i,reply)">
@@ -411,7 +411,7 @@
                     </fieldset>
                     <!-- ------------ADD ON CLICK------------------------ -->
                     <fieldset *ngIf="urls?.length>0">
-                      <legend>{{properties.ADD_AUTO_RESPONSE_WEBSITE}}</legend>
+                      <legend style="padding: 15px 10px;">{{properties.ADD_AUTO_RESPONSE_WEBSITE}}</legend>
                       <div *ngFor="let url of urls;let i=index">
                         <div class="portlet light dashboard-stat2" id="{{url.divId}}">
                           <div class="portlet-title custom-change-css" [ngClass]="{'colorBlue':isEven(i+1), 'colorRed':!isEven(i+1)}">
