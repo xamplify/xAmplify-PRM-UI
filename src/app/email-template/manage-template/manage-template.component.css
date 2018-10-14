@@ -181,5 +181,5 @@ td h6 {
     text-transform: uppercase;
     padding: 3px 9px;
 }
-@media only screen and (max-width:768px){ .modal-template { width: 95% !important;}}
+@media only screen and (max-width:768px){ .modal-template { width: 100% !important;}}
 @media only screen and (min-width:768px){ .modal-template { width: 65% !important;}}
