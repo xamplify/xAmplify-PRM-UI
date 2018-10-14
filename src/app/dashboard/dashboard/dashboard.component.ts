@@ -132,7 +132,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         $('#sparkline_bar').sparkline(myvalues, {
             type: 'bar',
             width: '100',
-            barWidth: 5,
+            barWidth: 2,
             height: '55',
             barColor: '#35aa47',
             negBarColor: '#e02222',
@@ -165,7 +165,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         $('#sparkline_bar2').sparkline(myvalues, {
             type: 'bar',
             width: '100',
-            barWidth: 5,
+            barWidth: 2,
             height: '55',
             barColor: '#35aa47',
             negBarColor: '#e02222',
@@ -188,7 +188,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         $('#sparkline_line').sparkline(myvalues, {
             type: 'line',
             width: '100',
-            barWidth: 5,
+            barWidth: 2,
             height: '55',
             barColor: '#35aa47',
             negBarColor: '#e02222',

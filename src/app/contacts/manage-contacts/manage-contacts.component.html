@@ -622,9 +622,10 @@
   <app-scroll-top></app-scroll-top>
 </div>
 
-<div id="filterModal" class="modal fade" role="dialog"
+<div id="filterModal" class="modal right fade" role="dialog"
 	data-backdrop="static" data-keyboard="false">
-	<div class="modal-dialog" [ngStyle]="{'width':!referenceService.isMobileScreenSize()? '53%': '95%'}">
+	<!-- <div class="modal-dialog" [ngStyle]="{'width':!referenceService.isMobileScreenSize()? '53%': '95%'}"> -->
+    <div class="modal-dialog modal-css" role="document" style="right:0 !important">
 		<!-- Modal content-->
 		<div class="modal-content">
 			<div class="modal-header">

@@ -102,7 +102,7 @@ td>h5 {
 	</div>
 
 	<!-- Customize Campaign Modal -->
-	<div class="modal fade" id="customizeCampaignModal" tabindex="-1" role="dialog" aria-labelledby="customizeCampaignModalLabel">
+	<div class="modal right fade" id="customizeCampaignModal" tabindex="-1" role="dialog" aria-labelledby="customizeCampaignModalLabel">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -608,9 +608,10 @@ td>h5 {
   <app-scroll-top></app-scroll-top>
 </div>
 <!-- Modals -->
-<div class="modal fade-scale" id="emailClickedModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false"
+<div class="modal right fade" id="emailClickedModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false"
  data-backdrop="static">
-	<div class="modal-dialog" role="document" style="width: 80%; margin: 1em auto">
+ <!-- style="width: 80%; margin: 1em auto" -->
+	<div class="modal-dialog" role="document" >
 		<div class="modal-content">
 			<div class="modal-header">
 				<a class="close-circle" data-dismiss="modal" (click)="cancelEmailStateModalPopUp()">
@@ -692,9 +693,10 @@ td>h5 {
 	</div>
 </div>
 <!-- world map user details  -->
-<div class="modal fade-scale" id="worldMapModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false"
+<div class="modal right fade" id="worldMapModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false"
  data-backdrop="static">
-	<div class="modal-dialog" role="document" style="width: 80%; margin: 1em auto">
+ <!-- style="width: 80%; margin: 1em auto" -->
+	<div class="modal-dialog" role="document" >
 		<div class="modal-content">
 			<div class="modal-header">
 				<a class="close-circle" data-dismiss="modal" (click)="cancelEmailStateModalPopUp()">
@@ -719,9 +721,9 @@ td>h5 {
 						<thead>
 							<tr>
 								<th class="headerCss center">NAME</th>
-								<th class="headerCss center">DATE & TIME</th>
+                <th class="headerCss center">DATE & TIME</th>
+                <th class="headerCss center">LOCATION</th>
 								<th class="headerCss center">DEVICE</th>
-								<th class="headerCss center">LOCATION</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -732,11 +734,11 @@ td>h5 {
 								<td class="center">
 								<app-timestamp [dateAndTime]="item.time"> </app-timestamp>
 								</td>
-								<td style="text-align: center">
-									<app-platform [deviceTypeOs]="true" [userPlatform]="item"> </app-platform>
-								</td>
-								<td style="text-align: center">
+              	<td style="text-align: center">
 									<app-location [userLocation]="item"> </app-location>
+								</td>
+                <td style="text-align: center">
+									<app-platform [deviceTypeOs]="true" [userPlatform]="item"> </app-platform>
 								</td>
 							</tr>
 						</tbody>

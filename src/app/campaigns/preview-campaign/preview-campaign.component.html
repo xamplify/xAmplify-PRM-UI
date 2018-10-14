@@ -691,8 +691,8 @@
 
 <app-preview-video *ngIf="videoFile" [videoFile]="videoFile" (notifyParent)="closePreviewVideoModal($event)"></app-preview-video>
 <!--email template preview-->
-<div class="modal" id="email_template_preivew">
-  <div class="modal-dialog modal-lg">
+<div class="modal right fade" id="email_template_preivew">
+  <div class="modal-dialog modal-lg modal-template" style="right:0">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true">
@@ -711,8 +711,8 @@
 </div>
 
 <!--contact list preview-->
-<div class="modal" id="contactlist-preivew">
-  <div class="modal-dialog modal-lg">
+<div class="modal right fade" id="contactlist-preivew">
+  <div class="modal-dialog modal-lg modal-template" style="right:0">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true">
@@ -754,8 +754,8 @@
 </div>
 <div id="emailTemplateContent" style="display: none;"></div>
 <!-- ----------------------------------Contact Lists--------------------------------- -->
-<div class="modal fade" id="usersModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static">
-  <div class="modal-dialog" role="document">
+<div class="modal right fade" id="usersModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static">
+  <div class="modal-dialog modal-template" role="document" style="right:0">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close-circle" data-dismiss="modal" aria-label="Close">
