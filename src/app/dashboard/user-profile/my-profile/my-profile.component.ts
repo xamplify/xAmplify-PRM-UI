@@ -78,7 +78,13 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         public regularExpressions: RegularExpressions,public route:ActivatedRoute) {
           if (this.isEmpty(this.authenticationService.userProfile.roles) || !this.authenticationService.userProfile.profileImagePath) {this.router.navigateByUrl(this.referenceService.homeRouter);}
           try{
-            this.userData = this.authenticationService.userProfile;
+            
+              if ( authenticationService.isSuperAdmin() ) {
+                  this.userData = this.authenticationService.venorMyProfileReport
+              } else {
+                  this.userData = this.authenticationService.userProfile;
+              }
+              
             this.roleNames = this.authenticationService.showRoles();
             this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
             this.videoUtilService.videoTempDefaultSettings = this.referenceService.defaultPlayerSettings;

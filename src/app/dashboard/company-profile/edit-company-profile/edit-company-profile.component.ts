@@ -223,7 +223,8 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.geoLocation();
-        this.getCompanyProfileByUserId();
+        let userId = this.authenticationService.isSuperAdmin()? this.authenticationService.selectedVendorId: this.loggedInUserId;
+        this.getCompanyProfileByUserId(userId);
         if (this.authenticationService.user.hasCompany) {
             this.companyProfile.isAdd = false;
             this.profileCompleted = 100;
@@ -418,8 +419,9 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
         );
       }
     }
-    getCompanyProfileByUserId() {
-        this.companyProfileService.getByUserId(this.loggedInUserId)
+    getCompanyProfileByUserId(userId) {
+                  
+        this.companyProfileService.getByUserId(userId)
             .subscribe(
                 data => {
                     if (data.data != undefined) {

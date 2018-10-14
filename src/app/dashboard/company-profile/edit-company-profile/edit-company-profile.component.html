@@ -1,6 +1,11 @@
 
-<div class="page-content" [class.ml0]="!authenticationService.user.hasCompany">
+<div class="page-content" [class.ml0]="!authenticationService.user.hasCompany || authenticationService.isSuperAdmin()">
 <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+<div class="page-bar" *ngIf="!showEdit">
+		<ul class="page-breadcrumb">
+		    <li *ngIf="authenticationService.isSuperAdmin()"><i class="fa fa-home"></i><a [routerLink]="['/home/dashboard/admin-report']">Admin Report</a></li>
+		    </ul>
+		    </div>
 	<div class="portlet light" id="company-profile-div">
 		<div class="portlet-title">
 			<div class="caption">Company Profile</div>
@@ -217,8 +222,8 @@
 						</div>
 					</div>
 					<div class="pull-right">
-						<button type="submit" *ngIf="companyProfile.isAdd"	id="saveOrUpdateCompanyButton" (click)="save()"	class="btn green-haze" disabled="disabled">Save</button>
-						<button type="submit" *ngIf="!companyProfile.isAdd"	id="saveOrUpdateCompanyButton" (click)="update()"class="btn green-haze">Update</button>
+						<button type="submit" [disabled]="authenticationService.isSuperAdmin()" *ngIf="companyProfile.isAdd"	id="saveOrUpdateCompanyButton" (click)="save()"	class="btn green-haze" disabled="disabled">Save</button>
+						<button type="submit" [disabled]="authenticationService.isSuperAdmin()" *ngIf="!companyProfile.isAdd"	id="saveOrUpdateCompanyButton" (click)="update()"class="btn green-haze">Update</button>
 					</div>
 				</form>
 			</div>
