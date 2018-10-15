@@ -1,5 +1,8 @@
 <div class="col-sm-4 col-xs-12" *ngFor="let socialStatusProvider of socialStatus.socialStatusProviders">
-						<div class="portlet light block box">
+						<div class="portlet light block box" [ngClass]="{'facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK',
+									'twitter': socialStatusProvider.socialConnection.source ==='TWITTER',
+									'linkedin': socialStatusProvider.socialConnection.source ==='LINKEDIN',
+									'google': socialStatusProvider.socialConnection.source ==='GOOGLE'}">
               <span class="ribbon1" [ngClass]="{'ribbon-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK',
 									'ribbon-twitter': socialStatusProvider.socialConnection.source ==='TWITTER',
 									'ribbon-linkedin': socialStatusProvider.socialConnection.source ==='LINKEDIN',
@@ -19,13 +22,21 @@
 <h5 class="status-time">{{socialStatus.scheduledTimeUser | date: 'short'}}</h5>
 </div>
 <div class="portlet body m0">
-  <div class="status-message">{{socialStatus.statusMessage}}</div>
-<div class="status-media">
+  <div class="status-message" [ngClass]="{'hidden': socialStatus.statusMessage?.length === 0, 'col-xs-8': socialStatus.socialStatusContents.length > 0, 'col-xs-12': socialStatus.socialStatusContents.length === 0}">
+		<ng-container *ngIf="isUrl(socialStatus.statusMessage); else plaintext">
+    	<a [href]="socialStatus.statusMessage" target="_blank">{{socialStatus.statusMessage}}</a>
+		</ng-container>
+		<ng-template #plaintext>{{socialStatus.statusMessage}}</ng-template>
+		
+	</div>
+<div class="status-media" [ngClass]="{'col-xs-4':socialStatus.statusMessage?.length > 0, 'col-xs-12': socialStatus.statusMessage?.length === 0}">
 <ng-container *ngFor="let socialStatusContent of socialStatus.socialStatusContents">
-    <img async *ngIf="socialStatusContent.fileType === 'image'" src="{{authenticationService.MEDIA_URL}}{{socialStatusContent.filePath}}?access_token={{authenticationService.access_token}}">
-		<video *ngIf="socialStatusContent.fileType == 'video'" width="160" height="80">
-			<source src="{{socialStatusContent.filePath}}" type="video/mp4">
-		</video>
+		<div class="image-wrapper col-xs-6">
+			<img async *ngIf="socialStatusContent.fileType === 'image'" src="{{authenticationService.MEDIA_URL}}{{socialStatusContent.filePath}}">
+			<video *ngIf="socialStatusContent.fileType == 'video'" width="160" height="80">
+				<source src="{{socialStatusContent.filePath}}" type="video/mp4">
+			</video>
+		</div>
 </ng-container>
 </div>
 </div>

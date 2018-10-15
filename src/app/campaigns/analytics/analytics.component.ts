@@ -59,7 +59,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   //eventCampaingRsvpRedistributionDetailPagination: Pagination = new Pagination();
    rsvpDetailAnalyticsPagination: Pagination = new Pagination();
 
-  socialStatus: SocialStatus;
+  socialStatus: SocialStatus = new SocialStatus();
   campaignType: string;
   campaignId: number;
   maxViewsValue: number;

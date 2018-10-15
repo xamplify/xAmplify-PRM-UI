@@ -16,16 +16,49 @@
     color: #999;
 }
 .status-message {
-  font-size: 14px;
+  font-size: 13px;
+  word-break: break-word;
+  float: left;
+  overflow-y: auto;
+  height: 100px;
+  padding-left: 0;
 }
 .status-media {
-  margin-bottom: 10px;
+  padding: 0;
 }
+.status-media .image-wrapper {
+    float: left;
+    background-color: #f1f1f1;
+    padding: 1px;
+}
+
 .status-media img {
-  width: 75px;
-  height: 60px;
-  float: left;
-  margin-right: 5px;
+    max-width: 100%;
+    max-height: 100%;
+    max-height: 100%;
+    height: auto;
+    width: 100%;
+    margin: 0 auto;
+    float: left;
+}
+/* width */
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555; 
 }
 
 .box .fa-social {
@@ -33,7 +66,7 @@
 }
 .box {
     position: relative;
-    padding: 15px !important;
+    padding: 10px !important;
 }
 
 .box i {
@@ -127,7 +160,10 @@
 
 
 
-
+.facebook {border-color: #3b5998}
+.twitter {border-color: #55acee}
+.linkedin {border-color: #007bb5}
+.google {border-color: #dd4b39}
 
 
 
