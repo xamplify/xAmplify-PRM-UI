@@ -84,7 +84,7 @@ export class LoginComponent implements OnInit, OnDestroy {
                       }else if(response.error_description ==="UserDetailsService returned null, which is an interface contract violation"){
                         this.setCustomeResponse("ERROR", this.properties.BAD_CREDENTIAL_ERROR);
                       }else if (response.error_description === "The email address that you've entered doesn't match any account. Sign up for an account." ){
-                    	  this.setCustomeResponse("ERROR", this.properties.USER_ACCOUNT_DOESNOT_EXIST );
+                    	  this.setCustomeResponse("ERROR", "We couldn't find your account. Please check your email and try again" );
                       }
                   }
                   else {

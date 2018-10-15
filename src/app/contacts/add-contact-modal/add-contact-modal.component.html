@@ -144,25 +144,27 @@ data-keyboard="false" data-backdrop="static">
         </div> -->
       </form>
     </div>
-    <div class="modal-footer" *ngIf="!isPartner">
+    <div class="modal-footer" style="border:none" *ngIf="!isPartner">
       <!-- <span style="float: left;"><span style="color: red">*</span> Required field</span> -->
+      <button class="btn default" (click)="addContactModalClose()">Cancel</button>
       <button *ngIf="!isContactTypeEdit && !isUpdateUser" type="submit" class="btn green"
-        [disabled]="!checkingForEmail" (click)="addRow()">Add</button>
+        [disabled]="!checkingForEmail" (click)="addRow()" >Add</button>
       <button *ngIf="isContactTypeEdit && !isUpdateUser" type="submit" class="btn green"
         [disabled]="!checkingForEmail || isEmailExist" (click)="addEditContactRow()">Save</button>
       <button *ngIf="!isContactTypeEdit && isUpdateUser" type="submit" class="btn green"
-        [disabled]="!checkingForEmail || isEmailExist" (click)="updateUser()" data-dismiss="modal">Update</button>
+        [disabled]="!checkingForEmail || isEmailExist" (click)="updateUser()" data-dismiss="modal" >Update</button>
       <!-- <button type="button" class="btn green" data-dismiss="modal"
         (click)="addContactModalClose()">Close</button> -->
     </div>
-    <div class="modal-footer" *ngIf="isPartner">
+    <div class="modal-footer" *ngIf="isPartner"  style="border:none" >
+       <button class="btn default" (click)="addContactModalClose()">Cancel</button>
       <!-- <span style="float: left;"><span style="color: red">*</span> Required field</span> -->
       <button *ngIf="!isContactTypeEdit && !isUpdateUser" type="submit" class="btn green"
         [disabled]="!checkingForEmail || !isCompanyDetails || isEmailExist" (click)="addRow()">Add</button>
       <button *ngIf="isContactTypeEdit && !isUpdateUser" type="submit" class="btn green"
-        [disabled]="!checkingForEmail || !isCompanyDetails || isEmailExist" (click)="addEditContactRow()">Save</button>
+        [disabled]="!checkingForEmail || !isCompanyDetails || isEmailExist" (click)="addEditContactRow()" >Save</button>
       <button *ngIf="!isContactTypeEdit && isUpdateUser" type="submit" class="btn green"
-        [disabled]="!checkingForEmail || !isCompanyDetails || isEmailExist" (click)="updateUser()" data-dismiss="modal">Update</button>
+        [disabled]="!checkingForEmail || !isCompanyDetails || isEmailExist" (click)="updateUser()" data-dismiss="modal" >Update</button>
       <!-- <button type="button" class="btn green" data-dismiss="modal"
         (click)="addContactModalClose()">Close</button> -->
     </div>
