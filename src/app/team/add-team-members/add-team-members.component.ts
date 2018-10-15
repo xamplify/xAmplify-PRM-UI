@@ -328,8 +328,8 @@ export class AddTeamMembersComponent implements OnInit {
         this.selectedTeamMemberEmailId = teamMember.emailId;
   }
 
-    setPage(page: number) {
-        this.pagination.pageIndex = page;
+    setPage(event:any) {
+        this.pagination.pageIndex = event.page;
         this.listTeamMembers(this.pagination);
     }
 

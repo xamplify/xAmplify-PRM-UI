@@ -198,44 +198,14 @@
                  </section>
                </div>
              </div>
-             
-             
-             
-             
-             
-             
-             
-             
-             
-             
-             
-             
-             
-             
-             
-             
-             
              <div class="clearfix"></div>
            <div [hidden]="httpRequestLoader.isLoading" *ngIf="pagination.pagedItems.length !== 0 && !referenceService.isPlayVideo">
             <app-pagination [pagination]="pagination" [type]="'managaVideos'"
              (notifyParent)="setPage($event)" (notifyParentDropDown)="loadVideos($event)"></app-pagination>
             </div>
-             
-             
-             
-             
-             
-             
-             
-             
-             
-             
            </div>
-           
          </div>
-
        </div>
-
      </div>
    </div>
    <app-edit-video *ngIf="editVideo" (notifyParent)="update($event)"></app-edit-video>
