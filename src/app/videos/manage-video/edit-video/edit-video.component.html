@@ -199,8 +199,8 @@
 											<span class="pull-left" style="margin-top: 13px;margin-left: -21px;cursor: pointer;color: #54a7e9;" data-toggle="tooltip" data-placement="bottom" title="Add tags to your video and click enter">
 												<i class="fa fa-question-circle" style="font-size: 20px"></i>
 											</span>
-											<tag-input [(ngModel)]="itemOfTags" [ngModelOptions]="{standalone: true}" [theme]="'foundation-theme'" [placeholder]="'Add Tag and Enter'" [secondaryPlaceholder]="'Add Tag and Enter'"
-											 placeholder='Add Tag and Enter' [validators]="validatorsTag" required></tag-input>
+											<tag-input [(ngModel)]="itemOfTags" [ngModelOptions]="{standalone: true}" [theme]="'foundation-theme'" [placeholder]="'Add a tag & press Enter'" [secondaryPlaceholder]="'Add a tag & press Enter'"
+											 [validators]="validatorsTag" required></tag-input>
 											<div *ngIf="itemOfTags?.length===0 || itemOfTags===null" style="color:red">Please add a tag for your video.</div>
 										</div>
 									</div>

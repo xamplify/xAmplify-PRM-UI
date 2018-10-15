@@ -236,6 +236,14 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     }catch(error) { this.xtremandLogger.error('error'+error);}
   }
 
+  setBrandingLogo(){
+    const originalLogoUrl = this.referenceService.selectedVideoLogo;
+    return originalLogoUrl;
+  }
+  setBrandignLogoDescUrl(){
+    const originalLogoDescUrl = this.referenceService.selectedVideoLogodesc;
+    return originalLogoDescUrl;
+  }
   fileLogoSelected(event: File){
   (<HTMLInputElement>document.getElementById('fileLogoSelectedid')).value = '';
    const fileList: File = event;
@@ -655,8 +663,11 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
               this.enableVideoLogo = true;
           } else {
               this.defaultSettingValuesBoolean(event);
-              this.brandLogoUrl = this.tempVideoFile.brandingLogoUri!==null ? this.tempVideoFile.brandingLogoUri : this.defaultPlayerValues.companyProfile.companyLogoPath;
-              this.logoDescriptionUrl = this.tempVideoFile.brandingLogoDescUri !==null ? this.tempVideoFile.brandingLogoDescUri : this.defaultPlayerValues.companyProfile.website;
+                // this.brandLogoUrl = this.tempVideoFile.brandingLogoUri!==null ? this.tempVideoFile.brandingLogoUri : this.defaultPlayerValues.companyProfile.companyLogoPath;
+              // this.logoDescriptionUrl = this.tempVideoFile.brandingLogoDescUri !==null ? this.tempVideoFile.brandingLogoDescUri : this.defaultPlayerValues.companyProfile.website;
+              this.brandLogoUrl = this.saveVideoFile.brandingLogoUri!==null ? this.setBrandingLogo() : this.defaultPlayerValues.companyProfile.companyLogoPath;
+              this.logoDescriptionUrl = this.saveVideoFile.brandingLogoDescUri !==null ? this.setBrandignLogoDescUrl() : this.defaultPlayerValues.companyProfile.website;
+
               this.playerColorsChange(this.tempPlayerColor, this.tempControllerColor);
               this.changePlayerColor(this.compPlayerColor);
               this.changeControllerColor(this.compControllerColor);
