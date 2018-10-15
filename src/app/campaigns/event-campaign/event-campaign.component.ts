@@ -750,7 +750,13 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     this.emailTemplateService.getById(emailTemplateId)
           .subscribe(
       (data: any) => {
-        this.getEmailTemplatePreview(data);
+          data.body = data.body.replace("EVENT_TITLE", this.eventCampaign.campaign);
+          data.body = data.body.replace("EVENT_START_TIME", this.eventCampaign.campaignEventTimes[0].startTimeString);
+          data.body = data.body.replace("EVENT_END_TIME", this.eventCampaign.campaignEventTimes[0].endTimeString);
+          data.body = data.body.replace("EVENT_DESCRIPTION", this.eventCampaign.message);
+          data.body = data.body.replace("EVENT_LOCATION", this.eventCampaign.campaignLocation.location + "," + this.eventCampaign.campaignLocation.street + "," + this.eventCampaign.campaignLocation.city + "," + this.eventCampaign.campaignLocation.state + "," + this.eventCampaign.campaignLocation.zip);
+          data.body = data.body.replace("EVENT_EMAILID", this.eventCampaign.email);
+          this.getEmailTemplatePreview(data);
       },
       (error: string) => {
         this.logger.errorPage(error);
