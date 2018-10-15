@@ -228,8 +228,7 @@ h3 {
   margin-top: -12px;
 }
 .divider {
-  border: 1px solid #dcd7d7;
-  width: 43%;
-  margin: 0 auto;
-  box-shadow: 0 2px #efeaea;
+  background: url(../../../assets/images/partition.png) center center no-repeat;
+  margin: 20px 0;
+  height: 10px;
 }
