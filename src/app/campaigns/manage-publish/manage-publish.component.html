@@ -276,8 +276,14 @@
 											<h6>
 											<span>
 												<span *ngIf="campaign.launched">Launched On</span>
-												<span *ngIf="!campaign.launched && campaign.launchedOn?.length > 0">Scheduled For</span>
-												<span *ngIf="!campaign.launched && campaign.launchedOn?.length==0">Saved On</span>
+											  <ng-container *ngIf="!campaign.launched && campaign.scheduleType!=='SCHEDULE' && campaign.scheduleType!=='SAVE'">
+                          <b *ngIf="!campaign.launched && campaign.launchedOn?.length > 0">Scheduled For</b>
+                          <b *ngIf="!campaign.launched && campaign.launchedOn?.length==0">Saved On</b>
+                          </ng-container>
+                          <ng-container *ngIf="!campaign.launched && campaign.scheduleType">
+                          <b *ngIf="!campaign.launched && campaign.scheduleType==='SCHEDULE'">Scheduled For</b>
+                          <b *ngIf="!campaign.launched && campaign.scheduleType==='SAVE'">Saved On</b>
+                          </ng-container>
 											</span>
 											<span title="Upload date"><b>
 												<span *ngIf="campaign.scheduleType=='NOW' || campaign.scheduleType=='SCHEDULE'">
@@ -301,8 +307,14 @@
 											</div>
 											<div class="ribbon" [class.active]="!campaign.launched && campaign.launchedOn?.length==0">
 												<span *ngIf="campaign.launched">Launched</span>
-												<span *ngIf="!campaign.launched && campaign.launchedOn?.length > 0">Scheduled</span>
-												<span *ngIf="!campaign.launched && campaign.launchedOn?.length==0">Saved</span>
+                        <ng-container *ngIf="!campaign.launched && campaign.scheduleType!=='SCHEDULE' && campaign.scheduleType!=='SAVE'">
+                          <b *ngIf="!campaign.launched && campaign.launchedOn?.length > 0">Scheduled For</b>
+                          <b *ngIf="!campaign.launched && campaign.launchedOn?.length==0">Saved On</b>
+                          </ng-container>
+                          <ng-container *ngIf="!campaign.launched && campaign.scheduleType">
+                          <b *ngIf="!campaign.launched && campaign.scheduleType==='SCHEDULE'">Scheduled For</b>
+                          <b *ngIf="!campaign.launched && campaign.scheduleType==='SAVE'">Saved On</b>
+                          </ng-container>
 											</div>
 											<div class="bar" >
 												<ng-container *ngIf="!campaign.launched">
