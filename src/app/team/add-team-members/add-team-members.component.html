@@ -372,20 +372,10 @@
 			      <div class="textCss"></div>
 		  </div>
 		  </div>
-		  <!-- <div class="form-group">
-        <label class="control-label col-sm-2" for="email" style="color:#8512b7;left: 12px">
-          <i class="fa fa-envelope-o" aria-hidden="true"></i>
-            <span style="color:red;"> *</span>
-        </label>
-		    <div class="col-sm-10 p0">
-		     <input  type="email"  class="form-control" id="emailId" placeholder="Email" [(ngModel)]="team.emailId" name="emailId" (input)="validateEmailId(team.emailId,false)" (blur)="validateEmailId(team.emailId,true)" style="border: none;">
-		      <div class="textCss"></div>
-		       <span class="text-danger" *ngIf="!teamMemberUi.isValidForm">{{teamMemberUi.errorMessage}}</span>
-		    </div>
-      </div> -->
+
       <div class="form-group">
           <label class="control-label col-xs-2 col-sm-2" for="email" style="color: #00bcd4; right: -15px !important">
-              <span class="text-danger"> *</span>
+              <span class="red"> *</span>
           </label>
          <div class="form-group col-xs-6 col-sm-10">
             <input type="email" style="border: none" class="form-control padding-mobile"

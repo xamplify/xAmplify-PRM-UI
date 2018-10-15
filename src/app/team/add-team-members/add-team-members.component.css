@@ -6,7 +6,7 @@ table td:first-child, table th:first-child { 	text-align: left }
 .fa-times {
 	color: #F3565D;
 } */
-.red{ 	color: #F3565D !important; }
+.red{ 	color: red !important; }
 
 hr {
 	padding: 5px 0;
