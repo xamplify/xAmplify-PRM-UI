@@ -760,6 +760,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
               data.body = data.body.replace("EVENT_LOCATION", "Online Meeting")
           }
           data.body = data.body.replace("EVENT_EMAILID", this.eventCampaign.email);
+          data.body = data.body.replace("VENDOR_NAME", this.authenticationService.user.firstName);
+          data.body = data.body.replace("VENDOR_TITLE", this.authenticationService.user.jobTitle);
+          data.body = data.body.replace("VENDOR_EMAILID", this.authenticationService.user.emailId);
           this.getEmailTemplatePreview(data);
       },
       (error: string) => {
