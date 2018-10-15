@@ -30,13 +30,15 @@ export class WelcomeComponent implements OnInit, OnDestroy {
     hasStatsRole = false;
     hasSocialStatusRole = false;
     contactOrPartnerLink:string ="";
+    welcomeVideoInfo: any;
     vendor_welcome_text = {
         "videos": "Upload your content and you’ll soon be ready for primetime.",
         "contacts": "Add, segment, manage, and edit the members of your Strategic Network.",
         "campaigns": "Easily automate your audience’s digital journey.",
         "templates": "Design beautiful, responsive email  templates that communicate effectively.",
         "socialMedia": "Up your social game and coordinate your message across all of your social media accounts.",
-        "analytics": "Manage, monitor, and measure various aspects of your campaigns and your partners."
+        "analytics": "Manage, monitor, and measure various aspects of your campaigns and your partners.",
+        "teamMember": "Add team members to make content and campaign management group effort"
     };
 
     partner_welcome_text = {
@@ -88,8 +90,17 @@ export class WelcomeComponent implements OnInit, OnDestroy {
       this.videoFile = undefined;
     }
 
-    showHowToVideo(url){
+    showHowToVideo(url, title){
       // this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+      let videoInfo: any;
+      if(title.includes('Partners')){ videoInfo =  this.welcome_text.contacts; }
+      if(title.includes('Videos')){ videoInfo =  this.welcome_text.videos; }
+      if(title.includes('Contacts')){ videoInfo =  this.welcome_text.contacts; }
+      if(title.includes('Templates')){ videoInfo =  this.welcome_text.templates; }
+      if(title.includes('Campaigns')){ videoInfo =  this.welcome_text.campaigns; }
+      if(title.includes('Team members')){ videoInfo =  this.welcome_text.teamMember; }
+
+      this.welcomeVideoInfo = {  "title":title, "videoInfo": videoInfo }
       this.videoUrl = url;
       this.getVideo(this.videoUrl.substring(this.videoUrl.length - 6));
     }

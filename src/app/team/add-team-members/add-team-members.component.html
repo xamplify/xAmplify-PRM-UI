@@ -388,10 +388,10 @@
 
       </form>
       </div>
-      <div class="modal-footer">
+      <div class="modal-footer" style="border:none;">
+      <button  class="btn btn-info"  type="reset" (click)="clearForm();">Cancel</button>
       <button type="button" class="btn btn-primary" *ngIf="teamMemberUi.isValidForm" (click)="addTeamMember()">Add</button>
-		<button  class="btn btn-primary" *ngIf="!teamMemberUi.isValidForm" disabled="disabled">Add</button>
-		<button  class="btn btn-info"   type="reset" (click)="clearForm();">Cancel</button>
+	  	<button  class="btn btn-primary" *ngIf="!teamMemberUi.isValidForm" disabled="disabled">Add</button>
       </div>
     </div>
   </div>
@@ -421,10 +421,10 @@
 		  </div>
       </form>
       </div>
-      <div class="modal-footer">
-      <button type="button" class="btn btn-primary" (click)="delete()" *ngIf="selectedId>0" >Go</button>
-       <button type="button" class="btn btn-primary" *ngIf="selectedId==0" disabled="disabled">Go</button>
+      <div class="modal-footer" style="border:none;">
         <button type="button" class="btn btn-info" (click)="hidePopup()" >Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="delete()" *ngIf="selectedId>0" >Go</button>
+        <button type="button" class="btn btn-primary" *ngIf="selectedId==0" disabled="disabled">Go</button>
       </div>
     </div>
   </div>
