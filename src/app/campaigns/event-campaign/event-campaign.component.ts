@@ -754,7 +754,11 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
           data.body = data.body.replace("EVENT_START_TIME", this.eventCampaign.campaignEventTimes[0].startTimeString);
           data.body = data.body.replace("EVENT_END_TIME", this.eventCampaign.campaignEventTimes[0].endTimeString);
           data.body = data.body.replace("EVENT_DESCRIPTION", this.eventCampaign.message);
+          if(!this.eventCampaign.onlineMeeting){
           data.body = data.body.replace("EVENT_LOCATION", this.eventCampaign.campaignLocation.location + "," + this.eventCampaign.campaignLocation.street + "," + this.eventCampaign.campaignLocation.city + "," + this.eventCampaign.campaignLocation.state + "," + this.eventCampaign.campaignLocation.zip);
+          }else{
+              data.body = data.body.replace("EVENT_LOCATION", "Online Meeting")
+          }
           data.body = data.body.replace("EVENT_EMAILID", this.eventCampaign.email);
           this.getEmailTemplatePreview(data);
       },
