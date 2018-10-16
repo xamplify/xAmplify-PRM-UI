@@ -750,20 +750,38 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     this.emailTemplateService.getById(emailTemplateId)
           .subscribe(
       (data: any) => {
-          data.body = data.body.replace("EVENT_TITLE", this.eventCampaign.campaign);
-          data.body = data.body.replace("EVENT_START_TIME", this.eventCampaign.campaignEventTimes[0].startTimeString);
-          data.body = data.body.replace("EVENT_END_TIME", this.eventCampaign.campaignEventTimes[0].endTimeString);
-          data.body = data.body.replace("EVENT_DESCRIPTION", this.eventCampaign.message);
-          if(!this.eventCampaign.onlineMeeting){
-          data.body = data.body.replace("EVENT_LOCATION", this.eventCampaign.campaignLocation.location + "," + this.eventCampaign.campaignLocation.street + "," + this.eventCampaign.campaignLocation.city + "," + this.eventCampaign.campaignLocation.state + "," + this.eventCampaign.campaignLocation.zip);
-          }else{
-              data.body = data.body.replace("EVENT_LOCATION", "Online Meeting")
+          if ( this.eventCampaign.campaign ) {
+              data.body = data.body.replace( "EVENT_TITLE", this.eventCampaign.campaign );
           }
-          data.body = data.body.replace("EVENT_EMAILID", this.eventCampaign.email);
-          data.body = data.body.replace("VENDOR_NAME", this.authenticationService.user.firstName);
-          data.body = data.body.replace("VENDOR_TITLE", this.authenticationService.user.jobTitle);
-          data.body = data.body.replace("VENDOR_EMAILID", this.authenticationService.user.emailId);
-          this.getEmailTemplatePreview(data);
+          if ( this.eventCampaign.campaignEventTimes[0].startTimeString ) {
+              data.body = data.body.replace( "EVENT_START_TIME", this.eventCampaign.campaignEventTimes[0].startTimeString );
+          }
+          if ( this.eventCampaign.campaignEventTimes[0].endTimeString ) {
+              data.body = data.body.replace( "EVENT_END_TIME", this.eventCampaign.campaignEventTimes[0].endTimeString );
+          }
+          if ( this.eventCampaign.message ) {
+              data.body = data.body.replace( "EVENT_DESCRIPTION", this.eventCampaign.message );
+          }
+          if ( !this.eventCampaign.onlineMeeting ) {
+              if ( this.eventCampaign.campaignLocation.location ) {
+                  data.body = data.body.replace( "EVENT_LOCATION", this.eventCampaign.campaignLocation.location + "," + this.eventCampaign.campaignLocation.street + "," + "\n" + this.eventCampaign.campaignLocation.city + "," + this.eventCampaign.campaignLocation.state + "," + this.eventCampaign.campaignLocation.zip );
+              }
+          } else {
+              data.body = data.body.replace( "EVENT_LOCATION", "Online Meeting" )
+          }
+          if ( this.eventCampaign.email ) {
+              data.body = data.body.replace( "EVENT_EMAILID", this.eventCampaign.email );
+          }
+          if ( this.eventCampaign.email ) {
+              data.body = data.body.replace( "VENDOR_NAME", this.authenticationService.user.firstName );
+          }
+          if ( this.eventCampaign.email ) {
+              data.body = data.body.replace( "VENDOR_TITLE", this.authenticationService.user.jobTitle );
+          }
+          if ( this.eventCampaign.email ) {
+              data.body = data.body.replace( "VENDOR_EMAILID", this.authenticationService.user.emailId );
+          }
+          this.getEmailTemplatePreview( data );
       },
       (error: string) => {
         this.logger.errorPage(error);
