@@ -38,7 +38,7 @@ export class WelcomeComponent implements OnInit, OnDestroy {
         "templates": "Design beautiful, responsive email  templates that communicate effectively.",
         "socialMedia": "Up your social game and coordinate your message across all of your social media accounts.",
         "analytics": "Manage, monitor, and measure various aspects of your campaigns and your partners.",
-        "teamMember": "Add team members to make content and campaign management group effort"
+        "teamMember": "Add team members to make content and campaign management a group effort"
     };
 
     partner_welcome_text = {
