@@ -795,8 +795,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     const emailTemplate1 = new EmailTemplate(); emailTemplate1.id = 1700; emailTemplate1.name = "Event Based template 1";
     const emailTemplate2 = new EmailTemplate(); emailTemplate2.id = 1701; emailTemplate2.name = "Event Based template 2";
     const emailTemplate3 = new EmailTemplate(); emailTemplate3.id = 1702; emailTemplate3.name = "Event Based template 3";
-    const emailTemplate4 = new EmailTemplate(); emailTemplate4.id = 1703; emailTemplate4.name = "Event Based template 4";
-    this.emailTemplates.push(emailTemplate1, emailTemplate2,emailTemplate3,emailTemplate4);
+    this.emailTemplates.push(emailTemplate1, emailTemplate2,emailTemplate3);
   }
 
   onChangeCountryCampaignEventTime(countryId: number) {
