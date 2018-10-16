@@ -1,11 +1,12 @@
 
 <div class="page-content" [class.ml0]="!authenticationService.user.hasCompany || authenticationService.isSuperAdmin()">
 <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-<div class="page-bar" *ngIf="!showEdit">
+	<div class="page-bar" *ngIf="authenticationService.isSuperAdmin()">
 		<ul class="page-breadcrumb">
-		    <li *ngIf="authenticationService.isSuperAdmin()"><i class="fa fa-home"></i><a [routerLink]="['/home/dashboard/admin-report']">Admin Report</a></li>
-		    </ul>
-		    </div>
+			<li><i class="fa fa-home"></i><a
+				[routerLink]="['/home/dashboard/admin-report']">Admin Report</a></li>
+		</ul>
+	</div>
 	<div class="portlet light" id="company-profile-div">
 		<div class="portlet-title">
 			<div class="caption">Company Profile</div>
