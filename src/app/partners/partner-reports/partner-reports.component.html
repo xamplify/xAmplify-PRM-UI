@@ -126,7 +126,7 @@
               </div>
             </div>
           </div>
-          <div class="portlet-body clearfix table-responsive" style="min-height: 400px; position: relative;">
+          <div class="portlet-body clearfix table-responsive" style="min-height: 400px;">
             <app-list-loader *ngIf="activeParnterHttpRequestLoader.isLoading" [rowsCount]="listLoaderValue.ACTIVEPARTNERS"></app-list-loader>
             <table class="table tgrid" *ngIf="!activeParnterHttpRequestLoader.isLoading">
               <thead>
@@ -149,7 +149,7 @@
             <div *ngIf="activePartnersPagination.totalRecords==0" class="alert alert-info">
               <strong>No campaigns found</strong>
             </div>
-            <div style="position: absolute;bottom: -10px;" *ngIf="activePartnersPagination.totalRecords>0 && !activeParnterHttpRequestLoader.isLoading &&!activeParnterHttpRequestLoader.isServerError">
+            <div style="position: absolute;bottom: 10px;" *ngIf="activePartnersPagination.totalRecords>0 && !activeParnterHttpRequestLoader.isLoading &&!activeParnterHttpRequestLoader.isServerError">
 
               <app-pagination [pagination]="activePartnersPagination" [type]="'ActivePartnerPagination'" [isDropdown]="true" (notifyParent)="setPage($event)"></app-pagination>
 

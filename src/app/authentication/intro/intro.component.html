@@ -55,7 +55,7 @@
             <a *ngIf="false" href="/embed/sb63hg" class="play litebox-hero"><img src="/assets/images/play-btn.png" alt="play"></a>
            </div>
            <br>
-          <div class="cta-btn"> <a routerLink="/v-signup" class="btn" lang="en">REGISTER <span style="font-size: 14px; color: #333; font-weight: 500;">(free trail)</span></a>
+          <div class="cta-btn"> <a routerLink="/v-signup" class="btn" lang="en">REGISTER <span style="font-size: 14px; color: #333; font-weight: 500;">(free trial)</span></a>
             <!--<p lang="en"><span class="total-number-1">0</span>K Worldwide Signups</p>-->
           </div>
         </div>
@@ -194,7 +194,7 @@
 
   <!--Tour-->
 
-  <section class="tour section-spacing text-center" #tour id="tour">
+  <section class="tour section-spacing text-center" #tour id="tour" *ngIf="false">
     <div class="container">
       <div class="row">
         <div class="col-md-8 center-block">
@@ -308,7 +308,7 @@
         <h3 lang="en">Limited signup only. Order today before the discount period ends.</h3>
       </header>
       <div class="row">
-        <div class="col-md-12"> <a href="" class="btn" lang="en">GET STARTED</a>
+        <div class="col-md-12"> <a [routerLink]="['/v-signup']" routerLinkActive="router-link-active"  class="btn" lang="en">GET STARTED</a>
           <p lang="en">Have a question? Give us a call <a href="tel:+5107701222">5107701222</a>.</p>
         </div>
       </div>
