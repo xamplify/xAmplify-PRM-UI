@@ -83,7 +83,7 @@
                   <th class="visible-xs" colspan="1" style="width: 45%">Email Template List</th>
                   <th class="visible-sm visible-md visible-lg" colspan="2" style="width: 35%">Email Template List</th>
 									<th class="hidden-xs text-center" *ngIf="!authenticationService.isVendor()">Vendor Company Name</th>
-									<th class="hidden-xs text-center" style="width: 13%">Type</th>
+									<th class="hidden-xs text-center" style="width: 15%">Type</th>
 									<th class="hidden-xs text-center">Created Date</th>
 									<th class="text-center">Actions</th>
 								</tr>
@@ -114,7 +114,7 @@
 										<h5 style="width: auto;" *ngIf="emailTemplate.type!='PARTNER'"><b>-</b></h5>
 									</td>
 									<td  class="hidden-xs">
-										<h5 class="view-banner" style="width: 115%;">{{emailTemplate.emailTemplateType}}</h5>
+										<h5 class="view-banner" style="width: 100%;">{{emailTemplate.emailTemplateType}}</h5>
 									</td>
 									<td class="hidden-xs text-center" >
 									<app-timestamp [isOnlyDate]="true" [dateAndTime]="emailTemplate.createdDate"> </app-timestamp>
