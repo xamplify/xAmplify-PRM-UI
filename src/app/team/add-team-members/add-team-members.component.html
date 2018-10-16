@@ -35,31 +35,31 @@
 		</div>
 	<!-- BEGIN PAGE CONTENT-->
 	<div class="row">
-			<div class="clearfix" [class.disabled]="authenticationService.isSuperAdmin()">
-				<section class="clearfix">
-				<div class="col-xs-6 col-sm-3 hidden-xs">
-						<div class="btn-xs btn-info fileinput-button btn-block rounded-0" style="overflow: hidden;position: relative;"  *ngIf="!isAddTeamMember && !isUploadCsv">
-							<h6 style="text-align: center;">Upload Csv</h6>
-							<input type="file" class="file-upload" #fileImportInput  name="File Upload" id="txtFileUpload" accept=".csv" (change)="fileChangeListener($event)" />
-						</div>
-						<div class="btn-xs btn-info fileinput-button btn-block rounded-0" style="overflow: hidden;position: relative;cursor: not-allowed;" disabled="disabled"
-							*ngIf="isAddTeamMember  || isUploadCsv">
-							<h6 style="text-align: center;">Upload Csv</h6>
-						</div>
-					</div>
-					<div class="col-xs-12 col-sm-3">
-						<button class="btn-xs btn-primary btn-block rounded-0" (click)="showAddTeamMember()" *ngIf="!isAddTeamMember && !isUploadCsv">
-							<h6>Add Team Member</h6>
-						</button>
-						<button class="btn-xs btn-primary btn-block rounded-0" disabled="disabled" *ngIf="isAddTeamMember || isUploadCsv" style="cursor: not-allowed" >
-							<h6>Add Team Member</h6>
-						</button>
-					</div>
-					<div class="col-xs-12 col-sm-3 hidden-xs">
-						<a class="btn btn-success" (click)="downloadEmptyCsv()" download [ngClass]="{'downlaod-css':!referenceService.isMobileScreenSize(),'downlaod-css-mobile':referenceService.isMobileScreenSize()}">Download Csv Template</a>
-					</div>
-				</section>
-			</div>
+    <div class="clearfix" [class.disabled]="authenticationService.isSuperAdmin()">
+      <section class="clearfix">
+      <div class="col-xs-6 col-sm-2 hidden-xs">
+          <div class="btn-xs btn-info fileinput-button btn-block rounded-0" style="overflow: hidden;position: relative;"  *ngIf="!isAddTeamMember && !isUploadCsv">
+            <h6 style="text-align: center; font-size:14px">Upload Csv</h6>
+            <input type="file" class="file-upload" #fileImportInput  name="File Upload" id="txtFileUpload" accept=".csv" (change)="fileChangeListener($event)" />
+          </div>
+          <div class="btn-xs btn-info fileinput-button btn-block rounded-0" style="overflow: hidden;position: relative;cursor: not-allowed;" disabled="disabled"
+            *ngIf="isAddTeamMember  || isUploadCsv">
+            <h6 style="text-align: center; font-size:14px">Upload Csv</h6>
+          </div>
+        </div>
+        <div class="col-xs-12 col-sm-2">
+          <button class="btn-xs btn-primary btn-block rounded-0" (click)="showAddTeamMember()" *ngIf="!isAddTeamMember && !isUploadCsv">
+            <h6 style="font-size:14px">Add Team Member</h6>
+          </button>
+          <button class="btn-xs btn-primary btn-block rounded-0" disabled="disabled" *ngIf="isAddTeamMember || isUploadCsv" style="cursor: not-allowed" >
+            <h6 style="font-size:14px">Add Team Member</h6>
+          </button>
+        </div>
+        <div class="col-xs-12 col-sm-3 hidden-xs pull-right" style="text-align:right">
+          <a class="btn btn-success" (click)="downloadEmptyCsv()" download >Download CSV Template</a>
+        </div>
+      </section>
+    </div>
 
 			<div class="portlet light border-radius-0" *ngIf="isAddTeamMember" style="height: 85px;">
 				<div class="portlet-body">
@@ -422,7 +422,7 @@
       </form>
       </div>
       <div class="modal-footer" style="border:none;">
-        <button type="button" class="btn btn-info" (click)="hidePopup()" >Cancel</button>
+        <button type="button" class="btn btn-default" (click)="hidePopup()" >Cancel</button>
         <button type="button" class="btn btn-primary" (click)="delete()" *ngIf="selectedId>0" >Go</button>
         <button type="button" class="btn btn-primary" *ngIf="selectedId==0" disabled="disabled">Go</button>
       </div>
