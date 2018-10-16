@@ -157,3 +157,7 @@ a.icons-link:hover {background:  #357ebd;}
 .center-block{ text-align: center; margin: 13px 0;}
 .colorlightBlock{ background: #808080;}
 .colorBlue{ background: #5bb1d4;}
+@media screen and (max-width:768px){.modal-template{ width: 100% !important; right: 0;} }
+@media screen and (min-width:768px){.modal-template{ width: 65% !important; right: 0;} }
+@media screen and (max-width:768px){.modal-user{ width: 100% !important; right: 0;} }
+@media screen and (min-width:768px){.modal-user{ width: 45% !important; right: 0;} }
