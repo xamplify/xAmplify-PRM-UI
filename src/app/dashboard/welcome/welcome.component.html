@@ -234,7 +234,7 @@
        </div>
        <div class="divider" ></div>
        <div class="flex">
-       <div class="col-sm-6 col-xs-12 block image-block" *ngIf="authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner()">
+       <div class="col-sm-6 col-xs-12 block image-block" *ngIf="authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner() || authenticationService.isOrgAdmin()">
            <img src="../../../assets/images/welcome/analytics.png" style="height: 200px;">
          </div>
          <div class="col-sm-6 col-xs-12 block">
@@ -247,7 +247,7 @@
              </div>
            </div>
          </div>
-         <div class="col-sm-6 col-xs-12 block image-block" *ngIf="!authenticationService.isVendor() && !authenticationService.isVendorPartner() && !authenticationService.isOrgAdminPartner()">
+         <div class="col-sm-6 col-xs-12 block image-block" *ngIf="!authenticationService.isVendor() && !authenticationService.isVendorPartner() && !authenticationService.isOrgAdminPartner() && !authenticationService.isOrgAdmin()">
            <img src="../../../assets/images/welcome/analytics.png" style="height: 200px;">
          </div>
        </div>
