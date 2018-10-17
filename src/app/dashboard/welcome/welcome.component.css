@@ -232,3 +232,11 @@ h3 {
   margin: 20px 0;
   height: 10px;
 }
+.left-side{
+  position: relative;
+  left: -16px;
+}
+.text-left{
+  text-align: left;
+}
+
