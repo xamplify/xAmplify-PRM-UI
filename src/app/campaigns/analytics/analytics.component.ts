@@ -1112,13 +1112,13 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
         object["Sent Time"] = sentTime.toDateString() + ' ' + sentTime.getHours() + ':' + sentTime.getMinutes() + ':' + sentTime.getSeconds();
         object["Latest View"] = latestView.toDateString() + ' ' + latestView.getHours() + ':' + latestView.getMinutes() + ':' + latestView.getSeconds();
         }
-        }
+        } 
 
       if (this.downloadTypeName === 'usersWatchedList') {
         object["Email Id"] = this.downloadCsvList[i].emailId;
         object["START DURATION"] = startTime.toDateString() + ' ' + startTime.getHours() + ':' + startTime.getMinutes() + ':' + startTime.getSeconds();
         object["STOP DURATION"] = endTime.toDateString() + ' ' + endTime.getHours() + ':' + endTime.getMinutes() + ':' + endTime.getSeconds();
-        object["IP ADDRESS"] = this.downloadCsvList[i].ipAddress;
+       /* object["IP ADDRESS"] = this.downloadCsvList[i].ipAddress;*/
         object["PLATFORM"] = this.downloadCsvList[i].os;
         object["STATE"] = this.downloadCsvList[i].state;
         object["COUNTRY"] = this.downloadCsvList[i].country;
