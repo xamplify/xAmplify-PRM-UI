@@ -74,6 +74,9 @@ export class Properties {
     ACCOUNT_ACTIVATED_SUCESS = 'Thanks for activating your account. Please login to complete your company profile.';
     SIGN_UP_ERROR = "An error occurred while processing your request. Please try after some time.";
     ACCOUNT_DEACTIVATE_SUCCESS = "OrgAdmin deactivation successfully done.";
+    WRONG_EMAIL_ADDRESS = "We couldn't find your account. Please check that you've entered the correct email address and try again.";
+    ERROR_EMAIL_ADDRESS = "The email address that you've entered doesn't match any account. Sign up for an account.";
+    OTHER_EMAIL_ISSUE = "UserDetailsService returned null, which is an interface contract violation";
 
     BAD_CREDENTIAL_ERROR = "Username or password is incorrect.";
     USER_ACCOUNT_DOESNOT_EXIST = "The email address that you've entered doesn't match any account. Sign for an account.";
