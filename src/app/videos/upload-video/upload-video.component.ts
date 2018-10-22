@@ -15,6 +15,7 @@ import { SaveVideoFile } from '../models/save-video-file';
 import { HomeComponent } from '../../core/home/home.component';
 
 import { CustomResponse } from '../../common/models/custom-response';
+import { Properties } from 'app/common/models/properties';
 
 declare var Dropbox, swal, google, QuickSidebar, gapi, downloadFromDropbox, BoxSelect, downloadFromGDrive: any;
 declare var $, videojs: any;
@@ -23,7 +24,7 @@ declare var $, videojs: any;
     selector: 'app-upload-video',
     templateUrl: './upload-video.component.html',
     styleUrls: ['./upload-video.component.css', '../../../assets/css/video-css/video-js.custom.css'],
-    providers: [HomeComponent]
+    providers: [HomeComponent, Properties]
 })
 export class UploadVideoComponent implements OnInit, OnDestroy {
 
@@ -87,7 +88,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         public authenticationService: AuthenticationService, public changeDetectorRef: ChangeDetectorRef,
         public videoFileService: VideoFileService, public cloudUploadService: UploadCloudvideoService,
         public sanitizer: DomSanitizer, public refService: ReferenceService, public homeComponent: HomeComponent,
-        public deviceService: Ng2DeviceService, public videoUtilService: VideoUtilService) {
+        public deviceService: Ng2DeviceService, public videoUtilService: VideoUtilService, public properties: Properties) {
         try {
             this.deviceInfo = this.deviceService.getDeviceInfo();
             this.browserInfo = this.deviceInfo.browser;

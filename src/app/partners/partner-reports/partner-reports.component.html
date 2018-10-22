@@ -191,7 +191,7 @@
             <table class="table tgrid">
               <thead>
                 <th class="center-aligned">partners</th>
-                <th class="center-aligned hidden-xs">LAST REMINDER SENT</th>
+                <th class="text-center hidden-xs">LAST REMINDER SENT</th>
                 <th align="right">Actions</th>
               </thead>
               <tbody>
@@ -200,9 +200,9 @@
                     <app-user-info [userInfo]="item" [isPartnerEntityInfo]="true" [isPartnerInfo]="true"></app-user-info>
                   </td>
                   <td class="hidden-xs">
-                   <h4>{{item.time}}</h4>
-                   <h4 *ngIf="!item.time"><b>-</b></h4>
-                  </td>
+                    <h4>{{item.time}}</h4>
+                    <h4 *ngIf="!item.time"><b>-</b></h4>
+                   </td>
                   <td (click)="sendPartnerReminder(item)">
                     <div class="actions-block">
                       <a data-toggle="tooltip" data-placement="left" title="Send reminder email">

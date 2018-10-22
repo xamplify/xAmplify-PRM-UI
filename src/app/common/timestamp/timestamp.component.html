@@ -1,5 +1,7 @@
-   <span *ngIf="!isOnlyDate && dateAndTime!==null && !referenceService.isSafariBrowser()">{{dateAndTime |date:'medium'}}</span>
-   <span *ngIf="isOnlyDate && dateAndTime!==null && !referenceService.isSafariBrowser()">{{dateAndTime |date:'mediumDate'}}</span>
-   <span *ngIf="!isOnlyDate && dateAndTime!==null && referenceService.isSafariBrowser() && !isSpacethere">{{dateAndTime | date:'medium'}}</span>
-   <span *ngIf="isOnlyDate && dateAndTime!==null && referenceService.isSafariBrowser() && !isSpacethere">{{dateAndTime |date:'mediumDate'}}</span>
-   <span *ngIf="!isOnlyDate && dateAndTime!==null && referenceService.isSafariBrowser() && isSpacethere">{{dateAndTime}}</span>
+<span *ngIf="!isOnlyDate && dateAndTime!==null && !referenceService.isSafariBrowser()">{{dateAndTime |date:'mediumDate'}}, {{dateAndTime |date:'shortTime'}}</span>
+<span *ngIf="isOnlyDate && dateAndTime!==null && !referenceService.isSafariBrowser()">{{dateAndTime |date:'mediumDate'}}</span>
+<span *ngIf="!isOnlyDate && dateAndTime!==null && referenceService.isSafariBrowser() && !isSpacethere">{{dateAndTime |date:'mediumDate'}}, {{dateAndTime |date:'shortTime'}}</span>
+<span *ngIf="isOnlyDate && dateAndTime!==null && referenceService.isSafariBrowser() && !isSpacethere">{{dateAndTime |date:'mediumDate'}}</span>
+<span *ngIf="!isOnlyDate && dateAndTime!==null && referenceService.isSafariBrowser() && isSpacethere">{{dateAndTime}}</span>
+
+<!-- {{dateAndTime |date:'medium'}} -->
