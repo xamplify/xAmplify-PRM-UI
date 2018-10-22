@@ -91,13 +91,16 @@ export class Properties {
     PASSWORD_UPDATED= 'Password updated successfully.';
     PAWORD_ERROR = 'New password should not be same as current password.'
 
+    /*Videos*/
+    VIDEO_PROCESS_MESSAGE= 'Your video has been uploaded and is now being processed. If you\'d like to take a break, we\'ll continue processing it in the background. We will send you an email when your video is ready.';
+
     /* campaign */
     ADD_AUTO_RESPONSE_WEBSITE = 'Auto-responses to a website visit'
     ADD_AUTO_RESPONSE_EMAIL = 'Auto-responses to your email'
     TO_PARTNER_MESSAGE = 'To Recipient(s): Send a campaign intended just for your Partner(s)/ Contact(s)';
     THROUGH_PARTNER_MESSAGE = 'Through Partner: Send a campaign that your Partners can redistribute';
     ENALEORDISABLE_VENDOR_MESSAGE='Enable/disable the Vendor’s access to your campaign analytics';
-    
+
     /****BEE ClientId/Client Secret********/
     clientId = '18ff022e-fa4e-47e7-b497-39a12ca4600a';
     clientSecret = 'FPzc1oxLx3zFjvwrma82TWiP0o3tk1yRVDwyAQqrIZ6jbfdssVo';

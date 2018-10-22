@@ -81,7 +81,7 @@
 					<div *ngIf="processing" class="row">
             <div class="alert alert-success alertMessageCustom loaderSymbol mb10" style="background: #dff0d8">
               <span><img src="assets/images/loadbar.gif" class="loader-image-tag"></span>
-              <span class="text-css">Your video has been uploaded and is now being processed. If you'd like to take a break, we'll continue processing it in the background. We will send you an email when your video is ready</span>
+              <span class="text-css">{{properties.VIDEO_PROCESS_MESSAGE}}</span>
             </div>
 					</div>
 					<div style="position: relative; top:-17px;" *ngIf="!processing">
