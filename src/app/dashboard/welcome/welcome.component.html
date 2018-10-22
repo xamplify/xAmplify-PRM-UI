@@ -84,49 +84,6 @@
           src="../../../assets/images/welcome/img-videos.png"
           data-holder-rendered="true">
         </div>
-         <!-- <div class="col-sm-6 col-xs-12 block image-block">
-           <div class="carousel slide" id="carousel-example-generic"
-             data-ride="carousel">
-             <ol class="carousel-indicators">
-               <li data-target="#carousel-example-generic" data-slide-to="0"
-                 class="active"></li>
-               <li data-target="#carousel-example-generic" data-slide-to="1"
-                 class=""></li>
-               <li data-target="#carousel-example-generic" data-slide-to="2"
-                 class=""></li>
-             </ol>
-             <div class="carousel-inner" role="listbox">
-               <div class="item active">
-                 <img alt="First slide [900x500]" style="height: 200px;"
-                   data-src="holder.js/900x500/auto/#777:#555/text:First slide"
-                   src="../../../assets/images/welcome/img-videos.png"
-                   data-holder-rendered="true">
-               </div>
-               <div class="item">
-                 <img alt="Second slide [900x500]" style="height: 183px;    float: right;"
-                   data-src="holder.js/900x500/auto/#666:#444/text:Second slide"
-                   src="../../../assets/images/welcome//Hosting-4334f606464c413fc825f3d7d718a0ff.svg"
-                   data-holder-rendered="true">
-               </div>
-               <div class="item">
-                 <img alt="Third slide [900x500]"  style="height: 183px; float: right;"
-                   data-src="holder.js/900x500/auto/#555:#333/text:Third slide"
-                   src="../../../assets/images/welcome//Hosting-4334f606464c413fc825f3d7d718a0ff.svg"
-                   data-holder-rendered="true">
-               </div>
-             </div>
-             <a href="#carousel-example-generic" class="left carousel-control"
-               role="button" data-slide="prev"> <span
-               class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-               <span class="sr-only">Previous</span>
-             </a> <a href="#carousel-example-generic"
-               class="right carousel-control" role="button" data-slide="next">
-               <span class="glyphicon glyphicon-chevron-right"
-               aria-hidden="true"></span> <span class="sr-only">Next</span>
-             </a>
-           </div>
-         </div> -->
-
          <div class="col-sm-6 col-xs-12 block" *ngIf="!authenticationService.isVendor() && !authenticationService.isOrgAdmin()">
            <div class="text-block">
              <h1 style="color: #76c9ff;text-align: left">Videos</h1>
@@ -238,7 +195,7 @@
            <img src="../../../assets/images/welcome/analytics.png" style="height: 200px;">
          </div>
          <div class="col-sm-6 col-xs-12 block">
-           <div class="text-block">
+           <div class="text-block" [class.text-left-analytics]="authenticationService.isOnlyPartner()">
              <h1 style="color: #00B3B3" class="text-left">Analytics</h1>
              <p class="left-side">{{welcome_text.analytics}}</p>
              <div  class="text-left">
@@ -248,7 +205,7 @@
            </div>
          </div>
          <div class="col-sm-6 col-xs-12 block image-block" *ngIf="!authenticationService.isVendor() && !authenticationService.isVendorPartner() && !authenticationService.isOrgAdminPartner() && !authenticationService.isOrgAdmin()">
-           <img src="../../../assets/images/welcome/analytics.png" style="height: 200px;">
+           <img src="../../../assets/images/welcome/analytics.png" style="height: 200px;" [ngStyle]="authenticationService.isOnlyPartner() && {'float': 'right'}">
          </div>
        </div>
      </div>
