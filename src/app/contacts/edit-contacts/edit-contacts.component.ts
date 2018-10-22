@@ -1411,11 +1411,18 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     deleteUserShowAlert( contactId: number ) {
         this.contactIds.push( this.contactUsersId )
         this.xtremandLogger.info( "contactListId in sweetAlert() " + this.contactIds );
+        let message = '';
+        if(this.isDefaultPartnerList){
+            message = 'This will remove this partner from any other Partner lists.';
+        }else {
+            message = 'The partner will only be removed from that list. To remove completely the partner needs to be removed from the default list.';
+        }
+        
         let self = this;
         if ( this.totalRecords != 1 ) {
             swal( {
                 title: 'Are you sure?',
-                text: "You won't be able to undo this action!",
+                text: message,
                 type: 'warning',
                 showCancelButton: true,
                 swalConfirmButtonColor: '#54a7e9',
