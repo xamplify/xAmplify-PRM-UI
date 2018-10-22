@@ -9,7 +9,7 @@
 					{{checkingContactTypeName}}s</a> <i class="fa fa-angle-right"
 				*ngIf="! showListOfContactList"></i></li>
 			<li
-				*ngIf="! showListOfContactList && contactsByType.selectedCategory != 'non-active' && contactsByType.selectedCategory != 'active'"><span
+				*ngIf="! showListOfContactList && contactsByType.selectedCategory != 'non-active' && contactsByType.selectedCategory != 'active' && contactsByType.selectedCategory != 'invalid'"><span
 				class="capitalize">{{contactsByType.selectedCategory}}
 					{{checkingContactTypeName}}s</span></li>
 			<li
@@ -18,6 +18,9 @@
 			<li
 				*ngIf="! showListOfContactList && contactsByType.selectedCategory == 'active'"><span
 				class="capitalize">Registered {{checkingContactTypeName}}s</span></li>
+			<li
+				*ngIf="! showListOfContactList && contactsByType.selectedCategory == 'invalid'"><span
+				class="capitalize">Undeliverable {{checkingContactTypeName}}s</span></li>
 		</ul>
 	</div>
 
@@ -105,7 +108,7 @@
 												</div>
 												<div class="details">
 													<div class="number" style="font-weight: 300 !important;">{{contactsByType.invalidContactsCount}}</div>
-													<div class="desc" style="font-size:20px">Invalid
+													<div class="desc" style="font-size:20px">Undeliverable
 														<!-- {{checkingContactTypeName}}s --></div>
 												</div>
 												<span class="morePadding"> <a class="more" style="text-align: left;">
@@ -468,12 +471,15 @@
 									<div class="portlet-title">
 										<div class="caption">
 											<i class="fa fa-edit"></i> <span class="capitalize"
-												*ngIf="contactsByType.selectedCategory !='non-active' && contactsByType.selectedCategory !='active'">{{contactsByType.selectedCategory}}
+												*ngIf="contactsByType.selectedCategory !='non-active' && contactsByType.selectedCategory !='active' && contactsByType.selectedCategory !='invalid'">{{contactsByType.selectedCategory}}
 												{{checkingContactTypeName}}s List</span> <span class="capitalize"
 												*ngIf="contactsByType.selectedCategory =='non-active'">Unregistered
 												{{checkingContactTypeName}}s List</span>
 												<span class="capitalize"
 												*ngIf="contactsByType.selectedCategory =='active'">Registered
+												{{checkingContactTypeName}}s List</span>
+												<span class="capitalize"
+												*ngIf="contactsByType.selectedCategory =='invalid'">Undeliverable
 												{{checkingContactTypeName}}s List</span>
 										</div>
 										<div class="btn-group pull-right"
