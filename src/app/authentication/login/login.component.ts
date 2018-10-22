@@ -81,11 +81,11 @@ export class LoginComponent implements OnInit, OnDestroy {
                         this.resendActiveMail = true;
                         this.customResponse =  new CustomResponse();
                      //   this.setCustomeResponse("ERROR", this.properties.USER_ACCOUNT_ACTIVATION_ERROR);
-                    }else if(response.error_description === this.properties.OTHER_EMAIL_ISSUE){
-                      this.setCustomeResponse("ERROR", this.properties.BAD_CREDENTIAL_ERROR);
-                    }else if (response.error_description === this.properties.ERROR_EMAIL_ADDRESS){
-                      this.setCustomeResponse("ERROR", this.properties.WRONG_EMAIL_ADDRESS );
-                    }
+                      }else if(response.error_description === this.properties.OTHER_EMAIL_ISSUE){
+                        this.setCustomeResponse("ERROR", this.properties.BAD_CREDENTIAL_ERROR);
+                      }else if (response.error_description === this.properties.ERROR_EMAIL_ADDRESS){
+                    	  this.setCustomeResponse("ERROR", this.properties.WRONG_EMAIL_ADDRESS );
+                      }
                   }
                   else {
                       this.resendActiveMail = false;
