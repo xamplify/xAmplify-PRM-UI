@@ -238,3 +238,7 @@ h3 {
 .text-left{
   text-align: left;
 }
+.text-left-analytics {
+  position: relative;
+  right: -46px;
+  }
