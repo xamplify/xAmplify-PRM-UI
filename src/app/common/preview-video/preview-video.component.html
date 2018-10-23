@@ -1,15 +1,18 @@
-  <div class="modal fade-scale" id="show_preview" data-keyboard="false" data-backdrop="static">
-		<div class="modal-dialog">
+  <div class="modal right fade" id="show_preview" data-keyboard="false" data-backdrop="static">
+		<div class="modal-dialog modal-css"  style="right:0 !important">
 			<div class="modal-content" style="border-radius: 0">
 				<div class="modal-header">
-					<a class="close-circle" data-dismiss="modal" (click)="destroyPreviewModal()"><i class="fa fa-times"></i></a>
-					<h4 *ngIf="videotitle?.length < 50" class="modal-title" title={{videotitle}}>{{videotitle | slice: 0:50}}</h4>
-					<h4 *ngIf="videotitle?.length > 50" class="modal-title" title={{videotitle}}>{{videotitle | slice: 0:50}}...</h4>
+          <a class="close-circle" data-dismiss="modal" (click)="destroyPreviewModal()"><i class="fa fa-times"></i></a>
+          <h4 *ngIf="welcomeVideoFile" style="font-weight: 600; font-size: 20px;"> {{welcomeVideoFile.title}} </h4>
+					<h4 style="font-weight: 600; font-size: 20px;" *ngIf="videotitle?.length < 50 && !welcomeVideoFile" class="modal-title" title={{videotitle}}>{{videotitle | slice: 0:50}}</h4>
+					<h4 style="font-weight: 600; font-size: 20px;" *ngIf="videotitle?.length > 50 && !welcomeVideoFile" class="modal-title" title={{videotitle}}>{{videotitle | slice: 0:50}}...</h4>
 				</div>
 				<div class="modal-body">
-					<div id="main_video"></div>
+         <div class="text-css" style="margin-top: 0 !important" *ngIf="welcomeVideoFile">{{welcomeVideoFile.videoInfo}}</div>
+          <div id="main_video"></div>
+          <div class="text-new"><span style="font-weight: 400">Description:</span> {{videoFile.description}}..</div>
 				</div>
-				<div class="modal-footer"> <a href="javascript:void(0)" (click)="destroyPreviewModal()" data-dismiss="modal" class="btn btn-default">Close</a>
+				<div class="modal-footer" style="border:none"> <a href="javascript:void(0)" (click)="destroyPreviewModal()" data-dismiss="modal" class="btn btn-default">Close</a>
 				</div>
 			</div>
 		</div>

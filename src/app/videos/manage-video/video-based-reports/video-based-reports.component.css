@@ -102,3 +102,5 @@ text-align: center;
   right: 0;
   left: 0
 }
+@media screen and (max-width:600px){.video-modal { width:100%; } }
+@media screen and (min-width:601px){.video-modal { width:80% !important; } }

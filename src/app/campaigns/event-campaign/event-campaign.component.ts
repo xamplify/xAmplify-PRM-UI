@@ -83,7 +83,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   reDistributeEvent = false;
   loader = false;
   isEditCampaign = false;
-  checkLaunchOption='NOW';
+  checkLaunchOption:string;
 
   constructor(public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
     private contactService: ContactService,
@@ -104,6 +104,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     if(this.reDistributeEvent) { this.isPartnerUserList = false; } else { this.isPartnerUserList = true; }
     if(this.authenticationService.isOnlyPartner()) {  this.isPartnerUserList = false; }
   }
+  isEven(n) { if(n % 2 === 0){ return true;} return false;}
   loadCampaignNames(userId:number){
     this.campaignService.getCampaignNames(userId).subscribe(data => { this.names.push(data); },
     error => console.log( error ), () => console.log( "Campaign Names Loaded" ) );
@@ -451,6 +452,10 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     this.timezones = this.referenceService.getTimeZonesByCountryId(this.eventCampaign.countryId);
     }
   }
+  setLaunchOptions(options:any){
+    this.checkLaunchOption = options;
+    if(this.checkLaunchOption=='SCHEDULE'){ this.setScheduleEvent();}
+  }
   scheduleCampaign(){
     this.scheduleTimeError();
     this.referenceService.campaignSuccessMessage = "SCHEDULE";
@@ -745,7 +750,38 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     this.emailTemplateService.getById(emailTemplateId)
           .subscribe(
       (data: any) => {
-        this.getEmailTemplatePreview(data);
+          if ( this.eventCampaign.campaign ) {
+              data.body = data.body.replace( "EVENT_TITLE", this.eventCampaign.campaign );
+          }
+          if ( this.eventCampaign.campaignEventTimes[0].startTimeString ) {
+              data.body = data.body.replace( "EVENT_START_TIME", this.eventCampaign.campaignEventTimes[0].startTimeString );
+          }
+          if ( this.eventCampaign.campaignEventTimes[0].endTimeString ) {
+              data.body = data.body.replace( "EVENT_END_TIME", this.eventCampaign.campaignEventTimes[0].endTimeString );
+          }
+          if ( this.eventCampaign.message ) {
+              data.body = data.body.replace( "EVENT_DESCRIPTION", this.eventCampaign.message );
+          }
+          if ( !this.eventCampaign.onlineMeeting ) {
+              if ( this.eventCampaign.campaignLocation.location ) {
+                  data.body = data.body.replace( "EVENT_LOCATION", this.eventCampaign.campaignLocation.location + "," + this.eventCampaign.campaignLocation.street + "," + "\n" + this.eventCampaign.campaignLocation.city + "," + this.eventCampaign.campaignLocation.state + "," + this.eventCampaign.campaignLocation.zip );
+              }
+          } else {
+              data.body = data.body.replace( "EVENT_LOCATION", "Online Meeting" )
+          }
+          if ( this.eventCampaign.email ) {
+              data.body = data.body.replace( "EVENT_EMAILID", this.eventCampaign.email );
+          }
+          if ( this.eventCampaign.email ) {
+              data.body = data.body.replace( "VENDOR_NAME", this.authenticationService.user.firstName );
+          }
+          if ( this.eventCampaign.email ) {
+              data.body = data.body.replace( "VENDOR_TITLE", this.authenticationService.user.jobTitle );
+          }
+          if ( this.eventCampaign.email ) {
+              data.body = data.body.replace( "VENDOR_EMAILID", this.authenticationService.user.emailId );
+          }
+          this.getEmailTemplatePreview( data );
       },
       (error: string) => {
         this.logger.errorPage(error);
@@ -759,8 +795,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     const emailTemplate1 = new EmailTemplate(); emailTemplate1.id = 1700; emailTemplate1.name = "Event Based template 1";
     const emailTemplate2 = new EmailTemplate(); emailTemplate2.id = 1701; emailTemplate2.name = "Event Based template 2";
     const emailTemplate3 = new EmailTemplate(); emailTemplate3.id = 1702; emailTemplate3.name = "Event Based template 3";
-    const emailTemplate4 = new EmailTemplate(); emailTemplate4.id = 1703; emailTemplate4.name = "Event Based template 4";
-    this.emailTemplates.push(emailTemplate1, emailTemplate2,emailTemplate3,emailTemplate4);
+    this.emailTemplates.push(emailTemplate1, emailTemplate2,emailTemplate3);
   }
 
   onChangeCountryCampaignEventTime(countryId: number) {

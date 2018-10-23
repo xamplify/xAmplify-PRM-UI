@@ -14,6 +14,7 @@ declare var videojs, $: any;
     styleUrls: ['./preview-video.component.css','../../../assets/css/video-css/video-js.custom.css']
 } )
 export class PreviewVideoComponent implements OnInit, OnDestroy {
+    @Input() welcomeVideoFile:any;
     @Input() videoFile: any;
     @Output() notifyParent: EventEmitter<any>;
     videoJSplayer: any;

@@ -81,7 +81,7 @@
 
 .step #disableTab{
 	pointer-events: none;
-    cursor: not-allowed; 
+    cursor: not-allowed;
     background-color: #ECECEC;
 }
 .step .fa {
@@ -114,8 +114,8 @@
 
   .customDisableCss{  cursor:not-allowed !important; opacity:0.5; }
   a.disabled { pointer-events: none; cursor: not-allowed; }
-  
-  
+
+
      #container {
     margin: -4px;
     width: 500px;
@@ -123,7 +123,7 @@
     padding-top: 30px;
     font-family: helvetica, arial, sans-serif;
     }
- 
+
 .launched {
      background: #337ab7;
      background: -moz-linear-gradient(top, #e3e3e3, #c8c8c8);
@@ -135,15 +135,15 @@
      width: 30%;
      font-size: 17px;
      z-index: 340;
-	 
+
     -moz-box-shadow: 1px 1px 3px #292929;
     -webkit-box-shadow: 1px 1px 3px #292929;
        box-shadow: 1px 1px 3px #292929;
- 
+
     color: #fdfdfd;
   /*   text-shadow: 0 1px 0 #0e0e0e; */
 }
- 
+
 .launched-arrow {
      width: 0; height: 0;
      line-height: 0;
@@ -164,15 +164,15 @@
      width: 30%;
      font-size: 17px;
      z-index: 340;
-	 
+
     -moz-box-shadow: 1px 1px 3px #292929;
     -webkit-box-shadow: 1px 1px 3px #292929;
        box-shadow: 1px 1px 3px #292929;
- 
+
     color: #fdfdfd;
   /*   text-shadow: 0 1px 0 #0e0e0e; */
 }
- 
+
 .saved-arrow {
      width: 0; height: 0;
      line-height: 0;
@@ -253,3 +253,5 @@ td h5 {
 #campaign-partner-table th {
 	text-align: center;
 }
+@media only screen and (max-width:768px){ .modal-copy { width: 100% !important;}}
+@media only screen and (min-width:768px){ .modal-copy { width: 45% !important;}}

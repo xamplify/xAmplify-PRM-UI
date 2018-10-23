@@ -23,3 +23,5 @@
 	text-align: center;
 	border-right: 1px solid rgba(0, 0, 0, .2)
 }
+@media screen and (max-width:600px){.accounts-modal { width:100%; } }
+@media screen and (min-width:601px){.accounts-modal { width:60%;float: right;; } }

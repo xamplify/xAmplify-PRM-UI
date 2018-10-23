@@ -299,6 +299,11 @@ hr {
   cursor: pointer;
 }
 
+.upload-btn-wrapper:hover {
+    opacity:1;   
+}
+
+
 
 .content-mgmt-box{
 	background: #fff;
@@ -575,9 +580,17 @@ label {
 	color: white !important;
     background-color: #428bca !important;
     cursor: pointer;
+    position: fixed;
 }
 
 .upload-button-class:hover{
 	color: white !important;
     background-color: #0f5796 !important;
+}
+.search-input-button{
+	position: relative;
+    top: -33px;
+    width: 40px;
+    height: 32px;
+    left: -1px;
 }
