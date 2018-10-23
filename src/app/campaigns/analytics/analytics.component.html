@@ -405,7 +405,7 @@
 	</section>
 	<div class="col-xs-12 col-sm-6 p-5x" [hidden]="campaignType !== 'VIDEO' || mainLoader || hasClientError">
 		<div class="col-xs-12 p-5x">
-			<div class="portlet light">
+			<div class="portlet light" style="padding-bottom: 36px !important;">
 				<div class="portlet-title">
 					<div class="caption">
 						<span class="caption-subject font-red-sunglo uppercase" style="font-size: 15px !important;">Campaign Recipient Participation</span>
@@ -753,7 +753,7 @@
 				<div data-animation="slideInUp">
 					<div class="row mb10">
 						<img src="/assets/images/user.png" width="48px" class="user-profile-image">
-						<h5 class="f-w-600 mt10 mb0">{{selectedRow.firstName}}&nbsp;{{selectedRow.lastName}}</h5>
+						<h5 class="f-w-600 mt10 mb0"><span *ngIf="selectedRow?.firstName">{{selectedRow.firstName}}</span>&nbsp;<span *ngIf="selectedRow?.lastName">{{selectedRow.lastName}}</span></h5>
 						<h6 class="m0">{{selectedRow.emailId}}</h6>
 					</div>
 					<div class="row mb10">
