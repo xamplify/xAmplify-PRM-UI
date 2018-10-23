@@ -581,3 +581,5 @@ tr>td>h6 {
     bottom: 0;
     right: -5px;
 }
+@media only screen and (max-width:768px){ .modal-css { width: 100% !important;}}
+@media only screen and (min-width:768px){ .modal-css { width: 65% !important;}}
