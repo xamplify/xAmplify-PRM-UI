@@ -625,13 +625,13 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
 
     downloadLogs() {
         if (this.downloadTypeName === 'minetesWatched') {
-            this.logListName = 'Minetes_Views_Logs.csv';
+            this.logListName = 'Minutes_Views_Logs.csv';
             this.downloadCsvList = this.totalUsersWatched;
         } else if (this.downloadTypeName === 'watchedFully') {
             this.logListName = 'Fully_Watched_Logs.csv';
             this.downloadCsvList = this.watchedFullyTotalReportList;
         } else if (this.downloadTypeName === 'worldMapData') {
-            this.logListName = 'country_Wise_Logs.csv';
+            this.logListName = 'Country_Wise_Logs.csv';
             this.downloadCsvList = this.worldMapCampaignUsersTotalData;
         } else if (this.downloadTypeName === 'clickedMenetsWatched') {
             this.logListName = 'Clicked_Menetes_logs.csv';
@@ -660,8 +660,9 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             if (this.downloadTypeName === 'minetesWatched') {
                 object["Email Id"] = this.downloadCsvList[i].emailId;
                 object["Date and Time"] = date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+                object["Minutes watched"] = this.downloadCsvList[i].minutesWatched;
                 object["Device"] = this.downloadCsvList[i].device;
-                object["Location"] = this.downloadCsvList[i].location;
+                object["Location"] = this.downloadCsvList[i].city + ' ' + this.downloadCsvList[i].state + ' ' + this.downloadCsvList[i].country;
             }
             else if (this.downloadTypeName === 'watchedFully') {
                 object["Email Id"] = this.downloadCsvList[i].name;
@@ -684,7 +685,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                 object["Date and Time"] = date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
                 object["Minets Watched"] = this.downloadCsvList[i].minutesWatched;
                 object["Device"] = this.downloadCsvList[i].device;
-                object["Location"] = this.downloadCsvList[i].location;
+                object["Location"] = this.downloadCsvList[i].city + ' ' + this.downloadCsvList[i].state + ' ' + this.downloadCsvList[i].country;
             }
             else if (this.downloadTypeName === 'playedDuration') {
                 object["Email Id"] = this.downloadCsvList[i].emailId;
