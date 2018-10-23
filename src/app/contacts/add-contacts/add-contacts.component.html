@@ -439,8 +439,8 @@ img:hover {
 											*ngFor="let newContact of newUsers; let i = index">
 										<tr class='row_{{i}}'>
 											<td>{{newContact.emailId}}</td>
-											<td  class="hidden-xs">{{newContact.firstName}}</td>
-											<td  class="hidden-xs">{{newContact.lastName}}</td>
+											<td class="hidden-xs">{{newContact.firstName}}</td>
+											<td class="hidden-xs">{{newContact.lastName}}</td>
 											<td>
 												<button id='more_less_button_{{i}}'
 													(click)="newContact.isShowDetails = ! newContact.isShowDetails">
@@ -711,10 +711,10 @@ img:hover {
 	<app-add-contact-modal (notifyParent)="addRow($event)"></app-add-contact-modal>
 </div>
 <div id="zohoId">
-	<div class="modal" id="zohoShowLoginPopup" tabindex="-1" role="dialog"
+	<div class="modal right" id="zohoShowLoginPopup" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel" data-keyboard="false"
 		data-backdrop="static">
-		<div class="modal-dialog" role="document">
+		<div class="modal-dialog modal-css" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
 					<!-- <button type="button" class="close"  (click)="hideZohoModal()"
@@ -774,10 +774,10 @@ img:hover {
 	</div>
 </div>
 
-<div class="modal" id="zohoShowAuthorisedPopup" tabindex="-1"
+<div class="modal right" id="zohoShowAuthorisedPopup" tabindex="-1"
 	role="dialog" aria-labelledby="myModalLabel" data-keyboard="false"
 	data-backdrop="static">
-	<div class="modal-dialog" role="document">
+	<div class="modal-dialog modal-css" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
 				<!-- <button type="button" class="close"  (click)="hideZohoAuthorisedPopup()"
@@ -816,9 +816,9 @@ img:hover {
 	</div>
 </div>
 
-<div class="modal fade" id="myModal2" tabindex="-1" role="dialog"
+<div class="modal right" id="myModal2" tabindex="-1" role="dialog"
 	aria-labelledby="myModalLabel">
-	<div class="modal-dialog" role="document">
+	<div class="modal-dialog modal-css" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -844,10 +844,10 @@ img:hover {
 	</div>
 </div>
 
-<div class="modal" id="settingSocialNetwork" tabindex="-1" role="dialog"
+<div class="modal right" id="settingSocialNetwork" tabindex="-1" role="dialog"
 	aria-labelledby="settingSocialNetworkModalLabel" data-keyboard="false"
 	data-backdrop="static">
-	<div class="modal-dialog" role="document">
+	<div class="modal-dialog modal-css" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
 				<!-- <button type="button" class="close"
@@ -885,10 +885,10 @@ img:hover {
 		</div>
 	</div>
 </div>
-<div class="modal fade" id="salesforceModal" tabindex="-1" role="dialog"
+<div class="modal right" id="salesforceModal" tabindex="-1" role="dialog"
 	aria-labelledby="myModalLabel" data-keyboard="false"
 	data-backdrop="static">
-	<div class="modal-dialog" role="document">
+	<div class="modal-dialog modal-css" role="document" >
 		<div class="modal-content">
 			<div class="modal-header" style="border-bottom: none;">
 				<!-- <button type="button" class="close"

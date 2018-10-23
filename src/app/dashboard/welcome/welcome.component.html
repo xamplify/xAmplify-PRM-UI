@@ -213,7 +213,7 @@
    <app-scroll-top></app-scroll-top>
  </div>
 
- <app-preview-video *ngIf="videoFile" [videoFile]="videoFile" (notifyParent)="closeModal($event)"></app-preview-video>
+ <app-preview-video *ngIf="videoFile" [videoFile]="videoFile" [welcomeVideoFile]="welcomeVideoInfo" (notifyParent)="closeModal($event)"></app-preview-video>
 
  <!-- Modal -->
  <!-- <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

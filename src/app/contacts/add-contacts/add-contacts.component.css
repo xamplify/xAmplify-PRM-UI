@@ -12,4 +12,10 @@
 .center{
   text-align: center;
 }
-.pb0{ padding-bottom: 1px !important}
+.pb0{ padding-bottom: 0 !important}
+@media screen and (min-width:601px){
+  .modal-css{  width: 45% !important; right: 0 !important;}
+  }
+@media screen and (max-width:600px){
+  .modal-css {width: 100% !important; right: 0 !important;}
+}

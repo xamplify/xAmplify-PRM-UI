@@ -30,7 +30,7 @@
 							<li class="filter" (click)="filterCampaigns('REGULAR',1)" [class.campaign-type-selected]="1 == selectedCampaignTypeIndex">Email</li>
 							<li class="filter" (click)="filterCampaigns('VIDEO',2)" [class.campaign-type-selected]="2 == selectedCampaignTypeIndex">Video</li>
 							<li class="filter" (click)="filterCampaigns('SOCIAL',3)" [class.campaign-type-selected]="3 == selectedCampaignTypeIndex">Social</li>
-							<!-- <li class="filter" (click)="filterCampaigns('EVENT',4)" [class.campaign-type-selected]="4 == selectedCampaignTypeIndex">Event</li> -->
+							<li class="filter" (click)="filterCampaigns('EVENT',4)" [class.campaign-type-selected]="4 == selectedCampaignTypeIndex">Event</li>
 							<li class="filter" style="display: none;">Own Template</li>
 						</ul>
 						<div class="page-toolbar col-xs-6 col-sm-12 col-md-6">
@@ -87,9 +87,9 @@
 											<ng-container *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1">
 												<img [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/social-campaign.png" alt="Social Campaign">
 											</ng-container>
-											<!-- <ng-container *ngIf="campaign.campaignType.indexOf('EVENT') > -1">
+											<ng-container *ngIf="campaign.campaignType.indexOf('EVENT') > -1">
 												<img [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/event-campaign.png" alt="Event Campaign">
-											</ng-container> -->
+											</ng-container>
                     					</td>
                      <td>
 											<h4 class="ellipsis campaign-title" title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:36}}
@@ -101,15 +101,15 @@
 										</td>
 										<td class="center">
 											<span align="right">
-                        <b *ngIf="campaign.launched">Launched On</b>
+												<b *ngIf="campaign.launched">Launched On</b>
                         <ng-container *ngIf="!campaign.launched && campaign.scheduleType!=='SCHEDULE' && campaign.scheduleType!=='SAVE'">
-                        <b *ngIf="!campaign.launched && campaign.launchedOn?.length > 0">Scheduled For</b>
-                        <b *ngIf="!campaign.launched && campaign.launchedOn?.length==0">Saved On</b>
-                        </ng-container>
-                        <ng-container *ngIf="!campaign.launched && campaign.scheduleType">
-                        <b *ngIf="!campaign.launched && campaign.scheduleType==='SCHEDULE'">Scheduled For</b>
-                        <b *ngIf="!campaign.launched && campaign.scheduleType==='SAVE'">Saved On</b>
-                        </ng-container>
+                          <b *ngIf="!campaign.launched && campaign.launchedOn?.length > 0">Scheduled For</b>
+                          <b *ngIf="!campaign.launched && campaign.launchedOn?.length==0">Saved On</b>
+                          </ng-container>
+                          <ng-container *ngIf="!campaign.launched && campaign.scheduleType">
+                          <b *ngIf="!campaign.launched && campaign.scheduleType==='SCHEDULE'">Scheduled For</b>
+                          <b *ngIf="!campaign.launched && campaign.scheduleType==='SAVE'">Saved On</b>
+                          </ng-container>
 											</span>
 											<span align="right" title="Upload Date">
 												<!-- <b *ngIf="campaign.launched || !campaign.launched && campaign.launchedOn?.length > 0">{{campaign.launchedOn}}</b> -->
@@ -189,9 +189,9 @@
 											<ng-container *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1">
 												<img [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/social-campaign.png" alt="Social Campaign">
                       </ng-container>
-                      <!-- <ng-container *ngIf="campaign.campaignType.indexOf('EVENT') > -1">
+                      <ng-container *ngIf="campaign.campaignType.indexOf('EVENT') > -1">
                           <img [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/event-campaign.png" alt="Event Campaign">
-                      </ng-container> -->
+                      </ng-container>
 										</td>
 										<td>
 											<h4 class="campaign-title" title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:25}}
@@ -209,12 +209,8 @@
                           <b *ngIf="!campaign.launched && campaign.scheduleType==='SCHEDULE'">Scheduled For</b>
                           <b *ngIf="!campaign.launched && campaign.scheduleType==='SAVE'">Saved On</b>
                           </ng-container>
-												<span *ngIf="campaign.scheduleType=='NOW' || campaign.scheduleType=='SCHEDULE'"><!-- {{campaign.launchedOn}} -->
-												<app-timestamp [isOnlyDate]="false" [dateAndTime]="campaign.launchedOn"> </app-timestamp>
-												</span>
-												<span *ngIf="campaign.scheduleType=='SAVE'"><!-- {{campaign.startTime}} -->
-												<app-timestamp [isOnlyDate]="false" [dateAndTime]="campaign.startTime"> </app-timestamp>
-												</span>
+												<span *ngIf="campaign.scheduleType=='NOW' || campaign.scheduleType=='SCHEDULE'">{{campaign.launchedOn}}</span>
+												<span *ngIf="campaign.scheduleType=='SAVE'">{{campaign.startTime}}</span>
 											</h5>
 										</td>
 										<td>
@@ -306,13 +302,19 @@
 													<i *ngIf="campaign.campaignType.indexOf('VIDEO') > -1" class="fa fa-video-camera" aria-hidden="true"></i>
 													<i *ngIf="campaign.campaignType.indexOf('REGULAR') > -1" class="fa fa-envelope" aria-hidden="true"></i>
                           <i *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1" class="fa fa-globe" aria-hidden="true"></i>
-                          <!-- <i *ngIf="campaign.campaignType.indexOf('EVENT') > -1" class="fa fa-calendar" aria-hidden="true"></i> -->
+                          <i *ngIf="campaign.campaignType.indexOf('EVENT') > -1" class="fa fa-calendar" aria-hidden="true"></i>
 												</span>
 											</div>
 											<div class="ribbon" [class.active]="!campaign.launched && campaign.launchedOn?.length==0">
 												<span *ngIf="campaign.launched">Launched</span>
-												<span *ngIf="!campaign.launched && campaign.launchedOn?.length > 0">Scheduled</span>
-												<span *ngIf="!campaign.launched && campaign.launchedOn?.length==0">Saved</span>
+                        <ng-container *ngIf="!campaign.launched && campaign.scheduleType!=='SCHEDULE' && campaign.scheduleType!=='SAVE'">
+                          <b *ngIf="!campaign.launched && campaign.launchedOn?.length > 0">Scheduled For</b>
+                          <b *ngIf="!campaign.launched && campaign.launchedOn?.length==0">Saved On</b>
+                          </ng-container>
+                          <ng-container *ngIf="!campaign.launched && campaign.scheduleType">
+                          <b *ngIf="!campaign.launched && campaign.scheduleType==='SCHEDULE'">Scheduled For</b>
+                          <b *ngIf="!campaign.launched && campaign.scheduleType==='SAVE'">Saved On</b>
+                          </ng-container>
 											</div>
 											<div class="bar" >
 												<ng-container *ngIf="!campaign.launched">
@@ -384,8 +386,8 @@
 
 
 <!-- Save As Modal -->
-<div class="modal fade" id="saveAsModal" tabindex="-1" role="dialog" aria-labelledby="saveAsModalLabel" aria-hidden="true">
-	<div class="modal-dialog" role="document">
+<div class="modal right fade" id="saveAsModal" tabindex="-1" role="dialog" aria-labelledby="saveAsModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-copy" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title f-w-600" id="saveAsModalLabel">Copy Campaign</h4>
@@ -408,8 +410,8 @@
 </div>
 
 
-<div id="campaignFilterModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
-	<div class="modal-dialog" style="width: 53%;">
+<div id="campaignFilterModal" class="modal right fade" role="dialog" data-backdrop="static" data-keyboard="false">
+	<div class="modal-dialog modal-copy">
 		<!-- Modal content-->
 		<div class="modal-content">
 			<div class="modal-header">

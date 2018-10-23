@@ -64,8 +64,7 @@ h3 {
 }
 
 .flex {
-  display: flex;
-  /* border-bottom: 1px solid #CCC; */
+	display: flex;
 }
 
 .header-text {
@@ -240,7 +239,6 @@ h3 {
   text-align: left;
 }
 .text-left-analytics {
-position: relative;
-right: -46px;
-}
-
+  position: relative;
+  right: -46px;
+  }

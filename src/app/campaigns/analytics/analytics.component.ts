@@ -168,8 +168,8 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   listCampaignViewsDataInsert(campaignviews: any){
       this.campaignViews= campaignviews;
       const views = [];
-      for (let i = 0; i <  this.campaignViews.length; i++) {
-        views.push( this.campaignViews[i].viewsCount)
+      for (let i = 0; i < this.campaignViews.length; i++) {
+        views.push(this.campaignViews[i].viewsCount)
       }
       this.maxViewsValue = Math.max.apply(null, views);
       this.campaignViewsPagination.totalRecords = this.campaignReport.emailSentCount;
@@ -244,7 +244,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     this.loading = true;
     const nameValue = this.campaignType === 'VIDEO' ? 'Views' : 'Email Opened';
     const self = this;
-    Highcharts.chart('campaign-views-barchart', {
+    let newChart = Highcharts.chart('campaign-views-barchart', {
       chart: {
         type: 'bar'
       },
@@ -306,6 +306,23 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
         name: nameValue,
         data: data
       }]
+    });
+    newChart.xAxis[0].labelGroup.element.childNodes.forEach(function(label)
+    {
+      label.style.cursor = "pointer";
+      label.onclick = function(){
+        console.log(label);
+        const text = this.textContent;
+        for(let i=0; i<self.campaignBarViews.length; i++){
+          let email = text;
+          if(email.indexOf(self.campaignBarViews[i].emailId)){
+            email = email.replace(self.campaignBarViews[i].firstName, '');
+            email = email.replace(self.campaignBarViews[i].lastName, '');
+            email = email.replace(/\s+/, "");
+            if(self.campaignBarViews[i].emailId === email){ self.userWatchedviewsInfo(email); break; }
+          }
+        }
+       }
     });
     this.loading = false;
   }
@@ -597,18 +614,18 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   }
   userWatchedviewsInfo(emailId: string) {
     try {
+      if(emailId.includes('<br/>')){
       emailId = emailId.substring(emailId.indexOf('<br/>'), emailId.length);
-      emailId = emailId.substring(5);
-    this.loading = true;
+      emailId = emailId.substring(5); }
+      this.loading = true;
       if (emailId !== this.selectedRow.emailId) {
       this.userCampaignReport.emailOpenCount = 0;
       this.userCampaignReport.emailClickedCount = 0;
       this.userCampaignReport.totalUniqueWatchCount = 0;
       this.barChartCliked = true;
-
-        this.selectedRow = this.campaignBarViews.find(function (obj) { return obj.emailId === emailId; });
-        this.userTimeline(this.selectedRow);
-        this.isTimeLineView = true;
+      this.selectedRow = this.campaignBarViews.find(function (obj) { return obj.emailId === emailId; });
+      this.userTimeline(this.selectedRow);
+      this.isTimeLineView = true;
     }
       this.loading = false;
     } catch (err) {
@@ -1112,13 +1129,13 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
         object["Sent Time"] = sentTime.toDateString() + ' ' + sentTime.getHours() + ':' + sentTime.getMinutes() + ':' + sentTime.getSeconds();
         object["Latest View"] = latestView.toDateString() + ' ' + latestView.getHours() + ':' + latestView.getMinutes() + ':' + latestView.getSeconds();
         }
-        } 
+        }
 
       if (this.downloadTypeName === 'usersWatchedList') {
         object["Email Id"] = this.downloadCsvList[i].emailId;
         object["START DURATION"] = startTime.toDateString() + ' ' + startTime.getHours() + ':' + startTime.getMinutes() + ':' + startTime.getSeconds();
         object["STOP DURATION"] = endTime.toDateString() + ' ' + endTime.getHours() + ':' + endTime.getMinutes() + ':' + endTime.getSeconds();
-       /* object["IP ADDRESS"] = this.downloadCsvList[i].ipAddress;*/
+        object["IP ADDRESS"] = this.downloadCsvList[i].ipAddress;
         object["PLATFORM"] = this.downloadCsvList[i].os;
         object["STATE"] = this.downloadCsvList[i].state;
         object["COUNTRY"] = this.downloadCsvList[i].country;

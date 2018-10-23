@@ -307,11 +307,11 @@
 											<ng-container *ngIf="!campaign.createdFromVideos">
 												<div class="input-icon right pull-right m10" *ngIf="isMyVideosActive">
 													<i class="icon-magnifier" (click)="searchVideo()" style="cursor: pointer;"></i>
-													<input type="text" class="form-control" placeholder="Search for a video" [(ngModel)]="videoSearchInput" [ngModelOptions]="{standalone: true}">
+													<input type="text" class="form-control" placeholder="Search in My Videos" [(ngModel)]="videoSearchInput" [ngModelOptions]="{standalone: true}">
 												</div>
 												<div class="input-icon right pull-right m10" *ngIf="!isMyVideosActive">
 													<i class="icon-magnifier" (click)="searchChannelVideo()" style="cursor: pointer;"></i>
-													<input type="text" class="form-control" placeholder="Search for a video" [(ngModel)]="channelVideoSearchInput" [ngModelOptions]="{standalone: true}">
+													<input type="text" class="form-control" placeholder="Search in Partner Videos" [(ngModel)]="channelVideoSearchInput" [ngModelOptions]="{standalone: true}">
 												</div>
 											</ng-container>
 										</div>
@@ -417,8 +417,8 @@
 														</ng-container>
 													</tbody>
                         </table>
-                        <div [hidden]="isvideoThere && campaignVideo.httpRequestLoader.isLoading && campaignVideo.httpRequestLoader.isServerError && campaign.createdFromVideos" style="text-align:left !important">
-                        <app-pagination  [hidden]="campaignVideo.httpRequestLoader.isLoading || campaignVideo.httpRequestLoader.isServerError" [pagination]="videosPagination" [type]="'videos'"
+                        <div [hidden]="isvideoThere && campaignVideo.httpRequestLoader.isLoading && campaignVideo.httpRequestLoader.isServerError && campaign.createdFromVideos">
+                        <app-pagination  style="position: relative;left: -277px;" [hidden]="campaignVideo.httpRequestLoader.isLoading || campaignVideo.httpRequestLoader.isServerError" [pagination]="videosPagination" [type]="'videos'"
                         (notifyParent)="setPagePagination($event)" (notifyParentDropDown)="loadCampaignVideos($event)"></app-pagination>
                         </div>
 											</div>
@@ -537,8 +537,8 @@
 														</ng-container>
 													</tbody>
 												</table>
-												<div [hidden]="isPartnerVideoExists && campaignVideo.httpRequestLoader.isLoading && campaignVideo.httpRequestLoader.isServerError && campaign.createdFromVideos" class="text-align:left">
-                          <app-pagination  [hidden]="campaignVideo.httpRequestLoader.isLoading && campaignVideo.httpRequestLoader.isServerError" [pagination]="channelVideosPagination" [type]="'partner-videos'"
+												<div [hidden]="isPartnerVideoExists && campaignVideo.httpRequestLoader.isLoading && campaignVideo.httpRequestLoader.isServerError && campaign.createdFromVideos">
+                          <app-pagination style="position: relative;left: -311px;" [hidden]="campaignVideo.httpRequestLoader.isLoading && campaignVideo.httpRequestLoader.isServerError" [pagination]="channelVideosPagination" [type]="'partner-videos'"
                           (notifyParent)="setPagePagination($event)" (notifyParentDropDown)="loadPartnerVideos($event)"></app-pagination>
 												</div>
 											</div>
@@ -568,7 +568,7 @@
 											<div class="portlet-input input-inline" style="position: relative;top: -6px;">
 												<div class="input-icon right">
 													<i class="icon-magnifier" (click)="searchContactList()" style="cursor: pointer;"></i>
-													<input type="text" class="form-control" placeholder="Search" [(ngModel)]="contactSearchInput" [ngModelOptions]="{standalone: true}">
+													<input type="text" class="form-control" placeholder="search..." [(ngModel)]="contactSearchInput" [ngModelOptions]="{standalone: true}">
 												</div>
 											</div>
 										</div>
@@ -636,8 +636,8 @@
 													</tr>
 												</tbody>
 											</table>
-											<div *ngIf="contactsPagination.totalRecords > 0 && !campaignContact.httpRequestLoader.isLoading && !campaignContact.httpRequestLoader.isServerError" style="text-align:left !important">
-                        <app-pagination [pagination]="contactsPagination" [type]="'contacts'"
+											<div *ngIf="contactsPagination.totalRecords > 0 && !campaignContact.httpRequestLoader.isLoading && !campaignContact.httpRequestLoader.isServerError">
+                        <app-pagination style="float: left; position: relative;left: 0px;" [pagination]="contactsPagination" [type]="'contacts'"
                         (notifyParent)="setPagePagination($event)" [isDropdown]="true"></app-pagination>
 
 												<select class="btn btn-default" style="float: right;" [(ngModel)]="contactItemsSize"
@@ -679,8 +679,8 @@
 							</ul>
 							<div class="input-icon right pull-right" style="padding-top: 4px;right: 8px;">
 								<i class="icon-magnifier" (click)="searchEmailTemplate()" style="cursor: pointer;"></i>
-								<input type="text" class="form-control" placeholder="Search for template" [(ngModel)]="emailTemplateSearchInput" [ngModelOptions]="{standalone: true}"
-								 style="width: 180px;height: 34px;">
+								<input type="text" class="form-control" placeholder="search..." [(ngModel)]="emailTemplateSearchInput" [ngModelOptions]="{standalone: true}"
+								 style="width: 170px;height: 34px;">
 							</div>
 							<div class="portlet-body">
 							<div class="row">
@@ -697,7 +697,7 @@
                           <div  *ngIf="!isAdd && isCampaignDraftEmailTemplate && emailTemplatesPagination.totalRecords>0 && emailTemplatesPagination.pageIndex==1 ">
                             <div class="col-md-3 col-sm-4 mix category_1 mix_all" style="display: block; opacity: 1; margin-top: -11px;">
                               <div id="container">
-                                <h3 *ngIf="campaign?.emailTemplate?.type?.toLocaleString()=='PARTNER'" style="width: 21%">
+                                <h3 *ngIf="campaign.emailTemplate?.type?.toLocaleString()=='PARTNER'" style="width: 21%">
 												    		{{campaign.emailTemplate?.type}}
 												    		<span class="arrow"></span>
 												   	</h3>
@@ -725,7 +725,7 @@
 														<span align="right" title="upladed date" class="template-created-on-value">
 															<b>{{campaign.emailTemplate.createdDate}}</b>
 														</span>
-														<ng-container *ngIf="campaign?.emailTemplate?.type?.toLocaleString()!='PARTNER'">
+														<ng-container *ngIf="campaign.emailTemplate?.type?.toLocaleString()!='PARTNER'">
 															<span align="left" class="template-created-by-label" title="{{campaign.emailTemplate.createdBy}}">
 																<b *ngIf="campaign.emailTemplate.createdBy?.length>12">{{campaign.emailTemplate.createdBy|slice:0:12}}....</b>
 																<b *ngIf="campaign.emailTemplate.createdBy?.length<=12">{{campaign.emailTemplate.createdBy}}</b>
@@ -752,8 +752,8 @@
 									<div *ngFor="let emailTemplate of emailTemplatesPagination.pagedItems ;let i =index" id="emailTemplateListDiv_{{emailTemplate.id}}">
 										<div class="col-md-3 col-sm-4 mix category_1 mix_all" style="display: block; opacity: 1; margin-top: -11px;" *ngIf="emailTemplateId!=emailTemplate.id">
 											<div id="container">
-												<h3 *ngIf="emailTemplate?.type=='PARTNER'" class="partner-ribbon">
-													{{emailTemplate?.type}}
+												<h3 *ngIf="emailTemplate.type=='PARTNER'" class="partner-ribbon">
+													{{emailTemplate.type}}
 													<span class="arrow"></span>
 												</h3>
 												<h3 *ngIf="emailTemplate.draft" class="draft-header">
@@ -786,7 +786,7 @@
 													<span align="right" title="upladed date" class="template-created-on-value">
 														<b>{{emailTemplate.createdDate}}</b>
 													</span>
-													<ng-container *ngIf="emailTemplate?.type!='PARTNER'">
+													<ng-container *ngIf="emailTemplate.type!='PARTNER'">
 														<span align="left" class="template-created-by-label" title="{{emailTemplate.createdBy}}">
 															<b *ngIf="emailTemplate.createdBy?.length>12">{{emailTemplate.createdBy|slice:0:12}}....</b>
 															<b *ngIf="emailTemplate.createdBy?.length<=12">{{emailTemplate.createdBy}}</b>
@@ -795,7 +795,7 @@
 															<b>Created By</b>
 														</span>
 													</ng-container>
-													<ng-container *ngIf="emailTemplate?.type=='PARTNER'">
+													<ng-container *ngIf="emailTemplate.type=='PARTNER'">
 														<span align="left" class="template-created-by-label" title="{{emailTemplate.vendorName}}">
 															<b *ngIf="emailTemplate.vendorName?.length>13">{{emailTemplate.vendorName|slice:0:13}}....</b>
 															<b *ngIf="emailTemplate.vendorName?.length<=13">{{emailTemplate.vendorName}}</b>
@@ -816,8 +816,8 @@
 				<div *ngIf="emailTemplatesPagination.totalRecords==0" class="alert alert-info">
 					<strong>No email templates found</strong>
 				</div>
-				<div  style="position: relative;top: -3px; text-align:left !important" [hidden]="emailTemplatesPagination.totalRecords<0 || campaignEmailTemplate.httpRequestLoader.isLoading || campaignEmailTemplate.httpRequestLoader.isServerError">
-          <app-pagination [pagination]="emailTemplatesPagination" [type]="'emailTemplates'"
+				<div  style="position: relative;top: -3px;" [hidden]="emailTemplatesPagination.totalRecords<0 || campaignEmailTemplate.httpRequestLoader.isLoading || campaignEmailTemplate.httpRequestLoader.isServerError">
+          <app-pagination style="position: relative;left: -311px;" [pagination]="emailTemplatesPagination" [type]="'emailTemplates'"
           (notifyParent)="setPagePagination($event)"  (notifyParentDropDown)="loadPaginationDropdownTemplates($event)"></app-pagination>
         </div>
 				<button type="button" class="btn btn-default pull-left" (click)="resetActive($event, 40, 'step-4')">Previous</button>
@@ -1119,7 +1119,7 @@
                     <div class="input-icon pull-right" style="cursor:pointer; position: relative;top: -16px;" >
                         <i class="icon-magnifier" style="cursor:pointer;font-size:18px;" (click)="searchReplyEmailTemplate(reply)"></i>
                         <input type="text" [(ngModel)]="reply.emailTemplateSearchInput" [ngModelOptions]="{standalone: true}" class="form-control"
-                         placeholder="Search for a template" 	style="width: 217px;height: 34px;">
+                         placeholder="search..." 	style="width: 217px;height: 34px;">
                     </div>
 									</div>
 									<app-loader [model]="campaignEmailTemplate.httpRequestLoader.isHorizontalCss" *ngIf="campaignEmailTemplate.httpRequestLoader.isLoading"></app-loader>
@@ -1298,7 +1298,7 @@
                             <div class="input-icon right" style="cursor:pointer">
                                 <i class="icon-magnifier" style="cursor:pointer;font-size:18px;" (click)="searchClickEmailTemplate(url)"></i>
                                 <input type="text" [(ngModel)]="url.emailTemplateSearchInput" [ngModelOptions]="{standalone: true}" class="form-control"
-                                 placeholder="Search for a template">
+                                 placeholder="search...">
                               </div>
 												</div>
 											</div>
@@ -1454,8 +1454,8 @@
 			<!-- End Of Line 18 -->
 		</div>
 		<!-- --------------------Email Template -->
-		<div class="modal" id="show_email_template_preivew">
-			<div class="modal-dialog modal-lg" style="width: 75%;">
+		<div class="modal right " id="show_email_template_preivew">
+			<div class="modal-dialog modal-lg" style="width: 75%;right:0">
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close-circle" data-dismiss="modal">
@@ -1473,8 +1473,8 @@
 			</div>
 		</div>
 		<!-- ----------------------------------Contact Lists--------------------------------- -->
-		<div class="modal fade" id="usersModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static">
-			<div class="modal-dialog" role="document">
+		<div class="modal right" id="usersModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static">
+			<div class="modal-dialog" role="document" style="right:0">
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close-circle" data-dismiss="modal" aria-label="Close">
