@@ -22,7 +22,7 @@ import { User } from '../../../core/models/user';
 import { DefaultVideoPlayer } from '../../models/default-video-player';
 import { EmbedModalComponent } from '../../../common/embed-modal/embed-modal.component';
 import { HomeComponent } from '../../../core/home/home.component';
-declare var videojs, QuickSidebar, brandingoriginalUrl,$: any;
+declare var videojs, QuickSidebar,$: any;
 
 @Component({
   selector: 'app-edit-video',
@@ -247,7 +247,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
   fileLogoSelected(event: File){
   (<HTMLInputElement>document.getElementById('fileLogoSelectedid')).value = '';
    const fileList: File = event;
-
       if (fileList) {
           const file: File = fileList;
           console.log(file);
@@ -664,7 +663,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
               this.enableVideoLogo = true;
           } else {
               this.defaultSettingValuesBoolean(event);
-              // this.brandLogoUrl = this.tempVideoFile.brandingLogoUri!==null ? this.tempVideoFile.brandingLogoUri : this.defaultPlayerValues.companyProfile.companyLogoPath;
+                // this.brandLogoUrl = this.tempVideoFile.brandingLogoUri!==null ? this.tempVideoFile.brandingLogoUri : this.defaultPlayerValues.companyProfile.companyLogoPath;
               // this.logoDescriptionUrl = this.tempVideoFile.brandingLogoDescUri !==null ? this.tempVideoFile.brandingLogoDescUri : this.defaultPlayerValues.companyProfile.website;
               this.brandLogoUrl = this.saveVideoFile.brandingLogoUri!==null ? this.setBrandingLogo() : this.defaultPlayerValues.companyProfile.companyLogoPath;
               this.logoDescriptionUrl = this.saveVideoFile.brandingLogoDescUri !==null ? this.setBrandignLogoDescUrl() : this.defaultPlayerValues.companyProfile.website;

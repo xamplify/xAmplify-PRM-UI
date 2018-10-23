@@ -35,31 +35,31 @@
 		</div>
 	<!-- BEGIN PAGE CONTENT-->
 	<div class="row">
-			<div class="clearfix" [class.disabled]="authenticationService.isSuperAdmin()">
-				<section class="clearfix">
-				<div class="col-xs-6 col-sm-2 hidden-xs">
-						<div class="btn-xs btn-info fileinput-button btn-block rounded-0" style="overflow: hidden;position: relative;"  *ngIf="!isAddTeamMember && !isUploadCsv">
-							<h6 style="text-align: center; font-size:14px">Upload Csv</h6>
-							<input type="file" class="file-upload" #fileImportInput  name="File Upload" id="txtFileUpload" accept=".csv" (change)="fileChangeListener($event)" />
-						</div>
-						<div class="btn-xs btn-info fileinput-button btn-block rounded-0" style="overflow: hidden;position: relative;cursor: not-allowed;" disabled="disabled"
-							*ngIf="isAddTeamMember  || isUploadCsv">
-							<h6 style="text-align: center; font-size:14px">Upload Csv</h6>
-						</div>
-					</div>
-					<div class="col-xs-12 col-sm-2">
-						<button class="btn-xs btn-primary btn-block rounded-0" (click)="showAddTeamMember()" *ngIf="!isAddTeamMember && !isUploadCsv">
-							<h6 style="font-size:14px">Add Team Member</h6>
-						</button>
-						<button class="btn-xs btn-primary btn-block rounded-0" disabled="disabled" *ngIf="isAddTeamMember || isUploadCsv" style="cursor: not-allowed" >
-							<h6 style="font-size:14px">Add Team Member</h6>
-						</button>
-					</div>
-					<div class="col-xs-12 col-sm-3 hidden-xs pull-right">
-						<a class="btn btn-success" (click)="downloadEmptyCsv()" download [ngClass]="{'downlaod-css':!referenceService.isMobileScreenSize(),'downlaod-css-mobile':referenceService.isMobileScreenSize()}">Download CSV Template</a>
-					</div>
-				</section>
-			</div>
+    <div class="clearfix" [class.disabled]="authenticationService.isSuperAdmin()">
+      <section class="clearfix">
+      <div class="col-xs-6 col-sm-2 hidden-xs">
+          <div class="btn-xs btn-info fileinput-button btn-block rounded-0" style="overflow: hidden;position: relative;"  *ngIf="!isAddTeamMember && !isUploadCsv">
+            <h6 style="text-align: center; font-size:14px">Upload Csv</h6>
+            <input type="file" class="file-upload" #fileImportInput  name="File Upload" id="txtFileUpload" accept=".csv" (change)="fileChangeListener($event)" />
+          </div>
+          <div class="btn-xs btn-info fileinput-button btn-block rounded-0" style="overflow: hidden;position: relative;cursor: not-allowed;" disabled="disabled"
+            *ngIf="isAddTeamMember  || isUploadCsv">
+            <h6 style="text-align: center; font-size:14px">Upload Csv</h6>
+          </div>
+        </div>
+        <div class="col-xs-12 col-sm-2">
+          <button class="btn-xs btn-primary btn-block rounded-0" (click)="showAddTeamMember()" *ngIf="!isAddTeamMember && !isUploadCsv">
+            <h6 style="font-size:14px">Add Team Member</h6>
+          </button>
+          <button class="btn-xs btn-primary btn-block rounded-0" disabled="disabled" *ngIf="isAddTeamMember || isUploadCsv" style="cursor: not-allowed" >
+            <h6 style="font-size:14px">Add Team Member</h6>
+          </button>
+        </div>
+        <div class="col-xs-12 col-sm-3 hidden-xs pull-right" style="text-align:right">
+          <a class="btn btn-success" (click)="downloadEmptyCsv()" download >Download CSV Template</a>
+        </div>
+      </section>
+    </div>
 
 			<div class="portlet light border-radius-0" *ngIf="isAddTeamMember" style="height: 85px;">
 				<div class="portlet-body">
@@ -337,25 +337,11 @@
 					<hr>
 						<!-- -----------Pagination-------------- -->
 						<div *ngIf="pagination.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError" class="pull-left">
-						<ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination">
-		                        <li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
-		                           <a (click)="setPage(1)" [class.disabled]="pagination.pager.currentPage === 1">First</a>
-		                        </li>
-		                        <li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
-		                            <a (click)="setPage(pagination.pager.currentPage - 1)" [class.disabled]="pagination.pager.currentPage === 1">Previous</a>
-		                         </li>
-		                         <li *ngFor="let page of pagination.pager.pages" [ngClass]="{active:pagination.pager.currentPage === page}">
-		                            <a (click)="setPage(page)" [class.disabled]="pagination.pager.currentPage === page">{{page}}</a>
-		                         </li>
-		                         <li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
-		                             <a (click)="setPage(pagination.pager.currentPage + 1)" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Next</a>
-		                         </li>
-		                          <li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
-		                             <a (click)="setPage(pagination.pager.totalPages)" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">Last</a>
-		                         </li>
-		                       </ul>
-					</div>
-					<!-- -----------End Of Pagination-------------- -->
+              <app-pagination [pagination]="pagination" [type]="'teammember'" [isDropdown]="true"
+              (notifyParent)="setPage($event)"></app-pagination>
+				    </div>
+          <!-- -----------End Of Pagination-------------- -->
+
 					<div class="pull-right" style="margin-top: 9px;" *ngIf="pagination.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError" [class.disabled]="authenticationService.isSuperAdmin()">
 						<button class="btn btn-primary" (click)="update()">Update</button>
 					</div>
@@ -363,49 +349,57 @@
 			</div>
 			<!-- END EXAMPLE TABLE PORTLET-->
 	</div>
-	<div id="addTeamMember" class="modal"  tabindex="-1" role="dialog"  data-keyboard="false" data-backdrop="static">
- 	 <div class="modal-dialog">
+	<div id="addTeamMember" class="modal right"  tabindex="-1" role="dialog"  data-keyboard="false" data-backdrop="static">
+ 	 <div class="modal-dialog modal-css">
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
 		<a class="close-circle" (click)="clearForm()"><i class="fa fa-times"></i></a>
-		<h4 class="modal-title">Add Team Member</h4>
+		<h4 class="modal-title" style="font-weight: 600;">Add Team Member</h4>
       </div>
       <div class="modal-body">
       <form class="form-horizontal" id="add-team-member-form">
-		   <div class="form-inline">
-		   <label class="control-label col-sm-2" for="firstName" style="color:blue"><i class="glyphicon glyphicon-user" style="right:11px" aria-hidden="true"></i></label>
+		   <div class="form-group">
+       <label class="control-label col-sm-2" for="firstName" style="color:blue">
+        <!-- <i class="glyphicon glyphicon-user" style="right:11px" aria-hidden="true"></i> -->
+      </label>
 		   <div class="form-group col-sm-5">
 			      <input type="text" style="border:none" id="firstName" placeholder="First Name" class="form-control" [(ngModel)]="team.firstName" name="firstName">
-			    <div class="textCss"></div>
+			 <div class="textCss"></div>
 		  </div>
 		   <div class="form-group col-sm-5">
 			      <input type="text" style="border:none" id="lastName" placeholder="Last Name" class="form-control" [(ngModel)]="team.lastName" name="lastName">
-			       <div class="textCss"></div>
+			      <div class="textCss"></div>
 		  </div>
 		  </div>
-		  <div class="form-group">
-		    <label class="control-label col-sm-2" for="email" style="color:#8512b7;left: 12px"><i class="fa fa-envelope-o" aria-hidden="true"><span style="color:red;"> *</span></i></label>
-		    <div class="col-sm-10">
-		     <input  type="email"  class="form-control" id="emailId" placeholder="Email Address" [(ngModel)]="team.emailId" name="emailId" (input)="validateEmailId(team.emailId,false)" (blur)="validateEmailId(team.emailId,true)" style="border: none;">
-		      <div class="textCss"></div>
-		       <span class="text-danger" *ngIf="!teamMemberUi.isValidForm">{{teamMemberUi.errorMessage}}</span>
-		    </div>
-		  </div>
+
+      <div class="form-group">
+          <label class="control-label col-xs-2 col-sm-2" for="email" style="color: #00bcd4; right: -15px !important">
+              <span class="red"> *</span>
+          </label>
+         <div class="form-group col-xs-6 col-sm-10">
+            <input type="email" style="border: none" class="form-control padding-mobile"
+            id="emailId" placeholder="Email" [(ngModel)]="team.emailId" name="emailId" (input)="validateEmailId(team.emailId,false)" (blur)="validateEmailId(team.emailId,true)"
+            placeholder="Email *" autocomplete="off" maxlength="250">
+          <div class="textCss"></div>
+          <span class="text-danger" *ngIf="!teamMemberUi.isValidForm">{{teamMemberUi.errorMessage}}</span>
+         </div>
+       </div>
+
       </form>
       </div>
-      <div class="modal-footer">
+      <div class="modal-footer" style="border:none;">
+      <button  class="btn btn-info"  type="reset" (click)="clearForm();">Cancel</button>
       <button type="button" class="btn btn-primary" *ngIf="teamMemberUi.isValidForm" (click)="addTeamMember()">Add</button>
-		<button  class="btn btn-primary" *ngIf="!teamMemberUi.isValidForm" disabled="disabled">Add</button>
-		<button  class="btn btn-info"   type="reset" (click)="clearForm();">Cancel</button>
+	  	<button  class="btn btn-primary" *ngIf="!teamMemberUi.isValidForm" disabled="disabled">Add</button>
       </div>
     </div>
   </div>
 </div>
 	<!-- END PAGE CONTENT -->
 	<!-- -Deleting Team Member Pop Up -->
-	<div id="delete-team-member-modal" class="modal"  tabindex="-1" role="dialog"  data-keyboard="false" data-backdrop="static">
- 	 <div class="modal-dialog">
+	<div id="delete-team-member-modal" class="modal right"  tabindex="-1" role="dialog"  data-keyboard="false" data-backdrop="static">
+ 	 <div class="modal-dialog modal-css">
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
@@ -423,15 +417,14 @@
       			<option value="0">Please select emailId</option>
       			<option *ngFor="let data of emailIds" [ngValue]="data.id">{{data.emailId}}</option>
       		</select>
-		      <div class="textCss"></div>
 		    </div>
 		  </div>
       </form>
       </div>
-      <div class="modal-footer">
-      <button type="button" class="btn btn-primary" (click)="delete()" *ngIf="selectedId>0" >Go</button>
-       <button type="button" class="btn btn-primary" *ngIf="selectedId==0" disabled="disabled">Go</button>
-        <button type="button" class="btn btn-info" (click)="hidePopup()" >Cancel</button>
+      <div class="modal-footer" style="border:none;">
+        <button type="button" class="btn btn-default" (click)="hidePopup()" >Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="delete()" *ngIf="selectedId>0" >Go</button>
+        <button type="button" class="btn btn-primary" *ngIf="selectedId==0" disabled="disabled">Go</button>
       </div>
     </div>
   </div>

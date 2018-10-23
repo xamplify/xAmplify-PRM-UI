@@ -6,7 +6,7 @@ table td:first-child, table th:first-child { 	text-align: left }
 .fa-times {
 	color: #F3565D;
 } */
-.red{ 	color: #F3565D !important; }
+.red{ 	color: red !important; }
 
 hr {
 	padding: 5px 0;
@@ -188,3 +188,8 @@ img:hover {
 .downlaod-css{ width:unset; color:white; left: 84px; position: absolute;}
 .downlaod-css-mobile{ width:100%; color:white; margin-top: 5px }
 
+@media screen and (min-width:601px){ .modal-css{  width: 41% !important; right: 0 !important;}}
+@media screen and (max-width:600px){ .modal-css {width: 100% !important; right: 0 !important;}}
+
+@media only screen and (max-width:600px){ .padding-mobile{ padding:0}}
+@media only screen and (min-width:601px){.padding-mobile{ padding:non;}}

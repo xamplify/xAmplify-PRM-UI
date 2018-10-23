@@ -126,7 +126,7 @@
               </div>
             </div>
           </div>
-          <div class="portlet-body clearfix table-responsive" style="min-height: 400px;">
+          <div class="portlet-body clearfix table-responsive" style="min-height: 410px;">
             <app-list-loader *ngIf="activeParnterHttpRequestLoader.isLoading" [rowsCount]="listLoaderValue.ACTIVEPARTNERS"></app-list-loader>
             <table class="table tgrid" *ngIf="!activeParnterHttpRequestLoader.isLoading">
               <thead>
@@ -199,10 +199,10 @@
                   <td>
                     <app-user-info [userInfo]="item" [isPartnerEntityInfo]="true" [isPartnerInfo]="true"></app-user-info>
                   </td>
-                  <td class="text-center hidden-xs">
-                   <p>{{item.time}}</p>
-                   <p *ngIf="!item.time"><b>-</b></p>
-                  </td>
+                  <td class="hidden-xs">
+                    <h4>{{item.time}}</h4>
+                    <h4 *ngIf="!item.time"><b>-</b></h4>
+                   </td>
                   <td (click)="sendPartnerReminder(item)">
                     <div class="actions-block">
                       <a data-toggle="tooltip" data-placement="left" title="Send reminder email">
