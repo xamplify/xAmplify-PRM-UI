@@ -27,4 +27,6 @@ export class SocialStatus {
   socialCampaign = false;
   emailOpened = false;
   isPartner = true;
+
+  socialStatusList: Array<SocialStatus> = [];
 }

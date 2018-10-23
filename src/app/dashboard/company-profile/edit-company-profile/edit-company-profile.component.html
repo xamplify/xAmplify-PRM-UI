@@ -1,6 +1,12 @@
 
-<div class="page-content" [class.ml0]="!authenticationService.user.hasCompany">
+<div class="page-content" [class.ml0]="!authenticationService.user.hasCompany || authenticationService.isSuperAdmin()">
 <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+	<div class="page-bar" *ngIf="authenticationService.isSuperAdmin()">
+		<ul class="page-breadcrumb">
+			<li><i class="fa fa-home"></i><a
+				[routerLink]="['/home/dashboard/admin-report']">Admin Report</a></li>
+		</ul>
+	</div>
 	<div class="portlet light" id="company-profile-div">
 		<div class="portlet-title">
 			<div class="caption">Company Profile</div>
@@ -47,7 +53,7 @@
 						<div class="smpl-step-info text-center"  style="margin-top: 3px;">Start {{properties.APP_WEBSITE}}</div>
 					</div>
 				</div>
-				<h1 class="text-center" style="font-size: 26px;color: #888888;">Let's get started on your company profile.</h1>
+				<h1 class="text-center heading-text">Let's get started on your company profile.</h1>
 				<img src="/assets/images/dotted-arrow.png" class="img-responsive" style="margin-bottom: 3em;">
 			<div [hidden]="processor.isProcessing">
 				<form role="form" id="company-profile-form">
@@ -137,10 +143,14 @@
 									<option *ngFor="let videoFile of publicVideos"	[ngValue]="videoFile.id">{{videoFile.title}}</option>
 								</select>
 							</div>
-							<div class="form-group" [attr.class]="aboutUsDivClass">
+							<!-- <div class="form-group" [attr.class]="aboutUsDivClass">
 								<label class="control-label">About Us <font	style="color: #f55d7a"><b>*</b></font></label>
 								<textarea class="form-control" rows="3" cols="5" maxlength="1000" placeholder="About Us" name="aboutUs" id="aboutUs" style="resize: none" [(ngModel)]="companyProfile.aboutUs" (input)="validateEmptySpace('aboutUs')" (blur)="validateEmptySpace('aboutUs')"></textarea>
 								<span *ngIf="aboutUsError"  style="color: #f55d7a">{{aboutUsErrorMessage}}</span>
+							</div> -->
+							<div class="form-group">
+								<label class="control-label">About Us</label>
+								<textarea class="form-control" rows="3" cols="5" maxlength="1000" placeholder="About Us" name="aboutUs" id="aboutUs" style="resize: none" [(ngModel)]="companyProfile.aboutUs"></textarea>
 							</div>
 							<div class="panel-group">
 								<div class="panel panel-default">
@@ -213,8 +223,8 @@
 						</div>
 					</div>
 					<div class="pull-right">
-						<button type="submit" *ngIf="companyProfile.isAdd"	id="saveOrUpdateCompanyButton" (click)="save()"	class="btn green-haze" disabled="disabled">Save</button>
-						<button type="submit" *ngIf="!companyProfile.isAdd"	id="saveOrUpdateCompanyButton" (click)="update()"class="btn green-haze">Update</button>
+						<button type="submit" [disabled]="authenticationService.isSuperAdmin()" *ngIf="companyProfile.isAdd"	id="saveOrUpdateCompanyButton" (click)="save()"	class="btn green-haze" disabled="disabled">Save</button>
+						<button type="submit" [disabled]="authenticationService.isSuperAdmin()" *ngIf="!companyProfile.isAdd"	id="saveOrUpdateCompanyButton" (click)="update()"class="btn green-haze">Update</button>
 					</div>
 				</form>
 			</div>

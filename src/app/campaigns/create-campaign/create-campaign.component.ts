@@ -527,7 +527,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     setVendorPartnersData(){
         this.contactListTabName = "Partners";
         this.emptyContactListMessage = "No partner(s) found";
-        this.contactListSelectMessage = "Select the partner(s) to be used in this campaign";
+        this.contactListSelectMessage = "Select the partner list(s) to be used in this campaign";
         this.contactsPagination.filterValue = true;
         this.contactsPagination.filterKey = "isPartnerUserList";
         this.showContactType = false;

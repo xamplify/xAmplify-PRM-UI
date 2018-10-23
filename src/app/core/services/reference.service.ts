@@ -73,7 +73,7 @@ export class ReferenceService {
     isRedistributionCampaignPage = false;
     campaignType = 'REGULAR';
     videoTag = "<a href='<SocialUbuntuURL>'>\n   <img src='<SocialUbuntuImgURL>'/> \n </a> \n";
-    emailMergeTags = "  For First Name : {{firstName}} \n  For Last Name : {{lastName}} \n  For Full Name : {{fullName}} |n For Email Id : {{emailId}}";
+    emailMergeTags = "  For First Name : {{firstName}} \n  For Last Name : {{lastName}} \n  For Full Name : {{fullName}} \n  For Email Id : {{emailId}}";
     coBrandingTag = "<img src='<Co-BrandingImgURL>'/> \n";
     URL: string = this.authenticationService.REST_URL + 'admin/';
     hasClientError = false;

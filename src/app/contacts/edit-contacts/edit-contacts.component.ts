@@ -123,15 +123,14 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     downloadDataList = [];
     isEmailExist: boolean = false;
     sortOptions = [
-        { 'name': 'Sort By', 'value': '' },
-        { 'name': 'Email(A-Z)', 'value': 'emailId-ASC' },
-        { 'name': 'Email(Z-A)', 'value': 'emailId-DESC' },
-        { 'name': 'First Name(ASC)', 'value': 'firstName-ASC' },
-        { 'name': 'First Name(DESC)', 'value': 'firstName-DESC' },
-        { 'name': 'Last Name(ASC)', 'value': 'lastName-ASC' },
-        { 'name': 'Last Name(DESC)', 'value': 'lastName-DESC' },
-        { 'name': 'Company Name(ASC)', 'value': 'contactCompany-ASC' },
-        { 'name': 'Company Name(DESC)', 'value': 'contactCompany-DESC' },
+        { 'name': 'Sort by', 'value': '' },
+        { 'name': 'Email (A-Z)', 'value': 'emailId-ASC' },
+        { 'name': 'Email (Z-A)', 'value': 'emailId-DESC' },
+        { 'name': 'First name (ASC)', 'value': 'firstName-ASC' },
+        { 'name': 'First name (DESC)', 'value': 'firstName-DESC' },
+        { 'name': 'Last name (ASC)', 'value': 'lastName-ASC' },
+        { 'name': 'Last name (DESC)', 'value': 'lastName-DESC' },
+        
     ];
 
     public sortOption: any = this.sortOptions[0];
@@ -1412,11 +1411,18 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     deleteUserShowAlert( contactId: number ) {
         this.contactIds.push( this.contactUsersId )
         this.xtremandLogger.info( "contactListId in sweetAlert() " + this.contactIds );
+        let message = '';
+        if(this.isDefaultPartnerList){
+            message = 'This will remove this partner from any other Partner lists.';
+        }else {
+            message = 'The partner will only be removed from that list. To remove completely the partner needs to be removed from the default list.';
+        }
+        
         let self = this;
         if ( this.totalRecords != 1 ) {
             swal( {
                 title: 'Are you sure?',
-                text: "You won't be able to undo this action!",
+                text: message,
                 type: 'warning',
                 showCancelButton: true,
                 swalConfirmButtonColor: '#54a7e9',

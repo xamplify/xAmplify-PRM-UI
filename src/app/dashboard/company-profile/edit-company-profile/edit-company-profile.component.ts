@@ -99,9 +99,9 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
     zipError = false;
     zipErrorMessage = "";
 
-    aboutUsDivClass: string = this.formGroupDefaultClass;
+/*    aboutUsDivClass: string = this.formGroupDefaultClass;
     aboutUsError = false;
-    aboutUsErrorMessage = "";
+    aboutUsErrorMessage = "";*/
 
     logoDivClass: string = this.formGroupDefaultClass;
     logoError = false;
@@ -223,7 +223,8 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.geoLocation();
-        this.getCompanyProfileByUserId();
+        let userId = this.authenticationService.isSuperAdmin()? this.authenticationService.selectedVendorId: this.loggedInUserId;
+        this.getCompanyProfileByUserId(userId);
         if (this.authenticationService.user.hasCompany) {
             this.companyProfile.isAdd = false;
             this.profileCompleted = 100;
@@ -342,7 +343,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
         let errorLength = $('div.form-group.has-error.has-feedback').length;
         if (!this.companyNameError && !this.companyProfileNameError && !this.emailIdError && !this.tagLineError && !this.phoneError && !this.websiteError
             && !this.facebookLinkError && !this.googlePlusLinkError && !this.twitterLinkError && !this.linkedinLinkError && !this.cityError && !this.stateError && !this.countryError &&
-            !this.zipError && !this.aboutUsError && !this.logoError) {
+            !this.zipError && !this.logoError) {
             this.processor.set(this.processor);
 
             if ( this.companyProfile.phone ) {
@@ -382,7 +383,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
     checkValidations(){
       this.validateEmptySpace('companyName');
       this.validateNames(this.companyProfile.companyName);
-      this.validateEmptySpace('aboutUs');
+      /*this.validateEmptySpace('aboutUs');*/
       this.validatePattern('emailId');
       this.validatePattern('phone');
       this.validatePattern('website');
@@ -398,11 +399,11 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
 
     saveCompanyProfileOnDestroy(){
       this.checkValidations();
-      this.aboutUsError = this.companyProfile.aboutUs? false: true;
+     /* this.aboutUsError = this.companyProfile.aboutUs? false: true;*/
       let errorLength = $('div.form-group.has-error.has-feedback').length;
       if (!this.companyNameError && !this.companyProfileNameError && !this.emailIdError && !this.tagLineError && !this.phoneError && !this.websiteError
           && !this.facebookLinkError && !this.googlePlusLinkError && !this.twitterLinkError && !this.linkedinLinkError && !this.cityError && !this.stateError && !this.countryError &&
-          !this.zipError && !this.aboutUsError && !this.logoError) {
+          !this.zipError && !this.logoError) {
         if(this.companyProfile.phone) { this.companyProfile.phone = this.companyProfile.phone.length <6 ? "": this.companyProfile.phone;}
        this.companyProfileService.update(this.companyProfile, this.loggedInUserId)
         .subscribe(
@@ -418,8 +419,9 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
         );
       }
     }
-    getCompanyProfileByUserId() {
-        this.companyProfileService.getByUserId(this.loggedInUserId)
+    getCompanyProfileByUserId(userId) {
+                  
+        this.companyProfileService.getByUserId(userId)
             .subscribe(
                 data => {
                     if (data.data != undefined) {
@@ -589,10 +591,10 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
             } else if (columnName == "zip") {
                 this.zipError = true;
                 this.zipDivClass = this.refService.errorClass;
-            } else if (columnName == "aboutUs") {
+            } /*else if (columnName == "aboutUs") {
                 this.aboutUsError = true;
                 this.aboutUsDivClass = this.refService.errorClass;
-            }
+            }*/
         } else if (value.length > 0) {
             if (columnName == "companyName") {
                 this.companyNameError = false;
@@ -632,10 +634,10 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
             } else if (columnName == "zip") {
                 this.zipError = false;
                 this.zipDivClass = this.refService.successClass;
-            } else if (columnName == "aboutUs") {
+            } /*else if (columnName == "aboutUs") {
                 this.aboutUsError = false;
                 this.aboutUsDivClass = this.refService.successClass;
-            }
+            }*/
             this.enableOrDisableButton();
         }
     }

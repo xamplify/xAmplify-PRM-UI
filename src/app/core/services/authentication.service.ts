@@ -34,6 +34,7 @@ export class AuthenticationService {
     roleName: Roles= new Roles();
     isAddedByVendor = false;
     selectedVendorId: number;
+    venorMyProfileReport: any;
     constructor(private http: Http, private router: Router, private utilService: UtilService) {
         this.REST_URL = this.SERVER_URL + 'xtremand-rest/';
         this.MEDIA_URL = this.SERVER_URL + 'vod/';
