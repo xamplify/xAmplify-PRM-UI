@@ -177,6 +177,11 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                 series: [dataset]
             }));
         });
+        charts[0].xAxis[0].labelGroup.element.childNodes.forEach(function(label)
+        {
+            label.style.cursor = "pointer";
+            label.onclick = function(){ self.totalMinutesWatchedByMostUsers();}
+        });
     }
     videoPlayedandSkippedDuration(views, skipped) {
         let xAxis = ' ';
