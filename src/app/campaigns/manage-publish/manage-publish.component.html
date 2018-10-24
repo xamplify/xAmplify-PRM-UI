@@ -132,7 +132,7 @@
 													<a *ngIf="hasAllAccess || (campaign.launched==false&&hasCampaignRole && loggedInUserId==campaign.userId)
 
 												|| (!campaign.launched&&isOnlyPartner)  || authenticationService.module.isVendor" (click)="editCampaign(campaign)"
-													 title="Edit Campaign" class='mr5'>
+													 data-toggle="tooltip" data-placement="top" title="Edit Campaign" class='mr5'>
 														<i class="fa fa-pencil-square-o"></i>
 													</a>
 												</ng-container>
@@ -148,7 +148,7 @@
 														<i class="fa fa-line-chart"></i>
 													</a>
 													<a *ngIf=" (campaign.campaignType !== 'SOCIAL') && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor) && !campaign.nurtureCampaign"
-													 data-rel="fancybox-button" title="Copy campaign" class='mr5' (click)="openSaveAsModal(campaign)">
+													 data-rel="fancybox-button" data-toggle="tooltip" data-placement="top" title="Copy campaign" class='mr5' (click)="openSaveAsModal(campaign)">
 														<i class="fa fa-files-o"></i>
 													</a>
 													 <a *ngIf=" (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor) && campaign.channelCampaign"
@@ -157,7 +157,7 @@
 						                         		<i class="fa fa-handshake-o" id="partner-icon"></i>
 						                       		</a>
 												</ng-container>
-												<a (click)="showCampaignPreview(campaign)" title="Preview">
+												<a (click)="showCampaignPreview(campaign)" data-toggle="tooltip" data-placement="top" title="Preview">
 													<i class="fa fa-eye mr5"></i>
                       						  </a>
 						                        <a *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor"
@@ -222,7 +222,7 @@
                               <li>
                                 <a *ngIf="hasAllAccess || (campaign.launched==false&&hasCampaignRole && loggedInUserId==campaign.userId)
                                   || (!campaign.launched&&isOnlyPartner)  || authenticationService.module.isVendor" (click)="editCampaign(campaign)"
-                                  title="Edit Campaign" class='mr5'>
+                                  data-toggle="tooltip" data-placement="top" title="Edit Campaign" class='mr5'>
                                   <i class="fa fa-pencil-square-o"></i> Edit Campaign
                                 </a>
                               </li>
@@ -336,7 +336,7 @@
 														<i class="fa fa-line-chart"></i>
 													</a>
 													<a *ngIf=" (campaign.campaignType !== 'SOCIAL') && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor) && !campaign.nurtureCampaign"
-													 data-rel="fancybox-button" title="Copy campaign" class='mr5' (click)="openSaveAsModal(campaign)">
+													 data-rel="fancybox-button"  data-toggle="tooltip" data-placement="top" title="Copy campaign" class='mr5' (click)="openSaveAsModal(campaign)">
 														<i class="fa fa-files-o"></i>
 													</a>
 													 <a *ngIf=" (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor) && campaign.channelCampaign"
@@ -348,7 +348,7 @@
 														<i class="fa fa-files-o"></i>
 													</a> -->
                         </ng-container>
-                          <a (click)="showCampaignPreview(campaign)" title="Preview">
+                          <a (click)="showCampaignPreview(campaign)" data-toggle="tooltip" data-placement="top" title="Preview">
 														<i class="fa fa-eye mr5"></i>
 												  </a>
 													<a *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor"
