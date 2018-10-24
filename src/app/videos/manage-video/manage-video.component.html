@@ -98,7 +98,7 @@
                                (click)="showEditVideo(videoFile)" data-toggle="tooltip" data-placement="top" [title]="actionsDescription.video_edit"> <i class="fa fa-pencil-square-o"></i>
                              </a>
                              <ng-container *ngIf="hasAllAccess || (hasCampaignRole && hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor">
-                                <a *ngIf="videoFile.viewBy!='DRAFT'" (click)="campaignRouter(videoFile)" data-toggle="tooltip" data-placement="top" title="Create Campaign">
+                                <a *ngIf="videoFile.viewBy!='DRAFT'" (click)="campaignRouter(videoFile)" data-toggle="tooltip" data-placement="top" title="Create campaign">
                                   <i class="fa fa-bullhorn"></i>
                                 </a>
                                 <a class="draft-mode-css" *ngIf="videoFile.viewBy=='DRAFT'" data-toggle="tooltip" data-placement="top" [title]="actionsDescription.video_draft">
