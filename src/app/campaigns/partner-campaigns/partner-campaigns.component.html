@@ -38,6 +38,7 @@
 					  	<li class="filter" (click)="filterCampaigns('regular')" [class.active]="'regular' == campaignType">Email</li>
               <li class="filter" (click)="filterCampaigns('video')" [class.active]="'video' == campaignType">Video</li>
               <li class="filter" (click)="filterCampaigns('social')" [class.active]="'social' == campaignType">Social</li>
+              <li class="filter" *ngIf="!referenceService.isXamplify()" (click)="filterCampaigns('event')" [class.active]="'event' == campaignType">Event</li>
               <li class="filter" style="display: none;">Own Template</li>
 						</ul>
 						<div class="page-toolbar col-xs-6">
@@ -96,6 +97,11 @@
 											<img *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1 && campaign.launched" src="assets/images/social-campaign.png" style="height: 50px;"
 											 alt="{{campaign.campaignType}} Campaign">
 											<img *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1 && !campaign.launched" src="assets/images/social-campaign.png" style="height: 50px;-webkit-filter: grayscale(100%);filter: grayscale(100%);"
+                       alt="{{campaign.campaignType}} Campaign">
+
+                       <img *ngIf="campaign.campaignType.indexOf('EVENT') > -1 && campaign.launched && !referenceService.isXamplify()" src="assets/images/event-campaign.png" style="height: 50px;"
+											 alt="{{campaign.campaignType}} Campaign">
+											<img *ngIf="campaign.campaignType.indexOf('EVENT') > -1 && !campaign.launched && !referenceService.isXamplify()" src="assets/images/event-campaign.png" style="height: 50px;-webkit-filter: grayscale(100%);filter: grayscale(100%);"
                        alt="{{campaign.campaignType}} Campaign">
 
                       </td>
@@ -163,7 +169,8 @@
 													<i *ngIf="campaign.campaignType.indexOf('VIDEO') > -1" class="fa fa-video-camera" aria-hidden="true"></i>
 													<i *ngIf="campaign.campaignType.indexOf('REGULAR') > -1" class="fa fa-envelope" aria-hidden="true"></i>
                           <i *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1" class="fa fa-globe" aria-hidden="true"></i>
-												</span>
+                          <i *ngIf="campaign.campaignType.indexOf('EVENT') > -1 && !referenceService.isXamplify()" class="fa fa-calendar" aria-hidden="true"></i>
+                        </span>
 											</div>
 											<div class="bar">
 											<a (click)="showCampaignPreview(campaign.campaignId)" data-toggle="tooltip" data-placement="top" title="preview campaign">
