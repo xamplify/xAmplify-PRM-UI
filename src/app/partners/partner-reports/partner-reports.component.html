@@ -24,34 +24,6 @@
       <div>
         <div>
           <div class="row">
-            <div class="col-xs-12 col-sm-6 col-md-3" (click)="goToActivePartnersDiv()" [class.blur]="0!=selectedTabIndex">
-              <a class="dashboard-stat dashboard-stat-lighter yellow-gold">
-                <div class="visual">
-                  <i class="fa fa-handshake-o"></i>
-                </div>
-                <div class="details">
-                  <div class="number">{{activePartnersCount}}</div>
-                  <div class="desc">Active Partners</div>
-                </div>
-                <span id="permhref" class="morePadding">
-                  <a class="more" (click)="goToActivePartnersDiv()"> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
-                </span>
-              </a>
-            </div>
-            <div class="col-xs-12 col-sm-6 col-md-3" (click)="goToInActivePartnersDiv()" [class.blur]="1!=selectedTabIndex">
-              <a class="dashboard-stat dashboard-stat-lighter blue-soft">
-                <div class="visual">
-                  <i class="fa fa-handshake-o"></i>
-                </div>
-                <div class="details">
-                  <div class="number">{{inActivePartnersCount}}</div>
-                  <div class="desc">Inactive partners</div>
-                </div>
-                <span id="permhref" class="morePadding">
-                  <a class="more" (click)="goToInActivePartnersDiv()"> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
-                </span>
-              </a>
-            </div>
             <div class="col-xs-12 col-sm-6 col-md-3" [class.blur]="2!=selectedTabIndex">
               <a class="dashboard-stat dashboard-stat-lighter purple-soft" (click)="goToReDistributedPartnersDiv()">
                 <div class="visual">
@@ -80,6 +52,35 @@
                 </span>
               </a>
             </div>
+            <div class="col-xs-12 col-sm-6 col-md-3" (click)="goToActivePartnersDiv()" [class.blur]="0!=selectedTabIndex">
+              <a class="dashboard-stat dashboard-stat-lighter yellow-gold">
+                <div class="visual">
+                  <i class="fa fa-handshake-o"></i>
+                </div>
+                <div class="details">
+                  <div class="number">{{activePartnersCount}}</div>
+                  <div class="desc">Active Partners</div>
+                </div>
+                <span id="permhref" class="morePadding">
+                  <a class="more" (click)="goToActivePartnersDiv()"> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
+                </span>
+              </a>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-3" (click)="goToInActivePartnersDiv()" [class.blur]="1!=selectedTabIndex">
+              <a class="dashboard-stat dashboard-stat-lighter blue-soft">
+                <div class="visual">
+                  <i class="fa fa-handshake-o"></i>
+                </div>
+                <div class="details">
+                  <div class="number">{{inActivePartnersCount}}</div>
+                  <div class="desc">Inactive partners</div>
+                </div>
+                <span id="permhref" class="morePadding">
+                  <a class="more" (click)="goToInActivePartnersDiv()"> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
+                </span>
+              </a>
+            </div>
+          
           </div>
         </div>
       </div>
