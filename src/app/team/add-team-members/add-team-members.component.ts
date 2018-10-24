@@ -351,7 +351,7 @@ export class AddTeamMembersComponent implements OnInit {
                         console.log(emailId.toLowerCase()+" is an org admin")
                         this.showErrorMessage("This email address is already registered with xAmplify and cannot be added as a team member at this time.");
                     }else if(this.partnerEmailIds.indexOf(emailId.toLowerCase())>-1){
-                        this.showErrorMessage("This email address is already registered with XAmplify and cannot be added as a team member at this time.");
+                        this.showErrorMessage("This email address is already registered with xAmplify and cannot be added as a team member at this time.");
                     }
                     else{
                         if(this.existingEmailIds.indexOf(emailId.toLowerCase())>-1){
