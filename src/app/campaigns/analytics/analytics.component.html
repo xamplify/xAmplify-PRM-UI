@@ -346,7 +346,7 @@
 				</div>
 			</button>
 		</div>
-		<div *ngIf="socialStatus" class="p-5x" [hidden]="mainLoader || hasClientError"  [ngClass]="{'col-xs-4': campaignType === 'SOCIAL'}">
+		<div class="p-5x" [hidden]="mainLoader || hasClientError" *ngIf="campaignType === 'SOCIAL'" [ngClass]="{'hidden': campaignType !== 'SOCIAL', 'col-xs-4': campaignType === 'SOCIAL'}">
 			<button class="portlet light color1-invert crcb" data-toggle="modal" data-target="#scrModal" [ngClass]="{'forbidden' :!isDataShare ?true:null}"
 			 [disabled]="socialStatus.socialStatusList.length < 1 || !isDataShare">
 				<div class="portlet-body text-center">
