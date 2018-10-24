@@ -134,6 +134,7 @@
 						</li>
 						</ul>
           </li>
+          <ng-container *ngIf="!refService.isXamplify()">
           <li *ngIf="authService.user.hasCompany" [ngClass]="{'active':location.path().includes('content')}">
             <a [routerLink]="['./content-management']">
             <i class="fa fa-file-text-o"></i>
@@ -142,7 +143,7 @@
             <span class="selected"></span>
             </a>
             </li>
-
+            </ng-container>
 					<li *ngIf="authService.module.isCampaign || authService.module.isCompanyPartner" [ngClass]="{'active': location.path().includes('campaigns')}">
 						<a  href="javascript:;" (click)="openOrCloseTabs('campaigns')" >
 						<i class="fa fa-bullhorn"></i>
