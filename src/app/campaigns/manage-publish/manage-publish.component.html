@@ -308,12 +308,12 @@
 											<div class="ribbon" [class.active]="!campaign.launched && campaign.launchedOn?.length==0">
 												<span *ngIf="campaign.launched">Launched</span>
                         <ng-container *ngIf="!campaign.launched && campaign.scheduleType!=='SCHEDULE' && campaign.scheduleType!=='SAVE'">
-                          <b *ngIf="!campaign.launched && campaign.launchedOn?.length > 0">Scheduled For</b>
-                          <b *ngIf="!campaign.launched && campaign.launchedOn?.length==0">Saved On</b>
+                          <span *ngIf="!campaign.launched && campaign.launchedOn?.length > 0">Scheduled</span>
+                          <span *ngIf="!campaign.launched && campaign.launchedOn?.length==0">Saved</span>
                           </ng-container>
                           <ng-container *ngIf="!campaign.launched && campaign.scheduleType">
-                          <b *ngIf="!campaign.launched && campaign.scheduleType==='SCHEDULE'">Scheduled For</b>
-                          <b *ngIf="!campaign.launched && campaign.scheduleType==='SAVE'">Saved On</b>
+                          <span *ngIf="!campaign.launched && campaign.scheduleType==='SCHEDULE'">Scheduled</span>
+                          <span *ngIf="!campaign.launched && campaign.scheduleType==='SAVE'">Saved</span>
                           </ng-container>
 											</div>
 											<div class="bar" >
