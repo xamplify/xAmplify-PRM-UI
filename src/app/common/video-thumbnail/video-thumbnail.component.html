@@ -32,6 +32,7 @@
     </span>
     <h6 class='f-w-600 views-draft'  (click)="showPlayVideo(videoFile)" [ngClass]="{'mt7':videoFile.viewBy!=='DRAFT'}">
       <span *ngIf="videoFile.views">{{videoFile.views}} views</span>
+      <span *ngIf="!videoFile.views">{{videoFile.views}} views</span>
     </h6>
       <p *ngIf="videoFile.viewBy=='DRAFT'" class="draft-video mb0"> DRAFT</p>
   </a>

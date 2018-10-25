@@ -91,3 +91,5 @@
      margin: 0 auto;
      height: 98px;
 }
+@media screen and (max-width:600px){.modal-template { width:100% !important; right:0} }
+@media screen and (min-width:601px){.modal-template { width:75% !important; right: 0} }
