@@ -201,7 +201,7 @@
                     <app-user-info [userInfo]="item" [isPartnerEntityInfo]="true" [isPartnerInfo]="true"></app-user-info>
                   </td>
                   <td class="hidden-xs">
-                    <h4>{{item.time}}</h4>
+                    <app-timestamp [isOnlyDate]="false" [dateAndTime]="item.time"> </app-timestamp>
                     <h4 *ngIf="!item.time"><b>-</b></h4>
                    </td>
                   <td (click)="sendPartnerReminder(item)">
@@ -329,8 +329,8 @@
                    	</td>
                     <td style="text-align: right;">
                       <font class="re-distributed-count">{{item.redistributedCampaignsCount}}</font>
-                      <div class="actions-block redistribute-count"   *ngIf="item.redistributedCampaignsCount> 0">
-                        <a title="View Redistributed Campaigns" (click)="showRedistributedCampaings(item)">
+                      <div class="actions-block redistribute-count" data-toggle="tooltip" data-placement="top" title="View Redistributed Campaigns"   *ngIf="item.redistributedCampaignsCount> 0">
+                        <a  (click)="showRedistributedCampaings(item)">
                           <i class="fa" [ngClass]="{'fa-plus': !item.expand, 'fa-minus': item.expand}"></i>
                         </a>
                       </div>
