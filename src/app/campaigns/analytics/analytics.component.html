@@ -28,7 +28,7 @@
 	</ul>
 <!--<app-analytics-loader [campaignType]="campaignType" *ngIf="loading"></app-analytics-loader>-->
 </div>
-<div class="portlet light">
+<div class="portlet light clearfix">
 <div class="portlet-body">
 <div *ngIf="hasClientError && !mainLoader" class="client-error">Something went wrong, Please refresh the page</div>
 <div *ngIf="customResponse.responseType === 'ERROR'; else NOERROR" class="m10">
@@ -518,7 +518,7 @@
 												<ng-container *ngFor="let socialStatus of socialStatus.socialStatusList">
 													<ng-container *ngIf="socialStatus.userId === item.userId">
 													<ng-container *ngFor="let socialStatusProvider of socialStatus.socialStatusProviders">
-											<div class="social-profile" [ngStyle]="{'background-image': 'url(' + socialStatusProvider.socialConnection.profileImage + ')'}" 
+											<div class="social-profile" [ngStyle]="{'background-image': 'url(' + socialStatusProvider.socialConnection.profileImage + ')'}"
 												data-toggle="tooltip" data-placement="top" title="{{socialStatusProvider.socialConnection.profileName}}">
 												<ng-container *ngIf="socialStatusProvider.socialConnection.source === 'TWITTER'">
 													<img class="img-circle" alt="{{socialStatusProvider.socialConnection.profileName}}" src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/twitter_circle-20.png">
@@ -725,7 +725,7 @@
 				<ng-container *ngIf="campaignType == 'SOCIAL'">
 					<div class="f-w-600 p10">Redistributed Accounts</div>
 					<ng-container *ngFor="let socialStatus of socialStatus.socialStatusList">
-						<ng-container *ngIf="socialStatus.userId === selectedRow.userId">						
+						<ng-container *ngIf="socialStatus.userId === selectedRow.userId">
 							<app-social-status [socialStatus]="socialStatus"></app-social-status>
 						</ng-container>
 					</ng-container>
