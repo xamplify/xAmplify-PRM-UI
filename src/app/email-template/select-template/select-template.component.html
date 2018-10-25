@@ -34,10 +34,10 @@
 						<div class="colxs-12 col-sm-1">
 							<div class="inputs regular_emails" align="right" style="float: right">
 								<div class="portlet-input input-inline input-small">
-									<div class="input-icon right">
+									<div class="input-icon right" style="width: 200px;margin-left: -55px;">
                     <!-- <i class="icon-magnifier"></i> -->
                      <input type="text" class="form-control"
-                      [(ngModel)]="templateFilter.name" placeholder="search...">
+                      [(ngModel)]="templateFilter.name" placeholder="Search for a template">
                       <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="templateFilter.name" (click)="templateFilter.name=''"></button>
                       <button type="submit" class="search-box-item-click" ><i class="fa fa-search"></i></button>
 									</div>
