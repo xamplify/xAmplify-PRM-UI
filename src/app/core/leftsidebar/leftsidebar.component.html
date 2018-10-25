@@ -38,7 +38,7 @@
 					<li *ngIf="authService.module.isCompanyPartner && !authService.module.isVideo  && !authService.isOnlyPartner()"  [ngClass]="{'active': location.path().includes('videos')}">
 						<a  [routerLink]="['./videos/manage']">
 						<i class="fa fa-video-camera"></i>
-						<span class="title">Videos</span>
+						<span class="title">Content</span>
 						<span class="arrow "></span>
 						<span class="selected"></span>
 						</a>
@@ -47,7 +47,7 @@
 					<li *ngIf="authService.module.isVideo  && !authService.isOnlyPartner()" [ngClass]="{'active': location.path().includes('videos')}">
 						<a href="javascript:;" (click)="openOrCloseTabs('videos')">
 						<i class="fa fa-video-camera"></i>
-						<span class="title">Videos</span>
+						<span class="title">Content</span>
 						<span class="arrow "></span>
 						<span class="selected"></span>
 						</a>
