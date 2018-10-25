@@ -747,7 +747,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   }
 
   previewEventCampaignEmailTemplate(emailTemplateId: number) {
-    this.emailTemplateService.getById(emailTemplateId)
+    this.eventCampaign.campaignEventMedias[0].filePath = this.eventCampaign.campaignEventMedias[0].filePath===undefined?null:this.eventCampaign.campaignEventMedias[0].filePath;
+      this.emailTemplateService.getByIdImageUri(emailTemplateId, this.eventCampaign.campaignEventMedias[0].filePath)
           .subscribe(
       (data: any) => {
           if ( this.eventCampaign.campaign ) {
