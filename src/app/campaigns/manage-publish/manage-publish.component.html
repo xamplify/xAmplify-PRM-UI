@@ -30,7 +30,7 @@
 							<li class="filter" (click)="filterCampaigns('REGULAR',1)" [class.campaign-type-selected]="1 == selectedCampaignTypeIndex">Email</li>
 							<li class="filter" (click)="filterCampaigns('VIDEO',2)" [class.campaign-type-selected]="2 == selectedCampaignTypeIndex">Video</li>
 							<li class="filter" (click)="filterCampaigns('SOCIAL',3)" [class.campaign-type-selected]="3 == selectedCampaignTypeIndex">Social</li>
-							<li class="filter" *ngIf="!refService.isXamplify()" (click)="filterCampaigns('EVENT',4)" [class.campaign-type-selected]="4 == selectedCampaignTypeIndex">Event</li>
+							<li class="filter" (click)="filterCampaigns('EVENT',4)" [class.campaign-type-selected]="4 == selectedCampaignTypeIndex">Event</li>
 							<li class="filter" style="display: none;">Own Template</li>
 						</ul>
 						<div class="page-toolbar col-xs-6 col-sm-12 col-md-6">
@@ -87,7 +87,7 @@
 											<ng-container *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1">
 												<img [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/social-campaign.png" alt="Social Campaign">
 											</ng-container>
-											<ng-container *ngIf="campaign.campaignType.indexOf('EVENT') > -1 && !refService.isXamplify()">
+											<ng-container *ngIf="campaign.campaignType.indexOf('EVENT') > -1">
 												<img [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/event-campaign.png" alt="Event Campaign">
 											</ng-container>
                     					</td>
@@ -132,7 +132,7 @@
 													<a *ngIf="hasAllAccess || (campaign.launched==false&&hasCampaignRole && loggedInUserId==campaign.userId)
 
 												|| (!campaign.launched&&isOnlyPartner)  || authenticationService.module.isVendor" (click)="editCampaign(campaign)"
-													 data-toggle="tooltip" data-placement="top" title="Edit Campaign" class='mr5'>
+													 title="Edit Campaign" class='mr5'>
 														<i class="fa fa-pencil-square-o"></i>
 													</a>
 												</ng-container>
@@ -148,7 +148,7 @@
 														<i class="fa fa-line-chart"></i>
 													</a>
 													<a *ngIf=" (campaign.campaignType !== 'SOCIAL') && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor) && !campaign.nurtureCampaign"
-													 data-rel="fancybox-button" data-toggle="tooltip" data-placement="top" title="Copy campaign" class='mr5' (click)="openSaveAsModal(campaign)">
+													 data-rel="fancybox-button" title="Copy campaign" class='mr5' (click)="openSaveAsModal(campaign)">
 														<i class="fa fa-files-o"></i>
 													</a>
 													 <a *ngIf=" (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor) && campaign.channelCampaign"
@@ -157,7 +157,7 @@
 						                         		<i class="fa fa-handshake-o" id="partner-icon"></i>
 						                       		</a>
 												</ng-container>
-												<a (click)="showCampaignPreview(campaign)" data-toggle="tooltip" data-placement="top" title="Preview">
+												<a (click)="showCampaignPreview(campaign)" title="Preview">
 													<i class="fa fa-eye mr5"></i>
                       						  </a>
 						                        <a *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor"
@@ -189,7 +189,7 @@
 											<ng-container *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1">
 												<img [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/social-campaign.png" alt="Social Campaign">
                       </ng-container>
-                      <ng-container *ngIf="campaign.campaignType.indexOf('EVENT') > -1 && !refService.isXamplify()">
+                      <ng-container *ngIf="campaign.campaignType.indexOf('EVENT') > -1">
                           <img [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/event-campaign.png" alt="Event Campaign">
                       </ng-container>
 										</td>
@@ -222,7 +222,7 @@
                               <li>
                                 <a *ngIf="hasAllAccess || (campaign.launched==false&&hasCampaignRole && loggedInUserId==campaign.userId)
                                   || (!campaign.launched&&isOnlyPartner)  || authenticationService.module.isVendor" (click)="editCampaign(campaign)"
-                                  data-toggle="tooltip" data-placement="top" title="Edit Campaign" class='mr5'>
+                                  title="Edit Campaign" class='mr5'>
                                   <i class="fa fa-pencil-square-o"></i> Edit Campaign
                                 </a>
                               </li>
@@ -302,18 +302,18 @@
 													<i *ngIf="campaign.campaignType.indexOf('VIDEO') > -1" class="fa fa-video-camera" aria-hidden="true"></i>
 													<i *ngIf="campaign.campaignType.indexOf('REGULAR') > -1" class="fa fa-envelope" aria-hidden="true"></i>
                           <i *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1" class="fa fa-globe" aria-hidden="true"></i>
-                          <i *ngIf="campaign.campaignType.indexOf('EVENT') > -1 && !refService.isXamplify()" class="fa fa-calendar" aria-hidden="true"></i>
+                          <i *ngIf="campaign.campaignType.indexOf('EVENT') > -1" class="fa fa-calendar" aria-hidden="true"></i>
 												</span>
 											</div>
 											<div class="ribbon" [class.active]="!campaign.launched && campaign.launchedOn?.length==0">
 												<span *ngIf="campaign.launched">Launched</span>
                         <ng-container *ngIf="!campaign.launched && campaign.scheduleType!=='SCHEDULE' && campaign.scheduleType!=='SAVE'">
-                          <span *ngIf="!campaign.launched && campaign.launchedOn?.length > 0">Scheduled</span>
-                          <span *ngIf="!campaign.launched && campaign.launchedOn?.length==0">Saved</span>
+                          <b *ngIf="!campaign.launched && campaign.launchedOn?.length > 0">Scheduled For</b>
+                          <b *ngIf="!campaign.launched && campaign.launchedOn?.length==0">Saved On</b>
                           </ng-container>
                           <ng-container *ngIf="!campaign.launched && campaign.scheduleType">
-                          <span *ngIf="!campaign.launched && campaign.scheduleType==='SCHEDULE'">Scheduled</span>
-                          <span *ngIf="!campaign.launched && campaign.scheduleType==='SAVE'">Saved</span>
+                          <b *ngIf="!campaign.launched && campaign.scheduleType==='SCHEDULE'">Scheduled For</b>
+                          <b *ngIf="!campaign.launched && campaign.scheduleType==='SAVE'">Saved On</b>
                           </ng-container>
 											</div>
 											<div class="bar" >
@@ -336,7 +336,7 @@
 														<i class="fa fa-line-chart"></i>
 													</a>
 													<a *ngIf=" (campaign.campaignType !== 'SOCIAL') && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor) && !campaign.nurtureCampaign"
-													 data-rel="fancybox-button"  data-toggle="tooltip" data-placement="top" title="Copy campaign" class='mr5' (click)="openSaveAsModal(campaign)">
+													 data-rel="fancybox-button" title="Copy campaign" class='mr5' (click)="openSaveAsModal(campaign)">
 														<i class="fa fa-files-o"></i>
 													</a>
 													 <a *ngIf=" (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor) && campaign.channelCampaign"
@@ -348,7 +348,7 @@
 														<i class="fa fa-files-o"></i>
 													</a> -->
                         </ng-container>
-                          <a (click)="showCampaignPreview(campaign)" data-toggle="tooltip" data-placement="top" title="Preview">
+                          <a (click)="showCampaignPreview(campaign)" title="Preview">
 														<i class="fa fa-eye mr5"></i>
 												  </a>
 													<a *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor"

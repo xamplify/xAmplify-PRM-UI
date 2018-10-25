@@ -218,7 +218,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
         } )
     }
     imageClick(){
-      $("#companyLogo").one('click',function() { });
+      $('#companyLogo').click();
     }
 
     ngOnInit() {
@@ -420,7 +420,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
       }
     }
     getCompanyProfileByUserId(userId) {
-
+                  
         this.companyProfileService.getByUserId(userId)
             .subscribe(
                 data => {

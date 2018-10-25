@@ -861,7 +861,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             this.redirectPge = true;
             this.videoFileService.isProgressBar = true;
           //  $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:1');
-            swal('','We’ll process your video in the background and save it in draft mode for when you return. Just look for it in the “Manage Videos” section.');
+            swal('','Leaving so soon?	We’ll	process	your video in	the	background and save it in draft	mode for when you	return. Just look for	it in	the	“Manage	Videos”	section.');
         }
         if (this.picker) {
             this.picker.setVisible(false);

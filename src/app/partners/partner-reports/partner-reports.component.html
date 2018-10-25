@@ -24,34 +24,6 @@
       <div>
         <div>
           <div class="row">
-            <div class="col-xs-12 col-sm-6 col-md-3" [class.blur]="2!=selectedTabIndex">
-              <a class="dashboard-stat dashboard-stat-lighter purple-soft" (click)="goToReDistributedPartnersDiv()">
-                <div class="visual">
-                  <i class="glyphicon glyphicon-bullhorn"></i>
-                </div>
-                <div class="details">
-                  <div class="number"><span *ngIf="campaignsCount">{{campaignsCount}}</span><span *ngIf="!campaignsCount">0</span></div>
-                  <div class="desc">Total Redistributed Campaigns</div>
-                </div>
-                <span id="permhref" class="morePadding">
-                  <a class="more" (click)="goToReDistributedPartnersDiv()"> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
-                </span>
-              </a>
-            </div>
-            <div class="col-xs-12 col-sm-6 col-md-3" [class.blur]="3!=selectedTabIndex">
-              <a class="dashboard-stat dashboard-stat-lighter green-soft" (click)="goToThroughPartnersDiv()">
-                <div class="visual">
-                  <i class="glyphicon glyphicon-bullhorn"></i>
-                </div>
-                <div class="details">
-                  <div class="number">{{throughPartnerCampaignsCount}}</div>
-                  <div class="desc">Through Partner Campaigns</div>
-                </div>
-                <span id="permhref" class="morePadding">
-                  <a class="more" (click)="goToThroughPartnersDiv()"> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
-                </span>
-              </a>
-            </div>
             <div class="col-xs-12 col-sm-6 col-md-3" (click)="goToActivePartnersDiv()" [class.blur]="0!=selectedTabIndex">
               <a class="dashboard-stat dashboard-stat-lighter yellow-gold">
                 <div class="visual">
@@ -80,7 +52,34 @@
                 </span>
               </a>
             </div>
-          
+            <div class="col-xs-12 col-sm-6 col-md-3" [class.blur]="2!=selectedTabIndex">
+              <a class="dashboard-stat dashboard-stat-lighter purple-soft" (click)="goToReDistributedPartnersDiv()">
+                <div class="visual">
+                  <i class="glyphicon glyphicon-bullhorn"></i>
+                </div>
+                <div class="details">
+                  <div class="number"><span *ngIf="campaignsCount">{{campaignsCount}}</span><span *ngIf="!campaignsCount">0</span></div>
+                  <div class="desc">Total Redistributed Campaigns</div>
+                </div>
+                <span id="permhref" class="morePadding">
+                  <a class="more" (click)="goToReDistributedPartnersDiv()"> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
+                </span>
+              </a>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-3" [class.blur]="3!=selectedTabIndex">
+              <a class="dashboard-stat dashboard-stat-lighter green-soft" (click)="goToThroughPartnersDiv()">
+                <div class="visual">
+                  <i class="glyphicon glyphicon-bullhorn"></i>
+                </div>
+                <div class="details">
+                  <div class="number">{{throughPartnerCampaignsCount}}</div>
+                  <div class="desc">Through Partner Campaigns</div>
+                </div>
+                <span id="permhref" class="morePadding">
+                  <a class="more" (click)="goToThroughPartnersDiv()"> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
+                </span>
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -201,7 +200,7 @@
                     <app-user-info [userInfo]="item" [isPartnerEntityInfo]="true" [isPartnerInfo]="true"></app-user-info>
                   </td>
                   <td class="hidden-xs">
-                    <app-timestamp [isOnlyDate]="false" [dateAndTime]="item.time"> </app-timestamp>
+                    <h4>{{item.time}}</h4>
                     <h4 *ngIf="!item.time"><b>-</b></h4>
                    </td>
                   <td (click)="sendPartnerReminder(item)">
@@ -329,8 +328,8 @@
                    	</td>
                     <td style="text-align: right;">
                       <font class="re-distributed-count">{{item.redistributedCampaignsCount}}</font>
-                      <div class="actions-block redistribute-count" data-toggle="tooltip" data-placement="top" title="View Redistributed Campaigns"   *ngIf="item.redistributedCampaignsCount> 0">
-                        <a  (click)="showRedistributedCampaings(item)">
+                      <div class="actions-block redistribute-count"   *ngIf="item.redistributedCampaignsCount> 0">
+                        <a title="View Redistributed Campaigns" (click)="showRedistributedCampaings(item)">
                           <i class="fa" [ngClass]="{'fa-plus': !item.expand, 'fa-minus': item.expand}"></i>
                         </a>
                       </div>

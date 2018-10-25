@@ -1135,8 +1135,8 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
         object["Email Id"] = this.downloadCsvList[i].emailId;
         object["START DURATION"] = startTime.toDateString() + ' ' + startTime.getHours() + ':' + startTime.getMinutes() + ':' + startTime.getSeconds();
         object["STOP DURATION"] = endTime.toDateString() + ' ' + endTime.getHours() + ':' + endTime.getMinutes() + ':' + endTime.getSeconds();
-        /*object["IP ADDRESS"] = this.downloadCsvList[i].ipAddress;*/
-        object["PLATFORM"] = this.downloadCsvList[i].os[0].toUpperCase() + this.downloadCsvList[i].os.substr(1).toLowerCase();
+        object["IP ADDRESS"] = this.downloadCsvList[i].ipAddress;
+        object["PLATFORM"] = this.downloadCsvList[i].os;
         object["STATE"] = this.downloadCsvList[i].state;
         object["COUNTRY"] = this.downloadCsvList[i].country;
       }

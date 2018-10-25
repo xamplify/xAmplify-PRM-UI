@@ -62,7 +62,7 @@
 						</div>
 						<div class="colxs-12 col-sm-5">
 							<ng-container class='m10 col-sm-3'>
-							<button class="btn btn-xs hidden-xs" style="margin-left: -75px;"[disabled]="isListView"
+							<button class="btn btn-xs hidden-xs" [disabled]="isListView"
 								(click)="isListView = true" title="List View">
 								<i class="fa fa-th-list p10" aria-hidden="true"></i>
 							</button>
@@ -76,16 +76,16 @@
 								<select class="form-control col-sm-5"
 									[(ngModel)]="selectedSortedOption"
 									(ngModelChange)="getSortedResult($event)"
-									style="position: relative; right: -22px;top: 1px;width:190px">
+									style="position: relative; right: 0px; top: 1px; width: 186px">
 									<option *ngFor="let sortOption of sortByDropDown"
 										[ngValue]="sortOption">{{sortOption.name}}</option>
 								</select>
 								<div class="portlet-input input-inline input-small col-sm-4">
 									<div class="input-icon right"
-										style="width:200px;top:1px;left:14px">
+										style="width: 150px; top: 1px; left: -12px">
 										<input type="text" class="form-control"
 											[(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"
-											placeholder="Search for a template"
+											placeholder="search..."
 											(keypress)="eventHandler($event.keyCode)">
 										<button
 											class="glyphicon glyphicon-remove search-box-item-clear"

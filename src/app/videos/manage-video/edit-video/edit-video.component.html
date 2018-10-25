@@ -318,11 +318,10 @@
 										<div>
 											<div class="form-group">
 												<label class="col-xs-5 col-sm-5 col-md-5 control-label" style="margin-top:-6px">Player Color:</label>
-												<div class="col-xs-7 col-sm-7 col-md-7"  [class.disablePlayerValues]="disablePlayerSettingnew">
-													<input [hidden]="disablePlayerSettingnew" [(colorPicker)]="compPlayerColor" [style.background]="compPlayerColor" formControlName="playerColor" [value]="compPlayerColor"
+												<div class="col-xs-7 col-sm-7 col-md-7">
+													<input [(colorPicker)]="compPlayerColor" [style.background]="compPlayerColor" formControlName="playerColor" [value]="compPlayerColor"
 													 (colorPickerChange)="changePlayerColor($event)" [class.disablePlayerValues]="disablePlayerSettingnew" [cpPosition]="'bottom'"
-                           [cpWidth]="'200px'" [cpHeight]="'265px'" />
-                          <input [hidden]="!disablePlayerSettingnew" [(ngModel)]="compPlayerColor" [ngModelOptions]="{standalone: true}" [style.background]="compPlayerColor" [class.disablePlayerValues]="disablePlayerSettingnew" />
+													 [cpWidth]="'200px'" [cpHeight]="'265px'" />
 													<i class="fa fa-question-circle pull-left" style="cursor:pointer;margin-top: 4px;margin-left: -19px;color:#3598dc;font-size: 18px;" data-toggle="tooltip"
 													 data-placement="left" title="Click to change"></i>
 												</div>
@@ -338,11 +337,10 @@
 											</div>
 											<div class="form-group">
 												<label class="col-xs-5 col-sm-5 col-md-5 control-label" style="margin-top:-6px">Controller Color:</label>
-												<div class="col-xs-7 col-sm-7 col-md-7"  [class.disablePlayerValues]="disablePlayerSettingnew">
-													<input [hidden]="disablePlayerSettingnew" [(colorPicker)]="compControllerColor" [style.background]="compControllerColor" (colorPickerChange)="changeControllerColor($event)"
+												<div class="col-xs-7 col-sm-7 col-md-7">
+													<input [(colorPicker)]="compControllerColor" [style.background]="compControllerColor" (colorPickerChange)="changeControllerColor($event)"
 													 formControlName="controllerColor" [value]="compControllerColor" [class.disablePlayerValues]="disablePlayerSettingnew"
-                           [cpPosition]="'bottom'" [cpWidth]="'200px'" [cpHeight]="'265px'" />
-                          <input [hidden]="!disablePlayerSettingnew" [(ngModel)]="compControllerColor" [ngModelOptions]="{standalone: true}" [style.background]="compControllerColor" [class.disablePlayerValues]="disablePlayerSettingnew" />
+													 [cpPosition]="'bottom'" [cpWidth]="'200px'" [cpHeight]="'265px'" />
 													<i class="fa fa-question-circle pull-left" style="cursor:pointer; margin-top: 4px;margin-left: -19px;color:#3598dc;font-size: 18px;" data-toggle="tooltip"
 													 data-placement="left" title="Click to change"></i>
 												</div>
@@ -400,17 +398,17 @@
                            <span *ngIf="!logoDescriptionUrl" style="color:red">please add the video logo url</span>
 												</div>
 											</div>
-											<div  [hidden]="!enableVideoLogo" *ngIf="disablePlayerSettingnew && brandLogoUrl" class="form-group">
+											<div  [hidden]="!enableVideoLogo" *ngIf="disablePlayerSettingnew && brandLogoUrl" class="form-group" [class.disabledCss]="enableVideoLogo">
 												<label class="col-xs-5 control-label">Video Logo:</label>
-												<div class="col-xs-7" [class.disabledCss]="enableVideoLogo">
+												<div class="col-xs-7">
 													<div *ngIf="brandLogoUrl" class="thumbnail-wrapper img-wrap img-responsive img-thumbnail rounded-0">
 														<img [src]="authenticationService.MEDIA_URL + brandLogoUrl" style="opacity: 0.5;">
 													</div>
 												</div>
 											</div>
-											<div [hidden]="!enableVideoLogo" *ngIf="disablePlayerSettingnew && logoDescriptionUrl" class="form-group" >
+											<div [hidden]="!enableVideoLogo" *ngIf="disablePlayerSettingnew && logoDescriptionUrl" class="form-group" [class.disabledCss]="enableVideoLogo">
 												<label class="col-xs-5 control-label">Video Logo URL:</label>
-												<div class="col-xs-7" [class.disabledCss]="enableVideoLogo">
+												<div class="col-xs-7">
 													<p style="position: relative;top: 8px;opacity: 0.5;">{{logoDescriptionUrl}}</p>
 												</div>
 											</div>

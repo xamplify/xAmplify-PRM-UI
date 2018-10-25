@@ -465,7 +465,6 @@ export class PartnerReportsComponent implements OnInit {
         this.getActivePartnerReports();
         this.pagination.maxResults = 12;
         this.listRedistributedThroughPartnerCampaigns(this.pagination);
-        this.goToReDistributedPartnersDiv();
     }else{
         this.router.navigate(['home/dashboard']);
     }
