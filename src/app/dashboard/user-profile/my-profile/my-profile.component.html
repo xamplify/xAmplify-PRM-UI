@@ -68,8 +68,12 @@ input:checked + .slider-new:before {
   border-radius: 50%;
 }
 .profile-usertitle-name{font-size: 14px;}
+.disable {
+  pointer-events: none;
+  cursor: default;
+}
 </style>
-			<div class="page-content" *ngIf="!hasClientErrors">
+			<div class="page-content" *ngIf="!hasClientErrors" [class.ml0]="authenticationService.isSuperAdmin()">
 				<div class="my-container">
 						<ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 				</div>
@@ -77,11 +81,13 @@ input:checked + .slider-new:before {
 				<app-topnavbar [hidden]="true" [model]="parentModel"></app-topnavbar>
 				<div class="page-bar">
 					<ul class="page-breadcrumb">
-						<li *ngIf="hasCompany">
+						<li *ngIf="hasCompany && !authenticationService.isSuperAdmin()">
 							<i class="fa fa-home"></i>
 							<a [routerLink]="referenceService.homeRouter">Home</a>
 							<i class="fa fa-angle-right"></i>
 						</li>
+						<li *ngIf="authenticationService.isSuperAdmin()"><i class="fa fa-home"></i><a [routerLink]="['/home/dashboard/admin-report']">Admin Report</a>
+						<i class="fa fa-angle-right"></i></li>
 						<li>
 							<a>User Account</a>
 						</li>
@@ -134,7 +140,7 @@ input:checked + .slider-new:before {
 											<i class="icon-info"></i>
 											Help </a>
 										</li> -->
-										<li *ngIf="(currentUser.roles?.length==1 || authenticationService.isOrgAdmin())">
+										<li [class.disable]="authenticationService.isSuperAdmin()" *ngIf="(currentUser.roles?.length==1 || authenticationService.isOrgAdmin())">
 										<a>
 											<div class="col-xs-2 p0"><i class="icon-settings"></i></div>
 											<div class="col-xs-5 p0">
@@ -216,10 +222,10 @@ input:checked + .slider-new:before {
 												<li class="active">
 													<a href="#tab_1_1" data-toggle="tab" (click)="clearCustomResponse()">Personal Info</a>
 												</li>
-												<li>
+												<li *ngIf="!authenticationService.isSuperAdmin()">
 													<a href="#tab_1_3" data-toggle="tab" (click)="clearCustomResponse()"><span class="hidden-xs">Change</span> Password</a>
 												</li>
-												<li class="hidden-xs">
+												<li class="hidden-xs" *ngIf="!authenticationService.isSuperAdmin()">
 													<a href="#tab_1_4" data-toggle="tab" (click)="clearCustomResponse()">Settings</a>
 												</li>
 												<li *ngIf="hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()" (click)="videojsCall()">
@@ -269,7 +275,7 @@ input:checked + .slider-new:before {
 															<input type="url"  placeholder="WebSite Url" class="form-control" formControlName="websiteUrl" />
 															<div *ngIf="formErrors.websiteUrl" class="alert alert-danger">{{ formErrors.websiteUrl }}</div>
 														</div>
-														<button type="submit"   [disabled]="!updateUserProfileForm.valid" class="btn green-haze">Save Changes</button>
+														<button type="submit"   [disabled]="!updateUserProfileForm.valid || authenticationService.isSuperAdmin()" class="btn green-haze">Save Changes</button>
 													</form>
 												</div>
 												<div class="tab-pane" id="tab_1_3" >

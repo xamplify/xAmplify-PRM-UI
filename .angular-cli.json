@@ -137,7 +137,8 @@
 			"environments": {
         "dev": "environments/environment.ts",
         "qa": "environments/environment.qa.ts",
-        "prod": "environments/environment.prod.ts"
+        "prod": "environments/environment.prod.ts",
+        "release": "environments/environment.release.ts"
     		}
 		}
 	],

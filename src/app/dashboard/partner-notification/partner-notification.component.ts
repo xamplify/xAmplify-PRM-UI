@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { CampaignService } from '../../campaigns/services/campaign.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
+import { ReferenceService } from 'app/core/services/reference.service';
 
 @Component({
   selector: 'app-partner-notification',
@@ -14,7 +15,7 @@ export class PartnerNotificationComponent implements OnInit {
   loggedInUserId: number;
   constructor( public authenticationService: AuthenticationService,
                private campaignService: CampaignService,
-               private xtremandLogger: XtremandLogger  ) { }
+               private xtremandLogger: XtremandLogger,public referenceService:ReferenceService  ) { }
     getPartnerCampaignsCountMapGroupByCampaignType(userId: number){
         this.campaignService.getPartnerCampaignsCountMapGroupByCampaignType(userId)
             .subscribe(

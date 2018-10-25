@@ -263,6 +263,7 @@ nav a.active {
 .pb20{padding-bottom:20px!important}
 .pl20{padding-left:20px!important}
 .pr20{padding-right:20px!important}
+.pg8{position: relative;top:-8px;}
 
 .portlet.light, .dashboard-stat2 {
 	border: 1px solid #CCC;

@@ -29,4 +29,5 @@ export class SocialStatus {
   isPartner = true;
 
   socialStatusList: Array<SocialStatus> = [];
+  selectedAccounts: number = 0;
 }
