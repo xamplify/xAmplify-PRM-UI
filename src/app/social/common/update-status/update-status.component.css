@@ -170,7 +170,7 @@ label img {
 	height: auto
 }
 
-.modal.fade .modal-dialog {
+/* .modal.fade .modal-dialog {
 	opacity: 0;
 	-webkit-transform: scale(.1);
 	-ms-transform: scale(.1);
@@ -202,7 +202,7 @@ label img {
 		rgba(0, 0, 0, .2);
 	box-shadow: 0 40px 77px rgba(0, 0, 0, .22), 0 27px 24px
 		rgba(0, 0, 0, .2)
-}
+} */
 
 .modal-title {
 	font-weight: 500;
