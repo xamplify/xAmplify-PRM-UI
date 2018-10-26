@@ -33,8 +33,8 @@
                      <div class="col-xs-12 col-sm-6 col-md-3"></div>
                      <div class="col-xs-6 col-sm-3 col-md-3 p0 flex">
                        <ng-container class='m10'>
-                         <button class="btn btn-xs hidden-xs" [disabled]="isListView" (click)="isListView = true"><i class="fa fa-th-list p10" aria-hidden="true" data-toggle="tooltip" data-placement="left" title="List View"></i></button>
-                         <button class="btn btn-xs hidden-xs"  [disabled]="!isListView" (click)="isListView = false"><i class="fa fa-th-large p10" aria-hidden="true" data-toggle="tooltip" data-placement="left" title="Grid View"></i></button>
+                         <span class="btn btn-xs hidden-xs" data-toggle="tooltip" data-placement="bottom" title="List View" [class.disabled]="isListView" (click)="isListView = true" style="background-color:#e2e2e2"><i class="fa fa-th-list p10" aria-hidden="true"></i></span>
+                         <span class="btn btn-xs hidden-xs m0"  data-toggle="tooltip" data-placement="bottom" title="Grid View" [class.disabled]="!isListView" (click)="isListView = false" style="background-color:#e2e2e2"><i class="fa fa-th-large p10" aria-hidden="true"></i></span>
                        </ng-container>
 
                        <select class="form-control ml5" style="cursor: pointer" [(ngModel)]="videoSort" (ngModelChange)="selectedSortByValue($event)">

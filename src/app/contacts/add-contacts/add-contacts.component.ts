@@ -817,6 +817,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.socialContactUsers.length = 0;
         this.allselectedUsers.length = 0;
         this.selectedContactListIds.length = 0;
+        this.customResponse = new CustomResponse();
         this.pager = [];
         this.pagedItems = [];
 
@@ -849,6 +850,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.contacts.length = 0;
         this.model.contactListName = "";
         this.isValidContactName = false;
+        this.customResponse = new CustomResponse();
         $( '.mdImageClass' ).attr( 'style', 'opacity: 1;cursor:not-allowed;' );
         $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(0%);filter: grayscale(0%);' );
         $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(0%);filter: grayscale(0%);' );
