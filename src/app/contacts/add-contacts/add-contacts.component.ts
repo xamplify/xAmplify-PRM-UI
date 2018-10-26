@@ -690,7 +690,6 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                             this.validCsvContacts = false;
                         }
                     }
-                    this.loading = true;
                     if ( this.validCsvContacts == true && this.invalidPatternEmails.length == 0 ) {
                         for ( var i = 0; i < this.contacts.length; i++ ) {
                             this.contacts[i].emailId = this.convertToLowerCase( this.contacts[i].emailId );
@@ -699,10 +698,32 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                                 this.contacts[i].country = null;
                             }
 
+                            var testArray = [];
+                            for (var i = 0; i <= this.contacts.length - 1; i++) {
+                                testArray.push(this.contacts[i].emailId.toLowerCase());
+                            }
+
+                            var newArray = this.compressArray(testArray);
+                            for (var w = 0; w < newArray.length; w++) {
+                                if (newArray[w].count >= 2) {
+                                    this.duplicateEmailIds.push(newArray[w].value);
+                                }
+                                console.log(newArray[w].value);
+                                console.log(newArray[w].count);
+                            }
+                            this.xtremandLogger.log("DUPLICATE EMAILS" + this.duplicateEmailIds);
+                            var valueArr = this.contacts.map(function (item) { return item.emailId.toLowerCase() });
+                            var isDuplicate = valueArr.some(function (item, idx) {
+                                return valueArr.indexOf(item) != idx
+                            });
+                            console.log("emailDuplicate" + isDuplicate);
+                            
                             /*if ( this.contacts[i].mobileNumber.length < 6 ) {
                                 this.contacts[i].mobileNumber = "";
                             }*/
                         }
+                        if (!isDuplicate) {
+                        this.loading = true;
                         this.xtremandLogger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( this.contacts ) );
                         this.contactListObject = new ContactList;
                         this.contactListObject.name = this.model.contactListName;
@@ -727,6 +748,9 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                             },
                             () => this.xtremandLogger.info( "addcontactComponent saveCsvContactList() finished" )
                             )
+                        }else{
+                            this.customResponse = new CustomResponse( 'ERROR', "please remove duplicate email id(s) " + "'" + this.duplicateEmailIds + "'", true );
+                        }
                     } else {
                         this.loading = false;
                         this.customResponse = new CustomResponse( 'ERROR', "'" + this.invalidPatternEmails + "'" + " are not valid email id(s) please remove", true );
