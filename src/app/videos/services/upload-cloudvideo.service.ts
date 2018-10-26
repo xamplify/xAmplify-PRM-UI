@@ -7,12 +7,21 @@ import { Observable } from 'rxjs/Observable';
 export class UploadCloudvideoService {
 
     public URL: string = this.authenticationService.REST_URL + 'videos/upload-cloud-video';
+    public CLOUDURL: string = this.authenticationService.REST_URL + 'videos/upload-cloud-content';
     constructor(private http: Http, private authenticationService: AuthenticationService) {
         console.log('cloud service constructor');
     }
     downloadFromDropbox(downloadLink: string, fileName: string): Observable<any> {
         console.log('file path in service ' + downloadLink + 'file name' + fileName);
         const url = this.URL + '?access_token=' + this.authenticationService.access_token +
+            '&downloadLink=' + downloadLink + '&fileName=' + fileName + '&userId=' + this.authenticationService.user.id;
+        return this.http.post(url, "")
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    downloadFromDropboxContent(downloadLink: string, fileName: string): Observable<any> {
+        console.log('file path in service ' + downloadLink + 'file name' + fileName);
+        const url = this.CLOUDURL + '?access_token=' + this.authenticationService.access_token +
             '&downloadLink=' + downloadLink + '&fileName=' + fileName + '&userId=' + this.authenticationService.user.id;
         return this.http.post(url, "")
             .map(this.extractData)

@@ -858,6 +858,70 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             },
             ( error: string ) => { this.xtremandLogger.errorPage( error );this.contentProcessing = false; });
       }
+      dropBoxContentChange() {
+          try{
+          if (this.isChecked === true && this.processing !== true && this.sweetAlertDisabled === false &&
+                this.sweetAlertMesg === 'DropBox') { swal('Oops...', 'You minimized DropBox window!', 'error'); }
+            if (this.isChecked !== true && this.cloudDrive === false && this.camera === false && this.cloudOneDrive === false &&
+                this.cloudBox === false) {
+                this.cloudDropbox = true;
+                this.isDisable = true;
+                this.isFileDrop = true;
+                this.isChecked = true;
+                this.sweetAlertDisabled = false;
+                this.sweetAlertMesg = 'DropBox';
+                this.fileDropDisabled();
+                this.downloadFromDropboxContent();
+                $('.camera').attr('style', 'cursor:not-allowed; opacity:0.5');
+                $('.googleDrive').attr('style', 'cursor:not-allowed; opacity:0.5');
+                $('.box').attr('style', 'cursor:not-allowed; opacity:0.5');
+                $('.oneDrive').attr('style', 'cursor:not-allowed; opacity:0.5');
+               // $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:0.6');
+              }
+            } catch(error){this.xtremandLogger.error('Error in upload video dropBoxChange method'+error);}
+        }
+      downloadFromDropboxContent() {
+          try{
+          if (this.processing !== true) {
+                const self = this;
+                const options = {
+                    success: function (files: any) {
+                        console.log(files[0].name);
+                        self.cloudStorageSelected = true;
+                        self.dropboxContent(files);
+                    },
+                    cancel: function () {
+                        self.defaultSettings();
+                    },
+                    linkType: 'direct',
+                    multiselect: false,
+                    extensions: ['.csv', '.cvs', '.gif','.html','.jpg', '.jpeg','.pdf','.png','.ppt','.pptx' ,'.txt' ,'.xls','.xlsx','.zip'],
+                };
+                Dropbox.choose(options);
+            } // close if condition
+          }catch(error) {this.xtremandLogger.error('Error in upload video downloadFromDropbox'+error); }
+        }
+      dropboxContent(files: any) {
+          try{
+          swal({
+                text: 'Thanks   for waiting while   we retrieve your files from Drop box',
+                allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif',
+            });
+            console.log('files ' + files);
+            this.cloudUploadService.downloadFromDropboxContent(files[0].link, files[0].name)
+                .subscribe((result: any) => {
+                    swal.close();
+                    console.log(result);
+                    this.refService.contentManagementLoader=true;
+                     this.router.navigate(['/home/content-management/manage']);
+                },
+                (error: any) => {
+                    this.errorIsThere = true;
+                    this.xtremandLogger.errorPage(error);
+                });
+              }catch(error){ this.xtremandLogger.error('Error in upload vidoe dropbox'+error);}
+        }
+      
     ngOnInit() {
         QuickSidebar.init();
         try {
