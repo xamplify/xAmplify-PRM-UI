@@ -26,8 +26,8 @@ export class PreviewVideoComponent implements OnInit, OnDestroy {
          }
 
     showPreview() {
-        this.appendVideoData( this.videoFile, "main_video", "modal-title" );
         $( "#show_preview" ).modal('show');
+        this.appendVideoData( this.videoFile, "main_video", "modal-title" );
     }
     destroyPreviewModal() {
         if ( this.videoJSplayer ) {
