@@ -471,7 +471,7 @@
 															<th class="hidden-xs">JOB TITLE</th>
 															<th class='text-center hidden-xs'>ADDRESS</th>
 															<!-- <th class='text-center'>MORE</th> -->
-															<th class='text-center' *ngIf="(hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId) || authenticationService.isOnlyPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()) && !isSynchronizationList">ACTIONS</th>
+															<th class='text-center' style="width:11%" *ngIf="(hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId) || authenticationService.isOnlyPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()) && !isSynchronizationList">ACTIONS</th>
 														</tr>
 													</thead>
 													<tbody>
@@ -712,7 +712,7 @@
 												<th class="hidden-xs">PHONE</th>
 												<th class="hidden-xs">JOB TITLE</th>
 												<th class="hidden-xs">ADDRESS</th>
-												<th *ngIf="isPartner && contactsByType.selectedCategory == 'non-active'">ACTIONS</th>
+												<th *ngIf="isPartner && contactsByType.selectedCategory == 'non-active'" style="width:11%">ACTIONS</th>
 												<!-- <th>MORE</th> -->
 											</tr>
 										</thead>

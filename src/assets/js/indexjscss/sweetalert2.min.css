@@ -208,7 +208,8 @@
 .swal2-icon.swal2-warning {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     color: #f8bb86;
-    border-color: #f8bb86
+    border-color: #f8bb86;
+    margin-top: 20px;
 }
 
 .swal2-icon.swal2-info {
