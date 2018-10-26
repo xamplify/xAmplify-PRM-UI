@@ -1005,6 +1005,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                         });
                 } else {
                     swal('Other than video files can be uploaded.');
+                    self.defaultSettings();
                 }
             });
             // Register a cancel callback handler
