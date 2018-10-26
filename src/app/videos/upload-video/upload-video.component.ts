@@ -904,7 +904,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
       dropboxContent(files: any) {
           try{
           swal({
-                text: 'Thanks   for waiting while   we retrieve your files from Drop box',
+                text: 'Thanks for waiting while we retrieve your files from Drop box',
                 allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif',
             });
             console.log('files ' + files);
@@ -912,8 +912,9 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 .subscribe((result: any) => {
                     swal.close();
                     console.log(result);
+                    this.contentProcessing = true; this.processing = false;
                     this.refService.contentManagementLoader=true;
-                     this.router.navigate(['/home/content-management/manage']);
+                    setTimeout(() => {  this.router.navigate(['/home/content-management/manage']); }, 2000);
                 },
                 (error: any) => {
                     this.errorIsThere = true;
@@ -921,7 +922,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 });
               }catch(error){ this.xtremandLogger.error('Error in upload vidoe dropbox'+error);}
         }
-      
+
     ngOnInit() {
         QuickSidebar.init();
         try {
@@ -952,7 +953,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         }
         this.isChecked = false;
         if ((this.isProgressBar || this.uploadeRecordVideo  || this.cloudStorageSelected || this.processing )
-            && this.errorIsThere === false && (this.router.url !=='/')) {
+            && this.errorIsThere === false && (this.router.url !=='/') && !this.contentProcessing) {
             this.redirectPge = true;
             this.videoFileService.isProgressBar = true;
           //  $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:1');
