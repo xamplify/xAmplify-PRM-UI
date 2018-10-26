@@ -36,6 +36,15 @@ export class UploadCloudvideoService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+    
+    downloadContentFromBox(downloadLink: string, fileName: string): Observable<any> {
+        console.log('file path in service' + downloadLink + 'file name' + fileName);
+        const url = this.CLOUDURL + '?access_token=' + this.authenticationService.access_token +
+            '&downloadLink=' + downloadLink + '&fileName=' + fileName + '&userId=' + this.authenticationService.user.id;
+        return this.http.post(url, "")
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 
     downloadFromGDrive(downloadLink: string, fileName: string, oauthToken: string): Observable<any> {
         console.log('file path in service' + downloadLink + 'file name' + fileName + 'oauthToken' + oauthToken);
