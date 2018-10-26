@@ -339,7 +339,7 @@
 											<div class="form-group">
 												<label class="col-xs-5 col-sm-5 col-md-5 control-label" style="margin-top:-6px">Controller Color:</label>
 												<div class="col-xs-7 col-sm-7 col-md-7"  [class.disablePlayerValues]="disablePlayerSettingnew">
-													<input [hidden]="disablePlayerSettingnew" [(colorPicker)]="compControllerColor" [style.background]="compControllerColor" (colorPickerChange)="changeControllerColor($event)"
+													<input [hidden]="disablePlayerSettingnew" [(colorPicker)]="compControllerColor" [style.background]="compControllerColor" (colorPickerChange)="changeControllerColor($event, newEnableController)"
 													 formControlName="controllerColor" [value]="compControllerColor" [class.disablePlayerValues]="disablePlayerSettingnew"
                            [cpPosition]="'bottom'" [cpWidth]="'200px'" [cpHeight]="'265px'" />
                           <input [hidden]="!disablePlayerSettingnew" [(ngModel)]="compControllerColor" [ngModelOptions]="{standalone: true}" [style.background]="compControllerColor" [class.disablePlayerValues]="disablePlayerSettingnew" />
