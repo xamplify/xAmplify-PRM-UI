@@ -16,6 +16,7 @@ import { HomeComponent } from '../../core/home/home.component';
 
 import { CustomResponse } from '../../common/models/custom-response';
 import { Properties } from 'app/common/models/properties';
+import { EmailTemplateService } from 'app/email-template/services/email-template.service';
 
 declare var Dropbox, swal, google, QuickSidebar, gapi, downloadFromDropbox, BoxSelect, downloadFromGDrive: any;
 declare var $, videojs: any;
@@ -83,13 +84,15 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
     isProgressBar = false;
     failedtoUpload = false;
     customResponse: CustomResponse = new CustomResponse();
+    loggedInUserId:any;
+    contentProcessing :boolean;
 
-    constructor(public router: Router, public xtremandLogger: XtremandLogger,
-        public authenticationService: AuthenticationService, public changeDetectorRef: ChangeDetectorRef,
-        public videoFileService: VideoFileService, public cloudUploadService: UploadCloudvideoService,
-        public sanitizer: DomSanitizer, public refService: ReferenceService, public homeComponent: HomeComponent,
-        public deviceService: Ng2DeviceService, public videoUtilService: VideoUtilService, public properties: Properties) {
+    constructor(public router: Router, public xtremandLogger: XtremandLogger, public authenticationService: AuthenticationService,
+        public changeDetectorRef: ChangeDetectorRef, public videoFileService: VideoFileService, public homeComponent: HomeComponent,
+        public cloudUploadService: UploadCloudvideoService, public sanitizer: DomSanitizer, public refService: ReferenceService,
+        public deviceService: Ng2DeviceService, public videoUtilService: VideoUtilService, public properties: Properties, public emailTemplateService: EmailTemplateService) {
         try {
+            this.loggedInUserId = this.authenticationService.getUserId();
             this.deviceInfo = this.deviceService.getDeviceInfo();
             this.browserInfo = this.deviceInfo.browser;
             console.log(this.browserInfo);
@@ -827,6 +830,34 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
     dropClick(){
       $('#file-upload').click();
     }
+    contentDropClick(){
+      $('#content-upload').click();
+    }
+    contentUpload( event: any ) {
+      this.contentProcessing = true;
+      this.customResponse.isVisible = false;
+      try {
+          let files: Array<File>;
+          if ( event.target.files ) { files = event.target.files; }
+          else if ( event.dataTransfer.files ) { files = event.dataTransfer.files; }
+          const formData: FormData = new FormData();
+          $.each( files, function( index, file ) {
+              formData.append( 'files', file, file.name );
+          });
+          this.uploadToServer( formData );
+      } catch ( error ) {  this.customResponse = new CustomResponse( 'ERROR', "Unable to upload file", true );  }
+    }
+      uploadToServer( formData: FormData ) {
+        this.contentProcessing = true;
+        this.emailTemplateService.uploadFile( this.loggedInUserId, formData )
+            .subscribe( data => {
+              if ( data.statusCode === 1020 ) {
+                this.refService.contentManagementLoader = true;
+                setTimeout(() => {  this.router.navigate(['/home/content-management/manage']); }, 2000);
+              } else { this.contentProcessing = false; this.customResponse = new CustomResponse( 'ERROR', data.message, true );  }
+            },
+            ( error: string ) => { this.xtremandLogger.errorPage( error );this.contentProcessing = false; });
+      }
     ngOnInit() {
         QuickSidebar.init();
         try {

@@ -84,6 +84,7 @@ export class ReferenceService {
     launchedCampaignType = '';
     selectedVideoLogo: string;
     selectedVideoLogodesc: string;
+    contentManagementLoader:boolean;
     constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,
         private router: Router, public deviceService: Ng2DeviceService,private route:ActivatedRoute) {
         console.log('reference service constructor');
