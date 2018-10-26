@@ -988,7 +988,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 if (self.isOtherThanVideo(files[0].name)) {
                     self.cloudStorageSelected = true;
                     swal({
-                        text: 'Thanks   for waiting while   we retrieve your video from Box',
+                        text: 'Thanks for waiting while we retrieve your files from Box',
                         allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif'
                     });
                     console.log(files);
