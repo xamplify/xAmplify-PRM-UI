@@ -109,7 +109,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             this.isFileProgress = false;
             this.textAreaDisable = true;
             this.maxTimeDuration = 3400; // record video time
-            this.maxVideoSize = 12; // upload video size in MB's
+            this.maxVideoSize = 800; // upload video size in MB's
           //  $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:1');
             this.uploader = new FileUploader({
                 allowedMimeType: ['video/m4v', 'video/x-msvideo', 'video/avi', 'video/msvideo','video/mpg', 'video/mp4', 'video/quicktime',
@@ -863,6 +863,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
           let files: Array<File>;
           if ( event.target.files ) { files = event.target.files; }
           else if ( event.dataTransfer.files ) { files = event.dataTransfer.files; }
+          console.log(files);
           const formData: FormData = new FormData();
           $.each( files, function( index, file ) {
               formData.append( 'files', file, file.name );
