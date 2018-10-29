@@ -1413,9 +1413,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
         this.xtremandLogger.info( "contactListId in sweetAlert() " + this.contactIds );
         let message = '';
         if(this.isDefaultPartnerList){
-            message = 'This will remove this partner from any other Partner lists.';
+            message = 'The partner(s) will be deleted from this and all other Partner lists.';
         }else {
-            message = 'The partner will only be removed from that list. To remove completely the partner needs to be removed from the default list.';
+            message = 'This will only delete the partner(s) from this list. To remove the partner(s) completely from your account, please delete the record(s) from the Master List.';
         }
         
         let self = this;
