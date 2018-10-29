@@ -54,13 +54,15 @@
         <ul class="sub-menu" [ngStyle]="{'display': videos? 'block': 'none' }">
         <li>
           <a  [routerLink]="['./videos']">
-            <i class="fa fa-file-video-o"></i>
+            <!-- <i class="fa fa-file-video-o"></i> -->
+            <i class="fa fa-cloud-upload" aria-hidden="true"></i>
             <span class="title">Upload Content</span>
           </a>
         </li>
         <li>
             <a [routerLink]="['./videos/manage']">
-             <i class="fa fa-list"></i>
+             <!-- <i class="fa fa-list"></i> -->
+             <i class="fa fa-file-video-o"></i>
              <span class="title">Manage Videos</span>
             </a>
         </li>

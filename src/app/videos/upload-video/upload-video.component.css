@@ -29,7 +29,7 @@ padding: 10px;
 
 .upload-video{
 font-weight: 500;
-color: white;
+color: #717171;
 }
 #myVideo{  background-color: #5fdbf5; width: 100%;}
 .zoomin img {  height: 80px; width: 80px;-webkit-transition: all 2s ease;
@@ -42,6 +42,8 @@ font-size:21px;font-weight:700;line-height:1;opacity:1;
 .my-drop-zone {
 width :auto;
 border-radius: 0;
+border: dotted 3px lightgray;
+min-height: 186px;
 }
 .nav-file-over { border: 0;}
 .another-file-over-class { border: dotted 3px green; }
@@ -119,9 +121,8 @@ width: 100% ;height:55px;line-height:16px; font-size: 14px;
 border-radius: 0
 }
 #file-upload { width:0; height:0; }
-.box-border{ border: 1px solid #54a7e9; padding: 37px 16px; margin: 0; }
-@media only screen and (max-width:600px){
-  /* .box-border{  min-height: 257px; border: 1px solid #54a7e9; padding: 30px 16px; margin: 0; } */
+.box-border{  border: 1px solid #b7b7b7; padding: 19px 0px 0px 0px;  margin: 4px 0px; min-height: 116px;}
+/* @media only screen and (max-width:600px){
   .box-border{ min-height: 179px; border: 1px solid #54a7e9; margin: 0; padding: 43px 0;}
 }
 @media only screen and (min-width:768px){
@@ -133,7 +134,7 @@ border-radius: 0
 @media only screen and (min-width:992px){
 .pc0 { padding-left:0!important;}
 .pu0 { padding-right:0!important}
-}
+} */
 
 .portlet.light {padding: 10px;min-height: 580px;}
 .upload-video-css {

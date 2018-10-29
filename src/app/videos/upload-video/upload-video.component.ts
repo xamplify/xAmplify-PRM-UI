@@ -109,7 +109,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             this.isFileProgress = false;
             this.textAreaDisable = true;
             this.maxTimeDuration = 3400; // record video time
-            this.maxVideoSize = 800; // upload video size in MB's
+            this.maxVideoSize = 12; // upload video size in MB's
           //  $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:1');
             this.uploader = new FileUploader({
                 allowedMimeType: ['video/m4v', 'video/x-msvideo', 'video/avi', 'video/msvideo','video/mpg', 'video/mp4', 'video/quicktime',
@@ -663,14 +663,13 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 swal.close();
                 console.log(result);
                 this.processing = true;
-
                 this.processVideo(result.path);
             },
             (error: any) => {
                 this.errorIsThere = true;
                 this.xtremandLogger.errorPage(error);
             });
-          }catch(error){ this.xtremandLogger.error('Error in upload vidoe dropbox'+error);}
+          }catch(error){ this.xtremandLogger.error('Error in upload vidoe dropbox'+error);swal.close();}
     }
     /* box retreive videos */
     downloadFrombox() {
@@ -713,7 +712,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             console.log('The user clicked cancel or closed the popup');
             self.defaultSettings();
         });
-      } catch(error) { this.xtremandLogger.error('upload video downloadFrombox'+error);}
+      } catch(error) { this.xtremandLogger.error('upload video downloadFrombox'+error);swal.close();}
     };
     /* google drive retreive videos */
     onApiLoad() {
@@ -779,7 +778,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             self.picker.setVisible(false);
             self.picker.dispose();
         }
-      }catch(error) {this.xtremandLogger.error('Error in upload video pickerCallback'+error); }
+      }catch(error) {this.xtremandLogger.error('Error in upload video pickerCallback'+error);swal.close(); }
     }
     downloadGDriveFile(fileId: any, name: string) {
        try{
@@ -804,7 +803,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         } else {
             swal('Only video files can be uploaded');
         }
-       } catch(error){this.xtremandLogger.error('error in upload vidoe downloadGDriveFile'+error); }
+       } catch(error){this.xtremandLogger.error('error in upload vidoe downloadGDriveFile'+error); swal.close();}
     }
 
     isVideo(filename: any) {
@@ -1014,9 +1013,9 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 console.log('The user clicked cancel or closed the popup');
                 self.defaultSettings();
             });
-          } catch(error) { this.xtremandLogger.error('upload video downloadFrombox'+error);}
+          } catch(error) { this.xtremandLogger.error('upload video downloadFrombox'+error);swal.close();}
         };
-        
+
         googleDriveContentChange() {
             try{
             this.sweetAlertMesg = 'Drive';
@@ -1025,7 +1024,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
               }
             } catch(error){this.xtremandLogger.error('Error in upload content googleDriveChange method'+error);}
           }
-        
+
         onApiLoadContent() {
             if (this.processing !== true) {  // for not clicking again on the google drive
                 const self = this;
@@ -1089,7 +1088,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                   self.picker.setVisible(false);
                   self.picker.dispose();
               }
-            }catch(error) {this.xtremandLogger.error('Error in upload content pickerCallback'+error); }
+            }catch(error) {this.xtremandLogger.error('Error in upload content pickerCallback'+error); swal.close(); }
           }
           downloadGDriveFileContent(fileId: any, name: string) {
              try{
@@ -1116,7 +1115,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
               } else {
                   swal('Other than video files can be uploaded');
               }
-             } catch(error){this.xtremandLogger.error('error in upload content downloadGDriveFile'+error); }
+             } catch(error){this.xtremandLogger.error('error in upload content downloadGDriveFile'+error);swal.close(); }
           }
 
     ngOnInit() {
