@@ -1016,6 +1016,108 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             });
           } catch(error) { this.xtremandLogger.error('upload video downloadFrombox'+error);}
         };
+        
+        googleDriveContentChange() {
+            try{
+            this.sweetAlertMesg = 'Drive';
+              if(this.uploader.queue.length === 0){
+              this.onApiLoadContent();    // google drive code
+              }
+            } catch(error){this.xtremandLogger.error('Error in upload content googleDriveChange method'+error);}
+          }
+        
+        onApiLoadContent() {
+            if (this.processing !== true) {  // for not clicking again on the google drive
+                const self = this;
+                gapi.load('auth', { 'callback': self.onAuthApiLoadContent.bind(this) });
+                gapi.load('picker', { 'callback': self.onPickerApiLoadContent.bind(this) });
+            }
+        }
+        onAuthApiLoadContent() {
+            window['gapi'].auth.authorize(
+                {
+                    'client_id': '982456748855-68ip6tueqej7757qsg1l0dd09jqh0qgs.apps.googleusercontent.com',
+                    'scope': ['https://www.googleapis.com/auth/drive.readonly'],
+                    'immediate': false
+                },
+                this.handleAuthResultContent.bind(this));
+        }
+        handleAuthResultContent(authResult: any) {
+            console.log('close window google drive');
+            const self = this;
+            if (authResult && !authResult.error) {
+                self.tempr = authResult.access_token;
+                self.createPickerContent();
+            }
+
+        }
+        onPickerApiLoadContent() {
+            const self = this;
+            this.pickerApiLoaded = true;
+            self.createPickerContent();
+        }
+        createPickerContent() {
+            const self = this;
+            if (self.tempr) {
+                const pickerBuilder = new google.picker.PickerBuilder();
+                self.picker = pickerBuilder
+                    .enableFeature(google.picker.Feature.NAV_HIDDEN)
+                    .setOAuthToken(self.tempr)
+                    .addView(google.picker.ViewId.DOCS)
+                    .setDeveloperKey('AIzaSyAcKKG96_VqvM9n-6qGgAxgsJrRztLSYAI')
+                    .setCallback(self.pickerCallbackContent.bind(this))
+                    .build();
+                self.picker.setVisible(true);
+            }
+        }
+        pickerCallbackContent(data: any) {
+            try{
+            const self = this;
+              if (data[google.picker.Response.ACTION] === google.picker.Action.PICKED) {
+                  self.cloudStorageSelected = true;
+                  const doc = data[google.picker.Response.DOCUMENTS][0];
+                  if (self.picker) {
+                      self.picker.setVisible(false);
+                      self.picker.dispose();
+                  }
+                  swal({
+                      text: 'Thanks for waiting while we retrieve your content from Google Drive',
+                      allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif'
+                  });
+                  self.downloadGDriveFileContent(doc.id, doc.name);
+              } else if (data[google.picker.Response.ACTION] === google.picker.Action.CANCEL) {
+                  self.picker.setVisible(false);
+                  self.picker.dispose();
+              }
+            }catch(error) {this.xtremandLogger.error('Error in upload content pickerCallback'+error); }
+          }
+          downloadGDriveFileContent(fileId: any, name: string) {
+             try{
+              const self = this;
+              if (this.isOtherThanVideo(name)) {
+                  const downloadLink = 'https://www.googleapis.com/drive/v3/files/' + fileId + '?alt=media';
+                  self.cloudUploadService.downloadContentFromGDrive(downloadLink, name, this.tempr)
+                      .subscribe((result: any) => {
+                          console.log(result);
+                          swal.close();
+                          self.processing = true;
+                          if (self.picker) {
+                              self.picker.setVisible(false);
+                              self.picker.dispose();
+                          }
+                          if (!self.redirectPge) { self.cloudStorageDisabled(); }
+                          self.contentProcessing = true; self.processing = false;
+                          self.refService.contentManagementLoader=true;
+                          setTimeout(() => {  self.router.navigate(['/home/content-management/manage']); }, 2000);
+                      }, (error: any) => {
+                          this.errorIsThere = true;
+                          this.xtremandLogger.errorPage(error);
+                      });
+              } else {
+                  swal('Other than video files can be uploaded');
+              }
+             } catch(error){this.xtremandLogger.error('error in upload content downloadGDriveFile'+error); }
+          }
 
     ngOnInit() {
         QuickSidebar.init();
