@@ -46,7 +46,7 @@
 
       <li *ngIf="authService.module.isVideo  && !authService.isOnlyPartner()" [ngClass]="{'active': location.path().includes('videos')}">
         <a href="javascript:;" (click)="openOrCloseTabs('videos')">
-        <i class="fa fa-video-camera"></i>
+          <i class="fa fa-cloud-upload" aria-hidden="true"></i>
         <span class="title">Content</span>
         <span class="arrow "></span>
         <span class="selected"></span>
