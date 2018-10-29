@@ -498,6 +498,9 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     }else if (event.type === 'rsvpDetailPagination') {
         this.rsvpDetailAnalyticsPagination = pagination;
         this.getRsvpDetails(this.rsvpResposeType);
+    } else if(event.type === 'contactListInfo'){
+        this.contactListInfoPagination = pagination;
+        this.getListOfContacts(this.contactListId);
     }
     else {
     this.pagination = pagination;
