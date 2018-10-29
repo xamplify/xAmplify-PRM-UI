@@ -285,7 +285,7 @@
 						</ng-container>
 					</div>
 				</div>
-				<div *ngIf="pagination.pagedItems.length !== 0">
+				<div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
 					<app-pagination [pagination]="pagination" [type]="'t'"
 						(notifyParent)="setPage($event)"
 						(notifyParentDropDown)="listEmailTemplates($event)"></app-pagination>

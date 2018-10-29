@@ -112,8 +112,9 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             this.maxVideoSize = 800; // upload video size in MB's
           //  $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:1');
             this.uploader = new FileUploader({
-                allowedMimeType: ['video/m4v', 'video/x-msvideo', 'video/mpg', 'video/mp4', 'video/quicktime',
+                allowedMimeType: ['video/m4v', 'video/x-msvideo', 'video/avi', 'video/msvideo','video/mpg', 'video/mp4', 'video/quicktime',
                     'video/x-ms-wmv', 'video/divx', 'video/x-f4v', 'video/x-matroska', 'video/x-flv', 'video/dvd', 'video/mpeg', 'video/xvid'],
+
                 maxFileSize: this.maxVideoSize * 1024 * 1024, // 800 MB
                 url: this.URL + this.authenticationService.access_token
             });
@@ -945,7 +946,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 });
               }catch(error){ this.xtremandLogger.error('Error in upload vidoe dropbox'+error);}
         }
-      
+
       boxContentChange() {
           try{
             if (this.isChecked === true && this.processing !== true && this.sweetAlertDisabled === false &&
@@ -970,7 +971,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             }
           } catch(error){this.xtremandLogger.error('Error in upload video box method'+error);}
         }
-      
+
       downloadContentFrombox() {
           try{
             const value = this;
