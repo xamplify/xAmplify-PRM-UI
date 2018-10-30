@@ -85,7 +85,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
     failedtoUpload = false;
     customResponse: CustomResponse = new CustomResponse();
     loggedInUserId:any;
-    contentProcessing :boolean;
+    contentProcessing:boolean;
 
     constructor(public router: Router, public xtremandLogger: XtremandLogger, public authenticationService: AuthenticationService,
         public changeDetectorRef: ChangeDetectorRef, public videoFileService: VideoFileService, public homeComponent: HomeComponent,
@@ -857,18 +857,27 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
       $('#content-upload').click();
     }
     contentUpload( event: any ) {
-      this.contentProcessing = true;
+      // this.contentProcessing = true;
       this.customResponse.isVisible = false;
       try {
           let files: Array<File>;
           if ( event.target.files ) { files = event.target.files; }
           else if ( event.dataTransfer.files ) { files = event.dataTransfer.files; }
           console.log(files);
+          let size:any = 0;
+          for (let i = 0; i < files.length; ++i) { size = size + files[i].size;  }
+          console.log(size);
+          if(size <= 12582912){
+          this.contentProcessing = true;
           const formData: FormData = new FormData();
           $.each( files, function( index, file ) {
               formData.append( 'files', file, file.name );
           });
           this.uploadToServer( formData );
+         }
+         else {
+          this.customResponse = new CustomResponse( 'ERROR', "Unable to upload files because your files size is more than 12 MB", true );
+         }
       } catch ( error ) {  this.customResponse = new CustomResponse( 'ERROR', "Unable to upload file", true );  }
     }
       uploadToServer( formData: FormData ) {
