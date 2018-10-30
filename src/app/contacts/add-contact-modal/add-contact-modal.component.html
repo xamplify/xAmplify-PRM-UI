@@ -32,7 +32,7 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
             <!-- <i  class="fa fa-building-o" style="right: 11px !important" aria-hidden="true"></i> -->
             <span *ngIf="isPartner" class="star"> *</span>
           </label>
-          <div class="form-group col-xs-5 col-sm-10">
+          <div class="form-group col-xs-10 col-sm-10">
             <input type="company" style="border: none" class="form-control padding-mobile" id="company"
               [(ngModel)]="addContactuser.contactCompany" (input)="contactCompanyChecking(addContactuser.contactCompany)"
               [ngModelOptions]="{standalone: true}" placeholder="Company" maxlength="250">
