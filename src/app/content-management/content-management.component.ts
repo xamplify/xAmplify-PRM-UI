@@ -1,6 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { PagerService } from '../core/services/pager.service';
 import { ReferenceService } from '../core/services/reference.service';
 import { Pagination } from '../core/models/pagination';
 import { HttpRequestLoader } from '../core/models/http-request-loader';
@@ -53,13 +52,13 @@ export class ContentManagementComponent implements OnInit {
     ];
     sortOption: any = this.sortOptions[0];
 
-    constructor( private router: Router, private pagerService: PagerService, public referenceService: ReferenceService,
+    constructor( private router: Router,public referenceService: ReferenceService,
         public actionsDescription: ActionsDescription, public pagination: Pagination, public socialPagerService: SocialPagerService,
         public authenticationService: AuthenticationService, private logger: XtremandLogger,
         private emailTemplateService: EmailTemplateService, private contentManagement: ContentManagement ) {
         this.loggedInUserId = this.authenticationService.getUserId();
         if(this.referenceService.contentManagementLoader){
-           this.customResponse = new CustomResponse( 'SUCCESS', 'files uploaded successfully', true );
+           this.customResponse = new CustomResponse( 'SUCCESS', 'Files(s) processed successfully.', true );
            this.referenceService.contentManagementLoader = false;
         }
     }
