@@ -1136,8 +1136,9 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
 
       if (this.downloadTypeName === 'usersWatchedList') {
         object["Email Id"] = this.downloadCsvList[i].emailId;
-        object["START DURATION"] = startTime.toDateString() + ' ' + startTime.getHours() + ':' + startTime.getMinutes() + ':' + startTime.getSeconds();
-        object["STOP DURATION"] = endTime.toDateString() + ' ' + endTime.getHours() + ':' + endTime.getMinutes() + ':' + endTime.getSeconds();
+        var am_pm = startTime.getHours() >= 12 ? "PM" : "AM";
+        object["START DURATION"] = startTime.toDateString() + ' ' + startTime.getHours() + ':' + startTime.getMinutes();
+        object["STOP DURATION"] = endTime.toDateString() + ' ' + endTime.getHours() + ':' + endTime.getMinutes();
         /*object["IP ADDRESS"] = this.downloadCsvList[i].ipAddress;*/
         object["PLATFORM"] = this.downloadCsvList[i].os[0].toUpperCase() + this.downloadCsvList[i].os.substr(1).toLowerCase();
         object["STATE"] = this.downloadCsvList[i].state;

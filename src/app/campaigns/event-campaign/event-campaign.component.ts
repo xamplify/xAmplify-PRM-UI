@@ -745,7 +745,18 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
     $("#show_email_template_preivew").modal('show');
   }
-
+  
+   formatAMPM(date) {
+      var hours = date.getHours();
+      var minutes = date.getMinutes();
+      var ampm = hours >= 12 ? 'pm' : 'am';
+      hours = hours % 12;
+      hours = hours ? hours : 12; // the hour '0' should be '12'
+      minutes = minutes < 10 ? '0'+minutes : minutes;
+      var strTime = hours + ':' + minutes + ' ' + ampm;
+      return strTime;
+    }
+   
   previewEventCampaignEmailTemplate(emailTemplateId: number) {
     //this.eventCampaign.campaignEventMedias[0].filePath = this.eventCampaign.campaignEventMedias[0].filePath===undefined?null:this.eventCampaign.campaignEventMedias[0].filePath;
       this.emailTemplateService.getById(emailTemplateId)
@@ -755,10 +766,17 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
               data.body = data.body.replace( "EVENT_TITLE", this.eventCampaign.campaign );
           }
           if ( this.eventCampaign.campaignEventTimes[0].startTimeString ) {
-              data.body = data.body.replace( "EVENT_START_TIME", this.eventCampaign.campaignEventTimes[0].startTimeString );
+              let startTime = new Date(this.eventCampaign.campaignEventTimes[0].startTimeString);
+              let srtTime = this.formatAMPM(startTime);
+              let date1 = startTime.toDateString()
+              data.body = data.body.replace( "EVENT_START_TIME", date1 + " " + srtTime );
           }
           if ( this.eventCampaign.campaignEventTimes[0].endTimeString ) {
-              data.body = data.body.replace( "EVENT_END_TIME", this.eventCampaign.campaignEventTimes[0].endTimeString );
+              
+              let endDate = new Date(this.eventCampaign.campaignEventTimes[0].endTimeString);
+              let endTime = this.formatAMPM(endDate);
+              let date2 = endDate.toDateString()
+              data.body = data.body.replace( "EVENT_END_TIME", date2 + " " + endTime );
           }
           if ( this.eventCampaign.message ) {
               data.body = data.body.replace( "EVENT_DESCRIPTION", this.eventCampaign.message );
