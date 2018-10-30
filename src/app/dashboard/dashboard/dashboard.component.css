@@ -415,3 +415,6 @@ a.social-stats{text-align: center;}
 .sparkline-chart .number > canvas {
   width: 100% !important;
 }
+
+@media screen and (max-width:600px){.modal-customize{ width: 100%;}}
+@media screen and (min-width:601px){.modal-customize{ width: 45%;} }
