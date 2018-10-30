@@ -1144,9 +1144,18 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
         object["COUNTRY"] = this.downloadCsvList[i].country;
       }
 
-      if (this.downloadTypeName === 'emailAction') {
-        object["Email Id"] = this.downloadCsvList[i].emailId;
-        object["Date and Time"] = date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+      if ( this.downloadTypeName === 'emailAction' ) {
+          object["Email Id"] = this.downloadCsvList[i].emailId;
+          if ( this.campaignReport.emailActionType === 'click' ) {
+              if ( this.downloadCsvList[i].url ) {
+                  object["Url"] = this.downloadCsvList[i].url;
+              } else {
+                  object["Url"] = "Clicked on the video thumbnail";
+              }
+          } else {
+              object["Email subject"] = this.downloadCsvList[i].subject;
+          }
+          object["Date and Time"] = date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
       }
 
       if (this.downloadTypeName === 'worldMap') {
