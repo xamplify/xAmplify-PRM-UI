@@ -746,22 +746,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     $("#show_email_template_preivew").modal('show');
   }
   
-  format_time(date_obj) {
-      // formats a javascript Date object into a 12h AM/PM time string
-      var hour = date_obj.getHours();
-      var minute = date_obj.getMinutes();
-      var amPM = (hour > 11) ? "pm" : "am";
-      if(hour > 12) {
-        hour -= 12;
-      } else if(hour == 0) {
-        hour = "12";
-      }
-      if(minute < 10) {
-        minute = "0" + minute;
-      }
-      return hour + ":" + minute + amPM;
-    }
-  
    formatAMPM(date) {
       var hours = date.getHours();
       var minutes = date.getMinutes();
@@ -773,24 +757,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
       return strTime;
     }
    
-   convertTime24to12(time24){
-       var tmpArr = time24.split(':'), time12;
-       if(+tmpArr[0] == 12) {
-       time12 = tmpArr[0] + ':' + tmpArr[1] + ' pm';
-       } else {
-       if(+tmpArr[0] == 0) {
-       time12 = '12:' + tmpArr[1] + ' am';
-       } else {
-       if(+tmpArr[0] > 12) {
-       time12 = (+tmpArr[0]-12) + ':' + tmpArr[1] + ' pm';
-       } else {
-       time12 = (+tmpArr[0]) + ':' + tmpArr[1] + ' am';
-       }
-       }
-       }
-       return time12;
-       }
-
   previewEventCampaignEmailTemplate(emailTemplateId: number) {
     //this.eventCampaign.campaignEventMedias[0].filePath = this.eventCampaign.campaignEventMedias[0].filePath===undefined?null:this.eventCampaign.campaignEventMedias[0].filePath;
       this.emailTemplateService.getById(emailTemplateId)
