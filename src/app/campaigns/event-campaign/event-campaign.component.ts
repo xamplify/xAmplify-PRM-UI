@@ -764,7 +764,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
               data.body = data.body.replace( "EVENT_DESCRIPTION", this.eventCampaign.message );
           }
           if ( !this.eventCampaign.onlineMeeting ) {
-              if ( this.eventCampaign.campaignLocation.location ) {
+              if ( this.eventCampaign.campaignLocation.location && this.eventCampaign.campaignLocation.street ) {
                   data.body = data.body.replace( /ADDRESS_LANE1/g, this.eventCampaign.campaignLocation.location + "," + this.eventCampaign.campaignLocation.street + "," );
                   data.body = data.body.replace( /ADDRESS_LANE2/g, this.eventCampaign.campaignLocation.city + "," + this.eventCampaign.campaignLocation.state + "," + this.eventCampaign.campaignLocation.zip );
               }
