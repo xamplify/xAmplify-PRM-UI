@@ -747,8 +747,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   }
 
   previewEventCampaignEmailTemplate(emailTemplateId: number) {
-    this.eventCampaign.campaignEventMedias[0].filePath = this.eventCampaign.campaignEventMedias[0].filePath===undefined?null:this.eventCampaign.campaignEventMedias[0].filePath;
-      this.emailTemplateService.getByIdImageUri(emailTemplateId, this.eventCampaign.campaignEventMedias[0].filePath)
+    //this.eventCampaign.campaignEventMedias[0].filePath = this.eventCampaign.campaignEventMedias[0].filePath===undefined?null:this.eventCampaign.campaignEventMedias[0].filePath;
+      this.emailTemplateService.getById(emailTemplateId)
           .subscribe(
       (data: any) => {
           if ( this.eventCampaign.campaign ) {
@@ -765,10 +765,11 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
           }
           if ( !this.eventCampaign.onlineMeeting ) {
               if ( this.eventCampaign.campaignLocation.location ) {
-                  data.body = data.body.replace( "EVENT_LOCATION", this.eventCampaign.campaignLocation.location + "," + this.eventCampaign.campaignLocation.street + "," + "\n" + this.eventCampaign.campaignLocation.city + "," + this.eventCampaign.campaignLocation.state + "," + this.eventCampaign.campaignLocation.zip );
+                  data.body = data.body.replace( /ADDRESS_LANE1/g, this.eventCampaign.campaignLocation.location + "," + this.eventCampaign.campaignLocation.street + "," );
+                  data.body = data.body.replace( /ADDRESS_LANE2/g, this.eventCampaign.campaignLocation.city + "," + this.eventCampaign.campaignLocation.state + "," + this.eventCampaign.campaignLocation.zip );
               }
           } else {
-              data.body = data.body.replace( "EVENT_LOCATION", "Online Meeting" )
+              data.body = data.body.replace( /EVENT_LOCATION/g, "Online Meeting" )
           }
           if ( this.eventCampaign.email ) {
               data.body = data.body.replace( "EVENT_EMAILID", this.eventCampaign.email );
@@ -781,6 +782,11 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
           }
           if ( this.eventCampaign.email ) {
               data.body = data.body.replace( "VENDOR_EMAILID", this.authenticationService.user.emailId );
+          }
+          if ( this.eventCampaign.campaignEventMedias[0].filePath ) {
+              data.body = data.body.replace( "IMAGE_URL", this.eventCampaign.campaignEventMedias[0].filePath );
+          }else{
+              data.body = data.body.replace( "IMAGE_URL", "https://aravindu.com/vod/images/conference2.jpg" );
           }
           this.getEmailTemplatePreview( data );
       },
