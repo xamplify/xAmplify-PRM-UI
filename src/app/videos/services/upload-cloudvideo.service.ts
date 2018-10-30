@@ -19,11 +19,10 @@ export class UploadCloudvideoService {
             .map(this.extractData)
             .catch(this.handleError);
     }
-    downloadFromDropboxContent(downloadLink: string, fileName: string): Observable<any> {
-        console.log('file path in service ' + downloadLink + 'file name' + fileName);
+    downloadFromDropboxContent(files: any){
         const url = this.CLOUDURL + '?access_token=' + this.authenticationService.access_token +
-            '&downloadLink=' + downloadLink + '&fileName=' + fileName + '&userId=' + this.authenticationService.user.id;
-        return this.http.post(url, "")
+            '&userId=' + this.authenticationService.user.id;
+        return this.http.post(url, files)
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -37,13 +36,12 @@ export class UploadCloudvideoService {
             .catch(this.handleError);
     }
     
-    downloadContentFromBox(downloadLink: string, fileName: string): Observable<any> {
-        console.log('file path in service' + downloadLink + 'file name' + fileName);
-        const url = this.CLOUDURL + '?access_token=' + this.authenticationService.access_token +
-            '&downloadLink=' + downloadLink + '&fileName=' + fileName + '&userId=' + this.authenticationService.user.id;
-        return this.http.post(url, "")
-            .map(this.extractData)
-            .catch(this.handleError);
+    downloadContentFromBox(files:any): Observable<any> {
+    	 const url = this.CLOUDURL + '?access_token=' + this.authenticationService.access_token +
+         '&userId=' + this.authenticationService.user.id;
+     return this.http.post(url, files)
+         .map(this.extractData)
+         .catch(this.handleError);
     }
 
     downloadFromGDrive(downloadLink: string, fileName: string, oauthToken: string): Observable<any> {
@@ -56,14 +54,12 @@ export class UploadCloudvideoService {
             .catch(this.handleError);
     }
     
-    downloadContentFromGDrive(downloadLink: string, fileName: string, oauthToken: string): Observable<any> {
-        console.log('file path in service' + downloadLink + 'file name' + fileName + 'oauthToken' + oauthToken);
+    downloadContentFromGDrive(files:any): Observable<any> {
         const url = this.CLOUDURL + '?access_token=' + this.authenticationService.access_token +
-            '&downloadLink=' + downloadLink + '&fileName=' + fileName + '&oauthToken=' + oauthToken +
-            '&userId=' + this.authenticationService.user.id;
-        return this.http.post(url, "")
-            .map(this.extractData)
-            .catch(this.handleError);
+        '&userId=' + this.authenticationService.user.id;
+    return this.http.post(url, files)
+        .map(this.extractData)
+        .catch(this.handleError);
     }
 
     extractData(res: Response) {

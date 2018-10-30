@@ -17,6 +17,7 @@ import { HomeComponent } from '../../core/home/home.component';
 import { CustomResponse } from '../../common/models/custom-response';
 import { Properties } from 'app/common/models/properties';
 import { EmailTemplateService } from 'app/email-template/services/email-template.service';
+import { CloudContent } from '../models/cloudcontent';
 
 declare var Dropbox, swal, google, QuickSidebar, gapi, downloadFromDropbox, BoxSelect, downloadFromGDrive: any;
 declare var $, videojs: any;
@@ -86,6 +87,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
     customResponse: CustomResponse = new CustomResponse();
     loggedInUserId:any;
     contentProcessing:boolean;
+    cloudContentArr = new Array<CloudContent>();
 
     constructor(public router: Router, public xtremandLogger: XtremandLogger, public authenticationService: AuthenticationService,
         public changeDetectorRef: ChangeDetectorRef, public videoFileService: VideoFileService, public homeComponent: HomeComponent,
@@ -827,28 +829,31 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         }
         return false;
     }
-    isOtherThanVideo(filename: any) {
-        const parts = filename.split('.');
-        const ext = parts[parts.length - 1];
-        switch (ext.toLowerCase()) {
-            case 'csv':
-            case 'cvs':
-            case 'gif':
-            case 'html':
-            case 'jpg':
-            case 'jpeg':
-            case 'pdf':
-            case 'png':
-            case 'ppt':
-            case 'pptx':
-            case 'txt':
-            case 'xls':
-            case 'xlsx':
-            case 'zip':
+    isOtherThanVideo(files: any) {
+        for (let i = 0; i < files.length; i++) {
+
+            const parts = files[i].name.split('.');
+            const ext = parts[parts.length - 1];
+            switch (ext.toLowerCase()) {
+                case 'csv':break;
+                case 'cvs':break;
+                case 'gif':break;
+                case 'html':break;
+                case 'jpg':break;
+                case 'jpeg':break;
+                case 'pdf':break;
+                case 'png':break;
+                case 'ppt':break;
+                case 'pptx':break;
+                case 'txt':break;
+                case 'xls':break;
+                case 'xlsx':break;
+                case 'zip':break;
+                default:return false;
                 // etc
-                return true;
+            }
         }
-        return false;
+        return true;
     }
     dropClick(){
       $('#file-upload').click();
@@ -910,8 +915,9 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 $('.box').attr('style', 'cursor:not-allowed; opacity:0.5');
                 $('.oneDrive').attr('style', 'cursor:not-allowed; opacity:0.5');
                // $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:0.6');
+                this.cloudContentArr=new Array<CloudContent>();
               }
-            } catch(error){this.xtremandLogger.error('Error in upload video dropBoxChange method'+error);}
+            } catch(error){this.xtremandLogger.error('Error in upload content dropBoxChange method'+error);}
         }
       downloadFromDropboxContent() {
           try{
@@ -919,7 +925,6 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 const self = this;
                 const options = {
                     success: function (files: any) {
-                        console.log(files[0].name);
                         self.cloudStorageSelected = true;
                         self.dropboxContent(files);
                     },
@@ -927,12 +932,12 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                         self.defaultSettings();
                     },
                     linkType: 'direct',
-                    multiselect: false,
+                    multiselect: true,
                     extensions: ['.csv', '.cvs', '.gif','.html','.jpg', '.jpeg','.pdf','.png','.ppt','.pptx' ,'.txt' ,'.xls','.xlsx','.zip'],
                 };
                 Dropbox.choose(options);
-            } // close if condition
-          }catch(error) {this.xtremandLogger.error('Error in upload video downloadFromDropbox'+error); }
+            } 
+          }catch(error) {this.xtremandLogger.error('Error in upload content downloadFromDropbox'+error); }
         }
       dropboxContent(files: any) {
           try{
@@ -940,11 +945,18 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 text: 'Thanks for waiting while we retrieve your files from Drop box',
                 allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif',
             });
-            console.log('files ' + files);
-            this.cloudUploadService.downloadFromDropboxContent(files[0].link, files[0].name)
+            for(let i=0;i<files.length;i++){
+                   var cloudContent = {
+                           'downloadLink': files[i].link,
+                           'fileName':files[i].name,
+                           'oauthToken':null
+                           
+                   }
+                   this.cloudContentArr.push(cloudContent);
+            }
+            this.cloudUploadService.downloadFromDropboxContent(this.cloudContentArr)
                 .subscribe((result: any) => {
                     swal.close();
-                    console.log(result);
                     this.contentProcessing = true; this.processing = false;
                     this.refService.contentManagementLoader=true;
                     setTimeout(() => {  this.router.navigate(['/home/content-management/manage']); }, 2000);
@@ -953,7 +965,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                     this.errorIsThere = true;
                     this.xtremandLogger.errorPage(error);
                 });
-              }catch(error){ this.xtremandLogger.error('Error in upload vidoe dropbox'+error);}
+              }catch(error){ this.xtremandLogger.error('Error in upload content from dropbox'+error);}
         }
 
       boxContentChange() {
@@ -977,6 +989,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 $('.camera').attr('style', 'cursor:not-allowed; opacity:0.5');
                 $('.oneDrive').attr('style', 'cursor:not-allowed; opacity:0.5');
               //  $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:0.6');
+                this.cloudContentArr=new Array<CloudContent>();
             }
           } catch(error){this.xtremandLogger.error('Error in upload video box method'+error);}
         }
@@ -987,7 +1000,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             const options = {
                 clientId: 'a8gaa6kwnxe10uruyregh3u6h7qxd24g',
                 linkType: 'direct',
-                multiselect: false,
+                multiselect: true,
             };
             const boxSelect = new BoxSelect(options);
             if (value.processing !== true) {
@@ -995,14 +1008,22 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             }
             const self = this;
             boxSelect.success(function (files: any) {
-                if (self.isOtherThanVideo(files[0].name)) {
+                if (self.isOtherThanVideo(files)) {
                     self.cloudStorageSelected = true;
                     swal({
                         text: 'Thanks for waiting while we retrieve your files from Box',
                         allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif'
                     });
-                    console.log(files);
-                    self.cloudUploadService.downloadContentFromBox(files[0].url, files[0].name)
+                    for(let i=0;i<files.length;i++){
+                        var cloudContent = {
+                                'downloadLink': files[i].link,
+                                'fileName':files[i].name,
+                                'oauthToken':null
+                                
+                        }
+                        self.cloudContentArr.push(cloudContent);
+                 }
+                    self.cloudUploadService.downloadContentFromBox(self.cloudContentArr)
                         .subscribe((result: any) => {
                             console.log(result);
                             swal.close();
@@ -1030,6 +1051,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             try{
             this.sweetAlertMesg = 'Drive';
               if(this.uploader.queue.length === 0){
+              this.cloudContentArr=new Array<CloudContent>();
               this.onApiLoadContent();    // google drive code
               }
             } catch(error){this.xtremandLogger.error('Error in upload content googleDriveChange method'+error);}
@@ -1071,6 +1093,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 const pickerBuilder = new google.picker.PickerBuilder();
                 self.picker = pickerBuilder
                     .enableFeature(google.picker.Feature.NAV_HIDDEN)
+                    .enableFeature(google.picker.Feature.MULTISELECT_ENABLED)
                     .setOAuthToken(self.tempr)
                     .addView(google.picker.ViewId.DOCS)
                     .setDeveloperKey('AIzaSyAcKKG96_VqvM9n-6qGgAxgsJrRztLSYAI')
@@ -1093,19 +1116,28 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                       text: 'Thanks for waiting while we retrieve your content from Google Drive',
                       allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif'
                   });
-                  self.downloadGDriveFileContent(doc.id, doc.name);
+                  self.downloadGDriveFileContent(data[google.picker.Response.DOCUMENTS]);
               } else if (data[google.picker.Response.ACTION] === google.picker.Action.CANCEL) {
                   self.picker.setVisible(false);
                   self.picker.dispose();
               }
             }catch(error) {this.xtremandLogger.error('Error in upload content pickerCallback'+error); swal.close(); }
           }
-          downloadGDriveFileContent(fileId: any, name: string) {
+          downloadGDriveFileContent(files:any) {
              try{
               const self = this;
-              if (this.isOtherThanVideo(name)) {
-                  const downloadLink = 'https://www.googleapis.com/drive/v3/files/' + fileId + '?alt=media';
-                  self.cloudUploadService.downloadContentFromGDrive(downloadLink, name, this.tempr)
+              if (self.isOtherThanVideo(files)) {
+                  for(let i=0;i<files.length;i++){
+                      var cloudContent = {
+                              'downloadLink': 'https://www.googleapis.com/drive/v3/files/' + files[i].id + '?alt=media',
+                              'fileName':files[i].name,
+                              'oauthToken':self.tempr
+                              
+                      }
+                      self.cloudContentArr.push(cloudContent);
+               }
+                  //const downloadLink = 'https://www.googleapis.com/drive/v3/files/' + fileId + '?alt=media';
+                  self.cloudUploadService.downloadContentFromGDrive(self.cloudContentArr)
                       .subscribe((result: any) => {
                           console.log(result);
                           swal.close();
@@ -1123,6 +1155,8 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                           this.xtremandLogger.errorPage(error);
                       });
               } else {
+            	  self.picker.setVisible(false);
+                  self.picker.dispose();
                   swal('Other than video files can be uploaded');
               }
              } catch(error){this.xtremandLogger.error('error in upload content downloadGDriveFile'+error);swal.close(); }
