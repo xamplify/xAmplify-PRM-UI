@@ -787,7 +787,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
 
     validatePhone() {
         if (this.companyProfile.phone) {
-            if (!this.regularExpressions.PHONE_NUMBER_PATTERN.test(this.companyProfile.phone)) {
+            if (!this.regularExpressions.PHONE_NUMBER_PATTERN.test(this.companyProfile.phone) || this.companyProfile.phone.length<8) {
                 this.addPhoneError();
                 this.phoneErrorMessage = "Invalid Contact Number"
             } else {
