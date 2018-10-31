@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ReferenceService } from '../../core/services/reference.service';
 
 import { Processor } from '../../core/models/processor';
 import { CampaignRsvp } from '../models/campaign-rsvp';
@@ -25,7 +26,7 @@ export class RsvpComponent implements OnInit {
   type="";
   replyUserName=""
 
-  constructor(private route: ActivatedRoute, public campaignService: CampaignService, public processor:Processor,
+  constructor(public referenceService: ReferenceService, private route: ActivatedRoute, public campaignService: CampaignService, public processor:Processor,
   public authenticationService:AuthenticationService) { }
 
   getEventCampaign (alias: string) {
@@ -48,7 +49,60 @@ export class RsvpComponent implements OnInit {
   }
   addURLs(templateBody:any){
     // just to avoid 404 link, added the links here.
-    templateBody = templateBody.replace('EVENT_TITLE', this.eventcampaign.campaign);
+      
+      if ( this.eventcampaign.campaign ) {
+          templateBody.body = templateBody.body.replace( "EVENT_TITLE", this.eventcampaign.campaign );
+      }
+      if ( this.eventcampaign.campaignEventTimes[0].startTimeString ) {
+          let startTime = new Date(this.eventcampaign.campaignEventTimes[0].startTimeString);
+          let srtTime = this.referenceService.formatAMPM(startTime);
+          let date1 = startTime.toDateString()
+          templateBody.body = templateBody.body.replace( "EVENT_START_TIME", date1 + " " + srtTime );
+      }
+      
+      if ( this.eventcampaign.campaignEventTimes[0].endTimeString ) {
+          let endDate = new Date(this.eventcampaign.campaignEventTimes[0].endTimeString);
+          let endTime = this.referenceService.formatAMPM(endDate);
+          let date2 = endDate.toDateString()
+          templateBody.body = templateBody.body.replace( "EVENT_END_TIME", date2 + " " + endTime );
+      }else if(this.eventcampaign.campaignEventTimes[0].allDay){
+          
+          let startTime = new Date(this.eventcampaign.campaignEventTimes[0].startTimeString);
+          let date1 = startTime.toDateString()
+          templateBody.body = templateBody.body.replace( "EVENT_END_TIME", date1 + " " + '11:59 PM' );
+      }
+      
+      if ( this.eventcampaign.message ) {
+          templateBody.body = templateBody.body.replace( "EVENT_DESCRIPTION", this.eventcampaign.message );
+      }
+      if ( !this.eventcampaign.onlineMeeting ) {
+          if ( this.eventcampaign.campaignLocation.location && this.eventcampaign.campaignLocation.street ) {
+              templateBody.body = templateBody.body.replace( /ADDRESS_LANE1/g, this.eventcampaign.campaignLocation.location + "," + this.eventcampaign.campaignLocation.street + "," );
+              templateBody.body = templateBody.body.replace( /ADDRESS_LANE2/g, this.eventcampaign.campaignLocation.city + "," + this.eventcampaign.campaignLocation.state + "," + this.eventcampaign.campaignLocation.zip );
+          }
+      } else {
+          templateBody.body = templateBody.body.replace( /EVENT_LOCATION/g, "Online Meeting" )
+      }
+      if ( this.eventcampaign.email ) {
+          templateBody.body = templateBody.body.replace( "EVENT_EMAILID", this.eventcampaign.email );
+      }
+      if ( this.eventcampaign.email ) {
+          templateBody.body = templateBody.body.replace( "VENDOR_NAME", this.authenticationService.user.firstName );
+      }
+      if ( this.eventcampaign.email ) {
+          templateBody.body = templateBody.body.replace( "VENDOR_TITLE", this.authenticationService.user.jobTitle );
+      }
+      if ( this.eventcampaign.email ) {
+          templateBody.body = templateBody.body.replace( "VENDOR_EMAILID", this.authenticationService.user.emailId );
+      }
+      if ( this.eventcampaign.campaignEventMedias[0].filePath ) {
+          templateBody.body = templateBody.body.replace( "IMAGE_URL", this.eventcampaign.campaignEventMedias[0].filePath );
+      }else{
+          templateBody.body = templateBody.body.replace( "IMAGE_URL", "https://aravindu.com/vod/images/conference2.jpg" );
+      }
+      
+      
+ /*   templateBody = templateBody.replace('EVENT_TITLE', this.eventcampaign.campaign);
     templateBody = templateBody.replace('EVENT_START_TIME', this.eventcampaign.campaignEventTimes[0].startTimeString);
     templateBody = templateBody.replace('EVENT_END_TIME', this.eventcampaign.campaignEventTimes[0].endTimeString);
     if(this.eventcampaign.campaignLocation.location){
@@ -56,7 +110,7 @@ export class RsvpComponent implements OnInit {
     }else {
       templateBody = templateBody.replace('EVENT_LOCATION', '');
     }
-    templateBody = templateBody.replace('EVENT_DESCRIPTION', 'Message:'+this.eventcampaign.message);
+    templateBody = templateBody.replace('EVENT_DESCRIPTION', 'Message:'+this.eventcampaign.message);*/
     templateBody = templateBody.replace('href="LINK_YES"',"hidden");
     templateBody = templateBody.replace('href="LINK_NO"',"hidden");
     templateBody = templateBody.replace('href="LINK_MAY_BE"',"hidden");
