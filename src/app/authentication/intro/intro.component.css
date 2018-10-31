@@ -1159,3 +1159,9 @@ background: none !important;
 agm-map {
 height: 600px;
 }
+
+@media screen and (max-width:600px){
+  .size{ font-size: 30px !important;}
+  .size-p{ font-size: 15px !important; }
+  .size-try-xamplify{ font-size: 17px !important; }
+}
