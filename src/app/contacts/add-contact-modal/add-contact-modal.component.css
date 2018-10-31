@@ -29,7 +29,13 @@ display: block;
 @media only screen and (max-width:600px){ .padding-mobile{ padding:0}}
 @media only screen and (min-width:601px){.padding-mobile{ padding:non;}}
 
-@media screen and (max-width:600px){.accounts-modal { width:100% !important; position: relative !important; } }
+@media screen and (max-width:600px){.accounts-modal { width:100% !important; position: relative !important; } .px0{padding: 0 !important;} .pxl0{ padding-left: 0 !important;}
+.star {
+  position: relative;
+  left: 42px !important;
+  top: 9px !important;
+}
+}
 @media screen and (min-width:601px){.accounts-modal { width:45% !important;float: right; position: relative !important; } }
 
 .danger{ color:red !important;}
