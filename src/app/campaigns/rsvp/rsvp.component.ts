@@ -50,7 +50,7 @@ export class RsvpComponent implements OnInit {
   addURLs(templateBody:any){
     // just to avoid 404 link, added the links here.
       
-      if ( this.eventcampaign.campaign ) {
+      /*if ( this.eventcampaign.campaign ) {
           templateBody.body = templateBody.body.replace( "EVENT_TITLE", this.eventcampaign.campaign );
       }
       if ( this.eventcampaign.campaignEventTimes[0].startTimeString ) {
@@ -99,7 +99,7 @@ export class RsvpComponent implements OnInit {
           templateBody.body = templateBody.body.replace( "IMAGE_URL", this.eventcampaign.campaignEventMedias[0].filePath );
       }else{
           templateBody.body = templateBody.body.replace( "IMAGE_URL", "https://aravindu.com/vod/images/conference2.jpg" );
-      }
+      }*/
       
       
  /*   templateBody = templateBody.replace('EVENT_TITLE', this.eventcampaign.campaign);
