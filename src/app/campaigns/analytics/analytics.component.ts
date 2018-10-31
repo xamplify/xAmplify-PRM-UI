@@ -1114,7 +1114,8 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       if (this.downloadTypeName === 'donut') {
         object["Email Id"] = this.downloadCsvList[i].emailId;
         object["Campaign Name"] = this.downloadCsvList[i].campaignName;
-        object["Date and Time"] = date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+        let hours = this.referenceService.formatAMPM(date);
+        object["Date and Time"] = date.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
         object["Platform"] = this.downloadCsvList[i].os;
         object["Location"] = this.downloadCsvList[i].location;
       }
@@ -1129,16 +1130,19 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
             object["Not Yet"] = this.downloadCsvList[i].rsvpMap.notYetResponded;
             object["Plus Guests"] = this.downloadCsvList[i].rsvpMap.additionalCount;
         }else{
-        object["Sent Time"] = sentTime.toDateString() + ' ' + sentTime.getHours() + ':' + sentTime.getMinutes() + ':' + sentTime.getSeconds();
-        object["Latest View"] = latestView.toDateString() + ' ' + latestView.getHours() + ':' + latestView.getMinutes() + ':' + latestView.getSeconds();
+         let hours = this.referenceService.formatAMPM(sentTime);
+        object["Sent Time"] = sentTime.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
+        let lastviewHours = this.referenceService.formatAMPM(latestView);
+        object["Latest View"] = latestView.toDateString().split(' ').slice(1).join(' ') + ' ' + lastviewHours;
         }
         }
 
       if (this.downloadTypeName === 'usersWatchedList') {
         object["Email Id"] = this.downloadCsvList[i].emailId;
-        var am_pm = startTime.getHours() >= 12 ? "PM" : "AM";
-        object["START DURATION"] = startTime.toDateString() + ' ' + startTime.getHours() + ':' + startTime.getMinutes();
-        object["STOP DURATION"] = endTime.toDateString() + ' ' + endTime.getHours() + ':' + endTime.getMinutes();
+        let srtHours = this.referenceService.formatAMPM(startTime);
+        object["START DURATION"] = startTime.toDateString().split(' ').slice(1).join(' ') + ' ' + srtHours;
+        let endHours = this.referenceService.formatAMPM(endTime);
+        object["STOP DURATION"] = endTime.toDateString().split(' ').slice(1).join(' ') + ' ' + endHours;
         /*object["IP ADDRESS"] = this.downloadCsvList[i].ipAddress;*/
         object["PLATFORM"] = this.downloadCsvList[i].os[0].toUpperCase() + this.downloadCsvList[i].os.substr(1).toLowerCase();
         object["STATE"] = this.downloadCsvList[i].state;
@@ -1156,12 +1160,14 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
           } else {
               object["Email subject"] = this.downloadCsvList[i].subject;
           }
-          object["Date and Time"] = date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+          let hours = this.referenceService.formatAMPM(date);
+          object["Date and Time"] = date.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
       }
 
       if (this.downloadTypeName === 'worldMap') {
         object["Email Id"] = this.downloadCsvList[i].emailId;
-        object["Date and Time"] = date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+        let hours = this.referenceService.formatAMPM(date);
+        object["Date and Time"] = date.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
         object["Device"] = this.downloadCsvList[i].deviceType;
         object["Location"] = this.downloadCsvList[i].location;
       }
@@ -1171,10 +1177,12 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
           if(this.rsvpResposeType === 'email open'){
               object["Campaign Name"] = this.downloadCsvList[i].campaignName;
               object["Subject"] = this.downloadCsvList[i].subject;
-              object["Time"] = date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();;
+              let hours = this.referenceService.formatAMPM(date);
+              object["Time"] = date.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
           }else{
               object["Message"] = this.downloadCsvList[i].message;
-              object["Response Time"] = responseTime.toDateString() + ' ' + responseTime.getHours() + ':' + responseTime.getMinutes() + ':' + responseTime.getSeconds();
+              let hours = this.referenceService.formatAMPM(responseTime);
+              object["Response Time"] = responseTime.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
               object["Plus Guests"] = this.downloadCsvList[i].additionalCount;
           }
          }
