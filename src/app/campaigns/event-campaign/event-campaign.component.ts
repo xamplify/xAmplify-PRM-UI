@@ -757,14 +757,14 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
           if ( this.eventCampaign.campaignEventTimes[0].startTimeString ) {
               let startTime = new Date(this.eventCampaign.campaignEventTimes[0].startTimeString);
               let srtTime = this.referenceService.formatAMPM(startTime);
-              let date1 = startTime.toDateString().split(' ').slice(1).join(' ')
+              let date1 = startTime.toDateString()
               data.body = data.body.replace( "EVENT_START_TIME", date1 + " " + srtTime );
           }
           if ( this.eventCampaign.campaignEventTimes[0].endTimeString ) {
               
               let endDate = new Date(this.eventCampaign.campaignEventTimes[0].endTimeString);
               let endTime = this.referenceService.formatAMPM(endDate);
-              let date2 = endDate.toDateString().split(' ').slice(1).join(' ')
+              let date2 = endDate.toDateString()
               data.body = data.body.replace( "EVENT_END_TIME", date2 + " " + endTime );
           }
           if ( this.eventCampaign.message ) {
