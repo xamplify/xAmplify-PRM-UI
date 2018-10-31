@@ -19,3 +19,10 @@
 @media screen and (max-width:600px){
   .modal-css {width: 100% !important; right: 0 !important;}
 }
+@media screen and (max-width:768px){
+  .cloud-items{ position: relative; font-size: 19px; top: -82px !important; left: 93px !important; }
+}
+.cloud-items{
+  position: relative; font-size: 19px; top: -82px; left: 78px;
+}
+.gray-color{position: relative; color: grey;}

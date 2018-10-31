@@ -198,18 +198,15 @@ img:hover {
 												</a>
 												<div id="salesforceGear" style="position: relative"
 													id="salesforceGear" *ngIf="sfImageNormal">
-													<a [class.disabled]="selectedAddContactsOption != 8"
-														(click)="settingSocialNetworkOpenModal('salesforce')">
-														<i id="SgearIcon" class="fa fa-cog" aria-hidden="true"
-														style="position: relative; font-size: 19px; top: -82px; left: 78px;"></i>
+													<a [class.disabled]="selectedAddContactsOption != 8" (click)="settingSocialNetworkOpenModal('salesforce')">
+														<i id="SgearIcon" class="fa fa-cog cloud-items" aria-hidden="true"></i>
 													</a>
 												</div>
 												<div style="position: relative" *ngIf="!sfImageNormal">
-										<a [class.disabled]="selectedAddContactsOption != 5"
-										(click)="salesforceContacts()"> <i class="fa fa-plug" aria-hidden="true"
-											style="position: relative; color: grey; font-size: 19px; top: -82px; left: 78px;"></i>
-										</a>
-									</div>
+                          <a [class.disabled]="selectedAddContactsOption != 5"
+                          (click)="salesforceContacts()"> <i class="fa fa-plug cloud-items gray-color" aria-hidden="true"></i>
+                          </a>
+								     	</div>
 											</div>
 											<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
 												<a *ngIf="googleImageBlur" id="googleContact_button"
@@ -222,67 +219,54 @@ img:hover {
 													height="86" width="90"
 													onmouseover="this.src='assets/images/crm/connecting.png';"
 													onmouseout="this.src='assets/images/crm/google.png';">
-												</a> <a id="googleContact_buttonNormal"
+                        </a>
+                         <a id="googleContact_buttonNormal"
 													*ngIf="googleImageNormal" style="background-color: white"
 													(click)="googleContacts()"
 													[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5">
-													<img
-													[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :googleImageBlur==true}"
+													<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :googleImageBlur==true}"
 													src="assets/images/crm/google.png" class="googleImageClass" data-toggle="tooltip" data-placement="bottom"
-													title="Click here to access contacts from your Google contacts"
-													height="86" width="90">
+													title="Click here to access contacts from your Google contacts"	height="86" width="90">
 												</a>
-												<div id="GoogleGear" style="position: relative"
-													*ngIf="googleImageNormal">
-													<a [class.disabled]="selectedAddContactsOption != 8"
-														(click)="settingSocialNetworkOpenModal('google')"> <i
-														id="GgearIcon" class="fa fa-cog" aria-hidden="true"
-														style="position: relative; font-size: 19px; top: -82px; left: 78px;"></i>
-													</a>
+												<div id="GoogleGear" style="position: relative" *ngIf="googleImageNormal">
+                            <a [class.disabled]="selectedAddContactsOption != 8"  (click)="settingSocialNetworkOpenModal('google')">
+                               <i id="GgearIcon" class="fa fa-cog cloud-items" aria-hidden="true"></i>
+                            </a>
 												</div>
 												<div style="position: relative" *ngIf="!googleImageNormal">
-										<a [class.disabled]="selectedAddContactsOption != 5"
-										(click)="googleContacts()"> <i class="fa fa-plug" aria-hidden="true"
-											style="position: relative; color: grey; font-size: 19px; top: -82px; left: 78px;"></i>
-										</a>
-									</div>
+                            <a [class.disabled]="selectedAddContactsOption != 5" (click)="googleContacts()">
+                             <i class="fa fa-plug cloud-items gray-color" aria-hidden="true"></i>
+                            </a>
+								    	</div>
 											</div>
 											<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
 												<a *ngIf="zohoImageBlur" id="zohoContact_button"
 													style="background-color: white"
 													(click)="checkingZohoContactsAuthentication()"
 													[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5">
-													<img
-													[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}"
+													<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}"
 													src="assets/images/crm/Zoho.png" class="zohoImageClass" data-toggle="tooltip" data-placement="bottom"
-													title="Click here to access contacts from your Zoho account"
-													height="86" width="90"
-													onmouseover="this.src='assets/images/crm/connecting.png';"
-													onmouseout="this.src='assets/images/crm/Zoho.png';">
-												</a> <a *ngIf="zohoImageNormal" id="zohoContact_buttonNormal"
+                          title="Click here to access contacts from your Zoho account" 	height="86" width="90"
+                          	onmouseover="this.src='assets/images/crm/connecting.png';" onmouseout="this.src='assets/images/crm/Zoho.png';">
+                         </a>
+                         <a *ngIf="zohoImageNormal" id="zohoContact_buttonNormal"
 													style="background-color: white"
 													(click)="checkingZohoContactsAuthentication()"
 													[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5">
-													<img
-													[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}"
+													<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}"
 													src="assets/images/crm/Zoho.png" class="zohoImageClass" data-toggle="tooltip" data-placement="bottom"
-													title="Click here to access contacts from your Zoho account"
-													height="86" width="90">
+													title="Click here to access contacts from your Zoho account"	height="86" width="90">
 												</a>
-												<div id="zohoGear" style="position: relative"
-													*ngIf="zohoImageNormal">
-													<a [class.disabled]="selectedAddContactsOption != 8"
-														(click)="settingSocialNetworkOpenModal('zoho')"> <i
-														id="ZgearIcon" class="fa fa-cog" aria-hidden="true"
-														style="position: relative; font-size: 19px; top: -82px; left: 78px;"></i>
+												<div id="zohoGear" style="position: relative"	*ngIf="zohoImageNormal">
+													<a [class.disabled]="selectedAddContactsOption != 8" (click)="settingSocialNetworkOpenModal('zoho')">
+                            <i id="ZgearIcon" class="fa fa-cog cloud-items" aria-hidden="true"></i>
 													</a>
 												</div>
 												<div style="position: relative" *ngIf="!zohoImageNormal">
-										<a [class.disabled]="selectedAddContactsOption != 5"
-										(click)="checkingZohoContactsAuthentication()"> <i class="fa fa-plug" aria-hidden="true"
-											style="position: relative; color: grey; font-size: 19px; top: -82px; left: 78px;"></i>
-										</a>
-									</div>
+                           <a [class.disabled]="selectedAddContactsOption != 5" (click)="checkingZohoContactsAuthentication()">
+                             <i class="fa fa-plug cloud-items gray-color" aria-hidden="true"></i>
+                           </a>
+								     	</div>
 											</div>
 											<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
 												<a id="microsoftContact_button"
