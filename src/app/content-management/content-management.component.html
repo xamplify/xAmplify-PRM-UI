@@ -55,9 +55,12 @@
 
 										<div class='col-xs-6 col-sm-3 col-md-3'
 											style="position: relative; left: 77px; z-index: 99;">
-											<span class="btn btn-xs hidden-xs" data-toggle="tooltip" data-placement="bottom" title="List View" [class.disabled]="isListView" (click)="isListView = true" style="background-color:#e2e2e2"><i class="fa fa-th-list p10" aria-hidden="true"></i></span>
+											<!-- <span class="btn btn-xs hidden-xs" data-toggle="tooltip" data-placement="bottom" title="List View" [class.disabled]="isListView" (click)="isListView = true" style="background-color:#e2e2e2"><i class="fa fa-th-list p10" aria-hidden="true"></i></span>
+                         <span class="btn btn-xs hidden-xs"  data-toggle="tooltip" data-placement="bottom" title="Grid View" [class.disabled]="!isListView" (click)="isListView = false" style="background-color:#e2e2e2"><i class="fa fa-th-large p10" aria-hidden="true"></i></span> -->
+                         <span class="btn btn-xs hidden-xs" data-toggle="tooltip" data-placement="bottom" title="List View" [class.disabled]="isListView" (click)="isListView = true" style="background-color:#e2e2e2"><i class="fa fa-th-list p10" aria-hidden="true"></i></span>
                          <span class="btn btn-xs hidden-xs"  data-toggle="tooltip" data-placement="bottom" title="Grid View" [class.disabled]="!isListView" (click)="isListView = false" style="background-color:#e2e2e2"><i class="fa fa-th-large p10" aria-hidden="true"></i></span>
-										</div>
+
+                        </div>
 
 										<div class="row col-xs-6 col-sm-3 col-md-6 pull-right"
 											style="padding-right: 0; margin-bottom: -30px;">
@@ -105,7 +108,7 @@
 									<app-response-message [customResponse]="customResponse"
 										*ngIf="customResponse.isVisible"></app-response-message>
 								</div>
-								<section [hidden]="!pagination.isListView">
+								<section [hidden]="!isListView">
 									<div class="table-responsive list-content-table">
 										<!-- *ngIf="pagination.pagedItems && !httpRequestLoader.isLoading" -->
 										<table class="table tgrid">
@@ -193,7 +196,7 @@
 								</section>
 
 								<!-- -List View -->
-								<section [hidden]="pagination.isListView">
+								<section [hidden]="isListView">
 
 									<ul class="content__list"
 										*ngFor="let file of pagedItems; let i =index;">

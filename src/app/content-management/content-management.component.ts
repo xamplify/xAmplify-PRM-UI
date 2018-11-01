@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { ReferenceService } from '../core/services/reference.service';
 import { Pagination } from '../core/models/pagination';
 import { HttpRequestLoader } from '../core/models/http-request-loader';
@@ -42,7 +41,7 @@ export class ContentManagementComponent implements OnInit {
     searchList: any;
     sortList: any;
     paginatedList: any;
-
+    isListView = false;
     sortOptions = [
                    { 'name': 'Sort By', 'value': ''},
                    { 'name': 'File Name(A-Z)', 'value': 'fileName'},
@@ -52,11 +51,12 @@ export class ContentManagementComponent implements OnInit {
     ];
     sortOption: any = this.sortOptions[0];
 
-    constructor( private router: Router,public referenceService: ReferenceService,
+    constructor(public referenceService: ReferenceService,
         public actionsDescription: ActionsDescription, public pagination: Pagination, public socialPagerService: SocialPagerService,
         public authenticationService: AuthenticationService, private logger: XtremandLogger,
         private emailTemplateService: EmailTemplateService, private contentManagement: ContentManagement ) {
         this.loggedInUserId = this.authenticationService.getUserId();
+        this.isListView = !this.referenceService.isGridView;
         if(this.referenceService.contentManagementLoader){
            this.customResponse = new CustomResponse( 'SUCCESS', 'File(s) processed successfully.', true );
            this.referenceService.contentManagementLoader = false;

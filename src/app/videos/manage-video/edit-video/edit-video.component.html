@@ -413,13 +413,79 @@
 												<div class="col-xs-7" [class.disabledCss]="enableVideoLogo">
 													<p style="position: relative;top: 8px;opacity: 0.5;">{{logoDescriptionUrl}}</p>
 												</div>
-											</div>
+                      </div>
+                      <div class="lineplayercontrol"><span>Video Player Controls</span></div>
+                      <div class="form-group">
+                        <label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Sharing:</label>
+                        <div class="col-xs-6 col-sm-3 col-md-3">
+                          <switch [status]="newAllowSharing" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
+                           [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
+                           (statusChange)="allowSharing($event)">
+                          </switch>
+                        </div>
+                        <label class="col-xs-6 col-sm-3 col-md-3 control-label">Enable Settings:</label>
+                        <div class="col-xs-6 col-sm-3 col-md-3">
+                          <switch [status]="newEnableSetting" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onRedColorSwitch"
+                           [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
+                           (statusChange)="enableSettings($event)">
+                          </switch>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Fullscreen:</label>
+                        <div class="col-xs-6 col-sm-3 col-md-3">
+                          <switch [status]="newFullScreen" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch"
+                           [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
+                           (statusChange)="changeFullscreen($event)">
+                          </switch>
+                        </div>
+                        <label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Comments:</label>
+                        <div class="col-xs-6 col-sm-3 col-md-3">
+                          <switch [status]="newComments" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch"
+                           [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
+                           (statusChange)="allowComments($event)">
+                          </switch>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Likes:</label>
+                        <div class="col-xs-6 col-sm-3 col-md-3">
+                          <switch [status]="newAllowLikes" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch"
+                           [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
+                           (statusChange)="allowLikes($event)">
+                          </switch>
+                        </div>
+                        <label class="col-xs-6 col-sm-3 col-md-3 control-label">Enable Casting:</label>
+                        <div class="col-xs-6 col-sm-3 col-md-3">
+                          <switch [status]="newEnableCasting" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onYellowColorSwitch"
+                           [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
+                           (statusChange)="enableCastings($event)">
+                          </switch>
+                        </div>
+
+                      </div>
+                      <div class="form-group">
+                        <label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Embed:</label>
+                        <div class="col-xs-6 col-sm-3 col-md-3">
+                          <switch [status]="newAllowEmbed" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onRedColorSwitch"
+                           [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
+                           (statusChange)="allowEmbedVideo($event)">
+                          </switch>
+                        </div>
+                        <label class="col-xs-6 col-sm-3 col-md-3 control-label">360 video:</label>
+                        <div class="col-xs-6 col-sm-3 col-md-3">
+                          <switch [status]="newValue360" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onBlueColorSwitch"
+                           [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
+                           (statusChange)="is360VideoCheck($event)">
+                          </switch>
+                        </div>
+                      </div>
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-						<div class="portlet box red">
+						<div class="portlet box red" *ngIf="false">
 							<div class="portlet-title" [ngClass]="{'activeDiv':!controlPlayers , 'inactiveDiv' :controlPlayers}" (click)="controlPlayerChange();">
 								<div class="col-xs-12 caption p01">
 									<div class="col-xs-11 p01">

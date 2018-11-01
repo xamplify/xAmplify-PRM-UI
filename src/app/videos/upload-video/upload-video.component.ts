@@ -88,6 +88,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
     loggedInUserId:any;
     contentProcessing:boolean;
     cloudContentArr = new Array<CloudContent>();
+    videoExtentions =  ['video/m4v', 'video/avi', 'video/mpg', 'video/mp4', 'video/flv', 'video/mov', 'video/wmv', 'video/divx', 'video/f4v', 'video/mpeg', 'video/vob', 'video/xvid'];
 
     constructor(public router: Router, public xtremandLogger: XtremandLogger, public authenticationService: AuthenticationService,
         public changeDetectorRef: ChangeDetectorRef, public videoFileService: VideoFileService, public homeComponent: HomeComponent,
@@ -118,8 +119,8 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             }
           //  $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:1');
             this.uploader = new FileUploader({
-                allowedMimeType: ['video/m4v', 'video/x-msvideo', 'video/avi', 'video/msvideo','video/mpg', 'video/mp4', 'video/quicktime',
-                    'video/x-ms-wmv', 'video/divx', 'video/x-f4v', 'video/x-matroska', 'video/x-flv', 'video/dvd', 'video/mpeg', 'video/xvid'],
+                // allowedMimeType: ['video/m4v', 'video/x-flv','video/x-msvideo', 'video/avi', 'video/msvideo','video/mpg', 'video/mp4', 'video/quicktime',
+                //     'video/x-ms-wmv', 'video/divx', 'video/x-f4v', 'video/x-matroska', 'video/x-flv', 'video/dvd', 'video/mpeg', 'video/xvid'],
 
                 maxFileSize: this.maxVideoSize * 1024 * 1024, // 800 MB
                 url: this.URL + this.authenticationService.access_token
@@ -265,11 +266,12 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         $('body').removeClass('modal-open');
         $('.modal-backdrop fade in').remove();
     }
+    checkVideoMimeTypes(type:any){ if(this.videoExtentions.includes(type.type) || (this.isVideo(type.name))){ return true} return false; }
     fileSizeCheck(event: any) {
        try{
         const fileList: FileList = event.target.files;
         console.log(fileList[0].type);
-        if (fileList.length > 0 && fileList[0].type.includes('video')) {
+        if (fileList.length > 0 && (fileList[0].type.includes('video')|| this.checkVideoMimeTypes(fileList[0]))) {
             const isSizeExceded: any = fileList[0].size;
             const size = isSizeExceded / (1024 * 1024);
             this.maxSizeOver = size > this.maxVideoSize ? true : false;
@@ -277,6 +279,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             }
         } else{
           this.customResponse = new CustomResponse( 'ERROR',this.videoUtilService.fileTypeMessage, true );
+          this.defaultSettings();
         }
      }catch(error) { this.xtremandLogger.error('Error in upload video, fileSizeCheck method'+error);}
     }
@@ -877,6 +880,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
           else if ( event.dataTransfer.files ) { files = event.dataTransfer.files; }
           console.log(files);
           let size:any = 0;
+          if(this.isOtherThanVideo(files)){
           for (let i = 0; i < files.length; ++i) { size = size + files[i].size;  }
           console.log(size);
           if(size <= 12582912){
@@ -890,6 +894,9 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
          else {
           this.customResponse = new CustomResponse( 'ERROR', "Unable to upload files because your files size is more than 12 MB", true );
          }
+        } else {
+          this.customResponse = new CustomResponse( 'ERROR', "Please upload supported file types like image files, gifs, pdf, xls.", true );
+        }
       } catch ( error ) {  this.customResponse = new CustomResponse( 'ERROR', "Unable to upload file", true );  }
     }
       uploadToServer( formData: FormData ) {
@@ -898,7 +905,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             .subscribe( data => {
               if ( data.statusCode === 1020 ) {
                 this.refService.contentManagementLoader = true;
-                setTimeout(() => {  this.router.navigate(['/home/content-management/manage']); }, 2000);
+                setTimeout(() => {  this.router.navigate(['/home/content-management/manage']); }, 1200);
               } else { this.contentProcessing = false; this.customResponse = new CustomResponse( 'ERROR', data.message, true );  }
             },
             ( error: string ) => { this.xtremandLogger.errorPage( error );this.contentProcessing = false; });
@@ -966,7 +973,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                     swal.close();
                     this.contentProcessing = true; this.processing = false;
                     this.refService.contentManagementLoader=true;
-                    setTimeout(() => {  this.router.navigate(['/home/content-management/manage']); }, 2000);
+                    setTimeout(() => {  this.router.navigate(['/home/content-management/manage']); }, 1200);
                 },
                 (error: any) => {
                     this.errorIsThere = true;
@@ -1037,7 +1044,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                             swal.close();
                             self.contentProcessing = true; self.processing = false;
                             self.refService.contentManagementLoader=true;
-                            setTimeout(() => {  self.router.navigate(['/home/content-management/manage']); }, 2000);
+                            setTimeout(() => {  self.router.navigate(['/home/content-management/manage']); }, 1200);
                         }, (error: any) => {
                             self.errorIsThere = true;
                             self.xtremandLogger.errorPage(error);
@@ -1157,7 +1164,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                           self.contentProcessing = true; self.processing = false;
                           self.videoFileService.videoFileSweetAlertMessage = false;
                           self.refService.contentManagementLoader=true;
-                          setTimeout(() => {  self.router.navigate(['/home/content-management/manage']); }, 2000);
+                          setTimeout(() => {  self.router.navigate(['/home/content-management/manage']); }, 1200);
                       }, (error: any) => {
                           this.errorIsThere = true;
                           this.xtremandLogger.errorPage(error);
