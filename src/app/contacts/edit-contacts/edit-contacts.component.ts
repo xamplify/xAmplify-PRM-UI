@@ -2290,7 +2290,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
         swal.close();
         $( '#filterModal' ).modal( 'hide' );
 
-        if ( this.selectedAddContactsOption !=8 ) {
+        if ( this.selectedAddContactsOption !=8 && this.router.url !=='/') {
             let self = this;
              swal( {
                  title: 'Are you sure?',

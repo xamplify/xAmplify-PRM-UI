@@ -12,6 +12,7 @@ import { ContactService } from '../../contacts/services/contact.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { ReferenceService } from '../../core/services/reference.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
+import { Router, ActivatedRoute } from '@angular/router';
 import { PagerService } from '../../core/services/pager.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
@@ -123,7 +124,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     public uploader: FileUploader = new FileUploader( { allowedMimeType: ["application/csv", "application/vnd.ms-excel", "text/plain", "text/csv"] });
 
     public httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
-    constructor( public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
+    constructor( private router: Router, public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
         public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
         public referenceService: ReferenceService, public countryNames: CountryNames, public paginationComponent: PaginationComponent,
         public contactService: ContactService, public properties: Properties, public actionsDescription: ActionsDescription, public regularExpressions: RegularExpressions,
@@ -1940,7 +1941,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         $("body>#settingSocialNetworkPartner").remove();
         $( 'body' ).removeClass( 'modal-backdrop in' );
 
-        if ( this.selectedAddPartnerOption !=5 ) {
+        if ( this.selectedAddPartnerOption !=5 && this.router.url !=='/' ) {
            let self = this;
             swal( {
                 title: 'Are you sure?',
