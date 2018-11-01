@@ -96,6 +96,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     loading = false;
     partnerAllDetails = [];
     openCampaignModal = false;
+    
+    disableOtherFuctionality = false;
 
     sortOptions = [
         { 'name': 'Sort By', 'value': '' },
@@ -431,6 +433,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                                 this.clipBoard = false;
                                 this.cancelPartners();
                                 this.getContactsAssocialteCampaigns();
+                                this.disableOtherFuctionality = false;
                             },
                             ( error: any ) => {
                                 let body: string = error['_body'];
@@ -471,6 +474,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         this.selectedContactListIds.length = 0;
         this.pager = [];
         this.pagedItems = [];
+        this.disableOtherFuctionality = false;
 
         $( '.salesForceImageClass' ).attr( 'style', 'opacity: 1;' );
         $( '.googleImageClass' ).attr( 'style', 'opacity: 1;' );
@@ -612,6 +616,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     copyFromClipboard() {
         this.fileTypeError = false;
         this.clipboardTextareaText = "";
+        this.disableOtherFuctionality = true;
         $( "button#cancel_button" ).prop( 'disabled', false );
         $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
         $( '#uploadCSV' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;min-height:85px' );
@@ -936,7 +941,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
     googleContacts() {
         try {
-            if ( this.selectedAddPartnerOption == 5 ) {
+            if ( this.selectedAddPartnerOption == 5 && !this.disableOtherFuctionality ) {
                 this.fileTypeError = false;
                 this.socialPartners.firstName = '';
                 this.socialPartners.lastName = '';
@@ -1095,7 +1100,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
     checkingZohoContactsAuthentication() {
         try {
-            if ( this.selectedAddPartnerOption == 5 ) {
+            if ( this.selectedAddPartnerOption == 5 && !this.disableOtherFuctionality ) {
                 this.contactService.checkingZohoAuthentication()
                     .subscribe(
                     ( data: any ) => {
@@ -1365,7 +1370,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
     salesforceContacts() {
         try {
-            if ( this.selectedAddPartnerOption == 5 ) {
+            if ( this.selectedAddPartnerOption == 5 && !this.disableOtherFuctionality ) {
                 this.contactType = "";
                 this.fileTypeError = false;
                 this.socialPartners.socialNetwork = "salesforce";
