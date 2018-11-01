@@ -58,7 +58,7 @@ export class ContentManagementComponent implements OnInit {
         private emailTemplateService: EmailTemplateService, private contentManagement: ContentManagement ) {
         this.loggedInUserId = this.authenticationService.getUserId();
         if(this.referenceService.contentManagementLoader){
-           this.customResponse = new CustomResponse( 'SUCCESS', 'Files(s) processed successfully.', true );
+           this.customResponse = new CustomResponse( 'SUCCESS', 'File(s) processed successfully.', true );
            this.referenceService.contentManagementLoader = false;
         }
     }
