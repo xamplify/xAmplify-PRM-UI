@@ -758,7 +758,13 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
               let startTime = new Date(this.eventCampaign.campaignEventTimes[0].startTimeString);
               let srtTime = this.referenceService.formatAMPM(startTime);
               let date1 = startTime.toDateString()
+              if(!this.eventCampaign.campaignEventTimes[0].allDay){
               data.body = data.body.replace( "EVENT_START_TIME", date1 + " " + srtTime );
+              data.body = data.body.replace( "<To>", 'To' )
+              }else{
+                  data.body = data.body.replace( "EVENT_START_TIME", date1 + " " + srtTime + ' ' + '(All Day)' );
+                  data.body = data.body.replace( "EVENT_END_TIME", " " );
+              }
           }
           
           if ( this.eventCampaign.campaignEventTimes[0].endTimeString ) {
@@ -766,12 +772,13 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
               let endTime = this.referenceService.formatAMPM(endDate);
               let date2 = endDate.toDateString()
               data.body = data.body.replace( "EVENT_END_TIME", date2 + " " + endTime );
-          }else if(this.eventCampaign.campaignEventTimes[0].allDay){
+          }
+          /*else if(this.eventCampaign.campaignEventTimes[0].allDay){
               
               let startTime = new Date(this.eventCampaign.campaignEventTimes[0].startTimeString);
               let date1 = startTime.toDateString()
               data.body = data.body.replace( "EVENT_END_TIME", date1 + " " + '11:59 PM' );
-          }
+          }*/
           
           if ( this.eventCampaign.message ) {
               data.body = data.body.replace( "EVENT_DESCRIPTION", this.eventCampaign.message );
@@ -782,7 +789,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
                   data.body = data.body.replace( /ADDRESS_LANE2/g, this.eventCampaign.campaignLocation.city + "," + this.eventCampaign.campaignLocation.state + "," + this.eventCampaign.campaignLocation.zip );
               }
           } else {
-              data.body = data.body.replace( /EVENT_LOCATION/g, "Online Meeting" )
+              data.body = data.body.replace( /ADDRESS_LANE1/g, "Online Meeting" )
+              data.body = data.body.replace( /ADDRESS_LANE2/g, " " )
           }
           if ( this.eventCampaign.email ) {
               data.body = data.body.replace( "EVENT_EMAILID", this.eventCampaign.email );
