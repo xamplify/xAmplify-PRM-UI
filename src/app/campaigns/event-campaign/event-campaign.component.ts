@@ -809,6 +809,13 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
           }else{
               data.body = data.body.replace( "IMAGE_URL", "https://aravindu.com/vod/images/conference2.jpg" );
           }
+          
+          if ( this.eventCampaign.campaignLocation.location ) {
+              data.body = data.body.replace( "LOCATION_MAP_URL", "https://maps.google.com/maps?q=" + this.eventCampaign.campaignLocation.location + "," + this.eventCampaign.campaignLocation.street + ","+this.eventCampaign.campaignLocation.city + ","+this.eventCampaign.campaignLocation.state + ","+this.eventCampaign.campaignLocation.zip + "&z=15&output=embed" );
+          }else{
+              data.body = data.body.replace( "LOCATION_MAP_URL", "https://maps.google.com/maps?q=42840 Christy Street, uite 100 Fremont, US CA 94538&z=15&output=embed" );
+          }
+          
           this.getEmailTemplatePreview( data );
       },
       (error: string) => {
