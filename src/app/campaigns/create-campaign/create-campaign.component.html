@@ -1213,7 +1213,7 @@
       <legend>	{{properties.ADD_AUTO_RESPONSE_WEBSITE}}</legend>
 			<div *ngFor="let url of urls;let i=index">
 				<div class="portlet light dashboard-stat2" id="{{url.divId}}">
-					<div class="portlet-title custom-change-css" [ngClass]="{'colorBlue':isEven(i+1), 'colorRed':!isEven(i+1)}">
+					<!-- <div class="portlet-title custom-change-css" [ngClass]="{'colorBlue':isEven(i+1), 'colorRed':!isEven(i+1)}">
 						<div class="col-xs-7">
 							<h4 class="text-left" style="color:#fff">Add an Auto-response to a website visit - {{i+1}}</h4>
             </div>
@@ -1230,6 +1230,24 @@
                 <span class="glyphicon glyphicon-plus"></span>
               </button>
             </div>
+          </div> -->
+          <div class="portlet-title custom-change-css" [ngClass]="{'colorBlue':isEven(i+1), 'colorRed':!isEven(i+1)}">
+						<div class="col-xs-7 ">
+							<h4 class="text-left" style="color:#fff">Add an Auto-response to a website visit - {{i+1}}</h4>
+            </div>
+            <div class="col-xs-5" style="text-align:right">
+						<label class="switch-choose" style="color:#fff">Choose Template</label>
+						<switch class="switch-choose" [status]="url.defaultTemplate" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+							[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+							(statusChange)="selectClickEmailBody($event,i,url)">
+            </switch>
+            <button type="button" class="btn btn-danger button-blue"  (click)="remove(url.divId,'url')">
+                <span class="glyphicon glyphicon-trash"></span>
+              </button>
+              <button type="button" class="btn btn-primary button-blue"  (click)="addClickRows()">
+                <span class="glyphicon glyphicon-plus"></span>
+              </button>
+          </div>
 					</div>
 					<div class="row">
 						<form class="role" id="form-{{url.divId}}" class="add-click">
