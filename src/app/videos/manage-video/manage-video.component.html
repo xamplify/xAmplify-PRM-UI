@@ -77,7 +77,7 @@
                          <!-- <th class="text-center">Type</th> -->
                          <th class="text-center">Category</th>
                          <th class="text-center">Upload Date</th>
-                         <th class="text-center" *ngIf="!authenticationService.isSuperAdmin()"><span [hidden]="authenticationService.isOnlyPartner()" class="actions-align">Actions</span></th>
+                         <th class="text-center" *ngIf="!authenticationService.isSuperAdmin()"><span [hidden]="authenticationService.isOnlyPartner()">Actions</span></th>
                        </tr>
                      </thead>
                      <tbody>
@@ -94,7 +94,7 @@
                          <app-timestamp [isOnlyDate]="true" [dateAndTime]="videoFile.uploadedDate"> </app-timestamp>
                          </td>
                          <td *ngIf="!authenticationService.isSuperAdmin()">
-                           <div class="actions-block" *ngIf="videoFileService.videoType==='myVideos'">
+                           <div class="actions-block override-actions" *ngIf="videoFileService.videoType==='myVideos'">
                              <a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor"
                                (click)="showEditVideo(videoFile)" data-toggle="tooltip" data-placement="top" [title]="actionsDescription.video_edit"> <i class="fa fa-pencil-square-o"></i>
                              </a>

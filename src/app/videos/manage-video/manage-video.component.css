@@ -185,9 +185,3 @@ background: #ffffff;
     background: #9e9e9e;
     color: #FFF;
 }
-@media screen and (min-width:1024px){
-.actions-align{ position: relative; right: -14px;} }
-
-@media screen and (max-width:1024px){
-  .actions-align{ position: relative; right: 13px;}
-}

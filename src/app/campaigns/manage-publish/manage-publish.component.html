@@ -123,7 +123,7 @@
 										<app-timestamp [isOnlyDate]="true" [dateAndTime]="campaign.createdDate"> </app-timestamp>
 										</td>
 										<td class="center">
-											<div class="actions-block">
+											<div class="actions-block override-actions">
 												<ng-container *ngIf="!campaign.launched">
 													<a *ngIf="hasAllAccess || (campaign.launched==false&&hasCampaignRole && loggedInUserId==campaign.userId)
 

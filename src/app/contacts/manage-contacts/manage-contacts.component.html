@@ -240,7 +240,7 @@
 													</td>
 													<td class="text-center hidden-xs">{{contactList.noOfContacts}}</td>
 													<td *ngIf="!authenticationService.isSuperAdmin()">
-														<div class="actions-block">
+														<div class="actions-block override-actions">
 															<a
 																*ngIf="(hasAllAccess || authenticationService.module.isVendor || (hasContactRole && loggedInUserId == contactList.uploadedUserId) || authenticationService.isOnlyPartner()) && !contactList.synchronisedList"
 																(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.synchronisedList)"
@@ -572,7 +572,7 @@
 															<h5 *ngIf="contact?.zipCode || contact.country" class='mt0'>{{contact.zipCode}}<span *ngIf="contact?.zipCode && contact.country">,&nbsp;</span>{{contact.country}}</h5>
 														</td>
 													 	<td align="center" *ngIf="isPartner && contactsByType.selectedCategory == 'non-active'">
-                              <div class="actions-block">
+                              <div class="actions-block override-actions">
                               <a *ngIf="!contact.signedUp" data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.partner_reSendMail}}" (click)="sendMail(contact.id)">
                                 <i class="fa fa-envelope"></i>
                               </a>

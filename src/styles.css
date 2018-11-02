@@ -901,5 +901,4 @@ b, strong {
 .modal.right.fade.in .modal-dialog { right: 0 !important; }
 @media screen and (max-width:600px){.accounts-modal { width:100%; } }
 @media screen and (min-width:601px){.accounts-modal { width:60%;float: right; } }
-@media screen and (min-width:1024px){.actions-align{ position: relative; right: -14px;} }
-@media screen and (max-width:1024px){.actions-align{ position: relative; right: 13px;} }
+.override-actions{ margin: 0 auto; display: table;float: none !important; }
