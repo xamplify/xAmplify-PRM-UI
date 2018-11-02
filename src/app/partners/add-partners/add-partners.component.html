@@ -116,7 +116,7 @@ img:hover {
 									<div class="portlet-body">
 									<div class="row">
 
-											<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
+											<div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
 									<a *ngIf="sfImageNormal" id="salesforceContact_buttonNormal"
 										style="background-color: white" (click)="salesforceContacts()"
 							[class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality || selectedAddPartnerOption == 7 ">
@@ -139,17 +139,17 @@ img:hover {
 									<div id="salesforceGear" style="position: relative"	id="salesforceGear" *ngIf="sfImageNormal">
 										<a [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality"
 										(click)="settingSocialNetworkOpenModal('salesforce')"> <i id="SgearIcon" class="fa fa-cog" aria-hidden="true"
-											style="position: relative; font-size: 19px; top: -82px; left: 78px;"></i>
+											style="position: relative; font-size: 19px; top: -82px; left: 100px;"></i>
 										</a>
 									</div>
 									<div style="position: relative" *ngIf="!sfImageNormal">
 										<a [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality"
 										(click)="salesforceContacts()"> <i class="fa fa-plug" aria-hidden="true"
-											style="position: relative; color: grey; font-size: 19px; top: -82px; left: 78px;"></i>
+											style="position: relative; color: grey; font-size: 19px; top: -82px; left: 100px;"></i>
 										</a>
 									</div>
 								</div>
-								<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
+								<div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
 									<a *ngIf="googleImageBlur" id="googleContact_button"
 										style="background-color: white" (click)="googleContacts()"
 							[class.disabled]="selectedAddPartnerOption != 5 || selectedAddPartnerOption == 3 || disableOtherFuctionality">
@@ -173,17 +173,17 @@ img:hover {
 										*ngIf="googleImageNormal">
 										<a [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality"
 										(click)="settingSocialNetworkOpenModal('google')"> <i id="GgearIcon" class="fa fa-cog" aria-hidden="true"
-											style="position: relative; font-size: 19px; top: -82px; left: 78px;"></i>
+											style="position: relative; font-size: 19px; top: -82px; left: 100px;"></i>
 										</a>
 									</div>
 									<div style="position: relative" *ngIf="!googleImageNormal">
 										<a [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality"
 										(click)="googleContacts()"> <i class="fa fa-plug" aria-hidden="true"
-											style="position: relative; color: grey; font-size: 19px; top: -82px; left: 78px;"></i>
+											style="position: relative; color: grey; font-size: 19px; top: -82px; left: 100px;"></i>
 										</a>
 									</div>
 								</div>
-								<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
+								<div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
 									<a *ngIf="zohoImageBlur" id="zohoContact_button"
 										style="background-color: white"
 										(click)="checkingZohoContactsAuthentication()"
@@ -208,17 +208,17 @@ img:hover {
 									<div id="zohoGear" style="position: relative" *ngIf="zohoImageNormal">
 										<a [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality"
 										(click)="settingSocialNetworkOpenModal('zoho')"> <i id="ZgearIcon" class="fa fa-cog" aria-hidden="true"
-											style="position: relative; font-size: 19px; top: -82px; left: 78px;"></i>
+											style="position: relative; font-size: 19px; top: -82px; left: 100px;"></i>
 										</a>
 									</div>
 									<div style="position: relative" *ngIf="!zohoImageNormal">
 										<a [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality"
 										(click)="checkingZohoContactsAuthentication()"> <i class="fa fa-plug" aria-hidden="true"
-											style="position: relative; color: grey; font-size: 19px; top: -82px; left: 78px;"></i>
+											style="position: relative; color: grey; font-size: 19px; top: -82px; left: 100px;"></i>
 										</a>
 									</div>
 								</div>
-								<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
+								<!-- <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
 									<a id="microsoftContact_button" style="background-color: white">
 										<img src="assets/images/crm/dynamicsCmgSoon.png"
 										class="imageClass imageblur mdImageClass" data-toggle="tooltip" data-placement="bottom"
@@ -226,7 +226,7 @@ img:hover {
 										height="86" width="90" style="margin-bottom: 18px"
 										>
 									</a>
-								</div>
+								</div> -->
 
 									</div>
 									<div class="clearfix"></div>
