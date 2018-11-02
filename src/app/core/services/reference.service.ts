@@ -1645,7 +1645,7 @@ export class ReferenceService {
       }else { document.body.className = 'login page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-sidebar-closed-hide-logo page-sidebar-closed';
       }
     }
-     
+
      formatAMPM(date) {
          var hours = date.getHours();
          var minutes = date.getMinutes();
@@ -1657,5 +1657,13 @@ export class ReferenceService {
          return strTime;
        }
 
-
+     scrollSmoothToBottom () {
+        const scrollingElement = (document.scrollingElement || document.body)
+        $(scrollingElement).animate({ scrollTop: document.body.scrollHeight }, 500);
+     }
+     //Require jQuery
+     scrollSmoothToTop () {
+        const scrollingElement = (document.scrollingElement || document.body)
+        $(scrollingElement).animate({ scrollTop: 0 }, 500);
+     }
 }

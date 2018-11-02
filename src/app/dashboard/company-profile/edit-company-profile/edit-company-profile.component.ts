@@ -855,7 +855,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
 
     validateFacebook() {
         if ($.trim(this.companyProfile.facebookLink).length > 0) {
-            if (!this.regularExpressions.URL_PATTERN.test(this.companyProfile.facebookLink)) {
+            if (!this.companyProfile.facebookLink.includes('facebook.com')) {
                 this.addFacebookError();
                 this.facebookLinkErrorMessage = "Invalid Facebook Url";
             } else {
@@ -868,7 +868,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
 
     validateTwitter() {
         if ($.trim(this.companyProfile.twitterLink).length > 0) {
-            if (!this.regularExpressions.URL_PATTERN.test(this.companyProfile.twitterLink)) {
+            if (!this.companyProfile.twitterLink.includes('twitter.com') ) {
                 this.addTwitterError();
                 this.twitterLinkErrorMessage = "Invalid Twiiter Url";
             } else {
@@ -881,7 +881,8 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
 
     validateLinkedIn() {
         if ($.trim(this.companyProfile.linkedInLink).length > 0) {
-            if (!this.regularExpressions.URL_PATTERN.test(this.companyProfile.linkedInLink)) {
+          // !this.regularExpressions.URL_PATTERN.test(this.companyProfile.linkedInLink) && !
+            if (!this.companyProfile.linkedInLink.includes('linkedin.com')) {
                 this.addLinkedInError();
                 this.linkedinLinkErrorMessage = "Invalid LinkedIn Url";
             } else {

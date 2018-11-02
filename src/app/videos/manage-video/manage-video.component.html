@@ -77,7 +77,7 @@
                          <!-- <th class="text-center">Type</th> -->
                          <th class="text-center">Category</th>
                          <th class="text-center">Upload Date</th>
-                         <th class="text-center" *ngIf="!authenticationService.isSuperAdmin()"><span [hidden]="authenticationService.isOnlyPartner()">Actions</span></th>
+                         <th class="text-center" *ngIf="!authenticationService.isSuperAdmin()"><span [hidden]="authenticationService.isOnlyPartner()" class="actions-align">Actions</span></th>
                        </tr>
                      </thead>
                      <tbody>
