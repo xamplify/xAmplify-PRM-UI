@@ -37,7 +37,7 @@ export class ContentManagementComponent implements OnInit {
     selectedFileIds = [];
     loader = false;
     loaderWidth: number = 30;
-    searchTitle: any;
+    searchTitle = '';
     searchList: any;
     sortList: any;
     paginatedList: any;
@@ -87,11 +87,22 @@ export class ContentManagementComponent implements OnInit {
     imageClick(){
         $('#uploadFile').click();
     }
-
+    eventHandler( keyCode: any ) { if ( keyCode === 13 ) { this.searchFile(); } }
     searchFile(){
-        this.searchList = this.list.filter(o => o.fileName.includes(this.searchTitle));
+        if(this.searchTitle===""){
+          // this.pagination = new Pagination();
+          this.pagination.pageIndex = 1;
+          this.listItems(this.pagination);
+         } else if(this.searchTitle.replace(/\s+/g, '')){
+           this.searchList = [];
+        // this.searchList = this.list.filter(o => o.fileName.includes(this.searchTitle));
+          for(let i=0; i< this.list.length;i++){
+            if(this.list[i].fileName.includes(this.searchTitle)){  this.searchList.push(this.list[i]);  }
+          }
         this.paginatedList = this.searchList;
-        this.setPage( 1 );
+        this.setPage( 1 ); } else {
+
+        }
     }
 
 

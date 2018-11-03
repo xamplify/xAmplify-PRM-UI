@@ -156,22 +156,22 @@
 
         <div class="col-xs-12 pu0">
 					<div class="box-border">
-					<div class="col-xs-6 col-sm-3 text-center hidden-xs" [class.customDisableCss]='uploader.queue.length || contentProcessing'>
+					<div class="col-xs-6 col-sm-3 col-md-3 text-center hidden-xs hidden-sm" [class.customDisableCss]='uploader.queue.length || contentProcessing'>
 						<img src="assets/images/record.png"  data-toggle="tooltip" data-placement="bottom" title="Click here to record using your webcam" (click)="cameraChange()"
 						 height="50" width="auto" class="camera" style=" border: 5px; margin: 10px;" onMouseOver="this.style.opacity= 1" onMouseOut="this.style.opacity= 0.7">
 						<div style="font-weight: 600;color: #ea7b92; margin: 9px 12px;">WebCam</div>
 					</div>
-					<div class="col-xs-4 col-sm-3 text-center" [class.customDisableCss]='uploader.queue.length || contentProcessing'>
+					<div class="col-xs-4 col-sm-4 col-md-3 text-center" [class.customDisableCss]='uploader.queue.length || contentProcessing'>
 						<img src="assets/images/Dropbox.png" class="dropBox"  data-toggle="tooltip" data-placement="bottom" title="Click here to access videos from your Dropbox account" (click)="dropBoxChange()"
 						 height="50" width="auto" style="cursor:pointer; border: 1px; margin: 10px;" onMouseOver="this.style.opacity= 1" onMouseOut="this.style.opacity= 0.7">
 						<div style="font-weight: 600;color: #55bede;margin: 9px 13px;">DropBox</div>
 					</div>
-					<div class="col-xs-4 col-sm-3 text-center margin-top-16" [class.customDisableCss]='uploader.queue.length || contentProcessing'>
+					<div class="col-xs-4 col-sm-4 col-md-3 text-center margin-top-16" [class.customDisableCss]='uploader.queue.length || contentProcessing'>
 						<img src="assets/images/box.png" class="box"  data-toggle="tooltip" data-placement="bottom" title="Click here to access videos from your Box account" (click)="boxChange()"
 						 height="50" width="auto" style="cursor:pointer; border: 1px; margin: 10px;" onMouseOver="this.style.opacity= 1" onMouseOut="this.style.opacity= 0.7">
 						<div style="font-weight: 600;margin: 9px 24px;color: #6eabd7;">Box</div>
 					</div>
-					<div class="col-xs-4 col-sm-3 text-center margin-top-16" [class.customDisableCss]='uploader.queue.length || contentProcessing'>
+					<div class="col-xs-4 col-sm-4 col-md-3 text-center margin-top-16" [class.customDisableCss]='uploader.queue.length || contentProcessing'>
 						<img src="assets/images/GoogleDrive.png"  data-toggle="tooltip" data-placement="bottom" class="googleDrive" title="Click here to access videos from your GoogleDrive account"
 						 (click)="googleDriveChange()" height="50" width="auto" style="cursor: pointer; border: 1px; margin: 10px;" onMouseOver="this.style.opacity= 1"
 						 onMouseOut="this.style.opacity= 0.7">
@@ -195,7 +195,7 @@
 					<div [class.customDisableCss]='isDisable==true || isFileProgress ==true || isSelectedVideo ==true || contentProcessing' (drop)="contentUpload($event)"
 				    class="well my-drop-zone"
 					 style="position: relative; cursor:pointer; margin-bottom:0" (click)="contentDropClick()">
-           <input type="file"  (change)="contentUpload($event)" multiple="multiple" accept="image/*,application/pdf,application/vnd.ms-excel"
+           <input type="file"  (change)="contentUpload($event)" multiple="multiple" accept="image/*,application/pdf,application/vnd.ms-excel,.doc, .docx, .dotx,.dotm, .html,.htm,.odt,.xps,.rtf,.txt"
 						  style="opacity: 0.0; position: absolute;" title=" " id="content-upload">
 						<div class="text-center">
               <!-- <i class="fa fa-cloud-upload fa-6" aria-hidden="true"></i> -->

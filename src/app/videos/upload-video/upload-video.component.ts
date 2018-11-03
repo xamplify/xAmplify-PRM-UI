@@ -839,6 +839,29 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         }
         return false;
     }
+
+    isContentVideo(files: any) {
+      for (let i = 0; i < files.length; i++) {
+      const parts = files[i].name.split('.');
+      const ext = parts[parts.length - 1];
+      switch (ext.toLowerCase()) {
+          case 'm4v':break;
+          case 'avi':break;
+          case 'mpg':break;
+          case 'mp4':break;
+          case 'flv':break;
+          case 'mov':break;
+          case 'wmv':break;
+          case 'divx':break;
+          case 'f4v':break;
+          case 'mpeg':break;
+          case 'vob':break;
+          case 'xvid':break;
+          default: return false;
+         }
+      }
+      return true;
+  }
     isOtherThanVideo(files: any) {
         for (let i = 0; i < files.length; i++) {
 
@@ -851,6 +874,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 case 'html':break;
                 case 'jpg':break;
                 case 'jpeg':break;
+                case 'doc':break;
                 case 'pdf':break;
                 case 'png':break;
                 case 'ppt':break;
@@ -859,6 +883,19 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 case 'xls':break;
                 case 'xlsx':break;
                 case 'zip':break;
+                case 'docx':break;
+                case 'docm':break;
+                case 'dotm':break;
+                case 'dotx':break;
+                case 'dot':break;
+                case 'dotx':break;
+                case 'xps':break;
+                case 'rtf':break;
+                case 'odt':break;
+                case 'wps':break;
+                case 'htm':break;
+                case 'mht':break;
+                case 'mhtml':break;
                 default:return false;
                 // etc
             }
@@ -880,7 +917,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
           else if ( event.dataTransfer.files ) { files = event.dataTransfer.files; }
           console.log(files);
           let size:any = 0;
-          if(this.isOtherThanVideo(files)){
+          if(!this.isContentVideo(files)){
           for (let i = 0; i < files.length; ++i) { size = size + files[i].size;  }
           console.log(size);
           if(size <= 12582912){
@@ -895,7 +932,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
           this.customResponse = new CustomResponse( 'ERROR', "Unable to upload files because your files size is more than 12 MB", true );
          }
         } else {
-          this.customResponse = new CustomResponse( 'ERROR', "Please upload supported file types like image files, gifs, pdf, xls.", true );
+          this.customResponse = new CustomResponse( 'ERROR', "Please upload supported file types like image files, gifs,doc,htm, pdf, xls.", true );
         }
       } catch ( error ) {  this.customResponse = new CustomResponse( 'ERROR', "Unable to upload file", true );  }
     }
@@ -1023,7 +1060,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             }
             const self = this;
             boxSelect.success(function (files: any) {
-                if (self.isOtherThanVideo(files)) {
+                if (!self.isContentVideo(files)) {
                     self.cloudStorageSelected = true;
                     swal({
                         text: 'Thanks for waiting while we retrieve your files from Box',
@@ -1141,7 +1178,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
           downloadGDriveFileContent(files:any) {
              try{
               const self = this;
-              if (self.isOtherThanVideo(files)) {
+              if (!self.isContentVideo(files)) {
                   for(let i=0;i<files.length;i++){
                       var cloudContent = {
                               'downloadLink': 'https://www.googleapis.com/drive/v3/files/' + files[i].id + '?alt=media',

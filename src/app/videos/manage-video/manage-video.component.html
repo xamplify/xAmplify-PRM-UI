@@ -157,7 +157,7 @@
                      </span>
                    </div>
                    <div class="ribbon" >
-                     <span>{{videoFile.viewBy}}</span>
+                     <span *ngIf="videoFile.viewBy==='DRAFT'">{{videoFile.viewBy}}</span>
                    </div>
                    <div class="bar" *ngIf="!authenticationService.isSuperAdmin()">
                      <div >

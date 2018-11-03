@@ -79,11 +79,11 @@
 
 											<div class="col-md-6" style="cursor: pointer">
 												<input class="form-control" type="text" name="search"
-													placeholder="Search for a file" [(ngModel)]="searchTitle">
+													placeholder="Search for a file" [(ngModel)]="searchTitle"  (keypress)="eventHandler($event.keyCode)">
 												<button
 													class="glyphicon glyphicon-remove search-box-item-clear"
-													*ngIf="pagination.searchKey"
-													(click)="pagination.searchKey=''"></button>
+													*ngIf="searchTitle"
+													(click)="searchTitle=''"></button>
 												<button type="submit" class="search-input-button"
 													(click)="searchFile()">
 													<i class="fa fa-search"></i>
