@@ -2083,7 +2083,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
             }).then( function( name: any ) {
                 console.log( name );
             }, function( dismiss: any ) {
-                if ( dismiss === 'cancel' ) {
+                if ( dismiss === 'No' ) {
                     self.selectedAddContactsOption = 8;
                 }
             });

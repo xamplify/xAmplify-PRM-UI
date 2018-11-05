@@ -1960,7 +1960,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             }).then( function() {
                 self.saveContacts();
             }, function( dismiss ) {
-                if ( dismiss === 'cancel' ) {
+                if ( dismiss === 'No' ) {
                     self.selectedAddPartnerOption = 5;
                 }
             })

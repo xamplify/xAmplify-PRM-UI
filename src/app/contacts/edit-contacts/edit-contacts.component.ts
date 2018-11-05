@@ -2304,7 +2304,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
              }).then( function() {
                  self.saveContacts( self.contactListId );
              }, function( dismiss ) {
-                 if ( dismiss === 'cancel' ) {
+                 if ( dismiss === 'No' ) {
                      self.selectedAddContactsOption = 8;
                  }
              })

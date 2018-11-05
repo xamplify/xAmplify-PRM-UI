@@ -2015,7 +2015,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                                 /*self.getRepliesData();
                                 self.getOnClickData();*/
                         },function (dismiss) {
-                            if (dismiss == 'cancel') {
+                            if (dismiss == 'No') {
                                 self.reInitialize();
                             }
                         })
