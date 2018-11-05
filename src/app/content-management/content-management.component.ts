@@ -42,13 +42,10 @@ export class ContentManagementComponent implements OnInit {
     sortList: any;
     paginatedList: any;
     isListView = false;
-    sortOptions = [
-                   { 'name': 'Sort By', 'value': ''},
-                   { 'name': 'File Name(A-Z)', 'value': 'fileName'},
-                   { 'name': 'File Name(Z-A)', 'value': 'fileName'},
-                   { 'name': 'Upload Date(ASD)', 'value': 'lastModifiedDate'},
+    sortOptions = [{ 'name': 'Sort By', 'value': ''},  { 'name': 'File Name(A-Z)', 'value': 'fileName'},
+                   { 'name': 'File Name(Z-A)', 'value': 'fileName'},  { 'name': 'Upload Date(ASD)', 'value': 'lastModifiedDate'},
                    { 'name': 'Upload Date(DSD)', 'value': 'lastModifiedDate'},
-    ];
+      ];
     sortOption: any = this.sortOptions[0];
 
     constructor(public referenceService: ReferenceService,
@@ -89,31 +86,29 @@ export class ContentManagementComponent implements OnInit {
     }
     eventHandler( keyCode: any ) { if ( keyCode === 13 ) { this.searchFile(); } }
     searchFile(){
-        if(this.searchTitle===""){
-          // this.pagination = new Pagination();
-          this.pagination.pageIndex = 1;
-          this.listItems(this.pagination);
-         } else if(this.searchTitle.replace(/\s+/g, '')){
+        if(this.searchTitle.replace(/\s+/g, '')===""){
+          this.referenceService.loading( this.httpRequestLoader, true );
+          setTimeout(() => {this.referenceService.loading( this.httpRequestLoader, false ); }, 1000);
+          const paginatedList = this.list;
+          this.paginatedList = paginatedList;
+          this.pager.totalPages = undefined;
+          this.setPage(1);
+         } else if(this.searchTitle){
+          this.referenceService.loading( this.httpRequestLoader, true );
+          setTimeout(() => {this.referenceService.loading( this.httpRequestLoader, false ); }, 1000);
            this.searchList = [];
-        // this.searchList = this.list.filter(o => o.fileName.includes(this.searchTitle));
           for(let i=0; i< this.list.length;i++){
-            if(this.list[i].fileName.includes(this.searchTitle)){  this.searchList.push(this.list[i]);  }
+            if(this.list[i].fileName.toLowerCase().includes(this.searchTitle.toLowerCase()) ){  this.searchList.push(this.list[i]);  }
           }
         this.paginatedList = this.searchList;
-        this.setPage( 1 ); } else {
-
-        }
+        this.pagination = new Pagination();
+        this.setPage( 1 ); } else { }
     }
-
-
     setPage( page: number ) {
         try {
-            if ( page < 1 || page > this.pager.totalPages ) {
-                return;
-            }
+            if ( page < 1 || page > this.pager.totalPages ) { return; }
             this.pager = this.socialPagerService.getPager( this.paginatedList.length, page, this.pageSize );
             this.pagedItems = this.paginatedList.slice( this.pager.startIndex, this.pager.endIndex + 1 );
-
         } catch ( error ) {
             console.error( error, "content management setPage()." )
         }
@@ -152,9 +147,7 @@ export class ContentManagementComponent implements OnInit {
         }
     }
 
-    checkListViewCheckboxes(){
-        return null;
-    }
+    checkListViewCheckboxes(){  return null;  }
 
     /**************List Items************************/
     listItems( pagination: Pagination ) {
@@ -162,12 +155,7 @@ export class ContentManagementComponent implements OnInit {
         this.emailTemplateService.listAwsFiles( pagination, this.loggedInUserId )
             .subscribe(
             ( data: any ) => {
-
-                for(var i=0;i< data.length; i++){
-                    data[i]["id"] = i;
-                }
-
-
+               for(var i=0;i< data.length; i++){ data[i]["id"] = i;}
                this.list = data;
                this.searchList = data;
                this.sortList = data;
@@ -179,12 +167,8 @@ export class ContentManagementComponent implements OnInit {
                 this.referenceService.loading( this.httpRequestLoader, false );
                 this.paginatedList = this.list;
                 this.setPage( 1 );
-
-            },
-            ( error: string ) => {
-                this.logger.errorPage( error );
-            }
-            );
+             },
+             ( error: string ) => {  this.logger.errorPage( error ); } );
     }
 
     /******Preview*****************/
@@ -276,9 +260,7 @@ export class ContentManagementComponent implements OnInit {
             this.referenceService.loading( this.httpRequestLoader, false );
             this.customResponse = new CustomResponse( 'ERROR', "Unable to upload file", true );
         }
-
     }
-
 
     uploadToServer( formData: FormData ) {
        this.loaderWidth = 91;

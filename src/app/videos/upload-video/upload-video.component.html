@@ -195,7 +195,7 @@
 					<div [class.customDisableCss]='isDisable==true || isFileProgress ==true || isSelectedVideo ==true || contentProcessing' (drop)="contentUpload($event)"
 				    class="well my-drop-zone"
 					 style="position: relative; cursor:pointer; margin-bottom:0" (click)="contentDropClick()">
-           <input type="file"  (change)="contentUpload($event)" multiple="multiple" accept="image/*,application/pdf,application/vnd.ms-excel,.doc, .docx, .dotx,.dotm, .html,.htm,.odt,.xps,.rtf,.txt"
+           <input type="file"  (change)="contentUpload($event)" multiple="multiple"
 						  style="opacity: 0.0; position: absolute;" title=" " id="content-upload">
 						<div class="text-center">
               <!-- <i class="fa fa-cloud-upload fa-6" aria-hidden="true"></i> -->

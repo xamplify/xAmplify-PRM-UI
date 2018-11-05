@@ -80,14 +80,8 @@
 											<div class="col-md-6" style="cursor: pointer">
 												<input class="form-control" type="text" name="search"
 													placeholder="Search for a file" [(ngModel)]="searchTitle"  (keypress)="eventHandler($event.keyCode)">
-												<button
-													class="glyphicon glyphicon-remove search-box-item-clear"
-													*ngIf="searchTitle"
-													(click)="searchTitle=''"></button>
-												<button type="submit" class="search-input-button"
-													(click)="searchFile()">
-													<i class="fa fa-search"></i>
-												</button>
+												<button class="glyphicon glyphicon-remove search-box-item-clear" style="right:59px !important;" *ngIf="searchTitle" (click)="searchTitle=''"></button>
+											 	<button type="submit" class="search-input-button"	(click)="searchFile()">	<i class="fa fa-search"></i></button>
 											</div>
 										</div>
 									</div>
@@ -102,17 +96,15 @@
 								*ngIf="httpRequestLoader.isLoading && !pagination.isListView"></app-grid-loader>
 							<app-list-loader
 								*ngIf="httpRequestLoader.isLoading && pagination.isListView"></app-list-loader>
-							<div class="margin-top-10 row"
-								*ngIf="!httpRequestLoader.isLoading">
-								<div *ngIf="list.items ?.length==0">
-									<app-response-message [customResponse]="customResponse"
-										*ngIf="customResponse.isVisible"></app-response-message>
-								</div>
+							<div class="margin-top-10 row" *ngIf="!httpRequestLoader.isLoading">
+								<!-- <div *ngIf="paginatedList?.length==0">
+									<app-response-message [customResponse]="customResponse"	*ngIf="customResponse.isVisible"></app-response-message>
+								</div> -->
 								<section [hidden]="!isListView">
 									<div class="table-responsive list-content-table">
-										<!-- *ngIf="pagination.pagedItems && !httpRequestLoader.isLoading" -->
+                    <!-- *ngIf="pagedItems && !httpRequestLoader.isLoading" -->
 										<table class="table tgrid">
-											<!-- *ngIf="pagination.pagedItems.length !== 0" -->
+											<!-- *ngIf="pagedItems.length !== 0" -->
 											<thead>
 												<tr>
 													<th class="text-center"></th>
@@ -172,7 +164,10 @@
 													</td>
 												</tr>
 											</tbody>
-										</table>
+                    </table>
+                    <div *ngIf="pagedItems.length == 0" style="width: 100%;" class="col-md-9 alert alert-info alert-dismissable">
+                        <a class="close" data-dismiss="alert" aria-label="close"></a><p>No results found</p>
+                   </div>
 										<ul *ngIf="pager.pages && pager.pages.length"
 											class="pagination">
 											<li [ngClass]="{disabled:pager.currentPage === 1}"><a
@@ -197,9 +192,8 @@
 
 								<!-- -List View -->
 								<section [hidden]="isListView">
-
 									<ul class="content__list"
-										*ngFor="let file of pagedItems; let i =index;">
+                    *ngFor="let file of pagedItems; let i =index;">
 										<li class="list__item"
 											[ngClass]="{'list__item--selected':selectedFileIds.indexOf(file.id)>-1}">
 											<div class="flex-row">
@@ -261,7 +255,11 @@
 										</li>
 									</ul>
 
-									<div class="col-xs-12" style="padding-top: 15px">
+                  <div class="col-xs-12" style="padding-top: 15px">
+                      <div *ngIf="pagedItems.length == 0" style="position: relative; top: 16px; width: 100%;" class="col-md-9 alert alert-info alert-dismissable">
+                        <a class="close" data-dismiss="alert" aria-label="close"></a>
+                        <p>No results found</p>
+                      </div>
 										<ul *ngIf="pager.pages && pager.pages.length"
 											class="pagination">
 											<li [ngClass]="{disabled:pager.currentPage === 1}"><a
