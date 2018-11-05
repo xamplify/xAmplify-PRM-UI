@@ -12,12 +12,14 @@ import { SaveVideoFile } from '../../videos/models/save-video-file';
 export class VideoThumbnailComponent implements OnInit {
   @Input() videoFile: SaveVideoFile;
   @Output() notifyParent: EventEmitter<any>;
+  isProcessing= true;
   constructor(public videoUtilService:VideoUtilService, public videoFileService:VideoFileService,public authenticationService:AuthenticationService) {
     this.notifyParent = new EventEmitter<any>();
+    this.isProcessing = true;
   }
 
   showPlayVideo(videoFile){
-     if(!this.authenticationService.isSuperAdmin()){
+     if(!this.authenticationService.isSuperAdmin() && this.isProcessing){
       this.notifyParent.emit(videoFile);
      }
   }

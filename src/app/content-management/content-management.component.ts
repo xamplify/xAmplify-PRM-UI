@@ -61,6 +61,7 @@ export class ContentManagementComponent implements OnInit {
     }
 
     sortByOption( event: any) {
+        this.referenceService.loading( this.httpRequestLoader, true );
         try {
             this.sortOption = event;
             if ( event.name == "Upload Date(ASD)" ) {
@@ -72,7 +73,7 @@ export class ContentManagementComponent implements OnInit {
             } else if ( event.name == "File Name(Z-A)" ) {
                 this.sortList = this.list.sort((a,b)=> {return b.fileName.localeCompare(a.fileName)});
             }
-
+            this.referenceService.loading( this.httpRequestLoader, false );
             this.paginatedList = this.sortList;
             this.setPage( 1 );
 

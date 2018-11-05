@@ -91,7 +91,15 @@
 							<b style="font-size: 13px; color:white;">skip</b>
 						</div>
 					</div>
-				</div>
+        </div>
+        <div id="error-overlay-modal" class="video-js overlay is360video video-processing-message" *ngIf="!isProcessed">
+          <div class="col-xs-12 row" style="top:67px">
+              <div>
+                <span><img src="assets/images/loadbar.gif" class="loader-image-tag" style="height: 69px !important;"></span>
+                <span class="text-css" style="font-size: 16px;">Processing your Video, Please wait.</span>
+              </div>
+          </div>
+          </div>
 				<!--  overlay modal ending -->
 
 				<div class="col-xs-12 col-sm-7 col-md-8" style="padding: 0;margin-top: 10px;">

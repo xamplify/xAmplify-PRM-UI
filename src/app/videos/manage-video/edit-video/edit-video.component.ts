@@ -141,7 +141,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
   showError:boolean;
   clientError = false;
   itemOfTags = [];
-
+  isProcessed = true;
   constructor(public referenceService: ReferenceService, public callActionSwitch: CallActionSwitch,
       public videoFileService: VideoFileService, public fb: FormBuilder, public changeDetectorRef: ChangeDetectorRef,
       public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger,private homeComponent:HomeComponent,
@@ -1138,7 +1138,8 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                   });
               });
           if (this.videoFileService.actionValue === 'Save') {
-              this.videoPlayListSourceMP4();
+              // this.videoPlayListSourceMP4();
+              this.videoPlayListSourceM3U8();
           } else {
               this.videoPlayListSourceM3U8();
           }

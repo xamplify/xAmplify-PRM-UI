@@ -53,3 +53,9 @@
   margin-bottom: -4px;
 }
 .mt7{ margin-top: 7px;}
+.loader-css{
+width: 55px;
+position: relative;
+z-index: 99;
+top: 6px;
+}
