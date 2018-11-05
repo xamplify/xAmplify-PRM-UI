@@ -1955,7 +1955,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                 showCancelButton: true,
                 confirmButtonColor: '#54a7e9',
                 cancelButtonColor: '#999',
-                confirmButtonText: 'Yes, Save it!'
+                confirmButtonText: 'Yes, Save it!',
+                cancelButtonText: "No"  
 
             }).then( function() {
                 self.saveContacts();

@@ -2056,6 +2056,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                 input: 'text',
                 showCancelButton: true,
                 confirmButtonText: 'Save',
+                cancelButtonText: "No" ,
                 allowOutsideClick: false,
                 preConfirm: function( name: any ) {
                     return new Promise( function() {
