@@ -81,6 +81,48 @@ export class ContentManagementComponent implements OnInit {
             console.error( error, "contentManagement", "sorting()" );
         }
     }
+    addImage(filePath: any) {
+          const parts = filePath.split('.');
+          const ext = parts[parts.length - 1];
+          switch (ext.toLowerCase()) {
+              case 'csv': return 'assets/images/content/csv.png';
+              case 'cvs': return 'assets/images/content/csv.png';
+              case 'gif': return 'assets/images/content/csv.png';
+              case 'html':return 'assets/images/content/csv.png';
+              case 'jpg':return 'assets/images/content/csv.png';
+              case 'jpeg':return 'assets/images/content/csv.png';
+              case 'doc':return 'assets/images/content/csv.png';
+              case 'pdf':return 'assets/images/content/pdfs.png';
+              case 'png':return 'assets/images/content/csv.png';
+              case 'ppt':return 'assets/images/content/csv.png';
+              case 'pptx':return 'assets/images/content/csv.png';
+              case 'txt':return 'assets/images/content/text.png';
+              case 'xls':return 'assets/images/content/csv.png';
+              case 'xlsx':return 'assets/images/content/xlsm.png';
+              case 'xlsm':return 'assets/images/content/xlsm.png';
+              case 'zip':return 'assets/images/content/zip.png';
+              case 'docx':return 'assets/images/content/docs.png';
+              case 'docm':return 'assets/images/content/csv.png';
+              case 'dotm':return 'assets/images/content/csv.png';
+              case 'dotx':return 'assets/images/content/csv.png';
+              case 'dot':return 'assets/images/content/csv.png';
+              case 'dotx':return 'assets/images/content/csv.png';
+              case 'xps':return 'assets/images/content/xps.jpg';
+              case 'rtf':return 'assets/images/content/rtf.png';
+              case 'odt':return 'assets/images/content/csv.png';
+              case 'wps':return 'assets/images/content/csv.png';
+              case 'htm':return 'assets/images/content/htm.png';
+              case 'mht':return 'assets/images/content/csv.png';
+              case 'mhtml':return 'assets/images/content/csv.png';
+              default: return 'assets/images/content/error.png';
+              // etc
+          }
+  }
+    changeImage(id:number,path:string){
+       let image = this.addImage(path);
+      (<HTMLInputElement>document.getElementById('content_image_'+id)).src = image;
+      (<HTMLInputElement>document.getElementById('content_image_grid_'+id)).src = image;
+    }
 
     imageClick(){
         $('#uploadFile').click();

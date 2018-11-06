@@ -52,27 +52,20 @@
 											<button type="button" class="btn btn-danger" style="float:left"
 												*ngIf="selectedFileIds?.length>1" (click)="delete()">Delete</button>
 										</div>
-
 										<div class='col-xs-6 col-sm-3 col-md-3'
 											style="position: relative; left: 77px; z-index: 99;">
-											<!-- <span class="btn btn-xs hidden-xs" data-toggle="tooltip" data-placement="bottom" title="List View" [class.disabled]="isListView" (click)="isListView = true" style="background-color:#e2e2e2"><i class="fa fa-th-list p10" aria-hidden="true"></i></span>
-                         <span class="btn btn-xs hidden-xs"  data-toggle="tooltip" data-placement="bottom" title="Grid View" [class.disabled]="!isListView" (click)="isListView = false" style="background-color:#e2e2e2"><i class="fa fa-th-large p10" aria-hidden="true"></i></span> -->
-                         <span class="btn btn-xs hidden-xs" data-toggle="tooltip" data-placement="bottom" title="List View" [class.disabled]="isListView" (click)="isListView = true" style="background-color:#e2e2e2"><i class="fa fa-th-list p10" aria-hidden="true"></i></span>
-                         <span class="btn btn-xs hidden-xs"  data-toggle="tooltip" data-placement="bottom" title="Grid View" [class.disabled]="!isListView" (click)="isListView = false" style="background-color:#e2e2e2"><i class="fa fa-th-large p10" aria-hidden="true"></i></span>
-
-                        </div>
-
+                      <span class="btn btn-xs hidden-xs" data-toggle="tooltip" data-placement="bottom" title="List View" [class.disabled]="isListView" (click)="isListView = true" style="background-color:#e2e2e2"><i class="fa fa-th-list p10" aria-hidden="true"></i></span>
+                      <span class="btn btn-xs hidden-xs"  data-toggle="tooltip" data-placement="bottom" title="Grid View" [class.disabled]="!isListView" (click)="isListView = false" style="background-color:#e2e2e2"><i class="fa fa-th-large p10" aria-hidden="true"></i></span>
+                    </div>
 										<div class="row col-xs-6 col-sm-3 col-md-6 pull-right"
 											style="padding-right: 0; margin-bottom: -30px;">
-
 											<div class="col-md-6"
 												[ngClass]="{'search-css': !referenceService.isMobileScreenSize(), 'mobile-css':referenceService.isMobileScreenSize() }">
 												<select class="form-control" style="margin-right: -25px;"
 													[(ngModel)]="sortOption"
 													(ngModelChange)="sortByOption($event)">
-													<ng-container
-														*ngFor="let sort of sortOptions; let i = index">
-													<option [ngValue]="sort">{{sort.name}}</option>
+													<ng-container *ngFor="let sort of sortOptions; let i = index">
+													   <option [ngValue]="sort">{{sort.name}}</option>
 													</ng-container>
 												</select>
 											</div>
@@ -91,15 +84,9 @@
 								<div class="progress-bar" role="progressbar" style="width: 99%;"
 									aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">99%</div>
 							</div>
-
-							<app-grid-loader
-								*ngIf="httpRequestLoader.isLoading && !pagination.isListView"></app-grid-loader>
-							<app-list-loader
-								*ngIf="httpRequestLoader.isLoading && pagination.isListView"></app-list-loader>
+							<app-grid-loader *ngIf="httpRequestLoader.isLoading && !pagination.isListView"></app-grid-loader>
+							<app-list-loader *ngIf="httpRequestLoader.isLoading && pagination.isListView"></app-list-loader>
 							<div class="margin-top-10 row" *ngIf="!httpRequestLoader.isLoading">
-								<!-- <div *ngIf="paginatedList?.length==0">
-									<app-response-message [customResponse]="customResponse"	*ngIf="customResponse.isVisible"></app-response-message>
-								</div> -->
 								<section [hidden]="!isListView">
 									<div class="table-responsive list-content-table">
                     <!-- *ngIf="pagedItems && !httpRequestLoader.isLoading" -->
@@ -129,8 +116,8 @@
 													<td>
 														<div class="clearfix">
 															<div class='thumbnail-wrapper'>
-																<img
-																	onerror="this.src='data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+Cjxzdmcgd2lkdGg9IjI5cHgiIGhlaWdodD0iMjhweCIgdmlld0JveD0iMCAwIDI5IDI4IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbG5zOnNrZXRjaD0iaHR0cDovL3d3dy5ib2hlbWlhbmNvZGluZy5jb20vc2tldGNoL25zIj4KICAgIDwhLS0gR2VuZXJhdG9yOiBTa2V0Y2ggMy4zLjIgKDEyMDQzKSAtIGh0dHA6Ly93d3cuYm9oZW1pYW5jb2RpbmcuY29tL3NrZXRjaCAtLT4KICAgIDx0aXRsZT5pbWFnZTwvdGl0bGU+CiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4KICAgIDxkZWZzPjwvZGVmcz4KICAgIDxnIGlkPSJpY29ucyIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCIgc2tldGNoOnR5cGU9Ik1TUGFnZSI+CiAgICAgICAgPGcgaWQ9IkFydGJvYXJkLTEiIHNrZXRjaDp0eXBlPSJNU0FydGJvYXJkR3JvdXAiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC01MDEuMDAwMDAwLCAtNDguMDAwMDAwKSIgc3Ryb2tlPSIjNTA1NjU5Ij4KICAgICAgICAgICAgPGcgaWQ9ImltYWdlIiBza2V0Y2g6dHlwZT0iTVNMYXllckdyb3VwIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg1MDMuMDAwMDAwLCA0OS4wMDAwMDApIj4KICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik0wLjAzMjQ0OTE2MDgsNy44NjY4Mzk4OCBMMTguNTQ0NzU4MiwzLjc0NTU3NTk4IEwyMi44MTg2NjE1LDIxLjU5NjczMTEgTDQuMzA2MzUyNDYsMjUuNzE3OTk1IEwwLjAzMjQ0OTE2MDgsNy44NjY4Mzk4OCBMMC4wMzI0NDkxNjA4LDcuODY2ODM5ODggWiIgaWQ9IlJlY3RhbmdsZS02OSIgc3Ryb2tlLXdpZHRoPSIyIiBza2V0Y2g6dHlwZT0iTVNTaGFwZUdyb3VwIj48L3BhdGg+CiAgICAgICAgICAgICAgICA8ZyBpZD0iaW1hZ2UtbW9kdWxlLWNvcHkiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDUuNzc3Nzc4LCAwLjAwMDAwMCkiIHNrZXRjaDp0eXBlPSJNU1NoYXBlR3JvdXAiPgogICAgICAgICAgICAgICAgICAgIDxnIGlkPSJzdmdzIj4KICAgICAgICAgICAgICAgICAgICAgICAgPGcgaWQ9IlJlY3RhbmdsZS02OS0rLVBhdGgtOTEtKy1PdmFsLTEiPgogICAgICAgICAgICAgICAgICAgICAgICAgICAgPHJlY3QgaWQ9IlJlY3RhbmdsZS02OSIgc3Ryb2tlLXdpZHRoPSIyIiBmaWxsPSIjRkZGRkZGIiB4PSIwIiB5PSIwIiB3aWR0aD0iMTkuOTYyOTYzIiBoZWlnaHQ9IjE5LjI1Ij48L3JlY3Q+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8cGF0aCBkPSJNMC43OTkxNDUyOTksMTUuNDEyMDg3OSBMNy4xOTIzMDc2OSwxMC43ODg0NjE1IEwxMS4xODgwMzQyLDEzLjEwMDI3NDcgTDIwLjc3Nzc3NzgsNi4xNjQ4MzUxNiIgaWQ9IlBhdGgtOTEiPjwvcGF0aD4KICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxlbGxpcHNlIGlkPSJPdmFsLTEiIGN4PSI3LjU5MTg4MDM0IiBjeT0iNS43Nzk1MzI5NyIgcng9IjIuNzk3MDA4NTUiIHJ5PSIyLjY5NzExNTM4Ij48L2VsbGlwc2U+CiAgICAgICAgICAgICAgICAgICAgICAgIDwvZz4KICAgICAgICAgICAgICAgICAgICA8L2c+CiAgICAgICAgICAgICAgICA8L2c+CiAgICAgICAgICAgIDwvZz4KICAgICAgICA8L2c+CiAgICA8L2c+Cjwvc3ZnPg=='"
+																<img id="content_image_{{i}}"
+																	(error)="changeImage(i, file.filePath)"
 																	src="{{file.filePath}}">
 															</div>
 															<div class="title-div">
@@ -143,21 +130,20 @@
 															</div>
 														</div>
 													</td>
-													<td class="text-center"><app-timestamp
-															[isOnlyDate]="true" [dateAndTime]="file.lastModifiedDate">
-														</app-timestamp></td>
-													<td class="text-center"><span>{{file.filesizeInKb}}</span>
-													</td>
+													<td class="text-center"><app-timestamp	[isOnlyDate]="true" [dateAndTime]="file.lastModifiedDate"></app-timestamp></td>
+													<td class="text-center"><span>{{file.filesizeInKb}}</span></td>
 													<td class="text-center"><span>{{file.type}}</span></td>
 													<td>
 														<div class="actions-block override-actions">
 															<!-- (click)="preview(file)" -->
-															<a data-toggle="tooltip" data-placement="top"
-																[title]="actionsDescription.preview_item"
-																href="{{file.filePath}}" target="_blank"> <i
-																class="fa fa-eye"></i>
-															</a> <a data-toggle="tooltip" data-placement="top"
-																[title]="actionsDescription.delete_item"
+															<a data-toggle="tooltip" data-placement="top"	[title]="actionsDescription.preview_item"
+																href="{{file.filePath}}" target="_blank"> <i class="fa fa-eye"></i>
+                              </a>
+                              <a class="fm external-link" target="_BLANK" data-toggle="tooltip" data-placement="top" style="width: 29px;"
+                              [title]="actionsDescription.preview_item" href="{{file.filePath}}" target="_blank">
+                                <i class="fa fa-external-link-square"  aria-hidden="true" style="font-size: 16px; color: #5a5a5a"></i>
+                              </a>
+                              <a data-toggle="tooltip" data-placement="top"	[title]="actionsDescription.delete_item"
 																(click)="delete(file)"> <i class="fa fa-trash"></i>
 															</a>
 														</div>
@@ -206,10 +192,13 @@
 													</label>
 													</span> <span class="ng-scope"> <a
 														class="item__preview item__preview--image img-container custom"
-														target="_BLANK"> <img
-															ng-src="https://d15k2d11r6t6rl.cloudfront.net/public/_thumbs/Integrators/6639d69f-523f-44ca-b809-a00daa26b367/bee-12092/BC-xAmplify-changes1.jpg_thumb.png?hash=1537857431976"
-															onerror="this.src='data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+Cjxzdmcgd2lkdGg9IjI5cHgiIGhlaWdodD0iMjhweCIgdmlld0JveD0iMCAwIDI5IDI4IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbG5zOnNrZXRjaD0iaHR0cDovL3d3dy5ib2hlbWlhbmNvZGluZy5jb20vc2tldGNoL25zIj4KICAgIDwhLS0gR2VuZXJhdG9yOiBTa2V0Y2ggMy4zLjIgKDEyMDQzKSAtIGh0dHA6Ly93d3cuYm9oZW1pYW5jb2RpbmcuY29tL3NrZXRjaCAtLT4KICAgIDx0aXRsZT5pbWFnZTwvdGl0bGU+CiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4KICAgIDxkZWZzPjwvZGVmcz4KICAgIDxnIGlkPSJpY29ucyIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCIgc2tldGNoOnR5cGU9Ik1TUGFnZSI+CiAgICAgICAgPGcgaWQ9IkFydGJvYXJkLTEiIHNrZXRjaDp0eXBlPSJNU0FydGJvYXJkR3JvdXAiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC01MDEuMDAwMDAwLCAtNDguMDAwMDAwKSIgc3Ryb2tlPSIjNTA1NjU5Ij4KICAgICAgICAgICAgPGcgaWQ9ImltYWdlIiBza2V0Y2g6dHlwZT0iTVNMYXllckdyb3VwIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg1MDMuMDAwMDAwLCA0OS4wMDAwMDApIj4KICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik0wLjAzMjQ0OTE2MDgsNy44NjY4Mzk4OCBMMTguNTQ0NzU4MiwzLjc0NTU3NTk4IEwyMi44MTg2NjE1LDIxLjU5NjczMTEgTDQuMzA2MzUyNDYsMjUuNzE3OTk1IEwwLjAzMjQ0OTE2MDgsNy44NjY4Mzk4OCBMMC4wMzI0NDkxNjA4LDcuODY2ODM5ODggWiIgaWQ9IlJlY3RhbmdsZS02OSIgc3Ryb2tlLXdpZHRoPSIyIiBza2V0Y2g6dHlwZT0iTVNTaGFwZUdyb3VwIj48L3BhdGg+CiAgICAgICAgICAgICAgICA8ZyBpZD0iaW1hZ2UtbW9kdWxlLWNvcHkiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDUuNzc3Nzc4LCAwLjAwMDAwMCkiIHNrZXRjaDp0eXBlPSJNU1NoYXBlR3JvdXAiPgogICAgICAgICAgICAgICAgICAgIDxnIGlkPSJzdmdzIj4KICAgICAgICAgICAgICAgICAgICAgICAgPGcgaWQ9IlJlY3RhbmdsZS02OS0rLVBhdGgtOTEtKy1PdmFsLTEiPgogICAgICAgICAgICAgICAgICAgICAgICAgICAgPHJlY3QgaWQ9IlJlY3RhbmdsZS02OSIgc3Ryb2tlLXdpZHRoPSIyIiBmaWxsPSIjRkZGRkZGIiB4PSIwIiB5PSIwIiB3aWR0aD0iMTkuOTYyOTYzIiBoZWlnaHQ9IjE5LjI1Ij48L3JlY3Q+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8cGF0aCBkPSJNMC43OTkxNDUyOTksMTUuNDEyMDg3OSBMNy4xOTIzMDc2OSwxMC43ODg0NjE1IEwxMS4xODgwMzQyLDEzLjEwMDI3NDcgTDIwLjc3Nzc3NzgsNi4xNjQ4MzUxNiIgaWQ9IlBhdGgtOTEiPjwvcGF0aD4KICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxlbGxpcHNlIGlkPSJPdmFsLTEiIGN4PSI3LjU5MTg4MDM0IiBjeT0iNS43Nzk1MzI5NyIgcng9IjIuNzk3MDA4NTUiIHJ5PSIyLjY5NzExNTM4Ij48L2VsbGlwc2U+CiAgICAgICAgICAgICAgICAgICAgICAgIDwvZz4KICAgICAgICAgICAgICAgICAgICA8L2c+CiAgICAgICAgICAgICAgICA8L2c+CiAgICAgICAgICAgIDwvZz4KICAgICAgICA8L2c+CiAgICA8L2c+Cjwvc3ZnPg=='"
-															class="thumb ng-scope" src="{{file.filePath}}">
+                            target="_BLANK">
+                            	<!-- onerror="this.src='data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+Cjxzdmcgd2lkdGg9IjI5cHgiIGhlaWdodD0iMjhweCIgdmlld0JveD0iMCAwIDI5IDI4IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbG5zOnNrZXRjaD0iaHR0cDovL3d3dy5ib2hlbWlhbmNvZGluZy5jb20vc2tldGNoL25zIj4KICAgIDwhLS0gR2VuZXJhdG9yOiBTa2V0Y2ggMy4zLjIgKDEyMDQzKSAtIGh0dHA6Ly93d3cuYm9oZW1pYW5jb2RpbmcuY29tL3NrZXRjaCAtLT4KICAgIDx0aXRsZT5pbWFnZTwvdGl0bGU+CiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4KICAgIDxkZWZzPjwvZGVmcz4KICAgIDxnIGlkPSJpY29ucyIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCIgc2tldGNoOnR5cGU9Ik1TUGFnZSI+CiAgICAgICAgPGcgaWQ9IkFydGJvYXJkLTEiIHNrZXRjaDp0eXBlPSJNU0FydGJvYXJkR3JvdXAiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC01MDEuMDAwMDAwLCAtNDguMDAwMDAwKSIgc3Ryb2tlPSIjNTA1NjU5Ij4KICAgICAgICAgICAgPGcgaWQ9ImltYWdlIiBza2V0Y2g6dHlwZT0iTVNMYXllckdyb3VwIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg1MDMuMDAwMDAwLCA0OS4wMDAwMDApIj4KICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik0wLjAzMjQ0OTE2MDgsNy44NjY4Mzk4OCBMMTguNTQ0NzU4MiwzLjc0NTU3NTk4IEwyMi44MTg2NjE1LDIxLjU5NjczMTEgTDQuMzA2MzUyNDYsMjUuNzE3OTk1IEwwLjAzMjQ0OTE2MDgsNy44NjY4Mzk4OCBMMC4wMzI0NDkxNjA4LDcuODY2ODM5ODggWiIgaWQ9IlJlY3RhbmdsZS02OSIgc3Ryb2tlLXdpZHRoPSIyIiBza2V0Y2g6dHlwZT0iTVNTaGFwZUdyb3VwIj48L3BhdGg+CiAgICAgICAgICAgICAgICA8ZyBpZD0iaW1hZ2UtbW9kdWxlLWNvcHkiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDUuNzc3Nzc4LCAwLjAwMDAwMCkiIHNrZXRjaDp0eXBlPSJNU1NoYXBlR3JvdXAiPgogICAgICAgICAgICAgICAgICAgIDxnIGlkPSJzdmdzIj4KICAgICAgICAgICAgICAgICAgICAgICAgPGcgaWQ9IlJlY3RhbmdsZS02OS0rLVBhdGgtOTEtKy1PdmFsLTEiPgogICAgICAgICAgICAgICAgICAgICAgICAgICAgPHJlY3QgaWQ9IlJlY3RhbmdsZS02OSIgc3Ryb2tlLXdpZHRoPSIyIiBmaWxsPSIjRkZGRkZGIiB4PSIwIiB5PSIwIiB3aWR0aD0iMTkuOTYyOTYzIiBoZWlnaHQ9IjE5LjI1Ij48L3JlY3Q+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8cGF0aCBkPSJNMC43OTkxNDUyOTksMTUuNDEyMDg3OSBMNy4xOTIzMDc2OSwxMC43ODg0NjE1IEwxMS4xODgwMzQyLDEzLjEwMDI3NDcgTDIwLjc3Nzc3NzgsNi4xNjQ4MzUxNiIgaWQ9IlBhdGgtOTEiPjwvcGF0aD4KICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxlbGxpcHNlIGlkPSJPdmFsLTEiIGN4PSI3LjU5MTg4MDM0IiBjeT0iNS43Nzk1MzI5NyIgcng9IjIuNzk3MDA4NTUiIHJ5PSIyLjY5NzExNTM4Ij48L2VsbGlwc2U+CiAgICAgICAgICAgICAgICAgICAgICAgIDwvZz4KICAgICAgICAgICAgICAgICAgICA8L2c+CiAgICAgICAgICAgICAgICA8L2c+CiAgICAgICAgICAgIDwvZz4KICAgICAgICA8L2c+CiAgICA8L2c+Cjwvc3ZnPg=='" -->
+
+                            <img ng-src="https://d15k2d11r6t6rl.cloudfront.net/public/_thumbs/Integrators/6639d69f-523f-44ca-b809-a00daa26b367/bee-12092/BC-xAmplify-changes1.jpg_thumb.png?hash=1537857431976"
+                            id="content_image_grid_{{i}}"
+                            (error)="changeImage(i, file.filePath)"
+                            class="thumb ng-scope" src="{{file.filePath}}">
 													</a> <a href="javascript:;"> </a>
 													</span>
 												</div>
