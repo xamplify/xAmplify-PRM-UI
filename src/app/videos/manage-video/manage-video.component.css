@@ -185,3 +185,9 @@ background: #ffffff;
     background: #9e9e9e;
     color: #FFF;
 }
+.loader-css-video{
+  width: 55px;
+  position: relative;
+  z-index: 99;
+  top: 6px;
+  }

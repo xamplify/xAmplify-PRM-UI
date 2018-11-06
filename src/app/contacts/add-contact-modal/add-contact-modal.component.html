@@ -56,11 +56,11 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
             <label class="control-label col-xs-2 col-sm-2" for="email" style="color: #00bcd4; right: 11px !important">
                 <span class="star"> *</span>
             </label>
-           <div class="form-group col-xs-10 col-sm-10 p0" *ngIf="isUpdateUser">
-              <h4 style="border: none;font-size: 15px; cursor: not-allowed;">{{addContactuser.emailId}}</h4>
+           <div class="form-group col-xs-10 col-sm-10" *ngIf="isUpdateUser">
+              <span style="border: none;font-size: 15px; cursor: not-allowed;right: -8px;position: relative;">{{addContactuser.emailId}}</span>
             <div class="textCss"></div>
           </div>
-           <div class="form-group col-xs-10 col-sm-10">
+           <div class="form-group col-xs-10 col-sm-10" *ngIf="!isUpdateUser">
               <input type="email" style="border: none" class="form-control padding-mobile" id="email1"
               (blur)="checkingEmailPattern(addContactuser.emailId)" (input)="validateEmail(addContactuser.emailId)"
               [(ngModel)]="addContactuser.emailId"  [ngModelOptions]="{standalone: true}"
