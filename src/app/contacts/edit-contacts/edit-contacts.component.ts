@@ -130,7 +130,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
         { 'name': 'First name (DESC)', 'value': 'firstName-DESC' },
         { 'name': 'Last name (ASC)', 'value': 'lastName-ASC' },
         { 'name': 'Last name (DESC)', 'value': 'lastName-DESC' },
-        
+
     ];
 
     public sortOption: any = this.sortOptions[0];
@@ -149,7 +149,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     openCampaignModal = false;
     logListName = "";
     searchContactType = "";
-
+    saveAsListName:any;
+    saveAsError:any;
     filterOptions = [
         { 'name': '', 'value': 'Field Name*' },
         { 'name': 'firstName', 'value': 'First Name' },
@@ -362,13 +363,13 @@ export class EditContactsComponent implements OnInit, OnDestroy {
             let existedEmails = [];
 
             for ( let i = 0; i < this.users.length; i++ ) {
-                
+
                 let userDetails = {
                         "emailId": this.users[i].emailId,
                         "firstName": this.users[i].firstName,
                         "lastName": this.users[i].lastName,
                     }
-                
+
                 this.newUserDetails.push( userDetails );
 
                 if ( this.users[i].country === "Select Country" ) {
@@ -501,7 +502,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                             "firstName": this.users[i].firstName,
                             "lastName": this.users[i].lastName,
                         }
-                    
+
                     this.newUserDetails.push( userDetails );
                 }
                 if ( this.validCsvContacts == true && this.invalidPatternEmails.length == 0 ) {
@@ -947,9 +948,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                         "firstName": this.users[i].firstName,
                         "lastName": this.users[i].lastName,
                     }
-                
+
                 this.newUserDetails.push( userDetails );
-                
+
                 if ( this.users[i].country === "Select Country" ) {
                     this.users[i].country = null;
                 }
@@ -1417,7 +1418,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
         }else {
             message = 'This will only delete the partner(s) from this list. To remove the partner(s) completely from your account, please delete the record(s) from the Master List.';
         }
-        
+
         let self = this;
         if ( this.totalRecords != 1 ) {
             swal( {
@@ -1574,7 +1575,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     }
 
     search( searchType: string ) {
-        
+
         this.searchContactType = this.searchContactType;
         try {
             if ( this.currentContactType == "all_contacts" ) {
@@ -1654,51 +1655,70 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     saveAs() {
         try {
             this.loadContactListsNames();
-            let self = this;
             if ( this.contactListName == undefined ) {
                 this.contactListName = this.contactService.partnerListName;
             }
             if ( this.isDefaultPartnerList == true && this.contactListName.includes( '_copy' ) ) {
                 this.contactListName + '_copy'
             }
-            swal( {
-                title: this.checkingContactTypeName + ' List Name',
-                input: 'text',
-                inputValue: this.contactListName + '_copy',
-                showCancelButton: true,
-                confirmButtonText: 'Save',
-                allowOutsideClick: false,
-                preConfirm: function( name: any ) {
-                    return new Promise( function() {
-                        console.log( 'logic begins' );
-                        var inputName = name.toLowerCase().replace( /\s/g, '' );
-                        if ( $.inArray( inputName, self.names ) > -1 ) {
-                            swal.showValidationError( 'This list name is already taken.' )
-                        } else {
-                            if ( name != "" && name.length < 250) {
-                                swal.close();
-                                self.saveDuplicateContactList( name );
-                            } else {
-                               if(name == ""){
-                                swal.showValidationError( 'List Name is Required..' )
-                               }
-                               else{
-                                   swal.showValidationError("You have exceeded 250 characters!");
-                               }
-                            }
-                        }
-                    });
-                }
-            }).then( function( name: any ) {
-                console.log( name );
-            }, function( dismiss: any ) {
-                console.log( 'you clicked on option' + dismiss );
-            });
+            this.saveAsListName =  this.contactListName + '_copy';
+            this.saveAsError = '';
+            $('#saveAsEditModal').modal('show');
+            // swal( {
+            //     title: this.checkingContactTypeName + ' List Name',
+            //     input: 'text',
+            //     inputValue: this.contactListName + '_copy',
+            //     showCancelButton: true,
+            //     confirmButtonText: 'Save',
+            //     allowOutsideClick: false,
+            //     preConfirm: function( name: any ) {
+            //         return new Promise( function() {
+            //             console.log( 'logic begins' );
+            //             var inputName = name.toLowerCase().replace( /\s/g, '' );
+            //             if ( $.inArray( inputName, self.names ) > -1 ) {
+            //                 swal.showValidationError( 'This list name is already taken.' )
+            //             } else {
+            //                 if ( name != "" && name.length < 250) {
+            //                     swal.close();
+            //                     self.saveDuplicateContactList( name );
+            //                 } else {
+            //                    if(name == ""){
+            //                     swal.showValidationError( 'List Name is Required..' )
+            //                    }
+            //                    else{
+            //                        swal.showValidationError("You have exceeded 250 characters!");
+            //                    }
+            //                 }
+            //             }
+            //         });
+            //     }
+            // }).then( function( name: any ) {
+            //     console.log( name );
+            // }, function( dismiss: any ) {
+            //     console.log( 'you clicked on option' + dismiss );
+            // });
         } catch ( error ) {
             this.xtremandLogger.error( error, "editContactComponent", "SaveAsNewListSweetAlert()" );
         }
     }
-
+    saveAsInputChecking(){
+      try{
+       const name = this.saveAsListName;
+       const self = this;
+       const inputName = name.toLowerCase().replace( /\s/g, '' );
+          if ( $.inArray( inputName, self.names ) > -1 ) {
+              this.saveAsError = 'This list name is already taken.';
+          } else {
+              if ( name !== "" && name.length < 250 ) {
+                self.saveDuplicateContactList( name );
+              }
+               else if(name == ""){  this.saveAsError = 'List Name is Required.';  }
+                else{ this.saveAsError = 'You have exceeded 250 characters!'; }
+            }
+          }catch(error){
+            this.xtremandLogger.error( error, "ManageContactsComponent", "saveAs()" );
+          }
+      }
     saveDuplicateContactList( name: string ) {
         try {
             if ( name != "" ) {
@@ -1716,6 +1736,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                         .subscribe(
                         data => {
                             data = data;
+                            $('#saveAsEditModal').modal('hide');
+                            this.saveAsError = '';
+                            this.saveAsListName = '';
+                            this.saveAsListName = undefined;
                             if ( this.isPartner == false ) {
                                 this.router.navigateByUrl( '/home/contacts/manage' )
                             } else {
@@ -1936,11 +1960,11 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                     event.mobileNumber = "";
                 }
             }
-            
+
             if ( event.country === "Select Country" ) {
                 event.country = null;
             }
-            
+
             this.editUser.user = event;
             this.addContactModalClose();
             this.contactService.updateContactListUser( this.selectedContactListId, this.editUser )
@@ -2255,7 +2279,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
             this.xtremandLogger.error( error, "addPartnerComponent", "resending Partner email" );
         }
     }
-    
+
     ngOnInit() {
         try {
             this.loadContactListsNames();
@@ -2289,6 +2313,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
         try{
         swal.close();
         $( '#filterModal' ).modal( 'hide' );
+        $('#saveAsEditModal').modal('hide');
 
         if ( this.selectedAddContactsOption !=8 && this.router.url !=='/') {
             let self = this;
@@ -2300,7 +2325,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                  confirmButtonColor: '#54a7e9',
                  cancelButtonColor: '#999',
                  confirmButtonText: 'Yes, Save it!',
-                 cancelButtonText: "No" 
+                 cancelButtonText: "No"
 
              }).then( function() {
                  self.saveContacts( self.contactListId );

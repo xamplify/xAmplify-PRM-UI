@@ -118,13 +118,13 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
         { 'name': 'First name (DESC)', 'value': 'firstName-DESC', 'for': 'contacts' },
         { 'name': 'Last name (ASC)', 'value': 'lastName-ASC', 'for': 'contacts' },
         { 'name': 'Last name (DESC)', 'value': 'lastName-DESC', 'for': 'contacts' },
-        
+
     ];
 
 /*    .......company name sorting......
     { 'name': 'Company name (ASC)', 'value': 'contactCompany-ASC', 'for': 'contacts' },
     { 'name': 'Company name (DESC)', 'value': 'contactCompany-DESC', 'for': 'contacts' },*/
-    
+
     sortOptionsForPagination = [
         { 'name': '10', 'value': '10' },
         { 'name': '25', 'value': '25' },
@@ -160,6 +160,10 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
     isListView = false;
     responseMessage = [];
     logListName = "";
+    saveAsListName:any;
+    saveAsContactListId:any;
+    saveAsError:any;
+    saveAsTypeList = 'manage-contacts';
 
     constructor( public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
         private pagerService: PagerService, public pagination: Pagination, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,
@@ -1281,79 +1285,120 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
 
     saveAs() {
         try {
-            let self = this;
-            swal( {
-                title: this.checkingContactTypeName + ' List Name',
-                input: 'text',
-                showCancelButton: true,
-                confirmButtonText: 'Save',
-                allowOutsideClick: false,
-                preConfirm: function( name: any ) {
-                    return new Promise( function() {
-                        console.log( 'logic begins' );
-                        var inputName = name.toLowerCase().replace( /\s/g, '' );
-                        if ( $.inArray( inputName, self.names ) > -1 ) {
-                            swal.showValidationError( 'This list name is already taken.' )
-                        } else {
-                            if ( name != "" && name.length < 250 ) {
-                                swal.close();
-                                self.saveSelectedUsers( name );
-                            } else {
-                                if(name == ""){
-                                    swal.showValidationError( 'List Name is Required..' )
-                                   }
-                                   else{
-                                       swal.showValidationError("You have exceeded 250 characters!");
-                                   }
-                                }
-                        }
-                    });
-                }
-            }).then( function( name: any ) {
-                console.log( name );
-            }, function( dismiss: any ) {
-                console.log( 'you clicked on option' + dismiss );
-            });
+          this.saveAsTypeList = 'manage-all-contacts';
+          this.saveAsListName = '';
+          this.saveAsError = '';
+          $('#saveAsModal').modal('show');
+
+            // swal( {
+            //     title: this.checkingContactTypeName + ' List Name',
+            //     input: 'text',
+            //     showCancelButton: true,
+            //     confirmButtonText: 'Save',
+            //     allowOutsideClick: false,
+            //     preConfirm: function( name: any ) {
+            //         return new Promise( function() {
+            //             console.log( 'logic begins' );
+            //             var inputName = name.toLowerCase().replace( /\s/g, '' );
+            //             if ( $.inArray( inputName, self.names ) > -1 ) {
+            //                 swal.showValidationError( 'This list name is already taken.' )
+            //             } else {
+            //                 if ( name != "" && name.length < 250 ) {
+            //                     swal.close();
+            //                     self.saveSelectedUsers( name );
+            //                 } else {
+            //                     if(name == ""){
+            //                         swal.showValidationError( 'List Name is Required..' )
+            //                        }
+            //                        else{
+            //                            swal.showValidationError("You have exceeded 250 characters!");
+            //                        }
+            //                     }
+            //             }
+            //         });
+            //     }
+            // }).then( function( name: any ) {
+            //     console.log( name );
+            // }, function( dismiss: any ) {
+            //     console.log( 'you clicked on option' + dismiss );
+            // });
         } catch ( error ) {
             this.xtremandLogger.error( error, "ManageContactsComponent", "saveAsAlert()" );
         }
     }
-
     saveAsNewList( contactSelectedListId: number, contactListName: string ) {
         try {
+            this.saveAsTypeList = 'manage-contacts';
+            this.saveAsListName = contactListName + '_copy';
+            this.saveAsContactListId = contactSelectedListId;
             this.loadContactListsNames();
-            let self = this;
-            swal( {
-                title: this.checkingContactTypeName + ' List Name',
-                input: 'text',
-                inputValue: contactListName + '_copy',
-                showCancelButton: true,
-                confirmButtonText: 'Save',
-                allowOutsideClick: false,
-                preConfirm: function( name: any ) {
-                    return new Promise( function() {
-                        self.xtremandLogger.log( 'logic begins' );
-                        var inputName = name.toLowerCase().replace( /\s/g, '' );
-                        if ( $.inArray( inputName, self.names ) > -1 ) {
-                            swal.showValidationError( 'This list name is already taken. ' )
-                        } else {
-                            if ( name != "" ) {
-                                swal.close();
-                                self.saveExistingContactList( contactSelectedListId, name );
-                            } else {
-                                swal.showValidationError( 'List Name is Required..' )
-                            }
-                        }
-                    });
-                }
-            }).then( function( name: any ) {
-                console.log( name );
-            }, function( dismiss: any ) {
-                console.log( 'you clicked on option' + dismiss );
-            });
+            this.saveAsError = '';
+            $('#saveAsModal').modal('show');
+            // let self = this;
+            // swal( {
+            //     title: this.checkingContactTypeName + ' List Name',
+            //     input: 'text',
+            //     inputValue: contactListName + '_copy',
+            //     showCancelButton: true,
+            //     confirmButtonText: 'Save',
+            //     allowOutsideClick: false,
+            //     preConfirm: function( name: any ) {
+            //         return new Promise( function() {
+            //             self.xtremandLogger.log( 'logic begins' );
+            //             var inputName = name.toLowerCase().replace( /\s/g, '' );
+            //             if ( $.inArray( inputName, self.names ) > -1 ) {
+            //                 swal.showValidationError( 'This list name is already taken. ' )
+            //             } else {
+            //                 if ( name != "" ) {
+            //                     swal.close();
+            //                     self.saveExistingContactList( contactSelectedListId, name );
+            //                 } else {
+            //                     swal.showValidationError( 'List Name is Required..' )
+            //                 }
+            //             }
+            //         });
+            //     }
+            // }).then( function( name: any ) {
+            //     console.log( name );
+            // }, function( dismiss: any ) {
+            //     console.log( 'you clicked on option' + dismiss );
+            // });
+
         } catch ( error ) {
             this.xtremandLogger.error( error, "ManageContactsComponent", "saveAsNewList()" );
         }
+    }
+
+    saveAsInputChecking(){
+      try{
+       const name = this.saveAsListName;
+       const self = this;
+       const inputName = name.toLowerCase().replace( /\s/g, '' );
+          if ( $.inArray( inputName, self.names ) > -1 ) {
+              this.saveAsError = 'This list name is already taken.';
+          } else {
+              if ( name !== "" && name.length < 250 ) {
+                this.saveAsError = '';
+                if(this.saveAsTypeList ==='manage-contacts') {
+                  this.saveExistingContactList(this.saveAsContactListId, this.saveAsListName);
+                  this.cleareDefaultConditions();
+                }
+                else if(this.saveAsTypeList === 'manage-all-contacts') {
+                  this.saveSelectedUsers( name );
+                  this.cleareDefaultConditions();
+                }
+              }
+                else if(name == ""){  this.saveAsError = 'List Name is Required.';  }
+                else{ this.saveAsError = 'You have exceeded 250 characters!'; }
+            }
+          }catch(error){
+            this.xtremandLogger.error( error, "ManageContactsComponent", "saveAs()" );
+          }
+      }
+    cleareDefaultConditions(){
+      $('#saveAsModal').modal('hide');
+      this.saveAsListName = undefined;
+      this.saveAsTypeList = 'manage-contacts';
     }
 
     saveExistingContactList( contactSelectedListId: number, contactListName: string ) {
@@ -1365,6 +1410,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
                 ( data: any ) => {
                     console.log( data.listOfUsers );
                     this.contactListUsers = data.listOfUsers;
+                    $('#saveAsModal').modal('hide');
+                    this.saveAsListName = undefined;
+                    this.saveAsTypeList = 'manage-contacts'
                 },
                 error => this.xtremandLogger.error( error ),
                 () => {

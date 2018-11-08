@@ -745,7 +745,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
     $("#show_email_template_preivew").modal('show');
   }
-  
+
   previewEventCampaignEmailTemplate(emailTemplateId: number) {
     //this.eventCampaign.campaignEventMedias[0].filePath = this.eventCampaign.campaignEventMedias[0].filePath===undefined?null:this.eventCampaign.campaignEventMedias[0].filePath;
       this.emailTemplateService.getById(emailTemplateId)
@@ -766,7 +766,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
                   data.body = data.body.replace( "EVENT_END_TIME", " " );
               }
           }
-          
+
           if ( this.eventCampaign.campaignEventTimes[0].endTimeString ) {
               let endDate = new Date(this.eventCampaign.campaignEventTimes[0].endTimeString);
               let endTime = this.referenceService.formatAMPM(endDate);
@@ -774,12 +774,12 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
               data.body = data.body.replace( "EVENT_END_TIME", date2 + " " + endTime );
           }
           /*else if(this.eventCampaign.campaignEventTimes[0].allDay){
-              
+
               let startTime = new Date(this.eventCampaign.campaignEventTimes[0].startTimeString);
               let date1 = startTime.toDateString()
               data.body = data.body.replace( "EVENT_END_TIME", date1 + " " + '11:59 PM' );
           }*/
-          
+
           if ( this.eventCampaign.message ) {
               data.body = data.body.replace( "EVENT_DESCRIPTION", this.eventCampaign.message );
           }
@@ -809,13 +809,13 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
           }else{
               data.body = data.body.replace( "IMAGE_URL", "https://aravindu.com/vod/images/conference2.jpg" );
           }
-          
+
           if ( this.eventCampaign.campaignLocation.location ) {
               data.body = data.body.replace( "LOCATION_MAP_URL", "https://maps.google.com/maps?q=" + this.eventCampaign.campaignLocation.location + "," + this.eventCampaign.campaignLocation.street + ","+this.eventCampaign.campaignLocation.city + ","+this.eventCampaign.campaignLocation.state + ","+this.eventCampaign.campaignLocation.zip + "&z=15&output=embed" );
           }else{
               data.body = data.body.replace( "LOCATION_MAP_URL", "https://maps.google.com/maps?q=42840 Christy Street, uite 100 Fremont, US CA 94538&z=15&output=embed" );
           }
-          
+
           this.getEmailTemplatePreview( data );
       },
       (error: string) => {
@@ -1028,7 +1028,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
                   showCancelButton: true,
                   confirmButtonColor: '#54a7e9',
                   cancelButtonColor: '#999',
-                  confirmButtonText: 'Yes, Save it!'
+                  confirmButtonText: 'Yes, Save it!',
+                  cancelButtonText: 'No'
 
               }).then(function() {
                       self.saveCampaignOnDestroy();
