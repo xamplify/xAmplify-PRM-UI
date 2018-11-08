@@ -95,6 +95,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
 
     AddContactsOption: typeof AddContactsOption = AddContactsOption;
     selectedAddContactsOption: number = 8;
+    disableOtherFuctionality = false;
 
     public uploader: FileUploader = new FileUploader( { allowedMimeType: ["application/csv", "application/vnd.ms-excel", "text/plain", "text/csv"] });
     contacts: User[];
@@ -654,6 +655,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                         this.selectedAddContactsOption = 8;
                         this.contactService.saveAsSuccessMessage = "add";
                         this.xtremandLogger.info( "update Contacts ListUsers:" + data );
+                        this.disableOtherFuctionality = false;
                         if ( this.isPartner == false ) {
                             this.router.navigateByUrl( '/home/contacts/manage' )
                         } else {
@@ -817,6 +819,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.socialContactUsers.length = 0;
         this.allselectedUsers.length = 0;
         this.selectedContactListIds.length = 0;
+        this.disableOtherFuctionality = false;
         this.customResponse = new CustomResponse();
         this.pager = [];
         this.pagedItems = [];
@@ -891,6 +894,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
 
     copyFromClipboard() {
         this.noOptionsClickError = false;
+        this.disableOtherFuctionality = true;
         this.clipboardTextareaText = "";
         $( "button#cancel_button" ).prop( 'disabled', false );
         $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
@@ -908,7 +912,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
 
     googleContacts() {
         try {
-            if ( this.selectedAddContactsOption == 8 ) {
+            if ( this.selectedAddContactsOption == 8 && !this.disableOtherFuctionality ) {
                 this.noOptionsClickError = false;
                 this.xtremandLogger.info( "addContactComponent googlecontacts() login:" );
                 this.socialContact.firstName = '';
@@ -1248,7 +1252,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
 
     checkingZohoContactsAuthentication() {
         try {
-            if ( this.selectedAddContactsOption == 8 ) {
+            if ( this.selectedAddContactsOption == 8 && !this.disableOtherFuctionality) {
                 this.contactService.checkingZohoAuthentication()
                     .subscribe(
                     ( data: any ) => {
@@ -1588,7 +1592,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
 
     salesforceContacts() {
         try {
-            if ( this.selectedAddContactsOption == 8 ) {
+            if ( this.selectedAddContactsOption == 8 && !this.disableOtherFuctionality) {
                 this.contactType = "";
                 this.noOptionsClickError = false;
                 this.socialContact.socialNetwork = "salesforce";

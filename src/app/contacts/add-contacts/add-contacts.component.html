@@ -131,7 +131,7 @@ img:hover {
 											<div class="col-xs-12 col-sm-4 col-md-4">
 												<button class="btn-primary btn-block" id="addContacts"
 													(click)="addContactModalOpen()"
-													[disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5">
+													[disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || disableOtherFuctionality">
 													<i class="fa fa-user-plus"></i>
 													 <!-- <span>Add {{checkingContactTypeName}}</span> -->
 													 <span>One at a time</span>
@@ -148,7 +148,7 @@ img:hover {
 											<div class="col-xs-12 col-sm-4 col-md-4">
 												<div class="btn-info fileinput-button btn-block"
 													id="uploadCSV" style="min-height: 85px"
-													[class.disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5">
+													[class.disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || disableOtherFuctionality">
 													<i
 														style="display: block; margin-top: 22px !important; text-align: center; font-size: 24px; margin: 0 auto 10px"
 														class="fa fa-file-excel-o"></i> <span
@@ -156,7 +156,7 @@ img:hover {
 														*ngIf="uploader.queue.length==0" [uploader]="uploader"
 														title=" " (change)="fileChange(input)" accept=".csv"
 														#input
-														[disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || selectedAddContactsOption == 2" />
+														[disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || selectedAddContactsOption == 2 || disableOtherFuctionality" />
 												</div>
                       </div>
                     </ng-container>
@@ -198,7 +198,7 @@ img:hover {
 												</a>
 												<div id="salesforceGear" style="position: relative"
 													id="salesforceGear" *ngIf="sfImageNormal">
-													<a [class.disabled]="selectedAddContactsOption != 8" (click)="settingSocialNetworkOpenModal('salesforce')">
+													<a [class.disabled]="selectedAddContactsOption != 8 || disableOtherFuctionality" (click)="settingSocialNetworkOpenModal('salesforce')">
 														<i id="SgearIcon" class="fa fa-cog cloud-items" aria-hidden="true"></i>
 													</a>
 												</div>
@@ -229,7 +229,7 @@ img:hover {
 													title="Click here to access contacts from your Google contacts"	height="86" width="90">
 												</a>
 												<div id="GoogleGear" style="position: relative" *ngIf="googleImageNormal">
-                            <a [class.disabled]="selectedAddContactsOption != 8"  (click)="settingSocialNetworkOpenModal('google')">
+                            <a [class.disabled]="selectedAddContactsOption != 8 || disableOtherFuctionality"  (click)="settingSocialNetworkOpenModal('google')">
                                <i id="GgearIcon" class="fa fa-cog cloud-items" aria-hidden="true"></i>
                             </a>
 												</div>
@@ -258,7 +258,7 @@ img:hover {
 													title="Click here to access contacts from your Zoho account"	height="86" width="90">
 												</a>
 												<div id="zohoGear" style="position: relative"	*ngIf="zohoImageNormal">
-													<a [class.disabled]="selectedAddContactsOption != 8" (click)="settingSocialNetworkOpenModal('zoho')">
+													<a [class.disabled]="selectedAddContactsOption != 8 || disableOtherFuctionality" (click)="settingSocialNetworkOpenModal('zoho')">
                             <i id="ZgearIcon" class="fa fa-cog cloud-items" aria-hidden="true"></i>
 													</a>
 												</div>
