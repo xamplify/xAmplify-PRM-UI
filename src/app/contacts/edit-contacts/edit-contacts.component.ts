@@ -1652,6 +1652,55 @@ export class EditContactsComponent implements OnInit, OnDestroy {
         }
     }
 
+
+    saveAsChange() {
+      try {
+          const self = this;
+          this.loadContactListsNames();
+          if ( this.contactListName == undefined ) {
+              this.contactListName = this.contactService.partnerListName;
+          }
+          if ( this.isDefaultPartnerList == true && this.contactListName.includes( '_copy' ) ) {
+              this.contactListName + '_copy'
+          }
+          swal( {
+              title: this.checkingContactTypeName + ' List Name',
+              input: 'text',
+              inputValue: this.contactListName + '_copy',
+              showCancelButton: true,
+              confirmButtonText: 'Save',
+              allowOutsideClick: false,
+              preConfirm: function( name: any ) {
+                  return new Promise( function() {
+                      console.log( 'logic begins' );
+                      var inputName = name.toLowerCase().replace( /\s/g, '' );
+                      if ( $.inArray( inputName, self.names ) > -1 ) {
+                          swal.showValidationError( 'This list name is already taken.' )
+                      } else {
+                          if ( name != "" && name.length < 250) {
+                              swal.close();
+                              self.saveDuplicateContactList( name );
+                          } else {
+                             if(name == ""){
+                              swal.showValidationError( 'List Name is Required..' )
+                             }
+                             else{
+                                 swal.showValidationError("You have exceeded 250 characters!");
+                             }
+                          }
+                      }
+                  });
+              }
+          }).then( function( name: any ) {
+              console.log( name );
+          }, function( dismiss: any ) {
+              console.log( 'you clicked on option' + dismiss );
+          });
+      } catch ( error ) {
+          this.xtremandLogger.error( error, "editContactComponent", "SaveAsNewListSweetAlert()" );
+      }
+  }
+
     saveAs() {
         try {
             this.loadContactListsNames();
