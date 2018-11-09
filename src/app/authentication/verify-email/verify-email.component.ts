@@ -5,6 +5,7 @@ import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { ReferenceService } from '../../core/services/reference.service';
 import { Properties } from '../../common/models/properties';
 import { Processor } from '../../core/models/processor';
+declare var $:any;
 
 @Component({
     selector: 'app-verify-email',
@@ -14,6 +15,7 @@ import { Processor } from '../../core/models/processor';
 })
 export class VerifyEmailComponent implements OnInit {
     public alias: string;
+    public errorMessage:string;
     constructor(private activatedRoute: ActivatedRoute, private userService: UserService, private router: Router,public processor:Processor,
         public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, public properties: Properties) { }
 
@@ -31,6 +33,8 @@ export class VerifyEmailComponent implements OnInit {
               (error:any)=>{
                 this.processor.remove(this.processor);
                 this.xtremandLogger.error('error'+error);
+                this.errorMessage=error;
+                $('body').css('cssText', 'background-color: white !important');
               });
          }catch(error){this.xtremandLogger.error('error in verifyemail'+error);}
     }
