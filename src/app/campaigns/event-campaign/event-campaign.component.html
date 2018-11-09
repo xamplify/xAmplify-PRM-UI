@@ -283,7 +283,12 @@
                           <td> <h6 class='m0 text-center f-w-600 table-color'>{{contactList.noOfContacts}}</h6> </td>
                           <td class='text-center m0'>
                             <a *ngIf="!isPreviewEvent">	<i class="fa fa-eye" aria-hidden="true" (click)="loadContactsOnPreview(contactList, contactsPagination);"></i></a>
-                            <a *ngIf="isPreviewEvent">	<i class="fa fa-eye disabled" aria-hidden="true"></i></a>
+                            <ng-container *ngIf="isPreviewEvent">
+                            <a *ngIf="authenticationService.isOnlyPartner()">
+                                <i class="fa fa-eye disabled" aria-hidden="true"></i>
+                            </a>
+                            <a *ngIf="!authenticationService.isOnlyPartner()">	<i class="fa fa-eye" aria-hidden="true" (click)="loadContactsOnPreview(contactList, contactsPagination);"></i></a>
+                            </ng-container>
                           </td>
                         </tr>
                       </tbody>

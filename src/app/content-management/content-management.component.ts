@@ -109,6 +109,8 @@ export class ContentManagementComponent implements OnInit {
               case 'wps':return 'assets/images/content/wps.png';
               case 'htm':return 'assets/images/content/htm.png';
               case 'mht':return 'assets/images/content/mht.jpg';
+              case 'log':return 'assets/images/content/log.png';
+              case 'mp3':return 'assets/images/content/mp3.png';
               case 'mhtml':return 'assets/images/content/mhtml.png';
               default: return 'assets/images/content/error.png';
               // etc
@@ -118,6 +120,8 @@ export class ContentManagementComponent implements OnInit {
        let image = this.addImage(path);
       (<HTMLInputElement>document.getElementById('content_image_'+id)).src = image;
       (<HTMLInputElement>document.getElementById('content_image_grid_'+id)).src = image;
+      $('#content_image_'+id).css('cssText', "max-height: 55%; max-width: 69px; position: relative; top: 16px;");
+      $('#content_image_grid_'+id).css('cssText', "border: 0px solid #5a5a5a; max-height: 27% !important");
     }
 
     imageClick(){
