@@ -16,6 +16,8 @@ import { HomeComponent } from '../../core/home/home.component';
 
 import { CustomResponse } from '../../common/models/custom-response';
 import { Properties } from 'app/common/models/properties';
+import { EmailTemplateService } from 'app/email-template/services/email-template.service';
+import { CloudContent } from '../models/cloudcontent';
 
 declare var Dropbox, swal, google, QuickSidebar, gapi, downloadFromDropbox, BoxSelect, downloadFromGDrive: any;
 declare var $, videojs: any;
@@ -83,13 +85,17 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
     isProgressBar = false;
     failedtoUpload = false;
     customResponse: CustomResponse = new CustomResponse();
+    loggedInUserId:any;
+    contentProcessing:boolean;
+    cloudContentArr = new Array<CloudContent>();
+    videoExtentions =  ['video/m4v', 'video/avi', 'video/mpg', 'video/mp4', 'video/flv', 'video/mov', 'video/wmv', 'video/divx', 'video/f4v', 'video/mpeg', 'video/vob', 'video/xvid'];
 
-    constructor(public router: Router, public xtremandLogger: XtremandLogger,
-        public authenticationService: AuthenticationService, public changeDetectorRef: ChangeDetectorRef,
-        public videoFileService: VideoFileService, public cloudUploadService: UploadCloudvideoService,
-        public sanitizer: DomSanitizer, public refService: ReferenceService, public homeComponent: HomeComponent,
-        public deviceService: Ng2DeviceService, public videoUtilService: VideoUtilService, public properties: Properties) {
+    constructor(public router: Router, public xtremandLogger: XtremandLogger, public authenticationService: AuthenticationService,
+        public changeDetectorRef: ChangeDetectorRef, public videoFileService: VideoFileService, public homeComponent: HomeComponent,
+        public cloudUploadService: UploadCloudvideoService, public sanitizer: DomSanitizer, public refService: ReferenceService,
+        public deviceService: Ng2DeviceService, public videoUtilService: VideoUtilService, public properties: Properties, public emailTemplateService: EmailTemplateService) {
         try {
+            this.loggedInUserId = this.authenticationService.getUserId();
             this.deviceInfo = this.deviceService.getDeviceInfo();
             this.browserInfo = this.deviceInfo.browser;
             console.log(this.browserInfo);
@@ -107,10 +113,15 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             this.textAreaDisable = true;
             this.maxTimeDuration = 3400; // record video time
             this.maxVideoSize = 800; // upload video size in MB's
+            if(this.videoFileService.videoFileSweetAlertMessage){
+              swal('Other than video files can be uploaded');
+              this.videoFileService.videoFileSweetAlertMessage = false;
+            }
           //  $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:1');
             this.uploader = new FileUploader({
-                allowedMimeType: ['video/m4v', 'video/x-msvideo', 'video/mpg', 'video/mp4', 'video/quicktime',
-                    'video/x-ms-wmv', 'video/divx', 'video/x-f4v', 'video/x-matroska', 'video/x-flv', 'video/dvd', 'video/mpeg', 'video/xvid'],
+                // allowedMimeType: ['video/m4v', 'video/x-flv','video/x-msvideo', 'video/avi', 'video/msvideo','video/mpg', 'video/mp4', 'video/quicktime',
+                //     'video/x-ms-wmv', 'video/divx', 'video/x-f4v', 'video/x-matroska', 'video/x-flv', 'video/dvd', 'video/mpeg', 'video/xvid'],
+
                 maxFileSize: this.maxVideoSize * 1024 * 1024, // 800 MB
                 url: this.URL + this.authenticationService.access_token
             });
@@ -255,11 +266,12 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         $('body').removeClass('modal-open');
         $('.modal-backdrop fade in').remove();
     }
+    checkVideoMimeTypes(type:any){ if(this.videoExtentions.includes(type.type) || (this.isVideo(type.name))){ return true} return false; }
     fileSizeCheck(event: any) {
        try{
         const fileList: FileList = event.target.files;
         console.log(fileList[0].type);
-        if (fileList.length > 0 && fileList[0].type.includes('video')) {
+        if (fileList.length > 0 && (fileList[0].type.includes('video')|| this.checkVideoMimeTypes(fileList[0]))) {
             const isSizeExceded: any = fileList[0].size;
             const size = isSizeExceded / (1024 * 1024);
             this.maxSizeOver = size > this.maxVideoSize ? true : false;
@@ -267,6 +279,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             }
         } else{
           this.customResponse = new CustomResponse( 'ERROR',this.videoUtilService.fileTypeMessage, true );
+          this.defaultSettings();
         }
      }catch(error) { this.xtremandLogger.error('Error in upload video, fileSizeCheck method'+error);}
     }
@@ -659,14 +672,14 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 swal.close();
                 console.log(result);
                 this.processing = true;
-
                 this.processVideo(result.path);
             },
             (error: any) => {
                 this.errorIsThere = true;
                 this.xtremandLogger.errorPage(error);
+                swal.close();
             });
-          }catch(error){ this.xtremandLogger.error('Error in upload vidoe dropbox'+error);}
+          }catch(error){ this.xtremandLogger.error('Error in upload vidoe dropbox'+error);swal.close();}
     }
     /* box retreive videos */
     downloadFrombox() {
@@ -699,6 +712,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                     }, (error: any) => {
                         self.errorIsThere = true;
                         self.xtremandLogger.errorPage(error);
+                        swal.close();
                     });
             } else {
                 swal('Only video files can be uploaded.');
@@ -709,7 +723,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             console.log('The user clicked cancel or closed the popup');
             self.defaultSettings();
         });
-      } catch(error) { this.xtremandLogger.error('upload video downloadFrombox'+error);}
+      } catch(error) { this.xtremandLogger.error('upload video downloadFrombox'+error);swal.close();}
     };
     /* google drive retreive videos */
     onApiLoad() {
@@ -775,7 +789,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             self.picker.setVisible(false);
             self.picker.dispose();
         }
-      }catch(error) {this.xtremandLogger.error('Error in upload video pickerCallback'+error); }
+      }catch(error) {this.xtremandLogger.error('Error in upload video pickerCallback'+error);swal.close(); }
     }
     downloadGDriveFile(fileId: any, name: string) {
        try{
@@ -796,11 +810,12 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 }, (error: any) => {
                     this.errorIsThere = true;
                     this.xtremandLogger.errorPage(error);
+                    swal.close();
                 });
         } else {
             swal('Only video files can be uploaded');
         }
-       } catch(error){this.xtremandLogger.error('error in upload vidoe downloadGDriveFile'+error); }
+       } catch(error){this.xtremandLogger.error('error in upload vidoe downloadGDriveFile'+error); swal.close();}
     }
 
     isVideo(filename: any) {
@@ -824,9 +839,391 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         }
         return false;
     }
+
+    isContentVideo(files: any) {
+      for (let i = 0; i < files.length; i++) {
+      const parts = files[i].name.split('.');
+      const ext = parts[parts.length - 1];
+      switch (ext.toLowerCase()) {
+          case 'm4v':break;
+          case 'avi':break;
+          case 'mpg':break;
+          case 'mp4':break;
+          case 'flv':break;
+          case 'mov':break;
+          case 'wmv':break;
+          case 'divx':break;
+          case 'f4v':break;
+          case 'mpeg':break;
+          case 'vob':break;
+          case 'xvid':break;
+          default: return false;
+         }
+      }
+      return true;
+  }
+    isOtherThanVideo(files: any) {
+        for (let i = 0; i < files.length; i++) {
+
+            const parts = files[i].name.split('.');
+            const ext = parts[parts.length - 1];
+            switch (ext.toLowerCase()) {
+                case 'csv':break;
+                case 'cvs':break;
+                case 'gif':break;
+                case 'html':break;
+                case 'jpg':break;
+                case 'jpeg':break;
+                case 'doc':break;
+                case 'pdf':break;
+                case 'png':break;
+                case 'ppt':break;
+                case 'pptx':break;
+                case 'txt':break;
+                case 'xls':break;
+                case 'xlsx':break;
+                case 'zip':break;
+                case 'docx':break;
+                case 'docm':break;
+                case 'dotm':break;
+                case 'dotx':break;
+                case 'dot':break;
+                case 'dotx':break;
+                case 'xps':break;
+                case 'rtf':break;
+                case 'odt':break;
+                case 'wps':break;
+                case 'htm':break;
+                case 'mht':break;
+                case 'mhtml':break;
+                default:return false;
+                // etc
+            }
+        }
+        return true;
+    }
     dropClick(){
       $('#file-upload').click();
     }
+    contentDropClick(){
+      $('#content-upload').click();
+    }
+    contentUpload( event: any ) {
+      // this.contentProcessing = true;
+      this.customResponse.isVisible = false;
+      try {
+          let files: Array<File>;
+          if ( event.target.files ) { files = event.target.files; }
+          else if ( event.dataTransfer.files ) { files = event.dataTransfer.files; }
+          console.log(files);
+          let size:any = 0;
+          if(!this.isContentVideo(files)){
+          for (let i = 0; i < files.length; ++i) { size = size + files[i].size;  }
+          console.log(size);
+          if(size <= 12582912){
+          this.contentProcessing = true;
+          const formData: FormData = new FormData();
+          $.each( files, function( index, file ) {
+              formData.append( 'files', file, file.name );
+          });
+          this.uploadToServer( formData );
+         }
+         else {
+          this.customResponse = new CustomResponse( 'ERROR', "Unable to upload files because your files size is more than 12 MB", true );
+         }
+        } else {
+          this.customResponse = new CustomResponse( 'ERROR', "Please upload supported file types like image files, gifs,doc,htm, pdf, xls.", true );
+        }
+      } catch ( error ) {  this.customResponse = new CustomResponse( 'ERROR', "Unable to upload file", true );  }
+    }
+      uploadToServer( formData: FormData ) {
+        this.contentProcessing = true;
+        this.emailTemplateService.uploadFile( this.loggedInUserId, formData )
+            .subscribe( data => {
+              if ( data.statusCode === 1020 ) {
+                this.refService.contentManagementLoader = true;
+                setTimeout(() => {  this.router.navigate(['/home/content-management/manage']); }, 1200);
+              } else { this.contentProcessing = false; this.customResponse = new CustomResponse( 'ERROR', data.message, true );  }
+            },
+            ( error: string ) => { this.xtremandLogger.errorPage( error );this.contentProcessing = false; });
+      }
+      dropBoxContentChange() {
+          try{
+          if (this.isChecked === true && this.processing !== true && this.sweetAlertDisabled === false &&
+                this.sweetAlertMesg === 'DropBox') { swal('Oops...', 'You minimized DropBox window!', 'error'); }
+            if (this.isChecked !== true && this.cloudDrive === false && this.camera === false && this.cloudOneDrive === false &&
+                this.cloudBox === false) {
+                this.cloudDropbox = true;
+                this.isDisable = true;
+                this.isFileDrop = true;
+                this.isChecked = true;
+                this.sweetAlertDisabled = false;
+                this.sweetAlertMesg = 'DropBox';
+                this.fileDropDisabled();
+                this.downloadFromDropboxContent();
+                $('.camera').attr('style', 'cursor:not-allowed; opacity:0.5');
+                $('.googleDrive').attr('style', 'cursor:not-allowed; opacity:0.5');
+                $('.box').attr('style', 'cursor:not-allowed; opacity:0.5');
+                $('.oneDrive').attr('style', 'cursor:not-allowed; opacity:0.5');
+               // $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:0.6');
+                this.cloudContentArr=new Array<CloudContent>();
+              }
+            } catch(error){this.xtremandLogger.error('Error in upload content dropBoxChange method'+error);}
+        }
+      downloadFromDropboxContent() {
+          try{
+          if (this.processing !== true) {
+                const self = this;
+                const options = {
+                    success: function (files: any) {
+                        self.cloudStorageSelected = true;
+                        self.dropboxContent(files);
+                    },
+                    cancel: function () {
+                        self.defaultSettings();
+                    },
+                    linkType: 'direct',
+                    multiselect: true,
+                    extensions: ['.csv', '.cvs', '.gif','.html','.jpg', '.jpeg','.pdf','.png','.ppt','.pptx' ,'.txt' ,'.xls','.xlsx','.zip'],
+                };
+                Dropbox.choose(options);
+            }
+          }catch(error) {this.xtremandLogger.error('Error in upload content downloadFromDropbox'+error); }
+        }
+      dropboxContent(files: any) {
+          try{
+          swal({
+                text: 'Thanks for waiting while we retrieve your files from Drop box',
+                allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif',
+            });
+            for(let i=0;i<files.length;i++){
+                   var cloudContent = {
+                           'downloadLink': files[i].link,
+                           'fileName':files[i].name,
+                           'oauthToken':null
+
+                   }
+                   this.cloudContentArr.push(cloudContent);
+            }
+            this.cloudUploadService.downloadFromDropboxContent(this.cloudContentArr)
+                .subscribe((result: any) => {
+                    swal.close();
+                    this.contentProcessing = true; this.processing = false;
+                    this.refService.contentManagementLoader=true;
+                    setTimeout(() => {  this.router.navigate(['/home/content-management/manage']); }, 1200);
+                },
+                (error: any) => {
+                    this.errorIsThere = true;
+                    this.xtremandLogger.errorPage(error);
+                    swal.close();
+                });
+              }catch(error){ this.xtremandLogger.error('Error in upload content from dropbox'+error);}
+        }
+
+      boxContentChange() {
+          try{
+            if (this.isChecked === true && this.processing !== true && this.sweetAlertDisabled === false &&
+                this.sweetAlertMesg === 'Box') { swal('Oops...', 'You minimized Box window!', 'error'); }
+            if (this.isChecked !== true && this.cloudDrive === false && this.camera === false && this.cloudOneDrive === false &&
+                this.cloudDropbox === false) {
+                this.cloudBox = true;
+                this.isDisable = true;
+                this.isFileDrop = true;
+                this.isChecked = true;
+                this.sweetAlertDisabled = false;
+                this.sweetAlertMesg = 'Box';
+                this.fileDropDisabled();
+                this.downloadContentFrombox();
+                this.cloudOneDrive = true;
+                this.cloudDrive = true;
+                $('.googleDrive').attr('style', 'cursor:not-allowed; opacity:0.5');
+                $('.dropBox').attr('style', 'cursor:not-allowed; opacity:0.5');
+                $('.camera').attr('style', 'cursor:not-allowed; opacity:0.5');
+                $('.oneDrive').attr('style', 'cursor:not-allowed; opacity:0.5');
+              //  $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:0.6');
+                this.cloudContentArr=new Array<CloudContent>();
+            }
+          } catch(error){this.xtremandLogger.error('Error in upload video box method'+error);}
+        }
+
+      downloadContentFrombox() {
+          try{
+            const value = this;
+            const options = {
+                clientId: 'a8gaa6kwnxe10uruyregh3u6h7qxd24g',
+                linkType: 'direct',
+                multiselect: true,
+            };
+            const boxSelect = new BoxSelect(options);
+            if (value.processing !== true) {
+                boxSelect.launchPopup();
+            }
+            const self = this;
+            boxSelect.success(function (files: any) {
+                if (!self.isContentVideo(files)) {
+                    self.cloudStorageSelected = true;
+                    swal({
+                        text: 'Thanks for waiting while we retrieve your files from Box',
+                        allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif'
+                    });
+                    for(let i=0;i<files.length;i++){
+                        var cloudContent = {
+                                'downloadLink': files[i].link,
+                                'fileName':files[i].name,
+                                'oauthToken':null
+
+                        }
+                        self.cloudContentArr.push(cloudContent);
+                 }
+                    self.cloudUploadService.downloadContentFromBox(self.cloudContentArr)
+                        .subscribe((result: any) => {
+                            console.log(result);
+                            swal.close();
+                            self.contentProcessing = true; self.processing = false;
+                            self.refService.contentManagementLoader=true;
+                            setTimeout(() => {  self.router.navigate(['/home/content-management/manage']); }, 1200);
+                        }, (error: any) => {
+                            self.errorIsThere = true;
+                            self.xtremandLogger.errorPage(error);
+                        });
+                } else {
+                    swal('Other than video files can be uploaded.');
+                    self.defaultSettings();
+                }
+            });
+            // Register a cancel callback handler
+            boxSelect.cancel(function () {
+                console.log('The user clicked cancel or closed the popup');
+                self.defaultSettings();
+            });
+          } catch(error) { this.xtremandLogger.error('upload video downloadFrombox'+error);swal.close();}
+        };
+
+        googleDriveContentChange() {
+            try{
+            this.sweetAlertMesg = 'Drive';
+              if(this.uploader.queue.length === 0){
+              this.cloudContentArr=new Array<CloudContent>();
+              this.onApiLoadContent();    // google drive code
+              }
+            } catch(error){this.xtremandLogger.error('Error in upload content googleDriveChange method'+error);}
+          }
+
+        onApiLoadContent() {
+            if (this.processing !== true) {  // for not clicking again on the google drive
+                const self = this;
+                gapi.load('auth', { 'callback': self.onAuthApiLoadContent.bind(this) });
+                gapi.load('picker', { 'callback': self.onPickerApiLoadContent.bind(this) });
+            }
+        }
+        onAuthApiLoadContent() {
+            window['gapi'].auth.authorize(
+                {
+                    'client_id': '982456748855-68ip6tueqej7757qsg1l0dd09jqh0qgs.apps.googleusercontent.com',
+                    'scope': ['https://www.googleapis.com/auth/drive.readonly'],
+                    'immediate': false
+                },
+                this.handleAuthResultContent.bind(this));
+        }
+        handleAuthResultContent(authResult: any) {
+            console.log('close window google drive');
+            const self = this;
+            if (authResult && !authResult.error) {
+                self.tempr = authResult.access_token;
+                self.createPickerContent();
+            }
+
+        }
+        onPickerApiLoadContent() {
+            const self = this;
+            this.pickerApiLoaded = true;
+            self.createPickerContent();
+        }
+        createPickerContent() {
+            const self = this;
+            if (self.tempr) {
+                const pickerBuilder = new google.picker.PickerBuilder();
+                self.picker = pickerBuilder
+                    .enableFeature(google.picker.Feature.NAV_HIDDEN)
+                    .enableFeature(google.picker.Feature.MULTISELECT_ENABLED)
+                    .setOAuthToken(self.tempr)
+                    .addView(google.picker.ViewId.DOCS)
+                    .setDeveloperKey('AIzaSyAcKKG96_VqvM9n-6qGgAxgsJrRztLSYAI')
+                    .setCallback(self.pickerCallbackContent.bind(this))
+                    .build();
+                self.picker.setVisible(true);
+            }
+        }
+        pickerCallbackContent(data: any) {
+            try{
+            const self = this;
+              if (data[google.picker.Response.ACTION] === google.picker.Action.PICKED) {
+                  self.cloudStorageSelected = true;
+                  const doc = data[google.picker.Response.DOCUMENTS][0];
+                  if (self.picker) {
+                      self.picker.setVisible(false);
+                      self.picker.dispose();
+                  }
+                  swal({
+                      text: 'Thanks for waiting while we retrieve your content from Google Drive',
+                      allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif'
+                  });
+                  self.downloadGDriveFileContent(data[google.picker.Response.DOCUMENTS]);
+              } else if (data[google.picker.Response.ACTION] === google.picker.Action.CANCEL) {
+                  self.picker.setVisible(false);
+                  self.picker.dispose();
+              }
+            }catch(error) {this.xtremandLogger.error('Error in upload content pickerCallback'+error); swal.close(); }
+          }
+          downloadGDriveFileContent(files:any) {
+             try{
+              const self = this;
+              if (!self.isContentVideo(files)) {
+                  for(let i=0;i<files.length;i++){
+                      var cloudContent = {
+                              'downloadLink': 'https://www.googleapis.com/drive/v3/files/' + files[i].id + '?alt=media',
+                              'fileName':files[i].name,
+                              'oauthToken':self.tempr
+
+                      }
+                      self.cloudContentArr.push(cloudContent);
+               }
+                  //const downloadLink = 'https://www.googleapis.com/drive/v3/files/' + fileId + '?alt=media';
+                  self.cloudUploadService.downloadContentFromGDrive(self.cloudContentArr)
+                      .subscribe((result: any) => {
+                          console.log(result);
+                          swal.close();
+                          if (self.picker) {
+                              self.picker.setVisible(false);
+                              self.picker.dispose();
+                          }
+                          if (!self.redirectPge) { self.cloudStorageDisabled(); }
+                          self.contentProcessing = true; self.processing = false;
+                          self.videoFileService.videoFileSweetAlertMessage = false;
+                          self.refService.contentManagementLoader=true;
+                          setTimeout(() => {  self.router.navigate(['/home/content-management/manage']); }, 1200);
+                      }, (error: any) => {
+                          this.errorIsThere = true;
+                          this.xtremandLogger.errorPage(error);
+                          if (self.picker) {
+                            self.picker.setVisible(false);
+                            self.picker.dispose();
+                            self.videoFileService.videoFileSweetAlertMessage = false;
+                        }
+                      });
+              } else {
+                  if (self.picker) {
+                  self.picker.setVisible(false);
+                  self.picker.dispose();
+                  }
+                    self.router.navigate(['/home/videos']);
+                    self.videoFileService.videoFileSweetAlertMessage = true;
+                //  google.script.host.close();
+                  swal('Other than video files can be uploaded');
+              }
+             } catch(error){this.xtremandLogger.error('error in upload content downloadGDriveFile'+error);swal.close(); }
+          }
+
     ngOnInit() {
         QuickSidebar.init();
         try {
@@ -857,7 +1254,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         }
         this.isChecked = false;
         if ((this.isProgressBar || this.uploadeRecordVideo  || this.cloudStorageSelected || this.processing )
-            && this.errorIsThere === false && (this.router.url !=='/')) {
+            && this.errorIsThere === false && (this.router.url !=='/') && !this.contentProcessing && !this.videoFileService.videoFileSweetAlertMessage) {
             this.redirectPge = true;
             this.videoFileService.isProgressBar = true;
           //  $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:1');

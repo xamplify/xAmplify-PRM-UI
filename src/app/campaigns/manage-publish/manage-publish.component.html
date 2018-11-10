@@ -36,12 +36,8 @@
 						<div class="page-toolbar col-xs-6 col-sm-12 col-md-6">
 							<div class="btn-group pull-right">
 								<ng-container class='m10'>
-									<button class="btn btn-xs hidden-xs" [disabled]="isListView" (click)="isListView = true" title="List View">
-										<i class="fa fa-th-list p10" aria-hidden="true"></i>
-									</button>
-									<button class="btn btn-xs hidden-xs" [disabled]="!isListView" (click)="isListView = false" title="Grid View">
-										<i class="fa fa-th-large p10" aria-hidden="true"></i>
-									</button>
+									<span class="btn btn-xs hidden-xs" data-toggle="tooltip" data-placement="bottom" title="List View" [class.disabled]="isListView" (click)="isListView = true" style="background-color:#e2e2e2"><i class="fa fa-th-list p10" aria-hidden="true"></i></span>
+                         <span class="btn btn-xs hidden-xs"  data-toggle="tooltip" data-placement="bottom" title="Grid View" [class.disabled]="!isListView" (click)="isListView = false" style="background-color:#e2e2e2"><i class="fa fa-th-large p10" aria-hidden="true"></i></span>
 								</ng-container>
 								<div class="inputs" align="right" style="float: right">
 									<div style="float: left;">
@@ -127,7 +123,7 @@
 										<app-timestamp [isOnlyDate]="true" [dateAndTime]="campaign.createdDate"> </app-timestamp>
 										</td>
 										<td class="center">
-											<div class="actions-block">
+											<div class="actions-block override-actions">
 												<ng-container *ngIf="!campaign.launched">
 													<a *ngIf="hasAllAccess || (campaign.launched==false&&hasCampaignRole && loggedInUserId==campaign.userId)
 
@@ -367,7 +363,7 @@
 						</div>
 					</div>
 					<div *ngIf="totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError" style="background:white">
-						<div *ngIf="pagination.pagedItems.length !== 0">
+						<div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
 							<app-pagination [pagination]="pagination" [type]="'campaign'" [isDropdown]="true" (notifyParent)="setPage($event)" (notifyParentDropDown)="listCampaign($event)"></app-pagination>
 							<select class="form-control" style="float: right; width: auto;" [(ngModel)]="itemsSize" (ngModelChange)="getNumberOfItemsPerPage($event)">
 								<option *ngFor="let itemPerPage of numberOfItemsPerPage" [ngValue]="itemPerPage">{{itemPerPage.name}}</option>

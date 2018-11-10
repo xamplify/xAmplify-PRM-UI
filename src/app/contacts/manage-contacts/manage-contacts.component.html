@@ -139,12 +139,8 @@
 
 										<div class="btn-group pull-right">
 												<ng-container class='m10'>
-												<button class="btn btn-xs hidden-xs" [disabled]="isListView" (click)="isListView = true" title="List View">
-													<i class="fa fa-th-list p10" aria-hidden="true"></i>
-												</button>
-												<button class="btn btn-xs hidden-xs" [disabled]="!isListView" (click)="isListView = false" title="Grid View">
-													<i class="fa fa-th-large p10" aria-hidden="true"></i>
-												</button>
+												<span class="btn btn-xs hidden-xs" data-toggle="tooltip" data-placement="bottom" title="List View" [class.disabled]="isListView" (click)="isListView = true" style="background-color:#e2e2e2"><i class="fa fa-th-list p10" aria-hidden="true"></i></span>
+                         						<span class="btn btn-xs hidden-xs"  data-toggle="tooltip" data-placement="bottom" title="Grid View" [class.disabled]="!isListView" (click)="isListView = false" style="background-color:#e2e2e2"><i class="fa fa-th-large p10" aria-hidden="true"></i></span>
 												</ng-container>
 												<div class="inputs sort-class" align="right" style="float: right">
 													<div [ngClass]="{'search-css': !referenceService.isMobileScreenSize(), 'mobile-css':referenceService.isMobileScreenSize() }">
@@ -164,7 +160,7 @@
 																[(ngModel)]="searchKey"
 																[ngModelOptions]="{standalone: true}"
 																(input)="searchKeyValue('contactList')"
-																class="form-control" placeholder="Search For a List" (keypress)="eventHandler($event.keyCode)">
+																class="form-control" placeholder="Search for a list" (keypress)="eventHandler($event.keyCode)">
 
 														<button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey=''"></button>
 														<button type="submit" class="search-box-item-click" (click)="search('contactList')"><i class="fa fa-search"></i></button>
@@ -241,7 +237,7 @@
 													</td>
 													<td class="text-center hidden-xs">{{contactList.noOfContacts}}</td>
 													<td *ngIf="!authenticationService.isSuperAdmin()">
-														<div class="actions-block">
+														<div class="actions-block override-actions">
 															<a
 																*ngIf="(hasAllAccess || authenticationService.module.isVendor || (hasContactRole && loggedInUserId == contactList.uploadedUserId) || authenticationService.isOnlyPartner()) && !contactList.synchronisedList"
 																(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.synchronisedList)"
@@ -436,7 +432,7 @@
 													[(ngModel)]="searchKey"
 													[ngModelOptions]="{standalone: true}"
 													(input)="searchKeyValue('contacts')" class="form-control"
-													placeholder="Search For {{checkingContactTypeName}}" (keypress)="eventHandler($event.keyCode)">
+													placeholder="Search for a {{checkingContactTypeName}}" (keypress)="eventHandler($event.keyCode)">
 
 													<button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey=''"></button>
 														<button type="submit" class="search-box-item-click" (click)="search('contacts')"><i class="fa fa-search"></i></button>
@@ -570,7 +566,7 @@
 															<h5 *ngIf="contact?.zipCode || contact.country" class='mt0'>{{contact.zipCode}}<span *ngIf="contact?.zipCode && contact.country">,&nbsp;</span>{{contact.country}}</h5>
 														</td>
 													 	<td align="center" *ngIf="isPartner && contactsByType.selectedCategory == 'non-active'">
-                              <div class="actions-block">
+                              <div class="actions-block override-actions">
                               <a *ngIf="!contact.signedUp" data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.partner_reSendMail}}" (click)="sendMail(contact.id)">
                                 <i class="fa fa-envelope"></i>
                               </a>
@@ -676,5 +672,31 @@
 		</div>
 	</div>
 </div>
+
+<!-- Save As Modal -->
+<div class="modal right fade" id="saveAsModal" tabindex="-1" role="dialog" aria-labelledby="saveAsModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-copy" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title f-w-600" id="saveAsModalLabel">{{checkingContactTypeName}} List Name</h4>
+				<button type="button" class="close-circle" data-dismiss="modal" style=" position: relative;top: -24px;">
+					<i class="fa fa-times"></i>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="form-group">
+					<label for="campaignName">Name</label>
+          <input class="form-control" type="text" id="campaignName" [(ngModel)]="saveAsListName">
+          <span style="color:red">{{saveAsError}}</span>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary"  (click)="saveAsInputChecking()">Save changes</button>
+			</div>
+		</div>
+	</div>
+</div>
+
 
 <!-- END PAGE CONTENT-->

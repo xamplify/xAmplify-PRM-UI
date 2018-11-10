@@ -33,6 +33,8 @@ export class VideoFileService {
     isSliderClicked = false;
     seekbarTime: any;
     videoType: any;
+    videoFileSweetAlertMessage: boolean;
+
     URL: string = this.authenticationService.REST_URL + 'videos/';
     constructor(private http: Http, private authenticationService: AuthenticationService,public httpClient: HttpClient) {
         console.log('VideoFileService constructor');

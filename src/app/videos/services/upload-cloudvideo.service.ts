@@ -7,6 +7,7 @@ import { Observable } from 'rxjs/Observable';
 export class UploadCloudvideoService {
 
     public URL: string = this.authenticationService.REST_URL + 'videos/upload-cloud-video';
+    public CLOUDURL: string = this.authenticationService.REST_URL + 'videos/upload-cloud-content';
     constructor(private http: Http, private authenticationService: AuthenticationService) {
         console.log('cloud service constructor');
     }
@@ -15,6 +16,13 @@ export class UploadCloudvideoService {
         const url = this.URL + '?access_token=' + this.authenticationService.access_token +
             '&downloadLink=' + downloadLink + '&fileName=' + fileName + '&userId=' + this.authenticationService.user.id;
         return this.http.post(url, "")
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    downloadFromDropboxContent(files: any){
+        const url = this.CLOUDURL + '?access_token=' + this.authenticationService.access_token +
+            '&userId=' + this.authenticationService.user.id;
+        return this.http.post(url, files)
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -27,6 +35,14 @@ export class UploadCloudvideoService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+    
+    downloadContentFromBox(files:any): Observable<any> {
+    	 const url = this.CLOUDURL + '?access_token=' + this.authenticationService.access_token +
+         '&userId=' + this.authenticationService.user.id;
+     return this.http.post(url, files)
+         .map(this.extractData)
+         .catch(this.handleError);
+    }
 
     downloadFromGDrive(downloadLink: string, fileName: string, oauthToken: string): Observable<any> {
         console.log('file path in service' + downloadLink + 'file name' + fileName + 'oauthToken' + oauthToken);
@@ -36,6 +52,14 @@ export class UploadCloudvideoService {
         return this.http.post(url, "")
             .map(this.extractData)
             .catch(this.handleError);
+    }
+    
+    downloadContentFromGDrive(files:any): Observable<any> {
+        const url = this.CLOUDURL + '?access_token=' + this.authenticationService.access_token +
+        '&userId=' + this.authenticationService.user.id;
+    return this.http.post(url, files)
+        .map(this.extractData)
+        .catch(this.handleError);
     }
 
     extractData(res: Response) {

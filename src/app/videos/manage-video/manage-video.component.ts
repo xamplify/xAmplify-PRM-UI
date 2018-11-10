@@ -107,10 +107,10 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.loadVideos(this.pagination);
     }
     mouseEnter(videoFile){
-      (<HTMLInputElement>document.getElementById('imagePathVideo'+videoFile.id)).src = videoFile.gifImagePath;
+      if(videoFile.processed){(<HTMLInputElement>document.getElementById('imagePathVideo'+videoFile.id)).src = videoFile.gifImagePath; }
     }
     mouseLeave(videoFile){
-       (<HTMLInputElement>document.getElementById('imagePathVideo'+videoFile.id)).src = videoFile.imagePath;
+      if(videoFile.processed){(<HTMLInputElement>document.getElementById('imagePathVideo'+videoFile.id)).src = videoFile.imagePath; }
     }
     getDefaultVideoSettings(){
      this.userService.getVideoDefaultSettings().subscribe((data)=>{ this.referenceService.defaultPlayerSettings = data;});
@@ -217,6 +217,9 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
           }catch(error){
             this.xtremandLogger.error('error'+error);
           }
+    }
+    showPlayVideoEvent(videoFile){
+      if(videoFile.processed){ this.showPlayVideo(videoFile); }
     }
     showPlayVideo(video: SaveVideoFile) {
         try{

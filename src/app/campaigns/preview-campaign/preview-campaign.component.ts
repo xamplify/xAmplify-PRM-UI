@@ -96,7 +96,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     constructor(
             private route: ActivatedRoute,
             private campaignService: CampaignService,
-            private authenticationService: AuthenticationService,
+            public authenticationService: AuthenticationService,
             private contactService: ContactService,
             public referenceService: ReferenceService,
             private pagerService: PagerService,

@@ -93,6 +93,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
     showMessageOnTop() {
         $(window).scrollTop(0);
+        this.customResponse =  new CustomResponse('SUCCESS', 'Copy campaign saved successfully', true);
         // setTimeout(function() { $("#lanchSuccess").slideUp(500); }, 5000);
     }
 
@@ -229,7 +230,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
 
     deleteCampaign(id: number, position: number, campaignName: string) {
-        this.refService.loading(this.httpRequestLoader, true);       
+        this.refService.loading(this.httpRequestLoader, true);
         this.campaignService.delete(id)
             .subscribe(
                 data => {

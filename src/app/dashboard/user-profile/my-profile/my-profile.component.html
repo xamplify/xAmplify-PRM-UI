@@ -95,6 +95,7 @@ input:checked + .slider-new:before {
 				<!-- BEGIN PAGE CONTENT-->
 				<div class="row">
 					<div class="col-md-12">
+              <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 						<!-- BEGIN PROFILE SIDEBAR -->
 						<div class="profile-sidebar" style="width:250px;" *ngIf="userData">
 							<!-- PORTLET MAIN -->
@@ -228,7 +229,6 @@ input:checked + .slider-new:before {
 											</ul>
 										</div>
 										<div class="portlet-body clearfix">
-												<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 											<div class="tab-content">
 											<div class="tab-pane active" id="tab_1_1">
 													<form role="form" [formGroup]="updateUserProfileForm" (ngSubmit)="updateUserProfile()">

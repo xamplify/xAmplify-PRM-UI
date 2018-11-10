@@ -141,7 +141,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
   showError:boolean;
   clientError = false;
   itemOfTags = [];
-
+  isProcessed = true;
   constructor(public referenceService: ReferenceService, public callActionSwitch: CallActionSwitch,
       public videoFileService: VideoFileService, public fb: FormBuilder, public changeDetectorRef: ChangeDetectorRef,
       public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger,private homeComponent:HomeComponent,
@@ -655,7 +655,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
               this.logoDescriptionUrl = this.defaultPlayerValues.brandingLogoDescUri = this.defaultPlayerValues.companyProfile.website;
               this.playerColorsChange(this.defaultPlayerValues.playerColor, this.defaultPlayerValues.controllerColor);
               this.changePlayerColor(this.compPlayerColor);
-              this.changeControllerColor(this.compControllerColor);
+              this.changeControllerColor(this.compControllerColor, this.defaultPlayerValues.enableVideoController);
               this.changeTransperancyControllBar(this.defaultPlayerValues.transparency, this.compControllerColor);
               if (!this.loadNgOninit) { this.enableVideoControllers(this.defaultPlayerValues.enableVideoController); }
               this.defaultPlayerSettingsCondition(this.defaultPlayerValues);
@@ -670,7 +670,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
 
               this.playerColorsChange(this.tempPlayerColor, this.tempControllerColor);
               this.changePlayerColor(this.compPlayerColor);
-              this.changeControllerColor(this.compControllerColor);
+              this.changeControllerColor(this.compControllerColor, this.tempVideoFile.enableVideoController);
               this.changeTransperancyControllBar(this.tempVideoFile.transparency, this.compControllerColor);
               if (!this.loadNgOninit) { this.enableVideoControllers(this.tempVideoFile.enableVideoController); }
               this.defaultPlayerSettingsCondition(this.tempVideoFile);
@@ -695,11 +695,12 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
       $('.video-js .vjs-control-bar .vjs-VR-control').css('cssText', 'color:' + this.saveVideoFile.playerColor + '!important');
       $('.vjs-VR-control .vjs-control .vjs-button enable').css('cssText', 'color:' + this.saveVideoFile.playerColor + '!important');
   }
-  changeControllerColor(event: any) {
-      try{
+  changeControllerColor(event: any, enableVideoController:boolean) {
+     try{
       this.compControllerColor = this.saveVideoFile.controllerColor = event;
+      if(enableVideoController){
       const rgba = this.videoUtilService.transparancyControllBarColor(event, this.valueRange);
-      $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
+      $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important'); }
       }catch(error){
        this.xtremandLogger.error('error'+error);
        this.clientError = true;
@@ -739,6 +740,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   controllBarShow() {
       $('.video-js .vjs-control-bar').show();
+      this.changeControllerColor(this.compControllerColor, this.newEnableController);
   }
   controllBarHide() {
       $('.video-js .vjs-control-bar').hide();
@@ -1136,7 +1138,8 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                   });
               });
           if (this.videoFileService.actionValue === 'Save') {
-              this.videoPlayListSourceMP4();
+              // this.videoPlayListSourceMP4();
+              this.videoPlayListSourceM3U8();
           } else {
               this.videoPlayListSourceM3U8();
           }

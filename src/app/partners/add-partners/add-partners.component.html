@@ -75,7 +75,7 @@ img:hover {
 									<div class="col-xs-12 col-sm-4 col-md-4">
 										<button class="btn-primary btn-block" id="addContacts"
 											(click)="addPartnerModalOpen()"
-							 					[disabled]="selectedAddPartnerOption != 1 && selectedAddPartnerOption != 5">
+							 					[disabled]="selectedAddPartnerOption != 1 && selectedAddPartnerOption != 5 || disableOtherFuctionality">
 											<i class="fa fa-user-plus"></i>
 											<span>One at a Time</span>
 										</button>
@@ -91,12 +91,12 @@ img:hover {
 									</div>
 									<div class="col-xs-12 col-sm-4 col-md-4">
 										<div class="btn-info fileinput-button btn-block" id="uploadCSV" style="min-height:85px"
-											[class.disabled]="selectedAddPartnerOption != 5">
+											[class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality">
 											<i style="display:block; margin-top: 22px !important; text-align: center; font-size:24px; margin:0 auto 10px" class="fa fa-file-excel-o"></i>
 											<span style="display:block; font-size:12px; text-align:center">Upload a	CSV</span>
 									<input type="file" ng2FileSelect [uploader]="uploader" title=" "
 									(change)="fileChange(input)" accept=".csv" #input
-									[disabled]="selectedAddPartnerOption != 5" />
+									[disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality" />
 										</div>
                   </div>
                   </ng-container>
@@ -116,10 +116,10 @@ img:hover {
 									<div class="portlet-body">
 									<div class="row">
 
-											<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
+											<div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
 									<a *ngIf="sfImageNormal" id="salesforceContact_buttonNormal"
 										style="background-color: white" (click)="salesforceContacts()"
-							[class.disabled]="selectedAddPartnerOption != 5 || selectedAddPartnerOption == 7">
+							[class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality || selectedAddPartnerOption == 7 ">
 										<img
 										[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :sfImageBlur==true}"
 										src="assets/images/crm/sf.png" class="salesForceImageClass" data-toggle="tooltip" data-placement="bottom"
@@ -127,7 +127,7 @@ img:hover {
 										height="86" width="90">
 									</a> <a *ngIf="sfImageBlur" id="salesforceContact_button"
 										style="background-color: white" (click)="salesforceContacts()"
-							[class.disabled]="selectedAddPartnerOption != 5 || selectedAddPartnerOption == 7">
+							[class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality || selectedAddPartnerOption == 7">
 										<img
 										[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :sfImageBlur==true}"
 										src="assets/images/crm/sf.png" class="salesForceImageClass" data-toggle="tooltip" data-placement="bottom"
@@ -137,22 +137,22 @@ img:hover {
 										onmouseout="this.src='assets/images/crm/sf.png';">
 									</a>
 									<div id="salesforceGear" style="position: relative"	id="salesforceGear" *ngIf="sfImageNormal">
-										<a [class.disabled]="selectedAddPartnerOption != 5"
+										<a [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality"
 										(click)="settingSocialNetworkOpenModal('salesforce')"> <i id="SgearIcon" class="fa fa-cog" aria-hidden="true"
-											style="position: relative; font-size: 19px; top: -82px; left: 78px;"></i>
+											style="position: relative; font-size: 19px; top: -82px; left: 100px;"></i>
 										</a>
 									</div>
 									<div style="position: relative" *ngIf="!sfImageNormal">
-										<a [class.disabled]="selectedAddPartnerOption != 5"
+										<a [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality"
 										(click)="salesforceContacts()"> <i class="fa fa-plug" aria-hidden="true"
-											style="position: relative; color: grey; font-size: 19px; top: -82px; left: 78px;"></i>
+											style="position: relative; color: grey; font-size: 19px; top: -82px; left: 100px;"></i>
 										</a>
 									</div>
 								</div>
-								<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
+								<div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
 									<a *ngIf="googleImageBlur" id="googleContact_button"
 										style="background-color: white" (click)="googleContacts()"
-							[class.disabled]="selectedAddPartnerOption != 5 || selectedAddPartnerOption == 3">
+							[class.disabled]="selectedAddPartnerOption != 5 || selectedAddPartnerOption == 3 || disableOtherFuctionality">
 										<img
 										[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :googleImageBlur==true}"
 										src="assets/images/crm/google.png" class="googleImageClass" data-toggle="tooltip" data-placement="bottom"
@@ -162,7 +162,7 @@ img:hover {
 										onmouseout="this.src='assets/images/crm/google.png';">
 									</a> <a id="googleContact_buttonNormal" *ngIf="googleImageNormal"
 										style="background-color: white" (click)="googleContacts()"
-							[class.disabled]="selectedAddPartnerOption != 5 || selectedAddPartnerOption == 3">
+							[class.disabled]="selectedAddPartnerOption != 5 || selectedAddPartnerOption == 3 || disableOtherFuctionality">
 										<img
 										[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :googleImageBlur==true}"
 										src="assets/images/crm/google.png" class="googleImageClass" data-toggle="tooltip" data-placement="bottom"
@@ -171,23 +171,23 @@ img:hover {
 									</a>
 									<div id="GoogleGear" style="position: relative"
 										*ngIf="googleImageNormal">
-										<a [class.disabled]="selectedAddPartnerOption != 5"
+										<a [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality"
 										(click)="settingSocialNetworkOpenModal('google')"> <i id="GgearIcon" class="fa fa-cog" aria-hidden="true"
-											style="position: relative; font-size: 19px; top: -82px; left: 78px;"></i>
+											style="position: relative; font-size: 19px; top: -82px; left: 100px;"></i>
 										</a>
 									</div>
 									<div style="position: relative" *ngIf="!googleImageNormal">
-										<a [class.disabled]="selectedAddPartnerOption != 5"
+										<a [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality"
 										(click)="googleContacts()"> <i class="fa fa-plug" aria-hidden="true"
-											style="position: relative; color: grey; font-size: 19px; top: -82px; left: 78px;"></i>
+											style="position: relative; color: grey; font-size: 19px; top: -82px; left: 100px;"></i>
 										</a>
 									</div>
 								</div>
-								<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
+								<div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
 									<a *ngIf="zohoImageBlur" id="zohoContact_button"
 										style="background-color: white"
 										(click)="checkingZohoContactsAuthentication()"
-							[class.disabled]="selectedAddPartnerOption != 5 || selectedAddPartnerOption == 6">
+							[class.disabled]="selectedAddPartnerOption != 5 || selectedAddPartnerOption == 6 || disableOtherFuctionality">
 										<img
 										[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}"
 										src="assets/images/crm/Zoho.png" class="zohoImageClass" data-toggle="tooltip" data-placement="bottom"
@@ -198,7 +198,7 @@ img:hover {
 									</a> <a *ngIf="zohoImageNormal" id="zohoContact_buttonNormal"
 										style="background-color: white"
 										(click)="checkingZohoContactsAuthentication()"
-							[class.disabled]="selectedAddPartnerOption != 5 || selectedAddPartnerOption == 6">
+							[class.disabled]="selectedAddPartnerOption != 5 || selectedAddPartnerOption == 6 || disableOtherFuctionality">
 										<img
 										[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}"
 										src="assets/images/crm/Zoho.png" class="zohoImageClass" data-toggle="tooltip" data-placement="bottom"
@@ -206,19 +206,19 @@ img:hover {
 										height="86" width="90">
 									</a>
 									<div id="zohoGear" style="position: relative" *ngIf="zohoImageNormal">
-										<a [class.disabled]="selectedAddPartnerOption != 5"
+										<a [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality"
 										(click)="settingSocialNetworkOpenModal('zoho')"> <i id="ZgearIcon" class="fa fa-cog" aria-hidden="true"
-											style="position: relative; font-size: 19px; top: -82px; left: 78px;"></i>
+											style="position: relative; font-size: 19px; top: -82px; left: 100px;"></i>
 										</a>
 									</div>
 									<div style="position: relative" *ngIf="!zohoImageNormal">
-										<a [class.disabled]="selectedAddPartnerOption != 5"
+										<a [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality"
 										(click)="checkingZohoContactsAuthentication()"> <i class="fa fa-plug" aria-hidden="true"
-											style="position: relative; color: grey; font-size: 19px; top: -82px; left: 78px;"></i>
+											style="position: relative; color: grey; font-size: 19px; top: -82px; left: 100px;"></i>
 										</a>
 									</div>
 								</div>
-								<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
+								<!-- <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
 									<a id="microsoftContact_button" style="background-color: white">
 										<img src="assets/images/crm/dynamicsCmgSoon.png"
 										class="imageClass imageblur mdImageClass" data-toggle="tooltip" data-placement="bottom"
@@ -226,7 +226,7 @@ img:hover {
 										height="86" width="90" style="margin-bottom: 18px"
 										>
 									</a>
-								</div>
+								</div> -->
 
 									</div>
 									<div class="clearfix"></div>
@@ -255,7 +255,7 @@ img:hover {
 				<li><a id="save_button" *ngIf="selectedAddPartnerOption != 5" (click)="saveContacts()">Save </a></li>
 				<li><a id="cancel_button" *ngIf="selectedAddPartnerOption != 5 || clipBoard" (click)="cancelPartners()">Cancel </a></li>
 				<li><a id="saveAs_button"
-					*ngIf="selectedAddPartnerOption == 5 && !clipBoard" (click)="editContactComponent.saveAs(); editContactComponent.addPartnerSave = true">Save
+					*ngIf="selectedAddPartnerOption == 5 && !clipBoard" (click)="editContactComponent.saveAsChange(); editContactComponent.addPartnerSave = true">Save
 						As </a></li>
 				 <li><a id="exportToExcel"
 					*ngIf="selectedAddPartnerOption == 5 && pagination.pagedItems?.length != 0 && !clipBoard" (click)="downloadPartnerList()">Export
@@ -590,7 +590,7 @@ img:hover {
 													</button>
 												</td> -->
 												<td align="center">
-												<div class="actions-block">
+												<div class="actions-block override-actions">
 												<a id="envolope_{{i}}" *ngIf="!contact.signedUp" data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.partner_reSendMail}}" (click)="sendMail(contact.id)">
 													<i class="fa fa-envelope"></i>
 												</a>

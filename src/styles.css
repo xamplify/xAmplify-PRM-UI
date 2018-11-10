@@ -859,37 +859,10 @@ b, strong {
   cursor:pointer;
 }
 
-/* @media all and (max-width: 768px) {
-  tr { display: block; border: 1px solid grey; padding: 1em; text-align: center; }
-  td { display: inline; padding: 0 .5em; }
-} */
-/*
-td>br { display: none; }
-
-@media all and (max-width: 767px) {
-    td>br { display: block; }
-} */
-
-@media (min-width: 991px) {
-.side-bar {
-  position: relative;
-  right: -42px;
-  top: 24px;
-  cursor: pointer;
-  color: #a8adad;
-  display: block;
-}
-}
-@media ( max-width : 991px) {
-.side-bar{
-  position: relative;
-  right: -42px;
-  top: 24px;
-  cursor: pointer;
-  color: #a8adad;
-  display: none;
-}
-}
+@media screen and (min-width: 991px) {
+.side-bar {position: relative; right: -42px;top: 24px;cursor: pointer;color: #a8adad; display: block;}}
+@media screen and ( max-width : 991px) {
+.side-bar{position: relative;  right: -42px;  top: 24px; cursor: pointer; color: #a8adad;  display: none;} }
 
 .progress {
 	margin-bottom: 0 !important;
@@ -911,14 +884,12 @@ td>br { display: none; }
   margin: auto;
   width: auto;
   height: 100%;
-  -webkit-transform: translate3d(0%, 0, 0);
-      -ms-transform: translate3d(0%, 0, 0);
-       -o-transform: translate3d(0%, 0, 0);
-          transform: translate3d(0%, 0, 0);
+  -webkit-transform: translate3d(0%, 0, 0) !important;
+      -ms-transform: translate3d(0%, 0, 0) !important;
+       -o-transform: translate3d(0%, 0, 0) !important;
+          transform: translate3d(0%, 0, 0) !important;
 }
-
 .modal.right .modal-content {  height: 100%; overflow-y: auto; }
-
 .modal.right.fade .modal-dialog {
   right: -320px;
   -webkit-transition: opacity 0.3s linear, right 0.3s ease-out;
@@ -926,7 +897,7 @@ td>br { display: none; }
        -o-transition: opacity 0.3s linear, right 0.3s ease-out;
           transition: opacity 0.3s linear, right 0.3s ease-out;
 }
-
 .modal.right.fade.in .modal-dialog { right: 0 !important; }
 @media screen and (max-width:600px){.accounts-modal { width:100%; } }
 @media screen and (min-width:601px){.accounts-modal { width:60%;float: right; } }
+/* .override-actions{ margin: 0 auto; display: table;float: none !important; } */
