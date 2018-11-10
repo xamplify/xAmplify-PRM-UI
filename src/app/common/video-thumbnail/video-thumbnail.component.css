@@ -46,10 +46,16 @@
   width: fit-content;
   padding: 1px;
   text-align: center;
-  margin-top: 6px;
+  margin-top: 7px;
 }
 .views-draft{
   margin-top: 3px;
   margin-bottom: -4px;
 }
 .mt7{ margin-top: 7px;}
+.loader-css{
+width: 55px;
+position: relative;
+z-index: 99;
+top: 6px;
+}

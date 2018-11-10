@@ -177,6 +177,11 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                 series: [dataset]
             }));
         });
+        charts[0].xAxis[0].labelGroup.element.childNodes.forEach(function(label)
+        {
+            label.style.cursor = "pointer";
+            label.onclick = function(){ self.totalMinutesWatchedByMostUsers();}
+        });
     }
     videoPlayedandSkippedDuration(views, skipped) {
         let xAxis = ' ';
@@ -625,13 +630,13 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
 
     downloadLogs() {
         if (this.downloadTypeName === 'minetesWatched') {
-            this.logListName = 'Minetes_Views_Logs.csv';
+            this.logListName = 'Minutes_Views_Logs.csv';
             this.downloadCsvList = this.totalUsersWatched;
         } else if (this.downloadTypeName === 'watchedFully') {
             this.logListName = 'Fully_Watched_Logs.csv';
             this.downloadCsvList = this.watchedFullyTotalReportList;
         } else if (this.downloadTypeName === 'worldMapData') {
-            this.logListName = 'country_Wise_Logs.csv';
+            this.logListName = 'Country_Wise_Logs.csv';
             this.downloadCsvList = this.worldMapCampaignUsersTotalData;
         } else if (this.downloadTypeName === 'clickedMenetsWatched') {
             this.logListName = 'Clicked_Menetes_logs.csv';
@@ -659,21 +664,25 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
 
             if (this.downloadTypeName === 'minetesWatched') {
                 object["Email Id"] = this.downloadCsvList[i].emailId;
-                object["Date and Time"] = date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+                let hours = this.referenceService.formatAMPM(date);
+                object["Date and Time"] = date.toDateString().split(' ').slice(1).join(' ') + ' ' + date;
+                object["Minutes watched"] = this.downloadCsvList[i].minutesWatched;
                 object["Device"] = this.downloadCsvList[i].device;
-                object["Location"] = this.downloadCsvList[i].location;
+                object["Location"] = this.downloadCsvList[i].city + ' ' + this.downloadCsvList[i].state + ' ' + this.downloadCsvList[i].country;
             }
             else if (this.downloadTypeName === 'watchedFully') {
                 object["Email Id"] = this.downloadCsvList[i].name;
                 object["Campaign Name"] = this.downloadCsvList[i].campaignName;
-                object["Date and Time"] = date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+                let hours = this.referenceService.formatAMPM(date);
+                object["Date and Time"] = date.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
                 object["Device"] = this.downloadCsvList[i].device;
                 object["Location"] = this.downloadCsvList[i].location;
             }
             else if (this.downloadTypeName === 'worldMapData') {
                 object["Email Id"] = this.downloadCsvList[i].emailId;
                 object["Campaign Name"] = this.downloadCsvList[i].campaignName;
-                object["Date and Time"] = time.toDateString() + ' ' + time.getHours() + ':' + time.getMinutes() + ':' + time.getSeconds();
+                let hours = this.referenceService.formatAMPM(time);
+                object["Date and Time"] = time.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
                 object["Device"] = this.downloadCsvList[i].os;
                 object["City"] = this.downloadCsvList[i].city;
                 object["Country"] = this.downloadCsvList[i].country;
@@ -681,21 +690,26 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             else if (this.downloadTypeName === 'clickedMenetsWatched') {
                 object["Name"] = this.downloadCsvList[i].name;
                 object["Video Title"] = this.downloadCsvList[i].videoTitle;
-                object["Date and Time"] = date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+                let hours = this.referenceService.formatAMPM(date);
+                object["Date and Time"] = date.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
                 object["Minets Watched"] = this.downloadCsvList[i].minutesWatched;
                 object["Device"] = this.downloadCsvList[i].device;
-                object["Location"] = this.downloadCsvList[i].location;
+                object["Location"] = this.downloadCsvList[i].city + ' ' + this.downloadCsvList[i].state + ' ' + this.downloadCsvList[i].country;
             }
             else if (this.downloadTypeName === 'playedDuration') {
                 object["Email Id"] = this.downloadCsvList[i].emailId;
-                object["Start Time"] = date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
-                object["End Time"] = endTime.toDateString() + ' ' + endTime.getHours() + ':' + endTime.getMinutes() + ':' + endTime.getSeconds();
+                let hours = this.referenceService.formatAMPM(date);
+                object["Start Time"] = date.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
+                let endHours = this.referenceService.formatAMPM(endTime);
+                object["End Time"] = endTime.toDateString().split(' ').slice(1).join(' ') + ' ' + endHours;
                 object["Device"] = this.downloadCsvList[i].device;
             }
             else if (this.downloadTypeName === 'skippedDuration') {
                 object["Email Id"] = this.downloadCsvList[i].emailId;
-                object["Start Time"] = date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
-                object["End Time"] = endTime.toDateString() + ' ' + endTime.getHours() + ':' + endTime.getMinutes() + ':' + endTime.getSeconds();
+                let hours = this.referenceService.formatAMPM(date);
+                object["Start Time"] = date.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
+                let endHours = this.referenceService.formatAMPM(endTime);
+                object["End Time"] = endTime.toDateString().split(' ').slice(1).join(' ') + ' ' + endHours;
                 object["Device"] = this.downloadCsvList[i].device;
             }
             this.downloadDataList.push(object);

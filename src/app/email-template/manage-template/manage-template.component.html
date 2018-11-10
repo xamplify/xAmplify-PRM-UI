@@ -62,30 +62,23 @@
 						</div>
 						<div class="colxs-12 col-sm-5">
 							<ng-container class='m10 col-sm-3'>
-							<button class="btn btn-xs hidden-xs" [disabled]="isListView"
-								(click)="isListView = true" title="List View">
-								<i class="fa fa-th-list p10" aria-hidden="true"></i>
-							</button>
-							<button class="btn btn-xs hidden-xs" [disabled]="!isListView"
-								(click)="isListView = false" title="Grid View"
-								style="margin-left: -3px;">
-								<i class="fa fa-th-large p10" aria-hidden="true"></i>
-							</button>
+							<span class="btn btn-xs hidden-xs" data-toggle="tooltip" data-placement="bottom" title="List View" [class.disabled]="isListView" (click)="isListView = true" style="background-color:#e2e2e2; margin-left: -84px;"><i class="fa fa-th-list p10" aria-hidden="true"></i></span>
+                         <span class="btn btn-xs hidden-xs m0"  data-toggle="tooltip" data-placement="bottom" title="Grid View" [class.disabled]="!isListView" (click)="isListView = false" style="background-color:#e2e2e2"><i class="fa fa-th-large p10" aria-hidden="true"></i></span>
 							</ng-container>
 							<div class="btn-group">
 								<select class="form-control col-sm-5"
 									[(ngModel)]="selectedSortedOption"
 									(ngModelChange)="getSortedResult($event)"
-									style="position: relative; right: 0px; top: 1px; width: 186px">
+									style="position: relative; right: -22px;top: 1px;width:190px">
 									<option *ngFor="let sortOption of sortByDropDown"
 										[ngValue]="sortOption">{{sortOption.name}}</option>
 								</select>
 								<div class="portlet-input input-inline input-small col-sm-4">
 									<div class="input-icon right"
-										style="width: 150px; top: 1px; left: -12px">
+										style="width:200px;top:1px;left:14px">
 										<input type="text" class="form-control"
 											[(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"
-											placeholder="search..."
+											placeholder="Search for a template"
 											(keypress)="eventHandler($event.keyCode)">
 										<button
 											class="glyphicon glyphicon-remove search-box-item-clear"
@@ -171,7 +164,7 @@
 											[isOnlyDate]="true" [dateAndTime]="emailTemplate.createdDate">
 										</app-timestamp></td>
 									<td style="width: 14%">
-										<div class="actions-block">
+										<div class="actions-block override-actions">
 											<a (click)="edit(emailTemplate.id)" data-toggle="tooltip"
 												data-placement="top"
 												title="{{actionsDescription.template_edit}}"
@@ -292,7 +285,7 @@
 						</ng-container>
 					</div>
 				</div>
-				<div *ngIf="pagination.pagedItems.length !== 0">
+				<div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
 					<app-pagination [pagination]="pagination" [type]="'t'"
 						(notifyParent)="setPage($event)"
 						(notifyParentDropDown)="listEmailTemplates($event)"></app-pagination>
