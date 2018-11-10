@@ -249,8 +249,6 @@ border-radius:50%
 }
 .thumbnail-wrapper {
   float: left;
-  /* width: 160px;
-  height: 90px; */
   width: 144px;
   height: 81px;
   background-color: #f1f1f1;
@@ -265,4 +263,21 @@ border-radius:50%
   height: 100%;
   width: auto;
   margin: 0 auto;
+}
+.lineplayercontrol{
+  width: 100%;
+  text-align: center;
+  border-bottom: 1px solid #cccbcb;
+  line-height: 0.1em;
+  margin: 25px 0 27px;
+  font-size: 17px;
+}
+.lineplayercontrol span{
+  color: #00a6e8;
+  border: 1px;
+  background: #fff;
+  padding: 0 10px;
+}
+.video-processing-message{
+  height: 315px !important; position: relative;width: 100%;color: white !important;  background-color: rgba(0, 0, 0, 0.92) !important;top: -317px; margin-bottom: -300px;
 }

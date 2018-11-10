@@ -1,6 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
-import { PagerService } from '../core/services/pager.service';
+import { Component, OnInit } from '@angular/core';
 import { ReferenceService } from '../core/services/reference.service';
 import { Pagination } from '../core/models/pagination';
 import { HttpRequestLoader } from '../core/models/http-request-loader';
@@ -39,33 +37,33 @@ export class ContentManagementComponent implements OnInit {
     selectedFileIds = [];
     loader = false;
     loaderWidth: number = 30;
-    searchTitle: any;
+    searchTitle = '';
     searchList: any;
     sortList: any;
     paginatedList: any;
-    
-    sortOptions = [
-                   { 'name': 'Sort By', 'value': ''},
-                   { 'name': 'File Name(A-Z)', 'value': 'fileName'},
-                   { 'name': 'File Name(Z-A)', 'value': 'fileName'},
-                   { 'name': 'Upload Date(ASD)', 'value': 'lastModifiedDate'},
+    isListView = false;
+    sortOptions = [{ 'name': 'Sort By', 'value': ''},  { 'name': 'File Name(A-Z)', 'value': 'fileName'},
+                   { 'name': 'File Name(Z-A)', 'value': 'fileName'},  { 'name': 'Upload Date(ASD)', 'value': 'lastModifiedDate'},
                    { 'name': 'Upload Date(DSD)', 'value': 'lastModifiedDate'},
- ];
+      ];
     sortOption: any = this.sortOptions[0];
-    
-    constructor( private router: Router, private pagerService: PagerService, public referenceService: ReferenceService,
+
+    constructor(public referenceService: ReferenceService,
         public actionsDescription: ActionsDescription, public pagination: Pagination, public socialPagerService: SocialPagerService,
         public authenticationService: AuthenticationService, private logger: XtremandLogger,
         private emailTemplateService: EmailTemplateService, private contentManagement: ContentManagement ) {
         this.loggedInUserId = this.authenticationService.getUserId();
-
+        this.isListView = !this.referenceService.isGridView;
+        if(this.referenceService.contentManagementLoader){
+           this.customResponse = new CustomResponse( 'SUCCESS', 'File(s) processed successfully.', true );
+           this.referenceService.contentManagementLoader = false;
+        }
     }
-    
-    
+
     sortByOption( event: any) {
+        this.referenceService.loading( this.httpRequestLoader, true );
         try {
             this.sortOption = event;
-           
             if ( event.name == "Upload Date(ASD)" ) {
                 this.sortList = this.list.sort(( a, b ) => new Date( b.lastModifiedDate ).getTime() - new Date( a.lastModifiedDate ).getTime() );
             } else if ( event.name == "Upload Date(DSD)" ) {
@@ -74,38 +72,86 @@ export class ContentManagementComponent implements OnInit {
                 this.sortList = this.list.sort((a,b)=> {return a.fileName.localeCompare(b.fileName)});
             } else if ( event.name == "File Name(Z-A)" ) {
                 this.sortList = this.list.sort((a,b)=> {return b.fileName.localeCompare(a.fileName)});
-            } 
-            
+            }
+            this.referenceService.loading( this.httpRequestLoader, false );
             this.paginatedList = this.sortList;
             this.setPage( 1 );
-            
+
         } catch ( error ) {
             console.error( error, "contentManagement", "sorting()" );
         }
     }
-    
+    addImage(filePath: any) {
+          const parts = filePath.split('.');
+          const ext = parts[parts.length - 1];
+          switch (ext.toLowerCase()) {
+              case 'csv': return 'assets/images/content/csv.png';
+              case 'cvs': return 'assets/images/content/cvs.png';
+              case 'gif': return 'assets/images/content/gif.png';
+              case 'html':return 'assets/images/content/html.png';
+              case 'doc':return 'assets/images/content/docs.png';
+              case 'pdf':return 'assets/images/content/pdfs.png';
+              case 'ppt':return 'assets/images/content/ppt.png';
+              case 'pptx':return 'assets/images/content/pptx.png';
+              case 'txt':return 'assets/images/content/text.png';
+              case 'xls':return 'assets/images/content/xls.png';
+              case 'xlsx':return 'assets/images/content/xlsm.png';
+              case 'xlsm':return 'assets/images/content/xlsm.png';
+              case 'zip':return 'assets/images/content/zip.png';
+              case 'docx':return 'assets/images/content/docs.png';
+              case 'docm':return 'assets/images/content/docs.png';
+              case 'dotm':return 'assets/images/content/docs.png';
+              case 'dotx':return 'assets/images/content/docs.png';
+              case 'dot':return 'assets/images/content/docs.png';
+              case 'xps':return 'assets/images/content/xps.jpg';
+              case 'rtf':return 'assets/images/content/rtf.png';
+              case 'odt':return 'assets/images/content/odt.png';
+              case 'wps':return 'assets/images/content/wps.png';
+              case 'htm':return 'assets/images/content/htm.png';
+              case 'mht':return 'assets/images/content/mht.jpg';
+              case 'log':return 'assets/images/content/log.png';
+              case 'mp3':return 'assets/images/content/mp3.png';
+              case 'mhtml':return 'assets/images/content/mhtml.png';
+              default: return 'assets/images/content/error.png';
+              // etc
+          }
+  }
+    changeImage(id:number,path:string){
+       let image = this.addImage(path);
+      (<HTMLInputElement>document.getElementById('content_image_'+id)).src = image;
+      (<HTMLInputElement>document.getElementById('content_image_grid_'+id)).src = image;
+      $('#content_image_'+id).css('cssText', "max-height: 55%; max-width: 69px; position: relative; top: 16px;");
+      $('#content_image_grid_'+id).css('cssText', "border: 0px solid #5a5a5a; max-height: 27% !important");
+    }
+
     imageClick(){
         $('#uploadFile').click();
     }
-    
+    eventHandler( keyCode: any ) { if ( keyCode === 13 ) { this.searchFile(); } }
     searchFile(){
-        this.searchList = this.list.filter(o => o.fileName.includes(this.searchTitle));
+        if(this.searchTitle.replace(/\s+/g, '')===""){
+          this.referenceService.loading( this.httpRequestLoader, true );
+          setTimeout(() => {this.referenceService.loading( this.httpRequestLoader, false ); }, 1000);
+          const paginatedList = this.list;
+          this.paginatedList = paginatedList;
+          this.pager.totalPages = undefined;
+          this.setPage(1);
+         } else if(this.searchTitle){
+          this.referenceService.loading( this.httpRequestLoader, true );
+          setTimeout(() => {this.referenceService.loading( this.httpRequestLoader, false ); }, 1000);
+           this.searchList = [];
+          for(let i=0; i< this.list.length;i++){
+            if(this.list[i].fileName.toLowerCase().includes(this.searchTitle.toLowerCase()) ){  this.searchList.push(this.list[i]);  }
+          }
         this.paginatedList = this.searchList;
-        this.setPage( 1 );
-        
-        
+        this.pagination = new Pagination();
+        this.setPage( 1 ); } else { }
     }
-    
-    
     setPage( page: number ) {
         try {
-            if ( page < 1 || page > this.pager.totalPages ) {
-                return;
-            }
-
+            if ( page < 1 || page > this.pager.totalPages ) { return; }
             this.pager = this.socialPagerService.getPager( this.paginatedList.length, page, this.pageSize );
             this.pagedItems = this.paginatedList.slice( this.pager.startIndex, this.pager.endIndex + 1 );
-
         } catch ( error ) {
             console.error( error, "content management setPage()." )
         }
@@ -127,7 +173,7 @@ export class ContentManagementComponent implements OnInit {
             }
         }
     }
-    
+
     getSelectedListViewFiles( file: any, id: any, event: any ) {
         let isChecked = $( '#list_' + id ).is( ':checked' );
         if ( isChecked ) {
@@ -144,9 +190,7 @@ export class ContentManagementComponent implements OnInit {
         }
     }
 
-    checkListViewCheckboxes(){
-        return null;
-    }
+    checkListViewCheckboxes(){  return null;  }
 
     /**************List Items************************/
     listItems( pagination: Pagination ) {
@@ -154,12 +198,7 @@ export class ContentManagementComponent implements OnInit {
         this.emailTemplateService.listAwsFiles( pagination, this.loggedInUserId )
             .subscribe(
             ( data: any ) => {
-                
-                for(var i=0;i< data.length; i++){
-                    data[i]["id"] = i;
-                }
-                
-                
+               for(var i=0;i< data.length; i++){ data[i]["id"] = i;}
                this.list = data;
                this.searchList = data;
                this.sortList = data;
@@ -171,12 +210,8 @@ export class ContentManagementComponent implements OnInit {
                 this.referenceService.loading( this.httpRequestLoader, false );
                 this.paginatedList = this.list;
                 this.setPage( 1 );
-                
-            },
-            ( error: string ) => {
-                this.logger.errorPage( error );
-            }
-            );
+             },
+             ( error: string ) => {  this.logger.errorPage( error ); } );
     }
 
     /******Preview*****************/
@@ -268,9 +303,7 @@ export class ContentManagementComponent implements OnInit {
             this.referenceService.loading( this.httpRequestLoader, false );
             this.customResponse = new CustomResponse( 'ERROR', "Unable to upload file", true );
         }
-
     }
-
 
     uploadToServer( formData: FormData ) {
        this.loaderWidth = 91;

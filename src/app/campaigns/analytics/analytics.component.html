@@ -442,8 +442,9 @@
 					<div class="portlet-title">
 						<div class="caption">
 							<span class="caption-subject font-red-sunglo" style="font-size: 15px !important;">
-								<span *ngIf="campaignType==='VIDEO'">TOTAL VIEWS FOR THIS CAMPAIGN</span>
-								<span *ngIf="campaignType!=='VIDEO' && campaignType!=='EVENT'">TOTAL EMAIL OPENED FOR THIS CAMPAIGN</span>
+                <span *ngIf="campaignType==='VIDEO'">TOTAL VIEWS FOR THIS CAMPAIGN</span>
+                <span *ngIf="campaignType==='SOCIAL'">TOTAL REDISTRIBUTED FOR THIS CAMPAIGN</span>
+								<span *ngIf="campaignType==='EMAIL'">TOTAL EMAIL OPENED FOR THIS CAMPAIGN</span>
 								<span *ngIf="campaignType === 'EVENT'">RE DISTRIBUTION PARTNER CAMAPAIGN ANALYTICS</span>
 							</span>
 						</div>
@@ -475,7 +476,8 @@
 										<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='VIDEO' || campaignType!=='EVENT'">Latest View</th>
 										<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType!=='EVENT'">
 											<span *ngIf="campaignType==='VIDEO'">Total Views</span>
-											<span *ngIf="campaignType!=='VIDEO'">Total Email Opened</span>
+                      <span *ngIf="campaignType==='EMAIL'">Total Email Opened</span>
+                      <span *ngIf="campaignType==='SOCIAL'">Total Redistributed</span>
 										</th>
 									</tr>
 								</thead>
@@ -542,8 +544,10 @@
 									</ng-container>
 								</tbody>
 							</table>
-						</div>
+            </div>
+            <div class="pg8">
 						<app-pagination  [pagination]="campaignViewsPagination" [type]="'campaignViews'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
+            </div>
           </div>
           </div>
 				</div>
@@ -693,7 +697,7 @@
 							</tbody>
 						</table>
 						</ng-container>
-						<app-pagination [pagination]="rsvpDetailAnalyticsPagination"
+						<app-pagination [pagination]="rsvpDetailAnalyticsPagination" class="pg8"
 						 [type]="'rsvpDetailsPagination'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
 						<!-- <app-pagination [hidden]="detailType === 'email open'" [pagination]="eventCampaingEmailOpenPagination"
 						 [type]="'emailOpenPagination'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination> -->
@@ -741,7 +745,7 @@
 					<span *ngIf="campaignType!=='VIDEO'">Email Opened Count By Recipient </span>
 				</div>
 				<div id="campaign-views-barchart" style="width: 100%; max-width: 100%; height: 260px; margin: 0 auto"></div>
-				<app-pagination *ngIf="pagination.pagedItems?.length > 0" [pagination]="pagination" [type]="'viewsBarChart'" (notifyParent)="setPage($event)" (notifyParentDropDown)= "paginationDropdown($event)"></app-pagination>
+				<div class="pg8"><app-pagination *ngIf="pagination.pagedItems?.length > 0" [pagination]="pagination" [type]="'viewsBarChart'" (notifyParent)="setPage($event)" (notifyParentDropDown)= "paginationDropdown($event)"></app-pagination></div>
 			</div>
 			<div class="col-xs-12 col-sm-6">
 				<div data-animation="slideInUp">
@@ -938,8 +942,9 @@
 						</table>
 						</ng-container>
 					</div>
-					<!--pager here  -->
-					<app-pagination *ngIf="usersWatchListPagination.pagedItems?.length > 0" [pagination]="usersWatchListPagination" [type]="'usersWatch'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
+          <!--pager here  -->
+          <div class="pg8">
+					<app-pagination *ngIf="usersWatchListPagination.pagedItems?.length > 0" [pagination]="usersWatchListPagination" [type]="'usersWatch'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination></div>
 				</div>
 			</div>
 		</div>
@@ -1059,8 +1064,9 @@
 							</tbody>
 						</table>
 						</ng-container>
-					</div>
-					<app-pagination *ngIf="emailActionListPagination.pagedItems?.length > 0" [pagination]="emailActionListPagination" [type]="'emailAction'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
+          </div>
+          <div class="pg8">
+					<app-pagination *ngIf="emailActionListPagination.pagedItems?.length > 0" [pagination]="emailActionListPagination" [type]="'emailAction'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination></div>
 				</div>
 			</div>
 		</div>
@@ -1174,9 +1180,11 @@
 							</tbody>
 						</table>
 						</ng-container>
-						<app-pagination [pagination]="campaignViewsPagination"
+           <div class="pg8">
+            <app-pagination [pagination]="campaignViewsPagination"
 						 [type]="'campaignViews'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
-					</div>
+          </div>
+         </div>
 				</div>
 			</div>
 		</div>
@@ -1241,9 +1249,11 @@
 							</tr>
 						</tbody>
 					</table>
-					</ng-container>
+          </ng-container>
+          <div class="pg8">
 					<app-pagination  *ngIf="pagination.pagedItems?.length > 0" [pagination]="pagination" [type]="'donutCampaign'" (notifyParent)="setPage($event)" (notifyParentDropDown)= "paginationDropdown($event)"></app-pagination>
-				</div>
+        </div>
+        </div>
 			</div>
 		</div>
 	</div>
@@ -1298,10 +1308,12 @@
 							</tr>
 						</tbody>
 					</table>
-					</ng-container>
+          </ng-container>
+          <div class="pg8">
 					<app-pagination *ngIf="pagination.pagedItems?.length > 0"  [pagination]="pagination" [type]="'coutrywiseUsers'"
 					(notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
-				</div>
+         </div>
+        </div>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal" (click)="clearPaginationValues()">Close</button>
@@ -1376,9 +1388,11 @@
 							</td>
 						  </tr>
 						</tbody>
-					</table>
-					<app-pagination  [pagination]="contactListInfoPagination" [type]="'contactListInfo'" (notifyParent)="setPage($event)" [isDropdown]="true"></app-pagination>
-					</div>
+          </table>
+          <div class="pg8">
+					<app-pagination  [pagination]="contactListInfoPagination" [type]="'contactListInfo'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
+          </div>
+        </div>
 				</div>
 				</div>
 				<div class="modal-footer">

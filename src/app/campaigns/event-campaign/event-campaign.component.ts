@@ -747,27 +747,50 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   }
 
   previewEventCampaignEmailTemplate(emailTemplateId: number) {
-    this.emailTemplateService.getById(emailTemplateId)
+    //this.eventCampaign.campaignEventMedias[0].filePath = this.eventCampaign.campaignEventMedias[0].filePath===undefined?null:this.eventCampaign.campaignEventMedias[0].filePath;
+      this.emailTemplateService.getById(emailTemplateId)
           .subscribe(
       (data: any) => {
           if ( this.eventCampaign.campaign ) {
               data.body = data.body.replace( "EVENT_TITLE", this.eventCampaign.campaign );
           }
           if ( this.eventCampaign.campaignEventTimes[0].startTimeString ) {
-              data.body = data.body.replace( "EVENT_START_TIME", this.eventCampaign.campaignEventTimes[0].startTimeString );
+              let startTime = new Date(this.eventCampaign.campaignEventTimes[0].startTimeString);
+              let srtTime = this.referenceService.formatAMPM(startTime);
+              let date1 = startTime.toDateString()
+              if(!this.eventCampaign.campaignEventTimes[0].allDay){
+              data.body = data.body.replace( "EVENT_START_TIME", date1 + " " + srtTime );
+              data.body = data.body.replace( "<To>", 'To' )
+              }else{
+                  data.body = data.body.replace( "EVENT_START_TIME", date1 + " " + srtTime + ' ' + '(All Day)' );
+                  data.body = data.body.replace( "EVENT_END_TIME", " " );
+              }
           }
+
           if ( this.eventCampaign.campaignEventTimes[0].endTimeString ) {
-              data.body = data.body.replace( "EVENT_END_TIME", this.eventCampaign.campaignEventTimes[0].endTimeString );
+              let endDate = new Date(this.eventCampaign.campaignEventTimes[0].endTimeString);
+              let endTime = this.referenceService.formatAMPM(endDate);
+              let date2 = endDate.toDateString()
+              data.body = data.body.replace( "EVENT_END_TIME", date2 + " " + endTime );
           }
+          /*else if(this.eventCampaign.campaignEventTimes[0].allDay){
+
+              let startTime = new Date(this.eventCampaign.campaignEventTimes[0].startTimeString);
+              let date1 = startTime.toDateString()
+              data.body = data.body.replace( "EVENT_END_TIME", date1 + " " + '11:59 PM' );
+          }*/
+
           if ( this.eventCampaign.message ) {
               data.body = data.body.replace( "EVENT_DESCRIPTION", this.eventCampaign.message );
           }
           if ( !this.eventCampaign.onlineMeeting ) {
-              if ( this.eventCampaign.campaignLocation.location ) {
-                  data.body = data.body.replace( "EVENT_LOCATION", this.eventCampaign.campaignLocation.location + "," + this.eventCampaign.campaignLocation.street + "," + "\n" + this.eventCampaign.campaignLocation.city + "," + this.eventCampaign.campaignLocation.state + "," + this.eventCampaign.campaignLocation.zip );
+              if ( this.eventCampaign.campaignLocation.location && this.eventCampaign.campaignLocation.street ) {
+                  data.body = data.body.replace( /ADDRESS_LANE1/g, this.eventCampaign.campaignLocation.location + "," + this.eventCampaign.campaignLocation.street + "," );
+                  data.body = data.body.replace( /ADDRESS_LANE2/g, this.eventCampaign.campaignLocation.city + "," + this.eventCampaign.campaignLocation.state + "," + this.eventCampaign.campaignLocation.zip );
               }
           } else {
-              data.body = data.body.replace( "EVENT_LOCATION", "Online Meeting" )
+              data.body = data.body.replace( /ADDRESS_LANE1/g, "Online Meeting" )
+              data.body = data.body.replace( /ADDRESS_LANE2/g, " " )
           }
           if ( this.eventCampaign.email ) {
               data.body = data.body.replace( "EVENT_EMAILID", this.eventCampaign.email );
@@ -781,6 +804,18 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
           if ( this.eventCampaign.email ) {
               data.body = data.body.replace( "VENDOR_EMAILID", this.authenticationService.user.emailId );
           }
+          if ( this.eventCampaign.campaignEventMedias[0].filePath ) {
+              data.body = data.body.replace( "IMAGE_URL", this.eventCampaign.campaignEventMedias[0].filePath );
+          }else{
+              data.body = data.body.replace( "IMAGE_URL", "https://aravindu.com/vod/images/conference2.jpg" );
+          }
+
+          if ( this.eventCampaign.campaignLocation.location ) {
+              data.body = data.body.replace( "LOCATION_MAP_URL", "https://maps.google.com/maps?q=" + this.eventCampaign.campaignLocation.location + "," + this.eventCampaign.campaignLocation.street + ","+this.eventCampaign.campaignLocation.city + ","+this.eventCampaign.campaignLocation.state + ","+this.eventCampaign.campaignLocation.zip + "&z=15&output=embed" );
+          }else{
+              data.body = data.body.replace( "LOCATION_MAP_URL", "https://maps.google.com/maps?q=42840 Christy Street, uite 100 Fremont, US CA 94538&z=15&output=embed" );
+          }
+
           this.getEmailTemplatePreview( data );
       },
       (error: string) => {
@@ -993,7 +1028,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
                   showCancelButton: true,
                   confirmButtonColor: '#54a7e9',
                   cancelButtonColor: '#999',
-                  confirmButtonText: 'Yes, Save it!'
+                  confirmButtonText: 'Yes, Save it!',
+                  cancelButtonText: 'No'
 
               }).then(function() {
                       self.saveCampaignOnDestroy();

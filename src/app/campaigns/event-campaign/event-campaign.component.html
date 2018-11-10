@@ -282,13 +282,19 @@
                           </td>
                           <td> <h6 class='m0 text-center f-w-600 table-color'>{{contactList.noOfContacts}}</h6> </td>
                           <td class='text-center m0'>
-                            <a>	<i class="fa fa-eye" aria-hidden="true" (click)="loadContactsOnPreview(contactList, contactsPagination);"></i></a>
+                            <a *ngIf="!isPreviewEvent">	<i class="fa fa-eye" aria-hidden="true" (click)="loadContactsOnPreview(contactList, contactsPagination);"></i></a>
+                            <ng-container *ngIf="isPreviewEvent">
+                            <a *ngIf="authenticationService.isOnlyPartner()">
+                                <i class="fa fa-eye disabled" aria-hidden="true"></i>
+                            </a>
+                            <a *ngIf="!authenticationService.isOnlyPartner()">	<i class="fa fa-eye" aria-hidden="true" (click)="loadContactsOnPreview(contactList, contactsPagination);"></i></a>
+                            </ng-container>
                           </td>
                         </tr>
                       </tbody>
                     </table>
                   </div>
-                  <app-pagination style="position: relative;left: -9px;" [pagination]="contactListsPagination" [type]="'contactlists'" (notifyParent)="setPage($event)"
+                  <app-pagination class="pg8" [pagination]="contactListsPagination" [type]="'contactlists'" (notifyParent)="setPage($event)"
                    (notifyParentDropDown)="paginationDropDown($event)"></app-pagination>
                 </ng-template>
                 </div>
@@ -322,8 +328,8 @@
                             </div>
                           </div>
                         </div> -->
-                        
-                        
+
+
                         <ul class="content__list"
 										*ngFor="let emailTemplate of emailTemplates ;let i =index">
 										<li class="list__item" [class.list__item--selected]="eventCampaign.emailTemplate.id === emailTemplate.id"
@@ -368,7 +374,7 @@
 											</div>
 										</li>
 									</ul>
-                        
+
                     </section>
                   </div>
                 </div>
@@ -606,7 +612,7 @@
                 </tr>
               </tbody>
             </table>
-            <app-pagination style="position: relative;left: -10px;" *ngIf="contactsPagination.pagedItems?.length > 0" [pagination]="contactsPagination" [type]="'updatestatuscontacts'"
+            <app-pagination class="pg8" *ngIf="contactsPagination.pagedItems?.length > 0" [pagination]="contactsPagination" [type]="'updatestatuscontacts'"
              (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropDown($event)"></app-pagination>
           </div>
         </div>

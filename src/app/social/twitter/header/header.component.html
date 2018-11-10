@@ -3,8 +3,8 @@
   <div class="profile-header-no-image" *ngIf="!twitterProfile.profileBannerUrl" [ngStyle]="{'background-color': '#'+twitterProfile.linkColor}"></div>
   <img src="{{twitterProfile.profileImageUrl}}" class="img-responsive img-circle profile-image">
   <div class='header-line clearfix'>
-    <div class="col-xs-4"></div>
-    <div class="col-xs-4">
+    <div class="col-xs-12 col-sm-4"></div>
+    <div class="col-xs-12 col-sm-5 items-width" >
       <li class="profilenav-item" *ngFor="let item of twitterNavs" [ngClass]="{'profilenav-item-active': item.isCurrent}">
         <a class="profilenav-stat" [routerLink]="['/home/twitter', socialConnection.profileId, item.name]">
           <span class="profilenav-label" aria-hidden="true">{{item.name | titlecase}}</span>
@@ -13,6 +13,6 @@
         </a>
       </li>
     </div>
-    <div class="col-xs-4"></div>
+    <div class="col-xs-12 col-sm-3"></div>
   </div>
 </div>

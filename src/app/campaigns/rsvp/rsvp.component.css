@@ -1,10 +1,10 @@
 button {
-  min-width: 100px;
+  min-width: 75px;
   border-radius: 30px !important;
 }
 .event-title {
   font-family: Century Gothic;
-  font-size: 32px;
+  font-size: 18px;
   color: #95b101;
   line-height: 51px;
   text-align: center;

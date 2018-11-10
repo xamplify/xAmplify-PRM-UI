@@ -83,6 +83,12 @@ export class EmailTemplateService {
         .catch(this.handleError);
     }
     
+    getByIdImageUri(id:number,imageUri:String){
+        return this.http.post(this.URL+"admin/getEmailTemplateByIdAndImageUri/"+id+"?access_token="+this.authenticationService.access_token+"&imageUri="+imageUri,"")
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+    
     get(id:number){
         return this.http.get(this.URL+"/emailTemplate/"+id)
         .map(this.extractData)

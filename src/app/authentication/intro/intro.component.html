@@ -26,8 +26,8 @@
     <div class="collapse navbar-collapse" id="bs-navbar-collapse-1">
       <ul class="nav navbar-nav nav-left">
         <li><a (click)="goToFeaturesTab()" lang="en">Features</a></li>
-        <li><a (click)="goToTourTab()" lang="en">Tour</a></li>
-        <li><a (click)="goToPricingTab()" lang="en">Pricing</a></li>
+        <!-- <li><a (click)="goToTourTab()" lang="en">Tour</a></li>
+        <li><a (click)="goToPricingTab()" lang="en">Pricing</a></li> -->
         <li><a (click)="goToContactTab()" lang="en">Contact</a></li>
         <li><a [routerLink]="['./terms-conditions']" lang="en">Terms & conditions</a></li>
         <li><a [routerLink]="['./privacy-policy']" lang="en">Privacy policy</a></li>
@@ -48,16 +48,18 @@
     <div class="row">
       <div class="col-md-12">
         <br>
-        <h1 lang="en">Experience the new way of ecosystem marketing</h1>
+        <h1 class="size" lang="en">Experience the new way of ecosystem marketing</h1>
         <br>
-        <p style="color: #fff;" lang="en">Whether you've spent years cultivating your network or are just testing the waters, {{properties.APP_WEBSITE}} provides you with a digital platform that allows you to engage and equip your partners, solidifying relationships and driving sales like never before.</p>
+        <p  class="size-p" style="color: #fff;" lang="en">Whether you've spent years cultivating your network or are just testing the waters, {{properties.APP_WEBSITE}} provides you with a digital platform that allows you to engage and equip your partners, solidifying relationships and driving sales like never before.</p>
         <div class="play-btn"  style="padding: 1em;">
           <a *ngIf="false" href="/embed/sb63hg" class="play litebox-hero"><img src="/assets/images/play-btn.png" alt="play"></a>
          </div>
          <br>
-        <div class="cta-btn"> <a routerLink="/v-signup" class="btn" lang="en">REGISTER <span style="font-size: 14px; color: #333; font-weight: 500;">(free trial)</span></a>
+        <!-- <div class="cta-btn"> <a routerLink="/v-signup" class="btn" lang="en">REGISTER <span style="font-size: 14px; color: #333; font-weight: 500;">(free trial)</span></a> -->
           <!--<p lang="en"><span class="total-number-1">0</span>K Worldwide Signups</p>-->
-        </div>
+        <!-- </div> -->
+        <div class="cta-btn"> <a class="btn" style="text-transform: none !important;" lang="en" href="https://form.jotform.me/83025855234456" target="_blank" >Request a Demo</a>
+         </div>
       </div>
     </div>
   </section>
@@ -163,7 +165,7 @@
           <ul>
             <li lang="en">Cultivate and evaluate your Partner Network by providing more bandwidth to support your engaged Partners</li>
             <li lang="en">Analyze the effectiveness of certain campaigns based on downstream activity</li>
-            <li lang="en">Analyze the effectiveness of certain campaigns based on downstream activity</li>
+            <li lang="en">Discover ways to fine-tune your message with details on video view-time and opened emails</li>
           </ul>
         </article>
       </div>
@@ -304,12 +306,18 @@
 <section class="cta-section section-spacing text-center">
   <div class="container">
     <header class="section-header">
-      <h2 lang="en">Try {{properties.APP_WEBSITE}} Today!</h2>
-      <h3 lang="en">Limited signup only. Order today before the discount period ends.</h3>
+      <h2 lang="en" class="size">Try {{properties.APP_WEBSITE}} Today!</h2>
+      <h3 lang="en" class="size-try-xamplify">Register for your free 30-day trial.</h3>
     </header>
     <div class="row">
-      <div class="col-md-12"> <a [routerLink]="['/v-signup']" routerLinkActive="router-link-active"  class="btn" lang="en">GET STARTED</a>
-        <p lang="en">Have a question? Give us a call <a href="tel:+5107701222">5107701222</a>.</p>
+      <div class="col-md-12">
+        <!-- <a [routerLink]="['/v-signup']" routerLinkActive="router-link-active"  class="btn" lang="en">GET STARTED</a> -->
+        <!-- <a href="https://form.jotform.me/83025855234456" target="_blank"  class="btn" lang="en">Request for Demo</a> -->
+         <div class="cta-btn"> <a routerLink="/v-signup" class="btn" lang="en">REGISTER <span style="font-size: 14px; color: #333; font-weight: 500;">(free trial)</span></a>
+          <!--<p lang="en"><span class="total-number-1">0</span>K Worldwide Signups</p>-->
+        </div>
+        <!-- <p lang="en">Have a question? Give us a call <a href="tel:+5107701222">5107701222</a>.</p> -->
+        <p lang="en">Have a question? Email us at <a style="color: white;">support@xamplify.com</a></p>
       </div>
     </div>
   </div>
@@ -323,7 +331,7 @@
   <div class="container">
     <header class="section-header">
       <h2 lang="en">Contact Us</h2>
-      <h3 lang="en">Have any questions? Get in touch</h3>
+      <h3 lang="en">Have any questions? <a style="color: #0396da;">support@xamplify.com</a></h3>
     </header>
   </div>
   <!--map-->

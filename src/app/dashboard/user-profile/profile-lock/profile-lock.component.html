@@ -16,7 +16,7 @@
 			</div>
 			<form class="lock-form pull-left">
 				<h4 [title]="userData.displayName">{{userData.displayName| slice:0:15}} <span *ngIf="userData.displayName?.length>15">...</span></h4>
-				<div class="form-group">
+				<div class="form-actions">
 					<div *ngIf="error" class="alert alert-custom">
 						<span style="position: relative; top: -3px;">{{error}}</span>
 					</div>
@@ -27,7 +27,7 @@
 
 				</div>
 				<div class="form-actions">
-					<button type="submit" class="btn btn-success uppercase" (click)="lockScreenLogin()">Login</button>
+					<button type="submit" class="btn btn-success uppercase" (click)="lockScreenLogin()" style="padding: 7px 14px !important;">Login</button>
 				</div>
       </form>
     </div>

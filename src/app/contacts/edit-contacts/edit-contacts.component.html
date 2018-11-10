@@ -255,7 +255,7 @@
 													<input type="text"
 														[(ngModel)]="searchKey"
 														[ngModelOptions]="{standalone: true}"
-														class="form-control" placeholder="Search for a{{checkingContactTypeName}}" (keypress)="eventHandler($event.keyCode)">
+														class="form-control" placeholder="Search for a {{checkingContactTypeName}}" (keypress)="eventHandler($event.keyCode)">
 												<button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey=''"></button>
 														<button type="submit" class="search-box-item-click" (click)="search('contactList')"><i class="fa fa-search"></i></button>
 
@@ -471,7 +471,7 @@
 															<th class="hidden-xs">JOB TITLE</th>
 															<th class='text-center hidden-xs'>ADDRESS</th>
 															<!-- <th class='text-center'>MORE</th> -->
-															<th class='text-center' *ngIf="(hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId) || authenticationService.isOnlyPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()) && !isSynchronizationList">ACTIONS</th>
+															<th class='text-center' style="width:11%" *ngIf="(hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId) || authenticationService.isOnlyPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()) && !isSynchronizationList">ACTIONS</th>
 														</tr>
 													</thead>
 													<tbody>
@@ -638,7 +638,7 @@
 						style="top: -13px; width: 104%; left: -6px;">
 						<!-- BEGIN EXAMPLE TABLE PORTLET-->
 						<div class="portlet box blue">
-							<div class="portlet-title"> 
+							<div class="portlet-title">
 								<div class="caption">
 									<span class="capitalize" *ngIf="contactsByType.selectedCategory != 'non-active' && contactsByType.selectedCategory != 'active' && contactsByType.selectedCategory !='invalid'">{{contactsByType.selectedCategory}}
 										{{checkingContactTypeName}} List</span>
@@ -684,7 +684,7 @@
 														(click)="search('contactList')"></i> --> <input type="text"
 														[(ngModel)]="searchKey"
 														[ngModelOptions]="{standalone: true}"
-														class="form-control" placeholder="Search For {{checkingContactTypeName}}" (keypress)="eventHandler($event.keyCode)">
+														class="form-control" placeholder="Search for a {{checkingContactTypeName}}" (keypress)="eventHandler($event.keyCode)">
 														<button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey=''"></button>
 														<button type="submit" class="search-box-item-click" (click)="search('contacts')"><i class="fa fa-search"></i></button>
 												</div>
@@ -712,7 +712,7 @@
 												<th class="hidden-xs">PHONE</th>
 												<th class="hidden-xs">JOB TITLE</th>
 												<th class="hidden-xs">ADDRESS</th>
-												<th *ngIf="isPartner && contactsByType.selectedCategory == 'non-active'">ACTIONS</th>
+												<th *ngIf="isPartner && contactsByType.selectedCategory == 'non-active'" style="width:11%">ACTIONS</th>
 												<!-- <th>MORE</th> -->
 											</tr>
 										</thead>
@@ -885,6 +885,33 @@
 		</div>
 	</div>
 </div>
+
+<!-- save as modal -->
+<div class="modal right fade" id="saveAsEditModal" tabindex="-1" role="dialog" aria-labelledby="saveAsModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-copy" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title f-w-600" id="saveAsModalLabel">{{checkingContactTypeName}} List Name</h4>
+				<button type="button" class="close-circle" data-dismiss="modal" style=" position: relative;top: -24px;">
+					<i class="fa fa-times"></i>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="form-group">
+					<label for="campaignName">Name</label>
+          <input class="form-control" type="text" id="campaignName" [(ngModel)]="saveAsListName">
+          <span style="color:red">{{saveAsError}}</span>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary"  (click)="saveAsInputChecking()">Save changes</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
 <div *ngIf="contactsByType.contactListAssociatedCampaigns?.length && openCampaignModal">
 <app-contacts-campaigns-mails [associatedCampaignDetails]="contactsByType.contactListAssociatedCampaigns" [isPartner]="isPartner"
 [users]="newUserDetails" [contactListId]="contactListId" (notifyParent)="closeModal($event)"></app-contacts-campaigns-mails>

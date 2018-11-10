@@ -8,6 +8,7 @@ import { ReferenceService } from '../../core/services/reference.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
+import { environment } from 'environments/environment';
 declare var BeePlugin,swal,$:any;
 
 @Component({
@@ -26,6 +27,7 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
     loadTemplate = false;
     constructor(private emailTemplateService:EmailTemplateService,private router:Router, private logger:XtremandLogger,
                 private authenticationService:AuthenticationService,public refService:ReferenceService) {
+    console.log('client Id: '+environment.clientId+'and secret id: '+environment.clientSecret);
     var names:any = [];
 		let self = this;
 		self.loggedInUserId = this.authenticationService.getUserId();
@@ -201,7 +203,7 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
            request(
              'POST',
              'https://auth.getbee.io/apiauth',
-             'grant_type=password&client_id=18ff022e-fa4e-47e7-b497-39a12ca4600a&client_secret=FPzc1oxLx3zFjvwrma82TWiP0o3tk1yRVDwyAQqrIZ6jbfdssVo',
+             'grant_type=password&client_id='+environment.clientId+'&client_secret='+environment.clientSecret+'',
              'application/x-www-form-urlencoded',
              function(token:any) {
                BeePlugin.create(token, beeConfig, function(beePluginInstance:any) {
@@ -226,8 +228,8 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
                });
              });
        }
-       
-	    
+
+
 
     	}//End Of Constructor
 

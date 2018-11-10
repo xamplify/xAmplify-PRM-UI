@@ -84,6 +84,7 @@ export class ReferenceService {
     launchedCampaignType = '';
     selectedVideoLogo: string;
     selectedVideoLogodesc: string;
+    contentManagementLoader:boolean;
     constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,
         private router: Router, public deviceService: Ng2DeviceService,private route:ActivatedRoute) {
         console.log('reference service constructor');
@@ -1645,5 +1646,24 @@ export class ReferenceService {
       }
     }
 
+     formatAMPM(date) {
+         var hours = date.getHours();
+         var minutes = date.getMinutes();
+         var ampm = hours >= 12 ? 'pm' : 'am';
+         hours = hours % 12;
+         hours = hours ? hours : 12; // the hour '0' should be '12'
+         minutes = minutes < 10 ? '0'+minutes : minutes;
+         var strTime = hours + ':' + minutes + ' ' + ampm;
+         return strTime;
+       }
 
+     scrollSmoothToBottom () {
+        const scrollingElement = (document.scrollingElement || document.body)
+        $(scrollingElement).animate({ scrollTop: document.body.scrollHeight }, 500);
+     }
+     //Require jQuery
+     scrollSmoothToTop () {
+        const scrollingElement = (document.scrollingElement || document.body)
+        $(scrollingElement).animate({ scrollTop: 0 }, 500);
+     }
 }

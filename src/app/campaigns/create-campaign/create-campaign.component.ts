@@ -2008,14 +2008,15 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                             showCancelButton: true,
                             confirmButtonColor: '#54a7e9',
                             cancelButtonColor: '#999',
-                            confirmButtonText: 'Yes, Save it!'
+                            confirmButtonText: 'Yes, Save it!',
+                            cancelButtonText: "No" 
 
                         }).then(function() {
                                 self.saveCampaignOnDestroy();
                                 /*self.getRepliesData();
                                 self.getOnClickData();*/
                         },function (dismiss) {
-                            if (dismiss == 'cancel') {
+                            if (dismiss == 'No') {
                                 self.reInitialize();
                             }
                         })
