@@ -135,13 +135,21 @@
                    <div class="text-danger" *ngIf="eventError.eventLocationError">Location is required</div>
                   </div>
               </div>
-              <div class="form-group">
+             <div class="form-group">
                 <label for="hostedBy" class="col-sm-3 labal-css">Address</label>
                 <div class="col-sm-9"><input type="text" [attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null" class="form-control" id="eventDateTime" placeholder="Street Address" [(ngModel)]="eventCampaign.campaignLocation.street" [ngModelOptions]="{standalone: true}"></div>
                 <div class="col-sm-offset-3 col-sm-9 pt10">
-                  <div class="col-sm-4 p0"><input type="text" [attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null" class="form-control" id="city" placeholder="City" [(ngModel)]="eventCampaign.campaignLocation.city" [ngModelOptions]="{standalone: true}"></div>
-                  <div class="col-sm-4 p0"><input type="text" [attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null" class="form-control" id="state" placeholder="State" [(ngModel)]="eventCampaign.campaignLocation.state" [ngModelOptions]="{standalone: true}"></div>
-                  <div class="col-sm-4 p0"><input type="text" [attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null" class="form-control" id="zip" placeholder="Zip" [(ngModel)]="eventCampaign.campaignLocation.zip" [ngModelOptions]="{standalone: true}"></div>
+                  <div class="col-sm-6" style="padding-left:0px"><input type="text" [attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null" class="form-control" id="city" placeholder="City" [(ngModel)]="eventCampaign.campaignLocation.city" [ngModelOptions]="{standalone: true}"></div>
+                  <div class="col-sm-6"  style="padding-right:0px"><input type="text" [attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null" class="form-control" id="state" placeholder="State" [(ngModel)]="eventCampaign.campaignLocation.state" [ngModelOptions]="{standalone: true}"></div>
+                </div>
+                <div class="col-sm-offset-3 col-sm-9 pt10">
+                 <div class="col-sm-6"  style="padding-left:0px">
+                  <select [attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null" class="form-control" style="width: 100%;cursor: pointer;"
+                    [(ngModel)]="eventCampaign.campaignLocation.country" [ngModelOptions]="{standalone: true}">
+                      <option *ngFor="let country of countries" [value]="country.name">{{country.name}}</option>
+                    </select>
+                 </div>
+                 <div class="col-sm-6"  style="padding-right:0px"><input type="text" [attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null" class="form-control" id="zip" placeholder="Zip" [(ngModel)]="eventCampaign.campaignLocation.zip" [ngModelOptions]="{standalone: true}"></div>
                 </div>
               </div>
             </section>
@@ -204,8 +212,8 @@
         </div>
         <div class="col-xs-12 p0 mb10">
             <div class="form-group"  (click)="imageClick()">
-                <label for="Event Image" class="col-sm-2 labal-css">Event Image</label>
-                <div class="col-sm-10" (drop)="fileChange($event)">
+                <label for="Event Image" class="col-sm-2 labal-css" style="width:14%">Event Image</label>
+                <div class="col-sm-10" style="width:85.44444%; margin-left: 6px;" (drop)="fileChange($event)">
                   <div class="upload-media-wrapper" *ngIf="! eventCampaign.campaignEventMedias[0].filePath" >
                     <i class="fa fa-camera" aria-hidden="true"></i>
                     <b>Add Event Image</b><br>
@@ -222,8 +230,8 @@
                 </div>
               </div>
               <div class="form-group">
-                <label for="hostedBy" class="col-sm-2 labal-css" style="margin-top:10px;">Event Description <span class=text-danger>*</span></label>
-                <div class="col-sm-10" [ngClass]="{'disabled':(isPreviewEvent || reDistributeEvent)}" style="margin-top:10px;">
+                <label for="hostedBy" class="col-sm-2 labal-css" style="margin-top:10px;width:15%">Event Description <i class=text-danger>*</i></label>
+                <div class="col-sm-10 p0" [ngClass]="{'disabled':(isPreviewEvent || reDistributeEvent)}" style="margin-top:10px; width: 83.11111%;margin-left: 8px;">
                   <ckeditor [class.disabled]="(isPreviewEvent || reDistributeEvent)" [(ngModel)]="eventCampaign.message"  (blur)="eventDescriptionError()" (input)="eventDescriptionError()" [ngModelOptions]="{standalone: true}" #myckeditor [config]="ckeConfig" debounce="500"></ckeditor>
                   <div  class="text-danger" *ngIf="eventError.eventDescription"> Event message is required</div>
                 </div>

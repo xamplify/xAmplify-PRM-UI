@@ -5,5 +5,5 @@ export class Location {
     city: string;
     state: string;
     zip: string;
-    country: string;
+    country: any;
 }
