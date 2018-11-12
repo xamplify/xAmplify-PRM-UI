@@ -859,7 +859,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   getCampaignReplies(campaign: EventCampaign) {
     if(campaign.campaignReplies!=undefined){
         this.eventCampaign.campaignReplies = campaign.campaignReplies;
-        for(var i=0;i<this.eventCampaign.campaignReplies.length;i++){
+        for(var i=0;i< this.eventCampaign.campaignReplies.length;i++){
             let reply = this.eventCampaign.campaignReplies[i];
             if(reply.defaultTemplate){
                 reply.selectedEmailTemplateIdForEdit = reply.selectedEmailTemplateId;
@@ -881,7 +881,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
  }
 
   getRepliesData(){
-    for(let i=0;i<this.eventCampaign.campaignReplies.length;i++){
+    for(let i=0;i< this.eventCampaign.campaignReplies.length;i++){
         const reply = this.eventCampaign.campaignReplies[i];
         $('#'+reply.divId).removeClass('portlet light dashboard-stat2 border-error');
         this.removeStyleAttrByDivId('reply-days-'+reply.divId);
