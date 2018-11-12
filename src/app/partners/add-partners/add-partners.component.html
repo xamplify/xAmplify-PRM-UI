@@ -255,7 +255,7 @@ img:hover {
 				<li><a id="save_button" *ngIf="selectedAddPartnerOption != 5" (click)="saveContacts()">Save </a></li>
 				<li><a id="cancel_button" *ngIf="selectedAddPartnerOption != 5 || clipBoard" (click)="cancelPartners()">Cancel </a></li>
 				<li><a id="saveAs_button"
-					*ngIf="selectedAddPartnerOption == 5 && !clipBoard" (click)="editContactComponent.saveAsChange(); editContactComponent.addPartnerSave = true">Save
+					*ngIf="selectedAddPartnerOption == 5 && !clipBoard" (click)="saveAsChange(); editContactComponent.addPartnerSave = true">Save
 						As </a></li>
 				 <li><a id="exportToExcel"
 					*ngIf="selectedAddPartnerOption == 5 && pagination.pagedItems?.length != 0 && !clipBoard" (click)="downloadPartnerList()">Export
@@ -884,9 +884,36 @@ img:hover {
 				</div>
 			</div>
 		</div>
-	</div> -->
+  </div> -->
+
 </div>
 </div>
+
+<app-save-as *ngIf="saveAsListName" [listName]="'Partner'" [saveAsListName]="saveAsListName" (notifyParentSaveAs)="closeSaveAsModal()"></app-save-as>
+<!-- <div class="modal right fade" id="saveAsAddPartnerModal" tabindex="-1" role="dialog" aria-labelledby="saveAsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-css" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title f-w-600" id="saveAsAddPartnerModal">Partner List Name</h4>
+        <button type="button" class="close-circle" data-dismiss="modal" style=" position: relative;top: -24px;">
+          <i class="fa fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="campaignName">Name</label>
+          <input class="form-control" type="text" id="campaignName" [(ngModel)]="saveAsListName">
+          <span style="color:red">{{saveAsError}}</span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary"  (click)="saveAsInputChecking()">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div> -->
+
 <div *ngIf="contactListAssociatedCampaignsList?.length && openCampaignModal">
 	<app-contacts-campaigns-mails
 		[associatedCampaignDetails]="contactListAssociatedCampaignsList" [isPartner] = "true"

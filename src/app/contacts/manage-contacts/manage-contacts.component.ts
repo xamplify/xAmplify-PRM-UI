@@ -284,6 +284,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
                     for ( let i = 0; i < data.names.length; i++ ) {
                         this.names.push( data.names[i].replace( /\s/g, '' ) );
                     }
+                    this.referenceService.namesArray = this.names;
                 },
                 ( error: any ) => {
                     this.xtremandLogger.error( error );

@@ -887,7 +887,7 @@
 </div>
 
 <!-- save as modal -->
-<div class="modal right fade" id="saveAsEditModal" tabindex="-1" role="dialog" aria-labelledby="saveAsModalLabel" aria-hidden="true">
+<!-- <div class="modal right fade" id="saveAsEditModal" tabindex="-1" role="dialog" aria-labelledby="saveAsModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-copy" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -909,8 +909,8 @@
 			</div>
 		</div>
 	</div>
-</div>
-
+</div> -->
+<app-save-as *ngIf="saveAsListName" [listName]="'Contact'" [saveAsListName]="saveAsListName" (notifyParentSaveAs)="closeSaveAsModal()"></app-save-as>
 
 <div *ngIf="contactsByType.contactListAssociatedCampaigns?.length && openCampaignModal">
 <app-contacts-campaigns-mails [associatedCampaignDetails]="contactsByType.contactListAssociatedCampaigns" [isPartner]="isPartner"

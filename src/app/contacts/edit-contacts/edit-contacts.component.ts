@@ -1701,54 +1701,29 @@ export class EditContactsComponent implements OnInit, OnDestroy {
       }
   }
 
+    addCopyToField(){
+          this.loadContactListsNames();
+          if ( this.contactListName == undefined ) {
+              this.contactListName = this.contactService.partnerListName;
+          }
+          if ( this.isDefaultPartnerList == true && this.contactListName.includes( '_copy' ) ) {
+              this.contactListName + '_copy'
+          }
+          this.saveAsListName =  this.contactListName + '_copy';
+          return this.saveAsListName;
+    }
     saveAs() {
         try {
-            this.loadContactListsNames();
-            if ( this.contactListName == undefined ) {
-                this.contactListName = this.contactService.partnerListName;
-            }
-            if ( this.isDefaultPartnerList == true && this.contactListName.includes( '_copy' ) ) {
-                this.contactListName + '_copy'
-            }
-            this.saveAsListName =  this.contactListName + '_copy';
-            this.saveAsError = '';
-            $('#saveAsEditModal').modal('show');
-            // swal( {
-            //     title: this.checkingContactTypeName + ' List Name',
-            //     input: 'text',
-            //     inputValue: this.contactListName + '_copy',
-            //     showCancelButton: true,
-            //     confirmButtonText: 'Save',
-            //     allowOutsideClick: false,
-            //     preConfirm: function( name: any ) {
-            //         return new Promise( function() {
-            //             console.log( 'logic begins' );
-            //             var inputName = name.toLowerCase().replace( /\s/g, '' );
-            //             if ( $.inArray( inputName, self.names ) > -1 ) {
-            //                 swal.showValidationError( 'This list name is already taken.' )
-            //             } else {
-            //                 if ( name != "" && name.length < 250) {
-            //                     swal.close();
-            //                     self.saveDuplicateContactList( name );
-            //                 } else {
-            //                    if(name == ""){
-            //                     swal.showValidationError( 'List Name is Required..' )
-            //                    }
-            //                    else{
-            //                        swal.showValidationError("You have exceeded 250 characters!");
-            //                    }
-            //                 }
-            //             }
-            //         });
-            //     }
-            // }).then( function( name: any ) {
-            //     console.log( name );
-            // }, function( dismiss: any ) {
-            //     console.log( 'you clicked on option' + dismiss );
-            // });
+            this.saveAsListName = this.addCopyToField();
+            // this.saveAsError = '';
+            // $('#saveAsEditModal').modal('show');
         } catch ( error ) {
             this.xtremandLogger.error( error, "editContactComponent", "SaveAsNewListSweetAlert()" );
         }
+    }
+    closeSaveAsModal(){
+      this.saveAsListName = undefined;
+      this.refService.namesArray = undefined;
     }
     saveAsInputChecking(){
       try{
@@ -1761,12 +1736,12 @@ export class EditContactsComponent implements OnInit, OnDestroy {
               if ( name !== "" && name.length < 250 ) {
                 self.saveDuplicateContactList( name );
               }
-               else if(name == ""){  this.saveAsError = 'List Name is Required.';  }
-                else{ this.saveAsError = 'You have exceeded 250 characters!'; }
+              else if(name == ""){  this.saveAsError = 'List Name is Required.';  }
+              else{ this.saveAsError = 'You have exceeded 250 characters!'; }
             }
           }catch(error){
             this.xtremandLogger.error( error, "ManageContactsComponent", "saveAs()" );
-          }
+         }
       }
     saveDuplicateContactList( name: string ) {
         try {
@@ -2116,6 +2091,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                         this.names.push( data.names[i].replace( /\s/g, '' ) );
                     }
                     console.log( this.names );
+                    this.refService.namesArray = this.names;
                 },
                 ( error: any ) => {
                     this.xtremandLogger.error( error );

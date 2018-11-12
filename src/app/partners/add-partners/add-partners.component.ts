@@ -96,8 +96,10 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     loading = false;
     partnerAllDetails = [];
     openCampaignModal = false;
-    
+
     disableOtherFuctionality = false;
+    saveAsListName:any;
+    saveAsError:any;
 
     sortOptions = [
         { 'name': 'Sort By', 'value': '' },
@@ -372,13 +374,13 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             }
             console.log( existedEmails );
             for ( let i = 0; i < this.newPartnerUser.length; i++ ) {
-                
+
                 let userDetails = {
                         "emailId": this.newPartnerUser[i].emailId,
                         "firstName": this.newPartnerUser[i].firstName,
                         "lastName": this.newPartnerUser[i].lastName,
                     }
-                
+
                 this.newUserDetails.push( userDetails );
 
                 if ( this.newPartnerUser[i].mobileNumber ) {
@@ -851,11 +853,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                     event.mobileNumber = "";
                 }
             }
-            
+
             if ( event.country === "Select Country" ) {
                 event.country = null;
             }
-            
+
             this.editUser.user = event;
             // $( "#addPartnerModal .close" ).click()
             this.addPartnerModalClose();
@@ -1358,7 +1360,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     showModal() {
        // $( '#salesforceModal' ).appendTo( "body" ).modal( 'show' );
         $( '#salesforceModal' ).modal( 'show' );
-        
+
     }
 
     hideModal() {
@@ -1626,7 +1628,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     settingSocialNetworkOpenModal( socialNetwork: string ) {
         this.settingSocialNetwork = socialNetwork;
        $( '#settingSocialNetworkPartner' ).modal( 'show' );
-       // $('#settingSocialNetworkPartner').modal('toggle'); 
+       // $('#settingSocialNetworkPartner').modal('toggle');
        // $('#settingSocialNetworkPartner').modal();
        // $( '#settingSocialNetwork' ).appendTo( "body" ).modal( 'show' );
         $("#settingSocialNetworkPartner").appendTo("body");
@@ -1906,13 +1908,40 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         this.openCampaignModal = false;
         this.contactListAssociatedCampaignsList.length = 0;
     }
-    
-    eventHandler( keyCode: any ) { if ( keyCode === 13 ) { this.search(); } }
+   eventHandler( keyCode: any ) { if ( keyCode === 13 ) { this.search(); } }
+   saveAsChange(){
+    try {
+      this.saveAsListName = this.editContactComponent.addCopyToField();
 
-/*    ngAfterViewInit(){
-        $('body').tooltip({ selector: '[data-toggle="tooltip"]' });
+      // this.saveAsError = '';
+      // $('#saveAsAddPartnerModal').modal('show');
+    }catch(error){
+       this.xtremandLogger.error( error, "Add Partner component", "saveAsChange()" );
+      }
+   }
+   saveAsInputChecking(){
+    try{
+     const names = this.referenceService.namesArray;
+     const inputName = this.saveAsListName.toLowerCase().replace( /\s/g, '' );
+        if ( $.inArray( inputName, names ) > -1 ) {
+            this.saveAsError = 'This list name is already taken.';
+        } else {
+            if ( this.saveAsListName !== "" && this.saveAsListName.length < 250 ) {
+              this.editContactComponent.saveDuplicateContactList(this.saveAsListName);
+              $('#saveAsAddPartnerModal').modal('hide');
+            }
+            else if(this.saveAsListName === ""){  this.saveAsError = 'List Name is Required.';  }
+            else{ this.saveAsError = 'You have exceeded 250 characters!'; }
+          }
+        }catch(error){
+          this.xtremandLogger.error( error, "Add partner Component", "saveAsInputChecking()" );
         }
-*/
+    }
+    closeSaveAsModal(){
+      this.saveAsListName = undefined;
+      this.referenceService.namesArray = undefined;
+    }
+
     ngOnInit() {
         try {
             this.socialContactImage();
@@ -1956,7 +1985,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                 confirmButtonColor: '#54a7e9',
                 cancelButtonColor: '#999',
                 confirmButtonText: 'Yes, Save it!',
-                cancelButtonText: "No"  
+                cancelButtonText: "No"
 
             }).then( function() {
                 self.saveContacts();
