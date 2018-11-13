@@ -14,6 +14,7 @@ import { Timezone } from '../../core/models/timezone';
 import { Ng2DeviceService } from 'ng2-device-detector';
 import { EmailTemplate } from '../../email-template/models/email-template';
 import { Campaign } from '../../campaigns/models/campaign';
+import { environment } from 'environments/environment';
 declare var $: any;
 
 @Injectable()
@@ -72,9 +73,10 @@ export class ReferenceService {
     vendorDetails: any;
     isRedistributionCampaignPage = false;
     campaignType = 'REGULAR';
-    videoTag = "<a href='<SocialUbuntuURL>'>\n   <img src='<SocialUbuntuImgURL>'/> \n </a> \n";
+    videoTag ="";
     emailMergeTags = "  For First Name : {{firstName}} \n  For Last Name : {{lastName}} \n  For Full Name : {{fullName}} \n  For Email Id : {{emailId}}";
-    coBrandingTag = "<img src='<Co-BrandingImgURL>'/> \n";
+    coBrandingTag = "";
+    coBrandingImageTag
     URL: string = this.authenticationService.REST_URL + 'admin/';
     hasClientError = false;
     isSidebarClosed = false;
@@ -90,6 +92,9 @@ export class ReferenceService {
     constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,
         private router: Router, public deviceService: Ng2DeviceService,private route:ActivatedRoute) {
         console.log('reference service constructor');
+        this.videoTag = "<img src=\""+environment.imagesHost+"xtremand-video.gif\">";
+        this.coBrandingTag = "<img src=\""+environment.imagesHost+"co-branding.png\" style=\"background-color:black\"/>";
+        this.coBrandingImageTag = "img src=\""+environment.imagesHost+"co-branding.png\"";
     }
     getBrowserInfoForNativeSet(){
          this.deviceInfo = this.deviceService.getDeviceInfo();
