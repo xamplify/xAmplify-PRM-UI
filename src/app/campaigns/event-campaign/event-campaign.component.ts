@@ -824,6 +824,10 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
           }else{
               data.body = data.body.replace( "LOCATION_MAP_URL", "https://maps.google.com/maps?q=42840 Christy Street, uite 100 Fremont, US CA 94538&z=15&output=embed" );
           }
+          
+          if ( this.eventCampaign.email ) {
+              data.body = data.body.replace( "https://aravindu.com/vod/images/us_location.png", " " );
+          }
 
           this.getEmailTemplatePreview( data );
       },
@@ -1051,7 +1055,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
               }).then(function() {
                       self.saveCampaignOnDestroy();
               },function (dismiss) {
-                if (dismiss === 'cancel') {
+                if (dismiss === 'No') {
                     self.reInitialize();
                 }
             })
