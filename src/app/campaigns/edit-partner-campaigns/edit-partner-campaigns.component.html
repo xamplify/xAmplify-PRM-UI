@@ -573,7 +573,7 @@
 <app-preview-video *ngIf="videoFile" [videoFile]="videoFile" (notifyParent)="closePreviewVideoModal($event)"></app-preview-video>
 <!--email template preview-->
 <div class="modal right fade" id="email_template_preivew">
-  <div class="modal-dialog modal-lg" style="right:0">
+  <div class="modal-dialog modal-lg modal-template" style="right:0">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true">
@@ -593,7 +593,7 @@
 
 <!--contact list preview-->
 <div class="modal right fade" id="contactlist-preivew">
-  <div class="modal-dialog modal-lg" style="right:0">
+  <div class="modal-dialog modal-lg modal-css" style="right:0">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true">
@@ -634,7 +634,7 @@
 </div>
 <!-- ----------------------------------Contact Lists--------------------------------- -->
 <div class="modal right fade" id="usersModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static">
-  <div class="modal-dialog" role="document" style="right:0">
+  <div class="modal-dialog modal-css" role="document" style="right:0">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close-circle" data-dismiss="modal" aria-label="Close">
@@ -651,7 +651,7 @@
       <div class="modal-body" id="users-modal-body">
       </div>
       <div class="modal-footer">
-        <app-pagination style="margin-left: -9px;float: left;" [pagination]="contactsUsersPagination" [type]="'editpartner'" [isDropdown]="true"
+        <app-pagination class="pg8" style="float: left;" [pagination]="contactsUsersPagination" [type]="'editpartner'" [isDropdown]="true"
           (notifyParent)="setPage($event)"></app-pagination>
         <button type="button" (click)="closeModelPopup()" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>

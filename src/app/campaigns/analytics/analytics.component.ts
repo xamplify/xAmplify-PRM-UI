@@ -508,6 +508,10 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     }
     }catch(error){ this.xtremandLogger.error('error'+error);}
    }
+  paginationContacts(pagination:Pagination){
+    this.contactListInfoPagination = pagination;
+    this.getListOfContacts(this.contactListId);
+  }
   callPaginationValues(type:string){
     if (type === 'viewsBarChart') { this.getCampaignUserViewsCountBarCharts(this.campaignId, this.pagination); }
     else if (type === 'donutCampaign') { this.campaignViewsDonut(this.donultModelpopupTitle); }
@@ -1233,7 +1237,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
    getListOfContacts(id:number){
         try{
           this.contactListId = id;
-         this.campaignService.loadUsersOfContactList(id,this.campaignId, this.pagination).subscribe(
+         this.campaignService.loadUsersOfContactList(id,this.campaignId, this.contactListInfoPagination).subscribe(
            data => {
             this.campaingContactListValues = data.listOfUsers;
             this.loading = false;
