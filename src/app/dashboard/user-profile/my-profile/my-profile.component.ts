@@ -91,7 +91,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             console.log(this.videoUtilService.videoTempDefaultSettings);
             this.loggedInUserId = this.authenticationService.getUserId();
             this.hasAllAccess = this.referenceService.hasAllAccess();
-            this.hasVideoRole = this.authenticationService.hasOnlyVideoRole();
+            this.hasVideoRole = this.authenticationService.hasVideoRole();
             this.hasCompany = this.authenticationService.user.hasCompany;
             this.callActionSwitch.size = 'normal';
             this.videoUrl = this.authenticationService.MEDIA_URL + "profile-video/Birds0211512666857407_mobinar.m3u8";
