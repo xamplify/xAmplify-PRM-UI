@@ -642,11 +642,15 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             $('.video-js .vjs-control-bar').hide();
         } else { $('.video-js .vjs-control-bar').show(); }
     }
-    changeControllerColor(event: any) {
-        this.defaultVideoPlayer.controllerColor = event;
-        this.compControllerColor = event;
-        const rgba = this.videoUtilService.transparancyControllBarColor(event, this.valueRange);
-        $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
+    changeControllerColor(event: any, enableVideoController:boolean) {
+         try{
+          this.defaultVideoPlayer.controllerColor = event;
+          this.compControllerColor = event;
+          if(enableVideoController){
+            const rgba = this.videoUtilService.transparancyControllBarColor(event, this.valueRange);
+            $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
+           }
+          } catch(error){ console.log(error); }
     }
     changePlayerColor(event: any) {
         this.defaultVideoPlayer.playerColor = event;
@@ -745,7 +749,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         this.defaultVideoPlayer.enableCasting = this.videoUtilService.videoTempDefaultSettings.enableCasting;
         this.defaultVideoPlayer.enableSettings = this.videoUtilService.videoTempDefaultSettings.enableSettings;
         this.defaultVideoPlayer.enableVideoController = this.videoUtilService.videoTempDefaultSettings.enableVideoController;
-        this.changeControllerColor(this.compControllerColor);
+        this.changeControllerColor(this.compControllerColor, this.defaultVideoPlayer.enableVideoController);
         this.changePlayerColor(this.compPlayerColor);
         this.transperancyControllBar(this.valueRange);
         if (this.defaultVideoPlayer.enableVideoController === false) {
