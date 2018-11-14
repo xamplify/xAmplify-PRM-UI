@@ -984,7 +984,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                     },
                     linkType: 'direct',
                     multiselect: true,
-                    extensions: ['.csv', '.cvs', '.gif','.html','.jpg', '.jpeg','.pdf','.png','.ppt','.pptx' ,'.txt' ,'.xls', '.xlsx', '.zip', '.xml', '.sdf', '.key', '.tar'],
+                    extensions: ['.csv', '.cvs', '.gif','.html','.jpg', '.jpeg','.pdf','.png','.ppt','.pptx' ,'.txt' ,'.xls', '.xlsx', '.zip', '.xml', '.sdf', '.key', '.tar','.sdf', '.key','.xlr', '.pct', '.indd', '.ai', '.eps', '.ps', '.svg', '.app', '.apk', '.b', '.exe', '.bat', '.jar'],
                 };
                 Dropbox.choose(options);
             }

@@ -355,12 +355,12 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
             this.companyProfileService.update(this.companyProfile, this.loggedInUserId)
                 .subscribe(
                     data => {
-
                         this.message = data.message;
                         if(this.message ==='Company Profile Info Updated Successfully'){
                           this.message = 'Company Profile updated successfully'
                           this.formUpdated = false;
                         }
+                        this.homeComponent.getVideoDefaultSettings();
                         $('#company-profile-error-div').hide();
                         $('#info').hide();
                         $('#edit-sucess').show(600);
