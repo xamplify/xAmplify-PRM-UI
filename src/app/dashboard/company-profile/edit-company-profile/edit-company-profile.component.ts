@@ -119,11 +119,11 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
     isOnlyPartner = false;
     isVendorRole = false;
     ngxloading = false;
-    maxFileSize:number = 10;
+    maxFileSize = 10;
     profileCompleted = 50;
     formUpdated = true;
-    tempCompanyProfile :any;
-
+    tempCompanyProfile:any;
+    upadatedUserId:any;
     constructor(private logger: XtremandLogger, public authenticationService: AuthenticationService, private fb: FormBuilder,
         private companyProfileService: CompanyProfileService, public homeComponent: HomeComponent,
         public refService: ReferenceService, private router: Router, public processor: Processor, public countryNames: CountryNames,
@@ -223,8 +223,8 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.geoLocation();
-        let userId = this.authenticationService.isSuperAdmin()? this.authenticationService.selectedVendorId: this.loggedInUserId;
-        this.getCompanyProfileByUserId(userId);
+        this.upadatedUserId = this.authenticationService.isSuperAdmin()? this.authenticationService.selectedVendorId: this.loggedInUserId;
+        this.getCompanyProfileByUserId(this.upadatedUserId);
         if (this.authenticationService.user.hasCompany) {
             this.companyProfile.isAdd = false;
             this.profileCompleted = 100;
@@ -420,14 +420,11 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
       }
     }
     getCompanyProfileByUserId(userId) {
-
         this.companyProfileService.getByUserId(userId)
             .subscribe(
                 data => {
                     if (data.data != undefined) {
-                        const tempCompanyProfile = data.data;
                         this.companyProfile = data.data;
-                        this.tempCompanyProfile = tempCompanyProfile;
                         if ($.trim(this.companyProfile.companyLogoPath).length > 0) {
                             this.companyLogoImageUrlPath = this.companyProfile.companyLogoPath;
                         }
@@ -446,6 +443,40 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
                 () => { this.logger.info("Completed getCompanyProfileByUserId()") }
             );
     }
+    getCompanyProfileByIdNgOnDestroy(userId) {
+      this.companyProfileService.getByUserId(userId)
+          .subscribe(
+              data => {
+                  if (data.data != undefined) {
+                     this.tempCompanyProfile = data.data;
+                  }
+              },
+              error => { this.logger.errorPage(error) },
+              () => { this.logger.info("Completed getCompanyProfileByIdNgOnDestroy()");
+              if(this.authenticationService.user.hasCompany && this.router.url!="/" && this.isFormUpdated()) {
+                const self = this;
+                swal( {
+                    title: 'Are you sure?',
+                    text: "You have unchanged company profile data",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#54a7e9',
+                    cancelButtonColor: '#999',
+                    confirmButtonText: 'Yes, Save it!',
+                    cancelButtonText : 'No'
+
+                }).then(function() {
+                        self.saveCompanyProfileOnDestroy();
+                },function (dismiss) {
+                    if (dismiss == 'cancel') {
+
+                    }
+                })
+
+              }
+            }
+          );
+  }
 
     getAllCompanyNames() {
         this.companyProfileService.getAllCompanyNames()
@@ -996,33 +1027,12 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
             .subscribe(
                 data => { this.publicVideos = data; },
                 error => { this.logger.errorPage(error) },
-                () => { this.logger.info("Completed getCompanyProfileByUserId()") }
+                () => { this.logger.info("Completed loadPublicVideos()") }
             );
     }
 
    ngOnDestroy(): void {
-    // && this.formUpdated && this.isFormUpdated()
-     if(this.authenticationService.user.hasCompany && this.router.url!="/") {
-       const self = this;
-       swal( {
-           title: 'Are you sure?',
-           text: "You have unchanged company profile data",
-           type: 'warning',
-           showCancelButton: true,
-           confirmButtonColor: '#54a7e9',
-           cancelButtonColor: '#999',
-           confirmButtonText: 'Yes, Save it!',
-           cancelButtonText : 'No'
-
-       }).then(function() {
-               self.saveCompanyProfileOnDestroy();
-       },function (dismiss) {
-           if (dismiss == 'cancel') {
-
-           }
-       })
-
-     }
+    this.getCompanyProfileByIdNgOnDestroy(this.upadatedUserId);
    }
 
 }
