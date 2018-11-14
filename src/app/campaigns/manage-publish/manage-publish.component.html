@@ -110,11 +110,11 @@
 											<span align="right" title="Upload Date">
 												<!-- <b *ngIf="campaign.launched || !campaign.launched && campaign.launchedOn?.length > 0">{{campaign.launchedOn}}</b> -->
 												<b *ngIf="campaign.scheduleType=='NOW' || campaign.scheduleType=='SCHEDULE'">
-                        <app-timestamp *ngIf="!refService.isSafariBrowser()" [isOnlyDate]="true" [dateAndTime]="campaign.launchedOn"> </app-timestamp>
+                        <app-timestamp *ngIf="!refService.isSafariBrowser()" [isOnlyDate]="false" [dateAndTime]="campaign.launchedOn"> </app-timestamp>
                         <span *ngIf="refService.isSafariBrowser()">{{campaign.launchedOn}}</span>
 												</b>
 												<b *ngIf="campaign.scheduleType=='SAVE'">
-												<app-timestamp *ngIf="!refService.isSafariBrowser()" [isOnlyDate]="true" [dateAndTime]="campaign.startTime"> </app-timestamp>
+												<app-timestamp *ngIf="!refService.isSafariBrowser()" [isOnlyDate]="false" [dateAndTime]="campaign.startTime"> </app-timestamp>
                         <span *ngIf="refService.isSafariBrowser()">{{campaign.startTime}}</span>
                       </b>
 											</span>
