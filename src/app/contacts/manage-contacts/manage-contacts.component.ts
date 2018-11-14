@@ -1290,39 +1290,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
           this.saveAsListName = '';
           this.saveAsError = '';
           $('#saveAsModal').modal('show');
-
-            // swal( {
-            //     title: this.checkingContactTypeName + ' List Name',
-            //     input: 'text',
-            //     showCancelButton: true,
-            //     confirmButtonText: 'Save',
-            //     allowOutsideClick: false,
-            //     preConfirm: function( name: any ) {
-            //         return new Promise( function() {
-            //             console.log( 'logic begins' );
-            //             var inputName = name.toLowerCase().replace( /\s/g, '' );
-            //             if ( $.inArray( inputName, self.names ) > -1 ) {
-            //                 swal.showValidationError( 'This list name is already taken.' )
-            //             } else {
-            //                 if ( name != "" && name.length < 250 ) {
-            //                     swal.close();
-            //                     self.saveSelectedUsers( name );
-            //                 } else {
-            //                     if(name == ""){
-            //                         swal.showValidationError( 'List Name is Required..' )
-            //                        }
-            //                        else{
-            //                            swal.showValidationError("You have exceeded 250 characters!");
-            //                        }
-            //                     }
-            //             }
-            //         });
-            //     }
-            // }).then( function( name: any ) {
-            //     console.log( name );
-            // }, function( dismiss: any ) {
-            //     console.log( 'you clicked on option' + dismiss );
-            // });
         } catch ( error ) {
             this.xtremandLogger.error( error, "ManageContactsComponent", "saveAsAlert()" );
         }
@@ -1335,36 +1302,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
             this.loadContactListsNames();
             this.saveAsError = '';
             $('#saveAsModal').modal('show');
-            // let self = this;
-            // swal( {
-            //     title: this.checkingContactTypeName + ' List Name',
-            //     input: 'text',
-            //     inputValue: contactListName + '_copy',
-            //     showCancelButton: true,
-            //     confirmButtonText: 'Save',
-            //     allowOutsideClick: false,
-            //     preConfirm: function( name: any ) {
-            //         return new Promise( function() {
-            //             self.xtremandLogger.log( 'logic begins' );
-            //             var inputName = name.toLowerCase().replace( /\s/g, '' );
-            //             if ( $.inArray( inputName, self.names ) > -1 ) {
-            //                 swal.showValidationError( 'This list name is already taken. ' )
-            //             } else {
-            //                 if ( name != "" ) {
-            //                     swal.close();
-            //                     self.saveExistingContactList( contactSelectedListId, name );
-            //                 } else {
-            //                     swal.showValidationError( 'List Name is Required..' )
-            //                 }
-            //             }
-            //         });
-            //     }
-            // }).then( function( name: any ) {
-            //     console.log( name );
-            // }, function( dismiss: any ) {
-            //     console.log( 'you clicked on option' + dismiss );
-            // });
-
         } catch ( error ) {
             this.xtremandLogger.error( error, "ManageContactsComponent", "saveAsNewList()" );
         }
