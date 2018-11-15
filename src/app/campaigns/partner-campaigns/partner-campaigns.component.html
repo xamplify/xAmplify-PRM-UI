@@ -202,7 +202,25 @@
 				<!-- End Of tab Content -->
 			</div>
 		</div>
-	</div>
+  </div>
+  <div class="modal right fade" id="email_template_preivew">
+    <div class="modal-dialog modal-lg modal-template" style="right:0">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true">
+            <i class="fa fa-times"></i>
+          </button>
+          <h4 class="modal-title">{{campaignName}}</h4>
+        </div>
+        <div class="modal-body">
+          <div id="email-template-content"></div>
+        </div>
+        <div class="modal-footer">
+          <a href="javascript:void(0)" data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
+        </div>
+      </div>
+    </div>
+  </div>
 	<!-- <div *ngIf="totalRecords <= 0"  class="alert alert-info"><strong>No Campaigns Found</strong></div> -->
   <app-scroll-top></app-scroll-top>
 </div>

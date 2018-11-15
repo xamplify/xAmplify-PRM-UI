@@ -27,6 +27,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     public searchKey: string = "";
     campaignSuccessMessage: string = "";
     loggedInUserId: number = 0;
+    campaignName:string;
     sortByDropDown = [
         { 'name': 'Campaign Name(A-Z)', 'value': 'campaign-ASC' },
         { 'name': 'Campaign Name(Z-A)', 'value': 'campaign-DESC' },
@@ -177,16 +178,35 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     }
 
     showCampaignPreview(campaign:any){
-        if(campaign.campaignType == 'EVENT') {
-          this.router.navigate(['/home/campaigns/event-preview/'+campaign.campaignId]);
-        } else {
-          this.router.navigate(['/home/campaigns/preview/'+campaign.campaignId]);
-        }
+      this.getCampaignById(campaign.campaignId)
+        // if(campaign.campaignType == 'EVENT') {
+        //   this.router.navigate(['/home/campaigns/event-preview/'+campaign.campaignId]);
+        // } else {
+        //   this.router.navigate(['/home/campaigns/preview/'+campaign.campaignId]);
+        // }
     }
 //    showCampaignPreview(campaignId:number){
 //        this.referenceService.isRedistributionCampaignPage = true;
 //        this.router.navigate(['/home/campaigns/preview/'+campaignId]);
 //    }
+
+    getCampaignById(campaignId) {
+      var obj = { 'campaignId': campaignId }
+      this.campaignService.getCampaignById( obj )
+          .subscribe(
+          data => {
+            const emailTemplateId = data.emailTemplate;
+            this.campaignName = data.campaignName;
+            this.previewEmailTemplate(emailTemplateId, data)
+
+          },
+          error => { this.xtremandLogger.errorPage( error ) },
+          () => console.log()
+          )
+    }
+    previewEmailTemplate(emailTemplate: any, campaign){
+      this.referenceService.previewEmailTemplate(emailTemplate, campaign);
+  }
 
     navigateSocialCampaign(campaign:any) {
         this.socialService.getSocialCampaignByCampaignId( campaign.campaignId )

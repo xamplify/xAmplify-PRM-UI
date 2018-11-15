@@ -192,8 +192,8 @@
             <table class="table tgrid">
               <thead>
                 <th class="center-aligned">partners</th>
-                <th class="text-center hidden-xs">LAST REMINDER SENT</th>
-                <th align="right">Actions</th>
+                <th class="hidden-xs" style="text-align: left;">LAST REMINDER SENT</th>
+                <th style="text-align: left">Actions</th>
               </thead>
               <tbody>
                 <tr *ngFor="let item of inActivePartnersPagination.pagedItems" style="cursor: pointer;">
@@ -205,7 +205,7 @@
                     <h4 *ngIf="!item.time"><b>-</b></h4>
                    </td>
                   <td (click)="sendPartnerReminder(item)">
-                    <div class="actions-block">
+                    <div class="actions-block float-none" >
                       <a data-toggle="tooltip" data-placement="left" title="Send reminder email">
                         <i class="fa fa-envelope"></i>
                       </a>
@@ -215,7 +215,7 @@
               </tbody>
             </table>
           </div>
-          <app-pagination [pagination]="inActivePartnersPagination" [type]="'userInteraction'" (notifyParentDropDown)="inActivePartnerDropDownList($event)"
+          <app-pagination class="pg8" [pagination]="inActivePartnersPagination" [type]="'userInteraction'" (notifyParentDropDown)="inActivePartnerDropDownList($event)"
             (notifyParent)="setInActivePartnesPage($event)"></app-pagination>
         </div>
       </div>
@@ -534,7 +534,7 @@
                       <td class="text-center hidden-xs">
                         <app-timestamp [isOnlyDate]="true" [dateAndTime]="campaign.createdDate"> </app-timestamp>
                       </td>
-                      <td>
+                      <td class="text-center">
                         <a data-rel="fancybox-button" (click)="goToCampaignAnalytics(campaign)" data-toggle="tooltip" data-placement="top" title="Campaign Based Reports"
                           class='mr5'>
                           <i class="fa fa-line-chart"></i>
@@ -610,7 +610,7 @@
               </div>
             </div>
             <div *ngIf="sortOption.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError" style="background:white">
-              <div *ngIf="throughPartnerCampaignPagination.pagedItems.length !== 0">
+              <div *ngIf="throughPartnerCampaignPagination.pagedItems.length !== 0" style="padding: 0 13px;">
                 <app-pagination [pagination]="throughPartnerCampaignPagination" [type]="'campaign'" [isDropdown]="true" (notifyParent)="setPartnerCampaignsPageByType($event,'through-partner')"
                   (notifyParentDropDown)="listThroughPartnerCampaigns($event)"></app-pagination>
                 <select class="form-control" style="float: right; width: auto;" [(ngModel)]="sortOption.itemsSize" (ngModelChange)="getNumberOfItemsPerPageByType($event,'through-partner')">
