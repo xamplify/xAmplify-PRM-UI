@@ -485,7 +485,7 @@
 								<ng-container *ngFor="let item of campaignViews" >
 									<tr (click)="userTimeline(item);">
 										<td>
-										<app-user-info  [userInfo]="item"> </app-user-info>
+										<app-user-info [isCompanyInfo]="true" [userInfo]="item"> </app-user-info>
 											<!-- here emailId coming as userMail -->
 										</td>
 										<td class="td-chart">
