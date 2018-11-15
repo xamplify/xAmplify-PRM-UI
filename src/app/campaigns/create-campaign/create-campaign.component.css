@@ -1064,6 +1064,7 @@ legend{display: block; width: auto; padding: 0 10px; margin-bottom: 0; font-size
 .switch-choose{
   position: relative;
   top: 6px;
+  left: -5px;
 }
 .error-div{
   width: 97%;
