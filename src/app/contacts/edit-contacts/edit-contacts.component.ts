@@ -130,7 +130,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
         { 'name': 'First name (DESC)', 'value': 'firstName-DESC' },
         { 'name': 'Last name (ASC)', 'value': 'lastName-ASC' },
         { 'name': 'Last name (DESC)', 'value': 'lastName-DESC' },
-
     ];
 
     public sortOption: any = this.sortOptions[0];
@@ -186,7 +185,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
             this.checkingContactTypeName = "Contact"
         } else {
             this.isPartner = true;
-            this.checkingContactTypeName = "Partner"
+            this.checkingContactTypeName = "Partner";
+            this.sortOptions.push( { 'name': 'Company (ASC)', 'value': 'contactCompany-ASC' });
+            this.sortOptions.push( { 'name': 'Company (DESC)', 'value': 'contactCompany-DESC' });
+            
         }
 
         this.users = new Array<User>();
