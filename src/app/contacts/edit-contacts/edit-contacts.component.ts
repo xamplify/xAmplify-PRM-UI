@@ -258,6 +258,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                     for ( var i = 1; i < allTextLines.length; i++ ) {
                         if ( allTextLines[i][4].trim().length > 0 ) {
                             let user = new User();
+                            if(!self.isPartner){
                             user.emailId = allTextLines[i][4];
                             user.firstName = allTextLines[i][0];
                             user.lastName = allTextLines[i][1];
@@ -272,6 +273,28 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                             /*user.description = allTextLines[i][9];*/
                             self.users.push( user );
                             self.contacts.push( user );
+                            }else{ 
+                               
+                                user.emailId = allTextLines[i][4];
+                                user.firstName = allTextLines[i][0];
+                                user.lastName = allTextLines[i][1];
+                                user.contactCompany = allTextLines[i][2];
+                                user.jobTitle = allTextLines[i][3];
+                                user.vertical = allTextLines[i][5];
+                                user.region = allTextLines[i][6];
+                                user.partnerType = allTextLines[i][7];
+                                user.category = allTextLines[i][8];
+                                user.address = allTextLines[i][9];
+                                user.city = allTextLines[i][10];
+                                user.state = allTextLines[i][11];
+                                user.zipCode = allTextLines[i][12];
+                                user.country = allTextLines[i][13];
+                                user.mobileNumber = allTextLines[i][14];
+                                /* user.description = allTextLines[i][9];*/
+                                self.users.push( user );
+                                self.contacts.push( user );
+                                
+                            }
                         }
                     }
                     console.log( "AddContacts : readFiles() contacts " + JSON.stringify( self.users ) );
@@ -736,6 +759,11 @@ export class EditContactsComponent implements OnInit, OnDestroy {
         this.noContactsFound = false;
         this.clipboardTextareaText = "";
         this.clickBoard = true;
+       /* if(this.isPartner){*/
+            
+        /*}else{
+        this.clickBoard = true;
+        }*/
         this.selectedAddContactsOption = 8;
     }
 
@@ -778,6 +806,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
             for ( var i = 0; i < allTextLines.length; i++ ) {
                 var data = allTextLines[i].split( splitValue );
                 let user = new User();
+                if(!this.isPartner){
                 switch ( data.length ) {
                     case 1:
                         user.firstName = data[0];
@@ -879,6 +908,160 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                         user.mobileNumber = data[8];
                         user.description = data[9];
                         break;*/
+                }
+                }else{
+                    switch ( data.length ) {
+                    case 1:
+                        user.firstName = data[0];
+                        break;
+                    case 2:
+                        user.firstName = data[0];
+                        user.lastName = data[1];
+                        break;
+                    case 3:
+                        user.firstName = data[0];
+                        user.lastName = data[1];
+                        user.contactCompany = data[2];
+                        break;
+                    case 4:
+                        user.firstName = data[0];
+                        user.lastName = data[1];
+                        user.contactCompany = data[2];
+                        user.jobTitle = data[3];
+                        break;
+                    case 5:
+                        user.firstName = data[0];
+                        user.lastName = data[1];
+                        user.contactCompany = data[2];
+                        user.jobTitle = data[3];
+                        user.emailId = data[4];
+                        break;
+                    case 6:
+                        user.firstName = data[0];
+                        user.lastName = data[1];
+                        user.contactCompany = data[2];
+                        user.jobTitle = data[3];
+                        user.emailId = data[4];
+                        user.vertical = data[5];
+                        break;
+                    case 7:
+                        user.firstName = data[0];
+                        user.lastName = data[1];
+                        user.contactCompany = data[2];
+                        user.jobTitle = data[3];
+                        user.emailId = data[4];
+                        user.vertical = data[5];
+                        user.region = data[6]
+                        break;
+                    case 8:
+                        user.firstName = data[0];
+                        user.lastName = data[1];
+                        user.contactCompany = data[2];
+                        user.jobTitle = data[3];
+                        user.emailId = data[4];
+                        user.vertical = data[5];
+                        user.region = data[6]
+                        user.partnerType = data[7]
+                        break;
+                    case 9:
+                        user.firstName = data[0];
+                        user.lastName = data[1];
+                        user.contactCompany = data[2];
+                        user.jobTitle = data[3];
+                        user.emailId = data[4];
+                        user.vertical = data[5];
+                        user.region = data[6]
+                        user.partnerType = data[7]
+                        user.category = data[8]
+                        break;
+                    case 10:
+                        user.firstName = data[0];
+                        user.lastName = data[1];
+                        user.contactCompany = data[2];
+                        user.jobTitle = data[3];
+                        user.emailId = data[4];
+                        user.vertical = data[5];
+                        user.region = data[6]
+                        user.partnerType = data[7]
+                        user.category = data[8]
+                        user.address = data[9]
+                        break;
+                    case 11:
+                        user.firstName = data[0];
+                        user.lastName = data[1];
+                        user.contactCompany = data[2];
+                        user.jobTitle = data[3];
+                        user.emailId = data[4];
+                        user.vertical = data[5];
+                        user.region = data[6]
+                        user.partnerType = data[7]
+                        user.category = data[8]
+                        user.address = data[9]
+                        user.city = data[10]
+                        break;
+                    case 12:
+                        user.firstName = data[0];
+                        user.lastName = data[1];
+                        user.contactCompany = data[2];
+                        user.jobTitle = data[3];
+                        user.emailId = data[4];
+                        user.vertical = data[5];
+                        user.region = data[6]
+                        user.partnerType = data[7]
+                        user.category = data[8]
+                        user.address = data[9]
+                        user.city = data[10]
+                        user.state = data[11]
+                        break;
+                    case 13:
+                        user.firstName = data[0];
+                        user.lastName = data[1];
+                        user.contactCompany = data[2];
+                        user.jobTitle = data[3];
+                        user.emailId = data[4];
+                        user.vertical = data[5];
+                        user.region = data[6]
+                        user.partnerType = data[7]
+                        user.category = data[8]
+                        user.address = data[9]
+                        user.city = data[10]
+                        user.state = data[11]
+                        user.zipCode = data[12]
+                        break;
+                    case 14:
+                        user.firstName = data[0];
+                        user.lastName = data[1];
+                        user.contactCompany = data[2];
+                        user.jobTitle = data[3];
+                        user.emailId = data[4];
+                        user.vertical = data[5];
+                        user.region = data[6]
+                        user.partnerType = data[7]
+                        user.category = data[8]
+                        user.address = data[9]
+                        user.city = data[10]
+                        user.state = data[11]
+                        user.zipCode = data[12]
+                        user.country = data[13]
+                        break;
+                    case 15:
+                        user.firstName = data[0];
+                        user.lastName = data[1];
+                        user.contactCompany = data[2];
+                        user.jobTitle = data[3];
+                        user.emailId = data[4];
+                        user.vertical = data[5];
+                        user.region = data[6]
+                        user.partnerType = data[7]
+                        user.category = data[8]
+                        user.address = data[9]
+                        user.city = data[10]
+                        user.state = data[11]
+                        user.zipCode = data[12]
+                        user.country = data[13]
+                        user.mobileNumber = data[14]
+                        break;
+                    }
                 }
                 this.xtremandLogger.info( user );
                 this.users.push( user );
