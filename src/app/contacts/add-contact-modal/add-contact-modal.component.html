@@ -11,6 +11,24 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
     </div>
     <div class="modal-body">
       <form class="form-horizontal" autocomplete="off">
+      <div class="form-group">
+            <label class="control-label col-xs-2 col-sm-2" for="email" style="color: #00bcd4; right: 11px !important">
+                <span class="star"> *</span>
+            </label>
+           <div class="form-group col-xs-10 col-sm-10" *ngIf="isUpdateUser">
+              <span class="email-css">{{addContactuser.emailId}}</span>
+              <div class="textCss"></div>
+          </div>
+           <div class="form-group col-xs-10 col-sm-10" *ngIf="!isUpdateUser">
+              <input type="email" style="border: none" class="form-control padding-mobile" id="email1"
+              (blur)="checkingEmailPattern(addContactuser.emailId)" (input)="validateEmail(addContactuser.emailId)"
+              [(ngModel)]="addContactuser.emailId"  [ngModelOptions]="{standalone: true}"
+              placeholder="Email *" autocomplete="off" maxlength="250">
+            <div class="textCss"></div>
+            <span class="danger" *ngIf="!validEmailPatternSuccess">Please enter a valid email address</span>
+            <span class="danger" *ngIf="isEmailExist">This email address has already been added</span>
+           </div>
+         </div>
         <div class="form-group">
           <label class="control-label col-xs-2 col-sm-2" for="name"style="color: blue">
             <!-- <i class="glyphicon glyphicon-user" style="right: 11px" aria-hidden="true"></i> -->
@@ -52,24 +70,49 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
           </div>
         </div>
 
-        <div class="form-group">
-            <label class="control-label col-xs-2 col-sm-2" for="email" style="color: #00bcd4; right: 11px !important">
-                <span class="star"> *</span>
-            </label>
-           <div class="form-group col-xs-10 col-sm-10" *ngIf="isUpdateUser">
-              <span class="email-css">{{addContactuser.emailId}}</span>
-              <div class="textCss"></div>
+
+
+ <div class="form-group" *ngIf="isPartner">
+            <div>
+              <label class="control-label col-xs-2 col-sm-2" for="vertical" style="color: #53affe;">
+                <!-- <i class="glyphicon glyphicon-home" aria-hidden="true"></i> -->
+              </label>
+              <div class="form-group col-xs-5 col-sm-5 pxl0">
+                <input type="vertical" style="border: none" class="form-control"  id="vertical"
+                  [(ngModel)]="addContactuser.vertical" [ngModelOptions]="{standalone: true}" placeholder="Vertical" maxlength="55">
+                <div class="textCss"></div>
+              </div>
+              <div class="form-group col-xs-6 col-sm-5">
+                <input type="region" style="border: none" class="form-control" id="region"
+                  [(ngModel)]="addContactuser.region" [ngModelOptions]="{standalone: true}" placeholder="Region" maxlength="55">
+                <div class="textCss"></div>
+              </div>
+            </div>
           </div>
-           <div class="form-group col-xs-10 col-sm-10" *ngIf="!isUpdateUser">
-              <input type="email" style="border: none" class="form-control padding-mobile" id="email1"
-              (blur)="checkingEmailPattern(addContactuser.emailId)" (input)="validateEmail(addContactuser.emailId)"
-              [(ngModel)]="addContactuser.emailId"  [ngModelOptions]="{standalone: true}"
-              placeholder="Email *" autocomplete="off" maxlength="250">
-            <div class="textCss"></div>
-            <span class="danger" *ngIf="!validEmailPatternSuccess">Please enter a valid email address</span>
-            <span class="danger" *ngIf="isEmailExist">This email address has already been added</span>
-           </div>
-         </div>
+          
+          
+         <div class="form-group" *ngIf="isPartner">
+            <div>
+              <label class="control-label col-xs-2 col-sm-2" for="partnerType" style="color: #53affe;">
+                <!-- <i class="glyphicon glyphicon-home" aria-hidden="true"></i> -->
+              </label>
+              <div class="form-group col-xs-5 col-sm-5 pxl0">
+                <input type="partnerType" style="border: none" class="form-control"  id="partnerType"
+                  [(ngModel)]="addContactuser.partnerType" [ngModelOptions]="{standalone: true}" placeholder="Partner Type" maxlength="55">
+                <div class="textCss"></div>
+              </div>
+              <div class="form-group col-xs-6 col-sm-5">
+                <input type="category" style="border: none" class="form-control" id="category"
+                  [(ngModel)]="addContactuser.category" [ngModelOptions]="{standalone: true}" placeholder="Category" maxlength="55">
+                <div class="textCss"></div>
+              </div>
+            </div>
+          </div>
+
+
+
+
+        
 
         <div class="form-group">
           <div>
