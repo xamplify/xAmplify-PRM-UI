@@ -127,7 +127,10 @@
 										</td>
 										<td>
 											<div class="actions-bloack override-actions" style="text-align: center !important; margin: 0 40px;">
-												<a (click)="showCampaignPreview(campaign)" data-toggle="tooltip" data-placement="top" title="Preview Campaign">
+												<a *ngIf="campaign.campaignType !== 'SOCIAL'" (click)="showCampaignPreview(campaign)" data-toggle="tooltip" data-placement="top" title="Preview Campaign">
+													<i class="fa fa-eye mr5"></i>
+                        </a>
+                        <a *ngIf="campaign.campaignType === 'SOCIAL'" data-toggle="tooltip" data-placement="top" title="coming soon">
 													<i class="fa fa-eye mr5"></i>
                         </a>
 												<a (click)="reDistributeCampaign(campaign)" data-toggle="tooltip" data-placement="top" title="Redistribute Campaign" data-rel="fancybox-button" >
