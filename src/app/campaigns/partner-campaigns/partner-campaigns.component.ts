@@ -225,7 +225,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
         this.socialService.getSocialCampaignByCampaignId( campaign.campaignId )
         .subscribe(
                 data => {
-                    this.router.navigate(['/home/campaigns/social', data.alias]);
+                    this.router.navigate(['/home/campaigns/social', data.socialStatusList[0].alias]);
                 },
                 error => { this.xtremandLogger.errorPage(error) },
                 () => console.log()

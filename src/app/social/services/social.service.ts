@@ -9,6 +9,7 @@ import 'rxjs/add/observable/throw';
 
 import {SocialStatus} from '../models/social-status';
 import {SocialConnection} from '../models/social-connection';
+import {SocialCampaign} from '../models/social-campaign';
 
 import {AuthenticationService} from '../../core/services/authentication.service';
 
@@ -91,6 +92,25 @@ export class SocialService {
       .catch(this.handleError);
   }
 
+  postStatus(socialStatusList: Array<SocialStatus>) {
+    return this.http.post(this.URL + 'social/status?access_token=' + this.authenticationService.access_token, socialStatusList)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  createSocialCampaign(socialCampaign: SocialCampaign) {
+    return this.http.post(this.URL + 'social/campaign?access_token=' + this.authenticationService.access_token, socialCampaign)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  redistributeSocialCampaign(socialCampaign: SocialCampaign) {
+    return this.http.post(this.URL + 'social/redistribute?access_token=' + this.authenticationService.access_token, socialCampaign)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+
   updateStatus(socialStatus: SocialStatus) {
     return this.http.post(this.URL + 'social/update-status?access_token=' + this.authenticationService.access_token, socialStatus)
       .map(this.extractData)
@@ -142,7 +162,7 @@ export class SocialService {
 
 
   getSocialCampaignByAlias(alias: string) {
-    return this.http.get(this.URL + 'social/status-by-alias/' + alias + '?access_token=' + this.authenticationService.access_token)
+    return this.http.get(this.URL + 'social/status-by-campaign-alias/' + alias + '?access_token=' + this.authenticationService.access_token)
       .map(this.extractData)
       .catch(this.handleError);
   }

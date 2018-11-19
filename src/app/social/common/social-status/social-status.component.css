@@ -8,6 +8,8 @@
 .profile-name {
     font-weight: bold;
     font-size: 14px;
+    margin: 0;
+    padding-top: 10px;
 }
 
 .status-time {

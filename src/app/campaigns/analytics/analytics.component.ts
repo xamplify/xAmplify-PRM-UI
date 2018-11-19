@@ -5,6 +5,7 @@ import { Campaign } from '../models/campaign';
 import { CampaignReport } from '../models/campaign-report';
 import { EmailLog } from '../models/email-log';
 import { Pagination } from '../../core/models/pagination';
+import { SocialCampaign } from '../../social/models/social-campaign';
 import { SocialStatus } from '../../social/models/social-status';
 import { CustomResponse } from '../../common/models/custom-response';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
@@ -59,7 +60,9 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   //eventCampaingRsvpRedistributionDetailPagination: Pagination = new Pagination();
    rsvpDetailAnalyticsPagination: Pagination = new Pagination();
 
-  socialStatus: SocialStatus = new SocialStatus();
+  socialCampaign: SocialCampaign = new SocialCampaign();
+  redistributedAccounts = new Set<number>();
+  redistributedAccountsBySelectedUserId: Array<SocialStatus> = [];
   campaignType: string;
   campaignId: number;
   maxViewsValue: number;
@@ -585,10 +588,21 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   userTimeline(campaignViews: any) {
     try{
     this.loading = true;
+    this.redistributedAccountsBySelectedUserId = [];
      this.listEmailLogsByCampaignAndUser(campaignViews.campaignId, campaignViews.userId);
     this.getTotalTimeSpentOfCampaigns(campaignViews.userId, campaignViews.campaignId);
     if(this.campaignType==='EVENT'){
         this.redistributionCampaignsDetails(campaignViews);
+    }
+    if(this.campaignType==='SOCIAL'){
+      this.socialCampaign.socialStatusList.forEach(
+        data => data.socialStatusList.forEach(
+          data => {
+          if(data.userId === campaignViews.userId) 
+            this.redistributedAccountsBySelectedUserId.push(data);
+          }
+        )
+      )
     }
     this.selectedRow = campaignViews;
     this.isTimeLineView = !this.isTimeLineView;
@@ -703,20 +717,14 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       this.socialService.getSocialCampaignByCampaignId(campaignId)
       .subscribe(
       data => {
-        this.socialStatus = data;
-
-
+        this.socialCampaign = data;
         this.loading = false;
+        this.socialCampaign.socialStatusList.forEach(data => {
+          data.socialStatusList.forEach( data => this.redistributedAccounts.add(data.userId))
+        })
       },
       error => this.xtremandLogger.error(error),
-      () => {
-        let self = this;
-          this.socialStatus.socialStatusProviders.forEach(function (element) {
-          if (element.socialConnection.source === 'TWITTER') {
-            self.getTweet(element);
-          }
-        });
-      }
+      () => {}
       )
     }catch(error){
       this.xtremandLogger.error('error'+error)
@@ -1277,15 +1285,6 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
         this.xtremandLogger.error('Error in listEmailLogsByCampaignIdUserIdActionType: ' + error);
       }
     }
-  }
-
-  getTweet(socialStatusProvider: SocialStatusProvider) {
-    this.twitterService.getTweet(socialStatusProvider.socialConnection, socialStatusProvider.statusId)
-      .subscribe(
-      data => {this.tweets.push(data)},
-      error => console.log(error),
-      () => { }
-      )
   }
 
   ngOnInit() {

@@ -1721,7 +1721,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         } else {
             this.campaign.regularEmail = false;
         }
-        this.filteredSocialStatusProviders();
+        // this.filteredSocialStatusProviders();
         this.getRepliesData();
         this.getOnClickData();
         this.selectedContactListIds = this.refService.removeDuplicates(this.selectedContactListIds);
@@ -2258,30 +2258,30 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
 
         listSocialStatusProviders() {
             const socialConnections = this.socialService.socialConnections;
-            this.socialStatus.socialStatusProviders = new Array<SocialStatusProvider>();
+            // this.socialStatus.socialStatusProviders = new Array<SocialStatusProvider>();
             for ( const i in socialConnections ) {
                 let socialStatusProvider = new SocialStatusProvider();
                 socialStatusProvider.socialConnection = socialConnections[i];
-                this.socialStatus.socialStatusProviders.push( socialStatusProvider );
+                // this.socialStatus.socialStatusProviders.push( socialStatusProvider );
             }
         }
 
-        filteredSocialStatusProviders(){
-            let socialStatusProviders = this.socialStatus.socialStatusProviders;
-            if(socialStatusProviders !== undefined){
-                socialStatusProviders = socialStatusProviders.filter( function( obj ) {
-                    return obj.selected == true;
-                });
-            }
-            this.socialStatus.socialStatusProviders = socialStatusProviders;
-        }
+        // filteredSocialStatusProviders(){
+        //     let socialStatusProviders = this.socialStatus.socialStatusProviders;
+        //     if(socialStatusProviders !== undefined){
+        //         socialStatusProviders = socialStatusProviders.filter( function( obj ) {
+        //             return obj.selected == true;
+        //         });
+        //     }
+        //     this.socialStatus.socialStatusProviders = socialStatusProviders;
+        // }
 
         updateStatus() {
-            let socialStatusProviders = this.socialStatus.socialStatusProviders;
-            socialStatusProviders = socialStatusProviders.filter( function( obj ) {
-                return obj.selected == true;
-            });
-            this.socialStatus.socialStatusProviders = socialStatusProviders;
+            // let socialStatusProviders = this.socialStatus.socialStatusProviders;
+            // socialStatusProviders = socialStatusProviders.filter( function( obj ) {
+            //     return obj.selected == true;
+            // });
+            // this.socialStatus.socialStatusProviders = socialStatusProviders;
             this.socialStatus.userId = this.loggedInUserId;
             swal( { title: 'Updating Status', text: "Please Wait...", showConfirmButton: false, imageUrl: "http://rewardian.com/images/load-page.gif" });
             this.socialService.updateStatus( this.socialStatus )

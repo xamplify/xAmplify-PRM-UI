@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { XtremandLogger } from '../../../error-pages/xtremand-logger.service';
 import { SaveVideoFile } from '../../../videos/models/save-video-file';
 
+import { SocialCampaign } from '../../models/social-campaign';
 import { SocialStatusDto } from '../../models/social-status-dto';
 import { SocialStatus } from '../../models/social-status';
 import { SocialStatusContent } from '../../models/social-status-content';
@@ -36,10 +37,22 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   @Input('alias') alias: string;
   videoUrl: string;
   posterImage: string;
+  videoGifImage: string;
   videoJSplayer: any;
   selectedVideo: SaveVideoFile;
   userId: number;
+  
+
+  socialCampaign = new SocialCampaign();
   socialStatus = new SocialStatus();
+  selectedAccounts: number = 0;
+  isCustomizeButtonClicked: boolean = false;
+  socialStatusList = new Array<SocialStatus>();
+  socialStatusResponse = new Array<SocialStatus>();
+  socialStatusProviders = new Array<SocialStatusProvider>();
+  isAllSelected: boolean = false;
+  loading: boolean = false;
+
   previewContactList = new ContactList();
   socialStatusDtos = new Array<any>();
   customResponse = new CustomResponse();
@@ -61,8 +74,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     this.location = this.router.url;
     this.resetCustomResponse();
     this.userId = this.authenticationService.getUserId();
-    this.socialStatus.userId = this.userId;
-    this.socialStatus.userListIds = []
+    // this.initializeSocialStatus();
   }
   resetCustomResponse() {
     this.customResponse.type = null;
@@ -105,6 +117,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     this.videoUrl = this.selectedVideo.videoPath;
     this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
     this.videoUrl = this.videoUrl + '.mp4?access_token=' + this.authenticationService.access_token;
+    this.videoGifImage = videoFile.gifImagePath;
     if (this.selectedVideo.is360video) {
          this.play360video(this.selectedVideo);
     } else {
@@ -181,38 +194,29 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
       socialStatusContent.id = this.selectedVideo.id;
       socialStatusContent.fileName = this.selectedVideo.title;
       socialStatusContent.fileType = 'video';
-      socialStatusContent.filePath = this.videoUrl;
+      socialStatusContent.filePath = this.videoGifImage;
+      this.videoGifImage
       this.socialStatus.socialStatusContents.push(socialStatusContent);
     }
     $('#listVideosModal').modal('hide');
   }
 
-  removeItem(i: number, socialStatusContent: SocialStatusContent) {
+  removeItem(socialStatus: SocialStatus, socialStatusContent: SocialStatusContent) {
     this.resetCustomResponse();
-    console.log(socialStatusContent + '' + i);
-    this.socialService.removeMedia(socialStatusContent.fileName)
-      .subscribe(
-      data => {
-        $('#preview-' + i).remove('slow');
-        this.socialStatus.socialStatusContents.splice(i);
-        this.resetCustomResponse();
-      },
-      error => console.log(error),
-      () => console.log('Finished')
-      );
+    socialStatus.socialStatusContents = socialStatus.socialStatusContents.filter(item => item.fileName !== socialStatusContent.fileName);
   }
 
-  validateImageUpload(files: any) {
+  validateImageUpload(files: any, socialStatus: SocialStatus) {
     this.resetCustomResponse();
     this.customResponse.statusArray = [];
     const uploadedFilesCount = files.length;
-    const existingFilesCount = this.socialStatus.socialStatusContents.length;
+    const existingFilesCount = socialStatus.socialStatusContents.length;
     if ((uploadedFilesCount + existingFilesCount) > 4) {
       this.setCustomResponse(ResponseType.Warning, 'You can upload maximum 4 images.');
       return false;
-    } else if ((this.socialStatus.socialStatusContents.length === 1) &&
-      (Array.from(this.socialStatus.socialStatusContents)[0].fileType === 'video')) {
-      this.setCustomResponse(ResponseType.Warning, 'You can include up to 4 photos or 1 video in a Tweet.');
+    } else if ((socialStatus.socialStatusContents.length === 1) &&
+      (Array.from(socialStatus.socialStatusContents)[0].fileType === 'video')) {
+      this.setCustomResponse(ResponseType.Warning, 'You can include up to 4 photos or 1 video in a post.');
       return false;
     } else {
       for (const file of files) {
@@ -228,9 +232,11 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
       return true;
     }
   }
-  fileChange(event: any) {
+  fileChange(event: any, socialStatus: SocialStatus) {
+    console.log(socialStatus);
+    console.log(this.socialStatusList);
     const files = event.target.files;
-    if (this.validateImageUpload(files)) {
+    if (this.validateImageUpload(files, socialStatus)) {
       if (files.length > 0) {
         const formData: FormData = new FormData();
         for (const file of files) {
@@ -242,9 +248,9 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
           data => {
             for (const i of Object.keys(data)) {
               const socialStatusContent = data[i];
-              this.socialStatus.socialStatusContents.push(socialStatusContent);
+              socialStatus.socialStatusContents.push(socialStatusContent);
             }
-            console.log(this.socialStatus);
+            console.log(socialStatus);
           },
           error => console.log(error),
           () => console.log('Finished')
@@ -268,12 +274,8 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     return this.isSocialCampaign ? this.isValidSocialCampaign() : this.isValidUpdateStatus();
   }
 
-  countSelectedSocialAccounts() {
-    return this.socialStatus.socialStatusProviders.filter((x, i) => {return x.selected;}).length;
-  }
-
   isSocialAccountsSelected() {
-      if ( this.countSelectedSocialAccounts() < 1 ) {
+      if ( this.selectedAccounts < 1 ) {
           this.setCustomResponse( ResponseType.Warning, 'Please select the accounts to post the status.' );
           return false;
       } else {
@@ -285,10 +287,10 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
       let isValid = true;
       isValid = this.isSocialAccountsSelected();
 
-      if ( !this.socialStatus.campaignName ) {
+      if ( !this.socialCampaign.campaignName ) {
           isValid = false;
           this.setCustomResponse( ResponseType.Warning, 'Please provide campaign name' );
-      } else if ( this.socialStatus.campaignName && this.socialStatus.userListIds.length === 0 && !this.authenticationService.isOnlyPartner() ) {
+      } else if ( this.socialCampaign.campaignName && this.socialCampaign.userListIds.length === 0 && !this.authenticationService.isOnlyPartner() ) {
           isValid = false;
           this.setCustomResponse( ResponseType.Warning, 'Please select contact lists' );
       }
@@ -299,23 +301,80 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     return this.isSocialAccountsSelected();
   }
 
+  isValidredistributeSocialCampaign(){
+    let isValid = true;
+    isValid = this.isSocialAccountsSelected();
+    if ( !this.socialCampaign.campaignName ) {
+      isValid = false;
+      this.setCustomResponse( ResponseType.Warning, 'Please provide campaign name' );
+    }
+    return isValid;
+  }
+  
+  redistributeSocialCampaign(){
+    this.resetCustomResponse();
+    this.socialCampaign.socialStatusProviderList = [];
+    this.socialCampaign.userId = this.userId;
+    this.socialCampaign.shareNow = true;
+    this.socialCampaign.parentCampaignId = this.socialCampaign.campaignId;
+    this.socialCampaign.campaignId = null;
+    this.socialStatusProviders.forEach(data => {
+      if(data.selected)
+        this.socialCampaign.socialStatusProviderList.push(data)
+    });
+    if(this.isValidredistributeSocialCampaign()){
+      this.loading = true;
+      this.socialService.redistributeSocialCampaign(this.socialCampaign)
+        .subscribe(
+        data => {
+          this.setCustomResponse(ResponseType.Success, 'Redistributed Successfully');
+          this.socialCampaign.campaignName = null;
+          this.referenceService.campaignSuccessMessage = 'NOW'
+          this.referenceService.launchedCampaignType = 'SOCIAL';
+          if(this.authenticationService.isOnlyPartner()) {
+            this.router.navigate(['home/campaigns/partner/social']); }
+          else {
+            this.router.navigate(['/home/campaigns/manage']);
+          }
+          $('input:checkbox').removeAttr('checked');
+          $('#contact-list-table tr').removeClass("highlight");
+        },
+        error => {
+          this.setCustomResponse(ResponseType.Error, 'An Error occurred while redistributing the social campaign.');
+          this.customResponse.statusArray = [];
+          this.customResponse.statusArray.push(error);
+          this.loading = false;
+        },
+        () => {
+          this.initializeSocialStatus();
+          this.socialCampaign.userListIds = [];
+          this.loading = false;
+        }
+        );
+    }
+    
+    console.log(this.socialCampaign);
+  }
+
   createSocialCampaign() {
     this.resetCustomResponse();
-    this.socialStatus.socialCampaign = this.isSocialCampaign;
+    this.socialCampaign.socialCampaign = this.isSocialCampaign;
     $('html, body').animate({
       scrollTop: $('#us-right').offset().top
     }, 500);
     if (this.validate()) {
-      this.setCustomResponse(ResponseType.Loading, 'Creating and publishing social campaign');
-      this.socialStatus.socialStatusProviders = this.filterSelectedSocialProviders(this.socialStatus.socialStatusProviders);
+      this.loading = true;
+      this.socialStatusResponse = [];
+      this.socialCampaign.userId = this.userId;
+      this.socialCampaign.socialStatusList = this.socialStatusList;
 
-      this.socialStatus.userId = this.userId;
 
-      this.socialService.updateStatus(this.socialStatus)
+
+      this.socialService.createSocialCampaign(this.socialCampaign)
         .subscribe(
         data => {
           this.setCustomResponse(ResponseType.Success, 'Status posted Successfully');
-          this.socialStatus.campaignName = null;
+          this.socialCampaign.campaignName = null;
           this.referenceService.campaignSuccessMessage = 'NOW'
           this.referenceService.launchedCampaignType = 'SOCIAL';
           if(this.authenticationService.isOnlyPartner()) {
@@ -330,10 +389,12 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
           this.setCustomResponse(ResponseType.Error, 'An Error occurred while creating the social campaign.');
           this.customResponse.statusArray = [];
           this.customResponse.statusArray.push(error);
+          this.loading = false;
         },
         () => {
           this.initializeSocialStatus();
-          this.socialStatus.userListIds = [];
+          this.socialCampaign.userListIds = [];
+          this.loading = false;
         }
         );
     }
@@ -348,21 +409,30 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 
   updateStatus() {
     if (this.validate()) {
-      this.socialStatus.socialStatusProviders = this.filterSelectedSocialProviders(this.socialStatus.socialStatusProviders);
-      this.setCustomResponse(ResponseType.Loading, 'Updating Status');
-      this.socialService.updateStatus(this.socialStatus)
+      // this.socialStatusProviders = this.filterSelectedSocialProviders(this.socialStatusProviders);
+      // this.setCustomResponse(ResponseType.Loading, 'Updating Status');
+      this.loading = true;
+      this.socialStatusResponse = [];
+      this.socialStatusList.forEach(data => {
+        data.userId = this.userId;
+        if (this.isUrl(data.statusMessage))
+          data.validLink = true;
+      });
+      this.socialService.postStatus(this.socialStatusList)
         .subscribe(
         data => {
           this.initializeSocialStatus();
           $('#full-calendar').fullCalendar('removeEvents');
           this.listEvents();
-          this.setCustomResponse(ResponseType.Success, 'Status posted Successfully');
+          this.socialStatusResponse = data;
+          this.customResponse.statusText = null;
         },
         error => {
+          this.loading = false;
           console.log(error);
           this.setCustomResponse(ResponseType.Error, 'Error while posting the update.');
         },
-        () => console.log('Finished')
+        () => this.loading = false
         );
     }
   }
@@ -388,11 +458,14 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   }
 
   initializeSocialStatus() {
-    this.socialStatus.socialStatusContents = new Array<SocialStatusContent>();
-    this.socialStatus.id = null;
-    this.socialStatus.statusMessage = '';
-    this.socialStatus.shareNow = true;
-
+    this.socialStatusList = [];
+    this.isAllSelected = false;
+    this.selectedAccounts = 0;
+    let socialStatus = new SocialStatus();
+    socialStatus.userId = this.userId;
+    this.socialCampaign.userListIds = [];
+    socialStatus.id = null;
+    this.socialStatusList.push(socialStatus);
     this.listSocialStatusProviders();
   }
 
@@ -411,16 +484,20 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 
   listSocialStatusProviders() {
     const socialConnections = this.socialService.socialConnections;
-    this.socialStatus.socialStatusProviders = new Array<SocialStatusProvider>();
+    this.socialStatusProviders = new Array<SocialStatusProvider>();
     for (const i in socialConnections) {
       if (socialConnections[i].active) {
-        const socialStatusProvider = new SocialStatusProvider();
-        socialStatusProvider.socialConnection = socialConnections[i];
-        this.socialStatus.socialStatusProviders.push(socialStatusProvider);
+        let source = socialConnections[i].source;
+        if(socialConnections[i].source !== 'GOOGLE') {
+          const socialStatusProvider = new SocialStatusProvider();
+          socialStatusProvider.socialConnection = socialConnections[i];
+          this.socialStatusProviders.push(socialStatusProvider);
+        }
       }
     }
   }
-  openListVideosModal() {
+  openListVideosModal(socialStatus: SocialStatus) {
+    this.socialStatus = socialStatus;
     $('#listVideosModal').modal('show');
     if (this.videosPagination.pagedItems.length === 0) {
       $('#preview-section').hide();
@@ -441,8 +518,8 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     $('html,body').animate({scrollTop: 0}, 'slow');
     this.initializeSocialStatus();
     this.socialStatus = socialStatus;
-    for (const i of Object.keys(this.socialStatus.socialStatusProviders)) {
-      this.socialStatus.socialStatusProviders[i].selected = true;
+    for (const i of Object.keys(this.socialStatusProviders)) {
+      this.socialStatusProviders[i].selected = true;
     }
   }
 
@@ -478,9 +555,9 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 
   loadContactLists(contactListsPagination: Pagination) {
     this.paginationType = 'updatestatuscontactlists';
-     if(this.authenticationService.isOnlyPartner()) { this.socialStatus.isPartner = false;}
+     if(this.authenticationService.isOnlyPartner()) { this.socialCampaign.isPartner = false;}
      this.contactListsPagination.filterKey = 'isPartnerUserList';
-     this.contactListsPagination.filterValue = this.socialStatus.isPartner; /// if its true normal contacts wil come, partner contacts for false
+     this.contactListsPagination.filterValue = this.socialCampaign.isPartner; /// if its true normal contacts wil come, partner contacts for false
      this.contactService.loadContactLists(contactListsPagination)
       .subscribe(
       (data: any) => {
@@ -607,11 +684,10 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
       data => {
         for (const i of Object.keys(data)) {
           const socialStatus = data[i];
-          for (const j of Object.keys(socialStatus.socialStatusProviders)) {
           const socialStatusDto = new SocialStatusDto();
           socialStatusDto.socialStatus = socialStatus;
           socialStatusDto.socialStatusContents = socialStatus.socialStatusContents;
-          socialStatusDto.socialStatusProvider = socialStatus.socialStatusProviders[j];
+          socialStatusDto.socialStatusProvider = socialStatus.socialStatusProvider;
 
           this.socialStatusDtos.push(socialStatusDto);
 
@@ -622,8 +698,6 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
             data: socialStatusDto,
           };
           $('#full-calendar').fullCalendar('renderEvent', event, true);
-          }
-
         }
       },
       error => console.log(error),
@@ -640,31 +714,25 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   highlightRow(contactListId: number) {
     const isChecked = $('#' + contactListId).is(':checked');
     if (isChecked) {
-      if (!this.socialStatus.userListIds.includes(contactListId)) {
-        this.socialStatus.userListIds.push(contactListId);
+      if (!this.socialCampaign.userListIds.includes(contactListId)) {
+        this.socialCampaign.userListIds.push(contactListId);
       }
       $('#' + contactListId).parent().closest('tr').addClass('highlight');
     } else {
-      this.socialStatus.userListIds.splice($.inArray(contactListId, this.socialStatus.userListIds), 1);
+      this.socialCampaign.userListIds.splice($.inArray(contactListId, this.socialCampaign.userListIds), 1);
       $('#' + contactListId).parent().closest('tr').removeClass('highlight');
     }
-  }
-
-  toggleContactListCheckbox(contactListId: number) {
-    const isChecked = $('#' + contactListId).is(':checked');
-    $('#' + contactListId).prop('checked', isChecked);
-    this.highlightRow(contactListId);
   }
 
   getSocialCampaign(socialCampaignAlias: string) {
     this.socialService.getSocialCampaignByAlias(socialCampaignAlias)
       .subscribe(
       data => {
-        this.socialStatus = data;
-        this.socialStatus.shareNow = true;
-        this.socialStatus.isPartner = true;
-        this.socialStatus.emailOpened = false;
-        this.socialStatus.userListIds = []
+        this.socialCampaign = data;
+        this.socialCampaign.isPartner = true;
+        this.socialCampaign.userListIds = [];
+        this.socialStatusList = [];
+        this.isCustomizeButtonClicked = true;
       },
       error => this.router.navigate(['/home/error/404']),
       () => {
@@ -674,7 +742,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   }
 
   toggleContactLists() {
-    this.socialStatus.isPartner = !this.socialStatus.isPartner;
+    this.socialCampaign.isPartner = !this.socialCampaign.isPartner;
     this.contactListsPagination.pageIndex = 1;
     this.loadContactLists(this.contactListsPagination);
   }
@@ -686,11 +754,11 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     $('#schedule-later-div').hide();
 
     if ( this.isSocialCampaign ) {
-        this.socialStatus.isPartner = this.authenticationService.isOnlyPartner() ? false : true;
+      this.socialCampaign.isPartner = this.authenticationService.isOnlyPartner() ? false : true;
+        if(this.alias) {
+          this.getSocialCampaign(this.alias);
+        }
         this.loadContactLists( this.contactListsPagination );
-    }
-    if (this.isSocialCampaign && this.alias) {
-      this.getSocialCampaign(this.alias);
     }
   }
 
@@ -702,5 +770,120 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     this.videoFileService.videoType = '';
     $('#listVideosModal').modal('hide');
     $('#contactsModal').modal('hide');
+  }
+
+  toggleSocialStatusProvider(socialStatusProvider: SocialStatusProvider) {
+    socialStatusProvider.selected = !socialStatusProvider.selected;
+    this.selectedAccounts = socialStatusProvider.selected ? this.selectedAccounts + 1 : this.selectedAccounts - 1;
+
+    if (this.isSocialCampaign && this.alias) {
+      if (socialStatusProvider.selected) {
+        let likeSocialAccount = 0;
+        this.socialCampaign.socialStatusList.forEach(data => {
+          if (data.socialStatusProvider.socialConnection.source === socialStatusProvider.socialConnection.source)
+            likeSocialAccount++;
+        })
+
+        if (likeSocialAccount >= 1) {
+          socialStatusProvider.socialStatusList = [];
+          this.socialCampaign.socialStatusList.forEach(data => {
+            if (data.socialStatusProvider.socialConnection.source === socialStatusProvider.socialConnection.source){
+              let socialStatus = new SocialStatus();
+              socialStatus.statusMessage = socialStatusProvider.socialConnection.source === 'TWITTER' ? data.statusMessage.substring(0, 280) : data.statusMessage;
+              data.socialStatusContents.forEach(data => socialStatus.socialStatusContents.push(data));
+              socialStatus.socialStatusProvider = data.socialStatusProvider;              
+              socialStatusProvider.socialStatusList.push(socialStatus);
+            }
+          })
+        } else {
+          this.socialCampaign.socialStatusList.forEach(data=> {
+              let socialStatus = new SocialStatus();
+              socialStatus.statusMessage = socialStatusProvider.socialConnection.source === 'TWITTER' ? data.statusMessage.substring(0, 280) : data.statusMessage;
+              data.socialStatusContents.forEach(data => socialStatus.socialStatusContents.push(data));
+              socialStatus.socialStatusProvider = data.socialStatusProvider;              
+              socialStatusProvider.socialStatusList.push(socialStatus);
+          })
+        }
+        socialStatusProvider.socialStatusList[0].selected = true;
+      }
+    } else {
+      if (socialStatusProvider.selected) {
+        if (this.isCustomizeButtonClicked) {
+          if (this.selectedAccounts <= 1) {
+            this.socialStatusList[0].socialStatusProvider = socialStatusProvider;
+          } else {
+            let socialStatusData = this.socialStatusList[0];
+            this.socialStatusList.push(this.copyContent(socialStatusData, socialStatusProvider));
+          }
+        } else {
+          this.socialStatusList[0].socialStatusProvider = socialStatusProvider;
+        }
+      } else if (!socialStatusProvider.selected) {
+        if (this.isCustomizeButtonClicked) {
+          // possibility to have more than one socialStatusList
+          if (this.socialStatusList.length > 1) {
+            this.socialStatusList = this.socialStatusList.filter(function (obj) {
+              return obj.socialStatusProvider.socialConnection.id !== socialStatusProvider.socialConnection.id;
+            });
+          } else {
+            this.socialStatusList[0] = new SocialStatus();
+            delete this.socialStatusList[0].socialStatusProvider;
+          }
+        } else {
+          if (this.selectedAccounts === 0) {
+            this.socialStatusList[0] = new SocialStatus();
+            delete this.socialStatusList[0].socialStatusProvider;
+          }
+        }
+      }
+    }
+
+    if (this.selectedAccounts === 0)
+      this.isAllSelected = false;
+    if (this.selectedAccounts === this.socialStatusProviders.length)
+      this.isAllSelected = true;
+
+      console.table(this.socialStatusProviders);
+  }
+
+  copyContent(targetSocialStatus: SocialStatus, socialStatusProvider: SocialStatusProvider){
+        let socialStatus = new SocialStatus();
+
+        socialStatus.statusMessage = socialStatusProvider.socialConnection.source === 'TWITTER' ? targetSocialStatus.statusMessage.substring(0, 280) : targetSocialStatus.statusMessage;
+        targetSocialStatus.socialStatusContents.forEach(data => socialStatus.socialStatusContents.push(data));
+        socialStatus.socialStatusProvider = socialStatusProvider;
+        socialStatus.userId = this.userId;
+
+        return socialStatus;
+  }
+
+  customizeEachNetwork() {
+    let socialStatusData = this.socialStatusList[0];
+    this.socialStatusList = [];
+    this.socialStatusProviders.forEach(data => {
+      if(data.selected){
+        this.socialStatusList.push(this.copyContent(socialStatusData, data));
+      }
+    })
+    this.isCustomizeButtonClicked = true;
+  }
+
+  toggleSelectAll(){
+    this.isAllSelected = ! this.isAllSelected;
+    this.selectedAccounts = 0;
+    if(this.isAllSelected){
+      this.socialStatusProviders.forEach(data => {
+          data.selected = false;
+          this.toggleSocialStatusProvider(data);
+      })
+    }else {
+      this.socialStatusList.length = 1;
+      this.socialStatusProviders.forEach(data => data.selected = false);
+    }
+  }
+
+  isUrl(s): boolean {
+    var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
+    return regexp.test(s);
   }
 }

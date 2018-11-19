@@ -28,7 +28,7 @@
 	</ul>
 <!--<app-analytics-loader [campaignType]="campaignType" *ngIf="loading"></app-analytics-loader>-->
 </div>
-<div class="portlet light clearfix">
+<div class="portlet light">
 <div class="portlet-body">
 <div *ngIf="hasClientError && !mainLoader" class="client-error">Something went wrong, Please refresh the page</div>
 <div *ngIf="customResponse.responseType === 'ERROR'; else NOERROR" class="m10">
@@ -348,11 +348,11 @@
 		</div>
 		<div class="p-5x" [hidden]="mainLoader || hasClientError" *ngIf="campaignType === 'SOCIAL'" [ngClass]="{'hidden': campaignType !== 'SOCIAL', 'col-xs-4': campaignType === 'SOCIAL'}">
 			<button class="portlet light color1-invert crcb" data-toggle="modal" data-target="#scrModal" [ngClass]="{'forbidden' :!isDataShare ?true:null}"
-			 [disabled]="socialStatus.socialStatusList.length < 1 || !isDataShare">
+			 [disabled]="redistributedAccounts.size < 1 || !isDataShare">
 				<div class="portlet-body text-center">
 						<i class="fa fa-share-alt"></i>
 					<h1>
-						<b>{{socialStatus.socialStatusList.length}}</b>
+						<b>{{redistributedAccounts.size}}</b>
 					</h1>
 					<h5>Redistributed</h5>
 				</div>
@@ -371,7 +371,7 @@
 			</button>
 		</div>
 	</div>
-	<section class='clearfix' [hidden]="mainLoader || hasClientError"  *ngIf="campaignType === 'SOCIAL' && socialStatus">
+	<section class='clearfix' [hidden]="mainLoader || hasClientError"  *ngIf="campaignType === 'SOCIAL' && socialCampaign">
 		<div class="col-xs-12">
 			<div class="portlet light" style="margin: -5px -5px 5px -5px;">
 				<div class="portlet-title">
@@ -380,7 +380,9 @@
 					</div>
 				</div>
 				<div class="portlet-body clearfix">
-					<app-social-status [socialStatus]="socialStatus"></app-social-status>
+					<ng-container *ngFor="let socialStatus of socialCampaign.socialStatusList">
+						<app-social-status [socialStatus]="socialStatus"></app-social-status>
+					</ng-container>
 				</div>
 			</div>
 		</div>
@@ -517,26 +519,27 @@
 												</div>
 											</div>
 											<ng-container *ngIf="campaignType == 'SOCIAL'">
-												<ng-container *ngFor="let socialStatus of socialStatus.socialStatusList">
-													<ng-container *ngIf="socialStatus.userId === item.userId">
-													<ng-container *ngFor="let socialStatusProvider of socialStatus.socialStatusProviders">
-											<div class="social-profile" [ngStyle]="{'background-image': 'url(' + socialStatusProvider.socialConnection.profileImage + ')'}"
-												data-toggle="tooltip" data-placement="top" title="{{socialStatusProvider.socialConnection.profileName}}">
-												<ng-container *ngIf="socialStatusProvider.socialConnection.source === 'TWITTER'">
-													<img class="img-circle" alt="{{socialStatusProvider.socialConnection.profileName}}" src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/twitter_circle-20.png">
-												</ng-container>
-												<ng-container *ngIf="socialStatusProvider.socialConnection.source === 'FACEBOOK'">
-													<img class="img-circle" alt="{{socialStatusProvider.socialConnection.profileName}}" src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/facebook_circle-20.png">
-												</ng-container>
-												<ng-container *ngIf="socialStatusProvider.socialConnection.source === 'LINKEDIN'">
-													<img class="img-circle" alt="{{socialStatusProvider.socialConnection.profileName}}" src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/linkedin_circle-20.png">
-												</ng-container>
-												<ng-container *ngIf="socialStatusProvider.socialConnection.source === 'GOOGLE'">
-													<img class="img-circle" alt="{{socialStatusProvider.socialConnection.profileName}}" src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/google_circle-20.png">
-												</ng-container>
-											</div>
+												<ng-container *ngFor="let socialStatus of socialCampaign.socialStatusList">
+													<ng-container *ngFor="let socialStatus of socialStatus.socialStatusList">
+														<ng-container *ngIf="socialStatus.userId === item.userId">
+															<div class="social-profile" [ngStyle]="{'background-image': 'url(' + socialStatus.socialStatusProvider.socialConnection.profileImage + ')'}" 
+																data-toggle="tooltip" data-placement="top" title="{{socialStatus.socialStatusProvider.socialConnection.profileName}}">
+																<ng-container *ngIf="socialStatus.socialStatusProvider.socialConnection.source === 'TWITTER'">
+																	<img class="img-circle" alt="{{socialStatus.socialStatusProvider.socialConnection.profileName}}" src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/twitter_circle-20.png">
+																</ng-container>
+																<ng-container *ngIf="socialStatus.socialStatusProvider.socialConnection.source === 'FACEBOOK'">
+																	<img class="img-circle" alt="{{socialStatus.socialStatusProvider.socialConnection.profileName}}" src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/facebook_circle-20.png">
+																</ng-container>
+																<ng-container *ngIf="socialStatus.socialStatusProvider.socialConnection.source === 'LINKEDIN'">
+																	<img class="img-circle" alt="{{socialStatus.socialStatusProvider.socialConnection.profileName}}" src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/linkedin_circle-20.png">
+																</ng-container>
+																<ng-container *ngIf="socialStatus.socialStatusProvider.socialConnection.source === 'GOOGLE'">
+																	<img class="img-circle" alt="{{socialStatus.socialStatusProvider.socialConnection.profileName}}" src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/google_circle-20.png">
+																</ng-container>
+															</div>
+														</ng-container>
 													</ng-container>
-													</ng-container>
+
 												</ng-container>
 											</ng-container>
 										</td>
@@ -544,10 +547,8 @@
 									</ng-container>
 								</tbody>
 							</table>
-            </div>
-            <div class="pg8">
+						</div>
 						<app-pagination  [pagination]="campaignViewsPagination" [type]="'campaignViews'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
-            </div>
           </div>
           </div>
 				</div>
@@ -716,10 +717,8 @@
 			<div class="col-xs-12">
 				<ng-container *ngIf="campaignType == 'SOCIAL'">
 					<div class="f-w-600 p10">Redistributed Accounts</div>
-					<ng-container *ngFor="let socialStatus of socialStatus.socialStatusList">
-						<ng-container *ngIf="socialStatus.userId === selectedRow.userId">
-							<app-social-status [socialStatus]="socialStatus"></app-social-status>
-						</ng-container>
+					<ng-container *ngFor="let socialStatus of redistributedAccountsBySelectedUserId">
+						<app-social-status [socialStatus]="socialStatus"></app-social-status>
 					</ng-container>
 				</ng-container>
             </div>
@@ -784,11 +783,7 @@
 								<div><img src="assets/images/social-icons.jpg" style="margin: 0px 15px;width: auto;height: 52px;"></div>
 								<div>Social Accounts</div>
 								<div class="number">
-									<ng-container *ngFor="let socialStatus of socialStatus.socialStatusList">
-										<ng-container *ngIf="socialStatus.userId === selectedRow.userId">
-											<span>{{socialStatus.socialStatusProviders.length}}</span>
-										</ng-container>
-									</ng-container>
+									<span>{{redistributedAccountsBySelectedUserId.length}}</span>
 								</div>
 							</a>
 						</div>
@@ -1406,7 +1401,41 @@
 				</tr>
 			</thead>
 			<tbody>
-				<ng-container *ngFor="let socialStatus of socialStatus.socialStatusList">
+				<ng-container *ngFor="let socialStatus of socialCampaign.socialStatusList">
+					<ng-container *ngFor="let socialStatus of socialStatus.socialStatusList">
+						<tr>
+						<ng-container *ngFor="let item of campaignViews">
+						<ng-container *ngIf="socialStatus.userId === item.userId">
+							<td>
+								<app-user-info  [userInfo]="item"> </app-user-info>
+							</td>
+							<td>
+								<div class="social-profile" [ngStyle]="{'background-image': 'url(' + socialStatus.socialStatusProvider.socialConnection.profileImage + ')'}"
+									data-toggle="tooltip" data-placement="top" title="{{socialStatus.socialStatusProvider.socialConnection.profileName}}">
+									<ng-container *ngIf="socialStatus.socialStatusProvider.socialConnection.source === 'TWITTER'">
+										<img class="img-circle" alt="{{socialStatus.socialStatusProvider.socialConnection.profileName}}" src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/twitter_circle-20.png">
+									</ng-container>
+									<ng-container *ngIf="socialStatus.socialStatusProvider.socialConnection.source === 'FACEBOOK'">
+										<img class="img-circle" alt="{{socialStatus.socialStatusProvider.socialConnection.profileName}}" src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/facebook_circle-20.png">
+									</ng-container>
+									<ng-container *ngIf="socialStatus.socialStatusProvider.socialConnection.source === 'LINKEDIN'">
+										<img class="img-circle" alt="{{socialStatus.socialStatusProvider.socialConnection.profileName}}" src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/linkedin_circle-20.png">
+									</ng-container>
+									<ng-container *ngIf="socialStatus.socialStatusProvider.socialConnection.source === 'GOOGLE'">
+										<img class="img-circle" alt="{{socialStatus.socialStatusProvider.socialConnection.profileName}}" src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/google_circle-20.png">
+									</ng-container>
+								</div>
+							</td>
+						</ng-container>
+						</ng-container>
+						</tr>						
+					</ng-container>
+				</ng-container>
+
+
+
+
+				<!--<ng-container *ngFor="let socialStatus of socialStatus.socialStatusList">
 					<tr>
 					<ng-container *ngFor="let item of campaignViews">
 					<ng-container *ngIf="socialStatus.userId === item.userId">
@@ -1435,7 +1464,7 @@
 					</ng-container>
 					</ng-container>
 					</tr>
-				</ng-container>
+				</ng-container>-->
 			</tbody>
 		</table>
       </div>
