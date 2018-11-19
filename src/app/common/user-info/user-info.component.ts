@@ -11,6 +11,7 @@ export class UserInfoComponent implements OnInit {
     @Input() isPartnerEntityInfo: boolean;
     @Input() isPartnerInfo: boolean;
     @Input() isCompanyInfo: boolean;
+    @Input() isContactCompanyInfo: boolean;
     backgroudColor: any;
     constructor() { }
 

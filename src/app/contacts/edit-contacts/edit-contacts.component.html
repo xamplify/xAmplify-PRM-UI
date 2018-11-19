@@ -615,7 +615,7 @@
 														<td *ngIf="isPartner">{{contact.partnerType}}</td>
 														<td *ngIf="isPartner">{{contact.category}}</td>
 															<td *ngIf="!isPartner">
-															<app-user-info [userInfo]="contact"> </app-user-info>
+															<app-user-info [isContactCompanyInfo]="true" [userInfo]="contact"> </app-user-info>
 															</td>
 															<td class="hidden-xs" *ngIf="!isPartner">
 															<div *ngIf="contact.mobileNumber" [class.disabled]="true" style="pointer-events: none !important; cursor: auto;">
@@ -826,7 +826,7 @@
 													<app-user-info [isPartnerEntityInfo]="true" [isPartnerInfo]="true" [userInfo]="allcontacts"> </app-user-info>
 												</td>
 												<td *ngIf="!isPartner">
-													<app-user-info  [userInfo]="allcontacts"> </app-user-info>
+													<app-user-info [isContactCompanyInfo]="true" [userInfo]="allcontacts"> </app-user-info>
 												</td>
 												<td *ngIf="isPartner">{{allcontacts.vertical}}</td>
 														<td *ngIf="isPartner">{{allcontacts.region}}</td>
