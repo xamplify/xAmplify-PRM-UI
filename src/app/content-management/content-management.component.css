@@ -247,7 +247,7 @@
 	text-align: center;
 	position: relative;
 	cursor: pointer; */
-	
+
 background-color: #f3f4f6;
 text-align: center;
 display: block;
@@ -264,8 +264,8 @@ border-radius:3px;
 	height: 100%;
 	width: auto;
 	margin: 0 auto; */
-	
-	
+
+
 position: absolute;
 top: 50%;
 left: 50%;
@@ -300,7 +300,7 @@ hr {
 }
 
 .upload-btn-wrapper:hover {
-    opacity:1;   
+    opacity:1;
 }
 
 
@@ -555,7 +555,7 @@ label {
     border-color: #2eaade;
 }
 .list__item.list__item--selected .select-box label:after {
-    opacity:1; 
+    opacity:1;
     content: "";
     position: absolute;
     width: 9px;
@@ -594,3 +594,5 @@ label {
     height: 32px;
     left: -1px;
 }
+.mcss{  padding-right: 0;}
+@media only screen and (max-width:600px) { .mcss{  padding: 0;} }

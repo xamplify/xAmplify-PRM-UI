@@ -600,10 +600,10 @@
 														</td>
 														<th style="width: 25%" *ngIf="!isPartner">NAME</th>
 														<th style="width: 25%" *ngIf="isPartner">Entity info</th>
-														<th *ngIf="isPartner">VERTICAL</th>
-														<th *ngIf="isPartner">REGION</th>
-														<th *ngIf="isPartner">TYPE</th>
-														<th *ngIf="isPartner">CATEGORY</th>
+														<th *ngIf="isPartner" class="hidden-xs">VERTICAL</th>
+														<th *ngIf="isPartner" class="hidden-xs">REGION</th>
+														<th *ngIf="isPartner" class="hidden-xs">TYPE</th>
+														<th *ngIf="isPartner" class="hidden-xs">CATEGORY</th>
 														<th class="hidden-xs" *ngIf="!isPartner">Phone</th>
 														<th class="text-center hidden-xs" *ngIf="!isPartner">Job Title</th>
 														<th class="text-center hidden-xs"  *ngIf="!isPartner">ADDRESS</th>
@@ -641,11 +641,11 @@
 														<td *ngIf="!isPartner"><app-user-info
 																[isContactCompanyInfo]="true" [userInfo]="contact"></app-user-info>
 														</td>
-														
-														<td *ngIf="isPartner">{{contact.vertical}}</td>
-														<td *ngIf="isPartner">{{contact.region}}</td>
-														<td *ngIf="isPartner">{{contact.partnerType}}</td>
-														<td *ngIf="isPartner">{{contact.category}}</td>
+
+														<td *ngIf="isPartner" class="hidden-xs" >{{contact.vertical}}</td>
+														<td *ngIf="isPartner" class="hidden-xs" >{{contact.region}}</td>
+														<td *ngIf="isPartner" class="hidden-xs" >{{contact.partnerType}}</td>
+														<td *ngIf="isPartner" class="hidden-xs" >{{contact.category}}</td>
 														<td class="hidden-xs" *ngIf="!isPartner">
 															<div *ngIf="contact.mobileNumber" [class.disabled]="true"
 																style="pointer-events: none !important; cursor: auto;">
@@ -674,7 +674,7 @@
 																	*ngIf="contact?.zipCode && contact.country">,&nbsp;</span>{{contact.country}}
 															</h5>
 														</td>
-														<td align="center" *ngIf="isPartner || contactsByType.selectedCategory == 'non-active'">
+														<td  align="center" *ngIf="isPartner || contactsByType.selectedCategory == 'non-active'">
 															<button id='more_less_button_{{i}}' *ngIf="isPartner"
 																(click)="contact.isShowDetails = ! contact.isShowDetails">
 																<span *ngIf="!contact.isShowDetails">More</span> <span

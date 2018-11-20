@@ -32,51 +32,36 @@
 					<div class="tab-content" style="min-height: 715px;">
 						<div class="tab-pane active m10">
 							<div class="page-toolbar">
-								<div *ngIf="!httpRequestLoader.isLoading"
-									class="btn-group pull-right col-xs-12 col-sm-12 col-md-12"
-									style="padding: 0"
+								<div *ngIf="!httpRequestLoader.isLoading"	class="btn-group pull-right col-xs-12 col-sm-12 col-md-12 p0"
 									[ngClass]="{'margin-css':!authenticationService.isOrgAdminPartner() || !authenticationService.isVendorPartner()}">
 									<div class="inputs" align="right">
 										<span style="display: none"> <input type="file"
 											id="uploadFile" name="file" title="Upload a file"
 											(change)="upload($event)" multiple="multiple" />
 										</span>
-
-
-										<div class="col-xs-12 col-sm-6 col-md-3 p0">
-											<button class="btn btn-primary pull-left" style="display:none"
-												(click)="imageClick()">
-												Upload a file<i class="fa fa-upload" aria-hidden="true"
-													style="font-size: 12px; margin-left: 5px;"></i>
+										<div class="col-xs-3 col-sm-3 col-md-3 p0">
+											<button class="btn btn-primary pull-left" style="display:none" (click)="imageClick()">
+												Upload a file<i class="fa fa-upload" aria-hidden="true" style="font-size: 12px; margin-left: 5px;"></i>
 											</button>
-											<button type="button" class="btn btn-danger" style="float:left"
-												*ngIf="selectedFileIds?.length>1" (click)="delete()">Delete</button>
+											<button type="button" class="btn btn-danger" style="float:left"	*ngIf="selectedFileIds?.length>1" (click)="delete()">Delete</button>
 										</div>
-										<div class='col-xs-6 col-sm-3 col-md-3'
-											style="position: relative; left: 77px; z-index: 99;">
+										<div class='col-xs-0 col-sm-3 col-md-3'	style="z-index: 99;">
                       <span class="btn btn-xs hidden-xs" data-toggle="tooltip" data-placement="bottom" title="List View" [class.disabled]="isListView" (click)="isListView = true" style="background-color:#e2e2e2"><i class="fa fa-th-list p10" aria-hidden="true"></i></span>
                       <span class="btn btn-xs hidden-xs"  data-toggle="tooltip" data-placement="bottom" title="Grid View" [class.disabled]="!isListView" (click)="isListView = false" style="background-color:#e2e2e2"><i class="fa fa-th-large p10" aria-hidden="true"></i></span>
                     </div>
-										<div class="row col-xs-6 col-sm-3 col-md-6 pull-right"
-											style="padding-right: 0; margin-bottom: -30px;">
-											<div class="col-md-6"
-												[ngClass]="{'search-css': !referenceService.isMobileScreenSize(), 'mobile-css':referenceService.isMobileScreenSize() }">
-												<select class="form-control" style="margin-right: -25px;"
-													[(ngModel)]="sortOption"
-													(ngModelChange)="sortByOption($event)">
-													<ng-container *ngFor="let sort of sortOptions; let i = index">
-													   <option [ngValue]="sort">{{sort.name}}</option>
-													</ng-container>
-												</select>
-											</div>
 
-											<div class="col-md-6" style="cursor: pointer">
-												<input class="form-control" type="text" name="search"
-													placeholder="Search for a file" [(ngModel)]="searchTitle"  (keypress)="eventHandler($event.keyCode)">
-												<button class="glyphicon glyphicon-remove search-box-item-clear" style="right:59px !important;" *ngIf="searchTitle" (click)="searchTitle=''"></button>
-											 	<button type="submit" class="search-input-button"	(click)="searchFile()">	<i class="fa fa-search"></i></button>
-											</div>
-										</div>
+                    <div class="col-sm-3 col-md-3 col-xs-12 p0">
+                    <select class="form-control" [(ngModel)]="sortOption" (ngModelChange)="sortByOption($event)">
+                      <ng-container *ngFor="let sort of sortOptions; let i = index"> <option [ngValue]="sort">{{sort.name}}</option>
+                      </ng-container>
+                    </select>
+                  </div>
+
+                  <div class="col-sm-3 col-md-3 col-xs-12 mcss" style="cursor: pointer">
+                    <input class="form-control" type="text" name="search" placeholder="Search for a file" [(ngModel)]="searchTitle"  (keypress)="eventHandler($event.keyCode)">
+                    <button class="glyphicon glyphicon-remove search-box-item-clear" style="right:59px !important;" *ngIf="searchTitle" (click)="searchTitle=''"></button>
+                    <button type="submit" class="search-input-button"	(click)="searchFile()">	<i class="fa fa-search"></i></button>
+                  </div>
 									</div>
 								</div>
 							</div>
@@ -96,9 +81,9 @@
 												<tr>
 													<th class="text-center"></th>
 													<th style="text-align: left">Name</th>
-													<th class="text-center">Date</th>
-													<th class="text-center">Size</th>
-													<th class="text-center">Type</th>
+													<th class="text-center hidden-xs">Date</th>
+													<th class="text-center hidden-xs">Size</th>
+													<th class="text-center hidden-xs">Type</th>
 													<th class="text-center"
 														*ngIf="!authenticationService.isSuperAdmin()"><span
 														[hidden]="authenticationService.isOnlyPartner()">Actions</span></th>
@@ -128,9 +113,9 @@
 															</div>
 														</div>
 													</td>
-													<td class="text-center"><app-timestamp	[isOnlyDate]="true" [dateAndTime]="file.lastModifiedDate"></app-timestamp></td>
-													<td class="text-center"><span>{{file.filesizeInKb}}</span></td>
-													<td class="text-center"><span>{{file.type}}</span></td>
+													<td class="text-center hidden-xs"><app-timestamp	[isOnlyDate]="true" [dateAndTime]="file.lastModifiedDate"></app-timestamp></td>
+													<td class="text-center hidden-xs"><span>{{file.filesizeInKb}}</span></td>
+													<td class="text-center hidden-xs"><span>{{file.type}}</span></td>
 													<td>
 														<div class="actions-block override-actions">
 															<!-- (click)="preview(file)" -->
