@@ -102,7 +102,7 @@
 									<th class="hidden-xs text-center"
 										*ngIf="!authenticationService.isVendor()">Vendor Company
 										Name</th>
-									<th class="hidden-xs text-center" style="width: 13%">Type</th>
+									<th class="hidden-xs text-center">Type</th>
 									<th class="hidden-xs text-center">Created Date</th>
 									<th class="text-center">Actions</th>
 								</tr>
@@ -148,7 +148,7 @@
 										</h5>
 									</td>
 									<td class="hidden-xs">
-										<h5 class="view-banner" style="width: 115%;">{{emailTemplate.emailTemplateType}}</h5>
+										<h5 class="view-banner">{{emailTemplate.emailTemplateType}}</h5>
 									</td>
 									<td class="hidden-xs text-center"><app-timestamp
 											[isOnlyDate]="true" [dateAndTime]="emailTemplate.createdDate">
