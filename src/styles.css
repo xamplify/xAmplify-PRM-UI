@@ -321,7 +321,7 @@ textarea {
 }
 
 tr.highlight {
-	background-color: #ffc !important;
+	background-color: #f7f7f7;
 }
 
 .bold {
@@ -521,31 +521,35 @@ a {
 	float: right;
 }
 
-.actions-block a {
-	border: 1px solid #e7e6e3;
-	padding: 3px;
-	margin-right: 5px;
-	width: 32px;
-	height: 32px;
-	display: block;
-	float: left;
-	color: #5bb2f5;
-	text-decoration: none;
-	border-radius: 100%;
-}
-/*.actions-block a:last-child{color: #ff0000;}*/
 .actions-block i {
-	margin: 5px;
+	border: 1px solid #5bb2f5;
+    color: #5bb2f5;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 35px !important;
+    vertical-align: middle;
 }
 
-.actions-block a:hover {
-	border: 1px solid #5bb2f5;
-	background: #5bb2f5;
-	color: #FFF;
+.actions-block .disable i{
+	color: #a7a7a7;
+    border: 1px solid #a7a7a7;
 }
-/*.actions-block a:last-child:hover{background-color: #ff0000;border: 1px solid #ff0000;}*/
-a .fa-trash {
-	color: #ff0000;
+.actions-block .fa-trash {
+	color: #cb5a5e;
+    border: 1px solid #cb5a5e;
+}
+.actions-block i:hover{
+    background: #5bb2f5;
+    color: white;
+}
+.actions-block .fa-trash:hover {
+	background: #cb5a5e;
+}
+
+.actions-block .disable i:hover{
+	background: #a7a7a7;
 }
 
 .close-circle {

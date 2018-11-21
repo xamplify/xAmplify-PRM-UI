@@ -16,19 +16,19 @@ video {
 .social-status-response .fa-times-circle-o{color: red;}
 
 .profile-box {padding: 10px;}
-.profile-box:hover{background-color: #fdfdfd; cursor: pointer;}
+.profile-box:hover{background-color: #f7f7f7; cursor: pointer;}
 .heading-primary {margin: 3px 0;}
 
-.update-status-profile{
-	padding: 0;
-    width: auto;
+.update-status-profile {margin-top: 1em;}
+.update-status-profile .profile-image-box {
+	margin: 0 auto;
+	float: none;
 }
 .update-status-content{
 	position: relative;
     border: 1px solid #ccc;
     padding: 10px 10px 25px 10px;
     margin-bottom: 10px;
-    width: 94%;
 	float: right;
 }
 
@@ -53,7 +53,7 @@ textarea {
 .fa-social {margin: 10px 10px 0 -10px}
 
 .checked {
-	background-color: #fdfdfd;
+	background-color: #f7f7f7;
 	color: #111;
 }
 
@@ -61,7 +61,7 @@ textarea {
 	width: 35px;
     float: left;
     position: relative;
-	margin: 0 20px 0 10px;
+	margin: 0 20px 0 15px;
 }
 .profile-image {
     height: 35px;
@@ -81,8 +81,13 @@ textarea {
 }
 .profile-selected {
 	margin-top: 10px;
+	margin-left: 10px;
 	cursor: pointer;
 	float: left;
+}
+
+.fa-check-square{
+	color: #007cff;
 }
 .social-image {
 	width: 20px;
@@ -164,7 +169,6 @@ label img {
 .form-group label {
 	font-weight: 700
 }
-
 .padding-10px {
 	padding: 10px
 }
