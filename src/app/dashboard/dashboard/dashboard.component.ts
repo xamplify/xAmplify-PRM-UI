@@ -25,6 +25,7 @@ import { UserDefaultPage } from '../../core/models/user-default-page';
 import { PagerService } from '../../core/services/pager.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { EmailTemplateService } from '../../email-template/services/email-template.service';
+import { DashboardStatesReport } from '../models/dashboard-states-report';
 declare var Metronic, $, Layout, Demo, Index, QuickSidebar, Highcharts, Tasks: any;
 
 @Component({
@@ -60,7 +61,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     downloadDataList = [];
     paginationType: string;
     isLoadingList = true;
-    worldMapUserData: any;
+    worldMapUserData: DashboardStatesReport[];
     countryCode: any;
     isCalledPagination = false;
     isFullscreenToggle = false;
