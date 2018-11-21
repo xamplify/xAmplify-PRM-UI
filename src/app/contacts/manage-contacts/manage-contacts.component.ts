@@ -176,6 +176,16 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
         } else {
             this.isPartner = true;
             this.checkingContactTypeName = "Partner"
+            this.sortOptions.push( { 'name': 'Company (ASC)', 'value': 'contactCompany-ASC', 'for': 'contacts' });
+            this.sortOptions.push( { 'name': 'Company (DESC)', 'value': 'contactCompany-DESC', 'for': 'contacts' });
+            this.sortOptions.push( { 'name': 'Vertical (ASC)', 'value': 'vertical-ASC', 'for': 'contacts' });
+            this.sortOptions.push( { 'name': 'Vertical (DESC)', 'value': 'vertical-DESC', 'for': 'contacts' });
+            this.sortOptions.push( { 'name': 'Region (ASC)', 'value': 'region-ASC', 'for': 'contacts' });
+            this.sortOptions.push( { 'name': 'Region (DESC)', 'value': 'region-DESC', 'for': 'contacts' });
+            this.sortOptions.push( { 'name': 'Partner type (ASC)', 'value': 'partnerType-ASC', 'for': 'contacts' });
+            this.sortOptions.push( { 'name': 'Partner type (DESC)', 'value': 'partnerType-DESC', 'for': 'contacts' });
+            this.sortOptions.push( { 'name': 'Category (ASC)', 'value': 'category-ASC', 'for': 'contacts' });
+            this.sortOptions.push( { 'name': 'Category (DESC)', 'value': 'category-DESC', 'for': 'contacts' });
         }
 
         this.showAll = true;
