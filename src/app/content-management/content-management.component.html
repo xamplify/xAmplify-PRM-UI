@@ -8,23 +8,18 @@
 	<div>
 		<div class="page-bar">
 			<ul class="page-breadcrumb">
-				<li *ngIf="!authenticationService.isSuperAdmin()"><i
-					class="fa fa-home"></i> <a
-					[routerLink]="referenceService.homeRouter">Home</a><i
-					class="fa fa-angle-right"></i></li>
-				<li *ngIf="authenticationService.isSuperAdmin()"><i
-					class="fa fa-home"></i><a
-					[routerLink]="['/home/dashboard/admin-report']">Admin Report</a><i
-					class="fa fa-angle-right"></i></li>
+				<li *ngIf="!authenticationService.isSuperAdmin()"><i class="fa fa-home"></i> <a
+					[routerLink]="referenceService.homeRouter">Home</a><i	class="fa fa-angle-right"></i></li>
+        <li *ngIf="authenticationService.isSuperAdmin()"><i	class="fa fa-home"></i>
+          <a [routerLink]="['/home/dashboard/admin-report']">Admin Report</a><i class="fa fa-angle-right"></i></li>
 				<li><a>Content Management</a></li>
 			</ul>
 		</div>
 	</div>
 	<div>
 		<div class="row">
-			<div class="col-xs-12" style="position: relative; top: -9px;">
-				<app-response-message [customResponse]="customResponse"
-					*ngIf="customResponse.isVisible"></app-response-message>
+			<div class="col-xs-12 pg8">
+				<app-response-message [customResponse]="customResponse"	*ngIf="customResponse.isVisible"></app-response-message>
 			</div>
 			<div class="col-xs-12 col-sm-12 col-md-12" *ngIf="!isPreviewed ">
 				<div class="tabbable tabbable-custom tabbable-noborder"
@@ -35,8 +30,7 @@
 								<div *ngIf="!httpRequestLoader.isLoading"	class="btn-group pull-right col-xs-12 col-sm-12 col-md-12 p0"
 									[ngClass]="{'margin-css':!authenticationService.isOrgAdminPartner() || !authenticationService.isVendorPartner()}">
 									<div class="inputs" align="right">
-										<span style="display: none"> <input type="file"
-											id="uploadFile" name="file" title="Upload a file"
+										<span style="display: none"> <input type="file"	id="uploadFile" name="file" title="Upload a file"
 											(change)="upload($event)" multiple="multiple" />
 										</span>
 										<div class="col-xs-3 col-sm-3 col-md-3 p0">
@@ -92,18 +86,15 @@
 											<tbody>
 												<!-- 	<tr *ngFor="let file of pagedItems | orderBy: key : reverse | filter:filter | paginate: { itemsPerPage: 12, currentPage: p };let i =index"> -->
 												<tr *ngFor="let file of pagedItems; let i =index">
-													<td><input
-														(click)="getSelectedListViewFiles(file,file.id, $event)"
-														class="" type="checkbox"
-														[checked]="selectedFileIds.indexOf(file.id)>-1"
-														value="{{file.fileName}}" id="list_{{file.id}}"> <!-- <input type="checkbox"> -->
+													<td><input	style="cursor: pointer;" (click)="getSelectedListViewFiles(file,file.id, $event)" type="checkbox"
+														[checked]="selectedFileIds.indexOf(file.id)>-1"	value="{{file.fileName}}" id="list_{{file.id}}"> <!-- <input type="checkbox"> -->
 													</td>
 													<td>
 														<div class="clearfix">
 															<div class='thumbnail-wrapper'>
 																<img id="content_image_{{i}}"	(error)="changeImage(i, file.filePath)"	src="{{file.filePath}}">
 															</div>
-															<div class="title-div">
+															<div class="title-div" style="cursor: default;">
 																<a data-toggle="tooltip" [title]="file.fileName">
 																	<h4 class='mt5 mb5 f-w-500'>
 																		{{file.fileName | slice: 0: 25}} <span
@@ -173,7 +164,7 @@
 															[checked]="selectedFileIds.indexOf(file.id)>-1"
 															value="{{file.fileName}}" id="grid_{{file.id}}">
 													</label>
-													</span> <span class="ng-scope"> <a
+													</span> <span class="ng-scope"> <a style="cursor: default;"
 														class="item__preview item__preview--image img-container custom"
                             target="_BLANK">
                             	<!-- onerror="this.src='data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+Cjxzdmcgd2lkdGg9IjI5cHgiIGhlaWdodD0iMjhweCIgdmlld0JveD0iMCAwIDI5IDI4IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbG5zOnNrZXRjaD0iaHR0cDovL3d3dy5ib2hlbWlhbmNvZGluZy5jb20vc2tldGNoL25zIj4KICAgIDwhLS0gR2VuZXJhdG9yOiBTa2V0Y2ggMy4zLjIgKDEyMDQzKSAtIGh0dHA6Ly93d3cuYm9oZW1pYW5jb2RpbmcuY29tL3NrZXRjaCAtLT4KICAgIDx0aXRsZT5pbWFnZTwvdGl0bGU+CiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4KICAgIDxkZWZzPjwvZGVmcz4KICAgIDxnIGlkPSJpY29ucyIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCIgc2tldGNoOnR5cGU9Ik1TUGFnZSI+CiAgICAgICAgPGcgaWQ9IkFydGJvYXJkLTEiIHNrZXRjaDp0eXBlPSJNU0FydGJvYXJkR3JvdXAiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC01MDEuMDAwMDAwLCAtNDguMDAwMDAwKSIgc3Ryb2tlPSIjNTA1NjU5Ij4KICAgICAgICAgICAgPGcgaWQ9ImltYWdlIiBza2V0Y2g6dHlwZT0iTVNMYXllckdyb3VwIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg1MDMuMDAwMDAwLCA0OS4wMDAwMDApIj4KICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik0wLjAzMjQ0OTE2MDgsNy44NjY4Mzk4OCBMMTguNTQ0NzU4MiwzLjc0NTU3NTk4IEwyMi44MTg2NjE1LDIxLjU5NjczMTEgTDQuMzA2MzUyNDYsMjUuNzE3OTk1IEwwLjAzMjQ0OTE2MDgsNy44NjY4Mzk4OCBMMC4wMzI0NDkxNjA4LDcuODY2ODM5ODggWiIgaWQ9IlJlY3RhbmdsZS02OSIgc3Ryb2tlLXdpZHRoPSIyIiBza2V0Y2g6dHlwZT0iTVNTaGFwZUdyb3VwIj48L3BhdGg+CiAgICAgICAgICAgICAgICA8ZyBpZD0iaW1hZ2UtbW9kdWxlLWNvcHkiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDUuNzc3Nzc4LCAwLjAwMDAwMCkiIHNrZXRjaDp0eXBlPSJNU1NoYXBlR3JvdXAiPgogICAgICAgICAgICAgICAgICAgIDxnIGlkPSJzdmdzIj4KICAgICAgICAgICAgICAgICAgICAgICAgPGcgaWQ9IlJlY3RhbmdsZS02OS0rLVBhdGgtOTEtKy1PdmFsLTEiPgogICAgICAgICAgICAgICAgICAgICAgICAgICAgPHJlY3QgaWQ9IlJlY3RhbmdsZS02OSIgc3Ryb2tlLXdpZHRoPSIyIiBmaWxsPSIjRkZGRkZGIiB4PSIwIiB5PSIwIiB3aWR0aD0iMTkuOTYyOTYzIiBoZWlnaHQ9IjE5LjI1Ij48L3JlY3Q+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8cGF0aCBkPSJNMC43OTkxNDUyOTksMTUuNDEyMDg3OSBMNy4xOTIzMDc2OSwxMC43ODg0NjE1IEwxMS4xODgwMzQyLDEzLjEwMDI3NDcgTDIwLjc3Nzc3NzgsNi4xNjQ4MzUxNiIgaWQ9IlBhdGgtOTEiPjwvcGF0aD4KICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxlbGxpcHNlIGlkPSJPdmFsLTEiIGN4PSI3LjU5MTg4MDM0IiBjeT0iNS43Nzk1MzI5NyIgcng9IjIuNzk3MDA4NTUiIHJ5PSIyLjY5NzExNTM4Ij48L2VsbGlwc2U+CiAgICAgICAgICAgICAgICAgICAgICAgIDwvZz4KICAgICAgICAgICAgICAgICAgICA8L2c+CiAgICAgICAgICAgICAgICA8L2c+CiAgICAgICAgICAgIDwvZz4KICAgICAgICA8L2c+CiAgICA8L2c+Cjwvc3ZnPg=='" -->
