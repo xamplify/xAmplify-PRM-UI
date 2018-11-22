@@ -106,8 +106,6 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
                     { 'name': 'Sort By', 'value': '' },
                     { 'name': 'Name(A-Z)', 'value': 'name-ASC' },
                     { 'name': 'Name(Z-A)', 'value': 'name-DESC' },
-                    { 'name': 'Subject(ASC)', 'value': 'subject-ASC' },
-                    { 'name': 'Subject(DESC)', 'value': 'subject-DESC' },
                     { 'name': 'Time(ASC)', 'value': 'time-ASC' },
                     { 'name': 'Time(DESC)', 'value': 'time-DESC' }
                 ];
@@ -460,7 +458,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     } else if (event.type === 'emailAction') {
         this.emailActionListPagination.pageIndex = event.page;
         if (this.campaignReport.emailActionType === 'open' || this.campaignReport.emailActionType === 'click') {
-          this.emailActionList(this.campaign.campaignId, this.campaignReport.emailActionType, this.emailActionListPagination);
+            this.emailActionList(this.campaign.campaignId, this.campaignReport.emailActionType, this.emailActionListPagination);
       }
     } else if (event.type === 'usersWatch') {
         this.usersWatchListPagination.pageIndex = event.page;
@@ -533,9 +531,14 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
         $('#emailActionListModal').modal();
 
         if (actionType === 'open') {
-          this.emailActionListPagination.totalRecords = this.campaignReport.emailOpenCount;
+              this.sortByDropDown.push( { 'name': 'Subject(ASC)', 'value': 'subject-ASC' } );
+              this.sortByDropDown.push( { 'name': 'Subject(DESC)', 'value': 'subject-DESC' } );
+              this.emailActionListPagination.totalRecords = this.campaignReport.emailOpenCount;
         } else if (actionType === 'click') {
-          this.emailActionListPagination.totalRecords = this.campaignReport.emailClickedCount;
+            this.sortByDropDown = this.sortByDropDown.filter(function(el) { return el.name != "Subject(ASC)"; }); 
+            this.sortByDropDown = this.sortByDropDown.filter(function(el) { return el.name != "Subject(DESC)"; }); 
+
+            this.emailActionListPagination.totalRecords = this.campaignReport.emailClickedCount;
         }
         this.emailActionListPagination = this.pagerService.getPagedItems(this.emailActionListPagination, this.campaignReport.emailLogs);
         this.emailActionTotalList(campaignId, actionType, this.emailActionListPagination.totalRecords);
