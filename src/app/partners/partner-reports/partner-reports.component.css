@@ -87,11 +87,6 @@ cursor: default;
     margin-top: 9px;
     margin-left: 2px;
 }
-.re-distributed-count{
-	font-weight: bold;
-	font-size: 15px;
-	font-size-adjust: inherit;
-}
 
 .re-distributed-high-level{
 	width: 100px;
@@ -108,11 +103,5 @@ cursor: default;
 }
 .float-none{
 	float: none;
-}
-.redistribute-count{
-	text-align: center;
-	position: relative;
-	margin-top: -7px;
-	padding: 0px 5px;
 }
 .override-action{ margin: 0 auto; display: table;float: none !important; }

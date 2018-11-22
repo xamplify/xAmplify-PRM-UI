@@ -328,9 +328,10 @@
 					        	</div>
                    	</td>
                     <td style="text-align: right;">
-                      <font class="re-distributed-count">{{item.redistributedCampaignsCount}}</font>
-                      <div class="actions-block redistribute-count" data-toggle="tooltip" data-placement="top" title="View Redistributed Campaigns"   *ngIf="item.redistributedCampaignsCount> 0">
-                        <a  (click)="showRedistributedCampaings(item)">
+                      
+                      <div class="actions-block">
+                        <font class="circled-number">{{item.redistributedCampaignsCount}}</font>
+                        <a  (click)="showRedistributedCampaings(item)" data-toggle="tooltip" data-placement="top" title="View Redistributed Campaigns"   *ngIf="item.redistributedCampaignsCount> 0">
                           <i class="fa" [ngClass]="{'fa-plus': !item.expand, 'fa-minus': item.expand}"></i>
                         </a>
                       </div>
@@ -368,35 +369,35 @@
                             </td>
                             <td class="center">
 		                    	<div class="actions-block float-none ">
-		                    		<a data-toggle="tooltip" data-placement="top" class="child-campaigns">
-                            <span style="position: relative;top: 3px;"><b>{{redistributedCampaign.totalRecipients}}</b></span>
+		                    		<a data-toggle="tooltip" data-placement="top">
+                            <span class="circled-number"><b>{{redistributedCampaign.totalRecipients}}</b></span>
                           </a>
                         </div>
                      		</td>
 		                      <td class="center">
 		                     	<div class="actions-block float-none">
-		                    		<a data-toggle="tooltip" data-placement="top" class="child-campaigns">
-                            <span style="position: relative;top: 3px;"><b>{{redistributedCampaign.activeRecipients}}</b></span>
+		                    		<a data-toggle="tooltip" data-placement="top">
+                            <span class="circled-number"><b>{{redistributedCampaign.activeRecipients}}</b></span>
                           </a>
                         </div>
 		                     </td>
 		                     <td class="center">
 		                    	<div class="actions-block float-none">
-		                    		<a data-toggle="tooltip" data-placement="top" class="child-campaigns">
-                            <span style="position: relative;top: 3px;"><b>{{redistributedCampaign.clickedUrls}}</b></span>
+		                    		<a data-toggle="tooltip" data-placement="top">
+                            <span class="circled-number"><b>{{redistributedCampaign.clickedUrls}}</b></span>
                           </a>
                         </div>
 		                    </td>
 		                     <td class="center">
 		                      	<div class="actions-block float-none">
-		                    		<a data-toggle="tooltip" data-placement="top" class="child-campaigns">
-                            <span style="position: relative;top: 3px;"><b>{{redistributedCampaign.views}}</b></span>
+		                    		<a data-toggle="tooltip" data-placement="top">
+                            <span class="circled-number"><b>{{redistributedCampaign.views}}</b></span>
                           </a>
                         </div>
 		                   	</td>
                             <td class="text-center">
                               <a data-rel="fancybox-button" (click)="referenseService.goToCampaignAnalytics(redistributedCampaign)" data-toggle="tooltip"
-                                data-placement="top" title="Campaign Based Reports" class='mr5'>
+                                data-placement="top" title="Campaign Based Reports" class='circled-number'>
                                 <i class="fa fa-line-chart"></i>
                               </a>
                               <a id="disabled-icon" class="blur" data-toggle="tooltip" data-placement="top" title="Data Sharing Disabled" *ngIf="!redistributedCampaign.dataShare">
@@ -536,7 +537,7 @@
                       </td>
                       <td class="text-center">
                         <a data-rel="fancybox-button" (click)="goToCampaignAnalytics(campaign)" data-toggle="tooltip" data-placement="top" title="Campaign Based Reports"
-                          class='mr5'>
+                          class='circled-number'>
                           <i class="fa fa-line-chart"></i>
                         </a>
                         <a id="disabled-icon" class="blur" data-toggle="tooltip" data-placement="top" title="Data Sharing Disabled" *ngIf="!campaign.dataShare && selectedTabIndex==2">

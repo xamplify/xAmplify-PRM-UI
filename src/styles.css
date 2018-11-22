@@ -524,13 +524,14 @@ a {
 .actions-block i, .circled-number {
 	border: 1px solid #5bb2f5;
     color: #5bb2f5;
-    width: 35px;
-    height: 35px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     text-align: center;
-    line-height: 35px !important;
+    line-height: 32px !important;
     vertical-align: middle;
 	margin-right: 7px;
+	font-size: 13px !important;
 }
 
 .actions-block .disable i{

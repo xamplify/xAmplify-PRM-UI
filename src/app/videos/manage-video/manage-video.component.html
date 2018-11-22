@@ -117,7 +117,7 @@
                                <i class="fa fa-line-chart"></i>
                              </a>
                              <a data-toggle="tooltip" data-placement="top" [title]="actionsDescription.video_delete" *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId == videoFile.uploadedUserId) || authenticationService.module.isVendor" (click)="deleteVideoAlert(videoFile.alias,i ,videoFile.title)">
-                               <i class="fa fa-trash"></i>
+                               <i class="fa fa-trash-o"></i>
                              </a>
                              </ng-container>
                              <ng-container *ngIf="!videoFile.processed">
@@ -125,7 +125,7 @@
                                     <i class="fa fa-line-chart"></i>
                                   </a>
                                   <a class="disable" data-toggle="tooltip" data-placement="top" title="Unavailabel for processing" *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId == videoFile.uploadedUserId) || authenticationService.module.isVendor">
-                                    <i class="fa fa-trash"></i>
+                                    <i class="fa fa-trash-o"></i>
                                   </a>
                               </ng-container>
                             </div>
@@ -203,11 +203,11 @@
                         <ng-container *ngIf="videoFileService.videoType==='myVideos'">
                           <a *ngIf="(hasAllAccess || (hasVideoRole && loggedInUserId == videoFile.uploadedUserId) || authenticationService.module.isVendor) && videoFile.processed" (click)="deleteVideoAlert(videoFile.alias,i ,videoFile.title)"
                           data-toggle="tooltip" data-placement="top" title="{{actionsDescription.video_delete}}">
-                            <i class="fa fa-trash" ></i>
+                            <i class="fa fa-trash-o" ></i>
                           </a>
                           <a class="disable" *ngIf="(hasAllAccess || (hasVideoRole && loggedInUserId == videoFile.uploadedUserId) || authenticationService.module.isVendor) && !videoFile.processed"
                           data-toggle="tooltip" data-placement="top" title="Unavailabel for processing">
-                            <i class="fa fa-trash" ></i>
+                            <i class="fa fa-trash-o" ></i>
                           </a>
                         </ng-container>
                         <ng-container *ngIf="videoFileService.videoType==='partnerVideos'">

@@ -126,7 +126,7 @@
 											</span>
 										</td>
 										<td>
-											<div class="actions-bloack override-actions" style="text-align: center !important; margin: 0 40px;">
+											<div class="actions-block override-actions" style="text-align: center !important; margin: 0 40px;">
 												<a *ngIf="campaign.campaignType !== 'SOCIAL'" (click)="showCampaignPreview(campaign)" data-toggle="tooltip" data-placement="top" title="Preview Campaign">
 													<i class="fa fa-eye mr5"></i>
                         </a>
@@ -179,7 +179,7 @@
 											<a (click)="showCampaignPreview(campaign.campaignId)" data-toggle="tooltip" data-placement="top" title="preview campaign">
 													<i class="fa fa-eye mr4"></i>
                                                  </a>
-												<a (click)="reDistributeCampaign(campaign)" title="Redistribute Campaign" data-rel="fancybox-button">
+												<a (click)="reDistributeCampaign(campaign)" data-toggle="tooltip" data-placement="top" title="Redistribute Campaign" data-rel="fancybox-button">
 													<i class="fa fa-clone"></i>
 												</a>
 											</div>
