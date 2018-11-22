@@ -520,8 +520,8 @@ a {
 .actions-block {
 	float: right;
 }
-
-.actions-block i {
+.circled-number { display: inline-block}
+.actions-block i, .circled-number {
 	border: 1px solid #5bb2f5;
     color: #5bb2f5;
     width: 35px;
@@ -530,21 +530,22 @@ a {
     text-align: center;
     line-height: 35px !important;
     vertical-align: middle;
+	margin-right: 7px;
 }
 
 .actions-block .disable i{
 	color: #a7a7a7;
     border: 1px solid #a7a7a7;
 }
-.actions-block .fa-trash {
+.actions-block .fa-trash-o {
 	color: #cb5a5e;
     border: 1px solid #cb5a5e;
 }
-.actions-block i:hover{
+.actions-block i:hover, .circled-number:hover{
     background: #5bb2f5;
     color: white;
 }
-.actions-block .fa-trash:hover {
+.actions-block .fa-trash-o:hover {
 	background: #cb5a5e;
 }
 

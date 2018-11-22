@@ -113,9 +113,8 @@
 															<!-- <a data-toggle="tooltip" data-placement="top"	[title]="actionsDescription.preview_item"
 																href="{{file.filePath}}" target="_blank"> <i class="fa fa-eye"></i>
                               </a> -->
-                              <a class="fm external-link" target="_BLANK" data-toggle="tooltip" data-placement="top" style="width: 29px;"
-                              [title]="actionsDescription.preview_item" href="{{file.filePath}}" target="_blank">
-                                <i class="fa fa-external-link-square"  aria-hidden="true" style="font-size: 16px; color: #5a5a5a"></i>
+                              <a data-toggle="tooltip" data-placement="top" [title]="actionsDescription.preview_item" href="{{file.filePath}}" target="_blank">
+                                <i class="fa fa-external-link" aria-hidden="true"></i>
                               </a>
                               <a data-toggle="tooltip" data-placement="top"	[title]="actionsDescription.delete_item"
 																(click)="delete(file)"> <i class="fa fa-trash"></i>
@@ -196,9 +195,7 @@
 																data-toggle="tooltip" data-placement="top"
 																[title]="actionsDescription.preview_item"
 																href="{{file.filePath}}" target="_blank"> <!-- (click)="preview(file)"  -->
-																	<i class="fa fa-external-link-square"
-																	aria-hidden="true"
-																	style="font-size: 20px; color: #5a5a5a"></i>
+																	<i class="fa fa-external-link" aria-hidden="true" style="font-size: 20px; color: #5a5a5a"></i>
 															</a> <a class="fm delete" data-toggle="tooltip"
 																data-placement="top"
 																[title]="actionsDescription.delete_item"

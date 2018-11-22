@@ -128,7 +128,7 @@
 													<a *ngIf="hasAllAccess || (campaign.launched==false&&hasCampaignRole && loggedInUserId==campaign.userId)
 
 												|| (!campaign.launched&&isOnlyPartner)  || authenticationService.module.isVendor" (click)="editCampaign(campaign)"
-													 data-toggle="tooltip" data-placement="top" title="Edit Campaign" class='mr5'>
+													 data-toggle="tooltip" data-placement="top" title="Edit Campaign">
 														<i class="fa fa-pencil-square-o"></i>
 													</a>
 												</ng-container>
@@ -136,15 +136,15 @@
 												<a *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) ||
 														 (loggedInUserId==campaign.userId) || authenticationService.module.isVendor) && campaign.redistributedCount>0"
                          								 (click)="goToRedistributedCampaigns(campaign)" data-toggle="tooltip" data-placement="top" title="Show Redistributed Campaigns">
-														<span style="position: relative;top: 3px;"><b>{{campaign.redistributedCount}}</b></span>
+														<span class="circled-number"><b>{{campaign.redistributedCount}}</b></span>
 													</a>
 													<a *ngIf="  hasAllAccess || (hasStatsRole || hasCampaignRole) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor"
 													 data-rel="fancybox-button" (click)="campaginRouter(campaign)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.campaign_report}}"
-													 class='mr5'>
+													>
 														<i class="fa fa-line-chart"></i>
 													</a>
 													<a *ngIf=" (campaign.campaignType !== 'SOCIAL') && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor) && !campaign.nurtureCampaign"
-													 data-rel="fancybox-button" data-toggle="tooltip" data-placement="top" title="Copy campaign" class='mr5' (click)="openSaveAsModal(campaign)">
+													 data-rel="fancybox-button" data-toggle="tooltip" data-placement="top" title="Copy campaign" (click)="openSaveAsModal(campaign)">
 														<i class="fa fa-files-o"></i>
 													</a>
 													 <a *ngIf=" (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor) && campaign.channelCampaign"
@@ -158,7 +158,7 @@
                       						  </a>
 						                        <a *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor"
 						                       		 (click)="confirmDeleteCampaign(campaign.campaignId, i, campaign.campaignName)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.campaign_delete}}" data-rel="fancybox-button">
-						                         <i class="fa fa-trash"></i>
+						                         <i class="fa fa-trash-o"></i>
 						                       </a>
 											</div>
 										</td>
@@ -218,7 +218,7 @@
                               <li>
                                 <a *ngIf="hasAllAccess || (campaign.launched==false&&hasCampaignRole && loggedInUserId==campaign.userId)
                                   || (!campaign.launched&&isOnlyPartner)  || authenticationService.module.isVendor" (click)="editCampaign(campaign)"
-                                  data-toggle="tooltip" data-placement="top" title="Edit Campaign" class='mr5'>
+                                  data-toggle="tooltip" data-placement="top" title="Edit Campaign">
                                   <i class="fa fa-pencil-square-o"></i> Edit Campaign
                                 </a>
                               </li>
@@ -227,13 +227,13 @@
                             <li>
                               <a *ngIf="  hasAllAccess || (hasStatsRole || hasCampaignRole) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor"
                                 data-rel="fancybox-button" (click)="campaginRouter(campaign)" title="Campaign Based Reports"
-                                class='mr5'>
+                               >
                                 <i class="fa fa-line-chart"></i> Campaign Analytics
                               </a>
                             </li>
                             <li>
                               <a *ngIf=" (campaign.campaignType !== 'SOCIAL') && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor) && !campaign.nurtureCampaign"
-                                data-rel="fancybox-button" title="Copy campaign" class='mr5' (click)="openSaveAsModal(campaign)">
+                                data-rel="fancybox-button" title="Copy campaign" (click)="openSaveAsModal(campaign)">
                                 <i class="fa fa-files-o"></i> Copy campaign
                               </a>
                             </li>
@@ -241,7 +241,7 @@
                           <li>
                             <a *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor"
                               (click)="confirmDeleteCampaign(campaign.campaignId, i, campaign.campaignName)" title="Delete Campaign" data-rel="fancybox-button">
-                              <i class="fa fa-trash"></i> Delete Campaign
+                              <i class="fa fa-trash-o"></i> Delete Campaign
                             </a>
                           </li>
                         </ul>
@@ -332,7 +332,7 @@
 														<i class="fa fa-line-chart"></i>
 													</a>
 													<a *ngIf=" (campaign.campaignType !== 'SOCIAL') && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor) && !campaign.nurtureCampaign"
-													 data-rel="fancybox-button"  data-toggle="tooltip" data-placement="top" title="Copy campaign" class='mr5' (click)="openSaveAsModal(campaign)">
+													 data-rel="fancybox-button"  data-toggle="tooltip" data-placement="top" title="Copy campaign" (click)="openSaveAsModal(campaign)">
 														<i class="fa fa-files-o"></i>
 													</a>
 													 <a *ngIf=" (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor) && campaign.channelCampaign"
@@ -349,7 +349,7 @@
 												  </a>
 													<a *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor"
 														(click)="confirmDeleteCampaign(campaign.campaignId, i, campaign.campaignName)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.campaign_delete}}">
-														<i class="fa fa-trash"></i>
+														<i class="fa fa-trash-o"></i>
 													</a>
 											</div>
 										</div>
