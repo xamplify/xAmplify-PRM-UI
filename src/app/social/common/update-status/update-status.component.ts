@@ -292,7 +292,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
           this.setCustomResponse( ResponseType.Warning, 'Please provide campaign name' );
       } else if ( this.socialCampaign.campaignName && this.socialCampaign.userListIds.length === 0 && !this.authenticationService.isOnlyPartner() ) {
           isValid = false;
-          this.setCustomResponse( ResponseType.Warning, 'Please select contact lists' );
+          this.setCustomResponse( ResponseType.Warning, 'Please select one or more Partner lists.' );
       }
       return isValid;
   }

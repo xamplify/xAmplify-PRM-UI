@@ -64,9 +64,11 @@ textarea {
 	margin: 0 20px 0 15px;
 }
 .profile-image {
-    height: 35px;
+	height: 35px;
     width: 35px;
-    border-radius: 50%;
+    border-radius: 100%;
+    padding: 3px;
+    border: 1px solid #007cff;
 }
 .profile-icon {
 	position: absolute;
