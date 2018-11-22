@@ -306,13 +306,26 @@
 											<button *ngIf="isPartnerToo" [class]="partnerVideosClass" (click)="showTab($event,'channel-videos')" id="partner-videos-tab">Partner Videos</button>
 											<ng-container *ngIf="!campaign.createdFromVideos">
 												<div class="input-icon right pull-right m10" *ngIf="isMyVideosActive">
-													<i class="icon-magnifier" (click)="searchVideo()" style="cursor: pointer;"></i>
+													<!-- <i class="icon-magnifier" (click)="searchVideo()" style="cursor: pointer;"></i>
 													<input type="text" class="form-control" placeholder="Search for a video" [(ngModel)]="videoSearchInput" [ngModelOptions]="{standalone: true}">
-												</div>
+                       -->
+                          <input type="text" [(ngModel)]="videoSearchInput" [ngModelOptions]="{standalone: true}" class="form-control"
+                          placeholder="Search for a Video" (keypress)="eventHandler($event.keyCode, 'myvideos')">
+                          <button class="glyphicon glyphicon-remove search-box-item-clear" style="padding:5px;" *ngIf="videoSearchInput" (click)="videoSearchInput=''"></button>
+                          <button type="submit" class="search-box-item-click" style="padding:4px !important;" (click)="searchVideo()"><i class="fa fa-search" style="font-size: 16px !important;padding:5px !important;"></i></button>
+
+                        </div>
 												<div class="input-icon right pull-right m10" *ngIf="!isMyVideosActive">
-													<i class="icon-magnifier" (click)="searchChannelVideo()" style="cursor: pointer;"></i>
+													<!-- <i class="icon-magnifier" (click)="searchChannelVideo()" style="cursor: pointer;"></i>
 													<input type="text" class="form-control" placeholder="Search for a video" [(ngModel)]="channelVideoSearchInput" [ngModelOptions]="{standalone: true}">
-												</div>
+                          -->
+                          <input type="text" [(ngModel)]="channelVideoSearchInput" [ngModelOptions]="{standalone: true}" class="form-control"
+                          placeholder="Search for a Video" (keypress)="eventHandler($event.keyCode, 'channel')">
+                          <button class="glyphicon glyphicon-remove search-box-item-clear" style="padding:5px;" *ngIf="channelVideoSearchInput" (click)="channelVideoSearchInput=''"></button>
+                          <button type="submit" class="search-box-item-click" style="padding:4px !important;" (click)="searchChannelVideo()"><i class="fa fa-search" style="font-size: 16px !important;padding:5px !important;"></i></button>
+
+
+                        </div>
 											</ng-container>
 										</div>
 
@@ -567,9 +580,16 @@
 										<div class="inputs" align="right" style="float: right;">
 											<div class="portlet-input input-inline" style="position: relative;top: -6px;">
 												<div class="input-icon right">
-													<i class="icon-magnifier" (click)="searchContactList()" style="cursor: pointer;"></i>
+													<!-- <i class="icon-magnifier" (click)="searchContactList()" style="cursor: pointer;"></i>
 													<input type="text" class="form-control" placeholder="Search for a list" [(ngModel)]="contactSearchInput" [ngModelOptions]="{standalone: true}">
-												</div>
+                       -->
+                          <input type="text" [(ngModel)]="contactSearchInput" [ngModelOptions]="{standalone: true}" class="form-control"
+                          placeholder="Search for a list" (keypress)="eventHandler($event.keyCode, 'contact')">
+                          <button class="glyphicon glyphicon-remove search-box-item-clear" style="padding:5px;" *ngIf="contactSearchInput" (click)="contactSearchInput=''"></button>
+                          <button type="submit" class="search-box-item-click" style="padding:4px !important;" (click)="searchContactList()"><i class="fa fa-search" style="font-size: 16px !important;padding:5px !important;"></i></button>
+
+
+                        </div>
 											</div>
 										</div>
 										<div class="row-fluid">
@@ -678,9 +698,16 @@
 								 *ngIf="!isOnlyPartner && isPartnerToo">Partner Templates</li>
 							</ul>
 							<div class="input-icon right pull-right" style="padding-top: 4px;right: 8px;">
-								<i class="icon-magnifier" (click)="searchEmailTemplate()" style="cursor: pointer;"></i>
+								<!-- <i class="icon-magnifier" (click)="searchEmailTemplate()" style="cursor: pointer;"></i>
 								<input type="text" class="form-control" placeholder="Search for a template" [(ngModel)]="emailTemplateSearchInput" [ngModelOptions]="{standalone: true}"
-								 style="width: 190px;height: 34px;">
+                 style="width: 190px;height: 34px;"> -->
+
+                 <input type="text" [(ngModel)]="emailTemplateSearchInput" [ngModelOptions]="{standalone: true}" class="form-control"
+                 placeholder="Search for a template" (keypress)="eventHandler($event.keyCode, 'emailTemplate')">
+                 <button class="glyphicon glyphicon-remove search-box-item-clear" style="padding:5px;" *ngIf="emailTemplateSearchInput" (click)="emailTemplateSearchInput=''"></button>
+                 <button type="submit" class="search-box-item-click email-search" (click)="searchEmailTemplate()"><i class="fa fa-search" style="font-size: 16px !important;padding:5px !important;"></i></button>
+
+
 							</div>
 							<div class="portlet-body">
 							<div class="row">

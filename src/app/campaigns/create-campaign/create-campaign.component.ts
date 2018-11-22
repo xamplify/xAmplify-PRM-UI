@@ -449,7 +449,12 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     count(status:any){
      console.log(status);
     }
-
+    eventHandler(event, type:string){
+      if(event===13 && type==='myvideos'){ this.searchVideo();}
+      if(event===13 && type==='channel'){ this.searchChannelVideo();}
+      if(event===13 && type==='contact'){ this.searchContactList();}
+      if(event===13 && type==='emailTemplate'){ this.searchEmailTemplate();}
+  }
     ngOnInit(){
         Metronic.init();
         Layout.init();
@@ -2009,7 +2014,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                             confirmButtonColor: '#54a7e9',
                             cancelButtonColor: '#999',
                             confirmButtonText: 'Yes, Save it!',
-                            cancelButtonText: "No" 
+                            cancelButtonText: "No"
 
                         }).then(function() {
                                 self.saveCampaignOnDestroy();

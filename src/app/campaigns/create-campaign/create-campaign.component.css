@@ -1086,3 +1086,8 @@ background: #808080;
 .colorRed{
 background: #5bb1d4;
 }
+.email-search{
+  padding-top: 3px !important;
+  position: absolute;
+  top: 5px;
+}
