@@ -807,7 +807,7 @@
 														<th class="hidden-xs" *ngIf="!isPartner">Phone</th>
 														<th class="text-center hidden-xs" *ngIf="!isPartner">Job Title</th>
 														<th class="text-center hidden-xs"  *ngIf="!isPartner">ADDRESS</th>
-												<th *ngIf="isPartner || contactsByType.selectedCategory == 'non-active'" style="width:11%">ACTIONS</th>
+												<th *ngIf="isPartner || contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'unsubscribe'" style="width:11%">ACTIONS</th>
 												<!-- <th>MORE</th> -->
 											</tr>
 										</thead>
@@ -859,6 +859,10 @@
 																(click)="allcontacts.isShowDetails = ! allcontacts.isShowDetails">
 																<span *ngIf="!allcontacts.isShowDetails">More</span> <span
 																	*ngIf="allcontacts.isShowDetails">Less</span>
+															</button>
+															<button class="btn green" *ngIf="contactsByType.selectedCategory == 'unsubscribe' && (authenticationService.isVendor() || authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner())"
+																(click)="activateUnsubscribedUser(allcontacts.id)">
+																Activate
 															</button>
                             <div class="actions-block" *ngIf="isPartner && contactsByType.selectedCategory == 'non-active'">
                             <a *ngIf="!allcontacts.signedUp" data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.partner_reSendMail}}" (click)="sendMail(allcontacts.id)">
