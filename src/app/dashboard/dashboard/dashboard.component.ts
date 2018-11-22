@@ -839,9 +839,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 "First Name": this.dashboardReport.downloadEmailLogList[i].firstName,
                 "Last Name": this.dashboardReport.downloadEmailLogList[i].lastName,
                 "Date and Time": date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds(),
-                "Campaign Name": this.dashboardReport.downloadEmailLogList[i].campaignName
+               /* "Campaign Name": this.dashboardReport.downloadEmailLogList[i].campaignName*/
             }
             if (this.paginationType == 'open') {
+                object["Campaign Name"] = this.dashboardReport.downloadEmailLogList[i].campaignName;
                 object["Subject"] = this.dashboardReport.downloadEmailLogList[i].subject;
             }
             if (this.paginationType == 'clicked') {
@@ -853,7 +854,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
             }
 
 
-            if (this.paginationType == 'clicked' || this.paginationType == 'watched') {
+            if (this.paginationType == 'clicked' || this.paginationType == 'watched' || this.paginationType == 'countryWiseUsers') {
+                if(this.paginationType != 'countryWiseUsers'){
+                object["Campaign Name"] = this.dashboardReport.downloadEmailLogList[i].campaignName;
+                }
                 object["City"] = this.dashboardReport.downloadEmailLogList[i].city;
                 object["State"] = this.dashboardReport.downloadEmailLogList[i].state;
                 object["Country"] = this.dashboardReport.downloadEmailLogList[i].country;

@@ -15,12 +15,15 @@
 					{{checkingContactTypeName}}s</a> <i class="fa fa-angle-right"
 				*ngIf="! showListOfContactList"></i></li>
 			<li
-				*ngIf="! showListOfContactList && contactsByType.selectedCategory != 'non-active' && contactsByType.selectedCategory != 'invalid'"><span
+				*ngIf="! showListOfContactList && contactsByType.selectedCategory != 'non-active' && contactsByType.selectedCategory != 'invalid' && contactsByType.selectedCategory != 'unsubscribe'"><span
 				class="capitalize">{{contactsByType.selectedCategory}}
 					{{checkingContactTypeName}}s</span></li>
 			<li
 				*ngIf="! showListOfContactList && contactsByType.selectedCategory == 'non-active'"><span
 				class="capitalize">Unregistered {{checkingContactTypeName}}s</span></li>
+			<li
+				*ngIf="! showListOfContactList && contactsByType.selectedCategory == 'unsubscribe'"><span
+				class="capitalize">Unsubscribed {{checkingContactTypeName}}s</span></li>
 			<li
 				*ngIf="! showListOfContactList && contactsByType.selectedCategory == 'invalid'"><span
 				class="capitalize">Undeliverable {{checkingContactTypeName}}s</span></li>

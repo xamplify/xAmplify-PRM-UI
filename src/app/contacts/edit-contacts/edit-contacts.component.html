@@ -9,9 +9,11 @@
 				class="fa fa-angle-right"> </i>Edit {{checkingContactTypeName}}s</a></li>
 		<li *ngIf="! showEditContactData"><i class="fa fa-angle-right">
 		</i>
-		<span class="capitalize" *ngIf="contactsByType.selectedCategory != 'non-active' && contactsByType.selectedCategory != 'active' && contactsByType.selectedCategory != 'invalid'">{{contactsByType.selectedCategory}}
+		<span class="capitalize" *ngIf="contactsByType.selectedCategory != 'non-active' && contactsByType.selectedCategory != 'unsubscribe' && contactsByType.selectedCategory != 'active' && contactsByType.selectedCategory != 'invalid'">{{contactsByType.selectedCategory}}
 		   {{checkingContactTypeName}}s</span>
 		<span class="capitalize" *ngIf="contactsByType.selectedCategory == 'non-active'">Unregistered
+		   {{checkingContactTypeName}}s</span>
+		  <span class="capitalize" *ngIf="contactsByType.selectedCategory == 'unsubscribe'">Unsubscribed
 		   {{checkingContactTypeName}}s</span>
 		  <span class="capitalize" *ngIf="contactsByType.selectedCategory == 'active'">Registered
 		   {{checkingContactTypeName}}s</span>
