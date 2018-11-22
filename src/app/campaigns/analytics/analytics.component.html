@@ -522,7 +522,7 @@
 												<ng-container *ngFor="let socialStatus of socialCampaign.socialStatusList">
 													<ng-container *ngFor="let socialStatus of socialStatus.socialStatusList">
 														<ng-container *ngIf="socialStatus.userId === item.userId">
-															<div class="social-profile" [ngStyle]="{'background-image': 'url(' + socialStatus.socialStatusProvider.socialConnection.profileImage + ')'}" 
+															<div class="social-profile" [ngStyle]="{'background-image': 'url(' + socialStatus.socialStatusProvider.socialConnection.profileImage + ')'}"
 																data-toggle="tooltip" data-placement="top" title="{{socialStatus.socialStatusProvider.socialConnection.profileName}}">
 																<ng-container *ngIf="socialStatus.socialStatusProvider.socialConnection.source === 'TWITTER'">
 																	<img class="img-circle" alt="{{socialStatus.socialStatusProvider.socialConnection.profileName}}" src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/twitter_circle-20.png">
@@ -992,15 +992,15 @@
                       <h6>Clicked on the video thumbnail</h6>
                     </td>
                     <td>
-                      <h6><!-- {{item.time | date: 'short'}} -->
-                      <app-timestamp [dateAndTime]="item.time"> </app-timestamp>
-                      </h6>
+                      <span><h6><!-- {{item.time | date: 'short'}} -->
+                      <app-timestamp [dateAndTime]="item.time" style="right: -69px;position: relative;"> </app-timestamp>
+                      <span data-toggle="tooltip" data-placement="left" title="View History"  style="text-align: center;position: relative; top: -17px;" class="actions-block" *ngIf="item.emailActionCount > 1">
+                        <a (click)="listEmailLogsByCampaignIdUserIdActionType(item, campaignReport.emailActionType)">
+                          <i class="fa" [ngClass]="{'fa-plus': !item.isExpand, 'fa-minus': item.isExpand}"></i>
+                        </a>
+                    </span>
+                      </h6></span>
 
-                      <div style="text-align: center;position: relative; top: -27px;" class="actions-block" *ngIf="item.emailActionCount > 1">
-                          <a title="View History" (click)="listEmailLogsByCampaignIdUserIdActionType(item, campaignReport.emailActionType)">
-                            <i class="fa" [ngClass]="{'fa-plus': !item.isExpand, 'fa-minus': item.isExpand}"></i>
-                          </a>
-                        </div>
                     </td>
                     <!-- <td>
                       <div class="actions-block" *ngIf="item.emailActionCount > 1">
@@ -1428,7 +1428,7 @@
 							</td>
 						</ng-container>
 						</ng-container>
-						</tr>						
+						</tr>
 					</ng-container>
 				</ng-container>
 
