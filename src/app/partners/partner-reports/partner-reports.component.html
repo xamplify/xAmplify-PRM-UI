@@ -117,10 +117,10 @@
               <span class="caption-subject font-red-sunglo uppercase"> campaigns launched by partners</span>
             </div>
             <div class="inputs" align="right" style="float: right">
-              <div class="portlet-input input-inline input-small">
+              <div class="portlet-input input-inline input-medium">
                 <div class="input-icon right" style="position: relative; margin: -12px 0 0 0;">
                   <input type="text" style="height: 34px;" class="form-control" [(ngModel)]="activePartnersSearchKey" [ngModelOptions]="{standalone: true}"
-                    placeholder="search..." (keypress)="activePartnerSearch($event.keyCode)">
+                    placeholder="Search for a Campaign" (keypress)="activePartnerSearch($event.keyCode)">
                   <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="activePartnersSearchKey" (click)="activePartnersSearchKey=''"></button>
                   <button type="submit" class="search-box-item-click" (click)="searchActivePartnerAnalytics()"><i class="fa fa-search"></i></button>
                 </div>
@@ -173,13 +173,13 @@
               <span class="caption-subject font-red-sunglo uppercase">Inactive partners</span>
             </div>
             <div class="inputs" align="right" style="float: right">
-              <div class="portlet-input input-inline input-small">
+              <div class="portlet-input input-inline input-medium">
                 <div class="input-icon right" style="position: relative; margin: -12px 0 0 0;">
                   <!-- <i class="icon-magnifier" (click)="searchInActivePartnerAnalytics()" style="cursor: pointer;"></i>
                 <input type="text" class="form-control" [(ngModel)]="inActivePartnersSearchKey" [ngModelOptions]="{standalone: true}" placeholder="search...">
                -->
                   <input type="text" style="height: 34px;" class="form-control" [(ngModel)]="inActivePartnersSearchKey" [ngModelOptions]="{standalone: true}"
-                    placeholder="search..." (keypress)="inActivePartnersSearch($event.keyCode)">
+                    placeholder="Search for a Campaign" (keypress)="inActivePartnersSearch($event.keyCode)">
                   <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="inActivePartnersSearchKey" (click)="inActivePartnersSearchKey=''"></button>
                   <button type="submit" class="search-box-item-click" (click)="searchInActivePartnerAnalytics()"><i class="fa fa-search"></i></button>
                 </div>
@@ -191,7 +191,7 @@
           <div class="portlet-body" *ngIf="!httpRequestLoader.isLoading">
             <table class="table tgrid">
               <thead>
-                <th class="center-aligned">partners</th>
+                <th class="center-aligned" style="width:50%">partners</th>
                 <th class="hidden-xs" style="text-align: left;">LAST REMINDER SENT</th>
                 <th style="text-align: left">Actions</th>
               </thead>
@@ -238,10 +238,10 @@
                   <option *ngFor="let option of sortOption.partnerCampaignDetailsSortDropDown" [ngValue]="option">{{option.name}}</option>
                 </select>
               </div>
-              <div class="portlet-input input-inline input-small" style="margin-right: 10px;">
+              <div class="portlet-input input-inline input-medium" style="margin-right: 10px;">
                 <div class="input-icon right" style="position: relative;right: -11px;">
                   <input type="text" style="height:34px;" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}"
-                    placeholder="search..." (keypress)="searchPartnerCampaignKeyPress($event.keyCode,'partner-campaign-details')">
+                    placeholder="Search for a Campaign" (keypress)="searchPartnerCampaignKeyPress($event.keyCode,'partner-campaign-details')">
                   <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey=''"></button>
                   <button type="submit" class="search-box-item-click" (click)="searchPartnerCampaigns('partner-campaign-details')"><i
                       class="fa fa-search"></i></button>
@@ -460,9 +460,9 @@
                         <option *ngFor="let option of sortOption.sortByDropDown" [ngValue]="option">{{option.name}}</option>
                       </select>
                     </div>
-                    <div class="portlet-input input-inline input-small">
+                    <div class="portlet-input input-inline input-medium">
                       <div class="input-icon right" style="position: relative;right: -11px;">
-                        <input type="text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..."
+                        <input type="text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search for a Campaign"
                           (keypress)="searchPartnerCampaignKeyPress($event.keyCode,'through-partner')">
                         <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey=''"></button>
                         <button type="submit" class="search-box-item-click" (click)="searchPartnerCampaigns('through-partner')"><i
