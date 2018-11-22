@@ -1420,6 +1420,28 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
         }
 
     }
+    
+    activateUnsubscribedUser(selectContactId: any){
+        try {
+            this.contactService.activateUnsubscribedUser( selectContactId )
+                .subscribe(
+                data => {
+                    console.log( data );
+                    if ( data == "User is successfully resubscribed" ) {
+                        swal('User Activated Successfully');
+                        this.listContactsByType( this.contactsByType.selectedCategory );
+                    }
+                },
+                ( error: any ) => {
+                    this.xtremandLogger.error( error );
+                },
+                () => this.xtremandLogger.log( "Manage Partner component resubscribe method successfull" )
+                );
+        } catch ( error ) {
+            this.xtremandLogger.error( error, "manageContactComponent", " resubscribe method" );
+        }
+
+    }
 
 
     ngAfterViewInit() {
