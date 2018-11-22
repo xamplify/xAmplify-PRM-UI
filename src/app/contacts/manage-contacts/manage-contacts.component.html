@@ -610,7 +610,7 @@
 														<th class="hidden-xs" *ngIf="!isPartner">Phone</th>
 														<th class="text-center hidden-xs" *ngIf="!isPartner">Job Title</th>
 														<th class="text-center hidden-xs"  *ngIf="!isPartner">ADDRESS</th>
-														<th class="text-center" *ngIf="isPartner || contactsByType.selectedCategory == 'non-active'">ACTIONS</th>
+														<th class="text-center" *ngIf="isPartner || contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'unsubscribe'">ACTIONS</th>
 														<!-- <th>MORE</th> -->
 													</tr>
 												</thead>
@@ -677,12 +677,18 @@
 																	*ngIf="contact?.zipCode && contact.country">,&nbsp;</span>{{contact.country}}
 															</h5>
 														</td>
-														<td  align="center" *ngIf="isPartner || contactsByType.selectedCategory == 'non-active'">
+														<td  align="center" *ngIf="isPartner || contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'unsubscribe'">
 															<button id='more_less_button_{{i}}' *ngIf="isPartner"
 																(click)="contact.isShowDetails = ! contact.isShowDetails">
 																<span *ngIf="!contact.isShowDetails">More</span> <span
 																	*ngIf="contact.isShowDetails">Less</span>
 															</button>
+															
+															<button *ngIf="contactsByType.selectedCategory == 'unsubscribe'"
+																(click)="activateUnsubscribedUser(contact.id)">
+																Active
+															</button>
+															
 															<div class="actions-block override-actions"
 																*ngIf="isPartner && contactsByType.selectedCategory == 'non-active'">
 																<a *ngIf="!contact.signedUp" data-toggle="tooltip"
