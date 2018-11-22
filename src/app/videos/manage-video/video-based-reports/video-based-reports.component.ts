@@ -639,7 +639,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             this.logListName = 'Country_Wise_Logs.csv';
             this.downloadCsvList = this.worldMapCampaignUsersTotalData;
         } else if (this.downloadTypeName === 'clickedMenetsWatched') {
-            this.logListName = 'Clicked_Menetes_logs.csv';
+            this.logListName = 'Clicked_Minutes_logs.csv';
             this.downloadCsvList = this.userMinutesWatchedTotalList;
         }
         else if (this.downloadTypeName === 'playedDuration') {
@@ -688,7 +688,8 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                 object["Country"] = this.downloadCsvList[i].country;
             }
             else if (this.downloadTypeName === 'clickedMenetsWatched') {
-                object["Name"] = this.downloadCsvList[i].name;
+                object["Email Id"] = this.downloadCsvList[i].emailId;
+                object["Campaign Name"] = this.downloadCsvList[i].campaignName;
                 object["Video Title"] = this.downloadCsvList[i].videoTitle;
                 let hours = this.referenceService.formatAMPM(date);
                 object["Date and Time"] = date.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
