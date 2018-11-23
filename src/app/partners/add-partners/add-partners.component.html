@@ -246,7 +246,7 @@ img:hover {
         <input type="text"  [(ngModel)]="searchKey"  [ngModelOptions]="{standalone: true}"
         class="form-control" placeholder="Search for a Partner" (keypress)="eventHandler($event.keyCode)">
         <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey=''"></button>
-        <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search"></i></button>
+        <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search" style="color:black !important"></i></button>
     </div>
 	<div class="col-xs-12" style="padding: 0 0 10px 0">
 		<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
@@ -500,7 +500,7 @@ img:hover {
                   <input type="text"  [(ngModel)]="searchKey"  [ngModelOptions]="{standalone: true}"
                    class="form-control" placeholder="Search for a Partner" (keypress)="eventHandler($event.keyCode)">
               <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey=''"></button>
-              <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search"></i></button>
+              <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search" style="color:black !important"></i></button>
               </div>
             </div>
           </div>
@@ -535,7 +535,8 @@ img:hover {
 												<th class="hidden-xs">TYPE</th>
 												<th class="hidden-xs hidden-sm">CATEGORY</th>
 												<!-- <th class='text-center hidden-xs'>ADDRESS</th> -->
-												<!-- <th class='text-center'>MORE</th> -->
+                        <!-- <th class='text-center'>MORE</th> -->
+                        <th></th>
 												<th class='text-center' style="width: 21%;">ACTIONS</th>
 											</tr>
 										</thead>
@@ -584,13 +585,15 @@ img:hover {
 														<span *ngIf="!contact.isShowDetails">More</span> <span
 															*ngIf="contact.isShowDetails">Less</span>
 													</button>
-												</td> -->
+                        </td> -->
+                        <td>
+                          <button id='more_less_button_{{i}}' class="hidden-xs"
+                          (click)="contact.isShowDetails = ! contact.isShowDetails">
+                          <span *ngIf="!contact.isShowDetails">More</span> <span
+                            *ngIf="contact.isShowDetails">Less</span>
+                        </button>
+                        </td>
 												<td align="center">
-												<button id='more_less_button_{{i}}' class="hidden-xs"
-														(click)="contact.isShowDetails = ! contact.isShowDetails">
-														<span *ngIf="!contact.isShowDetails">More</span> <span
-															*ngIf="contact.isShowDetails">Less</span>
-													</button>
 												<div class="actions-block override-actions">
 												<a id="envolope_{{i}}" *ngIf="!contact.signedUp" data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.partner_reSendMail}}" (click)="sendMail(contact.id)">
 													<i class="fa fa-envelope"></i>
