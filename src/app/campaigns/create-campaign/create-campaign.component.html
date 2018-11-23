@@ -1505,7 +1505,7 @@
 		</div>
 		<!-- ----------------------------------Contact Lists--------------------------------- -->
 		<div class="modal right" id="usersModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static">
-			<div class="modal-dialog" role="document" style="right:0">
+			<div class="modal-dialog modal-css" role="document" style="right:0">
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close-circle" data-dismiss="modal" aria-label="Close">
@@ -1520,7 +1520,7 @@
 					<div class="modal-body" id="users-modal-body">
 					</div>
 					<div class="modal-footer">
-              <app-pagination style="float: left;" [pagination]="contactsUsersPagination" [type]="'contactUsers'" [isDropdown]="true"
+              <app-pagination style="float: left;" class="pg8" [pagination]="contactsUsersPagination" [type]="'contactUsers'" [isDropdown]="true"
              (notifyParent)="setPagePagination($event)"></app-pagination>
 						<button type="button" (click)="closeModelPopup()" class="btn btn-default" data-dismiss="modal">Close</button>
 					</div>

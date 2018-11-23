@@ -1091,3 +1091,5 @@ background: #5bb1d4;
   position: absolute;
   top: 5px;
 }
+@media screen and (min-width:601px){.modal-css{  width: 45% !important; right: 0 !important;}}
+@media screen and (max-width:600px){.modal-css {width: 100% !important; right: 0 !important;}}

@@ -683,12 +683,12 @@
 																<span *ngIf="!contact.isShowDetails">More</span> <span
 																	*ngIf="contact.isShowDetails">Less</span>
 															</button>
-															
+
 															<button class="btn green" *ngIf="contactsByType.selectedCategory == 'unsubscribe' && (authenticationService.isVendor() || authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner())"
 																(click)="activateUnsubscribedUser(contact.id)">
-																Activate
+																Subscribe
 															</button>
-															
+
 															<div class="actions-block override-actions"
 																*ngIf="isPartner && contactsByType.selectedCategory == 'non-active'">
 																<a *ngIf="!contact.signedUp" data-toggle="tooltip"

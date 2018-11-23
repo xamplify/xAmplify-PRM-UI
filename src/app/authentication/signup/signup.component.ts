@@ -88,7 +88,8 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
     constructor(private router: Router, public countryNames: CountryNames, public regularExpressions: RegularExpressions, public properties: Properties,
         private formBuilder: FormBuilder, private signUpUser: User,public route:ActivatedRoute,
         private userService: UserService, public referenceService: ReferenceService,private xtremandLogger: XtremandLogger,public authenticationService:AuthenticationService) {
-        if(this.router.url.includes('/v-signup')){ this.vendorSignup = true; } else { this.vendorSignup = false;}
+          if(this.router.url.includes('/signup/')) {  localStorage.removeItem('currentUser');}
+          if(this.router.url.includes('/v-signup')){ this.vendorSignup = true; } else { this.vendorSignup = false;}
           this.signUpForm = new FormGroup({
             firstName: new FormControl(),
             lastName: new FormControl(),
@@ -143,15 +144,15 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
           this.checkValidationMessages()
         }
     }
-    
+
     checkPassword(){
         if(this.signUpForm.value.password.length > 20){
-            this.formErrors.password = this.validationMessages.password.maxlength; 
+            this.formErrors.password = this.validationMessages.password.maxlength;
         }else if( this.signUpForm.value.password.includes(" ") ){
             this.formErrors.password = "Password shouldn't contain spaces"
         }
     }
-    
+
     checkValidationMessages(){
       if(!this.signUpForm.value.firstName) {this.formErrors.firstName = this.validationMessages.firstName.required; }
       if(!this.signUpForm.value.emailId) {this.formErrors.emailId = this.validationMessages.emailId.required; }
