@@ -70,7 +70,12 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
           </div>
         </div>
 
-
+        <!-- <label >Choose a browser from this list:
+          <input [(ngModel)]="browserInfo"  [ngModelOptions]="{standalone: true}" list="browsers" name="myBrowser" /></label>
+          <datalist id="browsers" >
+            <option  [value]="0" >All Categories</option>
+            <option *ngFor="let category of categories" [ngValue]="category.id" [selected]="category.id==pagination.videoCategoryId">{{category.name}}</option>
+          </datalist> -->
 
  <div class="form-group" *ngIf="isPartner">
             <div>
@@ -89,8 +94,8 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
               </div>
             </div>
           </div>
-          
-          
+
+
          <div class="form-group" *ngIf="isPartner">
             <div>
               <label class="control-label col-xs-2 col-sm-2" for="partnerType" style="color: #53affe;">
@@ -112,7 +117,7 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
 
 
 
-        
+
 
         <div class="form-group">
           <div>
