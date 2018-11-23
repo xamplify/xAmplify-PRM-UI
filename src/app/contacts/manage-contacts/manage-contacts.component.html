@@ -306,7 +306,7 @@
 																(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.synchronisedList)"
 																data-toggle="tooltip" data-placement="top"
 																title="{{actionsDescription.contact_list_info}}"> <i
-																class="glyphicon glyphicon-info-sign"></i>
+																class="fa fa-info"></i>
 															</a> <a data-toggle="tooltip" data-placement="top"
 																title="{{actionsDescription.contact_list_saveAs}}"
 																(click)="saveAsNewList(contactList.id,contactList.name)">
@@ -316,7 +316,7 @@
 																data-toggle="tooltip" data-placement="top"
 																title="{{actionsDescription.contact_list_download}}"
 																data-rel="fancybox-button"> <i
-																class="fa fa-cloud-download"></i>
+																class="fa fa-download"></i>
 															</a> <span *ngIf="contactList.synchronisedList == true">
 																<a data-toggle="tooltip" data-placement="top"
 																title="{{actionsDescription.contact_list_synchronize}}"
@@ -400,7 +400,7 @@
 													data-toggle="tooltip" data-placement="top"
 													title="{{actionsDescription.contact_list_info}}"
 													data-rel="fancybox-button"> <i
-													class="glyphicon glyphicon-info-sign" style="color: white;"></i>
+													class="fa fa-info" style="color: white;"></i>
 												</a> <a data-toggle="tooltip" data-placement="top"
 													title="{{actionsDescription.contact_list_saveAs}}"
 													(click)="saveAsNewList(contactList.id,contactList.name)"
@@ -413,7 +413,7 @@
 													data-toggle="tooltip" data-placement="top"
 													title="{{actionsDescription.contact_list_download}}"
 													data-rel="fancybox-button"> <i
-													class="fa fa-cloud-download"></i>
+													class="fa fa-download"></i>
 												</a>
 												<ng-container *ngIf="contactList.synchronisedList == true">
 												<a data-toggle="tooltip" data-placement="top"
