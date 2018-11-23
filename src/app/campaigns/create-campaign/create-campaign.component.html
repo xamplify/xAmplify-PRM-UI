@@ -872,77 +872,46 @@
               <h4 style="text-align: left;margin-left: 15px;font-weight: 600;color: #999;">Preview Before Publishing</h4>
             </div> -->
 						<div class="col-xs-12">
-					  <div class="portlet light clearfix" style="padding:5px;background: #eaeaea;">
-					  	<button type="button" class="btn green square-button pull-right" (click)="socialStatus.isEnable = !socialStatus.isEnable"
-							style="padding: 5px 0;">
-							<i class="fa fa-share-alt fa-social" style="margin: 0 5px;"></i> Social Share</button>
-					  	<div class="border-none" *ngIf="socialStatus.isEnable">
-							<div *ngIf="socialStatus.socialStatusProviders?.length == 0">
-								<h2 class="text-warning" style="font-size: 22px !important;">
-									<i class="fa fa-exclamation-triangle" aria-hidden="true" style="font-size: 16px !important;"></i> No accounts found.</h2>
-								<h4>Please click
-									<span class="f-w-500">
-										<a [routerLink]="['/home/social/manage/all']">here</a>
-									</span> to manage your social accounts.</h4>
-							</div>
-							<div *ngIf="socialStatus.socialStatusProviders?.length > 0">
-								<div class="col-sm-6 border-right">
-									<div class="col-xs-12 p0">
-										<h4 style="float: left;margin: 10px;font-weight: 600;color: #717171;">Social Account</h4>
+						<div *ngIf="socialStatusProviders?.length > 0">
+						  <div class="portlet light clearfix">
+							<ul class="list-group social-account">
+								<li class="list-group-item profile-box" style="background-color: #dfdfdf; cursor: pointer;" [ngClass]="{'checked': isAllSelected, 'unchecked': !isAllSelected}">
+									<div class="profile-selected" (click)="toggleSelectAll()" style="float: initial;margin: 0 0 0 10px;">
+										<i class="fa fa-square-o" *ngIf="!isAllSelected"></i>
+										<i class="fa fa-check-square" *ngIf="isAllSelected"></i>
+										<span class="ml10">Select All <b *ngIf="selectedAccounts > 0">({{selectedAccounts}})</b></span>
 									</div>
-									<div class="clearfix">
-										<div class="col-md-3 col-sm-4 col-xs-6 box" *ngFor="let socialStatusProvider of socialStatus.socialStatusProviders; let i = index">
-											<div class="portlet light block" [ngClass]="{'checked': socialStatusProvider.selected, 'unchecked': !socialStatusProvider.selected}"
-												(click)="socialStatusProvider.selected = !socialStatusProvider.selected">
-												<span class="ribbon" [ngClass]="{'ribbon-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK',
-														'ribbon-twitter': socialStatusProvider.socialConnection.source ==='TWITTER',
-														'ribbon-linkedin': socialStatusProvider.socialConnection.source ==='LINKEDIN',
-														'ribbon-google': socialStatusProvider.socialConnection.source ==='GOOGLE'}">
-													<i class="fa fa-social pull-right" [ngClass]="{'fa-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK',
-														'fa-twitter': socialStatusProvider.socialConnection.source ==='TWITTER',
-														'fa-linkedin': socialStatusProvider.socialConnection.source ==='LINKEDIN',
-														'fa-google': socialStatusProvider.socialConnection.source ==='GOOGLE'}"></i>
+								</li>
+								<li *ngFor="let socialStatusProvider of socialStatusProviders; let i = index" (click)="toggleSocialStatusProvider(socialStatusProvider)"
+									class="list-group-item profile-box" [ngClass]="{'checked': socialStatusProvider.selected, 'unchecked': !socialStatusProvider.selected}">
+									<div class="profile-selected">
+										<i class="fa fa-square-o" *ngIf="!socialStatusProvider.selected"></i>
+										<i class="fa fa-check-square" *ngIf="socialStatusProvider.selected"></i>
+									</div>
+									<div class="profile-image-box">
+										<img class="profile-image" src="{{socialStatusProvider.socialConnection.profileImage}}" onError="this.src='assets/images/social/avatar.png';">
+										<img class="profile-icon" src="assets/images/social/{{socialStatusProvider.socialConnection.source}}.png">
+									</div>
+									<div class="profile-name">
+											<h5 *ngIf="socialStatusProvider.socialConnection.profileName" title="{{socialStatusProvider.socialConnection.profileName}}"
+												class="ellipsis heading-primary">
+												<b>{{socialStatusProvider.socialConnection.profileName}}</b>
+											</h5>
+											<h5 *ngIf="!socialStatusProvider.socialConnection.profileName" title="{{socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatusProvider.socialConnection.lastName}}"
+												class="ellipsis heading-primary">
+												<b>{{socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatusProvider.socialConnection.lastName}}</b>
+											</h5>
+											<h6 class="m0">
+												{{socialStatusProvider.socialConnection.source | titlecase}}
+												<span *ngIf="socialStatusProvider.socialConnection.source === 'FACEBOOK'">
+													<span *ngIf="socialStatusProvider.socialConnection.emailId">Profile</span>
+													<span *ngIf="!socialStatusProvider.socialConnection.emailId">Page</span>
 												</span>
-												<div class="portlet-title col-xs-12">
-													<h6 *ngIf="socialStatusProvider.socialConnection.profileName" title="{{socialStatusProvider.socialConnection.profileName}}"
-														class="ellipsis pull-left">
-														<b>{{socialStatusProvider.socialConnection.profileName}}</b>
-													</h6>
-													<h6 *ngIf="!socialStatusProvider.socialConnection.profileName" title="{{socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatusProvider.socialConnection.lastName}}"
-														class="ellipsis pull-left">
-														<b>{{socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatusProvider.socialConnection.lastName}}</b>
-													</h6>
-												</div>
-												<div class="portlet-body">
-													<img class="img-responsive profile-image" src="{{socialStatusProvider.socialConnection.profileImage}}">
-												</div>
-											</div>
-										</div>
+											</h6>
 									</div>
-								</div>
-								<div class="col-sm-6" style="margin-top: -30px;">
-									<div class="col-sm-12">
-										<h4 style="text-align: left;font-weight: 600;color: #717171;">Selected Account(s)</h4>
-										<section style="padding: 10px 0; text-align: left;">
-											<span *ngFor="let socialStatusProvider of socialStatus.socialStatusProviders">
-												<div class="btn btn-xs square-box" style="color: #FFF; margin-top: 0.5em;" *ngIf="socialStatusProvider.selected"
-												[ngClass]="{'btn-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK','btn-twitter': socialStatusProvider.socialConnection.source ==='TWITTER'}">
-													<div class="col-xs-12" style="display: inline-flex;">
-														<i class="fa fa-social pull-right"
-														[ngClass]="{'fa-facebook': socialStatusProvider.socialConnection.source ==='FACEBOOK',
-																	'fa-twitter': socialStatusProvider.socialConnection.source ==='TWITTER'}"></i>
-														<h5>{{socialStatusProvider.socialConnection.profileName}}</h5>
-													</div>
-												</div>
-											</span>
-										</section>
-									</div>
-									<div class="col-sm-12">
-										<textarea placeholder="What's happening?" rows="4" class="form-control form-group status-message-textarea square-box margin-bottom-10px"
-											[(ngModel)]="socialStatus.statusMessage" [ngModelOptions]="{standalone: true}" (keyup)="count(socialStatus.statusMessage)"></textarea>
-									</div>
-								</div>
-							</div>
+									<div class="clearfix"></div>
+								</li>
+							</ul>
 						</div>
 					</div>
 				</div>

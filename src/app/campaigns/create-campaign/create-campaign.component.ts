@@ -174,7 +174,14 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     loggedInUserId:number = 0;
     buttonName:string = "Launch";
 
-    socialStatus: SocialStatus = new SocialStatus();
+    selectedAccounts: number = 0;
+    socialStatusList = new Array<SocialStatus>();
+    socialStatusProviders = new Array<SocialStatusProvider>();
+    isAllSelected: boolean = false;
+
+
+
+
     replies:Array<Reply> = new Array<Reply>();
     urls:Array<Url> = new Array<Url>();
     date:Date;
@@ -1726,7 +1733,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         } else {
             this.campaign.regularEmail = false;
         }
-        // this.filteredSocialStatusProviders();
         this.getRepliesData();
         this.getOnClickData();
         this.selectedContactListIds = this.refService.removeDuplicates(this.selectedContactListIds);
@@ -1747,6 +1753,17 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             campaignType = CampaignType.VIDEO;
         }
         let country = $.trim($('#countryName option:selected').text());
+
+        this.socialStatusList = [];
+        this.socialStatusProviders.forEach(data => {
+                if(data.selected){
+                    let socialStatus = new SocialStatus();
+                    socialStatus.socialStatusProvider = data;
+                    this.socialStatusList.push(socialStatus);
+                }
+            }
+        )
+
         var data = {
             'campaignName': this.refService.replaceMultipleSpacesWithSingleSpace(this.campaign.campaignName),
             'fromName': this.refService.replaceMultipleSpacesWithSingleSpace(this.campaign.fromName),
@@ -1771,7 +1788,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             'selectedEmailTemplateId': this.selectedEmailTemplateRow,
             'regularEmail': this.campaign.regularEmail,
             'testEmailId': emailId,
-            'socialStatus': this.socialStatus,
+            'socialStatusList': this.socialStatusList,
             'campaignReplies':this.replies,
             'campaignUrls':this.urls,
             'campaignType':campaignType,
@@ -2226,7 +2243,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 this.contactListTabClass = this.successTabClass;
                 this.videoTabClass  = this.successTabClass;
                 this.emailTemplateTabClass = this.successTabClass;
-                this.initializeSocialStatus();
+                this.listSocialStatusProviders();
                 if(!this.isAdd && this.selectedTemplateBody!==undefined){
                     this.getAnchorLinksFromEmailTemplate(this.selectedTemplateBody);
                 }
@@ -2242,64 +2259,40 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
          * @since 27/06/2017
          */
 
-        initializeSocialStatus() {
-            this.socialStatus.id = null;
-            this.socialStatus.shareNow = true;
-            this.socialStatus.socialStatusContents = new Array<SocialStatusContent>();
-
-            if ( this.campaignType == 'regular' ) {
-                this.socialStatus.statusMessage = this.campaign.subjectLine;
-            } else if ( this.campaignType == 'video' ) {
-                this.socialStatus.statusMessage = this.launchVideoPreview.title;
-                let socialStatusContent: SocialStatusContent = new SocialStatusContent();
-                socialStatusContent.id = this.launchVideoPreview.id;
-                socialStatusContent.fileName = this.launchVideoPreview.title;
-                socialStatusContent.fileType = "video";
-                socialStatusContent.filePath = this.launchVideoPreview.videoPath;
-                this.socialStatus.socialStatusContents.push( socialStatusContent );
+        toggleSelectAll() {
+            this.isAllSelected = !this.isAllSelected;
+            this.selectedAccounts = 0;
+            if (this.isAllSelected) {
+                this.socialStatusProviders.forEach(data => {
+                    data.selected = false;
+                    this.toggleSocialStatusProvider(data);
+                })
+            } else {
+                this.socialStatusList.length = 1;
+                this.socialStatusProviders.forEach(data => data.selected = false);
             }
-            this.listSocialStatusProviders();
+        }
+
+        toggleSocialStatusProvider(socialStatusProvider: SocialStatusProvider){
+            socialStatusProvider.selected = !socialStatusProvider.selected;
+            this.selectedAccounts = socialStatusProvider.selected ? this.selectedAccounts + 1 : this.selectedAccounts - 1;
+            if (this.selectedAccounts === 0)
+                this.isAllSelected = false;
+            if (this.selectedAccounts === this.socialStatusProviders.length)
+                this.isAllSelected = true;
         }
 
         listSocialStatusProviders() {
             const socialConnections = this.socialService.socialConnections;
-            // this.socialStatus.socialStatusProviders = new Array<SocialStatusProvider>();
-            for ( const i in socialConnections ) {
-                let socialStatusProvider = new SocialStatusProvider();
-                socialStatusProvider.socialConnection = socialConnections[i];
-                // this.socialStatus.socialStatusProviders.push( socialStatusProvider );
-            }
+            socialConnections.forEach( data => {
+                if(data.active){
+                    let socialStatusProvider = new SocialStatusProvider();
+                    socialStatusProvider.socialConnection = data;
+                    this.socialStatusProviders.push(socialStatusProvider);
+                }
+            })
         }
 
-        // filteredSocialStatusProviders(){
-        //     let socialStatusProviders = this.socialStatus.socialStatusProviders;
-        //     if(socialStatusProviders !== undefined){
-        //         socialStatusProviders = socialStatusProviders.filter( function( obj ) {
-        //             return obj.selected == true;
-        //         });
-        //     }
-        //     this.socialStatus.socialStatusProviders = socialStatusProviders;
-        // }
-
-        updateStatus() {
-            // let socialStatusProviders = this.socialStatus.socialStatusProviders;
-            // socialStatusProviders = socialStatusProviders.filter( function( obj ) {
-            //     return obj.selected == true;
-            // });
-            // this.socialStatus.socialStatusProviders = socialStatusProviders;
-            this.socialStatus.userId = this.loggedInUserId;
-            swal( { title: 'Updating Status', text: "Please Wait...", showConfirmButton: false, imageUrl: "http://rewardian.com/images/load-page.gif" });
-            this.socialService.updateStatus( this.socialStatus )
-                .subscribe(
-                data => {
-                    this.initializeSocialStatus();
-                },
-                error => {
-                    console.log( error );
-                },
-                () => console.log( "Finished" )
-                );
-        }
  /***************************Email Rules***********************************/
         addReplyRows() {
             this.reply = new Reply();

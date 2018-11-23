@@ -1093,3 +1093,71 @@ background: #5bb1d4;
 }
 @media screen and (min-width:601px){.modal-css{  width: 45% !important; right: 0 !important;}}
 @media screen and (max-width:600px){.modal-css {width: 100% !important; right: 0 !important;}}
+
+.social-status-response .fa-check-circle-o{color: green;}
+.social-status-response .fa-times-circle-o{color: red;}
+
+.profile-box {padding: 10px; border: 1px solid #ddd;}
+.profile-box:hover{background-color: #f7f7f7; cursor: pointer;}
+.heading-primary {margin: 3px 0;}
+
+.update-status-profile {margin-top: 1em;}
+
+.inline-block {
+	display: inline-block
+}
+.fa-social {margin: 10px 10px 0 -10px}
+
+.checked {
+	background-color: #f7f7f7;
+	color: #111;
+}
+
+.profile-image-box {
+	width: 35px;
+    float: left;
+    position: relative;
+	margin: 0 20px 0 15px;
+}
+.profile-image {
+	height: 35px;
+    width: 35px;
+    border-radius: 100%;
+    padding: 3px;
+    border: 1px solid #007cff;
+}
+.profile-icon {
+	position: absolute;
+    bottom: 0;
+    right: -7px;
+    background-color: #fff;
+    border-radius: 50%;
+    width: 16px;
+}
+.profile-name {
+	display: inline-block;
+}
+.profile-selected {
+	margin-top: 10px;
+	margin-left: 10px;
+	cursor: pointer;
+	float: left;
+}
+.profile-selected i {
+	font-size: 15px !important;
+	padding: 0 !important;
+}
+.fa-check-square{
+	color: #007cff;
+}
+.social-image {
+	width: 20px;
+	height: auto
+}
+
+.list-group.social-account {
+	text-align: left;
+}
+.profile-box.unchecked{
+	opacity: 1;
+}
