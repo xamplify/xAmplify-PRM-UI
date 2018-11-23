@@ -17,7 +17,9 @@ export class VerifyEmailComponent implements OnInit {
     public alias: string;
     public errorMessage:string;
     constructor(private activatedRoute: ActivatedRoute, private userService: UserService, private router: Router,public processor:Processor,
-        public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, public properties: Properties) { }
+        public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, public properties: Properties) {
+          localStorage.removeItem('currentUser');
+        }
 
     activateAccount() {
       try{
