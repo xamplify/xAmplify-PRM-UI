@@ -93,7 +93,7 @@ export class ReferenceService {
         private router: Router, public deviceService: Ng2DeviceService,private route:ActivatedRoute) {
         console.log('reference service constructor');
         this.videoTag = "<img src=\""+environment.imagesHost+"xtremand-video.gif\">";
-        this.coBrandingTag = "<img src=\""+environment.imagesHost+"co-branding.png\" style=\"background-color:black\"/>";
+        this.coBrandingTag = "<img src=\""+environment.imagesHost+"co-branding.png\">";
         this.coBrandingImageTag = "img src=\""+environment.imagesHost+"co-branding.png\"";
     }
     getBrowserInfoForNativeSet(){
@@ -1555,6 +1555,8 @@ export class ReferenceService {
          }
          if(!campaign.enableCoBrandingLogo){
              updatedBody = updatedBody.replace("<a href=\"https://dummycobrandingurl.com\"","<a href=\"https://dummycobrandingurl.com\" style=\"display:none\"");
+             updatedBody = updatedBody.replace("https://xamp.io/vod/images/co-branding.png","");
+
          }
          if(campaign.nurtureCampaign ||userProfile.id!=campaign.userId){
              updatedBody = this.replacePartnerLogo(updatedBody,partnerLogo,partnerCompanyUrl,campaign);
@@ -1642,6 +1644,8 @@ export class ReferenceService {
          }
          if(!campaign.enableCoBrandingLogo){
              updatedBody = updatedBody.replace("<a href=\"https://dummycobrandingurl.com\"","<a href=\"https://dummycobrandingurl.com\" style=\"display:none\"");
+             updatedBody = updatedBody.replace("https://xamp.io/vod/images/co-branding.png","");
+
          }
          return updatedBody;
      }

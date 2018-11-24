@@ -295,8 +295,9 @@ export class UploadEmailTemplateComponent implements OnInit,OnDestroy {
             }
         }else{
             this.mycontent  = this.mycontent.replace(this.refService.coBrandingImageTag, "").
-            replace("<p>< style=\"background-color:black\" /></p>","").
-            replace("< style=\"background-color:black\"/>","");
+            replace("<p>< /></p>","").
+            replace("< />","").replace("<p>&lt;&gt;</p>","").replace("<>","");
+            
            // .replace("&lt; style=&quot;background-color:black&quot; /&gt;","");
         }
         
