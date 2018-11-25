@@ -135,7 +135,9 @@
 						<div class="social-status-response alert alert-dismissible" [ngClass]="{
 									'alert-success': socialStatus.publishStatus === 'SUCCESS',
 	                				'alert-danger': socialStatus.publishStatus === 'FAILURE'}">
-
+							<div class="pull-right">
+								<i class="fa fa-times-circle" aria-hidden="true" (click)="dismissMessage(socialStatus)"></i>
+							</div>
 							<div class="profile-image-box">
 								<img class="profile-image" src="{{socialStatus.socialStatusProvider.socialConnection.profileImage}}" onError="this.src='assets/images/social/avatar.png';">
 								<img class="profile-icon" src="assets/images/social/{{socialStatus.socialStatusProvider.socialConnection.source}}.png">

@@ -7,13 +7,7 @@ video {
 	height: auto;
 }
 .social-status-response {margin: 5px 0;}
-.social-status-response i{
-	float: left;
-	margin-right: 10px;
-	font-size: 20px;
-}
-.social-status-response .fa-check-circle-o{color: green;}
-.social-status-response .fa-times-circle-o{color: red;}
+
 
 .profile-box {padding: 10px;}
 .profile-box:hover{background-color: #f7f7f7; cursor: pointer;}

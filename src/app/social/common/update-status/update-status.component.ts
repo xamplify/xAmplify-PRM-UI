@@ -886,4 +886,8 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
     return regexp.test(s);
   }
+
+  dismissMessage(socialStatus: SocialStatus){
+    this.socialStatusResponse = this.socialStatusResponse.filter(item => item !== socialStatus);
+  }
 }
