@@ -862,13 +862,13 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
         if ($.trim(this.companyProfile.website).length > 0) {
             if (!this.regularExpressions.URL_PATTERN.test(this.companyProfile.website)) {
                 this.addWebSiteError();
-                this.websiteErrorMessage = "Please enter a valid company’s URL.";
+                this.websiteErrorMessage = "Please enter a valid companyâ€™s URL.";
             } else {
                 this.removeWebSiteError();
             }
         } else {
             this.websiteError = true;
-            this.websiteErrorMessage = 'Please add your company’s URL.';
+            this.websiteErrorMessage = 'Please add your companyâ€™s URL.';
         }
     }
 
