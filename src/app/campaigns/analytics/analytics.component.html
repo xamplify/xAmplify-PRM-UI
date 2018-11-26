@@ -28,7 +28,7 @@
 	</ul>
 <!--<app-analytics-loader [campaignType]="campaignType" *ngIf="loading"></app-analytics-loader>-->
 </div>
-<div class="portlet light">
+<div class="portlet light clearfix">
 <div class="portlet-body">
 <div *ngIf="hasClientError && !mainLoader" class="client-error">Something went wrong, Please refresh the page</div>
 <div *ngIf="customResponse.responseType === 'ERROR'; else NOERROR" class="m10">

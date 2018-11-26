@@ -411,6 +411,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
                 this.message = data.message;
                 if(this.message ==='Company Profile Info Updated Successfully'){
                   this.logger.log('success');
+                  this.homeComponent.getVideoDefaultSettings();
                 }
             },
             error => { this.ngxloading = false;
@@ -468,9 +469,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
                 }).then(function() {
                         self.saveCompanyProfileOnDestroy();
                 },function (dismiss) {
-                    if (dismiss == 'cancel') {
-
-                    }
+                    if (dismiss === 'cancel') {console.log('clicked cancel') }
                 })
 
               }

@@ -1625,7 +1625,7 @@ export class ReferenceService {
 
 
      goToCampaignAnalytics(campaign){
-         this.campaignType = campaign.campaignType;
+         this.campaignType = this.campaignType ? this.campaignType : 'VIDEO';
          this.router.navigate(["/home/campaigns/"+campaign.campaignId+"/details"]);
      }
 
