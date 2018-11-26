@@ -58,7 +58,7 @@ img:hover {
 		<div align="right" style="margin-top: 2px;" class="hidden-xs">
 			 <a (click)="downloadEmptyCsv()">
 				<button type="button" class="btn green" download	style="color: #ffffff;" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
-					Download Partner CSV Template<i class="fa fa-cloud-download" aria-hidden="true" style="margin-left: 5px"></i>
+					Download Partner CSV Template<i class="fa fa-download" aria-hidden="true" style="margin-left: 5px"></i>
 				</button>
 			</a>
 		</div>
@@ -116,20 +116,16 @@ img:hover {
 									<div class="portlet-body">
 									<div class="row">
 
-											<div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
-									<a *ngIf="sfImageNormal" id="salesforceContact_buttonNormal"
-										style="background-color: white" (click)="salesforceContacts()"
-							[class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality || selectedAddPartnerOption == 7 ">
-										<img
-										[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :sfImageBlur==true}"
+								<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+									<a *ngIf="sfImageNormal" id="salesforceContact_buttonNormal" style="background-color: white" (click)="salesforceContacts()"
+						     	[class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality || selectedAddPartnerOption == 7 ">
+										<img	[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :sfImageBlur==true}"
 										src="assets/images/crm/sf.png" class="salesForceImageClass" data-toggle="tooltip" data-placement="bottom"
 										title="Click here to access contacts from your Salesforce account"
 										height="86" width="90">
-									</a> <a *ngIf="sfImageBlur" id="salesforceContact_button"
-										style="background-color: white" (click)="salesforceContacts()"
-							[class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality || selectedAddPartnerOption == 7">
-										<img
-										[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :sfImageBlur==true}"
+									</a> <a *ngIf="sfImageBlur" id="salesforceContact_button"	style="background-color: white" (click)="salesforceContacts()"
+							      [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality || selectedAddPartnerOption == 7">
+										<img	[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :sfImageBlur==true}"
 										src="assets/images/crm/sf.png" class="salesForceImageClass" data-toggle="tooltip" data-placement="bottom"
 										title="Click here to access contacts from your Salesforce account"
 										height="86" width="90"
@@ -137,84 +133,68 @@ img:hover {
 										onmouseout="this.src='assets/images/crm/sf.png';">
 									</a>
 									<div id="salesforceGear" style="position: relative"	id="salesforceGear" *ngIf="sfImageNormal">
-										<a [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality"
-										(click)="settingSocialNetworkOpenModal('salesforce')"> <i id="SgearIcon" class="fa fa-cog" aria-hidden="true"
-											style="position: relative; font-size: 19px; top: -82px; left: 100px;"></i>
+										<a [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality" (click)="settingSocialNetworkOpenModal('salesforce')">
+                    <i id="SgearIcon" class="fa fa-cog cloud-css cloud-items" aria-hidden="true"></i>
 										</a>
 									</div>
 									<div style="position: relative" *ngIf="!sfImageNormal">
-										<a [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality"
-										(click)="salesforceContacts()"> <i class="fa fa-plug" aria-hidden="true"
-											style="position: relative; color: grey; font-size: 19px; top: -82px; left: 100px;"></i>
+										<a [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality" (click)="salesforceContacts()">
+                    <i class="fa fa-plug cloud-css cloud-items gray-color" aria-hidden="true"></i>
 										</a>
 									</div>
 								</div>
-								<div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
-									<a *ngIf="googleImageBlur" id="googleContact_button"
-										style="background-color: white" (click)="googleContacts()"
-							[class.disabled]="selectedAddPartnerOption != 5 || selectedAddPartnerOption == 3 || disableOtherFuctionality">
-										<img
-										[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :googleImageBlur==true}"
+								<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+									<a *ngIf="googleImageBlur" id="googleContact_button"	style="background-color: white" (click)="googleContacts()"
+						      	[class.disabled]="selectedAddPartnerOption != 5 || selectedAddPartnerOption == 3 || disableOtherFuctionality">
+										<img	[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :googleImageBlur==true}"
 										src="assets/images/crm/google.png" class="googleImageClass" data-toggle="tooltip" data-placement="bottom"
 										title="Click here to access contacts from your Google contacts"
 										height="86" width="90"
 										onmouseover="this.src='assets/images/crm/connecting.png';"
 										onmouseout="this.src='assets/images/crm/google.png';">
-									</a> <a id="googleContact_buttonNormal" *ngIf="googleImageNormal"
-										style="background-color: white" (click)="googleContacts()"
-							[class.disabled]="selectedAddPartnerOption != 5 || selectedAddPartnerOption == 3 || disableOtherFuctionality">
-										<img
-										[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :googleImageBlur==true}"
+									</a> <a id="googleContact_buttonNormal" *ngIf="googleImageNormal" style="background-color: white" (click)="googleContacts()"
+							       [class.disabled]="selectedAddPartnerOption != 5 || selectedAddPartnerOption == 3 || disableOtherFuctionality">
+										<img	[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :googleImageBlur==true}"
 										src="assets/images/crm/google.png" class="googleImageClass" data-toggle="tooltip" data-placement="bottom"
 										title="Click here to access contacts from your Google contacts"
 										height="86" width="90">
 									</a>
-									<div id="GoogleGear" style="position: relative"
-										*ngIf="googleImageNormal">
+									<div id="GoogleGear" style="position: relative"	*ngIf="googleImageNormal">
 										<a [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality"
-										(click)="settingSocialNetworkOpenModal('google')"> <i id="GgearIcon" class="fa fa-cog" aria-hidden="true"
-											style="position: relative; font-size: 19px; top: -82px; left: 100px;"></i>
+                    (click)="settingSocialNetworkOpenModal('google')">
+                    <i id="GgearIcon" class="fa fa-cog cloud-css cloud-items" aria-hidden="true" ></i>
 										</a>
 									</div>
 									<div style="position: relative" *ngIf="!googleImageNormal">
-										<a [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality"
-										(click)="googleContacts()"> <i class="fa fa-plug" aria-hidden="true"
-											style="position: relative; color: grey; font-size: 19px; top: -82px; left: 100px;"></i>
+										<a [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality" (click)="googleContacts()">
+                     <i class="fa fa-plug cloud-css cloud-items gray-color" aria-hidden="true"></i>
 										</a>
 									</div>
 								</div>
-								<div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
-									<a *ngIf="zohoImageBlur" id="zohoContact_button"
-										style="background-color: white"
-										(click)="checkingZohoContactsAuthentication()"
-							[class.disabled]="selectedAddPartnerOption != 5 || selectedAddPartnerOption == 6 || disableOtherFuctionality">
-										<img
-										[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}"
+								<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+									<a *ngIf="zohoImageBlur" id="zohoContact_button" style="background-color: white" (click)="checkingZohoContactsAuthentication()"
+						     	[class.disabled]="selectedAddPartnerOption != 5 || selectedAddPartnerOption == 6 || disableOtherFuctionality">
+										<img	[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}"
 										src="assets/images/crm/Zoho.png" class="zohoImageClass" data-toggle="tooltip" data-placement="bottom"
 										title="Click here to access contacts from your Zoho account"
 										height="86" width="90"
 										onmouseover="this.src='assets/images/crm/connecting.png';"
 										onmouseout="this.src='assets/images/crm/Zoho.png';">
-									</a> <a *ngIf="zohoImageNormal" id="zohoContact_buttonNormal"
-										style="background-color: white"
-										(click)="checkingZohoContactsAuthentication()"
-							[class.disabled]="selectedAddPartnerOption != 5 || selectedAddPartnerOption == 6 || disableOtherFuctionality">
-										<img
-										[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}"
+									</a> <a *ngIf="zohoImageNormal" id="zohoContact_buttonNormal" style="background-color: white"	(click)="checkingZohoContactsAuthentication()"
+						      	[class.disabled]="selectedAddPartnerOption != 5 || selectedAddPartnerOption == 6 || disableOtherFuctionality">
+										<img	[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}"
 										src="assets/images/crm/Zoho.png" class="zohoImageClass" data-toggle="tooltip" data-placement="bottom"
 										title="Click here to access contacts from your Zoho account"
 										height="86" width="90">
 									</a>
 									<div id="zohoGear" style="position: relative" *ngIf="zohoImageNormal">
-										<a [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality"
-										(click)="settingSocialNetworkOpenModal('zoho')"> <i id="ZgearIcon" class="fa fa-cog" aria-hidden="true"
-											style="position: relative; font-size: 19px; top: -82px; left: 100px;"></i>
+										<a [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality" (click)="settingSocialNetworkOpenModal('zoho')">
+                    <i id="ZgearIcon" class="fa fa-cog cloud-css cloud-items" aria-hidden="true"></i>
 										</a>
 									</div>
 									<div style="position: relative" *ngIf="!zohoImageNormal">
-										<a [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality"
-										(click)="checkingZohoContactsAuthentication()"> <i class="fa fa-plug" aria-hidden="true"
-											style="position: relative; color: grey; font-size: 19px; top: -82px; left: 100px;"></i>
+										<a [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality" (click)="checkingZohoContactsAuthentication()">
+                    <i class="fa fa-plug cloud-css cloud-items gray-color" aria-hidden="true"></i>
 										</a>
 									</div>
 								</div>
@@ -255,7 +235,7 @@ img:hover {
 				<li><a id="save_button" *ngIf="selectedAddPartnerOption != 5" (click)="saveContacts()">Save </a></li>
 				<li><a id="cancel_button" *ngIf="selectedAddPartnerOption != 5 || clipBoard" (click)="cancelPartners()">Cancel </a></li>
 				<li><a id="saveAs_button"
-					*ngIf="selectedAddPartnerOption == 5 && !clipBoard" (click)="editContactComponent.saveAsChange(); editContactComponent.addPartnerSave = true">Save
+					*ngIf="selectedAddPartnerOption == 5 && !clipBoard" (click)="saveAsChange(); editContactComponent.addPartnerSave = true">Save
 						As </a></li>
 				 <li><a id="exportToExcel"
 					*ngIf="selectedAddPartnerOption == 5 && pagination.pagedItems?.length != 0 && !clipBoard" (click)="downloadPartnerList()">Export
@@ -266,7 +246,7 @@ img:hover {
         <input type="text"  [(ngModel)]="searchKey"  [ngModelOptions]="{standalone: true}"
         class="form-control" placeholder="Search for a Partner" (keypress)="eventHandler($event.keyCode)">
         <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey=''"></button>
-        <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search"></i></button>
+        <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search" style="color:black !important"></i></button>
     </div>
 	<div class="col-xs-12" style="padding: 0 0 10px 0">
 		<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
@@ -366,9 +346,9 @@ img:hover {
 		</div>
 
 		<div class="row" *ngIf="clipBoard" style="margin-bottom: 15px;">
-			<div class="col-sm-12">
+			<div class="col-sm-12" style="padding-left:0px">
 				<h3 style="margin-left: 30px;">Copy from text -- paste below</h3>
-				<div class="col-xs-12 col-sm-7">
+				<div class="col-xs-12 col-sm-9">
 					<div class="col-xs-6" style="margin-bottom: 10px">
 						<select class="opts form-control">
 							<option selected value="DEFAULT">Delimiter Type</option>
@@ -384,14 +364,14 @@ img:hover {
 					<div class="col-xs-12">
 						<textarea id="copyFromclipTextArea" class="textareaNumber"
 							[(ngModel)]="clipboardTextareaText"
-							placeholder="FirstName,LastName,Company,Jobtitle,Email,Address,City,Country,Phonenumber       FirstName,LastName,Company,Jobtitle,Email,Address,City,Country,Phonenumber       FirstName,LastName,Company,Jobtitle,Email,Address,City,Country,Phonenumber"
+							placeholder="FirstName,LastName,Company,Jobtitle,Email,Vertical,Region,PartnerType,Category,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Vertical,Region,PartnerType,Category,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Vertical,Region,PartnerType,Category,Address,City,State,Zip,Country,Phone"
 							[ngModelOptions]="{standalone: true}"
 							style="height: 150px; font-size: 12px; line-height: 1.4; min-width: 100%; max-width: 100%; width: 100%;"
 							required="required">
 									</textarea>
 					</div>
 				</div>
-				<div class="col-xs-12 col-sm-5" style="margin-top: 30px;">
+				<div class="col-xs-12 col-sm-3" style="margin-top: 30px; padding-left:0px">
 					<span id="clipBoardValidationMessage"></span>
 				</div>
 			</div>
@@ -422,8 +402,12 @@ img:hover {
 											<tr>
 												<th style="width: 25%; text-align: center;">Entity info</th>
 												<th>PHONE</th>
-												<th>JOB TITLE</th>
-												<th class='text-center'>ADDRESS</th>
+												<!-- <th>JOB TITLE</th> -->
+                        <th class="hidden-xs">VERICAL</th>
+												<th class="hidden-xs">REGION</th>
+                        <th class="hidden-xs">PARTNER TYPE</th>
+                        <th class="hidden-xs">CATEGORY</th>
+												<th class='hidden-xs hidden-sm text-center'>ADDRESS</th>
 												<!-- <th class='text-center'>MORE</th> -->
 											</tr>
 										</thead>
@@ -434,7 +418,7 @@ img:hover {
 												<td>
 												<app-user-info [isPartnerEntityInfo]="true" [isPartnerInfo]="true" [isPartnerInfo]="true" [userInfo]="newContact"> </app-user-info>
 												</td>
-												<td>
+												<td class="hidden-xs">
 												<div *ngIf="newContact.mobileNumber" [class.disabled]="true" style="pointer-events: none !important; cursor: auto;">
 													<int-phone-prefix [(ngModel)]="newContact.mobileNumber"  [ngModelOptions]="{standalone: true}"></int-phone-prefix>
 													</div>
@@ -443,13 +427,17 @@ img:hover {
 															>{{newContact.mobileNumber}}</span>
 													</h5> -->
 												</td>
-												<td>
+												<!-- <td>
 													<h5 class='mb0 ellipsis'>{{newContact.jobTitle | slice:0:25}}
 													<span *ngIf="newContact.jobTitle?.length>25">...</span>
 													</h5>
-													<!-- <h6 class='mt0'>{{newContact.contactCompany}}</h6> -->
-												</td>
-												<td>
+													<h6 class='mt0'>{{newContact.contactCompany}}</h6>
+												</td> -->
+												<td class="hidden-xs">{{newContact.vertical}} </td>
+												<td class="hidden-xs">{{newContact.region}} </td>
+												<td class="hidden-xs">{{newContact.partnerType}} </td>
+												<td class="hidden-xs hidden-sm">{{newContact.category}} </td>
+												<td class="hidden-xs">
 													<h5 *ngIf="newContact?.address" class='mb0'>{{newContact.address}}</h5>
 													<h5 class='mb0'>{{newContact.city}},&nbsp;{{newContact.state}},</h5>
 													<h5 *ngIf="newContact?.city && newContact.country"
@@ -512,7 +500,7 @@ img:hover {
                   <input type="text"  [(ngModel)]="searchKey"  [ngModelOptions]="{standalone: true}"
                    class="form-control" placeholder="Search for a Partner" (keypress)="eventHandler($event.keyCode)">
               <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey=''"></button>
-              <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search"></i></button>
+              <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search" style="color:black !important"></i></button>
               </div>
             </div>
           </div>
@@ -540,11 +528,16 @@ img:hover {
 																(change)="editContactComponent.checkAll($event)"
 																id="checkAllExistingContacts"/></th>
 												<th style="width: 20%;">Entity info</th>
-												<th style="width: 26%;" class="hidden-xs">PHONE</th>
-												<th class="hidden-xs">JOB TITLE</th>
-												<th class='text-center hidden-xs'>ADDRESS</th>
-												<!-- <th class='text-center'>MORE</th> -->
-												<th class='text-center' style="width: 15%;">ACTIONS</th>
+												<!-- <th style="width: 26%;" class="hidden-xs">PHONE</th> -->
+												<!-- <th class="hidden-xs">JOB TITLE</th> -->
+												<th class="hidden-xs">VERTICAL</th>
+												<th class="hidden-xs">REGION</th>
+												<th class="hidden-xs">TYPE</th>
+												<th class="hidden-xs hidden-sm">CATEGORY</th>
+												<!-- <th class='text-center hidden-xs'>ADDRESS</th> -->
+                        <!-- <th class='text-center'>MORE</th> -->
+                        <th></th>
+												<th class='text-center' style="width: 21%;">ACTIONS</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -562,33 +555,44 @@ img:hover {
 												<td>
 													<app-user-info [isPartnerEntityInfo]="true" [isPartnerInfo]="true"  [userInfo]="contact"> </app-user-info>
 												</td>
-												<td class="hidden-xs">
-											<!-- 	<img
+												<!-- <td class="hidden-xs">
+												<img
 													src="https://lipis.github.io/flag-icon-css/flags/4x3/in.svg"
-													width="15px"> -->
+													width="15px">
 													<div *ngIf="contact.mobileNumber" [class.disabled]="true" style="pointer-events: none !important; cursor: auto;">
-														<!-- <span *ngIf="contact?.mobileNumber; else NA">{{contact.mobileNumber}}</span> -->
+														<span *ngIf="contact?.mobileNumber; else NA">{{contact.mobileNumber}}</span>
 													<int-phone-prefix [(ngModel)]="contact.mobileNumber"  [ngModelOptions]="{standalone: true}"></int-phone-prefix>
 													</div>
-												</td>
-												<td class="hidden-xs">
+												</td> -->
+												<td class="hidden-xs">{{contact.vertical}}</td>
+												<td class="hidden-xs">{{contact.region}}</td>
+												<td class="hidden-xs">{{contact.partnerType}}</td>
+												<td class="hidden-xs hidden-sm">{{contact.category}}</td>
+												<!-- <td class="hidden-xs">
 													<h5 class='mb0' title="{{contact.jobTitle}}">{{contact.jobTitle | slice:0:20}}
 													<span *ngIf="contact.jobTitle?.length>20">...</span>
 													</h5>
-													<!-- <h6 class='mt0'>{{contact.contactCompany}}</h6> -->
-												</td>
-												<td align="center" class="hidden-xs">
+													<h6 class='mt0'>{{contact.contactCompany}}</h6>
+												</td> -->
+												<!-- <td align="center" class="hidden-xs">
 													<h5 *ngIf="contact?.address" class='mb0'>{{contact.address}}</h5>
 													<h5 class='mb0'>{{contact.city}}<span *ngIf="contact.city && contact.state">,&nbsp;</span>{{contact.state}}</h5>
 													<h5 *ngIf="contact?.zipCode || contact.country" class='mt0'>{{contact.zipCode}}<span *ngIf="contact.zipCode && contact.country">,&nbsp;</span>{{contact.country}}</h5>
-												</td>
+												</td> -->
 												<!-- <td align="center">
 													<button id='more_less_button_{{i}}'
 														(click)="contact.isShowDetails = ! contact.isShowDetails">
 														<span *ngIf="!contact.isShowDetails">More</span> <span
 															*ngIf="contact.isShowDetails">Less</span>
 													</button>
-												</td> -->
+                        </td> -->
+                        <td>
+                          <button id='more_less_button_{{i}}' class="hidden-xs"
+                          (click)="contact.isShowDetails = ! contact.isShowDetails">
+                          <span *ngIf="!contact.isShowDetails">More</span> <span
+                            *ngIf="contact.isShowDetails">Less</span>
+                        </button>
+                        </td>
 												<td align="center">
 												<div class="actions-block override-actions">
 												<a id="envolope_{{i}}" *ngIf="!contact.signedUp" data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.partner_reSendMail}}" (click)="sendMail(contact.id)">
@@ -604,20 +608,42 @@ img:hover {
 												</td>
 												<ng-template #NA>N/A</ng-template>
 											</tr>
-											<!-- <tr
+											<tr
 												[ngClass]="{'hidden': !contact.isShowDetails, 'show-more': contact.isShowDetails}">
-												<td colspan="6">
+												<td colspan="8">
 													<table cellpadding="5" cellspacing="0"
 														style="padding-left: 50px; margin-left: 55px;">
 														<tbody>
 															<tr>
-																<td class='pt10 pb10 bold'>Notes:</td>
-																<td class='pt10 pb10'>{{contact.description}}</td>
+																<td class='pt10 pb10 bold'>Phone:</td>
+																<td class='pt10 pb10'>
+																	<div *ngIf="contact.mobileNumber"
+																		[class.disabled]="true"
+																		style="pointer-events: none !important; cursor: auto;">
+																		<int-phone-prefix [(ngModel)]="contact.mobileNumber"
+																			[ngModelOptions]="{standalone: true}"></int-phone-prefix>
+																	</div>
+																</td>
+															</tr>
+															<tr>
+																<td class='pt10 pb10 bold'>Address: </td>
+																<td align="center" class="hidden-xs">
+																	<h5 *ngIf="contact?.address" class='mb0'>{{contact.address}}</h5>
+																	<h5 class='mb0'>
+																		{{contact.city}}<span
+																			*ngIf="contact.city && contact.state">,&nbsp;</span>{{contact.state}}
+																	</h5>
+																	<h5 *ngIf="contact?.zipCode || contact.country"
+																		class='mt0'>
+																		{{contact.zipCode}}<span
+																			*ngIf="contact.zipCode && contact.country">,&nbsp;</span>{{contact.country}}
+																	</h5>
+																</td>
 															</tr>
 														</tbody>
 													</table>
 												</td>
-											</tr> -->
+											</tr>
 											</ng-container>
 
 										</tbody>
@@ -884,9 +910,36 @@ img:hover {
 				</div>
 			</div>
 		</div>
-	</div> -->
+  </div> -->
+
 </div>
 </div>
+
+<app-save-as *ngIf="saveAsListName" [listName]="'Partner'" [saveAsListName]="saveAsListName" (notifyParentSaveAs)="closeSaveAsModal()"></app-save-as>
+<!-- <div class="modal right fade" id="saveAsAddPartnerModal" tabindex="-1" role="dialog" aria-labelledby="saveAsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-css" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title f-w-600" id="saveAsAddPartnerModal">Partner List Name</h4>
+        <button type="button" class="close-circle" data-dismiss="modal" style=" position: relative;top: -24px;">
+          <i class="fa fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="campaignName">Name</label>
+          <input class="form-control" type="text" id="campaignName" [(ngModel)]="saveAsListName">
+          <span style="color:red">{{saveAsError}}</span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary"  (click)="saveAsInputChecking()">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div> -->
+
 <div *ngIf="contactListAssociatedCampaignsList?.length && openCampaignModal">
 	<app-contacts-campaigns-mails
 		[associatedCampaignDetails]="contactListAssociatedCampaignsList" [isPartner] = "true"

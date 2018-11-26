@@ -17,7 +17,7 @@ export class DashboardService {
     saveVideoFile: SaveVideoFile;
     pagination: Pagination;
     sortDates =  [{ 'name': '7 Days', 'value': 7 }, { 'name': '14 Days', 'value': 14 },
-      { 'name': '21 Days', 'value': 21 }, { 'name': 'month', 'value': 30 }];
+      { 'name': '21 Days', 'value': 21 }, { 'name': 'Month', 'value': 30 }];
 
     constructor(private http: Http, private authenticationService: AuthenticationService) { }
 
@@ -69,13 +69,13 @@ export class DashboardService {
             .map(this.extractData)
             .catch(this.handleError);
     }
-    
+
     loadVendorDetails(userId: number, pagination: Pagination) {
         const url = this.authenticationService.REST_URL+ 'vendor/details?access_token=' + this.authenticationService.access_token + '&partnerId=' + userId;
         return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);
-        
+
     }
 
     getCountryViewsDetails() {
@@ -150,29 +150,29 @@ export class DashboardService {
             .map(this.extractData)
             .catch(this.handleError);
     }
-    
-    
+
+
     getVendorsList(pagination: Pagination) {
         const url = this.authenticationService.REST_URL+ 'superadmin/analytics?access_token=' + this.authenticationService.access_token;
         return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);
     }
-    
+
     getVendorsCompanyProfile(vendorId: any) {
         const url = this.authenticationService.REST_URL+ 'admin/company-profile/get/'+ vendorId + '?access_token=' + this.authenticationService.access_token;
         return this.http.get(url)
             .map(this.extractData)
             .catch(this.handleError);
     }
-    
+
     getVendorsMyProfile(vendorEmail: any) {
         const url = this.authenticationService.REST_URL+ 'admin/getUserByUserName?access_token=' + this.authenticationService.access_token + '&userName=' + vendorEmail + '&isSuperAdmin=true';
         return this.http.post(url,"")
             .map(this.extractData)
             .catch(this.handleError);
     }
-    
+
     private extractData(res: Response) {
         let body = res.json();
         // console.log("response.json(): "+body);

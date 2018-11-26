@@ -120,8 +120,11 @@
 											</span>
 										</td>
 										<td>
-											<div class="actions-bloack override-actions" style="text-align: center !important; margin: 0 40px;">
-												<a (click)="showCampaignPreview(campaign)" data-toggle="tooltip" data-placement="top" title="Preview Campaign">
+											<div class="actions-block override-actions" style="text-align: center !important; margin: 0 40px;">
+												<a *ngIf="campaign.campaignType !== 'SOCIAL'" (click)="showCampaignPreview(campaign)" data-toggle="tooltip" data-placement="top" title="Preview Campaign">
+													<i class="fa fa-eye mr5"></i>
+                        </a>
+                        <a *ngIf="campaign.campaignType === 'SOCIAL'" data-toggle="tooltip" data-placement="top" title="coming soon">
 													<i class="fa fa-eye mr5"></i>
                         </a>
 												<a (click)="reDistributeCampaign(campaign)" data-toggle="tooltip" data-placement="top" title="Redistribute Campaign" data-rel="fancybox-button" >
@@ -169,7 +172,7 @@
 											<a (click)="showCampaignPreview(campaign.campaignId)" data-toggle="tooltip" data-placement="top" title="preview campaign">
 													<i class="fa fa-eye mr4"></i>
                                                  </a>
-												<a (click)="reDistributeCampaign(campaign)" title="Redistribute Campaign" data-rel="fancybox-button">
+												<a (click)="reDistributeCampaign(campaign)" data-toggle="tooltip" data-placement="top" title="Redistribute Campaign" data-rel="fancybox-button">
 													<i class="fa fa-clone"></i>
 												</a>
 											</div>
@@ -195,7 +198,25 @@
 				<!-- End Of tab Content -->
 			</div>
 		</div>
-	</div>
+  </div>
+  <div class="modal right fade" id="email_template_preivew">
+    <div class="modal-dialog modal-lg modal-template" style="right:0">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true">
+            <i class="fa fa-times"></i>
+          </button>
+          <h4 class="modal-title">{{campaignName}}</h4>
+        </div>
+        <div class="modal-body">
+          <div id="email-template-content"></div>
+        </div>
+        <div class="modal-footer">
+          <a href="javascript:void(0)" data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
+        </div>
+      </div>
+    </div>
+  </div>
 	<!-- <div *ngIf="totalRecords <= 0"  class="alert alert-info"><strong>No Campaigns Found</strong></div> -->
   <app-scroll-top></app-scroll-top>
 </div>

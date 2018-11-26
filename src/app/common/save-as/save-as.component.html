@@ -1,0 +1,24 @@
+
+<div class="modal right fade" id="saveAsModal" tabindex="-1" role="dialog" aria-labelledby="saveAsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-css" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title f-w-600" id="saveAsModal">{{listName}} List Name</h4>
+        <button (click)="closeModal()" type="button" class="close-circle" data-dismiss="modal" style=" position: relative;top: -24px;">
+          <i class="fa fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="campaignName">Name</label>
+          <input class="form-control" type="text" id="campaignName" [(ngModel)]="saveAsListName">
+          <span style="color:red">{{saveAsError}}</span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeModal()">Close</button>
+        <button type="button" class="btn btn-primary"  (click)="saveAsInputChecking()">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>

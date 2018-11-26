@@ -5,28 +5,25 @@ export class SocialStatus {
   id: number;
   userId: number;
   statusMessage = '';
+  message;
   scheduledTimeServer: Date;
   scheduledTimeUser: Date;
   timeZone: string;
-  socialStatusContents: Array<SocialStatusContent>;
-  socialStatusProviders: Array<SocialStatusProvider>;
+  socialStatusContents: Array<SocialStatusContent> = [];
+  socialStatusProvider: SocialStatusProvider;
   publishStatus: string;
 
   createdTime: Date;
   updatedTime: Date;
   updatedBy: number;
 
-  shareNow: boolean;
+  shareNow: boolean = true;
   isEnable: boolean;
+  validLink: boolean; // if the statusMessage is a valid web url
+  selected: boolean = false; 
 
   alias: string;
   parent: number;
-  campaignId: number;
-  campaignName: string;
-  userListIds: number[] = [];
-  socialCampaign = false;
-  emailOpened = false;
-  isPartner = true;
-
+  
   socialStatusList: Array<SocialStatus> = [];
 }

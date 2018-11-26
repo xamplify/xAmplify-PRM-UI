@@ -38,8 +38,8 @@
 							<span *ngIf="campaign.campaignName?.length>18">...</span>
 							</td>
 							<td align="center">{{campaign.campaignType}}</td>
-							<td align="center" class="hidden-xs" title="{{campaign.fromName}}">{{campaign.fromName | slice:0:15}}
-							<span *ngIf="campaign.campaignName?.length>15">...</span>
+							<td align="center" class="hidden-xs" title="{{campaign.fromName}}">
+                {{campaign.fromName | slice:0:20}}<span *ngIf="campaign.fromName?.length>20">..</span>
 							</td>
 							<td align="center" class="hidden-xs">
 							<app-timestamp [dateAndTime]="campaign.launchTime"> </app-timestamp>

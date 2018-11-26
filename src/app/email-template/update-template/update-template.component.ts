@@ -34,6 +34,8 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
             private router: Router, private emailTemplate: EmailTemplate, private logger: XtremandLogger,
             private authenticationService:AuthenticationService,public refService:ReferenceService) {
         logger.debug("updateTemplateComponent() Loaded");
+        CKEDITOR.config.allowedContent = true;
+        
         if(this.emailTemplateService.emailTemplate==undefined){
             this.router.navigate(["/home/emailtemplates/select"]);
         }
@@ -89,18 +91,18 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
         if($.trim(this.emailTemplate.body).length>0){
             this.emailTemplateService.update(this.emailTemplate)
             .subscribe(
-            (data: string) => {
+            (data: any) => {
                 this.refService.stopLoader(this.httpRequestLoader);
                 if(!isOnDestroy){
-                    if (data == "success") {
+                    if(data.statusCode==703){
                         this.refService.isUpdated = true;
                         this.emailTemplateService.emailTemplate = new EmailTemplate();
                         this.router.navigate(["/home/emailtemplates/manage"]);
-                        } else{
-                            this.clickedButtonName = "";
-                            this.isVideoTagError = true;
-                            this.videoTagsError = data;
-                        }
+                    }else{
+                        this.clickedButtonName = "";
+                        this.isVideoTagError = true;
+                        this.videoTagsError = data.message;
+                    }
                 }
 
             },

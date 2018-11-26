@@ -35,4 +35,9 @@ export class User {
     companyName:string = "";
     vendorSignUp:boolean = false;
     hasPassword = false;
+    
+    vertical: string = "";
+    region: string = "";
+    partnerType: string = "";
+    category: string = "";
 }

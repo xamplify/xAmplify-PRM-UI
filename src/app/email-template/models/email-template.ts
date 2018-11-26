@@ -16,8 +16,8 @@ export class EmailTemplate {
 	user: User;
 	jsonBody: string;
 	type: EmailTemplateType;
-	regularCoBrandingTemplate: boolean;
-	videoCoBrandingTemplate: boolean;
+	regularCoBrandingTemplate: boolean=false;
+	videoCoBrandingTemplate: boolean=false;
 	createdBy: string = "";
 	campaignDefault: boolean;
 	vendorName: string = "";

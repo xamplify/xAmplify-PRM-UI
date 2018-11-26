@@ -23,7 +23,7 @@ export class PieChartComponent implements OnInit {
            text: ''
        },
        tooltip: {
-           pointFormat: '{series.name}: <b>{point.percentage}%</b>'
+           pointFormat: '{series.name}: <b>{point.percentage:.0f}%</b>'
        },
        plotOptions: {
            pie: {
@@ -37,7 +37,7 @@ export class PieChartComponent implements OnInit {
        },
        exporting: {enabled: false},
        credits: {enabled: false},
-       colors: ['#909', '#dc3912', '#dc3912'],
+       colors: ['#ffb600', '#ff3879', '#be72d3'],
        series: [{
            name: 'Count',
            colorByPoint: true,

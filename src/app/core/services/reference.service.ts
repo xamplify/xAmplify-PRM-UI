@@ -14,6 +14,7 @@ import { Timezone } from '../../core/models/timezone';
 import { Ng2DeviceService } from 'ng2-device-detector';
 import { EmailTemplate } from '../../email-template/models/email-template';
 import { Campaign } from '../../campaigns/models/campaign';
+import { environment } from 'environments/environment';
 declare var $: any;
 
 @Injectable()
@@ -72,9 +73,10 @@ export class ReferenceService {
     vendorDetails: any;
     isRedistributionCampaignPage = false;
     campaignType = 'REGULAR';
-    videoTag = "<a href='<SocialUbuntuURL>'>\n   <img src='<SocialUbuntuImgURL>'/> \n </a> \n";
+    videoTag ="";
     emailMergeTags = "  For First Name : {{firstName}} \n  For Last Name : {{lastName}} \n  For Full Name : {{fullName}} \n  For Email Id : {{emailId}}";
-    coBrandingTag = "<img src='<Co-BrandingImgURL>'/> \n";
+    coBrandingTag = "";
+    coBrandingImageTag
     URL: string = this.authenticationService.REST_URL + 'admin/';
     hasClientError = false;
     isSidebarClosed = false;
@@ -85,9 +87,14 @@ export class ReferenceService {
     selectedVideoLogo: string;
     selectedVideoLogodesc: string;
     contentManagementLoader:boolean;
+    namesArray:any;
+
     constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,
         private router: Router, public deviceService: Ng2DeviceService,private route:ActivatedRoute) {
         console.log('reference service constructor');
+        this.videoTag = "<img src=\""+environment.imagesHost+"xtremand-video.gif\">";
+        this.coBrandingTag = "<img src=\""+environment.imagesHost+"co-branding.png\">";
+        this.coBrandingImageTag = "img src=\""+environment.imagesHost+"co-branding.png\"";
     }
     getBrowserInfoForNativeSet(){
          this.deviceInfo = this.deviceService.getDeviceInfo();
@@ -1546,6 +1553,8 @@ export class ReferenceService {
          }
          if(!campaign.enableCoBrandingLogo){
              updatedBody = updatedBody.replace("<a href=\"https://dummycobrandingurl.com\"","<a href=\"https://dummycobrandingurl.com\" style=\"display:none\"");
+             updatedBody = updatedBody.replace("https://xamp.io/vod/images/co-branding.png","");
+
          }
          if(campaign.nurtureCampaign ||userProfile.id!=campaign.userId){
              updatedBody = this.replacePartnerLogo(updatedBody,partnerLogo,partnerCompanyUrl,campaign);
@@ -1614,7 +1623,7 @@ export class ReferenceService {
 
 
      goToCampaignAnalytics(campaign){
-         this.campaignType = campaign.campaignType;
+         this.campaignType = this.campaignType ? this.campaignType : 'VIDEO';
          this.router.navigate(["/home/campaigns/"+campaign.campaignId+"/details"]);
      }
 
@@ -1633,6 +1642,8 @@ export class ReferenceService {
          }
          if(!campaign.enableCoBrandingLogo){
              updatedBody = updatedBody.replace("<a href=\"https://dummycobrandingurl.com\"","<a href=\"https://dummycobrandingurl.com\" style=\"display:none\"");
+             updatedBody = updatedBody.replace("https://xamp.io/vod/images/co-branding.png","");
+
          }
          return updatedBody;
      }

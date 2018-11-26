@@ -19,9 +19,22 @@
 				<span class="caption-subject font-red-sunglo uppercase">video statistics</span>
 			</div>
 			<div class="panel-title pull-right" style="margin-top: 5px;">
-			   <span class="tooltip-custom" title="{{heatMapTooltip}}">
+			   <!-- <span class="tooltip-custom" title="{{heatMapTooltip}}">
 					<i class="fa fa-question-circle" style="font-size: 20px"></i>
-				</span>
+        </span> -->
+        <span  class="tooltip-custom" [hidden]="referenceService.daySortValue===sortDates[1].value || referenceService.daySortValue===sortDates[2].value || referenceService.daySortValue===sortDates[3].value"  data-toggle="tooltip" data-placement="left" title="7 Days">
+          <i class="fa fa-question-circle stats" style="font-size: 20px"></i>
+        </span>
+        <span  class="tooltip-custom" [hidden]="referenceService.daySortValue===sortDates[0].value || referenceService.daySortValue===sortDates[2].value || referenceService.daySortValue===sortDates[3].value" data-toggle="tooltip" data-placement="left" title="14 Days">
+          <i class="fa fa-question-circle stats" style="font-size: 20px"></i>
+        </span>
+        <span  class="tooltip-custom" [hidden]="referenceService.daySortValue===sortDates[0].value || referenceService.daySortValue===sortDates[1].value || referenceService.daySortValue===sortDates[3].value" data-toggle="tooltip" data-placement="left" title="12 Days">
+          <i class="fa fa-question-circle stats" style="font-size: 20px"></i>
+        </span>
+        <span  class="tooltip-custom" [hidden]="referenceService.daySortValue===sortDates[0].value || referenceService.daySortValue===sortDates[1].value || referenceService.daySortValue===sortDates[2].value" data-toggle="tooltip" data-placement="left" title="Current Month">
+          <i class="fa fa-question-circle stats" style="font-size: 20px"></i>
+        </span>
+
 				<span style="float:right; font-size: 13px;">
 					<select style="cursor: pointer" [(ngModel)]="daySort" (ngModelChange)="selectedSortByValue($event.value)">
 						<option *ngFor="let sort of sortDates" [ngValue]="sort"> {{sort.name}} </option>

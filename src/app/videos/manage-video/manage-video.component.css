@@ -174,20 +174,15 @@ background: #ffffff;
   margin-left: -6px;
 }
 
-.draft-mode-css {
-	cursor: not-allowed !important;
-	opacity: 0.9;
-	color: #9e9e9e;
-}
-
-.draft-mode-css:hover{
-    border: 1px solid #9e9e9e;
-    background: #9e9e9e;
-    color: #FFF;
-}
 .loader-css-video{
   width: 55px;
   position: relative;
   z-index: 99;
   top: 6px;
+  }
+  .alert-custom-change{
+  position: relative;
+  top: 9px;
+  width: 97%;
+  right: -18px;
   }

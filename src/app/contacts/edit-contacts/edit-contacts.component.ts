@@ -130,7 +130,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
         { 'name': 'First name (DESC)', 'value': 'firstName-DESC' },
         { 'name': 'Last name (ASC)', 'value': 'lastName-ASC' },
         { 'name': 'Last name (DESC)', 'value': 'lastName-DESC' },
-
     ];
 
     public sortOption: any = this.sortOptions[0];
@@ -186,7 +185,18 @@ export class EditContactsComponent implements OnInit, OnDestroy {
             this.checkingContactTypeName = "Contact"
         } else {
             this.isPartner = true;
-            this.checkingContactTypeName = "Partner"
+            this.checkingContactTypeName = "Partner";
+            this.sortOptions.push( { 'name': 'Company (ASC)', 'value': 'contactCompany-ASC' });
+            this.sortOptions.push( { 'name': 'Company (DESC)', 'value': 'contactCompany-DESC' });
+            this.sortOptions.push( { 'name': 'Vertical (ASC)', 'value': 'vertical-ASC' });
+            this.sortOptions.push( { 'name': 'Vertical (DESC)', 'value': 'vertical-DESC' });
+            this.sortOptions.push( { 'name': 'Region (ASC)', 'value': 'region-ASC' });
+            this.sortOptions.push( { 'name': 'Region (DESC)', 'value': 'region-DESC' });
+            this.sortOptions.push( { 'name': 'Partner type (ASC)', 'value': 'partnerType-ASC' });
+            this.sortOptions.push( { 'name': 'Partner type (DESC)', 'value': 'partnerType-DESC' });
+            this.sortOptions.push( { 'name': 'Category (ASC)', 'value': 'category-ASC' });
+            this.sortOptions.push( { 'name': 'Category (DESC)', 'value': 'category-DESC' });
+            
         }
 
         this.users = new Array<User>();
@@ -256,6 +266,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                     for ( var i = 1; i < allTextLines.length; i++ ) {
                         if ( allTextLines[i][4].trim().length > 0 ) {
                             let user = new User();
+                            if(!self.isPartner){
                             user.emailId = allTextLines[i][4];
                             user.firstName = allTextLines[i][0];
                             user.lastName = allTextLines[i][1];
@@ -270,6 +281,28 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                             /*user.description = allTextLines[i][9];*/
                             self.users.push( user );
                             self.contacts.push( user );
+                            }else{ 
+                               
+                                user.emailId = allTextLines[i][4];
+                                user.firstName = allTextLines[i][0];
+                                user.lastName = allTextLines[i][1];
+                                user.contactCompany = allTextLines[i][2];
+                                user.jobTitle = allTextLines[i][3];
+                                user.vertical = allTextLines[i][5];
+                                user.region = allTextLines[i][6];
+                                user.partnerType = allTextLines[i][7];
+                                user.category = allTextLines[i][8];
+                                user.address = allTextLines[i][9];
+                                user.city = allTextLines[i][10];
+                                user.state = allTextLines[i][11];
+                                user.zipCode = allTextLines[i][12];
+                                user.country = allTextLines[i][13];
+                                user.mobileNumber = allTextLines[i][14];
+                                /* user.description = allTextLines[i][9];*/
+                                self.users.push( user );
+                                self.contacts.push( user );
+                                
+                            }
                         }
                     }
                     console.log( "AddContacts : readFiles() contacts " + JSON.stringify( self.users ) );
@@ -734,6 +767,11 @@ export class EditContactsComponent implements OnInit, OnDestroy {
         this.noContactsFound = false;
         this.clipboardTextareaText = "";
         this.clickBoard = true;
+       /* if(this.isPartner){*/
+            
+        /*}else{
+        this.clickBoard = true;
+        }*/
         this.selectedAddContactsOption = 8;
     }
 
@@ -776,6 +814,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
             for ( var i = 0; i < allTextLines.length; i++ ) {
                 var data = allTextLines[i].split( splitValue );
                 let user = new User();
+                if(!this.isPartner){
                 switch ( data.length ) {
                     case 1:
                         user.firstName = data[0];
@@ -877,6 +916,160 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                         user.mobileNumber = data[8];
                         user.description = data[9];
                         break;*/
+                }
+                }else{
+                    switch ( data.length ) {
+                    case 1:
+                        user.firstName = data[0];
+                        break;
+                    case 2:
+                        user.firstName = data[0];
+                        user.lastName = data[1];
+                        break;
+                    case 3:
+                        user.firstName = data[0];
+                        user.lastName = data[1];
+                        user.contactCompany = data[2];
+                        break;
+                    case 4:
+                        user.firstName = data[0];
+                        user.lastName = data[1];
+                        user.contactCompany = data[2];
+                        user.jobTitle = data[3];
+                        break;
+                    case 5:
+                        user.firstName = data[0];
+                        user.lastName = data[1];
+                        user.contactCompany = data[2];
+                        user.jobTitle = data[3];
+                        user.emailId = data[4];
+                        break;
+                    case 6:
+                        user.firstName = data[0];
+                        user.lastName = data[1];
+                        user.contactCompany = data[2];
+                        user.jobTitle = data[3];
+                        user.emailId = data[4];
+                        user.vertical = data[5];
+                        break;
+                    case 7:
+                        user.firstName = data[0];
+                        user.lastName = data[1];
+                        user.contactCompany = data[2];
+                        user.jobTitle = data[3];
+                        user.emailId = data[4];
+                        user.vertical = data[5];
+                        user.region = data[6]
+                        break;
+                    case 8:
+                        user.firstName = data[0];
+                        user.lastName = data[1];
+                        user.contactCompany = data[2];
+                        user.jobTitle = data[3];
+                        user.emailId = data[4];
+                        user.vertical = data[5];
+                        user.region = data[6]
+                        user.partnerType = data[7]
+                        break;
+                    case 9:
+                        user.firstName = data[0];
+                        user.lastName = data[1];
+                        user.contactCompany = data[2];
+                        user.jobTitle = data[3];
+                        user.emailId = data[4];
+                        user.vertical = data[5];
+                        user.region = data[6]
+                        user.partnerType = data[7]
+                        user.category = data[8]
+                        break;
+                    case 10:
+                        user.firstName = data[0];
+                        user.lastName = data[1];
+                        user.contactCompany = data[2];
+                        user.jobTitle = data[3];
+                        user.emailId = data[4];
+                        user.vertical = data[5];
+                        user.region = data[6]
+                        user.partnerType = data[7]
+                        user.category = data[8]
+                        user.address = data[9]
+                        break;
+                    case 11:
+                        user.firstName = data[0];
+                        user.lastName = data[1];
+                        user.contactCompany = data[2];
+                        user.jobTitle = data[3];
+                        user.emailId = data[4];
+                        user.vertical = data[5];
+                        user.region = data[6]
+                        user.partnerType = data[7]
+                        user.category = data[8]
+                        user.address = data[9]
+                        user.city = data[10]
+                        break;
+                    case 12:
+                        user.firstName = data[0];
+                        user.lastName = data[1];
+                        user.contactCompany = data[2];
+                        user.jobTitle = data[3];
+                        user.emailId = data[4];
+                        user.vertical = data[5];
+                        user.region = data[6]
+                        user.partnerType = data[7]
+                        user.category = data[8]
+                        user.address = data[9]
+                        user.city = data[10]
+                        user.state = data[11]
+                        break;
+                    case 13:
+                        user.firstName = data[0];
+                        user.lastName = data[1];
+                        user.contactCompany = data[2];
+                        user.jobTitle = data[3];
+                        user.emailId = data[4];
+                        user.vertical = data[5];
+                        user.region = data[6]
+                        user.partnerType = data[7]
+                        user.category = data[8]
+                        user.address = data[9]
+                        user.city = data[10]
+                        user.state = data[11]
+                        user.zipCode = data[12]
+                        break;
+                    case 14:
+                        user.firstName = data[0];
+                        user.lastName = data[1];
+                        user.contactCompany = data[2];
+                        user.jobTitle = data[3];
+                        user.emailId = data[4];
+                        user.vertical = data[5];
+                        user.region = data[6]
+                        user.partnerType = data[7]
+                        user.category = data[8]
+                        user.address = data[9]
+                        user.city = data[10]
+                        user.state = data[11]
+                        user.zipCode = data[12]
+                        user.country = data[13]
+                        break;
+                    case 15:
+                        user.firstName = data[0];
+                        user.lastName = data[1];
+                        user.contactCompany = data[2];
+                        user.jobTitle = data[3];
+                        user.emailId = data[4];
+                        user.vertical = data[5];
+                        user.region = data[6]
+                        user.partnerType = data[7]
+                        user.category = data[8]
+                        user.address = data[9]
+                        user.city = data[10]
+                        user.state = data[11]
+                        user.zipCode = data[12]
+                        user.country = data[13]
+                        user.mobileNumber = data[14]
+                        break;
+                    }
                 }
                 this.xtremandLogger.info( user );
                 this.users.push( user );
@@ -1653,9 +1846,55 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     }
 
 
-    saveAsChange() {
-      try {
-          const self = this;
+  //   saveAsChange() {
+  //     try {
+  //         const self = this;
+  //         this.loadContactListsNames();
+  //         if ( this.contactListName == undefined ) {
+  //             this.contactListName = this.contactService.partnerListName;
+  //         }
+  //         if ( this.isDefaultPartnerList == true && this.contactListName.includes( '_copy' ) ) {
+  //             this.contactListName + '_copy'
+  //         }
+  //         swal( {
+  //             title: this.checkingContactTypeName + ' List Name',
+  //             input: 'text',
+  //             inputValue: this.contactListName + '_copy',
+  //             showCancelButton: true,
+  //             confirmButtonText: 'Save',
+  //             allowOutsideClick: false,
+  //             preConfirm: function( name: any ) {
+  //                 return new Promise( function() {
+  //                     console.log( 'logic begins' );
+  //                     var inputName = name.toLowerCase().replace( /\s/g, '' );
+  //                     if ( $.inArray( inputName, self.names ) > -1 ) {
+  //                         swal.showValidationError( 'This list name is already taken.' )
+  //                     } else {
+  //                         if ( name != "" && name.length < 250) {
+  //                             swal.close();
+  //                             self.saveDuplicateContactList( name );
+  //                         } else {
+  //                            if(name == ""){
+  //                             swal.showValidationError( 'List Name is Required..' )
+  //                            }
+  //                            else{
+  //                                swal.showValidationError("You have exceeded 250 characters!");
+  //                            }
+  //                         }
+  //                     }
+  //                 });
+  //             }
+  //         }).then( function( name: any ) {
+  //             console.log( name );
+  //         }, function( dismiss: any ) {
+  //             console.log( 'you clicked on option' + dismiss );
+  //         });
+  //     } catch ( error ) {
+  //         this.xtremandLogger.error( error, "editContactComponent", "SaveAsNewListSweetAlert()" );
+  //     }
+  // }
+
+    addCopyToField(){
           this.loadContactListsNames();
           if ( this.contactListName == undefined ) {
               this.contactListName = this.contactService.partnerListName;
@@ -1663,111 +1902,20 @@ export class EditContactsComponent implements OnInit, OnDestroy {
           if ( this.isDefaultPartnerList == true && this.contactListName.includes( '_copy' ) ) {
               this.contactListName + '_copy'
           }
-          swal( {
-              title: this.checkingContactTypeName + ' List Name',
-              input: 'text',
-              inputValue: this.contactListName + '_copy',
-              showCancelButton: true,
-              confirmButtonText: 'Save',
-              allowOutsideClick: false,
-              preConfirm: function( name: any ) {
-                  return new Promise( function() {
-                      console.log( 'logic begins' );
-                      var inputName = name.toLowerCase().replace( /\s/g, '' );
-                      if ( $.inArray( inputName, self.names ) > -1 ) {
-                          swal.showValidationError( 'This list name is already taken.' )
-                      } else {
-                          if ( name != "" && name.length < 250) {
-                              swal.close();
-                              self.saveDuplicateContactList( name );
-                          } else {
-                             if(name == ""){
-                              swal.showValidationError( 'List Name is Required..' )
-                             }
-                             else{
-                                 swal.showValidationError("You have exceeded 250 characters!");
-                             }
-                          }
-                      }
-                  });
-              }
-          }).then( function( name: any ) {
-              console.log( name );
-          }, function( dismiss: any ) {
-              console.log( 'you clicked on option' + dismiss );
-          });
-      } catch ( error ) {
-          this.xtremandLogger.error( error, "editContactComponent", "SaveAsNewListSweetAlert()" );
-      }
-  }
-
+          this.saveAsListName =  this.contactListName + '_copy';
+          return this.saveAsListName;
+    }
     saveAs() {
         try {
-            this.loadContactListsNames();
-            if ( this.contactListName == undefined ) {
-                this.contactListName = this.contactService.partnerListName;
-            }
-            if ( this.isDefaultPartnerList == true && this.contactListName.includes( '_copy' ) ) {
-                this.contactListName + '_copy'
-            }
-            this.saveAsListName =  this.contactListName + '_copy';
-            this.saveAsError = '';
-            $('#saveAsEditModal').modal('show');
-            // swal( {
-            //     title: this.checkingContactTypeName + ' List Name',
-            //     input: 'text',
-            //     inputValue: this.contactListName + '_copy',
-            //     showCancelButton: true,
-            //     confirmButtonText: 'Save',
-            //     allowOutsideClick: false,
-            //     preConfirm: function( name: any ) {
-            //         return new Promise( function() {
-            //             console.log( 'logic begins' );
-            //             var inputName = name.toLowerCase().replace( /\s/g, '' );
-            //             if ( $.inArray( inputName, self.names ) > -1 ) {
-            //                 swal.showValidationError( 'This list name is already taken.' )
-            //             } else {
-            //                 if ( name != "" && name.length < 250) {
-            //                     swal.close();
-            //                     self.saveDuplicateContactList( name );
-            //                 } else {
-            //                    if(name == ""){
-            //                     swal.showValidationError( 'List Name is Required..' )
-            //                    }
-            //                    else{
-            //                        swal.showValidationError("You have exceeded 250 characters!");
-            //                    }
-            //                 }
-            //             }
-            //         });
-            //     }
-            // }).then( function( name: any ) {
-            //     console.log( name );
-            // }, function( dismiss: any ) {
-            //     console.log( 'you clicked on option' + dismiss );
-            // });
+            this.saveAsListName = this.addCopyToField();
         } catch ( error ) {
             this.xtremandLogger.error( error, "editContactComponent", "SaveAsNewListSweetAlert()" );
         }
     }
-    saveAsInputChecking(){
-      try{
-       const name = this.saveAsListName;
-       const self = this;
-       const inputName = name.toLowerCase().replace( /\s/g, '' );
-          if ( $.inArray( inputName, self.names ) > -1 ) {
-              this.saveAsError = 'This list name is already taken.';
-          } else {
-              if ( name !== "" && name.length < 250 ) {
-                self.saveDuplicateContactList( name );
-              }
-               else if(name == ""){  this.saveAsError = 'List Name is Required.';  }
-                else{ this.saveAsError = 'You have exceeded 250 characters!'; }
-            }
-          }catch(error){
-            this.xtremandLogger.error( error, "ManageContactsComponent", "saveAs()" );
-          }
-      }
+    closeSaveAsModal(){
+      this.saveAsListName = undefined;
+      this.refService.namesArray = undefined;
+    }
     saveDuplicateContactList( name: string ) {
         try {
             if ( name != "" ) {
@@ -2116,6 +2264,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                         this.names.push( data.names[i].replace( /\s/g, '' ) );
                     }
                     console.log( this.names );
+                    this.refService.namesArray = this.names;
                 },
                 ( error: any ) => {
                     this.xtremandLogger.error( error );
@@ -2327,6 +2476,28 @@ export class EditContactsComponent implements OnInit, OnDestroy {
         } catch ( error ) {
             this.xtremandLogger.error( error, "addPartnerComponent", "resending Partner email" );
         }
+    }
+    
+    activateUnsubscribedUser(selectContactId: any){
+        try {
+            this.contactService.activateUnsubscribedUser( selectContactId )
+                .subscribe(
+                data => {
+                    console.log( data );
+                    if ( data == "User is successfully resubscribed" ) {
+                        swal('User Activated Successfully');
+                        this.listOfSelectedContactListByType( this.contactsByType.selectedCategory );
+                    }
+                },
+                ( error: any ) => {
+                    this.xtremandLogger.error( error );
+                },
+                () => this.xtremandLogger.log( "Manage Partner component resubscribe method successfull" )
+                );
+        } catch ( error ) {
+            this.xtremandLogger.error( error, "manageContactComponent", " resubscribe method" );
+        }
+
     }
 
     ngOnInit() {

@@ -176,6 +176,16 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
         } else {
             this.isPartner = true;
             this.checkingContactTypeName = "Partner"
+            this.sortOptions.push( { 'name': 'Company (ASC)', 'value': 'contactCompany-ASC', 'for': 'contacts' });
+            this.sortOptions.push( { 'name': 'Company (DESC)', 'value': 'contactCompany-DESC', 'for': 'contacts' });
+            this.sortOptions.push( { 'name': 'Vertical (ASC)', 'value': 'vertical-ASC', 'for': 'contacts' });
+            this.sortOptions.push( { 'name': 'Vertical (DESC)', 'value': 'vertical-DESC', 'for': 'contacts' });
+            this.sortOptions.push( { 'name': 'Region (ASC)', 'value': 'region-ASC', 'for': 'contacts' });
+            this.sortOptions.push( { 'name': 'Region (DESC)', 'value': 'region-DESC', 'for': 'contacts' });
+            this.sortOptions.push( { 'name': 'Partner type (ASC)', 'value': 'partnerType-ASC', 'for': 'contacts' });
+            this.sortOptions.push( { 'name': 'Partner type (DESC)', 'value': 'partnerType-DESC', 'for': 'contacts' });
+            this.sortOptions.push( { 'name': 'Category (ASC)', 'value': 'category-ASC', 'for': 'contacts' });
+            this.sortOptions.push( { 'name': 'Category (DESC)', 'value': 'category-DESC', 'for': 'contacts' });
         }
 
         this.showAll = true;
@@ -284,6 +294,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
                     for ( let i = 0; i < data.names.length; i++ ) {
                         this.names.push( data.names[i].replace( /\s/g, '' ) );
                     }
+                    this.referenceService.namesArray = this.names;
                 },
                 ( error: any ) => {
                     this.xtremandLogger.error( error );
@@ -1289,39 +1300,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
           this.saveAsListName = '';
           this.saveAsError = '';
           $('#saveAsModal').modal('show');
-
-            // swal( {
-            //     title: this.checkingContactTypeName + ' List Name',
-            //     input: 'text',
-            //     showCancelButton: true,
-            //     confirmButtonText: 'Save',
-            //     allowOutsideClick: false,
-            //     preConfirm: function( name: any ) {
-            //         return new Promise( function() {
-            //             console.log( 'logic begins' );
-            //             var inputName = name.toLowerCase().replace( /\s/g, '' );
-            //             if ( $.inArray( inputName, self.names ) > -1 ) {
-            //                 swal.showValidationError( 'This list name is already taken.' )
-            //             } else {
-            //                 if ( name != "" && name.length < 250 ) {
-            //                     swal.close();
-            //                     self.saveSelectedUsers( name );
-            //                 } else {
-            //                     if(name == ""){
-            //                         swal.showValidationError( 'List Name is Required..' )
-            //                        }
-            //                        else{
-            //                            swal.showValidationError("You have exceeded 250 characters!");
-            //                        }
-            //                     }
-            //             }
-            //         });
-            //     }
-            // }).then( function( name: any ) {
-            //     console.log( name );
-            // }, function( dismiss: any ) {
-            //     console.log( 'you clicked on option' + dismiss );
-            // });
         } catch ( error ) {
             this.xtremandLogger.error( error, "ManageContactsComponent", "saveAsAlert()" );
         }
@@ -1334,36 +1312,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
             this.loadContactListsNames();
             this.saveAsError = '';
             $('#saveAsModal').modal('show');
-            // let self = this;
-            // swal( {
-            //     title: this.checkingContactTypeName + ' List Name',
-            //     input: 'text',
-            //     inputValue: contactListName + '_copy',
-            //     showCancelButton: true,
-            //     confirmButtonText: 'Save',
-            //     allowOutsideClick: false,
-            //     preConfirm: function( name: any ) {
-            //         return new Promise( function() {
-            //             self.xtremandLogger.log( 'logic begins' );
-            //             var inputName = name.toLowerCase().replace( /\s/g, '' );
-            //             if ( $.inArray( inputName, self.names ) > -1 ) {
-            //                 swal.showValidationError( 'This list name is already taken. ' )
-            //             } else {
-            //                 if ( name != "" ) {
-            //                     swal.close();
-            //                     self.saveExistingContactList( contactSelectedListId, name );
-            //                 } else {
-            //                     swal.showValidationError( 'List Name is Required..' )
-            //                 }
-            //             }
-            //         });
-            //     }
-            // }).then( function( name: any ) {
-            //     console.log( name );
-            // }, function( dismiss: any ) {
-            //     console.log( 'you clicked on option' + dismiss );
-            // });
-
         } catch ( error ) {
             this.xtremandLogger.error( error, "ManageContactsComponent", "saveAsNewList()" );
         }
@@ -1469,6 +1417,28 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
                 );
         } catch ( error ) {
             this.xtremandLogger.error( error, "addPartnerComponent", "resending Partner email" );
+        }
+
+    }
+    
+    activateUnsubscribedUser(selectContactId: any){
+        try {
+            this.contactService.activateUnsubscribedUser( selectContactId )
+                .subscribe(
+                data => {
+                    console.log( data );
+                    if ( data == "User is successfully resubscribed" ) {
+                        swal('User Activated Successfully');
+                        this.listContactsByType( this.contactsByType.selectedCategory );
+                    }
+                },
+                ( error: any ) => {
+                    this.xtremandLogger.error( error );
+                },
+                () => this.xtremandLogger.log( "Manage Partner component resubscribe method successfull" )
+                );
+        } catch ( error ) {
+            this.xtremandLogger.error( error, "manageContactComponent", " resubscribe method" );
         }
 
     }
