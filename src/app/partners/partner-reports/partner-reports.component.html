@@ -179,7 +179,7 @@
                 <input type="text" class="form-control" [(ngModel)]="inActivePartnersSearchKey" [ngModelOptions]="{standalone: true}" placeholder="search...">
                -->
                   <input type="text" style="height: 34px;" class="form-control" [(ngModel)]="inActivePartnersSearchKey" [ngModelOptions]="{standalone: true}"
-                    placeholder="Search for a Campaign" (keypress)="inActivePartnersSearch($event.keyCode)">
+                    placeholder="Search for a Partner" (keypress)="inActivePartnersSearch($event.keyCode)">
                   <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="inActivePartnersSearchKey" (click)="inActivePartnersSearchKey=''"></button>
                   <button type="submit" class="search-box-item-click" (click)="searchInActivePartnerAnalytics()"><i class="fa fa-search"></i></button>
                 </div>

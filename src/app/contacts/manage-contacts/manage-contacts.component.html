@@ -487,15 +487,18 @@
 							<div class="page-toolbar">
 								<div class="btn-group pull-right">
 									<div class="inputs" align="right" style="float: right">
-										<div *ngIf="!isSegmentation" (click)="modelForSeg()"
+										<div *ngIf="!isSegmentation" (click)="modelForSeg()" 
 											style="float: left; cursor: pointer; margin-right: 10px"
 											data-toggle="modal" data-target="#filterModal">
-											<i class="fa fa-filter" aria-hidden="true"
+											<i class="fa fa-filter" aria-hidden="true" data-toggle="tooltip"
+												data-placement="left" title="Apply a filter"
 												style="color: #0095da; font-size: 30px; margin-top: 10px;"></i>
 										</div>
 										<div *ngIf="isSegmentation" (click)="removeSegmentation()"
 											style="float: left; cursor: pointer; margin-right: 10px">
 											<i class="fa fa-filter" aria-hidden="true"
+											data-toggle="tooltip"
+												data-placement="left" title="Remove a filter"
 												style="color: red; font-size: 30px; margin-top: 10px;"></i>
 											<i class="fa fa-times" aria-hidden="true"
 												style="color: red; margin-left: -12px;"></i>
@@ -610,7 +613,8 @@
 														<th class="hidden-xs" *ngIf="!isPartner">Phone</th>
 														<th class="text-center hidden-xs" *ngIf="!isPartner">Job Title</th>
 														<th class="text-center hidden-xs"  *ngIf="!isPartner">ADDRESS</th>
-														<th class="text-center" *ngIf="isPartner || contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'unsubscribe'">ACTIONS</th>
+														<th class="text-center hidden-xs" *ngIf="isPartner"></th>
+														<th class="text-center" *ngIf="contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'unsubscribe'">ACTIONS</th>
 														<!-- <th>MORE</th> -->
 													</tr>
 												</thead>
@@ -677,12 +681,19 @@
 																	*ngIf="contact?.zipCode && contact.country">,&nbsp;</span>{{contact.country}}
 															</h5>
 														</td>
-														<td  align="center" *ngIf="isPartner || contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'unsubscribe'">
-															<button id='more_less_button_{{i}}' *ngIf="isPartner"
+														<td  align="center" *ngIf="isPartner">
+															<button id='more_less_button_{{i}}'
 																(click)="contact.isShowDetails = ! contact.isShowDetails">
 																<span *ngIf="!contact.isShowDetails">More</span> <span
 																	*ngIf="contact.isShowDetails">Less</span>
-															</button>
+														</button>
+													</td>
+														<td  align="center" *ngIf="isPartner || contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'unsubscribe'">
+															<!-- <button id='more_less_button_{{i}}' *ngIf="isPartner"
+																(click)="contact.isShowDetails = ! contact.isShowDetails">
+																<span *ngIf="!contact.isShowDetails">More</span> <span
+																	*ngIf="contact.isShowDetails">Less</span>
+															</button> -->
 
 															<button class="btn green" *ngIf="contactsByType.selectedCategory == 'unsubscribe' && (authenticationService.isVendor() || authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner())"
 																(click)="activateUnsubscribedUser(contact.id)">
@@ -781,7 +792,7 @@
 			<div class="modal-header">
 				<a class="close-circle" data-dismiss="modal"
 					(click)="cancelSegmentation()"><i class="fa fa-times"></i></a>
-				<h4 class="modal-title">Segmentation</h4>
+				<h4 class="modal-title">Filter</h4>
 			</div>
 			<div class="modal-body" style="padding: 28px;">
 				<div class="row">
@@ -809,10 +820,11 @@
 										<input type="text" class="form-control" placeholder="value*"
 											[(ngModel)]="criterias[i].value1">
 									</div>
-									<div class="form-group col-sm-2"
+									<div class="form-group col-sm-2" data-toggle="tooltip"
+												data-placement="left" title="Remove a condition"
 										[ngClass]="{'filter-css': !referenceService.isMobileScreenSize(), 'mobile-view-filter':referenceService.isMobileScreenSize()}">
 										<span (click)="cancelRow(i)"> <i class="fa fa-trash-o"
-											aria-hidden="true"
+											aria-hidden="true" 
 											style="color: red; font-size: 26px; margin-top: 6px"></i>
 										</span>
 									</div>
@@ -820,11 +832,12 @@
 							</div>
 						</div>
 						<div class="row col-sm-1" style="margin-left: 32px;">
-							<button type="button" class="btn btn-default pull-right"
-								(click)="addNewRow()">
+							<div (click)="addNewRow()" data-toggle="tooltip" data-placement="left" title="Add a condition">
+							<span class="btn btn-default pull-right">
 								<i class="fa fa-plus-square" aria-hidden="true"
-									style="color: green"></i>
-							</button>
+									style="color: #0196da"></i>
+							</span>
+							</div>
 						</div>
 					</div>
 				</div>

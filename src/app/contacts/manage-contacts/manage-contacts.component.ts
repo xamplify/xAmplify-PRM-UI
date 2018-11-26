@@ -151,7 +151,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
     filterConditions = [
         { 'name': 'Condition*', 'value': '' },
         { 'name': '=', 'value': 'eq' },
-        { 'name': 'like', 'value': 'like' },
+        { 'name': 'Contains', 'value': 'like' },
     ];
     filterCondition = this.filterConditions[0];
 
@@ -1428,7 +1428,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
                 data => {
                     console.log( data );
                     if ( data == "User is successfully resubscribed" ) {
-                        swal('User Activated Successfully');
+                        swal(this.checkingContactTypeName + 're-subscribed successfully');
                         this.listContactsByType( this.contactsByType.selectedCategory );
                     }
                 },

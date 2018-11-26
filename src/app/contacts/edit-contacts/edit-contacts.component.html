@@ -229,12 +229,14 @@
 								<div *ngIf="!isSegmentation" (click)="modelForSeg()"
 									style="float: left; cursor: pointer; margin-left: 50px;"
 									data-toggle="modal" data-target="#filterModal">
-									<i class="fa fa-filter" aria-hidden="true"
+									<i class="fa fa-filter" aria-hidden="true" data-toggle="tooltip"
+												data-placement="left" title="Apply a filter"
 										style="color: #0095da; font-size: 30px; margin-top: 10px;"></i>
 								</div>
 								<div *ngIf="isSegmentation" (click)="removeSegmentation()"
 									style="float: left; cursor: pointer; margin-left: 50px;">
-									<i class="fa fa-filter" aria-hidden="true"
+									<i class="fa fa-filter" aria-hidden="true" data-toggle="tooltip"
+												data-placement="left" title="Remove a filter"
 										style="color: red; font-size: 30px; margin-top: 10px;"></i> <i
 										class="fa fa-times" aria-hidden="true"
 										style="color: red; margin-left: -12px;"></i>
@@ -530,6 +532,7 @@
 														<th class="hidden-xs" *ngIf="!isPartner">Phone</th>
 														<th class="text-center hidden-xs" *ngIf="!isPartner">Job Title</th>
 														<th class="text-center hidden-xs"  *ngIf="!isPartner">ADDRESS</th>
+														<th class="text-center hidden-xs"  *ngIf="isPartner"></th>
 															<!-- <th class='text-center'>MORE</th> -->
 															<th class='text-center' style="width:16%" *ngIf="(hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId) || authenticationService.isOnlyPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()) && !isSynchronizationList || isPartner || contactsByType.selectedCategory == 'non-active'">ACTIONS</th>
 														</tr>
@@ -645,12 +648,19 @@
 																		*ngIf="contact.isShowDetails">Less</span>
 																</button>
 															</td> -->
-															<td align="center">
-															<button  *ngIf="isPartner || contactsByType.selectedCategory == 'non-active'" id='more_less_button_{{i}}'
+															<td align="center" *ngIf="isPartner">
+															<button  id='more_less_button_{{i}}'
 																(click)="contact.isShowDetails = ! contact.isShowDetails">
 																<span *ngIf="!contact.isShowDetails">More</span> <span
 																	*ngIf="contact.isShowDetails">Less</span>
 															</button>
+															</td> 
+															<td align="center">
+															<!-- <button  *ngIf="isPartner || contactsByType.selectedCategory == 'non-active'" id='more_less_button_{{i}}'
+																(click)="contact.isShowDetails = ! contact.isShowDetails">
+																<span *ngIf="!contact.isShowDetails">More</span> <span
+																	*ngIf="contact.isShowDetails">Less</span>
+															</button> -->
 															<div class="actions-block" *ngIf="(hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId) || authenticationService.isOnlyPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()) && !isSynchronizationList">
 															  	<a data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_edit}} {{checkingContactTypeName}}" (click)="editUserDetails(contact)">
 																  	<i class="fa fa-pencil-square-o"></i>
@@ -807,7 +817,8 @@
 														<th class="hidden-xs" *ngIf="!isPartner">Phone</th>
 														<th class="text-center hidden-xs" *ngIf="!isPartner">Job Title</th>
 														<th class="text-center hidden-xs"  *ngIf="!isPartner">ADDRESS</th>
-												<th class="text-center" *ngIf="isPartner || contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'unsubscribe'" style="width:17%">ACTIONS</th>
+														<th class="text-center hidden-xs"  *ngIf="isPartner"></th>
+												<th class="text-center" *ngIf="contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'unsubscribe'" style="width:17%">ACTIONS</th>
 												<!-- <th>MORE</th> -->
 											</tr>
 										</thead>
@@ -854,12 +865,19 @@
 													<h5 *ngIf="allcontacts?.zipCode || allcontacts.country"
 														class='mt0'>{{allcontacts.zipCode}}<span *ngIf="allcontacts.zipCode && allcontacts.country">,&nbsp;</span>{{allcontacts.country}}</h5>
 												</td>
-													<td align="center" *ngIf="isPartner || contactsByType.selectedCategory == 'non-active'">
-                           <button id='more_less_button_{{i}}' *ngIf="isPartner"
+												<td align="center" *ngIf="isPartner">
+                           <button id='more_less_button_{{i}}'
 																(click)="allcontacts.isShowDetails = ! allcontacts.isShowDetails">
 																<span *ngIf="!allcontacts.isShowDetails">More</span> <span
 																	*ngIf="allcontacts.isShowDetails">Less</span>
 															</button>
+															</td>
+													<td align="center" *ngIf="contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'unsubscribe'">
+                           <!-- <button id='more_less_button_{{i}}' *ngIf="isPartner"
+																(click)="allcontacts.isShowDetails = ! allcontacts.isShowDetails">
+																<span *ngIf="!allcontacts.isShowDetails">More</span> <span
+																	*ngIf="allcontacts.isShowDetails">Less</span>
+															</button> -->
 															<button class="btn green" *ngIf="contactsByType.selectedCategory == 'unsubscribe' && (authenticationService.isVendor() || authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner())"
 																(click)="activateUnsubscribedUser(allcontacts.id)">
 																Subscribe
@@ -956,7 +974,7 @@
 				<!-- <button type="button" class="close"  (click)="cancelSegmentation()"
 						data-dismiss="modal">&times;</button> -->
 					<a class="close-circle" data-dismiss="modal" (click)="cancelSegmentation()"><i class="fa fa-times"></i></a>
-					<h4 class="modal-title">Segmentation</h4>
+					<h4 class="modal-title">Filter</h4>
 				</div>
 				<div class="modal-body" style="padding: 28px;">
 					<div class="row">
@@ -983,7 +1001,8 @@
 										<div class="form-group col-sm-3">
 											<input type="text" class="form-control" placeholder="value*"	[(ngModel)]="criterias[i].value1" required>
 										</div>
-										<div class="form-group col-sm-2 filter-delete">
+										<div class="form-group col-sm-2 filter-delete" data-toggle="tooltip"
+												data-placement="left" title="Remove a condition">
 											<span (click)="cancelSegmentationRow(i)">
                          <i class="fa fa-trash-o" aria-hidden="true" 	style="color: red; font-size: 26px; margin-top: 6px"></i>
 											</span>
@@ -992,11 +1011,12 @@
 								</div>
 							</div>
 							<div class="row col-sm-1" style="margin-left: 32px;">
-								<button type="button" class="btn btn-default pull-right"
-									(click)="addNewRow()">
+							<div (click)="addNewRow()" data-toggle="tooltip" data-placement="left" title="Add a condition">
+								<button type="button" class="btn btn-default pull-right">
 									<i class="fa fa-plus-square" aria-hidden="true"
-										style="color: green"></i>
+										style="color: #0196da"></i>
 								</button>
+								</div>
 							</div>
 						</div>
 					</div>
