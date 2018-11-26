@@ -7,7 +7,7 @@ video {
 	height: auto;
 }
 .social-status-response {margin: 5px 0;}
-
+.status-message {word-break: break-all;}
 
 .profile-box {padding: 10px;}
 .profile-box:hover{background-color: #f7f7f7; cursor: pointer;}
@@ -77,7 +77,6 @@ textarea {
 }
 .profile-selected {
 	margin-top: 10px;
-	margin-left: 10px;
 	cursor: pointer;
 	float: left;
 }

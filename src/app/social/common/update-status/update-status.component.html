@@ -27,7 +27,7 @@
 
 <ul class="list-group m0 p0">
 	<li class="list-group-item p10" style="background-color: #dfdfdf; cursor: pointer;" [ngClass]="{'checked': isAllSelected, 'unchecked': !isAllSelected}">
-		<div class="ml10" (click)="toggleSelectAll()">
+		<div (click)="toggleSelectAll()">
 			<i class="fa fa-square-o" *ngIf="!isAllSelected"></i>
 			<i class="fa fa-check-square" *ngIf="isAllSelected"></i>
 			<span class="ml10">Select All <b *ngIf="selectedAccounts > 0">({{selectedAccounts}})</b></span>
@@ -191,7 +191,7 @@
 					<h6 class="caption-subject font-red-sunglo uppercase bold m10">Selected Accounts</h6>
 					<div *ngFor="let socialStatusProvider of socialStatusProviders">
 						<ng-container *ngIf="socialStatusProvider.selected">
-						<div class="profile-image-box" data-toggle="tooltip" data-placement="top" style="margin: 0 10px"
+						<div class="profile-image-box" data-toggle="tooltip" data-placement="top" style="margin: 0 5px"
 							[attr.title]="socialStatusProvider.socialConnection.profileName ? socialStatusProvider.socialConnection.profileName : 
 								socialStatusProvider.socialConnection.firstName">
 							<img class="profile-image" src="{{socialStatusProvider.socialConnection.profileImage}}" onError="this.src='assets/images/social/avatar.png';">
@@ -272,7 +272,7 @@
 								<ul class="list-group m0 p0">
 									<li *ngFor="let socialStatus of ssp.socialStatusList" class="list-group-item profile-box"
 										[ngClass]="{'checked': socialStatus.selected, 'unchecked': !socialStatus.selected}">
-										<div class="col-xs-3">
+										<div class="col-sm-4 col-xs-12 p0">
 											<div class="profile-selected" (click)="socialStatus.selected = !socialStatus.selected;">
 												<i class="fa fa-square-o" *ngIf="!socialStatus.selected"></i>
 												<i class="fa fa-check-square" *ngIf="socialStatus.selected"></i>
@@ -299,7 +299,7 @@
 												</h6>
 											</div>
 										</div>
-										<div class="col-xs-9">
+										<div class="col-sm-8 col-xs-12">
 											<div class="status-message" [ngClass]="{'hidden': socialStatus.statusMessage?.length == 0, 'col-xs-8': socialStatus.socialStatusContents.length > 0, 'col-xs-12': socialStatus.socialStatusContents.length === 0}">
 												<ng-container *ngIf="isUrl(socialStatus.statusMessage); else plaintext">
 													<a [href]="socialStatus.statusMessage" target="_blank">{{socialStatus.statusMessage}}</a>
