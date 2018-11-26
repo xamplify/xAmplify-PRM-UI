@@ -63,7 +63,7 @@
                <app-list-loader *ngIf="httpRequestLoader.isLoading && isListView && !referenceService.isPlayVideo"></app-list-loader>
                  <div class="margin-top-10 row">
                  <div *ngIf="!httpRequestLoader.isLoading  && !referenceService.isPlayVideo">
-                   <div *ngIf="pagination.pagedItems.length == 0" style="position: relative; top: 16px; width: 100%;" class="col-md-9 alert alert-info alert-dismissable">
+                   <div *ngIf="pagination.pagedItems.length == 0" class="col-md-9 alert alert-info alert-dismissable alert-custom-change">
                      <a class="close" data-dismiss="alert" aria-label="close"></a>
                      <p>No results found</p>
                    </div>

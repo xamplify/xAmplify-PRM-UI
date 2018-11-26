@@ -207,6 +207,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
     eventHandler(keyCode: any) {  if (keyCode === 13) {  this.searchTemplates(); } }
 
     ngOnInit() {
+      this.selectedSortedOption =  this.sortByDropDown[0];
         try {
             this.isListView = ! this.refService.isGridView;
             Metronic.init();

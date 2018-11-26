@@ -180,3 +180,9 @@ background: #ffffff;
   z-index: 99;
   top: 6px;
   }
+  .alert-custom-change{
+  position: relative;
+  top: 9px;
+  width: 97%;
+  right: -18px;
+  }
