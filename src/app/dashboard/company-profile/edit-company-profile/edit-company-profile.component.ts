@@ -124,6 +124,8 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
     formUpdated = true;
     tempCompanyProfile:any;
     upadatedUserId:any;
+    isUpdateChaged = false;
+
     constructor(private logger: XtremandLogger, public authenticationService: AuthenticationService, private fb: FormBuilder,
         private companyProfileService: CompanyProfileService, public homeComponent: HomeComponent,
         public refService: ReferenceService, private router: Router, public processor: Processor, public countryNames: CountryNames,
@@ -255,6 +257,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
             this.companyProfileService.save(this.companyProfile, this.loggedInUserId)
                 .subscribe(
                     data => {
+                        this.isUpdateChaged = true;
                         this.message = data.message;
                         if(this.message==='Company Profile Info Added Successfully') {
                           this.message = 'Company Profile saved successfully';
@@ -454,7 +457,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
               },
               error => { this.logger.errorPage(error) },
               () => { this.logger.info("Completed getCompanyProfileByIdNgOnDestroy()");
-              if(this.authenticationService.user.hasCompany && this.router.url!="/" && this.isFormUpdated()) {
+              if(!this.isUpdateChaged && this.authenticationService.user.hasCompany && this.router.url!="/" && this.isFormUpdated()) {
                 const self = this;
                 swal( {
                     title: 'Are you sure?',
@@ -1031,7 +1034,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
     }
 
    ngOnDestroy(): void {
-    this.getCompanyProfileByIdNgOnDestroy(this.upadatedUserId);
+     this.getCompanyProfileByIdNgOnDestroy(this.upadatedUserId);
    }
 
 }
