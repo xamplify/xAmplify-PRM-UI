@@ -56,20 +56,30 @@
 							</tbody>
 						</table>
 						
+						
 						<div *ngIf="!emailTemplateService.isRegularUpload" class="form-group" id="infoDiv" style="margin-top: -20px;">
 					 		<br><label for="info"><font style="color: red;">Your HTML template must include the code below.</font></label>
-						 	<textarea class="form-control" style="cursor: default;resize: none;" id="info" disabled="disabled" rows="4">{{refService.videoTag}}</textarea>
-					</div>
+						 	<textarea class="form-control" style="cursor: default;resize: none;" id="info" disabled="disabled" rows="1">{{refService.videoTag}}</textarea>
+						</div>
 						
 						<div>
 					 		<label for="info"><font style="color: red;">Use the image tag below to enable co-branding.</font></label>
 						 	<textarea class="form-control" style="cursor: default;resize: none;" id="info" disabled="disabled" rows="2">{{refService.coBrandingTag}}</textarea>
 						</div>
-					
-					<div>
+						
+						<br>
+						<div class="form-group" *ngIf="mycontent?.length>0">
+						<label class="control-label col-sm-5">Enable Co-Branding Logo</label>
+							<switch [status]="coBrandingLogo" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+									[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+									(statusChange)="setCoBrandingLogo($event)">
+							</switch>
+						</div>
+						
+				<!-- 	<div>
 					 		<br><label for="info"><font style="color: red;">Use the tags below for mail merge.</font></label>
 						 	<textarea class="form-control" style="cursor: default;resize: none;" id="info" disabled="disabled" rows="4">{{refService.emailMergeTags}}</textarea>
-					</div>
+					</div> -->
 					
 					</div>
 					<div class="col-xs-12" *ngIf="isUploaded" ><!--  -->

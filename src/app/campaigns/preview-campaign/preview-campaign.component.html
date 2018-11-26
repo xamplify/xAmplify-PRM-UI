@@ -326,8 +326,7 @@
                     </ng-container>
                     <div *ngIf="contactListPagination.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError" style="background:white">
                       <div *ngIf="contactListPagination.pagedItems.length !== 0">
-                        <app-pagination [pagination]="contactListPagination" [type]="'contacts'" (notifyParent)="setContactPage($event)" (notifyParentDropDown)="loadContactList($event)"
-                          style="margin-left: -10px;"></app-pagination>
+                        <app-pagination class="pg8" [pagination]="contactListPagination" [type]="'contacts'" (notifyParent)="setContactPage($event)" (notifyParentDropDown)="loadContactList($event)"></app-pagination>
                       </div>
                     </div>
                   </div>
@@ -780,7 +779,7 @@
       <div class="modal-body" id="users-modal-body">
       </div>
       <div class="modal-footer">
-        <app-pagination style="margin-left: -9px;float: left;" [pagination]="contactsUsersPagination" [type]="'previewcampaign'"
+        <app-pagination class="pg8" style="float: left;" [pagination]="contactsUsersPagination" [type]="'previewcampaign'"
           [isDropdown]="true" (notifyParent)="setPage($event)"></app-pagination>
         <button type="button" (click)="closeModelPopup()" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>

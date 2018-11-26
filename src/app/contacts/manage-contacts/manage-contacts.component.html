@@ -1,20 +1,29 @@
-<div class="page-content" [class.ml0]="authenticationService.isSuperAdmin()">
+<div class="page-content"
+	[class.ml0]="authenticationService.isSuperAdmin()">
 	<!-- page-breadcrumb -->
 	<div class="page-bar" *ngIf="!showEdit">
 		<ul class="page-breadcrumb">
-			<li *ngIf="!authenticationService.isSuperAdmin()"><i class="fa fa-home"></i> <a [routerLink]="referenceService.homeRouter">Home</a>
-				<i class="fa fa-angle-right"></i></li>
-		    <li *ngIf="authenticationService.isSuperAdmin()"><i class="fa fa-home"></i><a [routerLink]="['/home/dashboard/admin-report']">Admin Report</a><i class="fa fa-angle-right"></i></li>
+			<li *ngIf="!authenticationService.isSuperAdmin()"><i
+				class="fa fa-home"></i> <a
+				[routerLink]="referenceService.homeRouter">Home</a> <i
+				class="fa fa-angle-right"></i></li>
+			<li *ngIf="authenticationService.isSuperAdmin()"><i
+				class="fa fa-home"></i><a
+				[routerLink]="['/home/dashboard/admin-report']">Admin Report</a><i
+				class="fa fa-angle-right"></i></li>
 			<li><a (click)="navigateToManageContacts()">Manage
 					{{checkingContactTypeName}}s</a> <i class="fa fa-angle-right"
 				*ngIf="! showListOfContactList"></i></li>
 			<li
-				*ngIf="! showListOfContactList && contactsByType.selectedCategory != 'non-active' && contactsByType.selectedCategory != 'invalid'"><span
+				*ngIf="! showListOfContactList && contactsByType.selectedCategory != 'non-active' && contactsByType.selectedCategory != 'invalid' && contactsByType.selectedCategory != 'unsubscribe'"><span
 				class="capitalize">{{contactsByType.selectedCategory}}
 					{{checkingContactTypeName}}s</span></li>
 			<li
 				*ngIf="! showListOfContactList && contactsByType.selectedCategory == 'non-active'"><span
 				class="capitalize">Unregistered {{checkingContactTypeName}}s</span></li>
+			<li
+				*ngIf="! showListOfContactList && contactsByType.selectedCategory == 'unsubscribe'"><span
+				class="capitalize">Unsubscribed {{checkingContactTypeName}}s</span></li>
 			<li
 				*ngIf="! showListOfContactList && contactsByType.selectedCategory == 'invalid'"><span
 				class="capitalize">Undeliverable {{checkingContactTypeName}}s</span></li>
@@ -35,7 +44,7 @@
 								<div class="tab-pane active">
 									<!-- BEGIN FILTER -->
 
-								<!-- 	<div class="page-bar m0">
+									<!-- 	<div class="page-bar m0">
 										<div class="page-toolbar">
 											Removed serarch and sort from here
 										</div>
@@ -52,10 +61,14 @@
 												</div>
 												<div class="details">
 													<div class="number" style="font-weight: 300 !important;">{{contactsByType.allContactsCount}}</div>
-													<div class="desc" style="font-size:20px">All <!-- {{checkingContactTypeName}}s --></div>
+													<div class="desc" style="font-size: 20px">
+														All
+														<!-- {{checkingContactTypeName}}s -->
+													</div>
 												</div>
-												<span class="morePadding"> <a class="more" style="text-align: left;">
-														Detailed view <i class="m-icon-swapright m-icon-white"></i>
+												<span class="morePadding"> <a class="more"
+													style="text-align: left;"> Detailed view <i
+														class="m-icon-swapright m-icon-white"></i>
 												</a>
 												</span>
 											</button>
@@ -70,10 +83,14 @@
 												<div class="details">
 													<div class="number numberCss"
 														style="font-weight: 300 !important;">{{contactsByType.activeContactsCount}}</div>
-													<div class="desc" style="font-size:20px">Active <!-- {{checkingContactTypeName}}s --></div>
+													<div class="desc" style="font-size: 20px">
+														Active
+														<!-- {{checkingContactTypeName}}s -->
+													</div>
 												</div>
-												<span class="morePadding"> <a class="more" style="text-align: left;">
-														Detailed view <i class="m-icon-swapright m-icon-white"></i>
+												<span class="morePadding"> <a class="more"
+													style="text-align: left;"> Detailed view <i
+														class="m-icon-swapright m-icon-white"></i>
 												</a>
 												</span>
 											</button>
@@ -87,11 +104,14 @@
 												</div>
 												<div class="details">
 													<div class="number" style="font-weight: 300 !important;">{{contactsByType.inactiveContactsCount}}</div>
-													<div class="desc" style="font-size:20px">Unregistered
-														<!-- {{checkingContactTypeName}}s --></div>
+													<div class="desc" style="font-size: 20px">
+														Unregistered
+														<!-- {{checkingContactTypeName}}s -->
+													</div>
 												</div>
-												<span class="morePadding"> <a class="more" style="text-align: left;">
-														Detailed view <i class="m-icon-swapright m-icon-white"></i>
+												<span class="morePadding"> <a class="more"
+													style="text-align: left;"> Detailed view <i
+														class="m-icon-swapright m-icon-white"></i>
 												</a>
 												</span>
 											</button>
@@ -105,11 +125,14 @@
 												</div>
 												<div class="details">
 													<div class="number" style="font-weight: 300 !important;">{{contactsByType.invalidContactsCount}}</div>
-													<div class="desc" style="font-size:20px">Undeliverable
-														<!-- {{checkingContactTypeName}}s --></div>
+													<div class="desc" style="font-size: 20px">
+														Undeliverable
+														<!-- {{checkingContactTypeName}}s -->
+													</div>
 												</div>
-												<span class="morePadding"> <a class="more" style="text-align: left;">
-														Detailed view <i class="m-icon-swapright m-icon-white"></i>
+												<span class="morePadding"> <a class="more"
+													style="text-align: left;"> Detailed view <i
+														class="m-icon-swapright m-icon-white"></i>
 												</a>
 												</span>
 											</button>
@@ -123,11 +146,14 @@
 												</div>
 												<div class="details">
 													<div class="number" style="font-weight: 300 !important;">{{contactsByType.unsubscribedContactsCount}}</div>
-													<div class="desc" style="font-size:20px">Unsubscribed
-														<!-- {{checkingContactTypeName}}s --></div>
+													<div class="desc" style="font-size: 20px">
+														Unsubscribed
+														<!-- {{checkingContactTypeName}}s -->
+													</div>
 												</div>
-												<span class="morePadding"> <a class="more" style="text-align: left;">
-														Detailed view <i class="m-icon-swapright m-icon-white"></i>
+												<span class="morePadding"> <a class="more"
+													style="text-align: left;"> Detailed view <i
+														class="m-icon-swapright m-icon-white"></i>
 												</a>
 												</span>
 											</button>
@@ -135,75 +161,94 @@
 									</div>
 									<div class="page-bar m0">
 										<ul class="page-breadcrumb">
-											<li style="font-size: 16px; color: #888888">Your {{checkingContactTypeName}} Lists
-												</li>
+											<li style="font-size: 16px; color: #888888">Your
+												{{checkingContactTypeName}} Lists</li>
 
 										</ul>
 
 										<div class="btn-group pull-right">
-												<ng-container class='m10'>
-												<span class="btn btn-xs hidden-xs" data-toggle="tooltip" data-placement="bottom" title="List View" [class.disabled]="isListView" (click)="isListView = true" style="background-color:#e2e2e2"><i class="fa fa-th-list p10" aria-hidden="true"></i></span>
-                         						<span class="btn btn-xs hidden-xs"  data-toggle="tooltip" data-placement="bottom" title="Grid View" [class.disabled]="!isListView" (click)="isListView = false" style="background-color:#e2e2e2"><i class="fa fa-th-large p10" aria-hidden="true"></i></span>
-												</ng-container>
-												<div class="inputs sort-class" align="right" style="float: right">
-													<div [ngClass]="{'search-css': !referenceService.isMobileScreenSize(), 'mobile-css':referenceService.isMobileScreenSize() }">
-														<select class="form-control" [(ngModel)]="sortOption"
-															(ngModelChange)="sortByOption($event, 'contactList')">
-															<ng-container
-																*ngFor="let sort of sortOptions; let i = index">
-															<option *ngIf="i == 0" [ngValue]="sort">{{sort.name}}</option>
-															<option *ngIf="sort.for == 'contactList'"
-																[ngValue]="sort">{{sort.name}}</option>
-															</ng-container>
-														</select>
-													</div>
-													<div class="portlet-input input-inline search-class"  [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
-														<div class="input-icon right">
-															 <input type="text"
-																[(ngModel)]="searchKey"
-																[ngModelOptions]="{standalone: true}"
-																(input)="searchKeyValue('contactList')"
-																class="form-control" placeholder="Search for a list" (keypress)="eventHandler($event.keyCode)">
+											<ng-container class='m10'> <span
+												class="btn btn-xs hidden-xs" data-toggle="tooltip"
+												data-placement="bottom" title="List View"
+												[class.disabled]="isListView" (click)="isListView = true"
+												style="background-color: #e2e2e2"><i
+												class="fa fa-th-list p10" aria-hidden="true"></i></span> <span
+												class="btn btn-xs hidden-xs" data-toggle="tooltip"
+												data-placement="bottom" title="Grid View"
+												[class.disabled]="!isListView" (click)="isListView = false"
+												style="background-color: #e2e2e2"><i
+												class="fa fa-th-large p10" aria-hidden="true"></i></span> </ng-container>
+											<div class="inputs sort-class" align="right"
+												style="float: right">
+												<div
+													[ngClass]="{'search-css': !referenceService.isMobileScreenSize(), 'mobile-css':referenceService.isMobileScreenSize() }">
+													<select class="form-control" [(ngModel)]="sortOption"
+														(ngModelChange)="sortByOption($event, 'contactList')">
+														<ng-container
+															*ngFor="let sort of sortOptions; let i = index">
+														<option *ngIf="i == 0" [ngValue]="sort">{{sort.name}}</option>
+														<option *ngIf="sort.for == 'contactList'" [ngValue]="sort">{{sort.name}}</option>
+														</ng-container>
+													</select>
+												</div>
+												<div class="portlet-input input-inline search-class"
+													[ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
+													<div class="input-icon right">
+														<input type="text" [(ngModel)]="searchKey"
+															[ngModelOptions]="{standalone: true}"
+															(input)="searchKeyValue('contactList')"
+															class="form-control" placeholder="Search for a list"
+															(keypress)="eventHandler($event.keyCode)">
 
-														<button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey=''"></button>
-														<button type="submit" class="search-box-item-click" (click)="search('contactList')"><i class="fa fa-search"></i></button>
-														</div>
+														<button
+															class="glyphicon glyphicon-remove search-box-item-clear"
+															*ngIf="searchKey" (click)="searchKey=''"></button>
+														<button type="submit" class="search-box-item-click"
+															(click)="search('contactList')">
+															<i class="fa fa-search"></i>
+														</button>
 													</div>
 												</div>
 											</div>
-
 										</div>
+
+									</div>
 									<app-response-message [customResponse]="customResponse"
 										*ngIf="customResponse.isVisible"></app-response-message>
 									<!-- END DASHBOARD STATS -->
 									<div class="clearfix"></div>
 								</div>
 								<!-- END FILTER -->
-								 <!-- <app-loader *ngIf="httpRequestLoader.isLoading && !isListView"></app-loader>
+								<!-- <app-loader *ngIf="httpRequestLoader.isLoading && !isListView"></app-loader>
 								<app-list-loader *ngIf="httpRequestLoader.isLoading && isListView"></app-list-loader> -->
 								<div class="clearfix">
-								<app-grid-loader *ngIf="httpRequestLoader.isLoading && !isListView"></app-grid-loader>
-              					<app-list-loader *ngIf="httpRequestLoader.isLoading && isListView"></app-list-loader>
+									<app-grid-loader
+										*ngIf="httpRequestLoader.isLoading && !isListView"></app-grid-loader>
+									<app-list-loader
+										*ngIf="httpRequestLoader.isLoading && isListView"></app-list-loader>
 								</div>
 
 								<section [hidden]="!isListView"
 									*ngIf="pagination.pagedItems?.length != 0 && !httpRequestLoader.isLoading">
-									<div class="table-responsive" style="margin-top:7px">
+									<div class="table-responsive" style="margin-top: 7px">
 										<table class='table tgrid'>
 											<thead>
 												<tr>
-                          <th class="hidden-xs" colspan="2" style="width: 50%">List Name</th>
-                          <th class="visible-xs" colspan="1" style="width: 50%">List Info</th>
+													<th class="hidden-xs" colspan="2" style="width: 50%">List
+														Name</th>
+													<th class="visible-xs" colspan="1" style="width: 50%">List
+														Info</th>
 													<th class="hidden-xs">Created On</th>
-													<th class="text-center hidden-xs">Total {{checkingContactTypeName}}s</th>
-													<th class="text-center" *ngIf="!authenticationService.isSuperAdmin()">Actions</th>
+													<th class="text-center hidden-xs">Total
+														{{checkingContactTypeName}}s</th>
+													<th class="text-center"
+														*ngIf="!authenticationService.isSuperAdmin()">Actions</th>
 												</tr>
 											</thead>
 											<tbody>
 												<tr *ngFor="let contactList of pagination.pagedItems"
 													[class.isProcessing]="!contactList.emailValidationInd">
-                          <td style="width: 10%;" class="hidden-xs">
-                            <img
+													<td style="width: 10%;" class="hidden-xs"><img
 														*ngIf="contactList.socialNetwork=='ZOHO'"
 														src="{{zohoImage}}" alt="zoho" style="height: 70px;">
 														<img *ngIf="contactList.socialNetwork=='GOOGLE'"
@@ -218,59 +263,73 @@
 														style="width: 55px; margin-top: -88px; margin-left: 17px;">
 													</td>
 													<td>
-													<h4 class="ellipsis" title="{{contactList.name}}">
-															{{contactList.name | slice:0:50}}
-															<span *ngIf="contactList.name?.length>50">...</span>
+														<h4 class="ellipsis" title="{{contactList.name}}">
+															{{contactList.name | slice:0:50}} <span
+																*ngIf="contactList.name?.length>50">...</span>
 														</h4>
-														<h5 class='m0 ellipsis'  title="{{contactList.uploadedBy}}">
-															By <span class='f-w-400'>{{contactList.uploadedBy | slice:0:50}}
-															<span *ngIf="contactList.uploadedBy?.length>50">...</span>
+														<h5 class='m0 ellipsis' title="{{contactList.uploadedBy}}">
+															By <span class='f-w-400'>{{contactList.uploadedBy
+																| slice:0:50}} <span
+																*ngIf="contactList.uploadedBy?.length>50">...</span>
 															</span>
 														</h5>
-														<h5 class="mb0 ellipsis" title="{{contactList.companyName}}"><b>{{contactList.companyName | slice:0:50}}</b>
-                            <span *ngIf="contactList.companyName?.length>50">...</span>
-                            <h5 class="mb0 ellipsis hidden-sm hidden-md hidden-lg">
-                                <span class="mb0">Total {{checkingContactTypeName}}s: {{contactList.noOfContacts}}</span><br>
-                              	<span class="mb0">Created On:<app-timestamp [isOnlyDate]="true" [dateAndTime]="contactList.createdDate"> </app-timestamp></span>
-                            </h5>
-                            </h5>
+														<h5 class="mb0 ellipsis"
+															title="{{contactList.companyName}}">
+															<b>{{contactList.companyName | slice:0:50}}</b> <span
+																*ngIf="contactList.companyName?.length>50">...</span>
+															<h5 class="mb0 ellipsis hidden-sm hidden-md hidden-lg">
+																<span class="mb0">Total
+																	{{checkingContactTypeName}}s:
+																	{{contactList.noOfContacts}}</span><br> <span class="mb0">Created
+																	On:<app-timestamp [isOnlyDate]="true"
+																		[dateAndTime]="contactList.createdDate">
+																	</app-timestamp>
+																</span>
+															</h5>
+														</h5>
 													</td>
-													<td class="hidden-xs">
-													<app-timestamp [isOnlyDate]="true" [dateAndTime]="contactList.createdDate"> </app-timestamp>
-													</td>
+													<td class="hidden-xs"><app-timestamp
+															[isOnlyDate]="true"
+															[dateAndTime]="contactList.createdDate">
+														</app-timestamp></td>
 													<td class="text-center hidden-xs">{{contactList.noOfContacts}}</td>
 													<td *ngIf="!authenticationService.isSuperAdmin()">
 														<div class="actions-block override-actions">
 															<a
 																*ngIf="(hasAllAccess || authenticationService.module.isVendor || (hasContactRole && loggedInUserId == contactList.uploadedUserId) || authenticationService.isOnlyPartner()) && !contactList.synchronisedList"
 																(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.synchronisedList)"
-																data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_list_edit}}"> <i class="fa fa-pencil-square-o"></i>
-															</a>
-
-															<a *ngIf="!hasAllAccess && loggedInUserId != contactList.uploadedUserId && !authenticationService.module.isVendor || contactList.synchronisedList"
+																data-toggle="tooltip" data-placement="top"
+																title="{{actionsDescription.contact_list_edit}}"> <i
+																class="fa fa-pencil-square-o"></i>
+															</a> <a
+																*ngIf="!hasAllAccess && loggedInUserId != contactList.uploadedUserId && !authenticationService.module.isVendor || contactList.synchronisedList"
 																(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.synchronisedList)"
-																data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_list_info}}"> <i
-																class="glyphicon glyphicon-info-sign"></i>
-															</a>
-
-															<a data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_list_saveAs}}"
+																data-toggle="tooltip" data-placement="top"
+																title="{{actionsDescription.contact_list_info}}"> <i
+																class="fa fa-info"></i>
+															</a> <a data-toggle="tooltip" data-placement="top"
+																title="{{actionsDescription.contact_list_saveAs}}"
 																(click)="saveAsNewList(contactList.id,contactList.name)">
 																<i class="fa fa-files-o"></i>
-															</a>
-															 <a (click)="downloadContactList(contactList.id, contactList.name)"
-																data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_list_download}}" data-rel="fancybox-button"> <i
-																class="fa fa-cloud-download"></i>
-															</a>
-															<span *ngIf="contactList.synchronisedList == true">
-																<a data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_list_synchronize}}"
+															</a> <a
+																(click)="downloadContactList(contactList.id, contactList.name)"
+																data-toggle="tooltip" data-placement="top"
+																title="{{actionsDescription.contact_list_download}}"
+																data-rel="fancybox-button"> <i
+																class="fa fa-download"></i>
+															</a> <span *ngIf="contactList.synchronisedList == true">
+																<a data-toggle="tooltip" data-placement="top"
+																title="{{actionsDescription.contact_list_synchronize}}"
 																*ngIf="hasAllAccess || authenticationService.module.isVendor|| (hasContactRole && loggedInUserId==contactList.uploadedUserId)"
 																(click)="synchronizeContactList(contactList.id,contactList.socialNetwork)">
 																	<i class="fa fa-refresh" aria-hidden="true"></i>
 															</a>
-															</span>
-															<a *ngIf="(hasAllAccess || authenticationService.module.isVendor || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner()) && !contactList.defaultPartnerList"
-																(click)="showAlert(contactList.id)" data-toggle="tooltip" data-placement="top"  title="{{actionsDescription.contact_list_delete}}">
-																<i class="fa fa-trash"></i>
+															</span> <a
+																*ngIf="(hasAllAccess || authenticationService.module.isVendor || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner()) && !contactList.defaultPartnerList"
+																(click)="showAlert(contactList.id)"
+																data-toggle="tooltip" data-placement="top"
+																title="{{actionsDescription.contact_list_delete}}">
+																<i class="fa fa-trash-o"></i>
 															</a>
 														</div>
 													</td>
@@ -282,86 +341,108 @@
 
 								<div class="row mix-grid" [hidden]="isListView"
 									*ngIf="pagination.pagedItems && !httpRequestLoader.isLoading">
-									<div *ngFor="let contactList of pagination.pagedItems" class="col-xs-12 col-sm-4 col-lg-3">
+									<div *ngFor="let contactList of pagination.pagedItems"
+										class="col-xs-12 col-sm-4 col-lg-3">
 
 
 										<div class="grid-box" id="contactListDiv_{{contactList.id}}">
-											<img class="imageClassCss" *ngIf="contactList.socialNetwork=='MANUAL'" src="{{normalImage}}">
-											<img class="imageClassCss" *ngIf="contactList.socialNetwork=='ZOHO'" src="{{zohoImage}}">
-											<img class="imageClassCss" *ngIf="contactList.socialNetwork=='GOOGLE'" src="{{googleImage}}">
-											<img class="imageClassCss" *ngIf="contactList.socialNetwork=='SALESFORCE'" src="{{salesforceImage}}">
+											<img class="imageClassCss"
+												*ngIf="contactList.socialNetwork=='MANUAL'"
+												src="{{normalImage}}"> <img class="imageClassCss"
+												*ngIf="contactList.socialNetwork=='ZOHO'"
+												src="{{zohoImage}}"> <img class="imageClassCss"
+												*ngIf="contactList.socialNetwork=='GOOGLE'"
+												src="{{googleImage}}"> <img class="imageClassCss"
+												*ngIf="contactList.socialNetwork=='SALESFORCE'"
+												src="{{salesforceImage}}">
 											<!-- <img src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png"> -->
 
-												<div id="container" *ngIf="!contactList.emailValidationInd">
-													<h3>
-														processing<span class="arrow"> <img
-															src="assets/images/Spinner.gif" class="loaderGif" style="margin-top: 77px;">
-														</span>
-													</h3>
-												</div>
-											<h4 class="ellipsis" title="{{contactList.name}}">{{contactList.name | slice:0:25}}
-												<span *ngIf="contactList.name?.length>25">...</span>
+											<div id="container" *ngIf="!contactList.emailValidationInd">
+												<h3>
+													processing<span class="arrow"> <img
+														src="assets/images/Spinner.gif" class="loaderGif"
+														style="margin-top: 77px;">
+													</span>
+												</h3>
+											</div>
+											<h4 class="ellipsis" title="{{contactList.name}}">
+												{{contactList.name | slice:0:25}} <span
+													*ngIf="contactList.name?.length>25">...</span>
 											</h4>
-											<h6 class="mt10 mb0 ellipsis" title="{{contactList.uploadedBy}}">By {{contactList.uploadedBy | slice:0:30}}
-											<span *ngIf="contactList.uploadedBy?.length>30">...</span>
+											<h6 class="mt10 mb0 ellipsis"
+												title="{{contactList.uploadedBy}}">
+												By {{contactList.uploadedBy | slice:0:30}} <span
+													*ngIf="contactList.uploadedBy?.length>30">...</span>
 											</h6>
-											<h6 class="mt0 ellipsis" title="{{contactList.companyName}}"><b>{{contactList.companyName | slice:0:30}}</b>
-											<span *ngIf="contactList.companyName?.length>30">...</span>
+											<h6 class="mt0 ellipsis" title="{{contactList.companyName}}">
+												<b>{{contactList.companyName | slice:0:30}}</b> <span
+													*ngIf="contactList.companyName?.length>30">...</span>
 											</h6>
-											<h6 class="mt10 mb0">Total {{checkingContactTypeName}}s {{contactList.noOfContacts}}</h6>
-											<h6 class="mt10 mb0">Created date <app-timestamp [isOnlyDate]="true" [dateAndTime]="contactList.createdDate"> </app-timestamp>
+											<h6 class="mt10 mb0">Total {{checkingContactTypeName}}s
+												{{contactList.noOfContacts}}</h6>
+											<h6 class="mt10 mb0">
+												Created date
+												<app-timestamp [isOnlyDate]="true"
+													[dateAndTime]="contactList.createdDate"> </app-timestamp>
 											</h6>
-											<div class="bar" *ngIf="!authenticationService.isSuperAdmin()">
-											 <a [class.disabled]="!contactList.emailValidationInd"
-															*ngIf="(hasAllAccess || authenticationService.module.isVendor || (hasContactRole && loggedInUserId == contactList.uploadedUserId) || authenticationService.isOnlyPartner()) && !contactList.synchronisedList"
-															(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList)"
-															 data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_list_edit}}" data-rel="fancybox-button"> <i
-															class="fa fa-pencil-square-o"></i>
-														</a> <a
-															[class.disabled]="!contactList.emailValidationInd"
-															*ngIf="(!hasAllAccess && loggedInUserId != contactList.uploadedUserId && !authenticationService.module.isVendor) || contactList.synchronisedList"
-															(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList)"
-															 data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_list_info}}" data-rel="fancybox-button">
-															<i class="glyphicon glyphicon-info-sign" style="color: white;"></i>
-														</a>
-														<a
-															data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_list_saveAs}}"
-															(click)="saveAsNewList(contactList.id,contactList.name)"
-															[class.disabled]="!contactList.emailValidationInd"
-															data-rel="fancybox-button" style="left: 60%;">
-															<i class="fa fa-files-o" aria-hidden="true"
-															style="color: white;"></i>
-														</a>
-														<a [class.disabled]="!contactList.emailValidationInd"
-															(click)="downloadContactList(contactList.id, contactList.name)"
-															data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_list_download}}" data-rel="fancybox-button"> <i
-															class="fa fa-cloud-download"></i>
-														</a>
-														<ng-container *ngIf="contactList.synchronisedList == true">
-														<a data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_list_synchronize}}"
-															[class.disabled]="!contactList.emailValidationInd"
-															*ngIf="hasAllAccess || authenticationService.module.isVendor || (hasContactRole && loggedInUserId==contactList.uploadedUserId)"
-															(click)="synchronizeContactList(contactList.id,contactList.socialNetwork)"
-															data-rel="fancybox-button" style="left: 18%; top: -20px;">
-															<i class="fa fa-refresh" aria-hidden="true"
-															style="color: white;"></i>
-														</a>
-													</ng-container>
-													 <a
-															[class.disabled]="!contactList.emailValidationInd"
-															*ngIf="(hasAllAccess || authenticationService.module.isVendor || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner()) && !contactList.defaultPartnerList"
-															(click)="showAlert(contactList.id)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_list_delete}}"
-															data-rel="fancybox-button" lang="{{contactList.id}}">
-															<i class="fa fa-trash"></i>
-														</a>
+											<div class="bar"
+												*ngIf="!authenticationService.isSuperAdmin()">
+												<a [class.disabled]="!contactList.emailValidationInd"
+													*ngIf="(hasAllAccess || authenticationService.module.isVendor || (hasContactRole && loggedInUserId == contactList.uploadedUserId) || authenticationService.isOnlyPartner()) && !contactList.synchronisedList"
+													(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList)"
+													data-toggle="tooltip" data-placement="top"
+													title="{{actionsDescription.contact_list_edit}}"
+													data-rel="fancybox-button"> <i
+													class="fa fa-pencil-square-o"></i>
+												</a> <a [class.disabled]="!contactList.emailValidationInd"
+													*ngIf="(!hasAllAccess && loggedInUserId != contactList.uploadedUserId && !authenticationService.module.isVendor) || contactList.synchronisedList"
+													(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList)"
+													data-toggle="tooltip" data-placement="top"
+													title="{{actionsDescription.contact_list_info}}"
+													data-rel="fancybox-button"> <i
+													class="fa fa-info" style="color: white;"></i>
+												</a> <a data-toggle="tooltip" data-placement="top"
+													title="{{actionsDescription.contact_list_saveAs}}"
+													(click)="saveAsNewList(contactList.id,contactList.name)"
+													[class.disabled]="!contactList.emailValidationInd"
+													data-rel="fancybox-button" style="left: 60%;"> <i
+													class="fa fa-files-o" aria-hidden="true"
+													style="color: white;"></i>
+												</a> <a [class.disabled]="!contactList.emailValidationInd"
+													(click)="downloadContactList(contactList.id, contactList.name)"
+													data-toggle="tooltip" data-placement="top"
+													title="{{actionsDescription.contact_list_download}}"
+													data-rel="fancybox-button"> <i
+													class="fa fa-download"></i>
+												</a>
+												<ng-container *ngIf="contactList.synchronisedList == true">
+												<a data-toggle="tooltip" data-placement="top"
+													title="{{actionsDescription.contact_list_synchronize}}"
+													[class.disabled]="!contactList.emailValidationInd"
+													*ngIf="hasAllAccess || authenticationService.module.isVendor || (hasContactRole && loggedInUserId==contactList.uploadedUserId)"
+													(click)="synchronizeContactList(contactList.id,contactList.socialNetwork)"
+													data-rel="fancybox-button" style="left: 18%; top: -20px;">
+													<i class="fa fa-refresh" aria-hidden="true"
+													style="color: white;"></i>
+												</a> </ng-container>
+												<a [class.disabled]="!contactList.emailValidationInd"
+													*ngIf="(hasAllAccess || authenticationService.module.isVendor || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner()) && !contactList.defaultPartnerList"
+													(click)="showAlert(contactList.id)" data-toggle="tooltip"
+													data-placement="top"
+													title="{{actionsDescription.contact_list_delete}}"
+													data-rel="fancybox-button" lang="{{contactList.id}}"> <i
+													class="fa fa-trash-o"></i>
+												</a>
 											</div>
 										</div>
 									</div>
 								</div>
 								<div id="pagination">
 									<!--pager here  -->
-                  	<app-pagination style="position:relative;top:-9px;" style="position:relative;top:-9px;" [hidden]="httpRequestLoader.isLoading" [pagination]="pagination" [type]="'contacts'"
-
+									<app-pagination style="position:relative;top:-9px;"
+										style="position:relative;top:-9px;"
+										[hidden]="httpRequestLoader.isLoading"
+										[pagination]="pagination" [type]="'contacts'"
 										(notifyParent)="setPage($event)"
 										(notifyParentDropDown)="loadContactLists($event)"></app-pagination>
 								</div>
@@ -378,7 +459,8 @@
 			[uploadedUserId]="uploadedUserId"
 			[contactListId]="selectedContactListId"
 			[contactListName]="selectedContactListName"
-			[isDefaultPartnerList]="isDefaultPartnerList" [isSynchronizationList]="isSynchronizationList"></app-edit-contacts>
+			[isDefaultPartnerList]="isDefaultPartnerList"
+			[isSynchronizationList]="isSynchronizationList"></app-edit-contacts>
 	</div>
 
 	<div *ngIf="! showListOfContactList">
@@ -389,8 +471,7 @@
 		<div class="alert alert-success alert-dismissible"
 			*ngIf="invalidDeleteSucessMessage" style="margin-bottom: 20px;">
 			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-			{{checkingContactTypeName}} List has been
-			Deleted successfully.
+			{{checkingContactTypeName}} List has been Deleted successfully.
 		</div>
 		<div class="alert alert-danger" style="padding: 12px 10px 12px;"
 			*ngIf="invalidDeleteErrorMessage">
@@ -419,7 +500,8 @@
 											<i class="fa fa-times" aria-hidden="true"
 												style="color: red; margin-left: -12px;"></i>
 										</div>
-										<div  [ngClass]="{'mobileSorting':referenceService.isMobileScreenSize(), 'sortingContacts':!referenceService.isMobileScreenSize()}">
+										<div
+											[ngClass]="{'mobileSorting':referenceService.isMobileScreenSize(), 'sortingContacts':!referenceService.isMobileScreenSize()}">
 											<select class="form-control" [(ngModel)]="sortOption"
 												(ngModelChange)="sortByOption($event, 'contacts')">
 												<ng-container
@@ -429,16 +511,22 @@
 												</ng-container>
 											</select>
 										</div>
-										<div class="portlet-input input-inline"  [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
+										<div class="portlet-input input-inline"
+											[ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
 											<div class="input-icon right">
-											 <input type="text"
-													[(ngModel)]="searchKey"
+												<input type="text" [(ngModel)]="searchKey"
 													[ngModelOptions]="{standalone: true}"
 													(input)="searchKeyValue('contacts')" class="form-control"
-													placeholder="Search for a {{checkingContactTypeName}}" (keypress)="eventHandler($event.keyCode)">
+													placeholder="Search for a {{checkingContactTypeName}}"
+													(keypress)="eventHandler($event.keyCode)">
 
-													<button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey=''"></button>
-														<button type="submit" class="search-box-item-click" (click)="search('contacts')"><i class="fa fa-search"></i></button>
+												<button
+													class="glyphicon glyphicon-remove search-box-item-clear"
+													*ngIf="searchKey" (click)="searchKey=''"></button>
+												<button type="submit" class="search-box-item-click"
+													(click)="search('contacts')">
+													<i class="fa fa-search"></i>
+												</button>
 											</div>
 										</div>
 									</div>
@@ -463,12 +551,12 @@
 									*ngIf="contactsByType.contacts?.length > 0">
 									<div class="portlet-title">
 										<div class="caption">
-											<i class="fa fa-edit" style="font-size:18px"></i> <span class="capitalize"
+											<i class="fa fa-edit" style="font-size: 18px"></i> <span
+												class="capitalize"
 												*ngIf="contactsByType.selectedCategory !='non-active' && contactsByType.selectedCategory !='invalid'">{{contactsByType.selectedCategory}}
 												{{checkingContactTypeName}}s List</span> <span class="capitalize"
 												*ngIf="contactsByType.selectedCategory =='non-active'">Unregistered
-												{{checkingContactTypeName}}s List</span>
-												<span class="capitalize"
+												{{checkingContactTypeName}}s List</span> <span class="capitalize"
 												*ngIf="contactsByType.selectedCategory =='invalid'">Undeliverable
 												{{checkingContactTypeName}}s List</span>
 										</div>
@@ -497,7 +585,7 @@
 										<div class="table-responsive">
 											<app-loader [model]="httpRequestLoader.isHorizontalCss"
 												*ngIf="httpRequestLoader.isLoading"></app-loader>
-											<table class='table tgrid' id="sample_editable_1"
+											<table class='table tgrid' id="sample_editable_1" style="overflow: hidden;"
 												*ngIf="!httpRequestLoader.isLoading">
 												<thead>
 													<tr>
@@ -505,8 +593,7 @@
 															*ngIf="contactsByType.selectedCategory == 'all'"><input
 															type="checkbox" name="all"
 															[(ngModel)]="isHeaderCheckBoxChecked"
-															(change)="checkAll($event)"
-															id="checkAllExistingContacts" /></td>
+															(change)="checkAll($event)" id="checkAllExistingContacts" /></td>
 														<td align="center"
 															*ngIf="contactsByType.selectedCategory == 'invalid'">
 															<input type="checkbox" name="all"
@@ -516,10 +603,14 @@
 														</td>
 														<th style="width: 25%" *ngIf="!isPartner">NAME</th>
 														<th style="width: 25%" *ngIf="isPartner">Entity info</th>
-														<th class="hidden-xs">Phone</th>
-														<th class="text-center hidden-xs">Job Title</th>
-														<th class="text-center hidden-xs">ADDRESS</th>
-														<th class="text-center" *ngIf="isPartner && contactsByType.selectedCategory == 'non-active'">ACTIONS</th>
+														<th *ngIf="isPartner" class="hidden-xs">VERTICAL</th>
+														<th *ngIf="isPartner" class="hidden-xs">REGION</th>
+														<th *ngIf="isPartner" class="hidden-xs">TYPE</th>
+														<th *ngIf="isPartner" class="hidden-xs">CATEGORY</th>
+														<th class="hidden-xs" *ngIf="!isPartner">Phone</th>
+														<th class="text-center hidden-xs" *ngIf="!isPartner">Job Title</th>
+														<th class="text-center hidden-xs"  *ngIf="!isPartner">ADDRESS</th>
+														<th class="text-center" *ngIf="isPartner || contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'unsubscribe'">ACTIONS</th>
 														<!-- <th>MORE</th> -->
 													</tr>
 												</thead>
@@ -547,37 +638,67 @@
 															value="{{contact.id}}" id="{{contact.id}}"
 															(click)="invalidContactsSelectedUserIds(contact.id,contact.emailId,contact.firstName,contact.lastName,$event)" />
 														</td>
-														<td *ngIf="isPartner"><app-user-info [isPartnerEntityInfo]="true" [isPartnerInfo]="true" [userInfo]="contact">
-															</app-user-info></td>
-														<td *ngIf="!isPartner">
-														<app-user-info [isPartnerEntityInfo]="true" [userInfo]="contact"></app-user-info>
-                            </td>
-														<td class="hidden-xs">
-                              <div *ngIf="contact.mobileNumber" [class.disabled]="true" style="pointer-events: none !important; cursor: auto;">
-                              <int-phone-prefix [(ngModel)]="contact.mobileNumber"  [ngModelOptions]="{standalone: true}"></int-phone-prefix>
-                              </div>
-                              <!-- <h5>
+														<td *ngIf="isPartner"><app-user-info
+																[isPartnerEntityInfo]="true" [isPartnerInfo]="true"
+																[userInfo]="contact"> </app-user-info></td>
+														<td *ngIf="!isPartner"><app-user-info
+																[isContactCompanyInfo]="true" [userInfo]="contact"></app-user-info>
+														</td>
+
+														<td *ngIf="isPartner" class="hidden-xs" >{{contact.vertical}}</td>
+														<td *ngIf="isPartner" class="hidden-xs" >{{contact.region}}</td>
+														<td *ngIf="isPartner" class="hidden-xs" >{{contact.partnerType}}</td>
+														<td *ngIf="isPartner" class="hidden-xs" >{{contact.category}}</td>
+														<td class="hidden-xs" *ngIf="!isPartner">
+															<div *ngIf="contact.mobileNumber" [class.disabled]="true"
+																style="pointer-events: none !important; cursor: auto;">
+																<int-phone-prefix [(ngModel)]="contact.mobileNumber"
+																	[ngModelOptions]="{standalone: true}"></int-phone-prefix>
+															</div> <!-- <h5>
                                 <span *ngIf="contact?.mobileNumber; else NA">{{contact.mobileNumber}}</span>
                               </h5> -->
 														</td>
-														<td class="text-center hidden-xs">
-															<h5 class='mb0 ellipsis' title="{{contact.jobTitle}}">{{contact.jobTitle | slice:0:25}}
-															<span *ngIf="contact.jobTitle?.length>25">...</span>
-															</h5>
-															<!-- <h6 class='mt0' *ngIf="!isPartner">{{contact.contactCompany}}</h6> -->
-														</td>
-														<td class="text-center hidden-xs">
+														<td class="text-center hidden-xs" *ngIf="!isPartner">{{contact.jobTitle}}</td>
+													<!-- 	<td class="text-center hidden-xs">
+															<h5 class='mb0 ellipsis' title="{{contact.jobTitle}}">
+																{{contact.jobTitle | slice:0:25}} <span
+																	*ngIf="contact.jobTitle?.length>25">...</span>
+															</h5> <h6 class='mt0' *ngIf="!isPartner">{{contact.contactCompany}}</h6>
+														</td> -->
+														<td class="text-center hidden-xs" *ngIf="!isPartner">
 															<h5 *ngIf="contact?.address" class='mb0'>{{contact.address}}</h5>
-															<h5 class='mb0'>{{contact.city}}<span *ngIf="contact?.city && contact.state">,&nbsp;</span>{{contact.state}}</h5>
-															<h5 *ngIf="contact?.zipCode || contact.country" class='mt0'>{{contact.zipCode}}<span *ngIf="contact?.zipCode && contact.country">,&nbsp;</span>{{contact.country}}</h5>
+															<h5 class='mb0'>
+																{{contact.city}}<span
+																	*ngIf="contact?.city && contact.state">,&nbsp;</span>{{contact.state}}
+															</h5>
+															<h5 *ngIf="contact?.zipCode || contact.country"
+																class='mt0'>
+																{{contact.zipCode}}<span
+																	*ngIf="contact?.zipCode && contact.country">,&nbsp;</span>{{contact.country}}
+															</h5>
 														</td>
-													 	<td align="center" *ngIf="isPartner && contactsByType.selectedCategory == 'non-active'">
-                              <div class="actions-block override-actions">
-                              <a *ngIf="!contact.signedUp" data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.partner_reSendMail}}" (click)="sendMail(contact.id)">
-                                <i class="fa fa-envelope"></i>
-                              </a>
-                            </div>
-												    </td>
+														<td  align="center" *ngIf="isPartner || contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'unsubscribe'">
+															<button id='more_less_button_{{i}}' *ngIf="isPartner"
+																(click)="contact.isShowDetails = ! contact.isShowDetails">
+																<span *ngIf="!contact.isShowDetails">More</span> <span
+																	*ngIf="contact.isShowDetails">Less</span>
+															</button>
+
+															<button class="btn green" *ngIf="contactsByType.selectedCategory == 'unsubscribe' && (authenticationService.isVendor() || authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner())"
+																(click)="activateUnsubscribedUser(contact.id)">
+																Subscribe
+															</button>
+
+															<div class="actions-block override-actions"
+																*ngIf="isPartner && contactsByType.selectedCategory == 'non-active'">
+																<a *ngIf="!contact.signedUp" data-toggle="tooltip"
+																	data-placement="bottom"
+																	title="{{actionsDescription.partner_reSendMail}}"
+																	(click)="sendMail(contact.id)"> <i
+																	class="fa fa-envelope"></i>
+																</a>
+															</div>
+														</td>
 														<!-- <td>
 															<button id='more_less_button_{{i}}'
 																(click)="contact.isShowDetails = ! contact.isShowDetails">
@@ -587,20 +708,42 @@
 														</td> -->
 														<ng-template #NA>N/A</ng-template>
 													</tr>
-													<!-- <tr
-														[ngClass]="{'hidden': !contact.isShowDetails, 'show-more': contact.isShowDetails}">
-														<td colspan="6">
-															<table cellpadding="5" cellspacing="0"
-																style="padding-left: 50px; margin-left: 55px;">
-																<tbody>
-																	<tr>
-																		<td class='pt10 pb10 bold'>Notes:</td>
-																		<td class='pt10 pb10'>{{contact.description}}</td>
-																	</tr>
-																</tbody>
-															</table>
-														</td>
-													</tr> -->
+													<tr
+												[ngClass]="{'hidden': !contact.isShowDetails, 'show-more': contact.isShowDetails}">
+												<td colspan="8">
+													<table cellpadding="5" cellspacing="0"
+														style="padding-left: 50px; margin-left: 55px;">
+														<tbody>
+															<tr>
+																<td class='pt10 pb10 bold'>Phone:</td>
+																<td class='pt10 pb10'>
+																	<div *ngIf="contact.mobileNumber"
+																		[class.disabled]="true"
+																		style="pointer-events: none !important; cursor: auto;">
+																		<int-phone-prefix [(ngModel)]="contact.mobileNumber"
+																			[ngModelOptions]="{standalone: true}"></int-phone-prefix>
+																	</div>
+																</td>
+															</tr>
+															<tr>
+																<td class='pt10 pb10 bold'>Address: </td>
+																<td align="center" class="hidden-xs">
+																	<h5 *ngIf="contact?.address" class='mb0'>{{contact.address}}</h5>
+																	<h5 class='mb0'>
+																		{{contact.city}}<span
+																			*ngIf="contact.city && contact.state">,&nbsp;</span>{{contact.state}}
+																	</h5>
+																	<h5 *ngIf="contact?.zipCode || contact.country"
+																		class='mt0'>
+																		{{contact.zipCode}}<span
+																			*ngIf="contact.zipCode && contact.country">,&nbsp;</span>{{contact.country}}
+																	</h5>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</td>
+											</tr>
 													</ng-container>
 												</tbody>
 											</table>
@@ -608,97 +751,121 @@
 									</div>
 								</div>
 
-								<app-pagination style="position:relative;top:-9px;" [pagination]="contactsByType.pagination" [hidden]="contactsByType.isLoading"
+								<app-pagination style="position:relative;top:-9px;"
+									[pagination]="contactsByType.pagination"
+									[hidden]="contactsByType.isLoading"
 									[type]="contactsByType.selectedCategory"
 									(notifyParent)="setPage($event)"
 									(notifyParentDropDown)="onChangeAllContactUsers($event)"></app-pagination>
 							</div>
 						</div>
-						<app-export-csv *ngIf="referenceService.isDownloadCsvFile" [downloadListDetails]="downloadDataList" [downloadListName]="logListName"> </app-export-csv>
+						<app-export-csv *ngIf="referenceService.isDownloadCsvFile"
+							[downloadListDetails]="downloadDataList"
+							[downloadListName]="logListName"> </app-export-csv>
 						<!-- END PAGE CONTENT -->
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-  <app-scroll-top></app-scroll-top>
+	<app-scroll-top></app-scroll-top>
 </div>
 
 <div id="filterModal" class="modal right fade" role="dialog"
 	data-backdrop="static" data-keyboard="false">
 	<!-- <div class="modal-dialog" [ngStyle]="{'width':!referenceService.isMobileScreenSize()? '53%': '95%'}"> -->
-    <div class="modal-dialog modal-css" role="document" style="right:0 !important">
+	<div class="modal-dialog modal-css" role="document"
+		style="right: 0 !important">
 		<!-- Modal content-->
 		<div class="modal-content">
 			<div class="modal-header">
-				<a class="close-circle" data-dismiss="modal" (click)="cancelSegmentation()"><i class="fa fa-times"></i></a>
+				<a class="close-circle" data-dismiss="modal"
+					(click)="cancelSegmentation()"><i class="fa fa-times"></i></a>
 				<h4 class="modal-title">Segmentation</h4>
 			</div>
 			<div class="modal-body" style="padding: 28px;">
 				<div class="row">
 					<div class="col-xs-12 col-sm-12">
-						<div class="row col-sm-11" 	*ngFor="let addRow of criterias; let i = index" style="padding-bottom: 10px;">
+						<div class="row col-sm-11"
+							*ngFor="let addRow of criterias; let i = index"
+							style="padding-bottom: 10px;">
 							<div class="form-group">
 								<div class="form-inline col-sm-12">
 									<div class="form-group col-sm-4">
-										<select class="form-control" [(ngModel)]="criterias[i].property">
-											<option *ngFor="let filterOption of filterOptions; let i = index">{{filterOption.name}}</option>
+										<select class="form-control"
+											[(ngModel)]="criterias[i].property">
+											<option
+												*ngFor="let filterOption of filterOptions; let i = index">{{filterOption.name}}</option>
 										</select>
 									</div>
 									<div class="form-group col-sm-3">
-										<select class="form-control" 	[(ngModel)]="criterias[i].operation">
-											<option	*ngFor="let filterCondition of filterConditions; let i = index">{{filterCondition.name}}</option>
+										<select class="form-control"
+											[(ngModel)]="criterias[i].operation">
+											<option
+												*ngFor="let filterCondition of filterConditions; let i = index">{{filterCondition.name}}</option>
 										</select>
 									</div>
 									<div class="form-group col-sm-3">
-										<input type="text" class="form-control" placeholder="value*" 	[(ngModel)]="criterias[i].value1">
+										<input type="text" class="form-control" placeholder="value*"
+											[(ngModel)]="criterias[i].value1">
 									</div>
-									<div class="form-group col-sm-2" [ngClass]="{'filter-css': !referenceService.isMobileScreenSize(), 'mobile-view-filter':referenceService.isMobileScreenSize()}">
-										<span (click)="cancelRow(i)"> <i class="fa fa-trash-o" aria-hidden="true"	style="color: red; font-size: 26px; margin-top: 6px"></i>
+									<div class="form-group col-sm-2"
+										[ngClass]="{'filter-css': !referenceService.isMobileScreenSize(), 'mobile-view-filter':referenceService.isMobileScreenSize()}">
+										<span (click)="cancelRow(i)"> <i class="fa fa-trash-o"
+											aria-hidden="true"
+											style="color: red; font-size: 26px; margin-top: 6px"></i>
 										</span>
 									</div>
 								</div>
 							</div>
 						</div>
 						<div class="row col-sm-1" style="margin-left: 32px;">
-							<button type="button" class="btn btn-default pull-right" (click)="addNewRow()">
-								<i class="fa fa-plus-square" aria-hidden="true" style="color: green"></i>
+							<button type="button" class="btn btn-default pull-right"
+								(click)="addNewRow()">
+								<i class="fa fa-plus-square" aria-hidden="true"
+									style="color: green"></i>
 							</button>
 						</div>
 					</div>
 				</div>
 				<div class="col-xs-12 m0" *ngIf="isSegmentationErrorMessage">
-					<h4 class="m0" style="color: red; text-align: center;">Please fill the required inputs:</h4>
+					<h4 class="m0" style="color: red; text-align: center;">Please
+						fill the required inputs:</h4>
 				</div>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn green" (click)="contactFilter()">Submit</button>
-				<button type="button" class="btn green"	(click)="cancelSegmentation()" data-dismiss="modal">Cancel</button>
+				<button type="button" class="btn green"
+					(click)="cancelSegmentation()" data-dismiss="modal">Cancel</button>
 			</div>
 		</div>
 	</div>
 </div>
 
 <!-- Save As Modal -->
-<div class="modal right fade" id="saveAsModal" tabindex="-1" role="dialog" aria-labelledby="saveAsModalLabel" aria-hidden="true">
+<div class="modal right fade" id="saveAsModal" tabindex="-1"
+	role="dialog" aria-labelledby="saveAsModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-copy" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h4 class="modal-title f-w-600" id="saveAsModalLabel">{{checkingContactTypeName}} List Name</h4>
-				<button type="button" class="close-circle" data-dismiss="modal" style=" position: relative;top: -24px;">
+				<h4 class="modal-title f-w-600" id="saveAsModalLabel">{{checkingContactTypeName}}
+					List Name</h4>
+				<button type="button" class="close-circle" data-dismiss="modal"
+					style="position: relative; top: -24px;">
 					<i class="fa fa-times"></i>
 				</button>
 			</div>
 			<div class="modal-body">
 				<div class="form-group">
-					<label for="campaignName">Name</label>
-          <input class="form-control" type="text" id="campaignName" [(ngModel)]="saveAsListName">
-          <span style="color:red">{{saveAsError}}</span>
+					<label for="campaignName">Name</label> <input class="form-control"
+						type="text" id="campaignName" [(ngModel)]="saveAsListName">
+					<span style="color: red">{{saveAsError}}</span>
 				</div>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary"  (click)="saveAsInputChecking()">Save changes</button>
+				<button type="button" class="btn btn-primary"
+					(click)="saveAsInputChecking()">Save changes</button>
 			</div>
 		</div>
 	</div>

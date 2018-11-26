@@ -303,7 +303,7 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
   ngOnDestroy(){
       swal.close();
       let isButtonClicked = this.clickedButtonName!="SAVE" && this.clickedButtonName!="SAVE_AS" &&  this.clickedButtonName!="UPDATE";
-      if(isButtonClicked && this.emailTemplateService.emailTemplate!=undefined &&this.loggedInUserId>0 && this.emailTemplate.jsonBody!=undefined){
+      if(isButtonClicked && this.emailTemplateService.emailTemplate!=undefined &&this.loggedInUserId>0 && this.emailTemplate.jsonBody!=undefined && this.emailTemplate.body!=undefined){
         if(!this.emailTemplateService.emailTemplate.defaultTemplate){
             this.updateEmailTemplate(this.emailTemplate,this.emailTemplateService, true);
           }else{

@@ -1,4 +1,5 @@
 import {SocialConnection} from './social-connection';
+import {SocialStatus} from './social-status';
 
 export class SocialStatusProvider {
   id: number;
@@ -9,4 +10,6 @@ export class SocialStatusProvider {
   createdTime: Date;
   updatedTime: Date;
   updatedBy: number;
+
+  socialStatusList: Array<SocialStatus> = [];
 }

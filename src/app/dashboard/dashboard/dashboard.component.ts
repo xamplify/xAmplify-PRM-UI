@@ -25,6 +25,7 @@ import { UserDefaultPage } from '../../core/models/user-default-page';
 import { PagerService } from '../../core/services/pager.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { EmailTemplateService } from '../../email-template/services/email-template.service';
+import { DashboardStatesReport } from '../models/dashboard-states-report';
 declare var Metronic, $, Layout, Demo, Index, QuickSidebar, Highcharts, Tasks: any;
 
 @Component({
@@ -60,7 +61,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     downloadDataList = [];
     paginationType: string;
     isLoadingList = true;
-    worldMapUserData: any;
+    worldMapUserData: DashboardStatesReport[];
     countryCode: any;
     isCalledPagination = false;
     isFullscreenToggle = false;
@@ -71,8 +72,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     heatMapSort: any;
     trellisBarChartData: any;
     partnerEmailTemplateCount = 0;
-    heatMapTooltip = 'current year';
-    videoStatesTooltip = 'current month';
+    heatMapTooltip = 'Current Year';
+    videoStatesTooltip = 'Current Month';
     isOnlyPartner:boolean;
     loading = false;
     logListName = "";
@@ -838,9 +839,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 "First Name": this.dashboardReport.downloadEmailLogList[i].firstName,
                 "Last Name": this.dashboardReport.downloadEmailLogList[i].lastName,
                 "Date and Time": date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds(),
-                "Campaign Name": this.dashboardReport.downloadEmailLogList[i].campaignName
+               /* "Campaign Name": this.dashboardReport.downloadEmailLogList[i].campaignName*/
             }
             if (this.paginationType == 'open') {
+                object["Campaign Name"] = this.dashboardReport.downloadEmailLogList[i].campaignName;
                 object["Subject"] = this.dashboardReport.downloadEmailLogList[i].subject;
             }
             if (this.paginationType == 'clicked') {
@@ -852,7 +854,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
             }
 
 
-            if (this.paginationType == 'clicked' || this.paginationType == 'watched') {
+            if (this.paginationType == 'clicked' || this.paginationType == 'watched' || this.paginationType == 'countryWiseUsers') {
+                if(this.paginationType != 'countryWiseUsers'){
+                object["Campaign Name"] = this.dashboardReport.downloadEmailLogList[i].campaignName;
+                }
                 object["City"] = this.dashboardReport.downloadEmailLogList[i].city;
                 object["State"] = this.dashboardReport.downloadEmailLogList[i].state;
                 object["Country"] = this.dashboardReport.downloadEmailLogList[i].country;

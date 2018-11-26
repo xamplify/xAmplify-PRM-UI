@@ -422,6 +422,12 @@ export class ContactService {
             .map( this.extractData )
             .catch( this.handleError );
     }
+    
+    activateUnsubscribedUser(selectedUserId:number){
+        return this._http.post( this.contactsUrl + "resubscribeUser/" + selectedUserId + "?userId=" + this.authenticationService.getUserId() + "&access_token=" + this.authenticationService.access_token, "")
+        .map( this.extractData )
+        .catch( this.handleError );
+      }
 
     loadAllContacts(userId:number, pagination:Pagination){
       return this._http.post( this.contactsUrl + "?userId="+userId+"&access_token=" + this.authenticationService.access_token, pagination)

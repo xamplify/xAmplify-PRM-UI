@@ -22,6 +22,7 @@ import { CampaignEmailTemplate } from '../models/campaign-email-template';
 import { EventError } from '../models/event-error';
 import { CustomResponse } from '../../common/models/custom-response';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
+import { CountryNames } from '../../common/models/country-names';
 
 declare var $,swal, flatpickr, CKEDITOR;
 
@@ -29,7 +30,7 @@ declare var $,swal, flatpickr, CKEDITOR;
   selector: 'app-event-campaign',
   templateUrl: './event-campaign.component.html',
   styleUrls: ['./event-campaign.component.css'],
-  providers: [PagerService, Pagination, CallActionSwitch, Properties,EventError,HttpRequestLoader]
+  providers: [PagerService, Pagination, CallActionSwitch, Properties,EventError,HttpRequestLoader, CountryNames]
 })
 export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   emailTemplates: Array<EmailTemplate> = [];
@@ -93,8 +94,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     private pagerService: PagerService,
     private logger: XtremandLogger,
     private router: Router, public activatedRoute:ActivatedRoute,
-    public properties: Properties, public eventError:EventError) {
+    public properties: Properties, public eventError:EventError, public countryNames: CountryNames) {
     this.countries = this.referenceService.getCountries();
+    this.eventCampaign.campaignLocation.country = ( this.countryNames.countries[0] );
     this.listEmailTemplates();
     CKEDITOR.config.height = '100';
     this.isPreviewEvent = this.router.url.includes('/home/campaigns/event-preview')? true: false;
@@ -163,12 +165,17 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
           this.eventCampaign.campaignEventTimes[0].endTimeString =  new Date().toDateString();
         }
         if( this.eventCampaign.campaignEventTimes[0].countryId===undefined) { this.eventCampaign.campaignEventTimes[0].countryId=0; }
-        for(let i=0; i<this.countries.length;i++){
+        for(let i=0; i< this.countries.length;i++){
           if(this.countries[i].name=== result.data.campaignEventTimes[0].country){
             this.eventCampaign.countryId = this.countries[i].id;
             this.eventCampaign.campaignEventTimes[0].countryId = this.countries[i].id;
             break;
           }
+        }
+        
+        
+        if ( !this.eventCampaign.campaignLocation.country ) {
+            this.eventCampaign.campaignLocation.country = ( this.countryNames.countries[0] );
         }
         this.onChangeCountryCampaignEventTime(this.eventCampaign.campaignEventTimes[0].countryId)
         if(this.reDistributeEvent){ this.isPartnerUserList = false;}
@@ -524,7 +531,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     this.isFormSubmitted = true;
     if(this.isPartnerUserList) {eventCampaign.userListIds = this.parternUserListIds; }
     else { eventCampaign.userListIds = this.userListIds; }
-
+    if(this.eventCampaign.campaignLocation.country === "Select Country"){
+        this.eventCampaign.campaignLocation.country = "";
+    }
     this.onBlurValidation();
     eventCampaign.campaignScheduleType = launchOption;
     eventCampaign =  this.getCampaignData(eventCampaign)
@@ -815,6 +824,10 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
           }else{
               data.body = data.body.replace( "LOCATION_MAP_URL", "https://maps.google.com/maps?q=42840 Christy Street, uite 100 Fremont, US CA 94538&z=15&output=embed" );
           }
+          
+          if ( this.eventCampaign.email ) {
+              data.body = data.body.replace( "https://aravindu.com/vod/images/us_location.png", " " );
+          }
 
           this.getEmailTemplatePreview( data );
       },
@@ -835,6 +848,14 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
 
   onChangeCountryCampaignEventTime(countryId: number) {
     this.timezonesCampaignEventTime = this.referenceService.getTimeZonesByCountryId(countryId);
+    
+    for ( let i = 0; i < this.countries.length; i++ ) {
+        if ( countryId == this.countries[i].id ) {
+            this.eventCampaign.campaignLocation.country = this.countries[i].name;
+            break;
+        }
+    }
+
   }
   onChangeCountry(countryId: number) {
     this.timezones = this.referenceService.getTimeZonesByCountryId(countryId);
@@ -842,7 +863,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   getCampaignReplies(campaign: EventCampaign) {
     if(campaign.campaignReplies!=undefined){
         this.eventCampaign.campaignReplies = campaign.campaignReplies;
-        for(var i=0;i<this.eventCampaign.campaignReplies.length;i++){
+        for(var i=0;i< this.eventCampaign.campaignReplies.length;i++){
             let reply = this.eventCampaign.campaignReplies[i];
             if(reply.defaultTemplate){
                 reply.selectedEmailTemplateIdForEdit = reply.selectedEmailTemplateId;
@@ -864,7 +885,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
  }
 
   getRepliesData(){
-    for(let i=0;i<this.eventCampaign.campaignReplies.length;i++){
+    for(let i=0;i< this.eventCampaign.campaignReplies.length;i++){
         const reply = this.eventCampaign.campaignReplies[i];
         $('#'+reply.divId).removeClass('portlet light dashboard-stat2 border-error');
         this.removeStyleAttrByDivId('reply-days-'+reply.divId);
@@ -1034,7 +1055,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
               }).then(function() {
                       self.saveCampaignOnDestroy();
               },function (dismiss) {
-                if (dismiss === 'cancel') {
+                if (dismiss === 'No') {
                     self.reInitialize();
                 }
             })

@@ -1,3 +1,5 @@
+import { DashboardStatesReport } from "app/dashboard/models/dashboard-states-report";
+
 export class DashboardReport {
     genderDemographicsMale  = 0;
     genderDemographicsFemale  = 0;
@@ -11,7 +13,7 @@ export class DashboardReport {
     totalEmailClickedCount  = 0;
     totalEmailWatchedCount  = 0;
 
-    emailLogList: any;
+    emailLogList: DashboardStatesReport[];
     allEmailOpenLogList: any;
     allEmailClickedLogList: any;
     allEmailWatchedLogList: any;

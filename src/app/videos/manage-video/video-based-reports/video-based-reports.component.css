@@ -104,3 +104,4 @@ text-align: center;
 }
 @media screen and (max-width:600px){.video-modal { width:100%; } }
 @media screen and (min-width:601px){.video-modal { width:80% !important; } }
+.tooltip-css{position: relative;cursor: pointer;color: #54a7e9;}

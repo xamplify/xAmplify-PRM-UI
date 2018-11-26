@@ -166,7 +166,7 @@ export class AuthenticationService {
         console.error('error'+error);
       }
     }
-    
+
     isSuperAdmin(){
         try{
           const roleNames = this.getRoles();
@@ -204,7 +204,18 @@ export class AuthenticationService {
       console.error('error'+error);
       }
     }
-
+    hasVideoRole(){
+      try{
+      const roleNames = this.getRoles();
+      if((roleNames.indexOf('ROLE_USER')>-1 && roleNames.indexOf(this.roleName.videRole)>-1)){
+          return true;
+      }else{
+          return false;
+      }
+      }catch(error){
+      console.error('error'+error);
+      }
+    }
     isPartner(){
         try{
         const roleNames = this.getRoles();
@@ -287,7 +298,7 @@ export class AuthenticationService {
             return false;
         }
     }
-    
+
     checkLoggedInUserId( userId ) {
         if ( this.isSuperAdmin() ) {
             userId = this.selectedVendorId;

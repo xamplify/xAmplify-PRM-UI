@@ -28,10 +28,9 @@
 	<div class="row">
 		<div class="col-md-12">
 			<div class="portlet light clearfix" style="min-height: 644px;">
-				<div class="portlet-title">
-					<!--  -->
+				<div class="portlet-title" style="border-bottom: none">
 					<div class="row">
-						<div class="colxs-12 col-sm-7">
+						<div class="colxs-12 col-sm-12 col-md-6">
 							<div *ngIf="!isOnlyPartner">
 								<ul class="mix-filter">
 									<li class="filter" (click)="filterTemplates('NONE',false,0)"
@@ -59,39 +58,32 @@
 									<li class="filter" style="display: none;">Own Template</li>
 								</ul>
 							</div>
-						</div>
-						<div class="colxs-12 col-sm-5">
-							<ng-container class='m10 col-sm-3'>
-							<span class="btn btn-xs hidden-xs" data-toggle="tooltip" data-placement="bottom" title="List View" [class.disabled]="isListView" (click)="isListView = true" style="background-color:#e2e2e2; margin-left: -84px;"><i class="fa fa-th-list p10" aria-hidden="true"></i></span>
-                         <span class="btn btn-xs hidden-xs m0"  data-toggle="tooltip" data-placement="bottom" title="Grid View" [class.disabled]="!isListView" (click)="isListView = false" style="background-color:#e2e2e2"><i class="fa fa-th-large p10" aria-hidden="true"></i></span>
-							</ng-container>
-							<div class="btn-group">
-								<select class="form-control col-sm-5"
-									[(ngModel)]="selectedSortedOption"
-									(ngModelChange)="getSortedResult($event)"
-									style="position: relative; right: -22px;top: 1px;width:190px">
-									<option *ngFor="let sortOption of sortByDropDown"
-										[ngValue]="sortOption">{{sortOption.name}}</option>
-								</select>
-								<div class="portlet-input input-inline input-small col-sm-4">
-									<div class="input-icon right"
-										style="width:200px;top:1px;left:14px">
-										<input type="text" class="form-control"
-											[(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"
-											placeholder="Search for a template"
-											(keypress)="eventHandler($event.keyCode)">
-										<button
-											class="glyphicon glyphicon-remove search-box-item-clear"
-											*ngIf="searchKey" (click)="searchKey=''"></button>
-										<button type="submit" class="search-box-item-click"
-											(click)="searchTemplates()">
-											<i class="fa fa-search"></i>
-										</button>
+            </div>
+
+            <div class="page-toolbar col-xs-6 col-sm-12 col-md-6">
+							<div class="btn-group pull-right">
+								<ng-container class='m10'>
+                  <span class="btn btn-xs hidden-xs" data-toggle="tooltip" data-placement="bottom" title="List View" [class.disabled]="isListView" (click)="isListView = true" style="background-color:#e2e2e2"><i class="fa fa-th-list p10" aria-hidden="true"></i></span>
+                  <span class="btn btn-xs hidden-xs"  data-toggle="tooltip" data-placement="bottom" title="Grid View" [class.disabled]="!isListView" (click)="isListView = false" style="background-color:#e2e2e2"><i class="fa fa-th-large p10" aria-hidden="true"></i></span>
+                </ng-container>
+								<div class="inputs" align="right" style="float: right">
+									<div style="float: left;">
+									  <select class="form-control" [(ngModel)]="selectedSortedOption" (ngModelChange)="getSortedResult($event)" style="position: relative;right: -3px;">
+                      <option *ngFor="let sortOption of sortByDropDown" [ngValue]="sortOption">{{sortOption.name}}</option>
+                    </select>
+									</div>
+									<div class="portlet-input input-inline input-small" style="width: 198px !important;">
+										<div class="input-icon right" style="position: relative;right: -5px;">
+                      <input type="text" class="form-control" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" placeholder="search for template" (keypress)="eventHandler($event.keyCode)">
+                      <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey=''"></button>
+                      <button type="submit" class="search-box-item-click" (click)="searchTemplates()"><i class="fa fa-search"></i></button>
+                   </div>
 									</div>
 								</div>
 							</div>
 						</div>
-					</div>
+
+          </div>
 				</div>
 
 				<app-grid-loader *ngIf="httpRequestLoader.isLoading && !isListView"></app-grid-loader>
@@ -112,7 +104,7 @@
 									<th class="hidden-xs text-center"
 										*ngIf="!authenticationService.isVendor()">Vendor Company
 										Name</th>
-									<th class="hidden-xs text-center" style="width: 13%">Type</th>
+									<th class="hidden-xs text-center">Type</th>
 									<th class="hidden-xs text-center">Created Date</th>
 									<th class="text-center">Actions</th>
 								</tr>
@@ -145,8 +137,8 @@
 										</ng-container>
 										<h5 class="view-banner-draft" *ngIf="emailTemplate.draft">DRAFT</h5>
 										<h5 class="view-banner" *ngIf="emailTemplate.type=='PARTNER'">PARTNER</h5>
-										<h5 class="view-banner"
-											*ngIf="(emailTemplate.regularCoBrandingTemplate||emailTemplate.videoCoBrandingTemplate) &&emailTemplate.type=='UPLOADED' ">CO-BRANDED</h5>
+										<!-- <h5 class="view-banner"
+											*ngIf="(emailTemplate.regularCoBrandingTemplate||emailTemplate.videoCoBrandingTemplate) &&emailTemplate.type=='UPLOADED' ">CO-BRANDED</h5> -->
 									</td>
 									<td class="hidden-xs text-center"
 										*ngIf="!authenticationService.isVendor()">
@@ -158,7 +150,7 @@
 										</h5>
 									</td>
 									<td class="hidden-xs">
-										<h5 class="view-banner" style="width: 115%;">{{emailTemplate.emailTemplateType}}</h5>
+										<h5 class="view-banner">{{emailTemplate.emailTemplateType}}</h5>
 									</td>
 									<td class="hidden-xs text-center"><app-timestamp
 											[isOnlyDate]="true" [dateAndTime]="emailTemplate.createdDate">
@@ -174,13 +166,13 @@
 												(click)="showPreview(emailTemplate)" data-toggle="tooltip"
 												data-placement="top"
 												title="{{actionsDescription.template_preview}}"> <i
-												class="fa fa-eye mr5"></i>
+												class="fa fa-eye"></i>
 											</a> <a id="template-delete"
 												(click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)"
 												data-toggle="tooltip" data-placement="top"
 												title="{{actionsDescription.template_delete}}"
 												*ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  ||authenticationService.module.isVendor) && emailTemplate.type!='PARTNER' ">
-												<i class="fa fa-trash"></i>
+												<i class="fa fa-trash-o"></i>
 											</a>
 										</div>
 									</td>
@@ -258,7 +250,7 @@
 									data-toggle="tooltip" data-placement="top"
 									title="{{actionsDescription.template_delete}}"
 									*ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)||authenticationService.module.isVendor) && emailTemplate.type!='PARTNER' ">
-									<i class="fa fa-trash"></i>
+									<i class="fa fa-trash-o"></i>
 								</a>
 							</div>
 						</div>

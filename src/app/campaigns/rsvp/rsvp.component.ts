@@ -111,6 +111,7 @@ export class RsvpComponent implements OnInit {
       templateBody = templateBody.replace('EVENT_LOCATION', '');
     }
     templateBody = templateBody.replace('EVENT_DESCRIPTION', 'Message:'+this.eventcampaign.message);*/
+    templateBody = templateBody.replace("https://aravindu.com/vod/images/us_location.png", " ");
     templateBody = templateBody.replace('href="LINK_YES"',"hidden");
     templateBody = templateBody.replace('href="LINK_NO"',"hidden");
     templateBody = templateBody.replace('href="LINK_MAY_BE"',"hidden");

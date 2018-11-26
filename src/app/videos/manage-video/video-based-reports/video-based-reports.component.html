@@ -30,11 +30,11 @@
 	<div class="col-xs-12 col-sm-6 p5">
 		<div class="portlet light">
 			<div class="portlet-title">
-				<div class="caption" style="position: relative;">
+				<div class="caption">
 					<i class="icon-equalizer font-purple-plum hide"></i>
 					<span class="caption-subject font-red-sunglo uppercase">Viewer Stats</span>
           <!-- <span class="caption-helper">Details regarding campaign recipients who have watched your videos</span> -->
-          <span style="position: relative;cursor: pointer;color: #54a7e9;" title="Details regarding campaign recipients who have watched your videos">
+          <span class="tooltip-css"  data-toggle="tooltip" data-placement="bottom"  title="Details regarding campaign recipients who have watched your videos">
             <i class="fa fa-question-circle circle-custome-css" ></i>
         </span>
 				</div>
@@ -54,7 +54,7 @@
 							<app-donut-chart [percentageValue]="watchedFully" [totalValue]="100"></app-donut-chart>
 							<h2 class="percentage-value" style="margin: -2.7em 0 0 0;">{{watchedFully}}%</h2>
 						</section>
-						<h5 style="margin-top: 122px;font-weight: 400;">Watched completely</h5>
+						<h5 style="margin-top: 122px;font-weight: 400;">Finished Video</h5>
 					</div>
 					<div class="col-xs-12 col-sm-12 col-md-3 text-center">
 						<h1 style="margin-top: 48px;">
@@ -71,7 +71,7 @@
 				<tr>
 					<th class="td-new-n" rowspan="2">ANONYMOUS VIEWERS
             <!-- <span>(Views from indirect sources <br>such as social campaigns and <br>embedded videos)</span> -->
-            <span style="position: relative;cursor: pointer;color: #54a7e9;" title="Views from indirect sources such as social campaigns and embedded videos">
+            <span class="tooltip-css"  data-toggle="tooltip" data-placement="bottom"  title="Views from indirect sources such as social campaigns and embedded videos">
               <i class="fa fa-question-circle circle-custome-css" ></i>
            </span>
           </th>
@@ -145,7 +145,7 @@
 					<i class="icon-bar-chart font-green-sharp hide"></i>
 					<span class="caption-subject font-green-sharp uppercase">VIEWING TRENDS</span>
           <!-- <span class="caption-helper">Details on played and skipped portions of your video</span> -->
-          <span style="position: relative;cursor: pointer;color: #54a7e9;" title="Details on played and skipped portions of your video">
+          <span class="tooltip-css"  data-toggle="tooltip" data-placement="bottom" title="Details on played and skipped portions of your video">
             <i class="fa fa-question-circle circle-custome-css" ></i>
          </span>
 				</div>

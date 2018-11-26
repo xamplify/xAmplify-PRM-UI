@@ -1,4 +1,5 @@
 import { Component, OnInit,OnDestroy, ViewChild } from '@angular/core';
+import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import { Router } from '@angular/router';
 import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
 import { EmailTemplateService } from '../services/email-template.service';
@@ -17,7 +18,7 @@ declare var Metronic ,Layout ,Demo ,TableManaged,$,CKEDITOR:any;
     selector: 'app-upload-email-template',
     templateUrl: './upload-email-template.component.html',
     styleUrls: ['./upload-email-template.component.css'],
-    providers: [EmailTemplate,HttpRequestLoader]
+    providers: [EmailTemplate,HttpRequestLoader,CallActionSwitch]
 })
 export class UploadEmailTemplateComponent implements OnInit,OnDestroy {
 
@@ -48,9 +49,11 @@ export class UploadEmailTemplateComponent implements OnInit,OnDestroy {
     log: string = '';
     clickedButtonName:string = "";
     saveButtonName:string = "SAVE";
+    coBrandingLogo:boolean = false;
     @ViewChild("myckeditor") ckeditor: any;
     constructor(public emailTemplateService: EmailTemplateService, private userService: UserService, private router: Router,
-            private emailTemplate: EmailTemplate, private logger: XtremandLogger,private authenticationService:AuthenticationService,public refService:ReferenceService) {
+            private emailTemplate: EmailTemplate, private logger: XtremandLogger,private authenticationService:AuthenticationService,public refService:ReferenceService,
+            public callActionSwitch: CallActionSwitch) {
         logger.debug("uploadEmailTemplateComponent() Loaded");
         
         this.loggedInUserId = this.authenticationService.getUserId();
@@ -104,6 +107,7 @@ export class UploadEmailTemplateComponent implements OnInit,OnDestroy {
             }
             this.refService.stopLoader(this.httpRequestLoader);
         }
+        
     }
     /****************Reading Uploaded File********************/
     fileDropPreview(event:any){
@@ -176,10 +180,12 @@ export class UploadEmailTemplateComponent implements OnInit,OnDestroy {
             this.emailTemplate.regularTemplate = true;
             this.emailTemplate.desc = "Regular Template";
             this.emailTemplate.subject = "assets/images/normal-email-template.png";
+            this.emailTemplate.regularCoBrandingTemplate = this.coBrandingLogo;
         } else {
             this.emailTemplate.videoTemplate = true;
             this.emailTemplate.desc = "Video Template";
             this.emailTemplate.subject = "assets/images/video-email-template.png";
+            this.emailTemplate.videoCoBrandingTemplate = this.coBrandingLogo;
         }
         for(var instanceName in CKEDITOR.instances){
             CKEDITOR.instances[instanceName].updateElement();
@@ -191,15 +197,13 @@ export class UploadEmailTemplateComponent implements OnInit,OnDestroy {
             data => {
                 this.refService.stopLoader(this.httpRequestLoader);
                 if(!isOnDestroy){
-                    if (data == "success") {
+                    if(data.statusCode==702){
                         this.refService.isCreated = true;
                         this.router.navigate(["/home/emailtemplates/manage"]);
-                        } else{
-                            this.clickedButtonName = '';
-                            this.isVideoTagError = true;
-                            this.videoTagsError = data;
-                            this.customResponse = new CustomResponse("ERROR",data,true);
-                        }
+                    }else{
+                        this.customResponse = new CustomResponse("ERROR",data.message,true);
+                    }
+                    
                 }
                
             },
@@ -264,23 +268,51 @@ export class UploadEmailTemplateComponent implements OnInit,OnDestroy {
     
     
     ngOnInit() {
-        try {
-            Metronic.init();
+    try {
+        Metronic.init();
             Layout.init();
             Demo.init();
             TableManaged.init();
             this.ckeConfig = {
-                    allowedContent: true
+                    allowedContent: true,
                   };
         } catch (errr) { }
     }
 
 
     ngOnDestroy() {
-        if(this.clickedButtonName!=this.saveButtonName){
+     if(this.clickedButtonName!=this.saveButtonName){
             this.saveHtmlTemplate(true);
         }
     }
 
+    setCoBrandingLogo(event){
+        this.coBrandingLogo = event;
+        let body = this.getCkEditorData();
+        if(event){
+            if(body.indexOf(this.refService.coBrandingImageTag)<0){
+                this.mycontent = this.refService.coBrandingTag.concat(this.mycontent);
+            }
+        }else{
+            this.mycontent  = this.mycontent.replace(this.refService.coBrandingImageTag, "").
+            replace("<p>< /></p>","").
+            replace("< />","").replace("<p>&lt;&gt;</p>","").replace("<>","");
+            
+           // .replace("&lt; style=&quot;background-color:black&quot; /&gt;","");
+        }
+        
+    }
+    
+    getCkEditorData(){
+        let body = "";
+        for(var instanceName in CKEDITOR.instances){
+            CKEDITOR.instances[instanceName].updateElement();
+            body =  CKEDITOR.instances[instanceName].getData();
+        }
+        return body;
+    }
+    
+    
+    
     
 }

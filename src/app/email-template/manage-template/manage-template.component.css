@@ -153,9 +153,10 @@ a.disabled {
 .view-banner{
     background-color: #00a6e8;
     color: white;
-    width: 25%;
-    padding: 4px;
+    padding: 6px;
     text-align: center;
+    width: 175px;
+    margin: 0 auto;
 }
 .view-banner-draft{
     background-color: #f76c1a;

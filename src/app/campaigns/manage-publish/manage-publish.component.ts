@@ -39,6 +39,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         public totalRecords: number = 1;
         public searchKey: string = "";
     sortByDropDown = [
+        { 'name': 'Sort By', 'value': 'createdTime-DESC' },
         { 'name': 'Name (A-Z)', 'value': 'campaign-ASC' },
         { 'name': 'Name (Z-A)', 'value': 'campaign-DESC' },
         { 'name': 'Created Date (ASC)', 'value': 'createdTime-ASC' },
@@ -52,7 +53,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         { 'name': '---All---', 'value': '0' },
     ]
 
-    public selectedSortedOption: any = this.sortByDropDown[3];
+    public selectedSortedOption: any = this.sortByDropDown[0];
     public itemsSize: any = this.numberOfItemsPerPage[0];
 
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();

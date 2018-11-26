@@ -654,7 +654,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 },
                 linkType: 'direct',
                 multiselect: false,
-                extensions: ['.m4v', '.avi', '.mpg', '.mp4', '.flv', '.mov', '.wmv', '.divx', '.f4v', '.mpeg', '.vob', '.xvid'],
+                extensions: ['.m4v', '.avi', '.mpg', '.mp4', '.flv', '.mov', '.wmv', '.divx', '.f4v', '.mpeg', '.vob', '.xvid', '.mkv'],
             };
             Dropbox.choose(options);
         } // close if condition
@@ -984,7 +984,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                     },
                     linkType: 'direct',
                     multiselect: true,
-                    extensions: ['.csv', '.cvs', '.gif','.html','.jpg', '.jpeg','.pdf','.png','.ppt','.pptx' ,'.txt' ,'.xls','.xlsx','.zip'],
+                    extensions: ['.csv', '.cvs', '.gif','.html','.jpg', '.jpeg','.pdf','.png','.ppt','.pptx' ,'.txt' ,'.xls', '.xlsx', '.zip', '.xml', '.sdf', '.key', '.tar','.sdf', '.key','.xlr', '.pct', '.indd', '.ai', '.eps', '.ps', '.svg', '.app', '.apk', '.b', '.exe', '.bat', '.jar'],
                 };
                 Dropbox.choose(options);
             }

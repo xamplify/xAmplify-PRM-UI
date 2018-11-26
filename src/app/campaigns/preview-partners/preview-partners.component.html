@@ -42,17 +42,17 @@
                <table class="table tgrid" id="campaign-partner-table">
 							<thead>
 								<tr>
-									<th>EMAIL ID</th>
-									<th>FIRST NAME</th>
-									<th>LAST NAME</th>
+									<th  style="text-align:left">NAME</th>
+									<!-- th>FIRST NAME</th>
+									<th>LAST NAME</th> -->
 									<th>Action</th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr *ngFor="let partner of partnersPagination.pagedItems;let i=index">
-									<td>{{partner.emailId}}</td>
-									<td>{{partner.firstName}}</td>
-									<td>{{partner.lastName}}</td>
+									<td  style="text-align:left"><app-user-info [userInfo]="partner"> </app-user-info></td>
+									<!-- <td>{{partner.firstName}}</td>
+									<td>{{partner.lastName}}</td> -->
 									<td>
 										<a (click)="confirmDeletePartnerById(partner,i)"  data-toggle="tooltip" data-placement="top" title="{{actionsDescription.campaign_delete_partner}}">
 											<i class="fa fa-trash"></i>

@@ -157,6 +157,10 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
             this.addContactuser.jobTitle = this.contactDetails.jobTitle;
             this.addContactuser.emailId = this.contactDetails.emailId;
             this.editingEmailId = this.contactDetails.emailId;
+            this.addContactuser.vertical = this.contactDetails.vertical;
+            this.addContactuser.region = this.contactDetails.region;
+            this.addContactuser.partnerType = this.contactDetails.partnerType;
+            this.addContactuser.category = this.contactDetails.category;
             this.addContactuser.address = this.contactDetails.address;
             this.addContactuser.city = this.contactDetails.city;
             this.addContactuser.state = this.contactDetails.state;

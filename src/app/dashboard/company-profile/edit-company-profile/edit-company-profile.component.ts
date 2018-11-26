@@ -119,10 +119,12 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
     isOnlyPartner = false;
     isVendorRole = false;
     ngxloading = false;
-    maxFileSize:number = 10;
+    maxFileSize = 10;
     profileCompleted = 50;
     formUpdated = true;
-    tempCompanyProfile = [];
+    tempCompanyProfile:any;
+    upadatedUserId:any;
+    isUpdateChaged = false;
 
     constructor(private logger: XtremandLogger, public authenticationService: AuthenticationService, private fb: FormBuilder,
         private companyProfileService: CompanyProfileService, public homeComponent: HomeComponent,
@@ -223,8 +225,8 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.geoLocation();
-        let userId = this.authenticationService.isSuperAdmin()? this.authenticationService.selectedVendorId: this.loggedInUserId;
-        this.getCompanyProfileByUserId(userId);
+        this.upadatedUserId = this.authenticationService.isSuperAdmin()? this.authenticationService.selectedVendorId: this.loggedInUserId;
+        this.getCompanyProfileByUserId(this.upadatedUserId);
         if (this.authenticationService.user.hasCompany) {
             this.companyProfile.isAdd = false;
             this.profileCompleted = 100;
@@ -255,6 +257,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
             this.companyProfileService.save(this.companyProfile, this.loggedInUserId)
                 .subscribe(
                     data => {
+                        this.isUpdateChaged = true;
                         this.message = data.message;
                         if(this.message==='Company Profile Info Added Successfully') {
                           this.message = 'Company Profile saved successfully';
@@ -355,12 +358,12 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
             this.companyProfileService.update(this.companyProfile, this.loggedInUserId)
                 .subscribe(
                     data => {
-
                         this.message = data.message;
                         if(this.message ==='Company Profile Info Updated Successfully'){
                           this.message = 'Company Profile updated successfully'
                           this.formUpdated = false;
                         }
+                        this.homeComponent.getVideoDefaultSettings();
                         $('#company-profile-error-div').hide();
                         $('#info').hide();
                         $('#edit-sucess').show(600);
@@ -411,6 +414,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
                 this.message = data.message;
                 if(this.message ==='Company Profile Info Updated Successfully'){
                   this.logger.log('success');
+                  this.homeComponent.getVideoDefaultSettings();
                 }
             },
             error => { this.ngxloading = false;
@@ -420,13 +424,11 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
       }
     }
     getCompanyProfileByUserId(userId) {
-
         this.companyProfileService.getByUserId(userId)
             .subscribe(
                 data => {
                     if (data.data != undefined) {
                         this.companyProfile = data.data;
-                        this.tempCompanyProfile.push(this.companyProfile);
                         if ($.trim(this.companyProfile.companyLogoPath).length > 0) {
                             this.companyLogoImageUrlPath = this.companyProfile.companyLogoPath;
                         }
@@ -445,6 +447,38 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
                 () => { this.logger.info("Completed getCompanyProfileByUserId()") }
             );
     }
+    getCompanyProfileByIdNgOnDestroy(userId) {
+      this.companyProfileService.getByUserId(userId)
+          .subscribe(
+              data => {
+                  if (data.data != undefined) {
+                     this.tempCompanyProfile = data.data;
+                  }
+              },
+              error => { this.logger.errorPage(error) },
+              () => { this.logger.info("Completed getCompanyProfileByIdNgOnDestroy()");
+              if(!this.isUpdateChaged && this.authenticationService.user.hasCompany && this.router.url!="/" && this.isFormUpdated()) {
+                const self = this;
+                swal( {
+                    title: 'Are you sure?',
+                    text: "You have unchanged company profile data",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#54a7e9',
+                    cancelButtonColor: '#999',
+                    confirmButtonText: 'Yes, Save it!',
+                    cancelButtonText : 'No'
+
+                }).then(function() {
+                        self.saveCompanyProfileOnDestroy();
+                },function (dismiss) {
+                    if (dismiss === 'cancel') {console.log('clicked cancel') }
+                })
+
+              }
+            }
+          );
+  }
 
     getAllCompanyNames() {
         this.companyProfileService.getAllCompanyNames()
@@ -904,23 +938,23 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
     isFormUpdated(){
      console.log(this.companyProfile);
      console.log(this.tempCompanyProfile);
-      if((this.companyProfile.companyLogoPath !== this.tempCompanyProfile[0].companyLogoPath) ||
-         (this.companyProfile.companyProfileName !== this.tempCompanyProfile[0].companyProfileName) ||
-         (this.companyProfile.companyName !== this.tempCompanyProfile[0].companyName) ||
-         (this.companyProfile.emailId !== this.tempCompanyProfile[0].emailId) ||
-         (this.companyProfile.phone !== this.tempCompanyProfile[0].phone) ||
-         (this.companyProfile.website !== this.tempCompanyProfile[0].website) ||
-         (this.companyProfile.facebookLink !== this.tempCompanyProfile[0].facebookLink) ||
-         (this.companyProfile.twitterLink !== this.tempCompanyProfile[0].twitterLink) ||
-         (this.companyProfile.linkedInLink !== this.tempCompanyProfile[0].linkedInLink) ||
-         (this.companyProfile.googlePlusLink !== this.tempCompanyProfile[0].googlePlusLink) ||
-         (this.companyProfile.tagLine !== this.tempCompanyProfile[0].tagLine) ||
-         (this.companyProfile.city !== this.tempCompanyProfile[0].city) ||
-         (this.companyProfile.state !== this.tempCompanyProfile[0].state) ||
-         (this.companyProfile.country !== this.tempCompanyProfile[0].country) ||
-         (this.companyProfile.zip !== this.tempCompanyProfile[0].zip) ||
-         (this.companyProfile.aboutUs !== this.tempCompanyProfile[0].aboutUs) ||
-         (this.companyProfile.street !== this.tempCompanyProfile[0].street)
+      if((this.companyProfile.companyLogoPath !== this.tempCompanyProfile.companyLogoPath) ||
+         (this.companyProfile.companyProfileName !== this.tempCompanyProfile.companyProfileName) ||
+         (this.companyProfile.companyName !== this.tempCompanyProfile.companyName) ||
+         (this.companyProfile.emailId !== this.tempCompanyProfile.emailId) ||
+         (this.companyProfile.phone !== this.tempCompanyProfile.phone) ||
+         (this.companyProfile.website !== this.tempCompanyProfile.website) ||
+         (this.companyProfile.facebookLink !== this.tempCompanyProfile.facebookLink) ||
+         (this.companyProfile.twitterLink !== this.tempCompanyProfile.twitterLink) ||
+         (this.companyProfile.linkedInLink !== this.tempCompanyProfile.linkedInLink) ||
+         (this.companyProfile.googlePlusLink !== this.tempCompanyProfile.googlePlusLink) ||
+         (this.companyProfile.tagLine !== this.tempCompanyProfile.tagLine) ||
+         (this.companyProfile.city !== this.tempCompanyProfile.city) ||
+         (this.companyProfile.state !== this.tempCompanyProfile.state) ||
+         (this.companyProfile.country !== this.tempCompanyProfile.country) ||
+         (this.companyProfile.zip !== this.tempCompanyProfile.zip) ||
+         (this.companyProfile.aboutUs !== this.tempCompanyProfile.aboutUs) ||
+         (this.companyProfile.street !== this.tempCompanyProfile.street)
        ) { return true  }
       return false;
     }
@@ -995,31 +1029,12 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
             .subscribe(
                 data => { this.publicVideos = data; },
                 error => { this.logger.errorPage(error) },
-                () => { this.logger.info("Completed getCompanyProfileByUserId()") }
+                () => { this.logger.info("Completed loadPublicVideos()") }
             );
     }
 
    ngOnDestroy(): void {
-     if(this.authenticationService.user.hasCompany && this.router.url!="/" && this.formUpdated && this.isFormUpdated()) {
-       const self = this;
-       swal( {
-           title: 'Are you sure?',
-           text: "You have unchanged company profile data",
-           type: 'warning',
-           showCancelButton: true,
-           confirmButtonColor: '#54a7e9',
-           cancelButtonColor: '#999',
-           confirmButtonText: 'Yes, Save it!'
-
-       }).then(function() {
-               self.saveCompanyProfileOnDestroy();
-       },function (dismiss) {
-           if (dismiss == 'cancel') {
-
-           }
-       })
-
-     }
+     this.getCompanyProfileByIdNgOnDestroy(this.upadatedUserId);
    }
 
 }

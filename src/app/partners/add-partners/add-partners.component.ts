@@ -96,8 +96,10 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     loading = false;
     partnerAllDetails = [];
     openCampaignModal = false;
-    
+
     disableOtherFuctionality = false;
+    saveAsListName:any;
+    saveAsError:any;
 
     sortOptions = [
         { 'name': 'Sort By', 'value': '' },
@@ -255,7 +257,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     }
 
     downloadEmptyCsv() {
-        window.location.href = this.authenticationService.MEDIA_URL + "UPLOAD_USER_LIST _EMPTY.csv";
+        window.location.href = this.authenticationService.MEDIA_URL + "UPLOAD_PARTNER_LIST _EMPTY.csv";
     }
 
     setPage( event: any ) {
@@ -372,13 +374,13 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             }
             console.log( existedEmails );
             for ( let i = 0; i < this.newPartnerUser.length; i++ ) {
-                
+
                 let userDetails = {
                         "emailId": this.newPartnerUser[i].emailId,
                         "firstName": this.newPartnerUser[i].firstName,
                         "lastName": this.newPartnerUser[i].lastName,
                     }
-                
+
                 this.newUserDetails.push( userDetails );
 
                 if ( this.newPartnerUser[i].mobileNumber ) {
@@ -594,12 +596,16 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                         user.lastName = allTextLines[i][1];
                         user.contactCompany = allTextLines[i][2];
                         user.jobTitle = allTextLines[i][3];
-                        user.address = allTextLines[i][5];
-                        user.city = allTextLines[i][6];
-                        user.state = allTextLines[i][7];
-                        user.zipCode = allTextLines[i][8];
-                        user.country = allTextLines[i][9];
-                        user.mobileNumber = allTextLines[i][10];
+                        user.vertical = allTextLines[i][5];
+                        user.region = allTextLines[i][6];
+                        user.partnerType = allTextLines[i][7];
+                        user.category = allTextLines[i][8];
+                        user.address = allTextLines[i][9];
+                        user.city = allTextLines[i][10];
+                        user.state = allTextLines[i][11];
+                        user.zipCode = allTextLines[i][12];
+                        user.country = allTextLines[i][13];
+                        user.mobileNumber = allTextLines[i][14];
                         /* user.description = allTextLines[i][9];*/
                         self.newPartnerUser.push( user );
                     }
@@ -701,6 +707,131 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                         user.contactCompany = data[2];
                         user.jobTitle = data[3];
                         user.emailId = data[4];
+                        user.vertical = data[5];
+                        break;
+                    case 7:
+                        user.firstName = data[0];
+                        user.lastName = data[1];
+                        user.contactCompany = data[2];
+                        user.jobTitle = data[3];
+                        user.emailId = data[4];
+                        user.vertical = data[5];
+                        user.region = data[6]
+                        break;
+                    case 8:
+                        user.firstName = data[0];
+                        user.lastName = data[1];
+                        user.contactCompany = data[2];
+                        user.jobTitle = data[3];
+                        user.emailId = data[4];
+                        user.vertical = data[5];
+                        user.region = data[6]
+                        user.partnerType = data[7]
+                        break;
+                    case 9:
+                        user.firstName = data[0];
+                        user.lastName = data[1];
+                        user.contactCompany = data[2];
+                        user.jobTitle = data[3];
+                        user.emailId = data[4];
+                        user.vertical = data[5];
+                        user.region = data[6]
+                        user.partnerType = data[7]
+                        user.category = data[8]
+                        break;
+                    case 10:
+                        user.firstName = data[0];
+                        user.lastName = data[1];
+                        user.contactCompany = data[2];
+                        user.jobTitle = data[3];
+                        user.emailId = data[4];
+                        user.vertical = data[5];
+                        user.region = data[6]
+                        user.partnerType = data[7]
+                        user.category = data[8]
+                        user.address = data[9]
+                        break;
+                    case 11:
+                        user.firstName = data[0];
+                        user.lastName = data[1];
+                        user.contactCompany = data[2];
+                        user.jobTitle = data[3];
+                        user.emailId = data[4];
+                        user.vertical = data[5];
+                        user.region = data[6]
+                        user.partnerType = data[7]
+                        user.category = data[8]
+                        user.address = data[9]
+                        user.city = data[10]
+                        break;
+                    case 12:
+                        user.firstName = data[0];
+                        user.lastName = data[1];
+                        user.contactCompany = data[2];
+                        user.jobTitle = data[3];
+                        user.emailId = data[4];
+                        user.vertical = data[5];
+                        user.region = data[6]
+                        user.partnerType = data[7]
+                        user.category = data[8]
+                        user.address = data[9]
+                        user.city = data[10]
+                        user.state = data[11]
+                        break;
+                    case 13:
+                        user.firstName = data[0];
+                        user.lastName = data[1];
+                        user.contactCompany = data[2];
+                        user.jobTitle = data[3];
+                        user.emailId = data[4];
+                        user.vertical = data[5];
+                        user.region = data[6]
+                        user.partnerType = data[7]
+                        user.category = data[8]
+                        user.address = data[9]
+                        user.city = data[10]
+                        user.state = data[11]
+                        user.zipCode = data[12]
+                        break;
+                    case 14:
+                        user.firstName = data[0];
+                        user.lastName = data[1];
+                        user.contactCompany = data[2];
+                        user.jobTitle = data[3];
+                        user.emailId = data[4];
+                        user.vertical = data[5];
+                        user.region = data[6]
+                        user.partnerType = data[7]
+                        user.category = data[8]
+                        user.address = data[9]
+                        user.city = data[10]
+                        user.state = data[11]
+                        user.zipCode = data[12]
+                        user.country = data[13]
+                        break;
+                    case 15:
+                        user.firstName = data[0];
+                        user.lastName = data[1];
+                        user.contactCompany = data[2];
+                        user.jobTitle = data[3];
+                        user.emailId = data[4];
+                        user.vertical = data[5];
+                        user.region = data[6]
+                        user.partnerType = data[7]
+                        user.category = data[8]
+                        user.address = data[9]
+                        user.city = data[10]
+                        user.state = data[11]
+                        user.zipCode = data[12]
+                        user.country = data[13]
+                        user.mobileNumber = data[14]
+                        break;
+                    /*case 6:
+                        user.firstName = data[0];
+                        user.lastName = data[1];
+                        user.contactCompany = data[2];
+                        user.jobTitle = data[3];
+                        user.emailId = data[4];
                         user.address = data[5];
                         break;
                     case 7:
@@ -757,7 +888,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                         user.zipCode = data[8];
                         user.country = data[9];
                         user.mobileNumber = data[10];
-                        break;
+                        break;*/
                     /*case 10:
                         user.firstName = data[0];
                         user.lastName = data[1];
@@ -851,11 +982,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                     event.mobileNumber = "";
                 }
             }
-            
+
             if ( event.country === "Select Country" ) {
                 event.country = null;
             }
-            
+
             this.editUser.user = event;
             // $( "#addPartnerModal .close" ).click()
             this.addPartnerModalClose();
@@ -1358,7 +1489,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     showModal() {
        // $( '#salesforceModal' ).appendTo( "body" ).modal( 'show' );
         $( '#salesforceModal' ).modal( 'show' );
-        
+
     }
 
     hideModal() {
@@ -1626,7 +1757,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     settingSocialNetworkOpenModal( socialNetwork: string ) {
         this.settingSocialNetwork = socialNetwork;
        $( '#settingSocialNetworkPartner' ).modal( 'show' );
-       // $('#settingSocialNetworkPartner').modal('toggle'); 
+       // $('#settingSocialNetworkPartner').modal('toggle');
        // $('#settingSocialNetworkPartner').modal();
        // $( '#settingSocialNetwork' ).appendTo( "body" ).modal( 'show' );
         $("#settingSocialNetworkPartner").appendTo("body");
@@ -1906,13 +2037,40 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         this.openCampaignModal = false;
         this.contactListAssociatedCampaignsList.length = 0;
     }
-    
-    eventHandler( keyCode: any ) { if ( keyCode === 13 ) { this.search(); } }
+   eventHandler( keyCode: any ) { if ( keyCode === 13 ) { this.search(); } }
+   saveAsChange(){
+    try {
+      this.saveAsListName = this.editContactComponent.addCopyToField();
 
-/*    ngAfterViewInit(){
-        $('body').tooltip({ selector: '[data-toggle="tooltip"]' });
+      // this.saveAsError = '';
+      // $('#saveAsAddPartnerModal').modal('show');
+    }catch(error){
+       this.xtremandLogger.error( error, "Add Partner component", "saveAsChange()" );
+      }
+   }
+   saveAsInputChecking(){
+    try{
+     const names = this.referenceService.namesArray;
+     const inputName = this.saveAsListName.toLowerCase().replace( /\s/g, '' );
+        if ( $.inArray( inputName, names ) > -1 ) {
+            this.saveAsError = 'This list name is already taken.';
+        } else {
+            if ( this.saveAsListName !== "" && this.saveAsListName.length < 250 ) {
+              this.editContactComponent.saveDuplicateContactList(this.saveAsListName);
+              $('#saveAsAddPartnerModal').modal('hide');
+            }
+            else if(this.saveAsListName === ""){  this.saveAsError = 'List Name is Required.';  }
+            else{ this.saveAsError = 'You have exceeded 250 characters!'; }
+          }
+        }catch(error){
+          this.xtremandLogger.error( error, "Add partner Component", "saveAsInputChecking()" );
         }
-*/
+    }
+    closeSaveAsModal(){
+      this.saveAsListName = undefined;
+      this.referenceService.namesArray = undefined;
+    }
+
     ngOnInit() {
         try {
             this.socialContactImage();
@@ -1956,7 +2114,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                 confirmButtonColor: '#54a7e9',
                 cancelButtonColor: '#999',
                 confirmButtonText: 'Yes, Save it!',
-                cancelButtonText: "No"  
+                cancelButtonText: "No"
 
             }).then( function() {
                 self.saveContacts();

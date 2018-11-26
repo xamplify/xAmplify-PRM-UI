@@ -27,6 +27,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     public searchKey: string = "";
     campaignSuccessMessage: string = "";
     loggedInUserId: number = 0;
+    campaignName:string;
     sortByDropDown = [
         { 'name': 'Campaign Name(A-Z)', 'value': 'campaign-ASC' },
         { 'name': 'Campaign Name(Z-A)', 'value': 'campaign-DESC' },
@@ -177,10 +178,12 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     }
 
     showCampaignPreview(campaign:any){
-        if(campaign.campaignType == 'EVENT') {
-          this.router.navigate(['/home/campaigns/event-preview/'+campaign.campaignId]);
+        if(campaign.campaignType === 'EVENT') {
+       //   this.router.navigate(['/home/campaigns/event-preview/'+campaign.campaignId]);
+          this.getEventCampaignId(campaign.campaignId);
         } else {
-          this.router.navigate(['/home/campaigns/preview/'+campaign.campaignId]);
+        //  this.router.navigate(['/home/campaigns/preview/'+campaign.campaignId]);
+           this.getCampaignById(campaign.campaignId);
         }
     }
 //    showCampaignPreview(campaignId:number){
@@ -188,11 +191,41 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
 //        this.router.navigate(['/home/campaigns/preview/'+campaignId]);
 //    }
 
+    getCampaignById(campaignId) {
+      var obj = { 'campaignId': campaignId }
+      this.campaignService.getCampaignById( obj )
+          .subscribe(
+          data => {
+            const emailTemplateId = data.emailTemplate;
+            this.campaignName = data.campaignName;
+            this.previewEmailTemplate(emailTemplateId, data)
+          },
+          error => { this.xtremandLogger.errorPage( error ) },
+          () => console.log() )
+    }
+    previewEmailTemplate(emailTemplate: any, campaign){
+      this.referenceService.previewEmailTemplate(emailTemplate, campaign);
+    }
+    getEventCampaignId(campaignid){
+      this.campaignService.getEventCampaignById(campaignid).subscribe(
+        (result)=>{
+          console.log(result.data.emailTemplateDTO.body)
+          result.data.emailTemplateDTO.body = result.data.emailTemplateDTO.body.replace( "https://aravindu.com/vod/images/us_location.png", " " );
+          this.campaignName = result.data.campaign;
+          $("#email-template-content").empty();
+          $("#email-template-title").empty();
+          $("#email-template-content").append(result.data.emailTemplateDTO.body);
+          $('.modal .modal-body').css('overflow-y', 'auto');
+          $("#email_template_preivew").modal('show');
+          $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
+         });
+      }
+
     navigateSocialCampaign(campaign:any) {
         this.socialService.getSocialCampaignByCampaignId( campaign.campaignId )
         .subscribe(
                 data => {
-                    this.router.navigate(['/home/campaigns/social', data.alias]);
+                    this.router.navigate(['/home/campaigns/social', data.socialStatusList[0].alias]);
                 },
                 error => { this.xtremandLogger.errorPage(error) },
                 () => console.log()

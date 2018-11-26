@@ -103,3 +103,7 @@ white-space: pre-wrap;       /* css-3 */
   -webkit-animation: spin 2s linear infinite;
   animation: spin 2s linear infinite;
 }
+
+.cb-logo{
+	background-color: black;
+}

@@ -47,12 +47,12 @@
    <div class="page-bar page-bar-shadow">
      <div class="col-xs-12">
 
-
-     <div class="flex" *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdmin()">
-     <div class="col-sm-6 col-xs-12 block image-block">
-           <img src="../../assets/images/welcome/img-partners.png" style="max-width: 100%;height: 202px;margin: -19px -17px;">
-         </div>
-         <div class="col-sm-6 col-xs-12 block">
+      <div class="flex" *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdmin() || authenticationService.module.isPartner">
+          <!-- || authenticationService.module.isVendor || authenticationService.isAddedByVendor -->
+        <div class="col-sm-6 col-xs-12 block image-block" *ngIf="authenticationService.isVendor()">
+          <img src="../../assets/images/welcome/img-partners.png" style="max-width: 100%; height: 200px;margin: -24px 6px;">
+        </div>
+        <div class="col-sm-6 col-xs-12 block" [ngStyle]="{'right':authenticationService.isVendor() ? '0px' : '-50px' }">
            <div class="text-block">
              <h1 style="color: #00B3B3;text-align: left" >Partners</h1>
              <p class="left-side">{{welcome_text.contacts}}</p>
@@ -63,11 +63,15 @@
              </div>
            </div>
          </div>
+         <div class="col-sm-6 col-xs-12 block image-block" *ngIf="!authenticationService.isVendor()">
+          <img src="../../assets/images/welcome/img-partners.png" style="max-width: 100%; height: 200px;margin: -24px 61px;">
+        </div>
        </div>
-       <div class="divider" *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdmin()"></div>
 
-       <div class="flex" *ngIf="!authenticationService.isOnlyPartner()">
-       <div class="col-sm-6 col-xs-12 block" *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdmin()">
+       <div class="divider" *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner() || authenticationService.module.isPartner"></div>
+
+       <div class="flex" *ngIf="authenticationService.isVendor()|| authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendorPartner() || authenticationService.module.isVideo">
+       <div class="col-sm-6 col-xs-12 block" *ngIf="(authenticationService.isVendor() || authenticationService.isOrgAdmin() ) && !authenticationService.isOrgAdminPartner()">
            <div class="text-block" style="position: relative; right: -45px;">
              <h1 class="text-left" style="color: #76c9ff">Videos</h1>
              <p class="left-side">{{welcome_text.videos}}</p>
@@ -84,21 +88,22 @@
           src="../../../assets/images/welcome/img-videos.png"
           data-holder-rendered="true">
         </div>
-         <div class="col-sm-6 col-xs-12 block" *ngIf="!authenticationService.isVendor() && !authenticationService.isOrgAdmin()">
+         <div class="col-sm-6 col-xs-12 block" *ngIf="(!authenticationService.isVendor() && !authenticationService.isOrgAdmin()) || authenticationService.isOrgAdminPartner()">
            <div class="text-block">
-             <h1 style="color: #76c9ff;text-align: left">Videos</h1>
+             <h1 style="color: #76c9ff;text-align: left">Content</h1>
              <p style="position: relative;left: -19px;">{{welcome_text.videos}}</p>
              <div style="text-align: left">
-               <button *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdminPartner()|| authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.module.isVideo" class="btn btn-xs color1" [routerLink]="['/home/videos']" >Upload video</button>
-               <button *ngIf="authenticationService.isOnlyPartner() || !authenticationService.module.isVideo" class="btn btn-xs color1" [routerLink]="['/home/videos/manage']">View videos</button>
+               <button *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdminPartner()|| authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.module.isVideo" class="btn btn-xs color1" [routerLink]="['/home/videos']" >Upload Content</button>
+               <button *ngIf="authenticationService.isOnlyPartner() || !authenticationService.module.isVideo" class="btn btn-xs color1" [routerLink]="['/home/videos/manage']">View Content</button>
                <button type="button" class="btn btn-xs color1-invert" data-toggle="modal" (click)="showHowToVideo(uploadVideoUrl,'Videos')">Tell me how</button>
              </div>
            </div>
          </div>
         </div>
-         <div class="divider" *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdmin()"></div>
-         <div class="divider" *ngIf="!authenticationService.isVendor() && !authenticationService.isOrgAdmin() && !authenticationService.isOnlyPartner()"></div>
-       <div class="flex" *ngIf="!authenticationService.isVendor() && !authenticationService.isOrgAdmin()">
+
+         <div class="divider" *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdmin() || authenticationService.module.isVideo"></div>
+
+         <div class="flex" *ngIf="authenticationService.isOnlyPartner() || authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner() || authenticationService.module.isContact">
          <div class="col-sm-6 col-xs-12 block image-block" *ngIf="authenticationService.isOnlyPartner()">
            <img src="../../../assets/images/welcome/img-partners.png" style="max-width: 100%;height: 200px; ">
          </div>
@@ -117,9 +122,9 @@
            <img src="../../../assets/images/welcome/img-partners.png" style="max-width: 100%;height: 200px;margin: -24px 61px;">
          </div>
        </div>
-       <div class="divider"  *ngIf="!authenticationService.isVendor() && !authenticationService.isOrgAdmin()"></div>
+       <div class="divider" *ngIf="authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner() || authenticationService.module.isContact"></div>
 
-       <div class="flex" *ngIf="!authenticationService.isOnlyPartner()">
+       <div class="flex" *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdminPartner()|| authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.module.isEmailTemplate">
        <div class="col-sm-6 col-xs-12 block image-block">
            <img style="height: 200px;" src="../../../assets/images/welcome/img-templates.png">
          </div>
@@ -135,9 +140,9 @@
            </div>
          </div>
        </div>
-       <div class="divider" *ngIf="!authenticationService.isOnlyPartner()"></div>
+       <div class="divider" *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdminPartner()|| authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || authenticationService.module.isEmailTemplate"></div>
 
-       <div class="flex">
+       <div class="flex" *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdminPartner()|| authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || authenticationService.module.isCampaign">
          <div class="col-sm-6 col-xs-12 block" style="right: -52px; position: relative;">
            <div class="text-block">
              <h1 class="text-left" style="color: #827596">Campaigns</h1>
@@ -153,8 +158,8 @@
            <img src="../../../assets/images/welcome/img-campaigns.png" style="height: 203px;float: right;margin-top: -18px;">
          </div>
        </div>
-       <div class="divider"></div>
-       <div class="flex" *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdminPartner() || authenticationService.isVendorPartner()|| authenticationService.isOrgAdmin() ||authenticationService.isOrgAdmin()">
+       <div class="divider" *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdminPartner()|| authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || authenticationService.module.isCampaign"></div>
+       <div class="flex" *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdminPartner() || authenticationService.isVendorPartner()|| authenticationService.isOrgAdmin()">
            <div class="col-sm-6 col-xs-12 block image-block">
              <img src="../../../assets/images/welcome/img-members.png" style="max-width: 100%;height: 202px;margin-top: -10px;">
            </div>
@@ -170,8 +175,8 @@
                  </div>
                </div>
          </div>
-         <div class="divider" *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdminPartner() || authenticationService.isVendorPartner()|| authenticationService.isOrgAdmin() ||authenticationService.isOrgAdmin()"></div>
-       <div class="flex">
+        <div class="divider" *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdminPartner() || authenticationService.isVendorPartner()|| authenticationService.isOrgAdmin()"></div>
+       <div class="flex" *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdminPartner()|| authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner()">
          <div class="col-sm-6 col-xs-12 block image-block" *ngIf="authenticationService.isOnlyPartner()">
            <img class="" style="float: left !important; " src="../../../assets/images/welcome/img-social.png">
          </div>
@@ -189,12 +194,13 @@
            <img  src="../../../assets/images/welcome/img-social.png"  style="height: 208px;;">
          </div>
        </div>
-       <div class="divider" ></div>
+       <div class="divider" *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdminPartner()|| authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner()"></div>
        <div class="flex">
-       <div class="col-sm-6 col-xs-12 block image-block" *ngIf="authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner() || authenticationService.isOrgAdmin()">
+       <div class="col-sm-6 col-xs-12 block image-block" *ngIf="!authenticationService.isOnlyPartner() && authenticationService.module.isCampaign">
+          <!-- authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner() || authenticationService.isOrgAdmin() || authenticationService.module.isCampaign -->
            <img src="../../../assets/images/welcome/analytics.png" style="height: 200px;">
          </div>
-         <div class="col-sm-6 col-xs-12 block">
+         <div class="col-sm-6 col-xs-12 block"  [ngStyle]="{'right':authenticationService.module.isVideo ? '-45px' : '0px' }">
            <div class="text-block" [class.text-left-analytics]="authenticationService.isOnlyPartner()">
              <h1 style="color: #00B3B3" class="text-left">Analytics</h1>
              <p class="left-side">{{welcome_text.analytics}}</p>
@@ -204,7 +210,8 @@
              </div>
            </div>
          </div>
-         <div class="col-sm-6 col-xs-12 block image-block" *ngIf="!authenticationService.isVendor() && !authenticationService.isVendorPartner() && !authenticationService.isOrgAdminPartner() && !authenticationService.isOrgAdmin()">
+         <div class="col-sm-6 col-xs-12 block image-block" *ngIf="authenticationService.isOnlyPartner() || !authenticationService.module.isCampaign">
+            <!-- *ngIf="!authenticationService.isVendor() && !authenticationService.isVendorPartner() && !authenticationService.isOrgAdminPartner() && !authenticationService.isOrgAdmin() && !authenticationService.module.isCampaign" -->
            <img src="../../../assets/images/welcome/analytics.png" style="height: 200px;" [ngStyle]="authenticationService.isOnlyPartner() && {'float': 'right'}">
          </div>
        </div>
@@ -214,20 +221,3 @@
  </div>
 
  <app-preview-video *ngIf="videoFile" [videoFile]="videoFile" [welcomeVideoFile]="welcomeVideoInfo" (notifyParent)="closeModal($event)"></app-preview-video>
-
- <!-- Modal -->
- <!-- <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-   <div class="modal-dialog modal-lg" role="document">
-     <div class="modal-content">
-       <div class="modal-header">
-         <button type="button" class="closeModal close-circle" data-dismiss="modal" aria-hidden="true" ><i class="fa fa-times"></i></button>
-         <h4 class="modal-title" id="myModalLabel">How to Guide</h4>
-       </div>
-       <div class="modal-body">
-         <div class="container-video">
-           <iframe [src]='videoUrl'  frameborder="0" allowfullscreen class="video"></iframe>
-         </div>
-       </div>
-     </div>
-   </div>
- </div> -->
