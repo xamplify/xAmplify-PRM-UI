@@ -50,6 +50,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
     isDisable: boolean;
     checkSpeedValue = false;
     redirectPge = false;
+    redirectContent = false;
     player: any;
     playerInit = false;
     recordedVideo: any;
@@ -254,8 +255,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                         console.log(this.processVideoResp.error);
                     }
                 }
-            },
-            (error: any) => {
+            },(error: any) => {
                 this.modalPopupClosed();
                 this.errorIsThere = true;
                 this.xtremandLogger.errorPage(error);
@@ -277,8 +277,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             const isSizeExceded: any = fileList[0].size;
             const size = isSizeExceded / (1024 * 1024);
             this.maxSizeOver = size > this.maxVideoSize ? true : false;
-            if(this.maxSizeOver){ this.customResponse = new CustomResponse( 'ERROR',this.videoUtilService.maxSizeOverMesg, true );
-            }
+            if(this.maxSizeOver){ this.customResponse = new CustomResponse( 'ERROR',this.videoUtilService.maxSizeOverMesg, true );}
         } else{
           this.customResponse = new CustomResponse( 'ERROR',this.videoUtilService.fileTypeMessage, true );
           this.defaultSettings();
@@ -863,46 +862,8 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
          }
       }
       return true;
-  }
-    isOtherThanVideo(files: any) {
-        for (let i = 0; i < files.length; i++) {
+   }
 
-            const parts = files[i].name.split('.');
-            const ext = parts[parts.length - 1];
-            switch (ext.toLowerCase()) {
-                case 'csv':break;
-                case 'cvs':break;
-                case 'gif':break;
-                case 'html':break;
-                case 'jpg':break;
-                case 'jpeg':break;
-                case 'doc':break;
-                case 'pdf':break;
-                case 'png':break;
-                case 'ppt':break;
-                case 'pptx':break;
-                case 'txt':break;
-                case 'xls':break;
-                case 'xlsx':break;
-                case 'zip':break;
-                case 'docx':break;
-                case 'docm':break;
-                case 'dotm':break;
-                case 'dotx':break;
-                case 'dot':break;
-                case 'xps':break;
-                case 'rtf':break;
-                case 'odt':break;
-                case 'wps':break;
-                case 'htm':break;
-                case 'mht':break;
-                case 'mhtml':break;
-                default:return false;
-                // etc
-            }
-        }
-        return true;
-    }
     dropClick(){
       $('#file-upload').click();
     }
@@ -919,21 +880,16 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
           console.log(files);
           let size:any = 0;
           if(!this.isContentVideo(files)){
-          for (let i = 0; i < files.length; ++i) { size = size + files[i].size;  }
-          console.log(size);
-          if(size <= 12582912){
-          this.contentProcessing = true;
-          const formData: FormData = new FormData();
-          $.each( files, function( index, file ) {
-              formData.append( 'files', file, file.name );
-          });
-          this.uploadToServer( formData );
-         }
-         else {
-          this.customResponse = new CustomResponse( 'ERROR', "Unable to upload files because your files size is more than 12 MB", true );
-         }
-        } else {
-          this.customResponse = new CustomResponse( 'ERROR', "Please upload supported file types like image files, gifs,doc,htm, pdf, xls.", true );
+            for (let i = 0; i < files.length; ++i) { size = size + files[i].size;  }
+            console.log(size);
+             if(size <= 12582912){
+               this.contentProcessing = true;
+               const formData: FormData = new FormData();
+               $.each( files, function( index, file ) { formData.append( 'files', file, file.name ); });
+               this.uploadToServer( formData );
+            }
+            else { this.customResponse = new CustomResponse( 'ERROR', this.properties.CONTENT_UPLOAD_SIZE, true ); }
+         } else { this.customResponse = new CustomResponse( 'ERROR', this.properties.CONTENT_UPLOAD_FILETYPE, true );
         }
       } catch ( error ) {  this.customResponse = new CustomResponse( 'ERROR', "Unable to upload file", true );  }
     }
@@ -943,7 +899,9 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             .subscribe( data => {
               if ( data.statusCode === 1020 ) {
                 this.refService.contentManagementLoader = true;
-                setTimeout(() => {  this.router.navigate(['/home/content-management/manage']); }, 1200);
+                if(!this.redirectContent){
+                  this.redirectContent = false;
+                  setTimeout(() => { this.contentProcessing = false; this.router.navigate(['/home/content-management/manage']); }, 1200); }
               } else { this.contentProcessing = false; this.customResponse = new CustomResponse( 'ERROR', data.message, true );  }
             },
             ( error: string ) => { this.xtremandLogger.errorPage( error );this.contentProcessing = false; });
@@ -1104,7 +1062,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             try{
             this.sweetAlertMesg = 'Drive';
               if(this.uploader.queue.length === 0){
-              this.cloudContentArr=new Array<CloudContent>();
+              this.cloudContentArr = new Array<CloudContent>();
               this.onApiLoadContent();    // google drive code
               }
             } catch(error){this.xtremandLogger.error('Error in upload content googleDriveChange method'+error);}
@@ -1181,11 +1139,10 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
               const self = this;
               if (!self.isContentVideo(files)) {
                   for(let i=0;i<files.length;i++){
-                      var cloudContent = {
-                              'downloadLink': 'https://www.googleapis.com/drive/v3/files/' + files[i].id + '?alt=media',
-                              'fileName':files[i].name,
-                              'oauthToken':self.tempr
-
+                      const cloudContent = {
+                          'downloadLink': 'https://www.googleapis.com/drive/v3/files/' + files[i].id + '?alt=media',
+                          'fileName':files[i].name,
+                          'oauthToken':self.tempr
                       }
                       self.cloudContentArr.push(cloudContent);
                }
@@ -1258,8 +1215,11 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             && this.errorIsThere === false && (this.router.url !=='/') && !this.contentProcessing && !this.videoFileService.videoFileSweetAlertMessage) {
             this.redirectPge = true;
             this.videoFileService.isProgressBar = true;
-          //  $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:1');
             swal('','We’ll process your video in the background and save it in draft mode for when you return. Just look for it in the “Manage Videos” section.');
+        }
+        if((this.router.url !=='/') && this.contentProcessing ){
+          this.redirectContent = true;
+       //   swal('','We’ll process your content in the background and save it. Just look for it in the “Manage content" section.');
         }
         if (this.picker) {
             this.picker.setVisible(false);

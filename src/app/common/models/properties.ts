@@ -97,6 +97,8 @@ export class Properties {
   /*Videos*/
   VIDEO_PROCESS_MESSAGE= 'Your video has been uploaded and is now being processed. If you\'d like to take a break, we\'ll continue processing it in the background. We will send you an email when your video is ready.';
   VIDEO_PROCESSING_MESSAGE ='Don\'t mind us. We\'re just processing your video.'
+  CONTENT_UPLOAD_SIZE ='Unable to upload files because your files size is more than 12 MB';
+  CONTENT_UPLOAD_FILETYPE='Please upload supported file types like image files, gifs,doc,htm, pdf, xls.';
 
   /* campaign */
   ADD_AUTO_RESPONSE_WEBSITE = 'Auto-responses to a website visit'
