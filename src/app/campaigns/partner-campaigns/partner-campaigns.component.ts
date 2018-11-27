@@ -29,6 +29,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     loggedInUserId: number = 0;
     campaignName:string;
     sortByDropDown = [
+        { 'name': 'Sort By', 'value': 'createdTime-DESC' },
         { 'name': 'Campaign Name(A-Z)', 'value': 'campaign-ASC' },
         { 'name': 'Campaign Name(Z-A)', 'value': 'campaign-DESC' },
         { 'name': 'Company Name(A-Z)', 'value': 'company-ASC' },
@@ -44,11 +45,11 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
         { 'name': '---All---', 'value': '0' },
     ]
 
-    public selectedSortedOption: any = this.sortByDropDown[5];
+    public selectedSortedOption: any = this.sortByDropDown[0];
     public itemsSize: any = this.numberOfItemsPerPage[0];
     public isError: boolean = false;
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
-    isListView: boolean = false;
+    isListView = false;
     campaignType:string;
     role = '';
 
@@ -148,7 +149,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
         this.listCampaign(this.pagination);
     }
 
-
+    eventHandler(event){ if(event===13){ this.searchCampaigns();}}
 
     ngOnInit() {
         try {
