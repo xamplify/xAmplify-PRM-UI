@@ -531,8 +531,10 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
         $('#emailActionListModal').modal();
 
         if (actionType === 'open') {
-              this.sortByDropDown.push( { 'name': 'Subject(ASC)', 'value': 'subject-ASC' } );
-              this.sortByDropDown.push( { 'name': 'Subject(DESC)', 'value': 'subject-DESC' } );
+            if ( this.sortByDropDown.length === 5 ) {
+                this.sortByDropDown.push( { 'name': 'Subject(ASC)', 'value': 'subject-ASC' });
+                this.sortByDropDown.push( { 'name': 'Subject(DESC)', 'value': 'subject-DESC' });
+            }
               this.emailActionListPagination.totalRecords = this.campaignReport.emailOpenCount;
         } else if (actionType === 'click') {
             this.sortByDropDown = this.sortByDropDown.filter(function(el) { return el.name != "Subject(ASC)"; }); 
