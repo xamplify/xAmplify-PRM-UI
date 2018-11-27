@@ -96,6 +96,7 @@ export class Properties {
 
   /*Videos*/
   VIDEO_PROCESS_MESSAGE= 'Your video has been uploaded and is now being processed. If you\'d like to take a break, we\'ll continue processing it in the background. We will send you an email when your video is ready.';
+  VIDEO_PROCESSING_MESSAGE ='Don\'t mind us. We\'re just processing your video.'
 
   /* campaign */
   ADD_AUTO_RESPONSE_WEBSITE = 'Auto-responses to a website visit'

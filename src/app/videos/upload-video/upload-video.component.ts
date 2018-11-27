@@ -217,6 +217,8 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                         this.videoFileService.saveVideoFile.gifFiles = [];
                     }
                     this.videoFileService.actionValue = 'Save';
+                    this.refService.selectedVideoLogo = this.processVideoResp.brandingLogoUri;
+                    this.refService.selectedVideoLogodesc = this.processVideoResp.brandingLogoDescUri;
                     console.log(this.videoFileService.actionValue);
                     if (this.redirectPge === false) {
                       //  this.router.navigateByUrl('/home/videos/manage');
@@ -888,7 +890,6 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 case 'dotm':break;
                 case 'dotx':break;
                 case 'dot':break;
-                case 'dotx':break;
                 case 'xps':break;
                 case 'rtf':break;
                 case 'odt':break;

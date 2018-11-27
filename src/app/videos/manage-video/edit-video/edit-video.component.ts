@@ -22,6 +22,8 @@ import { User } from '../../../core/models/user';
 import { DefaultVideoPlayer } from '../../models/default-video-player';
 import { EmbedModalComponent } from '../../../common/embed-modal/embed-modal.component';
 import { HomeComponent } from '../../../core/home/home.component';
+import { Properties } from 'app/common/models/properties';
+
 declare var videojs, QuickSidebar,$: any;
 
 @Component({
@@ -43,7 +45,7 @@ declare var videojs, QuickSidebar,$: any;
           ])
       ])
   ],
-  providers: [CallActionSwitch, EmbedModalComponent,HomeComponent]
+  providers: [CallActionSwitch, EmbedModalComponent,HomeComponent, Properties]
 })
 export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
   @Output() notifyParent: EventEmitter<SaveVideoFile>;
@@ -145,7 +147,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(public referenceService: ReferenceService, public callActionSwitch: CallActionSwitch,
       public videoFileService: VideoFileService, public fb: FormBuilder, public changeDetectorRef: ChangeDetectorRef,
       public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger,private homeComponent:HomeComponent,
-      public sanitizer: DomSanitizer, public videoUtilService: VideoUtilService, public embedModalComponent:EmbedModalComponent) {
+      public sanitizer: DomSanitizer, public videoUtilService: VideoUtilService, public properties: Properties,public embedModalComponent:EmbedModalComponent) {
       try{
       this.saveVideoFile = this.videoFileService.saveVideoFile;
       this.tempVideoFile = this.videoFileService.saveVideoFile;
@@ -238,11 +240,11 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   setBrandingLogo(){
-    const originalLogoUrl = this.referenceService.selectedVideoLogo;
+    let originalLogoUrl = this.referenceService.selectedVideoLogo;
     return originalLogoUrl;
   }
   setBrandignLogoDescUrl(){
-    const originalLogoDescUrl = this.referenceService.selectedVideoLogodesc;
+    let originalLogoDescUrl = this.referenceService.selectedVideoLogodesc;
     return originalLogoDescUrl;
   }
   fileLogoSelected(event: File){
