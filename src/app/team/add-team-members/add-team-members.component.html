@@ -254,13 +254,13 @@
 								</app-user-info></td>
 								<ng-container *ngIf="!authenticationService.module.isVendor">
 									<td *ngIf="teamMember.all">
-										<switch *ngIf="teamMember.status!='UNAPPROVED'"  [status]="teamMember.orgAdmin" [onText]="callActionSwitch.onTextValue"
+										<switch *ngIf="teamMember.status.toLocaleString()!='UNAPPROVED'"  [status]="teamMember.orgAdmin" [onText]="callActionSwitch.onTextValue"
 													 [offText]="callActionSwitch.offTextValue"	[onColor]="callActionSwitch.onGreenColorSwitch"
 													 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
 													(statusChange)="changeOrgAdminStatus($event,i,teamMember)">
 										</switch>
 
-										<switch *ngIf="teamMember.status=='UNAPPROVED'" [status]="teamMember.orgAdmin" [onText]="callActionSwitch.onTextValue"
+										<switch *ngIf="teamMember.status.toLocaleString()=='UNAPPROVED'" [status]="teamMember.orgAdmin" [onText]="callActionSwitch.onTextValue"
 													 [offText]="callActionSwitch.offTextValue"	[onColor]="callActionSwitch.onGreenColorSwitch"
 													 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
 													 [disabled]="callActionSwitch.disabled">
@@ -307,12 +307,12 @@
 									</switch>
 								</td>
 								<td *ngIf="teamMember.teamMemberId!=secondOrgAdminId">
-								<switch *ngIf="teamMember.status=='UNAPPROVED'" [status]="teamMember.enabled" [onText]="callActionSwitch.onTextValue"
+								<switch *ngIf="teamMember.status.toLocaleString()=='UNAPPROVED'" [status]="teamMember.enabled" [onText]="callActionSwitch.onTextValue"
 											 [offText]="callActionSwitch.offTextValue"	[onColor]="callActionSwitch.onGreenColorSwitch"
 											 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
 											  (statusChange)="changeTeamMemberStatus(teamMember,$event)" [disabled]="callActionSwitch.disabled">
 									</switch>
-								<switch *ngIf="teamMember.status!='UNAPPROVED'" [status]="teamMember.enabled" [onText]="callActionSwitch.onTextValue"
+								<switch *ngIf="teamMember.status.toLocaleString()!='UNAPPROVED'" [status]="teamMember.enabled" [onText]="callActionSwitch.onTextValue"
 											 [offText]="callActionSwitch.offTextValue"	[onColor]="callActionSwitch.onGreenColorSwitch"
 											 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
 											  (statusChange)="changeTeamMemberStatus(teamMember,$event)">

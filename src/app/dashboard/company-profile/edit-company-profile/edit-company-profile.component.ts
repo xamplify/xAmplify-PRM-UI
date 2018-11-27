@@ -415,6 +415,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
                 if(this.message ==='Company Profile Info Updated Successfully'){
                   this.logger.log('success');
                   this.homeComponent.getVideoDefaultSettings();
+                  this.saveVideoBrandLog();
                 }
             },
             error => { this.ngxloading = false;

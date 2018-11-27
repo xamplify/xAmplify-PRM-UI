@@ -160,6 +160,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
       this.validationMessages = this.videoUtilService.validationMessages;
       this.formErrors = this.videoUtilService.formErrors;
       this.categories = this.referenceService.refcategories;
+      this.isProcessed = this.saveVideoFile.processed;
       if (this.saveVideoFile.viewBy === 'DRAFT') {
           this.isThisDraftVideo = true;
           this.saveVideoFile.viewBy = 'PRIVATE';
