@@ -15,6 +15,16 @@
     /*margin-top: 27px;*/
 }
 
+.view-banner{
+    background-color: #00a6e8;
+    color: white;
+    padding: 4px;
+    text-align: center;
+    width: 125px;
+    margin: 0 auto;
+    font-size:11px;
+}
+
 .progress {
     position: relative;
     height: 25px;

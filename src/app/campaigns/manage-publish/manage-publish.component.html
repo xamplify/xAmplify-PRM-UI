@@ -94,6 +94,7 @@
 											<h5 [title]="campaign.createdBy">By <b>{{campaign.createdBy | slice:0:35 }}<span *ngIf="campaign.createdBy?.length>35">...</span></b></h5>
 											<h5 [title]="campaign.companyName">From <b>{{campaign.companyName | slice:0:20 }}<span *ngIf="campaign.companyName?.length>20">...</span></b></h5>
 											<h5 *ngIf="campaign.nurtureCampaign" [title]="campaign.vendorOrganizationName">Originated By <b>{{campaign.vendorOrganizationName | slice:0:20 }}<span *ngIf="campaign.vendorOrganizationName?.length>20">...</span></b></h5>
+										    <h5 class="view-banner" *ngIf="campaign.channelCampaign">Through Campaign</h5>
 										</td>
 										<td class="center">
 											<span align="right">
@@ -266,6 +267,8 @@
 											<img src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png">
 											<h4 class="ellipsis" title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:22}}
 												<span *ngIf="campaign.campaignName?.length>22">...</span>
+												<br><br>
+											<span class="view-banner" *ngIf="campaign.channelCampaign" style="position: relative;top: -3px;">Through Campaign</span>
 											</h4>
 											<h6 [title]="campaign.createdBy">By <b>{{campaign.createdBy | slice:0:15}}<span *ngIf="campaign.createdBy?.length>15">...</span></b></h6>
 											<h6 [title]="campaign.companyName">From <b>{{campaign.companyName | slice:0:15}}<span *ngIf="campaign.companyName?.length>15">...</span></b></h6>
