@@ -1,11 +1,10 @@
 import { Component, OnInit} from '@angular/core';
-import { ActivatedRoute,Router } from '@angular/router';
-import { FormBuilder} from '@angular/forms';
+import { Router } from '@angular/router';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { ReferenceService } from '../../core/services/reference.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { Roles } from '../../core/models/roles';
-declare var swal, $,  Metronic, Layout , Demo,TableManaged:any;
+declare var Metronic, Layout , Demo,TableManaged:any;
 @Component({
     selector: 'app-select-campaign',
     templateUrl: './select-campaign-type-component.html',
@@ -14,13 +13,13 @@ declare var swal, $,  Metronic, Layout , Demo,TableManaged:any;
 
 export class SelectCampaignTypeComponent implements OnInit{
 
-    public emailTypes = ['Video Campaign','Regular Campaign'];
+    emailTypes = ['Video Campaign','Regular Campaign'];
     roleName:Roles=new Roles();
-    hasSocialStatusRole:boolean = false;
-    isOrgAdmin:boolean = false;
+    hasSocialStatusRole = false;
+    isOrgAdmin = false;
     isSocialCampaignAccess = true;
     isOnlyPartner = false;
-    constructor(private route: ActivatedRoute, private fb: FormBuilder,private logger:XtremandLogger,private router:Router,public refService:ReferenceService,public authenticationService:AuthenticationService){
+    constructor(private logger:XtremandLogger,private router:Router,public refService:ReferenceService,public authenticationService:AuthenticationService){
         this.logger.info("select-campaign-type constructor loaded");
         let roles = this.authenticationService.getRoles();
         if(roles.indexOf(this.roleName.socialShare)>-1|| roles.indexOf(this.roleName.allRole)>-1){
@@ -29,7 +28,7 @@ export class SelectCampaignTypeComponent implements OnInit{
         if(roles.indexOf(this.roleName.orgAdminRole)>-1){
             this.isOrgAdmin = true;
         }
-        this.isOnlyPartner  = this.authenticationService.isOnlyPartner();
+        this.isOnlyPartner = this.authenticationService.isOnlyPartner();
     }
 
     ngOnInit() {
@@ -40,13 +39,10 @@ export class SelectCampaignTypeComponent implements OnInit{
             TableManaged.init();
         }catch(error){
             this.logger.error("error in select-campaign-type ngOnInit()", error);
-            swal( 'Oops...','Something went wrong!','error');
         }
-
     }
 
-
-    createRegularCampaign(){
+     createRegularCampaign(){
          this.refService.selectedCampaignType = "regular";
          this.router.navigate(["/home/campaigns/create"]);
      }
@@ -55,8 +51,14 @@ export class SelectCampaignTypeComponent implements OnInit{
          this.router.navigate(["/home/campaigns/create"]);
      }
      createEventCampaign(){
+       if(this.isOrgAdmin || this.hasSocialStatusRole ||this.isOnlyPartner || this.authenticationService.module.isVendor){
         this.refService.selectedCampaignType = "eventCampaign";
-        this.router.navigate(["/home/campaigns/event"]);
+        this.router.navigate(["/home/campaigns/event"]); }
+     }
+     socialMediaCampaign(){
+       if(this.isOrgAdmin || this.hasSocialStatusRole ||this.isOnlyPartner || this.authenticationService.module.isVendor){
+      //this.refService.selectedCampaignType = "socialCampaign";
+       this.router.navigate(["/home/campaigns/social"]); }
      }
 
 

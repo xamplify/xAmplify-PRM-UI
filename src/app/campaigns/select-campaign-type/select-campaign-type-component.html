@@ -30,7 +30,7 @@
 								<div class="clearfix">
 									<!-- Pricing -->
 									<div class="col-xs-12" [ngClass]="{'col-sm-3':!refService.isXamplify(), 'col-sm-4':refService.isXamplify()}">
-										<div class="pricing hover-effect">
+										<div class="pricing hover-effect pointer"  (click)="createVideoCampaign()">
 											<div class="pricing-head">
 												<h3>Video E-mail Campaign</h3>
 												<h4><img alt="Video e-mail Campaign" class="pricing-head-img img-responsive	" src="assets/images/video-email.png"></h4>
@@ -50,7 +50,7 @@
 										</div>
 									</div>
 									<div class="col-xs-12" [ngClass]="{'col-sm-3':!refService.isXamplify(), 'col-sm-4':refService.isXamplify()}">
-										<div class="pricing hover-effect">
+										<div class="pricing hover-effect pointer"  (click)="createRegularCampaign()">
 											<div class="pricing-head">
 												<h3>E-mail Campaign</h3>
 												<h4><img alt="Regular E-mail Campaign" class="pricing-head-img img-responsive" src="assets/images/regular-email.png"></h4>
@@ -70,7 +70,7 @@
 										</div>
 									</div>
 									<div class="col-xs-12" [ngClass]="{'col-sm-3':!refService.isXamplify(), 'col-sm-4':refService.isXamplify()}">
-										<div class="pricing hover-effect">
+										<div class="pricing hover-effect pointer" (click)="socialMediaCampaign()">
 											<div class="pricing-head">
 												<h3>Social Media Campaign</h3>
 												<h4><img alt="Social Campaign" class="pricing-head-img img-responsive" src="assets/images/social-campaign.png"></h4>
@@ -84,7 +84,7 @@
 											<div class="pricing-footer" style="margin-bottom: -2px;">
 												<div class="col-xs-hidden"><br><br><br><br></div>
 												<p><span class="important">*</span> These items need to be uploaded and/or created before you can launch a campaign.</p>
-												<ng-container *ngIf="isOrgAdmin || hasSocialStatusRole ||isOnlyPartner || authenticationService.module.isVendor  ">
+												<ng-container *ngIf="isOrgAdmin || hasSocialStatusRole ||isOnlyPartner || authenticationService.module.isVendor">
 														<a class="btn yellow-crusta" [routerLink]="['/home/campaigns/social']">Select <i class="m-icon-swapright m-icon-white"></i></a>
 												</ng-container>
 												<ng-container *ngIf="!isOrgAdmin && !hasSocialStatusRole && !isOnlyPartner && !authenticationService.module.isVendor">
@@ -94,7 +94,7 @@
 										</div>
 									</div>
 									<div class="col-xs-12 col-sm-3" *ngIf="!refService.isXamplify()">
-										<div class="pricing hover-effect">
+										<div class="pricing hover-effect pointer" (click)="createEventCampaign()">
 											<div class="pricing-head">
 												<h3>Event Based Campaign</h3>
 												<h4><img alt="Social Campaign" class="pricing-head-img img-responsive" src="assets/images/event-campaign.png"></h4>
@@ -108,7 +108,7 @@
 											<div class="pricing-footer" style="margin-bottom: -2px;">
 												<div class="col-xs-hidden"><br><br><br><br></div>
 												<p><span class="important">*</span> These items need to be uploaded and/or created before you can launch a campaign.</p>
-												<ng-container *ngIf="isOrgAdmin || hasSocialStatusRole ||isOnlyPartner || authenticationService.module.isVendor  ">
+												<ng-container *ngIf="isOrgAdmin || hasSocialStatusRole ||isOnlyPartner || authenticationService.module.isVendor">
 														<a class="btn yellow-crusta" (click)="createEventCampaign()">Select <i class="m-icon-swapright m-icon-white"></i></a>
 												</ng-container>
 												<ng-container *ngIf="!isOrgAdmin && !hasSocialStatusRole && !isOnlyPartner && !authenticationService.module.isVendor">
