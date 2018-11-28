@@ -28,8 +28,8 @@ declare var $,swal, flatpickr, CKEDITOR;
 
 @Component({
   selector: 'app-event-campaign',
-  templateUrl: './event-campaign.component.html',
-  styleUrls: ['./event-campaign.component.css'],
+  templateUrl: './event-campaign-step.component.html',
+  styleUrls: ['./event-campaign.component.css','../create-campaign/create-campaign.component.css'],
   providers: [PagerService, Pagination, CallActionSwitch, Properties,EventError,HttpRequestLoader, CountryNames]
 })
 export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
@@ -85,6 +85,16 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   loader = false;
   isEditCampaign = false;
   checkLaunchOption:string;
+  
+  detailsTab = false;
+  recipientsTab = false;
+  emailTemplatesTab = false;
+  launchTab = false;
+  
+  detailsTabClass: string;
+  recipientsTabClass = "disableRecipientsTab";
+  emailTemplatesTabClass = "disableRecipientsTab";
+  launchTabClass = "disableRecipientsTab";
 
   constructor(public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
     private contactService: ContactService,
@@ -113,6 +123,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
 }
   validateCampaignName(campaignName:string){
      this.eventTitleError();
+     this.resetTabClass();
      const lowerCaseCampaignName = $.trim(campaignName.toLowerCase());//Remove all spaces
      const list = this.names[0];
      if(this.isAdd){
@@ -134,6 +145,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   $('#eventImage').click();
  }
   ngOnInit() {
+    this.detailsTab = true;
+    this.resetTabClass()
     this.loggedInUserId = this.authenticationService.getUserId();
     this.loadCampaignNames( this.loggedInUserId );
     if (this.referenceService.selectedCampaignType!=='eventCampaign' && this.router.url.includes('/home/campaigns/event') && !this.activatedRoute.snapshot.params['id']) {
@@ -209,7 +222,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     );
     }
     else{
-    this.eventCampaign.emailTemplate = this.emailTemplates[0];
+    /*this.eventCampaign.emailTemplate = this.emailTemplates[0];*/
     this.eventCampaign.countryId = this.countries[0].id;
     this.eventCampaign.campaignEventTimes[0].countryId = this.countries[0].id;
     this.loadContactLists(this.contactListsPagination);
@@ -233,6 +246,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   }
   eventHostByError(){
     this.eventError.eventHostByError = this.eventCampaign.fromName? false:true;
+    this.resetTabClass();
   }
   eventStartTimeError(){
      const currentDate = new Date().getTime();
@@ -242,6 +256,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
      else if(!this.eventCampaign.campaignEventTimes[0].startTimeString){this.setStartTimeErrorMessage(true, 'The start Date is required'); }
      else { this.setStartTimeErrorMessage(false, ''); }
      this.eventSameDateError();
+     this.resetTabClass();
   }
   setStartTimeErrorMessage(event:boolean, mesg:string){
     this.eventError.eventStartTimeError = event;
@@ -256,6 +271,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     this.endDateErrorMesg = '';
    }
    this.eventSameDateError();
+   this.resetTabClass();
   }
   eventSameDateError(){
     const endDate = Date.parse(this.eventCampaign.campaignEventTimes[0].endTimeString);
@@ -274,12 +290,15 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   }
   eventCountryError(){
     this.eventError.eventCountryAndTimeZone = this.eventCampaign.campaignEventTimes[0].countryId ? false: true;
+    this.resetTabClass();
   }
   eventDescriptionError(){
     this.eventError.eventDescription = this.eventCampaign.message ? false: true;
+    this.resetTabClass();
   }
   eventContactListError(){
     this.eventError.eventContactError = this.eventCampaign.userListIds.length>0 ? false: true;
+    this.resetTabClass();
   }
   onBlurValidation(){
    this.eventTitleError();
@@ -1030,6 +1049,58 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
       this.referenceService.selectedCampaignType = "";
       this.eventCampaign.userListIds = [];
       this.campaignService.campaign = undefined;
+    }
+    
+    resetTabs(currentTab : string){
+        if( currentTab == 'details' ){
+            this.detailsTab = true;
+            this.recipientsTab = false;
+            this.emailTemplatesTab = false;
+            this.launchTab = false;
+        } else if( currentTab == 'recipients' ){
+            this.detailsTab = false;
+            this.recipientsTab = true;
+            this.emailTemplatesTab = false;
+            this.launchTab = false;
+        }else if( currentTab == 'templates' ){
+            this.detailsTab = false;
+            this.recipientsTab = false;
+            this.emailTemplatesTab = true;
+            this.launchTab = false;
+        }else if( currentTab == 'launch' ){
+            this.detailsTab = false;
+            this.recipientsTab = false;
+            this.emailTemplatesTab = false;
+            this.launchTab = true;
+            }
+        
+    }
+    
+    resetTabClass(){
+        if((this.eventCampaign.campaign && this.eventCampaign.fromName && this.eventCampaign.campaignEventTimes[0].startTimeString && this.eventCampaign.campaignEventTimes[0].countryId && this.eventCampaign.message) && (this.userListIds.length === 0 && this.parternUserListIds.length === 0)){
+            this.recipientsTabClass = "enableRecipientsTab";
+        } else if((this.eventCampaign.campaign && this.eventCampaign.fromName && this.eventCampaign.campaignEventTimes[0].startTimeString && this.eventCampaign.campaignEventTimes[0].countryId && this.eventCampaign.message) && (this.userListIds.length !=0 || this.parternUserListIds.length !=0) ){
+            this.recipientsTabClass = "recipientsTabComplate";
+        } else{
+            this.recipientsTabClass = "disableRecipientsTab";
+        }
+        
+        if( (this.eventCampaign.campaign && this.eventCampaign.fromName && this.eventCampaign.campaignEventTimes[0].startTimeString && this.eventCampaign.campaignEventTimes[0].countryId && this.eventCampaign.message) && (this.userListIds.length !=0 || this.parternUserListIds.length !=0) && !this.eventCampaign.emailTemplate.id ){
+            this.emailTemplatesTabClass = "enableEmailTemplate";
+        }else if( (this.eventCampaign.campaign && this.eventCampaign.fromName && this.eventCampaign.campaignEventTimes[0].startTimeString && this.eventCampaign.campaignEventTimes[0].countryId && this.eventCampaign.message) &&(this.userListIds.length !=0 || this.parternUserListIds.length !=0) && this.eventCampaign.emailTemplate.id){
+            this.emailTemplatesTabClass = "emailTemplateTabComplete";
+        }else{
+            this.emailTemplatesTabClass = "disableTemplateTab";
+        }
+        
+        if( (this.eventCampaign.campaign && this.eventCampaign.fromName && this.eventCampaign.campaignEventTimes[0].startTimeString && this.eventCampaign.campaignEventTimes[0].countryId && this.eventCampaign.message) && (this.userListIds.length !=0 || this.parternUserListIds.length !=0) && this.eventCampaign.emailTemplate.id && !this.checkLaunchOption){
+            this.launchTabClass = "enableLaunchTab";
+        }else if( (this.eventCampaign.campaign && this.eventCampaign.fromName && this.eventCampaign.campaignEventTimes[0].startTimeString && this.eventCampaign.campaignEventTimes[0].countryId && this.eventCampaign.message) && (this.userListIds.length !=0 || this.parternUserListIds.length !=0) && this.eventCampaign.emailTemplate.id && this.checkLaunchOption){
+            this.launchTabClass = "emailLauchTabComplete";
+        }else{
+            this.launchTabClass = "disableLaunchTab";
+        }
+        
     }
 
    ngOnDestroy() {
