@@ -86,6 +86,22 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
             this.logger.error(cause+":"+error);
         }
     }
+    
+    showEventTemplates(){
+        try{
+            this.filteredEmailTemplates = new Array<EmailTemplate>();
+            for(var i=0;i<this.allEmailTemplates.length;i++){
+                var isBeeEventTemplate = this.allEmailTemplates[i].beeEventTemplate;
+                if(isBeeEventTemplate){
+                    this.filteredEmailTemplates.push(this.allEmailTemplates[i]);
+                }
+            }
+            this.logger.debug("Showing EventTemplates Templates size of"+this.filteredEmailTemplates.length);
+        }catch(error){
+            var cause = "Error in showEventTemplates() in selectTemplatesComponent";
+            this.logger.error(cause+":"+error);
+        }
+    }
 
 
     showVideoTemplates(){
