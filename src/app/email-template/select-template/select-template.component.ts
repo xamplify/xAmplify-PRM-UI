@@ -87,8 +87,9 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
         }
     }
     
-    showEventTemplates(){
+    showEventTemplates(index:number){
         try{
+        	 this.selectedTemplateTypeIndex = index;
             this.filteredEmailTemplates = new Array<EmailTemplate>();
             for(var i=0;i<this.allEmailTemplates.length;i++){
                 var isBeeEventTemplate = this.allEmailTemplates[i].beeEventTemplate;
