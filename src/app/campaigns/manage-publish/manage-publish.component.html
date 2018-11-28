@@ -125,14 +125,14 @@
 										</td>
 										<td class="center">
 											<div class="actions-block override-actions">
-												<ng-container *ngIf="!campaign.launched">
+												<!-- <ng-container *ngIf="!campaign.launched">
 													<a *ngIf="hasAllAccess || (campaign.launched==false&&hasCampaignRole && loggedInUserId==campaign.userId)
 
 												|| (!campaign.launched&&isOnlyPartner)  || authenticationService.module.isVendor" (click)="editCampaign(campaign)"
 													 data-toggle="tooltip" data-placement="top" title="Edit Campaign">
 														<i class="fa fa-pencil-square-o"></i>
 													</a>
-												</ng-container>
+												</ng-container> -->
 												<ng-container *ngIf="campaign.launched">
 												<a *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) ||
 														 (loggedInUserId==campaign.userId) || authenticationService.module.isVendor) && campaign.redistributedCount>0"
@@ -144,24 +144,96 @@
 													>
 														<i class="fa fa-line-chart"></i>
 													</a>
-													<a *ngIf=" (campaign.campaignType !== 'SOCIAL') && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor) && !campaign.nurtureCampaign"
+													<!-- <a *ngIf=" (campaign.campaignType !== 'SOCIAL') && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor) && !campaign.nurtureCampaign"
 													 data-rel="fancybox-button" data-toggle="tooltip" data-placement="top" title="Copy campaign" (click)="openSaveAsModal(campaign)">
 														<i class="fa fa-files-o"></i>
-													</a>
-													 <a *ngIf=" (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor) && campaign.channelCampaign"
+													</a> -->
+													 <!-- <a *ngIf=" (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor) && campaign.channelCampaign"
 						                       		 (click)="goToPreviewPartners(campaign)"
 						                       		 data-toggle="tooltip" data-placement="top" title="{{actionsDescription.campaign_preview_partner}}" data-rel="fancybox-button">
 						                         		<i class="fa fa-handshake-o" id="partner-icon"></i>
-						                       		</a>
+						                       		</a> -->
 												</ng-container>
-												<a (click)="showCampaignPreview(campaign)" data-toggle="tooltip" data-placement="top" title="Preview">
+												<!-- <a (click)="showCampaignPreview(campaign)" data-toggle="tooltip" data-placement="top" title="Preview">
 													<i class="fa fa-eye mr5"></i>
-                      						  </a>
-						                        <a *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor"
+                      						  </a> -->
+						                        <!-- <a *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor"
 						                       		 (click)="confirmDeleteCampaign(campaign.campaignId, i, campaign.campaignName)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.campaign_delete}}" data-rel="fancybox-button">
 						                         <i class="fa fa-trash-o"></i>
-						                       </a>
-											</div>
+						                       </a> -->
+						                       
+						                       
+						                       
+						                       <ng-container class="pull-right">
+						                       <div class="btn-group pull-right">
+													<span class="glyphicon glyphicon-cog dropdown-toggle gearDropdownMenu" data-toggle="dropdown"></span><span
+														class="caret dropdown-toggle caretDropdownMenu" data-toggle="dropdown"></span>
+												
+												<!-- <div class="btn-group pull-right"
+													style="color: #008fd5;">
+													<span class="dropdown-toggle" data-toggle="dropdown"
+														style="color: #008fd5; box-shadow: none; margin-top: 8px; float: right;">
+														<i class="fa fa-cog"
+														style="font-size: 20px; margin-right: 5px"></i><i
+														class="fa fa-angle-down"
+														style="font-size: 14px; float: right"></i>
+													</span> -->
+													<ul class="dropdown-menu pull-right">
+														
+														<li>
+														<ng-container *ngIf="!campaign.launched">
+													<a *ngIf="hasAllAccess || (campaign.launched==false&&hasCampaignRole && loggedInUserId==campaign.userId)
+
+												|| (!campaign.launched&&isOnlyPartner)  || authenticationService.module.isVendor" (click)="editCampaign(campaign)"
+													 data-toggle="tooltip" data-placement="top" title="Edit Campaign">
+														<!-- <i class="fa fa-pencil-square-o"></i> -->
+														Edit
+													</a>
+												</ng-container>
+														
+														</li>
+														<ng-container *ngIf="campaign.launched">
+														<li>
+														<a *ngIf=" (campaign.campaignType !== 'SOCIAL') && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor) && !campaign.nurtureCampaign"
+													 data-rel="fancybox-button" data-toggle="tooltip" data-placement="top" title="Copy campaign" (click)="openSaveAsModal(campaign)">
+														<!-- <i class="fa fa-files-o"></i> -->
+														Save As
+													</a>
+														
+														</li>
+														<li>
+														<a *ngIf=" (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor) && campaign.channelCampaign"
+						                       		 (click)="goToPreviewPartners(campaign)"
+						                       		 data-toggle="tooltip" data-placement="top" title="{{actionsDescription.campaign_preview_partner}}" data-rel="fancybox-button">
+						                         		<!-- <i class="fa fa-handshake-o" id="partner-icon"></i> -->
+						                         		Preview & Delete
+						                       		</a>
+														</li>
+														</ng-container>
+													<li><a (click)="showCampaignPreview(campaign)"
+														data-toggle="tooltip" data-placement="top" title="Preview">
+															<!-- <i class="fa fa-eye mr5"></i> --> Preview
+													</a></li>
+													<li>
+														<a
+														*ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor"
+														(click)="confirmDeleteCampaign(campaign.campaignId, i, campaign.campaignName)"
+														data-toggle="tooltip" data-placement="top"
+														title="{{actionsDescription.campaign_delete}}"
+														data-rel="fancybox-button">Delete<!--  <i class="fa fa-trash-o"> </i>-->
+													</a>
+
+													</li>
+													</ul>
+												<!-- </div> -->
+												</div>
+											
+												</ng-container>
+
+											</div> 
+												
+
+
 										</td>
 									</tr>
 								</tbody>
