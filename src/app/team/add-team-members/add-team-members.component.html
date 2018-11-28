@@ -185,12 +185,11 @@
 					<div class="caption">Team Members List</div>
 						<div class="tools" style="padding: 0;margin: 0;">
 							<div class="inputs" align="right" style="padding:0;display: inline;">
-								<div class="portlet-input input-inline input-small" style="width: 200px !important;">
+								<div class="portlet-input input-inline input-small" style="width: 236px !important;">
 									<div class="input-icon right">
-                    <input type="text" class="form-control" [(ngModel)]="pagination.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="eventHandler($event.keyCode)">
+                    <input type="text" class="form-control" [(ngModel)]="pagination.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search for a teammember" (keypress)="eventHandler($event.keyCode)">
                     <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="pagination.searchKey" (click)="pagination.searchKey=''"></button>
                     <button type="submit" class="search-box-item-click" (click)="searchTeamMembers()"><i class="fa fa-search"></i></button>
-
                   </div>
 								</div>
 							</div>
