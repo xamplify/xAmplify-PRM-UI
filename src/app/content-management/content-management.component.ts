@@ -117,15 +117,11 @@ export class ContentManagementComponent implements OnInit {
           }
   }
     changeImage(id:number,path:string){
-       let image = this.addImage(path);
+      let image = this.addImage(path);
       (<HTMLInputElement>document.getElementById('content_image_'+id)).src = image;
       (<HTMLInputElement>document.getElementById('content_image_grid_'+id)).src = image;
       $('#content_image_'+id).css('cssText', "max-height: 55%; max-width: 69px; position: relative; top: 16px;");
       $('#content_image_grid_'+id).css('cssText', "border: 0px solid #5a5a5a; max-height: 27% !important");
-    }
-
-    imageClick(){
-        $('#uploadFile').click();
     }
     eventHandler( keyCode: any ) { if ( keyCode === 13 ) { this.searchFile(); } }
     searchFile(){
@@ -277,60 +273,7 @@ export class ContentManagementComponent implements OnInit {
             }
             );
     }
-
-    /********Upload File******/
-    upload( event: any ) {
-        this.customResponse.isVisible = false;
-        try {
-            this.referenceService.loading( this.httpRequestLoader, true );
-            //this.customResponse = new CustomResponse( 'INFO', "Uploading in progress.Please wait...", true );
-            this.loader = true;
-            this.loaderWidth = 60;
-            let files: Array<File>;
-            if ( event.target.files ) {
-                files = event.target.files;
-            }
-            else if ( event.dataTransfer.files ) {
-                files = event.dataTransfer.files;
-            }
-            const formData: FormData = new FormData();
-            $.each( files, function( index, file ) {
-                formData.append( 'files', file, file.name );
-            });
-            this.uploadToServer( formData );
-            this.loaderWidth= 99;
-        } catch ( error ) {
-            this.referenceService.loading( this.httpRequestLoader, false );
-            this.customResponse = new CustomResponse( 'ERROR', "Unable to upload file", true );
-        }
-    }
-
-    uploadToServer( formData: FormData ) {
-       this.loaderWidth = 91;
-        this.emailTemplateService.uploadFile( this.loggedInUserId, formData )
-            .subscribe(
-            data => {
-                if ( data.statusCode == 1020 ) {
-                   this.loader = false;
-                    const message = ' files uploaded successfully';
-                    this.customResponse = new CustomResponse( 'SUCCESS', message, true );
-                    this.listItems( this.pagination );
-                } else {
-                    let message = data.message;
-                    this.customResponse = new CustomResponse( 'ERROR', message, true );
-                }
-                this.referenceService.loading( this.httpRequestLoader, false );
-            },
-            ( error: string ) => {
-                this.logger.errorPage( error );
-            }
-            );
-    }
-    /*******Validate Existing filename**********/
-
     ngOnInit() {
         this.listItems( this.pagination );
-
     }
-
 }
