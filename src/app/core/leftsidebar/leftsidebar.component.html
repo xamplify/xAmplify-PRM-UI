@@ -44,7 +44,7 @@
         </a>
       </li>
 
-      <li *ngIf="authService.module.isVideo  && !authService.isOnlyPartner()" [ngClass]="{'active': location.path().includes('videos') || location.path().includes('content-management')}">
+      <li *ngIf="authService.module.isVideo  && !authService.isOnlyPartner()" [ngClass]="{'active': location.path().includes('videos') || location.path().includes('content')}">
         <a href="javascript:;" (click)="openOrCloseTabs('videos')">
           <i class="fa fa-cloud-upload" aria-hidden="true"></i>
         <span class="title">Content</span>
@@ -67,7 +67,7 @@
             </a>
         </li>
         <li>
-          <a [routerLink]="['./content-management']">
+          <a [routerLink]="['./content']">
            <i class="fa fa-list"></i>
            <span class="title">Manage Content</span>
           </a>

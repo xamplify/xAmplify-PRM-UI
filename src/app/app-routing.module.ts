@@ -46,7 +46,7 @@ export const routes: Routes = [
           { path: 'contacts', loadChildren: 'app/contacts/contacts.module#ContactsModule',  data: { preload: true } },
           { path: 'partners', loadChildren: 'app/partners/partners.module#PartnersModule',  data: { preload: true } },
           { path: 'campaigns', loadChildren: 'app/campaigns/campaigns.module#CampaignsModule',  data: { preload: false } },
-          { path: 'content-management', loadChildren: 'app/content-management/content-management.module#ContentManagementModule',  data: { preload: false } },
+          { path: 'content', loadChildren: 'app/content-management/content-management.module#ContentManagementModule',  data: { preload: false } },
           { path: 'upgrade', loadChildren: 'app/upgrade/upgrade.module#UpgradeModule' },
           { path: 'team', loadChildren: 'app/team/team-member.module#TeamMemberModule' },
           { path: 'error/:errorStatusId', component: ErrorPagesComponent }

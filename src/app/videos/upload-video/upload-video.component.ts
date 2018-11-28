@@ -901,7 +901,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 this.refService.contentManagementLoader = true;
                 if(!this.redirectContent){
                   this.redirectContent = false;
-                  setTimeout(() => { this.contentProcessing = false; this.router.navigate(['/home/content-management/manage']); }, 1200); }
+                  setTimeout(() => { this.contentProcessing = false; this.router.navigate(['/home/content/manage']); }, 1200); }
               } else { this.contentProcessing = false; this.customResponse = new CustomResponse( 'ERROR', data.message, true );  }
             },
             ( error: string ) => { this.xtremandLogger.errorPage( error );this.contentProcessing = false; });
@@ -956,20 +956,19 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif',
             });
             for(let i=0;i<files.length;i++){
-                   var cloudContent = {
-                           'downloadLink': files[i].link,
-                           'fileName':files[i].name,
-                           'oauthToken':null
-
-                   }
-                   this.cloudContentArr.push(cloudContent);
+                const cloudContent = {
+                  'downloadLink': files[i].link,
+                  'fileName':files[i].name,
+                  'oauthToken':null
+                }
+                this.cloudContentArr.push(cloudContent);
             }
             this.cloudUploadService.downloadFromDropboxContent(this.cloudContentArr)
                 .subscribe((result: any) => {
                     swal.close();
                     this.contentProcessing = true; this.processing = false;
                     this.refService.contentManagementLoader=true;
-                    setTimeout(() => {  this.router.navigate(['/home/content-management/manage']); }, 1200);
+                    if(!this.redirectContent) { this.redirectContent = false; setTimeout(() => {  this.router.navigate(['/home/content/manage']); }, 1200); }
                 },
                 (error: any) => {
                     this.errorIsThere = true;
@@ -1026,11 +1025,10 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                         allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif'
                     });
                     for(let i=0;i<files.length;i++){
-                        var cloudContent = {
-                                'downloadLink': files[i].link,
-                                'fileName':files[i].name,
-                                'oauthToken':null
-
+                        const cloudContent = {
+                            'downloadLink': files[i].link,
+                            'fileName':files[i].name,
+                            'oauthToken':null
                         }
                         self.cloudContentArr.push(cloudContent);
                  }
@@ -1040,7 +1038,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                             swal.close();
                             self.contentProcessing = true; self.processing = false;
                             self.refService.contentManagementLoader=true;
-                            setTimeout(() => {  self.router.navigate(['/home/content-management/manage']); }, 1200);
+                            if(!self.redirectContent) { self.redirectContent = false; setTimeout(() => {  self.router.navigate(['/home/content/manage']); }, 1200); }
                         }, (error: any) => {
                             self.errorIsThere = true;
                             self.xtremandLogger.errorPage(error);
@@ -1159,7 +1157,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                           self.contentProcessing = true; self.processing = false;
                           self.videoFileService.videoFileSweetAlertMessage = false;
                           self.refService.contentManagementLoader=true;
-                          setTimeout(() => {  self.router.navigate(['/home/content-management/manage']); }, 1200);
+                          setTimeout(() => {  self.router.navigate(['/home/content/manage']); }, 1200);
                       }, (error: any) => {
                           this.errorIsThere = true;
                           this.xtremandLogger.errorPage(error);
