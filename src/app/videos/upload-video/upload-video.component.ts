@@ -741,7 +741,6 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             this.tempr = authResult.access_token;
             self.createPicker();
         }
-
     }
     onPickerApiLoad() {
         const self = this;
@@ -799,7 +798,8 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                     }
                     if (!self.redirectPge) { self.cloudStorageDisabled(); }
                     self.processVideo(result.path);
-                }, (error: any) => {
+                },
+                (error: any) => {
                     this.errorIsThere = true;
                     this.xtremandLogger.errorPage(error);
                     swal.close();
@@ -894,7 +894,10 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                   setTimeout(() => { this.contentProcessing = false; this.router.navigate(['/home/content/manage']); }, 1200); }
               } else { this.contentProcessing = false; this.customResponse = new CustomResponse( 'ERROR', data.message, true );  }
             },
-            ( error: string ) => { this.xtremandLogger.errorPage( error );this.contentProcessing = false; });
+            ( error: string ) => {
+              this.customResponse = new CustomResponse('ERROR', this.properties.SOMTHING_WENT_WRONG, true);
+             // this.xtremandLogger.errorPage( error );
+              this.contentProcessing = false; });
       }
       dropBoxContentChange() {
           try{
@@ -958,12 +961,18 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                     swal.close();
                     this.contentProcessing = true; this.processing = false;
                     this.refService.contentManagementLoader=true;
-                    if(!this.redirectContent) { this.redirectContent = false; setTimeout(() => {  this.router.navigate(['/home/content/manage']); }, 1200); }
+                    if(!this.videoFileService.contentRedirect) {
+                      this.videoFileService.contentRedirect = false;this.redirectContent = false;
+                      this.router.navigate(['/home/content/manage']);
+                     }
                 },
                 (error: any) => {
                     this.errorIsThere = true;
-                    this.xtremandLogger.errorPage(error);
+                //    this.xtremandLogger.errorPage(error);
                     swal.close();
+                    this.contentProcessing = false;
+                    this.customResponse = new CustomResponse('ERROR', this.properties.SOMTHING_WENT_WRONG, true);
+                    this.xtremandLogger.error('Error in upload content from dropbox'+error);
                 });
               }catch(error){ this.xtremandLogger.error('Error in upload content from dropbox'+error);}
         }
@@ -1021,17 +1030,23 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                             'oauthToken':null
                         }
                         self.cloudContentArr.push(cloudContent);
-                 }
+                    }
                     self.cloudUploadService.downloadContentFromBox(self.cloudContentArr)
                         .subscribe((result: any) => {
                             console.log(result);
                             swal.close();
                             self.contentProcessing = true; self.processing = false;
                             self.refService.contentManagementLoader=true;
-                            if(!self.redirectContent) { self.redirectContent = false; setTimeout(() => {  self.router.navigate(['/home/content/manage']); }, 1200); }
-                        }, (error: any) => {
+                            if(!self.videoFileService.contentRedirect) {
+                               self.videoFileService.contentRedirect = false;
+                               self.router.navigate(['/home/content/manage']);
+                             }
+                         }, (error: any) => {
                             self.errorIsThere = true;
-                            self.xtremandLogger.errorPage(error);
+                            self.contentProcessing = false;
+                         //   self.xtremandLogger.errorPage(error);
+                            self.customResponse = new CustomResponse('ERROR', this.properties.SOMTHING_WENT_WRONG, true);
+                            self.xtremandLogger.error(error);
                         });
                 } else {
                     swal('Other than video files can be uploaded.');
@@ -1057,7 +1072,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
           }
 
         onApiLoadContent() {
-            if (this.processing !== true) {  // for not clicking again on the google drive
+            if (this.contentProcessing !== true) {  // for not clicking again on the google drive
                 const self = this;
                 gapi.load('auth', { 'callback': self.onAuthApiLoadContent.bind(this) });
                 gapi.load('picker', { 'callback': self.onPickerApiLoadContent.bind(this) });
@@ -1147,15 +1162,21 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                           self.contentProcessing = true; self.processing = false;
                           self.videoFileService.videoFileSweetAlertMessage = false;
                           self.refService.contentManagementLoader=true;
-                          setTimeout(() => {  self.router.navigate(['/home/content/manage']); }, 1200);
+                          if(!self.videoFileService.contentRedirect) {
+                            self.videoFileService.contentRedirect = false;
+                            setTimeout(() => {
+                              self.router.navigate(['/home/content/manage']);
+                            }, 2000);
+                          }
                       }, (error: any) => {
                           this.errorIsThere = true;
-                          this.xtremandLogger.errorPage(error);
+                        //  this.xtremandLogger.errorPage(error);
                           if (self.picker) {
                             self.picker.setVisible(false);
                             self.picker.dispose();
                             self.videoFileService.videoFileSweetAlertMessage = false;
                         }
+                        this.customResponse = new CustomResponse('ERROR', this.properties.SOMTHING_WENT_WRONG, true);
                       });
               } else {
                   if (self.picker) {
@@ -1207,6 +1228,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         }
         if((this.router.url !=='/') && this.contentProcessing ){
           this.redirectContent = true;
+          this.videoFileService.contentRedirect = true;
        //   swal('','We’ll process your content in the background and save it. Just look for it in the “Manage content" section.');
         }
         if (this.picker) {
