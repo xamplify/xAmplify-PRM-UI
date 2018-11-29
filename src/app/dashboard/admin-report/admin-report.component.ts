@@ -37,8 +37,8 @@ export class AdminReportComponent implements OnInit {
                    { 'name': 'Sort by', 'value': '' },
                    { 'name': 'Conpany name (A-Z)', 'value': 'companyName-ASC' },
                    { 'name': 'Company name (Z-A)', 'value': 'companyName-DESC' },
-                   { 'name': 'Last login (ASC)', 'value': 'lastLogin-ASC'},
-                   { 'name': 'Last login (DESC)', 'value': 'lastLogin-DESC'},
+                   { 'name': 'Last login (ASC)', 'value': 'dateLastLogin-ASC'},
+                   { 'name': 'Last login (DESC)', 'value': 'dateLastLogin-DESC'},
 
                ];
     public sortOption: any = this.sortOptions[0];
