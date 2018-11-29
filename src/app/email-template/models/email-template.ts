@@ -25,4 +25,5 @@ export class EmailTemplate {
 	draft: boolean = false;
 	onDestroy: boolean = false;
     beeEventTemplate:boolean;
+    beeEventCoBrandingTemplate:boolean;
 }

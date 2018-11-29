@@ -245,6 +245,7 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
       emailTemplate.regularCoBrandingTemplate = emailTemplateService.emailTemplate.regularCoBrandingTemplate;
       emailTemplate.videoCoBrandingTemplate = emailTemplateService.emailTemplate.videoCoBrandingTemplate;
       emailTemplate.beeEventTemplate = emailTemplateService.emailTemplate.beeEventTemplate;
+      emailTemplate.beeEventCoBrandingTemplate = emailTemplateService.emailTemplate.beeEventCoBrandingTemplate;
       let isCoBrandingTemplate = emailTemplate.regularCoBrandingTemplate || emailTemplate.videoCoBrandingTemplate;
       if(emailTemplateService.emailTemplate.subject.indexOf('basic')>-1 && !isCoBrandingTemplate){
           emailTemplate.type = EmailTemplateType.BASIC;

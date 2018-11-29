@@ -28,6 +28,7 @@
 								<li class="filter" (click)="showCampaignDefaultTemplates(8)" [class.emailtemplate-selected]="8 == selectedTemplateTypeIndex">Default</li>
 								<li class="filter" (click)="showUploadTemplates(5)" [class.emailtemplate-selected]="5 == selectedTemplateTypeIndex">Upload Custom</li>
 								<li class="filter" (click)="showEventTemplates(9)" [class.emailtemplate-selected]="9 == selectedTemplateTypeIndex" *ngIf="!refService.isXamplify()">Event</li>
+									<li class="filter" (click)="showEventCoBrandingTemplates(10)" [class.emailtemplate-selected]="9 == selectedTemplateTypeIndex" *ngIf="!refService.isXamplify()">Event Co-Branding</li>
 								<li class="filter" style="display: none;">Own Template</li>
 							</ul>
 						</div>
