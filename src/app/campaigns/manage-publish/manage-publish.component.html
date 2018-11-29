@@ -135,7 +135,7 @@
 												</ng-container> -->
 												<ng-container *ngIf="campaign.launched">
 												<a *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) ||
-														 (loggedInUserId==campaign.userId) || authenticationService.module.isVendor) && campaign.redistributedCount>0"
+														 (loggedInUserId==campaign.userId) || authenticationService.module.isVendor) && campaign.channelCampaign"
                          								 (click)="goToRedistributedCampaigns(campaign)" data-toggle="tooltip" data-placement="top" title="Show Redistributed Campaigns">
 														<span class="circled-number"><b>{{campaign.redistributedCount}}</b></span>
 													</a>
@@ -186,7 +186,7 @@
 
 												|| (!campaign.launched&&isOnlyPartner)  || authenticationService.module.isVendor" (click)="editCampaign(campaign)"
 													 data-toggle="tooltip" data-placement="top" title="Edit Campaign">
-														<!-- <i class="fa fa-pencil-square-o"></i> -->
+														<i class="fa fa-pencil-square-o" style="width: 30px;"></i>
 														Edit
 													</a>
 												</ng-container>
@@ -196,7 +196,7 @@
 														<li>
 														<a *ngIf=" (campaign.campaignType !== 'SOCIAL') && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor) && !campaign.nurtureCampaign"
 													 data-rel="fancybox-button" data-toggle="tooltip" data-placement="top" title="Copy campaign" (click)="openSaveAsModal(campaign)">
-														<!-- <i class="fa fa-files-o"></i> -->
+														<i class="fa fa-files-o" style="width: 30px;"></i>
 														Save As
 													</a>
 														
@@ -205,14 +205,14 @@
 														<a *ngIf=" (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor) && campaign.channelCampaign"
 						                       		 (click)="goToPreviewPartners(campaign)"
 						                       		 data-toggle="tooltip" data-placement="top" title="{{actionsDescription.campaign_preview_partner}}" data-rel="fancybox-button">
-						                         		<!-- <i class="fa fa-handshake-o" id="partner-icon"></i> -->
-						                         		Preview & Delete
+						                         		<i class="fa fa-handshake-o" style="width: 30px;" id="partner-icon"></i>
+						                         		Preview & Delete Partner(s)
 						                       		</a>
 														</li>
 														</ng-container>
 													<li><a (click)="showCampaignPreview(campaign)"
 														data-toggle="tooltip" data-placement="top" title="Preview">
-															<!-- <i class="fa fa-eye mr5"></i> --> Preview
+															<i class="fa fa-eye mr5" style="width: 30px;"></i> Preview
 													</a></li>
 													<li>
 														<a
@@ -220,7 +220,7 @@
 														(click)="confirmDeleteCampaign(campaign.campaignId, i, campaign.campaignName)"
 														data-toggle="tooltip" data-placement="top"
 														title="{{actionsDescription.campaign_delete}}"
-														data-rel="fancybox-button">Delete<!--  <i class="fa fa-trash-o"> </i>-->
+														data-rel="fancybox-button"> <i class="fa fa-trash-o" style="width: 30px;"> </i>Delete
 													</a>
 
 													</li>
