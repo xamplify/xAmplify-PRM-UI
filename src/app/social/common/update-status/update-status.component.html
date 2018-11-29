@@ -390,10 +390,13 @@
 						<ng-container *ngIf="selectedAccounts > 1 && !isCustomizeButtonClicked">
 							<button class="btn btn-primary pull-right" (click)="customizeEachNetwork()">Customize for each network</button>
 						</ng-container>
-						<span *ngIf="socialStatus.id != null" [hidden]="socialStatus.userId != userId">
-							<button type="button" class="btn btn-primary rounded-0 pull-right margin-right-10px" (click)="initializeSocialStatus()">Cancel</button>
-							<button type="button" class="btn btn-danger rounded-0 pull-right margin-right-10px" (click)="deleteStatus(socialStatus)">
-								<i class="fa fa-trash-o"></i> Delete</button>
+						<span *ngIf="socialStatusList[0]?.id != null" [hidden]="socialStatusList[0]?.userId != userId">
+							<ng-container *ngIf="socialStatusList[0]?.socialStatusProvider.socialConnection.source !== 'LINKEDIN'">
+								<button type="button" class="btn btn-primary rounded-0 pull-right mr10" (click)="initializeSocialStatus()">Cancel</button>
+								<button type="button" class="btn btn-danger rounded-0 pull-right mr10" (click)="deleteStatus(socialStatusList[0])">
+									<i class="fa fa-trash-o"></i> Delete
+								</button>
+							</ng-container>
 						</span>
 					</div>
 				</div>
@@ -450,7 +453,7 @@
 										<td>{{contactList.createdDate}}</td>
 										<td> <h6 class='m0'>{{contactList.noOfContacts}}</h6> </td>
 										<td class='m0'>
-											<a>	<i class="fa fa-eye" (click)="loadContactsOnPreview(contactList, contactsPagination);"></i></a>
+											<a class="actions-block pull-left"><i class="fa fa-eye" (click)="loadContactsOnPreview(contactList, contactsPagination);"></i></a>
 										</td>
 									</tr>
 								</tbody>

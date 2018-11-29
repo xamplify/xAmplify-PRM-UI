@@ -79,6 +79,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   resetCustomResponse() {
     this.customResponse.type = null;
     this.customResponse.statusText = null;
+    this.socialStatusResponse = [];
   }
   changeChannelCampaign(){
     this.channelCampaign = !this.channelCampaign;
@@ -517,10 +518,11 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     $('#fc-event-' + socialStatus.id).modal('hide');
     $('html,body').animate({scrollTop: 0}, 'slow');
     this.initializeSocialStatus();
-    this.socialStatus = socialStatus;
-    for (const i of Object.keys(this.socialStatusProviders)) {
-      this.socialStatusProviders[i].selected = true;
-    }
+    this.socialStatusList
+    this.socialStatusList[0] = socialStatus;
+    this.socialStatusProviders = [];
+    this.socialStatusProviders[0] = socialStatus.socialStatusProvider;
+    this.toggleSelectAll();
   }
 
   showScheduleOption(divId: string) {$('#' + divId).removeClass('hidden');}
