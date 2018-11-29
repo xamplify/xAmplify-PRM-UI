@@ -153,8 +153,11 @@ border-radius: 0
 .upload-button{
   padding: 22px 71px;
 }
+@media only screen and (max-width:600px){.upload-button{ padding: 14px 30px;} .modal-cam{ width: 100% !important;}}
+@media only screen and (min-width:601px){.modal-cam{ width: 47% !important;}}
 @media only screen and (max-width:600px){
   .upload-button{ padding: 14px 30px;}
+  .modal-css{ width: 47%;}
 }
 @media only screen and (min-width:992px){
   .upload-button{ padding: 48px 20px;  }

@@ -97,6 +97,7 @@ export class ContentManagementComponent implements OnInit {
               case 'xls':return 'assets/images/content/xls.png';
               case 'xlsx':return 'assets/images/content/xlsm.png';
               case 'xlsm':return 'assets/images/content/xlsm.png';
+              case 'xml':return 'assets/images/content/xml.png';
               case 'zip':return 'assets/images/content/zip.png';
               case 'docx':return 'assets/images/content/docs.png';
               case 'docm':return 'assets/images/content/docs.png';

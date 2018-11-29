@@ -154,24 +154,15 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 } else {
                      this.processVideo(JSON.parse(response).path);
                     }
-            };
-         //   if (this.refService.uploadRetrivejsCalled === false) {
-                $('head').append('<link href="assets/js/indexjscss/webcam-capture/videojs.record.css" rel="stylesheet"  class="r-video">');
-                $('head').append('<script src="https://apis.google.com/js/api.js" type="text/javascript"  class="r-video"/>');
-                $('head').append('<script src="assets/js/indexjscss/select.js" type="text/javascript"  class="r-video"/>');
-                $('head').append('<script src="assets/js/indexjscss/webcam-capture/video.min.js" type="text/javascript"  class="r-video"/>');
-                // $('head').append('<script src="assets/js/indexjscss/videojs.record.js" type="text/javascript"  class="r-video"/>');
-                // <link href="assets/js/indexjscss/webcam-capture/video-js.css" rel="stylesheet">
-             //   this.refService.uploadRetrivejsCalled = true;
-          //  }
-               $('head').append('<script src="assets/js/indexjscss/webcam-capture/videojs.record.js" type="text/javascript"  class="r-video"/>');
-            if (this.refService.isEnabledCamera === false && !this.isIE() && !this.browserInfo.includes('safari') &&
+              };
+              this.videoUtilService.uploadVideoJsFilesLoad();
+               if (this.refService.isEnabledCamera === false && !this.isIE() && !this.browserInfo.includes('safari') &&
                 !this.browserInfo.includes('edge')) {
                 //    this.checkCameraBlock();
                 this.refService.isEnabledCamera = true;
-            } else if (this.isIE() || this.browserInfo.includes('safari') || this.browserInfo.includes('edge')) {
+              } else if (this.isIE() || this.browserInfo.includes('safari') || this.browserInfo.includes('edge')) {
                 this.refService.cameraIsthere = true;
-            }
+             }
         } catch (err) {
             console.error('ERROR : FileUploadComponent constructor ' + err);
         }
@@ -846,22 +837,21 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
       const parts = files[i].name.split('.');
       const ext = parts[parts.length - 1];
       switch (ext.toLowerCase()) {
-          case 'm4v':break;
-          case 'avi':break;
-          case 'mpg':break;
-          case 'mp4':break;
-          case 'flv':break;
-          case 'mov':break;
-          case 'wmv':break;
-          case 'divx':break;
-          case 'f4v':break;
-          case 'mpeg':break;
-          case 'vob':break;
-          case 'xvid':break;
-          default: return false;
-         }
+        case 'm4v':return true;
+        case 'avi':return true;
+        case 'mpg':return true;
+        case 'mp4':return true;
+        case 'flv':return true;
+        case 'mov':return true;
+        case 'wmv':return true;
+        case 'divx':return true;
+        case 'f4v':return true;
+        case 'mpeg':return true;
+        case 'vob':return true;
+        case 'xvid':return true;
+       }
       }
-      return true;
+      return false;
    }
 
     dropClick(){
