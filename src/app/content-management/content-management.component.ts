@@ -11,7 +11,7 @@ import { SocialPagerService } from '../contacts/services/social-pager.service';
 import { EmailTemplateService } from '../email-template/services/email-template.service';
 import { ContentManagement } from './model/content-management';
 
-declare var Metronic, $, Layout, Demo, swal: any;
+declare var $, swal: any;
 
 @Component( {
     selector: 'app-content-management',
@@ -20,23 +20,23 @@ declare var Metronic, $, Layout, Demo, swal: any;
     providers: [Pagination, HttpRequestLoader, ActionsDescription, ContentManagement, SocialPagerService]
 })
 export class ContentManagementComponent implements OnInit {
-    loggedInUserId: number = 0;
+    loggedInUserId = 0;
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
     customResponse: CustomResponse = new CustomResponse();
     list: any[] = [];
-    isPreviewed: boolean = false;
-    filePath: string = "";
+    isPreviewed = false;
+    filePath = "";
     previewFile: any = "";
     exisitingFileNames: string[] = [];
-    existingFileName: string = "";
+    existingFileName = "";
     awsFileKeys: string[] = [];
     pager: any = {};
     pagedItems: any[];
-    pageSize: number = 12;
+    pageSize = 12;
     selectedFiles = [];
     selectedFileIds = [];
     loader = false;
-    loaderWidth: number = 30;
+    loaderWidth = 30;
     searchTitle = '';
     searchList: any;
     sortList: any;
@@ -114,7 +114,6 @@ export class ContentManagementComponent implements OnInit {
               case 'mp3':return 'assets/images/content/mp3.png';
               case 'mhtml':return 'assets/images/content/mhtml.png';
               default: return 'assets/images/content/error.png';
-              // etc
           }
   }
     changeImage(id:number,path:string){
@@ -202,7 +201,7 @@ export class ContentManagementComponent implements OnInit {
                 if ( this.list.length > 0 ) {
                     this.exisitingFileNames = this.list.map( function( a ) { return a.fileName.toLowerCase(); });
                 } else {
-                    this.customResponse = new CustomResponse( 'INFO', "No records found", true );
+                   // this.customResponse = new CustomResponse( 'INFO', "No records found", true );
                 }
                 this.referenceService.loading( this.httpRequestLoader, false );
                 this.paginatedList = this.list;
