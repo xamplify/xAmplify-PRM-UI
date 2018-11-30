@@ -113,6 +113,8 @@ export class ContentManagementComponent implements OnInit {
               case 'log':return 'assets/images/content/log.png';
               case 'mp3':return 'assets/images/content/mp3.png';
               case 'mhtml':return 'assets/images/content/mhtml.png';
+              case 'rar':return 'assets/images/content/rar.png';
+              case 'apk':return 'assets/images/content/apk.png';
               default: return 'assets/images/content/error.png';
           }
   }
