@@ -184,13 +184,13 @@
                 <div class="col-xs-4 p0">
                   <i class="fa fa-users" [ngClass]="{'disabled': selectedUserlistIds.length < 1}"></i>
                 </div>
-                <div class="col-xs-8">
+                <div class="col-xs-8 p0" style="margin-top: 16px;">
                   <h4 class="pull-left" *ngIf="selectedUserlistIds.length==0">No contact list is selected</h4>
                   <h4 class="pull-left" *ngIf="selectedUserlistIds.length==1">{{selectedUserlistIds.length}} contact list
                     is selected</h4>
                   <h4 class="pull-left" *ngIf="selectedUserlistIds.length>1">{{selectedUserlistIds.length}} contact lists
                     are selected</h4>
-                  <a class="pull-right btn btn-primary btn-sm" class="pull-right btn btn-primary btn-sm" (click)="showContacts()">{{previewText}}</a>
+                  <a class="pull-right btn btn-primary btn-sm" style="margin-top: 6px" (click)="showContacts()">{{previewText}}</a>
                 </div>
               </div>
               <div id="campaign-contact-list" style="display: none;">
