@@ -186,3 +186,4 @@ background: #ffffff;
   width: 97%;
   right: -18px;
   }
+  .override-actions{ margin: 0 auto; display: table;float: none !important; }

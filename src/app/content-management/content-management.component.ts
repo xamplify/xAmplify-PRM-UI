@@ -42,9 +42,9 @@ export class ContentManagementComponent implements OnInit {
     sortList: any;
     paginatedList: any;
     isListView = false;
-    sortOptions = [{ 'name': 'Sort By', 'value': ''},  { 'name': 'File Name(A-Z)', 'value': 'fileName'},
-                   { 'name': 'File Name(Z-A)', 'value': 'fileName'},  { 'name': 'Upload Date(ASD)', 'value': 'lastModifiedDate'},
-                   { 'name': 'Upload Date(DSD)', 'value': 'lastModifiedDate'},
+    sortOptions = [{ 'name': 'Sort By', 'value': ''},  { 'name': 'File Name (A-Z)', 'value': 'fileName'},
+                   { 'name': 'File Name (Z-A)', 'value': 'fileName'},  { 'name': 'Upload Date (ASC)', 'value': 'lastModifiedDate'},
+                   { 'name': 'Upload Date (DESC)', 'value': 'lastModifiedDate'},
       ];
     sortOption: any = this.sortOptions[0];
 
