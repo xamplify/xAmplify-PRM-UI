@@ -487,7 +487,7 @@
 							<div class="page-toolbar">
 								<div class="btn-group pull-right">
 									<div class="inputs" align="right" style="float: right">
-										<div *ngIf="!isSegmentation" (click)="modelForSeg()" 
+										<div *ngIf="!isSegmentation" (click)="modelForSeg()"
 											style="float: left; cursor: pointer; margin-right: 10px"
 											data-toggle="modal" data-target="#filterModal">
 											<i class="fa fa-filter" aria-hidden="true" data-toggle="tooltip"
@@ -700,7 +700,7 @@
 																Subscribe
 															</button>
 
-															<div class="actions-block override-actions"
+															<div class="actions-block override-actions send-mail"
 																*ngIf="isPartner && contactsByType.selectedCategory == 'non-active'">
 																<a *ngIf="!contact.signedUp" data-toggle="tooltip"
 																	data-placement="bottom"
@@ -824,7 +824,7 @@
 												data-placement="left" title="Remove a condition"
 										[ngClass]="{'filter-css': !referenceService.isMobileScreenSize(), 'mobile-view-filter':referenceService.isMobileScreenSize()}">
 										<span (click)="cancelRow(i)"> <i class="fa fa-trash-o"
-											aria-hidden="true" 
+											aria-hidden="true"
 											style="color: red; font-size: 26px; margin-top: 6px"></i>
 										</span>
 									</div>
