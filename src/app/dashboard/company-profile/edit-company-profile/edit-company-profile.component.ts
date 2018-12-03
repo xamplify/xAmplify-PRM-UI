@@ -462,7 +462,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
                 const self = this;
                 swal( {
                     title: 'Are you sure?',
-                    text: "You have unchanged company profile data",
+                    text: "Do you want to save your changes?",
                     type: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#54a7e9',

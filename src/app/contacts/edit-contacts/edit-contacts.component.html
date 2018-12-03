@@ -654,7 +654,7 @@
 																<span *ngIf="!contact.isShowDetails">More</span> <span
 																	*ngIf="contact.isShowDetails">Less</span>
 															</button>
-															</td> 
+															</td>
 															<td align="center">
 															<!-- <button  *ngIf="isPartner || contactsByType.selectedCategory == 'non-active'" id='more_less_button_{{i}}'
 																(click)="contact.isShowDetails = ! contact.isShowDetails">
@@ -1036,7 +1036,7 @@
 	</div>
 </div>
 
-<app-save-as *ngIf="saveAsListName" [listName]="'Contact'" [saveAsListName]="saveAsListName" (notifyParentSaveAs)="closeSaveAsModal()"></app-save-as>
+<app-save-as *ngIf="saveAsListName" [listName]="checkingContactTypeName" [saveAsListName]="saveAsListName" (notifyParentSaveAs)="closeSaveAsModal()"></app-save-as>
 
 <div *ngIf="contactsByType.contactListAssociatedCampaigns?.length && openCampaignModal">
 <app-contacts-campaigns-mails [associatedCampaignDetails]="contactsByType.contactListAssociatedCampaigns" [isPartner]="isPartner"
