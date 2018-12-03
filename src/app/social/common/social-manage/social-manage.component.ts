@@ -15,6 +15,7 @@ declare var swal: any;
 })
 export class SocialManageComponent implements OnInit, OnDestroy {
     socialConnections: SocialConnection[] = new Array<SocialConnection>();
+    socialConnectionsTemp: SocialConnection[] = new Array<SocialConnection>();
     response: any;
     httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
     constructor( private route: ActivatedRoute, private socialService: SocialService,
@@ -26,6 +27,14 @@ export class SocialManageComponent implements OnInit, OnDestroy {
             .subscribe(
             result => {
                 this.socialConnections = result;
+
+                this.socialConnections.forEach(data => {
+                    let socialConnection = new SocialConnection();
+                    socialConnection.id = data.id;
+                    socialConnection.active = data.active;
+                    this.socialConnectionsTemp.push(socialConnection);
+                })
+
                 this.socialService.setDefaultAvatar(this.socialConnections);
                 this.referenceService.loading(this.httpRequestLoader, false);
             },
@@ -80,8 +89,41 @@ export class SocialManageComponent implements OnInit, OnDestroy {
             console.log( err );
         }
     }
-    ngOnDestroy(){
-      swal.close();
+
+    onChange() {
+        this.socialConnectionsTemp.forEach(data => console.log(data.id + ' - '+ data.active));
+        this.socialConnections.forEach(data => console.log(data.id + ' - '+ data.active));
+        let isChanged: boolean;
+        for(var i=0; i< this.socialConnections.length; i++){
+            if(this.socialConnections[i].active !== this.socialConnectionsTemp[i].active){
+                isChanged = true;
+                break;
+            }
+        }
+        if(isChanged) {
+        const self = this;
+        swal( {
+            title: 'Are you sure?',
+            text: "Do you want to save your changes?",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#54a7e9',
+            cancelButtonColor: '#999',
+            confirmButtonText: 'Yes, Save it!',
+            cancelButtonText : 'No'
+
+        }).then(function() {
+                self.save();
+        },function (dismiss) {
+            if (dismiss === 'cancel') {console.log('clicked cancel') }
+        })
+
+        }   
+    }
+
+    ngOnDestroy(): void {
+        swal.close();
+        this.onChange();
     }
 
 }
