@@ -73,13 +73,13 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
               self.emailTemplate.body = htmlContent;
               self.emailTemplate.jsonBody = jsonContent;
 	          if(emailTemplateService.emailTemplate.beeVideoTemplate || emailTemplateService.emailTemplate.videoCoBrandingTemplate){
-	              if(jsonContent.indexOf(self.videoGif)<0){
+	              if(jsonContent.indexOf(self.videoGif)< 0){
 	                 swal("","Whoops! We’re unable to save this template because you deleted the default gif. You’ll need to select a new email template and start over.","error");
 	                 return false;
 	              }
 	          }
 	          if(emailTemplateService.emailTemplate.regularCoBrandingTemplate || emailTemplateService.emailTemplate.videoCoBrandingTemplate){
-	              if(jsonContent.indexOf(self.coBraningImage)<0){
+	              if(jsonContent.indexOf(self.coBraningImage)< 0){
                     swal("","Whoops! We’re unable to save this template because you deleted the co-branding logo. You’ll need to select a new email template and start over.","error");
                     return false;
 	               }
@@ -172,6 +172,19 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
          { name: 'Full Name', value: '{{fullName}}' },
          { name: 'Email Id', value: '{{emailId}}' },
          { name: 'Company Name', value: '{{companyName}}' }];
+       
+       if ( mergeTags.length === 5 && (this.emailTemplateService.emailTemplate.beeEventTemplate || this.emailTemplateService.emailTemplate.beeEventCoBrandingTemplate)) {
+           mergeTags.push( { name: 'Event Title', value: '{{event_title}}' });
+           mergeTags.push( { name: 'Event Strat Time', value: '{{event_start_time}}' });
+           mergeTags.push( { name: 'Event End Time', value: '{{event_end_time}}' });
+           mergeTags.push( { name: 'Event Description', value: '{{event_description}}' });
+           mergeTags.push( { name: 'Address Lane1 ', value: '{{addreess_lane1}}' });
+           mergeTags.push( { name: 'Address Lane2', value: '{{addreess_lane2}} ' });
+           mergeTags.push( { name: 'Event EmailId', value: '{{event_emailId}}' });
+           mergeTags.push( { name: 'Vendor Name   ', value: '{{vendor_name}}' });
+           mergeTags.push( { name: 'Vendor EmailId', value: '{{vendor_emailId}}' });
+       }
+       
        if(refService.defaultPlayerSettings!=null){
            var beeUserId = "bee-"+self.refService.defaultPlayerSettings.companyProfile.id;
            var beeConfig = {

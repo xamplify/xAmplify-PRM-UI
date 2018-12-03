@@ -110,7 +110,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     public properties: Properties, public eventError:EventError, public countryNames: CountryNames) {
     this.countries = this.referenceService.getCountries();
     this.eventCampaign.campaignLocation.country = ( this.countryNames.countries[0] );
-    this.listEmailTemplates();
+    //this.listEmailTemplates();
     CKEDITOR.config.height = '100';
     this.isPreviewEvent = this.router.url.includes('/home/campaigns/event-preview')? true: false;
     this.isEditCampaign = this.router.url.includes('/home/campaigns/event-edit')? true: false;
@@ -299,7 +299,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   eventDescriptionError(){
     this.eventError.eventDescription = this.eventCampaign.message ? false: true;
     this.resetTabClass();
-  }
+  } 
   eventContactListError(){
     this.eventError.eventContactError = this.eventCampaign.userListIds.length>0 ? false: true;
     this.resetTabClass();
@@ -373,6 +373,11 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     );
   }
   
+  switchStatusChange(){
+      this.eventCampaign.channelCampaign = !this.eventCampaign.channelCampaign;
+      this.loadEmailTemplates(this.emailTemplatesPagination);
+  }
+  
   loadEmailTemplates(pagination:Pagination){
       pagination.throughPartner = this.eventCampaign.channelCampaign;
       this.referenceService.loading(this.campaignEmailTemplate.httpRequestLoader, true);
@@ -381,15 +386,28 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
       }else{
           pagination.campaignDefaultTemplate = false;
           pagination.isEmailTemplateSearchedFromCampaign = true;
-      }
+      }  
       pagination.maxResults = 12;
       pagination.filterBy = 'campaignEventEmails';
       this.emailTemplateService.listTemplates(pagination,this.loggedInUserId)
       .subscribe(
           (data:any) => {
-              this.campaignEmailTemplates = data.emailTemplates;
+              let allEventEmailTemplates = data.emailTemplates;
+              
+              this.campaignEmailTemplates = [];
+              for(let i=0;i< allEventEmailTemplates.length;i++){
+                  if(this.eventCampaign.channelCampaign){
+                      if(allEventEmailTemplates[i].beeEventCoBrandingTemplate){
+                       this.campaignEmailTemplates.push(allEventEmailTemplates[i]);
+                      }
+                   }else{
+                       this.campaignEmailTemplates = allEventEmailTemplates;
+                   }
+              }
+              
+              
               pagination.totalRecords = data.totalRecords;
-              this.emailTemplatesPagination = this.pagerService.getPagedItems(pagination, data.emailTemplates);
+              this.emailTemplatesPagination = this.pagerService.getPagedItems(pagination, this.campaignEmailTemplates);
               /*if(this.emailTemplatesPagination.totalRecords==0 &&this.selectedEmailTemplateRow==0){
                   this.isEmailTemplate = false;
               }
@@ -893,13 +911,13 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
 
   }
 
-  listEmailTemplates() {
+  /*listEmailTemplates() {
     const emailTemplate1 = new EmailTemplate(); emailTemplate1.id = 1700; emailTemplate1.name = "Event Based template 1";
     const emailTemplate2 = new EmailTemplate(); emailTemplate2.id = 1701; emailTemplate2.name = "Event Based template 2";
     const emailTemplate3 = new EmailTemplate(); emailTemplate3.id = 1702; emailTemplate3.name = "Event Based template 3";
-    this.emailTemplates.push(emailTemplate1, emailTemplate2,emailTemplate3);
+    //this.emailTemplates.push(emailTemplate1, emailTemplate2,emailTemplate3);
   }
-
+*/
   onChangeCountryCampaignEventTime(countryId: number) {
     this.timezonesCampaignEventTime = this.referenceService.getTimeZonesByCountryId(countryId);
     
