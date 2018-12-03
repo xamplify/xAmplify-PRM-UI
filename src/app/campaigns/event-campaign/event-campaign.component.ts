@@ -86,6 +86,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   isEditCampaign = false;
   checkLaunchOption:string;
   
+  campaignEmailTemplates=[];
+  emailTemplatesPagination:Pagination = new Pagination();
+  
   detailsTab = false;
   recipientsTab = false;
   emailTemplatesTab = false;
@@ -148,6 +151,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     this.detailsTab = true;
     this.resetTabClass()
     this.loggedInUserId = this.authenticationService.getUserId();
+    this.loadEmailTemplates(this.emailTemplatesPagination);
     this.loadCampaignNames( this.loggedInUserId );
     if (this.referenceService.selectedCampaignType!=='eventCampaign' && this.router.url.includes('/home/campaigns/event') && !this.activatedRoute.snapshot.params['id']) {
       console.log( "This page is reloaded" );
@@ -368,6 +372,37 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
         () => console.log('loadContacts() finished')
     );
   }
+  
+  loadEmailTemplates(pagination:Pagination){
+      pagination.throughPartner = this.eventCampaign.channelCampaign;
+      this.referenceService.loading(this.campaignEmailTemplate.httpRequestLoader, true);
+      if(pagination.searchKey==null || pagination.searchKey==""){
+          pagination.campaignDefaultTemplate = true;
+      }else{
+          pagination.campaignDefaultTemplate = false;
+          pagination.isEmailTemplateSearchedFromCampaign = true;
+      }
+      pagination.maxResults = 12;
+      pagination.filterBy = 'campaignEventEmails';
+      this.emailTemplateService.listTemplates(pagination,this.loggedInUserId)
+      .subscribe(
+          (data:any) => {
+              this.campaignEmailTemplates = data.emailTemplates;
+              pagination.totalRecords = data.totalRecords;
+              this.emailTemplatesPagination = this.pagerService.getPagedItems(pagination, data.emailTemplates);
+              /*if(this.emailTemplatesPagination.totalRecords==0 &&this.selectedEmailTemplateRow==0){
+                  this.isEmailTemplate = false;
+              }
+              //this.filterEmailTemplateForEditCampaign();
+*/              this.referenceService.loading(this.campaignEmailTemplate.httpRequestLoader, false);
+          },
+          (error:string) => {
+             this.logger.errorPage(error);
+          },
+          () => this.logger.info("Finished loadEmailTemplates()", this.emailTemplatesPagination)
+          )
+  }
+  
 
   setPage(event: any) {
     if (event.type === 'contacts') {
