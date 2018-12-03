@@ -59,8 +59,8 @@
 								<img class="img-responsive center-block" *ngIf="beeRegularTemplate.campaignDefault" src="{{beeRegularTemplate.subject}}" alt="{{beeRegularTemplate.name}}">
 								<h4 title="{{beeRegularTemplate.name}}">{{beeRegularTemplate.name|slice:0:23}} <span *ngIf="beeRegularTemplate.name?.length>23">....</span></h4>
 							<div class="bar">
-								<a (click)="showTemplateById(beeRegularTemplate.id,i)" *ngIf="!beeRegularTemplate.campaignDefault"><i class="fa fa-plus-circle"></i></a>
-								<a (click)="showPreview(beeRegularTemplate)" *ngIf="beeRegularTemplate.campaignDefault"><i class="fa fa-eye"></i></a>
+								<a  data-toggle="tooltip"data-placement="top" title="Create template" (click)="showTemplateById(beeRegularTemplate.id,i)" *ngIf="!beeRegularTemplate.campaignDefault"><i class="fa fa-plus-circle"></i></a>
+								<a data-toggle="tooltip"data-placement="top" title="Preview" (click)="showPreview(beeRegularTemplate)" *ngIf="beeRegularTemplate.campaignDefault"><i class="fa fa-eye"></i></a>
 							</div>
 							</div>
 						</div>

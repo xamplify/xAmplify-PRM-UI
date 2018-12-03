@@ -68,5 +68,4 @@ h3 {
 @media screen and (max-width:600px){ .modal-css{ width: 100% !important;} .modal-copy{width: 100% !important; }}
 @media screen and (min-width:601px){ .modal-css{ width: 60% !important;} .modal-copy{width: 40% !important; }}
 
-.send-mail{margin: 0 auto; display: table;float: none !important; }
 .override-actions{ margin: 0 auto; display: table;float: none !important; }
