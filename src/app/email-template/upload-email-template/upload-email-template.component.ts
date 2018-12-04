@@ -176,6 +176,7 @@ export class UploadEmailTemplateComponent implements OnInit,OnDestroy {
         this.emailTemplate.userDefined = true;
         this.emailTemplate.type = EmailTemplateType.UPLOADED;
         this.emailTemplate.onDestroy = isOnDestroy;
+        this.emailTemplate.draft = isOnDestroy;
         if (this.emailTemplateService.isRegularUpload) {
             this.emailTemplate.regularTemplate = true;
             this.emailTemplate.desc = "Regular Template";

@@ -124,6 +124,7 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
 	                 self.clickedButtonName = "UPDATE";
 	                 self.refService.startLoader(self.httpRequestLoader);
 	                 swal.close();
+	                 self.emailTemplate.draft = false;
 	                 self.updateEmailTemplate(self.emailTemplate, emailTemplateService, false);
 	              })).append(createButton('Cancel', function() {
 	                 self.clickedButtonName = "CANCEL";
@@ -180,6 +181,7 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
 
 	      function saveTemplate(){
               self.refService.startLoader(self.httpRequestLoader);
+              self.emailTemplate.draft = false;
               self.saveEmailTemplate(self.emailTemplate,emailTemplateService,self.loggedInUserId,false);
               swal.close();
 	      }
@@ -350,8 +352,9 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
   ngOnDestroy(){
       swal.close();
       let isButtonClicked = this.clickedButtonName!="SAVE" && this.clickedButtonName!="SAVE_AS" &&  this.clickedButtonName!="UPDATE";
-      if(isButtonClicked && this.emailTemplateService.emailTemplate!=undefined &&this.loggedInUserId>0 && this.emailTemplate.jsonBody!=undefined && this.emailTemplate.body!=undefined){
-        if(!this.emailTemplateService.emailTemplate.defaultTemplate){
+      if(isButtonClicked && this.emailTemplateService.emailTemplate!=undefined &&this.loggedInUserId>0 && this.emailTemplate.jsonBody!=undefined){
+          this.emailTemplate.draft = true;
+        if(!this.emailTemplateService.emailTemplate.defaultTemplate && this.emailTemplate.body!=undefined){
             this.updateEmailTemplate(this.emailTemplate,this.emailTemplateService, true);
           }else{
               this.saveEmailTemplate(this.emailTemplate,this.emailTemplateService,this.loggedInUserId,true);
