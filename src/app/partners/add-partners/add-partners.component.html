@@ -544,14 +544,15 @@ img:hover {
 											<ng-container
 												*ngFor="let contact of partners;let i = index" id="listPartners">
 											<tr class='row_{{i}}'>
-											<td class="text-center" *ngIf="!isCampaignDraftContactList "><input
-																type="checkbox"
-																[checked]="editContactComponent.selectedContactListIds.indexOf(contact.id)>-1"
-																class="chk"
-																[class.contact-list-selected]="editContactComponent.selectedContactListIds.indexOf(contact.id)>-1"
-																lang="{{contact.id}}" name="campaignContact[]"
-																value="{{contact.id}}" id="{{contact.id}}"
-																(click)="editContactComponent.highlightRow(contact.id,$event)" /></td>
+											<td class="text-center" *ngIf="!isCampaignDraftContactList ">
+                        <input type="checkbox"
+                            [checked]="editContactComponent.selectedContactListIds.indexOf(contact.id)>-1"
+                            class="chk"
+                            [class.contact-list-selected]="editContactComponent.selectedContactListIds.indexOf(contact.id)>-1"
+                            lang="{{contact.id}}" name="campaignContact[]"
+                            value="{{contact.id}}" id="{{contact.id}}"
+                            (click)="editContactComponent.highlightRow(contact.id,$event)" />
+                        </td>
 												<td>
 													<app-user-info [isPartnerEntityInfo]="true" [isPartnerInfo]="true"  [userInfo]="contact"> </app-user-info>
 												</td>
@@ -614,6 +615,22 @@ img:hover {
 													<table cellpadding="5" cellspacing="0"
 														style="padding-left: 50px; margin-left: 55px;">
 														<tbody>
+                              <tr class="hidden-sm hidden-md hidden-lg">
+                                	<td class='pt10 pb10 bold'>Vertical:</td>
+                                  <td >{{contact.vertical}}</td>
+                              </tr>
+                              <tr class="hidden-sm hidden-md hidden-lg">
+                                	<td class='pt10 pb10 bold'>Region:</td>
+                                  <td >{{contact.region}}</td>
+                              </tr>
+                              <tr class="hidden-sm hidden-md hidden-lg">
+                                	<td class='pt10 pb10 bold'>Partner Type:</td>
+                                  <td >{{contact.partnerType}}</td>
+                              </tr>
+                              <tr class="hidden-sm hidden-md hidden-lg">
+                                	<td class='pt10 pb10 bold'>Category:</td>
+                                  <td >{{contact.category}}</td>
+                              </tr>
 															<tr>
 																<td class='pt10 pb10 bold'>Phone:</td>
 																<td class='pt10 pb10'>
@@ -627,7 +644,7 @@ img:hover {
 															</tr>
 															<tr>
 																<td class='pt10 pb10 bold'>Address: </td>
-																<td align="center" class="hidden-xs">
+																<td align="center">
 																	<h5 *ngIf="contact?.address" class='mb0'>{{contact.address}}</h5>
 																	<h5 class='mb0'>
 																		{{contact.city}}<span

@@ -30,19 +30,19 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     campaignName:string;
     sortByDropDown = [
         { 'name': 'Sort By', 'value': 'createdTime-DESC' },
-        { 'name': 'Campaign Name(A-Z)', 'value': 'campaign-ASC' },
-        { 'name': 'Campaign Name(Z-A)', 'value': 'campaign-DESC' },
-        { 'name': 'Company Name(A-Z)', 'value': 'company-ASC' },
-        { 'name': 'Company Name(Z-A)', 'value': 'company-DESC' },
-        { 'name': 'Date Received(ASC)', 'value': 'createdTime-ASC' },
-        { 'name': 'Date Received(DESC)', 'value': 'createdTime-DESC' }
+        { 'name': 'Campaign Name (A-Z)', 'value': 'campaign-ASC' },
+        { 'name': 'Campaign Name (Z-A)', 'value': 'campaign-DESC' },
+        { 'name': 'Company Name (A-Z)', 'value': 'company-ASC' },
+        { 'name': 'Company Name (Z-A)', 'value': 'company-DESC' },
+        { 'name': 'Date Received (ASC)', 'value': 'createdTime-ASC' },
+        { 'name': 'Date Received (DESC)', 'value': 'createdTime-DESC' }
     ];
 
     numberOfItemsPerPage = [
         { 'name': '12', 'value': '12' },
         { 'name': '24', 'value': '24' },
         { 'name': '48', 'value': '48' },
-        { 'name': '---All---', 'value': '0' },
+        { 'name': 'All', 'value': '0' },
     ]
 
     public selectedSortedOption: any = this.sortByDropDown[0];
