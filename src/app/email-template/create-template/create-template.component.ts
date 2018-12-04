@@ -354,8 +354,11 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
       let isButtonClicked = this.clickedButtonName!="SAVE" && this.clickedButtonName!="SAVE_AS" &&  this.clickedButtonName!="UPDATE";
       if(isButtonClicked && this.emailTemplateService.emailTemplate!=undefined &&this.loggedInUserId>0 && this.emailTemplate.jsonBody!=undefined){
           this.emailTemplate.draft = true;
-        if(!this.emailTemplateService.emailTemplate.defaultTemplate && this.emailTemplate.body!=undefined){
-            this.updateEmailTemplate(this.emailTemplate,this.emailTemplateService, true);
+        if(!this.emailTemplateService.emailTemplate.defaultTemplate){
+            if(this.emailTemplate.body!=undefined){
+                this.updateEmailTemplate(this.emailTemplate,this.emailTemplateService, true);
+            }
+            
           }else{
               this.saveEmailTemplate(this.emailTemplate,this.emailTemplateService,this.loggedInUserId,true);
           }
