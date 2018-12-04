@@ -599,8 +599,7 @@ a.disabled {
 					<strong>No email templates found</strong>
 				</div>
 				<div style="text-align:left;" [hidden]="emailTemplatesPagination.totalRecords<0 || campaignEmailTemplate.httpRequestLoader.isLoading || campaignEmailTemplate.httpRequestLoader.isServerError">
-          <app-pagination [pagination]="emailTemplatesPagination" [type]="'emailTemplates'"
-          (notifyParent)="setPagePagination($event)"></app-pagination>
+          <app-pagination [pagination]="emailTemplatesPagination" [type]="'emailTemplates'"></app-pagination>
         </div>
           </div>
           
