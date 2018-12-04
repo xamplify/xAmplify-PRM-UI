@@ -39,7 +39,7 @@ declare var swal, $, videojs , Metronic, Layout , Demo,flatpickr,CKEDITOR:any;
 @Component({
   selector: 'app-create-campaign',
   templateUrl: './create-campaign.component.html',
-  styleUrls: ['./create-campaign.component.css', '../../../assets/css/video-css/video-js.custom.css'],
+  styleUrls: ['./create-campaign.component.css', '../../../assets/css/video-css/video-js.custom.css', '../../../assets/css/content.css'],
   providers:[HttpRequestLoader,CallActionSwitch,Properties]
 
 })
@@ -128,7 +128,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                                {'name':'10','value':'10'},
                                {'name':'20','value':'20'},
                                {'name':'30','value':'30'},
-                               {'name':'---All---','value':'0'},
+                               {'name':'All','value':'0'},
                                ]
     contactItemsSize:any = this.numberOfContactsPerPage[0];
     isCampaignDraftContactList:boolean = false;
@@ -178,7 +178,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     socialStatusList = new Array<SocialStatus>();
     socialStatusProviders = new Array<SocialStatusProvider>();
     isAllSelected: boolean = false;
-    isSocialEnable = false;
 
 
 
@@ -2284,7 +2283,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         }
 
         listSocialStatusProviders() {
-            if(this.socialStatusProviders.length < 1){
             const socialConnections = this.socialService.socialConnections;
             socialConnections.forEach( data => {
                 if(data.active){
@@ -2293,7 +2291,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                     this.socialStatusProviders.push(socialStatusProvider);
                 }
             })
-            }
         }
 
  /***************************Email Rules***********************************/
