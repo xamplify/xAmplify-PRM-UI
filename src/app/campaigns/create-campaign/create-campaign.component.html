@@ -874,6 +874,11 @@
 						<div class="col-xs-12">
 						<div *ngIf="socialStatusProviders?.length > 0">
 						  <div class="portlet light clearfix">
+							<button type="button" class="btn btn-primary pull-right" (click)="isSocialEnable = !isSocialEnable">
+								<i class="fa fa-share-alt fa-social" style="margin: 0 5px;"></i> Social Share
+							</button>
+							<div class="clearfix"></div>
+							<div [hidden]="!isSocialEnable">							
 							<ul class="list-group social-account">
 								<li class="list-group-item profile-box" style="background-color: #dfdfdf; cursor: pointer;" [ngClass]="{'checked': isAllSelected, 'unchecked': !isAllSelected}">
 									<div class="profile-selected" (click)="toggleSelectAll()" style="float: initial;margin: 0 0 0 10px;">
@@ -912,8 +917,10 @@
 									<div class="clearfix"></div>
 								</li>
 							</ul>
+							</div>
 						</div>
 					</div>
+					
 				</div>
 			<div class="portlet-body clearfix">
 				<div class="col-xs-12 col-sm-12 col-md-5 col-lg-5" *ngIf="campaignType=='video'">

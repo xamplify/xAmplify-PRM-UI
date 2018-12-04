@@ -123,7 +123,8 @@ export class SocialManageComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         swal.close();
-        this.onChange();
+        if(this.response !== 'success')
+        	this.onChange();
     }
 
 }

@@ -6,6 +6,7 @@ import { SaveVideoFile } from '../../../videos/models/save-video-file';
 import { SocialCampaign } from '../../models/social-campaign';
 import { SocialStatusDto } from '../../models/social-status-dto';
 import { SocialStatus } from '../../models/social-status';
+import { SocialConnection } from '../../models/social-connection';
 import { SocialStatusContent } from '../../models/social-status-content';
 import { SocialStatusProvider } from '../../models/social-status-provider';
 
@@ -24,7 +25,7 @@ import { CallActionSwitch } from '../../../videos/models/call-action-switch';
 import { ReferenceService } from '../../../core/services/reference.service';
 import { Properties } from '../../../common/models/properties';
 
-declare var $, flatpickr, videojs: any;
+declare var $, flatpickr, videojs, swal: any;
 
 @Component({
   selector: 'app-update-status',
@@ -52,6 +53,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   socialStatusProviders = new Array<SocialStatusProvider>();
   isAllSelected: boolean = false;
   loading: boolean = false;
+  socialConnections = new Array<SocialConnection>();
 
   previewContactList = new ContactList();
   socialStatusDtos = new Array<any>();
@@ -64,7 +66,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   location:any;
   channelCampaign: boolean;
 
-  constructor(private socialService: SocialService,
+  constructor(public socialService: SocialService,
     private videoFileService: VideoFileService, public properties:Properties,
     public authenticationService: AuthenticationService, private contactService: ContactService,
     private pagerService: PagerService, private router: Router, public videoUtilService: VideoUtilService,
@@ -475,6 +477,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
       .subscribe(
       result => {
         this.socialService.socialConnections = result;
+        this.socialConnections = result;
         console.table(result);
       },
       error => console.log(error),
@@ -484,14 +487,13 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   }
 
   listSocialStatusProviders() {
-    const socialConnections = this.socialService.socialConnections;
     this.socialStatusProviders = new Array<SocialStatusProvider>();
-    for (const i in socialConnections) {
-      if (socialConnections[i].active) {
-        let source = socialConnections[i].source;
-        if(socialConnections[i].source !== 'GOOGLE') {
+    for (const i in this.socialConnections) {
+      if (this.socialConnections[i].active) {
+        let source = this.socialConnections[i].source;
+        if(this.socialConnections[i].source !== 'GOOGLE') {
           const socialStatusProvider = new SocialStatusProvider();
-          socialStatusProvider.socialConnection = socialConnections[i];
+          socialStatusProvider.socialConnection = this.socialConnections[i];
           this.socialStatusProviders.push(socialStatusProvider);
         }
       }
@@ -891,5 +893,18 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 
   dismissMessage(socialStatus: SocialStatus){
     this.socialStatusResponse = this.socialStatusResponse.filter(item => item !== socialStatus);
+  }
+
+  save() {
+    this.socialService.saveAccounts( this.socialConnections )
+        .subscribe(
+        result => {},
+        error => console.log( error ),
+        () => {
+            this.socialService.socialConnections = this.socialConnections;
+            this.listSocialStatusProviders();
+            $('#manageAccountsModal').modal('hide');
+        } );
+
   }
 }

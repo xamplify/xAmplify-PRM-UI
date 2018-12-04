@@ -178,6 +178,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     socialStatusList = new Array<SocialStatus>();
     socialStatusProviders = new Array<SocialStatusProvider>();
     isAllSelected: boolean = false;
+    isSocialEnable = false;
 
 
 
@@ -2283,6 +2284,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         }
 
         listSocialStatusProviders() {
+            if(this.socialStatusProviders.length < 1){
             const socialConnections = this.socialService.socialConnections;
             socialConnections.forEach( data => {
                 if(data.active){
@@ -2291,6 +2293,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                     this.socialStatusProviders.push(socialStatusProvider);
                 }
             })
+            }
         }
 
  /***************************Email Rules***********************************/
