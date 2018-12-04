@@ -24,6 +24,11 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
     clickedButtonName = "";
     videoGif = "xtremand-video.gif";
     coBraningImage = "co-branding.png";
+    eventTitle = "{{event_title}}";
+    eventDescription = "{{event_description}}";
+    eventStartTime = "{{event_start_time}}";
+    eventEndTime = "{{event_end_time}}";
+    eventLocation = "{{addreess_lane1}}";
     loadTemplate = false;
     constructor(private emailTemplateService:EmailTemplateService,private router:Router, private logger:XtremandLogger,
                 private authenticationService:AuthenticationService,public refService:ReferenceService) {
@@ -84,6 +89,31 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
                     return false;
 	               }
 	          }
+	          
+	          if(emailTemplateService.emailTemplate.beeEventTemplate || emailTemplateService.emailTemplate.beeEventCoBrandingTemplate){
+	              if(jsonContent.indexOf(self.eventTitle)< 0){
+	                    swal("","Whoops! We’re unable to save this template because you deleted the {{event_title}} merge tag.","error");
+	                    return false;
+	                 }
+	              if(jsonContent.indexOf(self.eventDescription)< 0){
+	                        swal("","Whoops! We’re unable to save this template because you deleted the {{event_description}} merge tag.","error");
+	                        return false;
+	                   }
+	              if(jsonContent.indexOf(self.eventStartTime)< 0){
+                         swal("","Whoops! We’re unable to save this template because you deleted the {{event_start_time}} merge tag.","error");
+                         return false;
+                   }
+	              
+	              if(jsonContent.indexOf(self.eventEndTime)< 0){
+                      swal("","Whoops! We’re unable to save this template because you deleted the {{event_end_time}}﻿ merge tag.","error");
+                      return false; 
+                }
+	              if(jsonContent.indexOf(self.eventLocation)< 0){
+                      swal("","Whoops! We’re unable to save this template because you deleted the {{addreess_lane1}} merge tag.","error");
+                      return false;
+                }
+	          }
+	          
 	          if(!isDefaultTemplate){
 	              var buttons = $('<div>')
                   .append(' <div class="form-group"><input class="form-control" type="text" value="'+templateName+'" id="templateNameId" maxLength="200"><span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>')
