@@ -571,7 +571,8 @@ a.disabled {
 												<div class="item__content">
 													<div class="flex-row">
 														<span class="item__name" data-toggle="tooltip"
-															[title]="emailTemplate.name">{{emailTemplate.name}}
+															[title]="emailTemplate.name">{{emailTemplate.name | slice:0:18}}
+															<span *ngIf="emailTemplate.name?.length>18">...</span>
 														</span>
 														<div class="item__actions">
 															<span> <a class="fm external-link" target="_BLANK"
