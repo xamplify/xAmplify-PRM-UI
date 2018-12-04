@@ -203,7 +203,8 @@ a:hover{
 	text-decoration: none;
 }
 .campaign-type-selected {
-	background-color: #6dcff6;
+	background-color: #0095da;
+	color: white;
 }
 
 .filter-div{
