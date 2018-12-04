@@ -289,7 +289,7 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
       emailTemplate.videoCoBrandingTemplate = emailTemplateService.emailTemplate.videoCoBrandingTemplate;
       emailTemplate.beeEventTemplate = emailTemplateService.emailTemplate.beeEventTemplate;
       emailTemplate.beeEventCoBrandingTemplate = emailTemplateService.emailTemplate.beeEventCoBrandingTemplate;
-      let isCoBrandingTemplate = emailTemplate.regularCoBrandingTemplate || emailTemplate.videoCoBrandingTemplate;
+      let isCoBrandingTemplate = emailTemplate.regularCoBrandingTemplate || emailTemplate.videoCoBrandingTemplate||emailTemplate.beeEventCoBrandingTemplate;
       if(emailTemplateService.emailTemplate.subject.indexOf('basic')>-1 && !isCoBrandingTemplate){
           emailTemplate.type = EmailTemplateType.BASIC;
       }else if(emailTemplateService.emailTemplate.subject.indexOf('rich')>-1 && !isCoBrandingTemplate){
@@ -300,6 +300,8 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
           emailTemplate.type = EmailTemplateType.REGULAR_CO_BRANDING;
       }else if(emailTemplate.videoCoBrandingTemplate){
           emailTemplate.type = EmailTemplateType.VIDEO_CO_BRANDING;
+      }else if(emailTemplate.beeEventCoBrandingTemplate){
+          emailTemplate.type = EmailTemplateType.EVENT_CO_BRANDING;
       }
       emailTemplateService.save(emailTemplate) .subscribe(
           data => {
