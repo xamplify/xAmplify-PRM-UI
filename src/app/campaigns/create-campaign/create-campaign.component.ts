@@ -492,7 +492,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
              this.emailTemplatesPagination.filterBy = "CampaignRegularEmails";
              this.isVideo = true;
              $('#videoTab').hide();
-             this.lauchTabPreivewDivClass = "col-xs-12 col-sm-12 col-md-12 col-lg-12";
+             this.lauchTabPreivewDivClass = "col-xs-12 col-sm-12 col-md-7 col-lg-7";
          }
 
 

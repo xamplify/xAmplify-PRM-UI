@@ -797,24 +797,22 @@
                                 <div class="item__content">
                                   <div class="flex-row">
                                     <span class="item__name"
-                                      [title]="campaign.emailTemplate.name"><span>{{campaign.emailTemplate.name |slice:0:15}}</span><span *ngIf="campaign.emailTemplate?.name?.length>15">...</span>
+                                      [title]="campaign.emailTemplate.name"><b>{{campaign.emailTemplate.name |slice:0:15}}</b><b *ngIf="campaign.emailTemplate?.name?.length>15">...</b>
                                     </span>
-                                    <span lass="item__name" title="created on">
+                                    <span lass="item__name" title="created on" style="float:left">
                                         <!-- <b>Created On:</b>{{campaign.emailTemplate.createdDate}} -->
                                         <span><app-timestamp [isOnlyDate]="true"
                                           [dateAndTime]="campaign.emailTemplate.createdDate">
                                         </app-timestamp></span>
                                     </span>
                                     <ng-container *ngIf="emailTemplate.type.toLocaleString()!='PARTNER'">
-                                      <span> <b>By</b> </span>
-                                      <span  title="{{campaign.emailTemplate.createdBy}}">
-                                        <span>{{campaign.emailTemplate.createdBy|slice:0:12}}<span *ngIf="campaign.emailTemplate.createdBy?.length>12">...</span></span>
+                                      <span style="float:left"  title="{{campaign.emailTemplate.createdBy}}">
+                                          <b>By:</b> <span>{{campaign.emailTemplate.createdBy|slice:0:12}}<span *ngIf="campaign.emailTemplate.createdBy?.length>12">...</span></span>
                                       </span>
                                     </ng-container>
                                     <ng-container *ngIf="emailTemplate.type.toLocaleString()=='PARTNER'">
-                                      <span> <b>By</b> </span>
-                                      <span title="{{campaign.emailTemplate.vendorName}}">
-                                          <span>{{campaign.emailTemplate.vendorName|slice:0:12}}<span *ngIf="campaign.emailTemplate.vendorName?.length>12">...</span></span>
+                                      <span style="float:left" title="{{campaign.emailTemplate.vendorName}}">
+                                          <b>By:</b>  <span>{{campaign.emailTemplate.vendorName|slice:0:12}}<span *ngIf="campaign.emailTemplate.vendorName?.length>12">...</span></span>
                                         </span>
                                     </ng-container>
                                     <div class="item__actions">
@@ -918,10 +916,10 @@
                         <div class="item__content">
                           <div class="flex-row">
                             <span class="item__name"
-                              [title]="emailTemplate.name"><span>{{emailTemplate.name |slice:0:17}}</span><span *ngIf="emailTemplate?.name?.length>15">...</span>
+                              [title]="emailTemplate.name"><b>{{emailTemplate.name |slice:0:17}}</b><b *ngIf="emailTemplate?.name?.length>15">...</b>
                             </span>
                            <br>
-                            <span lass="item__name" title="created on">
+                            <span lass="item__name" title="created on" style="float:left">
                                 <!-- <b *ngIf="emailTemplate.createdDate">Created On:</b>{{emailTemplate.createdDate}} -->
                                 <span><app-timestamp [isOnlyDate]="true"
                                   [dateAndTime]="emailTemplate.createdDate">
@@ -929,15 +927,13 @@
                             </span>
                            <br>
                             <ng-container *ngIf="emailTemplate.type!='PARTNER'">
-                              <span *ngIf="emailTemplate.createdBy"> <b>By</b> </span>
-                              <span  title="{{emailTemplate.createdBy}}">
-                                <span>{{emailTemplate.createdBy|slice:0:12}}<span *ngIf="emailTemplate.createdBy?.length>12">...</span></span>
+                              <span  style="float:left" title="{{emailTemplate.createdBy}}">
+                                  <b>By:</b><span>{{emailTemplate.createdBy|slice:0:12}}<span *ngIf="emailTemplate.createdBy?.length>12">...</span></span>
                               </span>
                             </ng-container>
                             <ng-container *ngIf="emailTemplate.type=='PARTNER'">
-                              <span *ngIf="emailTemplate.vendorName"> <b>By</b> </span>
-                              <span title="{{emailTemplate.vendorName}}">
-                                  <span>{{emailTemplate.vendorName|slice:0:12}}<span *ngIf="emailTemplate.vendorName?.length>12">...</span></span>
+                              <span style="float:left" title="{{emailTemplate.vendorName}}">
+                                  <b>By</b><span>{{emailTemplate.vendorName|slice:0:12}}<span *ngIf="emailTemplate.vendorName?.length>12">...</span></span>
                               </span>
                             </ng-container>
                             <div class="item__actions">
@@ -1052,7 +1048,20 @@
 							<h5 id="description"></h5>
 						</div>
 					</div>
-				</div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5" *ngIf="campaignType=='regular'">
+            <div class="portlet light clearfix" style="padding:0px">
+              <div class="p0">
+                  <div class="pricing hover-effect pointer">
+											<div class="pricing-head">
+												<h4 title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:30}}<span *ngIf="campaign.campaignName?.length>30">...</span></h4>
+												<h4><img style="margin: 0 auto;height: 106px;" alt="Regular E-mail Campaign" class="pricing-head-img img-responsive" src="assets/images/regular-email.png"></h4>
+											</div>
+										</div>
+                <h5 id="description"></h5>
+              </div>
+            </div>
+          </div>
 				<div [attr.class]="lauchTabPreivewDivClass">
 					<div class="portlet light border-0">
 						<table width="100%">
