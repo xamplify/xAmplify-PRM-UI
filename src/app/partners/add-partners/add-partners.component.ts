@@ -1543,11 +1543,13 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     }
 
     checkingPopupValues() {
+        if(this.contactType !=""){
         $( "button#salesforce_save_button" ).prop( 'disabled', true );
         if ( this.contactType == "contact_listviews" || this.contactType == "lead_listviews" ) {
             this.getSalesforceListViewContacts( this.contactType );
         } else {
             this.getSalesforceContacts( this.contactType );
+        }
         }
     }
 
