@@ -816,7 +816,7 @@
                                         </span>
                                     </ng-container>
                                     <div class="item__actions">
-                                      <span> <a class="fm external-link" target="_BLANK"
+                                      <span> <a style="float:left"  class="fm external-link" target="_BLANK"
                                         data-toggle="tooltip" data-placement="top"
                                         title="Preview" (click)="getEmailTemplatePreview(emailTemplate)"> <!-- (click)="preview(file)"  -->
                                           <i class="fa fa-external-link-square"  aria-hidden="true" style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
@@ -937,7 +937,7 @@
                               </span>
                             </ng-container>
                             <div class="item__actions">
-                              <span> <a class="fm external-link" target="_BLANK" data-toggle="tooltip" data-placement="top"
+                              <span> <a style="float:left" class="fm external-link" target="_BLANK" data-toggle="tooltip" data-placement="top"
                                 title="Preview" (click)="getEmailTemplatePreview(emailTemplate)">
                                   <i class="fa fa-external-link-square"  aria-hidden="true" style="font-size: 20px; color: #5a5a5a; padding-top: 1px !important;"></i>
                                </a>
@@ -994,7 +994,7 @@
 								<i class="fa fa-share-alt fa-social" style="margin: 0 5px;"></i> Social Share
 							</button>
 							<div class="clearfix"></div>
-							<div [hidden]="!isSocialEnable">							
+							<div [hidden]="!isSocialEnable">
 							<div class="col-xs-12 col-sm-6">
 							<ul class="list-group social-account">
 								<li class="list-group-item profile-box" style="background-color: #dfdfdf; cursor: pointer;" [ngClass]="{'checked': isAllSelected, 'unchecked': !isAllSelected}">
@@ -1037,17 +1037,17 @@
 							</div>
 							<div class="col-xs-12 col-sm-6">
 								<div style="border: 1px solid #ccc; padding: 10px;">
-										<table> 
-										<caption>Social share preview</caption>  
-										<tbody> 
-										<tr> 
-											<th scope="row"><img class="pull-left" style="height: 100px" src="assets/images/{{campaignType}}-email.png"></th> 
+										<table>
+										<caption>Social share preview</caption>
+										<tbody>
+										<tr>
+											<th scope="row"><img class="pull-left" style="height: 100px" src="assets/images/{{campaignType}}-email.png"></th>
 											<td>
 												<h6 class="text-primary">{{authenticationService.APP_URL}}</h6>
 												<h6>{{campaign.campaignName}}</h6>
 											</td>
-										</tr>   
-										</tbody> 
+										</tr>
+										</tbody>
 										</table>
 								</div>
 							</div>
