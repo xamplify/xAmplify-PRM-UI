@@ -173,13 +173,18 @@ label {
 	-ms-flex-pack: justify;
 	justify-content: space-between;
 	position: absolute;
-	right: 1rem;
+	right: 2rem;
 	bottom: 1rem;
 	width: -webkit-calc(50% - 15px);
 	width: calc(50% - 15px);
 	padding-top: 1rem;
 	border-top: 1px solid #eaebed;
 }
+.item__actions  span{
+position: relative;
+right: -6px;
+}
+
 .actions__external-link {
 	margin-right: .75rem;
 }
