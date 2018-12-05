@@ -646,6 +646,7 @@ legend {
     text-align: center;
     position: relative;
     padding: 1em 0;
+    box-shadow: 1px 1px 1px 1px #adadad;
   }
 }
 
@@ -658,6 +659,7 @@ legend {
     text-align: center;
     position: relative;
     padding: 1em 0;
+    box-shadow: 1px 1px 1px 1px #adadad;
   }
 }
 
