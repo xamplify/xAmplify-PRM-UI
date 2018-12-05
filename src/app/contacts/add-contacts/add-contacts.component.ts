@@ -1580,18 +1580,20 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     showModal() {
-        $( '#salesforceModal' ).appendTo( "body" ).modal( 'show' );
+        $('#ContactSalesForceModal').modal('show');
+        /* $( '#salesforceModal' ).appendTo( "body" ).modal( 'show' );
         $( '#salesforceModal' ).modal( 'show' );
         $('#salesforceModal').modal('toggle');
-        $("#salesforceModal").modal();
+        $("#salesforceModal").modal();*/
     }
 
     hideModal() {
-        $( '#salesforceModal' ).modal( 'hide' );
+        $('#ContactSalesForceModal').modal('hide');
+        /*$( '#salesforceModal' ).modal( 'hide' );
         $( 'body' ).removeClass( 'modal-open' );
         $( '.modal-backdrop fade in' ).remove();
         $( '#salesforceModal' ).appendTo( "body" ).modal( 'hide' );
-        $( '#overlay-modal' ).hide();
+        $( '#overlay-modal' ).hide();*/
 
     }
 
@@ -1669,6 +1671,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                         this.customResponse = new CustomResponse( 'ERROR', this.properties.NO_RESULTS_FOUND, true );
                         this.selectedAddContactsOption = 8;
                         this.hideModal();
+                        }else{
                         for ( var i = 0; i < this.getSalesforceConatactList.contacts.length; i++ ) {
                             let socialContact = new SocialContact();
                             let user = new User();

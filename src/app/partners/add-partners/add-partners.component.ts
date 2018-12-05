@@ -1487,19 +1487,21 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     }
 
     showModal() {
-        $( '#salesforceModal' ).appendTo( "body" ).modal( 'show' );
+        /*$( '#salesforceModal' ).appendTo( "body" ).modal( 'show' );
         $( '#salesforceModal' ).modal( 'show' );
         $('#salesforceModal').modal('toggle');
-        $("#salesforceModal").modal();
+        $("#salesforceModal").modal();*/
+        $('#TestSalesForceModal').modal('show');
 
     }
 
     hideModal() {
-        $( '#salesforceModal' ).modal( 'hide' );
+        $('#TestSalesForceModal').modal('hide');
+        /*$( '#salesforceModal' ).modal( 'hide' );
         $( 'body' ).removeClass( 'modal-open' );
         $( '.modal-backdrop fade in' ).remove();
         $( '#overlay-modal' ).hide();
-        $( '#salesforceModal' ).appendTo( "body" ).modal( 'hide' );
+        $( '#salesforceModal' ).appendTo( "body" ).modal( 'hide' );*/
 
     }
 
@@ -1579,12 +1581,12 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                     if ( !this.getGoogleConatacts.contacts ) {
                         this.customResponse = new CustomResponse( 'ERROR', this.properties.NO_RESULTS_FOUND, true );
                         this.selectedAddPartnerOption = 5;
-                        //this.hideModal();
-                        $( '#salesforceModal' ).modal( 'hide' );
+                        this.hideModal();
+                       /* $( '#salesforceModal' ).modal( 'hide' );
                         $( 'body' ).removeClass( 'modal-open' );
                         $( '.modal-backdrop fade in' ).remove();
                         $( '#salesforceModal' ).appendTo( "body" ).modal( 'hide' );
-                        $( '#overlay-modal' ).hide();
+                        $( '#overlay-modal' ).hide();*/
                     } else {
                         for ( var i = 0; i < this.getGoogleConatacts.contacts.length; i++ ) {
                             let socialContact = new SocialContact();
@@ -1597,12 +1599,12 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                                 this.socialPartnerUsers.push( socialContact );
                             }
                             $( "#Gfile_preview" ).show();
-                            //this.hideModal();
-                            $( '#salesforceModal' ).modal( 'hide' );
+                            this.hideModal();
+                            /*$( '#salesforceModal' ).modal( 'hide' );
                             $( 'body' ).removeClass( 'modal-open' );
                             $( '.modal-backdrop fade in' ).remove();
                             //$( '#salesforceModal' ).appendTo( "body" ).modal( 'hide' );
-                            $( '#overlay-modal' ).hide();
+                            $( '#overlay-modal' ).hide();*/
 
                             $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                             $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
@@ -1656,12 +1658,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                     if ( !this.getGoogleConatacts.contacts ) {
                         this.customResponse = new CustomResponse( 'ERROR', this.properties.NO_RESULTS_FOUND, true );
                         this.selectedAddPartnerOption = 5;
-                        //this.hideModal();
-                        $( '#salesforceModal' ).modal( 'hide' );
-                        $( 'body' ).removeClass( 'modal-open' );
-                        $( '.modal-backdrop fade in' ).remove();
-                       // $( '#salesforceModal' ).appendTo( "body" ).modal( 'hide' );
-                        $( '#overlay-modal' ).hide();
+                        this.hideModal();
                     } else {
                         for ( var i = 0; i < this.getGoogleConatacts.contacts.length; i++ ) {
                             let socialContact = new SocialContact();
@@ -1673,19 +1670,12 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                                 socialContact.lastName = this.getGoogleConatacts.contacts[i].lastName;
                                 this.socialPartnerUsers.push( socialContact );
                             }
-
-                            $( '#salesforceModal' ).modal( 'hide' );
-                            $( 'body' ).removeClass( 'modal-open' );
-                            $( '.modal-backdrop fade in' ).remove();
-                           // $( '#salesforceModal' ).appendTo( "body" ).modal( 'hide' );
-
-                            $( '#overlay-modal' ).hide();
+                            this.hideModal();
 
                             $( "#Gfile_preview" ).show();
                             $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                             $( '#uploadCSV' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;min-height:85px' );
                             $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
-                            //this.hideModal();
                             $( '.googleImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
                             $( '.zohoImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
                             $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 100px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
