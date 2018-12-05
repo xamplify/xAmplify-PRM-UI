@@ -1580,13 +1580,18 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     showModal() {
-        $( "#salesforceModal" ).show();
+        $( '#salesforceModal' ).appendTo( "body" ).modal( 'show' );
+        $( '#salesforceModal' ).modal( 'show' );
+        $('#salesforceModal').modal('toggle');
+        $("#salesforceModal").modal();
     }
 
     hideModal() {
         $( '#salesforceModal' ).modal( 'hide' );
         $( 'body' ).removeClass( 'modal-open' );
         $( '.modal-backdrop fade in' ).remove();
+        $( '#salesforceModal' ).appendTo( "body" ).modal( 'hide' );
+        $( '#overlay-modal' ).hide();
 
     }
 
@@ -1603,7 +1608,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                         this.storeLogin = data;
                         console.log( data );
                         if ( this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM" ) {
-                            $( "#salesforceModal" ).modal();
+                           this.showModal();
                             console.log( "AddContactComponent salesforce() Authentication Success" );
                             this.checkingPopupValues();
                         } else {
@@ -1664,7 +1669,6 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                         this.customResponse = new CustomResponse( 'ERROR', this.properties.NO_RESULTS_FOUND, true );
                         this.selectedAddContactsOption = 8;
                         this.hideModal();
-                    } else {
                         for ( var i = 0; i < this.getSalesforceConatactList.contacts.length; i++ ) {
                             let socialContact = new SocialContact();
                             let user = new User();
@@ -1997,7 +2001,8 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.getGoogleContactsUsers();
                 this.contactService.socialProviderName = "nothing";
             } else if ( this.contactService.socialProviderName == 'salesforce' ) {
-                $( "#salesforceModal" ).modal();
+               /* $( "#salesforceModal" ).modal();*/
+                this.showModal();
                 this.contactService.socialProviderName = "nothing";
             }
 

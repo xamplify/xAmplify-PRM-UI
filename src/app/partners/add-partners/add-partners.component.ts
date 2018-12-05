@@ -1487,8 +1487,10 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     }
 
     showModal() {
-       // $( '#salesforceModal' ).appendTo( "body" ).modal( 'show' );
+        $( '#salesforceModal' ).appendTo( "body" ).modal( 'show' );
         $( '#salesforceModal' ).modal( 'show' );
+        $('#salesforceModal').modal('toggle');
+        $("#salesforceModal").modal();
 
     }
 
@@ -1496,6 +1498,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         $( '#salesforceModal' ).modal( 'hide' );
         $( 'body' ).removeClass( 'modal-open' );
         $( '.modal-backdrop fade in' ).remove();
+        $( '#overlay-modal' ).hide();
+        $( '#salesforceModal' ).appendTo( "body" ).modal( 'hide' );
 
     }
 
@@ -1513,7 +1517,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                         console.log( data );
                         if ( this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM" ) {
                            // $( '#salesforceModal' ).appendTo( "body" ).modal( 'show' );
-                            $( '#salesforceModal' ).modal( 'show' );
+                            /*$( '#salesforceModal' ).modal( 'show' );*/
+                            this.showModal();
                             console.log( "AddContactComponent salesforce() Authentication Success" );
                             this.checkingPopupValues();
                         } else {
@@ -1578,7 +1583,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                         $( '#salesforceModal' ).modal( 'hide' );
                         $( 'body' ).removeClass( 'modal-open' );
                         $( '.modal-backdrop fade in' ).remove();
-                        //$( '#salesforceModal' ).appendTo( "body" ).modal( 'hide' );
+                        $( '#salesforceModal' ).appendTo( "body" ).modal( 'hide' );
                         $( '#overlay-modal' ).hide();
                     } else {
                         for ( var i = 0; i < this.getGoogleConatacts.contacts.length; i++ ) {
@@ -2084,7 +2089,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                 this.getGoogleContactsUsers();
                 this.contactService.socialProviderName = "nothing";
             } else if ( this.contactService.socialProviderName == 'salesforce' ) {
-                $( '#salesforceModal' ).modal( 'show' );
+               /* $( '#salesforceModal' ).modal( 'show' );
+                $('#salesforceModal').modal('toggle');*/
+                this.showModal();
                 this.contactService.socialProviderName = "nothing";
             }
         }
