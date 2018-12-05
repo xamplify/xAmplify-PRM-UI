@@ -1428,7 +1428,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
                 data => {
                     console.log( data );
                     if ( data == "User is successfully resubscribed" ) {
-                        swal(this.checkingContactTypeName + 're-subscribed successfully');
+                        swal(this.checkingContactTypeName + ' re-subscribed successfully');
                         this.listContactsByType( this.contactsByType.selectedCategory );
                     }
                 },
