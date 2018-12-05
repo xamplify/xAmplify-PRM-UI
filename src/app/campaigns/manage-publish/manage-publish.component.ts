@@ -31,13 +31,14 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     hasStatsRole: boolean = false;
     campaignSuccessMessage: string = "";
     isScheduledCampaignLaunched: boolean = false;
-    loggedInUserId: number = 0;
-    hasAllAccess: boolean = false;
-    selectedCampaignTypeIndex: number = 0;
-        pager: any = {};
-        pagedItems: any[];
-        public totalRecords: number = 1;
-        public searchKey: string = "";
+    loggedInUserId = 0;
+    hasAllAccess = false;
+    selectedCampaignTypeIndex = 0;
+    pager: any = {};
+    pagedItems: any[];
+    totalRecords = 1;
+    searchKey = "";
+    isLastElement = false;
     sortByDropDown = [
         { 'name': 'Sort By', 'value': 'createdTime-DESC' },
         { 'name': 'Name (A-Z)', 'value': 'campaign-ASC' },
@@ -50,7 +51,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         { 'name': '12', 'value': '12' },
         { 'name': '24', 'value': '24' },
         { 'name': '48', 'value': '48' },
-        { 'name': '---All---', 'value': '0' },
+        { 'name': 'All', 'value': '0' },
     ]
 
     public selectedSortedOption: any = this.sortByDropDown[0];
@@ -150,7 +151,9 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.listCampaign(this.pagination);
     }
     eventHandler(keyCode: any) {  if (keyCode === 13) {  this.searchCampaigns(); } }
-
+    checkLastElement(i:any){
+      if(i===11) { this.isLastElement = true;} else { this.isLastElement = false;}
+    }
     ngOnInit() {
         try {
             this.isListView = !this.refService.isGridView;
