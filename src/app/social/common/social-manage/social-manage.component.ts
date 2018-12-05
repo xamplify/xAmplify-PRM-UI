@@ -18,12 +18,13 @@ export class SocialManageComponent implements OnInit, OnDestroy {
     socialConnectionsTemp: SocialConnection[] = new Array<SocialConnection>();
     response: any;
     httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
+    providerName: string;
     constructor( private route: ActivatedRoute, private socialService: SocialService,
         public authenticationService: AuthenticationService, public referenceService:ReferenceService ) { }
 
-    listAccounts( userId: number, providerName: string ) {
+    listAccounts( userId: number ) {
         this.referenceService.loading(this.httpRequestLoader, true);
-        this.socialService.listAccounts( userId, providerName, 'ALL' )
+        this.socialService.listAccounts( userId, this.providerName, 'ALL' )
             .subscribe(
             result => {
                 this.socialConnections = result;
@@ -82,9 +83,9 @@ export class SocialManageComponent implements OnInit, OnDestroy {
     errorHandler(event){event.target.src= 'assets/admin/pages/media/profile/icon-user-default.png';}
     ngOnInit() {
         try {
-            const providerName = this.route.snapshot.params['social'];
+            this.providerName = this.route.snapshot.params['social'];
             const userId = this.authenticationService.getUserId();
-            this.listAccounts( userId, providerName );
+            this.listAccounts( userId );
         } catch ( err ) {
             console.log( err );
         }

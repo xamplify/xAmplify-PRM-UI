@@ -37,12 +37,38 @@
                     </h5>
                   </div>
                 </div>
-                <div class="alert alert-warning rounded-0" *ngIf="socialConnections?.length == 0 && !httpRequestLoader.isLoading">
-                  <h4 class="text-warning">
-                    <i class="fa fa-exclamation-triangle" aria-hidden="true" style="font-size: 20px;"></i> No accounts found.
-                  </h4>
-                  <h5>Please click
-                    <a data-toggle="modal" data-target="#connectAccountsModal">here</a> to add your social accounts.</h5>
+                <div *ngIf="socialConnections?.length == 0 && !httpRequestLoader.isLoading">
+                  <div class="container" *ngIf="providerName.toLowerCase() === 'facebook'; else defaultWarningMessage">
+                      <h3>Create a Page</h3>
+                      <h5>Connect your business, yourself or your cause to the worldwide community of people on Facebook. To get started, choose a Page category.</h5>
+
+                      <div class="col-xs-6 p20">
+                        <div class="portlet light text-center">
+                        <img class="img-responsive" style="margin: 0 auto" src="https://www.facebook.com/images/pages/create/biz_illustration.png">
+                        <span class="text-primary">Business or brand</span>
+                        <p>Showcase your products and services, spotlight your brand and reach more customers on Facebook.</p>
+                        <a href="https://www.facebook.com/pages/creation/" target="_blank" class="btn btn-primary btn-xs">Get Started</a>
+                        </div>
+                      </div>
+                      <div class="col-xs-6 p20">
+                        <div class="portlet light text-center">
+                        <img class="img-responsive" style="margin: 0 auto" src="https://www.facebook.com/images/pages/create/community_illustration.png">
+                        <span class="text-primary">Community or public figure</span>
+                        <p>Connect and share with people in your community, organisation, team, group or club.</p>
+                        <a href="https://www.facebook.com/pages/creation/" target="_blank" class="btn btn-primary btn-xs">Get Started</a>
+                        </div>                        
+                      </div>
+                  </div>
+
+                  <ng-template #defaultWarningMessage>
+                  <div class="alert alert-warning rounded-0">
+                    <h4 class="text-warning">
+                      <i class="fa fa-exclamation-triangle" aria-hidden="true" style="font-size: 20px;"></i> No accounts found.
+                    </h4>
+                    <h5>Please click <a data-toggle="modal" data-target="#connectAccountsModal">here</a> to add your social accounts.</h5>
+                  </div>
+                  </ng-template>
+
                 </div>
                 <app-grid-loader *ngIf="httpRequestLoader.isLoading"></app-grid-loader>
 

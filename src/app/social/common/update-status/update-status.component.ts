@@ -187,7 +187,6 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     }
   addVideo() {
     this.resetCustomResponse();
-    console.log(this.socialStatus.socialStatusContents.length);
     if (this.socialStatus.socialStatusContents.length > 0 &&
       (Array.from(this.socialStatus.socialStatusContents)[0].fileType !== 'video')) {
       this.setCustomResponse(ResponseType.Warning, 'You can include up to 4 photos or 1 video in a post.');
@@ -478,7 +477,6 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
       result => {
         this.socialService.socialConnections = result;
         this.socialConnections = result;
-        console.table(result);
       },
       error => console.log(error),
       () => {
@@ -792,19 +790,23 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
           socialStatusProvider.socialStatusList = [];
           this.socialCampaign.socialStatusList.forEach(data => {
             if (data.socialStatusProvider.socialConnection.source === socialStatusProvider.socialConnection.source){
-              let socialStatus = new SocialStatus();
+              // let socialStatus = new SocialStatus();
+              // socialStatus.statusMessage = socialStatusProvider.socialConnection.source === 'TWITTER' ? data.statusMessage.substring(0, 280) : data.statusMessage;
+              // data.socialStatusContents.forEach(data => socialStatus.socialStatusContents.push(data));
+              // socialStatus.socialStatusProvider = data.socialStatusProvider;
+              let socialStatus = JSON.parse(JSON.stringify(data));              
               socialStatus.statusMessage = socialStatusProvider.socialConnection.source === 'TWITTER' ? data.statusMessage.substring(0, 280) : data.statusMessage;
-              data.socialStatusContents.forEach(data => socialStatus.socialStatusContents.push(data));
-              socialStatus.socialStatusProvider = data.socialStatusProvider;              
               socialStatusProvider.socialStatusList.push(socialStatus);
             }
           })
         } else {
           this.socialCampaign.socialStatusList.forEach(data=> {
-              let socialStatus = new SocialStatus();
+              // let socialStatus = new SocialStatus();
+              // socialStatus.statusMessage = socialStatusProvider.socialConnection.source === 'TWITTER' ? data.statusMessage.substring(0, 280) : data.statusMessage;
+              // data.socialStatusContents.forEach(data => socialStatus.socialStatusContents.push(data));
+              // socialStatus.socialStatusProvider = data.socialStatusProvider;              
+              let socialStatus = JSON.parse(JSON.stringify(data));              
               socialStatus.statusMessage = socialStatusProvider.socialConnection.source === 'TWITTER' ? data.statusMessage.substring(0, 280) : data.statusMessage;
-              data.socialStatusContents.forEach(data => socialStatus.socialStatusContents.push(data));
-              socialStatus.socialStatusProvider = data.socialStatusProvider;              
               socialStatusProvider.socialStatusList.push(socialStatus);
           })
         }
@@ -846,8 +848,6 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
       this.isAllSelected = false;
     if (this.selectedAccounts === this.socialStatusProviders.length)
       this.isAllSelected = true;
-
-      console.table(this.socialStatusProviders);
   }
 
   copyContent(targetSocialStatus: SocialStatus, socialStatusProvider: SocialStatusProvider){

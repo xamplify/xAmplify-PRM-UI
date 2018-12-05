@@ -994,7 +994,8 @@
 								<i class="fa fa-share-alt fa-social" style="margin: 0 5px;"></i> Social Share
 							</button>
 							<div class="clearfix"></div>
-							<div [hidden]="!isSocialEnable">
+							<div [hidden]="!isSocialEnable">							
+							<div class="col-xs-12 col-sm-6">
 							<ul class="list-group social-account">
 								<li class="list-group-item profile-box" style="background-color: #dfdfdf; cursor: pointer;" [ngClass]="{'checked': isAllSelected, 'unchecked': !isAllSelected}">
 									<div class="profile-selected" (click)="toggleSelectAll()" style="float: initial;margin: 0 0 0 10px;">
@@ -1034,9 +1035,25 @@
 								</li>
 							</ul>
 							</div>
+							<div class="col-xs-12 col-sm-6">
+								<div style="border: 1px solid #ccc; padding: 10px;">
+										<table> 
+										<caption>Social share preview</caption>  
+										<tbody> 
+										<tr> 
+											<th scope="row"><img class="pull-left" style="height: 100px" src="assets/images/{{campaignType}}-email.png"></th> 
+											<td>
+												<h6 class="text-primary">{{authenticationService.APP_URL}}</h6>
+												<h6>{{campaign.campaignName}}</h6>
+											</td>
+										</tr>   
+										</tbody> 
+										</table>
+								</div>
+							</div>
+							</div>
 						</div>
 					</div>
-
 				</div>
 			<div class="portlet-body clearfix">
 				<div class="col-xs-12 col-sm-12 col-md-5 col-lg-5" *ngIf="campaignType=='video'">
