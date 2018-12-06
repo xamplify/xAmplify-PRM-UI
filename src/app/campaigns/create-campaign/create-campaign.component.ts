@@ -178,7 +178,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     socialStatusList = new Array<SocialStatus>();
     socialStatusProviders = new Array<SocialStatusProvider>();
     isAllSelected: boolean = false;
-
+	isSocialEnable = false;
+    statusMessage: string;
 
 
 
@@ -1768,6 +1769,15 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 if(data.selected){
                     let socialStatus = new SocialStatus();
                     socialStatus.socialStatusProvider = data;
+                    if(socialStatus.socialStatusProvider.socialConnection.source.toLowerCase() === 'twitter'){
+                        var statusMsg = this.statusMessage;
+                        var length = 200;
+                        var trimmedstatusMsg = statusMsg.length > length ? statusMsg.substring(0, length - 3) + "..." : statusMsg;
+                        socialStatus.statusMessage = trimmedstatusMsg;
+                        debugger;
+                    }else{
+                        socialStatus.statusMessage = this.statusMessage;
+                    }
                     this.socialStatusList.push(socialStatus);
                 }
             }
@@ -2253,6 +2263,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 this.videoTabClass  = this.successTabClass;
                 this.emailTemplateTabClass = this.successTabClass;
                 this.listSocialStatusProviders();
+                this.statusMessage = this.campaign.campaignName;
                 if(!this.isAdd && this.selectedTemplateBody!==undefined){
                     this.getAnchorLinksFromEmailTemplate(this.selectedTemplateBody);
                 }
@@ -2292,6 +2303,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         }
 
         listSocialStatusProviders() {
+         if(this.socialStatusProviders.length < 1){
             const socialConnections = this.socialService.socialConnections;
             socialConnections.forEach( data => {
                 if(data.active){
@@ -2300,6 +2312,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                     this.socialStatusProviders.push(socialStatusProvider);
                 }
             })
+         }
         }
 
  /***************************Email Rules***********************************/
