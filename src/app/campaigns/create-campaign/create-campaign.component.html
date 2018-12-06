@@ -690,11 +690,13 @@
                   <!-- <li class="filter" (click)="filterTemplates('BASIC',1)" *ngIf="campaignType=='regular' && !isOnlyPartner" [class.emailtemplate-selected]="1 == selectedEmailTemplateTypeIndex">Basic Templates</li> -->
                   <li class="filter" (click)="filterTemplates('RICH',2)" *ngIf="campaignType=='regular' && !isOnlyPartner" [class.emailtemplate-selected]="2 == selectedEmailTemplateTypeIndex">Basic Templates</li>
                   <li class="filter" (click)="filterTemplates('UPLOADED',3)" *ngIf="campaignType=='regular' && !isOnlyPartner" [class.emailtemplate-selected]="3 == selectedEmailTemplateTypeIndex">Uploaded Regular Templates</li>
+                  <li class="filter" (click)="filterTemplates('REGULAR_CO_BRANDING',4)" *ngIf="campaignType=='regular' && !isOnlyPartner" [class.emailtemplate-selected]="4 == selectedEmailTemplateTypeIndex">Regular Co-Branding Templates</li>
 
                   <!-- <li class="filter" (click)="filterTemplates('BASIC',4)" *ngIf="campaignType=='video' && !isOnlyPartner" [class.emailtemplate-selected]="4== selectedEmailTemplateTypeIndex">Basic Video Templates</li> -->
                   <li class="filter" (click)="filterTemplates('RICH',5)" *ngIf="campaignType=='video' && !isOnlyPartner" [class.emailtemplate-selected]="5== selectedEmailTemplateTypeIndex">Video Templates</li>
                   <li class="filter" (click)="filterTemplates('UPLOADED',6)" *ngIf="campaignType=='video' && !isOnlyPartner" [class.emailtemplate-selected]="6== selectedEmailTemplateTypeIndex">Uploaded Video Templates</li>
-                  <li class="filter" (click)="filterTemplates('PARTNER',7)" [class.emailtemplate-selected]="7== selectedEmailTemplateTypeIndex"
+                 	<li class="filter" (click)="filterTemplates('VIDEO_CO_BRANDING',7)" *ngIf="campaignType=='video' && !isOnlyPartner" [class.emailtemplate-selected]="7== selectedEmailTemplateTypeIndex">Co-Branding Video Templates</li>
+                  <li class="filter" (click)="filterTemplates('PARTNER',8)" [class.emailtemplate-selected]="8== selectedEmailTemplateTypeIndex"
                    *ngIf="!isOnlyPartner && isPartnerToo">Partner Templates</li>
                 </ul>
                 <div class="input-icon right pull-right" style="padding-top: 4px;right: 8px;">

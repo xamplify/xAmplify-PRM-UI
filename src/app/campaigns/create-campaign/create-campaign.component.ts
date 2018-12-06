@@ -1563,6 +1563,15 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
            this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.PARTNER;
            this.selectedEmailTemplateType = EmailTemplateType.PARTNER;
        }
+       else if(type=="REGULAR_CO_BRANDING"){
+           this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.REGULAR_CO_BRANDING;
+           this.selectedEmailTemplateType = EmailTemplateType.REGULAR_CO_BRANDING;
+       }else if(type=="VIDEO_CO_BRANDING"){
+           this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.VIDEO_CO_BRANDING;
+           this.selectedEmailTemplateType = EmailTemplateType.VIDEO_CO_BRANDING;
+       }
+       
+       
         this.selectedEmailTemplateTypeIndex = index;
         this.emailTemplatesPagination.pageIndex = 1;
         this.loadEmailTemplates(this.emailTemplatesPagination);
