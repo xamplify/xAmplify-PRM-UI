@@ -648,7 +648,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
               this.customResponse = new CustomResponse( 'ERROR', response.errorResponses[0].message, true );
 
             }
-            else if(response.errorResponses[0].field ="eventStartTimeString"){
+            else if(response.errorResponses[0].field =="eventStartTimeString"){
               this.customResponse = new CustomResponse( 'ERROR', 'Please change the start time, its already over.', true );
               // this.eventError.eventDateError = true;
             }
@@ -833,18 +833,18 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
           .subscribe(
       (data: any) => {
           if ( this.eventCampaign.campaign ) {
-              data.body = data.body.replace( "EVENT_TITLE", this.eventCampaign.campaign );
+              data.body = data.body.replace( "{{event_title}}", this.eventCampaign.campaign );
           }
           if ( this.eventCampaign.campaignEventTimes[0].startTimeString ) {
               let startTime = new Date(this.eventCampaign.campaignEventTimes[0].startTimeString);
               let srtTime = this.referenceService.formatAMPM(startTime);
               let date1 = startTime.toDateString()
               if(!this.eventCampaign.campaignEventTimes[0].allDay){
-              data.body = data.body.replace( "EVENT_START_TIME", date1 + " " + srtTime );
+              data.body = data.body.replace( "{{event_start_time}}", date1 + " " + srtTime );
               data.body = data.body.replace( "<To>", 'To' )
               }else{
-                  data.body = data.body.replace( "EVENT_START_TIME", date1 + " " + srtTime + ' ' + '(All Day)' );
-                  data.body = data.body.replace( "EVENT_END_TIME", " " );
+                  data.body = data.body.replace( "{{event_start_time}}", date1 + " " + srtTime + ' ' + '(All Day)' );
+                  data.body = data.body.replace( "{{event_end_time}}", " " );
               }
           }
 
@@ -852,7 +852,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
               let endDate = new Date(this.eventCampaign.campaignEventTimes[0].endTimeString);
               let endTime = this.referenceService.formatAMPM(endDate);
               let date2 = endDate.toDateString()
-              data.body = data.body.replace( "EVENT_END_TIME", date2 + " " + endTime );
+              data.body = data.body.replace( "{{event_end_time}}", date2 + " " + endTime );
           }
           /*else if(this.eventCampaign.campaignEventTimes[0].allDay){
 
@@ -862,33 +862,33 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
           }*/
 
           if ( this.eventCampaign.message ) {
-              data.body = data.body.replace( "EVENT_DESCRIPTION", this.eventCampaign.message );
+              data.body = data.body.replace( "{{event_description}}", this.eventCampaign.message );
           }
           if ( !this.eventCampaign.onlineMeeting ) {
               if ( this.eventCampaign.campaignLocation.location && this.eventCampaign.campaignLocation.street ) {
-                  data.body = data.body.replace( /ADDRESS_LANE1/g, this.eventCampaign.campaignLocation.location + "," + this.eventCampaign.campaignLocation.street + "," );
-                  data.body = data.body.replace( /ADDRESS_LANE2/g, this.eventCampaign.campaignLocation.city + "," + this.eventCampaign.campaignLocation.state + "," + this.eventCampaign.campaignLocation.zip );
+                  data.body = data.body.replace( /{{addreess_lane1}}/g, this.eventCampaign.campaignLocation.location + "," + this.eventCampaign.campaignLocation.street + "," );
+                  data.body = data.body.replace( /{{addreess_lane2}}/g, this.eventCampaign.campaignLocation.city + "," + this.eventCampaign.campaignLocation.state + "," + this.eventCampaign.campaignLocation.zip );
               }
           } else {
-              data.body = data.body.replace( /ADDRESS_LANE1/g, "Online Meeting" )
-              data.body = data.body.replace( /ADDRESS_LANE2/g, " " )
+              data.body = data.body.replace( /{{addreess_lane1}}/g, "Online Meeting" )
+              data.body = data.body.replace( /{{addreess_lane2}}/g, " " )
           }
           if ( this.eventCampaign.email ) {
-              data.body = data.body.replace( "EVENT_EMAILID", this.eventCampaign.email );
+              data.body = data.body.replace( "{{event_emailId}}", this.eventCampaign.email );
           }
           if ( this.eventCampaign.email ) {
-              data.body = data.body.replace( "VENDOR_NAME", this.authenticationService.user.firstName );
+              data.body = data.body.replace( "{{vendor_name}}", this.authenticationService.user.firstName );
           }
           if ( this.eventCampaign.email ) {
               data.body = data.body.replace( "VENDOR_TITLE", this.authenticationService.user.jobTitle );
           }
           if ( this.eventCampaign.email ) {
-              data.body = data.body.replace( "VENDOR_EMAILID", this.authenticationService.user.emailId );
+              data.body = data.body.replace( "{{vendor_emailId}}", this.authenticationService.user.emailId );
           }
           if ( this.eventCampaign.campaignEventMedias[0].filePath ) {
-              data.body = data.body.replace( "IMAGE_URL", this.eventCampaign.campaignEventMedias[0].filePath );
+              data.body = data.body.replace( "https://xamplify.s3.amazonaws.com/images/bee-259/rocket-color.png", this.eventCampaign.campaignEventMedias[0].filePath );
           }else{
-              data.body = data.body.replace( "IMAGE_URL", "https://aravindu.com/vod/images/conference2.jpg" );
+              data.body = data.body.replace( "https://xamplify.s3.amazonaws.com/images/bee-259/rocket-color.png", "https://xamplify.s3.amazonaws.com/images/bee-259/rocket-color.png" );
           }
 
           if ( this.eventCampaign.campaignLocation.location ) {

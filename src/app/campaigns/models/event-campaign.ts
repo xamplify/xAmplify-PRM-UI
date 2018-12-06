@@ -12,7 +12,7 @@ export class EventCampaign {
     campaign: string;
     user: User = new User();
     message: string;
-    channelCampaign: boolean = true;
+    channelCampaign: boolean = false;
     emailOpened: boolean = true;
     socialSharingIcons: boolean = true;
     fromName: string;

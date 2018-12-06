@@ -214,7 +214,7 @@
 									<b *ngIf="emailTemplate.createdBy?.length<17">{{emailTemplate.createdBy}}</b>
 								</h6>
 								<h6 title="{{emailTemplate.companyName}}">
-									From <b *ngIf="emailTemplate.companyName?.length>17">{{emailTemplate.companyName|slice:0:17}}..</b>
+									From <b *ngIf="emailTemplate.companyName?.length>17">{{emailTemplate.companyName | slice:0:17}}..</b>
 									<b *ngIf="emailTemplate.companyName?.length<17">{{emailTemplate.companyName}}</b>
 								</h6>
 								</ng-container>
