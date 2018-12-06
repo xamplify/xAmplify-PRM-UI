@@ -780,13 +780,13 @@
                         <ul class="content__list">
                             <li class="list__item" [class.list__item--selected]="emailTemplateId === selectedEmailTemplateRow">
                               <!-- above class [ngClass]="{'list__item--selected':selectedFileIds.indexOf(file.id)>-1}" -->
-                              <div class="flex-row">
+                              <div class="flex-row" (click)="setEmailTemplate(campaign.emailTemplate)">
                                 <div class="item__select-box-wrapper">
                                   <span class="select-box"> <label>
-                                    <input (click)="setEmailTemplate(emailTemplate)"  type="checkbox">
+                                    <input (click)="setEmailTemplate(emailTemplate)"  type="checkbox" *ngIf="emailTemplateId!=selectedEmailTemplateRow" (click)="setEmailTemplate(campaign.emailTemplate)">
+                                  	 <input type="checkbox" checked="checked" *ngIf="emailTemplateId==selectedEmailTemplateRow">
                                   </label>
                                   </span>
-                                  <!-- [checked]="selectedFileIds.indexOf(file.id)>-1" -->
                                    <span class="ng-scope"> <a
                                     class="item__preview item__preview--image img-container custom"
                                     target="_BLANK"> <img
@@ -818,7 +818,7 @@
                                     <div class="item__actions">
                                       <span> <a style="float:left; right: -6px;"  class="fm external-link" target="_BLANK"
                                         data-toggle="tooltip" data-placement="top"
-                                        title="Preview" (click)="getEmailTemplatePreview(emailTemplate)"> <!-- (click)="preview(file)"  -->
+                                        title="Preview"  (click)="$event.stopPropagation();getEmailTemplatePreview(emailTemplate)"> <!-- (click)="preview(file)"  -->
                                           <i class="fa fa-external-link-square"  aria-hidden="true" style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
                                        </a>
                                       </span>
@@ -835,7 +835,7 @@
                       </div>
                     </ng-container>
 
-                    <div hidden *ngFor="let emailTemplate of emailTemplatesPagination.pagedItems ;let i =index" id="emailTemplateListDiv_{{emailTemplate.id}}">
+                    <div hidden *ngFor="let emailTemplate of emailTemplatesPagination.pagedItems ;let i =index" id="emailTemplateListDiv_{{emailTemplate.id}}" >
                       <div class="col-md-3 col-sm-4 mix category_1 mix_all" style="display: block; opacity: 1; margin-top: -11px;" *ngIf="emailTemplateId!=emailTemplate.id">
                         <div id="container">
                           <h3 *ngIf="emailTemplate.type=='PARTNER'" class="partner-ribbon">
@@ -899,7 +899,7 @@
                     <ul class="content__list" *ngFor="let emailTemplate of emailTemplatesPagination.pagedItems ;let i =index">
                     <li *ngIf="emailTemplateId!=emailTemplate.id" class="list__item" [class.list__item--selected]="emailTemplate.id === selectedEmailTemplateRow">
                       <!-- above class [ngClass]="{'list__item--selected':selectedFileIds.indexOf(file.id)>-1}" -->
-                      <div class="flex-row">
+                      <div class="flex-row" (click)="setEmailTemplate(emailTemplate)">
                         <div class="item__select-box-wrapper">
                           <span class="select-box" [class.hide]="emailTemplate.draft"> <label>
                             <input (click)="setEmailTemplate(emailTemplate)"  type="checkbox">
@@ -938,7 +938,7 @@
                             </ng-container>
                             <div class="item__actions">
                               <span> <a style="float:left;right: -6px;" class="fm external-link" target="_BLANK" data-toggle="tooltip" data-placement="top"
-                                title="Preview" (click)="getEmailTemplatePreview(emailTemplate)">
+                                title="Preview" (click)="$event.stopPropagation();getEmailTemplatePreview(emailTemplate)">
                                   <i class="fa fa-external-link-square"  aria-hidden="true" style="font-size: 20px; color: #5a5a5a; padding-top: 1px !important;"></i>
                                </a>
                               </span>
