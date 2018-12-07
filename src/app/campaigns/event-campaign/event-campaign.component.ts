@@ -1142,17 +1142,18 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
             this.recipientsTab = false;
             this.emailTemplatesTab = true;
             this.launchTab = false;
-            this.setUserLists();
         }else if( currentTab == 'launch' ){
             this.detailsTab = false;
             this.recipientsTab = false;
             this.emailTemplatesTab = false;
             this.launchTab = true;
+            this.setUserLists();
             }
 
     }
     setUserLists(){
-      if(this.isPartnerUserList) {this.eventCampaign.userListIds = this.parternUserListIds; }
+        this.selectedListOfUserLists = [];
+        if(this.isPartnerUserList) {this.eventCampaign.userListIds = this.parternUserListIds; }
       else { this.eventCampaign.userListIds = this.userListIds; }
       for(let i=0; i< this.contactListsPagination.pagedItems.length; i++ ) {
         if(this.eventCampaign.userListIds[0] === this.contactListsPagination.pagedItems[i].id)
