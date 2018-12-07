@@ -99,6 +99,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   emailTemplatesTabClass = "disableRecipientsTab";
   launchTabClass = "disableRecipientsTab";
 
+  selectedListOfUserLists = [];
+
   constructor(public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
     private contactService: ContactService,
     public campaignService: CampaignService,
@@ -147,6 +149,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
  imageClick(){
   $('#eventImage').click();
  }
+
   ngOnInit() {
     this.detailsTab = true;
     this.resetTabClass()
@@ -242,13 +245,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     this.ckeConfig = {
       allowedContent: true,
     };
-  }
-  highlightRowAll(id:number){
-   if(this.isPartnerUserList){
-    this.partnerHighlightRow(id);
-   } else {
-    this.highlightRow(id);
-   }
   }
   ngAfterViewInit() {
    // this.listAllTeamMemberEmailIds();
@@ -1122,10 +1118,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
      emailTemplateSelection(emailTemplate){
             this.eventCampaign.emailTemplate = emailTemplate;
             this.resetTabClass();
-            for (let userListId of this.eventCampaign.userListIds) {
-              let contactList = new ContactList(userListId);
-              this.eventCampaign.userLists.push(contactList);
-            }
         }
     reInitialize(){
       this.referenceService.selectedCampaignType = "";
@@ -1150,6 +1142,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
             this.recipientsTab = false;
             this.emailTemplatesTab = true;
             this.launchTab = false;
+            this.setUserLists();
         }else if( currentTab == 'launch' ){
             this.detailsTab = false;
             this.recipientsTab = false;
@@ -1158,7 +1151,20 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
             }
 
     }
-
+    setUserLists(){
+      if(this.isPartnerUserList) {this.eventCampaign.userListIds = this.parternUserListIds; }
+      else { this.eventCampaign.userListIds = this.userListIds; }
+      for(let i=0; i< this.contactListsPagination.pagedItems.length; i++ ) {
+        if(this.eventCampaign.userListIds[0] === this.contactListsPagination.pagedItems[i].id)
+        {
+          const list = {'id': this.eventCampaign.userListIds[0],
+            'name': this.contactListsPagination.pagedItems[i].name
+          }
+          this.selectedListOfUserLists.push(list);
+        }
+      }
+      console.log(this.selectedListOfUserLists);
+    }
     resetTabClass(){
         if((this.eventCampaign.campaign && this.eventCampaign.fromName && this.eventCampaign.campaignEventTimes[0].startTimeString && this.eventCampaign.campaignEventTimes[0].countryId && this.eventCampaign.message) && (this.userListIds.length === 0 && this.parternUserListIds.length === 0)){
             this.recipientsTabClass = "enableRecipientsTab";

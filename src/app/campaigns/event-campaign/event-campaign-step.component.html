@@ -497,8 +497,8 @@ a.disabled {
                       <tbody>
                         <tr *ngFor="let contactList of contactListsPagination.pagedItems; let i=index;" [class.contact-list-selected]="userListIds.indexOf(contactList.id)>-1 || parternUserListIds.indexOf(contactList.id)>-1">
                           <td class='text-center m0'>
-                            <input *ngIf="!isPartnerUserList " [attr.disabled]="isPreviewEvent? '' : null" type='checkbox' id='{{contactList.id}}' [checked]="userListIds.indexOf(contactList.id)>-1" (click)="highlightRow(contactList.id)" (input)="resetTabClass()">
-                            <input *ngIf="isPartnerUserList" [attr.disabled]="isPreviewEvent? '' : null" type='checkbox' id='{{contactList.id}}' [checked]="parternUserListIds.indexOf(contactList.id)>-1" (click)="partnerHighlightRow(contactList.id)" (input)="resetTabClass()">
+                            <input *ngIf="!isPartnerUserList" name="campaignContact[]" [attr.disabled]="isPreviewEvent? '' : null" type='checkbox' id='{{contactList.id}}' [checked]="userListIds.indexOf(contactList.id)>-1" (click)="highlightRow(contactList.id)" (input)="resetTabClass()">
+                            <input *ngIf="isPartnerUserList" name="campaignContact[]"  [attr.disabled]="isPreviewEvent? '' : null" type='checkbox' id='{{contactList.id}}' [checked]="parternUserListIds.indexOf(contactList.id)>-1" (click)="partnerHighlightRow(contactList.id)" (input)="resetTabClass()">
                           </td>
                           <td>
                             <h5 class='m0 f-w-600 table-color' title="{{contactList.name}}">
@@ -725,9 +725,9 @@ a.disabled {
                     </ng-container>
 
                     </td>
-                    <td width="55%">
-                      <ng-container *ngFor="let contactList of eventCampaign.userLists;let i=index;">
-                        <a (click)="loadContacts(contactList.id,contactsPagination)" data-toggle="modal" data-target="#myModal" title="{{contactList.name}}"
+                    <td width="55%" style="text-align:center">
+                      <ng-container *ngFor="let contactList of selectedListOfUserLists;let i=index;">
+                        <a (click)="loadContacts(contactList,contactsPagination)" data-toggle="modal" title="{{contactList.name}}"
                           style="display: block;">
                           <ng-container *ngIf="contactList.name?.length>50">
                             {{contactList.name | slice:0:50}}...
