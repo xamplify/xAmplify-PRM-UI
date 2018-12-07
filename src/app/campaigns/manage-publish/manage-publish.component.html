@@ -138,13 +138,20 @@
 												</ng-container> -->
 												<ng-container *ngIf="campaign.launched">
 												<a *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) ||
-														 (loggedInUserId==campaign.userId) || authenticationService.module.isVendor) && campaign.channelCampaign"
+														 (loggedInUserId==campaign.userId) || authenticationService.module.isVendor) && campaign.channelCampaign && campaign.redistributedCount>0"
                          								 (click)="goToRedistributedCampaigns(campaign)" data-toggle="tooltip" data-placement="top" title="Show Redistributed Campaigns">
 														<span class="circled-number"><b>{{campaign.redistributedCount}}</b></span>
-													</a>
+												</a>
+												
+												<a *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) ||
+														 (loggedInUserId==campaign.userId) || authenticationService.module.isVendor) && campaign.channelCampaign && campaign.redistributedCount==0"
+                         								  data-toggle="tooltip" data-placement="top" title="No Redistributed Campaigns">
+														<span class="circled-number disabled"><b>{{campaign.redistributedCount}}</b></span>
+												</a>
+												
+												
 													<a *ngIf="  hasAllAccess || (hasStatsRole || hasCampaignRole) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor"
-													 data-rel="fancybox-button" (click)="campaginRouter(campaign)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.campaign_report}}"
-													>
+													 data-rel="fancybox-button" (click)="campaginRouter(campaign)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.campaign_report}}">
 														<i class="fa fa-line-chart"></i>
 													</a>
 													<!-- <a *ngIf=" (campaign.campaignType !== 'SOCIAL') && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor) && !campaign.nurtureCampaign"

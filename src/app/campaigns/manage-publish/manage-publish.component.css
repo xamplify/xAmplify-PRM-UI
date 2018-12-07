@@ -281,3 +281,4 @@ td h5 {
     color: #00a6e8;
 }
 .mobile-css { position: absolute; top:-77px;}
+.circled-number.disabled{ cursor: not-allowed}
