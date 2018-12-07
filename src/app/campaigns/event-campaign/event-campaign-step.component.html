@@ -73,7 +73,7 @@ a.disabled {
 
 			<!-- Step One code -->
  <fieldset class="portlet light" style="margin-top: 25px" [hidden]="!detailsTab">
-			
+
 				<!-- <div class="page-bar  portlet light border-radius-0 shadow">
 		<div class="portlet-body clearfix"> -->
 				<div class="col-xs-12 col-sm-7">
@@ -452,13 +452,13 @@ a.disabled {
 				<!-- </div>
           </div> -->
 			</fieldset>
-			
+
 
 			<!--  End Step one -->
 
 
      <!--   Step two  Recipients  -->
-     
+
       <div class="col-xs-12 mb10" *ngIf="recipientsTab" style="padding: 10px 0 0 0;">
             <div class="boxes portlet light">
                 <div class="portlet-title" style="display:block">
@@ -483,30 +483,28 @@ a.disabled {
                 </section>
                 <ng-template #contactList>
                   <div class="table-responsive">
-                    <table class="table tgrid" id='contact-list-table' 	[ngClass]="{'has-error': eventError.eventContactError}">
+                    <table class="table table-bordered no-more-tables dataTable no-footer" id='contact-list-table' 	[ngClass]="{'has-error': eventError.eventContactError}">
                       <thead>
                         <tr>
                           <th class="custom-center">Select</th>
-                          <th class="custom-center">List Name</th>
+                          <th class="custom-center" style="width:18%">List Name</th>
                           <th class="custom-center">No.of Recipients</th>
                           <th class="custom-center">Preview</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr *ngFor="let contactList of contactListsPagination.pagedItems; let i=index;">
+                        <tr *ngFor="let contactList of contactListsPagination.pagedItems; let i=index;" [class.contact-list-selected]="userListIds.indexOf(contactList.id)>-1 || parternUserListIds.indexOf(contactList.id)>-1">
                           <td class='text-center m0'>
                             <input *ngIf="!isPartnerUserList " [attr.disabled]="isPreviewEvent? '' : null" type='checkbox' id='{{contactList.id}}' [checked]="userListIds.indexOf(contactList.id)>-1" (click)="highlightRow(contactList.id)" (input)="resetTabClass()">
                             <input *ngIf="isPartnerUserList" [attr.disabled]="isPreviewEvent? '' : null" type='checkbox' id='{{contactList.id}}' [checked]="parternUserListIds.indexOf(contactList.id)>-1" (click)="partnerHighlightRow(contactList.id)" (input)="resetTabClass()">
                           </td>
                           <td>
                             <h5 class='m0 f-w-600 table-color' title="{{contactList.name}}">
-                              <span *ngIf="contactList.name?.length<=50">{{contactList.name}}</span>
-                              <span *ngIf="contactList.name?.length>50">{{contactList.name | slice:0:50}}...</span>
+                              <span>{{contactList.name | slice:0:50}}<span *ngIf="contactList.name?.length>50">...</span></span>
                             </h5>
-                            <h6 class="pull-left mb0 mt5 table-color" title="{{contactList.uploadedBy}}">
-                              <span *ngIf="contactList.uploadedBy?.length<=30">By: {{contactList.uploadedBy}}</span>
-                              <span *ngIf="contactList.uploadedBy?.length>30">By: {{contactList.uploadedBy | slice:0:30}}...</span>
-                              Created On:<span>{{contactList.createdDate}}</span>
+                            <h6 class="mb0 mt5 table-color" title="{{contactList.uploadedBy}}">
+                                <span>{{contactList.uploadedBy | slice:0:30}}<span *ngIf="contactList.uploadedBy?.length>30">...</span></span>
+                                Created On:<span>{{contactList.createdDate}}</span>
                             </h6>
                           </td>
                           <td> <h6 class='m0 text-center f-w-600 table-color'>{{contactList.noOfContacts}}</h6> </td>
@@ -529,11 +527,11 @@ a.disabled {
                 </div>
               </div>
           </div>
-          
-          
-          
+
+
+
       <!--     End Step two   -->
-      
+
 <!--        Step three email templates   -->
 
 
@@ -545,11 +543,10 @@ a.disabled {
                   </div>
                   <div class="portlet-body clearfix">
                         <section  style="min-height: 200px;">
-                      
+
                         <ul class="content__list"
 										*ngFor="let emailTemplate of emailTemplatesPagination.pagedItems;let i =index">
-										<li class="list__item" [class.list__item--selected]="eventCampaign.emailTemplate.id === emailTemplate.id"
-											>
+										<li (click)="eventCampaign.emailTemplate = emailTemplate;" class="list__item" [class.list__item--selected]="eventCampaign.emailTemplate.id === emailTemplate.id">
 											<!-- above class [ngClass]="{'list__item--selected':selectedFileIds.indexOf(file.id)>-1}" -->
 											<div class="flex-row">
 												<div class="item__select-box-wrapper">
@@ -562,17 +559,15 @@ a.disabled {
 													 <span class="ng-scope"> <a
 														class="item__preview item__preview--image img-container custom"
 														target="_BLANK"> <img
-															ng-src="https://d15k2d11r6t6rl.cloudfront.net/public/_thumbs/Integrators/6639d69f-523f-44ca-b809-a00daa26b367/bee-12092/BC-xAmplify-changes1.jpg_thumb.png?hash=1537857431976"
-															onerror="this.src='data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+Cjxzdmcgd2lkdGg9IjI5cHgiIGhlaWdodD0iMjhweCIgdmlld0JveD0iMCAwIDI5IDI4IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbG5zOnNrZXRjaD0iaHR0cDovL3d3dy5ib2hlbWlhbmNvZGluZy5jb20vc2tldGNoL25zIj4KICAgIDwhLS0gR2VuZXJhdG9yOiBTa2V0Y2ggMy4zLjIgKDEyMDQzKSAtIGh0dHA6Ly93d3cuYm9oZW1pYW5jb2RpbmcuY29tL3NrZXRjaCAtLT4KICAgIDx0aXRsZT5pbWFnZTwvdGl0bGU+CiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4KICAgIDxkZWZzPjwvZGVmcz4KICAgIDxnIGlkPSJpY29ucyIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCIgc2tldGNoOnR5cGU9Ik1TUGFnZSI+CiAgICAgICAgPGcgaWQ9IkFydGJvYXJkLTEiIHNrZXRjaDp0eXBlPSJNU0FydGJvYXJkR3JvdXAiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC01MDEuMDAwMDAwLCAtNDguMDAwMDAwKSIgc3Ryb2tlPSIjNTA1NjU5Ij4KICAgICAgICAgICAgPGcgaWQ9ImltYWdlIiBza2V0Y2g6dHlwZT0iTVNMYXllckdyb3VwIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg1MDMuMDAwMDAwLCA0OS4wMDAwMDApIj4KICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik0wLjAzMjQ0OTE2MDgsNy44NjY4Mzk4OCBMMTguNTQ0NzU4MiwzLjc0NTU3NTk4IEwyMi44MTg2NjE1LDIxLjU5NjczMTEgTDQuMzA2MzUyNDYsMjUuNzE3OTk1IEwwLjAzMjQ0OTE2MDgsNy44NjY4Mzk4OCBMMC4wMzI0NDkxNjA4LDcuODY2ODM5ODggWiIgaWQ9IlJlY3RhbmdsZS02OSIgc3Ryb2tlLXdpZHRoPSIyIiBza2V0Y2g6dHlwZT0iTVNTaGFwZUdyb3VwIj48L3BhdGg+CiAgICAgICAgICAgICAgICA8ZyBpZD0iaW1hZ2UtbW9kdWxlLWNvcHkiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDUuNzc3Nzc4LCAwLjAwMDAwMCkiIHNrZXRjaDp0eXBlPSJNU1NoYXBlR3JvdXAiPgogICAgICAgICAgICAgICAgICAgIDxnIGlkPSJzdmdzIj4KICAgICAgICAgICAgICAgICAgICAgICAgPGcgaWQ9IlJlY3RhbmdsZS02OS0rLVBhdGgtOTEtKy1PdmFsLTEiPgogICAgICAgICAgICAgICAgICAgICAgICAgICAgPHJlY3QgaWQ9IlJlY3RhbmdsZS02OSIgc3Ryb2tlLXdpZHRoPSIyIiBmaWxsPSIjRkZGRkZGIiB4PSIwIiB5PSIwIiB3aWR0aD0iMTkuOTYyOTYzIiBoZWlnaHQ9IjE5LjI1Ij48L3JlY3Q+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8cGF0aCBkPSJNMC43OTkxNDUyOTksMTUuNDEyMDg3OSBMNy4xOTIzMDc2OSwxMC43ODg0NjE1IEwxMS4xODgwMzQyLDEzLjEwMDI3NDcgTDIwLjc3Nzc3NzgsNi4xNjQ4MzUxNiIgaWQ9IlBhdGgtOTEiPjwvcGF0aD4KICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxlbGxpcHNlIGlkPSJPdmFsLTEiIGN4PSI3LjU5MTg4MDM0IiBjeT0iNS43Nzk1MzI5NyIgcng9IjIuNzk3MDA4NTUiIHJ5PSIyLjY5NzExNTM4Ij48L2VsbGlwc2U+CiAgICAgICAgICAgICAgICAgICAgICAgIDwvZz4KICAgICAgICAgICAgICAgICAgICA8L2c+CiAgICAgICAgICAgICAgICA8L2c+CiAgICAgICAgICAgIDwvZz4KICAgICAgICA8L2c+CiAgICA8L2c+Cjwvc3ZnPg=='"
-															class="thumb ng-scope" src="assets/images/email-template.png">
+															class="thumb ng-scope" style="width: 103px !important;" src="assets/images/bee-template/rich-co-branding-news-letter.png">
 													</a> <a href="javascript:;"> </a>
 													</span>
 												</div>
 												<div class="item__content">
 													<div class="flex-row">
 														<span class="item__name" data-toggle="tooltip"
-															[title]="emailTemplate.name">{{emailTemplate.name | slice:0:18}}
-															<span *ngIf="emailTemplate.name?.length>18">...</span>
+															[title]="emailTemplate.name"><b>{{emailTemplate.name | slice:0:18}}
+															<span *ngIf="emailTemplate.name?.length>18">...</span></b>
 														</span>
 														<div class="item__actions">
 															<span> <a class="fm external-link" target="_BLANK"
@@ -602,16 +597,16 @@ a.disabled {
           <app-pagination [pagination]="emailTemplatesPagination" [type]="'emailTemplates'"></app-pagination>
         </div>
           </div>
-          
-          
+
+
         <!--    End Step three templates -->
-        
-        
+
+
 		<!-- 	Step four launch campaigns    -->
 		<div [hidden]="!launchTab" style="padding: 10px 0 0 0;">
-		
-		
-		
+
+
+
 		<!-- <div [attr.class]="lauchTabPreivewDivClass">
 					<div class="portlet light border-0">
 						<table width="100%">
@@ -676,11 +671,11 @@ a.disabled {
 						</table>
 					</div>
 				</div> -->
-		
-		
-		
-		
-		
+
+
+
+
+
 		  <div class="col-xs-12 mb10 p0">
           <fieldset class="col-xs-12">
             <legend style="color: #2c3f52;">Add Your Work Flow</legend>
@@ -826,7 +821,7 @@ a.disabled {
             <div class="btn-group btn-group-justified">
                <ng-container *ngFor="let options of launchOptions">
                   <label class="btn btn-primary" style="border: 1px solid #fff;" [class.disabled]="isPreviewEvent" >
-                    <input type="radio" class="text-center" (input)="resetTabClass()" name="scheduleCampaign" [value]="options" (click)="setLaunchOptions(options)" ngDefaultControl 
+                    <input type="radio" class="text-center" (input)="resetTabClass()" name="scheduleCampaign" [value]="options" (click)="setLaunchOptions(options)" ngDefaultControl
                     style=" margin-right:1.5em; " />{{options}}
                   </label>
                </ng-container>
@@ -874,12 +869,12 @@ a.disabled {
            <!--  ****Test email template**** -->
             <!-- <div><button type="button" class="btn green" (click)="campaignService.addEmailId(eventCampaign,eventCampaign.emailTemplate.id,false)" style="width: 10em;">Send Test Email</button>
             </div> -->
-            
+
           </div>
-            
-  
+
+
    <!--   end step four launch   -->
-		
+
 
 
 
@@ -907,7 +902,7 @@ a.disabled {
         </div>
         <div class="modal-body">
           <div class="table-responsive">
-            <table class="table tgrid">
+            <table class="table table-bordered no-more-tables dataTable no-footer">
               <thead>
                 <tr>
                   <th>Email Address</th>
@@ -932,7 +927,7 @@ a.disabled {
                 </tr>
               </tbody>
             </table>
-            <app-pagination class="pg8" *ngIf="contactsPagination.pagedItems?.length > 0" [pagination]="contactsPagination" [type]="'updatestatuscontacts'"
+            <app-pagination class="pg8" *ngIf="contactsPagination.pagedItems?.length > 0" [pagination]="contactsPagination" [type]="'contacts'"
              (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropDown($event)"></app-pagination>
           </div>
         </div>

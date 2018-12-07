@@ -79,7 +79,8 @@
         <div style="font-size: 15px;">
           <span style="float:left;margin-bottom: 3px">Replying as: </span><span style="margin-left: 6px;" class="bold"> {{replyUserName}}</span>
         </div>
-        <textarea [(ngModel)]="campaignRsvp.message" [ngModelOptions]="{standalone: true}" placeholder="Add a comment..."></textarea>
+        <textarea [(ngModel)]="campaignRsvp.message"  (input)="characterSize()" [ngModelOptions]="{standalone: true}" maxlength="140" placeholder="Add a comment..."></textarea>
+        <label style="float:right; font-size: 11px;position: absolute;right: 21px;bottom: 2px;color: #7b8894;">{{characterleft}} characters left</label>
        <div style="margin-bottom: 7px;" *ngIf="campaignRsvp.eventCampaignRsvp=='YES'">
          <button style="min-width: 35px !important;" class="btn btn-primary default-btn-css" [disabled]="totalGuests==1" (click)="totalGuests = totalGuests-1">-</button>
          <button class="btn btn-defult default-btn-css totalguests">{{totalGuests}}</button>

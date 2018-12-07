@@ -25,6 +25,7 @@ export class RsvpComponent implements OnInit {
   totalGuests = 1;
   type="";
   replyUserName=""
+  characterleft: any;
 
   constructor(public referenceService: ReferenceService, private route: ActivatedRoute, public campaignService: CampaignService, public processor:Processor,
   public authenticationService:AuthenticationService) { }
@@ -49,7 +50,7 @@ export class RsvpComponent implements OnInit {
   }
   addURLs(templateBody:any){
     // just to avoid 404 link, added the links here.
-      
+
       /*if ( this.eventcampaign.campaign ) {
           templateBody.body = templateBody.body.replace( "EVENT_TITLE", this.eventcampaign.campaign );
       }
@@ -59,19 +60,19 @@ export class RsvpComponent implements OnInit {
           let date1 = startTime.toDateString()
           templateBody.body = templateBody.body.replace( "EVENT_START_TIME", date1 + " " + srtTime );
       }
-      
+
       if ( this.eventcampaign.campaignEventTimes[0].endTimeString ) {
           let endDate = new Date(this.eventcampaign.campaignEventTimes[0].endTimeString);
           let endTime = this.referenceService.formatAMPM(endDate);
           let date2 = endDate.toDateString()
           templateBody.body = templateBody.body.replace( "EVENT_END_TIME", date2 + " " + endTime );
       }else if(this.eventcampaign.campaignEventTimes[0].allDay){
-          
+
           let startTime = new Date(this.eventcampaign.campaignEventTimes[0].startTimeString);
           let date1 = startTime.toDateString()
           templateBody.body = templateBody.body.replace( "EVENT_END_TIME", date1 + " " + '11:59 PM' );
       }
-      
+
       if ( this.eventcampaign.message ) {
           templateBody.body = templateBody.body.replace( "EVENT_DESCRIPTION", this.eventcampaign.message );
       }
@@ -100,8 +101,8 @@ export class RsvpComponent implements OnInit {
       }else{
           templateBody.body = templateBody.body.replace( "IMAGE_URL", "https://aravindu.com/vod/images/conference2.jpg" );
       }*/
-      
-      
+
+
  /*   templateBody = templateBody.replace('EVENT_TITLE', this.eventcampaign.campaign);
     templateBody = templateBody.replace('EVENT_START_TIME', this.eventcampaign.campaignEventTimes[0].startTimeString);
     templateBody = templateBody.replace('EVENT_END_TIME', this.eventcampaign.campaignEventTimes[0].endTimeString);
@@ -144,7 +145,9 @@ export class RsvpComponent implements OnInit {
     this.totalGuests = 1;
     this.replyUserName = '';
   }
-
+  characterSize(){
+    this.characterleft = 140 - this.campaignRsvp.message.length;
+  }
 
   ngOnInit() {
     try{

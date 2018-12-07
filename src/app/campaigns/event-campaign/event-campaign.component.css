@@ -406,7 +406,7 @@ label {
     border-color: #2eaade;
 }
 .list__item.list__item--selected .select-box label:after {
-    opacity:1; 
+    opacity:1;
     content: "";
     position: absolute;
     width: 9px;
@@ -426,4 +426,8 @@ label {
 	overflow-x: inherit;
     padding: 15px;
     margin-top: 36px;
+}
+.table tr.contact-list-selected td {
+	background-color: #00a6e8 !important;
+	color: white;
 }
