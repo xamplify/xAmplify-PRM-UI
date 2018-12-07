@@ -222,7 +222,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
             this.campaignType=="REGULAR";
         }
         
-        if(this.campaignService.campaign.campaignScheduleType=="SCHEDULE" && this.campaign.userId==this.loggedInUserId){
+        if(this.campaign.campaignScheduleType=="SCHEDULE" && this.campaign.userId==this.loggedInUserId){
             this.campaign.scheduleCampaign  = this.campaignLaunchOptions[1];
         }else{
             this.campaign.scheduleCampaign  = this.campaignLaunchOptions[2];
