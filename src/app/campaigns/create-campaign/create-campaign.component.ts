@@ -34,7 +34,8 @@ import { Country } from '../../core/models/country';
 import { Timezone } from '../../core/models/timezone';
 import { Roles } from '../../core/models/roles';
 import { Properties } from '../../common/models/properties';
-declare var swal, $, videojs , Metronic, Layout , Demo,flatpickr,CKEDITOR:any;
+var moment = require('moment-timezone');
+declare var swal, $, videojs , Metronic, Layout , Demo,flatpickr,CKEDITOR,require:any;
 
 @Component({
   selector: 'app-create-campaign',
@@ -325,13 +326,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 }
             }
           /************Launch Campaign**********************/
-            this.name = this.campaignService.campaign.campaignName;
-            /*if(this.campaignService.campaign.endTime.toString() !="null"){   // added to String() method here also
-                this.campaign.scheduleCampaign  = this.sheduleCampaignValues[2];
-                this.isScheduleSelected = true;
-                this.launchCampaignTabClass = this.successTabClass;
-            }*/
-            if(this.campaignService.campaign.scheduleTime!=null && this.campaignService.campaign.scheduleTime!="null"){
+            if(this.campaignService.campaign.campaignScheduleType=="SCHEDULE"){
                 this.campaign.scheduleCampaign  = this.sheduleCampaignValues[1];
                 this.isScheduleSelected = true;
                 this.launchCampaignTabClass = this.successTabClass;
@@ -341,10 +336,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 this.isScheduleSelected = true;
                 this.launchCampaignTabClass = this.successTabClass;
             }
-            /*if(this.campaignService.campaign.scheduleTime=="null" ||this.campaignService.campaign.scheduleTime==null){
-                this.campaign.scheduleTime = "";
-                this.campaign.scheduleCampaign  = this.sheduleCampaignValues[2];
-            }*/
+            
+            this.name = this.campaignService.campaign.campaignName;
             let emailTemplate = this.campaign.emailTemplate;
             if(emailTemplate!=undefined){
                 this.isEmailTemplate = true;
@@ -1749,10 +1742,14 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         let timeZoneId = "";
         let scheduleTime:any;
         if( this.campaignLaunchForm.value.scheduleCampaign=="NOW" || this.campaignLaunchForm.value.scheduleCampaign=="SAVE"){
-            timeZoneId = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            let intlTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            if(intlTimeZone!=undefined){
+                timeZoneId = intlTimeZone;
+            }else if(moment.tz.guess()!=undefined){
+                timeZoneId = moment.tz.guess();
+            }
             scheduleTime = this.campaignService.setLaunchTime();
         }else{
-         //   timeZoneId = this.campaignLaunchForm.value.timeZoneId;
             timeZoneId = $('#timezoneId option:selected').val();
             scheduleTime = this.campaignLaunchForm.value.launchTime;
         }
@@ -2074,7 +2071,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
 
     saveCampaignOnDestroy(){
         var data = this.getCampaignData("");
-        if(data.scheduleCampaign==null || data.scheduleCampaign=="NOW" || $.trim(data.scheduleCampaign).length==0){
+        if(data['scheduleCampaign']==null || data['scheduleCampaign']=="NOW" || $.trim(data['scheduleCampaign']).length==0){
             data['scheduleCampaign'] = "SAVE";
         }
         var errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
@@ -2451,7 +2448,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
              .subscribe(
              response => {
                  if(response.statusCode==2000){
-                     this.refService.campaignSuccessMessage = data.scheduleCampaign;
+                     this.refService.campaignSuccessMessage = data['scheduleCampaign'];
                      this.refService.launchedCampaignType = this.campaignType;
                      this.isLaunched = true;
                      this.reInitialize();
