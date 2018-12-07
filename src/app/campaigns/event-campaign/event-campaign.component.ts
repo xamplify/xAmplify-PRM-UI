@@ -243,6 +243,13 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
       allowedContent: true,
     };
   }
+  highlightRowAll(id:number){
+   if(this.isPartnerUserList){
+    this.partnerHighlightRow(id);
+   } else {
+    this.highlightRow(id);
+   }
+  }
   ngAfterViewInit() {
    // this.listAllTeamMemberEmailIds();
   }
@@ -1076,7 +1083,10 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
           eventCampaign.campaignEventMedias[0].id = null;
           if(this.isPartnerUserList) {eventCampaign.userListIds = this.parternUserListIds; }
           else { eventCampaign.userListIds = this.userListIds; }
-
+          for (let userListId of eventCampaign.userListIds) {
+            let contactList = new ContactList(userListId);
+            eventCampaign.userLists.push(contactList);
+          }
           eventCampaign.user.id = null;
           if(!eventCampaign.campaignEventTimes[0].startTimeString) {  eventCampaign.campaignEventTimes[0].startTimeString = this.getTodayTime();}
           if(!eventCampaign.campaignEventTimes[0].endTimeString){ eventCampaign.campaignEventTimes[0].endTimeString = this.getTodayTime(); }

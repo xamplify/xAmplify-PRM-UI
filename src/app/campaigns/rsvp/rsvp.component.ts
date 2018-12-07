@@ -25,7 +25,7 @@ export class RsvpComponent implements OnInit {
   totalGuests = 1;
   type="";
   replyUserName=""
-  characterleft: any;
+  characterleft = 140;
 
   constructor(public referenceService: ReferenceService, private route: ActivatedRoute, public campaignService: CampaignService, public processor:Processor,
   public authenticationService:AuthenticationService) { }
