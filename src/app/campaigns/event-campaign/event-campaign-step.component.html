@@ -575,6 +575,16 @@ a.disabled {
 															[title]="emailTemplate.name"><b>{{emailTemplate.name | slice:0:18}}
 															<span *ngIf="emailTemplate.name?.length>18">...</span></b>
 														</span>
+														<div class="item__last-modified">
+															<span [title]="emailTemplate.createdBy"><span>By: </span>{{emailTemplate.createdBy | slice:0:15}}
+															<span *ngIf="emailTemplate.createdBy?.length>15">...</span>
+															</span>
+														</div>
+														<div class="item__last-modified">
+															<span><app-timestamp [isOnlyDate]="true"
+																	[dateAndTime]="emailTemplate.createdDate">
+																</app-timestamp></span>
+														</div>
 														<div class="item__actions">
 															<span> <a class="fm external-link" target="_BLANK"
 																data-toggle="tooltip" data-placement="top"
