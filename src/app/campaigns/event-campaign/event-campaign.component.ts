@@ -1118,6 +1118,11 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
           }
       return false;
       }
+        
+     emailTemplateSelection(emailTemplate){
+            this.eventCampaign.emailTemplate = emailTemplate;
+            this.resetTabClass();
+        }
 
     reInitialize(){
       this.referenceService.selectedCampaignType = "";
