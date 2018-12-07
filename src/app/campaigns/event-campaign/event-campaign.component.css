@@ -71,7 +71,7 @@
   margin-bottom: 3px;
 }
 .labal-css{
-  color: #2c3f52;
+  color: #2c3f52 !important;
   font-weight: 600;
   margin-top: 4px;
 }
@@ -430,4 +430,7 @@ label {
 .table tr.contact-list-selected td {
 	background-color: #00a6e8 !important;
 	color: white;
+}
+.h4-text {
+  margin: 20px 20px 0 33px !important;
 }

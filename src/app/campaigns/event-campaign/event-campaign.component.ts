@@ -1118,17 +1118,21 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
           }
       return false;
       }
-        
+
      emailTemplateSelection(emailTemplate){
             this.eventCampaign.emailTemplate = emailTemplate;
             this.resetTabClass();
+            for (let userListId of this.eventCampaign.userListIds) {
+              let contactList = new ContactList(userListId);
+              this.eventCampaign.userLists.push(contactList);
+            }
         }
-
     reInitialize(){
       this.referenceService.selectedCampaignType = "";
       this.eventCampaign.userListIds = [];
       this.campaignService.campaign = undefined;
     }
+
 
     resetTabs(currentTab : string){
         if( currentTab == 'details' ){

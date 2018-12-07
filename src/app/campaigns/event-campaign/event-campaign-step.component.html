@@ -528,10 +528,10 @@ a.disabled {
                 </ng-template>
                 </div>
               </div>
-              
+
              <button type="button" style="float:left;" class="btn btn-default" (click)="resetTabs('details')">Previous</button>
 			 <button type="button" style="float: right;" class="btn btn-default btn green" [disabled]="emailTemplatesTabClass === 'disableTemplateTab'" (click)="resetTabs('templates')" title="">Next</button>
-              
+
           </div>
 
 
@@ -690,6 +690,90 @@ a.disabled {
 					</div>
 				</div> -->
 
+
+        <fieldset>
+            <legend>Preview Before Publishing</legend>
+            <div class="row">
+            <div class="portlet-body clearfix">
+            <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
+                <div class="portlet light clearfix" style="padding:0px">
+                  <div class="p0">
+                      <div class="pricing hover-effect pointer">
+                          <div class="pricing-head">
+                            <h4 title="{{eventCampaign.campaign}}" style="text-align:center">Campaign name: {{eventCampaign.campaign | slice:0:30}}<span *ngIf="eventCampaign.campaign?.length>30">...</span></h4>
+                            <h4><img style="margin: 0 auto;height: 106px;" alt="Regular E-mail Campaign" class="pricing-head-img img-responsive" src="assets/images/event-campaign.png"></h4>
+                          </div>
+                        </div>
+                    <h5 id="description"></h5>
+                  </div>
+                </div>
+              </div>
+            <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+              <div class="portlet light border-0">
+                <table width="100%">
+                  <tr>
+                    <td width="25%">
+                      <div class="icon-border">
+
+                      <i class="fa fa-users fa-2x icon-position" aria-hidden="true"></i>
+                    </div>
+                    <ng-container *ngIf="authenticationService.module.isVendor || authenticationService.isAddedByVendor">
+                      <span class="h4-text" *ngIf="isPartnerUserList">Partner List(s)</span>
+                    </ng-container>
+                    <ng-container *ngIf="!authenticationService.module.isVendor && !authenticationService.isAddedByVendor">
+                      <span class="h4-text" *ngIf="!isPartnerUserList">Contact List(s)</span>
+                    </ng-container>
+
+                    </td>
+                    <td width="55%">
+                      <ng-container *ngFor="let contactList of eventCampaign.userLists;let i=index;">
+                        <a (click)="loadContacts(contactList.id,contactsPagination)" data-toggle="modal" data-target="#myModal" title="{{contactList.name}}"
+                          style="display: block;">
+                          <ng-container *ngIf="contactList.name?.length>50">
+                            {{contactList.name | slice:0:50}}...
+                          </ng-container>
+                          <ng-container *ngIf="contactList.name?.length<=50">
+                            {{contactList.name}}
+                          </ng-container>
+                        </a>
+                      </ng-container>
+                    </td>
+                    <td style="text-align: right" width="20%">
+                      <a class="btn btn-primary btn-sm" style="color:#fff" (click)="resetTabs('recipients')">Change</a>
+                    </td>
+                  </tr>
+                </table>
+
+              </div>
+              <div class="portlet light border-0" id="email-template-preview-div">
+                <table width="100%">
+                  <tr>
+                    <td width="25%">
+                    <div class="icon-border">
+                      <i class="fa fa-envelope fa-2x icon-position" aria-hidden="true"></i>
+                    </div>
+                      <span style="margin:20px 15px 0 33px !important" >Email Template</span>
+                    </td>
+                    <td width="55%" style="text-align:center">
+                      <a (click)="getEmailTemplatePreview(eventCampaign.emailTemplate)" title="{{eventCampaign.emailTemplate.name}}">
+                        <ng-container *ngIf="eventCampaign.emailTemplate.name?.length>50">
+                          {{eventCampaign.emailTemplate.name | slice:0:50}}...
+                        </ng-container>
+                        <ng-container *ngIf="eventCampaign.emailTemplate.name?.length<=50">
+                          {{eventCampaign.emailTemplate.name}}
+                        </ng-container>
+                      </a>
+                    </td>
+                    <td style="text-align: right" width="20%">
+                      <a class="btn btn-primary btn-sm" (click)="resetTabs('templates')">Change</a>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        </fieldset>
 
 
 
