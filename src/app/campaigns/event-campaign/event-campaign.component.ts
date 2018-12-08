@@ -98,6 +98,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   recipientsTabClass = "disableRecipientsTab";
   emailTemplatesTabClass = "disableRecipientsTab";
   launchTabClass = "disableRecipientsTab";
+  currentTab: string;
 
   selectedListOfUserLists = [];
 
@@ -226,6 +227,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
         this.loadContactLists(this.contactListsPagination);
         this.listAllTeamMemberEmailIds();
         this.recipientsTabClass = "enableRecipientsTab";
+        this.detailsTab = true;
+        this.resetTabClass();
+        this.eventStartTimeError()
       }
     );
     }
@@ -248,6 +252,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   }
   ngAfterViewInit() {
    // this.listAllTeamMemberEmailIds();
+      this.detailsTab = true;
+      this.resetTabClass()
   }
   eventTitleError(){
     this.eventError.eventTitleError = this.eventCampaign.campaign ? false: true;
@@ -1127,6 +1133,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
 
 
     resetTabs(currentTab : string){
+        this.currentTab = currentTab;
         if( currentTab == 'details' ){
             this.detailsTab = true;
             this.recipientsTab = false;
@@ -1190,6 +1197,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
         }else{
             this.launchTabClass = "disableLaunchTab";
         }
+        
+        this.resetTabs(this.currentTab);
 
     }
 

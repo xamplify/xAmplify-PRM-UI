@@ -28,11 +28,11 @@ a.disabled {
 		</ul>
 	</div>
 	<app-list-loader [rowsCount]="6" *ngIf="loader"></app-list-loader>
-	<div class="page-bar">
+	<div class="page-bar" [hidden]="loader">
 		<div class="container"
 			style="width: 100%; border-radius: 0; border: 1px solid #869ab3; border-top: 0; box-shadow: 0 0 6px rgba(0, 0, 0, 0.6); padding-bottom: 10px;">
 			<div style="display: flex; padding-top: 1em;">
-				<div id="step2" class="col-block col-block-complete" (click)="resetTabs('details')"
+				<div id="step2" class="col-block col-block-complete" (click)="resetTabs('details')" [ngClass]="{'col-block-active': detailsTab}"
 					style="width: 25%">
 					<div class="cenetered-block">
 						<span> <i class="fa fa-th-list"></i>

@@ -434,3 +434,10 @@ label {
 .h4-text {
   margin: 20px 20px 0 33px !important;
 }
+.col-block-active {
+	color: #fff;
+	vertical-align: central;
+	border: 1px solid #0c84ae;
+	background-color: #0c84ae !important;
+}
+
