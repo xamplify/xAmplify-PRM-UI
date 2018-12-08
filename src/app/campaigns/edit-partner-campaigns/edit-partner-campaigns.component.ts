@@ -23,8 +23,10 @@ import { Timezone } from '../../core/models/timezone';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { CampaignContact } from '../models/campaign-contact';
 import { Properties } from '../../common/models/properties';
+var moment = require('moment-timezone');
 
-declare var  $,flatpickr,CKEDITOR:any;
+
+declare var  $,flatpickr,CKEDITOR,require:any;
 
 @Component({
   selector: 'app-edit-partner-campaigns',
@@ -459,11 +461,15 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
         let country = $.trim($('#countryName option:selected').text());
         let timeZoneId = "";
         let scheduleTime:any;
-        if( this.campaignLaunchForm.value.scheduleCampaign=="NOW" || this.campaignLaunchForm.value.scheduleCampaign=="SAVE"){
-            timeZoneId = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        if(this.campaignLaunchForm.value.scheduleCampaign=="NOW" || this.campaignLaunchForm.value.scheduleCampaign=="SAVE"){
+            let intlTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            if(intlTimeZone!=undefined){
+                timeZoneId = intlTimeZone;
+            }else if(moment.tz.guess()!=undefined){
+                timeZoneId = moment.tz.guess();
+           }
             scheduleTime = this.campaignService.setLaunchTime();
         }else{
-         //   timeZoneId = this.campaignLaunchForm.value.timeZoneId;
             timeZoneId = $('#timezoneId option:selected').val();
             scheduleTime = this.campaignLaunchForm.value.launchTime;
         }
