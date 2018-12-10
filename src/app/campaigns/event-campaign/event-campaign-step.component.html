@@ -31,7 +31,7 @@ a.disabled {
 	<div class="page-bar" [hidden]="loader">
 		<div class="container"
 			style="width: 100%; border-radius: 0; border: 1px solid #869ab3; border-top: 0; box-shadow: 0 0 6px rgba(0, 0, 0, 0.6); padding-bottom: 10px;">
-			<div style="display: flex; padding-top: 1em;">
+			<div *ngIf="!isPreviewEvent" style="display: flex; padding-top: 1em;">
 				<div id="step2" class="col-block col-block-complete" (click)="resetTabs('details')" [ngClass]="{'col-block-active': detailsTab}"
 					style="width: 25%">
 					<div class="cenetered-block">
@@ -73,7 +73,9 @@ a.disabled {
 
 			<!-- Step One code -->
  <fieldset class="portlet light" style="margin-top: 25px" [hidden]="!detailsTab">
-
+<div *ngIf="isPreviewEvent" class="portlet-title" style="display:block">
+                    <h4 class="pull-left f-w-600">Event Details</h4>
+                  </div>
 				<!-- <div class="page-bar  portlet light border-radius-0 shadow">
 		<div class="portlet-body clearfix"> -->
 				<div class="col-xs-12 col-sm-7">
@@ -451,7 +453,7 @@ a.disabled {
 				</div>
 				<!-- </div>
           </div> -->
-          <button type="button" style="float: right" class=" btn green"
+          <button *ngIf="!isPreviewEvent" type="button" style="float: right" class=" btn green"
 			(click)="resetTabs('recipients')" title="Please Fill Campaign Details" [disabled]="recipientsTabClass === 'disableRecipientsTab'">Next</button>
 			</fieldset>
 
@@ -523,14 +525,14 @@ a.disabled {
                       </tbody>
                     </table>
                   </div>
-                  <app-pagination class="pg8" [pagination]="contactListsPagination" [type]="'contactlists'" (notifyParent)="setPage($event)"
+                  <app-pagination class="pg8" [class.disabled]="isPreviewEvent" [pagination]="contactListsPagination" [type]="'contactlists'" (notifyParent)="setPage($event)"
                    (notifyParentDropDown)="paginationDropDown($event)"></app-pagination>
                 </ng-template>
                 </div>
               </div>
 
-             <button type="button" style="float:left;" class="btn btn-default" (click)="resetTabs('details')">Previous</button>
-			 <button type="button" style="float: right;" class="btn btn-default btn green" [disabled]="emailTemplatesTabClass === 'disableTemplateTab'" (click)="resetTabs('templates')" title="">Next</button>
+             <button *ngIf="!isPreviewEvent" type="button" style="float:left;" class="btn btn-default" (click)="resetTabs('details')">Previous</button>
+			 <button *ngIf="!isPreviewEvent" type="button" style="float: right;" class="btn btn-default btn green" [disabled]="emailTemplatesTabClass === 'disableTemplateTab'" (click)="resetTabs('templates')" title="">Next</button>
 
           </div>
 
@@ -552,7 +554,7 @@ a.disabled {
 
                         <ul class="content__list"
 										*ngFor="let emailTemplate of emailTemplatesPagination.pagedItems;let i =index">
-										<li (click)="emailTemplateSelection(emailTemplate)" class="list__item" [class.list__item--selected]="eventCampaign.emailTemplate.id === emailTemplate.id">
+										<li [class.disabled]="isPreviewEvent" (click)="emailTemplateSelection(emailTemplate)" class="list__item" [class.list__item--selected]="eventCampaign.emailTemplate.id === emailTemplate.id">
 											<!-- above class [ngClass]="{'list__item--selected':selectedFileIds.indexOf(file.id)>-1}" -->
 											<div class="flex-row">
 												<div class="item__select-box-wrapper">
@@ -610,11 +612,11 @@ a.disabled {
 					<strong>No email templates found</strong>
 				</div>
 				<div style="text-align:left;" [hidden]="emailTemplatesPagination.totalRecords<0 || campaignEmailTemplate.httpRequestLoader.isLoading || campaignEmailTemplate.httpRequestLoader.isServerError">
-          <app-pagination [pagination]="emailTemplatesPagination" [type]="'emailTemplates'"></app-pagination>
+          <app-pagination [class.disabled]="isPreviewEvent" [pagination]="emailTemplatesPagination" [type]="'emailTemplates'"></app-pagination>
         </div>
-        <button type="button" style="float:left;" class="btn btn-default" (click)="resetTabs('recipients')">Previous</button>
-			 <button type="button" style="float: right;" class="btn btn-default btn green" (click)="resetTabs('launch')" [class.disabled]="launchTabClass === 'disableLaunchTab'" title="">Next</button>
-          </div>
+        <button *ngIf="!isPreviewEvent" type="button" style="float:left;" class="btn btn-default" (click)="resetTabs('recipients')">Previous</button>
+		 <button *ngIf="!isPreviewEvent" type="button" style="float: right;" class="btn btn-default btn green" (click)="resetTabs('launch')" [class.disabled]="launchTabClass === 'disableLaunchTab'" title="">Next</button>
+        </div>
 
 
         <!--    End Step three templates -->
@@ -739,7 +741,7 @@ a.disabled {
                       </ng-container>
                     </td>
                     <td style="text-align: right" width="20%">
-                      <a class="btn btn-primary btn-sm" style="color:#fff" (click)="resetTabs('recipients')">Change</a>
+                      <a [class.disabled]="isPreviewEvent" class="btn btn-primary btn-sm" style="color:#fff" (click)="resetTabs('recipients')">Change</a>
                     </td>
                   </tr>
                 </table>
@@ -765,7 +767,7 @@ a.disabled {
                       </a>
                     </td>
                     <td style="text-align: right" width="20%">
-                      <a class="btn btn-primary btn-sm" (click)="resetTabs('templates')">Change</a>
+                      <a class="btn btn-primary btn-sm" [class.disabled]="isPreviewEvent" (click)="resetTabs('templates')">Change</a>
                     </td>
                   </tr>
                 </table>
@@ -972,7 +974,7 @@ a.disabled {
             <!-- <div><button type="button" class="btn green" (click)="campaignService.addEmailId(eventCampaign,eventCampaign.emailTemplate.id,false)" style="width: 10em;">Send Test Email</button>
             </div> -->
 
-<button type="button" style="float:left;" class="btn btn-default" (click)="resetTabs('templates')">Previous</button>
+<button *ngIf="!isPreviewEvent" type="button" style="float:left;" class="btn btn-default" (click)="resetTabs('templates')">Previous</button>
 
           </div>
 
@@ -1031,7 +1033,7 @@ a.disabled {
                 </tr>
               </tbody>
             </table>
-            <app-pagination class="pg8" *ngIf="contactsPagination.pagedItems?.length > 0" [pagination]="contactsPagination" [type]="'contacts'"
+            <app-pagination [class.disabled]="isPreviewEvent" class="pg8" *ngIf="contactsPagination.pagedItems?.length > 0" [pagination]="contactsPagination" [type]="'contacts'"
              (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropDown($event)"></app-pagination>
           </div>
         </div>
