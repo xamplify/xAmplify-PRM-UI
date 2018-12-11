@@ -210,12 +210,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
 
         if(this.reDistributeEvent){
             this.eventCampaign.userListIds = []; this.userListIds = [];this.parternUserListIds = []; 
-            
-            if(this.eventCampaign.channelCampaign){
-                this.eventCampaign.enableCoBrandingLogo = true;
-            }else{
-                this.eventCampaign.enableCoBrandingLogo = false;
-            }
+            this.eventCampaign.enableCoBrandingLogo = true;
             }
         this.eventCampaign.userLists = [];
         console.log(this.userListIds);
