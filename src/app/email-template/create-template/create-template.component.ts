@@ -95,10 +95,10 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
 	                    swal("","Whoops! We’re unable to save this template because you deleted the {{event_title}} merge tag.","error");
 	                    return false;
 	                 }
-	              if(jsonContent.indexOf(self.eventDescription)< 0){
+	             /* if(jsonContent.indexOf(self.eventDescription)< 0){
 	                        swal("","Whoops! We’re unable to save this template because you deleted the {{event_description}} merge tag.","error");
 	                        return false;
-	                   }
+	                   }*/
 	              if(jsonContent.indexOf(self.eventStartTime)< 0){
                          swal("","Whoops! We’re unable to save this template because you deleted the {{event_start_time}} merge tag.","error");
                          return false;
@@ -209,7 +209,7 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
            mergeTags.push( { name: 'Event Title', value: '{{event_title}}' });
            mergeTags.push( { name: 'Event Strat Time', value: '{{event_start_time}}' });
            mergeTags.push( { name: 'Event End Time', value: '{{event_end_time}}' });
-           mergeTags.push( { name: 'Event Description', value: '{{event_description}}' });
+          /* mergeTags.push( { name: 'Event Description', value: '{{event_description}}' });*/
            mergeTags.push( { name: 'Address Lane1 ', value: '{{addreess_lane1}}' });
            mergeTags.push( { name: 'Address Lane2', value: '{{addreess_lane2}} ' });
            mergeTags.push( { name: 'Event EmailId', value: '{{event_emailId}}' });
