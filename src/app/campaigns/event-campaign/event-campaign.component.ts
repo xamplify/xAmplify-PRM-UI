@@ -386,6 +386,14 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   switchStatusChange(){
       this.eventCampaign.channelCampaign = !this.eventCampaign.channelCampaign;
       this.loadEmailTemplates(this.emailTemplatesPagination);
+      
+      if(this.eventCampaign.channelCampaign){
+          this.eventCampaign.enableCoBrandingLogo = true;
+      }else{
+          this.eventCampaign.enableCoBrandingLogo = false;
+      }
+      
+      
   }
 
   loadEmailTemplates(pagination:Pagination){

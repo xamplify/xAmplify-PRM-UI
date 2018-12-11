@@ -29,6 +29,7 @@ export class EventCampaign {
     inviteOthers: boolean = true;
     rsvpReceived: boolean = true;
     onlineMeeting: boolean = true;
+    enableCoBrandingLogo = false;
 
     userLists: Array<ContactList> = [];
     userListIds: Array<number> = [];
