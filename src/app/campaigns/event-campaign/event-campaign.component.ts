@@ -200,7 +200,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
         }
         this.onChangeCountryCampaignEventTime(this.eventCampaign.campaignEventTimes[0].countryId)
         if(this.reDistributeEvent){ this.isPartnerUserList = false;}
-
+ 
         for(let i=0; i< result.data.userListDTOs.length;i++){
          if(this.reDistributeEvent || this.authenticationService.isOnlyPartner()) { this.userListIds.push(result.data.userListDTOs[i].id); }
          if(!this.reDistributeEvent) { this.parternUserListIds.push(result.data.userListDTOs[i].id); }
@@ -208,7 +208,15 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
         if(this.reDistributeEvent){  this.eventCampaign.userListIds = this.parternUserListIds;
         } else {  this.eventCampaign.userListIds = this.userListIds; }
 
-        if(this.reDistributeEvent){ this.eventCampaign.userListIds = []; this.userListIds = [];this.parternUserListIds = []; }
+        if(this.reDistributeEvent){
+            this.eventCampaign.userListIds = []; this.userListIds = [];this.parternUserListIds = []; 
+            
+            if(this.eventCampaign.channelCampaign){
+                this.eventCampaign.enableCoBrandingLogo = true;
+            }else{
+                this.eventCampaign.enableCoBrandingLogo = false;
+            }
+            }
         this.eventCampaign.userLists = [];
         console.log(this.userListIds);
 
