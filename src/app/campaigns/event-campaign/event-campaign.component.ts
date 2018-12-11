@@ -638,7 +638,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
 
     if(this.reDistributeEvent) {
       eventCampaign.parentCampaignId = this.activatedRoute.snapshot.params['id'];
-      eventCampaign.id = null;}
+      eventCampaign.id = null;
+      this.eventCampaign.enableCoBrandingLogo = true;
+    }
 
     delete eventCampaign.emailTemplateDTO;
     delete eventCampaign.userDTO
