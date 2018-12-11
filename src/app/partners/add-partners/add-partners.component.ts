@@ -1472,6 +1472,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                                 this.salesforceListViewsData.push( data.listViews[i] );
                                 this.xtremandLogger.log( data.listViews[i] );
                             }
+                        }else {
+                            this.customResponse = new CustomResponse( 'ERROR', "No " + this.contactType + "listViews found", true );
+                            this.hideModal();
                         }
                     },
                     ( error: any ) => {

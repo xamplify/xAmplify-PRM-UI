@@ -478,10 +478,10 @@ a.disabled {
                     </section>
                 </div>
                 <div class="portlet-body clearfix">
-                <div class="alert-danger alert-error" *ngIf="eventError.eventContactError">* Please select the <span *ngIf="!authenticationService.isOnlyPartner();else listHeader">contact</span><ng-template #listHeader>partner</ng-template> list</div>
+                <div class="alert-danger alert-error" *ngIf="eventError.eventContactError">* Please select at least one <span *ngIf="!authenticationService.isOnlyPartner();else listHeader">Contact</span><ng-template #listHeader>Partner</ng-template> list</div>
                 <section *ngIf="(isPreviewEvent && (userListIds?.length==0 && parternUserListIds?.length==0)) || contactListsPagination.pagedItems?.length === 0;else contactList">
                   <div class='alert alert-info' role='alert'>
-                    <h4 class='m0'>You have not added any <span *ngIf="authenticationService.isOnlyPartner();else listPartner">contact</span><ng-template #listPartner>partner</ng-template> lists yet.</h4>
+                    <h4 class='m0'>You have not added any <span *ngIf="authenticationService.isOnlyPartner();else listPartner">Contact</span><ng-template #listPartner>Partner</ng-template> lists yet.</h4>
                   </div>
                   <!-- <a class='btn btn-info' style="color: #fff;" [routerLink]="['/home/contacts/add']">Add Contacts</a> -->
                 </section>

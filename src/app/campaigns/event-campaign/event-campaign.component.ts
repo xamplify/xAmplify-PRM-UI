@@ -1201,11 +1201,11 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
         this.resetTabs(this.currentTab);
         
         if(this.isPreviewEvent){
+            this.setUserLists();
             this.detailsTab = true;
             this.recipientsTab = true;
             this.emailTemplatesTab = true;
             this.launchTab = true;
-            this.setUserLists();
         }
 
     }
