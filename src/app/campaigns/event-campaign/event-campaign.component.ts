@@ -23,8 +23,9 @@ import { EventError } from '../models/event-error';
 import { CustomResponse } from '../../common/models/custom-response';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { CountryNames } from '../../common/models/country-names';
+var moment = require('moment-timezone');
 
-declare var $,swal, flatpickr, CKEDITOR;
+declare var $,swal, flatpickr, CKEDITOR,require;
 
 @Component({
   selector: 'app-event-campaign',
@@ -573,11 +574,18 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
       eventCampaign.userLists.push(contactList);
     }
    console.log(eventCampaign);
+   let timeZoneId = "";
    if (eventCampaign.campaignScheduleType == "NOW" || eventCampaign.campaignScheduleType == "SAVE") {
-     eventCampaign.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    // eventCampaign.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+     let intlTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+     if(intlTimeZone!=undefined){
+         timeZoneId = intlTimeZone;
+     }else if(moment.tz.guess()!=undefined){
+         timeZoneId = moment.tz.guess();
+     }
      eventCampaign.launchTimeInString = this.campaignService.setLaunchTime();
    } else {
-     eventCampaign.timeZone = $('#timezoneId option:selected').val();
+     timeZoneId = $('#timezoneId option:selected').val();
    }
    eventCampaign.campaign = this.referenceService.replaceMultipleSpacesWithSingleSpace(eventCampaign.campaign);
    eventCampaign.fromName = this.referenceService.replaceMultipleSpacesWithSingleSpace(eventCampaign.fromName);
@@ -599,7 +607,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
       'fromName': this.referenceService.replaceMultipleSpacesWithSingleSpace(eventCampaign.fromName),
       'launchTimeInString':eventCampaign.launchTimeInString,
       'emailTemplate':eventCampaign.emailTemplate,
-      'timeZone': eventCampaign.timeZone,
+      'timeZone': timeZoneId,
       'campaignScheduleType': eventCampaign.campaignScheduleType,
       'campaignLocation': eventCampaign.campaignLocation,
       'campaignEventMedias': [{"filePath": eventCampaign.campaignEventMedias[0].filePath}],
