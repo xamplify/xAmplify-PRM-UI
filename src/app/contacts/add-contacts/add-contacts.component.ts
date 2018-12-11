@@ -1566,7 +1566,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                                 this.xtremandLogger.log( data.listViews[i] );
                             }
                         }else {
-                            this.customResponse = new CustomResponse( 'ERROR', "No " + this.contactType + "listViews found", true );
+                            this.customResponse = new CustomResponse( 'ERROR', "No " + this.contactType + " found", true );
                             this.hideModal();
                         }
                     },
