@@ -15,7 +15,7 @@
     <div class="portlet-title">
       <div *ngIf="isRsvp; then rsvp_exist else rsvp_new"></div>
       <ng-template #rsvp_exist>
-        <h4 class="pull-left">You Have rsvped <b>{{eventcampaign.campaignEventRsvps[0].eventCampaignRsvp}}</b></h4>
+        <h4 class="pull-left">You Have RSVPed <b>{{eventcampaign.campaignEventRsvps[0].eventCampaignRsvp}}</b></h4>
         <button class="btn btn-secondary pull-right" (click)="isRsvp = !isRsvp">change</button>
       </ng-template>
       <ng-template #rsvp_new>
@@ -23,7 +23,7 @@
         <div class="pull-right">
           <button class="btn btn-secondary" data-toggle="modal" data-target="#myModal" [class.selectedType]="type ==='YES'" (click)="campaignRsvp.eventCampaignRsvp = 'YES'">Yes</button>
           <button class="btn btn-secondary" data-toggle="modal" data-target="#myModal" [class.selectedType]="type ==='NO'" (click)="campaignRsvp.eventCampaignRsvp = 'NO'">No</button>
-          <button class="btn btn-secondary" data-toggle="modal" data-target="#myModal" [class.selectedType]="type ==='MAYBE'" (click)="campaignRsvp.eventCampaignRsvp = 'MAYBE'">May Be</button>
+          <button class="btn btn-secondary" data-toggle="modal" data-target="#myModal" [class.selectedType]="type ==='MAYBE'" (click)="campaignRsvp.eventCampaignRsvp = 'MAYBE'">Maybe</button>
         </div>
       </ng-template>
 
@@ -46,7 +46,7 @@
           <thead>
             <tr>
               <th>Date</th>
-              <th>Rsvp</th>
+              <th>RSVP</th>
               <th>Message</th>
             </tr>
           </thead>
@@ -77,7 +77,7 @@
       </div>
       <div class="modal-body">
         <div style="font-size: 15px;">
-          <span style="float:left;margin-bottom: 3px">Replying as: </span><span style="margin-left: 6px;" class="bold"> {{replyUserName}}</span>
+         <!--  <span style="float:left;margin-bottom: 3px">Replying as: </span> --><span style="margin-left: 6px;" class="bold"> {{replyUserName}}</span>
         </div>
         <textarea [(ngModel)]="campaignRsvp.message"  (input)="characterSize()" [ngModelOptions]="{standalone: true}" maxlength="140" placeholder="Add a comment..."></textarea>
         <label class="text-area-css">{{characterleft}} characters left</label>
