@@ -15,7 +15,6 @@ declare var Highcharts: any;
 })
 export class FacebookAnalyticsComponent implements OnInit {
 
-    page: any;
     fanCount: number;
     pageFansGenderAge: any;
     pageFansCountry: any;
@@ -31,12 +30,11 @@ export class FacebookAnalyticsComponent implements OnInit {
         this.pageFanAddsVsRemoves();
         this.pageImpressions();
     }
-    getPage( socialConnection: SocialConnection, pageId: string ) {
-        this.facebookService.getPage( socialConnection, pageId )
+    getPageFanCount( socialConnection: SocialConnection, pageId: string ) {
+        this.facebookService.getPageFanCount( socialConnection, pageId )
             .subscribe(
             data => {
-                this.page = data;
-                this.fanCount = data.extraData.fan_count;
+                this.fanCount = data;
             },
             error => console.log( error ),
             () => {
@@ -288,12 +286,13 @@ export class FacebookAnalyticsComponent implements OnInit {
             }]
         });
     }
-    getSocialConnection( profileId: string, source: string ) {
-      this.socialService.getSocialConnection(profileId, source)
+    getSocialConnectionByUserIdAndProfileId( userId: number, profileId: string ) {
+        debugger;
+      this.socialService.getSocialConnectionByUserIdAndProfileId(userId, profileId)
         .subscribe(
           data => {
             this.socialConnection = data;
-            this.getPage( this.socialConnection, profileId );
+            this.getPageFanCount( this.socialConnection, profileId );
           },
           error => console.log( error ),
           () => {}
@@ -319,9 +318,9 @@ export class FacebookAnalyticsComponent implements OnInit {
     ngOnInit() {
         try {
             const profileId = this.route.snapshot.params['profileId'];
-            const userId = this.authenticationService.user.id;
+            const userId = this.authenticationService.getUserId();
             this.setGlobalFontStyle();
-            this.getSocialConnection( profileId, 'FACEBOOK' );
+            this.getSocialConnectionByUserIdAndProfileId( userId, profileId );
 
         } catch ( err ) {
             console.log( err );

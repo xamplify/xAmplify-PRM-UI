@@ -35,8 +35,8 @@ export class HeaderComponent implements OnInit {
 
   }
 
-  getSocialConnection(profileId: any, source: string) {
-    this.socialService.getSocialConnection(profileId, source)
+  getSocialConnectionByUserIdAndProfileId( userId: number, profileId: any ) {
+        this.socialService.getSocialConnectionByUserIdAndProfileId(userId, profileId)
       .subscribe(
       data => {
         this.socialConnection = data;
@@ -63,11 +63,12 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit() {
+    const userId = this.authenticationService.getUserId();
     this.profileId = this.route.snapshot.params['profileId'];
     const path = this.route.snapshot.url[1].path;
     const obj = this.twitterNavs.find(function (obj) { return obj.name === path; });
     obj.isCurrent = true;
-    this.getSocialConnection(this.profileId, 'TWITTER');
+    this.getSocialConnectionByUserIdAndProfileId(userId, this.profileId);
   }
 
 }
