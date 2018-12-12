@@ -23,6 +23,7 @@ export class SocialManageComponent implements OnInit, OnDestroy {
         public authenticationService: AuthenticationService, public referenceService:ReferenceService ) { }
 
     listAccounts( userId: number ) {
+        this.socialConnections = [];
         this.referenceService.loading(this.httpRequestLoader, true);
         this.socialService.listAccounts( userId, this.providerName, 'ALL' )
             .subscribe(
@@ -45,6 +46,17 @@ export class SocialManageComponent implements OnInit, OnDestroy {
             },
             () => {});
     }
+    removeAccount(socialConnection: SocialConnection){
+        this.socialService.removeAccount( socialConnection.id )
+            .subscribe(
+            result => {
+                this.listAccounts(this.authenticationService.getUserId());
+            },
+            error => console.log( error ),
+            () => {
+                this.socialService.socialConnections = this.socialConnections;
+            } );
+    }
 
     save() {
         this.socialService.saveAccounts( this.socialConnections )
@@ -58,6 +70,23 @@ export class SocialManageComponent implements OnInit, OnDestroy {
             } );
 
     }
+    confirmRemoveAccount(socialConnection: SocialConnection){
+        const self = this;
+        swal( {
+            title: 'Are you sure?',
+            text: 'Do you really want to remove this account',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#54a7e9',
+            cancelButtonColor: '#999',
+            confirmButtonText: 'Yes'
+
+        }).then( function() {
+            self.removeAccount(socialConnection);
+        }, function( dismiss: any ) {
+            console.log( 'you clicked on option' + dismiss );
+        });
+    }
 
     confirmDialog(socialConnection: SocialConnection) {
         if (! socialConnection.active) {
@@ -66,7 +95,7 @@ export class SocialManageComponent implements OnInit, OnDestroy {
             const self = this;
             swal( {
                 title: 'Are you sure?',
-                text: 'Do you really want to deselect it!',
+                text: 'Do you really want to deselect this account?',
                 type: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#54a7e9',

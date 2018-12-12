@@ -35,6 +35,12 @@ export class SocialService {
       .catch(this.handleError);
   }
 
+  getSocialConnectionByUserIdAndProfileId( userId: number, profileId: string ) {
+    return this.http.get(this.URL + `social/account/${userId}/${profileId}?access_token=${this.authenticationService.access_token}`)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
   callback(socialProvider: string): Observable<SocialConnection> {
     let queryParam: string;
     let isDenied = false;
@@ -82,6 +88,12 @@ export class SocialService {
 
   saveAccounts(socialConnections: SocialConnection[]) {
     return this.http.post(this.URL + 'social/accounts?access_token=' + this.authenticationService.access_token, socialConnections)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  removeAccount(socialConnectionId: number){
+    return this.http.get(this.URL + `social/accounts/${socialConnectionId}?access_token=${this.authenticationService.access_token}`)
       .map(this.extractData)
       .catch(this.handleError);
   }
