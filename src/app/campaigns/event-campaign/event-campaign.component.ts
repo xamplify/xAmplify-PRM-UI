@@ -271,7 +271,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
      const startDate = Date.parse(this.eventCampaign.campaignEventTimes[0].startTimeString);
      if(startDate < currentDate) { this.setStartTimeErrorMessage(true, 'Start Date / Time is already over.');}
      else if( startDate > currentDate){ this.setStartTimeErrorMessage(false, '');}
-     else if(!this.eventCampaign.campaignEventTimes[0].startTimeString){this.setStartTimeErrorMessage(true, 'The start Date is required'); }
+     else if(!this.eventCampaign.campaignEventTimes[0].startTimeString){this.setStartTimeErrorMessage(true, 'The start date is required.'); }
      else { this.setStartTimeErrorMessage(false, ''); }
      this.eventSameDateError();
      this.resetTabClass();
@@ -283,7 +283,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   eventEndTimeError(){
   if(!this.eventCampaign.campaignEventTimes[0].allDay){
     this.eventError.eventEndDateError = !this.eventCampaign.campaignEventTimes[0].endTimeString ? true: false;
-    this.endDateErrorMesg = 'The End Date is required.'
+    this.endDateErrorMesg = 'The end date is required.'
   } else {
     this.eventError.eventEndDateError = false;
     this.endDateErrorMesg = '';
@@ -468,7 +468,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
       this.eventError.eventEndDateError = false;
     }
      else {
-      this.endDateErrorMesg = 'The End date is required';
+      this.endDateErrorMesg = 'The end date is required.';
       this.eventError.eventEndDateError = true;
     }
   }
