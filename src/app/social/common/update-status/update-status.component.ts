@@ -24,6 +24,8 @@ import { Pagination } from '../../../core/models/pagination';
 import { CallActionSwitch } from '../../../videos/models/call-action-switch';
 import { ReferenceService } from '../../../core/services/reference.service';
 import { Properties } from '../../../common/models/properties';
+import { Country } from '../../../core/models/country';
+import { Timezone } from '../../../core/models/timezone';
 
 declare var $, flatpickr, videojs, swal: any;
 
@@ -54,6 +56,11 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   isAllSelected: boolean = false;
   loading: boolean = false;
   socialConnections = new Array<SocialConnection>();
+  countries: Country[];
+  timezones: Timezone[];
+  countryId: number;
+  timezoneId: string;
+  scheduledTimeInString: string; 
 
   previewContactList = new ContactList();
   socialStatusDtos = new Array<any>();
@@ -76,6 +83,9 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     this.location = this.router.url;
     this.resetCustomResponse();
     this.userId = this.authenticationService.getUserId();
+    this.countries = this.referenceService.getCountries();
+    this.countryId = this.countries[0].id;
+    this.onSelectCountry(this.countryId);
     // this.initializeSocialStatus();
   }
   resetCustomResponse() {
@@ -107,6 +117,9 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   setCustomResponse(type: ResponseType, statusText: string) {
     this.customResponse.type = type;
     this.customResponse.statusText = statusText;
+    $('html, body').animate({
+      scrollTop: $('.page-content').offset().top
+    }, 500);
   }
   videoControllColors(videoFile: SaveVideoFile) {
     this.videoUtilService.videoColorControlls(videoFile);
@@ -331,7 +344,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
         data => {
           this.setCustomResponse(ResponseType.Success, 'Redistributed Successfully');
           this.socialCampaign.campaignName = null;
-          this.referenceService.campaignSuccessMessage = 'NOW'
+          this.referenceService.campaignSuccessMessage = this.socialCampaign.socialStatusList[0].shareNow? 'NOW': 'SCHEDULE';
           this.referenceService.launchedCampaignType = 'SOCIAL';
           if(this.authenticationService.isOnlyPartner()) {
             this.router.navigate(['home/campaigns/partner/social']); }
@@ -377,7 +390,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
         data => {
           this.setCustomResponse(ResponseType.Success, 'Status posted Successfully');
           this.socialCampaign.campaignName = null;
-          this.referenceService.campaignSuccessMessage = 'NOW'
+          this.referenceService.campaignSuccessMessage = this.socialCampaign.socialStatusList[0].shareNow? 'NOW': 'SCHEDULE';
           this.referenceService.launchedCampaignType = 'SOCIAL';
           if(this.authenticationService.isOnlyPartner()) {
             this.router.navigate(['home/campaigns/partner/social']); }
@@ -402,17 +415,8 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     }
   }
 
-  filterSelectedSocialProviders(socialStatusProviders: Array<SocialStatusProvider>) {
-    socialStatusProviders = socialStatusProviders.filter(function(obj) {
-      return obj.selected === true;
-    });
-    return socialStatusProviders;
-  }
-
   updateStatus() {
     if (this.validate()) {
-      // this.socialStatusProviders = this.filterSelectedSocialProviders(this.socialStatusProviders);
-      // this.setCustomResponse(ResponseType.Loading, 'Updating Status');
       this.loading = true;
       this.socialStatusResponse = [];
       this.socialStatusList.forEach(data => {
@@ -439,9 +443,35 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     }
   }
 
-  schedule() {
-    this.socialStatus.shareNow = false;
-    this.updateStatus();
+  shareLater() {
+    this.resetCustomResponse();
+
+    let isValid = true;
+    if (this.countryId === 0) {
+      isValid = false;
+      this.setCustomResponse(ResponseType.Warning, 'Please select your country from the dropdown list');
+    }
+
+    if (!this.scheduledTimeInString) {
+      isValid = false;
+      this.setCustomResponse(ResponseType.Warning, 'Please select schedule date and time');
+    }
+    if(isValid){
+      this.socialStatusList.forEach(data => {
+        data.shareNow = false;
+        data.scheduledTimeInString = this.scheduledTimeInString;
+      });
+      this.shareNow();
+    }
+  }
+
+  shareNow() {
+    if (!this.isSocialCampaign)
+      this.updateStatus();
+    else if (this.isSocialCampaign && !this.alias)
+      this.createSocialCampaign();
+    else if (this.isSocialCampaign && this.alias)
+      this.redistributeSocialCampaign();
   }
 
   deleteStatus(socialStatus: SocialStatus) {
@@ -525,8 +555,8 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     this.toggleSelectAll();
   }
 
-  showScheduleOption(divId: string) {$('#' + divId).removeClass('hidden');}
-  hideScheduleOption(divId: string) {$('#' + divId).addClass('hidden');}
+  showScheduleOption(divId: string) {$('#' + divId).removeClass('hidden'); $('#post-actions-button-group').addClass('hidden');}
+  hideScheduleOption(divId: string) {$('#' + divId).addClass('hidden'); $('#post-actions-button-group').removeClass('hidden');}
 
   videoPlayListSource(videoUrl: string) {
     this.videoUrl = videoUrl;
@@ -695,7 +725,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 
             const event = {
             title: socialStatus.statusMessage,
-            start: socialStatus.scheduledTimeUser,
+            start: socialStatus.scheduledTime,
             id: socialStatus.id+'-'+socialStatusDto.socialStatusProvider.id,
             data: socialStatusDto,
           };
@@ -704,10 +734,6 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
       },
       error => console.log(error),
       () => {
-        flatpickr('.flatpickr', {
-          enableTime: true,
-          minDate: new Date()
-        });
         console.log('listEvents() finished');
       }
       );
@@ -750,10 +776,16 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    flatpickr('.flatpickr', {
+      enableTime: true,
+      minDate: new Date(),
+      dateFormat: 'm/d/Y H:i',
+      time_24hr: false
+    });
     this.listSocialConnections();
     this.listEvents();
     this.constructCalendar();
-    $('#schedule-later-div').hide();
+    // $('#schedule-later-div').hide();
 
     if ( this.isSocialCampaign ) {
       this.socialCampaign.isPartner = this.authenticationService.isOnlyPartner() ? false : true;
@@ -906,5 +938,9 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
             $('#manageAccountsModal').modal('hide');
         } );
 
+  }
+
+  onSelectCountry(countryId){
+    this.timezones = this.referenceService.getTimeZonesByCountryId(countryId);
   }
 }

@@ -7,6 +7,7 @@ export class SocialStatus {
   statusMessage = '';
   message;
   scheduledTime: Date;
+  scheduledTimeInString: string;
   timeZone: string;
   socialStatusContents: Array<SocialStatusContent> = [];
   socialStatusProvider: SocialStatusProvider;
