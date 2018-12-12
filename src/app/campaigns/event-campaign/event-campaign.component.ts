@@ -528,8 +528,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
 
   validForm(eventCampaign:any){
    if(!this.eventError.eventStartTimeError &&!this.eventError.eventSameDateError && !this.eventError.eventEndDateError && !this.eventError.eventTitleError && !this.eventError.eventDateError && !this.eventError.eventHostByError
-    && !this.eventError.eventLocationError && !this.eventError.eventDescription &&
-    eventCampaign.message && eventCampaign.campaign && eventCampaign.campaignEventTimes[0].startTimeString &&
+    && !this.eventError.eventLocationError && eventCampaign.campaign && eventCampaign.campaignEventTimes[0].startTimeString &&
     eventCampaign.campaignEventTimes[0].country!="Select Country" && this.errorLength===0 &&
     this.isFormSubmitted && eventCampaign.userListIds.length>0){ return true;}
    else { return false;}
@@ -584,8 +583,10 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
          timeZoneId = moment.tz.guess();
      }
      eventCampaign.launchTimeInString = this.campaignService.setLaunchTime();
+     eventCampaign.timeZone = timeZoneId;
    } else {
      timeZoneId = $('#timezoneId option:selected').val();
+     eventCampaign.timeZone = timeZoneId;
    }
    eventCampaign.campaign = this.referenceService.replaceMultipleSpacesWithSingleSpace(eventCampaign.campaign);
    eventCampaign.fromName = this.referenceService.replaceMultipleSpacesWithSingleSpace(eventCampaign.fromName);
@@ -695,7 +696,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
       this.referenceService.goToTop();
       this.showErrorMessage = true;
       this.loader = false;
-      if(eventCampaign.campaignEventTimes[0].country=="Select Country"){
+      if( eventCampaign.campaignEventTimes[0].country=="Select Country"){
        // this.customResponse = new CustomResponse( 'ERROR', 'Please select the valid country', true );
       } else {
       this.customResponse = new CustomResponse( 'ERROR', 'Please complete the * required fields', true );
