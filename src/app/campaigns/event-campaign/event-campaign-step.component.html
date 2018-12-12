@@ -836,7 +836,7 @@ a.disabled {
                     <input [attr.disabled]="isPreviewEvent? '' : null" type="number" class="form-control" name="days" placeholder="Days" [(ngModel)]="reply.replyInDays" min="0" oninput="validity.valid||(value='');">
                   </div>
                   <div class="col-xs-12 time-col " *ngIf="reply.actionId!=22 && reply.actionId!=23 ">
-                    <div class="col-xs-2" style="cursor: default; position: relative; top: 28px;"><span for="time" id="send-time-{{reply.divId}}" class="time-picker-css">At<b style="color: red">*</b></span></div>
+                    <div class="col-xs-2" style="cursor: default; position: relative"><span for="time" id="send-time-{{reply.divId}}" class="time-picker-css">At<b style="color: red">*</b></span></div>
                     <div class="col-xs-10" style="height: 66px;"><timepicker [attr.disabled]="isPreviewEvent" [(ngModel)]="reply.replyTime" name="time" [hourStep]="1" [minuteStep]="1"></timepicker></div>
                   </div>
                 </div>

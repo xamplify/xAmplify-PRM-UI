@@ -687,6 +687,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
             else {
               this.customResponse = new CustomResponse( 'ERROR', response.errorResponses[0].message, true );
             }
+            this.referenceService.goToTop();
           }
         }
       },
@@ -701,6 +702,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
       } else {
       this.customResponse = new CustomResponse( 'ERROR', 'Please complete the * required fields', true );
       }
+      this.referenceService.goToTop();
     }
   }
 
@@ -874,7 +876,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
               let date1 = startTime.toDateString()
               if(!this.eventCampaign.campaignEventTimes[0].allDay){
               data.body = data.body.replace( "{{event_start_time}}", date1 + " " + srtTime );
-              data.body = data.body.replace( "<To>", 'To' )
+              data.body = data.body.replace( "&lt;To&gt;", 'To' )
               }else{
                   data.body = data.body.replace( "{{event_start_time}}", date1 + " " + srtTime + ' ' + '(All Day)' );
                   data.body = data.body.replace( "{{event_end_time}}", " " );
@@ -887,12 +889,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
               let date2 = endDate.toDateString()
               data.body = data.body.replace( "{{event_end_time}}", date2 + " " + endTime );
           }
-          /*else if(this.eventCampaign.campaignEventTimes[0].allDay){
-
-              let startTime = new Date(this.eventCampaign.campaignEventTimes[0].startTimeString);
-              let date1 = startTime.toDateString()
-              data.body = data.body.replace( "EVENT_END_TIME", date1 + " " + '11:59 PM' );
-          }*/
+          else if(this.eventCampaign.campaignEventTimes[0].allDay){
+              data.body = data.body.replace( "&lt;To&gt;", ' ' )
+          }
 
           if ( this.eventCampaign.message ) {
               data.body = data.body.replace( "{{event_description}}", this.eventCampaign.message );
