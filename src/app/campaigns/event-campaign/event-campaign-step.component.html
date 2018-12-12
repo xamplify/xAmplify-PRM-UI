@@ -46,7 +46,8 @@ a.disabled {
 					<div class="cenetered-block">
 						<span> <i class="fa fa-users"></i>
 						</span>
-						<h5 class="hidden-xs">Recipients</h5>
+						<h5 class="hidden-xs" *ngIf="!showContactType">Recipients</h5>
+						<h5 class="hidden-xs" *ngIf="showContactType">Partners & Contacts</h5>
 					</div>
 				</div>
 
@@ -492,6 +493,7 @@ a.disabled {
                         <tr>
                           <th class="custom-center">Select</th>
                           <th class="custom-center" style="width:18%">List Name</th>
+                          <th style="text-align: center;" *ngIf="showContactType">Type</th>
                           <th class="custom-center">Uploaded Date</th>
                           <th class="custom-center">Preview</th>
                         </tr>
@@ -511,7 +513,10 @@ a.disabled {
                                 Created On:<span>{{contactList.createdDate}}</span>
                             </h6>
  -->                          </td>
-                          <td class="text-center"> {{contactList.createdDate}} </td>
+								<td class='text-center m0' *ngIf="showContactType"><ng-container *ngIf="contactList.partnerUserList"> Partners </ng-container> <ng-container
+										*ngIf="!contactList.partnerUserList"> Contacts </ng-container>
+								</td>
+										<td class="text-center"> {{contactList.createdDate}} </td>
                           <td class='text-center m0'>
                             <a *ngIf="!isPreviewEvent">	<i class="fa fa-eye" aria-hidden="true" (click)="loadContactsOnPreview(contactList, contactsPagination);"></i></a>
                             <ng-container *ngIf="isPreviewEvent">

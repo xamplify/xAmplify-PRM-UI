@@ -23,6 +23,7 @@ import { EventError } from '../models/event-error';
 import { CustomResponse } from '../../common/models/custom-response';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { CountryNames } from '../../common/models/country-names';
+import { Roles } from '../../core/models/roles';
 var moment = require('moment-timezone');
 
 declare var $,swal, flatpickr, CKEDITOR,require;
@@ -100,6 +101,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   emailTemplatesTabClass = "disableRecipientsTab";
   launchTabClass = "disableRecipientsTab";
   currentTab: string;
+  showContactType:boolean = false;
+  roleName: Roles= new Roles();
 
   selectedListOfUserLists = [];
 
@@ -334,7 +337,18 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
 
   loadContactLists(contactListsPagination: Pagination) {
     this.paginationType = 'contactlists';
-    this.contactListsPagination.filterKey = 'isPartnerUserList';
+    const roles = this.authenticationService.getRoles();
+    let isVendor = roles.indexOf(this.roleName.vendorRole)>-1;
+    let isOrgAdmin = this.authenticationService.isOrgAdmin() || (!this.authenticationService.isAddedByVendor && !isVendor);
+   if(isOrgAdmin){
+       this.contactsPagination.filterValue = false;
+       this.contactsPagination.filterKey = null;
+       this.showContactType = true;
+   }else {
+       this.contactsPagination.filterValue = true;
+       this.showContactType = false;
+       this.contactListsPagination.filterKey = 'isPartnerUserList';
+   }
     this.contactListsPagination.filterValue = this.isPartnerUserList;
     this.contactService.loadContactLists(contactListsPagination)
       .subscribe(
