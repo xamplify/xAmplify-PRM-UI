@@ -414,6 +414,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
       
   }
 
+/*  setPagePagination(event:any){ this.setPage(event.page, event.type);}
+  loadPaginationDropdownTemplates(event:Pagination){ this.loadEmailTemplates();}*/
+  
   loadEmailTemplates(pagination:Pagination){
       pagination.throughPartner = this.eventCampaign.channelCampaign;
       this.referenceService.loading(this.campaignEmailTemplate.httpRequestLoader, true);
@@ -423,7 +426,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
           pagination.campaignDefaultTemplate = false;
           pagination.isEmailTemplateSearchedFromCampaign = true;
       }
-      pagination.maxResults = 12;
+     // pagination.maxResults = 12;
       pagination.filterBy = 'campaignEventEmails';
       this.emailTemplateService.listTemplates(pagination,this.loggedInUserId)
       .subscribe(
@@ -466,8 +469,16 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     else if (event.type === 'contactlists') {
       this.contactListsPagination.pageIndex = event.page;
       this.loadContactLists(this.contactListsPagination);
+    }else if(event.type ==="emailTemplates"){
+        this.emailTemplatesPagination.pageIndex = event.page;
+        this.loadEmailTemplates(this.emailTemplatesPagination);
     }
   }
+  
+  loadPaginationDropdownTemplates(paginarion:Pagination){ 
+      this.loadEmailTemplates(paginarion);
+      }
+  
   paginationDropDown(pagination: Pagination) {
     if (this.paginationType === 'contacts') { this.loadContacts(this.previewContactList, pagination); }
     else if (this.paginationType === 'contactlists') { this.loadContactLists(pagination); }

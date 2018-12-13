@@ -609,15 +609,18 @@ a.disabled {
 											</div>
 										</li>
 									</ul>
+							<div *ngIf="emailTemplatesPagination.totalRecords==0"
+								class="alert alert-info">
+								<strong>No email templates found</strong>
+							</div>
 
-                    </section>
+						</section>
                   </div>
                 </div>
-                <div *ngIf="emailTemplatesPagination.totalRecords==0" class="alert alert-info">
-					<strong>No email templates found</strong>
-				</div>
 				<div style="text-align:left;" [hidden]="emailTemplatesPagination.totalRecords<0 || campaignEmailTemplate.httpRequestLoader.isLoading || campaignEmailTemplate.httpRequestLoader.isServerError">
-          <app-pagination [class.disabled]="isPreviewEvent" [pagination]="emailTemplatesPagination" [type]="'emailTemplates'"></app-pagination>
+         <!--  <app-pagination [class.disabled]="isPreviewEvent" [pagination]="emailTemplatesPagination" [type]="'emailTemplates'"></app-pagination> -->
+          <app-pagination [class.disabled]="isPreviewEvent" [pagination]="emailTemplatesPagination" [type]="'emailTemplates'"
+            (notifyParent)="setPage($event)"  (notifyParentDropDown)="loadPaginationDropdownTemplates($event)"></app-pagination>
         </div>
         <button *ngIf="!isPreviewEvent" type="button" style="float:left;" class="btn btn-default" (click)="resetTabs('recipients')">Previous</button>
 		 <button *ngIf="!isPreviewEvent" type="button" style="float: right;" class="btn btn-default btn green" (click)="resetTabs('launch')" [class.disabled]="launchTabClass === 'disableLaunchTab'" title="">Next</button>
@@ -793,8 +796,8 @@ a.disabled {
               <img *ngIf="!isPreviewEvent" src="assets/images/icon1.png" (click)="addReplyRows()">
               <img *ngIf="isPreviewEvent" src="assets/images/icon1.png">
             </div><br>
-            <div class="col-xs-12 auto-response" *ngIf="!isPreviewEvent" style="text-align: center"><a (click)="addReplyRows()">Click Here</a> to add an auto reauto response to your email</div>
-            <div class="col-xs-12 auto-response" *ngIf="isPreviewEvent" style="text-align: center"><a style="cursor: default;" [attr.disabled]="isPreviewEvent? '' : null">Click Here</a> to add a auto response to your email</div>
+            <div class="col-xs-12 auto-response" *ngIf="!isPreviewEvent" style="text-align: center"><a (click)="addReplyRows()">Click here</a> to add an auto response to your email.</div>
+            <div class="col-xs-12 auto-response" *ngIf="isPreviewEvent" style="text-align: center"><a style="cursor: default;" [attr.disabled]="isPreviewEvent? '' : null">Click here</a> to add a auto response to your email</div>
             </div>
             <div *ngFor="let reply of eventCampaign.campaignReplies;let i=index">
             <div class="portlet light dashboard-stat2" id="{{reply.divId}}" style="min-height: 320px;" [class.disabled]="reply.body && reDistributeEvent && reply.id">
