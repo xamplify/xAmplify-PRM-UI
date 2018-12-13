@@ -67,10 +67,10 @@
                   <font style="color: red">
                     <b> * </b>
                   </font>
-                  <select class="form-control" name="campaign.email" [(ngModel)]="campaign.email">
-                    <option [ngValue]="campaign.email">
-                      {{campaign.email}}
-                    </option>
+                  <select class="form-control" name="campaign.email" [(ngModel)]="campaign.email" (change)="setFromName()">
+                    <option *ngFor="let teamMember of teamMemberEmailIds" [ngValue]="teamMember.emailId" >
+						{{teamMember.emailId}}
+					</option>
                   </select>
                 </div>
                 <div class="form-group" [attr.class]="preHeaderDivClass">

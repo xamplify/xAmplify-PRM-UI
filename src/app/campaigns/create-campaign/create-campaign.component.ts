@@ -2411,7 +2411,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
          this.campaignService.getAllTeamMemberEmailIds(this.loggedInUserId)
          .subscribe(
          data => {
-             console.log(data);
            let self = this;
            $.each(data,function(index,value){
                self.teamMemberEmailIds.push(data[index]);
@@ -2421,6 +2420,11 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                this.campaign.email = teamMember.emailId;
                this.campaign.fromName = $.trim(teamMember.firstName+" "+teamMember.lastName);
                this.setEmailIdAsFromName();
+           }else{
+               let existingTeamMemberEmailIds =  this.teamMemberEmailIds.map(function(a) {return a.emailId;});
+               if(existingTeamMemberEmailIds.indexOf(this.campaign.email)<0){
+                   this.setLoggedInUserEmailId();
+               }
            }
 
          },
@@ -2429,6 +2433,20 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
          );
      }
 
+     
+     setLoggedInUserEmailId(){
+         const userProfile = this.authenticationService.userProfile;
+         this.campaign.email = userProfile.emailId;
+         if(userProfile.firstName !== undefined && userProfile.lastName !== undefined)
+             this.campaign.fromName = $.trim(userProfile.firstName + " " + userProfile.lastName);
+         else if(userProfile.firstName !== undefined && userProfile.lastName == undefined)
+             this.campaign.fromName = $.trim(userProfile.firstName);
+         else
+             this.campaign.fromName = $.trim(userProfile.emailId);
+         this.setEmailIdAsFromName();
+     }
+     
+     
      setEmailIdAsFromName(){
          if(this.campaign.fromName.length==0){
              this.campaign.fromName = this.campaign.email;
