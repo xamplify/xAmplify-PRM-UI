@@ -105,6 +105,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   roleName: Roles= new Roles();
 
   selectedListOfUserLists = [];
+  selectedListOfUserListForPreview = [];
 
   constructor(public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
     private contactService: ContactService,
@@ -220,9 +221,11 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
         console.log(this.userListIds);
 
         if(this.isPreviewEvent){
-          for(let i=0; i< result.data.userListDTOs.length;i++){
+            this.selectedListOfUserListForPreview = result.data.userListDTOs;
+            for(let i=0; i< result.data.userListDTOs.length;i++){
             console.log(result);
           }
+          this.setUserLists()
         }
         if(this.authenticationService.isOnlyPartner()){
           const emailTemplates:any = [];
@@ -1249,8 +1252,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
         if(this.isPreviewEvent){
             this.setUserLists();
             this.detailsTab = true;
-            this.recipientsTab = true;
-            this.emailTemplatesTab = true;
+            this.recipientsTab = false;
+            this.emailTemplatesTab = false;
             this.launchTab = true;
         }
 

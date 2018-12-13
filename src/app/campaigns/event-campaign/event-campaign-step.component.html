@@ -735,7 +735,20 @@ a.disabled {
                     </ng-container>
 
                     </td>
-                    <td width="55%" style="text-align:center">
+                    <td *ngIf="isPreviewEvent" width="55%" style="text-align:center">
+                      <ng-container *ngFor="let contactList of selectedListOfUserListForPreview;let i=index;">
+                        <a (click)="loadContacts(contactList,contactsPagination)" data-toggle="modal" title="{{contactList.name}}"
+                          style="display: block;">
+                          <ng-container *ngIf="contactList.name?.length>50">
+                            {{contactList.name | slice:0:50}}...
+                          </ng-container>
+                          <ng-container *ngIf="contactList.name?.length<=50">
+                            {{contactList.name}}
+                          </ng-container>
+                        </a>
+                      </ng-container>
+                    </td>
+                    <td *ngIf="!isPreviewEvent" width="55%" style="text-align:center">
                       <ng-container *ngFor="let contactList of selectedListOfUserLists;let i=index;">
                         <a (click)="loadContacts(contactList,contactsPagination)" data-toggle="modal" title="{{contactList.name}}"
                           style="display: block;">
