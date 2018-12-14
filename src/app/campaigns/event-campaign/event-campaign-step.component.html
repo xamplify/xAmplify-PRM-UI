@@ -31,7 +31,7 @@ a.disabled {
 	<div class="page-bar" [hidden]="loader">
 		<div class="container"
 			style="width: 100%; border-radius: 0; border: 1px solid #869ab3; border-top: 0; box-shadow: 0 0 6px rgba(0, 0, 0, 0.6); padding-bottom: 10px;">
-			<div *ngIf="!isPreviewEvent" style="display: flex; padding-top: 1em;">
+			<div *ngIf="!isPreviewEvent && !reDistributeEvent" style="display: flex; padding-top: 1em;">
 				<div id="step2" class="col-block col-block-complete" (click)="resetTabs('details')" [ngClass]="{'col-block-active': detailsTab}"
 					style="width: 25%">
 					<div class="cenetered-block">
@@ -74,7 +74,7 @@ a.disabled {
 
 			<!-- Step One code -->
  <fieldset class="portlet light" style="margin-top: 25px" [hidden]="!detailsTab">
-<div *ngIf="isPreviewEvent" class="portlet-title" style="display:block">
+<div *ngIf="isPreviewEvent || reDistributeEvent" class="portlet-title" style="display:block">
                     <h4 class="pull-left f-w-600">Event Details</h4>
                   </div>
 				<!-- <div class="page-bar  portlet light border-radius-0 shadow">
@@ -454,7 +454,7 @@ a.disabled {
 				</div> -->
 				<!-- </div>
           </div> -->
-          <button *ngIf="!isPreviewEvent" type="button" style="float: right" class=" btn green"
+          <button *ngIf="!isPreviewEvent && !reDistributeEvent" type="button" style="float: right" class=" btn green"
 			(click)="resetTabs('recipients')" title="Please Fill Campaign Details" [disabled]="recipientsTabClass === 'disableRecipientsTab'">Next</button>
 			</fieldset>
 
@@ -536,8 +536,8 @@ a.disabled {
                 </div>
               </div>
 
-             <button *ngIf="!isPreviewEvent" type="button" style="float:left;" class="btn btn-default" (click)="resetTabs('details')">Previous</button>
-			 <button *ngIf="!isPreviewEvent" type="button" style="float: right;" class="btn btn-default btn green" [disabled]="emailTemplatesTabClass === 'disableTemplateTab'" (click)="resetTabs('templates')" title="">Next</button>
+             <button *ngIf="!isPreviewEvent && !reDistributeEvent" type="button" style="float:left;" class="btn btn-default" (click)="resetTabs('details')">Previous</button>
+			 <button *ngIf="!isPreviewEvent && !reDistributeEvent" type="button" style="float: right;" class="btn btn-default btn green" [disabled]="emailTemplatesTabClass === 'disableTemplateTab'" (click)="resetTabs('templates')" title="">Next</button>
 
           </div>
 
@@ -622,8 +622,8 @@ a.disabled {
           <app-pagination [class.disabled]="isPreviewEvent" [pagination]="emailTemplatesPagination" [type]="'emailTemplates'"
             (notifyParent)="setPage($event)"  (notifyParentDropDown)="loadPaginationDropdownTemplates($event)"></app-pagination>
         </div>
-        <button *ngIf="!isPreviewEvent" type="button" style="float:left;" class="btn btn-default" (click)="resetTabs('recipients')">Previous</button>
-		 <button *ngIf="!isPreviewEvent" type="button" style="float: right;" class="btn btn-default btn green" (click)="resetTabs('launch')" [class.disabled]="launchTabClass === 'disableLaunchTab'" title="">Next</button>
+        <button *ngIf="!isPreviewEvent && !reDistributeEvent" type="button" style="float:left;" class="btn btn-default" (click)="resetTabs('recipients')">Previous</button>
+		 <button *ngIf="!isPreviewEvent && !reDistributeEvent" type="button" style="float: right;" class="btn btn-default btn green" (click)="resetTabs('launch')" [class.disabled]="launchTabClass === 'disableLaunchTab'" title="">Next</button>
         </div>
 
 
@@ -722,7 +722,7 @@ a.disabled {
               <div class="portlet light border-0">
                 <table width="100%">
                   <tr>
-                    <td width="25%">
+                    <td width="28%">
                       <div class="icon-border">
 
                       <i class="fa fa-users fa-2x icon-position" aria-hidden="true"></i>
@@ -771,7 +771,7 @@ a.disabled {
               <div class="portlet light border-0" id="email-template-preview-div">
                 <table width="100%">
                   <tr>
-                    <td width="25%">
+                    <td width="28%">
                     <div class="icon-border">
                       <i class="fa fa-envelope fa-2x icon-position" aria-hidden="true"></i>
                     </div>
@@ -995,7 +995,7 @@ a.disabled {
             <!-- <div><button type="button" class="btn green" (click)="campaignService.addEmailId(eventCampaign,eventCampaign.emailTemplate.id,false)" style="width: 10em;">Send Test Email</button>
             </div> -->
 
-<button *ngIf="!isPreviewEvent" type="button" style="float:left;" class="btn btn-default" (click)="resetTabs('templates')">Previous</button>
+<button *ngIf="!isPreviewEvent && !reDistributeEvent" type="button" style="float:left;" class="btn btn-default" (click)="resetTabs('templates')">Previous</button>
 
           </div>
 
