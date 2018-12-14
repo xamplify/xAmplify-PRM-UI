@@ -778,7 +778,7 @@ a.disabled {
                       <span style="margin:20px 15px 0 33px !important" >Email Template</span>
                     </td>
                     <td width="55%" style="text-align:center">
-                      <a (click)="getEmailTemplatePreview(eventCampaign.emailTemplate)" title="{{eventCampaign.emailTemplate.name}}">
+                      <a (click)="previewEventCampaignEmailTemplate(eventCampaign.emailTemplate.id)" title="{{eventCampaign.emailTemplate.name}}">
                         <ng-container *ngIf="eventCampaign.emailTemplate.name?.length>50">
                           {{eventCampaign.emailTemplate.name | slice:0:50}}...
                         </ng-container>
