@@ -161,7 +161,7 @@
 								</h6>
 							</div>
 							<div class="error-block mt10" *ngIf="socialStatus.publishStatus === 'FAILURE'">
-								<h5>{{socialStatus.message}}</h5>
+								<h5>{{socialStatus.publishMessage}}</h5>
 							</div>
 						</div>
 					</div>
@@ -339,15 +339,15 @@
 					</div>
 					<div class="form-group col-sm-3">
 						<label class="pull-left">TimeZone </label>
-						<select class="form-control" style="width: 100%" [(ngModel)]="timezoneId" id="timezoneId">
-							<ng-container *ngIf="timezones?.length==1">
-								<option *ngFor="let timeZone of timezones" [value]="timeZone.timezoneId" [selected]="countryId === timeZone.countryId">
-									{{timeZone.cityName}}
+						<select class="form-control" style="width: 100%" id="timezoneId">
+							<ng-container *ngIf="timezones?.length === 1">
+								<option *ngFor="let timezone of timezones" [value]="timezone.timezoneId" selected>
+									{{timezone.cityName}}
 								</option>
 							</ng-container>
 							<ng-container *ngIf="timezones?.length>1">
-								<option *ngFor="let timeZone of timezones" [value]="timeZone.timezoneId">
-									{{timeZone.cityName}}
+								<option *ngFor="let timezone of timezones" [value]="timezone.timezoneId">
+									{{timezone.cityName}}
 								</option>
 							</ng-container>
 						</select>
@@ -355,10 +355,10 @@
 					<div class="form-group col-sm-3 mt5 p0">
 						<br>
 						<div class="col-xs-6 p0">
-							<button type="button" class="btn btn-primary" (click)="shareLater()">Schedule</button>
+							<button type="button" class="btn btn-primary btn-block" (click)="shareLater()">Schedule</button>
 						</div>
 						<div class="col-xs-6 p0">
-							<button type="button" class="btn btn-default" (click)="hideScheduleOption('schedule-option-div')">Cancel</button>					
+							<button type="button" class="btn btn-default btn-block" (click)="hideScheduleOption('schedule-option-div')">Cancel</button>					
 						</div>
 					</div>
 				</div>

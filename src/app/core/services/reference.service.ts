@@ -880,6 +880,8 @@ export class ReferenceService {
         return [
             new Country(0, '', 'Select Country'),
             new Country(238, 'US', 'United States'),
+            new Country(237, 'GB', 'United Kingdom'),
+            new Country(103, 'IN', 'India'),
             new Country(1, 'AF', 'Afghanistan'),
             new Country(2, 'AX', 'Aland Islands'),
             new Country(3, 'AL', 'Albania'),
@@ -982,7 +984,6 @@ export class ReferenceService {
             new Country(100, 'HK', 'Hong Kong'),
             new Country(101, 'HU', 'Hungary (Magyarorszag)'),
             new Country(102, 'IS', 'Iceland (Island)'),
-            new Country(103, 'IN', 'India'),
             new Country(104, 'ID', 'Indonesia'),
             new Country(105, 'IR', 'Iran'),
             new Country(106, 'IQ', 'Iraq'),
@@ -1115,7 +1116,6 @@ export class ReferenceService {
             new Country(234, 'UG', 'Uganda'),
             new Country(235, 'UA', 'Ukraine'),
             new Country(236, 'AE', 'United Arab Emirates'),
-            new Country(237, 'GB', 'United Kingdom'),
             new Country(239, 'UY', 'Uruguay'),
             new Country(240, 'UZ', 'Uzbekistan'),
             new Country(241, 'VU', 'Vanuatu'),
@@ -1127,7 +1127,6 @@ export class ReferenceService {
             new Country(247, 'YE', 'Yemen'),
             new Country(248, 'ZM', 'Zambia'),
             new Country(249, 'ZW', 'Zimbabwe'),
-
         ];
     }
 

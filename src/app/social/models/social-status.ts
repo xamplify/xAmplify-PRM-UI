@@ -5,7 +5,7 @@ export class SocialStatus {
   id: number;
   userId: number;
   statusMessage = '';
-  message;
+  publishMessage;
   scheduledTime: Date;
   scheduledTimeInString: string;
   timeZone: string;

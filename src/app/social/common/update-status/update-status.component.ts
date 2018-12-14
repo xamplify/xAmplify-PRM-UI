@@ -59,7 +59,6 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   countries: Country[];
   timezones: Timezone[];
   countryId: number;
-  timezoneId: string;
   scheduledTimeInString: string; 
 
   previewContactList = new ContactList();
@@ -286,7 +285,16 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   }
 
   validate() {
-    return this.isSocialCampaign ? this.isValidSocialCampaign() : this.isValidUpdateStatus();
+    let isValid = true;
+    this.socialStatusList.forEach(data => {
+      if(!data.statusMessage && data.socialStatusContents.length === 0){
+        this.setCustomResponse( ResponseType.Warning, 'Status can not be empty' );
+          isValid = false;
+          return false;
+      }
+    })
+    if(isValid)
+      return this.isSocialCampaign ? this.isValidSocialCampaign() : this.isValidUpdateStatus();
   }
 
   isSocialAccountsSelected() {
@@ -460,6 +468,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
       this.socialStatusList.forEach(data => {
         data.shareNow = false;
         data.scheduledTimeInString = this.scheduledTimeInString;
+        data.timeZone = $('#timezoneId option:selected').val();
       });
       this.shareNow();
     }
@@ -779,7 +788,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     flatpickr('.flatpickr', {
       enableTime: true,
       minDate: new Date(),
-      dateFormat: 'm/d/Y H:i',
+      dateFormat: 'm/d/Y h:i K',
       time_24hr: false
     });
     this.listSocialConnections();

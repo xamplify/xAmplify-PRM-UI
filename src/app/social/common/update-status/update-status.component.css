@@ -45,6 +45,7 @@ textarea {
 	display: inline-block
 }
 .fa-social {margin: 10px 10px 0 -10px}
+.fa-times-circle {cursor: pointer}
 
 .profile-box.checked {
 	background-color: #f7f7f7;
@@ -449,10 +450,6 @@ h4 {
 h5 {
 	display: inline;
 	font-weight: 600;
-}
-
-.btn {
-	min-width: 9.2em;
 }
 
 .profile-picture {
