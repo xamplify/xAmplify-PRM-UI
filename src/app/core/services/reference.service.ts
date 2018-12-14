@@ -879,6 +879,7 @@ export class ReferenceService {
     getCountries() {
         return [
             new Country(0, '', 'Select Country'),
+            new Country(238, 'US', 'United States'),
             new Country(1, 'AF', 'Afghanistan'),
             new Country(2, 'AX', 'Aland Islands'),
             new Country(3, 'AL', 'Albania'),
@@ -1115,7 +1116,6 @@ export class ReferenceService {
             new Country(235, 'UA', 'Ukraine'),
             new Country(236, 'AE', 'United Arab Emirates'),
             new Country(237, 'GB', 'United Kingdom'),
-            new Country(238, 'US', 'United States'),
             new Country(239, 'UY', 'Uruguay'),
             new Country(240, 'UZ', 'Uzbekistan'),
             new Country(241, 'VU', 'Vanuatu'),
