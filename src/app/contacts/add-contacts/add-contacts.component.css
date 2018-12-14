@@ -14,10 +14,12 @@
 }
 .pb0{ padding-bottom: 0 !important}
 @media screen and (min-width:601px){
-  .modal-css{  width: 70% !important; right: 0 !important;}
+  .modal-css{  width: 50% !important; right: 0 !important;}
+  .salesforce{margin-top: -44px;text-align: center; }
   }
 @media screen and (max-width:600px){
   .modal-css {width: 100% !important; right: 0 !important;} .cloud-css{  left: 73px !important; }
+  .salesforce{margin-top: -25px;text-align: center; }
 }
 @media screen and (max-width:768px){
   .cloud-items{ position: relative; font-size: 19px; top: -82px !important; left: 93px; }

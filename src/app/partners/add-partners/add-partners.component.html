@@ -121,13 +121,13 @@ img:hover {
 						     	[class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality || selectedAddPartnerOption == 7 ">
 										<img	[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :sfImageBlur==true}"
 										src="assets/images/crm/sf.png" class="salesForceImageClass" data-toggle="tooltip" data-placement="bottom"
-										title="Click here to access contacts from your Salesforce account"
+										title="Click here to access partners from your Salesforce account"
 										height="86" width="90">
 									</a> <a *ngIf="sfImageBlur" id="salesforceContact_button"	style="background-color: white" (click)="salesforceContacts()"
 							      [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality || selectedAddPartnerOption == 7">
 										<img	[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :sfImageBlur==true}"
 										src="assets/images/crm/sf.png" class="salesForceImageClass" data-toggle="tooltip" data-placement="bottom"
-										title="Click here to access contacts from your Salesforce account"
+										title="Click here to access partners from your Salesforce account"
 										height="86" width="90"
 										onmouseover="this.src='assets/images/crm/connecting.png';"
 										onmouseout="this.src='assets/images/crm/sf.png';">
@@ -148,7 +148,7 @@ img:hover {
 						      	[class.disabled]="selectedAddPartnerOption != 5 || selectedAddPartnerOption == 3 || disableOtherFuctionality">
 										<img	[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :googleImageBlur==true}"
 										src="assets/images/crm/google.png" class="googleImageClass" data-toggle="tooltip" data-placement="bottom"
-										title="Click here to access contacts from your Google contacts"
+										title="Click here to access partners from your Google account"
 										height="86" width="90"
 										onmouseover="this.src='assets/images/crm/connecting.png';"
 										onmouseout="this.src='assets/images/crm/google.png';">
@@ -156,7 +156,7 @@ img:hover {
 							       [class.disabled]="selectedAddPartnerOption != 5 || selectedAddPartnerOption == 3 || disableOtherFuctionality">
 										<img	[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :googleImageBlur==true}"
 										src="assets/images/crm/google.png" class="googleImageClass" data-toggle="tooltip" data-placement="bottom"
-										title="Click here to access contacts from your Google contacts"
+										title="Click here to access partners from your Google account"
 										height="86" width="90">
 									</a>
 									<div id="GoogleGear" style="position: relative"	*ngIf="googleImageNormal">
@@ -176,7 +176,7 @@ img:hover {
 						     	[class.disabled]="selectedAddPartnerOption != 5 || selectedAddPartnerOption == 6 || disableOtherFuctionality">
 										<img	[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}"
 										src="assets/images/crm/Zoho.png" class="zohoImageClass" data-toggle="tooltip" data-placement="bottom"
-										title="Click here to access contacts from your Zoho account"
+										title="Click here to access partners from your Zoho account"
 										height="86" width="90"
 										onmouseover="this.src='assets/images/crm/connecting.png';"
 										onmouseout="this.src='assets/images/crm/Zoho.png';">
@@ -184,7 +184,7 @@ img:hover {
 						      	[class.disabled]="selectedAddPartnerOption != 5 || selectedAddPartnerOption == 6 || disableOtherFuctionality">
 										<img	[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}"
 										src="assets/images/crm/Zoho.png" class="zohoImageClass" data-toggle="tooltip" data-placement="bottom"
-										title="Click here to access contacts from your Zoho account"
+										title="Click here to access partners from your Zoho account"
 										height="86" width="90">
 									</a>
 									<div id="zohoGear" style="position: relative" *ngIf="zohoImageNormal">
@@ -964,23 +964,21 @@ img:hover {
  <div class="modal right fade" id="TestSalesForceModal" tabindex="-1"
  role="dialog" aria-labelledby="TestSalesForceModal">
  <div class="modal-dialog modal-css" role="document">
-   <div class="modal-content rounded-0 accounts-modal" style="overflow: hidden;">
+   <div class="modal-content rounded-0">
      <div class="modal-header">
        <a class="close-circle" data-dismiss="modal" style="position: relative;;top:-12px;"><i class="fa fa-times"></i></a>
          <div class="col-sm-3" style="margin-top: 10px">
            <img src="assets/images/Salesforce-01.png" alt="Picture of a happy monkey" style="height: 65px" width="100px" />
          </div>
-         <div class="col-sm-12"
-           style="margin-left: 136px; margin-top: -44px">
-           <h4 class="modal-title">import from salesforce:</h4>
+         <div class="col-sm-12 salesforce">
+           <h4 class="modal-title">Import from salesforce:</h4>
          </div>
      </div>
      <div class="modal-body">
        <div class="clearfix">
           <form class="form-horizontal">
               <div class="form-group">
-                <label class="control-label col-sm-3" for="email">Select
-                  Option:</label>
+                <label class="control-label col-sm-3" for="email">Select Option:</label>
                 <div class="col-sm-8">
                   <select class="opts form-control" id="salesforce-dropdown-1"
                     (change)="onChangeSalesforceDropdown($event)">
@@ -994,14 +992,11 @@ img:hover {
               </div>
               <div class="form-group"
                 *ngIf="salesforceListViewsData?.length > 0">
-                <label class="control-label col-sm-3" for="salesforce-dropdown-2">Select
-                  Option:</label>
+                <label class="control-label col-sm-3" for="salesforce-dropdown-2">Select Option:</label>
                 <div class="col-sm-8">
-                  <select class="form-control" id="salesforce-dropdown-2"
-                    (change)="onChange($event.target.value)">
+                  <select class="form-control" id="salesforce-dropdown-2" (change)="onChange($event.target.value)">
                     <option selected value="DEFAULT">Select</option>
-                    <option *ngFor="let item of salesforceListViewsData"
-                      value='{{item.listViewId}}'>{{item.listViewName}}</option>
+                    <option *ngFor="let item of salesforceListViewsData" value='{{item.listViewId}}'>{{item.listViewName}}</option>
                   </select>
                 </div>
               </div>
