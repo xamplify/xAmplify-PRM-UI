@@ -2503,7 +2503,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     ngOnInit() {
         try {
             this.loadContactListsNames();
-            this.listTeamMembers();
+            if(!this.authenticationService.isTeamMember()){
+              this.listTeamMembers();
+            }
             this.listOrgAdmin();
             this.selectedContactListName = this.contactListName;
             this.checkingLoadContactsCount = true;
