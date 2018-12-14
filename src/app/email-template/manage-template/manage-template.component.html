@@ -54,6 +54,10 @@
 									<li class="filter"
 										(click)="filterTemplates('VIDEO_CO_BRANDING',false,8)"
 										[class.emailtemplate-selected]="8 == selectedTemplateTypeIndex">Video
+                    Co-Branding</li>
+                    <li class="filter" style="display: none"
+										(click)="filterTemplates('EVENT_CO_BRANDING','event',9)"
+										[class.emailtemplate-selected]="9 == selectedTemplateTypeIndex">Event
 										Co-Branding</li>
 									<li class="filter" style="display: none;">Own Template</li>
 								</ul>
@@ -257,7 +261,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="row mix-grid" style="margin-top: -15px; padding: 7px;" *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError ">
+					<div class="row mix-grid" style="margin-top: -15px; padding: 7px;" *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError">
 						<ng-container>
 						<div
 							*ngFor="let emailTemplate of pagination.pagedItems ;let i =index"
@@ -279,13 +283,13 @@
 						</ng-container>
 					</div>
 				</div>
-				<div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
+				<div *ngIf="pagination.pagedItems.length !== 0 && !httpRequestLoader.isLoading" class="pg8">
 					<app-pagination [pagination]="pagination" [type]="'t'"
 						(notifyParent)="setPage($event)"
 						(notifyParentDropDown)="listEmailTemplates($event)"></app-pagination>
 				</div>
 				<!-- End of 24 -->
-				<div *ngIf="pagination.totalRecords==0" class="alert alert-info">
+				<div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
 					<strong>No Email Templates Found</strong>
 				</div>
 			</div>
