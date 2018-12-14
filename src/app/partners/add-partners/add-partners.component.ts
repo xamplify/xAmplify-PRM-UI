@@ -1584,7 +1584,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                     this.getGoogleConatacts = data;
                     this.selectedAddPartnerOption = 7;
                     if ( !this.getGoogleConatacts.contacts ) {
+                        if(this.getGoogleConatacts.jsonData.includes("API_DISABLED_FOR_ORG")){
+                            this.customResponse = new CustomResponse( 'ERROR', "Salesforce REST API is not enabled, Please change your Salesforce platform settings.", true );
+                        }else{
                         this.customResponse = new CustomResponse( 'ERROR', this.properties.NO_RESULTS_FOUND, true );
+                        }
                         this.selectedAddPartnerOption = 5;
                         this.hideModal();
                        /* $( '#salesforceModal' ).modal( 'hide' );
@@ -1661,7 +1665,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                     this.getGoogleConatacts = data;
                     this.selectedAddPartnerOption = 7;
                     if ( !this.getGoogleConatacts.contacts ) {
+                        if(this.getGoogleConatacts.jsonData.includes("API_DISABLED_FOR_ORG")){
+                            this.customResponse = new CustomResponse( 'ERROR', "Salesforce REST API is not enabled, Please change your Salesforce platform settings.", true );
+                        }else{
                         this.customResponse = new CustomResponse( 'ERROR', this.properties.NO_RESULTS_FOUND, true );
+                        }
                         this.selectedAddPartnerOption = 5;
                         this.hideModal();
                     } else {

@@ -1673,7 +1673,11 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.getSalesforceConatactList = data;
                     this.selectedAddContactsOption = 3;
                     if ( !this.getSalesforceConatactList.contacts ) {
+                        if(this.getSalesforceConatactList.jsonData.includes("API_DISABLED_FOR_ORG")){
+                            this.customResponse = new CustomResponse( 'ERROR', "Salesforce REST API is not enabled, Please change your Salesforce platform settings.", true );
+                        }else{
                         this.customResponse = new CustomResponse( 'ERROR', this.properties.NO_RESULTS_FOUND, true );
+                        }
                         this.selectedAddContactsOption = 8;
                         this.hideModal();
                         }else{
@@ -1741,7 +1745,11 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.getSalesforceConatactList = data;
                     this.selectedAddContactsOption = 3;
                     if ( !this.getSalesforceConatactList.contacts ) {
+                        if(this.getSalesforceConatactList.jsonData.includes("API_DISABLED_FOR_ORG")){
+                            this.customResponse = new CustomResponse( 'ERROR', "Salesforce REST API is not enabled, Please change your Salesforce platform settings.", true );
+                        }else{
                         this.customResponse = new CustomResponse( 'ERROR', this.properties.NO_RESULTS_FOUND, true );
+                        }
                         this.selectedAddContactsOption = 8;
                         this.hideModal();
                     } else {
