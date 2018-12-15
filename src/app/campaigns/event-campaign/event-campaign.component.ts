@@ -103,7 +103,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   currentTab: string;
   showContactType:boolean = false;
   roleName: Roles= new Roles();
-
+  gridLoader = false;
   selectedListOfUserLists = [];
   selectedListOfUserListForPreview = [];
   isHeaderCheckBoxChecked: boolean = false;
@@ -206,7 +206,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
         }
         this.onChangeCountryCampaignEventTime(this.eventCampaign.campaignEventTimes[0].countryId)
         if(this.reDistributeEvent){ this.isPartnerUserList = false;}
- 
+
         for(let i=0; i< result.data.userListDTOs.length;i++){
          if(this.reDistributeEvent || this.authenticationService.isOnlyPartner()) { this.userListIds.push(result.data.userListDTOs[i].id); }
          if(!this.reDistributeEvent) { this.parternUserListIds.push(result.data.userListDTOs[i].id); }
@@ -215,7 +215,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
         } else {  this.eventCampaign.userListIds = this.userListIds; }
 
         if(this.reDistributeEvent){
-            this.eventCampaign.userListIds = []; this.userListIds = [];this.parternUserListIds = []; 
+            this.eventCampaign.userListIds = []; this.userListIds = [];this.parternUserListIds = [];
             this.eventCampaign.enableCoBrandingLogo = true;
             }
         this.eventCampaign.userLists = [];
@@ -371,7 +371,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
             });
             this.contactListsPagination.pagedItems = contactsAll;
            }
-        
+
         var contactIds = this.contactListsPagination.pagedItems.map( function( a ) { return a.id; });
         if(!this.isPartnerUserList){
         var items = $.grep( this.userListIds, function( element ) {
@@ -424,20 +424,21 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   switchStatusChange(){
       this.eventCampaign.channelCampaign = !this.eventCampaign.channelCampaign;
       this.loadEmailTemplates(this.emailTemplatesPagination);
-      
+
       if(this.eventCampaign.channelCampaign){
           this.eventCampaign.enableCoBrandingLogo = true;
       }else{
           this.eventCampaign.enableCoBrandingLogo = false;
       }
-      
-      
+
+
   }
 
 /*  setPagePagination(event:any){ this.setPage(event.page, event.type);}
   loadPaginationDropdownTemplates(event:Pagination){ this.loadEmailTemplates();}*/
-  
+
   loadEmailTemplates(pagination:Pagination){
+      this.gridLoader = true;
       pagination.throughPartner = this.eventCampaign.channelCampaign;
       this.referenceService.loading(this.campaignEmailTemplate.httpRequestLoader, true);
       if(pagination.searchKey==null || pagination.searchKey==""){
@@ -452,7 +453,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
       .subscribe(
           (data:any) => {
               let allEventEmailTemplates = data.emailTemplates;
-
+              this.gridLoader = false;
               this.campaignEmailTemplates = [];
               for(let i=0;i< allEventEmailTemplates.length;i++){
                   if(this.eventCampaign.channelCampaign){
@@ -494,11 +495,11 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
         this.loadEmailTemplates(this.emailTemplatesPagination);
     }
   }
-  
-  loadPaginationDropdownTemplates(paginarion:Pagination){ 
+
+  loadPaginationDropdownTemplates(paginarion:Pagination){
       this.loadEmailTemplates(paginarion);
       }
-  
+
   paginationDropDown(pagination: Pagination) {
     if (this.paginationType === 'contacts') { this.loadContacts(this.previewContactList, pagination); }
     else if (this.paginationType === 'contactlists') { this.loadContactLists(pagination); }
@@ -533,8 +534,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     this.contactListsPagination.pageIndex = 1;
     this.loadContactLists(this.contactListsPagination);
   }
-  
-  
+
+
   checkAllForPartners( ev: any ) {
       try {
           if ( ev.target.checked ) {
@@ -552,7 +553,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
           } else {
               $( '[name="campaignContact[]"]' ).prop( 'checked', false );
               $( '#user_list_tb tr' ).removeClass( "contact-list-selected" );
-             
+
               // this.parternUserListIds = [];
               //this.userListIds = [];
               if ( this.contactListsPagination.maxResults == this.contactListsPagination.totalRecords ) {
@@ -571,8 +572,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
           console.error( error, "editContactComponent", "checkingAllContacts()" );
       }
   }
-  
-  
+
+
   checkAll( ev: any ) {
       try {
           if ( ev.target.checked ) {
@@ -608,8 +609,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
           console.error( error, "editContactComponent", "checkingAllContacts()" );
       }
   }
-  
-  
+
+
 
   highlightRow(contactListId: number) {
     const isChecked = $('#' + contactListId).is(':checked');
@@ -625,7 +626,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
       $('#' + contactListId).parent().closest('tr').removeClass('highlight');
       if(this.userListIds.length===0){  this.eventError.eventContactError = true;}
     }
-    
+
     if ( this.userListIds.length == this.contactListsPagination.pagedItems.length ) {
         this.isHeaderCheckBoxChecked = true;
     } else {
@@ -647,7 +648,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
       $('#' + contactListId).parent().closest('tr').removeClass('highlight');
       if(this.parternUserListIds.length===0){  this.eventError.eventContactError = true;}
     }
-    
+
     if ( this.parternUserListIds.length == this.contactListsPagination.pagedItems.length ) {
         this.isHeaderCheckBoxChecked = true;
     } else {
@@ -1352,9 +1353,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
         }else{
             this.launchTabClass = "disableLaunchTab";
         }
-        
+
         this.resetTabs(this.currentTab);
-        
+
         if(this.isPreviewEvent){
             this.setUserLists();
             this.detailsTab = true;
@@ -1362,7 +1363,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
             this.emailTemplatesTab = false;
             this.launchTab = true;
         }
-        
+
         if(this.reDistributeEvent){
             this.setUserLists();
             this.detailsTab = true;

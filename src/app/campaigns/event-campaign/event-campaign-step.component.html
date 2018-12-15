@@ -509,7 +509,7 @@ a.disabled {
                       </thead>
                       <tbody>
                         <tr *ngFor="let contactList of contactListsPagination.pagedItems; let i=index;" [ngClass]="{'contact-list-selected': userListIds.indexOf(contactList.id)>-1 || parternUserListIds.indexOf(contactList.id)>-1}">
-                        
+
                           <td class='text-center m0'>
                             <input *ngIf="!isPartnerUserList" value="{{contactList.id}}" name="campaignContact[]" [attr.disabled]="isPreviewEvent? '' : null" type='checkbox' id='{{contactList.id}}' [checked]="userListIds.indexOf(contactList.id)>-1" (click)="highlightRow(contactList.id)" (input)="resetTabClass()">
                             <input *ngIf="isPartnerUserList" value="{{contactList.id}}" name="campaignContact[]"  [attr.disabled]="isPreviewEvent? '' : null" type='checkbox' id='{{contactList.id}}' [checked]="parternUserListIds.indexOf(contactList.id)>-1" (click)="partnerHighlightRow(contactList.id)" (input)="resetTabClass()">
@@ -545,29 +545,21 @@ a.disabled {
                 </ng-template>
                 </div>
               </div>
-
-             <button *ngIf="!isPreviewEvent && !reDistributeEvent" type="button" style="float:left;" class="btn btn-default" (click)="resetTabs('details')">Previous</button>
+       <button *ngIf="!isPreviewEvent && !reDistributeEvent" type="button" style="float:left;" class="btn btn-default" (click)="resetTabs('details')">Previous</button>
 			 <button *ngIf="!isPreviewEvent && !reDistributeEvent" type="button" style="float: right;" class="btn btn-default btn green" [disabled]="emailTemplatesTabClass === 'disableTemplateTab'" (click)="resetTabs('templates')" title="">Next</button>
-
           </div>
-
-
-
       <!--     End Step two   -->
-
-<!--        Step three email templates   -->
-
-
+      <!-- Step three email templates   -->
 
           <div class="col-xs-12 mb10" [hidden]="!emailTemplatesTab" style="padding: 10px 0 0 0;">
-              <div class="boxes portlet light">
+            <app-grid-loader *ngIf="gridLoader"></app-grid-loader>
+              <div class="boxes portlet light" [hidden]="gridLoader">
                   <div class="portlet-title" style="display:block">
                     <h4 class="pull-left f-w-600">Select<span *ngIf="isPreviewEvent">ed</span> an Email Template</h4>
                   </div>
                   <div class="portlet-body clearfix">
-                        <section  style="min-height: 200px;">
-
-                        <ul class="content__list"
+                 <section  style="min-height: 200px;">
+                  <ul class="content__list"
 										*ngFor="let emailTemplate of emailTemplatesPagination.pagedItems;let i =index">
 										<li [class.disabled]="isPreviewEvent || reDistributeEvent" (click)="emailTemplateSelection(emailTemplate)" class="list__item" [class.list__item--selected]="eventCampaign.emailTemplate.id === emailTemplate.id">
 											<!-- above class [ngClass]="{'list__item--selected':selectedFileIds.indexOf(file.id)>-1}" -->
