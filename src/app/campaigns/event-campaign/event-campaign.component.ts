@@ -683,7 +683,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
         }else{
            // this.emptyContactsMessage = "Contacts are in progress";
         }
-
+     this.resetTabClass();
     }
 
 }
@@ -711,6 +711,7 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
       }else{
          // this.emptyContactsMessage = "Contacts are in progress";
       }
+      this.resetTabClass();
 
   }
 
@@ -1383,6 +1384,8 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
     }
     setUserLists(){
         this.selectedListOfUserLists = [];
+        this.parternUserListIds = this.referenceService.removeDuplicates( this.parternUserListIds);
+        this.userListIds = this.referenceService.removeDuplicates( this.parternUserListIds);
         if(this.isPartnerUserList) {this.eventCampaign.userListIds = this.parternUserListIds; }
       else { this.eventCampaign.userListIds = this.userListIds; }
       for(let i=0; i< this.contactListsPagination.pagedItems.length; i++ ) {
