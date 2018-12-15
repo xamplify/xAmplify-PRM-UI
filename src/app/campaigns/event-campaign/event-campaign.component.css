@@ -75,6 +75,9 @@
   font-weight: 600;
   margin-top: 4px;
 }
+.color-css{
+	color: #111 !important;
+}
 .title-css{
   color: #2a3f54;
   font-size: 19px;

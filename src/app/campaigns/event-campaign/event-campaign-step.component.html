@@ -82,7 +82,7 @@ a.disabled {
 				<div class="col-xs-12 col-sm-7">
 					<form class="form-horizontal">
 						<div class="form-group">
-							<label for="eventTitle" class="col-sm-3 labal-css">Event
+							<label for="eventTitle" class="col-sm-3 labal-css color-css">Event
 								Title <span class=text-danger>*</span>
 							</label>
 							<div class="col-sm-9">
@@ -101,7 +101,7 @@ a.disabled {
 							</div>
 						</div>
 						<div class="form-group">
-							<label for="hostedBy" class="col-sm-3 labal-css">Hosted
+							<label for="hostedBy" class="col-sm-3 labal-css color-css">Hosted
 								By <span class=text-danger>*</span>
 							</label>
 							<div class="col-sm-9">
@@ -117,7 +117,7 @@ a.disabled {
 							</div>
 						</div>
 						<div class="form-group">
-							<label for="hostedBy" class="col-sm-3 labal-css">From
+							<label for="hostedBy" class="col-sm-3 labal-css color-css">From
 								Email</label>
 							<div class="col-sm-9">
 								<select
@@ -132,7 +132,7 @@ a.disabled {
 						</div>
 						<div class="form-group"
 							*ngIf="!authenticationService.isOnlyPartner()">
-							<label for="Throughpartner" class="col-sm-3 labal-css">Through
+							<label for="Throughpartner" class="col-sm-3 labal-css color-css">Through
 								Partner</label>
 							<div class="col-sm-2">
 								<switch [status]="eventCampaign.channelCampaign"
@@ -145,7 +145,7 @@ a.disabled {
 									(statusChange)="switchStatusChange()">
 								</switch>
 							</div>
-							<label for="toPartner" class="col-sm-3 labal-css">To
+							<label for="toPartner" class="col-sm-3 labal-css color-css">To
 								Partner</label>
 							<div class="col-sm-3" style="padding: 0; margin-top: 5px;">
 								<span style="cursor: pointer; color: #54a7e9;"
@@ -155,7 +155,7 @@ a.disabled {
 							</div>
 						</div>
 						<div class="form-group">
-							<label for="eventDateTime" class="col-sm-3 labal-css">Event
+							<label for="eventDateTime" class="col-sm-3 labal-css color-css">Event
 								Date/Time <span class=text-danger>*</span>
 							</label>
 							<div class="col-sm-9 p0">
@@ -194,7 +194,7 @@ a.disabled {
 							</div>
 						</div>
 						<div class="form-group">
-							<label for="Time Zone" class="col-sm-3 labal-css">Time
+							<label for="Time Zone" class="col-sm-3 labal-css color-css">Time
 								Zone <span class=text-danger>*</span>
 							</label>
 							<div class="col-sm-9 p0">
@@ -238,7 +238,7 @@ a.disabled {
 							</div>
 						</div>
 						<div class="form-group">
-							<label for="hostedBy" class="col-sm-3 labal-css">Online
+							<label for="hostedBy" class="col-sm-3 labal-css color-css">Online
 								Meeting</label>
 							<div class="col-sm-9">
 								<switch [disabled]="(isPreviewEvent || reDistributeEvent)"
@@ -254,7 +254,7 @@ a.disabled {
 						</div>
 						<section *ngIf="!eventCampaign.onlineMeeting">
 							<div class="form-group">
-								<label for="hostedBy" class="col-sm-3 labal-css">Location
+								<label for="hostedBy" class="col-sm-3 labal-css color-css">Location
 									Name <span class="text-danger" style="position: absolute;">*</span>
 								</label>
 								<div class="col-sm-9">
@@ -271,7 +271,7 @@ a.disabled {
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="hostedBy" class="col-sm-3 labal-css">Address</label>
+								<label for="hostedBy" class="col-sm-3 labal-css color-css">Address</label>
 								<div class="col-sm-9">
 									<input type="text"
 										[attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null"
@@ -403,7 +403,7 @@ a.disabled {
 				</div>
 				<!-- <div class="col-xs-12 p0 mb10">
 					<div class="form-group" (click)="imageClick()">
-						<label for="Event Image" class="col-sm-2 labal-css"
+						<label for="Event Image" class="col-sm-2 labal-css color-css"
 							style="width: 13%">Event Image</label>
 						<div class="col-sm-10" style="width: 85.44444%; margin-left: 16px;"
 							(drop)="fileChange($event)">
@@ -433,7 +433,7 @@ a.disabled {
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="hostedBy" class="col-sm-2 labal-css"
+						<label for="hostedBy" class="col-sm-2 labal-css color-css"
 							style="margin-top: 10px; width: 15%">Event Description <i
 							class=text-danger>*</i></label>
 						<div class="col-sm-10 p0" (input)="resetTabClass()"
@@ -470,7 +470,7 @@ a.disabled {
                   <h4 class="pull-left f-w-600">Select<span *ngIf="isPreviewEvent">ed</span> Invite Recipients<span style="color:red">*</span></h4>
                    <section >
                       <div class="form-group m0 pull-right" [hidden]="true">
-                        <h5 class="labal-css pr10 pull-left" style="font-size: 14px;">Partner Lists</h5>
+                        <h5 class="labal-css color-css pr10 pull-left" style="font-size: 14px;">Partner Lists</h5>
                         <switch [status]="isPartnerUserList" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [disabled]="isPreviewEvent"
                           [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
                           (statusChange)="toggleContactLists()">
@@ -490,19 +490,29 @@ a.disabled {
                   <div class="table-responsive">
                     <table class="table table-bordered no-more-tables dataTable no-footer" id='contact-list-table' 	[ngClass]="{'has-error': eventError.eventContactError}">
                       <thead>
-                        <tr>
-                          <th class="custom-center">Select</th>
-                          <th class="custom-center" style="width:18%">List Name</th>
+                     <tr>
+							<td *ngIf="!isPartnerUserList" align="center">
+								<input type="checkbox" name="all"
+								[(ngModel)]="isHeaderCheckBoxChecked"
+								(change)="checkAll($event)" id="checkAllExistingContacts" />
+							</td>
+								<td *ngIf="isPartnerUserList" align="center">
+								<input type="checkbox" name="all"
+								[(ngModel)]="isHeaderCheckBoxChecked"
+								(change)="checkAllForPartners($event)" id="checkAllExistingContacts" />
+							</td>
+										<th class="custom-center" style="width:18%">List Name</th>
                           <th style="text-align: center;" *ngIf="showContactType">Type</th>
                           <th class="custom-center">Uploaded Date</th>
                           <th class="custom-center">Preview</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr *ngFor="let contactList of contactListsPagination.pagedItems; let i=index;" [class.contact-list-selected]="userListIds.indexOf(contactList.id)>-1 || parternUserListIds.indexOf(contactList.id)>-1">
+                        <tr *ngFor="let contactList of contactListsPagination.pagedItems; let i=index;" [ngClass]="{'contact-list-selected': userListIds.indexOf(contactList.id)>-1 || parternUserListIds.indexOf(contactList.id)>-1}">
+                        
                           <td class='text-center m0'>
-                            <input *ngIf="!isPartnerUserList" name="campaignContact[]" [attr.disabled]="isPreviewEvent? '' : null" type='checkbox' id='{{contactList.id}}' [checked]="userListIds.indexOf(contactList.id)>-1" (click)="highlightRow(contactList.id)" (input)="resetTabClass()">
-                            <input *ngIf="isPartnerUserList" name="campaignContact[]"  [attr.disabled]="isPreviewEvent? '' : null" type='checkbox' id='{{contactList.id}}' [checked]="parternUserListIds.indexOf(contactList.id)>-1" (click)="partnerHighlightRow(contactList.id)" (input)="resetTabClass()">
+                            <input *ngIf="!isPartnerUserList" value="{{contactList.id}}" name="campaignContact[]" [attr.disabled]="isPreviewEvent? '' : null" type='checkbox' id='{{contactList.id}}' [checked]="userListIds.indexOf(contactList.id)>-1" (click)="highlightRow(contactList.id)" (input)="resetTabClass()">
+                            <input *ngIf="isPartnerUserList" value="{{contactList.id}}" name="campaignContact[]"  [attr.disabled]="isPreviewEvent? '' : null" type='checkbox' id='{{contactList.id}}' [checked]="parternUserListIds.indexOf(contactList.id)>-1" (click)="partnerHighlightRow(contactList.id)" (input)="resetTabClass()">
                           </td>
                           <td class="text-center">
                             <h5 class='m0 f-w-600 table-color' title="{{contactList.name}}">

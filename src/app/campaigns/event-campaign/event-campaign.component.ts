@@ -106,6 +106,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
 
   selectedListOfUserLists = [];
   selectedListOfUserListForPreview = [];
+  isHeaderCheckBoxChecked: boolean = false;
 
   constructor(public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
     private contactService: ContactService,
@@ -252,7 +253,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
 
     flatpickr('.flatpickr', {
       enableTime: true,
-      dateFormat: 'm/d/Y H:i',
+      dateFormat: 'm/d/Y H:i K',
       time_24hr: false,
       minDate: new Date(),
     });
@@ -356,8 +357,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     this.contactService.loadContactLists(contactListsPagination)
       .subscribe(
       (data: any) => {
-        contactListsPagination.totalRecords = data.totalRecords;
-        contactListsPagination = this.pagerService.getPagedItems(contactListsPagination, data.listOfUserLists);
+        this.contactListsPagination.totalRecords = data.totalRecords;
+        this.contactListsPagination = this.pagerService.getPagedItems(this.contactListsPagination, data.listOfUserLists);
         if(this.isPreviewEvent && this.authenticationService.isOnlyPartner()){
           const contactsAll:any = [];
           this.contactListsPagination.pagedItems.forEach((element, index) => {
@@ -370,6 +371,22 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
             });
             this.contactListsPagination.pagedItems = contactsAll;
            }
+        
+        var contactIds = this.contactListsPagination.pagedItems.map( function( a ) { return a.id; });
+        if(!this.isPartnerUserList){
+        var items = $.grep( this.userListIds, function( element ) {
+            return $.inArray( element, contactIds ) !== -1;
+        });
+        }else{
+            var items = $.grep( this.parternUserListIds, function( element ) {
+                return $.inArray( element, contactIds ) !== -1;
+            });
+           }
+        if ( items.length == contactListsPagination.totalRecords || items.length == this.contactListsPagination.pagedItems.length ) {
+            this.isHeaderCheckBoxChecked = true;
+        } else {
+            this.isHeaderCheckBoxChecked = false;
+        }
       },
       (error: any) => {
         this.logger.error(error);
@@ -516,6 +533,77 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     this.contactListsPagination.pageIndex = 1;
     this.loadContactLists(this.contactListsPagination);
   }
+  
+  
+  checkAllForPartners( ev: any ) {
+      try {
+          if ( ev.target.checked ) {
+              console.log( "checked" );
+              $( '[name="campaignContact[]"]' ).prop( 'checked', true );
+              let self = this;
+              $( '[name="campaignContact[]"]:checked' ).each( function() {
+                  var id = $( this ).val();
+                  self.parternUserListIds.push( parseInt( id ) );
+                  console.log( self.parternUserListIds );
+                  $( '#campaignContactListTable_' + id ).addClass( 'contact-list-selected' );
+              });
+              this.parternUserListIds = this.referenceService.removeDuplicates( this.parternUserListIds );
+          } else {
+              $( '[name="campaignContact[]"]' ).prop( 'checked', false );
+              $( '#user_list_tb tr' ).removeClass( "contact-list-selected" );
+             
+              // this.parternUserListIds = [];
+              //this.userListIds = [];
+              if ( this.contactListsPagination.maxResults == this.contactListsPagination.totalRecords ) {
+                  this.parternUserListIds = [];
+                  this.userListIds = [];
+                  $( '#user_list_tb tr' ).removeClass( "contact-list-selected" );
+              } else {
+                  let currentPageContactIds = this.contactListsPagination.pagedItems.map( function( a ) { return a.id; });
+                  this.parternUserListIds = this.referenceService.removeDuplicatesFromTwoArrays( this.parternUserListIds, currentPageContactIds );
+              }
+          }
+          ev.stopPropagation();
+      } catch ( error ) {
+          console.error( error, "editContactComponent", "checkingAllContacts()" );
+      }
+  }
+  
+  
+  checkAll( ev: any ) {
+      try {
+          if ( ev.target.checked ) {
+              console.log( "checked" );
+              $( '[name="campaignContact[]"]' ).prop( 'checked', true );
+              let self = this;
+              $( '[name="campaignContact[]"]:checked' ).each( function() {
+                  var id = $( this ).val();
+                  self.userListIds.push( parseInt( id ) );
+                  console.log( self.userListIds );
+                  $( '#campaignContactListTable_' + id ).addClass( 'contact-list-selected' );
+              });
+              this.userListIds = this.referenceService.removeDuplicates( this.userListIds );
+          } else {
+              $( '[name="campaignContact[]"]' ).prop( 'checked', false );
+              $( '#user_list_tb tr' ).removeClass( "contact-list-selected" );
+              //this.parternUserListIds = [];
+              //this.userListIds = [];
+              if ( this.contactListsPagination.maxResults == this.contactListsPagination.totalRecords ) {
+                  this.parternUserListIds = [];
+                  this.userListIds = [];
+                  $( '#user_list_tb tr' ).removeClass( "contact-list-selected" );
+              } else {
+                  let currentPageContactIds = this.contactListsPagination.pagedItems.map( function( a ) { return a.id; });
+                  this.userListIds = this.referenceService.removeDuplicatesFromTwoArrays( this.userListIds, currentPageContactIds );
+              }
+          }
+          ev.stopPropagation();
+      } catch ( error ) {
+          console.error( error, "editContactComponent", "checkingAllContacts()" );
+      }
+  }
+  
+  
 
   highlightRow(contactListId: number) {
     const isChecked = $('#' + contactListId).is(':checked');
@@ -530,6 +618,12 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
       this.userListIds.splice($.inArray(contactListId, this.userListIds), 1);
       $('#' + contactListId).parent().closest('tr').removeClass('highlight');
       if(this.userListIds.length===0){  this.eventError.eventContactError = true;}
+    }
+    
+    if ( this.userListIds.length == this.contactListsPagination.pagedItems.length ) {
+        this.isHeaderCheckBoxChecked = true;
+    } else {
+        this.isHeaderCheckBoxChecked = false;
     }
   }
 
@@ -546,6 +640,12 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
       this.parternUserListIds.splice($.inArray(contactListId, this.parternUserListIds), 1);
       $('#' + contactListId).parent().closest('tr').removeClass('highlight');
       if(this.parternUserListIds.length===0){  this.eventError.eventContactError = true;}
+    }
+    
+    if ( this.parternUserListIds.length == this.contactListsPagination.pagedItems.length ) {
+        this.isHeaderCheckBoxChecked = true;
+    } else {
+        this.isHeaderCheckBoxChecked = false;
     }
   }
 
