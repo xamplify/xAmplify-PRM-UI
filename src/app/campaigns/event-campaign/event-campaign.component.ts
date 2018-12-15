@@ -546,6 +546,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
                   self.parternUserListIds.push( parseInt( id ) );
                   console.log( self.parternUserListIds );
                   $( '#campaignContactListTable_' + id ).addClass( 'contact-list-selected' );
+                  self.eventError.eventContactError = false;
               });
               this.parternUserListIds = this.referenceService.removeDuplicates( this.parternUserListIds );
           } else {
@@ -562,8 +563,10 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
                   let currentPageContactIds = this.contactListsPagination.pagedItems.map( function( a ) { return a.id; });
                   this.parternUserListIds = this.referenceService.removeDuplicatesFromTwoArrays( this.parternUserListIds, currentPageContactIds );
               }
+              if(this.parternUserListIds.length===0){  this.eventError.eventContactError = true;}
           }
           ev.stopPropagation();
+          this.resetTabClass();
       } catch ( error ) {
           console.error( error, "editContactComponent", "checkingAllContacts()" );
       }
@@ -581,6 +584,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
                   self.userListIds.push( parseInt( id ) );
                   console.log( self.userListIds );
                   $( '#campaignContactListTable_' + id ).addClass( 'contact-list-selected' );
+                  self.eventError.eventContactError = false;
               });
               this.userListIds = this.referenceService.removeDuplicates( this.userListIds );
           } else {
@@ -596,8 +600,10 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
                   let currentPageContactIds = this.contactListsPagination.pagedItems.map( function( a ) { return a.id; });
                   this.userListIds = this.referenceService.removeDuplicatesFromTwoArrays( this.userListIds, currentPageContactIds );
               }
+              if(this.userListIds.length===0){  this.eventError.eventContactError = true;}
           }
           ev.stopPropagation();
+          this.resetTabClass();
       } catch ( error ) {
           console.error( error, "editContactComponent", "checkingAllContacts()" );
       }
