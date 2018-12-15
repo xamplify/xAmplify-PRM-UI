@@ -508,25 +508,21 @@ a.disabled {
                         </tr>
                       </thead>
                       <tbody>
-                        <tr *ngFor="let contactList of contactListsPagination.pagedItems; let i=index;" [ngClass]="{'contact-list-selected': userListIds.indexOf(contactList.id)>-1 || parternUserListIds.indexOf(contactList.id)>-1}">
-
+                        <ng-container *ngFor="let contactList of contactListsPagination.pagedItems; let i=index;">
+                        <tr id="campaignContactListTable_{{contactList.id}}" (click)="highlightContactRow(contactList.id,$event,contactList.noOfContacts,contactList.emailValidationInd)" *ngIf="!isPartnerUserList" [ngClass]="{'contact-list-selected': userListIds.indexOf(contactList.id)>-1 || parternUserListIds.indexOf(contactList.id)>-1}">
                           <td class='text-center m0'>
-                            <input *ngIf="!isPartnerUserList" value="{{contactList.id}}" name="campaignContact[]" [attr.disabled]="isPreviewEvent? '' : null" type='checkbox' id='{{contactList.id}}' [checked]="userListIds.indexOf(contactList.id)>-1" (click)="highlightRow(contactList.id)" (input)="resetTabClass()">
-                            <input *ngIf="isPartnerUserList" value="{{contactList.id}}" name="campaignContact[]"  [attr.disabled]="isPreviewEvent? '' : null" type='checkbox' id='{{contactList.id}}' [checked]="parternUserListIds.indexOf(contactList.id)>-1" (click)="partnerHighlightRow(contactList.id)" (input)="resetTabClass()">
+                            <input *ngIf="!isPartnerUserList" value="{{contactList.id}}" name="campaignContact[]" [attr.disabled]="isPreviewEvent? '' : null" type='checkbox' id='{{contactList.id}}' [checked]="userListIds.indexOf(contactList.id)>-1" (click)="$event.stopPropagation();highlightRow(contactList.id)" (input)="resetTabClass()">
+                            <input *ngIf="isPartnerUserList" value="{{contactList.id}}" name="campaignContact[]"  [attr.disabled]="isPreviewEvent? '' : null" type='checkbox' id='{{contactList.id}}' [checked]="parternUserListIds.indexOf(contactList.id)>-1" (click)="$event.stopPropagation();partnerHighlightRow(contactList.id)" (input)="resetTabClass()">
                           </td>
                           <td class="text-center">
                             <h5 class='m0 f-w-600 table-color' title="{{contactList.name}}">
                               <span>{{contactList.name | slice:0:50}}<span *ngIf="contactList.name?.length>50">...</span></span>
                             </h5>
-                            <!-- <h6 class="mb0 mt5 table-color" title="{{contactList.uploadedBy}}">
-                                <span>{{contactList.uploadedBy | slice:0:30}}<span *ngIf="contactList.uploadedBy?.length>30">...</span></span>
-                                Created On:<span>{{contactList.createdDate}}</span>
-                            </h6>
- -->                          </td>
-								<td class='text-center m0' *ngIf="showContactType"><ng-container *ngIf="contactList.partnerUserList"> Partners </ng-container> <ng-container
-										*ngIf="!contactList.partnerUserList"> Contacts </ng-container>
-								</td>
-										<td class="text-center"> {{contactList.createdDate}} </td>
+                          </td>
+                          <td class='text-center m0' *ngIf="showContactType"><ng-container *ngIf="contactList.partnerUserList"> Partners </ng-container> <ng-container
+                              *ngIf="!contactList.partnerUserList"> Contacts </ng-container>
+                          </td>
+			      							<td class="text-center"> {{contactList.createdDate}} </td>
                           <td class='text-center m0'>
                             <a *ngIf="!isPreviewEvent">	<i class="fa fa-eye" aria-hidden="true" (click)="loadContactsOnPreview(contactList, contactsPagination);"></i></a>
                             <ng-container *ngIf="isPreviewEvent">
@@ -537,6 +533,33 @@ a.disabled {
                             </ng-container>
                           </td>
                         </tr>
+                        </ng-container>
+                        <ng-container *ngFor="let contactList of contactListsPagination.pagedItems; let i=index;">
+                        <tr id="campaignContactListTable_{{contactList.id}}" (click)="highlightPartnerContactRow(contactList.id,$event,contactList.noOfContacts,contactList.emailValidationInd)" *ngIf="isPartnerUserList" [ngClass]="{'contact-list-selected': userListIds.indexOf(contactList.id)>-1 || parternUserListIds.indexOf(contactList.id)>-1}">
+                          <td class='text-center m0'>
+                            <input *ngIf="!isPartnerUserList" value="{{contactList.id}}" name="campaignContact[]" [attr.disabled]="isPreviewEvent? '' : null" type='checkbox' id='{{contactList.id}}' [checked]="userListIds.indexOf(contactList.id)>-1" (click)="$event.stopPropagation();highlightRow(contactList.id)" (input)="resetTabClass()">
+                            <input *ngIf="isPartnerUserList" value="{{contactList.id}}" name="campaignContact[]"  [attr.disabled]="isPreviewEvent? '' : null" type='checkbox' id='{{contactList.id}}' [checked]="parternUserListIds.indexOf(contactList.id)>-1" (click)="$event.stopPropagation();partnerHighlightRow(contactList.id)" (input)="resetTabClass()">
+                          </td>
+                          <td class="text-center">
+                            <h5 class='m0 f-w-600 table-color' title="{{contactList.name}}">
+                              <span>{{contactList.name | slice:0:50}}<span *ngIf="contactList.name?.length>50">...</span></span>
+                            </h5>
+                          </td>
+                          <td class='text-center m0' *ngIf="showContactType"><ng-container *ngIf="contactList.partnerUserList"> Partners </ng-container> <ng-container
+                              *ngIf="!contactList.partnerUserList"> Contacts </ng-container>
+                          </td>
+			      							<td class="text-center"> {{contactList.createdDate}} </td>
+                          <td class='text-center m0'>
+                            <a *ngIf="!isPreviewEvent">	<i class="fa fa-eye" aria-hidden="true" (click)="loadContactsOnPreview(contactList, contactsPagination);"></i></a>
+                            <ng-container *ngIf="isPreviewEvent">
+                            <a *ngIf="authenticationService.isOnlyPartner()">
+                                <i class="fa fa-eye disabled" aria-hidden="true"></i>
+                            </a>
+                            <a *ngIf="!authenticationService.isOnlyPartner()">	<i class="fa fa-eye" aria-hidden="true" (click)="loadContactsOnPreview(contactList, contactsPagination);"></i></a>
+                            </ng-container>
+                          </td>
+                        </tr>
+                        </ng-container>
                       </tbody>
                     </table>
                   </div>

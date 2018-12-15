@@ -619,11 +619,13 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
         this.userListIds.push(contactListId);
         this.parternUserListIds = []
         this.eventError.eventContactError = false;
+        $('#campaignContactListTable_'+contactListId).addClass('contact-list-selected');
       }
-      $('#' + contactListId).parent().closest('tr').addClass('highlight');
+      $('#' + contactListId).parent().closest('tr').addClass('contact-list-selected');
     } else {
       this.userListIds.splice($.inArray(contactListId, this.userListIds), 1);
-      $('#' + contactListId).parent().closest('tr').removeClass('highlight');
+      $('#' + contactListId).parent().closest('tr').removeClass('contact-list-selected');
+      $('#campaignContactListTable_'+contactListId).removeClass('contact-list-selected');
       if(this.userListIds.length===0){  this.eventError.eventContactError = true;}
     }
 
@@ -640,12 +642,14 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
       if (!this.parternUserListIds.includes(contactListId)) {
         this.parternUserListIds.push(contactListId);
         this.eventError.eventContactError = false;
-        this.userListIds = []
+        this.userListIds = [];
+        $('#campaignContactListTable_'+contactListId).addClass('contact-list-selected');
       }
-      $('#' + contactListId).parent().closest('tr').addClass('highlight');
+      $('#' + contactListId).parent().closest('tr').addClass('contact-list-selected');
     } else {
       this.parternUserListIds.splice($.inArray(contactListId, this.parternUserListIds), 1);
-      $('#' + contactListId).parent().closest('tr').removeClass('highlight');
+      $('#' + contactListId).parent().closest('tr').removeClass('contact-list-selected');
+      $('#campaignContactListTable_'+contactListId).removeClass('contact-list-selected');
       if(this.parternUserListIds.length===0){  this.eventError.eventContactError = true;}
     }
 
@@ -656,6 +660,61 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     }
   }
 
+  highlightContactRow(contactId:number,event:any,count:number,isValid:boolean){
+    if(isValid){
+        if(count>0){
+            let isChecked = $('#'+contactId).is(':checked');
+            if(isChecked){
+                //Removing Highlighted Row
+                $('#'+contactId).prop( "checked", false );
+                $('#campaignContactListTable_'+contactId).removeClass('contact-list-selected');
+                console.log("Revmoing"+contactId);
+                this.userListIds.splice($.inArray(contactId,this.userListIds),1);
+          }else{
+              //Highlighting Row
+              $('#'+contactId).prop( "checked", true );
+              $('#campaignContactListTable_'+contactId).addClass('contact-list-selected');
+              console.log("Adding"+contactId);
+              this.userListIds.push(contactId);
+          }
+            // this.contactsUtility();
+            event.stopPropagation();
+            console.log(this.userListIds);
+        }else{
+           // this.emptyContactsMessage = "Contacts are in progress";
+        }
+
+    }
+
+}
+
+highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boolean){
+  if(isValid){
+      if(count>0){
+          let isChecked = $('#'+contactId).is(':checked');
+          if(isChecked){
+              //Removing Highlighted Row
+              $('#'+contactId).prop( "checked", false );
+              $('#campaignContactListTable_'+contactId).removeClass('contact-list-selected');
+              console.log("Revmoing"+contactId);
+              this.parternUserListIds.splice($.inArray(contactId,this.parternUserListIds),1);
+        }else{
+            //Highlighting Row
+            $('#'+contactId).prop( "checked", true );
+            $('#campaignContactListTable_'+contactId).addClass('contact-list-selected');
+            console.log("Adding"+contactId);
+            this.parternUserListIds.push(contactId);
+        }
+          // this.contactsUtility();
+          event.stopPropagation();
+          console.log(this.parternUserListIds);
+      }else{
+         // this.emptyContactsMessage = "Contacts are in progress";
+      }
+
+  }
+
+}
   closeModal() {
     this.paginationType = 'contactlists';
     this.contactsPagination = new Pagination();
