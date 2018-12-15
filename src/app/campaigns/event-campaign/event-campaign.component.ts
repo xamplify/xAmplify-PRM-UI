@@ -839,6 +839,10 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
     eventCampaign.campaignEventMedias[0].id = null;
     eventCampaign.user.id = null;
 
+    for(let i=0; i< eventCampaign.campaignReplies.length;i++){
+      eventCampaign.campaignReplies[i].id = null;
+    }
+
     if(this.reDistributeEvent) {
       eventCampaign.parentCampaignId = this.activatedRoute.snapshot.params['id'];
       eventCampaign.id = null;
@@ -1305,6 +1309,10 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
             eventCampaign.userLists.push(contactList);
           }
           eventCampaign.user.id = null;
+          for(let i=0; i< eventCampaign.campaignReplies.length;i++){
+            eventCampaign.campaignReplies[i].id = null;
+          }
+
           if(!eventCampaign.campaignEventTimes[0].startTimeString) {  eventCampaign.campaignEventTimes[0].startTimeString = this.getTodayTime();}
           if(!eventCampaign.campaignEventTimes[0].endTimeString){ eventCampaign.campaignEventTimes[0].endTimeString = this.getTodayTime(); }
           if( this.eventCampaign.campaignEventTimes[0].countryId===undefined) { this.eventCampaign.campaignEventTimes[0].countryId=0; }
