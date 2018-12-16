@@ -458,7 +458,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   searchEmailTemplate(){
       this.emailTemplatesPagination.pageIndex = 1;
       this.emailTemplatesPagination.searchKey = this.emailTemplateSearchInput;
-     // this.emailTemplatesPagination.coBrandedEmailTemplateSearch = this.campaign.enableCoBrandingLogo;
+      this.emailTemplatesPagination.coBrandedEmailTemplateSearch = this.eventCampaign.enableCoBrandingLogo;
 
       this.loadEmailTemplates(this.emailTemplatesPagination);
 
