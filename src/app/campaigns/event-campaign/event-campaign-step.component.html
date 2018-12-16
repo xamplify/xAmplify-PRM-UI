@@ -214,7 +214,7 @@ a.disabled {
 									<select
 										[attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null"
 										class="form-control" style="width: 100%"
-										[(ngModel)]="eventCampaign.campaignEventTimes[0].timeZone"
+										[(ngModel)]="eventCampaign.campaignEventTimes[0].timeZone" (change)="timeZoneSet(eventCampaign.campaignEventTimes[0].timeZone)"
 										[ngModelOptions]="{standalone: true}"
 										id="timezoneIdCampaignEventTime">
 										<option *ngIf="!timezonesCampaignEventTime" value="" disabled

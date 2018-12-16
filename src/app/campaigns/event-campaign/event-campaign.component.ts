@@ -109,6 +109,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   isHeaderCheckBoxChecked: boolean = false;
   contactSearchInput: string = "";
   emailTemplateSearchInput: string = "";
+  timeZoneSetValue: any;
 
   constructor(public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
     private contactService: ContactService,
@@ -159,6 +160,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   $('#eventImage').click();
  }
 
+ timeZoneSet(event){
+  this.timeZoneSetValue = event;
+ }
   ngOnInit() {
     this.detailsTab = true;
     this.resetTabClass()
@@ -346,13 +350,13 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
       this.contactListsPagination.searchKey = this.contactSearchInput;
       this.loadContactLists(this.contactListsPagination);
   }
-  
+
   clearContactListSearch(){
       this.contactListsPagination.pageIndex = 1;
       this.contactListsPagination.searchKey = "";
       this.loadContactLists(this.contactListsPagination);
   }
-  
+
   loadContactLists(contactListsPagination: Pagination) {
     this.paginationType = 'contactlists';
     const roles = this.authenticationService.getRoles();
@@ -450,25 +454,25 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
 
 /*  setPagePagination(event:any){ this.setPage(event.page, event.type);}
   loadPaginationDropdownTemplates(event:Pagination){ this.loadEmailTemplates();}*/
-  
+
   searchEmailTemplate(){
       this.emailTemplatesPagination.pageIndex = 1;
       this.emailTemplatesPagination.searchKey = this.emailTemplateSearchInput;
      // this.emailTemplatesPagination.coBrandedEmailTemplateSearch = this.campaign.enableCoBrandingLogo;
-      
+
       this.loadEmailTemplates(this.emailTemplatesPagination);
-      
+
       /*if(this.campaign.enableCoBrandingLogo){
           this.loadRegularOrVideoCoBrandedTemplates();
       }else{
           this.loadAllEmailTemplates(this.emailTemplatesPagination);
       }*/
-     
+
   }
   clearEmailTemplateSearch(){
       this.emailTemplatesPagination.pageIndex = 1;
       this.emailTemplatesPagination.searchKey = "";
-      this.loadEmailTemplates(this.emailTemplatesPagination); 
+      this.loadEmailTemplates(this.emailTemplatesPagination);
   }
 
   loadEmailTemplates(pagination:Pagination){
@@ -815,12 +819,32 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
      eventCampaign.timeZone = timeZoneId;
    } else {
      timeZoneId = $('#timezoneId option:selected').val();
+     if(!eventCampaign.campaignEventTimes[0].timeZone){
+      let intlTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+       if(intlTimeZone!=undefined){
+        timeZoneId = intlTimeZone;
+       }else if(moment.tz.guess()!=undefined){
+        timeZoneId = moment.tz.guess();
+       }
+    }
      eventCampaign.timeZone = timeZoneId;
    }
    eventCampaign.campaign = this.referenceService.replaceMultipleSpacesWithSingleSpace(eventCampaign.campaign);
    eventCampaign.fromName = this.referenceService.replaceMultipleSpacesWithSingleSpace(eventCampaign.fromName);
 
    eventCampaign.campaignEventTimes[0].timeZone = $('#timezoneIdCampaignEventTime option:selected').val();
+  if(!eventCampaign.campaignEventTimes[0].timeZone){
+    let time ='';
+    let intlTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+     if(intlTimeZone!=undefined){
+      time = intlTimeZone;
+     }else if(moment.tz.guess()!=undefined){
+      time = moment.tz.guess();
+     }
+     eventCampaign.campaignEventTimes[0].timeZone = time;
+  }
+
+   console.log(this.timeZoneSetValue);
    eventCampaign.campaignEventTimes[0].country = this.countries.find(x => x.id == eventCampaign.campaignEventTimes[0].countryId).name;
    eventCampaign.toPartner = !eventCampaign.channelCampaign;
    if(eventCampaign.id){
