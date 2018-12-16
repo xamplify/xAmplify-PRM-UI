@@ -308,11 +308,11 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
         this.pagination.pageIndex = 1;
         if(isVideoTemplate){
             this.pagination.filterBy = "VideoEmail";
-        }else if(!isVideoTemplate){
+        }else if(!isVideoTemplate && this.selectedTemplateTypeIndex ==9) {
+          this.pagination.filterBy = 'EventEmail';
+        } else if(!isVideoTemplate){
             this.pagination.filterBy = "RegularEmail";
-        } else {
-          this.pagination.filterBy = 'campaignEventEmails';
-        }
+        } 
         this.listEmailTemplates(this.pagination);
     }
 
