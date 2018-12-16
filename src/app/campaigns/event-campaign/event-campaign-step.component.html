@@ -478,11 +478,19 @@ a.disabled {
                       </div>
                     </section>
                 </div>
+                <div style="padding-top: 12px;padding-right: 16px;">
+                <div class="input-icon pull-right">
+                          <input type="text" [(ngModel)]="contactSearchInput" [ngModelOptions]="{standalone: true}" class="form-control"
+                          placeholder="Search for a list">
+                          <button class="glyphicon glyphicon-remove search-box-item-clear" style="padding:5px;" *ngIf="contactSearchInput" (click)="contactSearchInput='';clearContactListSearch()"></button>
+                          <button type="submit" class="search-box-item-click" style="padding:4px !important;" (click)="searchContactList()"><i class="fa fa-search" style="font-size: 16px !important;padding:5px !important;"></i></button>
+                        </div>
+                        </div>
                 <div class="portlet-body clearfix">
                 <div class="alert-danger alert-error" *ngIf="eventError.eventContactError">* Please select at least one <span *ngIf="!authenticationService.isOnlyPartner();else listHeader">Contact</span><ng-template #listHeader>Partner</ng-template> list</div>
                 <section *ngIf="(isPreviewEvent && (userListIds?.length==0 && parternUserListIds?.length==0)) || contactListsPagination.pagedItems?.length === 0;else contactList">
                   <div class='alert alert-info' role='alert'>
-                    <h4 class='m0'>You have not added any <span *ngIf="authenticationService.isOnlyPartner();else listPartner">Contact</span><ng-template #listPartner>Partner</ng-template> lists yet.</h4>
+                    <h4 class='m0'>No <span *ngIf="authenticationService.isOnlyPartner();else listPartner">Contact</span><ng-template #listPartner>Partner</ng-template> list(s) found.</h4>
                   </div>
                   <!-- <a class='btn btn-info' style="color: #fff;" [routerLink]="['/home/contacts/add']">Add Contacts</a> -->
                 </section>
@@ -580,7 +588,24 @@ a.disabled {
                   <div class="portlet-title" style="display:block">
                     <h4 class="pull-left f-w-600">Select<span *ngIf="isPreviewEvent">ed</span> an Email Template</h4>
                   </div>
-                  <div class="portlet-body clearfix">
+                  <div style="padding-top: 12px;">
+					<div class="input-icon right pull-right"
+						style="padding-top: 4px; right: 8px;">
+						<input type="text" [(ngModel)]="emailTemplateSearchInput"
+							[ngModelOptions]="{standalone: true}" class="form-control"
+							placeholder="Search for a template">
+						<button class="glyphicon glyphicon-remove search-box-item-clear"
+							style="padding: 5px;" *ngIf="emailTemplateSearchInput"
+							(click)="emailTemplateSearchInput='';clearEmailTemplateSearch()"></button>
+						<button type="submit" class="search-box-item-click email-search"
+							(click)="searchEmailTemplate()">
+							<i class="fa fa-search"
+								style="font-size: 16px !important; padding: 5px !important;"></i>
+						</button>
+					</div>
+					</div>
+
+					<div class="portlet-body clearfix">
                  <section  style="min-height: 200px;">
                   <ul class="content__list"
 										*ngFor="let emailTemplate of emailTemplatesPagination.pagedItems;let i =index">

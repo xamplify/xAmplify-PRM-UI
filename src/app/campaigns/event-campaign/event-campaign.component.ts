@@ -107,6 +107,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   selectedListOfUserLists = [];
   selectedListOfUserListForPreview = [];
   isHeaderCheckBoxChecked: boolean = false;
+  contactSearchInput: string = "";
+  emailTemplateSearchInput: string = "";
 
   constructor(public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
     private contactService: ContactService,
@@ -339,6 +341,18 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
 
   /*****************LOAD CONTACTLISTS WITH PAGINATION START *****************/
 
+  searchContactList(){
+      this.contactListsPagination.pageIndex = 1;
+      this.contactListsPagination.searchKey = this.contactSearchInput;
+      this.loadContactLists(this.contactListsPagination);
+  }
+  
+  clearContactListSearch(){
+      this.contactListsPagination.pageIndex = 1;
+      this.contactListsPagination.searchKey = "";
+      this.loadContactLists(this.contactListsPagination);
+  }
+  
   loadContactLists(contactListsPagination: Pagination) {
     this.paginationType = 'contactlists';
     const roles = this.authenticationService.getRoles();
@@ -436,6 +450,26 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
 
 /*  setPagePagination(event:any){ this.setPage(event.page, event.type);}
   loadPaginationDropdownTemplates(event:Pagination){ this.loadEmailTemplates();}*/
+  
+  searchEmailTemplate(){
+      this.emailTemplatesPagination.pageIndex = 1;
+      this.emailTemplatesPagination.searchKey = this.emailTemplateSearchInput;
+     // this.emailTemplatesPagination.coBrandedEmailTemplateSearch = this.campaign.enableCoBrandingLogo;
+      
+      this.loadEmailTemplates(this.emailTemplatesPagination);
+      
+      /*if(this.campaign.enableCoBrandingLogo){
+          this.loadRegularOrVideoCoBrandedTemplates();
+      }else{
+          this.loadAllEmailTemplates(this.emailTemplatesPagination);
+      }*/
+     
+  }
+  clearEmailTemplateSearch(){
+      this.emailTemplatesPagination.pageIndex = 1;
+      this.emailTemplatesPagination.searchKey = "";
+      this.loadEmailTemplates(this.emailTemplatesPagination); 
+  }
 
   loadEmailTemplates(pagination:Pagination){
       this.gridLoader = true;
