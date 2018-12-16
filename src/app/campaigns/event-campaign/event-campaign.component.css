@@ -444,3 +444,13 @@ label {
 	background-color: #0c84ae !important;
 }
 
+.form-group span{
+	font-weight: 500;
+    color: #999;
+}
+
+.highletClass{
+	font-weight: 700 !important;
+    color: #008fd5 !important;
+}
+
