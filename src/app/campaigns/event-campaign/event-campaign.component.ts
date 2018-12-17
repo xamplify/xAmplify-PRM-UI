@@ -24,6 +24,7 @@ import { CustomResponse } from '../../common/models/custom-response';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { CountryNames } from '../../common/models/country-names';
 import { Roles } from '../../core/models/roles';
+import { EmailTemplateType } from '../../email-template/models/email-template-type';
 var moment = require('moment-timezone');
 
 declare var $,swal, flatpickr, CKEDITOR,require;
@@ -130,6 +131,16 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     this.reDistributeEvent = this.router.url.includes('/home/campaigns/re-distribute-event')? true: false;
     if(this.reDistributeEvent) { this.isPartnerUserList = false; } else { this.isPartnerUserList = true; }
     if(this.authenticationService.isOnlyPartner()) {  this.isPartnerUserList = false; }
+    
+    if(this.isEditCampaign){
+        if(this.eventCampaign.userListIds.length>0){
+            this.contactsPagination.editCampaign = true;
+            this.userListIds = this.eventCampaign.userListIds.sort();
+            this.parternUserListIds = this.eventCampaign.userListIds.sort();
+        }
+        
+    }
+    
   }
   isEven(n) { if(n % 2 === 0){ return true;} return false;}
   loadCampaignNames(userId:number){
@@ -359,6 +370,10 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
 
   loadContactLists(contactListsPagination: Pagination) {
     this.paginationType = 'contactlists';
+    if(this.isEditCampaign){
+       contactListsPagination.editCampaign = true; 
+       contactListsPagination.campaignId = this.eventCampaign.id;
+    }
     const roles = this.authenticationService.getRoles();
     let isVendor = roles.indexOf(this.roleName.vendorRole)>-1;
     let isOrgAdmin = this.authenticationService.isOrgAdmin() || (!this.authenticationService.isAddedByVendor && !isVendor);
@@ -445,8 +460,12 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
 
       if(this.eventCampaign.channelCampaign){
           this.eventCampaign.enableCoBrandingLogo = true;
+          if(this.isEditCampaign){
+              this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.EVENT_CO_BRANDING;
+          }
       }else{
           this.eventCampaign.enableCoBrandingLogo = false;
+          this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.NONE;
       }
 
 
