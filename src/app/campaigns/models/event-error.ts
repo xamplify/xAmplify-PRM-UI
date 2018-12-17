@@ -4,6 +4,7 @@ export class EventError{
   eventDateError = false;
   eventEndDateError = false;
   eventStartTimeError = false;
+  eventExpiredError = false;
   eventCountryAndTimeZone = false;
   eventLocationError = false;
   eventDescription = false;

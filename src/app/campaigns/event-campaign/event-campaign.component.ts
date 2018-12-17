@@ -297,6 +297,13 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
      else if( startDate > currentDate){ this.setStartTimeErrorMessage(false, '');}
      else if(!this.eventCampaign.campaignEventTimes[0].startTimeString){this.setStartTimeErrorMessage(true, 'The start date is required.'); }
      else { this.setStartTimeErrorMessage(false, ''); }
+     
+     if(this.reDistributeEvent){
+         if(startDate < currentDate){
+          this.eventError.eventExpiredError = true; 
+         }
+     }
+     
      this.eventSameDateError();
      this.resetTabClass();
   }
