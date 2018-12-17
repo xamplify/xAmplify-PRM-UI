@@ -514,4 +514,9 @@ export class CampaignService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+    getOrgCampaignTypes(companyId: any) {
+      return this.http.get(this.URL + `campaign/access/${companyId}?access_token=${this.authenticationService.access_token}` )
+          .map(this.extractData)
+          .catch(this.handleError);
+  }
 }
