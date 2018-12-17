@@ -49,6 +49,7 @@ export const routes: Routes = [
           { path: 'content', loadChildren: 'app/content-management/content-management.module#ContentManagementModule',  data: { preload: false } },
           { path: 'upgrade', loadChildren: 'app/upgrade/upgrade.module#UpgradeModule' },
           { path: 'team', loadChildren: 'app/team/team-member.module#TeamMemberModule' },
+          { path: 'deal', loadChildren: 'app/deal-registration/deal-registration.module#DealRegistrationModule' },
           { path: 'error/:errorStatusId', component: ErrorPagesComponent }
         ]
     },

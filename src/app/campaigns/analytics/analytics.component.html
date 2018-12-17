@@ -737,9 +737,9 @@
 			<div class="col-xs-12 col-sm-6">
 				<div data-animation="slideInUp">
 					<div class="row mb10">
-						<img src="/assets/images/user.png" width="48px" class="user-profile-image">
+						<img src="/assets/images/user.png" width="48px" class="user-profile-image"><span ><button style="position: absolute; left: 217px; margin-top: 7px;" [routerLink]="['/home/deal/deal-registration']">Push As a Lead</button></span>
 						<h5 class="f-w-600 mt10 mb0"><span *ngIf="selectedRow?.firstName">{{selectedRow.firstName}}</span>&nbsp;<span *ngIf="selectedRow?.lastName">{{selectedRow.lastName}}</span></h5>
-						<h6 class="m0">{{selectedRow.emailId}}</h6>
+            <h6 class="m0">{{selectedRow.emailId}}</h6>
 					</div>
 					<div class="row mb10">
 						<div class="col-sm-3 col-xs-6">
