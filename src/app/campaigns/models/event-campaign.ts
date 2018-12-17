@@ -19,6 +19,7 @@ export class EventCampaign {
     email: string = "";
     launchTimeInString: string;
     emailTemplate: EmailTemplate = new EmailTemplate();
+    selectedEditEmailTemplate: EmailTemplate = new EmailTemplate();
     timeZone: string;
     campaignScheduleType: string;
     campaignLocation: Location = new Location();

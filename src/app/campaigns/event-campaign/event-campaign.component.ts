@@ -111,6 +111,10 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   contactSearchInput: string = "";
   emailTemplateSearchInput: string = "";
   timeZoneSetValue: any;
+  showSelectedEmailTemplate:boolean = false;
+  filteredEmailTemplateIds: Array<number>;
+  emailTemplateId:number=0;
+  selectedEmailTemplateRow:number;
 
   constructor(public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
     private contactService: ContactService,
@@ -138,6 +142,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
             this.userListIds = this.eventCampaign.userListIds.sort();
             this.parternUserListIds = this.eventCampaign.userListIds.sort();
         }
+        this.emailTemplateId = this.eventCampaign.emailTemplate.id;
         
     }
     
@@ -254,6 +259,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
         }
         this.loadContactLists(this.contactListsPagination);
         this.listAllTeamMemberEmailIds();
+        this.setTemplateId();
+        this.loadEmailTemplates(this.emailTemplatesPagination);
         this.recipientsTabClass = "enableRecipientsTab";
         this.detailsTab = true;
         this.resetTabClass();
@@ -267,6 +274,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     this.eventCampaign.campaignEventTimes[0].countryId = this.countries[0].id;
     this.loadContactLists(this.contactListsPagination);
   }
+    
 
     flatpickr('.flatpickr', {
       enableTime: true,
@@ -283,6 +291,12 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
       this.detailsTab = true;
       this.resetTabClass()
   }
+  
+  setTemplateId(){
+      this.emailTemplateId = this.eventCampaign.emailTemplate.id;
+      this.eventCampaign.selectedEditEmailTemplate = this.eventCampaign.emailTemplate;
+  }
+  
   eventTitleError(){
     this.eventError.eventTitleError = this.eventCampaign.campaign ? false: true;
   }
@@ -534,9 +548,14 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
               this.emailTemplatesPagination = this.pagerService.getPagedItems(pagination, this.campaignEmailTemplates);
               /*if(this.emailTemplatesPagination.totalRecords==0 &&this.selectedEmailTemplateRow==0){
                   this.isEmailTemplate = false;
-              }
-              //this.filterEmailTemplateForEditCampaign();
-*/              this.referenceService.loading(this.campaignEmailTemplate.httpRequestLoader, false);
+              }*/ 
+              /*this.filterEmailTemplateForEditCampaign();
+              let filteredEmailTemplateIds = this.emailTemplatesPagination.pagedItems.map(function(a) {return a.id;});
+              if(filteredEmailTemplateIds.length>0){
+                  this.selectedEmailTemplateRow = filteredEmailTemplateIds[0];
+              }*/
+              this.filterEmailTemplateForEditCampaign();
+             this.referenceService.loading(this.campaignEmailTemplate.httpRequestLoader, false);
           },
           (error:string) => {
              this.logger.errorPage(error);
@@ -1073,6 +1092,7 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
         reply.emailTemplatesPagination.totalRecords = data.totalRecords;
         reply.emailTemplatesPagination = this.pagerService.getPagedItems(reply.emailTemplatesPagination, data.emailTemplates);
         this.filterReplyrEmailTemplateForEditCampaign(reply);
+        this.filterEmailTemplateForEditCampaign();
         this.referenceService.loading(this.campaignEmailTemplate.httpRequestLoader, false);
       },
       (error: string) => {
@@ -1080,6 +1100,15 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
       },
       () => this.logger.info("Finished loadEmailTemplatesForAddReply()", reply.emailTemplatesPagination)
       )
+  }
+  
+  filterEmailTemplateForEditCampaign(){
+      this.filteredEmailTemplateIds = this.emailTemplatesPagination.pagedItems.map(function(a) {return a.id;});
+      if(this.filteredEmailTemplateIds.indexOf(this.emailTemplateId)>-1){
+          this.showSelectedEmailTemplate=true;
+      }else{
+          this.showSelectedEmailTemplate=false;
+      }
   }
 
   filterReplyrEmailTemplateForEditCampaign(reply: Reply) {
