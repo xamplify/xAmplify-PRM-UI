@@ -74,7 +74,7 @@ export class SocialManageComponent implements OnInit, OnDestroy {
         const self = this;
         swal( {
             title: 'Are you sure?',
-            text: 'Do you really want to remove this account',
+            text: 'Do you really want to remove this account?',
             type: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#54a7e9',

@@ -565,7 +565,11 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   }
 
   showScheduleOption(divId: string) {$('#' + divId).removeClass('hidden'); $('#post-actions-button-group').addClass('hidden');}
-  hideScheduleOption(divId: string) {$('#' + divId).addClass('hidden'); $('#post-actions-button-group').removeClass('hidden');}
+  hideScheduleOption(divId: string) {
+    $('#' + divId).addClass('hidden'); 
+    $('#post-actions-button-group').removeClass('hidden');
+    this.resetCustomResponse();
+  }
 
   videoPlayListSource(videoUrl: string) {
     this.videoUrl = videoUrl;
