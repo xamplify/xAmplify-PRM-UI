@@ -259,7 +259,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
           this.emailTemplates = emailTemplates;
         }
         this.loadContactLists(this.contactListsPagination);
-        this.listAllTeamMemberEmailIds();
         this.setTemplateId();
         this.loadEmailTemplates(this.emailTemplatesPagination);
         this.recipientsTabClass = "enableRecipientsTab";
@@ -279,7 +278,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
 
     flatpickr('.flatpickr', {
       enableTime: true,
-      dateFormat: 'm/d/Y H:i K',
+      dateFormat: 'm/d/Y h:i K',
       time_24hr: false,
       minDate: new Date(),
     });
