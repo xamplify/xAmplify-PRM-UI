@@ -866,30 +866,18 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
      eventCampaign.timeZone = timeZoneId;
    } else {
      timeZoneId = $('#timezoneId option:selected').val();
-     if(!eventCampaign.campaignEventTimes[0].timeZone){
-      let intlTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-       if(intlTimeZone!=undefined){
-        timeZoneId = intlTimeZone;
-       }else if(moment.tz.guess()!=undefined){
-        timeZoneId = moment.tz.guess();
-       }
-    }
+    // timeZoneId = $('#timezoneId option:selected').val();
+    if(!this.timeZoneSetValue) { this.timeZoneSetValue = timeZoneId = this.setEventTimeZone(); }
+    //  console.log(this.timeZoneSetValue);
+    //  eventCampaign.timeZone = this.timeZoneSetValue;
+    //  if(!timeZoneId) { eventCampaign.timeZone = this.timeZoneSetValue; }
+     this.eventCampaign.campaignEventTimes[0].timeZone = timeZoneId = this.timeZoneSetValue;
+
      eventCampaign.timeZone = timeZoneId;
    }
    eventCampaign.campaign = this.referenceService.replaceMultipleSpacesWithSingleSpace(eventCampaign.campaign);
    eventCampaign.fromName = this.referenceService.replaceMultipleSpacesWithSingleSpace(eventCampaign.fromName);
 
-   eventCampaign.campaignEventTimes[0].timeZone = $('#timezoneIdCampaignEventTime option:selected').val();
-  if(!eventCampaign.campaignEventTimes[0].timeZone){
-    let time ='';
-    let intlTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-     if(intlTimeZone!=undefined){
-      time = intlTimeZone;
-     }else if(moment.tz.guess()!=undefined){
-      time = moment.tz.guess();
-     }
-     eventCampaign.campaignEventTimes[0].timeZone = time;
-  }
 
    console.log(this.timeZoneSetValue);
    eventCampaign.campaignEventTimes[0].country = this.countries.find(x => x.id == eventCampaign.campaignEventTimes[0].countryId).name;
@@ -1483,6 +1471,7 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
             this.recipientsTab = true;
             this.emailTemplatesTab = false;
             this.launchTab = false;
+            this.setEventTimeZone();
         }else if( currentTab == 'templates' ){
             this.detailsTab = false;
             this.recipientsTab = false;
@@ -1514,7 +1503,23 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
       }
       console.log(this.selectedListOfUserLists);
     }
-
+    setEventTimeZone(){
+      try{
+       this.timeZoneSetValue = '';
+       let e:any = document.getElementById("timezoneIdChange");
+       //let timeZoneId = $('#timezoneIdCampaignEventTime option:selected').val();
+       let timeZone = e[0].label;
+       console.log(this.timezonesCampaignEventTime);
+       for(let i=0; i< this.timezonesCampaignEventTime.length; i++){
+        if(this.timezonesCampaignEventTime[i].cityName === timeZone) {
+        this.timeZoneSetValue = this.timezonesCampaignEventTime[i].timezoneId;
+        break;
+      }
+      }
+      console.log(timeZone);
+      return this.timeZoneSetValue;
+      }catch(error) { console.log(error);}
+    }
     onlineMeetingSwitchStatusChange(){
         this.eventCampaign.onlineMeeting = !this.eventCampaign.onlineMeeting;
         this.resetTabClass();

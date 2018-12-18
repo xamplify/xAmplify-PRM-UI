@@ -121,7 +121,7 @@ a.disabled {
 							<label for="hostedBy" class="col-sm-3 labal-css color-css">From
 								Email</label>
 							<div class="col-sm-9">
-								<select *ngIf="!reDistributeEvent && !isPreviewEvent" 
+								<select *ngIf="!reDistributeEvent && !isPreviewEvent"
 									[attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null"
 									class="form-control" [(ngModel)]="eventCampaign.email"
 									[ngModelOptions]="{standalone: true}" (change)="setFromName()">
@@ -214,7 +214,7 @@ a.disabled {
 									</select>
 								</div>
 								<div class="col-sm-6">
-									<select
+									<!-- <select
 										[attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null"
 										class="form-control" style="width: 100%"
 										[(ngModel)]="eventCampaign.campaignEventTimes[0].timeZone" (change)="timeZoneSet(eventCampaign.campaignEventTimes[0].timeZone)"
@@ -233,7 +233,25 @@ a.disabled {
 											[value]="timeZone.timezoneId">{{timeZone.cityName}}
 										</option>
 										</ng-container>
-									</select>
+                  </select> -->
+                  <select
+                  [attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null" (blur)="setEventTimeZone()"
+                  class="form-control" style="width: 100%"
+                  [(ngModel)]="eventCampaign.campaignEventTimes[0].timeZone" [ngModelOptions]="{standalone: true}"
+                  id="timezoneIdChange">
+                  <option *ngIf="!timezonesCampaignEventTime" value="" disabled
+                    selected>Select TimeZone...</option>
+                  <ng-container *ngIf="timezonesCampaignEventTime?.length==1">
+                  <option *ngFor="let timeZone of timezonesCampaignEventTime"  [attr.value]="timeZone.timezoneId"
+                    [attr.selected]="true"> {{timeZone.cityName}}</option>
+                  </ng-container>
+                  <ng-container *ngIf="timezonesCampaignEventTime?.length>1">
+                  <option *ngFor="let timeZone of timezonesCampaignEventTime"
+                  [attr.value]="timeZone.timezoneId"
+                  [attr.selected]="timeZone.timezoneId === eventCampaign.campaignEventTimes[0].timeZone">{{timeZone.cityName}}
+                  </option>
+                  </ng-container>
+                </select>
 								</div>
 								<div class="text-danger" style="margin-left: 15px;"
 									*ngIf="eventError.eventCountryAndTimeZone && !eventCampaign.campaignEventTimes[0].countryId">Please
@@ -527,7 +545,7 @@ a.disabled {
                           </td>
                           <td class="text-center">
                             <h5 class='m0 f-w-600 table-color' title="{{contactList.name}}">
-                              <span>{{contactList.name | slice:0:50}}<span *ngIf="contactList.name?.length>50">...</span></span>
+                              <span>{{contactList.name | slice:0:35}}<span *ngIf="contactList.name?.length>35">...</span></span>
                             </h5>
                           </td>
                           <td class='text-center m0' *ngIf="showContactType"><ng-container *ngIf="contactList.partnerUserList"> Partners </ng-container> <ng-container
