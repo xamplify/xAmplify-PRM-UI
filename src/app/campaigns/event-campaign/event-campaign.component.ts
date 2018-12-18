@@ -529,8 +529,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
           pagination.campaignDefaultTemplate = false;
           pagination.isEmailTemplateSearchedFromCampaign = true;
       }
-     // pagination.maxResults = 12;
       pagination.filterBy = 'campaignEventEmails';
+      pagination.userId = this.loggedInUserId;
       this.emailTemplateService.listTemplates(pagination,this.loggedInUserId)
       .subscribe(
           (data:any) => {
