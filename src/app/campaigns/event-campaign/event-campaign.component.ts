@@ -763,7 +763,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
               $('#campaignContactListTable_'+contactId).addClass('contact-list-selected');
               console.log("Adding"+contactId);
               this.userListIds.push(contactId);
-              if(this.userListIds.length === 0){  
+              if(this.userListIds.length === 0){
                 this.eventError.eventContactError = true;
                 }else{this.eventError.eventContactError = false;}
           }
@@ -863,8 +863,8 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
     }
    console.log(eventCampaign);
    let timeZoneId = "";
-   if (eventCampaign.campaignScheduleType == "NOW" || eventCampaign.campaignScheduleType == "SAVE") {
-    // eventCampaign.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+   if (eventCampaign.campaignScheduleType === "NOW") {
+   //  eventCampaign.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
      let intlTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
      if(intlTimeZone!=undefined){
          timeZoneId = intlTimeZone;
@@ -873,6 +873,7 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
      }
      eventCampaign.launchTimeInString = this.campaignService.setLaunchTime();
      eventCampaign.timeZone = timeZoneId;
+     eventCampaign.campaignEventTimes[0].timeZone = timeZoneId;
    } else {
      timeZoneId = $('#timezoneId option:selected').val();
     // timeZoneId = $('#timezoneId option:selected').val();
@@ -881,7 +882,6 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
     //  eventCampaign.timeZone = this.timeZoneSetValue;
     //  if(!timeZoneId) { eventCampaign.timeZone = this.timeZoneSetValue; }
      this.eventCampaign.campaignEventTimes[0].timeZone = timeZoneId = this.timeZoneSetValue;
-
      eventCampaign.timeZone = timeZoneId;
    }
    eventCampaign.campaign = this.referenceService.replaceMultipleSpacesWithSingleSpace(eventCampaign.campaign);
