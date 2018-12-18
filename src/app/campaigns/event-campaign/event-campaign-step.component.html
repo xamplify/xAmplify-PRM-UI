@@ -190,7 +190,7 @@ a.disabled {
 									<input type="checkbox"
 										[attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null"
 										[checked]="eventCampaign.campaignEventTimes[0].allDay"
-										(change)="changeAllDay()"> All Day
+										(change)="changeAllDay()" (input)="resetTabClass()"> All Day
 								</div>
 							</div>
 						</div>
@@ -249,7 +249,7 @@ a.disabled {
 									[onColor]="callActionSwitch.onGreenColorSwitch"
 									[offColor]="callActionSwitch.offDefaultColor"
 									[size]="callActionSwitch.size"
-									(statusChange)="eventCampaign.onlineMeeting = !eventCampaign.onlineMeeting">
+									(statusChange)="onlineMeetingSwitchStatusChange()">
 								</switch>
 							</div>
 						</div>

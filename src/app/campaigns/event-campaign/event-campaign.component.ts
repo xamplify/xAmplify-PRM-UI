@@ -344,12 +344,14 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
      this.endDatePassedError = 'The event must end after the start date and time';
     } else if(startDate > endDate){ this.setSameDateErrorMesg(true,true,'The event must end after the start date and time.');
     } else { this.setSameDateErrorMesg(false,false,''); }
+  this.resetTabClass();
   }
   setSameDateErrorMesg(endDate,sameDate,mesg){ this.endDatePassError = endDate; this.eventError.eventSameDateError = sameDate;this.endDatePassedError = mesg;}
   eventLocationError(){
     if(!this.eventCampaign.onlineMeeting){
     this.eventError.eventLocationError = this.eventCampaign.campaignLocation.location? false: true;
     } else { this.eventError.eventLocationError = false;}
+    this.resetTabClass()
   }
   eventCountryError(){
     this.eventError.eventCountryAndTimeZone = this.eventCampaign.campaignEventTimes[0].countryId ? false: true;
@@ -600,6 +602,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
       this.endDateErrorMesg = 'The end date is required.';
       this.eventError.eventEndDateError = true;
     }
+    this.resetTabClass();
   }
   toggleContactLists() {
 
@@ -1512,26 +1515,32 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
       }
       console.log(this.selectedListOfUserLists);
     }
+    
+    onlineMeetingSwitchStatusChange(){
+        this.eventCampaign.onlineMeeting = !this.eventCampaign.onlineMeeting;
+        this.resetTabClass();
+    }
+    
     resetTabClass(){
-        if((this.eventCampaign.campaign && this.eventCampaign.fromName && this.eventCampaign.campaignEventTimes[0].startTimeString && this.datePassedError == '' && this.eventCampaign.campaignEventTimes[0].countryId ) && (this.userListIds.length === 0 && this.parternUserListIds.length === 0)){
+        if((this.eventCampaign.campaign && this.eventCampaign.fromName && this.eventCampaign.campaignEventTimes[0].startTimeString && (this.eventCampaign.campaignEventTimes[0].endTimeString || this.eventCampaign.campaignEventTimes[0].allDay) && !this.eventError.eventSameDateError && this.datePassedError == '' && this.eventCampaign.campaignEventTimes[0].countryId && (this.eventCampaign.onlineMeeting || this.eventCampaign.campaignLocation.location) ) && (this.userListIds.length === 0 && this.parternUserListIds.length === 0)){
             this.recipientsTabClass = "enableRecipientsTab";
-        } else if((this.eventCampaign.campaign && this.eventCampaign.fromName && this.eventCampaign.campaignEventTimes[0].startTimeString && this.datePassedError == '' && this.eventCampaign.campaignEventTimes[0].countryId ) && (this.userListIds.length !=0 || this.parternUserListIds.length !=0) ){
+        } else if((this.eventCampaign.campaign && this.eventCampaign.fromName && this.eventCampaign.campaignEventTimes[0].startTimeString && (this.eventCampaign.campaignEventTimes[0].endTimeString || this.eventCampaign.campaignEventTimes[0].allDay) && !this.eventError.eventSameDateError && this.datePassedError == '' && this.eventCampaign.campaignEventTimes[0].countryId && (this.eventCampaign.onlineMeeting || this.eventCampaign.campaignLocation.location) ) && (this.userListIds.length !=0 || this.parternUserListIds.length !=0) ){
             this.recipientsTabClass = "recipientsTabComplate";
         } else{
             this.recipientsTabClass = "disableRecipientsTab";
         }
 
-        if( (this.eventCampaign.campaign && this.eventCampaign.fromName && this.eventCampaign.campaignEventTimes[0].startTimeString && this.datePassedError == '' && this.eventCampaign.campaignEventTimes[0].countryId ) && (this.userListIds.length !=0 || this.parternUserListIds.length !=0) && !this.eventCampaign.emailTemplate.id ){
+        if( (this.eventCampaign.campaign && this.eventCampaign.fromName && this.eventCampaign.campaignEventTimes[0].startTimeString && (this.eventCampaign.campaignEventTimes[0].endTimeString || this.eventCampaign.campaignEventTimes[0].allDay) && !this.eventError.eventSameDateError && this.datePassedError == '' && this.eventCampaign.campaignEventTimes[0].countryId && (this.eventCampaign.onlineMeeting || this.eventCampaign.campaignLocation.location) ) && (this.userListIds.length !=0 || this.parternUserListIds.length !=0) && !this.eventCampaign.emailTemplate.id ){
             this.emailTemplatesTabClass = "enableEmailTemplate";
-        }else if( (this.eventCampaign.campaign && this.eventCampaign.fromName && this.eventCampaign.campaignEventTimes[0].startTimeString && this.datePassedError == '' && this.eventCampaign.campaignEventTimes[0].countryId ) &&(this.userListIds.length !=0 || this.parternUserListIds.length !=0) && this.eventCampaign.emailTemplate.id){
+        }else if( (this.eventCampaign.campaign && this.eventCampaign.fromName && this.eventCampaign.campaignEventTimes[0].startTimeString && (this.eventCampaign.campaignEventTimes[0].endTimeString || this.eventCampaign.campaignEventTimes[0].allDay) && !this.eventError.eventSameDateError && this.datePassedError == '' && this.eventCampaign.campaignEventTimes[0].countryId && (this.eventCampaign.onlineMeeting || this.eventCampaign.campaignLocation.location)) &&(this.userListIds.length !=0 || this.parternUserListIds.length !=0) && this.eventCampaign.emailTemplate.id){
             this.emailTemplatesTabClass = "emailTemplateTabComplete";
         }else{
             this.emailTemplatesTabClass = "disableTemplateTab";
         }
 
-        if( (this.eventCampaign.campaign && this.eventCampaign.fromName && this.eventCampaign.campaignEventTimes[0].startTimeString && this.datePassedError == '' && this.eventCampaign.campaignEventTimes[0].countryId ) && (this.userListIds.length !=0 || this.parternUserListIds.length !=0) && this.eventCampaign.emailTemplate.id && !this.checkLaunchOption){
+        if( (this.eventCampaign.campaign && this.eventCampaign.fromName && this.eventCampaign.campaignEventTimes[0].startTimeString && (this.eventCampaign.campaignEventTimes[0].endTimeString || this.eventCampaign.campaignEventTimes[0].allDay) && !this.eventError.eventSameDateError && this.datePassedError == '' && this.eventCampaign.campaignEventTimes[0].countryId && (this.eventCampaign.onlineMeeting || this.eventCampaign.campaignLocation.location) ) && (this.userListIds.length !=0 || this.parternUserListIds.length !=0) && this.eventCampaign.emailTemplate.id && !this.checkLaunchOption){
             this.launchTabClass = "enableLaunchTab";
-        }else if( (this.eventCampaign.campaign && this.eventCampaign.fromName && this.eventCampaign.campaignEventTimes[0].startTimeString && this.datePassedError == '' && this.eventCampaign.campaignEventTimes[0].countryId ) && (this.userListIds.length !=0 || this.parternUserListIds.length !=0) && this.eventCampaign.emailTemplate.id && this.checkLaunchOption){
+        }else if( (this.eventCampaign.campaign && this.eventCampaign.fromName && this.eventCampaign.campaignEventTimes[0].startTimeString && (this.eventCampaign.campaignEventTimes[0].endTimeString || this.eventCampaign.campaignEventTimes[0].allDay) && !this.eventError.eventSameDateError && this.datePassedError == '' && this.eventCampaign.campaignEventTimes[0].countryId && (this.eventCampaign.onlineMeeting || this.eventCampaign.campaignLocation.location) ) && (this.userListIds.length !=0 || this.parternUserListIds.length !=0) && this.eventCampaign.emailTemplate.id && this.checkLaunchOption){
             this.launchTabClass = "emailLauchTabComplete";
         }else{
             this.launchTabClass = "disableLaunchTab";
