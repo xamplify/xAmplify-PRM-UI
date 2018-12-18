@@ -214,7 +214,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
         if(!this.eventCampaign.campaignEventTimes[0]){
           this.eventCampaign.campaignEventTimes = [];
           this.eventCampaign.campaignEventTimes[0].startTimeString = new Date().toDateString();
-          this.eventCampaign.campaignEventTimes[0].endTimeString =  new Date().toDateString();
+          if(!this.eventCampaign.campaignEventTimes[0].allDay){
+            this.eventCampaign.campaignEventTimes[0].endTimeString =  new Date().toDateString();
+          }
         }
         if( this.eventCampaign.campaignEventTimes[0].countryId===undefined) { this.eventCampaign.campaignEventTimes[0].countryId=0; }
         for(let i=0; i< this.countries.length;i++){
@@ -342,7 +344,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     if(this.eventCampaign.campaignEventTimes[0].endTimeString && !this.eventCampaign.campaignEventTimes[0].allDay && startDate===endDate){
      this.eventError.eventSameDateError = true;
      this.endDatePassedError = 'The event must end after the start date and time';
-    } else if(startDate > endDate){ this.setSameDateErrorMesg(true,true,'The event must end after the start date and time.');
+    } else if(startDate > endDate && !this.eventCampaign.campaignEventTimes[0].allDay ){ this.setSameDateErrorMesg(true,true,'The event must end after the start date and time.');
     } else { this.setSameDateErrorMesg(false,false,''); }
   this.resetTabClass();
   }
@@ -1431,7 +1433,7 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
           }
 
           if(!eventCampaign.campaignEventTimes[0].startTimeString) {  eventCampaign.campaignEventTimes[0].startTimeString = this.getTodayTime();}
-          if(!eventCampaign.campaignEventTimes[0].endTimeString){ eventCampaign.campaignEventTimes[0].endTimeString = this.getTodayTime(); }
+          if(!eventCampaign.campaignEventTimes[0].endTimeString && !this.eventCampaign.campaignEventTimes[0].allDay){ eventCampaign.campaignEventTimes[0].endTimeString = this.getTodayTime(); }
           if( this.eventCampaign.campaignEventTimes[0].countryId===undefined) { this.eventCampaign.campaignEventTimes[0].countryId=0; }
           const errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
           delete eventCampaign.emailTemplateDTO;
