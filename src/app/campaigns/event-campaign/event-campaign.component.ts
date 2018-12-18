@@ -755,12 +755,17 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
                 $('#campaignContactListTable_'+contactId).removeClass('contact-list-selected');
                 console.log("Revmoing"+contactId);
                 this.userListIds.splice($.inArray(contactId,this.userListIds),1);
+                if(this.userListIds.length>0){  this.eventError.eventContactError = false;
+                }else{this.eventError.eventContactError = true;}
           }else{
               //Highlighting Row
               $('#'+contactId).prop( "checked", true );
               $('#campaignContactListTable_'+contactId).addClass('contact-list-selected');
               console.log("Adding"+contactId);
               this.userListIds.push(contactId);
+              if(this.userListIds.length === 0){  
+                this.eventError.eventContactError = true;
+                }else{this.eventError.eventContactError = false;}
           }
             // this.contactsUtility();
             event.stopPropagation();
@@ -783,12 +788,16 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
               $('#campaignContactListTable_'+contactId).removeClass('contact-list-selected');
               console.log("Revmoing"+contactId);
               this.parternUserListIds.splice($.inArray(contactId,this.parternUserListIds),1);
+              if(this.parternUserListIds.length>0){  this.eventError.eventContactError = false;
+              }else{this.eventError.eventContactError = true;}
         }else{
             //Highlighting Row
             $('#'+contactId).prop( "checked", true );
             $('#campaignContactListTable_'+contactId).addClass('contact-list-selected');
             console.log("Adding"+contactId);
             this.parternUserListIds.push(contactId);
+            if(this.parternUserListIds.length === 0){  this.eventError.eventContactError = true;
+            }else{this.eventError.eventContactError = false;}
         }
           // this.contactsUtility();
           event.stopPropagation();
