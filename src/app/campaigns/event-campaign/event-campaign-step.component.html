@@ -657,7 +657,7 @@ a.disabled {
                                     <div class="item__actions">
                                       <span> <a style="float:left; right: -6px;"  class="fm external-link" target="_BLANK"
                                         data-toggle="tooltip" data-placement="top"
-                                        title="Preview" (click)="previewEventCampaignEmailTemplate(eventCampaign.selectedEditEmailTemplate.id)"> <!-- (click)="preview(file)"  -->
+                                        title="Preview" (click)="$event.stopPropagation();previewEventCampaignEmailTemplate(eventCampaign.selectedEditEmailTemplate.id)"> <!-- (click)="preview(file)"  -->
                                           <i class="fa fa-external-link-square"  aria-hidden="true" style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
                                        </a>
                                       </span>
@@ -713,7 +713,7 @@ a.disabled {
 															<span> <a class="fm external-link" target="_BLANK"
 																data-toggle="tooltip" data-placement="top"
 																title="Preview"
-																(click)="previewEventCampaignEmailTemplate(emailTemplate.id)"> <!-- (click)="preview(file)"  -->
+																(click)="$event.stopPropagation();previewEventCampaignEmailTemplate(emailTemplate.id)"> <!-- (click)="preview(file)"  -->
 																	<i class="fa fa-external-link-square"
 																	aria-hidden="true"
 																	style="font-size: 20px; color: #5a5a5a"></i>
