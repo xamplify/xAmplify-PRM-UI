@@ -608,7 +608,7 @@ a.disabled {
 
 					<div class="portlet-body clearfix">
                  <section  style="min-height: 200px;">
-                 
+
                  <ng-container *ngIf="showSelectedEmailTemplate"><!-- !hideCoBrandedEmailTemplate -->
                           <div  *ngIf="emailTemplatesPagination.totalRecords>0 && emailTemplatesPagination.pageIndex==1">
 <ul class="content__list">
@@ -641,7 +641,7 @@ a.disabled {
                                     <span lass="item__name" title="created on" style="float:left">
                                         <!-- <b>Created On:</b>{{campaign.emailTemplate.createdDate}} -->
                                         <span><app-timestamp [isOnlyDate]="true"
-                                          [dateAndTime]="eventCampaign.selectedEditEmailTemplate.createdDate">
+                                          [dateAndTime]="eventCampaign?.selectedEditEmailTemplate?.createdDate">
                                         </app-timestamp></span>
                                     </span>
                                    <!--  <ng-container *ngIf="emailTemplate.type.toLocaleString()!='PARTNER'">
@@ -673,10 +673,10 @@ a.disabled {
 
                       </div>
                     </ng-container>
-  
+
                   <ul class="content__list"
 										*ngFor="let emailTemplate of emailTemplatesPagination.pagedItems;let i =index">
-										<li *ngIf="emailTemplateId!=emailTemplate.id" [class.disabled]="isPreviewEvent || reDistributeEvent" (click)="emailTemplateSelection(emailTemplate)" class="list__item" [class.list__item--selected]="eventCampaign.emailTemplate.id === emailTemplate.id">
+										<li *ngIf="emailTemplateId!=emailTemplate?.id" [class.disabled]="isPreviewEvent || reDistributeEvent" (click)="emailTemplateSelection(emailTemplate)" class="list__item" [class.list__item--selected]="eventCampaign?.emailTemplate?.id === emailTemplate?.id">
 											<!-- above class [ngClass]="{'list__item--selected':selectedFileIds.indexOf(file.id)>-1}" -->
 											<div class="flex-row">
 												<div class="item__select-box-wrapper">
@@ -895,12 +895,12 @@ a.disabled {
                       <span style="margin:20px 15px 0 33px !important" >Email Template</span>
                     </td>
                     <td width="55%" style="text-align:center">
-                      <a (click)="previewEventCampaignEmailTemplate(eventCampaign.emailTemplate.id)" title="{{eventCampaign.emailTemplate.name}}">
-                        <ng-container *ngIf="eventCampaign.emailTemplate.name?.length>50">
-                          {{eventCampaign.emailTemplate.name | slice:0:50}}...
+                      <a (click)="previewEventCampaignEmailTemplate(eventCampaign?.emailTemplate?.id)" title="{{eventCampaign?.emailTemplate?.name}}">
+                        <ng-container *ngIf="eventCampaign?.emailTemplate?.name?.length>50">
+                          {{eventCampaign?.emailTemplate?.name | slice:0:50}}...
                         </ng-container>
-                        <ng-container *ngIf="eventCampaign.emailTemplate.name?.length<=50">
-                          {{eventCampaign.emailTemplate.name}}
+                        <ng-container *ngIf="eventCampaign?.emailTemplate?.name?.length<=50">
+                          {{eventCampaign?.emailTemplate?.name}}
                         </ng-container>
                       </a>
                     </td>

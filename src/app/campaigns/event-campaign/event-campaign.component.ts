@@ -135,7 +135,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     this.reDistributeEvent = this.router.url.includes('/home/campaigns/re-distribute-event')? true: false;
     if(this.reDistributeEvent) { this.isPartnerUserList = false; } else { this.isPartnerUserList = true; }
     if(this.authenticationService.isOnlyPartner()) {  this.isPartnerUserList = false; }
-    
+
     if(this.isEditCampaign){
         if(this.eventCampaign.userListIds.length>0){
             this.contactsPagination.editCampaign = true;
@@ -143,9 +143,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
             this.parternUserListIds = this.eventCampaign.userListIds.sort();
         }
         this.emailTemplateId = this.eventCampaign.emailTemplate.id;
-        
+
     }
-    
+
   }
   isEven(n) { if(n % 2 === 0){ return true;} return false;}
   loadCampaignNames(userId:number){
@@ -205,6 +205,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
         this.validateCampaignName(this.eventCampaign.campaign);
         console.log( this.eventCampaign);
         this.eventCampaign.emailTemplate = result.data.emailTemplateDTO;
+        if(!this.eventCampaign.emailTemplate) { this.eventCampaign.emailTemplate = new EmailTemplate(); }
         this.eventCampaign.user = result.data.userDTO;
         if(result.data.campaignReplies===undefined){ this.eventCampaign.campaignReplies = [];}
         else {this.getCampaignReplies(this.eventCampaign);}
@@ -274,7 +275,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     this.eventCampaign.campaignEventTimes[0].countryId = this.countries[0].id;
     this.loadContactLists(this.contactListsPagination);
   }
-    
+
 
     flatpickr('.flatpickr', {
       enableTime: true,
@@ -291,12 +292,12 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
       this.detailsTab = true;
       this.resetTabClass()
   }
-  
+
   setTemplateId(){
       this.emailTemplateId = this.eventCampaign.emailTemplate.id;
       this.eventCampaign.selectedEditEmailTemplate = this.eventCampaign.emailTemplate;
   }
-  
+
   eventTitleError(){
     this.eventError.eventTitleError = this.eventCampaign.campaign ? false: true;
   }
@@ -311,13 +312,13 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
      else if( startDate > currentDate){ this.setStartTimeErrorMessage(false, '');}
      else if(!this.eventCampaign.campaignEventTimes[0].startTimeString){this.setStartTimeErrorMessage(true, 'The start date is required.'); }
      else { this.setStartTimeErrorMessage(false, ''); }
-     
+
      if(this.reDistributeEvent){
          if(startDate < currentDate){
-          this.eventError.eventExpiredError = true; 
+          this.eventError.eventExpiredError = true;
          }
      }
-     
+
      this.eventSameDateError();
      this.resetTabClass();
   }
@@ -394,7 +395,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   loadContactLists(contactListsPagination: Pagination) {
     this.paginationType = 'contactlists';
     if(this.isEditCampaign){
-       contactListsPagination.editCampaign = true; 
+       contactListsPagination.editCampaign = true;
        contactListsPagination.campaignId = this.eventCampaign.id;
     }
     const roles = this.authenticationService.getRoles();
@@ -550,7 +551,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
               this.emailTemplatesPagination = this.pagerService.getPagedItems(pagination, this.campaignEmailTemplates);
               /*if(this.emailTemplatesPagination.totalRecords==0 &&this.selectedEmailTemplateRow==0){
                   this.isEmailTemplate = false;
-              }*/ 
+              }*/
               /*this.filterEmailTemplateForEditCampaign();
               let filteredEmailTemplateIds = this.emailTemplatesPagination.pagedItems.map(function(a) {return a.id;});
               if(filteredEmailTemplateIds.length>0){
@@ -1104,7 +1105,7 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
       () => this.logger.info("Finished loadEmailTemplatesForAddReply()", reply.emailTemplatesPagination)
       )
   }
-  
+
   filterEmailTemplateForEditCampaign(){
       this.filteredEmailTemplateIds = this.emailTemplatesPagination.pagedItems.map(function(a) {return a.id;});
       if(this.filteredEmailTemplateIds.indexOf(this.emailTemplateId)>-1){
@@ -1515,12 +1516,12 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
       }
       console.log(this.selectedListOfUserLists);
     }
-    
+
     onlineMeetingSwitchStatusChange(){
         this.eventCampaign.onlineMeeting = !this.eventCampaign.onlineMeeting;
         this.resetTabClass();
     }
-    
+
     resetTabClass(){
         if((this.eventCampaign.campaign && this.eventCampaign.fromName && this.eventCampaign.campaignEventTimes[0].startTimeString && (this.eventCampaign.campaignEventTimes[0].endTimeString || this.eventCampaign.campaignEventTimes[0].allDay) && !this.eventError.eventSameDateError && this.datePassedError == '' && this.eventCampaign.campaignEventTimes[0].countryId && (this.eventCampaign.onlineMeeting || this.eventCampaign.campaignLocation.location) ) && (this.userListIds.length === 0 && this.parternUserListIds.length === 0)){
             this.recipientsTabClass = "enableRecipientsTab";
