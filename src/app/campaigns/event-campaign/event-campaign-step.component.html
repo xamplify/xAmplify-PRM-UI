@@ -121,7 +121,7 @@ a.disabled {
 							<label for="hostedBy" class="col-sm-3 labal-css color-css">From
 								Email</label>
 							<div class="col-sm-9">
-								<select *ngIf="!reDistributeEvent || !isPreviewEvent" 
+								<select *ngIf="!reDistributeEvent && !isPreviewEvent" 
 									[attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null"
 									class="form-control" [(ngModel)]="eventCampaign.email"
 									[ngModelOptions]="{standalone: true}" (change)="setFromName()">
@@ -129,7 +129,7 @@ a.disabled {
 										[ngValue]="teamMember.emailId">
 										{{teamMember.emailId}}</option>
 								</select>
-								<input [attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null" *ngIf="reDistributeEvent || !isPreviewEvent" type="text" class="form-control" [(ngModel)]="eventCampaign.email"
+								<input [attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null" *ngIf="reDistributeEvent || isPreviewEvent" type="text" class="form-control" [(ngModel)]="eventCampaign.email"
 									[ngModelOptions]="{standalone: true}">
 							</div>
 						</div>
