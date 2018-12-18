@@ -455,7 +455,7 @@ a.disabled {
 				</div> -->
 				<!-- </div>
           </div> -->
-          <button *ngIf="!isPreviewEvent && !reDistributeEvent" type="button" style="float: right" class=" btn green"
+          <button *ngIf="!isPreviewEvent && !reDistributeEvent" [ngClass]="{'next-button-top-class': !this.eventCampaign.onlineMeeting }" type="button" style="float: right" class=" btn green"
 			(click)="resetTabs('recipients')" title="Please Fill Campaign Details" [disabled]="recipientsTabClass === 'disableRecipientsTab'">Next</button>
 			</fieldset>
 
