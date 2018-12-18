@@ -481,7 +481,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
 
   switchStatusChange(){
       this.eventCampaign.channelCampaign = !this.eventCampaign.channelCampaign;
-      this.loadEmailTemplates(this.emailTemplatesPagination);
 
       if(this.eventCampaign.channelCampaign){
           this.eventCampaign.enableCoBrandingLogo = true;
@@ -490,7 +489,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
           this.eventCampaign.enableCoBrandingLogo = false;
           this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.NONE;
       }
-
+      this.loadEmailTemplates(this.emailTemplatesPagination);
 
   }
 
