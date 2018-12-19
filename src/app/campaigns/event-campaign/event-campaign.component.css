@@ -91,7 +91,7 @@
   border-radius: 0;
   width: 102%;
   position: relative;
-  top: -10px;
+  top: -10px !important;
   margin-bottom: -16px;
   right: 10px;
 }
@@ -158,7 +158,7 @@ a.icons-link:hover {background:  #357ebd;}
 .table-color{ color: #6d6d6d !important;}
 .opacityCss { opacity: 0.5;}
 .center-block{ text-align: center; margin: 13px 0;}
-.colorlightBlock{ background: #808080;}
+.colorlightBlock{ background: #77a9c1 !important;}
 .colorBlue{ background: #5bb1d4;}
 @media screen and (max-width:768px){.modal-template{ width: 100% !important; right: 0;} }
 @media screen and (min-width:768px){.modal-template{ width: 65% !important; right: 0;} }
