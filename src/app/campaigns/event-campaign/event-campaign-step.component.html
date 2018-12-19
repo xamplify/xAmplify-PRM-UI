@@ -508,7 +508,7 @@ a.disabled {
                         </div>
                         </div>
                 <div class="portlet-body clearfix">
-                <div class="alert-danger alert-error" *ngIf="eventError.eventContactError">* Please select at least one <span *ngIf="!authenticationService.isOnlyPartner();else listHeader">Contact</span><ng-template #listHeader>Partner</ng-template> list</div>
+                <div class="alert-danger alert-error" *ngIf="eventError.eventContactError">* Please select at least one <span *ngIf="authenticationService.isOnlyPartner();else listHeader">Contact</span><ng-template #listHeader>Partner</ng-template> list</div>
                 <section *ngIf="(isPreviewEvent && (userListIds?.length==0 && parternUserListIds?.length==0)) || contactListsPagination.pagedItems?.length === 0;else contactList">
                   <div class='alert alert-info' role='alert'>
                     <h4 class='m0'>No <span *ngIf="authenticationService.isOnlyPartner();else listPartner">Contact</span><ng-template #listPartner>Partner</ng-template> list(s) found.</h4>
@@ -517,20 +517,14 @@ a.disabled {
                 </section>
                 <ng-template #contactList>
                   <div class="table-responsive">
-                    <table class="table table-bordered no-more-tables dataTable no-footer" id='contact-list-table' 	[ngClass]="{'has-error': eventError.eventContactError}">
+                    <table class="table table-bordered no-more-tables dataTable no-footer" id='contact-list-table' 	[ngClass]="{'has-error': eventError.eventContactError, 'disabled': eventError.eventExpiredError}">
                       <thead>
                      <tr>
-							<td *ngIf="!isPartnerUserList" align="center">
-								<input type="checkbox" name="all"
-								[(ngModel)]="isHeaderCheckBoxChecked"
-								(change)="checkAll($event)" id="checkAllExistingContacts" />
-							</td>
-								<td *ngIf="isPartnerUserList" align="center">
-								<input type="checkbox" name="all"
-								[(ngModel)]="isHeaderCheckBoxChecked"
-								(change)="checkAllForPartners($event)" id="checkAllExistingContacts" />
-							</td>
-										<th class="custom-center" style="width:18%">List Name</th>
+                      <td align="center">
+                      <input type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked"
+                      (change)="checkAllForPartners($event)" id="checkAllExistingContacts" />
+                     </td>
+									  	<th class="custom-center" style="width:18%">List Name</th>
                           <th style="text-align: center;" *ngIf="showContactType">Type</th>
                           <th class="custom-center">Uploaded Date</th>
                           <th class="custom-center">Preview</th>
@@ -538,36 +532,9 @@ a.disabled {
                       </thead>
                       <tbody>
                         <ng-container *ngFor="let contactList of contactListsPagination.pagedItems; let i=index;">
-                        <tr id="campaignContactListTable_{{contactList.id}}" (click)="highlightContactRow(contactList.id,$event,contactList.noOfContacts,contactList.emailValidationInd)" *ngIf="!isPartnerUserList" [ngClass]="{'contact-list-selected': userListIds.indexOf(contactList.id)>-1 || parternUserListIds.indexOf(contactList.id)>-1}">
+                        <tr id="campaignContactListTable_{{contactList.id}}" (click)="highlightPartnerContactRow(contactList.id,$event,contactList.noOfContacts,contactList.emailValidationInd)" [ngClass]="{'contact-list-selected': userListIds.indexOf(contactList.id)>-1 || parternUserListIds.indexOf(contactList.id)>-1}">
                           <td class='text-center m0'>
-                            <input *ngIf="!isPartnerUserList" value="{{contactList.id}}" name="campaignContact[]" [attr.disabled]="isPreviewEvent? '' : null" type='checkbox' id='{{contactList.id}}' [checked]="userListIds.indexOf(contactList.id)>-1" (click)="$event.stopPropagation();highlightRow(contactList.id)" (input)="resetTabClass()">
-                            <input *ngIf="isPartnerUserList" value="{{contactList.id}}" name="campaignContact[]"  [attr.disabled]="isPreviewEvent? '' : null" type='checkbox' id='{{contactList.id}}' [checked]="parternUserListIds.indexOf(contactList.id)>-1" (click)="$event.stopPropagation();partnerHighlightRow(contactList.id)" (input)="resetTabClass()">
-                          </td>
-                          <td class="text-center">
-                            <h5 class='m0 f-w-600 table-color' title="{{contactList.name}}">
-                              <span>{{contactList.name | slice:0:35}}<span *ngIf="contactList.name?.length>35">...</span></span>
-                            </h5>
-                          </td>
-                          <td class='text-center m0' *ngIf="showContactType"><ng-container *ngIf="contactList.partnerUserList"> Partners </ng-container> <ng-container
-                              *ngIf="!contactList.partnerUserList"> Contacts </ng-container>
-                          </td>
-			      							<td class="text-center"> {{contactList.createdDate}} </td>
-                          <td class='text-center m0'>
-                            <a *ngIf="!isPreviewEvent">	<i class="fa fa-eye" aria-hidden="true" (click)="loadContactsOnPreview(contactList, contactsPagination);"></i></a>
-                            <ng-container *ngIf="isPreviewEvent">
-                            <a *ngIf="authenticationService.isOnlyPartner()">
-                                <i class="fa fa-eye disabled" aria-hidden="true"></i>
-                            </a>
-                            <a *ngIf="!authenticationService.isOnlyPartner()">	<i class="fa fa-eye" aria-hidden="true" (click)="loadContactsOnPreview(contactList, contactsPagination);"></i></a>
-                            </ng-container>
-                          </td>
-                        </tr>
-                        </ng-container>
-                        <ng-container *ngFor="let contactList of contactListsPagination.pagedItems; let i=index;">
-                        <tr id="campaignContactListTable_{{contactList.id}}" (click)="highlightPartnerContactRow(contactList.id,$event,contactList.noOfContacts,contactList.emailValidationInd)" *ngIf="isPartnerUserList" [ngClass]="{'contact-list-selected': userListIds.indexOf(contactList.id)>-1 || parternUserListIds.indexOf(contactList.id)>-1}">
-                          <td class='text-center m0'>
-                            <input *ngIf="!isPartnerUserList" value="{{contactList.id}}" name="campaignContact[]" [attr.disabled]="isPreviewEvent? '' : null" type='checkbox' id='{{contactList.id}}' [checked]="userListIds.indexOf(contactList.id)>-1" (click)="$event.stopPropagation();highlightRow(contactList.id)" (input)="resetTabClass()">
-                            <input *ngIf="isPartnerUserList" value="{{contactList.id}}" name="campaignContact[]"  [attr.disabled]="isPreviewEvent? '' : null" type='checkbox' id='{{contactList.id}}' [checked]="parternUserListIds.indexOf(contactList.id)>-1" (click)="$event.stopPropagation();partnerHighlightRow(contactList.id)" (input)="resetTabClass()">
+                            <input value="{{contactList.id}}" name="campaignContact[]"  [attr.disabled]="isPreviewEvent? '' : null" type='checkbox' id='{{contactList.id}}' [checked]="parternUserListIds.indexOf(contactList.id)>-1" (click)="$event.stopPropagation();partnerHighlightRow(contactList.id)" (input)="resetTabClass()">
                           </td>
                           <td class="text-center">
                             <h5 class='m0 f-w-600 table-color' title="{{contactList.name}}">
@@ -584,7 +551,7 @@ a.disabled {
                             <a *ngIf="authenticationService.isOnlyPartner()">
                                 <i class="fa fa-eye disabled" aria-hidden="true"></i>
                             </a>
-                            <a *ngIf="!authenticationService.isOnlyPartner()">	<i class="fa fa-eye" aria-hidden="true" (click)="loadContactsOnPreview(contactList, contactsPagination);"></i></a>
+                            <a *ngIf="!authenticationService.isOnlyPartner()">	<i class="fa fa-eye" aria-hidden="true" (click)="$event.stopPropagation();loadContactsOnPreview(contactList, contactsPagination);"></i></a>
                             </ng-container>
                           </td>
                         </tr>
@@ -597,11 +564,11 @@ a.disabled {
                 </ng-template>
                 </div>
               </div>
-       <button *ngIf="!isPreviewEvent && !reDistributeEvent" type="button" style="float:left;" class="btn btn-default" (click)="resetTabs('details')">Previous</button>
-			 <button *ngIf="!isPreviewEvent && !reDistributeEvent" type="button" style="float: right;" class="btn btn-default btn green" [disabled]="emailTemplatesTabClass === 'disableTemplateTab'" (click)="resetTabs('templates')" title="">Next</button>
-          </div>
-      <!--     End Step two   -->
-      <!-- Step three email templates   -->
+            <button *ngIf="!isPreviewEvent && !reDistributeEvent" type="button" style="float:left;" class="btn btn-default" (click)="resetTabs('details')">Previous</button>
+            <button *ngIf="!isPreviewEvent && !reDistributeEvent" type="button" style="float: right;" class="btn btn-default btn green" [disabled]="emailTemplatesTabClass === 'disableTemplateTab'" (click)="resetTabs('templates')" title="">Next</button>
+                </div>
+            <!--     End Step two   -->
+            <!-- Step three email templates   -->
 
           <div class="col-xs-12 mb10" [hidden]="!emailTemplatesTab" style="padding: 10px 0 0 0;">
             <app-grid-loader *ngIf="gridLoader"></app-grid-loader>
@@ -631,7 +598,7 @@ a.disabled {
 
                  <ng-container *ngIf="showSelectedEmailTemplate"><!-- !hideCoBrandedEmailTemplate -->
                           <div  *ngIf="emailTemplatesPagination.totalRecords>0 && emailTemplatesPagination.pageIndex==1">
-<ul class="content__list">
+                         <ul class="content__list">
                             <li class="list__item" [class.list__item--selected]="eventCampaign.emailTemplate.id === eventCampaign.selectedEditEmailTemplate.id" (click)="emailTemplateSelection(eventCampaign.selectedEditEmailTemplate)">
                               <!-- above class [ngClass]="{'list__item--selected':selectedFileIds.indexOf(file.id)>-1}" -->
                               <div class="flex-row">
@@ -639,8 +606,8 @@ a.disabled {
                                   <span class="select-box"> <label> <input
 															(click)="eventCampaign.emailTemplate = eventCampaign.selectedEditEmailTemplate;" class=""
 															type="checkbox" (input)="resetTabClass()">
-													</label>
-													</span>
+                              </label>
+                              </span>
                                    <span class="ng-scope"> <a
                                     class="item__preview item__preview--image img-container custom"
                                     target="_BLANK"> <img
@@ -654,26 +621,16 @@ a.disabled {
                                       [title]="eventCampaign.selectedEditEmailTemplate.name"><b>{{eventCampaign.selectedEditEmailTemplate.name |slice:0:15}}</b><b *ngIf="eventCampaign.selectedEditEmailTemplate?.name?.length>15">...</b>
                                     </span>
                                     <div class="item__last-modified">
-															<span [title]="eventCampaign.selectedEditEmailTemplate.createdBy"><span>By: </span>{{eventCampaign.selectedEditEmailTemplate.createdBy | slice:0:15}}
-															<span *ngIf="eventCampaign.selectedEditEmailTemplate.createdBy?.length>15">...</span>
-															</span>
-														</div>
+                                  <span [title]="eventCampaign.selectedEditEmailTemplate.createdBy"><span>By: </span>{{eventCampaign.selectedEditEmailTemplate.createdBy | slice:0:15}}
+                                  <span *ngIf="eventCampaign.selectedEditEmailTemplate.createdBy?.length>15">...</span>
+                                  </span>
+                                </div>
                                     <span lass="item__name" title="created on" style="float:left">
                                         <!-- <b>Created On:</b>{{campaign.emailTemplate.createdDate}} -->
                                         <span><app-timestamp [isOnlyDate]="true"
                                           [dateAndTime]="eventCampaign?.selectedEditEmailTemplate?.createdDate">
                                         </app-timestamp></span>
                                     </span>
-                                   <!--  <ng-container *ngIf="emailTemplate.type.toLocaleString()!='PARTNER'">
-                                      <span style="float:left"  title="{{eventCampaign.emailTemplate.createdBy}}">
-                                          <b>By:</b> <span>{{eventCampaign.emailTemplate.createdBy|slice:0:12}}<span *ngIf="eventCampaign.emailTemplate.createdBy?.length>12">...</span></span>
-                                      </span>
-                                    </ng-container> -->
-                                    <!-- <ng-container *ngIf="emailTemplate.type.toLocaleString()=='PARTNER'">
-                                      <span style="float:left" title="{{eventCampaign.emailTemplate.vendorName}}">
-                                          <b>By:</b>  <span>{{eventCampaign.emailTemplate.vendorName|slice:0:12}}<span *ngIf="eventCampaign.emailTemplate.vendorName?.length>12">...</span></span>
-                                        </span>
-                                    </ng-container> -->
                                     <div class="item__actions">
                                       <span> <a style="float:left; right: -6px;"  class="fm external-link" target="_BLANK"
                                         data-toggle="tooltip" data-placement="top"
@@ -688,9 +645,6 @@ a.disabled {
                               </div>
                             </li>
                           </ul>
-
-
-
                       </div>
                     </ng-container>
 
@@ -762,81 +716,9 @@ a.disabled {
         <button *ngIf="!isPreviewEvent && !reDistributeEvent" type="button" style="float:left;" class="btn btn-default" (click)="resetTabs('recipients')">Previous</button>
 		 <button *ngIf="!isPreviewEvent && !reDistributeEvent" type="button" style="float: right;" class="btn btn-default btn green" (click)="resetTabs('launch')" [class.disabled]="launchTabClass === 'disableLaunchTab'" title="">Next</button>
         </div>
-
-
         <!--    End Step three templates -->
-
-
 		<!-- 	Step four launch campaigns    -->
 		<div [hidden]="!launchTab" style="padding: 10px 0 0 0;">
-
-
-
-		<!-- <div [attr.class]="lauchTabPreivewDivClass">
-					<div class="portlet light border-0">
-						<table width="100%">
-							<tr>
-								<td width="25%">
-									<div class="icon-border">
-
-									<i class="fa fa-users fa-2x icon-position" aria-hidden="true"></i>
-								</div>
-								<ng-container *ngIf="authenticationService.module.isVendor || authenticationService.isAddedByVendor">
-									<h4 class="h4-text m0" *ngIf="campaignType == 'video'||'regular'" style="text-align:center">Partner List(s)</h4>
-								</ng-container>
-								<ng-container *ngIf="!authenticationService.module.isVendor && !authenticationService.isAddedByVendor">
-									<h4 class="h4-text m0" *ngIf="campaignType == 'video'||'regular'" style="text-align:center">Contact List(s)</h4>
-								</ng-container>
-
-								</td>
-								<td width="55%">
-									<ng-container *ngFor="let contactList of selectedContactLists;let i=index;">
-										<a (click)="loadUsers(contactList.id,contactsUsersPagination,contactList.name)" data-toggle="modal" data-target="#myModal" title="{{contactList.name}}"
-											style="display: block;">
-											<ng-container *ngIf="contactList.name?.length>50">
-												{{contactList.name | slice:0:50}}...
-											</ng-container>
-											<ng-container *ngIf="contactList.name?.length<=50">
-												{{contactList.name}}
-											</ng-container>
-										</a>
-									</ng-container>
-								</td>
-								<td style="text-align: right" width="20%">
-									<a class="btn btn-primary btn-sm" style="color:#fff" (click)="resetActive($event, 40, 'step-4')">Change</a>
-								</td>
-							</tr>
-						</table>
-
-					</div>
-					<div class="portlet light border-0" id="email-template-preview-div">
-						<table width="100%">
-							<tr>
-								<td width="25%">
-								<div class="icon-border">
-									<i class="fa fa-envelope fa-2x icon-position" aria-hidden="true"></i>
-								</div>
-									<h4 class="h4-text m0" style="text-align:center">Email Template</h4>
-								</td>
-								<td width="55%">
-									<a (click)="getEmailTemplatePreview(emailTemplate)" title="{{emailTemplate.name}}">
-										<ng-container *ngIf="emailTemplate.name?.length>50">
-											{{emailTemplate.name | slice:0:50}}...
-										</ng-container>
-										<ng-container *ngIf="emailTemplate.name?.length<=50">
-											{{emailTemplate.name}}
-										</ng-container>
-									</a>
-									<p>Template Name</p>
-								</td>
-								<td style="text-align: right" width="20%">
-									<a class="btn btn-primary btn-sm" (click)="resetActive($event, 40, 'step-5')">Change</a>
-								</td>
-							</tr>
-						</table>
-					</div>
-				</div> -->
-
 
         <fieldset>
             <legend>Preview Before Publishing</legend>
@@ -861,7 +743,6 @@ a.disabled {
                   <tr>
                     <td width="28%">
                       <div class="icon-border">
-
                       <i class="fa fa-users fa-2x icon-position" aria-hidden="true"></i>
                     </div>
                     <ng-container *ngIf="authenticationService.module.isVendor || authenticationService.isAddedByVendor">
@@ -876,12 +757,7 @@ a.disabled {
                       <ng-container *ngFor="let contactList of selectedListOfUserListForPreview;let i=index;">
                         <a (click)="loadContacts(contactList,contactsPagination)" data-toggle="modal" title="{{contactList.name}}"
                           style="display: block;">
-                          <ng-container *ngIf="contactList.name?.length>50">
-                            {{contactList.name | slice:0:50}}...
-                          </ng-container>
-                          <ng-container *ngIf="contactList.name?.length<=50">
-                            {{contactList.name}}
-                          </ng-container>
+                          <span *ngIf="contactList.name">  {{contactList.name | slice:0:40}}<span *ngIf="contactList.name?.length>40">...</span></span>
                         </a>
                       </ng-container>
                     </td>
@@ -889,12 +765,7 @@ a.disabled {
                       <ng-container *ngFor="let contactList of selectedListOfUserLists;let i=index;">
                         <a (click)="loadContacts(contactList,contactsPagination)" data-toggle="modal" title="{{contactList.name}}"
                           style="display: block;">
-                          <ng-container *ngIf="contactList.name?.length>50">
-                            {{contactList.name | slice:0:50}}...
-                          </ng-container>
-                          <ng-container *ngIf="contactList.name?.length<=50">
-                            {{contactList.name}}
-                          </ng-container>
+                          <span *ngIf="contactList.name">  {{contactList.name | slice:0:40}}<span *ngIf="contactList.name?.length>40">...</span></span>
                         </a>
                       </ng-container>
                     </td>
@@ -903,7 +774,6 @@ a.disabled {
                     </td>
                   </tr>
                 </table>
-
               </div>
               <div class="portlet light border-0" id="email-template-preview-div">
                 <table width="100%">
@@ -916,12 +786,9 @@ a.disabled {
                     </td>
                     <td width="55%" style="text-align:center">
                       <a (click)="previewEventCampaignEmailTemplate(eventCampaign?.emailTemplate?.id)" title="{{eventCampaign?.emailTemplate?.name}}">
-                        <ng-container *ngIf="eventCampaign?.emailTemplate?.name?.length>50">
-                          {{eventCampaign?.emailTemplate?.name | slice:0:50}}...
-                        </ng-container>
-                        <ng-container *ngIf="eventCampaign?.emailTemplate?.name?.length<=50">
-                          {{eventCampaign?.emailTemplate?.name}}
-                        </ng-container>
+                        <span *ngIf="eventCampaign?.emailTemplate?.name">
+                          {{eventCampaign?.emailTemplate?.name | slice:0:30}}<span  *ngIf="eventCampaign?.emailTemplate?.name.length>30">...</span>
+                        </span>
                       </a>
                     </td>
                     <td style="text-align: right" width="20%">
@@ -934,9 +801,6 @@ a.disabled {
           </div>
         </div>
         </fieldset>
-
-
-
 
 		  <div class="col-xs-12 mb10 p0">
           <fieldset class="col-xs-12">
@@ -1088,11 +952,7 @@ a.disabled {
                   </label>
                </ng-container>
                </div>
-            <!-- <button [disabled]="isPreviewEvent"  class='btn btn-block btn-primary' (click)="createEventCampaign(eventCampaign, 'NOW')">Now</button> -->
-          <!-- </div> -->
-          <!-- <div class="col-xs-4"><button [disabled]="isPreviewEvent"  class='btn btn-block btn-primary' (click)="setScheduleEvent()">Schedule</button></div>
-          <div class="col-xs-4"><button [disabled]="isPreviewEvent"  class='btn btn-block btn-primary' (click)="createEventCampaign(eventCampaign, 'SAVE')">Save</button></div> -->
-        </div>
+          </div>
           <div class="col-md-12 p0" style="margin-top: 12px;" [hidden]="checkLaunchOption!='SCHEDULE'">
             <div class="col-md-4">
               <input [attr.disabled]="isPreviewEvent? '' : null"  type="text" id="launchTimeInString" class="form-control flatpickr" placeholder="Launch Time"
@@ -1131,26 +991,12 @@ a.disabled {
            <!--  ****Test email template**** -->
             <!-- <div><button type="button" class="btn green" (click)="campaignService.addEmailId(eventCampaign,eventCampaign.emailTemplate.id,false)" style="width: 10em;">Send Test Email</button>
             </div> -->
-
-<button *ngIf="!isPreviewEvent && !reDistributeEvent" type="button" style="float:left;" class="btn btn-default" (click)="resetTabs('templates')">Previous</button>
-
+            <button *ngIf="!isPreviewEvent && !reDistributeEvent" type="button" style="float:left;" class="btn btn-default" (click)="resetTabs('templates')">Previous</button>
           </div>
-
-
-   <!--   end step four launch   -->
-
-
-
-
-
-
-
+       <!--   end step four launch   -->
 		</div>
 	</div>
 </div>
-
-
-
    <!--   contacts preview modal    -->
 <div class="modal right" id="contactsModal" tabindex="-1" role="dialog" aria-labelledby="contactsModalLabel" data-keyboard="false" data-backdrop="static">
     <div class="modal-dialog modal-user" role="document">
@@ -1199,7 +1045,6 @@ a.disabled {
     </div>
   </div>
 
-
 <!-- --------------------Email Template preview modal ----------------------------->
   <div class="modal right" id="show_email_template_preivew">
     <div class="modal-dialog modal-lg modal-template">
@@ -1219,4 +1064,3 @@ a.disabled {
       </div>
     </div>
   </div>
-

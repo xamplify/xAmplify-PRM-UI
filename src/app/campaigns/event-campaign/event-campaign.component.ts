@@ -115,7 +115,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   filteredEmailTemplateIds: Array<number>;
   emailTemplateId:number=0;
   selectedEmailTemplateRow:number;
-
+  isHighLet = false;
   constructor(public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
     private contactService: ContactService,
     public campaignService: CampaignService,
@@ -143,7 +143,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
             this.parternUserListIds = this.eventCampaign.userListIds.sort();
         }
         this.emailTemplateId = this.eventCampaign.emailTemplate.id;
-
     }
 
   }
@@ -233,11 +232,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
         if(this.reDistributeEvent){ this.isPartnerUserList = false;}
 
         for(let i=0; i< result.data.userListDTOs.length;i++){
-         if(this.reDistributeEvent || this.authenticationService.isOnlyPartner()) { this.userListIds.push(result.data.userListDTOs[i].id); }
+         if(this.reDistributeEvent || this.authenticationService.isOnlyPartner()) { this.parternUserListIds.push(result.data.userListDTOs[i].id); }
          if(!this.reDistributeEvent) { this.parternUserListIds.push(result.data.userListDTOs[i].id); }
         }
-        if(this.reDistributeEvent){  this.eventCampaign.userListIds = this.parternUserListIds;
-        } else {  this.eventCampaign.userListIds = this.userListIds; }
 
         if(this.reDistributeEvent){
             this.eventCampaign.userListIds = []; this.userListIds = [];this.parternUserListIds = [];
@@ -276,8 +273,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     this.eventCampaign.campaignEventTimes[0].countryId = this.countries[0].id;
     this.loadContactLists(this.contactListsPagination);
   }
-
-
     flatpickr('.flatpickr', {
       enableTime: true,
       dateFormat: 'm/d/Y h:i K',
@@ -481,7 +476,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
 
   switchStatusChange(){
       this.eventCampaign.channelCampaign = !this.eventCampaign.channelCampaign;
-
       if(this.eventCampaign.channelCampaign){
           this.eventCampaign.enableCoBrandingLogo = true;
               this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.EVENT_CO_BRANDING;
@@ -490,25 +484,13 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
           this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.NONE;
       }
       this.loadEmailTemplates(this.emailTemplatesPagination);
-
   }
-
-/*  setPagePagination(event:any){ this.setPage(event.page, event.type);}
-  loadPaginationDropdownTemplates(event:Pagination){ this.loadEmailTemplates();}*/
 
   searchEmailTemplate(){
       this.emailTemplatesPagination.pageIndex = 1;
       this.emailTemplatesPagination.searchKey = this.emailTemplateSearchInput;
       this.emailTemplatesPagination.coBrandedEmailTemplateSearch = this.eventCampaign.enableCoBrandingLogo;
-
       this.loadEmailTemplates(this.emailTemplatesPagination);
-
-      /*if(this.campaign.enableCoBrandingLogo){
-          this.loadRegularOrVideoCoBrandedTemplates();
-      }else{
-          this.loadAllEmailTemplates(this.emailTemplatesPagination);
-      }*/
-
   }
   clearEmailTemplateSearch(){
       this.emailTemplatesPagination.pageIndex = 1;
@@ -543,18 +525,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
                        this.campaignEmailTemplates = allEventEmailTemplates;
                    }
               }
-
-
               pagination.totalRecords = data.totalRecords;
               this.emailTemplatesPagination = this.pagerService.getPagedItems(pagination, this.campaignEmailTemplates);
-              /*if(this.emailTemplatesPagination.totalRecords==0 &&this.selectedEmailTemplateRow==0){
-                  this.isEmailTemplate = false;
-              }*/
-              /*this.filterEmailTemplateForEditCampaign();
-              let filteredEmailTemplateIds = this.emailTemplatesPagination.pagedItems.map(function(a) {return a.id;});
-              if(filteredEmailTemplateIds.length>0){
-                  this.selectedEmailTemplateRow = filteredEmailTemplateIds[0];
-              }*/
               this.filterEmailTemplateForEditCampaign();
              this.referenceService.loading(this.campaignEmailTemplate.httpRequestLoader, false);
           },
@@ -604,7 +576,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     this.resetTabClass();
   }
   toggleContactLists() {
-
     this.eventError.eventContactError = true;
     this.isPartnerUserList = !this.isPartnerUserList;
     if(this.isPartnerUserList) {
@@ -615,11 +586,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     else {if(this.userListIds.length>0) { this.parternUserListIds = [];
         this.eventError.eventContactError = false;}
     }
-
     this.contactListsPagination.pageIndex = 1;
     this.loadContactLists(this.contactListsPagination);
   }
-
 
   checkAllForPartners( ev: any ) {
       try {
@@ -638,9 +607,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
           } else {
               $( '[name="campaignContact[]"]' ).prop( 'checked', false );
               $( '#user_list_tb tr' ).removeClass( "contact-list-selected" );
-
-              // this.parternUserListIds = [];
-              //this.userListIds = [];
               if ( this.contactListsPagination.maxResults == this.contactListsPagination.totalRecords ) {
                   this.parternUserListIds = [];
                   this.userListIds = [];
@@ -658,75 +624,13 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
       }
   }
 
-
-  checkAll( ev: any ) {
-      try {
-          if ( ev.target.checked ) {
-              console.log( "checked" );
-              $( '[name="campaignContact[]"]' ).prop( 'checked', true );
-              let self = this;
-              $( '[name="campaignContact[]"]:checked' ).each( function() {
-                  var id = $( this ).val();
-                  self.userListIds.push( parseInt( id ) );
-                  console.log( self.userListIds );
-                  $( '#campaignContactListTable_' + id ).addClass( 'contact-list-selected' );
-                  self.eventError.eventContactError = false;
-              });
-              this.userListIds = this.referenceService.removeDuplicates( this.userListIds );
-          } else {
-              $( '[name="campaignContact[]"]' ).prop( 'checked', false );
-              $( '#user_list_tb tr' ).removeClass( "contact-list-selected" );
-              //this.parternUserListIds = [];
-              //this.userListIds = [];
-              if ( this.contactListsPagination.maxResults == this.contactListsPagination.totalRecords ) {
-                  this.parternUserListIds = [];
-                  this.userListIds = [];
-                  $( '#user_list_tb tr' ).removeClass( "contact-list-selected" );
-              } else {
-                  let currentPageContactIds = this.contactListsPagination.pagedItems.map( function( a ) { return a.id; });
-                  this.userListIds = this.referenceService.removeDuplicatesFromTwoArrays( this.userListIds, currentPageContactIds );
-              }
-              if(this.userListIds.length===0){  this.eventError.eventContactError = true;}
-          }
-          ev.stopPropagation();
-          this.resetTabClass();
-      } catch ( error ) {
-          console.error( error, "editContactComponent", "checkingAllContacts()" );
-      }
-  }
-
-
-
-  highlightRow(contactListId: number) {
-    const isChecked = $('#' + contactListId).is(':checked');
-    if (isChecked) {
-      if (!this.userListIds.includes(contactListId)) {
-        this.userListIds.push(contactListId);
-        this.parternUserListIds = []
-        this.eventError.eventContactError = false;
-        $('#campaignContactListTable_'+contactListId).addClass('contact-list-selected');
-      }
-      $('#' + contactListId).parent().closest('tr').addClass('contact-list-selected');
-    } else {
-      this.userListIds.splice($.inArray(contactListId, this.userListIds), 1);
-      $('#' + contactListId).parent().closest('tr').removeClass('contact-list-selected');
-      $('#campaignContactListTable_'+contactListId).removeClass('contact-list-selected');
-      if(this.userListIds.length===0){  this.eventError.eventContactError = true;}
-    }
-
-    if ( this.userListIds.length == this.contactListsPagination.pagedItems.length ) {
-        this.isHeaderCheckBoxChecked = true;
-    } else {
-        this.isHeaderCheckBoxChecked = false;
-    }
-  }
-
   partnerHighlightRow(contactListId: number) {
     const isChecked = $('#' + contactListId).is(':checked');
     if (isChecked) {
       if (!this.parternUserListIds.includes(contactListId)) {
         this.parternUserListIds.push(contactListId);
-        this.eventError.eventContactError = false;
+        if(this.parternUserListIds.length>0){  this.eventError.eventContactError = false;
+        }else{this.eventError.eventContactError = true;}
         this.userListIds = [];
         $('#campaignContactListTable_'+contactListId).addClass('contact-list-selected');
       }
@@ -735,7 +639,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
       this.parternUserListIds.splice($.inArray(contactListId, this.parternUserListIds), 1);
       $('#' + contactListId).parent().closest('tr').removeClass('contact-list-selected');
       $('#campaignContactListTable_'+contactListId).removeClass('contact-list-selected');
-      if(this.parternUserListIds.length===0){  this.eventError.eventContactError = true;}
+      if(this.parternUserListIds.length>0){  this.eventError.eventContactError = false;
+      }else{this.eventError.eventContactError = true;}
     }
 
     if ( this.parternUserListIds.length == this.contactListsPagination.pagedItems.length ) {
@@ -744,39 +649,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
         this.isHeaderCheckBoxChecked = false;
     }
   }
-
-  highlightContactRow(contactId:number,event:any,count:number,isValid:boolean){
-    if(isValid){
-        if(count>0){
-            let isChecked = $('#'+contactId).is(':checked');
-            if(isChecked){
-                //Removing Highlighted Row
-                $('#'+contactId).prop( "checked", false );
-                $('#campaignContactListTable_'+contactId).removeClass('contact-list-selected');
-                console.log("Revmoing"+contactId);
-                this.userListIds.splice($.inArray(contactId,this.userListIds),1);
-                if(this.userListIds.length>0){  this.eventError.eventContactError = false;
-                }else{this.eventError.eventContactError = true;}
-          }else{
-              //Highlighting Row
-              $('#'+contactId).prop( "checked", true );
-              $('#campaignContactListTable_'+contactId).addClass('contact-list-selected');
-              console.log("Adding"+contactId);
-              this.userListIds.push(contactId);
-              if(this.userListIds.length === 0){
-                this.eventError.eventContactError = true;
-                }else{this.eventError.eventContactError = false;}
-          }
-            // this.contactsUtility();
-            event.stopPropagation();
-            console.log(this.userListIds);
-        }else{
-           // this.emptyContactsMessage = "Contacts are in progress";
-        }
-     this.resetTabClass();
-    }
-
-}
 
 highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boolean){
   if(isValid){
@@ -800,6 +672,11 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
             }else{this.eventError.eventContactError = false;}
         }
           // this.contactsUtility();
+        if ( this.parternUserListIds.length == this.contactListsPagination.pagedItems.length ) {
+            this.isHeaderCheckBoxChecked = true;
+        } else {
+            this.isHeaderCheckBoxChecked = false;
+        }
           event.stopPropagation();
           console.log(this.parternUserListIds);
       }else{
@@ -928,8 +805,11 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
     this.referenceService.loading(this.httpRequestLoader, true);
     this.loader = true;
     this.isFormSubmitted = true;
-    if(this.isPartnerUserList) {eventCampaign.userListIds = this.parternUserListIds; }
-    else { eventCampaign.userListIds = this.userListIds; }
+    eventCampaign.userListIds = this.parternUserListIds;
+    // if(this.isPartnerUserList) {eventCampaign.userListIds = this.parternUserListIds; }
+    // else { eventCampaign.userListIds = this.userListIds; }
+
+
     if(this.eventCampaign.campaignLocation.country === "Select Country"){
         this.eventCampaign.campaignLocation.country = "";
     }
@@ -1253,14 +1133,6 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
       )
 
   }
-
-  /*listEmailTemplates() {
-    const emailTemplate1 = new EmailTemplate(); emailTemplate1.id = 1700; emailTemplate1.name = "Event Based template 1";
-    const emailTemplate2 = new EmailTemplate(); emailTemplate2.id = 1701; emailTemplate2.name = "Event Based template 2";
-    const emailTemplate3 = new EmailTemplate(); emailTemplate3.id = 1702; emailTemplate3.name = "Event Based template 3";
-    //this.emailTemplates.push(emailTemplate1, emailTemplate2,emailTemplate3);
-  }
-*/
   onChangeCountryCampaignEventTime(countryId: number) {
     this.timezonesCampaignEventTime = this.referenceService.getTimeZonesByCountryId(countryId);
 
@@ -1409,14 +1281,13 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
         }
         saveCampaignOnDestroy(){
           const eventCampaign = this.getCampaignData(this.eventCampaign);
-          // if(!eventCampaign.id) { eventCampaign.campaignLocation.id = null; }
-          // if(eventCampaign.id) { eventCampaign.campaignLocation.id = null; }
           if(this.isEditCampaign && !eventCampaign.onlineMeeting) {  }
           else {  eventCampaign.campaignLocation.id = null;}
           eventCampaign.campaignEventTimes[0].id = null;
           eventCampaign.campaignEventMedias[0].id = null;
-          if(this.isPartnerUserList) {eventCampaign.userListIds = this.parternUserListIds; }
-          else { eventCampaign.userListIds = this.userListIds; }
+          // if(this.isPartnerUserList) {eventCampaign.userListIds = this.parternUserListIds; }
+          // else { eventCampaign.userListIds = this.userListIds; }
+          eventCampaign.userListIds = this.parternUserListIds;
           for (let userListId of eventCampaign.userListIds) {
             let contactList = new ContactList(userListId);
             eventCampaign.userLists.push(contactList);
@@ -1496,14 +1367,11 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
 
     }
     setUserLists(){
-        this.selectedListOfUserLists = [];
-        this.parternUserListIds = this.referenceService.removeDuplicates( this.parternUserListIds);
-        this.userListIds = this.referenceService.removeDuplicates( this.parternUserListIds);
-        if(this.isPartnerUserList) {this.eventCampaign.userListIds = this.parternUserListIds; }
-      else { this.eventCampaign.userListIds = this.userListIds; }
+      this.selectedListOfUserLists = [];
+      this.parternUserListIds = this.referenceService.removeDuplicates( this.parternUserListIds);
+      this.eventCampaign.userListIds = this.parternUserListIds;
       for(let i=0; i< this.contactListsPagination.pagedItems.length; i++ ) {
-        if(this.eventCampaign.userListIds[0] === this.contactListsPagination.pagedItems[i].id)
-        {
+        if(this.eventCampaign.userListIds[0] === this.contactListsPagination.pagedItems[i].id){
           const list = {'id': this.eventCampaign.userListIds[0],
             'name': this.contactListsPagination.pagedItems[i].name
           }
