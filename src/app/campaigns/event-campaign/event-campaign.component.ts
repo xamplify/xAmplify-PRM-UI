@@ -740,7 +740,7 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
     }
    console.log(eventCampaign);
    let timeZoneId = "";
-   if (eventCampaign.campaignScheduleType === "NOW") {
+   if (eventCampaign.campaignScheduleType === "NOW" || eventCampaign.campaignScheduleType ==="SAVE") {
    //  eventCampaign.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
      let intlTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
      if(intlTimeZone!=undefined){
@@ -750,7 +750,9 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
      }
      eventCampaign.launchTimeInString = this.campaignService.setLaunchTime();
      eventCampaign.timeZone = timeZoneId;
-     eventCampaign.campaignEventTimes[0].timeZone = timeZoneId;
+    //  eventCampaign.campaignEventTimes[0].timeZone = timeZoneId;
+    if(!this.timeZoneSetValue) { this.timeZoneSetValue = timeZoneId = this.setEventTimeZone(); }
+     eventCampaign.campaignEventTimes[0].timeZone = this.timeZoneSetValue;
    } else {
      timeZoneId = $('#timezoneId option:selected').val();
     // timeZoneId = $('#timezoneId option:selected').val();
