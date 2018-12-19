@@ -753,12 +753,13 @@ a.disabled {
                     </td>
                     <td *ngIf="!isPreviewEvent" width="55%" style="text-align:center">
                       <ng-container *ngFor="let contactList of selectedListOfUserLists;let i=index;">
-                        <a (click)="loadContacts(contactList,contactsPagination)" data-toggle="modal" title="{{contactList.name}}"
+                          <!-- (click)="loadContacts(contactList,contactsPagination)"  -->
+                        <a data-toggle="modal" title="{{contactList.name}}"
                           style="display: block;">
                           <span *ngIf="contactList.name">  {{contactList.name | slice:0:40}}<span *ngIf="contactList.name?.length>40">...</span></span>
                         </a>
                       </ng-container>
-                      <a><span *ngIf="selectedListOfUserLists?.length===0" (click)="loadContactsPreviewOn(eventCampaign?.userListIds[0])">{{eventCampaign?.userListIds?.length}} Contact Lists</span></a>
+                      <a><span *ngIf="selectedListOfUserLists?.length===0">{{eventCampaign?.userListIds?.length}} Contact Lists</span></a>
                     </td>
                     <td style="text-align: right" width="20%">
                       <a [class.disabled]="isPreviewEvent || reDistributeEvent" class="btn btn-primary btn-sm" style="color:#fff" (click)="resetTabs('recipients')">Change</a>

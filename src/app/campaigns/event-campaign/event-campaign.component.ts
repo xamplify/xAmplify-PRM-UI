@@ -413,8 +413,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
       (data: any) => {
         this.contactListsPagination.totalRecords = data.totalRecords;
         this.contactListsPagination = this.pagerService.getPagedItems(this.contactListsPagination, data.listOfUserLists);
+        this.contactListsPagination.pagedItems = this.referenceService.removeDuplicatesObjects(this.contactListsPagination.pagedItems, "id");
         if(this.isPreviewEvent && this.authenticationService.isOnlyPartner()){
-          const contactsAll:any = [];
+          let contactsAll:any = [];
           this.contactListsPagination.pagedItems.forEach((element, index) => {
               if(this.authenticationService.isOnlyPartner() && element.id ===this.userListIds[index]) {
                 contactsAll.push(this.contactListsPagination.pagedItems[index]);
@@ -423,6 +424,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
                 contactsAll.push(this.contactListsPagination.pagedItems[index]);
               }
             });
+            contactsAll = this.referenceService.removeDuplicatesObjects(contactsAll, "id");
+           // contactsAll = contactsAll.filter((thing, index, self) => self.findIndex(t => t.name === thing.name && t.id === thing.id) === index)
             this.contactListsPagination.pagedItems = contactsAll;
            }
 
@@ -475,9 +478,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     );
   }
   loadContactsPreviewOn(userId:any){
-    let contactList = new ContactList(userId);
-    contactList.name = "selected Contact Lists"
-    this.loadContacts(contactList,this.contactsPagination)
+    // let contactList = new ContactList(userId);
+    // contactList.name = "selected Contact Lists"
+    // this.loadContacts(contactList,this.contactsPagination)
 
   }
   switchStatusChange(){

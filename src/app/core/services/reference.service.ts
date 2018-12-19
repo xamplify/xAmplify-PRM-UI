@@ -258,7 +258,19 @@ export class ReferenceService {
         }
       }catch(error){console.log('error'+error);}
     }
+    removeDuplicatesObjects(originalArray, prop) {
+      var newArray = [];
+      var lookupObject  = {};
 
+      for(var i in originalArray) {
+         lookupObject[originalArray[i][prop]] = originalArray[i];
+      }
+
+      for(i in lookupObject) {
+          newArray.push(lookupObject[i]);
+      }
+       return newArray;
+     }
     returnDuplicates(names: string[]) {
         const uniq = names
             .map((name) => {
@@ -1676,4 +1688,9 @@ export class ReferenceService {
         const scrollingElement = (document.scrollingElement || document.body)
         $(scrollingElement).animate({ scrollTop: 0 }, 500);
      }
+      getOrgCampaignTypes(companyId: any) {
+      return this.http.get(this.authenticationService.REST_URL + `campaign/access/${companyId}?access_token=${this.authenticationService.access_token}` )
+          .map(this.extractData)
+          .catch(this.handleError);
+  }
 }
