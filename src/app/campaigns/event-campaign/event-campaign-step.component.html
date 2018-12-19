@@ -528,7 +528,7 @@ a.disabled {
                           </td>
 			      							<td class="text-center"> {{contactList.createdDate}} </td>
                           <td class='text-center m0'>
-                            <a *ngIf="!isPreviewEvent">	<i class="fa fa-eye" aria-hidden="true" (click)="$event.stopPropagation();loadContactsOnPreview(contactList, contactsPagination);"></i></a>
+                            <a *ngIf="!isPreviewEvent">	<i class="fa fa-eye" aria-hidden="true"  (click)="$event.stopPropagation();loadContactsOnPreview(contactList, contactsPagination);"></i></a>
                             <ng-container *ngIf="isPreviewEvent">
                             <a *ngIf="authenticationService.isOnlyPartner()">
                                 <i class="fa fa-eye disabled" aria-hidden="true"></i>

@@ -396,7 +396,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     }
     const roles = this.authenticationService.getRoles();
     let isVendor = roles.indexOf(this.roleName.vendorRole)>-1;
-    let isOrgAdmin = this.authenticationService.isOrgAdmin() || this.authenticationService.isOrgAdminPartner() || this.authenticationService.isVendorPartner();
+    let isOrgAdmin = this.authenticationService.isOrgAdmin() || this.authenticationService.isOrgAdminPartner();
    if(isOrgAdmin){
        this.contactsPagination.filterValue = false;
        this.contactsPagination.filterKey = null;
