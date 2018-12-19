@@ -214,26 +214,6 @@ a.disabled {
 									</select>
 								</div>
 								<div class="col-sm-6">
-									<!-- <select
-										[attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null"
-										class="form-control" style="width: 100%"
-										[(ngModel)]="eventCampaign.campaignEventTimes[0].timeZone" (change)="timeZoneSet(eventCampaign.campaignEventTimes[0].timeZone)"
-										[ngModelOptions]="{standalone: true}"
-										id="timezoneIdCampaignEventTime">
-										<option *ngIf="!timezonesCampaignEventTime" value="" disabled
-											selected>Select TimeZone...</option>
-										<ng-container *ngIf="timezonesCampaignEventTime?.length==1">
-										<option *ngFor="let timeZone of timezonesCampaignEventTime"
-											[value]="timeZone.timezoneId"
-											[selected]="eventCampaign.campaignEventTimes[0].countryId == timeZone.countryId">
-											{{timeZone.cityName}}</option>
-										</ng-container>
-										<ng-container *ngIf="timezonesCampaignEventTime?.length>1">
-										<option *ngFor="let timeZone of timezonesCampaignEventTime"
-											[value]="timeZone.timezoneId">{{timeZone.cityName}}
-										</option>
-										</ng-container>
-                  </select> -->
                   <select
                   [attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null" (blur)="setEventTimeZone()"
                   class="form-control" style="width: 100%"
@@ -579,16 +559,12 @@ a.disabled {
                   <div style="padding-top: 12px;">
 					<div class="input-icon right pull-right"
 						style="padding-top: 4px; right: 8px;">
-						<input type="text" [(ngModel)]="emailTemplateSearchInput"
-							[ngModelOptions]="{standalone: true}" class="form-control"
-							placeholder="Search for a template">
-						<button class="glyphicon glyphicon-remove search-box-item-clear"
-							style="padding: 5px;" *ngIf="emailTemplateSearchInput"
-							(click)="emailTemplateSearchInput='';clearEmailTemplateSearch()"></button>
-						<button type="submit" class="search-box-item-click email-search"
-							(click)="searchEmailTemplate()">
-							<i class="fa fa-search"
-								style="font-size: 16px !important; padding: 5px !important;"></i>
+						<input type="text" [(ngModel)]="emailTemplateSearchInput"	[ngModelOptions]="{standalone: true}" class="form-control"
+							placeholder="Search for a template" (keypress)="eventHandler($event.keyCode)">
+						<button class="glyphicon glyphicon-remove search-box-item-clear"	style="padding: 5px;" *ngIf="emailTemplateSearchInput"
+							(click)="emailTemplateSearchInput='';"></button>
+						<button type="submit" class="search-box-item-click email-search"	(click)="searchEmailTemplate()">
+							<i class="fa fa-search"	style="font-size: 16px !important; padding: 5px !important;"></i>
 						</button>
 					</div>
 					</div>

@@ -175,10 +175,10 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   $('#eventImage').click();
  }
 
- timeZoneSet(event){
-  this.timeZoneSetValue = event;
+ eventHandler(event:any){
+  if(event===13) { this.searchEmailTemplate();}
  }
-  ngOnInit() {
+ ngOnInit() {
     this.detailsTab = true;
     this.resetTabClass()
     this.loggedInUserId = this.authenticationService.getUserId();
