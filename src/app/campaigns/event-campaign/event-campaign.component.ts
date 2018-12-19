@@ -710,7 +710,7 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
     const currentDate = new Date().getTime();
     const scheduleTime = Date.parse(this.eventCampaign.launchTimeInString);
     if(scheduleTime > currentDate &&  scheduleTime > startDate) {
-      this.setScheduleErrorMesg(true,'Schedule time is should be greater than today and less than start Date time'); }
+      this.setScheduleErrorMesg(true,'Your launch time must be before the event start date and time.'); }
     else if(scheduleTime < currentDate){ this.setScheduleErrorMesg(true,'Please choose a different launch time.');}
     else if(!this.eventCampaign.launchTimeInString) {  this.setScheduleErrorMesg(true,'Schedule time is required');}
     else { this.setScheduleErrorMesg(false,''); }

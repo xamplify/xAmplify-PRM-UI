@@ -2,11 +2,11 @@
 <div id="timeline-view" class="page-content">
 	<div class="page-bar" style="min-height: 572px;">
 		<div class="col-xs-12" style="padding: 10px 0px 5px 16px;">
-				<h4 class="pull-left" *ngIf="detailType === 'YES'">People who have says YES</h4>
-				<h4 class="pull-left" *ngIf="detailType === 'NO'">People who have says NO</h4>
-				<h4 class="pull-left" *ngIf="detailType === 'MAYBE'">People who have says MAY BE</h4>
-				<h4 class="pull-left" *ngIf="detailType === 'NOTYET'">People who NOT YET RESPONDED</h4>
-				<h4 class="pull-left" *ngIf="detailType === 'email open'">People who opened your email</h4>
+				<h4 class="pull-left" *ngIf="detailType === 'YES'">People who have responded YES</h4>
+				<h4 class="pull-left" *ngIf="detailType === 'NO'">People who have responded NO</h4>
+				<h4 class="pull-left" *ngIf="detailType === 'MAYBE'">People who have responded MAY BE</h4>
+				<h4 class="pull-left" *ngIf="detailType === 'NOTYET'">People who NOT YET responded</h4>
+				<h4 class="pull-left" *ngIf="detailType === 'email open'">People who have opened your email</h4>
 				<a (click)="analyticsComponent.showRsvpDetails = false" class="pull-right close-circle" style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;"> <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;"
 			aria-hidden="true"></span></a>
 				<div class="btn-group pull-right" style="margin: 28px 4px 0px 0px; cursor:pointer; color: #7d8c98">
@@ -30,8 +30,8 @@
 									<th style="font-size: 12px; font-weight: 500;" *ngIf="detailType !== 'email open'">MESSAGE</th>
 									<th style="font-size: 12px; font-weight: 500;" *ngIf="detailType === 'email open'">CAMPAIGN NAME</th>
 									<th style="font-size: 12px; font-weight: 500;" *ngIf="detailType === 'email open'">SUBJECT</th>
-									<th style="font-size: 12px; font-weight: 500;">TIME</th>
-									<th style="font-size: 12px; font-weight: 500;" *ngIf="detailType !== 'email open'">ATTENDIES</th>
+									<th style="font-size: 12px; font-weight: 500;">RSVP Date</th>
+									<th style="font-size: 12px; font-weight: 500;" *ngIf="detailType !== 'email open'">ATTENDEES</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -39,7 +39,7 @@
 									<td>
 										<app-user-info  [userInfo]="item"> </app-user-info>
 									</td>
-									<td *ngIf="detailType !== 'email open'">
+									<td *ngIf="detailType !== 'email open'" style="text-align:center">
 										<h6>{{item.message}}</h6>
 										<h6 *ngIf="!item.message" style="text-align:center"><b>-</b></h6>
 									</td>
