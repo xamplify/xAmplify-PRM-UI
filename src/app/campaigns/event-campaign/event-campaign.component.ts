@@ -474,7 +474,12 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
         () => console.log('loadContacts() finished')
     );
   }
+  loadContactsPreviewOn(userId:any){
+    let contactList = new ContactList(userId);
+    contactList.name = "selected Contact Lists"
+    this.loadContacts(contactList,this.contactsPagination)
 
+  }
   switchStatusChange(){
       this.eventCampaign.channelCampaign = !this.eventCampaign.channelCampaign;
       if(this.eventCampaign.channelCampaign){
@@ -1366,6 +1371,7 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
             this.emailTemplatesTab = false;
             this.launchTab = true;
             this.setUserLists();
+           // this.addUserEmailIds();
             }
 
     }
@@ -1383,6 +1389,18 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
       }
       console.log(this.selectedListOfUserLists);
     }
+    addUserEmailIds(){
+      let self = this;
+      self.selectedListOfUserLists = [];
+      $('[name="campaignContact[]"]:checked').each(function(index){
+          var id = $(this).val();
+          var name = $(this)[0].lang;
+          var  contactList = {'id':id,'name':name};
+          if(self.selectedListOfUserLists.length<=1){
+              self.selectedListOfUserLists.push(contactList);
+          }
+       });
+  }
     setEventTimeZone(){
       try{
        this.timeZoneSetValue = '';
