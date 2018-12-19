@@ -492,7 +492,14 @@ a.disabled {
                         </div>
                         </div>
                 <div class="portlet-body clearfix">
-                <div class="alert-danger alert-error" *ngIf="eventError.eventContactError">* Please select at least one <span *ngIf="authenticationService.isOnlyPartner();else listHeader">Contact</span><ng-template #listHeader>Partner</ng-template> list</div>
+                    <div class="alert-danger alert-error" *ngIf="eventError.eventContactError">
+                        * Please select at least one
+                        <span *ngIf="authenticationService.isOnlyPartner();else listHeader">Contact</span>
+                        <ng-template #listHeader>
+                          <span *ngIf="authenticationService.isOrgAdmin()">Contact/Partner</span>
+                          <span *ngIf="!authenticationService.isOrgAdmin()">Partner</span>
+                        </ng-template>
+                         list</div>
                 <section *ngIf="(isPreviewEvent && (userListIds?.length==0 && parternUserListIds?.length==0)) || contactListsPagination.pagedItems?.length === 0;else contactList">
                   <div class='alert alert-info' role='alert'>
                     <h4 class='m0'>No <span *ngIf="authenticationService.isOnlyPartner();else listPartner">Contact</span><ng-template #listPartner>Partner</ng-template> list(s) found.</h4>
@@ -520,7 +527,7 @@ a.disabled {
                           <td class='text-center m0'>
                             <input value="{{contactList.id}}" name="campaignContact[]"  [attr.disabled]="isPreviewEvent? '' : null" type='checkbox' id='{{contactList.id}}' [checked]="parternUserListIds.indexOf(contactList.id)>-1" (click)="$event.stopPropagation();partnerHighlightRow(contactList.id)" (input)="resetTabClass()">
                           </td>
-                          <td class="text-center">
+                          <td style="text-align:left">
                             <h5 class='m0 f-w-600 table-color' title="{{contactList.name}}">
                               <span>{{contactList.name | slice:0:50}}<span *ngIf="contactList.name?.length>50">...</span></span>
                             </h5>
@@ -798,7 +805,7 @@ a.disabled {
               Auto-responses to your email.
 						</a>
 					</div>
-			 
+
 			  <div class="col-xs-6" *ngIf="isPreviewEvent" [class.disabled]="isPreviewEvent">
 						<a style="cursor: default;" [attr.disabled]="isPreviewEvent? '' : null" class="dashboard-stat yellow-gold" style="background-color: #f4555c;padding: 9px 0;" (click)="addReplyRows()">
 							<i class="fa fa-plus-square p0" style="margin: 0 5px;"></i>
@@ -807,7 +814,7 @@ a.disabled {
 					</div>
 					<div class="col-xs-3"></div>
 					</div>
-            
+
             <!-- <div class="col-xs-12 auto-response" *ngIf="!isPreviewEvent" style="text-align: center"><a (click)="addReplyRows()">Click here</a> to add an auto response to your email.</div>
             <div class="col-xs-12 auto-response" *ngIf="isPreviewEvent" style="text-align: center"><a style="cursor: default;" [attr.disabled]="isPreviewEvent? '' : null">Click here</a> to add a auto response to your email</div>
             --> </div>
