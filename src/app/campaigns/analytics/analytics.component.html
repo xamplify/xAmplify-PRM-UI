@@ -130,7 +130,7 @@
 	<section *ngIf="campaignType === 'EVENT'" [hidden]="mainLoader">
 	<fieldset class="m10">
 	<div class="col-xs-12 caption-subject font-red-sunglo">
-		<h4 class="pull-left">Your Campaign Total Response</h4>
+		<h4 class="pull-left">Your Total Campaign Response</h4>
 		</div>
 		<div class="col-xs-12 col-sm-5 p-5x">
 		<div class="p-5x">
@@ -222,18 +222,18 @@
 							<thead>
 								<tr>
 									<th style="font-size: 12px; font-weight: 500;">RESPONSE DETAILS</th>
-									<th style="font-size: 12px; font-weight: 500;">EMAIL OPENED</th>
+									<th style="font-size: 12px; font-weight: 500;">INVITES OPENED</th>
 									<th style="font-size: 12px; font-weight: 500;">YES</th>
 									<th style="font-size: 12px; font-weight: 500;">NO</th>
-									<th style="font-size: 12px; font-weight: 500;">MAY BE</th>
+									<th style="font-size: 12px; font-weight: 500;">Maybe</th>
 									<th style="font-size: 12px; font-weight: 500;">NOT YET</th>
-									<th style="font-size: 12px; font-weight: 500;">PLUS GUESTS</th>
+									<th style="font-size: 12px; font-weight: 500;">TOTAL GUESTS</th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr (click)="getPartnerCampaingRsvpDetails()">
 									<td>
-										Your Partners Response
+										Your Partners
 									</td>
 									<td>
 										<h6>{{campaignReport.partnersEmailOpenedCount}}</h6>
@@ -447,7 +447,7 @@
                 <span *ngIf="campaignType==='VIDEO'">TOTAL VIEWS FOR THIS CAMPAIGN</span>
                 <span *ngIf="campaignType==='SOCIAL'">TOTAL REDISTRIBUTED FOR THIS CAMPAIGN</span>
 								<span *ngIf="campaignType==='EMAIL'">TOTAL EMAIL OPENED FOR THIS CAMPAIGN</span>
-								<span *ngIf="campaignType === 'EVENT'">RE DISTRIBUTION PARTNER CAMAPAIGN ANALYTICS</span>
+								<span *ngIf="campaignType === 'EVENT'">REDISTRIBUTION PARTNER CAMPAIGN ANALYTICS</span>
 							</span>
 						</div>
 						<div class="btn-group pull-right" style="margin-top: -10px; cursor:pointer; color: #7d8c98">
@@ -471,10 +471,10 @@
 									<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='EVENT' && isChannelCampaign"> email opened</th>
 										<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='EVENT' && isChannelCampaign">Yes</th>
 										<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='EVENT' && isChannelCampaign">No</th>
-										<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='EVENT' && isChannelCampaign">May Be</th>
+										<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='EVENT' && isChannelCampaign">Maybe</th>
 										<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='EVENT' && isChannelCampaign">Not Yet</th>
 										<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='EVENT' && !isChannelCampaign">Response Type</th>
-										<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='EVENT' && isChannelCampaign">PLUS GUESTS</th>
+										<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='EVENT' && isChannelCampaign">TOTAL GUESTS</th>
 										<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='VIDEO' || campaignType!=='EVENT'">Latest View</th>
 										<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType!=='EVENT'">
 											<span *ngIf="campaignType==='VIDEO'">Total Views</span>
