@@ -387,6 +387,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
       this.contactListsPagination.searchKey = "";
       this.loadContactLists(this.contactListsPagination);
   }
+  eventHandlerContact(event){ if(event===13){ this.searchContactList(); }}
 
   loadContactLists(contactListsPagination: Pagination) {
     this.paginationType = 'contactlists';
