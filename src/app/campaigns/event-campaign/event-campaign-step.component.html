@@ -455,8 +455,10 @@ a.disabled {
 				</div> -->
 				<!-- </div>
           </div> -->
-          <button *ngIf="!isPreviewEvent && !reDistributeEvent" [ngClass]="{'next-button-top-class': !this.eventCampaign.onlineMeeting }" type="button" style="float: right" class=" btn green"
+         <div class="col-xs-12">
+          <button *ngIf="!isPreviewEvent && !reDistributeEvent" type="button" style="float: right" class=" btn green"
 			(click)="resetTabs('recipients')" title="Please Fill Campaign Details" [disabled]="recipientsTabClass === 'disableRecipientsTab'">Next</button>
+			</div>
 			</fieldset>
 
 
@@ -746,7 +748,7 @@ a.disabled {
                       </ng-container>
                     </td>
                     <td style="text-align: right" width="20%">
-                      <a [class.disabled]="isPreviewEvent" class="btn btn-primary btn-sm" style="color:#fff" (click)="resetTabs('recipients')">Change</a>
+                      <a [class.disabled]="isPreviewEvent || reDistributeEvent" class="btn btn-primary btn-sm" style="color:#fff" (click)="resetTabs('recipients')">Change</a>
                     </td>
                   </tr>
                 </table>
@@ -768,7 +770,7 @@ a.disabled {
                       </a>
                     </td>
                     <td style="text-align: right" width="20%">
-                      <a class="btn btn-primary btn-sm" [class.disabled]="isPreviewEvent" (click)="resetTabs('templates')">Change</a>
+                      <a class="btn btn-primary btn-sm" [class.disabled]="isPreviewEvent || reDistributeEvent" (click)="resetTabs('templates')">Change</a>
                     </td>
                   </tr>
                 </table>
