@@ -786,13 +786,31 @@ a.disabled {
           <fieldset class="col-xs-12">
             <legend style="color: #2c3f52;">Add Your Work Flow</legend>
             <div style="margin-bottom:70px;">
-            <div class="col-xs-6" style="margin-left: 45.666667%;">
+            <!-- <div class="col-xs-6" style="margin-left: 45.666667%;">
               <img *ngIf="!isPreviewEvent" src="assets/images/icon1.png" (click)="addReplyRows()">
               <img *ngIf="isPreviewEvent" src="assets/images/icon1.png">
-            </div><br>
-            <div class="col-xs-12 auto-response" *ngIf="!isPreviewEvent" style="text-align: center"><a (click)="addReplyRows()">Click here</a> to add an auto response to your email.</div>
+            </div> --><br>
+            <div class="col-xs-12">
+            <div class="col-xs-3"></div>
+            <div class="col-xs-6" *ngIf="!isPreviewEvent">
+						<a class="dashboard-stat yellow-gold" style="background-color: #f4555c;padding: 9px 0;" (click)="addReplyRows()">
+							<i class="fa fa-plus-square p0" style="margin: 0 5px;"></i>
+              Auto-responses to your email.
+						</a>
+					</div>
+			 
+			  <div class="col-xs-6" *ngIf="isPreviewEvent" [class.disabled]="isPreviewEvent">
+						<a style="cursor: default;" [attr.disabled]="isPreviewEvent? '' : null" class="dashboard-stat yellow-gold" style="background-color: #f4555c;padding: 9px 0;" (click)="addReplyRows()">
+							<i class="fa fa-plus-square p0" style="margin: 0 5px;"></i>
+              Auto-responses to your email.
+						</a>
+					</div>
+					<div class="col-xs-3"></div>
+					</div>
+            
+            <!-- <div class="col-xs-12 auto-response" *ngIf="!isPreviewEvent" style="text-align: center"><a (click)="addReplyRows()">Click here</a> to add an auto response to your email.</div>
             <div class="col-xs-12 auto-response" *ngIf="isPreviewEvent" style="text-align: center"><a style="cursor: default;" [attr.disabled]="isPreviewEvent? '' : null">Click here</a> to add a auto response to your email</div>
-            </div>
+            --> </div>
             <div *ngFor="let reply of eventCampaign.campaignReplies;let i=index">
             <div class="portlet light dashboard-stat2" id="{{reply.divId}}" style="min-height: 320px;" [class.disabled]="reply.body && reDistributeEvent && reply.id">
               <div class="portlet-title custom-change-css" [ngClass]="{'colorlightBlock':isEven(i+1), 'colorBlue':!isEven(i+1)}" style="display:block">
