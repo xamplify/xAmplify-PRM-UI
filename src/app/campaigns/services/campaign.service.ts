@@ -359,7 +359,8 @@ export class CampaignService {
         let day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
         let hours = date.getHours() > 9 ? date.getHours() : '0' + date.getHours();
         let minutes = date.getMinutes() > 9 ? date.getMinutes() : '0' + date.getMinutes();
-        return month + "/" + day + "/" + year + " " + hours + ":" + minutes;
+        let am_pm = date.getHours() > 11 ? 'PM' : 'AM';
+        return month + "/" + day + "/" + year + " " + hours + ":" + minutes + " "+am_pm;
 
     }
     setHoursAndMinutesToAutoReponseReplyTimes(timeAndHoursString: string) {

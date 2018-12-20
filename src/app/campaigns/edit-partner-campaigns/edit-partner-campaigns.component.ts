@@ -1136,7 +1136,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
   ngOnInit() {
       flatpickr( '.flatpickr',{
           enableTime: true,
-          dateFormat: 'm/d/Y H:i',
+          dateFormat: 'm/d/Y h:i K',
           time_24hr: false
       } );
       this.isListView = !this.referenceService.isGridView;

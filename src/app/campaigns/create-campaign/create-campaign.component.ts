@@ -462,7 +462,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         Demo.init();
         flatpickr( '.flatpickr',{
             enableTime: true,
-            dateFormat: 'm/d/Y H:i',
+            dateFormat: 'm/d/Y h:i K',
             time_24hr: false
         } );
         //this.validatecampaignForm();
