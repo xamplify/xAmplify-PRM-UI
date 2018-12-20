@@ -1294,10 +1294,18 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
             $('#'+divId).removeAttr("style");
         }
         getTodayTime(){
-          let newDate:any = new Date().toLocaleString();
+          /*let newDate:any = new Date().toLocaleString();
           newDate = newDate.substring(0,newDate.length-6);
           newDate = newDate.replace(',','');
-          return newDate;
+          return newDate;*/
+            
+            var dt = new Date();
+            var d = dt.toLocaleDateString();
+            var t = dt.toLocaleTimeString();
+            t = t.replace(/\u200E/g, '');
+            t = t.replace(/^([^\d]*\d{1,2}:\d{1,2}):\d{1,2}([^\d]*)$/, '$1$2');
+            var result = d + ' ' + t;
+            return result;
         }
         saveCampaignOnDestroy(){
           const eventCampaign = this.getCampaignData(this.eventCampaign);
