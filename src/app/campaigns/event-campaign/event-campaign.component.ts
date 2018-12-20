@@ -136,17 +136,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     if(this.reDistributeEvent) { this.isPartnerUserList = false; } else { this.isPartnerUserList = true; }
     if(this.authenticationService.isOnlyPartner()) {  this.isPartnerUserList = false; }
 
-    if(this.isEditCampaign){
-        if(this.eventCampaign.userListIds.length>0){
-            this.contactsPagination.editCampaign = true;
-            this.userListIds = this.eventCampaign.userListIds.sort();
-            this.parternUserListIds = this.eventCampaign.userListIds.sort();
-        }
-        this.emailTemplateId = this.eventCampaign.emailTemplate.id;
-        this.launchOptions[2];
-        this.setLaunchOptions('SAVE');
-    }
-
   }
   isEven(n) { if(n % 2 === 0){ return true;} return false;}
   loadCampaignNames(userId:number){
@@ -186,9 +175,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     this.detailsTab = true;
     this.resetTabClass()
     this.loggedInUserId = this.authenticationService.getUserId();
-    this.loadEmailTemplates(this.emailTemplatesPagination);
     this.loadCampaignNames( this.loggedInUserId );
     this.listAllTeamMemberEmailIds();
+    this.loadContactLists(this.contactListsPagination);
 
     if (this.referenceService.selectedCampaignType!=='eventCampaign' && this.router.url.includes('/home/campaigns/event') && !this.activatedRoute.snapshot.params['id']) {
       console.log( "This page is reloaded" );
@@ -234,10 +223,11 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
         }
         this.onChangeCountryCampaignEventTime(this.eventCampaign.campaignEventTimes[0].countryId)
         if(this.reDistributeEvent){ this.isPartnerUserList = false;}
-
+        this.eventCampaign.userListIds = [];
         for(let i=0; i< result.data.userListDTOs.length;i++){
          if(this.reDistributeEvent || this.authenticationService.isOnlyPartner()) { this.parternUserListIds.push(result.data.userListDTOs[i].id); }
          if(!this.reDistributeEvent) { this.parternUserListIds.push(result.data.userListDTOs[i].id); }
+         this.eventCampaign.userListIds.push(result.data.userListDTOs[i].id);
         }
 
         if(this.reDistributeEvent){
@@ -261,6 +251,24 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
           });
           this.emailTemplates = emailTemplates;
         }
+        
+        if(this.isEditCampaign){
+            if(this.parternUserListIds.length>0){
+                this.contactsPagination.editCampaign = true;
+                this.parternUserListIds = this.eventCampaign.userListIds.sort();
+                this.emailTemplateId = this.eventCampaign.emailTemplate.id;
+            }
+           
+            if ( this.eventCampaign.campaignScheduleType === 'SAVE' ) {
+                this.launchOptions[2];
+                this.setLaunchOptions( 'SAVE' );
+            } else if( this.eventCampaign.campaignScheduleType === 'SCHEDULE' ){
+                this.launchOptions[1];
+                this.setLaunchOptions( 'SCHEDULE' );
+            }
+        }
+        
+        
         this.loadContactLists(this.contactListsPagination);
         this.setTemplateId();
         this.loadEmailTemplates(this.emailTemplatesPagination);
@@ -268,6 +276,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
         this.detailsTab = true;
         this.resetTabClass();
         this.eventStartTimeError()
+        
       }
     );
     }
@@ -275,7 +284,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     /*this.eventCampaign.emailTemplate = this.emailTemplates[0];*/
     this.eventCampaign.countryId = this.countries[0].id;
     this.eventCampaign.campaignEventTimes[0].countryId = this.countries[0].id;
-    this.loadContactLists(this.contactListsPagination);
+    this.loadEmailTemplates(this.emailTemplatesPagination);
   }
     flatpickr('.flatpickr', {
       enableTime: true,
@@ -434,15 +443,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
            }
 
         var contactIds = this.contactListsPagination.pagedItems.map( function( a ) { return a.id; });
-        if(!this.isPartnerUserList){
-        var items = $.grep( this.userListIds, function( element ) {
+        var items = $.grep( this.parternUserListIds, function( element ) {
             return $.inArray( element, contactIds ) !== -1;
         });
-        }else{
-            var items = $.grep( this.parternUserListIds, function( element ) {
-                return $.inArray( element, contactIds ) !== -1;
-            });
-           }
         if ( items.length == contactListsPagination.totalRecords || items.length == this.contactListsPagination.pagedItems.length ) {
             this.isHeaderCheckBoxChecked = true;
         } else {
