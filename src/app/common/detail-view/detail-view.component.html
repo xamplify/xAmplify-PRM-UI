@@ -27,11 +27,11 @@
 							<thead>
 								<tr>
 									<th style="font-size: 12px; font-weight: 500;" style="width:50%">NAME</th>
-									<th style="font-size: 12px; font-weight: 500;" *ngIf="detailType !== 'email open'">MESSAGE</th>
-									<th style="font-size: 12px; font-weight: 500;" *ngIf="detailType === 'email open'">CAMPAIGN NAME</th>
-									<th style="font-size: 12px; font-weight: 500;" *ngIf="detailType === 'email open'">SUBJECT</th>
-									<th style="font-size: 12px; font-weight: 500;">RSVP Date</th>
-									<th style="font-size: 12px; font-weight: 500;" *ngIf="detailType !== 'email open'">ATTENDEES</th>
+									<th style="font-size: 12px; font-weight: 500;" *ngIf="detailType !== 'email open' && detailType !== 'NOTYET'">MESSAGE</th>
+									<th style="font-size: 12px; font-weight: 500;" *ngIf="detailType === 'email open' && detailType !== 'NOTYET'">CAMPAIGN NAME</th>
+									<th style="font-size: 12px; font-weight: 500;" *ngIf="detailType === 'email open' && detailType !== 'NOTYET'">SUBJECT</th>
+									<th style="font-size: 12px; font-weight: 500;" *ngIf="detailType !== 'NOTYET'">RSVP Date</th>
+									<th style="font-size: 12px; font-weight: 500;" *ngIf="detailType !== 'email open' && detailType !== 'NOTYET'">ATTENDEES</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -39,16 +39,16 @@
 									<td>
 										<app-user-info  [userInfo]="item"> </app-user-info>
 									</td>
-									<td *ngIf="detailType !== 'email open'" style="text-align:center">
+									<td *ngIf="detailType !== 'email open' && detailType !== 'NOTYET'" style="text-align:center">
 										<h6>{{item.message}}</h6>
 										<h6 *ngIf="!item.message" style="text-align:center"><b>-</b></h6>
 									</td>
-									<td *ngIf="detailType === 'email open'"> {{item.campaignName}}</td>
-									<td *ngIf="detailType === 'email open'">{{item.subject}}</td>
-									<td> <h6 *ngIf="detailType !== 'email open'">{{item.responseTime | date: 'short'}}</h6>
-									<h6 *ngIf="detailType === 'email open'">{{item.time | date: 'short'}}</h6>
+									<td *ngIf="detailType === 'email open' && detailType !== 'NOTYET'"> {{item.campaignName}}</td>
+									<td *ngIf="detailType === 'email open' && detailType !== 'NOTYET'">{{item.subject}}</td>
+									<td *ngIf="detailType !== 'NOTYET'"> <h6 *ngIf="detailType !== 'email open' && detailType !== 'NOTYET'">{{item.responseTime | date: 'short'}}</h6>
+									<h6 *ngIf="detailType === 'email open' && detailType !== 'NOTYET'">{{item.time | date: 'short'}}</h6>
 									</td>
-									<td *ngIf="detailType !== 'email open'"> {{item.additionalCount}}</td>
+									<td *ngIf="detailType !== 'email open' && detailType !== 'NOTYET'"> {{item.additionalCount}}</td>
 								</tr>
 							</tbody>
 						</table>

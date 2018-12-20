@@ -741,6 +741,9 @@ a.disabled {
                     <ng-container *ngIf="!authenticationService.module.isVendor && !authenticationService.isAddedByVendor">
                       <span class="h4-text" *ngIf="!isPartnerUserList">Contact List(s)</span>
                     </ng-container>
+                     <ng-container *ngIf="(!authenticationService.module.isVendor && !authenticationService.isAddedByVendor) && (authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner())">
+                      <span class="h4-text">Recipients List(s)</span>
+                    </ng-container>
 
                     </td>
                     <td *ngIf="isPreviewEvent" width="55%" style="text-align:center">
