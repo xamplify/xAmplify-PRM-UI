@@ -155,8 +155,15 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                      this.processVideo(JSON.parse(response).path);
                     }
               };
-              this.videoUtilService.uploadVideoJsFilesLoad();
-               if (this.refService.isEnabledCamera === false && !this.isIE() && !this.browserInfo.includes('safari') &&
+              //this.videoUtilService.uploadVideoJsFilesLoad();
+              $('head').append('<link href="assets/js/indexjscss/webcam-capture/nvideojs.record.css" rel="stylesheet"  class="r-video">');
+              $('head').append('<script src="https://apis.google.com/js/api.js" type="text/javascript"  class="r-video"/>');
+              $('head').append('<script src="assets/js/indexjscss/select.js" type="text/javascript"  class="r-video"/>');
+              $('head').append('<script src="assets/js/indexjscss/video-hls-player/video6.4.0.js" type="text/javascript"  class="r-video"/>');
+              $('head').append('<link href="assets/js/indexjscss/webcam-capture/video-js.css" rel="stylesheet">');
+              $('head').append('<script src="assets/js/indexjscss/webcam-capture/nvideojs.record.js" type="text/javascript"  class="r-video"/>');
+
+              if (this.refService.isEnabledCamera === false && !this.isIE() && !this.browserInfo.includes('safari') &&
                 !this.browserInfo.includes('edge')) {
                 //    this.checkCameraBlock();
                 this.refService.isEnabledCamera = true;
@@ -240,7 +247,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                         this.customResponse = new CustomResponse( 'ERROR', this.videoUtilService.errorNullMesg, true );
                         console.log('process video data object is null please try again:');
                         if (this.RecordSave === true && this.player) {
-                            this.player.recorder.reset();
+                            this.player.record().reset();
                             this.modalPopupClosed();
                         }
                         console.log(this.processVideoResp.error);
@@ -336,12 +343,12 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         const formData = new FormData();
         const object = this.recordedVideo;
         console.log(this.recordedVideo);
-        //this.uploader.queue[0].upload();
-        if (navigator.userAgent.indexOf('Chrome') !== -1) {
-            formData.append('file', object.video);
-        } else {
-            formData.append('file', object);
-        }
+        formData.append('file', object);
+        // if (navigator.userAgent.indexOf('Chrome') !== -1) {
+        //     formData.append('file', object);
+        // } else {
+        //     formData.append('file', object);
+        // }
         console.log(formData);
         return this.videoFileService.saveRecordedVideo(formData)
             .subscribe((result: any) => {
@@ -354,9 +361,9 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
     }
     removeRecordVideo() {
        try{
-        this.player.recorder.stopDevice();
-        this.player.recorder.getDevice();
-        // this.player.recorder.reset();
+        this.player.record().stopDevice();
+        this.player.record().getDevice();
+        // this.player.record().reset();
         this.saveVideo = false;
         this.discardVideo = false;
         this.hideSaveDiscard = true;
@@ -369,8 +376,8 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         this.defaultSettings();
         this.stop();
         this.isFileDrop = false;
-        // this.player.recorder.stopDevice();
-        this.player.recorder.reset();
+        // this.player.record().stopDevice();
+        this.player.record().reset();
         this.saveVideo = false;
         this.discardVideo = false;
         this.playerInit = true;
@@ -465,6 +472,10 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             $('.googleDrive').attr('style', 'cursor:not-allowed; opacity:0.5');
             $('.box').attr('style', 'cursor:not-allowed; opacity:0.5');
             $('.oneDrive').attr('style', 'cursor:not-allowed; opacity:0.5');
+            $('.vjs-volume-panel .vjs-control .vjs-volume-panel-horizontal').attr('style', 'display:none');
+            $('.vjs-volume-panel-horizontal').attr('style', 'display:none');
+            $('.vjs-volume-panel .vjs-control .vjs-volume-panel-horizontal').css('cssText', 'display:none !important');
+
             const self = this;
             self.player = videojs('myVideo',
                 {
@@ -528,6 +539,8 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 self.testSpeeddisabled = false; // enabled the test speed button
                 self.closeModalId = true; // close button enabled
                 $('.video-js .vjs-fullscreen-control').show();
+                $('.vjs-volume-panel-horizontal').attr('style', 'display:none');
+                $('.vjs-volume-panel .vjs-control .vjs-volume-panel-horizontal').css('cssText', 'display:none !important');
                 self.stop();
                 self.rageDisabled = false;
                 console.log('finished recording: ', self.player.recordedData);
@@ -1216,7 +1229,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             this.videoFileService.actionValue = '';
         }
         if (this.playerInit) {
-            this.player.recorder.destroy();
+            this.player.record().destroy();
             this.playerInit = false;
         }
         this.isChecked = false;
