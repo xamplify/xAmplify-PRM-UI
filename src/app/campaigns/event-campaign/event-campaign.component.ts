@@ -143,6 +143,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
             this.parternUserListIds = this.eventCampaign.userListIds.sort();
         }
         this.emailTemplateId = this.eventCampaign.emailTemplate.id;
+        this.launchOptions[2];
+        this.setLaunchOptions('SAVE');
     }
 
   }

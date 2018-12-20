@@ -957,7 +957,7 @@ a.disabled {
             <div class="btn-group btn-group-justified" [class.disabled]="eventError.eventExpiredError">
                <ng-container *ngFor="let options of launchOptions">
                   <label class="btn btn-primary" style="border: 1px solid #fff;" [class.disabled]="isPreviewEvent" >
-                    <input type="radio" class="text-center" (input)="resetTabClass()" name="scheduleCampaign" [value]="options" (click)="setLaunchOptions(options)" ngDefaultControl
+                    <input type="radio"[checked]="eventCampaign.campaignScheduleType === options" class="text-center" (input)="resetTabClass()" name="scheduleCampaign" [value]="options" (click)="setLaunchOptions(options)" ngDefaultControl
                     style=" margin-right:1.5em; " />{{options}}
                   </label>
                </ng-container>
