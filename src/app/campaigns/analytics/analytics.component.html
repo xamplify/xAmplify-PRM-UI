@@ -447,7 +447,8 @@
                 <span *ngIf="campaignType==='VIDEO'">TOTAL VIEWS FOR THIS CAMPAIGN</span>
                 <span *ngIf="campaignType==='SOCIAL'">TOTAL REDISTRIBUTED FOR THIS CAMPAIGN</span>
 								<span *ngIf="campaignType==='EMAIL'">TOTAL EMAIL OPENED FOR THIS CAMPAIGN</span>
-								<span *ngIf="campaignType === 'EVENT'">REDISTRIBUTION PARTNER CAMPAIGN ANALYTICS</span>
+								<span *ngIf="campaignType === 'EVENT' && isChannelCampaign">REDISTRIBUTION PARTNER CAMPAIGN ANALYTICS</span>
+								<span *ngIf="campaignType === 'EVENT' && !isChannelCampaign">CAMPAIGN ANALYTICS</span>
 							</span>
 						</div>
 						<div class="btn-group pull-right" style="margin-top: -10px; cursor:pointer; color: #7d8c98">
@@ -485,7 +486,7 @@
 								</thead>
 								<tbody>
 								<ng-container *ngFor="let item of campaignViews" >
-									<tr (click)="userTimeline(item);">
+									<tr (click)="userTimeline(item);" [class.disabled]="campaignType==='EVENT' && !isChannelCampaign">
 										<td>
 										<app-user-info [isCompanyInfo]="true" [userInfo]="item"> </app-user-info>
 											<!-- here emailId coming as userMail -->
