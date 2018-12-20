@@ -40,3 +40,6 @@ button {
   color: #7b8894;
   bottom: 22px;
 }
+.alignCss{
+  position: relative;left: 95px;
+}

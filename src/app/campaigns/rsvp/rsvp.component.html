@@ -88,8 +88,10 @@
          <span class="bold">Total guests</span> (including you)
         </div>
       <div class="modal-footer">
+        <div [class.alignCss]="campaignRsvp.eventCampaignRsvp!='YES'">
         <button type="button" class="btn btn-default" data-dismiss="modal" (click)="closeRsvpModel()">Close</button>
         <button type="button" class="btn btn-secondary" (click)="saveEventCampaignRsvp()">Save changes</button>
+        </div>
       </div>
     </div>
   </div>

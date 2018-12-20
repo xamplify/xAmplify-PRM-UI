@@ -130,6 +130,7 @@ export class RsvpComponent implements OnInit {
       response => {
         this.totalGuests = 1;
         $('#myModal').modal('hide');
+        this.campaignRsvp.message = '';
         this.responseMessage = 'Thank you for the RSVP';
         this.getEventCampaign(this.alias);
       },
