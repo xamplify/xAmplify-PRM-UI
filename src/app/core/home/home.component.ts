@@ -79,13 +79,8 @@ export class HomeComponent implements OnInit {
             this.referenceService.defaultPlayerSettings = response;
             this.referenceService.companyId = response.companyProfile.id;
             if (!response.brandingLogoUri || !response.brandingLogoDescUri) {
-              const logoLink = this.videoUtilService.isStartsWith(
-                response.companyProfile.website
-              );
-              this.saveVideoBrandLog(
-                response.companyProfile.companyLogoPath,
-                logoLink
-              );
+                const logoLink = this.videoUtilService.isStartsWith(response.companyProfile.website);
+              this.saveVideoBrandLog( response.companyProfile.companyLogoPath, logoLink);
             }
           } else {
             console.log("defaultsetting api result is empty :");
@@ -101,28 +96,36 @@ export class HomeComponent implements OnInit {
   }
   saveVideoBrandLog(companyLogoPath, logoLink) {
     try {
-      this.userService
-        .saveBrandLogo(
-          companyLogoPath,
-          logoLink,
-          this.authenticationService.user.id
-        )
-        .subscribe(
-          (data: any) => {
-            console.log(data);
-            if (data !== undefined) {
-              console.log("logo updated successfully");
-            } else {
-            }
+      this.userService.saveBrandLogo(companyLogoPath, logoLink,this.authenticationService.user.id)
+        .subscribe( (data: any) => {
+            if (data !== undefined) { console.log("logo updated successfully");}
           },
-          error => {
-            this.xtremandLogger.error("error" + error);
-          }
-        );
+          error => { this.xtremandLogger.error("error" + error); });
     } catch (error) {
       this.xtremandLogger.error("error" + error);
     }
   }
+  getCompanyId() {
+    try {
+      this.userService.getVideoDefaultSettings().subscribe(
+        (result: any) => {
+          if (result !== "") {  this.referenceService.companyId = result.companyProfile.id;
+            this.getOrgCampaignTypes();
+          }
+        }, (error: any) => { console.log(error); }
+      );
+    } catch (error) { console.log(error);  } }
+
+    getOrgCampaignTypes(){
+      this.referenceService.getOrgCampaignTypes( this.referenceService.companyId).subscribe(
+      data=>{
+        console.log(data);
+        this.referenceService.campaignAccess.videoCampaign = data.video;
+        this.referenceService.campaignAccess.emailCampaign = data.regular;
+        this.referenceService.campaignAccess.socialCampaign = data.social;
+        this.referenceService.campaignAccess.eventCampaign = data.event
+      });
+    }
   ngOnInit() {
     try {
       const roleNames = this.authenticationService.getRoles();

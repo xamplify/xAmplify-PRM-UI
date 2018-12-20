@@ -15,6 +15,7 @@ import { Ng2DeviceService } from 'ng2-device-detector';
 import { EmailTemplate } from '../../email-template/models/email-template';
 import { Campaign } from '../../campaigns/models/campaign';
 import { environment } from 'environments/environment';
+import { CampaignAccess } from 'app/campaigns/models/campaign-access';
 declare var $: any;
 
 @Injectable()
@@ -88,7 +89,7 @@ export class ReferenceService {
     selectedVideoLogodesc: string;
     contentManagementLoader:boolean;
     namesArray:any;
-
+    campaignAccess: CampaignAccess;
     constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,
         private router: Router, public deviceService: Ng2DeviceService,private route:ActivatedRoute) {
         console.log('reference service constructor');

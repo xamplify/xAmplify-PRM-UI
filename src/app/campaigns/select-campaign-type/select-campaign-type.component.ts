@@ -6,12 +6,15 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 import { Roles } from '../../core/models/roles';
 import { CampaignService } from '../services/campaign.service';
 import { UserService } from 'app/core/services/user.service';
+import { CampaignAccess } from '../models/campaign-access';
+import { HomeComponent } from 'app/core/home/home.component';
 
 declare var Metronic, Layout , Demo,TableManaged:any;
 @Component({
     selector: 'app-select-campaign',
     templateUrl: './select-campaign-type-component.html',
-    styleUrls: ['../../../assets/css/pricing-table.css']
+    styleUrls: ['../../../assets/css/pricing-table.css'],
+    providers: [HomeComponent,CampaignAccess]
   })
 
 export class SelectCampaignTypeComponent implements OnInit{
@@ -29,7 +32,8 @@ export class SelectCampaignTypeComponent implements OnInit{
     eventCampaign = false;
 
     constructor(private logger:XtremandLogger,private router:Router,public refService:ReferenceService,public authenticationService:AuthenticationService,
-      public campaignService: CampaignService, public userService:UserService){
+      public campaignService: CampaignService, public userService:UserService, public campaignAccess: CampaignAccess,
+      public homeComponent:HomeComponent){
         this.logger.info("select-campaign-type constructor loaded");
         let roles = this.authenticationService.getRoles();
         if(roles.indexOf(this.roleName.socialShare)>-1|| roles.indexOf(this.roleName.allRole)>-1){
@@ -41,7 +45,7 @@ export class SelectCampaignTypeComponent implements OnInit{
         this.isOnlyPartner = this.authenticationService.isOnlyPartner();
     }
     cssClassChange(){
-      const countOfTrues = [this.videoCampaign,this.emailCampaign, this.socialCampaign, this.eventCampaign].filter(Boolean).length;
+      const countOfTrues = [this.campaignAccess.videoCampaign,this.campaignAccess.emailCampaign, this.campaignAccess.socialCampaign, this.campaignAccess.eventCampaign].filter(Boolean).length;
       if(countOfTrues === 4) { this.changeClass = 'col-xs-12 col-sm-3';
       } else if (countOfTrues === 3) { this.changeClass = 'col-xs-12 col-sm-4';
       } else if (countOfTrues === 2) { this.changeClass = 'col-xs-12 col-sm-6';
@@ -52,10 +56,10 @@ export class SelectCampaignTypeComponent implements OnInit{
       this.campaignService.getOrgCampaignTypes( this.refService.companyId).subscribe(
       data=>{
         console.log(data);
-        this.videoCampaign = data.video;
-        this.emailCampaign = data.regular;
-        this.socialCampaign = data.social;
-        this.eventCampaign = data.event
+        this.campaignAccess.videoCampaign = data.video;
+        this.campaignAccess.emailCampaign = data.regular;
+        this.campaignAccess.socialCampaign = data.social;
+        this.campaignAccess.eventCampaign = data.event
         this.cssClassChange();
       });
     }
@@ -70,10 +74,10 @@ export class SelectCampaignTypeComponent implements OnInit{
         );
       } catch (error) { console.log(error);  } }
 
+
     ngOnInit() {
         try{
-            this.getCompanyId();
-            this.cssClassChange();
+            if(!this.refService.companyId) { this.getCompanyId(); } else { this.getOrgCampaignTypes();}
             Metronic.init();
             Layout.init();
             Demo.init();
