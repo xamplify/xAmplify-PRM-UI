@@ -152,7 +152,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
     eventHandler(keyCode: any) {  if (keyCode === 13) {  this.searchCampaigns(); } }
     checkLastElement(i:any){
-      if(i===11) { this.isLastElement = true;} else { this.isLastElement = false;}
+      if(i === this.pagination.pagedItems.length-1) { this.isLastElement = true;} else { this.isLastElement = false;}
     }
     ngOnInit() {
         try {
