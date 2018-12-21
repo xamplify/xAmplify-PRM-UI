@@ -5,7 +5,7 @@
 				<h4 class="pull-left" *ngIf="detailType === 'YES'">People who have responded YES</h4>
 				<h4 class="pull-left" *ngIf="detailType === 'NO'">People who have responded NO</h4>
 				<h4 class="pull-left" *ngIf="detailType === 'MAYBE'">People who have responded MAY BE</h4>
-				<h4 class="pull-left" *ngIf="detailType === 'NOTYET'">People who NOT YET responded</h4>
+				<h4 class="pull-left" *ngIf="detailType === 'NOTYET'">People who have not yet responded</h4>
 				<h4 class="pull-left" *ngIf="detailType === 'email open'">People who have opened your email</h4>
 				<a (click)="analyticsComponent.showRsvpDetails = false" class="pull-right close-circle" style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;"> <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;"
 			aria-hidden="true"></span></a>
@@ -43,12 +43,12 @@
 										<h6>{{item.message}}</h6>
 										<h6 *ngIf="!item.message" style="text-align:center"><b>-</b></h6>
 									</td>
-									<td *ngIf="detailType === 'email open' && detailType !== 'NOTYET'"> {{item.campaignName}}</td>
-									<td *ngIf="detailType === 'email open' && detailType !== 'NOTYET'">{{item.subject}}</td>
-									<td *ngIf="detailType !== 'NOTYET'"> <h6 *ngIf="detailType !== 'email open' && detailType !== 'NOTYET'">{{item.responseTime | date: 'short'}}</h6>
-									<h6 *ngIf="detailType === 'email open' && detailType !== 'NOTYET'">{{item.time | date: 'short'}}</h6>
+									<td *ngIf="detailType === 'email open' && detailType !== 'NOTYET'" style="text-align:center"> {{item.campaignName}}</td>
+									<td *ngIf="detailType === 'email open' && detailType !== 'NOTYET'" style="text-align:center" style="text-align:center">{{item.subject}}</td>
+									<td *ngIf="detailType !== 'NOTYET'"> <h6 *ngIf="detailType !== 'email open' && detailType !== 'NOTYET'" style="text-align:center">{{item.responseTime | date: 'short'}}</h6>
+									<h6 *ngIf="detailType === 'email open' && detailType !== 'NOTYET'" style="text-align:center">{{item.time | date: 'short'}}</h6>
 									</td>
-									<td *ngIf="detailType !== 'email open' && detailType !== 'NOTYET'"> {{item.additionalCount}}</td>
+									<td *ngIf="detailType !== 'email open' && detailType !== 'NOTYET'" style="text-align:center"> {{item.additionalCount}}</td>
 								</tr>
 							</tbody>
 						</table>
