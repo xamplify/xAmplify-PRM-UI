@@ -67,9 +67,15 @@
                   <font style="color: red">
                     <b> * </b>
                   </font>
-                  <select class="form-control" name="campaign.email" [(ngModel)]="campaign.email" (change)="setFromName()">
+                  <select class="form-control" name="campaign.email" [(ngModel)]="campaign.email" (change)="setFromName()" *ngIf="isOrgAdminAndPartner || isVendorAndPartner">
                     <option *ngFor="let teamMember of teamMemberEmailIds" [ngValue]="teamMember.emailId" >
 						{{teamMember.emailId}}
+					</option>
+                  </select>
+                  
+                   <select class="form-control" name="campaign.email" [(ngModel)]="campaign.email" (change)="setFromName()" *ngIf="isOnlyPartner">
+                    <option  [ngValue]="campaign.email" >
+						{{campaign.email}}
 					</option>
                   </select>
                 </div>
