@@ -475,7 +475,7 @@
 										<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='EVENT' && isChannelCampaign">Maybe</th>
 										<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='EVENT' && isChannelCampaign">Not Yet</th>
 										<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='EVENT' && !isChannelCampaign">Response Type</th>
-										<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='EVENT' && isChannelCampaign">TOTAL GUESTS</th>
+										<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='EVENT'">TOTAL GUESTS</th>
 										<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='VIDEO' || campaignType!=='EVENT'">Latest View</th>
 										<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType!=='EVENT'">
 											<span *ngIf="campaignType==='VIDEO'">Total Views</span>
@@ -486,7 +486,7 @@
 								</thead>
 								<tbody>
 								<ng-container *ngFor="let item of campaignViews" >
-									<tr (click)="userTimeline(item);" [class.disabled]="campaignType==='EVENT' && !isChannelCampaign">
+									<tr (click)="userTimeline(item);">
 										<td>
 										<app-user-info [isCompanyInfo]="true" [userInfo]="item"> </app-user-info>
 											<!-- here emailId coming as userMail -->
@@ -506,7 +506,7 @@
 										<td class="text-center" *ngIf="campaignType==='EVENT' && !isChannelCampaign">{{item.rsvpMap.responseType}}
 										<span *ngIf="item.rsvpMap.responseType === null"><b>-</b></span>
 										</td>
-										<td class="text-center" *ngIf="campaignType==='EVENT' && isChannelCampaign">{{item.rsvpMap.additionalCount}}</td>
+										<td class="text-center" *ngIf="campaignType==='EVENT'">{{item.rsvpMap.additionalCount}}</td>
 										<!-- <td class="td-chart"><h6>{{item.userEmail}}</h6></td> -->
 										<td class="td-chart" *ngIf="campaignType!=='EVENT'">
 											<h6>
@@ -565,7 +565,7 @@
 
 
 
-<section *ngIf="campaignType === 'EVENT'">
+<section *ngIf="campaignType === 'EVENT' && isChannelCampaign">
 <div id="timeline-view" class="page-content" *ngIf="isTimeLineView">
 	<div class="page-bar" style="min-height: 572px;">
 		<a (click)="resetTopNavBarValue(); rsvpDetailType = ''" class="pull-right close-circle" style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;"> <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;"
@@ -708,7 +708,7 @@
 	</div>
 </div>
 </section>
-<section *ngIf="campaignType !== 'EVENT'">
+<section *ngIf="!isChannelCampaign || campaignType != 'EVENT'">
 <div id="timeline-view" class="page-content" *ngIf="isTimeLineView" [class.ml0]="authenticationService.isSuperAdmin()">
 	<div class="page-bar">
 		<a (click)="resetTopNavBarValue()" class="pull-right close-circle" style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;"> <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;"
