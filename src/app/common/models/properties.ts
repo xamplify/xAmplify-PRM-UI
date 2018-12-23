@@ -103,7 +103,7 @@ export class Properties {
   /* campaign */
   ADD_AUTO_RESPONSE_WEBSITE = 'Auto-responses to a website visit'
   ADD_AUTO_RESPONSE_EMAIL = 'Auto-responses to your email'
-  EVENT_TO_PARTNER_MESSAGE = 'To Recipient(s): Send a campaign intended just for selected recipients';
+  EVENT_TO_PARTNER_MESSAGE = 'To Partners: Send a campaign intended just for selected recipients';
   TO_PARTNER_MESSAGE = 'To Recipient(s): Send a campaign intended just for your Partner(s)/ Contact(s)';
   THROUGH_PARTNER_MESSAGE = 'Through Partner: Send a campaign that your Partners can redistribute';
   ENALEORDISABLE_VENDOR_MESSAGE='Enable/disable the Vendor’s access to your campaign analytics';

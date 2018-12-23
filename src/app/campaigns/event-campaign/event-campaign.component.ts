@@ -39,6 +39,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   emailTemplates: Array<EmailTemplate> = [];
   campaignEmailTemplate: CampaignEmailTemplate = new CampaignEmailTemplate();
   reply: Reply = new Reply();
+  showSelectedTemplate: any;
   countries: Country[];
   timezonesCampaignEventTime: Timezone[];
   timezones: Timezone[];
@@ -177,7 +178,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     this.loggedInUserId = this.authenticationService.getUserId();
     this.loadCampaignNames( this.loggedInUserId );
     this.listAllTeamMemberEmailIds();
-    this.loadContactLists(this.contactListsPagination);
+   // this.loadContactLists(this.contactListsPagination);
 
     if (this.referenceService.selectedCampaignType!=='eventCampaign' && this.router.url.includes('/home/campaigns/event') && !this.activatedRoute.snapshot.params['id']) {
       console.log( "This page is reloaded" );
@@ -198,6 +199,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
         console.log( this.eventCampaign);
         this.eventCampaign.emailTemplate = result.data.emailTemplateDTO;
         if(!this.eventCampaign.emailTemplate) { this.eventCampaign.emailTemplate = new EmailTemplate(); }
+        else { this.showSelectedTemplate = result.data.emailTemplateDTO.id;}
         this.eventCampaign.user = result.data.userDTO;
         if(result.data.campaignReplies===undefined){ this.eventCampaign.campaignReplies = [];}
         else {this.getCampaignReplies(this.eventCampaign);}
@@ -252,14 +254,14 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
           });
           this.emailTemplates = emailTemplates;
         }
-        
+
         if(this.isEditCampaign){
             if(this.parternUserListIds.length>0){
                 this.contactsPagination.editCampaign = true;
                 this.parternUserListIds = this.eventCampaign.userListIds.sort();
                 this.emailTemplateId = this.eventCampaign.emailTemplate.id;
             }
-           
+
             if ( this.eventCampaign.campaignScheduleType === 'SAVE' ) {
                 this.launchOptions[2];
                 this.setLaunchOptions( 'SAVE' );
@@ -268,8 +270,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
                 this.setLaunchOptions( 'SCHEDULE' );
             }
         }
-        
-        
+
+
         this.loadContactLists(this.contactListsPagination);
         this.setTemplateId();
         this.loadEmailTemplates(this.emailTemplatesPagination);
@@ -277,7 +279,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
         this.detailsTab = true;
         this.resetTabClass();
         this.eventStartTimeError()
-        
+
       }
     );
     }
@@ -285,6 +287,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     /*this.eventCampaign.emailTemplate = this.emailTemplates[0];*/
     this.eventCampaign.countryId = this.countries[0].id;
     this.eventCampaign.campaignEventTimes[0].countryId = this.countries[0].id;
+    this.loadContactLists(this.contactListsPagination);
     this.loadEmailTemplates(this.emailTemplatesPagination);
   }
     flatpickr('.flatpickr', {
@@ -401,7 +404,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
       this.contactListsPagination.searchKey = "";
       this.loadContactLists(this.contactListsPagination);
   }
-  eventHandlerContact(event){ if(event===13){ this.searchContactList(); }}
+  eventHandlerContact(event:any){ if(event===13){ this.searchContactList(); }}
 
   loadContactLists(contactListsPagination: Pagination) {
     this.paginationType = 'contactlists';
@@ -409,42 +412,32 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
        contactListsPagination.editCampaign = true;
        contactListsPagination.campaignId = this.eventCampaign.id;
     }
-    const roles = this.authenticationService.getRoles();
-    let isVendor = roles.indexOf(this.roleName.vendorRole)>-1;
-    let isOrgAdmin = this.authenticationService.isOrgAdmin() || this.authenticationService.isOrgAdminPartner();
-   if(isOrgAdmin){
-       this.contactsPagination.filterValue = false;
-       this.contactsPagination.filterKey = null;
+   if(this.authenticationService.isOrgAdmin() || this.authenticationService.isOrgAdminPartner()){
+       this.contactListsPagination.filterValue = false;
+       this.contactListsPagination.filterKey = null;
        this.showContactType = true;
    }else {
-       this.contactsPagination.filterValue = true;
+       this.contactListsPagination.filterValue = true;
        this.showContactType = false;
        this.contactListsPagination.filterKey = 'isPartnerUserList';
    }
-    this.contactListsPagination.filterValue = this.isPartnerUserList;
     this.contactService.loadContactLists(contactListsPagination)
       .subscribe(
       (data: any) => {
         this.contactListsPagination.totalRecords = data.totalRecords;
         this.contactListsPagination = this.pagerService.getPagedItems(this.contactListsPagination, data.listOfUserLists);
-        this.contactListsPagination.pagedItems = this.referenceService.removeDuplicatesObjects(this.contactListsPagination.pagedItems, "id");
+      //  this.contactListsPagination.pagedItems = this.referenceService.removeDuplicatesObjects(this.contactListsPagination.pagedItems, "id");
         if(this.isPreviewEvent && this.authenticationService.isOnlyPartner()){
-          let contactsAll:any = [];
+          const contactsAll:any = [];
           this.contactListsPagination.pagedItems.forEach((element, index) => {
-              if(this.authenticationService.isOnlyPartner() && element.id ===this.userListIds[index]) {
-                contactsAll.push(this.contactListsPagination.pagedItems[index]);
-              }
-              if(!this.authenticationService.isOnlyPartner() && element.id ===this.parternUserListIds[index]) {
+              if( element.id ===this.parternUserListIds[index]) {
                 contactsAll.push(this.contactListsPagination.pagedItems[index]);
               }
             });
-            contactsAll = this.referenceService.removeDuplicatesObjects(contactsAll, "id");
-           // contactsAll = contactsAll.filter((thing, index, self) => self.findIndex(t => t.name === thing.name && t.id === thing.id) === index)
             this.contactListsPagination.pagedItems = contactsAll;
            }
-
-        var contactIds = this.contactListsPagination.pagedItems.map( function( a ) { return a.id; });
-        var items = $.grep( this.parternUserListIds, function( element ) {
+        const contactIds = this.contactListsPagination.pagedItems.map( function( a ) { return a.id; });
+        const items = $.grep( this.parternUserListIds, function( element ) {
             return $.inArray( element, contactIds ) !== -1;
         });
         if ( items.length == contactListsPagination.totalRecords || items.length == this.contactListsPagination.pagedItems.length ) {
@@ -452,15 +445,14 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
         } else {
             this.isHeaderCheckBoxChecked = false;
         }
+        if(this.authenticationService.isOrgAdmin()){
+           this.contactListsPagination.pagedItems = this.referenceService.removeDuplicatesObjects(this.contactListsPagination.pagedItems, "id");
+        }
       },
       (error: any) => {
         this.logger.error(error);
       },
-      () => {
-        this.logger.info('event campaign page loadContactLists() finished');
-
-        }
-     );
+      () => { this.logger.info('event campaign page loadContactLists() finished'); } );
   }
 
   /*****************LOAD CONTACTLISTS WITH PAGINATION END *****************/
@@ -486,9 +478,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     );
   }
   loadContactsPreviewOn(userId:any){
-    // let contactList = new ContactList(userId);
-    // contactList.name = "selected Contact Lists"
-    // this.loadContacts(contactList,this.contactsPagination)
+    let contactList = new ContactList(userId);
+    contactList.name = "selected Contact Lists"
+    this.loadContacts(contactList,this.contactsPagination)
 
   }
   switchStatusChange(){
@@ -1122,7 +1114,7 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
           }
           if ( this.eventCampaign.email ) {
               data.body = data.body.replace( "{{vendor_name}}", this.authenticationService.user.firstName + " " + this.authenticationService.user.lastName );
-          } 
+          }
           if ( this.eventCampaign.email ) {
               data.body = data.body.replace( "VENDOR_TITLE", this.authenticationService.user.jobTitle );
           }
@@ -1299,7 +1291,7 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
           newDate = newDate.substring(0,newDate.length-6);
           newDate = newDate.replace(',','');
           return newDate;*/
-            
+
             var dt = new Date();
             var d = dt.toLocaleDateString();
             var t = dt.toLocaleTimeString();

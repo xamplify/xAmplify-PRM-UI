@@ -586,3 +586,7 @@ tr>td>h6 {
 .push {
   position: absolute; left: 217px; margin-top: 7px;
 }
+.text-center-css{
+  text-align: center;
+  font-size: 12px; font-weight: 500;
+}
