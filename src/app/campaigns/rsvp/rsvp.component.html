@@ -5,11 +5,11 @@
   </a> Thank you for the RSVP
 </div>
 
-<div class="col-xs-12 col-sm-8 p0"  [hidden]="!eventcampaign">
+<div class="col-xs-12 col-sm-7 p0"  [hidden]="!eventcampaign">
     <fieldset style="min-height: 464px;min-width: 549px;"><div #dataContainer></div></fieldset>
 </div>
 <ng-container *ngIf="eventcampaign">
-<div class="col-xs-12 col-sm-4 p0" >
+<div class="col-xs-12 col-sm-5 p0" >
 <div class=" col-xs-12 col-sm-12">
   <div class="portlet light">
     <div class="portlet-title">
@@ -48,13 +48,24 @@
               <th>Date</th>
               <th>RSVP</th>
               <th>Message</th>
+              <th>Guests</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let rsvp of eventcampaign.campaignEventRsvps">
               <td>{{rsvp.rsvpTime | date}} {{rsvp.rsvpTime | date:'shortTime'}}</td>
               <td>{{rsvp.eventCampaignRsvp}}</td>
-              <td>{{rsvp.message}}</td>
+              <td>{{rsvp.message | slice:0:18}}
+              <span *ngIf="rsvp.message?.length>18">...</span>
+              </td>
+              <td>
+              <span *ngIf="rsvp.eventCampaignRsvp === 'YES'">
+              {{rsvp.additionalCount}}
+              </span>
+              <span *ngIf="rsvp.eventCampaignRsvp != 'YES'">
+              0
+              </span>
+              </td>
             </tr>
           </tbody>
         </table>
