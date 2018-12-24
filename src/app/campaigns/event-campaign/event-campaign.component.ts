@@ -766,9 +766,9 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
          timeZoneId = moment.tz.guess();
      }
      eventCampaign.launchTimeInString = this.campaignService.setLaunchTime();
-   //  eventCampaign.timeZone = timeZoneId;
+     eventCampaign.timeZone = timeZoneId;
     //  eventCampaign.campaignEventTimes[0].timeZone = timeZoneId;
-    if(!this.timeZoneSetValue) { this.timeZoneSetValue = timeZoneId = this.setEventTimeZone(); }
+    if(!this.timeZoneSetValue) { this.timeZoneSetValue = this.setEventTimeZone(); }
      eventCampaign.campaignEventTimes[0].timeZone = this.timeZoneSetValue;
    } else {
      const eventTimeZoneId = $('#timezoneId option:selected').val();
