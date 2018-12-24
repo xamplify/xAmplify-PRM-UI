@@ -47,7 +47,8 @@ a.disabled {
 					<div class="cenetered-block">
 						<span> <i class="fa fa-users"></i>
 						</span>
-            <h5 class="hidden-xs" *ngIf="!showContactType">Partners</h5>
+            <h5 class="hidden-xs" *ngIf="!showContactType && !parentCampaignId">Partners</h5>
+            <h5 class="hidden-xs" *ngIf="!showContactType && parentCampaignId">Contacts</h5>
             <!-- Recipients -->
 						<h5 class="hidden-xs" *ngIf="showContactType">Partners & Contacts</h5>
 					</div>
@@ -135,7 +136,7 @@ a.disabled {
 							</div>
 						</div>
 						<div class="form-group"
-							*ngIf="!authenticationService.isOnlyPartner()">
+							*ngIf="!authenticationService.isOnlyPartner() && !parentCampaignId">
 							<span for="Throughpartner" class="col-sm-3 labal-css color-css" [ngClass]="{'highletClass': eventCampaign.channelCampaign }">Through
 								Partner</span>
 							<div class="col-sm-2">
@@ -259,7 +260,7 @@ a.disabled {
 										[attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null"
 										class="form-control" id="eventDateTime"
 										(blur)="eventLocationError()" (input)="eventLocationError()"
-										placeholder="My house, bar, etc"
+										placeholder="Corporate headquarters, local restaurant, etc."
 										[ngClass]="{'has-error': eventError.eventLocationError}"
 										[(ngModel)]="eventCampaign.campaignLocation.location"
 										[ngModelOptions]="{standalone: true}">
@@ -732,7 +733,7 @@ a.disabled {
                     <ng-container *ngIf="authenticationService.module.isVendor || authenticationService.isAddedByVendor">
                       <span class="h4-text" *ngIf="isPartnerUserList">Partner List(s)</span>
                     </ng-container>
-                    <ng-container *ngIf="!authenticationService.module.isVendor && !authenticationService.isAddedByVendor">
+                    <ng-container *ngIf="(!authenticationService.module.isVendor && !authenticationService.isAddedByVendor) || parentCampaignId">
                       <span class="h4-text" *ngIf="!isPartnerUserList">Contact List(s)</span>
                     </ng-container>
                      <ng-container *ngIf="(!authenticationService.module.isVendor && !authenticationService.isAddedByVendor) && (authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner())">

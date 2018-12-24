@@ -117,6 +117,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   emailTemplateId:number=0;
   selectedEmailTemplateRow:number;
   isHighLet = false;
+  parentCampaignId = false;
+
   constructor(public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
     private contactService: ContactService,
     public campaignService: CampaignService,
@@ -193,7 +195,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
         (result)=>{
         this.campaignService.eventCampaign = result.data;
         this.eventCampaign = result.data;
-        if(result.data.parentCampaignId) { this.isPartnerUserList = false;}
+        if(result.data.parentCampaignId) { this.parentCampaignId =true; this.isPartnerUserList = false;}
         this.editedCampaignName = this.eventCampaign.campaign;
         this.validateCampaignName(this.eventCampaign.campaign);
         console.log( this.eventCampaign);
@@ -417,7 +419,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
        this.contactListsPagination.filterKey = null;
        this.showContactType = true;
    }else {
-       if(this.reDistributeEvent){
+       if(this.reDistributeEvent || this.parentCampaignId){
            this.contactListsPagination.filterValue = false;
        }else{
        this.contactListsPagination.filterValue = true;
