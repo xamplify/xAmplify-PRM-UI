@@ -1147,13 +1147,10 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
   }
   onChangeCountryCampaignEventTime(countryId: number) {
     this.timezonesCampaignEventTime = this.referenceService.getTimeZonesByCountryId(countryId);
-
     for ( let i = 0; i < this.countries.length; i++ ) {
-        if ( countryId == this.countries[i].id ) {
-            this.eventCampaign.campaignLocation.country = this.countries[i].name;
-            break;
-        }
+      if ( countryId == this.countries[i].id ) { this.eventCampaign.campaignLocation.country = this.countries[i].name; break; }
     }
+   setTimeout(() => {this.setEventTimeZone(); }, 100);
    this.resetTabClass();
   }
   onChangeCountry(countryId: number) {
@@ -1305,8 +1302,6 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
           else {  eventCampaign.campaignLocation.id = null;}
           eventCampaign.campaignEventTimes[0].id = null;
           eventCampaign.campaignEventMedias[0].id = null;
-          // if(this.isPartnerUserList) {eventCampaign.userListIds = this.parternUserListIds; }
-          // else { eventCampaign.userListIds = this.userListIds; }
           eventCampaign.userListIds = this.parternUserListIds;
           for (let userListId of eventCampaign.userListIds) {
             let contactList = new ContactList(userListId);
