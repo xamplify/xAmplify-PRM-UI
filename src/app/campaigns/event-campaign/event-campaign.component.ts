@@ -1318,6 +1318,15 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
           for(let i=0; i< eventCampaign.campaignReplies.length;i++){
             eventCampaign.campaignReplies[i].id = null;
           }
+          
+          if(this.reDistributeEvent) {
+              eventCampaign.parentCampaignId = this.activatedRoute.snapshot.params['id'];
+              eventCampaign.id = null;
+              eventCampaign.enableCoBrandingLogo = true;
+              eventCampaign.nurtureCampaign = true;
+              eventCampaign.selectedEditEmailTemplate = eventCampaign.emailTemplate.id;
+              eventCampaign.channelCampaign = false;
+            }
 
           if(!eventCampaign.campaignEventTimes[0].startTimeString) {  eventCampaign.campaignEventTimes[0].startTimeString = this.getTodayTime();}
           if(!eventCampaign.campaignEventTimes[0].endTimeString && !this.eventCampaign.campaignEventTimes[0].allDay){ eventCampaign.campaignEventTimes[0].endTimeString = this.getTodayTime(); }
