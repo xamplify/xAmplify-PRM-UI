@@ -840,7 +840,7 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
       eventCampaign.campaignReplies[i].id = null;
     }
 
-    if(this.reDistributeEvent) {
+    if(this.reDistributeEvent || this.parentCampaignId) {
       eventCampaign.parentCampaignId = this.activatedRoute.snapshot.params['id'];
       eventCampaign.id = null;
       eventCampaign.enableCoBrandingLogo = true;
@@ -1319,7 +1319,7 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
             eventCampaign.campaignReplies[i].id = null;
           }
           
-          if(this.reDistributeEvent) {
+          if(this.reDistributeEvent || this.parentCampaignId) {
               eventCampaign.parentCampaignId = this.activatedRoute.snapshot.params['id'];
               eventCampaign.id = null;
               eventCampaign.enableCoBrandingLogo = true;
