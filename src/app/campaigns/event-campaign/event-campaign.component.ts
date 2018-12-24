@@ -203,7 +203,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
         this.eventCampaign.user = result.data.userDTO;
         if(result.data.campaignReplies===undefined){ this.eventCampaign.campaignReplies = [];}
         else {this.getCampaignReplies(this.eventCampaign);}
-        // this.eventCampaign.userListIds = this.campaignService.eventCampaign.userListDTOs;
         this.eventCampaign.campaignEventTimes = result.data.campaignEventTimes;
         if(!this.eventCampaign.campaignEventTimes[0]){
           this.eventCampaign.campaignEventTimes = [];
@@ -212,10 +211,12 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
             this.eventCampaign.campaignEventTimes[0].endTimeString =  new Date().toDateString();
           }
         }
+       if(this.eventCampaign.country === undefined || this.eventCampaign.country === ""  ){ this.eventCampaign.countryId = 0; }
+       else { this.eventCampaign.countryId = this.countries.find(x => x.name == result.data.country).id; }
+        //  this.eventCampaign.campaignEventTimes[0].countryId = this.countries.find(x => x.name == result.data.campaignEventTimes[0].country).id;
         if( this.eventCampaign.campaignEventTimes[0].countryId===undefined) { this.eventCampaign.campaignEventTimes[0].countryId=0; }
         for(let i=0; i< this.countries.length;i++){
           if(this.countries[i].name=== result.data.campaignEventTimes[0].country){
-            this.eventCampaign.countryId = this.countries[i].id;
             this.eventCampaign.campaignEventTimes[0].countryId = this.countries[i].id;
             break;
           }
@@ -227,24 +228,19 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
         if(this.reDistributeEvent){ this.isPartnerUserList = false;}
         this.eventCampaign.userListIds = [];
         for(let i=0; i< result.data.userListDTOs.length;i++){
-         if(this.reDistributeEvent || this.authenticationService.isOnlyPartner()) { this.parternUserListIds.push(result.data.userListDTOs[i].id); }
-         if(!this.reDistributeEvent) { this.parternUserListIds.push(result.data.userListDTOs[i].id); }
+         this.parternUserListIds.push(result.data.userListDTOs[i].id);
          this.eventCampaign.userListIds.push(result.data.userListDTOs[i].id);
         }
-
         if(this.reDistributeEvent){
             this.eventCampaign.userListIds = []; this.userListIds = [];this.parternUserListIds = [];
             this.eventCampaign.enableCoBrandingLogo = true;
             this.checkLaunchOption = this.eventCampaign.campaignScheduleType;
-            }
+        }
         this.eventCampaign.userLists = [];
         console.log(this.userListIds);
 
         if(this.isPreviewEvent){
-            this.selectedListOfUserListForPreview = result.data.userListDTOs;
-            for(let i=0; i< result.data.userListDTOs.length;i++){
-            console.log(result);
-          }
+          this.selectedListOfUserListForPreview = result.data.userListDTOs;
           this.setUserLists()
         }
         if(this.authenticationService.isOnlyPartner()){
@@ -270,7 +266,11 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
                 this.setLaunchOptions( 'SCHEDULE' );
             }
         }
-
+        for(let i=0; i< this.timezonesCampaignEventTime.length; i++){
+          if(this.timezonesCampaignEventTime[i].timezoneId === this.eventCampaign.campaignEventTimes[0].timeZone){
+            console.log(this.timezonesCampaignEventTime[i].timezoneId);
+          }
+        }
 
         this.loadContactLists(this.contactListsPagination);
         this.setTemplateId();
@@ -760,19 +760,17 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
          timeZoneId = moment.tz.guess();
      }
      eventCampaign.launchTimeInString = this.campaignService.setLaunchTime();
-     eventCampaign.timeZone = timeZoneId;
+   //  eventCampaign.timeZone = timeZoneId;
     //  eventCampaign.campaignEventTimes[0].timeZone = timeZoneId;
     if(!this.timeZoneSetValue) { this.timeZoneSetValue = timeZoneId = this.setEventTimeZone(); }
      eventCampaign.campaignEventTimes[0].timeZone = this.timeZoneSetValue;
    } else {
-     timeZoneId = $('#timezoneId option:selected').val();
-    // timeZoneId = $('#timezoneId option:selected').val();
-    if(!this.timeZoneSetValue) { this.timeZoneSetValue = timeZoneId = this.setEventTimeZone(); }
-    //  console.log(this.timeZoneSetValue);
+     const eventTimeZoneId = $('#timezoneId option:selected').val();
+    if(!this.timeZoneSetValue) { this.timeZoneSetValue = this.setEventTimeZone(); }
     //  eventCampaign.timeZone = this.timeZoneSetValue;
     //  if(!timeZoneId) { eventCampaign.timeZone = this.timeZoneSetValue; }
-     this.eventCampaign.campaignEventTimes[0].timeZone = timeZoneId = this.timeZoneSetValue;
-     eventCampaign.timeZone = timeZoneId;
+     this.eventCampaign.campaignEventTimes[0].timeZone = this.timeZoneSetValue;
+     eventCampaign.timeZone = eventTimeZoneId;
    }
    eventCampaign.campaign = this.referenceService.replaceMultipleSpacesWithSingleSpace(eventCampaign.campaign);
    eventCampaign.fromName = this.referenceService.replaceMultipleSpacesWithSingleSpace(eventCampaign.fromName);
@@ -780,6 +778,7 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
 
    console.log(this.timeZoneSetValue);
    eventCampaign.campaignEventTimes[0].country = this.countries.find(x => x.id == eventCampaign.campaignEventTimes[0].countryId).name;
+   eventCampaign.country = this.countries.find(x => x.id == eventCampaign.countryId).name;
    eventCampaign.toPartner = !eventCampaign.channelCampaign;
    if(eventCampaign.id){
     const customEventCampaign = {
@@ -795,12 +794,12 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
       'fromName': this.referenceService.replaceMultipleSpacesWithSingleSpace(eventCampaign.fromName),
       'launchTimeInString':eventCampaign.launchTimeInString,
       'emailTemplate':eventCampaign.emailTemplate,
-      'timeZone': timeZoneId,
+      'timeZone': eventCampaign.timeZone,
       'campaignScheduleType': eventCampaign.campaignScheduleType,
       'campaignLocation': eventCampaign.campaignLocation,
       'campaignEventMedias': [{"filePath": eventCampaign.campaignEventMedias[0].filePath}],
       'campaignEventTimes': eventCampaign.campaignEventTimes,
-      'country': eventCampaign.campaignEventTimes[0].country,
+      'country': eventCampaign.country,
       'publicEventCampaign': eventCampaign.publicEventCampaign,
       'toPartner':eventCampaign.toPartner,
       'inviteOthers':eventCampaign.inviteOthers,
@@ -819,10 +818,6 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
     this.loader = true;
     this.isFormSubmitted = true;
     eventCampaign.userListIds = this.parternUserListIds;
-    // if(this.isPartnerUserList) {eventCampaign.userListIds = this.parternUserListIds; }
-    // else { eventCampaign.userListIds = this.userListIds; }
-
-
     if(this.eventCampaign.campaignLocation.country === "Select Country"){
         this.eventCampaign.campaignLocation.country = "";
     }
@@ -1419,15 +1414,18 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
        this.timeZoneSetValue = '';
        let e:any = document.getElementById("timezoneIdChange");
        //let timeZoneId = $('#timezoneIdCampaignEventTime option:selected').val();
-       let timeZone = e[0].label;
+       var value = e.options[e.selectedIndex].value;
+       var text = e.options[e.selectedIndex].text;
+       console.log(value+'::::'+text);
+       this.timeZoneSetValue = text;
        console.log(this.timezonesCampaignEventTime);
        for(let i=0; i< this.timezonesCampaignEventTime.length; i++){
-        if(this.timezonesCampaignEventTime[i].cityName === timeZone) {
+        if(this.timezonesCampaignEventTime[i].cityName === text) {
         this.timeZoneSetValue = this.timezonesCampaignEventTime[i].timezoneId;
         break;
       }
       }
-      console.log(timeZone);
+      this.eventCampaign.campaignEventTimes[0].timeZone = this.timeZoneSetValue;
       return this.timeZoneSetValue;
       }catch(error) { console.log(error);}
     }

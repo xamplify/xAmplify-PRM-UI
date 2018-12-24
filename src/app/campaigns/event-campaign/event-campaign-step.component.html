@@ -217,20 +217,13 @@ a.disabled {
 									</select>
 								</div>
 								<div class="col-sm-6">
-                  <select
-                  [attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null" (blur)="setEventTimeZone()"
-                  class="form-control" style="width: 100%"
+                  <select [attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null"
+                  class="form-control" style="width: 100%" (change)="setEventTimeZone()"
                   [(ngModel)]="eventCampaign.campaignEventTimes[0].timeZone" [ngModelOptions]="{standalone: true}"
                   id="timezoneIdChange">
-                  <option *ngIf="!timezonesCampaignEventTime" value="" disabled
-                    selected>Select TimeZone...</option>
-                  <ng-container *ngIf="timezonesCampaignEventTime?.length==1">
+                  <option *ngIf="!timezonesCampaignEventTime" value="" disabled  [attr.selected]="true">Select TimeZone...</option>
+                  <ng-container *ngIf="timezonesCampaignEventTime">
                   <option *ngFor="let timeZone of timezonesCampaignEventTime"  [attr.value]="timeZone.timezoneId"
-                    [attr.selected]="true"> {{timeZone.cityName}}</option>
-                  </ng-container>
-                  <ng-container *ngIf="timezonesCampaignEventTime?.length>1">
-                  <option *ngFor="let timeZone of timezonesCampaignEventTime"
-                  [attr.value]="timeZone.timezoneId"
                   [attr.selected]="timeZone.timezoneId === eventCampaign.campaignEventTimes[0].timeZone">{{timeZone.cityName}}
                   </option>
                   </ng-container>
