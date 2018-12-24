@@ -843,7 +843,10 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
     if(this.reDistributeEvent) {
       eventCampaign.parentCampaignId = this.activatedRoute.snapshot.params['id'];
       eventCampaign.id = null;
-      this.eventCampaign.enableCoBrandingLogo = true;
+      eventCampaign.enableCoBrandingLogo = true;
+      eventCampaign.nurtureCampaign = true;
+      eventCampaign.selectedEditEmailTemplate = eventCampaign.emailTemplate.id;
+      eventCampaign.channelCampaign = false;
     }
 
     delete eventCampaign.emailTemplateDTO;

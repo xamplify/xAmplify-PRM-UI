@@ -31,6 +31,7 @@ export class EventCampaign {
     rsvpReceived: boolean = true;
     onlineMeeting: boolean = true;
     enableCoBrandingLogo = false;
+    
 
     userLists: Array<ContactList> = [];
     userListIds: Array<number> = [];
@@ -44,6 +45,7 @@ export class EventCampaign {
     campaignReplies: Array<Reply> = [];
 
     hostedBy: string = "";
+    nurtureCampaign: boolean = false;
 
     constructor() {
         this.campaignEventMedias.push(new CampaignEventMedia());
