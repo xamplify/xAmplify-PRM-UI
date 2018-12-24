@@ -1081,7 +1081,8 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
               let date1 = startTime.toDateString()
               if(!this.eventCampaign.campaignEventTimes[0].allDay){
               data.body = data.body.replace( "{{event_start_time}}", date1 + " " + srtTime );
-              data.body = data.body.replace( "&lt;To&gt;", 'To' )
+              data.body = data.body.replace( "&lt;To&gt;", 'To' );
+              data.body = data.body.replace( "{{To}}", 'To' );
               }else{
                   data.body = data.body.replace( "{{event_start_time}}", date1 + " " + srtTime + ' ' + '(All Day)' );
                   data.body = data.body.replace( "{{event_end_time}}", " " );
@@ -1095,7 +1096,8 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
               data.body = data.body.replace( "{{event_end_time}}", date2 + " " + endTime );
           }
           else if(this.eventCampaign.campaignEventTimes[0].allDay){
-              data.body = data.body.replace( "&lt;To&gt;", ' ' )
+              data.body = data.body.replace( "&lt;To&gt;", ' ' );
+              data.body = data.body.replace( "{{To}}", ' ' );
           }
 
           if ( this.eventCampaign.message ) {
