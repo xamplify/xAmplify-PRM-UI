@@ -193,7 +193,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
       this.isAdd = false;
       this.eventRouterPage =true;
       const alias = this.activatedRoute.snapshot.params['id'];
-      this.campaignService.getEventCampaignById(alias, this.reDistributeEvent).subscribe(
+      this.campaignService.reDistributeEvent = this.reDistributeEvent;
+      this.campaignService.getEventCampaignById(alias).subscribe(
         (result)=>{
         this.campaignService.eventCampaign = result.data;
         this.eventCampaign = result.data;

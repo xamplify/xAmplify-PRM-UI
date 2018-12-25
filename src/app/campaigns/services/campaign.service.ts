@@ -19,7 +19,7 @@ export class CampaignService {
     isExistingRedistributedCampaignName: boolean = false;
     componentName: string = "campaign.service.ts";
     URL = this.authenticationService.REST_URL;
-
+    reDistributeEvent = false;
     constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger) { }
 
     saveCampaignDetails(data: any) {
@@ -66,9 +66,9 @@ export class CampaignService {
             .catch(this.handleError);
     }
 
-    getEventCampaignById(campaignId:any, redistribute:boolean){
+    getEventCampaignById(campaignId:any){
       let eventUrl = this.URL + "campaign/get-event-campaign/"+campaignId+"?access_token=" + this.authenticationService.access_token;
-      if(redistribute){ eventUrl = this.URL + "campaign/get-event-campaign/"+campaignId+"/"+this.authenticationService.user.id+"?access_token=" + this.authenticationService.access_token }
+      if(this.reDistributeEvent){ this.reDistributeEvent = false; eventUrl = this.URL + "campaign/get-event-campaign/"+campaignId+"/"+this.authenticationService.user.id+"?access_token=" + this.authenticationService.access_token }
       return this.http.get(eventUrl)
       .map(this.extractData)
       .catch(this.handleError);
