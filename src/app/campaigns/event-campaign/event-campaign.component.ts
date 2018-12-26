@@ -118,7 +118,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   selectedEmailTemplateRow:number;
   isHighLet = false;
   parentCampaignId = false;
-  parentCampaignIdValue:number;
+
   constructor(public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
     private contactService: ContactService,
     public campaignService: CampaignService,
@@ -181,10 +181,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     this.loadCampaignNames( this.loggedInUserId );
     this.listAllTeamMemberEmailIds();
    // this.loadContactLists(this.contactListsPagination);
-    if(this.authenticationService.isOnlyPartner() && this.isEditCampaign){
-      this.router.navigate(['/home/campaigns/manage']);
-    }
-    else if (this.referenceService.selectedCampaignType!=='eventCampaign' && this.router.url.includes('/home/campaigns/event') && !this.activatedRoute.snapshot.params['id']) {
+
+    if (this.referenceService.selectedCampaignType!=='eventCampaign' && this.router.url.includes('/home/campaigns/event') && !this.activatedRoute.snapshot.params['id']) {
       console.log( "This page is reloaded" );
       this.router.navigate(['/home/campaigns/select']);
         this.isReloaded = true;
@@ -193,12 +191,11 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
       this.isAdd = false;
       this.eventRouterPage =true;
       const alias = this.activatedRoute.snapshot.params['id'];
-      this.campaignService.reDistributeEvent = this.reDistributeEvent;
       this.campaignService.getEventCampaignById(alias).subscribe(
         (result)=>{
         this.campaignService.eventCampaign = result.data;
         this.eventCampaign = result.data;
-        if(result.data.parentCampaignId) { this.parentCampaignIdValue = result.data.parentCampaignId;  this.parentCampaignId =true; this.isPartnerUserList = false;}
+        if(result.data.parentCampaignId) { this.parentCampaignId =true; this.isPartnerUserList = false;}
         this.editedCampaignName = this.eventCampaign.campaign;
         this.validateCampaignName(this.eventCampaign.campaign);
         console.log( this.eventCampaign);
@@ -237,9 +234,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
          this.eventCampaign.userListIds.push(result.data.userListDTOs[i].id);
         }
         if(this.reDistributeEvent){
-            if(!this.eventCampaign.nurtureCampaign){ this.parternUserListIds = []; }
-            this.eventCampaign.userListIds = [];
-           // this.userListIds = [];this.parternUserListIds = [];
+            this.eventCampaign.userListIds = []; this.userListIds = [];this.parternUserListIds = [];
             this.eventCampaign.enableCoBrandingLogo = true;
             this.checkLaunchOption = this.eventCampaign.campaignScheduleType;
         }
@@ -845,29 +840,15 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
       eventCampaign.campaignReplies[i].id = null;
     }
 
-    if((this.reDistributeEvent || this.parentCampaignId)) {
-      if(!this.eventCampaign.nurtureCampaign){
+    if(this.reDistributeEvent || this.parentCampaignId) {
       eventCampaign.parentCampaignId = this.activatedRoute.snapshot.params['id'];
       eventCampaign.id = null;
       eventCampaign.enableCoBrandingLogo = true;
       eventCampaign.nurtureCampaign = true;
       eventCampaign.selectedEditEmailTemplate = eventCampaign.emailTemplate.id;
       eventCampaign.channelCampaign = false;
-      eventCampaign.toPartner = false;
-      }
-      else {
-      //  eventCampaign.id = this.activatedRoute.snapshot.params['id'];
-      //  eventCampaign.parentCampaignId =  this.parentCampaignIdValue;
-       eventCampaign.enableCoBrandingLogo = true;
-       eventCampaign.nurtureCampaign = true;
-       eventCampaign.selectedEditEmailTemplate = eventCampaign.emailTemplate.id;
-       eventCampaign.channelCampaign = false;
-       eventCampaign.toPartner = false;
-       if(!eventCampaign.onlineMeeting) {  }
-       else {  eventCampaign.campaignLocation.id = null;}
-     }
-
     }
+
     delete eventCampaign.emailTemplateDTO;
     delete eventCampaign.userDTO
     delete eventCampaign.userListDTOs
@@ -1137,6 +1118,9 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
           if ( this.eventCampaign.fromName ) {
               data.body = data.body.replace( "{{event_emailId}}", this.eventCampaign.fromName );
           }
+          
+          
+          if(!this.reDistributeEvent && !this.isPreviewEvent){
           if ( this.eventCampaign.email ) {
               data.body = data.body.replace( "{{vendor_name}}", this.authenticationService.user.firstName + " " + this.authenticationService.user.lastName );
           }
@@ -1146,6 +1130,18 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
           if ( this.eventCampaign.email ) {
               data.body = data.body.replace( "{{vendor_emailId}}", this.authenticationService.user.emailId );
           }
+          }else{
+              if(this.eventCampaign.hostedBy){
+                data.body = data.body.replace( "{{vendor_name}}",  this.eventCampaign.hostedBy);
+              }else{
+                  data.body = data.body.replace( "{{vendor_name}}",  '');
+              }
+              data.body = data.body.replace( "{{vendor_emailId}}", this.eventCampaign.email );
+              
+          }
+          
+          
+          
           if ( this.eventCampaign.campaignEventMedias[0].filePath ) {
               data.body = data.body.replace( "https://xamplify.s3.amazonaws.com/images/bee-259/rocket-color.png", this.eventCampaign.campaignEventMedias[0].filePath );
           }else{
@@ -1337,7 +1333,7 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
           for(let i=0; i< eventCampaign.campaignReplies.length;i++){
             eventCampaign.campaignReplies[i].id = null;
           }
-
+          
           if(this.reDistributeEvent || this.parentCampaignId) {
               eventCampaign.parentCampaignId = this.activatedRoute.snapshot.params['id'];
               eventCampaign.id = null;
@@ -1345,7 +1341,6 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
               eventCampaign.nurtureCampaign = true;
               eventCampaign.selectedEditEmailTemplate = eventCampaign.emailTemplate.id;
               eventCampaign.channelCampaign = false;
-              eventCampaign.toPartner = false;
             }
 
           if(!eventCampaign.campaignEventTimes[0].startTimeString) {  eventCampaign.campaignEventTimes[0].startTimeString = this.getTodayTime();}
@@ -1517,7 +1512,7 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
    ngOnDestroy() {
     this.campaignService.eventCampaign = undefined;
     CKEDITOR.config.readOnly = false;
-    if(!this.hasInternalError && this.router.url!=="/" && !this.isPreviewEvent && !this.reDistributeEvent && !this.authenticationService.isOnlyPartner()){
+    if(!this.hasInternalError && this.router.url!=="/" && !this.isPreviewEvent && !this.reDistributeEvent){
      if(!this.isReloaded){
       if(!this.isLaunched){
           if(this.isAdd){
