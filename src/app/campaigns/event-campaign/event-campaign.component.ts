@@ -1077,28 +1077,39 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
       this.emailTemplateService.getById(emailTemplateId)
           .subscribe(
       (data: any) => {
+          
+          let dateFormat = require('dateformat');
           if ( this.eventCampaign.campaign ) {
               data.body = data.body.replace( "{{event_title}}", this.eventCampaign.campaign );
           }
           if ( this.eventCampaign.campaignEventTimes[0].startTimeString ) {
-              let startTime = new Date(this.eventCampaign.campaignEventTimes[0].startTimeString);
+             /* let startTime = new Date(this.eventCampaign.campaignEventTimes[0].startTimeString);
               let srtTime = this.referenceService.formatAMPM(startTime);
-              let date1 = startTime.toDateString()
+              let date1 = startTime.toDateString()*/
+              
+              let date1 = new Date(this.eventCampaign.campaignEventTimes[0].startTimeString);
+              date1 = dateFormat(date1, "dddd, mmmm dS, yyyy, h:MM TT");
+              
+              
               if(!this.eventCampaign.campaignEventTimes[0].allDay){
-              data.body = data.body.replace( "{{event_start_time}}", date1 + " " + srtTime );
+              data.body = data.body.replace( "{{event_start_time}}", date1 );
               data.body = data.body.replace( "&lt;To&gt;", 'To' );
               data.body = data.body.replace( "{{To}}", 'To' );
               }else{
-                  data.body = data.body.replace( "{{event_start_time}}", date1 + " " + srtTime + ' ' + '(All Day)' );
+                  data.body = data.body.replace( "{{event_start_time}}", date1 + " " + '(All Day)' );
                   data.body = data.body.replace( "{{event_end_time}}", " " );
               }
           }
 
           if ( this.eventCampaign.campaignEventTimes[0].endTimeString ) {
-              let endDate = new Date(this.eventCampaign.campaignEventTimes[0].endTimeString);
-              let endTime = this.referenceService.formatAMPM(endDate);
-              let date2 = endDate.toDateString()
-              data.body = data.body.replace( "{{event_end_time}}", date2 + " " + endTime );
+//              let endDate = new Date(this.eventCampaign.campaignEventTimes[0].endTimeString);
+//              let endTime = this.referenceService.formatAMPM(endDate);
+//              let date2 = endDate.toDateString()
+              
+              let date2 = new Date(this.eventCampaign.campaignEventTimes[0].endTimeString);
+              date2 = dateFormat(date2, "dddd, mmmm dS, yyyy, h:MM TT");
+              
+              data.body = data.body.replace( "{{event_end_time}}", date2  );
           }
           else if(this.eventCampaign.campaignEventTimes[0].allDay){
               data.body = data.body.replace( "&lt;To&gt;", ' ' );
