@@ -191,6 +191,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
       this.isAdd = false;
       this.eventRouterPage =true;
       const alias = this.activatedRoute.snapshot.params['id'];
+      if(this.reDistributeEvent && !this.eventCampaign.nurtureCampaign){
+      this.campaignService.reDistributeEvent =  this.reDistributeEvent;
+      }
       this.campaignService.getEventCampaignById(alias).subscribe(
         (result)=>{
         this.campaignService.eventCampaign = result.data;
@@ -720,6 +723,7 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
     const scheduleTime = Date.parse(this.eventCampaign.launchTimeInString);
     if(scheduleTime > currentDate &&  scheduleTime > startDate) {
       this.setScheduleErrorMesg(true,'Your launch time must be before the event start date and time.'); }
+    else if(scheduleTime === startDate){ this.setScheduleErrorMesg(true,'Your launch time must be before the event start date and time.');}
     else if(scheduleTime < currentDate){ this.setScheduleErrorMesg(true,'Please choose a different launch time.');}
     else if(!this.eventCampaign.launchTimeInString) {  this.setScheduleErrorMesg(true,'Schedule time is required');}
     else { this.setScheduleErrorMesg(false,''); }
@@ -874,13 +878,11 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
             if(response.errorResponses[0].field =='campaign' && response.errorResponses[0].message=='Already Exists'){
               this.customResponse = new CustomResponse( 'ERROR', 'Campaign name is already exists.', true );
             }
-            else if(response.errorResponses[0].field =='eventEndTimeString'){
-              this.customResponse = new CustomResponse( 'ERROR', response.errorResponses[0].message, true );
-
-            }
             else if(response.errorResponses[0].field =="eventStartTimeString"){
               this.customResponse = new CustomResponse( 'ERROR', 'Please change the start time, its already over.', true );
-              // this.eventError.eventDateError = true;
+            }
+            else if(response.errorResponses[0].field =="scheduleTime"){
+              this.customResponse = new CustomResponse( 'ERROR', 'Please change the schedule time, it should be before the event start time.', true );
             }
             else {
               this.customResponse = new CustomResponse( 'ERROR', response.errorResponses[0].message, true );
@@ -1118,8 +1120,8 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
           if ( this.eventCampaign.fromName ) {
               data.body = data.body.replace( "{{event_emailId}}", this.eventCampaign.fromName );
           }
-          
-          
+
+
           if(!this.reDistributeEvent && !this.isPreviewEvent){
           if ( this.eventCampaign.email ) {
               data.body = data.body.replace( "{{vendor_name}}", this.authenticationService.user.firstName + " " + this.authenticationService.user.lastName );
@@ -1137,11 +1139,11 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
                   data.body = data.body.replace( "{{vendor_name}}",  '');
               }
               data.body = data.body.replace( "{{vendor_emailId}}", this.eventCampaign.email );
-              
+
           }
-          
-          
-          
+
+
+
           if ( this.eventCampaign.campaignEventMedias[0].filePath ) {
               data.body = data.body.replace( "https://xamplify.s3.amazonaws.com/images/bee-259/rocket-color.png", this.eventCampaign.campaignEventMedias[0].filePath );
           }else{
@@ -1333,7 +1335,7 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
           for(let i=0; i< eventCampaign.campaignReplies.length;i++){
             eventCampaign.campaignReplies[i].id = null;
           }
-          
+
           if(this.reDistributeEvent || this.parentCampaignId) {
               eventCampaign.parentCampaignId = this.activatedRoute.snapshot.params['id'];
               eventCampaign.id = null;
