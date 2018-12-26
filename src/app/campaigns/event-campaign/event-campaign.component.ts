@@ -769,7 +769,7 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
      }else if(moment.tz.guess()!=undefined){
          timeZoneId = moment.tz.guess();
      }
-     eventCampaign.launchTimeInString = this.campaignService.setLaunchTime();
+     eventCampaign.launchTimeInString = null;
      eventCampaign.timeZone = timeZoneId;
     //  eventCampaign.campaignEventTimes[0].timeZone = timeZoneId;
     if(!this.timeZoneSetValue) { this.timeZoneSetValue = this.setEventTimeZone(); }
@@ -834,7 +834,7 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
     this.onBlurValidation();
     eventCampaign.campaignScheduleType = launchOption;
     eventCampaign =  this.getCampaignData(eventCampaign)
-    if(this.isEditCampaign && !eventCampaign.onlineMeeting) {  }
+    if((this.isEditCampaign || this.reDistributeEventManage) && !eventCampaign.onlineMeeting) {  }
     else {  eventCampaign.campaignLocation.id = null;}
     eventCampaign.campaignEventTimes[0].id = null;
     eventCampaign.campaignEventMedias[0].id = null;
@@ -851,19 +851,19 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
       if(this.reDistributeEventManage){
           eventCampaign.parentCampaignId = this.parentCampaignIdValue;
        }
-        
+
       eventCampaign.enableCoBrandingLogo = true;
       eventCampaign.nurtureCampaign = true;
       eventCampaign.selectedEditEmailTemplate = eventCampaign.emailTemplate.id;
       eventCampaign.channelCampaign = false;
       eventCampaign.toPartner = false;
-    
+
     }
 
     delete eventCampaign.emailTemplateDTO;
     delete eventCampaign.userDTO
     delete eventCampaign.userListDTOs
-
+    if (eventCampaign.campaignScheduleType === "NOW" || eventCampaign.campaignScheduleType ==="SAVE"){ eventCampaign.launchTimeInString = this.campaignService.setLaunchTime();}
     if(this.validForm(eventCampaign) && this.isFormSubmitted){
       this.referenceService.startLoader(this.httpRequestLoader);
       console.log(eventCampaign);
@@ -1339,7 +1339,7 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
         }
         saveCampaignOnDestroy(){
           const eventCampaign = this.getCampaignData(this.eventCampaign);
-          if(this.isEditCampaign && !eventCampaign.onlineMeeting) {  }
+          if((this.isEditCampaign || this.reDistributeEventManage)&& !eventCampaign.onlineMeeting) {  }
           else {  eventCampaign.campaignLocation.id = null;}
           eventCampaign.campaignEventTimes[0].id = null;
           eventCampaign.campaignEventMedias[0].id = null;
@@ -1353,15 +1353,19 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
             eventCampaign.campaignReplies[i].id = null;
           }
 
-          if(this.reDistributeEvent || this.parentCampaignId) {
-              eventCampaign.parentCampaignId = this.activatedRoute.snapshot.params['id'];
-              eventCampaign.id = null;
-              eventCampaign.enableCoBrandingLogo = true;
-              eventCampaign.nurtureCampaign = true;
-              eventCampaign.selectedEditEmailTemplate = eventCampaign.emailTemplate.id;
-              eventCampaign.channelCampaign = false;
-            }
-
+          if(this.reDistributeEvent || this.reDistributeEventManage) {
+            if(this.reDistributeEvent){
+            eventCampaign.parentCampaignId = this.activatedRoute.snapshot.params['id'];
+            eventCampaign.id = null; }
+            if(this.reDistributeEventManage){
+                eventCampaign.parentCampaignId = this.parentCampaignIdValue;
+             }
+            eventCampaign.enableCoBrandingLogo = true;
+            eventCampaign.nurtureCampaign = true;
+            eventCampaign.selectedEditEmailTemplate = eventCampaign.emailTemplate.id;
+            eventCampaign.channelCampaign = false;
+            eventCampaign.toPartner = false;
+          }
           if(!eventCampaign.campaignEventTimes[0].startTimeString) {  eventCampaign.campaignEventTimes[0].startTimeString = this.getTodayTime();}
           if(!eventCampaign.campaignEventTimes[0].endTimeString && !this.eventCampaign.campaignEventTimes[0].allDay){ eventCampaign.campaignEventTimes[0].endTimeString = this.getTodayTime(); }
           if( this.eventCampaign.campaignEventTimes[0].countryId===undefined) { this.eventCampaign.campaignEventTimes[0].countryId=0; }
