@@ -31,7 +31,7 @@
 									<th class="text-center-css" *ngIf="detailType === 'email open' && detailType !== 'NOTYET'">CAMPAIGN NAME</th>
 									<th class="text-center-css" *ngIf="detailType === 'email open' && detailType !== 'NOTYET'">SUBJECT</th>
 									<th class="text-center-css" *ngIf="detailType !== 'NOTYET'">Most Recent</th>
-									<th class="text-center-css" *ngIf="detailType !== 'email open' && detailType !== 'NOTYET'">ATTENDEES</th>
+									<th class="text-center-css" *ngIf="detailType === 'YES'">ATTENDEES</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -54,7 +54,7 @@
                     <app-timestamp [dateAndTime]="item.time"> </app-timestamp>
                   </h6>
 									</td>
-									<td class="text-center" *ngIf="detailType !== 'email open' && detailType !== 'NOTYET'" style="text-align:center"> {{item.additionalCount}}</td>
+									<td class="text-center" *ngIf="detailType === 'YES'" style="text-align:center"> {{item.additionalCount}}</td>
 								</tr>
 							</tbody>
 						</table>
