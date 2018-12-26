@@ -1136,7 +1136,10 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
               data.body = data.body.replace( /{{addreess_lane2}}/g, " " )
           }
           if ( this.eventCampaign.fromName ) {
-              data.body = data.body.replace( "{{event_emailId}}", this.eventCampaign.fromName );
+              data.body = data.body.replace( "{{event_fromName}}", this.eventCampaign.fromName );
+          }
+          if ( this.eventCampaign.email ) {
+              data.body = data.body.replace( "{{event_emailId}}", this.eventCampaign.email );
           }
 
 
@@ -1151,11 +1154,7 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
               data.body = data.body.replace( "{{vendor_emailId}}", this.authenticationService.user.emailId );
           }
           }else{
-              if(this.eventCampaign.hostedBy){
-                data.body = data.body.replace( "{{vendor_name}}",  this.eventCampaign.hostedBy);
-              }else{
-                  data.body = data.body.replace( "{{vendor_name}}",  '');
-              }
+              data.body = data.body.replace( "{{vendor_name}}", this.eventCampaign.fromName );
               data.body = data.body.replace( "{{vendor_emailId}}", this.eventCampaign.email );
 
           }
