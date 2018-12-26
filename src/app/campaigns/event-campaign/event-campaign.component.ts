@@ -237,6 +237,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
          this.eventCampaign.userListIds.push(result.data.userListDTOs[i].id);
         }
         if(this.reDistributeEvent){
+            if(!this.eventCampaign.nurtureCampaign){ this.parternUserListIds = []; }
             this.eventCampaign.userListIds = [];
            // this.userListIds = [];this.parternUserListIds = [];
             this.eventCampaign.enableCoBrandingLogo = true;
