@@ -31,6 +31,7 @@ export const campaignRoutes: Routes = [
   { path: "event-preview/:id", component: EventCampaignComponent },
   { path: "event-edit/:id", component: EventCampaignComponent },
   { path: "re-distribute-event/:id", component: EventCampaignComponent },
+  { path: "re-distribute-manage/:id", component: EventCampaignComponent },
   { path: ":campaignId/remove-access", component: PreviewPartnersComponent }
 ];
 

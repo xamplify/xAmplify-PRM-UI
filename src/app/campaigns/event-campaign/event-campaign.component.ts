@@ -118,7 +118,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   selectedEmailTemplateRow:number;
   isHighLet = false;
   parentCampaignId = false;
-
+  reDistributeEventManage = false;
   constructor(public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
     private contactService: ContactService,
     public campaignService: CampaignService,
@@ -136,6 +136,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     this.isEditCampaign = this.router.url.includes('/home/campaigns/event-edit')? true: false;
     CKEDITOR.config.readOnly = this.isPreviewEvent ? true: false;
     this.reDistributeEvent = this.router.url.includes('/home/campaigns/re-distribute-event')? true: false;
+    this.reDistributeEventManage = this.router.url.includes('/home/campaigns/re-distribute-manage')? true: false;
     if(this.reDistributeEvent) { this.isPartnerUserList = false; } else { this.isPartnerUserList = true; }
     if(this.authenticationService.isOnlyPartner()) {  this.isPartnerUserList = false; }
 
@@ -191,9 +192,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
       this.isAdd = false;
       this.eventRouterPage =true;
       const alias = this.activatedRoute.snapshot.params['id'];
-      if(this.reDistributeEvent && !this.eventCampaign.nurtureCampaign){
-      this.campaignService.reDistributeEvent =  this.reDistributeEvent;
-      }
+      if(this.reDistributeEvent){ this.campaignService.reDistributeEvent = true; }
       this.campaignService.getEventCampaignById(alias).subscribe(
         (result)=>{
         this.campaignService.eventCampaign = result.data;
@@ -1077,7 +1076,7 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
       this.emailTemplateService.getById(emailTemplateId)
           .subscribe(
       (data: any) => {
-          
+
           let dateFormat = require('dateformat');
           if ( this.eventCampaign.campaign ) {
               data.body = data.body.replace( "{{event_title}}", this.eventCampaign.campaign );
@@ -1086,11 +1085,11 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
              /* let startTime = new Date(this.eventCampaign.campaignEventTimes[0].startTimeString);
               let srtTime = this.referenceService.formatAMPM(startTime);
               let date1 = startTime.toDateString()*/
-              
+
               let date1 = new Date(this.eventCampaign.campaignEventTimes[0].startTimeString);
               date1 = dateFormat(date1, "dddd, mmmm dS, yyyy, h:MM TT");
-              
-              
+
+
               if(!this.eventCampaign.campaignEventTimes[0].allDay){
               data.body = data.body.replace( "{{event_start_time}}", date1 );
               data.body = data.body.replace( "&lt;To&gt;", 'To' );
@@ -1105,10 +1104,10 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
 //              let endDate = new Date(this.eventCampaign.campaignEventTimes[0].endTimeString);
 //              let endTime = this.referenceService.formatAMPM(endDate);
 //              let date2 = endDate.toDateString()
-              
+
               let date2 = new Date(this.eventCampaign.campaignEventTimes[0].endTimeString);
               date2 = dateFormat(date2, "dddd, mmmm dS, yyyy, h:MM TT");
-              
+
               data.body = data.body.replace( "{{event_end_time}}", date2  );
           }
           else if(this.eventCampaign.campaignEventTimes[0].allDay){
@@ -1512,7 +1511,7 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
             this.launchTab = true;
         }
 
-        if(this.reDistributeEvent){
+        if(this.reDistributeEvent || this.reDistributeEventManage){
             this.setUserLists();
             this.detailsTab = true;
             this.recipientsTab = true;
@@ -1525,7 +1524,7 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
    ngOnDestroy() {
     this.campaignService.eventCampaign = undefined;
     CKEDITOR.config.readOnly = false;
-    if(!this.hasInternalError && this.router.url!=="/" && !this.isPreviewEvent && !this.reDistributeEvent){
+    if(!this.hasInternalError && this.router.url!=="/" && !this.isPreviewEvent && !this.reDistributeEvent && !this.reDistributeEventManage){
      if(!this.isReloaded){
       if(!this.isLaunched){
           if(this.isAdd){

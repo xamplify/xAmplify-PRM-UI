@@ -171,7 +171,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
           //  setTimeout(function() { $("#scheduleCompleted").slideUp(1000); }, 5000);
         } else {
         if(campaign.nurtureCampaign){
-          this.router.navigate(['/home/campaigns/re-distribute-event/'+campaign.campaignId]);
+          this.campaignService.reDistributeEvent = false;
+          this.router.navigate(['/home/campaigns/re-distribute-manage/'+campaign.campaignId]);
          }else {
           this.router.navigate(['/home/campaigns/event-edit/'+campaign.campaignId]);
          }

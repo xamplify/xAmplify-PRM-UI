@@ -240,6 +240,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
         if(campaign.campaignType.indexOf('SOCIAL') > -1){
             this.navigateSocialCampaign(campaign);
         } else if(campaign.campaignType.indexOf('EVENT') > -1) {
+          this.campaignService.reDistributeEvent = true;
           this.router.navigate(['/home/campaigns/re-distribute-event/'+campaign.campaignId]);
         }
         else {

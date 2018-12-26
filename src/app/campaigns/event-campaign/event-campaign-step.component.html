@@ -32,7 +32,7 @@ a.disabled {
 		<div class="container"
 			style="width: 100%; border-radius: 0; border: 1px solid #869ab3; border-top: 0; box-shadow: 0 0 6px rgba(0, 0, 0, 0.6); padding-bottom: 10px;">
 			<div class="alert-danger alert-error" *ngIf="eventError.eventExpiredError" style="margin-top: 19px;font-weight: 600;"> This event is expired.</div>
-			<div *ngIf="!isPreviewEvent && !reDistributeEvent" style="display: flex; padding-top: 1em;">
+			<div *ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage" style="display: flex; padding-top: 1em;">
 				<div id="step2" class="col-block col-block-complete" (click)="resetTabs('details')" [ngClass]="{'col-block-active': detailsTab}"
 					style="width: 25%">
 					<div class="cenetered-block">
@@ -77,7 +77,7 @@ a.disabled {
 
 			<!-- Step One code -->
  <fieldset class="portlet light" style="margin-top: 25px" [hidden]="!detailsTab">
-<div *ngIf="isPreviewEvent || reDistributeEvent" class="portlet-title" style="display:block">
+<div *ngIf="isPreviewEvent || reDistributeEvent || reDistributeEventManage" class="portlet-title" style="display:block">
                     <h4 class="pull-left f-w-600">Event Details</h4>
                   </div>
 				<!-- <div class="page-bar  portlet light border-radius-0 shadow">
@@ -109,7 +109,7 @@ a.disabled {
 							</label>
 							<div class="col-sm-9">
 								<input type="text"
-									[attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null"
+									[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)? '' : null"
 									class="form-control pull-left" placeholder="Hosted By"
 									[(ngModel)]="eventCampaign.fromName"
 									[ngModelOptions]="{standalone: true}"
@@ -123,15 +123,15 @@ a.disabled {
 							<label for="hostedBy" class="col-sm-3 labal-css color-css">From
 								Email</label>
 							<div class="col-sm-9">
-								<select *ngIf="!reDistributeEvent && !isPreviewEvent"
-									[attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null"
+								<select *ngIf="!reDistributeEvent && !reDistributeEventManage && !isPreviewEvent"
+									[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)? '' : null"
 									class="form-control" [(ngModel)]="eventCampaign.email"
 									[ngModelOptions]="{standalone: true}" (change)="setFromName()">
 									<option *ngFor="let teamMember of teamMemberEmailIds"
 										[ngValue]="teamMember.emailId">
 										{{teamMember.emailId}}</option>
 								</select>
-								<input [attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null" *ngIf="reDistributeEvent || isPreviewEvent" type="text" class="form-control" [(ngModel)]="eventCampaign.email"
+								<input [attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)? '' : null" *ngIf="reDistributeEvent || isPreviewEvent || reDistributeEventManage" type="text" class="form-control" [(ngModel)]="eventCampaign.email"
 									[ngModelOptions]="{standalone: true}">
 							</div>
 						</div>
@@ -146,7 +146,7 @@ a.disabled {
 									[onColor]="callActionSwitch.onGreenColorSwitch"
 									[offColor]="callActionSwitch.onGreenColorSwitch"
 									[size]="callActionSwitch.size"
-									[disabled]="isPreviewEvent || reDistributeEvent"
+									[disabled]="isPreviewEvent || reDistributeEvent || reDistributeEventManage"
 									(statusChange)="switchStatusChange()">
 								</switch>
 							</div>
@@ -166,7 +166,7 @@ a.disabled {
 							<div class="col-sm-9 p0">
 								<div class="col-sm-6">
 									<input
-										[attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null"
+										[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)? '' : null"
 										type="text" id="startDatePicker"
 										class="form-control flatpickr" placeholder="Start"
 										[(ngModel)]="eventCampaign.campaignEventTimes[0].startTimeString"
@@ -178,7 +178,7 @@ a.disabled {
 								</div>
 								<div class="col-sm-6">
 									<input type="text" id="enDatePicker"
-										[attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null"
+										[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)? '' : null"
 										[disabled]="eventCampaign.campaignEventTimes[0].allDay"
 										class="form-control flatpickr" placeholder="End"
 										[(ngModel)]="eventCampaign.campaignEventTimes[0].endTimeString"
@@ -193,7 +193,7 @@ a.disabled {
 
                   <div class="col-sm-12">
                     <input type="checkbox" id="allDay" class="form-check-input mt10"
-                        [attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null"
+                        [attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)? '' : null"
                         [checked]="eventCampaign.campaignEventTimes[0].allDay"
                         (change)="changeAllDay()" (input)="resetTabClass()">
                         <label class="form-check-label" for="allDay" style="float:none"> All Day</label>
@@ -207,7 +207,7 @@ a.disabled {
 							<div class="col-sm-9 p0">
 								<div class="col-sm-6">
 									<select
-										[attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null"
+										[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)? '' : null"
 										class="form-control" style="width: 100%; cursor: pointer;"
 										[ngClass]="{'has-error': eventError.eventCountryAndTimeZone && !eventCampaign.campaignEventTimes[0].countryId}"
 										[(ngModel)]="eventCampaign.campaignEventTimes[0].countryId"
@@ -218,7 +218,7 @@ a.disabled {
 									</select>
 								</div>
 								<div class="col-sm-6">
-                  <select [attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null"
+                  <select [attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)? '' : null"
                   class="form-control" style="width: 100%" (change)="setEventTimeZone()"
                   [(ngModel)]="eventCampaign.campaignEventTimes[0].timeZone" [ngModelOptions]="{standalone: true}"
                   id="timezoneIdChange">
@@ -239,7 +239,7 @@ a.disabled {
 							<label for="hostedBy" class="col-sm-3 labal-css color-css">Online
 								Meeting</label>
 							<div class="col-sm-9">
-								<switch [disabled]="(isPreviewEvent || reDistributeEvent)"
+								<switch [disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)"
 									[status]="eventCampaign.onlineMeeting"
 									[onText]="callActionSwitch.onTextValue"
 									[offText]="callActionSwitch.offTextValue"
@@ -257,7 +257,7 @@ a.disabled {
 								</label>
 								<div class="col-sm-9">
 									<input type="text"
-										[attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null"
+										[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)? '' : null"
 										class="form-control" id="eventDateTime"
 										(blur)="eventLocationError()" (input)="eventLocationError()"
 										placeholder="Corporate headquarters, local restaurant, etc."
@@ -272,7 +272,7 @@ a.disabled {
 								<label for="hostedBy" class="col-sm-3 labal-css color-css">Address</label>
 								<div class="col-sm-9">
 									<input type="text"
-										[attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null"
+										[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)? '' : null"
 										class="form-control" id="eventDateTime"
 										placeholder="Street Address"
 										[(ngModel)]="eventCampaign.campaignLocation.street"
@@ -281,14 +281,14 @@ a.disabled {
 								<div class="col-sm-offset-3 col-sm-9 pt10">
 									<div class="col-sm-6" style="padding-left: 0px">
 										<input type="text"
-											[attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null"
+											[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)? '' : null"
 											class="form-control" id="city" placeholder="City"
 											[(ngModel)]="eventCampaign.campaignLocation.city"
 											[ngModelOptions]="{standalone: true}">
 									</div>
 									<div class="col-sm-6" style="padding-right: 0px">
 										<input type="text"
-											[attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null"
+											[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)? '' : null"
 											class="form-control" id="state" placeholder="State"
 											[(ngModel)]="eventCampaign.campaignLocation.state"
 											[ngModelOptions]="{standalone: true}">
@@ -297,7 +297,7 @@ a.disabled {
 								<div class="col-sm-offset-3 col-sm-9 pt10">
 									<div class="col-sm-6" style="padding-left: 0px">
 										<select
-											[attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null"
+											[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)? '' : null"
 											class="form-control" style="width: 100%; cursor: pointer;"
 											[(ngModel)]="eventCampaign.campaignLocation.country"
 											[ngModelOptions]="{standalone: true}">
@@ -307,7 +307,7 @@ a.disabled {
 									</div>
 									<div class="col-sm-6" style="padding-right: 0px">
 										<input type="text"
-											[attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null"
+											[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)? '' : null"
 											class="form-control" id="zip" placeholder="Zip"
 											[(ngModel)]="eventCampaign.campaignLocation.zip"
 											[ngModelOptions]="{standalone: true}">
@@ -323,13 +323,13 @@ a.disabled {
 							<h4 class="pull-left f-w-600">Event Settings</h4>
 						</div>
 						<div class="portlet-body clearfix"
-							[attr.disabled]="(isPreviewEvent || reDistributeEvent)">
+							[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)">
 							<ul>
 								<li><label> <switch
 											[status]="eventCampaign.rsvpReceived"
 											[onText]="callActionSwitch.onTextValue"
 											[offText]="callActionSwitch.offTextValue"
-											[disabled]="isPreviewEvent || reDistributeEvent"
+											[disabled]="isPreviewEvent || reDistributeEvent || reDistributeEventManage"
 											[onColor]="callActionSwitch.onGreenColorSwitch"
 											[offColor]="callActionSwitch.onDefaultColorSwitch"
 											[size]="callActionSwitch.bsize"
@@ -340,7 +340,7 @@ a.disabled {
 											[status]="eventCampaign.emailOpened"
 											[onText]="callActionSwitch.onTextValue"
 											[offText]="callActionSwitch.offTextValue"
-											[disabled]="isPreviewEvent || reDistributeEvent"
+											[disabled]="isPreviewEvent || reDistributeEvent || reDistributeEventManage"
 											[onColor]="callActionSwitch.onGreenColorSwitch"
 											[offColor]="callActionSwitch.onDefaultColorSwitch"
 											[size]="callActionSwitch.bsize"
@@ -366,7 +366,7 @@ a.disabled {
 									<label class="col-md-1 p0"
 									style="margin-top: 17px; cursor: pointer"> <input
 										style="cursor: pointer;"
-										[attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null"
+										[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)? '' : null"
 										type="radio" value="eventCampaign.publicEventCampaign"
 										[checked]="eventCampaign.publicEventCampaign"
 										(change)="eventCampaign.publicEventCampaign = !eventCampaign.publicEventCampaign">
@@ -384,7 +384,7 @@ a.disabled {
 								<li><label class="col-md-1 p0"
 									style="margin-top: 17px; cursor: pointer;"> <input
 										style="cursor: pointer;"
-										[attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null"
+										[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)? '' : null"
 										type="radio" value="!eventCampaign.publicEventCampaign"
 										[checked]="!eventCampaign.publicEventCampaign"
 										(change)="eventCampaign.publicEventCampaign = !eventCampaign.publicEventCampaign">
@@ -453,7 +453,7 @@ a.disabled {
 				<!-- </div>
           </div> -->
          <div class="col-xs-12">
-          <button *ngIf="!isPreviewEvent && !reDistributeEvent" type="button" style="float: right" class=" btn green"
+          <button *ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage" type="button" style="float: right" class=" btn green"
 			(click)="resetTabs('recipients')" title="Please Fill Campaign Details" [disabled]="recipientsTabClass === 'disableRecipientsTab'">Next</button>
 			</div>
 			</fieldset>
@@ -553,8 +553,8 @@ a.disabled {
                 </ng-template>
                 </div>
               </div>
-            <button *ngIf="!isPreviewEvent && !reDistributeEvent" type="button" style="float:left;" class="btn btn-default" (click)="resetTabs('details')">Previous</button>
-            <button *ngIf="!isPreviewEvent && !reDistributeEvent" type="button" style="float: right;" class="btn btn-default btn green" [disabled]="emailTemplatesTabClass === 'disableTemplateTab'" (click)="resetTabs('templates')" title="">Next</button>
+            <button *ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage" type="button" style="float:left;" class="btn btn-default" (click)="resetTabs('details')">Previous</button>
+            <button *ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage" type="button" style="float: right;" class="btn btn-default btn green" [disabled]="emailTemplatesTabClass === 'disableTemplateTab'" (click)="resetTabs('templates')" title="">Next</button>
                 </div>
             <!--     End Step two   -->
             <!-- Step three email templates   -->
@@ -635,7 +635,7 @@ a.disabled {
 
                   <ul class="content__list"
 										*ngFor="let emailTemplate of emailTemplatesPagination.pagedItems;let i =index">
-										<li *ngIf="emailTemplateId!=emailTemplate?.id" [class.disabled]="isPreviewEvent || reDistributeEvent" (click)="emailTemplateSelection(emailTemplate)" class="list__item" [class.list__item--selected]="eventCampaign?.emailTemplate?.id === emailTemplate?.id">
+										<li *ngIf="emailTemplateId!=emailTemplate?.id" [class.disabled]="isPreviewEvent || reDistributeEvent || reDistributeEventManage" (click)="emailTemplateSelection(emailTemplate)" class="list__item" [class.list__item--selected]="eventCampaign?.emailTemplate?.id === emailTemplate?.id">
 											<!-- above class [ngClass]="{'list__item--selected':selectedFileIds.indexOf(file.id)>-1}" -->
 											<div class="flex-row">
 												<div class="item__select-box-wrapper">
@@ -698,8 +698,8 @@ a.disabled {
           <app-pagination [class.disabled]="isPreviewEvent" [pagination]="emailTemplatesPagination" [type]="'emailTemplates'"
             (notifyParent)="setPage($event)"  (notifyParentDropDown)="loadPaginationDropdownTemplates($event)"></app-pagination>
         </div>
-        <button *ngIf="!isPreviewEvent && !reDistributeEvent" type="button" style="float:left;" class="btn btn-default" (click)="resetTabs('recipients')">Previous</button>
-		 <button *ngIf="!isPreviewEvent && !reDistributeEvent" type="button" style="float: right;" class="btn btn-default btn green" (click)="resetTabs('launch')" [class.disabled]="launchTabClass === 'disableLaunchTab'" title="">Next</button>
+        <button *ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage" type="button" style="float:left;" class="btn btn-default" (click)="resetTabs('recipients')">Previous</button>
+		 <button *ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage" type="button" style="float: right;" class="btn btn-default btn green" (click)="resetTabs('launch')" [class.disabled]="launchTabClass === 'disableLaunchTab'" title="">Next</button>
         </div>
         <!--    End Step three templates -->
 		<!-- 	Step four launch campaigns    -->
@@ -759,7 +759,7 @@ a.disabled {
                       <a><span *ngIf="selectedListOfUserLists?.length===0" (click)="loadContactsPreviewOn(eventCampaign?.userListIds[0])">{{eventCampaign?.userListIds?.length}} Contact Lists</span></a>
                     </td>
                     <td style="text-align: right" width="20%">
-                      <a [class.disabled]="isPreviewEvent || reDistributeEvent" class="btn btn-primary btn-sm" style="color:#fff" (click)="resetTabs('recipients')">Change</a>
+                      <a [class.disabled]="isPreviewEvent || reDistributeEvent || reDistributeEventManage" class="btn btn-primary btn-sm" style="color:#fff" (click)="resetTabs('recipients')">Change</a>
                     </td>
                   </tr>
                 </table>
@@ -781,7 +781,7 @@ a.disabled {
                       </a>
                     </td>
                     <td style="text-align: right" width="20%">
-                      <a class="btn btn-primary btn-sm" [class.disabled]="isPreviewEvent || reDistributeEvent" (click)="resetTabs('templates')">Change</a>
+                      <a class="btn btn-primary btn-sm" [class.disabled]="isPreviewEvent || reDistributeEvent || reDistributeEventManage" (click)="resetTabs('templates')">Change</a>
                     </td>
                   </tr>
                 </table>
@@ -818,7 +818,7 @@ a.disabled {
 					</div>
            </div>
             <div *ngFor="let reply of eventCampaign.campaignReplies;let i=index">
-            <div class="portlet light dashboard-stat2" id="{{reply.divId}}" style="min-height: 320px;" [class.disabled]="reply.body && reDistributeEvent && reply.id">
+            <div class="portlet light dashboard-stat2" id="{{reply.divId}}" style="min-height: 320px;" [class.disabled]="reply.body && reDistributeEvent && reDistributeEventManage && reply.id">
               <div class="portlet-title custom-change-css" [ngClass]="{'colorlightBlock':isEven(i+1), 'colorBlue':!isEven(i+1)}" style="display:block">
                 <div class="col-xs-6">
                   <h4 class="text-left" style="color:#fff">Add an Auto-response to your e-mail-{{i+1}}</h4>
@@ -849,7 +849,7 @@ a.disabled {
                     <option [value]="0" [selected]="reply.actionId ==0">Email is not opened</option>
                     <option [value]="13" [selected]="reply.actionId==13">Email is opened</option>
                     <option [value]="16" [selected]="reply.actionId ==16">Send immediately after email is opened</option>
-                    <option [value]="24" [selected]="reply.actionId ==24" [hidden]="reDistributeEvent || authenticationService.isOnlyPartner()">If partner has not shared event</option>
+                    <option [value]="24" [selected]="reply.actionId ==24" [hidden]="reDistributeEvent || reDistributeEventManage || authenticationService.isOnlyPartner()">If partner has not shared event</option>
                     <option [value]="25" [selected]="reply.actionId ==25">Send email if RSVP Yes</option>
                     <option [value]="26" [selected]="reply.actionId ==26">Send email If RSVP No</option>
                     <option [value]="27" [selected]="reply.actionId ==27">Send email If RSVP Maybe</option>
@@ -1001,7 +1001,7 @@ a.disabled {
            <!--  ****Test email template**** -->
             <!-- <div><button type="button" class="btn green" (click)="campaignService.addEmailId(eventCampaign,eventCampaign.emailTemplate.id,false)" style="width: 10em;">Send Test Email</button>
             </div> -->
-            <button *ngIf="!isPreviewEvent && !reDistributeEvent" type="button" style="float:left;" class="btn btn-default" (click)="resetTabs('templates')">Previous</button>
+            <button *ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage" type="button" style="float:left;" class="btn btn-default" (click)="resetTabs('templates')">Previous</button>
           </div>
        <!--   end step four launch   -->
 		</div>
