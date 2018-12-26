@@ -540,7 +540,8 @@
                                 'fa-linkedin fa-linkedin-color': socialConnection.source ==='LINKEDIN',
                                 'fa-google fa-google-color': socialConnection.source ==='GOOGLE'}"></i>
                              </div>
-                          <img class="img-responsive img-circle profile-picture center-block" src="{{socialConnection.profileImage}}" alt="{{socialConnection.profileName}}" (error)="errorHandler($event)">
+                          <img class="img-responsive img-circle profile-picture center-block" src="{{socialConnection.profileImage}}" alt="{{socialConnection.profileName}}" 
+						  (error)="$event.target.src = 'assets/admin/pages/media/profile/icon-user-default.png'">
                         </div>
                         <div class="clearfix">
                           <br>

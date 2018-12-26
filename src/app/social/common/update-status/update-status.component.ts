@@ -737,7 +737,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
           this.socialStatusDtos.push(socialStatusDto);
 
             const event = {
-            title: socialStatus.statusMessage,
+            title: socialStatus.statusMessage.substring(0, 15),
             start: socialStatus.scheduledTime,
             id: socialStatus.id+'-'+socialStatusDto.socialStatusProvider.id,
             data: socialStatusDto,
