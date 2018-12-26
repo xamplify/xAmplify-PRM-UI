@@ -119,6 +119,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   isHighLet = false;
   parentCampaignId = false;
   reDistributeEventManage = false;
+  parentCampaignIdValue:number;
   constructor(public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
     private contactService: ContactService,
     public campaignService: CampaignService,
@@ -197,7 +198,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
         (result)=>{
         this.campaignService.eventCampaign = result.data;
         this.eventCampaign = result.data;
-        if(result.data.parentCampaignId) { this.parentCampaignId =true; this.isPartnerUserList = false;}
+        if(result.data.parentCampaignId) { this.parentCampaignIdValue = result.data.parentCampaignId; this.parentCampaignId =true; this.isPartnerUserList = false;}
         this.editedCampaignName = this.eventCampaign.campaign;
         this.validateCampaignName(this.eventCampaign.campaign);
         console.log( this.eventCampaign);
@@ -421,7 +422,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
        this.contactListsPagination.filterKey = null;
        this.showContactType = true;
    }else {
-       if(this.reDistributeEvent || this.parentCampaignId){
+       if(this.reDistributeEvent || this.reDistributeEventManage){
            this.contactListsPagination.filterValue = false;
        }else{
        this.contactListsPagination.filterValue = true;
@@ -843,13 +844,20 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
       eventCampaign.campaignReplies[i].id = null;
     }
 
-    if(this.reDistributeEvent || this.parentCampaignId) {
+    if(this.reDistributeEvent || this.reDistributeEventManage) {
+      if(this.reDistributeEvent){
       eventCampaign.parentCampaignId = this.activatedRoute.snapshot.params['id'];
-      eventCampaign.id = null;
+      eventCampaign.id = null; }
+      if(this.reDistributeEventManage){
+          eventCampaign.parentCampaignId = this.parentCampaignIdValue;
+       }
+        
       eventCampaign.enableCoBrandingLogo = true;
       eventCampaign.nurtureCampaign = true;
       eventCampaign.selectedEditEmailTemplate = eventCampaign.emailTemplate.id;
       eventCampaign.channelCampaign = false;
+      eventCampaign.toPartner = false;
+    
     }
 
     delete eventCampaign.emailTemplateDTO;
