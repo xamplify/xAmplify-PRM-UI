@@ -210,7 +210,7 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
            mergeTags.push( { name: 'Event Strat Time', value: '{{event_start_time}}' });
            mergeTags.push( { name: 'Event End Time', value: '{{event_end_time}}' });
           /* mergeTags.push( { name: 'Event Description', value: '{{event_description}}' });*/
-           mergeTags.push( { name: 'Address Lane1 ', value: '{{addreess}}' });
+           mergeTags.push( { name: 'Address', value: '{{addreess}}' });
           /* mergeTags.push( { name: 'Address Lane2', value: '{{addreess_lane2}} ' });*/
            mergeTags.push( { name: 'Event From Name', value: '{{event_fromName}}' });
            mergeTags.push( { name: 'Event EmailId', value: '{{event_emailId}}' });
