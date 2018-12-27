@@ -28,7 +28,7 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
     eventDescription = "{{event_description}}";
     eventStartTime = "{{event_start_time}}";
     eventEndTime = "{{event_end_time}}";
-    eventLocation = "{{addreess_lane1}}";
+    eventLocation = "{{addreess}}";
     loadTemplate = false;
     constructor(private emailTemplateService:EmailTemplateService,private router:Router, private logger:XtremandLogger,
                 private authenticationService:AuthenticationService,public refService:ReferenceService) {
@@ -109,7 +109,7 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
                       return false; 
                 }
 	              if(jsonContent.indexOf(self.eventLocation)< 0){
-                      swal("","Whoops! We’re unable to save this template because you deleted the {{addreess_lane1}} merge tag.","error");
+                      swal("","Whoops! We’re unable to save this template because you deleted the {{addreess}} merge tag.","error");
                       return false;
                 }
 	          }
@@ -210,8 +210,8 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
            mergeTags.push( { name: 'Event Strat Time', value: '{{event_start_time}}' });
            mergeTags.push( { name: 'Event End Time', value: '{{event_end_time}}' });
           /* mergeTags.push( { name: 'Event Description', value: '{{event_description}}' });*/
-           mergeTags.push( { name: 'Address Lane1 ', value: '{{addreess_lane1}}' });
-           mergeTags.push( { name: 'Address Lane2', value: '{{addreess_lane2}} ' });
+           mergeTags.push( { name: 'Address Lane1 ', value: '{{addreess}}' });
+          /* mergeTags.push( { name: 'Address Lane2', value: '{{addreess_lane2}} ' });*/
            mergeTags.push( { name: 'Event From Name', value: '{{event_fromName}}' });
            mergeTags.push( { name: 'Event EmailId', value: '{{event_emailId}}' });
            mergeTags.push( { name: 'Vendor Name   ', value: '{{vendor_name}}' });
