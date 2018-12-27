@@ -944,6 +944,7 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
     const user = this.teamMemberEmailIds.filter((teamMember) => teamMember.emailId === this.eventCampaign.email)[0];
     this.eventCampaign.fromName = $.trim(user.firstName + " " + user.lastName);
     this.setEmailIdAsFromName();
+    this.eventHostByError();
   }
 
   fileChange(event: any) {
