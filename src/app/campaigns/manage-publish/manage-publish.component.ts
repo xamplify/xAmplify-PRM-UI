@@ -183,6 +183,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
      }
     ngOnInit() {
         try {
+          this.refService.manageRouter = true;
           if(this.authenticationService.isOnlyPartner()) { this.setCampaignAccessValues(true,true,true,true) }
           else { if(!this.refService.companyId) { this.getCompanyIdByUserId(); } else { this.getOrgCampaignTypes();}}
             this.isListView = !this.refService.isGridView;

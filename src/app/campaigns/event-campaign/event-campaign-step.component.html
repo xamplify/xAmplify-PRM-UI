@@ -21,24 +21,15 @@ a.disabled {
 			<li *ngIf="!eventRouterPage"><a
 				[routerLink]="['/home/campaigns/select']">Select Campaign</a> <i
 				class="fa fa-angle-right"></i></li>
-        <li *ngIf="(reDistributeEvent || reDistributeEventManage) && !authenticationService.isOnlyPartner()">
-            <a [routerLink]="['/home/campaigns/partner/all']"> Campaigns shared by Vendors</a>
+        <li *ngIf="!referenceService.manageRouter">
+            <a *ngIf="isEditCampaign || reDistributeEventManage" [routerLink]="['/home/campaigns/manage']">Manage Campaigns</a>
+            <a *ngIf="!isEditCampaign && !reDistributeEventManage" [routerLink]="['/home/campaigns/partner/all']"> Campaigns shared by Vendors</a>
             <i class="fa fa-angle-right"></i>
           </li>
-        <li *ngIf="isEditCampaign">
+        <li *ngIf="referenceService.manageRouter">
             <a  [routerLink]="['/home/campaigns/manage']">Manage Campaigns</a>
             <i class="fa fa-angle-right"></i>
          </li>
-         <ng-container *ngIf="authenticationService.isOnlyPartner()">
-         <li *ngIf="(reDistributeEventManage)">
-            <a  [routerLink]="['/home/campaigns/manage']">Manage Campaigns</a>
-            <i class="fa fa-angle-right"></i>
-          </li>
-          <li *ngIf="reDistributeEvent">
-              <a [routerLink]="['/home/campaigns/partner/all']"> Campaigns shared by Vendors</a>
-              <i class="fa fa-angle-right"></i>
-            </li>
-          </ng-container>
 			<li>Event Based Campaign</li>
 		</ul>
 	</div>

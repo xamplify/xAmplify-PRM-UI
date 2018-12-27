@@ -60,7 +60,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
         public referenceService: ReferenceService, private socialService: SocialService,
         private authenticationService: AuthenticationService,private route: ActivatedRoute) {
         this.loggedInUserId = this.authenticationService.getUserId();
-
+        this.referenceService.manageRouter = false;
         const currentUrl = this.router.url;
         if ( currentUrl.includes( 'campaigns/vendor' ) ) {
             this.role = "Vendor"
