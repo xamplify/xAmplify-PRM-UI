@@ -11,7 +11,11 @@
           <i class="fa fa-angle-right"></i>
         </li>
         <li>
-          <a>Partner campaigns</a>
+          <a [routerLink]="['/home/campaigns/partner/all']"> Campaigns shared by Vendors</a>
+        </li>
+        <li>
+          <i class="fa fa-angle-right"></i>
+          <a> Redistribute Campaign</a>
         </li>
       </ul>
     </div>
@@ -72,7 +76,7 @@
 						{{teamMember.emailId}}
 					</option>
                   </select>
-                  
+
                    <select class="form-control" name="campaign.email" [(ngModel)]="campaign.email" (change)="setFromName()" *ngIf="isOnlyPartner">
                     <option  [ngValue]="campaign.email" >
 						{{campaign.email}}

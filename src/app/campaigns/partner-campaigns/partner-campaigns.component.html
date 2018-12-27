@@ -6,10 +6,6 @@
 				<a [routerLink]="referenceService.homeRouter">Home</a>
 				<i class="fa fa-angle-right"></i>
       </li>
-      <li>
-        <a [routerLink]="referenceService.homeRouter">Dashboard</a>
-        <i class="fa fa-angle-right"></i>
-			</li>
 			<li *ngIf="role === 'Vendor'">
 				<a [routerLink]="['/home/dashboard/vendors']">Campaigns From Vendor</a>
       </li>
