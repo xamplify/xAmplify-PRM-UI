@@ -1154,8 +1154,8 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
               data.body = data.body.replace( "{{vendor_emailId}}", this.authenticationService.user.emailId );
           }
           }else{
-              data.body = data.body.replace( "{{vendor_name}}", this.eventCampaign.fromName );
-              data.body = data.body.replace( "{{vendor_emailId}}", this.eventCampaign.email );
+              data.body = data.body.replace( "{{vendor_name}}", this.eventCampaign.userDTO.firstName + " " + this.eventCampaign.userDTO.lastName);
+              data.body = data.body.replace( "{{vendor_emailId}}", this.eventCampaign.userDTO.emailId );
 
           }
 
