@@ -730,13 +730,13 @@ a.disabled {
                       <div class="icon-border">
                       <i class="fa fa-users fa-2x icon-position" aria-hidden="true"></i>
                     </div>
-                    <ng-container *ngIf="authenticationService.module.isVendor || authenticationService.isAddedByVendor">
-                      <span class="h4-text" *ngIf="isPartnerUserList">Partner List(s)</span>
+                    <ng-container *ngIf="authenticationService.isVendor() || authenticationService.isVendorPartner()">
+                      <span class="h4-text">Partner List(s)</span>
                     </ng-container>
-                    <ng-container *ngIf="(!authenticationService.module.isVendor && !authenticationService.isAddedByVendor) || parentCampaignId">
+                    <ng-container *ngIf="authenticationService.isOnlyPartner()">
                       <span class="h4-text" *ngIf="!isPartnerUserList">Contact List(s)</span>
                     </ng-container>
-                     <ng-container *ngIf="(!authenticationService.module.isVendor && !authenticationService.isAddedByVendor) && (authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner())">
+                     <ng-container *ngIf="(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner())">
                       <span class="h4-text">Recipients List(s)</span>
                     </ng-container>
 
@@ -759,7 +759,7 @@ a.disabled {
                       <a><span *ngIf="selectedListOfUserLists?.length===0" (click)="loadContactsPreviewOn(eventCampaign?.userListIds[0])">{{eventCampaign?.userListIds?.length}} Contact Lists</span></a>
                     </td>
                     <td style="text-align: right" width="20%">
-                      <a [class.disabled]="isPreviewEvent || reDistributeEvent || reDistributeEventManage" class="btn btn-primary btn-sm" style="color:#fff" (click)="resetTabs('recipients')">Change</a>
+                      <a  [class.hide]="reDistributeEvent || reDistributeEventManage" [class.disabled]="isPreviewEvent" class="btn btn-primary btn-sm" style="color:#fff" (click)="resetTabs('recipients')">Change</a>
                     </td>
                   </tr>
                 </table>
@@ -781,7 +781,7 @@ a.disabled {
                       </a>
                     </td>
                     <td style="text-align: right" width="20%">
-                      <a class="btn btn-primary btn-sm" [class.disabled]="isPreviewEvent || reDistributeEvent || reDistributeEventManage" (click)="resetTabs('templates')">Change</a>
+                      <a [class.hide]="reDistributeEvent || reDistributeEventManage" class="btn btn-primary btn-sm" [class.disabled]="isPreviewEvent" (click)="resetTabs('templates')">Change</a>
                     </td>
                   </tr>
                 </table>
