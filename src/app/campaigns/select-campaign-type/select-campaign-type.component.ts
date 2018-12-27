@@ -63,21 +63,22 @@ export class SelectCampaignTypeComponent implements OnInit{
         this.cssClassChange();
       });
     }
-    getCompanyId() {
+    getCompanyIdByUserId(){
       try {
-        this.userService.getVideoDefaultSettings().subscribe(
+        this.refService.getCompanyIdByUserId(this.authenticationService.user.id).subscribe(
           (result: any) => {
-            if (result !== "") {  this.refService.companyId = result.companyProfile.id;
+            if (result !== "") {
+              console.log(result);
+              this.refService.companyId = result;
               this.getOrgCampaignTypes();
             }
           }, (error: any) => { console.log(error); }
         );
-      } catch (error) { console.log(error);  } }
-
-
+      } catch (error) { console.log(error);  }
+     }
     ngOnInit() {
         try{
-            if(!this.refService.companyId) { this.getCompanyId(); } else { this.getOrgCampaignTypes();}
+            if(!this.refService.companyId) { this.getCompanyIdByUserId(); } else { this.getOrgCampaignTypes();}
             Metronic.init();
             Layout.init();
             Demo.init();

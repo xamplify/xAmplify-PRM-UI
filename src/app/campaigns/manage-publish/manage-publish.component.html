@@ -30,7 +30,7 @@
 							<li class="filter" (click)="filterCampaigns('REGULAR',1)" [class.campaign-type-selected]="1 == selectedCampaignTypeIndex">Email</li>
 							<li class="filter" (click)="filterCampaigns('VIDEO',2)" [class.campaign-type-selected]="2 == selectedCampaignTypeIndex">Video</li>
 							<li class="filter" (click)="filterCampaigns('SOCIAL',3)" [class.campaign-type-selected]="3 == selectedCampaignTypeIndex">Social</li>
-							<li class="filter" *ngIf="!refService.isXamplify()" (click)="filterCampaigns('EVENT',4)" [class.campaign-type-selected]="4 == selectedCampaignTypeIndex">Event</li>
+							<li class="filter" (click)="filterCampaigns('EVENT',4)" [class.campaign-type-selected]="4 == selectedCampaignTypeIndex">Event</li>
 							<li class="filter" style="display: none;">Own Template</li>
 						</ul>
 						<div class="page-toolbar col-xs-6 col-sm-12 col-md-6">
@@ -142,14 +142,14 @@
                          								 (click)="goToRedistributedCampaigns(campaign)" data-toggle="tooltip" data-placement="top" title="Show Redistributed Campaigns">
 														<span class="circled-number"><b>{{campaign.redistributedCount}}</b></span>
 												</a>
-												
+
 												<a *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) ||
 														 (loggedInUserId==campaign.userId) || authenticationService.module.isVendor) && campaign.channelCampaign && campaign.redistributedCount==0"
                          								  data-toggle="tooltip" data-placement="top" title="No Redistributed Campaigns">
 														<span class="circled-number disabled"><b>{{campaign.redistributedCount}}</b></span>
 												</a>
-												
-												
+
+
 													<a *ngIf="  hasAllAccess || (hasStatsRole || hasCampaignRole) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor"
 													 data-rel="fancybox-button" (click)="campaginRouter(campaign)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.campaign_report}}">
 														<i class="fa fa-line-chart"></i>

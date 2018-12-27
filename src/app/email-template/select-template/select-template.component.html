@@ -22,13 +22,13 @@
 								<!-- <li class="filter" (click)="showBasicTemplates(1)" [class.emailtemplate-selected]="1 == selectedTemplateTypeIndex">Basic</li> -->
 								<li class="filter" (click)="showRichTemplates(2)" [class.emailtemplate-selected]="2 == selectedTemplateTypeIndex">Basic</li>
 								<!-- <li class="filter" (click)="showBasicVideoTemplates(3)" [class.emailtemplate-selected]="3 == selectedTemplateTypeIndex">Basic Video</li> -->
-								<li class="filter" (click)="showRichVideoTemplates(4)" [class.emailtemplate-selected]="4 == selectedTemplateTypeIndex">Video</li>
-								<li class="filter" (click)="showRegularCoBrandingTemplates(6)" [class.emailtemplate-selected]="6 == selectedTemplateTypeIndex">Email Co-Branding</li>
-								<li class="filter" (click)="showVideoCoBrandingTemplates(7)" [class.emailtemplate-selected]="7 == selectedTemplateTypeIndex">Video Co-Branding</li>
+								<li class="filter" (click)="showRichVideoTemplates(4)" [class.emailtemplate-selected]="4 == selectedTemplateTypeIndex" *ngIf="campaignAccess.videoCampaign">Video</li>
+								<li class="filter" (click)="showRegularCoBrandingTemplates(6)" [class.emailtemplate-selected]="6 == selectedTemplateTypeIndex" *ngIf="campaignAccess.emailCampaign">Email Co-Branding</li>
+								<li class="filter" (click)="showVideoCoBrandingTemplates(7)" [class.emailtemplate-selected]="7 == selectedTemplateTypeIndex" *ngIf="campaignAccess.videoCampaign">Video Co-Branding</li>
 								<li class="filter" (click)="showCampaignDefaultTemplates(8)" [class.emailtemplate-selected]="8 == selectedTemplateTypeIndex">Default</li>
 								<li class="filter" (click)="showUploadTemplates(5)" [class.emailtemplate-selected]="5 == selectedTemplateTypeIndex">Upload Custom</li>
-								<li class="filter" (click)="showEventTemplates(9)" [class.emailtemplate-selected]="9 == selectedTemplateTypeIndex" *ngIf="!refService.isXamplify()">Event</li>
-									<li class="filter" (click)="showEventCoBrandingTemplates(10)" [class.emailtemplate-selected]="9 == selectedTemplateTypeIndex" *ngIf="!refService.isXamplify()">Event Co-Branding</li>
+								<li class="filter" (click)="showEventTemplates(9)" [class.emailtemplate-selected]="9 == selectedTemplateTypeIndex" *ngIf="campaignAccess.eventCampaign">Event</li>
+									<li class="filter" (click)="showEventCoBrandingTemplates(10)" [class.emailtemplate-selected]="9 == selectedTemplateTypeIndex" *ngIf="campaignAccess.eventCampaign">Event Co-Branding</li>
 								<li class="filter" style="display: none;">Own Template</li>
 							</ul>
 						</div>

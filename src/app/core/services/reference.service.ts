@@ -1689,9 +1689,15 @@ export class ReferenceService {
         const scrollingElement = (document.scrollingElement || document.body)
         $(scrollingElement).animate({ scrollTop: 0 }, 500);
      }
-      getOrgCampaignTypes(companyId: any) {
+    getOrgCampaignTypes(companyId: any) {
       return this.http.get(this.authenticationService.REST_URL + `campaign/access/${companyId}?access_token=${this.authenticationService.access_token}` )
           .map(this.extractData)
           .catch(this.handleError);
-  }
+    }
+
+    getCompanyIdByUserId(userId: any) {
+       return this.http.get(this.authenticationService.REST_URL + `admin/get-company-id/${userId}?access_token=${this.authenticationService.access_token}` )
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
 }
