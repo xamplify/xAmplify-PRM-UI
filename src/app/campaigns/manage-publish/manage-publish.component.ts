@@ -15,6 +15,7 @@ import { UtilService } from '../../core/services/util.service';
 import { ContactList } from '../../contacts/models/contact-list';
 import { EventCampaign } from '../models/event-campaign';
 import { ActionsDescription } from '../../common/models/actions-description';
+import { CampaignAccess } from '../models/campaign-access';
 
 declare var swal, $: any;
 
@@ -22,7 +23,7 @@ declare var swal, $: any;
     selector: 'app-manage-publish',
     templateUrl: './manage-publish.component.html',
     styleUrls: ['./manage-publish.component.css'],
-    providers: [Pagination, HttpRequestLoader, ActionsDescription]
+    providers: [Pagination, HttpRequestLoader, ActionsDescription, CampaignAccess]
 })
 export class ManagePublishComponent implements OnInit, OnDestroy {
     campaigns: Campaign[];
@@ -71,7 +72,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     partnersPagination:Pagination = new Pagination();
     constructor(private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService:UtilService, public actionsDescription: ActionsDescription,
-        public refService: ReferenceService, private userService: UserService, public authenticationService: AuthenticationService) {
+        public refService: ReferenceService, public campaignAccess:CampaignAccess, public authenticationService: AuthenticationService) {
         this.loggedInUserId = this.authenticationService.getUserId();
         this.utilService.setRouterLocalStorage('managecampaigns');
         if (this.refService.campaignSuccessMessage == "SCHEDULE") {
@@ -154,8 +155,36 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     checkLastElement(i:any){
       if(i === this.pagination.pagedItems.length-1) { this.isLastElement = true;} else { this.isLastElement = false;}
     }
+    getOrgCampaignTypes(){
+      this.refService.getOrgCampaignTypes( this.refService.companyId).subscribe(
+      data=>{
+        console.log(data);
+           this.setCampaignAccessValues(data.video,data.regular,data.social,data.event);
+      });
+     }
+     getCompanyIdByUserId(){
+      try {
+        this.refService.getCompanyIdByUserId(this.authenticationService.user.id).subscribe(
+          (result: any) => {
+            if (result !== "") {
+              console.log(result);
+              this.refService.companyId = result;
+              this.getOrgCampaignTypes();
+            }
+          }, (error: any) => { console.log(error); }
+        );
+      } catch (error) { console.log(error);  }
+     }
+     setCampaignAccessValues(video:any,regular:any, social:any,event:any){
+      this.campaignAccess.videoCampaign = video;
+      this.campaignAccess.emailCampaign = regular;
+      this.campaignAccess.socialCampaign = social;
+      this.campaignAccess.eventCampaign = event
+     }
     ngOnInit() {
         try {
+          if(this.authenticationService.isOnlyPartner()) { this.setCampaignAccessValues(true,true,true,true) }
+          else { if(!this.refService.companyId) { this.getCompanyIdByUserId(); } else { this.getOrgCampaignTypes();}}
             this.isListView = !this.refService.isGridView;
             this.pagination.maxResults = 12;
             this.listCampaign(this.pagination);
