@@ -755,6 +755,7 @@
 								</div>
 							</a>
 						</div>
+						<ng-container *ngIf="campaignType != 'EVENT'">
 						<div class="col-sm-3 col-xs-6">
 							<a class="text-center">
 								<div><img src="assets/images/clicked-new.png" style="margin: 0px 10px;width: 52px;"></div>
@@ -782,6 +783,8 @@
 								</div>
 							</a>
 						</div>
+						</ng-container>
+						
 						<div class="col-sm-3 col-xs-6" *ngIf="campaignType==='SOCIAL'">
 							<a class="text-center">
 								<div><img src="assets/images/social-icons.jpg" style="margin: 0px 15px;width: auto;height: 52px;"></div>
