@@ -180,7 +180,7 @@ a.disabled {
 										(input)="eventStartTimeError()" (blur)="eventStartTimeError()"
 										[ngClass]="{'has-error': eventError.eventStartTimeError && !eventCampaign.campaignEventTimes[0].startTimeString}">
 									<div class="col-sm-12 text-danger" style="padding: 0"
-										*ngIf="eventError.eventStartTimeError">{{datePassedError}}</div>
+										*ngIf="eventError.eventStartTimeError && !isPreviewEvent">{{datePassedError}}</div>
 								</div>
 								<div class="col-sm-6">
 									<input type="text" id="enDatePicker"
@@ -192,10 +192,10 @@ a.disabled {
 										(input)="eventEndTimeError()" (blur)="eventEndTimeError()"
 										[ngClass]="{'has-error': eventError.eventEndDateError,'opacityCss':eventCampaign.campaignEventTimes[0].allDay}">
 									<div class="col-sm-12 text-danger" style="padding: 0"
-										*ngIf="eventError.eventEndDateError">{{endDateErrorMesg}}</div>
+										*ngIf="eventError.eventEndDateError && !isPreviewEvent">{{endDateErrorMesg}}</div>
 								</div>
 								<div class="col-sm-12 text-danger"
-									*ngIf="(!eventError.eventStartTimeError && eventError.eventSameDateError) || endDatePassError">{{endDatePassedError}}</div>
+									*ngIf="((!eventError.eventStartTimeError && eventError.eventSameDateError) || endDatePassError) && !isPreviewEvent">{{endDatePassedError}}</div>
 
                   <div class="col-sm-12">
                     <input type="checkbox" id="allDay" class="form-check-input mt10"
@@ -237,7 +237,7 @@ a.disabled {
                 </select>
 								</div>
 								<div class="text-danger" style="margin-left: 15px;"
-									*ngIf="eventError.eventCountryAndTimeZone && !eventCampaign.campaignEventTimes[0].countryId">Please
+									*ngIf="eventError.eventCountryAndTimeZone && !eventCampaign.campaignEventTimes[0].countryId && !isPreviewEvent">Please
 									select the country and timezone</div>
 							</div>
 						</div>
@@ -270,7 +270,7 @@ a.disabled {
 										[ngClass]="{'has-error': eventError.eventLocationError}"
 										[(ngModel)]="eventCampaign.campaignLocation.location"
 										[ngModelOptions]="{standalone: true}">
-									<div class="text-danger" *ngIf="eventError.eventLocationError">Location
+									<div class="text-danger" *ngIf="eventError.eventLocationError && !isPreviewEvent">Location
 										is required</div>
 								</div>
 							</div>

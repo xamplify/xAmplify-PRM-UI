@@ -454,7 +454,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
         } else {
             this.isHeaderCheckBoxChecked = false;
         }
-        if(this.authenticationService.isOrgAdmin()){
+        if(this.authenticationService.isOrgAdmin() || this.authenticationService.isOrgAdminPartner()){
            this.contactListsPagination.pagedItems = this.referenceService.removeDuplicatesObjects(this.contactListsPagination.pagedItems, "id");
         }
       },
@@ -1340,7 +1340,7 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
         }
         saveCampaignOnDestroy(){
           const eventCampaign = this.getCampaignData(this.eventCampaign);
-          if((this.isEditCampaign || this.reDistributeEventManage)&& !eventCampaign.onlineMeeting) {  }
+          if((this.isEditCampaign || this.reDistributeEventManage)&& !eventCampaign.onlineMeeting  && !eventCampaign.campaignLocation.id) {  }
           else {  eventCampaign.campaignLocation.id = null;}
           eventCampaign.campaignEventTimes[0].id = null;
           eventCampaign.campaignEventMedias[0].id = null;
