@@ -787,7 +787,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       this.downloadTypeName = 'rsvp';
       this.rsvpResposeType = "email open";
       if(this.rsvpDetailType === 'reDistribution'){
-          this.campaignService.getEventCampaignRedistributionEmailOpenDetails( this.campaign.campaignId, this.campaignReport.selectedPartnerEmailId, this.rsvpDetailAnalyticsPagination )
+          this.campaignService.getEventCampaignRedistributionEmailOpenDetails( this.campaign.campaignId, this.campaignReport.selectedPartnerUserId, this.rsvpDetailAnalyticsPagination )
           .subscribe(
           data => {
             console.log(data);
