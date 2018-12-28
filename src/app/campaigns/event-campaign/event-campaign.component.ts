@@ -494,14 +494,14 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   }
   switchStatusChange(){
       this.eventCampaign.channelCampaign = !this.eventCampaign.channelCampaign;
-      
+
       if(!this.eventCampaign.channelCampaign){
           this.eventCampaign.enableCoBrandingLogo = false;
           this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.NONE;
           this.loadEmailTemplates(this.emailTemplatesPagination);
       }
   }
-  
+
   setCoBrandingLogo(event:any){
       this.eventCampaign.enableCoBrandingLogo = event;
       if(this.eventCampaign.enableCoBrandingLogo){
@@ -512,7 +512,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
           this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.NONE;
       }
       this.loadEmailTemplates(this.emailTemplatesPagination);
-      
+
       //let isRegularCoBranding = this.eventCampaign.emailTemplate!=undefined && this.eventCampaign.emailTemplate.regularCoBrandingTemplate;
       //let isVideoCoBranding =  this.eventCampaign.emailTemplate!=undefined &&  this.eventCampaign.emailTemplate.videoCoBrandingTemplate;
       //this.filterCoBrandedTemplates(event);
@@ -1069,7 +1069,7 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
 
   setReplyEmailTemplate(emailTemplateId: number, reply: Reply, index: number, isDraft: boolean) {
     if (!isDraft) {
-      reply.selectedEmailTemplateId = emailTemplateId;
+      this.eventCampaign.campaignReplies[index].selectedEmailTemplateId = emailTemplateId;
       $('#reply-' + index + emailTemplateId).prop("checked", true);
     }
   }
