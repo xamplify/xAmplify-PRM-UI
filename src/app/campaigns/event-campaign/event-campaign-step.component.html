@@ -21,12 +21,12 @@ a.disabled {
 			<li *ngIf="!eventRouterPage"><a
 				[routerLink]="['/home/campaigns/select']">Select Campaign</a> <i
 				class="fa fa-angle-right"></i></li>
-        <li *ngIf="!referenceService.manageRouter">
+        <li *ngIf="!referenceService.manageRouter&& eventRouterPage">
             <a *ngIf="isEditCampaign || reDistributeEventManage" [routerLink]="['/home/campaigns/manage']">Manage Campaigns</a>
             <a *ngIf="!isEditCampaign && !reDistributeEventManage" [routerLink]="['/home/campaigns/partner/all']"> Campaigns shared by Vendors</a>
             <i class="fa fa-angle-right"></i>
           </li>
-        <li *ngIf="referenceService.manageRouter">
+        <li *ngIf="referenceService.manageRouter && eventRouterPage">
             <a  [routerLink]="['/home/campaigns/manage']">Manage Campaigns</a>
             <i class="fa fa-angle-right"></i>
          </li>
