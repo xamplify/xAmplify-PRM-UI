@@ -314,7 +314,7 @@ a.disabled {
 									<div class="col-sm-6" style="padding-right: 0px">
 										<input type="text"
 											[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)? '' : null"
-											class="form-control" id="zip" placeholder="Zip"
+											class="form-control" id="zip" placeholder="Zip" maxlength="10"
 											[(ngModel)]="eventCampaign.campaignLocation.zip"
 											[ngModelOptions]="{standalone: true}">
 									</div>
