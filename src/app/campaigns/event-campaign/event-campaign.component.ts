@@ -834,7 +834,7 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
     this.onBlurValidation();
     eventCampaign.campaignScheduleType = launchOption;
     eventCampaign =  this.getCampaignData(eventCampaign)
-    if((this.isEditCampaign || this.reDistributeEventManage) && !eventCampaign.onlineMeeting) {  }
+    if((this.isEditCampaign || this.reDistributeEventManage) && !eventCampaign.onlineMeeting && !eventCampaign.campaignLocation.id)  {  }
     else {  eventCampaign.campaignLocation.id = null;}
     eventCampaign.campaignEventTimes[0].id = null;
     eventCampaign.campaignEventMedias[0].id = null;
