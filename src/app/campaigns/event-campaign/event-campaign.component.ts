@@ -198,6 +198,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
         (result)=>{
         this.campaignService.eventCampaign = result.data;
         this.eventCampaign = result.data;
+        this.eventCampaign.enableCoBrandingLogo = result.data.enableCoBrandingLogo;
         if(result.data.parentCampaignId) { this.parentCampaignIdValue = result.data.parentCampaignId; this.parentCampaignId =true; this.isPartnerUserList = false;}
         this.editedCampaignName = this.eventCampaign.campaign;
         this.validateCampaignName(this.eventCampaign.campaign);
@@ -238,7 +239,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
         }
         if(this.reDistributeEvent){
             this.eventCampaign.userListIds = []; this.userListIds = [];this.parternUserListIds = [];
-            this.eventCampaign.enableCoBrandingLogo = true;
             this.checkLaunchOption = this.eventCampaign.campaignScheduleType;
         }
         this.eventCampaign.userLists = [];
@@ -494,14 +494,28 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   }
   switchStatusChange(){
       this.eventCampaign.channelCampaign = !this.eventCampaign.channelCampaign;
-      if(this.eventCampaign.channelCampaign){
-          this.eventCampaign.enableCoBrandingLogo = true;
-              this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.EVENT_CO_BRANDING;
-      }else{
+      
+      if(!this.eventCampaign.channelCampaign){
           this.eventCampaign.enableCoBrandingLogo = false;
+          this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.NONE;
+          this.loadEmailTemplates(this.emailTemplatesPagination);
+      }
+  }
+  
+  setCoBrandingLogo(event:any){
+      this.eventCampaign.enableCoBrandingLogo = event;
+      if(this.eventCampaign.enableCoBrandingLogo){
+          //this.eventCampaign.enableCoBrandingLogo = true;
+          this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.EVENT_CO_BRANDING;
+      }else{
+          //this.eventCampaign.enableCoBrandingLogo = false;
           this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.NONE;
       }
       this.loadEmailTemplates(this.emailTemplatesPagination);
+      
+      //let isRegularCoBranding = this.eventCampaign.emailTemplate!=undefined && this.eventCampaign.emailTemplate.regularCoBrandingTemplate;
+      //let isVideoCoBranding =  this.eventCampaign.emailTemplate!=undefined &&  this.eventCampaign.emailTemplate.videoCoBrandingTemplate;
+      //this.filterCoBrandedTemplates(event);
   }
 
   searchEmailTemplate(){
