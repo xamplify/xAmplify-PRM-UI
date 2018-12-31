@@ -598,9 +598,11 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     if(this.eventCampaign.campaignEventTimes[0].allDay && this.eventCampaign.campaignEventTimes[0].endTimeString){
       this.eventCampaign.campaignEventTimes[0].endTimeString = '';
       this.eventError.eventDateError = false;
+      this.eventStartTimeError();
     } else if(this.eventCampaign.campaignEventTimes[0].allDay){
       this.endDateErrorMesg = '';
       this.eventError.eventEndDateError = false;
+      this.eventStartTimeError();
     }
      else {
       this.endDateErrorMesg = 'The end date is required.';
