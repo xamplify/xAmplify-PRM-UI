@@ -344,8 +344,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
       campaignData['countryId'] = 0;
       campaignData["userListIds"] = [];
       campaignData['userLists'] = [];
-      campaignData['email'] = campaignData.user.emailId;
-      campaignData['fromName'] = campaignData.user.emailId;
+      // campaignData['email'] = campaignData.user.emailId;
+      // campaignData['fromName'] = campaignData.user.emailId;
       campaignData.user.id = null;
       campaignData.user.userId = this.loggedInUserId;
       campaignData.country = campaignData.campaignEventTimes[0].country;

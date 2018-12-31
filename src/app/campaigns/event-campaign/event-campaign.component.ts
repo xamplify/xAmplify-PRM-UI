@@ -198,7 +198,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
         (result)=>{
         this.campaignService.eventCampaign = result.data;
         this.eventCampaign = result.data;
-        this.eventCampaign.enableCoBrandingLogo = result.data.enableCoBrandingLogo;
+        if(result.data.enableCoBrandingLogo){ this.eventCampaign.enableCoBrandingLogo = result.data.enableCoBrandingLogo; }
+        else { this.eventCampaign.enableCoBrandingLogo = false;}
         if(result.data.parentCampaignId) { this.parentCampaignIdValue = result.data.parentCampaignId; this.parentCampaignId =true; this.isPartnerUserList = false;}
         this.editedCampaignName = this.eventCampaign.campaign;
         this.validateCampaignName(this.eventCampaign.campaign);
