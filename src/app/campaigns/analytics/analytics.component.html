@@ -21,10 +21,10 @@
     <li *ngIf="campaignRouter==='partnerAnalytics'"><a [routerLink]="['/home/partners/analytics']">Partner Analytics</a><i class="fa fa-angle-right"></i></li>
     <li style="color: #888;" *ngIf="isDataShare" title="{{campaign.campaignName}}">
       {{campaign.campaignName | slice: 0: 35}}<span *ngIf="campaign.campaignName?.length>35">...</span>
-      <b *ngIf="isNavigatedThroughAnalytics" style="color:#0195da">(Data Sharing Enabled)</b><b *ngIf="!isPartnerEnabledAnalyticsAccess" style="color:#0195da">(Interactive Data)</b></li>
+      <b *ngIf="isNavigatedThroughAnalytics && campaignType != 'EVENT'" style="color:#0195da">(Data Sharing Enabled)</b><b *ngIf="!isPartnerEnabledAnalyticsAccess && campaignType != 'EVENT'" style="color:#0195da">(Interactive Data)</b></li>
     <li style="color: #888;" *ngIf="!isDataShare" title="{{campaign.campaignName}}">
       {{campaign.campaignName | slice: 0: 35}}<span *ngIf="campaign.campaignName?.length>35">...</span>
-      <b *ngIf="isNavigatedThroughAnalytics" style="color:#ed1d24">(Data Sharing Disabled)</b></li>
+      <b *ngIf="isNavigatedThroughAnalytics && campaignType != 'EVENT'" style="color:#ed1d24">(Data Sharing Disabled)</b></li>
 	</ul>
 <!--<app-analytics-loader [campaignType]="campaignType" *ngIf="loading"></app-analytics-loader>-->
 </div>

@@ -400,7 +400,7 @@
                                 data-placement="top" title="Campaign Based Reports" class='circled-number'>
                                 <i class="fa fa-line-chart"></i>
                               </a>
-                              <a id="disabled-icon" class="blur" data-toggle="tooltip" data-placement="top" title="Data Sharing Disabled" *ngIf="!redistributedCampaign.dataShare">
+                              <a id="disabled-icon" class="blur" data-toggle="tooltip" data-placement="top" title="Data Sharing Disabled" *ngIf="!redistributedCampaign.dataShare && redistributedCampaign.campaignType != 'EVENT'">
                                 <img src="../assets/images/disabled-icon.png">
                               </a>
                             </td>
@@ -446,6 +446,7 @@
                 <li class="filter" (click)="filterCampaigns('REGULAR',1)" [class.campaign-type-selected]="1 == sortOption.selectedCampaignTypeIndex">Email</li>
                 <li class="filter" (click)="filterCampaigns('VIDEO',2)" [class.campaign-type-selected]="2 == sortOption.selectedCampaignTypeIndex">Video</li>
                 <li class="filter" (click)="filterCampaigns('SOCIAL',3)" [class.campaign-type-selected]="3 == sortOption.selectedCampaignTypeIndex">Social</li>
+                <li class="filter" (click)="filterCampaigns('EVENT',4)" [class.campaign-type-selected]="4 == sortOption.selectedCampaignTypeIndex">Event</li>
                 <li class="filter" style="display: none;">Own Template</li>
               </ul>
 
@@ -508,6 +509,12 @@
                           alt="{{campaign.campaignType}} Campaign">
                         <img *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1 && !campaign.launched" src="assets/images/social-campaign.png" style="height: 50px;-webkit-filter: grayscale(100%);filter: grayscale(100%);"
                           alt="{{campaign.campaignType}} Campaign">
+                          
+                        <img *ngIf="campaign.campaignType.indexOf('EVENT') > -1 && campaign.launched" src="assets/images/event-campaign.png" style="height: 50px;"
+                          alt="{{campaign.campaignType}} Campaign">
+                        <img *ngIf="campaign.campaignType.indexOf('EVENT') > -1 && !campaign.launched" src="assets/images/event-campaign.png" style="height: 50px;-webkit-filter: grayscale(100%);filter: grayscale(100%);"
+                          alt="{{campaign.campaignType}} Campaign">
+                          
                       </td>
                       <td>
                         <h4 class="ellipsis mt5 mb5 f-w-600" style="font-size: 14px;" title="{{campaign.campaignName}}">{{campaign.campaignName
@@ -543,7 +550,7 @@
                           class='circled-number'>
                           <i class="fa fa-line-chart"></i>
                         </a>
-                        <a id="disabled-icon" class="blur" data-toggle="tooltip" data-placement="top" title="Data Sharing Disabled" *ngIf="!campaign.dataShare && selectedTabIndex==2">
+                        <a id="disabled-icon" class="blur" data-toggle="tooltip" data-placement="top" title="Data Sharing Disabled" *ngIf="!campaign.dataShare && selectedTabIndex==2 && campaign.campaignType != 'EVENT'">
                           <img src="../assets/images/disabled-icon.png">
                         </a>
                       </td>
@@ -599,7 +606,7 @@
                           <a (click)="referenseService.goToCampaignAnalytics(campaign)" data-toggle="tooltip" data-placement="top" title="Campaign Based Reports">
                             <i class="fa fa-line-chart"></i>
                           </a>
-                          <a id="disabled-icon" class="blur" data-toggle="tooltip" data-placement="top" title="Data Sharing Disabled" *ngIf="!campaign.dataShare && selectedTabIndex==2">
+                          <a id="disabled-icon" class="blur" data-toggle="tooltip" data-placement="top" title="Data Sharing Disabled" *ngIf="!campaign.dataShare && selectedTabIndex==2 && campaign.campaignType != 'EVENT'">
                             <img src="../assets/images/disabled-icon.png" style="margin-top: 9px;margin-left: 2px;">
                           </a>
                         </div>
