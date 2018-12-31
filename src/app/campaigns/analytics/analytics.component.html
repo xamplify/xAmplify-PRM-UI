@@ -507,8 +507,8 @@
 										<span *ngIf="item.rsvpMap.responseType === null"><b>-</b></span>
 										</td>
 										<td class="text-center" *ngIf="campaignType==='EVENT'">
-										<span *ngIf = "item.rsvpMap.additionalCount?.length > 0">{{item.rsvpMap.additionalCount}}</span>
-										<span *ngIf="!item.rsvpMap.additionalCount || item.rsvpMap.additionalCount?.length === 0"><b>-</b></span>
+										<span *ngIf = "item.rsvpMap.additionalCount?.length != 0 && item.rsvpMap.responseType === 'YES'">{{item.rsvpMap.additionalCount}}</span>
+										<span *ngIf="!item.rsvpMap.additionalCount || item.rsvpMap.additionalCount?.length === 0 || item.rsvpMap.responseType != 'YES'"><b>-</b></span>
 										</td>
 										<!-- <td class="td-chart"><h6>{{item.userEmail}}</h6></td> -->
 										<td class="td-chart" *ngIf="campaignType!=='EVENT'">
