@@ -13,7 +13,9 @@
       <li class="color-bread"><a>Create Campaign</a></li>
       </ng-container>
       <ng-container *ngIf="authenticationService.isOnlyPartner()">
-          <li class="color-bread"><a>Redistribute Campaign</a></li>
+          <a style="color: #808680;" [routerLink]="['/home/campaigns/partner/all']"> Campaigns shared by Vendors</a>
+            <i class="fa fa-angle-right"></i>
+          <li class="color-bread"><a> Redistribute Campaign</a></li>
       </ng-container>
 		</ul>
 	</div>
@@ -67,7 +69,7 @@
 <div class="text-center mt10">
 	<!--<button class="btn btn-sm btn-primary" data-target="#connectAccountsModal" data-toggle="modal">Add Accounts</button>-->
 	<button class="btn btn-sm btn-primary" data-target="#manageAccountsModal" data-toggle="modal">Manage Accounts</button>
-</div>				
+</div>
 			</div>
 			<div class="col-sm-12 alert alert-info rounded-0 custom-alert">
 				<h5>You may include up to 4 photos or 1 video in a Tweet.</h5>
@@ -193,7 +195,7 @@
 					<div *ngFor="let socialStatusProvider of socialStatusProviders">
 						<ng-container *ngIf="socialStatusProvider.selected">
 						<div class="profile-image-box" data-toggle="tooltip" data-placement="top" style="margin: 0 5px"
-							[attr.title]="socialStatusProvider.socialConnection.profileName ? socialStatusProvider.socialConnection.profileName : 
+							[attr.title]="socialStatusProvider.socialConnection.profileName ? socialStatusProvider.socialConnection.profileName :
 								socialStatusProvider.socialConnection.firstName">
 							<img class="profile-image" src="{{socialStatusProvider.socialConnection.profileImage}}" onError="this.src='assets/images/social/avatar.png';">
 							<img class="profile-icon" src="assets/images/social/{{socialStatusProvider.socialConnection.source}}.png">
@@ -201,7 +203,7 @@
 						</ng-container>
 					</div>
 					<div class="clearfix m10" style="padding: 1em"></div>
-				</ng-container>				
+				</ng-container>
 				<div *ngIf="!alias">
 				<div class="p10" *ngFor="let socialStatus of socialStatusList" [hidden]="isSocialCampaign && alias" >
 					<div class="update-status-profile col-xs-2 col-sm-1">
@@ -220,15 +222,15 @@
 						</ng-template>
 						<ng-template #socialProfile>
 							<div class="profile-image-box" data-toggle="tooltip" data-placement="top"
-								[attr.title]="socialStatus.socialStatusProvider.socialConnection.profileName ? socialStatus.socialStatusProvider.socialConnection.profileName : 
+								[attr.title]="socialStatus.socialStatusProvider.socialConnection.profileName ? socialStatus.socialStatusProvider.socialConnection.profileName :
 									socialStatus.socialStatusProvider.socialConnection.firstName">
 								<img class="profile-image" src="{{socialStatus.socialStatusProvider.socialConnection.profileImage}}" onError="this.src='assets/images/social/avatar.png';">
 								<img class="profile-icon" src="assets/images/social/{{socialStatus.socialStatusProvider.socialConnection.source}}.png">
 							</div>
-						</ng-template>						
+						</ng-template>
 					</div>
 					<div class="update-status-content col-xs-10 col-sm-11">
-						<textarea placeholder="What's happening?" rows="4" class="form-control form-group rounded-0 mb5" 
+						<textarea placeholder="What's happening?" rows="4" class="form-control form-group rounded-0 mb5"
 							[(ngModel)]="socialStatus.statusMessage" [attr.maxLength]="socialStatus.socialStatusProvider?.socialConnection.source === 'TWITTER' &&  (selectedAccounts === 1 || isCustomizeButtonClicked) ? 280 : null"></textarea>
 						<h6 class="text-count" *ngIf="socialStatus.socialStatusProvider?.socialConnection.source === 'TWITTER' && (selectedAccounts === 1 || isCustomizeButtonClicked)"><b>{{280 - socialStatus.statusMessage.length}}</b> character(s) left</h6>
 
@@ -358,7 +360,7 @@
 							<button type="button" class="btn btn-primary btn-block" (click)="shareLater()">Schedule</button>
 						</div>
 						<div class="col-xs-6 p0">
-							<button type="button" class="btn btn-default btn-block" (click)="hideScheduleOption('schedule-option-div')">Cancel</button>					
+							<button type="button" class="btn btn-default btn-block" (click)="hideScheduleOption('schedule-option-div')">Cancel</button>
 						</div>
 					</div>
 				</div>
@@ -424,7 +426,7 @@
 								<tbody>
 									<tr *ngFor="let contactList of contactListsPagination.pagedItems">
 										<td class='m0 text-center'>
-											<input type='checkbox' id='{{contactList.id}}' (click)="highlightRow(contactList.id)" 
+											<input type='checkbox' id='{{contactList.id}}' (click)="highlightRow(contactList.id)"
 											[checked]="socialCampaign.userListIds.indexOf(contactList.id)>-1">
 										</td>
 										<td>
@@ -540,7 +542,7 @@
                                 'fa-linkedin fa-linkedin-color': socialConnection.source ==='LINKEDIN',
                                 'fa-google fa-google-color': socialConnection.source ==='GOOGLE'}"></i>
                              </div>
-                          <img class="img-responsive img-circle profile-picture center-block" src="{{socialConnection.profileImage}}" alt="{{socialConnection.profileName}}" 
+                          <img class="img-responsive img-circle profile-picture center-block" src="{{socialConnection.profileImage}}" alt="{{socialConnection.profileName}}"
 						  (error)="$event.target.src = 'assets/admin/pages/media/profile/icon-user-default.png'">
                         </div>
                         <div class="clearfix">
@@ -624,7 +626,7 @@
 	<div id="fc-event-body-{{item.id}}-{{item.socialStatusProvider.id}}" class="clearfix">
 		<div class="clearfix p10" *ngIf="!item.socialStatus.ogTitle" style="border: 1px solid #ddd;">
 			<h5>{{item.socialStatus.statusMessage}}</h5>
-		</div>		
+		</div>
 		<div class="clearfix p10" *ngIf="item.socialStatus.ogTitle" style="border: 1px solid #ddd;">
 			<a target="_blank" href="{{item.socialStatus.statusMessage}}" style="text-decoration: none">
 				<img alt="{{item.socialStatus.ogTitle}}" src="{{item.socialStatus.ogImage}}" class="img-responsive" width="auto" height="64px">
