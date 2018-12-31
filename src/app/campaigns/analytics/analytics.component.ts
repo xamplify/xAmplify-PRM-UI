@@ -1108,7 +1108,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
         if(this.rsvpResposeType === 'email open'){
             this.logListName = 'People who opened mail log.csv';
         }else{
-        this.logListName = 'People who says '+ this.rsvpResposeType +' log.csv';
+        this.logListName = 'People who says '+ this.rsvpResposeType +' RSVPs log.csv';
         }
         this.downloadCsvList = this.rsvpDetailsList;
     }
@@ -1145,7 +1145,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
             object["No"] = this.downloadCsvList[i].rsvpMap.NO;
             object["May Be"] = this.downloadCsvList[i].rsvpMap.MAYBE;
             object["Not Yet"] = this.downloadCsvList[i].rsvpMap.notYetResponded;
-            object["Plus Guests"] = this.downloadCsvList[i].rsvpMap.additionalCount;
+            object["Total Guests"] = this.downloadCsvList[i].rsvpMap.additionalCount;
         }else{
          let hours = this.referenceService.formatAMPM(sentTime);
         object["Sent Time"] = sentTime.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
@@ -1200,7 +1200,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
               object["Message"] = this.downloadCsvList[i].message;
               let hours = this.referenceService.formatAMPM(responseTime);
               object["Response Time"] = responseTime.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
-              object["Plus Guests"] = this.downloadCsvList[i].additionalCount;
+              object["Total Attendees"] = this.downloadCsvList[i].additionalCount;
           }
          }
 
