@@ -337,7 +337,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
           this.eventError.eventExpiredError = true;
          }
      }
-
+     this.eventEndTimeError();
      this.eventSameDateError();
      this.resetTabClass();
   }
@@ -1073,6 +1073,8 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
   setReplyEmailTemplate(emailTemplateId: number, reply: Reply, index: number, isDraft: boolean) {
     if (!isDraft) {
       this.eventCampaign.campaignReplies[index].selectedEmailTemplateId = emailTemplateId;
+      this.eventCampaign.campaignReplies[index].emailTemplate =  new EmailTemplate();
+      this.eventCampaign.campaignReplies[index].emailTemplate['id'] = emailTemplateId;
       $('#reply-' + index + emailTemplateId).prop("checked", true);
     }
   }

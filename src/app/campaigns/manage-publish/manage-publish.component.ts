@@ -356,9 +356,10 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         let contactList = new ContactList(userListId);
         campaignData.userLists.push(contactList);
       }
+      if(campaignData.campaignReplies){
       for(let i=0; i< campaignData.campaignReplies.length;i++){
         campaignData.campaignReplies[i].id = null;
-      }
+      } }
       delete campaignData.userDTO;
       delete campaignData.userListDTOs;
       delete campaignData.emailTemplateDTO;
