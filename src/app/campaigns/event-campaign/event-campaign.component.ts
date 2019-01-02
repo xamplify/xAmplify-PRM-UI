@@ -821,6 +821,7 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
       'campaign': this.referenceService.replaceMultipleSpacesWithSingleSpace(this.eventCampaign.campaign),
       'user':eventCampaign.user,
       'message':eventCampaign.message,
+      'subjectLine':eventCampaign.subjectLine,
       'channelCampaign':eventCampaign.channelCampaign,
       'countryId': eventCampaign.countryId,
       'email':eventCampaign.email,
@@ -1025,7 +1026,7 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
     const id = 'reply-' + length;
     this.reply.divId = id;
     this.reply.actionId = 0;
-    this.reply.subject = this.referenceService.replaceMultipleSpacesWithSingleSpace(this.eventCampaign.campaign);
+    this.reply.subject = this.referenceService.replaceMultipleSpacesWithSingleSpace(this.eventCampaign.subjectLine);
 
     this.eventCampaign.campaignReplies.push(this.reply);
     this.allItems.push(id);
