@@ -26,6 +26,7 @@ export class RsvpComponent implements OnInit {
   type="";
   replyUserName=""
   characterleft = 140;
+  rsvpSavingProcessing = false;
 
   constructor(public referenceService: ReferenceService, private route: ActivatedRoute, public campaignService: CampaignService, public processor:Processor,
   public authenticationService:AuthenticationService) { }
@@ -124,6 +125,7 @@ export class RsvpComponent implements OnInit {
   }
 
   saveEventCampaignRsvp() {
+    this.rsvpSavingProcessing = true;
     this.campaignRsvp.additionalCount = this.totalGuests;
     this.campaignService.saveEventCampaignRsvp(this.campaignRsvp)
       .subscribe(
@@ -133,10 +135,12 @@ export class RsvpComponent implements OnInit {
         this.campaignRsvp.message = '';
         this.responseMessage = 'Thank you for the RSVP';
         this.getEventCampaign(this.alias);
+        this.rsvpSavingProcessing = false;
       },
       error => {
         console.log(error);
         this.processor.remove(this.processor);
+        this.rsvpSavingProcessing = false;
       },
       () => console.log("Campaign Names Loaded")
       );

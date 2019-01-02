@@ -88,7 +88,8 @@
       </div>
       <div class="modal-body">
         <div style="font-size: 15px;">
-         <!--  <span style="float:left;margin-bottom: 3px">Replying as: </span> --><span style="margin-left: 6px;" class="bold"> {{replyUserName}}</span>
+         <!--  <span style="float:left;margin-bottom: 3px">Replying as: </span> -->
+         <!-- <span style="margin-left: 6px;" class="bold"> {{replyUserName}}</span> -->
         </div>
         <textarea [(ngModel)]="campaignRsvp.message"  (input)="characterSize()" [ngModelOptions]="{standalone: true}" maxlength="140" placeholder="Add a comment..."></textarea>
         <label class="text-area-css">{{characterleft}} characters left</label>
@@ -101,7 +102,7 @@
       <div class="modal-footer">
         <div [class.alignCss]="campaignRsvp.eventCampaignRsvp!='YES'">
         <button type="button" class="btn btn-default" data-dismiss="modal" (click)="closeRsvpModel()">Close</button>
-        <button type="button" class="btn btn-secondary" (click)="saveEventCampaignRsvp()">Save changes</button>
+        <button type="button" class="btn btn-secondary" [disabled]="rsvpSavingProcessing" (click)="saveEventCampaignRsvp()">Save changes</button>
         </div>
       </div>
     </div>
