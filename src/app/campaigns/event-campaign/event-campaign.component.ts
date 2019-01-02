@@ -120,6 +120,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   parentCampaignId = false;
   reDistributeEventManage = false;
   parentCampaignIdValue:number;
+  isPartnerToo = false;
   constructor(public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
     private contactService: ContactService,
     public campaignService: CampaignService,
@@ -140,6 +141,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     this.reDistributeEventManage = this.router.url.includes('/home/campaigns/re-distribute-manage')? true: false;
     if(this.reDistributeEvent) { this.isPartnerUserList = false; } else { this.isPartnerUserList = true; }
     if(this.authenticationService.isOnlyPartner()) {  this.isPartnerUserList = false; }
+    this.isPartnerToo = this.authenticationService.checkIsPartnerToo();
 
   }
   isEven(n) { if(n % 2 === 0){ return true;} return false;}
@@ -983,7 +985,33 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
   resetcampaignEventMedia() {
     this.eventCampaign.campaignEventMedias[0] = new CampaignEventMedia();
   }
-
+  paginateEmailTemplateRows(pageIndex:number,reply:Reply){
+    reply.emailTemplatesPagination.pageIndex = pageIndex;
+    this.loadEmailTemplatesForAddReply(reply);
+  }
+  filterReplyTemplates(type:string,index:number,reply:Reply){
+    if(type=="BASIC"){
+        reply.emailTemplatesPagination.emailTemplateType = EmailTemplateType.BASIC;
+    }else if(type=="RICH"){
+        reply.emailTemplatesPagination.emailTemplateType = EmailTemplateType.RICH;
+    }else if(type=="UPLOADED"){
+        reply.emailTemplatesPagination.emailTemplateType = EmailTemplateType.UPLOADED;
+    }else if(type=="NONE"){
+        reply.emailTemplatesPagination.emailTemplateType = EmailTemplateType.NONE;
+    }
+    else if(type=="PARTNER"){
+        reply.emailTemplatesPagination.emailTemplateType = EmailTemplateType.PARTNER;
+    }
+     reply.selectedEmailTemplateTypeIndex = index;
+     reply.emailTemplatesPagination.pageIndex = 1;
+     this.loadEmailTemplatesForAddReply(reply);
+ }
+ eventReplyHandler(keyCode: any, reply:Reply) {  if (keyCode === 13) {  this.searchReplyEmailTemplate(reply); } }
+ searchReplyEmailTemplate(reply:Reply){
+  reply.emailTemplatesPagination.pageIndex = 1;
+  reply.emailTemplatesPagination.searchKey = reply.emailTemplateSearchInput;
+  this.loadEmailTemplatesForAddReply(reply);
+ }
   addReplyRows() {
     this.reply = new Reply();
     let length = this.allItems.length;

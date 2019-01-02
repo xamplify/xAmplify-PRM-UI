@@ -336,7 +336,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 this.isScheduleSelected = true;
                 this.launchCampaignTabClass = this.successTabClass;
             }
-            
+
             this.name = this.campaignService.campaign.campaignName;
             let emailTemplate = this.campaign.emailTemplate;
             if(emailTemplate!=undefined){
@@ -456,6 +456,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
       if(event===13 && type==='contact'){ this.searchContactList();}
       if(event===13 && type==='emailTemplate'){ this.searchEmailTemplate();}
   }
+  eventReplyHandler(keyCode: any, reply:Reply) {  if (keyCode === 13) {  this.searchReplyEmailTemplate(reply); } }
     ngOnInit(){
         Metronic.init();
         Layout.init();
@@ -1564,8 +1565,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
            this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.VIDEO_CO_BRANDING;
            this.selectedEmailTemplateType = EmailTemplateType.VIDEO_CO_BRANDING;
        }
-       
-       
+
+
         this.selectedEmailTemplateTypeIndex = index;
         this.emailTemplatesPagination.pageIndex = 1;
         this.loadEmailTemplates(this.emailTemplatesPagination);
@@ -2433,7 +2434,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
          );
      }
 
-     
+
      setLoggedInUserEmailId(){
          const userProfile = this.authenticationService.userProfile;
          this.campaign.email = userProfile.emailId;
@@ -2445,8 +2446,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
              this.campaign.fromName = $.trim(userProfile.emailId);
          this.setEmailIdAsFromName();
      }
-     
-     
+
+
      setEmailIdAsFromName(){
          if(this.campaign.fromName.length==0){
              this.campaign.fromName = this.campaign.email;
