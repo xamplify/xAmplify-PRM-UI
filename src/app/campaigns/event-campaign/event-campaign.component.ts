@@ -823,6 +823,7 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
       'message':eventCampaign.message,
       'subjectLine':eventCampaign.subjectLine,
       'channelCampaign':eventCampaign.channelCampaign,
+      'enableCoBrandingLogo':eventCampaign.enableCoBrandingLogo,
       'countryId': eventCampaign.countryId,
       'email':eventCampaign.email,
       'emailOpened':eventCampaign.emailOpened,
