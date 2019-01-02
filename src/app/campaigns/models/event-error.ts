@@ -11,4 +11,5 @@ export class EventError{
   eventContactError = false;
   eventSameDateError= false;
   scheduleTimeError = false;
+  eventSubjectLineError = false;
 }

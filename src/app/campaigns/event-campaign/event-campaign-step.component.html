@@ -141,6 +141,23 @@ a.disabled {
 									[ngModelOptions]="{standalone: true}">
 							</div>
 						</div>
+						<div class="form-group">
+							<label class="col-sm-3 labal-css color-css">Subject Line <font
+								style="color: red"> <b>*</b>
+							</font>
+							</label>
+							<div class="col-sm-9">
+								<input type="text" id="subjectLine" placeholder="Subject Line"
+									class="form-control" [(ngModel)]="eventCampaign.subjectLine"
+									[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)? '' : null"
+									name="subjectLine"
+									(input)="eventSubjectLineError()"
+									[ngClass]="{'has-error': eventError.eventSubjectLineError}"
+									maxlength="200" />
+									<div class="text-danger" *ngIf="eventError.eventSubjectLineError">
+									Subject line is required</div>
+							</div>
+						</div>
 						<div class="form-group"
 							*ngIf="!authenticationService.isOnlyPartner()">
 							<span for="Throughpartner" class="col-sm-3 labal-css color-css" [ngClass]="{'highletClass': eventCampaign.channelCampaign }">Through
