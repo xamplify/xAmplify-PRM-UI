@@ -322,12 +322,12 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   eventTitleError(){
       this.eventError.eventTitleError = this.eventCampaign.campaign.replace( /\s\s+/g, '' ).replace(/\s+$/,"").replace(/\s+/g," ") ? false: true;
   }
-  
+
   eventSubjectLineError(){
       this.eventError.eventSubjectLineError = this.eventCampaign.subjectLine.replace( /\s\s+/g, '' ).replace(/\s+$/,"").replace(/\s+/g," ") ? false: true;
       this.resetTabClass();
   }
-  
+
   eventHostByError(){
     this.eventError.eventHostByError = this.eventCampaign.fromName.replace( /\s\s+/g, '' ).replace(/\s+$/,"").replace(/\s+/g," ") ? false: true;
     this.resetTabClass();
@@ -1108,9 +1108,11 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
 
   setReplyEmailTemplate(emailTemplateId: number, reply: Reply, index: number, isDraft: boolean) {
     if (!isDraft) {
-      this.eventCampaign.campaignReplies[index].selectedEmailTemplateId = emailTemplateId;
-      this.eventCampaign.campaignReplies[index].emailTemplate =  new EmailTemplate();
-      this.eventCampaign.campaignReplies[index].emailTemplate['id'] = emailTemplateId;
+      reply.selectedEmailTemplateId = emailTemplateId;
+      // reply.emailTemplate.id = emailTemplateId;
+      // this.eventCampaign.campaignReplies[index].selectedEmailTemplateId = emailTemplateId;
+      // this.eventCampaign.campaignReplies[index].emailTemplate =  new EmailTemplate();
+      // this.eventCampaign.campaignReplies[index].emailTemplate['id'] = emailTemplateId;
       $('#reply-' + index + emailTemplateId).prop("checked", true);
     }
   }
@@ -1555,7 +1557,7 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
         if( (this.eventCampaign.campaign && !this.eventError.eventTitleError &&  this.isValidCampaignName && this.eventCampaign.fromName && !this.eventError.eventSubjectLineError && this.eventCampaign.subjectLine && !this.eventError.eventHostByError && this.eventCampaign.campaignEventTimes[0].startTimeString && (this.eventCampaign.campaignEventTimes[0].endTimeString || this.eventCampaign.campaignEventTimes[0].allDay) && !this.eventError.eventSameDateError && this.datePassedError == '' && this.eventCampaign.campaignEventTimes[0].countryId && (this.eventCampaign.onlineMeeting || (this.eventCampaign.campaignLocation.location && !this.eventError.eventLocationError)) ) && (this.userListIds.length !=0 || this.parternUserListIds.length !=0) && !this.eventCampaign.emailTemplate.id ){
             this.emailTemplatesTabClass = "enableEmailTemplate";
         }else if( (this.eventCampaign.campaign && !this.eventError.eventTitleError && this.isValidCampaignName && this.eventCampaign.fromName && !this.eventError.eventSubjectLineError && this.eventCampaign.subjectLine && !this.eventError.eventHostByError && this.eventCampaign.campaignEventTimes[0].startTimeString && (this.eventCampaign.campaignEventTimes[0].endTimeString || this.eventCampaign.campaignEventTimes[0].allDay) && !this.eventError.eventSameDateError && this.datePassedError == '' && this.eventCampaign.campaignEventTimes[0].countryId && (this.eventCampaign.onlineMeeting || (this.eventCampaign.campaignLocation.location && !this.eventError.eventLocationError))) &&(this.userListIds.length !=0 || this.parternUserListIds.length !=0) && this.eventCampaign.emailTemplate.id){
-            this.emailTemplatesTabClass = "emailTemplateTabComplete"; 
+            this.emailTemplatesTabClass = "emailTemplateTabComplete";
         }else{
             this.emailTemplatesTabClass = "disableTemplateTab";
         }
