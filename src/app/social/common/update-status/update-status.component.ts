@@ -427,11 +427,6 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     if (this.validate()) {
       this.loading = true;
       this.socialStatusResponse = [];
-      this.socialStatusList.forEach(data => {
-        data.userId = this.userId;
-        if (this.isUrl(data.statusMessage))
-          data.validLink = true;
-      });
       this.socialService.postStatus(this.socialStatusList)
         .subscribe(
         data => {
@@ -475,6 +470,15 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   }
 
   shareNow() {
+    this.socialStatusList.forEach(data => {
+      data.userId = this.userId;
+      if (this.isUrl(data.statusMessage))
+        data.validLink = true;
+      if (data.shareNow) {
+        data.scheduledTime = new Date();
+        data.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      }
+    });
     if (!this.isSocialCampaign)
       this.updateStatus();
     else if (this.isSocialCampaign && !this.alias)
@@ -484,7 +488,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   }
 
   deleteStatus(socialStatus: SocialStatus) {
-    this.setCustomResponse(ResponseType.Loading, 'Please Wait while we are processing your request.');
+    this.loading = true;
     this.socialService.deleteStatus(socialStatus)
       .subscribe(
       data => {
@@ -493,8 +497,11 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
         this.listEvents();
         this.initializeSocialStatus();
       },
-      error => this.setCustomResponse(ResponseType.Error, 'An Error occurred while deleting the status.'),
-      () => console.log('Finished')
+      error => {
+        this.loading = false;
+        this.setCustomResponse(ResponseType.Error, error)
+      },
+      () =>  this.loading = false
       );
   }
 
@@ -683,7 +690,8 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
         listWeek: {buttonText: 'list week'}
       },
       defaultView: 'month',
-      timeFormat: 'h:mm',
+      timeFormat: 'h:mm a',
+      eventOrder: "-start", 
       eventRender: function(event: any, element: any) {
         element.find('.fc-time').addClass('fc-time-title mr5');
         element.find('.fc-title').addClass('fc-time-title ml5');
@@ -737,7 +745,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
           this.socialStatusDtos.push(socialStatusDto);
 
             const event = {
-            title: socialStatus.statusMessage.substring(0, 15),
+            title: socialStatus.statusMessage.substring(0, 10),
             start: socialStatus.scheduledTime,
             id: socialStatus.id+'-'+socialStatusDto.socialStatusProvider.id,
             data: socialStatusDto,

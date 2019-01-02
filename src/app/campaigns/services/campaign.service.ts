@@ -522,4 +522,10 @@ export class CampaignService {
           .map(this.extractData)
           .catch(this.handleError);
   }
+
+  getCampaignCalendarView(userId: number){
+      return this.http.get(this.URL + `campaign/calendar/${userId}?access_token=${this.authenticationService.access_token}` )
+          .map(this.extractData)
+          .catch(this.handleError);
+  }
 }

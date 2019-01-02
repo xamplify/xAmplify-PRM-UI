@@ -174,10 +174,10 @@
 	                				'alert-success': customResponse.type === 1,
 	                				'alert-warning': customResponse.type === 2,
 	                				'alert-danger': customResponse.type === 3}">
-						<button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="customResponse.statusText = null">
-							<span>&times;</span>
-						</button>
-						<h4 class="m0">
+							<div class="pull-right">
+								<i class="fa fa-times-circle" aria-hidden="true" (click)="customResponse.statusText = null"></i>
+							</div>
+							<h4>
 							<i class="fa" [ngClass]="{
 									'fa-circle-o-notch fa-spin fa-3x fa-fw margin-bottom': customResponse.type === 0,
 									'fa-check-circle-o': customResponse.type === 1,
