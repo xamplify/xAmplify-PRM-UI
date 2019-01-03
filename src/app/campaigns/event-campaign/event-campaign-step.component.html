@@ -601,21 +601,20 @@ a.disabled {
                     <h4 class="pull-left f-w-600">Select<span *ngIf="isPreviewEvent">ed</span> an Email Template</h4>
                   </div>
                   <div style="padding-top: 12px;">
-					<div class="input-icon right pull-right"
-						style="padding-top: 4px; right: 8px;">
-						<input type="text" [(ngModel)]="emailTemplateSearchInput"	[ngModelOptions]="{standalone: true}" class="form-control"
-							placeholder="Search for a template" (keypress)="eventHandler($event.keyCode)">
-						<button class="glyphicon glyphicon-remove search-box-item-clear"	style="padding: 5px;" *ngIf="emailTemplateSearchInput"
-							(click)="emailTemplateSearchInput='';"></button>
-						<button type="submit" class="search-box-item-click email-search"	(click)="searchEmailTemplate()">
-							<i class="fa fa-search"	style="font-size: 16px !important; padding: 5px !important;"></i>
-						</button>
-					</div>
-					</div>
+                <div class="input-icon right pull-right"
+                  style="padding-top: 4px; right: 8px;">
+                  <input type="text" [(ngModel)]="emailTemplateSearchInput"	[ngModelOptions]="{standalone: true}" class="form-control"
+                    placeholder="Search for a template" (keypress)="eventHandler($event.keyCode)">
+                  <button class="glyphicon glyphicon-remove search-box-item-clear"	style="padding: 5px;" *ngIf="emailTemplateSearchInput"
+                    (click)="emailTemplateSearchInput='';"></button>
+                  <button type="submit" class="search-box-item-click email-search"	(click)="searchEmailTemplate()">
+                    <i class="fa fa-search"	style="font-size: 16px !important; padding: 5px !important;"></i>
+                  </button>
+                </div>
+                </div>
 
-					<div class="portlet-body clearfix">
+				    	<div class="portlet-body clearfix">
                  <section  style="min-height: 200px;">
-
                  <ng-container *ngIf="showSelectedTemplate"><!-- !hideCoBrandedEmailTemplate -->
                           <div  *ngIf="emailTemplatesPagination.totalRecords>0 && emailTemplatesPagination.pageIndex==1">
                          <ul class="content__list">
@@ -666,8 +665,7 @@ a.disabled {
                             </li>
                           </ul>
                       </div>
-                    </ng-container>
-
+                  </ng-container>
                   <ul class="content__list"
 										*ngFor="let emailTemplate of emailTemplatesPagination.pagedItems;let i =index">
 										<li *ngIf="emailTemplateId!=emailTemplate?.id" [class.disabled]="isPreviewEvent || reDistributeEvent || reDistributeEventManage" (click)="emailTemplateSelection(emailTemplate)" class="list__item" [class.list__item--selected]="eventCampaign?.emailTemplate?.id === emailTemplate?.id">
@@ -720,26 +718,23 @@ a.disabled {
 											</div>
 										</li>
 									</ul>
-							<div *ngIf="emailTemplatesPagination.totalRecords==0"
-								class="alert alert-info">
-								<strong>No email templates found</strong>
-							</div>
-
-						</section>
-                  </div>
-                </div>
+							    <div *ngIf="emailTemplatesPagination.totalRecords==0" class="alert alert-info">
+								   <strong>No email templates found</strong>
+							    </div>
+					      </section>
+             </div>
+         </div>
 				<div style="text-align:left;" [hidden]="emailTemplatesPagination.totalRecords<0 || campaignEmailTemplate.httpRequestLoader.isLoading || campaignEmailTemplate.httpRequestLoader.isServerError">
          <!--  <app-pagination [class.disabled]="isPreviewEvent" [pagination]="emailTemplatesPagination" [type]="'emailTemplates'"></app-pagination> -->
           <app-pagination [class.disabled]="isPreviewEvent" [pagination]="emailTemplatesPagination" [type]="'emailTemplates'"
             (notifyParent)="setPage($event)"  (notifyParentDropDown)="loadPaginationDropdownTemplates($event)"></app-pagination>
         </div>
         <button *ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage" type="button" style="float:left;" class="btn btn-default" (click)="resetTabs('recipients')">Previous</button>
-		 <button *ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage" type="button" style="float: right;" class="btn btn-default btn green" (click)="resetTabs('launch')" [class.disabled]="launchTabClass === 'disableLaunchTab'" title="">Next</button>
+		    <button *ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage" type="button" style="float: right;" class="btn btn-default btn green" (click)="resetTabs('launch')" [class.disabled]="launchTabClass === 'disableLaunchTab'" title="">Next</button>
         </div>
         <!--    End Step three templates -->
 		<!-- 	Step four launch campaigns    -->
 		<div [hidden]="!launchTab" style="padding: 10px 0 0 0;">
-
         <fieldset>
             <legend>Preview Before Publishing</legend>
             <div class="row">
@@ -830,10 +825,7 @@ a.disabled {
           <fieldset class="col-xs-12">
             <legend style="color: #2c3f52;">Add Your Work Flow</legend>
             <div style="margin-bottom:70px;">
-            <!-- <div class="col-xs-6" style="margin-left: 45.666667%;">
-              <img *ngIf="!isPreviewEvent" src="assets/images/icon1.png" (click)="addReplyRows()">
-              <img *ngIf="isPreviewEvent" src="assets/images/icon1.png">
-            </div> --><br>
+            <br>
             <div class="col-xs-12">
             <div class="col-xs-3"></div>
             <div class="col-xs-6" *ngIf="!isPreviewEvent" [class.disabled]="eventError.eventExpiredError">
@@ -927,11 +919,12 @@ a.disabled {
                         <label for="days" id="email-template-{{reply.divId}}">Select Email Template<b style="color: red">*</b></label>
                       </div>
                       <div class="portlet-title" style="float:left">
-                        <ul class="mix-filter" *ngIf="!isOnlyPartner" style="margin-top: -4px;">
-                          <li class="filter" (click)="filterReplyTemplates('NONE',0,reply)" [class.emailtemplate-selected]="0 == reply.selectedEmailTemplateTypeIndex">All Email Templates</li>
-                          <li class="filter" (click)="filterReplyTemplates('RICH',2,reply)" [class.emailtemplate-selected]="2 == reply.selectedEmailTemplateTypeIndex">Rich Templates</li>
-                          <li class="filter" (click)="filterReplyTemplates('UPLOADED',3,reply)" [class.emailtemplate-selected]="3 == reply.selectedEmailTemplateTypeIndex">Uploaded Regular Templates</li>
-                          <li *ngIf="isPartnerToo" class="filter" (click)="filterReplyTemplates('PARTNER',7,reply)" [class.emailtemplate-selected]="7== reply.selectedEmailTemplateTypeIndex">Partner Templates</li>
+                        <ul class="mix-filter col-xs-12" *ngIf="!isOnlyPartner" style="margin-left: -26px !important;"  [class.disabled]="isPreviewEvent || eventError.eventExpiredError">
+                         	<li class="hidden-xs" style="background: white; color: #616161;cursor: default;font-size: 14px;">Templates:</li>
+                          <li class="filter" (click)="filterReplyTemplates('NONE',0,reply)" [class.emailtemplate-selected]="0 == reply.selectedEmailTemplateTypeIndex">All Email</li>
+                          <li class="filter" (click)="filterReplyTemplates('RICH',2,reply)" [class.emailtemplate-selected]="2 == reply.selectedEmailTemplateTypeIndex">Rich</li>
+                          <li class="filter" (click)="filterReplyTemplates('UPLOADED',3,reply)" [class.emailtemplate-selected]="3 == reply.selectedEmailTemplateTypeIndex">Uploaded Regular</li>
+                          <li *ngIf="isPartnerToo" class="filter" (click)="filterReplyTemplates('PARTNER',7,reply)" [class.emailtemplate-selected]="7== reply.selectedEmailTemplateTypeIndex">Partner</li>
                         </ul>
                         <div class="input-icon pull-right" style="position:relative; top:-5px">
                           <input type="text" [(ngModel)]="reply.emailTemplateSearchInput" [ngModelOptions]="{standalone: true}" class="form-control"
@@ -956,7 +949,7 @@ a.disabled {
                             <ng-container *ngIf="!isAdd && reply.emailTemplatesPagination.totalRecords>0 && reply.emailTemplatesPagination.pageIndex==1 && reply.selectedEmailTemplateIdForEdit>0 && reply.showSelectedEmailTemplate ">
                               <tr (click)="setReplyEmailTemplate(reply.emailTemplate.id,reply,i)" [class.active]="reply.emailTemplate.id==reply.selectedEmailTemplateId">
                                 <td class="custom-center">
-                                  <input [attr.disabled]="isPreviewEvent? '' : null" type="radio" name="reply-email-template" [value]="reply.emailTemplate.id" id="reply-{{i}}-{{reply.emailTemplate.id}}"
+                                  <input [attr.disabled]="isPreviewEvent || eventError.eventExpiredError" type="radio" name="reply-email-template" [value]="reply.emailTemplate.id" id="reply-{{i}}-{{reply.emailTemplate.id}}"
                                     (click)="setReplyEmailTemplate(reply.emailTemplate.id,reply,i)" [checked]="reply.emailTemplate.id == reply.selectedEmailTemplateId">
                                 </td>
                                 <td class="custom-center" *ngIf="reply.emailTemplate.name?.length>25" title="{{reply.emailTemplate.name}}">{{reply.emailTemplate.name|slice:0:25}}....</td>
@@ -1013,10 +1006,11 @@ a.disabled {
                       </ng-container>
                     </div>
                   </div>
-                  <div *ngIf="reply.defaultTemplate" class="col-xs-12" style="position: relative;top: 3px;">
+                  <div *ngIf="reply.defaultTemplate" class="col-xs-12" style="margin-top:16px !important" [class.disabled]="isPreviewEvent">
                       <app-list-loader [rowsCount]="3" *ngIf="campaignEmailTemplate.httpRequestLoader.isLoading"></app-list-loader>
                       <app-error-pages *ngIf="campaignEmailTemplate.httpRequestLoader.isServerError"></app-error-pages>
-                      <ng-container *ngIf="!campaignEmailTemplate.httpRequestLoader.isLoading && !campaignEmailTemplate.httpRequestLoader.isServerError">
+                      <div class="row" *ngIf="!campaignEmailTemplate.httpRequestLoader.isLoading && !campaignEmailTemplate.httpRequestLoader.isServerError">
+                        <div>
                         <ng-container *ngIf="!isAdd && reply.emailTemplatesPagination.totalRecords>0 && reply.emailTemplatesPagination.pageIndex==1 && reply.selectedEmailTemplateIdForEdit>0 && reply.showSelectedEmailTemplate ">
                             <ul class="content__list">
                                 <li class="list__item" [class.list__item--selected]="reply.emailTemplate.id==reply.selectedEmailTemplateId">
@@ -1030,7 +1024,7 @@ a.disabled {
                                        <span class="ng-scope"> <a
                                         class="item__preview item__preview--image img-container custom"
                                         target="_BLANK"> <img
-                                          class="thumb ng-scope" style="width:103px !important" src="assets/images/bee-template/rich-co-branding-news-letter.png">
+                                          class="thumb ng-scope" style="width:98px !important" src="assets/images/bee-template/rich-co-branding-news-letter.png">
                                       </a> <a href="javascript:;"> </a>
                                       </span>
                                     </div>
@@ -1061,7 +1055,7 @@ a.disabled {
                                 </li>
                               </ul>
                           </ng-container>
-                            <ul class="content__list" *ngFor="let emailTemplate of reply.emailTemplatesPagination.pagedItems ;let e =index">
+                           <ul class="content__list" *ngFor="let emailTemplate of reply.emailTemplatesPagination.pagedItems ;let e =index">
                             <li (click)="setReplyEmailTemplate(emailTemplate.id,reply,i,emailTemplate.draft)" [class.list__item--selected]="emailTemplate.id==reply.selectedEmailTemplateId"
                                 *ngIf="reply.selectedEmailTemplateIdForEdit!=emailTemplate.id" class="list__item">
                               <!-- above class [ngClass]="{'list__item--selected':selectedFileIds.indexOf(file.id)>-1}" -->
@@ -1077,7 +1071,7 @@ a.disabled {
                                   </span>
                                    <span class="ng-scope"> <a class="item__preview item__preview--image img-container custom"
                                     target="_BLANK">
-                                     <img  class="thumb ng-scope" style="width: 103px !important;" src="assets/images/bee-template/rich-co-branding-news-letter.png">
+                                     <img  class="thumb ng-scope" style="width: 98px !important;" src="assets/images/bee-template/rich-co-branding-news-letter.png">
                                   </a> <a href="javascript:;"> </a>
                                   </span>
                                 </div>
@@ -1108,30 +1102,32 @@ a.disabled {
                               </div>
                             </li>
                           </ul>
-                        <div *ngIf="reply.emailTemplatesPagination.totalRecords==0" class="alert alert-info">
-                          <strong>No email templates found</strong>
                         </div>
-                        <div *ngIf="reply.emailTemplatesPagination.totalRecords>0 && !campaignEmailTemplate.httpRequestLoader.isLoading && !campaignEmailTemplate.httpRequestLoader.isServerError"
-                          style="float: left;">
-                          <ul *ngIf="reply.emailTemplatesPagination.pager.pages && reply.emailTemplatesPagination.pager.pages.length" class="pagination">
-                            <li [ngClass]="{disabled:reply.emailTemplatesPagination.pager.currentPage === 1}">
-                              <a (click)="paginateEmailTemplateRows(1,reply)" [class.disabled]="reply.emailTemplatesPagination.pager.currentPage === 1">First</a>
-                            </li>
-                            <li [ngClass]="{disabled:reply.emailTemplatesPagination.pager.currentPage === 1}">
-                              <a (click)="paginateEmailTemplateRows(reply.emailTemplatesPagination.pager.currentPage - 1,reply)" [class.disabled]="reply.emailTemplatesPagination.pager.currentPage === 1">Previous</a>
-                            </li>
-                            <li *ngFor="let page of reply.emailTemplatesPagination.pager.pages" [ngClass]="{active:reply.emailTemplatesPagination.pager.currentPage === page}">
-                              <a (click)="paginateEmailTemplateRows(page,reply)" [class.disabled]="reply.emailTemplatesPagination.pager.currentPage === page">{{page}}</a>
-                            </li>
-                            <li [ngClass]="{disabled:reply.emailTemplatesPagination.pager.currentPage === reply.emailTemplatesPagination.pager.totalPages}">
-                              <a (click)="paginateEmailTemplateRows(reply.emailTemplatesPagination.pager.currentPage + 1,reply)" [class.disabled]="reply.emailTemplatesPagination.pager.currentPage === reply.emailTemplatesPagination.pager.totalPages">Next</a>
-                            </li>
-                            <li [ngClass]="{disabled:reply.emailTemplatesPagination.pager.currentPage === reply.emailTemplatesPagination.pager.totalPages}">
-                              <a (click)="paginateEmailTemplateRows(reply.emailTemplatesPagination.pager.totalPages,reply)" [class.disabled]="reply.emailTemplatesPagination.pager.currentPage === reply.emailTemplatesPagination.pager.totalPages">Last</a>
-                            </li>
-                          </ul>
+                      </div>
+                      <div class="col-xs-12" style="margin-left: -12px;">
+                        <div *ngIf="reply.emailTemplatesPagination.totalRecords>0 && !campaignEmailTemplate.httpRequestLoader.isLoading && !campaignEmailTemplate.httpRequestLoader.isServerError">
+                        <ul *ngIf="reply.emailTemplatesPagination.pager.pages && reply.emailTemplatesPagination.pager.pages.length" class="pagination">
+                          <li [ngClass]="{disabled:reply.emailTemplatesPagination.pager.currentPage === 1}">
+                            <a (click)="paginateEmailTemplateRows(1,reply)" [class.disabled]="reply.emailTemplatesPagination.pager.currentPage === 1">First</a>
+                          </li>
+                          <li [ngClass]="{disabled:reply.emailTemplatesPagination.pager.currentPage === 1}">
+                            <a (click)="paginateEmailTemplateRows(reply.emailTemplatesPagination.pager.currentPage - 1,reply)" [class.disabled]="reply.emailTemplatesPagination.pager.currentPage === 1">Previous</a>
+                          </li>
+                          <li *ngFor="let page of reply.emailTemplatesPagination.pager.pages" [ngClass]="{active:reply.emailTemplatesPagination.pager.currentPage === page}">
+                            <a (click)="paginateEmailTemplateRows(page,reply)" [class.disabled]="reply.emailTemplatesPagination.pager.currentPage === page">{{page}}</a>
+                          </li>
+                          <li [ngClass]="{disabled:reply.emailTemplatesPagination.pager.currentPage === reply.emailTemplatesPagination.pager.totalPages}">
+                            <a (click)="paginateEmailTemplateRows(reply.emailTemplatesPagination.pager.currentPage + 1,reply)" [class.disabled]="reply.emailTemplatesPagination.pager.currentPage === reply.emailTemplatesPagination.pager.totalPages">Next</a>
+                          </li>
+                          <li [ngClass]="{disabled:reply.emailTemplatesPagination.pager.currentPage === reply.emailTemplatesPagination.pager.totalPages}">
+                            <a (click)="paginateEmailTemplateRows(reply.emailTemplatesPagination.pager.totalPages,reply)" [class.disabled]="reply.emailTemplatesPagination.pager.currentPage === reply.emailTemplatesPagination.pager.totalPages">Last</a>
+                          </li>
+                        </ul>
                         </div>
-                      </ng-container>
+                    </div>
+                    <div *ngIf="reply.emailTemplatesPagination.totalRecords==0" class="col-xs-12 alert alert-info">
+                      <strong>No email templates found</strong>
+                    </div>
                    </div>
 
                   </div>
@@ -1146,7 +1142,7 @@ a.disabled {
           <!-- <div class="col-xs-4"> -->
             <div class="btn-group btn-group-justified" [class.disabled]="eventError.eventExpiredError">
                <ng-container *ngFor="let options of launchOptions">
-                  <label class="btn btn-primary" style="border: 1px solid #fff;" [class.disabled]="isPreviewEvent" >
+                  <label class="btn btn-primary" style="border: 1px solid #fff;" [class.disabled]="isPreviewEvent || eventError.eventExpiredError" >
                     <input type="radio"[checked]="eventCampaign.campaignScheduleType === options" class="text-center" (input)="resetTabClass()" name="scheduleCampaign" [value]="options" (click)="setLaunchOptions(options)" ngDefaultControl
                     style=" margin-right:1.5em; " />{{options}}
                   </label>
