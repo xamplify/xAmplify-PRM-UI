@@ -324,14 +324,27 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
           }
     }
     saveAsEventCampaign(saveAsCampaign:any){
-      this.campaignService.getEventCampaignById(saveAsCampaign.campaignId).subscribe(
+     /* this.campaignService.getEventCampaignById(saveAsCampaign.campaignId).subscribe(
         (data)=>{
           console.log(data);
           this.saveAsCampaignInfo = data.data;
           this.setSaveAsEventCampaign(data.data);
         });
-    }
-
+    }*/
+    	
+    	let saveAsCampaignData = new EventCampaign();
+        saveAsCampaignData.id = saveAsCampaign.campaignId;
+        saveAsCampaignData.campaign = this.saveAsCampaignName;
+        this.campaignService.saveAsEventCampaign(saveAsCampaignData).subscribe(
+                  (data)=>{
+                      this.campaignSuccessMessage = "Campaign copied successfully";
+                      $('#lanchSuccess').show(600);
+                      $('#saveAsModal').modal('hide');
+                      this.showMessageOnTop();
+                      this.listCampaign(this.pagination);
+                      console.log("saveAsCampaign Successfully")
+                  });
+       }
     setSaveAsEventCampaign(campaignData:EventCampaign){
       campaignData.campaign = this.saveAsCampaignName;
       campaignData.id = null;

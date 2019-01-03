@@ -528,4 +528,9 @@ export class CampaignService {
           .map(this.extractData)
           .catch(this.handleError);
   }
+  saveAsEventCampaign(campaign:any) {
+      return this.http.post(this.URL + `campaign/save-as-event-campaign?access_token=${this.authenticationService.access_token}`, campaign)
+          .map(this.extractData)
+          .catch(this.handleError);
+  }
 }
