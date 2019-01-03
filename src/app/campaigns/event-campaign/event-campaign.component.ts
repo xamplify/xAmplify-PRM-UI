@@ -282,7 +282,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
 
         this.loadContactLists(this.contactListsPagination);
         this.setTemplateId();
-        this.loadEmailTemplates(this.emailTemplatesPagination);
+        if(!this.eventCampaign.nurtureCampaign){ this.loadEmailTemplates(this.emailTemplatesPagination); }
         this.recipientsTabClass = "enableRecipientsTab";
         this.detailsTab = true;
         this.resetTabClass();
@@ -1035,6 +1035,7 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
   }
 
   loadEmailTemplatesForAddReply(reply: Reply) {
+    if(!this.eventCampaign.nurtureCampaign){
     this.campaignEmailTemplate.httpRequestLoader.isHorizontalCss = true;
     this.referenceService.loading(this.campaignEmailTemplate.httpRequestLoader, true);
     reply.emailTemplatesPagination.filterBy = "CampaignRegularEmails";
@@ -1059,6 +1060,7 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
       },
       () => this.logger.info("Finished loadEmailTemplatesForAddReply()", reply.emailTemplatesPagination)
       )
+    }
   }
 
   filterEmailTemplateForEditCampaign(){
