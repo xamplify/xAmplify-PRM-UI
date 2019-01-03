@@ -1186,7 +1186,7 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
           }
           if ( !this.eventCampaign.onlineMeeting ) {
               if ( this.eventCampaign.campaignLocation.location && this.eventCampaign.campaignLocation.street ) {
-                  data.body = data.body.replace( /{{address}}/g, this.eventCampaign.campaignLocation.location + ",<br/>" +  this.eventCampaign.campaignLocation.street + "," + this.eventCampaign.campaignLocation.city + ",<br/>" + this.eventCampaign.campaignLocation.state + "," + this.eventCampaign.campaignLocation.zip);
+                  data.body = data.body.replace( /{{address}}/g, this.eventCampaign.campaignLocation.location + "<br/>" +  this.eventCampaign.campaignLocation.street + ", " + this.eventCampaign.campaignLocation.city + "<br/>" + this.eventCampaign.campaignLocation.state + ", " + this.eventCampaign.campaignLocation.zip);
                  /* data.body = data.body.replace( /{{addreess_lane2}}/g, this.eventCampaign.campaignLocation.city + "," + this.eventCampaign.campaignLocation.state + "," + this.eventCampaign.campaignLocation.zip );*/
               }
           } else {
