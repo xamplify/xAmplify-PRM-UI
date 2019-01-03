@@ -93,14 +93,14 @@
         </div>
         <textarea [(ngModel)]="campaignRsvp.message"  (input)="characterSize()" [ngModelOptions]="{standalone: true}" maxlength="140" placeholder="Add a comment..."></textarea>
         <label class="text-area-css">{{characterleft}} characters left</label>
-       <div style="margin-bottom: 7px;" *ngIf="campaignRsvp.eventCampaignRsvp=='YES'">
+       <div style="margin-bottom: 7px;" *ngIf="campaignRsvp.eventCampaignRsvp=='YES' && campaignRsvp.inviteOthers">
          <button style="min-width: 35px !important;" class="btn btn-primary default-btn-css" [disabled]="totalGuests==1" (click)="totalGuests = totalGuests-1">-</button>
          <button class="btn btn-defult default-btn-css totalguests">{{totalGuests}}</button>
          <button style="margin-left: -4px;" class="btn btn-primary default-btn-css" [disabled]="totalGuests==11" (click)="totalGuests = totalGuests+1">+</button>
          <span class="bold">Total guests</span> (including you)
         </div>
       <div class="modal-footer">
-        <div [class.alignCss]="campaignRsvp.eventCampaignRsvp!='YES'">
+        <div [class.alignCss]="campaignRsvp.eventCampaignRsvp!='YES' || !campaignRsvp.inviteOthers">
         <button type="button" class="btn btn-default" data-dismiss="modal" (click)="closeRsvpModel()">Close</button>
         <button type="button" class="btn btn-secondary" [disabled]="rsvpSavingProcessing" (click)="saveEventCampaignRsvp()">Save changes</button>
         </div>
