@@ -24,7 +24,7 @@
 	</div>
 		<div class="col-xs-12 col-sm-7 p-5x emails-info" [hidden]="mainLoader" >
 		<div [hidden]="mainLoader"class="col-xs-2 p0">
-			<button class="portlet light color1-invert crcb" (click)="analyticsComponent.getRsvpEmailOpenDetails()"
+			<button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'email open'" (click)="analyticsComponent.getRsvpEmailOpenDetails()"
 			 [disabled]="campaignReport.totalEmailOpenCount < 1">
 				<div class="portlet-body text-center">
 						<i class="fa fa-envelope"></i>
@@ -37,7 +37,7 @@
 			</button>
 		</div>
 		<div class="col-xs-2 p0 marginleft5">
-			<button class="portlet light color1-invert crcb" (click)="analyticsComponent.getRsvpDetails('YES')"
+			<button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'YES'" (click)="analyticsComponent.getRsvpDetails('YES')"
 			 [disabled]="campaignReport.totalYesCount < 1">
 				<div class="portlet-body text-center">
 						<i class="fa fa-check-circle"></i>
@@ -50,7 +50,7 @@
 			</button>
 		</div>
 		<div [hidden]="mainLoader"class="col-xs-2 p0 marginleft5">
-			<button class="portlet light color1-invert crcb" (click)="analyticsComponent.getRsvpDetails('NO')" 
+			<button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'NO'" (click)="analyticsComponent.getRsvpDetails('NO')" 
 			 [disabled]="campaignReport.totalNoCount < 1">
 				<div class="portlet-body text-center">
 						<i class="fa fa-times-circle"></i>
@@ -63,7 +63,7 @@
 			</button>
 		</div>
 		<div [hidden]="mainLoader"  class="col-xs-2 p0 marginleft5">
-			<button class="portlet light color1-invert crcb" (click)="analyticsComponent.getRsvpDetails('MAYBE')" 
+			<button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'MAYBE'" (click)="analyticsComponent.getRsvpDetails('MAYBE')" 
 			 [disabled]="campaignReport.totalMayBeCount < 1">
 				<div class="portlet-body text-center">
 						<i class="fa fa-question-circle"></i>
@@ -76,7 +76,7 @@
 			</button>
 		</div>
 		<div [hidden]="mainLoader"  class="col-xs-2 p0 marginleft5">
-			<button class="portlet light color1-invert crcb" (click)="analyticsComponent.getRsvpDetails('NOTYET')"
+			<button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'NOTYET'" (click)="analyticsComponent.getRsvpDetails('NOTYET')"
 			 [disabled]="campaignReport.totalNotYetRespondedCount < 1">
 				<div class="portlet-body text-center">
 						<i class="fa fa-exclamation-circle"></i>
