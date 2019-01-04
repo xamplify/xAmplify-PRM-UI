@@ -5,11 +5,14 @@ import { ReferenceService } from '../../core/services/reference.service';
 @Component({
   selector: 'app-detail-view',
   templateUrl: './detail-view.component.html',
-  styleUrls: ['./detail-view.component.css']
+  styleUrls: ['./detail-view.component.css','../../campaigns/analytics/analytics.component.css','../../campaigns/analytics/timeline.css']
 })
 export class DetailViewComponent implements OnInit {
     @Input() detailType: any;
     @Input() details: any;
+    @Input() campaign: any;
+    @Input() campaignType: any;
+    @Input() campaignReport: any;
     
   constructor(public analyticsComponent: AnalyticsComponent, public referenceService: ReferenceService) { }
  

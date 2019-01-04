@@ -9,7 +9,7 @@
 	}
 .btn-social { color: #fff;}
 </style>
-<app-detail-view *ngIf="showRsvpDetails" [detailType]="rsvpResposeType" [details]="rsvpDetailsList"></app-detail-view>
+<app-detail-view *ngIf="showRsvpDetails" [campaignReport]="campaignReport" [detailType]="rsvpResposeType" [campaignType]="campaignType" [campaign]="campaign" [details]="rsvpDetailsList"></app-detail-view>
 <!-- <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading> -->
 <div class="page-content" *ngIf="!isTimeLineView && !showRsvpDetails" [class.ml0]="authenticationService.isSuperAdmin()">
 <div class="page-bar square-box" style="margin: 0 0px 15px;border-radius: 0;">
@@ -166,7 +166,7 @@
 				<div class="portlet-body text-center">
 						<i class="fa fa-check-circle"></i>
 					<h1>
-						<b>{{this.campaignReport.totalYesCount}}</b>
+						<b>{{campaignReport.totalYesCount}}</b>
 
 					<span>Yes</span>
 					</h1>
