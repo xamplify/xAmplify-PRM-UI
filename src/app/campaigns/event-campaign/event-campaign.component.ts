@@ -1420,7 +1420,7 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
             if(this.reDistributeEventManage){
                 eventCampaign.parentCampaignId = this.parentCampaignIdValue;
              }
-            eventCampaign.enableCoBrandingLogo = true;
+            //eventCampaign.enableCoBrandingLogo = this.eventCampaign.enableCoBrandingLogo;
             eventCampaign.nurtureCampaign = true;
             eventCampaign.selectedEditEmailTemplate = eventCampaign.emailTemplate.id;
             eventCampaign.channelCampaign = false;
