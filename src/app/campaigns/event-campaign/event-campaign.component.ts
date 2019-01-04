@@ -865,7 +865,7 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
     else {  eventCampaign.campaignLocation.id = null;}
     eventCampaign.campaignEventTimes[0].id = null;
     eventCampaign.campaignEventMedias[0].id = null;
-    eventCampaign.user.id = null;
+    //eventCampaign.user.id = null;
 
     for(let i=0; i< eventCampaign.campaignReplies.length;i++){
       eventCampaign.campaignReplies[i].id = null;
