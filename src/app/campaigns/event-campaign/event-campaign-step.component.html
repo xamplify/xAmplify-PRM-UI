@@ -983,7 +983,7 @@ a.disabled {
                                 </li>
                               </ul>
                           </ng-container>
-                           <ul [hidden]="reDistributeEvent || reDistributeEventManage" class="content__list" *ngFor="let emailTemplate of reply.emailTemplatesPagination.pagedItems ;let e =index">
+                           <ul [hidden]="reDistributeEvent || reDistributeEventManage || isPreviewEvent" class="content__list" *ngFor="let emailTemplate of reply.emailTemplatesPagination.pagedItems ;let e =index">
                             <li (click)="setReplyEmailTemplate(emailTemplate.id,reply,i,emailTemplate.draft)" [class.list__item--selected]="emailTemplate.id==reply.selectedEmailTemplateId"
                                 *ngIf="reply.selectedEmailTemplateIdForEdit!=emailTemplate.id" class="list__item">
                               <!-- above class [ngClass]="{'list__item--selected':selectedFileIds.indexOf(file.id)>-1}" -->
