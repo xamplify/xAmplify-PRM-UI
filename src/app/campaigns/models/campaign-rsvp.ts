@@ -3,5 +3,4 @@ export class CampaignRsvp {
     alias: string;
     eventCampaignRsvp: string;
     additionalCount:number;
-    inviteOthers: boolean;
 }
