@@ -879,7 +879,7 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
           eventCampaign.parentCampaignId = this.parentCampaignIdValue;
        }
 
-      eventCampaign.enableCoBrandingLogo = true;
+      eventCampaign.enableCoBrandingLogo = eventCampaign.enableCoBrandingLogo;
       eventCampaign.nurtureCampaign = true;
       eventCampaign.selectedEditEmailTemplate = eventCampaign.emailTemplate.id;
       eventCampaign.channelCampaign = false;
