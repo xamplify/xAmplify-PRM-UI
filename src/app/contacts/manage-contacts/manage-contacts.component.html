@@ -278,9 +278,11 @@
 															<b>{{contactList.companyName | slice:0:50}}</b> <span
 																*ngIf="contactList.companyName?.length>50">...</span>
 															<h5 class="mb0 ellipsis hidden-sm hidden-md hidden-lg">
-																<span class="mb0">Total
+																<span class="mb0" *ngIf="contactList.emailValidationInd">Total
 																	{{checkingContactTypeName}}s:
-																	{{contactList.noOfContacts}}</span><br> <span class="mb0">Created
+																	{{contactList.noOfContacts}}</span>
+																	<span *ngIf="!contactList.emailValidationInd"><b>-</b></span>
+																	<br> <span class="mb0">Created
 																	On:<app-timestamp [isOnlyDate]="true"
 																		[dateAndTime]="contactList.createdDate">
 																	</app-timestamp>
@@ -292,7 +294,9 @@
 															[isOnlyDate]="true"
 															[dateAndTime]="contactList.createdDate">
 														</app-timestamp></td>
-													<td class="text-center hidden-xs">{{contactList.noOfContacts}}</td>
+													<td class="text-center hidden-xs"><span *ngIf="contactList.emailValidationInd">{{contactList.noOfContacts}}</span>
+													<span *ngIf="!contactList.emailValidationInd"><strong>-</strong></span>
+													</td>
 													<td *ngIf="!authenticationService.isSuperAdmin()">
 														<div class="actions-block override-actions">
 															<a
@@ -378,8 +382,9 @@
 												<b>{{contactList.companyName | slice:0:30}}</b> <span
 													*ngIf="contactList.companyName?.length>30">...</span>
 											</h6>
-											<h6 class="mt10 mb0">Total {{checkingContactTypeName}}s
+											<h6 class="mt10 mb0" *ngIf="contactList.emailValidationInd">Total {{checkingContactTypeName}}s
 												{{contactList.noOfContacts}}</h6>
+											<h6 *ngIf="!contactList.emailValidationInd"> Total {{checkingContactTypeName}}s <b>-</b></h6>
 											<h6 class="mt10 mb0">
 												Created date
 												<app-timestamp [isOnlyDate]="true"
