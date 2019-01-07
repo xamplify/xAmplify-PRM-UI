@@ -117,7 +117,6 @@ export class ReferenceService {
     }
     isXamplify(){
       if(window.location.hostname.includes('xamplify')){ return false } return false;
-    }
     getCategories(): Observable<Category[]> {
         const url = this.URL + 'categories?access_token=' + this.authenticationService.access_token;
         return this.http.get(url, "")

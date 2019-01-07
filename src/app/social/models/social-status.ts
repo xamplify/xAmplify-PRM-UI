@@ -26,5 +26,4 @@ export class SocialStatus {
   parent: number;
   
   socialStatusList: Array<SocialStatus> = [];
-  selectedAccounts: number = 0;
 }
