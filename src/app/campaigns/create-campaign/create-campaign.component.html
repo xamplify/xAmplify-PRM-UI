@@ -804,15 +804,15 @@
                                     <span lass="item__name" title="created on" style="float:left">
                                         <!-- <b>Created On:</b>{{campaign.emailTemplate.createdDate}} -->
                                         <span><app-timestamp [isOnlyDate]="true"
-                                          [dateAndTime]="campaign.emailTemplate.createdDate">
+                                          [dateAndTime]="campaign?.emailTemplate?.createdDate">
                                         </app-timestamp></span>
                                     </span>
-                                    <ng-container *ngIf="emailTemplate.type.toLocaleString()!='PARTNER'">
+                                    <ng-container *ngIf="emailTemplate?.type?.toLocaleString()!='PARTNER'">
                                       <span style="float:left"  title="{{campaign.emailTemplate.createdBy}}">
                                           <b>By:</b> <span>{{campaign.emailTemplate.createdBy|slice:0:12}}<span *ngIf="campaign.emailTemplate.createdBy?.length>12">...</span></span>
                                       </span>
                                     </ng-container>
-                                    <ng-container *ngIf="emailTemplate.type.toLocaleString()=='PARTNER'">
+                                    <ng-container *ngIf="emailTemplate?.type?.toLocaleString()=='PARTNER'">
                                       <span style="float:left" title="{{campaign.emailTemplate.vendorName}}">
                                           <b>By:</b>  <span>{{campaign.emailTemplate.vendorName|slice:0:12}}<span *ngIf="campaign.emailTemplate.vendorName?.length>12">...</span></span>
                                         </span>
