@@ -84,6 +84,7 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
         this.emailTemplate.id = this.emailTemplateService.emailTemplate.id;
         this.emailTemplate.name = this.model.templateName;
         this.emailTemplate.onDestroy = isOnDestroy;
+        this.emailTemplate.draft = isOnDestroy;
         for(var instanceName in CKEDITOR.instances){
             CKEDITOR.instances[instanceName].updateElement();
             this.emailTemplate.body =  CKEDITOR.instances[instanceName].getData();

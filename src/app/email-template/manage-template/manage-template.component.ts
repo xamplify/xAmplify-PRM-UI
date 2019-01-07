@@ -2,7 +2,6 @@ import { Component, OnInit,OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { EmailTemplateService } from '../services/email-template.service';
-import { UserService } from '../../core/services/user.service';
 import { PagerService } from '../../core/services/pager.service';
 import { ReferenceService } from '../../core/services/reference.service';
 
@@ -14,30 +13,31 @@ import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { CustomResponse } from '../../common/models/custom-response';
 import { ActionsDescription } from '../../common/models/actions-description';
+import { CampaignAccess } from 'app/campaigns/models/campaign-access';
 
-declare var Metronic,$, Layout, Demo, swal: any;
+declare var $, swal: any;
 
 @Component( {
     selector: 'app-manage-template',
     templateUrl: './manage-template.component.html',
     styleUrls: ['./manage-template.component.css', '../../../assets/css/video-css/ribbons.css'],
-    providers: [Pagination,HttpRequestLoader, ActionsDescription]
+    providers: [Pagination,HttpRequestLoader, ActionsDescription, CampaignAccess]
 })
 export class ManageTemplateComponent implements OnInit,OnDestroy {
     isPreview = false;
     emailTemplate: EmailTemplate;
     emailPreview: string;
-    hasEmailTemplateRole:boolean = false;
-    hasAllAccess:boolean = false;
+    hasEmailTemplateRole = false;
+    hasAllAccess = false;
     pager: any = {};
     pagedItems: any[];
-    public searchKey: string = "";
-    isEmailTemplateDeleted:boolean = false;
-    isCampaignEmailTemplate:boolean  = false;
-    selectedEmailTemplateName:string = "";
-    selectedTemplateTypeIndex:number = 0;
-    isOnlyPartner:boolean = false;
-    isPartnerToo:boolean = false;
+    searchKey = "";
+    isEmailTemplateDeleted = false;
+    isCampaignEmailTemplate  = false;
+    selectedEmailTemplateName = "";
+    selectedTemplateTypeIndex = 0;
+    isOnlyPartner = false;
+    isPartnerToo = false;
     templatesDropDown = [
         { 'name': 'All Email Templates', 'value': '' },
         { 'name': 'Uploaded Regular Templates', 'value': 'regularTemplate' },
@@ -63,17 +63,17 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
         { 'name': 'All', 'value': '0' },
     ]
 
-    public selectedTemplate: any = this.templatesDropDown[0];
-    public selectedSortedOption: any = this.sortByDropDown[this.sortByDropDown.length-1];
-    public itemsSize: any = this.numberOfItemsPerPage[0];
-    public message:string;
+    selectedTemplate: any = this.templatesDropDown[0];
+    selectedSortedOption: any = this.sortByDropDown[this.sortByDropDown.length-1];
+    itemsSize: any = this.numberOfItemsPerPage[0];
+    message:string;
     loggedInUserId:number = 0;
     httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
     customResponse: CustomResponse = new CustomResponse();
     isListView: boolean = false;
-    constructor( private emailTemplateService: EmailTemplateService, private userService: UserService, private router: Router,
+    constructor( private emailTemplateService: EmailTemplateService, private router: Router,
         private pagerService: PagerService, public refService: ReferenceService, public actionsDescription: ActionsDescription,
-        public pagination: Pagination,public authenticationService:AuthenticationService,private logger:XtremandLogger) {
+        public pagination: Pagination,public authenticationService:AuthenticationService,private logger:XtremandLogger, public campaignAccess:CampaignAccess) {
         this.loggedInUserId = this.authenticationService.getUserId();
         this.isPartnerToo = this.authenticationService.checkIsPartnerToo();
         if(refService.isCreated){
@@ -205,15 +205,34 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
     }
 
     eventHandler(keyCode: any) {  if (keyCode === 13) {  this.searchTemplates(); } }
-
+    getOrgCampaignTypes(){
+      this.refService.getOrgCampaignTypes( this.refService.companyId).subscribe(
+      data=>{
+        console.log(data);
+        this.campaignAccess.videoCampaign = data.video;
+        this.campaignAccess.emailCampaign = data.regular;
+        this.campaignAccess.socialCampaign = data.social;
+        this.campaignAccess.eventCampaign = data.event
+      });
+    }
+    getCompanyIdByUserId(){
+      try {
+        this.refService.getCompanyIdByUserId(this.authenticationService.user.id).subscribe(
+          (result: any) => {
+            if (result !== "") {
+              console.log(result);
+              this.refService.companyId = result;
+              this.getOrgCampaignTypes();
+            }
+          }, (error: any) => { console.log(error); }
+        );
+      } catch (error) { console.log(error);  }
+     }
     ngOnInit() {
       this.selectedSortedOption =  this.sortByDropDown[0];
         try {
+           if(!this.refService.companyId){ this.getCompanyIdByUserId()} else { this.getOrgCampaignTypes();}
             this.isListView = ! this.refService.isGridView;
-            Metronic.init();
-            Layout.init();
-            Demo.init();
-            // TableManaged.init();
             this.pagination.maxResults = 12;
             this.listEmailTemplates( this.pagination );
         } catch ( error ) {
@@ -301,13 +320,16 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
             this.pagination.emailTemplateType = EmailTemplateType.REGULAR_CO_BRANDING;
         }else if(type=="VIDEO_CO_BRANDING"){
             this.pagination.emailTemplateType = EmailTemplateType.VIDEO_CO_BRANDING;
+        }else if(type=="EVENT_CO_BRANDING"){
+        this.pagination.emailTemplateType = EmailTemplateType.EVENT_CO_BRANDING;
         }
-
         this.selectedTemplateTypeIndex = index;//This is to highlight the tab
         this.pagination.pageIndex = 1;
         if(isVideoTemplate){
             this.pagination.filterBy = "VideoEmail";
-        }else{
+        }else if(!isVideoTemplate && this.selectedTemplateTypeIndex ==9) {
+          this.pagination.filterBy = 'EventEmail';
+        } else if(!isVideoTemplate){
             this.pagination.filterBy = "RegularEmail";
         }
         this.listEmailTemplates(this.pagination);

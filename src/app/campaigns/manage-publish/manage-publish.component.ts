@@ -15,6 +15,7 @@ import { UtilService } from '../../core/services/util.service';
 import { ContactList } from '../../contacts/models/contact-list';
 import { EventCampaign } from '../models/event-campaign';
 import { ActionsDescription } from '../../common/models/actions-description';
+import { CampaignAccess } from '../models/campaign-access';
 
 declare var swal, $: any;
 
@@ -22,7 +23,7 @@ declare var swal, $: any;
     selector: 'app-manage-publish',
     templateUrl: './manage-publish.component.html',
     styleUrls: ['./manage-publish.component.css'],
-    providers: [Pagination, HttpRequestLoader, ActionsDescription]
+    providers: [Pagination, HttpRequestLoader, ActionsDescription, CampaignAccess]
 })
 export class ManagePublishComponent implements OnInit, OnDestroy {
     campaigns: Campaign[];
@@ -31,13 +32,14 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     hasStatsRole: boolean = false;
     campaignSuccessMessage: string = "";
     isScheduledCampaignLaunched: boolean = false;
-    loggedInUserId: number = 0;
-    hasAllAccess: boolean = false;
-    selectedCampaignTypeIndex: number = 0;
-        pager: any = {};
-        pagedItems: any[];
-        public totalRecords: number = 1;
-        public searchKey: string = "";
+    loggedInUserId = 0;
+    hasAllAccess = false;
+    selectedCampaignTypeIndex = 0;
+    pager: any = {};
+    pagedItems: any[];
+    totalRecords = 1;
+    searchKey = "";
+    isLastElement = false;
     sortByDropDown = [
         { 'name': 'Sort By', 'value': 'createdTime-DESC' },
         { 'name': 'Name (A-Z)', 'value': 'campaign-ASC' },
@@ -50,7 +52,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         { 'name': '12', 'value': '12' },
         { 'name': '24', 'value': '24' },
         { 'name': '48', 'value': '48' },
-        { 'name': '---All---', 'value': '0' },
+        { 'name': 'All', 'value': '0' },
     ]
 
     public selectedSortedOption: any = this.sortByDropDown[0];
@@ -70,7 +72,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     partnersPagination:Pagination = new Pagination();
     constructor(private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService:UtilService, public actionsDescription: ActionsDescription,
-        public refService: ReferenceService, private userService: UserService, public authenticationService: AuthenticationService) {
+        public refService: ReferenceService, public campaignAccess:CampaignAccess, public authenticationService: AuthenticationService) {
         this.loggedInUserId = this.authenticationService.getUserId();
         this.utilService.setRouterLocalStorage('managecampaigns');
         if (this.refService.campaignSuccessMessage == "SCHEDULE") {
@@ -150,33 +152,61 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.listCampaign(this.pagination);
     }
     eventHandler(keyCode: any) {  if (keyCode === 13) {  this.searchCampaigns(); } }
-
+    checkLastElement(i:any){
+      if(i === this.pagination.pagedItems.length-1) { this.isLastElement = true;} else { this.isLastElement = false;}
+    }
+    getOrgCampaignTypes(){
+      this.refService.getOrgCampaignTypes( this.refService.companyId).subscribe(
+      data=>{
+        console.log(data);
+           this.setCampaignAccessValues(data.video,data.regular,data.social,data.event);
+      });
+     }
+     getCompanyIdByUserId(){
+      try {
+        this.refService.getCompanyIdByUserId(this.authenticationService.user.id).subscribe(
+          (result: any) => {
+            if (result !== "") {
+              console.log(result);
+              this.refService.companyId = result;
+              this.getOrgCampaignTypes();
+            }
+          }, (error: any) => { console.log(error); }
+        );
+      } catch (error) { console.log(error);  }
+     }
+     setCampaignAccessValues(video:any,regular:any, social:any,event:any){
+      this.campaignAccess.videoCampaign = video;
+      this.campaignAccess.emailCampaign = regular;
+      this.campaignAccess.socialCampaign = social;
+      this.campaignAccess.eventCampaign = event
+     }
     ngOnInit() {
         try {
+          this.refService.manageRouter = true;
+          if(this.authenticationService.isOnlyPartner()) { this.setCampaignAccessValues(true,true,true,true) }
+          else { if(!this.refService.companyId) { this.getCompanyIdByUserId(); } else { this.getOrgCampaignTypes();}}
             this.isListView = !this.refService.isGridView;
             this.pagination.maxResults = 12;
-            if(this.refService.launchedCampaignType ==='VIDEO' || this.refService.launchedCampaignType ==='video')
-            {
-              this.filterCampaigns('VIDEO', 2);
-            } else if(this.refService.launchedCampaignType ==='REGULAR' || this.refService.launchedCampaignType ==='regular'){
-              this.filterCampaigns('REGULAR',1);
-            }
-            else if(this.refService.launchedCampaignType ==='SOCIAL') {
-              this.filterCampaigns('SOCIAL',3);
-            }
-            else {
-              this.listCampaign(this.pagination);
-            }
-
+            this.listCampaign(this.pagination);
         } catch (error) {
             this.logger.error("error in manage-publish-component init() ", error);
         }
-
     }
 
     editCampaign(campaign:any) {
       if(campaign.campaignType.indexOf('EVENT') > -1) {
-            this.router.navigate(['/home/campaigns/event-edit/'+campaign.campaignId]);
+        if (campaign.launched) {
+          this.isScheduledCampaignLaunched = true;
+          //  setTimeout(function() { $("#scheduleCompleted").slideUp(1000); }, 5000);
+        } else {
+        if(campaign.nurtureCampaign){
+          this.campaignService.reDistributeEvent = false;
+          this.router.navigate(['/home/campaigns/re-distribute-manage/'+campaign.campaignId]);
+         }else {
+          this.router.navigate(['/home/campaigns/event-edit/'+campaign.campaignId]);
+         }
+        }
        }
       else {
       var obj = { 'campaignId': campaign.campaignId }
@@ -294,14 +324,27 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
           }
     }
     saveAsEventCampaign(saveAsCampaign:any){
-      this.campaignService.getEventCampaignById(saveAsCampaign.campaignId).subscribe(
+     /* this.campaignService.getEventCampaignById(saveAsCampaign.campaignId).subscribe(
         (data)=>{
           console.log(data);
           this.saveAsCampaignInfo = data.data;
           this.setSaveAsEventCampaign(data.data);
         });
-    }
-
+    }*/
+    	
+    	let saveAsCampaignData = new EventCampaign();
+        saveAsCampaignData.id = saveAsCampaign.campaignId;
+        saveAsCampaignData.campaign = this.saveAsCampaignName;
+        this.campaignService.saveAsEventCampaign(saveAsCampaignData).subscribe(
+                  (data)=>{
+                      this.campaignSuccessMessage = "Campaign copied successfully";
+                      $('#lanchSuccess').show(600);
+                      $('#saveAsModal').modal('hide');
+                      this.showMessageOnTop();
+                      this.listCampaign(this.pagination);
+                      console.log("saveAsCampaign Successfully")
+                  });
+       }
     setSaveAsEventCampaign(campaignData:EventCampaign){
       campaignData.campaign = this.saveAsCampaignName;
       campaignData.id = null;
@@ -314,8 +357,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
       campaignData['countryId'] = 0;
       campaignData["userListIds"] = [];
       campaignData['userLists'] = [];
-      campaignData['email'] = campaignData.user.emailId;
-      campaignData['fromName'] = campaignData.user.emailId;
+      // campaignData['email'] = campaignData.user.emailId;
+      // campaignData['fromName'] = campaignData.user.emailId;
       campaignData.user.id = null;
       campaignData.user.userId = this.loggedInUserId;
       campaignData.country = campaignData.campaignEventTimes[0].country;
@@ -326,6 +369,10 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         let contactList = new ContactList(userListId);
         campaignData.userLists.push(contactList);
       }
+      if(campaignData.campaignReplies){
+      for(let i=0; i< campaignData.campaignReplies.length;i++){
+        campaignData.campaignReplies[i].id = null;
+      } }
       delete campaignData.userDTO;
       delete campaignData.userListDTOs;
       delete campaignData.emailTemplateDTO;

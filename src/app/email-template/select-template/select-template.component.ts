@@ -3,16 +3,16 @@ import { Router } from '@angular/router';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { ReferenceService } from '../../core/services/reference.service';
 import { EmailTemplateService } from '../services/email-template.service';
-import { UserService } from '../../core/services/user.service';
 import { EmailTemplate} from '../models/email-template';
 import { AuthenticationService} from '../../core/services/authentication.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
-declare var Metronic , Layout , Demo,$: any;
+import { CampaignAccess } from 'app/campaigns/models/campaign-access';
+declare var $: any;
 @Component({
   selector: 'app-select-template',
   templateUrl: './select-template.component.html',
   styleUrls: ['./select-template.component.css'],
-  providers :[EmailTemplate,HttpRequestLoader],
+  providers :[EmailTemplate,HttpRequestLoader, CampaignAccess],
 })
 export class SelectTemplateComponent implements OnInit,OnDestroy {
 
@@ -23,17 +23,37 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
     selectedTemplateTypeIndex:number = 0;
     httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
 
-    constructor( private emailTemplateService: EmailTemplateService, private userService: UserService,
+    constructor( private emailTemplateService: EmailTemplateService,
         private emailTemplate: EmailTemplate, private router: Router, private authenticationService: AuthenticationService,
-        private logger: XtremandLogger,public refService:ReferenceService) {
+        private logger: XtremandLogger,public refService:ReferenceService,public campaignAccess:CampaignAccess) {
 
      }
-
+     getOrgCampaignTypes(){
+      this.refService.getOrgCampaignTypes( this.refService.companyId).subscribe(
+      data=>{
+        console.log(data);
+        this.campaignAccess.videoCampaign = data.video;
+        this.campaignAccess.emailCampaign = data.regular;
+        this.campaignAccess.socialCampaign = data.social;
+        this.campaignAccess.eventCampaign = data.event
+      });
+     }
+     getCompanyIdByUserId(){
+      try {
+        this.refService.getCompanyIdByUserId(this.authenticationService.user.id).subscribe(
+          (result: any) => {
+            if (result !== "") {
+              console.log(result);
+              this.refService.companyId = result;
+              this.getOrgCampaignTypes();
+            }
+          }, (error: any) => { console.log(error); }
+        );
+      } catch (error) { console.log(error);  }
+     }
     ngOnInit(){
         try{
-            Metronic.init();
-            Layout.init();
-            Demo.init();
+           if(!this.refService.companyId){ this.getCompanyIdByUserId()} else { this.getOrgCampaignTypes();}
             this.listDefaultTemplates();
          }
          catch(error){
@@ -83,6 +103,40 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
             this.logger.debug("Showing Regular Templates size of"+this.filteredEmailTemplates.length);
         }catch(error){
             var cause = "Error in showRegularTemplates() in selectTemplatesComponent";
+            this.logger.error(cause+":"+error);
+        }
+    }
+
+    showEventTemplates(index:number){
+        try{
+        	 this.selectedTemplateTypeIndex = index;
+            this.filteredEmailTemplates = new Array<EmailTemplate>();
+            for(var i=0;i<this.allEmailTemplates.length;i++){
+                var isBeeEventTemplate = this.allEmailTemplates[i].beeEventTemplate;
+                if(isBeeEventTemplate){
+                    this.filteredEmailTemplates.push(this.allEmailTemplates[i]);
+                }
+            }
+            this.logger.debug("Showing EventTemplates Templates size of"+this.filteredEmailTemplates.length);
+        }catch(error){
+            var cause = "Error in showEventTemplates() in selectTemplatesComponent";
+            this.logger.error(cause+":"+error);
+        }
+    }
+
+    showEventCoBrandingTemplates(index:number){
+        try{
+             this.selectedTemplateTypeIndex = index;
+            this.filteredEmailTemplates = new Array<EmailTemplate>();
+            for(var i=0;i<this.allEmailTemplates.length;i++){
+                var beeEventCoBrandingTemplate = this.allEmailTemplates[i].beeEventCoBrandingTemplate;
+                if(beeEventCoBrandingTemplate){
+                    this.filteredEmailTemplates.push(this.allEmailTemplates[i]);
+                }
+            }
+            this.logger.debug("Showing EventTemplates Templates size of"+this.filteredEmailTemplates.length);
+        }catch(error){
+            var cause = "Error in showEventTemplates() in selectTemplatesComponent";
             this.logger.error(cause+":"+error);
         }
     }

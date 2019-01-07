@@ -138,8 +138,8 @@ export class TwitterProfileComponent implements OnInit {
 
     }
 
-    getSocialConnection(profileId1: string, profileId2: number, source: string) {
-    this.socialService.getSocialConnection(profileId1, source)
+    getSocialConnectionByUserIdAndProfileId(userId: number, profileId1: string, profileId2: number) {
+    this.socialService.getSocialConnectionByUserIdAndProfileId(userId, profileId1)
       .subscribe(
       data => {
         this.socialConnection = data;
@@ -155,9 +155,11 @@ export class TwitterProfileComponent implements OnInit {
   }
 
     ngOnInit() {
+        const userId = this.authenticationService.getUserId();
         const profileId1 = this.route.snapshot.params['profileId1'];
         const profileId2 = this.route.snapshot.params['profileId2'];
-        this.getSocialConnection(profileId1, profileId2, 'TWITTER');
+        debugger;
+        this.getSocialConnectionByUserIdAndProfileId(userId, profileId1, profileId2);
     }
 
 }

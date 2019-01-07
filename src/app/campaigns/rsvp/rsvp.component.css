@@ -32,3 +32,14 @@ button {
   position: relative;
   left: -7px;
 }
+.text-area-css{
+  float: right;
+  font-size: 11px;
+  position: relative;
+  left: -4px;
+  color: #7b8894;
+  bottom: 22px;
+}
+.alignCss{
+  position: relative;left: 95px;
+}

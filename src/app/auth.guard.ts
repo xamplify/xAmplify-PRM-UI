@@ -14,6 +14,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     campaignBaseUrl = 'campaigns';
     upgradeBaseUrl = 'upgrade';
     teamBaseUrl = 'team';
+    delRegBaseUrl = 'deal';
 
     constructor( private authenticationService: AuthenticationService, private router: Router ) {  }
     canActivate( route: ActivatedRouteSnapshot, state: RouterStateSnapshot ): boolean {
@@ -39,7 +40,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             if(!this.authenticationService.user.hasCompany && url === "/home/dashboard") {
               this.goToAccessDenied();
             }
-            else if(url.indexOf("/dashboard")<0 && url.indexOf("/content-management")<0 ){
+            else if(url.indexOf("/dashboard")<0 && url.indexOf("/content")<0 ){
                return this.secureUrlByRole(url);
             }else{
                 if(url.indexOf("/myprofile")>-1){
@@ -103,6 +104,9 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         if(url.indexOf(this.upgradeBaseUrl)>-1){
             return this.authorizeUrl(roles, url, this.upgradeBaseUrl);
         }
+        if(url.indexOf(this.delRegBaseUrl)>-1){
+          return this.authorizeUrl(roles, url, this.delRegBaseUrl);
+      }
       }catch(error){ console.log('error'+error);}
     }
 
@@ -133,9 +137,13 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         if(urlType===this.upgradeBaseUrl){
             role = this.roles.orgAdminRole;
         }
+        if(urlType===this.delRegBaseUrl){
+          role = this.roles.campaignRole;
+      }
         if(url.indexOf("partners")>-1 || url.indexOf("upgrade")>-1 ){
             url = url+"/";
         }
+
         const isVendor =  roles.indexOf(this.roles.vendorRole)>-1;
         const isPartner = roles.indexOf(this.roles.companyPartnerRole)>-1;
         const orgAdmin =  roles.indexOf(this.roles.orgAdminRole)>-1;

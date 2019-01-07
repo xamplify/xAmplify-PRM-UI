@@ -38,8 +38,8 @@ export class FacebookPostsComponent implements OnInit {
             );
     }
 
-    getSocialConnection(profileId: string, userId: number) {
-        this.socialService.getSocialConnection(profileId, 'FACEBOOK')
+    getSocialConnectionByUserIdAndProfileId( userId: number, profileId: string ) {
+        this.socialService.getSocialConnectionByUserIdAndProfileId(userId, profileId)
             .subscribe(
             data => {
                 this.socialConnection = data;
@@ -60,7 +60,7 @@ export class FacebookPostsComponent implements OnInit {
             const profileId = this.route.snapshot.params['profileId'];
             const userId = this.authenticationService.getUserId();
 
-            this.getSocialConnection(profileId, userId);
+            this.getSocialConnectionByUserIdAndProfileId(userId, profileId);
         } catch ( err ) {
             console.log( err );
         }

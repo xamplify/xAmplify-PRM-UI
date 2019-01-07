@@ -71,9 +71,12 @@
   margin-bottom: 3px;
 }
 .labal-css{
-  color: #2c3f52;
+  color: #2c3f52 !important;
   font-weight: 600;
   margin-top: 4px;
+}
+.color-css{
+	color: #111 !important;
 }
 .title-css{
   color: #2a3f54;
@@ -88,7 +91,7 @@
   border-radius: 0;
   width: 102%;
   position: relative;
-  top: -10px;
+  top: -10px !important;
   margin-bottom: -16px;
   right: 10px;
 }
@@ -152,10 +155,9 @@ a.icons-link:hover {background:  #357ebd;}
 .colorRed { background: #5bb1d4;}
 .event-title{ margin-top: 7px; font-weight: 600;}
 .auto-res {  font-weight: 300; font-size: 15px; color: #fff;}
-.table-color{ color: #6d6d6d !important;}
 .opacityCss { opacity: 0.5;}
 .center-block{ text-align: center; margin: 13px 0;}
-.colorlightBlock{ background: #808080;}
+.colorlightBlock{ background: #77a9c1 !important;}
 .colorBlue{ background: #5bb1d4;}
 @media screen and (max-width:768px){.modal-template{ width: 100% !important; right: 0;} }
 @media screen and (min-width:768px){.modal-template{ width: 65% !important; right: 0;} }
@@ -406,7 +408,7 @@ label {
     border-color: #2eaade;
 }
 .list__item.list__item--selected .select-box label:after {
-    opacity:1; 
+    opacity:1;
     content: "";
     position: absolute;
     width: 9px;
@@ -426,4 +428,30 @@ label {
 	overflow-x: inherit;
     padding: 15px;
     margin-top: 36px;
+}
+.table tr.contact-list-selected td {
+	background-color: #00a6e8 !important;
+	color: white !important;
+}
+.h4-text {
+  margin: 20px 20px 0 33px !important;
+}
+.col-block-active {
+	color: #fff;
+	vertical-align: central;
+	border: 1px solid #0c84ae;
+	background-color: #0c84ae !important;
+}
+
+.form-group span{
+	font-weight: 500;
+    color: #999;
+}
+
+.highletClass{
+	font-weight: 700 !important;
+    color: #008fd5 !important;
+}
+.hide {
+  display: none;
 }

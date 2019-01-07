@@ -29,26 +29,27 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     loggedInUserId: number = 0;
     campaignName:string;
     sortByDropDown = [
-        { 'name': 'Campaign Name(A-Z)', 'value': 'campaign-ASC' },
-        { 'name': 'Campaign Name(Z-A)', 'value': 'campaign-DESC' },
-        { 'name': 'Company Name(A-Z)', 'value': 'company-ASC' },
-        { 'name': 'Company Name(Z-A)', 'value': 'company-DESC' },
-        { 'name': 'Date Received(ASC)', 'value': 'createdTime-ASC' },
-        { 'name': 'Date Received(DESC)', 'value': 'createdTime-DESC' }
+        { 'name': 'Sort By', 'value': 'createdTime-DESC' },
+        { 'name': 'Campaign Name (A-Z)', 'value': 'campaign-ASC' },
+        { 'name': 'Campaign Name (Z-A)', 'value': 'campaign-DESC' },
+        { 'name': 'Company Name (A-Z)', 'value': 'company-ASC' },
+        { 'name': 'Company Name (Z-A)', 'value': 'company-DESC' },
+        { 'name': 'Date Received (ASC)', 'value': 'createdTime-ASC' },
+        { 'name': 'Date Received (DESC)', 'value': 'createdTime-DESC' }
     ];
 
     numberOfItemsPerPage = [
         { 'name': '12', 'value': '12' },
         { 'name': '24', 'value': '24' },
         { 'name': '48', 'value': '48' },
-        { 'name': '---All---', 'value': '0' },
+        { 'name': 'All', 'value': '0' },
     ]
 
-    public selectedSortedOption: any = this.sortByDropDown[5];
+    public selectedSortedOption: any = this.sortByDropDown[0];
     public itemsSize: any = this.numberOfItemsPerPage[0];
     public isError: boolean = false;
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
-    isListView: boolean = false;
+    isListView = false;
     campaignType:string;
     role = '';
 
@@ -59,7 +60,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
         public referenceService: ReferenceService, private socialService: SocialService,
         private authenticationService: AuthenticationService,private route: ActivatedRoute) {
         this.loggedInUserId = this.authenticationService.getUserId();
-
+        this.referenceService.manageRouter = false;
         const currentUrl = this.router.url;
         if ( currentUrl.includes( 'campaigns/vendor' ) ) {
             this.role = "Vendor"
@@ -148,7 +149,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
         this.listCampaign(this.pagination);
     }
 
-
+    eventHandler(event){ if(event===13){ this.searchCampaigns();}}
 
     ngOnInit() {
         try {
@@ -239,6 +240,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
         if(campaign.campaignType.indexOf('SOCIAL') > -1){
             this.navigateSocialCampaign(campaign);
         } else if(campaign.campaignType.indexOf('EVENT') > -1) {
+          this.campaignService.reDistributeEvent = true;
           this.router.navigate(['/home/campaigns/re-distribute-event/'+campaign.campaignId]);
         }
         else {

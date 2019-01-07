@@ -19,7 +19,7 @@ export class CampaignService {
     isExistingRedistributedCampaignName: boolean = false;
     componentName: string = "campaign.service.ts";
     URL = this.authenticationService.REST_URL;
-
+    reDistributeEvent = false;
     constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger) { }
 
     saveCampaignDetails(data: any) {
@@ -67,7 +67,9 @@ export class CampaignService {
     }
 
     getEventCampaignById(campaignId:any){
-      return this.http.get(this.URL + "campaign/get-event-campaign/"+campaignId+"?access_token=" + this.authenticationService.access_token)
+      let eventUrl = this.URL + "campaign/get-event-campaign/"+campaignId+"?access_token=" + this.authenticationService.access_token;
+      if(this.reDistributeEvent){ this.reDistributeEvent = false; eventUrl = this.URL + "campaign/get-partner-campaign/"+campaignId+"/"+this.authenticationService.user.id+"?access_token=" + this.authenticationService.access_token }
+      return this.http.get(eventUrl)
       .map(this.extractData)
       .catch(this.handleError);
     }
@@ -359,7 +361,8 @@ export class CampaignService {
         let day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
         let hours = date.getHours() > 9 ? date.getHours() : '0' + date.getHours();
         let minutes = date.getMinutes() > 9 ? date.getMinutes() : '0' + date.getMinutes();
-        return month + "/" + day + "/" + year + " " + hours + ":" + minutes;
+        let am_pm = date.getHours() > 11 ? 'PM' : 'AM';
+        return month + "/" + day + "/" + year + " " + hours + ":" + minutes + " "+am_pm;
 
     }
     setHoursAndMinutesToAutoReponseReplyTimes(timeAndHoursString: string) {
@@ -514,4 +517,20 @@ export class CampaignService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+    getOrgCampaignTypes(companyId: any) {
+      return this.http.get(this.URL + `campaign/access/${companyId}?access_token=${this.authenticationService.access_token}` )
+          .map(this.extractData)
+          .catch(this.handleError);
+  }
+
+  getCampaignCalendarView(userId: number){
+      return this.http.get(this.URL + `campaign/calendar/${userId}?access_token=${this.authenticationService.access_token}` )
+          .map(this.extractData)
+          .catch(this.handleError);
+  }
+  saveAsEventCampaign(campaign:any) {
+      return this.http.post(this.URL + `campaign/save-as-event-campaign?access_token=${this.authenticationService.access_token}`, campaign)
+          .map(this.extractData)
+          .catch(this.handleError);
+  }
 }

@@ -24,4 +24,6 @@ export class EmailTemplate {
 	vendorOrganizationName: string = "";
 	draft: boolean = false;
 	onDestroy: boolean = false;
+    beeEventTemplate:boolean;
+    beeEventCoBrandingTemplate:boolean;
 }

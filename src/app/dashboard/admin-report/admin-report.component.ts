@@ -6,6 +6,8 @@ import { PagerService } from '../../core/services/pager.service';
 import { ReferenceService } from '../../core/services/reference.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
+import { CustomResponse } from '../../common/models/custom-response';
+import { Properties } from '../../common/models/properties';
 import { Router } from '@angular/router';
 
 declare var swal:any;
@@ -14,7 +16,7 @@ declare var swal:any;
   selector: 'app-admin-report',
   templateUrl: './admin-report.component.html',
   styleUrls: ['./admin-report.component.css'],
-  providers: [Pagination, HttpRequestLoader]
+  providers: [Pagination, HttpRequestLoader, Properties]
 })
 
 export class AdminReportComponent implements OnInit {
@@ -28,6 +30,7 @@ export class AdminReportComponent implements OnInit {
     loading = false;
     isListLoading = false;
     public searchKey: string;
+    customResponse: CustomResponse = new CustomResponse();
     
     sortcolumn: string = null;
     sortingOrder: string = null;
@@ -37,15 +40,15 @@ export class AdminReportComponent implements OnInit {
                    { 'name': 'Sort by', 'value': '' },
                    { 'name': 'Conpany name (A-Z)', 'value': 'companyName-ASC' },
                    { 'name': 'Company name (Z-A)', 'value': 'companyName-DESC' },
-                   { 'name': 'Last login (ASC)', 'value': 'lastLogin-ASC'},
-                   { 'name': 'Last login (DESC)', 'value': 'lastLogin-DESC'},
+                   { 'name': 'Last login (ASC)', 'value': 'dateLastLogin-ASC'},
+                   { 'name': 'Last login (DESC)', 'value': 'dateLastLogin-DESC'},
 
                ];
     public sortOption: any = this.sortOptions[0];
     
     
     
-  constructor( public dashboardService: DashboardService, public pagination: Pagination , public pagerService: PagerService, public referenceService: ReferenceService,
+  constructor( public properties: Properties,public dashboardService: DashboardService, public pagination: Pagination , public pagerService: PagerService, public referenceService: ReferenceService,
 public authenticationService: AuthenticationService, public router:Router) {
 
   }
@@ -97,6 +100,13 @@ public authenticationService: AuthenticationService, public router:Router) {
                   this.vendorsDetails = data.data;
                   this.pagination.totalRecords = this.totalRecords;
                   this.pagination = this.pagerService.getPagedItems( this.pagination, this.vendorsDetails );
+                  
+                  if ( data.totalRecords === 0 ) {
+                      this.customResponse = new CustomResponse( 'INFO', this.properties.NO_RESULTS_FOUND, true );
+                  }else{
+                	  this.customResponse = new CustomResponse();
+                  }
+                  
                   this.isListLoading = false;
               },
               error => console.error( error ),

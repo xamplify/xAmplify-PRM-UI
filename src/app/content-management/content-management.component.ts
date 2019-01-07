@@ -11,7 +11,7 @@ import { SocialPagerService } from '../contacts/services/social-pager.service';
 import { EmailTemplateService } from '../email-template/services/email-template.service';
 import { ContentManagement } from './model/content-management';
 
-declare var Metronic, $, Layout, Demo, swal: any;
+declare var $, swal: any;
 
 @Component( {
     selector: 'app-content-management',
@@ -20,31 +20,31 @@ declare var Metronic, $, Layout, Demo, swal: any;
     providers: [Pagination, HttpRequestLoader, ActionsDescription, ContentManagement, SocialPagerService]
 })
 export class ContentManagementComponent implements OnInit {
-    loggedInUserId: number = 0;
+    loggedInUserId = 0;
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
     customResponse: CustomResponse = new CustomResponse();
     list: any[] = [];
-    isPreviewed: boolean = false;
-    filePath: string = "";
+    isPreviewed = false;
+    filePath = "";
     previewFile: any = "";
     exisitingFileNames: string[] = [];
-    existingFileName: string = "";
+    existingFileName = "";
     awsFileKeys: string[] = [];
     pager: any = {};
     pagedItems: any[];
-    pageSize: number = 12;
+    pageSize = 12;
     selectedFiles = [];
     selectedFileIds = [];
     loader = false;
-    loaderWidth: number = 30;
+    loaderWidth = 30;
     searchTitle = '';
     searchList: any;
     sortList: any;
     paginatedList: any;
     isListView = false;
-    sortOptions = [{ 'name': 'Sort By', 'value': ''},  { 'name': 'File Name(A-Z)', 'value': 'fileName'},
-                   { 'name': 'File Name(Z-A)', 'value': 'fileName'},  { 'name': 'Upload Date(ASD)', 'value': 'lastModifiedDate'},
-                   { 'name': 'Upload Date(DSD)', 'value': 'lastModifiedDate'},
+    sortOptions = [{ 'name': 'Sort By', 'value': ''},  { 'name': 'File Name (A-Z)', 'value': 'fileName'},
+                   { 'name': 'File Name (Z-A)', 'value': 'fileName'},  { 'name': 'Upload Date (ASC)', 'value': 'lastModifiedDate'},
+                   { 'name': 'Upload Date (DESC)', 'value': 'lastModifiedDate'},
       ];
     sortOption: any = this.sortOptions[0];
 
@@ -97,6 +97,7 @@ export class ContentManagementComponent implements OnInit {
               case 'xls':return 'assets/images/content/xls.png';
               case 'xlsx':return 'assets/images/content/xlsm.png';
               case 'xlsm':return 'assets/images/content/xlsm.png';
+              case 'xml':return 'assets/images/content/xml.png';
               case 'zip':return 'assets/images/content/zip.png';
               case 'docx':return 'assets/images/content/docs.png';
               case 'docm':return 'assets/images/content/docs.png';
@@ -112,20 +113,17 @@ export class ContentManagementComponent implements OnInit {
               case 'log':return 'assets/images/content/log.png';
               case 'mp3':return 'assets/images/content/mp3.png';
               case 'mhtml':return 'assets/images/content/mhtml.png';
+              case 'rar':return 'assets/images/content/rar.png';
+              case 'apk':return 'assets/images/content/apk.png';
               default: return 'assets/images/content/error.png';
-              // etc
           }
   }
     changeImage(id:number,path:string){
-       let image = this.addImage(path);
+      let image = this.addImage(path);
       (<HTMLInputElement>document.getElementById('content_image_'+id)).src = image;
       (<HTMLInputElement>document.getElementById('content_image_grid_'+id)).src = image;
       $('#content_image_'+id).css('cssText', "max-height: 55%; max-width: 69px; position: relative; top: 16px;");
       $('#content_image_grid_'+id).css('cssText', "border: 0px solid #5a5a5a; max-height: 27% !important");
-    }
-
-    imageClick(){
-        $('#uploadFile').click();
     }
     eventHandler( keyCode: any ) { if ( keyCode === 13 ) { this.searchFile(); } }
     searchFile(){
@@ -205,7 +203,7 @@ export class ContentManagementComponent implements OnInit {
                 if ( this.list.length > 0 ) {
                     this.exisitingFileNames = this.list.map( function( a ) { return a.fileName.toLowerCase(); });
                 } else {
-                    this.customResponse = new CustomResponse( 'INFO', "No records found", true );
+                   // this.customResponse = new CustomResponse( 'INFO', "No records found", true );
                 }
                 this.referenceService.loading( this.httpRequestLoader, false );
                 this.paginatedList = this.list;
@@ -277,60 +275,7 @@ export class ContentManagementComponent implements OnInit {
             }
             );
     }
-
-    /********Upload File******/
-    upload( event: any ) {
-        this.customResponse.isVisible = false;
-        try {
-            this.referenceService.loading( this.httpRequestLoader, true );
-            //this.customResponse = new CustomResponse( 'INFO', "Uploading in progress.Please wait...", true );
-            this.loader = true;
-            this.loaderWidth = 60;
-            let files: Array<File>;
-            if ( event.target.files ) {
-                files = event.target.files;
-            }
-            else if ( event.dataTransfer.files ) {
-                files = event.dataTransfer.files;
-            }
-            const formData: FormData = new FormData();
-            $.each( files, function( index, file ) {
-                formData.append( 'files', file, file.name );
-            });
-            this.uploadToServer( formData );
-            this.loaderWidth= 99;
-        } catch ( error ) {
-            this.referenceService.loading( this.httpRequestLoader, false );
-            this.customResponse = new CustomResponse( 'ERROR', "Unable to upload file", true );
-        }
-    }
-
-    uploadToServer( formData: FormData ) {
-       this.loaderWidth = 91;
-        this.emailTemplateService.uploadFile( this.loggedInUserId, formData )
-            .subscribe(
-            data => {
-                if ( data.statusCode == 1020 ) {
-                   this.loader = false;
-                    const message = ' files uploaded successfully';
-                    this.customResponse = new CustomResponse( 'SUCCESS', message, true );
-                    this.listItems( this.pagination );
-                } else {
-                    let message = data.message;
-                    this.customResponse = new CustomResponse( 'ERROR', message, true );
-                }
-                this.referenceService.loading( this.httpRequestLoader, false );
-            },
-            ( error: string ) => {
-                this.logger.errorPage( error );
-            }
-            );
-    }
-    /*******Validate Existing filename**********/
-
     ngOnInit() {
         this.listItems( this.pagination );
-
     }
-
 }

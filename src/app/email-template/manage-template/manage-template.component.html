@@ -40,7 +40,7 @@
 										[class.emailtemplate-selected]="2 == selectedTemplateTypeIndex">Basic</li>
 									<!-- <li class="filter" (click)="filterTemplates('BASIC',true,3)" [class.emailtemplate-selected]="3 == selectedTemplateTypeIndex">Basic Video</li> -->
 									<li class="filter" (click)="filterTemplates('RICH',true,4)"
-										[class.emailtemplate-selected]="4 == selectedTemplateTypeIndex">Video</li>
+										[class.emailtemplate-selected]="4 == selectedTemplateTypeIndex" *ngIf="campaignAccess.videoCampaign">Video</li>
 									<li class="filter"
 										(click)="filterTemplates('UPLOADED',false,5)"
 										[class.emailtemplate-selected]="5 == selectedTemplateTypeIndex">Uploaded</li>
@@ -49,12 +49,18 @@
 										[class.emailtemplate-selected]="6 == selectedTemplateTypeIndex">Partner</li>
 									<li class="filter"
 										(click)="filterTemplates('REGULAR_CO_BRANDING',false,7)"
-										[class.emailtemplate-selected]="7 == selectedTemplateTypeIndex">Email
+										[class.emailtemplate-selected]="7 == selectedTemplateTypeIndex" *ngIf="campaignAccess.emailCampaign">Email
 										Co-Branding</li>
 									<li class="filter"
 										(click)="filterTemplates('VIDEO_CO_BRANDING',false,8)"
-										[class.emailtemplate-selected]="8 == selectedTemplateTypeIndex">Video
-										Co-Branding</li>
+										[class.emailtemplate-selected]="8 == selectedTemplateTypeIndex" *ngIf="campaignAccess.videoCampaign">Video
+                    Co-Branding</li>
+                    <li class="filter" (click)="filterTemplates('RICH',false,9)"
+										[class.emailtemplate-selected]="9 == selectedTemplateTypeIndex" *ngIf="campaignAccess.eventCampaign">Event</li>
+										<li class="filter"
+										(click)="filterTemplates('EVENT_CO_BRANDING',false,10)" *ngIf="campaignAccess.eventCampaign"
+										[class.emailtemplate-selected]="10 == selectedTemplateTypeIndex">Event
+                    Co-Branding</li>
 									<li class="filter" style="display: none;">Own Template</li>
 								</ul>
 							</div>
@@ -74,7 +80,7 @@
 									</div>
 									<div class="portlet-input input-inline input-small" style="width: 198px !important;">
 										<div class="input-icon right" style="position: relative;right: -5px;">
-                      <input type="text" class="form-control" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" placeholder="search for template" (keypress)="eventHandler($event.keyCode)">
+                      <input type="text" class="form-control" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search for a template" (keypress)="eventHandler($event.keyCode)">
                       <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey=''"></button>
                       <button type="submit" class="search-box-item-click" (click)="searchTemplates()"><i class="fa fa-search"></i></button>
                    </div>
@@ -106,7 +112,7 @@
 										Name</th>
 									<th class="hidden-xs text-center">Type</th>
 									<th class="hidden-xs text-center">Created Date</th>
-									<th class="text-center">Actions</th>
+									<th class="text-center" style="min-width: 145px;">Actions</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -193,8 +199,10 @@
 							<h4 class="ellipsis mt5 mb5 f-w-600"
 								title="{{emailTemplate.name}}">
 								{{emailTemplate.name | slice:0:25}} <span
-									*ngIf="emailTemplate.name?.length>25">...</span>
+									*ngIf="emailTemplate.name?.length>25">...</span><br><br>
+							<span class="view-banner-listView">{{emailTemplate.emailTemplateType}}</span>
 							</h4>
+							<!-- <h5 class="view-banner">{{emailTemplate.emailTemplateType}}</h5> -->
 							<div>
 								<h6 *ngIf="emailTemplate.type=='PARTNER'">
 									Shared On <b> <app-timestamp [isOnlyDate]="true"
@@ -212,7 +220,7 @@
 									<b *ngIf="emailTemplate.createdBy?.length<17">{{emailTemplate.createdBy}}</b>
 								</h6>
 								<h6 title="{{emailTemplate.companyName}}">
-									From <b *ngIf="emailTemplate.companyName?.length>17">{{emailTemplate.companyName|slice:0:17}}..</b>
+									From <b *ngIf="emailTemplate.companyName?.length>17">{{emailTemplate.companyName | slice:0:17}}..</b>
 									<b *ngIf="emailTemplate.companyName?.length<17">{{emailTemplate.companyName}}</b>
 								</h6>
 								</ng-container>
@@ -255,7 +263,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="row mix-grid" style="margin-top: -15px; padding: 7px;" *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError ">
+					<div class="row mix-grid" style="margin-top: -15px; padding: 7px;" *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError">
 						<ng-container>
 						<div
 							*ngFor="let emailTemplate of pagination.pagedItems ;let i =index"
@@ -277,13 +285,13 @@
 						</ng-container>
 					</div>
 				</div>
-				<div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
+				<div *ngIf="pagination.pagedItems.length !== 0 && !httpRequestLoader.isLoading" class="pg8">
 					<app-pagination [pagination]="pagination" [type]="'t'"
 						(notifyParent)="setPage($event)"
 						(notifyParentDropDown)="listEmailTemplates($event)"></app-pagination>
 				</div>
 				<!-- End of 24 -->
-				<div *ngIf="pagination.totalRecords==0" class="alert alert-info">
+				<div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
 					<strong>No Email Templates Found</strong>
 				</div>
 			</div>

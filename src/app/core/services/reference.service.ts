@@ -15,6 +15,7 @@ import { Ng2DeviceService } from 'ng2-device-detector';
 import { EmailTemplate } from '../../email-template/models/email-template';
 import { Campaign } from '../../campaigns/models/campaign';
 import { environment } from 'environments/environment';
+import { CampaignAccess } from 'app/campaigns/models/campaign-access';
 declare var $: any;
 
 @Injectable()
@@ -88,7 +89,8 @@ export class ReferenceService {
     selectedVideoLogodesc: string;
     contentManagementLoader:boolean;
     namesArray:any;
-
+    campaignAccess: CampaignAccess;
+    manageRouter = false;
     constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,
         private router: Router, public deviceService: Ng2DeviceService,private route:ActivatedRoute) {
         console.log('reference service constructor');
@@ -113,7 +115,8 @@ export class ReferenceService {
       this.deviceInfo = this.deviceService.getDeviceInfo();
       if(this.deviceInfo.browser=== 'safari' || this.deviceInfo.browser==='ie'){ return true; } else{ return false};
     }
-
+    isXamplify(){
+      if(window.location.hostname.includes('xamplify')){ return false } return false;
     getCategories(): Observable<Category[]> {
         const url = this.URL + 'categories?access_token=' + this.authenticationService.access_token;
         return this.http.get(url, "")
@@ -256,7 +259,19 @@ export class ReferenceService {
         }
       }catch(error){console.log('error'+error);}
     }
+    removeDuplicatesObjects(originalArray, prop) {
+      var newArray = [];
+      var lookupObject  = {};
 
+      for(var i in originalArray) {
+         lookupObject[originalArray[i][prop]] = originalArray[i];
+      }
+
+      for(i in lookupObject) {
+          newArray.push(lookupObject[i]);
+      }
+       return newArray;
+     }
     returnDuplicates(names: string[]) {
         const uniq = names
             .map((name) => {
@@ -877,6 +892,9 @@ export class ReferenceService {
     getCountries() {
         return [
             new Country(0, '', 'Select Country'),
+            new Country(238, 'US', 'United States'),
+            new Country(237, 'GB', 'United Kingdom'),
+            new Country(103, 'IN', 'India'),
             new Country(1, 'AF', 'Afghanistan'),
             new Country(2, 'AX', 'Aland Islands'),
             new Country(3, 'AL', 'Albania'),
@@ -979,7 +997,6 @@ export class ReferenceService {
             new Country(100, 'HK', 'Hong Kong'),
             new Country(101, 'HU', 'Hungary (Magyarorszag)'),
             new Country(102, 'IS', 'Iceland (Island)'),
-            new Country(103, 'IN', 'India'),
             new Country(104, 'ID', 'Indonesia'),
             new Country(105, 'IR', 'Iran'),
             new Country(106, 'IQ', 'Iraq'),
@@ -1112,8 +1129,6 @@ export class ReferenceService {
             new Country(234, 'UG', 'Uganda'),
             new Country(235, 'UA', 'Ukraine'),
             new Country(236, 'AE', 'United Arab Emirates'),
-            new Country(237, 'GB', 'United Kingdom'),
-            new Country(238, 'US', 'United States'),
             new Country(239, 'UY', 'Uruguay'),
             new Country(240, 'UZ', 'Uzbekistan'),
             new Country(241, 'VU', 'Vanuatu'),
@@ -1125,7 +1140,6 @@ export class ReferenceService {
             new Country(247, 'YE', 'Yemen'),
             new Country(248, 'ZM', 'Zambia'),
             new Country(249, 'ZW', 'Zimbabwe'),
-
         ];
     }
 
@@ -1675,4 +1689,15 @@ export class ReferenceService {
         const scrollingElement = (document.scrollingElement || document.body)
         $(scrollingElement).animate({ scrollTop: 0 }, 500);
      }
+    getOrgCampaignTypes(companyId: any) {
+      return this.http.get(this.authenticationService.REST_URL + `campaign/access/${companyId}?access_token=${this.authenticationService.access_token}` )
+          .map(this.extractData)
+          .catch(this.handleError);
+    }
+
+    getCompanyIdByUserId(userId: any) {
+       return this.http.get(this.authenticationService.REST_URL + `admin/get-company-id/${userId}?access_token=${this.authenticationService.access_token}` )
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
 }

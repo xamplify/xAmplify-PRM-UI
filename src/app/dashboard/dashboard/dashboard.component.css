@@ -416,8 +416,8 @@ a.social-stats{text-align: center;}
   width: 100% !important;
 }
 
-@media screen and (max-width:600px){.modal-customize{ width: 100% !important; }}
-@media screen and (min-width:601px){.modal-customize{ width: 45% !important;} }
+@media screen and (max-width:600px){.modal-customize{ width: 100% !important; } .modal-css { width: 100% !important;}}
+@media screen and (min-width:601px){.modal-customize{ width: 45% !important;} .modal-css { width: 75% !important;}}
 .fullscreen{ cursor: pointer; padding: 8px; }
 .tooltip-css{cursor: pointer;color: #54a7e9;}
 .stats {color: #54a7e9;font-size: 20px;margin: 5px;}

@@ -6,6 +6,7 @@ import { SaveVideoFile } from '../../../videos/models/save-video-file';
 import { SocialCampaign } from '../../models/social-campaign';
 import { SocialStatusDto } from '../../models/social-status-dto';
 import { SocialStatus } from '../../models/social-status';
+import { SocialConnection } from '../../models/social-connection';
 import { SocialStatusContent } from '../../models/social-status-content';
 import { SocialStatusProvider } from '../../models/social-status-provider';
 
@@ -23,8 +24,10 @@ import { Pagination } from '../../../core/models/pagination';
 import { CallActionSwitch } from '../../../videos/models/call-action-switch';
 import { ReferenceService } from '../../../core/services/reference.service';
 import { Properties } from '../../../common/models/properties';
+import { Country } from '../../../core/models/country';
+import { Timezone } from '../../../core/models/timezone';
 
-declare var $, flatpickr, videojs: any;
+declare var $, flatpickr, videojs, swal: any;
 
 @Component({
   selector: 'app-update-status',
@@ -52,6 +55,11 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   socialStatusProviders = new Array<SocialStatusProvider>();
   isAllSelected: boolean = false;
   loading: boolean = false;
+  socialConnections = new Array<SocialConnection>();
+  countries: Country[];
+  timezones: Timezone[];
+  countryId: number;
+  scheduledTimeInString: string; 
 
   previewContactList = new ContactList();
   socialStatusDtos = new Array<any>();
@@ -64,7 +72,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   location:any;
   channelCampaign: boolean;
 
-  constructor(private socialService: SocialService,
+  constructor(public socialService: SocialService,
     private videoFileService: VideoFileService, public properties:Properties,
     public authenticationService: AuthenticationService, private contactService: ContactService,
     private pagerService: PagerService, private router: Router, public videoUtilService: VideoUtilService,
@@ -74,11 +82,15 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     this.location = this.router.url;
     this.resetCustomResponse();
     this.userId = this.authenticationService.getUserId();
+    this.countries = this.referenceService.getCountries();
+    this.countryId = this.countries[0].id;
+    this.onSelectCountry(this.countryId);
     // this.initializeSocialStatus();
   }
   resetCustomResponse() {
     this.customResponse.type = null;
     this.customResponse.statusText = null;
+    this.socialStatusResponse = [];
   }
   changeChannelCampaign(){
     this.channelCampaign = !this.channelCampaign;
@@ -104,6 +116,9 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   setCustomResponse(type: ResponseType, statusText: string) {
     this.customResponse.type = type;
     this.customResponse.statusText = statusText;
+    $('html, body').animate({
+      scrollTop: $('.page-content').offset().top
+    }, 500);
   }
   videoControllColors(videoFile: SaveVideoFile) {
     this.videoUtilService.videoColorControlls(videoFile);
@@ -184,7 +199,6 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     }
   addVideo() {
     this.resetCustomResponse();
-    console.log(this.socialStatus.socialStatusContents.length);
     if (this.socialStatus.socialStatusContents.length > 0 &&
       (Array.from(this.socialStatus.socialStatusContents)[0].fileType !== 'video')) {
       this.setCustomResponse(ResponseType.Warning, 'You can include up to 4 photos or 1 video in a post.');
@@ -271,7 +285,16 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   }
 
   validate() {
-    return this.isSocialCampaign ? this.isValidSocialCampaign() : this.isValidUpdateStatus();
+    let isValid = true;
+    this.socialStatusList.forEach(data => {
+      if(!data.statusMessage && data.socialStatusContents.length === 0){
+        this.setCustomResponse( ResponseType.Warning, 'Status can not be empty' );
+          isValid = false;
+          return false;
+      }
+    })
+    if(isValid)
+      return this.isSocialCampaign ? this.isValidSocialCampaign() : this.isValidUpdateStatus();
   }
 
   isSocialAccountsSelected() {
@@ -329,7 +352,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
         data => {
           this.setCustomResponse(ResponseType.Success, 'Redistributed Successfully');
           this.socialCampaign.campaignName = null;
-          this.referenceService.campaignSuccessMessage = 'NOW'
+          this.referenceService.campaignSuccessMessage = this.socialCampaign.socialStatusList[0].shareNow? 'NOW': 'SCHEDULE';
           this.referenceService.launchedCampaignType = 'SOCIAL';
           if(this.authenticationService.isOnlyPartner()) {
             this.router.navigate(['home/campaigns/partner/social']); }
@@ -375,7 +398,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
         data => {
           this.setCustomResponse(ResponseType.Success, 'Status posted Successfully');
           this.socialCampaign.campaignName = null;
-          this.referenceService.campaignSuccessMessage = 'NOW'
+          this.referenceService.campaignSuccessMessage = this.socialCampaign.socialStatusList[0].shareNow? 'NOW': 'SCHEDULE';
           this.referenceService.launchedCampaignType = 'SOCIAL';
           if(this.authenticationService.isOnlyPartner()) {
             this.router.navigate(['home/campaigns/partner/social']); }
@@ -400,24 +423,10 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     }
   }
 
-  filterSelectedSocialProviders(socialStatusProviders: Array<SocialStatusProvider>) {
-    socialStatusProviders = socialStatusProviders.filter(function(obj) {
-      return obj.selected === true;
-    });
-    return socialStatusProviders;
-  }
-
   updateStatus() {
     if (this.validate()) {
-      // this.socialStatusProviders = this.filterSelectedSocialProviders(this.socialStatusProviders);
-      // this.setCustomResponse(ResponseType.Loading, 'Updating Status');
       this.loading = true;
       this.socialStatusResponse = [];
-      this.socialStatusList.forEach(data => {
-        data.userId = this.userId;
-        if (this.isUrl(data.statusMessage))
-          data.validLink = true;
-      });
       this.socialService.postStatus(this.socialStatusList)
         .subscribe(
         data => {
@@ -437,13 +446,49 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     }
   }
 
-  schedule() {
-    this.socialStatus.shareNow = false;
-    this.updateStatus();
+  shareLater() {
+    this.resetCustomResponse();
+
+    let isValid = true;
+    if (this.countryId === 0) {
+      isValid = false;
+      this.setCustomResponse(ResponseType.Warning, 'Please select your country from the dropdown list');
+    }
+
+    if (!this.scheduledTimeInString) {
+      isValid = false;
+      this.setCustomResponse(ResponseType.Warning, 'Please select schedule date and time');
+    }
+    if(isValid){
+      this.socialStatusList.forEach(data => {
+        data.shareNow = false;
+        data.scheduledTimeInString = this.scheduledTimeInString;
+        data.timeZone = $('#timezoneId option:selected').val();
+      });
+      this.shareNow();
+    }
+  }
+
+  shareNow() {
+    this.socialStatusList.forEach(data => {
+      data.userId = this.userId;
+      if (this.isUrl(data.statusMessage))
+        data.validLink = true;
+      if (data.shareNow) {
+        data.scheduledTime = new Date();
+        data.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      }
+    });
+    if (!this.isSocialCampaign)
+      this.updateStatus();
+    else if (this.isSocialCampaign && !this.alias)
+      this.createSocialCampaign();
+    else if (this.isSocialCampaign && this.alias)
+      this.redistributeSocialCampaign();
   }
 
   deleteStatus(socialStatus: SocialStatus) {
-    this.setCustomResponse(ResponseType.Loading, 'Please Wait while we are processing your request.');
+    this.loading = true;
     this.socialService.deleteStatus(socialStatus)
       .subscribe(
       data => {
@@ -452,8 +497,11 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
         this.listEvents();
         this.initializeSocialStatus();
       },
-      error => this.setCustomResponse(ResponseType.Error, 'An Error occurred while deleting the status.'),
-      () => console.log('Finished')
+      error => {
+        this.loading = false;
+        this.setCustomResponse(ResponseType.Error, error)
+      },
+      () =>  this.loading = false
       );
   }
 
@@ -474,7 +522,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
       .subscribe(
       result => {
         this.socialService.socialConnections = result;
-        console.table(result);
+        this.socialConnections = result;
       },
       error => console.log(error),
       () => {
@@ -483,14 +531,13 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   }
 
   listSocialStatusProviders() {
-    const socialConnections = this.socialService.socialConnections;
     this.socialStatusProviders = new Array<SocialStatusProvider>();
-    for (const i in socialConnections) {
-      if (socialConnections[i].active) {
-        let source = socialConnections[i].source;
-        if(socialConnections[i].source !== 'GOOGLE') {
+    for (const i in this.socialConnections) {
+      if (this.socialConnections[i].active) {
+        let source = this.socialConnections[i].source;
+        if(this.socialConnections[i].source !== 'GOOGLE') {
           const socialStatusProvider = new SocialStatusProvider();
-          socialStatusProvider.socialConnection = socialConnections[i];
+          socialStatusProvider.socialConnection = this.socialConnections[i];
           this.socialStatusProviders.push(socialStatusProvider);
         }
       }
@@ -517,14 +564,19 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     $('#fc-event-' + socialStatus.id).modal('hide');
     $('html,body').animate({scrollTop: 0}, 'slow');
     this.initializeSocialStatus();
-    this.socialStatus = socialStatus;
-    for (const i of Object.keys(this.socialStatusProviders)) {
-      this.socialStatusProviders[i].selected = true;
-    }
+    this.socialStatusList
+    this.socialStatusList[0] = socialStatus;
+    this.socialStatusProviders = [];
+    this.socialStatusProviders[0] = socialStatus.socialStatusProvider;
+    this.toggleSelectAll();
   }
 
-  showScheduleOption(divId: string) {$('#' + divId).removeClass('hidden');}
-  hideScheduleOption(divId: string) {$('#' + divId).addClass('hidden');}
+  showScheduleOption(divId: string) {$('#' + divId).removeClass('hidden'); $('#post-actions-button-group').addClass('hidden');}
+  hideScheduleOption(divId: string) {
+    $('#' + divId).addClass('hidden'); 
+    $('#post-actions-button-group').removeClass('hidden');
+    this.resetCustomResponse();
+  }
 
   videoPlayListSource(videoUrl: string) {
     this.videoUrl = videoUrl;
@@ -638,7 +690,8 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
         listWeek: {buttonText: 'list week'}
       },
       defaultView: 'month',
-      timeFormat: 'h:mm',
+      timeFormat: 'h:mm a',
+      eventOrder: "-start", 
       eventRender: function(event: any, element: any) {
         element.find('.fc-time').addClass('fc-time-title mr5');
         element.find('.fc-title').addClass('fc-time-title ml5');
@@ -692,8 +745,8 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
           this.socialStatusDtos.push(socialStatusDto);
 
             const event = {
-            title: socialStatus.statusMessage,
-            start: socialStatus.scheduledTimeUser,
+            title: socialStatus.statusMessage.substring(0, 10),
+            start: socialStatus.scheduledTime,
             id: socialStatus.id+'-'+socialStatusDto.socialStatusProvider.id,
             data: socialStatusDto,
           };
@@ -702,10 +755,6 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
       },
       error => console.log(error),
       () => {
-        flatpickr('.flatpickr', {
-          enableTime: true,
-          minDate: new Date()
-        });
         console.log('listEvents() finished');
       }
       );
@@ -748,10 +797,16 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    flatpickr('.flatpickr', {
+      enableTime: true,
+      minDate: new Date(),
+      dateFormat: 'm/d/Y h:i K',
+      time_24hr: false
+    });
     this.listSocialConnections();
     this.listEvents();
     this.constructCalendar();
-    $('#schedule-later-div').hide();
+    // $('#schedule-later-div').hide();
 
     if ( this.isSocialCampaign ) {
       this.socialCampaign.isPartner = this.authenticationService.isOnlyPartner() ? false : true;
@@ -788,19 +843,23 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
           socialStatusProvider.socialStatusList = [];
           this.socialCampaign.socialStatusList.forEach(data => {
             if (data.socialStatusProvider.socialConnection.source === socialStatusProvider.socialConnection.source){
-              let socialStatus = new SocialStatus();
+              // let socialStatus = new SocialStatus();
+              // socialStatus.statusMessage = socialStatusProvider.socialConnection.source === 'TWITTER' ? data.statusMessage.substring(0, 280) : data.statusMessage;
+              // data.socialStatusContents.forEach(data => socialStatus.socialStatusContents.push(data));
+              // socialStatus.socialStatusProvider = data.socialStatusProvider;
+              let socialStatus = JSON.parse(JSON.stringify(data));              
               socialStatus.statusMessage = socialStatusProvider.socialConnection.source === 'TWITTER' ? data.statusMessage.substring(0, 280) : data.statusMessage;
-              data.socialStatusContents.forEach(data => socialStatus.socialStatusContents.push(data));
-              socialStatus.socialStatusProvider = data.socialStatusProvider;              
               socialStatusProvider.socialStatusList.push(socialStatus);
             }
           })
         } else {
           this.socialCampaign.socialStatusList.forEach(data=> {
-              let socialStatus = new SocialStatus();
+              // let socialStatus = new SocialStatus();
+              // socialStatus.statusMessage = socialStatusProvider.socialConnection.source === 'TWITTER' ? data.statusMessage.substring(0, 280) : data.statusMessage;
+              // data.socialStatusContents.forEach(data => socialStatus.socialStatusContents.push(data));
+              // socialStatus.socialStatusProvider = data.socialStatusProvider;              
+              let socialStatus = JSON.parse(JSON.stringify(data));              
               socialStatus.statusMessage = socialStatusProvider.socialConnection.source === 'TWITTER' ? data.statusMessage.substring(0, 280) : data.statusMessage;
-              data.socialStatusContents.forEach(data => socialStatus.socialStatusContents.push(data));
-              socialStatus.socialStatusProvider = data.socialStatusProvider;              
               socialStatusProvider.socialStatusList.push(socialStatus);
           })
         }
@@ -842,8 +901,6 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
       this.isAllSelected = false;
     if (this.selectedAccounts === this.socialStatusProviders.length)
       this.isAllSelected = true;
-
-      console.table(this.socialStatusProviders);
   }
 
   copyContent(targetSocialStatus: SocialStatus, socialStatusProvider: SocialStatusProvider){
@@ -889,5 +946,22 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 
   dismissMessage(socialStatus: SocialStatus){
     this.socialStatusResponse = this.socialStatusResponse.filter(item => item !== socialStatus);
+  }
+
+  save() {
+    this.socialService.saveAccounts( this.socialConnections )
+        .subscribe(
+        result => {},
+        error => console.log( error ),
+        () => {
+            this.socialService.socialConnections = this.socialConnections;
+            this.listSocialStatusProviders();
+            $('#manageAccountsModal').modal('hide');
+        } );
+
+  }
+
+  onSelectCountry(countryId){
+    this.timezones = this.referenceService.getTimeZonesByCountryId(countryId);
   }
 }

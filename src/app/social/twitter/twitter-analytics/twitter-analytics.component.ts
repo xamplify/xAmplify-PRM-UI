@@ -113,8 +113,8 @@ export class TwitterAnalyticsComponent implements OnInit {
             );
     }
 
-    getSocialConnection(profileId: string, source: string) {
-      this.socialService.getSocialConnection(profileId, source)
+    getSocialConnectionByUserIdAndProfileId( userId: number, profileId: string ) {
+      this.socialService.getSocialConnectionByUserIdAndProfileId(userId, profileId)
         .subscribe(
         data => {
           this.socialConnection = data;
@@ -129,7 +129,7 @@ export class TwitterAnalyticsComponent implements OnInit {
         try {
             const profileId = this.route.snapshot.params['profileId'];
             this.userId = this.authenticationService.user.id;
-            this.getSocialConnection( profileId, 'TWITTER' );
+            this.getSocialConnectionByUserIdAndProfileId( this.userId, profileId );
 
             this.getAnalytics( this.socialConnection );
             this.getWeeklyReport( this.socialConnection );

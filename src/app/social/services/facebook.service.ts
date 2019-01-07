@@ -58,6 +58,12 @@ export class FacebookService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+    
+    getPageFanCount(socialConnection: SocialConnection, pageId: string) {
+        return this.http.get(this.URL + 'fan-count' + '?access_token=' + this.authenticationService.access_token + '&pageId=' + pageId + '&facebookAccessToken='+socialConnection.accessToken)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 
     listAccounts(facebookAccessToken: string) {
         return this.http.get(this.URL + 'accounts' + '?access_token=' + this.authenticationService.access_token + '&accessToken=' + facebookAccessToken)

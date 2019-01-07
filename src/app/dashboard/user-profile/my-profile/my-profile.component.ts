@@ -617,6 +617,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.valueRange = response.transparency;
                 this.tempControllerColor = response.controllerColor;
                 this.tempPlayerColor = response.playerColor;
+                if(!response.controllerColor && !response.playerColor && !response.transparency) {
+                  this.compControllerColor = '#cccccc'; this.valueRange = 100; this.tempControllerColor = '#cccccc'; this.tempPlayerColor = '#ffffff';
+                }
                 this.logoImageUrlPath = response.brandingLogoUri = response.companyProfile.companyLogoPath;
                 this.logoLink = response.brandingLogoDescUri = response.companyProfile.website;
                 this.defaultPlayerbuildForm();

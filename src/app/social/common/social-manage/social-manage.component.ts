@@ -15,17 +15,28 @@ declare var swal: any;
 })
 export class SocialManageComponent implements OnInit, OnDestroy {
     socialConnections: SocialConnection[] = new Array<SocialConnection>();
+    socialConnectionsTemp: SocialConnection[] = new Array<SocialConnection>();
     response: any;
     httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
+    providerName: string;
     constructor( private route: ActivatedRoute, private socialService: SocialService,
         public authenticationService: AuthenticationService, public referenceService:ReferenceService ) { }
 
-    listAccounts( userId: number, providerName: string ) {
+    listAccounts( userId: number ) {
+        this.socialConnections = [];
         this.referenceService.loading(this.httpRequestLoader, true);
-        this.socialService.listAccounts( userId, providerName, 'ALL' )
+        this.socialService.listAccounts( userId, this.providerName, 'ALL' )
             .subscribe(
             result => {
                 this.socialConnections = result;
+
+                this.socialConnections.forEach(data => {
+                    let socialConnection = new SocialConnection();
+                    socialConnection.id = data.id;
+                    socialConnection.active = data.active;
+                    this.socialConnectionsTemp.push(socialConnection);
+                })
+
                 this.socialService.setDefaultAvatar(this.socialConnections);
                 this.referenceService.loading(this.httpRequestLoader, false);
             },
@@ -34,6 +45,17 @@ export class SocialManageComponent implements OnInit, OnDestroy {
                 this.referenceService.showServerError(this.httpRequestLoader);
             },
             () => {});
+    }
+    removeAccount(socialConnection: SocialConnection){
+        this.socialService.removeAccount( socialConnection.id )
+            .subscribe(
+            result => {
+                this.listAccounts(this.authenticationService.getUserId());
+            },
+            error => console.log( error ),
+            () => {
+                this.socialService.socialConnections = this.socialConnections;
+            } );
     }
 
     save() {
@@ -48,6 +70,23 @@ export class SocialManageComponent implements OnInit, OnDestroy {
             } );
 
     }
+    confirmRemoveAccount(socialConnection: SocialConnection){
+        const self = this;
+        swal( {
+            title: 'Are you sure?',
+            text: 'Do you really want to remove this account?',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#54a7e9',
+            cancelButtonColor: '#999',
+            confirmButtonText: 'Yes'
+
+        }).then( function() {
+            self.removeAccount(socialConnection);
+        }, function( dismiss: any ) {
+            console.log( 'you clicked on option' + dismiss );
+        });
+    }
 
     confirmDialog(socialConnection: SocialConnection) {
         if (! socialConnection.active) {
@@ -56,7 +95,7 @@ export class SocialManageComponent implements OnInit, OnDestroy {
             const self = this;
             swal( {
                 title: 'Are you sure?',
-                text: 'Do you really want to deselect it!',
+                text: 'Do you really want to deselect this account?',
                 type: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#54a7e9',
@@ -73,15 +112,49 @@ export class SocialManageComponent implements OnInit, OnDestroy {
     errorHandler(event){event.target.src= 'assets/admin/pages/media/profile/icon-user-default.png';}
     ngOnInit() {
         try {
-            const providerName = this.route.snapshot.params['social'];
+            this.providerName = this.route.snapshot.params['social'];
             const userId = this.authenticationService.getUserId();
-            this.listAccounts( userId, providerName );
+            this.listAccounts( userId );
         } catch ( err ) {
             console.log( err );
         }
     }
-    ngOnDestroy(){
-      swal.close();
+
+    onChange() {
+        this.socialConnectionsTemp.forEach(data => console.log(data.id + ' - '+ data.active));
+        this.socialConnections.forEach(data => console.log(data.id + ' - '+ data.active));
+        let isChanged: boolean;
+        for(var i=0; i< this.socialConnections.length; i++){
+            if(this.socialConnections[i].active !== this.socialConnectionsTemp[i].active){
+                isChanged = true;
+                break;
+            }
+        }
+        if(isChanged) {
+        const self = this;
+        swal( {
+            title: 'Are you sure?',
+            text: "Do you want to save your changes?",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#54a7e9',
+            cancelButtonColor: '#999',
+            confirmButtonText: 'Yes, Save it!',
+            cancelButtonText : 'No'
+
+        }).then(function() {
+                self.save();
+        },function (dismiss) {
+            if (dismiss === 'cancel') {console.log('clicked cancel') }
+        })
+
+        }   
+    }
+
+    ngOnDestroy(): void {
+        swal.close();
+        if(this.response !== 'success')
+        	this.onChange();
     }
 
 }

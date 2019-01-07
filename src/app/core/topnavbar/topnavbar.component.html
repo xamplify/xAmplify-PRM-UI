@@ -190,7 +190,7 @@
                 <a *ngIf="refService.userDefaultPage==='DASHBOARD'" [routerLink]="['/home/'+refService.userDefaultPage.toLowerCase()]">
                   <i class="fa fa-paper-plane-o" aria-hidden="true"></i> Dashboard</a>
               </li>
-							<li id="lockscreen"><a [routerLink]="['/userlock']"> <i
+							<li id="lockscreen"><a (click)="lockScreen()"> <i
 									class="icon-lock"></i> Lock Screen
 							</a></li>
 							<li class="divider"></li>

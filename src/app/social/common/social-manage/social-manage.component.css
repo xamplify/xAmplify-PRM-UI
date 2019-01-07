@@ -29,12 +29,21 @@
 .portlet.light.block:hover {
 	-webkit-box-shadow: 0 5px 20px rgba(0, 0, 0, .15);
 	box-shadow: 0 5px 20px rgba(0, 0, 0, .15);
-	-webkit-transform: translateY(-.5rem);
+	/*-webkit-transform: translateY(-.5rem);
 	-ms-transform: translateY(-.5rem);
-	transform: translateY(-.5rem);
+	transform: translateY(-.5rem);*/
 	cursor: pointer;
 	cursor: hand;
 }
+.delete-account{
+	position: absolute;
+	float: right;
+	right: 25px;
+	top: 25px;
+	cursor: pointer
+}
+.fa-trash-o {visibility: hidden;}
+.box:hover .fa-trash-o{visibility: visible;}
 
 h4 {
 	margin: 0.5em;
@@ -51,9 +60,10 @@ h5 {
 }
 
 .profile-picture {
-	height: 125px;
-	width: 125px;
+	height: 100px;
+	width: 100px;
 	border: 1px solid #e9e7e7;
+	margin: 20px auto;
 }
 
 .checked {
@@ -73,4 +83,7 @@ h5 {
 
 .swal2-cancel {
 	background-color: #cfd8dc;
+}
+.fa-2x, .fa-stack-2x {
+    font-size: 2em !important;
 }
