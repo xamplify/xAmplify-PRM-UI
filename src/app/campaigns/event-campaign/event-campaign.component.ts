@@ -1218,8 +1218,11 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
               data.body = data.body.replace( "{{vendor_emailId}}", this.eventCampaign.userDTO.emailId );
 
           }
+          
 
-
+          if(!this.eventCampaign.enableCoBrandingLogo){
+              data.body = data.body.replace( "https://xamp.io/vod/images/co-branding.png", "https://aravindu.com/vod/images/emptyImg.png" );
+          }
 
           if ( this.eventCampaign.campaignEventMedias[0].filePath ) {
               data.body = data.body.replace( "https://xamplify.s3.amazonaws.com/images/bee-259/rocket-color.png", this.eventCampaign.campaignEventMedias[0].filePath );
