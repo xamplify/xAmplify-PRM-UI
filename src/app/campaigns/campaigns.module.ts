@@ -23,6 +23,7 @@ import { PreviewCampaignComponent } from "./preview-campaign/preview-campaign.co
 import { EventCampaignComponent } from './event-campaign/event-campaign.component'; 
 import { ReDistributedComponent } from './analytics/re-distributed/re-distributed.component';
 import { PreviewPartnersComponent } from './preview-partners/preview-partners.component';
+import { CalendarComponent } from './calendar/calendar.component';
 
 @NgModule({
   imports: [
@@ -46,7 +47,8 @@ import { PreviewPartnersComponent } from './preview-partners/preview-partners.co
     PreviewCampaignComponent,
     EventCampaignComponent,
     ReDistributedComponent,
-    PreviewPartnersComponent
+    PreviewPartnersComponent,
+    CalendarComponent
   ],
   exports: [],
   providers: [ContactService, VideoFileService, EmailTemplateService]

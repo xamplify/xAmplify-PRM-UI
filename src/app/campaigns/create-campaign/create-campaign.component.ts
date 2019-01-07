@@ -34,12 +34,13 @@ import { Country } from '../../core/models/country';
 import { Timezone } from '../../core/models/timezone';
 import { Roles } from '../../core/models/roles';
 import { Properties } from '../../common/models/properties';
-declare var swal, $, videojs , Metronic, Layout , Demo,flatpickr,CKEDITOR:any;
+var moment = require('moment-timezone');
+declare var swal, $, videojs , Metronic, Layout , Demo,flatpickr,CKEDITOR,require:any;
 
 @Component({
   selector: 'app-create-campaign',
   templateUrl: './create-campaign.component.html',
-  styleUrls: ['./create-campaign.component.css', '../../../assets/css/video-css/video-js.custom.css'],
+  styleUrls: ['./create-campaign.component.css', '../../../assets/css/video-css/video-js.custom.css', '../../../assets/css/content.css'],
   providers:[HttpRequestLoader,CallActionSwitch,Properties]
 
 })
@@ -128,7 +129,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                                {'name':'10','value':'10'},
                                {'name':'20','value':'20'},
                                {'name':'30','value':'30'},
-                               {'name':'---All---','value':'0'},
+                               {'name':'All','value':'0'},
                                ]
     contactItemsSize:any = this.numberOfContactsPerPage[0];
     isCampaignDraftContactList:boolean = false;
@@ -178,7 +179,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     socialStatusList = new Array<SocialStatus>();
     socialStatusProviders = new Array<SocialStatusProvider>();
     isAllSelected: boolean = false;
-
+	isSocialEnable = false;
+    statusMessage: string;
 
 
 
@@ -324,13 +326,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 }
             }
           /************Launch Campaign**********************/
-            this.name = this.campaignService.campaign.campaignName;
-            /*if(this.campaignService.campaign.endTime.toString() !="null"){   // added to String() method here also
-                this.campaign.scheduleCampaign  = this.sheduleCampaignValues[2];
-                this.isScheduleSelected = true;
-                this.launchCampaignTabClass = this.successTabClass;
-            }*/
-            if(this.campaignService.campaign.scheduleTime!=null && this.campaignService.campaign.scheduleTime!="null"){
+            if(this.campaignService.campaign.campaignScheduleType=="SCHEDULE"){
                 this.campaign.scheduleCampaign  = this.sheduleCampaignValues[1];
                 this.isScheduleSelected = true;
                 this.launchCampaignTabClass = this.successTabClass;
@@ -340,10 +336,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 this.isScheduleSelected = true;
                 this.launchCampaignTabClass = this.successTabClass;
             }
-            /*if(this.campaignService.campaign.scheduleTime=="null" ||this.campaignService.campaign.scheduleTime==null){
-                this.campaign.scheduleTime = "";
-                this.campaign.scheduleCampaign  = this.sheduleCampaignValues[2];
-            }*/
+
+            this.name = this.campaignService.campaign.campaignName;
             let emailTemplate = this.campaign.emailTemplate;
             if(emailTemplate!=undefined){
                 this.isEmailTemplate = true;
@@ -462,13 +456,14 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
       if(event===13 && type==='contact'){ this.searchContactList();}
       if(event===13 && type==='emailTemplate'){ this.searchEmailTemplate();}
   }
+  eventReplyHandler(keyCode: any, reply:Reply) {  if (keyCode === 13) {  this.searchReplyEmailTemplate(reply); } }
     ngOnInit(){
         Metronic.init();
         Layout.init();
         Demo.init();
         flatpickr( '.flatpickr',{
             enableTime: true,
-            dateFormat: 'm/d/Y H:i',
+            dateFormat: 'm/d/Y h:i K',
             time_24hr: false
         } );
         //this.validatecampaignForm();
@@ -492,7 +487,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
              this.emailTemplatesPagination.filterBy = "CampaignRegularEmails";
              this.isVideo = true;
              $('#videoTab').hide();
-             this.lauchTabPreivewDivClass = "col-xs-12 col-sm-12 col-md-12 col-lg-12";
+             this.lauchTabPreivewDivClass = "col-xs-12 col-sm-12 col-md-7 col-lg-7";
          }
 
 
@@ -1563,6 +1558,15 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
            this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.PARTNER;
            this.selectedEmailTemplateType = EmailTemplateType.PARTNER;
        }
+       else if(type=="REGULAR_CO_BRANDING"){
+           this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.REGULAR_CO_BRANDING;
+           this.selectedEmailTemplateType = EmailTemplateType.REGULAR_CO_BRANDING;
+       }else if(type=="VIDEO_CO_BRANDING"){
+           this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.VIDEO_CO_BRANDING;
+           this.selectedEmailTemplateType = EmailTemplateType.VIDEO_CO_BRANDING;
+       }
+
+
         this.selectedEmailTemplateTypeIndex = index;
         this.emailTemplatesPagination.pageIndex = 1;
         this.loadEmailTemplates(this.emailTemplatesPagination);
@@ -1739,10 +1743,14 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         let timeZoneId = "";
         let scheduleTime:any;
         if( this.campaignLaunchForm.value.scheduleCampaign=="NOW" || this.campaignLaunchForm.value.scheduleCampaign=="SAVE"){
-            timeZoneId = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            let intlTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            if(intlTimeZone!=undefined){
+                timeZoneId = intlTimeZone;
+            }else if(moment.tz.guess()!=undefined){
+                timeZoneId = moment.tz.guess();
+            }
             scheduleTime = this.campaignService.setLaunchTime();
         }else{
-         //   timeZoneId = this.campaignLaunchForm.value.timeZoneId;
             timeZoneId = $('#timezoneId option:selected').val();
             scheduleTime = this.campaignLaunchForm.value.launchTime;
         }
@@ -1759,6 +1767,15 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 if(data.selected){
                     let socialStatus = new SocialStatus();
                     socialStatus.socialStatusProvider = data;
+                    if(socialStatus.socialStatusProvider.socialConnection.source.toLowerCase() === 'twitter'){
+                        var statusMsg = this.statusMessage;
+                        var length = 200;
+                        var trimmedstatusMsg = statusMsg.length > length ? statusMsg.substring(0, length - 3) + "..." : statusMsg;
+                        socialStatus.statusMessage = trimmedstatusMsg;
+                        debugger;
+                    }else{
+                        socialStatus.statusMessage = this.statusMessage;
+                    }
                     this.socialStatusList.push(socialStatus);
                 }
             }
@@ -2055,7 +2072,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
 
     saveCampaignOnDestroy(){
         var data = this.getCampaignData("");
-        if(data.scheduleCampaign==null || data.scheduleCampaign=="NOW" || $.trim(data.scheduleCampaign).length==0){
+        if(data['scheduleCampaign']==null || data['scheduleCampaign']=="NOW" || $.trim(data['scheduleCampaign']).length==0){
             data['scheduleCampaign'] = "SAVE";
         }
         var errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
@@ -2244,6 +2261,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 this.videoTabClass  = this.successTabClass;
                 this.emailTemplateTabClass = this.successTabClass;
                 this.listSocialStatusProviders();
+                this.statusMessage = this.campaign.campaignName;
                 if(!this.isAdd && this.selectedTemplateBody!==undefined){
                     this.getAnchorLinksFromEmailTemplate(this.selectedTemplateBody);
                 }
@@ -2283,6 +2301,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         }
 
         listSocialStatusProviders() {
+         if(this.socialStatusProviders.length < 1){
             const socialConnections = this.socialService.socialConnections;
             socialConnections.forEach( data => {
                 if(data.active){
@@ -2291,6 +2310,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                     this.socialStatusProviders.push(socialStatusProvider);
                 }
             })
+         }
         }
 
  /***************************Email Rules***********************************/
@@ -2392,7 +2412,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
          this.campaignService.getAllTeamMemberEmailIds(this.loggedInUserId)
          .subscribe(
          data => {
-             console.log(data);
            let self = this;
            $.each(data,function(index,value){
                self.teamMemberEmailIds.push(data[index]);
@@ -2402,6 +2421,11 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                this.campaign.email = teamMember.emailId;
                this.campaign.fromName = $.trim(teamMember.firstName+" "+teamMember.lastName);
                this.setEmailIdAsFromName();
+           }else{
+               let existingTeamMemberEmailIds =  this.teamMemberEmailIds.map(function(a) {return a.emailId;});
+               if(existingTeamMemberEmailIds.indexOf(this.campaign.email)<0){
+                   this.setLoggedInUserEmailId();
+               }
            }
 
          },
@@ -2409,6 +2433,20 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
          () => console.log( "Campaign Names Loaded" )
          );
      }
+
+
+     setLoggedInUserEmailId(){
+         const userProfile = this.authenticationService.userProfile;
+         this.campaign.email = userProfile.emailId;
+         if(userProfile.firstName !== undefined && userProfile.lastName !== undefined)
+             this.campaign.fromName = $.trim(userProfile.firstName + " " + userProfile.lastName);
+         else if(userProfile.firstName !== undefined && userProfile.lastName == undefined)
+             this.campaign.fromName = $.trim(userProfile.firstName);
+         else
+             this.campaign.fromName = $.trim(userProfile.emailId);
+         this.setEmailIdAsFromName();
+     }
+
 
      setEmailIdAsFromName(){
          if(this.campaign.fromName.length==0){
@@ -2429,7 +2467,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
              .subscribe(
              response => {
                  if(response.statusCode==2000){
-                     this.refService.campaignSuccessMessage = data.scheduleCampaign;
+                     this.refService.campaignSuccessMessage = data['scheduleCampaign'];
                      this.refService.launchedCampaignType = this.campaignType;
                      this.isLaunched = true;
                      this.reInitialize();

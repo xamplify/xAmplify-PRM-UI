@@ -4,9 +4,9 @@
 			<div class="col-xs-12">
 				<div class="portlet light fb-post-box">
 					<div class="portlet-title" *ngIf='fanCount > 0'>
-									<img alt="{{page.name}}" class="img-circle img-responsive" src="{{socialConnection.profileImage}}" />								
+									<img alt="{{socialConnection.profileName}}" class="img-circle img-responsive" src="{{socialConnection.profileImage}}" />								
 								
-									<h5 class="fb-profile-name">{{page.name}}</h5> 
+									<h5 class="fb-profile-name">{{socialConnection.profileName}}</h5> 
 									<h5 class="likes-count"><b>{{fanCount}}</b> Total Likes</h5>
 					</div>
 					<div class="portlet-body" [hidden]="fanCount <= 30">

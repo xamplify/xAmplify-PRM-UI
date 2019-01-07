@@ -15,6 +15,17 @@
     /*margin-top: 27px;*/
 }
 
+.view-banner{
+    background-color: #00a6e8;
+    color: white;
+    padding: 4px;
+    text-align: center;
+    width: 125px;
+    margin: 0 auto;
+    font-size:11px;
+    font-weight:600;
+}
+
 .progress {
     position: relative;
     height: 25px;
@@ -193,7 +204,8 @@ a:hover{
 	text-decoration: none;
 }
 .campaign-type-selected {
-	background-color: #6dcff6;
+	background-color: #0095da;
+	color: white;
 }
 
 .filter-div{
@@ -255,3 +267,18 @@ td h5 {
 }
 @media only screen and (max-width:768px){ .modal-copy { width: 100% !important;}}
 @media only screen and (min-width:768px){ .modal-copy { width: 45% !important;}}
+
+
+.gearDropdownMenu{
+	font-size: 18px;
+    top: 9px;
+    color: #00a6e8;
+    cursor: pointer;
+}
+.caretDropdownMenu{
+	top: 4px;
+    position: relative;
+    color: #00a6e8;
+}
+.mobile-css { position: absolute; top:-77px;}
+.circled-number.disabled{ cursor: not-allowed}

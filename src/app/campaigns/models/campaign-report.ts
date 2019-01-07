@@ -49,5 +49,6 @@ export class CampaignReport {
     selectedPartnerFirstName: string;
     selectedPartnerLastName: string;
     selectedPartnerEmailId: string;
+    selectedPartnerUserId: any;
 
 }

@@ -167,7 +167,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     filterConditions = [
         { 'name': '', 'value': 'Condition*' },
         { 'name': 'eq', 'value': '=' },
-        { 'name': 'like', 'value': 'like' },
+        { 'name': 'like', 'value': 'Contains' },
     ];
     filterCondition = this.filterConditions[0];
 
@@ -2485,17 +2485,17 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                 data => {
                     console.log( data );
                     if ( data == "User is successfully resubscribed" ) {
-                        swal('User Activated Successfully');
+                        swal(this.checkingContactTypeName + ' re-subscribed successfully');
                         this.listOfSelectedContactListByType( this.contactsByType.selectedCategory );
                     }
                 },
                 ( error: any ) => {
                     this.xtremandLogger.error( error );
                 },
-                () => this.xtremandLogger.log( "Manage Partner component resubscribe method successfull" )
+                () => this.xtremandLogger.log( "EditPartnerComponent resubscribe method successfull" )
                 );
         } catch ( error ) {
-            this.xtremandLogger.error( error, "manageContactComponent", " resubscribe method" );
+            this.xtremandLogger.error( error, "EditPartnerComponent", " resubscribe method" );
         }
 
     }
@@ -2503,7 +2503,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     ngOnInit() {
         try {
             this.loadContactListsNames();
-            this.listTeamMembers();
+            if(!this.authenticationService.isTeamMember()){
+              this.listTeamMembers();
+            }
             this.listOrgAdmin();
             this.selectedContactListName = this.contactListName;
             this.checkingLoadContactsCount = true;

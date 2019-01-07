@@ -1,14 +1,102 @@
 <section>
 <div id="timeline-view" class="page-content">
-	<div class="page-bar" style="min-height: 572px;">
-		<div class="col-xs-12" style="padding: 10px 0px 5px 16px;">
-				<h4 class="pull-left" *ngIf="detailType === 'YES'">People who have says YES</h4>
-				<h4 class="pull-left" *ngIf="detailType === 'NO'">People who have says NO</h4>
-				<h4 class="pull-left" *ngIf="detailType === 'MAYBE'">People who have says MAY BE</h4>
-				<h4 class="pull-left" *ngIf="detailType === 'NOTYET'">People who NOT YET RESPONDED</h4>
-				<h4 class="pull-left" *ngIf="detailType === 'email open'">People who opened your email</h4>
-				<a (click)="analyticsComponent.showRsvpDetails = false" class="pull-right close-circle" style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;"> <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;"
+	<div class="page-bar" style="min-height: 572px;border: 1px solid #CCC;">
+		
+    <a (click)="analyticsComponent.showRsvpDetails = false" class="pull-right close-circle" style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;"> <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;"
 			aria-hidden="true"></span></a>
+    
+    <div class="col-xs-12 caption-subject font-red-sunglo">
+		<h4 class="pull-left">Your Total Campaign Response</h4>
+		</div>
+		<div class="col-xs-12 col-sm-5 p-5x">
+		<div class="p-5x">
+			<div class="portlet light">
+				<div class="portlet-body clearfix">
+					<div class="col-xs-12">
+						<span class="btn btn-sm btn-primary pull-right">{{campaignType}} CAMPAIGN {{analyticsComponent.isPartnerCampaign}}</span>
+						<h4 title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:16}} <span *ngIf="campaign.campaignName?.length>16">...</span>
+						</h4>
+						<h5 class="text-info mb10">{{campaign.launchTime | date: 'fullDate'}}</h5>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+		<div class="col-xs-12 col-sm-7 p-5x emails-info">
+		<div class="col-xs-2 p0">
+			<button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'email open'" (click)="analyticsComponent.getRsvpEmailOpenDetails()"
+			 [disabled]="campaignReport.totalEmailOpenCount < 1">
+				<div class="portlet-body text-center">
+						<i class="fa fa-envelope"></i>
+					<h1>
+						<b>{{campaignReport.totalEmailOpenCount}}</b>
+						<span>Opened</span>
+					</h1>
+
+				</div>
+			</button>
+		</div>
+		<div class="col-xs-2 p0 marginleft5">
+			<button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'YES'" (click)="analyticsComponent.getRsvpDetails('YES')"
+			 [disabled]="campaignReport.totalYesCount < 1">
+				<div class="portlet-body text-center">
+						<i class="fa fa-check-circle"></i>
+					<h1>
+						<b>{{campaignReport.totalYesCount}}</b>
+
+					<span>Yes</span>
+					</h1>
+				</div>
+			</button>
+		</div>
+		<div class="col-xs-2 p0 marginleft5">
+			<button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'NO'" (click)="analyticsComponent.getRsvpDetails('NO')" 
+			 [disabled]="campaignReport.totalNoCount < 1">
+				<div class="portlet-body text-center">
+						<i class="fa fa-times-circle"></i>
+					<h1>
+						<b>{{campaignReport.totalNoCount}}</b>
+						<span>No</span>
+					</h1>
+
+				</div>
+			</button>
+		</div>
+		<div class="col-xs-2 p0 marginleft5">
+			<button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'MAYBE'" (click)="analyticsComponent.getRsvpDetails('MAYBE')" 
+			 [disabled]="campaignReport.totalMayBeCount < 1">
+				<div class="portlet-body text-center">
+						<i class="fa fa-question-circle"></i>
+					<h1>
+						<b>{{campaignReport.totalMayBeCount}}</b>
+						<span>Maybe</span>
+					</h1>
+
+				</div>
+			</button>
+		</div>
+		<div class="col-xs-2 p0 marginleft5">
+			<button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'NOTYET'" (click)="analyticsComponent.getRsvpDetails('NOTYET')"
+			 [disabled]="campaignReport.totalNotYetRespondedCount < 1">
+				<div class="portlet-body text-center">
+						<i class="fa fa-exclamation-circle"></i>
+					<h1>
+						<b>{{campaignReport.totalNotYetRespondedCount}}</b>
+
+					<span>Not yet</span>
+					</h1>
+				</div>
+			</button>
+		</div>
+	</div>
+    
+    
+    <div class="col-xs-12" style="padding: 10px 0px 5px 16px;">
+				<h4 class="pull-left" *ngIf="detailType === 'YES'">People who have responded YES</h4>
+				<h4 class="pull-left" *ngIf="detailType === 'NO'">People who have responded NO</h4>
+				<h4 class="pull-left" *ngIf="detailType === 'MAYBE'">People who have responded MayBe</h4>
+				<h4 class="pull-left" *ngIf="detailType === 'NOTYET'">People who have not yet responded</h4>
+				<h4 class="pull-left" *ngIf="detailType === 'email open'">People who have opened your email</h4>
 				<div class="btn-group pull-right" style="margin: 28px 4px 0px 0px; cursor:pointer; color: #7d8c98">
 					<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none;margin: -15px;padding-right: 10px;float:right;">
 					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
@@ -19,6 +107,7 @@
 				</div>
     </div>
     
+
     <div class="col-xs-12">
 					<div class="table-responsive">
 					<!--  <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader> -->
@@ -26,12 +115,12 @@
 						<table class="table tgrid">
 							<thead>
 								<tr>
-									<th style="font-size: 12px; font-weight: 500;" style="width:50%">NAME</th>
-									<th style="font-size: 12px; font-weight: 500;" *ngIf="detailType !== 'email open'">MESSAGE</th>
-									<th style="font-size: 12px; font-weight: 500;" *ngIf="detailType === 'email open'">CAMPAIGN NAME</th>
-									<th style="font-size: 12px; font-weight: 500;" *ngIf="detailType === 'email open'">SUBJECT</th>
-									<th style="font-size: 12px; font-weight: 500;">TIME</th>
-									<th style="font-size: 12px; font-weight: 500;" *ngIf="detailType !== 'email open'">ADDITONAL</th>
+									<th class="text-center-css" style="width:25%; text-align: left !important">NAME</th>
+									<th class="text-center-css" *ngIf="detailType !== 'email open' && detailType !== 'NOTYET'">MESSAGE</th>
+									<th class="text-center-css" *ngIf="detailType === 'email open' && detailType !== 'NOTYET'">CAMPAIGN NAME</th>
+									<th class="text-center-css" *ngIf="detailType === 'email open' && detailType !== 'NOTYET'">SUBJECT</th>
+									<th class="text-center-css" *ngIf="detailType !== 'NOTYET'">Most Recent</th>
+									<th class="text-center-css" *ngIf="detailType === 'YES'">ATTENDEES</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -39,23 +128,29 @@
 									<td>
 										<app-user-info  [userInfo]="item"> </app-user-info>
 									</td>
-									<td *ngIf="detailType !== 'email open'">
+									<td class="text-center" *ngIf="detailType !== 'email open' && detailType !== 'NOTYET'" style="text-align:center">
 										<h6>{{item.message}}</h6>
 										<h6 *ngIf="!item.message" style="text-align:center"><b>-</b></h6>
 									</td>
-									<td *ngIf="detailType === 'email open'"> {{item.campaignName}}</td>
-									<td *ngIf="detailType === 'email open'">{{item.subject}}</td>
-									<td> <h6 *ngIf="detailType !== 'email open'">{{item.responseTime | date: 'short'}}</h6>
-									<h6 *ngIf="detailType === 'email open'">{{item.time | date: 'short'}}</h6>
+									<td class="text-center" *ngIf="detailType === 'email open' && detailType !== 'NOTYET'" style="text-align:center"> {{item.campaignName}}</td>
+									<td class="text-center" *ngIf="detailType === 'email open' && detailType !== 'NOTYET'" style="text-align:center" style="text-align:center">{{item.subject}}</td>
+                  <td class="text-center" *ngIf="detailType !== 'NOTYET'"> <h6 *ngIf="detailType !== 'email open' && detailType !== 'NOTYET'" style="text-align:center">
+                    <!-- {{item.responseTime | date: 'short'}} -->
+                    <app-timestamp [dateAndTime]="item.responseTime"> </app-timestamp>
+                  </h6>
+                  <h6 class="text-center" *ngIf="detailType === 'email open' && detailType !== 'NOTYET'" style="text-align:center">
+                    <!-- {{item.time | date: 'short'}} -->
+                    <app-timestamp [dateAndTime]="item.time"> </app-timestamp>
+                  </h6>
 									</td>
-									<td *ngIf="detailType !== 'email open'"> {{item.additionalCount}}</td>
+									<td class="text-center" *ngIf="detailType === 'YES'" style="text-align:center"> {{item.additionalCount}}</td>
 								</tr>
 							</tbody>
 						</table>
 						</ng-container>
 						<app-pagination [pagination]="analyticsComponent.rsvpDetailAnalyticsPagination"
 						 [type]="'emailOpenPagination'" (notifyParent)="analyticsComponent.setPage($event)" (notifyParentDropDown)="analyticsComponent.paginationDropdown($event)"></app-pagination>
-					
+
 					<!-- <app-pagination *ngIf="detailType !== 'email open'" [pagination]="analyticsComponent.evenCamapignRsvpDetailPagination"
 						 [type]="'rsvpDetailPagination'" (notifyParent)="analyticsComponent.setPage($event)" (notifyParentDropDown)="analyticsComponent.paginationDropdown($event)"></app-pagination>
 					 -->

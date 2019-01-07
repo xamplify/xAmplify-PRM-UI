@@ -18,11 +18,11 @@
 	</div>
 	<div class="row">
 		<div class="col-xs-12">
-			<div class="page-bar" style="padding:10px">
+			<div class="page-bar" style="padding:10px;border: 1px solid #CCC;">
 			<div>
 				<div>
 					<div class="row">
-						<div class="col-xs-4" *ngFor="let vendorReport of vendorDetails">
+						<div class="col-xs-12 col-sm-4 col-md-4" *ngFor="let vendorReport of vendorDetails">
 							<a class="dashboard-stat dashboard-stat-lighter dashboard-stat blue" [class.disabled]="!vendorReport.campaignsCount" (click)="navigateToVendorCampaigns(vendorReport)">
 								<div class="visual">
 									<img style="width: 100px; height: 66px;" src="{{vendorReport.companyLogo}}" (error)="errorHandler($event)">

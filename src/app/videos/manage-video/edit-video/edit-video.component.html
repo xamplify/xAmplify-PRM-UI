@@ -92,11 +92,11 @@
 						</div>
 					</div>
         </div>
-        <div id="error-overlay-modal" class="video-js overlay is360video video-processing-message" *ngIf="!saveVideoFile.processed">
+        <div id="error-overlay-modal" class="video-js overlay is360video video-processing-message" *ngIf="!isProcessed">
           <div class="col-xs-12 row" style="top:67px">
               <div>
                 <span><img src="assets/images/loadbar.gif" class="loader-image-tag" style="height: 69px !important;"></span>
-                <span class="text-css" style="font-size: 14px;">Don't mind us. We're just processing your video.</span>
+                <span class="text-css" style="font-size: 14px;">{{properties.VIDEO_PROCESSING_MESSAGE}}</span>
               </div>
           </div>
           </div>

@@ -129,7 +129,7 @@ background: #ffffff;
 .grid-box {
     height: 210px;
     background: none;
-    border: 1px solid #f1f1f1;
+    /* border: 1px solid #f1f1f1; */
 }
 .grid-box:hover {
 	cursor: pointer;
@@ -186,3 +186,4 @@ background: #ffffff;
   width: 97%;
   right: -18px;
   }
+  .override-actions{ margin: 0 auto; display: table;float: none !important; }

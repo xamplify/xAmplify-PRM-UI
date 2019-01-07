@@ -189,7 +189,7 @@
             <i style="font-size: 1.5em;padding: 3px 10px;margin: 10px 0;" class="fa fa-cog pull-right" data-toggle="modal" data-target="#customizeCampaignModal"
              *ngIf="hasCampaignRole ||authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()"></i>
           </a>
-          <a [routerLink]="['/home/campaigns/select']" class="btn btn-sm btn-primary pull-right" style="margin: 5px 0;" *ngIf="hasCampaignRole && authenticationService.user.hasCompany">Create Campaign</a>
+          <a [routerLink]="['/home/campaigns/select']" class="btn btn-sm btn-primary pull-right" style="margin: 5px 0;border-color: white;" *ngIf="hasCampaignRole && authenticationService.user.hasCompany">Create Campaign</a>
         </div>
         <div class="portlet-body clearfix">
           <section *ngFor="let campaign of campaigns; let i=index">
@@ -632,7 +632,7 @@
   <div class="modal right fade" id="emailClickedModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false"
    data-backdrop="static">
    <!-- style="width: 80%; margin: 1em auto" -->
-    <div class="modal-dialog" role="document" >
+    <div class="modal-dialog modal-css" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <a class="close-circle" data-dismiss="modal" (click)="cancelEmailStateModalPopUp()">
@@ -664,7 +664,7 @@
             <strong>No results found</strong>
           </div>
           <div class="table-responsive" *ngIf="pagination.pagedItems?.length != 0">
-            <table class="table tgrid" id="sample_editable_1">
+            <table class="table tgrid" id="sample_editable_1" [hidden]="isLoadingList">
               <thead>
                 <tr>
                   <th class="headerCss center">NAME</th>

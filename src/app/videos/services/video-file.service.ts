@@ -34,7 +34,7 @@ export class VideoFileService {
     seekbarTime: any;
     videoType: any;
     videoFileSweetAlertMessage: boolean;
-
+    contentRedirect = false;
     URL: string = this.authenticationService.REST_URL + 'videos/';
     constructor(private http: Http, private authenticationService: AuthenticationService,public httpClient: HttpClient) {
         console.log('VideoFileService constructor');

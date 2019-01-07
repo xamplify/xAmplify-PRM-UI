@@ -24,6 +24,11 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
     clickedButtonName = "";
     videoGif = "xtremand-video.gif";
     coBraningImage = "co-branding.png";
+    eventTitle = "{{event_title}}";
+    eventDescription = "{{event_description}}";
+    eventStartTime = "{{event_start_time}}";
+    eventEndTime = "{{event_end_time}}";
+    eventLocation = "{{address}}";
     loadTemplate = false;
     constructor(private emailTemplateService:EmailTemplateService,private router:Router, private logger:XtremandLogger,
                 private authenticationService:AuthenticationService,public refService:ReferenceService) {
@@ -73,17 +78,42 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
               self.emailTemplate.body = htmlContent;
               self.emailTemplate.jsonBody = jsonContent;
 	          if(emailTemplateService.emailTemplate.beeVideoTemplate || emailTemplateService.emailTemplate.videoCoBrandingTemplate){
-	              if(jsonContent.indexOf(self.videoGif)<0){
+	              if(jsonContent.indexOf(self.videoGif)< 0){
 	                 swal("","Whoops! We’re unable to save this template because you deleted the default gif. You’ll need to select a new email template and start over.","error");
 	                 return false;
 	              }
 	          }
 	          if(emailTemplateService.emailTemplate.regularCoBrandingTemplate || emailTemplateService.emailTemplate.videoCoBrandingTemplate){
-	              if(jsonContent.indexOf(self.coBraningImage)<0){
+	              if(jsonContent.indexOf(self.coBraningImage)< 0){
                     swal("","Whoops! We’re unable to save this template because you deleted the co-branding logo. You’ll need to select a new email template and start over.","error");
                     return false;
 	               }
 	          }
+	          
+	          if(emailTemplateService.emailTemplate.beeEventTemplate || emailTemplateService.emailTemplate.beeEventCoBrandingTemplate){
+	              if(jsonContent.indexOf(self.eventTitle)< 0){
+	                    swal("","Whoops! We’re unable to save this template because you deleted the {{event_title}} merge tag.","error");
+	                    return false;
+	                 }
+	             /* if(jsonContent.indexOf(self.eventDescription)< 0){
+	                        swal("","Whoops! We’re unable to save this template because you deleted the {{event_description}} merge tag.","error");
+	                        return false;
+	                   }*/
+	              if(jsonContent.indexOf(self.eventStartTime)< 0){
+                         swal("","Whoops! We’re unable to save this template because you deleted the {{event_start_time}} merge tag.","error");
+                         return false;
+                   }
+	              
+	              if(jsonContent.indexOf(self.eventEndTime)< 0){
+                      swal("","Whoops! We’re unable to save this template because you deleted the {{event_end_time}}﻿ merge tag.","error");
+                      return false; 
+                }
+	              if(jsonContent.indexOf(self.eventLocation)< 0){
+                      swal("","Whoops! We’re unable to save this template because you deleted the {{address}} merge tag.","error");
+                      return false;
+                }
+	          }
+	          
 	          if(!isDefaultTemplate){
 	              var buttons = $('<div>')
                   .append(' <div class="form-group"><input class="form-control" type="text" value="'+templateName+'" id="templateNameId" maxLength="200"><span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>')
@@ -94,6 +124,7 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
 	                 self.clickedButtonName = "UPDATE";
 	                 self.refService.startLoader(self.httpRequestLoader);
 	                 swal.close();
+	                 self.emailTemplate.draft = false;
 	                 self.updateEmailTemplate(self.emailTemplate, emailTemplateService, false);
 	              })).append(createButton('Cancel', function() {
 	                 self.clickedButtonName = "CANCEL";
@@ -150,6 +181,7 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
 
 	      function saveTemplate(){
               self.refService.startLoader(self.httpRequestLoader);
+              self.emailTemplate.draft = false;
               self.saveEmailTemplate(self.emailTemplate,emailTemplateService,self.loggedInUserId,false);
               swal.close();
 	      }
@@ -172,6 +204,20 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
          { name: 'Full Name', value: '{{fullName}}' },
          { name: 'Email Id', value: '{{emailId}}' },
          { name: 'Company Name', value: '{{companyName}}' }];
+       
+       if ( mergeTags.length === 5 && (this.emailTemplateService.emailTemplate.beeEventTemplate || this.emailTemplateService.emailTemplate.beeEventCoBrandingTemplate)) {
+           mergeTags.push( { name: 'Event Title', value: '{{event_title}}' });
+           mergeTags.push( { name: 'Event Strat Time', value: '{{event_start_time}}' });
+           mergeTags.push( { name: 'Event End Time', value: '{{event_end_time}}' });
+          /* mergeTags.push( { name: 'Event Description', value: '{{event_description}}' });*/
+           mergeTags.push( { name: 'Address', value: '{{address}}' });
+          /* mergeTags.push( { name: 'Address Lane2', value: '{{addreess_lane2}} ' });*/
+           mergeTags.push( { name: 'Event From Name', value: '{{event_fromName}}' });
+           mergeTags.push( { name: 'Event EmailId', value: '{{event_emailId}}' });
+           mergeTags.push( { name: 'Vendor Name   ', value: '{{vendor_name}}' });
+           mergeTags.push( { name: 'Vendor EmailId', value: '{{vendor_emailId}}' });
+       }
+       
        if(refService.defaultPlayerSettings!=null){
            var beeUserId = "bee-"+self.refService.defaultPlayerSettings.companyProfile.id;
            var beeConfig = {
@@ -244,7 +290,9 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
       emailTemplate.subject = emailTemplateService.emailTemplate.subject;//Image Path
       emailTemplate.regularCoBrandingTemplate = emailTemplateService.emailTemplate.regularCoBrandingTemplate;
       emailTemplate.videoCoBrandingTemplate = emailTemplateService.emailTemplate.videoCoBrandingTemplate;
-      let isCoBrandingTemplate = emailTemplate.regularCoBrandingTemplate || emailTemplate.videoCoBrandingTemplate;
+      emailTemplate.beeEventTemplate = emailTemplateService.emailTemplate.beeEventTemplate;
+      emailTemplate.beeEventCoBrandingTemplate = emailTemplateService.emailTemplate.beeEventCoBrandingTemplate;
+      let isCoBrandingTemplate = emailTemplate.regularCoBrandingTemplate || emailTemplate.videoCoBrandingTemplate||emailTemplate.beeEventCoBrandingTemplate;
       if(emailTemplateService.emailTemplate.subject.indexOf('basic')>-1 && !isCoBrandingTemplate){
           emailTemplate.type = EmailTemplateType.BASIC;
       }else if(emailTemplateService.emailTemplate.subject.indexOf('rich')>-1 && !isCoBrandingTemplate){
@@ -255,6 +303,8 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
           emailTemplate.type = EmailTemplateType.REGULAR_CO_BRANDING;
       }else if(emailTemplate.videoCoBrandingTemplate){
           emailTemplate.type = EmailTemplateType.VIDEO_CO_BRANDING;
+      }else if(emailTemplate.beeEventCoBrandingTemplate){
+          emailTemplate.type = EmailTemplateType.EVENT_CO_BRANDING;
       }
       emailTemplateService.save(emailTemplate) .subscribe(
           data => {
@@ -303,9 +353,13 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
   ngOnDestroy(){
       swal.close();
       let isButtonClicked = this.clickedButtonName!="SAVE" && this.clickedButtonName!="SAVE_AS" &&  this.clickedButtonName!="UPDATE";
-      if(isButtonClicked && this.emailTemplateService.emailTemplate!=undefined &&this.loggedInUserId>0 && this.emailTemplate.jsonBody!=undefined && this.emailTemplate.body!=undefined){
+      if(isButtonClicked && this.emailTemplateService.emailTemplate!=undefined &&this.loggedInUserId>0 && this.emailTemplate.jsonBody!=undefined){
+          this.emailTemplate.draft = true;
         if(!this.emailTemplateService.emailTemplate.defaultTemplate){
-            this.updateEmailTemplate(this.emailTemplate,this.emailTemplateService, true);
+            if(this.emailTemplate.body!=undefined){
+                this.updateEmailTemplate(this.emailTemplate,this.emailTemplateService, true);
+            }
+            
           }else{
               this.saveEmailTemplate(this.emailTemplate,this.emailTemplateService,this.loggedInUserId,true);
           }

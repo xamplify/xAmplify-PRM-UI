@@ -25,24 +25,25 @@ export class TwitterFriendsComponent implements OnInit {
     private twitterService: TwitterService,
     private utilService: UtilService,
     private authenticationService: AuthenticationService,
-    private socialService: SocialService, public referenceService:ReferenceService
-  ) {}
+    private socialService: SocialService, public referenceService: ReferenceService
+  ) { }
 
   getFriends(socialConnection: SocialConnection) {
     this.twitterService
       .listTwitterProfiles(socialConnection, "friends")
       .subscribe(
-        data => {
-          this.twitterProfiles = data["twitterProfiles"];
-          this.utilService.abbreviateTwitterProfiles(this.twitterProfiles);
-        },
-        error => console.log(error),
-        () => console.log(this.twitterProfiles)
+      data => {
+        this.twitterProfiles = data["twitterProfiles"];
+        this.utilService.abbreviateTwitterProfiles(this.twitterProfiles);
+      },
+      error => console.log(error),
+      () => console.log(this.twitterProfiles)
       );
   }
 
-  getSocialConnection(profileId: string, source: string) {
-    this.socialService.getSocialConnection(profileId, source).subscribe(
+  getSocialConnectionByUserIdAndProfileId(userId: number, profileId: any) {
+    this.socialService.getSocialConnectionByUserIdAndProfileId(userId, profileId)
+      .subscribe(
       data => {
         this.socialConnection = data;
       },
@@ -50,14 +51,14 @@ export class TwitterFriendsComponent implements OnInit {
       () => {
         this.getFriends(this.socialConnection);
       }
-    );
+      );
   }
 
   ngOnInit() {
     try {
-      const profileId = this.route.snapshot.params["profileId"];
-      const userId = this.authenticationService.user.id;
-      this.getSocialConnection(profileId, "TWITTER");
+      const userId = this.authenticationService.getUserId();
+      const profileId = this.route.snapshot.params['profileId'];
+      this.getSocialConnectionByUserIdAndProfileId(userId, profileId);
     } catch (err) {
       console.log(err);
     }

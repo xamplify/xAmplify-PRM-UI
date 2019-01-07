@@ -263,7 +263,8 @@ nav a.active {
 .pb20{padding-bottom:20px!important}
 .pl20{padding-left:20px!important}
 .pr20{padding-right:20px!important}
-
+.pg8{position: relative;top:-8px;}
+.pointer{ cursor: pointer;}
 .portlet.light, .dashboard-stat2 {
 	border: 1px solid #CCC;
 	padding: 10px !important;
@@ -645,6 +646,7 @@ legend {
     text-align: center;
     position: relative;
     padding: 1em 0;
+    box-shadow: 1px 1px 1px 1px #adadad;
   }
 }
 
@@ -657,6 +659,7 @@ legend {
     text-align: center;
     position: relative;
     padding: 1em 0;
+    box-shadow: 1px 1px 1px 1px #adadad;
   }
 }
 

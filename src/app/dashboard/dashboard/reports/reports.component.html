@@ -62,7 +62,7 @@
 					<tbody>
 						<ng-container *ngFor="let view of videoViewsLevelFirst; let i = index">
 							<tr style="cursor:pointer;" (click)="selectedRow(view)">
-								<td class="center">{{view.videoTitle | slice:0:20}}<span *ngIf="view.videoTitle?.length>20">...</span></td>
+								<td class="center" title="{{view.videoTitle}}">{{view.videoTitle | slice:0:38}}<span *ngIf="view.videoTitle?.length>38">...</span></td>
 								<td class="center" *ngIf="reportName==='views'">{{view.viewsCount}}</td>
 								<td class="center" *ngIf="reportName!=='views'">{{view.minutesWatchedValue}}</td>
 								<td class="center">
@@ -121,7 +121,7 @@
 									</span>
 								</div>
 							</td>
-							<td [title]="videoViews.videoTitle" class="center hidden-xs">{{videoViews.videoTitle | slice:0:20}} <span *ngIf="videoViews.videoTitle?.length>20">...</span></td>
+							<td [title]="videoViews.videoTitle" class="center hidden-xs">{{videoViews.videoTitle | slice:0:35}} <span *ngIf="videoViews.videoTitle?.length>35">...</span></td>
 							<td class="center">
 							<app-timestamp [dateAndTime]="videoViews.date"> </app-timestamp>
 							</td>

@@ -3,6 +3,7 @@ import { VideoUtilService } from '../../videos/services/video-util.service';
 import { VideoFileService } from '../../videos/services/video-file.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { SaveVideoFile } from '../../videos/models/save-video-file';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-video-thumbnail',
@@ -12,12 +13,19 @@ import { SaveVideoFile } from '../../videos/models/save-video-file';
 export class VideoThumbnailComponent implements OnInit {
   @Input() videoFile: SaveVideoFile;
   @Output() notifyParent: EventEmitter<any>;
-  constructor(public videoUtilService:VideoUtilService, public videoFileService:VideoFileService,public authenticationService:AuthenticationService) {
+  isCreate: boolean;
+  constructor(public videoUtilService:VideoUtilService, public videoFileService:VideoFileService,public authenticationService:AuthenticationService, public router:Router) {
     this.notifyParent = new EventEmitter<any>();
+    this.isCreate = (this.router.url.includes('/home/campaigns/create') || this.router.url.includes('/home/campaigns/edit')) ? true: false;
   }
 
   showPlayVideo(videoFile){
      if(!this.authenticationService.isSuperAdmin() && videoFile.processed){
+      this.notifyParent.emit(videoFile);
+     }
+  }
+  titleClickVideo(videoFile){
+    if(!this.authenticationService.isSuperAdmin() && videoFile.processed && !this.isCreate){
       this.notifyParent.emit(videoFile);
      }
   }

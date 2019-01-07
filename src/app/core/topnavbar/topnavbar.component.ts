@@ -111,6 +111,9 @@ export class TopnavbarComponent implements OnInit {
      this.isAddedByVendor();
     }catch(error) {this.logger.error('error'+error); }
   }
+  lockScreen(){
+    this.router.navigate(['/userlock']);
+  }
 
   logout() {
     this.refService.userDefaultPage = 'NoneOf';

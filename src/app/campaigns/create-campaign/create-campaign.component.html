@@ -430,8 +430,8 @@
 														</ng-container>
 													</tbody>
                         </table>
-                        <div [hidden]="isvideoThere && campaignVideo.httpRequestLoader.isLoading && campaignVideo.httpRequestLoader.isServerError && campaign.createdFromVideos">
-                        <app-pagination  style="position: relative;left: -277px;" [hidden]="campaignVideo.httpRequestLoader.isLoading || campaignVideo.httpRequestLoader.isServerError" [pagination]="videosPagination" [type]="'videos'"
+                        <div style="text-align:left;" [hidden]="isvideoThere && campaignVideo.httpRequestLoader.isLoading && campaignVideo.httpRequestLoader.isServerError && campaign.createdFromVideos">
+                        <app-pagination [hidden]="campaignVideo.httpRequestLoader.isLoading || campaignVideo.httpRequestLoader.isServerError" [pagination]="videosPagination" [type]="'videos'"
                         (notifyParent)="setPagePagination($event)" (notifyParentDropDown)="loadCampaignVideos($event)"></app-pagination>
                         </div>
 											</div>
@@ -550,8 +550,8 @@
 														</ng-container>
 													</tbody>
 												</table>
-												<div [hidden]="isPartnerVideoExists && campaignVideo.httpRequestLoader.isLoading && campaignVideo.httpRequestLoader.isServerError && campaign.createdFromVideos">
-                          <app-pagination style="position: relative;left: -311px;" [hidden]="campaignVideo.httpRequestLoader.isLoading && campaignVideo.httpRequestLoader.isServerError" [pagination]="channelVideosPagination" [type]="'partner-videos'"
+												<div style="text-align:left;" [hidden]="isPartnerVideoExists && campaignVideo.httpRequestLoader.isLoading && campaignVideo.httpRequestLoader.isServerError && campaign.createdFromVideos">
+                          <app-pagination [hidden]="campaignVideo.httpRequestLoader.isLoading && campaignVideo.httpRequestLoader.isServerError" [pagination]="channelVideosPagination" [type]="'partner-videos'"
                           (notifyParent)="setPagePagination($event)" (notifyParentDropDown)="loadPartnerVideos($event)"></app-pagination>
 												</div>
 											</div>
@@ -656,8 +656,8 @@
 													</tr>
 												</tbody>
 											</table>
-											<div *ngIf="contactsPagination.totalRecords > 0 && !campaignContact.httpRequestLoader.isLoading && !campaignContact.httpRequestLoader.isServerError">
-                        <app-pagination style="float: left; position: relative;left: 0px;" [pagination]="contactsPagination" [type]="'contacts'"
+											<div style="text-align:left" *ngIf="contactsPagination.totalRecords > 0 && !campaignContact.httpRequestLoader.isLoading && !campaignContact.httpRequestLoader.isServerError">
+                        <app-pagination  [pagination]="contactsPagination" [type]="'contacts'"
                         (notifyParent)="setPagePagination($event)" [isDropdown]="true"></app-pagination>
 
 												<select class="btn btn-default" style="float: right;" [(ngModel)]="contactItemsSize"
@@ -679,184 +679,302 @@
 					</div>
 				</div>
 				<!-- -------------------------------------Email Template Tab--------------------------------------------------------- -->
-				<div class="row setup-content step hiddenStepInfo" id="step-5">
-					<!-- <br> -->
-					<!-- <div *ngIf="emailTemplatesPagination.totalRecords==0" class="alert alert-danger"><strong>No Email Templates Found</strong></div> -->
-					<div class="col-xs-12 text-center" style="margin-top: 10px;">
-						<div class="portlet light">
-							<ul class="mix-filter pull-left" style="padding:0" *ngIf="!campaign.enableCoBrandingLogo">
-								<li class="filter" (click)="filterTemplates('NONE',0)" [class.emailtemplate-selected]="0 == selectedEmailTemplateTypeIndex"
-								 *ngIf="!isOnlyPartner">All Email Templates</li>
-								<!-- <li class="filter" (click)="filterTemplates('BASIC',1)" *ngIf="campaignType=='regular' && !isOnlyPartner" [class.emailtemplate-selected]="1 == selectedEmailTemplateTypeIndex">Basic Templates</li> -->
-								<li class="filter" (click)="filterTemplates('RICH',2)" *ngIf="campaignType=='regular' && !isOnlyPartner" [class.emailtemplate-selected]="2 == selectedEmailTemplateTypeIndex">Basic Templates</li>
-								<li class="filter" (click)="filterTemplates('UPLOADED',3)" *ngIf="campaignType=='regular' && !isOnlyPartner" [class.emailtemplate-selected]="3 == selectedEmailTemplateTypeIndex">Uploaded Regular Templates</li>
+        <div class="row setup-content step hiddenStepInfo" id="step-5">
+            <!-- <br> -->
+            <!-- <div *ngIf="emailTemplatesPagination.totalRecords==0" class="alert alert-danger"><strong>No Email Templates Found</strong></div> -->
+            <div class="col-xs-12 text-center" style="margin-top: 10px;">
+              <div class="portlet light">
+                <ul class="mix-filter pull-left" style="padding:0" *ngIf="!campaign.enableCoBrandingLogo">
+                  <li class="filter" (click)="filterTemplates('NONE',0)" [class.emailtemplate-selected]="0 == selectedEmailTemplateTypeIndex"
+                   *ngIf="!isOnlyPartner">All Email Templates</li>
+                  <!-- <li class="filter" (click)="filterTemplates('BASIC',1)" *ngIf="campaignType=='regular' && !isOnlyPartner" [class.emailtemplate-selected]="1 == selectedEmailTemplateTypeIndex">Basic Templates</li> -->
+                  <li class="filter" (click)="filterTemplates('RICH',2)" *ngIf="campaignType=='regular' && !isOnlyPartner" [class.emailtemplate-selected]="2 == selectedEmailTemplateTypeIndex">Basic Templates</li>
+                  <li class="filter" (click)="filterTemplates('UPLOADED',3)" *ngIf="campaignType=='regular' && !isOnlyPartner" [class.emailtemplate-selected]="3 == selectedEmailTemplateTypeIndex">Uploaded Regular Templates</li>
+                  <li class="filter" (click)="filterTemplates('REGULAR_CO_BRANDING',4)" *ngIf="campaignType=='regular' && !isOnlyPartner" [class.emailtemplate-selected]="4 == selectedEmailTemplateTypeIndex">Regular Co-Branding Templates</li>
 
-								<!-- <li class="filter" (click)="filterTemplates('BASIC',4)" *ngIf="campaignType=='video' && !isOnlyPartner" [class.emailtemplate-selected]="4== selectedEmailTemplateTypeIndex">Basic Video Templates</li> -->
-								<li class="filter" (click)="filterTemplates('RICH',5)" *ngIf="campaignType=='video' && !isOnlyPartner" [class.emailtemplate-selected]="5== selectedEmailTemplateTypeIndex">Video Templates</li>
-								<li class="filter" (click)="filterTemplates('UPLOADED',6)" *ngIf="campaignType=='video' && !isOnlyPartner" [class.emailtemplate-selected]="6== selectedEmailTemplateTypeIndex">Uploaded Video Templates</li>
-								<li class="filter" (click)="filterTemplates('PARTNER',7)" [class.emailtemplate-selected]="7== selectedEmailTemplateTypeIndex"
-								 *ngIf="!isOnlyPartner && isPartnerToo">Partner Templates</li>
-							</ul>
-							<div class="input-icon right pull-right" style="padding-top: 4px;right: 8px;">
-								<!-- <i class="icon-magnifier" (click)="searchEmailTemplate()" style="cursor: pointer;"></i>
-								<input type="text" class="form-control" placeholder="Search for a template" [(ngModel)]="emailTemplateSearchInput" [ngModelOptions]="{standalone: true}"
-                 style="width: 190px;height: 34px;"> -->
+                  <!-- <li class="filter" (click)="filterTemplates('BASIC',4)" *ngIf="campaignType=='video' && !isOnlyPartner" [class.emailtemplate-selected]="4== selectedEmailTemplateTypeIndex">Basic Video Templates</li> -->
+                  <li class="filter" (click)="filterTemplates('RICH',5)" *ngIf="campaignType=='video' && !isOnlyPartner" [class.emailtemplate-selected]="5== selectedEmailTemplateTypeIndex">Video Templates</li>
+                  <li class="filter" (click)="filterTemplates('UPLOADED',6)" *ngIf="campaignType=='video' && !isOnlyPartner" [class.emailtemplate-selected]="6== selectedEmailTemplateTypeIndex">Uploaded Video Templates</li>
+                 	<li class="filter" (click)="filterTemplates('VIDEO_CO_BRANDING',7)" *ngIf="campaignType=='video' && !isOnlyPartner" [class.emailtemplate-selected]="7== selectedEmailTemplateTypeIndex">Co-Branding Video Templates</li>
+                  <li class="filter" (click)="filterTemplates('PARTNER',8)" [class.emailtemplate-selected]="8== selectedEmailTemplateTypeIndex"
+                   *ngIf="!isOnlyPartner && isPartnerToo">Partner Templates</li>
+                </ul>
+                <div class="input-icon right pull-right" style="padding-top: 4px;right: 8px;">
+                  <!-- <i class="icon-magnifier" (click)="searchEmailTemplate()" style="cursor: pointer;"></i>
+                  <input type="text" class="form-control" placeholder="Search for a template" [(ngModel)]="emailTemplateSearchInput" [ngModelOptions]="{standalone: true}"
+                   style="width: 190px;height: 34px;"> -->
 
-                 <input type="text" [(ngModel)]="emailTemplateSearchInput" [ngModelOptions]="{standalone: true}" class="form-control"
-                 placeholder="Search for a template" (keypress)="eventHandler($event.keyCode, 'emailTemplate')">
-                 <button class="glyphicon glyphicon-remove search-box-item-clear" style="padding:5px;" *ngIf="emailTemplateSearchInput" (click)="emailTemplateSearchInput=''"></button>
-                 <button type="submit" class="search-box-item-click email-search" (click)="searchEmailTemplate()"><i class="fa fa-search" style="font-size: 16px !important;padding:5px !important;"></i></button>
+                   <input type="text" [(ngModel)]="emailTemplateSearchInput" [ngModelOptions]="{standalone: true}" class="form-control"
+                   placeholder="Search for a template" (keypress)="eventHandler($event.keyCode, 'emailTemplate')">
+                   <button class="glyphicon glyphicon-remove search-box-item-clear" style="padding:5px;" *ngIf="emailTemplateSearchInput" (click)="emailTemplateSearchInput=''"></button>
+                   <button type="submit" class="search-box-item-click email-search" (click)="searchEmailTemplate()"><i class="fa fa-search" style="font-size: 16px !important;padding:5px !important;"></i></button>
 
 
-							</div>
-							<div class="portlet-body">
-							<div class="row">
-							<form role="form" class="form-horizontal form-bordered form-label-stripped">
-               <div class="col-xs-12">
-                <app-loader *ngIf="campaignEmailTemplate.httpRequestLoader.isLoading"></app-loader>
-                <app-error-pages *ngIf="campaignEmailTemplate.httpRequestLoader.isServerError"></app-error-pages>
-                <ng-container *ngIf=" emailTemplatesPagination.totalRecords > 0 && !campaignEmailTemplate.httpRequestLoader.isLoading && !campaignEmailTemplate.httpRequestLoader.isServerError">
-                  <div class="row pb10" id="user_list_table_view">
-                    <div class="portlet-body">
-                      <div id="user_list_tb_wrapper" class="dataTables_wrapper form-inline no-footer col-xs-12">
-                        <div class="mix-grid">
-                          <ng-container *ngIf="showSelectedEmailTemplate"><!-- !hideCoBrandedEmailTemplate -->
+                </div>
+                <div class="portlet-body">
+                <div class="row">
+                <form role="form" class="form-horizontal form-bordered form-label-stripped">
+                 <div class="col-xs-12">
+                  <app-loader *ngIf="campaignEmailTemplate.httpRequestLoader.isLoading"></app-loader>
+                  <app-error-pages *ngIf="campaignEmailTemplate.httpRequestLoader.isServerError"></app-error-pages>
+                  <ng-container *ngIf=" emailTemplatesPagination.totalRecords > 0 && !campaignEmailTemplate.httpRequestLoader.isLoading && !campaignEmailTemplate.httpRequestLoader.isServerError">
+                    <div class="row pb10" id="user_list_table_view">
+                      <div class="portlet-body">
+                        <div id="user_list_tb_wrapper" class="dataTables_wrapper form-inline no-footer col-xs-12">
+
+                          <div class="mix-grid">
+
+                        <ng-container *ngIf="showSelectedEmailTemplate"><!-- !hideCoBrandedEmailTemplate -->
                           <div  *ngIf="!isAdd && isCampaignDraftEmailTemplate && emailTemplatesPagination.totalRecords>0 && emailTemplatesPagination.pageIndex==1 ">
-                            <div class="col-md-3 col-sm-4 mix category_1 mix_all" style="display: block; opacity: 1; margin-top: -11px;">
+
+                          <div *ngIf="false" class="col-md-3 col-sm-4 mix category_1 mix_all" style="display: block; opacity: 1; margin-top: -11px;">
                               <div id="container">
                                 <h3 *ngIf="campaign.emailTemplate?.type?.toLocaleString()=='PARTNER'" style="width: 21%">
-												    		{{campaign.emailTemplate?.type}}
-												    		<span class="arrow"></span>
-												   	</h3>
-											 	</div>
-												<div class="mix-inner css" [class.template-selected]="emailTemplateId == selectedEmailTemplateRow">
-													<img class="img-responsive center-block" src="{{campaign.emailTemplate.subject}}" alt="{{campaign.emailTemplate.name}}" id="emailtemplate-image">
-													<div class="mix-details" id="mix-details" style="height:199px">
-														<h4 class="ellipsis" title="{{campaign.emailTemplate.name}}">{{campaign.emailTemplate.name}}</h4>
-														<div style="top: 2%; position: relative; margin-left: 5px;">
-														</div>
-														<div id="template-action-div">
-															<a class="mix-preview4 icons-css" title="Select" data-rel="" *ngIf="emailTemplateId!=selectedEmailTemplateRow" (click)="setEmailTemplate(campaign.emailTemplate)">
-																<i class="fa fa-check-circle" id="fa-font-size"></i>
-															</a>
-															<a class="mix-preview4 icons-css" title="Select" data-rel="" *ngIf="emailTemplateId == selectedEmailTemplateRow">
-																<i class="fa fa-ban" id="fa-font-size"></i>
-															</a>
-															<a class="mix-preview6 icons-css" title="Preview" data-rel="">
-																<i class="fa fa-eye" id="fa-font-size" (click)="getEmailTemplatePreview(campaign.emailTemplate)"></i>
-															</a>
-														</div>
-														<span align="right" class="template-created-on-label">
-															<b>Created On</b>
-														</span>
-														<span align="right" title="upladed date" class="template-created-on-value">
-															<b>{{campaign.emailTemplate.createdDate}}</b>
-														</span>
-														<ng-container *ngIf="campaign.emailTemplate?.type?.toLocaleString()!='PARTNER'">
-															<span align="left" class="template-created-by-label" title="{{campaign.emailTemplate.createdBy}}">
-																<b *ngIf="campaign.emailTemplate.createdBy?.length>12">{{campaign.emailTemplate.createdBy|slice:0:12}}....</b>
-																<b *ngIf="campaign.emailTemplate.createdBy?.length<=12">{{campaign.emailTemplate.createdBy}}</b>
-															</span>
-															<span align="left" class="template-created-by-value">
-																<b>Created By</b>
-															</span>
-														</ng-container>
-														<ng-container *ngIf="campaign.emailTemplate?.type?.toLocaleString()=='PARTNER'">
-															<span align="left" class="template-created-by-label" title="{{campaign.emailTemplate.vendorName}}">
-																<b *ngIf="campaign.emailTemplate.vendorName?.length>13">{{campaign.emailTemplate.vendorName|slice:0:13}}....</b>
-																<b *ngIf="campaign.emailTemplate.vendorName?.length<=13">{{campaign.emailTemplate.vendorName}}</b>
-															</span>
-															<span align="left" class="template-created-by-value">
-																<b>Shared By</b>
-															</span>
-														</ng-container>
-													</div>
-												</div>
-											</div>
-										</div>
-									</ng-container>
+                                {{campaign.emailTemplate?.type}}
+                                <span class="arrow"></span>
+                            </h3>
+                           </div>
+                          <div class="mix-inner css" [class.template-selected]="emailTemplateId == selectedEmailTemplateRow">
+                            <img class="img-responsive center-block" src="{{campaign.emailTemplate.subject}}" alt="{{campaign.emailTemplate.name}}" id="emailtemplate-image">
+                            <div class="mix-details" id="mix-details" style="height:199px">
+                              <h4 class="ellipsis" title="{{campaign.emailTemplate.name}}">{{campaign.emailTemplate.name}}</h4>
+                              <div style="top: 2%; position: relative; margin-left: 5px;">
+                              </div>
+                              <div id="template-action-div">
+                                <a class="mix-preview4 icons-css" title="Select" data-rel="" *ngIf="emailTemplateId!=selectedEmailTemplateRow" (click)="setEmailTemplate(campaign.emailTemplate)">
+                                  <i class="fa fa-check-circle" id="fa-font-size"></i>
+                                </a>
+                                <a class="mix-preview4 icons-css" title="Select" data-rel="" *ngIf="emailTemplateId == selectedEmailTemplateRow">
+                                  <i class="fa fa-ban" id="fa-font-size"></i>
+                                </a>
+                                <a class="mix-preview6 icons-css" title="Preview" data-rel="">
+                                  <i class="fa fa-eye" id="fa-font-size" (click)="getEmailTemplatePreview(campaign.emailTemplate)"></i>
+                                </a>
+                              </div>
+                              <span align="right" class="template-created-on-label">
+                                <b>Created On</b>
+                              </span>
+                              <span align="right" title="upladed date" class="template-created-on-value">
+                                <b>{{campaign.emailTemplate.createdDate}}</b>
+                              </span>
+                              <ng-container *ngIf="campaign.emailTemplate?.type?.toLocaleString()!='PARTNER'">
+                                <span align="left" class="template-created-by-label" title="{{campaign.emailTemplate.createdBy}}">
+                                  <b *ngIf="campaign.emailTemplate.createdBy?.length>12">{{campaign.emailTemplate.createdBy|slice:0:12}}....</b>
+                                  <b *ngIf="campaign.emailTemplate.createdBy?.length<=12">{{campaign.emailTemplate.createdBy}}</b>
+                                </span>
+                                <span align="left" class="template-created-by-value">
+                                  <b>Created By</b>
+                                </span>
+                              </ng-container>
+                              <ng-container *ngIf="campaign.emailTemplate?.type?.toLocaleString()=='PARTNER'">
+                                <span align="left" class="template-created-by-label" title="{{campaign.emailTemplate.vendorName}}">
+                                  <b *ngIf="campaign.emailTemplate.vendorName?.length>13">{{campaign.emailTemplate.vendorName|slice:0:13}}....</b>
+                                  <b *ngIf="campaign.emailTemplate.vendorName?.length<=13">{{campaign.emailTemplate.vendorName}}</b>
+                                </span>
+                                <span align="left" class="template-created-by-value">
+                                  <b>Shared By</b>
+                                </span>
+                              </ng-container>
+                            </div>
+                          </div>
+                        </div>
 
-									<div *ngFor="let emailTemplate of emailTemplatesPagination.pagedItems ;let i =index" id="emailTemplateListDiv_{{emailTemplate.id}}">
-										<div class="col-md-3 col-sm-4 mix category_1 mix_all" style="display: block; opacity: 1; margin-top: -11px;" *ngIf="emailTemplateId!=emailTemplate.id">
-											<div id="container">
-												<h3 *ngIf="emailTemplate.type=='PARTNER'" class="partner-ribbon">
-													{{emailTemplate.type}}
-													<span class="arrow"></span>
-												</h3>
-												<h3 *ngIf="emailTemplate.draft" class="draft-header">
-													DRAFT
-													<span class="draft-arrow"></span>
-												</h3>
-											</div>
-											<div class="mix-inner css" [class.template-selected]="emailTemplate.id == selectedEmailTemplateRow">
-												<img class="img-responsive center-block" src="{{emailTemplate.subject}}" alt="{{emailTemplate.name}}" id="emailtemplate-image">
-												<div class="mix-details" id="mix-details" style="height:199px">
-                          <h4 class="ellipsis" title="{{emailTemplate.name}}" style="margin-top: 14px;">
-                            <span *ngIf="emailTemplate.name?.length<25">{{emailTemplate.name}}</span>
-                            <span *ngIf="emailTemplate.name?.length>25">{{emailTemplate.name |slice:0:28}}...</span></h4>
-													<div style="top: 2%; position: relative; margin-left: 5px;">
-													</div>
-													<div id="template-action-div" *ngIf="!emailTemplate.draft">
-														<a class="mix-preview4 icons-css" title="Select" data-rel="" *ngIf="emailTemplate.id!=selectedEmailTemplateRow" (click)="setEmailTemplate(emailTemplate)">
-															<i class="fa fa-check-circle" id="fa-font-size"></i>
-														</a>
-														<a class="mix-preview4 icons-css" title="Select" data-rel="" *ngIf="emailTemplate.id==selectedEmailTemplateRow">
-															<i class="fa fa-ban" id="fa-font-size"></i>
-														</a>
-														<a class="mix-preview6 icons-css" title="Preview" data-rel="" (click)="getEmailTemplatePreview(emailTemplate)">
-															<i class="fa fa-eye" id="fa-font-size"></i>
-														</a>
-													</div>
-													<span align="right" class="template-created-on-label">
-														<b>Created On</b>
-													</span>
-													<span align="right" title="upladed date" class="template-created-on-value">
-														<b>{{emailTemplate.createdDate}}</b>
-													</span>
-													<ng-container *ngIf="emailTemplate.type!='PARTNER'">
-														<span align="left" class="template-created-by-label" title="{{emailTemplate.createdBy}}">
-															<b *ngIf="emailTemplate.createdBy?.length>12">{{emailTemplate.createdBy|slice:0:12}}....</b>
-															<b *ngIf="emailTemplate.createdBy?.length<=12">{{emailTemplate.createdBy}}</b>
-														</span>
-														<span align="left" class="template-created-by-value">
-															<b>Created By</b>
-														</span>
-													</ng-container>
-													<ng-container *ngIf="emailTemplate.type=='PARTNER'">
-														<span align="left" class="template-created-by-label" title="{{emailTemplate.vendorName}}">
-															<b *ngIf="emailTemplate.vendorName?.length>13">{{emailTemplate.vendorName|slice:0:13}}....</b>
-															<b *ngIf="emailTemplate.vendorName?.length<=13">{{emailTemplate.vendorName}}</b>
-														</span>
-														<span align="left" class="template-created-by-value">
-															<b>Shared By</b>
-														</span>
-													</ng-container>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</ng-container>
-				<div *ngIf="emailTemplatesPagination.totalRecords==0" class="alert alert-info">
-					<strong>No email templates found</strong>
-				</div>
-				<div  style="position: relative;top: -3px;" [hidden]="emailTemplatesPagination.totalRecords<0 || campaignEmailTemplate.httpRequestLoader.isLoading || campaignEmailTemplate.httpRequestLoader.isServerError">
-          <app-pagination style="position: relative;left: -311px;" [pagination]="emailTemplatesPagination" [type]="'emailTemplates'"
-          (notifyParent)="setPagePagination($event)"  (notifyParentDropDown)="loadPaginationDropdownTemplates($event)"></app-pagination>
+                        <ul class="content__list">
+                            <li class="list__item" [class.list__item--selected]="emailTemplateId === selectedEmailTemplateRow">
+                              <!-- above class [ngClass]="{'list__item--selected':selectedFileIds.indexOf(file.id)>-1}" -->
+                              <div class="flex-row" (click)="setEmailTemplate(campaign.emailTemplate)">
+                                <div class="item__select-box-wrapper">
+                                  <span class="select-box"> <label>
+                                    <input (click)="setEmailTemplate(emailTemplate)"  type="checkbox" *ngIf="emailTemplateId!=selectedEmailTemplateRow" (click)="setEmailTemplate(campaign.emailTemplate)">
+                                  	 <input type="checkbox" checked="checked" *ngIf="emailTemplateId==selectedEmailTemplateRow">
+                                  </label>
+                                  </span>
+                                   <span class="ng-scope"> <a
+                                    class="item__preview item__preview--image img-container custom"
+                                    target="_BLANK"> <img
+                                      class="thumb ng-scope" style="width:103px !important" src="{{campaign.emailTemplate.subject}}">
+                                  </a> <a href="javascript:;"> </a>
+                                  </span>
+                                </div>
+                                <div class="item__content">
+                                  <div class="flex-row">
+                                    <span class="item__name"
+                                      [title]="campaign.emailTemplate.name"><b>{{campaign.emailTemplate.name |slice:0:15}}</b><b *ngIf="campaign.emailTemplate?.name?.length>15">...</b>
+                                    </span>
+                                    <span lass="item__name" title="created on" style="float:left">
+                                        <!-- <b>Created On:</b>{{campaign.emailTemplate.createdDate}} -->
+                                        <span><app-timestamp [isOnlyDate]="true"
+                                          [dateAndTime]="campaign?.emailTemplate?.createdDate">
+                                        </app-timestamp></span>
+                                    </span>
+                                    <ng-container *ngIf="emailTemplate?.type?.toLocaleString()!='PARTNER'">
+                                      <span style="float:left"  title="{{campaign.emailTemplate.createdBy}}">
+                                          <b>By:</b> <span>{{campaign.emailTemplate.createdBy|slice:0:12}}<span *ngIf="campaign.emailTemplate.createdBy?.length>12">...</span></span>
+                                      </span>
+                                    </ng-container>
+                                    <ng-container *ngIf="emailTemplate?.type?.toLocaleString()=='PARTNER'">
+                                      <span style="float:left" title="{{campaign.emailTemplate.vendorName}}">
+                                          <b>By:</b>  <span>{{campaign.emailTemplate.vendorName|slice:0:12}}<span *ngIf="campaign.emailTemplate.vendorName?.length>12">...</span></span>
+                                        </span>
+                                    </ng-container>
+                                    <div class="item__actions">
+                                      <span> <a style="float:left; right: -6px;"  class="fm external-link" target="_BLANK"
+                                        data-toggle="tooltip" data-placement="top"
+                                        title="Preview"  (click)="$event.stopPropagation();getEmailTemplatePreview(emailTemplate)"> <!-- (click)="preview(file)"  -->
+                                          <i class="fa fa-external-link-square"  aria-hidden="true" style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
+                                       </a>
+                                      </span>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="clearfix"></div>
+                              </div>
+                            </li>
+                          </ul>
+
+
+
+                      </div>
+                    </ng-container>
+
+                    <div hidden *ngFor="let emailTemplate of emailTemplatesPagination.pagedItems ;let i =index" id="emailTemplateListDiv_{{emailTemplate.id}}" >
+                      <div class="col-md-3 col-sm-4 mix category_1 mix_all" style="display: block; opacity: 1; margin-top: -11px;" *ngIf="emailTemplateId!=emailTemplate.id">
+                        <div id="container">
+                          <h3 *ngIf="emailTemplate.type=='PARTNER'" class="partner-ribbon">
+                            {{emailTemplate.type}}
+                            <span class="arrow"></span>
+                          </h3>
+                          <h3 *ngIf="emailTemplate.draft" class="draft-header">
+                            DRAFT
+                            <span class="draft-arrow"></span>
+                          </h3>
+                        </div>
+                        <div class="mix-inner css" [class.template-selected]="emailTemplate.id == selectedEmailTemplateRow">
+                          <img class="img-responsive center-block" src="{{emailTemplate.subject}}" alt="{{emailTemplate.name}}" id="emailtemplate-image">
+                          <div class="mix-details" id="mix-details" style="height:199px">
+                            <h4 class="ellipsis" title="{{emailTemplate.name}}" style="margin-top: 14px;">
+                              <span *ngIf="emailTemplate.name?.length<25">{{emailTemplate.name}}</span>
+                              <span *ngIf="emailTemplate.name?.length>25">{{emailTemplate.name |slice:0:28}}...</span></h4>
+                            <div style="top: 2%; position: relative; margin-left: 5px;">
+                            </div>
+                            <div id="template-action-div" *ngIf="!emailTemplate.draft">
+                              <a class="mix-preview4 icons-css" title="Select" data-rel="" *ngIf="emailTemplate.id!=selectedEmailTemplateRow" (click)="setEmailTemplate(emailTemplate)">
+                                <i class="fa fa-check-circle" id="fa-font-size"></i>
+                              </a>
+                              <a class="mix-preview4 icons-css" title="Select" data-rel="" *ngIf="emailTemplate.id==selectedEmailTemplateRow">
+                                <i class="fa fa-ban" id="fa-font-size"></i>
+                              </a>
+                              <a class="mix-preview6 icons-css" title="Preview" data-rel="" (click)="getEmailTemplatePreview(emailTemplate)">
+                                <i class="fa fa-eye" id="fa-font-size"></i>
+                              </a>
+                            </div>
+                            <span align="right" class="template-created-on-label">
+                              <b>Created On</b>
+                            </span>
+                            <span align="right" title="upladed date" class="template-created-on-value">
+                              <b>{{emailTemplate.createdDate}}</b>
+                            </span>
+                            <ng-container *ngIf="emailTemplate.type!='PARTNER'">
+                              <span align="left" class="template-created-by-label" title="{{emailTemplate.createdBy}}">
+                                <b *ngIf="emailTemplate.createdBy?.length>12">{{emailTemplate.createdBy|slice:0:12}}....</b>
+                                <b *ngIf="emailTemplate.createdBy?.length<=12">{{emailTemplate.createdBy}}</b>
+                              </span>
+                              <span align="left" class="template-created-by-value">
+                                <b>Created By</b>
+                              </span>
+                            </ng-container>
+                            <ng-container *ngIf="emailTemplate.type=='PARTNER'">
+                              <span align="left" class="template-created-by-label" title="{{emailTemplate.vendorName}}">
+                                <b *ngIf="emailTemplate.vendorName?.length>13">{{emailTemplate.vendorName|slice:0:13}}....</b>
+                                <b *ngIf="emailTemplate.vendorName?.length<=13">{{emailTemplate.vendorName}}</b>
+                              </span>
+                              <span align="left" class="template-created-by-value">
+                                <b>Shared By</b>
+                              </span>
+                            </ng-container>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+
+                    <ul class="content__list" *ngFor="let emailTemplate of emailTemplatesPagination.pagedItems ;let i =index">
+                    <li *ngIf="emailTemplateId!=emailTemplate.id" class="list__item" [class.list__item--selected]="emailTemplate.id === selectedEmailTemplateRow">
+                      <!-- above class [ngClass]="{'list__item--selected':selectedFileIds.indexOf(file.id)>-1}" -->
+                      <div class="flex-row" (click)="setEmailTemplate(emailTemplate)">
+                        <div class="item__select-box-wrapper">
+                          <span class="select-box" [class.hide]="emailTemplate.draft"> <label>
+                            <input (click)="setEmailTemplate(emailTemplate)"  type="checkbox">
+                          </label>
+                          </span>
+                          <!-- [checked]="selectedFileIds.indexOf(file.id)>-1" -->
+                           <span class="ng-scope"> <a
+                            class="item__preview item__preview--image img-container custom"
+                            target="_BLANK"> <img
+                              class="thumb ng-scope" style="width: 103px !important" src="{{emailTemplate.subject}}">
+                          </a> <a href="javascript:;"> </a>
+                          </span>
+                        </div>
+                        <div class="item__content">
+                          <div class="flex-row">
+                            <span class="item__name"
+                              [title]="emailTemplate.name"><b>{{emailTemplate.name |slice:0:17}}</b><b *ngIf="emailTemplate?.name?.length>15">...</b>
+                            </span>
+                           <br>
+                            <span lass="item__name" title="created on" style="float:left">
+                                <!-- <b *ngIf="emailTemplate.createdDate">Created On:</b>{{emailTemplate.createdDate}} -->
+                                <span><app-timestamp [isOnlyDate]="true"
+                                  [dateAndTime]="emailTemplate.createdDate">
+                                </app-timestamp></span>
+                            </span>
+                           <br>
+                            <ng-container *ngIf="emailTemplate.type!='PARTNER'">
+                              <span  style="float:left" title="{{emailTemplate.createdBy}}">
+                                  <b>By:</b><span>{{emailTemplate.createdBy|slice:0:12}}<span *ngIf="emailTemplate.createdBy?.length>12">...</span></span>
+                              </span>
+                            </ng-container>
+                            <ng-container *ngIf="emailTemplate.type=='PARTNER'">
+                              <span style="float:left" title="{{emailTemplate.vendorName}}">
+                                  <b>By</b><span>{{emailTemplate.vendorName|slice:0:12}}<span *ngIf="emailTemplate.vendorName?.length>12">...</span></span>
+                              </span>
+                            </ng-container>
+                            <div class="item__actions">
+                              <span> <a style="float:left;right: -6px;" class="fm external-link" target="_BLANK" data-toggle="tooltip" data-placement="top"
+                                title="Preview" (click)="$event.stopPropagation();getEmailTemplatePreview(emailTemplate)">
+                                  <i class="fa fa-external-link-square"  aria-hidden="true" style="font-size: 20px; color: #5a5a5a; padding-top: 1px !important;"></i>
+                               </a>
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="clearfix"></div>
+                      </div>
+                    </li>
+                  </ul>
+
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+          <div *ngIf="emailTemplatesPagination.totalRecords==0" class="alert alert-info">
+            <strong>No email templates found</strong>
+          </div>
+          <div style="text-align:left;" [hidden]="emailTemplatesPagination.totalRecords<0 || campaignEmailTemplate.httpRequestLoader.isLoading || campaignEmailTemplate.httpRequestLoader.isServerError">
+            <app-pagination [pagination]="emailTemplatesPagination" [type]="'emailTemplates'"
+            (notifyParent)="setPagePagination($event)"  (notifyParentDropDown)="loadPaginationDropdownTemplates($event)"></app-pagination>
+          </div>
+          <button type="button" class="btn btn-default pull-left" (click)="resetActive($event, 40, 'step-4')">Previous</button>
+          <button type="submit" class=" btn green pull-right" (click)="resetActive($event, 40, 'step-6');addUserEmailIds();" [disabled]="!isEmailTemplate"
+            title="Please Select Email Template">Next</button>
+          </div>
+          </form>
+          </div>
         </div>
-				<button type="button" class="btn btn-default pull-left" (click)="resetActive($event, 40, 'step-4')">Previous</button>
-				<button type="submit" class=" btn green pull-right" (click)="resetActive($event, 40, 'step-6');addUserEmailIds();" [disabled]="!isEmailTemplate"
-					title="Please Select Email Template">Next</button>
-				</div>
-				</form>
-				</div>
-			</div>
-			</div>
-					</div>
-				</div>
+        </div>
+            </div>
+          </div>
 				<!-- End of step 5 -->
 				<!-- -------------------------------------Launch Tab--------------------------------------------------------- -->
 				<div class="row setup-content step hiddenStepInfo" id="step-6">
@@ -874,6 +992,12 @@
 						<div class="col-xs-12">
 						<div *ngIf="socialStatusProviders?.length > 0">
 						  <div class="portlet light clearfix">
+							<button type="button" class="btn btn-primary pull-right" (click)="isSocialEnable = !isSocialEnable" style="margin: 5px 15px;">
+								<i class="fa fa-share-alt fa-social" style="margin: 0 5px;"></i> Social Share
+							</button>
+							<div class="clearfix"></div>
+							<div [hidden]="!isSocialEnable">
+							<div class="col-xs-12 col-sm-6">
 							<ul class="list-group social-account">
 								<li class="list-group-item profile-box" style="background-color: #dfdfdf; cursor: pointer;" [ngClass]="{'checked': isAllSelected, 'unchecked': !isAllSelected}">
 									<div class="profile-selected" (click)="toggleSelectAll()" style="float: initial;margin: 0 0 0 10px;">
@@ -912,6 +1036,16 @@
 									<div class="clearfix"></div>
 								</li>
 							</ul>
+							</div>
+							<div class="col-xs-12 col-sm-6">
+								<div style="border: 1px solid #ccc; padding: 10px;">
+										<h6 class="pull-left f-w-600 mt0">Social share preview</h6>
+										<textarea placeholder="Status message" rows="4" class="form-control" [(ngModel)]="statusMessage"  [ngModelOptions]="{standalone: true}"></textarea>
+										<p class="pull-left">Dynamic campaign link will be appended at the end of the post.</p>
+										<div class="clearfix"></div>
+								</div>
+							</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -925,7 +1059,20 @@
 							<h5 id="description"></h5>
 						</div>
 					</div>
-				</div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5" *ngIf="campaignType=='regular'">
+            <div class="portlet light clearfix" style="padding:0px">
+              <div class="p0">
+                  <div class="pricing hover-effect pointer">
+											<div class="pricing-head">
+												<h4 title="{{campaign.campaignName}}">Campaign name: {{campaign.campaignName | slice:0:30}}<span *ngIf="campaign.campaignName?.length>30">...</span></h4>
+												<h4><img style="margin: 0 auto;height: 106px;" alt="Regular E-mail Campaign" class="pricing-head-img img-responsive" src="assets/images/regular-email.png"></h4>
+											</div>
+										</div>
+                <h5 id="description"></h5>
+              </div>
+            </div>
+          </div>
 				<div [attr.class]="lauchTabPreivewDivClass">
 					<div class="portlet light border-0">
 						<table width="100%">
@@ -1114,14 +1261,16 @@
 											<li class="filter" (click)="filterReplyTemplates('UPLOADED',3,reply)" [class.emailtemplate-selected]="3 == reply.selectedEmailTemplateTypeIndex">Uploaded Regular Templates</li>
 											<li *ngIf="isPartnerToo" class="filter" (click)="filterReplyTemplates('PARTNER',7,reply)" [class.emailtemplate-selected]="7== reply.selectedEmailTemplateTypeIndex">Partner Templates</li>
 										</ul>
-                    <div class="input-icon pull-right" style="cursor:pointer; position: relative;top: -16px;" >
-                        <i class="icon-magnifier" style="cursor:pointer;font-size:18px;" (click)="searchReplyEmailTemplate(reply)"></i>
-                        <input type="text" [(ngModel)]="reply.emailTemplateSearchInput" [ngModelOptions]="{standalone: true}" class="form-control"
-                         placeholder="Search for a template" 	style="width: 217px;height: 34px;">
+                    <div class="input-icon pull-right" style="position:relative; top:-5px">
+                      <input type="text" [(ngModel)]="reply.emailTemplateSearchInput" [ngModelOptions]="{standalone: true}" class="form-control"
+                      placeholder="Search" (keypress)="eventReplyHandler($event.keyCode, reply)">
+                      <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="reply.emailTemplateSearchInput" (click)="reply.emailTemplateSearchInput=''"></button>
+                      <button type="submit" class="search-box-item-click" (click)="searchReplyEmailTemplate(reply)"><i class="fa fa-search" style="padding-top: 3px !important; font-size: 18px !important;"></i></button>
                     </div>
 									</div>
-									<app-loader [model]="campaignEmailTemplate.httpRequestLoader.isHorizontalCss" *ngIf="campaignEmailTemplate.httpRequestLoader.isLoading"></app-loader>
-									<app-error-pages *ngIf="campaignEmailTemplate.httpRequestLoader.isServerError"></app-error-pages>
+									<!-- <app-loader [model]="campaignEmailTemplate.httpRequestLoader.isHorizontalCss" *ngIf="campaignEmailTemplate.httpRequestLoader.isLoading"></app-loader> -->
+                  <app-list-loader [rowsCount]="3" *ngIf="campaignEmailTemplate.httpRequestLoader.isLoading"></app-list-loader>
+                  <app-error-pages *ngIf="campaignEmailTemplate.httpRequestLoader.isServerError"></app-error-pages>
 									<ng-container *ngIf="!campaignEmailTemplate.httpRequestLoader.isLoading && !campaignEmailTemplate.httpRequestLoader.isServerError">
 										<table class="table tgrid">
 											<thead>
@@ -1144,7 +1293,7 @@
 														<td *ngIf="reply.emailTemplate.createdBy?.length>20" title="{{reply.emailTemplate.createdBy}}">{{reply.emailTemplate.createdBy|slice:0:20}}....</td>
 														<td *ngIf="reply.emailTemplate.createdBy?.length<=20" title="{{reply.emailTemplate.createdBy}}">{{reply.emailTemplate.createdBy}}</td>
 														<td>
-															<a class="btn btn-warning" (click)="getEmailTemplatePreview(reply.emailTemplate)">
+															<a  (click)="getEmailTemplatePreview(reply.emailTemplate)">
 																<i class="fa fa-eye" style="padding-top: 3px; font-size: 20px;" title="" data-original-title="Preview"></i>
 															</a>
 														</td>
@@ -1165,7 +1314,7 @@
 														<td *ngIf="emailTemplate.createdBy?.length>20" title="{{emailTemplate.createdBy}}">{{emailTemplate.createdBy|slice:0:20}}....</td>
 														<td *ngIf="emailTemplate.createdBy?.length<=20" title="{{emailTemplate.createdBy}}">{{emailTemplate.createdBy}}</td>
 														<td>
-															<a *ngIf="!emailTemplate.draft" class="btn btn-warning" (click)="getEmailTemplatePreview(emailTemplate)">
+															<a *ngIf="!emailTemplate.draft" (click)="getEmailTemplatePreview(emailTemplate);$event.stopPropagation()">
 																<i class="fa fa-eye" style="padding-top: 3px; font-size: 20px;" title="" data-original-title="Preview"></i>
 															</a>
 														</td>
@@ -1499,4 +1648,3 @@
 </div>
 <app-scroll-top></app-scroll-top>
 </div>
-

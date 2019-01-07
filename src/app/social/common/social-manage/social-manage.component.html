@@ -31,47 +31,64 @@
               <div class="portlet-body">
                 <div *ngIf="response === 'success'">
                   <div class="alert alert-success rounded-0" role="alert">
-                    <h4>Your account has been linked successfully.</h4>
+                    <h4>Your changes have been saved successfully.</h4>
                     <h5>
                       <a class="btn btn btn-primary" [routerLink]="referenceService.homeRouter">DASHBOARD</a>
                     </h5>
                   </div>
                 </div>
-                <div class="alert alert-warning rounded-0" *ngIf="socialConnections?.length == 0 && !httpRequestLoader.isLoading">
-                  <h4 class="text-warning">
-                    <i class="fa fa-exclamation-triangle" aria-hidden="true" style="font-size: 20px;"></i> No accounts found.
-                  </h4>
-                  <h5>Please click
-                    <a data-toggle="modal" data-target="#connectAccountsModal">here</a> to add your social accounts.</h5>
+                <div *ngIf="socialConnections?.length == 0 && !httpRequestLoader.isLoading">
+                  <div class="container" *ngIf="providerName.toLowerCase() === 'facebook'; else defaultWarningMessage">
+                      <h3>Create a Page</h3>
+                      <h5>Connect your business, yourself or your cause to the worldwide community of people on Facebook. To get started, choose a Page category.</h5>
+
+                      <div class="col-xs-6 p20">
+                        <div class="portlet light text-center">
+                        <img class="img-responsive" style="margin: 0 auto" src="https://www.facebook.com/images/pages/create/biz_illustration.png">
+                        <span class="text-primary">Business or brand</span>
+                        <p>Showcase your products and services, spotlight your brand and reach more customers on Facebook.</p>
+                        <a href="https://www.facebook.com/pages/creation/" target="_blank" class="btn btn-primary btn-xs">Get Started</a>
+                        </div>
+                      </div>
+                      <div class="col-xs-6 p20">
+                        <div class="portlet light text-center">
+                        <img class="img-responsive" style="margin: 0 auto" src="https://www.facebook.com/images/pages/create/community_illustration.png">
+                        <span class="text-primary">Community or public figure</span>
+                        <p>Connect and share with people in your community, organisation, team, group or club.</p>
+                        <a href="https://www.facebook.com/pages/creation/" target="_blank" class="btn btn-primary btn-xs">Get Started</a>
+                        </div>                        
+                      </div>
+                  </div>
+
+                  <ng-template #defaultWarningMessage>
+                  <div class="alert alert-warning rounded-0">
+                    <h4 class="text-warning">
+                      <i class="fa fa-exclamation-triangle" aria-hidden="true" style="font-size: 20px;"></i> No accounts found.
+                    </h4>
+                    <h5>Please click <a data-toggle="modal" data-target="#connectAccountsModal">here</a> to add your social accounts.</h5>
+                  </div>
+                  </ng-template>
+
                 </div>
                 <app-grid-loader *ngIf="httpRequestLoader.isLoading"></app-grid-loader>
 
                 <div *ngIf="socialConnections?.length > 0">
                   <div class="col-md-3 col-sm-4 col-xs-12 box" *ngFor="let socialConnection of socialConnections;let i = index">
-                    <div class="portlet light block" [ngClass]="{'checked': socialConnection.active, 'unchecked': !socialConnection.active}"
-                      (click)="confirmDialog(socialConnection)">
+                    <div (click)="confirmRemoveAccount(socialConnection)" class="delete-account">
+                      <i class="fa fa-trash-o fa-2x pull-right" style="color: red;" ></i>
+                    </div>
+                    <div class="portlet light block" (click)="confirmDialog(socialConnection)" [ngClass]="{'checked': socialConnection.active, 'unchecked': !socialConnection.active}">
                       <div class="portlet-body">
                         <div class="pt10">
-                          <div style="display: block; height: 20px;">
-                            <img src="https://image.flaticon.com/icons/svg/291/291201.svg" width="20px" alt="selected" [hidden]="!socialConnection.active">
-                            <i class="fa fa-social pull-right" [ngClass]="{
-                                'fa-facebook fa-facebook-color': socialConnection.source ==='FACEBOOK',
-                                'fa-twitter fa-twitter-color': socialConnection.source ==='TWITTER',
-                                'fa-linkedin fa-linkedin-color': socialConnection.source ==='LINKEDIN',
-                                'fa-google fa-google-color': socialConnection.source ==='GOOGLE'}"></i>
-                             </div>
-                          <img class="img-responsive img-circle profile-picture center-block" src="{{socialConnection.profileImage}}" alt="{{socialConnection.profileName}}" (error)="errorHandler($event)">
+                          <i class="fa fa-check-circle fa-2x pull-left" aria-hidden="true" [ngStyle]="{'color': socialConnection.active ? '#6AC259' : '#ccc' }" ></i>
+                          <img class="img-responsive img-circle profile-picture" src="{{socialConnection.profileImage}}" alt="{{socialConnection.profileName}}" (error)="errorHandler($event)">
                         </div>
                         <div class="clearfix">
-                          <br>
-                          <div *ngIf="socialConnection.profileName;then profileName else fullName"></div>
-                          <br>
-                          <ng-template #profileName>
-                            <h5 class="caption-subject ellipsis text-center" style="margin: 0 5px;" title="{{socialConnection.profileName}}">{{socialConnection.profileName}}</h5>
-                          </ng-template>
-                          <ng-template #fullName>
-                            <h5 class="caption-subject ellipsis text-center" style="margin: 0 5px;" title="{{socialConnection.firstName}}&nbsp;{{socialConnection.lastName}}">{{socialConnection.firstName}}&nbsp;{{socialConnection.lastName}}</h5>
-                          </ng-template>
+                            <h5 class="caption-subject ellipsis text-center" style="margin-bottom: 20px;">
+                            <i class="mr10 fa fa-social fa-{{socialConnection.source.toLowerCase()}} fa-{{socialConnection.source.toLowerCase()}}-color"></i>
+                            <span *ngIf="socialConnection.profileName" title="{{socialConnection.profileName}}">{{socialConnection.profileName}}</span>
+                            <span *ngIf="!socialConnection.profileName" title="{{socialConnection.firstName}}&nbsp;{{socialConnection.lastName}}">{{socialConnection.firstName}}&nbsp;{{socialConnection.lastName}}</span>
+                          </h5>
                         </div>
                       </div>
                     </div>

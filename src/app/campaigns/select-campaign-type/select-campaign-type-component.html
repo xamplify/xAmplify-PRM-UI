@@ -29,8 +29,8 @@
 							<div class="portlet-body">
 								<div class="clearfix">
 									<!-- Pricing -->
-									<div class="col-xs-12 col-sm-4">
-										<div class="pricing hover-effect">
+									<div [class]="changeClass" *ngIf="campaignAccess.videoCampaign">
+										<div class="pricing hover-effect pointer"  (click)="createVideoCampaign()">
 											<div class="pricing-head">
 												<h3>Video E-mail Campaign</h3>
 												<h4><img alt="Video e-mail Campaign" class="pricing-head-img img-responsive	" src="assets/images/video-email.png"></h4>
@@ -49,8 +49,8 @@
 											</div>
 										</div>
 									</div>
-									<div class="col-xs-12 col-sm-4">
-										<div class="pricing hover-effect">
+									<div [class]="changeClass" *ngIf="campaignAccess.emailCampaign">
+										<div class="pricing hover-effect pointer"  (click)="createRegularCampaign()">
 											<div class="pricing-head">
 												<h3>E-mail Campaign</h3>
 												<h4><img alt="Regular E-mail Campaign" class="pricing-head-img img-responsive" src="assets/images/regular-email.png"></h4>
@@ -69,8 +69,8 @@
 											</div>
 										</div>
 									</div>
-									<div class="col-xs-12 col-sm-4">
-										<div class="pricing hover-effect">
+									<div [class]="changeClass" *ngIf="campaignAccess.socialCampaign">
+										<div class="pricing hover-effect pointer" (click)="socialMediaCampaign()">
 											<div class="pricing-head">
 												<h3>Social Media Campaign</h3>
 												<h4><img alt="Social Campaign" class="pricing-head-img img-responsive" src="assets/images/social-campaign.png"></h4>
@@ -84,7 +84,7 @@
 											<div class="pricing-footer" style="margin-bottom: -2px;">
 												<div class="col-xs-hidden"><br><br><br><br></div>
 												<p><span class="important">*</span> These items need to be uploaded and/or created before you can launch a campaign.</p>
-												<ng-container *ngIf="isOrgAdmin || hasSocialStatusRole ||isOnlyPartner || authenticationService.module.isVendor  ">
+												<ng-container *ngIf="isOrgAdmin || hasSocialStatusRole ||isOnlyPartner || authenticationService.module.isVendor">
 														<a class="btn yellow-crusta" [routerLink]="['/home/campaigns/social']">Select <i class="m-icon-swapright m-icon-white"></i></a>
 												</ng-container>
 												<ng-container *ngIf="!isOrgAdmin && !hasSocialStatusRole && !isOnlyPartner && !authenticationService.module.isVendor">
@@ -93,8 +93,8 @@
 											</div>
 										</div>
 									</div>
-									<div class="col-xs-12 col-sm-3" style="display:none">
-										<div class="pricing hover-effect">
+									<div [class]="changeClass" *ngIf="campaignAccess.eventCampaign">
+										<div class="pricing hover-effect pointer" (click)="createEventCampaign()">
 											<div class="pricing-head">
 												<h3>Event Based Campaign</h3>
 												<h4><img alt="Social Campaign" class="pricing-head-img img-responsive" src="assets/images/event-campaign.png"></h4>
@@ -103,12 +103,13 @@
 											<ul class="pricing-content list-unstyled">
 												<li><i class="fa fa-list"></i> Provide campaign details</li>
 												<li><i class="fa fa-users"></i> Select Recipients <span class="important">*</span></li>
+												<li><i class="fa fa-envelope"></i> Select an e-mail template <span class="important">*</span></li>
 												<li><i class="fa fa-rocket"></i> Preview and Launch</li>
 											</ul>
 											<div class="pricing-footer" style="margin-bottom: -2px;">
-												<div class="col-xs-hidden"><br><br><br><br></div>
+												<div class="col-xs-hidden"><br><br></div>
 												<p><span class="important">*</span> These items need to be uploaded and/or created before you can launch a campaign.</p>
-												<ng-container *ngIf="isOrgAdmin || hasSocialStatusRole ||isOnlyPartner || authenticationService.module.isVendor  ">
+												<ng-container *ngIf="isOrgAdmin || hasSocialStatusRole ||isOnlyPartner || authenticationService.module.isVendor">
 														<a class="btn yellow-crusta" (click)="createEventCampaign()">Select <i class="m-icon-swapright m-icon-white"></i></a>
 												</ng-container>
 												<ng-container *ngIf="!isOrgAdmin && !hasSocialStatusRole && !isOnlyPartner && !authenticationService.module.isVendor">

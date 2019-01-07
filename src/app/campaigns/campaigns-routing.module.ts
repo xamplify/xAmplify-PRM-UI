@@ -12,6 +12,8 @@ import { PreviewCampaignComponent } from "./preview-campaign/preview-campaign.co
 import { EventCampaignComponent } from './event-campaign/event-campaign.component';
 import { ReDistributedComponent } from './analytics/re-distributed/re-distributed.component';
 import { PreviewPartnersComponent } from './preview-partners/preview-partners.component';
+import { CalendarComponent } from './calendar/calendar.component';
+
 export const campaignRoutes: Routes = [
   { path: "", redirectTo: "select", pathMatch: "full" },
   { path: "select", component: SelectCampaignTypeComponent },
@@ -31,7 +33,9 @@ export const campaignRoutes: Routes = [
   { path: "event-preview/:id", component: EventCampaignComponent },
   { path: "event-edit/:id", component: EventCampaignComponent },
   { path: "re-distribute-event/:id", component: EventCampaignComponent },
-  { path: ":campaignId/remove-access", component: PreviewPartnersComponent }
+  { path: "re-distribute-manage/:id", component: EventCampaignComponent },
+  { path: ":campaignId/remove-access", component: PreviewPartnersComponent },
+  { path: "calendar", component: CalendarComponent }
 ];
 
 @NgModule({

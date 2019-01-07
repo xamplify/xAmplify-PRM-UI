@@ -340,11 +340,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
             );
     }
 
-    getPage(socialConnection: SocialConnection, pageId: string) {
-        this.facebookService.getPage(socialConnection, pageId)
+    getPageFanCount(socialConnection: SocialConnection, pageId: string) {
+        this.facebookService.getPageFanCount(socialConnection, pageId)
             .subscribe(
                 data => {
-                    socialConnection.facebookFanCount = data.extraData.fan_count;
+                    socialConnection.facebookFanCount = data;
                 },
                 error => console.log(error),
                 () => { }
@@ -456,7 +456,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                                 this.getWeeklyPosts(this.socialConnections[i]);
                                 this.getPosts(this.socialConnections[i]);
                                 if (this.socialConnections[i].emailId === null) {
-                                    this.getPage(this.socialConnections[i], this.socialConnections[i].profileId);
+                                    this.getPageFanCount(this.socialConnections[i], this.socialConnections[i].profileId);
                                 } else {
                                     this.getFriends(this.socialConnections[i]);
                                 }

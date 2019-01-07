@@ -341,7 +341,7 @@ export class AddTeamMembersComponent implements OnInit {
                 this.teamMemberUi.validEmailId = this.referenceService.validateEmailId(emailId);
                 if(!this.teamMemberUi.validEmailId){
                     if(isTabChangeEvent){
-                      this.showErrorMessage("Invalid Email Id");
+                      this.showErrorMessage("Please enter a valid email address");
                     }else{
                         this.teamMemberUi.isValidForm = false;
                     }

@@ -185,12 +185,11 @@
 					<div class="caption">Team Members List</div>
 						<div class="tools" style="padding: 0;margin: 0;">
 							<div class="inputs" align="right" style="padding:0;display: inline;">
-								<div class="portlet-input input-inline input-small" style="width: 200px !important;">
+								<div class="portlet-input input-inline input-small" style="width: 236px !important;">
 									<div class="input-icon right">
-                    <input type="text" class="form-control" [(ngModel)]="pagination.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="eventHandler($event.keyCode)">
+                    <input type="text" class="form-control" [(ngModel)]="pagination.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search for a team member" (keypress)="eventHandler($event.keyCode)">
                     <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="pagination.searchKey" (click)="pagination.searchKey=''"></button>
                     <button type="submit" class="search-box-item-click" (click)="searchTeamMembers()"><i class="fa fa-search"></i></button>
-
                   </div>
 								</div>
 							</div>
@@ -254,13 +253,13 @@
 								</app-user-info></td>
 								<ng-container *ngIf="!authenticationService.module.isVendor">
 									<td *ngIf="teamMember.all">
-										<switch *ngIf="teamMember.status!='UNAPPROVED'"  [status]="teamMember.orgAdmin" [onText]="callActionSwitch.onTextValue"
+										<switch *ngIf="teamMember.status.toLocaleString()!='UNAPPROVED'"  [status]="teamMember.orgAdmin" [onText]="callActionSwitch.onTextValue"
 													 [offText]="callActionSwitch.offTextValue"	[onColor]="callActionSwitch.onGreenColorSwitch"
 													 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
 													(statusChange)="changeOrgAdminStatus($event,i,teamMember)">
 										</switch>
 
-										<switch *ngIf="teamMember.status=='UNAPPROVED'" [status]="teamMember.orgAdmin" [onText]="callActionSwitch.onTextValue"
+										<switch *ngIf="teamMember.status.toLocaleString()=='UNAPPROVED'" [status]="teamMember.orgAdmin" [onText]="callActionSwitch.onTextValue"
 													 [offText]="callActionSwitch.offTextValue"	[onColor]="callActionSwitch.onGreenColorSwitch"
 													 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
 													 [disabled]="callActionSwitch.disabled">
@@ -307,12 +306,12 @@
 									</switch>
 								</td>
 								<td *ngIf="teamMember.teamMemberId!=secondOrgAdminId">
-								<switch *ngIf="teamMember.status=='UNAPPROVED'" [status]="teamMember.enabled" [onText]="callActionSwitch.onTextValue"
+								<switch *ngIf="teamMember.status.toLocaleString()=='UNAPPROVED'" [status]="teamMember.enabled" [onText]="callActionSwitch.onTextValue"
 											 [offText]="callActionSwitch.offTextValue"	[onColor]="callActionSwitch.onGreenColorSwitch"
 											 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
 											  (statusChange)="changeTeamMemberStatus(teamMember,$event)" [disabled]="callActionSwitch.disabled">
 									</switch>
-								<switch *ngIf="teamMember.status!='UNAPPROVED'" [status]="teamMember.enabled" [onText]="callActionSwitch.onTextValue"
+								<switch *ngIf="teamMember.status.toLocaleString()!='UNAPPROVED'" [status]="teamMember.enabled" [onText]="callActionSwitch.onTextValue"
 											 [offText]="callActionSwitch.offTextValue"	[onColor]="callActionSwitch.onGreenColorSwitch"
 											 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
 											  (statusChange)="changeTeamMemberStatus(teamMember,$event)">

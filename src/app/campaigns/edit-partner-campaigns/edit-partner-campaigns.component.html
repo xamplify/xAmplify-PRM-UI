@@ -11,7 +11,11 @@
           <i class="fa fa-angle-right"></i>
         </li>
         <li>
-          <a>Partner campaigns</a>
+          <a [routerLink]="['/home/campaigns/partner/all']"> Campaigns shared by Vendors</a>
+        </li>
+        <li>
+          <i class="fa fa-angle-right"></i>
+          <a> Redistribute Campaign</a>
         </li>
       </ul>
     </div>
@@ -67,10 +71,16 @@
                   <font style="color: red">
                     <b> * </b>
                   </font>
-                  <select class="form-control" name="campaign.email" [(ngModel)]="campaign.email">
-                    <option [ngValue]="campaign.email">
-                      {{campaign.email}}
-                    </option>
+                  <select class="form-control" name="campaign.email" [(ngModel)]="campaign.email" (change)="setFromName()" *ngIf="isOrgAdminAndPartner || isVendorAndPartner">
+                    <option *ngFor="let teamMember of teamMemberEmailIds" [ngValue]="teamMember.emailId" >
+						{{teamMember.emailId}}
+					</option>
+                  </select>
+
+                   <select class="form-control" name="campaign.email" [(ngModel)]="campaign.email" (change)="setFromName()" *ngIf="isOnlyPartner">
+                    <option  [ngValue]="campaign.email" >
+						{{campaign.email}}
+					</option>
                   </select>
                 </div>
                 <div class="form-group" [attr.class]="preHeaderDivClass">
@@ -93,23 +103,22 @@
                         </div>
                         <div class="col-sm-8">
                           <label style="margin: 5px 0;">
-                            <span style="cursor: pointer;color: #54a7e9;"  data-toggle="tooltip" data-placement="bottom" title="{{properties.ENALEORDISABLE_VENDOR_MESSAGE}}">
-                              <i class="fa fa-question-circle" style="font-size: 18px;float: left;"></i>
+                            <span style="cursor: pointer;color: #54a7e9;">
+                              <i class="fa fa-question-circle" style="font-size: 18px;float: left;"  data-toggle="tooltip" data-placement="bottom" title="{{properties.ENALEORDISABLE_VENDOR_MESSAGE}}"></i>
                             </span>
                           </label>
                         </div>
                       </div>
-                      <section *ngIf="campaign.dataShare" style="margin:14px 0 0 12px">
-                        <label class="control-label" style="cursor:pointer" (click)="checkInteractiveData('false')">
+                      <section *ngIf="campaign.dataShare" style="margin: 3px 12px;">
+                        <label class="col-xs-12 radio-inline" style="cursor:pointer" (click)="checkInteractiveData('false')">
                           <input name="options" type="radio" [checked]="!campaign.detailedAnalyticsShared" style="cursor:pointer">
                           <strong>Active participants</strong>
                         </label>
-                        <label class="radio-inline" style="cursor:pointer;" (click)="checkInteractiveData('true')">
+                        <label class="col-xs-12 radio-inline" style="cursor:pointer;margin-left: 0;" (click)="checkInteractiveData('true')">
                           <input name="options" type="radio" [checked]="campaign.detailedAnalyticsShared" style="cursor:pointer">
                           <strong>All participants</strong>
-                        </label>
-                        <label>
-                          <span style="cursor: pointer;color: #54a7e9;position: relative; top: 3px;" data-toggle="tooltip" data-placement="bottom" title="Active participants - share only the recipients that have interacted with your campaign &#013;All participants - share all campaign recipient data">
+                          <span style="cursor: pointer;color: #54a7e9;" data-toggle="tooltip" data-placement="bottom" title="{{properties.ACTIVE_PARTICIPANTS}}
+                            {{properties.ALL_PARTICIPANTS}}">
                             <i class="fa fa-question-circle" style="font-size: 18px;"></i>
                           </span>
                         </label>
@@ -184,13 +193,13 @@
                 <div class="col-xs-4 p0">
                   <i class="fa fa-users" [ngClass]="{'disabled': selectedUserlistIds.length < 1}"></i>
                 </div>
-                <div class="col-xs-8">
+                <div class="col-xs-8 p0" style="margin-top: 16px;">
                   <h4 class="pull-left" *ngIf="selectedUserlistIds.length==0">No contact list is selected</h4>
                   <h4 class="pull-left" *ngIf="selectedUserlistIds.length==1">{{selectedUserlistIds.length}} contact list
                     is selected</h4>
                   <h4 class="pull-left" *ngIf="selectedUserlistIds.length>1">{{selectedUserlistIds.length}} contact lists
                     are selected</h4>
-                  <a class="pull-right btn btn-primary btn-sm" class="pull-right btn btn-primary btn-sm" (click)="showContacts()">{{previewText}}</a>
+                  <a class="pull-right btn btn-primary btn-sm" style="margin-top: 6px" (click)="showContacts()">{{previewText}}</a>
                 </div>
               </div>
               <div id="campaign-contact-list" style="display: none;">
@@ -342,8 +351,8 @@
                           <div class="row">
                             <form class="role add-reply" id="form-{{reply.divId}}">
                               <div class="col-xs-12" style="padding:0">
-                                <div class="col-xs-4" style="padding:0">
-                                  <div class="col-xs-12">
+                                <div class="col-xs-12" style="padding:0">
+                                  <div class="col-xs-4">
                                     <label for="reason" style="cursor:default">Reason</label>
                                     <select class="form-control" name="actionId" [(ngModel)]="reply.actionId" style="cursor:pointer">
                                       <option [value]="0" [selected]="reply.actionId ==0">Email is not opened</option>
@@ -359,7 +368,7 @@
                                     </select>
                                   </div>
                                   <div *ngIf="reply.actionId!=16 && reply.actionId!=17 && reply.actionId!=18">
-                                    <div class="col-xs-12" style="margin-top: 9px;">
+                                    <div class="col-xs-2">
                                       <label style="cursor:default" for="days" *ngIf="reply.actionId==22 || reply.actionId==23 " id="reply-days-{{reply.divId}}">Reply
                                         In X Days
                                         <b style="color: red">*</b>
@@ -373,25 +382,24 @@
                                       </label>
                                       <input type="number" class="form-control" name="days" placeholder="Days" [(ngModel)]="reply.replyInDays" min="0" oninput="validity.valid||(value='');">
                                     </div>
-                                    <div class="col-xs-12 time-col" *ngIf="reply.actionId!=22 && reply.actionId!=23 ">
-                                      <div class="col-xs-2" style="margin-top: 26px; cursor: default;">
-                                        <label for="time" id="send-time-{{reply.divId}}">At
-                                          <b style="color: red">*</b>
+                                    <div class="col-xs-3 time-col p0" *ngIf="reply.actionId!=22 && reply.actionId!=23 ">
+                                      <div class="col-xs-2" style="position: relative;top: 28px; cursor: default;">
+                                        <label for="time" id="send-time-{{reply.divId}}">At<b style="color: red">*</b>
                                         </label>
                                       </div>
-                                      <div class="col-xs-10" style="margin-bottom: -19px;">
+                                      <div>
                                         <timepicker [(ngModel)]="reply.replyTime" name="time" [hourStep]="1" [minuteStep]="1"></timepicker>
                                       </div>
                                     </div>
                                   </div>
-                                  <div class="col-xs-12" style="margin-top: 6px;">
+                                  <div class="col-xs-3" style="margin-left: -16px;">
                                     <label for="time" style="cursor:default" id="reply-subject-{{reply.divId}}">Subject
                                       <b style="color: red">*</b>
                                     </label>
                                     <input type="text" class="form-control" name="subject" [(ngModel)]="reply.subject" placeholder="Subject" maxlength="50">
                                   </div>
                                 </div>
-                                <div class="col-xs-8">
+                                <div class="col-xs-12">
                                   <div id="ck-editor-{{i}}">
                                     <div>
                                       <label style="cursor:default" for="days" id="reply-message-{{reply.divId}}">Message
@@ -437,8 +445,8 @@
                           <div class="row">
                             <form class="role" id="form-{{url.divId}}" class="add-click">
                               <div class="col-xs-12" style="padding:0">
-                                <div class="col-xs-4" style="padding:0">
-                                  <div class="col-xs-12">
+                                <div class="col-xs-12" style="padding:0">
+                                  <div class="col-xs-4">
                                     <label for="reason" style="cursor:default">When To Send Email</label>
                                     <select style="cursor:pointer" class="form-control" id="url-schedule-type" name="scheduleEmail" [(ngModel)]="url.actionId"
                                       (change)="setUrlScheduleType($event,url)">
@@ -449,33 +457,31 @@
                                   </div>
 
                                   <div *ngIf="url.actionId==21">
-                                    <div class="form-group col-xs-12" style="margin-top: 9px;">
+                                    <div class="col-xs-3">
                                       <label style="cursor:default" for="days" id="click-days-{{url.divId}}">Wait X Days
                                         After Click
                                         <b style="color: red">*</b>
                                       </label>
                                       <input type="number" class="form-control" name="days" [(ngModel)]="url.replyInDays" placeholder="Days" min="0" oninput="validity.valid||(value='');">
                                     </div>
-                                    <div class="form-group col-xs-12">
-                                      <div class="col-xs-2" style="margin-top: 12px;cursor:default">
-                                        <label for="time" id="send-time-{{url.divId}}">At
-                                          <b style="color: red">*</b>
-                                        </label>
+                                    <div class="col-xs-3 time-col p0">
+                                      <div class="col-xs-3"style="position: relative;top: 28px; cursor: default;">
+                                        <label for="time" id="send-time-{{url.divId}}">At <b style="color: red">*</b></label>
                                       </div>
-                                      <div class="col-xs-10" style="margin-top: -16px;margin-bottom: -28px;">
+                                      <div class="col-xs-9 p0" style="height: 66px;">
                                         <timepicker [(ngModel)]="url.replyTime" name="time" [hourStep]="1" [minuteStep]="1"></timepicker>
                                       </div>
                                     </div>
                                   </div>
 
-                                  <div class="col-xs-12" style="margin-top:6px">
+                                  <div class="col-xs-4" >
                                     <label style="cursor:default" for="time" id="click-subject-{{url.divId}}">Subject
                                       <b style="color: red">*</b>
                                     </label>
                                     <input type="text" class="form-control" name="subject" [(ngModel)]="url.subject" placeholder="Subject" maxlength="50">
                                   </div>
 
-                                  <div class="col-xs-12" style="margin-top:6px">
+                                  <div class="col-xs-4" >
                                     <label style="cursor:default" for="reason">Available URLs</label>
                                     <select style="cursor:pointer" class="form-control" name="url" [(ngModel)]="url.url" style="width: 100%">
                                       <option *ngFor="let hrefLink of emailTemplateHrefLinks;" [ngValue]="hrefLink" [selected]="hrefLink==url.url">
@@ -485,7 +491,7 @@
                                   </div>
                                 </div>
 
-                                <div class="col-xs-8">
+                                <div class="col-xs-12">
                                   <div id="ck-editor-{{i}}">
                                     <label for="days" id="click-message-{{url.divId}}">Message
                                       <b style="color: red">*</b>
@@ -511,7 +517,7 @@
           </div>
           <div class="col-xs-12" style="margin-top: 8px;">
             <fieldset>
-              <legend>Launch option</legend>
+              <legend>Launch Option</legend>
               <div>
                 <div class="btn-group btn-group-justified">
                   <ng-container *ngFor="let launchOption of campaignLaunchOptions">

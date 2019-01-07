@@ -531,8 +531,10 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
         $('#emailActionListModal').modal();
 
         if (actionType === 'open') {
-              this.sortByDropDown.push( { 'name': 'Subject(ASC)', 'value': 'subject-ASC' } );
-              this.sortByDropDown.push( { 'name': 'Subject(DESC)', 'value': 'subject-DESC' } );
+            if ( this.sortByDropDown.length === 5 ) {
+                this.sortByDropDown.push( { 'name': 'Subject(ASC)', 'value': 'subject-ASC' });
+                this.sortByDropDown.push( { 'name': 'Subject(DESC)', 'value': 'subject-DESC' });
+            }
               this.emailActionListPagination.totalRecords = this.campaignReport.emailOpenCount;
         } else if (actionType === 'click') {
             this.sortByDropDown = this.sortByDropDown.filter(function(el) { return el.name != "Subject(ASC)"; }); 
@@ -594,7 +596,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     this.redistributedAccountsBySelectedUserId = [];
      this.listEmailLogsByCampaignAndUser(campaignViews.campaignId, campaignViews.userId);
     this.getTotalTimeSpentOfCampaigns(campaignViews.userId, campaignViews.campaignId);
-    if(this.campaignType==='EVENT'){
+    if(this.campaignType==='EVENT' && this.isChannelCampaign){
         this.redistributionCampaignsDetails(campaignViews);
     }
     if(this.campaignType==='SOCIAL'){
@@ -670,6 +672,10 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
             this.isPartnerEnabledAnalyticsAccess = this.campaign.detailedAnalyticsShared;
             this.isDataShare = this.campaign.dataShare;
             this.isNavigatedThroughAnalytics = true;
+            if(data.campaignType === 'EVENT'){
+                this.isDataShare = true;
+                this.isPartnerEnabledAnalyticsAccess = true;
+            }
         }else{
             this.isNavigatedThroughAnalytics = false;
             this.isPartnerEnabledAnalyticsAccess = true;
@@ -785,7 +791,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       this.downloadTypeName = 'rsvp';
       this.rsvpResposeType = "email open";
       if(this.rsvpDetailType === 'reDistribution'){
-          this.campaignService.getEventCampaignRedistributionEmailOpenDetails( this.campaign.campaignId, this.campaignReport.selectedPartnerEmailId, this.rsvpDetailAnalyticsPagination )
+          this.campaignService.getEventCampaignRedistributionEmailOpenDetails( this.campaign.campaignId, this.campaignReport.selectedPartnerUserId, this.rsvpDetailAnalyticsPagination )
           .subscribe(
           data => {
             console.log(data);
@@ -898,10 +904,10 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       try{
           this.loading = true;
           this.selectedRsvpPartnerId = campaignViews.userId;
-          this.campaignReport.selectedPartnerFirstName = campaignViews.firstName;
-          this.campaignReport.selectedPartnerLastName = campaignViews.lastName;
+          this.campaignReport.selectedPartnerFirstName = campaignViews.firstName + " " + campaignViews.lastName;
+          //this.campaignReport.selectedPartnerLastName = campaignViews.lastName;
           this.campaignReport.selectedPartnerEmailId = campaignViews.emailId;
-          this.campaignReport.selectedPartnerEmailId = campaignViews.userId;
+          this.campaignReport.selectedPartnerUserId = campaignViews.userId;
 
          // this.downloadTypeName = 'rsvp';
             this.campaignService.getRestributionEventCampaignAnalytics( this.campaign.campaignId, campaignViews.userId )
@@ -1106,7 +1112,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
         if(this.rsvpResposeType === 'email open'){
             this.logListName = 'People who opened mail log.csv';
         }else{
-        this.logListName = 'People who says '+ this.rsvpResposeType +' log.csv';
+        this.logListName = 'People who says '+ this.rsvpResposeType +' RSVPs log.csv';
         }
         this.downloadCsvList = this.rsvpDetailsList;
     }
@@ -1143,7 +1149,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
             object["No"] = this.downloadCsvList[i].rsvpMap.NO;
             object["May Be"] = this.downloadCsvList[i].rsvpMap.MAYBE;
             object["Not Yet"] = this.downloadCsvList[i].rsvpMap.notYetResponded;
-            object["Plus Guests"] = this.downloadCsvList[i].rsvpMap.additionalCount;
+            object["Total Guests"] = this.downloadCsvList[i].rsvpMap.additionalCount;
         }else{
          let hours = this.referenceService.formatAMPM(sentTime);
         object["Sent Time"] = sentTime.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
@@ -1198,7 +1204,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
               object["Message"] = this.downloadCsvList[i].message;
               let hours = this.referenceService.formatAMPM(responseTime);
               object["Response Time"] = responseTime.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
-              object["Plus Guests"] = this.downloadCsvList[i].additionalCount;
+              object["Total Attendees"] = this.downloadCsvList[i].additionalCount;
           }
          }
 

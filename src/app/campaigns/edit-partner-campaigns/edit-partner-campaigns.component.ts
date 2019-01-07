@@ -23,8 +23,10 @@ import { Timezone } from '../../core/models/timezone';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { CampaignContact } from '../models/campaign-contact';
 import { Properties } from '../../common/models/properties';
+var moment = require('moment-timezone');
 
-declare var  $,flatpickr,CKEDITOR:any;
+
+declare var  $,flatpickr,CKEDITOR,require:any;
 
 @Component({
   selector: 'app-edit-partner-campaigns',
@@ -56,6 +58,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     dataError = false;
     emailTemplateHrefLinks: any[] = [];
     enableWorkFlow = true;
+    teamMemberEmailIds:any[] = [];
     formErrors = {
         'campaignName': '',
         'fromName': '',
@@ -154,6 +157,9 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     loggedInUserId:number = 0;
     listName:string;
     loading = false;
+    isOnlyPartner = false;
+    isOrgAdminAndPartner =false;
+    isVendorAndPartner = false;
 
     constructor(private router: Router,
             public campaignService: CampaignService,
@@ -170,6 +176,9 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
             this.contactListPagination.filterKey = 'isPartnerUserList';
             this.contactListPagination.filterValue = false;
             this.loggedInUserId = this.authenticationService.getUserId();
+            this.isOnlyPartner = this.authenticationService.isOnlyPartner();
+            this.isOrgAdminAndPartner = this.authenticationService.isOrgAdminPartner();
+            this.isVendorAndPartner = this.authenticationService.isVendorPartner();
              CKEDITOR.config.height = '100';
             if(this.campaignService.reDistributeCampaign!=undefined){
                 this.loadCampaignNames(this.loggedInUserId);
@@ -195,16 +204,12 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
         if(this.campaign.parentCampaignId==undefined || this.campaign.parentCampaignId==0){
             this.campaign.parentCampaignId = this.campaign.campaignId;
         }
-        const userProfile = this.authenticationService.userProfile;
-        this.campaign.email = userProfile.emailId;
-        if(userProfile.firstName !== undefined && userProfile.lastName !== undefined)
-            this.campaign.fromName = $.trim(userProfile.firstName + " " + userProfile.lastName);
-        else if(userProfile.firstName !== undefined && userProfile.lastName == undefined)
-            this.campaign.fromName = $.trim(userProfile.firstName);
-        else
-            this.campaign.fromName = $.trim(userProfile.emailId);
-
-        this.setEmailIdAsFromName();
+        /****If the loggedin User is Vendor& Partner then show drop down along with team members*****/
+        if(this.isOrgAdminAndPartner || this.isVendorAndPartner){
+            this.listAllTeamMemberEmailIds();
+        }else{
+            this.setLoggedInUserEmailId();
+        }
 
         this.getCampaignReplies(this.campaign);
         this.getCampaignUrls(this.campaign);
@@ -221,7 +226,8 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
         }else if(this.campaignType.includes('REGULAR')){
             this.campaignType=="REGULAR";
         }
-        if(this.campaign.scheduleTime!=null && this.campaign.scheduleTime!="null" && this.campaign.campaignScheduleType!="NOW" && this.campaign.userId==this.loggedInUserId){
+        
+        if(this.campaign.campaignScheduleType=="SCHEDULE" && this.campaign.userId==this.loggedInUserId){
             this.campaign.scheduleCampaign  = this.campaignLaunchOptions[1];
         }else{
             this.campaign.scheduleCampaign  = this.campaignLaunchOptions[2];
@@ -244,8 +250,51 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
         this.referenceService.stopLoader(this.httpRequestLoader);
     }
 
+    
+    setLoggedInUserEmailId(){
+        const userProfile = this.authenticationService.userProfile;
+        this.campaign.email = userProfile.emailId;
+        if(userProfile.firstName !== undefined && userProfile.lastName !== undefined)
+            this.campaign.fromName = $.trim(userProfile.firstName + " " + userProfile.lastName);
+        else if(userProfile.firstName !== undefined && userProfile.lastName == undefined)
+            this.campaign.fromName = $.trim(userProfile.firstName);
+        else
+            this.campaign.fromName = $.trim(userProfile.emailId);
+        this.setEmailIdAsFromName();
+    }
 
 
+    listAllTeamMemberEmailIds(){
+        this.campaignService.getAllTeamMemberEmailIds(this.loggedInUserId)
+        .subscribe(
+        data => {
+          let self = this;
+          $.each(data,function(index,value){
+              self.teamMemberEmailIds.push(data[index]);
+          });
+          if(!this.campaign.nurtureCampaign){
+              let teamMember = this.teamMemberEmailIds.filter((teamMember)=> teamMember.id ==this.loggedInUserId)[0];
+              this.campaign.email = teamMember.emailId;
+              this.campaign.fromName = $.trim(teamMember.firstName+" "+teamMember.lastName);
+              this.setEmailIdAsFromName();
+          }else{
+              let existingTeamMemberEmailIds =  this.teamMemberEmailIds.map(function(a) {return a.emailId;});
+              if(existingTeamMemberEmailIds.indexOf(this.campaign.email)<0){
+                  this.setLoggedInUserEmailId();
+              }
+          }
+        },
+        error => console.log( error ),
+        () => console.log( "Team members loaded" )
+        );
+    }
+    
+    setFromName(){
+        let user = this.teamMemberEmailIds.filter((teamMember)=> teamMember.emailId == this.campaign.email)[0];
+        this.campaign.fromName = $.trim(user.firstName+" "+user.lastName);
+        this.setEmailIdAsFromName();
+    }
+    
     getCampaignPartnerByCampaignIdAndUserId(campaignId: number, userId: number) {
         this.campaignService.getCampaignPartnerByCampaignIdAndUserId(campaignId, userId)
             .subscribe(
@@ -458,11 +507,15 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
         let country = $.trim($('#countryName option:selected').text());
         let timeZoneId = "";
         let scheduleTime:any;
-        if( this.campaignLaunchForm.value.scheduleCampaign=="NOW" || this.campaignLaunchForm.value.scheduleCampaign=="SAVE"){
-            timeZoneId = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        if(this.campaignLaunchForm.value.scheduleCampaign=="NOW" || this.campaignLaunchForm.value.scheduleCampaign=="SAVE"){
+            let intlTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            if(intlTimeZone!=undefined){
+                timeZoneId = intlTimeZone;
+            }else if(moment.tz.guess()!=undefined){
+                timeZoneId = moment.tz.guess();
+           }
             scheduleTime = this.campaignService.setLaunchTime();
         }else{
-         //   timeZoneId = this.campaignLaunchForm.value.timeZoneId;
             timeZoneId = $('#timezoneId option:selected').val();
             scheduleTime = this.campaignLaunchForm.value.launchTime;
         }
@@ -1083,7 +1136,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
   ngOnInit() {
       flatpickr( '.flatpickr',{
           enableTime: true,
-          dateFormat: 'm/d/Y H:i',
+          dateFormat: 'm/d/Y h:i K',
           time_24hr: false
       } );
       this.isListView = !this.referenceService.isGridView;

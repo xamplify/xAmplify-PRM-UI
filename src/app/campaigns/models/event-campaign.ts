@@ -12,13 +12,15 @@ export class EventCampaign {
     campaign: string;
     user: User = new User();
     message: string;
-    channelCampaign: boolean = true;
+    subjectLine: string="";
+    channelCampaign: boolean = false;
     emailOpened: boolean = true;
     socialSharingIcons: boolean = true;
     fromName: string;
     email: string = "";
     launchTimeInString: string;
     emailTemplate: EmailTemplate = new EmailTemplate();
+    selectedEditEmailTemplate: EmailTemplate = new EmailTemplate();
     timeZone: string;
     campaignScheduleType: string;
     campaignLocation: Location = new Location();
@@ -29,6 +31,8 @@ export class EventCampaign {
     inviteOthers: boolean = true;
     rsvpReceived: boolean = true;
     onlineMeeting: boolean = true;
+    enableCoBrandingLogo = false;
+    
 
     userLists: Array<ContactList> = [];
     userListIds: Array<number> = [];
@@ -42,6 +46,7 @@ export class EventCampaign {
     campaignReplies: Array<Reply> = [];
 
     hostedBy: string = "";
+    nurtureCampaign: boolean = false;
 
     constructor() {
         this.campaignEventMedias.push(new CampaignEventMedia());

@@ -61,8 +61,8 @@ export class TwitterHomeComponent implements OnInit {
             );
     }
 
-    getSocialConnection(profileId: string, source: string) {
-        this.socialService.getSocialConnection(profileId, source)
+     getSocialConnectionByUserIdAndProfileId(userId: number, profileId: any) {
+    this.socialService.getSocialConnectionByUserIdAndProfileId(userId, profileId)
             .subscribe(
             data => {
                 this.socialConnection = data;
@@ -91,8 +91,9 @@ export class TwitterHomeComponent implements OnInit {
 
     ngOnInit() {
         try {
-            this.profileId = this.route.snapshot.params['profileId'];
-            this.getSocialConnection(this.profileId, 'TWITTER');
+            const userId = this.authenticationService.getUserId();
+            const profileId = this.route.snapshot.params['profileId'];
+            this.getSocialConnectionByUserIdAndProfileId(userId, profileId);
         } catch (err) {
             console.log(err);
         }

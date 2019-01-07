@@ -257,6 +257,18 @@ export class AuthenticationService {
       }
     } catch(error) { console.log('error'+error);}
   }
+    isTeamMember(){
+        try{
+         const roleNames = this.getRoles();
+         if((!this.isSuperAdmin() && !this.isOrgAdmin() && !this.isOrgAdminPartner() && !this.isPartner() && !this.isVendor() && !this.isVendorPartner() && ((roleNames.indexOf('ROLE_VIDEO_UPLOAD')>-1) || (roleNames.indexOf('ROLE_CAMPAIGN')>-1) || (roleNames.indexOf('ROLE_CONTACT')>-1) || (roleNames.indexOf('ROLE_EMAIL_TEMPLATE')>-1)
+                || (roleNames.indexOf('ROLE_STATS')>-1) || (roleNames.indexOf('ROLE_SOCIAL_SHARE')>-1)) )){
+             return true;
+         }else{
+             return false;
+         }
+       } catch(error){ console.log('error'+error);}
+     }
+    
     logout(): void {
         console.log('logout()');
         // clear token remove user from local storage to log user out
