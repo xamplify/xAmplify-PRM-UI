@@ -148,8 +148,6 @@ Default styles for videojs-record 2.3.1
   line-height: 1.4em; }
 
 .vjs-record .vjs-play-control.vjs-control {
-  display: none !important;
-  /* remove above display ,its for preview video */
   cursor: pointer; }
 .vjs-volume-panel {
     display: none !important;
