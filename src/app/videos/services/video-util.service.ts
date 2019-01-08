@@ -81,19 +81,6 @@ export class VideoUtilService {
        $('head').append('<script src="assets/js/indexjscss/video-hls-player/video-testing-contrib-hls.js" type="text/javascript"  class="h-video"/>');
     }
     constructor() { }
-
-    uploadVideoJsFilesLoad(){
-        //   if (this.refService.uploadRetrivejsCalled === false) {
-          $('head').append('<link href="assets/js/indexjscss/webcam-capture/videojs.record.css" rel="stylesheet"  class="r-video">');
-          $('head').append('<script src="https://apis.google.com/js/api.js" type="text/javascript"  class="r-video"/>');
-          $('head').append('<script src="assets/js/indexjscss/select.js" type="text/javascript"  class="r-video"/>');
-          $('head').append('<script src="assets/js/indexjscss/webcam-capture/video.min.js" type="text/javascript"  class="r-video"/>');
-          // $('head').append('<script src="assets/js/indexjscss/videojs.record.js" type="text/javascript"  class="r-video"/>');
-          // <link href="assets/js/indexjscss/webcam-capture/video-js.css" rel="stylesheet">
-       //   this.refService.uploadRetrivejsCalled = true;
-    //  }
-         $('head').append('<script src="assets/js/indexjscss/webcam-capture/videojs.record.js" type="text/javascript"  class="r-video"/>');
-    }
     validateEmail(email: string) {
         const validation = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return validation.test(email);

@@ -306,25 +306,16 @@
 											<button *ngIf="isPartnerToo" [class]="partnerVideosClass" (click)="showTab($event,'channel-videos')" id="partner-videos-tab">Partner Videos</button>
 											<ng-container *ngIf="!campaign.createdFromVideos">
 												<div class="input-icon right pull-right m10" *ngIf="isMyVideosActive">
-													<!-- <i class="icon-magnifier" (click)="searchVideo()" style="cursor: pointer;"></i>
-													<input type="text" class="form-control" placeholder="Search for a video" [(ngModel)]="videoSearchInput" [ngModelOptions]="{standalone: true}">
-                       -->
                           <input type="text" [(ngModel)]="videoSearchInput" [ngModelOptions]="{standalone: true}" class="form-control"
                           placeholder="Search for a Video" (keypress)="eventHandler($event.keyCode, 'myvideos')">
                           <button class="glyphicon glyphicon-remove search-box-item-clear" style="padding:5px;" *ngIf="videoSearchInput" (click)="videoSearchInput=''"></button>
                           <button type="submit" class="search-box-item-click" style="padding:4px !important;" (click)="searchVideo()"><i class="fa fa-search" style="font-size: 16px !important;padding:5px !important;"></i></button>
-
                         </div>
 												<div class="input-icon right pull-right m10" *ngIf="!isMyVideosActive">
-													<!-- <i class="icon-magnifier" (click)="searchChannelVideo()" style="cursor: pointer;"></i>
-													<input type="text" class="form-control" placeholder="Search for a video" [(ngModel)]="channelVideoSearchInput" [ngModelOptions]="{standalone: true}">
-                          -->
                           <input type="text" [(ngModel)]="channelVideoSearchInput" [ngModelOptions]="{standalone: true}" class="form-control"
                           placeholder="Search for a Video" (keypress)="eventHandler($event.keyCode, 'channel')">
                           <button class="glyphicon glyphicon-remove search-box-item-clear" style="padding:5px;" *ngIf="channelVideoSearchInput" (click)="channelVideoSearchInput=''"></button>
                           <button type="submit" class="search-box-item-click" style="padding:4px !important;" (click)="searchChannelVideo()"><i class="fa fa-search" style="font-size: 16px !important;padding:5px !important;"></i></button>
-
-
                         </div>
 											</ng-container>
 										</div>
@@ -580,15 +571,10 @@
 										<div class="inputs" align="right" style="float: right;">
 											<div class="portlet-input input-inline" style="position: relative;top: -6px;">
 												<div class="input-icon right">
-													<!-- <i class="icon-magnifier" (click)="searchContactList()" style="cursor: pointer;"></i>
-													<input type="text" class="form-control" placeholder="Search for a list" [(ngModel)]="contactSearchInput" [ngModelOptions]="{standalone: true}">
-                       -->
                           <input type="text" [(ngModel)]="contactSearchInput" [ngModelOptions]="{standalone: true}" class="form-control"
                           placeholder="Search for a list" (keypress)="eventHandler($event.keyCode, 'contact')">
                           <button class="glyphicon glyphicon-remove search-box-item-clear" style="padding:5px;" *ngIf="contactSearchInput" (click)="contactSearchInput=''"></button>
                           <button type="submit" class="search-box-item-click" style="padding:4px !important;" (click)="searchContactList()"><i class="fa fa-search" style="font-size: 16px !important;padding:5px !important;"></i></button>
-
-
                         </div>
 											</div>
 										</div>
@@ -700,16 +686,10 @@
                    *ngIf="!isOnlyPartner && isPartnerToo">Partner Templates</li>
                 </ul>
                 <div class="input-icon right pull-right" style="padding-top: 4px;right: 8px;">
-                  <!-- <i class="icon-magnifier" (click)="searchEmailTemplate()" style="cursor: pointer;"></i>
-                  <input type="text" class="form-control" placeholder="Search for a template" [(ngModel)]="emailTemplateSearchInput" [ngModelOptions]="{standalone: true}"
-                   style="width: 190px;height: 34px;"> -->
-
                    <input type="text" [(ngModel)]="emailTemplateSearchInput" [ngModelOptions]="{standalone: true}" class="form-control"
                    placeholder="Search for a template" (keypress)="eventHandler($event.keyCode, 'emailTemplate')">
                    <button class="glyphicon glyphicon-remove search-box-item-clear" style="padding:5px;" *ngIf="emailTemplateSearchInput" (click)="emailTemplateSearchInput=''"></button>
                    <button type="submit" class="search-box-item-click email-search" (click)="searchEmailTemplate()"><i class="fa fa-search" style="font-size: 16px !important;padding:5px !important;"></i></button>
-
-
                 </div>
                 <div class="portlet-body">
                 <div class="row">
@@ -726,60 +706,7 @@
 
                         <ng-container *ngIf="showSelectedEmailTemplate"><!-- !hideCoBrandedEmailTemplate -->
                           <div  *ngIf="!isAdd && isCampaignDraftEmailTemplate && emailTemplatesPagination.totalRecords>0 && emailTemplatesPagination.pageIndex==1 ">
-
-                          <div *ngIf="false" class="col-md-3 col-sm-4 mix category_1 mix_all" style="display: block; opacity: 1; margin-top: -11px;">
-                              <div id="container">
-                                <h3 *ngIf="campaign.emailTemplate?.type?.toLocaleString()=='PARTNER'" style="width: 21%">
-                                {{campaign.emailTemplate?.type}}
-                                <span class="arrow"></span>
-                            </h3>
-                           </div>
-                          <div class="mix-inner css" [class.template-selected]="emailTemplateId == selectedEmailTemplateRow">
-                            <img class="img-responsive center-block" src="{{campaign.emailTemplate.subject}}" alt="{{campaign.emailTemplate.name}}" id="emailtemplate-image">
-                            <div class="mix-details" id="mix-details" style="height:199px">
-                              <h4 class="ellipsis" title="{{campaign.emailTemplate.name}}">{{campaign.emailTemplate.name}}</h4>
-                              <div style="top: 2%; position: relative; margin-left: 5px;">
-                              </div>
-                              <div id="template-action-div">
-                                <a class="mix-preview4 icons-css" title="Select" data-rel="" *ngIf="emailTemplateId!=selectedEmailTemplateRow" (click)="setEmailTemplate(campaign.emailTemplate)">
-                                  <i class="fa fa-check-circle" id="fa-font-size"></i>
-                                </a>
-                                <a class="mix-preview4 icons-css" title="Select" data-rel="" *ngIf="emailTemplateId == selectedEmailTemplateRow">
-                                  <i class="fa fa-ban" id="fa-font-size"></i>
-                                </a>
-                                <a class="mix-preview6 icons-css" title="Preview" data-rel="">
-                                  <i class="fa fa-eye" id="fa-font-size" (click)="getEmailTemplatePreview(campaign.emailTemplate)"></i>
-                                </a>
-                              </div>
-                              <span align="right" class="template-created-on-label">
-                                <b>Created On</b>
-                              </span>
-                              <span align="right" title="upladed date" class="template-created-on-value">
-                                <b>{{campaign.emailTemplate.createdDate}}</b>
-                              </span>
-                              <ng-container *ngIf="campaign.emailTemplate?.type?.toLocaleString()!='PARTNER'">
-                                <span align="left" class="template-created-by-label" title="{{campaign.emailTemplate.createdBy}}">
-                                  <b *ngIf="campaign.emailTemplate.createdBy?.length>12">{{campaign.emailTemplate.createdBy|slice:0:12}}....</b>
-                                  <b *ngIf="campaign.emailTemplate.createdBy?.length<=12">{{campaign.emailTemplate.createdBy}}</b>
-                                </span>
-                                <span align="left" class="template-created-by-value">
-                                  <b>Created By</b>
-                                </span>
-                              </ng-container>
-                              <ng-container *ngIf="campaign.emailTemplate?.type?.toLocaleString()=='PARTNER'">
-                                <span align="left" class="template-created-by-label" title="{{campaign.emailTemplate.vendorName}}">
-                                  <b *ngIf="campaign.emailTemplate.vendorName?.length>13">{{campaign.emailTemplate.vendorName|slice:0:13}}....</b>
-                                  <b *ngIf="campaign.emailTemplate.vendorName?.length<=13">{{campaign.emailTemplate.vendorName}}</b>
-                                </span>
-                                <span align="left" class="template-created-by-value">
-                                  <b>Shared By</b>
-                                </span>
-                              </ng-container>
-                            </div>
-                          </div>
-                        </div>
-
-                        <ul class="content__list">
+                          <ul class="content__list">
                             <li class="list__item" [class.list__item--selected]="emailTemplateId === selectedEmailTemplateRow">
                               <!-- above class [ngClass]="{'list__item--selected':selectedFileIds.indexOf(file.id)>-1}" -->
                               <div class="flex-row" (click)="setEmailTemplate(campaign.emailTemplate)">
@@ -831,73 +758,8 @@
                               </div>
                             </li>
                           </ul>
-
-
-
                       </div>
                     </ng-container>
-
-                    <div hidden *ngFor="let emailTemplate of emailTemplatesPagination.pagedItems ;let i =index" id="emailTemplateListDiv_{{emailTemplate.id}}" >
-                      <div class="col-md-3 col-sm-4 mix category_1 mix_all" style="display: block; opacity: 1; margin-top: -11px;" *ngIf="emailTemplateId!=emailTemplate.id">
-                        <div id="container">
-                          <h3 *ngIf="emailTemplate.type=='PARTNER'" class="partner-ribbon">
-                            {{emailTemplate.type}}
-                            <span class="arrow"></span>
-                          </h3>
-                          <h3 *ngIf="emailTemplate.draft" class="draft-header">
-                            DRAFT
-                            <span class="draft-arrow"></span>
-                          </h3>
-                        </div>
-                        <div class="mix-inner css" [class.template-selected]="emailTemplate.id == selectedEmailTemplateRow">
-                          <img class="img-responsive center-block" src="{{emailTemplate.subject}}" alt="{{emailTemplate.name}}" id="emailtemplate-image">
-                          <div class="mix-details" id="mix-details" style="height:199px">
-                            <h4 class="ellipsis" title="{{emailTemplate.name}}" style="margin-top: 14px;">
-                              <span *ngIf="emailTemplate.name?.length<25">{{emailTemplate.name}}</span>
-                              <span *ngIf="emailTemplate.name?.length>25">{{emailTemplate.name |slice:0:28}}...</span></h4>
-                            <div style="top: 2%; position: relative; margin-left: 5px;">
-                            </div>
-                            <div id="template-action-div" *ngIf="!emailTemplate.draft">
-                              <a class="mix-preview4 icons-css" title="Select" data-rel="" *ngIf="emailTemplate.id!=selectedEmailTemplateRow" (click)="setEmailTemplate(emailTemplate)">
-                                <i class="fa fa-check-circle" id="fa-font-size"></i>
-                              </a>
-                              <a class="mix-preview4 icons-css" title="Select" data-rel="" *ngIf="emailTemplate.id==selectedEmailTemplateRow">
-                                <i class="fa fa-ban" id="fa-font-size"></i>
-                              </a>
-                              <a class="mix-preview6 icons-css" title="Preview" data-rel="" (click)="getEmailTemplatePreview(emailTemplate)">
-                                <i class="fa fa-eye" id="fa-font-size"></i>
-                              </a>
-                            </div>
-                            <span align="right" class="template-created-on-label">
-                              <b>Created On</b>
-                            </span>
-                            <span align="right" title="upladed date" class="template-created-on-value">
-                              <b>{{emailTemplate.createdDate}}</b>
-                            </span>
-                            <ng-container *ngIf="emailTemplate.type!='PARTNER'">
-                              <span align="left" class="template-created-by-label" title="{{emailTemplate.createdBy}}">
-                                <b *ngIf="emailTemplate.createdBy?.length>12">{{emailTemplate.createdBy|slice:0:12}}....</b>
-                                <b *ngIf="emailTemplate.createdBy?.length<=12">{{emailTemplate.createdBy}}</b>
-                              </span>
-                              <span align="left" class="template-created-by-value">
-                                <b>Created By</b>
-                              </span>
-                            </ng-container>
-                            <ng-container *ngIf="emailTemplate.type=='PARTNER'">
-                              <span align="left" class="template-created-by-label" title="{{emailTemplate.vendorName}}">
-                                <b *ngIf="emailTemplate.vendorName?.length>13">{{emailTemplate.vendorName|slice:0:13}}....</b>
-                                <b *ngIf="emailTemplate.vendorName?.length<=13">{{emailTemplate.vendorName}}</b>
-                              </span>
-                              <span align="left" class="template-created-by-value">
-                                <b>Shared By</b>
-                              </span>
-                            </ng-container>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-
                     <ul class="content__list" *ngFor="let emailTemplate of emailTemplatesPagination.pagedItems ;let i =index">
                     <li *ngIf="emailTemplateId!=emailTemplate.id" class="list__item" [class.list__item--selected]="emailTemplate.id === selectedEmailTemplateRow">
                       <!-- above class [ngClass]="{'list__item--selected':selectedFileIds.indexOf(file.id)>-1}" -->
@@ -950,9 +812,7 @@
                         <div class="clearfix"></div>
                       </div>
                     </li>
-                  </ul>
-
-
+                   </ul>
                   </div>
                 </div>
               </div>
@@ -986,9 +846,6 @@
 						<fieldset>
 						<legend>Preview Before Publishing</legend>
 						<div class="row">
-            <!-- <div class="portlet title">
-              <h4 style="text-align: left;margin-left: 15px;font-weight: 600;color: #999;">Preview Before Publishing</h4>
-            </div> -->
 						<div class="col-xs-12">
 						<div *ngIf="socialStatusProviders?.length > 0">
 						  <div class="portlet light clearfix">
@@ -1144,25 +1001,25 @@
 	<!-- --Adding Work Flow------------- -->
 	<div class="col-xs-12">
 		<div>
-				<div class="row" style="margin-bottom: 5px;margin-top: -9px;">
-					<div class="col-xs-6">
-						<a *ngIf="emailTemplateHrefLinks?.length==0" class="dashboard-stat yellow-gold blur" style="background-color: #f76c1a;padding: 9px 0;">
-						<i class="fa fa-ban p0"></i>
-							No website links found in email template
-						</a>
-						<a *ngIf="emailTemplateHrefLinks?.length>0" class="dashboard-stat yellow-gold" style="background-color: #f76c1a;padding: 9px 0;"
-							(click)="addClickRows()">
-							<i class="fa fa-plus-square p0" style="margin: 0 5px;"></i>
-							{{properties.ADD_AUTO_RESPONSE_WEBSITE}}
-						</a>
-					</div>
+    <div class="row" style="margin-bottom: 5px;margin-top: -9px;">
+      <div class="col-xs-6">
+        <a *ngIf="emailTemplateHrefLinks?.length==0" class="dashboard-stat yellow-gold blur" style="background-color: #f76c1a;padding: 9px 0;">
+        <i class="fa fa-ban p0"></i>
+          No website links found in email template
+        </a>
+        <a *ngIf="emailTemplateHrefLinks?.length>0" class="dashboard-stat yellow-gold" style="background-color: #f76c1a;padding: 9px 0;"
+          (click)="addClickRows()">
+          <i class="fa fa-plus-square p0" style="margin: 0 5px;"></i>
+          {{properties.ADD_AUTO_RESPONSE_WEBSITE}}
+        </a>
+      </div>
 
-					<div class="col-xs-6">
-						<a class="dashboard-stat yellow-gold" style="background-color: #f4555c;padding: 9px 0;" (click)="addReplyRows()">
-							<i class="fa fa-plus-square p0" style="margin: 0 5px;"></i>
-              {{properties.ADD_AUTO_RESPONSE_EMAIL}}
-						</a>
-					</div>
+      <div class="col-xs-6">
+        <a class="dashboard-stat yellow-gold" style="background-color: #f4555c;padding: 9px 0;" (click)="addReplyRows()">
+          <i class="fa fa-plus-square p0" style="margin: 0 5px;"></i>
+          {{properties.ADD_AUTO_RESPONSE_EMAIL}}
+        </a>
+      </div>
 	<!-- -------------------------------------Add Reply----------------------------- -->
 		<div class="col-xs-12" id="reply-onclick-div" style="position: relative; bottom: -7px;">
 			<div class="alert alert-danger" *ngIf="dataError">
@@ -1214,25 +1071,23 @@
 							</div>
 								<div *ngIf="reply.actionId!=16 && reply.actionId!=17 && reply.actionId!=18">
 								<div class="col-xs-2">
-									<label style="cursor: default;" for="days" *ngIf="reply.actionId==22 || reply.actionId==23 " id="reply-days-{{reply.divId}}">Reply In X Days
-										<b style="color: red">*</b>
-										<font><b>(Minimum 1 Day)</b></font>
+									<label class="default" for="days" *ngIf="reply.actionId==22 || reply.actionId==23 " id="reply-days-{{reply.divId}}">Reply In X Days
+										<b style="color: red">*</b>	<font><b>(Minimum 1 Day)</b></font>
 									</label>
-									<label style="cursor: default;" for="days" *ngIf="reply.actionId!=22 && reply.actionId!=23" id="reply-days-{{reply.divId}}">Reply In X Days
+									<label class="default" for="days" *ngIf="reply.actionId!=22 && reply.actionId!=23" id="reply-days-{{reply.divId}}">Reply In X Days
 										<b style="color: red">*</b>
 									</label>
 									<input type="number" class="form-control" name="days" placeholder="Days" [(ngModel)]="reply.replyInDays" min="0" oninput="validity.valid||(value='');">
 								</div>
 
 								<div class="col-xs-3 time-col" style="padding-left: 0;" *ngIf="reply.actionId!=22 && reply.actionId!=23 ">
-									<div class="col-xs-2" style="cursor: default;"><span for="time" id="send-time-{{reply.divId}}" class="time-picker-css">At<b style="color: red">*</b></span></div>
+									<div class="col-xs-2 default"><span for="time" id="send-time-{{reply.divId}}" class="time-picker-css">At<b style="color: red">*</b></span></div>
 									<div class="col-xs-10" style="height: 66px;"><timepicker [(ngModel)]="reply.replyTime" name="time" [hourStep]="1" [minuteStep]="1"></timepicker></div>
 								</div>
 								</div>
 
 								<div class="col-xs-6">
-									<label style="cursor: default;" for="time" id="reply-subject-{{reply.divId}}">Subject
-										<b style="color: red">*</b>
+									<label class="default" for="time" id="reply-subject-{{reply.divId}}">Subject<b style="color: red">*</b>
 									</label>
 									<input type="text" class="form-control" name="subject" [(ngModel)]="reply.subject" placeholder="Subject" maxlength="50">
 								</div>
@@ -1240,7 +1095,7 @@
 							<div class="col-xs-12">
 								<div id="ck-editor-{{i}}" *ngIf="!reply.defaultTemplate">
 									<div  style="margin-left: 1px;">
-										<label style="cursor: default;" for="days" id="reply-message-{{reply.divId}}">Message <b style="color: red">*</b>
+										<label class="default" for="days" id="reply-message-{{reply.divId}}">Message <b style="color: red">*</b>
 										</label>
 									</div>
 									<div>
@@ -1272,56 +1127,6 @@
                   <app-list-loader [rowsCount]="3" *ngIf="campaignEmailTemplate.httpRequestLoader.isLoading"></app-list-loader>
                   <app-error-pages *ngIf="campaignEmailTemplate.httpRequestLoader.isServerError"></app-error-pages>
 									<ng-container *ngIf="!campaignEmailTemplate.httpRequestLoader.isLoading && !campaignEmailTemplate.httpRequestLoader.isServerError">
-										<table *ngIf="false" class="table tgrid">
-											<thead>
-												<tr>
-													<th class="text-center"></th>
-													<th class="text-center">Name</th>
-													<th class="text-center">Uploaded By</th>
-													<th class="text-center">Preview</th>
-												</tr>
-											</thead>
-											<tbody>
-												<ng-container *ngIf="!isAdd && reply.emailTemplatesPagination.totalRecords>0 && reply.emailTemplatesPagination.pageIndex==1 && reply.selectedEmailTemplateIdForEdit>0 && reply.showSelectedEmailTemplate ">
-													<tr (click)="setReplyEmailTemplate(reply.emailTemplate.id,reply,i)" [class.active]="reply.emailTemplate.id==reply.selectedEmailTemplateId">
-														<td>
-															<input type="radio" name="reply-email-template" [value]="reply.emailTemplate.id" id="reply-{{i}}-{{reply.emailTemplate.id}}"
-																(click)="setReplyEmailTemplate(reply.emailTemplate.id,reply,i)" [checked]="reply.emailTemplate.id == reply.selectedEmailTemplateId">
-														</td>
-														<td *ngIf="reply.emailTemplate.name?.length>20" title="{{reply.emailTemplate.name}}">{{reply.emailTemplate.name|slice:0:20}}....</td>
-														<td *ngIf="reply.emailTemplate.name?.length<=20" title="{{reply.emailTemplate.name}}">{{reply.emailTemplate.name}}</td>
-														<td *ngIf="reply.emailTemplate.createdBy?.length>20" title="{{reply.emailTemplate.createdBy}}">{{reply.emailTemplate.createdBy|slice:0:20}}....</td>
-														<td *ngIf="reply.emailTemplate.createdBy?.length<=20" title="{{reply.emailTemplate.createdBy}}">{{reply.emailTemplate.createdBy}}</td>
-														<td>
-															<a  (click)="getEmailTemplatePreview(reply.emailTemplate)">
-																<i class="fa fa-eye" style="padding-top: 3px; font-size: 20px;" title="" data-original-title="Preview"></i>
-															</a>
-														</td>
-													</tr>
-												</ng-container>
-												<ng-container *ngFor="let emailTemplate of reply.emailTemplatesPagination.pagedItems ;let e =index">
-													<tr (click)="setReplyEmailTemplate(emailTemplate.id,reply,i,emailTemplate.draft)" [class.active]="emailTemplate.id==reply.selectedEmailTemplateId"
-														*ngIf="reply.selectedEmailTemplateIdForEdit!=emailTemplate.id">
-														<!-- -->
-														<td>
-															<input *ngIf="!emailTemplate.draft" type="radio" name="reply-email-template" [value]="emailTemplate.id" id="reply-{{i}}-{{emailTemplate.id}}"
-															 (click)="setReplyEmailTemplate(emailTemplate.id,reply,i,emailTemplate.draft)"
-																[checked]="emailTemplate.id == reply.selectedEmailTemplateId">
-														<input *ngIf="emailTemplate.draft" title="draft template cannot be selected" disabled="disabled" type="radio" name="reply-email-template">
-														</td>
-														<td *ngIf="emailTemplate.name?.length>20" title="{{emailTemplate.name}}">{{emailTemplate.name|slice:0:20}}....</td>
-														<td *ngIf="emailTemplate.name?.length<=20" title="{{emailTemplate.name}}">{{emailTemplate.name}}</td>
-														<td *ngIf="emailTemplate.createdBy?.length>20" title="{{emailTemplate.createdBy}}">{{emailTemplate.createdBy|slice:0:20}}....</td>
-														<td *ngIf="emailTemplate.createdBy?.length<=20" title="{{emailTemplate.createdBy}}">{{emailTemplate.createdBy}}</td>
-														<td>
-															<a *ngIf="!emailTemplate.draft" (click)="getEmailTemplatePreview(emailTemplate);$event.stopPropagation()">
-																<i class="fa fa-eye" style="padding-top: 3px; font-size: 20px;" title="" data-original-title="Preview"></i>
-															</a>
-														</td>
-													</tr>
-												</ng-container>
-											</tbody>
-                    </table>
                     <ng-container *ngIf="(!isAdd && reply.emailTemplatesPagination.totalRecords>0 && reply.emailTemplatesPagination.pageIndex==1 && reply.selectedEmailTemplateIdForEdit>0 && reply.showSelectedEmailTemplate)">
                         <ul class="content__list">
                             <li class="list__item" [class.list__item--selected]="reply.emailTemplate.id==reply.selectedEmailTemplateId">
@@ -1339,7 +1144,7 @@
                                   </a> <a href="javascript:;"> </a>
                                   </span>
                                 </div>
-                                <div class="item__content">
+                                <div class="item__content" style="text-align: left;">
                                   <div class="flex-row">
                                     <span class="item__name"
                                       [title]="reply.emailTemplate.name"><b>{{reply.emailTemplate.name |slice:0:15}}</b><b *ngIf="reply.emailTemplate?.name?.length>15">...</b>
@@ -1365,14 +1170,16 @@
                               </div>
                             </li>
                           </ul>
-                      </ng-container>
-                       <ul class="content__list" *ngFor="let emailTemplate of reply.emailTemplatesPagination.pagedItems ;let e =index">
+                    </ng-container>
+
+                   <!-- current COde -->
+                    <ul class="content__list" *ngFor="let emailTemplate of reply.emailTemplatesPagination.pagedItems ;let e =index">
                         <li (click)="setReplyEmailTemplate(emailTemplate.id,reply,i,emailTemplate.draft)" [class.list__item--selected]="emailTemplate.id==reply.selectedEmailTemplateId"
                             *ngIf="reply.selectedEmailTemplateIdForEdit!=emailTemplate.id" class="list__item">
                           <!-- above class [ngClass]="{'list__item--selected':selectedFileIds.indexOf(file.id)>-1}" -->
                           <div class="flex-row">
                             <div class="item__select-box-wrapper">
-                              <span class="select-box">
+                              <span class="select-box" [class.hide]="emailTemplate.draft">
                                <label>
                                  <input *ngIf="!emailTemplate.draft" type="checkbox" name="reply-email-template" [value]="emailTemplate.id" id="reply-{{i}}-{{emailTemplate.id}}"
                                   (click)="setReplyEmailTemplate(emailTemplate.id,reply,i,emailTemplate.draft)"
@@ -1380,13 +1187,13 @@
                                  <input *ngIf="emailTemplate.draft" title="draft template cannot be selected" disabled="disabled" type="checkbox" name="reply-email-template">
                               </label>
                               </span>
-                               <span class="ng-scope"> <a class="item__preview item__preview--image img-container custom"
-                                target="_BLANK">
+                               <span class="ng-scope">
+                                  <a class="item__preview item__preview--image img-container custom" target="_BLANK">
                                  <img  class="thumb ng-scope" style="width: 98px !important;" src="assets/images/bee-template/rich-co-branding-news-letter.png">
                               </a> <a href="javascript:;"> </a>
                               </span>
                             </div>
-                            <div class="item__content" style="text-align:left">
+                            <div class="item__content" style="text-align: left;">
                               <div class="flex-row">
                                 <span class="item__name" data-toggle="tooltip"
                                   [title]="emailTemplate.name"><b>{{emailTemplate.name | slice:0:18}}
@@ -1401,19 +1208,19 @@
                                   <span><app-timestamp [isOnlyDate]="true" [dateAndTime]="emailTemplate.createdDate"> </app-timestamp></span>
                                 </div>
                                 <div class="item__actions">
-                                  <span> <a class="fm external-link" target="_BLANK"
-                                      data-toggle="tooltip" data-placement="top" title="Preview" (click)="$event.stopPropagation();getEmailTemplatePreview(emailTemplate)"> <!-- (click)="preview(file)"  -->
-                                      <i class="fa fa-external-link-square" aria-hidden="true" style="font-size: 20px; color: #5a5a5a"></i>
-                                  </a>
-                                  </span>
-                                </div>
+                                    <span> <a style="float:left;right: -6px;" class="fm external-link" target="_BLANK" data-toggle="tooltip" data-placement="top"
+                                      title="Preview" (click)="$event.stopPropagation();getEmailTemplatePreview(emailTemplate)">
+                                        <i class="fa fa-external-link-square"  aria-hidden="true" style="font-size: 20px; color: #5a5a5a; padding-top: 1px !important;"></i>
+                                     </a>
+                                    </span>
+                                  </div>
                               </div>
                             </div>
                             <div class="clearfix"></div>
                           </div>
                         </li>
-                      </ul>
-
+                    </ul>
+                    <!--current code   -->
 										<div *ngIf="reply.emailTemplatesPagination.totalRecords==0" class="alert alert-info">
 											<strong>No email templates found</strong>
 										</div>
@@ -1476,8 +1283,8 @@
               <div class="col-xs-12" style="padding:0">
 							<div class="col-xs-12" style="padding:0">
 								<div class="col-xs-6" >
-									<label style="cursor: default;" for="reason">When To Send Email</label>
-									<select style="cursor:pointer" class="form-control" id="url-schedule-type" name="scheduleEmail" [(ngModel)]="url.actionId" (change)="setUrlScheduleType($event,url)">
+									<label class="default" for="reason">When To Send Email</label>
+									<select class="form-control pointer" id="url-schedule-type" name="scheduleEmail" [(ngModel)]="url.actionId" (change)="setUrlScheduleType($event,url)">
 										  <option  [value]="19" [selected]="url.actionId ==19">Send if not clicked</option>
                       <option  [value]="20" [selected]="url.actionId ==20">Send immediately after clicked</option>
                       <option  [value]="21" [selected]="url.actionId ==21">Schedule</option>
@@ -1489,14 +1296,14 @@
 										</label>
 										<input type="number" class="form-control" name="days" [(ngModel)]="url.replyInDays" placeholder="Days" min="0" oninput="validity.valid||(value='');">
 									</div>
-									<div class="col-xs-8 time-col"><!-- form-group  -->
-										<div class="col-xs-2" style="cursor: default;"><label for="time" id="send-time-{{url.divId}}"  class="time-picker-css">At<b style="color: red">*</b></label></div>
+									<div class="col-xs-8 time-col">
+										<div class="col-xs-2 default"><label for="time" id="send-time-{{url.divId}}"  class="time-picker-css">At<b style="color: red">*</b></label></div>
 										<div class="col-xs-10" style="height:66px"><timepicker [(ngModel)]="url.replyTime" name="time" [hourStep]="1" [minuteStep]="1"></timepicker></div>
 									</div>
 								</div>
 
 								<div class="col-xs-6">
-									<label style="cursor: default;" for="time" id="click-subject-{{url.divId}}">Subject
+									<label class="default" for="time" id="click-subject-{{url.divId}}">Subject
 										<b style="color: red">*</b>
 									</label>
 									<input type="text" class="form-control" name="subject" [(ngModel)]="url.subject" placeholder="Subject" maxlength="50">
@@ -1504,7 +1311,7 @@
 
 								<div class="col-xs-6" >
 									<label for="reason" style="cursor: default;">Available URLs</label>
-									<select  style="cursor: pointer;" class="form-control" name="url" [(ngModel)]="url.url" style="width: 100%">
+									<select class="form-control pointer" name="url" [(ngModel)]="url.url" style="width: 100%">
 										<option *ngFor="let hrefLink of emailTemplateHrefLinks;" [ngValue]="hrefLink" [selected]="hrefLink==url.url">
 											{{hrefLink}}
 										</option>
@@ -1513,7 +1320,7 @@
 							</div>
 							<div class="col-xs-12" >
 								  <div id="ck-editor-{{i}}" *ngIf="!url.defaultTemplate">
-										<label style="cursor: default;" for="days" id="click-message-{{url.divId}}">Message <b style="color: red">*</b></label>
+										<label class="default" for="days" id="click-message-{{url.divId}}">Message <b style="color: red">*</b></label>
 									<div>
 										<ckeditor [(ngModel)]="url.body" name="body"></ckeditor>
 									</div>
@@ -1548,62 +1355,8 @@
 									<app-loader [model]="campaignEmailTemplate.httpRequestLoader.isHorizontalCss" *ngIf="campaignEmailTemplate.httpRequestLoader.isLoading"></app-loader>
 									<app-error-pages *ngIf="campaignEmailTemplate.httpRequestLoader.isServerError"></app-error-pages>
 									<ng-container *ngIf="!campaignEmailTemplate.httpRequestLoader.isLoading && !campaignEmailTemplate.httpRequestLoader.isServerError">
-                    <!-- old templates code starts -->
-                    <table *ngIf="false" class="table tgrid" style="margin-top: -3px;">
-											<thead>
-												<tr>
-													<th class="text-center"></th>
-													<th class="text-center">Name</th>
-													<th class="text-center">Uploaded By</th>
-													<th class="text-center">Preview</th>
-												</tr>
-											</thead>
-											<tbody>
-												<ng-container *ngIf="!isAdd && url.emailTemplatesPagination.totalRecords>0 && url.emailTemplatesPagination.pageIndex==1 && url.selectedEmailTemplateIdForEdit>0 && url.showSelectedEmailTemplate ">
-													<tr (click)="setClickEmailTemplate(url.emailTemplate.id,url,i)" [class.active]="url.emailTemplate.id==url.selectedEmailTemplateId">
-														<td>
-															<input type="radio" name="url-email-template" [value]="url.emailTemplate.id" id="url-{{i}}-{{url.emailTemplate.id}}" (click)="setClickEmailTemplate(url.emailTemplate.id,url,i)"
-																[checked]="url.emailTemplate.id == url.selectedEmailTemplateId">
-														</td>
-														<td *ngIf="url.emailTemplate.name?.length>20" title="{{url.emailTemplate.name}}">{{url.emailTemplate.name|slice:0:20}}....</td>
-														<td *ngIf="url.emailTemplate.name?.length<=20" title="{{url.emailTemplate.name}}">{{url.emailTemplate.name}}</td>
-														<td *ngIf="url.emailTemplate.createdBy?.length>20" title="{{url.emailTemplate.createdBy}}">{{url.emailTemplate.createdBy|slice:0:20}}....</td>
-														<td *ngIf="url.emailTemplate.createdBy?.length<=20" title="{{url.emailTemplate.createdBy}}">{{url.emailTemplate.createdBy}}</td>
-														<td>
-															<a class="btn btn-warning" (click)="getEmailTemplatePreview(url.emailTemplate)">
-																<i class="fa fa-eye" style="padding-top: 3px; font-size: 20px;" title="" data-original-title="Preview"></i>
-															</a>
-														</td>
-													</tr>
-												</ng-container>
-												<ng-container *ngFor="let emailTemplate of url.emailTemplatesPagination.pagedItems ;let e =index">
-													<tr (click)="setClickEmailTemplate(emailTemplate.id,url,i,emailTemplate.draft)" [class.active]="emailTemplate.id==url.selectedEmailTemplateId"
-														*ngIf="url.selectedEmailTemplateIdForEdit!=emailTemplate.id">
-														<!-- -->
-														<td>
-															<input *ngIf="!emailTemplate.draft" type="radio" name="url-email-template" [value]="emailTemplate.id" id="url-{{i}}-{{emailTemplate.id}}"
-															 (click)="setClickEmailTemplate(emailTemplate.id,url,i,emailTemplate.draft)"
-																[checked]="emailTemplate.id == url.selectedEmailTemplateId">
-
-															<input *ngIf="emailTemplate.draft" title="draft template cannot be selected" disabled="disabled" type="radio" name="url-email-template">
-														</td>
-														<td *ngIf="emailTemplate.name?.length>20" title="{{emailTemplate.name}}">{{emailTemplate.name|slice:0:20}}....</td>
-														<td *ngIf="emailTemplate.name?.length<=20" title="{{emailTemplate.name}}">{{emailTemplate.name}}</td>
-														<td *ngIf="emailTemplate.createdBy?.length>20" title="{{emailTemplate.createdBy}}">{{emailTemplate.createdBy|slice:0:20}}....</td>
-														<td *ngIf="emailTemplate.createdBy?.length<=20" title="{{emailTemplate.createdBy}}">{{emailTemplate.createdBy}}</td>
-														<td>
-															<a *ngIf="!emailTemplate.draft" class="btn btn-warning" (click)="getEmailTemplatePreview(emailTemplate)">
-																<i class="fa fa-eye" style="padding-top: 3px; font-size: 20px;" title="" data-original-title="Preview"></i>
-															</a>
-														</td>
-													</tr>
-												</ng-container>
-											</tbody>
-                    </table>
-                    <!-- old templates code ends here -->
                     <!-- new Template Code starts -->
                     <ng-container *ngIf="!isAdd && url.emailTemplatesPagination.totalRecords>0 && url.emailTemplatesPagination.pageIndex==1 && url.selectedEmailTemplateIdForEdit>0 && url.showSelectedEmailTemplate ">
-
                       <ul class="content__list">
                             <li class="list__item" [class.list__item--selected]="url.emailTemplate.id==url.selectedEmailTemplateId" >
                               <div class="flex-row" (click)="setClickEmailTemplate(url.emailTemplate.id,url,i)" >
@@ -1667,7 +1420,7 @@
                                 </a> <a href="javascript:;"> </a>
                                 </span>
                               </div>
-                              <div class="item__content">
+                              <div class="item__content" style="text-align: left;">
                                 <div class="flex-row">
                                   <span class="item__name" data-toggle="tooltip"
                                     [title]="emailTemplate.name"><b>{{emailTemplate.name | slice:0:18}}
@@ -1682,12 +1435,12 @@
                                     <span><app-timestamp [isOnlyDate]="true" [dateAndTime]="emailTemplate.createdDate"> </app-timestamp></span>
                                   </div>
                                   <div class="item__actions">
-                                    <span> <a class="fm external-link" target="_BLANK"
-                                        data-toggle="tooltip" data-placement="top" title="Preview" (click)="$event.stopPropagation();getEmailTemplatePreview(emailTemplate)"> <!-- (click)="preview(file)"  -->
-                                        <i class="fa fa-external-link-square" aria-hidden="true" style="font-size: 20px; color: #5a5a5a"></i>
-                                    </a>
-                                    </span>
-                                  </div>
+                                      <span> <a style="float:left;right: -6px;" class="fm external-link" target="_BLANK" data-toggle="tooltip" data-placement="top"
+                                        title="Preview" (click)="$event.stopPropagation();getEmailTemplatePreview(emailTemplate)">
+                                          <i class="fa fa-external-link-square"  aria-hidden="true" style="font-size: 20px; color: #5a5a5a; padding-top: 1px !important;"></i>
+                                       </a>
+                                      </span>
+                                    </div>
                                 </div>
                               </div>
                               <div class="clearfix"></div>
@@ -1695,7 +1448,6 @@
                           </li>
                         </ul>
                     <!-- new template code ends here -->
-
 										<div *ngIf="url.emailTemplatesPagination.totalRecords==0" class="alert alert-info">
 											<strong>No email templates found</strong>
 										</div>
@@ -1738,10 +1490,10 @@
 										<div>
 											  <div class="btn-group btn-group-justified">
 											<ng-container *ngFor="let schedule of sheduleCampaignValues">
-													  <label class="btn btn-primary" style="border: 1px solid #fff;">
-															<input type="radio" class="text-center"  name="scheduleCampaign" [value]="schedule" formControlName="scheduleCampaign" ngDefaultControl
-														 style=" margin-right:1.5em; " />{{schedule}}
-														</label>
+                        <label class="btn btn-primary" style="border: 1px solid #fff;">
+                          <input type="radio" class="text-center"  name="scheduleCampaign" [value]="schedule" formControlName="scheduleCampaign" ngDefaultControl
+                          style=" margin-right:1.5em; " />{{schedule}}
+                        </label>
 											</ng-container> </div>
 											<div class="col-md-12" style="margin-left: -17px;margin-top: 12px;" [hidden]="buttonName!='Schedule'">
 												<div class="col-md-4">
