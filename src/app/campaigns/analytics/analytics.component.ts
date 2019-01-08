@@ -752,6 +752,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
               this.campaignReport.totalNoCount = data.NO;
               this.campaignReport.totalNotYetRespondedCount = data.notYetResponded;
               this.campaignReport.totalEmailOpenCount = data.emailOpenedCount;
+              this.campaignReport.totalAdditionalCount = data.additionalCount;
               this.getPartnersResponeCount(campaignId);
               this.loading = false;
             },

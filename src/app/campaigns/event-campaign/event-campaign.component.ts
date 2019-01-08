@@ -1187,8 +1187,25 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
               data.body = data.body.replace( "{{event_description}}", this.eventCampaign.message );
           }
           if ( !this.eventCampaign.onlineMeeting ) {
-              if ( this.eventCampaign.campaignLocation.location && this.eventCampaign.campaignLocation.street ) {
-                  data.body = data.body.replace( /{{address}}/g, this.eventCampaign.campaignLocation.location + "<br/>" +  this.eventCampaign.campaignLocation.street + ", " + this.eventCampaign.campaignLocation.city + "<br/>" + this.eventCampaign.campaignLocation.state + ", " + this.eventCampaign.campaignLocation.zip);
+              
+              if(this.eventCampaign.campaignLocation.street === undefined){
+                  this.eventCampaign.campaignLocation.street = "";
+              }
+              
+              if(this.eventCampaign.campaignLocation.city === undefined){
+                  this.eventCampaign.campaignLocation.city = "";
+              }
+              
+              if(this.eventCampaign.campaignLocation.state === undefined){
+                  this.eventCampaign.campaignLocation.state = "";
+              }
+              
+              if(this.eventCampaign.campaignLocation.zip === undefined){
+                  this.eventCampaign.campaignLocation.zip = "";
+              }
+              
+              if ( this.eventCampaign.campaignLocation.location ) {
+                  data.body = data.body.replace( /{{address}}/g, this.eventCampaign.campaignLocation.location + "<br/>" +  this.eventCampaign.campaignLocation.street + " " + this.eventCampaign.campaignLocation.city + "<br/>" + this.eventCampaign.campaignLocation.state + " " + this.eventCampaign.campaignLocation.zip);
                  /* data.body = data.body.replace( /{{addreess_lane2}}/g, this.eventCampaign.campaignLocation.city + "," + this.eventCampaign.campaignLocation.state + "," + this.eventCampaign.campaignLocation.zip );*/
               }
           } else {
