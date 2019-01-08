@@ -457,7 +457,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
       if(event===13 && type==='emailTemplate'){ this.searchEmailTemplate();}
   }
   eventReplyHandler(keyCode: any, reply:Reply) {  if (keyCode === 13) {  this.searchReplyEmailTemplate(reply); } }
-    ngOnInit(){
+  eventUrlHandler(keyCode: any, url:any) {  if (keyCode === 13) {  this.searchClickEmailTemplate(url); } }
+
+  ngOnInit(){
         Metronic.init();
         Layout.init();
         Demo.init();
