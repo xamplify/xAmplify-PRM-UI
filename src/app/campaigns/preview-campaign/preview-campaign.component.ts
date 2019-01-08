@@ -65,7 +65,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
                                {'name':'10','value':'10'},
                                {'name':'20','value':'20'},
                                {'name':'30','value':'30'},
-                               {'name':'---All---','value':'0'},
+                               {'name':'All','value':'0'},
                                ]
     contactItemsSize:any = this.numberOfContactsPerPage[0];
     isCampaignDraftContactList:boolean = false;
