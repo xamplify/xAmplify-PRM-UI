@@ -1601,9 +1601,9 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
     if(!this.hasInternalError && this.router.url!=="/" && !this.isPreviewEvent && !this.reDistributeEvent && !this.reDistributeEventManage){
      if(!this.isReloaded){
       if(!this.isLaunched){
-          if(this.isAdd){
+          /*if(this.isAdd){
               this.saveCampaignOnDestroy();
-          }else{
+          }else{*/
               let self = this;
               swal( {
                   title: 'Are you sure?',
@@ -1622,7 +1622,7 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
                     self.reInitialize();
                 }
             })
-          }
+          //}
          }
         }
      }
