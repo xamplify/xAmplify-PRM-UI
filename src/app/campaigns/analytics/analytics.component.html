@@ -598,7 +598,7 @@
 	<div class="page-bar" style="min-height: 572px;">
 		<a (click)="resetTopNavBarValue(); rsvpDetailType = ''" class="pull-right close-circle" style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;"> <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;"
 			aria-hidden="true"></span></a>
-	<div class="col-xs-12 col-sm-5 p-5x">
+	<div class="col-xs-12 col-sm-4 p-5x">
 		<div class="p-5x">
 			<div class="portlet light" style="position: relative;top: 42px;">
 				<div class="portlet-body clearfix">
@@ -619,8 +619,23 @@
 			</div>
 		</div>
 	</div>
-		<div class="col-xs-12 col-sm-7 p-5x emails-info" [hidden]="mainLoader" >
-		<div [hidden]="mainLoader"class="col-xs-2 p0">
+		<div class="col-xs-12 col-sm-8 emails-info" [hidden]="mainLoader" >
+		
+		<div [hidden]="mainLoader"class="col-xs-2 rsvp_tile_padding">
+			<button class="portlet light color1-invert crcb" [class.selectedBox]="rsvpResposeType === 'email open'"   [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
+			 [disabled]="campaignReport.redistributionTotalInvitiesCount < 1 || !isPartnerEnabledAnalyticsAccess">
+				<div class="portlet-body text-center">
+						<i class="fa fa-envelope"></i>
+					<h1>
+						<b>{{campaignReport.redistributionTotalInvitiesCount}}</b>
+						<span>Invities</span>
+					</h1>
+
+				</div>
+			</button>
+		</div>
+		
+		<div [hidden]="mainLoader"class="col-xs-2 rsvp_tile_padding">
 			<button class="portlet light color1-invert crcb" (click)="getRsvpEmailOpenDetails()" [class.selectedBox]="rsvpResposeType === 'email open'"   [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
 			 [disabled]="campaignReport.redistributionTotalEmailOpenCount < 1 || !isPartnerEnabledAnalyticsAccess">
 				<div class="portlet-body text-center">
@@ -633,7 +648,7 @@
 				</div>
 			</button>
 		</div>
-		<div class="p-5x" class="col-xs-2 p0 marginleft5">
+		<div class="p-5x" class="col-xs-2 rsvp_tile_padding">
 			<button class="portlet light color1-invert crcb" [class.selectedBox]="rsvpResposeType === 'YES'" (click)="getRsvpDetails('YES')"  [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
 			 [disabled]="campaignReport.redistributionTotalYesCount < 1 ||  !isPartnerEnabledAnalyticsAccess">
 				<div class="portlet-body text-center">
@@ -645,7 +660,7 @@
 				</div>
 			</button>
 		</div>
-		<div class="p-5x" [hidden]="mainLoader"class="col-xs-2 p0 marginleft5">
+		<div class="p-5x" [hidden]="mainLoader"class="col-xs-2 rsvp_tile_padding">
 			<button class="portlet light color1-invert crcb" [class.selectedBox]="rsvpResposeType === 'NO'" (click)="getRsvpDetails('NO')"  [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
 			 [disabled]="campaignReport.redistributionTotalNoCount < 1 || !isPartnerEnabledAnalyticsAccess">
 				<div class="portlet-body text-center">
@@ -657,7 +672,7 @@
 				</div>
 			</button>
 		</div>
-		<div class="p-5x" [hidden]="mainLoader"  class="col-xs-2 p0 marginleft5">
+		<div class="p-5x" [hidden]="mainLoader"  class="col-xs-2 rsvp_tile_padding">
 			<button class="portlet light color1-invert crcb" [class.selectedBox]="rsvpResposeType === 'MAYBE'" (click)="getRsvpDetails('MAYBE')"  [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
 			 [disabled]="campaignReport.redistributionTotalMayBeCount < 1 || !isPartnerEnabledAnalyticsAccess">
 				<div class="portlet-body text-center">
@@ -669,7 +684,7 @@
 				</div>
 			</button>
 		</div>
-		<div [hidden]="mainLoader"  class="col-xs-2 p0 marginleft5">
+		<div [hidden]="mainLoader"  class="col-xs-2 rsvp_tile_padding">
 			<button class="portlet light color1-invert crcb" [class.selectedBox]="rsvpResposeType === 'NOTYET'" (click)="getRsvpDetails('NOTYET')"  [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
 			 [disabled]="campaignReport.redistributionTotalNotYetRespondedCount < 1 || !isPartnerEnabledAnalyticsAccess">
 				<div class="portlet-body text-center">

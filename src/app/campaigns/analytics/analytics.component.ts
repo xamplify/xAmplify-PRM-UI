@@ -846,6 +846,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       this.campaignReport.redistributionTotalNoCount = this.campaignReport.partnersNoCount;
       this.campaignReport.redistributionTotalNotYetRespondedCount = this.campaignReport.partnersNotYetRespondedCount;
       this.campaignReport.redistributionTotalEmailOpenCount = this.campaignReport.partnersEmailOpenedCount;
+      this.campaignReport.redistributionTotalInvitiesCount = this.campaignReport.partnersTotalInvitiesCount;
       this.isTimeLineView = true;
       this.rsvpDetailType = 'partnerRsvp';
       this.getRsvpDetails("YES");
@@ -907,6 +908,15 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       try{
           this.loading = true;
           this.selectedRsvpPartnerId = campaignViews.userId;
+          
+          if(!campaignViews.firstName){
+              campaignViews.firstName = "";
+          }
+          
+          if(!campaignViews.lastName){
+              campaignViews.lastName = "";
+          }
+          
           this.campaignReport.selectedPartnerFirstName = campaignViews.firstName + " " + campaignViews.lastName;
           //this.campaignReport.selectedPartnerLastName = campaignViews.lastName;
           this.campaignReport.selectedPartnerEmailId = campaignViews.emailId;
@@ -922,6 +932,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
               this.campaignReport.redistributionTotalNoCount = data.NO;
               this.campaignReport.redistributionTotalNotYetRespondedCount = data.notYetResponded;
               this.campaignReport.redistributionTotalEmailOpenCount = data.emailOpenedCount;
+              this.campaignReport.redistributionTotalInvitiesCount = data.totalInvities;
               this.rsvpDetailType = 'reDistribution';
               this.getRsvpDetails('YES');
               this.loading = false;

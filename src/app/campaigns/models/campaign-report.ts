@@ -48,6 +48,7 @@ export class CampaignReport {
     redistributionTotalMayBeCount: number = 0;
     redistributionTotalNotYetRespondedCount: number = 0;
     redistributionTotalEmailOpenCount: number = 0;
+    redistributionTotalInvitiesCount: number = 0;
 
     selectedPartnerFirstName: string;
     selectedPartnerLastName: string;
