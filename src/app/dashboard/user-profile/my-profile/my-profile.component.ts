@@ -78,13 +78,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         public regularExpressions: RegularExpressions,public route:ActivatedRoute) {
           if (this.isEmpty(this.authenticationService.userProfile.roles) || !this.authenticationService.userProfile.profileImagePath) {this.router.navigateByUrl(this.referenceService.homeRouter);}
           try{
-
-              if ( authenticationService.isSuperAdmin() ) {
-                  this.userData = this.authenticationService.venorMyProfileReport
-              } else {
-                  this.userData = this.authenticationService.userProfile;
-              }
-
+            if ( authenticationService.isSuperAdmin() ) { this.userData = this.authenticationService.venorMyProfileReport;
+            } else { this.userData = this.authenticationService.userProfile; }
             this.roleNames = this.authenticationService.showRoles();
             this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
             this.videoUtilService.videoTempDefaultSettings = this.referenceService.defaultPlayerSettings;
@@ -92,6 +87,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             this.loggedInUserId = this.authenticationService.getUserId();
             this.hasAllAccess = this.referenceService.hasAllAccess();
             this.hasVideoRole = this.authenticationService.hasVideoRole();
+            if(this.authenticationService.isOrgAdminPartner() || this.authenticationService.isVendorPartner() || this.authenticationService.isVendor() || this.authenticationService.isOrgAdmin()){
+              this.hasVideoRole = false;
+            }
             this.hasCompany = this.authenticationService.user.hasCompany;
             this.callActionSwitch.size = 'normal';
             this.videoUrl = this.authenticationService.MEDIA_URL + "profile-video/Birds0211512666857407_mobinar.m3u8";
@@ -236,9 +234,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             if ((this.currentUser.roles.length > 1 && this.hasCompany) || (this.authenticationService.user.roles.length>1 && this.hasCompany)) {
                 if (!this.authenticationService.isOnlyPartner()) {
                     this.getOrgAdminsCount(this.loggedInUserId);
+                    this.getVideoDefaultSettings();
+                    this.defaultVideoSettings();
                 }
-                this.getVideoDefaultSettings();
-                this.defaultVideoSettings();
                 this.referenceService.isDisabling = false;
                 this.status = true;
             } else {
@@ -257,7 +255,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
     ngAfterViewInit() {
         try{
-            if (this.currentUser.roles.length > 1 && this.authenticationService.hasCompany()) {
+            if (this.currentUser.roles.length > 1 && this.authenticationService.hasCompany() && !this.authenticationService.isOnlyPartner()) {
                 this.defaultVideoSettings();
                if (this.referenceService.defaultPlayerSettings.transparency === null) {
                    this.referenceService.defaultPlayerSettings.transparency = 100;
@@ -265,16 +263,12 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                    this.referenceService.defaultPlayerSettings.playerColor = '#879';
                }
                this.defaulttransperancyControllBar(this.referenceService.defaultPlayerSettings.transparency);
-               if (this.referenceService.defaultPlayerSettings.enableVideoController === false) {
-                   this.defaultVideoControllers();
-               }
+               if (!this.referenceService.defaultPlayerSettings.enableVideoController) { this.defaultVideoControllers(); }
            }
         }catch(error){
             this.hasClientErrors = true;
             this.logger.showClientErrors("my-profile.component.ts", "ngAfterViewInit()", error);
-
         }
-
     }
 
     updatePassword() {
@@ -345,7 +339,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                         } else {
                             this.logger.error(this.referenceService.errorPrepender + " checkPassword():" + data);
                         }
-
                     },
                     error => {
                         this.logger.error(this.referenceService.errorPrepender + " checkPassword():" + error);
@@ -481,7 +474,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                     }
                 }
             }
-
         } )
         } catch ( error ) {
             console.error( error, "addcontactOneAttimeModalComponent()", "gettingGeoLocation" );
@@ -733,7 +725,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             .subscribe((result: any) => {
                 this.ngxloading = false;
                 this.customResponse = new CustomResponse('SUCCESS', this.properties.DEFAULT_PLAYER_SETTINGS, true);
-                this.getVideoDefaultSettings();  },
+               if(!this.authenticationService.isOnlyPartner()) { this.getVideoDefaultSettings(); } },
                 (error:any) => { console.error('error in update player setting api'); }
             );
     }
