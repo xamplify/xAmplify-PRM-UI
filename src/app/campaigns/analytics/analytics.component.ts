@@ -1159,11 +1159,18 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
         object["Email Id"] = this.downloadCsvList[i].emailId;
         object["Campaign Name"] = this.downloadCsvList[i].campaignName;
         if(this.campaignType === 'EVENT'){
+            if(this.isChannelCampaign){
+            object["Invities"] = this.downloadCsvList[i].rsvpMap.totalInvities;
+            object["Opened"] = this.downloadCsvList[i].rsvpMap.emailOpenedCount;
             object["Yes"] = this.downloadCsvList[i].rsvpMap.YES;
             object["No"] = this.downloadCsvList[i].rsvpMap.NO;
             object["May Be"] = this.downloadCsvList[i].rsvpMap.MAYBE;
             object["Not Yet"] = this.downloadCsvList[i].rsvpMap.notYetResponded;
             object["Total Guests"] = this.downloadCsvList[i].rsvpMap.additionalCount;
+            }else{
+                object["Response Type"] = this.downloadCsvList[i].rsvpMap.responseType;
+                object["Total Guests"] = this.downloadCsvList[i].rsvpMap.additionalCount;
+            }
         }else{
          let hours = this.referenceService.formatAMPM(sentTime);
         object["Sent Time"] = sentTime.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
