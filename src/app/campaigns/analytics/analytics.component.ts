@@ -753,6 +753,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
               this.campaignReport.totalNotYetRespondedCount = data.notYetResponded;
               this.campaignReport.totalEmailOpenCount = data.emailOpenedCount;
               this.campaignReport.totalAdditionalCount = data.additionalCount;
+              this.campaignReport.totalInvitiesCount = data.totalInvities;
               this.getPartnersResponeCount(campaignId);
               this.loading = false;
             },
@@ -773,6 +774,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
               this.campaignReport.partnersYesCount = data.YES;
               this.campaignReport.partnersMayBeCount = data.MAYBE;
               this.campaignReport.partnersNoCount = data.NO;
+              this.campaignReport.partnersTotalInvitiesCount = data.totalInvities;
               this.campaignReport.partnersEmailOpenedCount = data.emailOpenedCount;
               this.campaignReport.partnersNotYetRespondedCount = data.notYetResponded;
               this.campaignReport.additionalCount = data.additionalCount;
