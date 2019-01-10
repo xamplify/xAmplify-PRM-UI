@@ -715,14 +715,15 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 
         element.find('.fc-right-block')
           .after($(`<div id = ${event.id} class="fc-left-block col-xs-1 p0"> ${str} </div>`));
-          $(element).popover({
-            html: true,
-            placement: 'auto',
-            trigger : 'hover',
-            content: function() {
-               return $('#fc-' + event.id).html();
-            }
-          });
+        $(element).popover({
+          container: 'body',
+          html: true,
+          placement: 'auto',
+          trigger: 'hover',
+          content: function () {
+            return $('#fc-' + event.id).html();
+          }
+        });
       },
       eventClick: function(event) {
        self.editSocialStatus(event.data.socialStatus);

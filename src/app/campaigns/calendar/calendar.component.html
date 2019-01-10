@@ -3,3 +3,68 @@
     <div id="calendar" class="col-sm-12 dashboard-stat2"></div>
   </div>
 </div>
+
+<!-- Modal -->
+<div class="modal right fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document" style="width: 50%">
+<div class="modal-content">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title" id="myModalLabel">{{campaign?.campaignName}}</h4>
+  </div>
+  <div class="modal-body">
+    <ng-container *ngIf="campaign">
+      <fieldset>
+        <legend>Campaign details:</legend>
+        <h4>{{campaign.campaignName}}<span class="badge badge-primary pull-right text-lowercase ml10">{{campaign.campaignType}} campaign</span></h4>
+        <span>
+          <ng-container *ngIf="campaign.campaignScheduleType === 'NOW'; else default">Launched</ng-container>
+          <ng-template #default>{{campaign.campaignScheduleType | titlecase}}d</ng-template>
+          on {{campaign.launchTime |date:'mediumDate'}}, {{campaign.launchTime |date:'shortTime'}}</span>
+        <section>
+          <h5>{{campaign.fromName}}</h5>
+          <h6>{{campaign.email}}</h6>
+        </section>
+      </fieldset>
+
+      <fieldset *ngIf="campaign.campaignType !== 'SOCIAL'">
+        <legend>Selected:</legend>
+        <div *ngIf="campaign.campaignVideoFile" class="col-sm-6 col-xs-12">
+          <img src="{{campaign.campaignVideoFile.imagePath}}">
+          <h5>{{campaign.campaignVideoFile.title}}</h5>
+          <h6>By {{campaign.campaignVideoFile.uploadedUserName}}</h6>
+        </div>
+          <div class="col-sm-6 col-xs-12" *ngIf="campaign.emailTemplate">
+            <img src="{{campaign.emailTemplate.subject}}">
+            <h5>{{campaign.emailTemplate.name}}</h5>
+            <h6>By {{campaign.emailTemplate.createdBy}}</h6>
+          </div>
+      </fieldset>
+      <fieldset *ngIf="campaign.campaignType !== 'SOCIAL'">
+        <legend>Selected Recipients(s):</legend>
+        <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">List Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <ng-container *ngFor="let userList of campaign.userLists; let i = index">
+      <tr>
+        <th scope="row">{{i+1}}</th>
+        <td>{{userList.name}}</td>
+      </tr>
+    </ng-container>
+  </tbody>
+</table>
+      </fieldset>
+    </ng-container>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    <button type="button" class="btn btn-primary">Save changes</button>
+  </div>
+</div>
+</div>
+</div>
