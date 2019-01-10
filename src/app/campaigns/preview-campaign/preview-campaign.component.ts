@@ -30,7 +30,7 @@ declare var $,CKEDITOR:any;
 @Component({
   selector: 'app-preview-campaign',
   templateUrl: './preview-campaign.component.html',
-  styleUrls: ['./preview-campaign.component.css', '../../../assets/css/grid-template.css'],
+  styleUrls: ['./preview-campaign.component.css', '../../../assets/css/content.css'],
   providers:[CallActionSwitch,Properties]
 })
 export class PreviewCampaignComponent implements OnInit,OnDestroy {

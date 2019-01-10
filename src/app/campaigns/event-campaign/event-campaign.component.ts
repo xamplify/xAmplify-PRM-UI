@@ -32,7 +32,7 @@ declare var $,swal, flatpickr, CKEDITOR,require;
 @Component({
   selector: 'app-event-campaign',
   templateUrl: './event-campaign-step.component.html',
-  styleUrls: ['./event-campaign.component.css','../create-campaign/create-campaign.component.css'],
+  styleUrls: ['./event-campaign.component.css','../create-campaign/create-campaign.component.css', '../../../assets/css/content.css' ],
   providers: [PagerService, Pagination, CallActionSwitch, Properties,EventError,HttpRequestLoader, CountryNames]
 })
 export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
@@ -1187,23 +1187,23 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
               data.body = data.body.replace( "{{event_description}}", this.eventCampaign.message );
           }
           if ( !this.eventCampaign.onlineMeeting ) {
-              
+
               if(this.eventCampaign.campaignLocation.street === undefined){
                   this.eventCampaign.campaignLocation.street = "";
               }
-              
+
               if(this.eventCampaign.campaignLocation.city === undefined){
                   this.eventCampaign.campaignLocation.city = "";
               }
-              
+
               if(this.eventCampaign.campaignLocation.state === undefined){
                   this.eventCampaign.campaignLocation.state = "";
               }
-              
+
               if(this.eventCampaign.campaignLocation.zip === undefined){
                   this.eventCampaign.campaignLocation.zip = "";
               }
-              
+
               if ( this.eventCampaign.campaignLocation.location ) {
                   data.body = data.body.replace( /{{address}}/g, this.eventCampaign.campaignLocation.location + "<br/>" +  this.eventCampaign.campaignLocation.street + " " + this.eventCampaign.campaignLocation.city + "<br/>" + this.eventCampaign.campaignLocation.state + " " + this.eventCampaign.campaignLocation.zip);
                  /* data.body = data.body.replace( /{{addreess_lane2}}/g, this.eventCampaign.campaignLocation.city + "," + this.eventCampaign.campaignLocation.state + "," + this.eventCampaign.campaignLocation.zip );*/
@@ -1235,7 +1235,7 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
               data.body = data.body.replace( "{{vendor_emailId}}", this.eventCampaign.userDTO.emailId );
 
           }
-          
+
 
           if(!this.eventCampaign.enableCoBrandingLogo){
               data.body = data.body.replace( "https://xamp.io/vod/images/co-branding.png", "https://aravindu.com/vod/images/emptyImg.png" );
