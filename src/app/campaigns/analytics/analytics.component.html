@@ -243,7 +243,7 @@
 									<th style="font-size: 12px; font-weight: 500;">NO</th>
 									<th style="font-size: 12px; font-weight: 500;">MayBe</th>
 									<th style="font-size: 12px; font-weight: 500;">NOT YET</th>
-									<th style="font-size: 12px; font-weight: 500;">TOTAL ATTENDEES</th>
+									<th style="font-size: 12px; font-weight: 500;">TOTAL ATTENDEES <br><h6 class="m0" style="font-size:9px">( including you )</h6></th>
 								</tr>
 							</thead>
 							<tbody>
@@ -495,7 +495,7 @@
 										<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='EVENT' && isChannelCampaign">MayBe</th>
 										<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='EVENT' && isChannelCampaign">Not Yet</th>
 										<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='EVENT' && !isChannelCampaign">Response Type</th>
-										<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='EVENT'">TOTAL ATTENDEES</th>
+										<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='EVENT'">TOTAL ATTENDEES <br><h6 class="m0" style="font-size:9px">( including you )</h6></th>
 										<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='VIDEO' || campaignType!=='EVENT'">Latest View</th>
 										<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType!=='EVENT'">
 											<span *ngIf="campaignType==='VIDEO'">Total Views</span>
@@ -656,7 +656,7 @@
 					<h1>
 						<b>{{campaignReport.redistributionTotalYesCount}}</b>
 					</h1>
-					<h5>Yes</h5>
+					<h5>Yes ( {{campaignReport.redistributionTotalAdditionalCount}} )</h5>
 				</div>
 			</button>
 		</div>
@@ -720,7 +720,7 @@
 									<th style="font-size: 12px; font-weight: 500;" *ngIf="rsvpResposeType === 'email open'">CAMPAIGN NAME</th>
 									<th style="font-size: 12px; font-weight: 500;" *ngIf="rsvpResposeType === 'email open'">SUBJECT</th>
 									<th style="font-size: 12px; font-weight: 500;">RSVP Date</th>
-									<th style="font-size: 12px; font-weight: 500;" *ngIf="rsvpResposeType !== 'email open'">TOTAL ATTENDEES</th>
+									<th style="font-size: 12px; font-weight: 500;" *ngIf="rsvpResposeType !== 'email open'">TOTAL ATTENDEES <!-- <br><h6 class="m0" style="font-size:9px">( including you )</h6> --></th>
 								</tr>
 							</thead>
 							<tbody>

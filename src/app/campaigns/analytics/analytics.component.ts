@@ -847,6 +847,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       this.campaignReport.redistributionTotalNotYetRespondedCount = this.campaignReport.partnersNotYetRespondedCount;
       this.campaignReport.redistributionTotalEmailOpenCount = this.campaignReport.partnersEmailOpenedCount;
       this.campaignReport.redistributionTotalInvitiesCount = this.campaignReport.partnersTotalInvitiesCount;
+      this.campaignReport.redistributionTotalAdditionalCount = this.campaignReport.additionalCount;
       this.isTimeLineView = true;
       this.rsvpDetailType = 'partnerRsvp';
       this.getRsvpDetails("YES");
@@ -934,6 +935,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
               this.campaignReport.redistributionTotalNotYetRespondedCount = data.notYetResponded;
               this.campaignReport.redistributionTotalEmailOpenCount = data.emailOpenedCount;
               this.campaignReport.redistributionTotalInvitiesCount = campaignViews.rsvpMap.totalInvities;
+              this.campaignReport.redistributionTotalAdditionalCount = data.additionalCount;
               this.rsvpDetailType = 'reDistribution';
               this.getRsvpDetails('YES');
               this.loading = false;
