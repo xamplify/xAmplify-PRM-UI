@@ -183,17 +183,17 @@ a.disabled {
 							</div>
 						</div>
 						<div class="form-group" *ngIf="eventCampaign.channelCampaign && !authenticationService.isOnlyPartner()">
-												<label class="control-label col-sm-3">Co-Branding Logo</label>
-												<div class="col-sm-9">
-													<switch class="pull-left" [status]="eventCampaign.enableCoBrandingLogo" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-													 [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
-													 (statusChange)="setCoBrandingLogo($event)">
-													</switch>
-													<span style="cursor: pointer;color: #54a7e9;" title="Enable your Partner's logo to be displayed in redistributed campaigns">
-														<i class="fa fa-question-circle" style="padding: 8px;"></i>
-													</span>
-												</div>
-											</div>
+              <label class="control-label col-sm-3">Co-Branding Logo</label>
+              <div class="col-sm-9">
+                <switch class="pull-left" [status]="eventCampaign.enableCoBrandingLogo" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+                  [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+                  (statusChange)="setCoBrandingLogo($event)">
+                </switch>
+                <span style="cursor: pointer;color: #54a7e9;" title="Enable your Partner's logo to be displayed in redistributed campaigns">
+                  <i class="fa fa-question-circle" style="padding: 8px;"></i>
+                </span>
+              </div>
+						</div>
 						<div class="form-group">
 							<label for="eventDateTime" class="col-sm-3 labal-css color-css">Event
 								Date/Time <span class="text-danger" style="margin-left: -3px;">*</span>
@@ -358,13 +358,13 @@ a.disabled {
 							<h4 class="pull-left f-w-600">Event Settings</h4>
 						</div>
 						<div class="portlet-body clearfix"
-							[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)">
+							[attr.disabled]="(isPreviewEvent)">
 							<ul>
 								<li><label> <switch
 											[status]="eventCampaign.rsvpReceived"
 											[onText]="callActionSwitch.onTextValue"
 											[offText]="callActionSwitch.offTextValue"
-											[disabled]="isPreviewEvent || reDistributeEvent || reDistributeEventManage"
+											[disabled]="isPreviewEvent"
 											[onColor]="callActionSwitch.onGreenColorSwitch"
 											[offColor]="callActionSwitch.onDefaultColorSwitch"
 											[size]="callActionSwitch.bsize"
@@ -375,7 +375,7 @@ a.disabled {
 											[status]="eventCampaign.emailOpened"
 											[onText]="callActionSwitch.onTextValue"
 											[offText]="callActionSwitch.offTextValue"
-											[disabled]="isPreviewEvent || reDistributeEvent || reDistributeEventManage"
+											[disabled]="isPreviewEvent"
 											[onColor]="callActionSwitch.onGreenColorSwitch"
 											[offColor]="callActionSwitch.onDefaultColorSwitch"
 											[size]="callActionSwitch.bsize"
@@ -383,12 +383,14 @@ a.disabled {
 										</switch> Notify me when email is opened
 								</label></li>
 								<li><label>
-                <switch [status]="eventCampaign.inviteOthers" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [disabled]="(isPreviewEvent || reDistributeEvent) || reDistributeEvent"
+                <switch [status]="eventCampaign.inviteOthers"
+                [disabled]="isPreviewEvent || reDistributeEvent || reDistributeEventManage"
+                [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [disabled]="(isPreviewEvent || reDistributeEvent) || reDistributeEvent"
                 [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
                 (statusChange)="eventCampaign.inviteOthers = !eventCampaign.inviteOthers">
               </switch>
                 Allow recipients to bring guests
- </label></li>
+              </label></li>
 							</ul>
 						</div>
 					</div>
@@ -493,13 +495,8 @@ a.disabled {
 			(click)="resetTabs('recipients')" title="Please Fill Campaign Details" [disabled]="recipientsTabClass === 'disableRecipientsTab'">Next</button>
 			</div>
 			</fieldset>
-
-
 			<!--  End Step one -->
-
-
      <!--   Step two  Recipients  -->
-
       <div class="col-xs-12 mb10" *ngIf="recipientsTab" style="padding: 10px 0 0 0;">
             <div class="boxes portlet light">
                 <div class="portlet-title" style="display:block">
@@ -554,9 +551,9 @@ a.disabled {
                       </thead>
                       <tbody>
                         <ng-container *ngFor="let contactList of contactListsPagination.pagedItems; let i=index;">
-                        <tr id="campaignContactListTable_{{contactList.id}}" (click)="highlightPartnerContactRow(contactList.id,$event,contactList.noOfContacts,contactList.emailValidationInd)" [ngClass]="{'contact-list-selected': userListIds.indexOf(contactList.id)>-1 || parternUserListIds.indexOf(contactList.id)>-1}">
+                        <tr id="campaignContactListTable_{{contactList.id}}" (click)="highlightPartnerContactRow(contactList,$event,contactList.noOfContacts,contactList.emailValidationInd)" [ngClass]="{'contact-list-selected': userListIds.indexOf(contactList.id)>-1 || parternUserListIds.indexOf(contactList.id)>-1}">
                           <td class='text-center m0'>
-                            <input value="{{contactList.id}}" name="campaignContact[]"  [attr.disabled]="isPreviewEvent? '' : null" type='checkbox' id='{{contactList.id}}' [checked]="parternUserListIds.indexOf(contactList.id)>-1" (click)="$event.stopPropagation();partnerHighlightRow(contactList.id)" (input)="resetTabClass()">
+                            <input value="{{contactList.id}}" name="campaignContact[]"  [attr.disabled]="isPreviewEvent? '' : null" type='checkbox' id='{{contactList.id}}' [checked]="parternUserListIds.indexOf(contactList.id)>-1" (click)="$event.stopPropagation();partnerHighlightRow(contactList)" (input)="resetTabClass()">
                           </td>
                           <td style="text-align:left">
                             <h5 class='m0 f-w-600 table-color' title="{{contactList.name}}">
@@ -781,13 +778,15 @@ a.disabled {
                       </ng-container>
                     </td>
                     <td *ngIf="!isPreviewEvent" width="55%" style="text-align:center">
-                      <ng-container *ngFor="let contactList of selectedListOfUserLists;let i=index;">
-                        <a (click)="loadContacts(contactList,contactsPagination)" data-toggle="modal" title="{{contactList.name}}" (click)="loadContacts(contactList,contactsPagination)"
+                      <ng-container *ngFor="let contactList of userListDTOObj;let i=index;">
+                        <a *ngIf="i<2" (click)="loadContacts(contactList,contactsPagination)" data-toggle="modal" title="{{contactList.name}}" (click)="loadContacts(contactList,contactsPagination)"
                           style="display: block;">
                           <span *ngIf="contactList.name">  {{contactList.name | slice:0:40}}<span *ngIf="contactList.name?.length>40">...</span></span>
                         </a>
                       </ng-container>
-                      <a><span *ngIf="selectedListOfUserLists?.length===0" (click)="loadContactsPreviewOn(eventCampaign?.userListIds[0])">{{eventCampaign?.userListIds?.length}} Contact Lists</span></a>
+                      <a>
+                        <span *ngIf="userListDTOObj?.length>2">...</span> <span *ngIf="userListDTOObj?.length == 0">0 contactlists</span>
+                      </a>
                     </td>
                     <td style="text-align: right" width="20%">
                       <a  [class.hide]="reDistributeEvent || reDistributeEventManage" [class.disabled]="isPreviewEvent" class="btn btn-primary btn-sm" style="color:#fff" (click)="resetTabs('recipients')">Change</a>
