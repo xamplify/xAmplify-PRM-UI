@@ -787,6 +787,30 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
             this.xtremandLogger.error('error'+error)
           }
         }
+  
+  
+  getRsvpInvitiesDetails(){
+      this.loading = true;
+      this.downloadTypeName = 'rsvp';
+      this.rsvpResposeType = "invities";
+          this.campaignService.getEventCampaignTotalInvitiesDetails( this.campaign.campaignId, this.rsvpDetailAnalyticsPagination )
+          .subscribe(
+          data => {
+            console.log(data);
+            this.loading = false;
+            this.showRsvpDetails = true;
+            this.rsvpDetailsList = data.listOfUsers;
+            this.rsvpDetailAnalyticsPagination.totalRecords = data.totalRecords;
+            this.rsvpDetailAnalyticsPagination = this.pagerService.getPagedItems(this.rsvpDetailAnalyticsPagination, data.listOfUsers);
+          },
+          error => this.xtremandLogger.error(error),
+          () => { }
+          )
+      }
+  
+ 
+  
+  
 
   getRsvpEmailOpenDetails(){
       try{

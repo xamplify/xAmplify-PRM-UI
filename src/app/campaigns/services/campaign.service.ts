@@ -312,6 +312,13 @@ export class CampaignService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+    
+    getEventCampaignTotalInvitiesDetails(campaignId: number, pagination: Pagination) {
+        const url = this.URL + 'campaign/partners-users-info/' + campaignId + "?access_token=" + this.authenticationService.access_token;
+        return this.http.post(url, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 
     getCampaignPartnerByCampaignIdAndUserId(campaignId: number, userId: number) {
         return this.http.get(this.URL + `campaign/partner-campaign/${campaignId}/${userId}?access_token=${this.authenticationService.access_token}`)
