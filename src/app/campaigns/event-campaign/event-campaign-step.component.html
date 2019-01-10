@@ -770,17 +770,15 @@ a.disabled {
 
                     </td>
                     <td *ngIf="isPreviewEvent" width="55%" style="text-align:center">
-                      <ng-container *ngFor="let contactList of selectedListOfUserListForPreview;let i=index;">
-                        <a (click)="loadContacts(contactList,contactsPagination)" data-toggle="modal" title="{{contactList.name}}"
-                          style="display: block;">
+                      <ng-container *ngFor="let contactList of userListDTOObj;let i=index;">
+                        <a (click)="loadContacts(contactList,contactsPagination)" data-toggle="modal" title="{{contactList.name}}">
                           <span *ngIf="contactList.name">  {{contactList.name | slice:0:40}}<span *ngIf="contactList.name?.length>40">...</span></span>
                         </a>
                       </ng-container>
                     </td>
                     <td *ngIf="!isPreviewEvent" width="55%" style="text-align:center">
                       <ng-container *ngFor="let contactList of userListDTOObj;let i=index;">
-                        <a *ngIf="i<2" (click)="loadContacts(contactList,contactsPagination)" data-toggle="modal" title="{{contactList.name}}" (click)="loadContacts(contactList,contactsPagination)"
-                          style="display: block;">
+                        <a *ngIf="i<2" (click)="loadContacts(contactList,contactsPagination)" data-toggle="modal" title="{{contactList.name}}" (click)="loadContacts(contactList,contactsPagination)">
                           <span *ngIf="contactList.name">  {{contactList.name | slice:0:40}}<span *ngIf="contactList.name?.length>40">...</span></span>
                         </a>
                       </ng-container>
