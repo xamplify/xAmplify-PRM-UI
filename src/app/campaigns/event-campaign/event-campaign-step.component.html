@@ -36,7 +36,7 @@ a.disabled {
 	<app-list-loader [rowsCount]="6" *ngIf="loader"></app-list-loader>
 	<div class="page-bar" [hidden]="loader">
 		<div class="container"
-			style="width: 100%; border-radius: 0; border: 1px solid #869ab3; border-top: 0; box-shadow: 0 0 6px rgba(0, 0, 0, 0.6); padding-bottom: 10px;">
+			style="width: 100%; border-radius: 0; border-top: 0;box-shadow: 0 0 5px rgba(0, 0, 0, .4); padding-bottom: 10px;">
 			<div class="alert-danger alert-error" *ngIf="eventError.eventExpiredError" style="margin-top: 19px;font-weight: 600;"> This event has concluded.</div>
 			<div *ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage" style="display: flex; padding-top: 1em;">
 				<div id="step2" class="col-block col-block-complete" (click)="resetTabs('details')" [ngClass]="{'col-block-active': detailsTab}"
