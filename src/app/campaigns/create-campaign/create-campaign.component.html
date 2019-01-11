@@ -1223,7 +1223,7 @@
 										<div *ngIf="reply.emailTemplatesPagination.totalRecords==0" class="alert alert-info">
 											<strong>No email templates found</strong>
 										</div>
-										<div *ngIf="reply.emailTemplatesPagination.totalRecords>0 && !campaignEmailTemplate.httpRequestLoader.isLoading && !campaignEmailTemplate.httpRequestLoader.isServerError">
+										<div class="col-xs-12" *ngIf="reply.emailTemplatesPagination.totalRecords>0 && !campaignEmailTemplate.httpRequestLoader.isLoading && !campaignEmailTemplate.httpRequestLoader.isServerError">
 											<ul  style="float: left" *ngIf="reply.emailTemplatesPagination.pager.pages && reply.emailTemplatesPagination.pager.pages.length" class="pagination">
 												<li [ngClass]="{disabled:reply.emailTemplatesPagination.pager.currentPage === 1}">
 													<a (click)="paginateEmailTemplateRows(1,reply)" [class.disabled]="reply.emailTemplatesPagination.pager.currentPage === 1">First</a>
