@@ -131,7 +131,7 @@
 								<tr>
 									<th class="text-center-css" style="width:25%; text-align: left !important">NAME</th>
 									<th class="text-center-css" *ngIf="detailType !== 'email open' && detailType !== 'NOTYET' && detailType !== 'invities'">MESSAGE</th>
-									<th class="text-center-css" *ngIf="detailType === 'email open' || detailType === 'invities' && detailType !== 'NOTYET'">CAMPAIGN NAME</th>
+									<th class="text-center-css" *ngIf="detailType === 'email open' && detailType !== 'NOTYET'">CAMPAIGN NAME</th>
 									<th class="text-center-css" *ngIf="detailType === 'email open' && detailType !== 'NOTYET'">SUBJECT</th>
 									<th class="text-center-css" *ngIf="detailType !== 'NOTYET'  && detailType !== 'invities'">Most Recent</th>
 									<th class="text-center-css" *ngIf="detailType === 'YES'">Guests</th>
@@ -146,9 +146,9 @@
 										<h6>{{item.message}}</h6>
 										<h6 *ngIf="!item.message" style="text-align:center"><b>-</b></h6>
 									</td>
-									<td class="text-center" *ngIf="detailType === 'email open' || detailType === 'invities' && detailType !== 'NOTYET'" style="text-align:center"> {{item.campaignName}}</td>
+									<td class="text-center" *ngIf="detailType === 'email open' && detailType !== 'NOTYET'" style="text-align:center"> {{item.campaignName}}</td>
 									<td class="text-center" *ngIf="detailType === 'email open' && detailType !== 'NOTYET'" style="text-align:center" style="text-align:center">{{item.subject}}</td>
-                  <td class="text-center" *ngIf="detailType !== 'NOTYET'"> <h6 *ngIf="detailType !== 'email open' && detailType !== 'NOTYET'  && detailType !== 'invities'" style="text-align:center">
+                  <td class="text-center" *ngIf="detailType !== 'NOTYET' && detailType !== 'invities'"> <h6 *ngIf="detailType !== 'email open' && detailType !== 'NOTYET'  && detailType !== 'invities'" style="text-align:center">
                     <!-- {{item.responseTime | date: 'short'}} -->
                     <app-timestamp [dateAndTime]="item.responseTime"> </app-timestamp>
                   </h6>
