@@ -1220,7 +1220,7 @@
                         </li>
                     </ul>
                     <!--current code   -->
-										<div *ngIf="reply.emailTemplatesPagination.totalRecords==0" class="alert alert-info">
+										<div *ngIf="reply.emailTemplatesPagination.totalRecords==0" class="col-xs-12 alert alert-info">
 											<strong>No email templates found</strong>
 										</div>
 										<div class="col-xs-12" *ngIf="reply.emailTemplatesPagination.totalRecords>0 && !campaignEmailTemplate.httpRequestLoader.isLoading && !campaignEmailTemplate.httpRequestLoader.isServerError">
@@ -1447,7 +1447,7 @@
                           </li>
                         </ul>
                     <!-- new template code ends here -->
-										<div *ngIf="url.emailTemplatesPagination.totalRecords==0" class="alert alert-info">
+										<div *ngIf="url.emailTemplatesPagination.totalRecords==0" class="col-xs-12 alert alert-info">
 											<strong>No email templates found</strong>
 										</div>
 										<div class="col-xs-12"  *ngIf="url.emailTemplatesPagination.totalRecords>0 && !campaignEmailTemplate.httpRequestLoader.isLoading && !campaignEmailTemplate.httpRequestLoader.isServerError">

@@ -846,7 +846,7 @@ a.disabled {
            </div>
             <div *ngFor="let reply of eventCampaign.campaignReplies;let i=index">
             <div class="portlet light dashboard-stat2" id="{{reply.divId}}" style="min-height: 320px;" [class.disabled]="reply.body && reDistributeEvent && reDistributeEventManage && reply.id">
-              <div class="portlet-title custom-change-css" [ngClass]="{'colorlightBlock':isEven(i+1), 'colorBlue':!isEven(i+1)}" style="display:block">
+              <div class="portlet-title custom-change-css" [ngClass]="{'colorBlue ':isEven(i+1), 'colorRed':!isEven(i+1)}" style="display:block">
                 <div class="col-xs-6">
                   <h4 class="text-left" style="color:#fff">Add an Auto-response to your e-mail-{{i+1}}</h4>
                 </div>

@@ -157,8 +157,7 @@ a.icons-link:hover {background:  #357ebd;}
 .auto-res {  font-weight: 300; font-size: 15px; color: #fff;}
 .opacityCss { opacity: 0.5;}
 .center-block{ text-align: center; margin: 13px 0;}
-.colorlightBlock{ background: #77a9c1 !important;}
-.colorBlue{ background: #5bb1d4;}
+
 @media screen and (max-width:768px){.modal-template{ width: 100% !important; right: 0;} }
 @media screen and (min-width:768px){.modal-template{ width: 65% !important; right: 0;} }
 @media screen and (max-width:768px){.modal-user{ width: 100% !important; right: 0;} }
