@@ -918,7 +918,7 @@ a.disabled {
                       <div >
                         <label for="days" id="email-template-{{reply.divId}}">Select Email Template<b style="color: red">*</b></label>
                       </div>
-                      <div [hidden]="eventCampaign.nurtureCampaign">
+                      <div [hidden]="eventCampaign.nurtureCampaign || isPreviewEvent">
                         <ul class="mix-filter col-xs-8 p0"  *ngIf="!isOnlyPartner" [class.disabled]="isPreviewEvent || eventError.eventExpiredError">
                           <li class="filter" (click)="filterReplyTemplates('NONE',0,reply)" [class.emailtemplate-selected]="0 == reply.selectedEmailTemplateTypeIndex">All Email</li>
                           <li class="filter" (click)="filterReplyTemplates('RICH',2,reply)" [class.emailtemplate-selected]="2 == reply.selectedEmailTemplateTypeIndex">Rich</li>
@@ -934,7 +934,7 @@ a.disabled {
                       </div>
                     </div>
                   </div>
-                  <div *ngIf="reply.defaultTemplate" class="col-xs-12" style="margin-top:16px !important" [class.disabled]="isPreviewEvent || eventError.eventExpiredError">
+                  <div *ngIf="reply.defaultTemplate" class="col-xs-12" style="margin-top:16px !important" [class.disabled]="eventError.eventExpiredError">
                       <app-list-loader [rowsCount]="3" *ngIf="campaignEmailTemplate.httpRequestLoader.isLoading"></app-list-loader>
                       <app-error-pages *ngIf="campaignEmailTemplate.httpRequestLoader.isServerError"></app-error-pages>
                       <div class="row" *ngIf="!campaignEmailTemplate.httpRequestLoader.isLoading && !campaignEmailTemplate.httpRequestLoader.isServerError">
@@ -1032,7 +1032,7 @@ a.disabled {
                           </ul>
                         </div>
                       </div>
-                      <div class="col-xs-12" style="margin-left: -12px;" [hidden]="reDistributeEvent || reDistributeEventManage">
+                      <div class="col-xs-12" style="margin-left: -12px;" [hidden]="reDistributeEvent || reDistributeEventManage || isPreviewEvent">
                         <div *ngIf="reply.emailTemplatesPagination.totalRecords>0 && !campaignEmailTemplate.httpRequestLoader.isLoading && !campaignEmailTemplate.httpRequestLoader.isServerError">
                         <ul *ngIf="reply.emailTemplatesPagination.pager.pages && reply.emailTemplatesPagination.pager.pages.length" class="pagination">
                           <li [ngClass]="{disabled:reply.emailTemplatesPagination.pager.currentPage === 1}">
