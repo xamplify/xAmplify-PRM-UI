@@ -205,7 +205,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     } else {
       this.socialStatus.statusMessage = this.selectedVideo.title;
       const socialStatusContent: SocialStatusContent = new SocialStatusContent();
-      socialStatusContent.id = this.selectedVideo.id;
+      socialStatusContent.videoId = this.selectedVideo.id;
       socialStatusContent.fileName = this.selectedVideo.title;
       socialStatusContent.fileType = 'video';
       socialStatusContent.filePath = this.videoGifImage;
@@ -432,7 +432,6 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
         data => {
           this.initializeSocialStatus();
           $('#full-calendar').fullCalendar('removeEvents');
-          this.listEvents();
           this.socialStatusResponse = data;
           this.customResponse.statusText = null;
         },
@@ -441,7 +440,10 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
           console.log(error);
           this.setCustomResponse(ResponseType.Error, 'Error while posting the update.');
         },
-        () => this.loading = false
+        () => {          
+          this.loading = false;
+          this.listEvents();
+        }
         );
     }
   }
@@ -832,6 +834,8 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     socialStatusProvider.selected = !socialStatusProvider.selected;
     this.selectedAccounts = socialStatusProvider.selected ? this.selectedAccounts + 1 : this.selectedAccounts - 1;
 
+
+
     if (this.isSocialCampaign && this.alias) {
       if (socialStatusProvider.selected) {
         let likeSocialAccount = 0;
@@ -898,10 +902,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
       }
     }
 
-    if (this.selectedAccounts === 0)
-      this.isAllSelected = false;
-    if (this.selectedAccounts === this.socialStatusProviders.length)
-      this.isAllSelected = true;
+  this.isAllSelected = (this.selectedAccounts === this.socialStatusProviders.length) ? true: false;
   }
 
   copyContent(targetSocialStatus: SocialStatus, socialStatusProvider: SocialStatusProvider){
