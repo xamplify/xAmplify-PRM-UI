@@ -313,6 +313,20 @@ export class CampaignService {
             .catch(this.handleError);
     }
     
+    getEventCampaignRedistributionInvitiesDetails(campaignId: number, userId: any, pagination: Pagination) {
+        const url = this.URL + 'campaign/users-details/' + campaignId +'/'+ userId + "?access_token=" + this.authenticationService.access_token;
+        return this.http.post(url, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    
+    getEventCampaignPartnerInvitiesDetails(campaignId: number, pagination: Pagination) {
+        const url = this.URL + 'campaign/partners-info/' + campaignId + "?access_token=" + this.authenticationService.access_token;
+        return this.http.post(url, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    
     getEventCampaignTotalInvitiesDetails(campaignId: number, pagination: Pagination) {
         const url = this.URL + 'campaign/partners-users-info/' + campaignId + "?access_token=" + this.authenticationService.access_token;
         return this.http.post(url, pagination)

@@ -789,7 +789,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
         }
   
   
-  getRsvpInvitiesDetails(){
+  /*getRsvpInvitiesDetails(){
       this.loading = true;
       this.downloadTypeName = 'rsvp';
       this.rsvpResposeType = "invities";
@@ -806,9 +806,59 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
           error => this.xtremandLogger.error(error),
           () => { }
           )
-      }
+      }*/
   
- 
+  getRsvpInvitiesDetails(){
+      try{
+      this.loading = true;
+      this.downloadTypeName = 'rsvp';
+      this.rsvpResposeType = "invities";
+      if(this.rsvpDetailType === 'reDistribution'){
+          this.campaignService.getEventCampaignRedistributionInvitiesDetails( this.campaign.campaignId, this.campaignReport.selectedPartnerUserId, this.rsvpDetailAnalyticsPagination )
+          .subscribe(
+          data => {
+            console.log(data);
+            this.loading = false;
+            this.rsvpDetailsList = data.listOfUsers;
+            this.rsvpDetailAnalyticsPagination.totalRecords = data.totalRecords;
+            this.rsvpDetailAnalyticsPagination = this.pagerService.getPagedItems(this.rsvpDetailAnalyticsPagination, data.listOfUsers);
+          },
+          error => this.xtremandLogger.error(error),
+          () => { }
+          )
+      }else if(this.rsvpDetailType === 'partnerRsvp'){
+          this.campaignService.getEventCampaignPartnerInvitiesDetails( this.campaign.campaignId,this.rsvpDetailAnalyticsPagination )
+          .subscribe(
+          data => {
+            console.log(data);
+            this.loading = false;
+            this.rsvpDetailsList = data.listOfUsers;
+            this.rsvpDetailAnalyticsPagination.totalRecords = data.totalRecords;
+            this.rsvpDetailAnalyticsPagination = this.pagerService.getPagedItems(this.rsvpDetailAnalyticsPagination, data.listOfUsers);
+          },
+          error => this.xtremandLogger.error(error),
+          () => { }
+          )
+      }
+      else{
+          this.showRsvpDetails = true;
+          this.campaignService.getEventCampaignTotalInvitiesDetails( this.campaign.campaignId, this.rsvpDetailAnalyticsPagination )
+          .subscribe(
+          data => {
+            console.log(data);
+            this.loading = false;
+            this.rsvpDetailsList = data.listOfUsers;
+            this.rsvpDetailAnalyticsPagination.totalRecords = data.totalRecords;
+            this.rsvpDetailAnalyticsPagination = this.pagerService.getPagedItems(this.rsvpDetailAnalyticsPagination, data.listOfUsers);
+          },
+          error => this.xtremandLogger.error(error),
+          () => { }
+          )
+      }
+      }catch(error){
+        this.xtremandLogger.error('error'+error)
+   }
+  }
   
   
 
