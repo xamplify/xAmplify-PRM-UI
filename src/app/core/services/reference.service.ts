@@ -116,7 +116,7 @@ export class ReferenceService {
       if(this.deviceInfo.browser=== 'safari' || this.deviceInfo.browser==='ie'){ return true; } else{ return false};
     }
     isXamplify(){
-      if(window.location.hostname.includes('xamplify')){ return false } return false; }
+      if(window.location.hostname.includes('xamplify')){ return true; } return false; }
     getCategories(): Observable<Category[]> {
         const url = this.URL + 'categories?access_token=' + this.authenticationService.access_token;
         return this.http.get(url, "")

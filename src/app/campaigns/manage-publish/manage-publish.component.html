@@ -36,7 +36,7 @@
 						<div class="page-toolbar col-xs-6 col-sm-12 col-md-6">
 							<div class="btn-group pull-right">
 								<ng-container class='m10'>
-									<span class="btn btn-xs" data-toggle="tooltip" data-placement="bottom" title="Calendar View" style="background-color:#e2e2e2"><i class="fa fa-calendar p10" [routerLink]="['/home/campaigns/calendar']"></i></span>
+									<span *ngIf="!refService.isXamplify()" class="btn btn-xs" data-toggle="tooltip" data-placement="bottom" title="Calendar View" style="background-color:#e2e2e2"><i class="fa fa-calendar p10" [routerLink]="['/home/campaigns/calendar']"></i></span>
 									<span class="btn btn-xs hidden-xs" data-toggle="tooltip" data-placement="bottom" title="List View" [class.disabled]="isListView" (click)="isListView = true" style="background-color:#e2e2e2"><i class="fa fa-th-list p10" aria-hidden="true"></i></span>
                          			<span class="btn btn-xs hidden-xs"  data-toggle="tooltip" data-placement="bottom" title="Grid View" [class.disabled]="!isListView" (click)="isListView = false" style="background-color:#e2e2e2"><i class="fa fa-th-large p10" aria-hidden="true"></i></span>
 								</ng-container>
