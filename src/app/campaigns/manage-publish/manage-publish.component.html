@@ -36,8 +36,9 @@
 						<div class="page-toolbar col-xs-6 col-sm-12 col-md-6">
 							<div class="btn-group pull-right">
 								<ng-container class='m10'>
+									<span *ngIf="!refService.isXamplify()" class="btn btn-xs" data-toggle="tooltip" data-placement="bottom" title="Calendar View" style="background-color:#e2e2e2"><i class="fa fa-calendar p10" [routerLink]="['/home/campaigns/calendar']"></i></span>
 									<span class="btn btn-xs hidden-xs" data-toggle="tooltip" data-placement="bottom" title="List View" [class.disabled]="isListView" (click)="isListView = true" style="background-color:#e2e2e2"><i class="fa fa-th-list p10" aria-hidden="true"></i></span>
-                         <span class="btn btn-xs hidden-xs"  data-toggle="tooltip" data-placement="bottom" title="Grid View" [class.disabled]="!isListView" (click)="isListView = false" style="background-color:#e2e2e2"><i class="fa fa-th-large p10" aria-hidden="true"></i></span>
+                         			<span class="btn btn-xs hidden-xs"  data-toggle="tooltip" data-placement="bottom" title="Grid View" [class.disabled]="!isListView" (click)="isListView = false" style="background-color:#e2e2e2"><i class="fa fa-th-large p10" aria-hidden="true"></i></span>
 								</ng-container>
 								<div class="inputs" align="right" style="float: right">
 									<div style="float: left;">
@@ -83,7 +84,7 @@
 											<ng-container *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1">
 												<img [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/social-campaign.png" alt="Social Campaign">
 											</ng-container>
-											<ng-container *ngIf="campaign.campaignType.indexOf('EVENT') > -1 && !refService.isXamplify()">
+											<ng-container *ngIf="campaign.campaignType.indexOf('EVENT') > -1">
 												<img [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/event-campaign.png" alt="Event Campaign">
 											</ng-container>
                     					</td>
@@ -252,7 +253,7 @@
 											<ng-container *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1">
 												<img [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/social-campaign.png" alt="Social Campaign">
                       </ng-container>
-                      <ng-container *ngIf="campaign.campaignType.indexOf('EVENT') > -1 && !refService.isXamplify()">
+                      <ng-container *ngIf="campaign.campaignType.indexOf('EVENT') > -1">
                           <img [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/event-campaign.png" alt="Event Campaign">
                       </ng-container>
 										</td>
@@ -371,7 +372,7 @@
 													<i *ngIf="campaign.campaignType.indexOf('VIDEO') > -1" class="fa fa-video-camera" aria-hidden="true"></i>
 													<i *ngIf="campaign.campaignType.indexOf('REGULAR') > -1" class="fa fa-envelope" aria-hidden="true"></i>
                           <i *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1" class="fa fa-globe" aria-hidden="true"></i>
-                          <i *ngIf="campaign.campaignType.indexOf('EVENT') > -1 && !refService.isXamplify()" class="fa fa-calendar" aria-hidden="true"></i>
+                          <i *ngIf="campaign.campaignType.indexOf('EVENT') > -1" class="fa fa-calendar" aria-hidden="true"></i>
 												</span>
 											</div>
 											<div class="ribbon" [class.active]="!campaign.launched && campaign.launchedOn?.length==0">

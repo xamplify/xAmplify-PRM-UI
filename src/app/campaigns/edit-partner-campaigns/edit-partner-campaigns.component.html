@@ -212,13 +212,10 @@
                         <div class="inputs" align="right" style="float:right;padding: 5px 5px 12px 0px;">
                           <div class="portlet-input input-inline input-large" style="position: relative;top: -6px;right: -5px;">
                             <div class="input-icon right">
-                              <!-- <i class="icon-magnifier" (click)="searchContactList()" style="cursor: pointer;"></i>
-                              <input type="text" class="form-control" placeholder="search..." [(ngModel)]="contactSearchInput" [ngModelOptions]="{standalone: true}"> -->
                               <input type="text" [(ngModel)]="contactSearchInput" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search for a list"
                                 (keypress)="contactSearchInputKey($event.keyCode)">
                               <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="contactSearchInput" (click)="contactSearchInput=''"></button>
                               <button type="submit" class="search-box-item-click" (click)="searchContactList()"><i class="fa fa-search"></i></button>
-
                             </div>
                           </div>
                         </div>

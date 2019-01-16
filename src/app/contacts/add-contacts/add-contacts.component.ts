@@ -199,7 +199,9 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
             var outputstring = files[0].name.substring( 0, files[0].name.lastIndexOf( "." ) );
             this.selectedAddContactsOption = 2;
             this.noOptionsClickError = false;
-            this.model.contactListName = outputstring;
+            if ( !this.model.contactListName ) {
+                this.model.contactListName = outputstring;
+            }
             this.validateContactName( this.model.contactListName );
             this.removeCsvName = true;
             $( "button#sample_editable_1_new" ).prop( 'disabled', false );

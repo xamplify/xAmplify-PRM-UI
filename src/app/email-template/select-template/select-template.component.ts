@@ -66,6 +66,7 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
           this.emailTemplateService.listDefaultTemplates()
            .subscribe(
                (data:any) => {
+                   if(!this.campaignAccess.eventCampaign){ data = this.hideEventTemplates(data); }
                    this.allEmailTemplates = data;
                    this.filteredEmailTemplates = data;
                    this.refService.loading(this.httpRequestLoader, false);
@@ -78,7 +79,11 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
            );
        }
 
-
+    hideEventTemplates(data:any){
+      const allData = [];
+      for(let i=0;i< data.length;i++){  if(!data[i].name.includes('Event')){ allData.push(data[i]); } }
+      return allData;
+    }
 
     ngOnDestroy() {
         //  this.emailTemplateService.emailTemplate = new EmailTemplate();

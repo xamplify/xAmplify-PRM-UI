@@ -30,13 +30,13 @@ a.disabled {
             <a  [routerLink]="['/home/campaigns/manage']">Manage Campaigns</a>
             <i class="fa fa-angle-right"></i>
          </li>
-			<li>Event Based Campaign</li>
+			<li>Event Campaign</li>
 		</ul>
 	</div>
 	<app-list-loader [rowsCount]="6" *ngIf="loader"></app-list-loader>
 	<div class="page-bar" [hidden]="loader">
 		<div class="container"
-			style="width: 100%; border-radius: 0; border: 1px solid #869ab3; border-top: 0; box-shadow: 0 0 6px rgba(0, 0, 0, 0.6); padding-bottom: 10px;">
+			style="width: 100%; border-radius: 0; border-top: 0;box-shadow: 0 0 5px rgba(0, 0, 0, .4); padding-bottom: 10px;">
 			<div class="alert-danger alert-error" *ngIf="eventError.eventExpiredError" style="margin-top: 19px;font-weight: 600;"> This event has concluded.</div>
 			<div *ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage" style="display: flex; padding-top: 1em;">
 				<div id="step2" class="col-block col-block-complete" (click)="resetTabs('details')" [ngClass]="{'col-block-active': detailsTab}"
@@ -183,17 +183,17 @@ a.disabled {
 							</div>
 						</div>
 						<div class="form-group" *ngIf="eventCampaign.channelCampaign && !authenticationService.isOnlyPartner()">
-												<label class="control-label col-sm-3">Co-Branding Logo</label>
-												<div class="col-sm-9">
-													<switch class="pull-left" [status]="eventCampaign.enableCoBrandingLogo" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-													 [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
-													 (statusChange)="setCoBrandingLogo($event)">
-													</switch>
-													<span style="cursor: pointer;color: #54a7e9;" title="Enable your Partner's logo to be displayed in redistributed campaigns">
-														<i class="fa fa-question-circle" style="padding: 8px;"></i>
-													</span>
-												</div>
-											</div>
+              <label class="control-label col-sm-3">Co-Branding Logo</label>
+              <div class="col-sm-9">
+                <switch class="pull-left" [status]="eventCampaign.enableCoBrandingLogo" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+                  [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+                  (statusChange)="setCoBrandingLogo($event)">
+                </switch>
+                <span style="cursor: pointer;color: #54a7e9;" title="Enable your Partner's logo to be displayed in redistributed campaigns">
+                  <i class="fa fa-question-circle" style="padding: 8px;"></i>
+                </span>
+              </div>
+						</div>
 						<div class="form-group">
 							<label for="eventDateTime" class="col-sm-3 labal-css color-css">Event
 								Date/Time <span class="text-danger" style="margin-left: -3px;">*</span>
@@ -358,13 +358,13 @@ a.disabled {
 							<h4 class="pull-left f-w-600">Event Settings</h4>
 						</div>
 						<div class="portlet-body clearfix"
-							[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)">
+							[attr.disabled]="(isPreviewEvent)">
 							<ul>
 								<li><label> <switch
 											[status]="eventCampaign.rsvpReceived"
 											[onText]="callActionSwitch.onTextValue"
 											[offText]="callActionSwitch.offTextValue"
-											[disabled]="isPreviewEvent || reDistributeEvent || reDistributeEventManage"
+											[disabled]="isPreviewEvent"
 											[onColor]="callActionSwitch.onGreenColorSwitch"
 											[offColor]="callActionSwitch.onDefaultColorSwitch"
 											[size]="callActionSwitch.bsize"
@@ -375,7 +375,7 @@ a.disabled {
 											[status]="eventCampaign.emailOpened"
 											[onText]="callActionSwitch.onTextValue"
 											[offText]="callActionSwitch.offTextValue"
-											[disabled]="isPreviewEvent || reDistributeEvent || reDistributeEventManage"
+											[disabled]="isPreviewEvent"
 											[onColor]="callActionSwitch.onGreenColorSwitch"
 											[offColor]="callActionSwitch.onDefaultColorSwitch"
 											[size]="callActionSwitch.bsize"
@@ -383,12 +383,14 @@ a.disabled {
 										</switch> Notify me when email is opened
 								</label></li>
 								<li><label>
-                <switch [status]="eventCampaign.inviteOthers" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [disabled]="(isPreviewEvent || reDistributeEvent) || reDistributeEvent"
+                <switch [status]="eventCampaign.inviteOthers"
+                [disabled]="isPreviewEvent || reDistributeEvent || reDistributeEventManage"
+                [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [disabled]="(isPreviewEvent || reDistributeEvent) || reDistributeEvent"
                 [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
                 (statusChange)="eventCampaign.inviteOthers = !eventCampaign.inviteOthers">
               </switch>
                 Allow recipients to bring guests
- </label></li>
+              </label></li>
 							</ul>
 						</div>
 					</div>
@@ -493,13 +495,8 @@ a.disabled {
 			(click)="resetTabs('recipients')" title="Please Fill Campaign Details" [disabled]="recipientsTabClass === 'disableRecipientsTab'">Next</button>
 			</div>
 			</fieldset>
-
-
 			<!--  End Step one -->
-
-
      <!--   Step two  Recipients  -->
-
       <div class="col-xs-12 mb10" *ngIf="recipientsTab" style="padding: 10px 0 0 0;">
             <div class="boxes portlet light">
                 <div class="portlet-title" style="display:block">
@@ -554,9 +551,9 @@ a.disabled {
                       </thead>
                       <tbody>
                         <ng-container *ngFor="let contactList of contactListsPagination.pagedItems; let i=index;">
-                        <tr id="campaignContactListTable_{{contactList.id}}" (click)="highlightPartnerContactRow(contactList.id,$event,contactList.noOfContacts,contactList.emailValidationInd)" [ngClass]="{'contact-list-selected': userListIds.indexOf(contactList.id)>-1 || parternUserListIds.indexOf(contactList.id)>-1}">
+                        <tr id="campaignContactListTable_{{contactList.id}}" (click)="highlightPartnerContactRow(contactList,$event,contactList.noOfContacts,contactList.emailValidationInd)" [ngClass]="{'contact-list-selected': userListIds.indexOf(contactList.id)>-1 || parternUserListIds.indexOf(contactList.id)>-1}">
                           <td class='text-center m0'>
-                            <input value="{{contactList.id}}" name="campaignContact[]"  [attr.disabled]="isPreviewEvent? '' : null" type='checkbox' id='{{contactList.id}}' [checked]="parternUserListIds.indexOf(contactList.id)>-1" (click)="$event.stopPropagation();partnerHighlightRow(contactList.id)" (input)="resetTabClass()">
+                            <input value="{{contactList.id}}" name="campaignContact[]"  [attr.disabled]="isPreviewEvent? '' : null" type='checkbox' id='{{contactList.id}}' [checked]="parternUserListIds.indexOf(contactList.id)>-1" (click)="$event.stopPropagation();partnerHighlightRow(contactList)" (input)="resetTabClass()">
                           </td>
                           <td style="text-align:left">
                             <h5 class='m0 f-w-600 table-color' title="{{contactList.name}}">
@@ -743,10 +740,10 @@ a.disabled {
             <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
                 <div class="portlet light clearfix" style="padding:0px">
                   <div class="p0">
-                      <div class="pricing hover-effect pointer">
+                      <div class="pricing hover-effect">
                           <div class="pricing-head">
                             <h4 title="{{eventCampaign.campaign}}" style="text-align:center">Campaign name: {{eventCampaign.campaign | slice:0:30}}<span *ngIf="eventCampaign.campaign?.length>30">...</span></h4>
-                            <h4><img style="margin: 0 auto;height: 106px;" alt="Regular E-mail Campaign" class="pricing-head-img img-responsive" src="assets/images/event-campaign.png"></h4>
+                            <h4><img style="margin: 0 auto;height: 106px;cursor:default" alt="Regular E-mail Campaign" class="pricing-head-img img-responsive" src="assets/images/event-campaign.png"></h4>
                           </div>
                         </div>
                     <h5 id="description"></h5>
@@ -773,21 +770,23 @@ a.disabled {
 
                     </td>
                     <td *ngIf="isPreviewEvent" width="55%" style="text-align:center">
-                      <ng-container *ngFor="let contactList of selectedListOfUserListForPreview;let i=index;">
-                        <a (click)="loadContacts(contactList,contactsPagination)" data-toggle="modal" title="{{contactList.name}}"
-                          style="display: block;">
+                      <ng-container *ngFor="let contactList of userListDTOObj;let i=index;">
+                        <a (click)="loadContacts(contactList,contactsPagination)" data-toggle="modal" title="{{contactList.name}}">
                           <span *ngIf="contactList.name">  {{contactList.name | slice:0:40}}<span *ngIf="contactList.name?.length>40">...</span></span>
                         </a>
                       </ng-container>
                     </td>
                     <td *ngIf="!isPreviewEvent" width="55%" style="text-align:center">
-                      <ng-container *ngFor="let contactList of selectedListOfUserLists;let i=index;">
-                        <a (click)="loadContacts(contactList,contactsPagination)" data-toggle="modal" title="{{contactList.name}}" (click)="loadContacts(contactList,contactsPagination)"
-                          style="display: block;">
+                      <ng-container *ngFor="let contactList of userListDTOObj;let i=index;">
+                        <div>
+                        <a *ngIf="i<2" (click)="loadContacts(contactList,contactsPagination)" data-toggle="modal" title="{{contactList.name}}" (click)="loadContacts(contactList,contactsPagination)">
                           <span *ngIf="contactList.name">  {{contactList.name | slice:0:40}}<span *ngIf="contactList.name?.length>40">...</span></span>
                         </a>
+                        </div>
                       </ng-container>
-                      <a><span *ngIf="selectedListOfUserLists?.length===0" (click)="loadContactsPreviewOn(eventCampaign?.userListIds[0])">{{eventCampaign?.userListIds?.length}} Contact Lists</span></a>
+                      <a>
+                        <span *ngIf="userListDTOObj?.length>2">...</span> <span *ngIf="userListDTOObj?.length == 0">0 contactlists</span>
+                      </a>
                     </td>
                     <td style="text-align: right" width="20%">
                       <a  [class.hide]="reDistributeEvent || reDistributeEventManage" [class.disabled]="isPreviewEvent" class="btn btn-primary btn-sm" style="color:#fff" (click)="resetTabs('recipients')">Change</a>
@@ -847,7 +846,7 @@ a.disabled {
            </div>
             <div *ngFor="let reply of eventCampaign.campaignReplies;let i=index">
             <div class="portlet light dashboard-stat2" id="{{reply.divId}}" style="min-height: 320px;" [class.disabled]="reply.body && reDistributeEvent && reDistributeEventManage && reply.id">
-              <div class="portlet-title custom-change-css" [ngClass]="{'colorlightBlock':isEven(i+1), 'colorBlue':!isEven(i+1)}" style="display:block">
+              <div class="portlet-title custom-change-css" [ngClass]="{'colorBlue ':isEven(i+1), 'colorRed':!isEven(i+1)}" style="display:block">
                 <div class="col-xs-6">
                   <h4 class="text-left" style="color:#fff">Add an Auto-response to your e-mail-{{i+1}}</h4>
                 </div>
@@ -919,7 +918,7 @@ a.disabled {
                       <div >
                         <label for="days" id="email-template-{{reply.divId}}">Select Email Template<b style="color: red">*</b></label>
                       </div>
-                      <div [hidden]="eventCampaign.nurtureCampaign">
+                      <div [hidden]="eventCampaign.nurtureCampaign || isPreviewEvent">
                         <ul class="mix-filter col-xs-8 p0"  *ngIf="!isOnlyPartner" [class.disabled]="isPreviewEvent || eventError.eventExpiredError">
                           <li class="filter" (click)="filterReplyTemplates('NONE',0,reply)" [class.emailtemplate-selected]="0 == reply.selectedEmailTemplateTypeIndex">All Email</li>
                           <li class="filter" (click)="filterReplyTemplates('RICH',2,reply)" [class.emailtemplate-selected]="2 == reply.selectedEmailTemplateTypeIndex">Rich</li>
@@ -935,7 +934,7 @@ a.disabled {
                       </div>
                     </div>
                   </div>
-                  <div *ngIf="reply.defaultTemplate" class="col-xs-12" style="margin-top:16px !important" [class.disabled]="isPreviewEvent || eventError.eventExpiredError">
+                  <div *ngIf="reply.defaultTemplate" class="col-xs-12" style="margin-top:16px !important" [class.disabled]="eventError.eventExpiredError">
                       <app-list-loader [rowsCount]="3" *ngIf="campaignEmailTemplate.httpRequestLoader.isLoading"></app-list-loader>
                       <app-error-pages *ngIf="campaignEmailTemplate.httpRequestLoader.isServerError"></app-error-pages>
                       <div class="row" *ngIf="!campaignEmailTemplate.httpRequestLoader.isLoading && !campaignEmailTemplate.httpRequestLoader.isServerError">
@@ -1033,7 +1032,7 @@ a.disabled {
                           </ul>
                         </div>
                       </div>
-                      <div class="col-xs-12" style="margin-left: -12px;" [hidden]="reDistributeEvent || reDistributeEventManage">
+                      <div class="col-xs-12" style="margin-left: -12px;" [hidden]="reDistributeEvent || reDistributeEventManage || isPreviewEvent">
                         <div *ngIf="reply.emailTemplatesPagination.totalRecords>0 && !campaignEmailTemplate.httpRequestLoader.isLoading && !campaignEmailTemplate.httpRequestLoader.isServerError">
                         <ul *ngIf="reply.emailTemplatesPagination.pager.pages && reply.emailTemplatesPagination.pager.pages.length" class="pagination">
                           <li [ngClass]="{disabled:reply.emailTemplatesPagination.pager.currentPage === 1}">

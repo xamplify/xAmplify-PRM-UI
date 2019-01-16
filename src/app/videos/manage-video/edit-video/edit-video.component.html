@@ -327,10 +327,10 @@
 											<div class="form-group">
 												<label class="col-xs-5 col-sm-5 col-md-5 control-label" style="margin-top:-6px">Player Color:</label>
 												<div class="col-xs-7 col-sm-7 col-md-7"  [class.disablePlayerValues]="disablePlayerSettingnew">
-													<input [hidden]="disablePlayerSettingnew" [(colorPicker)]="compPlayerColor" [style.background]="compPlayerColor" formControlName="playerColor" [value]="compPlayerColor"
+													<input [hidden]="disablePlayerSettingnew || !newEnableController" [(colorPicker)]="compPlayerColor" [style.background]="compPlayerColor" formControlName="playerColor" [value]="compPlayerColor"
 													 (colorPickerChange)="changePlayerColor($event)" [class.disablePlayerValues]="disablePlayerSettingnew" [cpPosition]="'bottom'"
                            [cpWidth]="'200px'" [cpHeight]="'265px'" />
-                          <input [hidden]="!disablePlayerSettingnew" [(ngModel)]="compPlayerColor" [ngModelOptions]="{standalone: true}" [style.background]="compPlayerColor" [class.disablePlayerValues]="disablePlayerSettingnew" />
+                          <input [hidden]="!disablePlayerSettingnew && newEnableController" [(ngModel)]="compPlayerColor" [ngModelOptions]="{standalone: true}" [style.background]="compPlayerColor" [class.disablePlayerValues]="disablePlayerSettingnew || !newEnableController" />
 													<i class="fa fa-question-circle pull-left" style="cursor:pointer;margin-top: 4px;margin-left: -19px;color:#3598dc;font-size: 18px;" data-toggle="tooltip"
 													 data-placement="left" title="Click to change"></i>
 												</div>
@@ -347,22 +347,22 @@
 											<div class="form-group">
 												<label class="col-xs-5 col-sm-5 col-md-5 control-label" style="margin-top:-6px">Controller Color:</label>
 												<div class="col-xs-7 col-sm-7 col-md-7"  [class.disablePlayerValues]="disablePlayerSettingnew">
-													<input [hidden]="disablePlayerSettingnew" [(colorPicker)]="compControllerColor" [style.background]="compControllerColor" (colorPickerChange)="changeControllerColor($event, newEnableController)"
+													<input [hidden]="disablePlayerSettingnew || !newEnableController" [(colorPicker)]="compControllerColor" [style.background]="compControllerColor" (colorPickerChange)="changeControllerColor($event, newEnableController)"
 													 formControlName="controllerColor" [value]="compControllerColor" [class.disablePlayerValues]="disablePlayerSettingnew"
                            [cpPosition]="'bottom'" [cpWidth]="'200px'" [cpHeight]="'265px'" />
-                          <input [hidden]="!disablePlayerSettingnew" [(ngModel)]="compControllerColor" [ngModelOptions]="{standalone: true}" [style.background]="compControllerColor" [class.disablePlayerValues]="disablePlayerSettingnew" />
+                          <input [hidden]="!disablePlayerSettingnew && newEnableController" [(ngModel)]="compControllerColor" [ngModelOptions]="{standalone: true}" [style.background]="compControllerColor" [class.disablePlayerValues]="disablePlayerSettingnew || !newEnableController" />
 													<i class="fa fa-question-circle pull-left" style="cursor:pointer; margin-top: 4px;margin-left: -19px;color:#3598dc;font-size: 18px;" data-toggle="tooltip"
 													 data-placement="left" title="Click to change"></i>
 												</div>
 											</div>
 											<div class="form-group">
 												<div class="col-xs-5 control-label" style="font-size:14px;position: relative;top: -6px;">Transparency:</div>
-												<div class="col-xs-7" style="padding:0">
+												<div class="col-xs-7 p0">
 													<div class="col-xs-10 col-sm-6 col-md-6">
-														<input type="range" id="rangeValue" min="0" max="100" value="{{valueRange}}" style="width: 104%;" [class.disablePlayerValues]="disablePlayerSettingnew"
+														<input type="range" id="rangeValue" min="0" max="100" value="{{valueRange}}" style="width: 104%;" [class.disablePlayerValues]="disablePlayerSettingnew || !newEnableController"
 														 (input)="transperancyControllBar(Transvalue.value)" #Transvalue>
 													</div>
-													<div class="col-xs-2 col-sm-3 col-md-3" style="padding:0%;">{{valueRange}}</div>
+													<div class="col-xs-2 col-sm-3 col-md-3 p0">{{valueRange}}</div>
 												</div>
 											</div>
 											<!-- co branding video logo -->

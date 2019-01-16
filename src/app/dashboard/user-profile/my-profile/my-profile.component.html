@@ -344,10 +344,10 @@ input:checked + .slider-new:before {
 															<div class="col-xs-12 col-sm-12 col-md-12 form-group" style="margin-bottom: 10px;">
 																<label class="form-group col-xs-3 col-sm-6 col-md-6 control-label">Player Color:</label>
 																<div class="col-xs-9 colsm-6 col-md-6">
-																	<input [hidden]="hasVideoRole" [(colorPicker)]="compPlayerColor" [style.background]="compPlayerColor" [value]="compPlayerColor"
+																	<input [hidden]="hasVideoRole || !defaultVideoPlayer.enableVideoController" [(colorPicker)]="compPlayerColor" [style.background]="compPlayerColor" [value]="compPlayerColor"
 																		formControlName="playerColor" (colorPickerChange)="changePlayerColor($event)"
 																		[cpWidth]="'200px'" [cpHeight]="'265px'"  [cpPosition]="'bottom'" [class.disablePlayerValues]="hasVideoRole" />
-                                    <input [hidden]="!hasVideoRole" [(ngModel)]="compPlayerColor" [ngModelOptions]="{standalone: true}" [style.background]="compPlayerColor" [class.disablePlayerValues]="hasVideoRole" />
+                                    <input [hidden]="!hasVideoRole && defaultVideoPlayer.enableVideoController" [(ngModel)]="compPlayerColor" [ngModelOptions]="{standalone: true}" [style.background]="compPlayerColor" [class.disablePlayerValues]="hasVideoRole || !defaultVideoPlayer.enableVideoController" />
                                     <!-- [class.disablePlayerValues]="!hasAllAccess" -->
 																</div>
 															</div>
@@ -364,18 +364,18 @@ input:checked + .slider-new:before {
 															<div class="col-xs-12 form-group" style="margin-bottom: 10px;">
 																<label class="col-xs-3 col-sm-6 col-md-6 control-label">Controller Color:</label>
 																<div class="col-xs-9 colsm-6 col-md-6" >
-																	<input [hidden]="hasVideoRole" [(colorPicker)]="compControllerColor" [style.background]="compControllerColor"
+																	<input [hidden]="hasVideoRole || !defaultVideoPlayer.enableVideoController" [(colorPicker)]="compControllerColor" [style.background]="compControllerColor"
 																		formControlName="controllerColor" [cpWidth]="'200px'" [cpHeight]="'265px'"
 																		(colorPickerChange)="changeControllerColor($event, defaultVideoPlayer.enableVideoController)"
 																		[value]="compControllerColor"  [cpPosition]="'bottom'" [class.disablePlayerValues]="hasVideoRole" />
-                                    <input [hidden]="!hasVideoRole" [(ngModel)]="compControllerColor" [ngModelOptions]="{standalone: true}" [style.background]="compControllerColor" [class.disablePlayerValues]="hasVideoRole" />
+                                    <input [hidden]="!hasVideoRole && defaultVideoPlayer.enableVideoController" [(ngModel)]="compControllerColor" [ngModelOptions]="{standalone: true}" [style.background]="compControllerColor" [class.disablePlayerValues]="hasVideoRole || !defaultVideoPlayer.enableVideoController" />
                                   </div>
 															</div>
 															<div class="col-xs-12 form-group" style="margin-bottom: 10px;">
 																<label class="col-xs-5 col-sm-6 col-md-6 control-label">Transparency:</label>
 																<div class="col-xs-6 col-sm-5 col-md-5">
 																<input type="range"  id="rangeValue" min="0" max="100" value="{{valueRange}}" style="width: 100%;"
-																 (input)="transperancyControllBar(Transvalue.value)" [class.disablePlayerValues]="hasVideoRole" #Transvalue>
+																 (input)="transperancyControllBar(Transvalue.value)" [class.disablePlayerValues]="hasVideoRole || !defaultVideoPlayer.enableVideoController" #Transvalue>
 																</div>
 															<div class="col-xs-1" style="padding:0">{{valueRange}}</div>
 															</div>

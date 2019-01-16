@@ -86,7 +86,7 @@
 					<strong>Video specifications:</strong>
 				</h5>
 				<ul style="margin-left: -23px;">
-					<li>Duration should be between 0.5 seconds and 30 seconds</li>
+					<li>Duration must be between 0.5 seconds and 140 seconds</li>
 				</ul>
 			</div>
 
@@ -246,12 +246,11 @@
 
 						<section [hidden]="isSocialCampaign && alias" class="pull-left">
 							<label class="add-photos" title="Add photos" data-toggle="tooltip" data-placement="top">
-								<i class="fa fa-image">&nbsp;</i>
-								<input type="file" (change)="fileChange($event, socialStatus)" #input name="media[]" accept="image/gif,image/jpeg,image/jpg,image/png"
-								 multiple="multiple" class="file-input js-tooltip" data-original-title="Add photos or video">
+								<i class="fa fa-image"></i>
+								<input type="file" (click)="input.value = null" value="" (change)="fileChange($event, socialStatus)" #input name="media[]" accept="image/*" multiple="multiple" class="file-input js-tooltip">
 							</label>
 							<span class="add-video" (click)="openListVideosModal(socialStatus)" title="Add video" data-toggle="tooltip" data-placement="top">
-								<i class="fa fa-video-camera">&nbsp;</i>
+								<i class="fa fa-video-camera"></i>
 							</span>
 						</section>
 					</div>
@@ -329,9 +328,10 @@
 						</div>
 					</section>
 				<div class="col-sm-12 form-inline form-group hidden text-right" id="schedule-option-div" style="border-top: 2px dashed #ccc;padding-top: 15px;">
-					<div class="form-group col-sm-3">
+					<div class="form-group col-sm-3" id="form-calendar">
 						<label class="pull-left">Date</label>
 						<input type="text" class="form-control flatpickr" style="width:100%" placeholder="Select date" [(ngModel)]="scheduledTimeInString"/>
+    					<!--<i class="fa fa-calendar flatpickr"></i>-->
 					</div>
 					<div class="form-group col-sm-3">
 						<label class="pull-left">Country</label>
@@ -543,7 +543,7 @@
                                 'fa-google fa-google-color': socialConnection.source ==='GOOGLE'}"></i>
                              </div>
                           <img class="img-responsive img-circle profile-picture center-block" src="{{socialConnection.profileImage}}" alt="{{socialConnection.profileName}}"
-						  (error)="$event.target.src = 'assets/admin/pages/media/profile/icon-user-default.png'">
+						  (error)="$event.target.src = 'assets/images/social/avatar.png'">
                         </div>
                         <div class="clearfix">
                           <br>
