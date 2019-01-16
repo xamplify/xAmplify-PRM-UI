@@ -620,7 +620,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   defaultPlayerSettingsCondition(playerSettings: any) {
       // future work is there on enable casting and enable settings.
-      if(!playerSettings.enableVideoController){ this.getDefaultPlayerSettings(); playerSettings = this.defaultPlayerValues;}
+      if(!playerSettings.playerColor){ this.getDefaultPlayerSettings(); playerSettings = this.defaultPlayerValues;}
       try {
           this.valueRange = playerSettings.transparency;
           this.newEnableController = playerSettings.enableVideoController;

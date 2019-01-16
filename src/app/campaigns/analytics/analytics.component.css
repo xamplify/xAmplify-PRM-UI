@@ -556,6 +556,15 @@ tr>td>h6 {
  .marginleft5{
      margin-left: 22px;
  }
+ 
+  .marginleft1{
+     margin-left: 3px;
+ }
+ 
+ .rsvp_tile_padding{
+ padding: 2px 2px 0px 4px;
+ }
+ 
  .highlet{
  color: #00a6e8;
  }

@@ -10,17 +10,18 @@ declare var $: any;
 })
 export class CalendarComponent implements OnInit {
   campaigns: any = [];
+  campaign: any;
   events: any = [];
   constructor(private authenticationService: AuthenticationService, private campaignService: CampaignService) { }
   getCampaignCalendarView(userId: number) {
     this.campaignService.getCampaignCalendarView(userId)
       .subscribe(
       data => {
-        debugger;
         this.campaigns = data;
 
         this.campaigns.forEach(element => {
-          let event:any = {};
+          let event: any = {};
+          event.id = element.id;
           event.title = element.campaign;
           event.start = element.createdTime;
           if (element.type === 'VIDEO')
@@ -39,7 +40,8 @@ export class CalendarComponent implements OnInit {
       );
   }
 
-  renderCalendar(){
+  renderCalendar() {
+    const self = this;
     $('#calendar').fullCalendar({
       header: {
         left: 'prev,next today',
@@ -50,9 +52,28 @@ export class CalendarComponent implements OnInit {
       editable: true,
       eventLimit: true, // allow "more" link when too many events
       events: this.events,
-      timeFormat: 'h:mm a'
+      timeFormat: 'h:mm a',
+      eventClick: function (event) {
+        console.log(event);
+        self.getCampaignById(event.id)
+        $('#myModal').modal();
+      },
     });
   }
+  getCampaignById(campaignId: number) {
+    this.campaign = null;
+    var obj = { 'campaignId': campaignId }
+    this.campaignService.getCampaignById(obj)
+      .subscribe(
+      data => {
+        this.campaign = data;
+      },
+      error => { console.error(error) },
+      () => console.log()
+      )
+  }
+
+
   ngOnInit() {
     const userId = this.authenticationService.getUserId();
     this.getCampaignCalendarView(userId);

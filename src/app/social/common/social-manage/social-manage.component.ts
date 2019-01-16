@@ -109,7 +109,7 @@ export class SocialManageComponent implements OnInit, OnDestroy {
             });
         }
     }
-    errorHandler(event){event.target.src= 'assets/admin/pages/media/profile/icon-user-default.png';}
+    errorHandler(event){event.target.src= 'assets/images/social/avatar.png';}
     ngOnInit() {
         try {
             this.providerName = this.route.snapshot.params['social'];

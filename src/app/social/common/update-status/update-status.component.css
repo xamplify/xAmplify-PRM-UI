@@ -476,3 +476,10 @@ h5 {
 .swal2-cancel {
 	background-color: #cfd8dc;
 }
+
+#form-calendar input{
+	background: #fff;
+}
+#form-calendar i{
+	position: absolute; top: 35px; right: 25px; cursor: pointer;
+}

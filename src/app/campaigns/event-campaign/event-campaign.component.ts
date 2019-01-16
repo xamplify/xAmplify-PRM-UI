@@ -25,14 +25,13 @@ import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { CountryNames } from '../../common/models/country-names';
 import { Roles } from '../../core/models/roles';
 import { EmailTemplateType } from '../../email-template/models/email-template-type';
-var moment = require('moment-timezone');
-
 declare var $,swal, flatpickr, CKEDITOR,require;
+var moment = require('moment-timezone');
 
 @Component({
   selector: 'app-event-campaign',
   templateUrl: './event-campaign-step.component.html',
-  styleUrls: ['./event-campaign.component.css','../create-campaign/create-campaign.component.css'],
+  styleUrls: ['./event-campaign.component.css','../create-campaign/create-campaign.component.css', '../../../assets/css/content.css' ],
   providers: [PagerService, Pagination, CallActionSwitch, Properties,EventError,HttpRequestLoader, CountryNames]
 })
 export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
@@ -107,7 +106,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   roleName: Roles= new Roles();
   gridLoader = false;
   selectedListOfUserLists = [];
-  selectedListOfUserListForPreview = [];
   isHeaderCheckBoxChecked: boolean = false;
   contactSearchInput: string = "";
   emailTemplateSearchInput: string = "";
@@ -121,6 +119,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   reDistributeEventManage = false;
   parentCampaignIdValue:number;
   isPartnerToo = false;
+  userListDTOObj = [];
+
   constructor(public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
     private contactService: ContactService,
     public campaignService: CampaignService,
@@ -236,21 +236,18 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
         this.onChangeCountryCampaignEventTime(this.eventCampaign.campaignEventTimes[0].countryId)
         if(this.reDistributeEvent){ this.isPartnerUserList = false;}
         this.eventCampaign.userListIds = [];
+        this.userListDTOObj = result.data.userListDTOs;
         for(let i=0; i< result.data.userListDTOs.length;i++){
          this.parternUserListIds.push(result.data.userListDTOs[i].id);
          this.eventCampaign.userListIds.push(result.data.userListDTOs[i].id);
         }
         if(this.reDistributeEvent){
             this.eventCampaign.userListIds = []; this.userListIds = [];this.parternUserListIds = [];
+            this.userListDTOObj = [];
             this.checkLaunchOption = this.eventCampaign.campaignScheduleType;
         }
         this.eventCampaign.userLists = [];
         console.log(this.userListIds);
-
-        if(this.isPreviewEvent){
-          this.selectedListOfUserListForPreview = result.data.userListDTOs;
-          this.setUserLists()
-        }
         if(this.authenticationService.isOnlyPartner()){
           const emailTemplates:any = [];
           this.emailTemplates.forEach((element,index)=>{
@@ -639,14 +636,16 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
               console.log( "checked" );
               $( '[name="campaignContact[]"]' ).prop( 'checked', true );
               let self = this;
-              $( '[name="campaignContact[]"]:checked' ).each( function() {
+              $( '[name="campaignContact[]"]:checked' ).each( function(index) {
                   var id = $( this ).val();
                   self.parternUserListIds.push( parseInt( id ) );
+                  self.userListDTOObj.push(self.contactListsPagination.pagedItems[index]);
                   console.log( self.parternUserListIds );
                   $( '#campaignContactListTable_' + id ).addClass( 'contact-list-selected' );
                   self.eventError.eventContactError = false;
               });
               this.parternUserListIds = this.referenceService.removeDuplicates( this.parternUserListIds );
+              this.userListDTOObj = this.referenceService.removeDuplicates( this.userListDTOObj );
           } else {
               $( '[name="campaignContact[]"]' ).prop( 'checked', false );
               $( '#user_list_tb tr' ).removeClass( "contact-list-selected" );
@@ -657,7 +656,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
               } else {
                   let currentPageContactIds = this.contactListsPagination.pagedItems.map( function( a ) { return a.id; });
                   this.parternUserListIds = this.referenceService.removeDuplicatesFromTwoArrays( this.parternUserListIds, currentPageContactIds );
-              }
+                  this.userListDTOObj =  this.referenceService.removeDuplicatesFromTwoArrays(this.userListDTOObj, this.contactListsPagination.pagedItems);
+                }
               if(this.parternUserListIds.length===0){  this.eventError.eventContactError = true;}
           }
           ev.stopPropagation();
@@ -667,7 +667,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
       }
   }
 
-  partnerHighlightRow(contactListId: number) {
+  partnerHighlightRow(contactList: any) {
+    let contactListId = contactList.id;
     const isChecked = $('#' + contactListId).is(':checked');
     if (isChecked) {
       if (!this.parternUserListIds.includes(contactListId)) {
@@ -676,6 +677,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
         }else{this.eventError.eventContactError = true;}
         this.userListIds = [];
         $('#campaignContactListTable_'+contactListId).addClass('contact-list-selected');
+        this.userListDTOObj.push(contactList);
       }
       $('#' + contactListId).parent().closest('tr').addClass('contact-list-selected');
     } else {
@@ -684,6 +686,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
       $('#campaignContactListTable_'+contactListId).removeClass('contact-list-selected');
       if(this.parternUserListIds.length>0){  this.eventError.eventContactError = false;
       }else{this.eventError.eventContactError = true;}
+      this.userListDTOObj = this.referenceService.removeSelectedObjectFromList(this.userListDTOObj, contactListId);
     }
 
     if ( this.parternUserListIds.length == this.contactListsPagination.pagedItems.length ) {
@@ -693,7 +696,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     }
   }
 
-highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boolean){
+highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolean){
+  let contactId = contactList.id;
   if(isValid){
       if(count>0){
           let isChecked = $('#'+contactId).is(':checked');
@@ -705,6 +709,7 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
               this.parternUserListIds.splice($.inArray(contactId,this.parternUserListIds),1);
               if(this.parternUserListIds.length>0){  this.eventError.eventContactError = false;
               }else{this.eventError.eventContactError = true;}
+              this.userListDTOObj= this.referenceService.removeSelectedObjectFromList(this.userListDTOObj, contactId);
         }else{
             //Highlighting Row
             $('#'+contactId).prop( "checked", true );
@@ -713,6 +718,7 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
             this.parternUserListIds.push(contactId);
             if(this.parternUserListIds.length === 0){  this.eventError.eventContactError = true;
             }else{this.eventError.eventContactError = false;}
+            this.userListDTOObj.push(contactList);
         }
           // this.contactsUtility();
         if ( this.parternUserListIds.length == this.contactListsPagination.pagedItems.length ) {
@@ -1187,8 +1193,65 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
               data.body = data.body.replace( "{{event_description}}", this.eventCampaign.message );
           }
           if ( !this.eventCampaign.onlineMeeting ) {
-              if ( this.eventCampaign.campaignLocation.location && this.eventCampaign.campaignLocation.street ) {
-                  data.body = data.body.replace( /{{address}}/g, this.eventCampaign.campaignLocation.location + "<br/>" +  this.eventCampaign.campaignLocation.street + ", " + this.eventCampaign.campaignLocation.city + "<br/>" + this.eventCampaign.campaignLocation.state + ", " + this.eventCampaign.campaignLocation.zip);
+
+              if(this.eventCampaign.campaignLocation.street === undefined){
+                  this.eventCampaign.campaignLocation.street = "";
+              }
+
+              if(this.eventCampaign.campaignLocation.city === undefined){
+                  this.eventCampaign.campaignLocation.city = "";
+              }
+
+              if(this.eventCampaign.campaignLocation.state === undefined){
+                  this.eventCampaign.campaignLocation.state = "";
+              }
+
+              if(this.eventCampaign.campaignLocation.zip === undefined){
+                  this.eventCampaign.campaignLocation.zip = "";
+              }
+
+              if ( this.eventCampaign.campaignLocation.location ) {
+                  
+                  let address1 = this.eventCampaign.campaignLocation.location;
+                  let address2 = "";
+                  let address3 = "";
+                  let fullAddress = "";
+                  
+                  if(this.eventCampaign.campaignLocation.street && this.eventCampaign.campaignLocation.city){
+                      address2 = this.eventCampaign.campaignLocation.street + ", " + this.eventCampaign.campaignLocation.city;
+                  }else if(this.eventCampaign.campaignLocation.street){
+                      address2 = this.eventCampaign.campaignLocation.street;
+                  }else if(this.eventCampaign.campaignLocation.city){
+                      address2 = this.eventCampaign.campaignLocation.city;
+                  }else{
+                      address2 = "" 
+                  }
+                  
+                  if(this.eventCampaign.campaignLocation.state && this.eventCampaign.campaignLocation.zip){
+                      address3 = this.eventCampaign.campaignLocation.state + ", " + this.eventCampaign.campaignLocation.zip;
+                  }else if(this.eventCampaign.campaignLocation.state){
+                      address3 = this.eventCampaign.campaignLocation.state;
+                  }else if(this.eventCampaign.campaignLocation.zip){
+                      address3 = this.eventCampaign.campaignLocation.zip;
+                  }else{
+                      address3 = "" 
+                  }
+                  
+                  if(address2 && address3){
+                      fullAddress = address1 + "<br>" + address2 + "<br>" + address3 + "<br>" + this.eventCampaign.campaignLocation.country;
+                  }else if(address2 && !address3){
+                      fullAddress = address1 + "<br>" + address2 + "<br>" + this.eventCampaign.campaignLocation.country;
+                  }
+                  else if(!address2 && address3){
+                      fullAddress = address1 + "<br>" + address3 + "<br>" + this.eventCampaign.campaignLocation.country;
+                  }else{
+                      fullAddress = address1 + "<br>" + this.eventCampaign.campaignLocation.country;
+                  }
+                  
+                  
+                  
+                  
+                  data.body = data.body.replace( /{{address}}/g, fullAddress);
                  /* data.body = data.body.replace( /{{addreess_lane2}}/g, this.eventCampaign.campaignLocation.city + "," + this.eventCampaign.campaignLocation.state + "," + this.eventCampaign.campaignLocation.zip );*/
               }
           } else {
@@ -1218,7 +1281,7 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
               data.body = data.body.replace( "{{vendor_emailId}}", this.eventCampaign.userDTO.emailId );
 
           }
-          
+
 
           if(!this.eventCampaign.enableCoBrandingLogo){
               data.body = data.body.replace( "https://xamp.io/vod/images/co-branding.png", "https://aravindu.com/vod/images/emptyImg.png" );
@@ -1494,37 +1557,9 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
             this.recipientsTab = false;
             this.emailTemplatesTab = false;
             this.launchTab = true;
-            this.setUserLists();
-           // this.addUserEmailIds();
             }
 
     }
-    setUserLists(){
-      this.selectedListOfUserLists = [];
-      this.parternUserListIds = this.referenceService.removeDuplicates( this.parternUserListIds);
-      this.eventCampaign.userListIds = this.parternUserListIds;
-      for(let i=0; i< this.contactListsPagination.pagedItems.length; i++ ) {
-        if(this.eventCampaign.userListIds[0] === this.contactListsPagination.pagedItems[i].id){
-          const list = {'id': this.eventCampaign.userListIds[0],
-            'name': this.contactListsPagination.pagedItems[i].name
-          }
-          this.selectedListOfUserLists.push(list);
-        }
-      }
-      console.log(this.selectedListOfUserLists);
-    }
-    addUserEmailIds(){
-      let self = this;
-      self.selectedListOfUserLists = [];
-      $('[name="campaignContact[]"]:checked').each(function(index){
-          var id = $(this).val();
-          var name = $(this)[0].lang;
-          var  contactList = {'id':id,'name':name};
-          if(self.selectedListOfUserLists.length<=1){
-              self.selectedListOfUserLists.push(contactList);
-          }
-       });
-  }
     setEventTimeZone(){
       try{
        this.timeZoneSetValue = '';
@@ -1578,7 +1613,6 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
         this.resetTabs(this.currentTab);
 
         if(this.isPreviewEvent){
-            this.setUserLists();
             this.detailsTab = true;
             this.recipientsTab = false;
             this.emailTemplatesTab = false;
@@ -1586,7 +1620,6 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
         }
 
         if(this.reDistributeEvent || this.reDistributeEventManage){
-            this.setUserLists();
             this.detailsTab = true;
             this.recipientsTab = true;
             this.emailTemplatesTab = false;
@@ -1601,9 +1634,9 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
     if(!this.hasInternalError && this.router.url!=="/" && !this.isPreviewEvent && !this.reDistributeEvent && !this.reDistributeEventManage){
      if(!this.isReloaded){
       if(!this.isLaunched){
-          if(this.isAdd){
+          /*if(this.isAdd){
               this.saveCampaignOnDestroy();
-          }else{
+          }else{*/
               let self = this;
               swal( {
                   title: 'Are you sure?',
@@ -1622,7 +1655,7 @@ highlightPartnerContactRow(contactId:number,event:any,count:number,isValid:boole
                     self.reInitialize();
                 }
             })
-          }
+          //}
          }
         }
      }

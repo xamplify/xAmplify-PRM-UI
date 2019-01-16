@@ -155,7 +155,6 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                      this.processVideo(JSON.parse(response).path);
                     }
               };
-              //this.videoUtilService.uploadVideoJsFilesLoad();
               $('head').append('<link href="assets/js/indexjscss/webcam-capture/nvideojs.record.css" rel="stylesheet"  class="r-video">');
               $('head').append('<script src="https://apis.google.com/js/api.js" type="text/javascript"  class="r-video"/>');
               $('head').append('<script src="assets/js/indexjscss/select.js" type="text/javascript"  class="r-video"/>');
