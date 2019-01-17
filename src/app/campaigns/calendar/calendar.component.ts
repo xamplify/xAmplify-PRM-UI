@@ -1,7 +1,15 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { CampaignService } from '../services/campaign.service';
+import { SocialService } from '../../social/services/social.service';
+import { ReferenceService } from '../../core/services/reference.service';
 
+import { SocialCampaign } from '../../social/models/social-campaign';
+import { CampaignReport } from '../models/campaign-report';
+import { Campaign } from '../models/campaign';
+import { EventCampaign } from '../models/event-campaign';
 declare var $: any;
 @Component({
   selector: 'app-calendar',
@@ -11,8 +19,30 @@ declare var $: any;
 export class CalendarComponent implements OnInit {
   campaigns: any = [];
   campaign: any;
+  socialCampaign: SocialCampaign = new SocialCampaign();
   events: any = [];
-  constructor(private authenticationService: AuthenticationService, private campaignService: CampaignService) { }
+  campaignType: string;
+  campaignReport: CampaignReport = new CampaignReport;
+
+  hasCampaignRole: boolean = false;
+  hasStatsRole: boolean = false;
+  hasAllAccess = false;
+  isOnlyPartner: boolean = false;
+  isScheduledCampaignLaunched: boolean = false;
+  loggedInUserId: number = 0;
+
+  saveAsCampaignId = 0;
+  saveAsCampaignName = '';
+  saveAsCampaignInfo :any;
+  constructor(public authenticationService: AuthenticationService, private campaignService: CampaignService, private socialService: SocialService,
+    public referenceService: ReferenceService,private router: Router) {
+    this.loggedInUserId = this.authenticationService.getUserId();
+        this.hasCampaignRole = this.referenceService.hasSelectedRole(this.referenceService.roles.campaignRole);
+        this.hasStatsRole = this.referenceService.hasSelectedRole(this.referenceService.roles.statsRole);
+        this.hasAllAccess = this.referenceService.hasAllAccess();
+        this.isOnlyPartner = this.authenticationService.isOnlyPartner();
+
+  }
   getCampaignCalendarView(userId: number) {
     this.campaignService.getCampaignCalendarView(userId)
       .subscribe(
@@ -24,14 +54,7 @@ export class CalendarComponent implements OnInit {
           event.id = element.id;
           event.title = element.campaign;
           event.start = element.createdTime;
-          if (element.type === 'VIDEO')
-            event.backgroundColor = '#ff6cae';
-          else if (element.type === 'REGULAR')
-            event.backgroundColor = '#00d0e4';
-          else if (element.type === 'SOCIAL')
-            event.backgroundColor = '#00d789';
-          else if (element.type === 'EVENT')
-            event.backgroundColor = '#ffbf00';
+          event.data = element;
           this.events.push(event);
         });
       },
@@ -54,9 +77,35 @@ export class CalendarComponent implements OnInit {
       events: this.events,
       timeFormat: 'h:mm a',
       eventClick: function (event) {
-        console.log(event);
         self.getCampaignById(event.id)
         $('#myModal').modal();
+      },
+      eventRender: function (event: any, element: any) {
+        element.find('.fc-time').addClass('fc-time-title mr5');
+        element.find('.fc-title').addClass('fc-time-title ml5');
+        element.find('.fc-time-title').wrapAll('<div class="fc-right-block col-xs-11 flex pull-right p0 mr-10"></div>');
+
+        const campaignType = event.data.type;
+        let str = '';
+        if('SAVE' === event.data.status){
+          element.css('background', '#6c757d');
+        }else if ('SCHEDULE' === event.data.status){
+          element.css('background', '#007bff');          
+        }else{
+          element.css('background', '#28a745'); 
+        }
+        if ('REGULAR' === campaignType) {
+          str += '<i class="fa fa-envelope-o"></i>';
+        } else if ('VIDEO' === campaignType) {
+          str += '<i class="fa fa-video-camera"></i>';
+        } else if ('SOCIAL' === campaignType) {
+          str += '<i class="fa fa-share-alt"></i>';
+        } else if ('EVENT' === campaignType) {
+          str += '<i class="fa fa-calendar"></i>';
+        }
+
+        element.find('.fc-right-block')
+          .after($(`<div id = ${event.id} class="fc-left-block col-xs-1 p0"> ${str} </div>`));
       },
     });
   }
@@ -69,16 +118,171 @@ export class CalendarComponent implements OnInit {
         this.campaign = data;
       },
       error => { console.error(error) },
-      () => console.log()
+      () => {
+        const campaignType = this.campaign.campaignType.toLocaleString();
+        if (campaignType.includes('VIDEO')) {
+          this.campaignType = 'VIDEO';
+          // this.getCountryWiseCampaignViews(campaignId);
+          // this.getCampaignViewsReportDurationWise(campaignId);
+          // this.getCampaignWatchedUsersCount(campaignId);
+          // this.campaignWatchedUsersListCount(campaignId);
+        } else if (campaignType.includes('SOCIAL')) {
+          this.campaignType = 'SOCIAL';
+          this.getSocialCampaignByCampaignId(campaignId);
+        } else if (campaignType.includes('EVENT')) {
+          this.campaignType = 'EVENT';
+          this.campaign.selectedEmailTemplateId = this.campaign.emailTemplate.id;
+          // this.getEventCampaignByCampaignId(campaignId);
+        } else {
+          this.campaignType = 'EMAIL';
+        }
+        this.getEmailSentCount(campaignId);
+      }
       )
   }
+  getSocialCampaignByCampaignId(campaignId: number) {
+    try {
+      this.socialService.getSocialCampaignByCampaignId(campaignId)
+        .subscribe(
+        data => {
+          this.socialCampaign = data;
+        },
+        error => console.error(error),
+        () => { }
+        )
+    } catch (error) {
+      console.error('error' + error)
+    }
+  }
 
+  getEmailSentCount(campaignId: number) {
+    try {
+      this.campaignService.getEmailSentCount(campaignId)
+        .subscribe(
+        data => {
+          this.campaignReport.emailSentCount = data.emails_sent_count;
+        },
+        error => console.log(error),
+        () => {
+          // this.listCampaignViews(campaignId, this.campaignViewsPagination);
+        }
+        )
+    } catch (error) { console.error('error' + error); }
+  }
+
+    navigateCampaignAnalytics(campaign:any){
+      this.referenceService.campaignType = campaign.campaignType;
+      this.router.navigate(['/home/campaigns/'+campaign.campaignId+'/details']);
+    }
+    navigateRedistributedCampaigns(campaign:any){
+        this.router.navigate(['/home/campaigns/'+campaign.campaignId+"/re-distributed"]);
+    }
+    navigatePreviewPartners(campaign:any){
+        this.router.navigate(['/home/campaigns/'+campaign.campaignId+"/remove-access"]);
+    }
+    showCampaignPreview(campaign:any){
+        if(campaign.campaignType.indexOf('EVENT')>-1){
+          this.router.navigate(['/home/campaigns/event-preview/'+campaign.campaignId]);
+        } else {
+           this.router.navigate(['/home/campaigns/preview/'+campaign.campaignId]);
+        }
+    }
+    editCampaign(campaign:any) {
+      if(campaign.campaignType.indexOf('EVENT') > -1) {
+        if (campaign.launched) {
+          this.isScheduledCampaignLaunched = true;
+          //  setTimeout(function() { $("#scheduleCompleted").slideUp(1000); }, 5000);
+        } else {
+        if(campaign.nurtureCampaign){
+          this.campaignService.reDistributeEvent = false;
+          this.router.navigate(['/home/campaigns/re-distribute-manage/'+campaign.campaignId]);
+         }else {
+          this.router.navigate(['/home/campaigns/event-edit/'+campaign.campaignId]);
+         }
+        }
+       }
+      else {
+      var obj = { 'campaignId': campaign.campaignId }
+        this.campaignService.getCampaignById(obj)
+            .subscribe(
+                data => {
+                    this.campaignService.campaign = data;
+                    let isLaunched = this.campaignService.campaign.launched;
+                    let isNurtureCampaign = this.campaignService.campaign.nurtureCampaign;
+                    let campaignType = this.campaignService.campaign.campaignType;
+                    if (isLaunched) {
+                        this.isScheduledCampaignLaunched = true;
+                        //  setTimeout(function() { $("#scheduleCompleted").slideUp(1000); }, 5000);
+                    } else {
+                        if (isNurtureCampaign) {
+                            this.campaignService.reDistributeCampaign = data;
+                            this.campaignService.isExistingRedistributedCampaignName = true;
+                            this.router.navigate(['/home/campaigns/re-distribute-campaign']);
+                        }
+                        else {
+                            this.referenceService.isEditNurtureCampaign = false;
+                            this.router.navigate(["/home/campaigns/edit"]);
+                        }
+
+
+                    }
+
+                },
+                error => { console.error(error) },
+                () => console.log()
+            )
+           this.isScheduledCampaignLaunched = false;
+          }
+    }
+    openSaveAsModal(campaign:any) {
+        $('#saveAsModal').modal('show');
+        this.saveAsCampaignId = campaign.campaignId;
+        this.saveAsCampaignName = campaign.campaignName + "_copy";
+        this.saveAsCampaignInfo = campaign;
+    }
+
+        saveAsCampaign() {
+        if(this.saveAsCampaignInfo.campaignType =='EVENT') {
+          this.saveAsEventCampaign(this.saveAsCampaignInfo);
+        }
+        else {
+        console.log(this.saveAsCampaignId + '-' + this.saveAsCampaignName);
+        let campaign = new Campaign();
+        campaign.campaignName = this.saveAsCampaignName;
+        campaign.campaignId = this.saveAsCampaignId;
+        campaign.scheduleCampaign = "SAVE";
+        console.log(campaign);
+        this.campaignService.saveAsCampaign(campaign)
+            .subscribe(
+                data => {
+                    $('#lanchSuccess').show(600);
+                    $('#saveAsModal').modal('hide');
+                    this.getCampaignCalendarView(this.loggedInUserId);
+                },
+                error => { $('#saveAsModal').modal('hide'); console.error(error) },
+                () => console.log("saveAsCampaign Successfully")
+            );
+          }
+    }
+
+      saveAsEventCampaign(saveAsCampaign:any){
+    	
+    	let saveAsCampaignData = new EventCampaign();
+        saveAsCampaignData.id = saveAsCampaign.campaignId;
+        saveAsCampaignData.campaign = this.saveAsCampaignName;
+        this.campaignService.saveAsEventCampaign(saveAsCampaignData).subscribe(
+                  (data)=>{
+                      $('#lanchSuccess').show(600);
+                      $('#saveAsModal').modal('hide');
+                      this.getCampaignCalendarView(this.loggedInUserId);
+                  });
+       }
 
   ngOnInit() {
-    const userId = this.authenticationService.getUserId();
-    this.getCampaignCalendarView(userId);
-
-
+    this.getCampaignCalendarView(this.loggedInUserId);
+  }
+  ngOnDestroy() {
+      $('#myModal').modal('hide');
   }
 
 }

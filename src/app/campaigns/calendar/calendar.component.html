@@ -1,70 +1,173 @@
 <div class="page-content">
-  <div class="page-bar rounded-0 margin-bottom-10px">
-    <div id="calendar" class="col-sm-12 dashboard-stat2"></div>
+  <div class="page-bar">
+    <div id="calendar" style="padding: 25px"></div>
   </div>
 </div>
 
 <!-- Modal -->
 <div class="modal right fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document" style="width: 50%">
-<div class="modal-content">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="myModalLabel">{{campaign?.campaignName}}</h4>
-  </div>
-  <div class="modal-body">
-    <ng-container *ngIf="campaign">
-      <fieldset>
-        <legend>Campaign details:</legend>
-        <h4>{{campaign.campaignName}}<span class="badge badge-primary pull-right text-lowercase ml10">{{campaign.campaignType}} campaign</span></h4>
-        <span>
-          <ng-container *ngIf="campaign.campaignScheduleType === 'NOW'; else default">Launched</ng-container>
-          <ng-template #default>{{campaign.campaignScheduleType | titlecase}}d</ng-template>
-          on {{campaign.launchTime |date:'mediumDate'}}, {{campaign.launchTime |date:'shortTime'}}</span>
-        <section>
-          <h5>{{campaign.fromName}}</h5>
-          <h6>{{campaign.email}}</h6>
-        </section>
-      </fieldset>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">{{campaign?.campaignName}}</h4>       
+      </div>
+      <div class="modal-body">
+        <ng-container *ngIf="campaign">
+          <fieldset>
+            <legend>Campaign details:</legend>
+            <h6>
+              <span class="campaign-label ml10">{{campaign.campaignType}} campaign</span>
+              <span class="campaign-label {{campaign.campaignScheduleType | lowercase}}">
+            <ng-container *ngIf="campaign.campaignScheduleType === 'NOW'; else default">Launched</ng-container>
+            <ng-template #default>{{campaign.campaignScheduleType | titlecase}}d</ng-template>
+          </span>
+            </h6>
+            <div class="media col-xs-12 col-sm-6">
+              <div class="media-left p10">
+                <i class="fa fa-bullhorn"></i>
+              </div>
+              <div class="media-body">
+                <h5>{{campaign.campaignName}}</h5>
+                <h6>
+                  <ng-container *ngIf="campaign.campaignScheduleType === 'NOW'; else default">Launched</ng-container>
+                  <ng-template #default>{{campaign.campaignScheduleType | titlecase}}d</ng-template>
+                  on {{campaign.launchTime |date:'mediumDate'}}, {{campaign.launchTime |date:'shortTime'}}
+                </h6>
+              </div>
+            </div>
 
-      <fieldset *ngIf="campaign.campaignType !== 'SOCIAL'">
-        <legend>Selected:</legend>
-        <div *ngIf="campaign.campaignVideoFile" class="col-sm-6 col-xs-12">
-          <img src="{{campaign.campaignVideoFile.imagePath}}">
-          <h5>{{campaign.campaignVideoFile.title}}</h5>
-          <h6>By {{campaign.campaignVideoFile.uploadedUserName}}</h6>
-        </div>
-          <div class="col-sm-6 col-xs-12" *ngIf="campaign.emailTemplate">
-            <img src="{{campaign.emailTemplate.subject}}">
-            <h5>{{campaign.emailTemplate.name}}</h5>
-            <h6>By {{campaign.emailTemplate.createdBy}}</h6>
-          </div>
-      </fieldset>
-      <fieldset *ngIf="campaign.campaignType !== 'SOCIAL'">
-        <legend>Selected Recipients(s):</legend>
-        <table class="table">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">List Name</th>
-    </tr>
-  </thead>
-  <tbody>
-    <ng-container *ngFor="let userList of campaign.userLists; let i = index">
-      <tr>
-        <th scope="row">{{i+1}}</th>
-        <td>{{userList.name}}</td>
-      </tr>
-    </ng-container>
-  </tbody>
-</table>
-      </fieldset>
-    </ng-container>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-    <button type="button" class="btn btn-primary">Save changes</button>
-  </div>
+            <div class="media col-xs-12 col-sm-6">
+              <div class="media-left p10">
+                <i class="fa fa-user-circle-o"></i>
+              </div>
+              <div class="media-body">
+                <h5>{{campaign.fromName}}</h5>
+                <h6>{{campaign.email}}</h6>
+              </div>
+            </div>
+          </fieldset>
+          <fieldset *ngIf="campaign.campaignType === 'SOCIAL'">
+            <legend>Social Accounts</legend>
+            <ng-container *ngFor="let socialStatus of socialCampaign.socialStatusList">
+              <app-social-status [socialStatus]="socialStatus"></app-social-status>
+            </ng-container>
+          </fieldset>
+          <fieldset *ngIf="campaign.campaignType !== 'SOCIAL'">
+            <legend>Selected:</legend>
+            <div *ngIf="campaign.campaignVideoFile" class="col-sm-6 col-xs-12">
+              <img src="{{campaign.campaignVideoFile.imagePath}}">
+              <h5>{{campaign.campaignVideoFile.title}}</h5>
+              <h6>By {{campaign.campaignVideoFile.uploadedUserName}}</h6>
+            </div>
+            <div class="col-sm-6 col-xs-12" *ngIf="campaign.emailTemplate">
+              <img src="{{campaign.emailTemplate.subject}}">
+              <h5>{{campaign.emailTemplate.name}}</h5>
+              <h6>By {{campaign.emailTemplate.createdBy}}</h6>
+            </div>
+          </fieldset>
+          <fieldset *ngIf="campaign.campaignType !== 'SOCIAL'">
+            <legend>Selected Recipients(s):</legend>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">List Name</th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngFor="let userList of campaign.userLists; let i = index">
+                  <tr>
+                    <th scope="row">{{i+1}}</th>
+                    <td>{{userList.name}}</td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+          </fieldset>
+          <fieldset *ngIf="campaign.campaignType !== 'SOCIAL'">
+            <legend>Analytics</legend>
+            <div>
+              <div class="text-center" [ngClass]="{'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO'}">
+                <h1>{{campaignReport.emailSentCount}}</h1>
+                <h5>Total Recipients</h5>
+              </div>
+              <div class="text-center" [ngClass]="{'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO','forbidden' :!isDataShare ?true:null}">
+                <h1>{{campaignReport.emailOpenCount}}</h1>
+                <h5>Active Recipients</h5>
+              </div>
+              <div class="text-center" [ngClass]="{'hidden': campaignType === 'SOCIAL', 'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO','forbidden' :!isDataShare ?true:null}">
+                <h1>{{campaignReport.emailClickedCount}}</h1>
+                <h5>Clicked URL</h5>
+              </div>
+              <div class="col-xs-6 col-sm-3 text-center" *ngIf="campaignType === 'VIDEO'" [ngClass]="{'forbidden' :!isDataShare ?true:null}">
+                <h1>{{campaignReport.usersWatchCount}}</h1>
+                <h5>Views</h5>
+              </div>
+            </div>
+          </fieldset>
+        </ng-container>
+      </div>
+      <div class="modal-footer">
+        <div class="actions-block text-center m10" *ngIf="campaign">
+          <ng-container *ngIf="campaign.launched">
+            <a *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor) && campaign.channelCampaign && campaign.redistributedCount>0"
+              (click)="navigateRedistributedCampaigns(campaign)" data-toggle="tooltip" data-placement="top" title="Show Redistributed Campaigns">
+              <span class="circled-number">{{campaign.redistributedCount}}</span>
+            </a>
+            <a *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor) && campaign.channelCampaign && campaign.redistributedCount==0"
+              data-toggle="tooltip" data-placement="top" title="No Redistributed Campaigns">
+              <span class="circled-number disabled">{{campaign.redistributedCount}}</span>
+            </a>
+            <a *ngIf="  hasAllAccess || (hasStatsRole || hasCampaignRole) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor"
+              data-rel="fancybox-button" (click)="navigateCampaignAnalytics(campaign)" data-toggle="tooltip" data-placement="top" title="Analytics">
+              <i class="fa fa-line-chart"></i>
+            </a>
+            <a *ngIf=" (campaign.campaignType !== 'SOCIAL') && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor) && !campaign.nurtureCampaign"
+              data-rel="fancybox-button" (click)="openSaveAsModal(campaign)" data-toggle="tooltip" data-placement="auto" title="Copy Campaign">
+              <i class="fa fa-files-o"></i>
+            </a>
+            <a *ngIf=" (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor) && campaign.channelCampaign"
+              (click)="navigatePreviewPartners(campaign)" data-rel="fancybox-button" data-toggle="tooltip" data-placement="auto" title="Preview & Delete Partner(s)">
+              <i class="fa fa-handshake-o" id="partner-icon"></i>
+            </a>
+          </ng-container>
+          <ng-container *ngIf="!campaign.launched">
+            <a *ngIf="hasAllAccess || (campaign.launched==false&&hasCampaignRole && loggedInUserId==campaign.userId) || (!campaign.launched&&isOnlyPartner)  || authenticationService.module.isVendor" 
+              (click)="editCampaign(campaign)" data-toggle="tooltip" data-placement="auto" title="Edit">
+              <i class="fa fa-pencil-square-o"></i>
+            </a>
+          </ng-container>
+            <a (click)="showCampaignPreview(campaign)"><i class="fa fa-eye mr5"  data-toggle="tooltip" data-placement="auto" title="Preview Campaign"></i></a>
+            <a *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor"
+              (click)="confirmDeleteCampaign(campaign.campaignId, i, campaign.campaignName)" data-rel="fancybox-button" data-toggle="tooltip" data-placement="auto" title="Delete">
+              <i class="fa fa-trash-o"> </i></a>
+        </div> 
+      </div>
 </div>
 </div>
+</div>
+
+<!-- Save As Modal -->
+<div class="modal right fade" id="saveAsModal" tabindex="-1" role="dialog" aria-labelledby="saveAsModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-copy" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title f-w-600" id="saveAsModalLabel">Copy Campaign</h4>
+				<button type="button" class="close-circle" data-dismiss="modal" style=" position: relative;top: -24px;">
+					<i class="fa fa-times"></i>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="form-group">
+					<label for="campaignName">Campaign Name</label>
+					<input class="form-control" type="text" id="campaignName" [(ngModel)]="saveAsCampaignName">
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary" (click)="saveAsCampaign()">Save changes</button>
+			</div>
+		</div>
+	</div>
 </div>

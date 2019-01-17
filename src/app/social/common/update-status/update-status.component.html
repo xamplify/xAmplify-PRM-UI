@@ -380,8 +380,8 @@
 							<button class="btn btn-primary pull-right" (click)="customizeEachNetwork()">Customize for each network</button>
 						</ng-container>
 						<span *ngIf="socialStatusList[0]?.id != null" [hidden]="socialStatusList[0]?.userId != userId">
-							<ng-container *ngIf="socialStatusList[0]?.socialStatusProvider.socialConnection.source !== 'LINKEDIN'">
 								<button type="button" class="btn btn-primary rounded-0 pull-right mr10" (click)="initializeSocialStatus()">Cancel</button>
+							<ng-container *ngIf="socialStatusList[0]?.socialStatusProvider.socialConnection.source !== 'LINKEDIN'">
 								<button type="button" class="btn btn-danger rounded-0 pull-right mr10" (click)="deleteStatus(socialStatusList[0])">
 									<i class="fa fa-trash-o"></i> Delete
 								</button>

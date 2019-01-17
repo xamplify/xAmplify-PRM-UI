@@ -911,3 +911,6 @@ b, strong {
 @media screen and (max-width:600px){.accounts-modal { width:100%; } }
 @media screen and (min-width:601px){.accounts-modal { width:60%;float: right; } }
 /* .override-actions{ margin: 0 auto; display: table;float: none !important; } */
+
+@media screen and (max-width:600px){.modal-dialog{ width: 100% !important; }}
+@media screen and (min-width:601px){.modal-dialog{ width: 50% !important;}}
