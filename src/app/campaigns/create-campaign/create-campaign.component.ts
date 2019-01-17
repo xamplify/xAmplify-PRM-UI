@@ -26,7 +26,6 @@ import { Category } from '../../videos/models/category';
 import { EmailTemplateType } from '../../email-template/models/email-template-type';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { SocialStatus } from "../../social/models/social-status";
-import { SocialStatusContent } from "../../social/models/social-status-content";
 import { SocialStatusProvider } from "../../social/models/social-status-provider";
 import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import { SocialService } from "../../social/services/social.service";
@@ -34,8 +33,8 @@ import { Country } from '../../core/models/country';
 import { Timezone } from '../../core/models/timezone';
 import { Roles } from '../../core/models/roles';
 import { Properties } from '../../common/models/properties';
-var moment = require('moment-timezone');
 declare var swal, $, videojs , Metronic, Layout , Demo,flatpickr,CKEDITOR,require:any;
+var moment = require('moment-timezone');
 
 @Component({
   selector: 'app-create-campaign',
@@ -169,7 +168,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     selectedContactLists: any;
     id:number;
     previewContactListId : number;
-    public sheduleCampaignValues = ['NOW', 'SCHEDULE', 'SAVE'];
+    sheduleCampaignValues = ['NOW', 'SCHEDULE', 'SAVE'];
     isLaunched:boolean = false;
     lauchTabPreivewDivClass = "col-xs-12 col-sm-12 col-md-7 col-lg-7";
     loggedInUserId:number = 0;
@@ -179,9 +178,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     socialStatusList = new Array<SocialStatus>();
     socialStatusProviders = new Array<SocialStatusProvider>();
     isAllSelected: boolean = false;
-	isSocialEnable = false;
+	  isSocialEnable = false;
     statusMessage: string;
-
+    userListDTOObj = [];
 
 
     replies:Array<Reply> = new Array<Reply>();
@@ -256,6 +255,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.isAdd = false;
             this.editedCampaignName = this.campaignService.campaign.campaignName;
             this.campaign = this.campaignService.campaign;
+            this.userListDTOObj = this.campaignService.campaign.userLists;
             if(this.campaign.regularEmail){
                 this.campaignType = 'regular';
                 this.emailTemplatesPagination.filterBy = "CampaignRegularEmails";
@@ -1166,22 +1166,24 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.contactsPagination.searchKey = this.contactSearchInput;
         this.loadCampaignContacts(this.contactsPagination);
     }
-    highlightRow(contactId:number,event:any){
+    highlightRow(contactList:any,event:any){
+        let contactId = contactList.id;
         let isChecked = $('#'+contactId).is(':checked');
         if(isChecked){
             $('#campaignContactListTable_'+contactId).addClass('contact-list-selected');
             this.selectedContactListIds.push(contactId);
+            this.userListDTOObj.push(contactList);
         }else{
             $('#campaignContactListTable_'+contactId).removeClass('contact-list-selected');
             this.selectedContactListIds.splice($.inArray(contactId,this.selectedContactListIds),1);
+            this.userListDTOObj = this.refService.removeSelectedObjectFromList(this.userListDTOObj, contactId);
         }
         this.contactsUtility();
         event.stopPropagation();
-
-
     }
-    highlightContactRow(contactId:number,event:any,count:number,isValid:boolean){
-        if(isValid){
+    highlightContactRow(contactList:any,event:any,count:number,isValid:boolean){
+      let contactId = contactList.id;
+      if(isValid){
             this.emptyContactsMessage = "";
             if(count>0){
                 let isChecked = $('#'+contactId).is(':checked');
@@ -1191,12 +1193,14 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                     $('#campaignContactListTable_'+contactId).removeClass('contact-list-selected');
                     console.log("Revmoing"+contactId);
                     this.selectedContactListIds.splice($.inArray(contactId,this.selectedContactListIds),1);
-              }else{
+                    this.userListDTOObj= this.refService.removeSelectedObjectFromList(this.userListDTOObj, contactId);
+                  }else{
                   //Highlighting Row
                   $('#'+contactId).prop( "checked", true );
                   $('#campaignContactListTable_'+contactId).addClass('contact-list-selected');
                   console.log("Adding"+contactId);
                   this.selectedContactListIds.push(contactId);
+                  this.userListDTOObj.push(contactList);
               }
                 this.contactsUtility();
                 event.stopPropagation();
@@ -1229,16 +1233,16 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             $('[name="campaignContact[]"]').prop('checked', true);
             this.isContactList = true;
             let self = this;
-            $('[name="campaignContact[]"]:checked').each(function(){
+            $('[name="campaignContact[]"]:checked').each(function(index){
                 var id = $(this).val();
                 self.selectedContactListIds.push(parseInt(id));
+                self.userListDTOObj.push(self.contactsPagination.pagedItems[index]);
                 console.log(self.selectedContactListIds);
                 $('#campaignContactListTable_'+id).addClass('contact-list-selected');
              });
             this.selectedContactListIds = this.refService.removeDuplicates(this.selectedContactListIds);
-            if(this.selectedContactListIds.length==0){
-                this.isContactList = false;
-            }
+            if(this.selectedContactListIds.length==0){ this.isContactList = false; }
+            this.userListDTOObj = this.refService.removeDuplicates( this.userListDTOObj );
         }else{
             $('[name="campaignContact[]"]').prop('checked', false);
             $('#user_list_tb tr').removeClass("contact-list-selected");
@@ -1249,6 +1253,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 this.selectedContactListIds = this.refService.removeDuplicates(this.selectedContactListIds);
                 let currentPageContactIds = this.contactsPagination.pagedItems.map(function(a) {return a.id;});
                 this.selectedContactListIds = this.refService.removeDuplicatesFromTwoArrays(this.selectedContactListIds, currentPageContactIds);
+                this.userListDTOObj =  this.refService.removeDuplicatesFromTwoArrays(this.userListDTOObj, this.contactsPagination.pagedItems);
                 if(this.selectedContactListIds.length==0){
                     this.isContactList = false;
                 }
@@ -2015,16 +2020,16 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
 
 
     addUserEmailIds(){
-        let self = this;
-        self.selectedContactLists = [];
-        $('[name="campaignContact[]"]:checked').each(function(index){
-            var id = $(this).val();
-            var name = $(this)[0].lang;
-            var  contactList = {'id':id,'name':name};
-            if(self.selectedContactLists.length<=1){
-                self.selectedContactLists.push(contactList);
-            }
-         });
+        // let self = this;
+        // self.selectedContactLists = [];
+        // $('[name="campaignContact[]"]:checked').each(function(index){
+        //     var id = $(this).val();
+        //     var name = $(this)[0].lang;
+        //     var  contactList = {'id':id,'name':name};
+        //     if(self.selectedContactLists.length<=1){
+        //         self.selectedContactLists.push(contactList);
+        //     }
+        //  });
         if(this.campaignType=="video"){
             this.playVideo();
         }

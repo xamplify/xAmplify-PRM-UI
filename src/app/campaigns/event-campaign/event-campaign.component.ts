@@ -1117,10 +1117,6 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
   setReplyEmailTemplate(emailTemplateId: number, reply: Reply, index: number, isDraft: boolean) {
     if (!isDraft) {
       reply.selectedEmailTemplateId = emailTemplateId;
-      // reply.emailTemplate.id = emailTemplateId;
-      // this.eventCampaign.campaignReplies[index].selectedEmailTemplateId = emailTemplateId;
-      // this.eventCampaign.campaignReplies[index].emailTemplate =  new EmailTemplate();
-      // this.eventCampaign.campaignReplies[index].emailTemplate['id'] = emailTemplateId;
       $('#reply-' + index + emailTemplateId).prop("checked", true);
     }
   }
@@ -1211,12 +1207,12 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
               }
 
               if ( this.eventCampaign.campaignLocation.location ) {
-                  
+
                   let address1 = this.eventCampaign.campaignLocation.location;
                   let address2 = "";
                   let address3 = "";
                   let fullAddress = "";
-                  
+
                   if(this.eventCampaign.campaignLocation.street && this.eventCampaign.campaignLocation.city){
                       address2 = this.eventCampaign.campaignLocation.street + ", " + this.eventCampaign.campaignLocation.city;
                   }else if(this.eventCampaign.campaignLocation.street){
@@ -1224,9 +1220,9 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
                   }else if(this.eventCampaign.campaignLocation.city){
                       address2 = this.eventCampaign.campaignLocation.city;
                   }else{
-                      address2 = "" 
+                      address2 = ""
                   }
-                  
+
                   if(this.eventCampaign.campaignLocation.state && this.eventCampaign.campaignLocation.zip){
                       address3 = this.eventCampaign.campaignLocation.state + ", " + this.eventCampaign.campaignLocation.zip;
                   }else if(this.eventCampaign.campaignLocation.state){
@@ -1234,9 +1230,9 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
                   }else if(this.eventCampaign.campaignLocation.zip){
                       address3 = this.eventCampaign.campaignLocation.zip;
                   }else{
-                      address3 = "" 
+                      address3 = ""
                   }
-                  
+
                   if(address2 && address3){
                       fullAddress = address1 + "<br>" + address2 + "<br>" + address3 + "<br>" + this.eventCampaign.campaignLocation.country;
                   }else if(address2 && !address3){
@@ -1247,10 +1243,10 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
                   }else{
                       fullAddress = address1 + "<br>" + this.eventCampaign.campaignLocation.country;
                   }
-                  
-                  
-                  
-                  
+
+
+
+
                   data.body = data.body.replace( /{{address}}/g, fullAddress);
                  /* data.body = data.body.replace( /{{addreess_lane2}}/g, this.eventCampaign.campaignLocation.city + "," + this.eventCampaign.campaignLocation.state + "," + this.eventCampaign.campaignLocation.zip );*/
               }
