@@ -160,15 +160,18 @@
 									<div class="caption">
 										<i class="fa fa-edit"></i>List of {{checkingContactTypeName}}s
 									</div>
+									
 									<div class="color-grey" style="margin-top:4px">
 											<div *ngIf="!isSynchronizationList">
-														<button id="cancel_button"[disabled]="selectedAddContactsOption == 8 && !clickBoard" class="btn pull-right"
-															(click)="cancelContacts()" style="margin-left: 5px;">
+											<!-- disabling cancel button condition
+											[disabled]="selectedAddContactsOption == 8 && !clickBoard"  -->
+														<button id="cancel_button" class="btn pull-right"
+															(click)="cancelContacts()" style="margin-left: 5px; background-color: white">
 															Cancel<i class="fa fa-cancel"></i>
 														</button>
 													</div>
 													<div class="btn-group pull-right">
-														<button class="btn dropdown-toggle"
+														<button class="btn dropdown-toggle" style="background-color: white"
 															id="save&delete_button" data-toggle="dropdown">
 															Actions <i class="fa fa-angle-down"></i>
 														</button>
@@ -187,6 +190,13 @@
 														</ul>
 													</div>
 													</div>
+													
+													<a class="pull-right" style="padding-right: 16px;" (click)="downloadEmptyCsv()">
+				<button type="button" class="btn btn-default" download [ngStyle]="{'width':refService.isMobileScreenSize()? '100%': 'unset'}">
+         Download CSV Template
+          <i class="fa fa-download" aria-hidden="true" style="margin-left: 5px"></i>
+				</button>
+			</a>
 								</div>
 								<div class="portlet-body">
 									<div class="table-toolbar">

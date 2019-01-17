@@ -2114,6 +2114,14 @@ export class EditContactsComponent implements OnInit, OnDestroy {
             this.criterias.splice( rowId, 1 );
         }
     }
+    
+    downloadEmptyCsv() {
+        if(this.isPartner){
+            window.location.href = this.authenticationService.MEDIA_URL + "UPLOAD_PARTNER_LIST _EMPTY.csv";
+        }else{
+        window.location.href = this.authenticationService.MEDIA_URL + "UPLOAD_USER_LIST _EMPTY.csv";
+        }
+    }
 
     loadAllContactListUsers( contactSelectedListId: number, totalRecords: number ) {
         try {
