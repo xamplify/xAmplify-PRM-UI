@@ -22,6 +22,8 @@ import { ContactService } from '../../contacts/services/contact.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { SocialStatusProvider } from '../../social/models/social-status-provider';
 import { Tweet } from '../../social/models/tweet';
+import { DealRegistrationService } from '../../deal-registration/services/deal-registration.service';
+
 declare var $, Highcharts: any;
 
 @Component({
@@ -31,7 +33,8 @@ declare var $, Highcharts: any;
   providers: [Pagination,HttpRequestLoader]
 })
 export class AnalyticsComponent implements OnInit , OnDestroy{
-  isTimeLineView: boolean;
+    isDealRegistration:boolean=false;
+    isTimeLineView: boolean;
   campaign: Campaign;
   isChannelCampaign: boolean;
   selectedRow: any = new Object();
@@ -111,9 +114,11 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
                 ];
   public selectedSortedOption: any = this.sortByDropDown[this.sortByDropDown.length-1];
   tweets: Array<Tweet> = new Array<Tweet>();
+  dealButtonText: string="";
+  dealId: any;
   constructor(private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
     public authenticationService: AuthenticationService, public pagerService: PagerService, public pagination: Pagination,
-    public referenceService: ReferenceService, public contactService: ContactService, public videoUtilService: VideoUtilService, public xtremandLogger:XtremandLogger, private twitterService: TwitterService) {
+    public referenceService: ReferenceService, public contactService: ContactService, public videoUtilService: VideoUtilService, public xtremandLogger:XtremandLogger, private twitterService: TwitterService,private dealRegService:DealRegistrationService) {
       try{
       this.campaignRouter = this.utilService.getRouterLocalStorage();
       this.isTimeLineView = false;
@@ -620,10 +625,26 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       }
       console.log('campaign id : ' + this.campaignId);
       this.getCampaignUserViewsCountBarCharts(this.campaignId, this.pagination);
+      this.getDealState(campaignViews);
       this.loading = false;
     }
   }catch(error){ this.xtremandLogger.error(error);}
   }
+  
+  
+  getDealState(campaignViews:any){
+      if(campaignViews.userId!=null && campaignViews.campaignId!=null){
+            this.dealRegService.getDeal(campaignViews.campaignId,campaignViews.userId).subscribe(data=>{
+              this.dealId = data;
+              if(data == -1)
+                  this.dealButtonText = "Push As A Lead"
+              else
+                  this.dealButtonText = "Update Lead"
+             })
+        }
+  }
+  
+  
   getTotalTimeSpentOfCampaigns(userId: number, campaignId:number) {
     try{
       this.loading = true;
@@ -1418,5 +1439,16 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     $('#emailActionListModal').modal('hide');
     $('#emailSentListModal').modal('hide');
     $('#donutModelPopup').modal('hide');
+  }
+  
+  /****************Deal Registration***************************/
+  showDealRegistrationForm(){
+      this.isDealRegistration = true;
+  }
+  
+  showTimeLineView(){
+      this.isDealRegistration = false;
+      this.isTimeLineView = true;
+      this.getDealState(this.selectedRow);
   }
 }

@@ -1,0 +1,68 @@
+<div class="col-xs-12 p5" *ngIf="partnerList">
+        <div class="portlet light">
+          <div class="portlet-title">
+            <div class="caption">
+              <span class="caption-subject font-red-sunglo uppercase">Partners</span>
+            </div>
+            <div class="inputs" align="right" style="float: right">
+              <div style="float: left;">
+                <select class="form-control" [(ngModel)]="sortOption.dealsPartnerSortOption" (ngModelChange)="sortPartners($event)"
+                  style="position: relative;right: -3px;">
+                  <option *ngFor="let option of sortOption.dealPartnersSortDropDown" [ngValue]="option">{{option.name}}</option>
+                </select>
+              </div>
+              <div class="portlet-input input-inline input-medium" style="margin-right: 10px;">
+                <div class="input-icon right" style="position: relative;right: -11px;">
+                  <input type="text" style="height:34px;" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}"
+                    placeholder="Search for a Partner" (keypress)="searchPartnersKeyPress($event.keyCode)">
+                  <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey=''"></button>
+                  <button type="submit" class="search-box-item-click" (click)="searchPartners()"><i
+                      class="fa fa-search"></i></button>
+                </div>
+              </div>
+            </div>
+          </div>
+          	<div class="row" id="box" *ngIf="httpRequestLoader.isServerError">
+    							Please contact admin for "Campaings"
+    		</div>
+          <app-list-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError"></app-list-loader>
+          <div class="portlet-body table-responsive" style="overflow: hidden;" *ngIf="!httpRequestLoader.isLoading && !httpRequestLoader.isServerError ">
+            <table class="table tgrid">
+              <thead>
+                <tr>
+                  <th class="center-aligned">Partner</th>
+                  <th class="center">#Leads Count</th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngFor="let item of pagination.pagedItems;let i=index">
+                  <tr>
+                    <td>
+                      <app-user-info [userInfo]="item" [isPartnerEntityInfo]="true" [isPartnerInfo]="true"></app-user-info>
+                    </td>
+                    <td>
+                     	<a (click)="showLeads(item)" data-toggle="tooltip" data-placement="top" title="No Of Deals">
+								<span class="circled-number"><b>{{item.count}}</b></span>
+						</a>
+                    </td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+             <div *ngIf="sortOption.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError" style="background:white">
+              <div *ngIf="pagination.pagedItems.length !== 0" style="padding: 0 13px;">
+                <app-pagination [pagination]="pagination" [type]="'deal-partners'" [isDropdown]="true" (notifyParent)="navigatePages($event)"
+                  (notifyParentDropDown)="listCampaignPartners($event)"></app-pagination>
+                <select class="form-control" style="float: right; width: auto;" [(ngModel)]="sortOption.itemsSize" (ngModelChange)="changeSize($event)">
+                  <option *ngFor="let itemPerPage of sortOption.numberOfItemsPerPage" [ngValue]="itemPerPage">{{itemPerPage.name}}</option>
+                </select>
+              </div>
+            </div>
+        </div>
+      </div>
+      </div>
+      <!-- --------------------------------Lead List -------------------------------- -->
+	<div class="row" *ngIf="leadList">
+		<app-manage-leads [partner]="partner" [campaignId]="campaignId"></app-manage-leads>
+	</div>
+

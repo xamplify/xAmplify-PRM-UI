@@ -24,6 +24,9 @@ import { EventCampaignComponent } from './event-campaign/event-campaign.componen
 import { ReDistributedComponent } from './analytics/re-distributed/re-distributed.component';
 import { PreviewPartnersComponent } from './preview-partners/preview-partners.component';
 import { CalendarComponent } from './calendar/calendar.component';
+import { DealRegistrationComponent } from '../deal-registration/add-deals/deal-registration.component';
+import { DealRegistrationService } from '../deal-registration/services/deal-registration.service';
+import { SharedLibraryModule } from "../shared/shared-library.module";
 
 @NgModule({
   imports: [
@@ -32,7 +35,8 @@ import { CalendarComponent } from './calendar/calendar.component';
     CampaignsRoutingModule,
     CKEditorModule,
     CommonComponentModule,
-    ErrorPagesModule
+    ErrorPagesModule,
+    SharedLibraryModule
   ],
   declarations: [
     ManagePublishComponent,
@@ -48,9 +52,10 @@ import { CalendarComponent } from './calendar/calendar.component';
     EventCampaignComponent,
     ReDistributedComponent,
     PreviewPartnersComponent,
-    CalendarComponent
+    CalendarComponent,
+    DealRegistrationComponent
   ],
   exports: [],
-  providers: [ContactService, VideoFileService, EmailTemplateService]
+  providers: [ContactService, VideoFileService, EmailTemplateService,DealRegistrationService]
 })
 export class CampaignsModule {}

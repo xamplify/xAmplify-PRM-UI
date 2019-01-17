@@ -1,0 +1,13 @@
+#box{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    color: #101010;
+    background-color:#f3565d;
+    height:103px;
+}
+
+.campaign-type-selected {
+	background-color: #6dcff6;
+}
