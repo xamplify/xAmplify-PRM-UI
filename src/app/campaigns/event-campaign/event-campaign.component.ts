@@ -441,7 +441,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
       (data: any) => {
         this.contactListsPagination.totalRecords = data.totalRecords;
         this.contactListsPagination = this.pagerService.getPagedItems(this.contactListsPagination, data.listOfUserLists);
-      //  this.contactListsPagination.pagedItems = this.referenceService.removeDuplicatesObjects(this.contactListsPagination.pagedItems, "id");
         if(this.isPreviewEvent && this.authenticationService.isOnlyPartner()){
           const contactsAll:any = [];
           this.contactListsPagination.pagedItems.forEach((element, index) => {
@@ -459,9 +458,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
             this.isHeaderCheckBoxChecked = true;
         } else {
             this.isHeaderCheckBoxChecked = false;
-        }
-        if(this.authenticationService.isOrgAdmin() || this.authenticationService.isOrgAdminPartner()){
-           this.contactListsPagination.pagedItems = this.referenceService.removeDuplicatesObjects(this.contactListsPagination.pagedItems, "id");
         }
       },
       (error: any) => {
