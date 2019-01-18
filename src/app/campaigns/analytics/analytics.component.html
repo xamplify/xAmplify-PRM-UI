@@ -147,7 +147,7 @@
 		</div>
 	</div>
 		<div class="col-xs-12 col-sm-8 emails-info" [hidden]="mainLoader" >
-		
+
 		<div [hidden]="mainLoader"class="col-xs-2 rsvp_tile_padding">
 			<button class="portlet light color1-invert crcb" (click)="getRsvpInvitiesDetails()"
 			 [disabled]="campaignReport.totalInvitiesCount < 1">
@@ -161,7 +161,7 @@
 				</div>
 			</button>
 		</div>
-		
+
 		<div [hidden]="mainLoader"class="col-xs-2 rsvp_tile_padding" >
 			<button class="portlet light color1-invert crcb" (click)="getRsvpEmailOpenDetails()"
 			 [disabled]="campaignReport.totalEmailOpenCount < 1">
@@ -189,7 +189,7 @@
 			</button>
 		</div>
 		<div [hidden]="mainLoader"class="col-xs-2 rsvp_tile_padding">
-			<button class="portlet light color1-invert crcb" (click)="getRsvpDetails('NO')" 
+			<button class="portlet light color1-invert crcb" (click)="getRsvpDetails('NO')"
 			 [disabled]="campaignReport.totalNoCount < 1">
 				<div class="portlet-body text-center">
 						<i class="fa fa-times-circle"></i>
@@ -202,7 +202,7 @@
 			</button>
 		</div>
 		<div [hidden]="mainLoader"  class="col-xs-2 rsvp_tile_padding">
-			<button class="portlet light color1-invert crcb" (click)="getRsvpDetails('MAYBE')" 
+			<button class="portlet light color1-invert crcb" (click)="getRsvpDetails('MAYBE')"
 			 [disabled]="campaignReport.totalMayBeCount < 1">
 				<div class="portlet-body text-center">
 						<i class="fa fa-question-circle"></i>
@@ -577,7 +577,7 @@
 								</tbody>
 							</table>
 						</div>
-						<app-pagination  [pagination]="campaignViewsPagination" [type]="'campaignViews'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
+						<app-pagination class="pg8" [pagination]="campaignViewsPagination" [type]="'campaignViews'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
           </div>
           </div>
 				</div>
@@ -620,7 +620,7 @@
 		</div>
 	</div>
 		<div class="col-xs-12 col-sm-8 emails-info" [hidden]="mainLoader" >
-		
+
 		<div [hidden]="mainLoader"class="col-xs-2 rsvp_tile_padding">
 			<button class="portlet light color1-invert crcb" (click)="getRsvpInvitiesDetails()" [class.selectedBox]="rsvpResposeType === 'invities'"   [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
 			 [disabled]="campaignReport.redistributionTotalInvitiesCount < 1 || !isPartnerEnabledAnalyticsAccess">
@@ -634,7 +634,7 @@
 				</div>
 			</button>
 		</div>
-		
+
 		<div [hidden]="mainLoader"class="col-xs-2 rsvp_tile_padding">
 			<button class="portlet light color1-invert crcb" (click)="getRsvpEmailOpenDetails()" [class.selectedBox]="rsvpResposeType === 'email open'"   [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
 			 [disabled]="campaignReport.redistributionTotalEmailOpenCount < 1 || !isPartnerEnabledAnalyticsAccess">
