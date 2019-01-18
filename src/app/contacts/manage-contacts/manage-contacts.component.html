@@ -852,7 +852,7 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn green" (click)="contactFilter()">Submit</button>
+				<button type="button" class="btn green" [disabled]="criterias.length === 0" (click)="contactFilter()">Submit</button>
 				<button type="button" class="btn green"
 					(click)="cancelSegmentation()" data-dismiss="modal">Cancel</button>
 			</div>
