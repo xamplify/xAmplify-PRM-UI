@@ -536,11 +536,7 @@
                         <div class="pt10">
                           <div style="display: block; height: 20px;">
                             <img src="https://image.flaticon.com/icons/svg/291/291201.svg" width="20px" alt="selected" [hidden]="!socialConnection.active">
-                            <i class="fa fa-social pull-right" [ngClass]="{
-                                'fa-facebook fa-facebook-color': socialConnection.source ==='FACEBOOK',
-                                'fa-twitter fa-twitter-color': socialConnection.source ==='TWITTER',
-                                'fa-linkedin fa-linkedin-color': socialConnection.source ==='LINKEDIN',
-                                'fa-google fa-google-color': socialConnection.source ==='GOOGLE'}"></i>
+                            <i class="fa fa-social pull-right fa-{{socialConnection.source | lowercase}} fa-{{socialConnection.source | lowercase}}-color"></i>
                              </div>
                           <img class="img-responsive img-circle profile-picture center-block" src="{{socialConnection.profileImage}}" alt="{{socialConnection.profileName}}"
 						  (error)="$event.target.src = 'assets/images/social/avatar.png'">
@@ -608,17 +604,9 @@
 </div>
 
 <div id='fc-{{item.socialStatus.id}}-{{item.socialStatusProvider.id}}' *ngFor="let item of socialStatusDtos" class='clearfix m10 hidden'>
-	<div class="btn btn-xs rounded-0 mb10" style="color: #FFF;" [ngClass]="{
-				'btn-facebook': item.socialStatusProvider.socialConnection.source ==='FACEBOOK',
-				'btn-twitter': item.socialStatusProvider.socialConnection.source ==='TWITTER',
-				'btn-linkedin': item.socialStatusProvider.socialConnection.source ==='LINKEDIN',
-				'btn-google': item.socialStatusProvider.socialConnection.source ==='GOOGLE'}">
+	<div class="btn btn-xs rounded-0 mb10 btn-{{item.socialStatusProvider.socialConnection.source | lowercase}}" style="color: #FFF;" >
 		<div class="col-xs-12" style="display: inline-flex;">
-			<i class="fa fa-social pull-right" [ngClass]="{
-						'fa-facebook': item.socialStatusProvider.socialConnection.source ==='FACEBOOK',
-						'fa-twitter': item.socialStatusProvider.socialConnection.source ==='TWITTER',
-						'fa-linkedin': item.socialStatusProvider.socialConnection.source ==='LINKEDIN',
-						'fa-google': item.socialStatusProvider.socialConnection.source ==='GOOGLE'}"></i>
+			<i class="fa fa-social pull-right fa-{{item.socialStatusProvider.socialConnection.source | lowercase}}"></i>
 			<h6 *ngIf="item.socialStatusProvider.socialConnection.profileName">{{item.socialStatusProvider.socialConnection.profileName}}</h6>
 			<h6 *ngIf="!item.socialStatusProvider.socialConnection.profileName">{{item.socialStatusProvider.socialConnection.firstName}}&nbsp;{{item.socialStatusProvider.socialConnection.lastName}}</h6>
 		</div>

@@ -13,7 +13,7 @@
         <h4 class="modal-title" id="myModalLabel">{{campaign?.campaignName}}</h4>       
       </div>
       <div class="modal-body">
-        <ng-container *ngIf="campaign">
+        <ng-container *ngIf="campaign && !deleteCampaignAlert">
           <fieldset>
             <legend>Campaign details:</legend>
             <h6>
@@ -107,8 +107,20 @@
             </div>
           </fieldset>
         </ng-container>
+<div class="swal2-modal show-swal2 visible" style="    display: block;padding: 20px;margin-top: -74px;border: 1px solid #ccc;box-shadow: 0px 0px 20px #f1f1f1;" tabindex="-1" *ngIf="deleteCampaignAlert">
+<div class="swal2-icon swal2-warning pulse-warning" style="display: block;">!</div>
+<span class="line tip"></span> <span class="line long"></span>
+<div class="placeholder"></div>
+<div class="fix"></div>
+<h2>Are you sure?</h2>
+<div class="swal2-content" style="display: block;">You won't be able to undo this action</div>
+<hr class="swal2-spacer" style="display: block;">
+<button class="btn btn-primary btn-sm" (click)="deleteCampaign(campaign.campaignId)">Yes, delete it!</button>
+<button class="btn btn-secondary btn-sm" (click)="deleteCampaignAlert = false">Cancel</button>
+</div>
+        
       </div>
-      <div class="modal-footer">
+      <div class="modal-footer" *ngIf="!deleteCampaignAlert">
         <div class="actions-block text-center m10" *ngIf="campaign">
           <ng-container *ngIf="campaign.launched">
             <a *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor) && campaign.channelCampaign && campaign.redistributedCount>0"
@@ -140,7 +152,7 @@
           </ng-container>
             <a (click)="showCampaignPreview(campaign)"><i class="fa fa-eye mr5"  data-toggle="tooltip" data-placement="auto" title="Preview Campaign"></i></a>
             <a *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor"
-              (click)="confirmDeleteCampaign(campaign.campaignId, i, campaign.campaignName)" data-rel="fancybox-button" data-toggle="tooltip" data-placement="auto" title="Delete">
+              (click)="confirmDeleteCampaign(campaign.campaignId)" data-rel="fancybox-button" data-toggle="tooltip" data-placement="auto" title="Delete">
               <i class="fa fa-trash-o"> </i></a>
         </div> 
       </div>
@@ -170,4 +182,35 @@
 			</div>
 		</div>
 	</div>
+</div>
+
+<div id="ca-{{campaign.id}}" *ngFor="let campaign of campaigns" class='clearfix m10 hidden' style="min-width: 1500px">
+  <h6>
+    <span class="campaign-label">{{campaign.type}} campaign</span>
+    <span class="campaign-label {{campaign.status | lowercase}}">
+            <ng-container *ngIf="campaign.status === 'NOW'; else default">Launched</ng-container>
+            <ng-template #default>{{campaign.status | titlecase}}d</ng-template>
+          </span>
+  </h6>
+  <div class="media">
+      <h5>{{campaign.campaign}}</h5>
+      <ng-container *ngIf="campaign.status === 'NOW'">
+        <div class="progress">
+          <div class="progress-bar" role="progressbar"  aria-valuemin="0" aria-valuemax="100"  [ngStyle]="{ 'width': campaign.percentage +'%' }">
+            <span class="sr-only"></span>
+          </div>
+        </div>
+        <h6>{{campaign.percentage}}% interaction</h6>
+      </ng-container>
+
+      <h6>
+        <ng-container *ngIf="campaign.status === 'NOW'; else default">Launched</ng-container>
+        <ng-template #default>{{campaign.status | titlecase}}d</ng-template>
+        on
+        <ng-container *ngIf="campaign.status === 'SAVE'; else launchTime">{{campaign.createdTime |date:'mediumDate'}}, {{campaign.createdTime | date:'shortTime'}}</ng-container>
+        <ng-template #launchTime>{{campaign.launchTime |date:'mediumDate'}}, {{campaign.launchTime | date:'shortTime'}}</ng-template>
+
+        <ng-container></ng-container>
+      </h6>
+  </div>
 </div>
