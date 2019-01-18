@@ -54,6 +54,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   campaignsWorldMapPagination: Pagination = new Pagination();
   userWatchedReportPagination: Pagination = new Pagination();
   rsvpDetailAnalyticsPagination: Pagination = new Pagination();
+  sentEmailOpenPagination: Pagination = new Pagination();
 
   socialCampaign: SocialCampaign = new SocialCampaign();
   redistributedAccounts = new Set<number>();
@@ -134,7 +135,6 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     try{
     this.loading = true;
     this.referenceService.loading(this.httpRequestLoader, true);
-    this.downloadTypeName = this.paginationType = 'campaignViews';
     this.listTotalCampaignViews(campaignId);
     if(!this.campaign.detailedAnalyticsShared && this.campaign.dataShare){
         pagination.campaignId = campaignId;
@@ -163,8 +163,13 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
         views.push(this.campaignViews[i].viewsCount)
       }
       this.maxViewsValue = Math.max.apply(null, views);
-      this.campaignViewsPagination.totalRecords = this.campaignReport.emailSentCount;
-      this.campaignViewsPagination = this.pagerService.getPagedItems(this.campaignViewsPagination, this.campaignViews);
+      if(this.paginationType === 'campaignViews') {
+        this.campaignViewsPagination.totalRecords = this.campaignReport.emailSentCount;
+        this.campaignViewsPagination = this.pagerService.getPagedItems(this.campaignViewsPagination, this.campaignViews);
+      } else if(this.paginationType === 'sentEmailData'){
+        this.sentEmailOpenPagination.totalRecords = this.campaignReport.emailSentCount;
+        this.sentEmailOpenPagination = this.pagerService.getPagedItems(this.sentEmailOpenPagination, this.campaignViews);
+      }
       this.loading = false;
       this.referenceService.loading(this.httpRequestLoader, false);
   }
@@ -438,6 +443,13 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       )
     }catch(error){ this.xtremandLogger.error('error'+error);}
   }
+  sentEmailModal(){
+    this.downloadTypeName = 'campaignViews';
+    this.paginationType = 'sentEmailData';
+    this.sentEmailOpenPagination = new Pagination();
+    this.listCampaignViews(this.campaign.campaignId, this.sentEmailOpenPagination);
+    $('#emailSentListModal').modal();
+  }
 
   setPage(event: any) {
     try{
@@ -445,6 +457,9 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     if (event.type === 'campaignViews') {
         this.campaignViewsPagination.pageIndex = event.page;
         this.listCampaignViews(this.campaign.campaignId, this.campaignViewsPagination);
+    } else if (event.type === 'sentEmailData') {
+        this.sentEmailOpenPagination.pageIndex = event.page;
+        this.listCampaignViews(this.campaign.campaignId, this.sentEmailOpenPagination);
     } else if (event.type === 'emailAction') {
         this.emailActionListPagination.pageIndex = event.page;
         if (this.campaignReport.emailActionType === 'open' || this.campaignReport.emailActionType === 'click') {
@@ -473,6 +488,9 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     if (this.paginationType === 'campaignViews') {
       this.campaignViewsPagination = pagination;
       this.listCampaignViews(this.campaign.campaignId, pagination);
+    } else if (this.paginationType === 'sentEmailData') {
+      this.sentEmailOpenPagination = pagination;
+      this.listCampaignViews(this.campaign.campaignId, pagination);
     } else if (this.paginationType === 'emailAction') {
       this.emailActionListPagination = pagination;
        if (this.campaignReport.emailActionType === 'open' || this.campaignReport.emailActionType === 'click') {
@@ -487,9 +505,6 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     } else if (event.type === 'rsvpDetailPagination') {
         this.rsvpDetailAnalyticsPagination = pagination;
         this.getRsvpDetails(this.rsvpResposeType);
-    } else if(event.type === 'contactListInfo'){
-        this.contactListInfoPagination = pagination;
-        this.getListOfContacts(this.contactListId);
     } else {
         this.pagination = pagination;
         this.callPaginationValues(this.paginationType);
@@ -510,13 +525,11 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       this.loading = true;
       this.referenceService.loading(this.httpRequestLoader, true);
       this.paginationType = 'emailAction';
-     this.campaignService.emailActionList(campaignId, actionType, pagination)
-      .subscribe(
-      data => {
+      this.campaignService.emailActionList(campaignId, actionType, pagination)
+       .subscribe(data => {
         this.campaignReport.emailLogs = data;
         this.campaignReport.emailActionType = actionType;
         $('#emailActionListModal').modal();
-
         if (actionType === 'open') {
             if ( this.sortByDropDown.length === 5 ) {
                 this.sortByDropDown.push( { 'name': 'Subject(ASC)', 'value': 'subject-ASC' });
@@ -526,7 +539,6 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
         } else if (actionType === 'click') {
             this.sortByDropDown = this.sortByDropDown.filter(function(el) { return el.name != "Subject(ASC)"; });
             this.sortByDropDown = this.sortByDropDown.filter(function(el) { return el.name != "Subject(DESC)"; });
-
             this.emailActionListPagination.totalRecords = this.campaignReport.emailClickedCount;
         }
         this.emailActionListPagination = this.pagerService.getPagedItems(this.emailActionListPagination, this.campaignReport.emailLogs);
@@ -535,8 +547,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
         this.referenceService.loading(this.httpRequestLoader, false);
       },
       error => console.log(error),
-      () => console.log()
-      )
+      () => console.log('emailActionList() completed')  )
     }catch(error) {this.xtremandLogger.error('Error in analytics page emails sent'+error); }
   }
 
@@ -544,17 +555,13 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     try{
       this.loading = true;
       this.campaignService.listEmailLogsByCampaignAndUser(campaignId, userId)
-      .subscribe(
-      data => {
-        this.emailLogs = data;
-        this.loading =false;
-        console.log(data);
-      },
+       .subscribe( data => {
+          this.emailLogs = data;
+          this.loading =false;
+          console.log(data);
+       },
       error => console.log(error),
-      () => {
-        this.count();
-      }
-      )
+      () => { this.count(); } )
     }catch(error) {this.xtremandLogger.error('Error in analytics page listEmailLogsByCampaignAndUser'+error); }
   }
 
@@ -568,9 +575,6 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
         } else if (this.emailLogs[i].actionId === 14 || this.emailLogs[i].actionId === 15) {
           this.userCampaignReport.emailClickedCount += 1;
         }
-       // else if (this.emailLogs[i].actionId === 1) {
-       //   this.userCampaignReport.totalUniqueWatchCount += 1;
-      //  }
       }
     }
       this.loading = false;
@@ -588,12 +592,8 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     }
     if(this.campaignType==='SOCIAL'){
       this.socialCampaign.socialStatusList.forEach(
-        data => data.socialStatusList.forEach(
-          data => {
-          if(data.userId === campaignViews.userId)
-            this.redistributedAccountsBySelectedUserId.push(data);
-          }
-        )
+        data => data.socialStatusList.forEach(data => {
+          if(data.userId === campaignViews.userId) { this.redistributedAccountsBySelectedUserId.push(data); }})
       )
     }
     this.selectedRow = campaignViews;
@@ -1039,7 +1039,10 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     this.campaignViewsPagination.pageIndex = 1;
     this.emailActionListPagination.pageIndex = 1;
     this.emailActionListPagination.maxResults = 12;
-    this.paginationType = 'campaignViews';
+    this.contactListInfoPagination = new Pagination();
+    this.contactListInfoPagination.pageIndex = 1;
+    this.contactListInfoPagination.maxResults = 12;
+    this.downloadTypeName = this.paginationType = 'campaignViews';
     }catch(error){
       this.xtremandLogger.error('error'+error)
     }
@@ -1309,10 +1312,10 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     }
 
     previewVideo(videoFile: any){
-        try{
+      try{
         this.loading = true;
         setTimeout(()=>{ this.loading = false; this.videoFile = videoFile; },600);
-        }catch(error){ this.xtremandLogger.error(error);}
+       }catch(error){ this.xtremandLogger.error(error);}
     }
 
     closeModal(event: any){
@@ -1323,22 +1326,9 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
         this.loading = true;
         this.getListOfContacts(this.campaingContactLists[0].id);
     }
-    /*getListOfContacts(id:number){
-    try{
-      this.contactListId = id;
-     this.contactService.loadUsersOfContactList(id, this.pagination).subscribe(
-       data => {
-        this.campaingContactListValues = data.listOfUsers;
-        this.loading = false;
-        $("#show_contact-list-info").modal('show');
-      },
-      (error:any)=>{this.xtremandLogger.error('error'+error); })
-    }catch(error) { this.xtremandLogger.error('error'+error);}
-  }*/
-
-   getListOfContacts(id:number){
+    getListOfContacts(id:number){
         try{
-          this.contactListId = id;
+         this.contactListId = id;
          this.campaignService.loadUsersOfContactList(id,this.campaignId, this.contactListInfoPagination).subscribe(
            data => {
             this.campaingContactListValues = data.listOfUsers;
@@ -1350,7 +1340,6 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
           (error:any)=>{this.xtremandLogger.error('error'+error); })
         }catch(error) { this.xtremandLogger.error('error'+error);}
      }
-
   getSortedResult(campaignId: number,event:any){
     this.emailActionListPagination = this.utilService.sortOptionValues(event,this.emailActionListPagination);
     this.emailActionList(campaignId, this.campaignReport.emailActionType, this.emailActionListPagination);
@@ -1384,7 +1373,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   ngOnInit() {
     try{
     this.mainLoader = true;
-    this.paginationType = 'campaignViews';
+    this.downloadTypeName = this.paginationType = 'campaignViews';
     this.emailActionListPagination.pageIndex = 1;
     this.campaignId = this.route.snapshot.params['campaignId'];
     this.getCampaignById(this.campaignId);

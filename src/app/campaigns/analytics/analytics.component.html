@@ -330,7 +330,7 @@
 	</div>
 	<div class="col-xs-12 col-sm-6 p-5x emails-info" [hidden]="mainLoader || hasClientError" >
 		<div class="p-5x" [ngClass]="{'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO'}">
-			<button class="portlet light color1-invert crcb" (click)="downloadTypeName = 'campaignViews'" data-toggle="modal" data-target="#emailSentListModal" [ngClass]="{'forbidden' :!isDataShare ?true:null}"
+			<button class="portlet light color1-invert crcb" (click)="sentEmailModal()"  [ngClass]="{'forbidden' :!isDataShare ?true:null}"
 			 [disabled]="campaignReport.emailSentCount < 1 || !isPartnerEnabledAnalyticsAccess">
 				<div class="portlet-body text-center">
 						<i class="fa fa-envelope"></i>
@@ -505,7 +505,7 @@
 									</tr>
 								</thead>
 								<tbody>
-								<ng-container *ngFor="let item of campaignViews" >
+								<ng-container *ngFor="let item of campaignViewsPagination.pagedItems" >
 									<tr (click)="userTimeline(item);">
 										<td>
 										<app-user-info [isCompanyInfo]="true" [userInfo]="item"> </app-user-info>
@@ -1192,7 +1192,7 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr *ngFor="let item of campaignViews">
+								<tr *ngFor="let item of sentEmailOpenPagination.pagedItems">
 									<td>
 										<app-user-info  [userInfo]="item"> </app-user-info>
 									</td>
@@ -1212,8 +1212,8 @@
 						</table>
 						</ng-container>
            <div>
-            <app-pagination class="pg8" [pagination]="campaignViewsPagination"
-						 [type]="'campaignViews'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
+            <app-pagination class="pg8" [pagination]="sentEmailOpenPagination" *ngIf="sentEmailOpenPagination.pagedItems?.length > 0"
+						 [type]="'sentEmailData'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
           </div>
          </div>
 				</div>
@@ -1378,7 +1378,7 @@
 		<div class="modal-dialog modal-lg modal-css" style="right:0">
 			<div class="modal-content">
 				<div class="modal-header">
-					<button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
+					<button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true" (click)="clearPaginationValues()"><i class="fa fa-times"></i></button>
 					<h4 class="modal-title" id="show_contact-list-info"	>
             <span *ngIf="!authenticationService.isVendor()">Contact List Info</span>
             <span *ngIf="authenticationService.isVendor()">Partners List Info</span>
@@ -1421,7 +1421,7 @@
 						</tbody>
           </table>
           <div >
-					<app-pagination class="pg8" [pagination]="contactListInfoPagination" [type]="'contactListInfo'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationContacts($event)"></app-pagination>
+					<app-pagination class="pg8" *ngIf="contactListInfoPagination.pagedItems?.length>0" [pagination]="contactListInfoPagination" [type]="'contactListInfo'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationContacts($event)"></app-pagination>
           </div>
         </div>
 				</div>
