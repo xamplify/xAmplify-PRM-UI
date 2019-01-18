@@ -43,3 +43,12 @@ button {
 .alignCss{
   position: relative;left: 95px;
 }
+
+.expired-event-class{
+	background-color: #ffffff;
+    color: #0006ff;
+    font-weight: 600;
+    text-align: center;
+    font-size: 26px;
+    margin: 132px 50px 0px 50px;
+}
