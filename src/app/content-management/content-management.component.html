@@ -49,8 +49,8 @@
 							<div class="progress" *ngIf="loader">
 								<div class="progress-bar" role="progressbar" style="width: 99%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">99%</div>
 							</div>
-							<app-grid-loader *ngIf="httpRequestLoader.isLoading && !pagination.isListView"></app-grid-loader>
-							<app-list-loader *ngIf="httpRequestLoader.isLoading && pagination.isListView"></app-list-loader>
+							<app-grid-loader *ngIf="httpRequestLoader.isLoading && !isListView"></app-grid-loader>
+							<app-list-loader *ngIf="httpRequestLoader.isLoading && isListView"></app-list-loader>
 							<div class="margin-top-10 row" *ngIf="!httpRequestLoader.isLoading">
 								<section [hidden]="!isListView">
 									<div class="table-responsive list-content-table">
