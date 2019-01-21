@@ -14,11 +14,14 @@
 					<i class="fa fa-angle-right"></i>
 				</li>
 				<li>
-					<a *ngIf="refService.isCampaignFromVideoRouter==true|| !isAdd" class="disabled">Select Campaign</a>
-					<a *ngIf="refService.isCampaignFromVideoRouter==false  && isAdd" [routerLink]="['../../campaigns/select']">Select Campaign</a>
+					<a *ngIf="refService.isCampaignFromVideoRouter==true|| !isAdd" [routerLink]="['../../campaigns/manage']">Manage Campaigns</a>
+					<a *ngIf="refService.isCampaignFromVideoRouter==false && isAdd" [routerLink]="['../../campaigns/select']">Select Campaign</a>
 					<i class="fa fa-angle-right"></i>
 				</li>
-				<li>
+				<li *ngIf="refService.isCampaignFromVideoRouter==true|| !isAdd">
+					<a>Edit Campaign</a>
+        </li>
+        <li *ngIf="refService.isCampaignFromVideoRouter==false && isAdd">
 					<a>Create Campaign</a>
 				</li>
 			</ul>
@@ -606,12 +609,12 @@
 												</thead>
 												<tbody>
 													<tr role="row" *ngFor="let contacts of contactsPagination.pagedItems;let i = index" id="campaignContactListTable_{{contacts.id}}"
-													 (click)="highlightContactRow(contacts.id,$event,contacts.noOfContacts,contacts.emailValidationInd)" [class.contact-list-selected]="(selectedContactListIds.indexOf(contacts.id)>-1 && contacts.noOfContacts>0)"
+													 (click)="highlightContactRow(contacts,$event,contacts.noOfContacts,contacts.emailValidationInd)" [class.contact-list-selected]="(selectedContactListIds.indexOf(contacts.id)>-1 && contacts.noOfContacts>0)"
 													 (mouseover)='showContactsAlert(contacts.noOfContacts)' [attr.title]="emptyContactsMessage">
 														<td>
 															<div class="form-group" *ngIf="contacts.noOfContacts>0 && contacts.emailValidationInd">
 																<input type="checkbox" class="chk" lang="{{contacts.name}}" id="{{contacts.id}}" [checked]="selectedContactListIds.indexOf(contacts.id)>-1"
-																 name="campaignContact[]" value="{{contacts.id}}" (click)="highlightRow(contacts.id,$event)">
+																 name="campaignContact[]" value="{{contacts.id}}" (click)="highlightRow(contacts,$event)">
 															</div>
 															<div class="form-group" *ngIf="contacts.noOfContacts==0 || !contacts.emailValidationInd">
 																<input type="checkbox" disabled="disabled" title="Contacts are in progress">
@@ -947,7 +950,7 @@
 
 								</td>
 								<td width="55%">
-									<ng-container *ngFor="let contactList of selectedContactLists;let i=index;">
+									<!-- <ng-container *ngFor="let contactList of selectedContactLists;let i=index;">
 										<a (click)="loadUsers(contactList.id,contactsUsersPagination,contactList.name)" data-toggle="modal" data-target="#myModal" title="{{contactList.name}}"
 											style="display: block;">
 											<ng-container *ngIf="contactList.name?.length>50">
@@ -957,7 +960,17 @@
 												{{contactList.name}}
 											</ng-container>
 										</a>
-									</ng-container>
+                  </ng-container> -->
+                  <ng-container *ngFor="let contactList of userListDTOObj;let i=index;">
+                    <div>
+                    <a *ngIf="i<2" (click)="loadContacts(contactList.id,contactsUsersPagination,contactList.name)" data-toggle="modal" title="{{contactList.name}}">
+                      <span *ngIf="contactList.name">  {{contactList.name | slice:0:40}}<span *ngIf="contactList.name?.length>40">...</span></span>
+                    </a>
+                    </div>
+                  </ng-container>
+                  <a>
+                    <span *ngIf="userListDTOObj?.length>2">...</span> <span *ngIf="userListDTOObj?.length == 0">0 contactlists</span>
+                  </a>
 								</td>
 								<td style="text-align: right" width="20%">
 									<a class="btn btn-primary btn-sm" style="color:#fff" (click)="resetActive($event, 40, 'step-4')">Change</a>

@@ -213,11 +213,19 @@ export class CampaignService {
             .catch(this.handleError);
     }
 
-    saveAsCampaign(campaign: Campaign) {
-        return this.http.post(this.URL + `campaign/saveas?access_token=${this.authenticationService.access_token}`, campaign)
+    saveAsCampaign(campaign:any) {
+      let campaignURL:any;
+      if(campaign.campaignType==='EVENT') { campaignURL = this.URL + `campaign/save-as-event-campaign?access_token=${this.authenticationService.access_token}`;
+      } else { campaignURL = this.URL + `campaign/saveas?access_token=${this.authenticationService.access_token}`; }
+      return this.http.post(campaignURL, campaign)
             .map(this.extractData)
             .catch(this.handleError);
     }
+    saveAsEventCampaign(campaign:any) {
+      return this.http.post(this.URL + `campaign/save-as-event-campaign?access_token=${this.authenticationService.access_token}`, campaign)
+          .map(this.extractData)
+          .catch(this.handleError);
+   }
     getCampaignUserWatchedMinutes(campaignId: number, type: string) {
         const url = this.URL + 'campaign/' + campaignId + '/bubble-chart-data?type=' + type + '&access_token=' + this.authenticationService.access_token;
         return this.http.get(url)
@@ -312,21 +320,21 @@ export class CampaignService {
             .map(this.extractData)
             .catch(this.handleError);
     }
-    
+
     getEventCampaignRedistributionInvitiesDetails(campaignId: number, userId: any, pagination: Pagination) {
         const url = this.URL + 'campaign/users-details/' + campaignId +'/'+ userId + "?access_token=" + this.authenticationService.access_token;
         return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);
     }
-    
+
     getEventCampaignPartnerInvitiesDetails(campaignId: number, pagination: Pagination) {
         const url = this.URL + 'campaign/partners-info/' + campaignId + "?access_token=" + this.authenticationService.access_token;
         return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);
     }
-    
+
     getEventCampaignTotalInvitiesDetails(campaignId: number, pagination: Pagination) {
         const url = this.URL + 'campaign/partners-users-info/' + campaignId + "?access_token=" + this.authenticationService.access_token;
         return this.http.post(url, pagination)
@@ -546,11 +554,6 @@ export class CampaignService {
 
   getCampaignCalendarView(userId: number){
       return this.http.get(this.URL + `campaign/calendar/${userId}?access_token=${this.authenticationService.access_token}` )
-          .map(this.extractData)
-          .catch(this.handleError);
-  }
-  saveAsEventCampaign(campaign:any) {
-      return this.http.post(this.URL + `campaign/save-as-event-campaign?access_token=${this.authenticationService.access_token}`, campaign)
           .map(this.extractData)
           .catch(this.handleError);
   }

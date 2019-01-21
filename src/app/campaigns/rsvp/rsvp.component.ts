@@ -27,6 +27,7 @@ export class RsvpComponent implements OnInit {
   replyUserName=""
   characterleft = 140;
   rsvpSavingProcessing = false;
+  eventExpiredError = false;
 
   constructor(public referenceService: ReferenceService, private route: ActivatedRoute, public campaignService: CampaignService, public processor:Processor,
   public authenticationService:AuthenticationService) { }
@@ -41,6 +42,7 @@ export class RsvpComponent implements OnInit {
         this.campaignRsvp.alias = this.alias;
         this.replyUserName = response.targetUserDTO.firstName;
         this.processor.remove(this.processor);
+        this.eventStartTimeError();
       },
       error => {
         console.log(error);
@@ -49,6 +51,16 @@ export class RsvpComponent implements OnInit {
       () => console.log("Campaign Names Loaded")
       );
   }
+  
+  eventStartTimeError(){
+      const currentDate = new Date().getTime();
+      const startDate = Date.parse(this.eventcampaign.campaignEventTimes[0].startTimeString);
+
+          if(startDate < currentDate){
+            this.eventExpiredError = true;
+            }
+   }
+  
   addURLs(templateBody:any){
     // just to avoid 404 link, added the links here.
 

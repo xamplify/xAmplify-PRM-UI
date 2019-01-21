@@ -160,15 +160,18 @@
 									<div class="caption">
 										<i class="fa fa-edit"></i>List of {{checkingContactTypeName}}s
 									</div>
+									
 									<div class="color-grey" style="margin-top:4px">
 											<div *ngIf="!isSynchronizationList">
-														<button id="cancel_button"[disabled]="selectedAddContactsOption == 8 && !clickBoard" class="btn pull-right"
-															(click)="cancelContacts()" style="margin-left: 5px;">
+											<!-- disabling cancel button condition
+											[disabled]="selectedAddContactsOption == 8 && !clickBoard"  -->
+														<button id="cancel_button" class="btn pull-right"
+															(click)="cancelContacts()" style="margin-left: 5px; background-color: white">
 															Cancel<i class="fa fa-cancel"></i>
 														</button>
 													</div>
 													<div class="btn-group pull-right">
-														<button class="btn dropdown-toggle"
+														<button class="btn dropdown-toggle" style="background-color: white"
 															id="save&delete_button" data-toggle="dropdown">
 															Actions <i class="fa fa-angle-down"></i>
 														</button>
@@ -187,6 +190,13 @@
 														</ul>
 													</div>
 													</div>
+													
+													<a class="pull-right" style="padding-right: 16px;" (click)="downloadEmptyCsv()">
+				<button type="button" class="btn btn-default" download [ngStyle]="{'width':refService.isMobileScreenSize()? '100%': 'unset'}">
+         Download CSV Template
+          <i class="fa fa-download" aria-hidden="true" style="margin-left: 5px"></i>
+				</button>
+			</a>
 								</div>
 								<div class="portlet-body">
 									<div class="table-toolbar">
@@ -768,6 +778,23 @@
 
 									<div class="page-bar" *ngIf="!showEditContactData">
 									<div class="btn-group pull-right">
+									
+									<div *ngIf="!isSegmentation" (click)="modelForSeg()"
+									style="float: left; cursor: pointer; padding-right: 20px;"
+									data-toggle="modal" data-target="#filterModal">
+									<i class="fa fa-filter" aria-hidden="true" data-toggle="tooltip"
+												data-placement="left" title="Apply a filter"
+										style="color: #0095da; font-size: 30px; margin-top: 10px;"></i>
+								</div>
+								<div *ngIf="isSegmentation" (click)="removeSegmentation()"
+									style="float: left; cursor: pointer; padding-right: 20px;">
+									<i class="fa fa-filter" aria-hidden="true" data-toggle="tooltip"
+												data-placement="left" title="Remove a filter"
+										style="color: red; font-size: 30px; margin-top: 10px;"></i> <i
+										class="fa fa-times" aria-hidden="true"
+										style="color: red; margin-left: -12px;"></i>
+								</div>
+									
 										<div class="inputs" align="right" style="float: right">
 											<div style="float: left; margin-right: 10px;">
 												<select class="form-control" [(ngModel)]="sortOption"
@@ -1011,8 +1038,8 @@
 								</div>
 							</div>
 							<div class="row col-sm-1" style="margin-left: 32px;">
-							<div (click)="addNewRow()" data-toggle="tooltip" data-placement="left" title="Add a condition">
-								<button type="button" class="btn btn-default pull-right">
+							<div data-toggle="tooltip" data-placement="left" title="Add a condition">
+								<button [disabled]="criterias.length > 5"  (click)="addNewRow()" type="button" class="btn btn-default pull-right">
 									<i class="fa fa-plus-square" aria-hidden="true"
 										style="color: #0196da"></i>
 								</button>
@@ -1026,7 +1053,7 @@
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn green"
+					<button type="button" class="btn green" [disabled]="criterias.length === 0"
 						(click)="contactFilter()">Submit</button>
 					<button type="button" class="btn green"
 						(click)="cancelSegmentation()" data-dismiss="modal">Cancel</button>

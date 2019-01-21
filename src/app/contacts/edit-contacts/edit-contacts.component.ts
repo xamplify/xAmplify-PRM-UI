@@ -160,7 +160,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
         { 'name': 'country', 'value': 'Country' },
         { 'name': 'city', 'value': 'City' },
         { 'name': 'mobileNumber', 'value': 'Mobile Number' },
-        { 'name': 'notes', 'value': 'Notes' },
+       /* { 'name': 'notes', 'value': 'Notes' },*/
     ];
     filterOption = this.filterOptions[0];
 
@@ -2112,6 +2112,14 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     cancelSegmentationRow( rowId: number ) {
         if ( rowId !== -1 ) {
             this.criterias.splice( rowId, 1 );
+        }
+    }
+    
+    downloadEmptyCsv() {
+        if(this.isPartner){
+            window.location.href = this.authenticationService.MEDIA_URL + "UPLOAD_PARTNER_LIST _EMPTY.csv";
+        }else{
+        window.location.href = this.authenticationService.MEDIA_URL + "UPLOAD_USER_LIST _EMPTY.csv";
         }
     }
 
