@@ -888,9 +888,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
                         console.log( index + "value" + value );
                     });
                     //this.invalidDeleteSucessMessage = true;
+                    this.listContactsByType( this.contactsByType.selectedCategory );
                     this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACTS_DELETE_SUCCESS, true );
                     this.contactCountLoad = true;
-                    this.listContactsByType( this.contactsByType.selectedCategory );
                 },
                 ( error: any ) => {
                     if ( error._body.includes( 'Please launch or delete those campaigns first' ) ) {
@@ -1420,7 +1420,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
         }
 
     }
-    
+
     activateUnsubscribedUser(selectContactId: any){
         try {
             this.contactService.activateUnsubscribedUser( selectContactId )
