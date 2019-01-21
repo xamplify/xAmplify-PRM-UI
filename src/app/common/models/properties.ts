@@ -5,13 +5,14 @@ export class Properties {
   BOTTOM_MESSAGE = '&copy; 2018 xAmplify. All rights reserved.'
   APP_WEBSITE = 'xAmplify';
   APP_WELCOME_MESSAGE = 'Welcome to xAmplify';
-  APP_Xamplify_URL="https://xamplify.io"
+  APP_Xamplify_URL="https://xamplify.io";
+  xamplify_router= 'https://www.xamplify.com/';
 
   NO_RESULTS_FOUND = "No results found.";
   EMAIL_SENT_SUCCESS = "Email sent successfully.";
   NO_USERS_SELECT_ERROR = "You have not selected any user.";
   //FOR CONTACTS
-  FILE_TYPE_ERROR = "File type not allowed please select the .csv file only."
+  FILE_TYPE_ERROR = "File type not allowed please select the .csv file only.";
   CONTACT_LIST_CREATE_SUCCESS = "Your contact list has been created successfully and it is being processed.";
   CONTACT_LIST_CREATE_ERROR = "An error occured while creating your contact list.";
 
