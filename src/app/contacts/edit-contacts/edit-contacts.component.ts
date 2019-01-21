@@ -196,7 +196,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
             this.sortOptions.push( { 'name': 'Partner type (DESC)', 'value': 'partnerType-DESC' });
             this.sortOptions.push( { 'name': 'Category (ASC)', 'value': 'category-ASC' });
             this.sortOptions.push( { 'name': 'Category (DESC)', 'value': 'category-DESC' });
-            
+
         }
 
         this.users = new Array<User>();
@@ -281,8 +281,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                             /*user.description = allTextLines[i][9];*/
                             self.users.push( user );
                             self.contacts.push( user );
-                            }else{ 
-                               
+                            }else{
+
                                 user.emailId = allTextLines[i][4];
                                 user.firstName = allTextLines[i][0];
                                 user.lastName = allTextLines[i][1];
@@ -301,7 +301,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                                 /* user.description = allTextLines[i][9];*/
                                 self.users.push( user );
                                 self.contacts.push( user );
-                                
+
                             }
                         }
                     }
@@ -768,7 +768,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
         this.clipboardTextareaText = "";
         this.clickBoard = true;
        /* if(this.isPartner){*/
-            
+
         /*}else{
         this.clickBoard = true;
         }*/
@@ -1845,55 +1845,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
         }
     }
 
-
-  //   saveAsChange() {
-  //     try {
-  //         const self = this;
-  //         this.loadContactListsNames();
-  //         if ( this.contactListName == undefined ) {
-  //             this.contactListName = this.contactService.partnerListName;
-  //         }
-  //         if ( this.isDefaultPartnerList == true && this.contactListName.includes( '_copy' ) ) {
-  //             this.contactListName + '_copy'
-  //         }
-  //         swal( {
-  //             title: this.checkingContactTypeName + ' List Name',
-  //             input: 'text',
-  //             inputValue: this.contactListName + '_copy',
-  //             showCancelButton: true,
-  //             confirmButtonText: 'Save',
-  //             allowOutsideClick: false,
-  //             preConfirm: function( name: any ) {
-  //                 return new Promise( function() {
-  //                     console.log( 'logic begins' );
-  //                     var inputName = name.toLowerCase().replace( /\s/g, '' );
-  //                     if ( $.inArray( inputName, self.names ) > -1 ) {
-  //                         swal.showValidationError( 'This list name is already taken.' )
-  //                     } else {
-  //                         if ( name != "" && name.length < 250) {
-  //                             swal.close();
-  //                             self.saveDuplicateContactList( name );
-  //                         } else {
-  //                            if(name == ""){
-  //                             swal.showValidationError( 'List Name is Required..' )
-  //                            }
-  //                            else{
-  //                                swal.showValidationError("You have exceeded 250 characters!");
-  //                            }
-  //                         }
-  //                     }
-  //                 });
-  //             }
-  //         }).then( function( name: any ) {
-  //             console.log( name );
-  //         }, function( dismiss: any ) {
-  //             console.log( 'you clicked on option' + dismiss );
-  //         });
-  //     } catch ( error ) {
-  //         this.xtremandLogger.error( error, "editContactComponent", "SaveAsNewListSweetAlert()" );
-  //     }
-  // }
-
     addCopyToField(){
           this.loadContactListsNames();
           if ( this.contactListName == undefined ) {
@@ -1917,7 +1868,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
       this.refService.namesArray = undefined;
     }
     saveDuplicateContactList( name: string ) {
-        try {
+       try {
             if ( name != "" ) {
                 this.contactListObject = new ContactList;
                 this.contactListObject.name = name;
@@ -1932,19 +1883,13 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                     this.contactService.saveContactList( listUsers, name, this.isPartner )
                         .subscribe(
                         data => {
-                            data = data;
                             $('#saveAsEditModal').modal('hide');
                             this.saveAsError = '';
                             this.saveAsListName = '';
                             this.saveAsListName = undefined;
-                            if ( this.isPartner == false ) {
-                                this.router.navigateByUrl( '/home/contacts/manage' )
-                            } else {
-                                this.router.navigateByUrl( 'home/partners/manage' )
-                            }
+                            this.goToContactOrPartnerUrl();
                             this.contactService.saveAsSuccessMessage = "SUCCESS";
                         },
-
                         ( error: any ) => {
                             this.xtremandLogger.error( error );
                             this.xtremandLogger.errorPage( error );
@@ -1952,7 +1897,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                         () => this.xtremandLogger.info( "allcontactComponent saveSelectedUsers() finished" )
                         )
                 } else {
-
                     if ( this.addPartnerSave == true ) {
                         for ( let i = 0; i < this.selectedContactListIds.length; i++ ) {
                             for ( let j = 0; j < this.contactService.allPartners.length; j++ ) {
@@ -1977,18 +1921,16 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                     this.contactService.saveContactList( this.selectedContactForSave, name, this.isPartner )
                         .subscribe(
                         data => {
-                            data = data;
-                            if ( this.isPartner == false ) {
-                                this.router.navigateByUrl( '/home/contacts/manage' )
-                            } else {
-                                this.router.navigateByUrl( 'home/partners/manage' )
-                            }
+                            this.goToContactOrPartnerUrl();
                             this.contactService.saveAsSuccessMessage = "SUCCESS";
                         },
-
                         ( error: any ) => {
+                            try {
                             this.xtremandLogger.error( error );
-                            this.xtremandLogger.errorPage( error );
+                              if (JSON.parse(error._body).message.includes('email addresses in your contact list')) {
+                                this.customResponse = new CustomResponse( 'ERROR', 'Email addresses in your contact list that aren\'t formatted properly', true );
+                              } else {  this.xtremandLogger.errorPage( error ); }
+                            }catch(err){ this.xtremandLogger.error( err );}
                         },
                         () => this.xtremandLogger.info( "allcontactComponent saveSelectedUsers() finished" )
                         )
@@ -2001,7 +1943,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
             this.xtremandLogger.error( error, "editContactComponent", "SaveAsNewList()" );
         }
     }
-
+    goToContactOrPartnerUrl(){
+      const url =  !this.isPartner ? 'contacts':'partners';
+      this.router.navigateByUrl( '/home/'+url+'/manage' )
+    }
     toggle( i: number ) {
         const className = $( '#more_' + i ).attr( 'class' );
         if ( className === 'hidden' ) {
@@ -2114,7 +2059,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
             this.criterias.splice( rowId, 1 );
         }
     }
-    
+
     downloadEmptyCsv() {
         if(this.isPartner){
             window.location.href = this.authenticationService.MEDIA_URL + "UPLOAD_PARTNER_LIST _EMPTY.csv";
@@ -2485,7 +2430,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
             this.xtremandLogger.error( error, "addPartnerComponent", "resending Partner email" );
         }
     }
-    
+
     activateUnsubscribedUser(selectContactId: any){
         try {
             this.contactService.activateUnsubscribedUser( selectContactId )

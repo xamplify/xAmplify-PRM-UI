@@ -22,7 +22,7 @@ export class RsvpComponent implements OnInit {
   campaignRsvp: CampaignRsvp = new CampaignRsvp();
   responseMessage: string;
   isRsvp = false;
-  totalGuests = 1;
+  totalGuests = 0;
   type="";
   replyUserName=""
   characterleft = 140;
@@ -51,7 +51,7 @@ export class RsvpComponent implements OnInit {
       () => console.log("Campaign Names Loaded")
       );
   }
-  
+
   eventStartTimeError(){
       const currentDate = new Date().getTime();
       const startDate = Date.parse(this.eventcampaign.campaignEventTimes[0].startTimeString);
@@ -60,7 +60,7 @@ export class RsvpComponent implements OnInit {
             this.eventExpiredError = true;
             }
    }
-  
+
   addURLs(templateBody:any){
     // just to avoid 404 link, added the links here.
 
@@ -159,7 +159,7 @@ export class RsvpComponent implements OnInit {
   }
   closeRsvpModel(){
     this.campaignRsvp.message = null;
-    this.totalGuests = 1;
+    this.totalGuests = 0;
     this.replyUserName = '';
   }
   characterSize(){
