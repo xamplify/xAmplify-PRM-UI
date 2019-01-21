@@ -35,6 +35,7 @@ export class CalendarComponent implements OnInit {
   saveAsCampaignId = 0;
   saveAsCampaignName = '';
   saveAsCampaignInfo: any;
+  loading: boolean = false;
   constructor(public authenticationService: AuthenticationService, private campaignService: CampaignService, private socialService: SocialService,
     public referenceService: ReferenceService, private router: Router) {
     this.loggedInUserId = this.authenticationService.getUserId();
@@ -44,25 +45,26 @@ export class CalendarComponent implements OnInit {
     this.isOnlyPartner = this.authenticationService.isOnlyPartner();
 
   }
-  getCampaignCalendarView(userId: number) {
-    this.campaignService.getCampaignCalendarView(userId)
+  getCampaignCalendarView() {
+    $('#calendar').fullCalendar('removeEvents');
+    var view = $('#calendar').fullCalendar('getView');
+    var request = { startTime: view.start._d, endTime: view.end._d, userId: this.loggedInUserId };
+        
+    this.loading = true;
+    this.campaignService.getCampaignCalendarView(request)
       .subscribe(
       data => {
+        this.events = [];
         this.campaigns = data;
 
         this.campaigns.forEach(element => {
-          let event: any = {};
-          event.id = element.id;
-          event.title = element.campaign;
-          event.start = element.createdTime;
-          event.data = element;
-          event.editable = false;
+          let event: any = {id: element.id, title: element.campaign, start: element.createdTime, data: element, editable: false};
           $('#calendar').fullCalendar('renderEvent', event, true);
           this.events.push(event);
         });
       },
       error => console.log(error),
-      () => {}
+      () => {this.loading = false;}
       );
   }
 
@@ -98,9 +100,13 @@ export class CalendarComponent implements OnInit {
       eventLimit: true, // allow "more" link when too many events
       events: this.events,
       timeFormat: 'h:mm a',
+      height: 'parent',
       eventClick: function (event) {
         self.getCampaignById(event.id)
         $('#myModal').modal();
+      },
+      viewRender: function(view: any, element: any){
+        self.getCampaignCalendarView();
       },
       eventRender: function (event: any, element: any) {
         element.find('.fc-time').addClass('fc-time-title mr5');
@@ -284,8 +290,7 @@ export class CalendarComponent implements OnInit {
         error => console.error(error),
         () => {
           $('#saveAsModal').modal('hide'); 
-          $('#calendar').fullCalendar('removeEvents');
-          this.getCampaignCalendarView(this.loggedInUserId);  
+          this.getCampaignCalendarView();  
         }
         );
     }
@@ -301,8 +306,7 @@ export class CalendarComponent implements OnInit {
         error => console.error(error),
         () => {
           $('#saveAsModal').modal('hide'); 
-          $('#calendar').fullCalendar('removeEvents');
-          this.getCampaignCalendarView(this.loggedInUserId);  
+          this.getCampaignCalendarView();  
         }
         );
   }
@@ -325,10 +329,16 @@ export class CalendarComponent implements OnInit {
         $('#myModal').modal('hide');
   }
 
+addDays(date, days) {
+  var result = new Date(date);
+  result.setDate(result.getDate() + days);
+  return result;
+}
+
   ngOnInit() {
     this.renderCalendar();
-    this.getCampaignCalendarView(this.loggedInUserId);
   }
+
   ngOnDestroy() {
     $('#myModal').modal('hide');
   }

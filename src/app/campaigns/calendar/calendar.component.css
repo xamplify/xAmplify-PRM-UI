@@ -8,3 +8,7 @@ fieldset img {height: 120px}
 .campaign-label.save{background: #6c757d;color: white;border: 1px solid #6c757d;}
 .campaign-label.schedule{background: #007bff;color: white;border: 1px solid #007bff;}
 .progress {height: 7px; margin: 10px 0;}
+
+
+.fc-event { max-height: fit-content; padding-bottom: 10px;}
+.fc-day-grid-event>.fc-content {white-space: initial !important;}

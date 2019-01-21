@@ -552,8 +552,8 @@ export class CampaignService {
           .catch(this.handleError);
   }
 
-  getCampaignCalendarView(userId: number){
-      return this.http.get(this.URL + `campaign/calendar/${userId}?access_token=${this.authenticationService.access_token}` )
+  getCampaignCalendarView(request: any){
+      return this.http.post(this.URL + `campaign/calendar?access_token=${this.authenticationService.access_token}`, request )
           .map(this.extractData)
           .catch(this.handleError);
   }
