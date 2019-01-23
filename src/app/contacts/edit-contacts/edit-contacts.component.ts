@@ -54,6 +54,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
     totalListUsers = [];
     updatedUserDetails = [];
+    existedEmailIds = [];
 
     contactListObject: ContactList;
     selectedContactListName: string;
@@ -525,6 +526,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                     if ( this.users[i].country === "Select Country" ) {
                         this.users[i].country = null;
                     }
+                    
+                    this.validateEmail(this.users[i].emailId);
 
                     /*if ( this.users[i].mobileNumber.length < 6 ) {
                         this.users[i].mobileNumber = "";
@@ -538,7 +541,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
                     this.newUserDetails.push( userDetails );
                 }
-                if ( this.validCsvContacts == true && this.invalidPatternEmails.length == 0 ) {
+                if ( this.validCsvContacts == true && this.invalidPatternEmails.length == 0 && !this.isEmailExist) {
                     $( "#sample_editable_1" ).show();
                     this.isCompanyDetails = false;
                     if ( this.isPartner ) {
@@ -636,6 +639,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                         this.customResponse = new CustomResponse( 'ERROR', "You are not allowed add teamMember or orgAdmin as a partner", true );
                     }
 
+                }else if(this.isEmailExist){
+                    this.customResponse = new CustomResponse( 'ERROR', "These email(s) are already added " + this.existedEmailIds, true );
                 } else {
                     this.inValidCsvContacts = true;
                 }
@@ -1101,9 +1106,11 @@ export class EditContactsComponent implements OnInit, OnDestroy {
         try {
             this.duplicateEmailIds = [];
             this.dublicateEmailId = false;
+            this.existedEmailIds = [];
             var testArray = [];
             for ( var i = 0; i <= this.users.length - 1; i++ ) {
                 testArray.push( this.users[i].emailId );
+                this.validateEmail(this.users[i].emailId);
             }
 
             var newArray = this.compressArray( testArray );
@@ -1120,8 +1127,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                 return valueArr.indexOf( item ) != idx
             });
             console.log( isDuplicate );
-            if ( !isDuplicate ) {
+            if ( !isDuplicate && !this.isEmailExist ) {
                 this.saveClipboardValidEmails();
+            }else if(this.isEmailExist){
+                this.customResponse = new CustomResponse( 'ERROR', "These email(s) are already added " + this.existedEmailIds, true );
             } else {
                 this.dublicateEmailId = true;
                 $( "button#sample_editable_1_new" ).prop( 'disabled', false );
@@ -1813,6 +1822,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
         $( '#addContactModal' ).modal( 'toggle' );
         $( "#addContactModal .close" ).click()
     }
+    
+    
     validateEmail( emailId: string ) {
         const lowerCaseEmail = emailId.toLowerCase();
         if ( this.validateEmailAddress( emailId ) ) {
@@ -1826,6 +1837,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
             for ( let i = 0; i < this.contacts.length; i++ ) {
                 if ( lowerCaseEmail == this.contacts[i].emailId ) {
                     this.isEmailExist = true;
+                    this.existedEmailIds.push(emailId);
                     break;
                 } else {
                     this.isEmailExist = false;

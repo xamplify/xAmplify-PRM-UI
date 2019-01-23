@@ -39,6 +39,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     checkingForEmail: boolean;
     addPartnerUser: User = new User();
     newPartnerUser = [];
+    existedEmailIds = [];
     invalidPatternEmails = [];
     validCsvContacts: boolean;
     partners: User[];
@@ -234,6 +235,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             for ( let i = 0; i < this.contactService.allPartners.length; i++ ) {
                 if ( lowerCaseEmail == this.contactService.allPartners[i].emailId ) {
                     this.isEmailExist = true;
+                    this.existedEmailIds.push(emailId);
                     break;
                 } else {
                     this.isEmailExist = false;
@@ -302,9 +304,12 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     savePartnerUsers() {
         this.duplicateEmailIds = [];
         this.dublicateEmailId = false;
+        this.existedEmailIds = [];
+        this.isEmailExist = false;
         var testArray = [];
         for ( var i = 0; i <= this.newPartnerUser.length - 1; i++ ) {
             testArray.push( this.newPartnerUser[i].emailId.toLowerCase() );
+            this.validateEmail(this.newPartnerUser[i].emailId);
         }
 
         var newArray = this.compressArray( testArray );
@@ -322,9 +327,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         });
         console.log( "emailDuplicate" + isDuplicate );
         if ( this.newPartnerUser[0].emailId != undefined ) {
-            if ( !isDuplicate ) {
+            if ( !isDuplicate && !this.isEmailExist ) {
                 this.saveValidEmails();
-            } else {
+            }else if(this.isEmailExist){
+                this.customResponse = new CustomResponse( 'ERROR', "These patners are already added " + this.existedEmailIds, true );
+            }else {
                 this.dublicateEmailId = true;
             }
         }
