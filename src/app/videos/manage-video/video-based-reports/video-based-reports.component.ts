@@ -693,7 +693,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                 object["Video Title"] = this.downloadCsvList[i].videoTitle;
                 let hours = this.referenceService.formatAMPM(date);
                 object["Date and Time"] = date.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
-                object["Minets Watched"] = this.downloadCsvList[i].minutesWatched;
+                object["Minutes Watched"] = this.downloadCsvList[i].minutesWatched;
                 object["Device"] = this.downloadCsvList[i].device;
                 object["Location"] = this.downloadCsvList[i].city + ' ' + this.downloadCsvList[i].state + ' ' + this.downloadCsvList[i].country;
             }
