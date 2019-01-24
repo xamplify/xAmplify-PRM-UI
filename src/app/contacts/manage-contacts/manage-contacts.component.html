@@ -30,7 +30,7 @@
 		</ul>
 	</div>
 
-	<div id="manageContacts" *ngIf="showListOfContactList">
+	<div id="manageContacts" >
 		<!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
 		<div *ngIf="showAll">
 			<!-- END PAGE HEADER-->
@@ -38,9 +38,9 @@
 			<div>
 				<div class="row">
 					<div class="col-md-12">
-						<div class="tabbable tabbable-custom tabbable-noborder">
+						<div [ngClass]="{'tabbable tabbable-custom tabbable-noborder': showListOfContactList}">
 
-							<div class="tab-content" style="min-height: 570px;">
+							<div class="tab-content" [ngStyle]="{'min-height':showListOfContactList? '570px': ''}">
 								<div class="tab-pane active">
 									<!-- BEGIN FILTER -->
 
@@ -159,7 +159,7 @@
 											</button>
 										</div>
 									</div>
-									<div class="page-bar m0">
+									<div class="page-bar m0" *ngIf="showListOfContactList">
 										<ul class="page-breadcrumb">
 											<li style="font-size: 16px; color: #888888">Your
 												{{checkingContactTypeName}} Lists</li>
@@ -221,6 +221,7 @@
 								<!-- END FILTER -->
 								<!-- <app-loader *ngIf="httpRequestLoader.isLoading && !isListView"></app-loader>
 								<app-list-loader *ngIf="httpRequestLoader.isLoading && isListView"></app-list-loader> -->
+								<section *ngIf="showListOfContactList">
 								<div class="clearfix">
 									<app-grid-loader
 										*ngIf="httpRequestLoader.isLoading && !isListView"></app-grid-loader>
@@ -451,6 +452,7 @@
 										(notifyParent)="setPage($event)"
 										(notifyParentDropDown)="loadContactLists($event)"></app-pagination>
 								</div>
+								</section>
 							</div>
 						</div>
 					</div>
