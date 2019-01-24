@@ -1,6 +1,9 @@
 <div class="page-content">
+  <div class="pg8">
+      <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+  </div>
   <div class="page-bar">
-    <div id="calendar" style="padding: 25px">
+    <div id="calendar" style="padding: 25px;border: 1px solid #CCC;">
       <ngx-loading [show]="loading"></ngx-loading>
     </div>
   </div>
@@ -8,11 +11,11 @@
 
 <!-- Modal -->
 <div class="modal right fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-css" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">{{campaign?.campaignName}}</h4>       
+        <button type="button" class="close-circle" data-dismiss="modal"><i class="fa fa-times"></i></button>
+        <h4 class="modal-title" id="myModalLabel"><b>{{campaign?.campaignName}}</b></h4>
       </div>
       <div class="modal-body">
         <ng-container *ngIf="campaign && !deleteCampaignAlert">
@@ -25,6 +28,7 @@
             <ng-template #default>{{campaign.campaignScheduleType | titlecase}}d</ng-template>
           </span>
             </h6>
+
             <div class="media col-xs-12 col-sm-6">
               <div class="media-left p10">
                 <i class="fa fa-bullhorn"></i>
@@ -55,18 +59,71 @@
               <app-social-status [socialStatus]="socialStatus"></app-social-status>
             </ng-container>
           </fieldset>
-          <fieldset *ngIf="campaign.campaignType !== 'SOCIAL'">
+          <fieldset [hidden]="campaign.campaignType === 'SOCIAL'">
             <legend>Selected:</legend>
-            <div *ngIf="campaign.campaignVideoFile" class="col-sm-6 col-xs-12">
-              <img src="{{campaign.campaignVideoFile.imagePath}}">
+            <div class="wrapper">
+            <!-- <div *ngIf="campaign.campaignVideoFile" class="wleft" (mouseenter) ="mouseEnter(campaign.campaignVideoFile)" (mouseleave) ="mouseLeave(campaign.campaignVideoFile)">
+              <div class="video-thumbnail-wrapper">
+              <img *ngIf="!authenticationService.isSuperAdmin()" id="imagePathVideo{{campaign.campaignVideoFile.id}}" class="video-thumbnail"(click)="videoFile = campaign.campaignVideoFile" src="{{campaign.campaignVideoFile}}" style="width:100%" (error)="videoUtilService.errorVideoHandler($event)" >
+              <i *ngIf="!authenticationService.isSuperAdmin()" class="fa fa-play-circle"(click)="videoFile = campaign.campaignVideoFile"></i>
+             </div>
               <h5>{{campaign.campaignVideoFile.title}}</h5>
               <h6>By {{campaign.campaignVideoFile.uploadedUserName}}</h6>
+            </div> -->
+            <div [hidden]="!campaign.campaignVideoFile" class="wleft" >
+              <div>
+                <div >
+                  <div id="main_video_src"></div>
+                  <h5 id="description"></h5>
+                </div>
+              </div>
             </div>
-            <div class="col-sm-6 col-xs-12" *ngIf="campaign.emailTemplate">
-              <img src="{{campaign.emailTemplate.subject}}">
-              <h5>{{campaign.emailTemplate.name}}</h5>
-              <h6>By {{campaign.emailTemplate.createdBy}}</h6>
+            <div *ngIf="campaign.emailTemplate" class="wright" >
+              <ul class="content__list" style="margin-top: -12px;">
+                  <li class="list__item" style="width:auto !important;float:none;" [class.list__item--selected]="true">
+                    <div class="flex-row">
+                      <div class="item__select-box-wrapper">
+                        <span class="select-box"> <label> <input type="checkbox" checked="checked"></label></span>
+                        <span class="ng-scope"> <a class="item__preview item__preview--image img-container custom"
+                          target="_BLANK"> <img class="thumb ng-scope" style="width:98px !important" src="assets/images/bee-template/rich-co-branding-news-letter.png">
+                          </a> <a href="javascript:;"> </a>
+                        </span>
+                      </div>
+                      <div class="item__content">
+                        <div class="flex-row">
+                          <span class="item__name"
+                            [title]="campaign.emailTemplate.name"><b>{{campaign.emailTemplate.name |slice:0:15}}</b><b *ngIf="campaign.emailTemplate?.name?.length>15">...</b>
+                          </span>
+                          <span lass="item__name" title="created on" style="float:left">
+                          <span><app-timestamp [isOnlyDate]="true" [dateAndTime]="campaign?.emailTemplate?.createdDate"></app-timestamp></span>
+                          </span>
+                          <ng-container *ngIf="campaign.emailTemplate?.type?.toLocaleString()!='PARTNER'">
+                            <span style="float:left"  title="{{campaign.emailTemplate.createdBy}}">
+                                <b>By:</b> <span>{{campaign.emailTemplate.createdBy|slice:0:12}}<span *ngIf="campaign.emailTemplate.createdBy?.length>12">...</span></span>
+                            </span>
+                          </ng-container>
+                          <ng-container *ngIf="campaign.emailTemplate?.type?.toLocaleString()=='PARTNER'">
+                            <span style="float:left" title="{{campaign.emailTemplate.vendorName}}">
+                                <b>By:</b>  <span>{{campaign.emailTemplate.vendorName|slice:0:12}}<span *ngIf="campaign.emailTemplate.vendorName?.length>12">...</span></span>
+                            </span>
+                          </ng-container>
+                          <div class="item__actions">
+                            <span> <a style="float:left; right: -6px;"  class="fm external-link" target="_BLANK"
+                              data-toggle="tooltip" data-placement="top"
+                              title="Preview"  (click)="$event.stopPropagation();getEmailTemplatePreview(campaign.emailTemplate)"> <!-- (click)="preview(file)"  -->
+                                <i class="fa fa-external-link-square"  aria-hidden="true" style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
+                             </a>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="clearfix"></div>
+                    </div>
+                  </li>
+                </ul>
             </div>
+          </div>
+
           </fieldset>
           <fieldset *ngIf="campaign.campaignType !== 'SOCIAL'">
             <legend>Selected Recipients(s):</legend>
@@ -75,17 +132,30 @@
                 <tr>
                   <th scope="col">#</th>
                   <th scope="col">List Name</th>
+                  <th scope="col">Uploaded Date</th>
+                  <th scope="col">Preview</th>
                 </tr>
               </thead>
               <tbody>
-                <ng-container *ngFor="let userList of campaign.userLists; let i = index">
+                <ng-container *ngFor="let userList of contactListPagination.pagedItems; let i = index">
                   <tr>
                     <th scope="row">{{i+1}}</th>
-                    <td>{{userList.name}}</td>
+                    <td><b>{{userList.name}}</b></td>
+                    <td><app-timestamp [isOnlyDate]="true" [dateAndTime]="userList.createdDate"> </app-timestamp></td>
+                    <td class="text-center">
+                      <a  (click)="$event.stopPropagation();loadContactsOnPreview(contactListPagination.pagedItems[i],contactsPagination)">
+                        <i class="fa fa-eye" style="color: #008fd5;padding-top: 3px; font-size: 20px;" title="" data-original-title="Preview"></i>
+                      </a>
+                    </td>
                   </tr>
                 </ng-container>
               </tbody>
             </table>
+            <div *ngIf="contactListPagination.totalRecords > 0" style="background:white">
+              <div *ngIf="contactListPagination.pagedItems.length !== 0">
+                <app-pagination class="pg8" [pagination]="contactListPagination" [type]="'contactslists'" (notifyParent)="setContactPage($event)" (notifyParentDropDown)="loadContactList($event)"></app-pagination>
+              </div>
+            </div>
           </fieldset>
           <fieldset *ngIf="campaign.campaignType !== 'SOCIAL'">
             <legend>Analytics</legend>
@@ -109,18 +179,18 @@
             </div>
           </fieldset>
         </ng-container>
-<div class="swal2-modal show-swal2 visible" style="    display: block;padding: 20px;margin-top: -74px;border: 1px solid #ccc;box-shadow: 0px 0px 20px #f1f1f1;" tabindex="-1" *ngIf="deleteCampaignAlert">
-<div class="swal2-icon swal2-warning pulse-warning" style="display: block;">!</div>
-<span class="line tip"></span> <span class="line long"></span>
-<div class="placeholder"></div>
-<div class="fix"></div>
-<h2>Are you sure?</h2>
-<div class="swal2-content" style="display: block;">You won't be able to undo this action</div>
-<hr class="swal2-spacer" style="display: block;">
-<button class="btn btn-primary btn-sm" (click)="deleteCampaign(campaign.campaignId)">Yes, delete it!</button>
-<button class="btn btn-secondary btn-sm" (click)="deleteCampaignAlert = false">Cancel</button>
-</div>
-        
+      <div class="swal2-modal show-swal2 visible" style="    display: block;padding: 20px;margin-top: -74px;border: 1px solid #ccc;box-shadow: 0px 0px 20px #f1f1f1;" tabindex="-1" *ngIf="deleteCampaignAlert">
+      <div class="swal2-icon swal2-warning pulse-warning" style="display: block;">!</div>
+      <span class="line tip"></span> <span class="line long"></span>
+      <div class="placeholder"></div>
+      <div class="fix"></div>
+      <h2>Are you sure?</h2>
+      <div class="swal2-content" style="display: block;">You won't be able to undo this action</div>
+      <hr class="swal2-spacer" style="display: block;">
+      <button class="btn btn-primary btn-sm" (click)="deleteCampaign(campaign.campaignId)">Yes, delete it!</button>
+      <button class="btn btn-secondary btn-sm" (click)="deleteCampaignAlert = false">Cancel</button>
+      </div>
+
       </div>
       <div class="modal-footer" *ngIf="!deleteCampaignAlert">
         <div class="actions-block text-center m10" *ngIf="campaign">
@@ -133,21 +203,21 @@
               data-toggle="tooltip" data-placement="top" title="No Redistributed Campaigns">
               <span class="circled-number disabled">{{campaign.redistributedCount}}</span>
             </a>
-            <a *ngIf="  hasAllAccess || (hasStatsRole || hasCampaignRole) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor"
+            <a *ngIf="hasAllAccess || (hasStatsRole || hasCampaignRole) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor"
               data-rel="fancybox-button" (click)="navigateCampaignAnalytics(campaign)" data-toggle="tooltip" data-placement="top" title="Analytics">
               <i class="fa fa-line-chart"></i>
             </a>
-            <a *ngIf=" (campaign.campaignType !== 'SOCIAL') && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor) && !campaign.nurtureCampaign"
+            <a *ngIf="(campaign.campaignType !== 'SOCIAL') && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor) && !campaign.nurtureCampaign"
               data-rel="fancybox-button" (click)="openSaveAsModal(campaign)" data-toggle="tooltip" data-placement="auto" title="Copy Campaign">
               <i class="fa fa-files-o"></i>
             </a>
-            <a *ngIf=" (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor) && campaign.channelCampaign"
+            <a *ngIf="(hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor) && campaign.channelCampaign"
               (click)="navigatePreviewPartners(campaign)" data-rel="fancybox-button" data-toggle="tooltip" data-placement="auto" title="Preview & Delete Partner(s)">
               <i class="fa fa-handshake-o" id="partner-icon"></i>
             </a>
           </ng-container>
           <ng-container *ngIf="!campaign.launched">
-            <a *ngIf="hasAllAccess || (campaign.launched==false&&hasCampaignRole && loggedInUserId==campaign.userId) || (!campaign.launched&&isOnlyPartner)  || authenticationService.module.isVendor" 
+            <a *ngIf="hasAllAccess || (campaign.launched==false&&hasCampaignRole && loggedInUserId==campaign.userId) || (!campaign.launched&&isOnlyPartner)  || authenticationService.module.isVendor"
               (click)="editCampaign(campaign)" data-toggle="tooltip" data-placement="auto" title="Edit">
               <i class="fa fa-pencil-square-o"></i>
             </a>
@@ -156,15 +226,83 @@
             <a *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor"
               (click)="confirmDeleteCampaign(campaign.campaignId)" data-rel="fancybox-button" data-toggle="tooltip" data-placement="auto" title="Delete">
               <i class="fa fa-trash-o"> </i></a>
-        </div> 
+        </div>
       </div>
 </div>
 </div>
 </div>
+<!-- video preview-->
+<app-preview-video *ngIf="videoFile" [videoFile]="videoFile" (notifyParent)="closeModal($event)"></app-preview-video>
+  <!--   contacts preview modal    -->
+  <div class="modal right " id="contactsModal">
+      <div class="modal-dialog modal-css" style="width: 75%;right:0">
+        <div class="modal-content">
+          <div class="modal-header">
+          <a class="close-circle" data-dismiss="modal" (click)="closeModal()">
+            <i class="fa fa-times"></i>
+          </a>
+          <h4 id="contactsModalLabel" class="modal-title caption-subject font-red-sunglo" style="font-weight: 600;color: #635e5e !important;">
+            <span *ngIf="previewContactList.name?.length<20">{{previewContactList.name}}</span>
+            <span *ngIf="previewContactList.name?.length>20">{{previewContactList.name | slice:0:20}}</span>
+          </h4>
+        </div>
+        <div class="modal-body">
+          <div class="table-responsive">
+            <table class="table table-bordered no-more-tables dataTable no-footer">
+              <thead>
+                <tr>
+                  <th>Email Address</th>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let contact of contactsPagination.pagedItems">
+                  <td title="{{contact.emailId}}">
+                    <span *ngIf="contact.emailId?.length>25">{{contact.emailId | slice:0:25}}..</span>
+                    <span *ngIf="contact.emailId?.length<=25">{{contact.emailId}}</span>
+                  </td>
+                  <td title="{{contact.firstName}}">
+                      <span *ngIf="contact.firstName?.length>20">{{contact.firstName | slice:0:20}}..</span>
+                      <span *ngIf="contact.firstName?.length<=20">{{contact.firstName}}</span>
+                  </td>
+                  <td title="{{contact.lastName}}">
+                      <span *ngIf="contact.lastName?.length>20">{{contact.lastName | slice:0:20}}..</span>
+                      <span *ngIf="contact.lastName?.length<=20">{{contact.lastName}}</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <app-pagination class="pg8" *ngIf="contactsPagination.pagedItems?.length > 0" [pagination]="contactsPagination" [type]="'contacts'"
+             (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropDown($event)"></app-pagination>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- Email template modal popup -->
+<div class="modal right " id="show_email_template_preivew">
+    <div class="modal-dialog modal-css" style="width: 75%;right:0">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close-circle" data-dismiss="modal">
+            <i class="fa fa-times"></i>
+          </button>
+          <h4 class="modal-title text-center" id="email-template-title"></h4>
+        </div>
+        <div class="modal-body">
+          <div id="htmlContent"></div>
+        </div>
+        <div class="modal-footer">
+          <a data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
+        </div>
+      </div>
+    </div>
+  </div>
 
 <!-- Save As Modal -->
 <div class="modal right fade" id="saveAsModal" tabindex="-1" role="dialog" aria-labelledby="saveAsModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-copy" role="document">
+	<div class="modal-dialog modal-css" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title f-w-600" id="saveAsModalLabel">Copy Campaign</h4>
