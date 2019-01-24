@@ -800,6 +800,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       this.loading = true;
       this.downloadTypeName = 'rsvp';
       this.rsvpResposeType = "invities";
+      this.rsvpDetailAnalyticsPagination = new Pagination();
       if(this.rsvpDetailType === 'reDistribution'){
           this.campaignService.getEventCampaignRedistributionInvitiesDetails( this.campaign.campaignId, this.campaignReport.selectedPartnerUserId, this.rsvpDetailAnalyticsPagination )
           .subscribe(
@@ -853,6 +854,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       try{
       this.loading = true;
       this.downloadTypeName = 'rsvp';
+      this.rsvpDetailAnalyticsPagination = new Pagination();
       this.rsvpResposeType = "email open";
       if(this.rsvpDetailType === 'reDistribution'){
           this.campaignService.getEventCampaignRedistributionEmailOpenDetails( this.campaign.campaignId, this.campaignReport.selectedPartnerUserId, this.rsvpDetailAnalyticsPagination )
@@ -918,6 +920,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       try{
           this.loading = true;
           this.downloadTypeName = 'rsvp';
+          this.rsvpDetailAnalyticsPagination = new Pagination();
           //this.rsvpDetailType = detailType;
           this.rsvpResposeType = responseType;
           if(this.rsvpDetailType === 'reDistribution'){
