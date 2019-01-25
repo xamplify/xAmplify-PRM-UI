@@ -44,6 +44,7 @@ export class ReferenceService {
     topNavBarNotificationDetails: any = new Object();
     roles: Roles = new Roles();
     topNavBarUserDetails = { 'displayName': '....', 'profilePicutrePath': 'assets/admin/pages/media/profile/icon-user-default.png' };
+    companyProfileImage: string;
     userDefaultPage = '';
     hasCompany = false;
     formGroupClass = "form-group";

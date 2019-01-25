@@ -157,6 +157,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
             } else {
                 this.companyLogoUploader.queue.length = 0;
                 this.companyLogoImageUrlPath = this.companyProfile.companyLogoPath = JSON.parse(response).path;
+                this.refService.companyProfileImage = this.companyProfile.companyLogoPath;
                 this.logoError = false;
                 this.logoErrorMessage = "";
                 this.enableOrDisableButton();
@@ -370,6 +371,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
                         $('#saveOrUpdateCompanyButton').prop('disabled', false);
                         this.processor.remove(this.processor);
                         this.authenticationService.user.websiteUrl = this.companyProfile.website;
+                        this.refService.companyProfileImage = this.companyProfile.companyLogoPath;
                         setTimeout(function () { $("#edit-sucess").slideUp(500); }, 5000);
                         this.saveVideoBrandLog();
                     },
@@ -473,7 +475,10 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
                 }).then(function() {
                         self.saveCompanyProfileOnDestroy();
                 },function (dismiss) {
-                    if (dismiss === 'cancel') {console.log('clicked cancel') }
+                    if (dismiss === 'cancel') {
+                      console.log('clicked cancel');
+                      self.refService.companyProfileImage = self.tempCompanyProfile.companyLogoPath;
+                   }
                 })
 
               }

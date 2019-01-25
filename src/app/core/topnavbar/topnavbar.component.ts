@@ -114,11 +114,12 @@ export class TopnavbarComponent implements OnInit {
   lockScreen(){
     this.router.navigate(['/userlock']);
   }
-
+  errorImage(event) { event.target.src = this.properties.COMPANY_LOGO; }
   logout() {
     this.refService.userDefaultPage = 'NoneOf';
     this.refService.isSidebarClosed = false;
     this.refService.defaulgVideoMethodCalled = false;
+    this.refService.companyProfileImage = '';
     document.body.className = 'login page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-sidebar-closed-hide-logo';
     this.authenticationService.logout();
     if(this.refService.isXamplify()){ window.location.href = 'https://www.xamplify.com/';}
