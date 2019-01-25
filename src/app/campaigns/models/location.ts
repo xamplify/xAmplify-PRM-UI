@@ -6,4 +6,5 @@ export class Location {
     state: string;
     zip: string;
     country: any;
+    address2: any;
 }

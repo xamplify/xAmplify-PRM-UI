@@ -308,11 +308,22 @@ a.disabled {
 								<div class="col-sm-9">
 									<input type="text"
 										[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)? '' : null"
-										class="form-control" id="eventDateTime"
+										class="form-control" id="address1"
 										placeholder="Street Address"
+										maxlength="25"
 										[(ngModel)]="eventCampaign.campaignLocation.street"
 										[ngModelOptions]="{standalone: true}">
 								</div>
+								<div class="col-sm-offset-3 col-sm-9 pt10">
+									<input type="text"
+										[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)? '' : null"
+										class="form-control" id="address2"
+										placeholder="Address2"
+										maxlength="25"
+										[(ngModel)]="eventCampaign.campaignLocation.address2"
+										[ngModelOptions]="{standalone: true}">
+								</div>
+								
 								<div class="col-sm-offset-3 col-sm-9 pt10">
 									<div class="col-sm-6" style="padding-left: 0px">
 										<input type="text"

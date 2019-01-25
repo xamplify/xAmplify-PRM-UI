@@ -1189,6 +1189,10 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
               if(this.eventCampaign.campaignLocation.street === undefined){
                   this.eventCampaign.campaignLocation.street = "";
               }
+              
+              if(this.eventCampaign.campaignLocation.address2 === undefined){
+                  this.eventCampaign.campaignLocation.address2 = "";
+              }
 
               if(this.eventCampaign.campaignLocation.city === undefined){
                   this.eventCampaign.campaignLocation.city = "";
@@ -1207,37 +1211,57 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
                   let address1 = this.eventCampaign.campaignLocation.location;
                   let address2 = "";
                   let address3 = "";
+                  let address4 = "";
                   let fullAddress = "";
 
-                  if(this.eventCampaign.campaignLocation.street && this.eventCampaign.campaignLocation.city){
-                      address2 = this.eventCampaign.campaignLocation.street + ", " + this.eventCampaign.campaignLocation.city;
+                 
+                  
+                  if(this.eventCampaign.campaignLocation.street && this.eventCampaign.campaignLocation.address2){
+                      address2 = this.eventCampaign.campaignLocation.street + "<br>" + this.eventCampaign.campaignLocation.address2;
                   }else if(this.eventCampaign.campaignLocation.street){
                       address2 = this.eventCampaign.campaignLocation.street;
-                  }else if(this.eventCampaign.campaignLocation.city){
-                      address2 = this.eventCampaign.campaignLocation.city;
+                  }else if(this.eventCampaign.campaignLocation.address2){
+                      address2 = this.eventCampaign.campaignLocation.address2;
                   }else{
                       address2 = ""
                   }
 
-                  if(this.eventCampaign.campaignLocation.state && this.eventCampaign.campaignLocation.zip){
-                      address3 = this.eventCampaign.campaignLocation.state + ", " + this.eventCampaign.campaignLocation.zip;
+                  if(this.eventCampaign.campaignLocation.state && this.eventCampaign.campaignLocation.city){
+                      address3 = this.eventCampaign.campaignLocation.city + ", " + this.eventCampaign.campaignLocation.state;
                   }else if(this.eventCampaign.campaignLocation.state){
                       address3 = this.eventCampaign.campaignLocation.state;
-                  }else if(this.eventCampaign.campaignLocation.zip){
-                      address3 = this.eventCampaign.campaignLocation.zip;
+                  }else if(this.eventCampaign.campaignLocation.city){
+                      address3 = this.eventCampaign.campaignLocation.city;
                   }else{
                       address3 = ""
                   }
-
-                  if(address2 && address3){
-                      fullAddress = address1 + "<br>" + address2 + "<br>" + address3 + "<br>" + this.eventCampaign.campaignLocation.country;
-                  }else if(address2 && !address3){
-                      fullAddress = address1 + "<br>" + address2 + "<br>" + this.eventCampaign.campaignLocation.country;
-                  }
-                  else if(!address2 && address3){
-                      fullAddress = address1 + "<br>" + address3 + "<br>" + this.eventCampaign.campaignLocation.country;
+                  
+                  if(this.eventCampaign.campaignLocation.country && this.eventCampaign.campaignLocation.zip){
+                      address4 = this.eventCampaign.campaignLocation.country + " " + this.eventCampaign.campaignLocation.zip;
+                  }else if(this.eventCampaign.campaignLocation.country){
+                      address4 = this.eventCampaign.campaignLocation.country;
+                  }else if(this.eventCampaign.campaignLocation.zip){
+                      address4 = this.eventCampaign.campaignLocation.zip;
                   }else{
-                      fullAddress = address1 + "<br>" + this.eventCampaign.campaignLocation.country;
+                      address4 = ""
+                  }
+
+                  if(address2 && address3 && address4){
+                      fullAddress = address1 + "<br>" + address2 + "<br>" + address3 + "<br>" + address4;
+                  }else if(address2 && !address3 && !address4){
+                      fullAddress = address1 + "<br>" + address2;
+                  }else if(address2 && address3 && !address4){
+                      fullAddress = address1 + "<br>" + address2 + "<br>" + address3;
+                  }else if(!address2 && address3 && address4){
+                      fullAddress = address1 + "<br>" + address3 + "<br>" + address4;
+                  }else if(!address2 && address3 && !address4){
+                      fullAddress = address1 + "<br>" + address3;
+                  }else if(!address2 && !address3 && address4){
+                      fullAddress = address1 + "<br>" + address4;
+                  }else if(address2 && !address3 && address4){
+                      fullAddress = address1 + "<br>" + address2 + "<br>" + address4;
+                  }else{
+                      fullAddress = address1;
                   }
 
 
