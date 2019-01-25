@@ -400,6 +400,9 @@ export class CalendarComponent implements OnInit, OnDestroy {
   closeModal(event:any){
   this.videoFile = undefined;
   }
+  closeModalContact(){
+
+  }
   mouseEnter(videoFile){
     if(videoFile.processed){(<HTMLInputElement>document.getElementById('imagePathVideo'+videoFile.id)).src = videoFile.gifImagePath; }
   }

@@ -326,7 +326,7 @@
                     </ng-container>
                     <div *ngIf="contactListPagination.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError" style="background:white">
                       <div *ngIf="contactListPagination.pagedItems.length !== 0">
-                        <app-pagination class="pg8" [pagination]="contactListPagination" [type]="'contacts'" (notifyParent)="setContactPage($event)" (notifyParentDropDown)="loadContactList($event)"></app-pagination>
+                        <app-pagination class="pg8" [pagination]="contactListPagination" [type]="'contactslists'" (notifyParent)="setPage($event)" (notifyParentDropDown)="loadContactList($event)"></app-pagination>
                       </div>
                     </div>
                   </div>
@@ -850,12 +850,12 @@
   </div>
 </div>
 <div id="emailTemplateContent" style="display: none;"></div>
-<!-- ----------------------------------Contact Lists--------------------------------- -->
+<!-- ----------------------------------Contact user modal popup --------------------------------- -->
 <div class="modal right fade" id="usersModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static">
   <div class="modal-dialog modal-user" role="document" style="right:0">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close-circle" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close-circle" data-dismiss="modal" aria-label="Close" (click)="closeModelPopup()">
           <i class="fa fa-times"></i>
         </button>
         <div>
@@ -864,11 +864,38 @@
           </h4>
         </div>
       </div>
-      <div class="modal-body" id="users-modal-body">
+      <div class="modal-body" >
+      <div class="table-responsive">
+          <table class="table table-striped table-hover table-bordered">
+            <thead>
+              <tr>
+                <th>Email Address</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let contact of contactsUsersPagination.pagedItems">
+                <td title="{{contact.emailId}}">
+                  <span *ngIf="contact.emailId?.length>25">{{contact.emailId | slice:0:25}}..</span>
+                  <span *ngIf="contact.emailId?.length<=25">{{contact.emailId}}</span>
+                </td>
+                <td title="{{contact.firstName}}">
+                    <span *ngIf="contact.firstName?.length>20">{{contact.firstName | slice:0:20}}..</span>
+                    <span *ngIf="contact.firstName?.length<=20">{{contact.firstName}}</span>
+                </td>
+                <td title="{{contact.lastName}}">
+                    <span *ngIf="contact.lastName?.length>20">{{contact.lastName | slice:0:20}}..</span>
+                    <span *ngIf="contact.lastName?.length<=20">{{contact.lastName}}</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <app-pagination class="pg8"[pagination]="contactsUsersPagination" [type]="'contacts'"
+          (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
+        </div>
       </div>
       <div class="modal-footer">
-        <app-pagination class="pg8" style="float: left;" [pagination]="contactsUsersPagination" [type]="'previewcampaign'"
-          [isDropdown]="true" (notifyParent)="setPage($event)"></app-pagination>
         <button type="button" (click)="closeModelPopup()" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>

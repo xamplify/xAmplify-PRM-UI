@@ -40,7 +40,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     emailTemplate: EmailTemplate;
     userLists: any;
     videoFile: any;
-    public campaignLaunchOptions = ['NOW', 'SCHEDULE', 'SAVE'];
+    campaignLaunchOptions = ['NOW', 'SCHEDULE', 'SAVE'];
     campaignLaunchForm: FormGroup;
     buttonName = "Launch";
     customResponse: CustomResponse = new CustomResponse();
@@ -93,6 +93,8 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     listName:string;
     roleName: Roles= new Roles();
     showContactType:boolean = false;
+    paginationType: string;
+
     constructor(
             private route: ActivatedRoute,
             private campaignService: CampaignService,
@@ -117,7 +119,6 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     selectClickEmailBody(i,r,e){}
     setUrlScheduleType(i,e){}
     shareAnalytics(e){}
-    setContactPage(e){}
     getCampaignById() {
         var obj = { 'campaignId': this.route.snapshot.params['id'] }
         this.campaignService.getCampaignById( obj )
@@ -422,6 +423,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
 
     /*************************************************************Contact List***************************************************************************************/
     loadContactList(contactsPagination: Pagination) {
+        this.paginationType = 'contactslists';
         this.campaignContact.httpRequestLoader.isHorizontalCss=true;
         this.referenceService.loading(this.campaignContact.httpRequestLoader, true);
         contactsPagination.campaignUserListIds = this.campaign.userListIds;
@@ -456,6 +458,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     /*******************************Preview*************************************/
     contactListItems:any[];
       loadUsers(id:number,pagination:Pagination, name){
+        this.paginationType='contacts';
         this.listName = name;
            if(id==undefined || id==0){
               id=this.previewContactListId;
@@ -470,36 +473,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
                       console.log(this.contactListItems);
                       pagination.totalRecords = data.totalRecords;
                       this.contactsUsersPagination = this.pagerService.getPagedItems(pagination, this.contactListItems);
-                      $('#users-modal-body').html('');
-                      var html = "";
-                      html+= '<table style="margin:0" class="table table-striped table-hover table-bordered" id="sample_editable_1">'+
-                              '<thead>'+
-                                  '<tr>'+
-                                      '<th>EMAIL ID</th>'+
-                                      '<th>FIRST NAME</th>'+
-                                      '<th>LAST NAME</th>'+
-                                  '</tr>'+
-                              '</thead>'+
-                               '<tbody>';
-                      $.each(this.contactsUsersPagination.pagedItems,function(index,value){
-                          var firstName = value.firstName;
-                          var lastName = value.lastName;
-                          if(firstName==null || firstName=="null"){
-                              firstName="";
-                          }
-                         if(lastName==null || lastName=="null"){
-                             lastName = "";
-                         }
-                          html+= '<tr>'+
-                                      '<td>'+value.emailId+'</td>'+
-                                      '<td>'+firstName+'</td>'+
-                                      '<td>'+lastName+'</td>'+
-                                  '</tr>';
-                      });
-                       html+='</tbody>';
-                       html+='</table>';
-                      $('#users-modal-body').append(html);
-                      $('#usersModal').modal({backdrop: 'static', keyboard: false});
+                      $('#usersModal').modal();
                   },
                   error =>
                   () => console.log( "MangeContactsComponent loadUsersOfContactList() finished" )
@@ -507,6 +481,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
       }
 
       closeModelPopup(){
+          this.paginationType ='contactslists';
           this.contactsUsersPagination = new Pagination();
       }
       showContactsAlert(count:number){
@@ -522,8 +497,18 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
 
 
   setPage(event:any){
+      if(event.type==='contacts'){
       this.contactsUsersPagination.pageIndex = event.page;
-      this.loadUsers(0,this.contactsUsersPagination,this.listName);
+      this.loadUsers(this.previewContactListId,this.contactsUsersPagination,this.listName);}
+      else if(event.type==='contactslists'){
+        this.contactListPagination.pageIndex = event.page;
+        this.loadContactList(this.contactListPagination);
+      }
+  }
+  paginationDropdown(pagination:Pagination){
+    if(this.paginationType==='contacts'){
+      this.loadUsers(this.previewContactListId,pagination,this.listName);
+    }
   }
 
   setReplyEmailTemplate(emailTemplateId:number,reply:Reply,index:number){

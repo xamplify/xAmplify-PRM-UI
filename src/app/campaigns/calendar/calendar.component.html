@@ -153,7 +153,7 @@
             </table>
             <div *ngIf="contactListPagination.totalRecords > 0" style="background:white">
               <div *ngIf="contactListPagination.pagedItems.length !== 0">
-                <app-pagination class="pg8" [pagination]="contactListPagination" [type]="'contactslists'" (notifyParent)="setContactPage($event)" (notifyParentDropDown)="loadContactList($event)"></app-pagination>
+                <app-pagination class="pg8" [pagination]="contactListPagination" [type]="'contactslists'" (notifyParent)="setPage($event)" (notifyParentDropDown)="loadContactList($event)"></app-pagination>
               </div>
             </div>
           </fieldset>
@@ -238,7 +238,7 @@
       <div class="modal-dialog modal-css" style="width: 75%;right:0">
         <div class="modal-content">
           <div class="modal-header">
-          <a class="close-circle" data-dismiss="modal" (click)="closeModal()">
+          <a class="close-circle" data-dismiss="modal" (click)="closeModalContact()">
             <i class="fa fa-times"></i>
           </a>
           <h4 id="contactsModalLabel" class="modal-title caption-subject font-red-sunglo" style="font-weight: 600;color: #635e5e !important;">
