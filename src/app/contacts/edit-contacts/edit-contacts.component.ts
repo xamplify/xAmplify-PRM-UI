@@ -1282,6 +1282,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
         }
         this.selectedAddContactsOption = 8;
         this.users = [];
+        this.selectedContactListIds = [];
+        this.isHeaderCheckBoxChecked = false;
         this.dublicateEmailId = false;
         this.clickBoard = false;
     }
