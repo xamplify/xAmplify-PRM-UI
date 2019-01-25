@@ -37,7 +37,7 @@ export class PieChartComponent implements OnInit {
        },
        exporting: {enabled: false},
        credits: {enabled: false},
-       colors: ['#ffb600', '#ff3879', '#be72d3'],
+       colors: ['#ffb600', '#ff3879', '#be72d3', '#357ebd'],
        series: [{
            name: 'Count',
            colorByPoint: true,
@@ -50,7 +50,7 @@ export class PieChartComponent implements OnInit {
       var pieChartData;
       this.parterService.launchedCampaignsCountGroupByCampaignType(this.customerId).subscribe(
         (data: any) => {
-          pieChartData = [{name: 'VIDEO', y: data.VIDEO}, {name: 'REGULAR', y: data.REGULAR},{name: 'SOCIAL', y: data.SOCIAL}];
+          pieChartData = [{name: 'VIDEO', y: data.VIDEO}, {name: 'REGULAR', y: data.REGULAR},{name: 'SOCIAL', y: data.SOCIAL},{name: 'EVENT', y: data.EVENT}];
         },
         (error: any) => { console.log('error got here') },
         () => this.constructPieChart(pieChartData)
