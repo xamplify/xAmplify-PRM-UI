@@ -124,7 +124,7 @@
                                   <a class="disable" data-toggle="tooltip" data-placement="top" title="Unavailabel for processing">
                                     <i class="fa fa-line-chart"></i>
                                   </a>
-                                  <a class="disable" data-toggle="tooltip" data-placement="top" title="Unavailabel for processing" *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId == videoFile.uploadedUserId) || authenticationService.module.isVendor">
+                                  <a class="disable" data-toggle="tooltip" data-placement="left" title="Unavailabel for processing" *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId == videoFile.uploadedUserId) || authenticationService.module.isVendor">
                                     <i class="fa fa-trash-o"></i>
                                   </a>
                               </ng-container>
