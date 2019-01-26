@@ -1,4 +1,4 @@
-import { Component, OnInit,Input } from '@angular/core';
+import { Component, OnInit,Input, Output, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { ReferenceService } from '../../core/services/reference.service';
@@ -11,6 +11,10 @@ import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { UtilService } from '../../core/services/util.service';
 import { ListLoaderValue } from '../../common/models/list-loader-value';
 import { DealRegistrationService } from '../services/deal-registration.service';
+import { EventEmitter } from '@angular/core';
+import { ManageDealsComponent } from '../manage-deals/manage-deals.component';
+import { ManageLeadsComponent } from '../manage-leads/manage-leads.component';
+
 
 @Component({
   selector: 'app-manage-partners',
@@ -22,12 +26,18 @@ export class ManagePartnersComponent implements OnInit {
 
     
     @Input() campaignId: number;
+    @Output() leadObj = new EventEmitter<any>();
     httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
     pagination:Pagination = new Pagination();
     partnerList:boolean = false;
     leadList:boolean = false;
     partner:any = 0;
-    
+    selectedDealId: ManageLeadsComponent;
+    @ViewChild(ManageLeadsComponent)
+    set dealId(deal: ManageLeadsComponent) {
+        this.selectedDealId = deal;
+        console.log(deal)
+    };   
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService, 
           public utilService: UtilService,public referenceService: ReferenceService,
           private dealRegistrationService:DealRegistrationService,public homeComponent: HomeComponent,public xtremandLogger:XtremandLogger,
@@ -108,6 +118,7 @@ export class ManagePartnersComponent implements OnInit {
       this.leadList = true;
       this.partnerList = false;
       this.partner = partner;
+      this.leadObj.emit(partner);
   }
   
   

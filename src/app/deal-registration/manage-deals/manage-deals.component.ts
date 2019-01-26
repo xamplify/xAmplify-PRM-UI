@@ -11,11 +11,14 @@ import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { UtilService } from '../../core/services/util.service';
 import { ListLoaderValue } from '../../common/models/list-loader-value';
 import { DealRegistrationService } from '../services/deal-registration.service';
+import { ManagePartnersComponent } from 'app/deal-registration/manage-partners/manage-partners.component';
+import { ManageLeadsComponent } from '../manage-leads/manage-leads.component';
 @Component({
   selector: 'app-manage-deals',
   templateUrl: './manage-deals.component.html',
   styleUrls: ['./manage-deals.component.css'],
-  providers: [Pagination, HomeComponent,HttpRequestLoader,SortOption, ListLoaderValue]
+  providers: [Pagination, HomeComponent,HttpRequestLoader,SortOption, ListLoaderValue],
+  
 })
 export class ManageDealsComponent implements OnInit {
 
@@ -35,14 +38,33 @@ export class ManageDealsComponent implements OnInit {
     campaingnList:boolean = false;
     partnerList:boolean = false;
     selectedCampaignId:number = 0;
+    filterDeals:string ="";
+   
     httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
     campaignsPagination:Pagination = new Pagination();
+   
+    
+    leadList: boolean;
+    selectedLeadId: any;
+    selectedDealId:any;
+    partner: number;
+    isDealAnalytics: boolean;
+
+    @ViewChild(ManagePartnersComponent)
+    set leadId(partner: ManagePartnersComponent) {
+        this.selectedLeadId = partner;
+    };
+  
+   
+
+     
     constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService, 
              public utilService: UtilService,public referenceService: ReferenceService,
               private dealRegistrationService:DealRegistrationService,public homeComponent: HomeComponent,public xtremandLogger:XtremandLogger,
               public sortOption:SortOption,public pagerService: PagerService) {
       this.loggedInUserId = this.authenticationService.getUserId();
       this.isListView = ! this.referenceService.isGridView;
+     
     }
 
   ngOnInit() {
@@ -59,8 +81,12 @@ export class ManageDealsComponent implements OnInit {
   }
 
   showCampaigns(){
-      this.partnerList = false;
+    this.campaignsPagination.pagedItems.forEach(element => {
+        element.expand = false;
+      });
       this.campaingnList = true;
+      this.leadList = false;
+      
   }
   /******************Total Deals************************/
   getTotalDeals() {
@@ -126,12 +152,18 @@ export class ManageDealsComponent implements OnInit {
   listCampaigns(pagination: Pagination) {
       this.referenceService.loading(this.httpRequestLoader, true);
       pagination.userId = this.loggedInUserId;
+      
       this.dealRegistrationService.listCampaigns(pagination)
           .subscribe(
               data => {
+                  
                   this.sortOption.totalRecords = data.totalRecords;
                   pagination.totalRecords = data.totalRecords;
                   pagination = this.pagerService.getPagedItems(pagination, data.campaigns);
+                  pagination.pagedItems.forEach(element => {
+                    element.expand = false;
+                  });
+                 
                   this.referenceService.loading(this.httpRequestLoader, false);
               },
               ( error: any ) => {
@@ -192,11 +224,50 @@ export class ManageDealsComponent implements OnInit {
    }
    
    /*********Show Partners***************/
-   showPartners(campaignId:number){
-       this.selectedCampaignId = campaignId;
-       this.campaingnList = false;
+   showPartners(campaign:any){
+       console.log(this.selectedLeadId)
+       this.selectedCampaignId = campaign.id;
+    //    this.campaingnList = false;
+        campaign.expand =  !campaign.expand;
        this.partnerList = true;
    }
+   showLeads(partner:any){
+   this.leadList = true;
+   this.campaingnList = false;
+   this.partner = partner;
+   this.filterDeals = "";
+   
+    }
+
+   goToReDistributedPartnersDiv(){
+        this.filterDeals = "TOTAL";
+        this.leadList = true;
+        this.campaingnList = false;
+       
+   }
+   showOpenedLeads(){
+    this.filterDeals = "OPENED";
+    this.leadList = true;
+    this.campaingnList = false;
+    
+   }
+   showClosedLeads(){
+        this.filterDeals = "CLOSED";
+        this.leadList = true;
+        this.campaingnList = false;
+        
+   }
+
+   dealAnalytics(deal:any){
+    this.selectedDealId = deal.dealId;
+    this.isDealAnalytics = true;
+       
+      
+   }
+   dealAnalyticsDisable(){
+    this.isDealAnalytics = !this.isDealAnalytics;
+   }
+  
 
   
   catchError(error:any,methodName:string){

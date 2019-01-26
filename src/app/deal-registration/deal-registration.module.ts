@@ -10,12 +10,16 @@ import { ManageLeadsComponent } from './manage-leads/manage-leads.component';
 import { CommonModule } from '@angular/common';
 import { Campaign } from '../campaigns/models/campaign';
 import { CampaignsModule } from '../campaigns/campaigns.module';
+import { DealAnalyticsComponent } from './deal-analytics/deal-analytics.component';
+import { CampaignService } from '../campaigns/services/campaign.service';
+import { SharedLibraryModule } from '../shared/shared-library.module';
+
 
 
 @NgModule({
   imports: [ CommonComponentModule,DealRegistrationRoutingModule , SharedModule,CommonModule,CommonComponentModule,CampaignsModule],
-  declarations: [ ManageDealsComponent, ManagePartnersComponent, ManageLeadsComponent],
-  providers:[DealRegistrationService],
+  declarations: [ ManageDealsComponent, ManagePartnersComponent, ManageLeadsComponent, DealAnalyticsComponent],
+  providers:[DealRegistrationService,CampaignService],
   exports:[]
 })
 export class DealRegistrationModule { }

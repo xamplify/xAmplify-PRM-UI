@@ -25,9 +25,10 @@ export class DealRegistrationComponent implements OnInit
 {
 
 
-    @Input() campaign: Campaign;
+    @Input() campaign: any;
     @Input() lead: any;
     @Input() dealId: any;
+    @Input() parent:any;
     dealRegistration: DealRegistration;
     isServerError: boolean = false;
     leadData: any;

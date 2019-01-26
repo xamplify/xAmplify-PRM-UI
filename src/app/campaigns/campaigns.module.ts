@@ -27,6 +27,7 @@ import { CalendarComponent } from './calendar/calendar.component';
 import { DealRegistrationComponent } from '../deal-registration/add-deals/deal-registration.component';
 import { DealRegistrationService } from '../deal-registration/services/deal-registration.service';
 import { SharedLibraryModule } from "../shared/shared-library.module";
+import { DealRegistrationModule } from "../deal-registration/deal-registration.module";
 
 @NgModule({
   imports: [
@@ -55,7 +56,7 @@ import { SharedLibraryModule } from "../shared/shared-library.module";
     CalendarComponent,
     DealRegistrationComponent
   ],
-  exports: [],
+  exports: [DealRegistrationComponent],
   providers: [ContactService, VideoFileService, EmailTemplateService,DealRegistrationService]
 })
 export class CampaignsModule {}
