@@ -2052,7 +2052,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         this.openCampaignModal = false;
         this.contactListAssociatedCampaignsList.length = 0;
     }
+    
    eventHandler( keyCode: any ) { if ( keyCode === 13 ) { this.search(); } }
+   
    saveAsChange(){
     try {
       this.saveAsListName = this.editContactComponent.addCopyToField();
