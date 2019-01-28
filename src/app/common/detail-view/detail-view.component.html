@@ -1,5 +1,6 @@
 <section>
 <div id="timeline-view" class="page-content">
+<!-- <ngx-loading [show]="referenceService.detailViewIsLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading> -->
 	<div class="page-bar" style="min-height: 572px;border: 1px solid #CCC;">
 		
     <a (click)="analyticsComponent.showRsvpDetails = false" class="pull-right close-circle" style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;"> <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;"
@@ -120,7 +121,7 @@
 					</ul>
 				</div>
     </div>
-    
+    <ngx-loading [show]="referenceService.detailViewIsLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 
     <div class="col-xs-12">
 					<div class="table-responsive">

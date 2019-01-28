@@ -14,6 +14,8 @@ export class DetailViewComponent implements OnInit {
     @Input() campaignType: any;
     @Input() campaignReport: any;
     
+    loading: boolean;
+    
   constructor(public analyticsComponent: AnalyticsComponent, public referenceService: ReferenceService) { }
  
   ngOnInit() {

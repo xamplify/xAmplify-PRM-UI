@@ -798,6 +798,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   getRsvpInvitiesDetails(){
       try{
       this.loading = true;
+      this.referenceService.detailViewIsLoading = true;
       this.downloadTypeName = 'rsvp';
       this.rsvpResposeType = "invities";
       this.rsvpDetailAnalyticsPagination = new Pagination();
@@ -807,6 +808,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
           data => {
             console.log(data);
             this.loading = false;
+            this.referenceService.detailViewIsLoading = false;
             this.rsvpDetailsList = data.listOfUsers;
             this.rsvpDetailAnalyticsPagination.totalRecords = data.totalRecords;
             this.rsvpDetailAnalyticsPagination = this.pagerService.getPagedItems(this.rsvpDetailAnalyticsPagination, data.listOfUsers);
@@ -820,6 +822,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
           data => {
             console.log(data);
             this.loading = false;
+            this.referenceService.detailViewIsLoading = false;
             this.rsvpDetailsList = data.listOfUsers;
             this.rsvpDetailAnalyticsPagination.totalRecords = data.totalRecords;
             this.rsvpDetailAnalyticsPagination = this.pagerService.getPagedItems(this.rsvpDetailAnalyticsPagination, data.listOfUsers);
@@ -835,6 +838,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
           data => {
             console.log(data);
             this.loading = false;
+            this.referenceService.detailViewIsLoading = false;
             this.rsvpDetailsList = data.listOfUsers;
             this.rsvpDetailAnalyticsPagination.totalRecords = data.totalRecords;
             this.rsvpDetailAnalyticsPagination = this.pagerService.getPagedItems(this.rsvpDetailAnalyticsPagination, data.listOfUsers);
@@ -853,6 +857,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   getRsvpEmailOpenDetails(){
       try{
       this.loading = true;
+      this.referenceService.detailViewIsLoading = true;
       this.downloadTypeName = 'rsvp';
       this.rsvpDetailAnalyticsPagination = new Pagination();
       this.rsvpResposeType = "email open";
@@ -862,6 +867,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
           data => {
             console.log(data);
             this.loading = false;
+            this.referenceService.detailViewIsLoading = false;
             this.rsvpDetailsList = data.data;
             this.rsvpDetailAnalyticsPagination.totalRecords = data.totalRecords;
             this.rsvpDetailAnalyticsPagination = this.pagerService.getPagedItems(this.rsvpDetailAnalyticsPagination, data.data);
@@ -875,6 +881,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
           data => {
             console.log(data);
             this.loading = false;
+            this.referenceService.detailViewIsLoading = false;
             this.rsvpDetailsList = data.data;
             this.rsvpDetailAnalyticsPagination.totalRecords = data.totalRecords;
             this.rsvpDetailAnalyticsPagination = this.pagerService.getPagedItems(this.rsvpDetailAnalyticsPagination, data.data);
@@ -890,6 +897,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
           data => {
             console.log(data);
             this.loading = false;
+            this.referenceService.detailViewIsLoading = false;
             this.rsvpDetailsList = data.data;
             this.rsvpDetailAnalyticsPagination.totalRecords = data.totalRecords;
             this.rsvpDetailAnalyticsPagination = this.pagerService.getPagedItems(this.rsvpDetailAnalyticsPagination, data.data);
@@ -919,6 +927,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   getRsvpDetails(responseType: any){
       try{
           this.loading = true;
+          this.referenceService.detailViewIsLoading = true;
           this.downloadTypeName = 'rsvp';
           this.rsvpDetailAnalyticsPagination = new Pagination();
           //this.rsvpDetailType = detailType;
@@ -929,6 +938,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
               data => {
                 console.log(data);
                 this.loading = false;
+                this.referenceService.detailViewIsLoading = false;
                 this.rsvpDetailsList = data.data;
                 this.rsvpDetailAnalyticsPagination.totalRecords = data.totalRecords;
                 this.rsvpDetailAnalyticsPagination = this.pagerService.getPagedItems(this.rsvpDetailAnalyticsPagination, data.data);
@@ -942,6 +952,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
               data => {
                 console.log(data);
                 this.loading = false;
+                this.referenceService.detailViewIsLoading = false;
                 this.rsvpDetailsList = data.data;
                 this.rsvpDetailAnalyticsPagination.totalRecords = data.totalRecords;
                 this.rsvpDetailAnalyticsPagination = this.pagerService.getPagedItems(this.rsvpDetailAnalyticsPagination, data.data);
@@ -956,6 +967,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
             data => {
               console.log(data);
               this.loading = false;
+              this.referenceService.detailViewIsLoading = false;
               this.rsvpDetailsList = data.data;
               this.rsvpDetailAnalyticsPagination.totalRecords = data.totalRecords;
               this.rsvpDetailAnalyticsPagination = this.pagerService.getPagedItems(this.rsvpDetailAnalyticsPagination, data.data);
