@@ -55,25 +55,30 @@ export class TopnavbarComponent implements OnInit {
         );
     }
     const roles = this.authenticationService.getRoles();
-    if (roles.indexOf(this.roleName.videRole) > -1 || roles.indexOf(this.roleName.allRole) > -1) {
-      this.authenticationService.module.hasVideoRole = true;
-    }
-    if (roles.indexOf(this.roleName.socialShare) > -1 || roles.indexOf(this.roleName.allRole) > -1) {
-      this.authenticationService.module.hasSocialStatusRole = true;
-    }
-    if (roles.indexOf(this.roleName.orgAdminRole) > -1) {
-      this.authenticationService.module.isOrgAdmin = true;
-    }
-    if (roles.length === 1) {
-      this.isUser = true;
-    }
-    if (roles.indexOf(this.roleName.companyPartnerRole) > -1) {
-      this.authenticationService.module.isCompanyPartner = true;
-    }
+    if(roles!=undefined){
+        if (roles.indexOf(this.roleName.videRole) > -1 || roles.indexOf(this.roleName.allRole) > -1) {
+            this.authenticationService.module.hasVideoRole = true;
+          }
+          if (roles.indexOf(this.roleName.socialShare) > -1 || roles.indexOf(this.roleName.allRole) > -1) {
+            this.authenticationService.module.hasSocialStatusRole = true;
+          }
+          if (roles.indexOf(this.roleName.orgAdminRole) > -1) {
+            this.authenticationService.module.isOrgAdmin = true;
+          }
+          if (roles.length === 1) {
+            this.isUser = true;
+          }
+          if (roles.indexOf(this.roleName.companyPartnerRole) > -1) {
+            this.authenticationService.module.isCompanyPartner = true;
+          }
 
-    if(roles.indexOf(this.roleName.vendorRole)>-1){
-        this.authenticationService.module.isVendor = true;
+          if(roles.indexOf(this.roleName.vendorRole)>-1){
+              this.authenticationService.module.isVendor = true;
+          }
+    }else{
+       // this.router.navigate(['/login']);
     }
+    
     }catch(error) {this.logger.error('error'+error); }
   }
   errorHandler(event:any){

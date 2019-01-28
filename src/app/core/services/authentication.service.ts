@@ -118,37 +118,45 @@ export class AuthenticationService {
         let roleNames: string[] = [];
         const currentUser = localStorage.getItem('currentUser');
         const roles = JSON.parse(currentUser)['roles'];
-        roleNames = roles.map(function (a) { return a.roleName; });
-        if(!roleNames && this.user.roles) { roleNames = this.user.roles.map(function (a) { return a.roleName; });}
-        return roleNames;
+        if(currentUser!=undefined && roles!=undefined){
+            roleNames = roles.map(function (a) { return a.roleName; });
+            if(!roleNames && this.user.roles) { roleNames = this.user.roles.map(function (a) { return a.roleName; });}
+            return roleNames;
+        }else{
+         // this.router.navigate(['/login']);
+        }
+       
         } catch(error){
          console.log('error'+error);
-        this.router.navigate(['/']);
+       
       }
     }
     showRoles():string{
       try{
         const roleNames = this.getRoles();
-        /***********Org Admin**************/
-        const isOrgAdmin = roleNames.indexOf(this.roleName.orgAdminRole)>-1;
-        const isPartner =  roleNames.indexOf(this.roleName.companyPartnerRole)>-1;
-        const isVendor = roleNames.indexOf(this.roleName.vendorRole)>-1;
-        if(roleNames.length===1){   return "User";
-        }else{
-            if(isOrgAdmin&&isPartner){
-                return "Orgadmin & Partner";
-            }else if(isVendor&&isPartner){
-                return "Vendor & Partner";
-            }else if(isOrgAdmin){
-                return "Orgadmin";
-            }else if(isVendor){
-                return "Vendor";
-            }else if(isPartner){
-                return "Partner";
+        if(roleNames!=undefined){
+            /***********Org Admin**************/
+            const isOrgAdmin = roleNames.indexOf(this.roleName.orgAdminRole)>-1;
+            const isPartner =  roleNames.indexOf(this.roleName.companyPartnerRole)>-1;
+            const isVendor = roleNames.indexOf(this.roleName.vendorRole)>-1;
+            if(roleNames.length===1){   return "User";
             }else{
-                return "Team Member";
+                if(isOrgAdmin&&isPartner){
+                    return "Orgadmin & Partner";
+                }else if(isVendor&&isPartner){
+                    return "Vendor & Partner";
+                }else if(isOrgAdmin){
+                    return "Orgadmin";
+                }else if(isVendor){
+                    return "Vendor";
+                }else if(isPartner){
+                    return "Partner";
+                }else{
+                    return "Team Member";
+                }
             }
         }
+     
       }catch(error){
         console.error('error'+error);
       }
