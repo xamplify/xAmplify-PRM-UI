@@ -1330,9 +1330,11 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
   }
   onChangeCountryCampaignEventTime(countryId: number) {
     this.timezonesCampaignEventTime = this.referenceService.getTimeZonesByCountryId(countryId);
-    for ( let i = 0; i < this.countries.length; i++ ) {
-      if ( countryId == this.countries[i].id ) { this.eventCampaign.campaignLocation.country = this.countries[i].name; break; }
-    }
+   /* for ( let i = 0; i < this.countries.length; i++ ) {
+      if ( countryId == this.countries[i].id ) { 
+          this.eventCampaign.campaignLocation.country = this.countries[i].name; break; 
+          }
+    }*/
    setTimeout(() => {this.setEventTimeZone(); }, 100);
    this.resetTabClass();
   }
