@@ -259,13 +259,23 @@ export class ManageDealsComponent implements OnInit {
    }
 
    dealAnalytics(deal:any){
-    this.selectedDealId = deal.dealId;
-    this.isDealAnalytics = true;
+       if(deal==="status_change"){
+            this.resetCounters();
+       }else{
+            this.selectedDealId = deal.dealId;
+            this.isDealAnalytics = true;
+       }
        
       
    }
    dealAnalyticsDisable(){
     this.isDealAnalytics = !this.isDealAnalytics;
+   }
+   resetCounters(){
+       this.getTotalDeals();
+       this.getOpenedDeals();
+       this.getClosedDeals();
+      
    }
   
 

@@ -17,7 +17,7 @@
             <div class="form-group">
               <label class="control-label">Campaign Name <font style="color: #f55d7a"><b>*</b></font></label>
               <input type="text" disabled="disabled" name="campaignName" placeholder="campaign Name" value="{{campaign.campaignName}}"
-                class="form-control" id="campaignName"  [disabled]="parent == 'deal-analytics'"/>
+                class="form-control" id="campaignName"  />
             </div>
 
             <div class="form-group" [attr.class]="company">
@@ -28,13 +28,13 @@
             <div class="form-group" [attr.class]="firstName">
               <label class="control-label">First Name <font style="color: #f55d7a"><b>*</b></font></label>
               <input type="text" maxlength="100" name="companyName" placeholder="First Name" class="form-control" [(ngModel)]=" dealRegistration.firstName"
-                [ngModelOptions]="{standalone: true}" id="firstName" (input)="validateField('firstName')"  [disabled]="parent == 'deal-analytics'"/>
+                [ngModelOptions]="{standalone: true}" id="firstName" (input)="validateField('firstName')" [disabled]="parent == 'deal-analytics'" />
             </div>
 
             <div class="form-group" [attr.class]="lastName">
               <label class="control-label">Last Name <font style="color: #f55d7a"><b>*</b></font></label>
               <input type="text" maxlength="100" placeholder="Last Name" class="form-control" [(ngModel)]=" dealRegistration.lastName" [ngModelOptions]="{standalone: true}"
-                id="lastName" (input)="validateField('lastName')"  [disabled]="parent == 'deal-analytics'"/>
+                id="lastName" (input)="validateField('lastName')" [disabled]="parent == 'deal-analytics'" />
             </div>
             <div class="form-group" [attr.class]="title">
               <label class="control-label">Title <font style="color: #f55d7a"><b>*</b></font></label>
@@ -60,7 +60,7 @@
             <div class="form-group" [attr.class]="dealType">
               <label class="control-label">Deal Type <font style="color: #f55d7a"><b>*</b></font></label>
               <input type="text" maxlength="100" placeholder="Deal Type" class="form-control" [(ngModel)]=" dealRegistration.dealType" [ngModelOptions]="{standalone: true}"
-                id="dealType" (input)="validateField('dealType')"  [disabled]="parent == 'deal-analytics'"/>
+                id="dealType" (input)="validateField('dealType')" [disabled]="parent == 'deal-analytics'" />
             </div>
 
             <div class="form-group">
@@ -100,26 +100,26 @@
             <div class="form-group" [attr.class]="leadPostalCode">
               <label class="control-label">Lead Postal Code <font style="color: #f55d7a"><b>*</b></font></label>
               <input type="text" maxlength="10" name="companyName" placeholder="Lead postal Code" class="form-control" [(ngModel)]=" dealRegistration.postalCode"
-                [ngModelOptions]="{standalone: true}" id="leadPostalCode" (input)="validateField('leadPostalCode')"  [disabled]="parent == 'deal-analytics'"/>
+                [ngModelOptions]="{standalone: true}" id="leadPostalCode" (input)="validateField('leadPostalCode')" [disabled]="parent == 'deal-analytics'"/>
             </div>
 
             <div class="form-group" [attr.class]="country">
               <label class="control-label">Lead Country <font style="color: #f55d7a"><b>*</b></font></label>
               <select class="form-control" placeholder="select country" [(ngModel)]="dealRegistration.leadCountry" [ngModelOptions]="{standalone: true}"
-                placeholder="Country" id="leadCountry" (input)="validateField('leadCountry')"  [disabled]="parent == 'deal-analytics'">
+                placeholder="Country" id="leadCountry" (input)="validateField('leadCountry')" [disabled]="parent == 'deal-analytics'">
                 <option *ngFor="let country of countryNames.countries" [value]="country" [selected]="dealRegistration.leadCountry==country">{{country}}</option>
               </select>
             </div>
             <div class="form-group" [attr.class]="opportunityAmount">
               <label class="control-label">Opportunity Amount <font style="color: #f55d7a"><b>*</b></font></label>
               <input type="number" maxlength="10" placeholder="Opportunity Amount" class="form-control" [(ngModel)]=" dealRegistration.opportunityAmount"
-                [ngModelOptions]="{standalone: true}" id="opportunityAmount" (input)="validateField('opportunityAmount')" [disabled]="parent == 'deal-analytics'"/>
+                [ngModelOptions]="{standalone: true}" id="opportunityAmount" (input)="validateField('opportunityAmount')"  [disabled]="parent == 'deal-analytics'"/>
             </div>
             <div class="form-group" [attr.class]="estimatedCloseDate">
               <label class="control-label">Estimated Close date <font style="color: #f55d7a"><b>*</b></font></label>
               <input type="text" placeholder="Estimated Close date" class="form-control flatpickr square-box" [(ngModel)]=" dealRegistration.estimatedCloseDate "
                 [ngModelOptions]="{standalone: true}" id="estimatedCloseDate" (input)="validateField('estimatedCloseDate')"
-                [disabled]="parent == 'deal-analytics'"/>
+               [disabled]="parent == 'deal-analytics'" />
             </div>
           </div>
         </div>
@@ -134,10 +134,10 @@
                   </div>
                   <div class="col-xs-6">
                     <div class="pull-right" id="question-icons">
-                      <button type="button" class="btn-danger button-blue" (click)="remove(i+1,property.id)" [disabled]="parent == 'deal-analytics'">
+                      <button type="button" class="btn-danger button-blue" (click)="remove(i+1,property.id)" >
                         <span class="glyphicon glyphicon-trash"></span>
                       </button>
-                      <button type="button" class="btn-primary button-blue" (click)="addProperties()" [disabled]="parent == 'deal-analytics'">
+                      <button type="button" class="btn-primary button-blue" (click)="addProperties()" >
                         <span class="glyphicon glyphicon-plus"></span>
                       </button>
                     </div>
@@ -149,12 +149,12 @@
                       <div class="form-group" [attr.class]="property.validationStausKey">
                         <label class="control-label">Question<font style="color: #f55d7a"><b>*</b></font></label>
                         <input type="text" maxlength="100" placeholder="Question" class="form-control" [(ngModel)]=" property.key" [ngModelOptions]="{standalone: true}"
-                          id="question" (input)="validateQuestion(property)" [disabled]="parent == 'deal-analytics'"/>
+                          id="question" (input)="validateQuestion(property)" [disabled]="property.isDisabled"/>
                       </div>
                       <div class="form-group" [attr.class]="property.validationStausValue">
                         <label class="control-label">Comment <font style="color: #f55d7a"><b>*</b></font></label>
                         <textarea type="text" maxlength="1000" placeholder="Comment" class="form-control" [(ngModel)]=" property.value" [ngModelOptions]="{standalone: true}"
-                          id="comment" (input)="validateComment(property)" [disabled]="parent == 'deal-analytics'"></textarea>
+                          id="comment" (input)="validateComment(property)" [disabled]="property.isDisabled"></textarea>
                       </div>
                     </div>
                   </form>
@@ -165,7 +165,7 @@
         </div>
         <hr>
         <div class="pull-right">
-          <button type="submit" id="saveDeal" *ngIf="parent != 'deal-analytics'" [disabled]=" !isDealRegistrationFormValid" (click)="save()" class="btn green-haze">{{submitButtonText}}</button>
+          <button type="submit" id="saveDeal"  [disabled]=" !isDealRegistrationFormValid" (click)="save()" class="btn green-haze">{{submitButtonText}}</button>
           <!--  <button type="submit" id="updateDeal" (click)="update()"class="btn green-haze">Update</button> -->
         </div>
       </form>

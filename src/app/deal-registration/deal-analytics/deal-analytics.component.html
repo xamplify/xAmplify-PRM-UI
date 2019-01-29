@@ -23,8 +23,9 @@
       <div data-animation-name="slideInUp">
 
         <div class="col-xs-12 col-sm-6 p10">
-
+       
           <div id="campaign-views-barchart" style="width: 100%; max-width: 100%; height: 260px; margin: 0 auto"></div>
+
 
         </div>
         <div class="col-xs-12 col-sm-6">
@@ -32,7 +33,8 @@
             <div class="row mb10">
               <img src="/assets/images/user.png" width="48px" class="user-profile-image">
               <span>
-                <button style="position: absolute; left: 217px; margin-top: 7px;" (click)="showDealRegistrationForm()">{{dealButtonText}}</button>
+                <button style="position: absolute; left: 217px; margin-top: 7px;" (click)="showDealRegistrationForm()"
+                class="btn btn-primary">{{dealButtonText}}</button>
               </span>
               <h5 class="f-w-600 mt10 mb0"><span *ngIf="lead?.firstName">{{lead.firstName}}</span>&nbsp;<span *ngIf="lead?.lastName">{{lead.lastName}}</span></h5>
               <h6 class="m0" *ngIf="lead?.emailId">{{lead.emailId}}</h6>
@@ -67,10 +69,13 @@
                     <h5>
                       <span class="f-w-600" title="{{status.dealStatus}}">
                         <span title="{{status.dealStatus}}">
-                          {{status.dealStatus | slice:0:30}}
+                          {{status.status | slice:0:30}}
                         </span>
-                      </span><br>
-                      <span><app-timestamp [dateAndTime]="status.createdTime"> </app-timestamp></span>
+                      </span>
+                     <br><br>
+                      <span class="f-w-600" title="{{status.firstName}}">{{status.firstName +" "+status.lastName | slice:0:30}}</span><br>
+                      <span>{{status.email}}</span><br>
+                      <span><app-timestamp [dateAndTime]="status.createdAt"> </app-timestamp></span>
 
                     </h5>
 
@@ -87,8 +92,7 @@
     </div>
   </div>
 </section>
-
-
+<div *ngIf="true">HI</div>
 <!-- --_Deal Registration -->
 <section *ngIf="isDealRegistration">
   <div class="page-content">

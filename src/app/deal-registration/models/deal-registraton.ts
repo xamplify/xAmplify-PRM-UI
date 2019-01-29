@@ -22,6 +22,6 @@ export class DealRegistration{
   opportunityAmount:any;
   estimatedCloseDate: any;
   estimatedClosedDateString:string;
-  properties:Object[];
+  properties:DealDynamicProperties[];
 
 }

@@ -1,10 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { ActivatedRoute } from '@angular/router';
 import { CampaignService } from '../../campaigns/services/campaign.service';
 import { UtilService } from '../../core/services/util.service';
 import { Pagination } from '../../core/models/pagination';
-import { PagerService } from '../../core/services/pager.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { ReferenceService } from '../../core/services/reference.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
@@ -24,7 +22,6 @@ export class DealAnalyticsComponent implements OnInit {
   selectedRow: any;
 
 campaign: Campaign;
-
 
 campaignViewsPagination: Pagination = new Pagination();
 
@@ -48,8 +45,8 @@ sortByDropDown = [
                   { 'name': 'Time(DESC)', 'value': 'time-DESC' }
               ];
 public selectedSortedOption: any = this.sortByDropDown[this.sortByDropDown.length-1];
-dealButtonText: string="View Deal";
-isDealRegistration:boolean = false;
+dealButtonText="View Deal";
+isDealRegistration = false;
   @Input()
   dealId: any;
   deal: DealRegistration;
@@ -60,20 +57,7 @@ isDealRegistration:boolean = false;
 constructor(private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, 
   public authenticationService: AuthenticationService,
   public referenceService: ReferenceService,  public xtremandLogger:XtremandLogger,private dealRegService:DealRegistrationService) {
-    try{
-    
-    this.campaign = new Campaign();
-    this.selectedRow.emailId = "";
-    if (this.referenceService.isFromTopNavBar) {
-      const object = {
-        "campaignId": this.referenceService.topNavBarNotificationDetails.campaignId,
-        "userId": this.referenceService.topNavBarNotificationDetails.userId,
-        "emailId": this.referenceService.topNavBarNotificationDetails.emailId
-      }
-     this.isTimeLineView = false;
      
-    }
-  }catch(error){ this.xtremandLogger.error('error'+error);}
 }
 showTimeline() {
   this.isTimeLineView = !this.isTimeLineView;
@@ -85,13 +69,13 @@ showTimeline() {
       const obj = { 'campaignId': this.deal.campaignId };
       this.campaignService.getCampaignById(obj).subscribe(campaign=>{
         this.campaign = campaign;
+        this.campaignType =  this.campaign.campaignType.toLocaleString();
+        this.campaignId = this.campaign.campaignId;
         console.log(this.campaign)
       })
       this.dealRegService.getDealCreatedBy(this.deal.createdBy).subscribe(user=>{
         this.user = user;
-        console.log(this.deal)
         
-        console.log(this.user)
       })
       this.dealRegService.getDealCreatedBy(this.deal.leadId).subscribe(lead=>{
         this.lead = lead;
@@ -100,7 +84,7 @@ showTimeline() {
       })
       this.dealRegService.getDealStatus(this.deal.id).subscribe(dealStatus=>{
         this.dealStatus = dealStatus;
-        console.log(this.dealStatus)
+       
       })
     
     })

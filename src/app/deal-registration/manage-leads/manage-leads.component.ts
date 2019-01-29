@@ -208,16 +208,20 @@ listClosedLeads(pagination:Pagination){
   }
   setDealStatus(dealId:number,event:any){
     try {
-        let self = this;
+      
+        // tslint:disable-next-line:curly
         if(event)
-        self.dealRegistrationService.acceptDeal(dealId).subscribe(data =>{
+        this.dealRegistrationService.acceptDeal(dealId).subscribe(data =>{
+             this.dealObj.emit("status_change");
            console.log(data); 
         });
+        // tslint:disable-next-line:curly
         else
-        self.dealRegistrationService.rejectDeal(dealId).subscribe(data =>{
+        this.dealRegistrationService.rejectDeal(dealId).subscribe(data =>{
+             this.dealObj.emit("status_change");
             console.log(data); 
          });
-       
+        // let self = this;
         // swal( {
         //     title: 'Are you sure?',
         //     text: event ?'You want to Accept this deal':'You want to Reject this deal' ,

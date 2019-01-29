@@ -153,9 +153,21 @@ export class DealRegistrationComponent implements OnInit
         this.dealRegistration.title = data.title;
         var date = this.getFormatedDate(new Date(data.estimatedClosedDate));
         this.dealRegistration.estimatedCloseDate = date
-        console.log( data.properties)
+       
         this.dealRegistration.properties = data.properties ;
-        this.properties = data.properties ;
+         this.properties = data.properties ;
+        if(this.parent == 'deal-analytics'){
+             this.dealRegistration.properties.forEach(property =>
+            {
+                property.isDisabled = true;
+            }) 
+             this.properties.forEach(property =>
+            {
+                property.isDisabled = true;
+            })
+        }
+
+       
         this.dealRegistration.opportunityAmount = data.opportunityAmount;
         let countryIndex = this.countryNames.countries.indexOf(data.leadCountry);
         if (countryIndex > -1)
@@ -249,6 +261,9 @@ export class DealRegistrationComponent implements OnInit
         length = length + 1;
         var id = 'property-' + length;
         this.property.divId = id;
+       
+            
+
         this.properties.push(this.property);
         this.submitButtonStatus()
 
