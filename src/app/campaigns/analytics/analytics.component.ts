@@ -910,6 +910,67 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
         this.xtremandLogger.error('error'+error)
    }
   }
+  
+  
+  
+  getRsvpEmailNotOpenDetails(){
+      try{
+      this.loading = true;
+      this.referenceService.detailViewIsLoading = true;
+      this.downloadTypeName = 'rsvp';
+      this.rsvpDetailAnalyticsPagination = new Pagination();
+      this.rsvpResposeType = "email not open";
+      if(this.rsvpDetailType === 'reDistribution'){
+          this.campaignService.getEventCampaignRedistributionEmailNotOpenDetails( this.campaign.campaignId, this.campaignReport.selectedPartnerUserId, this.rsvpDetailAnalyticsPagination )
+          .subscribe(
+          data => {
+            console.log(data);
+            this.loading = false;
+            this.referenceService.detailViewIsLoading = false;
+            this.rsvpDetailsList = data.data;
+            this.rsvpDetailAnalyticsPagination.totalRecords = data.totalRecords;
+            this.rsvpDetailAnalyticsPagination = this.pagerService.getPagedItems(this.rsvpDetailAnalyticsPagination, data.data);
+          },
+          error => this.xtremandLogger.error(error),
+          () => { }
+          )
+      }else if(this.rsvpDetailType === 'partnerRsvp'){
+          this.campaignService.getEventCampaignEmailNotOpenDetails( this.campaign.campaignId, false, this.rsvpDetailAnalyticsPagination )
+          .subscribe(
+          data => {
+            console.log(data);
+            this.loading = false;
+            this.referenceService.detailViewIsLoading = false;
+            this.rsvpDetailsList = data.data;
+            this.rsvpDetailAnalyticsPagination.totalRecords = data.totalRecords;
+            this.rsvpDetailAnalyticsPagination = this.pagerService.getPagedItems(this.rsvpDetailAnalyticsPagination, data.data);
+          },
+          error => this.xtremandLogger.error(error),
+          () => { }
+          )
+      }
+      else{
+          this.showRsvpDetails = true;
+          this.campaignService.getEventCampaignEmailNotOpenDetails( this.campaign.campaignId, this.isChannelCampaign, this.rsvpDetailAnalyticsPagination )
+          .subscribe(
+          data => {
+            console.log(data);
+            this.loading = false;
+            this.referenceService.detailViewIsLoading = false;
+            this.rsvpDetailsList = data.data;
+            this.rsvpDetailAnalyticsPagination.totalRecords = data.totalRecords;
+            this.rsvpDetailAnalyticsPagination = this.pagerService.getPagedItems(this.rsvpDetailAnalyticsPagination, data.data);
+          },
+          error => this.xtremandLogger.error(error),
+          () => { }
+          )
+      }
+      }catch(error){
+        this.xtremandLogger.error('error'+error)
+   }
+  }
+  
+  
 
   getPartnerCampaingRsvpDetails(){
       this.campaignReport.redistributionTotalYesCount = this.campaignReport.partnersYesCount;

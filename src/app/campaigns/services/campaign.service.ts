@@ -313,8 +313,22 @@ export class CampaignService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+    
+    getEventCampaignEmailNotOpenDetails(campaignId: number, isChannelCampaign: boolean, pagination: Pagination) {
+        const url = this.URL + 'campaign/' + campaignId + "/rsvp-email-open-details?access_token=" + this.authenticationService.access_token + "&channelCampaign=" + isChannelCampaign;
+        return this.http.post(url, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 
     getEventCampaignRedistributionEmailOpenDetails(campaignId: number, userId: any, pagination: Pagination) {
+        const url = this.URL + 'campaign/' + campaignId +'/'+ userId + "/rsvp-email-open-details?access_token=" + this.authenticationService.access_token;
+        return this.http.post(url, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    
+    getEventCampaignRedistributionEmailNotOpenDetails(campaignId: number, userId: any, pagination: Pagination) {
         const url = this.URL + 'campaign/' + campaignId +'/'+ userId + "/rsvp-email-open-details?access_token=" + this.authenticationService.access_token;
         return this.http.post(url, pagination)
             .map(this.extractData)
