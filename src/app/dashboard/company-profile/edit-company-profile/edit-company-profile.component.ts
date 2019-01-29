@@ -162,6 +162,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
                 this.logoErrorMessage = "";
                 this.enableOrDisableButton();
                 console.log(this.companyLogoImageUrlPath);
+                if(this.companyProfile.website) { this.saveVideoBrandLog(); }
             }
             this.isLoading = false;
         }
@@ -192,7 +193,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
     errorHandler(event){ event.target.src ='assets/images/company-profile-logo.png'; }
     saveVideoBrandLog() {
         const logoLink = this.videoUtilService.isStartsWith(this.companyProfile.website);
-        this.userService.saveBrandLogo(this.companyProfile.companyLogoPath, logoLink, this.loggedInUserId)
+        this.userService.saveBrandLogo(this.companyLogoImageUrlPath, logoLink, this.loggedInUserId)
             .subscribe(
                 (data: any) => {
                     console.log(data);
@@ -373,11 +374,10 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
                         this.authenticationService.user.websiteUrl = this.companyProfile.website;
                         this.refService.companyProfileImage = this.companyProfile.companyLogoPath;
                         setTimeout(function () { $("#edit-sucess").slideUp(500); }, 5000);
-                        this.saveVideoBrandLog();
                     },
                     error => { this.ngxloading = false;
                         this.logger.errorPage(error) },
-                    () => { this.logger.info("Completed saveOrUpdate()") }
+                    () => {  this.saveVideoBrandLog();this.logger.info("Completed saveOrUpdate()") }
                 );
         } else {
             this.ngxloading = false;

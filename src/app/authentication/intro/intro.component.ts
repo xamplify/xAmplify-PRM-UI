@@ -2,6 +2,7 @@ import { Component, OnInit,ViewChild,ElementRef } from "@angular/core";
 import { AuthenticationService } from "../../core/services/authentication.service";
 import { Properties } from '../../common/models/properties';
 import { Router } from "@angular/router";
+import { environment } from "environments/environment";
 
 @Component({
   selector: "app-intro",
@@ -23,6 +24,7 @@ export class IntroComponent implements OnInit {
   lat =  37.5483;
   lng = -121.9886;
   markers = [{ lat: 37.5483, lng: -121.9886, label: "A", draggable: false }];
+  clientUrl = environment.CLIENT_URL;
   constructor(public authenticationService: AuthenticationService, public properties: Properties,
     public router:Router) {}
 
@@ -62,13 +64,11 @@ export class IntroComponent implements OnInit {
     try {
       if (localStorage.getItem("currentUser")) {
         this.callSetTimeOut(900); this.authenticationService.navigateToDashboardIfUserExists();
-      }
-     else if (localStorage.getItem("isLogout")) {
+      } else if (localStorage.getItem("isLogout") && this.clientUrl ==='https://xamplify.io/') {
         this.callSetTimeOut(1500);
         window.location.href = 'https://www.xamplify.com/';
         localStorage.removeItem("isLogout")
-      }
-      else {
+      } else {
         this.mainLoader = false;
       }
     } catch (error) {
