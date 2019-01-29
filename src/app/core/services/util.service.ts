@@ -89,5 +89,6 @@ export class UtilService {
     getRouterLocalStorage(){
       return localStorage.getItem("campaignRouter");
     }
+    isXamplify(){ if(window.location.hostname.includes('xamplify')){ return true; } return false; }
 
 }
