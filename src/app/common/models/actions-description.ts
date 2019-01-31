@@ -21,7 +21,7 @@ export class ActionsDescription {
     video_delete = 'Delete video';
     video_campaign = 'Create campaign';
     video_report = 'Video based reports';
-    video_draft = 'Currently Unavailable';
+    video_draft = 'Currently unavailable';
 
    /* FOR EMAIL TEMPLATES*/
     template_edit = 'Edit template';
