@@ -275,9 +275,15 @@ export class CampaignService {
         return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);
-
-
     }
+    
+    cancelEvent(cancelEventData: any, userId: number) {
+        var url = this.URL + "campaign/cancel-event-campaign/" + userId + "?access_token=" + this.authenticationService.access_token;
+        return this.http.post(url, cancelEventData)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
 
     getEventCampaignDetailsByCampaignId(campaignId: number, isChannelCampaign: boolean) {
         const url = this.URL + 'campaign/' + campaignId + '/rsvp-details?access_token=' + this.authenticationService.access_token + '&channelCampaign=' + isChannelCampaign;

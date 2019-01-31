@@ -14,6 +14,7 @@ import { UtilService } from '../../core/services/util.service';
 import { EventCampaign } from '../models/event-campaign';
 import { ActionsDescription } from '../../common/models/actions-description';
 import { CampaignAccess } from '../models/campaign-access';
+import { CallActionSwitch } from '../../videos/models/call-action-switch';
 
 declare var swal, $: any;
 
@@ -21,7 +22,7 @@ declare var swal, $: any;
     selector: 'app-manage-publish',
     templateUrl: './manage-publish.component.html',
     styleUrls: ['./manage-publish.component.css'],
-    providers: [Pagination, HttpRequestLoader, ActionsDescription, CampaignAccess]
+    providers: [Pagination, HttpRequestLoader, ActionsDescription, CampaignAccess, CallActionSwitch]
 })
 export class ManagePublishComponent implements OnInit, OnDestroy {
     campaigns: Campaign[];
@@ -68,7 +69,13 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     saveAsCampaignInfo :any;
     partnerActionResponse:CustomResponse = new CustomResponse();
     partnersPagination:Pagination = new Pagination();
-    constructor(private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
+    
+    cancelEventMessage: string = "";
+    selectedCancelEventId: number;
+    eventCampaign: EventCampaign = new EventCampaign();
+    cancelEventSubjectLine: string = "";
+    
+    constructor(public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService:UtilService, public actionsDescription: ActionsDescription,
         public refService: ReferenceService, public campaignAccess:CampaignAccess, public authenticationService: AuthenticationService) {
         this.loggedInUserId = this.authenticationService.getUserId();
@@ -346,4 +353,43 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     goToPreviewPartners(campaign:Campaign){
         this.router.navigate(['/home/campaigns/'+campaign.campaignId+"/remove-access"]);
     }
+    
+    getCancelEventDetails(campaignId:number){
+        this.selectedCancelEventId = campaignId;
+        this.campaignService.getEventCampaignById(campaignId).subscribe(
+                (result)=>{
+                this.eventCampaign = result.data;
+                }
+            );
+       
+    }
+    cancelEvent(){
+        var cancelEventData = {
+                "id": this.selectedCancelEventId,
+                "isCancelled": true,
+                "message": this.cancelEventMessage,
+                "cancelEventSubjectLine": this.cancelEventSubjectLine
+            }
+        
+        
+        this.campaignService.cancelEvent(cancelEventData, this.loggedInUserId)
+          .subscribe(data => {
+                console.log(data);
+                this.customResponse = new CustomResponse('SUCCESS', "Event has been cancelled successfully", true);
+                $('#cancelEventModal').modal('hide');
+                this.showMessageOnTop();
+                console.log("Event Successfully cancelled");
+                this.cancelEventMessage = "";
+              },
+              error => { $('#cancelEventModal').modal('hide'); this.logger.errorPage(error) },
+              () => console.log("cancelCampaign completed")
+          );
+    }
+    
+    closeCancelEventodal(){
+        $('#cancelEventModal').modal('hide');
+        this.cancelEventMessage = "";
+    }
+    
+    
 }
