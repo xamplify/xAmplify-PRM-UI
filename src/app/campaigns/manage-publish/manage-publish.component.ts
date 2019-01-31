@@ -368,7 +368,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 "id": this.selectedCancelEventId,
                 "isCancelled": true,
                 "message": this.cancelEventMessage,
-                "cancelEventSubjectLine": this.cancelEventSubjectLine
+                "subject": this.cancelEventSubjectLine
             }
         
         

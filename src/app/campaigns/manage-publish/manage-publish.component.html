@@ -226,14 +226,14 @@
 													</a>
 													</div>
 													</li>
-													<li *ngIf="campaign.showCancelButton">
-													<div *ngIf="campaign.showCancelButton && hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor">
+													<section *ngIf="campaign.showCancelButton">
+													<li *ngIf="campaign.showCancelButton && hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor">
                           <a *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor"
                               data-toggle="modal" data-target="#cancelEventModal" title="Cancel Campaign" data-rel="fancybox-button" (click)="getCancelEventDetails(campaign.campaignId)">
-                              <i class="fa fa-ban"></i> Cancel Event
+                              <i class="fa fa-ban" style="width: 30px;"></i> Cancel Event
                             </a>
-                            </div>
-                          </li>
+                            </li>
+                          </section>
                          
 													</ul>
 												<!-- </div> -->
@@ -785,7 +785,7 @@
 				
 				
 				<div class="form-group">
-							<label class="col-sm-3 labal-css color-css">Cancel Subject Line <font
+							<label class="col-sm-3 labal-css color-css">Email subject<font
 								style="color: red"> <b>*</b>
 							</font>
 							</label>
@@ -796,16 +796,25 @@
 									maxlength="200" />
 							</div>
 						</div>
+			<div class="form-group">
+							<label class="col-sm-3 labal-css color-css" style="padding-top: 25px;">Cancel Message<font
+								style="color: red"> <b>*</b>
+							</font>
+							</label>
+							<div class="col-sm-9" style="padding-top: 10px;">
+								<textarea [(ngModel)]="cancelEventMessage" [ngModelOptions]="{standalone: true}" placeholder="Add a comment..."></textarea>
+							</div>
+						</div>
 
         </section>
         
         
-        <textarea [(ngModel)]="cancelEventMessage" [ngModelOptions]="{standalone: true}" placeholder="Add a comment..."></textarea>
+        <!-- <textarea [(ngModel)]="cancelEventMessage" [ngModelOptions]="{standalone: true}" placeholder="Add a comment..."></textarea> -->
        
       <div class="modal-footer">
         <div class="right-css">
         <button type="button" class="btn btn-default" data-dismiss="modal" (click)="closeCancelEventodal()">Close</button>
-        <button type="button" class="btn btn-secondary" (click)="cancelEvent()">Cancel Event</button>
+        <button type="button" class="btn btn-primary" (click)="cancelEvent()">Cancel Event</button>
         </div>
       </div>
     </div>
