@@ -626,7 +626,7 @@
               <div class="col-sm-9">
                 <switch class="pull-left" [status]="eventCampaign.enableCoBrandingLogo" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
                   [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
-                  (statusChange)="setCoBrandingLogo($event)">
+                  [disabled]="true">
                 </switch>
                 <span style="cursor: pointer;color: #54a7e9;" title="Enable your Partner's logo to be displayed in redistributed campaigns">
                   <i class="fa fa-question-circle" style="padding: 8px;"></i>
@@ -811,13 +811,14 @@
         
         <!-- <textarea [(ngModel)]="cancelEventMessage" [ngModelOptions]="{standalone: true}" placeholder="Add a comment..."></textarea> -->
        
-      <div class="modal-footer">
+      
+    </div>
+    <div class="pull-right" style="margin: 0px 29px 0px 0px;">
         <div class="right-css">
         <button type="button" class="btn btn-default" data-dismiss="modal" (click)="closeCancelEventodal()">Close</button>
         <button type="button" class="btn btn-primary" (click)="cancelEvent()">Cancel Event</button>
         </div>
       </div>
-    </div>
   </div>
 </div>
 </div>
