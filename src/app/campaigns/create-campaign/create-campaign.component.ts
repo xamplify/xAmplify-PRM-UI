@@ -256,6 +256,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.editedCampaignName = this.campaignService.campaign.campaignName;
             this.campaign = this.campaignService.campaign;
             this.userListDTOObj = this.campaignService.campaign.userLists;
+            if(this.userListDTOObj===undefined){ this.userListDTOObj = [];}
             if(this.campaign.regularEmail){
                 this.campaignType = 'regular';
                 this.emailTemplatesPagination.filterBy = "CampaignRegularEmails";
