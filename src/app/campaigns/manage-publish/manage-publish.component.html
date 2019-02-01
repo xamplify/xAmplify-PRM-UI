@@ -218,14 +218,14 @@
 													<li  ><a (click)="showCampaignPreview(campaign)">
 															<i class="fa fa-eye mr5" style="width: 30px;"></i> Preview Campaign
 													</a></li>
-													<li *ngIf="!campaign.showCancelButton">
-														<div *ngIf="!campaign.showCancelButton && hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor">
+													<section *ngIf="!campaign.showCancelButton">
+														<li *ngIf="!campaign.showCancelButton && hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor">
 														<a *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor"
 														(click)="confirmDeleteCampaign(campaign.campaignId, i, campaign.campaignName)"
 														data-rel="fancybox-button"> <i class="fa fa-trash-o" style="width: 30px;"> </i>Delete
 													</a>
-													</div>
 													</li>
+													</section>
 													<section *ngIf="campaign.showCancelButton">
 													<li *ngIf="campaign.showCancelButton && hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor">
                           <a *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor"
@@ -791,7 +791,7 @@
 							</label>
 							<div class="col-sm-9">
 								<input type="text" id="subjectLine" placeholder="Cancel Event Subject Line"
-									class="form-control" [(ngModel)]="cancelEventSubjectLine"
+									class="form-control" (input)="validateCancelEventButton()" [(ngModel)]="cancelEventSubjectLine"
 									name="subjectLine"
 									maxlength="200" />
 							</div>
@@ -802,7 +802,7 @@
 							</font>
 							</label>
 							<div class="col-sm-9" style="padding-top: 10px;">
-								<textarea [(ngModel)]="cancelEventMessage" [ngModelOptions]="{standalone: true}" placeholder="Add a comment..."></textarea>
+								<textarea [(ngModel)]="cancelEventMessage" [ngModelOptions]="{standalone: true}" (input)="validateCancelEventButton()" placeholder="Add a comment..."></textarea>
 							</div>
 						</div>
 
@@ -816,7 +816,7 @@
     <div class="pull-right" style="margin: 0px 29px 0px 0px;">
         <div class="right-css">
         <button type="button" class="btn btn-default" data-dismiss="modal" (click)="closeCancelEventodal()">Close</button>
-        <button type="button" class="btn btn-primary" (click)="cancelEvent()">Cancel Event</button>
+        <button type="button" class="btn btn-primary" [disabled]="!cancelEventButton" (click)="cancelEvent()">Cancel Event</button>
         </div>
       </div>
   </div>

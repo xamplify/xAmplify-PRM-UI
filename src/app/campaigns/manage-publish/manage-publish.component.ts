@@ -74,6 +74,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     selectedCancelEventId: number;
     eventCampaign: EventCampaign = new EventCampaign();
     cancelEventSubjectLine: string = "";
+    cancelEventButton: boolean = false;
     
     constructor(public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService:UtilService, public actionsDescription: ActionsDescription,
@@ -389,6 +390,14 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     closeCancelEventodal(){
         $('#cancelEventModal').modal('hide');
         this.cancelEventMessage = "";
+    }
+    
+    validateCancelEventButton(){
+        if(this.cancelEventMessage.replace( /\s\s+/g, '' ).replace(/\s+$/,"").replace(/\s+/g," ") && this.cancelEventSubjectLine.replace( /\s\s+/g, '' ).replace(/\s+$/,"").replace(/\s+/g," ")){
+            this.cancelEventButton = true;
+        }else{
+            this.cancelEventButton = false;
+        }
     }
     
     
