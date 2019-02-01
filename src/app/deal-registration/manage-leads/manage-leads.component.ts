@@ -13,6 +13,9 @@ import { ListLoaderValue } from '../../common/models/list-loader-value';
 import { DealRegistrationService } from '../services/deal-registration.service';
 import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import { EventEmitter } from '@angular/core';
+import { CustomResponse } from '../../common/models/custom-response';
+import { Campaign } from '../../campaigns/models/campaign';
+import { User } from '../../core/models/user';
 declare var swal: any;
 
 
@@ -33,7 +36,16 @@ export class ManageLeadsComponent implements OnInit,OnChanges {
     pagination:Pagination = new Pagination();
     selectedDealId: any;
     isDealAnalytics: boolean = false;
+        customResponse: CustomResponse = new CustomResponse();
 
+
+    leadStatusArray = ["APPROVED","OPENED","HOLD","REJECTED","CLOSED"];
+    isCommentSection = false;
+    isDealRegistration = false;
+    campaign: Campaign;
+     user: User;
+    item: any;
+    commentForLead: any;
    
     
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService, 
@@ -59,6 +71,16 @@ export class ManageLeadsComponent implements OnInit,OnChanges {
           
             this.listAllLeads(this.pagination);
         break;
+        }
+         case "APPROVED": {
+            
+            this.listApprovedLeads(this.pagination);
+            break;
+        }
+         case "REJECTED": {
+            
+            this.listRejectedLeads(this.pagination);
+            break;
         }
         case "OPENED": {
             
@@ -92,6 +114,46 @@ export class ManageLeadsComponent implements OnInit,OnChanges {
                 pagination = this.pagerService.getPagedItems(pagination, data.leads);
                 this.referenceService.loading(this.httpRequestLoader, false);
                 console.log(pagination);
+            },
+            ( error: any ) => {
+                this.httpRequestLoader.isServerError = true;
+            }
+        );
+
+}
+
+listApprovedLeads(pagination:Pagination){
+    
+    this.referenceService.loading(this.httpRequestLoader, true);
+    pagination.userId = this.authenticationService.getUserId();
+   
+    this.dealRegistrationService.listApprovedLeads(pagination)
+        .subscribe(
+            data => {
+                this.sortOption.totalRecords = data.totalRecords;
+                pagination.totalRecords = data.totalRecords;
+                pagination = this.pagerService.getPagedItems(pagination, data.leads);
+                this.referenceService.loading(this.httpRequestLoader, false);
+            },
+            ( error: any ) => {
+                this.httpRequestLoader.isServerError = true;
+            }
+        );
+
+}
+
+listRejectedLeads(pagination:Pagination){
+    
+    this.referenceService.loading(this.httpRequestLoader, true);
+    pagination.userId = this.authenticationService.getUserId();
+   
+    this.dealRegistrationService.listRejectedLeads(pagination)
+        .subscribe(
+            data => {
+                this.sortOption.totalRecords = data.totalRecords;
+                pagination.totalRecords = data.totalRecords;
+                pagination = this.pagerService.getPagedItems(pagination, data.leads);
+                this.referenceService.loading(this.httpRequestLoader, false);
             },
             ( error: any ) => {
                 this.httpRequestLoader.isServerError = true;
@@ -208,44 +270,16 @@ listClosedLeads(pagination:Pagination){
   }
   setDealStatus(dealId:number,event:any){
     try {
-      
-        // tslint:disable-next-line:curly
-        if(event)
-        this.dealRegistrationService.acceptDeal(dealId).subscribe(data =>{
-             this.dealObj.emit("status_change");
-           console.log(data); 
-        });
-        // tslint:disable-next-line:curly
-        else
-        this.dealRegistrationService.rejectDeal(dealId).subscribe(data =>{
-             this.dealObj.emit("status_change");
-            console.log(data); 
-         });
-        // let self = this;
-        // swal( {
-        //     title: 'Are you sure?',
-        //     text: event ?'You want to Accept this deal':'You want to Reject this deal' ,
-        //     type: 'warning',
-        //     showCancelButton: true,
-        //     confirmButtonColor: '#54a7e9',
-        //     cancelButtonColor: '#999',
-        //     confirmButtonText: event?'Accept':'Reject'
-
-        // }).then( function( myData: any ) {
-        //     if(event)
-        //         self.dealRegistrationService.acceptDeal(dealId).subscribe(data =>{
-        //            console.log(data); 
-        //         });
-        //     else
-        //         self.dealRegistrationService.rejectDeal(dealId).subscribe(data =>{
-        //             console.log(data); 
-        //          });
-        // }, function( dismiss: any ) {
-        //     event = false;
-        //     console.log( 'you clicked on option' + dismiss );
-        // });
+        
+                this.dealRegistrationService.changeDealStatus(dealId,event).subscribe(data =>{
+                this.customResponse = new CustomResponse('SUCCESS', "Successfully Changed ", true);
+                this.dealObj.emit("status_change");
+                    console.log(data); 
+                });
+               
+  
     } catch ( error ) {
-        this.xtremandLogger.error( error, "ManageContactsComponent", "deleteContactListAlert()" );
+        this.xtremandLogger.error( error, "ManageLeadsComponent", "setDealStatus()" );
     }
   }
   dealRouter(deal:any,event:any){
@@ -254,9 +288,23 @@ listClosedLeads(pagination:Pagination){
      this.dealObj.emit(deal);
     //this.router.navigate(['home/deals/'+deal.dealId+'/details']);
   }
-  showComments(dealId:number){
-      alert("Welcome To Comment Section for the deal "+dealId);
+  showComments(leadObj:any){
+       this.commentForLead = leadObj;
+      this.isCommentSection = !this.isCommentSection;
+  }
+  addCommentModalClose(event:any){
+        this.isCommentSection = !this.isCommentSection;
   }
   
+    showDealRegistrationForm(item) {
+    this.selectedDealId = item.dealId;
+    this.dealObj.emit(item.dealId);
+    //this.isDealRegistration = !this.isDealRegistration;
+  }
+   showTimeLineView() {
+    this.isDealRegistration = false;
+    
+   }
+
 
 }

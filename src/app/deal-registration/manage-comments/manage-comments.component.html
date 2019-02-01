@@ -1,0 +1,36 @@
+<div id="addCommentModal" class="modal right" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+data-keyboard="false" data-backdrop="static" style="display: block;padding-right: 0 !important;">
+<div class="modal-dialog" style="position: relative !important;">
+  <!-- Modal content-->
+  <div class="modal-content accounts-modal">
+    <div class="modal-header" style="border-bottom: none">
+      <button type="button" class="close-circle" data-dismiss="modal" (click)="addCommentModalClose()"><i class="fa fa-times"></i></button>
+     
+    </div>
+    <div class="modal-body">
+       <form class="form-horizontal" autocomplete="off" style="bottom: 100px">
+        <div class="form-group col-xs-12 col-sm-10 px0">
+              <input type="text" style="border: none" class="form-control" id="address"
+                [(ngModel)]="comment.comment" [ngModelOptions]="{standalone: true}" placeholder="Comment" maxlength="250" 
+                (keyup.enter)="postComment(comment)">
+               
+
+             <br>
+        </div>
+      </form>
+      <div style="margin-top: 30px" class= "col-xs-12 col-sm-10 px0 ">
+        <div *ngFor="let c of commentList" style="width: 65%;background-color: aliceblue;border-radius: 7px;margin: 5px;height: 150px">
+             <div style="padding: 10px; float: left;" *ngIf="c.user != null" >{{c.user.firstName+" "+c.user.lastName}}</div><br>
+          <div style="padding: 10px; float: left;">{{c.comment}}</div><br>
+          <div style="padding: 10px; float: right;" >{{c.createdAt | date}}</div>
+        </div>
+
+      </div>
+    </div>
+    <div class="modal-footer" style="border:none" *ngIf="true">
+     
+    </div>
+    
+  </div>
+</div>
+</div>

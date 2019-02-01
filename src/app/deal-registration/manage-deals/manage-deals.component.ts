@@ -13,6 +13,10 @@ import { ListLoaderValue } from '../../common/models/list-loader-value';
 import { DealRegistrationService } from '../services/deal-registration.service';
 import { ManagePartnersComponent } from 'app/deal-registration/manage-partners/manage-partners.component';
 import { ManageLeadsComponent } from '../manage-leads/manage-leads.component';
+import { Campaign } from '../../campaigns/models/campaign';
+import { CampaignService } from '../../campaigns/services/campaign.service';
+import { User } from '../../core/models/user';
+import { isNumber } from 'util';
 @Component({
   selector: 'app-manage-deals',
   templateUrl: './manage-deals.component.html',
@@ -47,8 +51,13 @@ export class ManageDealsComponent implements OnInit {
     leadList: boolean;
     selectedLeadId: any;
     selectedDealId:any;
+    selectedCampaign:Campaign;
+    selectedDeal:any;
+    selectedLead:any;
     partner: number;
     isDealAnalytics: boolean;
+    isDealRegistration: boolean;
+    user: User;
 
     @ViewChild(ManagePartnersComponent)
     set leadId(partner: ManagePartnersComponent) {
@@ -61,7 +70,7 @@ export class ManageDealsComponent implements OnInit {
     constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService, 
              public utilService: UtilService,public referenceService: ReferenceService,
               private dealRegistrationService:DealRegistrationService,public homeComponent: HomeComponent,public xtremandLogger:XtremandLogger,
-              public sortOption:SortOption,public pagerService: PagerService) {
+              public sortOption:SortOption,public pagerService: PagerService, private campaignService: CampaignService) {
       this.loggedInUserId = this.authenticationService.getUserId();
       this.isListView = ! this.referenceService.isGridView;
      
@@ -71,8 +80,9 @@ export class ManageDealsComponent implements OnInit {
       try{
           this.campaingnList = true;
           this.getTotalDeals();
-          this.getOpenedDeals();
-          this.getClosedDeals();
+          this.getApprovedDeals();
+          this.getRejectedDeals();
+         
           this.listCampaigns(this.campaignsPagination);
       }catch(error){
           this.catchError(error, "ngOnInit()");
@@ -147,6 +157,45 @@ export class ManageDealsComponent implements OnInit {
       }
   }
   
+
+  /*************Approved Leads****************************/
+  getApprovedDeals() {
+      try {
+          this.openedDealsLoader = true;
+          this.dealRegistrationService.getApprovedDeals( this.loggedInUserId ).subscribe(
+              ( data: any ) => {
+                  this.openedDeals = data.data;
+                  this.openedDealsLoader = false;
+              },
+              ( error: any ) => {
+                  this.openedDealsError = true;
+                  this.openedDealsLoader = false;
+              }
+
+          );
+      } catch ( error ) {
+          this.catchError( error, "getOpenedDeals()" );
+      }
+  }
+  /*************REJECTED Leads****************************/
+  getRejectedDeals() {
+     try {
+          this.closedDealsLoader = true;
+          this.dealRegistrationService.getRejectedDeals( this.loggedInUserId ).subscribe(
+              ( data: any ) => {
+                  this.closedDeals = data.data;
+                  this.closedDealsLoader = false;
+              },
+              ( error: any ) => {
+                  this.closedDealsError = true;
+                  this.closedDealsLoader = false;
+              }
+
+          );
+      } catch ( error ) {
+          this.catchError( error, "getClosedDeals()" );
+      }
+  }
   
   /*********************List Campaigns*****************/
   listCampaigns(pagination: Pagination) {
@@ -251,6 +300,19 @@ export class ManageDealsComponent implements OnInit {
     this.campaingnList = false;
     
    }
+
+    showApprovedLeads(){
+    this.filterDeals = "APPROVED";
+    this.leadList = true;
+    this.campaingnList = false;
+    
+   }
+    showRejectedLeads(){
+    this.filterDeals = "REJECTED";
+    this.leadList = true;
+    this.campaingnList = false;
+    
+   }
    showClosedLeads(){
         this.filterDeals = "CLOSED";
         this.leadList = true;
@@ -259,24 +321,76 @@ export class ManageDealsComponent implements OnInit {
    }
 
    dealAnalytics(deal:any){
+       console.log(deal);
        if(deal==="status_change"){
             this.resetCounters();
+       }else if (isNumber(deal)) {
+           this.showDealRegistrationForm(deal);
        }else{
             this.selectedDealId = deal.dealId;
+            this.isDealRegistration = false;
             this.isDealAnalytics = true;
        }
        
       
    }
+
    dealAnalyticsDisable(){
     this.isDealAnalytics = !this.isDealAnalytics;
    }
    resetCounters(){
        this.getTotalDeals();
-       this.getOpenedDeals();
-       this.getClosedDeals();
+       this.getApprovedDeals();
+       this.getRejectedDeals();
       
    }
+
+   getDealInfo(item:any){
+       
+    this.dealRegistrationService.getDealById(item).subscribe(deal => {
+      this.selectedDeal = deal.data;
+      this.selectedDealId = this.selectedDeal.dealId;
+      const obj = { campaignId: this.selectedDeal.campaignId.toString() };
+       console.log(this.selectedDeal)
+  
+      this.campaignService.getCampaignById(obj).subscribe(campaign => {
+          console.log(campaign)
+        this.selectedCampaign = campaign;
+       
+        
+      },
+      error => {
+         console.log(error);
+      })
+      this.dealRegistrationService.getDealCreatedBy(this.selectedDeal.createdBy).subscribe(user => {
+         console.log(user)
+        this.user = user;
+
+      })
+      this.dealRegistrationService.getDealCreatedBy(this.selectedDeal.leadId).subscribe(lead => {
+         console.log(lead)
+        this.selectedLead = lead;
+        
+     
+
+      })
+       this.selectedDealId = item;
+    this.isDealAnalytics = false;
+    this.isDealRegistration = true;
+   })
+}
+
+
+ showDealRegistrationForm(item) {
+      console.log(item)
+    this.getDealInfo(item);
+   
+
+  }
+  disableDealRegistrationForm(){
+      this.isDealAnalytics = false;
+    this.isDealRegistration = false;
+  }
   
 
   

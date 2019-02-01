@@ -1,4 +1,4 @@
-<div class="page-content" *ngIf="!isDealAnalytics" >
+<div class="page-content" *ngIf="!isDealAnalytics && !isDealRegistration" >
 	<div class="page-bar">
 		<ul class="page-breadcrumb">
 			<li *ngIf="!authenticationService.isSuperAdmin()">
@@ -28,7 +28,7 @@
 							<div class="number">
 								<span>{{totalDeals}}</span>
 							</div>
-							<div class="desc">Total Deals</div>
+							<div class="desc">Total Leads</div>
 						</div>
 						<span id="permhref" class="morePadding">
 							<a class="more" > Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
@@ -41,7 +41,7 @@
 				<!-- -------Opened Deals------- -->
 				<app-count-loader *ngIf="openedDealsLoader"></app-count-loader>
 				<div class="col-xs-16 col-sm-8 col-md-4" *ngIf="!openedDealsError && !openedDealsLoader">
-					<a class="dashboard-stat dashboard-stat-lighter green-soft" (click)="showOpenedLeads()">
+					<a class="dashboard-stat dashboard-stat-lighter green-soft" (click)="showApprovedLeads()">
 						<div class="visual">
 							<i class="glyphicon glyphicon-bullhorn"></i>
 						</div>
@@ -49,7 +49,7 @@
 							<div class="number">
 								<span>{{openedDeals}}</span>
 							</div>
-							<div class="desc">Opened Deals</div>
+							<div class="desc">Approved Leads</div>
 						</div>
 						<span id="permhref" class="morePadding">
 							<a class="more" > Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
@@ -62,7 +62,7 @@
 				<!-- -------Closed Deals------- -->
 				<app-count-loader *ngIf="closedDealsLoader"></app-count-loader>
 				<div class="col-xs-16 col-sm-8 col-md-4" *ngIf="!closedDealsError &&!closedDealsLoader ">
-					<a class="dashboard-stat dashboard-stat-lighter yellow-gold" (click)="showClosedLeads()">
+					<a class="dashboard-stat dashboard-stat-lighter yellow-gold" (click)="showRejectedLeads()">
 						<div class="visual">
 							<i class="glyphicon glyphicon-bullhorn"></i>
 						</div>
@@ -70,7 +70,7 @@
 							<div class="number">
 								<span>{{closedDeals}}</span>
 							</div>
-							<div class="desc">Closed Deals</div>
+							<div class="desc">Rejected Leads</div>
 						</div>
 						<span id="permhref" class="morePadding">
 							<a class="more" > Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
@@ -139,7 +139,7 @@
 										<th class="hidden-xs" colspan="2" style="width: 50%">Campaign</th>
 										<th class="visible-xs" colspan="1" style="width: 50%">Campaign</th>
 										<th class="hidden-xs">Status</th>
-										<th class="hidden-xs">Deals Count</th>
+										<th class="hidden-xs">Leads Count</th>
 										
 									</tr>
 								</thead>
@@ -281,7 +281,16 @@
 	
 	
 </div>
-<div *ngIf="isDealAnalytics">
+<div *ngIf="isDealAnalytics && !isDealRegistration">
 	<app-deal-analytics [dealId]="selectedDealId" (isDealAnalytics)="dealAnalyticsDisable()"></app-deal-analytics>
   
 </div>
+
+<!-- --_Deal Registration -->
+<section *ngIf="isDealRegistration && !isDealAnalytics && selectedCampaign!=null">
+  <div class="page-content">
+    <a (click)="disableDealRegistrationForm()" class="pull-right close-circle" style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;">
+      <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
+    <app-deal-registration [campaign]="selectedCampaign" [lead]="user" [dealId]="selectedDealId" [parent]="'deal-analytics'"></app-deal-registration>
+  </div>
+</section>

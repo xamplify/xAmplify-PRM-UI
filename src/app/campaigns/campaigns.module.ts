@@ -56,7 +56,7 @@ import { DealRegistrationModule } from "../deal-registration/deal-registration.m
     CalendarComponent,
     DealRegistrationComponent
   ],
-  exports: [DealRegistrationComponent],
+  exports: [DealRegistrationComponent,BubbleChartComponent,HeatMapComponent],
   providers: [ContactService, VideoFileService, EmailTemplateService,DealRegistrationService]
 })
 export class CampaignsModule {}

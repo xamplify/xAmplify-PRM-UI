@@ -13,12 +13,13 @@ import { CampaignsModule } from '../campaigns/campaigns.module';
 import { DealAnalyticsComponent } from './deal-analytics/deal-analytics.component';
 import { CampaignService } from '../campaigns/services/campaign.service';
 import { SharedLibraryModule } from '../shared/shared-library.module';
+import { ManageCommentsComponent } from './manage-comments/manage-comments.component';
 
 
 
 @NgModule({
-  imports: [ CommonComponentModule,DealRegistrationRoutingModule , SharedModule,CommonModule,CommonComponentModule,CampaignsModule],
-  declarations: [ ManageDealsComponent, ManagePartnersComponent, ManageLeadsComponent, DealAnalyticsComponent],
+  imports: [ CommonComponentModule,DealRegistrationRoutingModule , SharedModule,CommonModule,CampaignsModule],
+  declarations: [ ManageDealsComponent, ManagePartnersComponent, ManageLeadsComponent, DealAnalyticsComponent, ManageCommentsComponent],
   providers:[DealRegistrationService,CampaignService],
   exports:[]
 })

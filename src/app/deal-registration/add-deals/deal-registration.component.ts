@@ -25,7 +25,7 @@ export class DealRegistrationComponent implements OnInit
 {
 
 
-    @Input() campaign: any;
+    @Input() campaign: Campaign;
     @Input() lead: any;
     @Input() dealId: any;
     @Input() parent:any;
@@ -90,6 +90,7 @@ export class DealRegistrationComponent implements OnInit
 
     ngOnInit()
     {
+        console.log(this.campaign)
         this.getLeadData();
         flatpickr('.flatpickr', {
             enableTime: false,
