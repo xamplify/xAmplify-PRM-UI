@@ -146,7 +146,7 @@
 			</div>
 		</div>
 	</div>
-		<div class="col-xs-12 col-sm-8 emails-info" [hidden]="mainLoader" >
+		<div class="col-xs-12 col-sm-8 emails-info" id="campaignreportvendor" [hidden]="mainLoader" >
 
 		<div [hidden]="mainLoader"class="col-xs-2 rsvp_tile_padding">
 			<button class="portlet light color1-invert crcb" (click)="getRsvpInvitiesDetails()"
@@ -619,7 +619,7 @@
 			</div>
 		</div>
 	</div>
-		<div class="col-xs-12 col-sm-8 emails-info" [hidden]="mainLoader" >
+		<div class="col-xs-12 col-sm-8 emails-info" id='values' [hidden]="mainLoader" >
 
 		<div [hidden]="mainLoader"class="col-xs-2 rsvp_tile_padding">
 			<button class="portlet light color1-invert crcb" (click)="getRsvpInvitiesDetails()" [class.selectedBox]="rsvpResposeType === 'invities'"   [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
@@ -703,16 +703,16 @@
 		<div class="col-xs-12" style="padding: 10px 0px 5px 16px;">
 				<h4 class="pull-left" *ngIf="rsvpResposeType === 'invities'">Total invitees</h4>
 				<!-- <h4 class="pull-left" *ngIf="rsvpResposeType === 'email open'">People who <b class="highlet">OPENED YOUR EMAIL</b></h4> -->
-				<div class="pull-left" *ngIf="detailType === 'email open' || detailType === 'email not open'">
+				<div class="pull-left mt10" *ngIf="rsvpResposeType === 'email open' || rsvpResposeType === 'email not open'">
 				<ul class="mix-filter m0">
-								<li class="filter" (click)="getRsvpEmailOpenDetails()">People who have opened your email</li>
-								<li class="filter" (click)="getRsvpEmailNotOpenDetails()"> People who not opened your email</li>
-								</ul>
+            <li class="filter" [class.selectedBox]="rsvpResposeType === 'email open'" (click)="getRsvpEmailOpenDetails()">People who have opened your email</li>
+            <li class="filter" [class.selectedBox]="rsvpResposeType === 'email not open'"  (click)="getRsvpEmailNotOpenDetails()"> People who not opened your email</li>
+				</ul>
 				</div>
 				<h4 class="pull-left" *ngIf="rsvpResposeType === 'YES'">People who have responded <b class="highlet">YES</b></h4>
 				<h4 class="pull-left" *ngIf="rsvpResposeType === 'NO'">People who have responded <b class="highlet">NO</b></h4>
 				<h4 class="pull-left" *ngIf="rsvpResposeType === 'MAYBE'">People who have responded <b class="highlet">MAYBE</b></h4>
-				<h4 class="pull-left" *ngIf="rsvpResposeType === 'NOTYET'">People who <b class="highlet">NOT YET RESPONDED </b></h4>
+				<h4 class="pull-left" *ngIf="rsvpResposeType === 'NOTYET'">People who have<b class="highlet">NOT YET RESPONDED </b></h4>
     </div>
 
     <div class="col-xs-12">
@@ -723,11 +723,11 @@
 							<thead>
 								<tr>
 									<th style="font-size: 12px; font-weight: 500;" style="width:50%">NAME</th>
-									<th style="font-size: 12px; font-weight: 500;" *ngIf="rsvpResposeType !== 'email open' && rsvpResposeType != 'invities'">MESSAGE</th>
+									<th style="font-size: 12px; font-weight: 500;" *ngIf="rsvpResposeType !== 'email open' && rsvpResposeType != 'invities'"><span [hidden]="rsvpResposeType === 'email not open'">MESSAGE</span></th>
 									<th style="font-size: 12px; font-weight: 500;" *ngIf="rsvpResposeType === 'email open' && rsvpResposeType != 'invities'">CAMPAIGN NAME</th>
 									<th style="font-size: 12px; font-weight: 500;" *ngIf="rsvpResposeType === 'email open' && rsvpResposeType != 'invities'">SUBJECT</th>
-									<th style="font-size: 12px; font-weight: 500;" *ngIf="rsvpResposeType != 'invities'">RSVP Date</th>
-									<th style="font-size: 12px; font-weight: 500;" *ngIf="rsvpResposeType !== 'email open' && rsvpResposeType != 'invities'">GUESTS <!-- <br><h6 class="m0" style="font-size:9px">( including you )</h6> --></th>
+									<th style="font-size: 12px; font-weight: 500;" *ngIf="rsvpResposeType != 'invities'"><span [hidden]="rsvpResposeType === 'email not open'">RSVP Date</span></th>
+									<th style="font-size: 12px; font-weight: 500;" *ngIf="rsvpResposeType !== 'email open' && rsvpResposeType != 'invities'"><span [hidden]="rsvpResposeType === 'email not open'">GUESTS <!-- <br><h6 class="m0" style="font-size:9px">( including you )</h6> --></span></th>
 								</tr>
 							</thead>
 							<tbody>
@@ -736,8 +736,8 @@
 										<app-user-info  [userInfo]="item"> </app-user-info>
 									</td>
 									<td *ngIf="rsvpResposeType !== 'email open' && rsvpResposeType != 'invities'">
-										<h6>{{item.message}}</h6>
-										<h6 *ngIf="!item.message" style="text-align:center"><b>-</b></h6>
+										<span [hidden]="rsvpResposeType === 'email not open'"><h6>{{item.message}}</h6>
+										<h6 *ngIf="!item.message" style="text-align:center"><b>-</b></h6></span>
 									</td>
 									<td *ngIf="rsvpResposeType === 'email open' && rsvpResposeType != 'invities'">{{item.campaignName}}</td>
 									<td class="text-center" *ngIf="rsvpResposeType === 'email open' && rsvpResposeType != 'invities'">{{item.subject}}</td>

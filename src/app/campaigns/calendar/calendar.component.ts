@@ -19,12 +19,14 @@ import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { PagerService } from 'app/core/services/pager.service';
 import { ContactService } from 'app/contacts/services/contact.service';
 import { ContactList } from 'app/contacts/models/contact-list';
+import { HttpRequestLoader } from '../../core/models/http-request-loader';
 declare var $,videojs: any;
 
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
-  styleUrls: ['./calendar.component.css', '../../../assets/css/content.css']
+  styleUrls: ['./calendar.component.css', '../../../assets/css/content.css'],
+  providers:[HttpRequestLoader]
 })
 export class CalendarComponent implements OnInit, OnDestroy {
   campaigns: any = [];
@@ -36,7 +38,9 @@ export class CalendarComponent implements OnInit, OnDestroy {
   customResponse: CustomResponse = new CustomResponse();
 
   contactListPagination: Pagination = new Pagination();
+  httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
   contactsPagination: Pagination = new Pagination();
+  pagination:Pagination = new Pagination();
   previewContactList = new ContactList();
   deleteCampaignAlert = false;
   hasCampaignRole = false;
@@ -89,11 +93,9 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   getEventBackgroundColor(event: any) {
     let backgroundColor = '#fff';
-    if ('SAVE' === event.data.status) {
-      backgroundColor = '#6c757d';
-    } else if ('SCHEDULE' === event.data.status) {
-      backgroundColor = '#007bff';
-    } else {
+    if ('SAVE' === event.data.status) { backgroundColor = '#6c757d'; }
+    else if ('SCHEDULE' === event.data.status) { backgroundColor = '#007bff'; }
+    else {
       if (event.data.percentage <= 25) { backgroundColor = '#dc3545'; }
       else if (event.data.percentage > 25 && event.data.percentage <= 50){ backgroundColor = '#ffc107';}
       else if (event.data.percentage > 50 && event.data.percentage <= 75){ backgroundColor = '#17a2b8';}
@@ -415,6 +417,13 @@ export class CalendarComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     $('#myModal').modal('hide');
   }
+  sentEmailModal(){
+   // this.downloadTypeName = 'campaignViews';
+    this.paginationType = 'sentEmailData';
+    this.pagination = new Pagination();
+    //this.listCampaignViews(this.campaign.campaignId, this.pagination);
+    $('#emailSentListModal').modal();
+  }
   playVideo(){
     $('#main_video_src').empty();
     this.appendVideoData(this.launchVideoPreview, "main_video_src", "title");
@@ -507,5 +516,13 @@ export class CalendarComponent implements OnInit, OnDestroy {
         });
     }
    }
-}
+ }
+
+ downloadEmailLogs(){
+
+ }
+ clearPaginationValues(){
+
+ }
+
 }

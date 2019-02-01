@@ -276,7 +276,7 @@ export class CampaignService {
             .map(this.extractData)
             .catch(this.handleError);
     }
-    
+
     cancelEvent(cancelEventData: any, userId: number) {
         var url = this.URL + "campaign/cancel-event-campaign/" + userId + "?access_token=" + this.authenticationService.access_token;
         return this.http.post(url, cancelEventData)
@@ -314,28 +314,28 @@ export class CampaignService {
     }
 
     getEventCampaignEmailOpenDetails(campaignId: number, isChannelCampaign: boolean, pagination: Pagination) {
-        const url = this.URL + 'campaign/' + campaignId + "/rsvp-email-open-details?access_token=" + this.authenticationService.access_token + "&channelCampaign=" + isChannelCampaign;
+        const url = this.URL + 'campaign/' + campaignId + "/rsvp-email-open-details?access_token=" + this.authenticationService.access_token + "&channelCampaign=" + isChannelCampaign+"&type=OPEN";
         return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);
     }
-    
+
     getEventCampaignEmailNotOpenDetails(campaignId: number, isChannelCampaign: boolean, pagination: Pagination) {
-        const url = this.URL + 'campaign/' + campaignId + "/rsvp-email-open-details?access_token=" + this.authenticationService.access_token + "&channelCampaign=" + isChannelCampaign;
+        const url = this.URL + 'campaign/' + campaignId + "/rsvp-email-open-details?access_token=" + this.authenticationService.access_token + "&channelCampaign=" + isChannelCampaign+"&type=NOTOPEN";
         return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);
     }
 
     getEventCampaignRedistributionEmailOpenDetails(campaignId: number, userId: any, pagination: Pagination) {
-        const url = this.URL + 'campaign/' + campaignId +'/'+ userId + "/rsvp-email-open-details?access_token=" + this.authenticationService.access_token;
+        const url = this.URL + 'campaign/' + campaignId +'/'+ userId + "/rsvp-email-open-details?access_token=" + this.authenticationService.access_token+"&type=OPEN";
         return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);
     }
-    
+
     getEventCampaignRedistributionEmailNotOpenDetails(campaignId: number, userId: any, pagination: Pagination) {
-        const url = this.URL + 'campaign/' + campaignId +'/'+ userId + "/rsvp-email-open-details?access_token=" + this.authenticationService.access_token;
+        const url = this.URL + 'campaign/' + campaignId +'/'+ userId + "/rsvp-email-open-details?access_token=" + this.authenticationService.access_token+"&type=NOTOPEN";
         return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);
