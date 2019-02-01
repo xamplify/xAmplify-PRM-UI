@@ -78,6 +78,30 @@
                 </div>
               </div>
             </div>
+            <div *ngIf="campaign.campaignType==='REGULAR'" class="wleft" >
+                <div class="portlet light clearfix" style="padding:0px">
+                  <div class="p0">
+                      <div class="pricing hover-effect">
+                          <div class="pricing-head">
+                            <h4><img style="margin: 0 auto;height: 115px;" alt="Regular E-mail Campaign" class="pricing-head-img img-responsive" src="assets/images/regular-email.png"></h4>
+                          </div>
+                        </div>
+                    <h5 id="description"></h5>
+                  </div>
+                </div>
+            </div>
+            <div *ngIf="campaign.campaignType==='EVENT'" class="wleft" >
+              <div class="portlet light clearfix" style="padding:0px">
+                <div class="p0">
+                    <div class="pricing hover-effect">
+                        <div class="pricing-head">
+                          <h4><img style="margin: 0 auto;height: 115px;" alt="Regular E-mail Campaign" class="pricing-head-img img-responsive" src="assets/images/event-campaign.png"></h4>
+                        </div>
+                      </div>
+                  <h5 id="description"></h5>
+                </div>
+              </div>
+          </div>
             <div *ngIf="campaign.emailTemplate" class="wright" >
               <ul class="content__list" style="margin-top: -12px;">
                   <li class="list__item" style="width:auto !important;float:none;" [class.list__item--selected]="true">
@@ -231,8 +255,6 @@
 </div>
 </div>
 </div>
-<!-- video preview-->
-<app-preview-video *ngIf="videoFile" [videoFile]="videoFile" (notifyParent)="closeModal($event)"></app-preview-video>
   <!--   contacts preview modal    -->
   <div class="modal right " id="contactsModal">
       <div class="modal-dialog modal-css" style="width: 75%;right:0">
@@ -328,9 +350,9 @@
   <h6>
     <span class="campaign-label">{{campaign.type}} campaign</span>
     <span class="campaign-label {{campaign.status | lowercase}}">
-            <ng-container *ngIf="campaign.status === 'NOW'; else default">Launched</ng-container>
-            <ng-template #default>{{campaign.status | titlecase}}d</ng-template>
-          </span>
+    <ng-container *ngIf="campaign.status === 'NOW'; else default">Launched</ng-container>
+    <ng-template #default>{{campaign.status | titlecase}}d</ng-template>
+    </span>
   </h6>
   <div class="media">
       <h5>{{campaign.campaign}}</h5>
@@ -342,15 +364,73 @@
         </div>
         <h6>{{campaign.percentage}}% interaction</h6>
       </ng-container>
-
       <h6>
         <ng-container *ngIf="campaign.status === 'NOW'; else default">Launched</ng-container>
-        <ng-template #default>{{campaign.status | titlecase}}d</ng-template>
-        on
+        <ng-template #default>{{campaign.status | titlecase}}d</ng-template> on
         <ng-container *ngIf="campaign.status === 'SAVE'; else launchTime">{{campaign.createdTime |date:'mediumDate'}}, {{campaign.createdTime | date:'shortTime'}}</ng-container>
         <ng-template #launchTime>{{campaign.launchTime |date:'mediumDate'}}, {{campaign.launchTime | date:'shortTime'}}</ng-template>
-
         <ng-container></ng-container>
       </h6>
   </div>
+</div>
+
+<!-- Email Sent List Modal -->
+<div class="modal right fade" id="calendarModal" tabindex="-1" role="dialog" aria-labelledby="emailSentListModalLabel" data-backdrop="static"
+ data-keyboard="false">
+	<div class="modal-dialog modal-lg modal-css" role="document" style="right:0">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i class="fa fa-times"></i></a>
+				<h4 class="modal-title" id="emailSentListModalLabel" >Sent Email Details</h4>
+				<div class="btn-group pull-right" style="margin-top: -4px; cursor:pointer; color: #7d8c98">
+					<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none;margin-top: -15px;padding-right: 10px;margin-right: 21px; float:right;">
+					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
+				</span>
+					<ul class="dropdown-menu pull-right">
+						<li><a id="delete_button" (click)="downloadEmailLogs()"> Export To Excel </a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="table-responsive">
+					 <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+				 	<ng-container *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError ">
+						<table class="table tgrid">
+							<thead>
+								<tr>
+									<th style="font-size: 12px; font-weight: 500;text-align: left;width:25%">NAME</th>
+									<th style="font-size: 12px; font-weight: 500;">CAMPAIGN NAME</th>
+									<th style="font-size: 12px; font-weight: 500;">SENT TIME</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr *ngFor="let item of pagination.pagedItems">
+									<td>
+										<app-user-info  [userInfo]="item"> </app-user-info>
+									</td>
+									<td>
+										<h6 title="{{item.campaignName}}">{{item.campaignName | slice:0:30}}
+                        <span *ngIf="campaign.campaignName?.length>30">...</span>
+                    </h6>
+										<h4 *ngIf="item.campaignName==null">-</h4>
+									</td>
+									<td>
+										<h6>
+											<app-timestamp [dateAndTime]="campaign.launchTime"> </app-timestamp>
+										</h6>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						</ng-container>
+           <div>
+            <app-pagination class="pg8" [pagination]="pagination" *ngIf="pagination.pagedItems?.length > 0"
+						 [type]="'sentEmailData'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropDown($event)"></app-pagination>
+          </div>
+         </div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>

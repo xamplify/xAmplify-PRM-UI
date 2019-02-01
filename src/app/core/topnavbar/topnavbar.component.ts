@@ -114,7 +114,7 @@ export class TopnavbarComponent implements OnInit {
   lockScreen(){
     this.router.navigate(['/userlock']);
   }
-  errorImage(event) { event.target.src = this.properties.COMPANY_LOGO; }
+  errorImage(event) { event.target.src = 'assets/images/xamplify-logo.png'; }
   logout() {
     this.refService.userDefaultPage = 'NoneOf';
     this.refService.isSidebarClosed = false;
