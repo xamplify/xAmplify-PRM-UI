@@ -97,6 +97,7 @@
 											<h5 *ngIf="campaign.nurtureCampaign" [title]="campaign.vendorOrganizationName">Originated By <b>{{campaign.vendorOrganizationName | slice:0:20 }}<span *ngIf="campaign.vendorOrganizationName?.length>20">...</span></b></h5>
 										    <h5 class="view-banner" *ngIf="campaign.launched && campaign.channelCampaign">Through Campaign</h5>
 										    <h5 class="view-banner" *ngIf="campaign.launched && !campaign.channelCampaign && !campaign.nurtureCampaign">To Campaign</h5>
+										    <h5 class="view-banner" *ngIf="campaign.launched && !campaign.showCancelButton" style="background-color: #4c4c4c;">Cancelled</h5>
 										    <h5 class="view-banner" *ngIf="!campaign.launched && (campaign.scheduleType==='SAVE' || campaign.scheduleType==='NOW')" style="background-color: #f76c1a !important">Draft</h5>
 										    <h5 class="view-banner" *ngIf="!campaign.launched && campaign.scheduleType==='SCHEDULE'">Scheduled</h5>
 										</td>
@@ -354,6 +355,7 @@
 
 											<span class="view-banner" *ngIf="campaign.launched && campaign.channelCampaign" style="position: relative;top: -3px;">Through Campaign</span>
 										    <span class="view-banner" *ngIf="campaign.launched && !campaign.channelCampaign && !campaign.nurtureCampaign" style="position: relative;top: -3px;">To Campaign</span>
+										    <span class="view-banner" *ngIf="campaign.launched && !campaign.showCancelButton" style="position: relative;top: -3px; background-color: #4c4c4c;">Cancelled</span>
 										    <span class="view-banner" *ngIf="!campaign.launched && (campaign.scheduleType==='SAVE' || campaign.scheduleType==='NOW')" style="position: relative;top: -3px; background-color: #f76c1a !important">Draft</span>
 											<span class="view-banner" *ngIf="!campaign.launched && campaign.scheduleType==='SCHEDULE'" style="position: relative;top: -3px;">Scheduled</span>
 											</h4>
