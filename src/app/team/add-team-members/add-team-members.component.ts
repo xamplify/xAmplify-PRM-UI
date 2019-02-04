@@ -64,6 +64,7 @@ export class AddTeamMembersComponent implements OnInit {
     selectedTeamMemberEmailId:string = "";
     allEmailIds:any;
     selectedId:number=0;
+    contactAccess:boolean = false;
     /**********Constructor**********/
     constructor( public logger: XtremandLogger,public referenceService:ReferenceService,private teamMemberService:TeamMemberService,
             public authenticationService:AuthenticationService,private pagerService:PagerService,public pagination:Pagination,
@@ -74,10 +75,10 @@ export class AddTeamMembersComponent implements OnInit {
     }
 
     downloadEmptyCsv(){
-        if(this.authenticationService.module.isVendor){
-            window.location.href = this.authenticationService.MEDIA_URL + "team-member-vendor.csv";
-        }else{
+        if(this.contactAccess){
             window.location.href = this.authenticationService.MEDIA_URL + "team-member-list.csv";
+        }else{
+            window.location.href = this.authenticationService.MEDIA_URL + "team-member-vendor.csv";
         }
 
     }
@@ -92,12 +93,20 @@ export class AddTeamMembersComponent implements OnInit {
             this.listAllOrgAdminsEmailIds();
             this.listAllPartnerEmailIds();
             this.listAllOrgAdminsAndSupervisors();
+            this.hasContactAccess();
         }
         catch ( error ) {
             this.showUIError(error);
         }
     }
 
+    hasContactAccess(){
+        let isOrgAdmin = this.authenticationService.isOrgAdmin();
+        let isVendorAndPartner = this.authenticationService.isVendorPartner();
+        this.contactAccess  = isOrgAdmin || (isVendorAndPartner);
+    }
+    
+    
     /************List Members*****************/
     listTeamMembers(pagination:Pagination){
         try{
@@ -192,7 +201,6 @@ export class AddTeamMembersComponent implements OnInit {
         if(this.teamMemberUi.emptyRolesLength==0){
             this.errorMessage = "";
            this.referenceService.startLoader(this.httpRequestLoader);
-            console.log(this.teamMembers);
             this.teamMemberService.save(this.teamMembers,this.userId)
             .subscribe(
             data => {
@@ -264,6 +272,11 @@ export class AddTeamMembersComponent implements OnInit {
         this.customResponse = new CustomResponse('ERROR', this.errorMessage, true);
         // $( "#empty-roles-div" ).show(600);
         // setTimeout( function() { $( "#empty-roles-div" ).slideUp( 500 ); }, 7000 );
+    }
+    
+    hideErrorMessageDiv(){
+        this.errorMessage ="" ;
+        this.customResponse = new CustomResponse('ERROR', this.errorMessage, false);
     }
     /*********************Delete*********************/
    /* delete(teamMember:TeamMember){
@@ -461,7 +474,7 @@ export class AddTeamMembersComponent implements OnInit {
         team.campaign = true;
         team.emailTemplate = true;
         team.stats = true;
-        if(!this.authenticationService.module.isVendor){
+        if(this.contactAccess){
             team.contact = true;
         }
         team.socialShare = true;
@@ -481,7 +494,7 @@ export class AddTeamMembersComponent implements OnInit {
     countCheckedCheckBoxesLength(team:TeamMember,index:number,tableId:string){
        try{
            let length = $('#'+tableId+' .module-checkbox-'+index+':checked').length;
-           if(length==7){
+           if((this.contactAccess && length==7) || (!this.contactAccess && length==6)){
                team.all = true;
                $('#'+tableId+' #role-checkbox-'+index).prop("disabled",true);
            }else{
@@ -542,6 +555,7 @@ export class AddTeamMembersComponent implements OnInit {
     csvErrors:string[] = [];
 
     fileChangeListener($event): void {
+        this.hideErrorMessageDiv();
         this.csvErrors = [];
         var text = [];
         var files = $event.srcElement.files;
@@ -558,7 +572,8 @@ export class AddTeamMembersComponent implements OnInit {
             let headersRow = this.fileUtil
                 .getHeaderArray(csvRecordsArray);
             let headers = headersRow[0].split(',');
-            if(headers.length==9){
+            
+            if((this.contactAccess && headers.length==9)  || (!this.contactAccess && headers.length==8)){
                 if(this.validateHeaders(headers)){
                     this.readCsvData(csvRecordsArray,headersRow.length);
                 }else{
@@ -582,7 +597,13 @@ export class AddTeamMembersComponent implements OnInit {
       };
 
          validateHeaders(headers){
-          return (headers[0]=="EMAIL_ID" && headers[1]=="ALL" && headers[2]=="VIDEO" && headers[3]=="CONTACTS" && headers[4]=="CAMPAIGN" && headers[5]=="STATS" && headers[6]=="EMAIL" && headers[7]=="SOCIAL_SHARE" && headers[8]=="PARTNERS");
+           if(this.contactAccess){
+               return (headers[0]=="EMAIL_ID" && headers[1]=="ALL" && headers[2]=="VIDEO" && headers[3]=="CONTACTS" && headers[4]=="CAMPAIGN" && headers[5]=="STATS" && headers[6]=="EMAIL" && headers[7]=="SOCIAL_SHARE" && headers[8]=="PARTNERS");
+
+           }else{
+               return (headers[0]=="EMAIL_ID" && headers[1]=="ALL" && headers[2]=="VIDEO" && headers[3]=="CAMPAIGN" && headers[4]=="STATS" && headers[5]=="EMAIL" && headers[6]=="SOCIAL_SHARE" && headers[7]=="PARTNERS");
+
+           }
          }
 
       readCsvData(csvRecordsArray,rowLength){
@@ -679,19 +700,19 @@ export class AddTeamMembersComponent implements OnInit {
                   this.setAllRoles(teamMember);
               }else{
                   teamMember.video = this.setDefaultValue(row[2]);
-                  if(this.authenticationService.module.isVendor){
-                      teamMember.campaign   =this.setDefaultValue(row[3]);
-                      teamMember.stats = this.setDefaultValue(row[4]);
-                      teamMember.emailTemplate = this.setDefaultValue(row[5]);
-                      teamMember.socialShare = this.setDefaultValue(row[6]);
-                      teamMember.partners = this.setDefaultValue(row[7]);
-                  }else{
+                  if(this.contactAccess){
                       teamMember.contact = this.setDefaultValue(row[3]);
                       teamMember.campaign   =this.setDefaultValue(row[4]);
                       teamMember.stats = this.setDefaultValue(row[5]);
                       teamMember.emailTemplate = this.setDefaultValue(row[6]);
                       teamMember.socialShare = this.setDefaultValue(row[7]);
                       teamMember.partners = this.setDefaultValue(row[8]);
+                  }else{
+                      teamMember.campaign   =this.setDefaultValue(row[3]);
+                      teamMember.stats = this.setDefaultValue(row[4]);
+                      teamMember.emailTemplate = this.setDefaultValue(row[5]);
+                      teamMember.socialShare = this.setDefaultValue(row[6]);
+                      teamMember.partners = this.setDefaultValue(row[7]);
                   }
 
               }

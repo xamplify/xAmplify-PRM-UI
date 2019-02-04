@@ -92,7 +92,8 @@
 				<div class="portlet-title">
 					<div class="caption">Added Team Members</div>
 				</div>
-				<div class="portlet-body clearfix">
+				<app-list-loader  *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+				<div class="portlet-body clearfix"  *ngIf="!httpRequestLoader.isLoading">
 					<div class="table-responsive" style="overflow-x:inherit">
 						<table class="table table-striped  table-hover" id="add-team-member-table">
 							<thead>
@@ -111,7 +112,7 @@
 									<th class="rest-header">
 										<i class="fa fa-file-video-o" aria-hidden="true"></i><br>Video
 									</th>
-									<th class="rest-header" *ngIf="!authenticationService.module.isVendor">
+									<th class="rest-header" *ngIf="contactAccess">
 										<i class="fa fa-users" aria-hidden="true"></i><br>Contacts
 									</th>
 									<th class="rest-header" >
@@ -159,7 +160,7 @@
 									<br>
 								</td>
 								<td><input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.video" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'add-team-member-table')"></td>
-								<td *ngIf="!authenticationService.module.isVendor"><input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.contact" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'add-team-member-table')"></td>
+								<td *ngIf="contactAccess"><input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.contact" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'add-team-member-table')"></td>
 								<td><input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.campaign" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'add-team-member-table')"></td>
 								<td><input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.stats" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'add-team-member-table')"></td>
 								<td><input type="checkbox" id="role-checkbox-{{i}}"[(ngModel)]="teamMember.emailTemplate" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'add-team-member-table')"></td>
@@ -216,7 +217,7 @@
 									<th class="rest-header">
 										<i class="fa fa-file-video-o" aria-hidden="true"></i><br>Video
 									</th>
-									<th class="rest-header" *ngIf="!authenticationService.module.isVendor">
+									<th class="rest-header" *ngIf="contactAccess">
 										<i class="fa fa-users" aria-hidden="true"></i><br>Contacts
 									</th>
 									<th class="rest-header">
@@ -282,7 +283,7 @@
 								<ng-container *ngIf="(teamMember.orgAdmin || teamMember.all);then disable else enable"></ng-container>
 								<ng-template #disable>
 									<td><input type="checkbox" disabled="disabled" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.video" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')"></td>
-									<td  *ngIf="!authenticationService.module.isVendor"><input type="checkbox"  disabled="disabled" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.contact" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')"></td>
+									<td  *ngIf="contactAccess"><input type="checkbox"  disabled="disabled" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.contact" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')"></td>
 									<td><input type="checkbox" disabled="disabled"  id="role-checkbox-{{i}}" [(ngModel)]="teamMember.campaign" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')"></td>
 									<td><input type="checkbox" disabled="disabled"  id="role-checkbox-{{i}}" [(ngModel)]="teamMember.stats" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')"></td>
 									<td><input type="checkbox" disabled="disabled" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.emailTemplate" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')"></td>
@@ -291,7 +292,7 @@
 								</ng-template>
 								<ng-template #enable>
 									<td><input type="checkbox"  id="role-checkbox-{{i}}" [(ngModel)]="teamMember.video" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')"></td>
-									<td  *ngIf="!authenticationService.module.isVendor"><input type="checkbox"  id="role-checkbox-{{i}}" [(ngModel)]="teamMember.contact" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')"></td>
+									<td  *ngIf="contactAccess"><input type="checkbox"  id="role-checkbox-{{i}}" [(ngModel)]="teamMember.contact" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')"></td>
 									<td><input type="checkbox"  id="role-checkbox-{{i}}" [(ngModel)]="teamMember.campaign" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')"></td>
 									<td><input type="checkbox"  id="role-checkbox-{{i}}" [(ngModel)]="teamMember.stats" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')"></td>
 									<td><input type="checkbox"  id="role-checkbox-{{i}}" [(ngModel)]="teamMember.emailTemplate" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')"></td>
