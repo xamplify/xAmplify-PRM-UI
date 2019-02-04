@@ -1,4 +1,3 @@
-import { Pagination } from '../../core/models/pagination';
 import { EmailLog } from './email-log';
 export class CampaignReport {
     id: number;
