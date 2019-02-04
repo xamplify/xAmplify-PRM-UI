@@ -1,6 +1,12 @@
 <div class="expired-event-class" *ngIf="eventExpiredError"> This event has concluded.</div>
 
 <div class="container-fluid" [hidden]="processor.isProcessing || eventExpiredError" style="margin-top: 2em">
+
+<div class="alert alert-danger fade in" *ngIf="isCancelledEvent" style="text-align: center;font-size: 15px;">
+    <b>This event has cancelled.</b>
+</div>
+
+
 <div class="alert alert-success alert-dismissible fade in alertDanger" role="alert" *ngIf="responseMessage">
   <a type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="responseMessage = null">
     <span aria-hidden="true">×</span>
@@ -18,14 +24,14 @@
       <div *ngIf="isRsvp; then rsvp_exist else rsvp_new"></div>
       <ng-template #rsvp_exist>
         <h4 class="pull-left">You Have RSVPed <b>{{eventcampaign.campaignEventRsvps[0].eventCampaignRsvp}}</b></h4>
-        <button class="btn btn-secondary pull-right" (click)="isRsvp = !isRsvp">Change</button>
+        <button class="btn btn-secondary pull-right" [disabled] = "isCancelledEvent" (click)="isRsvp = !isRsvp">Change</button>
       </ng-template>
       <ng-template #rsvp_new>
         <h4 class="pull-left">Will you attend?</h4>
-        <div class="pull-right">
-          <button class="btn btn-secondary" data-toggle="modal" data-target="#myModal" [class.selectedType]="type ==='YES'" (click)="campaignRsvp.eventCampaignRsvp = 'YES'">Yes</button>
-          <button class="btn btn-secondary" data-toggle="modal" data-target="#myModal" [class.selectedType]="type ==='NO'" (click)="campaignRsvp.eventCampaignRsvp = 'NO'">No</button>
-          <button class="btn btn-secondary" data-toggle="modal" data-target="#myModal" [class.selectedType]="type ==='MAYBE'" (click)="campaignRsvp.eventCampaignRsvp = 'MAYBE'">Maybe</button>
+        <div class="pull-right" [class.disabled]="isCancelledEvent">
+          <button class="btn btn-secondary" [disabled] = "isCancelledEvent" data-toggle="modal" data-target="#myModal" [class.selectedType]="type ==='YES'" (click)="campaignRsvp.eventCampaignRsvp = 'YES'">Yes</button>
+          <button class="btn btn-secondary" [disabled] = "isCancelledEvent" data-toggle="modal" data-target="#myModal" [class.selectedType]="type ==='NO'" (click)="campaignRsvp.eventCampaignRsvp = 'NO'">No</button>
+          <button class="btn btn-secondary" [disabled] = "isCancelledEvent" data-toggle="modal" data-target="#myModal" [class.selectedType]="type ==='MAYBE'" (click)="campaignRsvp.eventCampaignRsvp = 'MAYBE'">Maybe</button>
         </div>
       </ng-template>
 

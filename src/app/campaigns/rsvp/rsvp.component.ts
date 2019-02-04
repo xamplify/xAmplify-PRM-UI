@@ -28,6 +28,7 @@ export class RsvpComponent implements OnInit {
   characterleft = 140;
   rsvpSavingProcessing = false;
   eventExpiredError = false;
+  isCancelledEvent = false;
 
   constructor(public referenceService: ReferenceService, private route: ActivatedRoute, public campaignService: CampaignService, public processor:Processor,
   public authenticationService:AuthenticationService) { }
@@ -43,6 +44,11 @@ export class RsvpComponent implements OnInit {
         this.replyUserName = response.targetUserDTO.firstName;
         this.processor.remove(this.processor);
         this.eventStartTimeError();
+        
+        if(response.eventCancellation.cancelled){
+            this.isCancelledEvent = true;
+        }
+        
       },
       error => {
         console.log(error);
