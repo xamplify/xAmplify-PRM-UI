@@ -2044,9 +2044,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         if(!this.hasInternalError && this.router.url!="/"){
             if(!this.isReloaded){
                 if(!this.isLaunched){
-                    if(this.isAdd){
-                        this.saveCampaignOnDestroy();
-                    }else{
+                    // if(this.isAdd){
+                    //     this.saveCampaignOnDestroy();
+                    // }else{
                         let self = this;
                         swal( {
                             title: 'Are you sure?',
@@ -2067,7 +2067,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                                 self.reInitialize();
                             }
                         })
-                    }
+                    // }
                  }
             }
          }
@@ -2446,12 +2446,12 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
      setLoggedInUserEmailId(){
          const userProfile = this.authenticationService.userProfile;
          this.campaign.email = userProfile.emailId;
-         if(userProfile.firstName !== undefined && userProfile.lastName !== undefined)
-             this.campaign.fromName = $.trim(userProfile.firstName + " " + userProfile.lastName);
-         else if(userProfile.firstName !== undefined && userProfile.lastName == undefined)
-             this.campaign.fromName = $.trim(userProfile.firstName);
-         else
-             this.campaign.fromName = $.trim(userProfile.emailId);
+         if(userProfile.firstName !== undefined && userProfile.lastName !== undefined){
+             this.campaign.fromName = $.trim(userProfile.firstName + " " + userProfile.lastName);}
+         else if(userProfile.firstName !== undefined && userProfile.lastName == undefined){
+             this.campaign.fromName = $.trim(userProfile.firstName); }
+         else {
+             this.campaign.fromName = $.trim(userProfile.emailId); }
          this.setEmailIdAsFromName();
      }
 
