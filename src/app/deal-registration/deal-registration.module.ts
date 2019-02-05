@@ -14,6 +14,7 @@ import { DealAnalyticsComponent } from './deal-analytics/deal-analytics.componen
 import { CampaignService } from '../campaigns/services/campaign.service';
 import { SharedLibraryModule } from '../shared/shared-library.module';
 import { ManageCommentsComponent } from './manage-comments/manage-comments.component';
+import { ManageDealCommentsComponent } from './manage-deal-comments/manage-deal-comments.component';
 
 
 

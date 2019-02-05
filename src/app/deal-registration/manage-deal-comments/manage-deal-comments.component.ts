@@ -5,14 +5,17 @@ import { DealRegistrationService } from '../services/deal-registration.service';
 import { User } from '../../core/models/user';
 var $ ;
 @Component({
-  selector: 'app-manage-comments',
-  templateUrl: './manage-comments.component.html',
-  styleUrls: ['../../contacts/add-contact-modal/add-contact-modal.component.css']
+  selector: 'app-manage-deal-comments',
+  templateUrl: './manage-deal-comments.component.html',
+  styleUrls: ['./manage-deal-comments.component.css']
 })
-export class ManageCommentsComponent implements OnInit {
+export class ManageDealCommentsComponent implements OnInit {
 
   @Input()
   lead:any;
+
+  @Input()
+  property:any;
 
    @Output()  isCommentSection = new EventEmitter<any>();
 
@@ -32,12 +35,12 @@ export class ManageCommentsComponent implements OnInit {
         this.user = user;
 
       }) 
-      this.dealRegService.getComments(this.lead.dealId).subscribe(commentData => {
+     this.dealRegService.getCommentsByProperty(this.lead.id,this.property.id).subscribe(commentData => {
         this.commentList = commentData.comments;
         this.comment = new DealComments;
-        console.log(commentData.comments)
+        console.log(commentData.comments) 
       })
-
+      console.log(this.property)
     console.log(this.lead);
   } 
 
@@ -47,17 +50,18 @@ export class ManageCommentsComponent implements OnInit {
   postComment(data:DealComments){ 
     data.createdAt = new Date();
     data.user = this.user;
-    data.dealId = this.lead.dealId;
+    data.propertyId = this.property.id;
     console.log(data);
-    this.dealRegService.saveComment(this.lead.dealId,data).subscribe(result =>{
-      this.dealRegService.getComments(this.lead.dealId).subscribe(commentData => {
+    this.dealRegService.saveComment(this.lead.id,data).subscribe(result =>{
+      this.dealRegService.getCommentsByProperty(this.lead.id,data.propertyId).subscribe(commentData => {
         this.commentList = commentData.comments;
         this.comment = new DealComments;
-        console.log(commentData.comments)
+        console.log(commentData.comments) 
       })
        
     });
    // data.user.lastName = this.user.lastName;
     
   }
+
 }

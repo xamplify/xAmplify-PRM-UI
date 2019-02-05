@@ -178,15 +178,21 @@ export class DealRegistrationService {
      * 
      * */
 
-    getComments(dealId: number, propertyId: number) {
-        var url = this.URL  + dealId + "/property/" +propertyId+ "/comments?access_token=" + this.authenticationService.access_token;
+    getComments(dealId: number) {
+        var url = this.URL  + dealId + "/comments?access_token=" + this.authenticationService.access_token;
+        return this.http.get(url)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    getCommentsByProperty(dealId: number,propertyId:number) {
+        var url = this.URL  + dealId +"/property/"+propertyId+ "/comments?access_token=" + this.authenticationService.access_token;
         return this.http.get(url)
             .map(this.extractData)
             .catch(this.handleError);
     }
 
-    saveComment(dealId: number, propertyId: number,comment: DealComments) {
-        var url = this.URL  + dealId + "/property/" +propertyId+ "/comments?access_token=" + this.authenticationService.access_token;
+    saveComment(dealId: number,comment: DealComments) {
+        var url = this.URL  + dealId +  "/comments/save?access_token=" + this.authenticationService.access_token;
 
         return this.http.post(url, comment)
             .map(this.extractData)
@@ -195,6 +201,21 @@ export class DealRegistrationService {
     deleteComments(comment: DealComments) {
          var url = this.URL  + "comments/delete?access_token=" + this.authenticationService.access_token;
         return this.http.post(url, comment)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    getForms(userId:number){
+        var url = this.authenticationService.REST_URL +"users/"+userId+"/forms/list?access_token=" + this.authenticationService.access_token;
+        console.log(url);
+        return this.http.get(url)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    getFormById(userId:number,formId:number){
+        var url = this.authenticationService.REST_URL +"users/"+userId+"/forms/"+formId+"?access_token=" + this.authenticationService.access_token;
+        console.log(url); 
+        return this.http.get(url)
             .map(this.extractData)
             .catch(this.handleError);
     }

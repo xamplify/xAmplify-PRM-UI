@@ -19,6 +19,8 @@ import { User } from '../../../core/models/user';
 import { DefaultVideoPlayer } from '../../../videos/models/default-video-player';
 import { CountryNames } from '../../../common/models/country-names';
 import { VideoFileService } from '../../../videos/services/video-file.service'
+import { DealQuestions } from '../../../deal-registration/models/deal-questions';
+import { DealForms } from '../../../deal-registration/models/deal-forms';
 
 declare var swal, $, videojs: any;
 
@@ -71,7 +73,17 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     ngxloading: boolean;
     roleNames:string = "";
     customResponse: CustomResponse = new CustomResponse();
+    customResponseForm: CustomResponse = new CustomResponse();
     hasClientErrors:boolean = false;
+    dealForms:DealForms[] = [];
+    form = new DealForms();
+    questions:DealQuestions[] =[];
+    question:DealQuestions;
+    formSubmiteState = true;
+    submitButtonText = "Save Form";
+    validateForm:boolean;
+    selectedForm:DealForms;
+    isListFormSection:boolean;
     constructor(public videoFileService: VideoFileService, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
         public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
         public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -128,6 +140,16 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.ngxloading = false;
                 this.customResponse = new CustomResponse('SUCCESS', this.properties.PROFILE_PIC_UPDATED,true);
             };
+            this.userService.listForm(this.loggedInUserId).subscribe(result => {
+                this.dealForms = result;  
+                if(result[0]){
+                    this.form =   result[0]; 
+                    this.questions = this.form.campaignDealQuestionDTOs;
+                    this.submitButtonText = "Update Form";
+                   
+                }else
+                    this.submitButtonText = "Save Form";
+            })
         }catch(error){
             this.hasClientErrors = true;
             this.logger.showClientErrors("my-profile.component.ts", "constructor()", error);
@@ -898,6 +920,120 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                 },
                 () => this.logger.info("Finished enableOrDisableOrgAdmin()")
             );
+    }
+
+    //Forms section
+    addQuestion()
+    {
+        this.question = new DealQuestions();
+        var length;
+        if(this.questions != null && this.questions!= undefined)
+            length = this.questions.length;
+        else
+             length = 0;
+        length = length + 1;
+        var id = 'question-' + length;
+        this.question.divId = id;
+        this.question.error = true;
+      
+
+        this.questions.push(this.question);
+      
+        
+
+    }
+    remove(i, id)
+    {
+        if (id)
+            console.log(id)
+        var index = 1;
+
+        this.questions = this.questions.filter(question => question.divId !== 'question-' + i)
+            .map(question =>
+            {
+                question.divId = 'question-' + index++;
+                return question;
+            });
+
+    }
+    validateQuestion(question:DealQuestions){
+        var errorClass = "form-group has-error has-feedback";
+        var successClass = "form-group has-success has-feedback";
+        if (question.question.length > 0)
+        {
+            question.class = successClass; 
+            question.error = false;
+        } else
+        {
+             question.class = errorClass;
+            question.error = true;
+        }
+        this.submitBUttonStateChange();
+    }
+    validateDealForm(form:DealForms){
+        if (form.name.length > 0)
+        {
+            this.validateForm = true;
+        } else
+        {
+            this.validateForm = false;
+        }
+        this.submitBUttonStateChange();
+    }
+    submitBUttonStateChange(){
+        let countForm = 0;
+        if(this.form.name!=null && this.form.name!=undefined && this.form.name.length>0){
+        this.questions.forEach(question =>
+                {
+                  
+                    if (question.error)
+                        countForm++;
+                })
+                if (countForm > 0)
+                    this.formSubmiteState = false;
+                else
+                    this.formSubmiteState = true;
+        }else{
+            this.formSubmiteState = false;
+        }
+    }
+    saveForm(){
+        
+        if(this.form.id == null){
+            this.form.createdBy = this.loggedInUserId;
+            this.questions.forEach(question =>{
+                question.createdBy == this.loggedInUserId;
+            })
+            this.form.campaignDealQuestionDTOs = this.questions;
+            this.userService.saveForm(this.loggedInUserId,this.form).subscribe(result => {
+                
+                this.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
+                this.userService.listForm(this.loggedInUserId).subscribe(form => {
+                    this.dealForms = form;  
+                    if(form[0]){
+                        this.form =   form[0]; 
+                        this.questions = this.form.campaignDealQuestionDTOs;
+                        this.submitButtonText = "Update Form";
+                     
+                    }else
+                        this.submitButtonText = "Save Form";
+                })
+            })
+        }else{
+            this.form.updatedBy = this.loggedInUserId;
+            this.questions.forEach(question =>{
+                if(question.id != null || question.id != undefined)
+                    question.createdBy == this.loggedInUserId;
+                else
+                    question.updatedBy == this.loggedInUserId;
+            })
+            this.form.campaignDealQuestionDTOs = this.questions;
+            this.userService.updateForm(this.loggedInUserId,this.form).subscribe(result => {
+                
+                this.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
+                
+            })
+        }
     }
 
     ngOnDestroy() {

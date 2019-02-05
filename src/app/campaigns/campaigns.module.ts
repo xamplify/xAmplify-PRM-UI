@@ -28,6 +28,7 @@ import { DealRegistrationComponent } from '../deal-registration/add-deals/deal-r
 import { DealRegistrationService } from '../deal-registration/services/deal-registration.service';
 import { SharedLibraryModule } from "../shared/shared-library.module";
 import { DealRegistrationModule } from "../deal-registration/deal-registration.module";
+import { ManageDealCommentsComponent } from "../deal-registration/manage-deal-comments/manage-deal-comments.component";
 
 @NgModule({
   imports: [
@@ -54,9 +55,10 @@ import { DealRegistrationModule } from "../deal-registration/deal-registration.m
     ReDistributedComponent,
     PreviewPartnersComponent,
     CalendarComponent,
-    DealRegistrationComponent
+    DealRegistrationComponent,
+    ManageDealCommentsComponent
   ],
-  exports: [DealRegistrationComponent,BubbleChartComponent,HeatMapComponent],
+  exports: [DealRegistrationComponent,BubbleChartComponent,HeatMapComponent,ManageDealCommentsComponent],
   providers: [ContactService, VideoFileService, EmailTemplateService,DealRegistrationService]
 })
 export class CampaignsModule {}

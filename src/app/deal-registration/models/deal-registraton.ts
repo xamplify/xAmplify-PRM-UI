@@ -1,4 +1,5 @@
 import { DealDynamicProperties } from "./deal-dynamic-properties";
+import { DealAnswer } from "./deal-answers";
 
 export class DealRegistration{
   id:number; 
@@ -23,5 +24,6 @@ export class DealRegistration{
   estimatedCloseDate: any;
   estimatedClosedDateString:string;
   properties:DealDynamicProperties[];
+  answers:DealAnswer[];
 
 }

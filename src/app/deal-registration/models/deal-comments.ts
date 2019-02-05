@@ -4,6 +4,7 @@ export class DealComments {
     
    
      id:number;
+     dealId:number;
      propertyId:number;
      comment:string;
      isReply:boolean;

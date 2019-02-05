@@ -302,21 +302,8 @@ footer a.tz:after{
 </style>
 
 
-<div id="addCommentModal" class="modal right" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false"
-  data-backdrop="static" style="display: block;padding-right: 0 !important;">
-  <div class="modal-dialog" style="position: relative !important;">
-    <!-- Modal content-->
-    <div class="modal-content accounts-modal">
-      <div class="modal-header" style="border-bottom: none">
-        <button type="button" class="close-circle" data-dismiss="modal" (click)="addCommentModalClose()">
-          <i class="fa fa-times"></i>
-        </button>
 
-      </div>
-      <div class="modal-body">
-       
-
-        <div class="write-new" style="margin-bottom: 25px;width: 85%">
+        <div class="write-new" style="margin-bottom: 50px;width: 85%">
 
 
                     <textarea placeholder="Write your comment here" name="comment" [(ngModel)]="comment.comment"
@@ -329,9 +316,9 @@ footer a.tz:after{
 
 
                 </div>
-        <ul class="comment-section" *ngFor="let c of commentList" style="margin: 0px">
+        <ul class="comment-section" *ngFor="let c of commentList" style="margin: 0px;padding-left: 8%">
 
-			<li class="comment user-comment" *ngIf="c.user.id != loggedInUserId" style="width: 127%;padding-left: 142px">
+			<li class="comment user-comment" *ngIf="c.user.id != loggedInUserId" style="width: 180%;padding-left: 55%">
                 <div class="info" >
                     <a href="#" *ngIf="c.user != null">{{c.user.firstName+" "+ c.user.lastName}}</a>
                    <span *ngIf="c?.createdAt"><app-timestamp [dateAndTime]="c.createdAt"> </app-timestamp></span>
@@ -345,7 +332,7 @@ footer a.tz:after{
             
 			</li>
 
-			<li class="comment author-comment" *ngIf="c.user.id == loggedInUserId" style="width: 100%;">
+			<li class="comment author-comment" *ngIf="c.user.id == loggedInUserId" style="width: 135%;">
 
                <div class="info">
                     <a href="#" *ngIf="c.user != null">{{c.user.firstName+" "+ c.user.lastName}}</a>
@@ -366,12 +353,3 @@ footer a.tz:after{
         </ul>
        
              
-       
-      </div>
-      <div class="modal-footer" style="border:none" *ngIf="true">
-
-      </div>
-
-    </div>
-  </div>
-</div>

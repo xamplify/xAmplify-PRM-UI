@@ -1,131 +1,149 @@
 <style type="text/css">
-.profile-usermenu{padding-bottom: 10px;}
-.page-bar{ border-radius: 0;}
-.portlet.light{
-	padding: 20px;
-}
-.disablePlayerValues { pointer-events: none; opacity: 0.6;}
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 60px;
-  height: 34px;
-}
+	.profile-usermenu {
+		padding-bottom: 10px;
+	}
 
-.switch input {display:none;}
+	.page-bar {
+		border-radius: 0;
+	}
 
-.slider-new {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  -webkit-transition: .4s;
-  transition: .4s;
-}
+	.portlet.light {
+		padding: 20px;
+	}
 
-.slider-new:before {
-  position: absolute;
-  content: "";
-  height: 26px;
-  width: 26px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s;
-}
-.logo-video{
+	.disablePlayerValues {
+		pointer-events: none;
+		opacity: 0.6;
+	}
+
+	.switch {
+		position: relative;
+		display: inline-block;
+		width: 60px;
+		height: 34px;
+	}
+
+	.switch input {
+		display: none;
+	}
+
+	.slider-new {
 		position: absolute;
-		top:42px;
-		right:23px;
-		width:40px;
+		cursor: pointer;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background-color: #ccc;
+		-webkit-transition: .4s;
+		transition: .4s;
+	}
+
+	.slider-new:before {
+		position: absolute;
+		content: "";
+		height: 26px;
+		width: 26px;
+		left: 4px;
+		bottom: 4px;
+		background-color: white;
+		-webkit-transition: .4s;
+		transition: .4s;
+	}
+
+	.logo-video {
+		position: absolute;
+		top: 42px;
+		right: 23px;
+		width: 40px;
 		border: 2px solid red;
-        z-index: 999999999999999999;
-}
-input:checked + .slider-new {
-  background-color: #5cb85c;
-}
+		z-index: 999999999999999999;
+	}
 
-input:focus + .slider-new {
-  box-shadow: 0 0 1px #5cb85c;
-}
+	input:checked+.slider-new {
+		background-color: #5cb85c;
+	}
 
-input:checked + .slider-new:before {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
-  transform: translateX(26px);
-}
+	input:focus+.slider-new {
+		box-shadow: 0 0 1px #5cb85c;
+	}
 
-/* Rounded sliders */
-.slider-new.round {
-  border-radius: 34px;
-}
+	input:checked+.slider-new:before {
+		-webkit-transform: translateX(26px);
+		-ms-transform: translateX(26px);
+		transform: translateX(26px);
+	}
 
-.slider-new.round:before {
-  border-radius: 50%;
-}
-.profile-usertitle-name{font-size: 14px;}
+	/* Rounded sliders */
+	.slider-new.round {
+		border-radius: 34px;
+	}
+
+	.slider-new.round:before {
+		border-radius: 50%;
+	}
+
+	.profile-usertitle-name {
+		font-size: 14px;
+	}
 </style>
-			<div class="page-content" *ngIf="!hasClientErrors">
-				<div class="my-container">
-						<ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-				</div>
-				<!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
-				<app-topnavbar [hidden]="true" [model]="parentModel"></app-topnavbar>
-				<div class="page-bar">
-					<ul class="page-breadcrumb">
-						<li *ngIf="hasCompany">
-							<i class="fa fa-home"></i>
-							<a [routerLink]="referenceService.homeRouter">Home</a>
-							<i class="fa fa-angle-right"></i>
-						</li>
-						<li>
-							<a>User Account</a>
-						</li>
-					</ul>
-				</div>
-				<div id="org-admin-info" class="alert alert-info" style="display: none;">
-					<a (click)="hideDiv('org-admin-info')" class="close" aria-label="close">x</a>
-					<strong>{{infoMessage}} <a routerLink="../../team/add-team" style="color: green;">Click Here</a></strong>
-				</div>
-				<!-- END PAGE HEADER-->
-				<!-- BEGIN PAGE CONTENT-->
-				<div class="row">
-					<div class="col-md-12">
-              <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
-						<!-- BEGIN PROFILE SIDEBAR -->
-						<div class="profile-sidebar" style="width:250px;" *ngIf="userData">
-							<!-- PORTLET MAIN -->
-							<div class="portlet light profile-sidebar-portlet">
-              <div class="profile-image-wrapper">
-                <img src="{{userProfileImage}}" class="profile-image" (error)="errorHandler($event)" (click)="imageUpload('imageSelect')">
-                <div class="upload-btn-wrapper">
-                    <i class="fa fa-camera"></i>
-                    <input type="file" ng2FileSelect [uploader]="uploader"
-                    accept="image/jpeg,image/pjpeg,image/jpeg,image/pjpeg,image/png" *ngIf="uploader.queue.length==0"
-                    id="imageSelect" (change)="fileChange(input)" title=" " #input/>
-                </div>
-              </div>
-								<div class="profile-usertitle">
-									<div class="profile-usertitle-name" style="overflow: auto">
-										 <span style="font-size: 17px !important;" [title]="userData.displayName">{{userData.displayName | slice:0:18}}</span><span *ngIf="userData.displayName?.length>18">...</span>
-										 <h5>{{userData.emailId}}</h5>
-									</div>
-									<div class="profile-usertitle-job">
-										{{userData.occupation}}
-									</div>
+<div class="page-content" *ngIf="!hasClientErrors">
+	<div class="my-container">
+		<ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+	</div>
+	<!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+	<app-topnavbar [hidden]="true" [model]="parentModel"></app-topnavbar>
+	<div class="page-bar">
+		<ul class="page-breadcrumb">
+			<li *ngIf="hasCompany">
+				<i class="fa fa-home"></i>
+				<a [routerLink]="referenceService.homeRouter">Home</a>
+				<i class="fa fa-angle-right"></i>
+			</li>
+			<li>
+				<a>User Account</a>
+			</li>
+		</ul>
+	</div>
+	<div id="org-admin-info" class="alert alert-info" style="display: none;">
+		<a (click)="hideDiv('org-admin-info')" class="close" aria-label="close">x</a>
+		<strong>{{infoMessage}} <a routerLink="../../team/add-team" style="color: green;">Click Here</a></strong>
+	</div>
+	<!-- END PAGE HEADER-->
+	<!-- BEGIN PAGE CONTENT-->
+	<div class="row">
+		<div class="col-md-12">
+			<app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+			<!-- BEGIN PROFILE SIDEBAR -->
+			<div class="profile-sidebar" style="width:250px;" *ngIf="userData">
+				<!-- PORTLET MAIN -->
+				<div class="portlet light profile-sidebar-portlet">
+					<div class="profile-image-wrapper">
+						<img src="{{userProfileImage}}" class="profile-image" (error)="errorHandler($event)" (click)="imageUpload('imageSelect')">
+						<div class="upload-btn-wrapper">
+							<i class="fa fa-camera"></i>
+							<input type="file" ng2FileSelect [uploader]="uploader" accept="image/jpeg,image/pjpeg,image/jpeg,image/pjpeg,image/png" *ngIf="uploader.queue.length==0"
+							 id="imageSelect" (change)="fileChange(input)" title=" " #input/>
+						</div>
+					</div>
+					<div class="profile-usertitle">
+						<div class="profile-usertitle-name" style="overflow: auto">
+							<span style="font-size: 17px !important;" [title]="userData.displayName">{{userData.displayName | slice:0:18}}</span><span
+							 *ngIf="userData.displayName?.length>18">...</span>
+							<h5>{{userData.emailId}}</h5>
+						</div>
+						<div class="profile-usertitle-job">
+							{{userData.occupation}}
+						</div>
 
-									<div class="profile-usertitle-job">
-										{{roleNames}}
-									</div>
-								</div>
-								<div class="profile-usermenu">
-									<ul class="nav">
-                    <!-- commented for future work -->
-										<!--	<li class="active" >
+						<div class="profile-usertitle-job">
+							{{roleNames}}
+						</div>
+					</div>
+					<div class="profile-usermenu">
+						<ul class="nav">
+							<!-- commented for future work -->
+							<!--	<li class="active" >
 											<a routerLink="../myprofile">
 											<i class="icon-settings"></i>
 											Account Settings </a>
@@ -135,361 +153,439 @@ input:checked + .slider-new:before {
 											<i class="icon-info"></i>
 											Help </a>
 										</li> -->
-										<li *ngIf="(currentUser.roles?.length==1 || authenticationService.isOrgAdmin())">
-										<a>
-											<div class="col-xs-2 p0"><i class="icon-settings"></i></div>
-											<div class="col-xs-5 p0">
-												<h4 class="m0">Enable/Disable</h4>
-												<h6 class='bold'>(Org Admin)</h6>
-											</div>
-											<div class="col-xs-5">
-												<label class="switch" style="top: 0px;left: 20px;">
-	  												<input type="checkbox" [(ngModel)]="status" (change)="changeStatus()" id="status">
-	  												<span class="slider-new round"></span>
-												</label>
-											</div>
-										 </a>
-										</li>
-									</ul>
+							<li *ngIf="(currentUser.roles?.length==1 || authenticationService.isOrgAdmin())">
+								<a>
+									<div class="col-xs-2 p0"><i class="icon-settings"></i></div>
+									<div class="col-xs-5 p0">
+										<h4 class="m0">Enable/Disable</h4>
+										<h6 class='bold'>(Org Admin)</h6>
+									</div>
+									<div class="col-xs-5">
+										<label class="switch" style="top: 0px;left: 20px;">
+											<input type="checkbox" [(ngModel)]="status" (change)="changeStatus()" id="status">
+											<span class="slider-new round"></span>
+										</label>
+									</div>
+								</a>
+							</li>
+						</ul>
+					</div>
+					<!-- END MENU -->
+				</div>
+				<!-- co -->
+				<div class="portlet light" *ngIf="false">
+					<div>
+						<div class="margin-top-20 profile-desc-link">
+							<div class="col-xs-12">
+								<div class="col-xs-6">
+									<h4 style="position: relative;left:-27px;font-size: 17px;font-weight: 500;">Projects </h4>
 								</div>
-								<!-- END MENU -->
-              </div>
-              <!-- co -->
-							<div class="portlet light" *ngIf="false">
-									<div>
-									<div class="margin-top-20 profile-desc-link">
-									 <div class="col-xs-12">
-										<div class="col-xs-6">
-										<h4 style="position: relative;left:-27px;font-size: 17px;font-weight: 500;">Projects </h4>
-										</div>
-										<div class="col-xs-6">
-											<h4 style="position: relative;right: -17px;font-size: 17px;font-weight: 500;">(33/10000) </h4>
-										</div> </div>
-										<div class="progress" style="width:100%;height: 7px;border-radius: 0">
-												<div class="progress-bar" role="progressbar" style="width:3%"
-												aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">
-												</div>
-										</div>
-									</div>
-									<div class="margin-top-20 profile-desc-link">
-										<div class="col-xs-12">
-										 <div class="col-xs-6">
-										<h4 style="position: relative;left:-27px;font-size: 17px;font-weight: 500;">Tasks(Min) </h4>
-										</div>
-										<div class="col-xs-6">
-											<h4 style="position: relative;right: -26px;font-size: 17px;font-weight: 500;">(83/9999) </h4>
-										</div>
-										</div>
-											<div class="progress" style="width:100%;height: 7px;border-radius: 0">
-												<div class="progress-bar" role="progressbar" style="width:8%"
-												aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">
-												</div>
-										</div>
-									</div>
-									<div class="margin-top-20 profile-desc-link">
-									  	  <div class="col-xs-12">
-										<div class="col-xs-6">
-										<h4  style="position: relative;left:-27px;font-size: 17px;font-weight: 500;">Uploads(Min) </h4>
-										</div>
-										<div class="col-xs-6">
-												<h4 style="position: relative;right:-43px;font-size: 17px;font-weight: 500;">(2/999) </h4>
-										</div> </div>
-											<div class="progress" style="width:100%; height: 7px;border-radius: 0">
-												<div class="progress-bar" role="progressbar" style="width:0%"
-												aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">
-												</div>
-										</div>
-									</div>
+								<div class="col-xs-6">
+									<h4 style="position: relative;right: -17px;font-size: 17px;font-weight: 500;">(33/10000) </h4>
 								</div>
 							</div>
-							<!-- END PORTLET MAIN -->
-						</div>
-						<div class="profile-content">
-							<div class="row">
-								<div class="col-md-12">
-									<div class="portlet light">
-										<div class="portlet-title tabbable-line">
-											<div class="caption caption-md">
-												<i class="icon-globe theme-font hide"></i>
-												<span class="caption-subject font-blue-madison bold uppercase">Account Profile</span>
-											</div>
-											<ul class="nav nav-tabs left-css">
-												<li class="active">
-													<a href="#tab_1_1" data-toggle="tab" (click)="clearCustomResponse()">Personal Info</a>
-												</li>
-												<li>
-													<a href="#tab_1_3" data-toggle="tab" (click)="clearCustomResponse()"><span class="hidden-xs">Change</span> Password</a>
-												</li>
-												<li class="hidden-xs">
-													<a href="#tab_1_4" data-toggle="tab" (click)="clearCustomResponse()">Settings</a>
-												</li>
-												<li *ngIf="hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()" (click)="videojsCall()">
-													<a href="#tab_1_5" data-toggle="tab"><span class="hidden-xs">Default</span> Player Settings</a>
-												</li>
-											</ul>
-										</div>
-										<div class="portlet-body clearfix">
-											<div class="tab-content">
-											<div class="tab-pane active" id="tab_1_1">
-													<form role="form" [formGroup]="updateUserProfileForm" (ngSubmit)="updateUserProfile()">
-														<div class="form-group">
-															<label class="control-label">First Name</label>
-															<input type="text" #first (keyup)="firstNameValue(first.value)" placeholder="First Name" class="form-control" formControlName="firstName" required/>
-															<div *ngIf="formErrors.firstName" class="alert alert-danger">{{ formErrors.firstName }}</div>
-														</div>
-														<div class="form-group">
-															<label class="control-label">Last Name</label>
-															<input type="text"  placeholder="Last Name" class="form-control" formControlName="lastName"  required/>
-															<div *ngIf="formErrors.lastName" class="alert alert-danger">{{ formErrors.lastName }}</div>
-														</div>
-														<div class="form-group">
-															<label class="control-label">Mobile Number</label>
-  													 <fieldset style="padding:0 !important;border: 1px solid #ece2e2 !important">
-													<int-phone-prefix placeholder="Mobile Number" [(ngModel)]="userData.mobileNumber" [ngModelOptions]="{standalone: true}"></int-phone-prefix>
-															</fieldset>
-															<div *ngIf="formErrors.mobileNumber" class="alert alert-danger">{{ formErrors.mobileNumber }}</div>
-														</div>
-														<div class="form-group">
-															<label class="control-label">Interests</label>
-															<input type="text"   placeholder="Interests" class="form-control" formControlName="interests"/>
-															<div *ngIf="formErrors.interests" class="alert alert-danger">{{ formErrors.interests }}</div>
-														</div>
-														<div class="form-group">
-															<label class="control-label">Occupation</label>
-															<input type="text" #occ (keyup)="occupationValue(occ.value)" placeholder="Occupation" class="form-control" formControlName="occupation" />
-															<div *ngIf="formErrors.occupation" class="alert alert-danger">{{ formErrors.occupation }}</div>
-														</div>
-														<div class="form-group">
-															<label class="control-label">About</label>
-															<textarea class="form-control" rows="3" placeholder="About You" formControlName="description"   style="resize: none;"></textarea>
-															<div *ngIf="formErrors.description" class="alert alert-danger">{{ formErrors.description }}</div>
-														</div>
-														<div class="form-group">
-															<label class="control-label">Website Url</label>
-															<input type="url"  placeholder="WebSite Url" class="form-control" formControlName="websiteUrl" />
-															<div *ngIf="formErrors.websiteUrl" class="alert alert-danger">{{ formErrors.websiteUrl }}</div>
-														</div>
-														<button type="submit"   [disabled]="!updateUserProfileForm.valid" class="btn green-haze">Save Changes</button>
-													</form>
-												</div>
-												<div class="tab-pane" id="tab_1_3" >
-													<form [formGroup]="updatePasswordForm" (ngSubmit)="updatePassword()" autocomplete="off">
-														<div class="form-group" *ngIf="userData.hasPassword">
-															<label class="control-label">Current Password</label>
-															<input id="oldPassword" type="password" [class]="className"  formControlName="oldPassword" required="required"/>
-															<span toggle="#oldPassword"  title="Show Password" class="fa fa-fw fa-eye field-icon toggle-password" (click)="referenceService.showPassword('oldPassword')"  *ngIf="!referenceService.showInputOldPassword && updatePasswordForm.get('oldPassword').value" style="left:-30px !important"></span>
-				 											<span toggle="#oldPassword"  title="Hide Password" class="fa fa-fw fa-eye-slash field-icon toggle-password" (click)="referenceService.showPassword('oldPassword')"  *ngIf="referenceService.showInputOldPassword && updatePasswordForm.get('oldPassword').value" style="left:-30px !important"></span>
-
-															<div *ngIf="formErrors.oldPassword" class="alert alert-danger">{{formErrors.oldPassword}}</div>
-														</div>
-														<div class="form-group">
-															<label class="control-label">New Password</label>
-															<input id="password" type="password" class="form-control"  formControlName="newPassword" required="required"/>
-															<span toggle="#password"  title="Show Password" class="fa fa-fw fa-eye field-icon toggle-password" (click)="referenceService.showPassword('password')"  *ngIf="!referenceService.showInputPassword && updatePasswordForm.get('newPassword').value" style="left:-30px !important"></span>
-				 											<span toggle="#password"  title="Hide Password" class="fa fa-fw fa-eye-slash field-icon toggle-password" (click)="referenceService.showPassword('password')"  *ngIf="referenceService.showInputPassword && updatePasswordForm.get('newPassword').value" style="left:-30px !important"></span>
-
-															<div *ngIf="formErrors.newPassword" class="alert alert-danger">{{formErrors.newPassword}}</div>
-														</div>
-														<div class="form-group">
-															<label class="control-label">Re-type New Password</label>
-															<input id="comfirmPassword" type="password" class="form-control"  formControlName="confirmNewPassword" required="required"/>
-															<span toggle="#comfirmPassword"  title="Show Password" class="fa fa-fw fa-eye field-icon toggle-password" (click)="referenceService.showPassword('comfirmPassword')"  *ngIf="!referenceService.showInputConfirmPassword && updatePasswordForm.get('confirmNewPassword').value" style="left:-30px !important"></span>
-				 											<span toggle="#comfirmPassword"  title="Hide Password" class="fa fa-fw fa-eye-slash field-icon toggle-password" (click)="referenceService.showPassword('comfirmPassword')"  *ngIf="referenceService.showInputConfirmPassword && updatePasswordForm.get('confirmNewPassword').value" style="left:-30px !important"></span>
-
-															<div *ngIf="formErrors.confirmNewPassword" class="alert alert-danger">{{formErrors.confirmNewPassword}}</div>
-															<div *ngIf="updatePasswordForm.hasError('mismatchedPasswords')" class="alert alert-danger">Passwords do not match.</div>
-														</div>
-														<div class="margin-top-10">
-															<button type="submit"  id="register-submit-btn" [disabled]="!updatePasswordForm.valid" class="btn green-haze">Change Password</button>
-															<input type="reset"  class="btn default" value="Cancel">
-														</div>
-													</form>
-												</div>
-												<!-- PRIVACY SETTINGS TAB -->
-												<div class="tab-pane hidden-xs" id="tab_1_4">
-													<form action="#">
-														<table class="table table-light">
-														<tr>
-															<td>
-															 	<div class='flex'>
-															 	<h4 class='f-w-600'>Default View</h4>
-																<section style="margin-left: 7em;">
-																	<switch [(status)]="callActionSwitch.isGridView" [onText]="callActionSwitch.onTextValueView" [offText]="callActionSwitch.offTextValueView"
-																		[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size">
-																	</switch>
-																</section>
-																</div>
-															</td>
-															<td>
-															</td>
-														</tr>
-														</table>
-														<!--end profile-settings-->
-														<div class="margin-top-10">
-															<button type="submit"  class="btn green-haze" (click)="setGridView(callActionSwitch.isGridView)">Save Changes</button>
-															<!-- <a href="javascript:;" class="btn default">Cancel</a> -->
-														</div>
-													</form>
-												</div>
-												<!-- END PRIVACY SETTINGS TAB -->
-												<!--video default player settings-->
-													<div class="tab-pane" id="tab_1_5">
-														<div>
-														<div>
-														<form role="form" [formGroup]="defaultPlayerForm" *ngIf="active" (ngSubmit)="UpdatePlayerSettingsValues()">
-														<div class= "col-xs-12" style="padding:0">
-														 <fieldset>
-															<legend>Video Player Apperance</legend>
-														<div class ="col-xs-12 col-sm-6 col-md-8" style="padding:0">
-															<div class="col-xs-12 col-sm-12 col-md-12 form-group" style="margin-bottom: 10px;">
-																<label class="form-group col-xs-3 col-sm-6 col-md-6 control-label">Player Color:</label>
-																<div class="col-xs-9 colsm-6 col-md-6">
-																	<input [hidden]="hasVideoRole || !defaultVideoPlayer.enableVideoController" [(colorPicker)]="compPlayerColor" [style.background]="compPlayerColor" [value]="compPlayerColor"
-																		formControlName="playerColor" (colorPickerChange)="changePlayerColor($event)"
-																		[cpWidth]="'200px'" [cpHeight]="'265px'"  [cpPosition]="'bottom'" [class.disablePlayerValues]="hasVideoRole" />
-                                    <input [hidden]="!hasVideoRole && defaultVideoPlayer.enableVideoController" [(ngModel)]="compPlayerColor" [ngModelOptions]="{standalone: true}" [style.background]="compPlayerColor" [class.disablePlayerValues]="hasVideoRole || !defaultVideoPlayer.enableVideoController" />
-                                    <!-- [class.disablePlayerValues]="!hasAllAccess" -->
-																</div>
-															</div>
-														<div class="col-xs-12 form-group" style="margin-bottom: 10px;">
-															<label class="col-xs-3 col-sm-6 col-md-6 control-label" >Enable Video Controller:</label>
-															<div class="col-xs-9 col-sm-6 col-md-6">
-																<switch [(status)]="defaultVideoPlayer.enableVideoController" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-																	[onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
-																	(statusChange)="enableVideoController($event)" [disabled]="hasVideoRole" >
-																	<!-- [disabled]="!hasAllAccess" -->
-																</switch>
-															</div>
-														</div>
-															<div class="col-xs-12 form-group" style="margin-bottom: 10px;">
-																<label class="col-xs-3 col-sm-6 col-md-6 control-label">Controller Color:</label>
-																<div class="col-xs-9 colsm-6 col-md-6" >
-																	<input [hidden]="hasVideoRole || !defaultVideoPlayer.enableVideoController" [(colorPicker)]="compControllerColor" [style.background]="compControllerColor"
-																		formControlName="controllerColor" [cpWidth]="'200px'" [cpHeight]="'265px'"
-																		(colorPickerChange)="changeControllerColor($event, defaultVideoPlayer.enableVideoController)"
-																		[value]="compControllerColor"  [cpPosition]="'bottom'" [class.disablePlayerValues]="hasVideoRole" />
-                                    <input [hidden]="!hasVideoRole && defaultVideoPlayer.enableVideoController" [(ngModel)]="compControllerColor" [ngModelOptions]="{standalone: true}" [style.background]="compControllerColor" [class.disablePlayerValues]="hasVideoRole || !defaultVideoPlayer.enableVideoController" />
-                                  </div>
-															</div>
-															<div class="col-xs-12 form-group" style="margin-bottom: 10px;">
-																<label class="col-xs-5 col-sm-6 col-md-6 control-label">Transparency:</label>
-																<div class="col-xs-6 col-sm-5 col-md-5">
-																<input type="range"  id="rangeValue" min="0" max="100" value="{{valueRange}}" style="width: 100%;"
-																 (input)="transperancyControllBar(Transvalue.value)" [class.disablePlayerValues]="hasVideoRole || !defaultVideoPlayer.enableVideoController" #Transvalue>
-																</div>
-															<div class="col-xs-1" style="padding:0">{{valueRange}}</div>
-															</div>
-														</div>
-														<div class ="col-xs-12 col-sm-6 col-md-4">
-															<video id="profile_video_player" class="video-js vjs-default-skin vjs-nofull" controls  height="160"
-															poster="" data-setup='{"example_option":true }'>
-															 <source [src]="videoUrl" type="application/x-mpegURL">
-															</video>
-															<div id="overlay-logo" >
-																<a [href]="logoLink" target="_blank">
-																	<img *ngIf="logoImageUrlPath" [src]="authenticationService.MEDIA_URL + logoImageUrlPath" class="img-responsive logo-image"
-																	 [class.logo-video]="fullScreenMode">
-															    </a>
-															</div>
-														</div>
-														</fieldset>
-													</div>
-														<div class ="col-xs-12" style="background: white; box-shadow: 0px 4px 5px rgba(251, 251, 251, 0.4);padding:0;">
-														 <fieldset>
-															 <legend>Controls of the player</legend>
-															<div class = "col-xs-12">
-															<div class="form-group">
-																<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Sharing:</label>
-																<div class="col-xs-6 col-sm-3 col-md-3">
-                                    <switch [(status)]="defaultVideoPlayer.allowSharing" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-                                      [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
-                                        (statusChange)="allowSharing($event)" [disabled]="hasVideoRole">
-                                    </switch>
-																</div>
-																<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Fullscreen:</label>
-															<div class="col-xs-6 col-sm-3 col-md-3">
-															      <switch [(status)]="defaultVideoPlayer.allowFullscreen" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-											                    	[onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
-											                    	(statusChange)="changeFullscreen($event)" [disabled]="hasVideoRole">
-		                                </switch>
-															</div>
-														</div>
-														<div class="form-group" style="margin-top: 38px;">
-														<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Likes:</label>
-														<div class="col-xs-6 col-sm-3 col-md-3">
-														     <switch [(status)]="defaultVideoPlayer.allowLikes" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-											                    	[onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
-											                    	(statusChange)="allowLikes($event)" [disabled]="hasVideoRole" >
-		                              </switch>
-														</div>
-															<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Embed:</label>
-															<div class="col-xs-6 col-sm-3 col-md-3">
-													          <switch [(status)]="defaultVideoPlayer.allowEmbed" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-																      [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
-															      	(statusChange)="enableEmbed($event)" [disabled]="hasVideoRole">
-															      </switch>
-														</div>
-														</div>
-														</div>
-
-														<div class ="col-xs-12" style="margin-top: 4px;">
-															<div class= "form-group">
-															<label class="col-xs-6 col-sm-3 col-md-3 control-label">Enable Settings:</label>
-																<div class="col-xs-6 col-sm-3 col-md-3">
-																    <switch [(status)]="defaultVideoPlayer.enableSettings" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-											                    	[onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
-											                    	(statusChange)="enableSettings($event)" [disabled]="hasVideoRole">
-		                                </switch>
-																</div>
-																<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Comments:</label>
-															<div class="col-xs-6 col-sm-3 col-md-3">
-														          <switch [(status)]="defaultVideoPlayer.allowComments" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-											                    	[onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
-																	          (statusChange)="allowComments($event)" [disabled]="hasVideoRole">
-																     </switch>
-															</div>
-														</div>
-															<div class="form-group" style="margin-top: 37px;">
-															<label class="col-xs-6 col-sm-3 col-md-3 control-label">Enable Casting:</label>
-															<div class="col-xs-6 col-sm-3 col-md-3">
-														         <switch [(status)]="defaultVideoPlayer.enableCasting" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-											                    	[onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
-																	         (statusChange)="enableCasting($event)" [disabled]="hasVideoRole">
-															     	</switch>
-															</div>
-															<label class="col-xs-6 col-sm-3 col-md-3 control-label">360 video:</label>
-																	<div class="col-xs-6 col-sm-3 col-md-3">
-																	<switch [(status)]="defaultVideoPlayer.is360video" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-											                    	  [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
-																	  (statusChange)="enable360Video($event)" [disabled]="hasVideoRole">
-																	</switch>
-																</div>
-															</div>
-														</div>
-														<div class="col-xs-12" style="float:left; padding:0;margin-top: 17px;margin-bottom: 7px;">
-																<button type="submit"  class="btn green-haze" [disabled]="hasVideoRole">Save Changes</button>
-																<button type="button" class="btn default" (click)="resetForm()" [disabled]="hasVideoRole">Cancel</button>
-																</div>
-														</fieldset>
-														</div>
-													</form>
-												 </div>
-												</div>
-											</div>
-										</div>
-									</div>
+							<div class="progress" style="width:100%;height: 7px;border-radius: 0">
+								<div class="progress-bar" role="progressbar" style="width:3%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">
 								</div>
 							</div>
 						</div>
-						<!-- END PROFILE CONTENT -->
+						<div class="margin-top-20 profile-desc-link">
+							<div class="col-xs-12">
+								<div class="col-xs-6">
+									<h4 style="position: relative;left:-27px;font-size: 17px;font-weight: 500;">Tasks(Min) </h4>
+								</div>
+								<div class="col-xs-6">
+									<h4 style="position: relative;right: -26px;font-size: 17px;font-weight: 500;">(83/9999) </h4>
+								</div>
+							</div>
+							<div class="progress" style="width:100%;height: 7px;border-radius: 0">
+								<div class="progress-bar" role="progressbar" style="width:8%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">
+								</div>
+							</div>
+						</div>
+						<div class="margin-top-20 profile-desc-link">
+							<div class="col-xs-12">
+								<div class="col-xs-6">
+									<h4 style="position: relative;left:-27px;font-size: 17px;font-weight: 500;">Uploads(Min) </h4>
+								</div>
+								<div class="col-xs-6">
+									<h4 style="position: relative;right:-43px;font-size: 17px;font-weight: 500;">(2/999) </h4>
+								</div>
+							</div>
+							<div class="progress" style="width:100%; height: 7px;border-radius: 0">
+								<div class="progress-bar" role="progressbar" style="width:0%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
-				<!-- END PAGE CONTENT-->
-      </div>
-      <app-scroll-top></app-scroll-top>
+				<!-- END PORTLET MAIN -->
 			</div>
-			<div class="page-content" *ngIf="hasClientErrors">
-				<h5 style="color: red">Something went wrong.please contact admin</h5>
+			<div class="profile-content">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="portlet light">
+							<div class="portlet-title tabbable-line">
+								<div class="caption caption-md">
+									<i class="icon-globe theme-font hide"></i>
+									<span class="caption-subject font-blue-madison bold uppercase">Account Profile</span>
+								</div>
+								<ul class="nav nav-tabs left-css">
+									<li class="active">
+										<a href="#tab_1_1" data-toggle="tab" (click)="clearCustomResponse()">Personal Info</a>
+									</li>
+									<li>
+										<a href="#tab_1_3" data-toggle="tab" (click)="clearCustomResponse()"><span class="hidden-xs">Change</span> Password</a>
+									</li>
+									<li class="hidden-xs">
+										<a href="#tab_1_4" data-toggle="tab" (click)="clearCustomResponse()">Settings</a>
+									</li>
+									<li *ngIf="hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()"
+									 (click)="videojsCall()">
+										<a href="#tab_1_5" data-toggle="tab"><span class="hidden-xs">Default</span> Player Settings</a>
+									</li>
+									<li class="hidden-xs">
+										<a href="#tab_1_6" data-toggle="tab" (click)="clearCustomResponse()">My Forms</a>
+									</li>
+								</ul>
+							</div>
+							<div class="portlet-body clearfix">
+								<div class="tab-content">
+									<div class="tab-pane active" id="tab_1_1">
+										<form role="form" [formGroup]="updateUserProfileForm" (ngSubmit)="updateUserProfile()">
+											<div class="form-group">
+												<label class="control-label">First Name</label>
+												<input type="text" #first (keyup)="firstNameValue(first.value)" placeholder="First Name" class="form-control" formControlName="firstName"
+												 required/>
+												<div *ngIf="formErrors.firstName" class="alert alert-danger">{{ formErrors.firstName }}</div>
+											</div>
+											<div class="form-group">
+												<label class="control-label">Last Name</label>
+												<input type="text" placeholder="Last Name" class="form-control" formControlName="lastName" required/>
+												<div *ngIf="formErrors.lastName" class="alert alert-danger">{{ formErrors.lastName }}</div>
+											</div>
+											<div class="form-group">
+												<label class="control-label">Mobile Number</label>
+												<fieldset style="padding:0 !important;border: 1px solid #ece2e2 !important">
+													<int-phone-prefix placeholder="Mobile Number" [(ngModel)]="userData.mobileNumber" [ngModelOptions]="{standalone: true}"></int-phone-prefix>
+												</fieldset>
+												<div *ngIf="formErrors.mobileNumber" class="alert alert-danger">{{ formErrors.mobileNumber }}</div>
+											</div>
+											<div class="form-group">
+												<label class="control-label">Interests</label>
+												<input type="text" placeholder="Interests" class="form-control" formControlName="interests" />
+												<div *ngIf="formErrors.interests" class="alert alert-danger">{{ formErrors.interests }}</div>
+											</div>
+											<div class="form-group">
+												<label class="control-label">Occupation</label>
+												<input type="text" #occ (keyup)="occupationValue(occ.value)" placeholder="Occupation" class="form-control" formControlName="occupation"
+												/>
+												<div *ngIf="formErrors.occupation" class="alert alert-danger">{{ formErrors.occupation }}</div>
+											</div>
+											<div class="form-group">
+												<label class="control-label">About</label>
+												<textarea class="form-control" rows="3" placeholder="About You" formControlName="description" style="resize: none;"></textarea>
+												<div *ngIf="formErrors.description" class="alert alert-danger">{{ formErrors.description }}</div>
+											</div>
+											<div class="form-group">
+												<label class="control-label">Website Url</label>
+												<input type="url" placeholder="WebSite Url" class="form-control" formControlName="websiteUrl" />
+												<div *ngIf="formErrors.websiteUrl" class="alert alert-danger">{{ formErrors.websiteUrl }}</div>
+											</div>
+											<button type="submit" [disabled]="!updateUserProfileForm.valid" class="btn green-haze">Save Changes</button>
+										</form>
+									</div>
+									<div class="tab-pane" id="tab_1_6">
+											<app-response-message [customResponse]="customResponseForm" *ngIf="customResponseForm.isVisible"></app-response-message>
 
+											<form role="form" >
+
+													<div class="form-group">
+														<label class="control-label">Form Name</label>
+														<input type="text"  placeholder="Form Name" class="form-control" [(ngModel)]="form.name"  [ngModelOptions]="{standalone: true}"
+														 required (input)="validateDealForm(form)"/>
+														<!-- <div *ngIf="formErrors.firstName" class="alert alert-danger">{{ formErrors.firstName }}</div> -->
+													</div>
+													<div class="form-group">
+														<a class="dashboard-stat " style="padding: 9px 0;margin-top: 10px" (click)="addQuestion()">
+														  <i class="fa fa-plus-square p0" style="margin: 0 5px;"></i>
+														  Add your questions
+														</a>
+													  </div>
+													<div *ngFor="let question of questions;let i=index" >
+															<div class="portlet light dashboard-stat2">
+															  <div class="portlet-title custom-change-css" style="border-bottom: 0px">
+																<div class="col-xs-10">
+																	<div class="portlet-title custom-change-css" style="border-bottom: 0px">
+																		<form  id="form-{{question.divId}}">
+																		  <div class="col-xs-10" style="padding:0">
+																			<div class="form-group" [attr.class]="question.class">
+																			  <label class="control-label">Question
+																				<font style="color: #f55d7a">
+																				  <b>*</b>
+																				</font>
+																			  </label>
+																			  <input type="text" maxlength="300" placeholder="Question" class="form-control" [(ngModel)]=" question.question" [ngModelOptions]="{standalone: true}"
+																				id="question_{{i}}" (input)="validateQuestion(question)" />
+																			</div>
+																			
+																		  </div>
+																		</form>
+
+																	  </div>
+																</div>
+																<div class="col-xs-2">
+																  <div class="pull-right" id="question-icons">
+																	<button type="button" class="btn-danger button-blue" (click)="remove(i+1,question.id)">
+																	  <span class="glyphicon glyphicon-trash"></span>
+																	</button>
+																	<button type="button" class="btn-primary button-blue" (click)="addQuestion()">
+																	  <span class="glyphicon glyphicon-plus"></span>
+																	</button>
+																	
+																  </div>
+																</div>
+															  </div>
+															  
+															</div>
+														  </div>
+												<button  [disabled]="!formSubmiteState" class="btn green-haze" (click)="saveForm()">{{submitButtonText}}</button>
+
+											</form>
+									</div>
+									<div class="tab-pane" id="tab_1_3">
+										<form [formGroup]="updatePasswordForm" (ngSubmit)="updatePassword()" autocomplete="off">
+											<div class="form-group" *ngIf="userData.hasPassword">
+												<label class="control-label">Current Password</label>
+												<input id="oldPassword" type="password" [class]="className" formControlName="oldPassword" required="required" />
+												<span toggle="#oldPassword" title="Show Password" class="fa fa-fw fa-eye field-icon toggle-password" (click)="referenceService.showPassword('oldPassword')"
+												 *ngIf="!referenceService.showInputOldPassword && updatePasswordForm.get('oldPassword').value" style="left:-30px !important"></span>
+												<span toggle="#oldPassword" title="Hide Password" class="fa fa-fw fa-eye-slash field-icon toggle-password" (click)="referenceService.showPassword('oldPassword')"
+												 *ngIf="referenceService.showInputOldPassword && updatePasswordForm.get('oldPassword').value" style="left:-30px !important"></span>
+
+												<div *ngIf="formErrors.oldPassword" class="alert alert-danger">{{formErrors.oldPassword}}</div>
+											</div>
+											<div class="form-group">
+												<label class="control-label">New Password</label>
+												<input id="password" type="password" class="form-control" formControlName="newPassword" required="required" />
+												<span toggle="#password" title="Show Password" class="fa fa-fw fa-eye field-icon toggle-password" (click)="referenceService.showPassword('password')"
+												 *ngIf="!referenceService.showInputPassword && updatePasswordForm.get('newPassword').value" style="left:-30px !important"></span>
+												<span toggle="#password" title="Hide Password" class="fa fa-fw fa-eye-slash field-icon toggle-password" (click)="referenceService.showPassword('password')"
+												 *ngIf="referenceService.showInputPassword && updatePasswordForm.get('newPassword').value" style="left:-30px !important"></span>
+
+												<div *ngIf="formErrors.newPassword" class="alert alert-danger">{{formErrors.newPassword}}</div>
+											</div>
+											<div class="form-group">
+												<label class="control-label">Re-type New Password</label>
+												<input id="comfirmPassword" type="password" class="form-control" formControlName="confirmNewPassword" required="required"
+												/>
+												<span toggle="#comfirmPassword" title="Show Password" class="fa fa-fw fa-eye field-icon toggle-password" (click)="referenceService.showPassword('comfirmPassword')"
+												 *ngIf="!referenceService.showInputConfirmPassword && updatePasswordForm.get('confirmNewPassword').value" style="left:-30px !important"></span>
+												<span toggle="#comfirmPassword" title="Hide Password" class="fa fa-fw fa-eye-slash field-icon toggle-password" (click)="referenceService.showPassword('comfirmPassword')"
+												 *ngIf="referenceService.showInputConfirmPassword && updatePasswordForm.get('confirmNewPassword').value" style="left:-30px !important"></span>
+
+												<div *ngIf="formErrors.confirmNewPassword" class="alert alert-danger">{{formErrors.confirmNewPassword}}</div>
+												<div *ngIf="updatePasswordForm.hasError('mismatchedPasswords')" class="alert alert-danger">Passwords do not match.</div>
+											</div>
+											<div class="margin-top-10">
+												<button type="submit" id="register-submit-btn" [disabled]="!updatePasswordForm.valid" class="btn green-haze">Change
+													Password
+												</button>
+												<input type="reset" class="btn default" value="Cancel">
+											</div>
+										</form>
+									</div>
+									<!-- PRIVACY SETTINGS TAB -->
+									<div class="tab-pane hidden-xs" id="tab_1_4">
+										<form action="#">
+											<table class="table table-light">
+												<tr>
+													<td>
+														<div class='flex'>
+															<h4 class='f-w-600'>Default View</h4>
+															<section style="margin-left: 7em;">
+																<switch [(status)]="callActionSwitch.isGridView" [onText]="callActionSwitch.onTextValueView" [offText]="callActionSwitch.offTextValueView"
+																 [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size">
+																</switch>
+															</section>
+														</div>
+													</td>
+													<td>
+													</td>
+												</tr>
+											</table>
+											<!--end profile-settings-->
+											<div class="margin-top-10">
+												<button type="submit" class="btn green-haze" (click)="setGridView(callActionSwitch.isGridView)">Save Changes</button>
+												<!-- <a href="javascript:;" class="btn default">Cancel</a> -->
+											</div>
+										</form>
+										</div>
+										<!-- END PRIVACY SETTINGS TAB -->
+										<!--video default player settings-->
+										<div class="tab-pane" id="tab_1_5">
+											<div>
+												<div>
+													<form role="form" [formGroup]="defaultPlayerForm" *ngIf="active" (ngSubmit)="UpdatePlayerSettingsValues()">
+														<div class="col-xs-12" style="padding:0">
+															<fieldset>
+																<legend>Video Player Apperance</legend>
+																<div class="col-xs-12 col-sm-6 col-md-8" style="padding:0">
+																	<div class="col-xs-12 col-sm-12 col-md-12 form-group" style="margin-bottom: 10px;">
+																		<label class="form-group col-xs-3 col-sm-6 col-md-6 control-label">Player Color:</label>
+																		<div class="col-xs-9 colsm-6 col-md-6">
+																			<input [hidden]="hasVideoRole || !defaultVideoPlayer.enableVideoController" [(colorPicker)]="compPlayerColor" [style.background]="compPlayerColor"
+																			 [value]="compPlayerColor" formControlName="playerColor" (colorPickerChange)="changePlayerColor($event)"
+																			 [cpWidth]="'200px'" [cpHeight]="'265px'" [cpPosition]="'bottom'" [class.disablePlayerValues]="hasVideoRole"
+																			/>
+																			<input [hidden]="!hasVideoRole && defaultVideoPlayer.enableVideoController" [(ngModel)]="compPlayerColor" [ngModelOptions]="{standalone: true}"
+																			 [style.background]="compPlayerColor" [class.disablePlayerValues]="hasVideoRole || !defaultVideoPlayer.enableVideoController"
+																			/>
+																			<!-- [class.disablePlayerValues]="!hasAllAccess" -->
+																		</div>
+																	</div>
+																	<div class="col-xs-12 form-group" style="margin-bottom: 10px;">
+																		<label class="col-xs-3 col-sm-6 col-md-6 control-label">Enable Video Controller:</label>
+																		<div class="col-xs-9 col-sm-6 col-md-6">
+																			<switch [(status)]="defaultVideoPlayer.enableVideoController" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+																			 [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
+																			 (statusChange)="enableVideoController($event)" [disabled]="hasVideoRole">
+																				<!-- [disabled]="!hasAllAccess" -->
+																			</switch>
+																		</div>
+																	</div>
+																	<div class="col-xs-12 form-group" style="margin-bottom: 10px;">
+																		<label class="col-xs-3 col-sm-6 col-md-6 control-label">Controller Color:</label>
+																		<div class="col-xs-9 colsm-6 col-md-6">
+																			<input [hidden]="hasVideoRole || !defaultVideoPlayer.enableVideoController" [(colorPicker)]="compControllerColor" [style.background]="compControllerColor"
+																			 formControlName="controllerColor" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event, defaultVideoPlayer.enableVideoController)"
+																			 [value]="compControllerColor" [cpPosition]="'bottom'" [class.disablePlayerValues]="hasVideoRole" />
+																			<input [hidden]="!hasVideoRole && defaultVideoPlayer.enableVideoController" [(ngModel)]="compControllerColor" [ngModelOptions]="{standalone: true}"
+																			 [style.background]="compControllerColor" [class.disablePlayerValues]="hasVideoRole || !defaultVideoPlayer.enableVideoController"
+																			/>
+																		</div>
+																	</div>
+																	<div class="col-xs-12 form-group" style="margin-bottom: 10px;">
+																		<label class="col-xs-5 col-sm-6 col-md-6 control-label">Transparency:</label>
+																		<div class="col-xs-6 col-sm-5 col-md-5">
+																			<input type="range" id="rangeValue" min="0" max="100" value="{{valueRange}}" style="width: 100%;" (input)="transperancyControllBar(Transvalue.value)"
+																			 [class.disablePlayerValues]="hasVideoRole || !defaultVideoPlayer.enableVideoController" #Transvalue>
+																		</div>
+																		<div class="col-xs-1" style="padding:0">{{valueRange}}</div>
+																	</div>
+																</div>
+																<div class="col-xs-12 col-sm-6 col-md-4">
+																	<video id="profile_video_player" class="video-js vjs-default-skin vjs-nofull" controls height="160" poster="" data-setup='{"example_option":true }'>
+																		<source [src]="videoUrl" type="application/x-mpegURL">
+																	</video>
+																	<div id="overlay-logo">
+																		<a [href]="logoLink" target="_blank">
+																			<img *ngIf="logoImageUrlPath" [src]="authenticationService.MEDIA_URL + logoImageUrlPath" class="img-responsive logo-image"
+																			 [class.logo-video]="fullScreenMode">
+																		</a>
+																	</div>
+																</div>
+															</fieldset>
+														</div>
+														<div class="col-xs-12" style="background: white; box-shadow: 0px 4px 5px rgba(251, 251, 251, 0.4);padding:0;">
+															<fieldset>
+																<legend>Controls of the player</legend>
+																<div class="col-xs-12">
+																	<div class="form-group">
+																		<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Sharing:</label>
+																		<div class="col-xs-6 col-sm-3 col-md-3">
+																			<switch [(status)]="defaultVideoPlayer.allowSharing" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+																			 [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
+																			 (statusChange)="allowSharing($event)" [disabled]="hasVideoRole">
+																			</switch>
+																		</div>
+																		<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Fullscreen:</label>
+																		<div class="col-xs-6 col-sm-3 col-md-3">
+																			<switch [(status)]="defaultVideoPlayer.allowFullscreen" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+																			 [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
+																			 (statusChange)="changeFullscreen($event)" [disabled]="hasVideoRole">
+																			</switch>
+																		</div>
+																	</div>
+																	<div class="form-group" style="margin-top: 38px;">
+																		<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Likes:</label>
+																		<div class="col-xs-6 col-sm-3 col-md-3">
+																			<switch [(status)]="defaultVideoPlayer.allowLikes" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+																			 [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
+																			 (statusChange)="allowLikes($event)" [disabled]="hasVideoRole">
+																			</switch>
+																		</div>
+																		<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Embed:</label>
+																		<div class="col-xs-6 col-sm-3 col-md-3">
+																			<switch [(status)]="defaultVideoPlayer.allowEmbed" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+																			 [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
+																			 (statusChange)="enableEmbed($event)" [disabled]="hasVideoRole">
+																			</switch>
+																		</div>
+																	</div>
+																</div>
+
+																<div class="col-xs-12" style="margin-top: 4px;">
+																	<div class="form-group">
+																		<label class="col-xs-6 col-sm-3 col-md-3 control-label">Enable Settings:</label>
+																		<div class="col-xs-6 col-sm-3 col-md-3">
+																			<switch [(status)]="defaultVideoPlayer.enableSettings" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+																			 [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
+																			 (statusChange)="enableSettings($event)" [disabled]="hasVideoRole">
+																			</switch>
+																		</div>
+																		<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Comments:</label>
+																		<div class="col-xs-6 col-sm-3 col-md-3">
+																			<switch [(status)]="defaultVideoPlayer.allowComments" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+																			 [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
+																			 (statusChange)="allowComments($event)" [disabled]="hasVideoRole">
+																			</switch>
+																		</div>
+																	</div>
+																	<div class="form-group" style="margin-top: 37px;">
+																		<label class="col-xs-6 col-sm-3 col-md-3 control-label">Enable Casting:</label>
+																		<div class="col-xs-6 col-sm-3 col-md-3">
+																			<switch [(status)]="defaultVideoPlayer.enableCasting" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+																			 [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
+																			 (statusChange)="enableCasting($event)" [disabled]="hasVideoRole">
+																			</switch>
+																		</div>
+																		<label class="col-xs-6 col-sm-3 col-md-3 control-label">360 video:</label>
+																		<div class="col-xs-6 col-sm-3 col-md-3">
+																			<switch [(status)]="defaultVideoPlayer.is360video" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+																			 [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
+																			 (statusChange)="enable360Video($event)" [disabled]="hasVideoRole">
+																			</switch>
+																		</div>
+																	</div>
+																</div>
+																<div class="col-xs-12" style="float:left; padding:0;margin-top: 17px;margin-bottom: 7px;">
+																	<button type="submit" class="btn green-haze" [disabled]="hasVideoRole">Save Changes</button>
+																	<button type="button" class="btn default" (click)="resetForm()" [disabled]="hasVideoRole">Cancel</button>
+																</div>
+															</fieldset>
+														</div>
+													</form>
+												</div>
+											</div>
+										</div>
+									
+
+
+									</div>
+									
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- END PROFILE CONTENT -->
+				</div>
 			</div>
+			<!-- END PAGE CONTENT-->
+		</div>
+		<app-scroll-top></app-scroll-top>
+	</div>
+	<div class="page-content" *ngIf="hasClientErrors">
+		<h5 style="color: red">Something went wrong.please contact admin</h5>
 
+	</div>
