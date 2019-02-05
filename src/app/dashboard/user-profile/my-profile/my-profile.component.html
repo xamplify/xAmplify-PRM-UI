@@ -296,62 +296,84 @@
 										</form>
 									</div>
 									<div class="tab-pane" id="tab_1_6">
-											<app-response-message [customResponse]="customResponseForm" *ngIf="customResponseForm.isVisible"></app-response-message>
+										<app-response-message [customResponse]="customResponseForm" *ngIf="customResponseForm.isVisible"></app-response-message>
 
-											<form role="form" >
+										<form role="form">
 
-													<div class="form-group">
-														<label class="control-label">Form Name</label>
-														<input type="text"  placeholder="Form Name" class="form-control" [(ngModel)]="form.name"  [ngModelOptions]="{standalone: true}"
-														 required (input)="validateDealForm(form)"/>
+											<div class="form-group">
+												<label class="control-label">Form Name</label>
+												<input type="text" placeholder="Form Name" class="form-control" [(ngModel)]="form.name" [ngModelOptions]="{standalone: true}"
+												 required (input)="validateDealForm(form)" />
+												<!-- <div *ngIf="formErrors.firstName" class="alert alert-danger">{{ formErrors.firstName }}</div> -->
+											</div>
+											<div class="col-xs-12">
+
+												<div *ngFor="let question of defaultQuestions;let i=index">
+
+													<div class="form-group" *ngIf="i <=8 " class="col-xs-6" style="padding: 10px">
+
+														<input type="text" placeholder="question" class="form-control" value="{{question}}" [disabled]="true" />
 														<!-- <div *ngIf="formErrors.firstName" class="alert alert-danger">{{ formErrors.firstName }}</div> -->
 													</div>
-													<div class="form-group">
-														<a class="dashboard-stat " style="padding: 9px 0;margin-top: 10px" (click)="addQuestion()">
-														  <i class="fa fa-plus-square p0" style="margin: 0 5px;"></i>
-														  Add your questions
-														</a>
-													  </div>
-													<div *ngFor="let question of questions;let i=index" >
-															<div class="portlet light dashboard-stat2">
-															  <div class="portlet-title custom-change-css" style="border-bottom: 0px">
-																<div class="col-xs-10">
-																	<div class="portlet-title custom-change-css" style="border-bottom: 0px">
-																		<form  id="form-{{question.divId}}">
-																		  <div class="col-xs-10" style="padding:0">
-																			<div class="form-group" [attr.class]="question.class">
-																			  <label class="control-label">Question
-																				<font style="color: #f55d7a">
-																				  <b>*</b>
-																				</font>
-																			  </label>
-																			  <input type="text" maxlength="300" placeholder="Question" class="form-control" [(ngModel)]=" question.question" [ngModelOptions]="{standalone: true}"
-																				id="question_{{i}}" (input)="validateQuestion(question)" />
-																			</div>
-																			
-																		  </div>
-																		</form>
+													<div class="form-group" *ngIf="i>8" class="col-xs-6" style="padding: 10px">
 
-																	  </div>
+														<input type="text" placeholder="question" class="form-control" value="{{question}}" [disabled]="true" />
+														<!-- <div *ngIf="formErrors.firstName" class="alert alert-danger">{{ formErrors.firstName }}</div> -->
+													</div>
+												</div>
+											</div>
+											<div class="col-xs-12">
+												<div class="form-group">
+													<a class="dashboard-stat " style="padding: 9px 0;margin-top: 10px" (click)="addQuestion()">
+														<i class="fa fa-plus-square p0" style="margin: 0 5px;"></i>
+														Add your questions
+													</a>
+												</div>
+											</div>
+											<div class="col-xs-12">
+
+
+												<div *ngFor="let question of questions;let i=index">
+													<div class="portlet light dashboard-stat2">
+														<div class="portlet-title custom-change-css" style="border-bottom: 0px">
+															<div class="col-xs-10">
+																<div class="portlet-title custom-change-css" style="border-bottom: 0px">
+																	<form id="form-{{question.divId}}">
+																		<div class="col-xs-10" style="padding:0">
+																			<div class="form-group" [attr.class]="question.class">
+																				<label class="control-label">Question
+																					<font style="color: #f55d7a">
+																						<b>*</b>
+																					</font>
+																				</label>
+																				<input type="text" maxlength="300" placeholder="Question" class="form-control" [(ngModel)]=" question.question" [ngModelOptions]="{standalone: true}"
+																				 id="question_{{i}}" (input)="validateQuestion(question)" />
+																			</div>
+
+																		</div>
+																	</form>
+
 																</div>
-																<div class="col-xs-2">
-																  <div class="pull-right" id="question-icons">
+															</div>
+															<div class="col-xs-2">
+																<div class="pull-right" id="question-icons">
 																	<button type="button" class="btn-danger button-blue" (click)="remove(i+1,question.id)">
-																	  <span class="glyphicon glyphicon-trash"></span>
+																		<span class="glyphicon glyphicon-trash"></span>
 																	</button>
 																	<button type="button" class="btn-primary button-blue" (click)="addQuestion()">
-																	  <span class="glyphicon glyphicon-plus"></span>
+																		<span class="glyphicon glyphicon-plus"></span>
 																	</button>
-																	
-																  </div>
-																</div>
-															  </div>
-															  
-															</div>
-														  </div>
-												<button  [disabled]="!formSubmiteState" class="btn green-haze" (click)="saveForm()">{{submitButtonText}}</button>
 
-											</form>
+																</div>
+															</div>
+														</div>
+
+													</div>
+												</div>
+											</div>
+											<button [disabled]="!formSubmiteState" class="btn green-haze" (click)="saveForm()">{{submitButtonText}}</button>
+
+										</form>
 									</div>
 									<div class="tab-pane" id="tab_1_3">
 										<form [formGroup]="updatePasswordForm" (ngSubmit)="updatePassword()" autocomplete="off">
@@ -420,172 +442,172 @@
 												<!-- <a href="javascript:;" class="btn default">Cancel</a> -->
 											</div>
 										</form>
-										</div>
-										<!-- END PRIVACY SETTINGS TAB -->
-										<!--video default player settings-->
-										<div class="tab-pane" id="tab_1_5">
+									</div>
+									<!-- END PRIVACY SETTINGS TAB -->
+									<!--video default player settings-->
+									<div class="tab-pane" id="tab_1_5">
+										<div>
 											<div>
-												<div>
-													<form role="form" [formGroup]="defaultPlayerForm" *ngIf="active" (ngSubmit)="UpdatePlayerSettingsValues()">
-														<div class="col-xs-12" style="padding:0">
-															<fieldset>
-																<legend>Video Player Apperance</legend>
-																<div class="col-xs-12 col-sm-6 col-md-8" style="padding:0">
-																	<div class="col-xs-12 col-sm-12 col-md-12 form-group" style="margin-bottom: 10px;">
-																		<label class="form-group col-xs-3 col-sm-6 col-md-6 control-label">Player Color:</label>
-																		<div class="col-xs-9 colsm-6 col-md-6">
-																			<input [hidden]="hasVideoRole || !defaultVideoPlayer.enableVideoController" [(colorPicker)]="compPlayerColor" [style.background]="compPlayerColor"
-																			 [value]="compPlayerColor" formControlName="playerColor" (colorPickerChange)="changePlayerColor($event)"
-																			 [cpWidth]="'200px'" [cpHeight]="'265px'" [cpPosition]="'bottom'" [class.disablePlayerValues]="hasVideoRole"
-																			/>
-																			<input [hidden]="!hasVideoRole && defaultVideoPlayer.enableVideoController" [(ngModel)]="compPlayerColor" [ngModelOptions]="{standalone: true}"
-																			 [style.background]="compPlayerColor" [class.disablePlayerValues]="hasVideoRole || !defaultVideoPlayer.enableVideoController"
-																			/>
-																			<!-- [class.disablePlayerValues]="!hasAllAccess" -->
-																		</div>
-																	</div>
-																	<div class="col-xs-12 form-group" style="margin-bottom: 10px;">
-																		<label class="col-xs-3 col-sm-6 col-md-6 control-label">Enable Video Controller:</label>
-																		<div class="col-xs-9 col-sm-6 col-md-6">
-																			<switch [(status)]="defaultVideoPlayer.enableVideoController" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-																			 [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
-																			 (statusChange)="enableVideoController($event)" [disabled]="hasVideoRole">
-																				<!-- [disabled]="!hasAllAccess" -->
-																			</switch>
-																		</div>
-																	</div>
-																	<div class="col-xs-12 form-group" style="margin-bottom: 10px;">
-																		<label class="col-xs-3 col-sm-6 col-md-6 control-label">Controller Color:</label>
-																		<div class="col-xs-9 colsm-6 col-md-6">
-																			<input [hidden]="hasVideoRole || !defaultVideoPlayer.enableVideoController" [(colorPicker)]="compControllerColor" [style.background]="compControllerColor"
-																			 formControlName="controllerColor" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event, defaultVideoPlayer.enableVideoController)"
-																			 [value]="compControllerColor" [cpPosition]="'bottom'" [class.disablePlayerValues]="hasVideoRole" />
-																			<input [hidden]="!hasVideoRole && defaultVideoPlayer.enableVideoController" [(ngModel)]="compControllerColor" [ngModelOptions]="{standalone: true}"
-																			 [style.background]="compControllerColor" [class.disablePlayerValues]="hasVideoRole || !defaultVideoPlayer.enableVideoController"
-																			/>
-																		</div>
-																	</div>
-																	<div class="col-xs-12 form-group" style="margin-bottom: 10px;">
-																		<label class="col-xs-5 col-sm-6 col-md-6 control-label">Transparency:</label>
-																		<div class="col-xs-6 col-sm-5 col-md-5">
-																			<input type="range" id="rangeValue" min="0" max="100" value="{{valueRange}}" style="width: 100%;" (input)="transperancyControllBar(Transvalue.value)"
-																			 [class.disablePlayerValues]="hasVideoRole || !defaultVideoPlayer.enableVideoController" #Transvalue>
-																		</div>
-																		<div class="col-xs-1" style="padding:0">{{valueRange}}</div>
+												<form role="form" [formGroup]="defaultPlayerForm" *ngIf="active" (ngSubmit)="UpdatePlayerSettingsValues()">
+													<div class="col-xs-12" style="padding:0">
+														<fieldset>
+															<legend>Video Player Apperance</legend>
+															<div class="col-xs-12 col-sm-6 col-md-8" style="padding:0">
+																<div class="col-xs-12 col-sm-12 col-md-12 form-group" style="margin-bottom: 10px;">
+																	<label class="form-group col-xs-3 col-sm-6 col-md-6 control-label">Player Color:</label>
+																	<div class="col-xs-9 colsm-6 col-md-6">
+																		<input [hidden]="hasVideoRole || !defaultVideoPlayer.enableVideoController" [(colorPicker)]="compPlayerColor" [style.background]="compPlayerColor"
+																		 [value]="compPlayerColor" formControlName="playerColor" (colorPickerChange)="changePlayerColor($event)"
+																		 [cpWidth]="'200px'" [cpHeight]="'265px'" [cpPosition]="'bottom'" [class.disablePlayerValues]="hasVideoRole"
+																		/>
+																		<input [hidden]="!hasVideoRole && defaultVideoPlayer.enableVideoController" [(ngModel)]="compPlayerColor" [ngModelOptions]="{standalone: true}"
+																		 [style.background]="compPlayerColor" [class.disablePlayerValues]="hasVideoRole || !defaultVideoPlayer.enableVideoController"
+																		/>
+																		<!-- [class.disablePlayerValues]="!hasAllAccess" -->
 																	</div>
 																</div>
-																<div class="col-xs-12 col-sm-6 col-md-4">
-																	<video id="profile_video_player" class="video-js vjs-default-skin vjs-nofull" controls height="160" poster="" data-setup='{"example_option":true }'>
-																		<source [src]="videoUrl" type="application/x-mpegURL">
-																	</video>
-																	<div id="overlay-logo">
-																		<a [href]="logoLink" target="_blank">
-																			<img *ngIf="logoImageUrlPath" [src]="authenticationService.MEDIA_URL + logoImageUrlPath" class="img-responsive logo-image"
-																			 [class.logo-video]="fullScreenMode">
-																		</a>
+																<div class="col-xs-12 form-group" style="margin-bottom: 10px;">
+																	<label class="col-xs-3 col-sm-6 col-md-6 control-label">Enable Video Controller:</label>
+																	<div class="col-xs-9 col-sm-6 col-md-6">
+																		<switch [(status)]="defaultVideoPlayer.enableVideoController" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+																		 [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
+																		 (statusChange)="enableVideoController($event)" [disabled]="hasVideoRole">
+																			<!-- [disabled]="!hasAllAccess" -->
+																		</switch>
 																	</div>
 																</div>
-															</fieldset>
-														</div>
-														<div class="col-xs-12" style="background: white; box-shadow: 0px 4px 5px rgba(251, 251, 251, 0.4);padding:0;">
-															<fieldset>
-																<legend>Controls of the player</legend>
-																<div class="col-xs-12">
-																	<div class="form-group">
-																		<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Sharing:</label>
-																		<div class="col-xs-6 col-sm-3 col-md-3">
-																			<switch [(status)]="defaultVideoPlayer.allowSharing" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-																			 [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
-																			 (statusChange)="allowSharing($event)" [disabled]="hasVideoRole">
-																			</switch>
-																		</div>
-																		<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Fullscreen:</label>
-																		<div class="col-xs-6 col-sm-3 col-md-3">
-																			<switch [(status)]="defaultVideoPlayer.allowFullscreen" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-																			 [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
-																			 (statusChange)="changeFullscreen($event)" [disabled]="hasVideoRole">
-																			</switch>
-																		</div>
-																	</div>
-																	<div class="form-group" style="margin-top: 38px;">
-																		<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Likes:</label>
-																		<div class="col-xs-6 col-sm-3 col-md-3">
-																			<switch [(status)]="defaultVideoPlayer.allowLikes" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-																			 [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
-																			 (statusChange)="allowLikes($event)" [disabled]="hasVideoRole">
-																			</switch>
-																		</div>
-																		<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Embed:</label>
-																		<div class="col-xs-6 col-sm-3 col-md-3">
-																			<switch [(status)]="defaultVideoPlayer.allowEmbed" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-																			 [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
-																			 (statusChange)="enableEmbed($event)" [disabled]="hasVideoRole">
-																			</switch>
-																		</div>
+																<div class="col-xs-12 form-group" style="margin-bottom: 10px;">
+																	<label class="col-xs-3 col-sm-6 col-md-6 control-label">Controller Color:</label>
+																	<div class="col-xs-9 colsm-6 col-md-6">
+																		<input [hidden]="hasVideoRole || !defaultVideoPlayer.enableVideoController" [(colorPicker)]="compControllerColor" [style.background]="compControllerColor"
+																		 formControlName="controllerColor" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event, defaultVideoPlayer.enableVideoController)"
+																		 [value]="compControllerColor" [cpPosition]="'bottom'" [class.disablePlayerValues]="hasVideoRole" />
+																		<input [hidden]="!hasVideoRole && defaultVideoPlayer.enableVideoController" [(ngModel)]="compControllerColor" [ngModelOptions]="{standalone: true}"
+																		 [style.background]="compControllerColor" [class.disablePlayerValues]="hasVideoRole || !defaultVideoPlayer.enableVideoController"
+																		/>
 																	</div>
 																</div>
+																<div class="col-xs-12 form-group" style="margin-bottom: 10px;">
+																	<label class="col-xs-5 col-sm-6 col-md-6 control-label">Transparency:</label>
+																	<div class="col-xs-6 col-sm-5 col-md-5">
+																		<input type="range" id="rangeValue" min="0" max="100" value="{{valueRange}}" style="width: 100%;" (input)="transperancyControllBar(Transvalue.value)"
+																		 [class.disablePlayerValues]="hasVideoRole || !defaultVideoPlayer.enableVideoController" #Transvalue>
+																	</div>
+																	<div class="col-xs-1" style="padding:0">{{valueRange}}</div>
+																</div>
+															</div>
+															<div class="col-xs-12 col-sm-6 col-md-4">
+																<video id="profile_video_player" class="video-js vjs-default-skin vjs-nofull" controls height="160" poster="" data-setup='{"example_option":true }'>
+																	<source [src]="videoUrl" type="application/x-mpegURL">
+																</video>
+																<div id="overlay-logo">
+																	<a [href]="logoLink" target="_blank">
+																		<img *ngIf="logoImageUrlPath" [src]="authenticationService.MEDIA_URL + logoImageUrlPath" class="img-responsive logo-image"
+																		 [class.logo-video]="fullScreenMode">
+																	</a>
+																</div>
+															</div>
+														</fieldset>
+													</div>
+													<div class="col-xs-12" style="background: white; box-shadow: 0px 4px 5px rgba(251, 251, 251, 0.4);padding:0;">
+														<fieldset>
+															<legend>Controls of the player</legend>
+															<div class="col-xs-12">
+																<div class="form-group">
+																	<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Sharing:</label>
+																	<div class="col-xs-6 col-sm-3 col-md-3">
+																		<switch [(status)]="defaultVideoPlayer.allowSharing" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+																		 [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
+																		 (statusChange)="allowSharing($event)" [disabled]="hasVideoRole">
+																		</switch>
+																	</div>
+																	<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Fullscreen:</label>
+																	<div class="col-xs-6 col-sm-3 col-md-3">
+																		<switch [(status)]="defaultVideoPlayer.allowFullscreen" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+																		 [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
+																		 (statusChange)="changeFullscreen($event)" [disabled]="hasVideoRole">
+																		</switch>
+																	</div>
+																</div>
+																<div class="form-group" style="margin-top: 38px;">
+																	<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Likes:</label>
+																	<div class="col-xs-6 col-sm-3 col-md-3">
+																		<switch [(status)]="defaultVideoPlayer.allowLikes" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+																		 [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
+																		 (statusChange)="allowLikes($event)" [disabled]="hasVideoRole">
+																		</switch>
+																	</div>
+																	<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Embed:</label>
+																	<div class="col-xs-6 col-sm-3 col-md-3">
+																		<switch [(status)]="defaultVideoPlayer.allowEmbed" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+																		 [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
+																		 (statusChange)="enableEmbed($event)" [disabled]="hasVideoRole">
+																		</switch>
+																	</div>
+																</div>
+															</div>
 
-																<div class="col-xs-12" style="margin-top: 4px;">
-																	<div class="form-group">
-																		<label class="col-xs-6 col-sm-3 col-md-3 control-label">Enable Settings:</label>
-																		<div class="col-xs-6 col-sm-3 col-md-3">
-																			<switch [(status)]="defaultVideoPlayer.enableSettings" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-																			 [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
-																			 (statusChange)="enableSettings($event)" [disabled]="hasVideoRole">
-																			</switch>
-																		</div>
-																		<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Comments:</label>
-																		<div class="col-xs-6 col-sm-3 col-md-3">
-																			<switch [(status)]="defaultVideoPlayer.allowComments" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-																			 [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
-																			 (statusChange)="allowComments($event)" [disabled]="hasVideoRole">
-																			</switch>
-																		</div>
+															<div class="col-xs-12" style="margin-top: 4px;">
+																<div class="form-group">
+																	<label class="col-xs-6 col-sm-3 col-md-3 control-label">Enable Settings:</label>
+																	<div class="col-xs-6 col-sm-3 col-md-3">
+																		<switch [(status)]="defaultVideoPlayer.enableSettings" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+																		 [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
+																		 (statusChange)="enableSettings($event)" [disabled]="hasVideoRole">
+																		</switch>
 																	</div>
-																	<div class="form-group" style="margin-top: 37px;">
-																		<label class="col-xs-6 col-sm-3 col-md-3 control-label">Enable Casting:</label>
-																		<div class="col-xs-6 col-sm-3 col-md-3">
-																			<switch [(status)]="defaultVideoPlayer.enableCasting" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-																			 [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
-																			 (statusChange)="enableCasting($event)" [disabled]="hasVideoRole">
-																			</switch>
-																		</div>
-																		<label class="col-xs-6 col-sm-3 col-md-3 control-label">360 video:</label>
-																		<div class="col-xs-6 col-sm-3 col-md-3">
-																			<switch [(status)]="defaultVideoPlayer.is360video" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-																			 [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
-																			 (statusChange)="enable360Video($event)" [disabled]="hasVideoRole">
-																			</switch>
-																		</div>
+																	<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Comments:</label>
+																	<div class="col-xs-6 col-sm-3 col-md-3">
+																		<switch [(status)]="defaultVideoPlayer.allowComments" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+																		 [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
+																		 (statusChange)="allowComments($event)" [disabled]="hasVideoRole">
+																		</switch>
 																	</div>
 																</div>
-																<div class="col-xs-12" style="float:left; padding:0;margin-top: 17px;margin-bottom: 7px;">
-																	<button type="submit" class="btn green-haze" [disabled]="hasVideoRole">Save Changes</button>
-																	<button type="button" class="btn default" (click)="resetForm()" [disabled]="hasVideoRole">Cancel</button>
+																<div class="form-group" style="margin-top: 37px;">
+																	<label class="col-xs-6 col-sm-3 col-md-3 control-label">Enable Casting:</label>
+																	<div class="col-xs-6 col-sm-3 col-md-3">
+																		<switch [(status)]="defaultVideoPlayer.enableCasting" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+																		 [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
+																		 (statusChange)="enableCasting($event)" [disabled]="hasVideoRole">
+																		</switch>
+																	</div>
+																	<label class="col-xs-6 col-sm-3 col-md-3 control-label">360 video:</label>
+																	<div class="col-xs-6 col-sm-3 col-md-3">
+																		<switch [(status)]="defaultVideoPlayer.is360video" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+																		 [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
+																		 (statusChange)="enable360Video($event)" [disabled]="hasVideoRole">
+																		</switch>
+																	</div>
 																</div>
-															</fieldset>
-														</div>
-													</form>
-												</div>
+															</div>
+															<div class="col-xs-12" style="float:left; padding:0;margin-top: 17px;margin-bottom: 7px;">
+																<button type="submit" class="btn green-haze" [disabled]="hasVideoRole">Save Changes</button>
+																<button type="button" class="btn default" (click)="resetForm()" [disabled]="hasVideoRole">Cancel</button>
+															</div>
+														</fieldset>
+													</div>
+												</form>
 											</div>
 										</div>
-									
-
-
 									</div>
-									
+
+
+
 								</div>
+
 							</div>
 						</div>
 					</div>
-					<!-- END PROFILE CONTENT -->
 				</div>
+				<!-- END PROFILE CONTENT -->
 			</div>
-			<!-- END PAGE CONTENT-->
 		</div>
-		<app-scroll-top></app-scroll-top>
+		<!-- END PAGE CONTENT-->
 	</div>
-	<div class="page-content" *ngIf="hasClientErrors">
-		<h5 style="color: red">Something went wrong.please contact admin</h5>
+	<app-scroll-top></app-scroll-top>
+</div>
+<div class="page-content" *ngIf="hasClientErrors">
+	<h5 style="color: red">Something went wrong.please contact admin</h5>
 
-	</div>
+</div>

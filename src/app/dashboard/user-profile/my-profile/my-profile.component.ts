@@ -83,6 +83,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     submitButtonText = "Save Form";
     validateForm:boolean;
     selectedForm:DealForms;
+    defaultQuestions:string[] = ["Campaign Name","Company","First Name","Last Name","Title ","Email ","Phone Number","Deal Type","Website","Lead Address",
+        "Lead City","Lead State/Province","Lead Postal Code","Lead Country","Opportunity Amount","Estimated Close date"];
     isListFormSection:boolean;
     constructor(public videoFileService: VideoFileService, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
         public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
