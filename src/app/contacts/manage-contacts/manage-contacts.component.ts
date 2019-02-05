@@ -408,7 +408,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
         } else {
             let a = document.createElement( 'a' );
             a.href = url;
-            a.download = contactListName + '_Contact_List.csv';
+            a.download = contactListName + " " + this.checkingContactTypeName + ' List.csv';
             document.body.appendChild( a );
             a.click();
             document.body.removeChild( a );
