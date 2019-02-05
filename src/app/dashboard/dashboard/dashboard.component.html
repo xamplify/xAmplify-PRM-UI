@@ -139,6 +139,7 @@
               </div>
               <div class="col-xs-12" *ngIf="userCampaignReport.campaignReportOption == 'CUSTOM'">
                 <hr>
+                <div style="margin-top: -4px;"><span>Note: select your campaigns with drag and drop.</span></div>
                 <div class="wrapper">
                   <div class="col-xs-6" style="padding: 0 5px 0 0">
                     <div class="portlet light border-radius-0">
@@ -159,7 +160,7 @@
                           <b>(MAX 4)</b>
                         </h5>
                       </div>
-                      <div class="portlet-body launchedCampaignsChild" [dragula]='"bag-items"'>
+                      <div class="portlet-body launchedCampaignsChild" style="min-height: 200px;" [dragula]='"bag-items"'>
                         <div class="gu-block" *ngFor="let item of launchedCampaignsChild">
                           <h6 class="gu-block-content" [id]="item.id">{{item.campaign | slice:0:27}}<span *ngIf="item.campaign?.length>27">...</span></h6>
                         </div>
