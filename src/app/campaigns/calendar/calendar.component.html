@@ -359,26 +359,24 @@
   </div>
 </div>
 
-<!-- Analytics List Modal -->
+<!-- Analytics List 4 Modal popups in 1 modal popup -->
 <div class="modal right fade" id="calendarModal" tabindex="-1" role="dialog" aria-labelledby="calendarModalLabl" data-backdrop="static"
  data-keyboard="false" >
 	<div class="modal-dialog modal-lg modal-css" role="document" style="right:0">
 		<div class="modal-content">
 			<div class="modal-header">
 				<a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i class="fa fa-times"></i></a>
-				<h4 class="modal-title" id="emailSentListModalLabel">{{paginationType}} Details</h4>
+				<h4 class="modal-title">{{modalTitle}}</h4>
 				<div class="btn-group pull-right" style="margin-top: -4px; cursor:pointer; color: #7d8c98">
         <div class="sort-dropdown"  *ngIf="paginationType==='Active Recipients' || paginationType==='Clicked URL' ">
-            <select class="form-control" [(ngModel)]="selectedSortedOption" (ngModelChange)="getSortedResult(campaign.campaignId,$event)">
-              <option *ngFor="let sortOption of sortByDropDown" [ngValue]="sortOption">{{sortOption.name}}</option>
-            </select>
+          <select class="form-control" [(ngModel)]="selectedSortedOption" (ngModelChange)="getSortedResult(campaign.campaignId,$event)">
+            <option *ngFor="let sortOption of sortByDropDown" [ngValue]="sortOption">{{sortOption.name}}</option>
+          </select>
           </div>
           <span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none;margin-top: -15px;padding-right: 10px;margin-right: 21px; float:right;">
 				  	<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
 			  	</span>
-					<ul class="dropdown-menu pull-right">
-						<li><a id="delete_button" (click)="downloadEmailLogs()"> Export To Excel </a></li>
-					</ul>
+					<ul class="dropdown-menu pull-right">	<li><a id="delete_button" (click)="downloadEmailLogs()"> Export To Excel </a></li></ul>
 				</div>
 			</div>
 			<div class="modal-body" style="padding: 9px 23px;">
@@ -389,36 +387,38 @@
 						<table class="table tgrid">
 							<thead>
 								<tr>
-                  <th style="font-size: 12px; font-weight: 500;text-align: left;width:25%">NAME</th>
+                  <th class="th-size" style="text-align: left;width:25%">NAME</th>
                   <ng-container *ngIf="paginationType==='Total Recipients'">
-									<th style="font-size: 12px; font-weight: 500;">CAMPAIGN NAME</th>
-                  <th style="font-size: 12px; font-weight: 500;">SENT TIME</th>
+									<th class="th-size">CAMPAIGN NAME</th>
+                  <th class="th-size">SENT TIME</th>
                   </ng-container>
                   <ng-container  *ngIf="paginationType==='Active Recipients' || paginationType==='Clicked URL' ">
                    <th style="width:33%" *ngIf="campaignReport.emailActionType === 'open'">Email Subject</th>
 									 <th style="width:33%" *ngIf="campaignReport.emailActionType === 'click'">Most Recent URL</th>
 									 <th style="width:27%;">Latest Time</th>
                   </ng-container>
+                  <ng-container  *ngIf="paginationType==='Views'" >
+                    <th class="th-size">START DURATION</th>
+								 	  <th class="th-size">STOP DURATION</th>
+									  <th class="th-size">LOCATION</th>
+									  <th class="th-size">PLATFORM</th>
+                  </ng-container>
 								</tr>
 							</thead>
 							<tbody>
                 <ng-container *ngIf="paginationType==='Total Recipients'">
 								<tr *ngFor="let item of pagination.pagedItems">
-									<td>
-										<app-user-info  [userInfo]="item"> </app-user-info>
-									</td>
+									<td><app-user-info  [userInfo]="item"> </app-user-info></td>
 									<td class="text-center">
 										<h6 title="{{item.campaignName}}">{{item.campaignName | slice:0:30}}
                         <span *ngIf="campaign.campaignName?.length>30">...</span><span *ngIf="item.campaignName==null">-</span>
                     </h6>
 									</td>
-									<td>
-										<h6><app-timestamp [dateAndTime]="campaign.launchTime"> </app-timestamp></h6>
-                  </td>
+									<td><h6><app-timestamp [dateAndTime]="campaign.launchTime"> </app-timestamp></h6> </td>
                 </tr>
-              </ng-container>
-              <ng-container *ngIf="paginationType==='Active Recipients' || paginationType==='Clicked URL'">
-              <ng-container *ngFor="let item of campaignReport.emailLogs">
+                </ng-container>
+                <ng-container *ngIf="paginationType==='Active Recipients' || paginationType==='Clicked URL'">
+                <ng-container *ngFor="let item of campaignReport.emailLogs">
                   <tr>
                     <td><app-user-info [userInfo]="item"> </app-user-info> </td>
                     <td *ngIf="campaignReport.emailActionType === 'open'">
@@ -431,19 +431,17 @@
                       <h6>Clicked on the video thumbnail</h6>
                     </td>
                     <td>
-                      <span><h6>
-                      <app-timestamp [dateAndTime]="item.time"> </app-timestamp>
+                      <span><h6><app-timestamp [dateAndTime]="item.time"> </app-timestamp>
                       <span data-toggle="tooltip" data-placement="left" title="View History"  style="text-align: center;position: relative; top: -17px; right: -24px;" class="actions-block" *ngIf="item.emailActionCount > 1">
                         <a (click)="listEmailLogsByCampaignIdUserIdActionType(item, campaignReport.emailActionType)">
                           <i class="fa" [ngClass]="{'fa-plus': !item.isExpand, 'fa-minus': item.isExpand}"></i>
                         </a>
-                    </span>
-                      </h6></span>
+                     </span></h6></span>
                     </td>
                   </tr>
                   <tr [ngClass]="{'hidden': !item.isExpand}">
                     <td colspan="4">
-                  <table class="table tgrid table-condensed" *ngIf="item.emailLogHistory">
+                    <table class="table tgrid table-condensed" *ngIf="item.emailLogHistory">
                     <thead>
                       <tr>
                         <th *ngIf="campaignReport.emailActionType === 'open'">Email Subject</th>
@@ -454,9 +452,7 @@
                     <tbody>
                       <tr *ngFor="let emailLog of item.emailLogHistory">
                         <td *ngIf="campaignReport.emailActionType === 'open'" [title]="emailLog.subject">
-                          <h6>{{emailLog.subject | slice:0:40}}
-                          <span *ngIf="emailLog.subject?.length > 40">...</span>
-                          </h6>
+                          <h6>{{emailLog.subject | slice:0:40}}<span *ngIf="emailLog.subject?.length > 40">...</span></h6>
                         </td>
                         <td *ngIf="campaignReport.emailActionType === 'click' && emailLog.url != null">
                           <h6>{{emailLog.url}} <span *ngIf="emailLog.url?.length > 40">...</span></h6>
@@ -464,15 +460,24 @@
                         <td *ngIf="campaignReport.emailActionType === 'click' && emailLog.url == null">
                           <h6>Clicked on the video thumbnail</h6>
                         </td>
-                        <td style="text-align: center;">
-                        <app-timestamp [dateAndTime]="emailLog.time"> </app-timestamp>
-                        </td>
+                        <td class="text-center"> <app-timestamp [dateAndTime]="emailLog.time"> </app-timestamp></td>
                       </tr>
                     </tbody>
                   </table>
                   </td>
                   </tr>
                 </ng-container>
+              </ng-container>
+              <ng-container *ngIf="paginationType==='Views'">
+                <tr *ngFor="let item of pagination.pagedItems">
+                  <td><app-user-info  [userInfo]="item"> </app-user-info></td>
+                  <td><h6><app-timestamp *ngIf="!referenceService.isSafariBrowser()" [dateAndTime]="item.startTime"> </app-timestamp>
+                    <span *ngIf="referenceService.isSafariBrowser()">{{item.startTime}}</span>
+                  </h6></td>
+                  <td><h6><app-timestamp [dateAndTime]="item.endTime"> </app-timestamp></h6></td>
+                  <td class="center"> <app-location  [userLocation]="item"> </app-location></td>
+                  <td class="center"> <app-platform [deviceTypeOs]="true" [userPlatform]="item"> </app-platform> </td>
+                </tr>
               </ng-container>
               </tbody>
 						</table>
@@ -487,76 +492,3 @@
 		</div>
 	</div>
 </div>
-
-<!-- Users Watch List Modal -->
-<div class="modal right fade" id="usersWatchListModal" tabindex="-1" role="dialog" aria-labelledby="usersWatchListModalLabel" data-backdrop="static"
- data-keyboard="false">
-	<div class="modal-dialog modal-lg modal-css" role="document" style="right:0">
-		<div class="modal-content">
-			<div class="modal-header">
-				<a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i class="fa fa-times"></i></a>
-				<h4 class="modal-title" id="usersWatchListModalLabel" >Recipients who have watched the campaign</h4>
-				<div class="btn-group pull-right" style="margin-top: -4px; cursor:pointer; color: #7d8c98">
-					<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none;margin-top: -15px;padding-right: 10px;margin-right: 21px; float:right;">
-					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
-				</span>
-					<ul class="dropdown-menu pull-right">
-						<li><a id="delete_button" (click)="downloadEmailLogs()"> Export To Excel </a></li>
-					</ul>
-				</div>
-			</div>
-			<div class="modal-body">
-				<div class="row">
-					<div class="table-responsive">
-					<app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
- 					<ng-container *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError">
-						<table class="table tgrid">
-							<thead>
-								<tr>
-									<th style="font-size: 12px; font-weight: 500;">NAME</th>
-									<th style="font-size: 12px; font-weight: 500;">START DURATION</th>
-									<th style="font-size: 12px; font-weight: 500;">STOP DURATION</th>
-									<th style="font-size: 12px; font-weight: 500;">LOCATION</th>
-									<th style="font-size: 12px; font-weight: 500;">PLATFORM</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr *ngFor="let item of campaignReport.usersWatchList">
-									<td>
-										<app-user-info  [userInfo]="item"> </app-user-info>
-									</td>
-									<td>
-										<h6><!-- {{item.startTime | date: 'short'}} -->
-                    <app-timestamp *ngIf="!referenceService.isSafariBrowser()" [dateAndTime]="item.startTime"> </app-timestamp>
-                    <span *ngIf="referenceService.isSafariBrowser()">{{item.startTime}}</span>
-                  </h6>
-									</td>
-									<td>
-										<h6><!-- {{item.endTime | date: 'short'}} -->
-										<app-timestamp [dateAndTime]="item.endTime"> </app-timestamp>
-										</h6>
-									</td>
-									<!-- <td>
-										<h6>{{item.ipAddress}}</h6>
-									</td> -->
-									<td class="center">
-										<app-location  [userLocation]="item"> </app-location>
-									</td>
-									<!-- <td><h6>{{item.deviceType}}, {{item.os}}</h6></td> -->
-									<td class="center">
-									<app-platform [deviceTypeOs]="true" [userPlatform]="item"> </app-platform>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-						</ng-container>
-					</div>
-          <!--pager here  -->
-          <div >
-					<app-pagination class="pg8" *ngIf="pagination.pagedItems?.length > 0" [pagination]="pagination" [type]="paginationType" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination></div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-

@@ -69,6 +69,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     { 'name': 'Time(ASC)', 'value': 'time-ASC' },
     { 'name': 'Time(DESC)', 'value': 'time-DESC' }
   ];
+  modalTitle: string;
   selectedSortedOption:any = this.sortByDropDown[this.sortByDropDown.length-1];
   constructor(public authenticationService: AuthenticationService, private campaignService: CampaignService, private socialService: SocialService,
     public referenceService: ReferenceService, private router: Router, public videoUtilService:VideoUtilService, public xtremandLogger:XtremandLogger,
@@ -272,7 +273,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
       this.loadContactList(pagination); }
       else if(this.paginationType === 'contacts') { this.loadContacts(this.previewContactList, pagination);}
       else if(this.paginationType === 'Total Recipients'){ this.listCampaignViews(this.campaign.campaignId, pagination); }
-      else if(this.paginationType === 'Views'){ this.usersWatchList(this.campaign.campaignId, this.pagination); }
+      else if(this.paginationType === 'Views'){ this.usersWatchList(this.campaign.campaignId, pagination); }
     }
     setPage(event:any){
       if (event.type === 'contacts') {
@@ -563,14 +564,19 @@ getSortedResult(campaignId: number,event:any){
     this.paginationType = paginationType;
     this.pagination = new Pagination();
     if(paginationType === 'Total Recipients'){
+       this.modalTitle = 'Sent Email Details';
        this.listCampaignViews(this.campaign.campaignId, this.pagination);
     } else if(paginationType === 'Active Recipients'){
+      this.modalTitle = 'Emails opened by recipients';
        this.emailActionList(this.campaign.campaignId, 'open', this.pagination);
     } else if(paginationType === 'Clicked URL'){
+      this.modalTitle = 'Recipients who clicked a URL';
        this.emailActionList(this.campaign.campaignId, 'click', this.pagination);
+    } else if(paginationType === 'Views'){
+      this.modalTitle = 'Recipients who have watched the campaign';
+      this.usersWatchList(this.campaign.campaignId, this.pagination);
     }
-    if(paginationType === 'Views'){ this.usersWatchList(this.campaign.campaignId, this.pagination);
-    } else { $('#calendarModal').modal();}
+    $('#calendarModal').modal();
   }
   playVideo(){
     $('#main_video_src').empty();
@@ -587,7 +593,6 @@ getSortedResult(campaignId: number,event:any){
       data => {
         this.pagination.totalRecords = this.campaignReport.usersWatchCount;
         this.campaignReport.usersWatchList = data.data;
-        $('#usersWatchListModal').modal();
         this.pagination = this.pagerService.getPagedItems(this.pagination, this.campaignReport.usersWatchList);
         this.usersWatchTotalList(campaignId, this.pagination.totalRecords);
         this.loading = false;

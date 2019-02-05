@@ -89,7 +89,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
     loggedInUserId:any;
     contentProcessing:boolean;
     cloudContentArr = new Array<CloudContent>();
-    videoExtentions =  ['video/m4v', 'video/avi', 'video/mpg', 'video/mp4', 'video/flv', 'video/mov', 'video/wmv', 'video/divx', 'video/f4v', 'video/mpeg', 'video/vob', 'video/xvid'];
+    videoExtentions =  ['video/m4v', 'video/avi', 'video/mpg', 'video/mp4', 'video/flv', 'video/mov', 'video/wmv', 'video/divx', 'video/f4v', 'video/mpeg', 'video/vob', 'video/xvid', 'video/x-matroska'];
 
     constructor(public router: Router, public xtremandLogger: XtremandLogger, public authenticationService: AuthenticationService,
         public changeDetectorRef: ChangeDetectorRef, public videoFileService: VideoFileService, public homeComponent: HomeComponent,
@@ -827,6 +827,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         const ext = parts[parts.length - 1];
         switch (ext.toLowerCase()) {
             case 'm4v':
+            case 'mkv':
             case 'avi':
             case 'mpg':
             case 'mp4':
