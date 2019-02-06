@@ -548,7 +548,7 @@ export class CampaignService {
     createEventCampaign(eventCampaign: any, eventUpdate: boolean) {
         let eventUrl;
         if(eventUpdate){
-            eventUrl = this.URL + "campaign/update-event-campaign/" + this.authenticationService.access_token;
+            eventUrl = this.URL + "campaign/update-event-campaign?access_token=" + this.authenticationService.access_token;
            }else{
                eventUrl = this.URL + `campaign/save-event-campaign?access_token=${this.authenticationService.access_token}`
            }

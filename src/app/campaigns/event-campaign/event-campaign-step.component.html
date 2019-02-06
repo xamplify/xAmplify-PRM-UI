@@ -299,7 +299,7 @@ a.disabled {
 										placeholder="Corporate headquarters, local restaurant, etc."
 										[ngClass]="{'has-error': eventError.eventLocationError}"
 										[(ngModel)]="eventCampaign.campaignLocation.location"
-										[ngModelOptions]="{standalone: true}">
+										[ngModelOptions]="{standalone: true}" maxlength="200">
 									<div class="text-danger" *ngIf="eventError.eventLocationError && !isPreviewEvent">Location
 										is required</div>
 								</div>
