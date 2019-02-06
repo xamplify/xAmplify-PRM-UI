@@ -93,6 +93,10 @@ export class ReferenceService {
     campaignAccess: CampaignAccess;
     manageRouter = false;
     detailViewIsLoading: boolean;
+    videoCampaign = false;
+    emailCampaign = false;
+    socialCampaign = false;
+    eventCampaign = false;
     constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,
         private router: Router, public deviceService: Ng2DeviceService,private route:ActivatedRoute) {
         console.log('reference service constructor');

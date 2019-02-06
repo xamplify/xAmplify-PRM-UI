@@ -26,6 +26,7 @@ import { PagerService } from '../../core/services/pager.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { EmailTemplateService } from '../../email-template/services/email-template.service';
 import { DashboardStatesReport } from '../models/dashboard-states-report';
+import { CampaignAccess } from 'app/campaigns/models/campaign-access';
 declare var Metronic, $, Layout, Demo, Index, QuickSidebar, Highcharts, Tasks: any;
 
 @Component({
@@ -41,6 +42,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     dashboardReport: DashboardReport = new DashboardReport();
     userDefaultPage: UserDefaultPage = new UserDefaultPage();
     socialConnections: SocialConnection[] = new Array<SocialConnection>();
+    campaignAccess:CampaignAccess = new CampaignAccess();
     totalRecords: number;
     campaigns: Campaign[];
     launchedCampaignsMaster: any[];
@@ -955,9 +957,31 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.isFullscreenToggle = !this.isFullscreenToggle;
         if (this.isFullscreenToggle) {
             this.generatHeatMap(this.heatMapData, 'heat-map-data');
-        } else { }
+        }
     }
-
+    getOrgCampaignTypes(){
+      this.referenceService.getOrgCampaignTypes( this.referenceService.companyId).subscribe(
+      data=>{
+        console.log(data);
+        this.campaignAccess.videoCampaign = data.video;
+        this.campaignAccess.emailCampaign = data.regular;
+        this.campaignAccess.socialCampaign = data.social;
+        this.campaignAccess.eventCampaign = data.event
+      });
+     }
+     getCompanyIdByUserId(){
+      try {
+        this.referenceService.getCompanyIdByUserId(this.authenticationService.user.id).subscribe(
+          (result: any) => {
+            if (result !== "") {
+              console.log(result);
+              this.referenceService.companyId = result;
+              this.getOrgCampaignTypes();
+            }
+          }, (error: any) => { console.log(error); }
+        );
+      } catch (error) { console.log(error);  }
+     }
     ngOnInit() {
         this.pagination.maxResults = 12;
         try {
@@ -969,6 +993,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             this.getCountriesTotalViewsData();
             this.getCampaignsHeatMapData();
             this.getVideoStatesSparklineChartsInfo(30);
+            if(!this.referenceService.companyId){ this.getCompanyIdByUserId()} else { this.getOrgCampaignTypes();}
 
             Metronic.init();
             Layout.init();

@@ -231,13 +231,15 @@
             </div>
           </section>
           <section>
-            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" *ngIf="totalCampaignsCount < 4 && hasCampaignRole">
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" *ngIf="totalCampaignsCount < 4 && (authenticationService.isVendor()|| authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendorPartner() )">
               <div class="portlet light border-radius-0">
                 <div class="portlet-body">
-                  <div class="text-center" style="margin: 3.17em 0.5em;">
+                  <div class="text-center" style="margin: 1.3em 0.5em;">
                     <h5 style="color: rgb(119, 119, 119);">What type of campaign would you like to create? </h5>
-                    <button class="color1 btn-campaign btn-block" (click)="createCampaign('video')">Video Campaign</button>
-                    <button class="color2 btn-campaign btn-block" (click)="createCampaign('regular')">Email Campaign</button>
+                    <button class="color3 btn-campaign btn-block" *ngIf="campaignAccess.videoCampaign" (click)="createCampaign('video')">Video Campaign</button>
+                    <button class="color1 btn-campaign btn-block" *ngIf="campaignAccess.emailCampaign" (click)="createCampaign('regular')">Email Campaign</button>
+                    <button class="color4 btn-campaign btn-block" *ngIf="campaignAccess.socialCampaign"  [routerLink]="['/home/campaigns/social']">Social Campaign</button>
+                    <button class="color2 btn-campaign btn-block" *ngIf="campaignAccess.eventCampaign" [routerLink]="['/home/campaigns/event']">Event Campaign</button>
                   </div>
                 </div>
               </div>

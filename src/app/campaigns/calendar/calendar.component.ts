@@ -563,21 +563,26 @@ getSortedResult(campaignId: number,event:any){
    // this.downloadTypeName = 'campaignViews';
     this.paginationType = paginationType;
     this.pagination = new Pagination();
-    if(paginationType === 'Total Recipients'){
+    if(paginationType === 'Total Recipients' && this.campaignReport.emailSentCount>0){
        this.modalTitle = 'Sent Email Details';
        this.listCampaignViews(this.campaign.campaignId, this.pagination);
-    } else if(paginationType === 'Active Recipients'){
-      this.modalTitle = 'Emails opened by recipients';
+       this.openCalendarModal();
+    } else if(paginationType === 'Active Recipients' && this.campaignReport.emailOpenCount>0){
+       this.modalTitle = 'Emails opened by recipients';
        this.emailActionList(this.campaign.campaignId, 'open', this.pagination);
-    } else if(paginationType === 'Clicked URL'){
-      this.modalTitle = 'Recipients who clicked a URL';
+       this.openCalendarModal();
+    } else if(paginationType === 'Clicked URL'  && this.campaignReport.emailClickedCount>0){
+       this.modalTitle = 'Recipients who clicked a URL';
        this.emailActionList(this.campaign.campaignId, 'click', this.pagination);
-    } else if(paginationType === 'Views'){
-      this.modalTitle = 'Recipients who have watched the campaign';
-      this.usersWatchList(this.campaign.campaignId, this.pagination);
+       this.openCalendarModal();
+    } else if(paginationType === 'Views'  && this.campaignReport.usersWatchCount>0){
+       this.modalTitle = 'Recipients who have watched the campaign';
+       this.usersWatchList(this.campaign.campaignId, this.pagination);
+       this.openCalendarModal();
     }
-    $('#calendarModal').modal();
+
   }
+  openCalendarModal(){  $('#calendarModal').modal(); }
   playVideo(){
     $('#main_video_src').empty();
     this.appendVideoData(this.launchVideoPreview, "main_video_src", "title");

@@ -79,6 +79,7 @@ export class HomeComponent implements OnInit {
             this.referenceService.defaultPlayerSettings = response;
             this.referenceService.companyId = response.companyProfile.id;
             this.referenceService.companyProfileImage = response.companyProfile.companyLogoPath;
+            this.getOrgCampaignTypes();
             if (!response.brandingLogoUri || !response.brandingLogoDescUri) {
                 const logoLink = this.videoUtilService.isStartsWith(response.companyProfile.website);
               this.saveVideoBrandLog( response.companyProfile.companyLogoPath, logoLink);
@@ -121,10 +122,10 @@ export class HomeComponent implements OnInit {
       this.referenceService.getOrgCampaignTypes( this.referenceService.companyId).subscribe(
       data=>{
         console.log(data);
-        this.referenceService.campaignAccess.videoCampaign = data.video;
-        this.referenceService.campaignAccess.emailCampaign = data.regular;
-        this.referenceService.campaignAccess.socialCampaign = data.social;
-        this.referenceService.campaignAccess.eventCampaign = data.event
+        this.referenceService.videoCampaign = data.video;
+        this.referenceService.emailCampaign = data.regular;
+        this.referenceService.socialCampaign = data.social;
+        this.referenceService.eventCampaign = data.event
       });
     }
   ngOnInit() {
