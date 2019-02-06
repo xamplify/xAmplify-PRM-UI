@@ -102,7 +102,7 @@ a.disabled {
 									[ngClass]="{'has-error': eventError.eventTitleError}"
 									(input)="validateCampaignName(eventCampaign.campaign); resetTabClass()"
 									(blur)="eventTitleError()"
-									[attr.disabled]="isPreviewEvent? '' : null">
+									[attr.disabled]="(isPreviewEvent || isEventUpdate)? '' : null">
 								<div class="text-danger" *ngIf="eventError.eventTitleError">Event
 									Title is required</div>
 								<div class="text-danger"
@@ -116,7 +116,7 @@ a.disabled {
 							</label>
 							<div class="col-sm-9">
 								<input type="text"
-									[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)? '' : null"
+									[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage || isEventUpdate)? '' : null"
 									class="form-control pull-left" placeholder="Hosted By"
 									[(ngModel)]="eventCampaign.fromName"
 									[ngModelOptions]="{standalone: true}"
@@ -131,7 +131,7 @@ a.disabled {
 								Email</label>
 							<div class="col-sm-9">
 								<select *ngIf="!reDistributeEvent && !reDistributeEventManage && !isPreviewEvent"
-									[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)? '' : null"
+									[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage || isEventUpdate)? '' : null"
 									class="form-control" [(ngModel)]="eventCampaign.email"
 									[ngModelOptions]="{standalone: true}" (change)="setFromName()">
 									<option *ngFor="let teamMember of teamMemberEmailIds"
@@ -150,7 +150,7 @@ a.disabled {
 							<div class="col-sm-9">
 								<input type="text" id="subjectLine" placeholder="Subject Line"
 									class="form-control" [(ngModel)]="eventCampaign.subjectLine"
-									[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)? '' : null"
+									[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage || isEventUpdate)? '' : null"
 									name="subjectLine"
 									(input)="eventSubjectLineError()"
 									[ngClass]="{'has-error': eventError.eventSubjectLineError}"
@@ -170,7 +170,7 @@ a.disabled {
 									[onColor]="callActionSwitch.onGreenColorSwitch"
 									[offColor]="callActionSwitch.onGreenColorSwitch"
 									[size]="callActionSwitch.size"
-									[disabled]="isPreviewEvent || reDistributeEvent || reDistributeEventManage"
+									[disabled]="isPreviewEvent || reDistributeEvent || reDistributeEventManage || isEventUpdate"
 									(statusChange)="switchStatusChange()">
 								</switch>
 							</div>
@@ -188,7 +188,7 @@ a.disabled {
               <div class="col-sm-9">
                 <switch class="pull-left" [status]="eventCampaign.enableCoBrandingLogo" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
                   [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
-                  (statusChange)="setCoBrandingLogo($event)">
+                  [disabled]="isPreviewEvent || reDistributeEvent || reDistributeEventManage || isEventUpdate" (statusChange)="setCoBrandingLogo($event)">
                 </switch>
                 <span style="cursor: pointer;color: #54a7e9;" title="Enable your Partner's logo to be displayed in redistributed campaigns">
                   <i class="fa fa-question-circle" style="padding: 8px;"></i>
@@ -243,7 +243,7 @@ a.disabled {
 							<div class="col-sm-9 p0">
 								<div class="col-sm-6">
 									<select
-										[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)? '' : null"
+										[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage || isEventUpdate)? '' : null"
 										class="form-control" style="width: 100%; cursor: pointer;"
 										[ngClass]="{'has-error': eventError.eventCountryAndTimeZone && !eventCampaign.campaignEventTimes[0].countryId}"
 										[(ngModel)]="eventCampaign.campaignEventTimes[0].countryId"
@@ -254,7 +254,7 @@ a.disabled {
 									</select>
 								</div>
 								<div class="col-sm-6">
-                  <select [attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)? '' : null"
+                  <select [attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage || isEventUpdate)? '' : null"
                   class="form-control" style="width: 100%" (change)="setEventTimeZone()"
                   [(ngModel)]="eventCampaign.campaignEventTimes[0].timeZone" [ngModelOptions]="{standalone: true}"
                   id="timezoneIdChange">
@@ -362,7 +362,7 @@ a.disabled {
 								</div>
 							</div>
 						</section>
-						<div class="form-group">
+						<div class="form-group" *ngIf="isEventUpdate">
 							<label class="col-sm-3 labal-css color-css" style="padding-top: 25px;">Message<font
 								style="color: red"> <b>*</b>
 							</font>
@@ -514,7 +514,7 @@ a.disabled {
 				<!-- </div>
           </div> -->
          <div class="col-xs-12">
-          <button *ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage" type="button" style="float: right" class=" btn green"
+          <button *ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage && !isEventUpdate" type="button" style="float: right" class=" btn green"
 			(click)="resetTabs('recipients')" title="Please Fill Campaign Details" [disabled]="recipientsTabClass === 'disableRecipientsTab'">Next</button>
 			</div>
 			</fieldset>
@@ -812,7 +812,7 @@ a.disabled {
                       </a>
                     </td>
                     <td style="text-align: right" width="20%">
-                      <a  [class.hide]="reDistributeEvent || reDistributeEventManage" [class.disabled]="isPreviewEvent" class="btn btn-primary btn-sm" style="color:#fff" (click)="resetTabs('recipients')">Change</a>
+                      <a  [class.hide]="reDistributeEvent || reDistributeEventManage || isEventUpdate" [class.disabled]="isPreviewEvent" class="btn btn-primary btn-sm" style="color:#fff" (click)="resetTabs('recipients')">Change</a>
                     </td>
                   </tr>
                 </table>
@@ -834,7 +834,7 @@ a.disabled {
                       </a>
                     </td>
                     <td style="text-align: right" width="20%">
-                      <a [class.hide]="reDistributeEvent || reDistributeEventManage" class="btn btn-primary btn-sm" [class.disabled]="isPreviewEvent" (click)="resetTabs('templates')">Change</a>
+                      <a [class.hide]="reDistributeEvent || reDistributeEventManage || isEventUpdate" class="btn btn-primary btn-sm" [class.disabled]="isPreviewEvent" (click)="resetTabs('templates')">Change</a>
                     </td>
                   </tr>
                 </table>
