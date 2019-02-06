@@ -235,6 +235,14 @@
                             </a>
                             </li>
                           </section>
+                         <section *ngIf="campaign.launched && campaign.campaignType === 'EVENT' && campaign.showCancelButton">
+							<li *ngIf="hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor">
+                          <a title="Update Event" data-rel="fancybox-button" (click)="updateEvent(campaign)">
+                              <i class="fa fa-pencil" style="width: 30px;"></i> Update event
+                            </a>
+                            </li>
+                            </section>
+                         
                          
 													</ul>
 												<!-- </div> -->
@@ -450,7 +458,12 @@
 						 <span *ngIf="campaign.showCancelButton">						
                           <a *ngIf="hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor"
                               data-toggle="modal" data-target="#cancelEventModal" title="Delete Campaign" data-rel="fancybox-button" (click)="getCancelEventDetails(campaign.campaignId)">
-                              <i class="fa fa-ban"></i>
+                              <i class="fa fa-ban"></i> 
+                            </a></span>
+                            <span *ngIf="campaign.launched && campaign.campaignType === 'EVENT' && campaign.showCancelButton">						
+                          <a *ngIf="hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor"
+                              title="Update event" data-rel="fancybox-button" (click)="updateEvent(campaign)">
+                              <i class="fa fa-pencil"></i>
                             </a></span>
                          
 											</div>

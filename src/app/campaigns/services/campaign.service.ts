@@ -545,8 +545,15 @@ export class CampaignService {
             .catch(this.handleError);
     }
 
-    createEventCampaign(eventCampaign: any) {
-        return this.http.post(this.URL + `campaign/save-event-campaign?access_token=${this.authenticationService.access_token}`, eventCampaign)
+    createEventCampaign(eventCampaign: any, eventUpdate: boolean) {
+        let eventUrl;
+        if(eventUpdate){
+            eventUrl = this.URL + "campaign/update-event-campaign/" + this.authenticationService.access_token;
+           }else{
+               eventUrl = this.URL + `campaign/save-event-campaign?access_token=${this.authenticationService.access_token}`
+           }
+        
+        return this.http.post(eventUrl, eventCampaign)
             .map(this.extractData)
             .catch(this.handleError);
     }

@@ -120,6 +120,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   parentCampaignIdValue:number;
   isPartnerToo = false;
   userListDTOObj = [];
+  isEventUpdate = false;
+
 
   constructor(public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
     private contactService: ContactService,
@@ -135,6 +137,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     //this.listEmailTemplates();
     CKEDITOR.config.height = '100';
     this.isPreviewEvent = this.router.url.includes('/home/campaigns/event-preview')? true: false;
+    this.isEventUpdate = this.router.url.includes('/home/campaigns/event-update')? true: false;
     this.isEditCampaign = this.router.url.includes('/home/campaigns/event-edit')? true: false;
     CKEDITOR.config.readOnly = this.isPreviewEvent ? true: false;
     this.reDistributeEvent = this.router.url.includes('/home/campaigns/re-distribute-event')? true: false;
@@ -824,6 +827,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
       'user':eventCampaign.user,
       'message':eventCampaign.message,
       'subjectLine':eventCampaign.subjectLine,
+      'updateMessage':eventCampaign.updateMessage,
       'channelCampaign':eventCampaign.channelCampaign,
       'enableCoBrandingLogo':eventCampaign.enableCoBrandingLogo,
       'countryId': eventCampaign.countryId,
@@ -896,7 +900,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
     if(this.validForm(eventCampaign) && this.isFormSubmitted){
       this.referenceService.startLoader(this.httpRequestLoader);
       console.log(eventCampaign);
-      this.campaignService.createEventCampaign(eventCampaign)
+      this.campaignService.createEventCampaign(eventCampaign, this.isEventUpdate)
       .subscribe(
       response => {
         if (response.statusCode === 2000) {
@@ -1519,7 +1523,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
           delete eventCampaign.userListDTOs
           if(errorLength===0){
               this.dataError = false;
-              this.campaignService.createEventCampaign(eventCampaign)
+              this.campaignService.createEventCampaign(eventCampaign,this.isEventUpdate)
               .subscribe(
                 response => {
                   console.log(response);
@@ -1630,12 +1634,13 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
 
         this.resetTabs(this.currentTab);
 
-        if(this.isPreviewEvent){
+        if(this.isPreviewEvent || this.isEventUpdate){
             this.detailsTab = true;
             this.recipientsTab = false;
             this.emailTemplatesTab = false;
             this.launchTab = true;
         }
+        
 
         if(this.reDistributeEvent || this.reDistributeEventManage){
             this.detailsTab = true;

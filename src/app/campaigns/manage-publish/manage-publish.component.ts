@@ -197,6 +197,9 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.logger.error("error in manage-publish-component init() ", error);
         }
     }
+    updateEvent(campaign:any){
+        this.router.navigate(['/home/campaigns/event-update/'+campaign.campaignId])
+    }
 
     editCampaign(campaign:any) {
       if(campaign.campaignType.indexOf('EVENT') > -1) {

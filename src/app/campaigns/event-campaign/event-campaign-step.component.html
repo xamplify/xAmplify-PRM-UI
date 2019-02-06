@@ -38,7 +38,7 @@ a.disabled {
 		<div class="container"
 			style="width: 100%; border-radius: 0; border-top: 0;box-shadow: 0 0 5px rgba(0, 0, 0, .4); padding-bottom: 10px;">
 			<div class="alert-danger alert-error" *ngIf="eventError.eventExpiredError" style="margin-top: 19px;font-weight: 600;"> This event has concluded.</div>
-			<div *ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage" style="display: flex; padding-top: 1em;">
+			<div *ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage && !isEventUpdate" style="display: flex; padding-top: 1em;">
 				<div id="step2" class="col-block col-block-complete" (click)="resetTabs('details')" [ngClass]="{'col-block-active': detailsTab}"
 					style="width: 25%">
 					<div class="cenetered-block">
@@ -83,8 +83,9 @@ a.disabled {
 
 			<!-- Step One code -->
  <fieldset class="portlet light" style="margin-top: 25px" [hidden]="!detailsTab">
-<div *ngIf="isPreviewEvent || reDistributeEvent || reDistributeEventManage" class="portlet-title" style="display:block">
-                    <h4 class="pull-left f-w-600">Event Details</h4>
+<div *ngIf="isPreviewEvent || reDistributeEvent || reDistributeEventManage || isEventUpdate" class="portlet-title" style="display:block">
+                    <h4 class="pull-left f-w-600" *ngIf="!isEventUpdate">Event Details</h4>
+                     <h4 class="pull-left f-w-600" *ngIf="isEventUpdate">Event Update</h4>
                   </div>
 				<!-- <div class="page-bar  portlet light border-radius-0 shadow">
 		<div class="portlet-body clearfix"> -->
@@ -361,6 +362,17 @@ a.disabled {
 								</div>
 							</div>
 						</section>
+						<div class="form-group">
+							<label class="col-sm-3 labal-css color-css" style="padding-top: 25px;">Message<font
+								style="color: red"> <b>*</b>
+							</font>
+							</label>
+							<div class="col-sm-9" style="padding-top: 10px;">
+								<textarea [(ngModel)]="eventCampaign.updateMessage" [ngModelOptions]="{standalone: true}" placeholder="Add a comment..."></textarea>
+							</div>
+						</div>
+						
+						
 					</form>
 				</div>
 				<div class="col-xs-12 col-sm-5">
@@ -1077,7 +1089,7 @@ a.disabled {
           </fieldset>
         </div>
 
-        <div class="col-xs-12 p0">
+        <div class="col-xs-12 p0" *ngIf="!isEventUpdate">
           <!-- <div class="col-xs-4"> -->
             <div class="btn-group btn-group-justified" [class.disabled]="eventError.eventExpiredError">
                <ng-container *ngFor="let options of launchOptions">
@@ -1088,6 +1100,15 @@ a.disabled {
                </ng-container>
                </div>
           </div>
+          <div class="col-xs-12 p0" *ngIf="isEventUpdate">
+          <div class="btn-group btn-group-justified" [class.disabled]="eventError.eventExpiredError" (click)="createEventCampaign(eventCampaign, 'NOW')">
+           <label class="btn btn-primary" style="border: 1px solid #fff;" [class.disabled]="isPreviewEvent || eventError.eventExpiredError">
+           Update
+          </label>
+          </div>
+          </div>
+          
+          
           <div class="col-md-12 p0" style="margin-top: 12px;" [hidden]="checkLaunchOption!='SCHEDULE'">
             <div class="col-md-4">
               <input [attr.disabled]="isPreviewEvent? '' : null"  type="text" id="launchTimeInString" class="form-control flatpickr" placeholder="Launch Time"
@@ -1126,7 +1147,7 @@ a.disabled {
            <!--  ****Test email template**** -->
             <!-- <div><button type="button" class="btn green" (click)="campaignService.addEmailId(eventCampaign,eventCampaign.emailTemplate.id,false)" style="width: 10em;">Send Test Email</button>
             </div> -->
-            <button *ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage" type="button" style="float:left;" class="btn btn-default" (click)="resetTabs('templates')">Previous</button>
+            <button *ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage && !isEventUpdate" type="button" style="float:left;" class="btn btn-default" (click)="resetTabs('templates')">Previous</button>
           </div>
        <!--   end step four launch   -->
 		</div>
