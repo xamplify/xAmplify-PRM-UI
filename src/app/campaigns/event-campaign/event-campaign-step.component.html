@@ -207,7 +207,7 @@ a.disabled {
 										class="form-control flatpickr" placeholder="Start"
 										[(ngModel)]="eventCampaign.campaignEventTimes[0].startTimeString"
 										[ngModelOptions]="{standalone: true}"
-										(input)="eventStartTimeError()" (blur)="eventStartTimeError()"
+										(input)="eventStartTimeError();validateUpdateButton()" (blur)="eventStartTimeError()"
 										[ngClass]="{'has-error': eventError.eventStartTimeError && !eventCampaign.campaignEventTimes[0].startTimeString}">
 									<div class="col-sm-12 text-danger" style="padding: 0"
 										*ngIf="eventError.eventStartTimeError && !isPreviewEvent">{{datePassedError}}</div>
@@ -219,7 +219,7 @@ a.disabled {
 										class="form-control flatpickr" placeholder="End"
 										[(ngModel)]="eventCampaign.campaignEventTimes[0].endTimeString"
 										[ngModelOptions]="{standalone: true}"
-										(input)="eventEndTimeError()" (blur)="eventEndTimeError()"
+										(input)="eventEndTimeError();validateUpdateButton()" (blur)="eventEndTimeError()"
 										[ngClass]="{'has-error': eventError.eventEndDateError,'opacityCss':eventCampaign.campaignEventTimes[0].allDay}">
 									<div class="col-sm-12 text-danger" style="padding: 0"
 										*ngIf="eventError.eventEndDateError && !isPreviewEvent">{{endDateErrorMesg}}</div>
@@ -231,7 +231,7 @@ a.disabled {
                     <input type="checkbox" id="allDay" class="form-check-input mt10"
                         [attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)? '' : null"
                         [checked]="eventCampaign.campaignEventTimes[0].allDay"
-                        (change)="changeAllDay()" (input)="resetTabClass()">
+                        (change)="changeAllDay()" (input)="resetTabClass();validateUpdateButton()">
                         <label class="form-check-label" for="allDay" style="float:none"> All Day</label>
                   </div>
 							</div>
@@ -295,7 +295,7 @@ a.disabled {
 									<input type="text"
 										[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)? '' : null"
 										class="form-control" id="eventDateTime"
-										(blur)="eventLocationError()" (input)="eventLocationError()"
+										(blur)="eventLocationError()" (input)="eventLocationError();validateUpdateButton()"
 										placeholder="Corporate headquarters, local restaurant, etc."
 										[ngClass]="{'has-error': eventError.eventLocationError}"
 										[(ngModel)]="eventCampaign.campaignLocation.location"
@@ -368,7 +368,7 @@ a.disabled {
 							</font>
 							</label>
 							<div class="col-sm-9" style="padding-top: 10px;">
-								<textarea [(ngModel)]="eventCampaign.updateMessage" [ngModelOptions]="{standalone: true}" placeholder="Add a comment..."></textarea>
+								<textarea [(ngModel)]="eventCampaign.updateMessage" (input)="validateUpdateButton()" [ngModelOptions]="{standalone: true}" placeholder="Add a comment..."></textarea>
 							</div>
 						</div>
 						
@@ -1087,6 +1087,15 @@ a.disabled {
             </div>
           </div>
           </fieldset>
+          
+          <div class="col-xs-12" style="text-align: center;" *ngIf="isEventUpdate">
+          <div class="btn-group" [class.disabled]="eventError.eventExpiredError || !isEnableUpdateButton" (click)="createEventCampaign(eventCampaign, 'NOW')">
+           <label class="btn btn-primary" style="border: 1px solid #fff;" [class.disabled]="isPreviewEvent || eventError.eventExpiredError">
+           Update
+          </label>
+          </div>
+          </div>
+          
         </div>
 
         <div class="col-xs-12 p0" *ngIf="!isEventUpdate">
@@ -1099,13 +1108,6 @@ a.disabled {
                   </label>
                </ng-container>
                </div>
-          </div>
-          <div class="col-xs-12 p0" *ngIf="isEventUpdate">
-          <div class="btn-group btn-group-justified" [class.disabled]="eventError.eventExpiredError" (click)="createEventCampaign(eventCampaign, 'NOW')">
-           <label class="btn btn-primary" style="border: 1px solid #fff;" [class.disabled]="isPreviewEvent || eventError.eventExpiredError">
-           Update
-          </label>
-          </div>
           </div>
           
           

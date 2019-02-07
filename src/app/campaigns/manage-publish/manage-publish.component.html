@@ -236,7 +236,7 @@
                             </li>
                           </section>
                          <section *ngIf="campaign.launched && campaign.campaignType === 'EVENT' && campaign.showCancelButton">
-							<li *ngIf="hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor">
+							<li *ngIf="authenticationService.module.isVendor">
                           <a title="Update Event" data-rel="fancybox-button" (click)="updateEvent(campaign)">
                               <i class="fa fa-pencil" style="width: 30px;"></i> Update event
                             </a>
@@ -461,7 +461,7 @@
                               <i class="fa fa-ban"></i> 
                             </a></span>
                             <span *ngIf="campaign.launched && campaign.campaignType === 'EVENT' && campaign.showCancelButton">						
-                          <a *ngIf="hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor"
+                          <a *ngIf="authenticationService.module.isVendor"
                               title="Update event" data-rel="fancybox-button" (click)="updateEvent(campaign)">
                               <i class="fa fa-pencil"></i>
                             </a></span>

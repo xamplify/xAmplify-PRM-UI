@@ -121,6 +121,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   isPartnerToo = false;
   userListDTOObj = [];
   isEventUpdate = false;
+  isEnableUpdateButton = false;
 
 
   constructor(public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
@@ -1649,6 +1650,14 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
             this.launchTab = true;
         }
 
+    }
+    
+    validateUpdateButton() {
+        if(this.eventCampaign.campaignEventTimes[0].startTimeString && (this.eventCampaign.campaignEventTimes[0].endTimeString || this.eventCampaign.campaignEventTimes[0].allDay) && !this.eventError.eventSameDateError && this.datePassedError == '' && (this.eventCampaign.onlineMeeting || (this.eventCampaign.campaignLocation.location && !this.eventError.eventLocationError) && this.eventCampaign.updateMessage.replace( /\s\s+/g, '' ).replace(/\s+$/,"").replace(/\s+/g," ")) ){
+           this.isEnableUpdateButton = true;
+        }else{
+            this.isEnableUpdateButton = false;
+        }
     }
 
    ngOnDestroy() {
