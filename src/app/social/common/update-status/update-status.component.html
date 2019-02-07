@@ -100,7 +100,7 @@
 		<div class="col-md-9 col-sm-12" [ngClass]="{'disabled-div': socialStatusProviders?.length === 0}" id="us-right">
 			<div class="col-sm-12 dashboard-stat2 p0 clearfix" *ngIf="isSocialCampaign">
 				<div class="portlet-body clearfix p10">
-					<div class="form-group pull-right m0">
+					<div class="form-group pull-right m0" style="position: relative;top: -3px">
 						<h5 class="control-label font-purple-intense pr10">Notify me when email is opened</h5>
 						<switch [status]="socialCampaign.emailOpened" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
 						 [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
@@ -111,7 +111,8 @@
 						<label for="campaignName">
 							<h6 class="caption-subject font-red-sunglo uppercase bold m0">Campaign</h6>
 						</label>
-						<input type="text" class="form-control input-lg" id="campaignName" placeholder="Campaign Name" [(ngModel)]="socialCampaign.campaignName">
+						<input type="text" class="form-control input-lg" id="campaignName" placeholder="Campaign Name" [(ngModel)]="socialCampaign.campaignName" (input)="validateCampaignName(socialCampaign.campaignName)">
+            <span *ngIf="isValidCampaignName" style="color:red">Title already exists</span>
           </div>
           <div class="form-group" *ngIf="false">   <!-- !authenticationService.isOnlyPartner()-->
 						<label for="hostedBy" class="col-sm-3 labal-css" >Through Partner</label>
