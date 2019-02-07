@@ -23,10 +23,9 @@ import { Timezone } from '../../core/models/timezone';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { CampaignContact } from '../models/campaign-contact';
 import { Properties } from '../../common/models/properties';
-var moment = require('moment-timezone');
-
 
 declare var  $,flatpickr,CKEDITOR,require:any;
+var moment = require('moment-timezone');
 
 @Component({
   selector: 'app-edit-partner-campaigns',
@@ -226,7 +225,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
         }else if(this.campaignType.includes('REGULAR')){
             this.campaignType=="REGULAR";
         }
-        
+
         if(this.campaign.campaignScheduleType=="SCHEDULE" && this.campaign.userId==this.loggedInUserId){
             this.campaign.scheduleCampaign  = this.campaignLaunchOptions[1];
         }else{
@@ -250,7 +249,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
         this.referenceService.stopLoader(this.httpRequestLoader);
     }
 
-    
+
     setLoggedInUserEmailId(){
         const userProfile = this.authenticationService.userProfile;
         this.campaign.email = userProfile.emailId;
@@ -288,13 +287,13 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
         () => console.log( "Team members loaded" )
         );
     }
-    
+
     setFromName(){
         let user = this.teamMemberEmailIds.filter((teamMember)=> teamMember.emailId == this.campaign.email)[0];
         this.campaign.fromName = $.trim(user.firstName+" "+user.lastName);
         this.setEmailIdAsFromName();
     }
-    
+
     getCampaignPartnerByCampaignIdAndUserId(campaignId: number, userId: number) {
         this.campaignService.getCampaignPartnerByCampaignIdAndUserId(campaignId, userId)
             .subscribe(
