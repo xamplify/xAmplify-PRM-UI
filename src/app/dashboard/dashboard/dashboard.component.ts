@@ -959,29 +959,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
             this.generatHeatMap(this.heatMapData, 'heat-map-data');
         }
     }
-    getOrgCampaignTypes(){
-      this.referenceService.getOrgCampaignTypes( this.referenceService.companyId).subscribe(
-      data=>{
-        console.log(data);
-        this.campaignAccess.videoCampaign = data.video;
-        this.campaignAccess.emailCampaign = data.regular;
-        this.campaignAccess.socialCampaign = data.social;
-        this.campaignAccess.eventCampaign = data.event
-      });
-     }
-     getCompanyIdByUserId(){
-      try {
-        this.referenceService.getCompanyIdByUserId(this.authenticationService.user.id).subscribe(
-          (result: any) => {
-            if (result !== "") {
-              console.log(result);
-              this.referenceService.companyId = result;
-              this.getOrgCampaignTypes();
-            }
-          }, (error: any) => { console.log(error); }
-        );
-      } catch (error) { console.log(error);  }
-     }
     ngOnInit() {
         this.pagination.maxResults = 12;
         try {
@@ -993,7 +970,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
             this.getCountriesTotalViewsData();
             this.getCampaignsHeatMapData();
             this.getVideoStatesSparklineChartsInfo(30);
-            if(!this.referenceService.companyId){ this.getCompanyIdByUserId()} else { this.getOrgCampaignTypes();}
 
             Metronic.init();
             Layout.init();

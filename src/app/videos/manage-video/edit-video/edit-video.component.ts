@@ -950,7 +950,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     this.logoDescriptionUrl = this.saveVideoFile.brandingLogoDescUri !==null ? this.setBrandignLogoDescUrl() : this.defaultPlayerValues.companyProfile.website;
   }
   }
-  errorHandler(event){ event.target.src="assets/images/no-thumbnail.png" }
+  errorHandler(event:any){ event.target.src="assets/images/no-thumbnail.png" }
   getDefaultPlayerSettings(){
     if(!this.referenceService.defaultPlayerSettings){
       this.homeComponent.getVideoDefaultSettings();
@@ -958,6 +958,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
       if(!this.defaultPlayerValues ||!this.defaultPlayerValues.playerColor || !this.defaultPlayerValues.enableVideoController){ this.clientError = true;}
      }
   }
+  setGifPath(event:any){ event.target.src=this.giffirst; }
   ngOnInit() {
     try{
       QuickSidebar.init();

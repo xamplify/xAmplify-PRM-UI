@@ -636,11 +636,11 @@ getSortedResult(campaignId: number,event:any){
   appendVideoData(videoFile:SaveVideoFile,divId:string,titleId:string){
    console.log(videoFile);
    let videoSelf = this;
-   var fullImagePath = videoFile.imagePath;
-   var title = videoFile.title;
-   if(title.length>50){ title = title.substring(0, 50)+"...";}
-   var videoPath = videoFile.videoPath;
-   var is360 = videoFile.is360video;
+   let fullImagePath = videoFile.imagePath;
+   let title = videoFile.title;
+   try{ if(title.length>50){ title = title.substring(0, 50)+"...";} }catch(error){}
+   let videoPath = videoFile.videoPath;
+   let is360 = videoFile.is360video;
    $("#"+divId).empty();
    $("#"+titleId).empty();
    $('head').append('<link href="assets/js/indexjscss/video-hls-player/video-hls-js.css" class="hls-video" rel="stylesheet">');
@@ -649,14 +649,14 @@ getSortedResult(campaignId: number,event:any){
        $('.h-video').remove();
        this.videoUtilService.player360VideoJsFiles();
        this.videoUtilService.video360withm3u8();
-       var str = '<video id=videoId poster='+fullImagePath+'  class="video-js vjs-default-skin" crossorigin="anonymous" controls></video>';
+       let str = '<video id=videoId poster='+fullImagePath+'  class="video-js vjs-default-skin" crossorigin="anonymous" controls></video>';
        $("#"+titleId).append(title);
        $('#'+titleId).prop(videoFile.title);
        $("#"+divId).append(str);
        videoPath = videoPath.substring(0, videoPath.lastIndexOf('.'));
        videoPath = videoPath+ '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
        $("#"+divId+" video").append('<source src=' + videoPath + ' type="application/x-mpegURL">');
-       var player = videojs('videoId');
+       let player = videojs('videoId');
        player.panorama({
            autoMobileOrientation: true,
            clickAndDrag: true,
@@ -673,7 +673,7 @@ getSortedResult(campaignId: number,event:any){
        console.log("Loaded Normal Video");
        $('.p-video').remove();
        this.videoUtilService.normalVideoJsFiles();
-       var str = '<video id=videoId  poster='+fullImagePath+' preload="none"  class="video-js vjs-default-skin" controls></video>';
+       let str = '<video id=videoId  poster='+fullImagePath+' preload="none"  class="video-js vjs-default-skin" controls></video>';
        $("#"+titleId).append(title);
        $('#'+titleId).prop(videoFile.title);
        $("#"+divId).append(str);
@@ -684,7 +684,7 @@ getSortedResult(campaignId: number,event:any){
         $("#videoId").css("width", "100%");
         $("#videoId").css("height", "155px");
         $("#videoId").css("max-width", "100%");
-        var document:any = window.document;
+        let document:any = window.document;
        const overrideNativeValue = this.referenceService.getBrowserInfoForNativeSet();
        this.videojsPlayer = videojs("videoId", {
            html5: {

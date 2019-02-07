@@ -190,7 +190,7 @@
             <i style="font-size: 1.5em;padding: 3px 10px;margin: 10px 0;" class="fa fa-cog pull-right" data-toggle="modal" data-target="#customizeCampaignModal"
              *ngIf="hasCampaignRole ||authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()"></i>
           </a>
-          <a [routerLink]="['/home/campaigns/select']" class="btn btn-sm btn-primary pull-right" style="margin: 5px 0;border-color: white;" *ngIf="hasCampaignRole && authenticationService.user.hasCompany">Create Campaign</a>
+          <a [routerLink]="['/home/campaigns/select']" class="btn btn-sm btn-primary pull-right" style="margin: 5px 0;border-color: white; color:white" *ngIf="hasCampaignRole && authenticationService.user.hasCompany">Create Campaign</a>
         </div>
         <div class="portlet-body clearfix">
           <section *ngFor="let campaign of campaigns; let i=index">
@@ -236,10 +236,10 @@
                 <div class="portlet-body">
                   <div class="text-center" style="margin: 1.3em 0.5em;">
                     <h5 style="color: rgb(119, 119, 119);">What type of campaign would you like to create? </h5>
-                    <button class="color3 btn-campaign btn-block" *ngIf="campaignAccess.videoCampaign" (click)="createCampaign('video')">Video Campaign</button>
-                    <button class="color1 btn-campaign btn-block" *ngIf="campaignAccess.emailCampaign" (click)="createCampaign('regular')">Email Campaign</button>
-                    <button class="color4 btn-campaign btn-block" *ngIf="campaignAccess.socialCampaign"  [routerLink]="['/home/campaigns/social']">Social Campaign</button>
-                    <button class="color2 btn-campaign btn-block" *ngIf="campaignAccess.eventCampaign" [routerLink]="['/home/campaigns/event']">Event Campaign</button>
+                    <button class="color3 btn-campaign btn-block" *ngIf="referenceService.videoCampaign" (click)="createCampaign('video')">Video Campaign</button>
+                    <button class="color1 btn-campaign btn-block" *ngIf="referenceService.emailCampaign" (click)="createCampaign('regular')">Email Campaign</button>
+                    <button class="color4 btn-campaign btn-block" *ngIf="referenceService.socialCampaign"  [routerLink]="['/home/campaigns/social']">Social Campaign</button>
+                    <button class="color2 btn-campaign btn-block" *ngIf="referenceService.eventCampaign" [routerLink]="['/home/campaigns/event']">Event Campaign</button>
                   </div>
                 </div>
               </div>

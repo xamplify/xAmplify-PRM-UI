@@ -109,9 +109,9 @@ export class HomeComponent implements OnInit {
   }
   getCompanyId() {
     try {
-      this.userService.getVideoDefaultSettings().subscribe(
+      this.referenceService.getCompanyIdByUserId(this.authenticationService.user.id).subscribe(
         (result: any) => {
-          if (result !== "") {  this.referenceService.companyId = result.companyProfile.id;
+          if (result !== "") {  this.referenceService.companyId = result;
             this.getOrgCampaignTypes();
           }
         }, (error: any) => { console.log(error); }

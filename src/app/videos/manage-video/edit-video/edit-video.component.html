@@ -270,15 +270,15 @@
 											<div>
 												<div class="col-xs-4 col-sm-4 col-md-4" (click)="selectedGifFirst()">
 													<input type="hidden" name="gifImagePath" formControlName="gifImagePath">
-													<img [ngClass]="{colorImg:gifBoolean1==true ,colorShade :gifBoolean1==false}" src="{{giffirst}}" class="sizeImg">
+													<img id="gifImageIdFirst" [ngClass]="{colorImg:gifBoolean1==true ,colorShade :gifBoolean1==false}" src="{{giffirst}}" class="sizeImg">
 												</div>
 												<div class="col-xs-4 col-sm-4 col-md-4" (click)="selectedGifSecond()">
 													<input type="hidden" name="gifImagePath" formControlName="gifImagePath">
-													<img [ngClass]="{colorImg:gifBoolean2==true ,colorShade :gifBoolean2==false}" src="{{gifsecond}}" class="sizeImg">
+													<img id="gifImageIdSecond" [ngClass]="{colorImg:gifBoolean2==true ,colorShade :gifBoolean2==false}" src="{{gifsecond}}" (error)="setGifPath($event)" class="sizeImg">
 												</div>
 												<div class="col-xs-4 col-sm-4 col-md-4" (click)="selectedGifThird()">
 													<input type="hidden" name="gifImagePath" formControlName="gifImagePath">
-													<img [ngClass]="{colorImg:gifBoolean3==true ,colorShade :gifBoolean3==false}" src="{{gifthird}}" class="sizeImg">
+													<img id="gifImageIdThird" [ngClass]="{colorImg:gifBoolean3==true ,colorShade :gifBoolean3==false}" src="{{gifthird}}" (error)="setGifPath($event)" class="sizeImg">
 												</div>
 											</div>
 										</div>
