@@ -330,7 +330,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             if ( !isDuplicate && !this.isEmailExist ) {
                 this.saveValidEmails();
             }else if(this.isEmailExist){
-                this.customResponse = new CustomResponse( 'ERROR', "These patners are already added " + this.existedEmailIds, true );
+                this.customResponse = new CustomResponse( 'ERROR', "These partner(s) are already added " + this.existedEmailIds, true );
             }else {
                 this.dublicateEmailId = true;
             }
