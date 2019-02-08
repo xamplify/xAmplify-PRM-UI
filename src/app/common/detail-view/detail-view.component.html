@@ -116,7 +116,7 @@
 				<div class="pull-left" *ngIf="detailType === 'email open' || detailType === 'email not open'">
 				<ul class="mix-filter m0">
 								<li class="filter" [class.selectedBox]="detailType ==='email open'"  (click)="analyticsComponent.getRsvpEmailOpenDetails()">People who have opened your email</li>
-								<li class="filter" [class.selectedBox]="detailType !=='email open'" (click)="analyticsComponent.getRsvpEmailNotOpenDetails()"> People who not opened your email</li>
+								<li class="filter" [class.selectedBox]="detailType !=='email open'" (click)="analyticsComponent.getRsvpEmailNotOpenDetails()"> People who haven't opened your email</li>
 								</ul>
 				<!-- <a (click)="analyticsComponent.getRsvpEmailOpenDetails()">People who have opened your email</a><span> <a (click)="analyticsComponent.getRsvpEmailNotOpenDetails()">Not yet opened details</a></span> -->
 				</div>

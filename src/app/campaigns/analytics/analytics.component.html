@@ -708,7 +708,7 @@
 				<div class="pull-left mt10" *ngIf="rsvpResposeType === 'email open' || rsvpResposeType === 'email not open'">
 				<ul class="mix-filter m0">
             <li class="filter" [class.selectedBox]="rsvpResposeType === 'email open'" (click)="getRsvpEmailOpenDetails()">People who have opened your email</li>
-            <li class="filter" [class.selectedBox]="rsvpResposeType === 'email not open'"  (click)="getRsvpEmailNotOpenDetails()"> People who not opened your email</li>
+            <li class="filter" [class.selectedBox]="rsvpResposeType === 'email not open'"  (click)="getRsvpEmailNotOpenDetails()"> People who haven't opened your email</li>
 				</ul>
 				</div>
 				<h4 class="pull-left" *ngIf="rsvpResposeType === 'YES'">People who have responded <b class="highlet">YES</b></h4>
