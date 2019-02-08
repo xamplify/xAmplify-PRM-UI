@@ -439,35 +439,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
        }
        this.showContactType = false;
        this.contactListsPagination.filterKey = 'isPartnerUserList';
-   }
-    this.contactService.loadContactLists(contactListsPagination)
-      .subscribe(
-      (data: any) => {
-        this.contactListsPagination.totalRecords = data.totalRecords;
-        this.contactListsPagination = this.pagerService.getPagedItems(this.contactListsPagination, data.listOfUserLists);
-        if(this.isPreviewEvent && this.authenticationService.isOnlyPartner()){
-          const contactsAll:any = [];
-          this.contactListsPagination.pagedItems.forEach((element, index) => {
-              if( element.id ===this.parternUserListIds[index]) {
-                contactsAll.push(this.contactListsPagination.pagedItems[index]);
-              }
-            });
-            this.contactListsPagination.pagedItems = contactsAll;
-           }
-        const contactIds = this.contactListsPagination.pagedItems.map( function( a ) { return a.id; });
-        const items = $.grep( this.parternUserListIds, function( element ) {
-            return $.inArray( element, contactIds ) !== -1;
-        });
-        if ( items.length == contactListsPagination.totalRecords || items.length == this.contactListsPagination.pagedItems.length ) {
-            this.isHeaderCheckBoxChecked = true;
-        } else {
-            this.isHeaderCheckBoxChecked = false;
-        }
-      },
-      (error: any) => {
-        this.logger.error(error);
-      },
-      () => { this.logger.info('event campaign page loadContactLists() finished'); } );
+    }
+    this.contactListMethod(this.contactListsPagination);
   }
 
   /*****************LOAD CONTACTLISTS WITH PAGINATION END *****************/
@@ -527,26 +500,20 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
       this.contactListsPagination = this.pagerService.getPagedItems(this.contactListsPagination, data.listOfUserLists);
       if(this.isPreviewEvent && this.authenticationService.isOnlyPartner()){
         const contactsAll:any = [];
-        this.contactListsPagination.pagedItems.forEach((element, index) => {
-            if( element.id ===this.parternUserListIds[index]) {
-              contactsAll.push(this.contactListsPagination.pagedItems[index]);
-            }
+          this.contactListsPagination.pagedItems.forEach((element, index) => {
+            if( element.id ===this.parternUserListIds[index]) { contactsAll.push(this.contactListsPagination.pagedItems[index]);}
           });
           this.contactListsPagination.pagedItems = contactsAll;
          }
-      const contactIds = this.contactListsPagination.pagedItems.map( function( a ) { return a.id; });
-      const items = $.grep( this.parternUserListIds, function( element ) {
-          return $.inArray( element, contactIds ) !== -1;
-      });
-      if ( items.length == contactListsPagination.totalRecords || items.length == this.contactListsPagination.pagedItems.length ) {
-          this.isHeaderCheckBoxChecked = true;
-      } else {
-          this.isHeaderCheckBoxChecked = false;
-      }
+        const contactIds = this.contactListsPagination.pagedItems.map( function( a ) { return a.id; });
+        const items = $.grep( this.parternUserListIds, function( element ) { return $.inArray( element, contactIds ) !== -1;});
+        if ( items.length == contactListsPagination.totalRecords || items.length == this.contactListsPagination.pagedItems.length ) {
+            this.isHeaderCheckBoxChecked = true;
+        } else {
+            this.isHeaderCheckBoxChecked = false;
+        }
     },
-    (error: any) => {
-      this.logger.error(error);
-    },
+    (error: any) => { this.logger.error(error); },
     () => { this.logger.info('event campaign page contactListMethod() finished'); } );
   }
 
@@ -951,6 +918,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
           this.referenceService.stopLoader(this.httpRequestLoader);
           this.router.navigate(["/home/campaigns/manage"]);
           this.referenceService.campaignSuccessMessage = launchOption;
+          if(this.isEventUpdate){ this.referenceService.campaignSuccessMessage="UPDATE"; }
         } else {
           this.loader = false;
           this.referenceService.stopLoader(this.httpRequestLoader);
