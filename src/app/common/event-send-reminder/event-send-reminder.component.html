@@ -9,8 +9,6 @@
       </div>
       <div class="modal-body">
         <div style="font-size: 15px;">
-         <!--  <span style="float:left;margin-bottom: 3px">Replying as: </span> -->
-         <!-- <span style="margin-left: 6px;" class="bold"> {{replyUserName}}</span> -->
         </div>
         <section>
 				<div class="col-xs-12 col-sm-12">
@@ -20,7 +18,7 @@
 								Title <span class=text-danger>*</span>
 							</label>
 							<div class="col-sm-9">
-								<input type="text" class="form-control" id="eventTitle"
+								<input type="text" [attr.disabled]="true" class="form-control" id="eventTitle"
 									placeholder="Event Title" [(ngModel)]="eventCampaign.campaign"
 									[ngModelOptions]="{standalone: true}">
 							</div>
@@ -37,23 +35,16 @@
 									[ngModelOptions]="{standalone: true}">
 							</div>
 						</div>
-						<div class="form-group">
+						<!-- <div class="form-group">
 							<label for="hostedBy" class="col-sm-3 labal-css color-css">From
 								Email</label>
 							<div class="col-sm-9">
-								<!-- <select
-									[attr.disabled]="true"
-									class="form-control" [(ngModel)]="eventCampaign.email"
-									[ngModelOptions]="{standalone: true}" (change)="setFromName()">
-									<option *ngFor="let teamMember of teamMemberEmailIds"
-										[ngValue]="teamMember.emailId">
-										{{teamMember.emailId}}</option>
-								</select> -->
+								
 								<input [attr.disabled]="true" type="text" class="form-control" [(ngModel)]="eventCampaign.email"
 									[ngModelOptions]="{standalone: true}">
 							</div>
-						</div>
-						<div class="form-group">
+						</div> -->
+						<!-- <div class="form-group">
 							<label class="col-sm-3 labal-css color-css">Subject Line <font
 								style="color: red"> <b>*</b>
 							</font>
@@ -65,41 +56,8 @@
 									name="subjectLine"
 									maxlength="200" />
 							</div>
-						</div>
-						<!-- <div class="form-group"
-							*ngIf="!authenticationService.isOnlyPartner()">
-							<span for="Throughpartner" class="col-sm-3 labal-css color-css" [ngClass]="{'highletClass': eventCampaign.channelCampaign }">Through
-								Partner</span>
-							<div class="col-sm-2">
-								<switch [status]="eventCampaign.channelCampaign"
-									[onText]="callActionSwitch.onTextValue"
-									[offText]="callActionSwitch.onTextValue"
-									[onColor]="callActionSwitch.onGreenColorSwitch"
-									[offColor]="callActionSwitch.onGreenColorSwitch"
-									[size]="callActionSwitch.size"
-									[disabled]="true">
-								</switch>
-							</div>
-							<span for="toPartner" class="col-sm-3 labal-css color-css" [ngClass]="{'highletClass': !eventCampaign.channelCampaign }">To
-								Partner</span>
-							<div class="col-sm-3" style="padding: 0; margin-top: 5px;">
-								<span style="cursor: pointer; color: #54a7e9;">
-									<i class="fa fa-question-circle"></i>
-								</span>
-							</div>
 						</div> -->
-						<!-- <div class="form-group" *ngIf="eventCampaign.channelCampaign && !authenticationService.isOnlyPartner()">
-              <label class="control-label col-sm-3">Co-Branding Logo</label>
-              <div class="col-sm-9">
-                <switch class="pull-left" [status]="eventCampaign.enableCoBrandingLogo" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-                  [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
-                  [disabled]="true">
-                </switch>
-                <span style="cursor: pointer;color: #54a7e9;" title="Enable your Partner's logo to be displayed in redistributed campaigns">
-                  <i class="fa fa-question-circle" style="padding: 8px;"></i>
-                </span>
-              </div>
-						</div> -->
+						
 						<div class="form-group">
 							<label for="eventDateTime" class="col-sm-3 labal-css color-css">Event
 								Date/Time <span class="text-danger" style="margin-left: -3px;">*</span>
@@ -131,49 +89,6 @@
                   </div>
 							</div>
 						</div>
-						<!-- <div class="form-group">
-							<label for="Time Zone" class="col-sm-3 labal-css color-css">Time
-								Zone <span class=text-danger>*</span>
-							</label>
-							<div class="col-sm-9 p0">
-								<div class="col-sm-6">
-									<select
-										[attr.disabled]="true"
-										class="form-control" style="width: 100%; cursor: pointer;"
-										[(ngModel)]="eventCampaign.campaignEventTimes[0].countryId"
-										[ngModelOptions]="{standalone: true}">
-										<option *ngFor="let country of countries" [value]="country.id">{{country.name}}</option>
-									</select>
-								</div>
-								<div class="col-sm-6">
-                  <select [attr.disabled]="true"
-                  class="form-control" style="width: 100%"
-                  [(ngModel)]="eventCampaign.campaignEventTimes[0].timeZone" [ngModelOptions]="{standalone: true}"
-                  id="timezoneIdChange">
-                  <option *ngIf="!timezonesCampaignEventTime" value="" disabled  [attr.selected]="true">Select TimeZone...</option>
-                  <ng-container *ngIf="timezonesCampaignEventTime">
-                  <option *ngFor="let timeZone of timezonesCampaignEventTime"  [attr.value]="timeZone.timezoneId"
-                  [attr.selected]="timeZone.timezoneId === eventCampaign.campaignEventTimes[0].timeZone">{{timeZone.cityName}}
-                  </option>
-                  </ng-container>
-                </select>
-								</div>
-							</div>
-						</div> -->
-						<!-- <div class="form-group">
-							<label for="hostedBy" class="col-sm-3 labal-css color-css">Online
-								Meeting</label>
-							<div class="col-sm-9">
-								<switch [disabled]="true"
-									[status]="eventCampaign.onlineMeeting"
-									[onText]="callActionSwitch.onTextValue"
-									[offText]="callActionSwitch.offTextValue"
-									[onColor]="callActionSwitch.onGreenColorSwitch"
-									[offColor]="callActionSwitch.offDefaultColor"
-									[size]="callActionSwitch.size">
-								</switch>
-							</div>
-						</div> -->
 						<section *ngIf="!eventCampaign.onlineMeeting">
 							<div class="form-group">
 								<label for="hostedBy" class="col-sm-3 labal-css color-css">Location
@@ -258,32 +173,28 @@
 							</label>
 							<div class="col-sm-9">
 								<input type="text" id="subjectLine" placeholder="Reminder Subject Line"
-									class="form-control" [(ngModel)]="reminderEventSubject"
+									class="form-control" [(ngModel)]="reminderEventSubject" (input)="validateReminderButton()"
 									name="subjectLine"
 									maxlength="200" />
 							</div>
 						</div>
 			<div class="form-group">
-							<label class="col-sm-3 labal-css color-css" style="padding-top: 25px;">Reminder Message<font
+							<label class="col-sm-3 labal-css color-css" style="padding-top: 25px;">Message<font
 								style="color: red"> <b>*</b>
 							</font>
 							</label>
 							<div class="col-sm-9" style="padding-top: 10px;">
-								<textarea [(ngModel)]="reminderEventMessage" [ngModelOptions]="{standalone: true}" placeholder="Add a comment..."></textarea>
+								<textarea [(ngModel)]="reminderEventMessage" [ngModelOptions]="{standalone: true}" (input)="validateReminderButton()" placeholder="Add a comment..."></textarea>
 							</div>
 						</div>
 
         </section>
-        
-        
-        <!-- <textarea [(ngModel)]="cancelEventMessage" [ngModelOptions]="{standalone: true}" placeholder="Add a comment..."></textarea> -->
-       
       
     </div>
     <div class="pull-right" style="margin: 0px 29px 0px 0px;">
         <div class="right-css">
         <button type="button" class="btn btn-default" data-dismiss="modal" (click)="closeReminder()">Close</button>
-        <button type="button" class="btn btn-primary" (click)="sendEmailNotOpenReminder()">Send Reminder</button>
+        <button type="button" class="btn btn-primary" [disabled]="!isDisableReminderButton"(click)="sendEmailNotOpenReminder()">Send Reminder</button>
         </div>
       </div>
   </div>
