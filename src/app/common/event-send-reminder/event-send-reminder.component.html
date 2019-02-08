@@ -143,14 +143,7 @@
 								</div>
 								<div class="col-sm-offset-3 col-sm-9 pt10">
 									<div class="col-sm-6" style="padding-left: 0px">
-										<select
-											[attr.disabled]="true"
-											class="form-control" style="width: 100%; cursor: pointer;"
-											[(ngModel)]="eventCampaign.campaignLocation.country"
-											[ngModelOptions]="{standalone: true}">
-											<option *ngFor="let country of countries"
-												[value]="country.name">{{country.name}}</option>
-										</select>
+										<input type="text" 	class="form-control"  [attr.disabled]="true" [(ngModel)]="eventCampaign.campaignLocation.country" [ngModelOptions]="{standalone: true}">
 									</div>
 									<div class="col-sm-6" style="padding-right: 0px">
 										<input type="text"
