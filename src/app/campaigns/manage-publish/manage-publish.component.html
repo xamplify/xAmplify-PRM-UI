@@ -236,7 +236,7 @@
                             </li>
                           </section>
                          <section *ngIf="campaign.launched && campaign.campaignType === 'EVENT' && campaign.showCancelButton">
-							              <li *ngIf="authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner()">
+							              <li *ngIf="(authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner()) && !campaign.nurtureCampaign">
                               <a title="Update Event" data-rel="fancybox-button" (click)="updateEvent(campaign)">
                                 <i class="fa fa-pencil" style="width: 30px;"></i> Update event
                               </a>

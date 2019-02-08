@@ -258,11 +258,13 @@ export class ReferenceService {
     hasAllAccess() {
        try{
        const roles = this.authenticationService.getRoles();
-        if (roles.indexOf(this.roles.allRole) > -1 || roles.indexOf(this.roles.orgAdminRole) > -1) {
+       if(roles) {
+       if (roles && roles.indexOf(this.roles.allRole) > -1 || roles.indexOf(this.roles.orgAdminRole) > -1) {
             return true;
         } else {
             return false;
         }
+      }
       }catch(error){console.log('error'+error);}
     }
     removeDuplicatesObjects(originalArray, prop) {

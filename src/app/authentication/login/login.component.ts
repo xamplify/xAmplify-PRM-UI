@@ -59,6 +59,7 @@ export class LoginComponent implements OnInit, OnDestroy {
                   const currentUser = JSON.parse(localStorage.getItem('currentUser'));
                   this.xtremandLogger.log(currentUser);
                   this.xtremandLogger.log(currentUser.hasCompany);
+                  localStorage.removeItem('isLogout');
                   this.redirectTo(currentUser);
                   // if user is coming from any link
                   if (this.authenticationService.redirectUrl) {

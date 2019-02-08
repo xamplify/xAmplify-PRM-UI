@@ -115,22 +115,21 @@ export class AuthenticationService {
     }
     getRoles(): any {
       try{
-        let roleNames: string[] = [];
-        const currentUser = localStorage.getItem('currentUser');
-        const roles = JSON.parse(currentUser)['roles'];
-        roleNames = roles.map(function (a) { return a.roleName; });
-        if(!roleNames && this.user.roles) { roleNames = this.user.roles.map(function (a) { return a.roleName; });}
-        return roleNames;
-        } catch(error){
-          this.xtremandLogger.log('error'+error);
-          //  this.islogout();
-          this.router.navigate(['/'])
-      }
+          let roleNames: string[] = [];
+          const currentUser = localStorage.getItem('currentUser');
+          if(currentUser != null){
+            const roles = JSON.parse(currentUser)['roles'];
+            roleNames = roles.map(function (a) { return a.roleName; });
+            if(!roleNames && this.user.roles) { roleNames = this.user.roles.map(function (a) { return a.roleName; });}
+            return roleNames;
+          }
+        } catch(error){ this.xtremandLogger.log('error'+error);  this.router.navigate(['/']); }
     }
     showRoles():string{
       try{
         const roleNames = this.getRoles();
         /***********Org Admin**************/
+        if(roleNames){
         const isOrgAdmin = roleNames.indexOf(this.roleName.orgAdminRole)>-1;
         const isPartner =  roleNames.indexOf(this.roleName.companyPartnerRole)>-1;
         const isVendor = roleNames.indexOf(this.roleName.vendorRole)>-1;
@@ -143,6 +142,7 @@ export class AuthenticationService {
             }else if(isPartner){  return "Partner";
             }else{  return "Team Member"; }
         }
+      }
       }catch(error){
         this.xtremandLogger.log('error'+error);
       }
@@ -151,7 +151,7 @@ export class AuthenticationService {
     isOnlyPartner(){
       try{
         const roleNames = this.getRoles();
-        if(roleNames.length===2 && (roleNames.indexOf('ROLE_USER')>-1 && roleNames.indexOf('ROLE_COMPANY_PARTNER')>-1)){
+        if(roleNames && roleNames.length===2 && (roleNames.indexOf('ROLE_USER')>-1 && roleNames.indexOf('ROLE_COMPANY_PARTNER')>-1)){
             return true;
         }else{
             return false;
@@ -164,7 +164,7 @@ export class AuthenticationService {
     isSuperAdmin(){
         try{
           const roleNames = this.getRoles();
-          if(roleNames.length===1 && (roleNames.indexOf('ROLE_SUPER_ADMIN')>-1)){
+          if(roleNames && roleNames.length===1 && (roleNames.indexOf('ROLE_SUPER_ADMIN')>-1)){
               return true;
           }else{
               return false;
@@ -177,7 +177,7 @@ export class AuthenticationService {
     isVendor(){
        try{
         const roleNames = this.getRoles();
-        if(roleNames.length===2 && (roleNames.indexOf(this.roleName.userRole)>-1 && roleNames.indexOf(this.roleName.vendorRole)>-1)){
+        if(roleNames && roleNames.length===2 && (roleNames.indexOf(this.roleName.userRole)>-1 && roleNames.indexOf(this.roleName.vendorRole)>-1)){
             return true;
         }else{
             return false;
@@ -189,7 +189,7 @@ export class AuthenticationService {
     hasOnlyVideoRole(){
       try{
       const roleNames = this.getRoles();
-      if(roleNames.length===2 && (roleNames.indexOf('ROLE_USER')>-1 && roleNames.indexOf(this.roleName.videRole)>-1)){
+      if(roleNames && roleNames.length===2 && (roleNames.indexOf('ROLE_USER')>-1 && roleNames.indexOf(this.roleName.videRole)>-1)){
           return true;
       }else{
           return false;
@@ -201,7 +201,7 @@ export class AuthenticationService {
     hasVideoRole(){
       try{
       const roleNames = this.getRoles();
-      if((roleNames.indexOf('ROLE_USER')>-1 && roleNames.indexOf(this.roleName.videRole)>-1)){
+      if(roleNames && (roleNames.indexOf('ROLE_USER')>-1 && roleNames.indexOf(this.roleName.videRole)>-1)){
           return true;
       }else{
           return false;
@@ -213,7 +213,7 @@ export class AuthenticationService {
     isPartner(){
         try{
         const roleNames = this.getRoles();
-        if(roleNames.indexOf('ROLE_COMPANY_PARTNER')>-1){
+        if(roleNames && roleNames.indexOf('ROLE_COMPANY_PARTNER')>-1){
             return true;
         }else{
             return false;
@@ -223,14 +223,14 @@ export class AuthenticationService {
     isOrgAdmin(){
        try{
         const roleNames = this.getRoles();
-        if(roleNames.indexOf('ROLE_ORG_ADMIN')>-1){ return true;
+        if(roleNames && roleNames.indexOf('ROLE_ORG_ADMIN')>-1){ return true;
         }else{ return false;  }
       } catch(error){  this.xtremandLogger.log('error'+error);}
     }
     isOrgAdminPartner(){
       try{
         const roleNames = this.getRoles();
-        if(( (roleNames.indexOf('ROLE_ORG_ADMIN')>-1 || (roleNames.indexOf('ROLE_ALL')>-1)) && roleNames.indexOf('ROLE_COMPANY_PARTNER')>-1)){
+        if( roleNames && ( (roleNames.indexOf('ROLE_ORG_ADMIN')>-1 || (roleNames.indexOf('ROLE_ALL')>-1)) && roleNames.indexOf('ROLE_COMPANY_PARTNER')>-1)){
             return true;
         }else{
             return false;
@@ -240,7 +240,7 @@ export class AuthenticationService {
     isVendorPartner(){
       try{
       const roleNames = this.getRoles();
-      if((roleNames.indexOf(this.roleName.vendorRole)>-1) && (roleNames.indexOf('ROLE_COMPANY_PARTNER')>-1)){
+      if(roleNames && (roleNames.indexOf(this.roleName.vendorRole)>-1) && (roleNames.indexOf('ROLE_COMPANY_PARTNER')>-1)){
         return true;
       }else{
           return false;
@@ -250,7 +250,7 @@ export class AuthenticationService {
     isTeamMember(){
         try{
          const roleNames = this.getRoles();
-         if((!this.isSuperAdmin() && !this.isOrgAdmin() && !this.isOrgAdminPartner() && !this.isPartner() && !this.isVendor() && !this.isVendorPartner() && ((roleNames.indexOf('ROLE_VIDEO_UPLOAD')>-1) || (roleNames.indexOf('ROLE_CAMPAIGN')>-1) || (roleNames.indexOf('ROLE_CONTACT')>-1) || (roleNames.indexOf('ROLE_EMAIL_TEMPLATE')>-1)
+         if((roleNames && !this.isSuperAdmin() && !this.isOrgAdmin() && !this.isOrgAdminPartner() && !this.isPartner() && !this.isVendor() && !this.isVendorPartner() && ((roleNames.indexOf('ROLE_VIDEO_UPLOAD')>-1) || (roleNames.indexOf('ROLE_CAMPAIGN')>-1) || (roleNames.indexOf('ROLE_CONTACT')>-1) || (roleNames.indexOf('ROLE_EMAIL_TEMPLATE')>-1)
                 || (roleNames.indexOf('ROLE_STATS')>-1) || (roleNames.indexOf('ROLE_SOCIAL_SHARE')>-1)) )){
              return true;
          }else{
@@ -289,6 +289,7 @@ export class AuthenticationService {
         module.isVendor = false;
         this.isAddedByVendor = false;
         swal.close();
+        this.router.navigate(['/']);
     }
 
     navigateToDashboardIfUserExists(){

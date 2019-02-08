@@ -37,7 +37,7 @@ a.disabled {
 	<div class="page-bar" [hidden]="loader">
 		<div class="container"
 			style="width: 100%; border-radius: 0; border-top: 0;box-shadow: 0 0 5px rgba(0, 0, 0, .4); padding-bottom: 10px;">
-			<div class="alert-danger alert-error" *ngIf="eventError.eventExpiredError" style="margin-top: 19px;font-weight: 600;"> This event has concluded.</div>
+			<div class="alert-danger alert-error" *ngIf="eventError.eventExpiredError" style="margin-top: 19px;font-weight: 600;"> This event has been concluded.</div>
 			<div *ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage && !isEventUpdate" style="display: flex; padding-top: 1em;">
 				<div id="step2" class="col-block col-block-complete" (click)="resetTabs('details')" [ngClass]="{'col-block-active': detailsTab}"
 					style="width: 25%">
@@ -56,7 +56,10 @@ a.disabled {
             <h5 class="hidden-xs" *ngIf="!showContactType && !parentCampaignId">Partners</h5>
             <h5 class="hidden-xs" *ngIf="!showContactType && parentCampaignId">Contacts</h5>
             <!-- Recipients -->
-						<h5 class="hidden-xs" *ngIf="showContactType">Partners & Contacts</h5>
+						<h5 class="hidden-xs" *ngIf="showContactType">
+              <h5 *ngIf="eventCampaign?.channelCampaign; else otherp">Partners</h5>
+              <ng-template #otherp>Partners & Recipients</ng-template>
+            </h5>
 					</div>
 				</div>
 
@@ -76,19 +79,15 @@ a.disabled {
 					</div>
 				</div>
 			</div>
-
-
-
- <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible" style="padding:10px"></app-response-message>
-
+       <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible" style="padding:10px"></app-response-message>
 			<!-- Step One code -->
- <fieldset class="portlet light" style="margin-top: 25px" [hidden]="!detailsTab">
-<div *ngIf="isPreviewEvent || reDistributeEvent || reDistributeEventManage || isEventUpdate" class="portlet-title" style="display:block">
-                    <h4 class="pull-left f-w-600" *ngIf="!isEventUpdate">Event Details</h4>
-                     <h4 class="pull-left f-w-600" *ngIf="isEventUpdate">Event Update</h4>
-                  </div>
+            <fieldset class="portlet light" style="margin-top: 25px" [hidden]="!detailsTab">
+            <div *ngIf="isPreviewEvent || reDistributeEvent || reDistributeEventManage || isEventUpdate" class="portlet-title" style="display:block">
+                <h4 class="pull-left f-w-600" *ngIf="!isEventUpdate">Event Details</h4>
+                <h4 class="pull-left f-w-600" *ngIf="isEventUpdate">Event Update</h4>
+            </div>
 				<!-- <div class="page-bar  portlet light border-radius-0 shadow">
-		<div class="portlet-body clearfix"> -->
+		    <div class="portlet-body clearfix"> -->
 				<div class="col-xs-12 col-sm-7">
 					<form class="form-horizontal">
 						<div class="form-group">
@@ -174,8 +173,10 @@ a.disabled {
 									(statusChange)="switchStatusChange()">
 								</switch>
 							</div>
-							<span for="toPartner" class="col-sm-3 labal-css color-css" [ngClass]="{'highletClass': !eventCampaign.channelCampaign }">To
-								Partner</span>
+							<span for="toPartner" class="col-sm-3 labal-css color-css" [ngClass]="{'highletClass': !eventCampaign.channelCampaign }">
+                <span *ngIf="authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner();else other">To Recipients</span>
+                <ng-template #other><span>To Partner</span> </ng-template>
+              </span>
 							<div class="col-sm-3" style="padding: 0; margin-top: 5px;">
 								<span style="cursor: pointer; color: #54a7e9;"
 									title="{{properties.EVENT_TO_PARTNER_MESSAGE}}&#013;{{properties.THROUGH_PARTNER_MESSAGE}}">
@@ -324,7 +325,7 @@ a.disabled {
 										[(ngModel)]="eventCampaign.campaignLocation.address2"
 										[ngModelOptions]="{standalone: true}">
 								</div>
-								
+
 								<div class="col-sm-offset-3 col-sm-9 pt10">
 									<div class="col-sm-6" style="padding-left: 0px">
 										<input type="text"
@@ -371,8 +372,8 @@ a.disabled {
 								<textarea [(ngModel)]="eventCampaign.updateMessage" (input)="validateUpdateButton()" [ngModelOptions]="{standalone: true}" placeholder="Add a comment..."></textarea>
 							</div>
 						</div>
-						
-						
+
+
 					</form>
 				</div>
 				<div class="col-xs-12 col-sm-5">
@@ -417,7 +418,7 @@ a.disabled {
 							</ul>
 						</div>
 					</div>
-					<div class="boxes portlet light">
+					<div class="boxes portlet light" *ngIf="false">
 						<div class="portlet-title" style="display:block">
 							<h4 class="pull-left f-w-600">Listing Privacy</h4>
 						</div>
@@ -1087,7 +1088,7 @@ a.disabled {
             </div>
           </div>
           </fieldset>
-          
+
           <div class="col-xs-12" style="text-align: center;" *ngIf="isEventUpdate">
           <div class="btn-group" [class.disabled]="eventError.eventExpiredError || !isEnableUpdateButton" (click)="createEventCampaign(eventCampaign, 'NOW')">
            <label class="btn btn-primary" style="border: 1px solid #fff;" [class.disabled]="isPreviewEvent || eventError.eventExpiredError">
@@ -1095,7 +1096,7 @@ a.disabled {
           </label>
           </div>
           </div>
-          
+
         </div>
 
         <div class="col-xs-12 p0" *ngIf="!isEventUpdate">
@@ -1109,8 +1110,8 @@ a.disabled {
                </ng-container>
                </div>
           </div>
-          
-          
+
+
           <div class="col-md-12 p0" style="margin-top: 12px;" [hidden]="checkLaunchOption!='SCHEDULE'">
             <div class="col-md-4">
               <input [attr.disabled]="isPreviewEvent? '' : null"  type="text" id="launchTimeInString" class="form-control flatpickr" placeholder="Launch Time"
