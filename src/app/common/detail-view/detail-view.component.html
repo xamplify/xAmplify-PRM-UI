@@ -1,4 +1,5 @@
 <section>
+<app-event-send-reminder *ngIf="isOpenNotificationModal" (notifyParent)="emailNotOpenReminderDate($event)" [selectedEventCampaignId]="campaign.campaignId" [selectedUserId]="selectedEmailNotOpenUserId"> </app-event-send-reminder>
 <div id="timeline-view" class="page-content">
 <!-- <ngx-loading [show]="referenceService.detailViewIsLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading> -->
 	<div class="page-bar" style="min-height: 572px;border: 1px solid #CCC;">
@@ -142,6 +143,7 @@
 									<th class="text-center-css" *ngIf="detailType === 'email open' && detailType !== 'NOTYET'">SUBJECT</th>
 									<th class="text-center-css" *ngIf="detailType !== 'NOTYET'  && detailType !== 'invities'"><span [hidden]="detailType !== 'email open'">Most Recent</span></th>
 									<th class="text-center-css" *ngIf="detailType === 'YES'">Guests</th>
+									<th class="text-center-css" *ngIf="detailType === 'email not open'">Reminder</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -165,6 +167,9 @@
 									</h6>
 									</td>
 									<td class="text-center" *ngIf="detailType === 'YES'" style="text-align:center"> {{item.additionalCount}}</td>
+									<td class="text-center" *ngIf="detailType === 'email not open'" style="text-align:center"> <a (click)="sendEmailNotOpenReminder(item)">
+									<i class="fa fa-bell-o" aria-hidden="true"></i>
+									</a> </td>
 								</tr>
 							</tbody>
 						</table>

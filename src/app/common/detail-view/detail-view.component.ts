@@ -15,9 +15,19 @@ export class DetailViewComponent implements OnInit {
     @Input() campaignReport: any;
     
     loading: boolean;
+    isOpenNotificationModal = false;
+    selectedEmailNotOpenUserId: any;
     
   constructor(public analyticsComponent: AnalyticsComponent, public referenceService: ReferenceService) { }
- 
+  
+  sendEmailNotOpenReminder(details: any){
+    this.isOpenNotificationModal = true;
+    this.selectedEmailNotOpenUserId = details.userId;
+  }
+  emailNotOpenReminderDate(event: any){
+      this.isOpenNotificationModal = false;
+  }
+  
   ngOnInit() {
   }
 

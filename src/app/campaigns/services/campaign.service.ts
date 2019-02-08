@@ -80,7 +80,6 @@ export class CampaignService {
             .catch(this.handleError);
     }
 
-
     getCampaignNames(userId: number) {
         return this.http.get(this.URL + "admin/listCampaignNames/" + userId + "?access_token=" + this.authenticationService.access_token)
             .map(this.extractData)
@@ -280,6 +279,11 @@ export class CampaignService {
     cancelEvent(cancelEventData: any, userId: number) {
         var url = this.URL + "campaign/cancel-event-campaign/" + userId + "?access_token=" + this.authenticationService.access_token;
         return this.http.post(url, cancelEventData)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    sendEmailNotOpenReminder(data: any) {
+        return this.http.post(this.URL + "campaign/send-event-reminder?access_token=" + this.authenticationService.access_token, data)
             .map(this.extractData)
             .catch(this.handleError);
     }
