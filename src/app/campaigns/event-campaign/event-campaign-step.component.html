@@ -101,7 +101,7 @@ a.disabled {
 									[ngClass]="{'has-error': eventError.eventTitleError}"
 									(input)="validateCampaignName(eventCampaign.campaign); resetTabClass()"
 									(blur)="eventTitleError()"
-									[attr.disabled]="(isPreviewEvent || isEventUpdate)? '' : null">
+									[attr.disabled]="(isPreviewEvent || isEventUpdate || reDistributeEvent || reDistributeEventManage)? '' : null">
 								<div class="text-danger" *ngIf="eventError.eventTitleError">Event
 									Title is required</div>
 								<div class="text-danger"
