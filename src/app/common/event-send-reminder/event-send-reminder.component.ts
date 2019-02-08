@@ -19,6 +19,7 @@ export class EventSendReminderComponent implements OnInit {
     eventCampaign: EventCampaign = new EventCampaign();
     reminderEventMessage = "";
     reminderEventSubject = "";
+    isDisableReminderButton = false;
     
   constructor(public authenticationService: AuthenticationService, public campaignService: CampaignService, public callActionSwitch: CallActionSwitch ) {
       this.notifyParent = new EventEmitter();
@@ -67,6 +68,14 @@ export class EventSendReminderComponent implements OnInit {
               }
           );
       
+  }
+  
+  validateReminderButton(){
+      if(this.reminderEventSubject.replace( /\s\s+/g, '' ).replace(/\s+$/,"").replace(/\s+/g," ") && this.reminderEventMessage.replace( /\s\s+/g, '' ).replace(/\s+$/,"").replace(/\s+/g," ")){
+          this.isDisableReminderButton = true;
+      }else {
+          this.isDisableReminderButton = false;
+      }
   }
   
   ngOnInit() {
