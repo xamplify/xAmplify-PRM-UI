@@ -1457,6 +1457,9 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   
     emailNotOpenReminderDate(event: any){
         this.isOpenNotificationModal = false;
+        if(event ===  "Success"){
+            this.customResponse = new CustomResponse('SUCCESS',"Reminder has been sent successfully", true);
+           }
     }
 
   ngOnInit() {

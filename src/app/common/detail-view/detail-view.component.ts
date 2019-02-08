@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { AnalyticsComponent } from "../../campaigns/analytics/analytics.component";
 import { ReferenceService } from '../../core/services/reference.service';
+import { CustomResponse } from '../models/custom-response';
 
 @Component({
   selector: 'app-detail-view',
@@ -17,6 +18,8 @@ export class DetailViewComponent implements OnInit {
     loading: boolean;
     isOpenNotificationModal = false;
     selectedEmailNotOpenUserId: any;
+    reminderSuccessMessage = false;
+    customResponse: CustomResponse = new CustomResponse();
     
   constructor(public analyticsComponent: AnalyticsComponent, public referenceService: ReferenceService) { }
   
@@ -26,6 +29,9 @@ export class DetailViewComponent implements OnInit {
   }
   emailNotOpenReminderDate(event: any){
       this.isOpenNotificationModal = false;
+      if(event ===  "Success"){
+       this.customResponse = new CustomResponse('SUCCESS',"Reminder has been sent successfully", true);
+      }
   }
   
   ngOnInit() {
