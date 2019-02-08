@@ -69,13 +69,13 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     saveAsCampaignInfo :any;
     partnerActionResponse:CustomResponse = new CustomResponse();
     partnersPagination:Pagination = new Pagination();
-    
+
     cancelEventMessage: string = "";
     selectedCancelEventId: number;
     eventCampaign: EventCampaign = new EventCampaign();
     cancelEventSubjectLine: string = "";
     cancelEventButton: boolean = false;
-    
+
     constructor(public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService:UtilService, public actionsDescription: ActionsDescription,
         public refService: ReferenceService, public campaignAccess:CampaignAccess, public authenticationService: AuthenticationService) {
@@ -94,6 +94,11 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.campaignSuccessMessage = "Campaign launched successfully";
             this.customResponse = new CustomResponse('SUCCESS', this.campaignSuccessMessage, true);
         }
+        else if (this.refService.campaignSuccessMessage == "UPDATE") {
+          this.showMessageOnTop();
+          this.campaignSuccessMessage = "Campaign updated successfully";
+          this.customResponse = new CustomResponse('SUCCESS', this.campaignSuccessMessage, true);
+      }
         this.hasCampaignRole = this.refService.hasSelectedRole(this.refService.roles.campaignRole);
         this.hasStatsRole = this.refService.hasSelectedRole(this.refService.roles.statsRole);
         this.hasAllAccess = this.refService.hasAllAccess();
@@ -357,15 +362,16 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     goToPreviewPartners(campaign:Campaign){
         this.router.navigate(['/home/campaigns/'+campaign.campaignId+"/remove-access"]);
     }
-    
+
     getCancelEventDetails(campaignId:number){
         this.selectedCancelEventId = campaignId;
         this.campaignService.getEventCampaignById(campaignId).subscribe(
                 (result)=>{
                 this.eventCampaign = result.data;
+                $('#cancelEventModal').modal('show');
                 }
             );
-       
+
     }
     cancelEvent(){
         var cancelEventData = {
@@ -374,8 +380,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 "message": this.cancelEventMessage,
                 "subject": this.cancelEventSubjectLine
             }
-        
-        
+
+
         this.campaignService.cancelEvent(cancelEventData, this.loggedInUserId)
           .subscribe(data => {
                 console.log(data);
@@ -389,12 +395,12 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
               () => console.log("cancelCampaign completed")
           );
     }
-    
+
     closeCancelEventodal(){
         $('#cancelEventModal').modal('hide');
         this.cancelEventMessage = "";
     }
-    
+
     validateCancelEventButton(){
         if(this.cancelEventMessage.replace( /\s\s+/g, '' ).replace(/\s+$/,"").replace(/\s+/g," ") && this.cancelEventSubjectLine.replace( /\s\s+/g, '' ).replace(/\s+$/,"").replace(/\s+/g," ")){
             this.cancelEventButton = true;
@@ -402,6 +408,6 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.cancelEventButton = false;
         }
     }
-    
-    
+
+
 }

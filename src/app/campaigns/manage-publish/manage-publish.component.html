@@ -235,13 +235,13 @@
                             </a>
                             </li>
                           </section>
-                         <section *ngIf="campaign.launched && campaign.campaignType === 'EVENT' && campaign.showCancelButton">
-							              <li *ngIf="(authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner()) && !campaign.nurtureCampaign">
-                              <a title="Update Event" data-rel="fancybox-button" (click)="updateEvent(campaign)">
-                                <i class="fa fa-pencil" style="width: 30px;"></i> Update event
-                              </a>
-                            </li>
-                            </section>
+                          <section *ngIf="campaign.launched && campaign.campaignType === 'EVENT' && campaign.showCancelButton">
+                          <li *ngIf="(authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner()) && !campaign.nurtureCampaign">
+                            <a title="Update Event" data-rel="fancybox-button" (click)="updateEvent(campaign)">
+                              <i class="fa fa-pencil" style="width: 30px;"></i> Update event
+                            </a>
+                          </li>
+                          </section>
 													</ul>
 												<!-- </div> -->
 												</div>
@@ -416,7 +416,7 @@
 
 												<a *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) ||
 														 (loggedInUserId==campaign.userId) || authenticationService.module.isVendor) && campaign.redistributedCount>0"
-                         								 (click)="goToRedistributedCampaigns(campaign)" data-toggle="tooltip" data-placement="top" title="Show Redistributed Campaigns">
+                         								 (click)="goToRedistributedCampaigns(campaign)" data-toggle="tooltip" data-placement="right" title="Show Redistributed Campaigns">
 														<i style="color: white">{{campaign.redistributedCount}}</i>
 													</a>
 
@@ -442,19 +442,19 @@
 														<i class="fa fa-eye mr5"></i>
 												  </a>
 													<a *ngIf="!campaign.showCancelButton && hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor"
-														(click)="confirmDeleteCampaign(campaign.campaignId, i, campaign.campaignName)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.campaign_delete}}">
+														(click)="confirmDeleteCampaign(campaign.campaignId, i, campaign.campaignName)" data-toggle="tooltip" data-placement="top" title="Delete Campaign">
 														<i class="fa fa-trash-o"></i>
 													</a>
 													</span>
 
 					            	 <span *ngIf="campaign.showCancelButton">
                           <a *ngIf="hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor"
-                              data-toggle="modal" data-target="#cancelEventModal" title="Delete Campaign" data-rel="fancybox-button" (click)="getCancelEventDetails(campaign.campaignId)">
+                               data-toggle="tooltip" data-placement="top"  title="Delete Campaign" data-rel="fancybox-button" (click)="getCancelEventDetails(campaign.campaignId)">
                               <i class="fa fa-ban"></i>
                             </a></span>
                             <span *ngIf="campaign.launched && campaign.campaignType === 'EVENT' && campaign.showCancelButton">
-                          <a *ngIf="authenticationService.module.isVendor"
-                              title="Update event" data-rel="fancybox-button" (click)="updateEvent(campaign)">
+                          <a  *ngIf="(authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner()) && !campaign.nurtureCampaign"
+                          data-toggle="tooltip" data-placement="top"  title="Update event" data-rel="fancybox-button" (click)="updateEvent(campaign)">
                               <i class="fa fa-pencil"></i>
                             </a></span>
 											</div>
