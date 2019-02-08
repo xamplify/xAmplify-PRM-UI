@@ -63,6 +63,7 @@ export class EventSendReminderComponent implements OnInit {
                   $( '#updateEventModal' ).modal( 'hide' );
                   $( 'body' ).removeClass( 'modal-open' );
                   $( '.modal-backdrop fade in' ).remove();
+                  this.notifyParent.emit( "Error" );
               }
           );
       

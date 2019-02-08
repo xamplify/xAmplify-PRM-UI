@@ -9,6 +9,7 @@
 	}
 .btn-social { color: #fff;}
 </style>
+<app-event-send-reminder *ngIf="isOpenNotificationModal" (notifyParent)="emailNotOpenReminderDate($event)" [selectedEventCampaignId]="campaign.campaignId" [selectedUserId]="selectedEmailNotOpenUserId"> </app-event-send-reminder>
 <app-detail-view *ngIf="showRsvpDetails" [campaignReport]="campaignReport" [detailType]="rsvpResposeType" [campaignType]="campaignType" [campaign]="campaign" [details]="rsvpDetailsList"></app-detail-view>
 <!-- <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading> -->
 <div class="page-content" *ngIf="!isTimeLineView && !showRsvpDetails" [class.ml0]="authenticationService.isSuperAdmin()">
@@ -728,6 +729,7 @@
 									<th style="font-size: 12px; font-weight: 500;" *ngIf="rsvpResposeType === 'email open' && rsvpResposeType != 'invities'">SUBJECT</th>
 									<th style="font-size: 12px; font-weight: 500;" *ngIf="rsvpResposeType != 'invities'"><span [hidden]="rsvpResposeType === 'email not open'">RSVP Date</span></th>
 									<th style="font-size: 12px; font-weight: 500;" *ngIf="rsvpResposeType !== 'email open' && rsvpResposeType != 'invities'"><span [hidden]="rsvpResposeType === 'email not open'">GUESTS <!-- <br><h6 class="m0" style="font-size:9px">( including you )</h6> --></span></th>
+								    <th class="text-center-css" *ngIf="rsvpResposeType === 'email not open'">Reminder</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -745,6 +747,9 @@
 									<h6 *ngIf="rsvpResposeType === 'email open'">{{item.time | date: 'short'}}</h6>
 									</td>
 									<td class="center" *ngIf="rsvpResposeType !== 'email open' && rsvpResposeType != 'invities'">{{item.additionalCount}}</td>
+								<td class="text-center" *ngIf="rsvpResposeType === 'email not open'" style="text-align:center"> <a (click)="sendEmailNotOpenReminder(item)">
+									<i class="fa fa-bell-o" aria-hidden="true"></i>
+									</a> </td>
 								</tr>
 							</tbody>
 						</table>

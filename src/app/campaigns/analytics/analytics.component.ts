@@ -96,6 +96,8 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   reDistributionRsvpDetails: any;
   rsvpResposeType = '';
   rsvpDetailType = '';
+  isOpenNotificationModal = false;
+  selectedEmailNotOpenUserId: any;
   httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
   hasClientError = false;
   sortByDropDown = [
@@ -1446,6 +1448,16 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       }
     }
   }
+  
+  
+  sendEmailNotOpenReminder(details: any){
+      this.isOpenNotificationModal = true;
+      this.selectedEmailNotOpenUserId = details.userId;
+    }
+  
+    emailNotOpenReminderDate(event: any){
+        this.isOpenNotificationModal = false;
+    }
 
   ngOnInit() {
     try{
