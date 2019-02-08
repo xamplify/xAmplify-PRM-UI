@@ -506,6 +506,48 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
           this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.NONE;
           this.loadEmailTemplates(this.emailTemplatesPagination);
       }
+      if(this.authenticationService.isOrgAdmin() || this.authenticationService.isOrgAdminPartner()){
+      if(!this.eventCampaign.channelCampaign){
+        this.contactListsPagination.filterValue = false;
+        this.contactListsPagination.filterKey = null;
+        this.contactListMethod(this.contactListsPagination);
+      } else {
+        this.contactListsPagination.filterValue = true;
+        this.contactListsPagination.filterKey = 'isPartnerUserList';
+        this.contactListMethod(this.contactListsPagination);
+      }
+    }
+
+  }
+  contactListMethod(contactListsPagination:Pagination){
+    this.contactService.loadContactLists(contactListsPagination)
+    .subscribe(
+    (data: any) => {
+      this.contactListsPagination.totalRecords = data.totalRecords;
+      this.contactListsPagination = this.pagerService.getPagedItems(this.contactListsPagination, data.listOfUserLists);
+      if(this.isPreviewEvent && this.authenticationService.isOnlyPartner()){
+        const contactsAll:any = [];
+        this.contactListsPagination.pagedItems.forEach((element, index) => {
+            if( element.id ===this.parternUserListIds[index]) {
+              contactsAll.push(this.contactListsPagination.pagedItems[index]);
+            }
+          });
+          this.contactListsPagination.pagedItems = contactsAll;
+         }
+      const contactIds = this.contactListsPagination.pagedItems.map( function( a ) { return a.id; });
+      const items = $.grep( this.parternUserListIds, function( element ) {
+          return $.inArray( element, contactIds ) !== -1;
+      });
+      if ( items.length == contactListsPagination.totalRecords || items.length == this.contactListsPagination.pagedItems.length ) {
+          this.isHeaderCheckBoxChecked = true;
+      } else {
+          this.isHeaderCheckBoxChecked = false;
+      }
+    },
+    (error: any) => {
+      this.logger.error(error);
+    },
+    () => { this.logger.info('event campaign page contactListMethod() finished'); } );
   }
 
   setCoBrandingLogo(event:any){
@@ -1194,7 +1236,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
               if(this.eventCampaign.campaignLocation.street === undefined){
                   this.eventCampaign.campaignLocation.street = "";
               }
-              
+
               if(this.eventCampaign.campaignLocation.address2 === undefined){
                   this.eventCampaign.campaignLocation.address2 = "";
               }
@@ -1219,8 +1261,8 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
                   let address4 = "";
                   let fullAddress = "";
 
-                 
-                  
+
+
                   if(this.eventCampaign.campaignLocation.street && this.eventCampaign.campaignLocation.address2){
                       address2 = this.eventCampaign.campaignLocation.street + "<br>" + this.eventCampaign.campaignLocation.address2;
                   }else if(this.eventCampaign.campaignLocation.street){
@@ -1240,7 +1282,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
                   }else{
                       address3 = ""
                   }
-                  
+
                   if(this.eventCampaign.campaignLocation.country && this.eventCampaign.campaignLocation.zip){
                       address4 = this.eventCampaign.campaignLocation.country + " " + this.eventCampaign.campaignLocation.zip;
                   }else if(this.eventCampaign.campaignLocation.country){
@@ -1336,8 +1378,8 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
   onChangeCountryCampaignEventTime(countryId: number) {
     this.timezonesCampaignEventTime = this.referenceService.getTimeZonesByCountryId(countryId);
    /* for ( let i = 0; i < this.countries.length; i++ ) {
-      if ( countryId == this.countries[i].id ) { 
-          this.eventCampaign.campaignLocation.country = this.countries[i].name; break; 
+      if ( countryId == this.countries[i].id ) {
+          this.eventCampaign.campaignLocation.country = this.countries[i].name; break;
           }
     }*/
    setTimeout(() => {this.setEventTimeZone(); }, 100);
@@ -1641,7 +1683,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
             this.emailTemplatesTab = false;
             this.launchTab = true;
         }
-        
+
 
         if(this.reDistributeEvent || this.reDistributeEventManage){
             this.detailsTab = true;
@@ -1651,7 +1693,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
         }
 
     }
-    
+
     validateUpdateButton() {
         if(this.eventCampaign.campaignEventTimes[0].startTimeString && (this.eventCampaign.campaignEventTimes[0].endTimeString || this.eventCampaign.campaignEventTimes[0].allDay) && !this.eventError.eventSameDateError && this.datePassedError == '' && (this.eventCampaign.onlineMeeting || (this.eventCampaign.campaignLocation.location && !this.eventError.eventLocationError) && this.eventCampaign.updateMessage.replace( /\s\s+/g, '' ).replace(/\s+$/,"").replace(/\s+/g," ")) ){
            this.isEnableUpdateButton = true;
