@@ -449,7 +449,7 @@
 
 					            	 <span *ngIf="campaign.showCancelButton">
                           <a *ngIf="hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor"
-                               data-toggle="tooltip" data-placement="top"  title="Delete Campaign" data-rel="fancybox-button" (click)="getCancelEventDetails(campaign.campaignId)">
+                               data-toggle="tooltip" data-placement="top"  title="Cancel Event" data-rel="fancybox-button" (click)="getCancelEventDetails(campaign.campaignId)">
                               <i class="fa fa-ban"></i>
                             </a></span>
                             <span *ngIf="campaign.launched && campaign.campaignType === 'EVENT' && campaign.showCancelButton">
