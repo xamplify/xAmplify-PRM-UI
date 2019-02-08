@@ -236,14 +236,12 @@
                             </li>
                           </section>
                          <section *ngIf="campaign.launched && campaign.campaignType === 'EVENT' && campaign.showCancelButton">
-							<li *ngIf="authenticationService.module.isVendor">
-                          <a title="Update Event" data-rel="fancybox-button" (click)="updateEvent(campaign)">
-                              <i class="fa fa-pencil" style="width: 30px;"></i> Update event
-                            </a>
+							              <li *ngIf="authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner()">
+                              <a title="Update Event" data-rel="fancybox-button" (click)="updateEvent(campaign)">
+                                <i class="fa fa-pencil" style="width: 30px;"></i> Update event
+                              </a>
                             </li>
                             </section>
-                         
-                         
 													</ul>
 												<!-- </div> -->
 												</div>
@@ -331,12 +329,6 @@
                               <i class="fa fa-trash-o"></i> Delete Campaign
                             </a>
                           </li>
-                         <!--  <li>
-                          <a 
-                              (click)="confirmDeleteCampaign(campaign.campaignId, i, campaign.campaignName)" title="Delete Campaign" data-rel="fancybox-button">
-                              <i class="fa fa-ban"></i> Cancel Event
-                            </a>
-                          </li> -->
                         </ul>
                       </div>
                       </div>
@@ -445,7 +437,7 @@
 														<i class="fa fa-files-o"></i>
 													</a> -->
                         </ng-container>
-                         <span *ngIf="!campaign.showCancelButton">	
+                         <span *ngIf="!campaign.showCancelButton">
                           <a (click)="showCampaignPreview(campaign)" data-toggle="tooltip" data-placement="top" title="Preview">
 														<i class="fa fa-eye mr5"></i>
 												  </a>
@@ -454,18 +446,17 @@
 														<i class="fa fa-trash-o"></i>
 													</a>
 													</span>
-													
-						 <span *ngIf="campaign.showCancelButton">						
+
+					            	 <span *ngIf="campaign.showCancelButton">
                           <a *ngIf="hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor"
                               data-toggle="modal" data-target="#cancelEventModal" title="Delete Campaign" data-rel="fancybox-button" (click)="getCancelEventDetails(campaign.campaignId)">
-                              <i class="fa fa-ban"></i> 
+                              <i class="fa fa-ban"></i>
                             </a></span>
-                            <span *ngIf="campaign.launched && campaign.campaignType === 'EVENT' && campaign.showCancelButton">						
+                            <span *ngIf="campaign.launched && campaign.campaignType === 'EVENT' && campaign.showCancelButton">
                           <a *ngIf="authenticationService.module.isVendor"
                               title="Update event" data-rel="fancybox-button" (click)="updateEvent(campaign)">
                               <i class="fa fa-pencil"></i>
                             </a></span>
-                         
 											</div>
 										</div>
 									</div>
@@ -494,7 +485,6 @@
 	<!-- <div *ngIf="totalRecords <= 0"  class="alert alert-info"><strong>No Campaigns Found</strong></div> -->
   <app-scroll-top></app-scroll-top>
 </div>
-
 
 <!-- Save As Modal -->
 <div class="modal right fade" id="saveAsModal" tabindex="-1" role="dialog" aria-labelledby="saveAsModalLabel" aria-hidden="true">
@@ -553,22 +543,16 @@
         <a class="close-circle" data-dismiss="modal" (click)="closeCancelEventodal()">
           <i class="fa fa-times"></i>
         </a>
-        <h4 class="modal-title" id="myModalLabel">You are Canceling the event</h4>
+        <h4 class="modal-title" id="myModalLabel">Canceling the event</h4>
       </div>
       <div class="modal-body">
-        <div style="font-size: 15px;">
-         <!--  <span style="float:left;margin-bottom: 3px">Replying as: </span> -->
-         <!-- <span style="margin-left: 6px;" class="bold"> {{replyUserName}}</span> -->
-        </div>
         <section>
 				<div class="col-xs-12 col-sm-12">
 					<form class="form-horizontal">
 						<div class="form-group">
-							<label for="eventTitle" class="col-sm-3 labal-css color-css">Event
-								Title <span class=text-danger>*</span>
-							</label>
+							<label for="eventTitle"  class="col-sm-3 labal-css color-css">Event Title	</label>
 							<div class="col-sm-9">
-								<input type="text" class="form-control" id="eventTitle"
+								<input type="text" class="form-control" id="eventTitle" [attr.disabled]="true"
 									placeholder="Event Title" [(ngModel)]="eventCampaign.campaign"
 									[ngModelOptions]="{standalone: true}">
 							</div>
@@ -584,69 +568,6 @@
 									[(ngModel)]="eventCampaign.fromName"
 									[ngModelOptions]="{standalone: true}">
 							</div>
-						</div>
-						<div class="form-group">
-							<label for="hostedBy" class="col-sm-3 labal-css color-css">From
-								Email</label>
-							<div class="col-sm-9">
-								<!-- <select
-									[attr.disabled]="true"
-									class="form-control" [(ngModel)]="eventCampaign.email"
-									[ngModelOptions]="{standalone: true}" (change)="setFromName()">
-									<option *ngFor="let teamMember of teamMemberEmailIds"
-										[ngValue]="teamMember.emailId">
-										{{teamMember.emailId}}</option>
-								</select> -->
-								<input [attr.disabled]="true" type="text" class="form-control" [(ngModel)]="eventCampaign.email"
-									[ngModelOptions]="{standalone: true}">
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-3 labal-css color-css">Subject Line <font
-								style="color: red"> <b>*</b>
-							</font>
-							</label>
-							<div class="col-sm-9">
-								<input type="text" id="subjectLine" placeholder="Subject Line"
-									class="form-control" [(ngModel)]="eventCampaign.subjectLine"
-									[attr.disabled]="true"
-									name="subjectLine"
-									maxlength="200" />
-							</div>
-						</div>
-						<div class="form-group"
-							*ngIf="!authenticationService.isOnlyPartner()">
-							<span for="Throughpartner" class="col-sm-3 labal-css color-css" [ngClass]="{'highletClass': eventCampaign.channelCampaign }">Through
-								Partner</span>
-							<div class="col-sm-2">
-								<switch [status]="eventCampaign.channelCampaign"
-									[onText]="callActionSwitch.onTextValue"
-									[offText]="callActionSwitch.onTextValue"
-									[onColor]="callActionSwitch.onGreenColorSwitch"
-									[offColor]="callActionSwitch.onGreenColorSwitch"
-									[size]="callActionSwitch.size"
-									[disabled]="true">
-								</switch>
-							</div>
-							<span for="toPartner" class="col-sm-3 labal-css color-css" [ngClass]="{'highletClass': !eventCampaign.channelCampaign }">To
-								Partner</span>
-							<div class="col-sm-3" style="padding: 0; margin-top: 5px;">
-								<span style="cursor: pointer; color: #54a7e9;">
-									<i class="fa fa-question-circle"></i>
-								</span>
-							</div>
-						</div>
-						<div class="form-group" *ngIf="eventCampaign.channelCampaign && !authenticationService.isOnlyPartner()">
-              <label class="control-label col-sm-3">Co-Branding Logo</label>
-              <div class="col-sm-9">
-                <switch class="pull-left" [status]="eventCampaign.enableCoBrandingLogo" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-                  [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
-                  [disabled]="true">
-                </switch>
-                <span style="cursor: pointer;color: #54a7e9;" title="Enable your Partner's logo to be displayed in redistributed campaigns">
-                  <i class="fa fa-question-circle" style="padding: 8px;"></i>
-                </span>
-              </div>
 						</div>
 						<div class="form-group">
 							<label for="eventDateTime" class="col-sm-3 labal-css color-css">Event
@@ -668,9 +589,7 @@
 										class="form-control flatpickr" placeholder="End"
 										[(ngModel)]="eventCampaign.campaignEventTimes[0].endTimeString"
 										[ngModelOptions]="{standalone: true}">
-									
 								</div>
-
                   <div class="col-sm-12">
                     <input type="checkbox" id="allDay" class="form-check-input mt10"
                         [attr.disabled]="true"
@@ -679,35 +598,7 @@
                   </div>
 							</div>
 						</div>
-						<!-- <div class="form-group">
-							<label for="Time Zone" class="col-sm-3 labal-css color-css">Time
-								Zone <span class=text-danger>*</span>
-							</label>
-							<div class="col-sm-9 p0">
-								<div class="col-sm-6">
-									<select
-										[attr.disabled]="true"
-										class="form-control" style="width: 100%; cursor: pointer;"
-										[(ngModel)]="eventCampaign.campaignEventTimes[0].countryId"
-										[ngModelOptions]="{standalone: true}">
-										<option *ngFor="let country of countries" [value]="country.id">{{country.name}}</option>
-									</select>
-								</div>
-								<div class="col-sm-6">
-                  <select [attr.disabled]="true"
-                  class="form-control" style="width: 100%"
-                  [(ngModel)]="eventCampaign.campaignEventTimes[0].timeZone" [ngModelOptions]="{standalone: true}"
-                  id="timezoneIdChange">
-                  <option *ngIf="!timezonesCampaignEventTime" value="" disabled  [attr.selected]="true">Select TimeZone...</option>
-                  <ng-container *ngIf="timezonesCampaignEventTime">
-                  <option *ngFor="let timeZone of timezonesCampaignEventTime"  [attr.value]="timeZone.timezoneId"
-                  [attr.selected]="timeZone.timezoneId === eventCampaign.campaignEventTimes[0].timeZone">{{timeZone.cityName}}
-                  </option>
-                  </ng-container>
-                </select>
-								</div>
-							</div>
-						</div> -->
+
 						<div class="form-group">
 							<label for="hostedBy" class="col-sm-3 labal-css color-css">Online
 								Meeting</label>
@@ -734,7 +625,6 @@
 										placeholder="Corporate headquarters, local restaurant, etc."
 										[(ngModel)]="eventCampaign.campaignLocation.location"
 										[ngModelOptions]="{standalone: true}">
-									
 								</div>
 							</div>
 							<div class="form-group">
@@ -757,7 +647,7 @@
 										[(ngModel)]="eventCampaign.campaignLocation.address2"
 										[ngModelOptions]="{standalone: true}">
 								</div>
-								
+
 								<div class="col-sm-offset-3 col-sm-9 pt10">
 									<div class="col-sm-6" style="padding-left: 0px">
 										<input type="text"
@@ -775,15 +665,8 @@
 									</div>
 								</div>
 								<div class="col-sm-offset-3 col-sm-9 pt10">
-									<div class="col-sm-6" style="padding-left: 0px">
-										<select
-											[attr.disabled]="true"
-											class="form-control" style="width: 100%; cursor: pointer;"
-											[(ngModel)]="eventCampaign.campaignLocation.country"
-											[ngModelOptions]="{standalone: true}">
-											<option *ngFor="let country of countries"
-												[value]="country.name">{{country.name}}</option>
-										</select>
+                  <div class="col-sm-6" style="padding-left: 0px">
+                    <input type="text" 	class="form-control"  [attr.disabled]="true" [(ngModel)]="eventCampaign.campaignLocation.country" [ngModelOptions]="{standalone: true}">
 									</div>
 									<div class="col-sm-6" style="padding-right: 0px">
 										<input type="text"
@@ -797,36 +680,28 @@
 						</section>
 					</form>
 				</div>
-				
-				
 				<div class="form-group">
-							<label class="col-sm-3 labal-css color-css">Email subject<font
-								style="color: red"> <b>*</b>
-							</font>
-							</label>
-							<div class="col-sm-9">
-								<input type="text" id="subjectLine" placeholder="Cancel Event Subject Line"
-									class="form-control" (input)="validateCancelEventButton()" [(ngModel)]="cancelEventSubjectLine"
-									name="subjectLine"
-									maxlength="200" />
-							</div>
+          <label class="col-sm-3 labal-css color-css">Email subject<font
+            style="color: red"> <b>*</b>
+          </font>
+          </label>
+          <div class="col-sm-9">
+            <input type="text" id="subjectLine" placeholder="Cancel Event Subject Line"
+              class="form-control" (input)="validateCancelEventButton()" [(ngModel)]="cancelEventSubjectLine"
+              name="subjectLine"
+              maxlength="200" />
+          </div>
 						</div>
-			<div class="form-group">
-							<label class="col-sm-3 labal-css color-css" style="padding-top: 25px;">Cancel Message<font
-								style="color: red"> <b>*</b>
-							</font>
-							</label>
-							<div class="col-sm-9" style="padding-top: 10px;">
-								<textarea [(ngModel)]="cancelEventMessage" [ngModelOptions]="{standalone: true}" (input)="validateCancelEventButton()" placeholder="Add a comment..."></textarea>
-							</div>
-						</div>
-
+        <div class="form-group">
+          <label class="col-sm-3 labal-css color-css" style="padding-top: 25px;">Cancel Message<font
+            style="color: red"> <b>*</b>
+          </font>
+          </label>
+          <div class="col-sm-9" style="padding-top: 10px;">
+            <textarea [(ngModel)]="cancelEventMessage" [ngModelOptions]="{standalone: true}" (input)="validateCancelEventButton()" placeholder="Add a comment..."></textarea>
+          </div>
+        </div>
         </section>
-        
-        
-        <!-- <textarea [(ngModel)]="cancelEventMessage" [ngModelOptions]="{standalone: true}" placeholder="Add a comment..."></textarea> -->
-       
-      
     </div>
     <div class="pull-right" style="margin: 0px 29px 0px 0px;">
         <div class="right-css">
