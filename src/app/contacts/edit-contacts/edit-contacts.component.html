@@ -160,7 +160,7 @@
 									<div class="caption">
 										<i class="fa fa-edit"></i>List of {{checkingContactTypeName}}s
 									</div>
-									
+
 									<div class="color-grey" style="margin-top:4px">
 											<div *ngIf="!isSynchronizationList">
 											<!-- disabling cancel button condition
@@ -190,7 +190,7 @@
 														</ul>
 													</div>
 													</div>
-													
+
 													<a class="pull-right" style="padding-right: 16px;" (click)="downloadEmptyCsv()">
 				<button type="button" class="btn btn-default" download [ngStyle]="{'width':refService.isMobileScreenSize()? '100%': 'unset'}">
          Download CSV Template
@@ -671,7 +671,7 @@
 																<span *ngIf="!contact.isShowDetails">More</span> <span
 																	*ngIf="contact.isShowDetails">Less</span>
 															</button> -->
-															<div class="actions-block" *ngIf="(hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId) || authenticationService.isOnlyPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()) && !isSynchronizationList">
+															<div class="actions-block override-actions" *ngIf="(hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId) || authenticationService.isOnlyPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()) && !isSynchronizationList">
 															  	<a data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_edit}} {{checkingContactTypeName}}" (click)="editUserDetails(contact)">
 																  	<i class="fa fa-pencil-square-o"></i>
 																 </a>
@@ -778,7 +778,7 @@
 
 									<div class="page-bar" *ngIf="!showEditContactData">
 									<div class="btn-group pull-right">
-									
+
 									<div *ngIf="!isSegmentation" (click)="modelForSeg()"
 									style="float: left; cursor: pointer; padding-right: 20px;"
 									data-toggle="modal" data-target="#filterModal">
@@ -794,7 +794,7 @@
 										class="fa fa-times" aria-hidden="true"
 										style="color: red; margin-left: -12px;"></i>
 								</div>
-									
+
 										<div class="inputs" align="right" style="float: right">
 											<div style="float: left; margin-right: 10px;">
 												<select class="form-control" [(ngModel)]="sortOption"
