@@ -232,12 +232,8 @@ export class ContentManagementComponent implements OnInit {
             swalCancelButtonColor: '#999',
             confirmButtonText: 'Yes, delete it!'
         }).then( function() {
-            if ( self.selectedFileIds.length < 1 ) {
-                self.contentManagement = file;
-                self.deleteFile( self.contentManagement );
-            } else {
-                self.deleteFile( self.contentManagement );
-            }
+            if ( self.selectedFileIds.length === 1 ) { self.contentManagement = file; }
+            self.deleteFile( self.contentManagement );
         }, function( dismiss: any ) {
             console.log( 'you clicked on option' + dismiss );
         });
@@ -262,7 +258,9 @@ export class ContentManagementComponent implements OnInit {
         this.emailTemplateService.deleteFile( file )
             .subscribe(
             data => {
-                const deleteMessage = file.fileName + ' deleted successfully';
+                let deleteMessage ;
+                if(this.selectedFileIds.length === 1){  deleteMessage = file.fileName + ' deleted successfully';}
+                else { deleteMessage = 'File(s) deleted successfully'; }
                 this.customResponse = new CustomResponse( 'SUCCESS', deleteMessage, true );
                 this.listItems( this.pagination );
                 if ( this.selectedFileIds ) {

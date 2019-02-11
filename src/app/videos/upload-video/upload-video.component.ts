@@ -974,7 +974,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                     swal.close();
                     this.contentProcessing = true; this.processing = false;
                     this.refService.contentManagementLoader=true;
-                    if(!this.videoFileService.contentRedirect) {
+                    if(!this.videoFileService.contentRedirect || this.router.url.includes('home/videos/upload') ) {
                       this.videoFileService.contentRedirect = false;this.redirectContent = false;
                       this.router.navigate(['/home/content/manage']);
                      }
@@ -1050,7 +1050,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                             swal.close();
                             self.contentProcessing = true; self.processing = false;
                             self.refService.contentManagementLoader=true;
-                            if(!self.videoFileService.contentRedirect) {
+                            if(!self.videoFileService.contentRedirect || self.router.url.includes('home/videos/upload')) {
                                self.videoFileService.contentRedirect = false;
                                self.router.navigate(['/home/content/manage']);
                              }
