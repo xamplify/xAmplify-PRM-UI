@@ -109,7 +109,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     this.dashboardReport.genderDemographicsTotal =
                     this.dashboardReport.genderDemographicsMale + this.dashboardReport.genderDemographicsFemale;
                 },
-                error => console.log(error),
+                error => this.xtremandLogger.log(error),
                 () => { }
             );
 
@@ -123,8 +123,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     this.dashboardReport.genderDemographicsMale = data['male'];
                     this.dashboardReport.genderDemographicsFemale = data['female'];
                 },
-                error => console.log(error),
-                () => console.log('finished')
+                error => this.xtremandLogger.log(error),
+                () => this.xtremandLogger.log('finished')
             );
     }
 
@@ -152,7 +152,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
     sparklineDataWithRouter(value: number, date: any, reportName: string) {
         if (date === undefined || date === null) {
-            console.log("date is " + date);
+            this.xtremandLogger.log("date is " + date);
         } else {
             this.referenceService.viewsDate = date;
             this.referenceService.clickedValue = value;
@@ -186,7 +186,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     averageSparklineData(result, dates) {
         const myvalues = result;
-        console.log(myvalues);
+        this.xtremandLogger.log(myvalues);
         const offsetValues = dates;
         $('#sparkline_line').sparkline(myvalues, {
             type: 'line',
@@ -201,7 +201,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     generatHeatMap(heatMapData, heatMapId) {
         const self = this;
         const data = heatMapData;
-        console.log(data);
+        this.xtremandLogger.log(data);
         Highcharts.chart(heatMapId, {
             colorAxis: {
                 minColor: '#FFFFFF',
@@ -337,8 +337,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     socialConnection.twitterTotalFollowersCount = data['followersCount'];
                     socialConnection.twitterTotalFriendsCount = data['friendsCount'];
                 },
-                error => console.log(error),
-                () => console.log('getTotalCountOfTFFF() method invoke started finished.')
+                error => this.xtremandLogger.log(error),
+                () => this.xtremandLogger.log('getTotalCountOfTFFF() method invoke started finished.')
             );
     }
 
@@ -348,7 +348,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 data => {
                     socialConnection.facebookFanCount = data;
                 },
-                error => console.log(error),
+                error => this.xtremandLogger.log(error),
                 () => { }
             );
     }
@@ -357,10 +357,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.facebookService.getFriends(socialConnection)
             .subscribe(
                 data => {
-                    console.log(data);
+                    this.xtremandLogger.log(data);
                     // socialConnection.facebookFriendsCount = data.extraData.fan_count;
                 },
-                error => console.log(error),
+                error => this.xtremandLogger.log(error),
                 () => { }
             );
     }
@@ -369,10 +369,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.facebookService.getPosts(socialConnection)
             .subscribe(
                 data => {
-                    console.log(data);
+                    this.xtremandLogger.log(data);
                 },
-                error => console.log(error),
-                () => console.log('getPosts() Finished.')
+                error => this.xtremandLogger.log(error),
+                () => this.xtremandLogger.log('getPosts() Finished.')
             );
     }
 
@@ -403,8 +403,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     var sum = values.reduce((a, b) => a + b, 0);
                     socialConnection.weeklyPostsCount = sum;
                 },
-                error => console.log(error),
-                () => console.log('getWeeklyTweets() method invoke started finished.')
+                error => this.xtremandLogger.log(error),
+                () => this.xtremandLogger.log('getWeeklyTweets() method invoke started finished.')
             );
     }
 
@@ -433,8 +433,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     var sum = values.reduce((a, b) => a + b, 0);
                     socialConnection.weeklyPostsCount = sum;
                 },
-                error => console.log(error),
-                () => console.log('getWeeklyTweets() method invoke started finished.')
+                error => this.xtremandLogger.log(error),
+                () => this.xtremandLogger.log('getWeeklyTweets() method invoke started finished.')
             );
     }
 
@@ -446,7 +446,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     this.socialService.socialConnections = data;
                     this.socialService.setDefaultAvatar(this.socialConnections);
                 },
-                error => console.log(error),
+                error => this.xtremandLogger.log(error),
                 () => {
                     if (this.socialConnections.length > 0) {
                         for (const i in this.socialConnections) {
@@ -466,7 +466,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                             }
                         }
                     }
-                    console.log('getFacebookAccounts() Finished.');
+                    this.xtremandLogger.log('getFacebookAccounts() Finished.');
                 }
             );
 
@@ -481,7 +481,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                         this.referenceService.userDefaultPage = 'DASHBOARD';
                     }
                 },
-                error => console.log(error),
+                error => this.xtremandLogger.log(error),
                 () => { }
             );
     }
@@ -509,7 +509,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 data => {
                     this.xtremandLogger.info(data);
                     this.campaigns = data;
-                    console.log(data);
+                    this.xtremandLogger.log(data);
                     const campaignIdArray = data.map(function (a) { return a[0]; });
                     this.totalCampaignsCount = this.campaigns.length;
                     if (this.totalCampaignsCount >= 1) {
@@ -557,7 +557,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 const result = this.launchedCampaignsMaster.filter(function (obj) {
                     return obj.id === parseInt(campaignsArray[i], 10);
                 });
-                console.log(result);
+                this.xtremandLogger.log(result);
                 if(result[0]){ this.launchedCampaignsChild.push(result[0]); }
             }
             this.launchedCampaignsMaster = this.launchedCampaignsMaster.filter(x => this.launchedCampaignsChild.indexOf(x) < 0);
@@ -626,8 +626,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     this.listOfAllEmailClickedLogs();
                     this.listOfAllEmailOpenLogs();
                 },
-                error => console.log(error),
-                () => console.log('emailOpenedCount completed')
+                error => this.xtremandLogger.log(error),
+                () => this.xtremandLogger.log('emailOpenedCount completed')
             );
     }
 
@@ -638,8 +638,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     this.dashboardReport.totalEmailWatchedCount = data['watched-users-count'];
                     this.listOfAllWatchedLogs();
                 },
-                error => console.log(error),
-                () => console.log('emailWatchedCount completed')
+                error => this.xtremandLogger.log(error),
+                () => this.xtremandLogger.log('emailWatchedCount completed')
             );
     }
 
@@ -674,7 +674,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     this.isLoadingList = false;
                     this.pagination = this.pagerService.getPagedItems(this.pagination, this.dashboardReport.emailLogList);
                 },
-                error => console.log(error),
+                error => this.xtremandLogger.log(error),
                 () => { }
             );
     }
@@ -690,7 +690,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     this.pagination.totalRecords = this.dashboardReport.totalEmailClickedCount;
                     this.pagination = this.pagerService.getPagedItems(this.pagination, this.dashboardReport.emailLogList);
                 },
-                error => console.log(error),
+                error => this.xtremandLogger.log(error),
                 () => { }
             );
     }
@@ -707,8 +707,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     this.pagination.totalRecords = this.dashboardReport.totalEmailWatchedCount;
                     this.pagination = this.pagerService.getPagedItems(this.pagination, this.dashboardReport.emailLogList);
                 },
-                error => console.log(error),
-                () => console.log('finished')
+                error => this.xtremandLogger.log(error),
+                () => this.xtremandLogger.log('finished')
             );
     }
 
@@ -754,11 +754,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
         try {
             this.dashboardService.getCampaignsEmailReports(campaignIdArray).
                 subscribe(result => {
-                    console.log(result);
+                    this.xtremandLogger.log(result);
                     this.categories = result.campaignNames;
-                    console.log(result.emailOpenedCount.concat(result.emailClickedCount, result.watchedCount))
+                    this.xtremandLogger.log(result.emailOpenedCount.concat(result.emailClickedCount, result.watchedCount))
                     this.maxBarChartNumber = Math.max.apply(null, result.emailOpenedCount.concat(result.emailClickedCount, result.watchedCount))
-                    console.log("max number is " + this.maxBarChartNumber);
+                    this.xtremandLogger.log("max number is " + this.maxBarChartNumber);
                     if (this.maxBarChartNumber > 0) {
                         this.isMaxBarChartNumber = true;
                         this.generateBarChartForEmailLogs(result.campaignNames, result.emailOpenedCount, result.emailClickedCount, result.watchedCount, this.maxBarChartNumber);
@@ -776,12 +776,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
         try {
             this.dashboardService.getVideoStatesInformation(daysCount).
                 subscribe(result => {
-                    console.log(result);
+                    this.xtremandLogger.log(result);
                     this.referenceService.viewsSparklineValues = result;
                     this.viewsSparklineData(result.views, result.dates);
                     this.minutesSparklineData(result.minutesWatched, result.dates);
                     this.averageSparklineData(result.averageDuration, result.dates);
-                    console.log(this.referenceService.viewsSparklineValues);
+                    this.xtremandLogger.log(this.referenceService.viewsSparklineValues);
                 },
                     (error: any) => {
                         this.xtremandLogger.error(error);
@@ -793,7 +793,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     selectedSortByValue(event: any) {
-        console.log(event);
+        this.xtremandLogger.log(event);
         this.referenceService.daySortValue = event;
         this.videoStatesTooltip =  this.utilService.setTooltipMessage(event);
         this.getVideoStatesSparklineChartsInfo(event);
@@ -886,7 +886,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     this.pagination.totalRecords = this.dashboardReport.totalEmailOpenedCount;
                     this.pagination = this.pagerService.getPagedItems(this.pagination, this.dashboardReport.allEmailOpenLogList);
                 },
-                error => console.log(error),
+                error => this.xtremandLogger.log(error),
                 () => { }
             );
     }
@@ -900,7 +900,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     this.pagination.totalRecords = this.dashboardReport.totalEmailClickedCount;
                     this.pagination = this.pagerService.getPagedItems(this.pagination, this.dashboardReport.allEmailClickedLogList);
                 },
-                error => console.log(error),
+                error => this.xtremandLogger.log(error),
                 () => { }
             );
     }
@@ -914,8 +914,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     this.pagination.totalRecords = this.dashboardReport.totalEmailWatchedCount;
                     this.pagination = this.pagerService.getPagedItems(this.pagination, this.dashboardReport.allEmailWatchedLogList);
                 },
-                error => console.log(error),
-                () => console.log('finished')
+                error => this.xtremandLogger.log(error),
+                () => this.xtremandLogger.log('finished')
             );
     }
 
@@ -929,7 +929,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 .subscribe(
                     (result: any) => {
                         this.loading = false;
-                        console.log(result);
+                        this.xtremandLogger.log(result);
                         this.worldMapUserData = result.data;
                         this.pagination.totalRecords = result.totalRecords;
                         this.pagination = this.pagerService.getPagedItems(this.pagination, this.worldMapUserData);
@@ -937,11 +937,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     },
                     (error: any) => {
                         this.loading = false;
-                        console.log(error)
+                        this.xtremandLogger.log(error)
                         this.xtremandLogger.error('error in world map dashboard ' + error);
                         this.xtremandLogger.errorPage(error);
                     },
-                    () => console.log('finished')
+                    () => this.xtremandLogger.log('finished')
                 );
         } catch (error) {
             this.loading = false;
@@ -983,9 +983,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
             this.listActiveSocialAccounts(this.loggedInUserId);
             this.genderDemographics(this.loggedInUserId);
 
-            console.log(this.authenticationService.getRoles());
+            this.xtremandLogger.log(this.authenticationService.getRoles());
         } catch (err) {
-            console.log(err);
+            this.xtremandLogger.log(err);
         }
     }
 
