@@ -16,7 +16,7 @@
 			<div class="portlet light">
 				<div class="portlet-body clearfix">
 					<div class="col-xs-12 p0">
-						<span class="btn btn-sm btn-primary pull-right" style="font-size: 10px;">{{campaignType}} CAMPAIGN {{analyticsComponent.isPartnerCampaign}}</span>
+						<span class="btn btn-sm btn-primary pull-right" style="font-size: 10px;cursor: default;">{{campaignType}} CAMPAIGN {{analyticsComponent.isPartnerCampaign}}</span>
 						<h4 title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:18}} <span *ngIf="campaign.campaignName?.length>18">...</span>
 						</h4>
 						<h5 class="text-info mb10">{{campaign.launchTime | date: 'fullDate'}}</h5>
