@@ -14,6 +14,7 @@ export class ManageDealCommentsComponent implements OnInit {
   @Input()
   lead:any;
 
+
   @Input()
   property:any;
 
@@ -25,9 +26,11 @@ export class ManageDealCommentsComponent implements OnInit {
     lastName:string;
   loggedInUserId: number;
   user: User;
+  isError = true;
   constructor(public authenticationService: AuthenticationService,private dealRegService: DealRegistrationService) { }
 
   ngOnInit() {
+   
      this.comment = new DealComments;
       this.loggedInUserId =this.authenticationService.getUserId();
       this.dealRegService.getDealCreatedBy(this.loggedInUserId).subscribe(user => {
@@ -43,7 +46,12 @@ export class ManageDealCommentsComponent implements OnInit {
       console.log(this.property)
     console.log(this.lead);
   } 
-
+  validateComment(comment:string){
+    if(comment.length == 0)
+        this.isError =true;
+    else
+        this.isError = false;
+  }
   addCommentModalClose(){
     this.isCommentSection.emit(false);
   }

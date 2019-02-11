@@ -84,10 +84,10 @@ export class DealRegistrationComponent implements OnInit
     submitButtonText: string = "";
     ngxloading: boolean;
     loggenInUserId: any;
-    forms: DealForms[];
+    forms: DealForms[] =[];
     form: DealForms;
-    answers: DealAnswer[];
-
+    answers: DealAnswer[]=[];
+    
     formId: number;
     constructor(private logger: XtremandLogger, public authenticationService: AuthenticationService, public referenceService: ReferenceService
         , public dealRegistrationService: DealRegistrationService, public countryNames: CountryNames
@@ -100,7 +100,9 @@ export class DealRegistrationComponent implements OnInit
     ngOnInit()
     {
        
-       
+       console.log(this.lead)
+       console.log(this.dealId)
+
         flatpickr('.flatpickr', {
             enableTime: false,
             dateFormat: 'm/d/Y',
@@ -110,7 +112,7 @@ export class DealRegistrationComponent implements OnInit
         if (this.dealId == -1)
         {
             this.submitButtonText = "SAVE";
-
+            console.log(this.campaign)
             this.dealRegistrationService.getForms(this.campaign.userId).subscribe(forms =>
             {
                 this.forms = forms;
@@ -118,8 +120,10 @@ export class DealRegistrationComponent implements OnInit
                 
                 if(forms.length>0){
                     this.form = forms[0];
-                    this.getLeadData();
+                  
                 }
+                this.getLeadData();
+                
 
             })
         }
@@ -190,7 +194,7 @@ export class DealRegistrationComponent implements OnInit
         {
             property.isSaved = true;
         })
-        if (this.parent == 'deal-analytics')
+        if (this.parent == 'manage-leads')
         {
             this.dealRegistration.properties.forEach(property =>
             {
@@ -218,6 +222,8 @@ export class DealRegistrationComponent implements OnInit
 
             this.mapAnswers(this.dealRegistration.answers);
         }
+        
+        this.setFieldErrorStates();
 
 
     }
@@ -253,7 +259,7 @@ export class DealRegistrationComponent implements OnInit
                 })
             })
 
-            this.submitButtonStatus();
+           
         })
 
     }
@@ -269,6 +275,7 @@ export class DealRegistrationComponent implements OnInit
         this.dealRegistration.company = data.contactCompany;
         this.dealRegistration.leadCity = data.city;
         this.dealRegistration.email = this.lead.emailId;
+        console.log(this.dealRegistration)
         let countryIndex = this.countryNames.countries.indexOf(data.country);
         if (countryIndex > -1)
         {
@@ -277,6 +284,7 @@ export class DealRegistrationComponent implements OnInit
         {
             this.dealRegistration.leadCountry = this.countryNames.countries[0];
         }
+        if(this.form != undefined){
         this.form.campaignDealQuestionDTOs.forEach(q =>
             {
                 if(q.answer == null || q.answer.length ==0){
@@ -284,6 +292,7 @@ export class DealRegistrationComponent implements OnInit
                     q.class = this.errorClass;
                 }
             });
+        }
         this.setFieldErrorStates()
 
     }
@@ -382,9 +391,10 @@ export class DealRegistrationComponent implements OnInit
         this.dealRegistration.leadId = this.lead.userId;
         this.dealRegistration.estimatedClosedDateString = this.dealRegistration.estimatedCloseDate;
         var obj = [];
-        if (this.form.campaignDealQuestionDTOs.length > 0)
+        let answers: DealAnswer[] = [];
+        if (this.form!= undefined &&  this.form.campaignDealQuestionDTOs.length > 0)
         {
-            let answers: DealAnswer[] = [];
+           
             this.form.campaignDealQuestionDTOs.forEach(question =>
             {
                 let answer = new DealAnswer();
@@ -395,7 +405,7 @@ export class DealRegistrationComponent implements OnInit
                 answer.questionId = question.id;
                 answers.push(answer);
             })
-            this.dealRegistration.answers = answers;
+            
         }
         this.properties.forEach(property =>
         {
@@ -406,6 +416,7 @@ export class DealRegistrationComponent implements OnInit
             }
             obj.push(question)
         })
+        this.dealRegistration.answers = answers;
         this.dealRegistration.properties = obj;
         if (this.dealRegistration.id != null)
         {
@@ -675,7 +686,7 @@ export class DealRegistrationComponent implements OnInit
 
     submitButtonStatus()
     {
-
+      
       
         if (!this.websiteError && !this.leadStreetError && !this.leadCityError
             && !this.leadStateError && !this.leadPostalCodeError && !this.countryError
@@ -683,6 +694,7 @@ export class DealRegistrationComponent implements OnInit
             && !this.companyError && !this.firstNameError && !this.lastNameError
             && !this.titleError && !this.dealTypeError && !this.phoneError)
         {
+           
          
             var count = 0;
             this.properties.forEach(propery =>
@@ -694,12 +706,14 @@ export class DealRegistrationComponent implements OnInit
             if (count == this.properties.length)
             {
                 let countForm = 0;
+                if(this.form!= undefined){
                 this.form.campaignDealQuestionDTOs.forEach(question =>
                 {
                    
                     if (question.error)
                         countForm++;
                 })
+                }
                 if (countForm > 0)
                     this.isDealRegistrationFormValid = false;
                 else

@@ -58,6 +58,8 @@ export class ManageDealsComponent implements OnInit {
     isDealAnalytics: boolean;
     isDealRegistration: boolean;
     user: User;
+    isPartner: boolean;
+    parent = "";
 
     @ViewChild(ManagePartnersComponent)
     set leadId(partner: ManagePartnersComponent) {
@@ -77,6 +79,7 @@ export class ManageDealsComponent implements OnInit {
     }
 
   ngOnInit() {
+    if(this.router.url.indexOf("partners") == -1){
       try{
           this.campaingnList = true;
           this.getTotalDeals();
@@ -84,9 +87,21 @@ export class ManageDealsComponent implements OnInit {
           this.getRejectedDeals();
          
           this.listCampaigns(this.campaignsPagination);
+          this.parent = "manage-leads";
       }catch(error){
           this.catchError(error, "ngOnInit()");
       }
+    }else{
+        this.isPartner = true;
+        this.partner = this.loggedInUserId;
+        this.campaingnList = true;
+        this.getTotalDealsByPartner();
+        this.getApprovedDealsByPartner();
+        this.getRejectedDealsByPartner();
+       
+        this.listCampaignsByPartner(this.campaignsPagination);
+        this.parent = "manage-leads-by-partner";
+    }
       
   }
 
@@ -117,6 +132,25 @@ export class ManageDealsComponent implements OnInit {
           this.catchError( error, "getTotalDeals()" );
       }
   }
+
+  getTotalDealsByPartner() {
+    try {
+        this.totalDealsLoader = true;
+        this.dealRegistrationService.getTotalDealsByPartner( this.loggedInUserId ).subscribe(
+            ( data: any ) => {
+                this.totalDeals = data.data;
+                this.totalDealsLoader = false;
+            },
+            ( error: any ) => {
+                this.totalDealsError = true;
+                this.totalDealsLoader = false;
+            }
+
+        );
+    } catch ( error ) {
+        this.catchError( error, "getTotalDeals()" );
+    }
+}
   /*************Opened Deals****************************/
   getOpenedDeals() {
       try {
@@ -177,6 +211,25 @@ export class ManageDealsComponent implements OnInit {
           this.catchError( error, "getOpenedDeals()" );
       }
   }
+
+  getApprovedDealsByPartner() {
+    try {
+        this.openedDealsLoader = true;
+        this.dealRegistrationService.getApprovedDealsByPartner( this.loggedInUserId ).subscribe(
+            ( data: any ) => {
+                this.openedDeals = data.data;
+                this.openedDealsLoader = false;
+            },
+            ( error: any ) => {
+                this.openedDealsError = true;
+                this.openedDealsLoader = false;
+            }
+
+        );
+    } catch ( error ) {
+        this.catchError( error, "getOpenedDeals()" );
+    }
+}
   /*************REJECTED Leads****************************/
   getRejectedDeals() {
      try {
@@ -196,6 +249,25 @@ export class ManageDealsComponent implements OnInit {
           this.catchError( error, "getClosedDeals()" );
       }
   }
+
+  getRejectedDealsByPartner() {
+    try {
+         this.closedDealsLoader = true;
+         this.dealRegistrationService.getRejectedDealsByPartner( this.loggedInUserId ).subscribe(
+             ( data: any ) => {
+                 this.closedDeals = data.data;
+                 this.closedDealsLoader = false;
+             },
+             ( error: any ) => {
+                 this.closedDealsError = true;
+                 this.closedDealsLoader = false;
+             }
+
+         );
+     } catch ( error ) {
+         this.catchError( error, "getClosedDeals()" );
+     }
+ }
   
   /*********************List Campaigns*****************/
   listCampaigns(pagination: Pagination) {
@@ -220,6 +292,29 @@ export class ManageDealsComponent implements OnInit {
               }
           );
   }
+
+  listCampaignsByPartner(pagination: Pagination) {
+    this.referenceService.loading(this.httpRequestLoader, true);
+    pagination.userId = this.loggedInUserId;
+    
+    this.dealRegistrationService.listCampaignsByPartner(pagination)
+        .subscribe(
+            data => {
+                
+                this.sortOption.totalRecords = data.totalRecords;
+                pagination.totalRecords = data.totalRecords;
+                pagination = this.pagerService.getPagedItems(pagination, data.campaigns);
+                pagination.pagedItems.forEach(element => {
+                  element.expand = false;
+                });
+               
+                this.referenceService.loading(this.httpRequestLoader, false);
+            },
+            ( error: any ) => {
+                this.httpRequestLoader.isServerError = true;
+            }
+        );
+}
   sortCampaigns(text:any){
       this.sortOption.selectedSortedOption = text;
       this.getAllFilteredResults(this.campaignsPagination);
@@ -274,16 +369,26 @@ export class ManageDealsComponent implements OnInit {
    
    /*********Show Partners***************/
    showPartners(campaign:any){
+       if(!this.isPartner){
        console.log(this.selectedLeadId)
        this.selectedCampaignId = campaign.id;
     //    this.campaingnList = false;
         campaign.expand =  !campaign.expand;
        this.partnerList = true;
+       }else{
+           this.dealRegistrationService.getCampaignPartnerById(this.loggedInUserId).subscribe(data =>{
+            this.selectedCampaignId = campaign.id;
+            this.showLeads(data.partners);
+           })
+        
+       }
    }
    showLeads(partner:any){
+       console.log(partner)
+       this.partner = partner;
    this.leadList = true;
    this.campaingnList = false;
-   this.partner = partner;
+  
    this.filterDeals = "";
    
     }
@@ -339,9 +444,15 @@ export class ManageDealsComponent implements OnInit {
     this.isDealAnalytics = !this.isDealAnalytics;
    }
    resetCounters(){
+       if(!this.isPartner){
        this.getTotalDeals();
        this.getApprovedDeals();
        this.getRejectedDeals();
+       }else{
+        this.getTotalDealsByPartner();
+        this.getApprovedDealsByPartner();
+        this.getRejectedDealsByPartner();
+       }
       
    }
 

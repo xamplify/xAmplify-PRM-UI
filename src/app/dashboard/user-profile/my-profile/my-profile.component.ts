@@ -948,6 +948,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     {
         if (id)
             console.log(id)
+            console.log(i)
         var index = 1;
 
         this.questions = this.questions.filter(question => question.divId !== 'question-' + i)
@@ -956,6 +957,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                 question.divId = 'question-' + index++;
                 return question;
             });
+            console.log(this.questions);
+            this.submitBUttonStateChange();
 
     }
     validateQuestion(question:DealQuestions){
@@ -1000,7 +1003,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
     saveForm(){
-        
+        this.ngxloading = true;
+       
         if(this.form.id == null){
             this.form.createdBy = this.loggedInUserId;
             this.questions.forEach(question =>{
@@ -1016,9 +1020,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                         this.form =   form[0]; 
                         this.questions = this.form.campaignDealQuestionDTOs;
                         this.submitButtonText = "Update Form";
-                     
+                        this.ngxloading = false;
                     }else
                         this.submitButtonText = "Save Form";
+                        this.ngxloading = false;
                 })
             })
         }else{
@@ -1031,9 +1036,19 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             })
             this.form.campaignDealQuestionDTOs = this.questions;
             this.userService.updateForm(this.loggedInUserId,this.form).subscribe(result => {
-                
+                this.ngxloading = false;
                 this.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
                 
+            },(error) =>{
+                this.ngxloading = false;
+                this.customResponseForm = new CustomResponse('ERROR', "The questions are already associate with deals", true);
+                this.userService.listForm(this.loggedInUserId).subscribe(form => {
+                    this.dealForms = form;  
+                    if(form[0]){
+                        this.form =   form[0]; 
+                        this.questions = this.form.campaignDealQuestionDTOs;
+                    } 
+                });
             })
         }
     }

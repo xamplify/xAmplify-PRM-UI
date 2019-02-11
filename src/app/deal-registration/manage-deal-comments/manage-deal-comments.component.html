@@ -302,12 +302,11 @@ footer a.tz:after{
 </style>
 
 
-
         <div class="write-new" style="margin-bottom: 50px;width: 85%">
 
 
                     <textarea placeholder="Write your comment here" name="comment" [(ngModel)]="comment.comment"
-                    ></textarea>
+                    (input)="validateComment(comment.comment)"></textarea>
 
                     <div >
                         <!-- <img src="https://aravindu.com/vod/images/14663/05112018/profilePicture/65DD83D1-A768-411E-8A37-3D79B1F858BC.jpeg" width="35" alt="Profile of Bradley Jones" title="Bradley Jones" /> -->

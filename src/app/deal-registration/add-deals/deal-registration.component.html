@@ -31,7 +31,7 @@
                 </font>
               </label>
               <input type="text" maxlength="100" placeholder="Company Name" class="form-control" [(ngModel)]=" dealRegistration.company"
-                [ngModelOptions]="{standalone: true}" id="company" (input)="validateField('company',false)" [disabled]="parent == 'deal-analytics'"
+                [ngModelOptions]="{standalone: true}" id="company" (input)="validateField('company',false)" [disabled]="parent == 'manage-leads'"
               />
             </div>
             <div class="form-group" [attr.class]="firstName">
@@ -41,7 +41,7 @@
                 </font>
               </label>
               <input type="text" maxlength="100" name="companyName" placeholder="First Name" class="form-control" [(ngModel)]=" dealRegistration.firstName"
-                [ngModelOptions]="{standalone: true}" id="firstName" (input)="validateField('firstName',false)" [disabled]="parent == 'deal-analytics'"
+                [ngModelOptions]="{standalone: true}" id="firstName" (input)="validateField('firstName',false)" [disabled]="parent == 'manage-leads'"
               />
             </div>
 
@@ -52,7 +52,7 @@
                 </font>
               </label>
               <input type="text" maxlength="100" placeholder="Last Name" class="form-control" [(ngModel)]=" dealRegistration.lastName"
-                [ngModelOptions]="{standalone: true}" id="lastName" (input)="validateField('lastName',false)" [disabled]="parent == 'deal-analytics'"
+                [ngModelOptions]="{standalone: true}" id="lastName" (input)="validateField('lastName',false)" [disabled]="parent == 'manage-leads'"
               />
             </div>
             <div class="form-group" [attr.class]="title">
@@ -62,18 +62,18 @@
                 </font>
               </label>
               <input type="text" maxlength="100" name="titleName" placeholder="Title Name" class="form-control" [(ngModel)]=" dealRegistration.title"
-                [ngModelOptions]="{standalone: true}" id="title" (input)="validateField('title',false)" [disabled]="parent == 'deal-analytics'"
+                [ngModelOptions]="{standalone: true}" id="title" (input)="validateField('title',false)" [disabled]="parent == 'manage-leads'"
               />
             </div>
 
-            <div class="form-group">
+            <div class="form-group" *ngIf="dealRegistration.email" >
               <label class="control-label">Email
                 <font style="color: #f55d7a">
                   <b>*</b>
                 </font>
               </label>
               <input type="text" maxlength="100" placeholder="email" class="form-control" [(ngModel)]=" dealRegistration.email" [ngModelOptions]="{standalone: true}"
-                id="email" disabled/>
+                id="email"  disabled/>
             </div>
 
             <div class="form-group" [attr.class]="phoneDivClass">
@@ -83,7 +83,7 @@
                 </font>
               </label>
               <fieldset style="padding:0 !important;border: 1px solid #ece2e2 !important">
-                <int-phone-prefix [(ngModel)]="dealRegistration.phone" (input)="validateField('phone',false)" (blur)="validateField('phone')" [ngModelOptions]="{standalone: true}"></int-phone-prefix>
+                <int-phone-prefix [(ngModel)]="dealRegistration.phone" (input)="validateField('phone',false)" (blur)="validateField('phone',false)" [ngModelOptions]="{standalone: true}"></int-phone-prefix>
               </fieldset>
               <span *ngIf="phoneError" style="color: #f55d7a">{{phoneErrorMessage}}</span>
             </div>
@@ -96,7 +96,7 @@
                 </font>
               </label>
               <input type="text" maxlength="100" placeholder="Deal Type" class="form-control" [(ngModel)]=" dealRegistration.dealType"
-                [ngModelOptions]="{standalone: true}" id="dealType" (input)="validateField('dealType',false)" [disabled]="parent == 'deal-analytics'"
+                [ngModelOptions]="{standalone: true}" id="dealType" (input)="validateField('dealType',false)" [disabled]="parent == 'manage-leads'"
               />
             </div>
 
@@ -117,8 +117,7 @@
                 </font>
               </label>
               <input type="text" maxlength="100" id="website" name="website" placeholder="WebSite" class="form-control" [(ngModel)]="dealRegistration.website"
-                (input)="validateField('website')" (blur)="validateField('website',false)" [disabled]="parent == 'deal-analytics'"
-              />
+                (input)="validateField('website',false)" (blur)="validateField('website',false)" [disabled]="parent == 'manage-leads'"/>
               <span *ngIf="websiteError" style="color: #f55d7a">{{websiteErrorMessage}}</span>
             </div>
 
@@ -129,7 +128,7 @@
                 </font>
               </label>
               <textarea type="text" maxlength="100" placeholder="Lead street" class="form-control" name="leadstreet" [(ngModel)]=" dealRegistration.leadStreet"
-                [ngModelOptions]="{standalone: true}" (input)="validateField('leadStreet',false)" id="leadStreet" [disabled]="parent == 'deal-analytics'"></textarea>
+                [ngModelOptions]="{standalone: true}" (input)="validateField('leadStreet',false)" id="leadStreet" [disabled]="parent == 'manage-leads'"></textarea>
             </div>
             <div class="form-group" [attr.class]="leadCity">
               <label class="control-label">Lead City
@@ -138,7 +137,7 @@
                 </font>
               </label>
               <input type="text" maxlength="100" name="city" placeholder="Lead City" class="form-control" [(ngModel)]=" dealRegistration.leadCity"
-                [ngModelOptions]="{standalone: true}" (input)="validateField('leadCity',false)" id="leadCity" [disabled]="parent == 'deal-analytics'"
+                [ngModelOptions]="{standalone: true}" (input)="validateField('leadCity',false)" id="leadCity" [disabled]="parent == 'manage-leads'"
               />
             </div>
 
@@ -149,7 +148,7 @@
                 </font>
               </label>
               <input type="text" maxlength="100" placeholder="Lead State/Province" class="form-control" name="lead state" [(ngModel)]=" dealRegistration.leadState"
-                [ngModelOptions]="{standalone: true}" id="leadState" (input)="validateField('leadState',false)" [disabled]="parent == 'deal-analytics'"
+                [ngModelOptions]="{standalone: true}" id="leadState" (input)="validateField('leadState',false)" [disabled]="parent == 'manage-leads'"
               />
             </div>
             <div class="form-group" [attr.class]="leadPostalCode">
@@ -159,7 +158,7 @@
                 </font>
               </label>
               <input type="text" maxlength="10" name="companyName" placeholder="Lead postal Code" class="form-control" [(ngModel)]=" dealRegistration.postalCode"
-                [ngModelOptions]="{standalone: true}" id="leadPostalCode" (input)="validateField('leadPostalCode',false)" [disabled]="parent == 'deal-analytics'"
+                [ngModelOptions]="{standalone: true}" id="leadPostalCode" (input)="validateField('leadPostalCode',false)" [disabled]="parent == 'manage-leads'"
               />
             </div>
 
@@ -170,7 +169,7 @@
                 </font>
               </label>
               <select class="form-control" placeholder="select country" [(ngModel)]="dealRegistration.leadCountry" [ngModelOptions]="{standalone: true}"
-                placeholder="Country" id="leadCountry" (input)="validateField('leadCountry',false)" [disabled]="parent == 'deal-analytics'">
+                placeholder="Country" id="leadCountry" (input)="validateField('leadCountry',false)" [disabled]="parent == 'manage-leads'">
                 <option *ngFor="let country of countryNames.countries" [value]="country" [selected]="dealRegistration.leadCountry==country">{{country}}</option>
               </select>
             </div>
@@ -181,7 +180,7 @@
                 </font>
               </label>
               <input type="number" maxlength="10" placeholder="Opportunity Amount" class="form-control" [(ngModel)]=" dealRegistration.opportunityAmount"
-                [ngModelOptions]="{standalone: true}" id="opportunityAmount" (input)="validateField('opportunityAmount',false)" [disabled]="parent == 'deal-analytics'"
+                [ngModelOptions]="{standalone: true}" id="opportunityAmount" (input)="validateField('opportunityAmount',false)" [disabled]="parent == 'manage-leads'"
               />
             </div>
             <div class="form-group" [attr.class]="estimatedCloseDate">
@@ -192,7 +191,7 @@
               </label>
               <input type="text" placeholder="Estimated Close date" class="form-control flatpickr square-box" [(ngModel)]=" dealRegistration.estimatedCloseDate "
                 [ngModelOptions]="{standalone: true}" id="estimatedCloseDate" (input)="validateField('estimatedCloseDate',false)"
-                [disabled]="parent == 'deal-analytics'" />
+                [disabled]="parent == 'manage-leads'" />
             </div>
           </div>
           <div class=" row col-sm-12 col-xs-12" style="margin-bottom: 50px">
@@ -207,7 +206,7 @@
                       </font>
                     </label>
                     <input type="text" maxlength="100" name="{{question.question}}" placeholder="{{question.question}}" class="form-control" [(ngModel)]="question.answer"
-                      [ngModelOptions]="{standalone: true}" id="question_{{question.id}}" (input)="validateField(question,true)" [disabled]="parent == 'deal-analytics'"
+                      [ngModelOptions]="{standalone: true}" id="question_{{question.id}}" (input)="validateField(question,true)" [disabled]="parent == 'manage-leads'"
                     />
                   </div>
                </div>
@@ -219,7 +218,7 @@
                       </font>
                     </label>
                     <input type="text" maxlength="100" name="{{question.question}}" placeholder="{{question.question}}" class="form-control" [(ngModel)]="question.answer"
-                      [ngModelOptions]="{standalone: true}" id="question_{{question.id}}" (input)="validateField(question,true)" [disabled]="parent == 'deal-analytics'"
+                      [ngModelOptions]="{standalone: true}" id="question_{{question.id}}" (input)="validateField(question,true)" [disabled]="parent == 'manage-leads'"
                     />
                   </div>
                </div>

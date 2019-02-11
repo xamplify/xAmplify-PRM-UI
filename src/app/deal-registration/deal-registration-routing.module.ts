@@ -11,9 +11,9 @@ export const routes: Routes = [
   { path: "", redirectTo: "manage", pathMatch: "full" },
   { path: "register", component: DealRegistrationComponent },
   { path: "manage", component: ManageDealsComponent },
+  { path: "manage/partners", component: ManageDealsComponent },
   { path: ":id/details", component: DealAnalyticsComponent }
 
- 
 ];
 
 @NgModule({

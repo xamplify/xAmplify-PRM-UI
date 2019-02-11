@@ -16,6 +16,7 @@ import { EventEmitter } from '@angular/core';
 import { CustomResponse } from '../../common/models/custom-response';
 import { Campaign } from '../../campaigns/models/campaign';
 import { User } from '../../core/models/user';
+import { CampaignService } from '../../campaigns/services/campaign.service';
 declare var swal: any;
 
 
@@ -32,6 +33,7 @@ export class ManageLeadsComponent implements OnInit,OnChanges {
     @Input() campaignId: any;
     @Input() filter:string;
     @Output() dealObj = new EventEmitter<any>();
+    @Input() isPartner:any; 
     httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
     pagination:Pagination = new Pagination();
     selectedDealId: any;
@@ -43,7 +45,7 @@ export class ManageLeadsComponent implements OnInit,OnChanges {
     isCommentSection = false;
     isDealRegistration = false;
     campaign: Campaign;
-     user: User;
+    user: User;
     item: any;
     commentForLead: any;
    
@@ -54,16 +56,24 @@ export class ManageLeadsComponent implements OnInit,OnChanges {
           public sortOption:SortOption,public pagerService: PagerService, public callActionSwitch: CallActionSwitch) { }
 
   ngOnInit() {
-    this.listLeadsBasedOnFilters();
+   
+    if(!this.isPartner)
+        this.listLeadsBasedOnFilters();
+    else
+        this.listLeadsBasedOnFiltersByPartner();
+   
    
   }
   ngOnChanges(changes: SimpleChanges) {
     const filter: SimpleChange = changes.filter;
-    console.log('prev value: ', filter.previousValue);
-    console.log('got name: ', filter.currentValue);
+   
     this.filter = filter.currentValue;
     console.log(this.filter);
-    this.listLeadsBasedOnFilters();
+    this.pagination = new Pagination();
+    if(!this.isPartner)
+        this.listLeadsBasedOnFilters();
+    else
+        this.listLeadsBasedOnFiltersByPartner();
   }
   listLeadsBasedOnFilters(){
       switch(this.filter){
@@ -100,6 +110,32 @@ export class ManageLeadsComponent implements OnInit,OnChanges {
       }
        
   }
+  listLeadsBasedOnFiltersByPartner(){
+    switch(this.filter){
+      case "TOTAL":{ 
+        
+          this.listAllLeadsByPartner(this.pagination);
+      break;
+      }
+       case "APPROVED": {
+          
+          this.listApprovedLeadsByPartner(this.pagination);
+          break;
+      }
+       case "REJECTED": {
+          
+          this.listRejectedLeadsByPartner(this.pagination);
+          break;
+      }
+      
+      default:{
+        
+          this.listLeadsByPartner(this.pagination);
+          break;
+      }
+    }
+     
+}
   listAllLeads(pagination:Pagination){
       
     this.referenceService.loading(this.httpRequestLoader, true);
@@ -112,6 +148,8 @@ export class ManageLeadsComponent implements OnInit,OnChanges {
                 this.sortOption.totalRecords = data.totalRecords;
                 pagination.totalRecords = data.totalRecords;
                 pagination = this.pagerService.getPagedItems(pagination, data.leads);
+               
+                
                 this.referenceService.loading(this.httpRequestLoader, false);
                 console.log(pagination);
             },
@@ -133,6 +171,7 @@ listApprovedLeads(pagination:Pagination){
                 this.sortOption.totalRecords = data.totalRecords;
                 pagination.totalRecords = data.totalRecords;
                 pagination = this.pagerService.getPagedItems(pagination, data.leads);
+                
                 this.referenceService.loading(this.httpRequestLoader, false);
             },
             ( error: any ) => {
@@ -153,6 +192,7 @@ listRejectedLeads(pagination:Pagination){
                 this.sortOption.totalRecords = data.totalRecords;
                 pagination.totalRecords = data.totalRecords;
                 pagination = this.pagerService.getPagedItems(pagination, data.leads);
+               
                 this.referenceService.loading(this.httpRequestLoader, false);
             },
             ( error: any ) => {
@@ -172,6 +212,7 @@ listOpenedLeads(pagination:Pagination){
                 this.sortOption.totalRecords = data.totalRecords;
                 pagination.totalRecords = data.totalRecords;
                 pagination = this.pagerService.getPagedItems(pagination, data.leads);
+                
                 this.referenceService.loading(this.httpRequestLoader, false);
             },
             ( error: any ) => {
@@ -191,6 +232,74 @@ listClosedLeads(pagination:Pagination){
                 this.sortOption.totalRecords = data.totalRecords;
                 pagination.totalRecords = data.totalRecords;
                 pagination = this.pagerService.getPagedItems(pagination, data.leads);
+               
+                this.referenceService.loading(this.httpRequestLoader, false);
+            },
+            ( error: any ) => {
+                this.httpRequestLoader.isServerError = true;
+            }
+        );
+
+}
+
+
+listAllLeadsByPartner(pagination:Pagination){
+      
+    this.referenceService.loading(this.httpRequestLoader, true);
+    pagination.userId = this.authenticationService.getUserId();
+   
+    this.dealRegistrationService.listAllLeadsByPartner(pagination)
+        .subscribe(
+            data => {
+               
+                this.sortOption.totalRecords = data.totalRecords;
+                pagination.totalRecords = data.totalRecords;
+                pagination = this.pagerService.getPagedItems(pagination, data.leads);
+               
+                
+                this.referenceService.loading(this.httpRequestLoader, false);
+                console.log(pagination);
+            },
+            ( error: any ) => {
+                this.httpRequestLoader.isServerError = true;
+            }
+        );
+
+}
+
+listApprovedLeadsByPartner(pagination:Pagination){
+    
+    this.referenceService.loading(this.httpRequestLoader, true);
+    pagination.userId = this.authenticationService.getUserId();
+   
+    this.dealRegistrationService.listApprovedLeadsByPartner(pagination)
+        .subscribe(
+            data => {
+                this.sortOption.totalRecords = data.totalRecords;
+                pagination.totalRecords = data.totalRecords;
+                pagination = this.pagerService.getPagedItems(pagination, data.leads);
+                
+                this.referenceService.loading(this.httpRequestLoader, false);
+            },
+            ( error: any ) => {
+                this.httpRequestLoader.isServerError = true;
+            }
+        );
+
+}
+
+listRejectedLeadsByPartner(pagination:Pagination){
+    
+    this.referenceService.loading(this.httpRequestLoader, true);
+    pagination.userId = this.authenticationService.getUserId();
+   
+    this.dealRegistrationService.listRejectedLeadsByPartner(pagination)
+        .subscribe(
+            data => {
+                this.sortOption.totalRecords = data.totalRecords;
+                pagination.totalRecords = data.totalRecords;
+                pagination = this.pagerService.getPagedItems(pagination, data.leads);
+               
                 this.referenceService.loading(this.httpRequestLoader, false);
             },
             ( error: any ) => {
@@ -200,6 +309,27 @@ listClosedLeads(pagination:Pagination){
 
 }
   
+listLeadsByPartner(pagination:Pagination){
+      
+    this.referenceService.loading(this.httpRequestLoader, true);
+    pagination.userId = this.partner.partnerId;
+    pagination.campaignId = this.campaignId;
+    this.dealRegistrationService.listLeadsByPartner(pagination)
+        .subscribe(
+            data => {
+                console.log(data)
+                this.sortOption.totalRecords = data.totalRecords;
+                pagination.totalRecords = data.totalRecords;
+                pagination = this.pagerService.getPagedItems(pagination, data.leads);
+                
+                this.referenceService.loading(this.httpRequestLoader, false);
+            },
+            ( error: any ) => {
+                this.httpRequestLoader.isServerError = true;
+            }
+        );
+
+}
   listLeads(pagination:Pagination){
       
       this.referenceService.loading(this.httpRequestLoader, true);
@@ -212,6 +342,7 @@ listClosedLeads(pagination:Pagination){
                   this.sortOption.totalRecords = data.totalRecords;
                   pagination.totalRecords = data.totalRecords;
                   pagination = this.pagerService.getPagedItems(pagination, data.leads);
+                  
                   this.referenceService.loading(this.httpRequestLoader, false);
               },
               ( error: any ) => {
@@ -226,7 +357,10 @@ listClosedLeads(pagination:Pagination){
   /********Pages Navigation***********/
   navigatePages( event: any ) {
      this.pagination.pageIndex = event.page;
-     this.listLeads(this.pagination);
+     if(!this.isPartner)
+        this.listLeadsBasedOnFilters();
+     else
+        this.listLeadsBasedOnFiltersByPartner();
     }
   /*****Dropdown**********/
   changeSize(items: any,type:any) {
@@ -304,6 +438,16 @@ listClosedLeads(pagination:Pagination){
    showTimeLineView() {
     this.isDealRegistration = false;
     
+   }
+   getCommentCount(leads:any){
+    leads.forEach(element => {
+        this.dealRegistrationService.getCommentsCount(element.dealId).subscribe(result=> {
+            if(isNaN(result))
+                element.commentCount = result.data;
+            else
+                element.commentCount = 0;
+            })
+    });
    }
 
 

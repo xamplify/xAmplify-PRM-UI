@@ -3,6 +3,8 @@ import { DealComments } from '../models/deal-comments';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { DealRegistrationService } from '../services/deal-registration.service';
 import { User } from '../../core/models/user';
+import { Campaign } from '../../campaigns/models/campaign';
+import { CampaignService } from '../../campaigns/services/campaign.service';
 var $ ;
 @Component({
   selector: 'app-manage-comments',
@@ -13,7 +15,7 @@ export class ManageCommentsComponent implements OnInit {
 
   @Input()
   lead:any;
-
+  campaign:Campaign;
    @Output()  isCommentSection = new EventEmitter<any>();
 
    comment:DealComments
@@ -22,11 +24,20 @@ export class ManageCommentsComponent implements OnInit {
     lastName:string;
   loggedInUserId: number;
   user: User;
-  constructor(public authenticationService: AuthenticationService,private dealRegService: DealRegistrationService) { }
+  isError = true;
+  constructor(public authenticationService: AuthenticationService,private dealRegService: DealRegistrationService,private campaignService:CampaignService) { }
 
   ngOnInit() {
+   
+    
      this.comment = new DealComments;
       this.loggedInUserId =this.authenticationService.getUserId();
+      const obj = { 'campaignId': this.lead.campaignId };
+      this.campaignService.getCampaignById(obj).subscribe(data =>{
+         this.campaign = data;
+         console.log(data)
+         
+     })
       this.dealRegService.getDealCreatedBy(this.loggedInUserId).subscribe(user => {
        
         this.user = user;
@@ -44,7 +55,15 @@ export class ManageCommentsComponent implements OnInit {
   addCommentModalClose(){
     this.isCommentSection.emit(false);
   }
+  validateComment(comment:string){
+    if(comment.length == 0)
+        this.isError =true;
+    else
+        this.isError = false;
+  }
   postComment(data:DealComments){ 
+   console.log(!this.isError)
+    if(!this.isError){
     data.createdAt = new Date();
     data.user = this.user;
     data.dealId = this.lead.dealId;
@@ -57,6 +76,7 @@ export class ManageCommentsComponent implements OnInit {
       })
        
     });
+  }
    // data.user.lastName = this.user.lastName;
     
   }

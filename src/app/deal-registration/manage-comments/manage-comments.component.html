@@ -143,7 +143,7 @@ html{
 /* Comment form */
 
 .write-new{
-    margin: 80px auto 0;
+    margin: 40px auto 0;
     width: 50%;
 }
 
@@ -294,6 +294,15 @@ footer a.tz:after{
     left: 80px;
 }
 
+.campaignProps{
+    background-color: #e5e5e445;
+    padding: 10px;
+    margin: auto;
+    text-align: center;
+    border-radius: 5px;
+    width: 85%;
+    line-height: 2.0;
+}
 
 @media (max-width: 1024px) {
     footer{ display:none;}
@@ -314,13 +323,19 @@ footer a.tz:after{
 
       </div>
       <div class="modal-body">
-       
+        <div  *ngIf="campaign != null && campaign != undefined" style="margin:auto;width: 85%" class="campaignProps">
+            <div><span class="f-w-600" title="{{campaign.campaignName}}">
+                    {{campaign.campaignName | slice: 0: 30}}
+                    <span *ngIf="campaign.campaignName?.length>30">...</span><br>
+                </span> campaign Launched at {{campaign.launchTime | date: 'shortTime'}}</div>
+            <h5>Created By <b>{{campaign.fromName}}</b></h5>
+        </div>
 
         <div class="write-new" style="margin-bottom: 25px;width: 85%">
 
 
                     <textarea placeholder="Write your comment here" name="comment" [(ngModel)]="comment.comment"
-                    ></textarea>
+                    (input)="validateComment(comment.comment)"></textarea>
 
                     <div >
                         <!-- <img src="https://aravindu.com/vod/images/14663/05112018/profilePicture/65DD83D1-A768-411E-8A37-3D79B1F858BC.jpeg" width="35" alt="Profile of Bradley Jones" title="Bradley Jones" /> -->
@@ -337,8 +352,11 @@ footer a.tz:after{
                    <span *ngIf="c?.createdAt"><app-timestamp [dateAndTime]="c.createdAt"> </app-timestamp></span>
                 </div>
 
-                <a class="avatar" href="#">
-                    <img src="https://aravindu.com/vod/images/14663/05112018/profilePicture/65DD83D1-A768-411E-8A37-3D79B1F858BC.jpeg" width="35" alt="Profile Avatar" title="Anie Silverston" />
+                <a class="avatar" href="#" *ngIf="c.user.profileImagePath!= null && c.user.profileImagePath!= undefined" >
+                    <img src="{{c.user.profileImagePath}}" width="35" alt="Profile Avatar" title="{{c.user.lastName}}" alt="Image not found"/>
+                </a>
+                <a class="avatar" href="#" *ngIf="c.user.profileImagePath== null || c.user.profileImagePath == undefined" >
+                    <img src="assets/admin/pages/media/profile/icon-user-default.png" width="35" alt="Profile Avatar" title="" />
                 </a>
 
                 <p>{{c.comment}}</p>
@@ -352,8 +370,11 @@ footer a.tz:after{
                      <span *ngIf="c?.createdAt"><app-timestamp [dateAndTime]="c.createdAt"> </app-timestamp></span>
                 </div>
 
-                <a class="avatar" href="#">
-                    <img src="https://aravindu.com/vod/images/14663/05112018/profilePicture/65DD83D1-A768-411E-8A37-3D79B1F858BC.jpeg" width="35" alt="Profile Avatar" title="Anie Silverston" />
+                <a class="avatar" href="#" *ngIf="c.user.profileImagePath!= null && c.user.profileImagePath!= undefined" >
+                    <img src="{{c.user.profileImagePath}}" width="35" alt="Profile Avatar" title="{{c.user.lastName}}" alt="Image not found"/>
+                </a>
+                <a class="avatar" href="#" *ngIf="c.user.profileImagePath== null || c.user.profileImagePath == undefined" >
+                    <img src="assets/admin/pages/media/profile/icon-user-default.png" width="35" alt="Profile Avatar" title="{{c.user.lastName}}" />
                 </a>
 
                 <p>{{c.comment}}</p>

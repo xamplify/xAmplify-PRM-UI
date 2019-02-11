@@ -91,28 +91,31 @@
                   [onColor]="callActionSwitch.onRedColorSwitch" [offColor]="callActionSwitch.onGreenColorSwitch" [size]="callActionSwitch.size"
                   (statusChange)="setDealStatus(item.dealId,$event)"></switch>
                   </div> -->
-                <select class="form-control" [(ngModel)]="item.dealStatus" (ngModelChange)="setDealStatus(item.dealId,$event)" style="width: 135px">
+                <select class="form-control" [(ngModel)]="item.dealStatus" (ngModelChange)="setDealStatus(item.dealId,$event)" style="width: 135px"
+                [disabled]="isPartner">
                   <option *ngFor="let option of leadStatusArray" [ngValue]="option">{{option}}</option>
                 </select>
               </td>
               <td>
 
-                <a *ngIf="true" data-rel="fancybox-button" (click)="dealRouter(item,$event)" title="Campaign Based Reports">
+                <a *ngIf="true" data-rel="fancybox-button" (click)="dealRouter(item,$event)" title="Lead Based Reports">
                   <span class="circled-number">
                     <i class="fa fa-line-chart"></i>
                   </span>
                 </a>
 
                 <a *ngIf="true" data-rel="fancybox-button" (click)="showDealRegistrationForm(item,$event)" title="View Deal">
-                  <span class="circled-number">
+                    <span class="circled-number" >
                     <i class="fa fa-eye mr5"></i>
                   </span>
                 </a>
-                <a *ngIf="true" data-rel="fancybox-button" (click)="showComments(item)" title="Comments">
-                  <span class="circled-number">
-                    <i class="fa fa-comments" aria-hidden="true"></i>
-
-                  </span>
+                <a *ngIf="true" data-rel="fancybox-button" (click)="showComments(item)" title="Comments" style="margin-top: 10px">
+                   
+                    <span class="circled-number" style="height: 40px;width:40px">
+                    <i class="fa fa-comments" aria-hidden="true" style="font-size:18px"> </i><span class="badge badge-default" style="margin-bottom: 32px; margin-left: -13px;background-color: #ed1c24 !important;">{{item.commentCount}}</span>
+                   </span>
+                     
+                
                 </a>
               </td>
               <!-- <td>
@@ -126,7 +129,7 @@
 
       <div *ngIf="sortOption.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError" style="background:white">
         <div *ngIf="pagination.pagedItems.length !== 0" style="padding: 0 13px;">
-          <app-pagination [pagination]="pagination" [type]="'deal-partners'" [isDropdown]="true" (notifyParent)="navigatePages($event)"
+          <app-pagination [pagination]="pagination" [type]="'deal-leads'" [isDropdown]="true" (notifyParent)="navigatePages($event)"
             (notifyParentDropDown)="listCampaignPartners($event)"></app-pagination>
           <select class="form-control" style="float: right; width: auto;" [(ngModel)]="sortOption.itemsSize" (ngModelChange)="changeSize($event)">
             <option *ngFor="let itemPerPage of sortOption.numberOfItemsPerPage" [ngValue]="itemPerPage">{{itemPerPage.name}}</option>
@@ -138,10 +141,9 @@
 </div>
 
    <div *ngIf="isCommentSection">
-
-                <app-manage-comments [lead]="commentForLead" (isCommentSection)="addCommentModalClose($event)"></app-manage-comments>
+                <app-manage-comments [lead]="commentForLead"  (isCommentSection)="addCommentModalClose($event)"></app-manage-comments>
   </div>
 <!-- <div *ngIf="isDealAnalytics">
-  <app-deal-analytics [dealId]="selectedDealId"></app-deal-analytics>
+  <app-deal-analytics [dealId]="selectedDealId"></app-deal-analytics> 
 
 </div> -->

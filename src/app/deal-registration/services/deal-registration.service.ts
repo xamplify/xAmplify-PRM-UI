@@ -13,6 +13,7 @@ import { DealComments } from '../models/deal-comments';
 
 @Injectable()
 export class DealRegistrationService {
+    
 
 
     URL = this.authenticationService.REST_URL + "deals/";
@@ -26,13 +27,28 @@ export class DealRegistrationService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+    getTotalDealsByPartner(userId: number) {
+        return this.http.get(this.URL + "partner/total/" + userId + "?access_token=" + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
     getApprovedDeals(userId: number) {
         return this.http.get(this.URL + "approved/" + userId + "?access_token=" + this.authenticationService.access_token)
             .map(this.extractData)
             .catch(this.handleError);
     }
+    getApprovedDealsByPartner(userId: number) {
+        return this.http.get(this.URL + "partner/approved/" + userId + "?access_token=" + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
      getRejectedDeals(userId: number) {
         return this.http.get(this.URL + "rejected/" + userId + "?access_token=" + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    getRejectedDealsByPartner(userId: number) {
+        return this.http.get(this.URL + "partner/rejected/" + userId + "?access_token=" + this.authenticationService.access_token)
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -67,10 +83,22 @@ export class DealRegistrationService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+    listCampaignsByPartner(pagination: Pagination) {
+        var url = this.URL + "partner/campaigns?access_token=" + this.authenticationService.access_token;
+        return this.http.post(url, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 
     listCampaignPartners(pagination: Pagination) {
         var url = this.URL + "partners?access_token=" + this.authenticationService.access_token;
         return this.http.post(url, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    getCampaignPartnerById(id:number){
+        var url = this.URL + "partners/"+id+"?access_token=" + this.authenticationService.access_token;
+        return this.http.get(url)
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -88,6 +116,7 @@ export class DealRegistrationService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+
 
      listApprovedLeads(pagination: Pagination) {
         var url = this.URL + "lead/approved?access_token=" + this.authenticationService.access_token;
@@ -110,6 +139,35 @@ export class DealRegistrationService {
     }
     listClosedLeads(pagination: Pagination) {
         var url = this.URL + "lead/closed?access_token=" + this.authenticationService.access_token;
+        return this.http.post(url, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+
+    listLeadsByPartner(pagination: Pagination) {
+        var url = this.URL + "partner/leads?access_token=" + this.authenticationService.access_token;
+        return this.http.post(url, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    listAllLeadsByPartner(pagination: Pagination) {
+        var url = this.URL + "partner/lead/list?access_token=" + this.authenticationService.access_token;
+        return this.http.post(url, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+
+     listApprovedLeadsByPartner(pagination: Pagination) {
+        var url = this.URL + "partner/lead/approved?access_token=" + this.authenticationService.access_token;
+        return this.http.post(url, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+     listRejectedLeadsByPartner(pagination: Pagination) {
+        var url = this.URL + "partner/lead/rejected?access_token=" + this.authenticationService.access_token;
         return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);
@@ -180,6 +238,14 @@ export class DealRegistrationService {
 
     getComments(dealId: number) {
         var url = this.URL  + dealId + "/comments?access_token=" + this.authenticationService.access_token;
+        return this.http.get(url)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    getCommentsCount(id: any): any
+    {
+        var url = this.URL  + id + "/comments/count?access_token=" + this.authenticationService.access_token;
         return this.http.get(url)
             .map(this.extractData)
             .catch(this.handleError);

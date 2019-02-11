@@ -1,4 +1,4 @@
-<div class="page-content" *ngIf="!isDealAnalytics && !isDealRegistration" >
+<div class="page-content" *ngIf=" !isDealRegistration" >
 	<div class="page-bar">
 		<ul class="page-breadcrumb">
 			<li *ngIf="!authenticationService.isSuperAdmin()">
@@ -10,7 +10,7 @@
 			</li>
 		
 			<li *ngIf="leadList">
-				<a>Deals</a>
+				<a>Leads</a>
 			</li>
 		</ul>
 	</div><!-- -End Of 2 -->
@@ -184,7 +184,7 @@
 										</tr>
 										<tr [ngClass]="{'hidden': !campaign.expand}">
 												 <td colspan="8">
-													<div class="row" *ngIf="partnerList"  style="width: 100%;">
+													<div class="row" *ngIf="!isPartner && partnerList"  style="width: 100%;">
 															<app-manage-partners [campaignId]="campaign.id" (leadObj)="showLeads($event)"></app-manage-partners>
 														</div>
 												</td>	
@@ -276,7 +276,7 @@
 	</div><!-- -End Of row (Campaigns List) -->
 	<!-- --------------------------------Partner List -------------------------------- -->
 	<div class="row" *ngIf="leadList" >
-			<app-manage-leads [partner]="partner" [campaignId]="selectedCampaignId" [filter]="filterDeals" (dealObj)="dealAnalytics($event)"></app-manage-leads>
+			<app-manage-leads [partner]="partner" [campaignId]="selectedCampaignId" [filter]="filterDeals" [isPartner]="isPartner" (dealObj)="dealAnalytics($event)"></app-manage-leads>
 	</div>
 	
 	
@@ -291,6 +291,6 @@
   <div class="page-content">
     <a (click)="disableDealRegistrationForm()" class="pull-right close-circle" style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;">
       <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
-    <app-deal-registration [campaign]="selectedCampaign" [lead]="user" [dealId]="selectedDealId" [parent]="'deal-analytics'"></app-deal-registration>
+    <app-deal-registration [campaign]="selectedCampaign" [lead]="user" [dealId]="selectedDealId" [parent]="parent"></app-deal-registration>
   </div>
 </section>
