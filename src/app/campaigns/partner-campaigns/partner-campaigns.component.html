@@ -1,3 +1,10 @@
+<style type="text/css">
+	
+	.disabled {
+		pointer-events: none;
+		cursor: not-allowed !important;
+	}
+</style>
 <div class="page-content">
 	<div class="page-bar">
 		<ul class="page-breadcrumb">
@@ -109,6 +116,7 @@
 											</h4>
 											<h5 class="mobile-left" [title]="campaign.createdBy">By <b>{{campaign.createdBy | slice:0:15}}<span *ngIf="campaign.createdBy?.length>15">...</span></b></h5>
 											<h5 class="mobile-left"  [title]="campaign.companyName">From <b>{{campaign.companyName | slice:0:15}}<span *ngIf="campaign.companyName?.length>15">...</span></b></h5>
+										<h5 class="ellipsis view-banner" *ngIf="campaign.launched && !campaign.showCancelButton && campaign.campaignType.indexOf('EVENT') > -1" style="background-color: red;">Cancelled</h5>
 										</td>
 										<td class="custom-center hidden-xs">
 											{{campaign.companyName | slice:0:15}}<span *ngIf="campaign.companyName?.length>15">...</span>
@@ -131,7 +139,7 @@
                         <a *ngIf="campaign.campaignType === 'SOCIAL'" data-toggle="tooltip" data-placement="top" title="coming soon">
 													<i class="fa fa-eye mr5"></i>
                         </a>
-												<a (click)="reDistributeCampaign(campaign)" data-toggle="tooltip" data-placement="top" title="Redistribute Campaign" data-rel="fancybox-button" >
+												<a [class.disabled]="campaign.launched && !campaign.showCancelButton && campaign.campaignType.indexOf('EVENT') > -1" (click)="reDistributeCampaign(campaign)" data-toggle="tooltip" data-placement="top" title="Redistribute Campaign" data-rel="fancybox-button" >
                             <i class="fa fa-clone"></i>
                         </a>
                         <a class="hidden"><i class="fa fa-trash"></i></a>
@@ -157,26 +165,38 @@
 									<div *ngFor="let campaign of pagination.pagedItems; let i= index" class="col-xs-12 col-sm-4 col-lg-3">
 										<div class="grid-box">
 											<img src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png">
+											<!-- <br> -->
 											<h4 class="ellipsis" title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:25}}
 												<span *ngIf="campaign.campaignName?.length>25">...</span>
 											</h4>
+											<!-- <span class="view-banner" *ngIf="campaign.launched && !campaign.showCancelButton && campaign.campaignType.indexOf('EVENT') > -1" style="background-color: red;">Cancelled</span> -->
                       <h5 [title]="campaign.createdBy">By <b>{{campaign.createdBy | slice:0:15}}<span *ngIf="campaign.createdBy?.length>15">...</span></b></h5>
 											<h5 [title]="campaign.companyName">From <b>{{campaign.companyName | slice:0:15}}<span *ngIf="campaign.companyName?.length>15">...</span></b></h5>
 											<h6 style="margin: 4px;">Received On <b>
                         <app-timestamp [isOnlyDate]="false" [dateAndTime]="campaign.launchedOn"> </app-timestamp>
                       </b></h6>
-											<div class="bookmark-ribbon">
+											<div class="bookmark-ribbon"> 
 												<span style="margin: 0px -7px; font-size: 17px; color: white;">
 													<i *ngIf="campaign.campaignType.indexOf('VIDEO') > -1" class="fa fa-video-camera" aria-hidden="true"></i>
 													<i *ngIf="campaign.campaignType.indexOf('REGULAR') > -1" class="fa fa-envelope" aria-hidden="true"></i>
                           <i *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1" class="fa fa-globe" aria-hidden="true"></i>
 												</span>
 											</div>
+											
+											
+											
+											<div class="ribbon">
+												<div  class="cancel-ribbon" *ngIf="campaign.launched && !campaign.showCancelButton && campaign.campaignType.indexOf('EVENT') > -1">Cancelled</div>
+											</div>
+											
+											
+											
+											
 											<div class="bar">
 											<a (click)="showCampaignPreview(campaign.campaignId)" data-toggle="tooltip" data-placement="top" title="preview campaign">
 													<i class="fa fa-eye mr4"></i>
                                                  </a>
-												<a (click)="reDistributeCampaign(campaign)" data-toggle="tooltip" data-placement="top" title="Redistribute Campaign" data-rel="fancybox-button">
+												<a [class.disabled]="campaign.launched && !campaign.showCancelButton && campaign.campaignType.indexOf('EVENT') > -1" (click)="reDistributeCampaign(campaign)"(click)="reDistributeCampaign(campaign)" data-toggle="tooltip" data-placement="top" title="Redistribute Campaign" data-rel="fancybox-button">
 													<i class="fa fa-clone"></i>
 												</a>
 											</div>
