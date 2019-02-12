@@ -62,7 +62,6 @@ export class AuthenticationService {
         headers.append('Content-Type', 'application/x-www-form-urlencoded');
         headers.append('Authorization', authorization);
         const options = { headers: headers };
-        this.xtremandLogger.log('authentication service' + body);
         return this.http.post(url, body, options).map((res: Response) => {
             this.map = res.json();
             return this.map;

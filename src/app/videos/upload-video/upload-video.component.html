@@ -85,7 +85,7 @@
             <div class="alert alert-success alertMessageCustom loaderSymbol mb10">
               <span><img src="assets/images/loadbar.gif" class="loader-image-tag"></span>
               <span class="text-css" *ngIf="processing">{{properties.VIDEO_PROCESS_MESSAGE}}</span>
-              <span class="text-css-content" *ngIf="contentProcessing">Your file has been uploaded. Please wait while we process it.</span>
+              <span class="text-css-content" *ngIf="contentProcessing">{{properties.CONTENT_PROCESS_MESSAGE}}</span>
             </div>
 					</div>
 					<!-- changes   -->
@@ -148,7 +148,7 @@
               <!-- <i class="fa fa-cloud-upload fa-6" aria-hidden="true"></i> -->
               <img src="../../../assets/images/uploadvideo.png" >
 							<h2 class="upload-video" style="margin:-5px;padding-top: 5px;">Upload a video </h2>
-              <h6 style="color: #717171">Drag and drop a video file here or click to select a Video file.</h6>
+              <h6 style="color: #717171">{{properties.VIDEO_DRAG_MESSAGE}}</h6>
               <button class="btn btn-primary" style="color:#fff">Browse</button>
 						</div>
 					</div>
@@ -192,16 +192,16 @@
       </div>
         <div class="col-xs-12 col-sm-6 pu0">
         <div class="col-xs-12 p0" >
-					<div [class.customDisableCss]='isDisable==true || isFileProgress ==true || isSelectedVideo ==true || contentProcessing' (drop)="contentUpload($event)"
+					<div [class.customDisableCss]='isDisable || isFileProgress || isSelectedVideo  || contentProcessing' (drop)="contentUpload($event)"
 				    class="well my-drop-zone"
 					 style="position: relative; cursor:pointer; margin-bottom:0" (click)="contentDropClick()">
-           <input type="file"  (change)="contentUpload($event)" multiple="multiple"
+           <input type="file" (change)="contentUpload($event)" multiple="multiple"
 						  style="opacity: 0.0; position: absolute;" title=" " id="content-upload">
 						<div class="text-center">
               <!-- <i class="fa fa-cloud-upload fa-6" aria-hidden="true"></i> -->
               <img src="../../../assets/images/uploadimage.png">
 							<h2 class="upload-video" style="margin:-5px;padding-top: 5px;">Upload Content</h2>
-              <h6 style="color: #717171;">Drag and drop files here or click to select files.</h6>
+              <h6 style="color: #717171;">{{properties.CONTENT_DRAG_MESSAGE}}</h6>
               <button class="btn btn-primary" style="color:#fff">Browse</button>
 						</div>
 					</div>
@@ -235,11 +235,8 @@
       </div>
       <div class="clearfix" style="margin: 5px;"></div>
 			<div  style="border-radius: 0" style="background-color: #ffffff">
-				<div class="panel-heading" hidden><h3 class="panel-title">**Notes</h3></div>
 				<div style="position: relative;right: 16px;">
-					<ul style="color:#4c4b4b;">
-						  <li>These plugins only work with the latest versions of Chrome, Firefox, Safari, Opera, Microsoft Edge & Internet Explorer 10.</li>
-          </ul>
+					<ul style="color:#4c4b4b;"><li>{{properties.SUPPORT_FILES}}</li></ul>
 				</div>
 			</div>
 		</div>
