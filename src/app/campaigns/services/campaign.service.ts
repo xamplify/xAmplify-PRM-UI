@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, RequestOptions, Response } from '@angular/http';
+import { Http,Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
@@ -9,7 +9,7 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 import { Campaign } from '../models/campaign';
 import { Pagination } from '../../core/models/pagination';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
-declare var swal, $, videojs, Metronic, Layout, Demo, TableManaged, Promise, jQuery: any;
+declare var swal, $, Promise: any;
 @Injectable()
 export class CampaignService {
 
@@ -553,10 +553,9 @@ export class CampaignService {
         let eventUrl;
         if(eventUpdate){
             eventUrl = this.URL + "campaign/update-event-campaign?access_token=" + this.authenticationService.access_token;
-           }else{
-               eventUrl = this.URL + `campaign/save-event-campaign?access_token=${this.authenticationService.access_token}`
-           }
-        
+        }else{
+            eventUrl = this.URL + `campaign/save-event-campaign?access_token=${this.authenticationService.access_token}`
+        }
         return this.http.post(eventUrl, eventCampaign)
             .map(this.extractData)
             .catch(this.handleError);
