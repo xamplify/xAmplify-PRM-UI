@@ -13,7 +13,7 @@ import { Pagination} from '../../core/models/pagination';
 import { PagerService } from '../../core/services/pager.service';
 import { CustomResponse } from '../../common/models/custom-response';
 
-declare var $,swal:any ;
+declare var $:any ;
 
 @Component({
   selector: 'app-table-editable',
@@ -105,8 +105,8 @@ export class AddTeamMembersComponent implements OnInit {
         let isVendorAndPartner = this.authenticationService.isVendorPartner();
         this.contactAccess  = isOrgAdmin || (isVendorAndPartner);
     }
-    
-    
+
+
     /************List Members*****************/
     listTeamMembers(pagination:Pagination){
         try{
@@ -117,7 +117,7 @@ export class AddTeamMembersComponent implements OnInit {
             this.teamMemberService.list(pagination,this.userId)
             .subscribe(
                 data => {
-                    console.log(data);
+                    this.logger.log(data);
                     this.teamMembersList = data.teamMembers;
                     this.secondOrgAdminId = data.secondOrgAdminId;
                     pagination.totalRecords = data.totalRecords;
@@ -221,10 +221,10 @@ export class AddTeamMembersComponent implements OnInit {
             error => {
                 this.logger.errorPage(error);
             },
-            () => console.log(" Completed save()")
+            () => this.logger.log(" Completed save()")
             );
         }else{
-            this.showErrorMessageDiv("Please assign atleast one role to team member");
+            this.showErrorMessageDiv("Please assign at least one role to your team member");
         }
 
     }
@@ -236,11 +236,11 @@ export class AddTeamMembersComponent implements OnInit {
         if(this.teamMemberUi.emptyRolesLength==0){
             this.errorMessage = "";
             this.referenceService.startLoader(this.httpRequestLoader);
-            console.log(this.teamMembersList);
+            this.logger.log(this.teamMembersList);
             this.teamMemberService.update(this.teamMembersList,this.userId)
             .subscribe(
             data => {
-                console.log(data);
+                this.logger.log(data);
                 this.referenceService.stopLoader(this.httpRequestLoader);
                 if(data.statusCode==3002){
                     this.successMessage = "Team Member(s) updated successfully.";
@@ -260,7 +260,7 @@ export class AddTeamMembersComponent implements OnInit {
             error => {
                 this.logger.errorPage(error);
             },
-            () => console.log(" Completed save()")
+            () => this.logger.log(" Completed save()")
             );
         }else{
             this.showErrorMessageDiv("Please assign atleast one role to team member");
@@ -273,7 +273,7 @@ export class AddTeamMembersComponent implements OnInit {
         // $( "#empty-roles-div" ).show(600);
         // setTimeout( function() { $( "#empty-roles-div" ).slideUp( 500 ); }, 7000 );
     }
-    
+
     hideErrorMessageDiv(){
         this.errorMessage ="" ;
         this.customResponse = new CustomResponse('ERROR', this.errorMessage, false);
@@ -306,7 +306,7 @@ export class AddTeamMembersComponent implements OnInit {
         teamMember.orgAdminId = this.selectedId;
       /*  teamMember.orgAdminId = this.selectedItem.id;
         teamMember.emailId = this.selectedItem.emailId;*/
-        console.log(teamMember);
+        this.logger.log(teamMember);
         this.teamMemberService.delete(teamMember)
         .subscribe(
         data => {
@@ -329,7 +329,7 @@ export class AddTeamMembersComponent implements OnInit {
             this.clearRows();
         },
         error => {this.logger.errorPage(error)},
-        () => console.log( "Team member deleted successfully." )
+        () => this.logger.log( "Team member deleted successfully." )
         );
     }
 
@@ -349,7 +349,7 @@ export class AddTeamMembersComponent implements OnInit {
 
     validateEmailId(emailId:string,isTabChangeEvent:boolean){
         try{
-            console.log($.trim(emailId).length);
+            this.logger.log($.trim(emailId).length);
             if($.trim(emailId).length>0){
                 this.teamMemberUi.validEmailId = this.referenceService.validateEmailId(emailId);
                 if(!this.teamMemberUi.validEmailId){
@@ -361,7 +361,7 @@ export class AddTeamMembersComponent implements OnInit {
                 }else{
                     /**********Method To Check Whether Org Admin Or Not***********/
                     if(this.orgAdminEmailIds.indexOf(emailId.toLowerCase())>-1){
-                        console.log(emailId.toLowerCase()+" is an org admin")
+                        this.logger.log(emailId.toLowerCase()+" is an org admin")
                         this.showErrorMessage("This email address is already registered with xAmplify and cannot be added as a team member at this time.");
                     }else if(this.partnerEmailIds.indexOf(emailId.toLowerCase())>-1){
                         this.showErrorMessage("This email address is already registered with xAmplify and cannot be added as a team member at this time.");
@@ -572,7 +572,7 @@ export class AddTeamMembersComponent implements OnInit {
             let headersRow = this.fileUtil
                 .getHeaderArray(csvRecordsArray);
             let headers = headersRow[0].split(',');
-            
+
             if((this.contactAccess && headers.length==9)  || (!this.contactAccess && headers.length==8)){
                 if(this.validateHeaders(headers)){
                     this.readCsvData(csvRecordsArray,headersRow.length);
@@ -651,7 +651,7 @@ export class AddTeamMembersComponent implements OnInit {
                    if(!this.referenceService.validateEmailId(emailId)){
                        this.csvErrors.push(emailId+" at row "+(i+1)+" is invalid.");
                    }else{
-                       console.log(duplicateEmailIds);
+                       this.logger.log(duplicateEmailIds);
                        /**********Method To Check Whether Org Admin Or Not***********/
                        if(this.orgAdminEmailIds.indexOf(emailId.toLowerCase())>-1){
                            this.csvErrors.push(emailId+" at row "+(i+1)+" is an Org Admin.");
@@ -770,7 +770,7 @@ export class AddTeamMembersComponent implements OnInit {
 
       getEnabledOrgAdminsCount(){
           let enabledOrgAdmin = this.teamMembersList.map(function(a) {return a.orgAdmin;});
-          console.log(this.teamMembersList);
+          this.logger.log(this.teamMembersList);
           var counts = {};
           $.each(enabledOrgAdmin, function(key,value) {
             if (!counts.hasOwnProperty(value)) {
@@ -812,8 +812,8 @@ export class AddTeamMembersComponent implements OnInit {
                       self.items2.push(obj);
                   });
               },
-              error => console.log( error ),
-              () => console.log( "listAllOrgAdminsAndSupervisors() done" )
+              error => this.logger.log( error ),
+              () => this.logger.log( "listAllOrgAdminsAndSupervisors() done" )
               );
           }
 }
