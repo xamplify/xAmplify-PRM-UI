@@ -43,6 +43,7 @@ export class Properties {
 
   SOCIAL_ACCOUNT_REMOVED_SUCCESS = "Your social account has been removed successfully.";
   SOCIAL_ACCOUNT_REMOVED_ERROR = "An error occured while removing your social Account.";
+  CONTACT_LIST_VALIDATION ='Please select how you would like to add your contacts.';
 
   /* For Partners*/
   PARTNER_LIST_CREATE_SUCCESS = "Your partner list has been created successfully and we are processing your partner list";
