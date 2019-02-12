@@ -152,7 +152,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.contactListNameError = false;
         let lowerCaseContactName = contactName.toLowerCase().replace( /\s/g, '' );
         var list = this.names;
-        console.log( list );
+        this.xtremandLogger.log( list );
         if ( $.inArray( lowerCaseContactName, list ) > -1 ) {
             this.isValidContactName = true;
             $( "button#sample_editable_1_new" ).prop( 'disabled', true );
@@ -246,7 +246,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                         self.contacts.push( user );
                     }
                 }
-                console.log( "AddContacts : readFiles() contacts " + JSON.stringify( self.contacts ) );
+               // console.log( "AddContacts : readFiles() contacts " + JSON.stringify( self.contacts ) );
             }
         } else {
             this.customResponse = new CustomResponse( 'ERROR', this.properties.FILE_TYPE_ERROR, true );
@@ -721,7 +721,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                                 return valueArr.indexOf(item) != idx
                             });
                             console.log("emailDuplicate" + isDuplicate);
-                            
+
                             /*if ( this.contacts[i].mobileNumber.length < 6 ) {
                                 this.contacts[i].mobileNumber = "";
                             }*/
@@ -2073,9 +2073,9 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
 
         if ( this.selectedAddContactsOption !=8 && this.router.url !=='/' ) {
             this.model.contactListName = "";
-            
+
             let self = this;
-            
+
             swal( {
                 title: 'Are you sure?',
                 text: "You have unsaved data",

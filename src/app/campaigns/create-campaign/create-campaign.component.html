@@ -910,29 +910,20 @@
 					</div>
 				</div>
 			<div class="portlet-body clearfix">
-				<div class="col-xs-12 col-sm-12 col-md-5 col-lg-5" *ngIf="campaignType=='video'">
+				<div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
 					<div class="portlet light clearfix" style="padding:0px">
 						<div class="p0">
-							<div id="main_video_src">
-							</div>
-							<!-- <h4 class="text-left f-w-500" id="title"></h4> -->
-							<h5 id="description"></h5>
+              <div id="main_video_src" [hidden]="campaignType!='video'"></div>
+              <div class="pricing hover-effect" [hidden]="campaignType=='video'">
+                <div class="pricing-head">
+                  <h4 title="{{campaign.campaignName}}">Campaign name: {{campaign.campaignName | slice:0:30}}<span *ngIf="campaign.campaignName?.length>30">...</span></h4>
+                  <h4><img style="margin: 0 auto;height: 106px;" alt="Regular E-mail Campaign" class="pricing-head-img img-responsive" src="assets/images/regular-email.png"></h4>
+                </div>
+              </div>
+              <h5 id="description"></h5>
 						</div>
 					</div>
         </div>
-        <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5" *ngIf="campaignType=='regular'">
-            <div class="portlet light clearfix" style="padding:0px">
-              <div class="p0">
-                  <div class="pricing hover-effect">
-											<div class="pricing-head">
-												<h4 title="{{campaign.campaignName}}">Campaign name: {{campaign.campaignName | slice:0:30}}<span *ngIf="campaign.campaignName?.length>30">...</span></h4>
-												<h4><img style="margin: 0 auto;height: 106px;" alt="Regular E-mail Campaign" class="pricing-head-img img-responsive" src="assets/images/regular-email.png"></h4>
-											</div>
-										</div>
-                <h5 id="description"></h5>
-              </div>
-            </div>
-          </div>
 				<div [attr.class]="lauchTabPreivewDivClass">
 					<div class="portlet light border-0">
 						<table width="100%">
@@ -947,30 +938,16 @@
 								<ng-container *ngIf="!authenticationService.module.isVendor && !authenticationService.isAddedByVendor">
 									<ng-container class="h4-text" *ngIf="campaignType == 'video'||'regular'">Contact List(s)</ng-container>
 								</ng-container>
-
 								</td>
 								<td width="55%">
-									<!-- <ng-container *ngFor="let contactList of selectedContactLists;let i=index;">
-										<a (click)="loadUsers(contactList.id,contactsUsersPagination,contactList.name)" data-toggle="modal" data-target="#myModal" title="{{contactList.name}}"
-											style="display: block;">
-											<ng-container *ngIf="contactList.name?.length>50">
-												{{contactList.name | slice:0:50}}...
-											</ng-container>
-											<ng-container *ngIf="contactList.name?.length<=50">
-												{{contactList.name}}
-											</ng-container>
-										</a>
-                  </ng-container> -->
                   <ng-container *ngFor="let contactList of userListDTOObj;let i=index;">
                     <div>
-                    <a *ngIf="i<2" (click)="loadContacts(contactList.id,contactsUsersPagination,contactList.name)" data-toggle="modal" title="{{contactList.name}}">
-                      <span *ngIf="contactList.name">  {{contactList.name | slice:0:40}}<span *ngIf="contactList.name?.length>40">...</span></span>
-                    </a>
+                      <a *ngIf="i<2" (click)="loadUsers(contactList.id,contactsUsersPagination,contactList.name)" title="{{contactList.name}}">
+                        <span *ngIf="contactList.name">  {{contactList.name | slice:0:40}}<span *ngIf="contactList.name?.length>40">...</span></span>
+                      </a>
                     </div>
                   </ng-container>
-                  <a>
-                    <span *ngIf="userListDTOObj?.length>2">...</span> <span *ngIf="userListDTOObj?.length == 0">0 contactlists</span>
-                  </a>
+                  <a> <span *ngIf="userListDTOObj?.length>2">...</span> <span *ngIf="userListDTOObj?.length == 0">0 contactlists</span></a>
 								</td>
 								<td style="text-align: right" width="20%">
 									<a class="btn btn-primary btn-sm" style="color:#fff" (click)="resetActive($event, 40, 'step-4')">Change</a>
