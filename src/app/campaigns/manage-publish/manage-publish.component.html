@@ -16,6 +16,7 @@
 			</li>
 		</ul>
 	</div>
+	 <ngx-loading [show]="isloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 	<div style="position: relative; top:-10px;">
 		<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 	</div>

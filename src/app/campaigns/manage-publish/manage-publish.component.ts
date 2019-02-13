@@ -75,6 +75,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     eventCampaign: EventCampaign = new EventCampaign();
     cancelEventSubjectLine: string = "";
     cancelEventButton: boolean = false;
+    isloading: boolean;
 
     constructor(public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService:UtilService, public actionsDescription: ActionsDescription,
@@ -381,15 +382,16 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 "subject": this.cancelEventSubjectLine
             }
 
-
+        this.isloading = true;
+        $('#cancelEventModal').modal('hide');
         this.campaignService.cancelEvent(cancelEventData, this.loggedInUserId)
           .subscribe(data => {
                 console.log(data);
                 $(window).scrollTop(0);
                 this.customResponse = new CustomResponse('SUCCESS', "Event has been cancelled successfully", true);
-                $('#cancelEventModal').modal('hide');
                 console.log("Event Successfully cancelled");
                 this.cancelEventMessage = "";
+                this.isloading = false;
               },
               error => { $('#cancelEventModal').modal('hide'); this.logger.errorPage(error) },
               () => console.log("cancelCampaign completed")
