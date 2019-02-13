@@ -1,10 +1,28 @@
 # XtremandWebCli
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.0.0.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.4.2.
+
+## Installation
+
+To get started locally, follow these instructions:
+
+1.Install the node.js version 8.11 or above, if you have not done yet. After installing, check the node version with `node -v`.
+
+2.Install the `@angular/cli` version `1.4.2`, Now project current version is 1.4.2. For installing the cli run below command.
+`npm install -g @angular/cli@1.4.2`
+check if the cli installed properly or not with `ng --version` command
+
+3.Clone the `xtremand-web-cli` project to your local computer using `git`
+
+4.Run `npm install` to download the node modules of your project. Those files will help you to run the project locally.
 
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+
+## AGM GOOGLE MAP INSTALLTION Required Changes
+
+Run `npm install @agm/core@1.0.0-beta.2 --save`  if you `get agm map` issue.
 
 ## Code scaffolding
 
@@ -12,7 +30,7 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 ## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+Run `ng build` to build the project. The build artifacts will be stored in the `xtremandApp/` directory. Use the `-prod` flag for a production build.
 
 ## Build Xamplify Production
 Run `node --max_old_space_size=8192 ./node_modules/@angular/cli/bin/ng build --prod --env=prod`. The build artifacts will be stored in the `xtremandApp/` directory
@@ -35,10 +53,6 @@ Before running the tests make sure you are serving the app via `ng serve`.
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
-
-## AGM GOOGLE MAP INSTALLTION Required Changes
-
-Run `npm install @agm/core@1.0.0-beta.2 --save`  if you get agm map issue after importing the project 
 
 # branch1-26062018
 
