@@ -1270,9 +1270,9 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       this.downloadCsvList = this.worldMapUserTotalData;
     } else if(this.downloadTypeName === 'rsvp'){
         if(this.rsvpResposeType === 'email open'){
-            this.logListName = 'People who opened mail log.csv';
+            this.logListName = 'People who opened email log.csv';
         }else{
-        this.logListName = 'People who says '+ this.rsvpResposeType +' RSVPs log.csv';
+        this.logListName = this.rsvpResposeType +' RSVPs.csv';
         }
         this.downloadCsvList = this.rsvpDetailsList;
     }
