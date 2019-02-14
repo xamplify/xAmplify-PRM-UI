@@ -391,7 +391,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-sm-12 dashboard-stat2 p0 clearfix" *ngIf="isSocialCampaign">
+			<div class="col-sm-12 dashboard-stat2 p0 clearfix" *ngIf="isSocialCampaign && !alias">
 				<div class="portlet-body clearfix p10">
 					<ng-container *ngIf="authenticationService.module.hasSocialStatusRole || (authenticationService.user.hasCompany && authenticationService.module.isOrgAdmin)">
 						<div class="form-group m0 pull-right">

@@ -338,7 +338,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     this.resetCustomResponse();
     this.socialCampaign.socialStatusProviderList = [];
     this.socialCampaign.userId = this.userId;
-    this.socialCampaign.shareNow = true;
+    
     this.socialCampaign.parentCampaignId = this.socialCampaign.campaignId;
     this.socialCampaign.campaignId = null;
     this.socialStatusProviders.forEach(data => {
@@ -390,7 +390,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
       this.socialStatusResponse = [];
       this.socialCampaign.userId = this.userId;
       this.socialCampaign.socialStatusList = this.socialStatusList;
-
+      
 
 
       this.socialService.createSocialCampaign(this.socialCampaign)
@@ -462,6 +462,10 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
       this.setCustomResponse(ResponseType.Warning, 'Please select schedule date and time');
     }
     if(isValid){
+      this.socialCampaign.shareNow = false;
+      this.socialCampaign.scheduledTimeInString = this.scheduledTimeInString;
+      this.socialCampaign.timeZone = $('#timezoneId option:selected').val();
+      
       this.socialStatusList.forEach(data => {
         data.shareNow = false;
         data.scheduledTimeInString = this.scheduledTimeInString;
@@ -781,6 +785,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
       .subscribe(
       data => {
         this.socialCampaign = data;
+        this.socialCampaign.shareNow = true;
         this.socialCampaign.isPartner = true;
         this.socialCampaign.userListIds = [];
         this.socialStatusList = [];
@@ -871,6 +876,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
             }
           })
         } else {
+          socialStatusProvider.socialStatusList = [];
           this.socialCampaign.socialStatusList.forEach(data=> {
               // let socialStatus = new SocialStatus();
               // socialStatus.statusMessage = socialStatusProvider.socialConnection.source === 'TWITTER' ? data.statusMessage.substring(0, 280) : data.statusMessage;

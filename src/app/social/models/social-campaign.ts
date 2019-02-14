@@ -17,4 +17,7 @@ export class SocialCampaign {
   userListIds: Array<number> = [];
 
   socialStatusProviderList: Array<SocialStatusProvider> = [];
+
+  scheduledTimeInString: string;
+  timeZone: string;
 }
