@@ -916,7 +916,7 @@ a.disabled {
                       <font><b>(Minimum 1 Day)</b></font>
                     </label>
                     <label style="cursor: default;" for="days" *ngIf="reply.actionId ==29 || reply.actionId!=22 && reply.actionId!=23" id="reply-days-{{reply.divId}}">
-                     <span *ngIf="reply.actionId !=29|&& reply.actionId != 30">Reply In X Days</span> 
+                     <span *ngIf="reply.actionId !=29 && reply.actionId != 30">Reply In X Days</span> 
                      <span *ngIf="reply.actionId == 29 || reply.actionId == 30">Send Before X Days</span>
                       <b style="color: red">*</b>
                     </label>
