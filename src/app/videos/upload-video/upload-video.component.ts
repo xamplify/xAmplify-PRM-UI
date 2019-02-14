@@ -866,6 +866,13 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
       }
       return false;
    }
+   isFileContainsExtension(files){
+    for (let i = 0; i < files.length; i++) {
+      const parts = files[i].name.split('.');
+      const ext = parts[parts.length - 1];
+      if(ext===files[i].name){ return false } else { return true; };
+   }
+  }
 
     dropClick(){
       $('#file-upload').click();
@@ -1154,14 +1161,15 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
              try{
               const self = this;
               if (!self.isContentVideo(files)) {
-                  for(let i=0;i<files.length;i++){
+                if(self.isFileContainsExtension(files)){
+                for(let i=0;i<files.length;i++){
                       const cloudContent = {
                           'downloadLink': 'https://www.googleapis.com/drive/v3/files/' + files[i].id + '?alt=media',
                           'fileName':files[i].name,
                           'oauthToken':self.tempr
                       }
                       self.cloudContentArr.push(cloudContent);
-               }
+                 }
                   //const downloadLink = 'https://www.googleapis.com/drive/v3/files/' + fileId + '?alt=media';
                   self.cloudUploadService.downloadContentFromGDrive(self.cloudContentArr)
                       .subscribe((result: any) => {
@@ -1175,11 +1183,9 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                           self.contentProcessing = true; self.processing = false;
                           self.videoFileService.videoFileSweetAlertMessage = false;
                           self.refService.contentManagementLoader=true;
-                          if(!self.videoFileService.contentRedirect) {
+                          if(!self.videoFileService.contentRedirect || self.router.url.includes('home/videos/upload')) {
                             self.videoFileService.contentRedirect = false;
-                            setTimeout(() => {
-                              self.router.navigate(['/home/content/manage']);
-                            }, 2000);
+                            setTimeout(() => { self.router.navigate(['/home/content/manage']); }, 2000);
                           }
                       }, (error: any) => {
                           this.errorIsThere = true;
@@ -1189,8 +1195,14 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                             self.picker.dispose();
                             self.videoFileService.videoFileSweetAlertMessage = false;
                         }
+                        swal.close();
                         this.customResponse = new CustomResponse('ERROR', this.properties.SOMTHING_WENT_WRONG, true);
                       });
+                  } else {
+                    swal.close();
+                    this.refService.goToTop();
+                    this.customResponse = new CustomResponse('ERROR', 'Your files does not contain proper extentions. Please add extensions to your files add re upload.', true);
+                  }
               } else {
                   if (self.picker) {
                   self.picker.setVisible(false);
