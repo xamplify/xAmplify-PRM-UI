@@ -122,6 +122,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   userListDTOObj = [];
   isEventUpdate = false;
   isEnableUpdateButton = false;
+  beforeDaysLength: number;
 
 
   constructor(public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
@@ -364,6 +365,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
    }
    this.eventSameDateError();
    this.resetTabClass();
+   this.validateReplayDate();
   }
   eventSameDateError(){
     const endDate = Date.parse(this.eventCampaign.campaignEventTimes[0].endTimeString);
@@ -1664,6 +1666,26 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
             this.launchTab = true;
         }
 
+    }
+    
+    validateReplayDate(){
+        var currentTime = new Date()
+        var month = currentTime.getMonth() + 1
+        var day = currentTime.getDate()
+        var year = currentTime.getFullYear()
+        var currentFulldate = month + "/" + day + "/" + year
+        var str = this.eventCampaign.campaignEventTimes[0].startTimeString
+        var res = str.split(" ");
+        this.differenceBetweenTwoDates(currentFulldate, res[0])
+    }
+    
+    differenceBetweenTwoDates(date1t, date2t){
+        var date1 = new Date(date1t);
+        var date2 = new Date(date2t);
+        var timeDiff = Math.abs(date2.getTime() - date1.getTime());
+        var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+        this.beforeDaysLength = diffDays;
+        
     }
 
     validateUpdateButton() {
