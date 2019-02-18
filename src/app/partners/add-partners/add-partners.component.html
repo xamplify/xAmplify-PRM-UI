@@ -266,7 +266,7 @@ img:hover {
 		<div *ngIf="dublicateEmailId" class="col-md-6"
 			class="col-md-9 alert alert alert-danger alert-dismissable"
 			style="width: 100%">
-			<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			<a class="close" data-dismiss="alert" aria-label="close" (click)="closeDuplicateEmailErrorMessage()">&times;</a>
 			<h4 class="m0">
 				Duplicate EmailId Exist Please Remove..<u>{{duplicateEmailIds}}</u>
 			</h4>

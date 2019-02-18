@@ -332,7 +332,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             }else if(this.isEmailExist){
                 this.customResponse = new CustomResponse( 'ERROR', "These partner(s) are already added " + this.existedEmailIds, true );
             }else {
-                this.dublicateEmailId = true;
+                this.dublicateEmailId = true; 
             }
         }
     }
@@ -475,6 +475,10 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         } catch ( error ) {
             this.xtremandLogger.error( error, "addPartnerComponent", "save Partners" );
         }
+    }
+    
+    closeDuplicateEmailErrorMessage(){
+        this.dublicateEmailId = false;
     }
 
     cancelPartners() {
