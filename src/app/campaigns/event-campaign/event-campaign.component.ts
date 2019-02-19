@@ -1258,7 +1258,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
                   }
 
                   if(this.eventCampaign.campaignLocation.country && this.eventCampaign.campaignLocation.zip){
-                      address4 = this.eventCampaign.campaignLocation.country + " " + this.eventCampaign.campaignLocation.zip;
+                      address4 = this.eventCampaign.campaignLocation.zip + " " + this.eventCampaign.campaignLocation.country;
                   }else if(this.eventCampaign.campaignLocation.country){
                       address4 = this.eventCampaign.campaignLocation.country;
                   }else if(this.eventCampaign.campaignLocation.zip){

@@ -344,6 +344,13 @@ a.disabled {
 								</div>
 								<div class="col-sm-offset-3 col-sm-9 pt10">
 									<div class="col-sm-6" style="padding-left: 0px">
+										<input type="text"
+											[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)? '' : null"
+											class="form-control" id="zip" placeholder="Zip" maxlength="10"
+											[(ngModel)]="eventCampaign.campaignLocation.zip"
+											[ngModelOptions]="{standalone: true}">
+									</div>
+									<div class="col-sm-6" style="padding-right: 0px">
 										<select
 											[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)? '' : null"
 											class="form-control" style="width: 100%; cursor: pointer;"
@@ -352,13 +359,6 @@ a.disabled {
 											<option *ngFor="let country of countries"
 												[value]="country.name">{{country.name}}</option>
 										</select>
-									</div>
-									<div class="col-sm-6" style="padding-right: 0px">
-										<input type="text"
-											[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)? '' : null"
-											class="form-control" id="zip" placeholder="Zip" maxlength="10"
-											[(ngModel)]="eventCampaign.campaignLocation.zip"
-											[ngModelOptions]="{standalone: true}">
 									</div>
 								</div>
 							</div>
