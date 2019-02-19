@@ -818,7 +818,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             },
             (error: any) => {
                 this.xtremandLogger.log(error);
-               // this.xtremandLogger.errorPage(error);
+                this.xtremandLogger.errorPage(error);
             }
             );
     }
