@@ -1273,6 +1273,9 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
             this.logListName = 'People who opened email log.csv';
         }else{
         this.logListName = this.rsvpResposeType +' RSVPs.csv';
+        if(this.rsvpResposeType === "NOTYET"){
+            this.logListName = 'Have Not RSVPed Yet log.csv';
+        }
         }
         this.downloadCsvList = this.rsvpDetailsList;
     }
