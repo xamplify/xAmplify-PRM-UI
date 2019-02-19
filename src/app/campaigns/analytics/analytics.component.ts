@@ -1309,11 +1309,11 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
         object["Campaign Name"] = this.downloadCsvList[i].campaignName;
         if(this.campaignType === 'EVENT'){
             if(this.isChannelCampaign){
-            object["Invities"] = this.downloadCsvList[i].rsvpMap.totalInvities;
+            object["Invites"] = this.downloadCsvList[i].rsvpMap.totalInvities;
             object["Opened"] = this.downloadCsvList[i].rsvpMap.emailOpenedCount;
             object["Yes"] = this.downloadCsvList[i].rsvpMap.YES;
             object["No"] = this.downloadCsvList[i].rsvpMap.NO;
-            object["May Be"] = this.downloadCsvList[i].rsvpMap.MAYBE;
+            object["Maybe"] = this.downloadCsvList[i].rsvpMap.MAYBE;
             object["Not Yet"] = this.downloadCsvList[i].rsvpMap.notYetResponded;
             object["Total Guests"] = this.downloadCsvList[i].rsvpMap.additionalCount;
             }else{
