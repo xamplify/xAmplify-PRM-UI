@@ -139,10 +139,10 @@
 							<thead>
 								<tr>
 									<th class="text-center-css" style="width:25%; text-align: left !important">NAME</th>
-									<th class="text-center-css" *ngIf="detailType !== 'email open' && detailType !== 'NOTYET' && detailType !== 'invities'"><span [hidden]="detailType !== 'email open'">MESSAGE</span></th>
+									<th class="text-center-css" *ngIf="detailType !== 'email open' && detailType !== 'NOTYET' && detailType !== 'invities' && detailType !== 'email not open'"><span>MESSAGE</span></th>
 									<th class="text-center-css" *ngIf="detailType === 'email open' && detailType !== 'NOTYET'">CAMPAIGN NAME</th>
 									<th class="text-center-css" *ngIf="detailType === 'email open' && detailType !== 'NOTYET'">SUBJECT</th>
-									<th class="text-center-css" *ngIf="detailType !== 'NOTYET'  && detailType !== 'invities'"><span [hidden]="detailType !== 'email open'">Most Recent</span></th>
+									<th class="text-center-css" *ngIf="detailType !== 'NOTYET'  && detailType !== 'invities' && detailType !== 'email not open'"><span>Most Recent</span></th>
 									<th class="text-center-css" *ngIf="detailType === 'YES'">Guests</th>
 									<th class="text-center-css" *ngIf="detailType === 'email not open'">Reminder</th>
 								</tr>
@@ -152,13 +152,13 @@
 									<td>
 										<app-user-info  [userInfo]="item"> </app-user-info>
 									</td>
-									<td class="text-center" *ngIf="detailType !== 'email open' && detailType !== 'NOTYET'  && detailType !== 'invities'" style="text-align:center">
+									<td class="text-center" *ngIf="detailType !== 'email open' && detailType !== 'email not open' && detailType !== 'NOTYET'  && detailType !== 'invities'" style="text-align:center">
 									<span [hidden]="detailType === 'email not open'">	<h6>{{item.message}}</h6>
 										<h6 *ngIf="!item.message" style="text-align:center"><b>-</b></h6> </span>
 									</td>
 									<td class="text-center" *ngIf="detailType === 'email open' && detailType !== 'NOTYET'" style="text-align:center"> {{item.campaignName}}</td>
 									<td class="text-center" *ngIf="detailType === 'email open' && detailType !== 'NOTYET'" style="text-align:center" style="text-align:center">{{item.subject}}</td>
-									<td class="text-center" *ngIf="detailType !== 'NOTYET' && detailType !== 'invities'"> <h6 *ngIf="detailType !== 'email open' && detailType !== 'NOTYET'  && detailType !== 'invities'" style="text-align:center">
+									<td class="text-center" *ngIf="detailType !== 'NOTYET' && detailType !== 'invities' && detailType !== 'email not open'"> <h6 *ngIf="detailType !== 'email open' && detailType !== 'NOTYET'  && detailType !== 'invities'" style="text-align:center">
 										<!-- {{item.responseTime | date: 'short'}} -->
 										<span [hidden]="detailType === 'email not open'"><app-timestamp [dateAndTime]="item.responseTime"> </app-timestamp></span>
 									</h6>
