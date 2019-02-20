@@ -139,9 +139,20 @@
                         <a *ngIf="campaign.campaignType === 'SOCIAL'" data-toggle="tooltip" data-placement="top" title="coming soon">
 													<i class="fa fa-eye mr5"></i>
                         </a>
-												<a [class.disabled]="campaign.launched && !campaign.showCancelButton && campaign.campaignType.indexOf('EVENT') > -1" (click)="reDistributeCampaign(campaign)" data-toggle="tooltip" data-placement="top" title="Redistribute Campaign" data-rel="fancybox-button" >
+						<span >
+						<a *ngIf="campaign.campaignType != 'EVENT'" (click)="reDistributeCampaign(campaign)" data-toggle="tooltip" data-placement="top" title="Redistribute Campaign" data-rel="fancybox-button" >
                             <i class="fa fa-clone"></i>
                         </a>
+                        
+                        <a *ngIf="campaign.campaignType === 'EVENT' && campaign.showCancelButton" (click)="reDistributeCampaign(campaign)" data-toggle="tooltip" data-placement="top" title="Redistribute Campaign" data-rel="fancybox-button" >
+                            <i class="fa fa-clone"></i>
+                        </a>
+                        
+                        <a *ngIf="campaign.campaignType === 'EVENT' && !campaign.showCancelButton"  data-toggle="tooltip" data-placement="top" title="Not available for cancelled event" data-rel="fancybox-button" >
+                            <i class="fa fa-clone cancelled-event"></i>
+                        </a>
+                        </span>
+                        
                         <a class="hidden"><i class="fa fa-trash"></i></a>
                         <!-- <a (click)="showCampaignPreview(campaign.campaignId)" title="Preview">
 												<i class="fa fa-eye mr5"></i>
@@ -197,8 +208,14 @@
 											<a (click)="showCampaignPreview(campaign.campaignId)" data-toggle="tooltip" data-placement="top" title="preview campaign">
 													<i class="fa fa-eye mr4"></i>
                                                  </a>
-												<a [class.disabled]="campaign.launched && !campaign.showCancelButton && campaign.campaignType.indexOf('EVENT') > -1" (click)="reDistributeCampaign(campaign)"(click)="reDistributeCampaign(campaign)" data-toggle="tooltip" data-placement="top" title="Redistribute Campaign" data-rel="fancybox-button">
+												<a *ngIf="campaign.campaignType != 'EVENT'" (click)="reDistributeCampaign(campaign)" data-toggle="tooltip" data-placement="top" title="Redistribute Campaign" data-rel="fancybox-button">
 													<i class="fa fa-clone"></i>
+												</a>
+												<a *ngIf="campaign.campaignType === 'EVENT' && campaign.showCancelButton" (click)="reDistributeCampaign(campaign)" data-toggle="tooltip" data-placement="top" title="Redistribute Campaign" data-rel="fancybox-button">
+													<i class="fa fa-clone"></i>
+												</a>
+												<a *ngIf="campaign.campaignType === 'EVENT' && !campaign.showCancelButton" data-toggle="tooltip" data-placement="top" title="Not available for cancelled event" data-rel="fancybox-button">
+													<i class="fa fa-clone" style="cursor:not-allowed"></i>
 												</a>
 											</div>
 										</div>

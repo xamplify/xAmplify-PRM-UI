@@ -83,6 +83,12 @@ fieldset {
 	background-color: #00a6e8 !important;
 	color: white;
 }
+.cancelled-event {
+	border: 1px solid #bdbdbd !important;
+    background: #bdbdbd !important;
+    color: white !important;
+    cursor: not-allowed !important;
+}
 .mobile-left { float: none;}
 @media only screen and (max-width:768px){ .modal-template { width: 95% !important;}}
 @media only screen and (min-width:768px){ .modal-template { width: 65% !important;}}
