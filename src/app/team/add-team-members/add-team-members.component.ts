@@ -263,7 +263,7 @@ export class AddTeamMembersComponent implements OnInit {
             () => this.logger.log(" Completed save()")
             );
         }else{
-            this.showErrorMessageDiv("Please assign atleast one role to team member");
+            this.showErrorMessageDiv("Please assign at least one role to your team member");
         }
     }
 
