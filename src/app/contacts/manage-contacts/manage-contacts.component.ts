@@ -1381,9 +1381,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
                 data => {
                     data = data;
                     if ( this.isPartner ) {
-                        this.customResponse = new CustomResponse( 'SUCCESS', this.properties.PARTNER_LIST_CREATE_SUCCESS, true );
+                        this.customResponse = new CustomResponse( 'SUCCESS', this.properties.PARTNER_LIST_SAVE_SUCCESS, true );
                     } else {
-                        this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_LIST_CREATE_SUCCESS, true );
+                        this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_LIST_SAVE_SUCCESS, true );
                     }
                     this.loadContactLists( this.pagination );
                 },

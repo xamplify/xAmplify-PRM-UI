@@ -14,6 +14,7 @@ export class Properties {
   //FOR CONTACTS
   FILE_TYPE_ERROR = "File type not allowed please select the .csv file only.";
   CONTACT_LIST_CREATE_SUCCESS = "Your contact list has been created successfully and it is being processed.";
+  CONTACT_LIST_SAVE_SUCCESS = "Your contact list has been saved successfully";
   CONTACT_LIST_CREATE_ERROR = "An error occured while creating your contact list.";
 
   CONTACT_LIST_UPDATE_SUCCESS = "Your contact list has been updated successfully.";
@@ -47,6 +48,7 @@ export class Properties {
 
   /* For Partners*/
   PARTNER_LIST_CREATE_SUCCESS = "Your partner list has been created successfully and we are processing your partner list";
+  PARTNER_LIST_SAVE_SUCCESS = "Your partner list has been saved successfully";
   PARTNER_LIST_NAME_UPDATE_SUCCESS = "Your partner list name has been updated successfully.";
 
   PARTNER_LIST_SYNCHRONIZATION_SUCCESS = "Your Parntner List has been synchronized successfully.";
