@@ -161,7 +161,7 @@
 				<section class='col-sm-12 p10' *ngIf="socialStatusResponse?.length > 0">
 					<div *ngFor="let socialStatus of socialStatusResponse">
 						<div class="social-status-response alert alert-dismissible" [ngClass]="{
-									'alert-success': socialStatus.publishStatus === 'SUCCESS',
+									'alert-success': socialStatus.publishStatus !== 'FAILURE',
 	                				'alert-danger': socialStatus.publishStatus === 'FAILURE'}">
 							<div class="pull-right">
 								<i class="fa fa-times-circle" aria-hidden="true" (click)="dismissMessage(socialStatus)"></i>

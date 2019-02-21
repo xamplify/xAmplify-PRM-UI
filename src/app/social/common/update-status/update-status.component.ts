@@ -357,8 +357,10 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
         data => {
           this.socialCampaign.campaignName = null;
           this.socialStatusResponse = data.socialStatusList;
-          if (data.publishStatus === 'SUCCESS') {
-            this.setCustomResponse(ResponseType.Success, 'Campaign has been redistributed successfully.');
+          if (data.publishStatus !== 'FAILURE') {
+            let message =  data.publishStatus === 'SUCCESS' ? 'launched':'scheduled';
+            this.setCustomResponse(ResponseType.Success, 'Campaign is ' + message + ' successfully.');
+            
             this.isRedirectEnabled = true;
             setTimeout(() => {
               this.redirect();
@@ -406,8 +408,9 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
           this.socialCampaign.campaignName = null;
           this.socialStatusResponse = data.socialStatusList;
           
-          if (data.publishStatus === 'SUCCESS') {
-            this.setCustomResponse(ResponseType.Success, 'Campaign has been created successfully.');
+          if (data.publishStatus !== 'FAILURE') {
+            let message =  data.publishStatus === 'SUCCESS' ? 'launched':'scheduled';
+            this.setCustomResponse(ResponseType.Success, 'Campaign is ' + message + ' successfully.');
             this.isRedirectEnabled = true;
             setTimeout(() => {
               this.redirect();
