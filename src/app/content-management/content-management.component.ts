@@ -156,6 +156,9 @@ export class ContentManagementComponent implements OnInit {
         }
 
     }
+    setFileCheck(file: any, id: any, event: any){
+      $('#grid_'+file.id).click();
+    }
 
     getSelectedFiles( file: any, id: any, event: any ) {
         let isChecked = $( '#grid_' + id ).is( ':checked' );

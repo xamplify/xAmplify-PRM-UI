@@ -71,7 +71,7 @@
                     </span>
                     <ng-template #showImage><img  [src]= "authenticationService.MEDIA_URL + companyLogoImageUrlPath"  [width]="squareCropperSettings.croppedWidth" [height]="squareCropperSettings.croppedHeight" (error)="errorHandler($event)"></ng-template>
                     <div class="profile-overlay">
-												<label class="fileContainer" (click)="fileChangeEvent()">
+												<label class="fileContainer pointer" (click)="fileChangeEvent()" >
 													<i class="fa fa-camera"></i>&nbsp;<span  *ngIf="!companyLogoImageUrlPath">Upload company logo</span><span *ngIf="companyLogoImageUrlPath">Change company logo</span>
                           <!-- <input id="companyLogo" type="file" ng2FileSelect [uploader]="companyLogoUploader" accept="image/jpeg,image/pjpeg,image/jpeg,image/pjpeg,image/png"
 															*ngIf="companyLogoUploader.queue.length==0" (change)="changeLogo($event)" title=" " #input/> -->

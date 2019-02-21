@@ -829,7 +829,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                     cancelButtonColor: '#999',
                     confirmButtonText: 'Yes',
                     showLoaderOnConfirm: true,
-                    allowOutsideClick: false
+                    allowOutsideClick: false,
+                    cancelButtonText : 'No'
                     /*     preConfirm: () => {
                              if(self.orgAdminCount>1){
                                  $('a').addClass('disabled');
