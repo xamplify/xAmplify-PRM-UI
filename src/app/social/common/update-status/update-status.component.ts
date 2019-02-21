@@ -44,8 +44,8 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   videoJSplayer: any;
   selectedVideo: SaveVideoFile;
   userId: number;
-  isValidCampaignName:any;
-
+  isCampaignNameExist:boolean;
+  isRedirectEnabled: boolean;
   socialCampaign = new SocialCampaign();
   socialStatus = new SocialStatus();
   selectedAccounts: number = 0;
@@ -307,13 +307,18 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   }
 
   isValidSocialCampaign() {
+    this.validateCampaignName(this.socialCampaign.campaignName);
       let isValid = true;
       isValid = this.isSocialAccountsSelected();
 
       if ( !this.socialCampaign.campaignName ) {
           isValid = false;
           this.setCustomResponse( ResponseType.Warning, 'Please provide campaign name' );
-      } else if ( this.socialCampaign.campaignName && this.socialCampaign.userListIds.length === 0 && !this.authenticationService.isOnlyPartner() ) {
+      } else if(this.isCampaignNameExist) {
+          isValid = false;
+          this.setCustomResponse( ResponseType.Warning, 'Please provide another campaign name' );
+      }
+      else if ( this.socialCampaign.campaignName && this.socialCampaign.userListIds.length === 0 && !this.authenticationService.isOnlyPartner() ) {
           isValid = false;
           this.setCustomResponse( ResponseType.Warning, 'Please select one or more Partner lists.' );
       }
@@ -350,15 +355,19 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
       this.socialService.redistributeSocialCampaign(this.socialCampaign)
         .subscribe(
         data => {
-          this.setCustomResponse(ResponseType.Success, 'Redistributed Successfully');
           this.socialCampaign.campaignName = null;
-          this.referenceService.campaignSuccessMessage = this.socialCampaign.socialStatusList[0].shareNow? 'NOW': 'SCHEDULE';
-          this.referenceService.launchedCampaignType = 'SOCIAL';
-          if(this.authenticationService.isOnlyPartner()) {
-            this.router.navigate(['home/campaigns/partner/social']); }
-          else {
-            this.router.navigate(['/home/campaigns/manage']);
+          this.socialStatusResponse = data.socialStatusList;
+          if (data.publishStatus === 'SUCCESS') {
+            this.setCustomResponse(ResponseType.Success, 'Campaign has been redistributed successfully.');
+            this.isRedirectEnabled = true;
+            setTimeout(() => {
+              this.redirect();
+            }, 10000);
+
           }
+          else if (data.publishStatus === 'FAILURE')
+            this.setCustomResponse(ResponseType.Error, 'An Error occurred while redistributing the social campaign.');
+
           $('input:checkbox').removeAttr('checked');
           $('#contact-list-table tr').removeClass("highlight");
         },
@@ -390,21 +399,24 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
       this.socialStatusResponse = [];
       this.socialCampaign.userId = this.userId;
       this.socialCampaign.socialStatusList = this.socialStatusList;
-      
-
 
       this.socialService.createSocialCampaign(this.socialCampaign)
         .subscribe(
         data => {
-          this.setCustomResponse(ResponseType.Success, 'Status posted Successfully');
           this.socialCampaign.campaignName = null;
-          this.referenceService.campaignSuccessMessage = this.socialCampaign.socialStatusList[0].shareNow? 'NOW': 'SCHEDULE';
-          this.referenceService.launchedCampaignType = 'SOCIAL';
-          if(this.authenticationService.isOnlyPartner()) {
-            this.router.navigate(['home/campaigns/partner/social']); }
-          else {
-            this.router.navigate(['/home/campaigns/manage']);
+          this.socialStatusResponse = data.socialStatusList;
+          
+          if (data.publishStatus === 'SUCCESS') {
+            this.setCustomResponse(ResponseType.Success, 'Campaign has been created successfully.');
+            this.isRedirectEnabled = true;
+            setTimeout(() => {
+              this.redirect();
+            }, 10000);
+
           }
+          else if (data.publishStatus === 'FAILURE')
+            this.setCustomResponse(ResponseType.Error, 'An Error occurred while creating the social campaign.');
+
           $('input:checkbox').removeAttr('checked');
           $('#contact-list-table tr').removeClass("highlight");
         },
@@ -420,6 +432,15 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
           this.loading = false;
         }
         );
+    }
+  }
+
+  redirect() {
+    if (this.authenticationService.isOnlyPartner()) {
+      this.router.navigate(['home/campaigns/partner/social']);
+    }
+    else {
+      this.router.navigate(['/home/campaigns/manage']);
     }
   }
 
@@ -478,8 +499,8 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   shareNow() {
     this.socialStatusList.forEach(data => {
       data.userId = this.userId;
-      if (this.isUrl(data.statusMessage))
-        data.validLink = true;
+      // if (this.isUrl(data.statusMessage))
+      //   data.validLink = true;
       if (data.shareNow) {
         data.scheduledTime = new Date();
         data.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -807,15 +828,12 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     this.campaignService.getCampaignNames(userId).subscribe(data => { this.campaignNames.push(data); },
     error => console.log( error ), () => console.log( "Campaign Names Loaded" ) );
   }
+
   validateCampaignName(campaignName:string){
-    const lowerCaseCampaignName = $.trim(campaignName.toLowerCase());//Remove all spaces
-    if(this.checkTitleAvailability(this.campaignNames[0],lowerCaseCampaignName)){
-        this.isValidCampaignName = true;
-    }else{
-        this.isValidCampaignName = false;
-    }
+    const lowerCaseCampaignName = $.trim(campaignName.toLowerCase()); //Remove all spaces
+    this.isCampaignNameExist = this.campaignNames[0].includes(lowerCaseCampaignName) ? true: false;
   }
-  checkTitleAvailability(arr, val) { return arr.indexOf(val) > -1; }
+
   ngOnInit() {
     flatpickr('.flatpickr', {
       enableTime: true,
@@ -834,7 +852,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
           this.getSocialCampaign(this.alias);
         }
         this.loadContactLists( this.contactListsPagination );
-        this.loadCampaignNames(this.authenticationService.user.id);
+        this.loadCampaignNames(this.userId);
     }
   }
 
