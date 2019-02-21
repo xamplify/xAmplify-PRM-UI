@@ -181,9 +181,9 @@
 												<span *ngIf="campaign.campaignName?.length>25">...</span>
 											</h4>
 											<!-- <span class="view-banner" *ngIf="campaign.launched && !campaign.showCancelButton && campaign.campaignType.indexOf('EVENT') > -1" style="background-color: red;">Cancelled</span> -->
-                      <h5 [title]="campaign.createdBy">By <b>{{campaign.createdBy | slice:0:15}}<span *ngIf="campaign.createdBy?.length>15">...</span></b></h5>
-											<h5 [title]="campaign.companyName">From <b>{{campaign.companyName | slice:0:15}}<span *ngIf="campaign.companyName?.length>15">...</span></b></h5>
-											<h6 style="margin: 4px;">Received On <b>
+                      <h6 [title]="campaign.createdBy">By <b>{{campaign.createdBy | slice:0:15}}<span *ngIf="campaign.createdBy?.length>15">...</span></b></h6>
+											<h6 [title]="campaign.companyName">From <b>{{campaign.companyName | slice:0:15}}<span *ngIf="campaign.companyName?.length>15">...</span></b></h6>
+											<h6>Received On <b>
                         <app-timestamp [isOnlyDate]="false" [dateAndTime]="campaign.launchedOn"> </app-timestamp>
                       </b></h6>
 											<div class="bookmark-ribbon"> 
