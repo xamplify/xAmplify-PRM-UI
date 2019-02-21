@@ -21,15 +21,16 @@ import { SocialStatusComponent } from '../social/common/social-status/social-sta
 import { ConnectAccountsComponent } from '../social/common/connect-accounts/connect-accounts.component';
 import { SocialLoaderComponent } from '../social/common/social-loader/social-loader.component';
 import { CommonComponentModule } from '../common/common.module';
+import { ImageCropperModule } from 'ng2-img-cropper';
 
 @NgModule({
         imports: [CommonModule, RouterModule, FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,
                   TagInputModule, HttpModule, Ng2FilterPipeModule, ColorPickerModule, TimepickerModule.forRoot(),
-                  BootstrapSwitchModule.forRoot(), TimezonePickerModule, LoadingModule, CommonComponentModule ],
-        declarations: [LoaderComponent, UpdateStatusComponent, SocialStatusComponent, ConnectAccountsComponent, SocialLoaderComponent],
+                  BootstrapSwitchModule.forRoot(), TimezonePickerModule, LoadingModule, CommonComponentModule, ImageCropperModule ],
+        declarations: [LoaderComponent, UpdateStatusComponent, SocialStatusComponent, ConnectAccountsComponent, SocialLoaderComponent, ],
         exports: [FileSelectDirective, FileDropDirective, FormsModule, CommonModule, RouterModule, ColorPickerModule,
                   FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule, TagInputModule,
-                  HttpModule, Ng2FilterPipeModule, LoaderComponent, TimepickerModule,
+                  HttpModule, Ng2FilterPipeModule, LoaderComponent, TimepickerModule,ImageCropperModule,
                   BootstrapSwitchModule, TimezonePickerModule, UpdateStatusComponent, SocialStatusComponent, ConnectAccountsComponent, LoadingModule, SocialLoaderComponent
                 ],
         providers: [],

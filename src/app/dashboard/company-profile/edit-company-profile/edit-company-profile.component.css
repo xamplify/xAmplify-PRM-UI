@@ -131,9 +131,18 @@ svg {
 .fileContainer [type=file] {
     cursor: pointer;
 }
-@media only screen  and (min-width:601px) {
+@media only screen  and (min-width:601px) { .heading-text{ font-size: 26px;color: #888888;}}
+@media only screen  and (max-width:600px) {}
+@media screen and (max-width:600px){
 .heading-text{ font-size: 26px;color: #888888;}
-}
-@media only screen  and (max-width:600px) {
+.accounts-modal { width:100%; }
+.imgCrop-modal {  width:100%; }
+ }
+@media screen and (min-width:601px){
   .heading-text{ font-size: 16px;color: #888888;}
+  .accounts-modal { width:60%;float: right; }
+  .imgCrop-modal {  width:41% !important; }
+}
+.result.rounded > img {
+  border-radius: 100px;
 }
