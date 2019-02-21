@@ -1045,7 +1045,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                     });
                     for(let i=0;i<files.length;i++){
                         const cloudContent = {
-                            'downloadLink': files[i].link,
+                            'downloadLink': files[i].link? files[i].link : files[i].url,
                             'fileName':files[i].name,
                             'oauthToken':null
                         }

@@ -92,6 +92,7 @@ export class ContentManagementComponent implements OnInit {
               case 'doc':return 'assets/images/content/docs.png';
               case 'pdf':return 'assets/images/content/pdfs.png';
               case 'ppt':return 'assets/images/content/ppt.png';
+              case 'pct':return 'assets/images/content/pct.png';
               case 'pptx':return 'assets/images/content/pptx.png';
               case 'txt':return 'assets/images/content/text.png';
               case 'xls':return 'assets/images/content/xls.png';
