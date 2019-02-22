@@ -132,6 +132,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
           "emailId": this.referenceService.topNavBarNotificationDetails.emailId
         }
        this.isTimeLineView = false;
+       console.log(object)
        this.userTimeline(object);
       }
     }catch(error){ this.xtremandLogger.error('error'+error);}
@@ -208,6 +209,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       this.campaignService.getEmailSentCount(campaignId)
       .subscribe(
       data => {
+        console.log(data)
         this.campaignReport.emailSentCount = data.emails_sent_count;
         this.loading = false;
       },
@@ -247,6 +249,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   }
 
   campaignViewsCountBarchart(names, data) {
+  
     this.loading = true;
     const nameValue = this.campaignType === 'VIDEO' ? 'Views' : 'Email Opened';
     const self = this;
@@ -637,7 +640,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
             this.dealRegService.getDeal(campaignViews.campaignId,campaignViews.userId).subscribe(data=>{
               this.dealId = data;
               if(data == -1)
-                  this.dealButtonText = "Push As A Lead"
+                  this.dealButtonText = "Register Lead"
               else
                   this.dealButtonText = "Update Lead"
              })
@@ -1429,6 +1432,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     }
     setTimeout(() => { this.mainLoader = false;}, 3000);
   }catch(error) {this.hasClientError = true;this.mainLoader = false; this.xtremandLogger.error('error'+error); }
+  
   }
   ngOnDestroy(){
     this.paginationType = '';

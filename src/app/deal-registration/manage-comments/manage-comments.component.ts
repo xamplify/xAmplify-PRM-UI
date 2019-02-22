@@ -1,83 +1,132 @@
-import { Component, OnInit, Input, Output,EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { DealComments } from '../models/deal-comments';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { DealRegistrationService } from '../services/deal-registration.service';
 import { User } from '../../core/models/user';
 import { Campaign } from '../../campaigns/models/campaign';
 import { CampaignService } from '../../campaigns/services/campaign.service';
-var $ ;
+import { ReferenceService } from '../../core/services/reference.service';
+import { DealRegistration } from '../models/deal-registraton';
+var $;
 @Component({
   selector: 'app-manage-comments',
   templateUrl: './manage-comments.component.html',
   styleUrls: ['../../contacts/add-contact-modal/add-contact-modal.component.css']
 })
-export class ManageCommentsComponent implements OnInit {
+export class ManageCommentsComponent implements OnInit
+{
 
   @Input()
-  lead:any;
-  campaign:Campaign;
-   @Output()  isCommentSection = new EventEmitter<any>();
+  lead: any;
+  campaign: Campaign;
+  @Output() isCommentSection = new EventEmitter<any>();
 
-   comment:DealComments
-   commentList:DealComments[] = [];
-    firstName:string;
-    lastName:string;
+  comment: DealComments
+  commentList: DealComments[] = [];
+  firstName: string;
+  lastName: string;
   loggedInUserId: number;
   user: User;
   isError = true;
-  constructor(public authenticationService: AuthenticationService,private dealRegService: DealRegistrationService,private campaignService:CampaignService) { }
+  createdBy: any;
+  deal: DealRegistration;
+  constructor(public authenticationService: AuthenticationService, private dealRegService: DealRegistrationService, 
+    private campaignService: CampaignService,refferenceService:ReferenceService) { 
 
-  ngOnInit() {
-   
+  }
+
+  ngOnInit()
+  {
+
+
+    this.comment = new DealComments;
+    this.loggedInUserId = this.authenticationService.getUserId();
+    const obj = { 'campaignId': this.lead.campaignId };
+    console.log(this.lead)
+    this.campaignService.getCampaignById(obj).subscribe(data =>
+    {
+      this.campaign = data;
+      this.dealRegService.getDealCreatedBy(this.campaign.userId).subscribe(user =>
+        {
+        
+          this.createdBy = user;
     
-     this.comment = new DealComments;
-      this.loggedInUserId =this.authenticationService.getUserId();
-      const obj = { 'campaignId': this.lead.campaignId };
-      this.campaignService.getCampaignById(obj).subscribe(data =>{
-         this.campaign = data;
-         console.log(data)
+        })
+     
+
+    },
+    error => console.log(error),
+    () => { })
+    this.dealRegService.getDealById(this.lead.dealId).subscribe(deal=>{
+        this.deal = deal;
+        console.log(this.deal);
+    },
+    error => console.log(error),
+    () => { })
+    this.dealRegService.getDealCreatedBy(this.loggedInUserId).subscribe(user =>
+    {
+
+      this.user = user;
+
+    },
+    error => console.log(error),
+    () => { })
+    this.dealRegService.getComments(this.lead.dealId).subscribe(commentData =>
+    {
+      console.log(commentData);
+      this.commentList = commentData.comments;
+      this.commentList.forEach(c=>{
+        c.userName = c.user.firstName+" "+c.user.lastName;
+        if (c.user.profileImagePath.indexOf(null) > -1) {
+          c.user.profileImagePath = 'assets/admin/pages/media/profile/icon-user-default.png';
          
-     })
-      this.dealRegService.getDealCreatedBy(this.loggedInUserId).subscribe(user => {
-       
-        this.user = user;
-
-      }) 
-      this.dealRegService.getComments(this.lead.dealId).subscribe(commentData => {
-        this.commentList = commentData.comments;
-        this.comment = new DealComments;
-        console.log(commentData.comments)
+        } 
       })
+      this.comment = new DealComments;
 
-    console.log(this.lead);
-  } 
+    },
+    error => console.log(error),
+    () => { })
 
-  addCommentModalClose(){
+
+  }
+
+  addCommentModalClose()
+  {
     this.isCommentSection.emit(false);
   }
-  validateComment(comment:string){
-    if(comment.length == 0)
-        this.isError =true;
+  validateComment(comment: string)
+  {
+    if (comment.length == 0)
+      this.isError = true;
     else
-        this.isError = false;
+      this.isError = false;
   }
-  postComment(data:DealComments){ 
-   console.log(!this.isError)
-    if(!this.isError){
-    data.createdAt = new Date();
-    data.user = this.user;
-    data.dealId = this.lead.dealId;
-    console.log(data);
-    this.dealRegService.saveComment(this.lead.dealId,data).subscribe(result =>{
-      this.dealRegService.getComments(this.lead.dealId).subscribe(commentData => {
-        this.commentList = commentData.comments;
-        this.comment = new DealComments;
-        console.log(commentData.comments)
-      })
-       
-    });
-  }
-   // data.user.lastName = this.user.lastName;
-    
+  postComment(data: DealComments)
+  {
+
+    if (!this.isError)
+    {
+      data.createdAt = new Date();
+      data.user = this.user;
+      data.dealId = this.lead.dealId;
+
+      this.dealRegService.saveComment(this.lead.dealId, data).subscribe(result =>
+      {
+        this.dealRegService.getComments(this.lead.dealId).subscribe(commentData =>
+        {
+          this.commentList = commentData.comments;
+          this.comment = new DealComments;
+
+        },
+        error => console.log(error),
+        () => { })
+
+      },
+      error => console.log(error),
+      () => { });
+    }
+    // data.user.lastName = this.user.lastName;
+
   }
 }

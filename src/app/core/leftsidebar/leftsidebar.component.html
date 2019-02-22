@@ -174,13 +174,13 @@
             
       <!-- ------Deal Registration------ -->
       <li *ngIf="(authService.module.isOrgAdmin && authService.user.hasCompany) || authService.module.isVendor || isOnlyPartner" [ngClass]="{'active': location.path().includes('deals')}">
-        <a   (click)="openOrCloseTabs('campaigns')">
+        <a   [routerLink]="['./deals/manage']">
         <i class="fa fa-tags"></i>
-        <span class="title">Deals</span>
+        <span class="title">Opportunities</span>
         <span class="arrow "></span>
         <span class="selected"></span>
         </a>
-        <ul class="sub-menu" [ngStyle]="{'display': campaigns? 'block': 'none' }">
+        <!-- <ul class="sub-menu" [ngStyle]="{'display': campaigns? 'block': 'none' }">
           <li>
               <a *ngIf="!isOnlyPartner && authService.module.isCampaign"  [routerLink]="['./deals/manage']" >
               <i class="fa fa-tags"></i>
@@ -189,12 +189,12 @@
              
             </li>
             <li>
-              <a  *ngIf="isOnlyPartner || authService.module.isCompanyPartner" [routerLink]="['./deals/manage/partners']">
+              <a  *ngIf="isOnlyPartner || authService.module.isCompanyPartner || authService.module.isPartner" [routerLink]="['./deals/manage/partners']">
               <i class="fa fa-tags"></i>
               <span class="title">As Partner</span>
               </a>
             </li>
-          </ul>
+          </ul> -->
       </li>
       
       

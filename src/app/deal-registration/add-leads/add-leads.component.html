@@ -1,0 +1,135 @@
+<div class="portlet light" id="del-profile-div">
+  <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+  <div class="portlet-title">
+    <div class="caption">Lead Registration</div>
+  </div>
+  <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+  <div class="alert alert-danger" id="company-profile-error-div" style="display: none;">
+    <a class="close" aria-label="close">x</a>
+    <strong>Please complete the required (*) fields. </strong>
+  </div>
+  <div class="portlet-body clearfix">
+    <div>
+      <form role="form" id="deal-registration-form">
+        <div class="row">
+          <!-- left page -->
+          <div class="col-sm-6 col-xs-12">
+            <div class="form-group">
+              <label class="control-label">Campaign Name
+                <font style="color: #f55d7a">
+                  <b>*</b>
+                </font>
+              </label>
+              <input type="text" disabled="disabled" name="campaignName"  value="{{campaign.campaignName}}"
+                class="form-control" id="campaignName" />
+            </div>
+
+            
+            <div class="form-group" [attr.class]="firstName">
+              <label class="control-label">First Name
+                
+              </label>
+              <input type="text" maxlength="100" name="companyName"  class="form-control" [(ngModel)]=" dealRegistration.firstName"
+                [ngModelOptions]="{standalone: true}" id="firstName"  />
+            </div>
+
+            <div class="form-group" [attr.class]="lastName">
+              <label class="control-label">Last Name
+               
+              </label>
+              <input type="text" maxlength="100"  class="form-control" [(ngModel)]=" dealRegistration.lastName"
+                [ngModelOptions]="{standalone: true}" id="lastName" />
+            </div>
+            <div class="form-group" [attr.class]="lastName">
+              <label class="control-label">Company
+               
+              </label>
+              <input type="text" maxlength="100"  class="form-control" [(ngModel)]=" dealRegistration.company"
+                [ngModelOptions]="{standalone: true}" id="lastName"  />
+            </div>
+            
+
+            <div class="form-group" *ngIf="dealRegistration.email">
+              <label class="control-label">Email
+                <font style="color: #f55d7a">
+                  <b>*</b>
+                </font>
+              </label>
+              <input type="text" maxlength="100"  class="form-control" [(ngModel)]=" dealRegistration.email" [ngModelOptions]="{standalone: true}"
+                id="email" disabled/>
+            </div>
+
+            <div class="form-group" [attr.class]="phoneDivClass">
+              <label class="control-label">Phone Number
+               
+              </label>
+              <fieldset style="padding:0 !important;border: 1px solid #ece2e2 !important">
+                <int-phone-prefix [(ngModel)]="dealRegistration.phone" (input)="validateField('phone',false)" (blur)="validateField('phone',false)"
+                  [ngModelOptions]="{standalone: true}"></int-phone-prefix>
+              </fieldset>
+              <span *ngIf="phoneError" style="color: #f55d7a">{{phoneErrorMessage}}</span>
+            </div>
+
+
+
+          </div>
+          <!-- right page -->
+          <div class="col-sm-6 col-xs-12">
+
+            
+            <div class="form-group" [attr.class]="leadStreet">
+              <label class="control-label">Lead Address
+
+              </label>
+              <textarea type="text" maxlength="100"  class="form-control" name="leadstreet" [(ngModel)]=" dealRegistration.leadStreet"
+                [ngModelOptions]="{standalone: true}" id="leadStreet"></textarea>
+            </div>
+            <div class="form-group" [attr.class]="leadCity">
+              <label class="control-label">Lead City
+
+              </label>
+              <input type="text" maxlength="100" name="city"  class="form-control" [(ngModel)]=" dealRegistration.leadCity"
+                [ngModelOptions]="{standalone: true}" id="leadCity" />
+            </div>
+
+            <div class="form-group" [attr.class]="leadState">
+              <label class="control-label">Lead State/Province
+
+              </label>
+              <input type="text" maxlength="100" class="form-control" name="lead state" [(ngModel)]=" dealRegistration.leadState"
+                [ngModelOptions]="{standalone: true}" id="leadState" />
+            </div>
+            <div class="form-group" [attr.class]="leadPostalCode">
+              <label class="control-label">Lead Postal Code
+
+              </label>
+              <input type="text" maxlength="10" name="companyName"  class="form-control" [(ngModel)]=" dealRegistration.postalCode"
+                [ngModelOptions]="{standalone: true}" id="leadPostalCode" />
+            </div>
+
+            <div class="form-group" [attr.class]="country">
+              <label class="control-label">Lead Country
+
+              </label>
+              <select class="form-control"  [(ngModel)]="dealRegistration.leadCountry" [ngModelOptions]="{standalone: true}"
+                placeholder="Country" id="leadCountry">
+                <option *ngFor="let country of countryNames.countries" [value]="country" [selected]="dealRegistration.leadCountry==country">{{country}}</option>
+              </select>
+            </div>
+           
+            
+          </div>
+
+
+          
+          <div class="pull-right" style="margin: 15px" *ngIf="parent != 'manage-deals'" >
+            <button type="submit" id="saveDeal" [disabled]=" !isDealRegistrationFormValid" (click)="save()" class="btn green-haze">{{submitButtonText}}</button>
+            <!--  <button type="submit" id="updateDeal" (click)="update()"class="btn green-haze">Update</button> -->
+          </div>
+          </div>
+      </form>
+
+
+      </div>
+    </div>
+  </div>

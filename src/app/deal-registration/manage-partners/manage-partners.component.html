@@ -29,7 +29,8 @@
         <thead>
           <tr>
             <th class="center-aligned">Partner</th>
-            <th class="center">#Leads Count</th>
+            <th class="center" *ngIf="isCampaignByLeads" >#Leads Count</th>
+            <th class="center" *ngIf="!isCampaignByLeads" >#Deals Count</th>
           </tr>
         </thead>
         <tbody>
@@ -38,11 +39,16 @@
               <td>
                 <app-user-info [userInfo]="item" [isPartnerEntityInfo]="true" [isPartnerInfo]="true"></app-user-info>
               </td>
-              <td>
-                <a (click)="showLeads(item)" data-toggle="tooltip" data-placement="top" title="No Of Deals">
+              <td *ngIf="isCampaignByLeads">
+                <a (click)="showLeads(item)" data-toggle="tooltip" data-placement="top" title="# Of Leads">
                   <span class="circled-number"><b>{{item.count}}</b></span>
                 </a>
               </td>
+              <td *ngIf="!isCampaignByLeads">
+                  <a (click)="showLeads(item)" data-toggle="tooltip" data-placement="top" title="# Of Deals">
+                    <span class="circled-number"><b>{{item.count}}</b></span>
+                  </a>
+                </td>
             </tr>
           </ng-container>
         </tbody>
