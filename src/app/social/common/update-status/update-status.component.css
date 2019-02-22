@@ -472,7 +472,12 @@ h5 {
 	color: #ffffff;
 	padding: 10px 20px;
 }
-
+.alert-danger {
+	background-color: #fc8585;
+    border-color: #fc8585;
+    color: #ffffff;
+    padding: 10px 20px;
+}
 .swal2-cancel {
 	background-color: #cfd8dc;
 }
