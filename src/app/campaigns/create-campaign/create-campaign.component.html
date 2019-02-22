@@ -821,10 +821,10 @@
               </div>
             </div>
           </ng-container>
-          <div *ngIf="emailTemplatesPagination.totalRecords==0 && campaign.enableCoBrandingLogo" class="alert alert-info">
+          <div *ngIf="emailTemplatesPagination.totalRecords==0 && campaign.enableCoBrandingLogo && !campaignEmailTemplate.httpRequestLoader.isLoading" class="alert alert-info">
             <strong>No co-branded email templates found</strong>
           </div>
-           <div *ngIf="emailTemplatesPagination.totalRecords==0 && !campaign.enableCoBrandingLogo" class="alert alert-info">
+           <div *ngIf="emailTemplatesPagination.totalRecords==0 && !campaign.enableCoBrandingLogo && !campaignEmailTemplate.httpRequestLoader.isLoading" class="alert alert-info">
             <strong>No email templates found</strong>
           </div>
           <div style="text-align:left;" [hidden]="emailTemplatesPagination.totalRecords<0 || campaignEmailTemplate.httpRequestLoader.isLoading || campaignEmailTemplate.httpRequestLoader.isServerError">
@@ -1214,7 +1214,7 @@
                     </ul>
                     <!--current code   -->
 										<div *ngIf="reply.emailTemplatesPagination.totalRecords==0" class="col-xs-12 alert alert-info">
-											<strong>No email templates found</strong>
+											<strong >No email templates found</strong>
 										</div>
 										<div class="col-xs-12" *ngIf="reply.emailTemplatesPagination.totalRecords>0 && !campaignEmailTemplate.httpRequestLoader.isLoading && !campaignEmailTemplate.httpRequestLoader.isServerError">
 											<ul  style="float: left" *ngIf="reply.emailTemplatesPagination.pager.pages && reply.emailTemplatesPagination.pager.pages.length" class="pagination">
