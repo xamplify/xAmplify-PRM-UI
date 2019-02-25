@@ -20,10 +20,12 @@ export class CampaignReport {
 
     emailSentList: any;
     usersWatchList: any;
+    totalUsersWatchList: any;
     totalWatchedList: any;
 
     emailActionType: string;
     emailLogs: Array<EmailLog>;
+    totalEmailLogs: Array<EmailLog>;
     totalEmailActionList: any;
 
     totalYesCount: number = 0;

@@ -359,6 +359,8 @@
   </div>
 </div>
 
+<app-export-csv *ngIf="referenceService.isDownloadCsvFile" [downloadListDetails]="downloadDataList" [downloadListName]="logListName"> </app-export-csv>
+
 <!-- Analytics List 4 Modal popups in 1 modal popup -->
 <div class="modal right fade" id="calendarModal" tabindex="-1" role="dialog" aria-labelledby="calendarModalLabl" data-backdrop="static"
  data-keyboard="false" >
