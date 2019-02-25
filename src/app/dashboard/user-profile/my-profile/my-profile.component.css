@@ -182,3 +182,6 @@ a:hover{ text-decoration:none}
     width: 32px;
 }
 .left-css{ position: relative; left: -19px;}
+.result.rounded > img { border-radius: 100px;}
+@media screen and (max-width:600px){.imgCrop-modal {  width:100%; }}
+@media screen and (min-width:601px){.imgCrop-modal {  width:41% !important; }}

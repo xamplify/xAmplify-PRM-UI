@@ -101,12 +101,19 @@ input:checked + .slider-new:before {
 							<!-- PORTLET MAIN -->
 							<div class="portlet light profile-sidebar-portlet">
               <div class="profile-image-wrapper">
-                <img src="{{userProfileImage}}" class="profile-image" (error)="errorHandler($event)" (click)="imageUpload('imageSelect')">
-                <div class="upload-btn-wrapper">
+                <!-- <img src="{{userProfileImage}}" class="profile-image" (error)="errorHandler($event)" (click)="imageUpload('imageSelect')"> -->
+
+                <ng-container *ngIf="(circleData | json) != '{}'; else showImage">
+                  <img class="profile-image"  *ngIf="!cropRounded && circleData?.image; else Other" [src]="circleData.image">
+                  <ng-template #Other><img class="profile-image"  [src]= "userProfileImage"  [width]="circleCropperSettings.croppedWidth" [height]="circleCropperSettings.croppedHeight" (error)="errorHandler($event)"></ng-template>
+                </ng-container>
+                <ng-template #showImage><img  [src]= "userProfileImage"  class="profile-image"  [width]="circleCropperSettings.croppedWidth" [height]="circleCropperSettings.croppedHeight" (error)="errorHandler($event)" (click)="imageUpload('imageSelect')"></ng-template>
+
+                <div id="imageSelect" class="upload-btn-wrapper" (click)="fileChangeEvent()">
                     <i class="fa fa-camera"></i>
-                    <input type="file" ng2FileSelect [uploader]="uploader"
+                    <!-- <input type="file" ng2FileSelect [uploader]="uploader"
                     accept="image/jpeg,image/pjpeg,image/jpeg,image/pjpeg,image/png" *ngIf="uploader.queue.length==0"
-                    id="imageSelect" (change)="fileChange(input)" title=" " #input/>
+                    id="imageSelect" (change)="fileChange(input)" title=" " #input/> -->
                 </div>
               </div>
 								<div class="profile-usertitle">
@@ -490,6 +497,24 @@ input:checked + .slider-new:before {
 			</div>
 			<div class="page-content" *ngIf="hasClientErrors">
 				<h5 style="color: red">Something went wrong.please contact admin</h5>
+      </div>
 
-			</div>
+      <div class="modal right fade" id="cropProfileImage" tabindex="-1"
+        role="dialog" aria-labelledby="cropProfileImage"  data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog imgCrop-modal"   role="document">
+          <div class="modal-content rounded-0" >
+            <div class="modal-header">
+              <a class="close-circle" data-dismiss="modal" (click)="closeModal()"><i class="fa fa-times"></i></a>
+              <h4 class="modal-title" id="cropProfileImage">Crop Your profile Image</h4>
+            </div>
+            <div class="modal-body">
+              <ngx-loading [show]="loadingcrop" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+              <img-cropper *ngIf="!cropRounded" [image]="circleData" [settings]="circleCropperSettings"></img-cropper>
+              <div style="text-align: right;">
+                  <button class="btn btn-primary" (click)="uploadProfileImage()">Upload Image</button>
+              </div>
+            </div>
+          </div>
+        </div>
+     </div>
 
