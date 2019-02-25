@@ -107,6 +107,11 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             .subscribe(
                 data => {
                     this.campaigns = data.campaigns;
+                     $.each(this.campaigns,function(index,campaign){
+                         campaign.displayTime = new Date(campaign.utcTimeInString);
+                         console.log(campaign.utcTimeInString+"***********"+campaign.displayTime+"for"+campaign.name);
+                    });
+                    console.log(this.campaigns);
                     this.totalRecords = data.totalRecords;
                     pagination.totalRecords = data.totalRecords;
                     pagination = this.pagerService.getPagedItems(pagination, data.campaigns);

@@ -11,7 +11,9 @@ import { UserToken } from '../models/user-token';
 import { UtilService } from '../services/util.service';
 
 import { environment } from '../../../environments/environment';
-declare var swal: any;
+var SockJs = require("sockjs-client");
+var Stomp = require("stompjs");
+declare var swal,require: any;
 
 @Injectable()
 export class AuthenticationService {
@@ -325,5 +327,13 @@ export class AuthenticationService {
         }
         return userId;
     }
+    
+    connect() {
+        let url = this.REST_URL + "socket";
+        let socket = new SockJs( url );
+        let stompClient = Stomp.over( socket );
+        return stompClient;
+    }
+    
 
 }

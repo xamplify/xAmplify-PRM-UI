@@ -7,6 +7,7 @@ export class Module {
     isOrgAdmin:boolean = false;
     isPartner:boolean = false;
     hasVideoRole:boolean = false;
+    hasOpportunityRole = false;
     hasSocialStatusRole:boolean = false;
     isCompanyPartner:boolean = false;
     isVendor:boolean = false;

@@ -35,7 +35,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
         this.location = location;
         const roles = this.authService.getRoles();
        
-        if(roles!=undefined){
+        if(roles!==undefined){
             if (roles.indexOf(this.roleName.campaignRole) > -1 ||
                     roles.indexOf(this.roleName.orgAdminRole) > -1 ||
                     roles.indexOf(this.roleName.allRole) > -1 ||
@@ -72,6 +72,12 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                     roles.indexOf(this.roleName.allRole) > -1 ||
                     roles.indexOf(this.roleName.vendorRole)>-1) {
                     this.authService.module.isVideo = true;
+                }
+                if (roles.indexOf(this.roleName.opportunityRole) > -1 ||
+                    roles.indexOf(this.roleName.orgAdminRole) > -1 ||
+                    roles.indexOf(this.roleName.allRole) > -1 ||
+                    roles.indexOf(this.roleName.vendorRole)>-1) {
+                    this.authService.module.hasOpportunityRole = true;
                 }
                 if (roles.indexOf(this.roleName.orgAdminRole) > -1) {
                     this.authService.module.isOrgAdmin = true;
