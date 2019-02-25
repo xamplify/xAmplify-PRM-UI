@@ -2419,6 +2419,19 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                 this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_SAVE_SUCCESS_AND_MAIL_SENT_SUCCESS, true );
             }
         }
+        
+        if( event === "users are unSubscribed for emails" ){
+            this.customResponse = new CustomResponse( 'ERROR', "The " + this.checkingContactTypeName +"s are unsubscribed for receiving the campaign emails.", true );
+        }
+        
+        if( event === "user has unSubscribed for emails" ){
+            this.customResponse = new CustomResponse( 'ERROR', "The " + this.checkingContactTypeName + " has unsubscribed for receiving the campaign emails.", true );
+        } 
+        
+        if ( event == "Emails Sending failed" ) {
+            this.customResponse = new CustomResponse( 'ERROR', "Failed to send Emails", true );
+        }
+        
         this.openCampaignModal = false;
         this.contactsByType.contactListAssociatedCampaigns.length = 0;
     }

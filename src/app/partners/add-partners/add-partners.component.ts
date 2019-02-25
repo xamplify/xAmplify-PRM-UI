@@ -2050,8 +2050,20 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     }
 
     closeModal( event ) {
-        if ( event == "Emails Send Successfully" ) {
+        if ( event === "Emails Send Successfully" ) {
             this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_SAVE_SUCCESS_AND_MAIL_SENT_SUCCESS, true );
+        }
+        
+        if( event === "users are unSubscribed for emails" ){
+            this.customResponse = new CustomResponse( 'ERROR', "The partners are unsubscribed for receiving the campaign emails.", true );
+        }
+        
+        if( event === "user has unSubscribed for emails" ){
+            this.customResponse = new CustomResponse( 'ERROR', "The partner has unsubscribed for receiving the campaign emails.", true );
+        }
+        
+        if ( event === "Emails Sending failed" ) {
+            this.customResponse = new CustomResponse( 'ERROR', "Failed to send Emails", true );
         }
         this.openCampaignModal = false;
         this.contactListAssociatedCampaignsList.length = 0;
