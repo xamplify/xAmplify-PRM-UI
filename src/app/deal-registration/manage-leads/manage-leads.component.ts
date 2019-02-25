@@ -54,6 +54,7 @@ export class ManageLeadsComponent implements OnInit, OnChanges
     item: any;
     commentForLead: any;
     isDealSection = false;
+    loggedInUser: User;
 
 
 
@@ -64,7 +65,7 @@ export class ManageLeadsComponent implements OnInit, OnChanges
 
     ngOnInit()
     {
-
+        this.loggedInUser = this.authenticationService.user;
         if (!this.isPartner)
             this.listLeadsBasedOnFilters();
         else
@@ -701,7 +702,7 @@ export class ManageLeadsComponent implements OnInit, OnChanges
         try
         {
 
-            this.dealRegistrationService.changeDealStatus(dealId, event).subscribe(data =>
+            this.dealRegistrationService.changeDealStatus(dealId, event,this.loggedInUser).subscribe(data =>
             {
                 this.customResponse = new CustomResponse('SUCCESS', "Successfully Changed ", true);
                 this.dealObj.emit("status_change");

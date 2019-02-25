@@ -145,6 +145,17 @@
                   <option *ngFor="let country of countryNames.countries" [value]="country" [selected]="dealRegistration.leadCountry==country">{{country}}</option>
                 </select>
               </div>
+              <div class="form-group" [attr.class]="websiteDivClass">
+                <label class="control-label">Website
+                  <font style="color: #f55d7a">
+                    <b>*</b>
+                  </font>
+                </label>
+                <input type="text" maxlength="100" id="website" name="website"  class="form-control" [(ngModel)]="dealRegistration.website"
+                  (input)="validateField('website',false)" (blur)="validateField('website',false)" [disabled]="parent == 'manage-leads'"
+                />
+                <span *ngIf="websiteError" style="color: #f55d7a">{{websiteErrorMessage}}</span>
+              </div>
 
 
             </div>
@@ -172,17 +183,7 @@
               [ngModelOptions]="{standalone: true}" id="dealType" (input)="validateField('dealType',false)" [disabled]="parent == 'manage-leads'"
             />
           </div>
-          <div class="form-group" [attr.class]="websiteDivClass">
-            <label class="control-label">Website
-              <font style="color: #f55d7a">
-                <b>*</b>
-              </font>
-            </label>
-            <input type="text" maxlength="100" id="website" name="website"  class="form-control" [(ngModel)]="dealRegistration.website"
-              (input)="validateField('website',false)" (blur)="validateField('website',false)" [disabled]="parent == 'manage-leads'"
-            />
-            <span *ngIf="websiteError" style="color: #f55d7a">{{websiteErrorMessage}}</span>
-          </div>
+          
           <div class="form-group" [attr.class]="opportunityAmount">
             <label class="control-label">Opportunity Amount
               <font style="color: #f55d7a">
@@ -303,7 +304,8 @@
         </div>
         <hr>
         <div class="pull-right" *ngIf="!parent">
-          <button type="submit" id="saveDeal" [disabled]=" !isDealRegistrationFormValid" (click)="save()" class="btn green-haze">{{submitButtonText}}</button>
+          <button type="submit" id="saveDeal" [disabled]=" !isDealRegistrationFormValid" (click)="save()" class="btn green-haze"
+          *ngIf="submitButtonText.length >0" >{{submitButtonText}}</button>
           <!--  <button type="submit" id="updateDeal" (click)="update()"class="btn green-haze">Update</button> -->
         </div>
       </form>

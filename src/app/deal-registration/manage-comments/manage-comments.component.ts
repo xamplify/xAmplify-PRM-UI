@@ -30,6 +30,7 @@ export class ManageCommentsComponent implements OnInit
   isError = true;
   createdBy: any;
   deal: DealRegistration;
+  userName ="";
   constructor(public authenticationService: AuthenticationService, private dealRegService: DealRegistrationService, 
     private campaignService: CampaignService,refferenceService:ReferenceService) { 
 
@@ -37,7 +38,11 @@ export class ManageCommentsComponent implements OnInit
 
   ngOnInit()
   {
+      this.getCommentList();
 
+  }
+  getCommentList(){
+    
 
     this.comment = new DealComments;
     this.loggedInUserId = this.authenticationService.getUserId();
@@ -46,20 +51,28 @@ export class ManageCommentsComponent implements OnInit
     this.campaignService.getCampaignById(obj).subscribe(data =>
     {
       this.campaign = data;
-      this.dealRegService.getDealCreatedBy(this.campaign.userId).subscribe(user =>
-        {
-        
-          this.createdBy = user;
-    
-        })
+      
      
 
     },
     error => console.log(error),
     () => { })
     this.dealRegService.getDealById(this.lead.dealId).subscribe(deal=>{
-        this.deal = deal;
-        console.log(this.deal);
+        this.deal = deal.data;
+       
+        this.dealRegService.getDealCreatedBy(this.deal.createdBy).subscribe(user =>
+          {
+          
+            this.createdBy = user;
+            if(this.createdBy.firstName!=null && this.createdBy.firstName.length>0){
+              this.userName = this.userName+this.createdBy.firstName;
+
+            }
+            if(this.createdBy.lastName!=null && this.createdBy.lastName.length>0){
+              this.userName = this.userName+this.createdBy.lastName;
+              
+            }
+          })
     },
     error => console.log(error),
     () => { })
@@ -88,7 +101,6 @@ export class ManageCommentsComponent implements OnInit
     error => console.log(error),
     () => { })
 
-
   }
 
   addCommentModalClose()
@@ -113,20 +125,13 @@ export class ManageCommentsComponent implements OnInit
 
       this.dealRegService.saveComment(this.lead.dealId, data).subscribe(result =>
       {
-        this.dealRegService.getComments(this.lead.dealId).subscribe(commentData =>
-        {
-          this.commentList = commentData.comments;
-          this.comment = new DealComments;
-
-        },
-        error => console.log(error),
-        () => { })
+       this.getCommentList();
 
       },
       error => console.log(error),
       () => { });
     }
-    // data.user.lastName = this.user.lastName;
+    
 
   }
 }

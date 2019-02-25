@@ -10,6 +10,7 @@ import { Pagination } from '../../core/models/pagination';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { DealRegistration } from '../models/deal-registraton';
 import { DealComments } from '../models/deal-comments';
+import { User } from '../../core/models/user';
 
 @Injectable()
 export class DealRegistrationService
@@ -223,11 +224,11 @@ export class DealRegistrationService
             .map(this.extractData)
             .catch(this.handleError);
     }
-    changeDealStatus(dealId: number, status: string)
+    changeDealStatus(dealId: number, status: string,user:User)
     {
 
         var url = this.URL + dealId + "/status/" + status + "?access_token=" + this.authenticationService.access_token;
-        return this.http.get(url)
+        return this.http.post(url,user)
             .map(this.extractData)
             .catch(this.handleError);
     }

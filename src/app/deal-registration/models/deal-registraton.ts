@@ -19,6 +19,7 @@ export class DealRegistration{
   leadCity: string;
   leadState: string; 
   postalCode:any;
+  isDeal:boolean;
   leadCountry = 'Select Country';
   opportunityAmount:any;
   estimatedCloseDate: any;

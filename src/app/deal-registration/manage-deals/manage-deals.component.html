@@ -20,7 +20,7 @@
 				</ul>
 				<ul class="mix-filter col-xs-6 p0 m0" style="float: right">
 						<li class="filter" (click)="showPartner()" [class.campaign-type-selected]="isPartnerVersion" style="float: right;
-						margin-top: 5px;" *ngIf="isOnlyPartner || authenticationService.module.isCompanyPartner || authenticationService.module.isPartner">Partner View </li>
+						margin-top: 5px;" *ngIf="isOnlyPartner || authenticationService.module.isCompanyPartner ">Partner View </li>
 						<li class="filter" (click)="showVendor()" [class.campaign-type-selected]="isVendorVersion" style="float: right;
 						margin-top: 5px;" *ngIf="!isOnlyPartner && (authenticationService.module.isCampaign || authenticationService.module.isVendor)">Vendor View</li>
 						<p class="filter" style="float: right;
@@ -482,6 +482,7 @@
 	<div class="page-content">
 		<a (click)="disableDealPushRegistrationForm()" class="pull-right close-circle" style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;">
 			<span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
-		<app-deal-registration [campaign]="selectedCampaign" [lead]="user" [dealId]="selectedDealId" [parent]="isVendorVersion"></app-deal-registration>
+		<app-deal-registration [campaign]="selectedCampaign" [lead]="user" [dealId]="selectedDealId" [parent]="isVendorVersion"
+		(dealReg)="resetCounters()"></app-deal-registration>
 	</div>
 </section>

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { DealRegistration } from '../models/deal-registraton';
 import { DealDynamicProperties } from '../models/deal-dynamic-properties';
 import { ReferenceService } from '../../core/services/reference.service';
@@ -29,6 +29,8 @@ export class DealRegistrationComponent implements OnInit
     @Input() lead: any;
     @Input() dealId: any;
     @Input() parent: any;
+    @Output() dealReg = new EventEmitter<any>();
+
     dealRegistration: DealRegistration;
     isServerError: boolean = false;
     leadData: any;
@@ -103,9 +105,10 @@ export class DealRegistrationComponent implements OnInit
             minDate: new Date()
         });
         this.loggenInUserId = this.authenticationService.user.id;
+        
         if (this.dealId == -1)
         {
-            this.submitButtonText = "SAVE";
+            this.submitButtonText = "REGISTER DEAL";
 
             this.dealRegistrationService.getForms(this.campaign.userId).subscribe(forms =>
             {
@@ -172,6 +175,7 @@ export class DealRegistrationComponent implements OnInit
                 subscribe(data =>
                 {
                     console.log(data.data)
+                   
                     this.setLeadData(data.data);
 
                 },
@@ -199,6 +203,11 @@ export class DealRegistrationComponent implements OnInit
         this.dealRegistration.website = data.website;
         this.dealRegistration.dealType = data.dealType;
         this.dealRegistration.title = data.title;
+        this.dealRegistration.isDeal=data.deal;
+        if(this.dealRegistration.isDeal)
+            this.submitButtonText = "UPDATE DEAL";
+        else
+            this.submitButtonText = "REGISTER DEAL";
         let date:any;
         if(data.estimatedClosedDate != null)
              date = this.getFormatedDate(new Date(data.estimatedClosedDate));
@@ -242,7 +251,7 @@ export class DealRegistrationComponent implements OnInit
 
         } else if (this.form != undefined)
         {
-            this.submitButtonText = "REGISTER DEAL";
+             this.submitButtonText = "REGISTER DEAL";
             this.form.campaignDealQuestionDTOs.forEach(q =>
             {
                 if (q.answer == null || q.answer.length == 0)
@@ -458,7 +467,14 @@ export class DealRegistrationComponent implements OnInit
         {
             this.dealRegistrationService.updateDeal(this.dealRegistration).subscribe(data =>
             {
-                this.customResponse = new CustomResponse('SUCCESS', data.message, true);
+                if(this.dealRegistration.isDeal)
+                    this.customResponse = new CustomResponse('SUCCESS', data.message, true);
+                else{
+                    this.customResponse = new CustomResponse('SUCCESS', "Deal Registered Successfully", true);
+                    this.dealReg.emit();
+                    this.dealRegistration.isDeal = true;
+                }
+                
                 this.isLoading = false;
                 this.referenceService.goToTop();
                 this.submitButtonText = "Update Deal";
@@ -479,7 +495,7 @@ export class DealRegistrationComponent implements OnInit
                     this.dealRegistration.id = data.data;
                     this.referenceService.dealId = this.dealRegistration.id;
                     this.dealRegistration.properties.forEach(p => p.isSaved = true);
-                    this.submitButtonText = "Update";
+                    this.submitButtonText = "Update Deal";
                 }
                 this.referenceService.goToTop();
             }, error =>
@@ -832,7 +848,7 @@ export class DealRegistrationComponent implements OnInit
             if (!this.URL_PATTERN.test(this.dealRegistration.website))
             {
                 this.addWebSiteError(x);
-                this.websiteErrorMessage = "Please enter a valid company’s URL.";
+                this.websiteErrorMessage = "Please enter a valid lead’s URL.";
             } else
             {
                 this.removeWebSiteError();
@@ -841,7 +857,7 @@ export class DealRegistrationComponent implements OnInit
         {
             this.websiteError = true;
             if (x != 0)
-                this.websiteErrorMessage = 'Please add your company’s URL.';
+                this.websiteErrorMessage = 'Please add your lead’s URL.';
         }
     }
 

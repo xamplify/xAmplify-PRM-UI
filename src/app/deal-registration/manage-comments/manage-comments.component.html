@@ -320,12 +320,13 @@
         <!-- Modal content-->
         <div class="modal-content accounts-modal">
             <div class="modal-header" style="border-bottom: none">
-                <button type="button" class="close-circle" data-dismiss="modal" (click)="addCommentModalClose()">
+                <button type="button" class="close-circle" data-dismiss="modal" (click)="addCommentModalClose()"
+                style="margin-right: 10px;margin-top: 10px;">
                     <i class="fa fa-times"></i>
                 </button>
             </div>
             <div class="modal-body">
-                <div *ngIf="campaign != null && campaign != undefined" style="margin:auto;width: 70%;padding:0px;background-color: white;" class="campaignProps" >
+                <div *ngIf="campaign != null && campaign != undefined" style="margin:auto;width: 87%;padding:0px;background-color: white;" class="campaignProps" >
                         <div class="tab-pane active" *ngIf="!isListView">
                                 <div class="margin-top-10">
                                     <div class="row mix-grid p10">
@@ -333,32 +334,22 @@
                                            
                                                 <div class="grid-box">
                                                     <img src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png">
-                                                    <h4 class="ellipsis" title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:25}}
-                                                        <span *ngIf="campaign.campaignName?.length>25">...</span>
+                                                  
+                                                    <h4 class="ellipsis" *ngIf="deal?.title" title="{{deal.title}}">{{deal.title | slice:0:25}}
+                                                        <span *ngIf="deal.title?.length>25">...</span>
                                                     </h4>
-                                                    <h5 class="mt10 mb0" [title]="campaign.launchedBy" *ngIf="createdBy!= null || createdBy!= undefined">{{createdBy.firstName  | slice:0:15}} {{createdBy.lastName  | slice:0:15}}<span *ngIf="campaign.launchedBy?.length>30">...</span></h5>
-                                                    <h5 class="mt10 mb0" [title]="campaign.launchedBy">By {{campaign.email | slice:0:15}}<span *ngIf="campaign.launchedBy?.length>30">...</span></h5>
+                                                    <h5 class="mt10 mb0" *ngIf="userName" [title]="userName" >{{userName  | slice:0:30}} <span *ngIf="userName.length>30">...</span></h5>
+                                                    <h5 class="mt10 mb0" *ngIf="createdBy?.emailId" [title]="createdBy?.emailId">By {{createdBy.emailId | slice:0:50}}<span *ngIf="createdBy.email?.length>50">...</span></h5>
                                                     <h5>
                                                         <span>
-                                                            <span>Launched On</span>
+                                                            <span>Created On</span>
                                                         </span>
                                                         <span title="Upload date">
                                                             <span>
-                                                                <app-timestamp [isOnlyDate]="false" [dateAndTime]="campaign.launchTime"> </app-timestamp>
+                                                                <app-timestamp *ngIf="deal?.createdAt" [isOnlyDate]="false" [dateAndTime]="deal.createdAt"> </app-timestamp>
                                                             </span>
                                                         </span>
                                                     </h5>
-                                                    <div class="bookmark-ribbon">
-                                                        <span style="margin: 0px -7px; font-size: 17px; color: white;">
-                                                            <i *ngIf="campaign.campaignType.indexOf('VIDEO') > -1" class="fa fa-video-camera" aria-hidden="true"></i>
-                                                            <i *ngIf="campaign.campaignType.indexOf('REGULAR') > -1" class="fa fa-envelope" aria-hidden="true"></i>
-                                                            <i *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1" class="fa fa-globe" aria-hidden="true"></i>
-                                                        </span>
-                                                    </div>
-                                                    <div class="ribbon" [class.active]="false">
-                                                        <span>Launched</span>
-                                                    </div>
-                                                   
     
                                                 </div>
                                             
@@ -387,7 +378,7 @@
 
                         <li class="comment author-comment" *ngIf="c.user.id != loggedInUserId" style="width: 135%;">
                             <div class="info">
-                                <a href="#" *ngIf="c.user != null">{{c.userName| slice:0:15}}<span *ngIf="c.userName?.length>30">...</span></a>
+                                <a href="#" >{{c.userName| slice:0:15}}<span *ngIf="c.userName?.length>30">...</span></a>
                                 <span *ngIf="c?.createdAt"><app-timestamp [dateAndTime]="c.createdAt"> </app-timestamp></span>
                             </div>
 
@@ -404,7 +395,7 @@
                         <li class="comment user-comment" *ngIf="c.user.id == loggedInUserId" style="width: 134%;">
 
                             <div class="info">
-                                    <a href="#" *ngIf="c.user != null">{{c.userName| slice:0:15}}<span *ngIf="c.userName?.length>30">...</span></a>
+                                    <a href="#" >{{c.userName| slice:0:15}}<span *ngIf="c.userName?.length>30">...</span></a>
                                 <span *ngIf="c?.createdAt"><app-timestamp [dateAndTime]="c.createdAt"> </app-timestamp></span>
                             </div>
 

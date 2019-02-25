@@ -83,6 +83,7 @@ export class ManageDealsComponent implements OnInit
     rejectedDealsError: boolean = false;
     rejectedDeals: number =0;
     isOnlyPartner: any;
+    loggedInUser: User;
 
 
     @ViewChild(ManagePartnersComponent)
@@ -102,7 +103,7 @@ export class ManageDealsComponent implements OnInit
         this.loggedInUserId = this.authenticationService.getUserId();
         this.isListView = !this.referenceService.isGridView;
         this.isOnlyPartner = this.authenticationService.isOnlyPartner();
-       
+        
         if(!this.isOnlyPartner){
             this.showVendor();
         }else{
@@ -409,13 +410,13 @@ export class ManageDealsComponent implements OnInit
             this.dealRegistrationService.getPartnerDealsCountByStatus(this.loggedInUserId,"approved").subscribe(
                 (data: any) =>
                 {
-                    this.openedDeals = data.data;
-                    this.openedDealsLoader = false;
+                    this.approvedDeals = data.data;
+                    this.approvedDealsLoader = false;
                 },
                 (error: any) =>
                 {
-                    this.openedDealsError = true;
-                    this.openedDealsLoader = false;
+                    this.approvedDealsError = true;
+                    this.approvedDealsLoader = false;
                 }
 
             );
@@ -483,6 +484,7 @@ export class ManageDealsComponent implements OnInit
             this.dealRegistrationService.getPartnerDealsCountByStatus(this.loggedInUserId,"opened").subscribe(
                 (data: any) =>
                 {
+                    console.log(data)
                     this.openedDeals = data.data;
                     this.openedDealsLoader = false;
                 },
@@ -1077,7 +1079,7 @@ export class ManageDealsComponent implements OnInit
     }
     disableDealPushRegistrationForm()
     {
-        this.resetCounters();
+        //this.resetCounters();
         this.isDealForm = false;
     }
 
