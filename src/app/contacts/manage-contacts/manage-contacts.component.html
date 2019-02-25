@@ -54,7 +54,7 @@
 									<div class="row mt5 mb5">
 										<div class="col-sm-5ths margin-top-10">
 											<button class="btn-block dashboard-stat blue"
-												(click)="listContactsByType('all')"
+												(click)="contactsByType.pagination.pageIndex = 1;listContactsByType('all')"
 												[disabled]="contactsByType.allContactsCount == 0">
 												<div class="visual">
 													<i class="fa fa-users"></i>
@@ -75,7 +75,7 @@
 										</div>
 										<div class="col-sm-5ths margin-top-10">
 											<button class="btn-block dashboard-stat green"
-												(click)="listContactsByType('active')"
+												(click)="contactsByType.pagination.pageIndex = 1;listContactsByType('active')"
 												[disabled]="contactsByType.activeContactsCount == 0">
 												<div class="visual">
 													<i class="fa fa-eye"></i>
@@ -97,7 +97,7 @@
 										</div>
 										<div class="col-sm-5ths margin-top-10">
 											<button class="btn-block dashboard-stat purple"
-												(click)="listContactsByType('non-active')"
+												(click)="contactsByType.pagination.pageIndex = 1;listContactsByType('non-active')"
 												[disabled]="contactsByType.inactiveContactsCount == 0">
 												<div class="visual">
 													<i class="fa fa-eye-slash"></i>
@@ -118,7 +118,7 @@
 										</div>
 										<div class="col-sm-5ths margin-top-10">
 											<button class="btn-block dashboard-stat yellow-gold"
-												(click)="listContactsByType('invalid')"
+												(click)="contactsByType.pagination.pageIndex = 1;listContactsByType('invalid')"
 												[disabled]="contactsByType.invalidContactsCount == 0">
 												<div class="visual">
 													<i class="fa fa-user-times"></i>
@@ -139,7 +139,7 @@
 										</div>
 										<div class="col-sm-5ths margin-top-10">
 											<button class="btn-block dashboard-stat red"
-												(click)="listContactsByType('unsubscribe')"
+												(click)="contactsByType.pagination.pageIndex = 1;listContactsByType('unsubscribe')"
 												[disabled]="contactsByType.unsubscribedContactsCount == 0">
 												<div class="visual">
 													<i class="fa fa-times"></i>
