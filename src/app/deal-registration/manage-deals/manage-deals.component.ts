@@ -103,7 +103,7 @@ export class ManageDealsComponent implements OnInit
         this.loggedInUserId = this.authenticationService.getUserId();
         this.isListView = !this.referenceService.isGridView;
         this.isOnlyPartner = this.authenticationService.isOnlyPartner();
-        
+        console.log(authenticationService.getRoles())
         if(!this.isOnlyPartner){
             this.showVendor();
         }else{

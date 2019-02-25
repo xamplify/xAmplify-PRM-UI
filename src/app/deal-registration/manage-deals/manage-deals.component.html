@@ -20,9 +20,9 @@
 				</ul>
 				<ul class="mix-filter col-xs-6 p0 m0" style="float: right">
 						<li class="filter" (click)="showPartner()" [class.campaign-type-selected]="isPartnerVersion" style="float: right;
-						margin-top: 5px;" *ngIf="isOnlyPartner || authenticationService.module.isCompanyPartner ">Partner View </li>
+						margin-top: 5px;" *ngIf=" authenticationService.module.isCompanyPartner ">Partner View </li>
 						<li class="filter" (click)="showVendor()" [class.campaign-type-selected]="isVendorVersion" style="float: right;
-						margin-top: 5px;" *ngIf="!isOnlyPartner && (authenticationService.module.isCampaign || authenticationService.module.isVendor)">Vendor View</li>
+						margin-top: 5px;" *ngIf=" authenticationService.module.isVendor">Vendor View</li>
 						<p class="filter" style="float: right;
 						margin: 10px;background-color: white">Opportunities: </p>
 						
