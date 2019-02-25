@@ -57,9 +57,9 @@ export class ContactsCampaignsMailsComponent implements OnInit {
                     $( '.modal-backdrop fade in' ).remove();
                     this.selectedCampaignIds.length = 0;
                     this.userEmails.length = 0;
-                    if(data.message === "The partners are unsubscribed for receiving the campaign emails."){
+                    if(data.statusCode === 2001){
                         this.notifyParent.emit( "users are unSubscribed for emails" );
-                    }else if(data.message === "The partner has unsubscribed for receiving the campaign emails."){
+                    }else if(data.statusCode === 2002){
                         this.notifyParent.emit( "user has unSubscribed for emails" );
                     }else{
                         this.notifyParent.emit( "Emails Send Successfully" );
