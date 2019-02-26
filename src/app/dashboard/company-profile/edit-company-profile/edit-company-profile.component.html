@@ -249,7 +249,7 @@
           <ngx-loading [show]="loadingcrop" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
         <img-cropper *ngIf="!cropRounded" [image]="squareData" [settings]="squareCropperSettings"></img-cropper>
         <div style="text-align: right;">
-            <button class="btn btn-primary" (click)="uploadLogo()">Upload Image</button>
+            <button class="btn btn-primary" [disabled]="(squareData | json) === '{}'" (click)="uploadLogo()">Upload Image</button>
         </div>
       </div>
 		</div>

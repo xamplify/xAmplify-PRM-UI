@@ -511,7 +511,7 @@ input:checked + .slider-new:before {
               <ngx-loading [show]="loadingcrop" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
               <img-cropper *ngIf="!cropRounded" [image]="circleData" [settings]="circleCropperSettings"></img-cropper>
               <div style="text-align: right;">
-                  <button class="btn btn-primary" (click)="uploadProfileImage()">Upload Image</button>
+                  <button class="btn btn-primary"  [disabled]="(circleData | json) === '{}'" (click)="uploadProfileImage()">Upload Image</button>
               </div>
             </div>
           </div>

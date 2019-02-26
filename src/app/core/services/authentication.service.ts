@@ -257,17 +257,9 @@ export class AuthenticationService {
          }
        } catch(error){  this.xtremandLogger.log('error'+error);}
      }
-
-    islogout(){
-      if(localStorage.getItem('isLogout')){
-        localStorage.removeItem('isLogout'); if(this.utilService.isXamplify()) { window.location.href = 'https://www.xamplify.com/'; }
-        else {  this.router.navigate(['/']); }
-      }
-    }
     logout(): void {
         this.xtremandLogger.log('Logout');
         // clear token remove user from local storage to log user out
-       // this.islogout();
         this.access_token = null;
         this.refresh_token = null;
         localStorage.removeItem('currentUser');
@@ -288,7 +280,7 @@ export class AuthenticationService {
         module.isVendor = false;
         this.isAddedByVendor = false;
         swal.close();
-        this.router.navigate(['/']);
+        if(!this.router.url.includes('/userlock')){ this.router.navigate(['/']) };
     }
 
     navigateToDashboardIfUserExists(){
