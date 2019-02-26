@@ -187,7 +187,7 @@ export class AddLeadsComponent implements OnInit
         if(data.estimatedClosedDate != null)
             date = this.getFormatedDate(new Date(data.estimatedClosedDate));
         else
-            date = new Date();
+            date = this.getFormatedDate(new Date());
         this.dealRegistration.estimatedCloseDate = date
 
         this.dealRegistration.properties = data.properties;
@@ -255,7 +255,7 @@ export class AddLeadsComponent implements OnInit
         this.dealRegistration.leadCity = data.city;
         this.dealRegistration.email = this.leadUser.emailId;
         var date = new Date();
-        this.dealRegistration.estimatedCloseDate =date;
+        this.dealRegistration.estimatedCloseDate =this.getFormatedDate(date);
         let countryIndex = this.countryNames.countries.indexOf(data.country);
         if (countryIndex > -1)
         {

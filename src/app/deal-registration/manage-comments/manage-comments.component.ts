@@ -89,7 +89,15 @@ export class ManageCommentsComponent implements OnInit
       console.log(commentData);
       this.commentList = commentData.comments;
       this.commentList.forEach(c=>{
-        c.userName = c.user.firstName+" "+c.user.lastName;
+        if(c.user.firstName!= undefined && c.user.firstName!=null && c.user.firstName.length>0){
+          c.userName = c.user.firstName;
+        }
+        if(c.user.lastName!= undefined && c.user.lastName!=null && c.user.lastName.length>0){
+          if(c.userName!= undefined && c.userName!=null && c.userName.length>0 )
+            c.userName = c.userName+" "+c.user.lastName;
+          else
+            c.userName =c.user.lastName;
+        }
         if (c.user.profileImagePath.indexOf(null) > -1) {
           c.user.profileImagePath = 'assets/admin/pages/media/profile/icon-user-default.png';
          

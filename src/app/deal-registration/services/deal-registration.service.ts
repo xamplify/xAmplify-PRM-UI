@@ -11,6 +11,7 @@ import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { DealRegistration } from '../models/deal-registraton';
 import { DealComments } from '../models/deal-comments';
 import { User } from '../../core/models/user';
+import { DealType } from '../models/deal-type';
 
 @Injectable()
 export class DealRegistrationService
@@ -322,6 +323,22 @@ export class DealRegistrationService
     getEmailLogCountByCampaignAndUser(campaignId: number, userid: any): any
     {
         var url = this.URL + "emaillog/" + campaignId + "/" + userid + "?access_token=" + this.authenticationService.access_token;
+        return this.http.get(url)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+
+    saveDealTypes(dealTypes: DealType[],userId:number)
+    {
+        var url = this.URL + "deal-type/list/"+userId+"s?access_token=" + this.authenticationService.access_token;
+        return this.http.post(url, dealTypes)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    listDealTypes(userId:number)
+    {
+        var url = this.URL + "deal-type/list/"+userId+"?access_token=" + this.authenticationService.access_token;
         return this.http.get(url)
             .map(this.extractData)
             .catch(this.handleError);

@@ -378,7 +378,7 @@
 
                         <li class="comment author-comment" *ngIf="c.user.id != loggedInUserId" style="width: 135%;">
                             <div class="info">
-                                <a href="#" >{{c.userName| slice:0:15}}<span *ngIf="c.userName?.length>30">...</span></a>
+                                <a href="#" >{{c.userName| slice:0:30}}<span *ngIf="c.userName?.length>30">...</span></a>
                                 <span *ngIf="c?.createdAt"><app-timestamp [dateAndTime]="c.createdAt"> </app-timestamp></span>
                             </div>
 
@@ -395,7 +395,7 @@
                         <li class="comment user-comment" *ngIf="c.user.id == loggedInUserId" style="width: 134%;">
 
                             <div class="info">
-                                    <a href="#" >{{c.userName| slice:0:15}}<span *ngIf="c.userName?.length>30">...</span></a>
+                                    <a href="#" >{{c.userName| slice:0:30}}<span *ngIf="c.userName?.length>30">...</span></a>
                                 <span *ngIf="c?.createdAt"><app-timestamp [dateAndTime]="c.createdAt"> </app-timestamp></span>
                             </div>
 

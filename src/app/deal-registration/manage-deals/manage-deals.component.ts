@@ -16,6 +16,7 @@ import { Campaign } from '../../campaigns/models/campaign';
 import { CampaignService } from '../../campaigns/services/campaign.service';
 import { User } from '../../core/models/user';
 import { isNumber } from 'util';
+import { Roles } from '../../core/models/roles';
 @Component({
     selector: 'app-manage-deals',
     templateUrl: './manage-deals.component.html',
@@ -84,7 +85,10 @@ export class ManageDealsComponent implements OnInit
     rejectedDeals: number =0;
     isOnlyPartner: any;
     loggedInUser: User;
-
+    roleName: Roles= new Roles();
+    isVendor: boolean;
+    isCompanyPartner: boolean;
+   
 
     @ViewChild(ManagePartnersComponent)
     set leadId(partner: ManagePartnersComponent)
@@ -103,6 +107,19 @@ export class ManageDealsComponent implements OnInit
         this.loggedInUserId = this.authenticationService.getUserId();
         this.isListView = !this.referenceService.isGridView;
         this.isOnlyPartner = this.authenticationService.isOnlyPartner();
+        const roles = this.authenticationService.getRoles();
+        if(roles!==undefined){
+            if (
+                    roles.indexOf(this.roleName.orgAdminRole) > -1 ||
+                    roles.indexOf(this.roleName.allRole) > -1 ||
+                    roles.indexOf(this.roleName.vendorRole)>-1) {
+                    this.isVendor = true;
+                }
+                if(roles.indexOf(this.roleName.companyPartnerRole)>-1){
+                    this.isCompanyPartner = true;
+                }
+            }
+
         console.log(authenticationService.getRoles())
         if(!this.isOnlyPartner){
             this.showVendor();

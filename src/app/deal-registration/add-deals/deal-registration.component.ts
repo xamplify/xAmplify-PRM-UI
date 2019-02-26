@@ -318,7 +318,8 @@ export class DealRegistrationComponent implements OnInit
         this.dealRegistration.company = data.contactCompany;
         this.dealRegistration.leadCity = data.city;
         this.dealRegistration.email = this.lead.emailId;
-
+        var date = new Date();
+        this.dealRegistration.estimatedCloseDate =this.getFormatedDate(date);
         let countryIndex = this.countryNames.countries.indexOf(data.country);
         if (countryIndex > -1)
         {

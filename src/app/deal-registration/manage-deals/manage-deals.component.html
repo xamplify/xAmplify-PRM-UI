@@ -20,9 +20,9 @@
 				</ul>
 				<ul class="mix-filter col-xs-6 p0 m0" style="float: right">
 						<li class="filter" (click)="showPartner()" [class.campaign-type-selected]="isPartnerVersion" style="float: right;
-						margin-top: 5px;" *ngIf=" authenticationService.module.isCompanyPartner ">Partner View </li>
+						margin-top: 5px;" *ngIf="isCompanyPartner">Partner View </li>
 						<li class="filter" (click)="showVendor()" [class.campaign-type-selected]="isVendorVersion" style="float: right;
-						margin-top: 5px;" *ngIf=" authenticationService.module.isVendor">Vendor View</li>
+						margin-top: 5px;" *ngIf=" isVendor">Vendor View</li>
 						<p class="filter" style="float: right;
 						margin: 10px;background-color: white">Opportunities: </p>
 						
@@ -37,7 +37,8 @@
 					<!-- -------Total Leads------- -->
 					<app-count-loader *ngIf="totalDealsLoader"></app-count-loader>
 					<div class="col-xs-8 col-sm-4 col-md-3"  *ngIf="!totalDealsError &&!totalDealsLoader">
-						<a class="dashboard-stat dashboard-stat-lighter purple-soft" (click)="showCampaigns()">
+						<a class="dashboard-stat dashboard-stat-lighter purple-soft" 
+						[class.greay]="1!=selectedTabIndex" (click)="showCampaigns()">
 							<div class="visual" >
 							 
 								<i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1"  [ngStyle]="{'color': 1==selectedTabIndex ? '#white' : '#ccc' }"
@@ -49,7 +50,7 @@
 								</div>
 								<div class="desc">Total Leads</div>
 							</div>
-							<span id="permhref" class="morePadding">
+							<span id="permhref" class="morePadding ">
 								<a class="more"> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
 							</span>
 						</a>
@@ -60,7 +61,8 @@
 					<!-- -------Total Deals------- -->
 					<app-count-loader *ngIf="totalDealsLoader"></app-count-loader>
 					<div class="col-xs-8 col-sm-4 col-md-3"  *ngIf="!totalDealsError &&!totalDealsLoader">
-						<a class="dashboard-stat dashboard-stat-lighter blue-soft" (click)="showCampaignsByDeals()">
+						<a class="dashboard-stat dashboard-stat-lighter blue-soft" (click)="showCampaignsByDeals()"
+						[class.greay]="2!=selectedTabIndex">
 							<div class="visual">
 									<i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1"  [ngStyle]="{'color': 2==selectedTabIndex ? '#white' : '#ccc' }"
 									*ngIf=" 2==selectedTabIndex" ></i>
@@ -82,7 +84,8 @@
 					<!-- -------Opened Deals------- -->
 					<app-count-loader *ngIf="totalDealsLoader"></app-count-loader>
 					<div class="col-xs-8 col-sm-4 col-md-3"  *ngIf="!totalDealsError &&!totalDealsLoader">
-						<a class="dashboard-stat dashboard-stat-lighter yellow-gold" (click)="showOpenedLeads()">
+						<a class="dashboard-stat dashboard-stat-lighter yellow-gold" (click)="showOpenedLeads()"
+						[class.greay]="3!=selectedTabIndex">
 							<div class="visual">
 									<i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1"  [ngStyle]="{'color': 3==selectedTabIndex ? '#white' : '#ccc' }"
 									*ngIf=" 3==selectedTabIndex" ></i>
@@ -104,7 +107,8 @@
 					<!-- -------Closed Deals------- -->
 					<app-count-loader *ngIf="totalDealsLoader"></app-count-loader>
 					<div class="col-xs-8 col-sm-4 col-md-3"  *ngIf="!totalDealsError &&!totalDealsLoader">
-						<a class="dashboard-stat dashboard-stat-lighter green-soft" (click)="showClosedLeads()">
+						<a class="dashboard-stat dashboard-stat-lighter green-soft" (click)="showClosedLeads()"
+						[class.greay]="4!=selectedTabIndex">
 							<div class="visual">
 									<i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1"  [ngStyle]="{'color': 4==selectedTabIndex ? '#white' : '#ccc' }"
 									*ngIf=" 4==selectedTabIndex" ></i>
@@ -126,7 +130,8 @@
 					<!-- -------Hold Deals------- -->
 					<app-count-loader *ngIf="totalDealsLoader"></app-count-loader>
 					<div class="col-xs-8 col-sm-4 col-md-3"  *ngIf="!totalDealsError &&!totalDealsLoader">
-						<a class="dashboard-stat dashboard-stat-lighter blue-sharp" (click)="showDealsOnHold()">
+						<a class="dashboard-stat dashboard-stat-lighter blue-sharp" (click)="showDealsOnHold()"
+						[class.greay]="5!=selectedTabIndex">
 							<div class="visual">
 									<i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1"  [ngStyle]="{'color': 5==selectedTabIndex ? '#white' : '#ccc' }"
 									*ngIf=" 5==selectedTabIndex" ></i>
@@ -148,7 +153,8 @@
 					<!-- -------Approved Deals------- -->
 					<app-count-loader *ngIf="openedDealsLoader"></app-count-loader>
 					<div class="col-xs-8 col-sm-4 col-md-3"  *ngIf="!openedDealsError && !openedDealsLoader">
-						<a class="dashboard-stat dashboard-stat-lighter green-soft" (click)="showApprovedLeads()">
+						<a class="dashboard-stat dashboard-stat-lighter green-soft" (click)="showApprovedLeads()"
+						[class.greay]="6!=selectedTabIndex">
 							<div class="visual">
 									<i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1"  [ngStyle]="{'color': 6==selectedTabIndex ? '#white' : '#ccc' }"
 									*ngIf=" 6==selectedTabIndex" ></i>
@@ -170,7 +176,8 @@
 					<!-- -------Closed Deals------- -->
 					<app-count-loader *ngIf="closedDealsLoader"></app-count-loader>
 					<div class="col-xs-8 col-sm-4 col-md-3"  *ngIf="!closedDealsError &&!closedDealsLoader ">
-						<a class="dashboard-stat dashboard-stat-lighter red-soft" (click)="showRejectedLeads()">
+						<a class="dashboard-stat dashboard-stat-lighter red-soft" (click)="showRejectedLeads()"
+						[class.greay]="7!=selectedTabIndex">
 							<div class="visual">
 									<i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1"  [ngStyle]="{'color': 7==selectedTabIndex ? '#white' : '#ccc' }"
 									*ngIf=" 7==selectedTabIndex" ></i>
