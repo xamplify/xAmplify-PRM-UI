@@ -73,9 +73,6 @@ textarea {
     border-radius: 50%;
     width: 16px;
 }
-.profile-name {
-	display: inline-block;
-}
 .profile-selected {
 	margin-top: 10px;
 	cursor: pointer;
@@ -321,12 +318,6 @@ body {
 	position: relative
 }
 
-h5 {
-	display: inline;
-	font-weight: 600;
-	word-break: break-all;
-}
-
 .btn-update-status {
 	border-radius: 0;
 	text-transform: uppercase;
@@ -445,11 +436,6 @@ h5 {
 h4 {
 	margin: 0.5em;
 	font-weight: 500;
-}
-
-h5 {
-	display: inline;
-	font-weight: 600;
 }
 
 .profile-picture {

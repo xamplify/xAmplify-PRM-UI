@@ -47,11 +47,11 @@
 		</div>
 		<div class="profile-name">
 				<h5 *ngIf="socialStatusProvider.socialConnection.profileName" title="{{socialStatusProvider.socialConnection.profileName}}"
-					class="ellipsis heading-primary">
+					class="heading-primary">
 					<b>{{socialStatusProvider.socialConnection.profileName}}</b>
 				</h5>
 				<h5 *ngIf="!socialStatusProvider.socialConnection.profileName" title="{{socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatusProvider.socialConnection.lastName}}"
-					class="ellipsis heading-primary">
+					class="heading-primary">
 					<b>{{socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatusProvider.socialConnection.lastName}}</b>
 				</h5>
 				<h6 class="m0">
@@ -72,7 +72,7 @@
 </div>
 			</div>
 			<div class="col-sm-12 alert alert-info rounded-0 custom-alert">
-				<h5>You may include up to 4 photos or 1 video in a Tweet.</h5>
+				<h5>Tweet with media must have exactly 1 gif or video or up to 4 photos.</h5>
 				<h5>
 					<strong>Image specifications:</strong>
 				</h5>
@@ -172,11 +172,11 @@
 							</div>
 							<div class="profile-name">
 								<h5 *ngIf="socialStatus.socialStatusProvider.socialConnection.profileName" title="{{socialStatus.socialStatusProvider.socialConnection.profileName}}"
-									class="ellipsis heading-primary">
+									class="heading-primary">
 									<b>{{socialStatus.socialStatusProvider.socialConnection.profileName}}</b>
 								</h5>
 								<h5 *ngIf="!socialStatus.socialStatusProvider.socialConnection.profileName" title="{{socialStatus.socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatus.socialStatusProvider.socialConnection.lastName}}"
-									class="ellipsis heading-primary">
+									class="heading-primary">
 									<b>{{socialStatus.socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatus.socialStatusProvider.socialConnection.lastName}}</b>
 								</h5>
 								<h6 class="m0">
@@ -288,11 +288,11 @@
 											</div>
 											<div class="profile-name">
 												<h5 *ngIf="socialStatus.socialStatusProvider.socialConnection.profileName" title="{{socialStatus.socialStatusProvider.socialConnection.profileName}}"
-													class="ellipsis heading-primary">
+													class="heading-primary">
 													<b>{{socialStatus.socialStatusProvider.socialConnection.profileName}}</b>
 												</h5>
 												<h5 *ngIf="!socialStatus.socialStatusProvider.socialConnection.profileName" title="{{socialStatus.socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatus.socialStatusProvider.socialConnection.lastName}}"
-													class="ellipsis heading-primary">
+													class="heading-primary">
 													<b>{{socialStatus.socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatus.socialStatusProvider.socialConnection.lastName}}</b>
 												</h5>
 												<h6 class="m0">
