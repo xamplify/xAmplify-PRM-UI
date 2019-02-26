@@ -1,7 +1,7 @@
 <div class="page-content ml0">
 <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 	<div class="page-bar col-xs-12">
-		<ul class="page-breadcrumb col-xs-6">
+		<ul class="page-breadcrumb col-xs-7">
 			<li>
 			<i class="fa fa-home"></i>
 				<a (click)="detailsTielsView = false">Admin Report</a>
@@ -12,7 +12,7 @@
 			</li>
 		</ul>
 		
-		<div class="inputs sort-class col-xs-6" align="right" style="float: right; margin-top: 2px;margin-right: -100px;">
+		<div class="inputs sort-class col-xs-5" align="right" style="float: right; margin-top: 2px;">
 													<div class="col-xs-6" [ngClass]="{'search-css': !referenceService.isMobileScreenSize(), 'mobile-css':referenceService.isMobileScreenSize() }">
 														<select class="form-control" [(ngModel)]="sortOption"
 															(ngModelChange)="sortByOption($event)">
