@@ -331,7 +331,7 @@ export class DealRegistrationService
 
     saveDealTypes(dealTypes: DealType[],userId:number)
     {
-        var url = this.URL + "deal-type/list/"+userId+"s?access_token=" + this.authenticationService.access_token;
+        var url = this.URL + "deal-type/list/"+userId+"?access_token=" + this.authenticationService.access_token;
         return this.http.post(url, dealTypes)
             .map(this.extractData)
             .catch(this.handleError);
