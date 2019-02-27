@@ -1101,7 +1101,7 @@
 										</label>
 									</div>
 									<div class="portlet-title">
-										<ul class="mix-filter col-xs-8 p0" *ngIf="!isOnlyPartner" >
+										<ul style="text-align: left" class="mix-filter col-xs-8 p0" *ngIf="!isOnlyPartner" >
 											<li class="filter" (click)="filterReplyTemplates('NONE',0,reply)" [class.emailtemplate-selected]="0 == reply.selectedEmailTemplateTypeIndex">All Email Templates</li>
 										<!-- 	<li class="filter" (click)="filterReplyTemplates('BASIC',1,reply)" [class.emailtemplate-selected]="1 == reply.selectedEmailTemplateTypeIndex">Basic Templates</li> -->
 											<li class="filter" (click)="filterReplyTemplates('RICH',2,reply)" [class.emailtemplate-selected]="2 == reply.selectedEmailTemplateTypeIndex">Rich Templates</li>

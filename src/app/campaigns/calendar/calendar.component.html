@@ -139,7 +139,7 @@
             <table class="table">
               <thead>
                 <tr>
-                  <th scope="col">#</th>
+                  <!-- <th scope="col">#</th> -->
                   <th scope="col">List Name</th>
                   <th scope="col" class="text-center">Uploaded Date</th>
                   <th scope="col" class="text-center">Preview</th>
@@ -148,7 +148,7 @@
               <tbody>
                 <ng-container *ngFor="let userList of contactListPagination.pagedItems; let i = index">
                   <tr>
-                    <th scope="row">{{i+1}}</th>
+                    <!-- <th scope="row">{{i+1}}</th> -->
                     <td><b>{{userList.name}}</b></td>
                     <td class="text-center"><app-timestamp [isOnlyDate]="true" [dateAndTime]="userList.createdDate"> </app-timestamp></td>
                     <td class="text-center">

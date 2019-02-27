@@ -183,11 +183,6 @@ border-radius: 0
 .text-css-content {  position: absolute; left: 57px; top: 20px;}
 .message-content{
   border: dotted 3px lightgray;
-  min-height: 67px;
-  padding: 5px 14px;
-}
-.message-upload{
-  border: dotted 3px lightgray;
-  padding: 5px 14px;
-  min-height: 67px;
+  min-height: 77px;
+  padding: 4px 0px;
 }

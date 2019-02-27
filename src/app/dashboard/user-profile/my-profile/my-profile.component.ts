@@ -1,10 +1,8 @@
-import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
 import { Router,ActivatedRoute } from '@angular/router';
 import { FormGroup,FormBuilder, Validators } from '@angular/forms';
 
 import { matchingPasswords, noWhiteSpaceValidator } from '../../../form-validator';
-import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
-
 import { UserService } from '../../../core/services/user.service';
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import { XtremandLogger } from '../../../error-pages/xtremand-logger.service';
@@ -18,7 +16,7 @@ import { User } from '../../../core/models/user';
 import { DefaultVideoPlayer } from '../../../videos/models/default-video-player';
 import { CountryNames } from '../../../common/models/country-names';
 import { VideoFileService } from '../../../videos/services/video-file.service'
-import { CropperSettings } from 'ng2-img-cropper';
+import { CropperSettings, ImageCropperComponent } from 'ng2-img-cropper';
 import { UtilService } from 'app/core/services/util.service';
 declare var swal, $, videojs: any;
 
@@ -28,7 +26,7 @@ declare var swal, $, videojs: any;
     styleUrls: ['./my-profile.component.css', '../../../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css',
         '../../../../assets/admin/pages/css/profile.css', '../../../../assets/css/video-css/video-js.custom.css',
         '../../../../assets/css/phone-number-plugin.css'],
-    providers: [User, DefaultVideoPlayer, VideoUtilService, CallActionSwitch, Properties, RegularExpressions, CountryNames]
+    providers: [User, DefaultVideoPlayer, CallActionSwitch, Properties, RegularExpressions, CountryNames],
 })
 export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     defaultVideoPlayer: DefaultVideoPlayer;
@@ -44,7 +42,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     userData: User;
     parentModel = { 'displayName': '', 'profilePicutrePath': 'assets/admin/pages/media/profile/icon-user-default.png' };
     className = "form-control ng-touched ng-dirty ng-valid";
-    uploader: FileUploader;
     compPlayerColor: string;
     compControllerColor: string;
     valueRange: number;
@@ -64,7 +61,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     currentUser: any;
     roles: string[] = [];
     isOnlyPartnerRole = false;
-    logoUploader: FileUploader;
     logoImageUrlPath: string;
     fullScreenMode = false;
     logoLink = '';
@@ -77,7 +73,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     circleData:any;
     cropRounded = false;
     loadingcrop = false;
-
+    @ViewChild(ImageCropperComponent) cropper:ImageCropperComponent;
     constructor(public videoFileService: VideoFileService, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
         public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
         public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -110,52 +106,14 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.parentModel.profilePicutrePath = this.userData.profileImagePath;
                 }
             }
-          // un used code this code. implemented crop modal for this
-            this.uploader = new FileUploader({
-                allowedMimeType: ['image/jpeg', 'image/pjpeg', 'image/jpeg', 'image/pjpeg', 'image/png'],
-                maxFileSize: 10 * 1024 * 1024, // 10 MB
-                url: this.authenticationService.REST_URL + "admin/uploadProfilePicture/" + this.loggedInUserId + "?access_token=" + this.authenticationService.access_token
-            });
-            this.uploader.onAfterAddingFile = (file) => {
-                this.ngxloading = true;
-                console.log(file);
-                file.withCredentials = false;
-                this.uploader.queue[0].upload();
-            };
-            this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-                const imageFilePath = JSON.parse(response);
-                this.userProfileImage = imageFilePath['message'];
-                this.parentModel.profilePicutrePath = response['message'];
-                this.uploader.queue.length = 0;
-                this.clearImage();
-                this.profileUploadSuccess = true;
-                this.referenceService.topNavBarUserDetails.profilePicutrePath = imageFilePath['message'];
-                this.authenticationService.userProfile.profileImagePath = imageFilePath['message'];
-                this.ngxloading = false;
-                this.customResponse = new CustomResponse('SUCCESS', this.properties.PROFILE_PIC_UPDATED,true);
-            };
-            // ended un used code here
         }catch(error){
             this.hasClientErrors = true;
             this.logger.showClientErrors("my-profile.component.ts", "constructor()", error);
         }
-
     }
     cropperSettings() {
-        this.circleCropperSettings = new CropperSettings();
-        this.circleCropperSettings.width = 200;
-        this.circleCropperSettings.height = 200;
-        this.circleCropperSettings.keepAspect = false;
-        this.circleCropperSettings.croppedWidth = 156;
-        this.circleCropperSettings.croppedHeight = 200;
-        this.circleCropperSettings.canvasWidth = 500;
-        this.circleCropperSettings.canvasHeight = 300;
-        this.circleCropperSettings.minWidth = 100;
-        this.circleCropperSettings.minHeight = 100;
-        this.circleCropperSettings.rounded = true;
-        this.circleCropperSettings.minWithRelativeToResolution = false;
-        this.circleCropperSettings.cropperDrawSettings.strokeColor = 'rgba(255,255,255,1)';
-        this.circleCropperSettings.cropperDrawSettings.strokeWidth = 2;
+        this.circleCropperSettings = this.utilService.cropSettings( this.circleCropperSettings,200,156,200,true);
+        this.circleCropperSettings.noFileInput = true;
         this.circleData = {};
     }
     isEmpty(obj) {
@@ -178,10 +136,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
       this.userService.saveUserProfileLogo(fileObj).subscribe(
         (response: any) => {
           const imageFilePath = response;
-          this.userProfileImage = imageFilePath['message'];
-          this.parentModel.profilePicutrePath = imageFilePath['message'];
-          this.uploader.queue.length = 0;
-          this.clearImage();
+          this.userProfileImage = this.parentModel.profilePicutrePath = imageFilePath['message'];
           this.profileUploadSuccess = true;
           this.referenceService.topNavBarUserDetails.profilePicutrePath = imageFilePath['message'];
           this.authenticationService.userProfile.profileImagePath = imageFilePath['message'];
@@ -190,39 +145,21 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
           $('#cropProfileImage').modal('hide');
           this.closeModal();
         },
-        (error) => { console.log(error);   $('#cropProfileImage').modal('hide'); this.customResponse = new CustomResponse('ERROR',this.properties.SOMTHING_WENT_WRONG,true); },
-        ()=>{ this.loadingcrop = false; });
+        (error) => { console.log(error); $('#cropProfileImage').modal('hide'); this.customResponse = new CustomResponse('ERROR',this.properties.SOMTHING_WENT_WRONG,true); },
+        ()=>{ this.loadingcrop = false;  $('#cropProfileImage').modal('hide');});
     }
-    clearImage() {
-        $('div#previewImage > img').remove();
-        $('div#previewImage').append('<img src="assets/images/upload-profile.png"/>');
-        $('#priview').attr('src', 'assets/images/upload-profile.png');
-    }
-    fileChange(inputFile: any, event: any) {
-        console.log(inputFile.files);
-        this.referenceService.goToTop();
-        $("#profile-pic-upload-div").hide();
-        this.profilePictueError = false;
-        let extentionsArray = ["jpg", "JPG", "jpeg", "JPEG", "png", "PNG"];
-        let maxSize = 100 * 1024 * 1024;//100Mb
-        let file = inputFile.files[0];
-        let name = file.name;
-        let size = file.size;
-        let type = file.type;
-        console.log(name + "::::::::::" + size + ":::::::::::" + type);
-        let ext = name.split('.').pop().toLowerCase();
-        if ($.inArray(ext, extentionsArray) == -1) {
-            this.profilePictueError = true;
-            this.profilePictureErrorMessage = "Please Upload Image Files Only";
-            this.customResponse =  new CustomResponse('ERROR',this.profilePictureErrorMessage, true);
-        }
-        let fileSize = (size / 1024 / 1024); //size in MB
-        if (fileSize > maxSize) {
-            this.profilePictueError = true;
-            this.profilePictureErrorMessage = "Maximum File Size is 10 MB";
-            this.customResponse =  new CustomResponse('ERROR',this.profilePictureErrorMessage, true);
-        }
-    }
+    fileChangeListener($event,cropperComp: ImageCropperComponent) {
+      this.cropper = cropperComp;
+      const image:any = new Image();
+      const file:File = $event.target.files[0];
+      const myReader:FileReader = new FileReader();
+      const that = this;
+      myReader.onloadend = function (loadEvent:any) {
+          image.src = loadEvent.target.result;
+          that.cropper.setImage(image);
+      };
+      myReader.readAsDataURL(file);
+      }
     videojsCall() {
         this.customResponse =  new CustomResponse();
         if (!this.videoJSplayer && !this.isOnlyPartnerRole) {

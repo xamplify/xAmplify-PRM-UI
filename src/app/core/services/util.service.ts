@@ -106,15 +106,18 @@ export class UtilService {
       const blob = new Blob([ab], {type: mimeString});
       return (<File> blob);
     }
-    cropSettings(cropperSetting:any){
+    cropSettings(cropperSetting:any,height,croppedWidth,croppedHeight, rounded){
       cropperSetting = new CropperSettings();
       cropperSetting.width = 200;
-      cropperSetting.height = 130;
-      cropperSetting.croppedWidth = 200;
-      cropperSetting.croppedHeight = 130;
+      cropperSetting.height = height;
+      cropperSetting.croppedWidth = croppedWidth;
+      cropperSetting.croppedHeight = croppedHeight;
       cropperSetting.canvasWidth = 500;
       cropperSetting.canvasHeight = 300;
-      cropperSetting.rounded = false;
+      cropperSetting.rounded = rounded;
+      cropperSetting.cropperDrawSettings.strokeColor = 'rgba(255,255,255,1)';
+      cropperSetting.cropperDrawSettings.strokeWidth = 2;
+      cropperSetting.noFileInput = true;
       return cropperSetting;
     }
 }

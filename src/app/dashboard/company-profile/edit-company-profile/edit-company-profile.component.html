@@ -246,8 +246,11 @@
         <h4 class="modal-title" id="cropLogoImage">Crop Your company Logo Image</h4>
 			</div>
 			<div class="modal-body">
+          <div class="btn green fileinput-button-css" [class.disabled]="(squareData | json) !== '{}'"><span>Select image</span>
+            <input style="height: 36px;" id="custom-input" type="file" (change)="fileChangeListener($event, cropper)">
+          </div>
           <ngx-loading [show]="loadingcrop" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-        <img-cropper *ngIf="!cropRounded" [image]="squareData" [settings]="squareCropperSettings"></img-cropper>
+        <img-cropper #cropper *ngIf="!cropRounded" [image]="squareData" [settings]="squareCropperSettings"></img-cropper>
         <div style="text-align: right;">
             <button class="btn btn-primary" [disabled]="(squareData | json) === '{}'" (click)="uploadLogo()">Upload Image</button>
         </div>

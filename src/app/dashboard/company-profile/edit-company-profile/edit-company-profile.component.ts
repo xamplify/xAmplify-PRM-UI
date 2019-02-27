@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { FormBuilder } from "@angular/forms";
 import { Router } from '@angular/router';
 import { FileUploader} from 'ng2-file-upload/ng2-file-upload';
@@ -21,7 +21,7 @@ import { CustomResponse } from '../../../common/models/custom-response';
 import { SaveVideoFile } from '../../../videos/models/save-video-file';
 import { Properties } from '../../../common/models/properties';
 import { UtilService } from 'app/core/services/util.service';
-import { CropperSettings} from 'ng2-img-cropper';
+import { CropperSettings, ImageCropperComponent } from 'ng2-img-cropper';
 declare var $,swal: any;
 
 @Component({
@@ -123,12 +123,11 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
     tempCompanyProfile:any;
     upadatedUserId:any;
     isUpdateChaged = false;
-    croppedImage = false;
     squareCropperSettings: CropperSettings;
     squareData:any;
     cropRounded = false;
     loadingcrop = false;
-
+    @ViewChild(ImageCropperComponent) cropper:ImageCropperComponent;
     constructor(private logger: XtremandLogger, public authenticationService: AuthenticationService, private fb: FormBuilder,
         private companyProfileService: CompanyProfileService, public homeComponent: HomeComponent,private sanitizer: DomSanitizer,
         public refService: ReferenceService, private router: Router, public processor: Processor, public countryNames: CountryNames,
@@ -139,41 +138,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
         this.companyProfileNameDivClass = this.refService.formGroupClass;
         this.isOnlyPartner = this.authenticationService.isOnlyPartner();
         this.isVendorRole = this.authenticationService.isVendor();
-        this.squareCropperSettings = this.utilService.cropSettings(this.squareCropperSettings);
-        this.squareCropperSettings.croppedWidth = 196;
-        this.squareData = {};
-       // unused code for company logo upload
-        this.companyLogoUploader = new FileUploader({
-            allowedMimeType: ['image/jpeg', 'image/pjpeg', 'image/jpg', 'image/png'],
-            maxFileSize: this.maxFileSize * 1024 * 1024, // 10 MB
-            url: this.authenticationService.REST_URL + "admin/company-profile/upload-logo?userId=" + this.loggedInUserId + "&access_token=" + this.authenticationService.access_token
-        });
-        this.companyLogoUploader.onAfterAddingFile = (fileItem) => {
-            console.log(fileItem);
-            this.isLoading = true;
-            fileItem.withCredentials = false;
-            this.companyLogoUploader.queue[0].upload();
-        };
-        this.companyLogoUploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-            console.log(response);
-            console.log(this.companyLogoUploader.queue[0]);
-            if (JSON.parse(response).message === null) {
-                this.companyLogoUploader.queue[0].upload();
-                this.logoError = false;
-                this.logoErrorMessage = "";
-            } else {
-                this.companyLogoUploader.queue.length = 0;
-                this.companyLogoImageUrlPath = this.companyProfile.companyLogoPath = JSON.parse(response).path;
-                this.refService.companyProfileImage = this.companyProfile.companyLogoPath;
-                this.logoError = false;
-                this.logoErrorMessage = "";
-                this.enableOrDisableButton();
-                console.log(this.companyLogoImageUrlPath);
-                if(this.companyProfile.website) { this.saveVideoBrandLog(); }
-            }
-            this.isLoading = false;
-        }
-       // end off the line for unused code
+        this.cropperSettings();
         this.companyBackGroundLogoUploader = new FileUploader({
             allowedMimeType: ['image/jpeg', 'image/pjpeg', 'image/jpeg', 'image/pjpeg', 'image/png'],
             maxFileSize: 10 * 1024 * 1024, // 100 MB
@@ -199,9 +164,25 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
     closeModal(){
       this.cropRounded = !this.cropRounded;
       this.squareData = {};
-      this.croppedImage = false;
     }
-    fileChangeEvent(){ this.cropRounded = false; this.croppedImage = true; $('#cropLogoImage').modal('show'); }
+    cropperSettings(){
+      this.squareCropperSettings = this.utilService.cropSettings(this.squareCropperSettings,130,196,130,false);
+      this.squareCropperSettings.noFileInput = true;
+      this.squareData = {};
+    }
+    fileChangeEvent(){ this.cropRounded = false; $('#cropLogoImage').modal('show'); }
+    fileChangeListener($event,cropperComp: ImageCropperComponent) {
+      this.cropper = cropperComp;
+      const image:any = new Image();
+      const file:File = $event.target.files[0];
+      const myReader:FileReader = new FileReader();
+      const that = this;
+      myReader.onloadend = function (loadEvent:any) {
+          image.src = loadEvent.target.result;
+          that.cropper.setImage(image);
+      };
+      myReader.readAsDataURL(file);
+      }
     uploadLogo(){
       this.loadingcrop = true;
       let fileObj:any;
@@ -522,7 +503,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
               }
             }
           );
-  }
+      }
 
     getAllCompanyNames() {
         this.companyProfileService.getAllCompanyNames()
@@ -1056,11 +1037,6 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
 
     changeBackGroundLogo(inputFile) {
         console.log(inputFile);
-    }
-
-    clearLogo() {
-        this.companyLogoUploader.queue.length = 0;
-        this.companyLogoImageUrlPath = "";
     }
 
     clearBackgroundLogo() {
