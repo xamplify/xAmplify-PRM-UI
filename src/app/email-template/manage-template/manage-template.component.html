@@ -111,7 +111,7 @@
 										*ngIf="!authenticationService.isVendor()">Vendor Company
 										Name</th>
 									<th class="hidden-xs text-center">Type</th>
-									<th class="hidden-xs text-center">Created Date</th>
+									<th class="hidden-xs text-center">Created On</th>
 									<th class="text-center" style="min-width: 145px;">Actions</th>
 								</tr>
 							</thead>
@@ -210,7 +210,7 @@
 									</b>
 								</h6>
 								<h6 *ngIf="emailTemplate.type!='PARTNER'">
-									Created On <b> <app-timestamp [isOnlyDate]="true"
+									Created On <b> <app-timestamp [isOnlyDate]="false"
 											[dateAndTime]="emailTemplate.createdDate"> </app-timestamp>
 									</b>
 								</h6>

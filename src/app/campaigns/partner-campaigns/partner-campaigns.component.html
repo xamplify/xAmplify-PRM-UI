@@ -127,7 +127,7 @@
 												<b>Received On</b>
 											</span>
 											<span align="right" title="Received On"><b>
-                          <app-timestamp [isOnlyDate]="false" [dateAndTime]="campaign.launchedOn"> </app-timestamp>
+                          <app-timestamp [isOnlyDate]="false" [dateAndTime]="campaign.displayTime"> </app-timestamp>
                         </b>
 											</span>
 										</td>
@@ -184,7 +184,7 @@
                       <h6 [title]="campaign.createdBy">By <b>{{campaign.createdBy | slice:0:15}}<span *ngIf="campaign.createdBy?.length>15">...</span></b></h6>
 											<h6 [title]="campaign.companyName">From <b>{{campaign.companyName | slice:0:15}}<span *ngIf="campaign.companyName?.length>15">...</span></b></h6>
 											<h6>Received On <b>
-                        <app-timestamp [isOnlyDate]="false" [dateAndTime]="campaign.launchedOn"> </app-timestamp>
+                        <app-timestamp [isOnlyDate]="false" [dateAndTime]="campaign.displayTime"> </app-timestamp>
                       </b></h6>
 											<div class="bookmark-ribbon"> 
 												<span style="margin: 0px -7px; font-size: 17px; color: white;">

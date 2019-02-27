@@ -255,6 +255,10 @@ export class PartnerReportsComponent implements OnInit {
       this.campaignService.listCampaign(pagination,this.loggedInUserId)
           .subscribe(
               data => {
+                $.each(data.campaigns,function(index,campaign){
+                    campaign.displayTime = new Date(campaign.utcTimeInString);
+                    campaign.createdDate = new Date(campaign.createdDate);
+                });
                   this.sortOption.totalRecords = data.totalRecords;
                   pagination.totalRecords = data.totalRecords;
                   pagination = this.pagerService.getPagedItems(pagination, data.campaigns);
@@ -437,6 +441,9 @@ export class PartnerReportsComponent implements OnInit {
           ( response: any ) => {
               console.log(response);
               let data  = response.data;
+              $.each(data.redistributedCampaigns,function(index,campaign){
+                  campaign.redistributedOn = new Date(campaign.redistributedUtcString);
+              });
               this.sortOption.totalRecords = data.totalRecords;
               pagination.totalRecords = data.totalRecords;
               pagination = this.pagerService.getPagedItems(pagination, data.redistributedCampaigns);

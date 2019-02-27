@@ -43,8 +43,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         { 'name': 'Sort By', 'value': 'createdTime-DESC' },
         { 'name': 'Name (A-Z)', 'value': 'campaign-ASC' },
         { 'name': 'Name (Z-A)', 'value': 'campaign-DESC' },
-        { 'name': 'Created Date (ASC)', 'value': 'createdTime-ASC' },
-        { 'name': 'Created Date (DESC)', 'value': 'createdTime-DESC' }
+        { 'name': 'Created On (ASC)', 'value': 'createdTime-ASC' },
+        { 'name': 'Created On (DESC)', 'value': 'createdTime-DESC' }
     ];
 
     numberOfItemsPerPage = [
@@ -119,6 +119,10 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             .subscribe(
                 data => {
                     this.campaigns = data.campaigns;
+                    $.each(this.campaigns,function(index,campaign){
+                        campaign.displayTime = new Date(campaign.utcTimeInString);
+                        campaign.createdDate = new Date(campaign.createdDate);
+                   });
                     this.totalRecords = data.totalRecords;
                     pagination.totalRecords = data.totalRecords;
                     pagination = this.pagerService.getPagedItems(pagination, data.campaigns);

@@ -98,6 +98,9 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
             .subscribe(
                 data => {
                     this.campaigns = data.campaigns;
+                    $.each(this.campaigns,function(index,campaign){
+                        campaign.displayTime = new Date(campaign.utcTimeInString);
+                    });
                     this.totalRecords = data.totalRecords;
                     pagination.totalRecords = data.totalRecords;
                     pagination = this.pagerService.getPagedItems(pagination, data.campaigns);
