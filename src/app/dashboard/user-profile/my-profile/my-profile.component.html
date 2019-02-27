@@ -502,7 +502,7 @@ pointer-events: none;
               <h4 class="modal-title" id="cropProfileImage">Crop Your profile Image</h4>
             </div>
             <div class="modal-body">
-              <div class="btn green fileinput-button-css" [class.disabled]="(circleData | json) !== '{}'"><span>Select image</span>
+              <div class="btn green fileinput-button-css" *ngIf="(circleData | json) === '{}'"><span>Select image</span>
                 <input style="height: 36px;" id="custom-input" type="file" (change)="fileChangeListener($event, cropper)">
               </div>
               <ngx-loading [show]="loadingcrop" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
