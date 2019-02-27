@@ -152,12 +152,12 @@ img:hover {
 													<i
 														style="display: block; margin-top: 22px !important; text-align: center; font-size: 24px; margin: 0 auto 10px"
 														class="fa fa-file-excel-o"></i> <span
-														style="display: block; font-size: 12px; text-align: center">Upload a CSV</span> <input type="file" ng2FileSelect
-														*ngIf="uploader.queue.length==0" [uploader]="uploader"
+														style="display: block; font-size: 12px; text-align: center">Upload a CSV</span> <input type="file"
 														title=" " (change)="fileChange(input)" accept=".csv"
 														#input
 														[disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || selectedAddContactsOption == 2 || disableOtherFuctionality" />
 												</div>
+												<!--  ng2FileSelect *ngIf="uploader.queue.length==0" [uploader]="uploader" -->
                       </div>
                     </ng-container>
 
@@ -334,7 +334,10 @@ img:hover {
 							</div>
 
 						</div>
-						<div *ngIf="removeCsvName" id="removeCsv"
+						<div class="col-xz-12" *ngIf="uploadedCsvFileName">
+						<strong class="csv-list-name"> {{uploadedCsvFileName}} </strong>
+						</div>
+						<!-- <div *ngIf="removeCsvName" id="removeCsv"
 							style="margin-top: 15px; margin-bottom: -20px; padding-left: 1cm">
 							<table class="table">
 								<thead>
@@ -365,7 +368,7 @@ img:hover {
 									</tr>
 								</tbody>
 							</table>
-						</div>
+						</div> -->
 				<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 						<div class="row" *ngIf="clipBoard">
 							<div class="col-sm-12">

@@ -92,6 +92,8 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
     pageSize: number = 12;
     pageNumber: any;
     loading = false;
+    
+    uploadedCsvFileName = "";
 
     AddContactsOption: typeof AddContactsOption = AddContactsOption;
     selectedAddContactsOption: number = 8;
@@ -199,6 +201,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
             var outputstring = files[0].name.substring( 0, files[0].name.lastIndexOf( "." ) );
             this.selectedAddContactsOption = 2;
             this.noOptionsClickError = false;
+            this.uploadedCsvFileName = files[0].name;
             if ( !this.model.contactListName ) {
                 this.model.contactListName = outputstring;
             }
@@ -206,7 +209,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
             this.removeCsvName = true;
             $( "button#sample_editable_1_new" ).prop( 'disabled', false );
             $( "#file_preview" ).show();
-            $( "button#cancel_button" ).prop( 'disabled', true );
+            $( "button#cancel_button" ).prop( 'disabled', false );
             $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
             $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
             $( '.salesForceImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
@@ -740,6 +743,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                                 this.selectedAddContactsOption = 8;
                                 this.xtremandLogger.info( "update Contacts ListUsers:" + data );
                                 this.contactService.saveAsSuccessMessage = "add";
+                                this.uploadedCsvFileName = "";
                                 if ( this.isPartner == false ) {
                                     this.router.navigateByUrl( '/home/contacts/manage' )
                                 } else {
@@ -825,6 +829,8 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.customResponse = new CustomResponse();
         this.pager = [];
         this.pagedItems = [];
+        
+        this.uploadedCsvFileName = "";
 
         this.contactService.successMessage = false;
         $( '.salesForceImageClass' ).attr( 'style', 'opacity: 1;' );
@@ -845,12 +851,13 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
         $( '#copyFromclipTextArea' ).val( '' );
         $( "#Gfile_preview" ).hide();
         this.newUsers.length = 0;
+        this.contacts.length = 0;
         this.clipBoard = false;
         this.clipboardUsers.length = 0;
         this.selectedAddContactsOption = 8;
     }
 
-    removeCsv() {
+    /*removeCsv() {
         this.selectedAddContactsOption = 8;
         this.contacts.length = 0;
         this.model.contactListName = "";
@@ -867,7 +874,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
         $( '#SgearIcon' ).attr( 'style', 'opacity: 1;position: relative;font-size: 19px;top: -83px;left: 100px;' );
         $( '#GgearIcon' ).attr( 'style', 'opacity: 1;position: relative;font-size: 19px;top: -83px;left: 100px;' );
         $( '#ZgearIcon' ).attr( 'style', 'opacity: 1;position: relative;font-size: 19px;top: -83px;left: 100px;' );
-    }
+    }*/
 
     addRow( event ) {
         this.newUsers.push( event );
