@@ -123,7 +123,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   isEventUpdate = false;
   isEnableUpdateButton = false;
   beforeDaysLength: number;
-
+  tempStartTime: string;
 
   constructor(public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
     private contactService: ContactService,
@@ -336,6 +336,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   }
   eventStartTimeError(){
      const currentDate = new Date().getTime();
+     this.tempStartTime = this.eventCampaign.campaignEventTimes[0].startTimeString;
      const startDate = Date.parse(this.eventCampaign.campaignEventTimes[0].startTimeString);
      if(startDate < currentDate) { this.setStartTimeErrorMessage(true, 'Start Date / Time is already over.');}
      else if( startDate > currentDate){ this.setStartTimeErrorMessage(false, '');}
@@ -1667,25 +1668,30 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
         }
 
     }
-    
+
     validateReplayDate(){
-        var currentTime = new Date()
-        var month = currentTime.getMonth() + 1
-        var day = currentTime.getDate()
-        var year = currentTime.getFullYear()
-        var currentFulldate = month + "/" + day + "/" + year
-        var str = this.eventCampaign.campaignEventTimes[0].startTimeString
-        var res = str.split(" ");
-        this.differenceBetweenTwoDates(currentFulldate, res[0])
+      try{
+        var currentTime = new Date();
+        var month = currentTime.getMonth() + 1;
+        var day = currentTime.getDate();
+        var year = currentTime.getFullYear();
+        var currentFulldate = month + "/" + day + "/" + year;
+        if(this.eventCampaign.campaignEventTimes[0].startTimeString){
+         var str = this.eventCampaign.campaignEventTimes[0].startTimeString;
+        } else {  str = this.tempStartTime; }
+        if(str){ var res = str.split(" "); this.differenceBetweenTwoDates(currentFulldate, res[0]);}
+      }catch(error){
+        this.logger.log(error);
+      }
     }
-    
+
     differenceBetweenTwoDates(date1t, date2t){
         var date1 = new Date(date1t);
         var date2 = new Date(date2t);
         var timeDiff = Math.abs(date2.getTime() - date1.getTime());
-        var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+        var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
         this.beforeDaysLength = diffDays;
-        
+
     }
 
     validateUpdateButton() {
