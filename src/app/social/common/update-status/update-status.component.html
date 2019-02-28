@@ -101,7 +101,7 @@
 			<div class="col-sm-12 dashboard-stat2 p0 clearfix" *ngIf="isSocialCampaign">
 				<div class="portlet-body clearfix p10">
 					<div class="form-group pull-right m0" style="position: relative;top: -3px">
-						<h5 class="control-label font-purple-intense pr10">Notify me when email is opened</h5>
+						<h5 class="control-label font-purple-intense pr10 inline">Notify me when email is opened</h5>
 						<switch [status]="socialCampaign.emailOpened" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
 						 [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
 						 (statusChange)="socialCampaign.emailOpened = !socialCampaign.emailOpened">
@@ -151,7 +151,7 @@
 	                				'fa-times': customResponse.type === 3}"></i>
 							<span class="ml10 f-w-600">{{customResponse.statusText}}</span>
 							</h4>
-							<h5 *ngIf="isRedirectEnabled">Page will be redirected automcatically in few seconds</h5>	
+							<h5 *ngIf="isRedirectEnabled">You will be automatically redirected in a few seconds.</h5>	
 						<ng-container *ngIf='customResponse.statusArray'>
 							<h5 *ngFor="let item of customResponse.statusArray">{{item}}</h5>
 						</ng-container>
@@ -396,7 +396,7 @@
 				<div class="portlet-body clearfix p10">
 					<ng-container *ngIf="authenticationService.module.hasSocialStatusRole || (authenticationService.user.hasCompany && authenticationService.module.isOrgAdmin)">
 						<div class="form-group m0 pull-right">
-							<h5 class="control-label font-purple-intense pr10">Partner Contacts</h5>
+							<h5 class="control-label font-purple-intense pr10 inline">Partner Contacts</h5>
 							<switch [status]="socialCampaign.isPartner" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
 							 [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
 							 (statusChange)="toggleContactLists()">
