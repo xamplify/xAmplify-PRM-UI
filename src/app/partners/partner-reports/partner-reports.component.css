@@ -105,3 +105,7 @@ cursor: default;
 	float: none;
 }
 .override-action{ margin: 0 auto; display: table;float: none !important; }
+
+.greay{
+  background-color: #8a8282c4;
+}

@@ -24,10 +24,13 @@
       <div>
         <div>
           <div class="row">
-            <div class="col-xs-12 col-sm-6 col-md-3" [class.blur]="2!=selectedTabIndex">
-              <a class="dashboard-stat dashboard-stat-lighter purple-soft" (click)="goToReDistributedPartnersDiv()">
+            <div class="col-xs-12 col-sm-6 col-md-3">
+              <a class="dashboard-stat dashboard-stat-lighter purple-soft" [class.greay]="2!=selectedTabIndex" (click)="goToReDistributedPartnersDiv()">
                 <div class="visual">
-                  <i class="glyphicon glyphicon-bullhorn"></i>
+                  <!-- <i class="glyphicon glyphicon-bullhorn"></i> -->
+                  <i *ngIf="selectedTabIndex == 2" class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1" 
+                   [ngStyle]="{'color': 2===selectedTabIndex ? '#white' : '#ccc' }">
+                 </i>
                 </div>
                 <div class="details">
                   <div class="number"><span *ngIf="campaignsCount">{{campaignsCount}}</span><span *ngIf="!campaignsCount">0</span></div>
@@ -38,10 +41,12 @@
                 </span>
               </a>
             </div>
-            <div class="col-xs-12 col-sm-6 col-md-3" [class.blur]="3!=selectedTabIndex">
-              <a class="dashboard-stat dashboard-stat-lighter green-soft" (click)="goToThroughPartnersDiv()">
+            <div class="col-xs-12 col-sm-6 col-md-3" >
+              <a class="dashboard-stat dashboard-stat-lighter green-soft" [class.greay]="3!=selectedTabIndex" (click)="goToThroughPartnersDiv()">
                 <div class="visual">
-                  <i class="glyphicon glyphicon-bullhorn"></i>
+                  <!-- <i class="glyphicon glyphicon-bullhorn"></i> -->
+                  <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1"  [ngStyle]="{'color': 3===selectedTabIndex ? '#white' : '#ccc' }"
+                *ngIf="selectedTabIndex == 3" ></i>
                 </div>
                 <div class="details">
                   <div class="number">{{throughPartnerCampaignsCount}}</div>
@@ -52,10 +57,12 @@
                 </span>
               </a>
             </div>
-            <div class="col-xs-12 col-sm-6 col-md-3" (click)="goToActivePartnersDiv()" [class.blur]="0!=selectedTabIndex">
-              <a class="dashboard-stat dashboard-stat-lighter yellow-gold">
+            <div class="col-xs-12 col-sm-6 col-md-3" (click)="goToActivePartnersDiv()" >
+              <a class="dashboard-stat dashboard-stat-lighter yellow-gold" [class.greay]="0!=selectedTabIndex">
                 <div class="visual">
-                  <i class="fa fa-handshake-o"></i>
+                  <!-- <i class="fa fa-handshake-o"></i> -->
+                  <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1"  [ngStyle]="{'color': 0===selectedTabIndex ? '#white' : '#ccc' }"
+                *ngIf="selectedTabIndex == 0" ></i>
                 </div>
                 <div class="details">
                   <div class="number">{{activePartnersCount}}</div>
@@ -66,10 +73,12 @@
                 </span>
               </a>
             </div>
-            <div class="col-xs-12 col-sm-6 col-md-3" (click)="goToInActivePartnersDiv()" [class.blur]="1!=selectedTabIndex">
-              <a class="dashboard-stat dashboard-stat-lighter blue-soft">
+            <div class="col-xs-12 col-sm-6 col-md-3" (click)="goToInActivePartnersDiv()">
+              <a class="dashboard-stat dashboard-stat-lighter blue-soft" [class.greay]="1!=selectedTabIndex">
                 <div class="visual">
-                  <i class="fa fa-handshake-o"></i>
+                  <!-- <i class="fa fa-handshake-o"></i> -->
+                  <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1"  [ngStyle]="{'color': 1===selectedTabIndex ? '#white' : '#ccc' }"
+                *ngIf="selectedTabIndex == 1" ></i>
                 </div>
                 <div class="details">
                   <div class="number">{{inActivePartnersCount}}</div>
