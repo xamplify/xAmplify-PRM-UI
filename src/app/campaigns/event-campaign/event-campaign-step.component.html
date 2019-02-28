@@ -901,7 +901,7 @@ a.disabled {
                     <option [value]="13" [selected]="reply.actionId==13">Email is opened</option>
                     <option [value]="16" [selected]="reply.actionId ==16">Send immediately after email is opened</option>
                     <option [value]="24" [selected]="reply.actionId ==24" [hidden]="reDistributeEvent || reDistributeEventManage || authenticationService.isOnlyPartner()">If partner has not shared event</option>
-                    <option [value]="29" [selected]="reply.actionId ==29">Send reminder if not responded RSVP</option>
+                    <option [value]="29" [selected]="reply.actionId ==29">Send reminder if no response</option>
                     <option [value]="30" [selected]="reply.actionId ==30">Send reminder if responded YES</option>
                     <option [value]="25" [selected]="reply.actionId ==25">Send email if RSVP Yes</option>
                     <option [value]="26" [selected]="reply.actionId ==26">Send email If RSVP No</option>
