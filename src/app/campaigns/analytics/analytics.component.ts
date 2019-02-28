@@ -529,6 +529,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       this.paginationType = 'emailAction';
       this.campaignService.emailActionList(campaignId, actionType, pagination)
        .subscribe(data => {
+         data.forEach((element, index) => { element.time = new Date(element.utcTimeString);});
         this.campaignReport.emailLogs = data;
         this.campaignReport.emailActionType = actionType;
         $('#emailActionListModal').modal();
@@ -1451,13 +1452,13 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       }
     }
   }
-  
-  
+
+
   sendEmailNotOpenReminder(details: any){
       this.isOpenNotificationModal = true;
       this.selectedEmailNotOpenUserId = details.userId;
     }
-  
+
     emailNotOpenReminderDate(event: any){
         this.isOpenNotificationModal = false;
         if(event ===  "Success"){
