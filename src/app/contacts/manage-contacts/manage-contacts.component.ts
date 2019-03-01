@@ -248,10 +248,11 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
                 .subscribe(
                 ( data: any ) => {
                     this.xtremandLogger.info( data );
+                    data.listOfUserLists.forEach((element, index) => { element.createdDate = new Date(element.createdDate);});
                     this.contactLists = data.listOfUserLists;
                     this.totalRecords = data.totalRecords;
                     if ( data.totalRecords.length == 0 ) {
-                        this.resetResponse();
+                        this.resetResponse(); 
                         this.customResponse = new CustomResponse( 'INFO', this.properties.NO_RESULTS_FOUND, true );
                     } else {
                         pagination.totalRecords = this.totalRecords;
