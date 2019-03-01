@@ -160,6 +160,9 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
 
   listCampaignViewsDataInsert(campaignviews: any){
       this.campaignViews= campaignviews;
+      this.campaignViews.forEach((element, index) => {
+        if(element.latestView){ element.latestView = new Date(element.latestView); }
+      });
       const views = [];
       for (let i = 0; i < this.campaignViews.length; i++) {
         views.push(this.campaignViews[i].viewsCount)
