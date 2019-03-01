@@ -12,7 +12,7 @@ export class ContactsByType {
     contacts: Array<User> = new Array<User>();
     listOfAllContacts: any;
     contactListAssociatedCampaigns: any;
-    selectedCategory: string = '';
+    selectedCategory: string = 'all';
     pagination: Pagination = new Pagination();
     contactPagination: Pagination = new Pagination();
     isLoading: boolean = false;

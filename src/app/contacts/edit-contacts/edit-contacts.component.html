@@ -57,44 +57,50 @@
 
 							<div class="row mt5 mb5">
 								<div class="col-sm-5ths">
-									<button class="btn-block dashboard-stat blue"
+									<button class="btn-block dashboard-stat blue" [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'all'"
 										(click)="backToEditContacts()">
 										<div class="visual">
-											<i class="fa fa-users"></i>
+											<!-- <i class="fa fa-users"></i> -->
+											<i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"  [ngStyle]="{'color': contactsByType.selectedCategory == 'all' ? '#white' : '#ccc' }"
+               										 *ngIf="contactsByType.selectedCategory == 'all'" ></i>
 										</div>
 										<div class="details">
 											<div class="number">{{contactsByType.allContactsCount}}</div>
 											<div class="desc" style="font-size:20px">All <!-- {{checkingContactTypeName}}s --></div>
 										</div>
-										<span class="morePadding"> <a class="more" style="text-align: left;">
+										<span class="morePadding"> <a class="more" style="text-align: left; background: #3480b5; color: white">
 														Detailed view <i class="m-icon-swapright m-icon-white"></i>
 												</a>
 												</span>
 									</button>
 								</div>
 								<div class="col-sm-5ths">
-									<button class="btn-block dashboard-stat green"
+									<button class="btn-block dashboard-stat green" [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'active'"
 										(click)="showingContactDetails('active')"
 										[disabled]="contactsByType.activeContactsCount == 0">
 										<div class="visual">
-											<i class="fa fa-eye"></i>
+											<!-- <i class="fa fa-eye"></i> -->
+											<i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"  [ngStyle]="{'color': contactsByType.selectedCategory == 'active' ? '#white' : '#ccc' }"
+               										 *ngIf="contactsByType.selectedCategory == 'active'" ></i>
 										</div>
 										<div class="details">
 											<div class="number">{{contactsByType.activeContactsCount}}</div>
 											<div class="desc" style="font-size:20px">Registered <!-- {{checkingContactTypeName}}s --></div>
 										</div>
-										<span class="morePadding"> <a class="more" style="text-align: left;">
+										<span class="morePadding"> <a class="more" style="text-align: left; background: #268c83; color:white">
 														Detailed view <i class="m-icon-swapright m-icon-white"></i>
 												</a>
 												</span>
 									</button>
 								</div>
 								<div class="col-sm-5ths">
-									<button class="btn-block dashboard-stat purple"
+									<button class="btn-block dashboard-stat purple" [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'non-active'"
 										(click)="showingContactDetails('non-active')"
 										[disabled]="contactsByType.inactiveContactsCount == 0">
 										<div class="visual">
-											<i class="fa fa-eye-slash"></i>
+											<!-- <i class="fa fa-eye-slash"></i> -->
+											<i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"  [ngStyle]="{'color': contactsByType.selectedCategory == 'non-active' ? '#white' : '#ccc' }"
+               										 *ngIf="contactsByType.selectedCategory == 'non-active'" ></i>
 										</div>
 										<div class="details">
 											<div class="number">{{contactsByType.inactiveContactsCount}}</div>
@@ -107,11 +113,13 @@
 									</button>
 								</div>
 								<div class="col-sm-5ths">
-									<button class="btn-block dashboard-stat yellow-gold"
+									<button class="btn-block dashboard-stat yellow-gold" [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'invalid'"
 										(click)="showingContactDetails('invalid')"
 										[disabled]="contactsByType.invalidContactsCount == 0">
 										<div class="visual">
-											<i class="fa fa-user-times"></i>
+											<!-- <i class="fa fa-user-times"></i> -->
+											<i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"  [ngStyle]="{'color': contactsByType.selectedCategory == 'invalid' ? '#white' : '#ccc' }"
+               										 *ngIf="contactsByType.selectedCategory == 'invalid'" ></i>
 										</div>
 										<div class="details">
 											<div class="number">{{contactsByType.invalidContactsCount}}</div>
@@ -124,12 +132,15 @@
 									</button>
 								</div>
 								<div class="col-sm-5ths">
-									<button class="btn-block dashboard-stat red"
+									<button class="btn-block dashboard-stat red" [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'unsubscribe'"
 										(click)="showingContactDetails('unsubscribe')"
 										[disabled]="contactsByType.unsubscribedContactsCount == 0">
 										<div class="visual">
 
-											<i class="fa fa-times"></i>
+											<!-- <i class="fa fa-times"></i> -->
+											
+											<i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"  [ngStyle]="{'color': contactsByType.selectedCategory == 'unsubscribe' ? '#white' : '#ccc' }"
+               										 *ngIf="contactsByType.selectedCategory == 'unsubscribe'" ></i>
 										</div>
 										<div class="details">
 											<div class="number">{{contactsByType.unsubscribedContactsCount}}</div>

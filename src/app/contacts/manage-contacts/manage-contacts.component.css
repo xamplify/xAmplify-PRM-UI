@@ -69,3 +69,6 @@ h3 {
 @media screen and (min-width:601px){ .modal-css{ width: 60% !important;} .modal-copy{width: 40% !important; }}
 
 .override-actions{ margin: 0 auto; display: table;float: none !important; }
+.grey{
+  background-color: #8a8282c4;
+}

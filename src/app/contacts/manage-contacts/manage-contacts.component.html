@@ -53,11 +53,13 @@
 									<div class="clearfix"></div>
 									<div class="row mt5 mb5">
 										<div class="col-sm-5ths margin-top-10">
-											<button class="btn-block dashboard-stat blue"
+											<button class="btn-block dashboard-stat blue" [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'all'"
 												(click)="contactsByType.pagination.pageIndex = 1;listContactsByType('all')"
 												[disabled]="contactsByType.allContactsCount == 0">
 												<div class="visual">
-													<i class="fa fa-users"></i>
+													<!-- <i class="fa fa-users"></i> -->
+													<i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"  [ngStyle]="{'color': contactsByType.selectedCategory == 'all' ? '#white' : '#ccc' }"
+               										 *ngIf="contactsByType.selectedCategory == 'all'" ></i>
 												</div>
 												<div class="details">
 													<div class="number" style="font-weight: 300 !important;">{{contactsByType.allContactsCount}}</div>
@@ -67,18 +69,20 @@
 													</div>
 												</div>
 												<span class="morePadding"> <a class="more"
-													style="text-align: left;"> Detailed view <i
+													style="text-align: left; background: #3480b5; color: white"> Detailed view <i
 														class="m-icon-swapright m-icon-white"></i>
 												</a>
 												</span>
 											</button>
 										</div>
 										<div class="col-sm-5ths margin-top-10">
-											<button class="btn-block dashboard-stat green"
+											<button class="btn-block dashboard-stat green" [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'active'"
 												(click)="contactsByType.pagination.pageIndex = 1;listContactsByType('active')"
 												[disabled]="contactsByType.activeContactsCount == 0">
 												<div class="visual">
-													<i class="fa fa-eye"></i>
+													<!-- <i class="fa fa-eye"></i> -->
+													<i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"  [ngStyle]="{'color': contactsByType.selectedCategory == 'active' ? '#white' : '#ccc' }"
+               										 *ngIf="contactsByType.selectedCategory == 'active'" ></i>
 												</div>
 												<div class="details">
 													<div class="number numberCss"
@@ -89,18 +93,20 @@
 													</div>
 												</div>
 												<span class="morePadding"> <a class="more"
-													style="text-align: left;"> Detailed view <i
+													style="text-align: left;background: #268c83; color:white"> Detailed view <i
 														class="m-icon-swapright m-icon-white"></i>
 												</a>
 												</span>
 											</button>
 										</div>
 										<div class="col-sm-5ths margin-top-10">
-											<button class="btn-block dashboard-stat purple"
+											<button class="btn-block dashboard-stat purple" [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'non-active'"
 												(click)="contactsByType.pagination.pageIndex = 1;listContactsByType('non-active')"
 												[disabled]="contactsByType.inactiveContactsCount == 0">
 												<div class="visual">
-													<i class="fa fa-eye-slash"></i>
+													<!-- <i class="fa fa-eye-slash"></i> -->
+													<i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"  [ngStyle]="{'color': contactsByType.selectedCategory == 'non-active' ? '#white' : '#ccc' }"
+               										 *ngIf="contactsByType.selectedCategory == 'non-active'" ></i>
 												</div>
 												<div class="details">
 													<div class="number" style="font-weight: 300 !important;">{{contactsByType.inactiveContactsCount}}</div>
@@ -117,17 +123,21 @@
 											</button>
 										</div>
 										<div class="col-sm-5ths margin-top-10">
-											<button class="btn-block dashboard-stat yellow-gold"
+											<button class="btn-block dashboard-stat yellow-gold" [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'invalid'"
 												(click)="contactsByType.pagination.pageIndex = 1;listContactsByType('invalid')"
 												[disabled]="contactsByType.invalidContactsCount == 0">
 												<div class="visual">
-													<i class="fa fa-user-times"></i>
+													<!-- <i class="fa fa-user-times"></i> -->
+													<i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"  [ngStyle]="{'color': contactsByType.selectedCategory == 'invalid' ? '#white' : '#ccc' }"
+               										 *ngIf="contactsByType.selectedCategory == 'invalid'" ></i>
 												</div>
 												<div class="details">
 													<div class="number" style="font-weight: 300 !important;">{{contactsByType.invalidContactsCount}}</div>
 													<div class="desc" style="font-size: 20px">
 														Undeliverable
 														<!-- {{checkingContactTypeName}}s -->
+														<i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1"  [ngStyle]="{'color': 1===selectedTabIndex ? '#white' : '#ccc' }"
+               										 *ngIf="selectedTabIndex == 1" ></i>
 													</div>
 												</div>
 												<span class="morePadding"> <a class="more"
@@ -138,11 +148,13 @@
 											</button>
 										</div>
 										<div class="col-sm-5ths margin-top-10">
-											<button class="btn-block dashboard-stat red"
+											<button class="btn-block dashboard-stat red" [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'unsubscribe'"
 												(click)="contactsByType.pagination.pageIndex = 1;listContactsByType('unsubscribe')"
 												[disabled]="contactsByType.unsubscribedContactsCount == 0">
 												<div class="visual">
-													<i class="fa fa-times"></i>
+													<!-- <i class="fa fa-times"></i> -->
+													<i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1"  [ngStyle]="{'color': contactsByType.selectedCategory == 'unsubscribe' ? '#white' : '#ccc' }"
+               										 *ngIf="contactsByType.selectedCategory == 'unsubscribe'" ></i>
 												</div>
 												<div class="details">
 													<div class="number" style="font-weight: 300 !important;">{{contactsByType.unsubscribedContactsCount}}</div>
