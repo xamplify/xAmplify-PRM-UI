@@ -460,7 +460,7 @@
                  </div>
             </div>
             </div>
-				<div class="portlet light" [hidden]="mainLoader || hasClientError">
+				<div class="portlet light" [hidden]="mainLoader || hasClientError || httpRequestLoader.isLoading">
 					<div class="portlet-title">
 						<div class="caption">
 							<span class="caption-subject font-red-sunglo" style="font-size: 15px !important;">

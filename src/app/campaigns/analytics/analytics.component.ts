@@ -870,29 +870,19 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
           .subscribe(
           data => {
             console.log(data);
-            this.loading = false;
-            this.referenceService.detailViewIsLoading = false;
-            this.rsvpDetailsList = data.data;
-            this.rsvpDetailAnalyticsPagination.totalRecords = data.totalRecords;
-            this.rsvpDetailAnalyticsPagination = this.pagerService.getPagedItems(this.rsvpDetailAnalyticsPagination, data.data);
+            this.emailOpenDataStore(data);
           },
           error => this.xtremandLogger.error(error),
-          () => { }
-          )
+          () => { } );
       }else if(this.rsvpDetailType === 'partnerRsvp'){
           this.campaignService.getEventCampaignEmailOpenDetails( this.campaign.campaignId, false, this.rsvpDetailAnalyticsPagination )
           .subscribe(
-          data => {
-            console.log(data);
-            this.loading = false;
-            this.referenceService.detailViewIsLoading = false;
-            this.rsvpDetailsList = data.data;
-            this.rsvpDetailAnalyticsPagination.totalRecords = data.totalRecords;
-            this.rsvpDetailAnalyticsPagination = this.pagerService.getPagedItems(this.rsvpDetailAnalyticsPagination, data.data);
-          },
+           data => {
+              console.log(data);
+              this.emailOpenDataStore(data);
+           },
           error => this.xtremandLogger.error(error),
-          () => { }
-          )
+          () => { } );
       }
       else{
           this.showRsvpDetails = true;
@@ -900,22 +890,24 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
           .subscribe(
           data => {
             console.log(data);
-            this.loading = false;
-            this.referenceService.detailViewIsLoading = false;
-            this.rsvpDetailsList = data.data;
-            this.rsvpDetailAnalyticsPagination.totalRecords = data.totalRecords;
-            this.rsvpDetailAnalyticsPagination = this.pagerService.getPagedItems(this.rsvpDetailAnalyticsPagination, data.data);
+            this.emailOpenDataStore(data);
           },
           error => this.xtremandLogger.error(error),
-          () => { }
-          )
+          () => { } );
       }
       }catch(error){
         this.xtremandLogger.error('error'+error)
    }
   }
 
-
+  emailOpenDataStore(data:any){
+    this.loading = false;
+    data.data.forEach((element, index) => { element.time = new Date(element.utcTimeString);});
+    this.referenceService.detailViewIsLoading = false;
+    this.rsvpDetailsList = data.data;
+    this.rsvpDetailAnalyticsPagination.totalRecords = data.totalRecords;
+    this.rsvpDetailAnalyticsPagination = this.pagerService.getPagedItems(this.rsvpDetailAnalyticsPagination, data.data);
+  }
 
   getRsvpEmailNotOpenDetails(){
       try{
