@@ -200,6 +200,7 @@ export class ContentManagementComponent implements OnInit {
         this.emailTemplateService.listAwsFiles( pagination, this.loggedInUserId )
             .subscribe(
             ( data: any ) => {
+               data.forEach((element, index) => { element.time = new Date(element.utcTimeString);});
                for(var i=0;i< data.length; i++){ data[i]["id"] = i;}
                this.list = data;
                this.searchList = data;

@@ -72,7 +72,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
                 this.authenticationService.user = data;
                 this.authenticationService.userProfile = data;
             },
-            error => {console.log( error ); this.router.navigate( ['/login'] );},
+            error => {console.log( error ); this.router.navigate(['/su'])},
             () => { }
             );
         }catch(error){ console.log('error'+error); }

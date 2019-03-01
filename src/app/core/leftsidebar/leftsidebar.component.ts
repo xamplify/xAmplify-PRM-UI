@@ -1,9 +1,9 @@
-import {Component, OnInit, DoCheck} from '@angular/core';
-import {Location} from '@angular/common';
-import {Router} from '@angular/router';
-import {AuthenticationService} from '../../core/services/authentication.service';
-import {Roles} from '../../core/models/roles';
-import {ReferenceService} from '../../core/services/reference.service';
+import { Component, OnInit, DoCheck } from '@angular/core';
+import { Location } from '@angular/common';
+import { Router } from '@angular/router';
+import { AuthenticationService } from '../../core/services/authentication.service';
+import { Roles } from '../../core/models/roles';
+import { ReferenceService } from '../../core/services/reference.service';
 declare var window:any;
 
 @Component({
@@ -30,10 +30,10 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
     }
 
     updateLeftSideBar(location:Location){
-      //  this.refService.isSidebarClosed = false;
-      //  document.body.className = 'login page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-sidebar-closed-hide-logo';
         this.location = location;
+        try{
         const roles = this.authService.getRoles();
+        if(roles){
         if (roles.indexOf(this.roleName.campaignRole) > -1 ||
             roles.indexOf(this.roleName.orgAdminRole) > -1 ||
             roles.indexOf(this.roleName.allRole) > -1 ||
@@ -81,6 +81,8 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
         if(roles.indexOf(this.roleName.vendorRole)>-1){
             this.authService.module.isVendor = true;
         }
+        }
+        }catch(error){  console.log(error); }
     }
 
   ngOnInit() {

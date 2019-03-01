@@ -72,9 +72,10 @@ export class LoginComponent implements OnInit, OnDestroy {
                }
              },
               (error: any) => {
-                  this.loading = false;
+                try{
+                this.loading = false;
                   const body = error['_body'];
-                  if (body !== "") {
+                    if (body !== "") {
                       const response = JSON.parse(body);
                       if (response.error_description === "Bad credentials" || response.error_description ==="Username/password are wrong") {
                           this.setCustomeResponse("ERROR", this.properties.BAD_CREDENTIAL_ERROR);
@@ -93,6 +94,9 @@ export class LoginComponent implements OnInit, OnDestroy {
                       this.setCustomeResponse("ERROR", error);
                       this.xtremandLogger.error("error:" + error)
                   }
+                }catch(err){
+                  if( error.status===0 ) { this.setCustomeResponse("ERROR", 'Error Disconnected! Service unavailable, Please check you internet connection'); }
+                }
               });
           return false;
         }
