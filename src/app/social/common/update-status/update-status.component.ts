@@ -197,23 +197,19 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
         $('#videoId').css('width', '100%');
         $('#videoId').css('height', '315px');
     }
-  addVideo() {
-    this.resetCustomResponse();
-    if (this.socialStatus.socialStatusContents.length > 0 &&
-      (Array.from(this.socialStatus.socialStatusContents)[0].fileType !== 'video')) {
-      this.setCustomResponse(ResponseType.Warning, 'You can include up to 4 photos or 1 video in a post.');
-    } else {
-      this.socialStatus.statusMessage = this.selectedVideo.title;
-      const socialStatusContent: SocialStatusContent = new SocialStatusContent();
-      socialStatusContent.videoId = this.selectedVideo.id;
-      socialStatusContent.fileName = this.selectedVideo.title;
-      socialStatusContent.fileType = 'video';
-      socialStatusContent.filePath = this.videoGifImage;
-      this.videoGifImage
-      this.socialStatus.socialStatusContents.push(socialStatusContent);
-    }
-    $('#listVideosModal').modal('hide');
-  }
+     addVideo() {
+       this.resetCustomResponse();
+       this.socialStatus.statusMessage = this.selectedVideo.title;
+       const socialStatusContent: SocialStatusContent = new SocialStatusContent();
+       socialStatusContent.videoId = this.selectedVideo.id;
+       socialStatusContent.fileName = this.selectedVideo.title;
+       socialStatusContent.fileType = 'video';
+       socialStatusContent.filePath = this.videoGifImage;
+       this.socialStatus.socialStatusContents = [];
+       this.socialStatus.socialStatusContents[0] = (socialStatusContent);
+       $('#listVideosModal').modal('hide');
+       this.videoJSplayer.dispose();
+     }
 
   removeItem(socialStatus: SocialStatus, socialStatusContent: SocialStatusContent) {
     this.resetCustomResponse();
@@ -584,8 +580,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 
   closeListVideosModal() {
     $('#listVideosModal').modal('hide');
-    this.videoJSplayer.pause();
-    this.videoJSplayer.currentTime(0);
+    this.videoJSplayer.dispose();
     this.closeModal();
   }
 
