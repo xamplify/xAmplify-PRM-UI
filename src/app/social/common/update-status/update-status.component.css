@@ -80,7 +80,7 @@ textarea {
 }
 .profile-name {
 	width: calc(100% - 90px);
-	float: right;
+	display: inline-block;
 }
 
 .fa-check-square, .fa-check-circle-o{
