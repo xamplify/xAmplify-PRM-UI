@@ -8,6 +8,7 @@ import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { UtilService } from '../../core/services/util.service';
 import { Roles } from '../../core/models/roles';
 import { Properties } from '../../common/models/properties';
+declare var $:any;
 
 @Component({
   selector: 'app-topnavbar',
@@ -104,7 +105,9 @@ export class TopnavbarComponent implements OnInit {
       );
     }catch(error) {this.logger.error('error'+error); }
   }
-
+  onRightClick(event){
+    return false;
+  }
   ngOnInit() {
     try{
      this.getUnreadNotificationsCount();
