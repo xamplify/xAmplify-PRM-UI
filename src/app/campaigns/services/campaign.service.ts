@@ -407,7 +407,7 @@ export class CampaignService {
 
     /*********Common Methods***********/
     setLaunchTime() {
-        let date = new Date();
+       /* let date = new Date();
         let year = date.getFullYear();
         let currentMonth = date.getMonth() + 1;
         let month = currentMonth < 10 ? '0' + currentMonth : currentMonth;
@@ -415,8 +415,22 @@ export class CampaignService {
         let hours = date.getHours() > 9 ? date.getHours() : '0' + date.getHours();
         let minutes = date.getMinutes() > 9 ? date.getMinutes() : '0' + date.getMinutes();
         let am_pm = date.getHours() > 11 ? 'PM' : 'AM';
-        return month + "/" + day + "/" + year + " " + hours + ":" + minutes + " "+am_pm;
-
+        return month + "/" + day + "/" + year + " " + hours + ":" + minutes + " "+am_pm;*/
+        
+        
+        let date = new Date();
+        let today = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();;
+        let currentMonth =  date.getMonth()+1;
+        let month = currentMonth < 10 ? '0' + currentMonth : currentMonth;
+        let year = date.getFullYear();
+        let hours = date.getHours();
+        let mintues = date.getMinutes();
+        let ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12;
+        hours = hours ? hours : 12; 
+        let mintuesInString = mintues < 10 ? '0'+mintues : mintues;
+        var currentDateTime = month + '/' + today + '/' + year + ' ' + hours + ':' + mintuesInString + ' ' + ampm;
+        return currentDateTime;
     }
     setHoursAndMinutesToAutoReponseReplyTimes(timeAndHoursString: string) {
         let date = new Date();
