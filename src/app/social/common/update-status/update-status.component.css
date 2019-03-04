@@ -11,7 +11,7 @@ video {
 
 .profile-box {padding: 10px;}
 .profile-box:hover{background-color: #f7f7f7; cursor: pointer;}
-.heading-primary {margin: 3px 0;}
+.heading-primary {margin: 3px 0;word-break: break-all;}
 
 .update-status-profile {margin-top: 1em;}
 .update-status-profile .profile-image-box {
@@ -77,6 +77,10 @@ textarea {
 	margin-top: 10px;
 	cursor: pointer;
 	float: left;
+}
+.profile-name {
+	width: calc(100% - 90px);
+	float: right;
 }
 
 .fa-check-square, .fa-check-circle-o{
