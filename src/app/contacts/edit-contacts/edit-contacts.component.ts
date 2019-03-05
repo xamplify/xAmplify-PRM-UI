@@ -179,6 +179,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
         public teamMemberService: TeamMemberService ) {
 
         this.addContactuser.country = ( this.countryNames.countries[0] );
+        this.contactsByType.selectedCategory = "all";
 
         let currentUrl = this.router.url;
         if ( currentUrl.includes( 'home/contacts' ) ) {
