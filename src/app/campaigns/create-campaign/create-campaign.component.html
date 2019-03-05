@@ -691,7 +691,7 @@
                 <div class="input-icon right pull-right" style="padding-top: 4px;right: 8px;">
                    <input type="text" [(ngModel)]="emailTemplateSearchInput" [ngModelOptions]="{standalone: true}" class="form-control"
                    placeholder="Search for a template" (keypress)="eventHandler($event.keyCode, 'emailTemplate')">
-                   <button class="glyphicon glyphicon-remove search-box-item-clear" style="padding:5px;" *ngIf="emailTemplateSearchInput" (click)="emailTemplateSearchInput=''"></button>
+                   <button class="glyphicon glyphicon-remove search-box-item-clear" style="padding:8px;" *ngIf="emailTemplateSearchInput" (click)="emailTemplateSearchInput=''"></button>
                    <button type="submit" class="search-box-item-click email-search" (click)="searchEmailTemplate()"><i class="fa fa-search" style="font-size: 16px !important;padding:5px !important;"></i></button>
                 </div>
                 <div class="portlet-body">
