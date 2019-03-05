@@ -698,7 +698,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     listOfWatchedLogs() {
         this.xtremandLogger.log(this.pagination);
         this.paginationType = 'watched';
-        if(!this.isCalledPagination){ this.pagination.maxResults = 10; this.isCalledPagination = true;}
+        if(!this.isCalledPagination){ this.pagination.maxResults = 12; this.isCalledPagination = true;}
         this.dashboardService.listOfWatchedLogs(this.loggedInUserId, this.pagination)
             .subscribe(
                 (data: any) => {
