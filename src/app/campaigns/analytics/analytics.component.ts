@@ -437,6 +437,10 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       data => {
         this.usersWatchListPagination.totalRecords = this.campaignReport.usersWatchCount;
         this.campaignReport.usersWatchList = data.data;
+        data.forEach((element, index) => {
+          element.startTime = new Date(element.startTimeUtcString);
+          element.endTime = new Date(element.endTimeUtcString);
+        });
         $('#usersWatchListModal').modal();
         this.usersWatchListPagination = this.pagerService.getPagedItems(this.usersWatchListPagination, this.campaignReport.usersWatchList);
         this.usersWatchTotalList(campaignId, this.usersWatchListPagination.totalRecords);
@@ -562,9 +566,11 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       this.loading = true;
       this.campaignService.listEmailLogsByCampaignAndUser(campaignId, userId)
        .subscribe( data => {
-          this.emailLogs = data;
-          this.loading =false;
-          console.log(data);
+        data.forEach((element, index) => {
+         if(element.time) { element.time = new Date(element.utcTimeString); }});
+        this.emailLogs = data;
+        this.loading =false;
+        console.log(data);
        },
       error => console.log(error),
       () => { this.count(); } )
@@ -1133,6 +1139,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       subscribe(
       (data: any) => {
         console.log(data);
+        data.forEach((element, index) => { element.time = new Date(element.time);});
         this.donutCampaignViews = data;
         if (timePeriod === 'today') {
           this.pagination.totalRecords = this.campaignReport.todayViewsCount;
