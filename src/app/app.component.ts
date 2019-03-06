@@ -1,5 +1,6 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
+import { NavigationCancel, Event, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
+
 import { SlimLoadingBarService } from 'ng2-slim-loading-bar';
 declare var QuickSidebar, $: any;
 
@@ -24,11 +25,15 @@ export class AppComponent implements OnInit, AfterViewInit {
                 this.router.navigated = false;
                 window.scrollTo(0, 0);
             }
+            this.navigationInterceptor(evt);
         });
     }
-    
-    ngAfterViewInit(){
-        $('body').tooltip({ selector: '[data-toggle="tooltip"]' });
-        }
-
+    private navigationInterceptor(event: Event): void {
+      if (event instanceof NavigationStart) {  this.slimLoadingBarService.start(); }
+      if (event instanceof NavigationEnd) { this.slimLoadingBarService.complete(); }
+      // Set loading state to false in both of the below events to hide the loader in case a request fails
+      if (event instanceof NavigationCancel) { this.slimLoadingBarService.stop(); }
+      if (event instanceof NavigationError) { this.slimLoadingBarService.stop(); }
+    }
+    ngAfterViewInit(){  $('body').tooltip({ selector: '[data-toggle="tooltip"]' }); }
 }

@@ -348,6 +348,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         this.videoBaseReportService.totlaMinutesWatchedByMostUsers(this.selectedVideo.id).subscribe(
             (result: any) => {
                 console.log(result);
+                result.forEach((element, index) => { element.date = new Date(element.utcTimeString);});
                 this.totalUsersWatched = result;
                 this.downloadTypeName = 'minetesWatched'
                 if (this.totalUsersWatched.length > 0) {

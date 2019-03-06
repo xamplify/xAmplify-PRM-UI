@@ -669,6 +669,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.dashboardService.listEmailOpenLogs(this.loggedInUserId, actionId, this.pagination)
             .subscribe(
                 (result: any) => {
+                    result.forEach((element) => {
+                    if(element.time) { element.time = new Date(element.utcTimeString);} });
                     this.dashboardReport.emailLogList = result;
                     this.pagination.totalRecords = this.dashboardReport.totalEmailOpenedCount;
                     this.isLoadingList = false;
@@ -685,6 +687,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.dashboardService.listEmailClickedLogs(this.loggedInUserId, this.pagination)
             .subscribe(
                 result => {
+                    result.forEach((element) => {
+                    if(element.time) { element.time = new Date(element.utcTimeString);} });
                     this.dashboardReport.emailLogList = result;
                     this.isLoadingList = false;
                     this.pagination.totalRecords = this.dashboardReport.totalEmailClickedCount;
@@ -702,6 +706,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.dashboardService.listOfWatchedLogs(this.loggedInUserId, this.pagination)
             .subscribe(
                 (data: any) => {
+                  data.forEach((element) => {
+                    if(element.time) { element.time = new Date(element.utcTimeString);} });
                     this.dashboardReport.emailLogList = data;
                     this.isLoadingList = false;
                     this.pagination.totalRecords = this.dashboardReport.totalEmailWatchedCount;
@@ -719,10 +725,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     this.countryViewsData = result.countrywiseusers;
                     this.xtremandLogger.log(this.countryViewsData);
                 },
-                    (error: any) => {
-                        this.xtremandLogger.error(error);
-                        this.xtremandLogger.errorPage(error);
-                    });
+                (error: any) => {
+                    this.xtremandLogger.error(error);
+                    this.xtremandLogger.errorPage(error);
+                });
         } catch (error) {
             this.xtremandLogger.error(error);
         }
@@ -882,7 +888,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.dashboardService.listEmailOpenLogs(this.loggedInUserId, 13, this.pagination)
             .subscribe(
                 (result: any) => {
-                    this.dashboardReport.allEmailOpenLogList = result;
+                  result.forEach((element) => {
+                  if(element.time) { element.time = new Date(element.utcTimeString);} });
+                  this.dashboardReport.allEmailOpenLogList = result;
                     this.pagination.totalRecords = this.dashboardReport.totalEmailOpenedCount;
                     this.pagination = this.pagerService.getPagedItems(this.pagination, this.dashboardReport.allEmailOpenLogList);
                 },
@@ -896,6 +904,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.dashboardService.listEmailClickedLogs(this.loggedInUserId, this.pagination)
             .subscribe(
                 result => {
+                   result.forEach((element) => {
+                    if(element.time) { element.time = new Date(element.utcTimeString);} });
                     this.dashboardReport.allEmailClickedLogList = result;
                     this.pagination.totalRecords = this.dashboardReport.totalEmailClickedCount;
                     this.pagination = this.pagerService.getPagedItems(this.pagination, this.dashboardReport.allEmailClickedLogList);
@@ -910,6 +920,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.dashboardService.listOfWatchedLogs(this.loggedInUserId, this.pagination)
             .subscribe(
                 (data: any) => {
+                    data.forEach((element) => {
+                    if(element.time) { element.time = new Date(element.utcTimeString);} });
                     this.dashboardReport.allEmailWatchedLogList = data;
                     this.pagination.totalRecords = this.dashboardReport.totalEmailWatchedCount;
                     this.pagination = this.pagerService.getPagedItems(this.pagination, this.dashboardReport.allEmailWatchedLogList);
@@ -929,6 +941,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 .subscribe(
                     (result: any) => {
                         this.loading = false;
+                        result.data.forEach((element) => {
+                          if(element.time) { element.time = new Date(element.utcTimeString);} });
                         this.xtremandLogger.log(result);
                         this.worldMapUserData = result.data;
                         this.pagination.totalRecords = result.totalRecords;
