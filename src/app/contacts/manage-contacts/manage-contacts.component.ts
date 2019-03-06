@@ -1389,8 +1389,12 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
                     this.loadContactLists( this.pagination );
                 },
                 ( error: any ) => {
-                    this.xtremandLogger.error( error );
+                    if(error._body.includes("email addresses in your contact list that aren't formatted properly")){
+                        this.customResponse = new CustomResponse( 'ERROR', "Email addresses in your contact list that aren't formatted properly.", true );
+                    }else{
                     this.xtremandLogger.errorPage( error );
+                    }
+                    this.xtremandLogger.error( error );
                 },
                 () => this.xtremandLogger.info( "allcontactComponent saveSelectedUsers() finished" )
                 )
