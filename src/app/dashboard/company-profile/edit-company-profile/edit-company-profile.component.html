@@ -249,7 +249,7 @@
 			</div>
 			<div class="modal-body">
           <div class="btn green fileinput-button-css" *ngIf="(squareData | json) === '{}'"><span>Select image</span>
-            <input style="height: 36px;" id="custom-input" type="file" (change)="fileChangeListener($event, cropper)">
+            <input style="height: 36px;" title=" " id="custom-input" type="file" (change)="fileChangeListener($event, cropper)">
           </div>
           <ngx-loading [show]="loadingcrop" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
         <img-cropper #cropper *ngIf="!cropRounded" [image]="squareData" [settings]="squareCropperSettings"></img-cropper>
