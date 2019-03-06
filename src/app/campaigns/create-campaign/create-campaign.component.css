@@ -1099,7 +1099,7 @@ background: #5bb1d4;
 
 .profile-box {padding: 10px; border: 1px solid #ddd;}
 .profile-box:hover{background-color: #f7f7f7; cursor: pointer;}
-.heading-primary {margin: 3px 0;}
+.heading-primary {margin: 3px 0;word-break: break-all;line-height: inherit;}
 
 .update-status-profile {margin-top: 1em;}
 
@@ -1135,6 +1135,7 @@ background: #5bb1d4;
     width: 16px;
 }
 .profile-name {
+	width: calc(100% - 100px);
 	display: inline-block;
 }
 .profile-selected {
