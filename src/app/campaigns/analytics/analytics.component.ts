@@ -138,7 +138,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     this.loading = true;
     this.referenceService.loading(this.httpRequestLoader, true);
     this.listTotalCampaignViews(campaignId);
-    if(!this.campaign.detailedAnalyticsShared && this.campaign.dataShare){
+    if(!this.campaign.detailedAnalyticsShared && this.campaign.dataShare && !this.campaign.parentCampaignId){
         pagination.campaignId = campaignId;
         pagination.campaignType = "VIDEO";
         this.campaignService.listCampaignInteractiveViews(pagination)
