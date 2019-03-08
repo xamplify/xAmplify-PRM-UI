@@ -83,7 +83,8 @@ body .fc {
 	padding: 0 .6em;
 	font-size: 1em;
 	white-space: nowrap;
-	cursor: pointer
+	cursor: pointer;
+	text-transform: capitalize;
 }
 
 .fc button::-moz-focus-inner {
