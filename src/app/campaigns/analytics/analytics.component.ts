@@ -437,7 +437,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       data => {
         this.usersWatchListPagination.totalRecords = this.campaignReport.usersWatchCount;
         this.campaignReport.usersWatchList = data.data;
-        data.forEach((element, index) => {
+        data.data.forEach((element, index) => {
           element.startTime = new Date(element.startTimeUtcString);
           element.endTime = new Date(element.endTimeUtcString);
         });

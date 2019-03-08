@@ -15,9 +15,9 @@ export class ServiceUnavailableComponent implements OnInit {
 
   ngOnInit() {
     console.log("service unavailable component");
-    Observable.interval(1000 * 60).subscribe(x => {
-     this.getUserByUserName(this.authenticationService.user.username);
-    });
+    // Observable.interval(1000 * 60).subscribe(x => {
+    //  this.getUserByUserName(this.authenticationService.user.username);
+    // });
   }
 
   getUserByUserName( userName: string ) {
