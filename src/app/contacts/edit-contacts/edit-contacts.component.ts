@@ -488,9 +488,12 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                             body = body.substring( 1, body.length - 1 );
                             if ( error._body.includes( 'Please launch or delete those campaigns first' ) ) {
                                 this.customResponse = new CustomResponse( 'ERROR', error._body, true );
-                            } else {
+                            } else if(error._body.includes("email addresses in your contact list that aren't formatted properly")){
+                                this.customResponse = new CustomResponse( 'ERROR', "Email addresses in your contact list that aren't formatted properly.", true );
+                            }else{
                                 this.xtremandLogger.errorPage( error );
                             }
+                            this.xtremandLogger.error( error );
                             console.log( error );
                         },
                         () => this.xtremandLogger.info( "MangeContactsComponent loadContactLists() finished" )
@@ -625,9 +628,12 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                                     if ( error._body.includes( 'Please launch or delete those campaigns first' ) ) {
                                         this.customResponse = new CustomResponse( 'ERROR', error._body, true );
 
-                                    } else {
-                                        this.xtremandLogger.errorPage( error );
+                                    } else if(error._body.includes("email addresses in your contact list that aren't formatted properly")){
+                                        this.customResponse = new CustomResponse( 'ERROR', "Email addresses in your contact list that aren't formatted properly.", true );
+                                    }else{
+                                       this.xtremandLogger.errorPage( error );
                                     }
+                                    this.xtremandLogger.error( error );
                                     console.log( error );
                                 },
                                 () => this.xtremandLogger.info( "MangeContactsComponent loadContactLists() finished" )
@@ -1243,9 +1249,12 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                                 body = body.substring( 1, body.length - 1 );
                                 if ( error._body.includes( 'Please launch or delete those campaigns first' ) ) {
                                     this.customResponse = new CustomResponse( 'ERROR', error._body, true );
-                                } else {
-                                    this.xtremandLogger.errorPage( error );
+                                } else if(error._body.includes("email addresses in your contact list that aren't formatted properly")){
+                                    this.customResponse = new CustomResponse( 'ERROR', "Email addresses in your contact list that aren't formatted properly.", true );
+                                }else{
+                                   this.xtremandLogger.errorPage( error );
                                 }
+                                this.xtremandLogger.error( error );
                                 console.log( error );
                             },
                             () => this.xtremandLogger.info( "MangeContactsComponent loadContactLists() finished" )

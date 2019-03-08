@@ -450,9 +450,12 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                                 if ( error._body.includes( 'Please launch or delete those campaigns first' ) ) {
                                     this.customResponse = new CustomResponse( 'ERROR', error._body, true );
                                     console.log( "done" )
-                                } else {
+                                } else if(error._body.includes("email addresses in your contact list that aren't formatted properly")){
+                                    this.customResponse = new CustomResponse( 'ERROR', "Email addresses in your contact list that aren't formatted properly.", true );
+                                }else{
                                     this.xtremandLogger.errorPage( error );
                                 }
+                                this.xtremandLogger.error( error );
                                 this.loading = false;
                                 console.log( error );
                             },

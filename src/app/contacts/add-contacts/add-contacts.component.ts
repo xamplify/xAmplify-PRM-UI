@@ -570,8 +570,12 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                 },
                 ( error: any ) => {
                     this.loading = false;
-                    this.xtremandLogger.error( error );
+                    if(error._body.includes("email addresses in your contact list that aren't formatted properly")){
+                        this.customResponse = new CustomResponse( 'ERROR', "Email addresses in your contact list that aren't formatted properly.", true );
+                    }else{
                     this.xtremandLogger.errorPage( error );
+                    }
+                    this.xtremandLogger.error( error );
                 },
                 () => this.xtremandLogger.info( "addcontactComponent saveacontact() finished" )
                 )
@@ -669,8 +673,12 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                     },
                     ( error: any ) => {
                         this.loading = false;
-                        this.xtremandLogger.error( error );
+                        if(error._body.includes("email addresses in your contact list that aren't formatted properly")){
+                            this.customResponse = new CustomResponse( 'ERROR', "Email addresses in your contact list that aren't formatted properly.", true );
+                        }else{
                         this.xtremandLogger.errorPage( error );
+                        }
+                        this.xtremandLogger.error( error );
                     },
                     () => this.xtremandLogger.info( "addcontactComponent saveacontact() finished" )
                     )
@@ -751,8 +759,12 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                                 }
                             },
                             ( error: any ) => {
-                                this.xtremandLogger.error( error );
+                                if(error._body.includes("email addresses in your contact list that aren't formatted properly")){
+                                    this.customResponse = new CustomResponse( 'ERROR', "Email addresses in your contact list that aren't formatted properly.", true );
+                                }else{
                                 this.xtremandLogger.errorPage( error );
+                                }
+                                this.xtremandLogger.error( error );
                             },
                             () => this.xtremandLogger.info( "addcontactComponent saveCsvContactList() finished" )
                             )
@@ -1089,8 +1101,12 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                         },
                         ( error: any ) => {
                             this.loading = false;
-                            this.xtremandLogger.error( error );
+                            if(error._body.includes("email addresses in your contact list that aren't formatted properly")){
+                                this.customResponse = new CustomResponse( 'ERROR', "Email addresses in your contact list that aren't formatted properly.", true );
+                            }else{
                             this.xtremandLogger.errorPage( error );
+                            }
+                            this.xtremandLogger.error( error );
                         },
                         () => this.xtremandLogger.info( "addcontactComponent saveacontact() finished" )
                         )
@@ -1134,8 +1150,12 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                     },
                     ( error: any ) => {
                         this.loading = false;
-                        this.xtremandLogger.error( error );
+                        if(error._body.includes("email addresses in your contact list that aren't formatted properly")){
+                            this.customResponse = new CustomResponse( 'ERROR', "Email addresses in your contact list that aren't formatted properly.", true );
+                        }else{
                         this.xtremandLogger.errorPage( error );
+                        }
+                        this.xtremandLogger.error( error );
                     },
                     () => this.xtremandLogger.info( "addcontactComponent saveacontact() finished" )
                     )
@@ -1473,8 +1493,12 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
 
                         ( error: any ) => {
                             this.loading = false;
-                            this.xtremandLogger.error( error );
+                            if(error._body.includes("email addresses in your contact list that aren't formatted properly")){
+                                this.customResponse = new CustomResponse( 'ERROR', "Email addresses in your contact list that aren't formatted properly.", true );
+                            }else{
                             this.xtremandLogger.errorPage( error );
+                            }
+                            this.xtremandLogger.error( error );
                         },
                         () => this.xtremandLogger.info( "addcontactComponent saveZohoContact() finished" )
                         )
@@ -1520,8 +1544,12 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
 
                     ( error: any ) => {
                         this.loading = false;
-                        this.xtremandLogger.error( error );
+                        if(error._body.includes("email addresses in your contact list that aren't formatted properly")){
+                            this.customResponse = new CustomResponse( 'ERROR', "Email addresses in your contact list that aren't formatted properly.", true );
+                        }else{
                         this.xtremandLogger.errorPage( error );
+                        }
+                        this.xtremandLogger.error( error );
                     },
                     () => this.xtremandLogger.info( "addcontactComponent saveZohoContactUsers() finished" )
                     )
@@ -1827,8 +1855,12 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                     },
                     ( error: any ) => {
                         this.loading = false;
-                        this.xtremandLogger.error( error );
+                        if(error._body.includes("email addresses in your contact list that aren't formatted properly")){
+                            this.customResponse = new CustomResponse( 'ERROR', "Email addresses in your contact list that aren't formatted properly.", true );
+                        }else{
                         this.xtremandLogger.errorPage( error );
+                        }
+                        this.xtremandLogger.error( error );
                     },
                     () => this.xtremandLogger.info( "addcontactComponent saveZohoContactUsers() finished" )
                     )
@@ -1872,8 +1904,12 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                         },
                         ( error: any ) => {
                             this.loading = false;
-                            this.xtremandLogger.error( error );
+                            if(error._body.includes("email addresses in your contact list that aren't formatted properly")){
+                                this.customResponse = new CustomResponse( 'ERROR', "Email addresses in your contact list that aren't formatted properly.", true );
+                            }else{
                             this.xtremandLogger.errorPage( error );
+                            }
+                            this.xtremandLogger.error( error );
                         },
                         () => this.xtremandLogger.info( "addcontactComponent saveSalesforceContacts() finished" )
                         )
