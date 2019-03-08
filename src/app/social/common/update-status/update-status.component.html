@@ -21,7 +21,7 @@
 	</div>
 	<div class="row">
 		<div class="col-md-3 col-sm-12">
-			<div class="col-sm-12 dashboard-stat2 pt0" id="social-accounts">
+			<div class="col-sm-12 dashboard-stat2 pt0" [ngClass]="{'disabled': isEditSocialStatus}">
 				<ng-container>
 					<h6 class="caption-subject font-red-sunglo uppercase bold mt0">SOCIAL ACCOUNTS</h6>
 					<div class="clearfix"></div>
@@ -434,7 +434,7 @@
 											<span *ngIf="contactList.uploadedBy?.length>50">By {{contactList.uploadedBy | slice:0:50}}...</span>
 											</h6>
 										</td>
-										<td>{{contactList.createdDate}}</td>
+										<td>{{contactList.createdDate | date:'mediumDate'}}</td>
 										<td> <h6 class='m0'>{{contactList.noOfContacts}}</h6> </td>
 										<td class='m0'>
 											<a class="actions-block pull-left"><i class="fa fa-eye" (click)="loadContactsOnPreview(contactList, contactsPagination);"></i></a>

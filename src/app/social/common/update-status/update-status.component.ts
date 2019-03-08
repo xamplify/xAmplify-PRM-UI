@@ -71,6 +71,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   paginationType: string;
   location:any;
   channelCampaign: boolean;
+  isEditSocialStatus: boolean = false;
   campaignNames = [];
   constructor(public socialService: SocialService,
     private videoFileService: VideoFileService, public properties:Properties,
@@ -91,6 +92,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     this.customResponse.type = null;
     this.customResponse.statusText = null;
     this.socialStatusResponse = [];
+    this.customResponse.statusArray = [];
   }
   changeChannelCampaign(){
     this.channelCampaign = !this.channelCampaign;
@@ -541,6 +543,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     socialStatus.id = null;
     this.socialStatusList.push(socialStatus);
     this.listSocialStatusProviders();
+    this.isEditSocialStatus = false;
   }
 
   listSocialConnections() {
@@ -589,7 +592,8 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     $('#fc-event-' + socialStatus.id).modal('hide');
     $('html,body').animate({scrollTop: 0}, 'slow');
     this.initializeSocialStatus();
-    this.socialStatusList
+    this.isEditSocialStatus = true;
+    socialStatus.shareNow = true;
     this.socialStatusList[0] = socialStatus;
     this.socialStatusProviders = [];
     this.socialStatusProviders[0] = socialStatus.socialStatusProvider;
