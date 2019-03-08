@@ -26,6 +26,7 @@ export class AuthenticationService {
     REST_URL: string;
     MEDIA_URL: string;
     SHARE_URL: string;
+    MARKETO_URL:string;
     user: User = new User();
     userProfile: User = new User();
     userToken: UserToken = new UserToken();
@@ -39,6 +40,7 @@ export class AuthenticationService {
     venorMyProfileReport: any;
     constructor(private http: Http, private router: Router, private utilService: UtilService) {
         this.REST_URL = this.SERVER_URL + 'xtremand-rest/';
+        this.MARKETO_URL = environment.MARKETO_SERVER_URL + 'xtremand-rest/';
         this.MEDIA_URL = this.SERVER_URL + 'vod/';
         this.SHARE_URL = this.SERVER_URL + 'embed/';
     }

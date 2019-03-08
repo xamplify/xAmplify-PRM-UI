@@ -11,7 +11,7 @@
 						<a [routerLink]="referenceService.homeRouter">Home</a><i class="fa fa-angle-right"></i>
 					</li>
 					<li>
-						<a (click)="showCampaigns()">Campaigns</a><i class="fa fa-angle-right"></i>
+						<a (click)="showCampaigns()">Opportunities</a><i class="fa fa-angle-right"></i>
 					</li>
 
 					<li *ngIf="leadList">
@@ -230,7 +230,7 @@
 										</div>
 										<div class="portlet-input input-inline input-small" style="width: 176px !important;">
 											<div class="input-icon right" style="position: relative;right: -11px;">
-												<input type="text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search a campaign"
+												<input type="text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search"
 												 (keypress)="searchCampaignsKeyPress($event.keyCode)">
 												<button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey=''"></button>
 												<button type="submit" class="search-box-item-click" (click)="searchCampaigns()">
@@ -291,11 +291,11 @@
 													</span>
 												</td>
 												<td>
-													<a data-toggle="tooltip" data-placement="top" title="# of Leads">
+													<a data-toggle="tooltip" data-placement="top" title="# of Leads" style="cursor: default">
 														<span class="circled-number"><b>{{campaign.dealsCount}}</b></span>
 													</a>
 
-													<a (click)="showPartners(campaign)" data-toggle="tooltip" data-placement="top" title="View Redistributed Campaigns" *ngIf="campaign.dealsCount > 0">
+													<a (click)="showPartners(campaign)" data-toggle="tooltip" data-placement="top" title="View leads for this campaign" *ngIf="campaign.dealsCount > 0">
 														<span class="circled-number"><i class="fa" [ngClass]="{'fa-plus': !campaign.expand, 'fa-minus': campaign.expand}"></i></span>
 													</a>
 												</td>
@@ -355,11 +355,14 @@
 													</span>
 												</td>
 												<td>
-													<a data-toggle="tooltip" data-placement="top" title="# of Deals">
+													<a data-toggle="tooltip" data-placement="top" title="# of Deals" style="cursor: default">
 														<span class="circled-number"><b>{{campaign.dealsCount}}</b></span>
 													</a>
 
-													<a (click)="showPartners(campaign)" data-toggle="tooltip" data-placement="top" title="View Redistributed partners" *ngIf="campaign.dealsCount > 0">
+													<a (click)="showPartners(campaign)" data-toggle="tooltip" data-placement="top" title="View deals for this campaign" *ngIf="!isPartnerVersion  && (campaign.dealsCount > 0 )">
+														<span class="circled-number"><i class="fa" [ngClass]="{'fa-plus': !campaign.expand, 'fa-minus': campaign.expand}"></i></span>
+													</a>
+													<a (click)="showPartners(campaign)" data-toggle="tooltip" data-placement="top" title="View Leads" *ngIf="isPartnerVersion && (campaign.dealsCount > 0)">
 														<span class="circled-number"><i class="fa" [ngClass]="{'fa-plus': !campaign.expand, 'fa-minus': campaign.expand}"></i></span>
 													</a>
 												</td>
@@ -420,7 +423,7 @@
 														<i class="fa fa-line-chart"></i>
 													</a>
 
-													<a (click)="showPartners(campaign)" data-toggle="tooltip" data-placement="top" title="View Redistributed parteners">
+													<a (click)="showPartners(campaign)" data-toggle="tooltip" data-placement="top" title="View leads for this campaigns">
 														<i class="fa" [ngClass]="{'fa-plus': !campaign.expand, 'fa-minus': campaign.expand}"></i>
 													</a>
 												</div>
@@ -480,7 +483,7 @@
 	<div class="page-content">
 		<a (click)="disableDealRegistrationForm()" class="pull-right close-circle" style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;">
 			<span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
-		<app-add-leads [campaign]="selectedCampaign" [lead]="user" [dealId]="selectedDealId" [parent]="'manage-deals'"></app-add-leads>
+		<app-add-leads [campaign]="selectedCampaign" [lead]="user" [dealId]="selectedDealId" [parent]="isVendor"></app-add-leads>
 	</div>
 </section>
 
@@ -489,7 +492,7 @@
 	<div class="page-content">
 		<a (click)="disableDealPushRegistrationForm()" class="pull-right close-circle" style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;">
 			<span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
-		<app-deal-registration [campaign]="selectedCampaign" [lead]="user" [dealId]="selectedDealId" [parent]="isVendorVersion"
+		<app-deal-registration [campaign]="selectedCampaign" [lead]="user" [dealId]="selectedDealId" [isVendor]="isVendorVersion"
 		(dealReg)="resetCounters()"></app-deal-registration>
 	</div>
 </section>

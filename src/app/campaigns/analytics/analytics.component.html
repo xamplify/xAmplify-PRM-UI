@@ -784,7 +784,7 @@
 					<div class="row mb10">
 						<img src="/assets/images/user.png" width="48px" class="user-profile-image">
 						<span *ngIf="(campaign.nurtureCampaign || !channelCampaign) &&  authenticationService.module.isCompanyPartner  ">
-							<button style="position: absolute; left: 217px; margin-top: 7px;" (click)="showDealRegistrationForm()"
+							<button style="position: absolute; left: 350px; margin-top: 7px;" (click)="showDealRegistrationForm()"
 							class="btn btn-success">{{dealButtonText}}</button>
 						</span>
 						<h5 class="f-w-600 mt10 mb0"><span *ngIf="selectedRow?.firstName">{{selectedRow.firstName}}</span>&nbsp;<span *ngIf="selectedRow?.lastName">{{selectedRow.lastName}}</span></h5>
@@ -1533,7 +1533,7 @@
 <div class="page-content">
 <a (click)="showTimeLineView()" class="pull-right close-circle" style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;"> <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;"
 			aria-hidden="true"></span></a>
-	<app-add-leads [campaign]="campaign" [lead]="selectedRow" [dealId]="dealId"></app-add-leads>
+	<app-add-leads [campaign]="campaign" [lead]="selectedRow" [dealId]="dealId" [parent]="false"></app-add-leads>
 </div>
 </section>
 

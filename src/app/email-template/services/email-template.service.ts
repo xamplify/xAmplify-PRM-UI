@@ -17,6 +17,7 @@ export class EmailTemplateService {
     public pagination: Pagination;
     isRegularUpload:boolean;
     URL = this.authenticationService.REST_URL;
+    MARKETO_URL = this.authenticationService.MARKETO_URL;
     
     constructor( private http: Http,  private authenticationService: AuthenticationService,
     		 private refService:ReferenceService ) {
@@ -134,6 +135,27 @@ export class EmailTemplateService {
     
     uploadFile(userId: number, formData: FormData) {
         return this.http.post(this.URL + `email-template/aws/upload/?userId=${userId}&access_token=${this.authenticationService.access_token}`, formData)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    checkMarketoCredentials(userId: number) {
+        return this.http.get(this.MARKETO_URL + `/marketo/${userId}/checkCredentials?access_token=${this.authenticationService.access_token}`)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    saveMarketoCredentials( formData: any) {
+        return this.http.post(this.MARKETO_URL + `/marketo/credentials?access_token=${this.authenticationService.access_token}`, formData)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    getMarketoEmailTemplatePreview(userId: number,emailTemplateId:number) {
+        return this.http.get(this.MARKETO_URL + `marketo/${userId}/emailtemplate/${emailTemplateId}/content?access_token=${this.authenticationService.access_token}`)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    getMarketoEmailTemplates(userId: number) {
+        return this.http.get(this.MARKETO_URL + `/marketo/${userId}/emailtemplates?access_token=${this.authenticationService.access_token}`)
             .map(this.extractData)
             .catch(this.handleError);
     }

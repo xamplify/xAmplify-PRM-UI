@@ -25,16 +25,18 @@ import { DetailViewComponent } from './detail-view/detail-view.component';
 import { TimestampComponent } from './timestamp/timestamp.component';
 import { ScrollTopComponent } from './scroll-top/scroll-top.component';
 import { SaveAsComponent } from './save-as/save-as.component';
+import { TimestampNewComponent } from './timestamp-new/timestamp.component';
 
 @NgModule({
     imports: [CommonModule, FormsModule, LoadingModule],
     declarations: [DonutChartComponent, PaginationComponent, WorldmapComponent, PieChartComponent,
         BarChartComponent, EmbedModalComponent, EmbedModalComponent, UserInfoComponent, LocationComponent,
         PlatformComponent, ResponseMessageComponent, PreviewVideoComponent, ContactsCampaignsMailsComponent, ListLoaderComponent,
-        PlayVideoLoaderComponent, GridLoaderComponent, ExportCsvComponent, AnalyticsLoaderComponent, VideoThumbnailComponent, DetailViewComponent, TimestampComponent, ScrollTopComponent, SaveAsComponent ],
+        PlayVideoLoaderComponent, GridLoaderComponent, ExportCsvComponent, AnalyticsLoaderComponent, VideoThumbnailComponent, DetailViewComponent, TimestampComponent, ScrollTopComponent, SaveAsComponent,
+    TimestampNewComponent ],
     exports: [DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent,
         BarChartComponent, EmbedModalComponent, UserInfoComponent, LocationComponent, PlatformComponent,
         ResponseMessageComponent, PreviewVideoComponent, PieChartComponent, ListLoaderComponent, GridLoaderComponent, PlayVideoLoaderComponent,
-        ExportCsvComponent, LoadingModule, AnalyticsLoaderComponent, VideoThumbnailComponent, DetailViewComponent, TimestampComponent, ScrollTopComponent, SaveAsComponent]
+        ExportCsvComponent, LoadingModule, AnalyticsLoaderComponent, VideoThumbnailComponent, DetailViewComponent, TimestampComponent, ScrollTopComponent, SaveAsComponent,TimestampNewComponent]
 })
 export class CommonComponentModule { }

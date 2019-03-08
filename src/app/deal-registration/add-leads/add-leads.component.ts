@@ -32,6 +32,7 @@ export class AddLeadsComponent implements OnInit
     @Input() lead: any;
     @Input() dealId: any;
     @Input() parent: any;
+    
     dealRegistration: DealRegistration;
     isServerError: boolean = false;
     leadData: any;
@@ -153,7 +154,7 @@ export class AddLeadsComponent implements OnInit
                 );
         } else
         {
-            this.dealRegistrationService.getDealById(this.dealId).
+            this.dealRegistrationService.getDealById(this.dealId,this.loggenInUserId).
                 subscribe(data =>
                 {
 
@@ -380,7 +381,7 @@ export class AddLeadsComponent implements OnInit
         this.dealRegistration.properties = obj;
         if (this.dealRegistration.id != null)
         {
-            this.dealRegistrationService.updateDeal(this.dealRegistration).subscribe(data =>
+            this.dealRegistrationService.updateLead(this.dealRegistration).subscribe(data =>
             {
                 this.customResponse = new CustomResponse('SUCCESS', "Lead updated successfully", true);
                 this.isLoading = false;
@@ -646,7 +647,12 @@ export class AddLeadsComponent implements OnInit
 
     submitButtonStatus()
     {
+        if (!this.companyError &&  !this.phoneError)
+        {
         this.isDealRegistrationFormValid = true;
+        }else{
+            this.isDealRegistrationFormValid = false;
+        }
     }
     addPhoneError(x)
     {

@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { DealRegistrationComponent } from './add-deals/deal-registration.component';
 import { DealRegistrationRoutingModule } from './deal-registration-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import { ManageDealsComponent } from './manage-deals/manage-deals.component';
@@ -15,8 +14,10 @@ import { ManageCommentsComponent } from './manage-comments/manage-comments.compo
 
 
 
+
+
 @NgModule({
-  imports: [ CommonComponentModule,DealRegistrationRoutingModule , SharedModule,CommonModule,CampaignsModule],
+  imports: [ CommonComponentModule,DealRegistrationRoutingModule , SharedModule,CommonModule,CampaignsModule ],
   declarations: [ ManageDealsComponent, ManagePartnersComponent, ManageLeadsComponent, DealAnalyticsComponent, ManageCommentsComponent],
   providers:[DealRegistrationService,CampaignService],
   exports:[]

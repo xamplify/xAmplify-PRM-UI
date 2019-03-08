@@ -314,35 +314,40 @@ footer a.tz:after{
                     </div>
 
 
-                </div>
+        </div>
+        <div  style="margin-bottom: 50px;width: 85%">
         <ul class="comment-section" *ngFor="let c of commentList" style="margin: 0px;padding-left: 8%">
 
-			<li class="comment user-comment" *ngIf="c.user.id != loggedInUserId" style="width: 180%;padding-left: 55%">
-                <div class="info" >
-                    <a href="#" *ngIf="c.user != null">{{c.user.firstName+" "+ c.user.lastName}}</a>
-                   <span *ngIf="c?.createdAt"><app-timestamp [dateAndTime]="c.createdAt"> </app-timestamp></span>
+			<li class="comment user-comment" *ngIf="c.user.id == loggedInUserId" style="width: 180%;padding-left: 55%">
+                <div class="info">
+                    <a href="#" >{{c.userName| slice:0:30}}<span *ngIf="c.userName?.length>30">...</span></a>
+                    <span *ngIf="c?.createdAt"><app-timestamp-new [dateAndTime]="c.createdAt"> </app-timestamp-new></span>
                 </div>
 
-                <a class="avatar" href="#">
-                    <img src="https://aravindu.com/vod/images/14663/05112018/profilePicture/65DD83D1-A768-411E-8A37-3D79B1F858BC.jpeg" width="35" alt="Profile Avatar" title="Anie Silverston" />
+                <a class="avatar" href="#" *ngIf="c.user.profileImagePath!= null && c.user.profileImagePath!= undefined">
+                    <img src="{{c.user.profileImagePath}}" width="35" alt="Profile Avatar" title="{{c.user.lastName}}" alt="Image not found"
+                    />
                 </a>
+               
 
                 <p>{{c.comment}}</p>
             
 			</li>
 
-			<li class="comment author-comment" *ngIf="c.user.id == loggedInUserId" style="width: 135%;">
+			<li class="comment author-comment" *ngIf="c.user.id != loggedInUserId" style="width: 135%;">
 
-               <div class="info">
-                    <a href="#" *ngIf="c.user != null">{{c.user.firstName+" "+ c.user.lastName}}</a>
-                     <span *ngIf="c?.createdAt"><app-timestamp [dateAndTime]="c.createdAt"> </app-timestamp></span>
-                </div>
+                <div class="info">
+                    <a href="#" >{{c.userName| slice:0:30}}<span *ngIf="c.userName?.length>30">...</span></a>
+                <span *ngIf="c?.createdAt"><app-timestamp-new [dateAndTime]="c.createdAt"> </app-timestamp-new></span>
+            </div>
 
-                <a class="avatar" href="#">
-                    <img src="https://aravindu.com/vod/images/14663/05112018/profilePicture/65DD83D1-A768-411E-8A37-3D79B1F858BC.jpeg" width="35" alt="Profile Avatar" title="Anie Silverston" />
-                </a>
+            <a class="avatar" href="#" *ngIf="c.user.profileImagePath!= null && c.user.profileImagePath!= undefined">
+                <img src="{{c.user.profileImagePath}}" width="35" alt="Profile Avatar" title="{{c.user.lastName}}" alt="Image not found"
+                />
+            </a>
+           
 
-                <p>{{c.comment}}</p>
+            <p>{{c.comment}}</p>
 
 			</li>
 
@@ -350,5 +355,6 @@ footer a.tz:after{
            
 
         </ul>
+    </div>
        
              

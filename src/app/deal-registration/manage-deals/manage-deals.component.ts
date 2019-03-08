@@ -896,11 +896,11 @@ export class ManageDealsComponent implements OnInit
         {
 
             this.selectedDealId = deal.dealId;
-            this.dealRegistrationService.getDealById(deal.dealId).subscribe(dealNew =>
+            this.dealRegistrationService.getDealById(deal.dealId,this.loggedInUserId).subscribe(dealNew =>
             {
                 this.selectedDeal = dealNew.data;
 
-                const obj = { campaignId: this.selectedDeal.campaignId.toString() };
+                const obj = { campaignId: this.selectedDeal.parentCampaignId.toString() };
 
 
                 this.campaignService.getCampaignById(obj).subscribe(campaign =>
@@ -947,11 +947,11 @@ export class ManageDealsComponent implements OnInit
     {
 
 
-        this.dealRegistrationService.getDealById(item).subscribe(deal =>
+        this.dealRegistrationService.getDealById(item,this.loggedInUserId).subscribe(deal =>
         {
             this.selectedDeal = deal.data;
             this.selectedDealId = this.selectedDeal.dealId;
-            const obj = { campaignId: this.selectedDeal.campaignId.toString() };
+            const obj = { campaignId: this.selectedDeal.parentCampaignId.toString() };
 
             this.campaignService.getCampaignById(obj).subscribe(campaign =>
             {
@@ -1022,11 +1022,11 @@ export class ManageDealsComponent implements OnInit
     getDealInfo(item: any)
     {
 
-        this.dealRegistrationService.getDealById(item).subscribe(deal =>
+        this.dealRegistrationService.getDealById(item,this.loggedInUserId).subscribe(deal =>
         {
             this.selectedDeal = deal.data;
             this.selectedDealId = this.selectedDeal.dealId;
-            const obj = { campaignId: this.selectedDeal.campaignId.toString() };
+            const obj = { campaignId: this.selectedDeal.parentCampaignId.toString() };
 
 
             this.campaignService.getCampaignById(obj).subscribe(campaign =>

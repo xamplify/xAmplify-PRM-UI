@@ -71,7 +71,7 @@ export class ManageLeadsComponent implements OnInit, OnChanges
         else
             this.listLeadsBasedOnFiltersByPartner();
 
-
+         
     }
     ngOnChanges(changes: SimpleChanges)
     {
@@ -84,6 +84,8 @@ export class ManageLeadsComponent implements OnInit, OnChanges
             this.listLeadsBasedOnFilters();
         else
             this.listLeadsBasedOnFiltersByPartner();
+
+           
     }
     listLeadsBasedOnFilters()
     {
@@ -101,6 +103,7 @@ export class ManageLeadsComponent implements OnInit, OnChanges
                 this.isDealSection = true;
                 this.pageText = "TOTAL DEALS";
                 this.pageHeader = "CAMPAIGN: " + this.selectedCampaign.campaignName;
+                console.log(this.selectedCampaign)
                 this.listAllDeals(this.pagination);
                 break;
             }
@@ -123,6 +126,7 @@ export class ManageLeadsComponent implements OnInit, OnChanges
                 this.pageText = "";
                 this.pageHeader = "OPENED DEALS";
                 this.listOpenedLeads(this.pagination);
+                console.log( this.pagination)
                 break;
             }
             case "HOLD": {
@@ -143,6 +147,7 @@ export class ManageLeadsComponent implements OnInit, OnChanges
                 this.isDealSection = false;
                 this.pageText = "TOTAL LEADS";
                 this.pageHeader = "CAMPAIGN: " + this.selectedCampaign.campaignName;
+                console.log(this.selectedCampaign)
                 this.listLeads(this.pagination);
                 break;
             }
@@ -165,6 +170,7 @@ export class ManageLeadsComponent implements OnInit, OnChanges
                 this.isDealSection = true;
                 this.pageText = "TOTAL DEALS";
                 this.pageHeader = "CAMPAIGN: " + this.selectedCampaign.campaignName;
+                console.log(this.selectedCampaign)
                 this.listAllDealsByPartner(this.pagination);
                 break;
             }
@@ -187,6 +193,7 @@ export class ManageLeadsComponent implements OnInit, OnChanges
                 this.pageText = "";
                 this.pageHeader = "OPENED DEALS";
                 this.listOpenedLeadsByPartner(this.pagination);
+                console.log( this.pagination)
                 break;
             }
             case "HOLD": {
@@ -208,6 +215,7 @@ export class ManageLeadsComponent implements OnInit, OnChanges
                 this.isDealSection = false;
                 this.pageText = "TOTAL LEADS";
                 this.pageHeader = "CAMPAIGN: " + this.selectedCampaign.campaignName;
+                console.log(this.selectedCampaign)
                 this.listLeadsByPartner(this.pagination);
                 break;
             }
@@ -515,6 +523,7 @@ export class ManageLeadsComponent implements OnInit, OnChanges
             .subscribe(
                 data =>
                 {
+                    console.log(data.leads)
                     this.sortOption.totalRecords = data.totalRecords;
                     pagination.totalRecords = data.totalRecords;
                     pagination = this.pagerService.getPagedItems(pagination, data.leads);
@@ -733,6 +742,8 @@ export class ManageLeadsComponent implements OnInit, OnChanges
     }
     addCommentModalClose(event: any)
     {
+        this.commentForLead.newCommentCount =0;
+        console.log(this.commentForLead.newCommentCount)
         this.isCommentSection = !this.isCommentSection;
     }
 

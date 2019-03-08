@@ -6,7 +6,7 @@ export class DealComments {
      id:number;
      dealId:number;
      propertyId:number;
-     userName:string;
+     userName="";
      comment:string;
      isReply:boolean;
      parentId:number;

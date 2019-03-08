@@ -1,7 +1,8 @@
 <div class="portlet light" id="del-profile-div">
   <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
   <div class="portlet-title">
-    <div class="caption">Lead Registration</div>
+    <div class="caption"  *ngIf="submitButtonText == 'SAVE'">Lead Registration</div>
+    <div class="caption"  *ngIf="submitButtonText != 'SAVE'">Lead Details</div>
   </div>
   <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
   <div class="alert alert-danger" id="company-profile-error-div" style="display: none;">
@@ -30,7 +31,7 @@
                 
               </label>
               <input type="text" maxlength="100" name="companyName"  class="form-control" [(ngModel)]=" dealRegistration.firstName"
-                [ngModelOptions]="{standalone: true}" id="firstName"  />
+                [ngModelOptions]="{standalone: true}" id="firstName"  [disabled]="parent"/>
             </div>
 
             <div class="form-group" [attr.class]="lastName">
@@ -38,14 +39,16 @@
                
               </label>
               <input type="text" maxlength="100"  class="form-control" [(ngModel)]=" dealRegistration.lastName"
-                [ngModelOptions]="{standalone: true}" id="lastName" />
+                [ngModelOptions]="{standalone: true}" id="lastName" [disabled]="parent"/>
             </div>
             <div class="form-group" [attr.class]="lastName">
               <label class="control-label">Company
-               
+                <font style="color: #f55d7a">
+                  <b>*</b>
+                </font>
               </label>
               <input type="text" maxlength="100"  class="form-control" [(ngModel)]=" dealRegistration.company"
-                [ngModelOptions]="{standalone: true}" id="lastName"  />
+                [ngModelOptions]="{standalone: true}" id="company" (input)="validateField('company',false)" [disabled]="parent"/>
             </div>
             
 
@@ -61,11 +64,13 @@
 
             <div class="form-group" [attr.class]="phoneDivClass">
               <label class="control-label">Phone Number
-               
+                <font style="color: #f55d7a">
+                  <b>*</b>
+                </font>
               </label>
               <fieldset style="padding:0 !important;border: 1px solid #ece2e2 !important">
                 <int-phone-prefix [(ngModel)]="dealRegistration.phone" (input)="validateField('phone',false)" (blur)="validateField('phone',false)"
-                  [ngModelOptions]="{standalone: true}"></int-phone-prefix>
+                  [ngModelOptions]="{standalone: true}" ></int-phone-prefix>
               </fieldset>
               <span *ngIf="phoneError" style="color: #f55d7a">{{phoneErrorMessage}}</span>
             </div>
@@ -82,14 +87,14 @@
 
               </label>
               <textarea type="text" maxlength="100"  class="form-control" name="leadstreet" [(ngModel)]=" dealRegistration.leadStreet"
-                [ngModelOptions]="{standalone: true}" id="leadStreet"></textarea>
+                [ngModelOptions]="{standalone: true}" id="leadStreet" [disabled]="parent"></textarea>
             </div>
             <div class="form-group" [attr.class]="leadCity">
               <label class="control-label">Lead City
 
               </label>
               <input type="text" maxlength="100" name="city"  class="form-control" [(ngModel)]=" dealRegistration.leadCity"
-                [ngModelOptions]="{standalone: true}" id="leadCity" />
+                [ngModelOptions]="{standalone: true}" id="leadCity" [disabled]="parent"/>
             </div>
 
             <div class="form-group" [attr.class]="leadState">
@@ -97,14 +102,14 @@
 
               </label>
               <input type="text" maxlength="100" class="form-control" name="lead state" [(ngModel)]=" dealRegistration.leadState"
-                [ngModelOptions]="{standalone: true}" id="leadState" />
+                [ngModelOptions]="{standalone: true}" id="leadState" [disabled]="parent"/>
             </div>
             <div class="form-group" [attr.class]="leadPostalCode">
               <label class="control-label">Lead Postal Code
 
               </label>
               <input type="text" maxlength="10" name="companyName"  class="form-control" [(ngModel)]=" dealRegistration.postalCode"
-                [ngModelOptions]="{standalone: true}" id="leadPostalCode" />
+                [ngModelOptions]="{standalone: true}" id="leadPostalCode" [disabled]="parent"/>
             </div>
 
             <div class="form-group" [attr.class]="country">
@@ -112,7 +117,7 @@
 
               </label>
               <select class="form-control"  [(ngModel)]="dealRegistration.leadCountry" [ngModelOptions]="{standalone: true}"
-                placeholder="Country" id="leadCountry">
+                placeholder="Country" id="leadCountry" [disabled]="parent">
                 <option *ngFor="let country of countryNames.countries" [value]="country" [selected]="dealRegistration.leadCountry==country">{{country}}</option>
               </select>
             </div>
@@ -122,7 +127,7 @@
 
 
           
-          <div class="pull-right" style="margin: 15px" *ngIf="parent != 'manage-deals'" >
+          <div class="pull-right" style="margin: 15px" *ngIf="!parent" >
             <button type="submit" id="saveDeal" [disabled]=" !isDealRegistrationFormValid" (click)="save()" class="btn green-haze">{{submitButtonText}}</button>
             <!--  <button type="submit" id="updateDeal" (click)="update()"class="btn green-haze">Update</button> -->
           </div>

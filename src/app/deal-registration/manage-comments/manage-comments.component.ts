@@ -21,7 +21,7 @@ export class ManageCommentsComponent implements OnInit
   campaign: Campaign;
   @Output() isCommentSection = new EventEmitter<any>();
 
-  comment: DealComments
+  comment: DealComments;
   commentList: DealComments[] = [];
   firstName: string;
   lastName: string;
@@ -31,6 +31,8 @@ export class ManageCommentsComponent implements OnInit
   createdBy: any;
   deal: DealRegistration;
   userName ="";
+  refreshComments: any;
+  leadName="";
   constructor(public authenticationService: AuthenticationService, private dealRegService: DealRegistrationService, 
     private campaignService: CampaignService,refferenceService:ReferenceService) { 
 
@@ -38,11 +40,20 @@ export class ManageCommentsComponent implements OnInit
 
   ngOnInit()
   {
+    if(this.lead.firstName!=null && this.lead.firstName.length>0){
+      this.leadName = this.leadName+this.lead.firstName;
+
+    }
+    if(this.lead.lastName!=null && this.lead.lastName.length>0){
+      this.leadName = this.leadName+this.lead.lastName;
+      
+    }
       this.getCommentList();
+   
 
   }
   getCommentList(){
-    
+    this.commentList = null;
 
     this.comment = new DealComments;
     this.loggedInUserId = this.authenticationService.getUserId();
@@ -57,9 +68,9 @@ export class ManageCommentsComponent implements OnInit
     },
     error => console.log(error),
     () => { })
-    this.dealRegService.getDealById(this.lead.dealId).subscribe(deal=>{
+    this.dealRegService.getDealById(this.lead.dealId,this.loggedInUserId).subscribe(deal=>{
         this.deal = deal.data;
-       
+      
         this.dealRegService.getDealCreatedBy(this.deal.createdBy).subscribe(user =>
           {
           
@@ -84,33 +95,39 @@ export class ManageCommentsComponent implements OnInit
     },
     error => console.log(error),
     () => { })
-    this.dealRegService.getComments(this.lead.dealId).subscribe(commentData =>
-    {
-      console.log(commentData);
-      this.commentList = commentData.comments;
-      this.commentList.forEach(c=>{
-        if(c.user.firstName!= undefined && c.user.firstName!=null && c.user.firstName.length>0){
-          c.userName = c.user.firstName;
-        }
-        if(c.user.lastName!= undefined && c.user.lastName!=null && c.user.lastName.length>0){
-          if(c.userName!= undefined && c.userName!=null && c.userName.length>0 )
-            c.userName = c.userName+" "+c.user.lastName;
-          else
-            c.userName =c.user.lastName;
-        }
-        if (c.user.profileImagePath.indexOf(null) > -1) {
-          c.user.profileImagePath = 'assets/admin/pages/media/profile/icon-user-default.png';
-         
-        } 
-      })
-      this.comment = new DealComments;
-
-    },
-    error => console.log(error),
-    () => { })
+    this.getComments();
+    this.refreshComments = setInterval(() => {
+       this.getComments();
+  },10000);
 
   }
 
+  getComments(){
+    this.dealRegService.getComments(this.lead.dealId).subscribe(commentData =>
+      {
+        console.log(commentData);
+        this.commentList = commentData.comments;
+        this.commentList.forEach(c=>{
+          if(c.user.firstName!= undefined && c.user.firstName!=null && c.user.firstName.length>0){
+            c.userName = c.user.firstName;
+          }
+          if(c.user.lastName!= undefined && c.user.lastName!=null && c.user.lastName.length>0){
+            if(c.userName!= undefined && c.userName!=null && c.userName.length>0 )
+              c.userName = c.userName+" "+c.user.lastName;
+            else
+              c.userName =c.user.lastName;
+          }
+          if (c.user.profileImagePath.indexOf(null) > -1) {
+            c.user.profileImagePath = 'assets/admin/pages/media/profile/icon-user-default.png';
+          
+          } 
+        })
+       
+
+      },
+      error => console.log(error),
+      () => { })
+  }
   addCommentModalClose()
   {
     this.isCommentSection.emit(false);
@@ -134,12 +151,37 @@ export class ManageCommentsComponent implements OnInit
       this.dealRegService.saveComment(this.lead.dealId, data).subscribe(result =>
       {
        this.getCommentList();
+       this.comment = new DealComments();
 
       },
       error => console.log(error),
       () => { });
     }
-    
 
+  }
+  ngOnDestroy() {
+
+      clearInterval(this.refreshComments);
+      console.log(this.commentList.length)
+      if(this.commentList.length>0){
+      
+         
+        let comment_id =this.commentList[this.commentList.length-1].id
+      const data ={
+        'user' : this.loggedInUserId,
+        'comment':comment_id,
+        'deal':this.deal.id,
+        'property':null
+
+      }
+      console.log(data)
+      this.dealRegService.updateCommentStats(data).subscribe(result =>
+        {
+       
+        },
+        error => console.log(error),
+        () => { });
+      }
+      
   }
 }

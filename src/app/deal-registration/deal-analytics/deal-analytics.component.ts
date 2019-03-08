@@ -56,7 +56,7 @@ export class DealAnalyticsComponent implements OnInit
     { 'name': 'Time(DESC)', 'value': 'time-DESC' }
   ];
   public selectedSortedOption: any = this.sortByDropDown[this.sortByDropDown.length - 1];
-  dealButtonText = "View Deal";
+  dealButtonText = "View Lead";
   isDealRegistration = false;
   @Input()
   dealId: any;
@@ -178,7 +178,7 @@ export class DealAnalyticsComponent implements OnInit
     this.userTimeline(object);
 
     this.mainLoader = true;
-    this.dealRegService.getDealById(this.dealId).subscribe(deal =>
+    this.dealRegService.getDealById(this.dealId,this.loggedInUserId).subscribe(deal =>
     {
       this.deal = deal.data;
       this.campaignId = this.deal.campaignId;

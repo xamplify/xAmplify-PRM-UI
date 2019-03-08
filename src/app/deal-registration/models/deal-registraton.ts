@@ -26,5 +26,6 @@ export class DealRegistration{
   estimatedClosedDateString:string;
   properties:DealDynamicProperties[];
   answers:DealAnswer[];
+  parentCampaignId:number;
 
 }

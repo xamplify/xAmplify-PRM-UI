@@ -9,6 +9,11 @@
         font: normal 13px sans-serif;
     }
 
+    ::-webkit-scrollbar {
+        width: 15px;
+        background: lightgray;
+    }
+
     .comment-section {
         list-style: none;
         max-width: 800px;
@@ -246,6 +251,15 @@
         .write-new {
             width: 100%;
         }
+        .comment-area {
+            height: 500px;
+            max-height: 500px;
+            overflow-y: scroll;
+
+            overflow-x: hidden;
+            max-width: 100%;
+            width: 100%
+        }
     }
 
 
@@ -318,47 +332,57 @@
     data-backdrop="static" style="display: block;padding-right: 0 !important;">
     <div class="modal-dialog" style="position: relative !important;">
         <!-- Modal content-->
-        <div class="modal-content accounts-modal">
+        <div class="modal-content accounts-modal" style="overflow-x: hidden;">
             <div class="modal-header" style="border-bottom: none">
-                <button type="button" class="close-circle" data-dismiss="modal" (click)="addCommentModalClose()"
-                style="margin-right: 10px;margin-top: 10px;">
+                <button type="button" class="close-circle" data-dismiss="modal" (click)="addCommentModalClose()" style="margin-right: 10px;margin-top: 10px;">
                     <i class="fa fa-times"></i>
                 </button>
             </div>
             <div class="modal-body">
-                <div *ngIf="campaign != null && campaign != undefined" style="margin:auto;width: 87%;padding:0px;background-color: white;" class="campaignProps" >
-                        <div class="tab-pane active" *ngIf="!isListView">
-                                <div class="margin-top-10">
-                                    <div class="row mix-grid p10">
-                                        
-                                           
-                                                <div class="grid-box">
-                                                    <img src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png">
-                                                  
-                                                    <h4 class="ellipsis" *ngIf="deal?.title" title="{{deal.title}}">{{deal.title | slice:0:25}}
-                                                        <span *ngIf="deal.title?.length>25">...</span>
-                                                    </h4>
-                                                    <h5 class="mt10 mb0" *ngIf="userName" [title]="userName" >{{userName  | slice:0:30}} <span *ngIf="userName.length>30">...</span></h5>
-                                                    <h5 class="mt10 mb0" *ngIf="createdBy?.emailId" [title]="createdBy?.emailId">By {{createdBy.emailId | slice:0:50}}<span *ngIf="createdBy.email?.length>50">...</span></h5>
-                                                    <h5>
-                                                        <span>
-                                                            <span>Created On</span>
-                                                        </span>
-                                                        <span title="Upload date">
-                                                            <span>
-                                                                <app-timestamp *ngIf="deal?.createdAt" [isOnlyDate]="false" [dateAndTime]="deal.createdAt"> </app-timestamp>
-                                                            </span>
-                                                        </span>
-                                                    </h5>
-    
-                                                </div>
-                                            
-                                        
+                <div *ngIf="campaign != null && campaign != undefined" style="margin:auto;width: 87%;padding:0px;background-color: white;"
+                    class="campaignProps">
+                    <div class="tab-pane active" *ngIf="!isListView">
+                        <div class="margin-top-10">
+                            <div class="row mix-grid p10">
+
+
+                                <div class="grid-box" style="padding-bottom:10px">
+                                    <img src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png">
+                                    <div *ngIf="deal?.deal" >
+                                        <h5 class="mt10 mb0" *ngIf="deal?.title" title="{{deal.title}}"><span style="font-size:14px;font-weight: 400">
+                                            Deal Title : </span>{{deal.title | slice:0:25}}
+                                            <span *ngIf="deal.title?.length>25">...</span>
+                                        </h5>
                                     </div>
+                                    <div *ngIf="!deal?.deal" >
+                                        <h5 class="mt10 mb0" *ngIf="leadName" title="{{leadName}}"><span style="font-size:14px;font-weight: 400">Lead
+                                                : </span>{{leadName | slice:0:25}}
+                                            <span *ngIf="leadName?.length>25">...</span>
+                                        </h5>
+                                    </div>
+                                    <h5 class="mt10 mb0" *ngIf="userName" [title]="userName"><span style="font-size:14px;font-weight: 400">Partner
+                                            Name : </span>{{userName | slice:0:30}} <span *ngIf="userName.length>30">...</span></h5>
+                                    <h5 class="mt10 mb0" *ngIf="createdBy?.emailId" [title]="createdBy?.emailId"><span style="font-size:14px;font-weight: 400">Partner
+                                            Email : </span> {{createdBy.emailId | slice:0:50}}<span *ngIf="createdBy.email?.length>50">...</span></h5>
+                                    <h5 class="mt10 mb0">
+                                        <span>
+                                            <span style="font-size:14px;font-weight: 400">Created On</span>
+                                        </span>
+                                        <span title="Upload date">
+                                            <span>
+                                                <app-timestamp-new *ngIf="deal?.createdAt" [isOnlyDate]="false" [dateAndTime]="deal.createdAt"> </app-timestamp-new>
+                                            </span>
+                                        </span>
+                                    </h5>
+
                                 </div>
-                                
+
+
                             </div>
-                    
+                        </div>
+
+                    </div>
+
                 </div>
 
                 <div class="write-new" style="margin-bottom: 25px;width: 85%">
@@ -368,25 +392,25 @@
 
                     <div>
                         <!-- <img src="https://aravindu.com/vod/images/14663/05112018/profilePicture/65DD83D1-A768-411E-8A37-3D79B1F858BC.jpeg" width="35" alt="Profile of Bradley Jones" title="Bradley Jones" /> -->
-                        <button type="submit" (click)="postComment(comment)">Submit</button>
+                        <button type="submit" (click)="postComment(comment)" style="margin-bottom: 10px;">Submit</button>
                     </div>
 
 
                 </div>
-                <div style=" height:500px;max-height: 500px;overflow: scroll;max-width: 100%;width:100%">
+                <div class="comment-area">
                     <ul class="comment-section" *ngFor="let c of commentList" style="margin: 0px">
 
                         <li class="comment author-comment" *ngIf="c.user.id != loggedInUserId" style="width: 135%;">
                             <div class="info">
-                                <a href="#" >{{c.userName| slice:0:30}}<span *ngIf="c.userName?.length>30">...</span></a>
-                                <span *ngIf="c?.createdAt"><app-timestamp [dateAndTime]="c.createdAt"> </app-timestamp></span>
+                                <a href="#">{{c.userName| slice:0:30}}<span *ngIf="c.userName?.length>30">...</span></a>
+                                <span *ngIf="c?.createdAt"><app-timestamp-new [dateAndTime]="c.createdAt"> </app-timestamp-new></span>
                             </div>
 
                             <a class="avatar" href="#" *ngIf="c.user.profileImagePath!= null && c.user.profileImagePath!= undefined">
                                 <img src="{{c.user.profileImagePath}}" width="35" alt="Profile Avatar" title="{{c.user.lastName}}" alt="Image not found"
                                 />
                             </a>
-                           
+
 
                             <p>{{c.comment}}</p>
 
@@ -395,15 +419,15 @@
                         <li class="comment user-comment" *ngIf="c.user.id == loggedInUserId" style="width: 134%;">
 
                             <div class="info">
-                                    <a href="#" >{{c.userName| slice:0:30}}<span *ngIf="c.userName?.length>30">...</span></a>
-                                <span *ngIf="c?.createdAt"><app-timestamp [dateAndTime]="c.createdAt"> </app-timestamp></span>
+                                <a href="#">{{c.userName| slice:0:30}}<span *ngIf="c.userName?.length>30">...</span></a>
+                                <span *ngIf="c?.createdAt"><app-timestamp-new [dateAndTime]="c.createdAt"> </app-timestamp-new></span>
                             </div>
 
                             <a class="avatar" href="#" *ngIf="c.user.profileImagePath!= null && c.user.profileImagePath!= undefined">
                                 <img src="{{c.user.profileImagePath}}" width="35" alt="Profile Avatar" title="{{c.user.lastName}}" alt="Image not found"
                                 />
                             </a>
-                           
+
 
                             <p>{{c.comment}}</p>
 

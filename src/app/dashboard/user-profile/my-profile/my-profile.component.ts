@@ -21,6 +21,8 @@ import { CountryNames } from '../../../common/models/country-names';
 import { VideoFileService } from '../../../videos/services/video-file.service'
 import { DealQuestions } from '../../../deal-registration/models/deal-questions';
 import { DealForms } from '../../../deal-registration/models/deal-forms';
+import { DealType } from '../../../deal-registration/models/deal-type';
+import { DealRegistrationService } from '../../../deal-registration/services/deal-registration.service';
 
 declare var swal, $, videojs: any;
 
@@ -79,8 +81,12 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     form = new DealForms();
     questions:DealQuestions[] =[];
     question:DealQuestions;
+    dealtype:DealType;
+    dealtypes:DealType[] = [];
     formSubmiteState = true;
+    dealSubmiteState = true;
     submitButtonText = "Save Form";
+    dealButtonText = "Save Deals";
     validateForm:boolean;
     selectedForm:DealForms;
     defaultQuestions:string[] = ["Campaign Name","Company","First Name","Last Name","Title ","Email ","Phone Number","Deal Type","Website","Lead Address",
@@ -89,12 +95,13 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     constructor(public videoFileService: VideoFileService, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
         public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
         public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
-        public regularExpressions: RegularExpressions,public route:ActivatedRoute) {
+        public regularExpressions: RegularExpressions,public route:ActivatedRoute,public dealRegSevice:DealRegistrationService) {
           if (this.isEmpty(this.authenticationService.userProfile.roles) || !this.authenticationService.userProfile.profileImagePath) {this.router.navigateByUrl(this.referenceService.homeRouter);}
           try{
             if ( authenticationService.isSuperAdmin() ) { this.userData = this.authenticationService.venorMyProfileReport;
             } else { this.userData = this.authenticationService.userProfile; }
             this.roleNames = this.authenticationService.showRoles();
+           
             this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
             this.videoUtilService.videoTempDefaultSettings = this.referenceService.defaultPlayerSettings;
             console.log(this.videoUtilService.videoTempDefaultSettings);
@@ -142,16 +149,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.ngxloading = false;
                 this.customResponse = new CustomResponse('SUCCESS', this.properties.PROFILE_PIC_UPDATED,true);
             };
-            this.userService.listForm(this.loggedInUserId).subscribe(result => {
-                this.dealForms = result;  
-                if(result[0]){
-                    this.form =   result[0]; 
-                    this.questions = this.form.campaignDealQuestionDTOs;
-                    this.submitButtonText = "Update Form";
-                   
-                }else
-                    this.submitButtonText = "Save Form";
-            })
+            this.initializeForm();
+            
         }catch(error){
             this.hasClientErrors = true;
             this.logger.showClientErrors("my-profile.component.ts", "constructor()", error);
@@ -925,6 +924,26 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     //Forms section
+
+    initializeForm(){
+        this.userService.listForm(this.loggedInUserId).subscribe(result => {
+            this.dealForms = result;  
+            if(result[0]){
+                this.form =   result[0]; 
+                this.questions = this.form.campaignDealQuestionDTOs;
+                this.submitButtonText = "Update Form";
+               
+            }else
+                this.submitButtonText = "Save Form";
+            this.submitBUttonStateChange();
+        })
+        this.dealRegSevice.listDealTypes(this.loggedInUserId).subscribe(dealTypes => {
+                
+            this.dealtypes = dealTypes.data;  
+            
+        });
+    }
+
     addQuestion()
     {
         this.question = new DealQuestions();
@@ -940,7 +959,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
       
 
         this.questions.push(this.question);
-      
+        this.submitBUttonStateChange();
         
 
     }
@@ -1051,6 +1070,103 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                 });
             })
         }
+    }
+    
+    //Deal types
+    addDealtype()
+    {
+        this.dealtype = new DealType();
+        var length;
+        if(this.dealtypes != null && this.dealtypes!= undefined)
+            length = this.dealtypes.length;
+        else
+             length = 0;
+        length = length + 1;
+        var id = 'dealType-' + length;
+        this.dealtype.divId = id;
+        this.dealtype.error = true;
+      
+
+        this.dealtypes.push(this.dealtype);
+        this.dealTypeButtonStateChange();
+      
+        
+
+    }
+    removeDealType(i, id)
+    {
+        if (id)
+            console.log(id)
+            console.log(i)
+        var index = 1;
+
+        this.dealtypes = this.dealtypes.filter(dealtype => dealtype.divId !== 'dealtype-' + i)
+            .map(dealtype =>
+            {
+                dealtype.divId = 'dealtype-' + index++;
+                return dealtype;
+            });
+            console.log(this.dealtypes);
+            this.dealTypeButtonStateChange();
+
+    }
+    validateDealType(dealType:DealType){
+        var errorClass = "form-group has-error has-feedback";
+        var successClass = "form-group has-success has-feedback";
+        if (dealType.dealType.length > 0)
+        {
+            dealType.class = successClass; 
+            dealType.error = false;
+        } else
+        {
+            dealType.class = errorClass;
+            dealType.error = true;
+        }
+        this.dealTypeButtonStateChange();
+    }
+   
+    dealTypeButtonStateChange(){
+        let countForm = 0;
+        this.dealtypes.forEach(dealType =>
+                {
+                  
+                    if (dealType.error)
+                        countForm++;
+                })
+                if (countForm > 0)
+                    this.dealSubmiteState = false;
+                else
+                    this.dealSubmiteState = true;
+        
+    }
+    saveDealTypes(){
+        this.ngxloading = true;
+       
+       
+          
+            this.dealtypes.forEach(dealtype =>{
+                if(dealtype.id != null && dealtype.id != undefined)
+                    dealtype.updatedBy == this.loggedInUserId;
+                else
+                    dealtype.createdBy == this.loggedInUserId;
+            })
+       
+            this.dealRegSevice.saveDealTypes(this.dealtypes,this.loggedInUserId).subscribe(result => {
+                this.ngxloading = false;
+                this.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
+                
+            },(error) =>{
+                this.ngxloading = false;
+                this.customResponseForm = new CustomResponse('ERROR', "The dealtypes are already associate with deals", true);
+               
+            },()=>{
+                this.dealRegSevice.listDealTypes(this.loggedInUserId).subscribe(dealTypes => {
+                    
+                    this.dealtypes = dealTypes.data;  
+                    
+                });
+            })
+      
     }
 
     ngOnDestroy() {

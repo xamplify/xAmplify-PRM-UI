@@ -6,6 +6,7 @@ export class DealDynamicProperties {
      validationStausKey:string="";
      validationStausValue:string="";
      id:number=null; 
+     propCommentCount=0;
      isDisabled:boolean = false;
      isCommentSection = false;
      isSaved = true;

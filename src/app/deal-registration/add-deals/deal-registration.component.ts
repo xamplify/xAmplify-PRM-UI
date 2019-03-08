@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { DealRegistration } from '../models/deal-registraton';
-import { DealDynamicProperties } from '../models/deal-dynamic-properties';
 import { ReferenceService } from '../../core/services/reference.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { Campaign } from '../../campaigns/models/campaign';
@@ -10,6 +9,9 @@ import { CustomResponse } from '../../common/models/custom-response';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { DealForms } from '../models/deal-forms';
 import { DealAnswer } from '../models/deal-answers';
+import { DealDynamicProperties } from '../models/deal-dynamic-properties';
+import { DealType } from '../models/deal-type';
+import { UtilService } from '../../core/services/util.service';
 
 
 
@@ -19,7 +21,8 @@ declare var flatpickr: any, $: any;
     selector: 'app-deal-registration',
     templateUrl: './deal-registration.component.html',
     styleUrls: ['./deal-registration.component.css'],
-    providers: [CountryNames]
+    providers: [CountryNames],
+    
 })
 export class DealRegistrationComponent implements OnInit
 {
@@ -28,7 +31,7 @@ export class DealRegistrationComponent implements OnInit
     @Input() campaign: Campaign;
     @Input() lead: any;
     @Input() dealId: any;
-    @Input() parent: any;
+    @Input() isVendor: any;
     @Output() dealReg = new EventEmitter<any>();
 
     dealRegistration: DealRegistration;
@@ -86,10 +89,10 @@ export class DealRegistrationComponent implements OnInit
     forms: DealForms[] = [];
     form: DealForms;
     answers: DealAnswer[] = [];
-
+    dealTypes:DealType[] =  [];
     formId: number;
     constructor(private logger: XtremandLogger, public authenticationService: AuthenticationService, public referenceService: ReferenceService
-        , public dealRegistrationService: DealRegistrationService, public countryNames: CountryNames
+        , public dealRegistrationService: DealRegistrationService, public countryNames: CountryNames,public utilService:UtilService
     )
     {
         this.dealRegistration = new DealRegistration();
@@ -98,7 +101,8 @@ export class DealRegistrationComponent implements OnInit
 
     ngOnInit()
     {
-
+       this.utilService.getJSONLocation().subscribe(response=>console.log(response))
+      
         flatpickr('.flatpickr', {
             enableTime: false,
             dateFormat: 'm/d/Y',
@@ -125,7 +129,12 @@ export class DealRegistrationComponent implements OnInit
 
             },
             error => console.log(error),
-            () => { })
+            () => { });
+            this.dealRegistrationService.listDealTypes(this.campaign.userId).subscribe(dealTypes => {
+                    
+                this.dealTypes = dealTypes.data;  
+                
+            });
         }
         else
         {
@@ -149,6 +158,11 @@ export class DealRegistrationComponent implements OnInit
 
 
         }
+        this.dealRegistrationService.listDealTypes(this.campaign.userId).subscribe(dealTypes => {
+                    
+            this.dealTypes = dealTypes.data;  
+            
+        });
 
     }
 
@@ -171,7 +185,7 @@ export class DealRegistrationComponent implements OnInit
                 );
         } else
         {
-            this.dealRegistrationService.getDealById(this.dealId).
+            this.dealRegistrationService.getDealById(this.dealId,this.loggenInUserId).
                 subscribe(data =>
                 {
                     console.log(data.data)
@@ -209,10 +223,11 @@ export class DealRegistrationComponent implements OnInit
         else
             this.submitButtonText = "REGISTER DEAL";
         let date:any;
-        if(data.estimatedClosedDate != null)
+        if(data.estimatedClosedDate != null && data.isDeal)
              date = this.getFormatedDate(new Date(data.estimatedClosedDate));
         else
             date = this.getFormatedDate(new Date());
+            console.log(date);
         this.dealRegistration.estimatedCloseDate = date
 
         this.dealRegistration.properties = data.properties;
@@ -221,7 +236,7 @@ export class DealRegistrationComponent implements OnInit
         {
             property.isSaved = true;
         })
-        if (this.parent == 'manage-leads')
+        if (this.isVendor == 'manage-leads')
         {
             this.dealRegistration.properties.forEach(property =>
             {
@@ -379,10 +394,35 @@ export class DealRegistrationComponent implements OnInit
             this.estimatedCloseDateError = false
         else
             this.estimatedCloseDateError = true;
-        if (this.dealRegistration.dealType != null && this.dealRegistration.dealType.length > 0)
-            this.dealTypeError = false
-        else
-            this.dealTypeError = true;
+        if(this.dealTypes.length == 0){
+            if (this.dealRegistration.dealType != null && this.dealRegistration.dealType.length > 0)
+                this.dealTypeError = false
+            else
+                this.dealTypeError = true;
+        }else{
+            let dtFilter = this.dealTypes.filter(dt =>{
+                if(dt.dealType == this.dealRegistration.dealType)
+                return dt;
+            });
+            if(dtFilter!=null && dtFilter!=undefined){
+                this.dealType = this.successClass;
+                this.dealTypeError = false;
+            }else{
+
+            
+            let fieldValue = $.trim($('#dealType').val());
+            console.log(fieldValue);
+            if (fieldValue.length > 0 && fieldValue != "Select Dealtype")
+            {
+                this.dealType = this.successClass;
+                this.dealTypeError = false;
+            } else
+            {
+                this.dealType = this.errorClass;
+                this.dealTypeError = true;
+            }
+        }
+        }
         this.validateWebSite(0);
         this.validatePhone(0);
         this.properties.forEach(property =>
@@ -395,6 +435,10 @@ export class DealRegistrationComponent implements OnInit
 
     }
 
+    opportunityAmountUpdate(event:string){
+        this.dealRegistration.opportunityAmount = event.replace('$', '').replace(',', '');
+        console.log(this.dealRegistration.opportunityAmount);
+    }
     addProperties()
     {
         this.property = new DealDynamicProperties();
@@ -637,6 +681,7 @@ export class DealRegistrationComponent implements OnInit
 
             } if (fieldId == "opportunityAmount")
             {
+                fieldValue = fieldValue.replace('$','').replace(',','');
                 if (fieldValue.length > 0 && parseFloat(fieldValue))
                 {
                     this.opportunityAmount = successClass;
@@ -720,7 +765,8 @@ export class DealRegistrationComponent implements OnInit
             }
             if (fieldId == "dealType")
             {
-                if (fieldValue.length > 0)
+               
+                if (fieldValue.length > 0 && fieldValue != "Select Dealtype")
                 {
                     this.dealType = successClass;
                     this.dealTypeError = false;
@@ -733,6 +779,7 @@ export class DealRegistrationComponent implements OnInit
             }
 
         }
+        
         this.submitButtonStatus();
     }
 
@@ -849,7 +896,7 @@ export class DealRegistrationComponent implements OnInit
             if (!this.URL_PATTERN.test(this.dealRegistration.website))
             {
                 this.addWebSiteError(x);
-                this.websiteErrorMessage = "Please enter a valid lead’s URL.";
+                this.websiteErrorMessage = "Please enter a valid URL.";
             } else
             {
                 this.removeWebSiteError();
@@ -905,6 +952,15 @@ export class DealRegistrationComponent implements OnInit
     {
         property.isCommentSection = !property.isCommentSection;
     }
+
+
+    setFormValidateErrMsg(){
+        alert("ERROR")
+     }
+  
+     clearFormValidateErrMsg(){
+        alert("SUCCES")
+     }
 
 }
 

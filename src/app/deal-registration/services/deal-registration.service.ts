@@ -69,9 +69,9 @@ export class DealRegistrationService
             .map(this.extractData)
             .catch(this.handleError);
     }
-    getDealById(dealId: number)
+    getDealById(dealId: number,userId:number)
     {
-        return this.http.post(this.URL + dealId + "?access_token=" + this.authenticationService.access_token, {})
+        return this.http.post(this.URL + "fetch/"+dealId + "/"+userId+"?access_token=" + this.authenticationService.access_token, {})
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -216,6 +216,13 @@ export class DealRegistrationService
             .map(this.extractData)
             .catch(this.handleError);
     }
+    updateLead(deal: DealRegistration)
+    {
+        var url = this.URL + "update-lead?access_token=" + this.authenticationService.access_token;
+        return this.http.post(url, deal)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 
     acceptDeal(dealId: number)
     {
@@ -298,6 +305,15 @@ export class DealRegistrationService
     {
         var url = this.URL + "comments/delete?access_token=" + this.authenticationService.access_token;
         return this.http.post(url, comment)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    updateCommentStats(data:any)
+    {
+        var url = this.URL + "/comment-stats/save?access_token=" + this.authenticationService.access_token;
+
+        return this.http.post(url, data)
             .map(this.extractData)
             .catch(this.handleError);
     }

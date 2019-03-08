@@ -101,26 +101,30 @@
               </td>
               <td>
 
-                <a *ngIf="true" data-rel="fancybox-button" (click)="dealRouter(item,$event)" title="Lead Based Reports">
-                  <span class="circled-number">
-                    <i class="fa fa-line-chart"></i>
+                <a *ngIf="true" data-rel="fancybox-button" (click)="dealRouter(item,$event)" title="Lead Based Reports" style="margin-top: 10px">
+                  <span class="circled-number"  style="height: 40px;width:40px">
+                    <i class="fa fa-line-chart" aria-hidden="true" style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
                   </span>
                 </a>
 
-                <a *ngIf="!isDealSection" data-rel="fancybox-button" (click)="showLeadRegistrationForm(item,$event)" title="View Lead">
-                    <span class="circled-number" >
-                    <i class="fa fa-tags mr5"></i>
+                <a *ngIf="!isDealSection" data-rel="fancybox-button" (click)="showLeadRegistrationForm(item,$event)" title="View Lead" style="margin-top: 10px" id="lead">
+                    <span class="circled-number" style="height: 40px;width:40px" >
+                    <i class="fa fa-tags mr5" aria-hidden="true" style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
                   </span>
                 </a>
-                <a *ngIf=" isDealSection" data-rel="fancybox-button" (click)="showDealRegistrationForm(item,$event)" title="View Lead">
-                    <span class="circled-number" >
-                    <i class="fa fa-tags mr5"></i>
+                <a *ngIf=" isDealSection" data-rel="fancybox-button" (click)="showDealRegistrationForm(item,$event)" title="View Deal"
+                style="margin-top: 10px" id="deal">
+                    <span class="circled-number" style="height: 40px;width:40px">
+                    <i class="fa fa-tags mr5"  aria-hidden="true" style="font-size:18px"></i>
+                    <!-- <i class="fa fa-comments" aria-hidden="true" style="margin-left: 5px;" *ngIf="item.propCommentCount"> </i>                 -->
+                    <span  class="badge badge-default" style="margin-bottom: 32px; margin-left: -20px;background-color: #ed1c24 !important;" >
+                      <span *ngIf="!item.propCommentCount">0</span><span *ngIf="item.propCommentCount">{{item.propCommentCount}}</span></span>
                   </span>
                 </a>
                 <a *ngIf="true" data-rel="fancybox-button" (click)="showComments(item)" title="Comments" style="margin-top: 10px">
                    
                     <span class="circled-number" style="height: 40px;width:40px">
-                    <i class="fa fa-comments" aria-hidden="true" style="font-size:18px"> </i><span class="badge badge-default" style="margin-bottom: 32px; margin-left: -13px;background-color: #ed1c24 !important;">{{item.commentCount}}</span>
+                    <i class="fa fa-comments" aria-hidden="true" style="font-size:18px"> </i><span class="badge badge-default"  style="margin-bottom: 32px; margin-left: -13px;background-color: #ed1c24 !important;">{{item.newCommentCount}}</span>
                    </span>
                      
                 
