@@ -21,7 +21,7 @@
 	</div>
 	<div class="row">
 		<div class="col-md-3 col-sm-12">
-			<div class="col-sm-12 dashboard-stat2 pt0">
+			<div class="col-sm-12 dashboard-stat2 pt0" id="social-accounts">
 				<ng-container>
 					<h6 class="caption-subject font-red-sunglo uppercase bold mt0">SOCIAL ACCOUNTS</h6>
 					<div class="clearfix"></div>
@@ -81,13 +81,6 @@
 					<li>Image Size
 						<=3 MB</li>
 				</ul>
-
-				<h5>
-					<strong>Video specifications:</strong>
-				</h5>
-				<ul style="margin-left: -23px;">
-					<li>Duration must be between 0.5 seconds and 140 seconds</li>
-				</ul>
 			</div>
 
 		</div>
@@ -100,7 +93,7 @@
 		<div class="col-md-9 col-sm-12" [ngClass]="{'disabled-div': socialStatusProviders?.length === 0}" id="us-right">
 			<div class="col-sm-12 dashboard-stat2 p0 clearfix" *ngIf="isSocialCampaign">
 				<div class="portlet-body clearfix p10">
-					<div class="form-group pull-right m0" style="position: relative;top: -3px">
+					<div class="form-group pull-right m0" style="position: relative;top: -3px" *ngIf="isSocialCampaign && alias">
 						<h5 class="control-label font-purple-intense pr10 inline">Notify me when email is opened</h5>
 						<switch [status]="socialCampaign.emailOpened" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
 						 [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
