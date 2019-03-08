@@ -113,7 +113,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
     cropperSettings() {
-        this.circleCropperSettings = this.utilService.cropSettings( this.circleCropperSettings,300,186,200,true);
+        this.circleCropperSettings = this.utilService.cropSettings( this.circleCropperSettings,200,156,200,true);
         this.circleCropperSettings.noFileInput = true;
         this.circleData = {};
     }
