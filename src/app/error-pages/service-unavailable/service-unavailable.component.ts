@@ -22,9 +22,11 @@ export class ServiceUnavailableComponent implements OnInit {
 
   getUserByUserName( userName: string ) {
   try{
+     if(userName) {
       this.authenticationService.getUserByUserName( userName ).subscribe(
         data => { this.router.navigate(['/home/dashboard']); },
         error => { console.log( error ); this.router.navigate(['/su'])});
+     }
     }catch(error){ console.log('error'+error);
      if(localStorage.getItem('currentUser')) { } else { this.router.navigate(['/login'])}
   }}

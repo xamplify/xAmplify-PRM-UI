@@ -73,6 +73,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     circleData:any;
     cropRounded = false;
     loadingcrop = false;
+    errorUploadCropper = false;
     @ViewChild(ImageCropperComponent) cropper:ImageCropperComponent;
     constructor(public videoFileService: VideoFileService, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
         public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
@@ -112,7 +113,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
     cropperSettings() {
-        this.circleCropperSettings = this.utilService.cropSettings( this.circleCropperSettings,200,156,200,true);
+        this.circleCropperSettings = this.utilService.cropSettings( this.circleCropperSettings,300,186,200,true);
         this.circleCropperSettings.noFileInput = true;
         this.circleData = {};
     }
@@ -152,6 +153,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
       this.cropper = cropperComp;
       const image:any = new Image();
       const file:File = $event.target.files[0];
+      const isSupportfile: any = file.type;
+      if (isSupportfile === 'image/jpg' || isSupportfile === 'image/jpeg' || isSupportfile === 'image/png') {
+        this.errorUploadCropper = false;
+      } else {  this.errorUploadCropper = true;}
       const myReader:FileReader = new FileReader();
       const that = this;
       myReader.onloadend = function (loadEvent:any) {

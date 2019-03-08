@@ -149,11 +149,11 @@
                        <span class="views-count" title="views"><i class="fa fa-eye"></i>&nbsp;{{videoFile.views}}</span>
                        <span class="video-duration"  title="Video Length">{{videoUtilService.truncateHourZeros(videoFile.videoLength)}}</span>
                    </div>
-                      <span class="ellipsis video-title" title="{{videoFile.title}}">{{videoFile.title | slice:0:25}}<span *ngIf="videoFile.title?.length>25">...</span></span>
+                      <span class="ellipsis video-title" data-toggle="tooltip" data-placement="top" title="{{videoFile.title}}">{{videoFile.title | slice:0:25}}<span *ngIf="videoFile.title?.length>25">...</span></span>
                       <span *ngIf="!authenticationService.isOnlyPartner()">
-                      <span class="video-uploaded-by" *ngIf="videoFileService.videoType==='myVideos'"  title="Uploaded By">By {{videoFile.uploadedUserName | slice:0:15}}<span *ngIf="videoFile.uploadedUserName?.length>15">...</span></span>
-                      <span class="video-uploaded-by" *ngIf="videoFileService.videoType==='partnerVideos'" title="Uploaded By">By
-                         <span *ngIf="videoFile.companyName">{{videoFile.companyName | slice:0:15}}<span *ngIf="videoFile.companyName?.length>15">...</span></span>
+                      <span class="video-uploaded-by" *ngIf="videoFileService.videoType==='myVideos'" data-toggle="tooltip" data-placement="top" title="Uploaded By">By {{videoFile.uploadedUserName | slice:0:15}}<span *ngIf="videoFile.uploadedUserName?.length>15">...</span></span>
+                      <span class="video-uploaded-by" *ngIf="videoFileService.videoType==='partnerVideos'" data-toggle="tooltip" data-placement="top" title="Uploaded By">By
+                         <span *ngIf="videoFile.companyName" >{{videoFile.companyName | slice:0:15}}<span *ngIf="videoFile.companyName?.length>15">...</span></span>
                          <span *ngIf="!videoFile.companyName">{{videoFile.uploadedUserName | slice:0:15}}<span *ngIf="videoFile.uploadedUserName?.length>15">...</span></span>
                       </span>
                     </span>

@@ -108,14 +108,20 @@ export class UtilService {
     }
     cropSettings(cropperSetting:any,height,croppedWidth,croppedHeight, rounded){
       cropperSetting = new CropperSettings();
-      cropperSetting.width = 200;
-      cropperSetting.height = height;
+      if(!rounded){
+        cropperSetting.width = 600;
+        cropperSetting.height = 230;
+        cropperSetting.cropperDrawSettings.strokeColor = 'rgba(255,255,255,1)';
+      } else {
+        cropperSetting.width = 200;
+        cropperSetting.height = height
+        cropperSetting.cropperDrawSettings.strokeColor = 'dotted 3px #6f6f6f';
+      }
       cropperSetting.croppedWidth = croppedWidth;
       cropperSetting.croppedHeight = croppedHeight;
       cropperSetting.canvasWidth = 500;
       cropperSetting.canvasHeight = 300;
       cropperSetting.rounded = rounded;
-      cropperSetting.cropperDrawSettings.strokeColor = 'rgba(255,255,255,1)';
       cropperSetting.cropperDrawSettings.strokeWidth = 2;
       cropperSetting.noFileInput = true;
       return cropperSetting;

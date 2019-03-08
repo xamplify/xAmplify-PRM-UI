@@ -127,6 +127,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
     squareData:any;
     cropRounded = false;
     loadingcrop = false;
+    errorUploadCropper = false;
     @ViewChild(ImageCropperComponent) cropper:ImageCropperComponent;
     constructor(private logger: XtremandLogger, public authenticationService: AuthenticationService, private fb: FormBuilder,
         private companyProfileService: CompanyProfileService, public homeComponent: HomeComponent,private sanitizer: DomSanitizer,
@@ -175,6 +176,10 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
       this.cropper = cropperComp;
       const image:any = new Image();
       const file:File = $event.target.files[0];
+      const isSupportfile = file.type;
+      if (isSupportfile === 'image/jpg' || isSupportfile === 'image/jpeg' || isSupportfile === 'image/png') {
+        this.errorUploadCropper = false;
+      } else {  this.errorUploadCropper = true;}
       const myReader:FileReader = new FileReader();
       const that = this;
       myReader.onloadend = function (loadEvent:any) {
@@ -858,7 +863,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
     }
 
     validateCity() {
-        if ($.trim(this.companyProfile.city).length > 0) {
+      if ($.trim(this.companyProfile.city).length > 0) {
             if (!this.regularExpressions.CITY_PATTERN.test(this.companyProfile.city)) {
                 this.addCityError();
                 this.cityErrorMessage = "Invalid City";

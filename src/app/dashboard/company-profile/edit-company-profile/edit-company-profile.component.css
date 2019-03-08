@@ -141,7 +141,7 @@ svg {
 @media screen and (min-width:601px){
   .heading-text{ font-size: 16px;color: #888888;}
   .accounts-modal { width:60%;float: right; }
-  .imgCrop-modal {  width:41% !important; }
+  .imgCrop-modal {  width:40% !important; }
 }
 .result.rounded > img {
   border-radius: 100px;
