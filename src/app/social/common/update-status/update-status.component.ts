@@ -72,6 +72,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   location:any;
   channelCampaign: boolean;
   isEditSocialStatus: boolean = false;
+  isPreviewVideo: boolean = false;
   campaignNames = [];
   constructor(public socialService: SocialService,
     private videoFileService: VideoFileService, public properties:Properties,
@@ -127,14 +128,13 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     const rgba = this.videoUtilService.transparancyControllBarColor(videoFile.controllerColor, videoFile.transparency);
     $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
   }
-  previewVideo(videoFile: SaveVideoFile) {
+  previewVideo(videoFile: SaveVideoFile) {    
     this.resetCustomResponse();
     this.selectedVideo = videoFile;
     this.posterImage = videoFile.imagePath;
     this.videoUrl = this.selectedVideo.videoPath;
     this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
     this.videoUrl = this.videoUrl + '.mp4?access_token=' + this.authenticationService.access_token;
-    this.videoGifImage = videoFile.gifImagePath;
     if (this.selectedVideo.is360video) {
          this.play360video(this.selectedVideo);
     } else {
@@ -199,6 +199,11 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
         $('#videoId').css('width', '100%');
         $('#videoId').css('height', '315px');
     }
+
+    selectVideo(videoFile: SaveVideoFile){
+      this.selectedVideo = videoFile;
+    }
+
      addVideo() {
        this.resetCustomResponse();
        this.socialStatus.statusMessage = this.selectedVideo.title;
@@ -206,11 +211,11 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
        socialStatusContent.videoId = this.selectedVideo.id;
        socialStatusContent.fileName = this.selectedVideo.title;
        socialStatusContent.fileType = 'video';
-       socialStatusContent.filePath = this.videoGifImage;
+       socialStatusContent.filePath = this.selectedVideo.gifImagePath;
        this.socialStatus.socialStatusContents = [];
        this.socialStatus.socialStatusContents[0] = (socialStatusContent);
        $('#listVideosModal').modal('hide');
-       this.videoJSplayer.dispose();
+      //  this.videoJSplayer.dispose();
      }
 
   removeItem(socialStatus: SocialStatus, socialStatusContent: SocialStatusContent) {
@@ -583,7 +588,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 
   closeListVideosModal() {
     $('#listVideosModal').modal('hide');
-    this.videoJSplayer.dispose();
+    // this.videoJSplayer.dispose();
     this.closeModal();
   }
 
@@ -624,7 +629,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
           $('#preview-section').show();
           videosPagination.totalRecords = result.totalRecords;
           videosPagination = this.pagerService.getPagedItems(videosPagination, result.listOfMobinars);
-          this.previewVideo(videosPagination.pagedItems[0]);
+          // this.previewVideo(videosPagination.pagedItems[0]);
         }
       });
       () => console.log('listVideos() completed:')
@@ -860,7 +865,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     if (this.videoJSplayer !== undefined) {
-      this.videoJSplayer.dispose();
+      // this.videoJSplayer.dispose();
     }
     $('.profile-video').remove();
     this.videoFileService.videoType = '';

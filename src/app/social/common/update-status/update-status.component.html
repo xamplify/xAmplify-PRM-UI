@@ -469,29 +469,31 @@
 				</div>
 				<div class="modal-body clearfix">
 					<div class="row">
-						<div class="col-md-6 col-sm-6 col-xs-12" id="preview-section">
+						<div class="col-xs-12" id="preview-section">
 							<div id="newPlayerVideo"></div>
 						</div>
-						<div *ngIf="videosPagination.pagedItems?.length > 0" class="col-md-6 col-sm-6 col-xs-12">
+						<div *ngIf="videosPagination.pagedItems?.length > 0" class="col-xs-12">
 							<div class="table-responsive">
 								<table class="table table-hover" id="list-videos-table">
-									<thead>
-										<tr>
-											<th>Select Video</th>
-										</tr>
-									</thead>
 									<tbody>
-										<tr style="cursor: pointer;" *ngFor="let video of videosPagination.pagedItems; let i = index">
-											<td (click)="previewVideo(video)">
-												<div class="pull-left mr10">
-													<input type="radio" name="videoPath" [checked]="i === 0" class='align-middle'>
-													<img src="{{video.imagePath}}" (error)="videoUtilService.errorVideoHandler($event)" height="35px" width="auto" class='pl10 align-middle'>
+										<tr style="cursor: pointer;" *ngFor="let video of videosPagination.pagedItems; let i = index" [ngClass]="{'highlight': selectedVideo === video}">
+											<td (click)="selectVideo(video)">
+												<!--<input type="radio" name="videoPath" [checked]="i === 0" class='align-middle'>-->
+												<div class="select-video">
+													<i class="fa fa-circle-o" *ngIf="selectedVideo !== video"></i>
+													<i class="fa fa-check-circle-o" *ngIf="selectedVideo === video"></i>
 												</div>
-												<div class="ml10">
-													<h5>{{video.title | slice:0:80}}<span *ngIf="video.title?.length>80">...</span></h5>
-													<h6 style="margin: 3px 0 0 0">{{videoUtilService.truncateHourZeros(video.videoLength)}}</h6>
+												<div class="thumbnail-wrapper">
+													<img src="{{video.imagePath}}" (error)="videoUtilService.errorVideoHandler($event)">
+													<h6 class="duration">{{videoUtilService.truncateHourZeros(video.videoLength)}}</h6>
+												</div>
+												<div class="video-title">
+													<h5>{{video.title | slice:0:150}}<span *ngIf="video.title?.length>150">...</span></h5>
 												</div>
 											</td>
+											<!--<td>
+												<a (click)="previewVideo(video); isPreviewVideo != isPreviewVideo"><i class="fa fa-eye" aria-hidden="true"></i></a>
+											</td>-->
 										</tr>
 									</tbody>
 								</table>
