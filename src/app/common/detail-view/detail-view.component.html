@@ -27,7 +27,7 @@
 	</div>
 		<div class="col-xs-12 col-sm-8 p-5x emails-info">
 		<div class="col-xs-2 rsvp_tile_padding">
-			<button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'invities'" (click)="analyticsComponent.getRsvpInvitiesDetails()"
+			<button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'invities'" (click)="analyticsComponent.resetRsvpPagination();analyticsComponent.getRsvpInvitiesDetails()"
 			 [disabled]="campaignReport.totalInvities < 1">
 				<div class="portlet-body text-center">
 						<i class="fa fa-envelope"></i>
@@ -40,7 +40,7 @@
 			</button>
 		</div>
 		<div class="col-xs-2 rsvp_tile_padding">
-			<button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'email open'" (click)="analyticsComponent.getRsvpEmailOpenDetails()"
+			<button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'email open'" (click)="analyticsComponent.resetRsvpPagination();analyticsComponent.getRsvpEmailOpenDetails()"
 			 [disabled]="campaignReport.totalEmailOpenCount < 1">
 				<div class="portlet-body text-center">
 						<i class="fa fa-envelope"></i>
@@ -53,7 +53,7 @@
 			</button>
 		</div>
 		<div class="col-xs-2 rsvp_tile_padding">
-			<button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'YES'" (click)="analyticsComponent.getRsvpDetails('YES')"
+			<button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'YES'" (click)="analyticsComponent.resetRsvpPagination();analyticsComponent.getRsvpDetails('YES')"
 			 [disabled]="campaignReport.totalYesCount < 1">
 				<div class="portlet-body text-center">
 						<i class="fa fa-check-circle"></i>
@@ -66,7 +66,7 @@
 			</button>
 		</div>
 		<div class="col-xs-2 rsvp_tile_padding">
-			<button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'NO'" (click)="analyticsComponent.getRsvpDetails('NO')"
+			<button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'NO'" (click)="analyticsComponent.resetRsvpPagination();analyticsComponent.getRsvpDetails('NO')"
 			 [disabled]="campaignReport.totalNoCount < 1">
 				<div class="portlet-body text-center">
 						<i class="fa fa-times-circle"></i>
@@ -79,7 +79,7 @@
 			</button>
 		</div>
 		<div class="col-xs-2 rsvp_tile_padding">
-			<button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'MAYBE'" (click)="analyticsComponent.getRsvpDetails('MAYBE')"
+			<button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'MAYBE'" (click)="analyticsComponent.resetRsvpPagination();analyticsComponent.getRsvpDetails('MAYBE')"
 			 [disabled]="campaignReport.totalMayBeCount < 1">
 				<div class="portlet-body text-center">
 						<i class="fa fa-question-circle"></i>
@@ -92,7 +92,7 @@
 			</button>
 		</div>
 		<div class="col-xs-2 rsvp_tile_padding">
-			<button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'NOTYET'" (click)="analyticsComponent.getRsvpDetails('NOTYET')"
+			<button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'NOTYET'" (click)="analyticsComponent.resetRsvpPagination();analyticsComponent.getRsvpDetails('NOTYET')"
 			 [disabled]="campaignReport.totalNotYetRespondedCount < 1">
 				<div class="portlet-body text-center">
 						<i class="fa fa-exclamation-circle"></i>
@@ -115,8 +115,8 @@
 				<h4 class="pull-left" *ngIf="detailType === 'NOTYET'">People who have not yet responded</h4>
 				<div class="pull-left" *ngIf="detailType === 'email open' || detailType === 'email not open'">
 				<ul class="mix-filter m0">
-								<li class="filter" [class.selectedBox]="detailType ==='email open'"  (click)="analyticsComponent.getRsvpEmailOpenDetails()">People who have opened your email</li>
-								<li class="filter" [class.selectedBox]="detailType !=='email open'" (click)="analyticsComponent.getRsvpEmailNotOpenDetails()"> People who haven't opened your email</li>
+								<li class="filter" [class.selectedBox]="detailType ==='email open'"  (click)="analyticsComponent.resetRsvpPagination();analyticsComponent.getRsvpEmailOpenDetails()">People who have opened your email</li>
+								<li class="filter" [class.selectedBox]="detailType !=='email open'" (click)="analyticsComponent.resetRsvpPagination();analyticsComponent.getRsvpEmailNotOpenDetails()"> People who haven't opened your email</li>
 								</ul>
 				<!-- <a (click)="analyticsComponent.getRsvpEmailOpenDetails()">People who have opened your email</a><span> <a (click)="analyticsComponent.getRsvpEmailNotOpenDetails()">Not yet opened details</a></span> -->
 				</div>
@@ -176,7 +176,7 @@
 						</table>
 						</ng-container>
 						<app-pagination [pagination]="analyticsComponent.rsvpDetailAnalyticsPagination"
-						 [type]="'emailOpenPagination'" (notifyParent)="analyticsComponent.setPage($event)" (notifyParentDropDown)="analyticsComponent.paginationDropdown($event)"></app-pagination>
+						 [type]="detailType" (notifyParent)="analyticsComponent.setPage($event)" (notifyParentDropDown)="analyticsComponent.paginationDropdown($event)"></app-pagination>
 
 					<!-- <app-pagination *ngIf="detailType !== 'email open'" [pagination]="analyticsComponent.evenCamapignRsvpDetailPagination"
 						 [type]="'rsvpDetailPagination'" (notifyParent)="analyticsComponent.setPage($event)" (notifyParentDropDown)="analyticsComponent.paginationDropdown($event)"></app-pagination>

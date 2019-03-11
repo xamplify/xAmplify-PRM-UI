@@ -459,6 +459,10 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     this.listCampaignViews(this.campaign.campaignId, this.sentEmailOpenPagination);
     $('#emailSentListModal').modal();
   }
+  
+  resetRsvpPagination(){
+      this.rsvpDetailAnalyticsPagination = new Pagination();
+  }
 
   setPage(event: any) {
     try{
@@ -477,10 +481,16 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     } else if (event.type === 'usersWatch') {
         this.usersWatchListPagination.pageIndex = event.page;
         this.usersWatchList(this.campaign.campaignId, this.usersWatchListPagination);
-    } else if (event.type === 'emailOpenPagination') {
+    } else if (event.type === 'email open') {
         this.rsvpDetailAnalyticsPagination.pageIndex = event.page;
         this.getRsvpEmailOpenDetails();
-    } else if (event.type === 'rsvpDetailPagination') {
+    }else if (event.type === 'email not open') {
+        this.rsvpDetailAnalyticsPagination.pageIndex = event.page;
+        this.getRsvpEmailNotOpenDetails();
+    }else if (event.type === 'invities') {
+        this.rsvpDetailAnalyticsPagination.pageIndex = event.page;
+        this.getRsvpInvitiesDetails();
+    } else if (event.type === 'YES' || event.type === 'NO' || event.type === 'MAYBE' || event.type === 'NOTYET') {
         this.rsvpDetailAnalyticsPagination.pageIndex = event.page;
         this.getRsvpDetails(this.rsvpResposeType);
     } else if (event.type === 'contactListInfo') {
@@ -492,30 +502,41 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     }
     }catch(error){ this.xtremandLogger.error('error'+error);}
   }
-  paginationDropdown(pagination:Pagination){
+  
+  
+  paginationDropdown(event: Pagination){
     try{
     if (this.paginationType === 'campaignViews') {
-      this.campaignViewsPagination = pagination;
-      this.listCampaignViews(this.campaign.campaignId, pagination);
+      this.campaignViewsPagination = event;
+      this.listCampaignViews(this.campaign.campaignId, event);
     } else if (this.paginationType === 'sentEmailData') {
-      this.sentEmailOpenPagination = pagination;
-      this.listCampaignViews(this.campaign.campaignId, pagination);
+      this.sentEmailOpenPagination = event;
+      this.listCampaignViews(this.campaign.campaignId, event);
     } else if (this.paginationType === 'emailAction') {
-      this.emailActionListPagination = pagination;
+      this.emailActionListPagination = event;
        if (this.campaignReport.emailActionType === 'open' || this.campaignReport.emailActionType === 'click') {
         this.emailActionList(this.campaign.campaignId, this.campaignReport.emailActionType, this.emailActionListPagination);
        }
     } else if (this.paginationType === 'usersWatch') {
-      this.usersWatchListPagination = pagination;
+      this.usersWatchListPagination = event;
       this.usersWatchList(this.campaign.campaignId, this.usersWatchListPagination);
-    } else if (event.type === 'emailOpenPagination') {
-        this.rsvpDetailAnalyticsPagination = pagination;
+    }else if (this.paginationType === 'email open') {
+        this.rsvpDetailAnalyticsPagination = event;
         this.getRsvpEmailOpenDetails();
-    } else if (event.type === 'rsvpDetailPagination') {
-        this.rsvpDetailAnalyticsPagination = pagination;
+    }else if (this.paginationType === 'email not open') {
+        this.rsvpDetailAnalyticsPagination = event;
+        this.getRsvpEmailNotOpenDetails();
+    }else if (this.paginationType === 'invities') {
+        this.rsvpDetailAnalyticsPagination = event;
+        this.getRsvpInvitiesDetails();
+    } else if (this.paginationType === 'YES' || this.paginationType === 'NO' || this.paginationType === 'MAYBE' || this.paginationType === 'NOTYET') {
+        this.rsvpDetailAnalyticsPagination = event;
+        this.getRsvpEmailOpenDetails();
+    } else if (this.paginationType === 'rsvpDetailPagination') {
+        this.rsvpDetailAnalyticsPagination = event;
         this.getRsvpDetails(this.rsvpResposeType);
     } else {
-        this.pagination = pagination;
+        this.pagination = event;
         this.callPaginationValues(this.paginationType);
     }
     }catch(error){ this.xtremandLogger.error('error'+error);}
@@ -813,7 +834,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       this.referenceService.detailViewIsLoading = true;
       this.downloadTypeName = 'rsvp';
       this.rsvpResposeType = "invities";
-      this.rsvpDetailAnalyticsPagination = new Pagination();
+      //this.rsvpDetailAnalyticsPagination = new Pagination();
       if(this.rsvpDetailType === 'reDistribution'){
           this.campaignService.getEventCampaignRedistributionInvitiesDetails( this.campaign.campaignId, this.campaignReport.selectedPartnerUserId, this.rsvpDetailAnalyticsPagination )
           .subscribe(
@@ -871,7 +892,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       this.loading = true;
       this.referenceService.detailViewIsLoading = true;
       this.downloadTypeName = 'rsvp';
-      this.rsvpDetailAnalyticsPagination = new Pagination();
+      //this.rsvpDetailAnalyticsPagination = new Pagination();
       this.rsvpResposeType = "email open";
      // this.emailOpenSelected = 'email open';
       if(this.rsvpDetailType === 'reDistribution'){
@@ -923,7 +944,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       this.loading = true;
       this.referenceService.detailViewIsLoading = true;
       this.downloadTypeName = 'rsvp';
-      this.rsvpDetailAnalyticsPagination = new Pagination();
+      //this.rsvpDetailAnalyticsPagination = new Pagination();
       this.rsvpResposeType = "email not open";
       if(this.rsvpDetailType === 'reDistribution'){
           this.campaignService.getEventCampaignRedistributionEmailNotOpenDetails( this.campaign.campaignId, this.campaignReport.selectedPartnerUserId, this.rsvpDetailAnalyticsPagination )
@@ -995,7 +1016,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
           this.loading = true;
           this.referenceService.detailViewIsLoading = true;
           this.downloadTypeName = 'rsvp';
-          this.rsvpDetailAnalyticsPagination = new Pagination();
+          //this.rsvpDetailAnalyticsPagination = new Pagination();
           //this.rsvpDetailType = detailType;
           this.rsvpResposeType = responseType;
           if(this.rsvpDetailType === 'reDistribution'){

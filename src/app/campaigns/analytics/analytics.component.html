@@ -624,7 +624,7 @@
 		<div class="col-xs-12 col-sm-8 emails-info" id='values' [hidden]="mainLoader" >
 
 		<div [hidden]="mainLoader"class="col-xs-2 rsvp_tile_padding">
-			<button class="portlet light color1-invert crcb" (click)="getRsvpInvitiesDetails()" [class.selectedBox]="rsvpResposeType === 'invities'"   [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
+			<button class="portlet light color1-invert crcb" (click)="resetRsvpPagination();getRsvpInvitiesDetails()" [class.selectedBox]="rsvpResposeType === 'invities'"   [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
 			 [disabled]="campaignReport.redistributionTotalInvitiesCount < 1 || !isPartnerEnabledAnalyticsAccess">
 				<div class="portlet-body text-center">
 						<i class="fa fa-envelope"></i>
@@ -638,7 +638,7 @@
 		</div>
 
 		<div [hidden]="mainLoader"class="col-xs-2 rsvp_tile_padding">
-			<button class="portlet light color1-invert crcb" (click)="getRsvpEmailOpenDetails()" [class.selectedBox]="rsvpResposeType === 'email open'"   [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
+			<button class="portlet light color1-invert crcb" (click)="resetRsvpPagination();getRsvpEmailOpenDetails()" [class.selectedBox]="rsvpResposeType === 'email open'"   [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
 			 [disabled]="campaignReport.redistributionTotalEmailOpenCount < 1 || !isPartnerEnabledAnalyticsAccess">
 				<div class="portlet-body text-center">
 						<i class="fa fa-envelope"></i>
@@ -651,7 +651,7 @@
 			</button>
 		</div>
 		<div class="p-5x" class="col-xs-2 rsvp_tile_padding">
-			<button class="portlet light color1-invert crcb" [class.selectedBox]="rsvpResposeType === 'YES'" (click)="getRsvpDetails('YES')"  [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
+			<button class="portlet light color1-invert crcb" [class.selectedBox]="rsvpResposeType === 'YES'" (click)="resetRsvpPagination();getRsvpDetails('YES')"  [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
 			 [disabled]="campaignReport.redistributionTotalYesCount < 1 ||  !isPartnerEnabledAnalyticsAccess">
 				<div class="portlet-body text-center">
 						<i class="fa fa-check-circle"></i>
@@ -663,7 +663,7 @@
 			</button>
 		</div>
 		<div class="p-5x" [hidden]="mainLoader"class="col-xs-2 rsvp_tile_padding">
-			<button class="portlet light color1-invert crcb" [class.selectedBox]="rsvpResposeType === 'NO'" (click)="getRsvpDetails('NO')"  [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
+			<button class="portlet light color1-invert crcb" [class.selectedBox]="rsvpResposeType === 'NO'" (click)="resetRsvpPagination();getRsvpDetails('NO')"  [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
 			 [disabled]="campaignReport.redistributionTotalNoCount < 1 || !isPartnerEnabledAnalyticsAccess">
 				<div class="portlet-body text-center">
 						<i class="fa fa-times-circle"></i>
@@ -675,7 +675,7 @@
 			</button>
 		</div>
 		<div class="p-5x" [hidden]="mainLoader"  class="col-xs-2 rsvp_tile_padding">
-			<button class="portlet light color1-invert crcb" [class.selectedBox]="rsvpResposeType === 'MAYBE'" (click)="getRsvpDetails('MAYBE')"  [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
+			<button class="portlet light color1-invert crcb" [class.selectedBox]="rsvpResposeType === 'MAYBE'" (click)="resetRsvpPagination();getRsvpDetails('MAYBE')"  [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
 			 [disabled]="campaignReport.redistributionTotalMayBeCount < 1 || !isPartnerEnabledAnalyticsAccess">
 				<div class="portlet-body text-center">
 						<i class="fa fa-question-circle"></i>
@@ -687,7 +687,7 @@
 			</button>
 		</div>
 		<div [hidden]="mainLoader"  class="col-xs-2 rsvp_tile_padding">
-			<button class="portlet light color1-invert crcb" [class.selectedBox]="rsvpResposeType === 'NOTYET'" (click)="getRsvpDetails('NOTYET')"  [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
+			<button class="portlet light color1-invert crcb" [class.selectedBox]="rsvpResposeType === 'NOTYET'" (click)="resetRsvpPagination();getRsvpDetails('NOTYET')"  [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
 			 [disabled]="campaignReport.redistributionTotalNotYetRespondedCount < 1 || !isPartnerEnabledAnalyticsAccess">
 				<div class="portlet-body text-center">
 						<i class="fa fa-exclamation-circle"></i>
@@ -707,8 +707,8 @@
 				<!-- <h4 class="pull-left" *ngIf="rsvpResposeType === 'email open'">People who <b class="highlet">OPENED YOUR EMAIL</b></h4> -->
 				<div class="pull-left mt10" *ngIf="rsvpResposeType === 'email open' || rsvpResposeType === 'email not open'">
 				<ul class="mix-filter m0">
-            <li class="filter" [class.selectedBox]="rsvpResposeType === 'email open'" (click)="getRsvpEmailOpenDetails()">People who have opened your email</li>
-            <li class="filter" [class.selectedBox]="rsvpResposeType === 'email not open'"  (click)="getRsvpEmailNotOpenDetails()"> People who haven't opened your email</li>
+            <li class="filter" [class.selectedBox]="rsvpResposeType === 'email open'" (click)="resetRsvpPagination();getRsvpEmailOpenDetails()">People who have opened your email</li>
+            <li class="filter" [class.selectedBox]="rsvpResposeType === 'email not open'"  (click)="resetRsvpPagination();getRsvpEmailNotOpenDetails()"> People who haven't opened your email</li>
 				</ul>
 				</div>
 				<h4 class="pull-left" *ngIf="rsvpResposeType === 'YES'">People who have responded <b class="highlet">YES</b></h4>
@@ -756,7 +756,7 @@
 						</table>
 						</ng-container>
 						<app-pagination [pagination]="rsvpDetailAnalyticsPagination" class="pg8"
-						 [type]="'rsvpDetailsPagination'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
+						 [type]="rsvpResposeType" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
 						<!-- <app-pagination [hidden]="detailType === 'email open'" [pagination]="eventCampaingEmailOpenPagination"
 						 [type]="'emailOpenPagination'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination> -->
 					</div>
