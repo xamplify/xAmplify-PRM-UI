@@ -451,7 +451,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                                     this.customResponse = new CustomResponse( 'ERROR', error._body, true );
                                     console.log( "done" )
                                 } else if(error._body.includes("email addresses in your contact list that aren't formatted properly")){
-                                    this.customResponse = new CustomResponse( 'ERROR', "Email addresses in your contact list that aren't formatted properly.", true );
+                                    this.customResponse = new CustomResponse( 'ERROR', "Email addresses in your partner list that aren't formatted properly.", true );
                                 }else{
                                     this.xtremandLogger.errorPage( error );
                                 }
@@ -2054,7 +2054,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
     closeModal( event ) {
         if ( event === "Emails Send Successfully" ) {
-            this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_SAVE_SUCCESS_AND_MAIL_SENT_SUCCESS, true );
+            this.customResponse = new CustomResponse( 'SUCCESS', this.properties.PARTNER_SAVE_SUCCESS_AND_MAIL_SENT_SUCCESS, true );
         }
         
         if( event === "users are unSubscribed for emails" ){
