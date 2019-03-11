@@ -2110,8 +2110,14 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     ngOnInit() {
         try {
             this.socialContactImage();
-            this.listTeamMembers();
-            this.listOrgAdmin();
+            /*this.listTeamMembers();
+            this.listOrgAdmin();*/
+            
+            if(!this.authenticationService.isTeamMember()){
+                this.listTeamMembers();
+                this.listOrgAdmin();
+              }
+            
             $( "#Gfile_preview" ).hide();
             this.socialContactsValue = true;
             this.loggedInUserId = this.authenticationService.getUserId();

@@ -2495,8 +2495,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
             this.loadContactListsNames();
             if(!this.authenticationService.isTeamMember()){
               this.listTeamMembers();
+              this.listOrgAdmin();
             }
-            this.listOrgAdmin();
+            
             this.selectedContactListName = this.contactListName;
             this.checkingLoadContactsCount = true;
             this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
