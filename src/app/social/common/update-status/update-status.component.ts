@@ -725,6 +725,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
       },
       defaultView: 'month',
       timeFormat: 'h:mm a',
+      timezone: 'local',
       eventOrder: "-start",
       eventRender: function(event: any, element: any) {
         element.find('.fc-time').addClass('fc-time-title mr5');

@@ -107,7 +107,13 @@ export class CalendarComponent implements OnInit, OnDestroy {
         this.events = [];
         this.campaigns = data;
         this.campaigns.forEach(element => {
-          let event: any = {id: element.id, title: element.campaign, start: element.createdTime, data: element, editable: false};
+          let startTime;
+          if(element.status === 'SAVE'){
+            startTime = element.updatedTime;
+          } else {
+            startTime = element.launchTime;
+          }
+          let event: any = {id: element.id, title: element.campaign, start: startTime, data: element, editable: false};
           $('#calendar').fullCalendar('renderEvent', event, true);
           this.events.push(event);
         });
@@ -143,6 +149,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
       eventLimit: true, // allow "more" link when too many events
       events: this.events,
       timeFormat: 'h:mm a',
+      timezone: 'local',
       height: 'parent',
       eventClick: function (event) {
         self.getCampaignById(event.id)
@@ -179,6 +186,8 @@ export class CalendarComponent implements OnInit, OnDestroy {
       .subscribe(
       data => {
         this.campaign = data;
+        if(data.campaignScheduleType === 'SCHEDULE' && data.launched)
+          this.campaign.campaignScheduleType = 'NOW';
         var selectedVideoId  = this.campaign.selectedVideoId;
         this.isChannelCampaign = data.channelCampaign;
         if(selectedVideoId>0){ this.launchVideoPreview = this.campaign.campaignVideoFile;}
