@@ -139,7 +139,7 @@ pointer-events: none;
 											<i class="icon-info"></i>
 											Help </a>
 										</li> -->
-										<li *ngIf="(currentUser.roles?.length==1 || authenticationService.isOrgAdmin())">
+										<li *ngIf="(authenticationService.isOrgAdmin())">
 										<a [class.disabled]="authenticationService.isSuperAdmin()">
 											<div class="col-xs-2 p0"><i class="icon-settings"></i></div>
 											<div class="col-xs-5 p0">

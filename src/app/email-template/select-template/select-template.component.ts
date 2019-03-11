@@ -31,7 +31,6 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
      getOrgCampaignTypes(){
       this.refService.getOrgCampaignTypes( this.refService.companyId).subscribe(
       data=>{
-        console.log(data);
         this.campaignAccess.videoCampaign = data.video;
         this.campaignAccess.emailCampaign = data.regular;
         this.campaignAccess.socialCampaign = data.social;
