@@ -55,6 +55,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     totalListUsers = [];
     updatedUserDetails = [];
     existedEmailIds = [];
+    csvContacts = [];
 
     contactListObject: ContactList;
     selectedContactListName: string;
@@ -282,7 +283,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                             user.mobileNumber = allTextLines[i][10];
                             /*user.description = allTextLines[i][9];*/
                             self.users.push( user );
-                            self.contacts.push( user );
+                            self.csvContacts.push( user );
                             }else{
 
                                 user.emailId = allTextLines[i][4];
@@ -302,7 +303,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                                 user.mobileNumber = allTextLines[i][14];
                                 /* user.description = allTextLines[i][9];*/
                                 self.users.push( user );
-                                self.contacts.push( user );
+                                self.csvContacts.push( user );
 
                             }
                         }
@@ -766,6 +767,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     removeCsv() {
         this.fileTypeError = false;
         this.inValidCsvContacts = false;
+        this.existedEmailIds,length = 0;
         this.invalidPatternEmails.length = 0;
         this.selectedAddContactsOption = 8;
         this.users = [];
