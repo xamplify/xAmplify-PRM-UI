@@ -62,10 +62,10 @@ export class LoginComponent implements OnInit, OnDestroy {
                   localStorage.removeItem('isLogout');
                   this.redirectTo(currentUser);
                   // if user is coming from any link
-                  if (this.authenticationService.redirectUrl) {
-                      this.router.navigate([this.authenticationService.redirectUrl]);
-                      this.authenticationService.redirectUrl = null;
-                  }
+                  // if (this.authenticationService.redirectUrl) {
+                  //     this.router.navigate([this.authenticationService.redirectUrl]);
+                  //     this.authenticationService.redirectUrl = null;
+                  // }
               } else {
                   this.loading = false;
                   this.setCustomeResponse("ERROR", this.properties.BAD_CREDENTIAL_ERROR);

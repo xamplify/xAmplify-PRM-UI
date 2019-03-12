@@ -179,14 +179,15 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
       const isSupportfile = file.type;
       if (isSupportfile === 'image/jpg' || isSupportfile === 'image/jpeg' || isSupportfile === 'image/png') {
         this.errorUploadCropper = false;
+        const myReader:FileReader = new FileReader();
+        const that = this;
+        myReader.onloadend = function (loadEvent:any) {
+            image.src = loadEvent.target.result;
+            that.cropper.setImage(image);
+        };
+        myReader.readAsDataURL(file);
       } else {  this.errorUploadCropper = true;}
-      const myReader:FileReader = new FileReader();
-      const that = this;
-      myReader.onloadend = function (loadEvent:any) {
-          image.src = loadEvent.target.result;
-          that.cropper.setImage(image);
-      };
-      myReader.readAsDataURL(file);
+
       }
     uploadLogo(){
       this.loadingcrop = true;
@@ -1011,33 +1012,6 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
         else if (column == "state") {
             this.validateState();
         }
-    }
-
-    changeLogo(event: any) {
-          this.customResponse.isVisible = false;
-            let fileList: any;
-            if (event.target != undefined) {
-                fileList = event.target.files[0];
-            } else {
-                fileList = event[0];
-            }
-        if (fileList!=undefined) {
-            let maxSize = this.maxFileSize*1024*1024;//10 Mb
-            let  size = fileList.size;
-            let ext = fileList.name.split('.').pop().toLowerCase();
-            let  extentionsArray = ['jpeg','pjpeg', 'png','jpg'];
-            if ($.inArray(ext, extentionsArray) == -1) {
-                this.refService.goToTop();
-                this.customResponse = new CustomResponse('ERROR',"Please upload image files only", true );
-            }else{
-                let fileSize = (size/ 1024 / 1024); //size in MB
-                if (size > maxSize) {
-                    this.refService.goToTop();
-                    this.customResponse = new CustomResponse( 'ERROR',"Max size is 10 MB", true );
-                }
-            }
-        }
-
     }
 
     changeBackGroundLogo(inputFile) {

@@ -65,20 +65,22 @@
 								<div class="portlet-body clearfix text-center" style="padding: 2em 0;">
 									<div class="profile-image-wrapper" style="cursor:pointer"  (click)="imageClick()">
                     <span *ngIf="logoError" style="color: #f55d7a">{{logoErrorMessage}}</span>
-                    <span *ngIf="!companyLogoImageUrlPath" style="color: #f55d7a; position: absolute;bottom: 5px;">* Please upload company logo</span>
-										<img *ngIf="!companyLogoImageUrlPath" src="assets/images/company-profile-logo.png" class="profile-image">
+                  	<span *ngIf="(squareData | json) == '{}'"> <span *ngIf="!companyLogoImageUrlPath" style="color: #f55d7a; position: absolute;bottom: 5px;">* Please upload company logo</span></span>
+										<span *ngIf="(squareData | json) == '{}'"><img *ngIf="!companyLogoImageUrlPath" src="assets/images/company-profile-logo.png" class="profile-image"></span>
+
                     <span class="result" *ngIf="(squareData | json) != '{}'; else showImage">
                       <img *ngIf="!cropRounded && squareData?.image; else Other" [src]="squareData.image">
                       <ng-template #Other><img [src]= "authenticationService.MEDIA_URL + companyLogoImageUrlPath"  [width]="squareCropperSettings.croppedWidth" [height]="squareCropperSettings.croppedHeight" (error)="errorHandler($event)"></ng-template>
                     </span>
-                    <ng-template #showImage><img  [src]= "authenticationService.MEDIA_URL + companyLogoImageUrlPath"  [width]="squareCropperSettings.croppedWidth" [height]="squareCropperSettings.croppedHeight" (error)="errorHandler($event)"></ng-template>
+                    <ng-template #showImage><img *ngIf="companyLogoImageUrlPath" [src]= "authenticationService.MEDIA_URL + companyLogoImageUrlPath"  [width]="squareCropperSettings.croppedWidth" [height]="squareCropperSettings.croppedHeight" (error)="errorHandler($event)"></ng-template>
+
                     <div class="profile-overlay">
 												<label class="fileContainer pointer" (click)="fileChangeEvent()" >
 													<i class="fa fa-camera"></i>&nbsp;<span  *ngIf="!companyLogoImageUrlPath">Upload company logo</span><span *ngIf="companyLogoImageUrlPath">Change company logo</span>
                           <!-- <input id="companyLogo" type="file" ng2FileSelect [uploader]="companyLogoUploader" accept="image/jpeg,image/pjpeg,image/jpeg,image/pjpeg,image/png"
 															*ngIf="companyLogoUploader.queue.length==0" (change)="changeLogo($event)" title=" " #input/> -->
                          </label>
-                      </div>
+                    </div>
 										</div>
 										<div class="clearfix"></div>
 										<section class="percentage-circle" style="display: grid; margin: 4em 0 1em;">

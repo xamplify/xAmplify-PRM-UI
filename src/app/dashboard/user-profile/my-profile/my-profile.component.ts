@@ -156,14 +156,14 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
       const isSupportfile: any = file.type;
       if (isSupportfile === 'image/jpg' || isSupportfile === 'image/jpeg' || isSupportfile === 'image/png') {
         this.errorUploadCropper = false;
-      } else {  this.errorUploadCropper = true;}
-      const myReader:FileReader = new FileReader();
-      const that = this;
-      myReader.onloadend = function (loadEvent:any) {
-          image.src = loadEvent.target.result;
-          that.cropper.setImage(image);
-      };
-      myReader.readAsDataURL(file);
+        const myReader:FileReader = new FileReader();
+        const that = this;
+        myReader.onloadend = function (loadEvent:any) {
+            image.src = loadEvent.target.result;
+            that.cropper.setImage(image);
+        };
+        myReader.readAsDataURL(file);
+       } else {  this.errorUploadCropper = true;}
       }
     videojsCall() {
         this.customResponse =  new CustomResponse();
