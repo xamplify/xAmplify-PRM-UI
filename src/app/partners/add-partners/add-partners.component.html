@@ -94,7 +94,7 @@ img:hover {
 											[class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality">
 											<i style="display:block; margin-top: 22px !important; text-align: center; font-size:24px; margin:0 auto 10px" class="fa fa-file-excel-o"></i>
 											<span style="display:block; font-size:12px; text-align:center">Upload a	CSV</span>
-									<input type="file" ng2FileSelect [uploader]="uploader" title=" "
+									<input type="file" ng2FileSelect [uploader]="uploader" title=" " (click)="input.value = null"
 									(change)="fileChange(input)" accept=".csv" #input
 									[disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality" />
 										</div>
