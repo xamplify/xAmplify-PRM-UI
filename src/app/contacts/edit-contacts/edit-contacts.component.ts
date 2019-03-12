@@ -2375,18 +2375,12 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
     listTeamMembers() {
         try {
-            this.teamMemberPagination.maxResults = 100000000;
             try {
-                this.teamMemberService.list( this.teamMemberPagination, this.authenticationService.getUserId() )
+                this.teamMemberService.listTeamMemberEmailIds()
                     .subscribe(
                     data => {
                         console.log( data );
-                        if ( data.teamMembers.length != 0 ) {
-                            for ( let i = 0; i < data.teamMembers.length; i++ ) {
-                                this.teamMembersList.push( data.teamMembers[i].emailId );
-                            }
-                        }
-                        this.teamMemberPagination = this.pagerService.getPagedItems( this.teamMemberPagination, this.teamMembersList );
+                        this.teamMembersList.push( data );
                     },
                     error => {
                         this.xtremandLogger.errorPage( error );
@@ -2493,7 +2487,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     ngOnInit() {
         try {
             this.loadContactListsNames();
-            if(!this.authenticationService.isTeamMember()){
+            if(this.isPartner){
               this.listTeamMembers();
               this.listOrgAdmin();
             }
