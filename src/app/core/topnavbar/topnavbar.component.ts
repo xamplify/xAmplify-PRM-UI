@@ -27,54 +27,63 @@ export class TopnavbarComponent implements OnInit {
     try{
     this.currentUrl = this.router.url;
     const userName = this.authenticationService.user.emailId;
-    if (this.refService.topNavbarUserService === false || this.utilService.topnavBareLoading === false) {
-      this.refService.topNavbarUserService = true;
-      this.utilService.topnavBareLoading = true;
-      this.userService.getUserByUserName(userName).
-        subscribe(
-        data => {
-          console.log(data);
-          refService.userDefaultPage = data.userDefaultPage;
-          const loggedInUser = data;
-          if (loggedInUser.firstName != null) {
-            this.model.displayName = loggedInUser.firstName;
-            refService.topNavBarUserDetails.displayName = loggedInUser.firstName;
-          } else {
-            this.model.displayName = loggedInUser.emailId;
-            refService.topNavBarUserDetails.displayName = loggedInUser.emailId;
+    if(userName!=undefined){
+        if (this.refService.topNavbarUserService === false || this.utilService.topnavBareLoading === false) {
+            this.refService.topNavbarUserService = true;
+            this.utilService.topnavBareLoading = true;
+            this.userService.getUserByUserName(userName).
+              subscribe(
+              data => {
+                console.log(data);
+                refService.userDefaultPage = data.userDefaultPage;
+                const loggedInUser = data;
+                if (loggedInUser.firstName != null) {
+                  this.model.displayName = loggedInUser.firstName;
+                  refService.topNavBarUserDetails.displayName = loggedInUser.firstName;
+                } else {
+                  this.model.displayName = loggedInUser.emailId;
+                  refService.topNavBarUserDetails.displayName = loggedInUser.emailId;
+                }
+                if (!(loggedInUser.profileImagePath.indexOf(null) > -1)) {
+                  this.model.profilePicutrePath = loggedInUser.profileImagePath;
+                  refService.topNavBarUserDetails.profilePicutrePath = loggedInUser.profileImagePath;
+                } else {
+                  this.model.profilePicutrePath = 'assets/admin/pages/media/profile/icon-user-default.png';
+                  refService.topNavBarUserDetails.profilePicutrePath = 'assets/admin/pages/media/profile/icon-user-default.png';
+                }
+              },
+              error => { this.logger.error(this.refService.errorPrepender + ' Constructor():' + error); },
+              () => this.logger.log('Finished')
+              );
           }
-          if (!(loggedInUser.profileImagePath.indexOf(null) > -1)) {
-            this.model.profilePicutrePath = loggedInUser.profileImagePath;
-            refService.topNavBarUserDetails.profilePicutrePath = loggedInUser.profileImagePath;
-          } else {
-            this.model.profilePicutrePath = 'assets/admin/pages/media/profile/icon-user-default.png';
-            refService.topNavBarUserDetails.profilePicutrePath = 'assets/admin/pages/media/profile/icon-user-default.png';
-          }
-        },
-        error => { this.logger.error(this.refService.errorPrepender + ' Constructor():' + error); },
-        () => this.logger.log('Finished')
-        );
-    }
-    const roles = this.authenticationService.getRoles();
-    if (roles.indexOf(this.roleName.videRole) > -1 || roles.indexOf(this.roleName.allRole) > -1) {
-      this.authenticationService.module.hasVideoRole = true;
-    }
-    if (roles.indexOf(this.roleName.socialShare) > -1 || roles.indexOf(this.roleName.allRole) > -1) {
-      this.authenticationService.module.hasSocialStatusRole = true;
-    }
-    if (roles.indexOf(this.roleName.orgAdminRole) > -1) {
-      this.authenticationService.module.isOrgAdmin = true;
-    }
-    if (roles.length === 1) {
-      this.isUser = true;
-    }
-    if (roles.indexOf(this.roleName.companyPartnerRole) > -1) {
-      this.authenticationService.module.isCompanyPartner = true;
-    }
+   
 
-    if(roles.indexOf(this.roleName.vendorRole)>-1){
-        this.authenticationService.module.isVendor = true;
+    const roles = this.authenticationService.getRoles();
+    if(roles!=undefined){
+        if (roles.indexOf(this.roleName.videRole) > -1 || roles.indexOf(this.roleName.allRole) > -1) {
+            this.authenticationService.module.hasVideoRole = true;
+          }
+          if (roles.indexOf(this.roleName.socialShare) > -1 || roles.indexOf(this.roleName.allRole) > -1) {
+            this.authenticationService.module.hasSocialStatusRole = true;
+          }
+          if (roles.indexOf(this.roleName.orgAdminRole) > -1) {
+            this.authenticationService.module.isOrgAdmin = true;
+          }
+          if (roles.length === 1) {
+            this.isUser = true;
+          }
+          if (roles.indexOf(this.roleName.companyPartnerRole) > -1) {
+            this.authenticationService.module.isCompanyPartner = true;
+          }
+
+          if(roles.indexOf(this.roleName.vendorRole)>-1){
+              this.authenticationService.module.isVendor = true;
+          }
     }
+    }else{
+       this.authenticationService.logout();
+    }
+   
     }catch(error) {this.logger.error('error'+error); }
   }
   errorHandler(event:any){
