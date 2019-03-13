@@ -285,10 +285,10 @@
 						</ng-container>
 					</div>
 				</div>
-				<div *ngIf="pagination.pagedItems.length !== 0 && !httpRequestLoader.isLoading" class="pg8">
-					<app-pagination [pagination]="pagination" [type]="'t'"
+				<div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
+					<app-pagination [pagination]="pagination"
 						(notifyParent)="setPage($event)"
-						(notifyParentDropDown)="listEmailTemplates($event)"></app-pagination>
+						(notifyParentDropDown)="listEmailTemplates($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
 				</div>
 				<!-- End of 24 -->
 				<div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
