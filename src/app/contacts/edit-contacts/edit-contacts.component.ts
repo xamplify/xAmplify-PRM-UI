@@ -2020,6 +2020,11 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                 if ( this.criterias[i].operation == "=" ) {
                     this.criterias[i].operation = "eq";
                 }
+                
+                if ( this.criterias[i].operation == "Contains" ) {
+                    this.criterias[i].operation = "like";
+                }
+                
                 if ( this.criterias[i].property == "First Name" ) {
                     this.criterias[i].property = "firstName";
                 }

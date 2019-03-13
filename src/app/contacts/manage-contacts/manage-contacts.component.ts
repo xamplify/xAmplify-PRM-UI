@@ -1157,6 +1157,11 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
                 if ( this.criterias[i].operation == "=" ) {
                     this.criterias[i].operation = "eq";
                 }
+                
+                if ( this.criterias[i].operation == "Contains" ) {
+                    this.criterias[i].operation = "like";
+                }
+                
                 if ( this.criterias[i].property == "First Name" ) {
                     this.criterias[i].property = "firstName";
                 }
