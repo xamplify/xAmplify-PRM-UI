@@ -438,6 +438,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 if(url.scheduled){
                     url.replyTime = this.campaignService.setHoursAndMinutesToAutoReponseReplyTimes(url.replyTimeInHoursAndMinutes);
                 }
+                if($.trim(url.subject).length==0){
+                  url.subject = campaign.subjectLine;
+                }
                 let length = this.allItems.length;
                 length = length+1;
                 var id = 'click-'+length;
@@ -2343,6 +2346,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.url.divId = id;
             this.url.scheduled = false;
             this.url.actionId = 19;
+            this.url.subject = this.refService.replaceMultipleSpacesWithSingleSpace(this.campaign.subjectLine);
             this.url.url = this.emailTemplateHrefLinks[0];
             this.urls.push(this.url);
             this.allItems.push(id);
