@@ -13,7 +13,7 @@
 			<!-- <div class="menu-toggler sidebar-toggler" *ngIf="authenticationService.user.hasCompany"> -->
 				<!-- DOC: Remove the above "hide" to enable the sidebar toggler button on header -->
       <!-- </div> -->
-      <div (click)="refService.changeSideBar()" class="side-bar" *ngIf="authenticationService.user.hasCompany">
+      <div (click)="refService.changeSideBar()" class="side-bar" [class.side-bar-css]="refService.isSidebarClosed" *ngIf="authenticationService.user.hasCompany">
         <i class="fa fa-bars" style="font-size: 21px;"></i>
 			</div>
 		</div>

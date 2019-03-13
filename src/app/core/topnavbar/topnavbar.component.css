@@ -48,3 +48,6 @@ pointer-events: none;
     width: 40px;
     border: 1px solid #ccc;
 }
+.side-bar-css {
+right: -36px !important;
+}
