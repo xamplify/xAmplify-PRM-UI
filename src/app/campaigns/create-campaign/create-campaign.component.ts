@@ -1651,13 +1651,16 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     }
 
     setEmailTemplate(emailTemplate:EmailTemplate){
-        $('#emailTemplateContent').html('');
-        this.emailTemplateHrefLinks = [];
-        this.getAnchorLinksFromEmailTemplate(emailTemplate.body);
-        this.setEmailTemplateData(emailTemplate);
-        if(this.emailTemplateHrefLinks.length == 0){
-            this.urls = [];
-        }
+     if(!emailTemplate.draft){
+         $('#emailTemplateContent').html('');
+         this.emailTemplateHrefLinks = [];
+         this.getAnchorLinksFromEmailTemplate(emailTemplate.body);
+         this.setEmailTemplateData(emailTemplate);
+         if(this.emailTemplateHrefLinks.length == 0){
+             this.urls = [];
+         }
+     }
+        
        /* if(this.emailTemplateHrefLinks.length==0){
             let self = this;
             swal( {
