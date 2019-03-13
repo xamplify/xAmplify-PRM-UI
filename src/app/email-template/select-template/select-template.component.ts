@@ -324,7 +324,9 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
            this.emailTemplateService.getById(id)
            .subscribe(
                (data:any) => {
-                data.jsonBody = data.jsonBody.replace("https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL + this.refService.defaultPlayerSettings.companyProfile.companyLogoPath);
+                if(this.refService.companyProfileImage!=undefined){
+                    data.jsonBody = data.jsonBody.replace("https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL + this.refService.companyProfileImage);
+                }
                 this.emailTemplateService.emailTemplate = data;
                    this.router.navigate(["/home/emailtemplates/create"]);
                },
