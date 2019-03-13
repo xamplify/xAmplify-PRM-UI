@@ -59,12 +59,12 @@
 						
 						<div *ngIf="!emailTemplateService.isRegularUpload" class="form-group" id="infoDiv" style="margin-top: -20px;">
 					 		<br><label for="info"><font style="color: red;">Your HTML template must include the code below.</font></label>
-						 	<textarea class="form-control" style="cursor: default;resize: none;" id="info" disabled="disabled" rows="1">{{refService.videoTag}}</textarea>
+						 	<textarea class="form-control" style="cursor: default;resize: none;" id="info" readonly="readonly" rows="1">{{refService.videoTag}}</textarea>
 						</div>
 						
 						<div>
 					 		<label for="info"><font style="color: red;">Use the image tag below to enable co-branding.</font></label>
-						 	<textarea class="form-control" style="cursor: default;resize: none;" id="info" disabled="disabled" rows="2">{{refService.coBrandingTag}}</textarea>
+						 	<textarea class="form-control" style="cursor: default;resize: none;" id="info" readonly="readonly" rows="2">{{refService.coBrandingTag}}</textarea>
 						</div>
 						
 						<br>
