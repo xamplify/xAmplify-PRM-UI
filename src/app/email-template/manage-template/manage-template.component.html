@@ -156,8 +156,10 @@
 										</h5>
 									</td>
 									<td class="hidden-xs">
-										<h5 class="view-banner">{{emailTemplate.emailTemplateType}}</h5>
-									</td>
+										<h5 class="view-banner">
+                      <span *ngIf="emailTemplate.emailTemplateType==='Regular Co-Branding'; else Other">Email Co-Branding</span>
+                      <ng-template #Other>{{emailTemplate.emailTemplateType}}</ng-template></h5>
+                    </td>
 									<td class="hidden-xs text-center"><app-timestamp
 											[isOnlyDate]="true" [dateAndTime]="emailTemplate.createdDate">
 										</app-timestamp></td>
