@@ -1461,7 +1461,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
                 data => {
                     console.log( data );
                     if ( data.message == "success" ) {
-                        this.customResponse = new CustomResponse( 'SUCCESS', "Your list have been processed successfully", true );
+                        this.customResponse = new CustomResponse( 'SUCCESS', "We are processing your contact list, once done will send you an email.", true );
                         this.loadContactLists(this.pagination);
                     }
                 },
