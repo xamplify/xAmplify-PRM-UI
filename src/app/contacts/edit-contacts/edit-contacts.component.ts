@@ -2387,7 +2387,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                     .subscribe(
                     data => {
                         console.log( data );
-                        this.teamMembersList.push( data );
+                        for(let i=0;i< data.length; i++){
+                            this.teamMembersList.push( data[i] );
+                        }
                     },
                     error => {
                         this.xtremandLogger.errorPage( error );
