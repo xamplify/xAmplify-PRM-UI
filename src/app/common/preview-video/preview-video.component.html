@@ -9,7 +9,8 @@
 				</div>
 				<div class="modal-body">
          <div class="text-css" style="margin-top: 0 !important" *ngIf="welcomeVideoFile">{{welcomeVideoFile.videoInfo}}</div>
-          <div id="main_video"></div>
+          <!-- <div id="main_video"></div> -->
+          <app-video-play *ngIf="videoFile" [videoFile]="videoFile" [videoWidth]="'550px'" [videoHeight]="'310px'"></app-video-play>
           <div class="text-new"><span style="font-weight: 400">Description:</span> {{videoFile.description}}</div>
 				</div>
 				<div class="modal-footer" style="border:none"> <a href="javascript:void(0)" (click)="destroyPreviewModal()" data-dismiss="modal" class="btn btn-default">Close</a>

@@ -26,6 +26,7 @@ import { TimestampComponent } from './timestamp/timestamp.component';
 import { ScrollTopComponent } from './scroll-top/scroll-top.component';
 import { SaveAsComponent } from './save-as/save-as.component';
 import { EventSendReminderComponent } from './event-send-reminder/event-send-reminder.component';
+import { VideoPlayComponent } from './video-play/video-play.component';
 
 @NgModule({
     imports: [CommonModule, FormsModule, LoadingModule],
@@ -33,11 +34,11 @@ import { EventSendReminderComponent } from './event-send-reminder/event-send-rem
         BarChartComponent, EmbedModalComponent, EmbedModalComponent, UserInfoComponent, LocationComponent,
         PlatformComponent, ResponseMessageComponent, PreviewVideoComponent, ContactsCampaignsMailsComponent, ListLoaderComponent,
         PlayVideoLoaderComponent, GridLoaderComponent, ExportCsvComponent, AnalyticsLoaderComponent, VideoThumbnailComponent, DetailViewComponent, TimestampComponent,
-        ScrollTopComponent, SaveAsComponent, EventSendReminderComponent ],
+        ScrollTopComponent, SaveAsComponent, EventSendReminderComponent, VideoPlayComponent ],
     exports: [DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent,
         BarChartComponent, EmbedModalComponent, UserInfoComponent, LocationComponent, PlatformComponent,
         ResponseMessageComponent, PreviewVideoComponent, PieChartComponent, ListLoaderComponent, GridLoaderComponent, PlayVideoLoaderComponent,
         ExportCsvComponent, LoadingModule, AnalyticsLoaderComponent, VideoThumbnailComponent, DetailViewComponent, TimestampComponent, ScrollTopComponent, SaveAsComponent,
-        EventSendReminderComponent]
+        EventSendReminderComponent, VideoPlayComponent]
 })
 export class CommonComponentModule { }
