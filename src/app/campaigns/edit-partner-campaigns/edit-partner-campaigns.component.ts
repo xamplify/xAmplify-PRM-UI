@@ -759,23 +759,27 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
         event.stopPropagation();
     }
 
-    getCampaignReplies(campaign: Campaign) {
-        if(campaign.campaignReplies!=undefined){
+    getCampaignReplies( campaign: Campaign ) {
+        if ( campaign.campaignReplies != undefined ) {
             this.replies = campaign.campaignReplies;
-            for(var i=0;i<this.replies.length;i++){
+            for ( var i = 0; i < this.replies.length; i++ ) {
                 let reply = this.replies[i];
-                reply.replyTime = this.campaignService.setHoursAndMinutesToAutoReponseReplyTimes(reply.replyTimeInHoursAndMinutes);
-                if($.trim(reply.subject).length==0){
-                    reply.subject = campaign.subjectLine;
+                if ( reply.actionId != 23 &&  reply.actionId != 22) {
+                    reply.replyTime = this.campaignService.setHoursAndMinutesToAutoReponseReplyTimes( reply.replyTimeInHoursAndMinutes );
+                    if ( $.trim( reply.subject ).length == 0 ) {
+                        reply.subject = campaign.subjectLine;
+                    }
+                    let length = this.allItems.length;
+                    length = length + 1;
+                    var id = 'reply-' + length;
+                    reply.divId = id;
+                    this.allItems.push( id );
+                } else {
+                    this.replies.pop();
                 }
-                let length = this.allItems.length;
-                length = length+1;
-                var id = 'reply-'+length;
-                reply.divId = id;
-                this.allItems.push(id);
+
             }
         }
-
      }
 
 
@@ -786,6 +790,9 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
                 let url = this.urls[i];
                 if(url.scheduled){
                     url.replyTime = this.campaignService.setHoursAndMinutesToAutoReponseReplyTimes(url.replyTimeInHoursAndMinutes);
+                }
+                if($.trim(url.subject).length==0){
+                    url.subject = campaign.subjectLine;
                 }
                 let length = this.allItems.length;
                 length = length+1;
