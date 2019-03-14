@@ -226,7 +226,7 @@ export class ContentManagementComponent implements OnInit {
         this.isPreviewed = false;
     }
     /************Delete******/
-    delete( file: ContentManagement ) {
+    delete( file: ContentManagement, id:any ) {
         let self = this;
         swal( {
             title: 'Are you sure?',
@@ -237,7 +237,10 @@ export class ContentManagementComponent implements OnInit {
             swalCancelButtonColor: '#999',
             confirmButtonText: 'Yes, delete it!'
         }).then( function() {
-            if ( self.selectedFileIds.length === 1 ) { self.contentManagement = file; }
+            if ( self.selectedFileIds.length < 1 ) {
+              self.selectedFiles.push( file );
+              self.selectedFileIds.push( id );
+            }
             self.deleteFile( self.contentManagement );
         }, function( dismiss: any ) {
             console.log( 'you clicked on option' + dismiss );

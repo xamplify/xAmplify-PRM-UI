@@ -99,7 +99,7 @@
                                 <i class="fa fa-external-link" aria-hidden="true"></i>
                               </a>
                               <a data-toggle="tooltip" data-placement="top"	[title]="actionsDescription.delete_item"
-																(click)="delete(file)"> <i class="fa fa-trash-o"></i>
+																(click)="delete(file, file.id)"> <i class="fa fa-trash-o"></i>
 															</a>
 														</div>
 													</td>
@@ -176,7 +176,7 @@
 															</a> <a class="fm delete" data-toggle="tooltip"
 																data-placement="top"
 																[title]="actionsDescription.delete_item"
-																(click)="$event.stopPropagation();delete(file)"> <i class="fa fa-trash-o" aria-hidden="true" style="font-size: 20px; color: #5a5a5a"></i>
+																(click)="$event.stopPropagation();delete(file,file.id)"> <i class="fa fa-trash-o" aria-hidden="true" style="font-size: 20px; color: #5a5a5a"></i>
 															</a>
 															</span>
 														</div>
