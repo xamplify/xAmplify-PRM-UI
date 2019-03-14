@@ -311,7 +311,7 @@
 													<span *ngIf="!contactList.emailValidationInd"><strong>-</strong></span>
 													</td>
 													<td *ngIf="!authenticationService.isSuperAdmin()">
-														<div class="actions-block override-actions">
+														<div class="actions-block override-actions" *ngIf="contactList.emailValidationInd">
 															<a
 																*ngIf="(hasAllAccess || authenticationService.module.isVendor || (hasContactRole && loggedInUserId == contactList.uploadedUserId) || authenticationService.isOnlyPartner()) && !contactList.synchronisedList"
 																(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.synchronisedList)"
@@ -347,6 +347,13 @@
 																data-toggle="tooltip" data-placement="top"
 																title="{{actionsDescription.contact_list_delete}}">
 																<i class="fa fa-trash-o"></i>
+															</a>
+														</div>
+														<div class="actions-block override-actions" *ngIf="!contactList.emailValidationInd">
+														<a data-toggle="tooltip" data-placement="top"
+																title="Force process the list"
+																(click)="forceProcessList(contactList.id)">
+																<i class="fa fa-repeat"></i>
 															</a>
 														</div>
 													</td>
@@ -404,7 +411,7 @@
 													[dateAndTime]="contactList.createdDate"> </app-timestamp>
 											</h6>
 											<div class="bar"
-												*ngIf="!authenticationService.isSuperAdmin()">
+												*ngIf="!authenticationService.isSuperAdmin() && contactList.emailValidationInd">
 												<a [class.disabled]="!contactList.emailValidationInd"
 													*ngIf="(hasAllAccess || authenticationService.module.isVendor || (hasContactRole && loggedInUserId == contactList.uploadedUserId) || authenticationService.isOnlyPartner()) && !contactList.synchronisedList"
 													(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList)"
@@ -452,6 +459,14 @@
 													class="fa fa-trash-o"></i>
 												</a>
 											</div>
+											<div class="bar" *ngIf="!contactList.emailValidationInd">
+											<a data-toggle="tooltip" data-placement="top"
+													title="Force process the list"
+													data-rel="fancybox-button" 
+													(click)="forceProcessList(contactList.id)"> 
+													<i class="fa fa-repeat"></i>
+												</a>
+										   </div>
 										</div>
 									</div>
 								</div>

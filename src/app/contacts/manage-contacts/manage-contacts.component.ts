@@ -1453,6 +1453,28 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
         }
 
     }
+    
+    forceProcessList( contactListId: number ) {
+        try {
+            this.contactService.forceProcessList( contactListId )
+                .subscribe(
+                data => {
+                    console.log( data );
+                    if ( data.message == "success" ) {
+                        this.customResponse = new CustomResponse( 'SUCCESS', "Your list have been processed successfully", true );
+                        this.loadContactLists(this.pagination);
+                    }
+                },
+                ( error: any ) => {
+                    this.xtremandLogger.error( error );
+                },
+                () => this.xtremandLogger.log( "Manage component forcce Process method successfull" )
+                );
+        } catch ( error ) {
+            this.xtremandLogger.error( error, "manageContactComponent", "force Process Method" );
+        }
+
+    }
 
 
     ngAfterViewInit() {

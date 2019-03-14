@@ -419,6 +419,13 @@ export class ContactService {
             .map( this.extractData )
             .catch( this.handleError );
     }
+    
+    forceProcessList(contactListId: number) {
+        this.logger.info( this.contactsUrl + "/process-userlist?access_token=" + this.authenticationService.access_token);
+        return this._http.get( this.contactsUrl + contactListId +"/process-userlist?access_token=" + this.authenticationService.access_token)
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
 
     activateUnsubscribedUser(selectedUserId:number){
         return this._http.post( this.contactsUrl + "resubscribeUser/" + selectedUserId + "?userId=" + this.authenticationService.getUserId() + "&access_token=" + this.authenticationService.access_token, "")
