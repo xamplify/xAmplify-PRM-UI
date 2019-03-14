@@ -41,7 +41,7 @@
 		</div>
 		<div class="col-xs-2 rsvp_tile_padding">
 			<button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'email open'" (click)="analyticsComponent.resetRsvpPagination();analyticsComponent.getRsvpEmailOpenDetails()"
-			 [disabled]="campaignReport.totalEmailOpenCount < 1">
+			 >
 				<div class="portlet-body text-center">
 						<i class="fa fa-envelope"></i>
 					<h1>
@@ -175,12 +175,9 @@
 							</tbody>
 						</table>
 						</ng-container>
-						<app-pagination [pagination]="analyticsComponent.rsvpDetailAnalyticsPagination"
+						<app-pagination *ngIf="analyticsComponent.rsvpDetailAnalyticsPagination.pagedItems.length !== 0" [pagination]="analyticsComponent.rsvpDetailAnalyticsPagination"
 						 [type]="detailType" (notifyParent)="analyticsComponent.setPage($event)" (notifyParentDropDown)="analyticsComponent.paginationDropdown($event)"></app-pagination>
 
-					<!-- <app-pagination *ngIf="detailType !== 'email open'" [pagination]="analyticsComponent.evenCamapignRsvpDetailPagination"
-						 [type]="'rsvpDetailPagination'" (notifyParent)="analyticsComponent.setPage($event)" (notifyParentDropDown)="analyticsComponent.paginationDropdown($event)"></app-pagination>
-					 -->
 					</div>
 				</div>
 	</div>

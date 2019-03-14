@@ -639,7 +639,7 @@
 
 		<div [hidden]="mainLoader"class="col-xs-2 rsvp_tile_padding">
 			<button class="portlet light color1-invert crcb" (click)="resetRsvpPagination();getRsvpEmailOpenDetails()" [class.selectedBox]="rsvpResposeType === 'email open'"   [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
-			 [disabled]="campaignReport.redistributionTotalEmailOpenCount < 1 || !isPartnerEnabledAnalyticsAccess">
+			 [disabled]="!isPartnerEnabledAnalyticsAccess">
 				<div class="portlet-body text-center">
 						<i class="fa fa-envelope"></i>
 					<h1>
@@ -755,10 +755,8 @@
 							</tbody>
 						</table>
 						</ng-container>
-						<app-pagination [pagination]="rsvpDetailAnalyticsPagination" class="pg8"
+						<app-pagination *ngIf="rsvpDetailAnalyticsPagination.pagedItems.length !== 0" [pagination]="rsvpDetailAnalyticsPagination" class="pg8"
 						 [type]="rsvpResposeType" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
-						<!-- <app-pagination [hidden]="detailType === 'email open'" [pagination]="eventCampaingEmailOpenPagination"
-						 [type]="'emailOpenPagination'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination> -->
 					</div>
 				</div>
 	</div>
