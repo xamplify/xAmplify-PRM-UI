@@ -71,7 +71,7 @@
        <div class="divider" *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner() || authenticationService.module.isPartner"></div>
 
        <div class="flex" *ngIf="authenticationService.isVendor()|| authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendorPartner() || authenticationService.module.isVideo">
-       <div class="col-sm-6 col-xs-12 block" *ngIf="(authenticationService.isVendor() || authenticationService.isOrgAdmin() ) && !authenticationService.isOrgAdminPartner()">
+       <div class="col-sm-6 col-xs-12 block" *ngIf="(authenticationService.isVendor() ) && !authenticationService.isOrgAdminPartner()">
            <div class="text-block" style="position: relative; right: -45px;">
              <h1 class="text-left" style="color: #76c9ff">Videos</h1>
              <p class="left-side">{{welcome_text.videos}}</p>
@@ -88,7 +88,7 @@
           src="../../../assets/images/welcome/img-videos.png"
           data-holder-rendered="true">
         </div>
-         <div class="col-sm-6 col-xs-12 block" *ngIf="(!authenticationService.isVendor() && !authenticationService.isOrgAdmin()) || authenticationService.isOrgAdminPartner()">
+         <div class="col-sm-6 col-xs-12 block" *ngIf="(!authenticationService.isVendor()) || authenticationService.isOrgAdminPartner()">
            <div class="text-block">
              <h1 style="color: #76c9ff;text-align: left">Content</h1>
              <p style="position: relative;left: -19px;">{{welcome_text.videos}}</p>
