@@ -687,7 +687,8 @@
                 <ng-container  *ngFor="let emailClicked of pagination.pagedItems;let i = index">
                 <tr>
                   <td>
-                    <app-user-info [userInfo]="emailClicked"> </app-user-info>
+                    <app-user-info *ngIf="paginationType == 'open'" [userInfo]="emailClicked" [isCompanyInfo] = "true"> </app-user-info>
+                     <app-user-info *ngIf="paginationType != 'open'" [userInfo]="emailClicked"> </app-user-info>
                   </td>
                   <td class="center hidden-xs" *ngIf="paginationType =='clicked'">
                     <h5  *ngIf="emailClicked.url" title="{{emailClicked.url}}">{{emailClicked.url | slice:0:30}} <span *ngIf="emailClicked.url?.length>30">...</span></h5>

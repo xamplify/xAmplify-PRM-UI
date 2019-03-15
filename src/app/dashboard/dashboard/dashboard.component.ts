@@ -850,6 +850,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                /* "Campaign Name": this.dashboardReport.downloadEmailLogList[i].campaignName*/
             }
             if (this.paginationType == 'open') {
+                object["Company Name"] = this.dashboardReport.downloadEmailLogList[i].companyName;
                 object["Campaign Name"] = this.dashboardReport.downloadEmailLogList[i].campaignName;
                 object["Subject"] = this.dashboardReport.downloadEmailLogList[i].subject;
             }
