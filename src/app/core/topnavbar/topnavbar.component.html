@@ -56,7 +56,12 @@
 							<i class="fa fa-upload" data-toggle="tooltip"></i>
 						</button>
 					</li>
-					<li style="margin-top: 17px;margin-right: 5px;" *ngIf="(authenticationService.module.hasSocialStatusRole || authenticationService.module.isOrgAdmin ||authenticationService.module.isVendor) && authenticationService.user.hasCompany">
+					<li style="margin-top: 17px;margin-right: 5px;" 
+					*ngIf="(refService.hasAllAccess() 
+										|| authenticationService.module.hasSocialStatusRole 
+										|| authenticationService.module.isOrgAdmin 
+										|| authenticationService.module.isVendor 
+										|| authenticationService.module.isCompanyPartner) && authenticationService.user.hasCompany">
 						<!-- *ngIf="refService.hasCompany" -->
 						<button class="btn btn-primary" [routerLink]="['/home/social/update-status']">
 							<span class="hidden-xs">Update Status</span>
@@ -166,7 +171,11 @@
 									class="fa fa-building-o"></i> Company Profile
 							</a>
 							</li>
-							<li *ngIf="(refService.hasAllAccess() || authenticationService.module.isVendor ||   authenticationService.module.isCompanyPartner)&& authenticationService.user.hasCompany">
+							<li *ngIf="(refService.hasAllAccess() 
+										|| authenticationService.module.hasSocialStatusRole 
+										|| authenticationService.module.isOrgAdmin 
+										|| authenticationService.module.isVendor 
+										|| authenticationService.module.isCompanyPartner) && authenticationService.user.hasCompany">
 								<a [routerLink]="['/home/social/manage/all']"> <i class="fa fa-cog" aria-hidden="true"></i> Social Accounts</a>
 							</li>
 
