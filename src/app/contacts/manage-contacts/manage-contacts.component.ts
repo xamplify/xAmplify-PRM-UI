@@ -208,7 +208,10 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
         }
         
         if(this.contactService.saveAsSuccessMessage === "saveAsPartnerError"){
-            this.customResponse = new CustomResponse( 'ERROR', this.contactService.saveAsSuccessMessage, true );
+            this.customResponse = new CustomResponse( 'ERROR', this.contactService.saveAsErrorMessage, true );
+            
+            this.contactService.saveAsSuccessMessage = "";
+            this.contactService.saveAsErrorMessage = "";
         }
         
         if ( this.contactService.deleteUserSucessMessage === true ) {
@@ -1503,6 +1506,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
             this.xtremandLogger.info( 'Deinit - Destroyed Component' )
             this.contactService.successMessage = false;
             this.contactService.deleteUserSucessMessage = false;
+            
             swal.close();
             $( '#filterModal' ).modal( 'hide' );
         } catch ( error ) {
