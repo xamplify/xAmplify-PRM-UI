@@ -206,6 +206,11 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
             this.xtremandLogger.info( "Success Message in manage contact pape" );
             this.contactService.saveAsSuccessMessage = "";
         }
+        
+        if(this.contactService.saveAsSuccessMessage === "saveAsPartnerError"){
+            this.customResponse = new CustomResponse( 'ERROR', this.contactService.saveAsSuccessMessage, true );
+        }
+        
         if ( this.contactService.deleteUserSucessMessage === true ) {
           if(this.isPartner){
             this.customResponse = new CustomResponse( 'SUCCESS', this.properties.PARTNERS_LIST_DELETE_SUCCESS, true );

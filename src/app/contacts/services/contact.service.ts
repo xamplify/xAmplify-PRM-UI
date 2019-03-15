@@ -21,6 +21,7 @@ import {ReferenceService} from '../../core/services/reference.service';
 export class ContactService {
 
     saveAsSuccessMessage: string;
+    saveAsErrorMessage: any;
     successMessage: boolean;
     deleteUserSucessMessage: boolean;
     socialContact: SocialContact[];

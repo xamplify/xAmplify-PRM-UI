@@ -1920,6 +1920,11 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                             this.xtremandLogger.error( error );
                             if (JSON.parse(error._body).message.includes('email addresses in your contact list')) {
                                 this.customResponse = new CustomResponse( 'ERROR', JSON.parse(error._body).message, true );
+                                if(this.addPartnerSave == true){
+                                    this.contactService.saveAsSuccessMessage = "saveAsPartnerError";
+                                    this.contactService.saveAsErrorMessage = JSON.parse(error._body).message;
+                                    this.goToContactOrPartnerUrl();
+                                }
                               } else {  this.xtremandLogger.errorPage( error ); }
                         },
                         () => this.xtremandLogger.info( "allcontactComponent saveSelectedUsers() finished" )
@@ -1957,6 +1962,11 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                             this.xtremandLogger.error( error );
                               if (JSON.parse(error._body).message.includes('email addresses in your contact list')) {
                                 this.customResponse = new CustomResponse( 'ERROR', JSON.parse(error._body).message, true );
+                                if(this.addPartnerSave == true){
+                                    this.contactService.saveAsSuccessMessage = "saveAsPartnerError";
+                                    this.contactService.saveAsErrorMessage = JSON.parse(error._body).message;
+                                    this.goToContactOrPartnerUrl();
+                                }
                               } else {  this.xtremandLogger.errorPage( error ); }
                             }catch(err){ this.xtremandLogger.error( err );}
                         },
