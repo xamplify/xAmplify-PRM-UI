@@ -1918,7 +1918,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                         },
                         ( error: any ) => {
                             this.xtremandLogger.error( error );
-                            this.xtremandLogger.errorPage( error );
+                            if (JSON.parse(error._body).message.includes('email addresses in your contact list')) {
+                                this.customResponse = new CustomResponse( 'ERROR', JSON.parse(error._body).message, true );
+                              } else {  this.xtremandLogger.errorPage( error ); }
                         },
                         () => this.xtremandLogger.info( "allcontactComponent saveSelectedUsers() finished" )
                         )
@@ -1954,7 +1956,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                             try {
                             this.xtremandLogger.error( error );
                               if (JSON.parse(error._body).message.includes('email addresses in your contact list')) {
-                                this.customResponse = new CustomResponse( 'ERROR', 'Email addresses in your contact list that aren\'t formatted properly', true );
+                                this.customResponse = new CustomResponse( 'ERROR', JSON.parse(error._body).message, true );
                               } else {  this.xtremandLogger.errorPage( error ); }
                             }catch(err){ this.xtremandLogger.error( err );}
                         },
