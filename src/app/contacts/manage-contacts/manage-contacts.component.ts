@@ -1403,7 +1403,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
                 },
                 ( error: any ) => {
                     if(error._body.includes("email addresses in your contact list that aren't formatted properly")){
-                        this.customResponse = new CustomResponse( 'ERROR', "Email addresses in your contact list that aren't formatted properly.", true );
+                        this.customResponse = new CustomResponse( 'ERROR', JSON.parse(error._body).message, true );
                     }else{
                     this.xtremandLogger.errorPage( error );
                     }

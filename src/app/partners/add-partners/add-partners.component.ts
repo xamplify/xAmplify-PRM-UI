@@ -451,7 +451,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                                     this.customResponse = new CustomResponse( 'ERROR', error._body, true );
                                     console.log( "done" )
                                 } else if(error._body.includes("email addresses in your contact list that aren't formatted properly")){
-                                    this.customResponse = new CustomResponse( 'ERROR', "Email addresses in your partner list that aren't formatted properly.", true );
+                                    this.customResponse = new CustomResponse( 'ERROR', JSON.parse(error._body).message, true );
                                 }else{
                                     this.xtremandLogger.errorPage( error );
                                 }
