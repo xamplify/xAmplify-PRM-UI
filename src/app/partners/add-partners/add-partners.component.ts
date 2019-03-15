@@ -458,6 +458,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                                 this.xtremandLogger.error( error );
                                 this.loading = false;
                                 console.log( error );
+                                this.newPartnerUser.length = 0;
+                                this.allselectedUsers.length = 0;
+                                this.loadPartnerList( this.pagination );
+                                this.clipBoard = false;
+                                this.cancelPartners();
                             },
                             () => this.xtremandLogger.info( "MangePartnerComponent loadPartners() finished" )
                             )

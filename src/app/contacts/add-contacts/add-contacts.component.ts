@@ -765,6 +765,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                                 this.xtremandLogger.errorPage( error );
                                 }
                                 this.xtremandLogger.error( error );
+                                this.loading = false;
                             },
                             () => this.xtremandLogger.info( "addcontactComponent saveCsvContactList() finished" )
                             )
