@@ -234,7 +234,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                     // var data = allTextLines[i].split( ',' );
                     if ( allTextLines[i][4] && allTextLines[i][4].trim().length > 0 ) {
                         let user = new User();
-                        user.emailId = allTextLines[i][4];
+                        user.emailId = allTextLines[i][4].trim();
                         user.firstName = allTextLines[i][0];
                         user.lastName = allTextLines[i][1];
                         user.contactCompany = allTextLines[i][2];

@@ -270,7 +270,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                         if ( allTextLines[i][4].trim().length > 0 ) {
                             let user = new User();
                             if(!self.isPartner){
-                            user.emailId = allTextLines[i][4];
+                            user.emailId = allTextLines[i][4].trim();
                             user.firstName = allTextLines[i][0];
                             user.lastName = allTextLines[i][1];
                             user.contactCompany = allTextLines[i][2];
