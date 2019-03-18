@@ -113,7 +113,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
           } else {
             startTime = element.launchTime;
           }
-          let event: any = {id: element.id, title: element.campaign, start: startTime, data: element, editable: false};
+          let event: any = {id: element.id, title: element.campaign, start: startTime, data: element, editable: false, allDay: false};
           $('#calendar').fullCalendar('renderEvent', event, true);
           this.events.push(event);
         });
@@ -147,6 +147,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
       navLinks: true, // can click day/week names to navigate views
       editable: true,
       eventLimit: true, // allow "more" link when too many events
+      allDayDefault: false,
       events: this.events,
       timeFormat: 'h:mm a',
       timezone: 'local',
