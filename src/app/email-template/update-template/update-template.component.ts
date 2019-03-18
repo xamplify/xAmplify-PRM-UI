@@ -7,13 +7,14 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 import { EmailTemplate} from '../models/email-template';
 import { ReferenceService } from '../../core/services/reference.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
+import { CallActionSwitch } from '../../videos/models/call-action-switch';
 declare var Metronic ,Layout ,Demo ,TableManaged,$,CKEDITOR:any;
 
 @Component({
     selector: 'app-update-template',
     templateUrl: './update-template.component.html',
     styleUrls: ['./update-template.component.css'],
-    providers: [EmailTemplate,HttpRequestLoader]
+    providers: [EmailTemplate,HttpRequestLoader,CallActionSwitch]
 })
 export class UpdateTemplateComponent implements OnInit, OnDestroy {
 
@@ -30,9 +31,14 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
     clickedButtonName:string = "";
     updateButton:string = "UPDATE";
     httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
+    isValidType: boolean;
+    coBrandingLogo: boolean = false;
+    mycontent: string;
+    emailTemplateTypes = ["VIDEO","REGULAR"];
     constructor(public emailTemplateService: EmailTemplateService, private userService: UserService,
             private router: Router, private emailTemplate: EmailTemplate, private logger: XtremandLogger,
-            private authenticationService:AuthenticationService,public refService:ReferenceService) {
+            private authenticationService:AuthenticationService,public refService:ReferenceService,
+            public callActionSwitch: CallActionSwitch) {
         logger.debug("updateTemplateComponent() Loaded");
         CKEDITOR.config.allowedContent = true;
         
@@ -47,9 +53,15 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
             () => logger.debug("Got List Of Available Email Template Names in uploadEmailTemplateComponent constructor")
         );
         this.videoTag = "<a href='<SocialUbuntuURL>'>\n   <img src='<SocialUbuntuImgURL>'/> \n </a> \n";
+        this.model.isRegularUpload =0;
         if (emailTemplateService.emailTemplate != undefined) {
+            console.log(emailTemplateService.emailTemplate)
             let body  = emailTemplateService.emailTemplate.body.replace(this.emailOpenTrackingUrl,"");
             this.model.content = body;
+            if(!emailTemplateService.emailTemplate.draft)
+            this.isValidType = true;
+            this.model.draft = emailTemplateService.emailTemplate.draft;
+            this.mycontent = this.model.content;
             this.model.templateName = emailTemplateService.emailTemplate.name;
         }
 
@@ -72,7 +84,26 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
             this.invalidTemplateName = true;
         }
     }
-
+    validateType(){
+        let fieldValue= $("#isRegularUpload").val();
+       
+        if (fieldValue !=null && fieldValue != undefined &&  fieldValue.length > 0 && fieldValue!= "Select Type")
+        {
+          
+          this.isValidType = true;
+         
+          $("#isRegularUpload").attr('style', 'border-left: 5px solid #42A948');
+        } else
+        {
+         
+          this.isValidType = false;
+         
+          $("#isRegularUpload").attr('style', 'border-left: 5px solid #a94442');
+          
+        }
+       
+      }
+    
 
     update(){
         this.clickedButtonName = this.updateButton;
@@ -83,13 +114,31 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
        this.refService.startLoader(this.httpRequestLoader);
         this.emailTemplate.id = this.emailTemplateService.emailTemplate.id;
         this.emailTemplate.name = this.model.templateName;
+        this.emailTemplate.createdBy = this.emailTemplateService.emailTemplate.createdBy;
         this.emailTemplate.onDestroy = isOnDestroy;
         this.emailTemplate.draft = isOnDestroy;
+      
+       
+        if (this.model.isRegularUpload == "REGULAR")
+        {
+          this.emailTemplate.regularTemplate = true;
+          this.emailTemplate.desc = "Regular Template";
+          this.emailTemplate.subject = "assets/images/normal-email-template.png";
+          this.emailTemplate.regularCoBrandingTemplate = this.coBrandingLogo;
+        } else
+        {
+          this.emailTemplate.videoTemplate = true;
+          this.emailTemplate.desc = "Video Template";
+          this.emailTemplate.subject = "assets/images/video-email-template.png";
+          this.emailTemplate.videoCoBrandingTemplate = this.coBrandingLogo;
+        }
+   
         for(var instanceName in CKEDITOR.instances){
             CKEDITOR.instances[instanceName].updateElement();
-            this.emailTemplate.body =  CKEDITOR.instances[instanceName].getData();
+            this.emailTemplate.body =  this.mycontent;
         }
         if($.trim(this.emailTemplate.body).length>0){
+            console.log(this.emailTemplate);
             this.emailTemplateService.update(this.emailTemplate)
             .subscribe(
             (data: any) => {
@@ -117,7 +166,38 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
 
 
     }
-
+    setCoBrandingLogo(event)
+    {
+        console.log(event)
+      
+      this.coBrandingLogo = event;
+      let body = this.getCkEditorData();
+      if (event)
+      {
+        if (body.indexOf(this.refService.coBrandingImageTag) < 0)
+        {
+            this.model.content = this.refService.coBrandingTag.concat(this.model.content);
+        }
+      } else
+      {
+        this.model.content = this.model.content.replace(this.refService.coBrandingImageTag, "").
+          replace("<p>< /></p>", "").
+          replace("< />", "").replace("<p>&lt;&gt;</p>", "").replace("<>", "");
+  
+        // .replace("&lt; style=&quot;background-color:black&quot; /&gt;","");
+      }
+  
+    }
+    getCkEditorData()
+    {
+      let body = "";
+      for (var instanceName in CKEDITOR.instances)
+      {
+        CKEDITOR.instances[instanceName].updateElement();
+        body = CKEDITOR.instances[instanceName].getData();
+      }
+      return body;
+    }
     ngOnInit() {
         try {
             Metronic.init();

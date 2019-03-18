@@ -1,3 +1,4 @@
+<ngx-loading [show]="importLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 <div class="page-content">
 	<div class="page-bar">
 		<ul class="page-breadcrumb">
@@ -28,11 +29,13 @@
 									 *ngIf="campaignAccess.videoCampaign">Video Co-Branding</li>
 									<li class="filter" (click)="showCampaignDefaultTemplates(8)" [class.emailtemplate-selected]="8 == selectedTemplateTypeIndex">Default</li>
 									<li class="filter" (click)="showUploadTemplates(5)" [class.emailtemplate-selected]="5 == selectedTemplateTypeIndex">Upload
-										Custom</li>
+										Custom
+									</li>
 									<li class="filter" (click)="showEventTemplates(9)" [class.emailtemplate-selected]="9 == selectedTemplateTypeIndex" *ngIf="campaignAccess.eventCampaign">Event</li>
 									<li class="filter" (click)="showEventCoBrandingTemplates(10)" [class.emailtemplate-selected]="10 == selectedTemplateTypeIndex"
 									 *ngIf="campaignAccess.eventCampaign">Event Co-Branding</li>
-									<li class="filter" (click)="getTemplatesFromMarketo()">Retrieve Templates</li>
+									<li class="filter" (click)="getTemplatesFromMarketo()" [class.emailtemplate-selected]="11 == selectedTemplateTypeIndex">Marketo
+										Templates</li>
 									<li class="filter" style="display: none;">Own Template</li>
 								</ul>
 							</div>
@@ -53,23 +56,54 @@
 				</div>
 				<div class="portlet-body">
 					<div class="row">
+						
+
 						<app-grid-loader *ngIf="httpRequestLoader.isLoading"></app-grid-loader>
 						<app-grid-loader *ngIf="httpRequestLoader.isLoading"></app-grid-loader>
 						<app-error-pages *ngIf="httpRequestLoader.isServerError"></app-error-pages>
+						<div style="position: relative; top: -10px">
+								<app-response-message [customResponse]="customResponse"
+									*ngIf="customResponse.isVisible"></app-response-message>
+						</div>
+						<div *ngIf="selectedTemplateTypeIndex == 11" style="width: 100%;padding-left: 15px;" class="row">
+								<label class="select-all-filter" style="float:right;"> <input type="checkbox" value="" 
+									[(ngModel)]="selectAllTemplates" (ngModelChange)="selectAll(selectAllTemplates)" >
+									<span style="font-weight: 600;font-size: 12px;"> Select All</span> </label>
+									<div *ngIf="isSaveMarketoTemplatesButtonState" style="float:right;margin-right: 10px">
+											<button class="btn" style="height: 36px;background-color: #6dcff6;" 
+											(click)="importMarketotemplates()">IMPORT</button>
+									</div>
+						</div>
+						
 						<div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let beeRegularTemplate of filteredEmailTemplates | filterBy: templateFilter;let i=index">
 							<div class="grid-box">
-								<img class="img-responsive center-block" *ngIf="!beeRegularTemplate.campaignDefault" src="{{beeRegularTemplate.body}}" alt="{{beeRegularTemplate.name}}">
-								<img class="img-responsive center-block" *ngIf="beeRegularTemplate.campaignDefault" src="{{beeRegularTemplate.subject}}"
+								<div *ngIf="beeRegularTemplate.marketoTemplate" style="width: 100%;padding-left: 15px;">
+									<label class="checkbox-inline" style="float:left;"><input type="checkbox" value="" style="width: 20px;height: 20px;"
+										[(ngModel)]="beeRegularTemplate.isSelectedMarketoTemplate" (ngModelChange)="setSelectedTemplates(beeRegularTemplate)"></label>
+								</div>
+								<img class="img-responsive center-block" *ngIf="!beeRegularTemplate.campaignDefault && !beeRegularTemplate.marketoTemplate"
+								 src="{{beeRegularTemplate.body}}" alt="{{beeRegularTemplate.name}}">
+								<img class="img-responsive center-block" *ngIf="beeRegularTemplate.campaignDefault && !beeRegularTemplate.marketoTemplate"
+								 src="{{beeRegularTemplate.subject}}" alt="{{beeRegularTemplate.name}}">
+								<img class="img-responsive center-block" *ngIf="beeRegularTemplate.marketoTemplate" src="{{beeRegularTemplate.subject}}"
 								 alt="{{beeRegularTemplate.name}}">
 								<h4 title="{{beeRegularTemplate.name}}">{{beeRegularTemplate.name|slice:0:23}} <span *ngIf="beeRegularTemplate.name?.length>23">....</span></h4>
 								<div class="bar">
 									<a data-toggle="tooltip" data-placement="top" title="Create template" (click)="showTemplateById(beeRegularTemplate.id,i)"
-									 *ngIf="!beeRegularTemplate.campaignDefault"><i class="fa fa-plus-circle"></i></a>
-									<a data-toggle="tooltip" data-placement="top" title="Preview" (click)="showPreview(beeRegularTemplate)" *ngIf="beeRegularTemplate.campaignDefault"><i
+									 *ngIf="!beeRegularTemplate.campaignDefault && !beeRegularTemplate.marketoTemplate"><i class="fa fa-plus-circle"></i></a>
+									<a data-toggle="tooltip" data-placement="top" title="Preview" (click)="showPreview(beeRegularTemplate)" *ngIf="beeRegularTemplate.campaignDefault && !beeRegularTemplate.marketoTemplate"><i
 										 class="fa fa-eye"></i></a>
+									<a data-toggle="tooltip" data-placement="top" title="Preview" (click)="showMarketoEmailtemplatePreview(beeRegularTemplate.id)"
+									 *ngIf="beeRegularTemplate.marketoTemplate"><i class="fa fa-eye"></i></a>
+									<a (click)="edit(beeRegularTemplate)" data-toggle="tooltip" data-placement="top" title="'Create Template'"
+									 *ngIf="beeRegularTemplate.marketoTemplate">
+										<i class="fa fa-plus-circle"></i>
+									</a>
 								</div>
 							</div>
 						</div>
+
+						
 					</div>
 				</div>
 			</div>
@@ -96,13 +130,15 @@
 
 </div>
 
+
+
 <!-- END CONTENT -->
 
 <div class="modal right fade" id="templateRetrieve" tabindex="-1" role="dialog" aria-labelledby="templateRetrieve" data-keyboard="false"
- data-backdrop="static" >
+ data-backdrop="static">
 	<div class="modal-dialog template-modal" role="document" style="width: 50%">
 		<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-		<div class="modal-content rounded-0" >
+		<div class="modal-content rounded-0">
 			<div class="modal-header">
 				<a class="close-circle" data-dismiss="modal" (click)="closeModal()"><i class="fa fa-times"></i></a>
 				<h4 class="modal-title" id="templateRetrieve">Retrieve Templates </h4>
@@ -110,29 +146,31 @@
 			<div class="modal-body" style="padding: 39px;">
 				<form class="form-horizontal">
 					<div *ngIf="templateError" class="alert alert-danger"><span>{{templateError}}</span></div>
-					<div  [attr.class]="clientIdClass">
+					<div *ngIf="templateSuccessMsg" class="alert alert-success"><span>{{templateSuccessMsg}}</span></div>
+					<div [attr.class]="clientIdClass">
 						<label class="control-label col-sm-3" for="email">Client Id:</label>
 						<div class="col-sm-8">
 							<input type="email" class="form-control" id="email" placeholder="Client Id" [(ngModel)]="clientId" [ngModelOptions]="{standalone: true}"
-							(input)="validateModelForm('email')">
+							 (input)="validateModelForm('email')">
 						</div>
 					</div>
-					<div  [attr.class]="secretIdClass">
+					<div [attr.class]="secretIdClass">
 						<label class="control-label col-sm-3" for="pwd">Secret Id:</label>
 						<div class="col-sm-8">
 							<input type="password" class="form-control" id="pwd" placeholder="Secret Id" [(ngModel)]="secretId" [ngModelOptions]="{standalone: true}"
-							(input)="validateModelForm('pwd')">
+							 (input)="validateModelForm('pwd')">
 						</div>
 					</div>
 
-					<div  [attr.class]="marketoInstanceClass">
+					<div [attr.class]="marketoInstanceClass">
 						<label class="control-label col-sm-3" for="instance">Marketo Instance:</label>
 						<div class="col-sm-8">
 							<input type="text" class="form-control" id="instance" placeholder="Marketo Instance" [(ngModel)]="marketoInstance" [ngModelOptions]="{standalone: true}"
-							(input)="validateModelForm('instance')">
+							 (input)="validateModelForm('instance')">
 						</div>
 					</div>
 				</form>
+
 			</div>
 			<div class="modal-footer">
 				<div style="text-align: right;">

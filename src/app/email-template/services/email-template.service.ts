@@ -11,7 +11,7 @@ import {ReferenceService} from "../../core/services/reference.service";
 import {ContentManagement} from '../../content-management/model/content-management';
 @Injectable()
 export class EmailTemplateService {
-
+    
 
     emailTemplate:EmailTemplate;
     public pagination: Pagination;
@@ -159,6 +159,25 @@ export class EmailTemplateService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+    saveMarketoEmailTemplate(emailTemplate:EmailTemplate){
+        return this.http.post(this.MARKETO_URL + "/marketo/saveEmailTemplate?access_token="+this.authenticationService.access_token,emailTemplate)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+    updateMarketoEmailTemplate(emailTemplate:EmailTemplate){
+        return this.http.post(this.MARKETO_URL + "/marketo/updateEmailTemplate?access_token="+this.authenticationService.access_token,emailTemplate)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
+    importMarketoEmailTemplates(userId: number,body: any[]): any
+    {
+        return this.http.post(this.MARKETO_URL + "/marketo/"+userId+"/importEmailTemplates?access_token="+this.authenticationService.access_token,body)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
+    
     
     
     private extractData( res: Response ) {

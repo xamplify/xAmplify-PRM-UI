@@ -92,9 +92,10 @@ export class ReferenceService {
     campaignAccess: CampaignAccess;
     manageRouter = false;
     dealId:number = 0;
+    envirinmentHost: { production: boolean; isDebugMode: boolean; clientId: string; clientSecret: string; imagesHost: string; CLIENT_URL: string; SERVER_URL: string; MARKETO_SERVER_URL: string; };
     constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,
         private router: Router, public deviceService: Ng2DeviceService,private route:ActivatedRoute) {
-        console.log('reference service constructor');
+        this.envirinmentHost = environment;
         this.videoTag = "<img src=\""+environment.imagesHost+"xtremand-video.gif\">";
         this.coBrandingTag = "<img src=\""+environment.imagesHost+"co-branding.png\">";
         this.coBrandingImageTag = "img src=\""+environment.imagesHost+"co-branding.png\"";
