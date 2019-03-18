@@ -400,9 +400,9 @@
 					</div>
 				</div>
 				<div class="portlet-body clearfix">
-					<ng-container *ngFor="let socialStatus of socialCampaign.socialStatusList">
-						<app-social-status [socialStatus]="socialStatus"></app-social-status>
-					</ng-container>
+					<div class="col-sm-4 col-xs-12" *ngFor="let socialStatus of socialCampaign.socialStatusList">
+		              <app-social-status [socialStatus]="socialStatus"></app-social-status>
+		            </div>
 				</div>
 			</div>
 		</div>
@@ -772,9 +772,9 @@
 			<div class="col-xs-12">
 				<ng-container *ngIf="campaignType == 'SOCIAL'">
 					<div class="f-w-600 p10">Redistributed Accounts</div>
-					<ng-container *ngFor="let socialStatus of redistributedAccountsBySelectedUserId">
+					<div class="col-sm-4 col-xs-12" *ngFor="let socialStatus of redistributedAccountsBySelectedUserId">
 						<app-social-status [socialStatus]="socialStatus"></app-social-status>
-					</ng-container>
+					</div>
 				</ng-container>
             </div>
 			<div class="col-xs-12 col-sm-6 p10">
