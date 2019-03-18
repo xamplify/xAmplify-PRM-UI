@@ -81,6 +81,7 @@ export class AuthenticationService {
                     localStorage.setItem('currentUser', JSON.stringify(userToken));
                     this.access_token = this.map.access_token;
                     this.refresh_token = this.map.refresh_token;
+                    this.expires_in = this.map.expires_in;
                     this.user = res.json();
                     this.userProfile = res.json();
                 }));
