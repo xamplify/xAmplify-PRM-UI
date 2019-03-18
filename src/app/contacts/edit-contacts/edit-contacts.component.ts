@@ -2079,8 +2079,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
             if ( !this.isSegmentationErrorMessage ) {
                 if ( this.currentContactType == "all_contacts" ) {
                     this.checkingLoadContactsCount = true;
+                    this.pagination.pageIndex = 1;
                     this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
                 } else {
+                    this.contactsByType.pagination.pageIndex = 1;
                     this.listOfSelectedContactListByType( this.contactsByType.selectedCategory );
                 }
                 this.isSegmentation = true;

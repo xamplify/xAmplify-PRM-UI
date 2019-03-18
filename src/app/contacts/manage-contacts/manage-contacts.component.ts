@@ -1207,6 +1207,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
                 }
             }
             if ( !this.isSegmentationErrorMessage ) {
+                this.contactsByType.pagination.pageIndex = 1;
                 this.listContactsByType( this.contactsByType.selectedCategory );
                 console.log( this.criterias );
                 this.isSegmentation = true;
