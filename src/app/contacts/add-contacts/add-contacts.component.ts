@@ -19,6 +19,7 @@ import { Properties } from '../../common/models/properties';
 import { CountryNames } from '../../common/models/country-names';
 import { RegularExpressions } from '../../common/models/regular-expressions';
 import { PaginationComponent } from '../../common/pagination/pagination.component';
+import { FileUtil } from '../../core/models/file-util';
 declare var swal, $, Papa: any;
 
 @Component( {
@@ -30,7 +31,7 @@ declare var swal, $, Papa: any;
         '../../../assets/css/form.css',
         './add-contacts.component.css',
         '../../../assets/css/numbered-textarea.css', '../../../assets/css/phone-number-plugin.css'],
-    providers: [SocialContact, ZohoContact, SalesforceContact, Pagination, CountryNames, Properties, RegularExpressions, PaginationComponent]
+    providers: [FileUtil,SocialContact, ZohoContact, SalesforceContact, Pagination, CountryNames, Properties, RegularExpressions, PaginationComponent]
 })
 export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
 
@@ -103,7 +104,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
     contacts: User[];
     private socialContactType: string;
     emailNotValid: boolean;
-    constructor( public socialPagerService: SocialPagerService, public referenceService: ReferenceService, private authenticationService: AuthenticationService,
+    constructor( private fileUtil: FileUtil, public socialPagerService: SocialPagerService, public referenceService: ReferenceService, private authenticationService: AuthenticationService,
         public contactService: ContactService, public regularExpressions: RegularExpressions, public paginationComponent: PaginationComponent,
         private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef, private route: ActivatedRoute, public properties: Properties,
         private router: Router, public pagination: Pagination, public xtremandLogger: XtremandLogger, public countryNames: CountryNames ) {
@@ -226,29 +227,47 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
             var self = this;
             reader.onload = function( e: any ) {
                 var contents = e.target.result;
+                
+                let csvData = reader.result;
+                let csvRecordsArray = csvData.split(/\r\n|\n/);
+                let headersRow = self.fileUtil
+                .getHeaderArray(csvRecordsArray);
+                 let headers = headersRow[0].split(',');
+                 if((headers.length == 11) ){
+                     if(self.validateHeaders(headers)){
+                         self.loading = true;
+                         var csvResult = Papa.parse( contents );
 
-                var csvResult = Papa.parse( contents );
-
-                var allTextLines = csvResult.data;
-                for ( var i = 1; i < allTextLines.length; i++ ) {
-                    // var data = allTextLines[i].split( ',' );
-                    if ( allTextLines[i][4] && allTextLines[i][4].trim().length > 0 ) {
-                        let user = new User();
-                        user.emailId = allTextLines[i][4].trim();
-                        user.firstName = allTextLines[i][0].trim();
-                        user.lastName = allTextLines[i][1].trim();
-                        user.contactCompany = allTextLines[i][2].trim();
-                        user.jobTitle = allTextLines[i][3].trim();
-                        user.address = allTextLines[i][5].trim();
-                        user.city = allTextLines[i][6].trim();
-                        user.state = allTextLines[i][7].trim();
-                        user.zipCode = allTextLines[i][8].trim();
-                        user.country = allTextLines[i][9].trim();
-                        user.mobileNumber = allTextLines[i][10].trim();
-                        /*user.description = allTextLines[i][9];*/
-                        self.contacts.push( user );
-                    }
-                }
+                         var allTextLines = csvResult.data;
+                         for ( var i = 1; i < allTextLines.length; i++ ) {
+                             // var data = allTextLines[i].split( ',' );
+                             if ( allTextLines[i][4] && allTextLines[i][4].trim().length > 0 ) {
+                                 let user = new User();
+                                 user.emailId = allTextLines[i][4].trim();
+                                 user.firstName = allTextLines[i][0].trim();
+                                 user.lastName = allTextLines[i][1].trim();
+                                 user.contactCompany = allTextLines[i][2].trim();
+                                 user.jobTitle = allTextLines[i][3].trim();
+                                 user.address = allTextLines[i][5].trim();
+                                 user.city = allTextLines[i][6].trim();
+                                 user.state = allTextLines[i][7].trim();
+                                 user.zipCode = allTextLines[i][8].trim();
+                                 user.country = allTextLines[i][9].trim();
+                                 user.mobileNumber = allTextLines[i][10].trim();
+                                 /*user.description = allTextLines[i][9];*/
+                                 self.contacts.push( user );
+                             }
+                         }
+                         self.loading = false;
+                         
+                         
+                     }else {
+                         self.customResponse = new CustomResponse( 'ERROR', "Invalid Csv", true );
+                     }
+                 }else {
+                     self.customResponse = new CustomResponse( 'ERROR', "Invalid Csv", true );
+                 }
+               
                // console.log( "AddContacts : readFiles() contacts " + JSON.stringify( self.contacts ) );
             }
         } else {
@@ -260,6 +279,9 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
             this.selectedAddContactsOption = 8;
         }
     }
+    validateHeaders(headers){
+        return (headers[0].trim()=="FIRSTNAME" && headers[1].trim()=="LASTNAME" && headers[2].trim()=="COMPANY" && headers[3].trim()=="JOBTITLE" && headers[4].trim()=="EMAILID" && headers[5].trim()=="ADDRESS" && headers[6].trim()=="CITY" && headers[7].trim()=="STATE" && headers[8].trim()=="ZIP CODE" && headers[9].trim()=="COUNTRY" && headers[10].trim()=="MOBILE NUMBER");
+  }
 
     clipboardShowPreview() {
         var selectedDropDown = $( "select.opts:visible option:selected " ).val();

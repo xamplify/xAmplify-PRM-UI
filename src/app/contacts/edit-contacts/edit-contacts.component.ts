@@ -22,6 +22,7 @@ import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { CountryNames } from '../../common/models/country-names';
 import { RegularExpressions } from '../../common/models/regular-expressions';
 import { TeamMemberService } from '../../team/services/team-member.service';
+import { FileUtil } from '../../core/models/file-util';
 
 declare var Metronic, Promise, Layout, Demo, swal, Portfolio, $, Papa: any;
 
@@ -31,7 +32,7 @@ declare var Metronic, Promise, Layout, Demo, swal, Portfolio, $, Papa: any;
     styleUrls: ['../../../assets/css/button.css',
         '../../../assets/css/numbered-textarea.css',
         './edit-contacts.component.css', '../../../assets/css/phone-number-plugin.css'],
-    providers: [Pagination, HttpRequestLoader, CountryNames, Properties, ActionsDescription, RegularExpressions, TeamMemberService]
+    providers: [FileUtil, Pagination, HttpRequestLoader, CountryNames, Properties, ActionsDescription, RegularExpressions, TeamMemberService]
 })
 export class EditContactsComponent implements OnInit, OnDestroy {
     @Input() contacts: User[];
@@ -173,7 +174,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     ];
     filterCondition = this.filterConditions[0];
 
-    constructor( public refService: ReferenceService, public contactService: ContactService, private manageContact: ManageContactsComponent,
+    constructor( private fileUtil: FileUtil, public refService: ReferenceService, public contactService: ContactService, private manageContact: ManageContactsComponent,
         public authenticationService: AuthenticationService, private router: Router, public countryNames: CountryNames,
         public regularExpressions: RegularExpressions, public actionsDescription: ActionsDescription,
         private pagerService: PagerService, public pagination: Pagination, public xtremandLogger: XtremandLogger, public properties: Properties,
@@ -264,50 +265,79 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                 var self = this;
                 reader.onload = function( e: any ) {
                     var contents = e.target.result;
-                    var csvResult = Papa.parse( contents );
-                    var allTextLines = csvResult.data;
-                    for ( var i = 1; i < allTextLines.length; i++ ) {
-                        if ( allTextLines[i][4].trim().length > 0 ) {
-                            let user = new User();
-                            if(!self.isPartner){
-                            user.emailId = allTextLines[i][4].trim();
-                            user.firstName = allTextLines[i][0].trim();
-                            user.lastName = allTextLines[i][1].trim();
-                            user.contactCompany = allTextLines[i][2].trim();
-                            user.jobTitle = allTextLines[i][3].trim();
-                            user.address = allTextLines[i][5].trim();
-                            user.city = allTextLines[i][6].trim();
-                            user.state = allTextLines[i][7].trim();
-                            user.zipCode = allTextLines[i][8].trim();
-                            user.country = allTextLines[i][9].trim();
-                            user.mobileNumber = allTextLines[i][10].trim();
-                            /*user.description = allTextLines[i][9];*/
-                            self.users.push( user );
-                            self.csvContacts.push( user );
-                            }else{
+                    
+                    let csvData = reader.result;
+                    let csvRecordsArray = csvData.split(/\r\n|\n/);
+                    let headersRow = self.fileUtil
+                    .getHeaderArray(csvRecordsArray);
+                     let headers = headersRow[0].split(',');
+                    
+                     if((!self.isPartner && headers.length == 11) ){
+                         if(self.validateContactsCsvHeaders(headers)){
+                             var csvResult = Papa.parse( contents );
+                             var allTextLines = csvResult.data;
+                             for ( var i = 1; i < allTextLines.length; i++ ) {
+                                 if ( allTextLines[i][4].trim().length > 0 ) {
+                                     let user = new User();
+                                     user.emailId = allTextLines[i][4].trim();
+                                     user.firstName = allTextLines[i][0].trim();
+                                     user.lastName = allTextLines[i][1].trim();
+                                     user.contactCompany = allTextLines[i][2].trim();
+                                     user.jobTitle = allTextLines[i][3].trim();
+                                     user.address = allTextLines[i][5].trim();
+                                     user.city = allTextLines[i][6].trim();
+                                     user.state = allTextLines[i][7].trim();
+                                     user.zipCode = allTextLines[i][8].trim();
+                                     user.country = allTextLines[i][9].trim();
+                                     user.mobileNumber = allTextLines[i][10].trim();
+                                     /*user.description = allTextLines[i][9];*/
+                                     self.users.push( user );
+                                     self.csvContacts.push( user );
+                                 }
+                             }
+                         }else {
+                             self.customResponse = new CustomResponse( 'ERROR', "Invalid Csv", true );
+                             self.removeCsv();
+                             self.uploader.queue.length = 0;
+                         }
+                     }else if((self.isPartner && headers.length == 15) ){
+                         if(self.validatePartnerCsvHeaders(headers)){
+                             var csvResult = Papa.parse( contents );
+                             var allTextLines = csvResult.data;
+                             for ( var i = 1; i < allTextLines.length; i++ ) {
+                                 if ( allTextLines[i][4].trim().length > 0 ) {
+                                     let user = new User();
+                                         user.emailId = allTextLines[i][4].trim();
+                                         user.firstName = allTextLines[i][0].trim();
+                                         user.lastName = allTextLines[i][1].trim();
+                                         user.contactCompany = allTextLines[i][2].trim();
+                                         user.jobTitle = allTextLines[i][3].trim();
+                                         user.vertical = allTextLines[i][5].trim();
+                                         user.region = allTextLines[i][6].trim();
+                                         user.partnerType = allTextLines[i][7].trim();
+                                         user.category = allTextLines[i][8].trim();
+                                         user.address = allTextLines[i][9].trim();
+                                         user.city = allTextLines[i][10].trim();
+                                         user.state = allTextLines[i][11].trim();
+                                         user.zipCode = allTextLines[i][12].trim();
+                                         user.country = allTextLines[i][13].trim();
+                                         user.mobileNumber = allTextLines[i][14].trim();
+                                         self.users.push( user );
+                                         self.csvContacts.push( user );
 
-                                user.emailId = allTextLines[i][4].trim();
-                                user.firstName = allTextLines[i][0].trim();
-                                user.lastName = allTextLines[i][1].trim();
-                                user.contactCompany = allTextLines[i][2].trim();
-                                user.jobTitle = allTextLines[i][3].trim();
-                                user.vertical = allTextLines[i][5].trim();
-                                user.region = allTextLines[i][6].trim();
-                                user.partnerType = allTextLines[i][7].trim();
-                                user.category = allTextLines[i][8].trim();
-                                user.address = allTextLines[i][9].trim();
-                                user.city = allTextLines[i][10].trim();
-                                user.state = allTextLines[i][11].trim();
-                                user.zipCode = allTextLines[i][12].trim();
-                                user.country = allTextLines[i][13].trim();
-                                user.mobileNumber = allTextLines[i][14].trim();
-                                /* user.description = allTextLines[i][9];*/
-                                self.users.push( user );
-                                self.csvContacts.push( user );
-
-                            }
-                        }
-                    }
+                                 }
+                             }
+                         }else {
+                             self.customResponse = new CustomResponse( 'ERROR', "Invalid Csv", true );
+                             self.removeCsv();
+                             self.uploader.queue.length = 0;
+                         }
+                     }else{
+                         self.customResponse = new CustomResponse( 'ERROR', "Invalid Csv", true );
+                         self.removeCsv();
+                         self.uploader.queue.length = 0;
+                     }
+                     
                     console.log( "AddContacts : readFiles() contacts " + JSON.stringify( self.users ) );
                 }
             } else {
@@ -318,6 +348,14 @@ export class EditContactsComponent implements OnInit, OnDestroy {
             this.xtremandLogger.error( error, "editContactComponent", "readingCsvFile()" );
         }
     }
+    
+    validatePartnerCsvHeaders(headers){
+        return (headers[0].trim()=="FIRSTNAME" && headers[1].trim()=="LASTNAME" && headers[2].trim()=="COMPANY" && headers[3].trim()=="JOBTITLE" && headers[4].trim()=="EMAILID" && headers[5].trim()=="VERTICAL" && headers[6].trim()=="REGION" && headers[7].trim()=="PARTNETTYPE" && headers[8].trim()=="CATEGORY" && headers[9].trim()=="ADDRESS" && headers[10].trim()=="CITY" && headers[11].trim()=="STATE" && headers[12].trim()=="ZIP" && headers[13].trim()=="COUNTRY" && headers[14].trim()=="MOBILE NUMBER");
+  }
+    
+    validateContactsCsvHeaders(headers){
+        return (headers[0].trim()=="FIRSTNAME" && headers[1].trim()=="LASTNAME" && headers[2].trim()=="COMPANY" && headers[3].trim()=="JOBTITLE" && headers[4].trim()=="EMAILID" && headers[5].trim()=="ADDRESS" && headers[6].trim()=="CITY" && headers[7].trim()=="STATE" && headers[8].trim()=="ZIP CODE" && headers[9].trim()=="COUNTRY" && headers[10].trim()=="MOBILE NUMBER");
+  }
 
     compressArray( original ) {
         var compressed = [];
