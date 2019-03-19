@@ -906,17 +906,17 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                         user.country = data[9];
                         break;
                     case 11:
-                        user.firstName = data[0];
-                        user.lastName = data[1];
-                        user.contactCompany = data[2];
-                        user.jobTitle = data[3];
-                        user.emailId = data[4];
-                        user.address = data[5];
-                        user.city = data[6];
-                        user.state = data[7];
-                        user.zipCode = data[8];
-                        user.country = data[9];
-                        user.mobileNumber = data[10];
+                        user.firstName = data[0].trim();
+                        user.lastName = data[1].trim();
+                        user.contactCompany = data[2].trim();
+                        user.jobTitle = data[3].trim();
+                        user.emailId = data[4].trim();
+                        user.address = data[5].trim();
+                        user.city = data[6].trim();
+                        user.state = data[7].trim();
+                        user.zipCode = data[8].trim();
+                        user.country = data[9].trim();
+                        user.mobileNumber = data[10].trim();
                         break;
                     /*case 10:
                         user.firstName = data[0];
@@ -1067,21 +1067,21 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                         user.country = data[13]
                         break;
                     case 15:
-                        user.firstName = data[0];
-                        user.lastName = data[1];
-                        user.contactCompany = data[2];
-                        user.jobTitle = data[3];
-                        user.emailId = data[4];
-                        user.vertical = data[5];
-                        user.region = data[6]
-                        user.partnerType = data[7]
-                        user.category = data[8]
-                        user.address = data[9]
-                        user.city = data[10]
-                        user.state = data[11]
-                        user.zipCode = data[12]
-                        user.country = data[13]
-                        user.mobileNumber = data[14]
+                        user.firstName = data[0].trim();
+                        user.lastName = data[1].trim();
+                        user.contactCompany = data[2].trim();
+                        user.jobTitle = data[3].trim();
+                        user.emailId = data[4].trim();
+                        user.vertical = data[5].trim();
+                        user.region = data[6].trim()
+                        user.partnerType = data[7].trim()
+                        user.category = data[8].trim()
+                        user.address = data[9].trim()
+                        user.city = data[10].trim()
+                        user.state = data[11].trim()
+                        user.zipCode = data[12].trim()
+                        user.country = data[13].trim()
+                        user.mobileNumber = data[14].trim()
                         break;
                     }
                 }

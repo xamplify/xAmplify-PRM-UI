@@ -856,21 +856,21 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                         user.country = data[13]
                         break;
                     case 15:
-                        user.firstName = data[0];
-                        user.lastName = data[1];
-                        user.contactCompany = data[2];
-                        user.jobTitle = data[3];
-                        user.emailId = data[4];
-                        user.vertical = data[5];
-                        user.region = data[6]
-                        user.partnerType = data[7]
-                        user.category = data[8]
-                        user.address = data[9]
-                        user.city = data[10]
-                        user.state = data[11]
-                        user.zipCode = data[12]
-                        user.country = data[13]
-                        user.mobileNumber = data[14]
+                        user.firstName = data[0].trim();
+                        user.lastName = data[1].trim();
+                        user.contactCompany = data[2].trim();
+                        user.jobTitle = data[3].trim();
+                        user.emailId = data[4].trim();
+                        user.vertical = data[5].trim();
+                        user.region = data[6].trim()
+                        user.partnerType = data[7].trim()
+                        user.category = data[8].trim()
+                        user.address = data[9].trim()
+                        user.city = data[10].trim()
+                        user.state = data[11].trim()
+                        user.zipCode = data[12].trim()
+                        user.country = data[13].trim()
+                        user.mobileNumber = data[14].trim()
                         break;
                     /*case 6:
                         user.firstName = data[0];
@@ -1187,7 +1187,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                             let user = new User();
                             socialContact.id = i;
                             if ( this.validateEmailAddress( this.getGoogleConatacts.contacts[i].emailId ) ) {
-                                socialContact.emailId = this.getGoogleConatacts.contacts[i].emailId;
+                                socialContact.emailId = this.getGoogleConatacts.contacts[i].emailId.trim();
                                 socialContact.firstName = this.getGoogleConatacts.contacts[i].firstName;
                                 socialContact.lastName = this.getGoogleConatacts.contacts[i].lastName;
                                 this.socialPartnerUsers.push( socialContact );
@@ -1335,7 +1335,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                             let user = new User();
                             socialContact.id = i;
                             if ( this.validateEmailAddress( this.getGoogleConatacts.contacts[i].emailId ) ) {
-                                socialContact.emailId = this.getGoogleConatacts.contacts[i].emailId;
+                                socialContact.emailId = this.getGoogleConatacts.contacts[i].emailId.trim();
                                 socialContact.firstName = this.getGoogleConatacts.contacts[i].firstName;
                                 socialContact.lastName = this.getGoogleConatacts.contacts[i].lastName;
                                 this.socialPartnerUsers.push( socialContact );
@@ -1426,7 +1426,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                             let user = new User();
                             socialContact.id = i;
                             if ( this.validateEmailAddress( this.getGoogleConatacts.contacts[i].emailId ) ) {
-                                socialContact.emailId = this.getGoogleConatacts.contacts[i].emailId;
+                                socialContact.emailId = this.getGoogleConatacts.contacts[i].emailId.trim();
                                 socialContact.firstName = this.getGoogleConatacts.contacts[i].firstName;
                                 socialContact.lastName = this.getGoogleConatacts.contacts[i].lastName;
                                 this.socialPartnerUsers.push( socialContact );
@@ -1648,7 +1648,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                             let user = new User();
                             socialContact.id = i;
                             if ( this.validateEmailAddress( this.getGoogleConatacts.contacts[i].emailId ) ) {
-                                socialContact.emailId = this.getGoogleConatacts.contacts[i].emailId;
+                                socialContact.emailId = this.getGoogleConatacts.contacts[i].emailId.trim();
                                 socialContact.firstName = this.getGoogleConatacts.contacts[i].firstName;
                                 socialContact.lastName = this.getGoogleConatacts.contacts[i].lastName;
                                 this.socialPartnerUsers.push( socialContact );
@@ -1724,7 +1724,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                             let user = new User();
                             socialContact.id = i;
                             if ( this.validateEmailAddress( this.getGoogleConatacts.contacts[i].emailId ) ) {
-                                socialContact.emailId = this.getGoogleConatacts.contacts[i].emailId;
+                                socialContact.emailId = this.getGoogleConatacts.contacts[i].emailId.trim();
                                 socialContact.firstName = this.getGoogleConatacts.contacts[i].firstName;
                                 socialContact.lastName = this.getGoogleConatacts.contacts[i].lastName;
                                 this.socialPartnerUsers.push( socialContact );

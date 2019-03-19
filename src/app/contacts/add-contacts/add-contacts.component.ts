@@ -377,17 +377,17 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                         user.country = data[9];
                         break;
                     case 11:
-                        user.firstName = data[0];
-                        user.lastName = data[1];
-                        user.contactCompany = data[2];
-                        user.jobTitle = data[3];
-                        user.emailId = data[4];
-                        user.address = data[5];
-                        user.city = data[6];
-                        user.state = data[7];
-                        user.zipCode = data[8];
-                        user.country = data[9];
-                        user.mobileNumber = data[10];
+                        user.firstName = data[0].trim();
+                        user.lastName = data[1].trim();
+                        user.contactCompany = data[2].trim();
+                        user.jobTitle = data[3].trim();
+                        user.emailId = data[4].trim();
+                        user.address = data[5].trim();
+                        user.city = data[6].trim();
+                        user.state = data[7].trim();
+                        user.zipCode = data[8].trim();
+                        user.country = data[9].trim();
+                        user.mobileNumber = data[10].trim();
                         break;
                     /*case 10:
                         user.firstName = data[0];
@@ -1003,7 +1003,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                             let user = new User();
                             socialContact.id = i;
                             if ( this.validateEmailAddress( this.getGoogleConatacts.contacts[i].emailId ) ) {
-                                socialContact.emailId = this.getGoogleConatacts.contacts[i].emailId;
+                                socialContact.emailId = this.getGoogleConatacts.contacts[i].emailId.trim();
                                 socialContact.firstName = this.getGoogleConatacts.contacts[i].firstName;
                                 socialContact.lastName = this.getGoogleConatacts.contacts[i].lastName;
                                 this.socialContactUsers.push( socialContact );
@@ -1337,7 +1337,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                             let user = new User();
                             socialContact.id = i;
                             if ( this.validateEmailAddress( this.getZohoConatacts.contacts[i].emailId ) ) {
-                                socialContact.emailId = this.getZohoConatacts.contacts[i].emailId;
+                                socialContact.emailId = this.getZohoConatacts.contacts[i].emailId.trim();
                                 socialContact.firstName = this.getZohoConatacts.contacts[i].firstName;
                                 socialContact.lastName = this.getZohoConatacts.contacts[i].lastName;
                                 this.socialContactUsers.push( socialContact );
@@ -1431,7 +1431,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                             let user = new User();
                             socialContact.id = i;
                             if ( this.validateEmailAddress( this.getZohoConatacts.contacts[i].emailId ) ) {
-                                socialContact.emailId = this.getZohoConatacts.contacts[i].emailId;
+                                socialContact.emailId = this.getZohoConatacts.contacts[i].emailId.trim();
                                 socialContact.firstName = this.getZohoConatacts.contacts[i].firstName;
                                 socialContact.lastName = this.getZohoConatacts.contacts[i].lastName;
                                 this.socialContactUsers.push( socialContact );
@@ -1724,9 +1724,9 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                             let user = new User();
                             socialContact.id = i;
                             if ( this.validateEmailAddress( this.getSalesforceConatactList.contacts[i].emailId ) ) {
-                                socialContact.emailId = this.getSalesforceConatactList.contacts[i].emailId;
-                                socialContact.firstName = this.getSalesforceConatactList.contacts[i].firstName;
-                                socialContact.lastName = this.getSalesforceConatactList.contacts[i].lastName;
+                                socialContact.emailId = this.getSalesforceConatactList.contacts[i].emailId.trim();
+                                socialContact.firstName = this.getSalesforceConatactList.contacts[i];
+                                socialContact.lastName = this.getSalesforceConatactList.contacts[i];
                                 this.socialContactUsers.push( socialContact );
                             }
                             $( "button#sample_editable_1_new" ).prop( 'disabled', false );
@@ -1796,7 +1796,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                             let user = new User();
                             socialContact.id = i;
                             if ( this.validateEmailAddress( this.getSalesforceConatactList.contacts[i].emailId ) ) {
-                                socialContact.emailId = this.getSalesforceConatactList.contacts[i].emailId;
+                                socialContact.emailId = this.getSalesforceConatactList.contacts[i].emailId.trim();
                                 socialContact.firstName = this.getSalesforceConatactList.contacts[i].firstName;
                                 socialContact.lastName = this.getSalesforceConatactList.contacts[i].lastName;
                                 this.socialContactUsers.push( socialContact );
