@@ -265,10 +265,12 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                      }else {
                          self.customResponse = new CustomResponse( 'ERROR', "Invalid Csv", true );
                          self.isListLoader = false;
+                         self.cancelContacts();
                      }
                  }else {
                      self.customResponse = new CustomResponse( 'ERROR', "Invalid Csv", true );
                      self.isListLoader = false;
+                     self.cancelContacts();
                  }
                
                // console.log( "AddContacts : readFiles() contacts " + JSON.stringify( self.contacts ) );
