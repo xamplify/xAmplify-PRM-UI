@@ -124,7 +124,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   isEnableUpdateButton = false;
   beforeDaysLength: number;
   tempStartTime: string;
-
+  isVendor = false;
   constructor(public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
     private contactService: ContactService,
     public campaignService: CampaignService,
@@ -426,11 +426,13 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
 
   loadContactLists(contactListsPagination: Pagination) {
     this.paginationType = 'contactlists';
+    const roles = this.authenticationService.getRoles();
+    this.isVendor = roles.indexOf(this.roleName.vendorRole)>-1;
     if(this.isEditCampaign){
        contactListsPagination.editCampaign = true;
        contactListsPagination.campaignId = this.eventCampaign.id;
     }
-   if(this.authenticationService.isOrgAdmin() || this.authenticationService.isOrgAdminPartner()){
+   if(this.authenticationService.isOrgAdmin() || this.authenticationService.isOrgAdminPartner() || (!this.authenticationService.isAddedByVendor && !this.isVendor)){
        this.contactListsPagination.filterValue = false;
        this.contactListsPagination.filterKey = null;
        this.showContactType = true;
@@ -446,6 +448,18 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
        }
        this.showContactType = false;
        this.contactListsPagination.filterKey = 'isPartnerUserList';
+    }
+
+    if(this.authenticationService.isOrgAdmin() || this.authenticationService.isOrgAdminPartner() || (!this.authenticationService.isAddedByVendor && !this.isVendor) ){
+      if(!this.eventCampaign.channelCampaign){
+        this.contactListsPagination.filterValue = false;
+        this.contactListsPagination.filterKey = null;
+        this.showContactType = true;
+      } else {
+        this.contactListsPagination.filterValue = true;
+        this.contactListsPagination.filterKey = 'isPartnerUserList';
+        this.showContactType = true;
+      }
     }
     this.contactListMethod(this.contactListsPagination);
   }
@@ -478,15 +492,25 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     this.loadContacts(contactList,this.contactsPagination)
 
   }
+  clearSelectedContactList(){
+      const roles = this.authenticationService.getRoles();
+      let isVendor = roles.indexOf(this.roleName.vendorRole)>-1;
+      if(this.authenticationService.isOrgAdmin() || (!this.authenticationService.isAddedByVendor && !isVendor)){
+        this.parternUserListIds = [];
+        this.userListIds = [];
+        this.eventCampaign.userListIds = [];
+      }
+  }
   switchStatusChange(){
-      this.eventCampaign.channelCampaign = !this.eventCampaign.channelCampaign;
-
+    this.clearSelectedContactList();
+    this.eventCampaign.channelCampaign = !this.eventCampaign.channelCampaign;
+      this.contactListsPagination.pageIndex = 1;
       if(!this.eventCampaign.channelCampaign){
           this.eventCampaign.enableCoBrandingLogo = false;
           this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.NONE;
           this.loadEmailTemplates(this.emailTemplatesPagination);
       }
-      if(this.authenticationService.isOrgAdmin() || this.authenticationService.isOrgAdminPartner()){
+      if(this.authenticationService.isOrgAdmin() || this.authenticationService.isOrgAdminPartner() || (!this.authenticationService.isAddedByVendor && !this.isVendor) ){
       if(!this.eventCampaign.channelCampaign){
         this.contactListsPagination.filterValue = false;
         this.contactListsPagination.filterKey = null;
@@ -496,6 +520,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
         this.contactListsPagination.filterKey = 'isPartnerUserList';
         this.contactListMethod(this.contactListsPagination);
       }
+      this.resetTabClass();
     }
 
   }

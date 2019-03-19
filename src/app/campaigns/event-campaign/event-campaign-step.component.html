@@ -174,7 +174,7 @@ a.disabled {
 								</switch>
 							</div>
 							<span for="toPartner" class="col-sm-3 labal-css color-css" [ngClass]="{'highletClass': !eventCampaign.channelCampaign }">
-                <span *ngIf="authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner();else other">To Recipients</span>
+                <span *ngIf="authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || (!this.authenticationService.isAddedByVendor && !this.isVendor);else other">To Recipients</span>
                 <ng-template #other><span>To Partner</span> </ng-template>
               </span>
 							<div class="col-sm-3" style="padding: 0; margin-top: 5px;">
@@ -916,7 +916,7 @@ a.disabled {
                       <font><b>(Minimum 1 Day)</b></font>
                     </label>
                     <label style="cursor: default;" for="days" *ngIf="reply.actionId ==29 || reply.actionId!=22 && reply.actionId!=23" id="reply-days-{{reply.divId}}">
-                     <span *ngIf="reply.actionId !=29 && reply.actionId != 30">Reply In X Days</span> 
+                     <span *ngIf="reply.actionId !=29 && reply.actionId != 30">Reply In X Days</span>
                      <span *ngIf="reply.actionId == 29 || reply.actionId == 30">Send Before X Days</span>
                       <b style="color: red">*</b>
                     </label>
