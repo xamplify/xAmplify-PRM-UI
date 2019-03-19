@@ -428,7 +428,11 @@
 									<div class="row" id="file_preview" *ngIf="filePrevew">
 										<div class="col-xs-12">
 											<!-- BEGIN EXAMPLE TABLE PORTLET-->
-											<div class="portlet box blue">
+											
+											<div *ngIf="users?.length == 0 && selectedAddContactsOption == 2">
+									<app-list-loader></app-list-loader>
+									</div>
+											<div class="portlet box blue" *ngIf="users?.length != 0">
 												<div class="portlet-title">
 													<div class="caption">
 														<i class="fa fa-edit"></i>File Preview
