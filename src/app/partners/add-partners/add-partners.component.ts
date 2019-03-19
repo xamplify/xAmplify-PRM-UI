@@ -21,6 +21,7 @@ import { ManageContactsComponent } from '../../contacts/manage-contacts/manage-c
 import { RegularExpressions } from '../../common/models/regular-expressions';
 import { PaginationComponent } from '../../common/pagination/pagination.component';
 import { TeamMemberService } from '../../team/services/team-member.service';
+import { FileUtil } from '../../core/models/file-util';
 declare var $, Papa, swal: any;
 
 @Component( {
@@ -30,7 +31,7 @@ declare var $, Papa, swal: any;
         '../../../assets/global/plugins/jquery-file-upload/css/jquery.fileupload-ui.css', '../../../assets/css/numbered-textarea.css',
         '../../../assets/css/phone-number-plugin.css'],
     providers: [Pagination, SocialPagerService, EditContactsComponent, ManageContactsComponent, CountryNames,
-        Properties, RegularExpressions, PaginationComponent, TeamMemberService, ActionsDescription]
+        Properties, RegularExpressions, PaginationComponent, TeamMemberService, ActionsDescription,FileUtil]
 })
 export class AddPartnersComponent implements OnInit, OnDestroy {
     loggedInUserId: number;
@@ -129,7 +130,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     public uploader: FileUploader = new FileUploader( { allowedMimeType: ["application/csv", "application/vnd.ms-excel", "text/plain", "text/csv"] });
 
     public httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
-    constructor( private router: Router, public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
+    constructor(private fileUtil:FileUtil, private router: Router, public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
         public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
         public referenceService: ReferenceService, public countryNames: CountryNames, public paginationComponent: PaginationComponent,
         public contactService: ContactService, public properties: Properties, public actionsDescription: ActionsDescription, public regularExpressions: RegularExpressions,
@@ -603,32 +604,53 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             var self = this;
             reader.onload = function( e: any ) {
                 var contents = e.target.result;
+                let csvData = reader.result;
+                let csvRecordsArray = csvData.split(/\r\n|\n/);
+                let headersRow = self.fileUtil
+                .getHeaderArray(csvRecordsArray);
+                 let headers = headersRow[0].split(',');
+                
+                 if((headers.length == 15) ){
+                     if(self.validateHeaders(headers)){
+                         
+                         
+                         var csvResult = Papa.parse( contents );
 
-                var csvResult = Papa.parse( contents );
-
-                var allTextLines = csvResult.data;
-                for ( var i = 1; i < allTextLines.length; i++ ) {
-                    if ( allTextLines[i][4] && allTextLines[i][4].trim().length > 0 ) {
-                        let user = new User();
-                        user.emailId = allTextLines[i][4].trim();
-                        user.firstName = allTextLines[i][0];
-                        user.lastName = allTextLines[i][1];
-                        user.contactCompany = allTextLines[i][2];
-                        user.jobTitle = allTextLines[i][3];
-                        user.vertical = allTextLines[i][5];
-                        user.region = allTextLines[i][6];
-                        user.partnerType = allTextLines[i][7];
-                        user.category = allTextLines[i][8];
-                        user.address = allTextLines[i][9];
-                        user.city = allTextLines[i][10];
-                        user.state = allTextLines[i][11];
-                        user.zipCode = allTextLines[i][12];
-                        user.country = allTextLines[i][13];
-                        user.mobileNumber = allTextLines[i][14];
-                        /* user.description = allTextLines[i][9];*/
-                        self.newPartnerUser.push( user );
-                    }
-                }
+                         var allTextLines = csvResult.data;
+                         for ( var i = 1; i < allTextLines.length; i++ ) {
+                             if ( allTextLines[i][4] && allTextLines[i][4].trim().length > 0 ) {
+                                 let user = new User();
+                                 user.emailId = allTextLines[i][4].trim();
+                                 user.firstName = allTextLines[i][0].trim();
+                                 user.lastName = allTextLines[i][1].trim();
+                                 user.contactCompany = allTextLines[i][2].trim();
+                                 user.jobTitle = allTextLines[i][3].trim();
+                                 user.vertical = allTextLines[i][5].trim();
+                                 user.region = allTextLines[i][6].trim();
+                                 user.partnerType = allTextLines[i][7].trim();
+                                 user.category = allTextLines[i][8].trim();
+                                 user.address = allTextLines[i][9].trim();
+                                 user.city = allTextLines[i][10].trim();
+                                 user.state = allTextLines[i][11].trim();
+                                 user.zipCode = allTextLines[i][12].trim();
+                                 user.country = allTextLines[i][13].trim();
+                                 user.mobileNumber = allTextLines[i][14].trim();
+                                 /* user.description = allTextLines[i][9];*/
+                                 self.newPartnerUser.push( user );
+                             }
+                         }
+                         
+                        
+                         
+                     }else{
+                         self.customResponse = new CustomResponse( 'ERROR', "Invalid Csv", true );
+                         self.cancelPartners();
+                     }
+                 }else{
+                     self.customResponse = new CustomResponse( 'ERROR', "Invalid Csv", true );
+                     self.cancelPartners();
+                 }
+                 
                 console.log( "ManagePartnerComponent : readFiles() Partners " + JSON.stringify( self.newPartnerUser ) );
             }
         } else {
@@ -637,6 +659,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             this.selectedAddPartnerOption = 5;
         }
     }
+    
+    
+    validateHeaders(headers){
+            return (headers[0].trim()=="FIRSTNAME" && headers[1].trim()=="LASTNAME" && headers[2].trim()=="COMPANY" && headers[3].trim()=="JOBTITLE" && headers[4].trim()=="EMAILID" && headers[5].trim()=="VERTICAL" && headers[6].trim()=="REGION" && headers[7].trim()=="PARTNETTYPE" && headers[8].trim()=="CATEGORY" && headers[9].trim()=="ADDRESS" && headers[10].trim()=="CITY" && headers[11].trim()=="STATE" && headers[12].trim()=="ZIP" && headers[13].trim()=="COUNTRY" && headers[14].trim()=="MOBILE NUMBER");
+      }
 
     copyFromClipboard() {
         this.fileTypeError = false;

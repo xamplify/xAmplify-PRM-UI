@@ -235,16 +235,16 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                     if ( allTextLines[i][4] && allTextLines[i][4].trim().length > 0 ) {
                         let user = new User();
                         user.emailId = allTextLines[i][4].trim();
-                        user.firstName = allTextLines[i][0];
-                        user.lastName = allTextLines[i][1];
-                        user.contactCompany = allTextLines[i][2];
-                        user.jobTitle = allTextLines[i][3];
-                        user.address = allTextLines[i][5];
-                        user.city = allTextLines[i][6];
-                        user.state = allTextLines[i][7];
-                        user.zipCode = allTextLines[i][8];
-                        user.country = allTextLines[i][9];
-                        user.mobileNumber = allTextLines[i][10];
+                        user.firstName = allTextLines[i][0].trim();
+                        user.lastName = allTextLines[i][1].trim();
+                        user.contactCompany = allTextLines[i][2].trim();
+                        user.jobTitle = allTextLines[i][3].trim();
+                        user.address = allTextLines[i][5].trim();
+                        user.city = allTextLines[i][6].trim();
+                        user.state = allTextLines[i][7].trim();
+                        user.zipCode = allTextLines[i][8].trim();
+                        user.country = allTextLines[i][9].trim();
+                        user.mobileNumber = allTextLines[i][10].trim();
                         /*user.description = allTextLines[i][9];*/
                         self.contacts.push( user );
                     }
