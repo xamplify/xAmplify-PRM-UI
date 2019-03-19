@@ -102,6 +102,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     disableOtherFuctionality = false;
     saveAsListName:any;
     saveAsError:any;
+    isListLoader = false;
 
     sortOptions = [
         { 'name': 'Sort By', 'value': '' },
@@ -582,6 +583,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
     readFiles( files: any, index = 0 ) {
         if ( files[0].type == "application/vnd.ms-excel" || files[0].type == "text/csv" || files[0].type == "text/x-csv" ) {
+            this.isListLoader = true;
             var outputstring = files[0].name.substring( 0, files[0].name.lastIndexOf( "." ) );
             this.selectedAddPartnerOption = 2;
             this.fileTypeError = false;
@@ -639,7 +641,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                                  self.newPartnerUser.push( user );
                              }
                          }
-                         
+                         self.isListLoader = false;
                         
                          
                      }else{
