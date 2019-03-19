@@ -93,6 +93,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
     pageSize: number = 12;
     pageNumber: any;
     loading = false;
+    isListLoader = false;
     
     uploadedCsvFileName = "";
 
@@ -199,6 +200,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
 
     readFiles( files: any, index = 0 ) {
         if ( files[0].type == "application/vnd.ms-excel" || files[0].type == "text/csv" || files[0].type == "text/x-csv" ) {
+            this.isListLoader = true;
             var outputstring = files[0].name.substring( 0, files[0].name.lastIndexOf( "." ) );
             this.selectedAddContactsOption = 2;
             this.noOptionsClickError = false;
@@ -235,7 +237,6 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                  let headers = headersRow[0].split(',');
                  if((headers.length == 11) ){
                      if(self.validateHeaders(headers)){
-                         self.loading = true;
                          var csvResult = Papa.parse( contents );
 
                          var allTextLines = csvResult.data;
@@ -258,7 +259,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                                  self.contacts.push( user );
                              }
                          }
-                         self.loading = false;
+                         self.isListLoader = false;
                          
                          
                      }else {

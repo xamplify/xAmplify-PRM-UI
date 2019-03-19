@@ -567,6 +567,9 @@ img:hover {
 								<!-- END EXAMPLE TABLE PORTLET-->
 							</div>
 						</div>
+						
+						
+						
 						<div class="row" id="file_preview">
 							<div class="col-md-12">
 								<!-- BEGIN EXAMPLE TABLE PORTLET-->
@@ -577,7 +580,7 @@ img:hover {
 										</div>
 									</div>
 									<div class="portlet-body">
-
+							<app-list-loader *ngIf="isListLoader"></app-list-loader>
 										<table class="table tgrid"
 											id="sample_editable_2">
 											<thead>
@@ -589,6 +592,7 @@ img:hover {
 												</tr>
 											</thead>
 											<tbody>
+											
 												<ng-container *ngFor="let user of contacts">
 												<tr>
 													<td>{{user.firstName}}</td>
