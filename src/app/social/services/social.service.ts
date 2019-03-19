@@ -98,8 +98,8 @@ export class SocialService {
       .catch(this.handleError);
   }
 
-  listEvents(userId: number) {
-    return this.http.get(this.URL + 'social/list/' + userId + '?access_token=' + this.authenticationService.access_token)
+  listEvents(request: any) {
+    return this.http.post(this.URL + 'social/list/?access_token=' + this.authenticationService.access_token, request)
       .map(this.extractData)
       .catch(this.handleError);
   }

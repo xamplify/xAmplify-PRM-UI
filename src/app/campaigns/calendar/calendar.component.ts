@@ -114,9 +114,9 @@ export class CalendarComponent implements OnInit, OnDestroy {
             startTime = element.launchTime;
           }
           let event: any = {id: element.id, title: element.campaign, start: startTime, data: element, editable: false, allDay: false};
-          $('#calendar').fullCalendar('renderEvent', event, true);
           this.events.push(event);
         });
+        $('#calendar').fullCalendar('addEventSource', this.events); 
       },
       error => console.log(error),
       () => {this.loading = false;}

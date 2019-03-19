@@ -457,7 +457,8 @@
 			</div>
 			<div [hidden]="isSocialCampaign">
 				<div class="col-sm-12 dashboard-stat2">
-					<div id='full-calendar' class="p10"></div>
+					<ngx-loading [show]="loadingCalendar"></ngx-loading>
+					<div id='calendar' class="p10"></div>
 				</div>
 			</div>
 

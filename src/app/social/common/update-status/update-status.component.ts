@@ -55,6 +55,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   socialStatusProviders = new Array<SocialStatusProvider>();
   isAllSelected: boolean = false;
   loading: boolean = false;
+  loadingCalendar: boolean = false;
   socialConnections = new Array<SocialConnection>();
   countries: Country[];
   timezones: Timezone[];
@@ -74,6 +75,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   isEditSocialStatus: boolean = false;
   isPreviewVideo: boolean = false;
   campaignNames = [];
+  events = [];
   constructor(public socialService: SocialService,
     private videoFileService: VideoFileService, public properties:Properties,
     public authenticationService: AuthenticationService, private contactService: ContactService,
@@ -458,7 +460,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
         .subscribe(
         data => {
           this.initializeSocialStatus();
-          $('#full-calendar').fullCalendar('removeEvents');
+          $('#calendar').fullCalendar('removeEvents');
           this.socialStatusResponse = data;
           this.customResponse.statusText = null;
         },
@@ -526,7 +528,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
       .subscribe(
       data => {
         this.setCustomResponse(ResponseType.Success, 'Status has been deleted successfully.');
-        $('#full-calendar').fullCalendar('removeEvents');
+        $('#calendar').fullCalendar('removeEvents');
         this.listEvents();
         this.initializeSocialStatus();
       },
@@ -713,7 +715,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 
   constructCalendar() {
     const self = this;
-    $('#full-calendar').fullCalendar({
+    $('#calendar').fullCalendar({
       header: {
         left: 'prev,next today',
         center: 'title',
@@ -727,6 +729,10 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
       timeFormat: 'h:mm a',
       timezone: 'local',
       eventOrder: "-start",
+      eventLimit: true,
+      viewRender: function(view: any, element: any){
+        self.listEvents();
+      },
       eventRender: function(event: any, element: any) {
         element.find('.fc-time').addClass('fc-time-title mr5');
         element.find('.fc-title').addClass('fc-time-title ml5');
@@ -767,10 +773,15 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   }
 
   listEvents() {
+    $('#calendar').fullCalendar('removeEvents');
+    var view = $('#calendar').fullCalendar('getView');
+    var request = { startTime: view.start._d, endTime: view.end._d, userId: this.userId };
+    this.loadingCalendar = true;
     const self = this;
-    this.socialService.listEvents(this.userId)
+    this.socialService.listEvents(request)
       .subscribe(
       data => {
+        this.events = [];
         for (const i of Object.keys(data)) {
           const socialStatus = data[i];
           const socialStatusDto = new SocialStatusDto();
@@ -780,18 +791,20 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 
           this.socialStatusDtos.push(socialStatusDto);
 
-            const event = {
-            title: socialStatus.statusMessage.substring(0, 10),
-            start: socialStatus.scheduledTime,
-            id: socialStatus.id+'-'+socialStatusDto.socialStatusProvider.id,
-            data: socialStatusDto,
-          };
-          $('#full-calendar').fullCalendar('renderEvent', event, true);
+            let event: any = {id: socialStatus.id+'-'+socialStatusDto.socialStatusProvider.id, 
+            title: socialStatus.statusMessage.substring(0, 10), 
+            start: socialStatus.scheduledTime, 
+            data: socialStatusDto, 
+            editable: false, 
+            allDay: false}; 
+          // $('#calendar').fullCalendar('renderEvent', event, true);
+          this.events.push(event);
         }
+        $('#calendar').fullCalendar('addEventSource', this.events); 
       },
       error => console.log(error),
       () => {
-        console.log('listEvents() finished');
+        this.loadingCalendar = false;
       }
       );
   }
@@ -850,7 +863,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
       time_24hr: false
     });
     this.listSocialConnections();
-    this.listEvents();
+    // this.listEvents();
     this.constructCalendar();
     // $('#schedule-later-div').hide();
 
