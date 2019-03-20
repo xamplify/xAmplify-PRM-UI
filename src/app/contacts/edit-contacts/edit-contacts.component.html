@@ -452,7 +452,7 @@
 															</tr>
 														</thead>
 														<tbody>
-															<ng-container *ngFor="let user of users; let i = index">
+															<ng-container *ngFor="let user of csvPagedItems; let i = index">
 															<tr>
 																<td>{{user.firstName}}</td>
 																<td>{{user.lastName}}</td>
@@ -530,6 +530,26 @@
 															</ng-container>
 														</tbody>
 													</table>
+													
+											<ul *ngIf="pager.pages && pager.pages.length"
+										class="pagination">
+										<li [ngClass]="{disabled:pager.currentPage === 1}"><a
+											(click)="setCsvPage(1)">First</a></li>
+										<li [ngClass]="{disabled:pager.currentPage === 1}"><a
+											(click)="setCsvPage(pager.currentPage - 1)">Previous</a></li>
+										<li *ngFor="let page of pager.pages"
+											[ngClass]="{active:pager.currentPage === page}"><a
+											(click)="setCsvPage(page)">{{page}}</a></li>
+										<li
+											[ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+											<a (click)="setCsvPage(pager.currentPage + 1)">Next</a>
+										</li>
+										<li
+											[ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+											<a (click)="setCsvPage(pager.totalPages)">Last</a>
+										</li>
+									</ul>
+													
 
 												</div>
 											</div>

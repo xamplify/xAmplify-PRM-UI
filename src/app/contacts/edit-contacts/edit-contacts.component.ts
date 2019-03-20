@@ -23,6 +23,7 @@ import { CountryNames } from '../../common/models/country-names';
 import { RegularExpressions } from '../../common/models/regular-expressions';
 import { TeamMemberService } from '../../team/services/team-member.service';
 import { FileUtil } from '../../core/models/file-util';
+import { SocialPagerService } from '../services/social-pager.service';
 
 declare var Metronic, Promise, Layout, Demo, swal, Portfolio, $, Papa: any;
 
@@ -153,6 +154,12 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     searchContactType = "";
     saveAsListName:any;
     saveAsError:any;
+    
+    pageSize: number = 12;
+    pageNumber: any;
+    pager: any = {};
+    csvPagedItems: any[];
+    
     filterOptions = [
         { 'name': '', 'value': 'Field Name*' },
         { 'name': 'firstName', 'value': 'First Name' },
@@ -174,7 +181,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     ];
     filterCondition = this.filterConditions[0];
 
-    constructor( private fileUtil: FileUtil, public refService: ReferenceService, public contactService: ContactService, private manageContact: ManageContactsComponent,
+    constructor( public socialPagerService: SocialPagerService, private fileUtil: FileUtil, public refService: ReferenceService, public contactService: ContactService, private manageContact: ManageContactsComponent,
         public authenticationService: AuthenticationService, private router: Router, public countryNames: CountryNames,
         public regularExpressions: RegularExpressions, public actionsDescription: ActionsDescription,
         private pagerService: PagerService, public pagination: Pagination, public xtremandLogger: XtremandLogger, public properties: Properties,
@@ -234,6 +241,22 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                 contacts.isChecked = false;
         })
     }
+    
+    setCsvPage( page: number ) {
+        try {
+            if ( page < 1 || page > this.pager.totalPages ) {
+                return;
+            }
+                this.pager = this.socialPagerService.getPager( this.users.length, page, this.pageSize );
+                this.csvPagedItems = this.users.slice( this.pager.startIndex, this.pager.endIndex + 1 );
+          
+        } catch ( error ) {
+            this.xtremandLogger.error( error, "AddContactsComponent setPage()." )
+        }
+
+    }
+
+    
 
     fileChange( input: any ) {
         this.uploadCsvUsingFile = true;
@@ -277,7 +300,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                              var csvResult = Papa.parse( contents );
                              var allTextLines = csvResult.data;
                              for ( var i = 1; i < allTextLines.length; i++ ) {
-                                 if ( allTextLines[i][4].trim().length > 0 ) {
+                                
+                                 if ( allTextLines[i][4] && allTextLines[i][4].trim().length > 0 ) {
                                      let user = new User();
                                      user.emailId = allTextLines[i][4].trim();
                                      user.firstName = allTextLines[i][0].trim();
@@ -294,18 +318,21 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                                      self.users.push( user );
                                      self.csvContacts.push( user );
                                  }
+                                 
                              }
+                             self.setCsvPage(1);
                          }else {
                              self.customResponse = new CustomResponse( 'ERROR', "Invalid Csv", true );
                              self.removeCsv();
                              self.uploader.queue.length = 0;
                          }
+                         
                      }else if((self.isPartner && headers.length == 15) ){
                          if(self.validatePartnerCsvHeaders(headers)){
                              var csvResult = Papa.parse( contents );
                              var allTextLines = csvResult.data;
                              for ( var i = 1; i < allTextLines.length; i++ ) {
-                                 if ( allTextLines[i][4].trim().length > 0 ) {
+                                 if ( allTextLines[i][4] && allTextLines[i][4].trim().length > 0 ) {
                                      let user = new User();
                                          user.emailId = allTextLines[i][4].trim();
                                          user.firstName = allTextLines[i][0].trim();
@@ -326,7 +353,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                                          self.csvContacts.push( user );
 
                                  }
+                                 
                              }
+                             self.setCsvPage(1);
                          }else {
                              self.customResponse = new CustomResponse( 'ERROR', "Invalid Csv", true );
                              self.removeCsv();
@@ -337,7 +366,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                          self.removeCsv();
                          self.uploader.queue.length = 0;
                      }
-                     
                     console.log( "AddContacts : readFiles() contacts " + JSON.stringify( self.users ) );
                 }
             } else {
