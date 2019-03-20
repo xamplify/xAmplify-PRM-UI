@@ -92,6 +92,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
     customResponse: CustomResponse = new CustomResponse();
     pageSize: number = 12;
     pageNumber: any;
+    paginationType = "";
     loading = false;
     isListLoader = false;
     
@@ -203,6 +204,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
             this.isListLoader = true;
             var outputstring = files[0].name.substring( 0, files[0].name.lastIndexOf( "." ) );
             this.selectedAddContactsOption = 2;
+            this.paginationType = "csvContacts";
             this.noOptionsClickError = false;
             this.uploadedCsvFileName = files[0].name;
             if ( !this.model.contactListName ) {
@@ -259,6 +261,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                                  self.contacts.push( user );
                              }
                          }
+                         self.setPage(1);
                          self.isListLoader = false;
                          
                          
@@ -304,6 +307,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
             else if ( selectedDropDown == "TabSeperated" )
                 splitValue = "\t";
         }
+        this.paginationType = "csvContacts";
         this.xtremandLogger.info( "selectedDropDown:" + selectedDropDown );
         this.xtremandLogger.info( splitValue );
         var startTime = new Date();
@@ -433,6 +437,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.xtremandLogger.info( user );
                 this.clipboardUsers.push( user );
                 self.contacts.push( user );
+                this.setPage(1);
                 $( "button#sample_editable_1_new" ).prop( 'disabled', false );
                 $( "#file_preview" ).show();
                 this.valilClipboardUsers = true;
@@ -866,6 +871,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.allselectedUsers.length = 0;
         this.selectedContactListIds.length = 0;
         this.disableOtherFuctionality = false;
+        this.paginationType = "";
         if ( this.selectedAddContactsOption != 2 ) {
             this.customResponse = new CustomResponse();
         }
@@ -1072,18 +1078,23 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
             if ( page < 1 || page > this.pager.totalPages ) {
                 return;
             }
-
-            this.pager = this.socialPagerService.getPager( this.socialContactUsers.length, page, this.pageSize );
-            this.pagedItems = this.socialContactUsers.slice( this.pager.startIndex, this.pager.endIndex + 1 );
-
-            var contactIds1 = this.pagedItems.map( function( a ) { return a.id; });
-            var items = $.grep( this.selectedContactListIds, function( element ) {
-                return $.inArray( element, contactIds1 ) !== -1;
-            });
-            if ( items.length == this.pager.pageSize || items.length == this.socialContactUsers.length || items.length == this.pagedItems.length ) {
-                this.isHeaderCheckBoxChecked = true;
+            
+            if ( this.paginationType == "csvContacts" ) {
+                this.pager = this.socialPagerService.getPager( this.contacts.length, page, this.pageSize );
+                this.pagedItems = this.contacts.slice( this.pager.startIndex, this.pager.endIndex + 1 );
             } else {
-                this.isHeaderCheckBoxChecked = false;
+                this.pager = this.socialPagerService.getPager( this.socialContactUsers.length, page, this.pageSize );
+                this.pagedItems = this.socialContactUsers.slice( this.pager.startIndex, this.pager.endIndex + 1 );
+
+                var contactIds1 = this.pagedItems.map( function( a ) { return a.id; });
+                var items = $.grep( this.selectedContactListIds, function( element ) {
+                    return $.inArray( element, contactIds1 ) !== -1;
+                });
+                if ( items.length == this.pager.pageSize || items.length == this.socialContactUsers.length || items.length == this.pagedItems.length ) {
+                    this.isHeaderCheckBoxChecked = true;
+                } else {
+                    this.isHeaderCheckBoxChecked = false;
+                }
             }
         } catch ( error ) {
             this.xtremandLogger.error( error, "AddContactsComponent setPage()." )

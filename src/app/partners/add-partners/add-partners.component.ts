@@ -103,6 +103,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     saveAsListName:any;
     saveAsError:any;
     isListLoader = false;
+    paginationType = "";
 
     sortOptions = [
         { 'name': 'Sort By', 'value': '' },
@@ -497,6 +498,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         this.selectedContactListIds.length = 0;
         this.pager = [];
         this.pagedItems = [];
+        this.paginationType = "";
         this.disableOtherFuctionality = false;
 
         $( '.salesForceImageClass' ).attr( 'style', 'opacity: 1;' );
@@ -584,6 +586,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     readFiles( files: any, index = 0 ) {
         if ( files[0].type == "application/vnd.ms-excel" || files[0].type == "text/csv" || files[0].type == "text/x-csv" ) {
             this.isListLoader = true;
+            this.paginationType = "csvPartners";
             var outputstring = files[0].name.substring( 0, files[0].name.lastIndexOf( "." ) );
             this.selectedAddPartnerOption = 2;
             this.fileTypeError = false;
@@ -642,7 +645,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                              }
                          }
                          self.isListLoader = false;
-                        
+                         self.setSocialPage(1);
                          
                      }else{
                          self.customResponse = new CustomResponse( 'ERROR', "Invalid Csv", true );
@@ -954,6 +957,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                 self.newPartnerUser.push( user );
             }
             this.selectedAddPartnerOption = 4;
+            this.setSocialPage(1);
             var endTime = new Date();
             $( "#clipBoardValidationMessage" ).append( "<h5 style='color:#07dc8f;'><i class='fa fa-check' aria-hidden='true'></i>" + "Processing started at: <b>" + startTime + "</b></h5>" );
             $( "#clipBoardValidationMessage" ).append( "<h5 style='color:#07dc8f;'><i class='fa fa-check' aria-hidden='true'></i>" + "Processing Finished at: <b>" + endTime + "</b></h5>" );
@@ -1099,19 +1103,25 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             if ( page < 1 || page > this.pager.totalPages ) {
                 return;
             }
-            this.pager = this.socialPagerService.getPager( this.socialPartnerUsers.length, page, this.pageSize );
-            this.pagedItems = this.socialPartnerUsers.slice( this.pager.startIndex, this.pager.endIndex + 1 );
-
-            var contactIds = this.pagedItems.map( function( a ) { return a.id; });
-            var items = $.grep( this.selectedContactListIds, function( element ) {
-                return $.inArray( element, contactIds ) !== -1;
-            });
-            this.xtremandLogger.log( "partner Ids" + contactIds );
-            this.xtremandLogger.log( "Selected partner Ids" + this.selectedContactListIds );
-            if ( items.length == this.pager.pageSize || items.length == this.getGoogleConatacts.length || items.length == this.pagedItems.length ) {
-                this.isHeaderCheckBoxChecked = true;
+            
+            if ( this.paginationType == "csvPartners" ) {
+                this.pager = this.socialPagerService.getPager( this.newPartnerUser.length, page, this.pageSize );
+                this.pagedItems = this.newPartnerUser.slice( this.pager.startIndex, this.pager.endIndex + 1 );
             } else {
-                this.isHeaderCheckBoxChecked = false;
+                this.pager = this.socialPagerService.getPager( this.socialPartnerUsers.length, page, this.pageSize );
+                this.pagedItems = this.socialPartnerUsers.slice( this.pager.startIndex, this.pager.endIndex + 1 );
+
+                var contactIds = this.pagedItems.map( function( a ) { return a.id; });
+                var items = $.grep( this.selectedContactListIds, function( element ) {
+                    return $.inArray( element, contactIds ) !== -1;
+                });
+                this.xtremandLogger.log( "partner Ids" + contactIds );
+                this.xtremandLogger.log( "Selected partner Ids" + this.selectedContactListIds );
+                if ( items.length == this.pager.pageSize || items.length == this.getGoogleConatacts.length || items.length == this.pagedItems.length ) {
+                    this.isHeaderCheckBoxChecked = true;
+                } else {
+                    this.isHeaderCheckBoxChecked = false;
+                }
             }
         } catch ( error ) {
             this.xtremandLogger.error( error, "addPartnerComponent", "setPage" );
