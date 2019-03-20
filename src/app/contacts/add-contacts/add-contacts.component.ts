@@ -866,7 +866,9 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.allselectedUsers.length = 0;
         this.selectedContactListIds.length = 0;
         this.disableOtherFuctionality = false;
-        this.customResponse = new CustomResponse();
+        if ( this.selectedAddContactsOption != 2 ) {
+            this.customResponse = new CustomResponse();
+        }
         this.pager = [];
         this.pagedItems = [];
         
