@@ -174,7 +174,7 @@ a.disabled {
 								</switch>
 							</div>
 							<span for="toPartner" class="col-sm-3 labal-css color-css" [ngClass]="{'highletClass': !eventCampaign.channelCampaign }">
-                <span *ngIf="authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || (!this.authenticationService.isAddedByVendor && !this.isVendor);else other">To Recipients</span>
+                <span *ngIf="authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || (!authenticationService.isAddedByVendor && !isVendor);else other">To Recipients</span>
                 <ng-template #other><span>To Partner</span> </ng-template>
               </span>
 							<div class="col-sm-3" style="padding: 0; margin-top: 5px;">
