@@ -1162,48 +1162,55 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
     contactFilter() {
         try {
             for ( let i = 0; i < this.criterias.length; i++ ) {
-                if ( this.criterias[i].operation == "=" ) {
-                    this.criterias[i].operation = "eq";
-                }
                 
-                if ( this.criterias[i].operation == "Contains" ) {
-                    this.criterias[i].operation = "like";
-                }
-                
-                if ( this.criterias[i].property == "First Name" ) {
-                    this.criterias[i].property = "firstName";
-                }
-                else if ( this.criterias[i].property == "Last Name" ) {
-                    this.criterias[i].property = "lastName";
-                }
-                else if ( this.criterias[i].property == "Company" ) {
-                    this.criterias[i].property = "contactCompany";
-                }
-                else if ( this.criterias[i].property == "Job Title" ) {
-                    this.criterias[i].property = "jobTitle";
-                }
-                else if ( this.criterias[i].property == "Email Id" ) {
-                    this.criterias[i].property = "emailId";
-                }
-                else if ( this.criterias[i].property == "Country" ) {
-                    this.criterias[i].property = "country";
-                } else if ( this.criterias[i].property == "City" ) {
-                    this.criterias[i].property = "city";
-                }
-                else if ( this.criterias[i].property == "Mobile Number" ) {
-                    this.criterias[i].property = "mobileNumber";
-                }
-                else if ( this.criterias[i].property == "Notes" ) {
-                    this.criterias[i].property = "description";
-                }
-                console.log( this.criterias[i].operation );
-                console.log( this.criterias[i].property );
-                console.log( this.criterias[i].value1 );
-
                 if ( this.criterias[i].property == "Field Name*" || this.criterias[i].operation == "Condition*" || ( this.criterias[i].value1 == undefined || this.criterias[i].value1 == "" ) ) {
                     this.isSegmentationErrorMessage = true;
+                    break;
                 } else {
                     this.isSegmentationErrorMessage = false;
+                }
+            }
+                
+            if ( !this.isSegmentationErrorMessage ) {
+                for ( let i = 0; i < this.criterias.length; i++ ) {
+                    if ( this.criterias[i].operation == "=" ) {
+                        this.criterias[i].operation = "eq";
+                    }
+
+                    if ( this.criterias[i].operation == "Contains" ) {
+                        this.criterias[i].operation = "like";
+                    }
+
+                    if ( this.criterias[i].property == "First Name" ) {
+                        this.criterias[i].property = "firstName";
+                    }
+                    else if ( this.criterias[i].property == "Last Name" ) {
+                        this.criterias[i].property = "lastName";
+                    }
+                    else if ( this.criterias[i].property == "Company" ) {
+                        this.criterias[i].property = "contactCompany";
+                    }
+                    else if ( this.criterias[i].property == "Job Title" ) {
+                        this.criterias[i].property = "jobTitle";
+                    }
+                    else if ( this.criterias[i].property == "Email Id" ) {
+                        this.criterias[i].property = "emailId";
+                    }
+                    else if ( this.criterias[i].property == "Country" ) {
+                        this.criterias[i].property = "country";
+                    } else if ( this.criterias[i].property == "City" ) {
+                        this.criterias[i].property = "city";
+                    }
+                    else if ( this.criterias[i].property == "Mobile Number" ) {
+                        this.criterias[i].property = "mobileNumber";
+                    }
+                    else if ( this.criterias[i].property == "Notes" ) {
+                        this.criterias[i].property = "description";
+                    }
+
+                    console.log( this.criterias[i].operation );
+                    console.log( this.criterias[i].property );
+                    console.log( this.criterias[i].value1 );
                 }
             }
             if ( !this.isSegmentationErrorMessage ) {
