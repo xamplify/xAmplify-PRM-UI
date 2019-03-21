@@ -158,6 +158,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
             } else {
                 this.pagination.maxResults = this.itemsSize.value;
             }
+            this.pagination.pagedItems.length = 0;
             this.listEmailTemplates( this.pagination );
         } catch ( error ) {
             this.logger.error(this.refService.errorPrepender+" getAllFilteredResults():"+error);
