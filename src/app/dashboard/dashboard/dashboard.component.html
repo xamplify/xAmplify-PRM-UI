@@ -649,22 +649,30 @@
             <span *ngIf="paginationType=='clicked'">clicked your emails</span>
             <span *ngIf="paginationType=='watched'">watched your videos</span>
           </h4>
-          <div class="btn-group pull-right" style="margin-top: 8px; cursor:pointer; color: #7d8c98; margin-right: -15px;">
+          <div [class.disabled]="isLoadingDownloadList" class="btn-group pull-right" style="margin-top: 8px; cursor:pointer; color: #7d8c98; margin-right: -15px;">
             <span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none; margin-top: -22px;margin-right: 21px; float:right;">
               <i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i>
               <i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
             </span>
             <ul class="dropdown-menu pull-right">
               <li>
-                <a id="delete_button" (click)="downloadEmailLogs()"> Export To Excel </a>
+                <a id="delete_button" (click)="downloadFuctionality()"> Export To Excel </a>
               </li>
             </ul>
           </div>
         </div>
         <div class="modal-body clearfix">
-          <div class="alert alert-info flex" *ngIf="isLoadingList">
-            <div class="loader" style="margin-right: 10px; width: 25px; height: 25px;"></div>
-            <h4 class="m5">Please wait while we process your request.</h4>
+
+				<div class="alert alert-info flex" *ngIf="isLoadingDownloadList">
+					<div class="loader"
+						style="margin-right: 10px; width: 25px; height: 25px;"></div>
+					<h4 class="m5">Please wait while we process your request.</h4>
+				</div>
+
+				<div *ngIf="isLoadingList">
+          <app-list-loader></app-list-loader>
+           <!--  <div class="loader" style="margin-right: 10px; width: 25px; height: 25px;"></div>
+            <h4 class="m5">Please wait while we process your request.</h4> -->
           </div>
           <div *ngIf="pagination.pagedItems?.length == 0 && !isLoadingList" class="col-md-6" class="col-md-9 alert alert-info m0" style="width: 100%">
             <strong>No results found</strong>
@@ -768,7 +776,7 @@
               </tbody>
             </table>
           </div>
-          <app-pagination class="pg8"  *ngIf="pagination.pagedItems?.length > 0" [pagination]="pagination" [type]="'dashboard'" (notifyParentDropDown)="paginationDropdown($event)" (notifyParent)="setPage($event)"></app-pagination>
+          <app-pagination class="pg8"  *ngIf="pagination.pagedItems?.length > 0 && !isLoadingList" [pagination]="pagination" [type]="'dashboard'" (notifyParentDropDown)="paginationDropdown($event)" (notifyParent)="setPage($event)"></app-pagination>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-defaullistOfEmailOpenLogs listOfEmailOpenLogst" data-dismiss="modal" (click)="cancelEmailStateModalPopUp()">Close</button>

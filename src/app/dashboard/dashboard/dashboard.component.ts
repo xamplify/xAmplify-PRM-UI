@@ -63,6 +63,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     downloadDataList = [];
     paginationType: string;
     isLoadingList = true;
+    isLoadingDownloadList = false;
     worldMapUserData: DashboardStatesReport[];
     countryCode: any;
     isCalledPagination = false;
@@ -79,6 +80,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
     isOnlyPartner:boolean;
     loading = false;
     logListName = "";
+    totalOpenListPagination: Pagination = new Pagination();
+    totalClickedPagination: Pagination = new Pagination();
+    totalWatchedPagination: Pagination = new Pagination();
 
     constructor(public router: Router, public dashboardService: DashboardService, public pagination: Pagination, public videosPagination: Pagination,
         public contactService: ContactService, public videoFileService: VideoFileService, public twitterService: TwitterService,
@@ -623,8 +627,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 data => {
                     this.dashboardReport.totalEmailOpenedCount = data['email_opened_count'];
                     this.dashboardReport.totalEmailClickedCount = data['email_url_clicked_count'] + data['email_gif_clicked_count'];
-                    this.listOfAllEmailClickedLogs();
-                    this.listOfAllEmailOpenLogs();
                 },
                 error => this.xtremandLogger.log(error),
                 () => this.xtremandLogger.log('emailOpenedCount completed')
@@ -636,7 +638,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             .subscribe(
                 data => {
                     this.dashboardReport.totalEmailWatchedCount = data['watched-users-count'];
-                    this.listOfAllWatchedLogs();
+                   // this.listOfAllWatchedLogs();
                 },
                 error => this.xtremandLogger.log(error),
                 () => this.xtremandLogger.log('emailWatchedCount completed')
@@ -665,7 +667,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
     listOfEmailOpenLogs(actionId: number) {
         this.paginationType = 'open';
-        if(!this.isCalledPagination){ this.pagination.maxResults = 12; this.isCalledPagination = true;}
+        this.isLoadingList = true;
+        //if(!this.isCalledPagination){ this.pagination.maxResults = 12; this.isCalledPagination = true;}
         this.dashboardService.listEmailOpenLogs(this.loggedInUserId, actionId, this.pagination)
             .subscribe(
                 (result: any) => {
@@ -675,6 +678,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     this.pagination.totalRecords = this.dashboardReport.totalEmailOpenedCount;
                     this.isLoadingList = false;
                     this.pagination = this.pagerService.getPagedItems(this.pagination, this.dashboardReport.emailLogList);
+                    
                 },
                 error => this.xtremandLogger.log(error),
                 () => { }
@@ -683,7 +687,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     listOfEmailClickedLogs() {
         this.paginationType = 'clicked';
-       if(!this.isCalledPagination){ this.pagination.maxResults = 12; this.isCalledPagination = true;}
+        this.isLoadingList = true;
+       //if(!this.isCalledPagination){ this.pagination.maxResults = 12; this.isCalledPagination = true;}
         this.dashboardService.listEmailClickedLogs(this.loggedInUserId, this.pagination)
             .subscribe(
                 result => {
@@ -693,6 +698,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     this.isLoadingList = false;
                     this.pagination.totalRecords = this.dashboardReport.totalEmailClickedCount;
                     this.pagination = this.pagerService.getPagedItems(this.pagination, this.dashboardReport.emailLogList);
+                    
                 },
                 error => this.xtremandLogger.log(error),
                 () => { }
@@ -702,7 +708,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     listOfWatchedLogs() {
         this.xtremandLogger.log(this.pagination);
         this.paginationType = 'watched';
-        if(!this.isCalledPagination){ this.pagination.maxResults = 12; this.isCalledPagination = true;}
+        this.isLoadingList = true;
+       // if(!this.isCalledPagination){ this.pagination.maxResults = 12; this.isCalledPagination = true;}
         this.dashboardService.listOfWatchedLogs(this.loggedInUserId, this.pagination)
             .subscribe(
                 (data: any) => {
@@ -823,15 +830,28 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.isLoadingList = true;
         this.isCalledPagination = false;
     }
+    
+ downloadFuctionality(){
+     this.isLoadingDownloadList = true;
+     if (this.paginationType === 'open') {
+         this.listOfAllEmailOpenLogs();
+     }else if (this.paginationType === 'clicked') {
+         this.listOfAllEmailClickedLogs();
+     }else if (this.paginationType === 'watched') {
+         this.listOfAllWatchedLogs();  
+     }
+ }   
 
     downloadEmailLogs() {
         if (this.paginationType === 'open') {
+           
             this.logListName = 'Email_Open_Logs.csv';
             this.dashboardReport.downloadEmailLogList = this.dashboardReport.allEmailOpenLogList;
         } else if (this.paginationType === 'clicked') {
             this.logListName = 'Email_Clicked_Logs.csv';
             this.dashboardReport.downloadEmailLogList = this.dashboardReport.allEmailClickedLogList;
         } else if (this.paginationType === 'watched') {
+           
             this.logListName = 'Email_Watched_Logs.csv';
             this.dashboardReport.downloadEmailLogList = this.dashboardReport.allEmailWatchedLogList;
         } else if (this.paginationType === 'countryWiseUsers') {
@@ -882,34 +902,33 @@ export class DashboardComponent implements OnInit, OnDestroy {
             this.downloadDataList.push(object);
         }
         this.referenceService.isDownloadCsvFile = true;
+        this.isLoadingDownloadList = false;
     }
 
     listOfAllEmailOpenLogs() {
-        this.pagination.maxResults = this.dashboardReport.totalEmailOpenedCount;
-        this.dashboardService.listEmailOpenLogs(this.loggedInUserId, 13, this.pagination)
+        this.totalOpenListPagination.maxResults = this.dashboardReport.totalEmailOpenedCount;
+        this.dashboardService.listEmailOpenLogs(this.loggedInUserId, 13, this.totalOpenListPagination)
             .subscribe(
                 (result: any) => {
                   result.forEach((element) => {
                   if(element.time) { element.time = new Date(element.utcTimeString);} });
                   this.dashboardReport.allEmailOpenLogList = result;
-                    this.pagination.totalRecords = this.dashboardReport.totalEmailOpenedCount;
-                    this.pagination = this.pagerService.getPagedItems(this.pagination, this.dashboardReport.allEmailOpenLogList);
+                  this.downloadEmailLogs();
                 },
                 error => this.xtremandLogger.log(error),
                 () => { }
             );
-    }
+    } 
 
     listOfAllEmailClickedLogs() {
-        this.pagination.maxResults = this.dashboardReport.totalEmailClickedCount;
-        this.dashboardService.listEmailClickedLogs(this.loggedInUserId, this.pagination)
+        this.totalClickedPagination.maxResults = this.dashboardReport.totalEmailClickedCount;
+        this.dashboardService.listEmailClickedLogs(this.loggedInUserId, this.totalClickedPagination)
             .subscribe(
                 result => {
                    result.forEach((element) => {
                     if(element.time) { element.time = new Date(element.utcTimeString);} });
                     this.dashboardReport.allEmailClickedLogList = result;
-                    this.pagination.totalRecords = this.dashboardReport.totalEmailClickedCount;
-                    this.pagination = this.pagerService.getPagedItems(this.pagination, this.dashboardReport.allEmailClickedLogList);
+                    this.downloadEmailLogs();
                 },
                 error => this.xtremandLogger.log(error),
                 () => { }
@@ -917,15 +936,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     listOfAllWatchedLogs() {
-        this.pagination.maxResults = this.dashboardReport.totalEmailWatchedCount;
-        this.dashboardService.listOfWatchedLogs(this.loggedInUserId, this.pagination)
+        this.totalWatchedPagination.maxResults = this.dashboardReport.totalEmailWatchedCount;
+        this.dashboardService.listOfWatchedLogs(this.loggedInUserId, this.totalWatchedPagination)
             .subscribe(
                 (data: any) => {
                     data.forEach((element) => {
                     if(element.time) { element.time = new Date(element.utcTimeString);} });
                     this.dashboardReport.allEmailWatchedLogList = data;
-                    this.pagination.totalRecords = this.dashboardReport.totalEmailWatchedCount;
-                    this.pagination = this.pagerService.getPagedItems(this.pagination, this.dashboardReport.allEmailWatchedLogList);
+                    this.downloadEmailLogs();
                 },
                 error => this.xtremandLogger.log(error),
                 () => this.xtremandLogger.log('finished')
@@ -937,7 +955,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       try {
             this.countryCode = countryCode.toUpperCase();
             this.paginationType = "countryWiseUsers";
-            if(!this.isCalledPagination){ this.pagination.maxResults = 12; this.isCalledPagination = true;}
+            //if(!this.isCalledPagination){ this.pagination.maxResults = 12; this.isCalledPagination = true;}
             this.dashboardService.worldMapCampaignDetails(this.loggedInUserId, this.countryCode, this.pagination)
                 .subscribe(
                     (result: any) => {
