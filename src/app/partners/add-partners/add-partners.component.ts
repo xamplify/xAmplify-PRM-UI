@@ -544,8 +544,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                     } else {
                         this.editContactComponent.isHeaderCheckBoxChecked = false;
                     }
-
-                    this.loadAllPartnerInList( pagination.totalRecords );
+                    if ( !this.searchKey ) {
+                        this.loadAllPartnerInList( pagination.totalRecords );
+                    }
 
                 },
                 error => this.xtremandLogger.error( error ),
