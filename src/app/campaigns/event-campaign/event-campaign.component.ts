@@ -455,13 +455,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
         this.contactListsPagination.filterValue = false;
         this.contactListsPagination.filterKey = null;
         this.showContactType = true;
-      } else {
-        this.contactListsPagination.filterValue = true;
-        this.contactListsPagination.filterKey = 'isPartnerUserList';
-        this.showContactType = true;
       }
-    }
-    this.contactListMethod(this.contactListsPagination);
+     }
+       this.contactListMethod(this.contactListsPagination);
   }
 
   /*****************LOAD CONTACTLISTS WITH PAGINATION END *****************/

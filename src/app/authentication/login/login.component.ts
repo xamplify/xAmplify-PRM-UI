@@ -49,6 +49,8 @@ export class LoginComponent implements OnInit, OnDestroy {
             this.loading = false;
             this.setCustomeResponse("ERROR", this.properties.EMPTY_CREDENTIAL_ERROR);
         } else {
+          this.model.username = this.model.username.replace(/\s/g, '');
+          this.model.password = this.model.password.replace(/\s/g, '');
           const userName = this.model.username.toLowerCase();
           this.referenceService.userName = userName;
           const authorization = 'Basic ' + btoa('my-trusted-client:');
