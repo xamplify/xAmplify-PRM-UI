@@ -1301,6 +1301,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       var object = {
         "First Name": this.downloadCsvList[i].firstName,
         "Last Name": this.downloadCsvList[i].lastName,
+        "Company Name": this.downloadCsvList[i].companyName,
       }
 
       if (this.downloadTypeName === 'donut') {

@@ -167,7 +167,7 @@
 			<button class="portlet light color1-invert crcb" (click)="getRsvpEmailOpenDetails()"
 			 [disabled]="campaignReport.totalEmailOpenCount < 1">
 				<div class="portlet-body text-center">
-						<i class="fa fa-envelope"></i>
+						<i class="fa fa-envelope-open"></i>
 					<h1>
 						<b>{{campaignReport.totalEmailOpenCount}}</b>
 						<span>Opened</span>
@@ -641,7 +641,7 @@
 			<button class="portlet light color1-invert crcb" (click)="resetRsvpPagination();getRsvpEmailOpenDetails()" [class.selectedBox]="rsvpResposeType === 'email open'"   [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
 			 [disabled]="!isPartnerEnabledAnalyticsAccess">
 				<div class="portlet-body text-center">
-						<i class="fa fa-envelope"></i>
+						<i class="fa fa-envelope-open"></i>
 					<h1>
 						<b>{{campaignReport.redistributionTotalEmailOpenCount}}</b>
 						<span>Opened</span>
@@ -736,7 +736,7 @@
 							<tbody>
 								<tr *ngFor="let item of rsvpDetailsList">
 									<td>
-										<app-user-info  [userInfo]="item"> </app-user-info>
+										<app-user-info  [userInfo]="item" [isCompanyInfo] = "true"> </app-user-info>
 									</td>
 									<td *ngIf="rsvpResposeType !== 'email open' && rsvpResposeType != 'invities'">
 										<span [hidden]="rsvpResposeType === 'email not open'"><h6>{{item.message}}</h6>
@@ -955,7 +955,7 @@
 							<tbody>
 								<tr *ngFor="let item of campaignReport.usersWatchList">
 									<td>
-										<app-user-info  [userInfo]="item"> </app-user-info>
+										<app-user-info  [userInfo]="item" [isCompanyInfo] = "true"> </app-user-info>
 									</td>
 									<td>
 										<h6><!-- {{item.startTime | date: 'short'}} -->
@@ -1035,7 +1035,7 @@
                 <ng-container *ngFor="let item of campaignReport.emailLogs">
                   <tr>
                     <td>
-                      <app-user-info [userInfo]="item"> </app-user-info>
+                      <app-user-info [userInfo]="item" [isCompanyInfo] = "true"> </app-user-info>
                     </td>
                     <td *ngIf="campaignReport.emailActionType === 'open'">
                       <h6 title="{{item.subject}}">
@@ -1204,7 +1204,7 @@
 							<tbody>
 								<tr *ngFor="let item of sentEmailOpenPagination.pagedItems">
 									<td>
-										<app-user-info  [userInfo]="item"> </app-user-info>
+										<app-user-info  [userInfo]="item" [isCompanyInfo] = "true"> </app-user-info>
 									</td>
 									<td>
 										<h6 title="{{item.campaignName}}">{{item.campaignName | slice:0:30}}
@@ -1271,7 +1271,7 @@
 						<tbody>
 							<tr *ngFor="let item of donutCampaignViews">
 								<td>
-									<app-user-info  [userInfo]="item"> </app-user-info>
+									<app-user-info  [userInfo]="item" [isCompanyInfo] = "true"> </app-user-info>
 								</td>
 								<td style="text-align: center">
 									<app-location  [userLocation]="item"> </app-location>
@@ -1333,7 +1333,7 @@
 						<tbody>
 							<tr *ngFor="let emailClicked of worldMapUserData;let i = index">
 								<td>
-									<app-user-info  [userInfo]="emailClicked"> </app-user-info>
+									<app-user-info  [userInfo]="emailClicked" [isCompanyInfo] = "true"> </app-user-info>
 								</td>
 								<td style="text-align: center">
 									<h5>
