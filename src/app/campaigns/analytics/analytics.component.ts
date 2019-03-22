@@ -1301,11 +1301,11 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       var object = {
         "First Name": this.downloadCsvList[i].firstName,
         "Last Name": this.downloadCsvList[i].lastName,
+        "Email Id": this.downloadCsvList[i].emailId,
         "Company Name": this.downloadCsvList[i].companyName,
       }
 
       if (this.downloadTypeName === 'donut') {
-        object["Email Id"] = this.downloadCsvList[i].emailId;
         object["Campaign Name"] = this.downloadCsvList[i].campaignName;
         let hours = this.referenceService.formatAMPM(date);
         object["Date and Time"] = date.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
@@ -1314,7 +1314,6 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       }
 
       if (this.downloadTypeName === 'campaignViews') {
-        object["Email Id"] = this.downloadCsvList[i].emailId;
         object["Campaign Name"] = this.downloadCsvList[i].campaignName;
         if(this.campaignType === 'EVENT'){
             if(this.isChannelCampaign){
@@ -1338,7 +1337,6 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
         }
 
       if (this.downloadTypeName === 'usersWatchedList') {
-        object["Email Id"] = this.downloadCsvList[i].emailId;
         let srtHours = this.referenceService.formatAMPM(startTime);
         object["START DURATION"] = startTime.toDateString().split(' ').slice(1).join(' ') + ' ' + srtHours;
         let endHours = this.referenceService.formatAMPM(endTime);
@@ -1350,7 +1348,6 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       }
 
       if ( this.downloadTypeName === 'emailAction' ) {
-          object["Email Id"] = this.downloadCsvList[i].emailId;
           if ( this.campaignReport.emailActionType === 'click' ) {
               if ( this.downloadCsvList[i].url ) {
                   object["Url"] = this.downloadCsvList[i].url;
@@ -1365,7 +1362,6 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       }
 
       if (this.downloadTypeName === 'worldMap') {
-        object["Email Id"] = this.downloadCsvList[i].emailId;
         let hours = this.referenceService.formatAMPM(date);
         object["Date and Time"] = date.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
         object["Device"] = this.downloadCsvList[i].deviceType;
@@ -1373,7 +1369,6 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       }
 
       if (this.downloadTypeName === 'rsvp') {
-          object["Email Id"] = this.downloadCsvList[i].emailId;
           if(this.rsvpResposeType === 'email open'){
               object["Campaign Name"] = this.downloadCsvList[i].campaignName;
               object["Subject"] = this.downloadCsvList[i].subject;
