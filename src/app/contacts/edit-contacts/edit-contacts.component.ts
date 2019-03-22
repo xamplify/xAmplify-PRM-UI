@@ -1317,8 +1317,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                                 body = body.substring( 1, body.length - 1 );
                                 if ( error._body.includes( 'Please launch or delete those campaigns first' ) ) {
                                     this.customResponse = new CustomResponse( 'ERROR', error._body, true );
-                                } else if(JSON.parse(error._body).message.includes("email addresses in your contact list that aren't formatted properly")){
-                                    this.customResponse = new CustomResponse( 'ERROR', JSON.parse(error._body).message, true );
+                                } else if(JSON.parse(error._body).includes("email addresses in your contact list that aren't formatted properly")){
+                                    this.customResponse = new CustomResponse( 'ERROR', JSON.parse(error._body), true );
                                 }else{
                                    this.xtremandLogger.errorPage( error );
                                 }
