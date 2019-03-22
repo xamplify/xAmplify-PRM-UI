@@ -1756,7 +1756,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.selectedContactListIds = this.refService.removeDuplicates(this.selectedContactListIds);
         let timeZoneId = "";
         let scheduleTime:any;
-        if( this.campaignLaunchForm.value.scheduleCampaign=="NOW" || this.campaignLaunchForm.value.scheduleCampaign=="SAVE"){
+        if( this.campaignLaunchForm.value.scheduleCampaign=="NOW" || this.campaignLaunchForm.value.scheduleCampaign=="SAVE" || this.campaignLaunchForm.value.scheduleCampaign==""){
             let intlTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
             if(intlTimeZone!=undefined){
                 timeZoneId = intlTimeZone;
