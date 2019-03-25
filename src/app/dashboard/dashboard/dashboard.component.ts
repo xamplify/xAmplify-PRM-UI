@@ -65,6 +65,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     isLoadingList = true;
     isLoadingDownloadList = false;
     worldMapUserData: DashboardStatesReport[];
+    worldMapTotalUsersData: DashboardStatesReport[];
     countryCode: any;
     isCalledPagination = false;
     isFullscreenToggle = false;
@@ -83,6 +84,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     totalOpenListPagination: Pagination = new Pagination();
     totalClickedPagination: Pagination = new Pagination();
     totalWatchedPagination: Pagination = new Pagination();
+    totalCountryWiseUsersWatchedPagination: Pagination = new Pagination();
 
     constructor(public router: Router, public dashboardService: DashboardService, public pagination: Pagination, public videosPagination: Pagination,
         public contactService: ContactService, public videoFileService: VideoFileService, public twitterService: TwitterService,
@@ -839,6 +841,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
          this.listOfAllEmailClickedLogs();
      }else if (this.paginationType === 'watched') {
          this.listOfAllWatchedLogs();  
+     } else if (this.paginationType === 'countryWiseUsers') {
+         this.getCampaignTotalUsersWatchedInfo();
      }
  }   
 
@@ -856,7 +860,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             this.dashboardReport.downloadEmailLogList = this.dashboardReport.allEmailWatchedLogList;
         } else if (this.paginationType === 'countryWiseUsers') {
             this.logListName = 'Country_Wise_Views_Logs.csv';
-            this.dashboardReport.downloadEmailLogList = this.worldMapUserData;
+            this.dashboardReport.downloadEmailLogList = this.worldMapTotalUsersData;
         }
 
         this.downloadDataList.length = 0;
@@ -949,9 +953,37 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 () => this.xtremandLogger.log('finished')
             );
     }
+    
+    
+    getCampaignTotalUsersWatchedInfo( ) {
+        try {
+            this.isLoadingDownloadList = true;
+            this.totalCountryWiseUsersWatchedPagination.maxResults = this.pagination.totalRecords;  
+            this.dashboardService.worldMapCampaignDetails(this.loggedInUserId, this.countryCode, this.totalCountryWiseUsersWatchedPagination)
+                  .subscribe(
+                      (result: any) => {
+                          result.data.forEach((element) => {
+                            if(element.time) { element.time = new Date(element.utcTimeString);} });
+                          this.xtremandLogger.log(result);
+                          this.worldMapTotalUsersData = result.data;
+                          this.downloadEmailLogs();
+                      },
+                      (error: any) => {
+                          this.xtremandLogger.log(error)
+                          this.xtremandLogger.error('error in world map dashboard ' + error);
+                          this.xtremandLogger.errorPage(error);
+                      },
+                      () => this.xtremandLogger.log('finished')
+                  );
+          } catch (error) {
+              this.xtremandLogger.error('error in world map dashboard ' + error);
+          }
+      }
+    
 
     getCampaignUsersWatchedInfo(countryCode) {
       this.loading = true;
+      this.isLoadingList = true;
       try {
             this.countryCode = countryCode.toUpperCase();
             this.paginationType = "countryWiseUsers";
@@ -967,9 +999,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
                         this.pagination.totalRecords = result.totalRecords;
                         this.pagination = this.pagerService.getPagedItems(this.pagination, this.worldMapUserData);
                         $('#worldMapModal').modal('show');
+                        this.isLoadingList = false;
                     },
                     (error: any) => {
                         this.loading = false;
+                        this.isLoadingList = false;
                         this.xtremandLogger.log(error)
                         this.xtremandLogger.error('error in world map dashboard ' + error);
                         this.xtremandLogger.errorPage(error);
@@ -978,9 +1012,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 );
         } catch (error) {
             this.loading = false;
+            this.isLoadingList = false;
             this.xtremandLogger.error('error in world map dashboard ' + error);
         }
     }
+    
     showCampaignDetails(campaign:any){
       this.loading = true;
       this.referenceService.campaignType = campaign[7];
