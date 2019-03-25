@@ -80,6 +80,7 @@ appendVideoData( videoFile: SaveVideoFile, divId: string, titleId: string ) {
         $( "#videoId" ).css( "max-width", "100%" );
         $( "#videoId" ).css( "margin", "0 auto" );
         const document: any = window.document;
+        const width = this.videoWidth;
         const overrideNativeValue = this.referenceService.getBrowserInfoForNativeSet();
         this.videoJSplayer = videojs( "videoId", {
           "controls": true,
@@ -102,7 +103,7 @@ appendVideoData( videoFile: SaveVideoFile, divId: string, titleId: string ) {
                     $( ".vjs-tech" ).css( "width", "100%" );
                     $( ".vjs-tech" ).css( "height", "100%" );
                 } else if ( event === "FullscreenOff" ) {
-                  $( "#videoId" ).css( "width", this.videoWidth ); // expected 550px
+                  $( "#videoId" ).css( "width", width); // expected 550px
                 }
             } );
         }
@@ -112,6 +113,8 @@ appendVideoData( videoFile: SaveVideoFile, divId: string, titleId: string ) {
     } );
   }
   ngOnInit() {
+    this.videoHeight = '380px';
+    this.videoWidth = '650px';
     this.appendVideoData( this.videoFile, "main_video", "modal-title" );
   }
   ngOnDestroy(): void {
