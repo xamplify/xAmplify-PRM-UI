@@ -39,6 +39,8 @@ export class VideoThumbnailComponent implements OnInit {
     if(videoFile.processed){
     (<HTMLInputElement>document.getElementById('imagePath'+this.videoFile.id)).src =  this.videoFile.imagePath;}
   }
-  ngOnInit() {}
+  ngOnInit() {
+    console.log(this.videoFile);
+  }
 
 }

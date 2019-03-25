@@ -10,7 +10,7 @@
 </div>
 
 <!-- Modal -->
-<div class="modal right fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div *ngIf="false" class="modal right fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog modal-css" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -37,8 +37,8 @@
                 <h5>{{campaign.campaignName}}</h5>
                 <h6>
                   <ng-container *ngIf="campaign.campaignScheduleType === 'NOW'; else default">Launched</ng-container>
-                  <ng-template #default>{{campaign.campaignScheduleType | titlecase}}d</ng-template> 
-                  
+                  <ng-template #default>{{campaign.campaignScheduleType | titlecase}}d</ng-template>
+
                   <ng-container *ngIf="campaign.campaignScheduleType !== 'SCHEDULE'; else schedule">on </ng-container>
                   <ng-template #schedule>for </ng-template>
                   <ng-container *ngIf="campaign.campaignScheduleType === 'SAVE'; else launchTime">{{campaign.startTime | date:'mediumDate'}}, {{campaign.startTime | date:'shortTime'}}</ng-container>
@@ -235,7 +235,7 @@
               <i class="fa fa-pencil-square-o"></i>
             </a>
           </ng-container>
-            <a (click)="showCampaignPreview(campaign)" data-toggle="tooltip" data-placement="auto" title="Preview Campaign"><i class="fa fa-eye mr5"></i></a>
+            <!-- <a (click)="showCampaignPreview(campaign)" data-toggle="tooltip" data-placement="auto" title="Preview Campaign"><i class="fa fa-eye mr5"></i></a> -->
             <a *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor"
               (click)="confirmDeleteCampaign(campaign.campaignId)" data-rel="fancybox-button" data-toggle="tooltip" data-placement="auto" title="Delete">
               <i class="fa fa-trash-o"> </i></a>
@@ -245,7 +245,7 @@
 </div>
 </div>
   <!--   contacts preview modal    -->
-  <div class="modal right " id="contactsModal">
+  <div class="modal right " id="contactsModal" *ngIf="false">
       <div class="modal-dialog modal-css" style="width: 75%;right:0">
         <div class="modal-content">
           <div class="modal-header">
@@ -292,7 +292,7 @@
     </div>
   </div>
 <!-- Email template modal popup -->
-<div class="modal right " id="show_email_template_preivew">
+<div *ngIf="false" class="modal right " id="show_email_template_preivew">
     <div class="modal-dialog modal-css" style="width: 75%;right:0">
       <div class="modal-content">
         <div class="modal-header">
@@ -312,7 +312,7 @@
   </div>
 
 <!-- Save As Modal -->
-<div class="modal right fade" id="saveAsModal" tabindex="-1" role="dialog" aria-labelledby="saveAsModalLabel" aria-hidden="true">
+<div *ngIf="false" class="modal right fade" id="saveAsModal" tabindex="-1" role="dialog" aria-labelledby="saveAsModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-css" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -355,8 +355,8 @@
       </ng-container>
       <h6>
         <ng-container *ngIf="campaign.status === 'NOW'; else default">Launched</ng-container>
-        <ng-template #default>{{campaign.status | titlecase}}d</ng-template> 
-        
+        <ng-template #default>{{campaign.status | titlecase}}d</ng-template>
+
         <ng-container *ngIf="campaign.status !== 'SCHEDULE'; else schedule">on </ng-container>
         <ng-template #schedule>for </ng-template>
 
@@ -369,7 +369,7 @@
 <app-export-csv *ngIf="referenceService.isDownloadCsvFile" [downloadListDetails]="downloadDataList" [downloadListName]="logListName"> </app-export-csv>
 
 <!-- Analytics List 4 Modal popups in 1 modal popup -->
-<div class="modal right fade" id="calendarModal" tabindex="-1" role="dialog" aria-labelledby="calendarModalLabl" data-backdrop="static"
+<div *ngIf="false" class="modal right fade" id="calendarModal" tabindex="-1" role="dialog" aria-labelledby="calendarModalLabl" data-backdrop="static"
  data-keyboard="false" >
 	<div class="modal-dialog modal-lg modal-css" role="document" style="right:0">
 		<div class="modal-content">
@@ -501,3 +501,4 @@
 		</div>
 	</div>
 </div>
+<app-preview-campaign *ngIf="previewCampaign" [previewCampaignId]="previewCampaign" (closeNotifyParent)="closePreviewCampaign($event)"></app-preview-campaign>

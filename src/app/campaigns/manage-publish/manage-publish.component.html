@@ -708,3 +708,4 @@
 </div>
 </div>
 
+<app-preview-campaign *ngIf="previewCampaign" [previewCampaignId]="previewCampaign" (closeNotifyParent)="closePreviewCampaign($event)"></app-preview-campaign>

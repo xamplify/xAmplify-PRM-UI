@@ -69,7 +69,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
   paginationType:string;
   campaignViews: any;
   totalCampaignViews: any;
-  
+
   isChannelCampaign:boolean;
   sortByDropDown = [
     { 'name': 'Sort By', 'value': '' },
@@ -82,7 +82,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
   downloadDataList = [];
   downloadCsvList: any;
   logListName = "";
-  
+  previewCampaign: any;
   selectedSortedOption:any = this.sortByDropDown[this.sortByDropDown.length-1];
   constructor(public authenticationService: AuthenticationService, private campaignService: CampaignService, private socialService: SocialService,
     public referenceService: ReferenceService, private router: Router, public videoUtilService:VideoUtilService, public xtremandLogger:XtremandLogger,
@@ -116,7 +116,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
           let event: any = {id: element.id, title: element.campaign, start: startTime, data: element, editable: false, allDay: false};
           this.events.push(event);
         });
-        $('#calendar').fullCalendar('addEventSource', this.events); 
+        $('#calendar').fullCalendar('addEventSource', this.events);
       },
       error => console.log(error),
       () => {this.loading = false;}
@@ -153,7 +153,8 @@ export class CalendarComponent implements OnInit, OnDestroy {
       timezone: 'local',
       height: 'parent',
       eventClick: function (event) {
-        self.getCampaignById(event.id)
+        // self.getCampaignById(event.id)
+        self.previewCampaign = event.id;
       },
       viewRender: function(view: any, element: any){
         self.getCampaignCalendarView();
@@ -213,7 +214,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
         this.getEmailSentCount(campaignId);
         this.getEmailLogCountByCampaign(campaignId);
         this.getCampaignWatchedUsersCount(campaignId);
-        setTimeout(() => { this.playVideo(); }, 200);
+        // setTimeout(() => { this.playVideo(); }, 200);
       }
       )
   }
@@ -350,16 +351,16 @@ export class CalendarComponent implements OnInit, OnDestroy {
       this.emailActionTotalList(campaignId, actionType, this.pagination.totalRecords);
       this.loading = false;
       this.referenceService.loading(this.httpRequestLoader, false);
-      
+
       this.totalEmailActionList(campaignId, actionType, this.pagination.totalRecords );
-      
+
     },
     error => console.log(error),
     () => console.log('emailActionList() completed')  )
   }catch(error) {this.xtremandLogger.error('Error in analytics page emails sent'+error); }
 }
-  
-  
+
+
   totalEmailActionList(campaignId: number, actionType: string, totalRecords: number) {
       try{
        this.totalEmailActionListPagination.maxResults = totalRecords;
@@ -372,10 +373,10 @@ export class CalendarComponent implements OnInit, OnDestroy {
       () => console.log('emailActionList() completed')  )
     }catch(error) {this.xtremandLogger.error('Error in analytics page emails sent'+error); }
   }
-  
-  
-  
-  
+
+
+
+
 emailActionTotalList(campaignId: number, actionType: string, totalRecords: number) {
   try{
   this.loading = true;
@@ -435,7 +436,22 @@ getSortedResult(campaignId: number,event:any){
     if (campaign.campaignType.indexOf('EVENT') > -1) {
       this.router.navigate(['/home/campaigns/event-preview/' + campaign.campaignId]);
     } else {
-      this.router.navigate(['/home/campaigns/preview/' + campaign.campaignId]);
+      // this.router.navigate(['/home/campaigns/preview/' + campaign.campaignId]);
+      this.previewCampaign = campaign.campaignId;
+    }
+  }
+  showMessageOnTop(mesg:string) {
+    $(window).scrollTop(0);
+    this.customResponse =  new CustomResponse('SUCCESS', mesg, true);
+    // setTimeout(function() { $("#lanchSuccess").slideUp(500); }, 5000);
+}
+  closePreviewCampaign(event){
+    this.previewCampaign = undefined;
+    this.getCampaignCalendarView();
+    if(event === 'copy campaign success'){ this.showMessageOnTop('Copy campaign saved successfully');}
+    if(event.delete ==='deleted campaign success'){
+      this.showMessageOnTop(event.campaignName + ' campaign deleted successfully');
+      this.refreshCalendar(event.id);
     }
   }
   editCampaign(campaign: any) {
@@ -594,23 +610,23 @@ getSortedResult(campaignId: number,event:any){
        }
     }catch(error){ this.xtremandLogger.error('error'+error);}
   }
-  
-  
+
+
   /*This below code for download functionality*/
-  
+
   totalListOfCampaignViews(campaignId: number, totalRecords: number) {
       try{
           this.totalViewsPatination.maxResults = totalRecords;
           if(!this.campaign.detailedAnalyticsShared && this.campaign.dataShare){
           this.campaignService.listCampaignInteractiveViews(this.totalViewsPatination)
-           .subscribe(data => {  
+           .subscribe(data => {
                this.totalCampaignViews = data;
                },
            error => console.log(error),
            () => console.log('listCampaignInteractiveViews(): called') )
       } else{
          this.campaignService.listCampaignViews(campaignId, this.totalViewsPatination, this.isChannelCampaign)
-           .subscribe(data => { 
+           .subscribe(data => {
                this.totalCampaignViews = data.campaignviews;
                },
             error => console.log(error),
@@ -618,7 +634,7 @@ getSortedResult(campaignId: number,event:any){
          }
       }catch(error){ this.xtremandLogger.error('error'+error);}
     }
-  
+
    /* End of download functionality code*/
 
 
@@ -630,7 +646,7 @@ getSortedResult(campaignId: number,event:any){
       this.referenceService.loading(this.httpRequestLoader, false);
       this.totalListOfCampaignViews(campaignId, this.pagination.totalRecords);
   }
-  
+
 
    showAnalyticsModal(paginationType:any){
    // this.downloadTypeName = 'campaignViews';
@@ -784,7 +800,7 @@ getSortedResult(campaignId: number,event:any){
     }
    }
  }
-  
+
   downloadEmailLogs(){
       if ( this.paginationType === 'Total Recipients' && this.campaignReport.emailSentCount>0 ) {
           this.logListName = 'Total email sent logs.csv';
@@ -798,25 +814,25 @@ getSortedResult(campaignId: number,event:any){
        } else if(this.paginationType === 'Views'  && this.campaignReport.usersWatchCount>0){
            this.logListName = 'Campaign views logs.csv';
           this.downloadCsvList =  this.campaignReport.totalWatchedList;
-       }  
-      
-      
-      
+       }
+
+
+
       this.downloadDataList.length = 0;
       for ( let i = 0; i < this.downloadCsvList.length; i++ ) {
-           
+
           let sentTime = new Date(this.downloadCsvList[i].launchTime);
           let latestTime = new Date(this.downloadCsvList[i].time);
           let startDuration = new Date(this.downloadCsvList[i].startTime);
           let stopDuration = new Date(this.downloadCsvList[i].endTime);
 
-          
+
           var object = {
               "First Name": this.downloadCsvList[i].firstName,
               "Last Name": this.downloadCsvList[i].lastName,
               "Email Id": this.downloadCsvList[i].emailId
           }
-          
+
           if ( this.paginationType === 'Total Recipients' && this.campaignReport.emailSentCount > 0 ) {
               object["Campaign Name"] = this.downloadCsvList[i].campaignName;
               let hours = this.referenceService.formatAMPM( sentTime );
@@ -835,14 +851,14 @@ getSortedResult(campaignId: number,event:any){
               object["Country"] = this.downloadCsvList[i].country;
               object["Platform"] = this.downloadCsvList[i].os;
                 }
-          
+
 
           this.downloadDataList.push( object );
       }
       this.referenceService.isDownloadCsvFile = true;
   }
 
- 
+
  clearPaginationValues(){
   this.pagination =  new Pagination();
  }
