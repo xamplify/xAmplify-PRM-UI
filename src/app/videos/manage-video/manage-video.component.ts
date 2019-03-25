@@ -139,6 +139,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
     loadVideos(pagination: Pagination) {
         try {
             this.referenceService.loading(this.httpRequestLoader, true);
+            pagination.showDraftContent=true;
             this.videoFileService.loadVideoFiles(pagination)
                 .subscribe((result: any) => {
                   result.listOfMobinars.forEach((element, index) => { element.uploadedDate = new Date(element.uploadedDate);});

@@ -96,6 +96,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
     listEmailTemplates( pagination: Pagination ) {
         this.refService.loading(this.httpRequestLoader, true);
         pagination.searchKey = this.searchKey;
+        pagination.showDraftContent=true;
             this.emailTemplateService.listTemplates( pagination, this.loggedInUserId)
                 .subscribe(
                 ( data: any ) => {
