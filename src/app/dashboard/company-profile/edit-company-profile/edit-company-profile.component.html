@@ -247,20 +247,25 @@
 		<div class="modal-content rounded-0" >
 			<div class="modal-header">
         <a class="close-circle" data-dismiss="modal" (click)="closeModal()"><i class="fa fa-times"></i></a>
-        <h4 class="modal-title" id="cropLogoImage">Crop Your company Logo Image</h4>
+        <h4 class="modal-title" id="cropLogoImage">Please add your company logo</h4>
 			</div>
 			<div class="modal-body">
           <div style="position: relative;top: -5px;" class="btn green fileinput-button-css" *ngIf="(squareData | json) === '{}'"><span>Select image</span>
             <input style="height: 36px;"  title=" "  id="custom-input" type="file" (change)="fileChangeListener($event, cropper)">
           </div>
           <div style="position: relative;top: -5px;" *ngIf="errorUploadCropper" style="color:red">*Please Upload only images</div>
-
           <div>
           <ngx-loading [show]="loadingcrop" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
           <img-cropper #cropper *ngIf="!cropRounded" [image]="squareData" [settings]="squareCropperSettings"></img-cropper>
           </div>
           <div>
             <button class="btn btn-primary" [disabled]="(squareData | json) === '{}'" (click)="uploadLogo()">Upload Image</button>
+          </div>
+          <div>
+            <ul style="padding: 0 15px;">
+              <li>For optimal results, your logo should fit within the white rectangle.</li>
+              <li>If you would like to use a different logo in an email template, you can change it during the template design process.</li>
+            </ul>
           </div>
       </div>
 		</div>
