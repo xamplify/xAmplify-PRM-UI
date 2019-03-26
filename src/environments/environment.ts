@@ -12,7 +12,7 @@ export const environment = {
   // clientSecret : "FPzc1oxLx3zFjvwrma82TWiP0o3tk1yRVDwyAQqrIZ6jbfdssVo",
   clientId : "6639d69f-523f-44ca-b809-a00daa26b367",
   clientSecret : "XnD77klwAeUFvYS66CbHMd107DMS441Etg9cCOVc63LTYko8NHa",
-  imagesHost: "https://xamp.io/vod/images/",
+  imagesHost: "https://aravindu.com/vod/images/",
 
 
   CLIENT_URL: "http://localhost:4200/",
@@ -20,5 +20,6 @@ export const environment = {
   //SERVER_URL: "https://aravindu.com/"
   //SERVER_URL: 'https://release.xamp.io/'
   SERVER_URL: 'http://localhost:8888/',
+  //SERVER_URL: 'https://aravindu.com/',
   MARKETO_SERVER_URL: 'https://aravindu.com/'
 };

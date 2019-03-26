@@ -76,6 +76,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     videoTabClass:string = this.defaultTabClass;
     contactListTabClass:string = this.defaultTabClass;
     emailTemplateTabClass:string = this.defaultTabClass;
+    dealTypesTabClass:string = this.defaultTabClass;
     launchCampaignTabClass:string = this.defaultTabClass;
     currentTabActiveClass:string = this.activeTabClass;
     inActiveTabClass:string = this.defaultTabClass;
@@ -2247,6 +2248,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             }else if(step=="step-5"){
               //Highlighting Email Templatet Tab With Oragne
                 this.emailTemplateTabClass = this.currentTabActiveClass;
+                
                 this.videoTabClass = this.successTabClass;
                 this.campaignDetailsTabClass = this.successTabClass;
                 this.contactListTabClass = this.successTabClass;

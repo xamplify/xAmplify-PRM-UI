@@ -34,7 +34,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
       //  document.body.className = 'login page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-sidebar-closed-hide-logo';
         this.location = location;
         const roles = this.authService.getRoles();
-       
+      
         if(roles!==undefined){
             if (roles.indexOf(this.roleName.campaignRole) > -1 ||
                     roles.indexOf(this.roleName.orgAdminRole) > -1 ||
