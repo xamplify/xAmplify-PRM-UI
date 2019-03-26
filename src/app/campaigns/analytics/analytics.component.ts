@@ -1413,8 +1413,10 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       this.videoFile = undefined;
     }
     showContactListModal(){
-        this.loading = true;
-        this.getListOfContacts(this.campaingContactLists[0].id);
+        if ( this.campaingContactLists[0].id ) {
+            this.loading = true;
+            this.getListOfContacts( this.campaingContactLists[0].id );
+        }
     }
     getListOfContacts(id:number){
         try{
