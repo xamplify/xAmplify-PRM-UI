@@ -1,16 +1,16 @@
 <script>
-webshims.setOptions('forms-ext', {
+  webshims.setOptions('forms-ext', {
     replaceUI: 'auto',
     types: 'number'
-});
-webshims.polyfill('forms forms-ext');
+  });
+  webshims.polyfill('forms forms-ext');
 </script>
 
 <div class="portlet light" id="del-profile-div">
   <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
   <div class="portlet-title">
-    <div class="caption" *ngIf="submitButtonText == 'REGISTER DEAL'" >Deal Registration</div>
-    <div class="caption" *ngIf="submitButtonText != 'REGISTER DEAL'" >Deal Details</div>
+    <div class="caption" *ngIf="submitButtonText == 'REGISTER DEAL'">Deal Registration</div>
+    <div class="caption" *ngIf="submitButtonText != 'REGISTER DEAL'">Deal Details</div>
   </div>
   <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
   <div class="alert alert-danger" id="company-profile-error-div" style="display: none;">
@@ -23,8 +23,8 @@ webshims.polyfill('forms forms-ext');
         <div class="row" style="margin-bottom: 50px;border: 1px solid darkslategrey;margin: 10px;padding: 10px">
 
           <!-- left page -->
-          <div >
-            <h4 class="caption">Lead Details</h4>
+          <div>
+            <h4 class="caption">Opportunity Details</h4>
             <div class="col-sm-6 col-xs-12">
               <div class="form-group">
                 <label class="control-label">Campaign Name
@@ -32,8 +32,8 @@ webshims.polyfill('forms forms-ext');
                     <b>*</b>
                   </font>
                 </label>
-                <input type="text" disabled="disabled" name="campaignName"  value="{{campaign.campaignName}}"
-                  class="form-control" id="campaignName" />
+                <input type="text" disabled="disabled" name="campaignName" value="{{campaign.campaignName}}" class="form-control" id="campaignName"
+                />
               </div>
 
               <div class="form-group" [attr.class]="company">
@@ -42,9 +42,8 @@ webshims.polyfill('forms forms-ext');
                     <b>*</b>
                   </font>
                 </label>
-                <input type="text" maxlength="100"  class="form-control" [(ngModel)]=" dealRegistration.company"
-                  [ngModelOptions]="{standalone: true}" id="company" (input)="validateField('company',false)" [disabled]="isVendor"
-                />
+                <input type="text" maxlength="100" class="form-control" [(ngModel)]=" dealRegistration.company" [ngModelOptions]="{standalone: true}"
+                  id="company" (input)="validateField('company',false)" [disabled]="isVendor" />
               </div>
               <div class="form-group" [attr.class]="firstName">
                 <label class="control-label">First Name
@@ -52,9 +51,8 @@ webshims.polyfill('forms forms-ext');
                     <b>*</b>
                   </font>
                 </label>
-                <input type="text" maxlength="100" name="companyName"  class="form-control" [(ngModel)]=" dealRegistration.firstName"
-                  [ngModelOptions]="{standalone: true}" id="firstName" (input)="validateField('firstName',false)" [disabled]="isVendor"
-                />
+                <input type="text" maxlength="100" name="companyName" class="form-control" [(ngModel)]=" dealRegistration.firstName" [ngModelOptions]="{standalone: true}"
+                  id="firstName" (input)="validateField('firstName',false)" [disabled]="isVendor" />
               </div>
 
               <div class="form-group" [attr.class]="lastName">
@@ -63,9 +61,8 @@ webshims.polyfill('forms forms-ext');
                     <b>*</b>
                   </font>
                 </label>
-                <input type="text" maxlength="100"  class="form-control" [(ngModel)]=" dealRegistration.lastName"
-                  [ngModelOptions]="{standalone: true}" id="lastName" (input)="validateField('lastName',false)" [disabled]="isVendor"
-                />
+                <input type="text" maxlength="100" class="form-control" [(ngModel)]=" dealRegistration.lastName" [ngModelOptions]="{standalone: true}"
+                  id="lastName" (input)="validateField('lastName',false)" [disabled]="isVendor" />
               </div>
 
 
@@ -75,7 +72,7 @@ webshims.polyfill('forms forms-ext');
                     <b>*</b>
                   </font>
                 </label>
-                <input type="text" maxlength="100"  class="form-control" [(ngModel)]=" dealRegistration.email" [ngModelOptions]="{standalone: true}"
+                <input type="text" maxlength="100" class="form-control" [(ngModel)]=" dealRegistration.email" [ngModelOptions]="{standalone: true}"
                   id="email" disabled/>
               </div>
 
@@ -108,8 +105,8 @@ webshims.polyfill('forms forms-ext');
                     <b>*</b>
                   </font>
                 </label>
-                <textarea type="text" maxlength="100"  class="form-control" name="leadstreet" [(ngModel)]=" dealRegistration.leadStreet"
-                  [ngModelOptions]="{standalone: true}" (input)="validateField('leadStreet',false)" id="leadStreet" [disabled]="isVendor"></textarea>
+                <textarea type="text" maxlength="100" class="form-control" name="leadstreet" [(ngModel)]=" dealRegistration.leadStreet" [ngModelOptions]="{standalone: true}"
+                  (input)="validateField('leadStreet',false)" id="leadStreet" [disabled]="isVendor"></textarea>
               </div>
               <div class="form-group" [attr.class]="leadCity">
                 <label class="control-label">Lead City
@@ -117,9 +114,8 @@ webshims.polyfill('forms forms-ext');
                     <b>*</b>
                   </font>
                 </label>
-                <input type="text" maxlength="100" name="city"  class="form-control" [(ngModel)]=" dealRegistration.leadCity"
-                  [ngModelOptions]="{standalone: true}" (input)="validateField('leadCity',false)" id="leadCity" [disabled]="isVendor"
-                />
+                <input type="text" maxlength="100" name="city" class="form-control" [(ngModel)]=" dealRegistration.leadCity" [ngModelOptions]="{standalone: true}"
+                  (input)="validateField('leadCity',false)" id="leadCity" [disabled]="isVendor" />
               </div>
 
               <div class="form-group" [attr.class]="leadState">
@@ -128,9 +124,8 @@ webshims.polyfill('forms forms-ext');
                     <b>*</b>
                   </font>
                 </label>
-                <input type="text" maxlength="100"  class="form-control" name="lead state" [(ngModel)]=" dealRegistration.leadState"
-                  [ngModelOptions]="{standalone: true}" id="leadState" (input)="validateField('leadState',false)" [disabled]="isVendor"
-                />
+                <input type="text" maxlength="100" class="form-control" name="lead state" [(ngModel)]=" dealRegistration.leadState" [ngModelOptions]="{standalone: true}"
+                  id="leadState" (input)="validateField('leadState',false)" [disabled]="isVendor" />
               </div>
               <div class="form-group" [attr.class]="leadPostalCode">
                 <label class="control-label">Lead Postal Code
@@ -138,9 +133,8 @@ webshims.polyfill('forms forms-ext');
                     <b>*</b>
                   </font>
                 </label>
-                <input type="text" maxlength="10" name="companyName"  class="form-control" [(ngModel)]=" dealRegistration.postalCode"
-                  [ngModelOptions]="{standalone: true}" id="leadPostalCode" (input)="validateField('leadPostalCode',false)"
-                  [disabled]="isVendor" />
+                <input type="text" maxlength="10" name="companyName" class="form-control" [(ngModel)]=" dealRegistration.postalCode" [ngModelOptions]="{standalone: true}"
+                  id="leadPostalCode" (input)="validateField('leadPostalCode',false)" [disabled]="isVendor" />
               </div>
 
               <div class="form-group" [attr.class]="country">
@@ -149,8 +143,8 @@ webshims.polyfill('forms forms-ext');
                     <b>*</b>
                   </font>
                 </label>
-                <select class="form-control"  [(ngModel)]="dealRegistration.leadCountry" [ngModelOptions]="{standalone: true}"
-                  placeholder="Country" id="leadCountry" (input)="validateField('leadCountry',false)" [disabled]="isVendor">
+                <select class="form-control" [(ngModel)]="dealRegistration.leadCountry" [ngModelOptions]="{standalone: true}" placeholder="Country"
+                  id="leadCountry" (input)="validateField('leadCountry',false)" [disabled]="isVendor">
                   <option *ngFor="let country of countryNames.countries" [value]="country" [selected]="dealRegistration.leadCountry==country">{{country}}</option>
                 </select>
               </div>
@@ -160,9 +154,8 @@ webshims.polyfill('forms forms-ext');
                     <b>*</b>
                   </font>
                 </label>
-                <input type="text" maxlength="100" id="website" name="website"  class="form-control" [(ngModel)]="dealRegistration.website"
-                   (blur)="validateField('website',false)" [disabled]="isVendor"
-                />
+                <input type="text" maxlength="100" id="website" name="website" class="form-control" [(ngModel)]="dealRegistration.website"
+                  (blur)="validateField('website',false)" [disabled]="isVendor" />
                 <span *ngIf="websiteError" style="color: #f55d7a">{{websiteErrorMessage}}</span>
               </div>
 
@@ -178,9 +171,8 @@ webshims.polyfill('forms forms-ext');
                 <b>*</b>
               </font>
             </label>
-            <input type="text" maxlength="100" name="titleName"  class="form-control" [(ngModel)]=" dealRegistration.title"
-              [ngModelOptions]="{standalone: true}" id="title" (input)="validateField('title',false)" [disabled]="isVendor"
-            />
+            <input type="text" maxlength="100" name="titleName" class="form-control" [(ngModel)]=" dealRegistration.title" [ngModelOptions]="{standalone: true}"
+              id="title" (input)="validateField('title',false)" [disabled]="isVendor" />
           </div>
           <div class="form-group" [attr.class]="dealType">
             <label class="control-label">Deal Type
@@ -188,31 +180,58 @@ webshims.polyfill('forms forms-ext');
                 <b>*</b>
               </font>
             </label>
+
+            <select class="form-control" [(ngModel)]="dealRegistration.dealType" [ngModelOptions]="{standalone: true}" id="dealType"
+              (input)="validateField('dealType',false)" [disabled]="isVendor" *ngIf="dealTypes.length > 0">
+              <option [value]="'null'">-- Select Dealtype --</option>
+
+              <option *ngFor="let dt of dealTypes" [value]="dt.dealType" [selected]="dealRegistration.dealType == dt.dealType">{{dt.dealType}}</option>
+            </select>
+            <select class="form-control" [(ngModel)]="dealRegistration.dealType" [ngModelOptions]="{standalone: true}" id="dealType"
+              (input)="validateField('dealType',false)" [disabled]="isVendor" *ngIf="dealTypes.length == 0">
+              <option [value]="null" [selected]="dealRegistration.dealType != 'New Customer'
+              || dealRegistration.dealType == 'New Product'
+              || dealRegistration.dealType == 'Upgrade'
+              || dealRegistration.dealType == 'Services'">-- Select Dealtype --</option>
+              <option [value]="'New Customer'" [selected]="dealRegistration.dealType == 'New Customer'">New Customer</option>
+              <option [value]="'New Product'" [selected]="dealRegistration.dealType == 'New Product'">New Product</option>
+              <option [value]="'Upgrade'" [selected]="dealRegistration.dealType == 'Upgrade'">Upgrade</option>
+              <option [value]="'Services'" [selected]="dealRegistration.dealType == 'Services'">Services</option>
+
+            </select>
+          </div>
+          <!-- <div class="form-group" [attr.class]="dealType">
+            <label class="control-label">Deal Type
+              <font style="color: #f55d7a">
+                <b>*</b>
+              </font>
+            </label> 
             
                 <select class="form-control"  [(ngModel)]="dealRegistration.dealType" [ngModelOptions]="{standalone: true}"
                  id="dealType" (input)="validateField('dealType',false)" [disabled]="isVendor"
-                *ngIf="dealTypes.length > 0" >
-                <option  [value]="'Select Dealtype'" >-- Select Dealtype --</option>
-
-                <option *ngFor="let dt of dealTypes" [value]="dt.dealType" [selected]="dealRegistration.dealType == dt.dealType">{{dt.dealType}}</option>
+               >
+               <option  [value]="null" >-- Select Dealtype --</option>
+                <option  [value]="'New Customer'" [selected]="dealRegistration.dealType == 'New Customer'">New Customer</option>
+                <option  [value]="'New Product'" [selected]="dealRegistration.dealType == 'New Product'">New Product</option>
+                <option  [value]="'Upgrade'" [selected]="dealRegistration.dealType == 'Upgrade'">Upgrade</option>
+                <option  [value]="'Services'" [selected]="dealRegistration.dealType == 'Services'">Services</option>
+               
               </select>
-            <input type="text" maxlength="100"  class="form-control" [(ngModel)]=" dealRegistration.dealType"
-              [ngModelOptions]="{standalone: true}" id="dealType" (input)="validateField('dealType',false)" [disabled]="isVendor"
-              *ngIf="dealTypes.length == 0"/>
-          </div>
-          
+            
+          </div> -->
+
           <div class="form-group " [attr.class]="opportunityAmount">
             <label class="control-label">Opportunity Amount
               <font style="color: #f55d7a">
                 <b>*</b>
               </font>
             </label>
-            <div class="input-group"> 
-             
-             
-            <input type="text"  currencyMask [options]="{align :'left' }"    class="form-control currency" [(ngModel)]=" dealRegistration.opportunityAmount "
-              [ngModelOptions]="{standalone: true}" id="opportunityAmount" (input)="validateField('opportunityAmount',false)"
-              [disabled]="isVendor" max="10000000000.00"/>
+            <div class="input-group" style="border:1px solid #e5e5e5">
+
+
+              <input type="text" currencyMask [options]="{align :'left' }" class="form-control currency" [(ngModel)]=" dealRegistration.opportunityAmount "
+                [ngModelOptions]="{standalone: true}" id="opportunityAmount" (ngModelChange)="validateField('opportunityAmount',false)"
+                [disabled]="isVendor" max="10000000000.00" />
             </div>
           </div>
           <div class="form-group" [attr.class]="estimatedCloseDate">
@@ -221,36 +240,34 @@ webshims.polyfill('forms forms-ext');
                 <b>*</b>
               </font>
             </label>
-            <input type="text"  class="form-control flatpickr square-box" [(ngModel)]=" dealRegistration.estimatedCloseDate "
-              [ngModelOptions]="{standalone: true}" id="estimatedCloseDate" (input)="validateField('estimatedCloseDate',false)"
-              [disabled]="isVendor" />
+            <input type="text" class="form-control flatpickr square-box" [(ngModel)]=" dealRegistration.estimatedCloseDate " [ngModelOptions]="{standalone: true}"
+              id="estimatedCloseDate" (input)="validateField('estimatedCloseDate',false)" [disabled]="isVendor" />
           </div>
 
-         
 
-            <div *ngIf="form!= null && form.campaignDealQuestionDTOs != null">
-              <div *ngFor="let question of form.campaignDealQuestionDTOs;let i=index">
-                
-                  <div class="form-group" [attr.class]="question.class">
-                    <label class="control-label">{{question.question}}
-                      <font style="color: #f55d7a">
-                        <b>*</b>
-                      </font>
-                    </label>
-                    <input type="text" maxlength="1000" name="{{question.question}}"  class="form-control"
-                      [(ngModel)]="question.answer" [ngModelOptions]="{standalone: true}" id="question_{{question.id}}" (input)="validateField(question,true)"
-                      [disabled]="isVendor" />
-                  </div>
-                
-               
-  
+
+          <div *ngIf="form!= null && form.campaignDealQuestionDTOs != null">
+            <div *ngFor="let question of form.campaignDealQuestionDTOs;let i=index">
+
+              <div class="form-group" [attr.class]="question.class">
+                <label class="control-label">{{question.question}}
+                  <font style="color: #f55d7a">
+                    <b>*</b>
+                  </font>
+                </label>
+                <input type="text" maxlength="1000" name="{{question.question}}" class="form-control" [(ngModel)]="question.answer" [ngModelOptions]="{standalone: true}"
+                  id="question_{{question.id}}" (input)="validateField(question,true)" [disabled]="isVendor" />
               </div>
-            </div>
-         
-        </div>
-       
 
-        <div class="form-group" *ngIf="!isVendor" >
+
+
+            </div>
+          </div>
+
+        </div>
+
+
+        <div class="form-group" *ngIf="!isVendor">
           <a class="dashboard-stat yellow-gold" style="padding: 9px 0;margin-top: 10px" (click)="addProperties()">
             <i class="fa fa-plus-square p0" style="margin: 0 5px;"></i>
             Add Your Comments
@@ -258,8 +275,8 @@ webshims.polyfill('forms forms-ext');
         </div>
         <div class="col-xs-12" id="reply-onclick-div" style="position: relative; bottom: 4px;">
           <fieldset *ngIf="properties?.length>0">
-            <legend *ngIf="!isVendor" >Add Your Comments</legend>
-            <legend *ngIf="isVendor" >Partner Comments</legend>
+            <legend *ngIf="!isVendor">Add Your Comments</legend>
+            <legend *ngIf="isVendor">Partner Comments</legend>
             <div *ngFor="let property of properties;let i=index">
               <div class="portlet light dashboard-stat2">
                 <div class="portlet-title custom-change-css" [ngClass]="{'colorBlue':isEven(i+1), 'colorRed':!isEven(i+1)}">
@@ -267,7 +284,7 @@ webshims.polyfill('forms forms-ext');
                     <h4 class="text-left" style="color:#fff">Comment-{{i+1}}</h4>
                   </div>
                   <div class="col-xs-6">
-                    <div class="pull-right" id="question-icons"  >
+                    <div class="pull-right" id="question-icons">
                       <button type="button" class="btn-danger button-blue" (click)="remove(i+1,property.id)" *ngIf="!isVendor">
                         <span class="glyphicon glyphicon-trash"></span>
                       </button>
@@ -289,7 +306,7 @@ webshims.polyfill('forms forms-ext');
                             <b>*</b>
                           </font>
                         </label>
-                        <input type="text" maxlength="100"  class="form-control" [(ngModel)]=" property.key" [ngModelOptions]="{standalone: true}"
+                        <input type="text" maxlength="100" class="form-control" [(ngModel)]=" property.key" [ngModelOptions]="{standalone: true}"
                           id="question" (input)="validateQuestion(property)" [disabled]="property.isDisabled || isVendor" />
                       </div>
                       <div class="form-group" [attr.class]="property.validationStausValue">
@@ -298,7 +315,7 @@ webshims.polyfill('forms forms-ext');
                             <b>*</b>
                           </font>
                         </label>
-                        <textarea type="text" maxlength="1000"  class="form-control" [(ngModel)]=" property.value" [ngModelOptions]="{standalone: true}"
+                        <textarea type="text" maxlength="1000" class="form-control" [(ngModel)]=" property.value" [ngModelOptions]="{standalone: true}"
                           id="comment" (input)="validateComment(property)" [disabled]="property.isDisabled || isVendor"></textarea>
                       </div>
                     </div>
@@ -317,9 +334,7 @@ webshims.polyfill('forms forms-ext');
         </div>
         <hr>
         <div class="pull-right" *ngIf="!isVendor">
-          <button type="submit" id="saveDeal" [disabled]=" !isDealRegistrationFormValid" (click)="save()" class="btn green-haze"
-          *ngIf="submitButtonText.length >0" 
-         >{{submitButtonText}}</button>
+          <button type="submit" id="saveDeal" [disabled]=" !isDealRegistrationFormValid" (click)="save()" class="btn green-haze" *ngIf="submitButtonText.length >0">{{submitButtonText}}</button>
           <!--  <button type="submit" id="updateDeal" (click)="update()"class="btn green-haze">Update</button> -->
         </div>
       </form>

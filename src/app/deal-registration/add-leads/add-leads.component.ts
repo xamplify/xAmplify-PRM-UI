@@ -321,7 +321,7 @@ export class AddLeadsComponent implements OnInit
         else
             this.dealTypeError = true;
         this.validateWebSite(0);
-        this.validatePhone(0);
+        //this.validatePhone(0);
         this.properties.forEach(property =>
         {
             this.validateQuestion(property);
@@ -647,7 +647,8 @@ export class AddLeadsComponent implements OnInit
 
     submitButtonStatus()
     {
-        if (!this.companyError &&  !this.phoneError)
+        // &&  !this.phoneError
+        if (!this.companyError )
         {
         this.isDealRegistrationFormValid = true;
         }else{

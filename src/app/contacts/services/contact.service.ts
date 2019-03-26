@@ -288,6 +288,21 @@ export class ContactService {
             .map( this.extractData )
             .catch( this.handleError );
     }
+    saveMarketoContactList( socialContact: SocialContact ): Observable<Response> {
+        this.successMessage = true;
+        var requestoptions = new RequestOptions( {
+            body: socialContact,
+        })
+        var headers = new Headers();
+        headers.append( 'Content-Type', 'application/json' );
+        var options = {
+            headers: headers
+        };
+        var url = this.authenticationService.REST_URL +  "/marketo/"+this.authenticationService.getUserId()+"/saveContactList?access_token=" + this.authenticationService.access_token;
+        return this._http.post( url, options, requestoptions )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
 
     contactListSynchronization( contactListId: number, socialContact: SocialContact ): Observable<Response> {
         var requestoptions = new RequestOptions( {
@@ -346,6 +361,21 @@ export class ContactService {
             .catch( this.handleError );
     }
 
+    checkMarketoCredentials(userId: number) {
+        return this._http.get(this.authenticationService.REST_URL + `/marketo/${userId}/checkCredentials?access_token=${this.authenticationService.access_token}`)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    saveMarketoCredentials( formData: any) {
+        return this._http.post(this.authenticationService.REST_URL +`/marketo/credentials?access_token=${this.authenticationService.access_token}`, formData)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    getMarketoContacts(userId: number) {
+        return this._http.get(this.authenticationService.REST_URL +`/marketo/${userId}/contacts?access_token=${this.authenticationService.access_token}`)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
     salesforceLogin(isPartner: boolean) {
         this.logger.info( this.salesforceContactUrl + "/authorizeLogin?access_token=" + this.authenticationService.access_token +"&userId=" + this.authenticationService.getUserId() );
         return this._http.get( this.salesforceContactUrl + "/authorizeLogin?access_token=" + this.authenticationService.access_token +"&userId=" + this.authenticationService.getUserId() +"&isPartner=" + isPartner)

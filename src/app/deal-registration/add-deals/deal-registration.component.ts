@@ -223,7 +223,7 @@ export class DealRegistrationComponent implements OnInit
         else
             this.submitButtonText = "REGISTER DEAL";
         let date:any;
-        if(data.estimatedClosedDate != null && data.isDeal)
+        if(data.estimatedClosedDate != null && data.deal)
              date = this.getFormatedDate(new Date(data.estimatedClosedDate));
         else
             date = this.getFormatedDate(new Date());
@@ -266,7 +266,7 @@ export class DealRegistrationComponent implements OnInit
 
         } else if (this.form != undefined)
         {
-             this.submitButtonText = "REGISTER DEAL";
+            
             this.form.campaignDealQuestionDTOs.forEach(q =>
             {
                 if (q.answer == null || q.answer.length == 0)
@@ -313,7 +313,7 @@ export class DealRegistrationComponent implements OnInit
                     }
                 })
             })
-            this.submitButtonText = "UPDATE DEAL";
+         
 
 
         },
@@ -394,6 +394,12 @@ export class DealRegistrationComponent implements OnInit
             this.estimatedCloseDateError = false
         else
             this.estimatedCloseDateError = true;
+        if (this.dealRegistration.opportunityAmount != null 
+        && parseFloat(this.dealRegistration.opportunityAmount) >0)
+            this.opportunityAmountError = false
+        else
+            this.opportunityAmountError = true;
+       
         if(this.dealTypes.length == 0){
             if (this.dealRegistration.dealType != null && this.dealRegistration.dealType.length > 0)
                 this.dealTypeError = false
@@ -682,7 +688,8 @@ export class DealRegistrationComponent implements OnInit
             } if (fieldId == "opportunityAmount")
             {
                 fieldValue = fieldValue.replace('$','').replace(',','');
-                if (fieldValue.length > 0 && parseFloat(fieldValue))
+              
+                if (fieldValue.length > 0 && parseFloat(fieldValue)>0)
                 {
                     this.opportunityAmount = successClass;
                     this.opportunityAmountError = false;
@@ -766,7 +773,7 @@ export class DealRegistrationComponent implements OnInit
             if (fieldId == "dealType")
             {
                
-                if (fieldValue.length > 0 && fieldValue != "Select Dealtype")
+                if (fieldValue.length > 0 && fieldValue != "null")
                 {
                     this.dealType = successClass;
                     this.dealTypeError = false;
@@ -789,7 +796,7 @@ export class DealRegistrationComponent implements OnInit
     submitButtonStatus()
     {
 
-
+     console.log(this.opportunityAmountError +"=="+this.dealTypeError);
         if (!this.websiteError && !this.leadStreetError && !this.leadCityError
             && !this.leadStateError && !this.leadPostalCodeError && !this.countryError
             && !this.opportunityAmountError && !this.estimatedCloseDateError
@@ -797,7 +804,7 @@ export class DealRegistrationComponent implements OnInit
             && !this.titleError && !this.dealTypeError && !this.phoneError)
         {
 
-
+          
             var count = 0;
             this.properties.forEach(propery =>
             {
@@ -807,20 +814,23 @@ export class DealRegistrationComponent implements OnInit
 
             if (count == this.properties.length)
             {
-                let countForm = 0;
+               
                 if (this.form != undefined)
                 {
+                    let countForm = 0;
                     this.form.campaignDealQuestionDTOs.forEach(question =>
                     {
 
                         if (question.error)
                             countForm++;
                     })
-                }
-                if (countForm > 0)
-                    this.isDealRegistrationFormValid = false;
-                else
+                    if (countForm > 0)
+                        this.isDealRegistrationFormValid = false;
+                    else
+                        this.isDealRegistrationFormValid = true;
+                }else
                     this.isDealRegistrationFormValid = true;
+               
             }
             else
                 this.isDealRegistrationFormValid = false;

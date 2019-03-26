@@ -45,6 +45,8 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
     public clipboardTextareaText: string;
     selectedZohoDropDown: string = 'DEFAULT';
     zohoCredentialError = '';
+
+    marketoCredentialError = '';
     model: any = {};
     names: string[] = [];
     invalidPatternEmails: string[] = [];
@@ -56,6 +58,10 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
     sfImageNormal: boolean = false;
     zohoImageBlur: boolean = false;
     zohoImageNormal: boolean = false;
+
+    marketoImageBlur: boolean = false;
+    marketoImageNormal: boolean = false;
+
     noOptionsClickError: boolean = false;
     duplicateEmailIds: string[] = [];
     public contactListNameError = false;
@@ -73,8 +79,15 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
     removeCsvName: boolean;
     public socialContact: SocialContact;
     public zohoContact: ZohoContact;
+
+    public marketoContact: SocialContact;
+
+
     public getGoogleConatacts: any;
     public getZohoConatacts: any;
+
+    public getMarketoConatacts: any;
+
     public salesforceContact: SalesforceContact;
     public getSalesforceConatactList: any;
     public storeLogin: any;
@@ -101,6 +114,22 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
     contacts: User[];
     private socialContactType: string;
     emailNotValid: boolean;
+    showMarketoForm: boolean;
+    marketoAuthError: boolean;
+    marketoInstanceClass: string;
+    marketoInstanceError: boolean;
+    marketoInstance: any;
+    marketoSecretIdClass: string;
+    marketoSecretIdError: boolean;
+    marketoSecretId: any;
+    marketoClientId: any;
+    marketoClientIdClass: string;
+    marketoClentIdError: boolean;
+    isMarketoModelFormValid:boolean;
+    marketoContactError: boolean;
+    marketoContactSuccessMsg: any;
+    loadingMarketo: boolean;
+
     constructor( public socialPagerService: SocialPagerService, public referenceService: ReferenceService, private authenticationService: AuthenticationService,
         public contactService: ContactService, public regularExpressions: RegularExpressions, public paginationComponent: PaginationComponent,
         private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef, private route: ActivatedRoute, public properties: Properties,
@@ -807,6 +836,12 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
             } else
                 this.saveZohoContactSelectedUsers();
         }
+        if ( this.selectedAddContactsOption == 6 ) {
+            if ( this.allselectedUsers.length == 0 ) {
+                this.saveMarketoContacts();
+            } else
+                this.saveMarketoContactSelectedUsers();
+        }
 
         if ( this.selectedAddContactsOption == 8 ) {
             this.noOptionsClickError = true;
@@ -830,6 +865,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
         $( '.salesForceImageClass' ).attr( 'style', 'opacity: 1;' );
         $( '.googleImageClass' ).attr( 'style', 'opacity: 1;' );
         $( '.zohoImageClass' ).attr( 'style', 'opacity: 1;' );
+        $( '.marketoImageClass' ).attr( 'style', 'opacity: 1;' );
         $( '.mdImageClass' ).attr( 'style', 'opacity: 1;cursor:not-allowed;' );
         $( '#SgearIcon' ).attr( 'style', 'opacity: 1;position: relative;font-size: 19px;top: -82px;left: 100px;' );
         $( '#GgearIcon' ).attr( 'style', 'opacity: 1;position: relative;font-size: 19px;top: -82px;left: 100px;' );
@@ -864,6 +900,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
         $( '.salesForceImageClass' ).attr( 'style', 'opacity: 1;' );
         $( '.googleImageClass' ).attr( 'style', 'opacity: 1;' );
         $( '.zohoImageClass' ).attr( 'style', 'opacity: 1;' );
+        $( '.marketoImageClass' ).attr( 'style', 'opacity: 1;' );
         $( '#SgearIcon' ).attr( 'style', 'opacity: 1;position: relative;font-size: 19px;top: -83px;left: 100px;' );
         $( '#GgearIcon' ).attr( 'style', 'opacity: 1;position: relative;font-size: 19px;top: -83px;left: 100px;' );
         $( '#ZgearIcon' ).attr( 'style', 'opacity: 1;position: relative;font-size: 19px;top: -83px;left: 100px;' );
@@ -880,6 +917,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
         $( '.salesForceImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
         $( '.googleImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
         $( '.zohoImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+        $( '.marketoImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
         $( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 100px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
         $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 100px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
         $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 100px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
@@ -906,6 +944,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
         $( '.salesForceImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
         $( '.googleImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
         $( '.zohoImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
+        $( '.marketoImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
         $( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 100px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
         $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 100px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
         $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 100px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
@@ -1048,6 +1087,17 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
             if ( socialUsers[i].emailId !== null && this.validateEmailAddress( socialUsers[i].emailId ) ) {
                 let email = socialUsers[i].emailId.toLowerCase();
                 socialUsers[i].emailId = email;
+                users.push( socialUsers[i] );
+            }
+        }
+        return users;
+    }
+    validateMarketoContacts( socialUsers: any ) {
+        let users = [];
+        for ( let i = 0; i < socialUsers.length; i++ ) {
+            if ( socialUsers[i].email !== null && this.validateEmailAddress( socialUsers[i].email ) ) {
+                let email = socialUsers[i].email.toLowerCase();
+                socialUsers[i].email = email;
                 users.push( socialUsers[i] );
             }
         }
@@ -1200,6 +1250,42 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
             $( '#row_' + contactId ).removeClass( 'contact-list-selected' );
             this.selectedContactListIds.splice( $.inArray( contactId, this.selectedContactListIds ), 1 );
             this.allselectedUsers.splice( $.inArray( contactId, this.allselectedUsers ), 1 );
+        }
+        if ( this.selectedContactListIds.length == this.pagedItems.length ) {
+            this.isHeaderCheckBoxChecked = true;
+        } else {
+            this.isHeaderCheckBoxChecked = false;
+        }
+        event.stopPropagation();
+    }
+
+
+    highlightMarketoRow(  user: any ) {
+        let isChecked = $( '#' + user.id ).is( ':checked' );
+      
+        if ( isChecked ) {
+            $( '#row_' + user.id ).addClass( 'contact-list-selected' );
+            this.selectedContactListIds.push( user.id );
+            var object = {
+                "id":user.id,
+                "email": user.emailId,
+                "firstName": user.firstName,
+                "lastName": user.lastName,
+                "country":user.country,
+                "city": user.city,
+                "state": user.state,
+                "postalCode": user.postalCode,
+                "address": user.address,
+                "company": user.company,
+                "title": user.title,
+                "mobilePhone": user.mobilePhone
+            }
+            this.allselectedUsers.push( object );
+            console.log( this.allselectedUsers );
+        } else {
+            $( '#row_' + user.id ).removeClass( 'contact-list-selected' );
+            this.selectedContactListIds.splice( $.inArray( user.id, this.selectedContactListIds ), 1 );
+            this.allselectedUsers.splice( $.inArray( user.id, this.allselectedUsers ), 1 );
         }
         if ( this.selectedContactListIds.length == this.pagedItems.length ) {
             this.isHeaderCheckBoxChecked = true;
@@ -1527,6 +1613,320 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
             this.xtremandLogger.error( error, "AddContactsComponent SaveSelectedZohoContacts()." )
         }
     }
+
+
+    // Marketo Contacts
+    marketoContacts() {
+    }
+    checkingMarketoContactsAuthentication() {
+
+        try {
+            if ( this.selectedAddContactsOption == 8 && !this.disableOtherFuctionality) {
+                this.contactService.checkMarketoCredentials(this.authenticationService.getUserId())
+                    .subscribe(
+                    ( data: any ) => {
+
+                        if (data.statusCode == 8000)
+                        {
+                            this.showMarketoForm = false;
+                           
+                           this.marketoAuthError = false;
+                            this.loading = false;
+                            this.retriveMarketoContacts();
+                        }
+                        else
+                        {
+            
+            
+                            $("#marketoShowLoginPopup").modal('show');
+                            this.marketoAuthError = false;
+                            this.loading = false;
+            
+                        }
+                        this.xtremandLogger.info( data );
+                     
+                    },
+                    ( error: any ) => {
+                        var body = error['_body'];
+                        if ( body != "" ) {
+                            var response = JSON.parse( body );
+                            if ( response.message == "Maximum allowed AuthTokens are exceeded, Please remove Active AuthTokens from your ZOHO Account.!" ) {
+                                this.customResponse = new CustomResponse( 'ERROR', 'Maximum allowed AuthTokens are exceeded, Please remove Active AuthTokens from your ZOHO Account', true );
+                            } else {
+                                this.xtremandLogger.errorPage( error );
+                            }
+                        } else {
+                            this.xtremandLogger.errorPage( error );
+                        }
+                        console.log( "errorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr:" + error )
+
+                    },
+                    () => this.xtremandLogger.info( "Add contact component loadContactListsName() finished" )
+                    )
+            }
+        } catch ( error ) {
+            this.xtremandLogger.error( error, "AddContactsComponent zohoContactsAuthenticationChecking()." )
+        }
+    }
+    saveMarketoContacts(){
+      
+        try {
+            this.socialContact.socialNetwork = "MARKETO";
+            this.socialContact.contactName = this.model.contactListName;
+            this.socialContact.isPartnerUserList = this.isPartner;
+            this.socialContact.contactType = this.contactType;
+            this.socialContact.contacts = this.socialContactUsers;
+            this.socialContact.contacts = this.validateMarketoContacts( this.socialContactUsers );
+            this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
+            this.socialContact.listName = this.model.contactListName;
+            if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' ) {
+                this.loading = true;
+                if ( this.socialContactUsers.length > 0 ) {
+                    this.contactService.saveMarketoContactList( this.socialContact )
+                        .subscribe(
+                        data => {
+                            data = data;
+                            this.loading = false;
+                            this.selectedAddContactsOption = 8;
+                            this.contactService.saveAsSuccessMessage = "add";
+                            this.xtremandLogger.info( "update Contacts ListUsers:" + data );
+                            if ( this.isPartner == false ) {
+                                this.router.navigateByUrl( '/home/contacts/manage' )
+                            } else {
+                                this.router.navigateByUrl( 'home/partners/manage' )
+                            }
+                        },
+
+                        ( error: any ) => {
+                            this.loading = false;
+                            this.xtremandLogger.error( error );
+                            this.xtremandLogger.errorPage( error );
+                        },
+                        () => this.xtremandLogger.info( "addcontactComponent saveMarketoContact() finished" )
+                        )
+                } else
+                    this.xtremandLogger.error( "AddContactComponent saveMarketoContact() Contacts Null Error" );
+            }
+            else {
+                this.contactListNameError = true;
+                this.xtremandLogger.error( "AddContactComponent saveMarketoContact() ContactList Name Error" );
+            }
+        } catch ( error ) {
+            this.xtremandLogger.error( error, "AddContactsComponent saveMarketoContact()." )
+        }
+    }
+    saveMarketoContactSelectedUsers() {
+        try {
+            
+             this.allselectedUsers = this.validateMarketoContacts( this.allselectedUsers );
+             this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
+          
+            if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' && this.allselectedUsers.length != 0 ) {
+                console.log(this.allselectedUsers);
+                this.loading = true;
+                this.contactListObject = new ContactList;
+                this.contactListObject.name = this.model.contactListName;
+                this.contactListObject.isPartnerUserList = this.isPartner;
+                this.socialContact.socialNetwork = "MARKETO";
+                this.socialContact.contactName = this.model.contactListName;
+                this.socialContact.isPartnerUserList = this.isPartner;
+                this.socialContact.contactType = this.contactType;
+                this.socialContact.contacts = this.allselectedUsers;
+                this.socialContact.contacts = this.validateMarketoContacts( this.allselectedUsers );
+                this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
+                this.socialContact.listName = this.model.contactListName;
+                this.contactService.saveMarketoContactList( this.socialContact )
+                        .subscribe(
+                        data => {
+                            data = data;
+                            this.loading = false;
+                            this.selectedAddContactsOption = 8;
+                           
+                            this.contactService.saveAsSuccessMessage = "add";
+                            this.xtremandLogger.info( "update Contacts ListUsers:" + data );
+                            if ( this.isPartner == false ) {
+                                this.router.navigateByUrl( '/home/contacts/manage' )
+                            } else {
+                                this.router.navigateByUrl( 'home/partners/manage' )
+                            }
+                        },
+
+                        ( error: any ) => {
+                            this.loading = false;
+                            this.xtremandLogger.error( error );
+                            this.xtremandLogger.errorPage( error );
+                        },
+                        () => this.xtremandLogger.info( "addcontactComponent saveMarketoContactSelectedUsers() finished" )
+                        )
+            }
+            else {
+                this.contactListNameError = true;
+                this.xtremandLogger.error( "AddContactComponent saveMarketoContactSelectedUsers() ContactList Name Error" );
+            }
+        } catch ( error ) {
+            this.xtremandLogger.error( error, "AddContactsComponent saveMarketoContactSelectedUsers()." )
+        }
+    }
+
+    authorisedMarketoContacts() {
+    }
+    retriveMarketoContacts(){
+       
+
+        $("#marketoShowLoginPopup").modal('hide');
+        this.contactService.getMarketoContacts(this.authenticationService.getUserId()).subscribe(data =>
+        {
+            this.marketoImageBlur =false;
+            this.marketoImageNormal = true;
+            this.getMarketoConatacts = data.data;
+
+           
+                this.getMarketoConatacts =  data.data;
+                this.loadingMarketo = false;
+                this.selectedAddContactsOption = 6;
+                if ( this.getMarketoConatacts.length ==0 ) {
+                    this.customResponse = new CustomResponse( 'ERROR', this.properties.NO_RESULTS_FOUND, true );
+                } else {
+                    for ( var i = 0; i < this.getMarketoConatacts.length; i++ ) {
+                        let socialContact = new SocialContact();
+                        let user = new User();
+                        socialContact.id = i;
+                        if ( this.validateEmailAddress( this.getMarketoConatacts[i].email ) ) {
+                            socialContact.emailId = this.getMarketoConatacts[i].email;
+                            socialContact.firstName = this.getMarketoConatacts[i].firstName;
+                            socialContact.lastName = this.getMarketoConatacts[i].lastName;
+
+                            socialContact.country = this.getMarketoConatacts[i].country;
+                            socialContact.city = this.getMarketoConatacts[i].city;
+                            socialContact.state = this.getMarketoConatacts[i].state;
+                            socialContact.postalCode = this.getMarketoConatacts[i].postalCode;
+                            socialContact.address = this.getMarketoConatacts[i].address;
+                            socialContact.company = this.getMarketoConatacts[i].company;
+                            socialContact.title = this.getMarketoConatacts[i].title;
+                            socialContact.mobilePhone = this.getMarketoConatacts[i].mobilePhone;
+                            
+                            this.socialContactUsers.push( socialContact );
+                        }
+                        $( "button#sample_editable_1_new" ).prop( 'disabled', false );
+                        $( "#Gfile_preview" ).show();
+                        $( "#myModal .close" ).click()
+                        $( "button#cancel_button" ).prop( 'disabled', false );
+                        $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                        $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                        $( '#uploadCSV' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;min-height:85px' );
+                        $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                        $( '.salesForceImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
+                        $( '.googleImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
+                        $( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 100px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                        $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 100px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                    }
+                    console.log( this.socialContactUsers);
+                }
+                this.xtremandLogger.info( this.getMarketoConatacts );
+                this.setPage( 1 );
+            },
+            ( error: any ) => {
+                this.loading = false;
+                this.xtremandLogger.error( error );
+                this.xtremandLogger.errorPage( error );
+            },
+            () => this.xtremandLogger.log( "marketoContacts data :" + JSON.stringify( this.getMarketoConatacts )
+ 
+           
+        ));
+    }
+    hideMarketoAuthorisedPopup() {
+        $( "#marketoShowAuthorisedPopup" ).hide();
+    }
+
+    getMarketoContacts() {
+        this.loadingMarketo = true;
+        const obj = {
+            userId: this.authenticationService.getUserId(),
+            instanceUrl: this.marketoInstance,
+            clientId: this.marketoClientId,
+            clientSecret: this.marketoSecretId
+        }
+
+        this.contactService.saveMarketoCredentials(obj).subscribe(response =>
+        {
+            if (response.statusCode == 8003)
+            {
+                this.showMarketoForm = false;
+                // this.checkMarketoCredentials();
+                this.marketoContactError = false;
+                this.marketoContactSuccessMsg = response.message;
+                this.loadingMarketo = false;
+                this.retriveMarketoContacts();
+            } else
+            {
+
+                $("#marketoShowLoginPopup").modal('show');
+                this.marketoContactError = response.message;
+                this.marketoContactSuccessMsg = false;
+                this.loadingMarketo = false;
+            }
+        }, ( error: any ) => {
+            this.marketoContactError = error;
+            this.loadingMarketo = false;
+        }
+        )
+    }
+
+    validateModelForm(fieldId: any)
+    {
+        var errorClass = "form-group has-error has-feedback";
+        var successClass = "form-group has-success has-feedback";
+
+        if (fieldId == 'email')
+        {
+            if (this.marketoClientId.length > 0)
+            {
+                this.marketoClientIdClass = successClass;
+                this.marketoClentIdError = false;
+            } else
+            {
+                this.marketoClientIdClass = errorClass;
+                this.marketoClentIdError = true;
+            }
+        } else if (fieldId == 'pwd')
+        {
+            if (this.marketoSecretId.length > 0)
+            {
+                this.marketoSecretIdClass = successClass;
+                this.marketoSecretIdError = false;
+            } else
+            {
+                this.marketoSecretIdClass = errorClass;
+                this.marketoSecretIdError = true;
+            }
+        } else if (fieldId == 'instance')
+        {
+            if (this.marketoInstance.length > 0)
+            {
+                this.marketoInstanceClass = successClass;
+                this.marketoInstanceError = false;
+            } else
+            {
+                this.marketoInstanceClass = errorClass;
+                this.marketoInstanceError = false;
+            }
+        }
+        this.toggleMarketoSubmitButtonState();
+    }
+    toggleMarketoSubmitButtonState(){
+        if (!this.marketoClentIdError && !this.marketoSecretIdError && !this.marketoInstanceError)
+        this.isMarketoModelFormValid = true;
+    else
+        this.isMarketoModelFormValid = false;
+    }
+
+    hideMarketoModal() {
+        $( "#marketoShowLoginPopup" ).hide();
+    }
+
+    
+
 
     onChange( item: any ) {
         this.xtremandLogger.log( item );
@@ -1903,6 +2303,11 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                     } else {
                         this.zohoImageBlur = true;
                     }
+                    if ( this.storeLogin.MARKETO == true ) {
+                        this.marketoImageNormal = true;
+                    } else {
+                        this.marketoImageBlur = true;
+                    }
                 },
                 ( error: any ) => {
                     this.xtremandLogger.error( error );
@@ -1960,6 +2365,12 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                         $( "#zohoGear" ).hide();
                         this.zohoImageBlur = true;
                     }
+                    else if ( socialNetwork == 'MARKETO' ) {
+                        $( "#marketoContact_buttonNormal" ).hide();
+                        $( "#marketoGear" ).hide();
+                        this.marketoImageBlur = true;
+                    }
+
                     this.customResponse = new CustomResponse( 'SUCCESS', this.properties.SOCIAL_ACCOUNT_REMOVED_SUCCESS, true );
                     $( '#settingSocialNetwork' ).modal( 'hide' );
                 },
