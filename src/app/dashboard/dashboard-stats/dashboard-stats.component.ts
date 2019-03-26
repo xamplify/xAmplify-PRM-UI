@@ -14,11 +14,11 @@ import { XtremandLogger } from "app/error-pages/xtremand-logger.service";
 export class DashboardStatsComponent implements OnInit {
   dashboardReport: DashboardReport = new DashboardReport();
   isAdmin: boolean;
-  constructor(
-    public router: Router,public xtremandLogger:XtremandLogger,
-    public dashboardService: DashboardService,
-    public authenticationService: AuthenticationService
-  ) {}
+  isTeamMember = false;
+  constructor(public router: Router,public xtremandLogger:XtremandLogger,public dashboardService: DashboardService,
+    public authenticationService: AuthenticationService) {
+    if(this.authenticationService.showRoles() === 'Team Member') { this.isTeamMember = true;}
+  }
 
   dashboardReportsCount() {
     let userId = this.authenticationService.user.id;
@@ -54,6 +54,10 @@ export class DashboardStatsComponent implements OnInit {
     }
   }
 
+  navigateToVendor(){
+    if (this.dashboardReport.vendorsCount > 0)
+    { this.router.navigate(["/home/dashboard/vendors"]);   }
+  }
   navigateToPartner() {
     if ( !this.authenticationService.isOnlyPartner() && this.dashboardReport.totalCompanyPartnersCount > 0) {
       this.router.navigate(["/home/partners/analytics"]);
