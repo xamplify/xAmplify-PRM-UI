@@ -1375,10 +1375,14 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
               let hours = this.referenceService.formatAMPM(date);
               object["Time"] = date.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
           }else{
-              object["Message"] = this.downloadCsvList[i].message;
-              let hours = this.referenceService.formatAMPM(responseTime);
-              object["Response Time"] = responseTime.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
-              object["Total Attendees"] = this.downloadCsvList[i].additionalCount;
+              if ( this.paginationType != 'invities' && this.paginationType != 'NOTYET' && this.paginationType != 'email not open' ) {
+                  object["Message"] = this.downloadCsvList[i].message;
+                  let hours = this.referenceService.formatAMPM( responseTime );
+                  object["Most recent"] = responseTime.toDateString().split( ' ' ).slice( 1 ).join( ' ' ) + ' ' + hours;
+                  if ( this.paginationType === 'YES' ){
+                      object["Guests"] = this.downloadCsvList[i].additionalCount;
+                  }
+              }
           }
          }
 
