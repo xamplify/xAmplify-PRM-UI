@@ -30,7 +30,8 @@ a.disabled {
             <a  [routerLink]="['/home/campaigns/manage']">Manage Campaigns</a>
             <i class="fa fa-angle-right"></i>
          </li>
-			<li>Event Campaign</li>
+      <li *ngIf="reDistributeEvent || reDistributeEventManage; else other">Redistribute Event Campaign</li>
+      <ng-template #other><li>Event Campaign</li></ng-template>
 		</ul>
 	</div>
 	<app-list-loader [rowsCount]="6" *ngIf="loader"></app-list-loader>
