@@ -100,6 +100,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   selectedEmailNotOpenUserId: any;
   httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
   hasClientError = false;
+  contactListDeleteError = false;
   sortByDropDown = [
                     { 'name': 'Sort By', 'value': '' },
                     { 'name': 'Name(A-Z)', 'value': 'name-ASC' },
@@ -1413,9 +1414,11 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       this.videoFile = undefined;
     }
     showContactListModal(){
-        if ( this.campaingContactLists[0].id ) {
+        if ( this.campaingContactLists) {
             this.loading = true;
             this.getListOfContacts( this.campaingContactLists[0].id );
+        }else{
+            this.contactListDeleteError = true;
         }
     }
     getListOfContacts(id:number){
@@ -1492,6 +1495,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   }
   ngOnDestroy(){
     this.paginationType = '';
+    this.contactListDeleteError = false;
     $('#worldMapModal').modal('hide');
     $('#email_template_preivew').modal('hide');
     $('#show_contact-list-info').modal('hide');

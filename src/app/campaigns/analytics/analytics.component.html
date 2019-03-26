@@ -38,7 +38,11 @@
 <ng-template #NOERROR>
 <app-analytics-loader *ngIf="mainLoader"></app-analytics-loader>
 	<div class="row" [hidden]="mainLoader || hasClientError">
-		<div class="pl10 pr10 col-xs-12" [ngClass]="{'col-sm-4': campaignType === 'VIDEO','forbidden' :!isDataShare ?true:null}" *ngIf="campaignType === 'VIDEO' && campaign.selectedVideoId>0">
+				<div class="alert alert-danger alert-dismissible" *ngIf="contactListDeleteError">
+					<a (click)="contactListDeleteError = false" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+					The contact list(s) associated with this campaign has been deleted.
+				</div>
+				<div class="pl10 pr10 col-xs-12" [ngClass]="{'col-sm-4': campaignType === 'VIDEO','forbidden' :!isDataShare ?true:null}" *ngIf="campaignType === 'VIDEO' && campaign.selectedVideoId>0">
 			<a class="dashboard-stat dashboard-stat-lighter purple-soft" (click)="previewVideo(campaign.campaignVideoFile)" [class.disabled]="!isPartnerEnabledAnalyticsAccess">
 				<div class="visual">
 					<i class="fa fa-video-camera"></i>

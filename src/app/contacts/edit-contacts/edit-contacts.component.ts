@@ -1695,10 +1695,12 @@ export class EditContactsComponent implements OnInit, OnDestroy {
         this.contactIds.push( this.contactUsersId )
         this.xtremandLogger.info( "contactListId in sweetAlert() " + this.contactIds );
         let message = '';
-        if(this.isDefaultPartnerList){
+        if(this.isPartner && this.isDefaultPartnerList){
             message = 'The partner(s) will be deleted from this and all other Partner lists.';
-        }else {
+        }else if (this.isPartner && !this.isDefaultPartnerList){
             message = 'This will only delete the partner(s) from this list. To remove the partner(s) completely from your account, please delete the record(s) from the Master List.';
+        }else {
+            message = "The contacts(s) will be deleted and action can't be undo.";
         }
 
         let self = this;
@@ -1720,7 +1722,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
             });
         }
 
-        if ( this.totalRecords === 1 && !( this.isDefaultPartnerList ) ) {
+        if ( this.totalRecords === 1 && ( !this.isDefaultPartnerList ) ) {
             swal( {
                 title: 'Are you sure?',
                 text: "Deleting all the " + this.checkingContactTypeName + "s" + " in this list will also cause the list to be deleted. You won't be able to undo this action. ",
