@@ -268,10 +268,10 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
 
     showRegularCoBrandingTemplates(index:number){
         try{
-            this.filteredEmailTemplates = new Array<EmailTemplate>();
+            this.filteredEmailTemplates = new Array< EmailTemplate>();
             this.selectedTemplateTypeIndex = index;
             console.log(this.allEmailTemplates);
-            for(var i=0;i<this.allEmailTemplates.length;i++){
+            for(var i=0;i< this.allEmailTemplates.length;i++){
                 var isRegularCoBrandingTemplate = this.allEmailTemplates[i].regularCoBrandingTemplate;
                 if(isRegularCoBrandingTemplate){
                     this.filteredEmailTemplates.push(this.allEmailTemplates[i]);
@@ -286,9 +286,9 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
 
     showVideoCoBrandingTemplates(index:number){
         try{
-            this.filteredEmailTemplates = new Array<EmailTemplate>();
+            this.filteredEmailTemplates = new Array< EmailTemplate>();
             this.selectedTemplateTypeIndex = index;
-            for(var i=0;i<this.allEmailTemplates.length;i++){
+            for(var i=0;i< this.allEmailTemplates.length;i++){
                 var isVideoCoBrandingTemplate = this.allEmailTemplates[i].videoCoBrandingTemplate;
                 if(isVideoCoBrandingTemplate){
                     this.filteredEmailTemplates.push(this.allEmailTemplates[i]);
@@ -305,7 +305,7 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
         try{
             this.filteredEmailTemplates = new Array<EmailTemplate>();
             this.selectedTemplateTypeIndex = index;
-            for(var i=0;i<this.allEmailTemplates.length;i++){
+            for(var i=0;i< this.allEmailTemplates.length;i++){
                 var isCampaignDefault = this.allEmailTemplates[i].campaignDefault;
                 if(isCampaignDefault){
                     this.filteredEmailTemplates.push(this.allEmailTemplates[i]);
@@ -336,11 +336,11 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
                },
                () => this.logger.info("Got Email Template")
            );
-       }else if(index==14 || index==1){
+       }else if(index==14 || index==1 || index==16){
            //This is normal template
            this.emailTemplateService.isRegularUpload = true;
            this.router.navigate(["/home/emailtemplates/upload"]);
-       }else if(index==13 || index==0){
+       }else if(index==13 || index==0 || index==15){
            //This is video template
            this.emailTemplateService.isRegularUpload = false;
            this.router.navigate(["/home/emailtemplates/upload"]);
