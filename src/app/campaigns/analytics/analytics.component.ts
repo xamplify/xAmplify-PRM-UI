@@ -138,7 +138,6 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     try{
     this.loading = true;
     this.referenceService.loading(this.httpRequestLoader, true);
-    this.listTotalCampaignViews(campaignId);
     if(!this.campaign.detailedAnalyticsShared && this.campaign.dataShare && !this.campaign.parentCampaignId){
         pagination.campaignId = campaignId;
         pagination.campaignType = "VIDEO";
@@ -156,6 +155,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
           error => console.log(error),
           () => console.log('listCampaignViews(); called') )
        }
+    this.listTotalCampaignViews(campaignId);
     }catch(error){ this.xtremandLogger.error('error'+error);}
   }
 
@@ -1221,18 +1221,12 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
 
   listTotalCampaignViews(campaignId: number) {
     try{
-      //this.loading = true;
       this.downloadTypeName ='campaignViews';
       this.campaignTotalViewsPagination.maxResults = this.campaignReport.emailSentCount;
       this.campaignService.listCampaignViews(campaignId, this.campaignTotalViewsPagination,  this.isChannelCampaign)
       .subscribe(
       data => {
         this.campaignTotalViewsData = data.campaignviews;
-       /* try {
-          const self = this;
-          this.selectedRow = this.campaignTotalViewsData.find(function (obj) { return obj.emailId === self.selectedRow.emailId; });
-          this.loading = false;
-        } catch (err) { console.log(err); }*/
       },
       error => console.log(error),
       () => console.log()
