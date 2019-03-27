@@ -674,6 +674,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     copyFromClipboard() {
         this.fileTypeError = false;
         this.clipboardTextareaText = "";
+        this.paginationType = "csvPartners";
         this.disableOtherFuctionality = true;
         $( "button#cancel_button" ).prop( 'disabled', false );
         $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
