@@ -371,6 +371,11 @@ export class PartnerReportsComponent implements OnInit {
               (response: any) => {
                pagination.totalRecords = response.totalRecords;
                console.log(response);
+               if(response.inactivePartnerList.length === 0){
+                   this.customResponse = new CustomResponse( 'INFO','No Partner(s) found', true );
+               }else {
+                   this.customResponse = new CustomResponse();
+               }
                for ( var i in response.inactivePartnerList) {
                    response.inactivePartnerList[i].contactCompany = response.inactivePartnerList[i].partnerCompanyName;
                }

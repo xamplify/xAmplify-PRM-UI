@@ -2119,10 +2119,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
    
    saveAsChange(){
     try {
-      this.saveAsListName = this.editContactComponent.addCopyToField();
+      this.contactService.isLoadingList = true;
+        this.saveAsListName = this.editContactComponent.addCopyToField();
 
-      // this.saveAsError = '';
-      // $('#saveAsAddPartnerModal').modal('show');
     }catch(error){
        this.xtremandLogger.error( error, "Add Partner component", "saveAsChange()" );
       }
@@ -2148,6 +2147,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     closeSaveAsModal(){
       this.saveAsListName = undefined;
       this.referenceService.namesArray = undefined;
+      this.contactService.isLoadingList = false;
     }
 
     ngOnInit() {

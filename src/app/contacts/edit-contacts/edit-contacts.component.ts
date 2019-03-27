@@ -2052,6 +2052,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     goToContactOrPartnerUrl(){
       const url =  !this.isPartner ? 'contacts':'partners';
       this.router.navigateByUrl( '/home/'+url+'/manage' )
+      this.contactService.isLoadingList = false;
     }
     toggle( i: number ) {
         const className = $( '#more_' + i ).attr( 'class' );
