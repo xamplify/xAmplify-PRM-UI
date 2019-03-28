@@ -59,6 +59,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
     contactCountLoad: boolean = false;
     isSegmentation: boolean = false;
     isSegmentationErrorMessage: boolean;
+    filterConditionErrorMessage = "";
 
     listContactData: boolean = true;
     customResponse: CustomResponse = new CustomResponse();
@@ -1165,6 +1166,21 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
                 
                 if ( this.criterias[i].property == "Field Name*" || this.criterias[i].operation == "Condition*" || ( this.criterias[i].value1 == undefined || this.criterias[i].value1 == "" ) ) {
                     this.isSegmentationErrorMessage = true;
+                    if(this.criterias[i].property == "Field Name*" && this.criterias[i].operation == "Condition*" && (this.criterias[i].value1 == undefined || this.criterias[i].value1 == "")){
+                        this.filterConditionErrorMessage = "Please fill the required data at position " + i;
+                    }else if(this.criterias[i].property == "Field Name*" && this.criterias[i].operation == "Condition*"){
+                        this.filterConditionErrorMessage = "Please select the Field Name and Condition at position " + i;
+                    }else if(this.criterias[i].property == "Field Name*" && (this.criterias[i].value1 == undefined || this.criterias[i].value1 == "")){
+                        this.filterConditionErrorMessage = "Please select the Field Name and Value at position " + i;
+                    }else if(this.criterias[i].operation == "Condition*" && (this.criterias[i].value1 == undefined || this.criterias[i].value1 == "")){
+                        this.filterConditionErrorMessage = "Please select the Condition and Value at position " + i;
+                    }else if(this.criterias[i].operation == "Condition*"){
+                        this.filterConditionErrorMessage = "Please select the Condition at position " + i;
+                    }else if(this.criterias[i].property == "Field Name*"){
+                        this.filterConditionErrorMessage = "Please select the Field Name at position " + i;
+                    }else if(this.criterias[i].value1 == undefined || this.criterias[i].value1 == ""){
+                        this.filterConditionErrorMessage = "Please fill the value at position " + i;
+                    }
                     break;
                 } else {
                     this.isSegmentationErrorMessage = false;
@@ -1242,6 +1258,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
     cancelSegmentation() {
         this.criterias.length = 0;
         this.isSegmentationErrorMessage = false;
+        this.filterConditionErrorMessage = "";
     }
 
     addNewRow() {

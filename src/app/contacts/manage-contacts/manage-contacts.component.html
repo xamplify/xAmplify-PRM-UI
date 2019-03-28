@@ -837,6 +837,7 @@
 							<div class="form-group">
 								<div class="form-inline col-sm-12">
 									<div class="form-group col-sm-4">
+									<b>{{i}}</b>
 										<select class="form-control"
 											[(ngModel)]="criterias[i].property">
 											<option
@@ -876,7 +877,7 @@
 					</div>
 				</div>
 				<div class="col-xs-12 m0" *ngIf="isSegmentationErrorMessage">
-					<h4 class="m0" style="color: red; text-align: center;">Please add a filter condition.</h4>
+					<h4 class="m0" style="color: red; text-align: center;">{{filterConditionErrorMessage}}</h4>
 				</div>
 			</div>
 			<div class="modal-footer">
