@@ -277,7 +277,7 @@ nav a.active {
 	white-space: nowrap;
 	float: left !important;
 	/* Required for text-overflow to do anything */
-	overflow: hidden;
+	/* overflow: hidden; */
 }
 
 /* full calendar */
