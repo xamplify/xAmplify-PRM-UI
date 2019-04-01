@@ -101,6 +101,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
   hasClientError = false;
   contactListDeleteError = false;
+  interactiveDataTimeLineViewEnable = false;
   sortByDropDown = [
                     { 'name': 'Sort By', 'value': '' },
                     { 'name': 'Name(A-Z)', 'value': 'name-ASC' },
@@ -618,6 +619,11 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   userTimeline(campaignViews: any) {
     try{
     this.loading = true;
+    
+    if(this.isDataShare && this.isNavigatedThroughAnalytics && !this.isPartnerEnabledAnalyticsAccess && campaignViews.viewsCount === 0){
+        this.interactiveDataTimeLineViewEnable = true;
+    }
+    
     this.redistributedAccountsBySelectedUserId = [];
      this.listEmailLogsByCampaignAndUser(campaignViews.campaignId, campaignViews.userId);
     this.getTotalTimeSpentOfCampaigns(campaignViews.userId, campaignViews.campaignId);
@@ -661,6 +667,13 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   }
   userWatchedviewsInfo(emailId: string) {
     try {
+      
+        if(this.userCampaignReport.totalUniqueWatchCount === 0){
+            this.interactiveDataTimeLineViewEnable = true;
+        }else{
+            this.interactiveDataTimeLineViewEnable = false;
+        }
+        
       if(emailId.includes('<br/>')){
       emailId = emailId.substring(emailId.indexOf('<br/>'), emailId.length);
       emailId = emailId.substring(5); }
@@ -1328,6 +1341,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
         object["Sent Time"] = sentTime.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
         let lastviewHours = this.referenceService.formatAMPM(latestView);
         object["Latest View"] = latestView.toDateString().split(' ').slice(1).join(' ') + ' ' + lastviewHours;
+        object["Total Views"] = this.downloadCsvList[i].viewsCount;
         }
         }
 
@@ -1360,7 +1374,12 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
         let hours = this.referenceService.formatAMPM(date);
         object["Date and Time"] = date.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
         object["Device"] = this.downloadCsvList[i].deviceType;
-        object["Location"] = this.downloadCsvList[i].location;
+        
+        var text = this.downloadCsvList[i].location;
+        var res = text.split(",", 3);
+        object["City"] = res[0];
+        object["State"] = res[1];
+        object["Country"] = res[2];
       }
 
       if (this.downloadTypeName === 'rsvp') {
