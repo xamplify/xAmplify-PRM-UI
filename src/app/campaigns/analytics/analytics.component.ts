@@ -1341,6 +1341,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
         object["Sent Time"] = sentTime.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
         let lastviewHours = this.referenceService.formatAMPM(latestView);
         object["Latest View"] = latestView.toDateString().split(' ').slice(1).join(' ') + ' ' + lastviewHours;
+        object["Total Views"] = this.downloadCsvList[i].viewsCount;
         }
         }
 
