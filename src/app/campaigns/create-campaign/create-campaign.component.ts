@@ -44,6 +44,7 @@ var moment = require('moment-timezone');
 
 })
 export class CreateCampaignComponent implements OnInit,OnDestroy{
+    ngxloading: boolean;
     selectedRow:number;
     categories: Category[];
     partnerCategories:Category[];
@@ -1521,35 +1522,34 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
 
 
     getEmailTemplatePreview(emailTemplate:EmailTemplate){
-        let body = emailTemplate.body;
-        let emailTemplateName = emailTemplate.name;
-        if(emailTemplateName.length>50){
-            emailTemplateName = emailTemplateName.substring(0, 50)+"...";
-        }
-        this.selectedEmailTemplateName = emailTemplateName;
-        $("#htmlContent").empty();
-        $("#email-template-title").empty();
-        $("#email-template-title").append(emailTemplateName);
-        $('#email-template-title').prop('title',emailTemplate.name);
-        let updatedBody = this.refService.showEmailTemplatePreview(this.campaign, this.campaignType, this.launchVideoPreview.gifImagePath, emailTemplate.body);
-       /* if(this.campaignType=='video'){
-            let selectedVideoGifPath = this.launchVideoPreview.gifImagePath;
-            updatedBody = emailTemplate.body.replace("<SocialUbuntuImgURL>",selectedVideoGifPath);
-            updatedBody = updatedBody.replace("&lt;SocialUbuntuURL&gt;","javascript:void(0)");
-            updatedBody = updatedBody.replace("<SocialUbuntuURL>","javascript:void(0)");
-            updatedBody = updatedBody.replace("https://dummyurl.com","javascript:void(0)");
-            updatedBody = updatedBody.replace("https://xamp.io/vod/images/xtremand-video.gif",selectedVideoGifPath);
-            updatedBody = updatedBody.replace("&lt;SocialUbuntuImgURL&gt;",selectedVideoGifPath);
-        }else{
-            updatedBody = emailTemplate.body.replace("<div id=\"video-tag\">","<div id=\"video-tag\" style=\"display:none\">");
-        }
-        if(!this.campaign.enableCoBrandingLogo){
-            updatedBody = updatedBody.replace("<a href=\"https://dummycobrandingurl.com\"","<a href=\"https://dummycobrandingurl.com\" style=\"display:none\"");
-        }*/
-        $("#htmlContent").append(updatedBody);
-        $('.modal .modal-body').css('overflow-y', 'auto');
-        $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
-        $("#show_email_template_preivew").modal('show');
+        this.ngxloading = true;
+        this.emailTemplateService.getAllCompanyProfileImages(this.loggedInUserId).subscribe(
+                ( data: any ) => {
+                    console.log(data);
+                    let body = emailTemplate.body;
+                    let self  =this;
+                    $.each(data,function(index,value){
+                        body = body.replace(value,self.authenticationService.MEDIA_URL + self.refService.companyProfileImage);
+                    });
+                    body = body.replace("https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL + this.refService.companyProfileImage);
+                    let emailTemplateName = emailTemplate.name;
+                    if(emailTemplateName.length>50){
+                        emailTemplateName = emailTemplateName.substring(0, 50)+"...";
+                    }
+                    this.selectedEmailTemplateName = emailTemplateName;
+                    $("#htmlContent").empty();
+                    $("#email-template-title").empty();
+                    $("#email-template-title").append(emailTemplateName);
+                    $('#email-template-title').prop('title',emailTemplate.name);
+                    let updatedBody = this.refService.showEmailTemplatePreview(this.campaign, this.campaignType, this.launchVideoPreview.gifImagePath, body);
+                    $("#htmlContent").append(updatedBody);
+                    $('.modal .modal-body').css('overflow-y', 'auto');
+                    $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
+                    $("#show_email_template_preivew").modal('show');
+                    this.ngxloading = false;
+                },
+                error => { this.ngxloading = false;this.logger.error("error in getAllCompanyProfileImages("+this.loggedInUserId+")", error); },
+                () =>  this.logger.info("Finished getAllCompanyProfileImages()"));
     }
     filterTemplates(type:string,index:number){
        if(type=="BASIC"){

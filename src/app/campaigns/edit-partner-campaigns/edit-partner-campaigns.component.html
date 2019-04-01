@@ -1,4 +1,5 @@
 <div class="page-content" [style.background-color]="referenceService.pageContnetBgColor">
+<ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
   <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
   <app-grid-loader *ngIf="httpRequestLoader.isLoading && !isListView"></app-grid-loader>
   <app-list-loader *ngIf="httpRequestLoader.isLoading && isListView"></app-list-loader>

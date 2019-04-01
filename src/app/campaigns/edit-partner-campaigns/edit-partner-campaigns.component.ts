@@ -23,6 +23,7 @@ import { Timezone } from '../../core/models/timezone';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { CampaignContact } from '../models/campaign-contact';
 import { Properties } from '../../common/models/properties';
+import { EmailTemplateService } from '../../email-template/services/email-template.service';
 
 declare var  $,flatpickr,CKEDITOR,require:any;
 var moment = require('moment-timezone');
@@ -34,6 +35,7 @@ var moment = require('moment-timezone');
   providers:[CallActionSwitch,HttpRequestLoader,Pagination,Properties]
 })
 export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
+    ngxloading: boolean;
 
     selectedEmailTemplateId = 0;
     campaign: Campaign;
@@ -165,6 +167,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
             private authenticationService: AuthenticationService,
             private contactService: ContactService,
             public referenceService: ReferenceService,
+            private emailTemplateService:EmailTemplateService,
             private pagerService: PagerService,
             public callActionSwitch: CallActionSwitch,
             private formBuilder: FormBuilder,
@@ -202,6 +205,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
         }
         if(this.campaign.parentCampaignId==undefined || this.campaign.parentCampaignId==0){
             this.campaign.parentCampaignId = this.campaign.campaignId;
+            this.campaign.parentCampaignUserId = this.campaign.userId;
         }
         /****If the loggedin User is Vendor& Partner then show drop down along with team members*****/
         if(this.isOrgAdminAndPartner || this.isVendorAndPartner){
@@ -476,11 +480,21 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
 
 
     previewEmailTemplate(emailTemplate: EmailTemplate) {
-        this.referenceService.previewEmailTemplate(emailTemplate, this.campaign);
-
+        this.ngxloading = true;
+        this.emailTemplateService.getAllCompanyProfileImages(this.campaign.parentCampaignUserId).subscribe(
+                ( data: any ) => {
+                    let body = emailTemplate.body;
+                    let self  =this;
+                    $.each(data,function(index,value){
+                        body = body.replace(value,self.authenticationService.MEDIA_URL + self.referenceService.companyProfileImage);
+                    });
+                    body = body.replace("https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL + this.referenceService.companyProfileImage);
+                    this.referenceService.previewEmailTemplate(emailTemplate, this.campaign);
+                    this.ngxloading = false;
+                },
+                error => { this.ngxloading = false;this.xtremandLogger.error("error in getAllCompanyProfileImages("+this.campaign.parentCampaignUserId+")", error); },
+                () =>  this.xtremandLogger.info("Finished getAllCompanyProfileImages()"));
     }
-
-
 
 
 

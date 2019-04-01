@@ -59,4 +59,5 @@ export class Campaign {
     parentCampaignId:number = 0;
     redistributedCount:number = 0;
     userLists:any;
+    parentCampaignUserId:number = 0;
 }

@@ -113,6 +113,12 @@ export class EmailTemplateService {
         .catch(this.handleError);
     }
     
+    getAllCompanyProfileImages(userId:number){
+        return this.http.get(this.URL+"admin/listAllCompanyProfileImages/"+userId+"?access_token="+this.authenticationService.access_token,"")
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+    
     countPartnerEmailtemplate(userId:number){
         return this.http.get(this.URL+"admin/count-partner-emailtemplate/"+userId+"?access_token="+this.authenticationService.access_token,"")
         .map(this.extractData)

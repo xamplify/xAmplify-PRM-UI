@@ -38,6 +38,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
     selectedTemplateTypeIndex = 0;
     isOnlyPartner = false;
     isPartnerToo = false;
+    ngxloading: boolean;
     templatesDropDown = [
         { 'name': 'All Email Templates', 'value': '' },
         { 'name': 'Uploaded Regular Templates', 'value': 'regularTemplate' },
@@ -347,20 +348,34 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
 
     }
     showPreview(emailTemplate:EmailTemplate){
-       console.log(emailTemplate);
-        let body = emailTemplate.body;
-        let emailTemplateName = emailTemplate.name;
-        if(emailTemplateName.length>50){
-            emailTemplateName = emailTemplateName.substring(0, 50)+"...";
-        }
-        $("#htmlContent").empty();
-        $("#email-template-title").empty();
-        $("#email-template-title").append(emailTemplateName);
-        $('#email-template-title').prop('title',emailTemplate.name);
-        $("#htmlContent").append(body);
-        $('.modal .modal-body').css('overflow-y', 'auto');
-       // $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
-        $("#show_email_template_preivew").modal('show');
+        this.ngxloading = true;
+        this.emailTemplateService.getAllCompanyProfileImages(this.loggedInUserId).subscribe(
+                ( data: any ) => {
+                    let body = emailTemplate.body;
+                    let self  =this;
+                    $.each(data,function(index,value){
+                        body = body.replace(value,self.authenticationService.MEDIA_URL + self.refService.companyProfileImage);
+                    });
+                    body = body.replace("https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL + this.refService.companyProfileImage);
+                    let emailTemplateName = emailTemplate.name;
+                    if(emailTemplateName.length>50){
+                        emailTemplateName = emailTemplateName.substring(0, 50)+"...";
+                    }
+                    $("#htmlContent").empty();
+                    $("#email-template-title").empty();
+                    $("#email-template-title").append(emailTemplateName);
+                    $('#email-template-title').prop('title',emailTemplate.name);
+                    $("#htmlContent").append(body);
+                    $('.modal .modal-body').css('overflow-y', 'auto');
+                   // $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
+                    $("#show_email_template_preivew").modal('show');
+                    this.ngxloading = false;
+                },
+                error => {this.ngxloading = false; this.logger.error("error in getAllCompanyProfileImages("+this.loggedInUserId+")", error); },
+                () =>  this.logger.info("Finished getAllCompanyProfileImages()"));
+        
+        
+       
     }
 
 }

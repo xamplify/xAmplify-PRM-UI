@@ -669,6 +669,7 @@
 				</div>
 				<!-- -------------------------------------Email Template Tab--------------------------------------------------------- -->
         <div class="row setup-content step hiddenStepInfo" id="step-5">
+        <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
             <!-- <br> -->
             <!-- <div *ngIf="emailTemplatesPagination.totalRecords==0" class="alert alert-danger"><strong>No Email Templates Found</strong></div> -->
             <div class="col-xs-12 text-center" style="margin-top: 10px;">
@@ -845,6 +846,7 @@
 				<!-- End of step 5 -->
 				<!-- -------------------------------------Launch Tab--------------------------------------------------------- -->
 				<div class="row setup-content step hiddenStepInfo" id="step-6">
+				 <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
           <div class="alert alert-danger error-div" *ngIf="invalidScheduleTime" id="invalidScheduleTimeDiv">
             <strong>{{invalidScheduleTimeError}}</strong>
           </div>

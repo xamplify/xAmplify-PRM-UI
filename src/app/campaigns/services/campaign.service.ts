@@ -500,6 +500,7 @@ export class CampaignService {
             data['testEmailId'] = emailId;
             data['userId'] = campaign.userId;
             data['selectedVideoId'] = campaign.selectedVideoId;
+            data['parentCampaignId'] = campaign.parentCampaignId;
             this.sendTestEmail(data)
                 .subscribe(
                 data => {
