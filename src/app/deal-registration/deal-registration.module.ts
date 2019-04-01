@@ -11,6 +11,7 @@ import { CampaignsModule } from '../campaigns/campaigns.module';
 import { DealAnalyticsComponent } from './deal-analytics/deal-analytics.component';
 import { CampaignService } from '../campaigns/services/campaign.service';
 import { ManageCommentsComponent } from './manage-comments/manage-comments.component';
+import { EmailTemplateService } from '../email-template/services/email-template.service';
 
 
 
@@ -19,7 +20,7 @@ import { ManageCommentsComponent } from './manage-comments/manage-comments.compo
 @NgModule({
   imports: [ CommonComponentModule,DealRegistrationRoutingModule , SharedModule,CommonModule,CampaignsModule ],
   declarations: [ ManageDealsComponent, ManagePartnersComponent, ManageLeadsComponent, DealAnalyticsComponent, ManageCommentsComponent],
-  providers:[DealRegistrationService,CampaignService],
+  providers:[DealRegistrationService,CampaignService,EmailTemplateService],
   exports:[]
 })
 export class DealRegistrationModule { }
