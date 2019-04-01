@@ -620,9 +620,14 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     try{
     this.loading = true;
     
-    if(this.isDataShare && this.isNavigatedThroughAnalytics && !this.isPartnerEnabledAnalyticsAccess && campaignViews.viewsCount === 0){
+    /*if(this.isDataShare && this.isNavigatedThroughAnalytics && !this.isPartnerEnabledAnalyticsAccess && campaignViews.viewsCount === 0){
         this.interactiveDataTimeLineViewEnable = true;
-    }
+    }else{
+        this.interactiveDataTimeLineViewEnable = false;
+    }*/
+    
+  /*     *ngIf="!interactiveDataTimeLineViewEnable"
+       code in 796 line need to add for not showing interactive data timeline view */
     
     this.redistributedAccountsBySelectedUserId = [];
      this.listEmailLogsByCampaignAndUser(campaignViews.campaignId, campaignViews.userId);
@@ -668,11 +673,11 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   userWatchedviewsInfo(emailId: string) {
     try {
       
-        if(this.userCampaignReport.totalUniqueWatchCount === 0){
+       /* if(this.userCampaignReport.totalUniqueWatchCount === 0){
             this.interactiveDataTimeLineViewEnable = true;
         }else{
             this.interactiveDataTimeLineViewEnable = false;
-        }
+        }*/
         
       if(emailId.includes('<br/>')){
       emailId = emailId.substring(emailId.indexOf('<br/>'), emailId.length);
