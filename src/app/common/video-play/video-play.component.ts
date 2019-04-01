@@ -14,6 +14,7 @@ export class VideoPlayComponent implements OnInit, OnDestroy {
  @Input() videoFile: SaveVideoFile;
  @Input() videoHeight:string;
  @Input() videoWidth:string;
+ @Input() isPreview: boolean;
  @Output() notifyVideoParent: EventEmitter<any>;
  videoJSplayer:any;
  constructor(public videoUtilService:VideoUtilService , public referenceService: ReferenceService, public authenticationService:AuthenticationService) { }
@@ -52,12 +53,16 @@ appendVideoData( videoFile: SaveVideoFile, divId: string, titleId: string ) {
         videoUrl = videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
         $( "#" + divId + " video").append('<source src=' + videoUrl + ' type="application/x-mpegURL">');
         let player = videojs( 'videoId' );
+        let isPreview = this.isPreview;
         player.panorama( {
             autoMobileOrientation: true,
             clickAndDrag: true,
             clickToToggle: true,
             callback: function() {
-                player.ready(function () { this.play();});
+                player.ready(function () {
+                 if(isPreview) { $('.vjs-big-play-button').css('display', 'block');}
+                 else { this.play(); }
+                });
                 videoSelf.videoControllColors( videoFile );
             }
         } );
@@ -81,6 +86,7 @@ appendVideoData( videoFile: SaveVideoFile, divId: string, titleId: string ) {
         $( "#videoId" ).css( "margin", "0 auto" );
         const document: any = window.document;
         const width = this.videoWidth;
+        let isPreview = this.isPreview;
         const overrideNativeValue = this.referenceService.getBrowserInfoForNativeSet();
         this.videoJSplayer = videojs( "videoId", {
           "controls": true,
@@ -92,7 +98,12 @@ appendVideoData( videoFile: SaveVideoFile, divId: string, titleId: string ) {
                 nativeVideoTracks: !overrideNativeValue,
                 nativeAudioTracks: !overrideNativeValue,
                 nativeTextTracks: !overrideNativeValue
-            }
+            },
+            function () {
+              this.ready(function () {
+                if(isPreview) { $('.vjs-big-play-button').css('display', 'block');}
+                else { this.play(); }
+              } )}
         } );
          this.videoControllColors( videoFile );
         if ( this.videoJSplayer ) {
@@ -113,18 +124,14 @@ appendVideoData( videoFile: SaveVideoFile, divId: string, titleId: string ) {
     } );
   }
   ngOnInit() {
-    this.videoHeight = '380px';
-    this.videoWidth = '650px';
     this.appendVideoData( this.videoFile, "main_video", "modal-title" );
   }
   ngOnDestroy(): void {
     if ( this.videoJSplayer ) {
       this.videoJSplayer.dispose();
       $( "#main_video" ).empty();
-      // this.notifyVideoParent.emit("modal closed");
     } else {
       console.log( '360 video closed' );
-      // this.notifyVideoParent.emit("modal closed");
    }
   }
 
