@@ -680,7 +680,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     this.pagination.totalRecords = this.dashboardReport.totalEmailOpenedCount;
                     this.isLoadingList = false;
                     this.pagination = this.pagerService.getPagedItems(this.pagination, this.dashboardReport.emailLogList);
-                    
+
                 },
                 error => this.xtremandLogger.log(error),
                 () => { }
@@ -700,7 +700,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     this.isLoadingList = false;
                     this.pagination.totalRecords = this.dashboardReport.totalEmailClickedCount;
                     this.pagination = this.pagerService.getPagedItems(this.pagination, this.dashboardReport.emailLogList);
-                    
+
                 },
                 error => this.xtremandLogger.log(error),
                 () => { }
@@ -753,6 +753,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     this.heatMapData = result.heatMapData;
                     this.heatMapData.forEach(element => {
                       element.name = element.name.length>25 ? element.name.substring(0,25)+"..." : element.name;
+                      if(element.launchTime) { element.launchTime = new Date(element.launchTime); }
                     });
                     if (!this.isFullscreenToggle) { this.generatHeatMap(this.heatMapData, 'dashboard-heat-map');
                     } else { this.generatHeatMap(this.heatMapData, 'heat-map-data'); }
@@ -832,7 +833,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.isLoadingList = true;
         this.isCalledPagination = false;
     }
-    
+
  downloadFuctionality(){
      this.isLoadingDownloadList = true;
      if (this.paginationType === 'open') {
@@ -840,22 +841,22 @@ export class DashboardComponent implements OnInit, OnDestroy {
      }else if (this.paginationType === 'clicked') {
          this.listOfAllEmailClickedLogs();
      }else if (this.paginationType === 'watched') {
-         this.listOfAllWatchedLogs();  
+         this.listOfAllWatchedLogs();
      } else if (this.paginationType === 'countryWiseUsers') {
          this.getCampaignTotalUsersWatchedInfo();
      }
- }   
+ }
 
     downloadEmailLogs() {
         if (this.paginationType === 'open') {
-           
+
             this.logListName = 'Email_Open_Logs.csv';
             this.dashboardReport.downloadEmailLogList = this.dashboardReport.allEmailOpenLogList;
         } else if (this.paginationType === 'clicked') {
             this.logListName = 'Email_Clicked_Logs.csv';
             this.dashboardReport.downloadEmailLogList = this.dashboardReport.allEmailClickedLogList;
         } else if (this.paginationType === 'watched') {
-           
+
             this.logListName = 'Email_Watched_Logs.csv';
             this.dashboardReport.downloadEmailLogList = this.dashboardReport.allEmailWatchedLogList;
         } else if (this.paginationType === 'countryWiseUsers') {
@@ -922,7 +923,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 error => this.xtremandLogger.log(error),
                 () => { }
             );
-    } 
+    }
 
     listOfAllEmailClickedLogs() {
         this.totalClickedPagination.maxResults = this.dashboardReport.totalEmailClickedCount;
@@ -953,12 +954,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 () => this.xtremandLogger.log('finished')
             );
     }
-    
-    
+
+
     getCampaignTotalUsersWatchedInfo( ) {
         try {
             this.isLoadingDownloadList = true;
-            this.totalCountryWiseUsersWatchedPagination.maxResults = this.pagination.totalRecords;  
+            this.totalCountryWiseUsersWatchedPagination.maxResults = this.pagination.totalRecords;
             this.dashboardService.worldMapCampaignDetails(this.loggedInUserId, this.countryCode, this.totalCountryWiseUsersWatchedPagination)
                   .subscribe(
                       (result: any) => {
@@ -979,7 +980,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
               this.xtremandLogger.error('error in world map dashboard ' + error);
           }
       }
-    
+
 
     getCampaignUsersWatchedInfo(countryCode) {
       this.loading = true;
@@ -1016,7 +1017,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             this.xtremandLogger.error('error in world map dashboard ' + error);
         }
     }
-    
+
     showCampaignDetails(campaign:any){
       this.loading = true;
       this.referenceService.campaignType = campaign[7];
