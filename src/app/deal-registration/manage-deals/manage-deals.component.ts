@@ -88,6 +88,8 @@ export class ManageDealsComponent implements OnInit
     roleName: Roles= new Roles();
     isVendor: boolean;
     isCompanyPartner: boolean;
+
+    enableLeads = false;
    
 
     @ViewChild(ManagePartnersComponent)
@@ -104,6 +106,7 @@ export class ManageDealsComponent implements OnInit
         private dealRegistrationService: DealRegistrationService, public homeComponent: HomeComponent, public xtremandLogger: XtremandLogger,
         public sortOption: SortOption, public pagerService: PagerService, private campaignService: CampaignService)
     {
+
         this.loggedInUserId = this.authenticationService.getUserId();
         this.isListView = !this.referenceService.isGridView;
         this.isOnlyPartner = this.authenticationService.isOnlyPartner();
@@ -119,8 +122,20 @@ export class ManageDealsComponent implements OnInit
                     this.isCompanyPartner = true;
                 }
             }
-
+            referenceService.getCompanyIdByUserId(this.loggedInUserId).subscribe(response=>{
+                referenceService.getOrgCampaignTypes(response).subscribe(data=>{
+                    this.enableLeads = data.enableLeads;
+                    console.log(data)
+                    if(!this.isOnlyPartner){
+                        this.showVendor();
+                    }else{
+                        this.showPartner();
+                    }
+                });
+            })
+        
         console.log(authenticationService.getRoles())
+        
         if(!this.isOnlyPartner){
             this.showVendor();
         }else{
@@ -1068,16 +1083,21 @@ export class ManageDealsComponent implements OnInit
     }
     showVendor()
     {
-        
-        this.isVendorVersion = true;
-        this.isPartnerVersion = false;
-        this.switchVersions();
+        if(this.enableLeads){
+            this.isVendorVersion = true;
+            this.isPartnerVersion = false;
+            this.switchVersions();
+        }else{
+            this.showPartner();
+        }
     }
     showPartner()
     {
-        this.isVendorVersion = false;
-        this.isPartnerVersion = true;
-        this.switchVersions();
+        if( this.isCompanyPartner ){
+            this.isVendorVersion = false;
+            this.isPartnerVersion = true;
+            this.switchVersions();
+        }
     }
 
     showDealRegistrationForm(item)

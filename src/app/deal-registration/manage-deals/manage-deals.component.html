@@ -22,7 +22,7 @@
 						<li class="filter" (click)="showPartner()" [class.campaign-type-selected]="isPartnerVersion" style="float: right;
 						margin-top: 5px;" *ngIf="isCompanyPartner">Partner View </li>
 						<li class="filter" (click)="showVendor()" [class.campaign-type-selected]="isVendorVersion" style="float: right;
-						margin-top: 5px;" *ngIf=" isVendor">Vendor View</li>
+						margin-top: 5px;" *ngIf=" isVendor && enableLeads">Vendor View</li>
 						<p class="filter" style="float: right;
 						margin: 10px;background-color: white">Opportunities: </p>
 						

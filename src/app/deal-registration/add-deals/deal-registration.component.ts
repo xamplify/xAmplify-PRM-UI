@@ -97,22 +97,22 @@ export class DealRegistrationComponent implements OnInit
 
 
 
-    isMarketoLead=false;
-    showMarketoForm: boolean;
-    clientId: string;
-    secretId: string;
-    marketoInstance: string;
-    clientIdClass: string;
-    secretIdClass: string;
-    marketoInstanceClass: string;
-    loading: boolean;
-    templateError: boolean;
-    clentIdError: boolean;
-    secretIdError: boolean;
-    marketoInstanceError: boolean;
-    isModelFormValid: boolean;
-    templateSuccessMsg: any;
-    pushToMarketo = false;
+    // isMarketoLead=false;
+    // showMarketoForm: boolean;
+    // clientId: string;
+    // secretId: string;
+    // marketoInstance: string;
+    // clientIdClass: string;
+    // secretIdClass: string;
+    // marketoInstanceClass: string;
+    // loading: boolean;
+    // templateError: boolean;
+    // clentIdError: boolean;
+    // secretIdError: boolean;
+    // marketoInstanceError: boolean;
+    // isModelFormValid: boolean;
+    // templateSuccessMsg: any;
+    // pushToMarketo = false;
     constructor(private logger: XtremandLogger, public authenticationService: AuthenticationService, public referenceService: ReferenceService
         , public dealRegistrationService: DealRegistrationService, public countryNames: CountryNames,public utilService:UtilService
         ,public callActionSwitch: CallActionSwitch
@@ -247,7 +247,7 @@ export class DealRegistrationComponent implements OnInit
         else
             this.dealRegistration.pushToMarketo =false;
 
-        this.pushToMarketo = this.dealRegistration.pushToMarketo;
+        //this.pushToMarketo = this.dealRegistration.pushToMarketo;
         if(this.dealRegistration.isDeal)
             this.submitButtonText = "UPDATE DEAL";
         else
@@ -364,7 +364,7 @@ export class DealRegistrationComponent implements OnInit
         this.dealRegistration.leadCity = data.city;
         this.dealRegistration.email = this.lead.emailId;
         this.dealRegistration.pushToMarketo = false;
-        this.pushToMarketo = this.dealRegistration.pushToMarketo;
+        //this.pushToMarketo = this.dealRegistration.pushToMarketo;
         var date = new Date();
         this.dealRegistration.estimatedCloseDate =this.getFormatedDate(date);
         let countryIndex = this.countryNames.countries.indexOf(data.country);
@@ -546,6 +546,10 @@ export class DealRegistrationComponent implements OnInit
         })
         this.dealRegistration.answers = answers;
         this.dealRegistration.properties = obj;
+        //console.log(this.pushToMarketo)
+        // if(!this.dealRegistration.pushToMarketo)
+        //       this.dealRegistration.pushToMarketo = this.pushToMarketo;
+        //       console.log( this.dealRegistration)
         if (this.dealRegistration.id != null)
         {
             this.dealRegistrationService.updateDeal(this.dealRegistration).subscribe(data =>
@@ -1005,172 +1009,172 @@ export class DealRegistrationComponent implements OnInit
      }
 
 
-     pushMarketo(event:any){
-        console.log(event);
-        this.pushToMarketo = !this.pushToMarketo;
-         if(!event){
-            this.checkMarketoCredentials();
-         }
-    }
+//      pushMarketo(event:any){
+//         console.log(event);
+//         this.pushToMarketo = !this.pushToMarketo;
+//          if(!event){
+//             this.checkMarketoCredentials();
+//          }
+//     }
    
        
-  clearValues()
-  {
-      this.clientId = '';
-      this.secretId = '';
-      this.marketoInstance = '';
-      this.clientIdClass = "form-group";
-      this.secretIdClass = "form-group";
-      this.marketoInstanceClass = "form-group";
+//   clearValues()
+//   {
+//       this.clientId = '';
+//       this.secretId = '';
+//       this.marketoInstance = '';
+//       this.clientIdClass = "form-group";
+//       this.secretIdClass = "form-group";
+//       this.marketoInstanceClass = "form-group";
 
-  }
-  checkMarketoCredentials()
-  {
-      this.loading = true;
-      this.emailTemplateService.checkMarketoCredentials(this.authenticationService.getUserId()).subscribe(response =>
-      {
-          if (response.statusCode == 8000)
-          {
-            console.log(response);
-          
-              this.showMarketoForm = false;
-              //this.getMarketoEmailTemplates();
-              this.templateError = false;
-              this.loading = false;
-          }
-          else
-          {
-              this.pushToMarketo = !this.pushToMarketo;
-              this.dealRegistration.pushToMarketo = false;
-              $("#templateRetrieve").modal('show');
-              $("#closeButton").show();
-              this.templateError = false;
-              this.loading = false;
+//   }
+//   checkMarketoCredentials()
+//   {
+//       this.loading = true;
+//       this.emailTemplateService.checkMarketoCredentials(this.authenticationService.getUserId()).subscribe(response =>
+//       {
+//           if (response.statusCode == 8000)
+//           {
+//             console.log(this.pushToMarketo);
+        
+//               this.showMarketoForm = false;
+//               //this.getMarketoEmailTemplates();
+//               this.templateError = false;
+//               this.loading = false;
+//           }
+//           else
+//           {
+//               this.pushToMarketo = !this.pushToMarketo;
+//               this.dealRegistration.pushToMarketo = false;
+//               $("#templateRetrieve").modal('show');
+//               $("#closeButton").show();
+//               this.templateError = false;
+//               this.loading = false;
 
-          }
-      }, error =>
-          {
-              this.pushToMarketo = !this.pushToMarketo;
-              this.templateError = error;
-              $("#templateRetrieve").modal('show');
-              $("#closeButton").show();
-              this.loading = false;
-          })
-  }
+//           }
+//       }, error =>
+//           {
+//               this.pushToMarketo = !this.pushToMarketo;
+//               this.templateError = error;
+//               $("#templateRetrieve").modal('show');
+//               $("#closeButton").show();
+//               this.loading = false;
+//           })
+//   }
 
   
-  submitMarketoCredentials()
-  {
-      this.loading = true;
-      const obj = {
-          userId: this.authenticationService.getUserId(),
-          instanceUrl: this.marketoInstance,
-          clientId: this.clientId,
-          clientSecret: this.secretId
-      }
+//   submitMarketoCredentials()
+//   {
+//       this.loading = true;
+//       const obj = {
+//           userId: this.authenticationService.getUserId(),
+//           instanceUrl: this.marketoInstance,
+//           clientId: this.clientId,
+//           clientSecret: this.secretId
+//       }
 
-      this.emailTemplateService.saveMarketoCredentials(obj).subscribe(response =>
-      {
-          if (response.statusCode == 8003)
-          {
-            $("#closeButton").hide();
-              this.showMarketoForm = false;
+//       this.emailTemplateService.saveMarketoCredentials(obj).subscribe(response =>
+//       {
+//           if (response.statusCode == 8003)
+//           {
+//             $("#closeButton").hide();
+//               this.showMarketoForm = false;
               
-              this.templateError = false;
-              this.templateSuccessMsg = response.message;
-              this.loading = false;
-              this.pushToMarketo = true;
-              setTimeout(function(){ $("#templateRetrieve").modal('hide')},3000);
-          } else
-          {
-              this.pushToMarketo = false;
-              $("#templateRetrieve").modal('show');
-              $("#closeButton").show();
-              this.templateError = response.message;
-              this.templateSuccessMsg = false;
-              this.loading = false;
-          }
-      }, error => {this.templateError = error;
-            this.pushToMarketo = false;
-            $("#closeButton").show();
-        }
-      )
+//               this.templateError = false;
+//               this.templateSuccessMsg = response.message;
+//               this.loading = false;
+//               this.pushToMarketo = true;
+//               setTimeout(function(){ $("#templateRetrieve").modal('hide')},3000);
+//           } else
+//           {
+//               this.pushToMarketo = false;
+//               $("#templateRetrieve").modal('show');
+//               $("#closeButton").show();
+//               this.templateError = response.message;
+//               this.templateSuccessMsg = false;
+//               this.loading = false;
+//           }
+//       }, error => {this.templateError = error;
+//             this.pushToMarketo = false;
+//             $("#closeButton").show();
+//         }
+//       )
 
-  }
-  getTemplatesFromMarketo()
-  {
-      this.clearValues();
+//   }
+//   getTemplatesFromMarketo()
+//   {
+//       this.clearValues();
 
-      this.checkMarketoCredentials();
+//       this.checkMarketoCredentials();
 
 
 
-  }
+//   }
   
  
-  validateModelForm(fieldId: any)
-  {
-      var errorClass = "form-group has-error has-feedback";
-      var successClass = "form-group has-success has-feedback";
+//   validateModelForm(fieldId: any)
+//   {
+//       var errorClass = "form-group has-error has-feedback";
+//       var successClass = "form-group has-success has-feedback";
 
-      if (fieldId == 'email')
-      {
-          if (this.clientId.length > 0)
-          {
-              this.clientIdClass = successClass;
-              this.clentIdError = false;
-          } else
-          {
-              this.clientIdClass = errorClass;
-              this.clentIdError = true;
-          }
-      } else if (fieldId == 'pwd')
-      {
-          if (this.secretId.length > 0)
-          {
-              this.secretIdClass = successClass;
-              this.secretIdError = false;
-          } else
-          {
-              this.secretIdClass = errorClass;
-              this.secretIdError = true;
-          }
-      } else if (fieldId == 'instance')
-      {
-          if (this.marketoInstance.length > 0)
-          {
-              this.marketoInstanceClass = successClass;
-              this.marketoInstanceError = false;
-          } else
-          {
-              this.marketoInstanceClass = errorClass;
-              this.marketoInstanceError = false;
-          }
-      }
-      this.toggleSubmitButtonState();
-  }
-
- 
-  saveMarketoTemplatesButtonState()
-  {
-
-
-  }
+//       if (fieldId == 'email')
+//       {
+//           if (this.clientId.length > 0)
+//           {
+//               this.clientIdClass = successClass;
+//               this.clentIdError = false;
+//           } else
+//           {
+//               this.clientIdClass = errorClass;
+//               this.clentIdError = true;
+//           }
+//       } else if (fieldId == 'pwd')
+//       {
+//           if (this.secretId.length > 0)
+//           {
+//               this.secretIdClass = successClass;
+//               this.secretIdError = false;
+//           } else
+//           {
+//               this.secretIdClass = errorClass;
+//               this.secretIdError = true;
+//           }
+//       } else if (fieldId == 'instance')
+//       {
+//           if (this.marketoInstance.length > 0)
+//           {
+//               this.marketoInstanceClass = successClass;
+//               this.marketoInstanceError = false;
+//           } else
+//           {
+//               this.marketoInstanceClass = errorClass;
+//               this.marketoInstanceError = false;
+//           }
+//       }
+//       this.toggleSubmitButtonState();
+//   }
 
  
-  toggleSubmitButtonState()
-  {
-      if (!this.clentIdError && !this.secretIdError && !this.marketoInstanceError)
-          this.isModelFormValid = true;
-      else
-          this.isModelFormValid = false;
+//   saveMarketoTemplatesButtonState()
+//   {
 
-  }
-  closeModal()
-  {
-    this.pushToMarketo = false;
-      $("#templateRetrieve").modal('hide');
-  }
+
+//   }
+
+ 
+//   toggleSubmitButtonState()
+//   {
+//       if (!this.clentIdError && !this.secretIdError && !this.marketoInstanceError)
+//           this.isModelFormValid = true;
+//       else
+//           this.isModelFormValid = false;
+
+//   }
+//   closeModal()
+//   {
+//     this.pushToMarketo = false;
+//       $("#templateRetrieve").modal('hide');
+//   }
 
 }
 

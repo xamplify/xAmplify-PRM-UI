@@ -105,6 +105,9 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   rsvpDetailType = '';
   httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
   hasClientError = false;
+  enableLeads = false;
+  createdBySelf = false;
+
   sortByDropDown = [
                     { 'name': 'Sort By', 'value': '' },
                     { 'name': 'Name(A-Z)', 'value': 'name-ASC' },
@@ -134,7 +137,11 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
        this.isTimeLineView = false;
        console.log(object)
        this.userTimeline(object);
+       
+     
       }
+
+   
     }catch(error){ this.xtremandLogger.error('error'+error);}
   }
   showTimeline() {
@@ -600,6 +607,9 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
 
   userTimeline(campaignViews: any) {
     try{
+      
+    
+  
     this.loading = true;
     this.redistributedAccountsBySelectedUserId = [];
      this.listEmailLogsByCampaignAndUser(campaignViews.campaignId, campaignViews.userId);
@@ -636,7 +646,37 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   
   
   getDealState(campaignViews:any){
+    console.log(campaignViews);
+    
       if(campaignViews.userId!=null && campaignViews.campaignId!=null){
+        const obj = {"campaignId":campaignViews.campaignId};
+          this.campaignService.getCampaignById(obj).subscribe(data=>{
+            console.log(data)
+            if(data.nurtureCampaign){
+              this.campaignService.getCampaignById({"campaignId":data.parentCampaignId}).subscribe(parent_campaign=>{
+                console.log(parent_campaign)
+                this.referenceService.getCompanyIdByUserId(parent_campaign.userId).subscribe(response=>{
+                  this.referenceService.getOrgCampaignTypes(response).subscribe(data=>{
+                      this.enableLeads = data.enableLeads;
+                      console.log(data)
+                  });
+              })
+              },error=>console.log(error))
+            }else{
+              if(data.userId == this.authenticationService.getUserId()){
+                this.createdBySelf = true;
+                console.log( this.createdBySelf )
+              }
+              this.referenceService.getCompanyIdByUserId(data.userId).subscribe(response=>{
+                this.referenceService.getOrgCampaignTypes(response).subscribe(data=>{
+                    this.enableLeads = data.enableLeads;
+                    console.log(data)
+                });
+            })
+            }
+          },error=>console.log(error))
+          
+      
             this.dealRegService.getDeal(campaignViews.campaignId,campaignViews.userId).subscribe(data=>{
               this.dealId = data;
               if(data == -1)

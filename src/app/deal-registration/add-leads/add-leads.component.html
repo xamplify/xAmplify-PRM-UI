@@ -12,7 +12,7 @@
   <div class="portlet-body clearfix">
     <div>
       <form role="form" id="deal-registration-form">
-          <div class="row" style="margin: 20px;" *ngIf="!dealRegistration.pushToMarketo" >
+          <!-- <div class="row" style="margin: 20px;" *ngIf="!dealRegistration.pushToMarketo" >
               <div class="col-xs-12 col-md-8" >
                 <h4 style="float:right;">Push lead to Marketo :</h4>
               </div>
@@ -30,14 +30,13 @@
                 <h4 style="float:right;">Push lead to Marketo :</h4>
                
               </div>
-              <div class="col-xs-12 col-md-2" style="opacity: 0.8;">
-                  <!-- <ui-switch  [(ngModel)]="p" [checked]="pushToMarketo" (change)="pushMarketo($event)" [ngModelOptions]="{standalone: true}"></ui-switch> -->
+              <div class="col-xs-12 col-md-2" style="opacity: 0.5;">
                   <switch [status]="dealRegistration.pushToMarketo" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
                   [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" >
                    </switch>
                    
               </div>
-          </div>
+          </div> -->
         <div class="row">
           <!-- left page -->
           <div class="col-sm-6 col-xs-12">
@@ -169,7 +168,7 @@
   
 
   <!-- END CONTENT -->
-
+<!-- 
 <div class="modal right fade" id="templateRetrieve" tabindex="-1" role="dialog" aria-labelledby="templateRetrieve" data-keyboard="false"
 data-backdrop="static">
  <div class="modal-dialog template-modal" role="document" style="width: 50%">
@@ -216,4 +215,4 @@ data-backdrop="static">
      </div>
    </div>
  </div>
-</div>
+</div> -->

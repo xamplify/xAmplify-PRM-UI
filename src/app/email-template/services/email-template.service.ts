@@ -144,6 +144,11 @@ export class EmailTemplateService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+    checkCustomObjects(userId: number) {
+        return this.http.get(this.MARKETO_URL + `/marketo/${userId}/checkCustomObjects?access_token=${this.authenticationService.access_token}`)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
     saveMarketoCredentials( formData: any) {
         return this.http.post(this.MARKETO_URL + `/marketo/credentials?access_token=${this.authenticationService.access_token}`, formData)
             .map(this.extractData)

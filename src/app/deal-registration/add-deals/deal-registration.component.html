@@ -21,13 +21,12 @@
     <div>
       <form role="form" id="deal-registration-form">
 
-          <div class="row" style="margin: 20px;" *ngIf="!dealRegistration.pushToMarketo && !isVendor" >
+          <!-- <div class="row" style="margin: 20px;" *ngIf="!dealRegistration.pushToMarketo && !isVendor" >
               <div class="col-xs-12 col-md-10" >
                 <h4 style="float:right;">Push Opportunity to Marketo :</h4>
                
               </div>
               <div class="col-xs-12 col-md-2">
-                  <!-- <ui-switch  [(ngModel)]="p" [checked]="pushToMarketo" (change)="pushMarketo($event)" [ngModelOptions]="{standalone: true}"></ui-switch> -->
                   <switch [status]="false" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
                   [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (click)="pushMarketo(pushToMarketo)" id="falseAction" *ngIf="!pushToMarketo">
                    </switch>
@@ -41,14 +40,13 @@
                 <h4 style="float:right;">Push Opportunity to Marketo :</h4>
                
               </div>
-              <div class="col-xs-12 col-md-2" style="opacity: 0.8;">
-                  <!-- <ui-switch  [(ngModel)]="p" [checked]="pushToMarketo" (change)="pushMarketo($event)" [ngModelOptions]="{standalone: true}"></ui-switch> -->
+              <div class="col-xs-12 col-md-2" style="opacity: 0.5;">
                   <switch [status]="dealRegistration.pushToMarketo" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
                   [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" >
                    </switch>
                    
               </div>
-          </div>
+          </div> -->
         <div class="row" style="margin-bottom: 50px;border: 1px solid darkslategrey;margin: 10px;padding: 10px">
 
           <!-- left page -->
@@ -378,7 +376,9 @@
 
   <!-- END CONTENT -->
 
-  <div class="modal right fade" id="templateRetrieve" tabindex="-1" role="dialog" aria-labelledby="templateRetrieve" data-keyboard="false"
+  
+<!-- Marketo Authentication -->
+  <!-- <div class="modal right fade" id="templateRetrieve" tabindex="-1" role="dialog" aria-labelledby="templateRetrieve" data-keyboard="false"
   data-backdrop="static">
    <div class="modal-dialog template-modal" role="document" style="width: 50%">
      <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
@@ -425,4 +425,4 @@
      </div>
    </div>
   </div>
-  
+   -->

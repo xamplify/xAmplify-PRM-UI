@@ -1707,4 +1707,16 @@ export class ReferenceService {
         .map(this.extractData)
         .catch(this.handleError);
     }
+
+
+    enableLeads(){
+        this.getCompanyIdByUserId(this.authenticationService.getUserId()).subscribe(response=>{
+            this.getOrgCampaignTypes(response).subscribe(data=>{
+                console.log(data)
+                return data.enableLeads;
+               
+            });
+        })
+        return false;
+    }
 }

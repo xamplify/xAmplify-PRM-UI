@@ -25,7 +25,18 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
     contacts = false;
     partners = false;
 
+    enableLeads = false;
+
     constructor(location: Location, public authService: AuthenticationService, public refService: ReferenceService,private router:Router) {
+       
+        console.log(authService.getUserId());
+        this.refService.getCompanyIdByUserId(this.authService.getUserId()).subscribe(response=>{
+            this.refService.getOrgCampaignTypes(response).subscribe(data=>{
+            this.enableLeads = data.enableLeads;
+            console.log(data)
+        });
+   
+    })
         this.updateLeftSideBar(location);
     }
 
@@ -89,7 +100,12 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                 if(roles.indexOf(this.roleName.vendorRole)>-1){
                     this.authService.module.isVendor = true;
                 }
+
+                
+        
+              
         }
+        
         
     }
 

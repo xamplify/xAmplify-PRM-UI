@@ -329,6 +329,8 @@ export class AuthenticationService {
         }
         return userId;
     }
+
+   
     
     connect() {
         let url = this.REST_URL + "socket";

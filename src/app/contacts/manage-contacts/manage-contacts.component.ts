@@ -104,6 +104,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
     public googleImage: string = 'assets/admin/pages/media/works/google-contacts.png';
     public salesforceImage: string = 'assets/admin/pages/media/works/salesforce-contacts.png';
     public normalImage: string = 'assets/admin/pages/media/works/contacts.png';
+    public marketoImage:string = 'assets/admin/pages/media/works/marketo.png'
 
     sortOptions = [
         { 'name': 'Sort by', 'value': '', 'for': '' },
