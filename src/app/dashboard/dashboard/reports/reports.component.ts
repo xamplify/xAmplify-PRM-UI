@@ -243,7 +243,7 @@ export class ReportsComponent implements OnInit {
   }
   
   downloadLogs() {
-     this.logListName = 'Video_Statestics.csv';
+     this.logListName = 'Video_Statistics.csv';
      
      if (this.reportName === 'views') {
          this.downloadCsvList = this.videoViewsLevelSecondAllRecords;
