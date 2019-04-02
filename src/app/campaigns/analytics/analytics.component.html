@@ -485,7 +485,10 @@
 						</div>
 					</div>
 					<div class="portlet-body clearfix">
-            <div *ngIf="campaignViews">
+					<div *ngIf="campaignViewsPagination.pagedItems?.length === 0" class="alert alert-info">
+  <strong>No Records Found.</strong>
+</div>
+            <div *ngIf="campaignViewsPagination.pagedItems?.length != 0" >
 						<div class="table-responsive">
 							<table class="table tgrid">
 								<thead>

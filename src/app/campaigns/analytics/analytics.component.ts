@@ -139,9 +139,11 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     try{
     this.loading = true;
     this.referenceService.loading(this.httpRequestLoader, true);
-    if(!this.campaign.detailedAnalyticsShared && this.campaign.dataShare && !this.campaign.parentCampaignId){
+  //if(!this.campaign.detailedAnalyticsShared && this.campaign.dataShare && !this.campaign.parentCampaignId){
+    if(this.isDataShare && this.isNavigatedThroughAnalytics && !this.isPartnerEnabledAnalyticsAccess){
         pagination.campaignId = campaignId;
-        pagination.campaignType = "VIDEO";
+        pagination.campaignType = this.campaignType;
+        
         this.campaignService.listCampaignInteractiveViews(pagination)
          .subscribe(data => {
            this.listCampaignViewsDataInsert(data);
@@ -315,7 +317,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       label.onclick = function(){
         console.log(label);
         const text = this.textContent;
-        for(let i=0; i<self.campaignBarViews.length; i++){
+        for(let i=0; i< self.campaignBarViews.length; i++){
           let email = text;
           if(email.indexOf(self.campaignBarViews[i].emailId)){
             email = email.replace(self.campaignBarViews[i].firstName, '');
@@ -328,35 +330,54 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     });
     this.loading = false;
   }
+  
   getCampaignUserViewsCountBarCharts(campaignId: number, pagination: Pagination) {
     try{
     this.loading = true;
     this.paginationType = 'viewsBarChart';
-    this.campaignService.listCampaignViews(campaignId, pagination, this.isChannelCampaign)
-      .subscribe(
-      data => {
-        console.log(data);
-        this.campaignBarViews = data.campaignviews;
-        const names = [];
-        const views = [];
-        for (let i = 0; i < this.campaignBarViews.length; i++) {
-          const firstName = this.campaignBarViews[i].firstName ? this.campaignBarViews[i].firstName : "";
-          const lastName =  this.campaignBarViews[i].lastName ? this.campaignBarViews[i].lastName : "";
-          names.push( "<b>"+firstName + " "+ lastName + '</b><br/>' + this.campaignBarViews[i].emailId);
-          views.push(this.campaignBarViews[i].viewsCount)
-        }
-        this.maxViewsValue = Math.max.apply(null, views);
-        this.pagination.totalRecords = this.campaignReport.emailSentCount;
-        this.pagination = this.pagerService.getPagedItems(this.pagination, this.campaignBarViews);
-        console.log(this.pagination);
-        this.campaignViewsCountBarchart(names, views);
-        this.referenceService.goToTop();
-        this.loading = false;
-      },
-      error => console.log(error),
-      () => console.log()
-      )
+    
+    if ( this.isDataShare && this.isNavigatedThroughAnalytics && !this.isPartnerEnabledAnalyticsAccess ) {
+        pagination.campaignId = campaignId;
+        pagination.campaignType = this.campaignType;
+
+        this.campaignService.listCampaignInteractiveViews( pagination )
+            .subscribe( data => {
+                this.campaignBarViews = data;
+                this.campaignBarViewsDataInsert();
+            },
+            error => console.log( error ),
+            () => console.log( 'listCampaignInteractiveViews(): called' ) )
+    } else {
+        this.campaignService.listCampaignViews( campaignId, pagination, this.isChannelCampaign )
+            .subscribe(
+            data => {
+                console.log( data );
+                this.campaignBarViews = data.campaignviews;
+                this.campaignBarViewsDataInsert();
+            },
+            error => console.log( error ),
+            () => console.log()
+            )
+    }
     }catch(error){ this.hasClientError = true;this.xtremandLogger.error('error'+error);}
+  }
+  
+  campaignBarViewsDataInsert(){
+      const names = [];
+      const views = [];
+      for ( let i = 0; i < this.campaignBarViews.length; i++ ) {
+          const firstName = this.campaignBarViews[i].firstName ? this.campaignBarViews[i].firstName : "";
+          const lastName = this.campaignBarViews[i].lastName ? this.campaignBarViews[i].lastName : "";
+          names.push( "<b>" + firstName + " " + lastName + '</b><br/>' + this.campaignBarViews[i].emailId );
+          views.push( this.campaignBarViews[i].viewsCount )
+      }
+      this.maxViewsValue = Math.max.apply( null, views );
+      this.pagination.totalRecords = this.campaignReport.emailSentCount;
+      this.pagination = this.pagerService.getPagedItems( this.pagination, this.campaignBarViews );
+      console.log( this.pagination );
+      this.campaignViewsCountBarchart( names, views );
+      this.referenceService.goToTop();
+      this.loading = false;
   }
 
   getCampaignUsersWatchedInfo(countryCode) {
