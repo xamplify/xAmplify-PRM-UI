@@ -898,4 +898,8 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     $('#myModal').modal('hide');
     this.router.navigate(['/home/campaigns/' + campaign.campaignId + "/remove-access"]);
   }
+  
+  downloadEmailLogs(){
+      
+  }
 }

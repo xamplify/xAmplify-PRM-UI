@@ -274,6 +274,7 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
                            $.each(self.companyProfileImages,function(index,value){
                                body = body.replace(value,self.authenticationService.MEDIA_URL + self.refService.companyProfileImage);
                            });
+                           body = body.replace("https://xamp.io/vod/replace-company-logo.png", self.authenticationService.MEDIA_URL + self.refService.companyProfileImage);
                            self.emailTemplate.jsonBody = body;
                            var jsonBody = JSON.parse(body);
                            bee.load(jsonBody);

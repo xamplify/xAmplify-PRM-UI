@@ -20,5 +20,5 @@ export const environment = {
   // SERVER_URL: "https://aravindu.com/"
  // SERVER_URL: "https://xamp.io/"
   SERVER_URL: 'https://release.xamp.io/'
- //SERVER_URL: 'http://localhost:8085/'
+ //SERVER_URL: 'http://localhost:8090/'
 };

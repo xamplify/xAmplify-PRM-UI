@@ -489,6 +489,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
                         body = body.replace(value,self.authenticationService.MEDIA_URL + self.referenceService.companyProfileImage);
                     });
                     body = body.replace("https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL + this.referenceService.companyProfileImage);
+                    emailTemplate.body = body;
                     this.referenceService.previewEmailTemplate(emailTemplate, this.campaign);
                     this.ngxloading = false;
                 },
