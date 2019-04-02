@@ -25,8 +25,10 @@ export class ReportsComponent implements OnInit {
   reportName: string;
   videoViewsLevelFirst = [];
   videoViewsLevelSecond = [];
+  videoMinutsWatchedTotalRecordsLevelSecond = [];
   videoViewsLevelSecondAllRecords = [];
   gettingAllUsersPagination: Pagination = new Pagination();
+  allMinutesWatchedPagination: Pagination = new Pagination();
   isReport: boolean;
   selectedRowValue = false;
   anotherViewDate: string;
@@ -165,8 +167,8 @@ export class ReportsComponent implements OnInit {
       (error: any) => {  console.error(error); } );
   }
 
-  getVideoViewsLevelTwoAllUsers(daysInterval, dateValue, videoId, totalrecords) {
-      this.gettingAllUsersPagination.maxResults = totalrecords;
+  getVideoViewsLevelTwoAllUsers(daysInterval, dateValue, videoId, totalRecords) {
+      this.gettingAllUsersPagination.maxResults = totalRecords;
       this.dashboardService.getVideoViewsLevelTwoReports(daysInterval, dateValue, videoId, this.gettingAllUsersPagination).subscribe(
         (result: any) => { this.videoViewsLevelSecondAllRecords = result.data; },
         (error: any) => { console.error(error); });
@@ -214,9 +216,22 @@ export class ReportsComponent implements OnInit {
         this.videoViewsLevelSecond = result.data;
         this.pagination.totalRecords = result.totalRecords;
         this.pagination = this.pagerService.getPagedItems(this.pagination, this.videoViewsLevelSecond);
+        this.getVideoMinutesWatchedAllUsersLevelTwo(result.totalRecords);
       },
       (error: any) => {  console.error(error); });
   }
+  
+  getVideoMinutesWatchedAllUsersLevelTwo(totalRecords) {
+      this.allMinutesWatchedPagination.maxResults = totalRecords;
+      this.dashboardService.getVideoMinutesWatchedLevelTwoReports(this.daysInterval, this.dateValue, this.videoId, this.allMinutesWatchedPagination).subscribe(
+        (result: any) => {
+          console.log(result);
+          this.videoMinutsWatchedTotalRecordsLevelSecond = result.data;
+        },
+        (error: any) => {  console.error(error); });
+    }
+  
+  
   selectedRow(viewData: any) {
     this.videoViewsLevelSecond.length = 0;
     this.pagination.pageIndex = 1;
@@ -226,13 +241,22 @@ export class ReportsComponent implements OnInit {
       this.getVideoMinutesWatchedLevelTwo(this.daysCount, viewData.selectedDate, viewData.videoId, this.pagination);
     }
   }
-  downloadLogs(level: string) {
+  
+  downloadLogs() {
      this.logListName = 'Video_Statestics.csv';
-    if (level === 'one') {
+     
+     if (this.reportName === 'views') {
+         this.downloadCsvList = this.videoViewsLevelSecondAllRecords;
+     }else{
+         this.downloadCsvList = this.videoMinutsWatchedTotalRecordsLevelSecond;
+     }
+     
+     
+   /* if (level === 'one') {
       this.downloadCsvList = this.videoViewsLevelFirst;
     } else if (level === 'two') {
       this.downloadCsvList = this.videoViewsLevelSecondAllRecords;
-    }
+    }*/
     this.downloadDataList.length = 0;
     for (let i = 0; i < this.downloadCsvList.length; i++) {
       const date = new Date(this.downloadCsvList[i].date);
@@ -241,19 +265,20 @@ export class ReportsComponent implements OnInit {
         'Last Name': this.downloadCsvList[i].lastName,
         'Email Id': this.downloadCsvList[i].emailId,
         'Video Title': this.downloadCsvList[i].videoTitle,
+        'Date and Time': date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
       }
-      if (level === 'one') {
+      /*if (level === 'one') {
         if (this.reportName == 'views') {
           object[this.reportName] = this.downloadCsvList[i].viewsCount;
         } else {
           object[this.reportName] = this.downloadCsvList[i].minutesWatchedValue;
         }
         object["Date"] = date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
-      }
+      }*/
 
-      if (level === 'two') {
+      /*if (level === 'two') {
         object["Date and Time"] = date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
-      }
+      }*/
 
       this.downloadDataList.push(object);
     }
