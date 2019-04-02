@@ -250,13 +250,7 @@ export class ReportsComponent implements OnInit {
      }else{
          this.downloadCsvList = this.videoMinutsWatchedTotalRecordsLevelSecond;
      }
-     
-     
-   /* if (level === 'one') {
-      this.downloadCsvList = this.videoViewsLevelFirst;
-    } else if (level === 'two') {
-      this.downloadCsvList = this.videoViewsLevelSecondAllRecords;
-    }*/
+  
     this.downloadDataList.length = 0;
     for (let i = 0; i < this.downloadCsvList.length; i++) {
       const date = new Date(this.downloadCsvList[i].date);
@@ -267,19 +261,7 @@ export class ReportsComponent implements OnInit {
         'Video Title': this.downloadCsvList[i].videoTitle,
         'Date and Time': date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
       }
-      /*if (level === 'one') {
-        if (this.reportName == 'views') {
-          object[this.reportName] = this.downloadCsvList[i].viewsCount;
-        } else {
-          object[this.reportName] = this.downloadCsvList[i].minutesWatchedValue;
-        }
-        object["Date"] = date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
-      }*/
-
-      /*if (level === 'two') {
-        object["Date and Time"] = date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
-      }*/
-
+      
       this.downloadDataList.push(object);
     }
     this.referenceService.isDownloadCsvFile = true;
