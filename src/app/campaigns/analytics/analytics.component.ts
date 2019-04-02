@@ -21,6 +21,7 @@ import { TwitterService } from '../../social/services/twitter.service';
 import { ContactService } from '../../contacts/services/contact.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { Tweet } from '../../social/models/tweet';
+import { EmailTemplateService } from '../../email-template/services/email-template.service';
 declare var $, Highcharts: any;
 
 @Component({
@@ -30,6 +31,7 @@ declare var $, Highcharts: any;
   providers: [Pagination,HttpRequestLoader]
 })
 export class AnalyticsComponent implements OnInit , OnDestroy{
+    ngxloading: boolean;
   isTimeLineView: boolean;
   campaign: Campaign;
   isChannelCampaign: boolean;
@@ -113,7 +115,8 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   tweets: Array<Tweet> = new Array<Tweet>();
   constructor(private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
     public authenticationService: AuthenticationService, public pagerService: PagerService, public pagination: Pagination,
-    public referenceService: ReferenceService, public contactService: ContactService, public videoUtilService: VideoUtilService, public xtremandLogger:XtremandLogger, private twitterService: TwitterService) {
+    public referenceService: ReferenceService, public contactService: ContactService, public videoUtilService: VideoUtilService, 
+    public xtremandLogger:XtremandLogger, private twitterService: TwitterService,private emailTemplateService:EmailTemplateService) {
       try{
       this.campaignRouter = this.utilService.getRouterLocalStorage();
       this.isTimeLineView = false;
@@ -1434,11 +1437,30 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     }catch(error){this.xtremandLogger.error('error'+error); }
   }
 
-    showEmailTemplatePreview(emailTemplate:any){
-        try{
-        console.log(this.campaign);
-        this.referenceService.previewEmailTemplate(emailTemplate, this.campaign);
-        }catch(error){this.xtremandLogger.error(error);}
+  showEmailTemplatePreview( emailTemplate: any ) {
+      try {
+          this.ngxloading = true;
+          let userId = 0;
+          if(this.campaign.nurtureCampaign){
+              userId = this.campaign.parentCampaignUserId;
+          }else{
+              userId =  this.campaign.userId;
+          }
+          this.emailTemplateService.getAllCompanyProfileImages(userId).subscribe(
+              ( data: any ) => {
+                  let body = emailTemplate.body;
+                  let self = this;
+                  $.each( data, function( index, value ) {
+                      body = body.replace( value, self.authenticationService.MEDIA_URL + self.campaign.companyLogo );
+                  } );
+                  body = body.replace( "https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL + this.campaign.companyLogo );
+                  emailTemplate.body = body;
+                  this.referenceService.previewEmailTemplate( emailTemplate, this.campaign );
+                  this.ngxloading = false;
+              },
+              error => { this.xtremandLogger.error( "error in getAllCompanyProfileImages(" + userId+ ")", error ); },
+              () => this.xtremandLogger.info( "Finished getAllCompanyProfileImages()" ) );
+      } catch ( error ) { this.xtremandLogger.error( error ); }
     }
 
     previewVideo(videoFile: any){

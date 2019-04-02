@@ -486,9 +486,9 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
                     let body = emailTemplate.body;
                     let self  =this;
                     $.each(data,function(index,value){
-                        body = body.replace(value,self.authenticationService.MEDIA_URL + self.referenceService.companyProfileImage);
+                        body = body.replace(value, self.authenticationService.MEDIA_URL+self.campaign.companyLogo);
                     });
-                    body = body.replace("https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL + this.referenceService.companyProfileImage);
+                    body = body.replace("https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL+this.campaign.companyLogo);
                     emailTemplate.body = body;
                     this.referenceService.previewEmailTemplate(emailTemplate, this.campaign);
                     this.ngxloading = false;

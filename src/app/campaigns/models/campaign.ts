@@ -60,4 +60,5 @@ export class Campaign {
     redistributedCount:number = 0;
     userLists:any;
     parentCampaignUserId:number = 0;
+    companyLogo:string = "";
 }
