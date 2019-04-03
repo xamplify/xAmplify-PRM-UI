@@ -104,7 +104,6 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
         
               
         }
-        }
         }catch(error){  console.log(error); }
     }
 

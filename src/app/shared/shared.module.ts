@@ -28,11 +28,11 @@ import { ImageCropperModule } from 'ng2-img-cropper';
 @NgModule({
         imports: [CommonModule, RouterModule, FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,
                   TagInputModule, HttpModule, Ng2FilterPipeModule, ColorPickerModule, TimepickerModule.forRoot(),
-                  BootstrapSwitchModule.forRoot(), TimezonePickerModule, LoadingModule, CommonComponentModule,NgxCurrencyModule ],
+                  BootstrapSwitchModule.forRoot(),ImageCropperModule , TimezonePickerModule, LoadingModule, CommonComponentModule,NgxCurrencyModule ],
         declarations: [LoaderComponent, UpdateStatusComponent, SocialStatusComponent, ConnectAccountsComponent, SocialLoaderComponent,CountLoaderComponent],
         exports: [FileSelectDirective, FileDropDirective, FormsModule, CommonModule, RouterModule, ColorPickerModule,
                   FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule, TagInputModule,
-                  HttpModule, Ng2FilterPipeModule, LoaderComponent, TimepickerModule,
+                  HttpModule, Ng2FilterPipeModule, ImageCropperModule ,LoaderComponent, TimepickerModule,
                   BootstrapSwitchModule, TimezonePickerModule, UpdateStatusComponent, SocialStatusComponent, ConnectAccountsComponent, LoadingModule, SocialLoaderComponent,NgxCurrencyModule,CountLoaderComponent
                 ],
         providers: [],
