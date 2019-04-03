@@ -49,6 +49,8 @@ export class LoginComponent implements OnInit, OnDestroy {
             this.loading = false;
             this.setCustomeResponse("ERROR", this.properties.EMPTY_CREDENTIAL_ERROR);
         } else {
+          this.model.username = this.model.username.replace(/\s/g, '');
+          this.model.password = this.model.password.replace(/\s/g, '');
           const userName = this.model.username.toLowerCase();
           this.referenceService.userName = userName;
           const authorization = 'Basic ' + btoa('my-trusted-client:');
@@ -59,21 +61,23 @@ export class LoginComponent implements OnInit, OnDestroy {
                   const currentUser = JSON.parse(localStorage.getItem('currentUser'));
                   this.xtremandLogger.log(currentUser);
                   this.xtremandLogger.log(currentUser.hasCompany);
+                  localStorage.removeItem('isLogout');
                   this.redirectTo(currentUser);
                   // if user is coming from any link
-                  if (this.authenticationService.redirectUrl) {
-                      this.router.navigate([this.authenticationService.redirectUrl]);
-                      this.authenticationService.redirectUrl = null;
-                  }
+                  // if (this.authenticationService.redirectUrl) {
+                  //     this.router.navigate([this.authenticationService.redirectUrl]);
+                  //     this.authenticationService.redirectUrl = null;
+                  // }
               } else {
                   this.loading = false;
                   this.setCustomeResponse("ERROR", this.properties.BAD_CREDENTIAL_ERROR);
                }
              },
               (error: any) => {
-                  this.loading = false;
+                try{
+                this.loading = false;
                   const body = error['_body'];
-                  if (body !== "") {
+                    if (body !== "") {
                       const response = JSON.parse(body);
                       if (response.error_description === "Bad credentials" || response.error_description ==="Username/password are wrong") {
                           this.setCustomeResponse("ERROR", this.properties.BAD_CREDENTIAL_ERROR);
@@ -92,6 +96,9 @@ export class LoginComponent implements OnInit, OnDestroy {
                       this.setCustomeResponse("ERROR", error);
                       this.xtremandLogger.error("error:" + error)
                   }
+                }catch(err){
+                  if( error.status===0 ) { this.setCustomeResponse("ERROR", 'Error Disconnected! Service unavailable, Please check you internet connection'); }
+                }
               });
           return false;
         }

@@ -98,8 +98,8 @@ export class SocialService {
       .catch(this.handleError);
   }
 
-  listEvents(userId: number) {
-    return this.http.get(this.URL + 'social/list/' + userId + '?access_token=' + this.authenticationService.access_token)
+  listEvents(request: any) {
+    return this.http.post(this.URL + 'social/list/?access_token=' + this.authenticationService.access_token, request)
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -191,9 +191,21 @@ export class SocialService {
     return body || {};
   }
 
-  private handleError(error: any) {
-    const errMsg = (error.message) ? error.message :
-      error.status ? `${error.status} - ${error.statusText}` : 'Server   error';
-    return Observable.throw(errMsg);
-  }
+    private handleError( error: any ) {
+        const body = error['_body'];
+        if ( body !== "" ) {
+            var response = JSON.parse( body );
+            if ( response.message != undefined ) {
+                return Observable.throw( response.message );
+            } else {
+                return Observable.throw( response.error );
+            }
+
+        } else {
+            let errMsg = ( error.message ) ? error.message :
+                error.status ? `${error.status} - ${error.statusText}` : 'Server   error';
+            return Observable.throw( error );
+        }
+
+    }
 }

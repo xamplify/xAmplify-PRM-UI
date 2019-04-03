@@ -47,7 +47,7 @@ img:hover {
 <div class="page-content">
 
 <div class="my-container">
-		<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+		<ngx-loading [show]="loading || contactService.isLoadingList" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 	</div>
 	<div class="page-bar">
 		<ul class="page-breadcrumb">
@@ -94,7 +94,7 @@ img:hover {
 											[class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality">
 											<i style="display:block; margin-top: 22px !important; text-align: center; font-size:24px; margin:0 auto 10px" class="fa fa-file-excel-o"></i>
 											<span style="display:block; font-size:12px; text-align:center">Upload a	CSV</span>
-									<input type="file" ng2FileSelect [uploader]="uploader" title=" "
+									<input type="file" ng2FileSelect [uploader]="uploader" title=" " (click)="input.value = null"
 									(change)="fileChange(input)" accept=".csv" #input
 									[disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality" />
 										</div>
@@ -234,7 +234,7 @@ img:hover {
 			<ul class="dropdown-menu pull-right">
 				<li><a id="save_button" *ngIf="selectedAddPartnerOption != 5" (click)="saveContacts()">Save </a></li>
 				<li><a id="cancel_button" *ngIf="selectedAddPartnerOption != 5 || clipBoard" (click)="cancelPartners()">Cancel </a></li>
-				<li><a id="saveAs_button"
+				<li><a id="saveAs_button" [class.disabled]="isSaveAsList"
 					*ngIf="selectedAddPartnerOption == 5 && !clipBoard" (click)="saveAsChange(); editContactComponent.addPartnerSave = true">Save
 						As </a></li>
 				 <li><a id="exportToExcel"
@@ -266,7 +266,7 @@ img:hover {
 		<div *ngIf="dublicateEmailId" class="col-md-6"
 			class="col-md-9 alert alert alert-danger alert-dismissable"
 			style="width: 100%">
-			<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			<a class="close" data-dismiss="alert" aria-label="close" (click)="closeDuplicateEmailErrorMessage()">&times;</a>
 			<h4 class="m0">
 				Duplicate EmailId Exist Please Remove..<u>{{duplicateEmailIds}}</u>
 			</h4>
@@ -380,9 +380,9 @@ img:hover {
 			<div class="col-xs-12" style="width: 103%; left: -18px;"
 				*ngIf="(selectedAddPartnerOption == 2 || selectedAddPartnerOption == 4)">
 				<!-- BEGIN EXAMPLE TABLE PORTLET-->
-				<div *ngIf="newPartnerUser?.length == 0 && selectedAddPartnerOption == 2"
-									class="alert alert-info alert-dismissable">No Partners
-									found</div>
+				<div *ngIf="newPartnerUser?.length == 0 && selectedAddPartnerOption == 2">
+									<app-list-loader></app-list-loader>
+									</div>
 				<div class="portlet box blue" *ngIf="newPartnerUser?.length != 0">
 					<div class="portlet-title">
 						<div class="caption">
@@ -413,7 +413,7 @@ img:hover {
 										</thead>
 										<tbody>
 										<ng-container
-												*ngFor="let newContact of newPartnerUser; let i = index">
+												*ngFor="let newContact of pagedItems; let i = index">
 											<tr class='row_{{i}}'>
 												<td>
 												<app-user-info [isPartnerEntityInfo]="true" [isPartnerInfo]="true" [isPartnerInfo]="true" [userInfo]="newContact"> </app-user-info>
@@ -471,6 +471,26 @@ img:hover {
 
 										</tbody>
 									</table>
+
+									<ul *ngIf="pager.pages && pager.pages.length"
+										class="pagination">
+										<li [ngClass]="{disabled:pager.currentPage === 1}"><a
+											(click)="setSocialPage(1)">First</a></li>
+										<li [ngClass]="{disabled:pager.currentPage === 1}"><a
+											(click)="setSocialPage(pager.currentPage - 1)">Previous</a></li>
+										<li *ngFor="let page of pager.pages"
+											[ngClass]="{active:pager.currentPage === page}"><a
+											(click)="setSocialPage(page)">{{page}}</a></li>
+										<li
+											[ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+											<a (click)="setSocialPage(pager.currentPage + 1)">Next</a>
+										</li>
+										<li
+											[ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+											<a (click)="setSocialPage(pager.totalPages)">Last</a>
+										</li>
+									</ul>
+
 								</div>
 							</div>
 						</div>
@@ -814,7 +834,7 @@ img:hover {
 							<label class="control-label col-sm-3" for="email">Select
 								Option:</label>
 							<div class="col-sm-8">
-								<select class="opts form-control" id="salesforce-dropdown-1"
+								<select class="opts form-control"
 									(change)="onChangeSalesforceDropdown($event)">
 									<option selected value="DEFAULT">Select</option>
 									<option value="contact">Contacts</option>

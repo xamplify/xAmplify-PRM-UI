@@ -59,6 +59,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
     contactCountLoad: boolean = false;
     isSegmentation: boolean = false;
     isSegmentationErrorMessage: boolean;
+    filterConditionErrorMessage = "";
 
     listContactData: boolean = true;
     customResponse: CustomResponse = new CustomResponse();
@@ -145,7 +146,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
         { 'name': 'Country', 'value': 'country' },
         { 'name': 'City', 'value': 'city' },
         { 'name': 'Mobile Number', 'value': 'mobile Number' },
-        { 'name': 'Notes', 'value': 'notes' },
+       /* { 'name': 'Notes', 'value': 'notes' },*/
     ];
     filterOption = this.filterOptions[0];
 
@@ -207,6 +208,14 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
             this.xtremandLogger.info( "Success Message in manage contact pape" );
             this.contactService.saveAsSuccessMessage = "";
         }
+        
+        if(this.contactService.saveAsSuccessMessage === "saveAsPartnerError"){
+            this.customResponse = new CustomResponse( 'ERROR', this.contactService.saveAsErrorMessage, true );
+            
+            this.contactService.saveAsSuccessMessage = "";
+            this.contactService.saveAsErrorMessage = "";
+        }
+        
         if ( this.contactService.deleteUserSucessMessage === true ) {
           if(this.isPartner){
             this.customResponse = new CustomResponse( 'SUCCESS', this.properties.PARTNERS_LIST_DELETE_SUCCESS, true );
@@ -249,10 +258,11 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
                 .subscribe(
                 ( data: any ) => {
                     this.xtremandLogger.info( data );
+                    data.listOfUserLists.forEach((element, index) => { element.createdDate = new Date(element.createdDate);});
                     this.contactLists = data.listOfUserLists;
                     this.totalRecords = data.totalRecords;
                     if ( data.totalRecords.length == 0 ) {
-                        this.resetResponse();
+                        this.resetResponse(); 
                         this.customResponse = new CustomResponse( 'INFO', this.properties.NO_RESULTS_FOUND, true );
                     } else {
                         pagination.totalRecords = this.totalRecords;
@@ -409,7 +419,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
         } else {
             let a = document.createElement( 'a' );
             a.href = url;
-            a.download = contactListName + '_Contact_List.csv';
+            a.download = contactListName + " " + this.checkingContactTypeName + ' List.csv';
             document.body.appendChild( a );
             a.click();
             document.body.removeChild( a );
@@ -889,9 +899,10 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
                         console.log( index + "value" + value );
                     });
                     //this.invalidDeleteSucessMessage = true;
-                    this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACTS_DELETE_SUCCESS, true );
+                    this.contactsCount();
                     this.contactCountLoad = true;
                     this.listContactsByType( this.contactsByType.selectedCategory );
+                    this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACTS_DELETE_SUCCESS, true );
                 },
                 ( error: any ) => {
                     if ( error._body.includes( 'Please launch or delete those campaigns first' ) ) {
@@ -1153,46 +1164,74 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
     contactFilter() {
         try {
             for ( let i = 0; i < this.criterias.length; i++ ) {
-                if ( this.criterias[i].operation == "=" ) {
-                    this.criterias[i].operation = "eq";
-                }
-                if ( this.criterias[i].property == "First Name" ) {
-                    this.criterias[i].property = "firstName";
-                }
-                else if ( this.criterias[i].property == "Last Name" ) {
-                    this.criterias[i].property = "lastName";
-                }
-                else if ( this.criterias[i].property == "Company" ) {
-                    this.criterias[i].property = "contactCompany";
-                }
-                else if ( this.criterias[i].property == "Job Title" ) {
-                    this.criterias[i].property = "jobTitle";
-                }
-                else if ( this.criterias[i].property == "Email Id" ) {
-                    this.criterias[i].property = "emailId";
-                }
-                else if ( this.criterias[i].property == "Country" ) {
-                    this.criterias[i].property = "country";
-                } else if ( this.criterias[i].property == "City" ) {
-                    this.criterias[i].property = "city";
-                }
-                else if ( this.criterias[i].property == "Mobile Number" ) {
-                    this.criterias[i].property = "mobileNumber";
-                }
-                else if ( this.criterias[i].property == "Notes" ) {
-                    this.criterias[i].property = "description";
-                }
-                console.log( this.criterias[i].operation );
-                console.log( this.criterias[i].property );
-                console.log( this.criterias[i].value1 );
-
+                
                 if ( this.criterias[i].property == "Field Name*" || this.criterias[i].operation == "Condition*" || ( this.criterias[i].value1 == undefined || this.criterias[i].value1 == "" ) ) {
                     this.isSegmentationErrorMessage = true;
+                    if(this.criterias[i].property == "Field Name*" && this.criterias[i].operation == "Condition*" && (this.criterias[i].value1 == undefined || this.criterias[i].value1 == "")){
+                        this.filterConditionErrorMessage = "Please fill the required data at position " + i;
+                    }else if(this.criterias[i].property == "Field Name*" && this.criterias[i].operation == "Condition*"){
+                        this.filterConditionErrorMessage = "Please select the Field Name and Condition at position " + i;
+                    }else if(this.criterias[i].property == "Field Name*" && (this.criterias[i].value1 == undefined || this.criterias[i].value1 == "")){
+                        this.filterConditionErrorMessage = "Please select the Field Name and Value at position " + i;
+                    }else if(this.criterias[i].operation == "Condition*" && (this.criterias[i].value1 == undefined || this.criterias[i].value1 == "")){
+                        this.filterConditionErrorMessage = "Please select the Condition and Value at position " + i;
+                    }else if(this.criterias[i].operation == "Condition*"){
+                        this.filterConditionErrorMessage = "Please select the Condition at position " + i;
+                    }else if(this.criterias[i].property == "Field Name*"){
+                        this.filterConditionErrorMessage = "Please select the Field Name at position " + i;
+                    }else if(this.criterias[i].value1 == undefined || this.criterias[i].value1 == ""){
+                        this.filterConditionErrorMessage = "Please fill the value at position " + i;
+                    }
+                    break;
                 } else {
                     this.isSegmentationErrorMessage = false;
                 }
             }
+                
             if ( !this.isSegmentationErrorMessage ) {
+                for ( let i = 0; i < this.criterias.length; i++ ) {
+                    if ( this.criterias[i].operation == "=" ) {
+                        this.criterias[i].operation = "eq";
+                    }
+
+                    if ( this.criterias[i].operation == "Contains" ) {
+                        this.criterias[i].operation = "like";
+                    }
+
+                    if ( this.criterias[i].property == "First Name" ) {
+                        this.criterias[i].property = "firstName";
+                    }
+                    else if ( this.criterias[i].property == "Last Name" ) {
+                        this.criterias[i].property = "lastName";
+                    }
+                    else if ( this.criterias[i].property == "Company" ) {
+                        this.criterias[i].property = "contactCompany";
+                    }
+                    else if ( this.criterias[i].property == "Job Title" ) {
+                        this.criterias[i].property = "jobTitle";
+                    }
+                    else if ( this.criterias[i].property == "Email Id" ) {
+                        this.criterias[i].property = "emailId";
+                    }
+                    else if ( this.criterias[i].property == "Country" ) {
+                        this.criterias[i].property = "country";
+                    } else if ( this.criterias[i].property == "City" ) {
+                        this.criterias[i].property = "city";
+                    }
+                    else if ( this.criterias[i].property == "Mobile Number" ) {
+                        this.criterias[i].property = "mobileNumber";
+                    }
+                    else if ( this.criterias[i].property == "Notes" ) {
+                        this.criterias[i].property = "description";
+                    }
+
+                    console.log( this.criterias[i].operation );
+                    console.log( this.criterias[i].property );
+                    console.log( this.criterias[i].value1 );
+                }
+            }
+            if ( !this.isSegmentationErrorMessage ) {
+                this.contactsByType.pagination.pageIndex = 1;
                 this.listContactsByType( this.contactsByType.selectedCategory );
                 console.log( this.criterias );
                 this.isSegmentation = true;
@@ -1220,6 +1259,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
     cancelSegmentation() {
         this.criterias.length = 0;
         this.isSegmentationErrorMessage = false;
+        this.filterConditionErrorMessage = "";
     }
 
     addNewRow() {
@@ -1381,15 +1421,19 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
                 data => {
                     data = data;
                     if ( this.isPartner ) {
-                        this.customResponse = new CustomResponse( 'SUCCESS', this.properties.PARTNER_LIST_CREATE_SUCCESS, true );
+                        this.customResponse = new CustomResponse( 'SUCCESS', this.properties.PARTNER_LIST_SAVE_SUCCESS, true );
                     } else {
-                        this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_LIST_CREATE_SUCCESS, true );
+                        this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_LIST_SAVE_SUCCESS, true );
                     }
                     this.loadContactLists( this.pagination );
                 },
                 ( error: any ) => {
-                    this.xtremandLogger.error( error );
+                    if(error._body.includes("email addresses in your contact list that aren't formatted properly")){
+                        this.customResponse = new CustomResponse( 'ERROR', JSON.parse(error._body).message, true );
+                    }else{
                     this.xtremandLogger.errorPage( error );
+                    }
+                    this.xtremandLogger.error( error );
                 },
                 () => this.xtremandLogger.info( "allcontactComponent saveSelectedUsers() finished" )
                 )
@@ -1421,7 +1465,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
         }
 
     }
-    
+
     activateUnsubscribedUser(selectContactId: any){
         try {
             this.contactService.activateUnsubscribedUser( selectContactId )
@@ -1440,6 +1484,28 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
                 );
         } catch ( error ) {
             this.xtremandLogger.error( error, "manageContactComponent", " resubscribe method" );
+        }
+
+    }
+    
+    forceProcessList( contactListId: number ) {
+        try {
+            this.contactService.forceProcessList( contactListId )
+                .subscribe(
+                data => {
+                    console.log( data );
+                    if ( data.message == "success" ) {
+                        this.customResponse = new CustomResponse( 'SUCCESS', "We are processing your contact list, once done will send you an email.", true );
+                        this.loadContactLists(this.pagination);
+                    }
+                },
+                ( error: any ) => {
+                    this.xtremandLogger.error( error );
+                },
+                () => this.xtremandLogger.log( "Manage component forcce Process method successfull" )
+                );
+        } catch ( error ) {
+            this.xtremandLogger.error( error, "manageContactComponent", "force Process Method" );
         }
 
     }
@@ -1466,6 +1532,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
             this.xtremandLogger.info( 'Deinit - Destroyed Component' )
             this.contactService.successMessage = false;
             this.contactService.deleteUserSucessMessage = false;
+            
             swal.close();
             $( '#filterModal' ).modal( 'hide' );
         } catch ( error ) {

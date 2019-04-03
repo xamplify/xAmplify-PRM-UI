@@ -2,7 +2,6 @@ import { Component, OnInit, OnDestroy, } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { CampaignService } from '../services/campaign.service';
-import { UserService } from '../../core/services/user.service';
 import { ReferenceService } from '../../core/services/reference.service';
 import { Campaign } from '../models/campaign';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
@@ -12,10 +11,10 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { CustomResponse } from '../../common/models/custom-response';
 import { UtilService } from '../../core/services/util.service';
-import { ContactList } from '../../contacts/models/contact-list';
 import { EventCampaign } from '../models/event-campaign';
 import { ActionsDescription } from '../../common/models/actions-description';
 import { CampaignAccess } from '../models/campaign-access';
+import { CallActionSwitch } from '../../videos/models/call-action-switch';
 
 declare var swal, $: any;
 
@@ -23,15 +22,15 @@ declare var swal, $: any;
     selector: 'app-manage-publish',
     templateUrl: './manage-publish.component.html',
     styleUrls: ['./manage-publish.component.css'],
-    providers: [Pagination, HttpRequestLoader, ActionsDescription, CampaignAccess]
+    providers: [Pagination, HttpRequestLoader, ActionsDescription, CampaignAccess, CallActionSwitch]
 })
 export class ManagePublishComponent implements OnInit, OnDestroy {
     campaigns: Campaign[];
-    isCampaignDeleted: boolean = false;
-    hasCampaignRole: boolean = false;
-    hasStatsRole: boolean = false;
-    campaignSuccessMessage: string = "";
-    isScheduledCampaignLaunched: boolean = false;
+    isCampaignDeleted = false;
+    hasCampaignRole = false;
+    hasStatsRole = false;
+    campaignSuccessMessage = "";
+    isScheduledCampaignLaunched = false;
     loggedInUserId = 0;
     hasAllAccess = false;
     selectedCampaignTypeIndex = 0;
@@ -40,12 +39,13 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     totalRecords = 1;
     searchKey = "";
     isLastElement = false;
+    campaignType: string;
     sortByDropDown = [
         { 'name': 'Sort By', 'value': 'createdTime-DESC' },
         { 'name': 'Name (A-Z)', 'value': 'campaign-ASC' },
         { 'name': 'Name (Z-A)', 'value': 'campaign-DESC' },
-        { 'name': 'Created Date (ASC)', 'value': 'createdTime-ASC' },
-        { 'name': 'Created Date (DESC)', 'value': 'createdTime-DESC' }
+        { 'name': 'Created On (ASC)', 'value': 'createdTime-ASC' },
+        { 'name': 'Created On (DESC)', 'value': 'createdTime-DESC' }
     ];
 
     numberOfItemsPerPage = [
@@ -55,22 +55,30 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         { 'name': 'All', 'value': '0' },
     ]
 
-    public selectedSortedOption: any = this.sortByDropDown[0];
-    public itemsSize: any = this.numberOfItemsPerPage[0];
+    selectedSortedOption: any = this.sortByDropDown[0];
+    itemsSize: any = this.numberOfItemsPerPage[0];
 
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
     campaignPartnerLoader: HttpRequestLoader = new HttpRequestLoader();
-    isListView: boolean = false;
+    isListView = false;
 
-    public isError: boolean = false;
+    isError = false;
     saveAsCampaignId = 0;
     saveAsCampaignName = '';
-    isOnlyPartner: boolean = false;
+    isOnlyPartner = false;
     customResponse: CustomResponse = new CustomResponse();
-    saveAsCampaignInfo :any;
+    saveAsCampaignInfo:any;
     partnerActionResponse:CustomResponse = new CustomResponse();
     partnersPagination:Pagination = new Pagination();
-    constructor(private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
+
+    cancelEventMessage = "";
+    selectedCancelEventId: number;
+    eventCampaign: EventCampaign = new EventCampaign();
+    cancelEventSubjectLine = "";
+    cancelEventButton = false;
+    isloading: boolean;
+    previewCampaign :any;
+    constructor(public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService:UtilService, public actionsDescription: ActionsDescription,
         public refService: ReferenceService, public campaignAccess:CampaignAccess, public authenticationService: AuthenticationService) {
         this.loggedInUserId = this.authenticationService.getUserId();
@@ -88,6 +96,11 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.campaignSuccessMessage = "Campaign launched successfully";
             this.customResponse = new CustomResponse('SUCCESS', this.campaignSuccessMessage, true);
         }
+        else if (this.refService.campaignSuccessMessage == "UPDATE") {
+          this.showMessageOnTop();
+          this.campaignSuccessMessage = "Campaign updated successfully";
+          this.customResponse = new CustomResponse('SUCCESS', this.campaignSuccessMessage, true);
+      }
         this.hasCampaignRole = this.refService.hasSelectedRole(this.refService.roles.campaignRole);
         this.hasStatsRole = this.refService.hasSelectedRole(this.refService.roles.statsRole);
         this.hasAllAccess = this.refService.hasAllAccess();
@@ -107,11 +120,10 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             .subscribe(
                 data => {
                     this.campaigns = data.campaigns;
-                     $.each(this.campaigns,function(index,campaign){
-                         campaign.displayTime = new Date(campaign.utcTimeInString);
-                         console.log(campaign.utcTimeInString+"***********"+campaign.displayTime+"for"+campaign.name);
-                    });
-                    console.log(this.campaigns);
+                    $.each(this.campaigns,function(index,campaign){
+                        campaign.displayTime = new Date(campaign.utcTimeInString);
+                        campaign.createdDate = new Date(campaign.createdDate);
+                   });
                     this.totalRecords = data.totalRecords;
                     pagination.totalRecords = data.totalRecords;
                     pagination = this.pagerService.getPagedItems(pagination, data.campaigns);
@@ -142,8 +154,6 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.itemsSize = items;
         this.getAllFilteredResults(this.pagination);
     }
-
-
 
     getAllFilteredResults(pagination: Pagination) {
         this.pagination.pageIndex = 1;
@@ -198,6 +208,9 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.logger.error("error in manage-publish-component init() ", error);
         }
     }
+    updateEvent(campaign:any){
+        this.router.navigate(['/home/campaigns/event-update/'+campaign.campaignId])
+    }
 
     editCampaign(campaign:any) {
       if(campaign.campaignType.indexOf('EVENT') > -1) {
@@ -208,13 +221,11 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         if(campaign.nurtureCampaign){
           this.campaignService.reDistributeEvent = false;
           this.router.navigate(['/home/campaigns/re-distribute-manage/'+campaign.campaignId]);
-         }else {
-          this.router.navigate(['/home/campaigns/event-edit/'+campaign.campaignId]);
-         }
+         }else { this.router.navigate(['/home/campaigns/event-edit/'+campaign.campaignId]); }
         }
        }
       else {
-      var obj = { 'campaignId': campaign.campaignId }
+       let obj = { 'campaignId': campaign.campaignId }
         this.campaignService.getCampaignById(obj)
             .subscribe(
                 data => {
@@ -235,14 +246,10 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                             this.refService.isEditNurtureCampaign = false;
                             this.router.navigate(["/home/campaigns/edit"]);
                         }
-
-
                     }
-
                 },
                 error => { this.logger.errorPage(error) },
-                () => console.log()
-            )
+                () => console.log() )
            this.isScheduledCampaignLaunched = false;
           }
     }
@@ -272,9 +279,6 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 data => {
                     this.refService.loading(this.httpRequestLoader, false);
                     this.isCampaignDeleted = true;
-                    // $('#campaignListDiv_' + id).remove();
-                    //  setTimeout(function() { $("#deleteSuccess").slideUp(500); }, 5000);
-                    //  this.pagination.pageIndex = this.pagination.pageIndex - 1;
                     const deleteMessage = campaignName + ' Campaign deleted successfully';
                     this.customResponse = new CustomResponse('SUCCESS', deleteMessage, true);
                     this.pagination.pagedItems.splice(position, 1);
@@ -300,104 +304,46 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.saveAsCampaignName = campaign.campaignName + "_copy";
         this.saveAsCampaignInfo = campaign;
     }
-
-    saveAsCampaign() {
-        if(this.saveAsCampaignInfo.campaignType =='EVENT') {
-          this.saveAsEventCampaign(this.saveAsCampaignInfo);
-        }
-        else {
-        console.log(this.saveAsCampaignId + '-' + this.saveAsCampaignName);
-        let campaign = new Campaign();
+    setCampaignData(){
+      let campaignData:any;
+      if(this.saveAsCampaignInfo.campaignType === 'EVENT') {
+        const saveAsCampaignData = new EventCampaign();
+        saveAsCampaignData.id = this.saveAsCampaignInfo.campaignId;
+        saveAsCampaignData.campaign = this.saveAsCampaignName;
+        campaignData = saveAsCampaignData;
+        campaignData.campaignType = this.saveAsCampaignInfo.campaignType;
+      }
+      else {
+        const campaign = new Campaign();
         campaign.campaignName = this.saveAsCampaignName;
         campaign.campaignId = this.saveAsCampaignId;
         campaign.scheduleCampaign = "SAVE";
-        console.log(campaign);
-        this.campaignService.saveAsCampaign(campaign)
-            .subscribe(
-                data => {
-                    console.log(data);
-                    this.campaignSuccessMessage = "Campaign copied successfully";
-                    $('#lanchSuccess').show(600);
-                    $('#saveAsModal').modal('hide');
-                    this.showMessageOnTop();
-                    this.listCampaign(this.pagination);
-                    console.log("saveAsCampaign Successfully")
-                },
-                error => { $('#saveAsModal').modal('hide'); this.logger.errorPage(error) },
-                () => console.log("saveAsCampaign Successfully")
-            );
-          }
+        campaign.campaignType = this.saveAsCampaignInfo.campaignType;
+        campaignData = campaign;
+      }
+      return campaignData;
     }
-    saveAsEventCampaign(saveAsCampaign:any){
-     /* this.campaignService.getEventCampaignById(saveAsCampaign.campaignId).subscribe(
-        (data)=>{
-          console.log(data);
-          this.saveAsCampaignInfo = data.data;
-          this.setSaveAsEventCampaign(data.data);
-        });
-    }*/
-    	
-    	let saveAsCampaignData = new EventCampaign();
-        saveAsCampaignData.id = saveAsCampaign.campaignId;
-        saveAsCampaignData.campaign = this.saveAsCampaignName;
-        this.campaignService.saveAsEventCampaign(saveAsCampaignData).subscribe(
-                  (data)=>{
-                      this.campaignSuccessMessage = "Campaign copied successfully";
-                      $('#lanchSuccess').show(600);
-                      $('#saveAsModal').modal('hide');
-                      this.showMessageOnTop();
-                      this.listCampaign(this.pagination);
-                      console.log("saveAsCampaign Successfully")
-                  });
-       }
-    setSaveAsEventCampaign(campaignData:EventCampaign){
-      campaignData.campaign = this.saveAsCampaignName;
-      campaignData.id = null;
-      campaignData.campaignScheduleType = "SAVE";
-      campaignData.campaignLocation.id = null;
-      campaignData.campaignEventTimes[0].id = null;
-      campaignData.campaignEventMedias[0].id = null;
-      campaignData['emailTemplate'] = campaignData.emailTemplateDTO;
-      campaignData["user"] = campaignData.userDTO;
-      campaignData['countryId'] = 0;
-      campaignData["userListIds"] = [];
-      campaignData['userLists'] = [];
-      // campaignData['email'] = campaignData.user.emailId;
-      // campaignData['fromName'] = campaignData.user.emailId;
-      campaignData.user.id = null;
-      campaignData.user.userId = this.loggedInUserId;
-      campaignData.country = campaignData.campaignEventTimes[0].country;
-      for(let i=0; i< campaignData.userListDTOs.length;i++){
-       campaignData.userListIds.push(campaignData.userListDTOs[i].id);
-      }
-      for (let userListId of campaignData.userListIds) {
-        let contactList = new ContactList(userListId);
-        campaignData.userLists.push(contactList);
-      }
-      if(campaignData.campaignReplies){
-      for(let i=0; i< campaignData.campaignReplies.length;i++){
-        campaignData.campaignReplies[i].id = null;
-      } }
-      delete campaignData.userDTO;
-      delete campaignData.userListDTOs;
-      delete campaignData.emailTemplateDTO;
-      console.log(campaignData);
-      this.campaignService.createEventCampaign(campaignData).subscribe((data:any)=>{
-        console.log(data);
-        this.campaignSuccessMessage = "Campaign copied successfully";
-        $('#lanchSuccess').show(600);
-        $('#saveAsModal').modal('hide');
-        this.showMessageOnTop();
-        this.listCampaign(this.pagination);
-        console.log("saveAsCampaign Successfully")
-      })
+    saveAsCampaign() {
+        const campaignData = this.setCampaignData();
+        this.campaignService.saveAsCampaign(campaignData)
+          .subscribe(data => {
+                console.log(data);
+                this.campaignSuccessMessage = "Campaign copied successfully";
+                $('#lanchSuccess').show(600);
+                $('#saveAsModal').modal('hide');
+                this.showMessageOnTop();
+                this.listCampaign(this.pagination);
+                console.log("saveAsCampaign Successfully");
+              },
+              error => { $('#saveAsModal').modal('hide'); this.logger.errorPage(error) },
+              () => console.log("saveAsCampaign Successfully")
+          );
     }
     filterCampaigns(type: string, index: number) {
         this.selectedCampaignTypeIndex = index;//This is to highlight the tab
         this.pagination.pageIndex = 1;
         this.pagination.campaignType = type;
         this.listCampaign(this.pagination);
-
     }
     filterByUserNameOrDate() {
 
@@ -405,13 +351,17 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     campaginRouter(campaign:any){
       this.refService.campaignType = campaign.campaignType;
       this.router.navigate(['/home/campaigns/'+campaign.campaignId+'/details']);
-
     }
     showCampaignPreview(campaign:any){
+        this.refService.loadingPreview = true;
         if(campaign.campaignType.indexOf('EVENT')>-1){
-          this.router.navigate(['/home/campaigns/event-preview/'+campaign.campaignId]);
+          this.campaignType = 'EVENT';
+          // this.router.navigate(['/home/campaigns/event-preview/'+campaign.campaignId]);
+          this.previewCampaign = campaign.campaignId;
         } else {
-           this.router.navigate(['/home/campaigns/preview/'+campaign.campaignId]);
+          this.campaignType = campaign.campaignType.toLocaleString();
+          // this.router.navigate(['/home/campaigns/preview/'+campaign.campaignId]);
+          this.previewCampaign = campaign.campaignId;
         }
     }
     goToRedistributedCampaigns(campaign:Campaign){
@@ -420,4 +370,67 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     goToPreviewPartners(campaign:Campaign){
         this.router.navigate(['/home/campaigns/'+campaign.campaignId+"/remove-access"]);
     }
+
+    getCancelEventDetails(campaignId:number){
+        this.selectedCancelEventId = campaignId;
+        this.campaignService.getEventCampaignById(campaignId).subscribe(
+                (result)=>{
+                this.eventCampaign = result.data;
+                $('#cancelEventModal').modal('show');
+                }
+            );
+
+    }
+    cancelEvent(){
+        var cancelEventData = {
+                "id": this.selectedCancelEventId,
+                "isCancelled": true,
+                "message": this.cancelEventMessage,
+                "subject": this.cancelEventSubjectLine
+            }
+
+        this.isloading = true;
+        $('#cancelEventModal').modal('hide');
+        this.campaignService.cancelEvent(cancelEventData, this.loggedInUserId)
+          .subscribe(data => {
+                console.log(data);
+                $(window).scrollTop(0);
+                this.customResponse = new CustomResponse('SUCCESS', "Event has been cancelled successfully", true);
+                console.log("Event Successfully cancelled");
+                this.cancelEventMessage = "";
+                this.isloading = false;
+              },
+              error => { $('#cancelEventModal').modal('hide'); this.logger.errorPage(error) },
+              () => console.log("cancelCampaign completed")
+          );
+    }
+
+    closeCancelEventodal(){
+        $('#cancelEventModal').modal('hide');
+        this.cancelEventMessage = "";
+    }
+
+    validateCancelEventButton(){
+        if(this.cancelEventMessage.replace( /\s\s+/g, '' ).replace(/\s+$/,"").replace(/\s+/g," ") && this.cancelEventSubjectLine.replace( /\s\s+/g, '' ).replace(/\s+$/,"").replace(/\s+/g," ")){
+            this.cancelEventButton = true;
+        }else{
+            this.cancelEventButton = false;
+        }
+    }
+    closePreviewCampaign(event){
+      this.previewCampaign = undefined;
+      if(event === 'copy campaign success'){ this.showMessageOnTop();
+        this.pagination.pageIndex = 1;
+        this.listCampaign(this.pagination);
+      }
+      if(event.delete === 'deleted campaign success'){
+        this.refService.loading(this.httpRequestLoader, false);
+        this.isCampaignDeleted = true;
+        const deleteMessage =  event.campaignName + ' campaign deleted successfully';
+        this.customResponse = new CustomResponse('SUCCESS', deleteMessage, true);
+        this.pagination.pageIndex = 1;
+        this.listCampaign(this.pagination);
+      }
+    }
+
 }

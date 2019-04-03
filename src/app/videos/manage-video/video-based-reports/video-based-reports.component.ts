@@ -334,6 +334,9 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         this.videoBaseReportService.watchedFullyReport(this.selectedVideo.id, this.pagination).subscribe(
             (result: any) => {
                 console.log(result);
+                result.data.forEach((element, index) => {
+                  if(element.time){ element.time = new Date(element.utcTimeString);}
+                });
                 this.watchedFullyReportData = result.data;
                 this.pagination.totalRecords = result.totalRecords;
                 this.pagination = this.pagerService.getPagedItems(this.pagination, result.data);
@@ -348,6 +351,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         this.videoBaseReportService.totlaMinutesWatchedByMostUsers(this.selectedVideo.id).subscribe(
             (result: any) => {
                 console.log(result);
+                result.forEach((element, index) => { if(element.date){ element.date = new Date(element.utcTimeString);} });
                 this.totalUsersWatched = result;
                 this.downloadTypeName = 'minetesWatched'
                 if (this.totalUsersWatched.length > 0) {
@@ -427,6 +431,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             subscribe(
             data => {
                 console.log(data);
+                data.data.forEach((element) => { if(element.date){ element.date = new Date(element.utcTimeString);} });
                 this.userMinutesWatched = data.data;
                 this.pagination.totalRecords = data.totalRecords;
                 this.pagination = this.pagerService.getPagedItems(this.pagination, this.userMinutesWatched);
@@ -494,6 +499,10 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         this.videoBaseReportService.videoSkippedDurationInfo(this.selectedVideo.id, this.pagination).subscribe(
             (result: any) => {
                 console.log(result);
+                result.data.forEach((element) => {
+                   if(element.date){ element.date = new Date(element.date); }
+                   if(element.endTime){ element.endTime = new Date(element.endTime); }
+                });
                 this.videoSkippedDuration = result.data;
                 this.pagination.totalRecords = result.totalRecords;
                 this.pagination = this.pagerService.getPagedItems(this.pagination, this.videoSkippedDuration);
@@ -510,6 +519,10 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         this.videoBaseReportService.videoPlayedDurationInfo(this.selectedVideo.id, this.videoPlayedPagination).subscribe(
             (result: any) => {
                 console.log(result);
+                result.data.forEach((element) => {
+                  if(element.date){ element.date = new Date(element.date); }
+                  if(element.endTime){ element.endTime = new Date(element.endTime); }
+               });
                 this.videoPlayedDuration = result.data;
                 this.videoPlayedPagination.totalRecords = result.totalRecords;
                 this.videoPlayedPagination = this.pagerService.getPagedItems(this.videoPlayedPagination, this.videoPlayedDuration);
@@ -543,6 +556,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             subscribe(
             (result: any) => {
                 console.log(result);
+                result.data.forEach((element) => { if(element.time){ element.time = new Date(element.utcTimeString);} });
                 this.worldMapCampaignUsersInfo = result.data;
                 this.pagination.totalRecords = result.totalRecords;
                 this.pagination = this.pagerService.getPagedItems(this.pagination, result.data);
@@ -693,7 +707,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                 object["Video Title"] = this.downloadCsvList[i].videoTitle;
                 let hours = this.referenceService.formatAMPM(date);
                 object["Date and Time"] = date.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
-                object["Minets Watched"] = this.downloadCsvList[i].minutesWatched;
+                object["Minutes Watched"] = this.downloadCsvList[i].minutesWatched;
                 object["Device"] = this.downloadCsvList[i].device;
                 object["Location"] = this.downloadCsvList[i].city + ' ' + this.downloadCsvList[i].state + ' ' + this.downloadCsvList[i].country;
             }

@@ -276,6 +276,8 @@ nav a.active {
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	float: left !important;
+	/* Required for text-overflow to do anything */
+	/* overflow: hidden; */
 }
 
 /* full calendar */
@@ -911,3 +913,20 @@ b, strong {
 @media screen and (max-width:600px){.accounts-modal { width:100%; } }
 @media screen and (min-width:601px){.accounts-modal { width:60%;float: right; } }
 /* .override-actions{ margin: 0 auto; display: table;float: none !important; } */
+
+@media screen and (max-width:600px){.modal-dialog{ width: 100% !important; }}
+@media screen and (min-width:601px){.modal-dialog{ width: 50% !important;}}
+.fileinput-button-css {
+  position: relative;
+  overflow: hidden;
+  }
+.fileinput-button-css input {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  opacity: 0;
+  -ms-filter: 'alpha(opacity=0)';
+  direction: ltr;
+  cursor: pointer;
+}

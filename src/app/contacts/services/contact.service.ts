@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { ContactList } from '../models/contact-list';
-import { Criteria } from '../models/criteria';
 import { SocialContact } from '../models/social-contact';
 import { ZohoContact } from '../models/zoho-contact';
 import { SalesforceContact } from '../models/salesforce-contact';
@@ -10,7 +9,7 @@ import { SalesforceListViewContact } from '../models/salesforce-list-view-contac
 import { User } from '../../core/models/user';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Pagination } from '../../core/models/pagination';
 import { EditUser } from '../models/edit-user';
 import 'rxjs/add/operator/catch';
@@ -18,24 +17,24 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
 import {ReferenceService} from '../../core/services/reference.service';
 
-declare var swal: any;
 @Injectable()
 export class ContactService {
 
     saveAsSuccessMessage: string;
-    public successMessage: boolean;
-    public deleteUserSucessMessage: boolean;
-    public socialContact: SocialContact[];
-    public zohoContact: ZohoContact;
-    public salesforceContact: SalesforceContact;
-    public salesforceListViewContact: SalesforceListViewContact;
+    saveAsErrorMessage: any;
+    successMessage: boolean;
+    deleteUserSucessMessage: boolean;
+    socialContact: SocialContact[];
+    zohoContact: ZohoContact;
+    salesforceContact: SalesforceContact;
+    salesforceListViewContact: SalesforceListViewContact;
     isContactModalPopup = false;
-
     socialProviderName = "";
-    public pagination: Pagination;
+    pagination: Pagination;
     allPartners: User[];
     partnerListName: string;
     socialCallbackName: string;
+    isLoadingList: boolean;
 
     url = this.authenticationService.REST_URL + "admin/";
     contactsUrl = this.authenticationService.REST_URL + "userlists/";
@@ -288,21 +287,6 @@ export class ContactService {
             .map( this.extractData )
             .catch( this.handleError );
     }
-    saveMarketoContactList( socialContact: SocialContact ): Observable<Response> {
-        this.successMessage = true;
-        var requestoptions = new RequestOptions( {
-            body: socialContact,
-        })
-        var headers = new Headers();
-        headers.append( 'Content-Type', 'application/json' );
-        var options = {
-            headers: headers
-        };
-        var url = this.authenticationService.REST_URL +  "/marketo/"+this.authenticationService.getUserId()+"/saveContactList?access_token=" + this.authenticationService.access_token;
-        return this._http.post( url, options, requestoptions )
-            .map( this.extractData )
-            .catch( this.handleError );
-    }
 
     contactListSynchronization( contactListId: number, socialContact: SocialContact ): Observable<Response> {
         var requestoptions = new RequestOptions( {
@@ -361,21 +345,6 @@ export class ContactService {
             .catch( this.handleError );
     }
 
-    checkMarketoCredentials(userId: number) {
-        return this._http.get(this.authenticationService.REST_URL + `/marketo/${userId}/checkCredentials?access_token=${this.authenticationService.access_token}`)
-            .map(this.extractData)
-            .catch(this.handleError);
-    }
-    saveMarketoCredentials( formData: any) {
-        return this._http.post(this.authenticationService.REST_URL +`/marketo/credentials?access_token=${this.authenticationService.access_token}`, formData)
-            .map(this.extractData)
-            .catch(this.handleError);
-    }
-    getMarketoContacts(userId: number) {
-        return this._http.get(this.authenticationService.REST_URL +`/marketo/${userId}/contacts?access_token=${this.authenticationService.access_token}`)
-            .map(this.extractData)
-            .catch(this.handleError);
-    }
     salesforceLogin(isPartner: boolean) {
         this.logger.info( this.salesforceContactUrl + "/authorizeLogin?access_token=" + this.authenticationService.access_token +"&userId=" + this.authenticationService.getUserId() );
         return this._http.get( this.salesforceContactUrl + "/authorizeLogin?access_token=" + this.authenticationService.access_token +"&userId=" + this.authenticationService.getUserId() +"&isPartner=" + isPartner)
@@ -453,6 +422,13 @@ export class ContactService {
             .catch( this.handleError );
     }
     
+    forceProcessList(contactListId: number) {
+        this.logger.info( this.contactsUrl + "/process-userlist?access_token=" + this.authenticationService.access_token);
+        return this._http.get( this.contactsUrl + contactListId +"/process-userlist?access_token=" + this.authenticationService.access_token)
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+
     activateUnsubscribedUser(selectedUserId:number){
         return this._http.post( this.contactsUrl + "resubscribeUser/" + selectedUserId + "?userId=" + this.authenticationService.getUserId() + "&access_token=" + this.authenticationService.access_token, "")
         .map( this.extractData )

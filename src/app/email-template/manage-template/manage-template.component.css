@@ -156,7 +156,7 @@ a.disabled {
     padding: 6px;
     text-align: center;
     width: 175px;
-    margin: 0 auto;
+    /* margin: 0 auto; */
 }
 .view-banner-draft{
     background-color: #f76c1a;

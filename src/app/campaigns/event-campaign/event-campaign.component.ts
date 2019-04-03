@@ -120,7 +120,11 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   parentCampaignIdValue:number;
   isPartnerToo = false;
   userListDTOObj = [];
-
+  isEventUpdate = false;
+  isEnableUpdateButton = false;
+  beforeDaysLength: number;
+  tempStartTime: string;
+  isVendor = false;
   constructor(public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
     private contactService: ContactService,
     public campaignService: CampaignService,
@@ -135,6 +139,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     //this.listEmailTemplates();
     CKEDITOR.config.height = '100';
     this.isPreviewEvent = this.router.url.includes('/home/campaigns/event-preview')? true: false;
+    this.isEventUpdate = this.router.url.includes('/home/campaigns/event-update')? true: false;
     this.isEditCampaign = this.router.url.includes('/home/campaigns/event-edit')? true: false;
     CKEDITOR.config.readOnly = this.isPreviewEvent ? true: false;
     this.reDistributeEvent = this.router.url.includes('/home/campaigns/re-distribute-event')? true: false;
@@ -331,6 +336,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   }
   eventStartTimeError(){
      const currentDate = new Date().getTime();
+     this.tempStartTime = this.eventCampaign.campaignEventTimes[0].startTimeString;
      const startDate = Date.parse(this.eventCampaign.campaignEventTimes[0].startTimeString);
      if(startDate < currentDate) { this.setStartTimeErrorMessage(true, 'Start Date / Time is already over.');}
      else if( startDate > currentDate){ this.setStartTimeErrorMessage(false, '');}
@@ -360,6 +366,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
    }
    this.eventSameDateError();
    this.resetTabClass();
+   this.validateReplayDate();
   }
   eventSameDateError(){
     const endDate = Date.parse(this.eventCampaign.campaignEventTimes[0].endTimeString);
@@ -419,14 +426,20 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
 
   loadContactLists(contactListsPagination: Pagination) {
     this.paginationType = 'contactlists';
+    const roles = this.authenticationService.getRoles();
+    this.isVendor = roles.indexOf(this.roleName.vendorRole)>-1;
     if(this.isEditCampaign){
        contactListsPagination.editCampaign = true;
        contactListsPagination.campaignId = this.eventCampaign.id;
     }
-   if(this.authenticationService.isOrgAdmin() || this.authenticationService.isOrgAdminPartner()){
+   if(this.authenticationService.isOrgAdmin() || this.authenticationService.isOrgAdminPartner() || (!this.authenticationService.isAddedByVendor && !this.isVendor)){
        this.contactListsPagination.filterValue = false;
        this.contactListsPagination.filterKey = null;
        this.showContactType = true;
+       if(this.isEditCampaign){
+        this.contactListsPagination.filterValue = true;
+        this.contactListsPagination.filterKey = 'isPartnerUserList';
+       }
    }else {
        if(this.reDistributeEvent || this.reDistributeEventManage){
            this.contactListsPagination.filterValue = false;
@@ -435,39 +448,16 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
        }
        this.showContactType = false;
        this.contactListsPagination.filterKey = 'isPartnerUserList';
-   }
-    this.contactService.loadContactLists(contactListsPagination)
-      .subscribe(
-      (data: any) => {
-        this.contactListsPagination.totalRecords = data.totalRecords;
-        this.contactListsPagination = this.pagerService.getPagedItems(this.contactListsPagination, data.listOfUserLists);
-      //  this.contactListsPagination.pagedItems = this.referenceService.removeDuplicatesObjects(this.contactListsPagination.pagedItems, "id");
-        if(this.isPreviewEvent && this.authenticationService.isOnlyPartner()){
-          const contactsAll:any = [];
-          this.contactListsPagination.pagedItems.forEach((element, index) => {
-              if( element.id ===this.parternUserListIds[index]) {
-                contactsAll.push(this.contactListsPagination.pagedItems[index]);
-              }
-            });
-            this.contactListsPagination.pagedItems = contactsAll;
-           }
-        const contactIds = this.contactListsPagination.pagedItems.map( function( a ) { return a.id; });
-        const items = $.grep( this.parternUserListIds, function( element ) {
-            return $.inArray( element, contactIds ) !== -1;
-        });
-        if ( items.length == contactListsPagination.totalRecords || items.length == this.contactListsPagination.pagedItems.length ) {
-            this.isHeaderCheckBoxChecked = true;
-        } else {
-            this.isHeaderCheckBoxChecked = false;
-        }
-        if(this.authenticationService.isOrgAdmin() || this.authenticationService.isOrgAdminPartner()){
-           this.contactListsPagination.pagedItems = this.referenceService.removeDuplicatesObjects(this.contactListsPagination.pagedItems, "id");
-        }
-      },
-      (error: any) => {
-        this.logger.error(error);
-      },
-      () => { this.logger.info('event campaign page loadContactLists() finished'); } );
+    }
+
+    if(this.authenticationService.isOrgAdmin() || this.authenticationService.isOrgAdminPartner() || (!this.authenticationService.isAddedByVendor && !this.isVendor) ){
+      if(!this.eventCampaign.channelCampaign){
+        this.contactListsPagination.filterValue = false;
+        this.contactListsPagination.filterKey = null;
+        this.showContactType = true;
+      }
+     }
+       this.contactListMethod(this.contactListsPagination);
   }
 
   /*****************LOAD CONTACTLISTS WITH PAGINATION END *****************/
@@ -498,14 +488,61 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     this.loadContacts(contactList,this.contactsPagination)
 
   }
+  clearSelectedContactList(){
+      const roles = this.authenticationService.getRoles();
+      let isVendor = roles.indexOf(this.roleName.vendorRole)>-1;
+      if(this.authenticationService.isOrgAdmin() || (!this.authenticationService.isAddedByVendor && !isVendor)){
+        this.parternUserListIds = [];
+        this.userListIds = [];
+        this.eventCampaign.userListIds = [];
+      }
+  }
   switchStatusChange(){
-      this.eventCampaign.channelCampaign = !this.eventCampaign.channelCampaign;
-
+    this.clearSelectedContactList();
+    this.eventCampaign.channelCampaign = !this.eventCampaign.channelCampaign;
+      this.contactListsPagination.pageIndex = 1;
       if(!this.eventCampaign.channelCampaign){
           this.eventCampaign.enableCoBrandingLogo = false;
           this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.NONE;
           this.loadEmailTemplates(this.emailTemplatesPagination);
       }
+      if(this.authenticationService.isOrgAdmin() || this.authenticationService.isOrgAdminPartner() || (!this.authenticationService.isAddedByVendor && !this.isVendor) ){
+      if(!this.eventCampaign.channelCampaign){
+        this.contactListsPagination.filterValue = false;
+        this.contactListsPagination.filterKey = null;
+        this.contactListMethod(this.contactListsPagination);
+      } else {
+        this.contactListsPagination.filterValue = true;
+        this.contactListsPagination.filterKey = 'isPartnerUserList';
+        this.contactListMethod(this.contactListsPagination);
+      }
+      this.resetTabClass();
+    }
+
+  }
+  contactListMethod(contactListsPagination:Pagination){
+    this.contactService.loadContactLists(contactListsPagination)
+    .subscribe(
+    (data: any) => {
+      this.contactListsPagination.totalRecords = data.totalRecords;
+      this.contactListsPagination = this.pagerService.getPagedItems(this.contactListsPagination, data.listOfUserLists);
+      if(this.isPreviewEvent && this.authenticationService.isOnlyPartner()){
+        const contactsAll:any = [];
+          this.contactListsPagination.pagedItems.forEach((element, index) => {
+            if( element.id ===this.parternUserListIds[index]) { contactsAll.push(this.contactListsPagination.pagedItems[index]);}
+          });
+          this.contactListsPagination.pagedItems = contactsAll;
+         }
+        const contactIds = this.contactListsPagination.pagedItems.map( function( a ) { return a.id; });
+        const items = $.grep( this.parternUserListIds, function( element ) { return $.inArray( element, contactIds ) !== -1;});
+        if ( items.length == contactListsPagination.totalRecords || items.length == this.contactListsPagination.pagedItems.length ) {
+            this.isHeaderCheckBoxChecked = true;
+        } else {
+            this.isHeaderCheckBoxChecked = false;
+        }
+    },
+    (error: any) => { this.logger.error(error); },
+    () => { this.logger.info('event campaign page contactListMethod() finished'); } );
   }
 
   setCoBrandingLogo(event:any){
@@ -828,6 +865,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
       'user':eventCampaign.user,
       'message':eventCampaign.message,
       'subjectLine':eventCampaign.subjectLine,
+      'updateMessage':eventCampaign.updateMessage,
       'channelCampaign':eventCampaign.channelCampaign,
       'enableCoBrandingLogo':eventCampaign.enableCoBrandingLogo,
       'countryId': eventCampaign.countryId,
@@ -900,7 +938,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
     if(this.validForm(eventCampaign) && this.isFormSubmitted){
       this.referenceService.startLoader(this.httpRequestLoader);
       console.log(eventCampaign);
-      this.campaignService.createEventCampaign(eventCampaign)
+      this.campaignService.createEventCampaign(eventCampaign, this.isEventUpdate)
       .subscribe(
       response => {
         if (response.statusCode === 2000) {
@@ -908,6 +946,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
           this.referenceService.stopLoader(this.httpRequestLoader);
           this.router.navigate(["/home/campaigns/manage"]);
           this.referenceService.campaignSuccessMessage = launchOption;
+          if(this.isEventUpdate){ this.referenceService.campaignSuccessMessage="UPDATE"; }
         } else {
           this.loader = false;
           this.referenceService.stopLoader(this.httpRequestLoader);
@@ -1117,10 +1156,6 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
   setReplyEmailTemplate(emailTemplateId: number, reply: Reply, index: number, isDraft: boolean) {
     if (!isDraft) {
       reply.selectedEmailTemplateId = emailTemplateId;
-      // reply.emailTemplate.id = emailTemplateId;
-      // this.eventCampaign.campaignReplies[index].selectedEmailTemplateId = emailTemplateId;
-      // this.eventCampaign.campaignReplies[index].emailTemplate =  new EmailTemplate();
-      // this.eventCampaign.campaignReplies[index].emailTemplate['id'] = emailTemplateId;
       $('#reply-' + index + emailTemplateId).prop("checked", true);
     }
   }
@@ -1198,6 +1233,10 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
                   this.eventCampaign.campaignLocation.street = "";
               }
 
+              if(this.eventCampaign.campaignLocation.address2 === undefined){
+                  this.eventCampaign.campaignLocation.address2 = "";
+              }
+
               if(this.eventCampaign.campaignLocation.city === undefined){
                   this.eventCampaign.campaignLocation.city = "";
               }
@@ -1211,46 +1250,66 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
               }
 
               if ( this.eventCampaign.campaignLocation.location ) {
-                  
+
                   let address1 = this.eventCampaign.campaignLocation.location;
                   let address2 = "";
                   let address3 = "";
+                  let address4 = "";
                   let fullAddress = "";
-                  
-                  if(this.eventCampaign.campaignLocation.street && this.eventCampaign.campaignLocation.city){
-                      address2 = this.eventCampaign.campaignLocation.street + ", " + this.eventCampaign.campaignLocation.city;
+
+
+
+                  if(this.eventCampaign.campaignLocation.street && this.eventCampaign.campaignLocation.address2){
+                      address2 = this.eventCampaign.campaignLocation.street + "<br>" + this.eventCampaign.campaignLocation.address2;
                   }else if(this.eventCampaign.campaignLocation.street){
                       address2 = this.eventCampaign.campaignLocation.street;
-                  }else if(this.eventCampaign.campaignLocation.city){
-                      address2 = this.eventCampaign.campaignLocation.city;
+                  }else if(this.eventCampaign.campaignLocation.address2){
+                      address2 = this.eventCampaign.campaignLocation.address2;
                   }else{
-                      address2 = "" 
+                      address2 = ""
                   }
-                  
-                  if(this.eventCampaign.campaignLocation.state && this.eventCampaign.campaignLocation.zip){
-                      address3 = this.eventCampaign.campaignLocation.state + ", " + this.eventCampaign.campaignLocation.zip;
+
+                  if(this.eventCampaign.campaignLocation.state && this.eventCampaign.campaignLocation.city){
+                      address3 = this.eventCampaign.campaignLocation.city + ", " + this.eventCampaign.campaignLocation.state;
                   }else if(this.eventCampaign.campaignLocation.state){
                       address3 = this.eventCampaign.campaignLocation.state;
+                  }else if(this.eventCampaign.campaignLocation.city){
+                      address3 = this.eventCampaign.campaignLocation.city;
+                  }else{
+                      address3 = ""
+                  }
+
+                  if(this.eventCampaign.campaignLocation.country && this.eventCampaign.campaignLocation.zip){
+                      address4 = this.eventCampaign.campaignLocation.zip + " " + this.eventCampaign.campaignLocation.country;
+                  }else if(this.eventCampaign.campaignLocation.country){
+                      address4 = this.eventCampaign.campaignLocation.country;
                   }else if(this.eventCampaign.campaignLocation.zip){
-                      address3 = this.eventCampaign.campaignLocation.zip;
+                      address4 = this.eventCampaign.campaignLocation.zip;
                   }else{
-                      address3 = "" 
+                      address4 = ""
                   }
-                  
-                  if(address2 && address3){
-                      fullAddress = address1 + "<br>" + address2 + "<br>" + address3 + "<br>" + this.eventCampaign.campaignLocation.country;
-                  }else if(address2 && !address3){
-                      fullAddress = address1 + "<br>" + address2 + "<br>" + this.eventCampaign.campaignLocation.country;
-                  }
-                  else if(!address2 && address3){
-                      fullAddress = address1 + "<br>" + address3 + "<br>" + this.eventCampaign.campaignLocation.country;
+
+                  if(address2 && address3 && address4){
+                      fullAddress = address1 + "<br>" + address2 + "<br>" + address3 + "<br>" + address4;
+                  }else if(address2 && !address3 && !address4){
+                      fullAddress = address1 + "<br>" + address2;
+                  }else if(address2 && address3 && !address4){
+                      fullAddress = address1 + "<br>" + address2 + "<br>" + address3;
+                  }else if(!address2 && address3 && address4){
+                      fullAddress = address1 + "<br>" + address3 + "<br>" + address4;
+                  }else if(!address2 && address3 && !address4){
+                      fullAddress = address1 + "<br>" + address3;
+                  }else if(!address2 && !address3 && address4){
+                      fullAddress = address1 + "<br>" + address4;
+                  }else if(address2 && !address3 && address4){
+                      fullAddress = address1 + "<br>" + address2 + "<br>" + address4;
                   }else{
-                      fullAddress = address1 + "<br>" + this.eventCampaign.campaignLocation.country;
+                      fullAddress = address1;
                   }
-                  
-                  
-                  
-                  
+
+
+
+
                   data.body = data.body.replace( /{{address}}/g, fullAddress);
                  /* data.body = data.body.replace( /{{addreess_lane2}}/g, this.eventCampaign.campaignLocation.city + "," + this.eventCampaign.campaignLocation.state + "," + this.eventCampaign.campaignLocation.zip );*/
               }
@@ -1314,9 +1373,11 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
   }
   onChangeCountryCampaignEventTime(countryId: number) {
     this.timezonesCampaignEventTime = this.referenceService.getTimeZonesByCountryId(countryId);
-    for ( let i = 0; i < this.countries.length; i++ ) {
-      if ( countryId == this.countries[i].id ) { this.eventCampaign.campaignLocation.country = this.countries[i].name; break; }
-    }
+   /* for ( let i = 0; i < this.countries.length; i++ ) {
+      if ( countryId == this.countries[i].id ) {
+          this.eventCampaign.campaignLocation.country = this.countries[i].name; break;
+          }
+    }*/
    setTimeout(() => {this.setEventTimeZone(); }, 100);
    this.resetTabClass();
   }
@@ -1501,7 +1562,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
           delete eventCampaign.userListDTOs
           if(errorLength===0){
               this.dataError = false;
-              this.campaignService.createEventCampaign(eventCampaign)
+              this.campaignService.createEventCampaign(eventCampaign,this.isEventUpdate)
               .subscribe(
                 response => {
                   console.log(response);
@@ -1612,12 +1673,13 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
 
         this.resetTabs(this.currentTab);
 
-        if(this.isPreviewEvent){
+        if(this.isPreviewEvent || this.isEventUpdate){
             this.detailsTab = true;
             this.recipientsTab = false;
             this.emailTemplatesTab = false;
             this.launchTab = true;
         }
+
 
         if(this.reDistributeEvent || this.reDistributeEventManage){
             this.detailsTab = true;
@@ -1626,6 +1688,39 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
             this.launchTab = true;
         }
 
+    }
+
+    validateReplayDate(){
+      try{
+        var currentTime = new Date();
+        var month = currentTime.getMonth() + 1;
+        var day = currentTime.getDate();
+        var year = currentTime.getFullYear();
+        var currentFulldate = month + "/" + day + "/" + year;
+        if(this.eventCampaign.campaignEventTimes[0].startTimeString){
+         var str = this.eventCampaign.campaignEventTimes[0].startTimeString;
+        } else {  str = this.tempStartTime; }
+        if(str){ var res = str.split(" "); this.differenceBetweenTwoDates(currentFulldate, res[0]);}
+      }catch(error){
+        this.logger.log(error);
+      }
+    }
+
+    differenceBetweenTwoDates(date1t, date2t){
+        var date1 = new Date(date1t);
+        var date2 = new Date(date2t);
+        var timeDiff = Math.abs(date2.getTime() - date1.getTime());
+        var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+        this.beforeDaysLength = diffDays;
+
+    }
+
+    validateUpdateButton() {
+        if(this.eventCampaign.campaignEventTimes[0].startTimeString && (this.eventCampaign.campaignEventTimes[0].endTimeString || this.eventCampaign.campaignEventTimes[0].allDay) && !this.eventError.eventSameDateError && this.datePassedError == '' && (this.eventCampaign.onlineMeeting || (this.eventCampaign.campaignLocation.location && !this.eventError.eventLocationError) && this.eventCampaign.updateMessage.replace( /\s\s+/g, '' ).replace(/\s+$/,"").replace(/\s+/g," ")) ){
+           this.isEnableUpdateButton = true;
+        }else{
+            this.isEnableUpdateButton = false;
+        }
     }
 
    ngOnDestroy() {

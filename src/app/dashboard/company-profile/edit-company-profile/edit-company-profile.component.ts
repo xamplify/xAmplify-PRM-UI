@@ -1,8 +1,8 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { FormBuilder } from "@angular/forms";
 import { Router } from '@angular/router';
-import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
-
+import { FileUploader} from 'ng2-file-upload/ng2-file-upload';
+import { DomSanitizer } from '@angular/platform-browser';
 import { Processor } from '../../../core/models/processor';
 import { HomeComponent } from '../../../core/home/home.component';
 import { CountryNames } from '../../../common/models/country-names';
@@ -20,7 +20,8 @@ import { CompanyProfile } from '../models/company-profile';
 import { CustomResponse } from '../../../common/models/custom-response';
 import { SaveVideoFile } from '../../../videos/models/save-video-file';
 import { Properties } from '../../../common/models/properties';
-
+import { UtilService } from 'app/core/services/util.service';
+import { CropperSettings, ImageCropperComponent } from 'ng2-img-cropper';
 declare var $,swal: any;
 
 @Component({
@@ -29,6 +30,7 @@ declare var $,swal: any;
     styleUrls: ['./edit-company-profile.component.css', '../../../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css',
                 '../../../../assets/css/phone-number-plugin.css'],
     providers: [Processor, CountryNames, RegularExpressions, Properties]
+
 })
 export class EditCompanyProfileComponent implements OnInit, OnDestroy {
     customResponse: CustomResponse = new CustomResponse();
@@ -77,7 +79,6 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
     linkedinLinkError = false;
     linkedinLinkErrorMessage = "";
 
-
     twitterDivClass: string = this.formGroupDefaultClass;
     twitterLinkError = false;
     twitterLinkErrorMessage = "";
@@ -94,7 +95,6 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
     countryError = false;
     countryErrorMessage = false;
 
-
     zipDivClass: string = this.formGroupDefaultClass;
     zipError = false;
     zipErrorMessage = "";
@@ -107,8 +107,6 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
     logoError = false;
     logoErrorMessage = "";
     hasPublicVideo = false;
-
-
     existingCompanyName = "";
     companyLogoUploader: FileUploader;
     companyLogoImageUrlPath = "";
@@ -125,46 +123,23 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
     tempCompanyProfile:any;
     upadatedUserId:any;
     isUpdateChaged = false;
-
+    squareCropperSettings: CropperSettings;
+    squareData:any;
+    cropRounded = false;
+    loadingcrop = false;
+    errorUploadCropper = false;
+    @ViewChild(ImageCropperComponent) cropper:ImageCropperComponent;
     constructor(private logger: XtremandLogger, public authenticationService: AuthenticationService, private fb: FormBuilder,
-        private companyProfileService: CompanyProfileService, public homeComponent: HomeComponent,
+        private companyProfileService: CompanyProfileService, public homeComponent: HomeComponent,private sanitizer: DomSanitizer,
         public refService: ReferenceService, private router: Router, public processor: Processor, public countryNames: CountryNames,
         public regularExpressions: RegularExpressions, public videoFileService: VideoFileService, public videoUtilService: VideoUtilService,
-        public userService: UserService, public properties: Properties) {
+        public userService: UserService, public properties: Properties, public utilService:UtilService) {
         this.loggedInUserId = this.authenticationService.getUserId();
         this.companyNameDivClass = this.refService.formGroupClass;
         this.companyProfileNameDivClass = this.refService.formGroupClass;
         this.isOnlyPartner = this.authenticationService.isOnlyPartner();
         this.isVendorRole = this.authenticationService.isVendor();
-        this.companyLogoUploader = new FileUploader({
-            allowedMimeType: ['image/jpeg', 'image/pjpeg', 'image/jpg', 'image/png'],
-            maxFileSize: this.maxFileSize * 1024 * 1024, // 10 MB
-            url: this.authenticationService.REST_URL + "admin/company-profile/upload-logo?userId=" + this.loggedInUserId + "&access_token=" + this.authenticationService.access_token
-        });
-        this.companyLogoUploader.onAfterAddingFile = (fileItem) => {
-            console.log(fileItem);
-            this.isLoading = true;
-            fileItem.withCredentials = false;
-            this.companyLogoUploader.queue[0].upload();
-        };
-        this.companyLogoUploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-            console.log(response);
-            console.log(this.companyLogoUploader.queue[0]);
-            if (JSON.parse(response).message === null) {
-                this.companyLogoUploader.queue[0].upload();
-                this.logoError = false;
-                this.logoErrorMessage = "";
-            } else {
-                this.companyLogoUploader.queue.length = 0;
-                this.companyLogoImageUrlPath = this.companyProfile.companyLogoPath = JSON.parse(response).path;
-                this.logoError = false;
-                this.logoErrorMessage = "";
-                this.enableOrDisableButton();
-                console.log(this.companyLogoImageUrlPath);
-            }
-            this.isLoading = false;
-        }
-
+        this.cropperSettings();
         this.companyBackGroundLogoUploader = new FileUploader({
             allowedMimeType: ['image/jpeg', 'image/pjpeg', 'image/jpeg', 'image/pjpeg', 'image/png'],
             maxFileSize: 10 * 1024 * 1024, // 100 MB
@@ -186,23 +161,75 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
                 this.backGroundImage = this.authenticationService.MEDIA_URL + this.companyBackgroundLogoImageUrlPath;
             }
         }
+    }
+    closeModal(){
+      this.cropRounded = !this.cropRounded;
+      this.squareData = {};
+    }
+    cropperSettings(){
+      this.squareCropperSettings = this.utilService.cropSettings(this.squareCropperSettings,130,196,130,false);
+      this.squareCropperSettings.noFileInput = true;
+      this.squareData = {};
+    }
+    fileChangeEvent(){ this.cropRounded = false; $('#cropLogoImage').modal('show'); }
+    fileChangeListener($event,cropperComp: ImageCropperComponent) {
+      this.cropper = cropperComp;
+      const image:any = new Image();
+      const file:File = $event.target.files[0];
+      const isSupportfile = file.type;
+      if (isSupportfile === 'image/jpg' || isSupportfile === 'image/jpeg' || isSupportfile === 'image/png') {
+        this.errorUploadCropper = false;
+        const myReader:FileReader = new FileReader();
+        const that = this;
+        myReader.onloadend = function (loadEvent:any) {
+            image.src = loadEvent.target.result;
+            that.cropper.setImage(image);
+        };
+        myReader.readAsDataURL(file);
+      } else {  this.errorUploadCropper = true;}
 
+      }
+    uploadLogo(){
+      this.loadingcrop = true;
+      let fileObj:any;
+      fileObj = this.utilService.convertBase64ToFileObject(this.squareData.image);
+      fileObj = this.utilService.blobToFile(fileObj);
+      console.log(fileObj);
+      this.fileUploadCode(fileObj);
+    }
+
+    fileUploadCode(fileObj:File){
+      this.companyProfileService.saveCompanyProfileLogo(fileObj).subscribe(
+        (response: any) => {
+          console.log(response);
+          this.companyLogoImageUrlPath = this.companyProfile.companyLogoPath = response.path;
+          this.refService.companyProfileImage = this.companyProfile.companyLogoPath;
+          this.logoError = false;
+          this.logoErrorMessage = "";
+          this.enableOrDisableButton();
+          $('#cropLogoImage').modal('hide');
+          this.closeModal();
+        },
+        (error) => { console.log(error);  $('#cropLogoImage').modal('hide'); this.customResponse = new CustomResponse('ERROR',this.properties.SOMTHING_WENT_WRONG,true); },
+        ()=>{ this.loadingcrop = false; if(this.companyProfile.website) { this.saveVideoBrandLog(); }});
     }
     errorHandler(event){ event.target.src ='assets/images/company-profile-logo.png'; }
     saveVideoBrandLog() {
-        const logoLink = this.videoUtilService.isStartsWith(this.companyProfile.website);
-        this.userService.saveBrandLogo(this.companyProfile.companyLogoPath, logoLink, this.loggedInUserId)
-            .subscribe(
-                (data: any) => {
-                    console.log(data);
-                    if (data !== undefined) { console.log('logo updated successfully');
-                    } else { this.ngxloading = false; }
-                },
-                (error) => { this.ngxloading = false; });
+      const logoLink = this.videoUtilService.isStartsWith(this.companyProfile.website);
+      if(logoLink && this.companyLogoImageUrlPath && this.loggedInUserId){
+      this.userService.saveBrandLogo(this.companyLogoImageUrlPath, logoLink, this.loggedInUserId)
+        .subscribe(
+          (data: any) => {
+            console.log(data);
+            if (data !== undefined) { console.log('logo updated successfully');
+            } else { this.ngxloading = false; }
+         },
+        (error) => { this.ngxloading = false; console.log(error); this.customResponse = new CustomResponse('ERROR',this.properties.SOMTHING_WENT_WRONG,true);});
+      }
     }
 
     geoLocation(){
-        this.videoFileService.getJSONLocation()
+        this.utilService.getJSONLocation()
         .subscribe(
         (data: any) => {
             if ( this.companyProfile.country == undefined || this.companyProfile.country == "" || this.companyProfile.country =="Select Country" ) {
@@ -220,7 +247,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
         } )
     }
     imageClick(){
-      $("#companyLogo").one('click',function() { });
+     this.fileChangeEvent();
     }
 
     ngOnInit() {
@@ -370,12 +397,12 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
                         $('#saveOrUpdateCompanyButton').prop('disabled', false);
                         this.processor.remove(this.processor);
                         this.authenticationService.user.websiteUrl = this.companyProfile.website;
+                        this.refService.companyProfileImage = this.companyProfile.companyLogoPath;
                         setTimeout(function () { $("#edit-sucess").slideUp(500); }, 5000);
-                        this.saveVideoBrandLog();
                     },
                     error => { this.ngxloading = false;
                         this.logger.errorPage(error) },
-                    () => { this.logger.info("Completed saveOrUpdate()") }
+                    () => {  this.saveVideoBrandLog();this.logger.info("Completed saveOrUpdate()") }
                 );
         } else {
             this.ngxloading = false;
@@ -473,13 +500,16 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
                 }).then(function() {
                         self.saveCompanyProfileOnDestroy();
                 },function (dismiss) {
-                    if (dismiss === 'cancel') {console.log('clicked cancel') }
+                    if (dismiss === 'cancel') {
+                      console.log('clicked cancel');
+                      self.refService.companyProfileImage = self.tempCompanyProfile.companyLogoPath;
+                   }
                 })
 
               }
             }
           );
-  }
+      }
 
     getAllCompanyNames() {
         this.companyProfileService.getAllCompanyNames()
@@ -834,7 +864,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
     }
 
     validateCity() {
-        if ($.trim(this.companyProfile.city).length > 0) {
+      if ($.trim(this.companyProfile.city).length > 0) {
             if (!this.regularExpressions.CITY_PATTERN.test(this.companyProfile.city)) {
                 this.addCityError();
                 this.cityErrorMessage = "Invalid City";
@@ -984,40 +1014,8 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
         }
     }
 
-    changeLogo(event: any) {
-          this.customResponse.isVisible = false;
-            let fileList: any;
-            if (event.target != undefined) {
-                fileList = event.target.files[0];
-            } else {
-                fileList = event[0];
-            }
-        if (fileList!=undefined) {
-            let maxSize = this.maxFileSize*1024*1024;//10 Mb
-            let  size = fileList.size;
-            let ext = fileList.name.split('.').pop().toLowerCase();
-            let  extentionsArray = ['jpeg','pjpeg', 'png','jpg'];
-            if ($.inArray(ext, extentionsArray) == -1) {
-                this.refService.goToTop();
-                this.customResponse = new CustomResponse('ERROR',"Please upload image files only", true );
-            }else{
-                let fileSize = (size/ 1024 / 1024); //size in MB
-                if (size > maxSize) {
-                    this.refService.goToTop();
-                    this.customResponse = new CustomResponse( 'ERROR',"Max size is 10 MB", true );
-                }
-            }
-        }
-
-    }
-
     changeBackGroundLogo(inputFile) {
         console.log(inputFile);
-    }
-
-    clearLogo() {
-        this.companyLogoUploader.queue.length = 0;
-        this.companyLogoImageUrlPath = "";
     }
 
     clearBackgroundLogo() {

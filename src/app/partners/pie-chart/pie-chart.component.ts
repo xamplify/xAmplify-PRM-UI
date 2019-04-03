@@ -1,5 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ParterService } from '../services/parter.service';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+
 declare var Highcharts: any;
 @Component({
   selector: 'app-pie-chart',
@@ -9,7 +11,7 @@ declare var Highcharts: any;
 
 export class PieChartComponent implements OnInit {
   @Input() customerId: number;
-  constructor(public parterService: ParterService) { }
+  constructor(public parterService: ParterService, public authenticationService:AuthenticationService) { }
 
   constructPieChart(pieChartData: any){
    Highcharts.chart('pie'+this.customerId, {
@@ -37,7 +39,7 @@ export class PieChartComponent implements OnInit {
        },
        exporting: {enabled: false},
        credits: {enabled: false},
-       colors: ['#ffb600', '#ff3879', '#be72d3'],
+       colors: ['#ffb600', '#ff3879', '#be72d3', '#357ebd'],
        series: [{
            name: 'Count',
            colorByPoint: true,
@@ -48,9 +50,9 @@ export class PieChartComponent implements OnInit {
   
   launchedCampaignsCountGroupByCampaignType() {
       var pieChartData;
-      this.parterService.launchedCampaignsCountGroupByCampaignType(this.customerId).subscribe(
+      this.parterService.launchedCampaignsCountGroupByCampaignType(this.customerId, this.authenticationService.user.id).subscribe(
         (data: any) => {
-          pieChartData = [{name: 'VIDEO', y: data.VIDEO}, {name: 'REGULAR', y: data.REGULAR},{name: 'SOCIAL', y: data.SOCIAL}];
+          pieChartData = [{name: 'VIDEO', y: data.VIDEO}, {name: 'REGULAR', y: data.REGULAR},{name: 'SOCIAL', y: data.SOCIAL},{name: 'EVENT', y: data.EVENT}];
         },
         (error: any) => { console.log('error got here') },
         () => this.constructPieChart(pieChartData)

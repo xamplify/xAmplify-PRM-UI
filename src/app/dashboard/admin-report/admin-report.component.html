@@ -1,7 +1,7 @@
 <div class="page-content ml0">
 <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 	<div class="page-bar col-xs-12">
-		<ul class="page-breadcrumb col-xs-6">
+		<ul class="page-breadcrumb col-xs-7">
 			<li>
 			<i class="fa fa-home"></i>
 				<a (click)="detailsTielsView = false">Admin Report</a>
@@ -12,7 +12,7 @@
 			</li>
 		</ul>
 		
-		<div class="inputs sort-class col-xs-6" align="right" style="float: right; margin-top: 2px;margin-right: -100px;">
+		<div class="inputs sort-class col-xs-5" align="right" style="float: right; margin-top: 2px;">
 													<div class="col-xs-6" [ngClass]="{'search-css': !referenceService.isMobileScreenSize(), 'mobile-css':referenceService.isMobileScreenSize() }">
 														<select class="form-control" [(ngModel)]="sortOption"
 															(ngModelChange)="sortByOption($event)">
@@ -47,8 +47,9 @@
 						<thead>
 							<tr>
 								<th style="width: 20%;">NAME</th>
-								<th>COMPANY</th>
-								<th>STATUS</th>
+								<th class='text-center'>COMPANY</th>
+								<th class='text-center'>ROLE</th>
+								<th class='text-center'>STATUS</th>
 								<th class='text-center'>REGISTRATION DATE</th>
 								<th class='text-center'>LAST LOGIN</th>
 								<th class='text-center'>UPDATED TIME</th>
@@ -62,8 +63,12 @@
 								<app-user-info [userInfo]="report">
 								</app-user-info>
 								</td>
-								<td>{{report.companyName}}</td>
-								<td>{{report.userStatus}}</td>
+								<td align="center">{{report.companyName}}</td>
+									<td align="center">
+									<span  *ngIf="report.roleId==2">Org_Admin</span>
+										<span  *ngIf="report.roleId==13">Vendor</span>
+									</td>
+								<td align="center">{{report.userStatus}}</td>
 								<td align="center">
 								<app-timestamp [dateAndTime]="report.dateReg"> </app-timestamp>
 								</td>
@@ -73,7 +78,7 @@
 								<td align="center">
 								<app-timestamp [dateAndTime]="report.updatedTime"> </app-timestamp>
 								</td>
-								<td>
+								<td align="center">
 								<a data-toggle="tooltip" data-placement="top" title="Company profile details" (click)="getVendorCompanyProfile(report)"> 
 								<i class="fa fa-building-o" style="font-size: 20px;"></i></a>
 								

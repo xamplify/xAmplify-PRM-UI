@@ -92,6 +92,7 @@ export class ContentManagementComponent implements OnInit {
               case 'doc':return 'assets/images/content/docs.png';
               case 'pdf':return 'assets/images/content/pdfs.png';
               case 'ppt':return 'assets/images/content/ppt.png';
+              case 'pct':return 'assets/images/content/pct.png';
               case 'pptx':return 'assets/images/content/pptx.png';
               case 'txt':return 'assets/images/content/text.png';
               case 'xls':return 'assets/images/content/xls.png';
@@ -155,6 +156,9 @@ export class ContentManagementComponent implements OnInit {
         }
 
     }
+    setFileCheck(file: any, id: any, event: any){
+      $('#grid_'+file.id).click();
+    }
 
     getSelectedFiles( file: any, id: any, event: any ) {
         let isChecked = $( '#grid_' + id ).is( ':checked' );
@@ -196,6 +200,7 @@ export class ContentManagementComponent implements OnInit {
         this.emailTemplateService.listAwsFiles( pagination, this.loggedInUserId )
             .subscribe(
             ( data: any ) => {
+               data.forEach((element, index) => { element.time = new Date(element.utcTimeString);});
                for(var i=0;i< data.length; i++){ data[i]["id"] = i;}
                this.list = data;
                this.searchList = data;
@@ -221,7 +226,7 @@ export class ContentManagementComponent implements OnInit {
         this.isPreviewed = false;
     }
     /************Delete******/
-    delete( file: ContentManagement ) {
+    delete( file: ContentManagement, id:any ) {
         let self = this;
         swal( {
             title: 'Are you sure?',
@@ -233,11 +238,10 @@ export class ContentManagementComponent implements OnInit {
             confirmButtonText: 'Yes, delete it!'
         }).then( function() {
             if ( self.selectedFileIds.length < 1 ) {
-                self.contentManagement = file;
-                self.deleteFile( self.contentManagement );
-            } else {
-                self.deleteFile( self.contentManagement );
+              self.selectedFiles.push( file );
+              self.selectedFileIds.push( id );
             }
+            self.deleteFile( self.contentManagement );
         }, function( dismiss: any ) {
             console.log( 'you clicked on option' + dismiss );
         });
@@ -262,7 +266,9 @@ export class ContentManagementComponent implements OnInit {
         this.emailTemplateService.deleteFile( file )
             .subscribe(
             data => {
-                const deleteMessage = file.fileName + ' deleted successfully';
+                let deleteMessage ;
+                if(this.selectedFileIds.length === 1){  deleteMessage = file.fileName + ' deleted successfully';}
+                else { deleteMessage = 'File(s) deleted successfully'; }
                 this.customResponse = new CustomResponse( 'SUCCESS', deleteMessage, true );
                 this.listItems( this.pagination );
                 if ( this.selectedFileIds ) {

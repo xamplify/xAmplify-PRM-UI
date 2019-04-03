@@ -57,20 +57,6 @@
     margin-bottom: 9px;
     margin-top: 8px;
   }
-.fileinput-button {
-position: relative;
-overflow: hidden;
-}
-.fileinput-button input {
-position: absolute;
-top: 0;
-right: 0;
-margin: 0;
-opacity: 0;
--ms-filter: 'alpha(opacity=0)';
-direction: ltr;
-cursor: pointer;
-}
 .logo-image{
 position: absolute;
 right: 22px;
@@ -182,3 +168,6 @@ a:hover{ text-decoration:none}
     width: 32px;
 }
 .left-css{ position: relative; left: -19px;}
+.result.rounded > img { border-radius: 100px;}
+@media screen and (max-width:600px){.imgCrop-modal {  width:100%; }}
+@media screen and (min-width:601px){.imgCrop-modal {  width:40% !important; }}

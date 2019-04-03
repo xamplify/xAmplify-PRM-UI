@@ -9,11 +9,11 @@ import { Roles} from '../models/roles';
 import { Module } from '../models/module';
 import { UserToken } from '../models/user-token';
 import { UtilService } from '../services/util.service';
-
 import { environment } from '../../../environments/environment';
 var SockJs = require("sockjs-client");
 var Stomp = require("stompjs");
 declare var swal,require: any;
+import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 
 @Injectable()
 export class AuthenticationService {
@@ -38,7 +38,7 @@ export class AuthenticationService {
     isAddedByVendor = false;
     selectedVendorId: number;
     venorMyProfileReport: any;
-    constructor(private http: Http, private router: Router, private utilService: UtilService) {
+    constructor(private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger:XtremandLogger) {
         this.REST_URL = this.SERVER_URL + 'xtremand-rest/';
         
         this.MEDIA_URL = this.SERVER_URL + 'vod/';
@@ -66,7 +66,6 @@ export class AuthenticationService {
         headers.append('Content-Type', 'application/x-www-form-urlencoded');
         headers.append('Authorization', authorization);
         const options = { headers: headers };
-        console.log('authentication service' + body);
         return this.http.post(url, body, options).map((res: Response) => {
             this.map = res.json();
             return this.map;
@@ -86,6 +85,7 @@ export class AuthenticationService {
                     localStorage.setItem('currentUser', JSON.stringify(userToken));
                     this.access_token = this.map.access_token;
                     this.refresh_token = this.map.refresh_token;
+                    this.expires_in = this.map.expires_in;
                     this.user = res.json();
                     this.userProfile = res.json();
                 }));
@@ -106,7 +106,7 @@ export class AuthenticationService {
         }
         return userId;
       }catch(error){
-        console.error('error'+error);
+        this.xtremandLogger.error('error'+error);
       }
     }
     hasCompany(): boolean {
@@ -115,174 +115,158 @@ export class AuthenticationService {
         if (currentUser != null) {
             return currentUser.hasCompany;
         }
-      }catch(error){ console.log('error'+error);}
+      }catch(error){  this.xtremandLogger.log('error'+error);}
     }
     getRoles(): any {
       try{
-        let roleNames: string[] = [];
-        const currentUser = localStorage.getItem('currentUser');
-        const roles = JSON.parse(currentUser)['roles'];
-        if(currentUser!=undefined && roles!=undefined){
+
+          let roleNames: string[] = [];
+          const currentUser = localStorage.getItem('currentUser');
+          if(currentUser != null){
+            const roles = JSON.parse(currentUser)['roles'];
             roleNames = roles.map(function (a) { return a.roleName; });
             if(!roleNames && this.user.roles) { roleNames = this.user.roles.map(function (a) { return a.roleName; });}
             return roleNames;
-        }else{
-         // this.router.navigate(['/login']);
-        }
-       
-        } catch(error){
-         console.log('error'+error);
-       
-      }
+          }
+        } catch(error){ this.xtremandLogger.log('error'+error);  this.router.navigate(['/']); }
+
     }
     showRoles():string{
       try{
         const roleNames = this.getRoles();
-        if(roleNames!=undefined){
-            /***********Org Admin**************/
-            const isOrgAdmin = roleNames.indexOf(this.roleName.orgAdminRole)>-1;
-            const isPartner =  roleNames.indexOf(this.roleName.companyPartnerRole)>-1;
-            const isVendor = roleNames.indexOf(this.roleName.vendorRole)>-1;
-            if(roleNames.length===1){   return "User";
-            }else{
-                if(isOrgAdmin&&isPartner){
-                    return "Orgadmin & Partner";
-                }else if(isVendor&&isPartner){
-                    return "Vendor & Partner";
-                }else if(isOrgAdmin){
-                    return "Orgadmin";
-                }else if(isVendor){
-                    return "Vendor";
-                }else if(isPartner){
-                    return "Partner";
-                }else{
-                    return "Team Member";
-                }
-            }
+
+        /***********Org Admin**************/
+        if(roleNames){
+        const isOrgAdmin = roleNames.indexOf(this.roleName.orgAdminRole)>-1;
+        const isPartner =  roleNames.indexOf(this.roleName.companyPartnerRole)>-1;
+        const isVendor = roleNames.indexOf(this.roleName.vendorRole)>-1;
+        if(roleNames.length===1){   return "User";
+        }else{
+            if(isOrgAdmin&&isPartner){ return "Orgadmin & Partner";
+            }else if(isVendor&&isPartner){ return "Vendor & Partner";
+            }else if(isOrgAdmin){  return "Orgadmin";
+            }else if(isVendor){ return "Vendor";
+            }else if(isPartner){  return "Partner";
+            }else{  return "Team Member"; }
         }
-     
+      }
       }catch(error){
-        console.error('error'+error);
+        this.xtremandLogger.log('error'+error);
       }
     }
 
     isOnlyPartner(){
       try{
         const roleNames = this.getRoles();
-        if(roleNames.length===2 && (roleNames.indexOf('ROLE_USER')>-1 && roleNames.indexOf('ROLE_COMPANY_PARTNER')>-1)){
+        if(roleNames && roleNames.length===2 && (roleNames.indexOf('ROLE_USER')>-1 && roleNames.indexOf('ROLE_COMPANY_PARTNER')>-1)){
             return true;
         }else{
             return false;
         }
       }catch(error){
-        console.error('error'+error);
+        this.xtremandLogger.log('error'+error);
       }
     }
 
     isSuperAdmin(){
         try{
           const roleNames = this.getRoles();
-          if(roleNames.length===1 && (roleNames.indexOf('ROLE_SUPER_ADMIN')>-1)){
+          if(roleNames && roleNames.length===1 && (roleNames.indexOf('ROLE_SUPER_ADMIN')>-1)){
               return true;
           }else{
               return false;
           }
         }catch(error){
-          console.error('error'+error);
+          this.xtremandLogger.log('error'+error);
         }
       }
 
     isVendor(){
        try{
         const roleNames = this.getRoles();
-        if(roleNames.length===2 && (roleNames.indexOf(this.roleName.userRole)>-1 && roleNames.indexOf(this.roleName.vendorRole)>-1)){
+        if(roleNames && roleNames.length===2 && (roleNames.indexOf(this.roleName.userRole)>-1 && roleNames.indexOf(this.roleName.vendorRole)>-1)){
             return true;
         }else{
             return false;
         }
       }catch(error){
-        console.error('error'+error);
+        this.xtremandLogger.log('error'+error);
       }
     }
     hasOnlyVideoRole(){
       try{
       const roleNames = this.getRoles();
-      if(roleNames.length===2 && (roleNames.indexOf('ROLE_USER')>-1 && roleNames.indexOf(this.roleName.videRole)>-1)){
+      if(roleNames && roleNames.length===2 && (roleNames.indexOf('ROLE_USER')>-1 && roleNames.indexOf(this.roleName.videRole)>-1)){
           return true;
       }else{
           return false;
       }
       }catch(error){
-      console.error('error'+error);
+        this.xtremandLogger.log('error'+error);
       }
     }
     hasVideoRole(){
       try{
       const roleNames = this.getRoles();
-      if((roleNames.indexOf('ROLE_USER')>-1 && roleNames.indexOf(this.roleName.videRole)>-1)){
+      if(roleNames && (roleNames.indexOf('ROLE_USER')>-1 && roleNames.indexOf(this.roleName.videRole)>-1)){
           return true;
       }else{
           return false;
       }
       }catch(error){
-      console.error('error'+error);
+        this.xtremandLogger.log('error'+error);
       }
     }
     isPartner(){
         try{
         const roleNames = this.getRoles();
-        if(roleNames.indexOf('ROLE_COMPANY_PARTNER')>-1){
+        if(roleNames && roleNames.indexOf('ROLE_COMPANY_PARTNER')>-1){
             return true;
         }else{
             return false;
         }
-      }catch(error){ console.log('error'+error);
-    }
+      }catch(error){  this.xtremandLogger.log('error'+error); }
     }
     isOrgAdmin(){
        try{
         const roleNames = this.getRoles();
-        if(( (roleNames.indexOf('ROLE_ORG_ADMIN')>-1))){
-            return true;
-        }else{
-            return false;
-        }
-      } catch(error){ console.log('error'+error);}
+        if(roleNames && roleNames.indexOf('ROLE_ORG_ADMIN')>-1){ return true;
+        }else{ return false;  }
+      } catch(error){  this.xtremandLogger.log('error'+error);}
     }
     isOrgAdminPartner(){
       try{
         const roleNames = this.getRoles();
-        if(( (roleNames.indexOf('ROLE_ORG_ADMIN')>-1 || (roleNames.indexOf('ROLE_ALL')>-1)) && roleNames.indexOf('ROLE_COMPANY_PARTNER')>-1)){
+        if( roleNames && ( (roleNames.indexOf('ROLE_ORG_ADMIN')>-1 || (roleNames.indexOf('ROLE_ALL')>-1)) && roleNames.indexOf('ROLE_COMPANY_PARTNER')>-1)){
             return true;
         }else{
             return false;
         }
-      }catch(error){console.log('error'+error); }
+      }catch(error){ this.xtremandLogger.log('error'+error); }
     }
     isVendorPartner(){
       try{
       const roleNames = this.getRoles();
-      if((roleNames.indexOf(this.roleName.vendorRole)>-1) && (roleNames.indexOf('ROLE_COMPANY_PARTNER')>-1)){
+      if(roleNames && (roleNames.indexOf(this.roleName.vendorRole)>-1) && (roleNames.indexOf('ROLE_COMPANY_PARTNER')>-1)){
         return true;
       }else{
           return false;
       }
-    } catch(error) { console.log('error'+error);}
+    } catch(error) {  this.xtremandLogger.log('error'+error);}
   }
     isTeamMember(){
         try{
          const roleNames = this.getRoles();
-         if((!this.isSuperAdmin() && !this.isOrgAdmin() && !this.isOrgAdminPartner() && !this.isPartner() && !this.isVendor() && !this.isVendorPartner() && ((roleNames.indexOf('ROLE_VIDEO_UPLOAD')>-1) || (roleNames.indexOf('ROLE_CAMPAIGN')>-1) || (roleNames.indexOf('ROLE_CONTACT')>-1) || (roleNames.indexOf('ROLE_EMAIL_TEMPLATE')>-1)
+         if((roleNames && !this.isSuperAdmin() && !this.isOrgAdmin() && !this.isOrgAdminPartner() && !this.isPartner() && !this.isVendor() && !this.isVendorPartner() && ((roleNames.indexOf('ROLE_VIDEO_UPLOAD')>-1) || (roleNames.indexOf('ROLE_CAMPAIGN')>-1) || (roleNames.indexOf('ROLE_CONTACT')>-1) || (roleNames.indexOf('ROLE_EMAIL_TEMPLATE')>-1)
                 || (roleNames.indexOf('ROLE_STATS')>-1) || (roleNames.indexOf('ROLE_SOCIAL_SHARE')>-1)) )){
              return true;
          }else{
              return false;
          }
-       } catch(error){ console.log('error'+error);}
+       } catch(error){  this.xtremandLogger.log('error'+error);}
      }
-    
     logout(): void {
-        console.log('logout()');
+        this.xtremandLogger.log('Logout');
         // clear token remove user from local storage to log user out
         this.access_token = null;
         this.refresh_token = null;
@@ -304,29 +288,23 @@ export class AuthenticationService {
         module.isVendor = false;
         this.isAddedByVendor = false;
         swal.close();
+        if(!this.router.url.includes('/userlock')){ this.router.navigate(['/']) };
     }
 
     navigateToDashboardIfUserExists(){
-       try{
-       if(localStorage.getItem('currentUser')){
-            this.router.navigate(["/home/dashboard/default"]);
-        }
-      }catch(err){ console.log('error'+err);}
+      try{
+         if(localStorage.getItem('currentUser')){ this.router.navigate(["/home/dashboard/default"]); }
+      }catch(error){  this.xtremandLogger.log('error'+error);}
     }
 
     checkIsPartnerToo(){
         let roles = this.showRoles();
-        if(roles=="Vendor & Partner" || roles=="Orgadmin & Partner"){
-           return true;
-        }else{
-            return false;
-        }
+        if(roles=="Vendor & Partner" || roles=="Orgadmin & Partner"){  return true;
+        }else{ return false;  }
     }
 
     checkLoggedInUserId( userId ) {
-        if ( this.isSuperAdmin() ) {
-            userId = this.selectedVendorId;
-        }
+        if ( this.isSuperAdmin() ) { userId = this.selectedVendorId; }
         return userId;
     }
 

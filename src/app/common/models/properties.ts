@@ -5,14 +5,16 @@ export class Properties {
   BOTTOM_MESSAGE = '&copy; 2018 xAmplify. All rights reserved.'
   APP_WEBSITE = 'xAmplify';
   APP_WELCOME_MESSAGE = 'Welcome to xAmplify';
-  APP_Xamplify_URL="https://xamplify.io"
+  APP_Xamplify_URL="https://xamplify.io";
+  xamplify_router= 'https://www.xamplify.com/';
 
   NO_RESULTS_FOUND = "No results found.";
   EMAIL_SENT_SUCCESS = "Email sent successfully.";
   NO_USERS_SELECT_ERROR = "You have not selected any user.";
   //FOR CONTACTS
-  FILE_TYPE_ERROR = "File type not allowed please select the .csv file only."
+  FILE_TYPE_ERROR = "File type not allowed please select the .csv file only.";
   CONTACT_LIST_CREATE_SUCCESS = "Your contact list has been created successfully and it is being processed.";
+  CONTACT_LIST_SAVE_SUCCESS = "Your contact list has been saved successfully";
   CONTACT_LIST_CREATE_ERROR = "An error occured while creating your contact list.";
 
   CONTACT_LIST_UPDATE_SUCCESS = "Your contact list has been updated successfully.";
@@ -42,9 +44,11 @@ export class Properties {
 
   SOCIAL_ACCOUNT_REMOVED_SUCCESS = "Your social account has been removed successfully.";
   SOCIAL_ACCOUNT_REMOVED_ERROR = "An error occured while removing your social Account.";
+  CONTACT_LIST_VALIDATION ='Please select how you would like to add your contacts.';
 
   /* For Partners*/
   PARTNER_LIST_CREATE_SUCCESS = "Your partner list has been created successfully and we are processing your partner list";
+  PARTNER_LIST_SAVE_SUCCESS = "Your partner list has been saved successfully";
   PARTNER_LIST_NAME_UPDATE_SUCCESS = "Your partner list name has been updated successfully.";
 
   PARTNER_LIST_SYNCHRONIZATION_SUCCESS = "Your Parntner List has been synchronized successfully.";
@@ -99,6 +103,10 @@ export class Properties {
   VIDEO_PROCESSING_MESSAGE ='Don\'t mind us. We\'re just processing your video.'
   CONTENT_UPLOAD_SIZE ='Unable to upload files because your files size is more than 12 MB';
   CONTENT_UPLOAD_FILETYPE='Please upload supported file types like image files, gifs,doc,htm, pdf, xls.';
+  CONTENT_PROCESS_MESSAGE = 'Your file has been uploaded. Please wait while we process it.';
+  SUPPORT_FILES ='These plugins only work with the latest versions of Chrome, Firefox, Safari, Opera, Microsoft Edge & Internet Explorer 10.';
+  CONTENT_DRAG_MESSAGE = 'Drag and drop files here or click to select files.';
+  VIDEO_DRAG_MESSAGE ='Drag and drop a video file here or click to select a Video file.';
 
   /* campaign */
   ADD_AUTO_RESPONSE_WEBSITE = 'Auto-responses to a website visit'
@@ -107,8 +115,8 @@ export class Properties {
   TO_PARTNER_MESSAGE = 'To Recipient(s): Send a campaign intended just for your Partner(s)/ Contact(s)';
   THROUGH_PARTNER_MESSAGE = 'Through Partner: Send a campaign that your Partners can redistribute';
   ENALEORDISABLE_VENDOR_MESSAGE='Enable/disable the Vendor’s access to your campaign analytics';
-  ACTIVE_PARTICIPANTS = 'Active participants - share only the recipients that have interacted with your campaign';
-  ALL_PARTICIPANTS = 'All participants - share all campaign recipient data';
+  ACTIVE_PARTICIPANTS = 'Active participants - Share only the recipients that have interacted with your campaign';
+  ALL_PARTICIPANTS = 'All participants - Share all campaign recipient data';
 
   /****BEE ClientId/Client Secret********/
   clientId = '18ff022e-fa4e-47e7-b497-39a12ca4600a';

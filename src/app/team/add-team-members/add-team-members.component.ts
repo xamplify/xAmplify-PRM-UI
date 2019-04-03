@@ -117,6 +117,7 @@ export class AddTeamMembersComponent implements OnInit {
             this.teamMemberService.list(pagination,this.userId)
             .subscribe(
                 data => {
+                    this.logger.log(data);
                     this.teamMembersList = data.teamMembers;
                     this.secondOrgAdminId = data.secondOrgAdminId;
                     pagination.totalRecords = data.totalRecords;
@@ -495,7 +496,7 @@ export class AddTeamMembersComponent implements OnInit {
     countCheckedCheckBoxesLength(team:TeamMember,index:number,tableId:string){
        try{
            let length = $('#'+tableId+' .module-checkbox-'+index+':checked').length;
-           if((this.contactAccess && length==8) || (!this.contactAccess && length==7)){
+           if((this.contactAccess && length==7) || (!this.contactAccess && length==6)){
                team.all = true;
                $('#'+tableId+' #role-checkbox-'+index).prop("disabled",true);
            }else{
@@ -574,7 +575,7 @@ export class AddTeamMembersComponent implements OnInit {
                 .getHeaderArray(csvRecordsArray);
             let headers = headersRow[0].split(',');
 
-            if((this.contactAccess && headers.length==10)  || (!this.contactAccess && headers.length==9)){
+            if((this.contactAccess && headers.length==9)  || (!this.contactAccess && headers.length==8)){
                 if(this.validateHeaders(headers)){
                     this.readCsvData(csvRecordsArray,headersRow.length);
                 }else{
@@ -599,12 +600,10 @@ export class AddTeamMembersComponent implements OnInit {
 
          validateHeaders(headers){
            if(this.contactAccess){
-               return (headers[0]=="EMAIL_ID" && headers[1]=="ALL" && headers[2]=="VIDEO" && headers[3]=="CONTACTS" && headers[4]=="CAMPAIGN" && headers[5]=="STATS" && headers[6]=="EMAIL" 
-               && headers[7]=="SOCIAL_SHARE" && headers[8]=="PARTNERS" && headers[9]=="OPPORTUNITIES");
+               return (headers[0]=="EMAIL_ID" && headers[1]=="ALL" && headers[2]=="VIDEO" && headers[3]=="CONTACTS" && headers[4]=="CAMPAIGN" && headers[5]=="STATS" && headers[6]=="EMAIL" && headers[7]=="SOCIAL_SHARE" && headers[8]=="PARTNERS");
 
            }else{
-               return (headers[0]=="EMAIL_ID" && headers[1]=="ALL" && headers[2]=="VIDEO" && headers[3]=="CAMPAIGN" && headers[4]=="STATS" && headers[5]=="EMAIL" 
-               && headers[6]=="SOCIAL_SHARE" && headers[7]=="PARTNERS" && headers[8]=="OPPORTUNITIES");
+               return (headers[0]=="EMAIL_ID" && headers[1]=="ALL" && headers[2]=="VIDEO" && headers[3]=="CAMPAIGN" && headers[4]=="STATS" && headers[5]=="EMAIL" && headers[6]=="SOCIAL_SHARE" && headers[7]=="PARTNERS");
 
            }
          }
@@ -710,14 +709,12 @@ export class AddTeamMembersComponent implements OnInit {
                       teamMember.emailTemplate = this.setDefaultValue(row[6]);
                       teamMember.socialShare = this.setDefaultValue(row[7]);
                       teamMember.partners = this.setDefaultValue(row[8]);
-                       teamMember.opportunity = this.setDefaultValue(row[9]);
                   }else{
                       teamMember.campaign   =this.setDefaultValue(row[3]);
                       teamMember.stats = this.setDefaultValue(row[4]);
                       teamMember.emailTemplate = this.setDefaultValue(row[5]);
                       teamMember.socialShare = this.setDefaultValue(row[6]);
                       teamMember.partners = this.setDefaultValue(row[7]);
-                       teamMember.opportunity = this.setDefaultValue(row[8]);
                   }
 
               }
@@ -767,10 +764,10 @@ export class AddTeamMembersComponent implements OnInit {
       }
 
       getEnabledOrgAdminsCount(){
-          const enabledOrgAdmin = this.teamMembersList.map(function(a) {return a.orgAdmin;});
+          let enabledOrgAdmin = this.teamMembersList.map(function(a) {return a.orgAdmin;});
           this.logger.log(this.teamMembersList);
-          const counts = {};
-          $.each(enabledOrgAdmin, function(index,value) {
+          var counts = {};
+          $.each(enabledOrgAdmin, function(key,value) {
             if (!counts.hasOwnProperty(value)) {
               counts[value] = 1;
             } else {

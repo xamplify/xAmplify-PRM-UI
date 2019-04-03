@@ -8,6 +8,7 @@ import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { UtilService } from '../../core/services/util.service';
 import { Roles } from '../../core/models/roles';
 import { Properties } from '../../common/models/properties';
+declare var $:any;
 
 @Component({
   selector: 'app-topnavbar',
@@ -26,34 +27,37 @@ export class TopnavbarComponent implements OnInit {
     try{
         this.currentUrl = this.router.url;
     const userName = this.authenticationService.user.emailId;
-    if (this.refService.topNavbarUserService === false || this.utilService.topnavBareLoading === false) {
-      this.refService.topNavbarUserService = true;
-      this.utilService.topnavBareLoading = true;
-      this.userService.getUserByUserName(userName).
-        subscribe(
-        data => {
-          console.log(data);
-          refService.userDefaultPage = data.userDefaultPage;
-          const loggedInUser = data;
-          if (loggedInUser.firstName != null) {
-            this.model.displayName = loggedInUser.firstName;
-            refService.topNavBarUserDetails.displayName = loggedInUser.firstName;
-          } else {
-            this.model.displayName = loggedInUser.emailId;
-            refService.topNavBarUserDetails.displayName = loggedInUser.emailId;
+    if(userName!=undefined){
+        if (this.refService.topNavbarUserService === false || this.utilService.topnavBareLoading === false) {
+            this.refService.topNavbarUserService = true;
+            this.utilService.topnavBareLoading = true;
+            this.userService.getUserByUserName(userName).
+              subscribe(
+              data => {
+                console.log(data);
+                refService.userDefaultPage = data.userDefaultPage;
+                const loggedInUser = data;
+                if (loggedInUser.firstName != null) {
+                  this.model.displayName = loggedInUser.firstName;
+                  refService.topNavBarUserDetails.displayName = loggedInUser.firstName;
+                } else {
+                  this.model.displayName = loggedInUser.emailId;
+                  refService.topNavBarUserDetails.displayName = loggedInUser.emailId;
+                }
+                if (!(loggedInUser.profileImagePath.indexOf(null) > -1)) {
+                  this.model.profilePicutrePath = loggedInUser.profileImagePath;
+                  refService.topNavBarUserDetails.profilePicutrePath = loggedInUser.profileImagePath;
+                } else {
+                  this.model.profilePicutrePath = 'assets/admin/pages/media/profile/icon-user-default.png';
+                  refService.topNavBarUserDetails.profilePicutrePath = 'assets/admin/pages/media/profile/icon-user-default.png';
+                }
+              },
+              error => { this.logger.error(this.refService.errorPrepender + ' Constructor():' + error); },
+              () => this.logger.log('Finished')
+              );
           }
-          if (!(loggedInUser.profileImagePath.indexOf(null) > -1)) {
-            this.model.profilePicutrePath = loggedInUser.profileImagePath;
-            refService.topNavBarUserDetails.profilePicutrePath = loggedInUser.profileImagePath;
-          } else {
-            this.model.profilePicutrePath = 'assets/admin/pages/media/profile/icon-user-default.png';
-            refService.topNavBarUserDetails.profilePicutrePath = 'assets/admin/pages/media/profile/icon-user-default.png';
-          }
-        },
-        error => { this.logger.error(this.refService.errorPrepender + ' Constructor():' + error); },
-        () => this.logger.log('Finished')
-        );
-    }
+   
+
     const roles = this.authenticationService.getRoles();
     if(roles!=undefined){
         if (roles.indexOf(this.roleName.videRole) > -1 || roles.indexOf(this.roleName.allRole) > -1) {
@@ -75,10 +79,11 @@ export class TopnavbarComponent implements OnInit {
           if(roles.indexOf(this.roleName.vendorRole)>-1){
               this.authenticationService.module.isVendor = true;
           }
-    }else{
-       // this.router.navigate(['/login']);
+
     }
-    
+    }else{
+       this.authenticationService.logout();
+    }   
     }catch(error) {this.logger.error('error'+error); }
   }
   errorHandler(event:any){
@@ -134,23 +139,27 @@ export class TopnavbarComponent implements OnInit {
       );
     }catch(error) {this.logger.error('error'+error); }
   }
-
+  onRightClick(event){
+    return false;
+  }
   ngOnInit() {
     try{
      this.getUnreadNotificationsCount();
-     this.isAddedByVendor();
+    // this.isAddedByVendor();
     }catch(error) {this.logger.error('error'+error); }
   }
   lockScreen(){
     this.router.navigate(['/userlock']);
   }
-
+  errorImage(event) { event.target.src = 'assets/images/xamplify-logo.png'; }
   logout() {
     this.refService.userDefaultPage = 'NoneOf';
     this.refService.isSidebarClosed = false;
     this.refService.defaulgVideoMethodCalled = false;
+    this.refService.companyProfileImage = '';
     document.body.className = 'login page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-sidebar-closed-hide-logo';
+    localStorage.setItem('isLogout', 'loggedOut');
     this.authenticationService.logout();
-    this.router.navigate(['/']);
+   // this.router.navigate(['/']);
   }
 }

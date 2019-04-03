@@ -90,7 +90,7 @@
 				</span>
 				<ul class="dropdown-menu pull-right">
 					<li>
-						<a id="delete_button" (click)="downloadLogs('two')"> Export To Excel </a>
+						<a id="delete_button" (click)="downloadLogs()"> Export To Excel </a>
 					</li>
 				</ul>
 			</div>
@@ -129,7 +129,7 @@
 					</ng-container>
 				</tbody>
 			</table>
-			<div class="pg8"><app-pagination [hidden]="loading" [pagination]="pagination" [type]="'reports'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination></div>
+			<div class="pg8"><app-pagination [hidden]="loading || videoViewsLevelSecond?.length==0" [pagination]="pagination" [type]="'reports'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination></div>
 		</div>
   </div>
   </div>

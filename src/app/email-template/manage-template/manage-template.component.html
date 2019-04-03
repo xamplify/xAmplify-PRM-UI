@@ -1,5 +1,6 @@
 <div class="page-content"
 	[class.ml0]="authenticationService.isSuperAdmin()">
+	<ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 	<div class="page-bar">
 		<ul class="page-breadcrumb">
 			<li *ngIf="!authenticationService.isSuperAdmin()"><i
@@ -111,7 +112,7 @@
 										*ngIf="!authenticationService.isVendor()">Vendor Company
 										Name</th>
 									<th class="hidden-xs text-center">Type</th>
-									<th class="hidden-xs text-center">Created Date</th>
+									<th class="hidden-xs text-center">Created On</th>
 									<th class="text-center" style="min-width: 145px;">Actions</th>
 								</tr>
 							</thead>
@@ -156,8 +157,10 @@
 										</h5>
 									</td>
 									<td class="hidden-xs">
-										<h5 class="view-banner">{{emailTemplate.emailTemplateType}}</h5>
-									</td>
+										<h5 class="view-banner">
+                      <span *ngIf="emailTemplate.emailTemplateType==='Regular Co-Branding'; else Other">Email Co-Branding</span>
+                      <ng-template #Other>{{emailTemplate.emailTemplateType}}</ng-template></h5>
+                    </td>
 									<td class="hidden-xs text-center"><app-timestamp
 											[isOnlyDate]="true" [dateAndTime]="emailTemplate.createdDate">
 										</app-timestamp></td>
@@ -200,7 +203,11 @@
 								title="{{emailTemplate.name}}">
 								{{emailTemplate.name | slice:0:25}} <span
 									*ngIf="emailTemplate.name?.length>25">...</span><br><br>
-							<span class="view-banner-listView">{{emailTemplate.emailTemplateType}}</span>
+							<span class="view-banner-listView">
+                <!-- {{emailTemplate.emailTemplateType}} -->
+                <span *ngIf="emailTemplate.emailTemplateType==='Regular Co-Branding'; else OtherType">Email Co-Branding</span>
+                <ng-template #OtherType>{{emailTemplate.emailTemplateType}}</ng-template>
+              </span>
 							</h4>
 							<!-- <h5 class="view-banner">{{emailTemplate.emailTemplateType}}</h5> -->
 							<div>
@@ -216,12 +223,12 @@
 								</h6>
 								<ng-container *ngIf="emailTemplate.type!='PARTNER'">
 								<h6 title="{{emailTemplate.createdBy}}">
-									By <b *ngIf="emailTemplate.createdBy?.length>17">{{emailTemplate.createdBy|slice:0:17}}..</b>
-									<b *ngIf="emailTemplate.createdBy?.length<17">{{emailTemplate.createdBy}}</b>
+									By <b>{{emailTemplate.createdBy | slice:0:17}}</b>
+									<span *ngIf="emailTemplate.createdBy?.length>17">..</span>
 								</h6>
 								<h6 title="{{emailTemplate.companyName}}">
-									From <b *ngIf="emailTemplate.companyName?.length>17">{{emailTemplate.companyName | slice:0:17}}..</b>
-									<b *ngIf="emailTemplate.companyName?.length<17">{{emailTemplate.companyName}}</b>
+									From <b>{{emailTemplate.companyName | slice:0:17}}</b>
+									<span *ngIf="emailTemplate.companyName?.length>17">..</span>
 								</h6>
 								</ng-container>
 								<div class="ribbon draft" *ngIf="emailTemplate.draft">
@@ -285,10 +292,10 @@
 						</ng-container>
 					</div>
 				</div>
-				<div *ngIf="pagination.pagedItems.length !== 0 && !httpRequestLoader.isLoading" class="pg8">
-					<app-pagination [pagination]="pagination" [type]="'t'"
+				<div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
+					<app-pagination [pagination]="pagination"
 						(notifyParent)="setPage($event)"
-						(notifyParentDropDown)="listEmailTemplates($event)"></app-pagination>
+						(notifyParentDropDown)="listEmailTemplates($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
 				</div>
 				<!-- End of 24 -->
 				<div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">

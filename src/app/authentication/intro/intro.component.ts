@@ -1,6 +1,8 @@
 import { Component, OnInit,ViewChild,ElementRef } from "@angular/core";
 import { AuthenticationService } from "../../core/services/authentication.service";
 import { Properties } from '../../common/models/properties';
+import { Router } from "@angular/router";
+import { environment } from "environments/environment";
 
 @Component({
   selector: "app-intro",
@@ -22,7 +24,9 @@ export class IntroComponent implements OnInit {
   lat =  37.5483;
   lng = -121.9886;
   markers = [{ lat: 37.5483, lng: -121.9886, label: "A", draggable: false }];
-  constructor(public authenticationService: AuthenticationService, public properties: Properties) {}
+  clientUrl = environment.CLIENT_URL;
+  constructor(public authenticationService: AuthenticationService, public properties: Properties,
+    public router:Router) {}
 
   clickedMarker(label: string, index: number) {
     console.log(`clicked the marker: ${label || index}`);
@@ -50,16 +54,20 @@ export class IntroComponent implements OnInit {
   goToContactTab(){
       this.contact.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'start' });
   }
+  callSetTimeOut(time:any){
+    setTimeout(() => { this.mainLoader = false; }, time);
+  }
   ngOnInit() {
     this.navbar = document.getElementById("navbar");
     this.sticky = this.navbar.offsetTop;
     this.mainLoader = true;
     try {
       if (localStorage.getItem("currentUser")) {
-        this.authenticationService.navigateToDashboardIfUserExists();
-        setTimeout(() => {
-          this.mainLoader = false;
-        }, 900);
+        this.callSetTimeOut(900); this.authenticationService.navigateToDashboardIfUserExists();
+      } else if (localStorage.getItem("isLogout") && this.clientUrl ==='https://xamplify.io/') {
+        this.callSetTimeOut(1500);
+        window.location.href = 'https://www.xamplify.com/';
+        localStorage.removeItem("isLogout")
       } else {
         this.mainLoader = false;
       }

@@ -24,10 +24,13 @@
       <div>
         <div>
           <div class="row">
-            <div class="col-xs-12 col-sm-6 col-md-3" [class.blur]="2!=selectedTabIndex">
-              <a class="dashboard-stat dashboard-stat-lighter purple-soft" (click)="goToReDistributedPartnersDiv()">
+            <div class="col-xs-12 col-sm-6 col-md-3">
+              <a class="dashboard-stat dashboard-stat-lighter purple-soft" [class.greay]="2!=selectedTabIndex" (click)="goToReDistributedPartnersDiv()">
                 <div class="visual">
-                  <i class="glyphicon glyphicon-bullhorn"></i>
+                  <!-- <i class="glyphicon glyphicon-bullhorn"></i> -->
+                  <i *ngIf="selectedTabIndex == 2" class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1" 
+                   [ngStyle]="{'color': 2===selectedTabIndex ? '#white' : '#ccc' }">
+                 </i>
                 </div>
                 <div class="details">
                   <div class="number"><span *ngIf="campaignsCount">{{campaignsCount}}</span><span *ngIf="!campaignsCount">0</span></div>
@@ -38,10 +41,12 @@
                 </span>
               </a>
             </div>
-            <div class="col-xs-12 col-sm-6 col-md-3" [class.blur]="3!=selectedTabIndex">
-              <a class="dashboard-stat dashboard-stat-lighter green-soft" (click)="goToThroughPartnersDiv()">
+            <div class="col-xs-12 col-sm-6 col-md-3" >
+              <a class="dashboard-stat dashboard-stat-lighter green-soft" [class.greay]="3!=selectedTabIndex" (click)="goToThroughPartnersDiv()">
                 <div class="visual">
-                  <i class="glyphicon glyphicon-bullhorn"></i>
+                  <!-- <i class="glyphicon glyphicon-bullhorn"></i> -->
+                  <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1"  [ngStyle]="{'color': 3===selectedTabIndex ? '#white' : '#ccc' }"
+                *ngIf="selectedTabIndex == 3" ></i>
                 </div>
                 <div class="details">
                   <div class="number">{{throughPartnerCampaignsCount}}</div>
@@ -52,10 +57,12 @@
                 </span>
               </a>
             </div>
-            <div class="col-xs-12 col-sm-6 col-md-3" (click)="goToActivePartnersDiv()" [class.blur]="0!=selectedTabIndex">
-              <a class="dashboard-stat dashboard-stat-lighter yellow-gold">
+            <div class="col-xs-12 col-sm-6 col-md-3" (click)="goToActivePartnersDiv()" >
+              <a class="dashboard-stat dashboard-stat-lighter yellow-gold" [class.greay]="0!=selectedTabIndex">
                 <div class="visual">
-                  <i class="fa fa-handshake-o"></i>
+                  <!-- <i class="fa fa-handshake-o"></i> -->
+                  <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1"  [ngStyle]="{'color': 0===selectedTabIndex ? '#white' : '#ccc' }"
+                *ngIf="selectedTabIndex == 0" ></i>
                 </div>
                 <div class="details">
                   <div class="number">{{activePartnersCount}}</div>
@@ -66,10 +73,12 @@
                 </span>
               </a>
             </div>
-            <div class="col-xs-12 col-sm-6 col-md-3" (click)="goToInActivePartnersDiv()" [class.blur]="1!=selectedTabIndex">
-              <a class="dashboard-stat dashboard-stat-lighter blue-soft">
+            <div class="col-xs-12 col-sm-6 col-md-3" (click)="goToInActivePartnersDiv()">
+              <a class="dashboard-stat dashboard-stat-lighter blue-soft" [class.greay]="1!=selectedTabIndex">
                 <div class="visual">
-                  <i class="fa fa-handshake-o"></i>
+                  <!-- <i class="fa fa-handshake-o"></i> -->
+                  <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1"  [ngStyle]="{'color': 1===selectedTabIndex ? '#white' : '#ccc' }"
+                *ngIf="selectedTabIndex == 1" ></i>
                 </div>
                 <div class="details">
                   <div class="number">{{inActivePartnersCount}}</div>
@@ -120,7 +129,7 @@
               <div class="portlet-input input-inline input-medium">
                 <div class="input-icon right" style="position: relative; margin: -12px 0 0 0;">
                   <input type="text" style="height: 34px;" class="form-control" [(ngModel)]="activePartnersSearchKey" [ngModelOptions]="{standalone: true}"
-                    placeholder="Search for a Campaign" (keypress)="activePartnerSearch($event.keyCode)">
+                    placeholder="Search for a Partner" (keypress)="activePartnerSearch($event.keyCode)">
                   <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="activePartnersSearchKey" (click)="activePartnersSearchKey=''"></button>
                   <button type="submit" class="search-box-item-click" (click)="searchActivePartnerAnalytics()"><i class="fa fa-search"></i></button>
                 </div>
@@ -133,7 +142,7 @@
               <thead>
                 <th>Partner</th>
                 <th>Campaigns</th>
-                <th>Pie Chart</th>
+                <th> </th>
               </thead>
               <tbody>
                 <tr *ngFor="let item of activePartnersPagination.pagedItems">
@@ -189,7 +198,7 @@
           <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
           <app-response-message style="position: relative; bottom: 9px;" [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
           <div class="portlet-body" *ngIf="!httpRequestLoader.isLoading">
-            <table class="table tgrid">
+            <table class="table tgrid" *ngIf="inActivePartnersPagination.pagedItems.length != 0">
               <thead>
                 <th class="center-aligned" style="width:50%">partners</th>
                 <th class="hidden-xs" style="text-align: left;">LAST REMINDER SENT</th>
@@ -278,8 +287,8 @@
                         <span *ngIf="item.lastName?.length>15">...</span>
                       </h5>
                       <h6 class='m0' style="font-weight: 400;">
-                        <a title="{{item.emailId}}">{{item.emailId | slice:0:30}}</a>
-                        <span *ngIf="item.emailId?.length>30">...</span>
+                        <span title="">{{item.emailId | slice:0:38}}</span>
+                        <span *ngIf="item.emailId?.length>38">...</span>
                       </h6>
                       	<h5 style="font-weight: 600; color: #676767;"><app-timestamp [isOnlyDate]="false" [dateAndTime]="item.redistributedOn"> </app-timestamp></h5>
                     </td>
@@ -485,7 +494,7 @@
                       <th class="hidden-xs" colspan="2" style="width: 50%">Campaign</th>
                       <th class="visible-xs" colspan="1" style="width: 50%">Campaign</th>
                       <th class="hidden-xs">Status</th>
-                      <th class="hidden-xs">Created Date</th>
+                      <th class="hidden-xs">Created On</th>
                       <th style="text-align:left">Actions</th>
                     </tr>
                   </thead>
@@ -532,10 +541,10 @@
                           <!-- <b *ngIf="campaign.launched || !campaign.launched && campaign.launchedOn?.length > 0">{{campaign.launchedOn}}</b> -->
                           <b *ngIf="campaign.scheduleType=='NOW' || campaign.scheduleType=='SCHEDULE'">
                             <!-- {{campaign.launchedOn}} -->
-                            <app-timestamp [isOnlyDate]="false" [dateAndTime]="campaign.launchedOn"> </app-timestamp>
+                            <app-timestamp [isOnlyDate]="false" [dateAndTime]="campaign.displayTime"> </app-timestamp>
                           </b>
                           <b *ngIf="campaign.scheduleType=='SAVE'">
-                            <app-timestamp [isOnlyDate]="false" [dateAndTime]="campaign.startTime"> </app-timestamp>
+                            <app-timestamp [isOnlyDate]="false" [dateAndTime]="campaign.displayTime"> </app-timestamp>
                           </b>
                         </span>
                       </td>
@@ -580,10 +589,10 @@
                           <span title="Upload date">
                             <span *ngIf="campaign.scheduleType=='NOW' || campaign.scheduleType=='SCHEDULE'">
                               <!-- {{campaign.launchedOn}} -->
-                              <app-timestamp [isOnlyDate]="false" [dateAndTime]="campaign.launchedOn"> </app-timestamp>
+                              <app-timestamp [isOnlyDate]="false" [dateAndTime]="campaign.displayTime"> </app-timestamp>
                             </span>
                             <span *ngIf="campaign.scheduleType=='SAVE'">
-                              <app-timestamp [isOnlyDate]="false" [dateAndTime]="campaign.startTime"> </app-timestamp>
+                              <app-timestamp [isOnlyDate]="false" [dateAndTime]="campaign.displayTime"> </app-timestamp>
                             </span>
                           </span>
                         </h6>
@@ -592,6 +601,7 @@
                             <i *ngIf="campaign.campaignType.indexOf('VIDEO') > -1" class="fa fa-video-camera" aria-hidden="true"></i>
                             <i *ngIf="campaign.campaignType.indexOf('REGULAR') > -1" class="fa fa-envelope" aria-hidden="true"></i>
                             <i *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1" class="fa fa-globe" aria-hidden="true"></i>
+                            <i *ngIf="campaign.campaignType.indexOf('EVENT') > -1" class="fa fa-calendar" aria-hidden="true"></i>
                           </span>
                         </div>
                         <div class="ribbon" [class.active]="!campaign.launched && campaign.launchedOn?.length==0">

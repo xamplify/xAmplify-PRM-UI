@@ -31,5 +31,5 @@ export class Pagination {
 	throughPartner:boolean = false;
 	isListView:boolean = false;
 	dealStatus:string = null;
-
+	showDraftContent=false;
 }

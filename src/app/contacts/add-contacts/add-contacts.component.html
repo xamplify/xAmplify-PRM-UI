@@ -138,22 +138,21 @@
 													<span>One at a time</span>
 												</button>
 											</div>
-											<ng-container *ngIf="!referenceService.isMobileScreenSize()">
-												<div class="col-xs-12 col-sm-4 col-md-4">
-													<button class="btn-success btn-block" id="copyFromClipBoard" (click)="copyFromClipboard()" [disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5">
-														<i class="fa fa-users"></i> <span>Copy list from clipboard</span>
-													</button>
+											<div class="col-xs-12 col-sm-4 col-md-4">
+												<div class="btn-info fileinput-button btn-block"
+													id="uploadCSV" style="min-height: 85px"
+													[class.disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || disableOtherFuctionality">
+													<i
+														style="display: block; margin-top: 22px !important; text-align: center; font-size: 24px; margin: 0 auto 10px"
+														class="fa fa-file-excel-o"></i> <span
+														style="display: block; font-size: 12px; text-align: center">Upload a CSV</span> <input type="file"
+														title=" " (click)="input.value = null" (change)="fileChange(input)" accept=".csv"
+														#input
+														[disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || selectedAddContactsOption == 2 || disableOtherFuctionality" />
 												</div>
-												<div class="col-xs-12 col-sm-4 col-md-4">
-													<div class="btn-info fileinput-button btn-block" id="uploadCSV" style="min-height: 85px" [class.disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || disableOtherFuctionality">
-														<i style="display: block; margin-top: 22px !important; text-align: center; font-size: 24px; margin: 0 auto 10px" class="fa fa-file-excel-o"></i>
-														<span style="display: block; font-size: 12px; text-align: center">Upload a CSV</span> <input type="file" ng2FileSelect
-														 *ngIf="uploader.queue.length==0" [uploader]="uploader" title=" " (change)="fileChange(input)" accept=".csv"
-														 #input [disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || selectedAddContactsOption == 2 || disableOtherFuctionality"
-														/>
-													</div>
-												</div>
-											</ng-container>
+												<!--  ng2FileSelect *ngIf="uploader.queue.length==0" [uploader]="uploader" -->
+                      </div>
+                    </ng-container>
 
 											<!-- The global file processing state -->
 											<span class="fileupload-process"> </span>
@@ -292,13 +291,15 @@
 
 										<!-- Validation Messages -->
 										<div *ngIf="isValidContactName">
-											<p class="custom-error-message">{{checkingContactTypeName}} List Name Already Exists</p>
+											<p class="custom-error-message chagneText">{{checkingContactTypeName}}
+												List name already exists</p>
 										</div>
 										<div *ngIf="contactListNameError">
-											<p class="custom-error-message">Please enter the {{checkingContactTypeName}} list name.</p>
+											<p class="custom-error-message chagneText">Please enter the
+												{{checkingContactTypeName}} list name.</p>
 										</div>
 										<div *ngIf="noOptionsClickError ">
-											<p class="custom-error-message">Please select how you would like to add your Contacts.</p>
+											<p class="custom-error-message chagneText">{{properties.CONTACT_LIST_VALIDATION}}</p>
 										</div>
 									</div>
 								</div>
@@ -317,7 +318,11 @@
 							</div>
 
 						</div>
-						<div *ngIf="removeCsvName" id="removeCsv" style="margin-top: 15px; margin-bottom: -20px; padding-left: 1cm">
+						<div *ngIf="uploadedCsvFileName">
+						<strong class="csv-list-name"> {{uploadedCsvFileName}} </strong>
+						</div>
+						<!-- <div *ngIf="removeCsvName" id="removeCsv"
+							style="margin-top: 15px; margin-bottom: -20px; padding-left: 1cm">
 							<table class="table">
 								<thead>
 								</thead>
@@ -340,8 +345,8 @@
 									</tr>
 								</tbody>
 							</table>
-						</div>
-						<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+						</div> -->
+				<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 						<div class="row" *ngIf="clipBoard">
 							<div class="col-sm-12">
 								<h3 style="margin-left: 30px;">Copy from text -- paste below
@@ -519,6 +524,9 @@
 								<!-- END EXAMPLE TABLE PORTLET-->
 							</div>
 						</div>
+						
+						
+						
 						<div class="row" id="file_preview">
 							<div class="col-md-12">
 								<!-- BEGIN EXAMPLE TABLE PORTLET-->
@@ -529,8 +537,9 @@
 										</div>
 									</div>
 									<div class="portlet-body">
-
-										<table class="table tgrid" id="sample_editable_2">
+							<app-list-loader *ngIf="isListLoader"></app-list-loader>
+										<table class="table tgrid"
+											id="sample_editable_2">
 											<thead>
 												<tr>
 													<th>FIRST NAME</th>
@@ -540,59 +549,65 @@
 												</tr>
 											</thead>
 											<tbody>
-												<ng-container *ngFor="let user of contacts">
-													<tr>
-														<td>{{user.firstName}}</td>
-														<td>{{user.lastName}}</td>
-														<td>{{user.emailId}}</td>
-														<td>
-															<button id='more_less_button_{{i}}' (click)="user.isShowDetails = ! user.isShowDetails">
-																<span *ngIf="!user.isShowDetails">More</span> <span *ngIf="user.isShowDetails">Less</span>
-															</button>
-														</td>
-													</tr>
-													<tr [ngClass]="{'hidden': !user.isShowDetails, 'show-more': user.isShowDetails}">
-														<td colspan="6">
-															<table cellpadding="5" cellspacing="0" style="padding-left: 50px; margin-left: 55px;">
-																<tbody>
-																	<tr style="border-bottom: 1px solid #dcdcdc">
-																		<td class='pt10 pb10'>Company:</td>
-																		<td class='pt10 pb10'>{{user.contactCompany}}</td>
-																	</tr>
-																	<tr style="border-bottom: 1px solid #dcdcdc">
-																		<td class='pt10 pb10'>Job Title:</td>
-																		<td class='pt10 pb10'>{{user.jobTitle}}</td>
-																	</tr>
-																	<tr style="border-bottom: 1px solid #dcdcdc">
-																		<td class='pt10 pb10'>Address:</td>
-																		<td class='pt10 pb10'>{{user.address}}</td>
-																	</tr>
-																	<tr style="border-bottom: 1px solid #dcdcdc">
-																		<td class='pt10 pb10'>City:</td>
-																		<td class='pt10 pb10'>{{user.city}}</td>
-																	</tr>
-																	<tr style="border-bottom: 1px solid #dcdcdc">
-																		<td class='pt10 pb10'>State:</td>
-																		<td class='pt10 pb10'>{{user.state}}</td>
-																	</tr>
-																	<tr style="border-bottom: 1px solid #dcdcdc">
-																		<td class='pt10 pb10'>Zip Code:</td>
-																		<td class='pt10 pb10'>{{user.zipCode}}</td>
-																	</tr>
-																	<tr style="border-bottom: 1px solid #dcdcdc">
-																		<td class='pt10 pb10'>Country:</td>
-																		<td class='pt10 pb10'>{{user.country}}</td>
-																	</tr>
-																	<tr style="border-bottom: 1px solid #dcdcdc">
-																		<td class='pt10 pb10'>Phone Number:</td>
-																		<td class='pt10 pb10'>
-																			<div *ngIf="user.mobileNumber" [class.disabled]="true" style="pointer-events: none !important; cursor: auto;">
-																				<int-phone-prefix [(ngModel)]="user.mobileNumber" [ngModelOptions]="{standalone: true}"></int-phone-prefix>
-																			</div>
-																			<!-- {{user.mobileNumber}} -->
-																		</td>
-																	</tr>
-																	<!-- <tr style="border-bottom: 1px solid #dcdcdc">
+
+											<ng-container *ngFor="let user of pagedItems">
+												<tr>
+													<td>{{user.firstName}}</td>
+													<td>{{user.lastName}}</td>
+													<td>{{user.emailId}}</td>
+													<td>
+														<button id='more_less_button_{{i}}'
+															(click)="user.isShowDetails = ! user.isShowDetails">
+															<span *ngIf="!user.isShowDetails">More</span> <span
+																*ngIf="user.isShowDetails">Less</span>
+														</button>
+													</td>
+												</tr>
+												<tr
+													[ngClass]="{'hidden': !user.isShowDetails, 'show-more': user.isShowDetails}">
+													<td colspan="6">
+														<table cellpadding="5" cellspacing="0"
+															style="padding-left: 50px; margin-left: 55px;">
+															<tbody>
+																<tr style="border-bottom: 1px solid #dcdcdc">
+																	<td class='pt10 pb10'>Company:</td>
+																	<td class='pt10 pb10'>{{user.contactCompany}}</td>
+																</tr>
+																<tr style="border-bottom: 1px solid #dcdcdc">
+																	<td class='pt10 pb10'>Job Title:</td>
+																	<td class='pt10 pb10'>{{user.jobTitle}}</td>
+																</tr>
+																<tr style="border-bottom: 1px solid #dcdcdc">
+																	<td class='pt10 pb10'>Address:</td>
+																	<td class='pt10 pb10'>{{user.address}}</td>
+																</tr>
+																<tr style="border-bottom: 1px solid #dcdcdc">
+																	<td class='pt10 pb10'>City:</td>
+																	<td class='pt10 pb10'>{{user.city}}</td>
+																</tr>
+																<tr style="border-bottom: 1px solid #dcdcdc">
+																	<td class='pt10 pb10'>State:</td>
+																	<td class='pt10 pb10'>{{user.state}}</td>
+																</tr>
+																<tr style="border-bottom: 1px solid #dcdcdc">
+																	<td class='pt10 pb10'>Zip Code:</td>
+																	<td class='pt10 pb10'>{{user.zipCode}}</td>
+																</tr>
+																<tr style="border-bottom: 1px solid #dcdcdc">
+																	<td class='pt10 pb10'>Country:</td>
+																	<td class='pt10 pb10'>{{user.country}}</td>
+																</tr>
+																<tr style="border-bottom: 1px solid #dcdcdc">
+																	<td class='pt10 pb10'>Phone Number:</td>
+																	<td class='pt10 pb10'>
+																	<div *ngIf="user.mobileNumber" [class.disabled]="true" style="pointer-events: none !important; cursor: auto;">
+													<int-phone-prefix [(ngModel)]="user.mobileNumber"  [ngModelOptions]="{standalone: true}"></int-phone-prefix>
+													</div>
+																	<!-- {{user.mobileNumber}} -->
+																	</td>
+																</tr>
+																<!-- <tr style="border-bottom: 1px solid #dcdcdc">
+
 																	<td class='pt10 pb10'>Notes:</td>
 																	<td class='pt10 pb10'>{{user.description}}</td>
 																</tr> -->
@@ -603,6 +618,25 @@
 												</ng-container>
 											</tbody>
 										</table>
+										
+										<ul *ngIf="pager.pages && pager.pages.length"
+											class="pagination">
+											<li [ngClass]="{disabled:pager.currentPage === 1}"><a
+												(click)="setPage(1)">First</a></li>
+											<li [ngClass]="{disabled:pager.currentPage === 1}"><a
+												(click)="setPage(pager.currentPage - 1)">Previous</a></li>
+											<li *ngFor="let page of pager.pages"
+												[ngClass]="{active:pager.currentPage === page}"><a
+												(click)="setPage(page)">{{page}}</a></li>
+											<li
+												[ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+												<a (click)="setPage(pager.currentPage + 1)">Next</a>
+											</li>
+											<li
+												[ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+												<a (click)="setPage(pager.totalPages)">Last</a>
+											</li>
+										</ul>
 
 									</div>
 								</div>
@@ -818,7 +852,8 @@
 						<label class="control-label col-sm-3" for="email">Select Option:
 						</label>
 						<div class="col-sm-8">
-							<select class="opts form-control" id="salesforce-dropdown-1" (change)="onChangeSalesforceDropdown($event)">
+							<select class="opts form-control"
+								(change)="onChangeSalesforceDropdown($event)">
 								<option selected value="DEFAULT">Select</option>
 								<option value="contact">Contacts</option>
 								<option value="lead">Leads</option>

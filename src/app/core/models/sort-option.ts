@@ -6,8 +6,8 @@ export class SortOption {
     sortByDropDown = [
         { 'name': 'Name(A-Z)', 'value': 'campaign-ASC' },
         { 'name': 'Name(Z-A)', 'value': 'campaign-DESC' },
-        { 'name': 'Created Date(ASC)', 'value': 'createdTime-ASC' },
-        { 'name': 'Created Date(DESC)', 'value': 'createdTime-DESC' }
+        { 'name': 'Created On(ASC)', 'value': 'createdTime-ASC' },
+        { 'name': 'Created On(DESC)', 'value': 'createdTime-DESC' }
     ];
     
     partnerCampaignDetailsSortDropDown = [

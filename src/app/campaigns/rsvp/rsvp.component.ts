@@ -22,11 +22,13 @@ export class RsvpComponent implements OnInit {
   campaignRsvp: CampaignRsvp = new CampaignRsvp();
   responseMessage: string;
   isRsvp = false;
-  totalGuests = 1;
+  totalGuests = 0;
   type="";
   replyUserName=""
   characterleft = 140;
   rsvpSavingProcessing = false;
+  eventExpiredError = false;
+  isCancelledEvent = false;
 
   constructor(public referenceService: ReferenceService, private route: ActivatedRoute, public campaignService: CampaignService, public processor:Processor,
   public authenticationService:AuthenticationService) { }
@@ -41,6 +43,12 @@ export class RsvpComponent implements OnInit {
         this.campaignRsvp.alias = this.alias;
         this.replyUserName = response.targetUserDTO.firstName;
         this.processor.remove(this.processor);
+        this.eventStartTimeError();
+        
+        if(response.eventCancellation.cancelled){
+            this.isCancelledEvent = true;
+        }
+        
       },
       error => {
         console.log(error);
@@ -49,6 +57,16 @@ export class RsvpComponent implements OnInit {
       () => console.log("Campaign Names Loaded")
       );
   }
+
+  eventStartTimeError(){
+      const currentDate = new Date().getTime();
+      const startDate = Date.parse(this.eventcampaign.campaignEventTimes[0].startTimeString);
+
+          if(startDate < currentDate){
+            this.eventExpiredError = true;
+            }
+   }
+
   addURLs(templateBody:any){
     // just to avoid 404 link, added the links here.
 
@@ -147,7 +165,7 @@ export class RsvpComponent implements OnInit {
   }
   closeRsvpModel(){
     this.campaignRsvp.message = null;
-    this.totalGuests = 1;
+    this.totalGuests = 0;
     this.replyUserName = '';
   }
   characterSize(){

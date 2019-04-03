@@ -26,6 +26,8 @@ import { TimestampComponent } from './timestamp/timestamp.component';
 import { ScrollTopComponent } from './scroll-top/scroll-top.component';
 import { SaveAsComponent } from './save-as/save-as.component';
 import { TimestampNewComponent } from './timestamp-new/timestamp.component';
+import { EventSendReminderComponent } from './event-send-reminder/event-send-reminder.component';
+import { VideoPlayComponent } from './video-play/video-play.component';
 
 @NgModule({
     imports: [CommonModule, FormsModule, LoadingModule],

@@ -23,8 +23,7 @@ import { ConnectAccountsComponent } from '../social/common/connect-accounts/conn
 import { SocialLoaderComponent } from '../social/common/social-loader/social-loader.component';
 import { CommonComponentModule } from '../common/common.module';
 import { NgxCurrencyModule } from "ngx-currency";
-
-
+import { ImageCropperModule } from 'ng2-img-cropper';
 
 @NgModule({
         imports: [CommonModule, RouterModule, FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,
