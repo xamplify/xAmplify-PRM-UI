@@ -39,6 +39,7 @@ declare var $,CKEDITOR:any;
   providers:[CallActionSwitch,Properties]
 })
 export class PreviewCampaignComponent implements OnInit,OnDestroy {
+    ngxloading: boolean;
     campaignType = "";
     selectedEmailTemplateId: number = 0;
     campaign: Campaign=new Campaign();
@@ -757,20 +758,53 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     }
 
     getEmailTemplatePreview(emailTemplate: EmailTemplate) {
-        let body = emailTemplate.body;
-        let emailTemplateName = emailTemplate.name;
-        if (emailTemplateName.length > 50) {
-            emailTemplateName = emailTemplateName.substring(0, 50) + "...";
+        this.ngxloading = true;
+        let userId = 0;
+        if(this.campaign.nurtureCampaign){
+            userId = this.campaign.parentCampaignUserId;
+        }else{
+            userId =  this.campaign.userId;
         }
-        $("#email-template-content").empty();
-        $("#email-template-title").empty();
-        $("#email-template-title").append(emailTemplateName);
-        $('#email-template-title').prop('title', emailTemplate.name);
-        let updatedBody = this.referenceService.showEmailTemplatePreview(this.campaign, this.campaignType, this.campaign.campaignVideoFile.gifImagePath, emailTemplate.body);
-        $("#email-template-content").append(updatedBody);
-        $('.modal .modal-body').css('overflow-y', 'auto');
-        $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
-        $("#email_template_preivew").modal('show');
+        this.emailTemplateService.getAllCompanyProfileImages(userId).subscribe(
+                ( data: any ) => {
+                    console.log(data);
+                    let body = emailTemplate.body;
+                    let self  =this;
+                    if(this.campaign.nurtureCampaign){
+                        $.each( data, function( index, value ) {
+                            body = body.replace( value, self.authenticationService.MEDIA_URL + self.campaign.companyLogo );
+                        });
+                        body = body.replace( "https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL + this.campaign.companyLogo );
+                    }else{
+                        $.each(data,function(index,value){
+                            body = body.replace(value,self.authenticationService.MEDIA_URL + self.referenceService.companyProfileImage);
+                        });
+                        body = body.replace("https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL + this.referenceService.companyProfileImage);
+                    }
+                    let emailTemplateName = emailTemplate.name;
+                    if (emailTemplateName.length > 50) {
+                        emailTemplateName = emailTemplateName.substring(0, 50) + "...";
+                    }
+                    $("#email-template-content").empty();
+                    $("#email-template-title").empty();
+                    $("#email-template-title").append(emailTemplateName);
+                    $('#email-template-title').prop('title', emailTemplate.name);
+                    let gifPath = "";
+                    
+                    if(this.campaignType.includes('VIDEO')){
+                        gifPath = this.campaign.campaignVideoFile.gifImagePath;
+                    }
+                    let updatedBody = this.referenceService.showEmailTemplatePreview(this.campaign, this.campaignType, gifPath, body);
+                    $("#email-template-content").append(updatedBody);
+                    $('.modal .modal-body').css('overflow-y', 'auto');
+                    $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
+                    $("#email_template_preivew").modal('show');
+                    
+                    this.ngxloading = false;
+                },
+                error => { this.ngxloading = false;this.xtremandLogger.error("error in getAllCompanyProfileImages("+userId+")", error); },
+                () =>  this.xtremandLogger.info("Finished getAllCompanyProfileImages()"));
+     
     }
     isEven(n) {
       if(n % 2 === 0){ return true;}
