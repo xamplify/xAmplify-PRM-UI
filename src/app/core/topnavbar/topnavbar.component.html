@@ -8,12 +8,12 @@
 		<!-- BEGIN LOGO -->
 		<div class="page-logo"><!--  -->
 			<a [routerLink]="refService.homeRouter">
-			<img [src]="properties.COMPANY_LOGO" alt="logo" class="logo-default" />
+			<img [src]="authenticationService.MEDIA_URL + refService.companyProfileImage" (error)="errorImage($event)" alt="logo" class="logo-default" />
 			</a>
 			<!-- <div class="menu-toggler sidebar-toggler" *ngIf="authenticationService.user.hasCompany"> -->
 				<!-- DOC: Remove the above "hide" to enable the sidebar toggler button on header -->
       <!-- </div> -->
-      <div (click)="refService.changeSideBar()" class="side-bar" *ngIf="authenticationService.user.hasCompany">
+      <div (click)="refService.changeSideBar()" class="side-bar" [class.side-bar-css]="refService.isSidebarClosed" *ngIf="authenticationService.user.hasCompany">
         <i class="fa fa-bars" style="font-size: 21px;"></i>
 			</div>
 		</div>
@@ -56,7 +56,12 @@
 							<i class="fa fa-upload" data-toggle="tooltip"></i>
 						</button>
 					</li>
-					<li style="margin-top: 17px;margin-right: 5px;" *ngIf="(authenticationService.module.hasSocialStatusRole || authenticationService.module.isOrgAdmin ||authenticationService.module.isVendor) && authenticationService.user.hasCompany">
+					<li style="margin-top: 17px;margin-right: 5px;" 
+					*ngIf="(refService.hasAllAccess() 
+										|| authenticationService.module.hasSocialStatusRole 
+										|| authenticationService.module.isOrgAdmin 
+										|| authenticationService.module.isVendor 
+										|| authenticationService.module.isCompanyPartner) && authenticationService.user.hasCompany">
 						<!-- *ngIf="refService.hasCompany" -->
 						<button class="btn btn-primary" [routerLink]="['/home/social/update-status']">
 							<span class="hidden-xs">Update Status</span>
@@ -166,7 +171,11 @@
 									class="fa fa-building-o"></i> Company Profile
 							</a>
 							</li>
-							<li *ngIf="(refService.hasAllAccess() || authenticationService.module.isVendor ||   authenticationService.module.isCompanyPartner)&& authenticationService.user.hasCompany">
+							<li *ngIf="(refService.hasAllAccess() 
+										|| authenticationService.module.hasSocialStatusRole 
+										|| authenticationService.module.isOrgAdmin 
+										|| authenticationService.module.isVendor 
+										|| authenticationService.module.isCompanyPartner) && authenticationService.user.hasCompany">
 								<a [routerLink]="['/home/social/manage/all']"> <i class="fa fa-cog" aria-hidden="true"></i> Social Accounts</a>
 							</li>
 
@@ -186,7 +195,7 @@
                 <a *ngIf="refService.userDefaultPage==='DASHBOARD'" [routerLink]="['/home/'+refService.userDefaultPage.toLowerCase()]">
                   <i class="fa fa-paper-plane-o" aria-hidden="true"></i> Dashboard</a>
               </li>
-							<li id="lockscreen"><a (click)="lockScreen()"> <i
+							<li id="lockscreen"><a (click)="lockScreen()" (contextmenu)="onRightClick($event)"> <i
 									class="icon-lock"></i> Lock Screen
 							</a></li>
 							<li class="divider"></li>

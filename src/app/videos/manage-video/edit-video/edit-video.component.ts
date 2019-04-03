@@ -668,9 +668,13 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
               this.defaultSettingValuesBoolean(event);
                 // this.brandLogoUrl = this.tempVideoFile.brandingLogoUri!==null ? this.tempVideoFile.brandingLogoUri : this.defaultPlayerValues.companyProfile.companyLogoPath;
               // this.logoDescriptionUrl = this.tempVideoFile.brandingLogoDescUri !==null ? this.tempVideoFile.brandingLogoDescUri : this.defaultPlayerValues.companyProfile.website;
+              if(this.isThisDraftVideo){
+                this.brandLogoUrl = this.defaultPlayerValues.companyProfile.companyLogoPath;
+                this.logoDescriptionUrl = this.defaultPlayerValues.companyProfile.website;
+              } else {
               this.brandLogoUrl = this.saveVideoFile.brandingLogoUri!==null ? this.setBrandingLogo() : this.defaultPlayerValues.companyProfile.companyLogoPath;
               this.logoDescriptionUrl = this.saveVideoFile.brandingLogoDescUri !==null ? this.setBrandignLogoDescUrl() : this.defaultPlayerValues.companyProfile.website;
-
+              }
               this.playerColorsChange(this.tempPlayerColor, this.tempControllerColor);
               this.changePlayerColor(this.compPlayerColor);
               this.changeControllerColor(this.compControllerColor, this.tempVideoFile.enableVideoController);
@@ -946,7 +950,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     this.logoDescriptionUrl = this.saveVideoFile.brandingLogoDescUri !==null ? this.setBrandignLogoDescUrl() : this.defaultPlayerValues.companyProfile.website;
   }
   }
-  errorHandler(event){ event.target.src="assets/images/no-thumbnail.png" }
+  errorHandler(event:any){ event.target.src="assets/images/no-thumbnail.png" }
   getDefaultPlayerSettings(){
     if(!this.referenceService.defaultPlayerSettings){
       this.homeComponent.getVideoDefaultSettings();
@@ -954,6 +958,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
       if(!this.defaultPlayerValues ||!this.defaultPlayerValues.playerColor || !this.defaultPlayerValues.enableVideoController){ this.clientError = true;}
      }
   }
+  setGifPath(event:any){ event.target.src=this.giffirst; }
   ngOnInit() {
     try{
       QuickSidebar.init();
@@ -1013,14 +1018,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                           }
                           // player.play();
                           // setTimeout(()=>{ player.pause();},5);
-                      } else {
-                         $('#overlay-modal').hide();
-                         if (playPromise !== undefined) {
-                          playPromise.then(_ => {  player.pause(); })
-                          .catch(error => {console.log('error in'+error);});
-                         }
-                        //  player.play();
-                        //  setTimeout(()=>{ player.pause();},5);
                       }
                       $('#skipOverlay').click(function () {
                           isCallActionthere = false;

@@ -44,6 +44,7 @@ var moment = require('moment-timezone');
 
 })
 export class CreateCampaignComponent implements OnInit,OnDestroy{
+    ngxloading: boolean;
     selectedRow:number;
     categories: Category[];
     partnerCategories:Category[];
@@ -256,6 +257,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.editedCampaignName = this.campaignService.campaign.campaignName;
             this.campaign = this.campaignService.campaign;
             this.userListDTOObj = this.campaignService.campaign.userLists;
+            if(this.userListDTOObj===undefined){ this.userListDTOObj = [];}
             if(this.campaign.regularEmail){
                 this.campaignType = 'regular';
                 this.emailTemplatesPagination.filterBy = "CampaignRegularEmails";
@@ -436,6 +438,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 url.emailTemplatesPagination = new Pagination();
                 if(url.scheduled){
                     url.replyTime = this.campaignService.setHoursAndMinutesToAutoReponseReplyTimes(url.replyTimeInHoursAndMinutes);
+                }
+                if($.trim(url.subject).length==0){
+                  url.subject = campaign.subjectLine;
                 }
                 let length = this.allItems.length;
                 length = length+1;
@@ -1517,35 +1522,34 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
 
 
     getEmailTemplatePreview(emailTemplate:EmailTemplate){
-        let body = emailTemplate.body;
-        let emailTemplateName = emailTemplate.name;
-        if(emailTemplateName.length>50){
-            emailTemplateName = emailTemplateName.substring(0, 50)+"...";
-        }
-        this.selectedEmailTemplateName = emailTemplateName;
-        $("#htmlContent").empty();
-        $("#email-template-title").empty();
-        $("#email-template-title").append(emailTemplateName);
-        $('#email-template-title').prop('title',emailTemplate.name);
-        let updatedBody = this.refService.showEmailTemplatePreview(this.campaign, this.campaignType, this.launchVideoPreview.gifImagePath, emailTemplate.body);
-       /* if(this.campaignType=='video'){
-            let selectedVideoGifPath = this.launchVideoPreview.gifImagePath;
-            updatedBody = emailTemplate.body.replace("<SocialUbuntuImgURL>",selectedVideoGifPath);
-            updatedBody = updatedBody.replace("&lt;SocialUbuntuURL&gt;","javascript:void(0)");
-            updatedBody = updatedBody.replace("<SocialUbuntuURL>","javascript:void(0)");
-            updatedBody = updatedBody.replace("https://dummyurl.com","javascript:void(0)");
-            updatedBody = updatedBody.replace("https://xamp.io/vod/images/xtremand-video.gif",selectedVideoGifPath);
-            updatedBody = updatedBody.replace("&lt;SocialUbuntuImgURL&gt;",selectedVideoGifPath);
-        }else{
-            updatedBody = emailTemplate.body.replace("<div id=\"video-tag\">","<div id=\"video-tag\" style=\"display:none\">");
-        }
-        if(!this.campaign.enableCoBrandingLogo){
-            updatedBody = updatedBody.replace("<a href=\"https://dummycobrandingurl.com\"","<a href=\"https://dummycobrandingurl.com\" style=\"display:none\"");
-        }*/
-        $("#htmlContent").append(updatedBody);
-        $('.modal .modal-body').css('overflow-y', 'auto');
-        $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
-        $("#show_email_template_preivew").modal('show');
+        this.ngxloading = true;
+        this.emailTemplateService.getAllCompanyProfileImages(this.loggedInUserId).subscribe(
+                ( data: any ) => {
+                    console.log(data);
+                    let body = emailTemplate.body;
+                    let self  =this;
+                    $.each(data,function(index,value){
+                        body = body.replace(value,self.authenticationService.MEDIA_URL + self.refService.companyProfileImage);
+                    });
+                    body = body.replace("https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL + this.refService.companyProfileImage);
+                    let emailTemplateName = emailTemplate.name;
+                    if(emailTemplateName.length>50){
+                        emailTemplateName = emailTemplateName.substring(0, 50)+"...";
+                    }
+                    this.selectedEmailTemplateName = emailTemplateName;
+                    $("#htmlContent").empty();
+                    $("#email-template-title").empty();
+                    $("#email-template-title").append(emailTemplateName);
+                    $('#email-template-title').prop('title',emailTemplate.name);
+                    let updatedBody = this.refService.showEmailTemplatePreview(this.campaign, this.campaignType, this.launchVideoPreview.gifImagePath, body);
+                    $("#htmlContent").append(updatedBody);
+                    $('.modal .modal-body').css('overflow-y', 'auto');
+                    $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
+                    $("#show_email_template_preivew").modal('show');
+                    this.ngxloading = false;
+                },
+                error => { this.ngxloading = false;this.logger.error("error in getAllCompanyProfileImages("+this.loggedInUserId+")", error); },
+                () =>  this.logger.info("Finished getAllCompanyProfileImages()"));
     }
     filterTemplates(type:string,index:number){
        if(type=="BASIC"){
@@ -1647,13 +1651,16 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     }
 
     setEmailTemplate(emailTemplate:EmailTemplate){
-        $('#emailTemplateContent').html('');
-        this.emailTemplateHrefLinks = [];
-        this.getAnchorLinksFromEmailTemplate(emailTemplate.body);
-        this.setEmailTemplateData(emailTemplate);
-        if(this.emailTemplateHrefLinks.length == 0){
-            this.urls = [];
-        }
+     if(!emailTemplate.draft){
+         $('#emailTemplateContent').html('');
+         this.emailTemplateHrefLinks = [];
+         this.getAnchorLinksFromEmailTemplate(emailTemplate.body);
+         this.setEmailTemplateData(emailTemplate);
+         if(this.emailTemplateHrefLinks.length == 0){
+             this.urls = [];
+         }
+     }
+        
        /* if(this.emailTemplateHrefLinks.length==0){
             let self = this;
             swal( {
@@ -1749,7 +1756,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.selectedContactListIds = this.refService.removeDuplicates(this.selectedContactListIds);
         let timeZoneId = "";
         let scheduleTime:any;
-        if( this.campaignLaunchForm.value.scheduleCampaign=="NOW" || this.campaignLaunchForm.value.scheduleCampaign=="SAVE"){
+        if( this.campaignLaunchForm.value.scheduleCampaign=="NOW" || this.campaignLaunchForm.value.scheduleCampaign=="SAVE" || this.campaignLaunchForm.value.scheduleCampaign==""){
             let intlTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
             if(intlTimeZone!=undefined){
                 timeZoneId = intlTimeZone;
@@ -2043,9 +2050,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         if(!this.hasInternalError && this.router.url!="/"){
             if(!this.isReloaded){
                 if(!this.isLaunched){
-                    if(this.isAdd){
-                        this.saveCampaignOnDestroy();
-                    }else{
+                    // if(this.isAdd){
+                    //     this.saveCampaignOnDestroy();
+                    // }else{
                         let self = this;
                         swal( {
                             title: 'Are you sure?',
@@ -2066,7 +2073,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                                 self.reInitialize();
                             }
                         })
-                    }
+                    // }
                  }
             }
          }
@@ -2342,6 +2349,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.url.divId = id;
             this.url.scheduled = false;
             this.url.actionId = 19;
+            this.url.subject = this.refService.replaceMultipleSpacesWithSingleSpace(this.campaign.subjectLine);
             this.url.url = this.emailTemplateHrefLinks[0];
             this.urls.push(this.url);
             this.allItems.push(id);
@@ -2445,12 +2453,12 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
      setLoggedInUserEmailId(){
          const userProfile = this.authenticationService.userProfile;
          this.campaign.email = userProfile.emailId;
-         if(userProfile.firstName !== undefined && userProfile.lastName !== undefined)
-             this.campaign.fromName = $.trim(userProfile.firstName + " " + userProfile.lastName);
-         else if(userProfile.firstName !== undefined && userProfile.lastName == undefined)
-             this.campaign.fromName = $.trim(userProfile.firstName);
-         else
-             this.campaign.fromName = $.trim(userProfile.emailId);
+         if(userProfile.firstName !== undefined && userProfile.lastName !== undefined){
+             this.campaign.fromName = $.trim(userProfile.firstName + " " + userProfile.lastName);}
+         else if(userProfile.firstName !== undefined && userProfile.lastName == undefined){
+             this.campaign.fromName = $.trim(userProfile.firstName); }
+         else {
+             this.campaign.fromName = $.trim(userProfile.emailId); }
          this.setEmailIdAsFromName();
      }
 

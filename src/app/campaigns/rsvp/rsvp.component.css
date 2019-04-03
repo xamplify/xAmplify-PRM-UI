@@ -41,7 +41,10 @@ button {
   bottom: 22px;
 }
 .alignCss{
-  position: relative;left: 95px;
+  position: relative;left: 95px !important;
+}
+.right-css{
+  position: relative; right: -16px;
 }
 
 .expired-event-class{

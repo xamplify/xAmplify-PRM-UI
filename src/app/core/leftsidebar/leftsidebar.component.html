@@ -12,7 +12,7 @@
         <span class="selected"></span>
         </a>
       </li>
-      <li  *ngIf="(authService.module.isOrgAdmin && authService.user.hasCompany) || authService.module.isVendor || authService.isAddedByVendor" [ngClass]="{'active': location.path().includes('partners')}">
+      <li  *ngIf="(authService.module.isOrgAdmin && authService.user.hasCompany) || authService.module.isVendor  || authService.module.isPartner" [ngClass]="{'active': location.path().includes('partners')}">
         <a href="javascript:;" (click)="openOrCloseTabs('partners')">
         <i class="fa fa-handshake-o"></i>
         <span class="title">Partners</span>
@@ -74,7 +74,8 @@
       </li>
         </ul>
       </li>
-      <li *ngIf="(authService.module.isContact ||authService.module.isCompanyPartner)&& !authService.isAddedByVendor"  [ngClass]="{'active': location.path().includes('contacts')}">
+      <!--&& !authService.isAddedByVendor-->
+      <li *ngIf="(authService.module.isContact ||authService.module.isCompanyPartner)"  [ngClass]="{'active': location.path().includes('contacts')}">
         <a  href="javascript:;" (click)="openOrCloseTabs('contacts')">
         <i class="fa fa-list-ul"></i>
         <span class="title">Contacts</span>

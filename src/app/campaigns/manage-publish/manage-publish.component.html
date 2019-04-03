@@ -16,6 +16,7 @@
 			</li>
 		</ul>
 	</div>
+	 <ngx-loading [show]="isloading || refService.loadingPreview" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 	<div style="position: relative; top:-10px;">
 		<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 	</div>
@@ -68,7 +69,7 @@
 									<tr>
                       <th colspan="2" style="width: 30%">Campaign</th>
                       <th class="center" style="width: 28%">Status</th>
-                      <th class="center" style="width: 15%">Created Date</th>
+                      <th class="center" style="width: 15%">Created On</th>
                       <th style="width: 25%;text-align:right">Actions</th>
 									</tr>
 								</thead>
@@ -97,6 +98,7 @@
 											<h5 *ngIf="campaign.nurtureCampaign" [title]="campaign.vendorOrganizationName">Originated By <b>{{campaign.vendorOrganizationName | slice:0:20 }}<span *ngIf="campaign.vendorOrganizationName?.length>20">...</span></b></h5>
 										    <h5 class="view-banner" *ngIf="campaign.launched && campaign.channelCampaign">Through Campaign</h5>
 										    <h5 class="view-banner" *ngIf="campaign.launched && !campaign.channelCampaign && !campaign.nurtureCampaign">To Campaign</h5>
+										    <h5 class="view-banner" *ngIf="campaign.launched && !campaign.showCancelButton && campaign.campaignType.indexOf('EVENT') > -1" style="background-color: red;">Cancelled</h5>
 										    <h5 class="view-banner" *ngIf="!campaign.launched && (campaign.scheduleType==='SAVE' || campaign.scheduleType==='NOW')" style="background-color: #f76c1a !important">Draft</h5>
 										    <h5 class="view-banner" *ngIf="!campaign.launched && campaign.scheduleType==='SCHEDULE'">Scheduled</h5>
 										</td>
@@ -115,12 +117,12 @@
 											<span align="right" title="Upload Date">
 												<!-- <b *ngIf="campaign.launched || !campaign.launched && campaign.launchedOn?.length > 0">{{campaign.launchedOn}}</b> -->
 												<b *ngIf="campaign.scheduleType=='NOW' || campaign.scheduleType=='SCHEDULE'">
-                        <app-timestamp *ngIf="!refService.isSafariBrowser()" [isOnlyDate]="false" [dateAndTime]="campaign.launchedOn"> </app-timestamp>
-                        <span *ngIf="refService.isSafariBrowser()">{{campaign.launchedOn}}</span>
+                        <app-timestamp *ngIf="!refService.isSafariBrowser()" [isOnlyDate]="false" [dateAndTime]="campaign.displayTime"> </app-timestamp>
+                        <span *ngIf="refService.isSafariBrowser()">{{campaign.displayTime}}</span>
 												</b>
 												<b *ngIf="campaign.scheduleType=='SAVE'">
-												<app-timestamp *ngIf="!refService.isSafariBrowser()" [isOnlyDate]="false" [dateAndTime]="campaign.startTime"> </app-timestamp>
-                        <span *ngIf="refService.isSafariBrowser()">{{campaign.startTime}}</span>
+												<app-timestamp *ngIf="!refService.isSafariBrowser()" [isOnlyDate]="false" [dateAndTime]="campaign.displayTime"> </app-timestamp>
+                        <span *ngIf="refService.isSafariBrowser()">{{campaign.displayTime}}</span>
                       </b>
 											</span>
 										</td>
@@ -218,12 +220,29 @@
 													<li  ><a (click)="showCampaignPreview(campaign)">
 															<i class="fa fa-eye mr5" style="width: 30px;"></i> Preview Campaign
 													</a></li>
-													<li  *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor">
+													<section *ngIf="!campaign.showCancelButton">
+														<li *ngIf="!campaign.showCancelButton && hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor">
 														<a *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor"
 														(click)="confirmDeleteCampaign(campaign.campaignId, i, campaign.campaignName)"
 														data-rel="fancybox-button"> <i class="fa fa-trash-o" style="width: 30px;"> </i>Delete
 													</a>
 													</li>
+													</section>
+													<section *ngIf="campaign.showCancelButton">
+													<li *ngIf="campaign.showCancelButton && hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor">
+                          <a *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor"
+                              data-toggle="modal" data-target="#cancelEventModal" title="Cancel Campaign" data-rel="fancybox-button" (click)="getCancelEventDetails(campaign.campaignId)">
+                              <i class="fa fa-ban" style="width: 30px;"></i> Cancel Event
+                            </a>
+                            </li>
+                          </section>
+                          <section *ngIf="campaign.launched && campaign.campaignType === 'EVENT' && campaign.showCancelButton">
+                          <li *ngIf="(authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner()) && !campaign.nurtureCampaign">
+                            <a title="Update Event" data-rel="fancybox-button" (click)="updateEvent(campaign)">
+                              <i class="fa fa-pencil" style="width: 30px;"></i> Update event
+                            </a>
+                          </li>
+                          </section>
 													</ul>
 												<!-- </div> -->
 												</div>
@@ -329,7 +348,7 @@
 								<app-error-pages *ngIf="httpRequestLoader.isServerError"></app-error-pages>
 								<ng-container *ngIf="totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
 									<div *ngFor="let campaign of pagination.pagedItems; let i= index" class="col-xs-12 col-sm-4 col-lg-3">
-										<div class="grid-box" style="height:210px">
+										<div class="grid-box" style="height:222px">
 											<img src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png">
 											<h4 class="ellipsis" title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:22}}
 												<span *ngIf="campaign.campaignName?.length>22">...</span>
@@ -347,25 +366,19 @@
 											<span>
 												<span *ngIf="campaign.launched">Launched On</span>
 											  <ng-container *ngIf="!campaign.launched && campaign.scheduleType!=='SCHEDULE' && campaign.scheduleType!=='SAVE' && campaign.scheduleType!=='NOW'">
-                          <b *ngIf="!campaign.launched && campaign.scheduleType==='SCHEDULE'">Scheduled For</b>
-                          <b *ngIf="!campaign.launched && campaign.scheduleType==='NOW'">Saved On</b>
-                          </ng-container>
-                          <ng-container *ngIf="!campaign.launched && campaign.scheduleType">
-                          <b *ngIf="!campaign.launched && campaign.scheduleType==='SCHEDULE'">Scheduled For</b>
-                          <b *ngIf="!campaign.launched && (campaign.scheduleType==='SAVE' || campaign.scheduleType==='NOW')">Saved On</b>
-                          </ng-container>
-											</span>
-											<span title="Upload date"><b>
-												<span *ngIf="campaign.scheduleType=='NOW' || campaign.scheduleType=='SCHEDULE'">
-                        <app-timestamp *ngIf="!refService.isSafariBrowser()" [isOnlyDate]="true" [dateAndTime]="campaign.launchedOn"> </app-timestamp>
-                        <span *ngIf="refService.isSafariBrowser()">{{campaign.launchedOn}}</span>
-                      </span>
-												<span *ngIf="campaign.scheduleType=='SAVE'">
-												<app-timestamp *ngIf="!refService.isSafariBrowser()" [isOnlyDate]="true" [dateAndTime]="campaign.startTime"> </app-timestamp>
-                        <span *ngIf="refService.isSafariBrowser()" >{{campaign.startTime}}</span>
-                      </span>
-                      </b>
-											</span>
+						                          <b *ngIf="!campaign.launched && campaign.scheduleType==='SCHEDULE'">Scheduled For</b>
+						                          <b *ngIf="!campaign.launched && campaign.scheduleType==='NOW'">Saved On</b>
+						                          </ng-container>
+						                          <ng-container *ngIf="!campaign.launched && campaign.scheduleType">
+						                          <b *ngIf="!campaign.launched && campaign.scheduleType==='SCHEDULE'">Scheduled For</b>
+						                          <b *ngIf="!campaign.launched && (campaign.scheduleType==='SAVE' || campaign.scheduleType==='NOW')">Saved On</b>
+					                          </ng-container>
+										</span>
+										<span title="Upload date"><b>
+											<span *ngIf="!refService.isSafariBrowser()">{{campaign.displayTime |date:'mediumDate'}},{{campaign.displayTime |date:'shortTime'}}</span>
+					                        <span *ngIf="refService.isSafariBrowser()">{{campaign.displayTime}}</span>
+					                      </b>
+										</span>
 											</h6>
 											<div class="bookmark-ribbon">
 												<span style="margin: 0px -7px; font-size: 17px; color: white;">
@@ -376,7 +389,8 @@
 												</span>
 											</div>
 											<div class="ribbon" [class.active]="!campaign.launched && campaign.launchedOn?.length==0">
-												<span *ngIf="campaign.launched">Launched</span>
+												<span *ngIf="campaign.launched && campaign.showCancelButton">Launched</span>
+												<div  class="cancel-ribbon" *ngIf="campaign.launched && !campaign.showCancelButton && campaign.campaignType.indexOf('EVENT') > -1">Cancelled</div>
                         <ng-container *ngIf="!campaign.launched && campaign.scheduleType!=='SCHEDULE' && campaign.scheduleType!=='SAVE' && campaign.scheduleType!=='NOW'">
                           <span *ngIf="!campaign.launched && campaign.launchedOn?.length > 0">Scheduled</span>
                           <span *ngIf="!campaign.launched && campaign.launchedOn?.length==0">Saved</span>
@@ -397,7 +411,7 @@
 
 												<a *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) ||
 														 (loggedInUserId==campaign.userId) || authenticationService.module.isVendor) && campaign.redistributedCount>0"
-                         								 (click)="goToRedistributedCampaigns(campaign)" data-toggle="tooltip" data-placement="top" title="Show Redistributed Campaigns">
+                         								 (click)="goToRedistributedCampaigns(campaign)" data-toggle="tooltip" data-placement="right" title="Show Redistributed Campaigns">
 														<i style="color: white">{{campaign.redistributedCount}}</i>
 													</a>
 
@@ -418,13 +432,26 @@
 														<i class="fa fa-files-o"></i>
 													</a> -->
                         </ng-container>
+                         <span *ngIf="!campaign.showCancelButton">
                           <a (click)="showCampaignPreview(campaign)" data-toggle="tooltip" data-placement="top" title="Preview">
 														<i class="fa fa-eye mr5"></i>
 												  </a>
-													<a *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor"
-														(click)="confirmDeleteCampaign(campaign.campaignId, i, campaign.campaignName)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.campaign_delete}}">
+													<a *ngIf="!campaign.showCancelButton && hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor"
+														(click)="confirmDeleteCampaign(campaign.campaignId, i, campaign.campaignName)" data-toggle="tooltip" data-placement="top" title="Delete Campaign">
 														<i class="fa fa-trash-o"></i>
 													</a>
+													</span>
+
+					            	 <span *ngIf="campaign.showCancelButton">
+                          <a *ngIf="hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor"
+                               data-toggle="tooltip" data-placement="top"  title="Cancel Event" data-rel="fancybox-button" (click)="getCancelEventDetails(campaign.campaignId)">
+                              <i class="fa fa-ban"></i>
+                            </a></span>
+                            <span *ngIf="campaign.launched && campaign.campaignType === 'EVENT' && campaign.showCancelButton">
+                          <a  *ngIf="(authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner()) && !campaign.nurtureCampaign"
+                          data-toggle="tooltip" data-placement="top"  title="Update event" data-rel="fancybox-button" (click)="updateEvent(campaign)">
+                              <i class="fa fa-pencil"></i>
+                            </a></span>
 											</div>
 										</div>
 									</div>
@@ -453,7 +480,6 @@
 	<!-- <div *ngIf="totalRecords <= 0"  class="alert alert-info"><strong>No Campaigns Found</strong></div> -->
   <app-scroll-top></app-scroll-top>
 </div>
-
 
 <!-- Save As Modal -->
 <div class="modal right fade" id="saveAsModal" tabindex="-1" role="dialog" aria-labelledby="saveAsModalLabel" aria-hidden="true">
@@ -504,3 +530,182 @@
 		</div>
 	</div>
 </div>
+
+<div class="modal fade right" id="cancelEventModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <a class="close-circle" data-dismiss="modal" (click)="closeCancelEventodal()">
+          <i class="fa fa-times"></i>
+        </a>
+        <h4 class="modal-title" id="myModalLabel">Canceling the event</h4>
+      </div>
+      <div class="modal-body">
+        <section>
+				<div class="col-xs-12 col-sm-12">
+					<form class="form-horizontal">
+						<div class="form-group">
+							<label for="eventTitle"  class="col-sm-3 labal-css color-css">Event Title	</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" id="eventTitle" [attr.disabled]="true"
+									placeholder="Event Title" [(ngModel)]="eventCampaign.campaign"
+									[ngModelOptions]="{standalone: true}">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="hostedBy" class="col-sm-3 labal-css color-css">Hosted
+								By <span class=text-danger>*</span>
+							</label>
+							<div class="col-sm-9">
+								<input type="text"
+									[attr.disabled]="true"
+									class="form-control pull-left" placeholder="Hosted By"
+									[(ngModel)]="eventCampaign.fromName"
+									[ngModelOptions]="{standalone: true}">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="eventDateTime" class="col-sm-3 labal-css color-css">Event
+								Date/Time <span class="text-danger" style="margin-left: -3px;">*</span>
+							</label>
+							<div class="col-sm-9 p0">
+								<div class="col-sm-6">
+									<input
+										[attr.disabled]="true"
+										type="text" id="startDatePicker"
+										class="form-control flatpickr" placeholder="Start"
+										[(ngModel)]="eventCampaign.campaignEventTimes[0].startTimeString"
+										[ngModelOptions]="{standalone: true}">
+								</div>
+								<div class="col-sm-6">
+									<input type="text" id="enDatePicker"
+										[attr.disabled]="true"
+										[disabled]="true"
+										class="form-control flatpickr" placeholder="End"
+										[(ngModel)]="eventCampaign.campaignEventTimes[0].endTimeString"
+										[ngModelOptions]="{standalone: true}">
+								</div>
+                  <div class="col-sm-12">
+                    <input type="checkbox" id="allDay" class="form-check-input mt10"
+                        [attr.disabled]="true"
+                        [checked]="eventCampaign.campaignEventTimes[0].allDay">
+                        <label class="form-check-label" for="allDay" style="float:none"> All Day</label>
+                  </div>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="hostedBy" class="col-sm-3 labal-css color-css">Online
+								Meeting</label>
+							<div class="col-sm-9">
+								<switch [disabled]="true"
+									[status]="eventCampaign.onlineMeeting"
+									[onText]="callActionSwitch.onTextValue"
+									[offText]="callActionSwitch.offTextValue"
+									[onColor]="callActionSwitch.onGreenColorSwitch"
+									[offColor]="callActionSwitch.offDefaultColor"
+									[size]="callActionSwitch.size">
+								</switch>
+							</div>
+						</div>
+						<section *ngIf="!eventCampaign.onlineMeeting">
+							<div class="form-group">
+								<label for="hostedBy" class="col-sm-3 labal-css color-css">Location
+									Name <span class="text-danger" style="position: absolute;">*</span>
+								</label>
+								<div class="col-sm-9">
+									<input type="text"
+										[attr.disabled]="true"
+										class="form-control" id="eventDateTime"
+										placeholder="Corporate headquarters, local restaurant, etc."
+										[(ngModel)]="eventCampaign.campaignLocation.location"
+										[ngModelOptions]="{standalone: true}">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="hostedBy" class="col-sm-3 labal-css color-css">Address</label>
+								<div class="col-sm-9">
+									<input type="text"
+										[attr.disabled]="true"
+										class="form-control" id="address1"
+										placeholder="Street Address"
+										maxlength="25"
+										[(ngModel)]="eventCampaign.campaignLocation.street"
+										[ngModelOptions]="{standalone: true}">
+								</div>
+								<div class="col-sm-offset-3 col-sm-9 pt10">
+									<input type="text"
+										[attr.disabled]="true"
+										class="form-control" id="address2"
+										placeholder="Address2"
+										maxlength="25"
+										[(ngModel)]="eventCampaign.campaignLocation.address2"
+										[ngModelOptions]="{standalone: true}">
+								</div>
+
+								<div class="col-sm-offset-3 col-sm-9 pt10">
+									<div class="col-sm-6" style="padding-left: 0px">
+										<input type="text"
+											[attr.disabled]="true"
+											class="form-control" id="city" placeholder="City"
+											[(ngModel)]="eventCampaign.campaignLocation.city"
+											[ngModelOptions]="{standalone: true}">
+									</div>
+									<div class="col-sm-6" style="padding-right: 0px">
+										<input type="text"
+											[attr.disabled]="true"
+											class="form-control" id="state" placeholder="State"
+											[(ngModel)]="eventCampaign.campaignLocation.state"
+											[ngModelOptions]="{standalone: true}">
+									</div>
+								</div>
+								<div class="col-sm-offset-3 col-sm-9 pt10">
+                  <div class="col-sm-6" style="padding-left: 0px">
+                    <input type="text" 	class="form-control"  [attr.disabled]="true" [(ngModel)]="eventCampaign.campaignLocation.country" [ngModelOptions]="{standalone: true}">
+									</div>
+									<div class="col-sm-6" style="padding-right: 0px">
+										<input type="text"
+											[attr.disabled]="true"
+											class="form-control" id="zip" placeholder="Zip" maxlength="10"
+											[(ngModel)]="eventCampaign.campaignLocation.zip"
+											[ngModelOptions]="{standalone: true}">
+									</div>
+								</div>
+							</div>
+						</section>
+					</form>
+				</div>
+				<div class="form-group">
+          <label class="col-sm-3 labal-css color-css">Email subject<font
+            style="color: red"> <b>*</b>
+          </font>
+          </label>
+          <div class="col-sm-9">
+            <input type="text" id="subjectLine" placeholder="Cancel Event Subject Line"
+              class="form-control" (input)="validateCancelEventButton()" [(ngModel)]="cancelEventSubjectLine"
+              name="subjectLine"
+              maxlength="200" />
+          </div>
+						</div>
+        <div class="form-group">
+          <label class="col-sm-3 labal-css color-css" style="padding-top: 25px;">Cancel Message<font
+            style="color: red"> <b>*</b>
+          </font>
+          </label>
+          <div class="col-sm-9" style="padding-top: 10px;">
+            <textarea [(ngModel)]="cancelEventMessage" [ngModelOptions]="{standalone: true}" (input)="validateCancelEventButton()" placeholder="Add a comment..."></textarea>
+          </div>
+        </div>
+        </section>
+    </div>
+    <div class="pull-right" style="margin: 0px 29px 0px 0px;">
+        <div class="right-css">
+        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="closeCancelEventodal()">Close</button>
+        <button type="button" class="btn btn-primary" [disabled]="!cancelEventButton" (click)="cancelEvent()">Cancel Event</button>
+        </div>
+      </div>
+  </div>
+</div>
+</div>
+
+<app-preview-campaign *ngIf="previewCampaign" [previewCampaignId]="previewCampaign" [previewCampaignType]="campaignType" (closeNotifyParent)="closePreviewCampaign($event)"></app-preview-campaign>

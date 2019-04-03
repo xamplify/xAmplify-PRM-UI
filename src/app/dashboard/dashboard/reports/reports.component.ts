@@ -25,8 +25,10 @@ export class ReportsComponent implements OnInit {
   reportName: string;
   videoViewsLevelFirst = [];
   videoViewsLevelSecond = [];
+  videoMinutsWatchedTotalRecordsLevelSecond = [];
   videoViewsLevelSecondAllRecords = [];
   gettingAllUsersPagination: Pagination = new Pagination();
+  allMinutesWatchedPagination: Pagination = new Pagination();
   isReport: boolean;
   selectedRowValue = false;
   anotherViewDate: string;
@@ -48,19 +50,7 @@ export class ReportsComponent implements OnInit {
     if (this.resultSparkline === undefined || this.resultSparkline === null) {
       this.router.navigate(['/home/dashboard/default']);
     }
-    console.log(this.resultSparkline);
-    this.viewsDate = this.referenceService.viewsDate;
-    this.viewsValue = this.referenceService.clickedValue;
-    this.daysCount = this.referenceService.daySortValue;
-    this.reportName = this.referenceService.reportName;
-    for (let i = 0; i < this.sortDates.length; i++) {
-      if (this.referenceService.daySortValue === this.sortDates[i].value) {
-        this.daySort = this.sortDates[i];
-        break;
-      }
-    }
-    this.selectedSortByValue(this.daysCount);
-    console.log("day sort value " + this.daySort + 'views date is ' + this.viewsDate + 'value is ' + this.viewsValue + 'dayscount is' + this.daysCount);
+
   }
   selectedSortByValue(event: any) {
     console.log(event);
@@ -124,42 +114,41 @@ export class ReportsComponent implements OnInit {
   }
 
   getCurrentDayFromDate(date) {
-    if (date !== undefined) {
-      this.viewsDate = date;
-      const res = date.split("-");
+    if (date !== undefined) {  this.viewsDate = date; const res = date.split("-");
       return res[2];
     }
   }
   getVideoViewsLevelOne(dateValue, isReport) {
     this.isReport = isReport;
     this.anotherViewDate = dateValue;
-    if (dateValue === undefined) {
-      this.viewsDate = this.referenceService.viewsDate;
-      console.log("date value is " + this.viewsDate);
-    }
+    if (dateValue === undefined) { this.viewsDate = this.referenceService.viewsDate; }
     const dateCountValue = this.getCurrentDayFromDate(dateValue);
-    console.log("date count value is " + dateCountValue);
     if (dateCountValue !== undefined) {
       this.videoViewsLevelFirst = null;
       this.dashboardService.getVideoViewsLevelOneReports(this.daysCount, dateCountValue).subscribe(
         (result: any) => {
-         // this.loading =true;
           this.videoViewsLevelFirst = result;
-          console.log(this.videoViewsLevelFirst);
-          if (this.videoViewsLevelFirst.length === 0) {
-            this.videoViewsLevelSecond.length = 0;
-          //  this.loading =false;
-          }
+          if (this.videoViewsLevelFirst.length === 0) { this.videoViewsLevelSecond.length = 0; }
           if (this.isReport && this.videoViewsLevelFirst.length > 0) {
             this.pagination.pageIndex = 1;
-         ///   this.loading = false;
             this.getVideoViewsLevelTwo(this.daysCount, result[0].selectedDate, result[0].videoId, this.pagination);
             this.isReport = false;
           }
         },
-        (error: any) => {
-          console.error(error);
-        });
+        (error: any) => {  console.error(error);  });
+    }
+  }
+  getVideoViewsLevelOneTest(dateValue, isReport) {
+    this.isReport = isReport;
+    this.anotherViewDate = dateValue;
+    if (dateValue === undefined) { this.viewsDate = this.referenceService.viewsDate; }
+    const dateCountValue = this.getCurrentDayFromDate(dateValue);
+    if (dateCountValue !== undefined) {
+      this.dashboardService.getVideoViewsLevelOneReports(this.daysCount, dateCountValue).subscribe(
+        (result: any) => {
+          this.videoViewsLevelFirst = result;
+        },
+        (error: any) => {  console.error(error);  });
     }
   }
 
@@ -170,28 +159,19 @@ export class ReportsComponent implements OnInit {
     this.videoId = videoId;
     this.dashboardService.getVideoViewsLevelTwoReports(daysInterval, dateValue, videoId, pagination).subscribe(
       (result: any) => {
-        console.log(result);
         this.videoViewsLevelSecond = result.data;
         this.pagination.totalRecords = result.totalRecords;
         this.pagination = this.pagerService.getPagedItems(this.pagination, this.videoViewsLevelSecond);
-
         this.getVideoViewsLevelTwoAllUsers(daysInterval, dateValue, videoId, result.totalRecords);
       },
-      (error: any) => {
-        console.error(error);
-      });
+      (error: any) => {  console.error(error); } );
   }
 
-  getVideoViewsLevelTwoAllUsers(daysInterval, dateValue, videoId, totalrecords) {
-      this.gettingAllUsersPagination.maxResults = totalrecords;
+  getVideoViewsLevelTwoAllUsers(daysInterval, dateValue, videoId, totalRecords) {
+      this.gettingAllUsersPagination.maxResults = totalRecords;
       this.dashboardService.getVideoViewsLevelTwoReports(daysInterval, dateValue, videoId, this.gettingAllUsersPagination).subscribe(
-        (result: any) => {
-          console.log(result);
-          this.videoViewsLevelSecondAllRecords = result.data;
-        },
-        (error: any) => {
-          console.error(error);
-        });
+        (result: any) => { this.videoViewsLevelSecondAllRecords = result.data; },
+        (error: any) => { console.error(error); });
     }
 
   setPage(event: any) {
@@ -208,10 +188,7 @@ export class ReportsComponent implements OnInit {
   }
   getVideoMinutesWatchedLevelOne(dateValue, isReport) {
     this.isReport = isReport;
-    if (dateValue === undefined) {
-      this.viewsDate = this.referenceService.viewsDate;
-      console.log("date value is " + this.viewsDate);
-    }
+    if (dateValue === undefined) {  this.viewsDate = this.referenceService.viewsDate; }
     const dateCountValue = this.getCurrentDayFromDate(dateValue);
     console.log("date count value is " + dateCountValue);
     if (dateCountValue !== undefined) {
@@ -225,9 +202,7 @@ export class ReportsComponent implements OnInit {
             this.isReport = false;
           }
         },
-        (error: any) => {
-          console.error(error);
-        });
+        (error: any) => { console.error(error); });
     }
   }
   getVideoMinutesWatchedLevelTwo(daysInterval, dateValue, videoId, pagination) {
@@ -241,65 +216,75 @@ export class ReportsComponent implements OnInit {
         this.videoViewsLevelSecond = result.data;
         this.pagination.totalRecords = result.totalRecords;
         this.pagination = this.pagerService.getPagedItems(this.pagination, this.videoViewsLevelSecond);
+        this.getVideoMinutesWatchedAllUsersLevelTwo(result.totalRecords);
       },
-      (error: any) => {
-        console.error(error);
-      });
+      (error: any) => {  console.error(error); });
   }
+  
+  getVideoMinutesWatchedAllUsersLevelTwo(totalRecords) {
+      this.allMinutesWatchedPagination.maxResults = totalRecords;
+      this.dashboardService.getVideoMinutesWatchedLevelTwoReports(this.daysInterval, this.dateValue, this.videoId, this.allMinutesWatchedPagination).subscribe(
+        (result: any) => {
+          console.log(result);
+          this.videoMinutsWatchedTotalRecordsLevelSecond = result.data;
+        },
+        (error: any) => {  console.error(error); });
+    }
+  
+  
   selectedRow(viewData: any) {
-    console.log(viewData);
     this.videoViewsLevelSecond.length = 0;
     this.pagination.pageIndex = 1;
     if (this.reportName === 'views') {
       this.getVideoViewsLevelTwo(this.daysCount, viewData.selectedDate, viewData.videoId, this.pagination);
-    }
-    else {
+    } else {
       this.getVideoMinutesWatchedLevelTwo(this.daysCount, viewData.selectedDate, viewData.videoId, this.pagination);
     }
   }
-  downloadLogs(level: string) {
-     this.logListName = 'Video_Statestics.csv';
-    if (level === 'one') {
-      this.downloadCsvList = this.videoViewsLevelFirst;
-    } else if (level === 'two') {
-      this.downloadCsvList = this.videoViewsLevelSecondAllRecords;
-    }
+  
+  downloadLogs() {
+     this.logListName = 'Video_Statistics.csv';
+     
+     if (this.reportName === 'views') {
+         this.downloadCsvList = this.videoViewsLevelSecondAllRecords;
+     }else{
+         this.downloadCsvList = this.videoMinutsWatchedTotalRecordsLevelSecond;
+     }
+  
     this.downloadDataList.length = 0;
     for (let i = 0; i < this.downloadCsvList.length; i++) {
-      let date = new Date(this.downloadCsvList[i].date);
-      var object = {
+      const date = new Date(this.downloadCsvList[i].date);
+      const object = {
         'First Name': this.downloadCsvList[i].firstName,
         'Last Name': this.downloadCsvList[i].lastName,
         'Email Id': this.downloadCsvList[i].emailId,
         'Video Title': this.downloadCsvList[i].videoTitle,
-
+        'Date and Time': date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
       }
-      if (level === 'one') {
-        if (this.reportName == 'views') {
-          object[this.reportName] = this.downloadCsvList[i].viewsCount;
-        } else {
-          object[this.reportName] = this.downloadCsvList[i].minutesWatchedValue;
-        }
-        object["Date"] = date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
-      }
-
-      if (level === 'two') {
-        object["Date and Time"] = date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
-      }
-
+      
       this.downloadDataList.push(object);
     }
     this.referenceService.isDownloadCsvFile = true;
   }
 
   ngOnInit() {
-  //  this.pagination.maxResults = 5;
+    //  this.pagination.maxResults = 5;
+    console.log(this.resultSparkline);
+    this.viewsDate = this.referenceService.viewsDate;
+    this.viewsValue = this.referenceService.clickedValue;
+    this.daysCount = this.referenceService.daySortValue;
+    this.reportName = this.referenceService.reportName;
+    for (let i = 0; i < this.sortDates.length; i++) {if (this.referenceService.daySortValue === this.sortDates[i].value) {
+        this.daySort = this.sortDates[i]; break; }
+    }
+ //   this.selectedSortByValue(this.daysCount);
+    console.log("day sort value " + this.daySort + 'views date is ' + this.viewsDate + 'value is ' + this.viewsValue + 'dayscount is' + this.daysCount);
     this.isReport = true;
     console.log(this.referenceService.viewsSparklineValues);
     if (this.viewsDate === undefined || this.viewsDate === null) { this.viewsDate = this.resultSparkline.dates[0]; }
     this.viewsOrMinutesWatchedSparklineData(this.resultSparkline);
     if (this.reportName.includes('views')) {
-      this.getVideoViewsLevelOne(this.viewsDate, true);
+     this.getVideoViewsLevelOne(this.viewsDate, true);
     } else {
       this.getVideoMinutesWatchedLevelOne(this.viewsDate, true);
     }

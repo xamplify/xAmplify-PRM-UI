@@ -204,7 +204,7 @@
 									<div class="form-group">
 										<label class="col-xs-3 col-sm-3 col-md-3 control-label">Tags:</label>
 										<div class="col-xs-9 col-sm-9 col-md-9">
-											<span class="pull-left" style="margin-top: 13px;margin-left: -21px;cursor: pointer;color: #54a7e9;" data-toggle="tooltip" data-placement="bottom" title="Add tags to your video and click enter">
+											<span class="pull-left" style="margin-top: 13px;margin-left: -21px;cursor: pointer;color: #54a7e9;" data-toggle="tooltip" data-placement="bottom" title="Add a tag to your video and press Enter">
 												<i class="fa fa-question-circle" style="font-size: 20px"></i>
 											</span>
 											<tag-input [(ngModel)]="itemOfTags" [ngModelOptions]="{standalone: true}" [theme]="'foundation-theme'" [placeholder]="'Add a tag & press Enter'" [secondaryPlaceholder]="'Add a tag & press Enter'"
@@ -270,15 +270,15 @@
 											<div>
 												<div class="col-xs-4 col-sm-4 col-md-4" (click)="selectedGifFirst()">
 													<input type="hidden" name="gifImagePath" formControlName="gifImagePath">
-													<img [ngClass]="{colorImg:gifBoolean1==true ,colorShade :gifBoolean1==false}" src="{{giffirst}}" class="sizeImg">
+													<img id="gifImageIdFirst" [ngClass]="{colorImg:gifBoolean1==true ,colorShade :gifBoolean1==false}" src="{{giffirst}}" class="sizeImg">
 												</div>
 												<div class="col-xs-4 col-sm-4 col-md-4" (click)="selectedGifSecond()">
 													<input type="hidden" name="gifImagePath" formControlName="gifImagePath">
-													<img [ngClass]="{colorImg:gifBoolean2==true ,colorShade :gifBoolean2==false}" src="{{gifsecond}}" class="sizeImg">
+													<img id="gifImageIdSecond" [ngClass]="{colorImg:gifBoolean2==true ,colorShade :gifBoolean2==false}" src="{{gifsecond}}" (error)="setGifPath($event)" class="sizeImg">
 												</div>
 												<div class="col-xs-4 col-sm-4 col-md-4" (click)="selectedGifThird()">
 													<input type="hidden" name="gifImagePath" formControlName="gifImagePath">
-													<img [ngClass]="{colorImg:gifBoolean3==true ,colorShade :gifBoolean3==false}" src="{{gifthird}}" class="sizeImg">
+													<img id="gifImageIdThird" [ngClass]="{colorImg:gifBoolean3==true ,colorShade :gifBoolean3==false}" src="{{gifthird}}" (error)="setGifPath($event)" class="sizeImg">
 												</div>
 											</div>
 										</div>

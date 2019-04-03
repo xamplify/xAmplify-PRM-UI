@@ -49,11 +49,7 @@ export class HomeComponent implements OnInit {
         (error: any) => {
           this.xtremandLogger.error("error" + error);
         },
-        () =>
-          console.log(
-            "categoriss  are in the manage vidoes :" + this.refcategories
-          )
-      );
+        () => this.xtremandLogger.log("categoriss api called"));
     } catch (error) {
       this.xtremandLogger.error("error" + error);
     }
@@ -70,20 +66,17 @@ export class HomeComponent implements OnInit {
   getVideoDefaultSettings() {
     try {
       this.userService.getVideoDefaultSettings().subscribe(
-        (result: any) => {
-          if (result !== "") {
-            const response = result;
-            console.log("defaultsetting api called :");
-            console.log(response);
+        (response: any) => {
+          if (response !== "") {
             this.referenceService.videoBrandLogo = response.brandingLogoUri;
             this.referenceService.defaultPlayerSettings = response;
             this.referenceService.companyId = response.companyProfile.id;
+            this.referenceService.companyProfileImage = response.companyProfile.companyLogoPath;
+            this.getOrgCampaignTypes();
             if (!response.brandingLogoUri || !response.brandingLogoDescUri) {
                 const logoLink = this.videoUtilService.isStartsWith(response.companyProfile.website);
               this.saveVideoBrandLog( response.companyProfile.companyLogoPath, logoLink);
             }
-          } else {
-            console.log("defaultsetting api result is empty :");
           }
         },
         (error: any) => {
@@ -98,7 +91,7 @@ export class HomeComponent implements OnInit {
     try {
       this.userService.saveBrandLogo(companyLogoPath, logoLink,this.authenticationService.user.id)
         .subscribe( (data: any) => {
-            if (data !== undefined) { console.log("logo updated successfully");}
+            if (data !== undefined) { this.xtremandLogger.log("logo updated successfully");}
           },
           error => { this.xtremandLogger.error("error" + error); });
     } catch (error) {
@@ -107,23 +100,23 @@ export class HomeComponent implements OnInit {
   }
   getCompanyId() {
     try {
-      this.userService.getVideoDefaultSettings().subscribe(
+      this.referenceService.getCompanyIdByUserId(this.authenticationService.user.id).subscribe(
         (result: any) => {
-          if (result !== "") {  this.referenceService.companyId = result.companyProfile.id;
+          if (result !== "") {  this.referenceService.companyId = result;
             this.getOrgCampaignTypes();
           }
-        }, (error: any) => { console.log(error); }
+        }, (error: any) => { this.xtremandLogger.log(error); }
       );
-    } catch (error) { console.log(error);  } }
+    } catch (error) { this.xtremandLogger.log(error);  } }
 
-    getOrgCampaignTypes(){
+  getOrgCampaignTypes(){
       this.referenceService.getOrgCampaignTypes( this.referenceService.companyId).subscribe(
       data=>{
-        console.log(data);
-        this.referenceService.campaignAccess.videoCampaign = data.video;
-        this.referenceService.campaignAccess.emailCampaign = data.regular;
-        this.referenceService.campaignAccess.socialCampaign = data.social;
-        this.referenceService.campaignAccess.eventCampaign = data.event
+        this.xtremandLogger.log(data);
+        this.referenceService.videoCampaign = data.video;
+        this.referenceService.emailCampaign = data.regular;
+        this.referenceService.socialCampaign = data.social;
+        this.referenceService.eventCampaign = data.event
       });
     }
   ngOnInit() {

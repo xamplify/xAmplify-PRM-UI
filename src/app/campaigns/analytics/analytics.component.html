@@ -9,8 +9,10 @@
 	}
 .btn-social { color: #fff;}
 </style>
+<ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+<app-event-send-reminder *ngIf="isOpenNotificationModal" (notifyParent)="emailNotOpenReminderDate($event)" [selectedEventCampaignId]="campaign.campaignId" [selectedUserId]="selectedEmailNotOpenUserId"> </app-event-send-reminder>
 <app-detail-view *ngIf="showRsvpDetails" [campaignReport]="campaignReport" [detailType]="rsvpResposeType" [campaignType]="campaignType" [campaign]="campaign" [details]="rsvpDetailsList"></app-detail-view>
-<!-- <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading> -->
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 <div class="page-content" *ngIf="!isTimeLineView && !showRsvpDetails" [class.ml0]="authenticationService.isSuperAdmin()">
 <div class="page-bar square-box" style="margin: 0 0px 15px;border-radius: 0;">
 	<ul class="page-breadcrumb">
@@ -37,7 +39,11 @@
 <ng-template #NOERROR>
 <app-analytics-loader *ngIf="mainLoader"></app-analytics-loader>
 	<div class="row" [hidden]="mainLoader || hasClientError">
-		<div class="pl10 pr10 col-xs-12" [ngClass]="{'col-sm-4': campaignType === 'VIDEO','forbidden' :!isDataShare ?true:null}" *ngIf="campaignType === 'VIDEO' && campaign.selectedVideoId>0">
+				<div class="alert alert-danger alert-dismissible" *ngIf="contactListDeleteError">
+					<a (click)="contactListDeleteError = false" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+					The contact list(s) associated with this campaign has been deleted.
+				</div>
+				<div class="pl10 pr10 col-xs-12" [ngClass]="{'col-sm-4': campaignType === 'VIDEO','forbidden' :!isDataShare ?true:null}" *ngIf="campaignType === 'VIDEO' && campaign.selectedVideoId>0">
 			<a class="dashboard-stat dashboard-stat-lighter purple-soft" (click)="previewVideo(campaign.campaignVideoFile)" [class.disabled]="!isPartnerEnabledAnalyticsAccess">
 				<div class="visual">
 					<i class="fa fa-video-camera"></i>
@@ -137,8 +143,8 @@
 			<div class="portlet light">
 				<div class="portlet-body clearfix">
 					<div class="col-xs-12 p0">
-						<span class="btn btn-sm btn-primary pull-right" style="font-size:10px">{{campaignType}} CAMPAIGN {{isPartnerCampaign}}</span>
-						<h4 title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:18}} <span *ngIf="campaign.campaignName?.length>18">..</span>
+						<span class="btn btn-sm btn-primary pull-right" style="font-size:10px;cursor:default">{{campaignType}} CAMPAIGN <br><span *ngIf="isPartnerCampaign === '(PARTNER)'">(THROUGH PARTNER)</span></span>
+						<h4 title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:15}} <span *ngIf="campaign.campaignName?.length>15">..</span>
 						</h4>
 						<h5 class="text-info mb10">{{campaign.launchTime | date: 'fullDate'}}</h5>
 					</div>
@@ -146,7 +152,7 @@
 			</div>
 		</div>
 	</div>
-		<div class="col-xs-12 col-sm-8 emails-info" [hidden]="mainLoader" >
+		<div class="col-xs-12 col-sm-8 emails-info" id="campaignreportvendor" [hidden]="mainLoader" >
 
 		<div [hidden]="mainLoader"class="col-xs-2 rsvp_tile_padding">
 			<button class="portlet light color1-invert crcb" (click)="getRsvpInvitiesDetails()"
@@ -166,7 +172,7 @@
 			<button class="portlet light color1-invert crcb" (click)="getRsvpEmailOpenDetails()"
 			 [disabled]="campaignReport.totalEmailOpenCount < 1">
 				<div class="portlet-body text-center">
-						<i class="fa fa-envelope"></i>
+						<i class="fa fa-envelope-open"></i>
 					<h1>
 						<b>{{campaignReport.totalEmailOpenCount}}</b>
 						<span>Opened</span>
@@ -238,7 +244,7 @@
 								<tr>
 									<th style="font-size: 12px; font-weight: 500;">RESPONSE DETAILS</th>
 									<th style="font-size: 12px; font-weight: 500;">TOTAL INVITES</th>
-									<th style="font-size: 12px; font-weight: 500;">INVITES OPENED</th>
+									<th style="font-size: 12px; font-weight: 500;">EMAIL OPENED</th>
 									<th style="font-size: 12px; font-weight: 500;">YES</th>
 									<th style="font-size: 12px; font-weight: 500;">NO</th>
 									<th style="font-size: 12px; font-weight: 500;">MAYBE</th>
@@ -318,7 +324,7 @@
 			<div class="portlet light">
 				<div class="portlet-body clearfix">
 					<div class="col-xs-12">
-						<span class="btn btn-sm btn-primary pull-right">{{campaignType}} CAMPAIGN {{isPartnerCampaign}}</span>
+						<span class="btn btn-sm btn-primary pull-right" style="cursor: default;">{{campaignType}} CAMPAIGN {{isPartnerCampaign}}</span>
 						<h4>{{campaign.campaignName}}</h4>
 						<h5 class="text-info mb10"><!-- {{campaign.launchTime | date: 'fullDate'}} -->
 						<app-timestamp [dateAndTime]="campaign.launchTime"> </app-timestamp>
@@ -399,9 +405,9 @@
 					</div>
 				</div>
 				<div class="portlet-body clearfix">
-					<ng-container *ngFor="let socialStatus of socialCampaign.socialStatusList">
-						<app-social-status [socialStatus]="socialStatus"></app-social-status>
-					</ng-container>
+					<div class="col-sm-4 col-xs-12" *ngFor="let socialStatus of socialCampaign.socialStatusList">
+		              <app-social-status [socialStatus]="socialStatus"></app-social-status>
+		            </div>
 				</div>
 			</div>
 		</div>
@@ -459,7 +465,7 @@
                  </div>
             </div>
             </div>
-				<div class="portlet light" [hidden]="mainLoader || hasClientError">
+				<div class="portlet light" [hidden]="mainLoader || hasClientError || httpRequestLoader.isLoading">
 					<div class="portlet-title">
 						<div class="caption">
 							<span class="caption-subject font-red-sunglo" style="font-size: 15px !important;">
@@ -480,7 +486,10 @@
 						</div>
 					</div>
 					<div class="portlet-body clearfix">
-            <div *ngIf="campaignViews">
+					<div *ngIf="campaignViewsPagination.pagedItems?.length === 0" class="alert alert-info">
+  <strong>No Records Found.</strong>
+</div>
+            <div *ngIf="campaignViewsPagination.pagedItems?.length != 0" >
 						<div class="table-responsive">
 							<table class="table tgrid">
 								<thead>
@@ -595,6 +604,7 @@
 
 <section *ngIf="campaignType === 'EVENT' && isChannelCampaign">
 <div id="timeline-view" class="page-content" *ngIf="isTimeLineView">
+	<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 	<div class="page-bar" style="min-height: 572px;">
 		<a (click)="resetTopNavBarValue(); rsvpDetailType = ''" class="pull-right close-circle" style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;"> <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;"
 			aria-hidden="true"></span></a>
@@ -603,14 +613,14 @@
 			<div class="portlet light" style="position: relative;top: 42px;">
 				<div class="portlet-body clearfix">
 					<div class="col-xs-12" *ngIf="rsvpDetailType !== 'partnerRsvp'">
-						<span class="btn btn-sm btn-primary pull-right" title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:20}} <span *ngIf="campaign.campaignName?.length>20">...</span></span>
+						<span class="btn btn-sm btn-primary pull-right" style="cursor:default;" title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:20}} <span *ngIf="campaign.campaignName?.length>20">...</span></span>
 						<h4 class="m0" title="{{campaignReport.selectedPartnerFirstName}}">{{campaignReport.selectedPartnerFirstName | slice:0:20}} <span *ngIf="campaignReport.selectedPartnerFirstName?.length>20">...</span></h4>
 						<!-- <h4 class="m0" title="{{campaignReport.selectedPartnerLastName}}">{{campaignReport.selectedPartnerLastName | slice:0:20}} <span *ngIf="campaignReport.selectedPartnerLastName?.length>20">...</span></h4> -->
 						<h4 class="m0" title="{{campaignReport.selectedPartnerEmailId}}">{{campaignReport.selectedPartnerEmailId | slice:0:24}} <span *ngIf="campaignReport.selectedPartnerEmailId?.length>24">...</span></h4>
 						<h5 class="text-info" style="margin-bottom: 0;">{{campaign.launchTime | date: 'fullDate'}}</h5>
 					</div>
 					<div class="col-xs-12" *ngIf="rsvpDetailType === 'partnerRsvp'">
-						<span class="btn btn-sm btn-primary pull-right" title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:20}} <span *ngIf="campaign.campaignName?.length>20">...</span></span>
+						<span class="btn btn-sm btn-primary pull-right" style="cursor:default;"  title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:20}} <span *ngIf="campaign.campaignName?.length>20">...</span></span>
 						<h4 class="m0">Your Campaign</h4>
 						<h4>Response</h4>
 						<h5 class="text-info" style="margin-bottom: 0;">{{campaign.launchTime | date: 'fullDate'}}</h5>
@@ -619,10 +629,10 @@
 			</div>
 		</div>
 	</div>
-		<div class="col-xs-12 col-sm-8 emails-info" [hidden]="mainLoader" >
+		<div class="col-xs-12 col-sm-8 emails-info" id='values' [hidden]="mainLoader" >
 
 		<div [hidden]="mainLoader"class="col-xs-2 rsvp_tile_padding">
-			<button class="portlet light color1-invert crcb" (click)="getRsvpInvitiesDetails()" [class.selectedBox]="rsvpResposeType === 'invities'"   [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
+			<button class="portlet light color1-invert crcb" (click)="resetRsvpPagination();getRsvpInvitiesDetails()" [class.selectedBox]="rsvpResposeType === 'invities'"   [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
 			 [disabled]="campaignReport.redistributionTotalInvitiesCount < 1 || !isPartnerEnabledAnalyticsAccess">
 				<div class="portlet-body text-center">
 						<i class="fa fa-envelope"></i>
@@ -636,10 +646,10 @@
 		</div>
 
 		<div [hidden]="mainLoader"class="col-xs-2 rsvp_tile_padding">
-			<button class="portlet light color1-invert crcb" (click)="getRsvpEmailOpenDetails()" [class.selectedBox]="rsvpResposeType === 'email open'"   [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
-			 [disabled]="campaignReport.redistributionTotalEmailOpenCount < 1 || !isPartnerEnabledAnalyticsAccess">
+			<button class="portlet light color1-invert crcb" (click)="resetRsvpPagination();getRsvpEmailOpenDetails()" [class.selectedBox]="rsvpResposeType === 'email open'"   [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
+			 [disabled]="!isPartnerEnabledAnalyticsAccess">
 				<div class="portlet-body text-center">
-						<i class="fa fa-envelope"></i>
+						<i class="fa fa-envelope-open"></i>
 					<h1>
 						<b>{{campaignReport.redistributionTotalEmailOpenCount}}</b>
 						<span>Opened</span>
@@ -649,7 +659,7 @@
 			</button>
 		</div>
 		<div class="p-5x" class="col-xs-2 rsvp_tile_padding">
-			<button class="portlet light color1-invert crcb" [class.selectedBox]="rsvpResposeType === 'YES'" (click)="getRsvpDetails('YES')"  [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
+			<button class="portlet light color1-invert crcb" [class.selectedBox]="rsvpResposeType === 'YES'" (click)="resetRsvpPagination();getRsvpDetails('YES')"  [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
 			 [disabled]="campaignReport.redistributionTotalYesCount < 1 ||  !isPartnerEnabledAnalyticsAccess">
 				<div class="portlet-body text-center">
 						<i class="fa fa-check-circle"></i>
@@ -661,7 +671,7 @@
 			</button>
 		</div>
 		<div class="p-5x" [hidden]="mainLoader"class="col-xs-2 rsvp_tile_padding">
-			<button class="portlet light color1-invert crcb" [class.selectedBox]="rsvpResposeType === 'NO'" (click)="getRsvpDetails('NO')"  [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
+			<button class="portlet light color1-invert crcb" [class.selectedBox]="rsvpResposeType === 'NO'" (click)="resetRsvpPagination();getRsvpDetails('NO')"  [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
 			 [disabled]="campaignReport.redistributionTotalNoCount < 1 || !isPartnerEnabledAnalyticsAccess">
 				<div class="portlet-body text-center">
 						<i class="fa fa-times-circle"></i>
@@ -673,7 +683,7 @@
 			</button>
 		</div>
 		<div class="p-5x" [hidden]="mainLoader"  class="col-xs-2 rsvp_tile_padding">
-			<button class="portlet light color1-invert crcb" [class.selectedBox]="rsvpResposeType === 'MAYBE'" (click)="getRsvpDetails('MAYBE')"  [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
+			<button class="portlet light color1-invert crcb" [class.selectedBox]="rsvpResposeType === 'MAYBE'" (click)="resetRsvpPagination();getRsvpDetails('MAYBE')"  [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
 			 [disabled]="campaignReport.redistributionTotalMayBeCount < 1 || !isPartnerEnabledAnalyticsAccess">
 				<div class="portlet-body text-center">
 						<i class="fa fa-question-circle"></i>
@@ -685,7 +695,7 @@
 			</button>
 		</div>
 		<div [hidden]="mainLoader"  class="col-xs-2 rsvp_tile_padding">
-			<button class="portlet light color1-invert crcb" [class.selectedBox]="rsvpResposeType === 'NOTYET'" (click)="getRsvpDetails('NOTYET')"  [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
+			<button class="portlet light color1-invert crcb" [class.selectedBox]="rsvpResposeType === 'NOTYET'" (click)="resetRsvpPagination();getRsvpDetails('NOTYET')"  [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
 			 [disabled]="campaignReport.redistributionTotalNotYetRespondedCount < 1 || !isPartnerEnabledAnalyticsAccess">
 				<div class="portlet-body text-center">
 						<i class="fa fa-exclamation-circle"></i>
@@ -702,11 +712,17 @@
 
 		<div class="col-xs-12" style="padding: 10px 0px 5px 16px;">
 				<h4 class="pull-left" *ngIf="rsvpResposeType === 'invities'">Total invitees</h4>
-				<h4 class="pull-left" *ngIf="rsvpResposeType === 'email open'">People who <b class="highlet">OPENED YOUR EMAIL</b></h4>
+				<!-- <h4 class="pull-left" *ngIf="rsvpResposeType === 'email open'">People who <b class="highlet">OPENED YOUR EMAIL</b></h4> -->
+				<div class="pull-left mt10" *ngIf="rsvpResposeType === 'email open' || rsvpResposeType === 'email not open'">
+				<ul class="mix-filter m0">
+            <li class="filter" [class.selectedBox]="rsvpResposeType === 'email open'" (click)="resetRsvpPagination();getRsvpEmailOpenDetails()">People who have opened your email</li>
+            <li class="filter" [class.selectedBox]="rsvpResposeType === 'email not open'"  (click)="resetRsvpPagination();getRsvpEmailNotOpenDetails()"> People who haven't opened your email</li>
+				</ul>
+				</div>
 				<h4 class="pull-left" *ngIf="rsvpResposeType === 'YES'">People who have responded <b class="highlet">YES</b></h4>
 				<h4 class="pull-left" *ngIf="rsvpResposeType === 'NO'">People who have responded <b class="highlet">NO</b></h4>
 				<h4 class="pull-left" *ngIf="rsvpResposeType === 'MAYBE'">People who have responded <b class="highlet">MAYBE</b></h4>
-				<h4 class="pull-left" *ngIf="rsvpResposeType === 'NOTYET'">People who <b class="highlet">NOT YET RESPONDED </b></h4>
+				<h4 class="pull-left" *ngIf="rsvpResposeType === 'NOTYET'">People who have<b class="highlet">NOT YET RESPONDED </b></h4>
     </div>
 
     <div class="col-xs-12">
@@ -717,21 +733,22 @@
 							<thead>
 								<tr>
 									<th style="font-size: 12px; font-weight: 500;" style="width:50%">NAME</th>
-									<th style="font-size: 12px; font-weight: 500;" *ngIf="rsvpResposeType !== 'email open' && rsvpResposeType != 'invities'">MESSAGE</th>
+									<th style="font-size: 12px; font-weight: 500;" *ngIf="rsvpResposeType !== 'email open' && rsvpResposeType != 'invities'"><span [hidden]="rsvpResposeType === 'email not open'">MESSAGE</span></th>
 									<th style="font-size: 12px; font-weight: 500;" *ngIf="rsvpResposeType === 'email open' && rsvpResposeType != 'invities'">CAMPAIGN NAME</th>
 									<th style="font-size: 12px; font-weight: 500;" *ngIf="rsvpResposeType === 'email open' && rsvpResposeType != 'invities'">SUBJECT</th>
-									<th style="font-size: 12px; font-weight: 500;" *ngIf="rsvpResposeType != 'invities'">RSVP Date</th>
-									<th style="font-size: 12px; font-weight: 500;" *ngIf="rsvpResposeType !== 'email open' && rsvpResposeType != 'invities'">GUESTS <!-- <br><h6 class="m0" style="font-size:9px">( including you )</h6> --></th>
+									<th style="font-size: 12px; font-weight: 500;" *ngIf="rsvpResposeType != 'invities'"><span [hidden]="rsvpResposeType === 'email not open'">RSVP Date</span></th>
+									<th style="font-size: 12px; font-weight: 500;" *ngIf="rsvpResposeType !== 'email open' && rsvpResposeType != 'invities'"><span [hidden]="rsvpResposeType === 'email not open'">GUESTS <!-- <br><h6 class="m0" style="font-size:9px">( including you )</h6> --></span></th>
+								    <th class="text-center-css" *ngIf="rsvpResposeType === 'email not open'">Reminder</th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr *ngFor="let item of rsvpDetailsList">
 									<td>
-										<app-user-info  [userInfo]="item"> </app-user-info>
+										<app-user-info  [userInfo]="item" [isCompanyInfo] = "true"> </app-user-info>
 									</td>
 									<td *ngIf="rsvpResposeType !== 'email open' && rsvpResposeType != 'invities'">
-										<h6>{{item.message}}</h6>
-										<h6 *ngIf="!item.message" style="text-align:center"><b>-</b></h6>
+										<span [hidden]="rsvpResposeType === 'email not open'"><h6>{{item.message}}</h6>
+										<h6 *ngIf="!item.message" style="text-align:center"><b>-</b></h6></span>
 									</td>
 									<td *ngIf="rsvpResposeType === 'email open' && rsvpResposeType != 'invities'">{{item.campaignName}}</td>
 									<td class="text-center" *ngIf="rsvpResposeType === 'email open' && rsvpResposeType != 'invities'">{{item.subject}}</td>
@@ -739,14 +756,15 @@
 									<h6 *ngIf="rsvpResposeType === 'email open'">{{item.time | date: 'short'}}</h6>
 									</td>
 									<td class="center" *ngIf="rsvpResposeType !== 'email open' && rsvpResposeType != 'invities'">{{item.additionalCount}}</td>
+								<td class="text-center" *ngIf="rsvpResposeType === 'email not open'" style="text-align:center"> <a (click)="sendEmailNotOpenReminder(item)">
+									<i class="fa fa-bell-o" aria-hidden="true"></i>
+									</a> </td>
 								</tr>
 							</tbody>
 						</table>
 						</ng-container>
-						<app-pagination [pagination]="rsvpDetailAnalyticsPagination" class="pg8"
-						 [type]="'rsvpDetailsPagination'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
-						<!-- <app-pagination [hidden]="detailType === 'email open'" [pagination]="eventCampaingEmailOpenPagination"
-						 [type]="'emailOpenPagination'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination> -->
+						<app-pagination *ngIf="rsvpDetailAnalyticsPagination.pagedItems.length !== 0" [pagination]="rsvpDetailAnalyticsPagination" class="pg8"
+						 [type]="rsvpResposeType" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
 					</div>
 				</div>
 	</div>
@@ -762,9 +780,9 @@
 			<div class="col-xs-12">
 				<ng-container *ngIf="campaignType == 'SOCIAL'">
 					<div class="f-w-600 p10">Redistributed Accounts</div>
-					<ng-container *ngFor="let socialStatus of redistributedAccountsBySelectedUserId">
+					<div class="col-sm-4 col-xs-12" *ngFor="let socialStatus of redistributedAccountsBySelectedUserId">
 						<app-social-status [socialStatus]="socialStatus"></app-social-status>
-					</ng-container>
+					</div>
 				</ng-container>
             </div>
 			<div class="col-xs-12 col-sm-6 p10">
@@ -945,7 +963,7 @@
 							<tbody>
 								<tr *ngFor="let item of campaignReport.usersWatchList">
 									<td>
-										<app-user-info  [userInfo]="item"> </app-user-info>
+										<app-user-info  [userInfo]="item" [isCompanyInfo] = "true"> </app-user-info>
 									</td>
 									<td>
 										<h6><!-- {{item.startTime | date: 'short'}} -->
@@ -1025,7 +1043,7 @@
                 <ng-container *ngFor="let item of campaignReport.emailLogs">
                   <tr>
                     <td>
-                      <app-user-info [userInfo]="item"> </app-user-info>
+                      <app-user-info [userInfo]="item" [isCompanyInfo] = "true"> </app-user-info>
                     </td>
                     <td *ngIf="campaignReport.emailActionType === 'open'">
                       <h6 title="{{item.subject}}">
@@ -1194,7 +1212,7 @@
 							<tbody>
 								<tr *ngFor="let item of sentEmailOpenPagination.pagedItems">
 									<td>
-										<app-user-info  [userInfo]="item"> </app-user-info>
+										<app-user-info  [userInfo]="item" [isCompanyInfo] = "true"> </app-user-info>
 									</td>
 									<td>
 										<h6 title="{{item.campaignName}}">{{item.campaignName | slice:0:30}}
@@ -1261,7 +1279,7 @@
 						<tbody>
 							<tr *ngFor="let item of donutCampaignViews">
 								<td>
-									<app-user-info  [userInfo]="item"> </app-user-info>
+									<app-user-info  [userInfo]="item" [isCompanyInfo] = "true"> </app-user-info>
 								</td>
 								<td style="text-align: center">
 									<app-location  [userLocation]="item"> </app-location>
@@ -1323,7 +1341,7 @@
 						<tbody>
 							<tr *ngFor="let emailClicked of worldMapUserData;let i = index">
 								<td>
-									<app-user-info  [userInfo]="emailClicked"> </app-user-info>
+									<app-user-info  [userInfo]="emailClicked" [isCompanyInfo] = "true"> </app-user-info>
 								</td>
 								<td style="text-align: center">
 									<h5>

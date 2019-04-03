@@ -40,8 +40,8 @@ export class ParterService {
             .catch( this.handleError );
     }
     
-    launchedCampaignsCountGroupByCampaignType( customerId: number ) {
-        const url = this.URL + 'partner/campaigns-count-by-campaigntype/'+customerId+'?access_token=' + this.authenticationService.access_token
+    launchedCampaignsCountGroupByCampaignType( partnerId: number, customerId:number ) {
+        const url = this.URL + 'partner/campaigns-count-by-campaigntype/'+customerId+'/'+partnerId+'?access_token=' + this.authenticationService.access_token
         return this.httpClient.get( url )
             .catch( this.handleError );
     }

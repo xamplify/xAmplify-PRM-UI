@@ -13,6 +13,7 @@ export class EventCampaign {
     user: User = new User();
     message: string;
     subjectLine: string="";
+    updateMessage = "";
     channelCampaign: boolean = false;
     emailOpened: boolean = true;
     socialSharingIcons: boolean = true;

@@ -177,7 +177,7 @@ export class ChartReportComponent implements OnInit, OnDestroy {
                     'Last Name': this.downloadCsvList[i].lastName,
                     'Email Id': this.downloadCsvList[i].emailId,
                     'Views': this.downloadCsvList[i].views,
-                    'Date': this.downloadCsvList[i].date,
+                    'Year': this.downloadCsvList[i].date,
                     'Device': this.downloadCsvList[i].device,
                     'City': this.downloadCsvList[i].city,
                     'State': this.downloadCsvList[i].state,

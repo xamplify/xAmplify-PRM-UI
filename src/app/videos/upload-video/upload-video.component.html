@@ -5,7 +5,7 @@
 			<li style="color:#888">Upload Content</li>
 		</ul>
 	</div>
-	<!--record model poopup -->
+	<!--record model popup start-->
 	<div class="modal right fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false" data-backdrop="static">
 		<div class="modal-dialog modal-cam" role="document">
 			<div class="modal-content" style="border-radius:0">
@@ -21,12 +21,12 @@
 								<div id="script" style="display: block;">
 									<textarea id="script-text" class="record-textarea" [(ngModel)]="textAreaValue" (ngModelChange)="textAreaEmpty()" [ngModelOptions]="{standalone:true}"
 									 placeholder=" Don't forget what you want to say. Add your script here.">
-						                </textarea>
+						      </textarea>
 								</div>
 								<div id="scrollSpeedDiv" class="col-xs-12 col-md-12" style="padding:0">
 									<div class="col-xs-12 col-sm-4 col-md-4" style="padding:0">Scroll Speed: 1
-										<font style="color: red;"> [fast]</font> - 10
-										<font style="color: red;"> [slow]</font>
+										<span style="color: red;"> [fast]</span> - 10
+										<span style="color: red;"> [slow]</span>
 									</div>
 									<div class="col-xs-11 col-sm-7 col-md-7" style="padding:0">
 										<input type="range" [class.customDisableCss]="RecordSave==true || rageDisabled==true" id="rangeDisabled" min="1" max="10"
@@ -63,7 +63,7 @@
 				<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" *ngIf="MultipleVideo">
 					<div class="addfiles" style="float: left; width: 113px;">
 						<div class="btn green fileinput-button"><span> <i class="fa fa-plus"></i>Add A Video</span>
-							<input type="file" ng2FileSelect [uploader]="uploader" accept=".mp4,.mpg,.m4v,.flv,.avi,.mov,.wmv,.divx,.f4v,.mpeg,.vob, .mkv"
+							<input type="file" ng2FileSelect [uploader]="uploader" accept=".mp4,.mpg,.m4v,.flv,.avi,.mov,.wmv,.divx,.f4v,.mpeg,.vob,.mkv,video/x-matroska,video/mp4,video/x-m4v,video/*"
 							 [class.customDisableCss]="isFileProgress==true" *ngIf="uploader.queue.length==0" [disabled]="loading==true||isDisable == true || isSelectedVideo == true"
 							 (change)="fileSizeCheck($event)" title=" " #input />
 						</div>
@@ -83,9 +83,9 @@
 				<div class="col-xs-12">
 					<div *ngIf="processing || contentProcessing" class="row">
             <div class="alert alert-success alertMessageCustom loaderSymbol mb10">
-              <span><img src="assets/images/loadbar.gif" class="loader-image-tag"></span>
+              <span><img alt="" src="assets/images/loadbar.gif" class="loader-image-tag"></span>
               <span class="text-css" *ngIf="processing">{{properties.VIDEO_PROCESS_MESSAGE}}</span>
-              <span class="text-css-content" *ngIf="contentProcessing">Your file has been uploaded. Please wait while we process it.</span>
+              <span class="text-css-content" *ngIf="contentProcessing">{{properties.CONTENT_PROCESS_MESSAGE}}</span>
             </div>
 					</div>
 					<!-- changes   -->
@@ -101,7 +101,7 @@
 										<source [src]="videoPreviewPath" type='video/dvd'>
 										<source [src]="videoPreviewPath" type='video/xvid'>
 									</video>
-									<img *ngIf="!previewDisabled || browserInfo==='safari'" src="assets/images/no-preview.jpg" style="border: 2px solid #00a6e8;" id="my-video">
+									<img alt="" *ngIf="!previewDisabled || browserInfo==='safari'" src="assets/images/no-preview.jpg" style="border: 2px solid #00a6e8;" id="my-video">
                 </div>
                 <div class="col-xs-12 col-sm-8 col-md-8">
 								<div class="col-xs-12 col-sm-12 col-md-6">
@@ -145,10 +145,9 @@
 						<input type="file" ng2FileSelect [uploader]="uploader" accept=".mp4,.mpg,.m4v,.flv,.avi,.mov,.wmv,.divx,.f4v,.mpeg,.vob"
 						 *ngIf="uploader.queue.length==0" (change)="fileSizeCheck($event)" style="opacity: 0.0; position: absolute;" title=" " id="file-upload">
 						<div class="text-center">
-              <!-- <i class="fa fa-cloud-upload fa-6" aria-hidden="true"></i> -->
-              <img src="../../../assets/images/uploadvideo.png" >
+              <img src="../../../assets/images/uploadvideo.png" alt=''>
 							<h2 class="upload-video" style="margin:-5px;padding-top: 5px;">Upload a video </h2>
-              <h6 style="color: #717171">Drag and drop a video file here or click to select a Video file.</h6>
+              <h6 style="color: #717171">{{properties.VIDEO_DRAG_MESSAGE}}</h6>
               <button class="btn btn-primary" style="color:#fff">Browse</button>
 						</div>
 					</div>
@@ -157,51 +156,52 @@
         <div class="col-xs-12 pu0">
 					<div class="box-border">
 					<div class="col-xs-6 col-sm-3 col-md-3 text-center hidden-xs hidden-sm" [class.customDisableCss]='uploader.queue.length || contentProcessing'>
-						<img src="assets/images/record.png"  data-toggle="tooltip" data-placement="bottom" title="Click here to record using your webcam" (click)="cameraChange()"
+						<img src="assets/images/record.png" alt="" data-toggle="tooltip" data-placement="bottom" title="Click here to record using your webcam" (click)="cameraChange()"
 						 height="50" width="auto" class="camera" style=" border: 5px; margin: 10px;" onMouseOver="this.style.opacity= 1" onMouseOut="this.style.opacity= 0.7">
 						<div style="font-weight: 600;color: #ea7b92; margin: 9px 12px;">WebCam</div>
 					</div>
 					<div class="col-xs-4 col-sm-4 col-md-3 text-center" [class.customDisableCss]='uploader.queue.length || contentProcessing'>
-						<img src="assets/images/Dropbox.png" class="dropBox"  data-toggle="tooltip" data-placement="bottom" title="Click here to access videos from your Dropbox account" (click)="dropBoxChange()"
+						<img src="assets/images/Dropbox.png" class="dropBox" alt="" data-toggle="tooltip" data-placement="bottom" title="Click here to access videos from your Dropbox account" (click)="dropBoxChange()"
 						 height="50" width="auto" style="cursor:pointer; border: 1px; margin: 10px;" onMouseOver="this.style.opacity= 1" onMouseOut="this.style.opacity= 0.7">
 						<div style="font-weight: 600;color: #55bede;margin: 9px 13px;">DropBox</div>
 					</div>
 					<div class="col-xs-4 col-sm-4 col-md-3 text-center margin-top-16" [class.customDisableCss]='uploader.queue.length || contentProcessing'>
-						<img src="assets/images/box.png" class="box"  data-toggle="tooltip" data-placement="bottom" title="Click here to access videos from your Box account" (click)="boxChange()"
+						<img src="assets/images/box.png" class="box" alt="" data-toggle="tooltip" data-placement="bottom" title="Click here to access videos from your Box account" (click)="boxChange()"
 						 height="50" width="auto" style="cursor:pointer; border: 1px; margin: 10px;" onMouseOver="this.style.opacity= 1" onMouseOut="this.style.opacity= 0.7">
 						<div style="font-weight: 600;margin: 9px 24px;color: #6eabd7;">Box</div>
 					</div>
 					<div class="col-xs-4 col-sm-4 col-md-3 text-center margin-top-16" [class.customDisableCss]='uploader.queue.length || contentProcessing'>
-						<img src="assets/images/GoogleDrive.png"  data-toggle="tooltip" data-placement="bottom" class="googleDrive" title="Click here to access videos from your GoogleDrive account"
+						<img src="assets/images/GoogleDrive.png" alt="" data-toggle="tooltip" data-placement="bottom" class="googleDrive" title="Click here to access videos from your GoogleDrive account"
 						 (click)="googleDriveChange()" height="50" width="auto" style="cursor: pointer; border: 1px; margin: 10px;" onMouseOver="this.style.opacity= 1"
 						 onMouseOut="this.style.opacity= 0.7">
 						<div style="font-weight: 600; color: #eec24c; margin: 9px 3px">GoogleDrive</div>
           </div>
           <!-- commented for future work -->
-					<!-- <div class="col-sm-5ths" [class.customDisableCss]='uploader.queue.length || contentProcessing'>
+					<!--<div class="col-sm-5ths" [class.customDisableCss]='uploader.queue.length || contentProcessing'>
 						<img src="assets/images/onedrive.png" class="oneDrive" title="Click here to access videos from your OneDrive account" height="50"
 						 width="auto" style="cursor: pointer; border: 1px; margin: 10px;" onMouseOver="this.style.opacity= 1" onMouseOut="this.style.opacity= 0.7">
 						<div style="font-weight: 600;margin: 9px 9px; color: #5280c8;">OneDrive</div>
 					</div> -->
           </div>
-          <div class="col-xs-12 message-upload">
+          <div class="col-xs-12 message-content">
+            <ul style="padding: 0px 23px;">
               <li>Maximum video file size is {{maxVideoSize}} MB. For larger files please <a  href="mailto:support@xamplify.com" target="_top">contact us</a>.</li>
-              <li>Supported video file types are <b>mp4, mpg, m4v, flv, avi, mov, wmv, divx, f4v, mpeg, vob, mkv </b>.</li>
-           </div>
+              <li>Supported video file types are <strong>mp4, mpg, m4v, flv, avi, mov, wmv, divx, f4v, mpeg, vob, mkv </strong>.</li>
+           </ul>
+            </div>
         </div>
       </div>
         <div class="col-xs-12 col-sm-6 pu0">
         <div class="col-xs-12 p0" >
-					<div [class.customDisableCss]='isDisable==true || isFileProgress ==true || isSelectedVideo ==true || contentProcessing' (drop)="contentUpload($event)"
+					<div [class.customDisableCss]='isDisable || isFileProgress || isSelectedVideo  || contentProcessing' (drop)="contentUpload($event)"
 				    class="well my-drop-zone"
 					 style="position: relative; cursor:pointer; margin-bottom:0" (click)="contentDropClick()">
-           <input type="file"  (change)="contentUpload($event)" multiple="multiple"
+           <input type="file" (change)="contentUpload($event)" multiple="multiple"
 						  style="opacity: 0.0; position: absolute;" title=" " id="content-upload">
 						<div class="text-center">
-              <!-- <i class="fa fa-cloud-upload fa-6" aria-hidden="true"></i> -->
-              <img src="../../../assets/images/uploadimage.png">
+              <img src="../../../assets/images/uploadimage.png" alt="">
 							<h2 class="upload-video" style="margin:-5px;padding-top: 5px;">Upload Content</h2>
-              <h6 style="color: #717171;">Drag and drop files here or click to select files.</h6>
+              <h6 style="color: #717171;">{{properties.CONTENT_DRAG_MESSAGE}}</h6>
               <button class="btn btn-primary" style="color:#fff">Browse</button>
 						</div>
 					</div>
@@ -210,41 +210,35 @@
 				<div class="col-xs-12 p0">
 					<div class="box-border">
 					<div class="col-xs-4 col-sm-4 text-center" [class.customDisableCss]='uploader.queue.length || contentProcessing'>
-						<img src="assets/images/Dropbox.png" class="dropBox"  data-toggle="tooltip" data-placement="bottom" title="Click here to access files from your Dropbox account" (click)="dropBoxContentChange()"
+						<img src="assets/images/Dropbox.png" alt="" class="dropBox"  data-toggle="tooltip" data-placement="bottom" title="Click here to access files from your Dropbox account" (click)="dropBoxContentChange()"
 						 height="50" width="auto" style="cursor:pointer; border: 1px; margin: 10px;" onMouseOver="this.style.opacity= 1" onMouseOut="this.style.opacity= 0.7">
 						<div style="font-weight: 600;color: #55bede;margin: 9px 13px;">DropBox</div>
 					</div>
 					<div class="col-xs-4 col-sm-4 text-center margin-top-16" [class.customDisableCss]='uploader.queue.length || contentProcessing'>
-						<img src="assets/images/box.png" class="box"  data-toggle="tooltip" data-placement="bottom" title="Click here to access files from your Box account" (click)="boxContentChange()"
+						<img src="assets/images/box.png" class="box" alt=""  data-toggle="tooltip" data-placement="bottom" title="Click here to access files from your Box account" (click)="boxContentChange()"
 						 height="50" width="auto" style="cursor:pointer; border: 1px; margin: 10px;" onMouseOver="this.style.opacity= 1" onMouseOut="this.style.opacity= 0.7">
 						<div style="font-weight: 600;margin: 9px 24px;color: #6eabd7;">Box</div>
 					</div>
 					<div class="col-xs-4 col-sm-4 text-center margin-top-16" [class.customDisableCss]='uploader.queue.length || contentProcessing'>
-						<img src="assets/images/GoogleDrive.png"  data-toggle="tooltip" data-placement="bottom" class="googleDrive" title="Click here to access files from your GoogleDrive account"
+						<img src="assets/images/GoogleDrive.png" alt="" data-toggle="tooltip" data-placement="bottom" class="googleDrive" title="Click here to access files from your GoogleDrive account"
 						 (click)="googleDriveContentChange()" height="50" width="auto" style="cursor: pointer; border: 1px; margin: 10px;" onMouseOver="this.style.opacity= 1"
 						 onMouseOut="this.style.opacity= 0.7">
 						<div style="font-weight: 600; color: #eec24c; margin: 9px 3px">GoogleDrive</div>
           </div>
           </div>
           <div class="col-xs-12 message-content">
+              <ul style="padding: 0px 23px;">
               <li>Maximum file size is 12 MB. For larger files please <a  href="mailto:admin@xamplify.io" target="_top">contact us</a>.</li>
-              <li>Supported file types are <b>image files, gifs, pdf, xls </b>.</li>
-           </div>
+              <li>Supported file types are <strong>image files, gifs, pdf, xls </strong>.</li>
+             </ul>
+            </div>
         </div>
         </div>
       </div>
-
       <div class="clearfix" style="margin: 5px;"></div>
-      <!-- class="panel panel-success" -->
 			<div  style="border-radius: 0" style="background-color: #ffffff">
-				<div class="panel-heading" hidden>
-					<h3 class="panel-title">**Notes</h3>
-        </div>
-        <!-- class="panel-body" -->
 				<div style="position: relative;right: 16px;">
-					<ul style="color:#4c4b4b;">
-						  <li>These plugins only work with the latest versions of Chrome, Firefox, Safari, Opera, Microsoft Edge & Internet Explorer 10.</li>
-          </ul>
+					<ul style="color:#4c4b4b;"><li>{{properties.SUPPORT_FILES}}</li></ul>
 				</div>
 			</div>
 		</div>

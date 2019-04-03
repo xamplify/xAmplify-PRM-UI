@@ -9,9 +9,8 @@
 .cloud-services img{display:block; margin:0 auto;}
 .cloud-services .portlet-body {padding: 10px 0 0px;}
 .cloud-services.portlet.light {padding-bottom: 0px;}
-.center{
-  text-align: center;
-}
+.center{ text-align: center; }
+.chagneText { text-transform: none !important;}
 .pb0{ padding-bottom: 0 !important}
 @media screen and (min-width:601px){
   .modal-css{  width: 50% !important; right: 0 !important;}
@@ -30,3 +29,8 @@
 .gray-color{position: relative; color: grey;}
 
  @media only screen and (max-width: 992px) and (min-width: 601px) { .cloud-css{  left: 130px !important; } }
+.csv-list-name{
+	font-size: 15px;
+    color: #565555;
+    padding-left: 13px;
+}

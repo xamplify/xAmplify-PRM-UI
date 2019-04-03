@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  isDebugMode: true,
+  isDebugMode: false,
 
   /****BEE ClientId/Client Secret********/
   clientId : "6639d69f-523f-44ca-b809-a00daa26b367",

@@ -122,26 +122,8 @@ border-radius: 0
 }
 #file-upload { width:0; height:0; }
 .box-border{  border: 1px solid #b7b7b7; padding: 19px 0px 0px 0px;  margin: 4px 0px; min-height: 116px;}
-/* @media only screen and (max-width:600px){
-  .box-border{ min-height: 179px; border: 1px solid #54a7e9; margin: 0; padding: 43px 0;}
-}
-@media only screen and (min-width:768px){
-  .box-border{ margin: 0; min-height: 192px; border: 1px solid #54a7e9; padding: 51px 0; }
-}
-@media only screen and (min-width:992px){
-  .box-border{ border: 1px solid #54a7e9; min-height: 181px; padding: 37px 16px; margin: 0; }
-}
-@media only screen and (min-width:992px){
-.pc0 { padding-left:0!important;}
-.pu0 { padding-right:0!important}
-} */
-
 .portlet.light {padding: 10px;min-height: 580px;}
 .upload-video-css {
-    /* padding: 20px;
-    margin-bottom: 15px;
-    border: 1px solid #e0e0e0;
-    box-shadow: 0 0 1px rgba(0, 0, 0, 0.2); */
     padding:0;
     margin-bottom: 9px;
 }
@@ -183,11 +165,6 @@ border-radius: 0
 .text-css-content {  position: absolute; left: 57px; top: 20px;}
 .message-content{
   border: dotted 3px lightgray;
-  min-height: 67px;
-  padding: 5px 14px;
-}
-.message-upload{
-  border: dotted 3px lightgray;
-  padding: 5px 14px;
-  min-height: 67px;
+  min-height: 77px;
+  padding: 4px 0px;
 }

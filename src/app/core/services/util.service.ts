@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Pagination } from '../models/pagination';
+import { CropperSettings} from 'ng2-img-cropper';
 
 @Injectable()
 export class UtilService {
@@ -89,5 +90,40 @@ export class UtilService {
     getRouterLocalStorage(){
       return localStorage.getItem("campaignRouter");
     }
+    isXamplify(){ if(window.location.hostname.includes('xamplify')){ return true; } return false; }
 
+    blobToFile(theBlob){
+      theBlob.lastModifiedDate = new Date();
+      theBlob.name = theBlob.lastModifiedDate.getTime()+'.jpg';
+      return theBlob;
+     }
+    convertBase64ToFileObject(dataURI) {
+      const byteString = atob(dataURI.split(',')[1]);
+      const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+      const ab = new ArrayBuffer(byteString.length);
+      const ia = new Uint8Array(ab);
+      for (let i = 0; i < byteString.length; i++) {  ia[i] = byteString.charCodeAt(i);  }
+      const blob = new Blob([ab], {type: mimeString});
+      return (<File> blob);
+    }
+    cropSettings(cropperSetting:any,height,croppedWidth,croppedHeight, rounded){
+      cropperSetting = new CropperSettings();
+      if(!rounded){
+        cropperSetting.width = 600;
+        cropperSetting.height = 230;
+        cropperSetting.cropperDrawSettings.strokeColor = 'rgba(255,255,255,1)';
+      } else {
+        cropperSetting.width = 200;
+        cropperSetting.height = height
+        cropperSetting.cropperDrawSettings.strokeColor = 'dotted 3px #6f6f6f';
+      }
+      cropperSetting.croppedWidth = croppedWidth;
+      cropperSetting.croppedHeight = croppedHeight;
+      cropperSetting.canvasWidth = 500;
+      cropperSetting.canvasHeight = 300;
+      cropperSetting.rounded = rounded;
+      cropperSetting.cropperDrawSettings.strokeWidth = 2;
+      cropperSetting.noFileInput = true;
+      return cropperSetting;
+    }
 }

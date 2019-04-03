@@ -20,6 +20,7 @@ declare var BeePlugin,swal,$:any;
 export class CreateTemplateComponent implements OnInit,OnDestroy {
     httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
     loggedInUserId = 0;
+    companyProfileImages:string[]=[];
     emailTemplate:EmailTemplate = new EmailTemplate();
     clickedButtonName = "";
     videoGif = "xtremand-video.gif";
@@ -40,6 +41,14 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
             ( data: any ) => {  names = data; },
             error => { this.logger.error("error in getAvailableNames("+self.loggedInUserId+")", error); },
             () =>  this.logger.info("Finished getAvailableNames()"));
+        
+        emailTemplateService.getAllCompanyProfileImages(self.loggedInUserId).subscribe(
+                ( data: any ) => {
+                    console.log(data);
+                    self.companyProfileImages = data;
+                },
+                error => { this.logger.error("error in getAllCompanyProfileImages("+self.loggedInUserId+")", error); },
+                () =>  this.logger.info("Finished getAllCompanyProfileImages()"));
 
 	    var request = function(method, url, data, type, callback) {
 	        var req = new XMLHttpRequest();
@@ -262,6 +271,10 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
                    function(template:any) {
                        if(emailTemplateService.emailTemplate!=undefined){
                            var body = emailTemplateService.emailTemplate.jsonBody;
+                           $.each(self.companyProfileImages,function(index,value){
+                               body = body.replace(value,self.authenticationService.MEDIA_URL + self.refService.companyProfileImage);
+                           });
+                           body = body.replace("https://xamp.io/vod/replace-company-logo.png", self.authenticationService.MEDIA_URL + self.refService.companyProfileImage);
                            self.emailTemplate.jsonBody = body;
                            var jsonBody = JSON.parse(body);
                            bee.load(jsonBody);
@@ -306,6 +319,7 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
       }else if(emailTemplate.beeEventCoBrandingTemplate){
           emailTemplate.type = EmailTemplateType.EVENT_CO_BRANDING;
       }
+      this.updateCompanyLogo(emailTemplate);
       emailTemplateService.save(emailTemplate) .subscribe(
           data => {
               this.refService.stopLoader(this.httpRequestLoader);
@@ -330,7 +344,7 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
           emailTemplate.name = $.trim($('#templateNameId').val());
       }
       emailTemplate.id = emailTemplateService.emailTemplate.id;
-      console.log(emailTemplate);
+      this.updateCompanyLogo(emailTemplate);
       emailTemplateService.update(emailTemplate) .subscribe(
           data => {
               this.refService.stopLoader(this.httpRequestLoader);
@@ -345,6 +359,11 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
               },
           () => console.log( "Email Template Updated" )
           );
+  }
+  
+  updateCompanyLogo(emailTemplate:EmailTemplate){
+      emailTemplate.jsonBody = emailTemplate.jsonBody.replace(this.authenticationService.MEDIA_URL + this.refService.companyProfileImage,"https://xamp.io/vod/replace-company-logo.png");
+      emailTemplate.body = emailTemplate.body.replace(this.authenticationService.MEDIA_URL + this.refService.companyProfileImage,"https://xamp.io/vod/replace-company-logo.png");
   }
 
   ngOnInit() {
