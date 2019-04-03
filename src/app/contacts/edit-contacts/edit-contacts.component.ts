@@ -1964,8 +1964,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     }
     saveDuplicateContactList( name: string ) {
        try {
-            if ( name != "" ) {
-                this.contactListObject = new ContactList;
+            
+           if ( name != "" ) {
+               this.contactService.isLoadingList = true;
+               this.contactListObject = new ContactList;
                 this.contactListObject.name = name;
                 this.contactListObject.isPartnerUserList = this.isPartner;
                 if ( this.selectedContactListIds.length == 0 ) {
@@ -1984,6 +1986,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                             this.saveAsListName = undefined;
                             this.goToContactOrPartnerUrl();
                             this.contactService.saveAsSuccessMessage = "SUCCESS";
+                            this.contactService.isLoadingList = false;
                         },
                         ( error: any ) => {
                             this.xtremandLogger.error( error );
@@ -2042,6 +2045,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                         () => this.xtremandLogger.info( "allcontactComponent saveSelectedUsers() finished" )
                         )
                 }
+                this.contactService.isLoadingList = false;
             }
             else {
                 this.xtremandLogger.error( "AllContactComponent saveSelectedUsers() UserNotSelectedContacts" );

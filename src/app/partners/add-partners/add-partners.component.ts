@@ -104,6 +104,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     saveAsError:any;
     isListLoader = false;
     paginationType = "";
+    isSaveAsList = false;
 
     sortOptions = [
         { 'name': 'Sort By', 'value': '' },
@@ -2119,7 +2120,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
    
    saveAsChange(){
     try {
-      this.contactService.isLoadingList = true;
+        this.isSaveAsList = true;
         this.saveAsListName = this.editContactComponent.addCopyToField();
 
     }catch(error){
@@ -2148,6 +2149,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
       this.saveAsListName = undefined;
       this.referenceService.namesArray = undefined;
       this.contactService.isLoadingList = false;
+      this.isSaveAsList = false;
     }
 
     ngOnInit() {
