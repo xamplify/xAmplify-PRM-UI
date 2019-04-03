@@ -10,6 +10,8 @@ import { PagerService } from '../../core/services/pager.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { CustomResponse } from '../../common/models/custom-response';
+import { EmailTemplateService } from '../../email-template/services/email-template.service';
+
 
 declare var $: any;
 @Component({
@@ -19,6 +21,7 @@ declare var $: any;
     providers: [Pagination, HttpRequestLoader]
 })
 export class PartnerCampaignsComponent implements OnInit,OnDestroy {
+    ngxloading: boolean;
 
     campaigns: Campaign[];
     pager: any = {};
@@ -58,7 +61,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     constructor(private campaignService: CampaignService, private router: Router, private xtremandLogger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService,
         public referenceService: ReferenceService, private socialService: SocialService,
-        private authenticationService: AuthenticationService,private route: ActivatedRoute) {
+        private authenticationService: AuthenticationService,private route: ActivatedRoute,private emailTemplateService:EmailTemplateService) {
         this.loggedInUserId = this.authenticationService.getUserId();
         this.referenceService.manageRouter = false;
         const currentUrl = this.router.url;
@@ -196,6 +199,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
 //    }
 
     getCampaignById(campaignId) {
+        this.ngxloading = true;
       var obj = { 'campaignId': campaignId }
       this.campaignService.getCampaignById( obj )
           .subscribe(
@@ -207,8 +211,22 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
           error => { this.xtremandLogger.errorPage( error ) },
           () => console.log() )
     }
-    previewEmailTemplate(emailTemplate: any, campaign){
-      this.referenceService.previewEmailTemplate(emailTemplate, campaign);
+    previewEmailTemplate(emailTemplate: any, campaign:Campaign){
+        this.emailTemplateService.getAllCompanyProfileImages(campaign.userId).subscribe(
+                ( data: any ) => {
+                    let body = emailTemplate.body;
+                    let self  =this;
+                    $.each(data,function(index,value){
+                        body = body.replace(value, self.authenticationService.MEDIA_URL+campaign.companyLogo);
+                    });
+                    body = body.replace("https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL+campaign.companyLogo);
+                    emailTemplate.body = body;
+                    this.referenceService.previewEmailTemplate(emailTemplate, campaign);
+                    this.ngxloading = false;
+                },
+                error => { this.ngxloading = false;this.xtremandLogger.error("error in getAllCompanyProfileImages("+campaign.userId+")", error); },
+                () =>  this.xtremandLogger.info("Finished getAllCompanyProfileImages()"));
+      
     }
     getEventCampaignId(campaignid){
       this.campaignService.getEventCampaignById(campaignid).subscribe(
