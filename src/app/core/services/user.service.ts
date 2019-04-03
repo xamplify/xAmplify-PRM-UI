@@ -5,6 +5,7 @@ import { User } from '../models/user';
 import { DefaultVideoPlayer } from '../../videos/models/default-video-player';
 import { AuthenticationService } from '../services/authentication.service';
 import { ReferenceService } from './reference.service';
+import { DealForms } from '../../deal-registration/models/deal-forms';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable()
@@ -179,6 +180,22 @@ export class UserService {
       .map( this.extractData )
       .catch( this.handleError );
     }
+    saveForm(userId:number,form:DealForms){
+        return this.http.post( this.authenticationService.REST_URL+"/users/"+ userId + "/forms/save?access_token=" + this.authenticationService.access_token ,form)
+        .map( this.extractData )
+        .catch( this.handleError );
+    }
+    updateForm(userId:number,form:DealForms){
+        return this.http.post( this.authenticationService.REST_URL+"/users/"+ userId + "/forms/update?access_token=" + this.authenticationService.access_token ,form)
+        .map( this.extractData )
+        .catch( this.handleError );
+    }
+    listForm(userId:number){
+        return this.http.get( this.authenticationService.REST_URL+"/users/"+ userId + "/forms/list?access_token=" + this.authenticationService.access_token)
+        .map( this.extractData )
+        .catch( this.handleError );
+    }
+
     saveUserProfileLogo(file:any){
       const formData = new FormData();
       formData.append('file', file, file.name);

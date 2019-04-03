@@ -25,7 +25,7 @@ export class TopnavbarComponent implements OnInit {
     public socialService: SocialService, public authenticationService: AuthenticationService,
     public refService: ReferenceService, public logger: XtremandLogger,public properties: Properties) {
     try{
-    this.currentUrl = this.router.url;
+        this.currentUrl = this.router.url;
     const userName = this.authenticationService.user.emailId;
     if(userName!=undefined){
         if (this.refService.topNavbarUserService === false || this.utilService.topnavBareLoading === false) {
@@ -79,16 +79,41 @@ export class TopnavbarComponent implements OnInit {
           if(roles.indexOf(this.roleName.vendorRole)>-1){
               this.authenticationService.module.isVendor = true;
           }
+
     }
     }else{
        this.authenticationService.logout();
-    }
-   
+    }   
     }catch(error) {this.logger.error('error'+error); }
   }
   errorHandler(event:any){
     event.target.src = 'assets/admin/pages/media/profile/icon-user-default.png';
   }
+  connectToWebSocket(){
+      let error_callback = function(error) {
+          // display the error's message header:
+          alert(error.headers.message);
+        };
+      let stompClient = this.authenticationService.connect();
+      let headers = {
+              login: 'mahisravan07@gmail.com',
+              passcode: 'Sravan@07',
+              // additional header
+              'client-id': 'my-trusted-client'
+            };
+      
+      stompClient.connect(headers, error_callback);
+   /*   stompClient.connect(headers, frame => {
+          stompClient.subscribe('/topic/notification', notifications => {
+          });
+
+      });*/
+      
+      
+  }
+ 
+  
+  
   getUnreadNotificationsCount() {
    try{
     this.userService.getUnreadNotificationsCount(this.authenticationService.getUserId())

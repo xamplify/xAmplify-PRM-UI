@@ -169,7 +169,36 @@
         <span class="arrow "></span>
         <span class="selected"></span>
         </a>
+        
       </li>
+      
+            
+      <!-- ------Deal Registration------ -->
+      <li *ngIf="(authService.module.isOrgAdmin && authService.user.hasCompany && enableLeads) || (authService.module.isVendor && enableLeads) || isOnlyPartner || this.authService.module.isCompanyPartner ||(authService.module.hasOpportunityRole && enableLeads)" [ngClass]="{'active': location.path().includes('deals')}">
+        <a   [routerLink]="['./deals/manage']">
+        <i class="fa fa-tags"></i>
+        <span class="title">Opportunities</span>
+        <span class="arrow "></span>
+        <span class="selected"></span>
+        </a>
+        <!-- <ul class="sub-menu" [ngStyle]="{'display': campaigns? 'block': 'none' }">
+          <li>
+              <a *ngIf="!isOnlyPartner && authService.module.isCampaign"  [routerLink]="['./deals/manage']" >
+              <i class="fa fa-tags"></i>
+              <span class="title">As Vendor</span>
+              </a>
+             
+            </li>
+            <li>
+              <a  *ngIf="isOnlyPartner || authService.module.isCompanyPartner || authService.module.isPartner" [routerLink]="['./deals/manage/partners']">
+              <i class="fa fa-tags"></i>
+              <span class="title">As Partner</span>
+              </a>
+            </li>
+          </ul> -->
+      </li>
+      
+      
       <!-- <li *ngIf="authService.module.isOrgAdmin || authService.module.isVendor" [ngClass]="{'active':location.path().includes('upgrade')}">
         <a style="cursor:not-allowed">
           [routerLink]="['./upgrade']"

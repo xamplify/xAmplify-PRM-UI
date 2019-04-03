@@ -11,12 +11,13 @@ import {ReferenceService} from "../../core/services/reference.service";
 import {ContentManagement} from '../../content-management/model/content-management';
 @Injectable()
 export class EmailTemplateService {
-
+    
 
     emailTemplate:EmailTemplate;
     public pagination: Pagination;
     isRegularUpload:boolean;
     URL = this.authenticationService.REST_URL;
+    MARKETO_URL = this.authenticationService.REST_URL;
     
     constructor( private http: Http,  private authenticationService: AuthenticationService,
     		 private refService:ReferenceService ) {
@@ -143,6 +144,51 @@ export class EmailTemplateService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+
+    checkMarketoCredentials(userId: number) {
+        return this.http.get(this.MARKETO_URL + `/marketo/${userId}/checkCredentials?access_token=${this.authenticationService.access_token}`)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    checkCustomObjects(userId: number) {
+        return this.http.get(this.MARKETO_URL + `/marketo/${userId}/checkCustomObjects?access_token=${this.authenticationService.access_token}`)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    saveMarketoCredentials( formData: any) {
+        return this.http.post(this.MARKETO_URL + `/marketo/credentials?access_token=${this.authenticationService.access_token}`, formData)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    getMarketoEmailTemplatePreview(userId: number,emailTemplateId:number) {
+        return this.http.get(this.MARKETO_URL + `marketo/${userId}/emailtemplate/${emailTemplateId}/content?access_token=${this.authenticationService.access_token}`)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    getMarketoEmailTemplates(userId: number) {
+        return this.http.get(this.MARKETO_URL + `/marketo/${userId}/emailtemplates?access_token=${this.authenticationService.access_token}`)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    saveMarketoEmailTemplate(emailTemplate:EmailTemplate){
+        return this.http.post(this.MARKETO_URL + "/marketo/saveEmailTemplate?access_token="+this.authenticationService.access_token,emailTemplate)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+    updateMarketoEmailTemplate(emailTemplate:EmailTemplate){
+        return this.http.post(this.MARKETO_URL + "/marketo/updateEmailTemplate?access_token="+this.authenticationService.access_token,emailTemplate)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
+    importMarketoEmailTemplates(userId: number,body: any[]): any
+    {
+        return this.http.post(this.MARKETO_URL + "/marketo/"+userId+"/importEmailTemplates?access_token="+this.authenticationService.access_token,body)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
+    
     
     
     private extractData( res: Response ) {

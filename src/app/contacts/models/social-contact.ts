@@ -16,4 +16,15 @@ export class SocialContact{
     id:number;
     checked:boolean=true;
     isPartnerUserList: boolean;
+    //MARKETO VARIABLES
+    listName:string;
+    email:string;
+    country:string;
+    city: string;
+    state: string;
+    postalCode: number;
+    address: string;
+    company: string;
+    mobilePhone: string;
+    title:string;
 }

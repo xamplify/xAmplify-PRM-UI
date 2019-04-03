@@ -16,22 +16,24 @@ import { TimezonePickerModule } from 'ng2-timezone-selector';
 import { LoadingModule } from 'ngx-loading';
 
 import { LoaderComponent } from '../loader/loader.component';
+import { CountLoaderComponent } from '../count-loader/count-loader.component';
 import { UpdateStatusComponent } from '../social/common/update-status/update-status.component';
 import { SocialStatusComponent } from '../social/common/social-status/social-status.component';
 import { ConnectAccountsComponent } from '../social/common/connect-accounts/connect-accounts.component';
 import { SocialLoaderComponent } from '../social/common/social-loader/social-loader.component';
 import { CommonComponentModule } from '../common/common.module';
+import { NgxCurrencyModule } from "ngx-currency";
 import { ImageCropperModule } from 'ng2-img-cropper';
 
 @NgModule({
         imports: [CommonModule, RouterModule, FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,
                   TagInputModule, HttpModule, Ng2FilterPipeModule, ColorPickerModule, TimepickerModule.forRoot(),
-                  BootstrapSwitchModule.forRoot(), TimezonePickerModule, LoadingModule, CommonComponentModule, ImageCropperModule ],
-        declarations: [LoaderComponent, UpdateStatusComponent, SocialStatusComponent, ConnectAccountsComponent, SocialLoaderComponent, ],
+                  BootstrapSwitchModule.forRoot(), TimezonePickerModule, LoadingModule, CommonComponentModule,NgxCurrencyModule ],
+        declarations: [LoaderComponent, UpdateStatusComponent, SocialStatusComponent, ConnectAccountsComponent, SocialLoaderComponent,CountLoaderComponent],
         exports: [FileSelectDirective, FileDropDirective, FormsModule, CommonModule, RouterModule, ColorPickerModule,
                   FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule, TagInputModule,
-                  HttpModule, Ng2FilterPipeModule, LoaderComponent, TimepickerModule,ImageCropperModule,
-                  BootstrapSwitchModule, TimezonePickerModule, UpdateStatusComponent, SocialStatusComponent, ConnectAccountsComponent, LoadingModule, SocialLoaderComponent
+                  HttpModule, Ng2FilterPipeModule, LoaderComponent, TimepickerModule,
+                  BootstrapSwitchModule, TimezonePickerModule, UpdateStatusComponent, SocialStatusComponent, ConnectAccountsComponent, LoadingModule, SocialLoaderComponent,NgxCurrencyModule,CountLoaderComponent
                 ],
         providers: [],
 })

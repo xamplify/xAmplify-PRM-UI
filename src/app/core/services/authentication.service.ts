@@ -10,8 +10,10 @@ import { Module } from '../models/module';
 import { UserToken } from '../models/user-token';
 import { UtilService } from '../services/util.service';
 import { environment } from '../../../environments/environment';
+var SockJs = require("sockjs-client");
+var Stomp = require("stompjs");
+declare var swal,require: any;
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
-declare var swal: any;
 
 @Injectable()
 export class AuthenticationService {
@@ -24,6 +26,7 @@ export class AuthenticationService {
     REST_URL: string;
     MEDIA_URL: string;
     SHARE_URL: string;
+    MARKETO_URL:string;
     user: User = new User();
     userProfile: User = new User();
     userToken: UserToken = new UserToken();
@@ -37,6 +40,7 @@ export class AuthenticationService {
     venorMyProfileReport: any;
     constructor(private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger:XtremandLogger) {
         this.REST_URL = this.SERVER_URL + 'xtremand-rest/';
+        
         this.MEDIA_URL = this.SERVER_URL + 'vod/';
         this.SHARE_URL = this.SERVER_URL + 'embed/';
     }
@@ -115,6 +119,7 @@ export class AuthenticationService {
     }
     getRoles(): any {
       try{
+
           let roleNames: string[] = [];
           const currentUser = localStorage.getItem('currentUser');
           if(currentUser != null){
@@ -124,10 +129,12 @@ export class AuthenticationService {
             return roleNames;
           }
         } catch(error){ this.xtremandLogger.log('error'+error);  this.router.navigate(['/']); }
+
     }
     showRoles():string{
       try{
         const roleNames = this.getRoles();
+
         /***********Org Admin**************/
         if(roleNames){
         const isOrgAdmin = roleNames.indexOf(this.roleName.orgAdminRole)>-1;
@@ -300,5 +307,15 @@ export class AuthenticationService {
         if ( this.isSuperAdmin() ) { userId = this.selectedVendorId; }
         return userId;
     }
+
+   
+    
+    connect() {
+        let url = this.REST_URL + "socket";
+        let socket = new SockJs( url );
+        let stompClient = Stomp.over( socket );
+        return stompClient;
+    }
+    
 
 }

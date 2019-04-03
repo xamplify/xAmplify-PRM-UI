@@ -28,6 +28,7 @@ import { InternationalPhoneModule } from 'ng4-intl-phone';
 import { DashboardStatsComponent } from './dashboard-stats/dashboard-stats.component';
 import { VendorReportsComponent } from './vendor-reports/vendor-reports.component';
 import { AdminReportComponent } from './admin-report/admin-report.component';
+import { DealRegistrationService } from '../deal-registration/services/deal-registration.service';
 
 @NgModule({
     imports: [DasboardRoutingModule, SharedModule, CoreModule, CommonModule, DragulaModule, CommonComponentModule, InternationalPhoneModule],
@@ -36,6 +37,6 @@ import { AdminReportComponent } from './admin-report/admin-report.component';
         FollowersComponent, SharedComponent,EditCompanyProfileComponent, ReportsComponent, CompanyPageComponent, PartnerNotificationComponent, DashboardStatsComponent, VendorReportsComponent, AdminReportComponent
     ],
     exports: [InternationalPhoneModule],
-    providers: [DashboardService,CompanyProfileService]
+    providers: [DashboardService,CompanyProfileService,DealRegistrationService]
 })
 export class DashboardModule { }

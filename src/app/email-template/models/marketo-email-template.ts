@@ -1,0 +1,30 @@
+import { User } from '../../core/models/user';
+import { EmailTemplateType } from '../../email-template/models/email-template-type';
+export class MarketoEmailTemplate {
+	id: number;
+	name: string;
+	subject: string;
+	content: string; 
+	description: string;
+	langId: number;
+	userDefined: boolean;
+	defaultTemplate: boolean;
+	regularTemplate: boolean;
+	videoTemplate: boolean;
+	beeRegularTemplate: boolean;
+	beeVideoTemplate: boolean;
+	isMarketoTemplate:boolean;
+	user: User;
+	jsonBody: string;
+	type: EmailTemplateType;
+	regularCoBrandingTemplate: boolean=false;
+	videoCoBrandingTemplate: boolean=false;
+	createdBy: string = "";
+	campaignDefault: boolean;
+	vendorName: string = "";
+	vendorOrganizationName: string = "";
+	draft: boolean = false;
+	onDestroy: boolean = false;
+    beeEventTemplate:boolean;
+    beeEventCoBrandingTemplate:boolean;
+}

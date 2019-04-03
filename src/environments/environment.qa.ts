@@ -9,5 +9,6 @@ export const environment = {
   imagesHost: "https://aravindu.com/vod/images/",
 
   CLIENT_URL: 'https://socialubuntu.com/', //socail ubuntu client app server
-  SERVER_URL: 'https://aravindu.com/'  // social ubuntu backend prodution testing
+  SERVER_URL: 'https://aravindu.com/' , // social ubuntu backend prodution testing
+  MARKETO_SERVER_URL: 'https://aravindu.com/' //Marketo sever url
 };
