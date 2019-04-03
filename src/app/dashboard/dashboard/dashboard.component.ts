@@ -352,7 +352,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.facebookService.getPageFanCount(socialConnection, pageId)
             .subscribe(
                 data => {
-                    socialConnection.facebookFanCount = data;
+                    socialConnection.facebookFanCount = data["fan_count"];
                 },
                 error => this.xtremandLogger.log(error),
                 () => { }
