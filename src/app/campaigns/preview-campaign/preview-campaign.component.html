@@ -793,6 +793,7 @@
 <div class="modal right fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"  data-keyboard="false"
 data-backdrop="static">
   <div class="modal-dialog modal-css" role="document">
+  <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close-circle" data-dismiss="modal" (click)="closeModalpreview()"><i class="fa fa-times"></i></button>
