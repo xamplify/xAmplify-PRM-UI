@@ -17,7 +17,7 @@ export class EmailTemplateService {
     public pagination: Pagination;
     isRegularUpload:boolean;
     URL = this.authenticationService.REST_URL;
-    MARKETO_URL = this.authenticationService.MARKETO_URL;
+    MARKETO_URL = this.authenticationService.REST_URL;
     
     constructor( private http: Http,  private authenticationService: AuthenticationService,
     		 private refService:ReferenceService ) {
