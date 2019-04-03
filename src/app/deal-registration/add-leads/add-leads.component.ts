@@ -212,10 +212,10 @@ export class AddLeadsComponent implements OnInit
         this.dealRegistration.website = data.website;
         this.dealRegistration.dealType = data.dealType;
         this.dealRegistration.title = data.title;
-        if(data.pushToMarketo)
-            this.dealRegistration.pushToMarketo = data.pushToMarketo;
-        else
-            this.dealRegistration.pushToMarketo =false;
+        // if(data.pushToMarketo)
+        //     this.dealRegistration.pushToMarketo = data.pushToMarketo;
+        // else
+        //     this.dealRegistration.pushToMarketo =false;
         let date:any;
         if(data.estimatedClosedDate != null)
             date = this.getFormatedDate(new Date(data.estimatedClosedDate));
@@ -287,7 +287,7 @@ export class AddLeadsComponent implements OnInit
         this.dealRegistration.company = data.contactCompany;
         this.dealRegistration.leadCity = data.city;
         this.dealRegistration.email = this.leadUser.emailId;
-        this.dealRegistration.pushToMarketo = false;
+        //this.dealRegistration.pushToMarketo = false;
         var date = new Date();
         this.dealRegistration.estimatedCloseDate =this.getFormatedDate(date);
         let countryIndex = this.countryNames.countries.indexOf(data.country);
@@ -412,7 +412,7 @@ export class AddLeadsComponent implements OnInit
 
         this.dealRegistration.answers = answers;
         this.dealRegistration.properties = obj;
-        // console.log(this.pushToMarketo)
+         console.log(this.dealRegistration);
         // if(!this.dealRegistration.pushToMarketo)
         //       this.dealRegistration.pushToMarketo = this.pushToMarketo;
         //       console.log( this.dealRegistration)

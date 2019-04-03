@@ -242,10 +242,10 @@ export class DealRegistrationComponent implements OnInit
         this.dealRegistration.dealType = data.dealType;
         this.dealRegistration.title = data.title;
         this.dealRegistration.isDeal=data.deal;
-        if(data.pushToMarketo)
-            this.dealRegistration.pushToMarketo = data.pushToMarketo;
-        else
-            this.dealRegistration.pushToMarketo =false;
+        // if(data.pushToMarketo)
+        //     this.dealRegistration.pushToMarketo = data.pushToMarketo;
+        // else
+        //     this.dealRegistration.pushToMarketo =false;
 
         //this.pushToMarketo = this.dealRegistration.pushToMarketo;
         if(this.dealRegistration.isDeal)
@@ -363,7 +363,7 @@ export class DealRegistrationComponent implements OnInit
         this.dealRegistration.company = data.contactCompany;
         this.dealRegistration.leadCity = data.city;
         this.dealRegistration.email = this.lead.emailId;
-        this.dealRegistration.pushToMarketo = false;
+       // this.dealRegistration.pushToMarketo = false;
         //this.pushToMarketo = this.dealRegistration.pushToMarketo;
         var date = new Date();
         this.dealRegistration.estimatedCloseDate =this.getFormatedDate(date);

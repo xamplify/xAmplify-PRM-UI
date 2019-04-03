@@ -19,7 +19,7 @@ export const environment = {
   // CLIENT_URL : 'https://xamplify.io/', // xamplify client app server
   //SERVER_URL: "https://aravindu.com/"
   //SERVER_URL: 'https://release.xamp.io/'
-  SERVER_URL: 'http://localhost:8888/',
-  //SERVER_URL: 'https://aravindu.com/',
-  MARKETO_SERVER_URL: 'https://aravindu.com/'
+ // SERVER_URL: 'http://localhost:8888/',
+  SERVER_URL: 'https://aravindu.com/',
+  //MARKETO_SERVER_URL: 'https://aravindu.com/'
 };

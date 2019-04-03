@@ -27,6 +27,6 @@ export class DealRegistration{
   properties:DealDynamicProperties[];
   answers:DealAnswer[];
   parentCampaignId:number;
-  pushToMarketo=true;
+  //pushToMarketo=true;
 
 }
