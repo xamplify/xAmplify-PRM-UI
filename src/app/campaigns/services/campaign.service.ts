@@ -73,6 +73,19 @@ export class CampaignService {
       .map(this.extractData)
       .catch(this.handleError);
     }
+    getPreviewCampaignById(data:any, type:string){
+      if(type === "EVENT") {
+        let eventUrl = this.URL + "campaign/get-event-campaign/"+data.campaignId+"?access_token=" + this.authenticationService.access_token;
+        if(this.reDistributeEvent){ this.reDistributeEvent = false; eventUrl = this.URL + "campaign/get-partner-campaign/"+data.campaignId+"/"+this.authenticationService.user.id+"?access_token=" + this.authenticationService.access_token }
+        return this.http.get(eventUrl)
+        .map(this.extractData)
+        .catch(this.handleError);
+      } else {
+        return this.http.post(this.URL + "admin/getCampaignById?access_token=" + this.authenticationService.access_token, data)
+        .map(this.extractData)
+        .catch(this.handleError);
+      }
+    }
 
     getParnterCampaignById(data: any) {
         return this.http.post(this.URL + "admin/getPartnerCampaignById?access_token=" + this.authenticationService.access_token, data)
@@ -416,8 +429,8 @@ export class CampaignService {
         let minutes = date.getMinutes() > 9 ? date.getMinutes() : '0' + date.getMinutes();
         let am_pm = date.getHours() > 11 ? 'PM' : 'AM';
         return month + "/" + day + "/" + year + " " + hours + ":" + minutes + " "+am_pm;*/
-        
-        
+
+
         let date = new Date();
         let today = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();;
         let currentMonth =  date.getMonth()+1;
@@ -427,7 +440,7 @@ export class CampaignService {
         let mintues = date.getMinutes();
         let ampm = hours >= 12 ? 'PM' : 'AM';
         hours = hours % 12;
-        hours = hours ? hours : 12; 
+        hours = hours ? hours : 12;
         let mintuesInString = mintues < 10 ? '0'+mintues : mintues;
         var currentDateTime = month + '/' + today + '/' + year + ' ' + hours + ':' + mintuesInString + ' ' + ampm;
         return currentDateTime;

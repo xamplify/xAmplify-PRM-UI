@@ -39,6 +39,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     totalRecords = 1;
     searchKey = "";
     isLastElement = false;
+    campaignType: string;
     sortByDropDown = [
         { 'name': 'Sort By', 'value': 'createdTime-DESC' },
         { 'name': 'Name (A-Z)', 'value': 'campaign-ASC' },
@@ -352,9 +353,13 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
       this.router.navigate(['/home/campaigns/'+campaign.campaignId+'/details']);
     }
     showCampaignPreview(campaign:any){
+        this.refService.loadingPreview = true;
         if(campaign.campaignType.indexOf('EVENT')>-1){
-          this.router.navigate(['/home/campaigns/event-preview/'+campaign.campaignId]);
+          this.campaignType = 'EVENT';
+          // this.router.navigate(['/home/campaigns/event-preview/'+campaign.campaignId]);
+          this.previewCampaign = campaign.campaignId;
         } else {
+          this.campaignType = campaign.campaignType.toLocaleString();
           // this.router.navigate(['/home/campaigns/preview/'+campaign.campaignId]);
           this.previewCampaign = campaign.campaignId;
         }

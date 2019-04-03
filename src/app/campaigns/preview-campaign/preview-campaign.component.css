@@ -123,3 +123,11 @@ fieldset img {height: 137px}
 }
 .th-size{ font-size: 12px; font-weight: 500;}
 .pointer{ cursor: pointer;}
+.preview-btn{  padding-top: 5px !important;; font-size: 15px; color: #5a5a5a;}
+.auto-resp {
+  font-size: 13px;color: #3d3c4c; font-weight: 600;
+  /* text-decoration: underline; */
+}
+.message-auto{
+  border: 1px solid #b7b5b5;padding: 5px 8px; background: #ebebe4;
+}

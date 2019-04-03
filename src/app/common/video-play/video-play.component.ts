@@ -29,7 +29,7 @@ appendVideoData( videoFile: SaveVideoFile, divId: string, titleId: string ) {
     $( '.p-video' ).remove();
     console.log( videoFile );
     const videoSelf = this;
-    if ( videoFile.viewBy === 'DRAFT' ) {
+    if (videoFile && videoFile.viewBy === 'DRAFT' ) {
         console.log( this.referenceService.defaultPlayerSettings );
         videoFile.playerColor = this.referenceService.defaultPlayerSettings.playerColor;
         videoFile.controllerColor = this.referenceService.defaultPlayerSettings.controllerColor;
@@ -124,7 +124,7 @@ appendVideoData( videoFile: SaveVideoFile, divId: string, titleId: string ) {
     } );
   }
   ngOnInit() {
-    this.appendVideoData( this.videoFile, "main_video", "modal-title" );
+    if(this.videoFile) { this.appendVideoData( this.videoFile, "main_video", "modal-title" ); }
   }
   ngOnDestroy(): void {
     if ( this.videoJSplayer ) {

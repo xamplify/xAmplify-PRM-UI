@@ -97,6 +97,7 @@ export class ReferenceService {
     emailCampaign = false;
     socialCampaign = false;
     eventCampaign = false;
+    loadingPreview = false;
     constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,
         private router: Router, public deviceService: Ng2DeviceService,private route:ActivatedRoute) {
         console.log('reference service constructor');
@@ -1614,8 +1615,8 @@ export class ReferenceService {
          this.campaignType = this.campaignType ? this.campaignType : 'VIDEO';
          this.router.navigate(["/home/campaigns/"+campaign.campaignId+"/details"]);
      }
-     
-     
+
+
 
      previewEmailTemplate(emailTemplate: EmailTemplate,campaign:Campaign) {
           const body = emailTemplate.body;

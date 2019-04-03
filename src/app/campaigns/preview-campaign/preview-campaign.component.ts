@@ -30,19 +30,20 @@ import { SocialCampaign } from 'app/social/models/social-campaign';
 import { UtilService } from 'app/core/services/util.service';
 import { EventCampaign } from '../models/event-campaign';
 import { Router } from '@angular/router';
+import { EmailLog } from '../models/email-log';
+import { CountryNames } from 'app/common/models/country-names';
 declare var $,CKEDITOR:any;
 
 @Component({
   selector: 'app-preview-campaign',
   templateUrl: './preview-campaign.component.html',
   styleUrls: ['./preview-campaign.component.css', '../../../assets/css/content.css'],
-  providers:[CallActionSwitch,Properties]
+  providers:[CallActionSwitch,Properties, CountryNames]
 })
 export class PreviewCampaignComponent implements OnInit,OnDestroy {
-    ngxloading: boolean;
     campaignType = "";
     selectedEmailTemplateId: number = 0;
-    campaign: Campaign=new Campaign();
+    campaign: any;
     emailTemplate: EmailTemplate;
     userLists: any;
     videoFile: any;
@@ -69,13 +70,6 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     /***************Contact List************************/
     isContactList:boolean = false;
     contactListBorderColor:string = "silver";
-    // numberOfContactsPerPage = [
-    //                            {'name':'10','value':'10'},
-    //                            {'name':'20','value':'20'},
-    //                            {'name':'30','value':'30'},
-    //                            {'name':'All','value':'0'},
-    //                            ]
-    // contactItemsSize:any = this.numberOfContactsPerPage[0];
     isCampaignDraftContactList:boolean = false;
     selectedRowClass:string = "";
     isHeaderCheckBoxChecked:boolean = false;
@@ -102,12 +96,14 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     contactType:string = "";
     listName:string;
     roleName: Roles= new Roles();
-    showContactType:boolean = false;
+    showContactType = false;
     paginationType: string;
     deleteCampaignAlert =  false;
     @Output() closeNotifyParent: EventEmitter<any>;
     @Input() previewCampaignId: number;
+    @Input() previewCampaignType: any;
     modalTitle: string;
+    timezonesCampaignEventTime:any;
     pagination: Pagination =  new Pagination();
     sortByDropDown = [
       { 'name': 'Sort By', 'value': '' },
@@ -132,10 +128,11 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     saveAsCampaignName: string;
     saveAsCampaignInfo: any;
     isScheduledCampaignLaunched: boolean;
+
     constructor(
             private campaignService: CampaignService, private utilService:UtilService,
             public authenticationService: AuthenticationService,
-            private contactService: ContactService,
+            private contactService: ContactService, public countryNames: CountryNames,
             public referenceService: ReferenceService,
             private pagerService: PagerService, public router:Router,
             private emailTemplateService: EmailTemplateService,
@@ -160,15 +157,20 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     setUrlScheduleType(i,e){}
     shareAnalytics(e){}
     getCampaignById() {
-        const obj = { 'campaignId': this.previewCampaignId }
-        this.campaignService.getCampaignById( obj )
+      // if(this.previewCampaignType === 'EVENT'){ this.campaign = new EventCampaign();}
+      // else { this.campaign = new Campaign(); }
+        const obj = { 'campaignId': this.previewCampaignId } // , this.previewCampaignType
+        this.campaignService.getPreviewCampaignById( obj, this.previewCampaignType)
           .subscribe(
             data => {
-                this.setCampaignData(data);
+                if(this.previewCampaignType === 'EVENT') { this.setEventCampaignData(data.data); }
+                else { this.setCampaignData(data);}
             },
             error => { this.xtremandLogger.errorPage( error ) },
           () => {
-            const campaignType = this.campaign.campaignType.toLocaleString();
+          let campaignType:any;
+           if(this.previewCampaignType !== 'EVENT') {  campaignType = this.campaign.campaignType.toLocaleString(); }
+           else { campaignType = this.previewCampaignType; }
             this.campaignType = campaignType;
             if (campaignType.includes('VIDEO')) {
               this.campaignType = 'VIDEO';
@@ -177,7 +179,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
               this.getSocialCampaignByCampaignId(this.previewCampaignId);
             } else if (campaignType.includes('EVENT')) {
               this.campaignType = 'EVENT';
-              this.campaign.selectedEmailTemplateId = this.campaign.emailTemplate.id;
+             // this.campaign.selectedEmailTemplateId = this.campaign.emailTemplate.id;
               // this.getEventCampaignByCampaignId(campaignId);
             } else {
               this.campaignType = 'EMAIL';
@@ -185,25 +187,17 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
             this.getEmailSentCount(this.previewCampaignId);
             this.getEmailLogCountByCampaign(this.previewCampaignId);
             this.getCampaignWatchedUsersCount(this.previewCampaignId);
+            this.referenceService.loadingPreview = false;
             $('#myModal').modal('show');
-          }
-          )
+          });
     }
     setCampaignData(result){
         this.campaign = result;
         console.log(this.campaign);
-        if(this.campaign.userListIds.length>0){
-            this.loadContactList(this.contactListPagination);
-        }
+        if(this.campaign.userListIds.length>0){ this.loadContactList(this.contactListPagination);}
         this.selectedEmailTemplateId = this.campaign.selectedEmailTemplateId;
         this.selectedUserlistIds = this.campaign.userListIds;
         this.isChannelCampaign = this.campaign.channelCampaign;
-        // this.campaignType = this.campaign.campaignType.toLocaleString();
-        // if(this.campaignType.includes('VIDEO')){
-        //     this.campaignType=="VIDEO";
-        // }else if(this.campaignType.includes('REGULAR')){
-        //     this.campaignType=="REGULAR";
-        // }
         if(this.campaign.scheduleTime!=null && this.campaign.scheduleTime!="null" && this.campaign.campaignScheduleType!="NOW"){
             this.campaign.scheduleCampaign  = this.campaignLaunchOptions[1];
         }else{
@@ -248,20 +242,115 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
             this.showContactType = false;
         }
     }
+
+    setEventCampaignData(result:EventCampaign){
+      this.campaign = result;
+      console.log(this.campaign);
+      if(this.campaign.userListDTOs.length>0){ this.loadContactLists(this.contactListPagination);}
+      // this.selectedEmailTemplateId = this.campaign.selectedEditEmailTemplate.id;
+      // this.selectedUserlistIds = this.campaign.userListIds;
+      this.campaign.emailTemplate = result.emailTemplateDTO;
+      if(!this.campaign.emailTemplate) { this.campaign.emailTemplate = new EmailTemplate(); }
+      else { this.selectedEmailTemplateId = this.campaign.emailTemplateDTO.id;}
+      this.isChannelCampaign = this.campaign.channelCampaign;
+      this.campaign.campaignEventTimes = result.campaignEventTimes;
+      if(!this.campaign.campaignEventTimes[0]){
+        this.campaign.campaignEventTimes = [];
+        this.campaign.campaignEventTimes[0].startTimeString = new Date().toDateString();
+        if(!this.campaign.campaignEventTimes[0].allDay){
+          this.campaign.campaignEventTimes[0].endTimeString =  new Date().toDateString();
+        }
+      }
+      for(let i=0; i< result.userListDTOs.length;i++){
+        this.selectedUserlistIds.push(result.userListDTOs[i].id);
+      }
+      if(this.campaign.country === undefined || this.campaign.country === ""  ){ this.campaign.countryId = 0; }
+      else { this.campaign.countryId = this.countries.find(x => x.name == result.country).id; }
+       if( this.campaign.campaignEventTimes[0].countryId===undefined) { this.campaign.campaignEventTimes[0].countryId=0; }
+       for(let i=0; i< this.countries.length;i++){
+         if(this.countries[i].name=== result.campaignEventTimes[0].country){
+           this.campaign.campaignEventTimes[0].countryId = this.countries[i].id;
+           break;
+         }
+       }
+       if ( !this.campaign.campaignLocation.country ) {
+           this.campaign.campaignLocation.country = ( this.countryNames.countries[0] );
+       }
+
+      // if(this.campaign.scheduleTime!=null && this.campaign.scheduleTime!="null" && this.campaign.campaignScheduleType!="NOW"){
+      //     this.campaign.scheduleCampaign  = this.campaignLaunchOptions[1];
+      // }else{
+      //     this.campaign.scheduleCampaign  = this.campaignLaunchOptions[2];
+      // }
+
+      if ( this.campaign.campaignScheduleType === 'SAVE' ) {
+        // this.launchOptions[2];
+        // this.setLaunchOptions( 'SAVE' );
+    } else if( this.campaign.campaignScheduleType === 'SCHEDULE' ){
+        // this.launchOptions[1];
+        // this.setLaunchOptions( 'SCHEDULE' );
+    }
+    this.onChangeCountryCampaignEventTime(this.campaign.campaignEventTimes[0].countryId);
+    for(let i=0; i< this.timezonesCampaignEventTime.length; i++){
+      if(this.timezonesCampaignEventTime[i].timezoneId === this.campaign.campaignEventTimes[0].timeZone){
+        console.log(this.timezonesCampaignEventTime[i].timezoneId);
+      }
+    }
+      if(this.campaign.timeZone==undefined){
+          this.campaign.countryId = this.countries[0].id;
+          this.onSelect(this.campaign.countryId);
+      }else{
+          let countryNames = this.referenceService.getCountries().map(function(a) {return a.name;});
+          let countryIndex = countryNames.indexOf(this.campaign.country);
+          if(countryIndex>-1){
+              this.campaign.countryId = this.countries[countryIndex].id;
+              this.onSelect(this.campaign.countryId);
+          }else{
+              this.campaign.countryId = this.countries[0].id;
+              this.onSelect(this.campaign.countryId);
+          }
+      }
+      this.referenceService.stopLoader(this.httpRequestLoader);
+      this.getCampaignReplies(this.campaign);
+      this.getCampaignUrls(this.campaign);
+      const roles = this.authenticationService.getRoles();
+      let isVendor = roles.indexOf(this.roleName.vendorRole)>-1;
+      let isOrgAdmin = this.authenticationService.isOrgAdmin() || (!this.authenticationService.isAddedByVendor && !isVendor);
+      if(isOrgAdmin){
+          this.channelCampaignFieldName = "To Recipient";
+      }else{
+          this.channelCampaignFieldName = "To Partner";
+      }
+      if(isOrgAdmin){
+          if(this.campaign.channelCampaign){
+              this.contactType = "partner(s)";
+              this.showContactType = false;
+          }else{
+              this.contactType = " partner(s) / recepient(s) ";
+              this.showContactType = true;
+          }
+
+      }else if(isVendor|| this.authenticationService.isAddedByVendor){
+          this.contactType = "partner(s)";
+          this.showContactType = false;
+      }
+    }
+    onChangeCountryCampaignEventTime(countryId){ this.timezonesCampaignEventTime = this.referenceService.getTimeZonesByCountryId(countryId); }
     openSaveAsModal(campaign: any) {
       $('#saveAsModalcalendar').modal('show');
       this.saveAsCampaignId = campaign.campaignId;
-      this.saveAsCampaignName = campaign.campaignName + "_copy";
+      const campaignName = campaign.campaignName? campaign.campaignName: campaign.campaign;
+      this.saveAsCampaignName = campaignName + "_copy";
       this.saveAsCampaignInfo = campaign;
     }
     setSaveCampaignData(){
       let campaignData:any;
-    if(this.saveAsCampaignInfo.campaignType === 'EVENT') {
+    if(this.previewCampaignType === 'EVENT') {
       const saveAsCampaignData = new EventCampaign();
-      saveAsCampaignData.id = this.saveAsCampaignInfo.campaignId;
+      saveAsCampaignData.id = this.saveAsCampaignInfo.id;
       saveAsCampaignData.campaign = this.saveAsCampaignName;
       campaignData = saveAsCampaignData;
-      campaignData.campaignType = this.saveAsCampaignInfo.campaignType;
+      campaignData.campaignType = this.previewCampaignType;
     }
     else {
       const campaign = new Campaign();
@@ -446,19 +535,19 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
        this.pagination = new Pagination();
        if(paginationType === 'Total Recipients' && this.campaignReport.emailSentCount>0){
           this.modalTitle = 'Sent Email Details';
-          this.listCampaignViews(this.campaign.campaignId, this.pagination);
+          this.listCampaignViews(this.previewCampaignId, this.pagination);
           this.openCalendarModal();
        } else if(paginationType === 'Active Recipients' && this.campaignReport.emailOpenCount>0){
           this.modalTitle = 'Emails opened by recipients';
-          this.emailActionList(this.campaign.campaignId, 'open', this.pagination);
+          this.emailActionList(this.previewCampaignId, 'open', this.pagination);
           this.openCalendarModal();
        } else if(paginationType === 'Clicked URL'  && this.campaignReport.emailClickedCount>0){
           this.modalTitle = 'Recipients who clicked a URL';
-          this.emailActionList(this.campaign.campaignId, 'click', this.pagination);
+          this.emailActionList(this.previewCampaignId, 'click', this.pagination);
           this.openCalendarModal();
        } else if(paginationType === 'Views'  && this.campaignReport.usersWatchCount>0){
           this.modalTitle = 'Recipients who have watched the campaign';
-          this.usersWatchList(this.campaign.campaignId, this.pagination);
+          this.usersWatchList(this.previewCampaignId, this.pagination);
           this.openCalendarModal();
        }
      }
@@ -476,6 +565,30 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     previewEmailTemplate(emailTemplate: EmailTemplate){
         this.referenceService.previewEmailTemplate(emailTemplate, this.campaign);
     }
+
+  listEmailLogsByCampaignIdUserIdActionType(emailLog: EmailLog, actionType: string) {
+    this.campaignReport.emailLogs.forEach((element) => {
+      if(element.userId !== emailLog.userId) {  element.isExpand = false; }
+    });
+    emailLog.isExpand = !emailLog.isExpand;
+    if (emailLog.emailLogHistory === undefined) {
+      try {
+        this.loading = true;
+        this.campaignService.listEmailLogsByCampaignIdUserIdActionType(emailLog.campaignId, emailLog.userId, actionType)
+          .subscribe(
+          data => {
+            emailLog.emailLogHistory = data;
+            this.loading = false;
+          },
+          error => console.log(error),
+          () => { }
+          )
+      } catch (error) {
+        this.xtremandLogger.error('Error in listEmailLogsByCampaignIdUserIdActionType: ' + error);
+      }
+    }
+  }
+
 
     usersWatchList(campaignId: number, pagination: Pagination) {
       try{
@@ -569,7 +682,16 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     }
 
     editCampaign(campaign: any) {
-      if (campaign.campaignType.indexOf('EVENT') > -1) {
+      if(this.previewCampaignType === 'EVENT'){
+        $('#myModal').modal('hide');
+        if (campaign.nurtureCampaign) {
+          this.campaignService.reDistributeEvent = false;
+          this.router.navigate(['/home/campaigns/re-distribute-manage/' + this.previewCampaignId]);
+        } else {
+          this.router.navigate(['/home/campaigns/event-edit/' + this.previewCampaignId]);
+        }
+      }
+      else if (campaign.campaignType.indexOf('EVENT') > -1) {
         if (campaign.launched) {
           this.isScheduledCampaignLaunched = true;
           //  setTimeout(function() { $("#scheduleCompleted").slideUp(1000); }, 5000);
@@ -758,53 +880,25 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     }
 
     getEmailTemplatePreview(emailTemplate: EmailTemplate) {
-        this.ngxloading = true;
-        let userId = 0;
-        if(this.campaign.nurtureCampaign){
-            userId = this.campaign.parentCampaignUserId;
-        }else{
-            userId =  this.campaign.userId;
+        let body = emailTemplate.body;
+        let emailTemplateName = emailTemplate.name;
+        if (emailTemplateName.length > 50) {
+            emailTemplateName = emailTemplateName.substring(0, 50) + "...";
         }
-        this.emailTemplateService.getAllCompanyProfileImages(userId).subscribe(
-                ( data: any ) => {
-                    console.log(data);
-                    let body = emailTemplate.body;
-                    let self  =this;
-                    if(this.campaign.nurtureCampaign){
-                        $.each( data, function( index, value ) {
-                            body = body.replace( value, self.authenticationService.MEDIA_URL + self.campaign.companyLogo );
-                        });
-                        body = body.replace( "https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL + this.campaign.companyLogo );
-                    }else{
-                        $.each(data,function(index,value){
-                            body = body.replace(value,self.authenticationService.MEDIA_URL + self.referenceService.companyProfileImage);
-                        });
-                        body = body.replace("https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL + this.referenceService.companyProfileImage);
-                    }
-                    let emailTemplateName = emailTemplate.name;
-                    if (emailTemplateName.length > 50) {
-                        emailTemplateName = emailTemplateName.substring(0, 50) + "...";
-                    }
-                    $("#email-template-content").empty();
-                    $("#email-template-title").empty();
-                    $("#email-template-title").append(emailTemplateName);
-                    $('#email-template-title').prop('title', emailTemplate.name);
-                    let gifPath = "";
-                    
-                    if(this.campaignType.includes('VIDEO')){
-                        gifPath = this.campaign.campaignVideoFile.gifImagePath;
-                    }
-                    let updatedBody = this.referenceService.showEmailTemplatePreview(this.campaign, this.campaignType, gifPath, body);
-                    $("#email-template-content").append(updatedBody);
-                    $('.modal .modal-body').css('overflow-y', 'auto');
-                    $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
-                    $("#email_template_preivew").modal('show');
-                    
-                    this.ngxloading = false;
-                },
-                error => { this.ngxloading = false;this.xtremandLogger.error("error in getAllCompanyProfileImages("+userId+")", error); },
-                () =>  this.xtremandLogger.info("Finished getAllCompanyProfileImages()"));
-     
+        $("#email-template-content").empty();
+        $("#email-template-title").empty();
+        $("#email-template-title").append(emailTemplateName);
+        $('#email-template-title').prop('title', emailTemplate.name);
+        let updatedBody:any;
+        if(this.campaignType === 'EVENT') {
+           updatedBody = this.referenceService.showEmailTemplatePreview(this.campaign, this.campaignType, '', emailTemplate.body);
+         } else {
+           updatedBody = this.referenceService.showEmailTemplatePreview(this.campaign, this.campaignType, this.campaign.campaignVideoFile.gifImagePath, emailTemplate.body);
+          }
+        $("#email-template-content").append(updatedBody);
+        $('.modal .modal-body').css('overflow-y', 'auto');
+        $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
+        $("#email_template_preivew").modal('show');
     }
     isEven(n) {
       if(n % 2 === 0){ return true;}
@@ -834,6 +928,39 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
             () => this.xtremandLogger.info("Finished loadContactList()", this.contactListPagination)
             )
     }
+
+  loadContactLists(contactListsPagination: Pagination) {
+    this.paginationType = 'contactslists';
+    const roles = this.authenticationService.getRoles();
+    let isVendor = roles.indexOf(this.roleName.vendorRole)>-1;
+   if(this.authenticationService.isOrgAdmin() || this.authenticationService.isOrgAdminPartner() || (!this.authenticationService.isAddedByVendor && !isVendor)){
+       contactListsPagination.filterValue = false;
+       contactListsPagination.filterKey = null;
+       this.showContactType = true;
+   }else {
+       this.contactListPagination.filterValue = true;
+       this.showContactType = false;
+       contactListsPagination.filterKey = 'isPartnerUserList';
+    }
+    if(this.authenticationService.isOrgAdmin() || this.authenticationService.isOrgAdminPartner() || (!this.authenticationService.isAddedByVendor && !isVendor) ){
+      if(!this.campaign.channelCampaign){
+        this.contactListPagination.filterValue = false;
+        this.contactListPagination.filterKey = null;
+        this.showContactType = true;
+      }
+     }
+     this.contactListMethod(this.contactListPagination);
+  }
+  contactListMethod(contactListsPagination:Pagination){
+    this.contactService.loadContactLists(contactListsPagination)
+    .subscribe(
+    (data: any) => {
+      this.contactListPagination.totalRecords = data.totalRecords;
+      this.contactListPagination = this.pagerService.getPagedItems(this.contactListPagination, data.listOfUserLists);
+    },
+    (error: any) => { this.xtremandLogger.error(error); },
+    () => { this.xtremandLogger.info('event campaign page contactListMethod() finished'); } );
+  }
 
     showContacts(){
         if($('#campaign-contact-list').css('display') == 'none'){
@@ -898,12 +1025,34 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
       this.loadUsers(this.previewContactListId,this.contactsUsersPagination,this.listName);}
       else if(event.type==='contactslists'){
         this.contactListPagination.pageIndex = event.page;
-        this.loadContactList(this.contactListPagination);
+        if(this.previewCampaignType === 'EVENT') { this.loadContactLists(this.contactListPagination); }
+        else { this.loadContactList(this.contactListPagination); }
+      } else if(event.type==='Total Recipients'){
+        this.pagination.pageIndex = event.page;
+        this.listCampaignViews(this.previewCampaignId, this.pagination);
+      } else if(event.type === 'Views'){
+        this.pagination.pageIndex = event.page;
+         this.usersWatchList(this.previewCampaignId, this.pagination);
+      }else if(event.type === 'Active Recipients'){
+        this.emailActionList(this.previewCampaignId, 'open', this.pagination);
+      }else if(event.type === 'Clicked URL'){
+        this.emailActionList(this.previewCampaignId, 'click', this.pagination);
       }
   }
   paginationDropdown(pagination:Pagination){
     if(this.paginationType==='contacts'){
       this.loadUsers(this.previewContactListId,pagination,this.listName);
+    }else if (this.paginationType==='contactslists') {
+      if(this.previewCampaignType === 'EVENT') { this.loadContactLists(pagination); }
+      else { this.loadContactList(pagination); }
+    } else if(this.paginationType==='Total Recipients'){
+      this.listCampaignViews(this.previewCampaignId, pagination);
+    } else if(this.paginationType === 'Views'){
+       this.usersWatchList(this.previewCampaignId, pagination);
+    } else if(this.paginationType === 'Active Recipients'){
+      this.emailActionList(this.previewCampaignId, 'open', pagination);
+    }else if(this.paginationType === 'Clicked URL'){
+      this.emailActionList(this.previewCampaignId, 'click', pagination);
     }
   }
 
@@ -921,19 +1070,15 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
 
   navigateCampaignAnalytics(campaign: any) {
     $('#myModal').modal('hide');
-    this.referenceService.campaignType = campaign.campaignType;
-    this.router.navigate(['/home/campaigns/' + campaign.campaignId + '/details']);
+    this.referenceService.campaignType = this.previewCampaignType;
+    this.router.navigate(['/home/campaigns/' + this.previewCampaignId + '/details']);
   }
   navigateRedistributedCampaigns(campaign: any) {
     $('#myModal').modal('hide');
-    this.router.navigate(['/home/campaigns/' + campaign.campaignId + "/re-distributed"]);
+    this.router.navigate(['/home/campaigns/' + this.previewCampaignId + "/re-distributed"]);
   }
   navigatePreviewPartners(campaign: any) {
     $('#myModal').modal('hide');
-    this.router.navigate(['/home/campaigns/' + campaign.campaignId + "/remove-access"]);
-  }
-  
-  downloadEmailLogs(){
-      
+    this.router.navigate(['/home/campaigns/' + this.previewCampaignId + "/remove-access"]);
   }
 }

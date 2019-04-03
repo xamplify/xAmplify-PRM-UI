@@ -16,7 +16,7 @@
 			</li>
 		</ul>
 	</div>
-	 <ngx-loading [show]="isloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+	 <ngx-loading [show]="isloading || refService.loadingPreview" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 	<div style="position: relative; top:-10px;">
 		<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 	</div>
@@ -708,4 +708,4 @@
 </div>
 </div>
 
-<app-preview-campaign *ngIf="previewCampaign" [previewCampaignId]="previewCampaign" (closeNotifyParent)="closePreviewCampaign($event)"></app-preview-campaign>
+<app-preview-campaign *ngIf="previewCampaign" [previewCampaignId]="previewCampaign" [previewCampaignType]="campaignType" (closeNotifyParent)="closePreviewCampaign($event)"></app-preview-campaign>

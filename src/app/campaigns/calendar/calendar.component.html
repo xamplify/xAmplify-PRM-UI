@@ -4,7 +4,7 @@
   </div>
   <div class="page-bar">
     <div id="calendar" style="padding: 25px;border: 1px solid #CCC;">
-      <ngx-loading [show]="loading"></ngx-loading>
+      <ngx-loading [show]="loading || referenceService.loadingPreview"></ngx-loading>
     </div>
   </div>
 </div>
@@ -501,4 +501,4 @@
 		</div>
 	</div>
 </div>
-<app-preview-campaign *ngIf="previewCampaign" [previewCampaignId]="previewCampaign" (closeNotifyParent)="closePreviewCampaign($event)"></app-preview-campaign>
+<app-preview-campaign *ngIf="previewCampaign" [previewCampaignType]="precampaignType" [previewCampaignId]="previewCampaign" (closeNotifyParent)="closePreviewCampaign($event)"></app-preview-campaign>

@@ -69,7 +69,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
   paginationType:string;
   campaignViews: any;
   totalCampaignViews: any;
-
+  precampaignType :string;
   isChannelCampaign:boolean;
   sortByDropDown = [
     { 'name': 'Sort By', 'value': '' },
@@ -153,8 +153,10 @@ export class CalendarComponent implements OnInit, OnDestroy {
       timezone: 'local',
       height: 'parent',
       eventClick: function (event) {
-        // self.getCampaignById(event.id)
+       //  self.getCampaignById(event.id)
         self.previewCampaign = event.id;
+        self.precampaignType = event.data.type;
+        self.referenceService.loadingPreview = true;
       },
       viewRender: function(view: any, element: any){
         self.getCampaignCalendarView();
@@ -434,9 +436,12 @@ getSortedResult(campaignId: number,event:any){
   }
   showCampaignPreview(campaign: any) {
     if (campaign.campaignType.indexOf('EVENT') > -1) {
-      this.router.navigate(['/home/campaigns/event-preview/' + campaign.campaignId]);
+      // this.router.navigate(['/home/campaigns/event-preview/' + campaign.campaignId]);
+      this.precampaignType = 'EVENT';
+      this.previewCampaign = campaign.campaignId;
     } else {
       // this.router.navigate(['/home/campaigns/preview/' + campaign.campaignId]);
+      this.precampaignType = campaign.campaignType.toLocaleString();
       this.previewCampaign = campaign.campaignId;
     }
   }
