@@ -105,6 +105,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     isListLoader = false;
     paginationType = "";
     isSaveAsList = false;
+    isDuplicateEmailId = false;
 
     sortOptions = [
         { 'name': 'Sort By', 'value': '' },
@@ -330,6 +331,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             return valueArr.indexOf( item ) != idx
         });
         console.log( "emailDuplicate" + isDuplicate );
+        this.isDuplicateEmailId = isDuplicate;
         if ( this.newPartnerUser[0].emailId != undefined ) {
             if ( !isDuplicate && !this.isEmailExist ) {
                 this.saveValidEmails();
@@ -2188,7 +2190,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         $("body>#settingSocialNetworkPartner").remove();
         $( 'body' ).removeClass( 'modal-backdrop in' );
 
-        if ( this.selectedAddPartnerOption !=5 && this.router.url !=='/' ) {
+        if ( this.selectedAddPartnerOption !=5 && this.router.url !=='/' && !this.isDuplicateEmailId ) {
            let self = this;
             swal( {
                 title: 'Are you sure?',

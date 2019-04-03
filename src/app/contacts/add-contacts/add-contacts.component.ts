@@ -95,6 +95,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
     paginationType = "";
     loading = false;
     isListLoader = false;
+    isDuplicateEmailId = false;
     
     uploadedCsvFileName = "";
 
@@ -536,6 +537,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
             return valueArr.indexOf( item ) != idx
         });
         console.log( "emailDuplicate" + isDuplicate );
+        this.isDuplicateEmailId = isDuplicate;
         this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
 
         if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' ) {
@@ -652,6 +654,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                 return valueArr.indexOf( item ) != idx
             });
             console.log( "ERROREMails" + isDuplicate );
+            this.isDuplicateEmailId = isDuplicate;
 
             if ( this.invalidPattenMail === true ) {
                 $( "#clipBoardValidationMessage" ).append( "<h4 style='color:#f68a55;'>" + "Email Address is not valid" + "</h4>" );
@@ -764,6 +767,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                                 return valueArr.indexOf(item) != idx
                             });
                             console.log("emailDuplicate" + isDuplicate);
+                            this.isDuplicateEmailId = isDuplicate;
 
                             /*if ( this.contacts[i].mobileNumber.length < 6 ) {
                                 this.contacts[i].mobileNumber = "";
@@ -2155,7 +2159,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
         swal.close();
         $( '#settingSocialNetwork' ).modal( 'hide' );
 
-        if ( this.selectedAddContactsOption !=8 && this.router.url !=='/' ) {
+        if ( this.selectedAddContactsOption !=8 && this.router.url !=='/' && !this.isDuplicateEmailId ) {
             this.model.contactListName = "";
 
             let self = this;
