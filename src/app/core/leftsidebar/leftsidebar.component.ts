@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { Roles } from '../../core/models/roles';
 import { ReferenceService } from '../../core/services/reference.service';
+import { DashboardService } from '../../dashboard/dashboard.service';
+import { Pagination } from '../models/pagination';
 declare var window:any;
 
 @Component({
@@ -26,8 +28,11 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
     partners = false;
 
     enableLeads = false;
+    enableLeadsByVendor = false;
+    pagination = new Pagination();
 
-    constructor(location: Location, public authService: AuthenticationService, public refService: ReferenceService,private router:Router) {
+    constructor(location: Location, public authService: AuthenticationService, public refService: ReferenceService,private router:Router
+    ,private dashBoardService:DashboardService) {
        
         console.log(authService.getUserId());
         this.refService.getCompanyIdByUserId(this.authService.getUserId()).subscribe(response=>{
@@ -93,6 +98,17 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                     this.authService.module.isOrgAdmin = true;
                 }
                 if(roles.indexOf(this.roleName.companyPartnerRole)>-1){
+                    this.pagination.pageIndex =1 ;
+                    this.pagination.maxResults = 10000;
+                    this.dashBoardService.loadVendorDetails(this.authService.getUserId(),this.pagination).subscribe(response=>{
+                        response.data.forEach(element => {
+                            this.refService.getOrgCampaignTypes(element.companyId).subscribe(data=>{
+                                if(!this.enableLeadsByVendor)
+                                    this.enableLeadsByVendor = data.enableLeads;
+                                console.log(data)
+                            });
+                        });
+                    })
                     this.authService.module.isCompanyPartner = true;
                 }
 

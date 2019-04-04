@@ -174,7 +174,7 @@
       
             
       <!-- ------Deal Registration------ -->
-      <li *ngIf="(authService.module.isOrgAdmin && authService.user.hasCompany && enableLeads) || (authService.module.isVendor && enableLeads) || isOnlyPartner || this.authService.module.isCompanyPartner ||(authService.module.hasOpportunityRole && enableLeads)" [ngClass]="{'active': location.path().includes('deals')}">
+      <li *ngIf="(authService.module.isOrgAdmin && authService.user.hasCompany && enableLeads) || (authService.module.isVendor && enableLeads) || (isOnlyPartner && enableLeadsByVendor) || (this.authService.module.isCompanyPartner  && enableLeadsByVendor) ||(authService.module.hasOpportunityRole && enableLeads)" [ngClass]="{'active': location.path().includes('deals')}">
         <a   [routerLink]="['./deals/manage']">
         <i class="fa fa-tags"></i>
         <span class="title">Opportunities</span>

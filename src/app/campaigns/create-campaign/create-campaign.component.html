@@ -1618,7 +1618,10 @@ data-backdrop="static">
 	 <div class="modal-content rounded-0">
 		 <div class="modal-header">
 			 <a class="close-circle" data-dismiss="modal" (click)="closeModal()" id="closeButton"><i class="fa fa-times"></i></a>
-			 <h4 class="modal-title" id="templateRetrieve">Push Lead</h4>
+			 <h4 class="modal-title" id="templateRetrieve">Marketo integration with xAmplify</h4>
+		 </div>
+		 <div>
+			 <img src="assets/images/crm/Mark-amplify.png"  style="margin: 30px 30% 0;width: 50%;text-align: center;">
 		 </div>
 		 <div class="modal-body" style="padding: 39px;">
 			 <form class="form-horizontal">
@@ -1652,8 +1655,10 @@ data-backdrop="static">
 		 <div class="modal-footer">
 			 <div style="text-align: right;">
 				 <button class="btn btn-default" (click)="clearValues()">Clear</button>
-				 <button class="btn btn-primary" [disabled]="!isModelFormValid || !clientId || !secretId || !marketoInstance" (click)="submitMarketoCredentials()">Submit</button>
-			 </div>
+
+				 <button [attr.class]="marketoButtonClass" [disabled]="!isModelFormValid || !clientId || !secretId || !marketoInstance" (click)="submitMarketoCredentials()">Submit</button>
+			 
+				</div>
 		 </div>
 	 </div>
  </div>

@@ -147,7 +147,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     campaignDefaultEmailTemplates: Array<EmailTemplate>;
     isEmailTemplate:boolean = false;
     isCampaignDraftEmailTemplate:boolean = false;
-    emailTemplateHtmlPreivew:string = "";;
+    emailTemplateHtmlPreivew:string = "";
+
     selectedEmailTemplateName:string = "";
     emailTemplateId:number=0;
     isDefaultCampaignEmailTemplate:boolean = true;
@@ -227,6 +228,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
      pushToMarketo = false;
 
      loadingMarketo: boolean;
+     marketoButtonClass = "btn btn-default";
  
      //ENABLE or DISABLE LEADS
      enableLeads : boolean;
@@ -1857,7 +1859,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             'campaignType':campaignType,
             'country':country,
             'createdFromVideos':this.campaign.createdFromVideos,
-            'nurtureCampaign':false
+            'nurtureCampaign':false,
+            'pushToMarketo':this.pushToMarketo
         };
         console.log(data);
         return data;
@@ -2731,9 +2734,15 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     toggleSubmitButtonState()
     {
         if (!this.clentIdError && !this.secretIdError && !this.marketoInstanceError)
+            {
             this.isModelFormValid = true;
+            this.marketoButtonClass = "btn btn-primary";
+            }
         else
+        {
             this.isModelFormValid = false;
+            this.marketoButtonClass = "btn btn-default";
+        }
 
     }
     closeModal()

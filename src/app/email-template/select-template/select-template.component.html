@@ -136,8 +136,13 @@
 		<div class="modal-content rounded-0">
 			<div class="modal-header">
 				<a class="close-circle" data-dismiss="modal" (click)="closeModal()"><i class="fa fa-times"></i></a>
-				<h4 class="modal-title" id="templateRetrieve">Retrieve Templates </h4>
+				<h4 class="modal-title" id="templateRetrieve">Marketo integration with xAmplify</h4>
 			</div>
+			
+			<div>
+				<img src="assets/images/crm/Mark-amplify.png"  style="margin: 30px 30% 0;width: 50%;text-align: center;">
+			</div>
+			
 			<div class="modal-body" style="padding: 39px;">
 				<form class="form-horizontal">
 					<div *ngIf="templateError" class="alert alert-danger"><span>{{templateError}}</span></div>
