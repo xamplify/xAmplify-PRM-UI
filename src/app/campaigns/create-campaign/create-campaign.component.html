@@ -1624,14 +1624,14 @@ data-backdrop="static">
 			 <form class="form-horizontal">
 				 <div *ngIf="templateError" class="alert alert-danger"><span>{{templateError}}</span></div>
 				 <div *ngIf="templateSuccessMsg" class="alert alert-success"><span>{{templateSuccessMsg}}</span></div>
-				 <div [attr.class]="clientIdClass" class="form-group">
+				 <div  class="form-group">
 					 <label class="control-label col-sm-3" for="email">Client Id:</label>
 					 <div class="col-sm-8">
 						 <input type="email" class="form-control" id="email" placeholder="Client Id" [(ngModel)]="clientId" [ngModelOptions]="{standalone: true}"
 							(input)="validateModelForm('email')">
 					 </div>
 				 </div>
-				 <div [attr.class]="secretIdClass" class="form-group">
+				 <div  class="form-group">
 					 <label class="control-label col-sm-3" for="pwd">Secret Id:</label>
 					 <div class="col-sm-8">
 						 <input type="password" class="form-control" id="pwd" placeholder="Secret Id" [(ngModel)]="secretId" [ngModelOptions]="{standalone: true}"
@@ -1639,7 +1639,7 @@ data-backdrop="static">
 					 </div>
 				 </div>
 
-				 <div [attr.class]="marketoInstanceClass" class="form-group">
+				 <div  class="form-group">
 					 <label class="control-label col-sm-3" for="instance">Marketo Instance:</label>
 					 <div class="col-sm-8">
 						 <input type="text" class="form-control" id="instance" placeholder="Marketo Instance" [(ngModel)]="marketoInstance" [ngModelOptions]="{standalone: true}"
