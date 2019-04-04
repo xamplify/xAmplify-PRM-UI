@@ -62,7 +62,7 @@ export class AddLeadsComponent implements OnInit
     firstName: string;
     PHONE_NUMBER_PATTERN: RegExp = /^[0-9-+]+$/;
     URL_PATTERN = /(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/;
-    isLoading = false;
+    isLoadingLead = false;
 
     customResponse: CustomResponse = new CustomResponse("","",false);
 
@@ -85,7 +85,7 @@ export class AddLeadsComponent implements OnInit
     titleError: boolean;
     dealTypeError: boolean;
     submitButtonText: string = "";
-    ngxloading: boolean;
+    ngxloadingLead: boolean;
     loggenInUserId: any;
     forms: DealForms[] = [];
     form: DealForms;
@@ -400,8 +400,8 @@ export class AddLeadsComponent implements OnInit
 
     save()
     {
-        this.ngxloading = true;
-        this.isLoading = true;
+        this.ngxloadingLead = true;
+        this.isLoadingLead = true;
         this.dealRegistration.campaignId = this.lead.campaignId;
         this.dealRegistration.createdBy = this.authenticationService.getUserId();
         this.dealRegistration.leadId = this.lead.userId;
@@ -422,12 +422,12 @@ export class AddLeadsComponent implements OnInit
             this.dealRegistrationService.updateLead(this.dealRegistration).subscribe(data =>
             {
                 this.customResponse = new CustomResponse('SUCCESS', "Lead updated successfully", true);
-                this.isLoading = false;
+                this.isLoadingLead = false;
                 this.referenceService.goToTop();
 
             }, error =>
                 {
-                    this.ngxloading = false;
+                    this.ngxloadingLead = false;
                     this.logger.errorPage(error)
                 })
         } else
@@ -435,7 +435,7 @@ export class AddLeadsComponent implements OnInit
             this.dealRegistrationService.saveDeal(this.dealRegistration).subscribe(data =>
             {
                 this.customResponse = new CustomResponse('SUCCESS', "Lead added successfully", true);
-                this.isLoading = false;
+                this.isLoadingLead = false;
                 if (data.data != undefined)
                 {
                     this.dealRegistration.id = data.data;
@@ -445,7 +445,7 @@ export class AddLeadsComponent implements OnInit
                 this.referenceService.goToTop();
             }, error =>
                 {
-                    this.ngxloading = false;
+                    this.ngxloadingLead = false;
                     this.logger.errorPage(error)
                 })
         }
