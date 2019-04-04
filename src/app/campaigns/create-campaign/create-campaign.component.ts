@@ -1273,7 +1273,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     /*******************************Preview*************************************/
     contactListItems:any[];
       loadUsers(id:number,pagination:Pagination, ListName){
-         this.loading = true;
+         //this.loading = true;
          if(id==undefined){
               id=this.previewContactListId;
           }else{
@@ -1283,7 +1283,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
           this.contactService.loadUsersOfContactList( id,this.contactsUsersPagination).subscribe(
                   (data:any) => {
                       console.log(data);
-                      this.loading = false;
+                      //this.loading = false;
                       console.log(pagination);
                       this.contactListItems = data.listOfUsers;
                       console.log(this.contactListItems);
