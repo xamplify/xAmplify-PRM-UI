@@ -114,6 +114,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     hasContactRole: boolean = false;
     loggedInUserId = 0;
     hasAllAccess = false;
+    isDuplicateEmailId = false;
 
     public currentContactType: string = "all_contacts";
     public userListIds: Array<UserListIds>;
@@ -443,6 +444,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
             return valueArr.indexOf( item ) != idx
         });
         console.log( isDuplicate );
+        this.isDuplicateEmailId = isDuplicate;
         this.xtremandLogger.info( this.users[0].emailId );
         if ( this.invalidPattenMail === true ) {
             this.showInvalidMaills = true;
@@ -601,9 +603,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                     
                     this.validateEmail(this.users[i].emailId);
 
-                    /*if ( this.users[i].mobileNumber.length < 6 ) {
-                        this.users[i].mobileNumber = "";
-                    }*/
+                    
 
                     let userDetails = {
                             "emailId": this.users[i].emailId,
@@ -613,7 +613,29 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
                     this.newUserDetails.push( userDetails );
                 }
-                if ( this.validCsvContacts == true && this.invalidPatternEmails.length == 0 && !this.isEmailExist) {
+                
+                var testArray = [];
+                for (var i = 0; i <= this.users.length - 1; i++) {
+                    testArray.push(this.users[i].emailId.toLowerCase());
+                }
+                var newArray = this.compressArray(testArray);
+                for (var w = 0; w < newArray.length; w++) {
+                    if (newArray[w].count >= 2) {
+                        this.duplicateEmailIds.push(newArray[w].value);
+                    }
+                    console.log(newArray[w].value);
+                    console.log(newArray[w].count);
+                }
+                this.xtremandLogger.log("DUPLICATE EMAILS" + this.duplicateEmailIds);
+                var valueArr = this.users.map(function (item) { return item.emailId.toLowerCase() });
+                var isDuplicate = valueArr.some(function (item, idx) {
+                    return valueArr.indexOf(item) != idx
+                });
+                console.log("emailDuplicate" + isDuplicate);
+                this.isDuplicateEmailId = isDuplicate;
+                
+                
+                if ( this.validCsvContacts == true && this.invalidPatternEmails.length == 0 && !this.isEmailExist && !isDuplicate) {
                     $( "#sample_editable_1" ).show();
                     this.isCompanyDetails = false;
                     if ( this.isPartner ) {
@@ -716,7 +738,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
                 }else if(this.isEmailExist){
                     this.customResponse = new CustomResponse( 'ERROR', "These email(s) are already added " + this.existedEmailIds, true );
-                } else {
+                }
+                else if(isDuplicate){
+                    this.customResponse = new CustomResponse( 'ERROR', "Please remove duplicate email ids " + this.duplicateEmailIds, true );
+                }else {
                     this.inValidCsvContacts = true;
                 }
             }
@@ -1203,6 +1228,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                 return valueArr.indexOf( item ) != idx
             });
             console.log( isDuplicate );
+            this.isDuplicateEmailId = isDuplicate;
             if ( !isDuplicate && !this.isEmailExist ) {
                 this.saveClipboardValidEmails();
             }else if(this.isEmailExist){
@@ -2641,7 +2667,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
         $( '#filterModal' ).modal( 'hide' );
         $('#saveAsEditModal').modal('hide');
 
-        if ( this.selectedAddContactsOption !=8 && this.router.url !=='/') {
+        if ( this.selectedAddContactsOption !=8 && this.router.url !=='/' && !this.isDuplicateEmailId) {
             let self = this;
              swal( {
                  title: 'Are you sure?',
