@@ -678,6 +678,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       this.getCampaignUserViewsCountBarCharts(this.campaignId, this.pagination);
       this.loading = false;
     }
+    this.loading = false;
   }catch(error){ this.xtremandLogger.error(error);}
   }
   getTotalTimeSpentOfCampaigns(userId: number, campaignId:number) {
@@ -1131,7 +1132,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
               this.loading = false;
             },
             error => this.xtremandLogger.error(error),
-            () => { }
+            () => {this.loading = false; }
             )
           }catch(error){
             this.xtremandLogger.error('error'+error)
