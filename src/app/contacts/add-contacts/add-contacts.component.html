@@ -139,6 +139,11 @@
 												</button>
 											</div>
 											<div class="col-xs-12 col-sm-4 col-md-4">
+												<button class="btn-success btn-block" id="copyFromClipBoard" (click)="copyFromClipboard()" [disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5">
+													<i class="fa fa-users"></i> <span>Copy list from clipboard</span>
+												</button>
+											</div>
+											<div class="col-xs-12 col-sm-4 col-md-4">
 												<div class="btn-info fileinput-button btn-block" id="uploadCSV" style="min-height: 85px" [class.disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || disableOtherFuctionality">
 													<i style="display: block; margin-top: 22px !important; text-align: center; font-size: 24px; margin: 0 auto 10px" class="fa fa-file-excel-o"></i>
 													<span style="display: block; font-size: 12px; text-align: center">Upload a CSV</span> <input type="file" title=" "
@@ -209,13 +214,13 @@
 											</div>
 											<div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
 												<a *ngIf="zohoImageBlur" id="zohoContact_button" style="background-color: white" (click)="checkingZohoContactsAuthentication()"
-												 [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 ">
+												 [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
 													<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}" src="assets/images/crm/Zoho.png"
 													 class="zohoImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access contacts from your Zoho account"
 													 height="86" width="90" onmouseover="this.src='assets/images/crm/connecting.png';" onmouseout="this.src='assets/images/crm/Zoho.png';">
 												</a>
 												<a *ngIf="zohoImageNormal" id="zohoContact_buttonNormal" style="background-color: white" (click)="checkingZohoContactsAuthentication()"
-												 [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 ">
+												 [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
 													<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}" src="assets/images/crm/Zoho.png"
 													 class="zohoImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access contacts from your Zoho account"
 													 height="86" width="90">
@@ -242,7 +247,7 @@
 												 [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
 													<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :marketoImageBlur==true}" src="assets/images/crm/marketo.png"
 													 class="marketoImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access contacts from your marketo account"
-													 height="86" width="90">
+													 height="86" width="90" onmouseover="this.src='assets/images/crm/connecting.png';" onmouseout="this.src='assets/images/crm/marketo.png';">
 												</a>
 												<div id="marketoGear" style="position: relative" *ngIf="marketoImageNormal">
 													<a [class.disabled]="selectedAddContactsOption != 8 || disableOtherFuctionality" (click)="settingSocialNetworkOpenModal('zoho')">
