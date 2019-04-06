@@ -631,6 +631,38 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
      {
          $("#templateRetrieve").modal('hide');
      }
+     submitRetrieTemplates()
+     {
+         this.loading = true;
+         const obj = {
+             userId: this.authenticationService.getUserId(),
+             instanceUrl: this.marketoInstance,
+             clientId: this.clientId,
+             clientSecret: this.secretId
+         }
+ 
+         this.emailTemplateService.saveMarketoCredentials(obj).subscribe(response =>
+         {
+             if (response.statusCode == 8003)
+             {
+                 this.showMarketoForm = false;
+                 // this.checkMarketoCredentials();
+                 this.templateError = false;
+                 this.templateSuccessMsg = response.message;
+                 this.loading = false;
+                 this.checkMarketoCredentials();
+             } else
+             {
+ 
+                 $("#templateRetrieve").modal('show');
+                 this.templateError = response.message;
+                 this.templateSuccessMsg = false;
+                 this.loading = false;
+             }
+         }, error => this.templateError = error
+         )
+ 
+     }
      edit(emailTemplate: EmailTemplate)
      {
          this.emailTemplateService.getMarketoEmailTemplatePreview(this.authenticationService.getUserId(), emailTemplate.id).subscribe(response =>
