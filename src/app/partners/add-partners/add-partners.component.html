@@ -439,8 +439,8 @@ img:hover {
 												<td class="hidden-xs hidden-sm">{{newContact.category}} </td>
 												<td class="hidden-xs">
 													<h5 *ngIf="newContact?.address" class='mb0'>{{newContact.address}}</h5>
-													<h5 class='mb0'>{{newContact.city}},&nbsp;{{newContact.state}},</h5>
-													<h5 *ngIf="newContact?.city && newContact.country"
+													<h5 class='mb0' *ngIf="newContact?.city && newContact.state">{{newContact.city}},&nbsp;{{newContact.state}},</h5>
+													<h5 *ngIf="newContact?.zipCode && newContact.country"
 														class='mt0'>{{newContact.zipCode}},&nbsp;{{newContact.country}}</h5>
 												</td>
 												<!-- <td align="center">
