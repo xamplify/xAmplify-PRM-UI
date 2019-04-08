@@ -364,6 +364,50 @@ a.disabled {
 								</div>
 							</div>
 						</section>
+						
+						<div class="form-group">
+                  <label class="col-sm-3 labal-css color-css">Data Sharing</label>
+                  <div class="col-sm-9" style="margin-bottom: 10px;">
+                    <div class="email-options-checkbox-group email-options-notify">
+                      <div class="email-options-checkbox clearfix">
+                        <div class="col-sm-4">
+											<switch [status]="eventCampaign.dataShare"
+												[onText]="callActionSwitch.onTextValue"
+												[offText]="callActionSwitch.offTextValue"
+												[onColor]="callActionSwitch.onGreenColorSwitch"
+												[offColor]="callActionSwitch.offDefaultColor"
+												[size]="callActionSwitch.size"
+												(statusChange)="shareAnalytics($event)">
+											</switch>
+										</div>
+                        <div class="col-sm-8">
+                          <label style="margin: 5px 0;">
+                            <span style="cursor: pointer;color: #54a7e9;">
+                              <i class="fa fa-question-circle" style="font-size: 18px;float: left;"  data-toggle="tooltip" data-placement="bottom" title="{{properties.ENALEORDISABLE_VENDOR_MESSAGE}}"></i>
+                            </span>
+                          </label>
+                        </div>
+                      </div>
+                      <section *ngIf="eventCampaign.dataShare" style="margin: 6px 15px;">
+                        <label class="col-xs-12 radio-inline" style="cursor:pointer" (click)="checkInteractiveData('false')">
+                          <input name="options" type="radio" [checked]="!eventCampaign.detailedAnalyticsShared" style="cursor:pointer">
+                          <strong>Active participants</strong>
+                          <span style="cursor: pointer;color: #54a7e9;" data-toggle="tooltip" data-placement="bottom" title="{{properties.ACTIVE_PARTICIPANTS}}">
+                          <i class="fa fa-question-circle" style="font-size: 18px;"></i>
+                         </span>
+                        </label>
+                        <label class="col-xs-12 radio-inline" style="cursor:pointer;margin-left: 0;" (click)="checkInteractiveData('true')">
+                          <input name="options" type="radio" [checked]="eventCampaign.detailedAnalyticsShared" style="cursor:pointer">
+                          <strong>All participants</strong>
+                          <span style="cursor: pointer;color: #54a7e9;" data-toggle="tooltip" data-placement="bottom" title="{{properties.ALL_PARTICIPANTS}}">
+                            <i class="fa fa-question-circle" style="font-size: 18px;"></i>
+                          </span>
+                        </label>
+                      </section>
+                    </div>
+                  </div>
+                </div>
+						
 						<div class="form-group" *ngIf="isEventUpdate">
 							<label class="col-sm-3 labal-css color-css" style="padding-top: 25px;">Message<font
 								style="color: red"> <b>*</b>
