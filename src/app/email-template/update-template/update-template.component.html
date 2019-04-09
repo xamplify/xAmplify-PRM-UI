@@ -31,6 +31,9 @@
 							<div *ngIf="invalidTemplateName"	class="alert alert-danger">Name is required</div>
 							<div *ngIf="duplicateTemplateName && !invalidTemplateName" class="alert alert-danger">Duplicate	Name</div>
 							<div *ngIf="isVideoTagError" class="alert alert-danger">{{videoTagsError}}</div>
+
+
+							
 						</form>
 					</div>
 					<div class="col-xs-12 col-md-6" style="padding: 4em;">
@@ -38,7 +41,7 @@
 							<tbody>
 								<tr>
 									<td nowrap>
-										<button type="button" class="btn btn-info" (click)="update()" [disabled]="duplicateTemplateName ||invalidTemplateName ">Update</button>
+										<button type="button" class="btn btn-info" (click)="update()" [disabled]="duplicateTemplateName ||invalidTemplateName">Update</button>
 									</td>
 								</tr>
 							</tbody>
@@ -51,6 +54,14 @@
 						<div *ngIf="emailTemplateService.emailTemplate.videoTemplate" class="form-group" id="infoDiv">
 					 		<br><label for="info"><font style="color: red;">**Before you upload your HTML template, please be sure to include the code below.</font></label>
 						 	<textarea class="form-control" style="cursor: default;resize: none;" id="info"readonly="readonly"  rows="4">{{refService.videoTag}}</textarea>
+					</div>
+
+					<div class="form-group" *ngIf="model.draft && mycontent?.length>0">
+						<label class="control-label col-sm-5">Enable Co-Branding Logo</label>
+							<switch [status]="coBrandingLogo" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+									[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+									(statusChange)="setCoBrandingLogo($event)">
+							</switch>
 					</div>
 					
 					<!-- <div>

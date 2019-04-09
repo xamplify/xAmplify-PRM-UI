@@ -58,7 +58,7 @@ import { RsvpComponent } from './campaigns/rsvp/rsvp.component';
     ],
     imports: [BrowserAnimationsModule, BrowserModule, FormsModule, HttpModule, HttpClientModule, HttpClientJsonpModule,
         AppRoutingModule, DashboardModule, CoreModule, AuthenticationModule, ReactiveFormsModule, CommonModule, ShareButtonsModule.forRoot(),
-        Ng2DeviceDetectorModule.forRoot(), ErrorPagesModule],
+        Ng2DeviceDetectorModule.forRoot(), ErrorPagesModule,],
     providers: [{
         provide: Http,
         useFactory: httpService,

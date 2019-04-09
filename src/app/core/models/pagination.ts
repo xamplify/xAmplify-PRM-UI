@@ -30,6 +30,6 @@ export class Pagination {
 	reDistributedPartnerAnalytics:boolean= false;
 	throughPartner:boolean = false;
 	isListView:boolean = false;
+	dealStatus:string = null;
 	showDraftContent=false;
-
 }

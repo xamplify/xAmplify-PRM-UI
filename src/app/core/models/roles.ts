@@ -12,4 +12,5 @@ export class Roles {
   vendorRole = 'ROLE_VENDOR';
   userRole = 'ROLE_USER';
   superAdminRole = 'ROLE_SUPER_ADMIN';
+  opportunityRole = 'ROLE_OPPORTUNITY';
 }

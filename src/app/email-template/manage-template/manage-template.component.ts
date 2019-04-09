@@ -103,6 +103,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
                 ( data: any ) => {
                     pagination.totalRecords = data.totalRecords;
                     pagination = this.pagerService.getPagedItems( pagination, data.emailTemplates );
+                    console.log(pagination)
                     this.refService.loading(this.httpRequestLoader, false);
                 },
                 ( error: string ) => {
@@ -192,10 +193,14 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
             .subscribe(
             ( data: EmailTemplate ) => {
                 this.emailTemplateService.emailTemplate = data;
-                if ( data.regularTemplate || data.videoTemplate ) {
-                    this.router.navigate( ["/home/emailtemplates/update"] );
-                } else {
-                    this.router.navigate( ["/home/emailtemplates/create"] );
+                if(!data.marketoTemplate){
+                    if ( data.regularTemplate || data.videoTemplate ) {
+                        this.router.navigate( ["/home/emailtemplates/update"] );
+                    } else {
+                        this.router.navigate( ["/home/emailtemplates/create"] );
+                    }
+                }else {
+                    this.router.navigate( ["/home/emailtemplates/marketo/update"] );
                 }
 
             },

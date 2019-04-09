@@ -18,6 +18,11 @@ import { CountryNames } from '../../../common/models/country-names';
 import { VideoFileService } from '../../../videos/services/video-file.service'
 import { CropperSettings, ImageCropperComponent } from 'ng2-img-cropper';
 import { UtilService } from 'app/core/services/util.service';
+
+import { DealQuestions } from '../../../deal-registration/models/deal-questions';
+import { DealForms } from '../../../deal-registration/models/deal-forms';
+import { DealType } from '../../../deal-registration/models/deal-type';
+import { DealRegistrationService } from '../../../deal-registration/services/deal-registration.service';
 declare var swal, $, videojs: any;
 
 @Component({
@@ -69,6 +74,24 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     customResponse: CustomResponse = new CustomResponse();
     hasClientErrors = false;
 
+    dealForms:DealForms[] = [];
+    form = new DealForms();
+    questions:DealQuestions[] =[];
+    question:DealQuestions;
+    dealtype:DealType;
+    dealtypes:DealType[] = [];
+    formSubmiteState = true;
+    dealSubmiteState = true;
+    submitButtonText = "Save Form";
+    dealButtonText = "Save Deals";
+    validateForm:boolean;
+    selectedForm:DealForms;
+    defaultQuestions:string[] = ["Campaign Name","Company","First Name","Last Name","Title ","Email ","Phone Number","Deal Type","Website","Lead Address",
+        "Lead City","Lead State/Province","Lead Postal Code","Lead Country","Opportunity Amount","Estimated Close date"];
+    isListFormSection:boolean;
+    customResponseForm: CustomResponse = new CustomResponse();
+
+
     circleCropperSettings: CropperSettings;
     circleData:any;
     cropRounded = false;
@@ -78,7 +101,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     constructor(public videoFileService: VideoFileService, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
         public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
         public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
-        public regularExpressions: RegularExpressions,public route:ActivatedRoute, public utilService:UtilService) {
+        public regularExpressions: RegularExpressions,public route:ActivatedRoute, public utilService:UtilService,public dealRegSevice:DealRegistrationService) {
           if (this.isEmpty(this.authenticationService.userProfile.roles) || !this.authenticationService.userProfile.profileImagePath) {this.router.navigateByUrl(this.referenceService.homeRouter);}
           try{
             if ( authenticationService.isSuperAdmin() ) { this.userData = this.authenticationService.venorMyProfileReport;
@@ -897,6 +920,253 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                 },
                 () => this.logger.info("Finished enableOrDisableOrgAdmin()")
             );
+    }
+
+
+    //Forms section
+
+    initializeForm(){
+        this.userService.listForm(this.loggedInUserId).subscribe(result => {
+            this.dealForms = result;  
+            if(result[0]){
+                this.form =   result[0]; 
+                this.questions = this.form.campaignDealQuestionDTOs;
+                this.submitButtonText = "Update Form";
+               
+            }else
+                this.submitButtonText = "Save Form";
+            this.submitBUttonStateChange();
+        })
+        this.dealRegSevice.listDealTypes(this.loggedInUserId).subscribe(dealTypes => {
+                
+            this.dealtypes = dealTypes.data;  
+            
+        });
+    }
+
+    addQuestion()
+    {
+        this.question = new DealQuestions();
+        var length;
+        if(this.questions != null && this.questions!= undefined)
+            length = this.questions.length;
+        else
+             length = 0;
+        length = length + 1;
+        var id = 'question-' + length;
+        this.question.divId = id;
+        this.question.error = true;
+      
+
+        this.questions.push(this.question);
+        this.submitBUttonStateChange();
+        
+
+    }
+    remove(i, id)
+    {
+        if (id)
+            console.log(id)
+            console.log(i)
+        var index = 1;
+
+        this.questions = this.questions.filter(question => question.divId !== 'question-' + i)
+            .map(question =>
+            {
+                question.divId = 'question-' + index++;
+                return question;
+            });
+            console.log(this.questions);
+            this.submitBUttonStateChange();
+
+    }
+    validateQuestion(question:DealQuestions){
+        var errorClass = "form-group has-error has-feedback";
+        var successClass = "form-group has-success has-feedback";
+        if (question.question.length > 0)
+        {
+            question.class = successClass; 
+            question.error = false;
+        } else
+        {
+             question.class = errorClass;
+            question.error = true;
+        }
+        this.submitBUttonStateChange();
+    }
+    validateDealForm(form:DealForms){
+        if (form.name.length > 0)
+        {
+            this.validateForm = true;
+        } else
+        {
+            this.validateForm = false;
+        }
+        this.submitBUttonStateChange();
+    }
+    submitBUttonStateChange(){
+        let countForm = 0;
+        if(this.form.name!=null && this.form.name!=undefined && this.form.name.length>0){
+        this.questions.forEach(question =>
+                {
+                  
+                    if (question.error)
+                        countForm++;
+                })
+                if (countForm > 0)
+                    this.formSubmiteState = false;
+                else
+                    this.formSubmiteState = true;
+        }else{
+            this.formSubmiteState = false;
+        }
+    }
+    saveForm(){
+        this.ngxloading = true;
+       
+        if(this.form.id == null){
+            this.form.createdBy = this.loggedInUserId;
+            this.questions.forEach(question =>{
+                question.createdBy == this.loggedInUserId;
+            })
+            this.form.campaignDealQuestionDTOs = this.questions;
+            this.userService.saveForm(this.loggedInUserId,this.form).subscribe(result => {
+                
+                this.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
+                this.userService.listForm(this.loggedInUserId).subscribe(form => {
+                    this.dealForms = form;  
+                    if(form[0]){
+                        this.form =   form[0]; 
+                        this.questions = this.form.campaignDealQuestionDTOs;
+                        this.submitButtonText = "Update Form";
+                        this.ngxloading = false;
+                    }else
+                        this.submitButtonText = "Save Form";
+                        this.ngxloading = false;
+                })
+            })
+        }else{
+            this.form.updatedBy = this.loggedInUserId;
+            this.questions.forEach(question =>{
+                if(question.id != null || question.id != undefined)
+                    question.createdBy == this.loggedInUserId;
+                else
+                    question.updatedBy == this.loggedInUserId;
+            })
+            this.form.campaignDealQuestionDTOs = this.questions;
+            this.userService.updateForm(this.loggedInUserId,this.form).subscribe(result => {
+                this.ngxloading = false;
+                this.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
+                
+            },(error) =>{
+                this.ngxloading = false;
+                this.customResponseForm = new CustomResponse('ERROR', "The questions are already associate with deals", true);
+                this.userService.listForm(this.loggedInUserId).subscribe(form => {
+                    this.dealForms = form;  
+                    if(form[0]){
+                        this.form =   form[0]; 
+                        this.questions = this.form.campaignDealQuestionDTOs;
+                    } 
+                });
+            })
+        }
+    }
+    
+    //Deal types
+    addDealtype()
+    {
+        this.dealtype = new DealType();
+        var length;
+        if(this.dealtypes != null && this.dealtypes!= undefined)
+            length = this.dealtypes.length;
+        else
+             length = 0;
+        length = length + 1;
+        var id = 'dealType-' + length;
+        this.dealtype.divId = id;
+        this.dealtype.error = true;
+      
+
+        this.dealtypes.push(this.dealtype);
+        this.dealTypeButtonStateChange();
+      
+        
+
+    }
+    removeDealType(i, id)
+    {
+        if (id)
+            console.log(id)
+            console.log(i)
+        var index = 1;
+
+        this.dealtypes = this.dealtypes.filter(dealtype => dealtype.divId !== 'dealtype-' + i)
+            .map(dealtype =>
+            {
+                dealtype.divId = 'dealtype-' + index++;
+                return dealtype;
+            });
+            console.log(this.dealtypes);
+            this.dealTypeButtonStateChange();
+
+    }
+    validateDealType(dealType:DealType){
+        var errorClass = "form-group has-error has-feedback";
+        var successClass = "form-group has-success has-feedback";
+        if (dealType.dealType.length > 0)
+        {
+            dealType.class = successClass; 
+            dealType.error = false;
+        } else
+        {
+            dealType.class = errorClass;
+            dealType.error = true;
+        }
+        this.dealTypeButtonStateChange();
+    }
+   
+    dealTypeButtonStateChange(){
+        let countForm = 0;
+        this.dealtypes.forEach(dealType =>
+                {
+                  
+                    if (dealType.error)
+                        countForm++;
+                })
+                if (countForm > 0)
+                    this.dealSubmiteState = false;
+                else
+                    this.dealSubmiteState = true;
+        
+    }
+    saveDealTypes(){
+        this.ngxloading = true;
+       
+       
+          
+            this.dealtypes.forEach(dealtype =>{
+                if(dealtype.id != null && dealtype.id != undefined)
+                    dealtype.updatedBy == this.loggedInUserId;
+                else
+                    dealtype.createdBy == this.loggedInUserId;
+            })
+       
+            this.dealRegSevice.saveDealTypes(this.dealtypes,this.loggedInUserId).subscribe(result => {
+                this.ngxloading = false;
+                this.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
+                
+            },(error) =>{
+                this.ngxloading = false;
+                this.customResponseForm = new CustomResponse('ERROR', "The dealtypes are already associate with deals", true);
+               
+            },()=>{
+                this.dealRegSevice.listDealTypes(this.loggedInUserId).subscribe(dealTypes => {
+                    
+                    this.dealtypes = dealTypes.data;  
+                    
+                });
+            })
+      
     }
 
     ngOnDestroy() {

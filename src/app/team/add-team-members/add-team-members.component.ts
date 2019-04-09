@@ -479,6 +479,7 @@ export class AddTeamMembersComponent implements OnInit {
         }
         team.socialShare = true;
         team.partners = true;
+        team.opportunity = true;
 
     }
     removeAllRoles(team:TeamMember){
@@ -489,6 +490,7 @@ export class AddTeamMembersComponent implements OnInit {
         team.contact = false;
         team.socialShare = false;
         team.partners = false;
+        team.opportunity = false;
     }
 
     countCheckedCheckBoxesLength(team:TeamMember,index:number,tableId:string){
@@ -666,7 +668,7 @@ export class AddTeamMembersComponent implements OnInit {
                    }
                }
           }else{
-              for(var d=0;d<duplicateEmailIds.length;d++){
+              for(let d=0;d<duplicateEmailIds.length;d++){
                   this.csvErrors.push(duplicateEmailIds[d]+" is duplicate row.");
                   this.isUploadCsv = false;
                   this.isAddTeamMember = false;
@@ -736,7 +738,6 @@ export class AddTeamMembersComponent implements OnInit {
           $('#addTeamMember').hide();
           $('#add-team-member-form')[0].reset();
       }
-      v:boolean = false
       changeOrgAdminStatus(event:any,index:number,team:TeamMember){
           $('#empty-roles-div').hide();
           if(event){
@@ -744,12 +745,6 @@ export class AddTeamMembersComponent implements OnInit {
           }else{
               this.disableAsAnOrgAdmin(event, index, team);
           }
-          /*if(this.getEnabledOrgAdminsCount()>1){
-             this.disableAsAnOrgAdmin(event, index, team);
-             $('#empty-roles-div').show('600');
-             this.errorMessage = "More than two org admins are not allowed";
-          }*/
-
       }
 
       disableAsAnOrgAdmin(event:any,index:number,team:TeamMember){
@@ -779,8 +774,7 @@ export class AddTeamMembersComponent implements OnInit {
               counts[value]++;
             }
           });
-          var orgAdminsCount = counts['true'];
-          return orgAdminsCount;
+          return counts['true'];
       }
 
       changeTeamMemberStatus(teamMember:TeamMember,event:any){

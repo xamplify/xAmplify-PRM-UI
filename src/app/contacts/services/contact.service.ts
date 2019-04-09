@@ -441,6 +441,41 @@ export class ContactService {
       .catch( this.handleError );
     }
 
+
+    /**MARKETO */
+
+    saveMarketoContactList( socialContact: SocialContact ): Observable<Response> {
+        this.successMessage = true;
+        var requestoptions = new RequestOptions( {
+            body: socialContact,
+        })
+        var headers = new Headers();
+        headers.append( 'Content-Type', 'application/json' );
+        var options = {
+            headers: headers
+        };
+        var url = this.authenticationService.REST_URL +  "/marketo/"+this.authenticationService.getUserId()+"/saveContactList?access_token=" + this.authenticationService.access_token;
+        return this._http.post( url, options, requestoptions )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+    checkMarketoCredentials(userId: number) {
+        return this._http.get(this.authenticationService.REST_URL + `/marketo/${userId}/checkCredentials?access_token=${this.authenticationService.access_token}`)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    saveMarketoCredentials( formData: any) {
+        return this._http.post(this.authenticationService.REST_URL +`/marketo/credentials?access_token=${this.authenticationService.access_token}`, formData)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    getMarketoContacts(userId: number) {
+        return this._http.get(this.authenticationService.REST_URL +`/marketo/${userId}/contacts?access_token=${this.authenticationService.access_token}`)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+
     extractData( res: Response ) {
         let body = res.json();
         console.log( body );
