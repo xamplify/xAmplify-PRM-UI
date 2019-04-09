@@ -205,6 +205,16 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
         (result)=>{
         this.campaignService.eventCampaign = result.data;
         this.eventCampaign = result.data;
+        
+        if(this.eventCampaign.dataShare == undefined){
+        this.eventCampaign.dataShare = false;
+        }
+        if(this.eventCampaign.detailedAnalyticsShared == undefined){
+            this.eventCampaign.detailedAnalyticsShared = false;
+        }
+        
+        
+        
         if(result.data.enableCoBrandingLogo){ this.eventCampaign.enableCoBrandingLogo = result.data.enableCoBrandingLogo; }
         else { this.eventCampaign.enableCoBrandingLogo = false;}
         if(result.data.parentCampaignId) { this.parentCampaignIdValue = result.data.parentCampaignId; this.parentCampaignId =true; this.isPartnerUserList = false;}
@@ -543,6 +553,18 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     },
     (error: any) => { this.logger.error(error); },
     () => { this.logger.info('event campaign page contactListMethod() finished'); } );
+  }
+  
+  shareAnalytics(event:any){
+      this.eventCampaign.dataShare = event;
+  }
+  
+  checkInteractiveData( text: any ) {
+      if ( text == "true" ) {
+          this.eventCampaign.detailedAnalyticsShared = true;
+      } else {
+          this.eventCampaign.detailedAnalyticsShared = false;
+      }
   }
 
   setCoBrandingLogo(event:any){
@@ -886,10 +908,13 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
       'inviteOthers':eventCampaign.inviteOthers,
       'rsvpReceived':eventCampaign.rsvpReceived,
       'onlineMeeting':eventCampaign.onlineMeeting,
+      'dataShare':eventCampaign.dataShare,
+      'detailedAnalyticsShared':eventCampaign.detailedAnalyticsShared,
       'userLists' : eventCampaign.userLists,
       'userListIds':eventCampaign.userListIds,
       'campaignReplies': eventCampaign.campaignReplies,
     }
+    
     eventCampaign = customEventCampaign;
    }
    return eventCampaign;

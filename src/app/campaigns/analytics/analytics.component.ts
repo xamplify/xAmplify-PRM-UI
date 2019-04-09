@@ -22,8 +22,6 @@ import { ContactService } from '../../contacts/services/contact.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { Tweet } from '../../social/models/tweet';
 import { EmailTemplateService } from '../../email-template/services/email-template.service';
-import { DealRegistrationService } from '../../deal-registration/services/deal-registration.service';
-
 declare var $, Highcharts: any;
 
 @Component({
@@ -33,8 +31,6 @@ declare var $, Highcharts: any;
   providers: [Pagination,HttpRequestLoader]
 })
 export class AnalyticsComponent implements OnInit , OnDestroy{
-  isDealRegistration:boolean=false;
-
     ngxloading: boolean;
   isTimeLineView: boolean;
   campaign: Campaign;
@@ -117,17 +113,10 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
                 ];
   selectedSortedOption: any = this.sortByDropDown[this.sortByDropDown.length-1];
   tweets: Array<Tweet> = new Array<Tweet>();
-
-
-  enableLeads = false;
-  createdBySelf = false;
-  dealButtonText: string="";
-  dealId: any;
-
   constructor(private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
     public authenticationService: AuthenticationService, public pagerService: PagerService, public pagination: Pagination,
     public referenceService: ReferenceService, public contactService: ContactService, public videoUtilService: VideoUtilService, 
-    public xtremandLogger:XtremandLogger, private twitterService: TwitterService,private emailTemplateService:EmailTemplateService,private dealRegService:DealRegistrationService) {
+    public xtremandLogger:XtremandLogger, private twitterService: TwitterService,private emailTemplateService:EmailTemplateService) {
       try{
       this.campaignRouter = this.utilService.getRouterLocalStorage();
       this.isTimeLineView = false;
@@ -687,56 +676,11 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       }
       console.log('campaign id : ' + this.campaignId);
       this.getCampaignUserViewsCountBarCharts(this.campaignId, this.pagination);
-      this.getDealState(campaignViews);
       this.loading = false;
     }
+    this.loading = false;
   }catch(error){ this.xtremandLogger.error(error);}
   }
-
-
-  
-  getDealState(campaignViews:any){
-    console.log(campaignViews);
-    
-      if(campaignViews.userId!=null && campaignViews.campaignId!=null){
-        const obj = {"campaignId":campaignViews.campaignId};
-          this.campaignService.getCampaignById(obj).subscribe(data=>{
-            console.log(data)
-            if(data.nurtureCampaign){
-              this.campaignService.getCampaignById({"campaignId":data.parentCampaignId}).subscribe(parent_campaign=>{
-                console.log(parent_campaign)
-                this.referenceService.getCompanyIdByUserId(parent_campaign.userId).subscribe(response=>{
-                  this.referenceService.getOrgCampaignTypes(response).subscribe(data=>{
-                      this.enableLeads = data.enableLeads;
-                      console.log(data)
-                  });
-              })
-              },error=>console.log(error))
-            }else{
-              if(data.userId == this.authenticationService.getUserId()){
-                this.createdBySelf = true;
-                console.log( this.createdBySelf )
-              }
-              this.referenceService.getCompanyIdByUserId(data.userId).subscribe(response=>{
-                this.referenceService.getOrgCampaignTypes(response).subscribe(data=>{
-                    this.enableLeads = data.enableLeads;
-                    console.log(data)
-                });
-            })
-            }
-          },error=>console.log(error))
-          
-      
-            this.dealRegService.getDeal(campaignViews.campaignId,campaignViews.userId).subscribe(data=>{
-              this.dealId = data;
-              if(data == -1)
-                  this.dealButtonText = "Register Lead"
-              else
-                  this.dealButtonText = "Update Lead"
-             })
-        }
-  }
-  
   getTotalTimeSpentOfCampaigns(userId: number, campaignId:number) {
     try{
       this.loading = true;
@@ -1188,7 +1132,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
               this.loading = false;
             },
             error => this.xtremandLogger.error(error),
-            () => { }
+            () => {this.loading = false; }
             )
           }catch(error){
             this.xtremandLogger.error('error'+error)
@@ -1622,18 +1566,4 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     $('#emailSentListModal').modal('hide');
     $('#donutModelPopup').modal('hide');
   }
-
-   /****************Deal Registration***************************/
-   showDealRegistrationForm(){
-    this.isDealRegistration = true;
-    console.log(this.isTimeLineView && !this.isDealRegistration);
-}
-
-showTimeLineView(){
-    this.isDealRegistration = false;
-    this.isTimeLineView = true;
-    console.log(this.isDealRegistration);
-
-    this.getDealState(this.selectedRow);
-}
 }

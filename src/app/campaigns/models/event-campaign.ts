@@ -34,6 +34,9 @@ export class EventCampaign {
     onlineMeeting: boolean = true;
     enableCoBrandingLogo = false;
     
+    dataShare = false;
+    detailedAnalyticsShared = false;
+    
 
     userLists: Array<ContactList> = [];
     userListIds: Array<number> = [];
