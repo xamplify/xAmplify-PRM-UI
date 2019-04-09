@@ -83,7 +83,8 @@ body .fc {
 	padding: 0 .6em;
 	font-size: 1em;
 	white-space: nowrap;
-	cursor: pointer
+	cursor: pointer;
+	text-transform: capitalize;
 }
 
 .fc button::-moz-focus-inner {
@@ -646,7 +647,9 @@ a.fc-more:hover {
 
 .fc-time-grid .fc-event {
 	position: absolute;
-	z-index: 1
+	z-index: 1;
+	height: 20px;
+	padding-bottom: 5px;
 }
 
 .fc-time-grid-event.fc-not-start {

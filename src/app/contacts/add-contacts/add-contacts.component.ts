@@ -19,6 +19,7 @@ import { Properties } from '../../common/models/properties';
 import { CountryNames } from '../../common/models/country-names';
 import { RegularExpressions } from '../../common/models/regular-expressions';
 import { PaginationComponent } from '../../common/pagination/pagination.component';
+import { FileUtil } from '../../core/models/file-util';
 declare var swal, $, Papa: any;
 
 @Component( {
@@ -30,7 +31,7 @@ declare var swal, $, Papa: any;
         '../../../assets/css/form.css',
         './add-contacts.component.css',
         '../../../assets/css/numbered-textarea.css', '../../../assets/css/phone-number-plugin.css'],
-    providers: [SocialContact, ZohoContact, SalesforceContact, Pagination, CountryNames, Properties, RegularExpressions, PaginationComponent]
+    providers: [FileUtil,SocialContact, ZohoContact, SalesforceContact, Pagination, CountryNames, Properties, RegularExpressions, PaginationComponent]
 })
 export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
 
@@ -91,7 +92,12 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
     customResponse: CustomResponse = new CustomResponse();
     pageSize: number = 12;
     pageNumber: any;
+    paginationType = "";
     loading = false;
+    isListLoader = false;
+    isDuplicateEmailId = false;
+    
+    uploadedCsvFileName = "";
 
     AddContactsOption: typeof AddContactsOption = AddContactsOption;
     selectedAddContactsOption: number = 8;
@@ -101,7 +107,35 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
     contacts: User[];
     private socialContactType: string;
     emailNotValid: boolean;
-    constructor( public socialPagerService: SocialPagerService, public referenceService: ReferenceService, private authenticationService: AuthenticationService,
+
+
+    //MARKETO
+
+    showMarketoForm: boolean;
+    marketoAuthError: boolean;
+    marketoInstanceClass: string;
+    marketoInstanceError: boolean;
+    marketoInstance: any;
+    marketoSecretIdClass: string;
+    marketoSecretIdError: boolean;
+    marketoSecretId: any;
+    marketoClientId: any;
+    marketoClientIdClass: string;
+    marketoClentIdError: boolean;
+    isMarketoModelFormValid: boolean;
+    marketoContactError: boolean;
+    marketoContactSuccessMsg: any;
+    loadingMarketo: boolean;
+    public getMarketoConatacts: any;
+
+    
+    marketoImageBlur: boolean = false;
+    marketoImageNormal: boolean = true;
+
+
+
+
+    constructor( private fileUtil: FileUtil, public socialPagerService: SocialPagerService, public referenceService: ReferenceService, private authenticationService: AuthenticationService,
         public contactService: ContactService, public regularExpressions: RegularExpressions, public paginationComponent: PaginationComponent,
         private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef, private route: ActivatedRoute, public properties: Properties,
         private router: Router, public pagination: Pagination, public xtremandLogger: XtremandLogger, public countryNames: CountryNames ) {
@@ -152,7 +186,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.contactListNameError = false;
         let lowerCaseContactName = contactName.toLowerCase().replace( /\s/g, '' );
         var list = this.names;
-        console.log( list );
+        this.xtremandLogger.log( list );
         if ( $.inArray( lowerCaseContactName, list ) > -1 ) {
             this.isValidContactName = true;
             $( "button#sample_editable_1_new" ).prop( 'disabled', true );
@@ -196,9 +230,12 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
 
     readFiles( files: any, index = 0 ) {
         if ( files[0].type == "application/vnd.ms-excel" || files[0].type == "text/csv" || files[0].type == "text/x-csv" ) {
+            this.isListLoader = true;
             var outputstring = files[0].name.substring( 0, files[0].name.lastIndexOf( "." ) );
             this.selectedAddContactsOption = 2;
+            this.paginationType = "csvContacts";
             this.noOptionsClickError = false;
+            this.uploadedCsvFileName = files[0].name;
             if ( !this.model.contactListName ) {
                 this.model.contactListName = outputstring;
             }
@@ -206,7 +243,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
             this.removeCsvName = true;
             $( "button#sample_editable_1_new" ).prop( 'disabled', false );
             $( "#file_preview" ).show();
-            $( "button#cancel_button" ).prop( 'disabled', true );
+            $( "button#cancel_button" ).prop( 'disabled', false );
             $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
             $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
             $( '.salesForceImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
@@ -223,30 +260,52 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
             var self = this;
             reader.onload = function( e: any ) {
                 var contents = e.target.result;
+                
+                let csvData = reader.result;
+                let csvRecordsArray = csvData.split(/\r\n|\n/);
+                let headersRow = self.fileUtil
+                .getHeaderArray(csvRecordsArray);
+                 let headers = headersRow[0].split(',');
+                 if((headers.length == 11) ){
+                     if(self.validateHeaders(headers)){
+                         var csvResult = Papa.parse( contents );
 
-                var csvResult = Papa.parse( contents );
-
-                var allTextLines = csvResult.data;
-                for ( var i = 1; i < allTextLines.length; i++ ) {
-                    // var data = allTextLines[i].split( ',' );
-                    if ( allTextLines[i][4] && allTextLines[i][4].trim().length > 0 ) {
-                        let user = new User();
-                        user.emailId = allTextLines[i][4];
-                        user.firstName = allTextLines[i][0];
-                        user.lastName = allTextLines[i][1];
-                        user.contactCompany = allTextLines[i][2];
-                        user.jobTitle = allTextLines[i][3];
-                        user.address = allTextLines[i][5];
-                        user.city = allTextLines[i][6];
-                        user.state = allTextLines[i][7];
-                        user.zipCode = allTextLines[i][8];
-                        user.country = allTextLines[i][9];
-                        user.mobileNumber = allTextLines[i][10];
-                        /*user.description = allTextLines[i][9];*/
-                        self.contacts.push( user );
-                    }
-                }
-                console.log( "AddContacts : readFiles() contacts " + JSON.stringify( self.contacts ) );
+                         var allTextLines = csvResult.data;
+                         for ( var i = 1; i < allTextLines.length; i++ ) {
+                             // var data = allTextLines[i].split( ',' );
+                             if ( allTextLines[i][4] && allTextLines[i][4].trim().length > 0 ) {
+                                 let user = new User();
+                                 user.emailId = allTextLines[i][4].trim();
+                                 user.firstName = allTextLines[i][0].trim();
+                                 user.lastName = allTextLines[i][1].trim();
+                                 user.contactCompany = allTextLines[i][2].trim();
+                                 user.jobTitle = allTextLines[i][3].trim();
+                                 user.address = allTextLines[i][5].trim();
+                                 user.city = allTextLines[i][6].trim();
+                                 user.state = allTextLines[i][7].trim();
+                                 user.zipCode = allTextLines[i][8].trim();
+                                 user.country = allTextLines[i][9].trim();
+                                 user.mobileNumber = allTextLines[i][10].trim();
+                                 /*user.description = allTextLines[i][9];*/
+                                 self.contacts.push( user );
+                             }
+                         }
+                         self.setPage(1);
+                         self.isListLoader = false;
+                         
+                         
+                     }else {
+                         self.customResponse = new CustomResponse( 'ERROR', "Invalid Csv", true );
+                         self.isListLoader = false;
+                         self.cancelContacts();
+                     }
+                 }else {
+                     self.customResponse = new CustomResponse( 'ERROR', "Invalid Csv", true );
+                     self.isListLoader = false;
+                     self.cancelContacts();
+                 }
+               
+               // console.log( "AddContacts : readFiles() contacts " + JSON.stringify( self.contacts ) );
             }
         } else {
             this.customResponse = new CustomResponse( 'ERROR', this.properties.FILE_TYPE_ERROR, true );
@@ -257,6 +316,9 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
             this.selectedAddContactsOption = 8;
         }
     }
+    validateHeaders(headers){
+        return (headers[0].trim()=="FIRSTNAME" && headers[1].trim()=="LASTNAME" && headers[2].trim()=="COMPANY" && headers[3].trim()=="JOBTITLE" && headers[4].trim()=="EMAILID" && headers[5].trim()=="ADDRESS" && headers[6].trim()=="CITY" && headers[7].trim()=="STATE" && headers[8].trim()=="ZIP CODE" && headers[9].trim()=="COUNTRY" && headers[10].trim()=="MOBILE NUMBER");
+  }
 
     clipboardShowPreview() {
         var selectedDropDown = $( "select.opts:visible option:selected " ).val();
@@ -274,6 +336,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
             else if ( selectedDropDown == "TabSeperated" )
                 splitValue = "\t";
         }
+        this.paginationType = "csvContacts";
         this.xtremandLogger.info( "selectedDropDown:" + selectedDropDown );
         this.xtremandLogger.info( splitValue );
         var startTime = new Date();
@@ -374,17 +437,17 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                         user.country = data[9];
                         break;
                     case 11:
-                        user.firstName = data[0];
-                        user.lastName = data[1];
-                        user.contactCompany = data[2];
-                        user.jobTitle = data[3];
-                        user.emailId = data[4];
-                        user.address = data[5];
-                        user.city = data[6];
-                        user.state = data[7];
-                        user.zipCode = data[8];
-                        user.country = data[9];
-                        user.mobileNumber = data[10];
+                        user.firstName = data[0].trim();
+                        user.lastName = data[1].trim();
+                        user.contactCompany = data[2].trim();
+                        user.jobTitle = data[3].trim();
+                        user.emailId = data[4].trim();
+                        user.address = data[5].trim();
+                        user.city = data[6].trim();
+                        user.state = data[7].trim();
+                        user.zipCode = data[8].trim();
+                        user.country = data[9].trim();
+                        user.mobileNumber = data[10].trim();
                         break;
                     /*case 10:
                         user.firstName = data[0];
@@ -403,6 +466,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.xtremandLogger.info( user );
                 this.clipboardUsers.push( user );
                 self.contacts.push( user );
+                this.setPage(1);
                 $( "button#sample_editable_1_new" ).prop( 'disabled', false );
                 $( "#file_preview" ).show();
                 this.valilClipboardUsers = true;
@@ -501,6 +565,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
             return valueArr.indexOf( item ) != idx
         });
         console.log( "emailDuplicate" + isDuplicate );
+        this.isDuplicateEmailId = isDuplicate;
         this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
 
         if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' ) {
@@ -567,8 +632,12 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                 },
                 ( error: any ) => {
                     this.loading = false;
-                    this.xtremandLogger.error( error );
+                    if(error._body.includes("email addresses in your contact list that aren't formatted properly")){
+                        this.customResponse = new CustomResponse( 'ERROR', JSON.parse(error._body).message, true );
+                    }else{
                     this.xtremandLogger.errorPage( error );
+                    }
+                    this.xtremandLogger.error( error );
                 },
                 () => this.xtremandLogger.info( "addcontactComponent saveacontact() finished" )
                 )
@@ -613,6 +682,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                 return valueArr.indexOf( item ) != idx
             });
             console.log( "ERROREMails" + isDuplicate );
+            this.isDuplicateEmailId = isDuplicate;
 
             if ( this.invalidPattenMail === true ) {
                 $( "#clipBoardValidationMessage" ).append( "<h4 style='color:#f68a55;'>" + "Email Address is not valid" + "</h4>" );
@@ -666,8 +736,12 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                     },
                     ( error: any ) => {
                         this.loading = false;
-                        this.xtremandLogger.error( error );
+                        if(error._body.includes("email addresses in your contact list that aren't formatted properly")){
+                            this.customResponse = new CustomResponse( 'ERROR', JSON.parse(error._body).message, true );
+                        }else{
                         this.xtremandLogger.errorPage( error );
+                        }
+                        this.xtremandLogger.error( error );
                     },
                     () => this.xtremandLogger.info( "addcontactComponent saveacontact() finished" )
                     )
@@ -721,7 +795,8 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                                 return valueArr.indexOf(item) != idx
                             });
                             console.log("emailDuplicate" + isDuplicate);
-                            
+                            this.isDuplicateEmailId = isDuplicate;
+
                             /*if ( this.contacts[i].mobileNumber.length < 6 ) {
                                 this.contacts[i].mobileNumber = "";
                             }*/
@@ -740,6 +815,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                                 this.selectedAddContactsOption = 8;
                                 this.xtremandLogger.info( "update Contacts ListUsers:" + data );
                                 this.contactService.saveAsSuccessMessage = "add";
+                                this.uploadedCsvFileName = "";
                                 if ( this.isPartner == false ) {
                                     this.router.navigateByUrl( '/home/contacts/manage' )
                                 } else {
@@ -747,8 +823,13 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                                 }
                             },
                             ( error: any ) => {
-                                this.xtremandLogger.error( error );
+                                if(error._body.includes("email addresses in your contact list that aren't formatted properly")){
+                                    this.customResponse = new CustomResponse( 'ERROR', JSON.parse(error._body).message, true );
+                                }else{
                                 this.xtremandLogger.errorPage( error );
+                                }
+                                this.xtremandLogger.error( error );
+                                this.loading = false;
                             },
                             () => this.xtremandLogger.info( "addcontactComponent saveCsvContactList() finished" )
                             )
@@ -807,6 +888,14 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
             } else
                 this.saveZohoContactSelectedUsers();
         }
+        if (this.selectedAddContactsOption == 6)
+        {
+            if (this.allselectedUsers.length == 0)
+            {
+                this.saveMarketoContacts();
+            } else
+                this.saveMarketoContactSelectedUsers();
+        }
 
         if ( this.selectedAddContactsOption == 8 ) {
             this.noOptionsClickError = true;
@@ -822,9 +911,14 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.allselectedUsers.length = 0;
         this.selectedContactListIds.length = 0;
         this.disableOtherFuctionality = false;
-        this.customResponse = new CustomResponse();
+        this.paginationType = "";
+        if ( this.selectedAddContactsOption != 2 ) {
+            this.customResponse = new CustomResponse();
+        }
         this.pager = [];
         this.pagedItems = [];
+        
+        this.uploadedCsvFileName = "";
 
         this.contactService.successMessage = false;
         $( '.salesForceImageClass' ).attr( 'style', 'opacity: 1;' );
@@ -845,12 +939,13 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
         $( '#copyFromclipTextArea' ).val( '' );
         $( "#Gfile_preview" ).hide();
         this.newUsers.length = 0;
+        this.contacts.length = 0;
         this.clipBoard = false;
         this.clipboardUsers.length = 0;
         this.selectedAddContactsOption = 8;
     }
 
-    removeCsv() {
+    /*removeCsv() {
         this.selectedAddContactsOption = 8;
         this.contacts.length = 0;
         this.model.contactListName = "";
@@ -867,7 +962,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
         $( '#SgearIcon' ).attr( 'style', 'opacity: 1;position: relative;font-size: 19px;top: -83px;left: 100px;' );
         $( '#GgearIcon' ).attr( 'style', 'opacity: 1;position: relative;font-size: 19px;top: -83px;left: 100px;' );
         $( '#ZgearIcon' ).attr( 'style', 'opacity: 1;position: relative;font-size: 19px;top: -83px;left: 100px;' );
-    }
+    }*/
 
     addRow( event ) {
         this.newUsers.push( event );
@@ -983,7 +1078,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                             let user = new User();
                             socialContact.id = i;
                             if ( this.validateEmailAddress( this.getGoogleConatacts.contacts[i].emailId ) ) {
-                                socialContact.emailId = this.getGoogleConatacts.contacts[i].emailId;
+                                socialContact.emailId = this.getGoogleConatacts.contacts[i].emailId.trim();
                                 socialContact.firstName = this.getGoogleConatacts.contacts[i].firstName;
                                 socialContact.lastName = this.getGoogleConatacts.contacts[i].lastName;
                                 this.socialContactUsers.push( socialContact );
@@ -1023,18 +1118,23 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
             if ( page < 1 || page > this.pager.totalPages ) {
                 return;
             }
-
-            this.pager = this.socialPagerService.getPager( this.socialContactUsers.length, page, this.pageSize );
-            this.pagedItems = this.socialContactUsers.slice( this.pager.startIndex, this.pager.endIndex + 1 );
-
-            var contactIds1 = this.pagedItems.map( function( a ) { return a.id; });
-            var items = $.grep( this.selectedContactListIds, function( element ) {
-                return $.inArray( element, contactIds1 ) !== -1;
-            });
-            if ( items.length == this.pager.pageSize || items.length == this.socialContactUsers.length || items.length == this.pagedItems.length ) {
-                this.isHeaderCheckBoxChecked = true;
+            
+            if ( this.paginationType == "csvContacts" ) {
+                this.pager = this.socialPagerService.getPager( this.contacts.length, page, this.pageSize );
+                this.pagedItems = this.contacts.slice( this.pager.startIndex, this.pager.endIndex + 1 );
             } else {
-                this.isHeaderCheckBoxChecked = false;
+                this.pager = this.socialPagerService.getPager( this.socialContactUsers.length, page, this.pageSize );
+                this.pagedItems = this.socialContactUsers.slice( this.pager.startIndex, this.pager.endIndex + 1 );
+
+                var contactIds1 = this.pagedItems.map( function( a ) { return a.id; });
+                var items = $.grep( this.selectedContactListIds, function( element ) {
+                    return $.inArray( element, contactIds1 ) !== -1;
+                });
+                if ( items.length == this.pager.pageSize || items.length == this.socialContactUsers.length || items.length == this.pagedItems.length ) {
+                    this.isHeaderCheckBoxChecked = true;
+                } else {
+                    this.isHeaderCheckBoxChecked = false;
+                }
             }
         } catch ( error ) {
             this.xtremandLogger.error( error, "AddContactsComponent setPage()." )
@@ -1082,8 +1182,12 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                         },
                         ( error: any ) => {
                             this.loading = false;
-                            this.xtremandLogger.error( error );
+                            if(error._body.includes("email addresses in your contact list that aren't formatted properly")){
+                                this.customResponse = new CustomResponse( 'ERROR', JSON.parse(error._body).message, true );
+                            }else{
                             this.xtremandLogger.errorPage( error );
+                            }
+                            this.xtremandLogger.error( error );
                         },
                         () => this.xtremandLogger.info( "addcontactComponent saveacontact() finished" )
                         )
@@ -1127,8 +1231,12 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                     },
                     ( error: any ) => {
                         this.loading = false;
-                        this.xtremandLogger.error( error );
+                        if(error._body.includes("email addresses in your contact list that aren't formatted properly")){
+                            this.customResponse = new CustomResponse( 'ERROR', JSON.parse(error._body).message, true );
+                        }else{
                         this.xtremandLogger.errorPage( error );
+                        }
+                        this.xtremandLogger.error( error );
                     },
                     () => this.xtremandLogger.info( "addcontactComponent saveacontact() finished" )
                     )
@@ -1143,6 +1251,8 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     checkAll( ev: any ) {
+        if (this.selectedAddContactsOption != 6)
+        {
         if ( ev.target.checked ) {
             console.log( "checked" );
             $( '[name="campaignContact[]"]' ).prop( 'checked', true );
@@ -1181,6 +1291,11 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
             }
         }
         ev.stopPropagation();
+    }
+        else
+        {
+            this.checkAllForMarketo(ev);
+        }
     }
 
     highlightRow( contactId: number, email: any, firstName: any, lastName: any, event: any ) {
@@ -1309,7 +1424,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                             let user = new User();
                             socialContact.id = i;
                             if ( this.validateEmailAddress( this.getZohoConatacts.contacts[i].emailId ) ) {
-                                socialContact.emailId = this.getZohoConatacts.contacts[i].emailId;
+                                socialContact.emailId = this.getZohoConatacts.contacts[i].emailId.trim();
                                 socialContact.firstName = this.getZohoConatacts.contacts[i].firstName;
                                 socialContact.lastName = this.getZohoConatacts.contacts[i].lastName;
                                 this.socialContactUsers.push( socialContact );
@@ -1403,7 +1518,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                             let user = new User();
                             socialContact.id = i;
                             if ( this.validateEmailAddress( this.getZohoConatacts.contacts[i].emailId ) ) {
-                                socialContact.emailId = this.getZohoConatacts.contacts[i].emailId;
+                                socialContact.emailId = this.getZohoConatacts.contacts[i].emailId.trim();
                                 socialContact.firstName = this.getZohoConatacts.contacts[i].firstName;
                                 socialContact.lastName = this.getZohoConatacts.contacts[i].lastName;
                                 this.socialContactUsers.push( socialContact );
@@ -1466,8 +1581,12 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
 
                         ( error: any ) => {
                             this.loading = false;
-                            this.xtremandLogger.error( error );
+                            if(error._body.includes("email addresses in your contact list that aren't formatted properly")){
+                                this.customResponse = new CustomResponse( 'ERROR', JSON.parse(error._body).message, true );
+                            }else{
                             this.xtremandLogger.errorPage( error );
+                            }
+                            this.xtremandLogger.error( error );
                         },
                         () => this.xtremandLogger.info( "addcontactComponent saveZohoContact() finished" )
                         )
@@ -1513,8 +1632,12 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
 
                     ( error: any ) => {
                         this.loading = false;
-                        this.xtremandLogger.error( error );
+                        if(error._body.includes("email addresses in your contact list that aren't formatted properly")){
+                            this.customResponse = new CustomResponse( 'ERROR', JSON.parse(error._body).message, true );
+                        }else{
                         this.xtremandLogger.errorPage( error );
+                        }
+                        this.xtremandLogger.error( error );
                     },
                     () => this.xtremandLogger.info( "addcontactComponent saveZohoContactUsers() finished" )
                     )
@@ -1688,9 +1811,9 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                             let user = new User();
                             socialContact.id = i;
                             if ( this.validateEmailAddress( this.getSalesforceConatactList.contacts[i].emailId ) ) {
-                                socialContact.emailId = this.getSalesforceConatactList.contacts[i].emailId;
-                                socialContact.firstName = this.getSalesforceConatactList.contacts[i].firstName;
-                                socialContact.lastName = this.getSalesforceConatactList.contacts[i].lastName;
+                                socialContact.emailId = this.getSalesforceConatactList.contacts[i].emailId.trim();
+                                socialContact.firstName = this.getSalesforceConatactList.contacts[i];
+                                socialContact.lastName = this.getSalesforceConatactList.contacts[i];
                                 this.socialContactUsers.push( socialContact );
                             }
                             $( "button#sample_editable_1_new" ).prop( 'disabled', false );
@@ -1760,7 +1883,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                             let user = new User();
                             socialContact.id = i;
                             if ( this.validateEmailAddress( this.getSalesforceConatactList.contacts[i].emailId ) ) {
-                                socialContact.emailId = this.getSalesforceConatactList.contacts[i].emailId;
+                                socialContact.emailId = this.getSalesforceConatactList.contacts[i].emailId.trim();
                                 socialContact.firstName = this.getSalesforceConatactList.contacts[i].firstName;
                                 socialContact.lastName = this.getSalesforceConatactList.contacts[i].lastName;
                                 this.socialContactUsers.push( socialContact );
@@ -1820,8 +1943,12 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                     },
                     ( error: any ) => {
                         this.loading = false;
-                        this.xtremandLogger.error( error );
+                        if(error._body.includes("email addresses in your contact list that aren't formatted properly")){
+                            this.customResponse = new CustomResponse( 'ERROR', JSON.parse(error._body).message, true );
+                        }else{
                         this.xtremandLogger.errorPage( error );
+                        }
+                        this.xtremandLogger.error( error );
                     },
                     () => this.xtremandLogger.info( "addcontactComponent saveZohoContactUsers() finished" )
                     )
@@ -1865,8 +1992,12 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                         },
                         ( error: any ) => {
                             this.loading = false;
-                            this.xtremandLogger.error( error );
+                            if(error._body.includes("email addresses in your contact list that aren't formatted properly")){
+                                this.customResponse = new CustomResponse( 'ERROR', JSON.parse(error._body).message, true );
+                            }else{
                             this.xtremandLogger.errorPage( error );
+                            }
+                            this.xtremandLogger.error( error );
                         },
                         () => this.xtremandLogger.info( "addcontactComponent saveSalesforceContacts() finished" )
                         )
@@ -2071,11 +2202,11 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
         swal.close();
         $( '#settingSocialNetwork' ).modal( 'hide' );
 
-        if ( this.selectedAddContactsOption !=8 && this.router.url !=='/' ) {
+        if ( this.selectedAddContactsOption !=8 && this.router.url !=='/' && !this.isDuplicateEmailId ) {
             this.model.contactListName = "";
-            
+
             let self = this;
-            
+
             swal( {
                 title: 'Are you sure?',
                 text: "You have unsaved data",
@@ -2134,4 +2265,480 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
          }
 
     }
+
+
+    /**
+     * 
+     * MARKETO
+     */
+
+     
+    // Marketo Contacts
+    marketoContacts()
+    {
+    }
+    checkingMarketoContactsAuthentication()
+    {
+
+        try
+        {
+            if (this.selectedAddContactsOption == 8 && !this.disableOtherFuctionality)
+            {
+                this.contactService.checkMarketoCredentials(this.authenticationService.getUserId())
+                    .subscribe(
+                        (data: any) =>
+                        {
+
+                            if (data.statusCode == 8000)
+                            {
+                                this.showMarketoForm = false;
+
+                                this.marketoAuthError = false;
+                                this.loading = false;
+                                this.retriveMarketoContacts();
+                            }
+                            else
+                            {
+
+
+                                $("#marketoShowLoginPopup").modal('show');
+                                this.marketoAuthError = false;
+                                this.loading = false;
+
+                            }
+                            this.xtremandLogger.info(data);
+
+                        },
+                        (error: any) =>
+                        {
+                            var body = error['_body'];
+                            if (body != "")
+                            {
+                                var response = JSON.parse(body);
+                                if (response.message == "Maximum allowed AuthTokens are exceeded, Please remove Active AuthTokens from your ZOHO Account.!")
+                                {
+                                    this.customResponse = new CustomResponse('ERROR', 'Maximum allowed AuthTokens are exceeded, Please remove Active AuthTokens from your ZOHO Account', true);
+                                } else
+                                {
+                                    this.xtremandLogger.errorPage(error);
+                                }
+                            } else
+                            {
+                                this.xtremandLogger.errorPage(error);
+                            }
+                            console.log("errorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr:" + error)
+
+                        },
+                        () => this.xtremandLogger.info("Add contact component loadContactListsName() finished")
+                    )
+            }
+        } catch (error)
+        {
+            this.xtremandLogger.error(error, "AddContactsComponent zohoContactsAuthenticationChecking().")
+        }
+    }
+    saveMarketoContacts()
+    {
+
+        try
+        {
+            this.socialContact.socialNetwork = "MARKETO";
+            this.socialContact.contactName = this.model.contactListName;
+            this.socialContact.isPartnerUserList = this.isPartner;
+            this.socialContact.contactType = this.contactType;
+            this.socialContact.contacts = this.socialContactUsers;
+            this.socialContact.contacts = this.validateMarketoContacts(this.socialContactUsers);
+            this.model.contactListName = this.model.contactListName.replace(/\s\s+/g, ' ');
+            this.socialContact.listName = this.model.contactListName;
+            if (this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ')
+            {
+                this.loading = true;
+                if (this.socialContactUsers.length > 0)
+                {
+                    this.contactService.saveMarketoContactList(this.socialContact)
+                        .subscribe(
+                            data =>
+                            {
+                                data = data;
+                                this.loading = false;
+                                this.selectedAddContactsOption = 8;
+                                this.contactService.saveAsSuccessMessage = "add";
+                                this.xtremandLogger.info("update Contacts ListUsers:" + data);
+                                if (this.isPartner == false)
+                                {
+                                    this.router.navigateByUrl('/home/contacts/manage')
+                                } else
+                                {
+                                    this.router.navigateByUrl('home/partners/manage')
+                                }
+                            },
+
+                            (error: any) =>
+                            {
+                                this.loading = false;
+                                this.xtremandLogger.error(error);
+                                this.xtremandLogger.errorPage(error);
+                            },
+                            () => this.xtremandLogger.info("addcontactComponent saveMarketoContact() finished")
+                        )
+                } else
+                    this.xtremandLogger.error("AddContactComponent saveMarketoContact() Contacts Null Error");
+            }
+            else
+            {
+                this.contactListNameError = true;
+                this.xtremandLogger.error("AddContactComponent saveMarketoContact() ContactList Name Error");
+            }
+        } catch (error)
+        {
+            this.xtremandLogger.error(error, "AddContactsComponent saveMarketoContact().")
+        }
+    }
+    saveMarketoContactSelectedUsers()
+    {
+        try
+        {
+
+            this.allselectedUsers = this.validateMarketoContacts(this.allselectedUsers);
+            this.model.contactListName = this.model.contactListName.replace(/\s\s+/g, ' ');
+
+            if (this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' && this.allselectedUsers.length != 0)
+            {
+                console.log(this.allselectedUsers);
+                this.loading = true;
+                this.contactListObject = new ContactList;
+                this.contactListObject.name = this.model.contactListName;
+                this.contactListObject.isPartnerUserList = this.isPartner;
+                this.socialContact.socialNetwork = "MARKETO";
+                this.socialContact.contactName = this.model.contactListName;
+                this.socialContact.isPartnerUserList = this.isPartner;
+                this.socialContact.contactType = this.contactType;
+                this.socialContact.contacts = this.allselectedUsers;
+                this.socialContact.contacts = this.validateMarketoContacts(this.allselectedUsers);
+                this.model.contactListName = this.model.contactListName.replace(/\s\s+/g, ' ');
+                this.socialContact.listName = this.model.contactListName;
+                this.contactService.saveMarketoContactList(this.socialContact)
+                    .subscribe(
+                        data =>
+                        {
+                            data = data;
+                            this.loading = false;
+                            this.selectedAddContactsOption = 8;
+
+                            this.contactService.saveAsSuccessMessage = "add";
+                            this.xtremandLogger.info("update Contacts ListUsers:" + data);
+                            if (this.isPartner == false)
+                            {
+                                this.router.navigateByUrl('/home/contacts/manage')
+                            } else
+                            {
+                                this.router.navigateByUrl('home/partners/manage')
+                            }
+                        },
+
+                        (error: any) =>
+                        {
+                            this.loading = false;
+                            this.xtremandLogger.error(error);
+                            this.xtremandLogger.errorPage(error);
+                        },
+                        () => this.xtremandLogger.info("addcontactComponent saveMarketoContactSelectedUsers() finished")
+                    )
+            }
+            else
+            {
+                this.contactListNameError = true;
+                this.xtremandLogger.error("AddContactComponent saveMarketoContactSelectedUsers() ContactList Name Error");
+            }
+        } catch (error)
+        {
+            this.xtremandLogger.error(error, "AddContactsComponent saveMarketoContactSelectedUsers().")
+        }
+    }
+
+    authorisedMarketoContacts()
+    {
+    }
+    retriveMarketoContacts()
+    {
+
+
+        $("#marketoShowLoginPopup").modal('hide');
+        this.contactService.getMarketoContacts(this.authenticationService.getUserId()).subscribe(data =>
+        {
+            this.marketoImageBlur = false;
+            this.marketoImageNormal = true;
+            this.getMarketoConatacts = data.data;
+
+
+            this.getMarketoConatacts = data.data;
+            this.loadingMarketo = false;
+            this.selectedAddContactsOption = 6;
+            if (this.getMarketoConatacts.length == 0)
+            {
+                this.customResponse = new CustomResponse('ERROR', this.properties.NO_RESULTS_FOUND, true);
+            } else
+            {
+                for (var i = 0; i < this.getMarketoConatacts.length; i++)
+                {
+                    let socialContact = new SocialContact();
+                    let user = new User();
+                    socialContact.id = i;
+                    if (this.validateEmailAddress(this.getMarketoConatacts[i].email))
+                    {
+                        socialContact.emailId = this.getMarketoConatacts[i].email;
+                        socialContact.firstName = this.getMarketoConatacts[i].firstName;
+                        socialContact.lastName = this.getMarketoConatacts[i].lastName;
+
+                        socialContact.country = this.getMarketoConatacts[i].country;
+                        socialContact.city = this.getMarketoConatacts[i].city;
+                        socialContact.state = this.getMarketoConatacts[i].state;
+                        socialContact.postalCode = this.getMarketoConatacts[i].postalCode;
+                        socialContact.address = this.getMarketoConatacts[i].address;
+                        socialContact.company = this.getMarketoConatacts[i].company;
+                        socialContact.title = this.getMarketoConatacts[i].title;
+                        socialContact.mobilePhone = this.getMarketoConatacts[i].mobilePhone;
+
+                        this.socialContactUsers.push(socialContact);
+                    }
+                    $("button#sample_editable_1_new").prop('disabled', false);
+                    $("#Gfile_preview").show();
+                    $("#myModal .close").click()
+                    $("button#cancel_button").prop('disabled', false);
+                    $('.mdImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+                    $('#addContacts').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+                    $('#uploadCSV').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;min-height:85px');
+                    $('#copyFromClipBoard').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+                    $('.salesForceImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
+                    $('.googleImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
+                    $('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -85px;left: 100px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
+                    $('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -85px;left: 100px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
+                }
+                console.log(this.socialContactUsers);
+            }
+            this.xtremandLogger.info(this.getMarketoConatacts);
+            this.setPage(1);
+        },
+            (error: any) =>
+            {
+                this.loading = false;
+                this.xtremandLogger.error(error);
+                this.xtremandLogger.errorPage(error);
+            },
+            () => this.xtremandLogger.log("marketoContacts data :" + JSON.stringify(this.getMarketoConatacts)
+
+
+            ));
+    }
+    hideMarketoAuthorisedPopup()
+    {
+        $("#marketoShowAuthorisedPopup").hide();
+    }
+
+    getMarketoContacts()
+    {
+        this.loadingMarketo = true;
+        const obj = {
+            userId: this.authenticationService.getUserId(),
+            instanceUrl: this.marketoInstance,
+            clientId: this.marketoClientId,
+            clientSecret: this.marketoSecretId
+        }
+
+        this.contactService.saveMarketoCredentials(obj).subscribe(response =>
+        {
+            if (response.statusCode == 8003)
+            {
+                this.showMarketoForm = false;
+                // this.checkMarketoCredentials();
+                this.marketoContactError = false;
+                this.marketoContactSuccessMsg = response.message;
+                this.loadingMarketo = false;
+                this.retriveMarketoContacts();
+            } else
+            {
+
+                $("#marketoShowLoginPopup").modal('show');
+                this.marketoContactError = response.message;
+                this.marketoContactSuccessMsg = false;
+                this.loadingMarketo = false;
+            }
+        }, (error: any) =>
+        {
+            this.marketoContactError = error;
+            this.loadingMarketo = false;
+        }
+        )
+    }
+
+    validateModelForm(fieldId: any)
+    {
+        var errorClass = "form-group has-error has-feedback";
+        var successClass = "form-group has-success has-feedback";
+
+        if (fieldId == 'email')
+        {
+            if (this.marketoClientId.length > 0)
+            {
+                this.marketoClientIdClass = successClass;
+                this.marketoClentIdError = false;
+            } else
+            {
+                this.marketoClientIdClass = errorClass;
+                this.marketoClentIdError = true;
+            }
+        } else if (fieldId == 'pwd')
+        {
+            if (this.marketoSecretId.length > 0)
+            {
+                this.marketoSecretIdClass = successClass;
+                this.marketoSecretIdError = false;
+            } else
+            {
+                this.marketoSecretIdClass = errorClass;
+                this.marketoSecretIdError = true;
+            }
+        } else if (fieldId == 'instance')
+        {
+            if (this.marketoInstance.length > 0)
+            {
+                this.marketoInstanceClass = successClass;
+                this.marketoInstanceError = false;
+            } else
+            {
+                this.marketoInstanceClass = errorClass;
+                this.marketoInstanceError = false;
+            }
+        }
+        this.toggleMarketoSubmitButtonState();
+    }
+    toggleMarketoSubmitButtonState()
+    {
+        if (!this.marketoClentIdError && !this.marketoSecretIdError && !this.marketoInstanceError)
+            this.isMarketoModelFormValid = true;
+        else
+            this.isMarketoModelFormValid = false;
+    }
+
+    hideMarketoModal()
+    {
+        $("#marketoShowLoginPopup").hide();
+    }
+
+    
+    highlightMarketoRow(user: any)
+    {
+        let isChecked = $('#' + user.id).is(':checked');
+
+        if (isChecked)
+        {
+            $('#row_' + user.id).addClass('contact-list-selected');
+            this.selectedContactListIds.push(user.id);
+            var object = {
+                "id": user.id,
+                "email": user.emailId,
+                "firstName": user.firstName,
+                "lastName": user.lastName,
+                "country": user.country,
+                "city": user.city,
+                "state": user.state,
+                "postalCode": user.postalCode,
+                "address": user.address,
+                "company": user.company,
+                "title": user.title,
+                "mobilePhone": user.mobilePhone
+            }
+            this.allselectedUsers.push(object);
+            console.log(this.allselectedUsers);
+        } else
+        {
+            $('#row_' + user.id).removeClass('contact-list-selected');
+            this.selectedContactListIds.splice($.inArray(user.id, this.selectedContactListIds), 1);
+            this.allselectedUsers.splice($.inArray(user.id, this.allselectedUsers), 1);
+        }
+        if (this.selectedContactListIds.length == this.pagedItems.length)
+        {
+            this.isHeaderCheckBoxChecked = true;
+        } else
+        {
+            this.isHeaderCheckBoxChecked = false;
+        }
+        event.stopPropagation();
+    }
+
+    checkAllForMarketo(ev: any)
+    {
+        if (ev.target.checked)
+        {
+            console.log("checked");
+            $('[name="campaignContact[]"]').prop('checked', true);
+            let self = this;
+            $('[name="campaignContact[]"]:checked').each(function ()
+            {
+                var id = $(this).val();
+                self.selectedContactListIds.push(parseInt(id));
+                console.log(self.selectedContactListIds);
+                $('#ContactListTable_' + id).addClass('contact-list-selected');
+                for (var i = 0; i < self.pagedItems.length; i++)
+                {
+                    var object = {
+
+                        "id": self.pagedItems[i].id,
+                        "email": self.pagedItems[i].emailId,
+                        "firstName": self.pagedItems[i].firstName,
+                        "lastName": self.pagedItems[i].lastName,
+                        "country": self.pagedItems[i].country,
+                        "city": self.pagedItems[i].city,
+                        "state": self.pagedItems[i].state,
+                        "postalCode": self.pagedItems[i].postalCode,
+                        "address": self.pagedItems[i].address,
+                        "company": self.pagedItems[i].company,
+                        "title": self.pagedItems[i].title,
+                        "mobilePhone": self.pagedItems[i].mobilePhone
+                    }
+                    console.log(object);
+                    self.allselectedUsers.push(object);
+                }
+            });
+            this.allselectedUsers = this.removeDuplicates(this.allselectedUsers, 'email');
+            this.selectedContactListIds = this.referenceService.removeDuplicates(this.selectedContactListIds);
+        } else
+        {
+            $('[name="campaignContact[]"]').prop('checked', false);
+            $('#user_list_tb tr').removeClass("contact-list-selected");
+            if (this.pager.maxResults == this.pager.totalItems)
+            {
+                this.selectedContactListIds = [];
+                this.allselectedUsers.length = 0;
+            } else
+            {
+                let paginationIdsArray = new Array;
+                for (let j = 0; j < this.pagedItems.length; j++)
+                {
+                    var paginationEmail = this.pagedItems[j].emailId;
+                    this.allselectedUsers.splice(this.allselectedUsers.indexOf(paginationEmail), 1);
+                }
+                let currentPageContactIds = this.pagedItems.map(function (a) { return a.id; });
+                this.selectedContactListIds = this.referenceService.removeDuplicatesFromTwoArrays(this.selectedContactListIds, currentPageContactIds);
+            }
+        }
+        console.log(this.allselectedUsers);
+        ev.stopPropagation();
+    }
+
+    validateMarketoContacts(socialUsers: any)
+    {
+        let users = [];
+        for (let i = 0; i < socialUsers.length; i++)
+        {
+            if (socialUsers[i].email !== null && this.validateEmailAddress(socialUsers[i].email))
+            {
+                let email = socialUsers[i].email.toLowerCase();
+                socialUsers[i].email = email;
+                users.push(socialUsers[i]);
+            }
+        }
+        return users;
+    }
+
 }

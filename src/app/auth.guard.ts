@@ -14,7 +14,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     campaignBaseUrl = 'campaigns';
     upgradeBaseUrl = 'upgrade';
     teamBaseUrl = 'team';
-    delRegBaseUrl = 'deal';
+    opportunityBaseUrl = 'deals';
 
     constructor( private authenticationService: AuthenticationService, private router: Router ) {  }
     canActivate( route: ActivatedRouteSnapshot, state: RouterStateSnapshot ): boolean {
@@ -37,7 +37,8 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             this.authenticationService.user.roles =  JSON.parse( currentUser )['roles'];
             this.authenticationService.user.hasCompany =  JSON.parse( currentUser )['hasCompany'];
             this.getUserByUserName(userName);
-            if(!this.authenticationService.user.hasCompany && url === "/home/dashboard") {
+            if(url.includes('home/error')){ this.router.navigateByUrl('/home/dashboard') }
+            else if(!this.authenticationService.user.hasCompany && url === "/home/dashboard") {
               this.goToAccessDenied();
             }
             else if(url.indexOf("/dashboard")<0 && url.indexOf("/content")<0 ){
@@ -71,7 +72,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
                 this.authenticationService.user = data;
                 this.authenticationService.userProfile = data;
             },
-            error => {console.log( error ); this.router.navigate( ['/login'] );},
+            error => {console.log( error ); this.router.navigate(['/su'])},
             () => { }
             );
         }catch(error){ console.log('error'+error); }
@@ -104,8 +105,8 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         if(url.indexOf(this.upgradeBaseUrl)>-1){
             return this.authorizeUrl(roles, url, this.upgradeBaseUrl);
         }
-        if(url.indexOf(this.delRegBaseUrl)>-1){
-          return this.authorizeUrl(roles, url, this.delRegBaseUrl);
+        if(url.indexOf(this.opportunityBaseUrl)>-1){
+          return this.authorizeUrl(roles, url, this.opportunityBaseUrl);
       }
       }catch(error){ console.log('error'+error);}
     }
@@ -137,8 +138,8 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         if(urlType===this.upgradeBaseUrl){
             role = this.roles.orgAdminRole;
         }
-        if(urlType===this.delRegBaseUrl){
-          role = this.roles.campaignRole;
+        if(urlType===this.opportunityBaseUrl){
+          role = this.roles.opportunityRole;
       }
         if(url.indexOf("partners")>-1 || url.indexOf("upgrade")>-1 ){
             url = url+"/";
@@ -183,13 +184,13 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     }
     checkPartnerAccessUrls(url:string,urlType:string):boolean{
       try{
-      if(this.authenticationService.user.hasCompany && (url.includes('home/campaigns/re-distribute-campaign')
+           if(this.authenticationService.user.hasCompany && (url.includes('/home/deals') || url.includes('/home/campaigns/re-distribute-campaign')
               || !(url.includes('/home/videos') || url.includes('/home/campaigns/create') || url.includes('/home/campaigns/select')
-                      || url.includes('/home/emailtemplates') || url.includes('/home/emailtemplates') || url.includes('/home/partners/add')
+                      || url.includes('/home/emailtemplates') || url.includes('/home/partners/add')
                       || url.includes('/home/partners/manage')))){
-        return true;
+                return true;
       }else{
-        return this.goToAccessDenied();
+                return this.goToAccessDenied();
       }
     }catch(error){ console.log('error'+error);}
     }

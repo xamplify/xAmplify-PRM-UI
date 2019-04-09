@@ -6,31 +6,75 @@ export class SortOption {
     sortByDropDown = [
         { 'name': 'Name(A-Z)', 'value': 'campaign-ASC' },
         { 'name': 'Name(Z-A)', 'value': 'campaign-DESC' },
-        { 'name': 'Created Date(ASC)', 'value': 'createdTime-ASC' },
-        { 'name': 'Created Date(DESC)', 'value': 'createdTime-DESC' }
+        { 'name': 'Created On(ASC)', 'value': 'createdTime-ASC' },
+        { 'name': 'Created On(DESC)', 'value': 'createdTime-DESC' }
     ];
     
     partnerCampaignDetailsSortDropDown = [
-                { 'name': 'Name(A-Z)', 'value': 'campaign-ASC' },
-                { 'name': 'Name(Z-A)', 'value': 'campaign-DESC' },
-                { 'name': 'Launched By(ASC)', 'value': 'launchedBy-ASC' },
-                { 'name': 'Launched By(DESC)', 'value': 'launchedBy-DESC' },
-                { 'name': 'Launched On(ASC)', 'value': 'createdTime-ASC' },
-                { 'name': 'Launched On(DESC)', 'value': 'createdTime-DESC' }
-                                                          
+        { 'name': 'Name(A-Z)', 'value': 'campaign-ASC' },
+        { 'name': 'Name(Z-A)', 'value': 'campaign-DESC' },
+        { 'name': 'Launched By(ASC)', 'value': 'launchedBy-ASC' },
+        { 'name': 'Launched By(DESC)', 'value': 'launchedBy-DESC' },
+        { 'name': 'Launched On(ASC)', 'value': 'createdTime-ASC' },
+        { 'name': 'Launched On(DESC)', 'value': 'createdTime-DESC' }
+
          ];
 
     campaignPartnersRemoveAccessSortDropDown = [
-                                                { 'name': 'Email ID(A-Z)', 'value': 'emailId-ASC' },
-                                                { 'name': 'Email ID(Z-A)', 'value': 'emailId-DESC' },
-                                                { 'name': 'First Name(ASC)', 'value': 'firstName-ASC' },
-                                                { 'name': 'First Name(DESC)', 'value': 'firstName-DESC' },
-                                                { 'name': 'Last Name(ASC)', 'value': 'lastName-ASC' },
-                                                { 'name': 'Last Name(DESC)', 'value': 'lastName-DESC' }
-                                                
-                                                
-              ];
+        { 'name': 'Email ID(A-Z)', 'value': 'emailId-ASC' },
+        { 'name': 'Email ID(Z-A)', 'value': 'emailId-DESC' },
+        { 'name': 'First Name(ASC)', 'value': 'firstName-ASC' },
+        { 'name': 'First Name(DESC)', 'value': 'firstName-DESC' },
+        { 'name': 'Last Name(ASC)', 'value': 'lastName-ASC' },
+        { 'name': 'Last Name(DESC)', 'value': 'lastName-DESC' }
+      ];
     
+    dealPartnersSortDropDown = [
+        { 'name': 'Email ID(A-Z)', 'value': 'emailId-ASC' },
+        { 'name': 'Email ID(Z-A)', 'value': 'emailId-DESC' },
+        { 'name': 'First Name(ASC)', 'value': 'firstName-ASC' },
+        { 'name': 'First Name(DESC)', 'value': 'firstName-DESC' },
+        { 'name': 'Last Name(ASC)', 'value': 'lastName-ASC' },
+        { 'name': 'Last Name(DESC)', 'value': 'lastName-DESC' },
+        { 'name': 'Leads Count(ASC)', 'value': 'count-ASC' },
+        { 'name': 'Leads Count(DESC)', 'value': 'count-DESC' }
+      ];
+    
+    
+    
+    leadsSortDropDown = [
+        { 'name': 'Email ID(A-Z)', 'value': 'emailId-ASC' },
+        { 'name': 'Email ID(Z-A)', 'value': 'emailId-DESC' },
+        { 'name': 'Campaign Name(A-Z)', 'value': 'campaignName-ASC' },
+        { 'name': 'Campaign Name(Z-A)', 'value': 'campaignName-DESC' },
+        { 'name': 'First Name(ASC)', 'value': 'firstName-ASC' },
+        { 'name': 'First Name(DESC)', 'value': 'firstName-DESC' },
+        { 'name': 'Last Name(ASC)', 'value': 'lastName-ASC' },
+        { 'name': 'Last Name(DESC)', 'value': 'lastName-DESC' },
+        { 'name': 'Deal Title(ASC)', 'value': 'title-ASC' },
+        { 'name': 'Deal Title(DESC)', 'value': 'title-DESC' },
+        { 'name': 'Created Date(ASC)', 'value': 'createdTime-ASC' },
+        { 'name': 'Created Date(DESC)', 'value': 'createdTime-DESC' }
+      ];
+    
+    
+    dealCampaignsSortDropDown = [
+
+        { 'name': 'Name(A-Z)', 'value': 'campaign-ASC' },
+        { 'name': 'Name(Z-A)', 'value': 'campaign-DESC' },
+        { 'name': 'Email ID(A-Z)', 'value': 'emailId-ASC' },
+        { 'name': 'Email ID(Z-A)', 'value': 'emailId-DESC' },
+        { 'name': 'First Name(ASC)', 'value': 'firstName-ASC' },
+        { 'name': 'First Name(DESC)', 'value': 'firstName-DESC' },
+        { 'name': 'Last Name(ASC)', 'value': 'lastName-ASC' },
+        { 'name': 'Last Name(DESC)', 'value': 'lastName-DESC' },
+        { 'name': 'Created Date(ASC)', 'value': 'createdTime-ASC' },
+        { 'name': 'Created Date(DESC)', 'value': 'createdTime-DESC' },
+        { 'name': 'Deals Count(ASC)', 'value': 'count-ASC' },
+        { 'name': 'Deals Count(DESC)', 'value': 'count-DESC' }
+         ]
+   
+   
     numberOfItemsPerPage = [
         { 'name': '12', 'value': '12' },
         { 'name': '24', 'value': '24' },
@@ -39,6 +83,9 @@ export class SortOption {
     ]
     public selectedSortedOption: any = this.sortByDropDown[3];
     public defaultSortOption:any = this.partnerCampaignDetailsSortDropDown[5];
+    public dealsPartnerSortOption:any = this.dealPartnersSortDropDown[7];
+    public leadsSortOption:any = this.leadsSortDropDown[11]; 
+    public dealCampaignSortOption:any = this.dealCampaignsSortDropDown[11];    
     public  campaignPartnersRemoveAccessDefaultSortOption:any = this.campaignPartnersRemoveAccessSortDropDown[0];
     public itemsSize: any = this.numberOfItemsPerPage[0];
     isListView: boolean = false;

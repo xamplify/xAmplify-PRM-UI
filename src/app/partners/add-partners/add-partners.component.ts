@@ -21,6 +21,7 @@ import { ManageContactsComponent } from '../../contacts/manage-contacts/manage-c
 import { RegularExpressions } from '../../common/models/regular-expressions';
 import { PaginationComponent } from '../../common/pagination/pagination.component';
 import { TeamMemberService } from '../../team/services/team-member.service';
+import { FileUtil } from '../../core/models/file-util';
 declare var $, Papa, swal: any;
 
 @Component( {
@@ -30,7 +31,7 @@ declare var $, Papa, swal: any;
         '../../../assets/global/plugins/jquery-file-upload/css/jquery.fileupload-ui.css', '../../../assets/css/numbered-textarea.css',
         '../../../assets/css/phone-number-plugin.css'],
     providers: [Pagination, SocialPagerService, EditContactsComponent, ManageContactsComponent, CountryNames,
-        Properties, RegularExpressions, PaginationComponent, TeamMemberService, ActionsDescription]
+        Properties, RegularExpressions, PaginationComponent, TeamMemberService, ActionsDescription,FileUtil]
 })
 export class AddPartnersComponent implements OnInit, OnDestroy {
     loggedInUserId: number;
@@ -39,6 +40,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     checkingForEmail: boolean;
     addPartnerUser: User = new User();
     newPartnerUser = [];
+    existedEmailIds = [];
     invalidPatternEmails = [];
     validCsvContacts: boolean;
     partners: User[];
@@ -100,6 +102,10 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     disableOtherFuctionality = false;
     saveAsListName:any;
     saveAsError:any;
+    isListLoader = false;
+    paginationType = "";
+    isSaveAsList = false;
+    isDuplicateEmailId = false;
 
     sortOptions = [
         { 'name': 'Sort By', 'value': '' },
@@ -128,7 +134,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     public uploader: FileUploader = new FileUploader( { allowedMimeType: ["application/csv", "application/vnd.ms-excel", "text/plain", "text/csv"] });
 
     public httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
-    constructor( private router: Router, public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
+    constructor(private fileUtil:FileUtil, private router: Router, public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
         public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
         public referenceService: ReferenceService, public countryNames: CountryNames, public paginationComponent: PaginationComponent,
         public contactService: ContactService, public properties: Properties, public actionsDescription: ActionsDescription, public regularExpressions: RegularExpressions,
@@ -234,6 +240,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             for ( let i = 0; i < this.contactService.allPartners.length; i++ ) {
                 if ( lowerCaseEmail == this.contactService.allPartners[i].emailId ) {
                     this.isEmailExist = true;
+                    this.existedEmailIds.push(emailId);
                     break;
                 } else {
                     this.isEmailExist = false;
@@ -302,9 +309,12 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     savePartnerUsers() {
         this.duplicateEmailIds = [];
         this.dublicateEmailId = false;
+        this.existedEmailIds = [];
+        this.isEmailExist = false;
         var testArray = [];
         for ( var i = 0; i <= this.newPartnerUser.length - 1; i++ ) {
             testArray.push( this.newPartnerUser[i].emailId.toLowerCase() );
+            this.validateEmail(this.newPartnerUser[i].emailId);
         }
 
         var newArray = this.compressArray( testArray );
@@ -321,11 +331,14 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             return valueArr.indexOf( item ) != idx
         });
         console.log( "emailDuplicate" + isDuplicate );
+        this.isDuplicateEmailId = isDuplicate;
         if ( this.newPartnerUser[0].emailId != undefined ) {
-            if ( !isDuplicate ) {
+            if ( !isDuplicate && !this.isEmailExist ) {
                 this.saveValidEmails();
-            } else {
-                this.dublicateEmailId = true;
+            }else if(this.isEmailExist){
+                this.customResponse = new CustomResponse( 'ERROR', "These partner(s) are already added " + this.existedEmailIds, true );
+            }else {
+                this.dublicateEmailId = true; 
             }
         }
     }
@@ -443,11 +456,19 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                                 if ( error._body.includes( 'Please launch or delete those campaigns first' ) ) {
                                     this.customResponse = new CustomResponse( 'ERROR', error._body, true );
                                     console.log( "done" )
-                                } else {
+                                } else if(error._body.includes("email addresses in your contact list that aren't formatted properly")){
+                                    this.customResponse = new CustomResponse( 'ERROR', JSON.parse(error._body), true );
+                                }else{
                                     this.xtremandLogger.errorPage( error );
                                 }
+                                this.xtremandLogger.error( error );
                                 this.loading = false;
                                 console.log( error );
+                                this.newPartnerUser.length = 0;
+                                this.allselectedUsers.length = 0;
+                                this.loadPartnerList( this.pagination );
+                                this.clipBoard = false;
+                                this.cancelPartners();
                             },
                             () => this.xtremandLogger.info( "MangePartnerComponent loadPartners() finished" )
                             )
@@ -469,6 +490,10 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             this.xtremandLogger.error( error, "addPartnerComponent", "save Partners" );
         }
     }
+    
+    closeDuplicateEmailErrorMessage(){
+        this.dublicateEmailId = false;
+    }
 
     cancelPartners() {
         this.socialPartnerUsers.length = 0;
@@ -476,6 +501,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         this.selectedContactListIds.length = 0;
         this.pager = [];
         this.pagedItems = [];
+        this.paginationType = "";
         this.disableOtherFuctionality = false;
 
         $( '.salesForceImageClass' ).attr( 'style', 'opacity: 1;' );
@@ -521,8 +547,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                     } else {
                         this.editContactComponent.isHeaderCheckBoxChecked = false;
                     }
-
-                    this.loadAllPartnerInList( pagination.totalRecords );
+                    if ( !this.searchKey ) {
+                        this.loadAllPartnerInList( pagination.totalRecords );
+                    }
 
                 },
                 error => this.xtremandLogger.error( error ),
@@ -562,6 +589,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
     readFiles( files: any, index = 0 ) {
         if ( files[0].type == "application/vnd.ms-excel" || files[0].type == "text/csv" || files[0].type == "text/x-csv" ) {
+            this.isListLoader = true;
+            this.paginationType = "csvPartners";
             var outputstring = files[0].name.substring( 0, files[0].name.lastIndexOf( "." ) );
             this.selectedAddPartnerOption = 2;
             this.fileTypeError = false;
@@ -584,32 +613,53 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             var self = this;
             reader.onload = function( e: any ) {
                 var contents = e.target.result;
+                let csvData = reader.result;
+                let csvRecordsArray = csvData.split(/\r\n|\n/);
+                let headersRow = self.fileUtil
+                .getHeaderArray(csvRecordsArray);
+                 let headers = headersRow[0].split(',');
+                
+                 if((headers.length == 15) ){
+                     if(self.validateHeaders(headers)){
+                         
+                         
+                         var csvResult = Papa.parse( contents );
 
-                var csvResult = Papa.parse( contents );
-
-                var allTextLines = csvResult.data;
-                for ( var i = 1; i < allTextLines.length; i++ ) {
-                    if ( allTextLines[i][4] && allTextLines[i][4].trim().length > 0 ) {
-                        let user = new User();
-                        user.emailId = allTextLines[i][4];
-                        user.firstName = allTextLines[i][0];
-                        user.lastName = allTextLines[i][1];
-                        user.contactCompany = allTextLines[i][2];
-                        user.jobTitle = allTextLines[i][3];
-                        user.vertical = allTextLines[i][5];
-                        user.region = allTextLines[i][6];
-                        user.partnerType = allTextLines[i][7];
-                        user.category = allTextLines[i][8];
-                        user.address = allTextLines[i][9];
-                        user.city = allTextLines[i][10];
-                        user.state = allTextLines[i][11];
-                        user.zipCode = allTextLines[i][12];
-                        user.country = allTextLines[i][13];
-                        user.mobileNumber = allTextLines[i][14];
-                        /* user.description = allTextLines[i][9];*/
-                        self.newPartnerUser.push( user );
-                    }
-                }
+                         var allTextLines = csvResult.data;
+                         for ( var i = 1; i < allTextLines.length; i++ ) {
+                             if ( allTextLines[i][4] && allTextLines[i][4].trim().length > 0 ) {
+                                 let user = new User();
+                                 user.emailId = allTextLines[i][4].trim();
+                                 user.firstName = allTextLines[i][0].trim();
+                                 user.lastName = allTextLines[i][1].trim();
+                                 user.contactCompany = allTextLines[i][2].trim();
+                                 user.jobTitle = allTextLines[i][3].trim();
+                                 user.vertical = allTextLines[i][5].trim();
+                                 user.region = allTextLines[i][6].trim();
+                                 user.partnerType = allTextLines[i][7].trim();
+                                 user.category = allTextLines[i][8].trim();
+                                 user.address = allTextLines[i][9].trim();
+                                 user.city = allTextLines[i][10].trim();
+                                 user.state = allTextLines[i][11].trim();
+                                 user.zipCode = allTextLines[i][12].trim();
+                                 user.country = allTextLines[i][13].trim();
+                                 user.mobileNumber = allTextLines[i][14].trim();
+                                 /* user.description = allTextLines[i][9];*/
+                                 self.newPartnerUser.push( user );
+                             }
+                         }
+                         self.isListLoader = false;
+                         self.setSocialPage(1);
+                         
+                     }else{
+                         self.customResponse = new CustomResponse( 'ERROR', "Invalid Csv", true );
+                         self.cancelPartners();
+                     }
+                 }else{
+                     self.customResponse = new CustomResponse( 'ERROR', "Invalid Csv", true );
+                     self.cancelPartners();
+                 }
+                 
                 console.log( "ManagePartnerComponent : readFiles() Partners " + JSON.stringify( self.newPartnerUser ) );
             }
         } else {
@@ -618,10 +668,16 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             this.selectedAddPartnerOption = 5;
         }
     }
+    
+    
+    validateHeaders(headers){
+            return (headers[0].trim()=="FIRSTNAME" && headers[1].trim()=="LASTNAME" && headers[2].trim()=="COMPANY" && headers[3].trim()=="JOBTITLE" && headers[4].trim()=="EMAILID" && headers[5].trim()=="VERTICAL" && headers[6].trim()=="REGION" && headers[7].trim()=="PARTNETTYPE" && headers[8].trim()=="CATEGORY" && headers[9].trim()=="ADDRESS" && headers[10].trim()=="CITY" && headers[11].trim()=="STATE" && headers[12].trim()=="ZIP" && headers[13].trim()=="COUNTRY" && headers[14].trim()=="MOBILE NUMBER");
+      }
 
     copyFromClipboard() {
         this.fileTypeError = false;
         this.clipboardTextareaText = "";
+        this.paginationType = "csvPartners";
         this.disableOtherFuctionality = true;
         $( "button#cancel_button" ).prop( 'disabled', false );
         $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
@@ -810,21 +866,21 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                         user.country = data[13]
                         break;
                     case 15:
-                        user.firstName = data[0];
-                        user.lastName = data[1];
-                        user.contactCompany = data[2];
-                        user.jobTitle = data[3];
-                        user.emailId = data[4];
-                        user.vertical = data[5];
-                        user.region = data[6]
-                        user.partnerType = data[7]
-                        user.category = data[8]
-                        user.address = data[9]
-                        user.city = data[10]
-                        user.state = data[11]
-                        user.zipCode = data[12]
-                        user.country = data[13]
-                        user.mobileNumber = data[14]
+                        user.firstName = data[0].trim();
+                        user.lastName = data[1].trim();
+                        user.contactCompany = data[2].trim();
+                        user.jobTitle = data[3].trim();
+                        user.emailId = data[4].trim();
+                        user.vertical = data[5].trim();
+                        user.region = data[6].trim()
+                        user.partnerType = data[7].trim()
+                        user.category = data[8].trim()
+                        user.address = data[9].trim()
+                        user.city = data[10].trim()
+                        user.state = data[11].trim()
+                        user.zipCode = data[12].trim()
+                        user.country = data[13].trim()
+                        user.mobileNumber = data[14].trim()
                         break;
                     /*case 6:
                         user.firstName = data[0];
@@ -906,6 +962,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                 self.newPartnerUser.push( user );
             }
             this.selectedAddPartnerOption = 4;
+            this.setSocialPage(1);
             var endTime = new Date();
             $( "#clipBoardValidationMessage" ).append( "<h5 style='color:#07dc8f;'><i class='fa fa-check' aria-hidden='true'></i>" + "Processing started at: <b>" + startTime + "</b></h5>" );
             $( "#clipBoardValidationMessage" ).append( "<h5 style='color:#07dc8f;'><i class='fa fa-check' aria-hidden='true'></i>" + "Processing Finished at: <b>" + endTime + "</b></h5>" );
@@ -1051,19 +1108,25 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             if ( page < 1 || page > this.pager.totalPages ) {
                 return;
             }
-            this.pager = this.socialPagerService.getPager( this.socialPartnerUsers.length, page, this.pageSize );
-            this.pagedItems = this.socialPartnerUsers.slice( this.pager.startIndex, this.pager.endIndex + 1 );
-
-            var contactIds = this.pagedItems.map( function( a ) { return a.id; });
-            var items = $.grep( this.selectedContactListIds, function( element ) {
-                return $.inArray( element, contactIds ) !== -1;
-            });
-            this.xtremandLogger.log( "partner Ids" + contactIds );
-            this.xtremandLogger.log( "Selected partner Ids" + this.selectedContactListIds );
-            if ( items.length == this.pager.pageSize || items.length == this.getGoogleConatacts.length || items.length == this.pagedItems.length ) {
-                this.isHeaderCheckBoxChecked = true;
+            
+            if ( this.paginationType == "csvPartners" ) {
+                this.pager = this.socialPagerService.getPager( this.newPartnerUser.length, page, this.pageSize );
+                this.pagedItems = this.newPartnerUser.slice( this.pager.startIndex, this.pager.endIndex + 1 );
             } else {
-                this.isHeaderCheckBoxChecked = false;
+                this.pager = this.socialPagerService.getPager( this.socialPartnerUsers.length, page, this.pageSize );
+                this.pagedItems = this.socialPartnerUsers.slice( this.pager.startIndex, this.pager.endIndex + 1 );
+
+                var contactIds = this.pagedItems.map( function( a ) { return a.id; });
+                var items = $.grep( this.selectedContactListIds, function( element ) {
+                    return $.inArray( element, contactIds ) !== -1;
+                });
+                this.xtremandLogger.log( "partner Ids" + contactIds );
+                this.xtremandLogger.log( "Selected partner Ids" + this.selectedContactListIds );
+                if ( items.length == this.pager.pageSize || items.length == this.getGoogleConatacts.length || items.length == this.pagedItems.length ) {
+                    this.isHeaderCheckBoxChecked = true;
+                } else {
+                    this.isHeaderCheckBoxChecked = false;
+                }
             }
         } catch ( error ) {
             this.xtremandLogger.error( error, "addPartnerComponent", "setPage" );
@@ -1141,7 +1204,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                             let user = new User();
                             socialContact.id = i;
                             if ( this.validateEmailAddress( this.getGoogleConatacts.contacts[i].emailId ) ) {
-                                socialContact.emailId = this.getGoogleConatacts.contacts[i].emailId;
+                                socialContact.emailId = this.getGoogleConatacts.contacts[i].emailId.trim();
                                 socialContact.firstName = this.getGoogleConatacts.contacts[i].firstName;
                                 socialContact.lastName = this.getGoogleConatacts.contacts[i].lastName;
                                 this.socialPartnerUsers.push( socialContact );
@@ -1289,7 +1352,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                             let user = new User();
                             socialContact.id = i;
                             if ( this.validateEmailAddress( this.getGoogleConatacts.contacts[i].emailId ) ) {
-                                socialContact.emailId = this.getGoogleConatacts.contacts[i].emailId;
+                                socialContact.emailId = this.getGoogleConatacts.contacts[i].emailId.trim();
                                 socialContact.firstName = this.getGoogleConatacts.contacts[i].firstName;
                                 socialContact.lastName = this.getGoogleConatacts.contacts[i].lastName;
                                 this.socialPartnerUsers.push( socialContact );
@@ -1380,7 +1443,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                             let user = new User();
                             socialContact.id = i;
                             if ( this.validateEmailAddress( this.getGoogleConatacts.contacts[i].emailId ) ) {
-                                socialContact.emailId = this.getGoogleConatacts.contacts[i].emailId;
+                                socialContact.emailId = this.getGoogleConatacts.contacts[i].emailId.trim();
                                 socialContact.firstName = this.getGoogleConatacts.contacts[i].firstName;
                                 socialContact.lastName = this.getGoogleConatacts.contacts[i].lastName;
                                 this.socialPartnerUsers.push( socialContact );
@@ -1602,7 +1665,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                             let user = new User();
                             socialContact.id = i;
                             if ( this.validateEmailAddress( this.getGoogleConatacts.contacts[i].emailId ) ) {
-                                socialContact.emailId = this.getGoogleConatacts.contacts[i].emailId;
+                                socialContact.emailId = this.getGoogleConatacts.contacts[i].emailId.trim();
                                 socialContact.firstName = this.getGoogleConatacts.contacts[i].firstName;
                                 socialContact.lastName = this.getGoogleConatacts.contacts[i].lastName;
                                 this.socialPartnerUsers.push( socialContact );
@@ -1678,7 +1741,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                             let user = new User();
                             socialContact.id = i;
                             if ( this.validateEmailAddress( this.getGoogleConatacts.contacts[i].emailId ) ) {
-                                socialContact.emailId = this.getGoogleConatacts.contacts[i].emailId;
+                                socialContact.emailId = this.getGoogleConatacts.contacts[i].emailId.trim();
                                 socialContact.firstName = this.getGoogleConatacts.contacts[i].firstName;
                                 socialContact.lastName = this.getGoogleConatacts.contacts[i].lastName;
                                 this.socialPartnerUsers.push( socialContact );
@@ -1995,18 +2058,15 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     }
 
     listTeamMembers() {
-        this.teamMemberPagination.maxResults = 10000000;
         try {
-            this.teamMemberService.list( this.teamMemberPagination, this.authenticationService.getUserId() )
+            this.teamMemberService.listTeamMemberEmailIds( )
                 .subscribe(
                 data => {
                     console.log( data );
-                    if ( data.teamMembers.length != 0 ) {
-                        for ( let i = 0; i < data.teamMembers.length; i++ ) {
-                            this.teamMembersList.push( data.teamMembers[i].emailId );
-                        }
+                    for(let i=0;i< data.length; i++){
+                        this.teamMembersList.push( data[i] );
                     }
-                    this.teamMemberPagination = this.pagerService.getPagedItems( this.teamMemberPagination, this.teamMembersList );
+                    
                 },
                 error => {
                     this.xtremandLogger.errorPage( error );
@@ -2039,19 +2099,32 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     }
 
     closeModal( event ) {
-        if ( event == "Emails Send Successfully" ) {
-            this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_SAVE_SUCCESS_AND_MAIL_SENT_SUCCESS, true );
+        if ( event === "Emails Send Successfully" ) {
+            this.customResponse = new CustomResponse( 'SUCCESS', this.properties.PARTNER_SAVE_SUCCESS_AND_MAIL_SENT_SUCCESS, true );
+        }
+        
+        if( event === "users are unSubscribed for emails" ){
+            this.customResponse = new CustomResponse( 'ERROR', "The partners are unsubscribed for receiving the campaign emails.", true );
+        }
+        
+        if( event === "user has unSubscribed for emails" ){
+            this.customResponse = new CustomResponse( 'ERROR', "The partner has unsubscribed for receiving the campaign emails.", true );
+        }
+        
+        if ( event === "Emails Sending failed" ) {
+            this.customResponse = new CustomResponse( 'ERROR', "Failed to send Emails", true );
         }
         this.openCampaignModal = false;
         this.contactListAssociatedCampaignsList.length = 0;
     }
+    
    eventHandler( keyCode: any ) { if ( keyCode === 13 ) { this.search(); } }
+   
    saveAsChange(){
     try {
-      this.saveAsListName = this.editContactComponent.addCopyToField();
+        this.isSaveAsList = true;
+        this.saveAsListName = this.editContactComponent.addCopyToField();
 
-      // this.saveAsError = '';
-      // $('#saveAsAddPartnerModal').modal('show');
     }catch(error){
        this.xtremandLogger.error( error, "Add Partner component", "saveAsChange()" );
       }
@@ -2077,6 +2150,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     closeSaveAsModal(){
       this.saveAsListName = undefined;
       this.referenceService.namesArray = undefined;
+      this.contactService.isLoadingList = false;
+      this.isSaveAsList = false;
     }
 
     ngOnInit() {
@@ -2084,6 +2159,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             this.socialContactImage();
             this.listTeamMembers();
             this.listOrgAdmin();
+            
             $( "#Gfile_preview" ).hide();
             this.socialContactsValue = true;
             this.loggedInUserId = this.authenticationService.getUserId();
@@ -2114,7 +2190,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         $("body>#settingSocialNetworkPartner").remove();
         $( 'body' ).removeClass( 'modal-backdrop in' );
 
-        if ( this.selectedAddPartnerOption !=5 && this.router.url !=='/' ) {
+        if ( this.selectedAddPartnerOption !=5 && this.router.url !=='/' && !this.isDuplicateEmailId ) {
            let self = this;
             swal( {
                 title: 'Are you sure?',

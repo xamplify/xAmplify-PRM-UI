@@ -11,6 +11,7 @@ export class WorldmapComponent implements OnInit {
   @Input() worldMapData: any;
   @Output() notifyParent: EventEmitter<any>;
   worldmapMessage: string;
+  titleName = 'Recipients';
 
   constructor(public router:Router) {
     this.notifyParent = new EventEmitter<any>();
@@ -57,7 +58,7 @@ export class WorldmapComponent implements OnInit {
       },
       series: [{
         data: data,
-        name: 'Recipients',
+        name: self.titleName,
         states: {
           hover: {
             color: '#BADA55'
@@ -78,6 +79,7 @@ export class WorldmapComponent implements OnInit {
   ngOnInit() {
     if(this.router.url.includes('home/partners/analytics')){
      this.worldmapMessage = 'Check out where your Partners are located';
+     this.titleName = 'Partners';
     } else if(this.router.url.includes('home/videos/manage')){
       this.worldmapMessage = 'Check out where your videos are being watched';
     }

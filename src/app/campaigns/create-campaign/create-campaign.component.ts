@@ -26,7 +26,6 @@ import { Category } from '../../videos/models/category';
 import { EmailTemplateType } from '../../email-template/models/email-template-type';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { SocialStatus } from "../../social/models/social-status";
-import { SocialStatusContent } from "../../social/models/social-status-content";
 import { SocialStatusProvider } from "../../social/models/social-status-provider";
 import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import { SocialService } from "../../social/services/social.service";
@@ -34,8 +33,8 @@ import { Country } from '../../core/models/country';
 import { Timezone } from '../../core/models/timezone';
 import { Roles } from '../../core/models/roles';
 import { Properties } from '../../common/models/properties';
-var moment = require('moment-timezone');
 declare var swal, $, videojs , Metronic, Layout , Demo,flatpickr,CKEDITOR,require:any;
+var moment = require('moment-timezone');
 
 @Component({
   selector: 'app-create-campaign',
@@ -45,6 +44,7 @@ declare var swal, $, videojs , Metronic, Layout , Demo,flatpickr,CKEDITOR,requir
 
 })
 export class CreateCampaignComponent implements OnInit,OnDestroy{
+    ngxloading: boolean;
     selectedRow:number;
     categories: Category[];
     partnerCategories:Category[];
@@ -147,7 +147,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     campaignDefaultEmailTemplates: Array<EmailTemplate>;
     isEmailTemplate:boolean = false;
     isCampaignDraftEmailTemplate:boolean = false;
-    emailTemplateHtmlPreivew:string = "";;
+    emailTemplateHtmlPreivew:string = "";
+
     selectedEmailTemplateName:string = "";
     emailTemplateId:number=0;
     isDefaultCampaignEmailTemplate:boolean = true;
@@ -169,7 +170,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     selectedContactLists: any;
     id:number;
     previewContactListId : number;
-    public sheduleCampaignValues = ['NOW', 'SCHEDULE', 'SAVE'];
+    sheduleCampaignValues = ['NOW', 'SCHEDULE', 'SAVE'];
     isLaunched:boolean = false;
     lauchTabPreivewDivClass = "col-xs-12 col-sm-12 col-md-7 col-lg-7";
     loggedInUserId:number = 0;
@@ -179,9 +180,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     socialStatusList = new Array<SocialStatus>();
     socialStatusProviders = new Array<SocialStatusProvider>();
     isAllSelected: boolean = false;
-	isSocialEnable = false;
+	  isSocialEnable = false;
     statusMessage: string;
-
+    userListDTOObj = [];
 
 
     replies:Array<Reply> = new Array<Reply>();
@@ -208,6 +209,29 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     loading = false;
     isPartnerToo:boolean = false;
     httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
+
+     //Push Leads To Marketo
+     showMarketoForm: boolean;
+     clientId: string;
+     secretId: string;
+     marketoInstance: string;
+     clientIdClass: string;
+     secretIdClass: string;
+     marketoInstanceClass: string;
+   
+     templateError: boolean;
+     clentIdError: boolean;
+     secretIdError: boolean;
+     marketoInstanceError: boolean;
+     isModelFormValid: boolean;
+     templateSuccessMsg: any;
+     pushToMarketo = false;
+
+     loadingMarketo: boolean;
+     marketoButtonClass = "btn btn-default";
+ 
+     //ENABLE or DISABLE LEADS
+     enableLeads : boolean;
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder,public refService:ReferenceService,
                 private logger:XtremandLogger,private videoFileService:VideoFileService,
@@ -256,6 +280,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.isAdd = false;
             this.editedCampaignName = this.campaignService.campaign.campaignName;
             this.campaign = this.campaignService.campaign;
+            this.userListDTOObj = this.campaignService.campaign.userLists;
+            if(this.userListDTOObj===undefined){ this.userListDTOObj = [];}
             if(this.campaign.regularEmail){
                 this.campaignType = 'regular';
                 this.emailTemplatesPagination.filterBy = "CampaignRegularEmails";
@@ -436,6 +462,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 url.emailTemplatesPagination = new Pagination();
                 if(url.scheduled){
                     url.replyTime = this.campaignService.setHoursAndMinutesToAutoReponseReplyTimes(url.replyTimeInHoursAndMinutes);
+                }
+                if($.trim(url.subject).length==0){
+                  url.subject = campaign.subjectLine;
                 }
                 let length = this.allItems.length;
                 length = length+1;
@@ -1166,22 +1195,24 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.contactsPagination.searchKey = this.contactSearchInput;
         this.loadCampaignContacts(this.contactsPagination);
     }
-    highlightRow(contactId:number,event:any){
+    highlightRow(contactList:any,event:any){
+        let contactId = contactList.id;
         let isChecked = $('#'+contactId).is(':checked');
         if(isChecked){
             $('#campaignContactListTable_'+contactId).addClass('contact-list-selected');
             this.selectedContactListIds.push(contactId);
+            this.userListDTOObj.push(contactList);
         }else{
             $('#campaignContactListTable_'+contactId).removeClass('contact-list-selected');
             this.selectedContactListIds.splice($.inArray(contactId,this.selectedContactListIds),1);
+            this.userListDTOObj = this.refService.removeSelectedObjectFromList(this.userListDTOObj, contactId);
         }
         this.contactsUtility();
         event.stopPropagation();
-
-
     }
-    highlightContactRow(contactId:number,event:any,count:number,isValid:boolean){
-        if(isValid){
+    highlightContactRow(contactList:any,event:any,count:number,isValid:boolean){
+      let contactId = contactList.id;
+      if(isValid){
             this.emptyContactsMessage = "";
             if(count>0){
                 let isChecked = $('#'+contactId).is(':checked');
@@ -1191,12 +1222,14 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                     $('#campaignContactListTable_'+contactId).removeClass('contact-list-selected');
                     console.log("Revmoing"+contactId);
                     this.selectedContactListIds.splice($.inArray(contactId,this.selectedContactListIds),1);
-              }else{
+                    this.userListDTOObj= this.refService.removeSelectedObjectFromList(this.userListDTOObj, contactId);
+                  }else{
                   //Highlighting Row
                   $('#'+contactId).prop( "checked", true );
                   $('#campaignContactListTable_'+contactId).addClass('contact-list-selected');
                   console.log("Adding"+contactId);
                   this.selectedContactListIds.push(contactId);
+                  this.userListDTOObj.push(contactList);
               }
                 this.contactsUtility();
                 event.stopPropagation();
@@ -1229,16 +1262,16 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             $('[name="campaignContact[]"]').prop('checked', true);
             this.isContactList = true;
             let self = this;
-            $('[name="campaignContact[]"]:checked').each(function(){
+            $('[name="campaignContact[]"]:checked').each(function(index){
                 var id = $(this).val();
                 self.selectedContactListIds.push(parseInt(id));
+                self.userListDTOObj.push(self.contactsPagination.pagedItems[index]);
                 console.log(self.selectedContactListIds);
                 $('#campaignContactListTable_'+id).addClass('contact-list-selected');
              });
             this.selectedContactListIds = this.refService.removeDuplicates(this.selectedContactListIds);
-            if(this.selectedContactListIds.length==0){
-                this.isContactList = false;
-            }
+            if(this.selectedContactListIds.length==0){ this.isContactList = false; }
+            this.userListDTOObj = this.refService.removeDuplicates( this.userListDTOObj );
         }else{
             $('[name="campaignContact[]"]').prop('checked', false);
             $('#user_list_tb tr').removeClass("contact-list-selected");
@@ -1249,6 +1282,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 this.selectedContactListIds = this.refService.removeDuplicates(this.selectedContactListIds);
                 let currentPageContactIds = this.contactsPagination.pagedItems.map(function(a) {return a.id;});
                 this.selectedContactListIds = this.refService.removeDuplicatesFromTwoArrays(this.selectedContactListIds, currentPageContactIds);
+                this.userListDTOObj =  this.refService.removeDuplicatesFromTwoArrays(this.userListDTOObj, this.contactsPagination.pagedItems);
                 if(this.selectedContactListIds.length==0){
                     this.isContactList = false;
                 }
@@ -1263,7 +1297,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     /*******************************Preview*************************************/
     contactListItems:any[];
       loadUsers(id:number,pagination:Pagination, ListName){
-         this.loading = true;
+         //this.loading = true;
          if(id==undefined){
               id=this.previewContactListId;
           }else{
@@ -1273,7 +1307,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
           this.contactService.loadUsersOfContactList( id,this.contactsUsersPagination).subscribe(
                   (data:any) => {
                       console.log(data);
-                      this.loading = false;
+                      //this.loading = false;
                       console.log(pagination);
                       this.contactListItems = data.listOfUsers;
                       console.log(this.contactListItems);
@@ -1512,35 +1546,34 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
 
 
     getEmailTemplatePreview(emailTemplate:EmailTemplate){
-        let body = emailTemplate.body;
-        let emailTemplateName = emailTemplate.name;
-        if(emailTemplateName.length>50){
-            emailTemplateName = emailTemplateName.substring(0, 50)+"...";
-        }
-        this.selectedEmailTemplateName = emailTemplateName;
-        $("#htmlContent").empty();
-        $("#email-template-title").empty();
-        $("#email-template-title").append(emailTemplateName);
-        $('#email-template-title').prop('title',emailTemplate.name);
-        let updatedBody = this.refService.showEmailTemplatePreview(this.campaign, this.campaignType, this.launchVideoPreview.gifImagePath, emailTemplate.body);
-       /* if(this.campaignType=='video'){
-            let selectedVideoGifPath = this.launchVideoPreview.gifImagePath;
-            updatedBody = emailTemplate.body.replace("<SocialUbuntuImgURL>",selectedVideoGifPath);
-            updatedBody = updatedBody.replace("&lt;SocialUbuntuURL&gt;","javascript:void(0)");
-            updatedBody = updatedBody.replace("<SocialUbuntuURL>","javascript:void(0)");
-            updatedBody = updatedBody.replace("https://dummyurl.com","javascript:void(0)");
-            updatedBody = updatedBody.replace("https://xamp.io/vod/images/xtremand-video.gif",selectedVideoGifPath);
-            updatedBody = updatedBody.replace("&lt;SocialUbuntuImgURL&gt;",selectedVideoGifPath);
-        }else{
-            updatedBody = emailTemplate.body.replace("<div id=\"video-tag\">","<div id=\"video-tag\" style=\"display:none\">");
-        }
-        if(!this.campaign.enableCoBrandingLogo){
-            updatedBody = updatedBody.replace("<a href=\"https://dummycobrandingurl.com\"","<a href=\"https://dummycobrandingurl.com\" style=\"display:none\"");
-        }*/
-        $("#htmlContent").append(updatedBody);
-        $('.modal .modal-body').css('overflow-y', 'auto');
-        $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
-        $("#show_email_template_preivew").modal('show');
+        this.ngxloading = true;
+        this.emailTemplateService.getAllCompanyProfileImages(this.loggedInUserId).subscribe(
+                ( data: any ) => {
+                    console.log(data);
+                    let body = emailTemplate.body;
+                    let self  =this;
+                    $.each(data,function(index,value){
+                        body = body.replace(value,self.authenticationService.MEDIA_URL + self.refService.companyProfileImage);
+                    });
+                    body = body.replace("https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL + this.refService.companyProfileImage);
+                    let emailTemplateName = emailTemplate.name;
+                    if(emailTemplateName.length>50){
+                        emailTemplateName = emailTemplateName.substring(0, 50)+"...";
+                    }
+                    this.selectedEmailTemplateName = emailTemplateName;
+                    $("#htmlContent").empty();
+                    $("#email-template-title").empty();
+                    $("#email-template-title").append(emailTemplateName);
+                    $('#email-template-title').prop('title',emailTemplate.name);
+                    let updatedBody = this.refService.showEmailTemplatePreview(this.campaign, this.campaignType, this.launchVideoPreview.gifImagePath, body);
+                    $("#htmlContent").append(updatedBody);
+                    $('.modal .modal-body').css('overflow-y', 'auto');
+                    $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
+                    $("#show_email_template_preivew").modal('show');
+                    this.ngxloading = false;
+                },
+                error => { this.ngxloading = false;this.logger.error("error in getAllCompanyProfileImages("+this.loggedInUserId+")", error); },
+                () =>  this.logger.info("Finished getAllCompanyProfileImages()"));
     }
     filterTemplates(type:string,index:number){
        if(type=="BASIC"){
@@ -1642,13 +1675,16 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     }
 
     setEmailTemplate(emailTemplate:EmailTemplate){
-        $('#emailTemplateContent').html('');
-        this.emailTemplateHrefLinks = [];
-        this.getAnchorLinksFromEmailTemplate(emailTemplate.body);
-        this.setEmailTemplateData(emailTemplate);
-        if(this.emailTemplateHrefLinks.length == 0){
-            this.urls = [];
-        }
+     if(!emailTemplate.draft){
+         $('#emailTemplateContent').html('');
+         this.emailTemplateHrefLinks = [];
+         this.getAnchorLinksFromEmailTemplate(emailTemplate.body);
+         this.setEmailTemplateData(emailTemplate);
+         if(this.emailTemplateHrefLinks.length == 0){
+             this.urls = [];
+         }
+     }
+        
        /* if(this.emailTemplateHrefLinks.length==0){
             let self = this;
             swal( {
@@ -1744,7 +1780,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.selectedContactListIds = this.refService.removeDuplicates(this.selectedContactListIds);
         let timeZoneId = "";
         let scheduleTime:any;
-        if( this.campaignLaunchForm.value.scheduleCampaign=="NOW" || this.campaignLaunchForm.value.scheduleCampaign=="SAVE"){
+        if( this.campaignLaunchForm.value.scheduleCampaign=="NOW" || this.campaignLaunchForm.value.scheduleCampaign=="SAVE" || this.campaignLaunchForm.value.scheduleCampaign==""){
             let intlTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
             if(intlTimeZone!=undefined){
                 timeZoneId = intlTimeZone;
@@ -1813,7 +1849,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             'campaignType':campaignType,
             'country':country,
             'createdFromVideos':this.campaign.createdFromVideos,
-            'nurtureCampaign':false
+            'nurtureCampaign':false,
+            'pushToMarketo':this.pushToMarketo
         };
         console.log(data);
         return data;
@@ -2015,16 +2052,16 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
 
 
     addUserEmailIds(){
-        let self = this;
-        self.selectedContactLists = [];
-        $('[name="campaignContact[]"]:checked').each(function(index){
-            var id = $(this).val();
-            var name = $(this)[0].lang;
-            var  contactList = {'id':id,'name':name};
-            if(self.selectedContactLists.length<=1){
-                self.selectedContactLists.push(contactList);
-            }
-         });
+        // let self = this;
+        // self.selectedContactLists = [];
+        // $('[name="campaignContact[]"]:checked').each(function(index){
+        //     var id = $(this).val();
+        //     var name = $(this)[0].lang;
+        //     var  contactList = {'id':id,'name':name};
+        //     if(self.selectedContactLists.length<=1){
+        //         self.selectedContactLists.push(contactList);
+        //     }
+        //  });
         if(this.campaignType=="video"){
             this.playVideo();
         }
@@ -2038,9 +2075,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         if(!this.hasInternalError && this.router.url!="/"){
             if(!this.isReloaded){
                 if(!this.isLaunched){
-                    if(this.isAdd){
-                        this.saveCampaignOnDestroy();
-                    }else{
+                    // if(this.isAdd){
+                    //     this.saveCampaignOnDestroy();
+                    // }else{
                         let self = this;
                         swal( {
                             title: 'Are you sure?',
@@ -2061,7 +2098,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                                 self.reInitialize();
                             }
                         })
-                    }
+                    // }
                  }
             }
          }
@@ -2337,6 +2374,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.url.divId = id;
             this.url.scheduled = false;
             this.url.actionId = 19;
+            this.url.subject = this.refService.replaceMultipleSpacesWithSingleSpace(this.campaign.subjectLine);
             this.url.url = this.emailTemplateHrefLinks[0];
             this.urls.push(this.url);
             this.allItems.push(id);
@@ -2440,12 +2478,12 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
      setLoggedInUserEmailId(){
          const userProfile = this.authenticationService.userProfile;
          this.campaign.email = userProfile.emailId;
-         if(userProfile.firstName !== undefined && userProfile.lastName !== undefined)
-             this.campaign.fromName = $.trim(userProfile.firstName + " " + userProfile.lastName);
-         else if(userProfile.firstName !== undefined && userProfile.lastName == undefined)
-             this.campaign.fromName = $.trim(userProfile.firstName);
-         else
-             this.campaign.fromName = $.trim(userProfile.emailId);
+         if(userProfile.firstName !== undefined && userProfile.lastName !== undefined){
+             this.campaign.fromName = $.trim(userProfile.firstName + " " + userProfile.lastName);}
+         else if(userProfile.firstName !== undefined && userProfile.lastName == undefined){
+             this.campaign.fromName = $.trim(userProfile.firstName); }
+         else {
+             this.campaign.fromName = $.trim(userProfile.emailId); }
          this.setEmailIdAsFromName();
      }
 
@@ -2497,6 +2535,211 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
          }
      return false;
      }
+
+
+    
+    /**
+     * 
+     * Push Leads to Marketo
+     */
+
+    pushMarketo(event: any)
+    {
+        this.pushToMarketo =  !this.pushToMarketo;
+        console.log(this.pushToMarketo);
+       
+        if (this.pushToMarketo)
+        {
+            this.checkMarketoCredentials();
+        }
+    }
+
+
+    clearValues()
+    {
+        this.clientId = '';
+        this.secretId = '';
+        this.marketoInstance = '';
+        this.clientIdClass = "form-group";
+        this.secretIdClass = "form-group";
+        this.marketoInstanceClass = "form-group";
+
+    }
+    checkMarketoCredentials()
+    {
+        this.loadingMarketo = true;
+        this.emailTemplateService.checkMarketoCredentials(this.authenticationService.getUserId()).subscribe(response =>
+        {
+            if (response.statusCode == 8000)
+            {
+                this.loading = true;
+                this.emailTemplateService.checkCustomObjects(this.authenticationService.getUserId()).subscribe(customObjectResponse =>
+                    {
+                        if (customObjectResponse.statusCode == 8020){
+                            this.pushToMarketo =  true;
+                            console.log(this.pushToMarketo);
+                           
+                            this.templateError = false;
+                            this.loading = false;
+                        }else{
+                            this.pushToMarketo = false;
+                           
+                            this.templateError = false;
+                            this.loading = false;
+                            alert("Custome Objects are not found")
+                        }
+
+                    }, error =>
+                    {
+                        this.pushToMarketo = false;
+                        this.templateError = error;
+                       
+                        this.loadingMarketo = false;
+                    })
+               
+            }
+            else
+            {
+                this.pushToMarketo = false;
+               
+                $("#templateRetrieve").modal('show');
+                $("#closeButton").show();
+                this.templateError = false;
+                this.loadingMarketo = false;
+
+            }
+        }, error =>
+            {
+                this.pushToMarketo = false;
+                this.templateError = error;
+                $("#templateRetrieve").modal('show');
+                $("#closeButton").show();
+                this.loadingMarketo = false;
+            })
+    }
+
+
+    submitMarketoCredentials()
+    {
+        this.loadingMarketo = true;
+        const obj = {
+            userId: this.authenticationService.getUserId(),
+            instanceUrl: this.marketoInstance,
+            clientId: this.clientId,
+            clientSecret: this.secretId
+        }
+
+        this.emailTemplateService.saveMarketoCredentials(obj).subscribe(response =>
+        {
+            if (response.statusCode == 8003)
+            {
+                $("#closeButton").hide();
+                this.showMarketoForm = false;
+                this.pushToMarketo = true;
+                this.templateError = false;
+                this.templateSuccessMsg = response.message;
+                this.loadingMarketo = false;
+                
+                setTimeout(function () { $("#templateRetrieve").modal('hide') }, 3000);
+            } else
+            {
+                this.pushToMarketo = false;
+                $("#templateRetrieve").modal('show');
+                $("#closeButton").show();
+                this.templateError = response.message;
+                this.templateSuccessMsg = false;
+                this.loadingMarketo = false;
+            }
+        }, error =>
+        {
+        this.templateError = error;
+            this.pushToMarketo = false;
+            $("#closeButton").show();
+            this.loadingMarketo = false;
+        }
+        )
+
+    }
+    getTemplatesFromMarketo()
+    {
+        this.clearValues();
+
+        this.checkMarketoCredentials();
+
+
+
+    }
+
+
+    validateModelForm(fieldId: any)
+    {
+        var errorClass = "form-group has-error has-feedback";
+        var successClass = "form-group has-success has-feedback";
+
+        if (fieldId == 'email')
+        {
+            if (this.clientId.length > 0)
+            {
+                this.clientIdClass = successClass;
+                this.clentIdError = false;
+            } else
+            {
+                this.clientIdClass = errorClass;
+                this.clentIdError = true;
+            }
+        } else if (fieldId == 'pwd')
+        {
+            if (this.secretId.length > 0)
+            {
+                this.secretIdClass = successClass;
+                this.secretIdError = false;
+            } else
+            {
+                this.secretIdClass = errorClass;
+                this.secretIdError = true;
+            }
+        } else if (fieldId == 'instance')
+        {
+            if (this.marketoInstance.length > 0)
+            {
+                this.marketoInstanceClass = successClass;
+                this.marketoInstanceError = false;
+            } else
+            {
+                this.marketoInstanceClass = errorClass;
+                this.marketoInstanceError = false;
+            }
+        }
+        this.toggleSubmitButtonState();
+    }
+
+
+    saveMarketoTemplatesButtonState()
+    {
+
+
+    }
+
+
+    toggleSubmitButtonState()
+    {
+        if (!this.clentIdError && !this.secretIdError && !this.marketoInstanceError)
+            {
+            this.isModelFormValid = true;
+            this.marketoButtonClass = "btn btn-primary";
+            }
+        else
+        {
+            this.isModelFormValid = false;
+            this.marketoButtonClass = "btn btn-default";
+        }
+
+    }
+    closeModal()
+    {
+        this.pushToMarketo = false;
+        $("#templateRetrieve").modal('hide');
+    }
 
 
 }

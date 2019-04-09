@@ -69,7 +69,7 @@ export class PartnerReportsComponent implements OnInit {
     Highcharts.chart('campaign-type-chart', {
       chart: { type: 'bar' },
       xAxis: {
-        categories: ['VIDEO CAMPAIGN', 'SOCIAL CAMPAIGN', 'EMAIL CAMPAIGN'],
+        categories: ['VIDEO CAMPAIGN', 'SOCIAL CAMPAIGN', 'EMAIL CAMPAIGN', 'EVENT CAMPAIGN'],
         lineWidth: 0,
         minorTickLength: 0,
         tickLength: 0,
@@ -80,7 +80,7 @@ export class PartnerReportsComponent implements OnInit {
         visible: false,
         gridLineWidth: 0,
       },
-      colors: ['#ffb600', '#be72d3', '#ff3879'],
+      colors: ['#ffb600', '#be72d3', '#ff3879', '#357ebd'],
       tooltip: {
         formatter: function () {
             return 'Campaign Type: <b>' + this.point.category + '</b><br>Campaigns Count: <b>' + this.point.y;
@@ -104,6 +104,7 @@ export class PartnerReportsComponent implements OnInit {
         campaignData.push(data.partnersLaunchedCampaignsByCampaignType.VIDEO);
         campaignData.push(data.partnersLaunchedCampaignsByCampaignType.SOCIAL);
         campaignData.push(data.partnersLaunchedCampaignsByCampaignType.REGULAR);
+        campaignData.push(data.partnersLaunchedCampaignsByCampaignType.EVENT);
         this.campaignTypeChart(campaignData);
       },
       (error: any) => { console.log('error got here') });
@@ -254,6 +255,10 @@ export class PartnerReportsComponent implements OnInit {
       this.campaignService.listCampaign(pagination,this.loggedInUserId)
           .subscribe(
               data => {
+                $.each(data.campaigns,function(index,campaign){
+                    campaign.displayTime = new Date(campaign.utcTimeInString);
+                    campaign.createdDate = new Date(campaign.createdDate);
+                });
                   this.sortOption.totalRecords = data.totalRecords;
                   pagination.totalRecords = data.totalRecords;
                   pagination = this.pagerService.getPagedItems(pagination, data.campaigns);
@@ -366,6 +371,11 @@ export class PartnerReportsComponent implements OnInit {
               (response: any) => {
                pagination.totalRecords = response.totalRecords;
                console.log(response);
+               if(response.inactivePartnerList.length === 0){
+                   this.customResponse = new CustomResponse( 'INFO','No Partner(s) found', true );
+               }else {
+                   this.customResponse = new CustomResponse();
+               }
                for ( var i in response.inactivePartnerList) {
                    response.inactivePartnerList[i].contactCompany = response.inactivePartnerList[i].partnerCompanyName;
                }
@@ -436,6 +446,9 @@ export class PartnerReportsComponent implements OnInit {
           ( response: any ) => {
               console.log(response);
               let data  = response.data;
+              $.each(data.redistributedCampaigns,function(index,campaign){
+                  campaign.redistributedOn = new Date(campaign.redistributedUtcString);
+              });
               this.sortOption.totalRecords = data.totalRecords;
               pagination.totalRecords = data.totalRecords;
               pagination = this.pagerService.getPagedItems(pagination, data.redistributedCampaigns);

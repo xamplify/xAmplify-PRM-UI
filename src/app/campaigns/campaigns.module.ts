@@ -24,6 +24,13 @@ import { EventCampaignComponent } from './event-campaign/event-campaign.componen
 import { ReDistributedComponent } from './analytics/re-distributed/re-distributed.component';
 import { PreviewPartnersComponent } from './preview-partners/preview-partners.component';
 import { CalendarComponent } from './calendar/calendar.component';
+import { DealRegistrationComponent } from '../deal-registration/add-deals/deal-registration.component';
+import { DealRegistrationService } from '../deal-registration/services/deal-registration.service';
+import { SharedLibraryModule } from "../shared/shared-library.module";
+import { DealRegistrationModule } from "../deal-registration/deal-registration.module";
+import { ManageDealCommentsComponent } from "../deal-registration/manage-deal-comments/manage-deal-comments.component";
+import { AddLeadsComponent } from "../deal-registration/add-leads/add-leads.component";
+import { MarketoAuthenticationComponent } from "../deal-registration/marketo-authentication/marketo-authentication.component";
 
 @NgModule({
   imports: [
@@ -32,7 +39,8 @@ import { CalendarComponent } from './calendar/calendar.component';
     CampaignsRoutingModule,
     CKEditorModule,
     CommonComponentModule,
-    ErrorPagesModule
+    ErrorPagesModule,
+    SharedLibraryModule
   ],
   declarations: [
     ManagePublishComponent,
@@ -48,9 +56,14 @@ import { CalendarComponent } from './calendar/calendar.component';
     EventCampaignComponent,
     ReDistributedComponent,
     PreviewPartnersComponent,
-    CalendarComponent
+    CalendarComponent,
+    DealRegistrationComponent,
+    ManageDealCommentsComponent,
+    AddLeadsComponent,
+    MarketoAuthenticationComponent
   ],
-  exports: [],
-  providers: [ContactService, VideoFileService, EmailTemplateService]
+  exports: [DealRegistrationComponent,BubbleChartComponent,HeatMapComponent,ManageDealCommentsComponent,AddLeadsComponent
+  ,MarketoAuthenticationComponent],
+  providers: [ContactService, VideoFileService, EmailTemplateService,DealRegistrationService]
 })
 export class CampaignsModule {}

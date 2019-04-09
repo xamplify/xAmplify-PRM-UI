@@ -19,9 +19,9 @@ export class LogRegularCampaignComponent implements OnInit {
   templateId: number;
   templatehtml: string;
   alias: string;
-  errorHtml = '<div class="portlet light" style="padding:5px 5px 190px 17px">' +
-  '<h3 style="color:blue;text-align: center;margin-top:204px;" >Sorry!!!. This regular email template campaign has been removed</h3></div>';
-
+    errorHtml =  '<div class="page-content"><div class="portlet light" style="border: navajowhite;">' +
+    ' <div class="portlet-body clearfix">' +
+    '<h3 style="color: blue;text-align: center;margin-top: 150px;font-weight: bold;" >Sorry !This campaign has been removed</h3></div></div></div>';
   constructor(public xtremandLogger: XtremandLogger, public activatedRoute: ActivatedRoute,
           public videoFileService: VideoFileService,public referenceService:ReferenceService,public processor:Processor) {
     this.xtremandLogger.log('Ui regular campaign called');
@@ -60,8 +60,10 @@ export class LogRegularCampaignComponent implements OnInit {
               document.getElementById('regular-campaign').innerHTML = this.templatehtml;
               this.processor.remove(this.processor);
         }, (error: any) => {
-          this.xtremandLogger.error('log regular campaign component: regular campaign():' + error);
-           document.getElementById('regular-campaign').innerHTML = this.errorHtml;
+           console.log(error);
+            this.xtremandLogger.error('log regular campaign component: regular campaign():' + error);
+            document.getElementById('regular-campaign').innerHTML = this.errorHtml;
+           this.processor.remove(this.processor);
           // this.xtremandLogger.errorPage(error);
         },
         () => console.log('getRegularTemplateHtml method completed:')
@@ -69,6 +71,7 @@ export class LogRegularCampaignComponent implements OnInit {
     } catch (error) {
       this.xtremandLogger.error('error in showCampaign method :' + error);
       document.getElementById('regular-campaign').innerHTML = this.errorHtml;
+      this.processor.remove(this.processor);
     }
   }
 }

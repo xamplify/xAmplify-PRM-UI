@@ -12,6 +12,7 @@ export class TeamMember{
     stats:boolean = false;
     socialShare:boolean = false;
     partners:boolean = false;
+    opportunity:boolean=false;
     all:boolean = false;
     teamMemberId:number;
     allSelected:boolean =false;

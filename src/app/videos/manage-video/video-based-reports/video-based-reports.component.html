@@ -124,7 +124,7 @@
 						<tbody>
 							<ng-container *ngFor="let videoViews of viewsMinutesData; let i = index">
 								<tr (click)="clickedMinutesWatched(videoViews.userId)">
-									<td class="td-new td-chart" width="30%" height="10">{{videoViews.firstName}} {{videoViews.lastName}}</td>
+									<td class="td-new td-chart" width="30%" height="10">{{videoViews.firstName}} {{videoViews.lastName}}<span *ngIf="!videoViews.firstName && !videoViews.lastName">{{videoViews.emailId}}</span></td>
 									<td class="td-new td-chart td-color" [style.opacity]="(videoViews.views/viewsMaxValues)">{{videoViews.views}}</td>
 									<td class="td-new td-chart"><span class="minutesWatched">{{videoViews.minutesWatched}}</span>
                     <div class="minutes-color" [style.width.%]="(videoViews.minutesWatched/maxValueViews)*100"
@@ -132,7 +132,8 @@
 									</td>
 								</tr>
 							</ng-container>
-						</tbody>
+            </tbody>
+            <span  style="position: absolute;padding: 122px 209px;" *ngIf="viewsMinutesData.length==0">No date available</span>
 					</table>
 				</div>
 			</div>

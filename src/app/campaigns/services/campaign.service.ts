@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, RequestOptions, Response } from '@angular/http';
+import { Http,Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
@@ -9,7 +9,7 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 import { Campaign } from '../models/campaign';
 import { Pagination } from '../../core/models/pagination';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
-declare var swal, $, videojs, Metronic, Layout, Demo, TableManaged, Promise, jQuery: any;
+declare var swal, $, Promise: any;
 @Injectable()
 export class CampaignService {
 
@@ -61,7 +61,8 @@ export class CampaignService {
     }
 
     getCampaignById(data: any) {
-        return this.http.post(this.URL + "admin/getCampaignById?access_token=" + this.authenticationService.access_token, data)
+         console.log(data)
+        return this.http.post(this.URL + "admin/getCampaignById?access_token=" + this.authenticationService.access_token,data)
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -73,13 +74,25 @@ export class CampaignService {
       .map(this.extractData)
       .catch(this.handleError);
     }
+    getPreviewCampaignById(data:any, type:string){
+      if(type === "EVENT") {
+        let eventUrl = this.URL + "campaign/get-event-campaign/"+data.campaignId+"?access_token=" + this.authenticationService.access_token;
+        if(this.reDistributeEvent){ this.reDistributeEvent = false; eventUrl = this.URL + "campaign/get-partner-campaign/"+data.campaignId+"/"+this.authenticationService.user.id+"?access_token=" + this.authenticationService.access_token }
+        return this.http.get(eventUrl)
+        .map(this.extractData)
+        .catch(this.handleError);
+      } else {
+        return this.http.post(this.URL + "admin/getCampaignById?access_token=" + this.authenticationService.access_token, data)
+        .map(this.extractData)
+        .catch(this.handleError);
+      }
+    }
 
     getParnterCampaignById(data: any) {
         return this.http.post(this.URL + "admin/getPartnerCampaignById?access_token=" + this.authenticationService.access_token, data)
             .map(this.extractData)
             .catch(this.handleError);
     }
-
 
     getCampaignNames(userId: number) {
         return this.http.get(this.URL + "admin/listCampaignNames/" + userId + "?access_token=" + this.authenticationService.access_token)
@@ -213,11 +226,19 @@ export class CampaignService {
             .catch(this.handleError);
     }
 
-    saveAsCampaign(campaign: Campaign) {
-        return this.http.post(this.URL + `campaign/saveas?access_token=${this.authenticationService.access_token}`, campaign)
+    saveAsCampaign(campaign:any) {
+      let campaignURL:any;
+      if(campaign.campaignType==='EVENT') { campaignURL = this.URL + `campaign/save-as-event-campaign?access_token=${this.authenticationService.access_token}`;
+      } else { campaignURL = this.URL + `campaign/saveas?access_token=${this.authenticationService.access_token}`; }
+      return this.http.post(campaignURL, campaign)
             .map(this.extractData)
             .catch(this.handleError);
     }
+    saveAsEventCampaign(campaign:any) {
+      return this.http.post(this.URL + `campaign/save-as-event-campaign?access_token=${this.authenticationService.access_token}`, campaign)
+          .map(this.extractData)
+          .catch(this.handleError);
+   }
     getCampaignUserWatchedMinutes(campaignId: number, type: string) {
         const url = this.URL + 'campaign/' + campaignId + '/bubble-chart-data?type=' + type + '&access_token=' + this.authenticationService.access_token;
         return this.http.get(url)
@@ -267,9 +288,20 @@ export class CampaignService {
         return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);
-
-
     }
+
+    cancelEvent(cancelEventData: any, userId: number) {
+        var url = this.URL + "campaign/cancel-event-campaign/" + userId + "?access_token=" + this.authenticationService.access_token;
+        return this.http.post(url, cancelEventData)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    sendEmailNotOpenReminder(data: any) {
+        return this.http.post(this.URL + "campaign/send-event-reminder?access_token=" + this.authenticationService.access_token, data)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
 
     getEventCampaignDetailsByCampaignId(campaignId: number, isChannelCampaign: boolean) {
         const url = this.URL + 'campaign/' + campaignId + '/rsvp-details?access_token=' + this.authenticationService.access_token + '&channelCampaign=' + isChannelCampaign;
@@ -300,33 +332,47 @@ export class CampaignService {
     }
 
     getEventCampaignEmailOpenDetails(campaignId: number, isChannelCampaign: boolean, pagination: Pagination) {
-        const url = this.URL + 'campaign/' + campaignId + "/rsvp-email-open-details?access_token=" + this.authenticationService.access_token + "&channelCampaign=" + isChannelCampaign;
+        const url = this.URL + 'campaign/' + campaignId + "/rsvp-email-open-details?access_token=" + this.authenticationService.access_token + "&channelCampaign=" + isChannelCampaign+"&type=OPEN";
+        return this.http.post(url, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    getEventCampaignEmailNotOpenDetails(campaignId: number, isChannelCampaign: boolean, pagination: Pagination) {
+        const url = this.URL + 'campaign/' + campaignId + "/rsvp-email-open-details?access_token=" + this.authenticationService.access_token + "&channelCampaign=" + isChannelCampaign+"&type=NOTOPEN";
         return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);
     }
 
     getEventCampaignRedistributionEmailOpenDetails(campaignId: number, userId: any, pagination: Pagination) {
-        const url = this.URL + 'campaign/' + campaignId +'/'+ userId + "/rsvp-email-open-details?access_token=" + this.authenticationService.access_token;
+        const url = this.URL + 'campaign/' + campaignId +'/'+ userId + "/rsvp-email-open-details?access_token=" + this.authenticationService.access_token+"&type=OPEN";
         return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);
     }
-    
+
+    getEventCampaignRedistributionEmailNotOpenDetails(campaignId: number, userId: any, pagination: Pagination) {
+        const url = this.URL + 'campaign/' + campaignId +'/'+ userId + "/rsvp-email-open-details?access_token=" + this.authenticationService.access_token+"&type=NOTOPEN";
+        return this.http.post(url, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
     getEventCampaignRedistributionInvitiesDetails(campaignId: number, userId: any, pagination: Pagination) {
         const url = this.URL + 'campaign/users-details/' + campaignId +'/'+ userId + "?access_token=" + this.authenticationService.access_token;
         return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);
     }
-    
+
     getEventCampaignPartnerInvitiesDetails(campaignId: number, pagination: Pagination) {
         const url = this.URL + 'campaign/partners-info/' + campaignId + "?access_token=" + this.authenticationService.access_token;
         return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);
     }
-    
+
     getEventCampaignTotalInvitiesDetails(campaignId: number, pagination: Pagination) {
         const url = this.URL + 'campaign/partners-users-info/' + campaignId + "?access_token=" + this.authenticationService.access_token;
         return this.http.post(url, pagination)
@@ -364,7 +410,6 @@ export class CampaignService {
 
     private extractData(res: Response) {
         let body = res.json();
-        console.log(body);
         return body || {};
     }
 
@@ -375,7 +420,7 @@ export class CampaignService {
 
     /*********Common Methods***********/
     setLaunchTime() {
-        let date = new Date();
+       /* let date = new Date();
         let year = date.getFullYear();
         let currentMonth = date.getMonth() + 1;
         let month = currentMonth < 10 ? '0' + currentMonth : currentMonth;
@@ -383,8 +428,22 @@ export class CampaignService {
         let hours = date.getHours() > 9 ? date.getHours() : '0' + date.getHours();
         let minutes = date.getMinutes() > 9 ? date.getMinutes() : '0' + date.getMinutes();
         let am_pm = date.getHours() > 11 ? 'PM' : 'AM';
-        return month + "/" + day + "/" + year + " " + hours + ":" + minutes + " "+am_pm;
+        return month + "/" + day + "/" + year + " " + hours + ":" + minutes + " "+am_pm;*/
 
+
+        let date = new Date();
+        let today = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();;
+        let currentMonth =  date.getMonth()+1;
+        let month = currentMonth < 10 ? '0' + currentMonth : currentMonth;
+        let year = date.getFullYear();
+        let hours = date.getHours();
+        let mintues = date.getMinutes();
+        let ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12;
+        hours = hours ? hours : 12;
+        let mintuesInString = mintues < 10 ? '0'+mintues : mintues;
+        var currentDateTime = month + '/' + today + '/' + year + ' ' + hours + ':' + mintuesInString + ' ' + ampm;
+        return currentDateTime;
     }
     setHoursAndMinutesToAutoReponseReplyTimes(timeAndHoursString: string) {
         let date = new Date();
@@ -454,6 +513,7 @@ export class CampaignService {
             data['testEmailId'] = emailId;
             data['userId'] = campaign.userId;
             data['selectedVideoId'] = campaign.selectedVideoId;
+            data['parentCampaignId'] = campaign.parentCampaignId;
             this.sendTestEmail(data)
                 .subscribe(
                 data => {
@@ -517,8 +577,14 @@ export class CampaignService {
             .catch(this.handleError);
     }
 
-    createEventCampaign(eventCampaign: any) {
-        return this.http.post(this.URL + `campaign/save-event-campaign?access_token=${this.authenticationService.access_token}`, eventCampaign)
+    createEventCampaign(eventCampaign: any, eventUpdate: boolean) {
+        let eventUrl;
+        if(eventUpdate){
+            eventUrl = this.URL + "campaign/update-event-campaign?access_token=" + this.authenticationService.access_token;
+        }else{
+            eventUrl = this.URL + `campaign/save-event-campaign?access_token=${this.authenticationService.access_token}`
+        }
+        return this.http.post(eventUrl, eventCampaign)
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -544,13 +610,8 @@ export class CampaignService {
           .catch(this.handleError);
   }
 
-  getCampaignCalendarView(userId: number){
-      return this.http.get(this.URL + `campaign/calendar/${userId}?access_token=${this.authenticationService.access_token}` )
-          .map(this.extractData)
-          .catch(this.handleError);
-  }
-  saveAsEventCampaign(campaign:any) {
-      return this.http.post(this.URL + `campaign/save-as-event-campaign?access_token=${this.authenticationService.access_token}`, campaign)
+  getCampaignCalendarView(request: any){
+      return this.http.post(this.URL + `campaign/calendar?access_token=${this.authenticationService.access_token}`, request )
           .map(this.extractData)
           .catch(this.handleError);
   }

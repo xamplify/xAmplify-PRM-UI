@@ -4,6 +4,7 @@ import { DashboardReport } from "../../core/models/dashboard-report";
 
 import { DashboardService } from "../dashboard.service";
 import { AuthenticationService } from "../../core/services/authentication.service";
+import { XtremandLogger } from "app/error-pages/xtremand-logger.service";
 
 @Component({
   selector: "app-dashboard-stats",
@@ -13,11 +14,11 @@ import { AuthenticationService } from "../../core/services/authentication.servic
 export class DashboardStatsComponent implements OnInit {
   dashboardReport: DashboardReport = new DashboardReport();
   isAdmin: boolean;
-  constructor(
-    public router: Router,
-    public dashboardService: DashboardService,
-    public authenticationService: AuthenticationService
-  ) {}
+  isTeamMember = false;
+  constructor(public router: Router,public xtremandLogger:XtremandLogger,public dashboardService: DashboardService,
+    public authenticationService: AuthenticationService) {
+    if(this.authenticationService.showRoles() === 'Team Member') { this.isTeamMember = true;}
+  }
 
   dashboardReportsCount() {
     let userId = this.authenticationService.user.id;
@@ -37,8 +38,8 @@ export class DashboardStatsComponent implements OnInit {
         this.dashboardReport.totalCompanyPartnersCount = data.totalCompanyPartnersCount;
         this.dashboardReport.vendorsCount = data.vendorsCount;
       },
-      error => console.log(error),
-      () => console.log("dashboard reports counts completed")
+      error => this.xtremandLogger.log(error),
+      () => this.xtremandLogger.log("dashboard reports counts completed")
     );
   }
 
@@ -53,14 +54,18 @@ export class DashboardStatsComponent implements OnInit {
     }
   }
 
+  navigateToVendor(){
+    if (this.dashboardReport.vendorsCount > 0)
+    { this.router.navigate(["/home/dashboard/vendors"]);   }
+  }
   navigateToPartner() {
     if ( !this.authenticationService.isOnlyPartner() && this.dashboardReport.totalCompanyPartnersCount > 0) {
       this.router.navigate(["/home/partners/analytics"]);
     } else if (this.authenticationService.isOnlyPartner() && this.dashboardReport.vendorsCount > 0)
-    { console.log("go to vendors page");
+    { this.xtremandLogger.log("go to vendors page");
       this.router.navigate(["/home/dashboard/vendors"]); // un comment for vendor page
     } else {
-      console.log("go to prtner page");
+      this.xtremandLogger.log("go to prtner page");
       // this.router.navigate(["/home/partners/analytics"]);
     }
   }

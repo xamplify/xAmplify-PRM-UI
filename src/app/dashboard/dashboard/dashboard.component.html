@@ -139,6 +139,8 @@
               </div>
               <div class="col-xs-12" *ngIf="userCampaignReport.campaignReportOption == 'CUSTOM'">
                 <hr>
+                <div [hidden]="launchedCampaignsMaster?.length==0">
+                <div style="margin-bottom: 10px;"><span>Select up to 4 campaigns by dragging & dropping</span></div>
                 <div class="wrapper">
                   <div class="col-xs-6" style="padding: 0 5px 0 0">
                     <div class="portlet light border-radius-0">
@@ -159,7 +161,7 @@
                           <b>(MAX 4)</b>
                         </h5>
                       </div>
-                      <div class="portlet-body launchedCampaignsChild" [dragula]='"bag-items"'>
+                      <div class="portlet-body launchedCampaignsChild" style="min-height: 200px;" [dragula]='"bag-items"'>
                         <div class="gu-block" *ngFor="let item of launchedCampaignsChild">
                           <h6 class="gu-block-content" [id]="item.id">{{item.campaign | slice:0:27}}<span *ngIf="item.campaign?.length>27">...</span></h6>
                         </div>
@@ -167,6 +169,8 @@
                     </div>
                   </div>
                 </div>
+                </div>
+                <span [hidden]="launchedCampaignsMaster.length>0">No campaigns available.</span>
               </div>
             </div>
           </div>
@@ -189,7 +193,7 @@
             <i style="font-size: 1.5em;padding: 3px 10px;margin: 10px 0;" class="fa fa-cog pull-right" data-toggle="modal" data-target="#customizeCampaignModal"
              *ngIf="hasCampaignRole ||authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()"></i>
           </a>
-          <a [routerLink]="['/home/campaigns/select']" class="btn btn-sm btn-primary pull-right" style="margin: 5px 0;border-color: white;" *ngIf="hasCampaignRole && authenticationService.user.hasCompany">Create Campaign</a>
+          <a [routerLink]="['/home/campaigns/select']" class="btn btn-sm btn-primary pull-right" style="margin: 5px 0;border-color: white; color:white" *ngIf="hasCampaignRole && authenticationService.user.hasCompany">Create Campaign</a>
         </div>
         <div class="portlet-body clearfix">
           <section *ngFor="let campaign of campaigns; let i=index">
@@ -199,10 +203,10 @@
               <!--[class.disabled]="!hasStatsRole ? true : null" @date 13/04/218 @added Manas Sahoo // [routerLink]="['/home/campaigns/', campaign[0], 'details']"-->
                 <div class="bookmark-ribbon">
                   <span style="margin: 0px -7px; font-size: 17px; color: white;">
-                    <i *ngIf="campaign[7] ==='VIDEO'" class="fa fa-video-camera" aria-hidden="true"></i>
-                    <i *ngIf="campaign[7]==='REGULAR'" class="fa fa-envelope" aria-hidden="true"></i>
-                    <i *ngIf="campaign[7]==='SOCIAL'" class="fa fa-globe" aria-hidden="true"></i>
-                    <i *ngIf="campaign[7]==='EVENT'" class="fa fa-calendar" aria-hidden="true"></i>
+                    <i *ngIf="campaign[7] ==='VIDEO'" data-toggle="tooltip" data-placement="top" title="Video" class="fa fa-video-camera" aria-hidden="true"></i>
+                    <i *ngIf="campaign[7]==='REGULAR'"  data-toggle="tooltip" data-placement="top" title="Email" class="fa fa-envelope" aria-hidden="true"></i>
+                    <i *ngIf="campaign[7]==='SOCIAL'"  data-toggle="tooltip" data-placement="top" title="Social" class="fa fa-globe" aria-hidden="true"></i>
+                    <i *ngIf="campaign[7]==='EVENT'"  data-toggle="tooltip" data-placement="top" title="Event" class="fa fa-calendar" aria-hidden="true"></i>
                   </span>
                 </div>
                 <div class="portlet-title">
@@ -213,7 +217,7 @@
                   </div>
                 </div>
                 <div class="portlet-body text-center">
-                  <i *ngIf="campaign[2]" class="fa fa-handshake-o pull-right text-primary" aria-hidden="true" style="position: absolute; right: 6px;font-size: 22px;"></i>
+                  <i *ngIf="campaign[2]" data-toggle="tooltip" data-placement="left" title="Through Campaign" class="fa fa-handshake-o pull-right text-primary" aria-hidden="true" style="position: absolute; right: 6px;font-size: 22px;"></i>
                   <section class="percentage-circle">
                     <svg width="120" height="120" viewBox="0 0 120 120" style="transform: rotate(-90deg)">
                       <circle cx="60" cy="60" r="54" fill="none" stroke="#e6e6e6" stroke-width="5" />
@@ -230,13 +234,15 @@
             </div>
           </section>
           <section>
-            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" *ngIf="totalCampaignsCount < 4 && hasCampaignRole">
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" *ngIf="totalCampaignsCount < 4 && (authenticationService.isVendor()|| authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendorPartner() )">
               <div class="portlet light border-radius-0">
                 <div class="portlet-body">
-                  <div class="text-center" style="margin: 3.17em 0.5em;">
+                  <div class="text-center" style="margin: 1.3em 0.5em;">
                     <h5 style="color: rgb(119, 119, 119);">What type of campaign would you like to create? </h5>
-                    <button class="color1 btn-campaign btn-block" (click)="createCampaign('video')">Video Campaign</button>
-                    <button class="color2 btn-campaign btn-block" (click)="createCampaign('regular')">Email Campaign</button>
+                    <button class="color3 btn-campaign btn-block" *ngIf="referenceService.videoCampaign" (click)="createCampaign('video')">Video Campaign</button>
+                    <button class="color1 btn-campaign btn-block" *ngIf="referenceService.emailCampaign" (click)="createCampaign('regular')">Email Campaign</button>
+                    <button class="color4 btn-campaign btn-block" *ngIf="referenceService.socialCampaign"  [routerLink]="['/home/campaigns/social']">Social Campaign</button>
+                    <button class="color2 btn-campaign btn-block" *ngIf="referenceService.eventCampaign" [routerLink]="['/home/campaigns/event']">Event Campaign</button>
                   </div>
                 </div>
               </div>
@@ -342,7 +348,7 @@
                 <div class="portlet-title">
                   <div class="caption">
                     <i class="fa fa-bar-chart"></i>
-                    <span class="caption-subject">Video Stats</span>
+                    <span class="caption-subject">Video Statistics</span>
                   </div>
                   <div>
                     <div class="panel-title pull-right">
@@ -555,7 +561,7 @@
                       </div>
 
                       <div class="col-xs-8 text-left pl0 pr0">
-                        <h5>
+                        <h5 *ngIf="socialConnection.source !== 'LINKEDIN'">
                           <span class="nummber" style="color: #00aced; font-weight: 600; display: inline;">{{socialConnection.weeklyPostsCount}}</span> New
                           <span *ngIf="socialConnection.source === 'TWITTER'">Tweets</span>
                           <span *ngIf="socialConnection.source === 'FACEBOOK'">Posts</span>
@@ -643,22 +649,30 @@
             <span *ngIf="paginationType=='clicked'">clicked your emails</span>
             <span *ngIf="paginationType=='watched'">watched your videos</span>
           </h4>
-          <div class="btn-group pull-right" style="margin-top: 8px; cursor:pointer; color: #7d8c98; margin-right: -15px;">
+          <div [class.disabled]="isLoadingDownloadList" class="btn-group pull-right" style="margin-top: 8px; cursor:pointer; color: #7d8c98; margin-right: -15px;">
             <span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none; margin-top: -22px;margin-right: 21px; float:right;">
               <i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i>
               <i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
             </span>
             <ul class="dropdown-menu pull-right">
               <li>
-                <a id="delete_button" (click)="downloadEmailLogs()"> Export To Excel </a>
+                <a id="delete_button" (click)="downloadFuctionality()"> Export To Excel </a>
               </li>
             </ul>
           </div>
         </div>
         <div class="modal-body clearfix">
-          <div class="alert alert-info flex" *ngIf="isLoadingList">
-            <div class="loader" style="margin-right: 10px; width: 25px; height: 25px;"></div>
-            <h4 class="m5">Please wait while we process your request.</h4>
+
+				<div class="alert alert-info flex" *ngIf="isLoadingDownloadList">
+					<div class="loader"
+						style="margin-right: 10px; width: 25px; height: 25px;"></div>
+					<h4 class="m5">Please wait while we process your request.</h4>
+				</div>
+
+				<div *ngIf="isLoadingList">
+          <app-list-loader></app-list-loader>
+           <!--  <div class="loader" style="margin-right: 10px; width: 25px; height: 25px;"></div>
+            <h4 class="m5">Please wait while we process your request.</h4> -->
           </div>
           <div *ngIf="pagination.pagedItems?.length == 0 && !isLoadingList" class="col-md-6" class="col-md-9 alert alert-info m0" style="width: 100%">
             <strong>No results found</strong>
@@ -681,7 +695,8 @@
                 <ng-container  *ngFor="let emailClicked of pagination.pagedItems;let i = index">
                 <tr>
                   <td>
-                    <app-user-info [userInfo]="emailClicked"> </app-user-info>
+                    <app-user-info *ngIf="paginationType == 'open'" [userInfo]="emailClicked" [isCompanyInfo] = "true"> </app-user-info>
+                     <app-user-info *ngIf="paginationType != 'open'" [userInfo]="emailClicked"> </app-user-info>
                   </td>
                   <td class="center hidden-xs" *ngIf="paginationType =='clicked'">
                     <h5  *ngIf="emailClicked.url" title="{{emailClicked.url}}">{{emailClicked.url | slice:0:30}} <span *ngIf="emailClicked.url?.length>30">...</span></h5>
@@ -761,7 +776,9 @@
               </tbody>
             </table>
           </div>
-          <app-pagination class="pg8"  *ngIf="pagination.pagedItems?.length > 0" [pagination]="pagination" [type]="'dashboard'" (notifyParentDropDown)="paginationDropdown($event)" (notifyParent)="setPage($event)"></app-pagination>
+          <div class="pg8" *ngIf="pagination.pagedItems.length !== 0">
+          <app-pagination [hidden]="isLoadingList" [pagination]="pagination" [type]="'dashboard'" (notifyParentDropDown)="paginationDropdown($event)" (notifyParent)="setPage($event)"></app-pagination>
+        </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-defaullistOfEmailOpenLogs listOfEmailOpenLogst" data-dismiss="modal" (click)="cancelEmailStateModalPopUp()">Close</button>
@@ -780,20 +797,28 @@
             <i class="fa fa-times"></i>
           </a>
           <h4 class="m0">Check out where your videos are being watched</h4>
-          <div class="btn-group pull-right" style="margin-top: 8px; cursor:pointer; color: #7d8c98; margin-right: -15px;">
+          <div [class.disabled]="isLoadingDownloadList" class="btn-group pull-right" style="margin-top: 8px; cursor:pointer; color: #7d8c98; margin-right: -15px;">
             <span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none; margin-top: -22px;margin-right: 21px; float:right;">
               <i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i>
               <i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
             </span>
             <ul class="dropdown-menu pull-right">
               <li>
-                <a id="delete_button" (click)="downloadEmailLogs()"> Export To Excel </a>
+                <a id="delete_button" (click)="downloadFuctionality()"> Export To Excel </a>
               </li>
             </ul>
           </div>
         </div>
         <div class="modal-body clearfix">
-          <div class="table-responsive">
+        <div class="alert alert-info flex" *ngIf="isLoadingDownloadList">
+					<div class="loader"
+						style="margin-right: 10px; width: 25px; height: 25px;"></div>
+					<h4 class="m5">Please wait while we process your request.</h4>
+				</div>
+				<div *ngIf="isLoadingList">
+          <app-list-loader></app-list-loader>
+          </div>
+          <div class="table-responsive" *ngIf="!isLoadingList">
             <table class="table tgrid">
               <thead>
                 <tr>
@@ -857,7 +882,7 @@
               </tbody>
             </table>
           </div>
-          <app-pagination class="pg8" *ngIf="pagination.pagedItems?.length > 0" [pagination]="pagination" [type]="'worldmap'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
+          <app-pagination class="pg8" *ngIf="pagination.pagedItems?.length > 0 && !isLoadingList" [pagination]="pagination" [type]="'worldmap'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal" (click)="cancelEmailStateModalPopUp()">Close</button>

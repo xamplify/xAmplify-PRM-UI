@@ -8,6 +8,8 @@ import { SelectTemplateComponent } from './select-template/select-template.compo
 import { UpdateTemplateComponent } from './update-template/update-template.component';
 import { UploadEmailTemplateComponent } from './upload-email-template/upload-email-template.component';
 import { HelpComponent } from './help/help.component';
+import { UploadMarketoEmailTemplateComponent } from './upload-marketo-email-template/upload-marketo-email-template.component';
+import { UpdateMarketoTemplateComponent } from './update-marketo-template/update-marketo-template.component';
 
 export const emailRoutes: Routes = [
 { path: '', redirectTo: 'manage', pathMatch: 'full' },
@@ -15,6 +17,8 @@ export const emailRoutes: Routes = [
 { path: 'select', component: SelectTemplateComponent },
 { path: 'create', component: CreateTemplateComponent },
 { path: 'upload', component: UploadEmailTemplateComponent },
+{ path: 'marketo/upload', component: UploadMarketoEmailTemplateComponent },
+{ path: 'marketo/update', component: UpdateMarketoTemplateComponent },
 { path: 'update', component: UpdateTemplateComponent },
 { path: 'videoEmails/emaileditor', component: EmailEditorComponent },
 { path: 'regularEmails/emaileditor', component: EmailEditorComponent },

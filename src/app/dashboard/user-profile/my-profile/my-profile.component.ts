@@ -1,16 +1,13 @@
-import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
 import { Router,ActivatedRoute } from '@angular/router';
 import { FormGroup,FormBuilder, Validators } from '@angular/forms';
 
 import { matchingPasswords, noWhiteSpaceValidator } from '../../../form-validator';
-import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
-
 import { UserService } from '../../../core/services/user.service';
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import { XtremandLogger } from '../../../error-pages/xtremand-logger.service';
 import { ReferenceService } from '../../../core/services/reference.service';
 import { VideoUtilService } from '../../../videos/services/video-util.service';
-
 import { CallActionSwitch } from '../../../videos/models/call-action-switch';
 import { CustomResponse } from '../../../common/models/custom-response';
 import { Properties } from '../../../common/models/properties';
@@ -19,7 +16,13 @@ import { User } from '../../../core/models/user';
 import { DefaultVideoPlayer } from '../../../videos/models/default-video-player';
 import { CountryNames } from '../../../common/models/country-names';
 import { VideoFileService } from '../../../videos/services/video-file.service'
+import { CropperSettings, ImageCropperComponent } from 'ng2-img-cropper';
+import { UtilService } from 'app/core/services/util.service';
 
+import { DealQuestions } from '../../../deal-registration/models/deal-questions';
+import { DealForms } from '../../../deal-registration/models/deal-forms';
+import { DealType } from '../../../deal-registration/models/deal-type';
+import { DealRegistrationService } from '../../../deal-registration/services/deal-registration.service';
 declare var swal, $, videojs: any;
 
 @Component({
@@ -28,7 +31,7 @@ declare var swal, $, videojs: any;
     styleUrls: ['./my-profile.component.css', '../../../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css',
         '../../../../assets/admin/pages/css/profile.css', '../../../../assets/css/video-css/video-js.custom.css',
         '../../../../assets/css/phone-number-plugin.css'],
-    providers: [User, DefaultVideoPlayer, VideoUtilService, CallActionSwitch, Properties, RegularExpressions, CountryNames]
+    providers: [User, DefaultVideoPlayer, CallActionSwitch, Properties, RegularExpressions, CountryNames],
 })
 export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     defaultVideoPlayer: DefaultVideoPlayer;
@@ -44,7 +47,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     userData: User;
     parentModel = { 'displayName': '', 'profilePicutrePath': 'assets/admin/pages/media/profile/icon-user-default.png' };
     className = "form-control ng-touched ng-dirty ng-valid";
-    uploader: FileUploader;
     compPlayerColor: string;
     compControllerColor: string;
     valueRange: number;
@@ -64,22 +66,47 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     currentUser: any;
     roles: string[] = [];
     isOnlyPartnerRole = false;
-    logoUploader: FileUploader;
     logoImageUrlPath: string;
     fullScreenMode = false;
     logoLink = '';
     ngxloading: boolean;
-    roleNames:string = "";
+    roleNames = "";
     customResponse: CustomResponse = new CustomResponse();
-    hasClientErrors:boolean = false;
+    hasClientErrors = false;
+
+    dealForms:DealForms[] = [];
+    form = new DealForms();
+    questions:DealQuestions[] =[];
+    question:DealQuestions;
+    dealtype:DealType;
+    dealtypes:DealType[] = [];
+    formSubmiteState = true;
+    dealSubmiteState = true;
+    submitButtonText = "Save Form";
+    dealButtonText = "Save Deals";
+    validateForm:boolean;
+    selectedForm:DealForms;
+    defaultQuestions:string[] = ["Campaign Name","Company","First Name","Last Name","Title ","Email ","Phone Number","Deal Type","Website","Lead Address",
+        "Lead City","Lead State/Province","Lead Postal Code","Lead Country","Opportunity Amount","Estimated Close date"];
+    isListFormSection:boolean;
+    customResponseForm: CustomResponse = new CustomResponse();
+
+
+    circleCropperSettings: CropperSettings;
+    circleData:any;
+    cropRounded = false;
+    loadingcrop = false;
+    errorUploadCropper = false;
+    @ViewChild(ImageCropperComponent) cropper:ImageCropperComponent;
     constructor(public videoFileService: VideoFileService, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
         public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
         public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
-        public regularExpressions: RegularExpressions,public route:ActivatedRoute) {
+        public regularExpressions: RegularExpressions,public route:ActivatedRoute, public utilService:UtilService,public dealRegSevice:DealRegistrationService) {
           if (this.isEmpty(this.authenticationService.userProfile.roles) || !this.authenticationService.userProfile.profileImagePath) {this.router.navigateByUrl(this.referenceService.homeRouter);}
           try{
             if ( authenticationService.isSuperAdmin() ) { this.userData = this.authenticationService.venorMyProfileReport;
             } else { this.userData = this.authenticationService.userProfile; }
+            this.cropperSettings();
             this.roleNames = this.authenticationService.showRoles();
             this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
             this.videoUtilService.videoTempDefaultSettings = this.referenceService.defaultPlayerSettings;
@@ -103,70 +130,64 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.parentModel.profilePicutrePath = this.userData.profileImagePath;
                 }
             }
-            this.uploader = new FileUploader({
-                allowedMimeType: ['image/jpeg', 'image/pjpeg', 'image/jpeg', 'image/pjpeg', 'image/png'],
-                maxFileSize: 10 * 1024 * 1024, // 10 MB
-                url: this.authenticationService.REST_URL + "admin/uploadProfilePicture/" + this.loggedInUserId + "?access_token=" + this.authenticationService.access_token
-            });
-            this.uploader.onAfterAddingFile = (file) => {
-                this.ngxloading = true;
-                console.log(file);
-                file.withCredentials = false;
-                this.uploader.queue[0].upload();
-            };
-            this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-                console.log(response);
-                const imageFilePath = JSON.parse(response);
-                console.log(imageFilePath);
-                this.userProfileImage = imageFilePath['message'];
-                this.parentModel.profilePicutrePath = imageFilePath['message'];
-                this.uploader.queue.length = 0;
-                this.clearImage();
-                this.profileUploadSuccess = true;
-                this.referenceService.topNavBarUserDetails.profilePicutrePath = imageFilePath['message'];
-                this.authenticationService.userProfile.profileImagePath = imageFilePath['message'];
-                this.ngxloading = false;
-                this.customResponse = new CustomResponse('SUCCESS', this.properties.PROFILE_PIC_UPDATED,true);
-            };
         }catch(error){
             this.hasClientErrors = true;
             this.logger.showClientErrors("my-profile.component.ts", "constructor()", error);
         }
-
+    }
+    cropperSettings() {
+        this.circleCropperSettings = this.utilService.cropSettings( this.circleCropperSettings,200,156,200,true);
+        this.circleCropperSettings.noFileInput = true;
+        this.circleData = {};
     }
     isEmpty(obj) {
         return Object.keys(obj).length === 0;
     }
-    clearImage() {
-        $('div#previewImage > img').remove();
-        $('div#previewImage').append('<img src="assets/images/upload-profile.png"/>');
-        $('#priview').attr('src', 'assets/images/upload-profile.png');
+    closeModal(){
+      this.cropRounded = !this.cropRounded;
+      this.circleData = {};
     }
-    fileChange(inputFile: any, event: any) {
-        console.log(inputFile.files);
-        this.referenceService.goToTop();
-        $("#profile-pic-upload-div").hide();
-        this.profilePictueError = false;
-        let extentionsArray = ["jpg", "JPG", "jpeg", "JPEG", "png", "PNG"];
-        let maxSize = 100 * 1024 * 1024;//100Mb
-        let file = inputFile.files[0];
-        let name = file.name;
-        let size = file.size;
-        let type = file.type;
-        console.log(name + "::::::::::" + size + ":::::::::::" + type);
-        let ext = name.split('.').pop().toLowerCase();
-        if ($.inArray(ext, extentionsArray) == -1) {
-            this.profilePictueError = true;
-            this.profilePictureErrorMessage = "Please Upload Image Files Only";
-            this.customResponse =  new CustomResponse('ERROR',this.profilePictureErrorMessage, true);
-        }
-        let fileSize = (size / 1024 / 1024); //size in MB
-        if (fileSize > maxSize) {
-            this.profilePictueError = true;
-            this.profilePictureErrorMessage = "Maximum File Size is 10 MB";
-            this.customResponse =  new CustomResponse('ERROR',this.profilePictureErrorMessage, true);
-        }
+    fileChangeEvent(){ this.cropRounded = false; $('#cropProfileImage').modal('show'); }
+    uploadProfileImage(){
+      this.loadingcrop = true;
+      let fileObj:any;
+      fileObj = this.utilService.convertBase64ToFileObject(this.circleData.image);
+      fileObj = this.utilService.blobToFile(fileObj);
+      console.log(fileObj);
+      this.fileUploadCode(fileObj);
     }
+    fileUploadCode(fileObj:File){
+      this.userService.saveUserProfileLogo(fileObj).subscribe(
+        (response: any) => {
+          const imageFilePath = response;
+          this.userProfileImage = this.parentModel.profilePicutrePath = imageFilePath['message'];
+          this.profileUploadSuccess = true;
+          this.referenceService.topNavBarUserDetails.profilePicutrePath = imageFilePath['message'];
+          this.authenticationService.userProfile.profileImagePath = imageFilePath['message'];
+          this.loadingcrop = false;
+          this.customResponse = new CustomResponse('SUCCESS', this.properties.PROFILE_PIC_UPDATED,true);
+          $('#cropProfileImage').modal('hide');
+          this.closeModal();
+        },
+        (error) => { console.log(error); $('#cropProfileImage').modal('hide'); this.customResponse = new CustomResponse('ERROR',this.properties.SOMTHING_WENT_WRONG,true); },
+        ()=>{ this.loadingcrop = false;  $('#cropProfileImage').modal('hide');});
+    }
+    fileChangeListener($event,cropperComp: ImageCropperComponent) {
+      this.cropper = cropperComp;
+      const image:any = new Image();
+      const file:File = $event.target.files[0];
+      const isSupportfile: any = file.type;
+      if (isSupportfile === 'image/jpg' || isSupportfile === 'image/jpeg' || isSupportfile === 'image/png') {
+        this.errorUploadCropper = false;
+        const myReader:FileReader = new FileReader();
+        const that = this;
+        myReader.onloadend = function (loadEvent:any) {
+            image.src = loadEvent.target.result;
+            that.cropper.setImage(image);
+        };
+        myReader.readAsDataURL(file);
+       } else {  this.errorUploadCropper = true;}
+      }
     videojsCall() {
         this.customResponse =  new CustomResponse();
         if (!this.videoJSplayer && !this.isOnlyPartnerRole) {
@@ -829,7 +850,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                     cancelButtonColor: '#999',
                     confirmButtonText: 'Yes',
                     showLoaderOnConfirm: true,
-                    allowOutsideClick: false
+                    allowOutsideClick: false,
+                    cancelButtonText : 'No'
                     /*     preConfirm: () => {
                              if(self.orgAdminCount>1){
                                  $('a').addClass('disabled');
@@ -898,6 +920,253 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                 },
                 () => this.logger.info("Finished enableOrDisableOrgAdmin()")
             );
+    }
+
+
+    //Forms section
+
+    initializeForm(){
+        this.userService.listForm(this.loggedInUserId).subscribe(result => {
+            this.dealForms = result;  
+            if(result[0]){
+                this.form =   result[0]; 
+                this.questions = this.form.campaignDealQuestionDTOs;
+                this.submitButtonText = "Update Form";
+               
+            }else
+                this.submitButtonText = "Save Form";
+            this.submitBUttonStateChange();
+        })
+        this.dealRegSevice.listDealTypes(this.loggedInUserId).subscribe(dealTypes => {
+                
+            this.dealtypes = dealTypes.data;  
+            
+        });
+    }
+
+    addQuestion()
+    {
+        this.question = new DealQuestions();
+        var length;
+        if(this.questions != null && this.questions!= undefined)
+            length = this.questions.length;
+        else
+             length = 0;
+        length = length + 1;
+        var id = 'question-' + length;
+        this.question.divId = id;
+        this.question.error = true;
+      
+
+        this.questions.push(this.question);
+        this.submitBUttonStateChange();
+        
+
+    }
+    remove(i, id)
+    {
+        if (id)
+            console.log(id)
+            console.log(i)
+        var index = 1;
+
+        this.questions = this.questions.filter(question => question.divId !== 'question-' + i)
+            .map(question =>
+            {
+                question.divId = 'question-' + index++;
+                return question;
+            });
+            console.log(this.questions);
+            this.submitBUttonStateChange();
+
+    }
+    validateQuestion(question:DealQuestions){
+        var errorClass = "form-group has-error has-feedback";
+        var successClass = "form-group has-success has-feedback";
+        if (question.question.length > 0)
+        {
+            question.class = successClass; 
+            question.error = false;
+        } else
+        {
+             question.class = errorClass;
+            question.error = true;
+        }
+        this.submitBUttonStateChange();
+    }
+    validateDealForm(form:DealForms){
+        if (form.name.length > 0)
+        {
+            this.validateForm = true;
+        } else
+        {
+            this.validateForm = false;
+        }
+        this.submitBUttonStateChange();
+    }
+    submitBUttonStateChange(){
+        let countForm = 0;
+        if(this.form.name!=null && this.form.name!=undefined && this.form.name.length>0){
+        this.questions.forEach(question =>
+                {
+                  
+                    if (question.error)
+                        countForm++;
+                })
+                if (countForm > 0)
+                    this.formSubmiteState = false;
+                else
+                    this.formSubmiteState = true;
+        }else{
+            this.formSubmiteState = false;
+        }
+    }
+    saveForm(){
+        this.ngxloading = true;
+       
+        if(this.form.id == null){
+            this.form.createdBy = this.loggedInUserId;
+            this.questions.forEach(question =>{
+                question.createdBy == this.loggedInUserId;
+            })
+            this.form.campaignDealQuestionDTOs = this.questions;
+            this.userService.saveForm(this.loggedInUserId,this.form).subscribe(result => {
+                
+                this.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
+                this.userService.listForm(this.loggedInUserId).subscribe(form => {
+                    this.dealForms = form;  
+                    if(form[0]){
+                        this.form =   form[0]; 
+                        this.questions = this.form.campaignDealQuestionDTOs;
+                        this.submitButtonText = "Update Form";
+                        this.ngxloading = false;
+                    }else
+                        this.submitButtonText = "Save Form";
+                        this.ngxloading = false;
+                })
+            })
+        }else{
+            this.form.updatedBy = this.loggedInUserId;
+            this.questions.forEach(question =>{
+                if(question.id != null || question.id != undefined)
+                    question.createdBy == this.loggedInUserId;
+                else
+                    question.updatedBy == this.loggedInUserId;
+            })
+            this.form.campaignDealQuestionDTOs = this.questions;
+            this.userService.updateForm(this.loggedInUserId,this.form).subscribe(result => {
+                this.ngxloading = false;
+                this.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
+                
+            },(error) =>{
+                this.ngxloading = false;
+                this.customResponseForm = new CustomResponse('ERROR', "The questions are already associate with deals", true);
+                this.userService.listForm(this.loggedInUserId).subscribe(form => {
+                    this.dealForms = form;  
+                    if(form[0]){
+                        this.form =   form[0]; 
+                        this.questions = this.form.campaignDealQuestionDTOs;
+                    } 
+                });
+            })
+        }
+    }
+    
+    //Deal types
+    addDealtype()
+    {
+        this.dealtype = new DealType();
+        var length;
+        if(this.dealtypes != null && this.dealtypes!= undefined)
+            length = this.dealtypes.length;
+        else
+             length = 0;
+        length = length + 1;
+        var id = 'dealType-' + length;
+        this.dealtype.divId = id;
+        this.dealtype.error = true;
+      
+
+        this.dealtypes.push(this.dealtype);
+        this.dealTypeButtonStateChange();
+      
+        
+
+    }
+    removeDealType(i, id)
+    {
+        if (id)
+            console.log(id)
+            console.log(i)
+        var index = 1;
+
+        this.dealtypes = this.dealtypes.filter(dealtype => dealtype.divId !== 'dealtype-' + i)
+            .map(dealtype =>
+            {
+                dealtype.divId = 'dealtype-' + index++;
+                return dealtype;
+            });
+            console.log(this.dealtypes);
+            this.dealTypeButtonStateChange();
+
+    }
+    validateDealType(dealType:DealType){
+        var errorClass = "form-group has-error has-feedback";
+        var successClass = "form-group has-success has-feedback";
+        if (dealType.dealType.length > 0)
+        {
+            dealType.class = successClass; 
+            dealType.error = false;
+        } else
+        {
+            dealType.class = errorClass;
+            dealType.error = true;
+        }
+        this.dealTypeButtonStateChange();
+    }
+   
+    dealTypeButtonStateChange(){
+        let countForm = 0;
+        this.dealtypes.forEach(dealType =>
+                {
+                  
+                    if (dealType.error)
+                        countForm++;
+                })
+                if (countForm > 0)
+                    this.dealSubmiteState = false;
+                else
+                    this.dealSubmiteState = true;
+        
+    }
+    saveDealTypes(){
+        this.ngxloading = true;
+       
+       
+          
+            this.dealtypes.forEach(dealtype =>{
+                if(dealtype.id != null && dealtype.id != undefined)
+                    dealtype.updatedBy == this.loggedInUserId;
+                else
+                    dealtype.createdBy == this.loggedInUserId;
+            })
+       
+            this.dealRegSevice.saveDealTypes(this.dealtypes,this.loggedInUserId).subscribe(result => {
+                this.ngxloading = false;
+                this.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
+                
+            },(error) =>{
+                this.ngxloading = false;
+                this.customResponseForm = new CustomResponse('ERROR', "The dealtypes are already associate with deals", true);
+               
+            },()=>{
+                this.dealRegSevice.listDealTypes(this.loggedInUserId).subscribe(dealTypes => {
+                    
+                    this.dealtypes = dealTypes.data;  
+                    
+                });
+            })
+      
     }
 
     ngOnDestroy() {

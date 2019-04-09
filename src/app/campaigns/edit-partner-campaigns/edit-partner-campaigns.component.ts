@@ -23,10 +23,10 @@ import { Timezone } from '../../core/models/timezone';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { CampaignContact } from '../models/campaign-contact';
 import { Properties } from '../../common/models/properties';
-var moment = require('moment-timezone');
-
+import { EmailTemplateService } from '../../email-template/services/email-template.service';
 
 declare var  $,flatpickr,CKEDITOR,require:any;
+var moment = require('moment-timezone');
 
 @Component({
   selector: 'app-edit-partner-campaigns',
@@ -35,6 +35,7 @@ declare var  $,flatpickr,CKEDITOR,require:any;
   providers:[CallActionSwitch,HttpRequestLoader,Pagination,Properties]
 })
 export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
+    ngxloading: boolean;
 
     selectedEmailTemplateId = 0;
     campaign: Campaign;
@@ -166,6 +167,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
             private authenticationService: AuthenticationService,
             private contactService: ContactService,
             public referenceService: ReferenceService,
+            private emailTemplateService:EmailTemplateService,
             private pagerService: PagerService,
             public callActionSwitch: CallActionSwitch,
             private formBuilder: FormBuilder,
@@ -203,6 +205,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
         }
         if(this.campaign.parentCampaignId==undefined || this.campaign.parentCampaignId==0){
             this.campaign.parentCampaignId = this.campaign.campaignId;
+            this.campaign.parentCampaignUserId = this.campaign.userId;
         }
         /****If the loggedin User is Vendor& Partner then show drop down along with team members*****/
         if(this.isOrgAdminAndPartner || this.isVendorAndPartner){
@@ -226,7 +229,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
         }else if(this.campaignType.includes('REGULAR')){
             this.campaignType=="REGULAR";
         }
-        
+
         if(this.campaign.campaignScheduleType=="SCHEDULE" && this.campaign.userId==this.loggedInUserId){
             this.campaign.scheduleCampaign  = this.campaignLaunchOptions[1];
         }else{
@@ -250,7 +253,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
         this.referenceService.stopLoader(this.httpRequestLoader);
     }
 
-    
+
     setLoggedInUserEmailId(){
         const userProfile = this.authenticationService.userProfile;
         this.campaign.email = userProfile.emailId;
@@ -288,13 +291,13 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
         () => console.log( "Team members loaded" )
         );
     }
-    
+
     setFromName(){
         let user = this.teamMemberEmailIds.filter((teamMember)=> teamMember.emailId == this.campaign.email)[0];
         this.campaign.fromName = $.trim(user.firstName+" "+user.lastName);
         this.setEmailIdAsFromName();
     }
-    
+
     getCampaignPartnerByCampaignIdAndUserId(campaignId: number, userId: number) {
         this.campaignService.getCampaignPartnerByCampaignIdAndUserId(campaignId, userId)
             .subscribe(
@@ -477,11 +480,22 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
 
 
     previewEmailTemplate(emailTemplate: EmailTemplate) {
-        this.referenceService.previewEmailTemplate(emailTemplate, this.campaign);
-
+        this.ngxloading = true;
+        this.emailTemplateService.getAllCompanyProfileImages(this.campaign.parentCampaignUserId).subscribe(
+                ( data: any ) => {
+                    let body = emailTemplate.body;
+                    let self  =this;
+                    $.each(data,function(index,value){
+                        body = body.replace(value, self.authenticationService.MEDIA_URL+self.campaign.companyLogo);
+                    });
+                    body = body.replace("https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL+this.campaign.companyLogo);
+                    emailTemplate.body = body;
+                    this.referenceService.previewEmailTemplate(emailTemplate, this.campaign);
+                    this.ngxloading = false;
+                },
+                error => { this.ngxloading = false;this.xtremandLogger.error("error in getAllCompanyProfileImages("+this.campaign.parentCampaignUserId+")", error); },
+                () =>  this.xtremandLogger.info("Finished getAllCompanyProfileImages()"));
     }
-
-
 
 
 
@@ -760,23 +774,27 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
         event.stopPropagation();
     }
 
-    getCampaignReplies(campaign: Campaign) {
-        if(campaign.campaignReplies!=undefined){
+    getCampaignReplies( campaign: Campaign ) {
+        if ( campaign.campaignReplies != undefined ) {
             this.replies = campaign.campaignReplies;
-            for(var i=0;i<this.replies.length;i++){
+            for ( var i = 0; i < this.replies.length; i++ ) {
                 let reply = this.replies[i];
-                reply.replyTime = this.campaignService.setHoursAndMinutesToAutoReponseReplyTimes(reply.replyTimeInHoursAndMinutes);
-                if($.trim(reply.subject).length==0){
-                    reply.subject = campaign.subjectLine;
+                if ( reply.actionId != 23 &&  reply.actionId != 22) {
+                    reply.replyTime = this.campaignService.setHoursAndMinutesToAutoReponseReplyTimes( reply.replyTimeInHoursAndMinutes );
+                    if ( $.trim( reply.subject ).length == 0 ) {
+                        reply.subject = campaign.subjectLine;
+                    }
+                    let length = this.allItems.length;
+                    length = length + 1;
+                    var id = 'reply-' + length;
+                    reply.divId = id;
+                    this.allItems.push( id );
+                } else {
+                    this.replies.pop();
                 }
-                let length = this.allItems.length;
-                length = length+1;
-                var id = 'reply-'+length;
-                reply.divId = id;
-                this.allItems.push(id);
+
             }
         }
-
      }
 
 
@@ -787,6 +805,9 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
                 let url = this.urls[i];
                 if(url.scheduled){
                     url.replyTime = this.campaignService.setHoursAndMinutesToAutoReponseReplyTimes(url.replyTimeInHoursAndMinutes);
+                }
+                if($.trim(url.subject).length==0){
+                    url.subject = campaign.subjectLine;
                 }
                 let length = this.allItems.length;
                 length = length+1;

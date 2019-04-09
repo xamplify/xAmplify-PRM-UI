@@ -30,7 +30,7 @@
 		</ul>
 	</div>
 
-	<div id="manageContacts" *ngIf="showListOfContactList">
+	<div id="manageContacts" >
 		<!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
 		<div *ngIf="showAll">
 			<!-- END PAGE HEADER-->
@@ -38,9 +38,9 @@
 			<div>
 				<div class="row">
 					<div class="col-md-12">
-						<div class="tabbable tabbable-custom tabbable-noborder">
+						<div [ngClass]="{'tabbable tabbable-custom tabbable-noborder': showListOfContactList}">
 
-							<div class="tab-content" style="min-height: 570px;">
+							<div class="tab-content" [ngStyle]="{'min-height':showListOfContactList? '570px': ''}">
 								<div class="tab-pane active">
 									<!-- BEGIN FILTER -->
 
@@ -53,54 +53,60 @@
 									<div class="clearfix"></div>
 									<div class="row mt5 mb5">
 										<div class="col-sm-5ths margin-top-10">
-											<button class="btn-block dashboard-stat blue"
-												(click)="listContactsByType('all')"
+											<button class="btn-block dashboard-stat blue" [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'all'"
+												(click)="contactsByType.pagination.pageIndex = 1;listContactsByType('all')"
 												[disabled]="contactsByType.allContactsCount == 0">
 												<div class="visual">
-													<i class="fa fa-users"></i>
+													<!-- <i class="fa fa-users"></i> -->
+													<i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"  [ngStyle]="{'color': contactsByType.selectedCategory == 'all' ? '#white' : '#ccc' }"
+               										 *ngIf="contactsByType.selectedCategory == 'all'" ></i>
 												</div>
 												<div class="details">
-													<div class="number" style="font-weight: 300 !important;">{{contactsByType.allContactsCount}}</div>
-													<div class="desc" style="font-size: 20px">
+													<div class="number" style="font-weight: 300 !important; color: #FFFFFF;">{{contactsByType.allContactsCount}}</div>
+													<div class="desc" style="font-size: 20px; color: #FFFFFF;">
 														All
 														<!-- {{checkingContactTypeName}}s -->
 													</div>
 												</div>
 												<span class="morePadding"> <a class="more"
-													style="text-align: left;"> Detailed view <i
+													style="text-align: left; background: #3480b5; color: white"> Detailed view <i
 														class="m-icon-swapright m-icon-white"></i>
 												</a>
 												</span>
 											</button>
 										</div>
 										<div class="col-sm-5ths margin-top-10">
-											<button class="btn-block dashboard-stat green"
-												(click)="listContactsByType('active')"
+											<button class="btn-block dashboard-stat green" [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'active'"
+												(click)="contactsByType.pagination.pageIndex = 1;listContactsByType('active')"
 												[disabled]="contactsByType.activeContactsCount == 0">
 												<div class="visual">
-													<i class="fa fa-eye"></i>
+													<!-- <i class="fa fa-eye"></i> -->
+													<i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"  [ngStyle]="{'color': contactsByType.selectedCategory == 'active' ? '#white' : '#ccc' }"
+               										 *ngIf="contactsByType.selectedCategory == 'active'" ></i>
 												</div>
 												<div class="details">
 													<div class="number numberCss"
-														style="font-weight: 300 !important;">{{contactsByType.activeContactsCount}}</div>
-													<div class="desc" style="font-size: 20px">
+														style="font-weight: 300 !important; color: #FFFFFF;">{{contactsByType.activeContactsCount}}</div>
+													<div class="desc" style="font-size: 20px; color: #FFFFFF;">
 														Active
 														<!-- {{checkingContactTypeName}}s -->
 													</div>
 												</div>
 												<span class="morePadding"> <a class="more"
-													style="text-align: left;"> Detailed view <i
+													style="text-align: left;background: #268c83; color:white"> Detailed view <i
 														class="m-icon-swapright m-icon-white"></i>
 												</a>
 												</span>
 											</button>
 										</div>
 										<div class="col-sm-5ths margin-top-10">
-											<button class="btn-block dashboard-stat purple"
-												(click)="listContactsByType('non-active')"
+											<button class="btn-block dashboard-stat purple" [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'non-active'"
+												(click)="contactsByType.pagination.pageIndex = 1;listContactsByType('non-active')"
 												[disabled]="contactsByType.inactiveContactsCount == 0">
 												<div class="visual">
-													<i class="fa fa-eye-slash"></i>
+													<!-- <i class="fa fa-eye-slash"></i> -->
+													<i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"  [ngStyle]="{'color': contactsByType.selectedCategory == 'non-active' ? '#white' : '#ccc' }"
+               										 *ngIf="contactsByType.selectedCategory == 'non-active'" ></i>
 												</div>
 												<div class="details">
 													<div class="number" style="font-weight: 300 !important;">{{contactsByType.inactiveContactsCount}}</div>
@@ -117,17 +123,21 @@
 											</button>
 										</div>
 										<div class="col-sm-5ths margin-top-10">
-											<button class="btn-block dashboard-stat yellow-gold"
-												(click)="listContactsByType('invalid')"
+											<button class="btn-block dashboard-stat yellow-gold" [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'invalid'"
+												(click)="contactsByType.pagination.pageIndex = 1;listContactsByType('invalid')"
 												[disabled]="contactsByType.invalidContactsCount == 0">
 												<div class="visual">
-													<i class="fa fa-user-times"></i>
+													<!-- <i class="fa fa-user-times"></i> -->
+													<i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"  [ngStyle]="{'color': contactsByType.selectedCategory == 'invalid' ? '#white' : '#ccc' }"
+               										 *ngIf="contactsByType.selectedCategory == 'invalid'" ></i>
 												</div>
 												<div class="details">
 													<div class="number" style="font-weight: 300 !important;">{{contactsByType.invalidContactsCount}}</div>
 													<div class="desc" style="font-size: 20px">
 														Undeliverable
 														<!-- {{checkingContactTypeName}}s -->
+														<i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1"  [ngStyle]="{'color': 1===selectedTabIndex ? '#white' : '#ccc' }"
+               										 *ngIf="selectedTabIndex == 1" ></i>
 													</div>
 												</div>
 												<span class="morePadding"> <a class="more"
@@ -138,11 +148,13 @@
 											</button>
 										</div>
 										<div class="col-sm-5ths margin-top-10">
-											<button class="btn-block dashboard-stat red"
-												(click)="listContactsByType('unsubscribe')"
+											<button class="btn-block dashboard-stat red" [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'unsubscribe'"
+												(click)="contactsByType.pagination.pageIndex = 1;listContactsByType('unsubscribe')"
 												[disabled]="contactsByType.unsubscribedContactsCount == 0">
 												<div class="visual">
-													<i class="fa fa-times"></i>
+													<!-- <i class="fa fa-times"></i> -->
+													<i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1"  [ngStyle]="{'color': contactsByType.selectedCategory == 'unsubscribe' ? '#white' : '#ccc' }"
+               										 *ngIf="contactsByType.selectedCategory == 'unsubscribe'" ></i>
 												</div>
 												<div class="details">
 													<div class="number" style="font-weight: 300 !important;">{{contactsByType.unsubscribedContactsCount}}</div>
@@ -159,7 +171,7 @@
 											</button>
 										</div>
 									</div>
-									<div class="page-bar m0">
+									<div class="page-bar m0" *ngIf="showListOfContactList">
 										<ul class="page-breadcrumb">
 											<li style="font-size: 16px; color: #888888">Your
 												{{checkingContactTypeName}} Lists</li>
@@ -221,6 +233,7 @@
 								<!-- END FILTER -->
 								<!-- <app-loader *ngIf="httpRequestLoader.isLoading && !isListView"></app-loader>
 								<app-list-loader *ngIf="httpRequestLoader.isLoading && isListView"></app-list-loader> -->
+								<section *ngIf="showListOfContactList">
 								<div class="clearfix">
 									<app-grid-loader
 										*ngIf="httpRequestLoader.isLoading && !isListView"></app-grid-loader>
@@ -258,11 +271,16 @@
 														style="height: 70px;"> <img
 														*ngIf="contactList.socialNetwork=='MANUAL'"
 														src="{{normalImage}}" alt="manual" style="height: 70px;">
+														<img
+														*ngIf="contactList.socialNetwork=='MARKETO'"
+														src="{{marketoImage}}" alt="manual" style="height: 70px;">
 														<img *ngIf="!contactList.emailValidationInd"
 														src="assets/images/Spinner.gif"
 														style="width: 55px; margin-top: -88px; margin-left: 17px;">
+														
 													</td>
 													<td>
+														
 														<h4 class="ellipsis" title="{{contactList.name}}">
 															{{contactList.name | slice:0:50}} <span
 																*ngIf="contactList.name?.length>50">...</span>
@@ -298,7 +316,7 @@
 													<span *ngIf="!contactList.emailValidationInd"><strong>-</strong></span>
 													</td>
 													<td *ngIf="!authenticationService.isSuperAdmin()">
-														<div class="actions-block override-actions">
+														<div class="actions-block override-actions" *ngIf="contactList.emailValidationInd">
 															<a
 																*ngIf="(hasAllAccess || authenticationService.module.isVendor || (hasContactRole && loggedInUserId == contactList.uploadedUserId) || authenticationService.isOnlyPartner()) && !contactList.synchronisedList"
 																(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.synchronisedList)"
@@ -336,6 +354,13 @@
 																<i class="fa fa-trash-o"></i>
 															</a>
 														</div>
+														<div class="actions-block override-actions" *ngIf="!contactList.emailValidationInd">
+														<a data-toggle="tooltip" data-placement="top"
+																title="Force process the list"
+																(click)="forceProcessList(contactList.id)">
+																<i class="fa fa-repeat"></i>
+															</a>
+														</div>
 													</td>
 												</tr>
 											</tbody>
@@ -359,6 +384,9 @@
 												src="{{googleImage}}"> <img class="imageClassCss"
 												*ngIf="contactList.socialNetwork=='SALESFORCE'"
 												src="{{salesforceImage}}">
+												<img
+														*ngIf="contactList.socialNetwork=='MARKETO'"
+														src="{{marketoImage}}" alt="manual" style="height: 70px;">
 											<!-- <img src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png"> -->
 
 											<div id="container" *ngIf="!contactList.emailValidationInd">
@@ -391,7 +419,7 @@
 													[dateAndTime]="contactList.createdDate"> </app-timestamp>
 											</h6>
 											<div class="bar"
-												*ngIf="!authenticationService.isSuperAdmin()">
+												*ngIf="!authenticationService.isSuperAdmin() && contactList.emailValidationInd">
 												<a [class.disabled]="!contactList.emailValidationInd"
 													*ngIf="(hasAllAccess || authenticationService.module.isVendor || (hasContactRole && loggedInUserId == contactList.uploadedUserId) || authenticationService.isOnlyPartner()) && !contactList.synchronisedList"
 													(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList)"
@@ -439,6 +467,14 @@
 													class="fa fa-trash-o"></i>
 												</a>
 											</div>
+											<div class="bar" *ngIf="!contactList.emailValidationInd">
+											<a data-toggle="tooltip" data-placement="top"
+													title="Force process the list"
+													data-rel="fancybox-button" 
+													(click)="forceProcessList(contactList.id)"> 
+													<i class="fa fa-repeat"></i>
+												</a>
+										   </div>
 										</div>
 									</div>
 								</div>
@@ -451,6 +487,7 @@
 										(notifyParent)="setPage($event)"
 										(notifyParentDropDown)="loadContactLists($event)"></app-pagination>
 								</div>
+								</section>
 							</div>
 						</div>
 					</div>
@@ -470,8 +507,8 @@
 
 	<div *ngIf="! showListOfContactList">
 		<div style="padding: 0 0 15px 0;">
-			<app-response-message [customResponse]="customResponse"
-				*ngIf="customResponse.isVisible"></app-response-message>
+		<!-- 	<app-response-message [customResponse]="customResponse"
+				*ngIf="customResponse.isVisible"></app-response-message> -->
 		</div>
 		<div class="alert alert-success alert-dismissible"
 			*ngIf="invalidDeleteSucessMessage" style="margin-bottom: 20px;">
@@ -808,6 +845,7 @@
 							<div class="form-group">
 								<div class="form-inline col-sm-12">
 									<div class="form-group col-sm-4">
+									<b>{{i}}</b>
 										<select class="form-control"
 											[(ngModel)]="criterias[i].property">
 											<option
@@ -837,8 +875,8 @@
 							</div>
 						</div>
 						<div class="row col-sm-1" style="margin-left: 32px;">
-							<div (click)="addNewRow()" data-toggle="tooltip" data-placement="left" title="Add a condition">
-							<span class="btn btn-default pull-right">
+							<div data-toggle="tooltip" data-placement="left" title="Add a condition">
+							<span [class.disabled]="criterias.length > 5"  (click)="addNewRow()" class="btn btn-default pull-right">
 								<i class="fa fa-plus-square" aria-hidden="true"
 									style="color: #0196da"></i>
 							</span>
@@ -847,12 +885,11 @@
 					</div>
 				</div>
 				<div class="col-xs-12 m0" *ngIf="isSegmentationErrorMessage">
-					<h4 class="m0" style="color: red; text-align: center;">Please
-						fill the required inputs:</h4>
+					<h4 class="m0" style="color: red; text-align: center;">{{filterConditionErrorMessage}}</h4>
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn green" (click)="contactFilter()">Submit</button>
+				<button type="button" class="btn green" [disabled]="criterias.length === 0" (click)="contactFilter()">Submit</button>
 				<button type="button" class="btn green"
 					(click)="cancelSegmentation()" data-dismiss="modal">Cancel</button>
 			</div>

@@ -22,6 +22,8 @@ import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { CountryNames } from '../../common/models/country-names';
 import { RegularExpressions } from '../../common/models/regular-expressions';
 import { TeamMemberService } from '../../team/services/team-member.service';
+import { FileUtil } from '../../core/models/file-util';
+import { SocialPagerService } from '../services/social-pager.service';
 
 declare var Metronic, Promise, Layout, Demo, swal, Portfolio, $, Papa: any;
 
@@ -31,7 +33,7 @@ declare var Metronic, Promise, Layout, Demo, swal, Portfolio, $, Papa: any;
     styleUrls: ['../../../assets/css/button.css',
         '../../../assets/css/numbered-textarea.css',
         './edit-contacts.component.css', '../../../assets/css/phone-number-plugin.css'],
-    providers: [Pagination, HttpRequestLoader, CountryNames, Properties, ActionsDescription, RegularExpressions, TeamMemberService]
+    providers: [FileUtil, Pagination, HttpRequestLoader, CountryNames, Properties, ActionsDescription, RegularExpressions, TeamMemberService]
 })
 export class EditContactsComponent implements OnInit, OnDestroy {
     @Input() contacts: User[];
@@ -51,9 +53,12 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     criterias = new Array<Criteria>();
     isSegmentation: boolean = false;
     isSegmentationErrorMessage: boolean;
+    filterConditionErrorMessage = "";
 
     totalListUsers = [];
     updatedUserDetails = [];
+    existedEmailIds = [];
+    csvContacts = [];
 
     contactListObject: ContactList;
     selectedContactListName: string;
@@ -109,6 +114,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     hasContactRole: boolean = false;
     loggedInUserId = 0;
     hasAllAccess = false;
+    isDuplicateEmailId = false;
 
     public currentContactType: string = "all_contacts";
     public userListIds: Array<UserListIds>;
@@ -150,6 +156,12 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     searchContactType = "";
     saveAsListName:any;
     saveAsError:any;
+    
+    pageSize: number = 12;
+    pageNumber: any;
+    pager: any = {};
+    csvPagedItems: any[];
+    
     filterOptions = [
         { 'name': '', 'value': 'Field Name*' },
         { 'name': 'firstName', 'value': 'First Name' },
@@ -160,7 +172,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
         { 'name': 'country', 'value': 'Country' },
         { 'name': 'city', 'value': 'City' },
         { 'name': 'mobileNumber', 'value': 'Mobile Number' },
-        { 'name': 'notes', 'value': 'Notes' },
+       /* { 'name': 'notes', 'value': 'Notes' },*/
     ];
     filterOption = this.filterOptions[0];
 
@@ -171,13 +183,14 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     ];
     filterCondition = this.filterConditions[0];
 
-    constructor( public refService: ReferenceService, public contactService: ContactService, private manageContact: ManageContactsComponent,
+    constructor( public socialPagerService: SocialPagerService, private fileUtil: FileUtil, public refService: ReferenceService, public contactService: ContactService, private manageContact: ManageContactsComponent,
         public authenticationService: AuthenticationService, private router: Router, public countryNames: CountryNames,
         public regularExpressions: RegularExpressions, public actionsDescription: ActionsDescription,
         private pagerService: PagerService, public pagination: Pagination, public xtremandLogger: XtremandLogger, public properties: Properties,
         public teamMemberService: TeamMemberService ) {
 
         this.addContactuser.country = ( this.countryNames.countries[0] );
+        this.contactsByType.selectedCategory = "all";
 
         let currentUrl = this.router.url;
         if ( currentUrl.includes( 'home/contacts' ) ) {
@@ -196,7 +209,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
             this.sortOptions.push( { 'name': 'Partner type (DESC)', 'value': 'partnerType-DESC' });
             this.sortOptions.push( { 'name': 'Category (ASC)', 'value': 'category-ASC' });
             this.sortOptions.push( { 'name': 'Category (DESC)', 'value': 'category-DESC' });
-            
+
         }
 
         this.users = new Array<User>();
@@ -230,6 +243,22 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                 contacts.isChecked = false;
         })
     }
+    
+    setCsvPage( page: number ) {
+        try {
+            if ( page < 1 || page > this.pager.totalPages ) {
+                return;
+            }
+                this.pager = this.socialPagerService.getPager( this.users.length, page, this.pageSize );
+                this.csvPagedItems = this.users.slice( this.pager.startIndex, this.pager.endIndex + 1 );
+          
+        } catch ( error ) {
+            this.xtremandLogger.error( error, "AddContactsComponent setPage()." )
+        }
+
+    }
+
+    
 
     fileChange( input: any ) {
         this.uploadCsvUsingFile = true;
@@ -261,50 +290,84 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                 var self = this;
                 reader.onload = function( e: any ) {
                     var contents = e.target.result;
-                    var csvResult = Papa.parse( contents );
-                    var allTextLines = csvResult.data;
-                    for ( var i = 1; i < allTextLines.length; i++ ) {
-                        if ( allTextLines[i][4].trim().length > 0 ) {
-                            let user = new User();
-                            if(!self.isPartner){
-                            user.emailId = allTextLines[i][4];
-                            user.firstName = allTextLines[i][0];
-                            user.lastName = allTextLines[i][1];
-                            user.contactCompany = allTextLines[i][2];
-                            user.jobTitle = allTextLines[i][3];
-                            user.address = allTextLines[i][5];
-                            user.city = allTextLines[i][6];
-                            user.state = allTextLines[i][7];
-                            user.zipCode = allTextLines[i][8];
-                            user.country = allTextLines[i][9];
-                            user.mobileNumber = allTextLines[i][10];
-                            /*user.description = allTextLines[i][9];*/
-                            self.users.push( user );
-                            self.contacts.push( user );
-                            }else{ 
-                               
-                                user.emailId = allTextLines[i][4];
-                                user.firstName = allTextLines[i][0];
-                                user.lastName = allTextLines[i][1];
-                                user.contactCompany = allTextLines[i][2];
-                                user.jobTitle = allTextLines[i][3];
-                                user.vertical = allTextLines[i][5];
-                                user.region = allTextLines[i][6];
-                                user.partnerType = allTextLines[i][7];
-                                user.category = allTextLines[i][8];
-                                user.address = allTextLines[i][9];
-                                user.city = allTextLines[i][10];
-                                user.state = allTextLines[i][11];
-                                user.zipCode = allTextLines[i][12];
-                                user.country = allTextLines[i][13];
-                                user.mobileNumber = allTextLines[i][14];
-                                /* user.description = allTextLines[i][9];*/
-                                self.users.push( user );
-                                self.contacts.push( user );
+                    
+                    let csvData = reader.result;
+                    let csvRecordsArray = csvData.split(/\r\n|\n/);
+                    let headersRow = self.fileUtil
+                    .getHeaderArray(csvRecordsArray);
+                     let headers = headersRow[0].split(',');
+                    
+                     if((!self.isPartner && headers.length == 11) ){
+                         if(self.validateContactsCsvHeaders(headers)){
+                             var csvResult = Papa.parse( contents );
+                             var allTextLines = csvResult.data;
+                             for ( var i = 1; i < allTextLines.length; i++ ) {
                                 
-                            }
-                        }
-                    }
+                                 if ( allTextLines[i][4] && allTextLines[i][4].trim().length > 0 ) {
+                                     let user = new User();
+                                     user.emailId = allTextLines[i][4].trim();
+                                     user.firstName = allTextLines[i][0].trim();
+                                     user.lastName = allTextLines[i][1].trim();
+                                     user.contactCompany = allTextLines[i][2].trim();
+                                     user.jobTitle = allTextLines[i][3].trim();
+                                     user.address = allTextLines[i][5].trim();
+                                     user.city = allTextLines[i][6].trim();
+                                     user.state = allTextLines[i][7].trim();
+                                     user.zipCode = allTextLines[i][8].trim();
+                                     user.country = allTextLines[i][9].trim();
+                                     user.mobileNumber = allTextLines[i][10].trim();
+                                     /*user.description = allTextLines[i][9];*/
+                                     self.users.push( user );
+                                     self.csvContacts.push( user );
+                                 }
+                                 
+                             }
+                             self.setCsvPage(1);
+                         }else {
+                             self.customResponse = new CustomResponse( 'ERROR', "Invalid Csv", true );
+                             self.removeCsv();
+                             self.uploader.queue.length = 0;
+                         }
+                         
+                     }else if((self.isPartner && headers.length == 15) ){
+                         if(self.validatePartnerCsvHeaders(headers)){
+                             var csvResult = Papa.parse( contents );
+                             var allTextLines = csvResult.data;
+                             for ( var i = 1; i < allTextLines.length; i++ ) {
+                                 if ( allTextLines[i][4] && allTextLines[i][4].trim().length > 0 ) {
+                                     let user = new User();
+                                         user.emailId = allTextLines[i][4].trim();
+                                         user.firstName = allTextLines[i][0].trim();
+                                         user.lastName = allTextLines[i][1].trim();
+                                         user.contactCompany = allTextLines[i][2].trim();
+                                         user.jobTitle = allTextLines[i][3].trim();
+                                         user.vertical = allTextLines[i][5].trim();
+                                         user.region = allTextLines[i][6].trim();
+                                         user.partnerType = allTextLines[i][7].trim();
+                                         user.category = allTextLines[i][8].trim();
+                                         user.address = allTextLines[i][9].trim();
+                                         user.city = allTextLines[i][10].trim();
+                                         user.state = allTextLines[i][11].trim();
+                                         user.zipCode = allTextLines[i][12].trim();
+                                         user.country = allTextLines[i][13].trim();
+                                         user.mobileNumber = allTextLines[i][14].trim();
+                                         self.users.push( user );
+                                         self.csvContacts.push( user );
+
+                                 }
+                                 
+                             }
+                             self.setCsvPage(1);
+                         }else {
+                             self.customResponse = new CustomResponse( 'ERROR', "Invalid Csv", true );
+                             self.removeCsv();
+                             self.uploader.queue.length = 0;
+                         }
+                     }else{
+                         self.customResponse = new CustomResponse( 'ERROR', "Invalid Csv", true );
+                         self.removeCsv();
+                         self.uploader.queue.length = 0;
+                     }
                     console.log( "AddContacts : readFiles() contacts " + JSON.stringify( self.users ) );
                 }
             } else {
@@ -315,6 +378,14 @@ export class EditContactsComponent implements OnInit, OnDestroy {
             this.xtremandLogger.error( error, "editContactComponent", "readingCsvFile()" );
         }
     }
+    
+    validatePartnerCsvHeaders(headers){
+        return (headers[0].trim()=="FIRSTNAME" && headers[1].trim()=="LASTNAME" && headers[2].trim()=="COMPANY" && headers[3].trim()=="JOBTITLE" && headers[4].trim()=="EMAILID" && headers[5].trim()=="VERTICAL" && headers[6].trim()=="REGION" && headers[7].trim()=="PARTNETTYPE" && headers[8].trim()=="CATEGORY" && headers[9].trim()=="ADDRESS" && headers[10].trim()=="CITY" && headers[11].trim()=="STATE" && headers[12].trim()=="ZIP" && headers[13].trim()=="COUNTRY" && headers[14].trim()=="MOBILE NUMBER");
+  }
+    
+    validateContactsCsvHeaders(headers){
+        return (headers[0].trim()=="FIRSTNAME" && headers[1].trim()=="LASTNAME" && headers[2].trim()=="COMPANY" && headers[3].trim()=="JOBTITLE" && headers[4].trim()=="EMAILID" && headers[5].trim()=="ADDRESS" && headers[6].trim()=="CITY" && headers[7].trim()=="STATE" && headers[8].trim()=="ZIP CODE" && headers[9].trim()=="COUNTRY" && headers[10].trim()=="MOBILE NUMBER");
+  }
 
     compressArray( original ) {
         var compressed = [];
@@ -373,6 +444,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
             return valueArr.indexOf( item ) != idx
         });
         console.log( isDuplicate );
+        this.isDuplicateEmailId = isDuplicate;
         this.xtremandLogger.info( this.users[0].emailId );
         if ( this.invalidPattenMail === true ) {
             this.showInvalidMaills = true;
@@ -486,9 +558,12 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                             body = body.substring( 1, body.length - 1 );
                             if ( error._body.includes( 'Please launch or delete those campaigns first' ) ) {
                                 this.customResponse = new CustomResponse( 'ERROR', error._body, true );
-                            } else {
+                            } else if(JSON.parse(error._body).includes("email addresses in your contact list that aren't formatted properly")){
+                                this.customResponse = new CustomResponse( 'ERROR', JSON.parse(error._body), true );
+                            }else{
                                 this.xtremandLogger.errorPage( error );
                             }
+                            this.xtremandLogger.error( error );
                             console.log( error );
                         },
                         () => this.xtremandLogger.info( "MangeContactsComponent loadContactLists() finished" )
@@ -525,10 +600,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                     if ( this.users[i].country === "Select Country" ) {
                         this.users[i].country = null;
                     }
+                    
+                    this.validateEmail(this.users[i].emailId);
 
-                    /*if ( this.users[i].mobileNumber.length < 6 ) {
-                        this.users[i].mobileNumber = "";
-                    }*/
+                    
 
                     let userDetails = {
                             "emailId": this.users[i].emailId,
@@ -538,7 +613,29 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
                     this.newUserDetails.push( userDetails );
                 }
-                if ( this.validCsvContacts == true && this.invalidPatternEmails.length == 0 ) {
+                
+                var testArray = [];
+                for (var i = 0; i <= this.users.length - 1; i++) {
+                    testArray.push(this.users[i].emailId.toLowerCase());
+                }
+                var newArray = this.compressArray(testArray);
+                for (var w = 0; w < newArray.length; w++) {
+                    if (newArray[w].count >= 2) {
+                        this.duplicateEmailIds.push(newArray[w].value);
+                    }
+                    console.log(newArray[w].value);
+                    console.log(newArray[w].count);
+                }
+                this.xtremandLogger.log("DUPLICATE EMAILS" + this.duplicateEmailIds);
+                var valueArr = this.users.map(function (item) { return item.emailId.toLowerCase() });
+                var isDuplicate = valueArr.some(function (item, idx) {
+                    return valueArr.indexOf(item) != idx
+                });
+                console.log("emailDuplicate" + isDuplicate);
+                this.isDuplicateEmailId = isDuplicate;
+                
+                
+                if ( this.validCsvContacts == true && this.invalidPatternEmails.length == 0 && !this.isEmailExist && !isDuplicate) {
                     $( "#sample_editable_1" ).show();
                     this.isCompanyDetails = false;
                     if ( this.isPartner ) {
@@ -621,9 +718,12 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                                     if ( error._body.includes( 'Please launch or delete those campaigns first' ) ) {
                                         this.customResponse = new CustomResponse( 'ERROR', error._body, true );
 
-                                    } else {
-                                        this.xtremandLogger.errorPage( error );
+                                    } else if(JSON.parse(error._body).message.includes("email addresses in your contact list that aren't formatted properly")){
+                                        this.customResponse = new CustomResponse( 'ERROR', JSON.parse(error._body).message, true );
+                                    }else{
+                                       this.xtremandLogger.errorPage( error );
                                     }
+                                    this.xtremandLogger.error( error );
                                     console.log( error );
                                 },
                                 () => this.xtremandLogger.info( "MangeContactsComponent loadContactLists() finished" )
@@ -636,7 +736,12 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                         this.customResponse = new CustomResponse( 'ERROR', "You are not allowed add teamMember or orgAdmin as a partner", true );
                     }
 
-                } else {
+                }else if(this.isEmailExist){
+                    this.customResponse = new CustomResponse( 'ERROR', "These email(s) are already added " + this.existedEmailIds, true );
+                }
+                else if(isDuplicate){
+                    this.customResponse = new CustomResponse( 'ERROR', "Please remove duplicate email ids " + this.duplicateEmailIds, true );
+                }else {
                     this.inValidCsvContacts = true;
                 }
             }
@@ -754,6 +859,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     removeCsv() {
         this.fileTypeError = false;
         this.inValidCsvContacts = false;
+        this.existedEmailIds,length = 0;
         this.invalidPatternEmails.length = 0;
         this.selectedAddContactsOption = 8;
         this.users = [];
@@ -768,7 +874,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
         this.clipboardTextareaText = "";
         this.clickBoard = true;
        /* if(this.isPartner){*/
-            
+
         /*}else{
         this.clickBoard = true;
         }*/
@@ -892,17 +998,17 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                         user.country = data[9];
                         break;
                     case 11:
-                        user.firstName = data[0];
-                        user.lastName = data[1];
-                        user.contactCompany = data[2];
-                        user.jobTitle = data[3];
-                        user.emailId = data[4];
-                        user.address = data[5];
-                        user.city = data[6];
-                        user.state = data[7];
-                        user.zipCode = data[8];
-                        user.country = data[9];
-                        user.mobileNumber = data[10];
+                        user.firstName = data[0].trim();
+                        user.lastName = data[1].trim();
+                        user.contactCompany = data[2].trim();
+                        user.jobTitle = data[3].trim();
+                        user.emailId = data[4].trim();
+                        user.address = data[5].trim();
+                        user.city = data[6].trim();
+                        user.state = data[7].trim();
+                        user.zipCode = data[8].trim();
+                        user.country = data[9].trim();
+                        user.mobileNumber = data[10].trim();
                         break;
                     /*case 10:
                         user.firstName = data[0];
@@ -1053,21 +1159,21 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                         user.country = data[13]
                         break;
                     case 15:
-                        user.firstName = data[0];
-                        user.lastName = data[1];
-                        user.contactCompany = data[2];
-                        user.jobTitle = data[3];
-                        user.emailId = data[4];
-                        user.vertical = data[5];
-                        user.region = data[6]
-                        user.partnerType = data[7]
-                        user.category = data[8]
-                        user.address = data[9]
-                        user.city = data[10]
-                        user.state = data[11]
-                        user.zipCode = data[12]
-                        user.country = data[13]
-                        user.mobileNumber = data[14]
+                        user.firstName = data[0].trim();
+                        user.lastName = data[1].trim();
+                        user.contactCompany = data[2].trim();
+                        user.jobTitle = data[3].trim();
+                        user.emailId = data[4].trim();
+                        user.vertical = data[5].trim();
+                        user.region = data[6].trim()
+                        user.partnerType = data[7].trim()
+                        user.category = data[8].trim()
+                        user.address = data[9].trim()
+                        user.city = data[10].trim()
+                        user.state = data[11].trim()
+                        user.zipCode = data[12].trim()
+                        user.country = data[13].trim()
+                        user.mobileNumber = data[14].trim()
                         break;
                     }
                 }
@@ -1101,9 +1207,11 @@ export class EditContactsComponent implements OnInit, OnDestroy {
         try {
             this.duplicateEmailIds = [];
             this.dublicateEmailId = false;
+            this.existedEmailIds = [];
             var testArray = [];
             for ( var i = 0; i <= this.users.length - 1; i++ ) {
                 testArray.push( this.users[i].emailId );
+                this.validateEmail(this.users[i].emailId);
             }
 
             var newArray = this.compressArray( testArray );
@@ -1120,8 +1228,11 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                 return valueArr.indexOf( item ) != idx
             });
             console.log( isDuplicate );
-            if ( !isDuplicate ) {
+            this.isDuplicateEmailId = isDuplicate;
+            if ( !isDuplicate && !this.isEmailExist ) {
                 this.saveClipboardValidEmails();
+            }else if(this.isEmailExist){
+                this.customResponse = new CustomResponse( 'ERROR', "These email(s) are already added " + this.existedEmailIds, true );
             } else {
                 this.dublicateEmailId = true;
                 $( "button#sample_editable_1_new" ).prop( 'disabled', false );
@@ -1233,9 +1344,12 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                                 body = body.substring( 1, body.length - 1 );
                                 if ( error._body.includes( 'Please launch or delete those campaigns first' ) ) {
                                     this.customResponse = new CustomResponse( 'ERROR', error._body, true );
-                                } else {
-                                    this.xtremandLogger.errorPage( error );
+                                } else if(JSON.parse(error._body).includes("email addresses in your contact list that aren't formatted properly")){
+                                    this.customResponse = new CustomResponse( 'ERROR', JSON.parse(error._body), true );
+                                }else{
+                                   this.xtremandLogger.errorPage( error );
                                 }
+                                this.xtremandLogger.error( error );
                                 console.log( error );
                             },
                             () => this.xtremandLogger.info( "MangeContactsComponent loadContactLists() finished" )
@@ -1273,6 +1387,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
         }
         this.selectedAddContactsOption = 8;
         this.users = [];
+        this.selectedContactListIds = [];
+        this.isHeaderCheckBoxChecked = false;
         this.dublicateEmailId = false;
         this.clickBoard = false;
     }
@@ -1606,10 +1722,12 @@ export class EditContactsComponent implements OnInit, OnDestroy {
         this.contactIds.push( this.contactUsersId )
         this.xtremandLogger.info( "contactListId in sweetAlert() " + this.contactIds );
         let message = '';
-        if(this.isDefaultPartnerList){
+        if(this.isPartner && this.isDefaultPartnerList){
             message = 'The partner(s) will be deleted from this and all other Partner lists.';
-        }else {
+        }else if (this.isPartner && !this.isDefaultPartnerList){
             message = 'This will only delete the partner(s) from this list. To remove the partner(s) completely from your account, please delete the record(s) from the Master List.';
+        }else {
+            message = "The contacts(s) will be deleted and action can't be undo.";
         }
 
         let self = this;
@@ -1631,7 +1749,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
             });
         }
 
-        if ( this.totalRecords === 1 && !( this.isDefaultPartnerList ) ) {
+        if ( this.totalRecords === 1 && ( !this.isDefaultPartnerList ) ) {
             swal( {
                 title: 'Are you sure?',
                 text: "Deleting all the " + this.checkingContactTypeName + "s" + " in this list will also cause the list to be deleted. You won't be able to undo this action. ",
@@ -1813,6 +1931,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
         $( '#addContactModal' ).modal( 'toggle' );
         $( "#addContactModal .close" ).click()
     }
+    
+    
     validateEmail( emailId: string ) {
         const lowerCaseEmail = emailId.toLowerCase();
         if ( this.validateEmailAddress( emailId ) ) {
@@ -1826,6 +1946,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
             for ( let i = 0; i < this.contacts.length; i++ ) {
                 if ( lowerCaseEmail == this.contacts[i].emailId ) {
                     this.isEmailExist = true;
+                    this.existedEmailIds.push(emailId);
                     break;
                 } else {
                     this.isEmailExist = false;
@@ -1844,55 +1965,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
             this.emailNotValid = false;
         }
     }
-
-
-  //   saveAsChange() {
-  //     try {
-  //         const self = this;
-  //         this.loadContactListsNames();
-  //         if ( this.contactListName == undefined ) {
-  //             this.contactListName = this.contactService.partnerListName;
-  //         }
-  //         if ( this.isDefaultPartnerList == true && this.contactListName.includes( '_copy' ) ) {
-  //             this.contactListName + '_copy'
-  //         }
-  //         swal( {
-  //             title: this.checkingContactTypeName + ' List Name',
-  //             input: 'text',
-  //             inputValue: this.contactListName + '_copy',
-  //             showCancelButton: true,
-  //             confirmButtonText: 'Save',
-  //             allowOutsideClick: false,
-  //             preConfirm: function( name: any ) {
-  //                 return new Promise( function() {
-  //                     console.log( 'logic begins' );
-  //                     var inputName = name.toLowerCase().replace( /\s/g, '' );
-  //                     if ( $.inArray( inputName, self.names ) > -1 ) {
-  //                         swal.showValidationError( 'This list name is already taken.' )
-  //                     } else {
-  //                         if ( name != "" && name.length < 250) {
-  //                             swal.close();
-  //                             self.saveDuplicateContactList( name );
-  //                         } else {
-  //                            if(name == ""){
-  //                             swal.showValidationError( 'List Name is Required..' )
-  //                            }
-  //                            else{
-  //                                swal.showValidationError("You have exceeded 250 characters!");
-  //                            }
-  //                         }
-  //                     }
-  //                 });
-  //             }
-  //         }).then( function( name: any ) {
-  //             console.log( name );
-  //         }, function( dismiss: any ) {
-  //             console.log( 'you clicked on option' + dismiss );
-  //         });
-  //     } catch ( error ) {
-  //         this.xtremandLogger.error( error, "editContactComponent", "SaveAsNewListSweetAlert()" );
-  //     }
-  // }
 
     addCopyToField(){
           this.loadContactListsNames();
@@ -1917,9 +1989,11 @@ export class EditContactsComponent implements OnInit, OnDestroy {
       this.refService.namesArray = undefined;
     }
     saveDuplicateContactList( name: string ) {
-        try {
-            if ( name != "" ) {
-                this.contactListObject = new ContactList;
+       try {
+            
+           if ( name != "" ) {
+               this.contactService.isLoadingList = true;
+               this.contactListObject = new ContactList;
                 this.contactListObject.name = name;
                 this.contactListObject.isPartnerUserList = this.isPartner;
                 if ( this.selectedContactListIds.length == 0 ) {
@@ -1932,27 +2006,28 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                     this.contactService.saveContactList( listUsers, name, this.isPartner )
                         .subscribe(
                         data => {
-                            data = data;
                             $('#saveAsEditModal').modal('hide');
                             this.saveAsError = '';
                             this.saveAsListName = '';
                             this.saveAsListName = undefined;
-                            if ( this.isPartner == false ) {
-                                this.router.navigateByUrl( '/home/contacts/manage' )
-                            } else {
-                                this.router.navigateByUrl( 'home/partners/manage' )
-                            }
+                            this.goToContactOrPartnerUrl();
                             this.contactService.saveAsSuccessMessage = "SUCCESS";
+                            this.contactService.isLoadingList = false;
                         },
-
                         ( error: any ) => {
                             this.xtremandLogger.error( error );
-                            this.xtremandLogger.errorPage( error );
+                            if (JSON.parse(error._body).message.includes('email addresses in your contact list')) {
+                                this.customResponse = new CustomResponse( 'ERROR', JSON.parse(error._body).message, true );
+                                if(this.addPartnerSave == true){
+                                    this.contactService.saveAsSuccessMessage = "saveAsPartnerError";
+                                    this.contactService.saveAsErrorMessage = JSON.parse(error._body).message;
+                                    this.goToContactOrPartnerUrl();
+                                }
+                              } else {  this.xtremandLogger.errorPage( error ); }
                         },
                         () => this.xtremandLogger.info( "allcontactComponent saveSelectedUsers() finished" )
                         )
                 } else {
-
                     if ( this.addPartnerSave == true ) {
                         for ( let i = 0; i < this.selectedContactListIds.length; i++ ) {
                             for ( let j = 0; j < this.contactService.allPartners.length; j++ ) {
@@ -1977,22 +2052,26 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                     this.contactService.saveContactList( this.selectedContactForSave, name, this.isPartner )
                         .subscribe(
                         data => {
-                            data = data;
-                            if ( this.isPartner == false ) {
-                                this.router.navigateByUrl( '/home/contacts/manage' )
-                            } else {
-                                this.router.navigateByUrl( 'home/partners/manage' )
-                            }
+                            this.goToContactOrPartnerUrl();
                             this.contactService.saveAsSuccessMessage = "SUCCESS";
                         },
-
                         ( error: any ) => {
+                            try {
                             this.xtremandLogger.error( error );
-                            this.xtremandLogger.errorPage( error );
+                              if (JSON.parse(error._body).message.includes('email addresses in your contact list')) {
+                                this.customResponse = new CustomResponse( 'ERROR', JSON.parse(error._body).message, true );
+                                if(this.addPartnerSave == true){
+                                    this.contactService.saveAsSuccessMessage = "saveAsPartnerError";
+                                    this.contactService.saveAsErrorMessage = JSON.parse(error._body).message;
+                                    this.goToContactOrPartnerUrl();
+                                }
+                              } else {  this.xtremandLogger.errorPage( error ); }
+                            }catch(err){ this.xtremandLogger.error( err );}
                         },
                         () => this.xtremandLogger.info( "allcontactComponent saveSelectedUsers() finished" )
                         )
                 }
+                this.contactService.isLoadingList = false;
             }
             else {
                 this.xtremandLogger.error( "AllContactComponent saveSelectedUsers() UserNotSelectedContacts" );
@@ -2001,7 +2080,11 @@ export class EditContactsComponent implements OnInit, OnDestroy {
             this.xtremandLogger.error( error, "editContactComponent", "SaveAsNewList()" );
         }
     }
-
+    goToContactOrPartnerUrl(){
+      const url =  !this.isPartner ? 'contacts':'partners';
+      this.router.navigateByUrl( '/home/'+url+'/manage' )
+      this.contactService.isLoadingList = false;
+    }
     toggle( i: number ) {
         const className = $( '#more_' + i ).attr( 'class' );
         if ( className === 'hidden' ) {
@@ -2041,58 +2124,87 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     cancelSegmentation() {
         this.criterias.length = 0;
         this.isSegmentationErrorMessage = false;
+        this.filterConditionErrorMessage = "";
     }
 
     contactFilter() {
         try {
             for ( let i = 0; i < this.criterias.length; i++ ) {
-                if ( this.criterias[i].operation == "=" ) {
-                    this.criterias[i].operation = "eq";
-                }
-                if ( this.criterias[i].property == "First Name" ) {
-                    this.criterias[i].property = "firstName";
-                }
-                else if ( this.criterias[i].property == "Last Name" ) {
-                    this.criterias[i].property = "lastName";
-                }
-                else if ( this.criterias[i].property == "Company" ) {
-                    this.criterias[i].property = "contactCompany";
-                }
-                else if ( this.criterias[i].property == "Job Title" ) {
-                    this.criterias[i].property = "jobTitle";
-                }
-                else if ( this.criterias[i].property == "Email Id" ) {
-                    this.criterias[i].property = "emailId";
-                }
-                else if ( this.criterias[i].property == "Country" ) {
-                    this.criterias[i].property = "country";
-                }
-                else if ( this.criterias[i].property == "City" ) {
-                    this.criterias[i].property = "city";
-                }
-                else if ( this.criterias[i].property == "Mobile Number" ) {
-                    this.criterias[i].property = "mobileNumber";
-                }
-                else if ( this.criterias[i].property == "Notes" ) {
-                    this.criterias[i].property = "description";
-                }
-                console.log( this.criterias[i].operation );
-                console.log( this.criterias[i].property );
-                console.log( this.criterias[i].value1 );
-
                 if ( this.criterias[i].property == "Field Name*" || this.criterias[i].operation == "Condition*" || ( this.criterias[i].value1 == undefined || this.criterias[i].value1 == "" ) ) {
                     this.isSegmentationErrorMessage = true;
+                    if(this.criterias[i].property == "Field Name*" && this.criterias[i].operation == "Condition*" && (this.criterias[i].value1 == undefined || this.criterias[i].value1 == "")){
+                        this.filterConditionErrorMessage = "Please fill the required data at position " + i;
+                    }else if(this.criterias[i].property == "Field Name*" && this.criterias[i].operation == "Condition*"){
+                        this.filterConditionErrorMessage = "Please select the Field Name and Condition at position " + i;
+                    }else if(this.criterias[i].property == "Field Name*" && (this.criterias[i].value1 == undefined || this.criterias[i].value1 == "")){
+                        this.filterConditionErrorMessage = "Please select the Field Name and Value at position " + i;
+                    }else if(this.criterias[i].operation == "Condition*" && (this.criterias[i].value1 == undefined || this.criterias[i].value1 == "")){
+                        this.filterConditionErrorMessage = "Please select the Condition and Value at position " + i;
+                    }else if(this.criterias[i].operation == "Condition*"){
+                        this.filterConditionErrorMessage = "Please select the Condition at position " + i;
+                    }else if(this.criterias[i].property == "Field Name*"){
+                        this.filterConditionErrorMessage = "Please select the Field Name at position " + i;
+                    }else if(this.criterias[i].value1 == undefined || this.criterias[i].value1 == ""){
+                        this.filterConditionErrorMessage = "Please fill the value at position " + i;
+                    }
+                    break;
                 } else {
                     this.isSegmentationErrorMessage = false;
                 }
-
             }
+            
+            
+            if ( !this.isSegmentationErrorMessage ) {
+                for ( let i = 0; i < this.criterias.length; i++ ) {
+                    if ( this.criterias[i].operation == "=" ) {
+                        this.criterias[i].operation = "eq";
+                    }
+
+                    if ( this.criterias[i].operation == "Contains" ) {
+                        this.criterias[i].operation = "like";
+                    }
+
+                    if ( this.criterias[i].property == "First Name" ) {
+                        this.criterias[i].property = "firstName";
+                    }
+                    else if ( this.criterias[i].property == "Last Name" ) {
+                        this.criterias[i].property = "lastName";
+                    }
+                    else if ( this.criterias[i].property == "Company" ) {
+                        this.criterias[i].property = "contactCompany";
+                    }
+                    else if ( this.criterias[i].property == "Job Title" ) {
+                        this.criterias[i].property = "jobTitle";
+                    }
+                    else if ( this.criterias[i].property == "Email Id" ) {
+                        this.criterias[i].property = "emailId";
+                    }
+                    else if ( this.criterias[i].property == "Country" ) {
+                        this.criterias[i].property = "country";
+                    }
+                    else if ( this.criterias[i].property == "City" ) {
+                        this.criterias[i].property = "city";
+                    }
+                    else if ( this.criterias[i].property == "Mobile Number" ) {
+                        this.criterias[i].property = "mobileNumber";
+                    }
+                    else if ( this.criterias[i].property == "Notes" ) {
+                        this.criterias[i].property = "description";
+                    }
+                    console.log( this.criterias[i].operation );
+                    console.log( this.criterias[i].property );
+                    console.log( this.criterias[i].value1 );
+                }
+            }
+
             console.log( this.criterias );
             if ( !this.isSegmentationErrorMessage ) {
                 if ( this.currentContactType == "all_contacts" ) {
                     this.checkingLoadContactsCount = true;
+                    this.pagination.pageIndex = 1;
                     this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
                 } else {
+                    this.contactsByType.pagination.pageIndex = 1;
                     this.listOfSelectedContactListByType( this.contactsByType.selectedCategory );
                 }
                 this.isSegmentation = true;
@@ -2112,6 +2224,14 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     cancelSegmentationRow( rowId: number ) {
         if ( rowId !== -1 ) {
             this.criterias.splice( rowId, 1 );
+        }
+    }
+
+    downloadEmptyCsv() {
+        if(this.isPartner){
+            window.location.href = this.authenticationService.MEDIA_URL + "UPLOAD_PARTNER_LIST _EMPTY.csv";
+        }else{
+        window.location.href = this.authenticationService.MEDIA_URL + "UPLOAD_USER_LIST _EMPTY.csv";
         }
     }
 
@@ -2398,18 +2518,14 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
     listTeamMembers() {
         try {
-            this.teamMemberPagination.maxResults = 100000000;
             try {
-                this.teamMemberService.list( this.teamMemberPagination, this.authenticationService.getUserId() )
+                this.teamMemberService.listTeamMemberEmailIds()
                     .subscribe(
                     data => {
                         console.log( data );
-                        if ( data.teamMembers.length != 0 ) {
-                            for ( let i = 0; i < data.teamMembers.length; i++ ) {
-                                this.teamMembersList.push( data.teamMembers[i].emailId );
-                            }
+                        for(let i=0;i< data.length; i++){
+                            this.teamMembersList.push( data[i] );
                         }
-                        this.teamMemberPagination = this.pagerService.getPagedItems( this.teamMemberPagination, this.teamMembersList );
                     },
                     error => {
                         this.xtremandLogger.errorPage( error );
@@ -2452,6 +2568,19 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                 this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_SAVE_SUCCESS_AND_MAIL_SENT_SUCCESS, true );
             }
         }
+        
+        if( event === "users are unSubscribed for emails" ){
+            this.customResponse = new CustomResponse( 'ERROR', "The " + this.checkingContactTypeName +"s are unsubscribed for receiving the campaign emails.", true );
+        }
+        
+        if( event === "user has unSubscribed for emails" ){
+            this.customResponse = new CustomResponse( 'ERROR', "The " + this.checkingContactTypeName + " has unsubscribed for receiving the campaign emails.", true );
+        } 
+        
+        if ( event == "Emails Sending failed" ) {
+            this.customResponse = new CustomResponse( 'ERROR', "Failed to send Emails", true );
+        }
+        
         this.openCampaignModal = false;
         this.contactsByType.contactListAssociatedCampaigns.length = 0;
     }
@@ -2477,7 +2606,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
             this.xtremandLogger.error( error, "addPartnerComponent", "resending Partner email" );
         }
     }
-    
+
     activateUnsubscribedUser(selectContactId: any){
         try {
             this.contactService.activateUnsubscribedUser( selectContactId )
@@ -2503,10 +2632,11 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     ngOnInit() {
         try {
             this.loadContactListsNames();
-            if(!this.authenticationService.isTeamMember()){
+            if(this.isPartner){
               this.listTeamMembers();
+              this.listOrgAdmin();
             }
-            this.listOrgAdmin();
+            
             this.selectedContactListName = this.contactListName;
             this.checkingLoadContactsCount = true;
             this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
@@ -2537,7 +2667,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
         $( '#filterModal' ).modal( 'hide' );
         $('#saveAsEditModal').modal('hide');
 
-        if ( this.selectedAddContactsOption !=8 && this.router.url !=='/') {
+        if ( this.selectedAddContactsOption !=8 && this.router.url !=='/' && !this.isDuplicateEmailId) {
             let self = this;
              swal( {
                  title: 'Are you sure?',

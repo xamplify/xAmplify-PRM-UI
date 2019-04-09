@@ -1,9 +1,11 @@
-import {Component, OnInit, DoCheck} from '@angular/core';
-import {Location} from '@angular/common';
-import {Router} from '@angular/router';
-import {AuthenticationService} from '../../core/services/authentication.service';
-import {Roles} from '../../core/models/roles';
-import {ReferenceService} from '../../core/services/reference.service';
+import { Component, OnInit, DoCheck } from '@angular/core';
+import { Location } from '@angular/common';
+import { Router } from '@angular/router';
+import { AuthenticationService } from '../../core/services/authentication.service';
+import { Roles } from '../../core/models/roles';
+import { ReferenceService } from '../../core/services/reference.service';
+import { DashboardService } from '../../dashboard/dashboard.service';
+import { Pagination } from '../models/pagination';
 declare var window:any;
 
 @Component({
@@ -25,15 +27,30 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
     contacts = false;
     partners = false;
 
-    constructor(location: Location, public authService: AuthenticationService, public refService: ReferenceService,private router:Router) {
+    enableLeads = false;
+    enableLeadsByVendor = false;
+    pagination = new Pagination();
+
+    constructor(location: Location, public authService: AuthenticationService, public refService: ReferenceService,private router:Router
+    ,private dashBoardService:DashboardService) {
+       
+        console.log(authService.getUserId());
+        this.refService.getCompanyIdByUserId(this.authService.getUserId()).subscribe(response=>{
+            this.refService.getOrgCampaignTypes(response).subscribe(data=>{
+            this.enableLeads = data.enableLeads;
+            console.log(data)
+        });
+   
+    })
         this.updateLeftSideBar(location);
     }
 
     updateLeftSideBar(location:Location){
-      //  this.refService.isSidebarClosed = false;
-      //  document.body.className = 'login page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-sidebar-closed-hide-logo';
         this.location = location;
+        try{
         const roles = this.authService.getRoles();
+
+        if(roles){
         if (roles.indexOf(this.roleName.campaignRole) > -1 ||
             roles.indexOf(this.roleName.orgAdminRole) > -1 ||
             roles.indexOf(this.roleName.allRole) > -1 ||
@@ -59,28 +76,51 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
             this.authService.module.isStats = true;
         }
 
-        if (roles.indexOf(this.roleName.partnersRole) > -1 ||
-            roles.indexOf(this.roleName.orgAdminRole) > -1 ||
-            roles.indexOf(this.roleName.allRole) > -1 ||
-            roles.indexOf(this.roleName.vendorRole)>-1) {
-            this.authService.module.isPartner = true;
-            }
-        if (roles.indexOf(this.roleName.videRole) > -1 ||
-            roles.indexOf(this.roleName.orgAdminRole) > -1 ||
-            roles.indexOf(this.roleName.allRole) > -1 ||
-            roles.indexOf(this.roleName.vendorRole)>-1) {
-            this.authService.module.isVideo = true;
-        }
-        if (roles.indexOf(this.roleName.orgAdminRole) > -1) {
-            this.authService.module.isOrgAdmin = true;
-        }
-        if(roles.indexOf(this.roleName.companyPartnerRole)>-1){
-            this.authService.module.isCompanyPartner = true;
-        }
+                if (roles.indexOf(this.roleName.partnersRole) > -1 ||
+                    roles.indexOf(this.roleName.orgAdminRole) > -1 ||
+                    roles.indexOf(this.roleName.allRole) > -1 ||
+                    roles.indexOf(this.roleName.vendorRole)>-1) {
+                    this.authService.module.isPartner = true;
+                    }
+                if (roles.indexOf(this.roleName.videRole) > -1 ||
+                    roles.indexOf(this.roleName.orgAdminRole) > -1 ||
+                    roles.indexOf(this.roleName.allRole) > -1 ||
+                    roles.indexOf(this.roleName.vendorRole)>-1) {
+                    this.authService.module.isVideo = true;
+                }
+                if (roles.indexOf(this.roleName.opportunityRole) > -1 ||
+                    roles.indexOf(this.roleName.orgAdminRole) > -1 ||
+                    roles.indexOf(this.roleName.allRole) > -1 ||
+                    roles.indexOf(this.roleName.vendorRole)>-1) {
+                    this.authService.module.hasOpportunityRole = true;
+                }
+                if (roles.indexOf(this.roleName.orgAdminRole) > -1) {
+                    this.authService.module.isOrgAdmin = true;
+                }
+                if(roles.indexOf(this.roleName.companyPartnerRole)>-1){
+                    this.pagination.pageIndex =1 ;
+                    this.pagination.maxResults = 10000;
+                    this.dashBoardService.loadVendorDetails(this.authService.getUserId(),this.pagination).subscribe(response=>{
+                        response.data.forEach(element => {
+                            this.refService.getOrgCampaignTypes(element.companyId).subscribe(data=>{
+                                if(!this.enableLeadsByVendor)
+                                    this.enableLeadsByVendor = data.enableLeads;
+                                console.log(data)
+                            });
+                        });
+                    })
+                    this.authService.module.isCompanyPartner = true;
+                }
 
-        if(roles.indexOf(this.roleName.vendorRole)>-1){
-            this.authService.module.isVendor = true;
+                if(roles.indexOf(this.roleName.vendorRole)>-1){
+                    this.authService.module.isVendor = true;
+                }
+
+                
+        
+              
         }
+        }catch(error){  console.log(error); }
     }
 
   ngOnInit() {

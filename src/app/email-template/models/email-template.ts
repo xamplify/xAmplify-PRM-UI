@@ -4,6 +4,7 @@ export class EmailTemplate {
 	id: number;
 	name: string;
 	subject: string;
+	content: string; 
 	body: string;
 	desc: string;
 	langId: number;
@@ -13,6 +14,7 @@ export class EmailTemplate {
 	videoTemplate: boolean;
 	beeRegularTemplate: boolean;
 	beeVideoTemplate: boolean;
+	marketoTemplate:boolean;
 	user: User;
 	jsonBody: string;
 	type: EmailTemplateType;
@@ -26,4 +28,6 @@ export class EmailTemplate {
 	onDestroy: boolean = false;
     beeEventTemplate:boolean;
     beeEventCoBrandingTemplate:boolean;
+	  marketoEmailTemplate: { marketo_id: number; };
+	  isSelectedMarketoTemplate = false;
 }

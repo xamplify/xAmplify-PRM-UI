@@ -1,15 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/throw';
-
 import { User } from '../models/user';
 import { DefaultVideoPlayer } from '../../videos/models/default-video-player';
 import { AuthenticationService } from '../services/authentication.service';
 import { ReferenceService } from './reference.service';
+import { DealForms } from '../../deal-registration/models/deal-forms';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class UserService {
@@ -23,7 +20,7 @@ export class UserService {
 
     constructor(
         private http: Http,
-        private authenticationService: AuthenticationService, private refService: ReferenceService ) {
+        private authenticationService: AuthenticationService, public httpClient:HttpClient ) {
     }
 
     getUsers(): Observable<User[]> {
@@ -182,6 +179,29 @@ export class UserService {
       return this.http.get( this.URL+'user/'+alias)
       .map( this.extractData )
       .catch( this.handleError );
+    }
+    saveForm(userId:number,form:DealForms){
+        return this.http.post( this.authenticationService.REST_URL+"/users/"+ userId + "/forms/save?access_token=" + this.authenticationService.access_token ,form)
+        .map( this.extractData )
+        .catch( this.handleError );
+    }
+    updateForm(userId:number,form:DealForms){
+        return this.http.post( this.authenticationService.REST_URL+"/users/"+ userId + "/forms/update?access_token=" + this.authenticationService.access_token ,form)
+        .map( this.extractData )
+        .catch( this.handleError );
+    }
+    listForm(userId:number){
+        return this.http.get( this.authenticationService.REST_URL+"/users/"+ userId + "/forms/list?access_token=" + this.authenticationService.access_token)
+        .map( this.extractData )
+        .catch( this.handleError );
+    }
+
+    saveUserProfileLogo(file:any){
+      const formData = new FormData();
+      formData.append('file', file, file.name);
+      const url = this.URL + "admin/uploadProfilePicture/" + this.authenticationService.user.id + "?access_token=" + this.authenticationService.access_token
+      return this.httpClient.post(url,formData)
+      .catch(this.handleError);
     }
     private extractData( res: Response ) {
         const body = res.json();
