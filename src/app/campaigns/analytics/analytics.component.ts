@@ -736,10 +736,10 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
             this.isPartnerEnabledAnalyticsAccess = this.campaign.detailedAnalyticsShared;
             this.isDataShare = this.campaign.dataShare;
             this.isNavigatedThroughAnalytics = true;
-            if(data.campaignType === 'EVENT'){
+            /*if(data.campaignType === 'EVENT'){
                 this.isDataShare = true;
                 this.isPartnerEnabledAnalyticsAccess = true;
-            }
+            }*/
         }else{
             this.isNavigatedThroughAnalytics = false;
             this.isPartnerEnabledAnalyticsAccess = true;
