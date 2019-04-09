@@ -832,7 +832,22 @@ export class DealRegistrationComponent implements OnInit
     submitButtonStatus()
     {
 
-     console.log(this.opportunityAmountError +"=="+this.dealTypeError);
+     console.log("websiteError"+"===> "+this.websiteError);
+     console.log("leadStreetError"+"===> "+this.leadStreetError);
+     console.log("leadCityError"+"===> "+this.leadCityError);
+     console.log("opportunityAmountError"+"===> "+this.opportunityAmountError);
+     console.log("leadPostalCodeError"+"===> "+this.leadPostalCodeError);
+     console.log("countryError"+"===> "+this.countryError);
+     console.log("estimatedCloseDateError"+"===> "+this.estimatedCloseDateError);
+     console.log("companyError"+"===> "+this.companyError);
+     console.log("firstNameError"+"===> "+this.firstNameError);
+
+     console.log("lastNameError"+"===> "+this.lastNameError);
+     console.log("titleError"+"===> "+this.titleError);
+
+     console.log("dealTypeError"+"===> "+this.dealTypeError);
+     console.log("phoneError"+"===> "+this.phoneError);
+
         if (!this.websiteError && !this.leadStreetError && !this.leadCityError
             && !this.leadStateError && !this.leadPostalCodeError && !this.countryError
             && !this.opportunityAmountError && !this.estimatedCloseDateError

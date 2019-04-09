@@ -167,6 +167,7 @@ export class AddLeadsComponent implements OnInit
     {
         if (this.dealId == -1)
         {
+            console.log(this.lead)
             this.dealRegistrationService.getLeadData(this.lead)
                 .subscribe(
                     data =>
@@ -177,6 +178,7 @@ export class AddLeadsComponent implements OnInit
                     },
                     (error: any) =>
                     {
+                        this.setDefaultLeadData(this.lead);
                         this.isServerError = true;
                     }
                 );
@@ -286,7 +288,7 @@ export class AddLeadsComponent implements OnInit
         this.dealRegistration.postalCode = data.zipCode;
         this.dealRegistration.company = data.contactCompany;
         this.dealRegistration.leadCity = data.city;
-        this.dealRegistration.email = this.leadUser.emailId;
+        this.dealRegistration.email = this.lead.emailId;
         //this.dealRegistration.pushToMarketo = false;
         var date = new Date();
         this.dealRegistration.estimatedCloseDate =this.getFormatedDate(date);

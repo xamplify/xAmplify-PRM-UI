@@ -194,6 +194,7 @@ export class DealRegistrationService
 
     getLeadData(user: any)
     {
+        console.log(user)
         let userId = user.userId;
         let userListId = user.userListId;
         return this.http.get(this.URL + "user-list/" + userListId + "/" + userId + "?access_token=" + this.authenticationService.access_token)

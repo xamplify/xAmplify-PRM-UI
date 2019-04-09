@@ -147,7 +147,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     campaignDefaultEmailTemplates: Array<EmailTemplate>;
     isEmailTemplate:boolean = false;
     isCampaignDraftEmailTemplate:boolean = false;
-    emailTemplateHtmlPreivew:string = "";;
+    emailTemplateHtmlPreivew:string = "";
+
     selectedEmailTemplateName:string = "";
     emailTemplateId:number=0;
     isDefaultCampaignEmailTemplate:boolean = true;
@@ -208,6 +209,29 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     loading = false;
     isPartnerToo:boolean = false;
     httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
+
+     //Push Leads To Marketo
+     showMarketoForm: boolean;
+     clientId: string;
+     secretId: string;
+     marketoInstance: string;
+     clientIdClass: string;
+     secretIdClass: string;
+     marketoInstanceClass: string;
+   
+     templateError: boolean;
+     clentIdError: boolean;
+     secretIdError: boolean;
+     marketoInstanceError: boolean;
+     isModelFormValid: boolean;
+     templateSuccessMsg: any;
+     pushToMarketo = false;
+
+     loadingMarketo: boolean;
+     marketoButtonClass = "btn btn-default";
+ 
+     //ENABLE or DISABLE LEADS
+     enableLeads : boolean;
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder,public refService:ReferenceService,
                 private logger:XtremandLogger,private videoFileService:VideoFileService,
@@ -1825,7 +1849,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             'campaignType':campaignType,
             'country':country,
             'createdFromVideos':this.campaign.createdFromVideos,
-            'nurtureCampaign':false
+            'nurtureCampaign':false,
+            'pushToMarketo':this.pushToMarketo
         };
         console.log(data);
         return data;
@@ -2510,6 +2535,211 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
          }
      return false;
      }
+
+
+    
+    /**
+     * 
+     * Push Leads to Marketo
+     */
+
+    pushMarketo(event: any)
+    {
+        this.pushToMarketo =  !this.pushToMarketo;
+        console.log(this.pushToMarketo);
+       
+        if (this.pushToMarketo)
+        {
+            this.checkMarketoCredentials();
+        }
+    }
+
+
+    clearValues()
+    {
+        this.clientId = '';
+        this.secretId = '';
+        this.marketoInstance = '';
+        this.clientIdClass = "form-group";
+        this.secretIdClass = "form-group";
+        this.marketoInstanceClass = "form-group";
+
+    }
+    checkMarketoCredentials()
+    {
+        this.loadingMarketo = true;
+        this.emailTemplateService.checkMarketoCredentials(this.authenticationService.getUserId()).subscribe(response =>
+        {
+            if (response.statusCode == 8000)
+            {
+                this.loading = true;
+                this.emailTemplateService.checkCustomObjects(this.authenticationService.getUserId()).subscribe(customObjectResponse =>
+                    {
+                        if (customObjectResponse.statusCode == 8020){
+                            this.pushToMarketo =  true;
+                            console.log(this.pushToMarketo);
+                           
+                            this.templateError = false;
+                            this.loading = false;
+                        }else{
+                            this.pushToMarketo = false;
+                           
+                            this.templateError = false;
+                            this.loading = false;
+                            alert("Custome Objects are not found")
+                        }
+
+                    }, error =>
+                    {
+                        this.pushToMarketo = false;
+                        this.templateError = error;
+                       
+                        this.loadingMarketo = false;
+                    })
+               
+            }
+            else
+            {
+                this.pushToMarketo = false;
+               
+                $("#templateRetrieve").modal('show');
+                $("#closeButton").show();
+                this.templateError = false;
+                this.loadingMarketo = false;
+
+            }
+        }, error =>
+            {
+                this.pushToMarketo = false;
+                this.templateError = error;
+                $("#templateRetrieve").modal('show');
+                $("#closeButton").show();
+                this.loadingMarketo = false;
+            })
+    }
+
+
+    submitMarketoCredentials()
+    {
+        this.loadingMarketo = true;
+        const obj = {
+            userId: this.authenticationService.getUserId(),
+            instanceUrl: this.marketoInstance,
+            clientId: this.clientId,
+            clientSecret: this.secretId
+        }
+
+        this.emailTemplateService.saveMarketoCredentials(obj).subscribe(response =>
+        {
+            if (response.statusCode == 8003)
+            {
+                $("#closeButton").hide();
+                this.showMarketoForm = false;
+                this.pushToMarketo = true;
+                this.templateError = false;
+                this.templateSuccessMsg = response.message;
+                this.loadingMarketo = false;
+                
+                setTimeout(function () { $("#templateRetrieve").modal('hide') }, 3000);
+            } else
+            {
+                this.pushToMarketo = false;
+                $("#templateRetrieve").modal('show');
+                $("#closeButton").show();
+                this.templateError = response.message;
+                this.templateSuccessMsg = false;
+                this.loadingMarketo = false;
+            }
+        }, error =>
+        {
+        this.templateError = error;
+            this.pushToMarketo = false;
+            $("#closeButton").show();
+            this.loadingMarketo = false;
+        }
+        )
+
+    }
+    getTemplatesFromMarketo()
+    {
+        this.clearValues();
+
+        this.checkMarketoCredentials();
+
+
+
+    }
+
+
+    validateModelForm(fieldId: any)
+    {
+        var errorClass = "form-group has-error has-feedback";
+        var successClass = "form-group has-success has-feedback";
+
+        if (fieldId == 'email')
+        {
+            if (this.clientId.length > 0)
+            {
+                this.clientIdClass = successClass;
+                this.clentIdError = false;
+            } else
+            {
+                this.clientIdClass = errorClass;
+                this.clentIdError = true;
+            }
+        } else if (fieldId == 'pwd')
+        {
+            if (this.secretId.length > 0)
+            {
+                this.secretIdClass = successClass;
+                this.secretIdError = false;
+            } else
+            {
+                this.secretIdClass = errorClass;
+                this.secretIdError = true;
+            }
+        } else if (fieldId == 'instance')
+        {
+            if (this.marketoInstance.length > 0)
+            {
+                this.marketoInstanceClass = successClass;
+                this.marketoInstanceError = false;
+            } else
+            {
+                this.marketoInstanceClass = errorClass;
+                this.marketoInstanceError = false;
+            }
+        }
+        this.toggleSubmitButtonState();
+    }
+
+
+    saveMarketoTemplatesButtonState()
+    {
+
+
+    }
+
+
+    toggleSubmitButtonState()
+    {
+        if (!this.clentIdError && !this.secretIdError && !this.marketoInstanceError)
+            {
+            this.isModelFormValid = true;
+            this.marketoButtonClass = "btn btn-primary";
+            }
+        else
+        {
+            this.isModelFormValid = false;
+            this.marketoButtonClass = "btn btn-default";
+        }
+
+    }
+    closeModal()
+    {
+        this.pushToMarketo = false;
+        $("#templateRetrieve").modal('hide');
+    }
 
 
 }
