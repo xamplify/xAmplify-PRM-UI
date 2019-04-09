@@ -58,7 +58,7 @@
                        <a data-rel="fancybox-button" (click)="goToCampaignAnalytics(item)" data-toggle="tooltip" data-placement="top" title="Campaign Based Reports" class='mr5'>
 							<i class="fa fa-line-chart"></i>
 						</a>
-						 <a id="disabled-icon" class="blur" data-toggle="tooltip" data-placement="top" title="Data Sharing Disabled" *ngIf="!item.dataShare && item.campaignType != 'EVENT'">
+						 <a id="disabled-icon" class="blur" data-toggle="tooltip" data-placement="top" title="Data Sharing Disabled" *ngIf="!item.dataShare">
                         	<img src="../assets/images/disabled-icon.png">
                      	</a>
                       </td>
