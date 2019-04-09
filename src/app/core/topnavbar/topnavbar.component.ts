@@ -145,7 +145,7 @@ export class TopnavbarComponent implements OnInit {
   ngOnInit() {
     try{
      this.getUnreadNotificationsCount();
-    // this.isAddedByVendor();
+     this.isAddedByVendor();
     }catch(error) {this.logger.error('error'+error); }
   }
   lockScreen(){

@@ -363,7 +363,9 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
   
   updateCompanyLogo(emailTemplate:EmailTemplate){
       emailTemplate.jsonBody = emailTemplate.jsonBody.replace(this.authenticationService.MEDIA_URL + this.refService.companyProfileImage,"https://xamp.io/vod/replace-company-logo.png");
-      emailTemplate.body = emailTemplate.body.replace(this.authenticationService.MEDIA_URL + this.refService.companyProfileImage,"https://xamp.io/vod/replace-company-logo.png");
+      if(emailTemplate.body!=undefined){
+          emailTemplate.body = emailTemplate.body.replace(this.authenticationService.MEDIA_URL + this.refService.companyProfileImage,"https://xamp.io/vod/replace-company-logo.png");
+      }
   }
 
   ngOnInit() {
