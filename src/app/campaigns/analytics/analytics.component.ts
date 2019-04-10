@@ -38,6 +38,8 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   dealButtonText: string="";
   dealId: any;
   
+  public searchKey: string;
+  
     ngxloading: boolean;
   isTimeLineView: boolean;
   campaign: Campaign;
@@ -149,6 +151,14 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     try{
     this.loading = true;
     this.referenceService.loading(this.httpRequestLoader, true);
+    
+    if(this.searchKey){
+        pagination.searchKey = this.searchKey;
+        this.pagination.pageIndex = 1;
+    }else{
+        pagination.searchKey = null;
+    }
+    
   //if(!this.campaign.detailedAnalyticsShared && this.campaign.dataShare && !this.campaign.parentCampaignId){
     if(this.isDataShare && this.isNavigatedThroughAnalytics && !this.isPartnerEnabledAnalyticsAccess){
         pagination.campaignId = campaignId;
@@ -1605,6 +1615,14 @@ showTimeLineView(){
         if(event ===  "Success"){
             this.customResponse = new CustomResponse('SUCCESS',"Reminder has been sent successfully", true);
            }
+    }
+    
+    eventHandler( keyCode: any ) { if ( keyCode === 13 ) { this.search(); } }
+    
+    search() {
+        this.pagination.searchKey = this.searchKey;
+        this.pagination.pageIndex = 1;
+        this.listCampaignViews(this.campaignId, this.campaignViewsPagination);
     }
 
   ngOnInit() {
