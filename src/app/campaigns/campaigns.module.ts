@@ -59,11 +59,10 @@ import { MarketoAuthenticationComponent } from "../deal-registration/marketo-aut
     CalendarComponent,
     DealRegistrationComponent,
     ManageDealCommentsComponent,
-    AddLeadsComponent,
-    MarketoAuthenticationComponent
+    AddLeadsComponent
   ],
   exports: [DealRegistrationComponent,BubbleChartComponent,HeatMapComponent,ManageDealCommentsComponent,AddLeadsComponent
-  ,MarketoAuthenticationComponent],
+],
   providers: [ContactService, VideoFileService, EmailTemplateService,DealRegistrationService]
 })
 export class CampaignsModule {}

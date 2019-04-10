@@ -172,6 +172,25 @@ export class DashboardService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+    /**
+     * 
+     * MArketo Authentication
+     */
+    checkMarketoCredentials(userId: number) {
+        return this.http.get(this.authenticationService.REST_URL + `/marketo/${userId}/checkCredentials?access_token=${this.authenticationService.access_token}`)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    checkCustomObjects(userId: number) {
+        return this.http.get(this.authenticationService.REST_URL + `/marketo/${userId}/checkCustomObjects?access_token=${this.authenticationService.access_token}`)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    saveMarketoCredentials( formData: any) {
+        return this.http.post(this.authenticationService.REST_URL + `/marketo/credentials?access_token=${this.authenticationService.access_token}`, formData)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 
     private extractData(res: Response) {
         let body = res.json();

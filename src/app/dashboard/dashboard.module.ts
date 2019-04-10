@@ -29,14 +29,17 @@ import { DashboardStatsComponent } from './dashboard-stats/dashboard-stats.compo
 import { VendorReportsComponent } from './vendor-reports/vendor-reports.component';
 import { AdminReportComponent } from './admin-report/admin-report.component';
 import { DealRegistrationService } from '../deal-registration/services/deal-registration.service';
+import { MarketoAuthenticationComponent } from './marketo-authentication/marketo-authentication.component';
 
 @NgModule({
     imports: [DasboardRoutingModule, SharedModule, CoreModule, CommonModule, DragulaModule, CommonComponentModule, InternationalPhoneModule],
     declarations: [DashboardComponent, TableAdvanceComponent, ViewsReportComponent, ExtraFaqComponent,
         WelcomeComponent, MyProfileComponent, ProfileLockComponent, ProfileHelpComponent, DefaultPageComponent,
-        FollowersComponent, SharedComponent,EditCompanyProfileComponent, ReportsComponent, CompanyPageComponent, PartnerNotificationComponent, DashboardStatsComponent, VendorReportsComponent, AdminReportComponent
+        FollowersComponent, SharedComponent,EditCompanyProfileComponent, ReportsComponent, CompanyPageComponent, PartnerNotificationComponent, DashboardStatsComponent, 
+        VendorReportsComponent, AdminReportComponent,
+        MarketoAuthenticationComponent
     ],
-    exports: [InternationalPhoneModule],
+    exports: [InternationalPhoneModule,MarketoAuthenticationComponent],
     providers: [DashboardService,CompanyProfileService,DealRegistrationService]
 })
 export class DashboardModule { }

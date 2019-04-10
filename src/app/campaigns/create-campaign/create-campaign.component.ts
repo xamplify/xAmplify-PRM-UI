@@ -240,6 +240,16 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 private emailTemplateService:EmailTemplateService,private router:Router, private socialService: SocialService,
                 public callActionSwitch: CallActionSwitch, public videoUtilService: VideoUtilService,public properties:Properties
             ){
+
+                refService.getCompanyIdByUserId(this.authenticationService.getUserId()).subscribe(response=>{
+                    refService.getOrgCampaignTypes(response).subscribe(data=>{
+                        console.log(data)
+                        this.enableLeads = data.enableLeads;
+                        console.log(this.enableLeads);
+                       
+                    });
+                })
+        
         this.logger.info("create-campaign-component constructor loaded");
         $('.bootstrap-switch-label').css('cssText', 'width:31px;!important');
         /*  CKEDITOR.config.width = 500;

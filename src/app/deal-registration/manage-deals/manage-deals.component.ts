@@ -136,11 +136,11 @@ export class ManageDealsComponent implements OnInit
         
         console.log(authenticationService.getRoles())
         
-        if(!this.isOnlyPartner){
-            this.showVendor();
-        }else{
-            this.showPartner();
-        }
+        // if(!this.isOnlyPartner){
+        //     this.showVendor();
+        // }else{
+        //     this.showPartner();
+        // }
 
     }
 
