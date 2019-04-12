@@ -246,10 +246,12 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
         const countryData = result;
         const data = [];
         const self = this;
-        if (countryData != null) {
-          for (const i of Object.keys(countryData)) {
-            const arr = [countryData[i][0].toLowerCase(), countryData[i][1]];
-            data.push(arr);
+        if ( countryData != null ) {
+            for ( const i of Object.keys( countryData ) ) {
+                
+                const arr = countryData[i][2]? [countryData[i][0].toLowerCase(), countryData[i][1] + countryData[i][2]]: [countryData[i][0].toLowerCase(), countryData[i][1]];
+
+                data.push( arr );
           }
           this.renderMapData = data;
         }
