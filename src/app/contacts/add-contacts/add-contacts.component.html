@@ -180,7 +180,7 @@
 													 height="86" width="90" onmouseover="this.src='assets/images/crm/connecting.png';" onmouseout="this.src='assets/images/crm/sf.png';">
 												</a>
 												<div id="salesforceGear" style="position: relative" id="salesforceGear" *ngIf="sfImageNormal">
-													<a [class.disabled]="selectedAddContactsOption != 8 || disableOtherFuctionality" (click)="settingSocialNetworkOpenModal('salesforce')">
+													<a [class.disabled]="selectedAddContactsOption != 8 || disableOtherFuctionality" (click)="settingSocialNetworkOpenModal('Salesforce')">
 														<i id="SgearIcon" class="fa fa-cog cloud-items cloud-css" aria-hidden="true"></i>
 													</a>
 												</div>
@@ -202,7 +202,7 @@
 													 height="86" width="90">
 												</a>
 												<div id="GoogleGear" style="position: relative" *ngIf="googleImageNormal">
-													<a [class.disabled]="selectedAddContactsOption != 8 || disableOtherFuctionality" (click)="settingSocialNetworkOpenModal('google')">
+													<a [class.disabled]="selectedAddContactsOption != 8 || disableOtherFuctionality" (click)="settingSocialNetworkOpenModal('Google')">
 														<i id="GgearIcon" class="fa fa-cog cloud-css cloud-items" aria-hidden="true"></i>
 													</a>
 												</div>
@@ -226,7 +226,7 @@
 													 height="86" width="90">
 												</a>
 												<div id="zohoGear" style="position: relative" *ngIf="zohoImageNormal">
-													<a [class.disabled]="selectedAddContactsOption != 8 || disableOtherFuctionality" (click)="settingSocialNetworkOpenModal('zoho')">
+													<a [class.disabled]="selectedAddContactsOption != 8 || disableOtherFuctionality" (click)="settingSocialNetworkOpenModal('Zoho')">
 														<i id="ZgearIcon" class="fa fa-cog cloud-items cloud-css" aria-hidden="true"></i>
 													</a>
 												</div>
@@ -250,7 +250,7 @@
 													 height="86" width="90" onmouseover="this.src='assets/images/crm/connecting.png';" onmouseout="this.src='assets/images/crm/marketo.png';">
 												</a>
 												<div id="marketoGear" style="position: relative" *ngIf="marketoImageNormal">
-													<a [class.disabled]="selectedAddContactsOption != 8 || disableOtherFuctionality" (click)="settingSocialNetworkOpenModal('zoho')">
+													<a [class.disabled]="selectedAddContactsOption != 8 || disableOtherFuctionality" (click)="settingSocialNetworkOpenModal('Marketo')">
 														<i id="ZgearIcon" class="fa fa-cog cloud-items cloud-css" aria-hidden="true"></i>
 													</a>
 												</div>
@@ -799,14 +799,18 @@
 				<form class="form-horizontal">
 					<div class="form-group">
 						<h4 style="margin-left: 20px;">
-							<span class="glyphicon glyphicon-triangle-right"></span>After Unlinking, your {{settingSocialNetwork}} account will
-							be removed from our platform.
+							<span class="glyphicon glyphicon-triangle-right"></span>You are about to unlink your {{settingSocialNetwork}} account from xAmplify.
 						</h4>
+						
 						<h4 style="margin-left: 20px;">
-							<span class="glyphicon glyphicon-triangle-right"></span>Would you like to delete associated contact lists: <input
+							<span class="glyphicon glyphicon-triangle-right"></span>If you decide to relink your account, you will need to reenter your credentials.
+						</h4>
+						
+						<h4 style="margin-left: 20px;">
+							<span class="glyphicon glyphicon-triangle-right"></span>Would you like to delete associated contact lists? <input
 							 type="checkbox" [(ngModel)]="isUnLinkSocialNetwork" [ngModelOptions]="{standalone: true}">
 						</h4>
-						<button type="button" class="btn btn-primary" style="margin-left: 38%; margin-top: 2%" (click)="unlinkSocailAccount()">UnLink
+						<button type="button" class="btn btn-primary" style="margin-left: 38%; margin-top: 2%" (click)="unlinkSocailAccount()">Unlink
 							Account
 						</button>
 					</div>
