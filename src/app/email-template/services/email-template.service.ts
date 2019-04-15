@@ -9,6 +9,7 @@ import 'rxjs/add/observable/throw';
 import {Pagination} from '../../core/models/pagination';
 import {ReferenceService} from "../../core/services/reference.service";
 import {ContentManagement} from '../../content-management/model/content-management';
+import { Router } from '@angular/router';
 @Injectable()
 export class EmailTemplateService {
     
@@ -20,7 +21,7 @@ export class EmailTemplateService {
     MARKETO_URL = this.authenticationService.REST_URL;
     
     constructor( private http: Http,  private authenticationService: AuthenticationService,
-    		 private refService:ReferenceService ) {
+    		 private refService:ReferenceService,private router:Router) {
        }
     
     save(emailTemplate:EmailTemplate){
@@ -188,7 +189,11 @@ export class EmailTemplateService {
         .catch(this.handleError);
     }
 
-    
+    goToManage(){
+        if("/home/emailtemplates/manage"==this.router.url){
+            this.router.navigate(["/home/emailtemplates/manage"]);
+         }
+    }
     
     
     private extractData( res: Response ) {

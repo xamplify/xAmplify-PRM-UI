@@ -317,6 +317,8 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
               if(!isOnDestroy){
                   this.refService.isCreated = true;
                   this.router.navigate(["/home/emailtemplates/manage"]);
+              }else{
+                  this.emailTemplateService.goToManage();
               }
           },
           error => {
@@ -342,6 +344,8 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
               if(!isOnDestroy){
                   this.refService.isUpdated = true;
                   this.router.navigate(["/home/emailtemplates/manage"]);
+              }else{
+                  this.emailTemplateService.goToManage();
               }
           },
           error => {
@@ -365,11 +369,17 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
       swal.close();
       let isButtonClicked = this.clickedButtonName!="SAVE" && this.clickedButtonName!="SAVE_AS" &&  this.clickedButtonName!="UPDATE";
       if(isButtonClicked && this.emailTemplateService.emailTemplate!=undefined &&this.loggedInUserId>0 && this.emailTemplate.jsonBody!=undefined && this.isMinTimeOver){
-        if(!this.emailTemplateService.emailTemplate.defaultTemplate && this.emailTemplateService.emailTemplate.draft){
-            this.isAdd = false;
-            this.emailTemplate.draft  = true;
-            this.showSweetAlert();
-          }else{
+       let isDefaultTemplate = this.emailTemplateService.emailTemplate.defaultTemplate;
+       let isUserDefined = this.emailTemplateService.emailTemplate.userDefined;
+       let isDraft = this.emailTemplateService.emailTemplate.draft;
+          if(!isDefaultTemplate && isUserDefined){
+            if(isDraft){
+                this.isAdd = false;
+                this.emailTemplate.draft  = true;
+                this.showSweetAlert();
+            }
+          }
+        else{
               this.isAdd = true;
               this.showSweetAlert();
           }
@@ -386,19 +396,14 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
           confirmButtonColor: '#54a7e9',
           cancelButtonColor: '#999',
           confirmButtonText: 'Yes, Save it!',
-          cancelButtonText: "No"
+          cancelButtonText: "No",
+          allowOutsideClick: false
       }).then(function() {
           if(self.isAdd){
               self.emailTemplate.draft = true;
               self.saveEmailTemplate(self.emailTemplate,self.emailTemplateService,self.loggedInUserId,true);
-              if("/home/emailtemplates/manage"==self.router.url){
-                  self.router.navigate(["/home/emailtemplates/manage"]);
-               }
           }else{
               self.updateEmailTemplate(self.emailTemplate,self.emailTemplateService, true);
-              if("/home/emailtemplates/manage"==self.router.url){
-                  self.router.navigate(["/home/emailtemplates/manage"]);
-                }
           }
       },function (dismiss) {
           

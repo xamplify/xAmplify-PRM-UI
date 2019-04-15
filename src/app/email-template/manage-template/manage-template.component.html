@@ -1,6 +1,5 @@
 <div class="page-content"
 	[class.ml0]="authenticationService.isSuperAdmin()">
-	<ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 	<div class="page-bar">
 		<ul class="page-breadcrumb">
 			<li *ngIf="!authenticationService.isSuperAdmin()"><i
@@ -27,6 +26,7 @@
 			*ngIf="customResponse.isVisible"></app-response-message>
 	</div>
 	<div class="row">
+	<ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 		<div class="col-md-12">
 			<div class="portlet light clearfix" style="min-height: 644px;">
 				<div class="portlet-title" style="border-bottom: none">
@@ -306,7 +306,7 @@
 		</div>
 	</div>
 
-	<div class="modal right fade" id="show_email_template_preivew">
+	<div class="modal right" id="show_email_template_preivew">
 		<div class="modal-dialog modal-lg modal-template" style="right:0">
 			<div class="modal-content">
 				<div class="modal-header">

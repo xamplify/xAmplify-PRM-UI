@@ -8,7 +8,7 @@ import { EmailTemplate} from '../models/email-template';
 import { ReferenceService } from '../../core/services/reference.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { CallActionSwitch } from '../../videos/models/call-action-switch';
-declare var Metronic ,Layout ,Demo ,TableManaged,$,CKEDITOR:any;
+declare var Metronic ,Layout ,Demo ,TableManaged,$,CKEDITOR,swal:any;
 
 @Component({
     selector: 'app-update-template',
@@ -55,7 +55,6 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
         this.videoTag = "<a href='<SocialUbuntuURL>'>\n   <img src='<SocialUbuntuImgURL>'/> \n </a> \n";
         this.model.isRegularUpload =0;
         if (emailTemplateService.emailTemplate != undefined) {
-            console.log(emailTemplateService.emailTemplate)
             let body  = emailTemplateService.emailTemplate.body.replace(this.emailOpenTrackingUrl,"");
             this.model.content = body;
             if(!emailTemplateService.emailTemplate.draft)
@@ -107,10 +106,10 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
 
     update(){
         this.clickedButtonName = this.updateButton;
-        this.updateHtmlTemplate(false);
+        this.updateHtmlTemplate(false,null);
     }
 
-    updateHtmlTemplate(isOnDestroy:boolean) {
+    updateHtmlTemplate(isOnDestroy:boolean,ckEditorBody:any) {
        this.refService.startLoader(this.httpRequestLoader);
         this.emailTemplate.id = this.emailTemplateService.emailTemplate.id;
         this.emailTemplate.name = this.model.templateName;
@@ -132,10 +131,13 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
           this.emailTemplate.subject = "assets/images/video-email-template.png";
           this.emailTemplate.videoCoBrandingTemplate = this.coBrandingLogo;
         }
-   
-        for(var instanceName in CKEDITOR.instances){
-            CKEDITOR.instances[instanceName].updateElement();
-            this.emailTemplate.body =  this.mycontent;
+        if(isOnDestroy){
+            this.emailTemplate.body = ckEditorBody;
+        }else{
+            for(var instanceName in CKEDITOR.instances){
+                CKEDITOR.instances[instanceName].updateElement();
+                this.emailTemplate.body =  this.mycontent;
+            }
         }
         if($.trim(this.emailTemplate.body).length>0){
             console.log(this.emailTemplate);
@@ -153,6 +155,8 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
                         this.isVideoTagError = true;
                         this.videoTagsError = data.message;
                     }
+                }else{
+                    this.emailTemplateService.goToManage();
                 }
 
             },
@@ -209,9 +213,32 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
 
 
     ngOnDestroy() {
-        if(this.emailTemplateService.emailTemplate != undefined && this.clickedButtonName!=this.updateButton){
-            this.updateHtmlTemplate(true);
+        let body = this.getCkEditorData();
+        if(this.emailTemplateService.emailTemplate != undefined && this.clickedButtonName!=this.updateButton && $.trim(body).length>0){
+            this.showSweetAlert(body);
         }
-
     }
+    
+    
+    showSweetAlert(body:any) {
+        let self = this;
+        swal( {
+            title: 'Are you sure?',
+            text: "You have unchanged data",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#54a7e9',
+            cancelButtonColor: '#999',
+            confirmButtonText: 'Yes, Save it!',
+            cancelButtonText: "No",
+            allowOutsideClick: false
+        } ).then(function() {
+            self.updateHtmlTemplate( true,body);
+        }, function( dismiss ) {
+
+        } );
+    }
+    
+    
+    
 }

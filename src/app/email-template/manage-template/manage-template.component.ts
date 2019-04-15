@@ -372,14 +372,12 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
                     $('#email-template-title').prop('title',emailTemplate.name);
                     $("#htmlContent").append(body);
                     $('.modal .modal-body').css('overflow-y', 'auto');
-                   // $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
+                    //$('.modal .modal-body').css('max-height', $(window).height() * 0.75);
                     $("#show_email_template_preivew").modal('show');
                     this.ngxloading = false;
                 },
                 error => {this.ngxloading = false; this.logger.error("error in getAllCompanyProfileImages("+this.loggedInUserId+")", error); },
                 () =>  this.logger.info("Finished getAllCompanyProfileImages()"));
-        
-        
        
     }
 
