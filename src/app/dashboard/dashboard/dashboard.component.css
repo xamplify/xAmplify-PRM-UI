@@ -234,7 +234,7 @@ h1.bold {
 	    height: 300px !important;
 }
 .campaign-box{position: relative}
-.profile-name{font-weight: 600;margin: 0 0 5px 0; font-size: 14px;}
+.profile-name{font-weight: 600;margin: 0 0 5px 0; font-size: 14px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;}
 .profile-details b{color: #333;}
 .profile-details a{color: #333;}
 .profile-img{width:60px; height:60px;border: 1px solid #ccc; border-radius: 100%;background-repeat: no-repeat; background-size: 60px 60px; position:relative}
