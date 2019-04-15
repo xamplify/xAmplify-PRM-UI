@@ -1412,7 +1412,13 @@ showTimeLineView(){
       let startTime = new Date(this.downloadCsvList[i].startTime);
       let endTime = new Date(this.downloadCsvList[i].endTime);
       let sentTime = new Date(this.campaign.launchTime);
-      let latestView = new Date(this.downloadCsvList[i].latestView);
+      let latestView;
+      if(this.downloadCsvList[i].latestView){
+          latestView = new Date(this.downloadCsvList[i].latestView);
+      }else{
+          latestView = null;
+      }
+      
       let responseTime = new Date(this.downloadCsvList[i].responseTime);
 
       var object = {
@@ -1448,8 +1454,14 @@ showTimeLineView(){
         }else{
          let hours = this.referenceService.formatAMPM(sentTime);
         object["Sent Time"] = sentTime.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
-        let lastviewHours = this.referenceService.formatAMPM(latestView);
-        object["Latest View"] = latestView.toDateString().split(' ').slice(1).join(' ') + ' ' + lastviewHours;
+        
+        if(latestView != null){
+            let lastviewHours = this.referenceService.formatAMPM(latestView);
+            object["Latest View"] = latestView.toDateString().split(' ').slice(1).join(' ') + ' ' + lastviewHours;
+        }else{
+            object["Latest View"] = ' ';  
+        }
+        
         object["Total Views"] = this.downloadCsvList[i].viewsCount;
         }
         }
