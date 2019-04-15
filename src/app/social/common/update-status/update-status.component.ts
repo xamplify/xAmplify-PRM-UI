@@ -243,8 +243,11 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
         if (file.size > 3145728) {
           // File size should not be more than 3 MB
           this.setCustomResponse(ResponseType.Warning, 'Accepted image size is less than 3MB');
-          this.customResponse.statusArray.push(
-            'The Uploaded Image: ' + file.name + ' size is ' + Math.round(file.size / 1024 / 1024 * 100) / 100 + ' MB');
+          this.customResponse.statusArray.push('The Uploaded Image: ' + file.name + ' size is ' + Math.round(file.size / 1024 / 1024 * 100) / 100 + ' MB');
+          return false;
+        } 
+        if(!file.type.startsWith("image")){
+          this.setCustomResponse(ResponseType.Warning, "We can't quite use that type of file. Could you try one of the following instead: JPG, JPEG, GIF, PNG?");
           return false;
         }
         console.log(file.name + ': ' + file.size);
