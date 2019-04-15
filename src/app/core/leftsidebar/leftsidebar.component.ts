@@ -14,33 +14,28 @@ declare var window:any;
   styleUrls: ['./leftsidebar.component.css']
 })
 export class LeftsidebarComponent implements OnInit, DoCheck {
-
     location: Location;
     baseRoute: string;
     enableLink = true;
     roleName: Roles= new Roles();
-    isOnlyPartner:boolean = false;
-
+    isOnlyPartner = false;
     emailtemplates = false;
     campaigns = false;
     videos = false;
     contacts = false;
     partners = false;
-
     enableLeads = false;
     enableLeadsByVendor = false;
+    changeTemplateCss = false;
     pagination = new Pagination();
-
     constructor(location: Location, public authService: AuthenticationService, public refService: ReferenceService,private router:Router
     ,private dashBoardService:DashboardService) {
-       
         console.log(authService.getUserId());
         this.refService.getCompanyIdByUserId(this.authService.getUserId()).subscribe(response=>{
             this.refService.getOrgCampaignTypes(response).subscribe(data=>{
             this.enableLeads = data.enableLeads;
             console.log(data)
         });
-   
     })
         this.updateLeftSideBar(location);
     }
@@ -49,7 +44,6 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
         this.location = location;
         try{
         const roles = this.authService.getRoles();
-
         if(roles){
         if (roles.indexOf(this.roleName.campaignRole) > -1 ||
             roles.indexOf(this.roleName.orgAdminRole) > -1 ||
@@ -75,54 +69,47 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
             roles.indexOf(this.roleName.vendorRole)>-1) {
             this.authService.module.isStats = true;
         }
-
-                if (roles.indexOf(this.roleName.partnersRole) > -1 ||
-                    roles.indexOf(this.roleName.orgAdminRole) > -1 ||
-                    roles.indexOf(this.roleName.allRole) > -1 ||
-                    roles.indexOf(this.roleName.vendorRole)>-1) {
-                    this.authService.module.isPartner = true;
-                    }
-                if (roles.indexOf(this.roleName.videRole) > -1 ||
-                    roles.indexOf(this.roleName.orgAdminRole) > -1 ||
-                    roles.indexOf(this.roleName.allRole) > -1 ||
-                    roles.indexOf(this.roleName.vendorRole)>-1) {
-                    this.authService.module.isVideo = true;
-                }
-                if (roles.indexOf(this.roleName.opportunityRole) > -1 ||
-                    roles.indexOf(this.roleName.orgAdminRole) > -1 ||
-                    roles.indexOf(this.roleName.allRole) > -1 ||
-                    roles.indexOf(this.roleName.vendorRole)>-1) {
-                    this.authService.module.hasOpportunityRole = true;
-                }
-                if (roles.indexOf(this.roleName.orgAdminRole) > -1) {
-                    this.authService.module.isOrgAdmin = true;
-                }
-                if(roles.indexOf(this.roleName.companyPartnerRole)>-1){
-                    this.pagination.pageIndex =1 ;
-                    this.pagination.maxResults = 10000;
-                    this.dashBoardService.loadVendorDetails(this.authService.getUserId(),this.pagination).subscribe(response=>{
-                        response.data.forEach(element => {
-                            this.refService.getOrgCampaignTypes(element.companyId).subscribe(data=>{
-                                if(!this.enableLeadsByVendor)
-                                    this.enableLeadsByVendor = data.enableLeads;
-                                console.log(data)
-                            });
-                        });
-                    })
-                    this.authService.module.isCompanyPartner = true;
-                }
-
-                if(roles.indexOf(this.roleName.vendorRole)>-1){
-                    this.authService.module.isVendor = true;
-                }
-
-                
-        
-              
+        if (roles.indexOf(this.roleName.partnersRole) > -1 ||
+            roles.indexOf(this.roleName.orgAdminRole) > -1 ||
+            roles.indexOf(this.roleName.allRole) > -1 ||
+            roles.indexOf(this.roleName.vendorRole)>-1) {
+            this.authService.module.isPartner = true;
+            }
+        if (roles.indexOf(this.roleName.videRole) > -1 ||
+            roles.indexOf(this.roleName.orgAdminRole) > -1 ||
+            roles.indexOf(this.roleName.allRole) > -1 ||
+            roles.indexOf(this.roleName.vendorRole)>-1) {
+            this.authService.module.isVideo = true;
+        }
+        if (roles.indexOf(this.roleName.opportunityRole) > -1 ||
+            roles.indexOf(this.roleName.orgAdminRole) > -1 ||
+            roles.indexOf(this.roleName.allRole) > -1 ||
+            roles.indexOf(this.roleName.vendorRole)>-1) {
+            this.authService.module.hasOpportunityRole = true;
+        }
+        if (roles.indexOf(this.roleName.orgAdminRole) > -1) {
+            this.authService.module.isOrgAdmin = true;
+        }
+        if(roles.indexOf(this.roleName.companyPartnerRole)>-1){
+            this.pagination.pageIndex =1 ;
+            this.pagination.maxResults = 10000;
+            this.dashBoardService.loadVendorDetails(this.authService.getUserId(),this.pagination).subscribe(response=>{
+                response.data.forEach(element => {
+                    this.refService.getOrgCampaignTypes(element.companyId).subscribe(data=>{
+                        if(!this.enableLeadsByVendor){
+                              this.enableLeadsByVendor = data.enableLeads; }
+                        console.log(data)
+                    });
+                });
+            })
+            this.authService.module.isCompanyPartner = true;
+          }
+          if(roles.indexOf(this.roleName.vendorRole)>-1){
+              this.authService.module.isVendor = true;
+          }
         }
         }catch(error){  console.log(error); }
     }
-
   ngOnInit() {
     this.isOnlyPartner = this.authService.isOnlyPartner();
   }

@@ -2,3 +2,4 @@ a.disabled {
    pointer-events: none;
    cursor: not-allowed;
 }
+.emailTempCss { width:259px; }
