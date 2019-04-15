@@ -1,4 +1,5 @@
 import { Component, OnInit, Input,OnDestroy } from '@angular/core';
+import { Location } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { XtremandLogger } from '../../../error-pages/xtremand-logger.service';
 import { SaveVideoFile } from '../../../videos/models/save-video-file';
@@ -76,7 +77,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   isPreviewVideo: boolean = false;
   campaignNames = [];
   events = [];
-  constructor(public socialService: SocialService,
+  constructor(private _location: Location, public socialService: SocialService,
     private videoFileService: VideoFileService, public properties:Properties,
     public authenticationService: AuthenticationService, private contactService: ContactService,
     private pagerService: PagerService, private router: Router, public videoUtilService: VideoUtilService,
@@ -1023,5 +1024,8 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 
   onSelectCountry(countryId){
     this.timezones = this.referenceService.getTimeZonesByCountryId(countryId);
+  }
+  cancel() {
+    this._location.back(); // <-- go back to previous location on cancel
   }
 }

@@ -369,6 +369,7 @@
 				</div>
 				<div class="col-xs-12 m0 p0" id="post-actions-button-group">
 					<div class="col-xs-6 pr10 pull-right">
+						<button type="button" class="btn pull-right ml10" (click)="cancel()">Cancel</button>
 						<div class="btn-group pull-right" *ngIf="!(selectedAccounts > 1 && !isCustomizeButtonClicked)">
 							<button type="button" class="btn btn-primary rounded-0" (click)="shareNow()">Post Now</button>
 							<button type="button" style="min-width: 32px;" class="btn btn-primary dropdown-toggle rounded-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" *ngIf="isSocialCampaign">
