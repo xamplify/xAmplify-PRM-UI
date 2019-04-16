@@ -173,7 +173,7 @@ export class DashboardService {
             .catch(this.handleError);
     }
     /**
-     * 
+     *    
      * MArketo Authentication
      */
     checkMarketoCredentials(userId: number) {
