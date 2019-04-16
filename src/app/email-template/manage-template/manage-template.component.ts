@@ -300,7 +300,8 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
                     $.each(result,function(index,value){
                         campaignNames+= (index+1)+"."+value+"<br><br>";
                     });
-                    let message = "Please delete associated campaign(s)<br><br>"+campaignNames;
+                   // let message = "Please delete associated campaign(s)<br><br>"+campaignNames;
+                    let message = "This template is being used in Campaign(s) / Auto Response(s) / Redistributed Campaign(s)<br><br>"+campaignNames;
                     this.customResponse = new CustomResponse('ERROR',message,true );
                     this.refService.loading(this.httpRequestLoader, false);
                 }

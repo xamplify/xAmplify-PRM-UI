@@ -400,7 +400,7 @@
                                   </div>
                                 </div>
                                 <div class="col-xs-12">
-                                  <div id="ck-editor-{{i}}">
+                                  <div id="ck-editor-{{i}}" *ngIf="!reply.defaultTemplate">
                                     <div>
                                       <label style="cursor:default" for="days" id="reply-message-{{reply.divId}}">Message
                                         <b style="color: red">*</b>
@@ -409,7 +409,49 @@
                                     <div>
                                       <ckeditor [(ngModel)]="reply.body" name="body"></ckeditor>
                                     </div>
-                                  </div>
+                                    </div>
+                                     <ul class="content__list" *ngIf="reply.defaultTemplate">
+                                   <fieldset>
+		                            <li class="list__item" [class.list__item--selected]="reply.emailTemplate.id==reply.selectedEmailTemplateId">
+		                              <div class="flex-row" >
+		                                <div class="item__select-box-wrapper">
+		                                  <span class="select-box"> <label> <input type="checkbox"
+		                                    [value]="reply.emailTemplate.id" id="reply-{{i}}-{{reply.emailTemplate.id}}" checked="checked">
+		                                    </label>
+		                                  </span>
+		                                   <span class="ng-scope"> <a
+		                                    class="item__preview item__preview--image img-container custom"
+		                                    target="_BLANK"> <img
+		                                      class="thumb ng-scope" style="width:98px !important" src="{{reply.emailTemplate.subject}}">
+		                                  </a> <a href="javascript:;"> </a>
+		                                  </span>
+		                                </div>
+		                                <div class="item__content" style="text-align: left;">
+		                                  <div class="flex-row">
+		                                    <span class="item__name"
+		                                      [title]="reply.emailTemplate.name"><b>{{reply.emailTemplate.name |slice:0:20}}</b><b *ngIf="reply.emailTemplate?.name?.length>20">...</b>
+		                                    </span>
+		                                    
+		                                    <span style="float:left"  title="{{reply.emailTemplate.createdBy}}">
+                                          	<span>{{reply.emailTemplate.createdBy|slice:0:20}}<span *ngIf="reply.emailTemplate.createdBy?.length>20">...</span></span>
+                                     		 </span>
+		
+		                                    <div class="item__actions">
+		                                      <span> <a style="float:left; right: -6px;"  class="fm external-link" target="_BLANK"
+		                                        data-toggle="tooltip" data-placement="top"
+		                                        title="Preview"  (click)="$event.stopPropagation();getEmailTemplatePreview(reply.emailTemplate)">
+		                                          <i class="fa fa-external-link-square"  aria-hidden="true" style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
+		                                       </a>
+		                                      </span>
+		                                    </div>
+		                                  </div>
+		                                </div>
+		                                <div class="clearfix"></div>
+		                              </div>
+		                            </li>
+		                             <legend>Selected email template</legend>
+						            </fieldset>
+                        		  </ul>
                                 </div>
                               </div>
                             </form>
@@ -490,9 +532,8 @@
                                     </select>
                                   </div>
                                 </div>
-
                                 <div class="col-xs-12">
-                                  <div id="ck-editor-{{i}}">
+                                  <div id="ck-editor-{{i}}" *ngIf="!url.defaultTemplate">
                                     <label for="days" id="click-message-{{url.divId}}">Message
                                       <b style="color: red">*</b>
                                     </label>
@@ -500,7 +541,49 @@
                                       <ckeditor [(ngModel)]="url.body" name="body"></ckeditor>
                                     </div>
                                   </div>
-                                </div>
+                                   <ul class="content__list" *ngIf="url.defaultTemplate">
+                                   <fieldset>
+		                            <li class="list__item" [class.list__item--selected]="url.emailTemplate.id==url.selectedEmailTemplateId">
+		                              <div class="flex-row">
+		                                <div class="item__select-box-wrapper">
+		                                  <span class="select-box"> <label> <input type="checkbox"
+		                                    [value]="url.emailTemplate.id" id="reply-{{i}}-{{url.emailTemplate.id}}" checked="checked">
+		                                    </label>
+		                                  </span>
+		                                   <span class="ng-scope"> <a
+		                                    class="item__preview item__preview--image img-container custom"
+		                                    target="_BLANK"> <img
+		                                      class="thumb ng-scope" style="width:98px !important" src="{{url.emailTemplate.subject}}">
+		                                  </a> <a href="javascript:;"> </a>
+		                                  </span>
+		                                </div>
+		                                <div class="item__content" style="text-align: left;">
+		                                  <div class="flex-row">
+		                                    <span class="item__name"
+		                                      [title]="url.emailTemplate.name"><b>{{url.emailTemplate.name |slice:0:20}}</b><b *ngIf="url.emailTemplate?.name?.length>20">...</b>
+		                                    </span>
+		                                    
+		                                    <span style="float:left"  title="{{url.emailTemplate.createdBy}}">
+                                          	<span>{{url.emailTemplate.createdBy|slice:0:20}}<span *ngIf="url.emailTemplate.createdBy?.length>20">...</span></span>
+                                     		 </span>
+		
+		                                    <div class="item__actions">
+		                                      <span> <a style="float:left; right: -6px;"  class="fm external-link" target="_BLANK"
+		                                        data-toggle="tooltip" data-placement="top"
+		                                        title="Preview"  (click)="$event.stopPropagation();getEmailTemplatePreview(url.emailTemplate)">
+		                                          <i class="fa fa-external-link-square"  aria-hidden="true" style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
+		                                       </a>
+		                                      </span>
+		                                    </div>
+		                                  </div>
+		                                </div>
+		                                <div class="clearfix"></div>
+		                              </div>
+		                            </li>
+		                             <legend>Selected email template</legend>
+						            </fieldset>
+                        		  </ul>
+                               </div>
                               </div>
                             </form>
                           </div>
@@ -578,7 +661,7 @@
 
 <app-preview-video *ngIf="videoFile" [videoFile]="videoFile" (notifyParent)="closePreviewVideoModal($event)"></app-preview-video>
 <!--email template preview-->
-<div class="modal right fade" id="email_template_preivew">
+<div class="modal right" id="email_template_preivew">
   <div class="modal-dialog modal-lg modal-template" style="right:0">
     <div class="modal-content">
       <div class="modal-header">

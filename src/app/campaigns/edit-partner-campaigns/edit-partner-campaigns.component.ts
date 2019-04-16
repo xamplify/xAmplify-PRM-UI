@@ -31,7 +31,7 @@ var moment = require('moment-timezone');
 @Component({
   selector: 'app-edit-partner-campaigns',
   templateUrl: './edit-partner-campaigns.component.html',
-  styleUrls: ['./edit-partner-campaigns.component.css'],
+  styleUrls: ['./edit-partner-campaigns.component.css','../../../assets/css/content.css'],
   providers:[CallActionSwitch,HttpRequestLoader,Pagination,Properties]
 })
 export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
@@ -750,13 +750,6 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
        }
 
   }
-
-
-
-
-
-
-
     highlightRow(contactListId: number,event:any) {
         const isChecked = $('#' + contactListId).is(':checked');
         if (isChecked) {
@@ -797,7 +790,6 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
         }
      }
 
-
     getCampaignUrls(campaign:Campaign){
         if(campaign.campaignUrls!=undefined){
             this.urls = campaign.campaignUrls;
@@ -816,9 +808,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
                 this.allItems.push(id);
             }
         }
-
     }
-
 
     extractTimeFromDate(replyTime){
         //let dt = new Date(replyTime);
