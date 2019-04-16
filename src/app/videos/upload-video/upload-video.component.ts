@@ -720,6 +720,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                     });
             } else {
                 swal('Only video files can be uploaded.');
+                self.defaultSettings();
             }
         });
         // Register a cancel callback handler
