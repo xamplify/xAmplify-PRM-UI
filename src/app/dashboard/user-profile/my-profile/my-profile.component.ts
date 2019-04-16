@@ -23,6 +23,7 @@ import { DealQuestions } from '../../../deal-registration/models/deal-questions'
 import { DealForms } from '../../../deal-registration/models/deal-forms';
 import { DealType } from '../../../deal-registration/models/deal-type';
 import { DealRegistrationService } from '../../../deal-registration/services/deal-registration.service';
+import { DashboardService } from '../../dashboard.service';
 declare var swal, $, videojs: any;
 
 @Component({
@@ -34,6 +35,7 @@ declare var swal, $, videojs: any;
     providers: [User, DefaultVideoPlayer, CallActionSwitch, Properties, RegularExpressions, CountryNames],
 })
 export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
+   
     defaultVideoPlayer: DefaultVideoPlayer;
     tempDefaultVideoPlayerSettings: any;
     videoJSplayer: any;
@@ -97,11 +99,13 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     cropRounded = false;
     loadingcrop = false;
     errorUploadCropper = false;
+    integrationTabIndex = 0;
     @ViewChild(ImageCropperComponent) cropper:ImageCropperComponent;
+    integrateRibbonText: string;
     constructor(public videoFileService: VideoFileService, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
         public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
         public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
-        public regularExpressions: RegularExpressions,public route:ActivatedRoute, public utilService:UtilService,public dealRegSevice:DealRegistrationService) {
+        public regularExpressions: RegularExpressions,public route:ActivatedRoute, public utilService:UtilService,public dealRegSevice:DealRegistrationService,private dashBoardServiece:DashboardService) {
           if (this.isEmpty(this.authenticationService.userProfile.roles) || !this.authenticationService.userProfile.profileImagePath) {this.router.navigateByUrl(this.referenceService.homeRouter);}
           try{
             if ( authenticationService.isSuperAdmin() ) { this.userData = this.authenticationService.venorMyProfileReport;
@@ -130,6 +134,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.parentModel.profilePicutrePath = this.userData.profileImagePath;
                 }
             }
+            this.checkIntegrations();
         }catch(error){
             this.hasClientErrors = true;
             this.logger.showClientErrors("my-profile.component.ts", "constructor()", error);
@@ -1167,6 +1172,27 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                 });
             })
       
+    }
+
+    checkIntegrations(): any
+    {
+        this.dashBoardServiece.checkMarketoCredentials(this.authenticationService.getUserId()).subscribe(response => {
+            if (response.statusCode == 8000)
+            {
+                this.integrateRibbonText = "configured";
+            }
+            else
+            {
+                this.integrateRibbonText = "configure";
+
+            }
+        }, error =>
+            {
+                this.integrateRibbonText = "configure";
+            })
+    }
+    configmarketo(){
+        this.integrationTabIndex = 1;
     }
 
     ngOnDestroy() {

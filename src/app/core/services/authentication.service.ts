@@ -95,6 +95,11 @@ export class AuthenticationService {
             .map((res: Response) => { return res.json(); })
             .catch((error: any) => { return error; });
     }
+    getUserOpportunityModule(userId: number) {
+        return this.http.get(this.REST_URL + 'admin/getUserOppertunityModule/' + userId + '?access_token=' + this.access_token)
+            .map((res: Response) => { return res.json(); })
+            .catch((error: any) => { return error; });
+    }
     getUserId(): number {
         try{
         let userId;

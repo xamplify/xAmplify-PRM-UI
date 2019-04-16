@@ -27,7 +27,6 @@ import { CalendarComponent } from './calendar/calendar.component';
 import { DealRegistrationComponent } from '../deal-registration/add-deals/deal-registration.component';
 import { DealRegistrationService } from '../deal-registration/services/deal-registration.service';
 import { SharedLibraryModule } from "../shared/shared-library.module";
-import { DealRegistrationModule } from "../deal-registration/deal-registration.module";
 import { ManageDealCommentsComponent } from "../deal-registration/manage-deal-comments/manage-deal-comments.component";
 import { AddLeadsComponent } from "../deal-registration/add-leads/add-leads.component";
 
