@@ -41,9 +41,9 @@ export class ManageDealsComponent implements OnInit
     dealsOnHold: number = 0;
     approvedDeals: number = 0;
     
-    totalDealsLoader: boolean = false;
-    openedDealsLoader: boolean = false;
-    closedDealsLoader: boolean = false;
+    totalDealsLoader: boolean = true;
+    openedDealsLoader: boolean = true;
+    closedDealsLoader: boolean = true;
     campaingnList: boolean = false;
     partnerList: boolean = false;
     selectedCampaignId: number = 0;
@@ -69,18 +69,18 @@ export class ManageDealsComponent implements OnInit
     parent = "";
     isVendorVersion: boolean;
     isPartnerVersion: boolean;
-    dealsOnHoldLoader: boolean;
+    dealsOnHoldLoader: boolean = true;
     dealsOnHoldError: boolean;
     totalLeadsLoader: boolean;
     totalLeadsError: boolean;
-    approvedDealsLoader: boolean;
+    approvedDealsLoader: boolean = true;
     approvedDealsError: boolean;
     isDealForm = false;
     campaign: any;
     isCampaignByDeals: boolean;
     isCampaignByLeads: boolean;
     selectedTabIndex = 1;
-    rejectedDealsLoader: boolean = false;
+    rejectedDealsLoader: boolean = true;
     rejectedDealsError: boolean = false;
     rejectedDeals: number =0;
     isOnlyPartner: any;

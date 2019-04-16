@@ -1174,6 +1174,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
       
     }
 
+    
     checkIntegrations(): any
     {
         this.dashBoardServiece.checkMarketoCredentials(this.authenticationService.getUserId()).subscribe(response => {
