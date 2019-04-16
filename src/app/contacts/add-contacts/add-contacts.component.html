@@ -249,11 +249,11 @@
 													 class="marketoImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access contacts from your marketo account"
 													 height="86" width="90" onmouseover="this.src='assets/images/crm/connecting.png';" onmouseout="this.src='assets/images/crm/marketo.png';">
 												</a>
-												<div id="marketoGear" style="position: relative" *ngIf="marketoImageNormal">
+												<!-- <div id="marketoGear" style="position: relative" *ngIf="marketoImageNormal">
 													<a [class.disabled]="selectedAddContactsOption != 8 || disableOtherFuctionality" (click)="settingSocialNetworkOpenModal('Marketo')">
 														<i id="ZgearIcon" class="fa fa-cog cloud-items cloud-css" aria-hidden="true"></i>
 													</a>
-												</div>
+												</div> -->
 												<div style="position: relative" *ngIf="!marketoImageNormal">
 													<a [class.disabled]="selectedAddContactsOption != 6" (click)="checkingMarketoContactsAuthentication()">
 														<i class="fa fa-plug cloud-items gray-color cloud-css" aria-hidden="true"></i>
