@@ -11,9 +11,9 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { CustomResponse } from '../../common/models/custom-response';
 import { EmailTemplateService } from '../../email-template/services/email-template.service';
-
-
+import { UtilService } from 'app/core/services/util.service';
 declare var $: any;
+
 @Component({
     selector: 'app-partner-campaigns',
     templateUrl: './partner-campaigns.component.html',
@@ -22,14 +22,13 @@ declare var $: any;
 })
 export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     ngxloading: boolean;
-
     campaigns: Campaign[];
     pager: any = {};
     pagedItems: any[];
-    public totalRecords: number = 1;
-    public searchKey: string = "";
-    campaignSuccessMessage: string = "";
-    loggedInUserId: number = 0;
+    totalRecords = 1;
+    searchKey = "";
+    campaignSuccessMessage = "";
+    loggedInUserId = 0;
     campaignName:string;
     sortByDropDown = [
         { 'name': 'Sort By', 'value': 'createdTime-DESC' },
@@ -59,7 +58,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     customResponse: CustomResponse = new CustomResponse();
 
     constructor(private campaignService: CampaignService, private router: Router, private xtremandLogger: XtremandLogger,
-        public pagination: Pagination, private pagerService: PagerService,
+        public pagination: Pagination, private pagerService: PagerService, public utilService:UtilService,
         public referenceService: ReferenceService, private socialService: SocialService,
         private authenticationService: AuthenticationService,private route: ActivatedRoute,private emailTemplateService:EmailTemplateService) {
         this.loggedInUserId = this.authenticationService.getUserId();
@@ -88,7 +87,6 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
         }else{
             pagination.campaignType = "NONE";
         }
-
         if ( this.role == "Vendor" ) {
             pagination.filterValue = this.referenceService.vendorDetails.id;
             pagination.filterKey = "customerId";
@@ -98,21 +96,21 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
         }
 
         this.campaignService.listPartnerCampaigns(this.pagination, this.loggedInUserId)
-            .subscribe(
-                data => {
-                    this.campaigns = data.campaigns;
-                    $.each(this.campaigns,function(index,campaign){
-                        campaign.displayTime = new Date(campaign.utcTimeInString);
-                    });
-                    this.totalRecords = data.totalRecords;
-                    pagination.totalRecords = data.totalRecords;
-                    pagination = this.pagerService.getPagedItems(pagination, data.campaigns);
-                    this.referenceService.stopLoader(this.httpRequestLoader);
-                },
-                error => {
-                    this.xtremandLogger.errorPage(error);
-                },
-                () => this.xtremandLogger.info("Finished listPartnerCampaigns()", this.campaigns)
+          .subscribe(
+            data => {
+              this.campaigns = data.campaigns;
+              $.each(this.campaigns,function(index,campaign){
+                  campaign.displayTime = new Date(campaign.utcTimeInString);
+              });
+              this.totalRecords = data.totalRecords;
+              pagination.totalRecords = data.totalRecords;
+              pagination = this.pagerService.getPagedItems(pagination, data.campaigns);
+              this.referenceService.stopLoader(this.httpRequestLoader);
+            },
+            error => {
+                this.xtremandLogger.errorPage(error);
+            },
+            () => this.xtremandLogger.info("Finished listPartnerCampaigns()", this.campaigns)
             );
     }
 
@@ -130,28 +128,25 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
         this.getAllFilteredResults(this.pagination);
     }
 
-    getNumberOfItemsPerPage(items: any) {
-        this.itemsSize = items;
-        this.getAllFilteredResults(this.pagination);
-    }
-
-
-
+    // getNumberOfItemsPerPage(items: any) {
+    //     this.itemsSize = items;
+    //     this.getAllFilteredResults(this.pagination);
+    // }
     getAllFilteredResults(pagination: Pagination) {
-        this.pagination.pageIndex = 1;
+      //  this.pagination.pageIndex = 1;
         this.pagination.searchKey = this.searchKey;
-        let sortedValue = this.selectedSortedOption.value;
-        if (sortedValue != "") {
-            let options: string[] = sortedValue.split("-");
-            this.pagination.sortcolumn = options[0];
-            this.pagination.sortingOrder = options[1];
-        }
-
-        if (this.itemsSize.value == 0) {
-            this.pagination.maxResults = this.pagination.totalRecords;
-        } else {
-            this.pagination.maxResults = this.itemsSize.value;
-        }
+        this.pagination = this.utilService.sortOptionValues(this.selectedSortedOption, this.pagination);
+        // let sortedValue = this.selectedSortedOption.value;
+        // if (sortedValue != "") {
+        //     let options: string[] = sortedValue.split("-");
+        //     this.pagination.sortcolumn = options[0];
+        //     this.pagination.sortingOrder = options[1];
+        // }
+        // if (this.itemsSize.value == 0) {
+        //     this.pagination.maxResults = this.pagination.totalRecords;
+        // } else {
+        //     this.pagination.maxResults = this.itemsSize.value;
+        // }
         this.listCampaign(this.pagination);
     }
 
@@ -160,22 +155,17 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     ngOnInit() {
         try {
             this.isListView = !this.referenceService.isGridView;
-            this.pagination.maxResults = 12;
+            // this.pagination.maxResults = 12;
+            this.pagination.pageIndex = 1;
             this.campaignType = this.route.snapshot.params['type'];
             this.listCampaign(this.pagination);
         } catch (error) {
             this.xtremandLogger.error("error in partner-campaigns.component.ts init() ", error);
         }
-
     }
-
-
-
     ngOnDestroy() {
 
     }
-
-
     filterCampaigns(type: string) {
         if ( this.role == "Vendor" ) {
             this.router.navigate( ['/home/campaigns/vendor/' + type] );
@@ -193,40 +183,37 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
            this.getCampaignById(campaign.campaignId);
         }
     }
-//    showCampaignPreview(campaignId:number){
-//        this.referenceService.isRedistributionCampaignPage = true;
-//        this.router.navigate(['/home/campaigns/preview/'+campaignId]);
-//    }
-
     getCampaignById(campaignId) {
         this.ngxloading = true;
-      var obj = { 'campaignId': campaignId }
-      this.campaignService.getCampaignById( obj )
+        var obj = { 'campaignId': campaignId }
+        this.campaignService.getCampaignById( obj )
           .subscribe(
-          data => {
-            const emailTemplateId = data.emailTemplate;
-            this.campaignName = data.campaignName;
-            this.previewEmailTemplate(emailTemplateId, data)
-          },
-          error => { this.xtremandLogger.errorPage( error ) },
-          () => console.log() )
+              data => {
+                const emailTemplateId = data.emailTemplate;
+                this.campaignName = data.campaignName;
+                this.previewEmailTemplate(emailTemplateId, data)
+              },
+              error => { this.xtremandLogger.errorPage( error ) },
+              () => console.log()
+          );
     }
     previewEmailTemplate(emailTemplate: any, campaign:Campaign){
         this.emailTemplateService.getAllCompanyProfileImages(campaign.userId).subscribe(
-                ( data: any ) => {
-                    let body = emailTemplate.body;
-                    let self  =this;
-                    $.each(data,function(index,value){
-                        body = body.replace(value, self.authenticationService.MEDIA_URL+campaign.companyLogo);
-                    });
-                    body = body.replace("https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL+campaign.companyLogo);
-                    emailTemplate.body = body;
-                    this.referenceService.previewEmailTemplate(emailTemplate, campaign);
-                    this.ngxloading = false;
-                },
-                error => { this.ngxloading = false;this.xtremandLogger.error("error in getAllCompanyProfileImages("+campaign.userId+")", error); },
-                () =>  this.xtremandLogger.info("Finished getAllCompanyProfileImages()"));
-      
+            ( data: any ) => {
+              let body = emailTemplate.body;
+              let self  =this;
+              $.each(data,function(index,value){
+                  body = body.replace(value, self.authenticationService.MEDIA_URL+campaign.companyLogo);
+              });
+              body = body.replace("https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL+campaign.companyLogo);
+              emailTemplate.body = body;
+              this.referenceService.previewEmailTemplate(emailTemplate, campaign);
+              this.ngxloading = false;
+              },
+              error => { this.ngxloading = false;this.xtremandLogger.error("error in getAllCompanyProfileImages("+campaign.userId+")", error); },
+              () =>  this.xtremandLogger.info("Finished getAllCompanyProfileImages()")
+              );
+
     }
     getEventCampaignId(campaignid){
       this.campaignService.getEventCampaignById(campaignid).subscribe(
@@ -246,17 +233,13 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     navigateSocialCampaign(campaign:any) {
         this.socialService.getSocialCampaignByCampaignId( campaign.campaignId )
         .subscribe(
-                data => {
-                    this.router.navigate(['/home/campaigns/social', data.socialStatusList[0].alias]);
-                },
-                error => { this.xtremandLogger.errorPage(error) },
-                () => console.log()
-            )
+            data => {
+                this.router.navigate(['/home/campaigns/social', data.socialStatusList[0].alias]);
+            },
+            error => { this.xtremandLogger.errorPage(error) },
+            () => console.log()
+            );
     }
-    listCampaigns(event){
-
-    }
-
     reDistributeCampaign(campaign:any){
         if(campaign.campaignType.indexOf('SOCIAL') > -1){
             this.navigateSocialCampaign(campaign);

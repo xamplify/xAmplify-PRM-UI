@@ -159,11 +159,11 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.pagination.pageIndex = 1;
         this.pagination.searchKey = this.searchKey;
         this.pagination = this.utilService.sortOptionValues(this.selectedSortedOption, this.pagination);
-        if (this.itemsSize.value == 0) {
-            this.pagination.maxResults = this.pagination.totalRecords;
-        } else {
-            this.pagination.maxResults = this.itemsSize.value;
-        }
+        // if (this.itemsSize.value == 0) {
+        //     this.pagination.maxResults = this.pagination.totalRecords;
+        // } else {
+        //     this.pagination.maxResults = this.itemsSize.value;
+        // }
         this.listCampaign(this.pagination);
     }
     eventHandler(keyCode: any) {  if (keyCode === 13) {  this.searchCampaigns(); } }

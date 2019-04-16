@@ -463,14 +463,14 @@
 							<strong>No campaigns found</strong>
 						</div>
 					</div>
-					<div *ngIf="totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError" style="background:white">
+					<div [hidden]="totalRecords <= 0 || httpRequestLoader.isLoading || httpRequestLoader.isServerError" style="background:white">
 						<div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
-							<app-pagination [pagination]="pagination" [type]="'campaign'" [isDropdown]="true" (notifyParent)="setPage($event)" (notifyParentDropDown)="listCampaign($event)"></app-pagination>
-							<select class="form-control" style="float: right; width: auto;" [(ngModel)]="itemsSize" (ngModelChange)="getNumberOfItemsPerPage($event)">
+							<app-pagination [pagination]="pagination" [type]="'campaign'" (notifyParent)="setPage($event)" (notifyParentDropDown)="getAllFilteredResults($event)"></app-pagination>
+							<!-- <select class="form-control" style="float: right; width: auto;" [(ngModel)]="itemsSize" (ngModelChange)="getNumberOfItemsPerPage($event)">
 								<option *ngFor="let itemPerPage of numberOfItemsPerPage" [ngValue]="itemPerPage">{{itemPerPage.name}}</option>
-							</select>
+							</select> -->
 						</div>
-					</div>
+          </div>
 				</div>
 				<!-- End Of tab Content -->
 
