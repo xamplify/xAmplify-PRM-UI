@@ -47,6 +47,8 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
     isSaveMarketoTemplatesButtonState = false;
     customResponse: CustomResponse = new CustomResponse();
     importLoading: boolean;
+    
+    basicTemplates = [32,33,34,35,36,37,38,39,40,307,325,359,360];
 
     constructor( private emailTemplateService: EmailTemplateService,
         private emailTemplate: EmailTemplate, private router: Router, private authenticationService: AuthenticationService,
@@ -234,9 +236,10 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
                     /*if(this.allEmailTemplates[i].name.indexOf('Rich')>-1){
                         this.filteredEmailTemplates.push(this.allEmailTemplates[i]);
                     }*/
-                    if(this.allEmailTemplates[i].id === 325 || this.allEmailTemplates[i].id === 307 || this.allEmailTemplates[i].id === 359 || this.allEmailTemplates[i].id === 360){
+                    if(this.basicTemplates.indexOf(this.allEmailTemplates[i].id) > -1){
                         this.filteredEmailTemplates.push(this.allEmailTemplates[i]);
                     }
+                    
                 }
             }
             this.logger.debug("Showing Rich Templates size of"+this.filteredEmailTemplates.length);
