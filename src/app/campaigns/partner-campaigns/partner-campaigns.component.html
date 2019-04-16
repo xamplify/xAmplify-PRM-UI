@@ -206,7 +206,7 @@
 
 
 											<div class="bar">
-											<a (click)="showCampaignPreview(campaign.campaignId)" data-toggle="tooltip" data-placement="top" title="preview campaign">
+											<a (click)="showCampaignPreview(campaign)" data-toggle="tooltip" data-placement="top" title="preview campaign">
 													<i class="fa fa-eye mr4"></i>
                                                  </a>
 												<a *ngIf="campaign.campaignType != 'EVENT'" (click)="reDistributeCampaign(campaign)" data-toggle="tooltip" data-placement="top" title="Redistribute Campaign" data-rel="fancybox-button">
