@@ -130,7 +130,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
 
     
     marketoImageBlur: boolean = false;
-    marketoImageNormal: boolean = true;
+    marketoImageNormal: boolean = false;
 
 
 
@@ -2034,6 +2034,12 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                     } else {
                         this.zohoImageBlur = true;
                     }
+                    if ( this.storeLogin.MARKETO == true ) {
+                        this.marketoImageNormal = true;
+                    } else {
+                        this.marketoImageBlur = true;
+                    }
+                    
                 },
                 ( error: any ) => {
                     this.xtremandLogger.error( error );

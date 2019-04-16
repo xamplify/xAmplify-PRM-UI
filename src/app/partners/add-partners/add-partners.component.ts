@@ -154,7 +154,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
     
     marketoImageBlur: boolean = false;
-    marketoImageNormal: boolean = true;
+    marketoImageNormal: boolean = false;
 
 
     public uploader: FileUploader = new FileUploader( { allowedMimeType: ["application/csv", "application/vnd.ms-excel", "text/plain", "text/csv"] });
@@ -1117,6 +1117,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                         this.zohoImageNormal = true;
                     } else {
                         this.zohoImageBlur = true;
+                    }
+                    if ( this.storeLogin.MARKETO == true ) {
+                        this.marketoImageNormal = true;
+                    } else {
+                        this.marketoImageBlur = true;
                     }
                 },
                 ( error: any ) => {
