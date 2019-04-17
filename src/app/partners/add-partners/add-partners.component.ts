@@ -129,7 +129,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     pageNumber: any;
     newUserDetails = [];
     teamMembersList = [];
-    orgAdminsList = [];
+   /* orgAdminsList = [];*/
 
     
 
@@ -390,9 +390,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         try {
             this.newUserDetails.length = 0;
             this.isCompanyDetails = false;
-            for ( let i = 0; i < this.orgAdminsList.length; i++ ) {
+            /*for ( let i = 0; i < this.orgAdminsList.length; i++ ) {
                 this.teamMembersList.push( this.orgAdminsList[i] );
-            }
+            }*/
             this.teamMembersList.push( this.authenticationService.user.emailId );
             let emails = []
             for ( let i = 0; i < this.newPartnerUser.length; i++ ) {
@@ -508,7 +508,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                     this.customResponse = new CustomResponse( 'ERROR', "Company Details is required", true );
                 }
             } else {
-                this.customResponse = new CustomResponse( 'ERROR', "You are not allowed to add teamMember or orgAdmin as a partner", true );
+                this.customResponse = new CustomResponse( 'ERROR', "You are not allowed to add teamMember(s) as a partner", true );
                 if ( this.selectedAddPartnerOption == 1 ) {
                     this.cancelPartners();
                 }
@@ -2122,7 +2122,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
     }
 
-    listOrgAdmin() {
+/*    listOrgAdmin() {
         try {
             this.contactService.listOrgAdmins()
                 .subscribe(
@@ -2139,7 +2139,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             this.xtremandLogger.log( error );
         }
 
-    }
+    }*/
 
     closeModal( event ) {
         if ( event === "Emails Send Successfully" ) {
@@ -2201,7 +2201,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         try {
             this.socialContactImage();
             this.listTeamMembers();
-            this.listOrgAdmin();
+           /* this.listOrgAdmin();*/
             
             $( "#Gfile_preview" ).hide();
             this.socialContactsValue = true;

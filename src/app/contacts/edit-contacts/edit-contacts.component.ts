@@ -147,7 +147,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     newUserDetails = [];
     teamMemberPagination: Pagination = new Pagination();
     teamMembersList = [];
-    orgAdminsList = [];
+/*    orgAdminsList = [];*/
     editingEmailId = '';
     loading = false;
     contactAllDetails = [];
@@ -499,9 +499,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                     }
                 }
 
-                for ( let i = 0; i < this.orgAdminsList.length; i++ ) {
+                /*for ( let i = 0; i < this.orgAdminsList.length; i++ ) {
                     this.teamMembersList.push( this.orgAdminsList[i] );
-                }
+                }*/
                 this.teamMembersList.push( this.authenticationService.user.emailId );
 
                 let emails = []
@@ -573,7 +573,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                     this.customResponse = new CustomResponse( 'ERROR', "Company Details is required", true );
                 }
             } else {
-                this.customResponse = new CustomResponse( 'ERROR', "You are not allowed to add teamMember or orgAdmin as a partner", true );
+                this.customResponse = new CustomResponse( 'ERROR', "You are not allowed to add teamMember(s) as a partner", true );
                 this.cancelContacts();
             }
         } catch ( error ) {
@@ -650,9 +650,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                             }
                         }
 
-                        for ( let i = 0; i < this.orgAdminsList.length; i++ ) {
+                       /* for ( let i = 0; i < this.orgAdminsList.length; i++ ) {
                             this.teamMembersList.push( this.orgAdminsList[i] );
-                        }
+                        }*/
                         this.teamMembersList.push( this.authenticationService.user.emailId );
 
                         let emails = []
@@ -733,7 +733,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                         }
 
                     } else {
-                        this.customResponse = new CustomResponse( 'ERROR', "You are not allowed add teamMember or orgAdmin as a partner", true );
+                        this.customResponse = new CustomResponse( 'ERROR', "You are not allowed add teamMember(s) as a partner", true );
                     }
 
                 }else if(this.isEmailExist){
@@ -1281,9 +1281,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                         }*/
                     }
 
-                    for ( let i = 0; i < this.orgAdminsList.length; i++ ) {
+                   /* for ( let i = 0; i < this.orgAdminsList.length; i++ ) {
                         this.teamMembersList.push( this.orgAdminsList[i] );
-                    }
+                    }*/
                     this.teamMembersList.push( this.authenticationService.user.emailId );
                     let emails = []
                     for ( let i = 0; i < this.users.length; i++ ) {
@@ -1358,7 +1358,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                         this.customResponse = new CustomResponse( 'ERROR', "Company Details is required", true );
                     }
                 } else {
-                    this.customResponse = new CustomResponse( 'ERROR', "You are not allowed to add teamMember or orgAdmin as a partner", true );
+                    this.customResponse = new CustomResponse( 'ERROR', "You are not allowed to add teamMember(s) as a partner", true );
                 }
                 this.dublicateEmailId = false;
             }
@@ -2541,7 +2541,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
     }
 
-    listOrgAdmin() {
+/*    listOrgAdmin() {
         try {
             this.contactService.listOrgAdmins()
                 .subscribe(
@@ -2559,7 +2559,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
         }
 
     }
-
+*/
     closeModal( event ) {
         if ( event == "Emails Send Successfully" ) {
             if ( this.isPartner ) {
@@ -2634,7 +2634,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
             this.loadContactListsNames();
             if(this.isPartner){
               this.listTeamMembers();
-              this.listOrgAdmin();
+            /*  this.listOrgAdmin();*/
             }
             
             this.selectedContactListName = this.contactListName;
