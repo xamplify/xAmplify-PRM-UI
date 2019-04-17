@@ -638,11 +638,16 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
         }
     }
 
-    validateReplyBody(reply:Reply){
-        if(reply.body==null || reply.body==undefined || $.trim(reply.body).length==0){
-            $('#'+reply.divId).addClass('portlet light dashboard-stat2 border-error');
-            $('#reply-message-'+reply.divId).css('color','red');
+    validateReplyBody( reply: Reply ) {
+        if ( reply.defaultTemplate && reply.selectedEmailTemplateId == 0 ) {
+            $( '#' + reply.divId ).addClass( 'portlet light dashboard-stat2 border-error' );
+            $( '#email-template-' + reply.divId ).css( 'color', 'red' );
+        } else if ( !reply.defaultTemplate && ( reply.body == null || reply.body == undefined || $.trim( reply.body ).length == 0 ) ) {
+            $( '#' + reply.divId ).addClass( 'portlet light dashboard-stat2 border-error' );
+            $( '#reply-message-' + reply.divId ).css( 'color', 'red' );
         }
+
+
     }
 
     addReplyDivError(divId:string){
@@ -696,10 +701,14 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     }
 
     validateOnClickBody(url:Url){
-        if(url.body==null || url.body==undefined || $.trim(url.body).length==0){
-            this.addReplyDivError(url.divId);
+        if(url.defaultTemplate && url.selectedEmailTemplateId==0){
+            $('#'+url.divId).addClass('portlet light dashboard-stat2 border-error');
+            $('#click-email-template-'+url.divId).css('color','red');
+        }else if(!url.defaultTemplate &&(url.body==null || url.body==undefined || $.trim(url.body).length==0)){
+            $('#'+url.divId).addClass('portlet light dashboard-stat2 border-error');
             $('#click-message-'+url.divId).css('color','red');
         }
+    
     }
 
     validateOnClickReplyInDays(url:Url){
