@@ -247,7 +247,10 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     setEventCampaignData(result:EventCampaign){
       this.campaign = result;
       console.log(this.campaign);
-      if(this.campaign.userListDTOs.length>0){ this.loadContactLists(this.contactListPagination);}
+      if(this.campaign.userListDTOs.length>0){
+        // this.loadContactLists(this.contactListPagination);
+        this.contactListPagination.pagedItems = this.campaign.userListDTOs;
+      }
       // this.selectedEmailTemplateId = this.campaign.selectedEditEmailTemplate.id;
       // this.selectedUserlistIds = this.campaign.userListIds;
       this.campaign.emailTemplate = result.emailTemplateDTO;
@@ -901,8 +904,8 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
         $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
         $("#email_template_preivew").modal('show');
     }*/
-    
-    
+
+
     getEmailTemplatePreview(emailTemplate: EmailTemplate) {
         this.ngxloading = true;
         let userId = 0;
@@ -946,7 +949,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
                         $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
                         $("#email_template_preivew").modal('show');
                         this.ngxloading = false;
-                       
+
                     },
                     error => { this.ngxloading = false;this.xtremandLogger.error("error in getAllCompanyProfileImages("+userId+")", error); },
                     () =>  this.xtremandLogger.info("Finished getAllCompanyProfileImages()"));
@@ -972,7 +975,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
             this.ngxloading = false;
         }
 
-     
+
     }
     isEven(n) {
       if(n % 2 === 0){ return true;}
