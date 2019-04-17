@@ -270,7 +270,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="row mix-grid" style="margin-top: -15px; padding: 7px;" *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError">
+					<!-- <div class="row mix-grid" style="margin-top: -15px; padding: 7px;" *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError">
 						<ng-container>
 						<div
 							*ngFor="let emailTemplate of pagination.pagedItems ;let i =index"
@@ -290,7 +290,7 @@
 							</div>
 						</div>
 						</ng-container>
-					</div>
+					</div> -->
 				</div>
 				<div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
 					<app-pagination [pagination]="pagination"
