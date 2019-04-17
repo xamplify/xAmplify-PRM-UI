@@ -37,9 +37,9 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   createdBySelf = false;
   dealButtonText: string="";
   dealId: any;
-  
+
   public searchKey: string;
-  
+
     ngxloading: boolean;
   isTimeLineView: boolean;
   campaign: Campaign;
@@ -113,6 +113,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   hasClientError = false;
   contactListDeleteError = false;
   interactiveDataTimeLineViewEnable = false;
+  totalCampaignViewsLoader = false;
   sortByDropDown = [
                     { 'name': 'Sort By', 'value': '' },
                     { 'name': 'Name(A-Z)', 'value': 'name-ASC' },
@@ -124,7 +125,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   tweets: Array<Tweet> = new Array<Tweet>();
   constructor(private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
     public authenticationService: AuthenticationService, public pagerService: PagerService, public pagination: Pagination,
-    public referenceService: ReferenceService, public contactService: ContactService, public videoUtilService: VideoUtilService, 
+    public referenceService: ReferenceService, public contactService: ContactService, public videoUtilService: VideoUtilService,
     public xtremandLogger:XtremandLogger, private twitterService: TwitterService,private emailTemplateService:EmailTemplateService,private dealRegService:DealRegistrationService) {
       try{
       this.campaignRouter = this.utilService.getRouterLocalStorage();
@@ -151,19 +152,19 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     try{
     this.loading = true;
     this.referenceService.loading(this.httpRequestLoader, true);
-    
+
     if(this.searchKey){
         pagination.searchKey = this.searchKey;
         this.pagination.pageIndex = 1;
     }else{
         pagination.searchKey = null;
     }
-    
+
   //if(!this.campaign.detailedAnalyticsShared && this.campaign.dataShare && !this.campaign.parentCampaignId){
     if(this.isDataShare && this.isNavigatedThroughAnalytics && !this.isPartnerEnabledAnalyticsAccess){
         pagination.campaignId = campaignId;
         pagination.campaignType = this.campaignType;
-        
+
         this.campaignService.listCampaignInteractiveViews(pagination)
          .subscribe(data => {
            this.listCampaignViewsDataInsert(data);
@@ -200,6 +201,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
         this.sentEmailOpenPagination = this.pagerService.getPagedItems(this.sentEmailOpenPagination, this.campaignViews);
       }
       this.loading = false;
+      this.totalCampaignViewsLoader = false;
       this.referenceService.loading(this.httpRequestLoader, false);
   }
 
@@ -248,7 +250,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
         const self = this;
         if ( countryData != null ) {
             for ( const i of Object.keys( countryData ) ) {
-                
+
                 const arr = countryData[i][2]? [countryData[i][0].toLowerCase(), countryData[i][1] + countryData[i][2]]: [countryData[i][0].toLowerCase(), countryData[i][1]];
 
                 data.push( arr );
@@ -352,12 +354,12 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     });
     this.loading = false;
   }
-  
+
   getCampaignUserViewsCountBarCharts(campaignId: number, pagination: Pagination) {
     try{
     this.loading = true;
     this.paginationType = 'viewsBarChart';
-    
+
     if ( this.isDataShare && this.isNavigatedThroughAnalytics && !this.isPartnerEnabledAnalyticsAccess ) {
         pagination.campaignId = campaignId;
         pagination.campaignType = this.campaignType;
@@ -383,7 +385,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     }
     }catch(error){ this.hasClientError = true;this.xtremandLogger.error('error'+error);}
   }
-  
+
   campaignBarViewsDataInsert(){
       const names = [];
       const views = [];
@@ -504,7 +506,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     this.listCampaignViews(this.campaign.campaignId, this.sentEmailOpenPagination);
     $('#emailSentListModal').modal();
   }
-  
+
   resetRsvpPagination(){
       this.rsvpDetailAnalyticsPagination = new Pagination();
   }
@@ -514,6 +516,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     this.paginationType = event.type;
     if (event.type === 'campaignViews') {
         this.campaignViewsPagination.pageIndex = event.page;
+        this.totalCampaignViewsLoader = true;
         this.listCampaignViews(this.campaign.campaignId, this.campaignViewsPagination);
     } else if (event.type === 'sentEmailData') {
         this.sentEmailOpenPagination.pageIndex = event.page;
@@ -547,8 +550,8 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     }
     }catch(error){ this.xtremandLogger.error('error'+error);}
   }
-  
-  
+
+
   paginationDropdown(event: Pagination){
     try{
     if (this.paginationType === 'campaignViews') {
@@ -662,16 +665,16 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   userTimeline(campaignViews: any) {
     try{
     this.loading = true;
-    
+
     /*if(this.isDataShare && this.isNavigatedThroughAnalytics && !this.isPartnerEnabledAnalyticsAccess && campaignViews.viewsCount === 0){
         this.interactiveDataTimeLineViewEnable = true;
     }else{
         this.interactiveDataTimeLineViewEnable = false;
     }*/
-    
+
   /*     *ngIf="!interactiveDataTimeLineViewEnable"
        code in 796 line need to add for not showing interactive data timeline view */
-    
+
     this.redistributedAccountsBySelectedUserId = [];
      this.listEmailLogsByCampaignAndUser(campaignViews.campaignId, campaignViews.userId);
     this.getTotalTimeSpentOfCampaigns(campaignViews.userId, campaignViews.campaignId);
@@ -704,7 +707,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
    /****************Deal Registration***************************/
   getDealState(campaignViews:any){
     console.log(campaignViews);
-    
+
       if(campaignViews.userId!=null && campaignViews.campaignId!=null){
         const obj = {"campaignId":campaignViews.campaignId};
           this.campaignService.getCampaignById(obj).subscribe(data=>{
@@ -732,8 +735,8 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
             })
             }
           },error=>console.log(error))
-          
-      
+
+
             this.dealRegService.getDeal(campaignViews.campaignId,campaignViews.userId).subscribe(data=>{
               this.dealId = data;
               if(data == -1)
@@ -743,7 +746,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
              })
         }
   }
- 
+
    showDealRegistrationForm(){
     this.isDealRegistration = true;
     console.log(this.isTimeLineView && !this.isDealRegistration);
@@ -758,8 +761,8 @@ showTimeLineView(){
 }
 
  /****************END of Deal Registration***************************/
- 
- 
+
+
   getTotalTimeSpentOfCampaigns(userId: number, campaignId:number) {
     try{
       this.loading = true;
@@ -776,13 +779,13 @@ showTimeLineView(){
   }
   userWatchedviewsInfo(emailId: string) {
     try {
-      
+
        /* if(this.userCampaignReport.totalUniqueWatchCount === 0){
             this.interactiveDataTimeLineViewEnable = true;
         }else{
             this.interactiveDataTimeLineViewEnable = false;
         }*/
-        
+
       if(emailId.includes('<br/>')){
       emailId = emailId.substring(emailId.indexOf('<br/>'), emailId.length);
       emailId = emailId.substring(5); }
@@ -1418,7 +1421,7 @@ showTimeLineView(){
       }else{
           latestView = null;
       }
-      
+
       let responseTime = new Date(this.downloadCsvList[i].responseTime);
 
       var object = {
@@ -1454,14 +1457,14 @@ showTimeLineView(){
         }else{
          let hours = this.referenceService.formatAMPM(sentTime);
         object["Sent Time"] = sentTime.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
-        
+
         if(latestView != null){
             let lastviewHours = this.referenceService.formatAMPM(latestView);
             object["Latest View"] = latestView.toDateString().split(' ').slice(1).join(' ') + ' ' + lastviewHours;
         }else{
-            object["Latest View"] = ' ';  
+            object["Latest View"] = ' ';
         }
-        
+
         object["Total Views"] = this.downloadCsvList[i].viewsCount;
         }
         }
@@ -1495,7 +1498,7 @@ showTimeLineView(){
         let hours = this.referenceService.formatAMPM(date);
         object["Date and Time"] = date.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
         object["Device"] = this.downloadCsvList[i].deviceType;
-        
+
         var text = this.downloadCsvList[i].location;
         var res = text.split(",", 3);
         object["City"] = res[0];
@@ -1630,9 +1633,9 @@ showTimeLineView(){
             this.customResponse = new CustomResponse('SUCCESS',"Reminder has been sent successfully", true);
            }
     }
-    
+
     eventHandler( keyCode: any ) { if ( keyCode === 13 ) { this.search(); } }
-    
+
     search() {
         this.pagination.searchKey = this.searchKey;
         this.pagination.pageIndex = 1;

@@ -475,14 +475,14 @@
 				<div class="row" *ngIf="isPartnerEnabledAnalyticsAccess || isDataShare">
 					<div class="col-xs-12 col-sm-12 p-5x">
 						<div class="col-xs-12 p-5x">
-							<div class="row" *ngIf="!campaignViews">
+							<div class="row" *ngIf="!campaignViews || totalCampaignViewsLoader">
 								<div class="porlet light" style="background: white;">
 									<div class="portlet-body clearfix">
 										<app-list-loader style="background: white"></app-list-loader>
 									</div>
 								</div>
 							</div>
-							<div class="portlet light" [hidden]="mainLoader || hasClientError || httpRequestLoader.isLoading">
+							<div class="portlet light" [hidden]="mainLoader || hasClientError || !campaignViews || totalCampaignViewsLoader">
 								<div class="portlet-title col-xs-12">
 									<div class="caption col-xs-8">
 										<span class="caption-subject font-red-sunglo" style="font-size: 15px !important;">
