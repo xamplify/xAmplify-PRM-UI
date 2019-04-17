@@ -963,26 +963,7 @@ data-backdrop="static">
               <div>
                 <div>
                   <div class="col-xs-12"></div>
-                  <!-- <div class="col-xs-6 text-right">
-                    <h5 class="control-label font-purple-intense pr10" style="display: inline-block;" *ngIf="campaign.nurtureCampaign">Enable
-                      work flow</h5>
-                    <switch *ngIf="campaign.nurtureCampaign" [disabled]="callActionSwitch.disabled" [status]="enableWorkFlow" [onText]="callActionSwitch.onTextValue"
-                      [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch"
-                      [size]="callActionSwitch.size" (statusChange)="enableWorkFlow = !enableWorkFlow">
-                    </switch>
-                  </div> -->
                   <div [hidden]="!enableWorkFlow">
-                    <!-- <div class="col-xs-6">
-                      <a class="dashboard-stat yellow-gold blur" style="background-color: #f76c1a;cursor: default;">
-                        <i class="fa fa-ban p0" style="margin: 0 5px;"></i>{{properties.ADD_AUTO_RESPONSE_WEBSITE}}
-                      </a>
-                    </div>
-                    <div class="col-xs-6">
-                      <a class="dashboard-stat yellow-gold blur" style="background-color: #f4555c;cursor: default;">
-                        <i class="fa fa-ban p0" style="margin: 0 5px;"></i> {{properties.ADD_AUTO_RESPONSE_EMAIL}}
-                      </a>
-                    </div> -->
-                    <!-- -------------------------------------Add Reply----------------------------- -->
                     <div id="reply-onclick-div" >
                       <!-- Content Should Come here ------------ -->
                       <fieldset *ngIf="replies?.length>0">

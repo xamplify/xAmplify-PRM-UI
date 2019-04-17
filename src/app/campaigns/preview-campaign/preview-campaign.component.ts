@@ -195,6 +195,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     setCampaignData(result){
         this.campaign = result;
         console.log(this.campaign);
+        this.contactListPagination.campaignUserListIds = this.campaign.userListIds;
         if(this.campaign.userListIds.length>0){ this.loadContactList(this.contactListPagination);}
         this.selectedEmailTemplateId = this.campaign.selectedEmailTemplateId;
         this.selectedUserlistIds = this.campaign.userListIds;
@@ -249,7 +250,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
       console.log(this.campaign);
       if(this.campaign.userListDTOs.length>0){
         // this.loadContactLists(this.contactListPagination);
-        this.contactListPagination.pagedItems = this.campaign.userListDTOs;
+      //  this.contactListPagination.pagedItems = this.campaign.userListDTOs;
       }
       // this.selectedEmailTemplateId = this.campaign.selectedEditEmailTemplate.id;
       // this.selectedUserlistIds = this.campaign.userListIds;
@@ -280,7 +281,8 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
        if ( !this.campaign.campaignLocation.country ) {
            this.campaign.campaignLocation.country = ( this.countryNames.countries[0] );
        }
-
+       this.contactListPagination.campaignUserListIds = this.selectedUserlistIds;
+       if(this.selectedUserlistIds.length>0) { this.loadContactList(this.contactListPagination); }
       // if(this.campaign.scheduleTime!=null && this.campaign.scheduleTime!="null" && this.campaign.campaignScheduleType!="NOW"){
       //     this.campaign.scheduleCampaign  = this.campaignLaunchOptions[1];
       // }else{
@@ -883,29 +885,6 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
         }
     }
 
-   /* getEmailTemplatePreview(emailTemplate: EmailTemplate) {
-        let body = emailTemplate.body;
-        let emailTemplateName = emailTemplate.name;
-        if (emailTemplateName.length > 50) {
-            emailTemplateName = emailTemplateName.substring(0, 50) + "...";
-        }
-        $("#email-template-content").empty();
-        $("#email-template-title").empty();
-        $("#email-template-title").append(emailTemplateName);
-        $('#email-template-title').prop('title', emailTemplate.name);
-        let updatedBody:any;
-        if(this.campaignType === 'EVENT') {
-           updatedBody = this.referenceService.showEmailTemplatePreview(this.campaign, this.campaignType, '', emailTemplate.body);
-         } else {
-           updatedBody = this.referenceService.showEmailTemplatePreview(this.campaign, this.campaignType, this.campaign.campaignVideoFile.gifImagePath, emailTemplate.body);
-          }
-        $("#email-template-content").append(updatedBody);
-        $('.modal .modal-body').css('overflow-y', 'auto');
-        $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
-        $("#email_template_preivew").modal('show');
-    }*/
-
-
     getEmailTemplatePreview(emailTemplate: EmailTemplate) {
         this.ngxloading = true;
         let userId = 0;
@@ -974,8 +953,6 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
             $("#email_template_preivew").modal('show');
             this.ngxloading = false;
         }
-
-
     }
     isEven(n) {
       if(n % 2 === 0){ return true;}
@@ -992,7 +969,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
         this.paginationType = 'contactslists';
         this.campaignContact.httpRequestLoader.isHorizontalCss=true;
         this.referenceService.loading(this.campaignContact.httpRequestLoader, true);
-        contactsPagination.campaignUserListIds = this.campaign.userListIds;
+      //  contactsPagination.campaignUserListIds = this.campaign.userListIds;
         this.contactService.loadCampaignContactsList(contactsPagination)
             .subscribe(
             (data: any) => {
@@ -1005,40 +982,6 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
             () => this.xtremandLogger.info("Finished loadContactList()", this.contactListPagination)
             )
     }
-
-  loadContactLists(contactListsPagination: Pagination) {
-    this.paginationType = 'contactslists';
-    const roles = this.authenticationService.getRoles();
-    let isVendor = roles.indexOf(this.roleName.vendorRole)>-1;
-   if(this.authenticationService.isOrgAdmin() || this.authenticationService.isOrgAdminPartner() || (!this.authenticationService.isAddedByVendor && !isVendor)){
-       contactListsPagination.filterValue = false;
-       contactListsPagination.filterKey = null;
-       this.showContactType = true;
-   }else {
-       this.contactListPagination.filterValue = true;
-       this.showContactType = false;
-       contactListsPagination.filterKey = 'isPartnerUserList';
-    }
-    if(this.authenticationService.isOrgAdmin() || this.authenticationService.isOrgAdminPartner() || (!this.authenticationService.isAddedByVendor && !isVendor) ){
-      if(!this.campaign.channelCampaign){
-        this.contactListPagination.filterValue = false;
-        this.contactListPagination.filterKey = null;
-        this.showContactType = true;
-      }
-     }
-     this.contactListMethod(this.contactListPagination);
-  }
-  contactListMethod(contactListsPagination:Pagination){
-    this.contactService.loadContactLists(contactListsPagination)
-    .subscribe(
-    (data: any) => {
-      this.contactListPagination.totalRecords = data.totalRecords;
-      this.contactListPagination = this.pagerService.getPagedItems(this.contactListPagination, data.listOfUserLists);
-    },
-    (error: any) => { this.xtremandLogger.error(error); },
-    () => { this.xtremandLogger.info('event campaign page contactListMethod() finished'); } );
-  }
-
     showContacts(){
         if($('#campaign-contact-list').css('display') == 'none'){
             this.previewText = "Hide";
@@ -1052,7 +995,6 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
         this.contactListPagination.searchKey = this.contactSearchInput;
         this.loadContactList(this.contactListPagination);
     }
-
 
     /*******************************Preview*************************************/
     contactListItems:any[];
@@ -1102,8 +1044,10 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
       this.loadUsers(this.previewContactListId,this.contactsUsersPagination,this.listName);}
       else if(event.type==='contactslists'){
         this.contactListPagination.pageIndex = event.page;
-        if(this.previewCampaignType === 'EVENT') { this.loadContactLists(this.contactListPagination); }
-        else { this.loadContactList(this.contactListPagination); }
+        this.loadContactList(this.contactListPagination);
+        // if(this.previewCampaignType === 'EVENT') { this.loadContactLists(this.contactListPagination); }
+        // else { this.loadContactList(this.contactListPagination); }
+
       } else if(event.type==='Total Recipients'){
         this.pagination.pageIndex = event.page;
         this.listCampaignViews(this.previewCampaignId, this.pagination);
@@ -1120,8 +1064,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     if(this.paginationType==='contacts'){
       this.loadUsers(this.previewContactListId,pagination,this.listName);
     }else if (this.paginationType==='contactslists') {
-      if(this.previewCampaignType === 'EVENT') { this.loadContactLists(pagination); }
-      else { this.loadContactList(pagination); }
+      this.loadContactList(pagination);
     } else if(this.paginationType==='Total Recipients'){
       this.listCampaignViews(this.previewCampaignId, pagination);
     } else if(this.paginationType === 'Views'){
