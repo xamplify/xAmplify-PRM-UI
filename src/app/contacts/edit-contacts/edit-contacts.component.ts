@@ -1359,6 +1359,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                                     this.customResponse = new CustomResponse( 'ERROR', error._body, true );
                                 } else if(JSON.parse(error._body).includes("email addresses in your contact list that aren't formatted properly")){
                                     this.customResponse = new CustomResponse( 'ERROR', JSON.parse(error._body), true );
+                                    this.cancelContacts();
                                 }else{
                                    this.xtremandLogger.errorPage( error );
                                 }
