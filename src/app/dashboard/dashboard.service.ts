@@ -191,6 +191,18 @@ export class DashboardService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+    
+    changeRole(userId:number){
+        return this.http.get(this.authenticationService.REST_URL + `admin/changeRole/${userId}?access_token=${this.authenticationService.access_token}`)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+    
+    getAccess(companyId:number){
+        return this.http.get(this.authenticationService.REST_URL + `admin/getAccess/${companyId}?access_token=${this.authenticationService.access_token}`)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
 
     private extractData(res: Response) {
         let body = res.json();

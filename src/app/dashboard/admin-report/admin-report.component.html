@@ -85,6 +85,12 @@
 								<a data-toggle="tooltip" data-placement="top" title="My profile details" (click)="getVendorMyProfile(report)"> 
 								<i class="fa fa fa-user-o" style="font-size: 20px;margin-left:5px"></i></a>
 								
+								<a data-toggle="tooltip" data-placement="top" title="Change Role" (click)="$event.stopPropagation();changeStatus(report)"> 
+								<i class="fa fa-pencil-square-o" style="font-size: 20px;margin-left:5px"></i></a>
+								
+								<!-- <a data-toggle="tooltip" data-placement="top" title="Change Access" (click)="$event.stopPropagation();getAccess(report)"> 
+								<i class="fa fa-universal-access" style="font-size: 20px;margin-left:5px"></i></a> -->
+								
 								</td>
 							</tr>
 							</ng-container>
@@ -98,11 +104,8 @@
 				(notifyParentDropDown)="onChangeAllContactUsers($event)"></app-pagination>
 		</div>
 
-
-
 		<section *ngIf="detailsTielsView">
 				<div class="clearfix"></div>
-
 			<div class="page-bar">
 				<div class="table-responsive">
 					<table class='table tgrid'>
@@ -143,7 +146,57 @@
 			</div>
 			<app-dashboard-stats></app-dashboard-stats>
 		</section>
-
   </div>
   <app-scroll-top></app-scroll-top>
+  <section>
+  <!-- ---Access Modal Pop Up -->
+<!--   <div class="modal right " id="access-template-div" >
+			<div class="modal-dialog modal-lg" style="width: 75%;right:0">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close-circle" data-dismiss="modal"><i class="fa fa-times"></i>
+						</button>
+						<h4 class="modal-title text-center" id="email-template-title">Available Modules</h4>
+					</div>
+					<div class="modal-body">
+						<div class="portlet-body clearfix">
+						<div class="table-responsive" style="overflow-x:inherit">
+							<table class="table table-striped  table-hover" style="width:100%">
+							  <tr>
+							    <th>Email Campaign</th>
+							    <td><input type="checkbox" [(ngModel)]="modulesAccess.regular"></td>
+							  </tr>
+							  <tr>
+							    <th>Video Campaign</th>
+							    <td>{{modulesAccess?.video}}</td>
+							  </tr>
+							  <tr>
+							    <th>Social Campaign</th>
+							    <td>{{modulesAccess?.social}}</td>
+							  </tr>
+							  <tr>
+							    <th>Event Campaign</th>
+							    <td>{{modulesAccess?.event}}</td>
+							  </tr>
+							  <tr>
+							    <th>Leads</th>
+							    <td>{{modulesAccess?.leads}}</td>
+							  </tr>
+							  <tr>
+							    <th>Landing Pages</th>
+							    <td>{{modulesAccess?.landingPages}}</td>
+							  </tr>
+							</table>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<a data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
+					</div>
+				</div>
+			</div>
+		</div>
+   -->
+  </section>
+  
 </div>
