@@ -156,6 +156,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     searchContactType = "";
     saveAsListName:any;
     saveAsError:any;
+    isCsvFileLsitLoading = false;
     
     pageSize: number = 12;
     pageNumber: any;
@@ -279,6 +280,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
         try {
             if ( files[0].type == "application/vnd.ms-excel" || files[0].type == "text/csv" || files[0].type == "text/x-csv" ) {
                 this.selectedAddContactsOption = 2;
+                this.isCsvFileLsitLoading = true;
                 this.isShowUsers = false;
                 this.fileTypeError = false;
                 this.xtremandLogger.info( "coontacts preview" );
@@ -323,6 +325,11 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                                  
                              }
                              self.setCsvPage(1);
+                             
+                             if( self.csvContacts.length == 0 ){
+                                 self.customResponse = new CustomResponse( 'ERROR', "No results found.", true );  
+                             }
+                             
                          }else {
                              self.customResponse = new CustomResponse( 'ERROR', "Invalid Csv", true );
                              self.removeCsv();
@@ -358,6 +365,11 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                                  
                              }
                              self.setCsvPage(1);
+                             
+                             if( self.csvContacts.length == 0 ){
+                                 self.customResponse = new CustomResponse( 'ERROR', "No results found.", true );  
+                             }
+                             
                          }else {
                              self.customResponse = new CustomResponse( 'ERROR', "Invalid Csv", true );
                              self.removeCsv();
@@ -370,6 +382,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                      }
                     console.log( "AddContacts : readFiles() contacts " + JSON.stringify( self.users ) );
                 }
+                this.isCsvFileLsitLoading = false;
             } else {
                 this.fileTypeError = true;
                 this.uploader.queue.length = 0;
