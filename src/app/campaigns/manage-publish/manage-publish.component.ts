@@ -335,7 +335,9 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 this.listCampaign(this.pagination);
                 console.log("saveAsCampaign Successfully");
               },
-              error => { $('#saveAsModal').modal('hide'); this.logger.errorPage(error) },
+              error => { $('#saveAsModal').modal('hide'); this.logger.errorPage(error)
+              this.customResponse =  new CustomResponse('ERROR', 'something went wrong in saving copy campaign', true);
+              },
               () => console.log("saveAsCampaign Successfully")
           );
     }
@@ -374,12 +376,10 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     getCancelEventDetails(campaignId:number){
         this.selectedCancelEventId = campaignId;
         this.campaignService.getEventCampaignById(campaignId).subscribe(
-                (result)=>{
-                this.eventCampaign = result.data;
-                $('#cancelEventModal').modal('show');
-                }
-            );
-
+         (result)=>{
+          this.eventCampaign = result.data;
+            $('#cancelEventModal').modal('show');
+        });
     }
     cancelEvent(){
         var cancelEventData = {
@@ -430,6 +430,14 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.customResponse = new CustomResponse('SUCCESS', deleteMessage, true);
         this.pagination.pageIndex = 1;
         this.listCampaign(this.pagination);
+      }
+      if(event.delete ==='something went wrong in delete' ){
+        this.refService.loading(this.httpRequestLoader, false);
+        const deleteMessage =  'something went wrong  when '+event.campaignName + ' deleting. please try again';
+        this.customResponse = new CustomResponse('ERROR', deleteMessage, true);
+      }
+      if(event ==='something went wrong') {
+        this.customResponse =  new CustomResponse('ERROR', 'something went wrong, please try again', true);
       }
     }
 

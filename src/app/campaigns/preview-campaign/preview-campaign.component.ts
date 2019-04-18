@@ -32,7 +32,7 @@ import { EventCampaign } from '../models/event-campaign';
 import { Router } from '@angular/router';
 import { EmailLog } from '../models/email-log';
 import { CountryNames } from 'app/common/models/country-names';
-declare var $,CKEDITOR:any;
+declare var $:any;
 
 @Component({
   selector: 'app-preview-campaign',
@@ -149,15 +149,9 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
             this.hasStatsRole = this.referenceService.hasSelectedRole(this.referenceService.roles.statsRole);
             this.hasAllAccess = this.referenceService.hasAllAccess();
             this.isOnlyPartner = this.authenticationService.isOnlyPartner();
-            CKEDITOR.config.height = '100';
             this.closeNotifyParent = new EventEmitter<any>();
-           CKEDITOR.config.readOnly = true;
         }
-    selectReplyEmailBody(i,e){}
-    selectClickEmailBody(i,r,e){}
-    setUrlScheduleType(i,e){}
-    shareAnalytics(e){}
-    getCampaignById() {
+     getCampaignById() {
       // if(this.previewCampaignType === 'EVENT'){ this.campaign = new EventCampaign();}
       // else { this.campaign = new Campaign(); }
         const obj = { 'campaignId': this.previewCampaignId } // , this.previewCampaignType
@@ -180,8 +174,6 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
               this.getSocialCampaignByCampaignId(this.previewCampaignId);
             } else if (campaignType.includes('EVENT')) {
               this.campaignType = 'EVENT';
-             // this.campaign.selectedEmailTemplateId = this.campaign.emailTemplate.id;
-              // this.getEventCampaignByCampaignId(campaignId);
             } else {
               this.campaignType = 'EMAIL';
             }
@@ -248,12 +240,6 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     setEventCampaignData(result:EventCampaign){
       this.campaign = result;
       console.log(this.campaign);
-      if(this.campaign.userListDTOs.length>0){
-        // this.loadContactLists(this.contactListPagination);
-      //  this.contactListPagination.pagedItems = this.campaign.userListDTOs;
-      }
-      // this.selectedEmailTemplateId = this.campaign.selectedEditEmailTemplate.id;
-      // this.selectedUserlistIds = this.campaign.userListIds;
       this.campaign.emailTemplate = result.emailTemplateDTO;
       if(!this.campaign.emailTemplate) { this.campaign.emailTemplate = new EmailTemplate(); }
       else { this.selectedEmailTemplateId = this.campaign.emailTemplateDTO.id;}
@@ -283,18 +269,9 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
        }
        this.contactListPagination.campaignUserListIds = this.selectedUserlistIds;
        if(this.selectedUserlistIds.length>0) { this.loadContactList(this.contactListPagination); }
-      // if(this.campaign.scheduleTime!=null && this.campaign.scheduleTime!="null" && this.campaign.campaignScheduleType!="NOW"){
-      //     this.campaign.scheduleCampaign  = this.campaignLaunchOptions[1];
-      // }else{
-      //     this.campaign.scheduleCampaign  = this.campaignLaunchOptions[2];
-      // }
 
       if ( this.campaign.campaignScheduleType === 'SAVE' ) {
-        // this.launchOptions[2];
-        // this.setLaunchOptions( 'SAVE' );
     } else if( this.campaign.campaignScheduleType === 'SCHEDULE' ){
-        // this.launchOptions[1];
-        // this.setLaunchOptions( 'SCHEDULE' );
     }
     this.onChangeCountryCampaignEventTime(this.campaign.campaignEventTimes[0].countryId);
     for(let i=0; i< this.timezonesCampaignEventTime.length; i++){
@@ -350,7 +327,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
       this.saveAsCampaignInfo = campaign;
     }
     setSaveCampaignData(){
-      let campaignData:any;
+    let campaignData:any;
     if(this.previewCampaignType === 'EVENT') {
       const saveAsCampaignData = new EventCampaign();
       saveAsCampaignData.id = this.saveAsCampaignInfo.id;
@@ -379,7 +356,9 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
           this.closeNotifyParent.emit('copy campaign success');
           },
           error => { $('#saveAsModalcalendar').modal('hide'); $('#myModal').modal('hide');
-          this.customResponse =  new CustomResponse('ERROR', 'something went wrong in saving copy campaign', true); },
+          this.customResponse =  new CustomResponse('ERROR', 'something went wrong in saving copy campaign', true);
+          this.closeNotifyParent.emit('something went wrong');
+        },
           () => {
           $('#saveAsModalcalendar').modal('hide');
           // this.getCampaignCalendarView();
@@ -391,13 +370,20 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
       this.deleteCampaignAlert = true;
     }
     deleteCampaign(campaign: any) {
-      this.campaignService.delete(campaign.campaignId)
+      // this.ngxloading = true;
+      const campaignName = this.previewCampaignType ==='EVENT' ? campaign.campaign : campaign.campaignName;
+      this.campaignService.delete(this.previewCampaignId)
         .subscribe(
         data => {
           $('#myModal').modal('hide');
-          this.closeNotifyParent.emit({ 'delete': 'deleted campaign success', 'id': campaign.campaignId,'campaignName': campaign.campaignName });
+          this.closeNotifyParent.emit({ 'delete': 'deleted campaign success', 'id': this.previewCampaignId,'campaignName': campaignName });
        },
-        error => { console.error(error) }
+        error => { console.error(error);
+          $('#myModal').modal('hide');
+          this.closeNotifyParent.emit({ 'delete': 'something went wrong in delete', 'id': this.previewCampaignId,'campaignName': campaignName });
+        }, ()=>{
+          // this.ngxloading = false;
+        }
         );
     }
 
@@ -445,9 +431,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
         this.emailActionTotalList(campaignId, actionType, this.pagination.totalRecords);
         this.loading = false;
         this.referenceService.loading(this.httpRequestLoader, false);
-
         this.totalEmailActionList(campaignId, actionType, this.pagination.totalRecords );
-
       },
       error => console.log(error),
       () => console.log('emailActionList() completed')  )
@@ -705,14 +689,14 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
           $('#myModal').modal('hide');
           if (campaign.nurtureCampaign) {
             this.campaignService.reDistributeEvent = false;
-            this.router.navigate(['/home/campaigns/re-distribute-manage/' + campaign.campaignId]);
+            this.router.navigate(['/home/campaigns/re-distribute-manage/' + this.previewCampaignId]);
           } else {
-            this.router.navigate(['/home/campaigns/event-edit/' + campaign.campaignId]);
+            this.router.navigate(['/home/campaigns/event-edit/' + this.previewCampaignId]);
           }
         }
       }
       else {
-        var obj = { 'campaignId': campaign.campaignId }
+        var obj = { 'campaignId': this.previewCampaignId }
         this.campaignService.getCampaignById(obj)
           .subscribe(
           data => {
@@ -741,14 +725,6 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
         this.isScheduledCampaignLaunched = false;
       }
     }
-    extractTimeFromDate(replyTime){
-        //let dt = new Date(replyTime);
-        let dt = replyTime;
-        let hours = dt.getHours() > 9 ? dt.getHours() : '0' + dt.getHours();
-        let minutes = dt.getMinutes() > 9 ? dt.getMinutes() : '0' + dt.getMinutes();
-        return hours+":"+minutes;
-    }
-
     getCampaignReplies(campaign: Campaign) {
         if(campaign.campaignReplies!=undefined){
             this.replies = campaign.campaignReplies;
@@ -954,12 +930,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
             this.ngxloading = false;
         }
     }
-    isEven(n) {
-      if(n % 2 === 0){ return true;}
-        return false;
-    }
     ngOnDestroy(){
-      CKEDITOR.config.readOnly = false;
       $('#usersModal').modal('hide');
       $("#email_template_preivew").modal('hide');
     }
@@ -969,7 +940,6 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
         this.paginationType = 'contactslists';
         this.campaignContact.httpRequestLoader.isHorizontalCss=true;
         this.referenceService.loading(this.campaignContact.httpRequestLoader, true);
-      //  contactsPagination.campaignUserListIds = this.campaign.userListIds;
         this.contactService.loadCampaignContactsList(contactsPagination)
             .subscribe(
             (data: any) => {
@@ -1045,9 +1015,6 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
       else if(event.type==='contactslists'){
         this.contactListPagination.pageIndex = event.page;
         this.loadContactList(this.contactListPagination);
-        // if(this.previewCampaignType === 'EVENT') { this.loadContactLists(this.contactListPagination); }
-        // else { this.loadContactList(this.contactListPagination); }
-
       } else if(event.type==='Total Recipients'){
         this.pagination.pageIndex = event.page;
         this.listCampaignViews(this.previewCampaignId, this.pagination);
@@ -1074,15 +1041,6 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     }else if(this.paginationType === 'Clicked URL'){
       this.emailActionList(this.previewCampaignId, 'click', pagination);
     }
-  }
-
-  setReplyEmailTemplate(emailTemplateId:number,reply:Reply,index:number){
-      reply.selectedEmailTemplateId = emailTemplateId;
-      $('#reply-'+index+emailTemplateId).prop("checked",true);
-  }
-  setClickEmailTemplate(emailTemplateId:number,url:Url,index:number){
-      url.selectedEmailTemplateId = emailTemplateId;
-      $('#url-'+index+emailTemplateId).prop("checked",true);
   }
   closeModalpreview(){
     this.closeNotifyParent.emit(true);

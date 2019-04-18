@@ -179,8 +179,11 @@
 				</div>
 			</div>
 			<div class="portlet-body" style="min-height: 308px">
-				<app-bar-chart *ngIf="viewsBarData" [viewsBarData]="viewsBarData" (notifyParent)="selectedCategoryValue($event)"></app-bar-chart>
-			</div>
+				<app-bar-chart *ngIf="viewsBarData?.views?.length>0" [viewsBarData]="viewsBarData" (notifyParent)="selectedCategoryValue($event)"></app-bar-chart>
+        <div *ngIf="viewsBarData?.views?.length ==0" style="max-width: 100%;text-align: center;">
+						<span style="position: absolute;top: 195px;left: 220px;">No data available</span>
+					</div>
+      </div>
 		</div>
 		<!-- END PORTLET-->
 	</div>
