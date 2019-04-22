@@ -35,7 +35,7 @@ declare var swal, $, videojs: any;
     providers: [User, DefaultVideoPlayer, CallActionSwitch, Properties, RegularExpressions, CountryNames],
 })
 export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
-   
+
     defaultVideoPlayer: DefaultVideoPlayer;
     tempDefaultVideoPlayerSettings: any;
     videoJSplayer: any;
@@ -106,39 +106,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
         public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
         public regularExpressions: RegularExpressions,public route:ActivatedRoute, public utilService:UtilService,public dealRegSevice:DealRegistrationService,private dashBoardServiece:DashboardService) {
-          if (this.isEmpty(this.authenticationService.userProfile.roles) || !this.authenticationService.userProfile.profileImagePath) {this.router.navigateByUrl(this.referenceService.homeRouter);}
-          try{
-            if ( authenticationService.isSuperAdmin() ) { this.userData = this.authenticationService.venorMyProfileReport;
-            } else { this.userData = this.authenticationService.userProfile; }
-            this.cropperSettings();
-            this.roleNames = this.authenticationService.showRoles();
-            this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-            this.videoUtilService.videoTempDefaultSettings = this.referenceService.defaultPlayerSettings;
-            console.log(this.videoUtilService.videoTempDefaultSettings);
-            this.loggedInUserId = this.authenticationService.getUserId();
-            this.hasAllAccess = this.referenceService.hasAllAccess();
-            this.hasVideoRole = this.authenticationService.hasVideoRole();
-            if(this.authenticationService.isOrgAdminPartner() || this.authenticationService.isVendorPartner() || this.authenticationService.isVendor() || this.authenticationService.isOrgAdmin()){
-              this.hasVideoRole = false;
-            }
-            this.hasCompany = this.authenticationService.user.hasCompany;
-            this.callActionSwitch.size = 'normal';
-            this.videoUrl = this.authenticationService.MEDIA_URL + "profile-video/Birds0211512666857407_mobinar.m3u8";
-            if (this.isEmpty(this.userData.roles) || !this.userData.profileImagePath) {
-                this.router.navigateByUrl(this.referenceService.homeRouter);
-            } else {
-                console.log(this.userData);
-                this.parentModel.displayName = this.userData.firstName ? this.userData.firstName : this.userData.emailId;
-                if (!(this.userData.profileImagePath.indexOf(null) > -1)) {
-                    this.userProfileImage = this.userData.profileImagePath;
-                    this.parentModel.profilePicutrePath = this.userData.profileImagePath;
-                }
-            }
-            this.checkIntegrations();
-        }catch(error){
-            this.hasClientErrors = true;
-            this.logger.showClientErrors("my-profile.component.ts", "constructor()", error);
-        }
+     //   this.customConstructorCall();
     }
     cropperSettings() {
         this.circleCropperSettings = this.utilService.cropSettings( this.circleCropperSettings,200,156,200,true);
@@ -246,10 +214,53 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     imageUpload(event){ $('#'+event).click();}
     clearCustomResponse(){ this.customResponse = new CustomResponse(); }
     errorHandler(event:any){ event.target.src = 'assets/admin/pages/media/profile/icon-user-default.png';}
+    customConstructorCall(){
+      if (this.isEmpty(this.authenticationService.userProfile.roles) || !this.authenticationService.userProfile.profileImagePath) {this.router.navigateByUrl(this.referenceService.homeRouter);}
+          try{
+            if ( this.authenticationService.isSuperAdmin() ) { this.userData = this.authenticationService.venorMyProfileReport;
+            } else { this.userData = this.authenticationService.userProfile;
+            }
+            this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            this.getUserByUserName(this.currentUser.userName);
+            this.cropperSettings();
+            this.roleNames = this.authenticationService.showRoles();
+            // this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            this.videoUtilService.videoTempDefaultSettings = this.referenceService.defaultPlayerSettings;
+            console.log(this.videoUtilService.videoTempDefaultSettings);
+            this.loggedInUserId = this.authenticationService.getUserId();
+            this.hasAllAccess = this.referenceService.hasAllAccess();
+            this.hasVideoRole = this.authenticationService.hasVideoRole();
+            if(this.authenticationService.isOrgAdminPartner() || this.authenticationService.isVendorPartner() || this.authenticationService.isVendor() || this.authenticationService.isOrgAdmin()){
+              this.hasVideoRole = false;
+            }
+            this.hasCompany = this.authenticationService.user.hasCompany;
+            this.callActionSwitch.size = 'normal';
+            this.videoUrl = this.authenticationService.MEDIA_URL + "profile-video/Birds0211512666857407_mobinar.m3u8";
+            if (this.isEmpty(this.userData.roles) || !this.userData.profileImagePath) {
+                this.router.navigateByUrl(this.referenceService.homeRouter);
+            } else {
+                console.log(this.userData);
+                this.parentModel.displayName = this.userData.firstName ? this.userData.firstName : this.userData.emailId;
+                if (!(this.userData.profileImagePath.indexOf(null) > -1)) {
+                    this.userProfileImage = this.userData.profileImagePath;
+                    this.parentModel.profilePicutrePath = this.userData.profileImagePath;
+                }
+            }
+            this.checkIntegrations();
+        }catch(error){
+            this.hasClientErrors = true;
+            this.logger.showClientErrors("my-profile.component.ts", "constructor()", error);
+        }
+    }
+
     ngOnInit() {
         try {
+            this.customConstructorCall();
+            console.log(this.authenticationService.user);
             this.geoLocation();
             this.videoUtilService.normalVideoJsFiles();
+            // const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            // this.getUserByUserName(currentUser.userName);
             if(!this.referenceService.isMobileScreenSize()){
               this.isGridView(this.authenticationService.getUserId()); }
             else { this.referenceService.isGridView = true; }
@@ -283,20 +294,34 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         try{
             if (this.currentUser.roles.length > 1 && this.authenticationService.hasCompany() && !this.authenticationService.isOnlyPartner()) {
                 this.defaultVideoSettings();
-               if (this.referenceService.defaultPlayerSettings.transparency === null) {
+               if(this.referenceService.defaultPlayerSettings !== undefined){
+                if (this.referenceService.defaultPlayerSettings.transparency === null) {
                    this.referenceService.defaultPlayerSettings.transparency = 100;
                    this.referenceService.defaultPlayerSettings.controllerColor = '#456';
                    this.referenceService.defaultPlayerSettings.playerColor = '#879';
                }
                this.defaulttransperancyControllBar(this.referenceService.defaultPlayerSettings.transparency);
                if (!this.referenceService.defaultPlayerSettings.enableVideoController) { this.defaultVideoControllers(); }
-           }
+               }
+              }
         }catch(error){
             this.hasClientErrors = true;
             this.logger.showClientErrors("my-profile.component.ts", "ngAfterViewInit()", error);
         }
     }
-
+   getUserByUserName( userName: string ) {
+      try{
+         this.authenticationService.getUserByUserName( userName )
+            .subscribe(
+            data => {
+              this.userData = data;
+              this.authenticationService.userProfile = data;
+            },
+            error => {console.log( error ); this.router.navigate(['/su'])},
+            () => { }
+            );
+        }catch(error){ console.log('error'+error); }
+    }
     updatePassword() {
         this.ngxloading = true;
         console.log(this.updatePasswordForm.value);
@@ -724,7 +749,11 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         } else { $('.video-js .vjs-fullscreen-control').show(); }
     }
     defaultVideoSettings() {
-        console.log('default settings called');
+      if(this.referenceService.defaultPlayerSettings !== null && this.referenceService.defaultPlayerSettings !== undefined){
+      console.log('default settings called');
+      console.log(this.referenceService.defaultPlayerSettings);
+      console.log(this.referenceService.defaultPlayerSettings.playerColor);
+
         if (this.referenceService.defaultPlayerSettings.playerColor === undefined || this.referenceService.defaultPlayerSettings.playerColor === null) {
             this.referenceService.defaultPlayerSettings.playerColor = '#454';
             this.referenceService.defaultPlayerSettings.controllerColor = '#234';
@@ -740,6 +769,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         if (this.referenceService.defaultPlayerSettings.allowFullscreen === false) {
             $('.video-js .vjs-fullscreen-control').hide();
         } else { $('.video-js .vjs-fullscreen-control').show(); }
+
+      }
     }
     UpdatePlayerSettingsValues() {
         this.ngxloading = true;
@@ -932,20 +963,20 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
     initializeForm(){
         this.userService.listForm(this.loggedInUserId).subscribe(result => {
-            this.dealForms = result;  
+            this.dealForms = result;
             if(result[0]){
-                this.form =   result[0]; 
+                this.form =   result[0];
                 this.questions = this.form.campaignDealQuestionDTOs;
                 this.submitButtonText = "Update Form";
-               
+
             }else
                 this.submitButtonText = "Save Form";
             this.submitBUttonStateChange();
         })
         this.dealRegSevice.listDealTypes(this.loggedInUserId).subscribe(dealTypes => {
-                
-            this.dealtypes = dealTypes.data;  
-            
+
+            this.dealtypes = dealTypes.data;
+
         });
     }
 
@@ -961,11 +992,11 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         var id = 'question-' + length;
         this.question.divId = id;
         this.question.error = true;
-      
+
 
         this.questions.push(this.question);
         this.submitBUttonStateChange();
-        
+
 
     }
     remove(i, id)
@@ -990,7 +1021,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         var successClass = "form-group has-success has-feedback";
         if (question.question.length > 0)
         {
-            question.class = successClass; 
+            question.class = successClass;
             question.error = false;
         } else
         {
@@ -1014,7 +1045,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         if(this.form.name!=null && this.form.name!=undefined && this.form.name.length>0){
         this.questions.forEach(question =>
                 {
-                  
+
                     if (question.error)
                         countForm++;
                 })
@@ -1028,7 +1059,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     saveForm(){
         this.ngxloading = true;
-       
+
         if(this.form.id == null){
             this.form.createdBy = this.loggedInUserId;
             this.questions.forEach(question =>{
@@ -1036,12 +1067,12 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             })
             this.form.campaignDealQuestionDTOs = this.questions;
             this.userService.saveForm(this.loggedInUserId,this.form).subscribe(result => {
-                
+
                 this.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
                 this.userService.listForm(this.loggedInUserId).subscribe(form => {
-                    this.dealForms = form;  
+                    this.dealForms = form;
                     if(form[0]){
-                        this.form =   form[0]; 
+                        this.form =   form[0];
                         this.questions = this.form.campaignDealQuestionDTOs;
                         this.submitButtonText = "Update Form";
                         this.ngxloading = false;
@@ -1062,21 +1093,21 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             this.userService.updateForm(this.loggedInUserId,this.form).subscribe(result => {
                 this.ngxloading = false;
                 this.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
-                
+
             },(error) =>{
                 this.ngxloading = false;
                 this.customResponseForm = new CustomResponse('ERROR', "The questions are already associate with deals", true);
                 this.userService.listForm(this.loggedInUserId).subscribe(form => {
-                    this.dealForms = form;  
+                    this.dealForms = form;
                     if(form[0]){
-                        this.form =   form[0]; 
+                        this.form =   form[0];
                         this.questions = this.form.campaignDealQuestionDTOs;
-                    } 
+                    }
                 });
             })
         }
     }
-    
+
     //Deal types
     addDealtype()
     {
@@ -1090,12 +1121,12 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         var id = 'dealType-' + length;
         this.dealtype.divId = id;
         this.dealtype.error = true;
-      
+
 
         this.dealtypes.push(this.dealtype);
         this.dealTypeButtonStateChange();
-      
-        
+
+
 
     }
     removeDealType(i, id)
@@ -1120,7 +1151,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         var successClass = "form-group has-success has-feedback";
         if (dealType.dealType.length > 0)
         {
-            dealType.class = successClass; 
+            dealType.class = successClass;
             dealType.error = false;
         } else
         {
@@ -1129,12 +1160,12 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         }
         this.dealTypeButtonStateChange();
     }
-   
+
     dealTypeButtonStateChange(){
         let countForm = 0;
         this.dealtypes.forEach(dealType =>
                 {
-                  
+
                     if (dealType.error)
                         countForm++;
                 })
@@ -1142,39 +1173,39 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.dealSubmiteState = false;
                 else
                     this.dealSubmiteState = true;
-        
+
     }
     saveDealTypes(){
         this.ngxloading = true;
-       
-       
-          
+
+
+
             this.dealtypes.forEach(dealtype =>{
                 if(dealtype.id != null && dealtype.id != undefined)
                     dealtype.updatedBy == this.loggedInUserId;
                 else
                     dealtype.createdBy == this.loggedInUserId;
             })
-       
+
             this.dealRegSevice.saveDealTypes(this.dealtypes,this.loggedInUserId).subscribe(result => {
                 this.ngxloading = false;
                 this.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
-                
+
             },(error) =>{
                 this.ngxloading = false;
                 this.customResponseForm = new CustomResponse('ERROR', "The dealtypes are already associate with deals", true);
-               
+
             },()=>{
                 this.dealRegSevice.listDealTypes(this.loggedInUserId).subscribe(dealTypes => {
-                    
-                    this.dealtypes = dealTypes.data;  
-                    
+
+                    this.dealtypes = dealTypes.data;
+
                 });
             })
-      
+
     }
 
-    
+
     checkIntegrations(): any
     {
         this.dashBoardServiece.checkMarketoCredentials(this.authenticationService.getUserId()).subscribe(response => {

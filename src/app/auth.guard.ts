@@ -69,8 +69,10 @@ export class AuthGuard implements CanActivate, CanActivateChild {
          this.authenticationService.getUserByUserName( userName )
             .subscribe(
             data => {
-                this.authenticationService.user = data;
-                this.authenticationService.userProfile = data;
+              console.log('logged in user profile info:');
+              console.log(data);
+              this.authenticationService.user = data;
+              this.authenticationService.userProfile = data;
             },
             error => {console.log( error ); this.router.navigate(['/su'])},
             () => { }
