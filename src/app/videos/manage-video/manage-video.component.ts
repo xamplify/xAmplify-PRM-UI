@@ -301,7 +301,9 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                     this.xtremandLogger.error('Error In : delete videos ():' + error);
                     this.referenceService.showServerError(this.httpRequestLoader);
                     this.httpRequestLoader.statusCode = error.status;
-                } else if (error._body.search('video is being used in one or more campaigns. Please delete those campaigns') !== -1) {
+                    const errorMesge = "Something went wrong when deleting the video file";
+                    this.customResponse = new CustomResponse( 'ERROR', errorMesge, true );
+                  } else if (error._body.search('video is being used in one or more campaigns. Please delete those campaigns') !== -1) {
                     // const errorMesge = "Heads up! "+ videoName.substr(0,50) +" is being used in one or more campaigns or might be used by vendor activity. Please delete those campaigns first.";
                     const errorMesge = 'Heads up! '+ videoName.substr(0,50).italics() + ' is being used in one or more campaigns. You must first delete any associated campaigns';
                     this.defaultBannerMessageValues();

@@ -45,9 +45,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     status = true;
     updatePasswordSuccess = false;
     profileUploadSuccess = false;
-    userProfileImage = "assets/admin/pages/media/profile/icon-user-default.png";
+    userProfileImage = "assets/images/icon-user-default.png";
     userData: User;
-    parentModel = { 'displayName': '', 'profilePicutrePath': 'assets/admin/pages/media/profile/icon-user-default.png' };
+    parentModel = { 'displayName': '', 'profilePicutrePath': 'assets/images/icon-user-default.png' };
     className = "form-control ng-touched ng-dirty ng-valid";
     compPlayerColor: string;
     compControllerColor: string;
@@ -213,7 +213,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     imageUpload(event){ $('#'+event).click();}
     clearCustomResponse(){ this.customResponse = new CustomResponse(); }
-    errorHandler(event:any){ event.target.src = 'assets/admin/pages/media/profile/icon-user-default.png';}
+    errorHandler(event:any){ event.target.src = 'assets/images/icon-user-default.png';}
     customConstructorCall(){
       if (this.isEmpty(this.authenticationService.userProfile.roles) || !this.authenticationService.userProfile.profileImagePath) {this.router.navigateByUrl(this.referenceService.homeRouter);}
           try{

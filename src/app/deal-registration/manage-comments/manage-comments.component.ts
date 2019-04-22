@@ -33,8 +33,8 @@ export class ManageCommentsComponent implements OnInit
   userName ="";
   refreshComments: any;
   leadName="";
-  constructor(public authenticationService: AuthenticationService, private dealRegService: DealRegistrationService, 
-    private campaignService: CampaignService,refferenceService:ReferenceService) { 
+  constructor(public authenticationService: AuthenticationService, private dealRegService: DealRegistrationService,
+    private campaignService: CampaignService,refferenceService:ReferenceService) {
 
   }
 
@@ -46,10 +46,10 @@ export class ManageCommentsComponent implements OnInit
     }
     if(this.lead.lastName!=null && this.lead.lastName.length>0){
       this.leadName = this.leadName+this.lead.lastName;
-      
+
     }
       this.getCommentList();
-   
+
 
   }
   getCommentList(){
@@ -62,18 +62,18 @@ export class ManageCommentsComponent implements OnInit
     this.campaignService.getCampaignById(obj).subscribe(data =>
     {
       this.campaign = data;
-      
-     
+
+
 
     },
     error => console.log(error),
     () => { })
     this.dealRegService.getDealById(this.lead.dealId,this.loggedInUserId).subscribe(deal=>{
         this.deal = deal.data;
-      
+
         this.dealRegService.getDealCreatedBy(this.deal.createdBy).subscribe(user =>
           {
-          
+
             this.createdBy = user;
             if(this.createdBy.firstName!=null && this.createdBy.firstName.length>0){
               this.userName = this.userName+this.createdBy.firstName;
@@ -81,7 +81,7 @@ export class ManageCommentsComponent implements OnInit
             }
             if(this.createdBy.lastName!=null && this.createdBy.lastName.length>0){
               this.userName = this.userName+this.createdBy.lastName;
-              
+
             }
           })
     },
@@ -118,11 +118,11 @@ export class ManageCommentsComponent implements OnInit
               c.userName =c.user.lastName;
           }
           if (c.user.profileImagePath.indexOf(null) > -1) {
-            c.user.profileImagePath = 'assets/admin/pages/media/profile/icon-user-default.png';
-          
-          } 
+            c.user.profileImagePath = 'assets/images/icon-user-default.png';
+
+          }
         })
-       
+
 
       },
       error => console.log(error),
@@ -164,8 +164,8 @@ export class ManageCommentsComponent implements OnInit
       clearInterval(this.refreshComments);
       console.log(this.commentList.length)
       if(this.commentList.length>0){
-      
-         
+
+
         let comment_id =this.commentList[this.commentList.length-1].id
       const data ={
         'user' : this.loggedInUserId,
@@ -177,11 +177,11 @@ export class ManageCommentsComponent implements OnInit
       console.log(data)
       this.dealRegService.updateCommentStats(data).subscribe(result =>
         {
-       
+
         },
         error => console.log(error),
         () => { });
       }
-      
+
   }
 }

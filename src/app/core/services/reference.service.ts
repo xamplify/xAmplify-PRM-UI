@@ -43,7 +43,7 @@ export class ReferenceService {
     cameraIsthere: boolean;
     topNavBarNotificationDetails: any = new Object();
     roles: Roles = new Roles();
-    topNavBarUserDetails = { 'displayName': '....', 'profilePicutrePath': 'assets/admin/pages/media/profile/icon-user-default.png' };
+    topNavBarUserDetails = { 'displayName': '....', 'profilePicutrePath': 'assets/images/icon-user-default.png' };
     companyProfileImage: string;
     userDefaultPage = '';
     hasCompany = false;

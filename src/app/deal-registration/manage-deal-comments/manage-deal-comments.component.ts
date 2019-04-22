@@ -34,7 +34,7 @@ export class ManageDealCommentsComponent implements OnInit
   {
 
     this.comment = new DealComments;
-    
+
     this.loggedInUserId = this.authenticationService.getUserId();
     this.dealRegService.getDealCreatedBy(this.loggedInUserId).subscribe(user =>
     {
@@ -45,7 +45,7 @@ export class ManageDealCommentsComponent implements OnInit
     error => console.log(error),
     () => { })
     this.getCommentList();
-   
+
 
   }
   getCommentList(){
@@ -63,12 +63,12 @@ export class ManageDealCommentsComponent implements OnInit
               c.userName =c.user.lastName;
           }
           if (c.user.profileImagePath.indexOf(null) > -1) {
-            c.user.profileImagePath = 'assets/admin/pages/media/profile/icon-user-default.png';
-          
-          } 
+            c.user.profileImagePath = 'assets/images/icon-user-default.png';
+
+          }
         })
         this.comment = new DealComments;
-  
+
       },
       error => console.log(error),
       () => { })
@@ -106,10 +106,10 @@ export class ManageDealCommentsComponent implements OnInit
   }
   ngOnDestroy() {
 
-    
+
     if(this.commentList.length>0){
-    
-       
+
+
       let comment_id =this.commentList[this.commentList.length-1].id
     const data ={
       'user' : this.loggedInUserId,
@@ -121,12 +121,12 @@ export class ManageDealCommentsComponent implements OnInit
     console.log(data)
     this.dealRegService.updateCommentStats(data).subscribe(result =>
       {
-     
+
       },
       error => console.log(error),
       () => { });
     }
-    
+
 }
 
 }
