@@ -1160,6 +1160,13 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
             $( "#more_less_button_" + i ).attr( 'value', 'more' );
         }
     }
+    
+    eventEnterKeyHandler(keyCode: any){
+        if (keyCode === 13) { 
+            this.contactFilter();
+        }
+    }
+    
 
     contactFilter() {
         try {

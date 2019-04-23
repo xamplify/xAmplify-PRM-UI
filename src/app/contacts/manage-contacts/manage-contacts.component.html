@@ -861,7 +861,7 @@
 									</div>
 									<div class="form-group col-sm-3">
 										<input type="text" class="form-control" placeholder="value*"
-											[(ngModel)]="criterias[i].value1">
+											[(ngModel)]="criterias[i].value1" (keypress)="eventEnterKeyHandler($event.keyCode)">
 									</div>
 									<div class="form-group col-sm-2" data-toggle="tooltip"
 												data-placement="left" title="Remove a condition"

@@ -2141,6 +2141,12 @@ export class EditContactsComponent implements OnInit, OnDestroy {
         this.filterConditionErrorMessage = "";
     }
 
+    eventEnterKeyHandler(keyCode: any){
+        if (keyCode === 13) { 
+            this.contactFilter();
+        }
+    }
+    
     contactFilter() {
         try {
             for ( let i = 0; i < this.criterias.length; i++ ) {
