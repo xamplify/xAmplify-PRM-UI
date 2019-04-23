@@ -240,8 +240,8 @@
                                   <input type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" id="checkAllExistingContacts"
                                     [ngModelOptions]="{standalone: true}" />
                                 </td>
-                                <th class="text-center">Date Uploaded </th>
                                 <th class="text-center"> List Name </th>
+                                <th class="text-center"> Date Uploaded </th>
                                 <th class="text-center"> Preview </th>
                               </tr>
                             </thead>
@@ -261,17 +261,19 @@
                                   </div>
                                 </td>
 
-                                <td class="text-center sorting_1">
-                                  <app-timestamp [isOnlyDate]="true" [dateAndTime]="contacts.createdDate"> </app-timestamp>
-                                </td>
-
-                                <td class="text-center" *ngIf="contacts.name?.length>15" title="{{contacts.name}}">
+ 								<td class="text-center" *ngIf="contacts.name?.length>15" title="{{contacts.name}}">
                                   {{contacts.name | slice:0:15}}...
                                 </td>
 
                                 <td class="text-center" *ngIf="contacts.name?.length<=15" title="{{contacts.name}}">
                                   {{contacts.name}}
                                 </td>
+
+                                <td class="text-center sorting_1">
+                                  <app-timestamp [isOnlyDate]="true" [dateAndTime]="contacts.createdDate"> </app-timestamp>
+                                </td>
+
+                               
                                 <td class="text-center">
                                   <a (click)="$event.stopPropagation();loadUsers(contactListPagination.pagedItems[i].id,contactsUsersPagination,contacts.name)">
                                     <i class="fa fa-eye" style="padding-top: 3px; font-size: 20px;" title="" data-original-title="Preview"></i>
