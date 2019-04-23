@@ -81,7 +81,10 @@ data-backdrop="static">
                   </div>
                 </div>
             </div>
-            <div *ngIf="campaign.emailTemplate" class="col-xs-6 p0">
+            <div *ngIf="!campaign.emailTemplate?.id" class="col-xs-6 p0" style="margin-top: 60px; text-align: center;">
+            <p style="color: #ff3a3a;">No Template found</p>
+            </div>
+            <div *ngIf="campaign.emailTemplate?.id" class="col-xs-6 p0">
               <ul  class="content__list" >
                   <li class="list__item" style="width:auto !important;float:none;margin-right: -29px;margin-top: -13px;" [class.list__item--selected]="true">
                     <div class="flex-row">
@@ -130,7 +133,8 @@ data-backdrop="static">
           </fieldset>
           <fieldset *ngIf="previewCampaignType !== 'SOCIAL'">
             <legend>Selected {{contactType}}:</legend>
-            <app-list-loader style="background: white" [rowsCount]="3" *ngIf="contactListPagination.pagedItems.length === 0"></app-list-loader>
+            <app-list-loader style="background: white" [rowsCount]="3" *ngIf="isContactListLoader"></app-list-loader>
+            <p *ngIf="contactListPagination.pagedItems.length==0" style="color: #ff3a3a;">No {{contactType}} found</p>
             <table class="table" [hidden]="contactListPagination.pagedItems.length==0">
               <thead>
                 <tr>

@@ -129,6 +129,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     saveAsCampaignName: string;
     saveAsCampaignInfo: any;
     isScheduledCampaignLaunched: boolean;
+    isContactListLoader = false;
 
     constructor(
             private campaignService: CampaignService, private utilService:UtilService,
@@ -938,6 +939,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     /*************************************************************Contact List***************************************************************************************/
     loadContactList(contactsPagination: Pagination) {
         this.paginationType = 'contactslists';
+        this.isContactListLoader = true;
         this.campaignContact.httpRequestLoader.isHorizontalCss=true;
         this.referenceService.loading(this.campaignContact.httpRequestLoader, true);
         this.contactService.loadCampaignContactsList(contactsPagination)
@@ -947,8 +949,11 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
                 contactsPagination.totalRecords = data.totalRecords;
                 this.contactListPagination = this.pagerService.getPagedItems(contactsPagination,this.userLists);
                 this.referenceService.loading(this.campaignContact.httpRequestLoader, false);
+                this.isContactListLoader = false;
             },
-            (error: string) => this.xtremandLogger.errorPage(error),
+            (error: string) => {this.xtremandLogger.errorPage(error);
+            this.isContactListLoader = false;
+            },
             () => this.xtremandLogger.info("Finished loadContactList()", this.contactListPagination)
             )
     }
