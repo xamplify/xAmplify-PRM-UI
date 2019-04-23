@@ -500,7 +500,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     }catch(error){ this.xtremandLogger.error('error'+error);}
   }
   sentEmailModal(){
-    this.downloadTypeName = 'campaignViews';
+    this.downloadTypeName = 'sentEmails';
     this.paginationType = 'sentEmailData';
     this.sentEmailOpenPagination = new Pagination();
     this.listCampaignViews(this.campaign.campaignId, this.sentEmailOpenPagination);
@@ -1346,7 +1346,9 @@ showTimeLineView(){
 
   listTotalCampaignViews(campaignId: number) {
     try{
-      this.downloadTypeName ='campaignViews';
+        if ( this.downloadTypeName != 'sentEmails' ) {
+            this.downloadTypeName = 'campaignViews';
+      }
       this.campaignTotalViewsPagination.maxResults = this.campaignReport.emailSentCount;
       this.campaignService.listCampaignViews(campaignId, this.campaignTotalViewsPagination,  this.isChannelCampaign)
       .subscribe(
@@ -1393,7 +1395,10 @@ showTimeLineView(){
     } else if (this.downloadTypeName === 'campaignViews') {
         this.logListName = 'Campaign_report_logs.csv';
       this.downloadCsvList = this.campaignTotalViewsData;
-    } else if (this.downloadTypeName === 'worldMap') {
+    }else if (this.downloadTypeName === 'sentEmails') {
+        this.logListName = 'Sent_Emails_logs.csv';
+        this.downloadCsvList = this.campaignTotalViewsData;
+      } else if (this.downloadTypeName === 'worldMap') {
         this.logListName = 'World_Map_logs.csv';
       this.downloadCsvList = this.worldMapUserTotalData;
     } else if(this.downloadTypeName === 'rsvp'){
@@ -1468,6 +1473,12 @@ showTimeLineView(){
         object["Total Views"] = this.downloadCsvList[i].viewsCount;
         }
         }
+      
+      if (this.downloadTypeName === 'sentEmails') {
+          object["Campaign Name"] = this.downloadCsvList[i].campaignName;
+          let hours = this.referenceService.formatAMPM(sentTime);
+          object["Sent Time"] = sentTime.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
+      }
 
       if (this.downloadTypeName === 'usersWatchedList') {
         let srtHours = this.referenceService.formatAMPM(startTime);
