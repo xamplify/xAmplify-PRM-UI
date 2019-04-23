@@ -47,6 +47,9 @@ export class ContentManagementComponent implements OnInit {
                    { 'name': 'Upload Date (DESC)', 'value': 'lastModifiedDate'},
       ];
     sortOption: any = this.sortOptions[0];
+    pageNumber: any;
+    numberPerPage = [{ 'name': '12', 'value': 12 }, { 'name': '24', 'value': 24 }, { 'name': '48', 'value': 48 },
+    { 'name': 'All', 'value': 0 }];
 
     constructor(public referenceService: ReferenceService,
         public actionsDescription: ActionsDescription, public pagination: Pagination, public socialPagerService: SocialPagerService,
@@ -58,6 +61,7 @@ export class ContentManagementComponent implements OnInit {
            this.customResponse = new CustomResponse( 'SUCCESS', 'File(s) processed successfully.', true );
            this.referenceService.contentManagementLoader = false;
         }
+        this.pageNumber = this.numberPerPage[0];
     }
 
     sortByOption( event: any) {
@@ -160,6 +164,12 @@ export class ContentManagementComponent implements OnInit {
       $('#grid_'+file.id).click();
     }
 
+    selectedPageNumber(event){
+      if(event === 0) { event = this.paginatedList.length;}
+     // this.paginatedList = this.list.slice(0,event);
+      this.pageSize = event;
+      this.setPage( 1 );
+    }
     getSelectedFiles( file: any, id: any, event: any ) {
         let isChecked = $( '#grid_' + id ).is( ':checked' );
         if ( isChecked ) {

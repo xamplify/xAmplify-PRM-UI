@@ -109,24 +109,6 @@
                     <div *ngIf="pagedItems.length == 0" style="width: 100%;" class="col-md-9 alert alert-info alert-dismissable">
                         <a class="close" data-dismiss="alert" aria-label="close"></a><p>No results found</p>
                    </div>
-										<ul *ngIf="pager.pages && pager.pages.length"
-											class="pagination">
-											<li [ngClass]="{disabled:pager.currentPage === 1}"><a
-												(click)="setPage(1)">First</a></li>
-											<li [ngClass]="{disabled:pager.currentPage === 1}"><a
-												(click)="setPage(pager.currentPage - 1)">Previous</a></li>
-											<li *ngFor="let page of pager.pages"
-												[ngClass]="{active:pager.currentPage === page}"><a
-												(click)="setPage(page)">{{page}}</a></li>
-											<li
-												[ngClass]="{disabled:pager.currentPage === pager.totalPages}">
-												<a (click)="setPage(pager.currentPage + 1)">Next</a>
-											</li>
-											<li
-												[ngClass]="{disabled:pager.currentPage === pager.totalPages}">
-												<a (click)="setPage(pager.totalPages)">Last</a>
-											</li>
-										</ul>
 										<!-- <pagination-controls (pageChange)="p = $event"></pagination-controls> -->
 									</div>
 								</section>
@@ -192,7 +174,7 @@
                         <a class="close" data-dismiss="alert" aria-label="close"></a>
                         <p>No results found</p>
                       </div>
-										<ul *ngIf="pager.pages && pager.pages.length"
+										<!-- <ul *ngIf="pager.pages && pager.pages.length"
 											class="pagination">
 											<li [ngClass]="{disabled:pager.currentPage === 1}"><a
 												(click)="setPage(1)">First</a></li>
@@ -209,10 +191,37 @@
 												[ngClass]="{disabled:pager.currentPage === pager.totalPages}">
 												<a (click)="setPage(pager.totalPages)">Last</a>
 											</li>
-										</ul>
+										</ul> -->
 									</div>
 									<!-- <pagination-controls (pageChange)="p = $event"></pagination-controls> -->
-								</section>
+                </section>
+                <ul *ngIf="pager.pages && pager.pages.length"
+                class="pagination">
+                <li [ngClass]="{disabled:pager.currentPage === 1}"><a
+                  (click)="setPage(1)">First</a></li>
+                <li [ngClass]="{disabled:pager.currentPage === 1}"><a
+                  (click)="setPage(pager.currentPage - 1)">Previous</a></li>
+                <li *ngFor="let page of pager.pages"
+                  [ngClass]="{active:pager.currentPage === page}"><a
+                  (click)="setPage(page)">{{page}}</a></li>
+                <li
+                  [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                  <a (click)="setPage(pager.currentPage + 1)">Next</a>
+                </li>
+                <li
+                  [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                  <a (click)="setPage(pager.totalPages)">Last</a>
+                </li>
+              </ul>
+              <select class="form-control" style="cursor: pointer; float: right;width:6%;" [(ngModel)]="pageNumber" (ngModelChange)="selectedPageNumber($event.value)">
+                  <!-- <ng-container *ngFor="let pageNo of numberPerPage" > -->
+                  <option [ngValue]="numberPerPage[0]"> {{numberPerPage[0].name}}</option>
+                  <option *ngIf="paginatedList.length>12" [ngValue]="numberPerPage[1]"> {{numberPerPage[1].name}}</option>
+                  <option *ngIf="paginatedList.length>24" [ngValue]="numberPerPage[2]"> {{numberPerPage[2].name}}</option>
+                  <option *ngIf="paginatedList.length>12" [ngValue]="numberPerPage[3]"> {{numberPerPage[3].name}}</option>
+                <!-- </ng-container> -->
+                </select>
+
 							</div>
 						</div>
 					</div>

@@ -84,7 +84,7 @@ export class ProfileLockComponent implements OnInit {
       if (this.password !== '') {
             this.error = 'Password is incorrect';
         } else {
-            this.error = "Password should't be empty";
+            this.error = "Password shouldn't be empty";
         }
         console.log('error : ' + this.error);
     }
