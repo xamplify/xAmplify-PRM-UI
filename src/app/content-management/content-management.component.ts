@@ -68,13 +68,13 @@ export class ContentManagementComponent implements OnInit {
         this.referenceService.loading( this.httpRequestLoader, true );
         try {
             this.sortOption = event;
-            if ( event.name == "Upload Date(ASD)" ) {
+            if ( event.name.includes('DESC')) {
                 this.sortList = this.list.sort(( a, b ) => new Date( b.lastModifiedDate ).getTime() - new Date( a.lastModifiedDate ).getTime() );
-            } else if ( event.name == "Upload Date(DSD)" ) {
+            } else if ( event.name.includes('ASC')) {
                 this.sortList = this.list.sort(( a, b ) =>  new Date( a.lastModifiedDate ).getTime() - new Date( b.lastModifiedDate ).getTime() );
-            }  else if ( event.name == "File Name(A-Z)" ) {
+            }  else if ( event.name.includes('A-Z')) {
                 this.sortList = this.list.sort((a,b)=> {return a.fileName.localeCompare(b.fileName)});
-            } else if ( event.name == "File Name(Z-A)" ) {
+            } else if ( event.name.includes('Z-A')) {
                 this.sortList = this.list.sort((a,b)=> {return b.fileName.localeCompare(a.fileName)});
             }
             this.referenceService.loading( this.httpRequestLoader, false );
@@ -167,8 +167,10 @@ export class ContentManagementComponent implements OnInit {
     selectedPageNumber(event){
       if(event === 0) { event = this.paginatedList.length;}
      // this.paginatedList = this.list.slice(0,event);
+      this.referenceService.loading( this.httpRequestLoader, true );
       this.pageSize = event;
       this.setPage( 1 );
+      this.referenceService.loading( this.httpRequestLoader, false );
     }
     getSelectedFiles( file: any, id: any, event: any ) {
         let isChecked = $( '#grid_' + id ).is( ':checked' );

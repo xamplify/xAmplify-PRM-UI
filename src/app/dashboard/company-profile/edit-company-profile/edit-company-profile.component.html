@@ -65,12 +65,15 @@
 								<div class="portlet-body clearfix text-center" style="padding: 2em 0;">
 									<div class="profile-image-wrapper" style="cursor:pointer"  (click)="imageClick()">
                     <span *ngIf="logoError" style="color: #f55d7a">{{logoErrorMessage}}</span>
-                  	<span *ngIf="(squareData | json) == '{}'"> <span *ngIf="!companyLogoImageUrlPath" style="color: #f55d7a; position: absolute;bottom: 5px;">* Please upload company logo</span></span>
+                  	<span *ngIf="!croppedImage"> <span *ngIf="!companyLogoImageUrlPath" style="color: #f55d7a; position: absolute;bottom: 5px;">* Please upload company logo</span></span>
 										<span *ngIf="(squareData | json) == '{}'"><img *ngIf="!companyLogoImageUrlPath" src="assets/images/company-profile-logo.png" class="profile-image"></span>
 
-                    <span class="result" *ngIf="(squareData | json) != '{}'; else showImage">
+                    <!-- <span class="result" *ngIf="(squareData | json) != '{}'; else showImage">
                       <img *ngIf="!cropRounded && squareData?.image; else Other" [src]="squareData.image">
                       <ng-template #Other><img [src]= "authenticationService.MEDIA_URL + companyLogoImageUrlPath"  [width]="squareCropperSettings.croppedWidth" [height]="squareCropperSettings.croppedHeight" (error)="errorHandler($event)"></ng-template>
+                    </span> -->
+                    <span *ngIf="croppedImage; else showImage">
+                      <img [src]="croppedImage" style="width:100%;height: 100%;">
                     </span>
                     <ng-template #showImage><img *ngIf="companyLogoImageUrlPath" [src]= "authenticationService.MEDIA_URL + companyLogoImageUrlPath"  [width]="squareCropperSettings.croppedWidth" [height]="squareCropperSettings.croppedHeight" (error)="errorHandler($event)"></ng-template>
 
@@ -250,16 +253,37 @@
         <h4 class="modal-title" id="cropLogoImage">Please add your company logo</h4>
 			</div>
 			<div class="modal-body">
-          <div style="position: relative;top: -5px;" class="btn green fileinput-button-css" *ngIf="(squareData | json) === '{}'"><span>Select image</span>
-            <input style="height: 36px;"  title=" "  id="custom-input" type="file" (change)="fileChangeListener($event, cropper)">
+          <div style="position: relative;top: -5px;width: 118px;"
+            class="btn green fileinput-button-css" *ngIf="!imageChangedEvent"><span>Select image</span>
+            <input style="height: 36px;"  title=" "  id="custom-input" type="file" (change)="filenewChangeEvent($event)">
           </div>
           <div style="position: relative;top: -5px;" *ngIf="errorUploadCropper" style="color:red">*Please Upload only images</div>
           <div>
           <ngx-loading [show]="loadingcrop" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-          <img-cropper #cropper *ngIf="!cropRounded" [image]="squareData" [settings]="squareCropperSettings"></img-cropper>
-          </div>
+          <!-- <img-cropper #cropper *ngIf="!cropRounded" [image]="squareData" [settings]="squareCropperSettings"></img-cropper> -->
+        <div [hidden]="!imageChangedEvent"><image-cropper
+          [imageChangedEvent]="imageChangedEvent"
+          [maintainAspectRatio]="false"
+          [onlyScaleDown]="true"
+          [roundCropper]="false"
+          format="jpg"
+          outputType="base64"
+          (imageCropped)="imageCroppedMethod($event)"
+          (imageLoaded)="imageLoaded()"
+          (cropperReady)="cropperReady()"
+          (imageQuality)=0
+          (loadImageFailed)="loadImageFailed()"
+          [style.display]="showCropper ? null : 'none'"></image-cropper>
+        </div>
+        <div *ngIf="!imageChangedEvent">
+          <fieldset style="background: #cacaca;height: 227px;margin-bottom: 5px;">
+          </fieldset>
+      </div>
+        <!-- <div *ngIf="showCropper"> <span>Aspect Ratio:</span> <button type="button" (click)="setValue('None')">None</button><button type="button" (click)="setValue('15/8')">15:8</button><button type="button" (click)="setValue('8/4')">8:4</button><button type="button" (click)="setValue('10/5')">10:5</button></div> -->
+
+        </div>
           <div>
-            <button class="btn btn-primary" [disabled]="(squareData | json) === '{}'" (click)="uploadLogo()">Upload Image</button>
+            <button class="btn btn-primary" [disabled]="!showCropper" (click)="uploadLogo()">Upload Image</button>
           </div>
           <div>
             <ul style="padding: 0 15px;">

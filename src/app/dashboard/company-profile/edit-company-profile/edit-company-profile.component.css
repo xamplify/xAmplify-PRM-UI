@@ -23,7 +23,7 @@
     animation: spin 2s linear infinite;
 }
 .profile-image-wrapper {
-    display: block;
+     display: grid;
     width: 200px;
     height: 133px;
     background: #fff;
@@ -31,7 +31,7 @@
     margin: 0 auto;
     border: 1px solid #d0d0d0;
     position: relative;
-}
+  }
 .profile-overlay, .banner-overlay {
     display:none;
 }
