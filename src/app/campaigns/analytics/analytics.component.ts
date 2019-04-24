@@ -1494,15 +1494,15 @@ showTimeLineView(){
       if ( this.downloadTypeName === 'emailAction' ) {
           if ( this.campaignReport.emailActionType === 'click' ) {
               if ( this.downloadCsvList[i].url ) {
-                  object["Url"] = this.downloadCsvList[i].url;
+                  object["Most Recent Url"] = this.downloadCsvList[i].url;
               } else {
-                  object["Url"] = "Clicked on the video thumbnail";
+                  object["Most Recent Url"] = "Clicked on the video thumbnail";
               }
           } else {
               object["Email subject"] = this.downloadCsvList[i].subject;
           }
           let hours = this.referenceService.formatAMPM(date);
-          object["Date and Time"] = date.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
+          object["Latest Time"] = date.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
       }
 
       if (this.downloadTypeName === 'worldMap') {
