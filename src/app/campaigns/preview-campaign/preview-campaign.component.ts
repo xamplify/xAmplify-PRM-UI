@@ -868,7 +868,11 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
         if(this.campaign.nurtureCampaign){
             userId = this.campaign.parentCampaignUserId;
         }else{
-            userId =  this.campaign.userId;
+            if(this.previewCampaignType ==='EVENT'){
+                userId =  this.campaign.userDTO.id;
+            }else{
+                userId =  this.campaign.userId;
+            }
         }
         if(userId!=undefined){
             this.emailTemplateService.getAllCompanyProfileImages(userId).subscribe(
