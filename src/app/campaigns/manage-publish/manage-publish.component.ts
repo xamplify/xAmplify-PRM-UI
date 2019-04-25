@@ -54,10 +54,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         { 'name': '48', 'value': '48' },
         { 'name': 'All', 'value': '0' },
     ]
-
+    itemsSize:any;
     selectedSortedOption: any = this.sortByDropDown[0];
-    itemsSize: any = this.numberOfItemsPerPage[0];
-
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
     campaignPartnerLoader: HttpRequestLoader = new HttpRequestLoader();
     isListView = false;
@@ -83,6 +81,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         public refService: ReferenceService, public campaignAccess:CampaignAccess, public authenticationService: AuthenticationService) {
         this.loggedInUserId = this.authenticationService.getUserId();
         this.utilService.setRouterLocalStorage('managecampaigns');
+        this.itemsSize = this.numberOfItemsPerPage[0];
         if (this.refService.campaignSuccessMessage == "SCHEDULE") {
             this.showMessageOnTop();
             this.campaignSuccessMessage = "Campaign scheduled successfully";
@@ -156,14 +155,16 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
 
     getAllFilteredResults(pagination: Pagination) {
+        this.pagination = pagination;
         this.pagination.pageIndex = 1;
         this.pagination.searchKey = this.searchKey;
         this.pagination = this.utilService.sortOptionValues(this.selectedSortedOption, this.pagination);
-        // if (this.itemsSize.value == 0) {
-        //     this.pagination.maxResults = this.pagination.totalRecords;
-        // } else {
-        //     this.pagination.maxResults = this.itemsSize.value;
-        // }
+        this.pagination.maxResults = pagination.maxResults;
+        if (this.itemsSize.value === "0") {
+            this.pagination.maxResults = this.pagination.totalRecords;
+        } else {
+            this.pagination.maxResults = this.itemsSize.value;
+        }
         this.listCampaign(this.pagination);
     }
     eventHandler(keyCode: any) {  if (keyCode === 13) {  this.searchCampaigns(); } }
@@ -344,6 +345,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     filterCampaigns(type: string, index: number) {
         this.selectedCampaignTypeIndex = index;//This is to highlight the tab
         this.pagination.pageIndex = 1;
+        this.pagination.maxResults = 12;
+        this.itemsSize = this.numberOfItemsPerPage[0];
         this.pagination.campaignType = type;
         this.listCampaign(this.pagination);
     }
