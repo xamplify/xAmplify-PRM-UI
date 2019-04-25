@@ -225,15 +225,15 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
         }
         if(isOrgAdmin){
             if(this.campaign.channelCampaign){
-                this.contactType = "partner(s)";
+                this.contactType = "partner list(s)";
                 this.showContactType = false;
             }else{
-                this.contactType = " partner(s) / recepient(s) ";
+                this.contactType = " partner / recepient list(s)";
                 this.showContactType = true;
             }
 
         }else if(isVendor|| this.authenticationService.isAddedByVendor){
-            this.contactType = "partner(s)";
+            this.contactType = "partner list(s)";
             this.showContactType = false;
         }
     }
