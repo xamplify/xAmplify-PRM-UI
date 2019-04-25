@@ -977,7 +977,7 @@
                       </a>
                     </div>
                   </ng-container>
-                  <a> <span *ngIf="userListDTOObj?.length>2">...</span> <span *ngIf="userListDTOObj?.length == 0">0 contactlists</span></a>
+                  <a> <span *ngIf="userListDTOObj?.length>2" (click)="resetActive($event, 40, 'step-4')">...</span> <span *ngIf="userListDTOObj?.length == 0">0 contactlists</span></a>
 								</td>
 								<td style="text-align: right" width="20%">
 									<a class="btn btn-primary btn-sm" style="color:#fff" (click)="resetActive($event, 40, 'step-4')">Change</a>
@@ -1657,7 +1657,7 @@ data-backdrop="static">
 				 <button class="btn btn-default" (click)="clearValues()">Clear</button>
 
 				 <button [attr.class]="marketoButtonClass" [disabled]="!isModelFormValid || !clientId || !secretId || !marketoInstance" (click)="submitMarketoCredentials()">Submit</button>
-			 
+
 				</div>
 		 </div>
 	 </div>
