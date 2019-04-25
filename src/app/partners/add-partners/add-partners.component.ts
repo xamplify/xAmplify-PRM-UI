@@ -508,7 +508,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                     this.customResponse = new CustomResponse( 'ERROR', "Company Details is required", true );
                 }
             } else {
-                this.customResponse = new CustomResponse( 'ERROR', "You are not allowed to add teamMember(s) as a partner", true );
+                this.customResponse = new CustomResponse( 'ERROR', "You are not allowed to add teamMember(s) or yourself as a partner", true );
                 if ( this.selectedAddPartnerOption == 1 ) {
                     this.cancelPartners();
                 }

@@ -586,7 +586,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                     this.customResponse = new CustomResponse( 'ERROR', "Company Details is required", true );
                 }
             } else {
-                this.customResponse = new CustomResponse( 'ERROR', "You are not allowed to add teamMember(s) as a partner", true );
+                this.customResponse = new CustomResponse( 'ERROR', "You are not allowed to add teamMember(s) or yourself as a partner", true );
                 this.cancelContacts();
             }
         } catch ( error ) {
@@ -746,7 +746,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                         }
 
                     } else {
-                        this.customResponse = new CustomResponse( 'ERROR', "You are not allowed add teamMember(s) as a partner", true );
+                        this.customResponse = new CustomResponse( 'ERROR', "You are not allowed add teamMember(s) or yourself as a partner", true );
                     }
 
                 }else if(this.isEmailExist){
@@ -1372,7 +1372,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                         this.customResponse = new CustomResponse( 'ERROR', "Company Details is required", true );
                     }
                 } else {
-                    this.customResponse = new CustomResponse( 'ERROR', "You are not allowed to add teamMember(s) as a partner", true );
+                    this.customResponse = new CustomResponse( 'ERROR', "You are not allowed to add teamMember(s) or yourself as a partner", true );
                 }
                 this.dublicateEmailId = false;
             }
