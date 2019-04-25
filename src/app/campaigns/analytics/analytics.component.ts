@@ -1441,7 +1441,13 @@ showTimeLineView(){
         let hours = this.referenceService.formatAMPM(date);
         object["Date and Time"] = date.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
         object["Platform"] = this.downloadCsvList[i].os;
-        object["Location"] = this.downloadCsvList[i].location;
+       /* object["Location"] = this.downloadCsvList[i].location;*/
+        var text = this.downloadCsvList[i].location;
+        var res = text.split(",", 3);
+        object["City"] = res[0];
+        object["State"] = res[1];
+        object["Country"] = res[2];
+        
       }
 
       if (this.downloadTypeName === 'campaignViews') {
