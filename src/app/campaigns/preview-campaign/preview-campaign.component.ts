@@ -406,6 +406,11 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
       } catch(error){ this.xtremandLogger.error('error'+error);}
     }
     getSortedResult(campaignId: number,event:any){
+      
+      if(this.campaignType == 'EVENT'){
+          campaignId = this.campaign.id;
+      }
+        
       this.pagination = this.utilService.sortOptionValues(event,this.pagination);
       this.emailActionList(campaignId, this.campaignReport.emailActionType, this.pagination);
     }
