@@ -570,10 +570,11 @@ export class AddTeamMembersComponent implements OnInit {
           reader.onload = (data) => {
              this.isUploadCsv = true;
             let csvData = reader.result;
-            let csvRecordsArray = csvData.split(/\r|\n/);
+            let csvRecordsArray = csvData.split(/\r\n|\n/);
             let headersRow = this.fileUtil
                 .getHeaderArray(csvRecordsArray);
             let headers = headersRow[0].split(',');
+
             if((this.contactAccess && headers.length==9)  || (!this.contactAccess && headers.length==8)){
                 if(this.validateHeaders(headers)){
                     this.readCsvData(csvRecordsArray,headersRow.length);
@@ -644,7 +645,7 @@ export class AddTeamMembersComponent implements OnInit {
           let duplicateEmailIds = this.referenceService.returnDuplicates(names);
           this.teamMembers = [];
           if(duplicateEmailIds.length==0){
-              for(var i=1;i< this.csvRecords.length;i++){
+              for(var i=1;i<this.csvRecords.length;i++){
                   let rows = this.csvRecords[i];
                    let row = rows[0].split(',');
                    let emailId = row[0];
@@ -667,7 +668,7 @@ export class AddTeamMembersComponent implements OnInit {
                    }
                }
           }else{
-              for(let d=0;d< duplicateEmailIds.length;d++){
+              for(let d=0;d<duplicateEmailIds.length;d++){
                   this.csvErrors.push(duplicateEmailIds[d]+" is duplicate row.");
                   this.isUploadCsv = false;
                   this.isAddTeamMember = false;
