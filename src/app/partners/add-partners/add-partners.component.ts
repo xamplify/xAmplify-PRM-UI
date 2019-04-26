@@ -675,8 +675,14 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                                  self.newPartnerUser.push( user );
                              }
                          }
+                        if( self.newPartnerUser.length == 0){
+                            self.customResponse = new CustomResponse( 'ERROR', "No partners found", true );
+                            self.cancelPartners();
+                        }else{
+                            self.setSocialPage(1);
+                        }
                          self.isListLoader = false;
-                         self.setSocialPage(1);
+                         
                          
                      }else{
                          self.customResponse = new CustomResponse( 'ERROR', "Invalid Csv", true );

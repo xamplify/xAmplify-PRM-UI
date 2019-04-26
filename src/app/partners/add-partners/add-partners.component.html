@@ -404,7 +404,7 @@ img:hover {
 			<div class="col-xs-12" style="width: 103%; left: -18px;"
 				*ngIf="(selectedAddPartnerOption == 2 || selectedAddPartnerOption == 4)">
 				<!-- BEGIN EXAMPLE TABLE PORTLET-->
-				<div *ngIf="newPartnerUser?.length == 0 && selectedAddPartnerOption == 2">
+				<div *ngIf="newPartnerUser?.length == 0 && selectedAddPartnerOption == 2 && isListLoader">
 									<app-list-loader></app-list-loader>
 									</div>
 				<div class="portlet box blue" *ngIf="newPartnerUser?.length != 0">
