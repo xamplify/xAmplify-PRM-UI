@@ -267,8 +267,10 @@ export class DealRegistrationComponent implements OnInit
 
         this.dealRegistration.properties = data.properties;
         this.properties = data.properties;
+        let i=1;
         this.dealRegistration.properties.forEach(property =>
         {
+             property.divId= "property-"+ i++;
             property.isSaved = true;
         })
         if (this.isVendor == 'manage-leads')
@@ -1038,7 +1040,7 @@ export class DealRegistrationComponent implements OnInit
         property.isCommentSection = !property.isCommentSection;
     }
 
-    showAlert(i:number,question:DealQuestions){
+    showAlert(i:number,question:DealDynamicProperties){
         try {
             this.logger.info( "Comment in sweetAlert() " + question.id );
             let self = this;
@@ -1061,7 +1063,7 @@ export class DealRegistrationComponent implements OnInit
             this.logger.error( error, "ManageContactsComponent", "deleteContactListAlert()" );
         }
     }
-    deleteComment(i:number,question:DealQuestions){
+    deleteComment(i:number,question:DealDynamicProperties){
         this.dealRegistrationService.deleteProperty(question).subscribe(response=>{
             this.remove(i, question.id)
 

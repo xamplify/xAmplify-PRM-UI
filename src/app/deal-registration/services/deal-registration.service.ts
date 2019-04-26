@@ -13,6 +13,7 @@ import { DealComments } from '../models/deal-comments';
 import { User } from '../../core/models/user';
 import { DealType } from '../models/deal-type';
 import { DealQuestions } from '../models/deal-questions';
+import { DealDynamicProperties } from '../models/deal-dynamic-properties';
 
 @Injectable()
 export class DealRegistrationService
@@ -310,7 +311,7 @@ export class DealRegistrationService
             .map(this.extractData)
             .catch(this.handleError);
     }
-    deleteProperty(question: DealQuestions)
+    deleteProperty(question: DealDynamicProperties)
     {
         var url = this.URL + "properties/delete?access_token=" + this.authenticationService.access_token;
         return this.http.post(url, question)
