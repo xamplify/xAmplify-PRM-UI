@@ -17,6 +17,11 @@ import { CampaignService } from '../../campaigns/services/campaign.service';
 import { User } from '../../core/models/user';
 import { isNumber } from 'util';
 import { Roles } from '../../core/models/roles';
+import { CustomResponse } from '../../common/models/custom-response';
+
+
+
+
 @Component({
     selector: 'app-manage-deals',
     templateUrl: './manage-deals.component.html',
@@ -90,6 +95,8 @@ export class ManageDealsComponent implements OnInit
     isCompanyPartner: boolean;
 
     enableLeads = false;
+
+    customResponse: CustomResponse;
    
 
     @ViewChild(ManagePartnersComponent)
@@ -903,7 +910,7 @@ export class ManageDealsComponent implements OnInit
 
         if (deal === "status_change")
         {
-            this.resetCounters();
+            this.resetCounters(0);
         } else if (isNumber(deal))
         {
             this.showDealRegistrationForm(deal);
@@ -1012,24 +1019,38 @@ export class ManageDealsComponent implements OnInit
     {
         this.isDealAnalytics = !this.isDealAnalytics;
     }
-    resetCounters()
+    resetCounters(event:number)
     {
-        if (!this.isPartner)
-        {
-            this.getTotalDeals();
-            this.getOpenedDeals();
-            this.getClosedDeals();
-            this.getDealsOnHold();
-            this.getApprovedDeals();
-            this.getRejectedDeals();
-        } else
-        {
-            this.getTotalDealsByPartner();
-            this.getOpenedDealsByPartner();
-            this.getClosedDealsByPartner();
-            this.getDealsOnHoldByPartner();
-            this.getApprovedDealsByPartner();
-            this.getRejectedDealsByPartner();
+        if(event==0){
+            if (!this.isPartner)
+            {
+                this.getTotalDeals();
+                this.getOpenedDeals();
+                this.getClosedDeals();
+                this.getDealsOnHold();
+                this.getApprovedDeals();
+                this.getRejectedDeals();
+            } else
+            {
+                this.getTotalDealsByPartner();
+                this.getOpenedDealsByPartner();
+                this.getClosedDealsByPartner();
+                this.getDealsOnHoldByPartner();
+                this.getApprovedDealsByPartner();
+                this.getRejectedDealsByPartner();
+            }
+        }else{
+            this.disableDealPushRegistrationForm();
+         
+            if(event==1){
+                this.customResponse = new CustomResponse('SUCCESS', "Deal Registered Successfully", true);
+                this.resetCounters(0);
+               
+            }else if(event ==2){
+                this.customResponse = new CustomResponse('SUCCESS', "Deal Updated Successfully", true);
+            }
+           
+            
         }
 
     }

@@ -13,10 +13,12 @@ import { DealDynamicProperties } from '../models/deal-dynamic-properties';
 import { DealType } from '../models/deal-type';
 import { UtilService } from '../../core/services/util.service';
 import { CallActionSwitch } from '../../videos/models/call-action-switch';
+import { DealComments } from '../models/deal-comments';
+import { DealQuestions } from '../models/deal-questions';
 
 
 
-declare var flatpickr: any, $: any;
+declare var flatpickr: any, $: any, swal: any;
 
 @Component({
     selector: 'app-deal-registration',
@@ -505,7 +507,7 @@ export class DealRegistrationComponent implements OnInit
         if (id)
             console.log(id)
         var index = 1;
-
+      
         this.properties = this.properties.filter(property => property.divId !== 'property-' + i)
             .map(property =>
             {
@@ -561,11 +563,12 @@ export class DealRegistrationComponent implements OnInit
         {
             this.dealRegistrationService.updateDeal(this.dealRegistration).subscribe(data =>
             {
-                if(this.dealRegistration.isDeal)
-                    this.customResponse = new CustomResponse('SUCCESS', data.message, true);
-                else{
-                    this.customResponse = new CustomResponse('SUCCESS', "Deal Registered Successfully", true);
-                    this.dealReg.emit();
+                if(this.dealRegistration.isDeal){
+                   // this.customResponse = new CustomResponse('SUCCESS', data.message, true);
+                    this.dealReg.emit(2);
+                }else{
+                    //this.customResponse = new CustomResponse('SUCCESS', "Deal Registered Successfully", true);
+                    this.dealReg.emit(1);
                     this.dealRegistration.isDeal = true;
                 }
                 
@@ -1035,7 +1038,35 @@ export class DealRegistrationComponent implements OnInit
         property.isCommentSection = !property.isCommentSection;
     }
 
+    showAlert(i:number,question:DealQuestions){
+        try {
+            this.logger.info( "Comment in sweetAlert() " + question.id );
+            let self = this;
+            swal( {
+                title: 'Are you sure?',
+                text: "You won't be able to undo this action!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#54a7e9',
+                cancelButtonColor: '#999',
+                confirmButtonText: 'Yes, delete it!'
 
+            }).then( function( myData: any ) {
+                console.log( "ManageContacts showAlert then()" + myData );
+                self.deleteComment(i, question );
+            }, function( dismiss: any ) {
+                console.log( 'you clicked on option' + dismiss );
+            });
+        } catch ( error ) {
+            this.logger.error( error, "ManageContactsComponent", "deleteContactListAlert()" );
+        }
+    }
+    deleteComment(i:number,question:DealQuestions){
+        this.dealRegistrationService.deleteProperty(question).subscribe(response=>{
+            this.remove(i, question.id)
+
+        })
+    }
     setFormValidateErrMsg(){
         alert("ERROR")
      }

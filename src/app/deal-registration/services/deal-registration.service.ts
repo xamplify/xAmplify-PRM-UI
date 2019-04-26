@@ -12,6 +12,7 @@ import { DealRegistration } from '../models/deal-registraton';
 import { DealComments } from '../models/deal-comments';
 import { User } from '../../core/models/user';
 import { DealType } from '../models/deal-type';
+import { DealQuestions } from '../models/deal-questions';
 
 @Injectable()
 export class DealRegistrationService
@@ -309,12 +310,19 @@ export class DealRegistrationService
             .map(this.extractData)
             .catch(this.handleError);
     }
+    deleteProperty(question: DealQuestions)
+    {
+        var url = this.URL + "properties/delete?access_token=" + this.authenticationService.access_token;
+        return this.http.post(url, question)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 
     updateCommentStats(data:any)
     {
         var url = this.URL + "/comment-stats/save?access_token=" + this.authenticationService.access_token;
 
-        return this.http.post(url, data)
+        return this.http.post(url, data) 
             .map(this.extractData)
             .catch(this.handleError);
     }

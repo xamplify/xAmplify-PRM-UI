@@ -246,6 +246,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.parentModel.profilePicutrePath = this.userData.profileImagePath;
                 }
             }
+            this.initializeForm();
             this.checkIntegrations();
         }catch(error){
             this.hasClientErrors = true;
@@ -963,20 +964,26 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
     initializeForm(){
         this.userService.listForm(this.loggedInUserId).subscribe(result => {
-            this.dealForms = result;
+            this.dealForms = result;  
+            console.log(this.dealForms)
             if(result[0]){
-                this.form =   result[0];
+                this.form =   result[0]; 
                 this.questions = this.form.campaignDealQuestionDTOs;
+                let index =1;
+                this.questions = this.questions.map(q=>{
+                    q.divId = 'question-' + index++;
+                    return q;
+                });
                 this.submitButtonText = "Update Form";
-
+               
             }else
                 this.submitButtonText = "Save Form";
             this.submitBUttonStateChange();
         })
         this.dealRegSevice.listDealTypes(this.loggedInUserId).subscribe(dealTypes => {
-
-            this.dealtypes = dealTypes.data;
-
+                
+            this.dealtypes = dealTypes.data;  
+            
         });
     }
 
@@ -1226,6 +1233,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     configmarketo(){
         this.integrationTabIndex = 1;
     }
+      closeMarketoForm(event:any){
+       if(event === "0")
+            this.integrationTabIndex = 0;
+    }		    
 
     ngOnDestroy() {
         if (this.isPlayed === true) {  this.videoJSplayer.dispose(); }

@@ -1,4 +1,4 @@
-<div class="portlet light" id="del-profile-div">
+<div class="portlet light" id="del-profile-div" style="border: 0px">
   <ngx-loading [show]="isLoadingLead" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
   <div class="portlet-title">
     <div class="caption"  *ngIf="submitButtonText == 'SAVE'">Lead Registration</div>
@@ -40,7 +40,7 @@
         <div class="row">
           <!-- left page -->
           <div class="col-sm-6 col-xs-12">
-            <div class="form-group">
+            <div class="form-group" style="margin-bottom: 20px">
               <label class="control-label">Campaign Name
                 <font style="color: #f55d7a">
                   <b>*</b>
@@ -51,7 +51,7 @@
             </div>
 
             
-            <div class="form-group" [attr.class]="firstName">
+            <div class="form-group" [attr.class]="firstName" style="margin-bottom: 20px">
               <label class="control-label">First Name
                 
               </label>
@@ -59,14 +59,14 @@
                 [ngModelOptions]="{standalone: true}" id="firstName"  [disabled]="parent"/>
             </div>
 
-            <div class="form-group" [attr.class]="lastName">
+            <div class="form-group" [attr.class]="lastName" style="margin-bottom: 20px">
               <label class="control-label">Last Name
                
               </label>
               <input type="text" maxlength="100"  class="form-control" [(ngModel)]=" dealRegistration.lastName"
                 [ngModelOptions]="{standalone: true}" id="lastName" [disabled]="parent"/>
             </div>
-            <div class="form-group" [attr.class]="lastName">
+            <div class="form-group" [attr.class]="lastName" style="margin-bottom: 20px">
               <label class="control-label">Company
                 <font style="color: #f55d7a">
                   <b>*</b>
@@ -77,7 +77,7 @@
             </div>
             
 
-            <div class="form-group" *ngIf="dealRegistration.email">
+            <div class="form-group" *ngIf="dealRegistration.email" style="margin-bottom: 20px">
               <label class="control-label">Email
                 <font style="color: #f55d7a">
                   <b>*</b>
@@ -87,7 +87,7 @@
                 id="email" disabled/>
             </div>
 
-            <div class="form-group" [attr.class]="phoneDivClass">
+            <div class="form-group" [attr.class]="phoneDivClass" style="margin-bottom: 20px">
               <label class="control-label">Phone Number
                 <!-- <font style="color: #f55d7a">
                   <b>*</b>
@@ -108,14 +108,14 @@
           <div class="col-sm-6 col-xs-12">
 
             
-            <div class="form-group" [attr.class]="leadStreet">
+            <div class="form-group" [attr.class]="leadStreet" style="margin-bottom: 20px">
               <label class="control-label">Lead Address
 
               </label>
               <textarea type="text" maxlength="100"  class="form-control" name="leadstreet" [(ngModel)]=" dealRegistration.leadStreet"
                 [ngModelOptions]="{standalone: true}" id="leadStreet" [disabled]="parent"></textarea>
             </div>
-            <div class="form-group" [attr.class]="leadCity">
+            <div class="form-group" [attr.class]="leadCity" style="margin-bottom: 20px">
               <label class="control-label">Lead City
 
               </label>
@@ -123,14 +123,14 @@
                 [ngModelOptions]="{standalone: true}" id="leadCity" [disabled]="parent"/>
             </div>
 
-            <div class="form-group" [attr.class]="leadState">
+            <div class="form-group" [attr.class]="leadState" style="margin-bottom: 20px">
               <label class="control-label">Lead State/Province
 
               </label>
               <input type="text" maxlength="100" class="form-control" name="lead state" [(ngModel)]=" dealRegistration.leadState"
                 [ngModelOptions]="{standalone: true}" id="leadState" [disabled]="parent"/>
             </div>
-            <div class="form-group" [attr.class]="leadPostalCode">
+            <div class="form-group" [attr.class]="leadPostalCode" style="margin-bottom: 20px">
               <label class="control-label">Lead Postal Code
 
               </label>
@@ -138,7 +138,7 @@
                 [ngModelOptions]="{standalone: true}" id="leadPostalCode" [disabled]="parent"/>
             </div>
 
-            <div class="form-group" [attr.class]="country">
+            <div class="form-group" [attr.class]="country" style="margin-bottom: 20px">
               <label class="control-label">Lead Country
 
               </label>

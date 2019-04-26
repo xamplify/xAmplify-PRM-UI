@@ -3,7 +3,8 @@ import { DealComments } from '../models/deal-comments';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { DealRegistrationService } from '../services/deal-registration.service';
 import { User } from '../../core/models/user';
-var $;
+import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
+import { ReferenceService } from '../../core/services/reference.service';
 @Component({
   selector: 'app-manage-deal-comments',
   templateUrl: './manage-deal-comments.component.html',
@@ -28,13 +29,14 @@ export class ManageDealCommentsComponent implements OnInit
   loggedInUserId: number;
   user: User;
   isError = true;
-  constructor(public authenticationService: AuthenticationService, private dealRegService: DealRegistrationService) { }
+  constructor(private logger: XtremandLogger, public referenceService: ReferenceService,
+    public authenticationService: AuthenticationService, private dealRegService: DealRegistrationService) { }
 
   ngOnInit()
   {
 
     this.comment = new DealComments;
-
+    
     this.loggedInUserId = this.authenticationService.getUserId();
     this.dealRegService.getDealCreatedBy(this.loggedInUserId).subscribe(user =>
     {
@@ -45,7 +47,7 @@ export class ManageDealCommentsComponent implements OnInit
     error => console.log(error),
     () => { })
     this.getCommentList();
-
+   
 
   }
   getCommentList(){
@@ -63,12 +65,13 @@ export class ManageDealCommentsComponent implements OnInit
               c.userName =c.user.lastName;
           }
           if (c.user.profileImagePath.indexOf(null) > -1) {
-            c.user.profileImagePath = 'assets/images/icon-user-default.png';
-
-          }
+            c.user.profileImagePath = 'assets/admin/pages/media/profile/icon-user-default.png';
+          
+          } 
         })
+        this.scrollBottom();
         this.comment = new DealComments;
-
+  
       },
       error => console.log(error),
       () => { })
@@ -104,12 +107,17 @@ export class ManageDealCommentsComponent implements OnInit
     // data.user.lastName = this.user.lastName;
 
   }
+
+  scrollBottom() {
+    this.referenceService.scrollSmoothToDiv("comment-area");
+   // $(".comment-area").animate({ scrollTop: document.body.scrollHeight }, 500);
+  }
   ngOnDestroy() {
 
-
+    
     if(this.commentList.length>0){
-
-
+    
+       
       let comment_id =this.commentList[this.commentList.length-1].id
     const data ={
       'user' : this.loggedInUserId,
@@ -121,12 +129,12 @@ export class ManageDealCommentsComponent implements OnInit
     console.log(data)
     this.dealRegService.updateCommentStats(data).subscribe(result =>
       {
-
+     
       },
       error => console.log(error),
       () => { });
     }
-
+    
 }
 
 }

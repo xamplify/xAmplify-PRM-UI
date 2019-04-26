@@ -479,7 +479,7 @@
 											
 										</section>
 										<div *ngIf="integrationTabIndex == 1">
-										<app-marketo-authentication ></app-marketo-authentication>
+										<app-marketo-authentication (closeEvent)="closeMarketoForm($event)"></app-marketo-authentication>
 										</div>
 
 									</div>

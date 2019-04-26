@@ -944,17 +944,17 @@
 							<span>{{marketoContactError}}</span>
 						</div>
 						<div class="form-group">
-							<label class="control-label col-sm-3" for="email">Client Id:</label>
+							<label class="control-label col-sm-3" for="client">Client Id:</label>
 							<div class="col-sm-8">
-								<input type="email" style="width: 75%" class="form-control" id="email" placeholder="Client Id" [(ngModel)]="marketoClientId" [ngModelOptions]="{standalone: true}"
-								(input)="validateModelForm('email')">
+								<input type="text" style="width: 75%" class="form-control" id="client" placeholder="Client Id" [(ngModel)]="marketoClientId" [ngModelOptions]="{standalone: true}"
+								(input)="validateModelForm('client')">
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="control-label col-sm-3" for="pwd">Client Secret:</label>
+							<label class="control-label col-sm-3" for="secret">Client Secret:</label>
 							<div class="col-sm-8">
-								<input type="password" style="width: 75%" class="form-control" id="pwd" placeholder="Secret Id" [(ngModel)]="marketoSecretId" [ngModelOptions]="{standalone: true}"
-								(input)="validateModelForm('pwd')">
+								<input type="password" style="width: 75%" class="form-control" id="secret" placeholder="Secret Id" [(ngModel)]="marketoSecretId" [ngModelOptions]="{standalone: true}"
+								(input)="validateModelForm('secret')">
 							</div>
 						</div>
 						<div class="form-group">

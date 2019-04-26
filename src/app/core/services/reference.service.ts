@@ -1712,6 +1712,11 @@ export class ReferenceService {
         const scrollingElement = (document.scrollingElement || document.body)
         $(scrollingElement).animate({ scrollTop: 0 }, 500);
      }
+     
+      scrollSmoothToDiv (elementId:string) {
+        const scrollingElement = (document.scrollingElement || document.body)
+        $("#"+elementId).animate({ scrollTop: document.body.scrollHeight }, 500);
+     }
     getOrgCampaignTypes(companyId: any) {
       return this.http.get(this.authenticationService.REST_URL + `campaign/access/${companyId}?access_token=${this.authenticationService.access_token}` )
           .map(this.extractData)

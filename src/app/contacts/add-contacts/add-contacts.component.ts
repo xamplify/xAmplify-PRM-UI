@@ -262,13 +262,10 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                 var contents = e.target.result;
                 
                 let csvData = reader.result;
-                let csvRecordsArray = csvData.split(/\r|\n/);
+                let csvRecordsArray = csvData.split(/\r\n|\n/);
                 let headersRow = self.fileUtil
                 .getHeaderArray(csvRecordsArray);
-                alert(headersRow[0]);
                  let headers = headersRow[0].split(',');
-                
-                 alert(headers);
                  if((headers.length == 11) ){
                      if(self.validateHeaders(headers)){
                          var csvResult = Papa.parse( contents );
@@ -2585,7 +2582,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
         var errorClass = "form-group has-error has-feedback";
         var successClass = "form-group has-success has-feedback";
 
-        if (fieldId == 'email')
+        if (fieldId == 'client')
         {
             if (this.marketoClientId.length > 0)
             {
@@ -2596,7 +2593,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.marketoClientIdClass = errorClass;
                 this.marketoClentIdError = true;
             }
-        } else if (fieldId == 'pwd')
+        } else if (fieldId == 'secret')
         {
             if (this.marketoSecretId.length > 0)
             {
@@ -2672,7 +2669,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
         {
             this.isHeaderCheckBoxChecked = false;
         }
-        event.stopPropagation();
+        event.stopPropagation(); 
     }
 
     checkAllForMarketo(ev: any)

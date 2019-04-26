@@ -1,4 +1,4 @@
-import { Component, OnInit,Input } from '@angular/core';
+import { Component, OnInit, Output,EventEmitter } from '@angular/core';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { DashboardService } from '../dashboard.service';
 import { CustomResponse } from '../../common/models/custom-response';
@@ -28,6 +28,7 @@ export class MarketoAuthenticationComponent implements OnInit {
     loadingMarketo: boolean;
     responseSuccessMsgMarketo: any;
     customResponse: CustomResponse = new CustomResponse();
+    @Output() closeEvent = new EventEmitter<any>();
 
 
   constructor(private authenticationService: AuthenticationService,private dashBoardService:DashboardService) { }
@@ -131,7 +132,7 @@ export class MarketoAuthenticationComponent implements OnInit {
         var errorClass = "form-group has-error has-feedback";
         var successClass = "form-group has-success has-feedback";
        
-        if (fieldId == 'email')
+        if (fieldId == 'client')
         {
         
             if (this.clientId.length > 0)
@@ -144,7 +145,7 @@ export class MarketoAuthenticationComponent implements OnInit {
                 this.clientIdClass = errorClass;
                 this.clentIdError = true;
             }
-        } else if (fieldId == 'pwd')
+        } else if (fieldId == 'secret')
         {
          
             if (this.secretId.length > 0)
@@ -197,8 +198,9 @@ export class MarketoAuthenticationComponent implements OnInit {
        
 
     }
-    closeModal()
+    closeMarketoCredentials()
     {
-        $("#templateRetrieve").modal('hide');
+        console.log("Closed")
+        this.closeEvent.emit("0");
     }
 }

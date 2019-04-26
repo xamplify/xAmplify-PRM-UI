@@ -4,11 +4,13 @@
         padding: 0;
         box-sizing: border-box;
     }
-    @media screen and (min-width: 601px){
-    .modal-dialog {
-    width: 100% !important;
+
+    @media screen and (min-width: 601px) {
+        .modal-dialog {
+            width: 100% !important;
+        }
     }
-    }
+
     html {
         font: normal 13px sans-serif;
     }
@@ -116,7 +118,7 @@
     }
 
     .comment.user-comment p {
-        background-color: #f3f3f3;
+        background-color: #e2e8e566;
     }
 
     .comment.author-comment p {
@@ -329,6 +331,39 @@
             display: none;
         }
     }
+    
+.frame {
+    height: 100px;      /* equals max image height */
+    line-height: 100px;
+    width: 100%;
+  
+    
+    text-align: center; margin: 1em 0;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 7px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey; 
+  border-radius: 0px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: green; 
+  border-radius: opx;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: green; 
+}
+
+  
 </style>
 
 
@@ -344,64 +379,69 @@
             </div>
             <div class="modal-body">
                 <div *ngIf="campaign != null && campaign != undefined" style="margin:auto;width: 87%;padding:0px;background-color: white;"
-                    class="campaignProps">
+                    class="campaignProps shadow p-6">
                     <div class="tab-pane active" *ngIf="!isListView">
                         <div class="margin-top-10">
-                            <div class="row mix-grid p10">
+                            <div class="row mix-grid p10" style=" background: #f1f1f1; ">
 
 
-                                <div class="grid-box" style="padding-bottom:10px">
-                                    <img src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png">
-                                    <div *ngIf="deal?.deal" >
-                                        <h5 class="mt10 mb0" *ngIf="deal?.title" title="{{deal.title}}"><span style="font-size:14px;font-weight: 400">
-                                            Deal Title : </span>{{deal.title | slice:0:25}}
+                                <div  style="padding-bottom:10px;   ">
+                                    <div class="col-md-3" >
+                                        <div class="frame">
+                                            <img src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png" >
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8" style="text-align: left;">
+                                            <div *ngIf="campaign">
+                                                    <h5 class="mt10 mb0" *ngIf="campaign?.campaignName" title="{{campaign.campaignName}}"><span style="font-size:14px;font-weight: 400"
+                                                        class="col-md-6">
+                                                            Campaign name </span>: {{campaign.campaignName | slice:0:25}}
+                                                        <span *ngIf="campaign.campaignName?.length>25">...</span>
+                                                    </h5>
+                                                </div>
+                                    <div *ngIf="deal?.deal">
+                                        <h5 class="mt10 mb0" *ngIf="deal?.title" title="{{deal.title}}"><span style="font-size:14px;font-weight: 400"
+                                            class="col-md-6">
+                                                Deal Title </span>: {{deal.title | slice:0:25}}
                                             <span *ngIf="deal.title?.length>25">...</span>
                                         </h5>
                                     </div>
-                                    <div *ngIf="!deal?.deal" >
-                                        <h5 class="mt10 mb0" *ngIf="leadName" title="{{leadName}}"><span style="font-size:14px;font-weight: 400">Lead
-                                                : </span>{{leadName | slice:0:25}}
+                                    <div *ngIf="!deal?.deal">
+                                        <h5 class="mt10 mb0" *ngIf="leadName" title="{{leadName}}"><span style="font-size:14px;font-weight: 400"
+                                            class="col-md-6">Lead
+                                               </span> : {{leadName | slice:0:25}}
                                             <span *ngIf="leadName?.length>25">...</span>
                                         </h5>
                                     </div>
-                                    <h5 class="mt10 mb0" *ngIf="userName" [title]="userName"><span style="font-size:14px;font-weight: 400">Partner
-                                            Name : </span>{{userName | slice:0:30}} <span *ngIf="userName.length>30">...</span></h5>
-                                    <h5 class="mt10 mb0" *ngIf="createdBy?.emailId" [title]="createdBy?.emailId"><span style="font-size:14px;font-weight: 400">Partner
-                                            Email : </span> {{createdBy.emailId | slice:0:50}}<span *ngIf="createdBy.email?.length>50">...</span></h5>
+                                    <h5 class="mt10 mb0" *ngIf="userName" [title]="userName"><span style="font-size:14px;font-weight: 400"  class="col-md-6">Partner
+                                            Name </span>: {{userName | slice:0:30}} <span *ngIf="userName.length>30">...</span></h5>
+                                    <h5 class="mt10 mb0" *ngIf="createdBy?.emailId" [title]="createdBy?.emailId"><span style="font-size:14px;font-weight: 400"  class="col-md-6">Partner
+                                            Email </span>:  {{createdBy.emailId | slice:0:50}}<span *ngIf="createdBy.email?.length>50">...</span></h5>
                                     <h5 class="mt10 mb0">
                                         <span>
-                                            <span style="font-size:14px;font-weight: 400">Created On</span>
+                                            <span style="font-size:14px;font-weight: 400"  class="col-md-6">Created On</span>
                                         </span>
                                         <span title="Upload date">
                                             <span>
-                                                <app-timestamp-new *ngIf="deal?.createdAt" [isOnlyDate]="false" [dateAndTime]="deal.createdAt"> </app-timestamp-new>
+                                               : <app-timestamp-new *ngIf="deal?.createdAt" [isOnlyDate]="false" [dateAndTime]="deal.createdAt"> </app-timestamp-new>
                                             </span>
                                         </span>
                                     </h5>
-
+                                </div>
                                 </div>
 
 
-                            </div>
+                            </div> 
                         </div>
 
                     </div>
 
                 </div>
 
-                <div class="write-new" style="margin-bottom: 25px;width: 85%">
 
+                <div class="comment-area" style="max-height: 400px; overflow-y: auto;    overflow-x: hidden;"
+                >
 
-                    <textarea placeholder="Write your comment here" name="comment" [(ngModel)]="comment.comment" (input)="validateComment(comment.comment)"></textarea>
-
-                    <div>
-                        <!-- <img src="https://aravindu.com/vod/images/14663/05112018/profilePicture/65DD83D1-A768-411E-8A37-3D79B1F858BC.jpeg" width="35" alt="Profile of Bradley Jones" title="Bradley Jones" /> -->
-                        <button type="submit" (click)="postComment(comment)" style="margin-bottom: 10px;">Submit</button>
-                    </div>
-
-
-                </div>
-                <div class="comment-area">
                     <ul class="comment-section" *ngFor="let c of commentList" style="margin: 0px">
 
                         <li class="comment author-comment" *ngIf="c.user.id != loggedInUserId" style="width: 135%;">
@@ -442,7 +482,18 @@
 
                     </ul>
                 </div>
+                <div class="write-new" style="margin-bottom: 25px;width: 85%;">
 
+
+                    <textarea placeholder="Write your comment here" name="comment" [(ngModel)]="comment.comment" (input)="validateComment(comment.comment)"></textarea>
+
+                    <div>
+                        <!-- <img src="https://aravindu.com/vod/images/14663/05112018/profilePicture/65DD83D1-A768-411E-8A37-3D79B1F858BC.jpeg" width="35" alt="Profile of Bradley Jones" title="Bradley Jones" /> -->
+                        <button type="submit" (click)="postComment(comment)" style="margin-bottom: 10px;">Submit</button>
+                    </div>
+
+
+                </div>
 
             </div>
             <div class="modal-footer" style="border:none" *ngIf="true">

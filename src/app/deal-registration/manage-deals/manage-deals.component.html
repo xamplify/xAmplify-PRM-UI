@@ -1,48 +1,47 @@
-<div class="page-content" *ngIf=" !isDealRegistration && !isDealForm ">
+<div class="page-content" *ngIf="  !isDealForm ">
 
 
 
 	<div>
-		
-			<div class="page-bar">
-				<ul class="page-breadcrumb">
-					<li *ngIf="!authenticationService.isSuperAdmin()">
-						<i class="fa fa-home"></i>
-						<a [routerLink]="referenceService.homeRouter">Home</a><i class="fa fa-angle-right"></i>
-					</li>
-					<li>
-						<a (click)="showCampaigns()">Opportunities</a><i class="fa fa-angle-right"></i>
-					</li>
 
-					<li *ngIf="leadList">
-						<a>Leads</a>
-					</li>
-				</ul>
-				<ul class="mix-filter col-xs-6 p0 m0" style="float: right">
-						<li class="filter" (click)="showPartner()" [class.campaign-type-selected]="isPartnerVersion" style="float: right;
+		<div class="page-bar">
+			<ul class="page-breadcrumb">
+				<li *ngIf="!authenticationService.isSuperAdmin()">
+					<i class="fa fa-home"></i>
+					<a [routerLink]="referenceService.homeRouter">Home</a><i class="fa fa-angle-right"></i>
+				</li>
+				<li>
+					<a (click)="showCampaigns()">Opportunities</a><i class="fa fa-angle-right"></i>
+				</li>
+
+				<li *ngIf="leadList">
+					<a>Leads</a>
+				</li>
+			</ul>
+			<ul class="mix-filter col-xs-6 p0 m0" style="float: right" *ngIf="this.isCompanyPartner && this.isVendor">
+				<li class="filter" (click)="showPartner()" [class.campaign-type-selected]="isPartnerVersion" style="float: right;
 						margin-top: 5px;" *ngIf="isCompanyPartner">Partner View </li>
-						<li class="filter" (click)="showVendor()" [class.campaign-type-selected]="isVendorVersion" style="float: right;
+				<li class="filter" (click)="showVendor()" [class.campaign-type-selected]="isVendorVersion" style="float: right;
 						margin-top: 5px;" *ngIf=" isVendor && enableLeads">Vendor View</li>
-						<p class="filter" style="float: right;
+				<p class="filter" style="float: right;
 						margin: 10px;background-color: white">Opportunities: </p>
-						
-	
-					</ul>
-			</div><!-- -End Of 2 -->
-			
-		
+
+
+			</ul>
+		</div><!-- -End Of 2 -->
+
+
 		<div class="row">
 			<div class="col-xs-12  p5">
 				<div class="row">
 					<!-- -------Total Leads------- -->
 					<app-count-loader *ngIf="totalDealsLoader"></app-count-loader>
-					<div class="col-xs-8 col-sm-4 col-md-3"  *ngIf="!totalDealsError &&!totalDealsLoader">
-						<a class="dashboard-stat dashboard-stat-lighter purple-soft" 
-						[class.greay]="1!=selectedTabIndex" (click)="showCampaigns()">
-							<div class="visual" >
-							 
-								<i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1"  [ngStyle]="{'color': 1==selectedTabIndex ? '#white' : '#ccc' }"
-								*ngIf=" 1==selectedTabIndex" ></i>
+					<div class="col-xs-8 col-sm-4 col-md-3" *ngIf="!totalDealsError &&!totalDealsLoader">
+						<a class="dashboard-stat dashboard-stat-lighter purple-soft" [class.greay]="1!=selectedTabIndex" (click)="showCampaigns()">
+							<div class="visual">
+
+								<i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1" [ngStyle]="{'color': 1==selectedTabIndex ? '#white' : '#ccc' }"
+								 *ngIf=" 1==selectedTabIndex"></i>
 							</div>
 							<div class="details">
 								<div class="number">
@@ -60,12 +59,11 @@
 					</div>
 					<!-- -------Total Deals------- -->
 					<app-count-loader *ngIf="totalDealsLoader"></app-count-loader>
-					<div class="col-xs-8 col-sm-4 col-md-3"  *ngIf="!totalDealsError &&!totalDealsLoader">
-						<a class="dashboard-stat dashboard-stat-lighter blue-soft" (click)="showCampaignsByDeals()"
-						[class.greay]="2!=selectedTabIndex">
+					<div class="col-xs-8 col-sm-4 col-md-3" *ngIf="!totalDealsError &&!totalDealsLoader">
+						<a class="dashboard-stat dashboard-stat-lighter blue-soft" (click)="showCampaignsByDeals()" [class.greay]="2!=selectedTabIndex">
 							<div class="visual">
-									<i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1"  [ngStyle]="{'color': 2==selectedTabIndex ? '#white' : '#ccc' }"
-									*ngIf=" 2==selectedTabIndex" ></i>
+								<i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1" [ngStyle]="{'color': 2==selectedTabIndex ? '#white' : '#ccc' }"
+								 *ngIf=" 2==selectedTabIndex"></i>
 							</div>
 							<div class="details">
 								<div class="number">
@@ -83,12 +81,11 @@
 					</div>
 					<!-- -------Opened Deals------- -->
 					<app-count-loader *ngIf="totalDealsLoader"></app-count-loader>
-					<div class="col-xs-8 col-sm-4 col-md-3"  *ngIf="!totalDealsError &&!totalDealsLoader">
-						<a class="dashboard-stat dashboard-stat-lighter yellow-gold" (click)="showOpenedLeads()"
-						[class.greay]="3!=selectedTabIndex">
+					<div class="col-xs-8 col-sm-4 col-md-3" *ngIf="!totalDealsError &&!totalDealsLoader">
+						<a class="dashboard-stat dashboard-stat-lighter yellow-gold" (click)="showOpenedLeads()" [class.greay]="3!=selectedTabIndex">
 							<div class="visual">
-									<i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1"  [ngStyle]="{'color': 3==selectedTabIndex ? '#white' : '#ccc' }"
-									*ngIf=" 3==selectedTabIndex" ></i>
+								<i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1" [ngStyle]="{'color': 3==selectedTabIndex ? '#white' : '#ccc' }"
+								 *ngIf=" 3==selectedTabIndex"></i>
 							</div>
 							<div class="details">
 								<div class="number">
@@ -106,12 +103,11 @@
 					</div>
 					<!-- -------Closed Deals------- -->
 					<app-count-loader *ngIf="totalDealsLoader"></app-count-loader>
-					<div class="col-xs-8 col-sm-4 col-md-3"  *ngIf="!totalDealsError &&!totalDealsLoader">
-						<a class="dashboard-stat dashboard-stat-lighter green-soft" (click)="showClosedLeads()"
-						[class.greay]="4!=selectedTabIndex">
+					<div class="col-xs-8 col-sm-4 col-md-3" *ngIf="!totalDealsError &&!totalDealsLoader">
+						<a class="dashboard-stat dashboard-stat-lighter green-soft" (click)="showClosedLeads()" [class.greay]="4!=selectedTabIndex">
 							<div class="visual">
-									<i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1"  [ngStyle]="{'color': 4==selectedTabIndex ? '#white' : '#ccc' }"
-									*ngIf=" 4==selectedTabIndex" ></i>
+								<i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1" [ngStyle]="{'color': 4==selectedTabIndex ? '#white' : '#ccc' }"
+								 *ngIf=" 4==selectedTabIndex"></i>
 							</div>
 							<div class="details">
 								<div class="number">
@@ -129,12 +125,11 @@
 					</div>
 					<!-- -------Hold Deals------- -->
 					<app-count-loader *ngIf="totalDealsLoader"></app-count-loader>
-					<div class="col-xs-8 col-sm-4 col-md-3"  *ngIf="!totalDealsError &&!totalDealsLoader">
-						<a class="dashboard-stat dashboard-stat-lighter blue-sharp" (click)="showDealsOnHold()"
-						[class.greay]="5!=selectedTabIndex">
+					<div class="col-xs-8 col-sm-4 col-md-3" *ngIf="!totalDealsError &&!totalDealsLoader">
+						<a class="dashboard-stat dashboard-stat-lighter blue-sharp" (click)="showDealsOnHold()" [class.greay]="5!=selectedTabIndex">
 							<div class="visual">
-									<i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1"  [ngStyle]="{'color': 5==selectedTabIndex ? '#white' : '#ccc' }"
-									*ngIf=" 5==selectedTabIndex" ></i>
+								<i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1" [ngStyle]="{'color': 5==selectedTabIndex ? '#white' : '#ccc' }"
+								 *ngIf=" 5==selectedTabIndex"></i>
 							</div>
 							<div class="details">
 								<div class="number">
@@ -152,12 +147,11 @@
 					</div>
 					<!-- -------Approved Deals------- -->
 					<app-count-loader *ngIf="openedDealsLoader"></app-count-loader>
-					<div class="col-xs-8 col-sm-4 col-md-3"  *ngIf="!openedDealsError && !openedDealsLoader">
-						<a class="dashboard-stat dashboard-stat-lighter green-soft" (click)="showApprovedLeads()"
-						[class.greay]="6!=selectedTabIndex">
+					<div class="col-xs-8 col-sm-4 col-md-3" *ngIf="!openedDealsError && !openedDealsLoader">
+						<a class="dashboard-stat dashboard-stat-lighter green-soft" (click)="showApprovedLeads()" [class.greay]="6!=selectedTabIndex">
 							<div class="visual">
-									<i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1"  [ngStyle]="{'color': 6==selectedTabIndex ? '#white' : '#ccc' }"
-									*ngIf=" 6==selectedTabIndex" ></i>
+								<i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1" [ngStyle]="{'color': 6==selectedTabIndex ? '#white' : '#ccc' }"
+								 *ngIf=" 6==selectedTabIndex"></i>
 							</div>
 							<div class="details">
 								<div class="number">
@@ -175,12 +169,11 @@
 					</div>
 					<!-- -------Closed Deals------- -->
 					<app-count-loader *ngIf="closedDealsLoader"></app-count-loader>
-					<div class="col-xs-8 col-sm-4 col-md-3"  *ngIf="!closedDealsError &&!closedDealsLoader ">
-						<a class="dashboard-stat dashboard-stat-lighter red-soft" (click)="showRejectedLeads()"
-						[class.greay]="7!=selectedTabIndex">
+					<div class="col-xs-8 col-sm-4 col-md-3" *ngIf="!closedDealsError &&!closedDealsLoader ">
+						<a class="dashboard-stat dashboard-stat-lighter red-soft" (click)="showRejectedLeads()" [class.greay]="7!=selectedTabIndex">
 							<div class="visual">
-									<i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1"  [ngStyle]="{'color': 7==selectedTabIndex ? '#white' : '#ccc' }"
-									*ngIf=" 7==selectedTabIndex" ></i>
+								<i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1" [ngStyle]="{'color': 7==selectedTabIndex ? '#white' : '#ccc' }"
+								 *ngIf=" 7==selectedTabIndex"></i>
 							</div>
 							<div class="details">
 								<div class="number">
@@ -219,8 +212,9 @@
 									<ng-container class='m10'>
 										<span class="btn btn-xs hidden-xs" data-toggle="tooltip" data-placement="bottom" title="List View" [class.disabled]="isListView"
 										 (click)="isListView = true" style="background-color:#e2e2e2"><i class="fa fa-th-list p10" aria-hidden="true"></i></span>
-										<span class="btn btn-xs hidden-xs" data-toggle="tooltip" data-placement="bottom" title="Grid View" [class.disabled]="!isListView" *ngIf="false" 
-										 (click)="isListView = false" style="background-color:#e2e2e2"><i class="fa fa-th-large p10" aria-hidden="true"></i></span>
+										<span class="btn btn-xs hidden-xs" data-toggle="tooltip" data-placement="bottom" title="Grid View" [class.disabled]="!isListView"
+										 *ngIf="false" (click)="isListView = false" style="background-color:#e2e2e2"><i class="fa fa-th-large p10"
+											 aria-hidden="true"></i></span>
 									</ng-container>
 									<div class="inputs" align="right" style="float: right">
 										<div style="float: left;">
@@ -248,19 +242,20 @@
 						<app-grid-loader *ngIf="httpRequestLoader.isLoading && !isListView && !httpRequestLoader.isServerError"></app-grid-loader>
 						<app-list-loader *ngIf="httpRequestLoader.isLoading && isListView && !httpRequestLoader.isServerError"></app-list-loader>
 						<section class='m10' *ngIf="sortOption.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
-						
+
 							<div class="table-responsive" *ngIf="isCampaignByLeads">
 								<table class='table tgrid table-hover table-sm' *ngIf="isListView">
 									<thead>
+
 										<tr>
 											<th class="hidden-xs" colspan="2" style="width: 50%">Campaign</th>
 											<th class="visible-xs" colspan="1" style="width: 50%">Campaign</th>
 											<th class="hidden-xs">Status </th>
-											<th class="hidden-xs">Leads Count <th>
-
+											<th class="hidden-xs">Leads Count </th>
 										</tr>
+
 									</thead>
-									
+
 									<tbody>
 										<ng-container *ngFor='let campaign of campaignsPagination.pagedItems; let i=index'>
 											<tr>
@@ -419,6 +414,9 @@
 													<span>Launched</span>
 												</div>
 												<div class="bar">
+													<a data-toggle="tooltip" data-placement="top" title="# of Deals">
+														<span style="color: white;"><b>{{campaign.dealsCount}}</b></span>
+													</a>
 													<a (click)="referenseService.goToCampaignAnalytics(campaign)" data-toggle="tooltip" data-placement="top" title="Campaign Based Reports">
 														<i class="fa fa-line-chart"></i>
 													</a>
@@ -461,6 +459,14 @@
 		</div><!-- -End Of row (Campaigns List) -->
 		<!-- --------------------------------Partner List -------------------------------- -->
 		<div class="row" *ngIf="leadList" style="background-color:white">
+
+			<app-response-message [customResponse]="customResponse" *ngIf="customResponse?.isVisible"></app-response-message>
+			<div class="caption col-md-6" style="margin: 9px 14px;padding-top: 3px;padding-left: 5px
+				;font-size: 18px;font-weight: 600">
+				<span class="caption-subject font-red-sunglo uppercase" *ngIf="filterDeals.length >0">{{filterDeals}} Deals</span>
+				<span class="caption-subject font-red-sunglo uppercase" *ngIf="filterDeals.length == 0">Total Leads</span>
+			</div>
+
 			<a (click)="closeLeads()" class="pull-right close-circle" style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;">
 				<span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
 			<app-manage-leads [partner]="partner" [campaignId]="selectedCampaignId" [selectedCampaign]="campaign" [filter]="filterDeals"
@@ -479,20 +485,35 @@
 </div>
 
 <!-- --Lead Registration -->
-<section *ngIf="isDealRegistration && !isDealAnalytics && selectedCampaign!=null">
-	<div class="page-content">
-		<a (click)="disableDealRegistrationForm()" class="pull-right close-circle" style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;">
-			<span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
-		<app-add-leads [campaign]="selectedCampaign" [lead]="user" [dealId]="selectedDealId" [parent]="isVendor"></app-add-leads>
+<div class="modal right" id="leadFormModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false"
+ data-backdrop="static" *ngIf="isDealRegistration && !isDealAnalytics && selectedCampaign!=null" style="display: block">
+
+	<div class="modal-dialog modal-css" role="document" style="float: right;position: relative">
+		<div class="modal-content">
+		
+			<div class="modal-body">
+				<section >
+
+					
+						<a (click)="disableDealRegistrationForm()" class="pull-right close-circle" style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;">
+							<span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
+						<app-add-leads [campaign]="selectedCampaign" [lead]="user" [dealId]="selectedDealId" [parent]="isVendor"></app-add-leads>
+					
+				</section>
+			</div>
+		</div>
 	</div>
-</section>
+</div>
 
 <!-- --_Deal Registration -->
+
 <section *ngIf="isDealForm  && selectedCampaign!=null">
 	<div class="page-content">
+
+
 		<a (click)="disableDealPushRegistrationForm()" class="pull-right close-circle" style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;">
 			<span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
 		<app-deal-registration [campaign]="selectedCampaign" [lead]="user" [dealId]="selectedDealId" [isVendor]="isVendorVersion"
-		(dealReg)="resetCounters()"></app-deal-registration>
+		 (dealReg)="resetCounters($event)"></app-deal-registration>
 	</div>
 </section>
