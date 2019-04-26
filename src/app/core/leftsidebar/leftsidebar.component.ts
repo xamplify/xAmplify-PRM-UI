@@ -33,20 +33,14 @@ export class LeftsidebarComponent implements OnInit, DoCheck
         , private dashBoardService: DashboardService)
     {
         console.log(authService.getUserId());
-        // this.refService.getCompanyIdByUserId(this.authService.getUserId()).subscribe(response =>
-        // {
-        //     this.refService.getOrgCampaignTypes(response).subscribe(data =>
-        //     {
-        //         this.enableLeads = data.enableLeads;
-        //         console.log(data)
-        //     });
+       this.refService.getCompanyIdByUserId(this.authService.getUserId()).subscribe(response =>
+        {
+            this.refService.getOrgCampaignTypes(response).subscribe(data =>
+            {
+                this.enableLeads = data.enableLeads;
+                console.log(data)
+            });
 
-        // })
-        this.authService.getUserOpportunityModule(authService.getUserId()).subscribe(response =>{
-            if(response.data!=null)
-                this.enableLeads = response.data;
-
-            console.log(response.data);
         })
         this.updateLeftSideBar(location);
     }
