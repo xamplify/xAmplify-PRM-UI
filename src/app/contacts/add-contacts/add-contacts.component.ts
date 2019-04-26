@@ -262,10 +262,13 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                 var contents = e.target.result;
                 
                 let csvData = reader.result;
-                let csvRecordsArray = csvData.split(/\r\n|\n/);
+                let csvRecordsArray = csvData.split(/\r|\n/);
                 let headersRow = self.fileUtil
                 .getHeaderArray(csvRecordsArray);
+                alert(headersRow[0]);
                  let headers = headersRow[0].split(',');
+                
+                 alert(headers);
                  if((headers.length == 11) ){
                      if(self.validateHeaders(headers)){
                          var csvResult = Papa.parse( contents );

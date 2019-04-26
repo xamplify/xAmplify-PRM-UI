@@ -294,7 +294,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                     var contents = e.target.result;
                     
                     let csvData = reader.result;
-                    let csvRecordsArray = csvData.split(/\r\n|\n/);
+                    let csvRecordsArray = csvData.split(/\r|\n/);
                     let headersRow = self.fileUtil
                     .getHeaderArray(csvRecordsArray);
                      let headers = headersRow[0].split(',');

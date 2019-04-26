@@ -641,7 +641,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             reader.onload = function( e: any ) {
                 var contents = e.target.result;
                 let csvData = reader.result;
-                let csvRecordsArray = csvData.split(/\r\n|\n/);
+                let csvRecordsArray = csvData.split(/\r|\n/);
                 let headersRow = self.fileUtil
                 .getHeaderArray(csvRecordsArray);
                  let headers = headersRow[0].split(',');
