@@ -2753,6 +2753,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.pushToMarketo = false;
         $("#templateRetrieve").modal('hide');
     }
-
+    spamCheck() {
+        $("#email_spam_check").modal('show');
+    }
 
 }

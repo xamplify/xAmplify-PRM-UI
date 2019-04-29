@@ -381,5 +381,9 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
                 () =>  this.logger.info("Finished getAllCompanyProfileImages()"));
        
     }
-
+    spamCheck(emailTemplate: any) {
+        this.emailTemplate = null;
+        this.emailTemplate = emailTemplate;
+        $("#email_spam_check").modal('show');
+    }
 }

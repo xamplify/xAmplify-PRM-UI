@@ -1552,6 +1552,7 @@
 												<button type="button" class="btn btn-default" (click)="resetActive($event, 40, 'step-5')" style="font-weight: 600;width: 10em;">Previous</button>
 												<button type="button" class="btn green" (click)="campaignService.addEmailId(campaign,selectedEmailTemplateRow,false)" style="width: 10em;">Send Test Email</button>
 												<button type="submit" class="btn green" [disabled]="!campaignLaunchForm.valid"  style="width: 10em;">{{buttonName}}</button>
+												<button type="button" class="btn btn-primary" (click)="spamCheck()"  style="width: 10em;">Spam check</button>
 											</div>
 										</div>
 									</div>
@@ -1657,9 +1658,26 @@ data-backdrop="static">
 				 <button class="btn btn-default" (click)="clearValues()">Clear</button>
 
 				 <button [attr.class]="marketoButtonClass" [disabled]="!isModelFormValid || !clientId || !secretId || !marketoInstance" (click)="submitMarketoCredentials()">Submit</button>
-
+			 
 				</div>
 		 </div>
 	 </div>
  </div>
 </div>
+
+	<div class="modal right fade" id="email_spam_check" *ngIf="emailTemplate">
+		<div class="modal-dialog modal-lg modal-template" style="right:0">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
+					<h4 class="modal-title">Email Spam Check</h4>
+				</div>
+				<div class="modal-body">
+					<app-email-spam-check *ngIf="emailTemplate" [emailTemplate] = "emailTemplate"></app-email-spam-check>
+				</div>
+				<div class="modal-footer">
+					<a href="javascript:void(0)" data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
+				</div>
+			</div>
+		</div>
+	</div>

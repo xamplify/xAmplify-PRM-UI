@@ -29,6 +29,7 @@ import { TimestampNewComponent } from './timestamp-new/timestamp.component';
 import { EventSendReminderComponent } from './event-send-reminder/event-send-reminder.component';
 import { VideoPlayComponent } from './video-play/video-play.component';
 import { ImageCropperComponent } from './image-cropper/component/image-cropper.component';
+import { EmailSpamCheckComponent } from '../email-template/email-spam-check/email-spam-check.component';
 
 @NgModule({
     imports: [CommonModule, FormsModule, LoadingModule],
@@ -37,11 +38,11 @@ import { ImageCropperComponent } from './image-cropper/component/image-cropper.c
         PlatformComponent, ResponseMessageComponent, PreviewVideoComponent, ContactsCampaignsMailsComponent, ListLoaderComponent,
         PlayVideoLoaderComponent, GridLoaderComponent, ExportCsvComponent, AnalyticsLoaderComponent, VideoThumbnailComponent,
         DetailViewComponent, TimestampComponent, ScrollTopComponent, SaveAsComponent,
-        TimestampNewComponent, VideoPlayComponent, EventSendReminderComponent, ImageCropperComponent],
+        TimestampNewComponent, VideoPlayComponent, EventSendReminderComponent, ImageCropperComponent, EmailSpamCheckComponent],
     exports: [DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent,
         BarChartComponent, EmbedModalComponent, UserInfoComponent, LocationComponent, PlatformComponent,ImageCropperComponent,
         ResponseMessageComponent, PreviewVideoComponent, PieChartComponent, ListLoaderComponent, GridLoaderComponent, PlayVideoLoaderComponent,
         ExportCsvComponent, LoadingModule, AnalyticsLoaderComponent, VideoThumbnailComponent, DetailViewComponent, TimestampComponent,
-        ScrollTopComponent, SaveAsComponent, TimestampNewComponent, VideoPlayComponent, EventSendReminderComponent]
+        ScrollTopComponent, SaveAsComponent, TimestampNewComponent, VideoPlayComponent, EventSendReminderComponent, EmailSpamCheckComponent]
 })
 export class CommonComponentModule { }

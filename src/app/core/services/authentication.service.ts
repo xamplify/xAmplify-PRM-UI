@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response, RequestOptions } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
@@ -322,5 +323,13 @@ export class AuthenticationService {
         return stompClient;
     }
     
+    extractData( res: Response ) {
+        let body = res.json();
+        console.log( body );
+        return body || {};
+    }
 
+    handleError( error: any ) {
+        return Observable.throw( error );
+    } 
 }

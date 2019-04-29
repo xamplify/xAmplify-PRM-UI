@@ -34,6 +34,7 @@ import { UploadCloudvideoService } from './videos/services/upload-cloudvideo.ser
 import { ReferenceService } from './core/services/reference.service';
 import { PagerService } from './core/services/pager.service';
 import { EmailTemplateService } from './email-template/services/email-template.service';
+import { EmailSpamCheckService } from './email-template/services/email-spam-check.service';
 import { CampaignService } from './campaigns/services/campaign.service';
 import { AuthenticationService } from './core/services/authentication.service';
 import { SlimLoadingBarService } from 'ng2-slim-loading-bar';
@@ -66,7 +67,7 @@ import { RsvpComponent } from './campaigns/rsvp/rsvp.component';
     }, { provide: LoggerService, useClass: ConsoleLoggerService },
         AuthenticationService, UtilService, UserService, LogService, PagerService, ReferenceService, SocialService,
         TwitterService, FacebookService, XtremandLogger, VideoUtilService,ParterService,
-        VideoFileService, UploadCloudvideoService, ContactService, EmailTemplateService, CampaignService],
+        VideoFileService, UploadCloudvideoService, ContactService, EmailTemplateService, EmailSpamCheckService, CampaignService],
     bootstrap: [AppComponent]
 
 })
