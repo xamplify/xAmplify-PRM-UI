@@ -1,0 +1,221 @@
+<div class="text-center p10">
+    <button class="btn btn-primary mb10" (click)="send()">Spam Check</button>
+</div>
+<div>
+    <ngx-loading [show]="loading"></ngx-loading>
+<div class="wrapper center-block" *ngIf="results">
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+        <ng-container *ngFor="let result of results">
+            <div *ngIf="!result.jsonResponse" class="p10">
+                <div class='text-input__loading--line thick w100'></div>
+                <div class='text-input__loading--line thin w75'></div>
+            </div>
+            <div class="panel panel-default" *ngIf="result.jsonResponse?.status === false && result.jsonResponse?.body === null">
+                <h5 class="p10">{{result.jsonResponse.title}} <a (click)="test(result)" class="btn btn-success btn-xs">Try again</a></h5>                
+            </div>
+            <div class="panel panel-default" *ngIf="result.jsonResponse?.status">                
+                <div class="panel-heading" role="tab" id="headingOne">
+                    <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{result.id}}" aria-expanded="true" >
+                            <b>{{result.jsonResponse.displayedMark}}</b> {{result.jsonResponse.title}}
+                        </a>
+                        <span style="float: right;font-size: 12px;">{{result.jsonResponse.messageInfo.dateReceivedDisplayed}}</span>
+                    </h4>                    
+                </div>
+                <div id="collapse{{result.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                    <div class="panel-body">
+                        <div class="test-results">
+                            
+                            
+                            
+                            
+<div class="panel-group" id="accordion-test-results" role="tablist" aria-multiselectable="true">
+    
+    
+
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="links">
+            <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion-test-results" href="#collapseLinks-{{result.id}}" aria-expanded="true" aria-controls="collapseLinks">
+                    {{result.jsonResponse.links.title}}
+                    <span class="pull-right">{{result.jsonResponse.links.displayedMark}}</span>
+                </a>
+            </h4>
+        </div>
+        <div id="collapseLinks-{{result.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="links">
+            <div class="panel-body">
+                <h5 class="mt0 f-w-600">{{result.jsonResponse.links.description}}</h5>
+                <ng-container *ngFor="let url of result.jsonResponse.links.urls">
+                    <h6 style="white-space: nowrap;" *ngIf="url.statusCode !== '200'">
+                        <span [ngClass]="{'status-success': url.statusCode === '200', 'status-failure': url.statusCode !== '200'}">[ {{url.statusCode}} - {{url.httpStatus}} ]</span>
+                        <span>{{url.baseUrl}}</span>
+                    </h6>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="blacklists">
+            <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion-test-results" href="#collapseBlacklists-{{result.id}}" aria-expanded="true" aria-controls="collapseBlacklists">
+                    {{result.jsonResponse.blacklists.title}}
+                    <span class="pull-right">{{result.jsonResponse.blacklists.displayedMark}}</span>
+                </a>
+            </h4>
+        </div>
+        <div id="collapseBlacklists-{{result.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="links">
+            <div class="panel-body">
+                <h5 class="mt0 f-w-600" [innerHTML]="result.jsonResponse.blacklists.description"></h5>
+                <h6 [innerHTML]="result.jsonResponse.blacklists.messages"></h6>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="SubTest">
+            <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion-test-results" href="#collapseSubTest-{{result.id}}" aria-expanded="true" aria-controls="collapseSubTest">
+                    {{result.jsonResponse.body.title}}
+                    <span class="pull-right {{result.jsonResponse.body.statusClass}}">{{result.jsonResponse.body.displayedMark}}</span>
+                </a>
+            </h4>
+        </div>
+        <div id="collapseSubTest-{{result.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="SubTest">
+            <div class="panel-body">
+                <h5 class="mt0 f-w-600">{{result.jsonResponse.body.description}}</h5>
+                <div [innerHTML]="result.jsonResponse.body.messages"></div>
+
+<div class="panel-group" id="accordion-SubTest" role="tablist" aria-multiselectable="true">                
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="altAttributes">
+            <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion-SubTest" href="#collapsealtAttributes-{{result.id}}" aria-expanded="true" aria-controls="collapsealtAttributes">
+                    {{result.jsonResponse.body.subtests.altAttributes.title}}
+                    <span class="pull-right {{result.jsonResponse.body.subtests.altAttributes.statusClass}}">{{result.jsonResponse.body.subtests.altAttributes.displayedMark}}</span>
+                </a>
+            </h4>
+        </div>
+        <div id="collapsealtAttributes-{{result.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="altAttributes">
+            <div class="panel-body">
+                <h5 class="mt0 f-w-600">{{result.jsonResponse.body.subtests.altAttributes.description}}</h5>
+                <ul>
+                    <ng-container *ngFor="let item of result.jsonResponse.body.subtests.altAttributes.imagesWithoutAlt">
+                        <li [innerHTML]="item"></li>
+                    </ng-container>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="forbiddenTags">
+            <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion-SubTest" href="#collapseforbiddenTags-{{result.id}}" aria-expanded="true" aria-controls="collapseforbiddenTags">
+                    {{result.jsonResponse.body.subtests.forbiddenTags.title}}
+                    <span class="pull-right {{result.jsonResponse.body.subtests.forbiddenTags.statusClass}}">{{result.jsonResponse.body.subtests.forbiddenTags.displayedMark}}</span>
+                </a>
+            </h4>
+        </div>
+        <div id="collapseforbiddenTags-{{result.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="forbiddenTags">
+            <div class="panel-body">
+                <h5 class="mt0 f-w-600">{{result.jsonResponse.body.subtests.forbiddenTags.description}}</h5>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="shorturl">
+            <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion-SubTest" href="#collapseshorturl-{{result.id}}" aria-expanded="true" aria-controls="collapseshorturl">
+                    {{result.jsonResponse.body.subtests.shorturl.title}}
+                    <span class="pull-right {{result.jsonResponse.body.subtests.shorturl.statusClass}}">{{result.jsonResponse.body.subtests.shorturl.displayedMark}}</span>
+                </a>
+            </h4>
+        </div>
+        <div id="collapseshorturl-{{result.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="shorturl">
+            <div class="panel-body">
+                <h5 class="mt0 f-w-600">{{result.jsonResponse.body.subtests.shorturl.description}}</h5>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="listUnsubscribe">
+            <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion-SubTest" href="#collapselistUnsubscribe-{{result.id}}" aria-expanded="true" aria-controls="collapselistUnsubscribe">
+                    {{result.jsonResponse.body.subtests.listUnsubscribe.title}}
+                    <span class="pull-right {{result.jsonResponse.body.subtests.listUnsubscribe.statusClass}}">{{result.jsonResponse.body.subtests.listUnsubscribe.displayedMark}}</span>
+                </a>
+            </h4>
+        </div>
+        <div id="collapselistUnsubscribe-{{result.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="listUnsubscribe">
+            <div class="panel-body">
+                <h5 class="mt0 f-w-600">{{result.jsonResponse.body.subtests.listUnsubscribe.description}}</h5>
+                <h5>{{result.jsonResponse.body.subtests.listUnsubscribe.messages}}</h5>
+            </div>
+        </div>
+    </div>
+</div>
+
+            </div>
+        </div>
+    </div>
+<span class="pull-right">{{result.jsonResponse.commentedMark}}</span>
+</div>
+                        </div>
+                        
+                    </div>
+                </div>
+                
+            </div>
+        </ng-container>
+    </div>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--<div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="body">
+            <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion-test-results" href="#collapsebody" aria-expanded="true" aria-controls="collapsebody">
+                    {{result.jsonResponse.body.content.title}}
+                    <span class="pull-right {{result.jsonResponse.body.content.statusClass}}"></span>
+                </a>
+            </h4>
+        </div>
+        <div id="collapsebody" class="panel-collapse collapse" role="tabpanel" aria-labelledby="body">
+            <div class="panel-body">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item active"><a class="nav-link active" id="html-version-tab" data-toggle="tab" href="#html-version" role="tab" aria-controls="html-version" aria-selected="true">{{result.jsonResponse.body.html.title}}</a></li>
+                    <li class="nav-item"><a class="nav-link" id="text-version-tab" data-toggle="tab" href="#text-version" role="tab" aria-controls="text-version" aria-selected="false">{{result.jsonResponse.body.text.title}}</a></li>
+                    <li class="nav-item"><a class="nav-link" id="source-tab" data-toggle="tab" href="#source" role="tab" aria-controls="source" aria-selected="false">{{result.jsonResponse.body.raw.title}}</a></li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade active in" id="html-version" role="tabpanel" aria-labelledby="html-version-tab">
+                        <div [innerHTML]="result.jsonResponse.body.html.content"></div>
+                    </div>
+                    <div class="tab-pane fade" id="text-version" role="tabpanel" aria-labelledby="text-version-tab">
+                        <div [innerHTML]="result.jsonResponse.body.text.content"></div>
+                    </div>
+                    <div class="tab-pane fade" id="source" role="tabpanel" aria-labelledby="source-tab">
+                        <pre [innerHTML]="result.jsonResponse.body.raw.content"></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>-->
