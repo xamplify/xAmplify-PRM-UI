@@ -243,7 +243,7 @@
 									<i class="fa fa-times-circle"></i>
 								</span>
 								<img async *ngIf="socialStatusContent.fileType !== 'video'" src="{{authenticationService.MEDIA_URL}}{{socialStatusContent.filePath}}">
-								<img async *ngIf="socialStatusContent.fileType === 'video'" src="{{socialStatusContent.filePath}}">
+								<img async *ngIf="socialStatusContent.fileType === 'video'" src="{{socialStatusContent.filePath}}" (error)="videoUtilService.errorVideoHandler($event)">
 							</div>
 						</section>
 
@@ -379,6 +379,10 @@
 								<li><a (click)="showScheduleOption('schedule-option-div')">Schedule</a></li>
 							</ul>
 						</div>
+						<button type="button" class="btn pull-right mr10" 
+							*ngIf="selectedAccounts > 1 && isCustomizeButtonClicked" (click)="undoCustomizeEachNetwork()">
+							<i class="fa fa-undo" aria-hidden="true" data-toggle="tooltip" data-placement="auto" title="Undo"></i>
+						</button>
 						<ng-container *ngIf="selectedAccounts > 1 && !isCustomizeButtonClicked">
 							<button class="btn btn-primary pull-right" (click)="customizeEachNetwork()">Customize for each network</button>
 						</ng-container>

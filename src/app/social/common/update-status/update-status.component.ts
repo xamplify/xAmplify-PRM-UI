@@ -989,6 +989,13 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     this.isCustomizeButtonClicked = true;
   }
 
+  undoCustomizeEachNetwork() {
+    let socialStatusData = this.socialStatusList[0];
+    this.socialStatusList = [];
+    this.socialStatusList[0] = socialStatusData;
+    this.isCustomizeButtonClicked = false;
+  }
+
   toggleSelectAll(){
     this.isAllSelected = ! this.isAllSelected;
     this.selectedAccounts = 0;
