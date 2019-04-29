@@ -350,9 +350,6 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.pagination.campaignType = type;
         this.listCampaign(this.pagination);
     }
-    filterByUserNameOrDate() {
-
-    }
     campaginRouter(campaign:any){
       this.refService.campaignType = campaign.campaignType;
       this.router.navigate(['/home/campaigns/'+campaign.campaignId+'/details']);

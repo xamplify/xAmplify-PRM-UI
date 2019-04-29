@@ -913,12 +913,16 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
 
     validateCity() {
       if ($.trim(this.companyProfile.city).length > 0) {
-            if (!this.regularExpressions.CITY_PATTERN.test(this.companyProfile.city)) {
-                this.addCityError();
-                this.cityErrorMessage = "Invalid City";
-            } else {
-                this.removeCityError();
-            }
+        if(/^[a-zA-Z0-9]*$/.test(this.companyProfile.city) == false){
+          this.addCityError();
+          this.cityErrorMessage = "Invalid City";
+         } else {  this.removeCityError(); }
+          //  if (!this.regularExpressions.CITY_PATTERN.test(this.companyProfile.city)) {
+          //       this.addCityError();
+          //       this.cityErrorMessage = "Invalid City";
+          //   } else {
+          //       this.removeCityError();
+          //   }
         } else {
             this.removeCityError();
         }
@@ -926,7 +930,8 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
 
     validateState() {
         if ($.trim(this.companyProfile.state).length > 0) {
-            if (!this.regularExpressions.CITY_PATTERN.test(this.companyProfile.state)) {
+          if(/^[a-zA-Z0-9]*$/.test(this.companyProfile.state) == false){
+            // if (!this.regularExpressions.CITY_PATTERN.test(this.companyProfile.state)) {
                 this.addStateError();
                 this.stateErrorMessage = "Invalid State";
             } else {
