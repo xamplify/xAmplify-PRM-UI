@@ -357,7 +357,7 @@
 													<a (click)="showPartners(campaign)" data-toggle="tooltip" data-placement="top" title="View deals for this campaign" *ngIf="!isPartnerVersion  && (campaign.dealsCount > 0 )">
 														<span class="circled-number"><i class="fa" [ngClass]="{'fa-plus': !campaign.expand, 'fa-minus': campaign.expand}"></i></span>
 													</a>
-													<a (click)="showPartners(campaign)" data-toggle="tooltip" data-placement="top" title="View Leads" *ngIf="isPartnerVersion && (campaign.dealsCount > 0)">
+													<a (click)="showPartners(campaign)" data-toggle="tooltip" data-placement="top" title="View Deals" *ngIf="isPartnerVersion && (campaign.dealsCount > 0)">
 														<span class="circled-number"><i class="fa" [ngClass]="{'fa-plus': !campaign.expand, 'fa-minus': campaign.expand}"></i></span>
 													</a>
 												</td>
