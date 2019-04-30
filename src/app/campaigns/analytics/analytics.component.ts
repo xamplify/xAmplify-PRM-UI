@@ -1440,6 +1440,7 @@ showTimeLineView(){
         object["Campaign Name"] = this.downloadCsvList[i].campaignName;
         let hours = this.referenceService.formatAMPM(date);
         object["Date and Time"] = date.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
+        object["Views"] = this.downloadCsvList[i].viewsCoun;
         object["Platform"] = this.downloadCsvList[i].os;
        /* object["Location"] = this.downloadCsvList[i].location;*/
         var text = this.downloadCsvList[i].location;
