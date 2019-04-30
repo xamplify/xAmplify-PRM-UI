@@ -1064,10 +1064,14 @@ export class DealRegistrationComponent implements OnInit
         }
     }
     deleteComment(i:number,question:DealDynamicProperties){
-        this.dealRegistrationService.deleteProperty(question).subscribe(response=>{
-            this.remove(i, question.id)
+         if(question.isSaved){
+            this.dealRegistrationService.deleteProperty(question).subscribe(response=>{
+                this.remove(i, question.id)
 
-        })
+            },error=> this.logger.error( error, "DealRegistrationComponent", "deleteComment()" ))
+        }else{
+            this.remove(i, question.id);
+        }
     }
     setFormValidateErrMsg(){
         alert("ERROR")
