@@ -368,7 +368,7 @@
 					</div>
 				</div>
 				<div class="col-xs-12 m0 p0" id="post-actions-button-group">
-					<div class="col-xs-6 pr10 pull-right">
+					<div class="col-xs-12 col-sm-6 pr10 pull-right">
 						<button type="button" class="btn pull-right ml10" (click)="cancel()">Cancel</button>
 						<div class="btn-group pull-right" *ngIf="!(selectedAccounts > 1 && !isCustomizeButtonClicked)">
 							<button type="button" class="btn btn-primary rounded-0" (click)="shareNow()">Post Now</button>
@@ -379,10 +379,11 @@
 								<li><a (click)="showScheduleOption('schedule-option-div')">Schedule</a></li>
 							</ul>
 						</div>
-						<button type="button" class="btn pull-right mr10" 
-							*ngIf="selectedAccounts > 1 && isCustomizeButtonClicked" (click)="undoCustomizeEachNetwork()">
-							<i class="fa fa-undo" aria-hidden="true" data-toggle="tooltip" data-placement="auto" title="Undo"></i>
-						</button>
+						<div *ngIf="selectedAccounts > 1 && isCustomizeButtonClicked">
+							<button type="button" class="btn pull-right mr10" (click)="undoCustomizeEachNetwork()" data-toggle="tooltip" data-placement="top" title="Undo">
+								<span ><i class="fa fa-undo" aria-hidden="true" ></i></span>							
+							</button>
+						</div>
 						<ng-container *ngIf="selectedAccounts > 1 && !isCustomizeButtonClicked">
 							<button class="btn btn-primary pull-right" (click)="customizeEachNetwork()">Customize for each network</button>
 						</ng-container>
@@ -437,13 +438,13 @@
 											[checked]="socialCampaign.userListIds.indexOf(contactList.id)>-1">
 										</td>
 										<td>
-											<h5 title="{{contactList.name}}">
-											<span *ngIf="contactList.name?.length<=50">{{contactList.name}}</span>
-											<span *ngIf="contactList.name?.length>50">{{contactList.name | slice:0:50}}...</span>
+											<h5 class="m0 f-w-600" title="{{contactList.name}}">
+												<span *ngIf="contactList.name?.length<=50">{{contactList.name}}</span>
+												<span *ngIf="contactList.name?.length>50">{{contactList.name | slice:0:50}}...</span>
 											</h5>
 											<h6 title="{{contactList.uploadedBy}}" style="margin: 5px 0;">
-											<span *ngIf="contactList.uploadedBy?.length<=50">By {{contactList.uploadedBy}}</span>
-											<span *ngIf="contactList.uploadedBy?.length>50">By {{contactList.uploadedBy | slice:0:50}}...</span>
+												<span *ngIf="contactList.uploadedBy?.length<=50">By {{contactList.uploadedBy}}</span>
+												<span *ngIf="contactList.uploadedBy?.length>50">By {{contactList.uploadedBy | slice:0:50}}...</span>
 											</h6>
 										</td>
 										<td>{{contactList.createdDate | date:'mediumDate'}}</td>

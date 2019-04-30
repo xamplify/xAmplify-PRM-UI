@@ -994,6 +994,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     this.socialStatusList = [];
     this.socialStatusList[0] = socialStatusData;
     this.isCustomizeButtonClicked = false;
+    $('html,body').animate({scrollTop: 0}, 'slow');
   }
 
   toggleSelectAll(){
