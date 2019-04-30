@@ -101,7 +101,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         if(url.indexOf(this.teamBaseUrl)>-1){
             return this.authorizeUrl(roles, url, this.teamBaseUrl);
         }
-        if(url.indexOf(this.socialBaseUrl)>-1){
+        if(url.indexOf(this.socialBaseUrl)>-1 || url.indexOf('twitter')>-1 ){
             return this.authorizeUrl(roles, url, this.socialBaseUrl);
         }
         if(url.indexOf(this.upgradeBaseUrl)>-1){
@@ -134,7 +134,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         if(urlType===this.teamBaseUrl){
             role = this.roles.orgAdminRole;
         }
-        if(urlType===this.socialBaseUrl){
+        if(urlType===this.socialBaseUrl || url.includes('twitter')){
             role = this.roles.socialShare;
         }
         if(urlType===this.upgradeBaseUrl){
