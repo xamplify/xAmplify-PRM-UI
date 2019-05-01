@@ -4,6 +4,9 @@ import { EmailTemplate } from '../models/email-template';
 import { User } from '../../core/models/user';
 import { EmailSpamCheckService } from '../services/email-spam-check.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
+
+declare var $: any;
+
 @Component({
   selector: 'app-email-spam-check',
   templateUrl: './email-spam-check.component.html',
@@ -17,6 +20,7 @@ export class EmailSpamCheckComponent implements OnChanges, OnInit {
   results: EmailSpamScore[] = [];
   emailSpamScore: EmailSpamScore;
   loading = false;
+  selected = false;
   ngOnInit() {
     
   }
@@ -103,5 +107,14 @@ export class EmailSpamCheckComponent implements OnChanges, OnInit {
       (error: any) => { console.log(error); this.loading = false;}
     );
   }
+  
+/*  toggleIcon(e) {
+      $(e.target)
+          .prev('.panel-heading')
+          .find(".more-less")
+          .toggleClass('glyphicon-plus glyphicon-minus');
+  }
+  $('.panel-group').on('hidden.bs.collapse', toggleIcon);
+  $('.panel-group').on('shown.bs.collapse', toggleIcon);*/
 
 }

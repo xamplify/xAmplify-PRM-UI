@@ -14,12 +14,13 @@
                 <h5 class="p10">{{result.jsonResponse.title}} <a (click)="test(result)" class="btn btn-success btn-xs">Try again</a></h5>                
             </div>
             <div class="panel panel-default" *ngIf="result.jsonResponse?.status">                
-                <div class="panel-heading" role="tab" id="headingOne">
+                <div class="panel-heading" role="tab" id="headingOne" aria-controls="collapseOne">
                     <h4 class="panel-title">
-                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{result.id}}" aria-expanded="true" >
-                            <b>{{result.jsonResponse.displayedMark}}</b> {{result.jsonResponse.title}}
+                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{result.id}}" aria-expanded="false">
+                             <span class="more-less headerRowPlusImage plusSymbol"></span>
+                            <b style="font-size: 19px;color: #008fd5;">{{result.jsonResponse.displayedMark}}</b> {{result.jsonResponse.title}}
                         </a>
-                        <span style="float: right;font-size: 12px;">{{result.jsonResponse.messageInfo.dateReceivedDisplayed}}</span>
+                        <span style="float: right;font-size: 12px;color: #056898;">{{result.jsonResponse.messageInfo.dateReceivedDisplayed}}</span>
                     </h4>                    
                 </div>
                 <div id="collapse{{result.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
@@ -36,9 +37,10 @@
     <div class="panel panel-default">
         <div class="panel-heading" role="tab" id="links">
             <h4 class="panel-title">
-                <a role="button" data-toggle="collapse" data-parent="#accordion-test-results" href="#collapseLinks-{{result.id}}" aria-expanded="true" aria-controls="collapseLinks">
+                <a role="button" data-toggle="collapse" data-parent="#accordion-test-results" href="#collapseLinks-{{result.id}}" aria-expanded="false" aria-controls="collapseLinks">
+                    <span class="more-less childRowPlusImage plusSymbol"></span>
                     {{result.jsonResponse.links.title}}
-                    <span class="pull-right">{{result.jsonResponse.links.displayedMark}}</span>
+                    <span class="pull-right status {{result.jsonResponse.links.statusClass}}">{{result.jsonResponse.links.displayedMark}}</span>
                 </a>
             </h4>
         </div>
@@ -54,13 +56,225 @@
             </div>
         </div>
     </div>
+    
+    
+       <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="links">
+            <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion-test-results" href="#collapseimprove-{{result.id}}" aria-expanded="false" aria-controls="collapseimprove">
+                   <span class="more-less childRowPlusImage plusSymbol"></span>
+                    {{result.jsonResponse.spamAssassin.title}}
+                    <span class="pull-right status {{result.jsonResponse.spamAssassin.statusClass}}">{{result.jsonResponse.spamAssassin.displayedMark}}</span>
+                </a>
+            </h4>
+        </div>
+        <div id="collapseimprove-{{result.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="links">
+            <div class="panel-body">
+                <h5 class="mt0 f-w-600" [innerHTML]="result.jsonResponse.spamAssassin.description"></h5>
+                <ng-container>
+                  <table class="table tgrid">
+					<tr>
+						<td>{{result.jsonResponse.spamAssassin.rules.DKIM_SIGNED.score}}</td>
+						<td>{{result.jsonResponse.spamAssassin.rules.DKIM_SIGNED.code}}</td>
+						<td>{{result.jsonResponse.spamAssassin.rules.DKIM_SIGNED.description}}<br>
+						{{result.jsonResponse.spamAssassin.rules.DKIM_SIGNED.solution}}
+						</td>
+					</tr>
+					<tr>
+						<td>{{result.jsonResponse.spamAssassin.rules.DKIM_VALID.score}}</td>
+						<td>{{result.jsonResponse.spamAssassin.rules.DKIM_VALID.code}}</td>
+						<td>{{result.jsonResponse.spamAssassin.rules.DKIM_VALID.description}}<br>
+						{{result.jsonResponse.spamAssassin.rules.DKIM_VALID.solution}}
+						</td>
+					</tr>
+					<tr>
+						<td>{{result.jsonResponse.spamAssassin.rules.HTML_MESSAGE.score}}</td>
+						<td>{{result.jsonResponse.spamAssassin.rules.HTML_MESSAGE.code}}</td>
+						<td>{{result.jsonResponse.spamAssassin.rules.HTML_MESSAGE.description}}<br>
+						{{result.jsonResponse.spamAssassin.rules.HTML_MESSAGE.solution}}
+						</td>
+					</tr>
+					<tr>
+						<td>{{result.jsonResponse.spamAssassin.rules.MIME_HTML_ONLY.score}}</td>
+						<td>{{result.jsonResponse.spamAssassin.rules.MIME_HTML_ONLY.code}}</td>
+						<td>{{result.jsonResponse.spamAssassin.rules.MIME_HTML_ONLY.description}}<br>
+						{{result.jsonResponse.spamAssassin.rules.MIME_HTML_ONLY.solution}}
+						</td>
+					</tr>
+					<tr>
+						<td>{{result.jsonResponse.spamAssassin.rules.T_KAM_HTML_FONT_INVALID.score}}</td>
+						<td>{{result.jsonResponse.spamAssassin.rules.T_KAM_HTML_FONT_INVALID.code}}</td>
+						<td>{{result.jsonResponse.spamAssassin.rules.T_KAM_HTML_FONT_INVALID.description}}<br>
+						{{result.jsonResponse.spamAssassin.rules.T_KAM_HTML_FONT_INVALID.solution}}
+						</td>
+					</tr>
+					<tr>
+						<td>{{result.jsonResponse.spamAssassin.rules.T_SPF_HELO_TEMPERROR.score}}</td>
+						<td>{{result.jsonResponse.spamAssassin.rules.T_SPF_HELO_TEMPERROR.code}}</td>
+						<td>{{result.jsonResponse.spamAssassin.rules.T_SPF_HELO_TEMPERROR.description}}<br>
+						{{result.jsonResponse.spamAssassin.rules.T_SPF_HELO_TEMPERROR.solution}}
+						</td>
+					</tr>
+					<tr>
+						<td>{{result.jsonResponse.spamAssassin.rules.URIBL_BLOCKED.score}}</td>
+						<td>{{result.jsonResponse.spamAssassin.rules.URIBL_BLOCKED.code}}</td>
+						<td>{{result.jsonResponse.spamAssassin.rules.URIBL_BLOCKED.description}}<br>
+						{{result.jsonResponse.spamAssassin.rules.URIBL_BLOCKED.solution}}
+						</td>
+					</tr>
+					</table>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+    
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="listNotAuthenticated">
+            <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#listNotAuthenticated-SubTest" href="#collapselistNotAuthenticated-{{result.id}}" aria-expanded="false" aria-controls="collapselistNotAuthenticated">
+                    <span class="more-less childRowPlusImage plusSymbol"></span>
+                    {{result.jsonResponse.signature.title}}
+                    <span class="pull-right status {{result.jsonResponse.signature.statusClass}}">
+                    
+                    {{result.jsonResponse.signature.displayedMark}}</span>
+                </a>
+            </h4>
+        </div>
+        <div id="collapselistNotAuthenticated-{{result.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="listNotAuthenticated">
+            <div class="panel-body">
+                <h5 class="mt0 f-w-600" [innerHTML]="result.jsonResponse.signature.description"></h5>
+                
+   <div class="panel-group" id="listNotAuthenticated-SubTest" role="tablist" aria-multiselectable="true">                
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="spfAttributes">
+            <h4 class="panel-title">
+                <a role="button" title="{{result.jsonResponse.signature.subtests.spf.title}}" data-toggle="collapse" data-parent="#listNotAuthenticated-SubTest" href="#collapsespfAttributes-{{result.id}}" aria-expanded="false" aria-controls="collapsespfAttributes">
+                    <span class="more-less childRowPlusImage plusSymbol"></span>
+                    {{result.jsonResponse.signature.subtests.spf.title | slice:0:82}}
+                    <span *ngIf="result.jsonResponse.signature.subtests.spf.title?.length>82">...</span>
+                    <span class="pull-right status {{result.jsonResponse.signature.subtests.spf.statusClass}}">{{result.jsonResponse.signature.subtests.spf.displayedMark}}</span>
+                </a>
+            </h4>
+        </div>
+        <div id="collapsespfAttributes-{{result.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="spfAttributes">
+            <div class="panel-body">
+                <h5 class="mt0 f-w-600">{{result.jsonResponse.signature.subtests.spf.description}}</h5>
+                <h5 class="mt0 f-w-600"[innerHTML]="result.jsonResponse.signature.subtests.spf.messages"></h5>
+
+            </div>
+        </div>
+    </div>
+    
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="dkimAttributes">
+            <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#listNotAuthenticated-SubTest" href="#collapsedkimAttributes-{{result.id}}" aria-expanded="false" aria-controls="collapsedkimAttributes">
+                    <span class="more-less childRowPlusImage plusSymbol"></span>
+                    {{result.jsonResponse.signature.subtests.dkim.title}}
+                    <span class="pull-right status {{result.jsonResponse.signature.subtests.dkim.statusClass}}">{{result.jsonResponse.signature.subtests.dkim.displayedMark}}</span>
+                </a>
+            </h4>
+        </div>
+        <div id="collapsedkimAttributes-{{result.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="dkimAttributes">
+            <div class="panel-body">
+                <h5 class="mt0 f-w-600">{{result.jsonResponse.signature.subtests.dkim.description}}</h5>
+                <h5 class="mt0 f-w-600"[innerHTML]="result.jsonResponse.signature.subtests.dkim.messages"></h5>
+
+            </div>
+        </div>
+    </div>
+    
+     <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="dmarcAttributes">
+            <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#listNotAuthenticated-SubTest" href="#collapsedmarcAttributes-{{result.id}}" aria-expanded="false" aria-controls="collapsedmarcAttributes">
+                    <span class="more-less childRowPlusImage plusSymbol"></span>
+                    {{result.jsonResponse.signature.subtests.dmarc.title}}
+                    <span class="pull-right status {{result.jsonResponse.signature.subtests.dmarc.statusClass}}">{{result.jsonResponse.signature.subtests.dmarc.displayedMark}}</span>
+                </a>
+            </h4>
+        </div>
+        <div id="collapsedmarcAttributes-{{result.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="dmarcAttributes">
+            <div class="panel-body">
+                <h5 class="mt0 f-w-600">{{result.jsonResponse.signature.subtests.dmarc.description}}</h5>
+                <h5 class="mt0 f-w-600"[innerHTML]="result.jsonResponse.signature.subtests.dmarc.messages"></h5>
+
+            </div>
+        </div>
+    </div>
+    
+    
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="rDnsAttributes">
+            <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#listNotAuthenticated-SubTest" href="#collapserDnsAttributes-{{result.id}}" aria-expanded="false" aria-controls="collapserDnsAttributes">
+                    <span class="more-less childRowPlusImage plusSymbol"></span>
+                    {{result.jsonResponse.signature.subtests.rDns.title}}
+                    <span class="pull-right status {{result.jsonResponse.signature.subtests.rDns.statusClass}}">{{result.jsonResponse.signature.subtests.rDns.displayedMark}}</span>
+                </a>
+            </h4>
+        </div>
+        <div id="collapserDnsAttributes-{{result.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="rDnsAttributes">
+            <div class="panel-body">
+                <h5 class="mt0 f-w-600">{{result.jsonResponse.signature.subtests.rDns.description}}</h5>
+                <h5 class="mt0 f-w-600"[innerHTML]="result.jsonResponse.signature.subtests.rDns.tested"></h5>
+
+            </div>
+        </div>
+    </div>
+    
+    
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="mxRecordAttributes">
+            <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#listNotAuthenticated-SubTest" href="#collapsemxRecordAttributes-{{result.id}}" aria-expanded="false" aria-controls="collapsemxRecordAttributes">
+                   <span class="more-less childRowPlusImage plusSymbol"></span>
+                    <span [innerHTML]="result.jsonResponse.signature.subtests.mxRecord.title"></span>
+                    <span class="pull-right status {{result.jsonResponse.signature.subtests.mxRecord.statusClass}}">{{result.jsonResponse.signature.subtests.mxRecord.displayedMark}}</span>
+                </a>
+            </h4>
+        </div>
+        <div id="collapsemxRecordAttributes-{{result.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="mxRecordAttributes">
+            <div class="panel-body">
+                <h5 class="mt0 f-w-600">{{result.jsonResponse.signature.subtests.mxRecord.description}}</h5>
+                <h5 class="mt0 f-w-600"[innerHTML]="result.jsonResponse.signature.subtests.mxRecord.tested"></h5>
+
+            </div>
+        </div>
+    </div>
+    
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="aRecordAttributes">
+            <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#listNotAuthenticated-SubTest" href="#collapseaRecordAttributes-{{result.id}}" aria-expanded="false" aria-controls="collapseaRecordAttributes">
+                    <span class="more-less childRowPlusImage plusSymbol"></span>
+                    <span [innerHTML]="result.jsonResponse.signature.subtests.aRecord.title"></span>
+                    <span class="pull-right status {{result.jsonResponse.signature.subtests.aRecord.statusClass}}">{{result.jsonResponse.signature.subtests.aRecord.displayedMark}}</span>
+                </a>
+            </h4>
+        </div>
+        <div id="collapseaRecordAttributes-{{result.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="aRecordAttributes">
+            <div class="panel-body">
+                <h5 class="mt0 f-w-600">{{result.jsonResponse.signature.subtests.aRecord.description}}</h5>
+                <h5 class="mt0 f-w-600"[innerHTML]="result.jsonResponse.signature.subtests.aRecord.tested"></h5>
+
+            </div>
+        </div>
+      </div>
+    
+    </div>
+                
+   </div>
+  </div>
+ </div>
 
     <div class="panel panel-default">
         <div class="panel-heading" role="tab" id="blacklists">
             <h4 class="panel-title">
-                <a role="button" data-toggle="collapse" data-parent="#accordion-test-results" href="#collapseBlacklists-{{result.id}}" aria-expanded="true" aria-controls="collapseBlacklists">
+                <a role="button" data-toggle="collapse" data-parent="#accordion-test-results" href="#collapseBlacklists-{{result.id}}" aria-expanded="false" aria-controls="collapseBlacklists">
+                    <span class="more-less childRowPlusImage plusSymbol"></span>
                     {{result.jsonResponse.blacklists.title}}
-                    <span class="pull-right">{{result.jsonResponse.blacklists.displayedMark}}</span>
+                    <span class="pull-right status {{result.jsonResponse.blacklists.statusClass}}">{{result.jsonResponse.blacklists.displayedMark}}</span>
                 </a>
             </h4>
         </div>
@@ -75,9 +289,10 @@
     <div class="panel panel-default">
         <div class="panel-heading" role="tab" id="SubTest">
             <h4 class="panel-title">
-                <a role="button" data-toggle="collapse" data-parent="#accordion-test-results" href="#collapseSubTest-{{result.id}}" aria-expanded="true" aria-controls="collapseSubTest">
+                <a role="button" data-toggle="collapse" data-parent="#accordion-test-results" href="#collapseSubTest-{{result.id}}" aria-expanded="false" aria-controls="collapseSubTest">
+                    <span class="more-less childRowPlusImage plusSymbol"></span>
                     {{result.jsonResponse.body.title}}
-                    <span class="pull-right {{result.jsonResponse.body.statusClass}}">{{result.jsonResponse.body.displayedMark}}</span>
+                    <span class="pull-right status {{result.jsonResponse.body.statusClass}}">{{result.jsonResponse.body.displayedMark}}</span>
                 </a>
             </h4>
         </div>
@@ -90,9 +305,10 @@
     <div class="panel panel-default">
         <div class="panel-heading" role="tab" id="altAttributes">
             <h4 class="panel-title">
-                <a role="button" data-toggle="collapse" data-parent="#accordion-SubTest" href="#collapsealtAttributes-{{result.id}}" aria-expanded="true" aria-controls="collapsealtAttributes">
+                <a role="button" data-toggle="collapse" data-parent="#accordion-SubTest" href="#collapsealtAttributes-{{result.id}}" aria-expanded="false" aria-controls="collapsealtAttributes">
+                    <span class="more-less childRowPlusImage plusSymbol"></span>
                     {{result.jsonResponse.body.subtests.altAttributes.title}}
-                    <span class="pull-right {{result.jsonResponse.body.subtests.altAttributes.statusClass}}">{{result.jsonResponse.body.subtests.altAttributes.displayedMark}}</span>
+                    <span class="pull-right status {{result.jsonResponse.body.subtests.altAttributes.statusClass}}">{{result.jsonResponse.body.subtests.altAttributes.displayedMark}}</span>
                 </a>
             </h4>
         </div>
@@ -111,9 +327,10 @@
     <div class="panel panel-default">
         <div class="panel-heading" role="tab" id="forbiddenTags">
             <h4 class="panel-title">
-                <a role="button" data-toggle="collapse" data-parent="#accordion-SubTest" href="#collapseforbiddenTags-{{result.id}}" aria-expanded="true" aria-controls="collapseforbiddenTags">
+                <a role="button" data-toggle="collapse" data-parent="#accordion-SubTest" href="#collapseforbiddenTags-{{result.id}}" aria-expanded="false" aria-controls="collapseforbiddenTags">
+                    <span class="more-less childRowPlusImage plusSymbol"></span>
                     {{result.jsonResponse.body.subtests.forbiddenTags.title}}
-                    <span class="pull-right {{result.jsonResponse.body.subtests.forbiddenTags.statusClass}}">{{result.jsonResponse.body.subtests.forbiddenTags.displayedMark}}</span>
+                    <span class="pull-right status {{result.jsonResponse.body.subtests.forbiddenTags.statusClass}}">{{result.jsonResponse.body.subtests.forbiddenTags.displayedMark}}</span>
                 </a>
             </h4>
         </div>
@@ -127,9 +344,10 @@
     <div class="panel panel-default">
         <div class="panel-heading" role="tab" id="shorturl">
             <h4 class="panel-title">
-                <a role="button" data-toggle="collapse" data-parent="#accordion-SubTest" href="#collapseshorturl-{{result.id}}" aria-expanded="true" aria-controls="collapseshorturl">
+                <a role="button" data-toggle="collapse" data-parent="#accordion-SubTest" href="#collapseshorturl-{{result.id}}" aria-expanded="false" aria-controls="collapseshorturl">
+                    <span class="more-less childRowPlusImage plusSymbol"></span>
                     {{result.jsonResponse.body.subtests.shorturl.title}}
-                    <span class="pull-right {{result.jsonResponse.body.subtests.shorturl.statusClass}}">{{result.jsonResponse.body.subtests.shorturl.displayedMark}}</span>
+                    <span class="pull-right status {{result.jsonResponse.body.subtests.shorturl.statusClass}}">{{result.jsonResponse.body.subtests.shorturl.displayedMark}}</span>
                 </a>
             </h4>
         </div>
@@ -143,9 +361,10 @@
     <div class="panel panel-default">
         <div class="panel-heading" role="tab" id="listUnsubscribe">
             <h4 class="panel-title">
-                <a role="button" data-toggle="collapse" data-parent="#accordion-SubTest" href="#collapselistUnsubscribe-{{result.id}}" aria-expanded="true" aria-controls="collapselistUnsubscribe">
+                <a role="button" data-toggle="collapse" data-parent="#accordion-SubTest" href="#collapselistUnsubscribe-{{result.id}}" aria-expanded="false" aria-controls="collapselistUnsubscribe">
+                    <span class="more-less childRowPlusImage plusSymbol"></span>
                     {{result.jsonResponse.body.subtests.listUnsubscribe.title}}
-                    <span class="pull-right {{result.jsonResponse.body.subtests.listUnsubscribe.statusClass}}">{{result.jsonResponse.body.subtests.listUnsubscribe.displayedMark}}</span>
+                    <span class="pull-right status {{result.jsonResponse.body.subtests.listUnsubscribe.statusClass}}">{{result.jsonResponse.body.subtests.listUnsubscribe.displayedMark}}</span>
                 </a>
             </h4>
         </div>
@@ -156,12 +375,13 @@
             </div>
         </div>
     </div>
+    
 </div>
 
             </div>
         </div>
     </div>
-<span class="pull-right">{{result.jsonResponse.commentedMark}}</span>
+<span class="pull-right" style="color: #056898; font-weight: 600;">{{result.jsonResponse.commentedMark}}</span>
 </div>
                         </div>
                         
