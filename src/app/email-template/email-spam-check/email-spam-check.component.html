@@ -149,7 +149,7 @@
         <div class="panel-heading" role="tab" id="spfAttributes">
             <h4 class="panel-title">
                 <a role="button" title="{{result.jsonResponse.signature.subtests.spf.title}}" data-toggle="collapse" data-parent="#listNotAuthenticated-SubTest" href="#collapsespfAttributes-{{result.id}}" aria-expanded="false" aria-controls="collapsespfAttributes">
-                    <span class="more-less childRowPlusImage plusSymbol"></span>
+                    <span class="more-less childRowPlusImage childPlusSymbol"></span>
                     {{result.jsonResponse.signature.subtests.spf.title | slice:0:82}}
                     <span *ngIf="result.jsonResponse.signature.subtests.spf.title?.length>82">...</span>
                     <span class="pull-right status {{result.jsonResponse.signature.subtests.spf.statusClass}}">{{result.jsonResponse.signature.subtests.spf.displayedMark}}</span>
@@ -169,7 +169,7 @@
         <div class="panel-heading" role="tab" id="dkimAttributes">
             <h4 class="panel-title">
                 <a role="button" data-toggle="collapse" data-parent="#listNotAuthenticated-SubTest" href="#collapsedkimAttributes-{{result.id}}" aria-expanded="false" aria-controls="collapsedkimAttributes">
-                    <span class="more-less childRowPlusImage plusSymbol"></span>
+                    <span class="more-less childRowPlusImage childPlusSymbol"></span>
                     {{result.jsonResponse.signature.subtests.dkim.title}}
                     <span class="pull-right status {{result.jsonResponse.signature.subtests.dkim.statusClass}}">{{result.jsonResponse.signature.subtests.dkim.displayedMark}}</span>
                 </a>
@@ -188,7 +188,7 @@
         <div class="panel-heading" role="tab" id="dmarcAttributes">
             <h4 class="panel-title">
                 <a role="button" data-toggle="collapse" data-parent="#listNotAuthenticated-SubTest" href="#collapsedmarcAttributes-{{result.id}}" aria-expanded="false" aria-controls="collapsedmarcAttributes">
-                    <span class="more-less childRowPlusImage plusSymbol"></span>
+                    <span class="more-less childRowPlusImage childPlusSymbol"></span>
                     {{result.jsonResponse.signature.subtests.dmarc.title}}
                     <span class="pull-right status {{result.jsonResponse.signature.subtests.dmarc.statusClass}}">{{result.jsonResponse.signature.subtests.dmarc.displayedMark}}</span>
                 </a>
@@ -208,7 +208,7 @@
         <div class="panel-heading" role="tab" id="rDnsAttributes">
             <h4 class="panel-title">
                 <a role="button" data-toggle="collapse" data-parent="#listNotAuthenticated-SubTest" href="#collapserDnsAttributes-{{result.id}}" aria-expanded="false" aria-controls="collapserDnsAttributes">
-                    <span class="more-less childRowPlusImage plusSymbol"></span>
+                    <span class="more-less childRowPlusImage childPlusSymbol"></span>
                     {{result.jsonResponse.signature.subtests.rDns.title}}
                     <span class="pull-right status {{result.jsonResponse.signature.subtests.rDns.statusClass}}">{{result.jsonResponse.signature.subtests.rDns.displayedMark}}</span>
                 </a>
@@ -228,7 +228,7 @@
         <div class="panel-heading" role="tab" id="mxRecordAttributes">
             <h4 class="panel-title">
                 <a role="button" data-toggle="collapse" data-parent="#listNotAuthenticated-SubTest" href="#collapsemxRecordAttributes-{{result.id}}" aria-expanded="false" aria-controls="collapsemxRecordAttributes">
-                   <span class="more-less childRowPlusImage plusSymbol"></span>
+                   <span class="more-less childRowPlusImage childPlusSymbol"></span>
                     <span [innerHTML]="result.jsonResponse.signature.subtests.mxRecord.title"></span>
                     <span class="pull-right status {{result.jsonResponse.signature.subtests.mxRecord.statusClass}}">{{result.jsonResponse.signature.subtests.mxRecord.displayedMark}}</span>
                 </a>
@@ -247,7 +247,7 @@
         <div class="panel-heading" role="tab" id="aRecordAttributes">
             <h4 class="panel-title">
                 <a role="button" data-toggle="collapse" data-parent="#listNotAuthenticated-SubTest" href="#collapseaRecordAttributes-{{result.id}}" aria-expanded="false" aria-controls="collapseaRecordAttributes">
-                    <span class="more-less childRowPlusImage plusSymbol"></span>
+                    <span class="more-less childRowPlusImage childPlusSymbol"></span>
                     <span [innerHTML]="result.jsonResponse.signature.subtests.aRecord.title"></span>
                     <span class="pull-right status {{result.jsonResponse.signature.subtests.aRecord.statusClass}}">{{result.jsonResponse.signature.subtests.aRecord.displayedMark}}</span>
                 </a>
@@ -306,7 +306,7 @@
         <div class="panel-heading" role="tab" id="altAttributes">
             <h4 class="panel-title">
                 <a role="button" data-toggle="collapse" data-parent="#accordion-SubTest" href="#collapsealtAttributes-{{result.id}}" aria-expanded="false" aria-controls="collapsealtAttributes">
-                    <span class="more-less childRowPlusImage plusSymbol"></span>
+                    <span class="more-less childRowPlusImage childPlusSymbol"></span>
                     {{result.jsonResponse.body.subtests.altAttributes.title}}
                     <span class="pull-right status {{result.jsonResponse.body.subtests.altAttributes.statusClass}}">{{result.jsonResponse.body.subtests.altAttributes.displayedMark}}</span>
                 </a>
@@ -328,7 +328,7 @@
         <div class="panel-heading" role="tab" id="forbiddenTags">
             <h4 class="panel-title">
                 <a role="button" data-toggle="collapse" data-parent="#accordion-SubTest" href="#collapseforbiddenTags-{{result.id}}" aria-expanded="false" aria-controls="collapseforbiddenTags">
-                    <span class="more-less childRowPlusImage plusSymbol"></span>
+                    <span class="more-less childRowPlusImage childPlusSymbol"></span>
                     {{result.jsonResponse.body.subtests.forbiddenTags.title}}
                     <span class="pull-right status {{result.jsonResponse.body.subtests.forbiddenTags.statusClass}}">{{result.jsonResponse.body.subtests.forbiddenTags.displayedMark}}</span>
                 </a>
@@ -345,7 +345,7 @@
         <div class="panel-heading" role="tab" id="shorturl">
             <h4 class="panel-title">
                 <a role="button" data-toggle="collapse" data-parent="#accordion-SubTest" href="#collapseshorturl-{{result.id}}" aria-expanded="false" aria-controls="collapseshorturl">
-                    <span class="more-less childRowPlusImage plusSymbol"></span>
+                    <span class="more-less childRowPlusImage childPlusSymbol"></span>
                     {{result.jsonResponse.body.subtests.shorturl.title}}
                     <span class="pull-right status {{result.jsonResponse.body.subtests.shorturl.statusClass}}">{{result.jsonResponse.body.subtests.shorturl.displayedMark}}</span>
                 </a>
@@ -362,7 +362,7 @@
         <div class="panel-heading" role="tab" id="listUnsubscribe">
             <h4 class="panel-title">
                 <a role="button" data-toggle="collapse" data-parent="#accordion-SubTest" href="#collapselistUnsubscribe-{{result.id}}" aria-expanded="false" aria-controls="collapselistUnsubscribe">
-                    <span class="more-less childRowPlusImage plusSymbol"></span>
+                    <span class="more-less childRowPlusImage childPlusSymbol"></span>
                     {{result.jsonResponse.body.subtests.listUnsubscribe.title}}
                     <span class="pull-right status {{result.jsonResponse.body.subtests.listUnsubscribe.statusClass}}">{{result.jsonResponse.body.subtests.listUnsubscribe.displayedMark}}</span>
                 </a>

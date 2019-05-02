@@ -78,6 +78,20 @@ a[aria-expanded="true"] .plusSymbol{
    
 }
 
+a[aria-expanded="false"] .childPlusSymbol{
+    background-image: url(https://www.mail-tester.com/images/plus.png);
+    background-repeat: no-repeat;
+    background-position: center center;
+    
+}
+	
+a[aria-expanded="true"] .childPlusSymbol{
+    background-image: url(https://www.mail-tester.com/images/minus.png);
+    background-repeat: no-repeat;
+    background-position: center center;
+   
+}
+
 .headerRowPlusImage{
 	border: 0px solid;
     background-color: #ececec;

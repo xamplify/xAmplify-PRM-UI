@@ -1239,6 +1239,8 @@ showTimeLineView(){
 
   clearPaginationValues() {
     try{
+    this.searchKey = null;
+    this.pagination.searchKey = null;
     this.pagination.pageIndex = 1;
     this.pagination = new Pagination();
     this.barChartCliked = false;
