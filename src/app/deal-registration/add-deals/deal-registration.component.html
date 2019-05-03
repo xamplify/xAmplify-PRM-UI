@@ -90,7 +90,15 @@
               <input type="text" maxlength="100" class="form-control" [(ngModel)]=" dealRegistration.lastName" [ngModelOptions]="{standalone: true}"
                 id="lastName" (input)="validateField('lastName',false)" [disabled]="isVendor" />
             </div>
-
+          <div class="form-group" [attr.class]="title" style="margin-bottom: 20px">
+            <label class="control-label">Role
+              <font style="color: #f55d7a">
+                <b>*</b>
+              </font>
+            </label>
+            <input type="text" maxlength="100" name="role" class="form-control" [(ngModel)]=" dealRegistration.role" [ngModelOptions]="{standalone: true}"
+              id="role" (input)="validateField('role',false)" [disabled]="isVendor" />
+          </div>
 
             <div class="form-group" *ngIf="dealRegistration.email" style="margin-bottom: 20px">
               <label class="control-label">Email
@@ -201,15 +209,7 @@
               id="title" (input)="validateField('title',false)" [disabled]="isVendor" />
           </div>
 
-          <div class="form-group" [attr.class]="title" style="margin-bottom: 20px">
-            <label class="control-label">Role
-              <font style="color: #f55d7a">
-                <b>*</b>
-              </font>
-            </label>
-            <input type="text" maxlength="100" name="role" class="form-control" [(ngModel)]=" dealRegistration.role" [ngModelOptions]="{standalone: true}"
-              id="role" (input)="validateField('role',false)" [disabled]="isVendor" />
-          </div>
+         
 
           <div class="form-group" [attr.class]="dealType" style="margin-bottom: 20px">
             <label class="control-label">Deal Type
