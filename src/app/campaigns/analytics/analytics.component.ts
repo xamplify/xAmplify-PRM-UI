@@ -698,9 +698,10 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       }
       console.log('campaign id : ' + this.campaignId);
       this.getCampaignUserViewsCountBarCharts(this.campaignId, this.pagination);
-      this.getDealState(campaignViews);
+     
       this.loading = false;
     }
+       this.getDealState(campaignViews);
     this.loading = false;
   }catch(error){ this.xtremandLogger.error(error);}
   }
