@@ -1040,7 +1040,7 @@ export class DealRegistrationComponent implements OnInit
         property.isCommentSection = !property.isCommentSection;
     }
 
-    showAlert(i:number,question:DealDynamicProperties){
+    deleteComment(i:number,question:DealDynamicProperties){
         try {
             this.logger.info( "Comment in sweetAlert() " + question.id );
             let self = this;
@@ -1054,21 +1054,22 @@ export class DealRegistrationComponent implements OnInit
                 confirmButtonText: 'Yes, delete it!'
 
             }).then( function( myData: any ) {
-                console.log( "ManageContacts showAlert then()" + myData );
-                self.deleteComment(i, question );
+                console.log( "deleteComment showAlert then()" + question );
+                self.dealRegistrationService.deleteProperty(question).subscribe(response=>{
+                    self.remove(i, question.id)
+    
+                },error=> this.logger.error( error, "DealRegistrationComponent", "deleteComment()" ))
             }, function( dismiss: any ) {
                 console.log( 'you clicked on option' + dismiss );
             });
         } catch ( error ) {
-            this.logger.error( error, "ManageContactsComponent", "deleteContactListAlert()" );
+            this.logger.error( error, "DealRegistrationComponent", "deleteCommentAlert()" );
         }
     }
-    deleteComment(i:number,question:DealDynamicProperties){
-         if(question.isSaved){
-            this.dealRegistrationService.deleteProperty(question).subscribe(response=>{
-                this.remove(i, question.id)
-
-            },error=> this.logger.error( error, "DealRegistrationComponent", "deleteComment()" ))
+    showAlert(i:number,question:DealDynamicProperties){
+        if( question.isSaved ){
+            this.deleteComment(i,question);
+            
         }else{
             this.remove(i, question.id);
         }
