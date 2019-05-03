@@ -1655,11 +1655,18 @@ showTimeLineView(){
     }
 
     eventHandler( keyCode: any ) { if ( keyCode === 13 ) { this.search(); } }
-
+    
     search() {
         this.pagination.searchKey = this.searchKey;
         this.pagination.pageIndex = 1;
-        this.listCampaignViews(this.campaignId, this.campaignViewsPagination);
+        if(this.paginationType == 'campaignViews' || this.paginationType == 'sentEmailData'){
+            this.campaignViewsPagination.searchKey = this.searchKey;
+            this.campaignViewsPagination.pageIndex = 1;
+            this.listCampaignViews(this.campaignId, this.campaignViewsPagination);
+        }else if(this.paginationType == 'coutrywiseUsers'){
+            this.getCampaignUsersWatchedInfo(this.countryCode);
+        }
+        
     }
 
   ngOnInit() {
