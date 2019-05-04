@@ -646,10 +646,11 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   /*****************LOAD CONTACTLISTS WITH PAGINATION START *****************/
 
   loadContactLists(contactListsPagination: Pagination) {
+    contactListsPagination.isLoading = true;
     this.paginationType = 'updatestatuscontactlists';
      if(this.authenticationService.isOnlyPartner()) { this.socialCampaign.isPartner = false;}
-     this.contactListsPagination.filterKey = 'isPartnerUserList';
-     this.contactListsPagination.filterValue = this.socialCampaign.isPartner; /// if its true normal contacts wil come, partner contacts for false
+    //  this.contactListsPagination.filterKey = 'isPartnerUserList';
+    //  this.contactListsPagination.filterValue = this.socialCampaign.isPartner; /// if its true normal contacts wil come, partner contacts for false
      this.contactService.loadContactLists(contactListsPagination)
       .subscribe(
       (data: any) => {
@@ -659,7 +660,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
       (error: any) => {
         this.logger.error(error);
       },
-      () => this.logger.info('MangeContactsComponent loadContactLists() finished')
+      () => contactListsPagination.isLoading = false
       );
   }
 
@@ -1039,4 +1040,17 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   cancel() {
     this._location.back(); // <-- go back to previous location on cancel
   }
+
+  searchContactList(){
+    this.contactListsPagination.pageIndex = 1;
+    this.loadContactLists(this.contactListsPagination);
+  }
+
+  resetSearchContactList(){
+    this.contactListsPagination.pageIndex = 1;
+    this.contactListsPagination.searchKey = null;
+    this.loadContactLists(this.contactListsPagination);
+    
+  }
+
 }

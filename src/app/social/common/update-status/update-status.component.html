@@ -400,17 +400,28 @@
 			</div>
 			<div class="col-sm-12 dashboard-stat2 p0 clearfix" *ngIf="isSocialCampaign && !alias">
 				<div class="portlet-body clearfix p10">
-					<ng-container *ngIf="authenticationService.module.hasSocialStatusRole || (authenticationService.user.hasCompany && authenticationService.module.isOrgAdmin)">
+					<ng-container >
 						<div class="form-group m0 pull-right">
-							<h5 class="control-label font-purple-intense pr10 inline">Partner Contacts</h5>
+							<!--<h5 class="control-label font-purple-intense pr10 inline">Partner Contacts</h5>
 							<switch [status]="socialCampaign.isPartner" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
 							 [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
 							 (statusChange)="toggleContactLists()">
-							</switch>
+							</switch>-->
 						</div>
 					</ng-container>
-					<div class="form-group m0">
-						<h6 class="caption-subject font-red-sunglo uppercase bold mt0">Recipient Lists</h6>
+
+					<div class="row">
+						<div class="col-sm-8 col-xs-12">
+							<h6 class="caption-subject font-red-sunglo uppercase bold mt10 mb10 ml0">Recipient Lists</h6>
+						</div>
+						<div class="col-sm-4 col-xs-12">
+							<div style="position: relative; padding-bottom: 5px;">
+                          <input type="text" [(ngModel)]="contactListsPagination.searchKey" [ngModelOptions]="{standalone: true}" class="form-control"
+                          placeholder="Search for a list">
+                          <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="contactListsPagination.searchKey" (click)="resetSearchContactList()"></button>
+                          <button type="submit" class="search-box-item-click" (click)="searchContactList()"><i class="fa fa-search"></i></button>
+                        </div>
+						</div>
 					</div>
 
 					<section *ngIf="contactListsPagination.pagedItems?.length === 0">
@@ -420,6 +431,7 @@
 						<a class='btn btn-info' style="color: #fff;" [routerLink]="['/home/contacts/add']">Add Contacts</a>
 					</section>
 					<section *ngIf="contactListsPagination.pagedItems?.length > 0">
+						<ngx-loading [show]="contactListsPagination.isLoading"></ngx-loading>
 						<div class="table-responsive">
 							<table class="table tgrid" id='contact-list-table'>
 								<thead>
@@ -428,6 +440,7 @@
 										<th>List Name</th>
 										<th>Created On</th>
 										<th>Recipients</th>
+										<th>Type</th>
 										<th>Preview</th>
 									</tr>
 								</thead>
@@ -449,6 +462,10 @@
 										</td>
 										<td>{{contactList.createdDate | date:'mediumDate'}}</td>
 										<td> <h6 class='m0'>{{contactList.noOfContacts}}</h6> </td>
+										<td>
+											<span *ngIf="contactList.partnerUserList">partner</span>
+											<span *ngIf="!contactList.partnerUserList">contact</span>
+										</td>
 										<td class='m0'>
 											<a class="actions-block pull-left"><i class="fa fa-eye" (click)="loadContactsOnPreview(contactList, contactsPagination);"></i></a>
 										</td>
