@@ -34,6 +34,9 @@ export class EmailSpamCheckComponent implements OnChanges, OnInit {
     this.emailSpamCheckService.listEmailSpamScoresByEmailTemplateId(emailTemplateId).subscribe(
       result => {
         this.results = result;
+        if(this.results.length == 0){
+            this.send();
+        }
       },
       (error: any) => console.log(error),
       () => {
