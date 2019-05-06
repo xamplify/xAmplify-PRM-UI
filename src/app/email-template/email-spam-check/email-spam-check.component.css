@@ -25,21 +25,30 @@
 .warning { background-color: #f2ca72; }
 
 .status.warning {
-    border-color: #d59416;
-    background-color: #f3bd47;
+    border-color: #d59416 !important;
+    background-color: #f3bd47 !important;
 }
+
 .status.failure {
-    border-color: #d5163a;
-    background-color: #f35957;
-}
-.status.failure {
-    border-color: #d5163a;
-    background-color: #f35957;
+    border-color: #d5163a !important;
+    background-color: #f35957 !important;
 }
 .status.success {
-    border-color: #93941f;
-    background-color: #c4c51a;
-    text-indent: -9999px;
+    border-color: #93941f !important;
+    background-color: #c4c51a !important;
+    text-indent: -9999px !important; 
+}
+
+
+.status-warning {
+    color: #d59416 !important;
+}
+
+.status-failure {
+    color: #d5163a !important;
+}
+.status-success {
+    color: #93941f !important;
 }
 
  .status {
@@ -105,5 +114,8 @@ a[aria-expanded="true"] .childPlusSymbol{
     margin: -10px 6px 0px -15px;
     width: 37px;
     min-height: 37px;
+}
+.text-blue{
+	color: #5b9bd1;
 }
 	

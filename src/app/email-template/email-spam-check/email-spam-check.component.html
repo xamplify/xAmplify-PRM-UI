@@ -74,113 +74,113 @@
                 <ng-container>
                   <table class="table tgrid">
                   <tr *ngIf="result.jsonResponse.spamAssassin.rules.DKIM_ADSP_CUSTOM_MED">
-						<td>{{result.jsonResponse.spamAssassin.rules.DKIM_ADSP_CUSTOM_MED.score}}</td>
-						<td>{{result.jsonResponse.spamAssassin.rules.DKIM_ADSP_CUSTOM_MED.code}}</td>
+						<td class="{{result.jsonResponse.spamAssassin.rules.DKIM_ADSP_CUSTOM_MED.status}}">{{result.jsonResponse.spamAssassin.rules.DKIM_ADSP_CUSTOM_MED.score}}</td>
+						<td class="text-blue">{{result.jsonResponse.spamAssassin.rules.DKIM_ADSP_CUSTOM_MED.code}}</td>
 						<td>{{result.jsonResponse.spamAssassin.rules.DKIM_ADSP_CUSTOM_MED.description}}<br>
 						{{result.jsonResponse.spamAssassin.rules.DKIM_ADSP_CUSTOM_MED.solution}}
 						</td>
 					</tr>
 					<tr *ngIf="result.jsonResponse.spamAssassin.rules.DKIM_SIGNED">
-						<td>{{result.jsonResponse.spamAssassin.rules.DKIM_SIGNED.score}}</td>
-						<td>{{result.jsonResponse.spamAssassin.rules.DKIM_SIGNED.code}}</td>
+						<td class="{{result.jsonResponse.spamAssassin.rules.DKIM_SIGNED.status}}">{{result.jsonResponse.spamAssassin.rules.DKIM_SIGNED.score}}</td>
+						<td class="text-blue">{{result.jsonResponse.spamAssassin.rules.DKIM_SIGNED.code}}</td>
 						<td>{{result.jsonResponse.spamAssassin.rules.DKIM_SIGNED.description}}<br>
 						{{result.jsonResponse.spamAssassin.rules.DKIM_SIGNED.solution}}
 						</td>
 					</tr>
 					<tr *ngIf="result.jsonResponse.spamAssassin.rules.DKIM_VALID">
-						<td>{{result.jsonResponse.spamAssassin.rules.DKIM_VALID.score}}</td>
-						<td>{{result.jsonResponse.spamAssassin.rules.DKIM_VALID.code}}</td>
+						<td class="{{result.jsonResponse.spamAssassin.rules.DKIM_VALID.status}}">{{result.jsonResponse.spamAssassin.rules.DKIM_VALID.score}}</td>
+						<td class="text-blue">{{result.jsonResponse.spamAssassin.rules.DKIM_VALID.code}}</td>
 						<td>{{result.jsonResponse.spamAssassin.rules.DKIM_VALID.description}}<br>
 						{{result.jsonResponse.spamAssassin.rules.DKIM_VALID.solution}}
 						</td>
 					</tr>
 					 <tr *ngIf="result.jsonResponse.spamAssassin.rules.DKIM_VALID_EF">
-						<td>{{result.jsonResponse.spamAssassin.rules.DKIM_VALID_EF.score}}</td>
-						<td>{{result.jsonResponse.spamAssassin.rules.DKIM_VALID_EF.code}}</td>
+						<td class="{{result.jsonResponse.spamAssassin.rules.DKIM_VALID_EF.status}}">{{result.jsonResponse.spamAssassin.rules.DKIM_VALID_EF.score}}</td>
+						<td class="text-blue">{{result.jsonResponse.spamAssassin.rules.DKIM_VALID_EF.code}}</td>
 						<td>{{result.jsonResponse.spamAssassin.rules.DKIM_VALID_EF.description}}<br>
 						{{result.jsonResponse.spamAssassin.rules.DKIM_VALID_EF.solution}}
 						</td>
 					</tr>
 					<tr *ngIf="result.jsonResponse.spamAssassin.rules.FORGED_GMAIL_RCVD">
-						<td>{{result.jsonResponse.spamAssassin.rules.FORGED_GMAIL_RCVD.score}}</td>
-						<td>{{result.jsonResponse.spamAssassin.rules.FORGED_GMAIL_RCVD.code}}</td>
+						<td class="{{result.jsonResponse.spamAssassin.rules.FORGED_GMAIL_RCVD.status}}">{{result.jsonResponse.spamAssassin.rules.FORGED_GMAIL_RCVD.score}}</td>
+						<td class="text-blue">{{result.jsonResponse.spamAssassin.rules.FORGED_GMAIL_RCVD.code}}</td>
 						<td>{{result.jsonResponse.spamAssassin.rules.FORGED_GMAIL_RCVD.description}}<br>
 						{{result.jsonResponse.spamAssassin.rules.FORGED_GMAIL_RCVD.solution}}
 						</td>
 					</tr>
 					<tr *ngIf="result.jsonResponse.spamAssassin.rules.FREEMAIL_FORGED_FROMDOMAIN">
-						<td>{{result.jsonResponse.spamAssassin.rules.FREEMAIL_FORGED_FROMDOMAIN.score}}</td>
-						<td>{{result.jsonResponse.spamAssassin.rules.FREEMAIL_FORGED_FROMDOMAIN.code}}</td>
+						<td class="{{result.jsonResponse.spamAssassin.rules.FREEMAIL_FORGED_FROMDOMAIN.status}}">{{result.jsonResponse.spamAssassin.rules.FREEMAIL_FORGED_FROMDOMAIN.score}}</td>
+						<td class="text-blue">{{result.jsonResponse.spamAssassin.rules.FREEMAIL_FORGED_FROMDOMAIN.code}}</td>
 						<td>{{result.jsonResponse.spamAssassin.rules.FREEMAIL_FORGED_FROMDOMAIN.description}}<br>
 						{{result.jsonResponse.spamAssassin.rules.FREEMAIL_FORGED_FROMDOMAIN.solution}}
 						</td>
 					</tr>
 					<tr *ngIf="result.jsonResponse.spamAssassin.rules.FREEMAIL_FROM">
-						<td>{{result.jsonResponse.spamAssassin.rules.FREEMAIL_FROM.score}}</td>
-						<td>{{result.jsonResponse.spamAssassin.rules.FREEMAIL_FROM.code}}</td>
+						<td class="{{result.jsonResponse.spamAssassin.rules.FREEMAIL_FROM.status}}">{{result.jsonResponse.spamAssassin.rules.FREEMAIL_FROM.score}}</td>
+						<td class="text-blue">{{result.jsonResponse.spamAssassin.rules.FREEMAIL_FROM.code}}</td>
 						<td>{{result.jsonResponse.spamAssassin.rules.FREEMAIL_FROM.description}}<br>
 						{{result.jsonResponse.spamAssassin.rules.FREEMAIL_FROM.solution}}
 						</td>
 					</tr>
 					<tr *ngIf="result.jsonResponse.spamAssassin.rules.HEADER_FROM_DIFFERENT_DOMAINS">
-						<td>{{result.jsonResponse.spamAssassin.rules.HEADER_FROM_DIFFERENT_DOMAINS.score}}</td>
-						<td>{{result.jsonResponse.spamAssassin.rules.HEADER_FROM_DIFFERENT_DOMAINS.code}}</td>
+						<td class="{{result.jsonResponse.spamAssassin.rules.HEADER_FROM_DIFFERENT_DOMAINS.status}}">{{result.jsonResponse.spamAssassin.rules.HEADER_FROM_DIFFERENT_DOMAINS.score}}</td>
+						<td class="text-blue">{{result.jsonResponse.spamAssassin.rules.HEADER_FROM_DIFFERENT_DOMAINS.code}}</td>
 						<td>{{result.jsonResponse.spamAssassin.rules.HEADER_FROM_DIFFERENT_DOMAINS.description}}<br>
 						{{result.jsonResponse.spamAssassin.rules.HEADER_FROM_DIFFERENT_DOMAINS.solution}}
 						</td>
 					</tr>
 					<tr *ngIf="result.jsonResponse.spamAssassin.rules.HTML_MESSAGE">
-						<td>{{result.jsonResponse.spamAssassin.rules.HTML_MESSAGE.score}}</td>
-						<td>{{result.jsonResponse.spamAssassin.rules.HTML_MESSAGE.code}}</td>
+						<td class="{{result.jsonResponse.spamAssassin.rules.HTML_MESSAGE.status}}">{{result.jsonResponse.spamAssassin.rules.HTML_MESSAGE.score}}</td>
+						<td class="text-blue">{{result.jsonResponse.spamAssassin.rules.HTML_MESSAGE.code}}</td>
 						<td>{{result.jsonResponse.spamAssassin.rules.HTML_MESSAGE.description}}<br>
 						{{result.jsonResponse.spamAssassin.rules.HTML_MESSAGE.solution}}
 						</td>
 					</tr>
 					<tr *ngIf="result.jsonResponse.spamAssassin.rules.NML_ADSP_CUSTOM_MED">
-						<td>{{result.jsonResponse.spamAssassin.rules.NML_ADSP_CUSTOM_MED.score}}</td>
-						<td>{{result.jsonResponse.spamAssassin.rules.NML_ADSP_CUSTOM_MED.code}}</td>
+						<td class="{{result.jsonResponse.spamAssassin.rules.NML_ADSP_CUSTOM_MED.status}}">{{result.jsonResponse.spamAssassin.rules.NML_ADSP_CUSTOM_MED.score}}</td>
+						<td class="text-blue">{{result.jsonResponse.spamAssassin.rules.NML_ADSP_CUSTOM_MED.code}}</td>
 						<td>{{result.jsonResponse.spamAssassin.rules.NML_ADSP_CUSTOM_MED.description}}<br>
 						{{result.jsonResponse.spamAssassin.rules.NML_ADSP_CUSTOM_MED.solution}}
 						</td>
 					</tr>
 					<tr *ngIf="result.jsonResponse.spamAssassin.rules.SPF_PASS">
-						<td>{{result.jsonResponse.spamAssassin.rules.SPF_PASS.score}}</td>
-						<td>{{result.jsonResponse.spamAssassin.rules.SPF_PASS.code}}</td>
+						<td class="{{result.jsonResponse.spamAssassin.rules.SPF_PASS.status}}">{{result.jsonResponse.spamAssassin.rules.SPF_PASS.score}}</td>
+						<td class="text-blue">{{result.jsonResponse.spamAssassin.rules.SPF_PASS.code}}</td>
 						<td>{{result.jsonResponse.spamAssassin.rules.SPF_PASS.description}}<br>
 						{{result.jsonResponse.spamAssassin.rules.SPF_PASS.solution}}
 						</td>
 					</tr>
 					<tr *ngIf="result.jsonResponse.spamAssassin.rules.MIME_HTML_ONLY">
-						<td>{{result.jsonResponse.spamAssassin.rules.MIME_HTML_ONLY.score}}</td>
-						<td>{{result.jsonResponse.spamAssassin.rules.MIME_HTML_ONLY.code}}</td>
+						<td class="{{result.jsonResponse.spamAssassin.rules.MIME_HTML_ONLY.status}}">{{result.jsonResponse.spamAssassin.rules.MIME_HTML_ONLY.score}}</td>
+						<td class="text-blue">{{result.jsonResponse.spamAssassin.rules.MIME_HTML_ONLY.code}}</td>
 						<td>{{result.jsonResponse.spamAssassin.rules.MIME_HTML_ONLY.description}}<br>
 						{{result.jsonResponse.spamAssassin.rules.MIME_HTML_ONLY.solution}}
 						</td>
 					</tr>
 					<tr *ngIf="result.jsonResponse.spamAssassin.rules.T_KAM_HTML_FONT_INVALID">
-						<td>{{result.jsonResponse.spamAssassin.rules.T_KAM_HTML_FONT_INVALID.score}}</td>
-						<td>{{result.jsonResponse.spamAssassin.rules.T_KAM_HTML_FONT_INVALID.code}}</td>
+						<td class="{{result.jsonResponse.spamAssassin.rules.T_KAM_HTML_FONT_INVALID.status}}">{{result.jsonResponse.spamAssassin.rules.T_KAM_HTML_FONT_INVALID.score}}</td>
+						<td class="text-blue">{{result.jsonResponse.spamAssassin.rules.T_KAM_HTML_FONT_INVALID.code}}</td>
 						<td>{{result.jsonResponse.spamAssassin.rules.T_KAM_HTML_FONT_INVALID.description}}<br>
 						{{result.jsonResponse.spamAssassin.rules.T_KAM_HTML_FONT_INVALID.solution}}
 						</td>
 					</tr>
 					<tr *ngIf="result.jsonResponse.spamAssassin.rules.T_REMOTE_IMAGE">
-						<td>{{result.jsonResponse.spamAssassin.rules.T_REMOTE_IMAGE.score}}</td>
-						<td>{{result.jsonResponse.spamAssassin.rules.T_REMOTE_IMAGE.code}}</td>
+						<td class="{{result.jsonResponse.spamAssassin.rules.T_REMOTE_IMAGE.status}}">{{result.jsonResponse.spamAssassin.rules.T_REMOTE_IMAGE.score}}</td>
+						<td class="text-blue">{{result.jsonResponse.spamAssassin.rules.T_REMOTE_IMAGE.code}}</td>
 						<td>{{result.jsonResponse.spamAssassin.rules.T_REMOTE_IMAGE.description}}<br>
 						{{result.jsonResponse.spamAssassin.rules.T_REMOTE_IMAGE.solution}}
 						</td>
 					</tr>
 					<tr *ngIf="result.jsonResponse.spamAssassin.rules.T_SPF_HELO_TEMPERROR">
-						<td>{{result.jsonResponse.spamAssassin.rules.T_SPF_HELO_TEMPERROR.score}}</td>
-						<td>{{result.jsonResponse.spamAssassin.rules.T_SPF_HELO_TEMPERROR.code}}</td>
+						<td class="{{result.jsonResponse.spamAssassin.rules.T_SPF_HELO_TEMPERROR.status}}">{{result.jsonResponse.spamAssassin.rules.T_SPF_HELO_TEMPERROR.score}}</td>
+						<td class="text-blue">{{result.jsonResponse.spamAssassin.rules.T_SPF_HELO_TEMPERROR.code}}</td>
 						<td>{{result.jsonResponse.spamAssassin.rules.T_SPF_HELO_TEMPERROR.description}}<br>
 						{{result.jsonResponse.spamAssassin.rules.T_SPF_HELO_TEMPERROR.solution}}
 						</td>
 					</tr>
 					<tr *ngIf="result.jsonResponse.spamAssassin.rules.URIBL_BLOCKED">
-						<td>{{result.jsonResponse.spamAssassin.rules.URIBL_BLOCKED.score}}</td>
-						<td>{{result.jsonResponse.spamAssassin.rules.URIBL_BLOCKED.code}}</td>
+						<td class="{{result.jsonResponse.spamAssassin.rules.URIBL_BLOCKED.status}}">{{result.jsonResponse.spamAssassin.rules.URIBL_BLOCKED.score}}</td>
+						<td class="text-blue">{{result.jsonResponse.spamAssassin.rules.URIBL_BLOCKED.code}}</td>
 						<td>{{result.jsonResponse.spamAssassin.rules.URIBL_BLOCKED.description}}<br>
 						{{result.jsonResponse.spamAssassin.rules.URIBL_BLOCKED.solution}}
 						</td>
@@ -344,7 +344,7 @@
         <div id="collapseBlacklists-{{result.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="links">
             <div class="panel-body">
                 <h5 class="mt0 f-w-600" [innerHTML]="result.jsonResponse.blacklists.description"></h5>
-                <h6 [innerHTML]="result.jsonResponse.blacklists.messages"></h6>
+                <span [innerHTML]="result.jsonResponse.blacklists.messages"></span>
             </div>
         </div>
     </div>
@@ -377,7 +377,7 @@
         </div>
         <div id="collapsealtAttributes-{{result.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="altAttributes">
             <div class="panel-body">
-                <h5 class="mt0 f-w-600">{{result.jsonResponse.body.subtests.altAttributes.description}}</h5>
+                <h5 class="mt0 f-w-600" [innerHTML]="result.jsonResponse.body.subtests.altAttributes.description"><!-- {{result.jsonResponse.body.subtests.altAttributes.description}} --></h5>
                 <ul>
                     <ng-container *ngFor="let item of result.jsonResponse.body.subtests.altAttributes.imagesWithoutAlt">
                         <li [innerHTML]="item"></li>
