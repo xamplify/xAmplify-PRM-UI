@@ -1497,6 +1497,7 @@ showTimeLineView(){
         object["STOP DURATION"] = endTime.toDateString().split(' ').slice(1).join(' ') + ' ' + endHours;
         /*object["IP ADDRESS"] = this.downloadCsvList[i].ipAddress;*/
         object["PLATFORM"] = this.downloadCsvList[i].os[0].toUpperCase() + this.downloadCsvList[i].os.substr(1).toLowerCase();
+        object["CITY"] = this.downloadCsvList[i].city;
         object["STATE"] = this.downloadCsvList[i].state;
         object["COUNTRY"] = this.downloadCsvList[i].country;
       }
