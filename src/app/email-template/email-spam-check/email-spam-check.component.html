@@ -129,6 +129,20 @@
 						{{result.jsonResponse.spamAssassin.rules.HEADER_FROM_DIFFERENT_DOMAINS.solution}}
 						</td>
 					</tr>
+					<tr *ngIf="result.jsonResponse.spamAssassin.rules.HTML_FONT_LOW_CONTRAST">
+						<td class="{{result.jsonResponse.spamAssassin.rules.HTML_FONT_LOW_CONTRAST.status}}">{{result.jsonResponse.spamAssassin.rules.HTML_FONT_LOW_CONTRAST.score}}</td>
+						<td class="text-blue">{{result.jsonResponse.spamAssassin.rules.HTML_FONT_LOW_CONTRAST.code}}</td>
+						<td>{{result.jsonResponse.spamAssassin.rules.HTML_FONT_LOW_CONTRAST.description}}<br>
+						{{result.jsonResponse.spamAssassin.rules.HTML_FONT_LOW_CONTRAST.solution}}
+						</td>
+					</tr>
+					<tr *ngIf="result.jsonResponse.spamAssassin.rules.HTML_IMAGE_RATIO_02">
+						<td class="{{result.jsonResponse.spamAssassin.rules.HTML_IMAGE_RATIO_02.status}}">{{result.jsonResponse.spamAssassin.rules.HTML_IMAGE_RATIO_02.score}}</td>
+						<td class="text-blue">{{result.jsonResponse.spamAssassin.rules.HTML_IMAGE_RATIO_02.code}}</td>
+						<td>{{result.jsonResponse.spamAssassin.rules.HTML_IMAGE_RATIO_02.description}}<br>
+						{{result.jsonResponse.spamAssassin.rules.HTML_IMAGE_RATIO_02.solution}}
+						</td>
+					</tr>
 					<tr *ngIf="result.jsonResponse.spamAssassin.rules.HTML_MESSAGE">
 						<td class="{{result.jsonResponse.spamAssassin.rules.HTML_MESSAGE.status}}">{{result.jsonResponse.spamAssassin.rules.HTML_MESSAGE.score}}</td>
 						<td class="text-blue">{{result.jsonResponse.spamAssassin.rules.HTML_MESSAGE.code}}</td>

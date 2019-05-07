@@ -1387,7 +1387,8 @@ showTimeLineView(){
     try{
     this.loading = true;
     if (this.downloadTypeName === 'donut') {
-      this.logListName = 'Campaign_Views_Logs.csv';
+     /* this.logListName = 'Campaign_Views_Logs.csv';*/
+        this.logListName = this.donultModelpopupTitle + '_views';
       this.downloadCsvList = this.totalListOfemailLog;
     } else if (this.downloadTypeName === 'emailAction') {
         this.logListName = 'Email_Action_Logs.csv';
