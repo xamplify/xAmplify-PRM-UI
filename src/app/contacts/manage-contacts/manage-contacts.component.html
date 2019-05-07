@@ -672,7 +672,7 @@
 															[class.contact-list-selected]="selectedContactListIds.indexOf(contact.id)>-1"
 															lang="{{contact.name}}" name="campaignContact[]"
 															value="{{contact.id}}" id="{{contact.id}}"
-															(click)="highlightRow(contact.id,contact.emailId,contact.firstName,contact.lastName,$event)" />
+															(click)="highlightRow(contact.id,contact,$event)" />
 														</td>
 														<td align="center"
 															*ngIf="contactsByType.selectedCategory == 'invalid'">
