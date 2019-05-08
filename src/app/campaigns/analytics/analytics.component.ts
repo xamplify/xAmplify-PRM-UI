@@ -1659,15 +1659,25 @@ showTimeLineView(){
     eventHandler( keyCode: any ) { if ( keyCode === 13 ) { this.search(); } }
     
     search() {
-        this.pagination.searchKey = this.searchKey;
-        this.pagination.pageIndex = 1;
+        
         if(this.paginationType == 'campaignViews' || this.paginationType == 'sentEmailData'){
             this.campaignViewsPagination.searchKey = this.searchKey;
             this.campaignViewsPagination.pageIndex = 1;
             this.listCampaignViews(this.campaignId, this.campaignViewsPagination);
         }else if(this.paginationType == 'coutrywiseUsers'){
+            this.pagination.searchKey = this.searchKey;
+            this.pagination.pageIndex = 1;
             this.getCampaignUsersWatchedInfo(this.countryCode);
+        }else if(this.paginationType = 'emailAction'){
+            this.emailActionListPagination.searchKey = this.searchKey;
+            this.emailActionListPagination.pageIndex = 1;
+            this.emailActionList(this.campaignId, this.campaignReport.emailActionType, this.emailActionListPagination);
+        }else if(this.paginationType = 'usersWatch'){
+            this.pagination.searchKey = this.searchKey;
+            this.pagination.pageIndex = 1;
+            this.usersWatchList(this.campaignId, this.pagination);
         }
+        
         
     }
 

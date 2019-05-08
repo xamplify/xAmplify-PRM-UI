@@ -995,10 +995,18 @@
  data-backdrop="static" data-keyboard="false">
 	<div class="modal-dialog modal-lg modal-css" role="document" style="right:0">
 		<div class="modal-content">
-			<div class="modal-header">
+			<div class="modal-header col-xs-12">
 				<a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i class="fa fa-times"></i></a>
-				<h4 class="modal-title" id="usersWatchListModalLabel">Recipients who have watched the campaign</h4>
-				<div class="btn-group pull-right" style="margin-top: -4px; cursor:pointer; color: #7d8c98">
+				<h4 class="modal-title col-xs-6" id="usersWatchListModalLabel">Recipients who have watched the campaign</h4>
+				<div class='col-xs-4'>
+			        <input type="text"  [(ngModel)]="searchKey"  [ngModelOptions]="{standalone: true}"
+			        class="form-control" placeholder="Search " (keypress)="eventHandler($event.keyCode)">
+			        <button class="clear-search" *ngIf="searchKey" (click)="searchKey=''">
+					  <span class="glyphicon glyphicon-remove" style="font-size: 1em"></span>
+					</button>
+			        <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search" style="color:black !important"></i></button>
+   				 </div>
+				<div class="btn-group pull-right" style="margin-top: 20px; cursor:pointer; color: #7d8c98">
 					<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none;margin-top: -15px;padding-right: 10px;margin-right: 21px; float:right;">
 						<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
 					</span>
@@ -1012,7 +1020,11 @@
 					<div class="table-responsive">
 						<app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
 						<ng-container *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError">
-							<table class="table tgrid">
+						<div class="alert alert-info alert-dismissible" *ngIf="campaignReport.usersWatchList?.length == 0">
+						  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+						  No results found.
+						</div>
+							<table class="table tgrid" *ngIf="campaignReport.usersWatchList?.length != 0">
 								<thead>
 									<tr>
 										<th style="font-size: 12px; font-weight: 500;">NAME</th>
@@ -1072,13 +1084,22 @@
  data-backdrop="static" data-keyboard="false">
 	<div class="modal-dialog modal-lg modal-css" role="document" style="right:0">
 		<div class="modal-content">
-			<div class="modal-header">
+			<div class="modal-header col-xs-12">
 				<a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i class="fa fa-times"></i></a>
-				<h4 class="modal-title" id="emailActionListModalLabel" *ngIf="campaignReport.emailActionType === 'open'">Emails opened
+				<h4 class="modal-title col-xs-4" id="emailActionListModalLabel" *ngIf="campaignReport.emailActionType === 'open'">Emails opened
 					by recipients</h4>
-				<h4 class="modal-title" id="emailActionListModalLabel" *ngIf="campaignReport.emailActionType === 'click'">Recipients
+				<h4 class="modal-title col-xs-4" id="emailActionListModalLabel" *ngIf="campaignReport.emailActionType === 'click'">Recipients
 					who clicked a URL</h4>
-				<div class="btn-group pull-right" style="margin-top: -4px; cursor:pointer; color: #7d8c98">
+					
+				<div class='col-xs-4'>
+			        <input type="text"  [(ngModel)]="searchKey"  [ngModelOptions]="{standalone: true}"
+			        class="form-control" placeholder="Search " (keypress)="eventHandler($event.keyCode)">
+			        <button class="clear-search" *ngIf="searchKey" (click)="searchKey=''">
+					  <span class="glyphicon glyphicon-remove" style="font-size: 1em"></span>
+					</button>
+			        <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search" style="color:black !important"></i></button>
+   				 </div>
+				<div class="btn-group pull-right" style="margin-top: 23px; cursor:pointer; color: #7d8c98">
 					<div class="sort-dropdown">
 						<select class="form-control" [(ngModel)]="selectedSortedOption" (ngModelChange)="getSortedResult(campaign.campaignId,$event)">
 							<option *ngFor="let sortOption of sortByDropDown" [ngValue]="sortOption">{{sortOption.name}}</option>
@@ -1099,7 +1120,11 @@
 						</div>
 						<app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
 						<ng-container *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError">
-							<table class="table tgrid">
+						<div class="alert alert-info alert-dismissible" *ngIf="campaignReport.emailLogs?.length == 0">
+						  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+						  No results found.
+						</div>
+							<table class="table tgrid" *ngIf="campaignReport.emailLogs?.length != 0">
 								<thead>
 									<tr>
 										<th style="width:40%">NAME</th>
