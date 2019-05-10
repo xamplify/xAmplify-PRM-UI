@@ -39,6 +39,7 @@ export class AuthenticationService {
     isAddedByVendor = false;
     selectedVendorId: number;
     venorMyProfileReport: any;
+    isXamplifyUrl = false;
     constructor(private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger:XtremandLogger) {
         this.REST_URL = this.SERVER_URL + 'xtremand-rest/';
         
@@ -294,7 +295,20 @@ export class AuthenticationService {
         module.isVendor = false;
         this.isAddedByVendor = false;
         swal.close();
-        if(!this.router.url.includes('/userlock')){ this.router.navigate(['/']) };
+        if ( !this.router.url.includes( '/userlock' ) ) {
+            
+            if ( window.location.hostname.includes('xamplify') ) {
+                this.isXamplifyUrl = true;
+            }else{
+                this.isXamplifyUrl = false;
+            }
+            
+            if ( this.isXamplifyUrl ) {
+                window.location.href = 'https://www.xamplify.com/';
+            } else {
+                this.router.navigate( ['/'] )
+            }
+        };
     }
 
     navigateToDashboardIfUserExists(){
