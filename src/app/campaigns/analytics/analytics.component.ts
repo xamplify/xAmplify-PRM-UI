@@ -508,6 +508,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   }
 
   resetRsvpPagination(){
+      this.searchKey = '';
       this.rsvpDetailAnalyticsPagination = new Pagination();
   }
 
@@ -1668,14 +1669,34 @@ showTimeLineView(){
             this.pagination.searchKey = this.searchKey;
             this.pagination.pageIndex = 1;
             this.getCampaignUsersWatchedInfo(this.countryCode);
-        }else if(this.paginationType = 'emailAction'){
+        }else if(this.paginationType == 'emailAction'){
             this.emailActionListPagination.searchKey = this.searchKey;
             this.emailActionListPagination.pageIndex = 1;
             this.emailActionList(this.campaignId, this.campaignReport.emailActionType, this.emailActionListPagination);
-        }else if(this.paginationType = 'usersWatch'){
+        }else if(this.paginationType == 'usersWatch'){
             this.pagination.searchKey = this.searchKey;
             this.pagination.pageIndex = 1;
             this.usersWatchList(this.campaignId, this.pagination);
+        }else if(this.paginationType == 'donutCampaign'){
+            this.pagination.searchKey = this.searchKey;
+            this.pagination.pageIndex = 1;
+            this.campaignViewsDonut(this.donultModelpopupTitle);
+        }else if(this.paginationType == 'invities'){
+            this.rsvpDetailAnalyticsPagination.searchKey = this.searchKey;
+            this.rsvpDetailAnalyticsPagination.pageIndex = 1;
+            this.getRsvpInvitiesDetails();
+        }else if(this.paginationType == 'email open'){
+            this.rsvpDetailAnalyticsPagination.searchKey = this.searchKey;
+            this.rsvpDetailAnalyticsPagination.pageIndex = 1;
+            this.getRsvpEmailOpenDetails();
+        }else if(this.paginationType === 'YES' || this.paginationType === 'NO' || this.paginationType === 'MAYBE' || this.paginationType === 'NOTYET'){
+            this.rsvpDetailAnalyticsPagination.searchKey = this.searchKey;
+            this.rsvpDetailAnalyticsPagination.pageIndex = 1;
+            this.getRsvpDetails(this.rsvpResposeType);
+        }else if(this.paginationType === 'email not open'){
+            this.rsvpDetailAnalyticsPagination.searchKey = this.searchKey;
+            this.rsvpDetailAnalyticsPagination.pageIndex = 1;
+            this.getRsvpEmailNotOpenDetails();
         }
         
         
