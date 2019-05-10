@@ -647,6 +647,7 @@
 															id="checkAllExistingInvalidContacts" />
 														</td>
 														<th style="width: 25%" *ngIf="!isPartner">NAME</th>
+														<th *ngIf="contactsByType.selectedCategory =='invalid' && !isPartner" class="hidden-xs">EMAIL CATEGORY</th>
 														<th style="width: 25%" *ngIf="isPartner">Entity info</th>
 														<th *ngIf="isPartner" class="hidden-xs">VERTICAL</th>
 														<th *ngIf="isPartner" class="hidden-xs">REGION</th>
@@ -683,12 +684,15 @@
 															lang="{{contact.name}}" name="invalidContact[]"
 															value="{{contact.id}}" id="{{contact.id}}"
 															(click)="invalidContactsSelectedUserIds(contact.id,contact.emailId,contact.firstName,contact.lastName,$event)" />
-														</td>
+														</td> 
 														<td *ngIf="isPartner"><app-user-info
 																[isPartnerEntityInfo]="true" [isPartnerInfo]="true"
 																[userInfo]="contact"> </app-user-info></td>
 														<td *ngIf="!isPartner"><app-user-info
 																[isContactCompanyInfo]="true" [userInfo]="contact"></app-user-info>
+														</td>
+														<td *ngIf="contactsByType.selectedCategory =='invalid' && !isPartner" class="hidden-xs" >{{contact.emailCategory}}
+														<span *ngIf="!contact.emailCategory"><b>-</b></span>
 														</td>
 
 														<td *ngIf="isPartner" class="hidden-xs" >{{contact.vertical}}</td>

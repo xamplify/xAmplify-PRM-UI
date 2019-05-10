@@ -575,7 +575,7 @@
 														<th *ngIf="isPartner">TYPE</th>
 														<th *ngIf="isPartner">CATEGORY</th>
 														<th class="hidden-xs" *ngIf="!isPartner">Phone</th>
-														<th class="text-center hidden-xs" *ngIf="!isPartner">Job Title</th>
+														<th class="hidden-xs" *ngIf="!isPartner">Job Title</th>
 														<th class="text-center hidden-xs"  *ngIf="!isPartner">ADDRESS</th>
 														<th class="text-center hidden-xs"  *ngIf="isPartner"></th>
 															<!-- <th class='text-center'>MORE</th> -->
@@ -872,12 +872,13 @@
 													id="checkAllExistingInvalidContacts" /></th>
 												<th style="width: 25%" *ngIf="isPartner">Entity info</th>
 												<th style="width: 25%" *ngIf="!isPartner">NAME</th>
+												<th *ngIf="contactsByType.selectedCategory == 'invalid' && !isPartner">EMAIL CATEGORY</th>
 												<th *ngIf="isPartner">VERTICAL</th>
 														<th *ngIf="isPartner">REGION</th>
 														<th *ngIf="isPartner">TYPE</th>
 														<th *ngIf="isPartner">CATEGORY</th>
 														<th class="hidden-xs" *ngIf="!isPartner">Phone</th>
-														<th class="text-center hidden-xs" *ngIf="!isPartner">Job Title</th>
+														<th class="hidden-xs" *ngIf="!isPartner">Job Title</th>
 														<th class="text-center hidden-xs"  *ngIf="!isPartner">ADDRESS</th>
 														<th class="text-center hidden-xs"  *ngIf="isPartner"></th>
 												<th class="text-center" *ngIf="contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'unsubscribe'" style="width:17%">ACTIONS</th>
@@ -903,6 +904,9 @@
 												<td *ngIf="!isPartner">
 													<app-user-info [isContactCompanyInfo]="true" [userInfo]="allcontacts"> </app-user-info>
 												</td>
+												<td *ngIf="contactsByType.selectedCategory =='invalid' && !isPartner" class="hidden-xs" >{{allcontacts.emailCategory}}
+														<span *ngIf="!allcontacts.emailCategory"><b>-</b></span>
+														</td>
 												<td *ngIf="isPartner">{{allcontacts.vertical}}</td>
 														<td *ngIf="isPartner">{{allcontacts.region}}</td>
 														<td *ngIf="isPartner">{{allcontacts.partnerType}}</td>
