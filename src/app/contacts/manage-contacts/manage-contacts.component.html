@@ -16,7 +16,7 @@
 				*ngIf="! showListOfContactList"></i></li>
 			<li
 				*ngIf="! showListOfContactList && contactsByType.selectedCategory != 'non-active' && contactsByType.selectedCategory != 'invalid' && contactsByType.selectedCategory != 'unsubscribe'"><span
-				class="capitalize">{{contactsByType.selectedCategory}}
+				class="capitalize">Registered<!-- {{contactsByType.selectedCategory}} -->
 					{{checkingContactTypeName}}s</span></li>
 			<li
 				*ngIf="! showListOfContactList && contactsByType.selectedCategory == 'non-active'"><span
@@ -88,7 +88,7 @@
 													<div class="number numberCss"
 														style="font-weight: 300 !important; color: #FFFFFF;">{{contactsByType.activeContactsCount}}</div>
 													<div class="desc" style="font-size: 20px; color: #FFFFFF;">
-														Active
+														Registered
 														<!-- {{checkingContactTypeName}}s -->
 													</div>
 												</div>

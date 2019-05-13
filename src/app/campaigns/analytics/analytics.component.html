@@ -769,12 +769,26 @@
 				<h4 class="pull-left" *ngIf="rsvpResposeType === 'NO'">People who have responded <b class="highlet">NO</b></h4>
 				<h4 class="pull-left" *ngIf="rsvpResposeType === 'MAYBE'">People who have responded <b class="highlet">MAYBE</b></h4>
 				<h4 class="pull-left" *ngIf="rsvpResposeType === 'NOTYET'">People who have<b class="highlet">NOT YET RESPONDED </b></h4>
+			
+			<div class="pull-right col-xs-4">
+			        <input type="text"  [(ngModel)]="searchKey"  [ngModelOptions]="{standalone: true}"
+			        class="form-control" placeholder="Search " (keypress)="eventHandler($event.keyCode)">
+			        <button class="clear-search" *ngIf="searchKey" (click)="searchKey=''">
+					  <span class="glyphicon glyphicon-remove" style="font-size: 1em"></span>
+					</button>
+			        <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search" style="color:black !important"></i></button>
+			</div>
+			
 			</div>
 
 			<div class="col-xs-12">
 				<div class="table-responsive">
 					<!--  <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader> -->
-					<ng-container>
+					<div class="alert alert-info alert-dismissible" *ngIf="rsvpDetailsList?.length == 0">
+						  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+						  No results found.
+						</div>
+					<ng-container *ngIf="rsvpDetailsList?.length != 0">
 						<table class="table tgrid">
 							<thead>
 								<tr>
