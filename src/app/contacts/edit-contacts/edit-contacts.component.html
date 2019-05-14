@@ -579,7 +579,7 @@
 														<th class="text-center hidden-xs"  *ngIf="!isPartner">ADDRESS</th>
 														<th class="text-center hidden-xs"  *ngIf="isPartner"></th>
 															<!-- <th class='text-center'>MORE</th> -->
-															<th class='text-center' style="width:16%" *ngIf="(hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId) || authenticationService.isOnlyPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()) && !isSynchronizationList || isPartner || contactsByType.selectedCategory == 'non-active'">ACTIONS</th>
+														<th class='text-center' style="width:16%" *ngIf="((hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId) || authenticationService.isOnlyPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()) && !isSynchronizationList || isPartner || contactsByType.selectedCategory == 'non-active') && !clickBoard">ACTIONS</th>
 														</tr>
 													</thead>
 													<tbody>
@@ -700,7 +700,7 @@
 																	*ngIf="contact.isShowDetails">Less</span>
 															</button>
 															</td>
-															<td align="center">
+															<td align="center" *ngIf="!clickBoard">
 															<!-- <button  *ngIf="isPartner || contactsByType.selectedCategory == 'non-active'" id='more_less_button_{{i}}'
 																(click)="contact.isShowDetails = ! contact.isShowDetails">
 																<span *ngIf="!contact.isShowDetails">More</span> <span
