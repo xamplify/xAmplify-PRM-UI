@@ -575,11 +575,9 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     for (const i in this.socialConnections) {
       if (this.socialConnections[i].active) {
         let source = this.socialConnections[i].source;
-        if(this.socialConnections[i].source !== 'GOOGLE') {
-          const socialStatusProvider = new SocialStatusProvider();
-          socialStatusProvider.socialConnection = this.socialConnections[i];
-          this.socialStatusProviders.push(socialStatusProvider);
-        }
+        const socialStatusProvider = new SocialStatusProvider();
+        socialStatusProvider.socialConnection = this.socialConnections[i];
+        this.socialStatusProviders.push(socialStatusProvider);
       }
     }
   }
