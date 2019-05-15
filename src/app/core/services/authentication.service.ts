@@ -295,7 +295,7 @@ export class AuthenticationService {
         this.isAddedByVendor = false;
         swal.close();
         if ( !this.router.url.includes( '/userlock' ) ) {
-            if ( window.location.hostname.includes( 'xamplify' ) ) {
+            if ( environment.CLIENT_URL ==='https://xamplify.io/' ) {
                 window.location.href = 'https://www.xamplify.com/';
             } else {
                 this.router.navigate( ['/'] )
