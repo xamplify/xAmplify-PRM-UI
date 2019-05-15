@@ -682,6 +682,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
      this.listEmailLogsByCampaignAndUser(campaignViews.campaignId, campaignViews.userId);
     this.getTotalTimeSpentOfCampaigns(campaignViews.userId, campaignViews.campaignId);
     if(this.campaignType==='EVENT' && this.isChannelCampaign){
+        this.resetRsvpPagination();
         this.redistributionCampaignsDetails(campaignViews);
     }
     if(this.campaignType==='SOCIAL'){

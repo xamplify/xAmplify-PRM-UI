@@ -740,7 +740,7 @@
 																	*ngIf="contact.isShowDetails">Less</span>
 															</button> -->
 
-															<button class="btn green" *ngIf="contactsByType.selectedCategory == 'unsubscribe' && (authenticationService.isVendor() || authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner() || authenticationService.isPartner() || authenticationService.isOnlyPartner())"
+															<button class="btn green" *ngIf="contactsByType.selectedCategory == 'unsubscribe' && (hasAllAccess || referenceService.roles.contactsRole || referenceService.roles.partnersRole || authenticationService.isVendor() || authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner() || authenticationService.isPartner() || authenticationService.isOnlyPartner())"
 																(click)="activateUnsubscribedUser(contact.id)">
 																Subscribe
 															</button>
