@@ -660,10 +660,18 @@
 															<td *ngIf="isPartner">
 															<app-user-info [isPartnerEntityInfo]="true" [isPartnerInfo]="true" [userInfo]="contact"> </app-user-info>
 															</td>
-															<td *ngIf="isPartner">{{contact.vertical}}</td>
-														<td *ngIf="isPartner">{{contact.region}}</td>
-														<td *ngIf="isPartner">{{contact.partnerType}}</td>
-														<td *ngIf="isPartner">{{contact.category}}</td>
+															<td class="white-space-transform" *ngIf="isPartner" title="{{contact.vertical}}">{{contact.vertical | slice:0:17}}
+															<span *ngIf="contact.vertical?.length>17">...</span>
+															</td>
+														<td class="white-space-transform" *ngIf="isPartner" title="contact.region">{{contact.region | slice:0:17}}
+														<span *ngIf="contact.region?.length>17">...</span>
+														</td>
+														<td class="white-space-transform" *ngIf="isPartner" title="contact.partnerType">{{contact.partnerType | slice:0:17}}
+														<span *ngIf="contact.partnerType?.length>17">...</span>
+														</td>
+														<td class="white-space-transform" *ngIf="isPartner" title="{{contact.category}}">{{contact.category | slice:0:17}}
+														<span *ngIf="contact.category?.length>17">...</span>
+														</td>
 															<td *ngIf="!isPartner">
 															<app-user-info [isContactCompanyInfo]="true" [userInfo]="contact"> </app-user-info>
 															</td>
@@ -907,10 +915,18 @@
 												<td *ngIf="contactsByType.selectedCategory =='invalid' && !isPartner" class="hidden-xs" >{{allcontacts.emailCategory}}
 														<span *ngIf="!allcontacts.emailCategory"><b>-</b></span>
 														</td>
-												<td *ngIf="isPartner">{{allcontacts.vertical}}</td>
-														<td *ngIf="isPartner">{{allcontacts.region}}</td>
-														<td *ngIf="isPartner">{{allcontacts.partnerType}}</td>
-														<td *ngIf="isPartner">{{allcontacts.category}}</td>
+												<td *ngIf="isPartner" title="allcontacts.vertical">{{allcontacts.vertical | slice:0:17}}
+												<span *ngIf="allcontacts.vertical?.length>17">...</span>
+												</td>
+														<td *ngIf="isPartner" title="allcontacts.region">{{allcontacts.region | slice:0:17}}
+														<span *ngIf="allcontacts.region?.length>17">...</span>
+														</td>
+														<td *ngIf="isPartner" title="allcontacts.partnerType">{{allcontacts.partnerType | slice:0:17}}
+														<span *ngIf="allcontacts.partnerType?.length>17">...</span>
+														</td>
+														<td *ngIf="isPartner" title="allcontacts.category">{{allcontacts.category | slice:0:17}}
+														<span *ngIf="allcontacts.category?.length>17">...</span>
+														</td>
 												<td class="hidden-xs" *ngIf="!isPartner">
 												<div *ngIf="allcontacts.mobileNumber" [class.disabled]="true" style="pointer-events: none !important; cursor: auto;">
 													<int-phone-prefix [(ngModel)]="allcontacts.mobileNumber"  [ngModelOptions]="{standalone: true}"></int-phone-prefix>

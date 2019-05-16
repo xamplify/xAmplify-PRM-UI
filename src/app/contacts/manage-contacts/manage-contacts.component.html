@@ -694,10 +694,18 @@
 														<span *ngIf="!contact.emailCategory"><b>-</b></span>
 														</td>
 
-														<td *ngIf="isPartner" class="hidden-xs" >{{contact.vertical}}</td>
-														<td *ngIf="isPartner" class="hidden-xs" >{{contact.region}}</td>
-														<td *ngIf="isPartner" class="hidden-xs" >{{contact.partnerType}}</td>
-														<td *ngIf="isPartner" class="hidden-xs" >{{contact.category}}</td>
+														<td *ngIf="isPartner" class="hidden-xs" title="{{contact.vertical}}">{{contact.vertical | slice:0:17}}
+														<span *ngIf="contact.vertical?.length>17">...</span>
+														</td>
+														<td *ngIf="isPartner" class="hidden-xs" title="{{contact.region}}">{{contact.region | slice:0:17}}
+														<span *ngIf="contact.region?.length>17">...</span>
+														</td>
+														<td *ngIf="isPartner" class="hidden-xs" title="{{contact.partnerType}}">{{contact.partnerType | slice:0:17}}
+														<span *ngIf="contact.partnerType?.length>17">...</span>
+														</td>
+														<td *ngIf="isPartner" class="hidden-xs" title="{{contact.category}}">{{contact.category | slice:0:17}}
+														<span *ngIf="contact.category?.length>17">...</span>
+														</td>
 														<td class="hidden-xs" *ngIf="!isPartner">
 															<div *ngIf="contact.mobileNumber" [class.disabled]="true"
 																style="pointer-events: none !important; cursor: auto;">

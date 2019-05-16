@@ -457,10 +457,18 @@ img:hover {
 													</h5>
 													<h6 class='mt0'>{{newContact.contactCompany}}</h6>
 												</td> -->
-												<td class="hidden-xs">{{newContact.vertical}} </td>
-												<td class="hidden-xs">{{newContact.region}} </td>
-												<td class="hidden-xs">{{newContact.partnerType}} </td>
-												<td class="hidden-xs hidden-sm">{{newContact.category}} </td>
+												<td class="hidden-xs">{{newContact.vertical | slice:0:20}}
+												<span *ngIf="newContact.vertical?.length>20">...</span>
+												 </td>
+												<td class="hidden-xs">{{newContact.region | slice:0:20}} 
+												<span *ngIf="newContact.region?.length>20">...</span>
+												</td>
+												<td class="hidden-xs">{{newContact.partnerType | slice:0:20}}
+												<span *ngIf="newContact.partnerType?.length>20">...</span>
+												 </td>
+												<td class="hidden-xs hidden-sm">{{newContact.category | slice:0:20}}
+												<span *ngIf="newContact.category?.length>20">...</span>
+												 </td>
 												<td class="hidden-xs">
 													<h5 *ngIf="newContact?.address" class='mb0'>{{newContact.address}}</h5>
 													<h5 class='mb0'><span *ngIf="newContact?.city">{{newContact.city}},&nbsp;</span><span *ngIf="newContact?.state">{{newContact.state}},</span></h5>
@@ -608,10 +616,18 @@ img:hover {
 													<int-phone-prefix [(ngModel)]="contact.mobileNumber"  [ngModelOptions]="{standalone: true}"></int-phone-prefix>
 													</div>
 												</td> -->
-												<td class="hidden-xs">{{contact.vertical}}</td>
-												<td class="hidden-xs">{{contact.region}}</td>
-												<td class="hidden-xs">{{contact.partnerType}}</td>
-												<td class="hidden-xs hidden-sm">{{contact.category}}</td>
+												<td class="hidden-xs white-space-transform" title="{{contact.vertical}}">{{contact.vertical | slice:0:17}}
+												<span *ngIf="contact.vertical?.length>17">...</span>
+												</td>
+												<td class="hidden-xs white-space-transform" title="{{contact.region}}">{{contact.region | slice:0:17}}
+												<span *ngIf="contact.region?.length>17">...</span>
+												</td>
+												<td class="hidden-xs white-space-transform"  title="{{contact.partnerType}}">{{contact.partnerType | slice:0:17}}
+												<span *ngIf="contact.partnerType?.length>17">...</span>
+												</td>
+												<td class="hidden-xs hidden-sm white-space-transform" title="{{contact.category}}">{{contact.category | slice:0:17}}
+												<span *ngIf="contact.category?.length>17">...</span>
+												</td>
 												<!-- <td class="hidden-xs">
 													<h5 class='mb0' title="{{contact.jobTitle}}">{{contact.jobTitle | slice:0:20}}
 													<span *ngIf="contact.jobTitle?.length>20">...</span>
