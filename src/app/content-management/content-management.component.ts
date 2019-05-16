@@ -148,6 +148,7 @@ export class ContentManagementComponent implements OnInit {
           }
         this.paginatedList = this.searchList;
         this.pagination = new Pagination();
+        this.pager.totalPages = undefined;
         this.setPage( 1 ); } else { }
     }
     setPage( page: number ) {
