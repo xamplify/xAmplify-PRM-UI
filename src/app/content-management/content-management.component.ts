@@ -47,6 +47,9 @@ export class ContentManagementComponent implements OnInit {
                    { 'name': 'Upload Date (DESC)', 'value': 'lastModifiedDate'},
       ];
     sortOption: any = this.sortOptions[0];
+    pageNumber: any;
+    numberPerPage = [{ 'name': '12', 'value': 12 }, { 'name': '24', 'value': 24 }, { 'name': '48', 'value': 48 },
+    { 'name': 'All', 'value': 0 }];
 
     constructor(public referenceService: ReferenceService,
         public actionsDescription: ActionsDescription, public pagination: Pagination, public socialPagerService: SocialPagerService,
@@ -58,19 +61,20 @@ export class ContentManagementComponent implements OnInit {
            this.customResponse = new CustomResponse( 'SUCCESS', 'File(s) processed successfully.', true );
            this.referenceService.contentManagementLoader = false;
         }
+        this.pageNumber = this.numberPerPage[0];
     }
 
     sortByOption( event: any) {
         this.referenceService.loading( this.httpRequestLoader, true );
         try {
             this.sortOption = event;
-            if ( event.name == "Upload Date(ASD)" ) {
+            if ( event.name.includes('DESC')) {
                 this.sortList = this.list.sort(( a, b ) => new Date( b.lastModifiedDate ).getTime() - new Date( a.lastModifiedDate ).getTime() );
-            } else if ( event.name == "Upload Date(DSD)" ) {
+            } else if ( event.name.includes('ASC')) {
                 this.sortList = this.list.sort(( a, b ) =>  new Date( a.lastModifiedDate ).getTime() - new Date( b.lastModifiedDate ).getTime() );
-            }  else if ( event.name == "File Name(A-Z)" ) {
+            }  else if ( event.name.includes('A-Z')) {
                 this.sortList = this.list.sort((a,b)=> {return a.fileName.localeCompare(b.fileName)});
-            } else if ( event.name == "File Name(Z-A)" ) {
+            } else if ( event.name.includes('Z-A')) {
                 this.sortList = this.list.sort((a,b)=> {return b.fileName.localeCompare(a.fileName)});
             }
             this.referenceService.loading( this.httpRequestLoader, false );
@@ -144,6 +148,7 @@ export class ContentManagementComponent implements OnInit {
           }
         this.paginatedList = this.searchList;
         this.pagination = new Pagination();
+        this.pager.totalPages = undefined;
         this.setPage( 1 ); } else { }
     }
     setPage( page: number ) {
@@ -160,6 +165,14 @@ export class ContentManagementComponent implements OnInit {
       $('#grid_'+file.id).click();
     }
 
+    selectedPageNumber(event){
+      if(event === 0) { event = this.paginatedList.length;}
+     // this.paginatedList = this.list.slice(0,event);
+      this.referenceService.loading( this.httpRequestLoader, true );
+      this.pageSize = event;
+      this.setPage( 1 );
+      this.referenceService.loading( this.httpRequestLoader, false );
+    }
     getSelectedFiles( file: any, id: any, event: any ) {
         let isChecked = $( '#grid_' + id ).is( ':checked' );
         if ( isChecked ) {

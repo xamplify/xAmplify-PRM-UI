@@ -32,11 +32,11 @@
 				 class="fa fa-angle-right"></i></li>
 			<li style="color: #888;" *ngIf="isDataShare" title="{{campaign.campaignName}}">
 				{{campaign.campaignName | slice: 0: 35}}<span *ngIf="campaign.campaignName?.length>35">...</span>
-				<b *ngIf="isNavigatedThroughAnalytics && campaignType != 'EVENT'" style="color:#0195da">(Data Sharing Enabled)</b><b
-				 *ngIf="!isPartnerEnabledAnalyticsAccess && campaignType != 'EVENT'" style="color:#0195da">(Interactive Data)</b></li>
+				<b *ngIf="isNavigatedThroughAnalytics" style="color:#0195da">(Data Sharing Enabled)</b><b
+				 *ngIf="!isPartnerEnabledAnalyticsAccess" style="color:#0195da">(Interactive Data)</b></li>
 			<li style="color: #888;" *ngIf="!isDataShare" title="{{campaign.campaignName}}">
 				{{campaign.campaignName | slice: 0: 35}}<span *ngIf="campaign.campaignName?.length>35">...</span>
-				<b *ngIf="isNavigatedThroughAnalytics && campaignType != 'EVENT'" style="color:#ed1d24">(Data Sharing Disabled)</b></li>
+				<b *ngIf="isNavigatedThroughAnalytics" style="color:#ed1d24">(Data Sharing Disabled)</b></li>
 		</ul>
 		<!--<app-analytics-loader [campaignType]="campaignType" *ngIf="loading"></app-analytics-loader>-->
 	</div>
@@ -131,12 +131,12 @@
 								<i class="fa fa-users"></i>
 							</div>
 							<div class="camp-details">
-								<div class="camp-title" *ngIf="!authenticationService.isVendor()">Contact List Info</div>
-								<div class="camp-title" *ngIf="authenticationService.isVendor()">Partners List Info</div>
+								<div class="camp-title" *ngIf="isNavigatedThroughAnalytics || (!authenticationService.isVendor() && !isChannelCampaign); else other">Contact List Info</div>
+								<ng-template #other><div class="camp-title">Partners List Info</div></ng-template>
 								<div class="camp-number">
 									<b class="m0">{{campaingContactLists?.length}}
-										<span *ngIf="!authenticationService.isVendor()">Contact Lists</span>
-										<span *ngIf="authenticationService.isVendor()">Partner Lists</span>
+										<span *ngIf="isNavigatedThroughAnalytics || (!authenticationService.isVendor()  && !isChannelCampaign); else partnerlist">Contact Lists</span>
+										<ng-template #partnerlist><span>Partner Lists</span></ng-template>
 									</b>
 								</div>
 								<div class="camp-desc" *ngIf="isDataShare">
@@ -169,7 +169,7 @@
 						<div class="col-xs-12 col-sm-8 emails-info" id="campaignreportvendor" [hidden]="mainLoader">
 
 							<div [hidden]="mainLoader" class="col-xs-2 rsvp_tile_padding">
-								<button class="portlet light color1-invert crcb" (click)="getRsvpInvitiesDetails()" [disabled]="campaignReport.totalInvitiesCount < 1">
+								<button class="portlet light color1-invert crcb" (click)="getRsvpInvitiesDetails();searchKey=''" [disabled]="campaignReport.totalInvitiesCount < 1 || !isPartnerEnabledAnalyticsAccess">
 									<div class="portlet-body text-center">
 										<i class="fa fa-envelope"></i>
 										<h1>
@@ -182,7 +182,7 @@
 							</div>
 
 							<div [hidden]="mainLoader" class="col-xs-2 rsvp_tile_padding">
-								<button class="portlet light color1-invert crcb" (click)="getRsvpEmailOpenDetails()" [disabled]="campaignReport.totalEmailOpenCount < 1">
+								<button class="portlet light color1-invert crcb" (click)="getRsvpEmailOpenDetails();searchKey=''" [disabled]="campaignReport.totalEmailOpenCount < 1 || !isDataShare ">
 									<div class="portlet-body text-center">
 										<i class="fa fa-envelope-open"></i>
 										<h1>
@@ -194,7 +194,7 @@
 								</button>
 							</div>
 							<div class="col-xs-2 rsvp_tile_padding">
-								<button class="portlet light color1-invert crcb" (click)="getRsvpDetails('YES')" [disabled]="campaignReport.totalYesCount < 1">
+								<button class="portlet light color1-invert crcb" (click)="getRsvpDetails('YES');searchKey=''" [disabled]="campaignReport.totalYesCount < 1">
 									<div class="portlet-body text-center">
 										<i class="fa fa-check-circle"></i>
 										<h1>
@@ -206,7 +206,7 @@
 								</button>
 							</div>
 							<div [hidden]="mainLoader" class="col-xs-2 rsvp_tile_padding">
-								<button class="portlet light color1-invert crcb" (click)="getRsvpDetails('NO')" [disabled]="campaignReport.totalNoCount < 1">
+								<button class="portlet light color1-invert crcb" (click)="getRsvpDetails('NO');searchKey=''" [disabled]="campaignReport.totalNoCount < 1">
 									<div class="portlet-body text-center">
 										<i class="fa fa-times-circle"></i>
 										<h1>
@@ -218,7 +218,7 @@
 								</button>
 							</div>
 							<div [hidden]="mainLoader" class="col-xs-2 rsvp_tile_padding">
-								<button class="portlet light color1-invert crcb" (click)="getRsvpDetails('MAYBE')" [disabled]="campaignReport.totalMayBeCount < 1">
+								<button class="portlet light color1-invert crcb" (click)="getRsvpDetails('MAYBE');searchKey=''" [disabled]="campaignReport.totalMayBeCount < 1">
 									<div class="portlet-body text-center">
 										<i class="fa fa-question-circle"></i>
 										<h1>
@@ -230,7 +230,7 @@
 								</button>
 							</div>
 							<div [hidden]="mainLoader" class="col-xs-2 rsvp_tile_padding">
-								<button class="portlet light color1-invert crcb" (click)="getRsvpDetails('NOTYET')" [disabled]="campaignReport.totalNotYetRespondedCount < 1">
+								<button class="portlet light color1-invert crcb" (click)="getRsvpDetails('NOTYET');searchKey=''" [disabled]="campaignReport.totalNotYetRespondedCount < 1 || !isPartnerEnabledAnalyticsAccess">
 									<div class="portlet-body text-center">
 										<i class="fa fa-exclamation-circle"></i>
 										<h1>
@@ -444,7 +444,7 @@
 										</section>
 										<h5 style="text-align: center; color: #00a6e8; margin-top: 3.5em;">Lifetime</h5>
 									</div>
-									<div class="col-xs-4 text-center" [class.disabled]="(campaignReport.thisMonthViewsCount < 1 || !isDataShare) ? true : null"
+									<div class="col-xs-4 text-center" [class.disabled]="campaignReport.thisMonthViewsCount < 1 || (!isDataShare) ? true : null"
 									 (click)="campaignViewsDonut('current-month')">
 										<section class="percentage-circle" style="cursor: pointer">
 											<app-donut-chart [percentageValue]="campaignReport.thisMonthViewsCount" [totalValue]="campaignReport.emailSentCount"> </app-donut-chart>
@@ -475,16 +475,16 @@
 				<div class="row" *ngIf="isPartnerEnabledAnalyticsAccess || isDataShare">
 					<div class="col-xs-12 col-sm-12 p-5x">
 						<div class="col-xs-12 p-5x">
-							<div class="row" *ngIf="!campaignViews">
+							<div class="row" *ngIf="!campaignViews || totalCampaignViewsLoader">
 								<div class="porlet light" style="background: white;">
 									<div class="portlet-body clearfix">
 										<app-list-loader style="background: white"></app-list-loader>
 									</div>
 								</div>
 							</div>
-							<div class="portlet light" [hidden]="mainLoader || hasClientError || httpRequestLoader.isLoading">
-								<div class="portlet-title">
-									<div class="caption">
+							<div class="portlet light" [hidden]="mainLoader || hasClientError || !campaignViews || totalCampaignViewsLoader">
+								<div class="portlet-title col-xs-12">
+									<div class="caption col-xs-8">
 										<span class="caption-subject font-red-sunglo" style="font-size: 15px !important;">
 											<span *ngIf="campaignType==='VIDEO'">TOTAL VIEWS FOR THIS CAMPAIGN</span>
 											<span *ngIf="campaignType==='SOCIAL'">TOTAL REDISTRIBUTED FOR THIS CAMPAIGN</span>
@@ -493,7 +493,24 @@
 											<span *ngIf="campaignType === 'EVENT' && !isChannelCampaign">CAMPAIGN ANALYTICS</span>
 										</span>
 									</div>
-									<div class="btn-group pull-right" style="margin-top: -10px; cursor:pointer; color: #7d8c98">
+
+
+								<div class="col-xs-3" style="margin-top: -7px;padding-right: 0px;">
+									<input type="text" [(ngModel)]="searchKey"
+										[ngModelOptions]="{standalone: true}" class="form-control"
+										placeholder="Search"
+										(keypress)="eventHandler($event.keyCode)">
+									<button class="search-box-item-clear"
+										*ngIf="searchKey" (click)="searchKey=''">
+										<span class="glyphicon glyphicon-remove" style="font-size: 1em"></span>
+										</button>
+									<button type="submit" class="search-box-item-click" style="right: 1px"
+										(click)="search()">
+										<i class="fa fa-search" style="padding: 4px; color: black !important"></i>
+									</button>
+								</div>
+
+								<div class="btn-group pull-right col-xs-1" style="margin-top: -10px; cursor:pointer; color: #7d8c98">
 										<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none;margin-top: 14px;margin-right: 21px; float:right;">
 											<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
 										</span>
@@ -752,12 +769,26 @@
 				<h4 class="pull-left" *ngIf="rsvpResposeType === 'NO'">People who have responded <b class="highlet">NO</b></h4>
 				<h4 class="pull-left" *ngIf="rsvpResposeType === 'MAYBE'">People who have responded <b class="highlet">MAYBE</b></h4>
 				<h4 class="pull-left" *ngIf="rsvpResposeType === 'NOTYET'">People who have<b class="highlet">NOT YET RESPONDED </b></h4>
+			
+			<div class="pull-right col-xs-4">
+			        <input type="text"  [(ngModel)]="searchKey"  [ngModelOptions]="{standalone: true}"
+			        class="form-control" placeholder="Search " (keypress)="eventHandler($event.keyCode)">
+			        <button class="clear-search" *ngIf="searchKey" (click)="searchKey=''">
+					  <span class="glyphicon glyphicon-remove" style="font-size: 1em"></span>
+					</button>
+			        <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search" style="color:black !important"></i></button>
+			</div>
+			
 			</div>
 
 			<div class="col-xs-12">
 				<div class="table-responsive">
 					<!--  <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader> -->
-					<ng-container>
+					<div class="alert alert-info alert-dismissible" *ngIf="rsvpDetailsList?.length == 0">
+						  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+						  No results found.
+						</div>
+					<ng-container *ngIf="rsvpDetailsList?.length != 0">
 						<table class="table tgrid">
 							<thead>
 								<tr>
@@ -978,10 +1009,18 @@
  data-backdrop="static" data-keyboard="false">
 	<div class="modal-dialog modal-lg modal-css" role="document" style="right:0">
 		<div class="modal-content">
-			<div class="modal-header">
+			<div class="modal-header col-xs-12">
 				<a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i class="fa fa-times"></i></a>
-				<h4 class="modal-title" id="usersWatchListModalLabel">Recipients who have watched the campaign</h4>
-				<div class="btn-group pull-right" style="margin-top: -4px; cursor:pointer; color: #7d8c98">
+				<h4 class="modal-title col-xs-6" id="usersWatchListModalLabel">Recipients who have watched the campaign</h4>
+				<div class='col-xs-4'>
+			        <input type="text"  [(ngModel)]="searchKey"  [ngModelOptions]="{standalone: true}"
+			        class="form-control" placeholder="Search " (keypress)="eventHandler($event.keyCode)">
+			        <button class="clear-search" *ngIf="searchKey" (click)="searchKey=''">
+					  <span class="glyphicon glyphicon-remove" style="font-size: 1em"></span>
+					</button>
+			        <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search" style="color:black !important"></i></button>
+   				 </div>
+				<div class="btn-group pull-right" style="margin-top: 20px; cursor:pointer; color: #7d8c98">
 					<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none;margin-top: -15px;padding-right: 10px;margin-right: 21px; float:right;">
 						<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
 					</span>
@@ -995,7 +1034,11 @@
 					<div class="table-responsive">
 						<app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
 						<ng-container *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError">
-							<table class="table tgrid">
+						<div class="alert alert-info alert-dismissible" *ngIf="campaignReport.usersWatchList?.length == 0">
+						  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+						  No results found.
+						</div>
+							<table class="table tgrid" *ngIf="campaignReport.usersWatchList?.length != 0">
 								<thead>
 									<tr>
 										<th style="font-size: 12px; font-weight: 500;">NAME</th>
@@ -1055,13 +1098,22 @@
  data-backdrop="static" data-keyboard="false">
 	<div class="modal-dialog modal-lg modal-css" role="document" style="right:0">
 		<div class="modal-content">
-			<div class="modal-header">
+			<div class="modal-header col-xs-12">
 				<a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i class="fa fa-times"></i></a>
-				<h4 class="modal-title" id="emailActionListModalLabel" *ngIf="campaignReport.emailActionType === 'open'">Emails opened
+				<h4 class="modal-title col-xs-4" id="emailActionListModalLabel" *ngIf="campaignReport.emailActionType === 'open'">Emails opened
 					by recipients</h4>
-				<h4 class="modal-title" id="emailActionListModalLabel" *ngIf="campaignReport.emailActionType === 'click'">Recipients
+				<h4 class="modal-title col-xs-4" id="emailActionListModalLabel" *ngIf="campaignReport.emailActionType === 'click'">Recipients
 					who clicked a URL</h4>
-				<div class="btn-group pull-right" style="margin-top: -4px; cursor:pointer; color: #7d8c98">
+					
+				<div class='col-xs-4'>
+			        <input type="text"  [(ngModel)]="searchKey"  [ngModelOptions]="{standalone: true}"
+			        class="form-control" placeholder="Search " (keypress)="eventHandler($event.keyCode)">
+			        <button class="clear-search" *ngIf="searchKey" (click)="searchKey=''">
+					  <span class="glyphicon glyphicon-remove" style="font-size: 1em"></span>
+					</button>
+			        <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search" style="color:black !important"></i></button>
+   				 </div>
+				<div class="btn-group pull-right" style="margin-top: 23px; cursor:pointer; color: #7d8c98">
 					<div class="sort-dropdown">
 						<select class="form-control" [(ngModel)]="selectedSortedOption" (ngModelChange)="getSortedResult(campaign.campaignId,$event)">
 							<option *ngFor="let sortOption of sortByDropDown" [ngValue]="sortOption">{{sortOption.name}}</option>
@@ -1082,7 +1134,11 @@
 						</div>
 						<app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
 						<ng-container *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError">
-							<table class="table tgrid">
+						<div class="alert alert-info alert-dismissible" *ngIf="campaignReport.emailLogs?.length == 0">
+						  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+						  No results found.
+						</div>
+							<table class="table tgrid" *ngIf="campaignReport.emailLogs?.length != 0">
 								<thead>
 									<tr>
 										<th style="width:40%">NAME</th>
@@ -1240,24 +1296,43 @@
  data-backdrop="static" data-keyboard="false">
 	<div class="modal-dialog modal-lg modal-css" role="document" style="right:0">
 		<div class="modal-content">
-			<div class="modal-header">
-				<a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i class="fa fa-times"></i></a>
-				<h4 class="modal-title" id="emailSentListModalLabel">Sent Email Details</h4>
-				<div class="btn-group pull-right" style="margin-top: -4px; cursor:pointer; color: #7d8c98">
-					<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none;margin-top: -15px;padding-right: 10px;margin-right: 21px; float:right;">
-						<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
+			<div class="modal-header col-xs-12">
+				<!-- <div class='col-xs-12'> -->
+				<h4 class="modal-title col-xs-6" id="emailSentListModalLabel">Sent Email Details</h4>
+				
+				 <div class='col-xs-4'>
+			        <input type="text"  [(ngModel)]="searchKey"  [ngModelOptions]="{standalone: true}"
+			        class="form-control" placeholder="Search " (keypress)="eventHandler($event.keyCode)">
+			        <button class="clear-search" *ngIf="searchKey" (click)="searchKey=''">
+					  <span class="glyphicon glyphicon-remove" style="font-size: 1em"></span>
+					</button>
+			        <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search" style="color:black !important"></i></button>
+   				 </div>
+   				 
+				<div class="btn-group col-xs-1" style="cursor:pointer; color: #7d8c98">
+					<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none; position: absolute; margin-top: 8px;">
+						<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px;"></i>
 					</span>
-					<ul class="dropdown-menu pull-right">
+					<ul class="dropdown-menu pull-right" style="margin-top:30px">
 						<li><a id="delete_button" (click)="downloadEmailLogs()"> Export To Excel </a></li>
 					</ul>
 				</div>
+				<div class="col-xs-1">
+				<a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i class="fa fa-times"></i></a>
+			</div>
+			<!-- </div> -->
 			</div>
 			<div class="modal-body">
 				<div class="row">
 					<div class="table-responsive">
 						<app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
 						<ng-container *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError ">
-							<table class="table tgrid">
+						<div class="alert alert-info alert-dismissible" *ngIf="sentEmailOpenPagination.pagedItems?.length == 0">
+						  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+						  No results found.
+						</div>
+						
+							<table class="table tgrid" *ngIf="sentEmailOpenPagination.pagedItems?.length != 0">
 								<thead>
 									<tr>
 										<th style="font-size: 12px; font-weight: 500;text-align: left;width:25%">NAME</th>
@@ -1299,14 +1374,24 @@
 <div class="modal right fade" id="donutModelPopup" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
 	<div class="modal-dialog modal-lg modal-css" role="document" style="right:0">
 		<div class="modal-content">
-			<div class="modal-header">
+			<div class="modal-header col-xs-12">
 				<a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i class="fa fa-times"></i></a>
-				<h4 class="modal-title" style="text-align: center">
+				<h4 class="modal-title col-xs-6" style="text-align: left">
 					<span *ngIf="donultModelpopupTitle ==='current-month'">This Month's</span>
 					<span *ngIf="donultModelpopupTitle ==='life-time'">Lifetime</span>
 					<span *ngIf="donultModelpopupTitle !=='life-time' && donultModelpopupTitle !=='current-month'">Today's</span>
 					Views</h4>
-				<div class="btn-group pull-right" style="margin-top: -4px; cursor:pointer; color: #7d8c98">
+				
+				 <div class='col-xs-4'>
+			        <input type="text"  [(ngModel)]="searchKey"  [ngModelOptions]="{standalone: true}"
+			        class="form-control" placeholder="Search " (keypress)="eventHandler($event.keyCode)">
+			        <button class="clear-search" *ngIf="searchKey" (click)="searchKey=''">
+					  <span class="glyphicon glyphicon-remove" style="font-size: 1em"></span>
+					</button>
+			        <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search" style="color:black !important"></i></button>
+   				 </div>
+				
+				<div class="btn-group pull-right" style="margin-top: 20px; cursor:pointer; color: #7d8c98">
 					<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none;margin-top: -15px;padding-right: 10px;margin-right: 21px; float:right;">
 						<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
 					</span>
@@ -1321,7 +1406,11 @@
 				<div class="table-responsive">
 					<app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
 					<ng-container *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError ">
-						<table class="table tgrid">
+					<div class="alert alert-info alert-dismissible" *ngIf="donutCampaignViews?.length == 0">
+						  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+						  No results found.
+						</div>
+						<table class="table tgrid" *ngIf="donutCampaignViews?.length != 0">
 							<thead>
 								<tr>
 									<th style="font-size: 12px; font-weight: 500;">NAME</th>
@@ -1370,23 +1459,42 @@
  data-backdrop="static">
 	<div class="modal-dialog modal-css" role="document" style="right:0">
 		<div class="modal-content">
-			<div class="modal-header">
-				<a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i class="fa fa-times"></i></a>
-				<h4 class="m0" style="text-align: center">People Who Have Watched Your Video</h4>
-				<div class="btn-group pull-right" style="margin-top: -4px; cursor:pointer; color: #7d8c98">
-					<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none;margin-top: -10px;padding-right: 0px;margin-right: 15px; float:right;">
-						<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
+			<div class="modal-header col-xs-12">
+				
+				<h4 class="m0 col-xs-6" style="text-align: center ">People Who Have Watched Your Video</h4>
+				
+				 <div class='col-xs-4'>
+			        <input type="text"  [(ngModel)]="searchKey"  [ngModelOptions]="{standalone: true}"
+			        class="form-control" placeholder="Search " (keypress)="eventHandler($event.keyCode)">
+			        <button class="clear-search" *ngIf="searchKey" (click)="searchKey=''">
+					  <span class="glyphicon glyphicon-remove" style="font-size: 1em"></span>
+					</button>
+			        <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search" style="color:black !important"></i></button>
+   				 </div>
+   				 
+				
+				<div class="btn-group col-xs-1" style="cursor:pointer; color: #7d8c98">
+					<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none; position: absolute; margin-top: 8px;">
+						<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px;"></i>
 					</span>
-					<ul class="dropdown-menu pull-right">
+					<ul class="dropdown-menu pull-right" style="margin-top:30px">
 						<li><a id="delete_button" (click)="downloadEmailLogs()"> Export To Excel </a></li>
 					</ul>
 				</div>
+				<div class="col-xs-1">
+				<a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i class="fa fa-times"></i></a>
+			</div>
+				
 			</div>
 			<div class="modal-body clearfix">
 				<div class="table-responsive">
 					<app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
 					<ng-container *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError ">
-						<table class="table tgrid">
+					<div class="alert alert-info alert-dismissible" *ngIf="worldMapUserData?.length == 0">
+						  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+						  No results found.
+						</div>
+						<table class="table tgrid" *ngIf="worldMapUserData?.length != 0">
 							<thead>
 								<tr>
 									<th class="headerCss center">NAME</th>
@@ -1457,8 +1565,8 @@
 				<button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true" (click)="clearPaginationValues()"><i
 					 class="fa fa-times"></i></button>
 				<h4 class="modal-title" id="show_contact-list-info">
-					<span *ngIf="!authenticationService.isVendor()">Contact List Info</span>
-					<span *ngIf="authenticationService.isVendor()">Partners List Info</span>
+					<span *ngIf="isNavigatedThroughAnalytics || (!authenticationService.isVendor()  && !isChannelCampaign); else other">Contact List Info</span>
+					<ng-template #other><span>Partners List Info</span></ng-template>
 				</h4>
 			</div>
 			<div class="modal-body">
@@ -1466,7 +1574,7 @@
 					<div class="col-md-4">
 						<table class="table tgrid">
 							<thead>
-								<th class="center">Contact List name</th>
+								<th class="center">List name</th>
 							</thead>
 							<tbody>
 								<tr *ngFor="let item of campaingContactLists">
@@ -1602,12 +1710,21 @@
 </div>
 
 
-
 <!-- --_Deal Registration -->
-<section *ngIf="isDealRegistration">
-	<div class="page-content">
-		<a (click)="showTimeLineView()" class="pull-right close-circle" style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;">
-		<span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
-		<app-add-leads [campaign]="campaign" [lead]="selectedRow" [dealId]="dealId"></app-add-leads>
+<div class="modal right" id="leadFormModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false"
+ data-backdrop="static" *ngIf="isDealRegistration" style="display: block">
+
+	<div class="modal-dialog modal-css" role="document" style="float: right;position: relative">
+		<div class="modal-content">
+
+			<div class="modal-body">
+			
+					
+						<a (click)="showTimeLineView()" class="pull-right close-circle" style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;">
+							<span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
+						<app-add-leads [campaign]="campaign" [lead]="selectedRow" [dealId]="dealId"></app-add-leads>
+					
+			</div>
+		</div>
 	</div>
-</section>
+</div>

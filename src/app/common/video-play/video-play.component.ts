@@ -90,7 +90,7 @@ appendVideoData( videoFile: SaveVideoFile, divId: string, titleId: string ) {
         const overrideNativeValue = this.referenceService.getBrowserInfoForNativeSet();
         this.videoJSplayer = videojs( "videoId", {
           "controls": true,
-          "autoplay": true,
+          "autoplay": !isPreview,
             html5: {
                 hls: {
                     overrideNative: overrideNativeValue
@@ -101,8 +101,8 @@ appendVideoData( videoFile: SaveVideoFile, divId: string, titleId: string ) {
             },
             function () {
               this.ready(function () {
-                if(isPreview) { $('.vjs-big-play-button').css('display', 'block');}
-                else { this.play(); }
+                // if(this.isPreview) { $('.vjs-big-play-button').css('display', 'block');}
+                // else { this.play(); }
               } )}
         } );
          this.videoControllColors( videoFile );

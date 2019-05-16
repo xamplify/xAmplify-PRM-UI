@@ -767,7 +767,23 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
                             "emailId": self.contactsByType.pagination.pagedItems[i].emailId,
                             "firstName": self.contactsByType.pagination.pagedItems[i].firstName,
                             "lastName": self.contactsByType.pagination.pagedItems[i].lastName,
+                            "jobTitle": self.contactsByType.pagination.pagedItems[i].jobTitle,
+                            "company": self.contactsByType.pagination.pagedItems[i].contactCompany,
+                            "mobileNumber": self.contactsByType.pagination.pagedItems[i].mobileNumber,
+                            "address": self.contactsByType.pagination.pagedItems[i].address,
+                            "city": self.contactsByType.pagination.pagedItems[i].city,
+                            "state": self.contactsByType.pagination.pagedItems[i].state,
+                            "country": self.contactsByType.pagination.pagedItems[i].country,
+                            "zipCode": self.contactsByType.pagination.pagedItems[i].zipCode,
                         }
+                        
+                        if(this.isPartner){
+                            object["vertical"] = self.contactsByType.pagination.pagedItems[i].vertical;
+                            object["region"] = self.contactsByType.pagination.pagedItems[i].region;
+                            object["partnerType"] = self.contactsByType.pagination.pagedItems[i].partnerType;
+                            object["category"] = self.contactsByType.pagination.pagedItems[i].category;
+                        }
+                        
                         console.log( object );
                         self.allselectedUsers.push( object );
                     }
@@ -796,7 +812,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
         }
     }
 
-    highlightRow( contactId: number, email: any, firstName: any, lastName: any, event: any ) {
+    highlightRow( contactId: number, selectedRow: any, event: any ) {
         try {
             // this.invalidContactsSelectedUserIds( contactId, event );
             let isChecked = $( '#' + contactId ).is( ':checked' );
@@ -805,10 +821,26 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
                 $( '#row_' + contactId ).addClass( 'contact-list-selected' );
                 this.selectedContactListIds.push( contactId );
                 var object = {
-                    "emailId": email,
-                    "firstName": firstName,
-                    "lastName": lastName,
+                    "emailId": selectedRow.emailId,
+                    "firstName": selectedRow.firstName,
+                    "lastName": selectedRow.lastName,
+                    "jobTitle": selectedRow.jobTitle,
+                    "company": selectedRow.contactCompany,
+                    "mobileNumber": selectedRow.mobileNumber,
+                    "address": selectedRow.address,
+                    "city": selectedRow.city,
+                    "state": selectedRow.state,
+                    "country": selectedRow.country,
+                    "zipCode": selectedRow.zipCode,
                 }
+                
+                if(this.isPartner){
+                    object["vertical"] = selectedRow.vertical;
+                    object["region"] = selectedRow.region;
+                    object["partnerType"] = selectedRow.partnerType;
+                    object["category"] = selectedRow.category;
+                }
+                
                 this.allselectedUsers.push( object );
                 console.log( this.allselectedUsers );
             } else {
@@ -853,8 +885,15 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
                         },
 
                         ( error: any ) => {
+                            let body: string = error['_body'];
+                            body = body.substring( 1, body.length - 1 );
+                            if(JSON.parse(error._body).message.includes("email addresses in your contact list that aren't formatted properly")){
+                                this.customResponse = new CustomResponse( 'ERROR', JSON.parse(error._body).message, true );
+                            }else{
+                                this.xtremandLogger.errorPage( error );
+                            }
                             this.xtremandLogger.error( error );
-                            this.xtremandLogger.errorPage( error );
+                            console.log( error );
                         },
                         () => this.xtremandLogger.info( "allcontactComponent saveSelectedUsers() finished" )
                         )
@@ -1160,6 +1199,13 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
             $( "#more_less_button_" + i ).attr( 'value', 'more' );
         }
     }
+    
+    eventEnterKeyHandler(keyCode: any){
+        if (keyCode === 13) { 
+            this.contactFilter();
+        }
+    }
+    
 
     contactFilter() {
         try {

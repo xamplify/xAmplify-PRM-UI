@@ -7,13 +7,10 @@
 				[attr.height]="35"
 				[attr.x]="log.startDuration/heatMapData.videoLength*100+'%'"
 				[attr.y]="0"  
-				[ngClass]="{'play-rect': log.actionId === 1, 'skip-rect': log.actionId === 8}">
-				<title *ngIf="log.actionId === 1">
-					played from {{log.startDurationHHMMSS}} - {{log.stopDurationHHMMSS}}
-				</title>
-				<title *ngIf="log.actionId === 8">
-					skipped from {{log.startDurationHHMMSS}} - {{log.stopDurationHHMMSS}}
-				</title>	
+				[ngClass]="{'play-rect': log.actionId === 1, 'pause-rect': log.actionId === 2, 'skip-rect': log.actionId === 8}">
+				<title *ngIf="log.actionId === 1">Played from {{log.startDurationHHMMSS}} - {{log.stopDurationHHMMSS}}</title>
+				<title *ngIf="log.actionId === 2">Paused at {{log.startDurationHHMMSS}}</title>	
+				<title *ngIf="log.actionId === 8">Skipped from {{log.startDurationHHMMSS}} - {{log.stopDurationHHMMSS}}</title>	
 	  		</rect>
 		</svg>
 	</div>

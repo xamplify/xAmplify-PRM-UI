@@ -24,11 +24,11 @@
   .cloud-items{ position: relative; font-size: 19px; top: -82px !important; left: 93px; }
 }
 .cloud-items{
-  position: relative; font-size: 19px; top: -75px;left: 85px;
+  position: relative; font-size: 19px; top: -81px;left: 78px;
 }
 .gray-color{position: relative; color: grey;}
 
- @media only screen and (max-width: 992px) and (min-width: 601px) { .cloud-css{  left: 130px !important; } }
+ @media only screen and (max-width: 992px) and (min-width: 601px) { .cloud-css{  left: 100px !important; } }
 .csv-list-name{
 	font-size: 15px;
     color: #565555;

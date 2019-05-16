@@ -129,7 +129,33 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     pageNumber: any;
     newUserDetails = [];
     teamMembersList = [];
-    orgAdminsList = [];
+   /* orgAdminsList = [];*/
+
+    
+
+    //MARKETO
+
+    showMarketoForm: boolean;
+    marketoAuthError: boolean;
+    marketoInstanceClass: string;
+    marketoInstanceError: boolean;
+    marketoInstance: any;
+    marketoSecretIdClass: string;
+    marketoSecretIdError: boolean;
+    marketoSecretId: any;
+    marketoClientId: any;
+    marketoClientIdClass: string;
+    marketoClentIdError: boolean;
+    isMarketoModelFormValid: boolean;
+    marketoContactError: boolean;
+    marketoContactSuccessMsg: any;
+    loadingMarketo: boolean;
+    public getMarketoConatacts: any;
+
+    
+    marketoImageBlur: boolean = false;
+    marketoImageNormal: boolean = false;
+
 
     public uploader: FileUploader = new FileUploader( { allowedMimeType: ["application/csv", "application/vnd.ms-excel", "text/plain", "text/csv"] });
 
@@ -364,9 +390,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         try {
             this.newUserDetails.length = 0;
             this.isCompanyDetails = false;
-            for ( let i = 0; i < this.orgAdminsList.length; i++ ) {
+            /*for ( let i = 0; i < this.orgAdminsList.length; i++ ) {
                 this.teamMembersList.push( this.orgAdminsList[i] );
-            }
+            }*/
             this.teamMembersList.push( this.authenticationService.user.emailId );
             let emails = []
             for ( let i = 0; i < this.newPartnerUser.length; i++ ) {
@@ -401,7 +427,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                         this.newPartnerUser[i].mobileNumber = "";
                     }
                 }
-                if ( this.selectedAddPartnerOption != 3 && this.selectedAddPartnerOption != 6 && this.selectedAddPartnerOption != 7 ) {
+                if ( this.selectedAddPartnerOption != 3 && this.selectedAddPartnerOption != 6 && this.selectedAddPartnerOption != 7 
+                    && this.selectedAddPartnerOption != 8) {
                     if ( this.newPartnerUser[i].contactCompany.trim() != '' ) {
                         this.isCompanyDetails = true;
                     } else {
@@ -481,7 +508,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                     this.customResponse = new CustomResponse( 'ERROR', "Company Details is required", true );
                 }
             } else {
-                this.customResponse = new CustomResponse( 'ERROR', "You are not allowed to add teamMember or orgAdmin as a partner", true );
+                this.customResponse = new CustomResponse( 'ERROR', "You are not allowed to add teamMember(s) or yourself as a partner", true );
                 if ( this.selectedAddPartnerOption == 1 ) {
                     this.cancelPartners();
                 }
@@ -508,9 +535,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         $( '.googleImageClass' ).attr( 'style', 'opacity: 1;' );
         $( '.zohoImageClass' ).attr( 'style', 'opacity: 1;' );
         $( '.mdImageClass' ).attr( 'style', 'opacity: 1;cursor:not-allowed;' );
-        $( '#SgearIcon' ).attr( 'style', 'opacity: 1;position: relative;font-size: 19px;top: -82px;left: 100px;' );
-        $( '#GgearIcon' ).attr( 'style', 'opacity: 1;position: relative;font-size: 19px;top: -82px;left: 100px;' );
-        $( '#ZgearIcon' ).attr( 'style', 'opacity: 1;position: relative;font-size: 19px;top: -82px;left: 100px;' );
+        $( '#SgearIcon' ).attr( 'style', 'opacity: 1;position: relative;font-size: 19px;top: -81px;left: 78px;' );
+        $( '#GgearIcon' ).attr( 'style', 'opacity: 1;position: relative;font-size: 19px;top: -81px;left: 78px;' );
+        $( '#ZgearIcon' ).attr( 'style', 'opacity: 1;position: relative;font-size: 19px;top: -81px;left: 78px;' );
         $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(0%);filter: grayscale(0%);' );
         $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(0%);filter: grayscale(0%);' );
         $( '#uploadCSV' ).attr( 'style', '-webkit-filter: grayscale(0%);filter: grayscale(0%);min-height:85px' );
@@ -602,9 +629,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             $( '.salesForceImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
             $( '.googleImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
             $( '.zohoImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
-            $( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 100px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
-            $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -86px; left: 100px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
-            $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 100px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+            $( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 78px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+            $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -86px; left: 78px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+            $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 78px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
             $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
             let reader = new FileReader();
             reader.readAsText( files[0] );
@@ -614,7 +641,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             reader.onload = function( e: any ) {
                 var contents = e.target.result;
                 let csvData = reader.result;
-                let csvRecordsArray = csvData.split(/\r\n|\n/);
+                let csvRecordsArray = csvData.split(/\r|\n/);
                 let headersRow = self.fileUtil
                 .getHeaderArray(csvRecordsArray);
                  let headers = headersRow[0].split(',');
@@ -648,8 +675,14 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                                  self.newPartnerUser.push( user );
                              }
                          }
+                        if( self.newPartnerUser.length == 0){
+                            self.customResponse = new CustomResponse( 'ERROR', "No partners found", true );
+                            self.cancelPartners();
+                        }else{
+                            self.setSocialPage(1);
+                        }
                          self.isListLoader = false;
-                         self.setSocialPage(1);
+                         
                          
                      }else{
                          self.customResponse = new CustomResponse( 'ERROR', "Invalid Csv", true );
@@ -687,9 +720,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         $( '.salesForceImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
         $( '.googleImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
         $( '.zohoImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
-        $( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 100px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
-        $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 100px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
-        $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 100px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+        $( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 78px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+        $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 78px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+        $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 78px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
         $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
     }
 
@@ -1091,6 +1124,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                     } else {
                         this.zohoImageBlur = true;
                     }
+                    if ( this.storeLogin.MARKETO == true ) {
+                        this.marketoImageNormal = true;
+                    } else {
+                        this.marketoImageBlur = true;
+                    }
                 },
                 ( error: any ) => {
                     this.xtremandLogger.error( error );
@@ -1216,8 +1254,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                             $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                             $( '.salesForceImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
                             $( '.zohoImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
-                            $( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 100px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
-                            $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 100px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                            $( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 78px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                            $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 78px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                             $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                         }
                     }
@@ -1365,8 +1403,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                             $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                             $( '.salesForceImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
                             $( '.googleImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
-                            $( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 100px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
-                            $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 100px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                            $( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 78px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                            $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 78px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                         }
                     }
                     this.xtremandLogger.info( this.getGoogleConatacts );
@@ -1456,8 +1494,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                             $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                             $( '.salesForceImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
                             $( '.googleImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
-                            $( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 100px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
-                            $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 100px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                            $( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 78px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                            $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 78px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                         }
                     }
                     this.xtremandLogger.info( this.getGoogleConatacts );
@@ -1684,8 +1722,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                             $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                             $( '.googleImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
                             $( '.zohoImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
-                            $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 100px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
-                            $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 100px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                            $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 78px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                            $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 78px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                         }
                     }
                     this.xtremandLogger.info( this.getGoogleConatacts );
@@ -1754,8 +1792,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                             $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                             $( '.googleImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
                             $( '.zohoImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
-                            $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 100px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
-                            $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -85px;left: 100px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                            $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 78px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                            $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 78px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                             $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                         }
                     }
@@ -1822,6 +1860,12 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                 this.saveSalesforceContacts();
             } else
                 this.saveSalesforceContactSelectedUsers();
+        }
+        if ( this.selectedAddPartnerOption == 8 ) {
+            if ( this.allselectedUsers.length == 0 ) {
+                this.saveMarketoContacts();
+            } else
+                this.saveMarketoContactSelectedUsers();
         }
     }
 
@@ -1896,6 +1940,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     }
 
     checkAll( ev: any ) {
+        if (this.selectedAddPartnerOption != 8)
+        {
         if ( ev.target.checked ) {
             console.log( "checked" );
             $( '[name="campaignContact[]"]' ).prop( 'checked', true );
@@ -1934,6 +1980,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             }
         }
         ev.stopPropagation();
+    }else{
+        this.checkAllForMarketo(ev);
+    }
     }
 
     highlightRow( contactId: number, email: any, firstName: any, lastName: any, event: any ) {
@@ -2079,7 +2128,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
     }
 
-    listOrgAdmin() {
+/*    listOrgAdmin() {
         try {
             this.contactService.listOrgAdmins()
                 .subscribe(
@@ -2096,7 +2145,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             this.xtremandLogger.log( error );
         }
 
-    }
+    }*/
 
     closeModal( event ) {
         if ( event === "Emails Send Successfully" ) {
@@ -2158,7 +2207,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         try {
             this.socialContactImage();
             this.listTeamMembers();
-            this.listOrgAdmin();
+           /* this.listOrgAdmin();*/
             
             $( "#Gfile_preview" ).hide();
             this.socialContactsValue = true;
@@ -2214,6 +2263,496 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             swal.close();
         }
 
+    }
+
+    
+    /**
+     * 
+     * MARKETO
+     */
+
+     
+    // Marketo Contacts
+    marketoContacts()
+    {
+    }
+    checkingMarketoContactsAuthentication()
+    {
+        this.selectedAddPartnerOption = 8;
+        try
+        {
+            if (this.selectedAddPartnerOption == 8 && !this.disableOtherFuctionality)
+            {
+                this.contactService.checkMarketoCredentials(this.authenticationService.getUserId())
+                    .subscribe(
+                        (data: any) =>
+                        {
+
+                            if (data.statusCode == 8000)
+                            {
+                                this.showMarketoForm = false;
+
+                                this.marketoAuthError = false;
+                                this.loading = false;
+                                this.retriveMarketoContacts();
+                            }
+                            else
+                            {
+
+
+                                $("#marketoShowLoginPopup").modal('show');
+                                this.marketoAuthError = false;
+                                this.loading = false;
+
+                            }
+                            this.xtremandLogger.info(data);
+
+                        },
+                        (error: any) =>
+                        {
+                            var body = error['_body'];
+                            if (body != "")
+                            {
+                                var response = JSON.parse(body);
+                                if (response.message == "Maximum allowed AuthTokens are exceeded, Please remove Active AuthTokens from your ZOHO Account.!")
+                                {
+                                    this.customResponse = new CustomResponse('ERROR', 'Maximum allowed AuthTokens are exceeded, Please remove Active AuthTokens from your ZOHO Account', true);
+                                } else
+                                {
+                                    this.xtremandLogger.errorPage(error);
+                                }
+                            } else
+                            {
+                                this.xtremandLogger.errorPage(error);
+                            }
+                            console.log("errorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr:" + error)
+
+                        },
+                        () => this.xtremandLogger.info("Add contact component loadContactListsName() finished")
+                    )
+            }
+        } catch (error)
+        {
+            this.xtremandLogger.error(error, "AddContactsComponent zohoContactsAuthenticationChecking().")
+        }
+    }
+    saveMarketoContacts()
+    {
+
+        this.socialPartners.socialNetwork = "MARKETO";
+        this.socialPartners.contactType = this.contactType;
+        this.socialPartners.contacts = this.socialPartnerUsers;
+        if ( this.socialPartnerUsers.length > 0 ) {
+            this.newPartnerUser = this.socialPartners.contacts;
+            this.saveValidEmails();
+        } else
+            this.xtremandLogger.error( "AddContactComponent saveMarketoContacts() Contacts Null Error" );
+
+        // try
+        // {
+        //     this.socialPartners.socialNetwork = "MARKETO";
+        //     this.socialPartners.contactName = this.pager.contactListName;
+        //     this.socialPartners.isPartnerUserList = this.isPartner;
+        //     this.socialPartners.contactType = this.contactType;
+        //     this.socialPartners.contacts = this.socialPartnerUsers;
+        //     this.socialPartners.contacts = this.validateMarketoContacts(this.socialPartnerUsers);
+        //     this.pager.contactListName = this.pager.contactListName.replace(/\s\s+/g, ' ');
+        //     this.socialPartners.listName = this.pager.contactListName;
+        //     if (this.pager.contactListName != '' && !this.isValidContactName && this.pager.contactListName != ' ')
+        //     {
+        //         this.loading = true;
+        //         if (this.socialPartnerUsers.length > 0)
+        //         {
+        //             this.contactService.saveMarketoContactList(this.socialPartners)
+        //                 .subscribe(
+        //                     data =>
+        //                     {
+        //                         data = data;
+        //                         this.loading = false;
+        //                         this.selectedAddPartnerOption = 9;
+        //                         this.contactService.saveAsSuccessMessage = "add";
+        //                         this.xtremandLogger.info("update Contacts ListUsers:" + data);
+        //                         if (this.isPartner == false)
+        //                         {
+        //                             this.router.navigateByUrl('/home/contacts/manage')
+        //                         } else
+        //                         {
+        //                             this.router.navigateByUrl('home/partners/manage')
+        //                         }
+        //                     },
+
+        //                     (error: any) =>
+        //                     {
+        //                         this.loading = false;
+        //                         this.xtremandLogger.error(error);
+        //                         this.xtremandLogger.errorPage(error);
+        //                     },
+        //                     () => this.xtremandLogger.info("addcontactComponent saveMarketoContact() finished")
+        //                 )
+        //         } else
+        //             this.xtremandLogger.error("AddContactComponent saveMarketoContact() Contacts Null Error");
+        //     }
+        //     else
+        //     {
+        //         this.xtremandLogger.error("AddContactComponent saveMarketoContact() ContactList Name Error");
+        //     }
+        // } catch (error)
+        // {
+        //     this.xtremandLogger.error(error, "AddContactsComponent saveMarketoContact().")
+        // }
+    }
+    saveMarketoContactSelectedUsers()
+    {
+
+        this.newPartnerUser = this.allselectedUsers;
+        if ( this.allselectedUsers.length != 0 ) {
+            this.newPartnerUser = this.allselectedUsers;
+            this.saveValidEmails();
+        }
+        else {
+            this.xtremandLogger.error( "AddContactComponent saveMarketoContactSelectedUsers() ContactList Name Error" );
+        }
+        // try
+        // {
+
+        //     this.allselectedUsers = this.validateMarketoContacts(this.allselectedUsers);
+        //     this.pager.contactListName = this.pager.contactListName.replace(/\s\s+/g, ' ');
+
+        //     if (this.pager.contactListName != '' && !this.isValidContactName && this.pager.contactListName != ' ' && this.allselectedUsers.length != 0)
+        //     {
+        //         console.log(this.allselectedUsers);
+        //         this.loading = true;
+        //         this.partnerLi = new ContactList;
+        //         this.contactListObject.name = this.model.contactListName;
+        //         this.contactListObject.isPartnerUserList = this.isPartner;
+        //         this.socialPartners.socialNetwork = "MARKETO";
+        //         this.socialPartners.contactName = this.pager.contactListName;
+        //         this.socialPartners.isPartnerUserList = this.isPartner;
+        //         this.socialPartners.contactType = this.contactType;
+        //         this.socialPartners.contacts = this.allselectedUsers;
+        //         this.socialPartners.contacts = this.validateMarketoContacts(this.allselectedUsers);
+        //         this.pager.contactListName = this.pager.contactListName.replace(/\s\s+/g, ' ');
+        //         this.socialPartners.listName = this.pager.contactListName;
+        //         this.contactService.saveMarketoContactList(this.socialPartners)
+        //             .subscribe(
+        //                 data =>
+        //                 {
+        //                     data = data;
+        //                     this.loading = false;
+        //                     this.selectedAddPartnerOption = 9;
+
+        //                     this.contactService.saveAsSuccessMessage = "add";
+        //                     this.xtremandLogger.info("update Contacts ListUsers:" + data);
+        //                     if (this.isPartner == false)
+        //                     {
+        //                         this.router.navigateByUrl('/home/contacts/manage')
+        //                     } else
+        //                     {
+        //                         this.router.navigateByUrl('home/partners/manage')
+        //                     }
+        //                 },
+
+        //                 (error: any) =>
+        //                 {
+        //                     this.loading = false;
+        //                     this.xtremandLogger.error(error);
+        //                     this.xtremandLogger.errorPage(error);
+        //                 },
+        //                 () => this.xtremandLogger.info("addcontactComponent saveMarketoContactSelectedUsers() finished")
+        //             )
+        //     }
+        //     else
+        //     {
+             
+        //         this.xtremandLogger.error("AddContactComponent saveMarketoContactSelectedUsers() ContactList Name Error");
+        //     }
+        // } catch (error)
+        // {
+        //     this.xtremandLogger.error(error, "AddContactsComponent saveMarketoContactSelectedUsers().")
+        // }
+    }
+
+    authorisedMarketoContacts()
+    {
+    }
+    retriveMarketoContacts()
+    {
+
+
+        $("#marketoShowLoginPopup").modal('hide');
+        this.contactService.getMarketoContacts(this.authenticationService.getUserId()).subscribe(data =>
+        {
+            this.marketoImageBlur = false;
+            this.marketoImageNormal = true;
+            this.getMarketoConatacts = data.data;
+
+           
+            this.getMarketoConatacts = data.data;
+            this.loadingMarketo = false;
+           
+            if (this.getMarketoConatacts.length == 0)
+            {
+                this.customResponse = new CustomResponse('ERROR', this.properties.NO_RESULTS_FOUND, true);
+            } else
+            {
+                for (var i = 0; i < this.getMarketoConatacts.length; i++)
+                {
+                    let socialPartner = new SocialContact();
+                    let user = new User();
+                    socialPartner.id = i;
+                    if (this.validateEmailAddress(this.getMarketoConatacts[i].email))
+                    {
+                        socialPartner.emailId = this.getMarketoConatacts[i].email;
+                        socialPartner.firstName = this.getMarketoConatacts[i].firstName;
+                        socialPartner.lastName = this.getMarketoConatacts[i].lastName;
+
+                        socialPartner.country = this.getMarketoConatacts[i].country;
+                        socialPartner.city = this.getMarketoConatacts[i].city;
+                        socialPartner.state = this.getMarketoConatacts[i].state;
+                        socialPartner.postalCode = this.getMarketoConatacts[i].postalCode;
+                        socialPartner.address = this.getMarketoConatacts[i].address;
+                        socialPartner.company = this.getMarketoConatacts[i].company;
+                        socialPartner.title = this.getMarketoConatacts[i].title;
+                        socialPartner.mobilePhone = this.getMarketoConatacts[i].mobilePhone;
+
+                        this.socialPartnerUsers.push(socialPartner);
+                    }
+                    $( "#Gfile_preview" ).show();
+                    $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                    $( '#uploadCSV' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;min-height:85px' );
+                    $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                    $( '.salesForceImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
+                    $( '.zohoImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
+                    $( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 78px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                    $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 78px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                    $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                }
+             
+            }
+            this.xtremandLogger.info(this.getMarketoConatacts);
+            this.setSocialPage(1);
+        },
+            (error: any) =>
+            {
+                this.loading = false;
+                this.xtremandLogger.error(error);
+                this.xtremandLogger.errorPage(error);
+            },
+            () => this.xtremandLogger.log("marketoContacts data :" + JSON.stringify(this.getMarketoConatacts)
+
+
+            ));
+    }
+    hideMarketoAuthorisedPopup()
+    {
+        $("#marketoShowAuthorisedPopup").hide();
+    }
+
+    getMarketoContacts()
+    {
+        this.loadingMarketo = true;
+        const obj = {
+            userId: this.authenticationService.getUserId(),
+            instanceUrl: this.marketoInstance,
+            clientId: this.marketoClientId,
+            clientSecret: this.marketoSecretId
+        }
+
+        this.contactService.saveMarketoCredentials(obj).subscribe(response =>
+        {
+            if (response.statusCode == 8003)
+            {
+                this.showMarketoForm = false;
+                // this.checkMarketoCredentials();
+                this.marketoContactError = false;
+                this.marketoContactSuccessMsg = response.message;
+                this.loadingMarketo = false;
+                this.retriveMarketoContacts();
+            } else
+            {
+
+                $("#marketoShowLoginPopup").modal('show');
+                this.marketoContactError = response.message;
+                this.marketoContactSuccessMsg = false;
+                this.loadingMarketo = false;
+            }
+        }, (error: any) =>
+        {
+            this.marketoContactError = error;
+            this.loadingMarketo = false;
+        }
+        )
+    }
+
+    validateModelForm(fieldId: any)
+    {
+        var errorClass = "form-group has-error has-feedback";
+        var successClass = "form-group has-success has-feedback";
+
+        if (fieldId == 'email')
+        {
+            if (this.marketoClientId.length > 0)
+            {
+                this.marketoClientIdClass = successClass;
+                this.marketoClentIdError = false;
+            } else
+            {
+                this.marketoClientIdClass = errorClass;
+                this.marketoClentIdError = true;
+            }
+        } else if (fieldId == 'pwd')
+        {
+            if (this.marketoSecretId.length > 0)
+            {
+                this.marketoSecretIdClass = successClass;
+                this.marketoSecretIdError = false;
+            } else
+            {
+                this.marketoSecretIdClass = errorClass;
+                this.marketoSecretIdError = true;
+            }
+        } else if (fieldId == 'instance')
+        {
+            if (this.marketoInstance.length > 0)
+            {
+                this.marketoInstanceClass = successClass;
+                this.marketoInstanceError = false;
+            } else
+            {
+                this.marketoInstanceClass = errorClass;
+                this.marketoInstanceError = false;
+            }
+        }
+        this.toggleMarketoSubmitButtonState();
+    }
+    toggleMarketoSubmitButtonState()
+    {
+        if (!this.marketoClentIdError && !this.marketoSecretIdError && !this.marketoInstanceError)
+            this.isMarketoModelFormValid = true;
+        else
+            this.isMarketoModelFormValid = false;
+    }
+
+    hideMarketoModal()
+    {
+        $("#marketoShowLoginPopup").hide();
+        this.cancelPartners();
+    }
+
+    
+    highlightMarketoRow(user: any)
+    {
+        let isChecked = $('#' + user.id).is(':checked');
+
+        if (isChecked)
+        {
+            $('#row_' + user.id).addClass('contact-list-selected');
+            this.selectedContactListIds.push(user.id);
+            var object = {
+                "id": user.id,
+                "email": user.emailId,
+                "firstName": user.firstName,
+                "lastName": user.lastName,
+                "country": user.country,
+                "city": user.city,
+                "state": user.state,
+                "postalCode": user.postalCode,
+                "address": user.address,
+                "company": user.company,
+                "title": user.title,
+                "mobilePhone": user.mobilePhone
+            }
+            this.allselectedUsers.push(object);
+            console.log(this.allselectedUsers);
+        } else
+        {
+            $('#row_' + user.id).removeClass('contact-list-selected');
+            this.selectedContactListIds.splice($.inArray(user.id, this.selectedContactListIds), 1);
+            this.allselectedUsers.splice($.inArray(user.id, this.allselectedUsers), 1);
+        }
+        if (this.selectedContactListIds.length == this.pagedItems.length)
+        {
+            this.isHeaderCheckBoxChecked = true;
+        } else
+        {
+            this.isHeaderCheckBoxChecked = false;
+        }
+        event.stopPropagation();
+    }
+
+    checkAllForMarketo(ev: any)
+    {
+        if (ev.target.checked)
+        {
+            console.log("checked");
+            $('[name="campaignContact[]"]').prop('checked', true);
+            let self = this;
+            $('[name="campaignContact[]"]:checked').each(function ()
+            {
+                var id = $(this).val();
+                self.selectedContactListIds.push(parseInt(id));
+                console.log(self.selectedContactListIds);
+                $('#ContactListTable_' + id).addClass('contact-list-selected');
+                for (var i = 0; i < self.pagedItems.length; i++)
+                {
+                    var object = {
+
+                        "id": self.pagedItems[i].id,
+                        "email": self.pagedItems[i].emailId,
+                        "firstName": self.pagedItems[i].firstName,
+                        "lastName": self.pagedItems[i].lastName,
+                        "country": self.pagedItems[i].country,
+                        "city": self.pagedItems[i].city,
+                        "state": self.pagedItems[i].state,
+                        "postalCode": self.pagedItems[i].postalCode,
+                        "address": self.pagedItems[i].address,
+                        "company": self.pagedItems[i].company,
+                        "title": self.pagedItems[i].title,
+                        "mobilePhone": self.pagedItems[i].mobilePhone
+                    }
+                    console.log(object);
+                    self.allselectedUsers.push(object);
+                }
+            });
+            this.allselectedUsers = this.removeDuplicates(this.allselectedUsers, 'email');
+            this.selectedContactListIds = this.referenceService.removeDuplicates(this.selectedContactListIds);
+        } else
+        {
+            $('[name="campaignContact[]"]').prop('checked', false);
+            $('#user_list_tb tr').removeClass("contact-list-selected");
+            if (this.pager.maxResults == this.pager.totalItems)
+            {
+                this.selectedContactListIds = [];
+                this.allselectedUsers.length = 0;
+            } else
+            {
+                let paginationIdsArray = new Array;
+                for (let j = 0; j < this.pagedItems.length; j++)
+                {
+                    var paginationEmail = this.pagedItems[j].emailId;
+                    this.allselectedUsers.splice(this.allselectedUsers.indexOf(paginationEmail), 1);
+                }
+                let currentPageContactIds = this.pagedItems.map(function (a) { return a.id; });
+                this.selectedContactListIds = this.referenceService.removeDuplicatesFromTwoArrays(this.selectedContactListIds, currentPageContactIds);
+            }
+        }
+        console.log(this.allselectedUsers);
+        ev.stopPropagation();
+    }
+
+    validateMarketoContacts(socialUsers: any)
+    {
+        let users = [];
+        for (let i = 0; i < socialUsers.length; i++)
+        {
+            if (socialUsers[i].email !== null && this.validateEmailAddress(socialUsers[i].email))
+            {
+                let email = socialUsers[i].email.toLowerCase();
+                socialUsers[i].email = email;
+                users.push(socialUsers[i]);
+            }
+        }
+        return users;
     }
 
 }

@@ -122,7 +122,7 @@ export class UtilService {
       cropperSetting.canvasWidth = 500;
       cropperSetting.canvasHeight = 300;
       cropperSetting.rounded = rounded;
-      cropperSetting.cropperDrawSettings.strokeWidth = 2;
+      cropperSetting.cropperDrawSettings.strokeWidth = 1;
       cropperSetting.noFileInput = true;
       return cropperSetting;
     }

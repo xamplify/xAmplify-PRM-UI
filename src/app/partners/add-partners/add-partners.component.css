@@ -14,3 +14,6 @@
 .cloud-items{
   position: relative; font-size: 19px; top: -82px; left: 100px;
 }
+.white-space-transform{
+	   white-space: nowrap;
+}

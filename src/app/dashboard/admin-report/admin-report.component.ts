@@ -9,8 +9,9 @@ import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { CustomResponse } from '../../common/models/custom-response';
 import { Properties } from '../../common/models/properties';
 import { Router } from '@angular/router';
+import { Roles } from '../../core/models/roles';
 
-declare var swal:any;
+declare var swal,$:any;
 
 @Component({
   selector: 'app-admin-report',
@@ -22,15 +23,18 @@ declare var swal:any;
 export class AdminReportComponent implements OnInit {
     dashboardReport: DashboardReport = new DashboardReport();
     public httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
+    modulesAccess:any;
     totalRecords: number;
     vendorsDetails: any;
     selectedVendorsDetails: any;
     detailsTielsView = false;
+    isAccessView = false;
     selectedVendorRow: any;
     loading = false;
     isListLoading = false;
     public searchKey: string;
     customResponse: CustomResponse = new CustomResponse();
+    roles: Roles = new Roles();
     
     sortcolumn: string = null;
     sortingOrder: string = null;
@@ -103,10 +107,7 @@ public authenticationService: AuthenticationService, public router:Router) {
                   
                   if ( data.totalRecords === 0 ) {
                       this.customResponse = new CustomResponse( 'INFO', this.properties.NO_RESULTS_FOUND, true );
-                  }else{
-                	  this.customResponse = new CustomResponse();
                   }
-                  
                   this.isListLoading = false;
               },
               error => console.error( error ),
@@ -156,6 +157,8 @@ public authenticationService: AuthenticationService, public router:Router) {
       }
   }
   
+ 
+  
   setPage( event: any ) {
       this.pagination.pageIndex = event.page;
       this.getVendorsDetails();
@@ -204,8 +207,85 @@ public authenticationService: AuthenticationService, public router:Router) {
 
   ngOnInit() {
       this.getVendorsDetails();
-      
+  }
+  
+  changeStatus(report:any){
+      try {
+          console.log( report );
+          let roleNames = report.roles.map( function( a ) { return a.roleName; } );
+          const isOrgAdmin = roleNames.indexOf( this.roles.orgAdminRole ) > -1;
+          let message = "";
+          if(isOrgAdmin){
+              message = "<b style='color:#5b9bd1'>Org Admin will be downgraded to Vendor</b>.";
+          }else{
+              message = "<b style='color:#5b9bd1'>Vendor will be upgraded to Org Admin</b>.";
+          }
+          let self = this;
+          swal( {
+              title: 'Are you sure to change the role?',
+              text: message,
+              type: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#54a7e9',
+              cancelButtonColor: '#999',
+              confirmButtonText: 'Yes, Change it!',
+              allowOutsideClick: false
+          } ).then( function() {
+              self.loading = true;
+              self.changeRole(report);
+          }, function( dismiss: any ) {
+              console.log( 'you clicked on option' + dismiss );
+          } );
 
+
+      } catch ( error ) {
+          console.error( error, "adminReportComponent", "changeStatus()" );
+      }
+  }
+  
+  changeRole(report:any){
+      this.dashboardService.changeRole(report.id)
+      .subscribe(
+      ( data: any ) => {
+          console.log( report );
+          let message = report.emailId+" "+data;
+          this.getVendorsDetails();
+          this.customResponse = new CustomResponse('SUCCESS',message,true );
+          this.loading = false;
+      },
+      error => {this.loading = false;console.error( error )},
+      () => {
+         
+          }
+      )
   }
 
+  getAccess(report:any){
+      try {
+          this.loading = true;
+          this.customResponse = new CustomResponse();
+          this.dashboardService.getAccess(report.companyId)
+              .subscribe(
+              ( data: any ) => {
+                  console.log(data);
+                  this.isAccessView = true;
+                  this.loading = false;
+                  this.modulesAccess = data;
+                  $('#access-template-div').modal('show');
+              },
+              error => {
+                  console.error( error )
+                  this.loading =false;
+                  this.customResponse = new CustomResponse('ERROR','Something went wrong.',true );
+              },
+              () => console.info( "changeAccess() finished" )
+              )
+      } catch ( error ) {
+          this.loading =false;
+          console.error( error, "adminReportComponent", "changeAccess()" );
+      }
+  
+  }
+  
+  
 }

@@ -56,7 +56,7 @@
 											</span>
 											<h5 class="f-w-600 mt10 mb0"><span *ngIf="selectedRow?.firstName">{{selectedRow.firstName}}</span>&nbsp;<span
 												 *ngIf="selectedRow?.lastName">{{selectedRow.lastName}}</span></h5>
-											<h6 class="m0">{{selectedRow.emailId}}</h6>
+											<h6 class="m0" *ngIf="selectedRow?.emailId">{{selectedRow.emailId}}</h6>
 										</div>
 										<div class="row mb10">
 											<div class="col-sm-3 col-xs-6">
@@ -64,7 +64,7 @@
 													<div><img src="assets/images/email-opened.png" style="margin: 0px 5px;width: 52px;"></div>
 													<div>Email Opened</div>
 													<div class="number">
-														<span data-counter="counterup" style="margin: 0 25px;">{{campaignReport.emailOpenCount}}</span>
+														<span data-counter="counterup" style="margin: 0 25px;">{{userCampaignReport.emailOpenCount}}</span>
 													</div>
 												</a>
 											</div>
@@ -74,7 +74,7 @@
 														<div><img src="assets/images/clicked-new.png" style="margin: 0px 10px;width: 52px;"></div>
 														<div>Clicked URL</div>
 														<div class="number">
-															<span data-counter="counterup" style="margin: 0 25px;">{{campaignReport.emailClickedCount}}</span>
+															<span data-counter="counterup" style="margin: 0 25px;">{{userCampaignReport.emailClickedCount}}</span>
 														</div>
 													</a>
 												</div>
@@ -83,7 +83,7 @@
 														<div><img src="assets/images/video-watched.png" style="margin: 0px 11px;width: 52px;"></div>
 														<div>Views</div>
 														<div class="number">
-															<span data-counter="counterup" style="margin: 0 33px;">{{campaignReport.totalUniqueWatchCount}}</span>
+															<span data-counter="counterup" style="margin: 0 33px;">{{userCampaignReport.totalUniqueWatchCount}}</span>
 														</div>
 													</a>
 												</div>
@@ -152,14 +152,14 @@
 																{{emailLog.subject | slice:0:30}} <span *ngIf="emailLog.subject?.length>30">...</span>
 															</span> email opened
 														</span>
-														<span *ngIf="emailLog.actionId == 14">Clicked <span class="f-w-600" title="{{campaign.campaignVideoFile.title}}">{{campaign.campaignVideoFile.title
+														<span *ngIf="emailLog.actionId == 14 && campaign.campaignVideoFile">Clicked <span class="f-w-600" title="{{campaign.campaignVideoFile.title}}">{{campaign.campaignVideoFile.title
 																| slice:0:30}} <span *ngIf="campaign.campaignVideoFile.title?.length>30">...</span></span> video GIF</span>
 														<span *ngIf="emailLog.actionId == 15">
 															Clicked on the URL
 															<span class="f-w-600" *ngIf="emailLog.url"><a href="{{emailLog.url}}" target="_blank" title="{{emailLog.url}}">{{emailLog.url
 																	| slice:0:30}}<span *ngIf="emailLog.url?.length>30">...</span></a></span>
 														</span>
-														<span *ngIf="emailLog.actionId == 1 || emailLog.actionId == 10">
+														<span *ngIf="campaign.campaignVideoFile && (emailLog.actionId == 1 || emailLog.actionId == 10)">
 															<span class="f-w-600" title="{{campaign.campaignVideoFile.title}}">{{campaign.campaignVideoFile.title | slice:0:30}}
 																<span *ngIf="campaign.campaignVideoFile.title?.length>30">...</span>
 															</span> <span *ngIf="emailLog.actionId == 10">re-</span>played

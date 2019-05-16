@@ -596,42 +596,46 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   }
 
   loadEmailTemplates(pagination:Pagination){
-      this.gridLoader = true;
-      pagination.throughPartner = this.eventCampaign.channelCampaign;
-      this.referenceService.loading(this.campaignEmailTemplate.httpRequestLoader, true);
-      if(pagination.searchKey==null || pagination.searchKey==""){
-          pagination.campaignDefaultTemplate = true;
-      }else{
-          pagination.campaignDefaultTemplate = false;
-          pagination.isEmailTemplateSearchedFromCampaign = true;
+      //Not calling this method for only partner
+      if(!this.authenticationService.isOnlyPartner()){
+          this.gridLoader = true;
+          pagination.throughPartner = this.eventCampaign.channelCampaign;
+          this.referenceService.loading(this.campaignEmailTemplate.httpRequestLoader, true);
+          if(pagination.searchKey==null || pagination.searchKey==""){
+              pagination.campaignDefaultTemplate = true;
+          }else{
+              pagination.campaignDefaultTemplate = false;
+              pagination.isEmailTemplateSearchedFromCampaign = true;
+          }
+          pagination.filterBy = 'campaignEventEmails';
+          pagination.userId = this.loggedInUserId;
+          this.emailTemplateService.listTemplates(pagination,this.loggedInUserId)
+          .subscribe(
+              (data:any) => {
+                  let allEventEmailTemplates = data.emailTemplates;
+                  this.gridLoader = false;
+                  this.campaignEmailTemplates = [];
+                  for(let i=0;i< allEventEmailTemplates.length;i++){
+                      if(this.eventCampaign.channelCampaign){
+                          if(allEventEmailTemplates[i].beeEventCoBrandingTemplate){
+                           this.campaignEmailTemplates.push(allEventEmailTemplates[i]);
+                          }
+                       }else{
+                           this.campaignEmailTemplates = allEventEmailTemplates;
+                       }
+                  }
+                  pagination.totalRecords = data.totalRecords;
+                  this.emailTemplatesPagination = this.pagerService.getPagedItems(pagination, this.campaignEmailTemplates);
+                  this.filterEmailTemplateForEditCampaign();
+                 this.referenceService.loading(this.campaignEmailTemplate.httpRequestLoader, false);
+              },
+              (error:string) => {
+                 this.logger.errorPage(error);
+              },
+              () => this.logger.info("Finished loadEmailTemplates()", this.emailTemplatesPagination)
+              )
       }
-      pagination.filterBy = 'campaignEventEmails';
-      pagination.userId = this.loggedInUserId;
-      this.emailTemplateService.listTemplates(pagination,this.loggedInUserId)
-      .subscribe(
-          (data:any) => {
-              let allEventEmailTemplates = data.emailTemplates;
-              this.gridLoader = false;
-              this.campaignEmailTemplates = [];
-              for(let i=0;i< allEventEmailTemplates.length;i++){
-                  if(this.eventCampaign.channelCampaign){
-                      if(allEventEmailTemplates[i].beeEventCoBrandingTemplate){
-                       this.campaignEmailTemplates.push(allEventEmailTemplates[i]);
-                      }
-                   }else{
-                       this.campaignEmailTemplates = allEventEmailTemplates;
-                   }
-              }
-              pagination.totalRecords = data.totalRecords;
-              this.emailTemplatesPagination = this.pagerService.getPagedItems(pagination, this.campaignEmailTemplates);
-              this.filterEmailTemplateForEditCampaign();
-             this.referenceService.loading(this.campaignEmailTemplate.httpRequestLoader, false);
-          },
-          (error:string) => {
-             this.logger.errorPage(error);
-          },
-          () => this.logger.info("Finished loadEmailTemplates()", this.emailTemplatesPagination)
-          )
+   
   }
 
 

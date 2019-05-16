@@ -47,6 +47,8 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
     isSaveMarketoTemplatesButtonState = false;
     customResponse: CustomResponse = new CustomResponse();
     importLoading: boolean;
+    
+    basicTemplates = [32,33,34,35,36,37,38,39,40,307,325,359,360];
 
     constructor( private emailTemplateService: EmailTemplateService,
         private emailTemplate: EmailTemplate, private router: Router, private authenticationService: AuthenticationService,
@@ -123,7 +125,7 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
     showRegularTemplates(){
         try{
             this.filteredEmailTemplates = new Array<EmailTemplate>();
-            for(var i=0;i<this.allEmailTemplates.length;i++){
+            for(var i=0;i< this.allEmailTemplates.length;i++){
                 var isBeeRegularTemplate = this.allEmailTemplates[i].beeRegularTemplate;
                 if(isBeeRegularTemplate){
                     this.filteredEmailTemplates.push(this.allEmailTemplates[i]);
@@ -140,7 +142,7 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
         try{
         	 this.selectedTemplateTypeIndex = index;
             this.filteredEmailTemplates = new Array<EmailTemplate>();
-            for(var i=0;i<this.allEmailTemplates.length;i++){
+            for(var i=0;i< this.allEmailTemplates.length;i++){
                 var isBeeEventTemplate = this.allEmailTemplates[i].beeEventTemplate;
                 if(isBeeEventTemplate){
                     this.filteredEmailTemplates.push(this.allEmailTemplates[i]);
@@ -157,7 +159,7 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
         try{
              this.selectedTemplateTypeIndex = index;
             this.filteredEmailTemplates = new Array<EmailTemplate>();
-            for(var i=0;i<this.allEmailTemplates.length;i++){
+            for(var i=0;i< this.allEmailTemplates.length;i++){
                 var beeEventCoBrandingTemplate = this.allEmailTemplates[i].beeEventCoBrandingTemplate;
                 if(beeEventCoBrandingTemplate){
                     this.filteredEmailTemplates.push(this.allEmailTemplates[i]);
@@ -174,7 +176,7 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
     showVideoTemplates(){
         try{
             this.filteredEmailTemplates = new Array<EmailTemplate>();
-            for(var i=0;i<this.allEmailTemplates.length;i++){
+            for(var i=0;i< this.allEmailTemplates.length;i++){
                 var isBeeVideoTemplate = this.allEmailTemplates[i].beeVideoTemplate;
                 if(isBeeVideoTemplate){
                     this.filteredEmailTemplates.push(this.allEmailTemplates[i]);
@@ -209,7 +211,7 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
         try{
             this.filteredEmailTemplates = new Array<EmailTemplate>();
             this.selectedTemplateTypeIndex = index;
-            for(var i=0;i<this.allEmailTemplates.length;i++){
+            for(var i=0;i< this.allEmailTemplates.length;i++){
                 var isBeeRegularTemplate = this.allEmailTemplates[i].beeRegularTemplate;
                 if(isBeeRegularTemplate){
                     if(this.allEmailTemplates[i].name.indexOf('Basic')>-1){
@@ -234,9 +236,10 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
                     /*if(this.allEmailTemplates[i].name.indexOf('Rich')>-1){
                         this.filteredEmailTemplates.push(this.allEmailTemplates[i]);
                     }*/
-                    if(this.allEmailTemplates[i].id === 325 || this.allEmailTemplates[i].id === 307 || this.allEmailTemplates[i].id === 359 || this.allEmailTemplates[i].id === 360){
+                    if(this.basicTemplates.indexOf(this.allEmailTemplates[i].id) > -1){
                         this.filteredEmailTemplates.push(this.allEmailTemplates[i]);
                     }
+                    
                 }
             }
             this.logger.debug("Showing Rich Templates size of"+this.filteredEmailTemplates.length);
@@ -251,7 +254,7 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
         try{
             this.filteredEmailTemplates = new Array<EmailTemplate>();
             this.selectedTemplateTypeIndex = index;
-            for(var i=0;i<this.allEmailTemplates.length;i++){
+            for(var i=0;i< this.allEmailTemplates.length;i++){
                 var isBeeVideoTemplate = this.allEmailTemplates[i].beeVideoTemplate;
                 if(isBeeVideoTemplate){
                     if(this.allEmailTemplates[i].name.indexOf('Basic')>-1){
@@ -361,11 +364,11 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
                },
                () => this.logger.info("Got Email Template")
            );
-       }else if(index==14 || index==1 || index==16){
+       }else if(index==14 || index==1 || index==16 || index==24 || index==22){
            //This is normal template
            this.emailTemplateService.isRegularUpload = true;
            this.router.navigate(["/home/emailtemplates/upload"]);
-       }else if(index==13 || index==0 || index==15){
+       }else if(index==13 || index==0 || index==15 || index==23 || index==21){
            //This is video template
            this.emailTemplateService.isRegularUpload = false;
            this.router.navigate(["/home/emailtemplates/upload"]);

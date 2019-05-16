@@ -1,13 +1,13 @@
 <div class="col-xs-12 p5" style="min-height: 300px">
   <div class="portlet light">
     <div class="portlet-title">
-        <div class="caption col-md-12" *ngIf="pageText.length >0" >
+        <!-- <div class="caption col-md-12" *ngIf="pageText.length >0" >
             <span class="caption-subject font-red-sunglo uppercase">{{pageText}}</span>
-        </div>
-      <div class="caption">
+        </div> -->
+      <div class="caption" style="padding-bottom: 0px!important;margin-top: 15px">
         <span class="caption-subject font-red-sunglo uppercase">{{pageHeader}}</span>
       </div>
-      <div class="inputs" align="right" style="float: right">
+      <div class="inputs" align="right" style="float: right;margin-bottom: 10px">
         <div style="float: left;">
           <select class="form-control" [(ngModel)]="sortOption.leadsSortOption" (ngModelChange)="sortLeads($event)" style="position: relative;right: -3px;">
             <option *ngFor="let option of sortOption.leadsSortDropDown" [ngValue]="option">{{option.name}}</option>
@@ -166,3 +166,4 @@
   <app-deal-analytics [dealId]="selectedDealId"></app-deal-analytics> 
 
 </div> -->
+

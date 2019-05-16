@@ -300,7 +300,8 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
                     $.each(result,function(index,value){
                         campaignNames+= (index+1)+"."+value+"<br><br>";
                     });
-                    let message = "Please delete associated campaign(s)<br><br>"+campaignNames;
+                   // let message = "Please delete associated campaign(s)<br><br>"+campaignNames;
+                    let message = "This template is being used in Campaign(s) / Auto Response(s) / Redistributed Campaign(s)<br><br>"+campaignNames;
                     this.customResponse = new CustomResponse('ERROR',message,true );
                     this.refService.loading(this.httpRequestLoader, false);
                 }
@@ -372,15 +373,17 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
                     $('#email-template-title').prop('title',emailTemplate.name);
                     $("#htmlContent").append(body);
                     $('.modal .modal-body').css('overflow-y', 'auto');
-                   // $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
+                    //$('.modal .modal-body').css('max-height', $(window).height() * 0.75);
                     $("#show_email_template_preivew").modal('show');
                     this.ngxloading = false;
                 },
                 error => {this.ngxloading = false; this.logger.error("error in getAllCompanyProfileImages("+this.loggedInUserId+")", error); },
                 () =>  this.logger.info("Finished getAllCompanyProfileImages()"));
-        
-        
        
     }
-
+    spamCheck(emailTemplate: any) {
+        this.emailTemplate = null;
+        this.emailTemplate = emailTemplate;
+        $("#email_spam_check").modal('show');
+    }
 }

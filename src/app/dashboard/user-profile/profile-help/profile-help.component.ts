@@ -12,8 +12,8 @@ import { ReferenceService } from '../../../core/services/reference.service';
 })
 export class ProfileHelpComponent implements OnInit {
   userData: User;
-  userProfileImage = 'assets/admin/pages/media/profile/icon-user-default.png';
-  parentModel = { 'displayName': '', 'profilePicutrePath': 'assets/admin/pages/media/profile/icon-user-default.png' };
+  userProfileImage = 'assets/images/icon-user-default.png';
+  parentModel = { 'displayName': '', 'profilePicutrePath': 'assets/images/icon-user-default.png' };
   constructor(public authenticationService: AuthenticationService, public router: Router, public referenceService: ReferenceService) {
     this.userData = this.authenticationService.userProfile;
     if (this.isEmpty(this.userData.roles) || !this.userData.profileImagePath) {

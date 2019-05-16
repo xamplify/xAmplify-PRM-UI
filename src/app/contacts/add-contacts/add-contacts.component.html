@@ -180,7 +180,7 @@
 													 height="86" width="90" onmouseover="this.src='assets/images/crm/connecting.png';" onmouseout="this.src='assets/images/crm/sf.png';">
 												</a>
 												<div id="salesforceGear" style="position: relative" id="salesforceGear" *ngIf="sfImageNormal">
-													<a [class.disabled]="selectedAddContactsOption != 8 || disableOtherFuctionality" (click)="settingSocialNetworkOpenModal('salesforce')">
+													<a [class.disabled]="selectedAddContactsOption != 8 || disableOtherFuctionality" (click)="settingSocialNetworkOpenModal('Salesforce')">
 														<i id="SgearIcon" class="fa fa-cog cloud-items cloud-css" aria-hidden="true"></i>
 													</a>
 												</div>
@@ -193,16 +193,16 @@
 											<div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
 												<a *ngIf="googleImageBlur" id="googleContact_button" style="background-color: white" (click)="googleContacts()" [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
 													<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :googleImageBlur==true}" src="assets/images/crm/google.png"
-													 class="googleImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access contacts from your Google contacts"
+													 class="googleImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access contacts from your Google account"
 													 height="86" width="90" onmouseover="this.src='assets/images/crm/connecting.png';" onmouseout="this.src='assets/images/crm/google.png';">
 												</a>
 												<a id="googleContact_buttonNormal" *ngIf="googleImageNormal" style="background-color: white" (click)="googleContacts()" [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
 													<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :googleImageBlur==true}" src="assets/images/crm/google.png"
-													 class="googleImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access contacts from your Google contacts"
+													 class="googleImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access contacts from your Google account"
 													 height="86" width="90">
 												</a>
 												<div id="GoogleGear" style="position: relative" *ngIf="googleImageNormal">
-													<a [class.disabled]="selectedAddContactsOption != 8 || disableOtherFuctionality" (click)="settingSocialNetworkOpenModal('google')">
+													<a [class.disabled]="selectedAddContactsOption != 8 || disableOtherFuctionality" (click)="settingSocialNetworkOpenModal('Google')">
 														<i id="GgearIcon" class="fa fa-cog cloud-css cloud-items" aria-hidden="true"></i>
 													</a>
 												</div>
@@ -226,7 +226,7 @@
 													 height="86" width="90">
 												</a>
 												<div id="zohoGear" style="position: relative" *ngIf="zohoImageNormal">
-													<a [class.disabled]="selectedAddContactsOption != 8 || disableOtherFuctionality" (click)="settingSocialNetworkOpenModal('zoho')">
+													<a [class.disabled]="selectedAddContactsOption != 8 || disableOtherFuctionality" (click)="settingSocialNetworkOpenModal('Zoho')">
 														<i id="ZgearIcon" class="fa fa-cog cloud-items cloud-css" aria-hidden="true"></i>
 													</a>
 												</div>
@@ -240,20 +240,20 @@
 												<a *ngIf="marketoImageBlur" id="marketoContact_button" style="background-color: white" (click)="checkingMarketoContactsAuthentication()"
 												 [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
 													<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :marketoImageBlur==true}" src="assets/images/crm/marketo.png"
-													 class="marketoImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access contacts from your marketo account"
+													 class="marketoImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access contacts from your Marketo account"
 													 height="86" width="90" onmouseover="this.src='assets/images/crm/connecting.png';" onmouseout="this.src='assets/images/crm/marketo.png';">
 												</a>
 												<a *ngIf="marketoImageNormal" id="MarketoContact_buttonNormal" style="background-color: white" (click)="checkingMarketoContactsAuthentication()"
 												 [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
 													<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :marketoImageBlur==true}" src="assets/images/crm/marketo.png"
-													 class="marketoImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access contacts from your marketo account"
+													 class="marketoImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access contacts from your Marketo account"
 													 height="86" width="90" onmouseover="this.src='assets/images/crm/connecting.png';" onmouseout="this.src='assets/images/crm/marketo.png';">
 												</a>
-												<div id="marketoGear" style="position: relative" *ngIf="marketoImageNormal">
-													<a [class.disabled]="selectedAddContactsOption != 8 || disableOtherFuctionality" (click)="settingSocialNetworkOpenModal('zoho')">
+												<!-- <div id="marketoGear" style="position: relative" *ngIf="marketoImageNormal">
+													<a [class.disabled]="selectedAddContactsOption != 8 || disableOtherFuctionality" (click)="settingSocialNetworkOpenModal('Marketo')">
 														<i id="ZgearIcon" class="fa fa-cog cloud-items cloud-css" aria-hidden="true"></i>
 													</a>
-												</div>
+												</div> -->
 												<div style="position: relative" *ngIf="!marketoImageNormal">
 													<a [class.disabled]="selectedAddContactsOption != 6" (click)="checkingMarketoContactsAuthentication()">
 														<i class="fa fa-plug cloud-items gray-color cloud-css" aria-hidden="true"></i>
@@ -799,14 +799,18 @@
 				<form class="form-horizontal">
 					<div class="form-group">
 						<h4 style="margin-left: 20px;">
-							<span class="glyphicon glyphicon-triangle-right"></span>After Unlinking, your {{settingSocialNetwork}} account will
-							be removed from our platform.
+							<span class="glyphicon glyphicon-triangle-right"></span>You are about to unlink your {{settingSocialNetwork}} account from xAmplify.
 						</h4>
+						
 						<h4 style="margin-left: 20px;">
-							<span class="glyphicon glyphicon-triangle-right"></span>Would you like to delete associated contact lists: <input
+							<span class="glyphicon glyphicon-triangle-right"></span>If you decide to relink your account, you will need to reenter your credentials.
+						</h4>
+						
+						<h4 style="margin-left: 20px;">
+							<span class="glyphicon glyphicon-triangle-right"></span>Would you like to delete associated contact lists? <input
 							 type="checkbox" [(ngModel)]="isUnLinkSocialNetwork" [ngModelOptions]="{standalone: true}">
 						</h4>
-						<button type="button" class="btn btn-primary" style="margin-left: 38%; margin-top: 2%" (click)="unlinkSocailAccount()">UnLink
+						<button type="button" class="btn btn-primary" style="margin-left: 38%; margin-top: 2%" (click)="unlinkSocailAccount()">Unlink
 							Account
 						</button>
 					</div>
@@ -940,17 +944,17 @@
 							<span>{{marketoContactError}}</span>
 						</div>
 						<div class="form-group">
-							<label class="control-label col-sm-3" for="email">Client Id:</label>
+							<label class="control-label col-sm-3" for="client">Client Id:</label>
 							<div class="col-sm-8">
-								<input type="email" style="width: 75%" class="form-control" id="email" placeholder="Client Id" [(ngModel)]="marketoClientId" [ngModelOptions]="{standalone: true}"
-								(input)="validateModelForm('email')">
+								<input type="text" style="width: 75%" class="form-control" id="client" placeholder="Client Id" [(ngModel)]="marketoClientId" [ngModelOptions]="{standalone: true}"
+								(input)="validateModelForm('client')">
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="control-label col-sm-3" for="pwd">Client Secret:</label>
+							<label class="control-label col-sm-3" for="secret">Client Secret:</label>
 							<div class="col-sm-8">
-								<input type="password" style="width: 75%" class="form-control" id="pwd" placeholder="Secret Id" [(ngModel)]="marketoSecretId" [ngModelOptions]="{standalone: true}"
-								(input)="validateModelForm('pwd')">
+								<input type="password" style="width: 75%" class="form-control" id="secret" placeholder="Secret Id" [(ngModel)]="marketoSecretId" [ngModelOptions]="{standalone: true}"
+								(input)="validateModelForm('secret')">
 							</div>
 						</div>
 						<div class="form-group">

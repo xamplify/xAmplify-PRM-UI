@@ -16,6 +16,7 @@ import { EmailTemplateService } from '../email-template/services/email-template.
 
 
 
+
 @NgModule({
   imports: [ CommonComponentModule,DealRegistrationRoutingModule , SharedModule,CommonModule,CampaignsModule ],
   declarations: [ ManageDealsComponent, ManagePartnersComponent, ManageLeadsComponent, DealAnalyticsComponent, ManageCommentsComponent],

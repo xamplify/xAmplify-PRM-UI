@@ -27,6 +27,7 @@ export class ActionsDescription {
     template_edit = 'Edit template';
     template_delete = 'Delete template';
     template_preview = 'View template';
+    template_spam_check = 'Spam check';
 
    /* FOR CAMPAIGNS*/
     campaign_edit = 'Edit campaign';

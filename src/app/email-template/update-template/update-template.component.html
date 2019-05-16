@@ -55,7 +55,7 @@
 					 		<br><label for="info"><font style="color: red;">**Before you upload your HTML template, please be sure to include the code below.</font></label>
 						 	<textarea class="form-control" style="cursor: default;resize: none;" id="info"readonly="readonly"  rows="4">{{refService.videoTag}}</textarea>
 					</div>
-
+					<br>
 					<div class="form-group" *ngIf="model.draft && mycontent?.length>0">
 						<label class="control-label col-sm-5">Enable Co-Branding Logo</label>
 							<switch [status]="coBrandingLogo" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"

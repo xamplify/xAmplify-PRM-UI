@@ -4,7 +4,7 @@ export class EmailTemplate {
 	id: number;
 	name: string;
 	subject: string;
-	content: string; 
+	content: string;
 	body: string;
 	desc: string;
 	langId: number;
@@ -14,20 +14,21 @@ export class EmailTemplate {
 	videoTemplate: boolean;
 	beeRegularTemplate: boolean;
 	beeVideoTemplate: boolean;
-	marketoTemplate:boolean;
+	marketoTemplate: boolean;
 	user: User;
 	jsonBody: string;
 	type: EmailTemplateType;
-	regularCoBrandingTemplate: boolean=false;
-	videoCoBrandingTemplate: boolean=false;
+	regularCoBrandingTemplate: boolean = false;
+	videoCoBrandingTemplate: boolean = false;
 	createdBy: string = "";
 	campaignDefault: boolean;
 	vendorName: string = "";
 	vendorOrganizationName: string = "";
 	draft: boolean = false;
 	onDestroy: boolean = false;
-    beeEventTemplate:boolean;
-    beeEventCoBrandingTemplate:boolean;
-	  marketoEmailTemplate: { marketo_id: number; };
-	  isSelectedMarketoTemplate = false;
+	beeEventTemplate: boolean;
+	beeEventCoBrandingTemplate: boolean;
+	marketoEmailTemplate: { marketo_id: number; };
+	isSelectedMarketoTemplate = false;
+	spamScore: string;
 }

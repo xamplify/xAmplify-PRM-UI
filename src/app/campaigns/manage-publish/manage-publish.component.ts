@@ -54,10 +54,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         { 'name': '48', 'value': '48' },
         { 'name': 'All', 'value': '0' },
     ]
-
+    itemsSize:any;
     selectedSortedOption: any = this.sortByDropDown[0];
-    itemsSize: any = this.numberOfItemsPerPage[0];
-
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
     campaignPartnerLoader: HttpRequestLoader = new HttpRequestLoader();
     isListView = false;
@@ -83,6 +81,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         public refService: ReferenceService, public campaignAccess:CampaignAccess, public authenticationService: AuthenticationService) {
         this.loggedInUserId = this.authenticationService.getUserId();
         this.utilService.setRouterLocalStorage('managecampaigns');
+        this.itemsSize = this.numberOfItemsPerPage[0];
         if (this.refService.campaignSuccessMessage == "SCHEDULE") {
             this.showMessageOnTop();
             this.campaignSuccessMessage = "Campaign scheduled successfully";
@@ -156,10 +155,12 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
 
     getAllFilteredResults(pagination: Pagination) {
+        this.pagination = pagination;
         this.pagination.pageIndex = 1;
         this.pagination.searchKey = this.searchKey;
         this.pagination = this.utilService.sortOptionValues(this.selectedSortedOption, this.pagination);
-        if (this.itemsSize.value == 0) {
+        this.pagination.maxResults = pagination.maxResults;
+        if (this.itemsSize.value === "0") {
             this.pagination.maxResults = this.pagination.totalRecords;
         } else {
             this.pagination.maxResults = this.itemsSize.value;
@@ -335,18 +336,19 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 this.listCampaign(this.pagination);
                 console.log("saveAsCampaign Successfully");
               },
-              error => { $('#saveAsModal').modal('hide'); this.logger.errorPage(error) },
+              error => { $('#saveAsModal').modal('hide'); this.logger.errorPage(error)
+              this.customResponse =  new CustomResponse('ERROR', 'something went wrong in saving copy campaign', true);
+              },
               () => console.log("saveAsCampaign Successfully")
           );
     }
     filterCampaigns(type: string, index: number) {
         this.selectedCampaignTypeIndex = index;//This is to highlight the tab
         this.pagination.pageIndex = 1;
+        this.pagination.maxResults = 12;
+        this.itemsSize = this.numberOfItemsPerPage[0];
         this.pagination.campaignType = type;
         this.listCampaign(this.pagination);
-    }
-    filterByUserNameOrDate() {
-
     }
     campaginRouter(campaign:any){
       this.refService.campaignType = campaign.campaignType;
@@ -374,12 +376,10 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     getCancelEventDetails(campaignId:number){
         this.selectedCancelEventId = campaignId;
         this.campaignService.getEventCampaignById(campaignId).subscribe(
-                (result)=>{
-                this.eventCampaign = result.data;
-                $('#cancelEventModal').modal('show');
-                }
-            );
-
+         (result)=>{
+          this.eventCampaign = result.data;
+            $('#cancelEventModal').modal('show');
+        });
     }
     cancelEvent(){
         var cancelEventData = {
@@ -430,6 +430,14 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.customResponse = new CustomResponse('SUCCESS', deleteMessage, true);
         this.pagination.pageIndex = 1;
         this.listCampaign(this.pagination);
+      }
+      if(event.delete ==='something went wrong in delete' ){
+        this.refService.loading(this.httpRequestLoader, false);
+        const deleteMessage =  'something went wrong  when '+event.campaignName + ' deleting. please try again';
+        this.customResponse = new CustomResponse('ERROR', deleteMessage, true);
+      }
+      if(event ==='something went wrong') {
+        this.customResponse =  new CustomResponse('ERROR', 'something went wrong, please try again', true);
       }
     }
 

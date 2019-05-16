@@ -11,9 +11,8 @@
             "assets/images",
             "favicon.ico",
             ".htaccess",
-            "assets/admin/pages/img",
             "assets/admin/layout2/img",
-            "assets/admin/pages/media",
+            "assets/admin/pages/media/works",
             "assets/global/img",
             "assets/js/indexjscss"
 			  ],

@@ -43,7 +43,7 @@ export class ReferenceService {
     cameraIsthere: boolean;
     topNavBarNotificationDetails: any = new Object();
     roles: Roles = new Roles();
-    topNavBarUserDetails = { 'displayName': '....', 'profilePicutrePath': 'assets/admin/pages/media/profile/icon-user-default.png' };
+    topNavBarUserDetails = { 'displayName': '....', 'profilePicutrePath': 'assets/images/icon-user-default.png' };
     companyProfileImage: string;
     userDefaultPage = '';
     hasCompany = false;
@@ -1711,6 +1711,11 @@ export class ReferenceService {
      scrollSmoothToTop () {
         const scrollingElement = (document.scrollingElement || document.body)
         $(scrollingElement).animate({ scrollTop: 0 }, 500);
+     }
+     
+      scrollSmoothToDiv (elementId:string) {
+        const scrollingElement = (document.scrollingElement || document.body)
+        $("#"+elementId).animate({ scrollTop: document.body.scrollHeight }, 500);
      }
     getOrgCampaignTypes(companyId: any) {
       return this.http.get(this.authenticationService.REST_URL + `campaign/access/${companyId}?access_token=${this.authenticationService.access_token}` )

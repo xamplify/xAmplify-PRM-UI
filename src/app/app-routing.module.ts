@@ -34,7 +34,8 @@ export const routes: Routes = [
     { path: 'v-signup', component: SignupComponent},
     { path: 'forgot-password', component: ForgotPasswordComponent },
     { path: 'register/verifyemail/user', component: VerifyEmailComponent },
-    { path: '', component: IntroComponent},
+    /*{ path: '', component: IntroComponent},*/
+    { path: '', redirectTo:'login', pathMatch: 'full'},
     { path: 'home', redirectTo:'', pathMatch: 'full'},
     { path: 'home', component: HomeComponent, canActivate: [AuthGuard],
       children: [

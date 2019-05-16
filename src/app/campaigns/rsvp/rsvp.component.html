@@ -63,8 +63,9 @@
             <tr *ngFor="let rsvp of eventcampaign.campaignEventRsvps">
               <td>{{rsvp.rsvpTime | date}} {{rsvp.rsvpTime | date:'shortTime'}}</td>
               <td>{{rsvp.eventCampaignRsvp}}</td>
-              <td><span title="rsvp.message">{{rsvp.message | slice:0:18}}</span>>
-              <span *ngIf="rsvp.message?.length>18">...</span>
+              <td><span title="{{rsvp.message}}" *ngIf="rsvp?.message">{{rsvp.message | slice:0:18}}</span>
+               <span *ngIf="rsvp?.message?.length>18">...</span>
+               <span *ngIf="!rsvp?.message">-</span>
               </td>
               <td>
               <span *ngIf="rsvp.eventCampaignRsvp === 'YES'">
