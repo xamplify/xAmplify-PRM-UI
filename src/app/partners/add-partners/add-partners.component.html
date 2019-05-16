@@ -116,7 +116,7 @@ img:hover {
 									<div class="portlet-body">
 									<div class="row">
 
-								<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+								<div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
 									<a *ngIf="sfImageNormal" id="salesforceContact_buttonNormal" style="background-color: white" (click)="salesforceContacts()"
 						     	[class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality || selectedAddPartnerOption == 7 ">
 										<img	[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :sfImageBlur==true}"
@@ -133,7 +133,7 @@ img:hover {
 										onmouseout="this.src='assets/images/crm/sf.png';">
 									</a>
 									<div id="salesforceGear" style="position: relative"	id="salesforceGear" *ngIf="sfImageNormal">
-										<a [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality" (click)="settingSocialNetworkOpenModal('salesforce')">
+										<a [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality" (click)="settingSocialNetworkOpenModal('Salesforce')">
                     <i id="SgearIcon" class="fa fa-cog cloud-css cloud-items" aria-hidden="true"></i>
 										</a>
 									</div>
@@ -143,7 +143,7 @@ img:hover {
 										</a>
 									</div>
 								</div>
-								<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+								<div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
 									<a *ngIf="googleImageBlur" id="googleContact_button"	style="background-color: white" (click)="googleContacts()"
 						      	[class.disabled]="selectedAddPartnerOption != 5 || selectedAddPartnerOption == 3 || disableOtherFuctionality">
 										<img	[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :googleImageBlur==true}"
@@ -161,7 +161,7 @@ img:hover {
 									</a>
 									<div id="GoogleGear" style="position: relative"	*ngIf="googleImageNormal">
 										<a [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality"
-                    (click)="settingSocialNetworkOpenModal('google')">
+                    (click)="settingSocialNetworkOpenModal('Google')">
                     <i id="GgearIcon" class="fa fa-cog cloud-css cloud-items" aria-hidden="true" ></i>
 										</a>
 									</div>
@@ -171,7 +171,7 @@ img:hover {
 										</a>
 									</div>
 								</div>
-								<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+								<div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
 									<a *ngIf="zohoImageBlur" id="zohoContact_button" style="background-color: white" (click)="checkingZohoContactsAuthentication()"
 						     	[class.disabled]="selectedAddPartnerOption != 5 || selectedAddPartnerOption == 6 || disableOtherFuctionality">
 										<img	[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}"
@@ -188,7 +188,7 @@ img:hover {
 										height="86" width="90">
 									</a>
 									<div id="zohoGear" style="position: relative" *ngIf="zohoImageNormal">
-										<a [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality" (click)="settingSocialNetworkOpenModal('zoho')">
+										<a [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality" (click)="settingSocialNetworkOpenModal('Zoho')">
                     <i id="ZgearIcon" class="fa fa-cog cloud-css cloud-items" aria-hidden="true"></i>
 										</a>
 									</div>
@@ -198,6 +198,30 @@ img:hover {
 										</a>
 									</div>
 								</div>
+								<div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+										<a *ngIf="marketoImageBlur" id="marketoContact_button" style="background-color: white" (click)="checkingMarketoContactsAuthentication()"
+										 [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
+											<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :marketoImageBlur==true}" src="assets/images/crm/marketo.png"
+											 class="marketoImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access Partners from your Marketo account"
+											 height="86" width="90" onmouseover="this.src='assets/images/crm/connecting.png';" onmouseout="this.src='assets/images/crm/marketo.png';">
+										</a>
+										<a *ngIf="marketoImageNormal" id="MarketoContact_buttonNormal" style="background-color: white" (click)="checkingMarketoContactsAuthentication()"
+										 [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
+											<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :marketoImageBlur==true}" src="assets/images/crm/marketo.png"
+											 class="marketoImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access Partners from your Marketo account"
+											 height="86" width="90" onmouseover="this.src='assets/images/crm/connecting.png';" onmouseout="this.src='assets/images/crm/marketo.png';">
+										</a>
+										<!-- <div id="marketoGear" style="position: relative" *ngIf="marketoImageNormal">
+											<a [class.disabled]="selectedAddContactsOption != 8 || disableOtherFuctionality" (click)="settingSocialNetworkOpenModal('Marketo')">
+												<i id="ZgearIcon" class="fa fa-cog cloud-items cloud-css" aria-hidden="true"></i>
+											</a>
+										</div> -->
+										<div style="position: relative" *ngIf="!marketoImageNormal">
+											<a [class.disabled]="selectedAddContactsOption != 6" (click)="checkingMarketoContactsAuthentication()">
+												<i class="fa fa-plug cloud-items gray-color cloud-css" aria-hidden="true"></i>
+											</a>
+										</div>
+									</div>
 								<!-- <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
 									<a id="microsoftContact_button" style="background-color: white">
 										<img src="assets/images/crm/dynamicsCmgSoon.png"
@@ -380,7 +404,7 @@ img:hover {
 			<div class="col-xs-12" style="width: 103%; left: -18px;"
 				*ngIf="(selectedAddPartnerOption == 2 || selectedAddPartnerOption == 4)">
 				<!-- BEGIN EXAMPLE TABLE PORTLET-->
-				<div *ngIf="newPartnerUser?.length == 0 && selectedAddPartnerOption == 2">
+				<div *ngIf="newPartnerUser?.length == 0 && selectedAddPartnerOption == 2 && isListLoader">
 									<app-list-loader></app-list-loader>
 									</div>
 				<div class="portlet box blue" *ngIf="newPartnerUser?.length != 0">
@@ -433,10 +457,18 @@ img:hover {
 													</h5>
 													<h6 class='mt0'>{{newContact.contactCompany}}</h6>
 												</td> -->
-												<td class="hidden-xs">{{newContact.vertical}} </td>
-												<td class="hidden-xs">{{newContact.region}} </td>
-												<td class="hidden-xs">{{newContact.partnerType}} </td>
-												<td class="hidden-xs hidden-sm">{{newContact.category}} </td>
+												<td class="hidden-xs">{{newContact.vertical | slice:0:20}}
+												<span *ngIf="newContact.vertical?.length>20">...</span>
+												 </td>
+												<td class="hidden-xs">{{newContact.region | slice:0:20}} 
+												<span *ngIf="newContact.region?.length>20">...</span>
+												</td>
+												<td class="hidden-xs">{{newContact.partnerType | slice:0:20}}
+												<span *ngIf="newContact.partnerType?.length>20">...</span>
+												 </td>
+												<td class="hidden-xs hidden-sm">{{newContact.category | slice:0:20}}
+												<span *ngIf="newContact.category?.length>20">...</span>
+												 </td>
 												<td class="hidden-xs">
 													<h5 *ngIf="newContact?.address" class='mb0'>{{newContact.address}}</h5>
 													<h5 class='mb0'><span *ngIf="newContact?.city">{{newContact.city}},&nbsp;</span><span *ngIf="newContact?.state">{{newContact.state}},</span></h5>
@@ -584,10 +616,18 @@ img:hover {
 													<int-phone-prefix [(ngModel)]="contact.mobileNumber"  [ngModelOptions]="{standalone: true}"></int-phone-prefix>
 													</div>
 												</td> -->
-												<td class="hidden-xs">{{contact.vertical}}</td>
-												<td class="hidden-xs">{{contact.region}}</td>
-												<td class="hidden-xs">{{contact.partnerType}}</td>
-												<td class="hidden-xs hidden-sm">{{contact.category}}</td>
+												<td class="hidden-xs white-space-transform" title="{{contact.vertical}}">{{contact.vertical | slice:0:17}}
+												<span *ngIf="contact.vertical?.length>17">...</span>
+												</td>
+												<td class="hidden-xs white-space-transform" title="{{contact.region}}">{{contact.region | slice:0:17}}
+												<span *ngIf="contact.region?.length>17">...</span>
+												</td>
+												<td class="hidden-xs white-space-transform"  title="{{contact.partnerType}}">{{contact.partnerType | slice:0:17}}
+												<span *ngIf="contact.partnerType?.length>17">...</span>
+												</td>
+												<td class="hidden-xs hidden-sm white-space-transform" title="{{contact.category}}">{{contact.category | slice:0:17}}
+												<span *ngIf="contact.category?.length>17">...</span>
+												</td>
 												<!-- <td class="hidden-xs">
 													<h5 class='mb0' title="{{contact.jobTitle}}">{{contact.jobTitle | slice:0:20}}
 													<span *ngIf="contact.jobTitle?.length>20">...</span>
@@ -886,19 +926,20 @@ img:hover {
 				<form class="form-horizontal">
 					<div class="form-group">
 						<h4 style="margin-left: 20px;">
-							<span class="glyphicon glyphicon-triangle-right"></span>After
-							Unlinking, your {{settingSocialNetwork}} account will be removed
-							from our platform.
+							<span class="glyphicon glyphicon-triangle-right"></span>You are about to unlink your {{settingSocialNetwork}} account from xAmplify.
+						</h4>
+						<h4 style="margin-left: 20px;">
+							<span class="glyphicon glyphicon-triangle-right"></span>If you decide to relink your account, you will need to reenter your credentials.
 						</h4>
 						<h4 style="margin-left: 20px;">
 							<span class="glyphicon glyphicon-triangle-right"></span>Would you
-							like to delete associated contact lists: <input type="checkbox"
+							like to delete associated contact lists? <input type="checkbox"
 								[(ngModel)]="isUnLinkSocialNetwork"
 								[ngModelOptions]="{standalone: true}">
 						</h4>
 						<button type="button" class="btn btn-primary"
 							style="margin-left: 38%; margin-top: 2%"
-							(click)="unlinkSocailAccount()">UnLink Account</button>
+							(click)="unlinkSocailAccount()">Unlink Account</button>
 					</div>
 				</form>
 			</div>
@@ -1036,3 +1077,62 @@ img:hover {
 		[associatedCampaignDetails]="contactListAssociatedCampaignsList" [isPartner] = "true"
 		[users]="newUserDetails" [contactListId]="partnerListId" (notifyParent)="closeModal($event)"></app-contacts-campaigns-mails>
 </div>
+
+
+
+<!-- MARKETO -->
+<div id="marketoId">
+		<div class="modal right" id="marketoShowLoginPopup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false"
+		 data-backdrop="static">
+		 <ngx-loading [show]="loadingMarketo" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+			<div class="modal-dialog modal-css" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<!-- <button type="button" class="close"  (click)="hideZohoModal()"
+							data-dismiss="modal">&times;</button> -->
+						<a class="close-circle" data-dismiss="modal" (click)="hideMarketoModal()"><i class="fa fa-times"></i></a>
+						<h4 class="modal-title" id="templateRetrieve">Marketo integration with xAmplify</h4>
+						<div>
+							<div>
+								<img src="assets/images/crm/Mark-amplify.png"  style="margin: 30px 30% 0;width: 50%;text-align: center;">
+							</div>
+							
+						</div>
+					</div>
+					<div class="modal-body">
+						<form class="form-horizontal">
+							<div *ngIf="marketoContactError" class="alert alert-danger">
+								<span>{{marketoContactError}}</span>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-sm-3" for="email">Client Id:</label>
+								<div class="col-sm-8">
+									<input type="email" style="width: 75%" class="form-control" id="email" placeholder="Client Id" [(ngModel)]="marketoClientId" [ngModelOptions]="{standalone: true}"
+									(input)="validateModelForm('email')">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-sm-3" for="pwd">Client Secret:</label>
+								<div class="col-sm-8">
+									<input type="password" style="width: 75%" class="form-control" id="pwd" placeholder="Secret Id" [(ngModel)]="marketoSecretId" [ngModelOptions]="{standalone: true}"
+									(input)="validateModelForm('pwd')">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-sm-3" for="instance">Marketo Instance:</label>
+								<div class="col-sm-8">
+									<input type="password" style="width: 75%" class="form-control" id="instance" placeholder="Marketo Instance" [(ngModel)]="marketoInstance" [ngModelOptions]="{standalone: true}"
+									(input)="validateModelForm('instance')">
+								</div>
+							</div>
+							
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal" (click)="hideMarketoModal()">Close</button>
+						<button type="button" class="btn btn-primary" [disabled]="!isMarketoModelFormValid || !marketoClientId || !marketoSecretId || !marketoInstance" (click)="getMarketoContacts()">Authorize</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>

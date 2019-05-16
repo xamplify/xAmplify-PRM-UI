@@ -753,7 +753,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     this.heatMapData = result.heatMapData;
                     this.heatMapData.forEach(element => {
                       element.name = element.name.length>25 ? element.name.substring(0,25)+"..." : element.name;
-                      if(element.launchTime) { element.launchTime = new Date(element.launchTime); }
+                      if(element.launchTime) { element.launchTime = this.convertDateFormat(element.launchTime); }
                     });
                     if (!this.isFullscreenToggle) { this.generatHeatMap(this.heatMapData, 'dashboard-heat-map');
                     } else { this.generatHeatMap(this.heatMapData, 'heat-map-data'); }
@@ -766,6 +766,21 @@ export class DashboardComponent implements OnInit, OnDestroy {
             this.xtremandLogger.error(error);
         }
     }
+    convertDateFormat(time){
+      let ntime = new Date(time);
+      let timeDate  = ntime.toString().split(" ");
+      let timeHours = this.tConv24(timeDate[4]);
+      return timeDate[1]+" "+timeDate[2]+" "+timeDate[3]+", "+timeHours;
+    }
+    tConv24(time24) {
+      let ts = time24;
+      let H = +ts.substr(0, 2);
+      let h:any = (H % 12) || 12;
+      h = (h < 10)?("0"+h):h;  // leading 0 at the left for 1 digit hours
+      var ampm = H < 12 ? " AM" : " PM";
+      ts = h + ts.substr(2, 3) + ampm;
+      return ts;
+    };
     getCampaignsEamailBarChartReports(campaignIdArray) {
         try {
             this.dashboardService.getCampaignsEmailReports(campaignIdArray).

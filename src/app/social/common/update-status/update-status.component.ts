@@ -1,4 +1,5 @@
 import { Component, OnInit, Input,OnDestroy } from '@angular/core';
+import { Location } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { XtremandLogger } from '../../../error-pages/xtremand-logger.service';
 import { SaveVideoFile } from '../../../videos/models/save-video-file';
@@ -76,7 +77,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   isPreviewVideo: boolean = false;
   campaignNames = [];
   events = [];
-  constructor(public socialService: SocialService,
+  constructor(private _location: Location, public socialService: SocialService,
     private videoFileService: VideoFileService, public properties:Properties,
     public authenticationService: AuthenticationService, private contactService: ContactService,
     private pagerService: PagerService, private router: Router, public videoUtilService: VideoUtilService,
@@ -242,8 +243,11 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
         if (file.size > 3145728) {
           // File size should not be more than 3 MB
           this.setCustomResponse(ResponseType.Warning, 'Accepted image size is less than 3MB');
-          this.customResponse.statusArray.push(
-            'The Uploaded Image: ' + file.name + ' size is ' + Math.round(file.size / 1024 / 1024 * 100) / 100 + ' MB');
+          this.customResponse.statusArray.push('The Uploaded Image: ' + file.name + ' size is ' + Math.round(file.size / 1024 / 1024 * 100) / 100 + ' MB');
+          return false;
+        } 
+        if(!file.type.startsWith("image")){
+          this.setCustomResponse(ResponseType.Warning, "We can't quite use that type of file. Could you try one of the following instead: JPG, JPEG, GIF, PNG?");
           return false;
         }
         console.log(file.name + ': ' + file.size);
@@ -571,11 +575,9 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     for (const i in this.socialConnections) {
       if (this.socialConnections[i].active) {
         let source = this.socialConnections[i].source;
-        if(this.socialConnections[i].source !== 'GOOGLE') {
-          const socialStatusProvider = new SocialStatusProvider();
-          socialStatusProvider.socialConnection = this.socialConnections[i];
-          this.socialStatusProviders.push(socialStatusProvider);
-        }
+        const socialStatusProvider = new SocialStatusProvider();
+        socialStatusProvider.socialConnection = this.socialConnections[i];
+        this.socialStatusProviders.push(socialStatusProvider);
       }
     }
   }
@@ -642,10 +644,11 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   /*****************LOAD CONTACTLISTS WITH PAGINATION START *****************/
 
   loadContactLists(contactListsPagination: Pagination) {
+    contactListsPagination.isLoading = true;
     this.paginationType = 'updatestatuscontactlists';
      if(this.authenticationService.isOnlyPartner()) { this.socialCampaign.isPartner = false;}
-     this.contactListsPagination.filterKey = 'isPartnerUserList';
-     this.contactListsPagination.filterValue = this.socialCampaign.isPartner; /// if its true normal contacts wil come, partner contacts for false
+    //  this.contactListsPagination.filterKey = 'isPartnerUserList';
+    //  this.contactListsPagination.filterValue = this.socialCampaign.isPartner; /// if its true normal contacts wil come, partner contacts for false
      this.contactService.loadContactLists(contactListsPagination)
       .subscribe(
       (data: any) => {
@@ -655,7 +658,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
       (error: any) => {
         this.logger.error(error);
       },
-      () => this.logger.info('MangeContactsComponent loadContactLists() finished')
+      () => contactListsPagination.isLoading = false
       );
   }
 
@@ -985,6 +988,14 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     this.isCustomizeButtonClicked = true;
   }
 
+  undoCustomizeEachNetwork() {
+    let socialStatusData = this.socialStatusList[0];
+    this.socialStatusList = [];
+    this.socialStatusList[0] = socialStatusData;
+    this.isCustomizeButtonClicked = false;
+    $('html,body').animate({scrollTop: 0}, 'slow');
+  }
+
   toggleSelectAll(){
     this.isAllSelected = ! this.isAllSelected;
     this.selectedAccounts = 0;
@@ -1024,4 +1035,20 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   onSelectCountry(countryId){
     this.timezones = this.referenceService.getTimeZonesByCountryId(countryId);
   }
+  cancel() {
+    this._location.back(); // <-- go back to previous location on cancel
+  }
+
+  searchContactList(){
+    this.contactListsPagination.pageIndex = 1;
+    this.loadContactLists(this.contactListsPagination);
+  }
+
+  resetSearchContactList(){
+    this.contactListsPagination.pageIndex = 1;
+    this.contactListsPagination.searchKey = null;
+    this.loadContactLists(this.contactListsPagination);
+    
+  }
+
 }

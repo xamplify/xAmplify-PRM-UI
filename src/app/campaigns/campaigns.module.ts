@@ -27,10 +27,8 @@ import { CalendarComponent } from './calendar/calendar.component';
 import { DealRegistrationComponent } from '../deal-registration/add-deals/deal-registration.component';
 import { DealRegistrationService } from '../deal-registration/services/deal-registration.service';
 import { SharedLibraryModule } from "../shared/shared-library.module";
-import { DealRegistrationModule } from "../deal-registration/deal-registration.module";
 import { ManageDealCommentsComponent } from "../deal-registration/manage-deal-comments/manage-deal-comments.component";
 import { AddLeadsComponent } from "../deal-registration/add-leads/add-leads.component";
-import { MarketoAuthenticationComponent } from "../deal-registration/marketo-authentication/marketo-authentication.component";
 
 @NgModule({
   imports: [
@@ -59,11 +57,10 @@ import { MarketoAuthenticationComponent } from "../deal-registration/marketo-aut
     CalendarComponent,
     DealRegistrationComponent,
     ManageDealCommentsComponent,
-    AddLeadsComponent,
-    MarketoAuthenticationComponent
+    AddLeadsComponent
   ],
   exports: [DealRegistrationComponent,BubbleChartComponent,HeatMapComponent,ManageDealCommentsComponent,AddLeadsComponent
-  ,MarketoAuthenticationComponent],
+],
   providers: [ContactService, VideoFileService, EmailTemplateService,DealRegistrationService]
 })
 export class CampaignsModule {}

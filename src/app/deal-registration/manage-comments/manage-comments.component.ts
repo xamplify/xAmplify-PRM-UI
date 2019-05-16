@@ -7,7 +7,7 @@ import { Campaign } from '../../campaigns/models/campaign';
 import { CampaignService } from '../../campaigns/services/campaign.service';
 import { ReferenceService } from '../../core/services/reference.service';
 import { DealRegistration } from '../models/deal-registraton';
-var $;
+declare var $: any;
 @Component({
   selector: 'app-manage-comments',
   templateUrl: './manage-comments.component.html',
@@ -21,7 +21,7 @@ export class ManageCommentsComponent implements OnInit
   campaign: Campaign;
   @Output() isCommentSection = new EventEmitter<any>();
 
-  comment: DealComments;
+  comment: DealComments;  
   commentList: DealComments[] = [];
   firstName: string;
   lastName: string;
@@ -34,10 +34,13 @@ export class ManageCommentsComponent implements OnInit
   refreshComments: any;
   leadName="";
   constructor(public authenticationService: AuthenticationService, private dealRegService: DealRegistrationService, 
-    private campaignService: CampaignService,refferenceService:ReferenceService) { 
+    private campaignService: CampaignService,private refferenceService:ReferenceService) { 
 
   }
-
+  scrollBottom() {
+    
+    $(".comment-area").animate({ scrollTop: document.body.scrollHeight }, 500);
+  }
   ngOnInit()
   {
     if(this.lead.firstName!=null && this.lead.firstName.length>0){
@@ -49,6 +52,7 @@ export class ManageCommentsComponent implements OnInit
       
     }
       this.getCommentList();
+     
    
 
   }
@@ -75,6 +79,7 @@ export class ManageCommentsComponent implements OnInit
           {
           
             this.createdBy = user;
+            this.userName="";
             if(this.createdBy.firstName!=null && this.createdBy.firstName.length>0){
               this.userName = this.userName+this.createdBy.firstName;
 
@@ -95,10 +100,11 @@ export class ManageCommentsComponent implements OnInit
     },
     error => console.log(error),
     () => { })
+    console.log("ngOnDestroy");
     this.getComments();
-    this.refreshComments = setInterval(() => {
-       this.getComments();
-  },10000);
+  //   this.refreshComments = setInterval(() => {
+  //      this.getComments();
+  // },10000);
 
   }
 
@@ -107,6 +113,7 @@ export class ManageCommentsComponent implements OnInit
       {
         console.log(commentData);
         this.commentList = commentData.comments;
+        this.userName="";
         this.commentList.forEach(c=>{
           if(c.user.firstName!= undefined && c.user.firstName!=null && c.user.firstName.length>0){
             c.userName = c.user.firstName;
@@ -122,6 +129,7 @@ export class ManageCommentsComponent implements OnInit
           
           } 
         })
+        this.scrollBottom()
        
 
       },
@@ -161,7 +169,7 @@ export class ManageCommentsComponent implements OnInit
   }
   ngOnDestroy() {
 
-      clearInterval(this.refreshComments);
+     // clearInterval(this.refreshComments);
       console.log(this.commentList.length)
       if(this.commentList.length>0){
       

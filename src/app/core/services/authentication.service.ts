@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response, RequestOptions } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
@@ -92,6 +93,11 @@ export class AuthenticationService {
     }
     getUserByUserName(userName: string) {
         return this.http.post(this.REST_URL + 'admin/getUserByUserName?userName=' + userName + '&access_token=' + this.access_token, '')
+            .map((res: Response) => { return res.json(); })
+            .catch((error: any) => { return error; });
+    }
+    getUserOpportunityModule(userId: number) {
+        return this.http.get(this.REST_URL + 'admin/getUserOppertunityModule/' + userId + '?access_token=' + this.access_token)
             .map((res: Response) => { return res.json(); })
             .catch((error: any) => { return error; });
     }
@@ -288,7 +294,13 @@ export class AuthenticationService {
         module.isVendor = false;
         this.isAddedByVendor = false;
         swal.close();
-        if(!this.router.url.includes('/userlock')){ this.router.navigate(['/']) };
+        if ( !this.router.url.includes( '/userlock' ) ) {
+            if ( environment.CLIENT_URL ==='https://xamplify.io/' ) {
+                window.location.href = 'https://www.xamplify.com/';
+            } else {
+                this.router.navigate( ['/'] )
+            }
+        };
     }
 
     navigateToDashboardIfUserExists(){
@@ -317,5 +329,13 @@ export class AuthenticationService {
         return stompClient;
     }
     
+    extractData( res: Response ) {
+        let body = res.json();
+        console.log( body );
+        return body || {};
+    }
 
+    handleError( error: any ) {
+        return Observable.throw( error );
+    } 
 }

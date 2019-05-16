@@ -16,7 +16,7 @@
 				*ngIf="! showListOfContactList"></i></li>
 			<li
 				*ngIf="! showListOfContactList && contactsByType.selectedCategory != 'non-active' && contactsByType.selectedCategory != 'invalid' && contactsByType.selectedCategory != 'unsubscribe'"><span
-				class="capitalize">{{contactsByType.selectedCategory}}
+				class="capitalize">Registered<!-- {{contactsByType.selectedCategory}} -->
 					{{checkingContactTypeName}}s</span></li>
 			<li
 				*ngIf="! showListOfContactList && contactsByType.selectedCategory == 'non-active'"><span
@@ -88,7 +88,7 @@
 													<div class="number numberCss"
 														style="font-weight: 300 !important; color: #FFFFFF;">{{contactsByType.activeContactsCount}}</div>
 													<div class="desc" style="font-size: 20px; color: #FFFFFF;">
-														Active
+														Registered
 														<!-- {{checkingContactTypeName}}s -->
 													</div>
 												</div>
@@ -384,9 +384,8 @@
 												src="{{googleImage}}"> <img class="imageClassCss"
 												*ngIf="contactList.socialNetwork=='SALESFORCE'"
 												src="{{salesforceImage}}">
-												<img
-														*ngIf="contactList.socialNetwork=='MARKETO'"
-														src="{{marketoImage}}" alt="manual" style="height: 70px;">
+												<img class="imageClassCss" *ngIf="contactList.socialNetwork=='MARKETO'"
+														src="{{marketoImage}}" alt="manual" style="height: 60px;">
 											<!-- <img src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png"> -->
 
 											<div id="container" *ngIf="!contactList.emailValidationInd">
@@ -647,6 +646,7 @@
 															id="checkAllExistingInvalidContacts" />
 														</td>
 														<th style="width: 25%" *ngIf="!isPartner">NAME</th>
+														<th *ngIf="contactsByType.selectedCategory =='invalid' && !isPartner" class="hidden-xs">EMAIL CATEGORY</th>
 														<th style="width: 25%" *ngIf="isPartner">Entity info</th>
 														<th *ngIf="isPartner" class="hidden-xs">VERTICAL</th>
 														<th *ngIf="isPartner" class="hidden-xs">REGION</th>
@@ -672,7 +672,7 @@
 															[class.contact-list-selected]="selectedContactListIds.indexOf(contact.id)>-1"
 															lang="{{contact.name}}" name="campaignContact[]"
 															value="{{contact.id}}" id="{{contact.id}}"
-															(click)="highlightRow(contact.id,contact.emailId,contact.firstName,contact.lastName,$event)" />
+															(click)="highlightRow(contact.id,contact,$event)" />
 														</td>
 														<td align="center"
 															*ngIf="contactsByType.selectedCategory == 'invalid'">
@@ -683,18 +683,29 @@
 															lang="{{contact.name}}" name="invalidContact[]"
 															value="{{contact.id}}" id="{{contact.id}}"
 															(click)="invalidContactsSelectedUserIds(contact.id,contact.emailId,contact.firstName,contact.lastName,$event)" />
-														</td>
+														</td> 
 														<td *ngIf="isPartner"><app-user-info
 																[isPartnerEntityInfo]="true" [isPartnerInfo]="true"
 																[userInfo]="contact"> </app-user-info></td>
 														<td *ngIf="!isPartner"><app-user-info
 																[isContactCompanyInfo]="true" [userInfo]="contact"></app-user-info>
 														</td>
+														<td *ngIf="contactsByType.selectedCategory =='invalid' && !isPartner" class="hidden-xs" >{{contact.emailCategory}}
+														<span *ngIf="!contact.emailCategory"><b>-</b></span>
+														</td>
 
-														<td *ngIf="isPartner" class="hidden-xs" >{{contact.vertical}}</td>
-														<td *ngIf="isPartner" class="hidden-xs" >{{contact.region}}</td>
-														<td *ngIf="isPartner" class="hidden-xs" >{{contact.partnerType}}</td>
-														<td *ngIf="isPartner" class="hidden-xs" >{{contact.category}}</td>
+														<td *ngIf="isPartner" class="hidden-xs" title="{{contact.vertical}}">{{contact.vertical | slice:0:17}}
+														<span *ngIf="contact.vertical?.length>17">...</span>
+														</td>
+														<td *ngIf="isPartner" class="hidden-xs" title="{{contact.region}}">{{contact.region | slice:0:17}}
+														<span *ngIf="contact.region?.length>17">...</span>
+														</td>
+														<td *ngIf="isPartner" class="hidden-xs" title="{{contact.partnerType}}">{{contact.partnerType | slice:0:17}}
+														<span *ngIf="contact.partnerType?.length>17">...</span>
+														</td>
+														<td *ngIf="isPartner" class="hidden-xs" title="{{contact.category}}">{{contact.category | slice:0:17}}
+														<span *ngIf="contact.category?.length>17">...</span>
+														</td>
 														<td class="hidden-xs" *ngIf="!isPartner">
 															<div *ngIf="contact.mobileNumber" [class.disabled]="true"
 																style="pointer-events: none !important; cursor: auto;">
@@ -737,7 +748,7 @@
 																	*ngIf="contact.isShowDetails">Less</span>
 															</button> -->
 
-															<button class="btn green" *ngIf="contactsByType.selectedCategory == 'unsubscribe' && (authenticationService.isVendor() || authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner())"
+															<button class="btn green" *ngIf="contactsByType.selectedCategory == 'unsubscribe' && (hasAllAccess || referenceService.roles.contactsRole || referenceService.roles.partnersRole || authenticationService.isVendor() || authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner() || authenticationService.isPartner() || authenticationService.isOnlyPartner())"
 																(click)="activateUnsubscribedUser(contact.id)">
 																Subscribe
 															</button>
@@ -861,7 +872,7 @@
 									</div>
 									<div class="form-group col-sm-3">
 										<input type="text" class="form-control" placeholder="value*"
-											[(ngModel)]="criterias[i].value1">
+											[(ngModel)]="criterias[i].value1" (keypress)="eventEnterKeyHandler($event.keyCode)">
 									</div>
 									<div class="form-group col-sm-2" data-toggle="tooltip"
 												data-placement="left" title="Remove a condition"

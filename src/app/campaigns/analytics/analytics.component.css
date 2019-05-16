@@ -599,3 +599,19 @@ tr>td>h6 {
   text-align: center;
   font-size: 12px; font-weight: 500;
 }
+.search-box-item-click{
+	height: 32px;
+	right: 16px;
+}
+
+.clear-search{
+	cursor: pointer;
+    pointer-events: all;
+    width: 25px !important;
+    right: 60px !important;
+    top: 6px !important;
+    background: #ffffff !important;
+    color: #008fd5 !important;
+    font-size: 13px !important;
+    position: absolute !important;
+}

@@ -3,7 +3,8 @@ import { DealComments } from '../models/deal-comments';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { DealRegistrationService } from '../services/deal-registration.service';
 import { User } from '../../core/models/user';
-var $;
+import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
+import { ReferenceService } from '../../core/services/reference.service';
 @Component({
   selector: 'app-manage-deal-comments',
   templateUrl: './manage-deal-comments.component.html',
@@ -28,7 +29,8 @@ export class ManageDealCommentsComponent implements OnInit
   loggedInUserId: number;
   user: User;
   isError = true;
-  constructor(public authenticationService: AuthenticationService, private dealRegService: DealRegistrationService) { }
+  constructor(private logger: XtremandLogger, public referenceService: ReferenceService,
+    public authenticationService: AuthenticationService, private dealRegService: DealRegistrationService) { }
 
   ngOnInit()
   {
@@ -67,6 +69,7 @@ export class ManageDealCommentsComponent implements OnInit
           
           } 
         })
+        this.scrollBottom();
         this.comment = new DealComments;
   
       },
@@ -103,6 +106,11 @@ export class ManageDealCommentsComponent implements OnInit
     }
     // data.user.lastName = this.user.lastName;
 
+  }
+
+  scrollBottom() {
+    this.referenceService.scrollSmoothToDiv("comment-area");
+   // $(".comment-area").animate({ scrollTop: document.body.scrollHeight }, 500);
   }
   ngOnDestroy() {
 

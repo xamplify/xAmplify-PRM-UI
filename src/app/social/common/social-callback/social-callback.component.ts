@@ -82,7 +82,7 @@ export class SocialCallbackComponent implements OnInit {
     }
 
     redirect() {
-        if ( !this.socialConnection.existingUser ){
+        if ( !this.socialConnection.existingUser && this.socialConnection.source !== 'GOOGLE' ){
             this.router.navigate( ['/home/social/manage/' + this.providerName] );
         }
         else{

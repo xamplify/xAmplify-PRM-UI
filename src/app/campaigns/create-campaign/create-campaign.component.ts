@@ -218,7 +218,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
      clientIdClass: string;
      secretIdClass: string;
      marketoInstanceClass: string;
-   
+
      templateError: boolean;
      clentIdError: boolean;
      secretIdError: boolean;
@@ -229,7 +229,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
 
      loadingMarketo: boolean;
      marketoButtonClass = "btn btn-default";
- 
+
      //ENABLE or DISABLE LEADS
      enableLeads : boolean;
     /***********End Of Declation*************************/
@@ -240,6 +240,16 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 private emailTemplateService:EmailTemplateService,private router:Router, private socialService: SocialService,
                 public callActionSwitch: CallActionSwitch, public videoUtilService: VideoUtilService,public properties:Properties
             ){
+
+                refService.getCompanyIdByUserId(this.authenticationService.getUserId()).subscribe(response=>{
+                    refService.getOrgCampaignTypes(response).subscribe(data=>{
+                        console.log(data)
+                        this.enableLeads = data.enableLeads;
+                        console.log(this.enableLeads);
+
+                    });
+                })
+
         this.logger.info("create-campaign-component constructor loaded");
         $('.bootstrap-switch-label').css('cssText', 'width:31px;!important');
         /*  CKEDITOR.config.width = 500;
@@ -717,7 +727,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.selectedContactListIds = [];
             this.isContactList = false;
         }*/
-
+        this.contactsPagination.pageIndex = 1;
         this.clearSelectedContactList();
         if(event){
             this.removeTemplateAndAutoResponse();
@@ -737,6 +747,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         let isVendor = roles.indexOf(this.roleName.vendorRole)>-1;
         if(this.authenticationService.isOrgAdmin() || (!this.authenticationService.isAddedByVendor && !isVendor)){
             this.selectedContactListIds = [];
+            this.userListDTOObj = [];
             this.isContactList = false;
         }
     }
@@ -1285,6 +1296,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 this.userListDTOObj =  this.refService.removeDuplicatesFromTwoArrays(this.userListDTOObj, this.contactsPagination.pagedItems);
                 if(this.selectedContactListIds.length==0){
                     this.isContactList = false;
+                    this.userListDTOObj = [];
                 }
             }
 
@@ -1684,7 +1696,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
              this.urls = [];
          }
      }
-        
+
        /* if(this.emailTemplateHrefLinks.length==0){
             let self = this;
             swal( {
@@ -2144,6 +2156,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.refService.campaignVideoFile = undefined;
         this.refService.selectedCampaignType = "";
         this.selectedContactListIds = [];
+        this.userListDTOObj = [];
         this.campaignService.campaign = undefined;
         this.names = [];
         this.name = "";
@@ -2537,9 +2550,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
      }
 
 
-    
+
     /**
-     * 
+     *
      * Push Leads to Marketo
      */
 
@@ -2547,7 +2560,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     {
         this.pushToMarketo =  !this.pushToMarketo;
         console.log(this.pushToMarketo);
-       
+
         if (this.pushToMarketo)
         {
             this.checkMarketoCredentials();
@@ -2578,12 +2591,12 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                         if (customObjectResponse.statusCode == 8020){
                             this.pushToMarketo =  true;
                             console.log(this.pushToMarketo);
-                           
+
                             this.templateError = false;
                             this.loading = false;
                         }else{
                             this.pushToMarketo = false;
-                           
+
                             this.templateError = false;
                             this.loading = false;
                             alert("Custome Objects are not found")
@@ -2593,15 +2606,15 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                     {
                         this.pushToMarketo = false;
                         this.templateError = error;
-                       
+
                         this.loadingMarketo = false;
                     })
-               
+
             }
             else
             {
                 this.pushToMarketo = false;
-               
+
                 $("#templateRetrieve").modal('show');
                 $("#closeButton").show();
                 this.templateError = false;
@@ -2639,7 +2652,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 this.templateError = false;
                 this.templateSuccessMsg = response.message;
                 this.loadingMarketo = false;
-                
+
                 setTimeout(function () { $("#templateRetrieve").modal('hide') }, 3000);
             } else
             {
@@ -2740,6 +2753,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.pushToMarketo = false;
         $("#templateRetrieve").modal('hide');
     }
-
+    spamCheck() {
+        $("#email_spam_check").modal('show');
+    }
 
 }

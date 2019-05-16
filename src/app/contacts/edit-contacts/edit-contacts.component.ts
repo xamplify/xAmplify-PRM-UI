@@ -147,7 +147,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     newUserDetails = [];
     teamMemberPagination: Pagination = new Pagination();
     teamMembersList = [];
-    orgAdminsList = [];
+/*    orgAdminsList = [];*/
     editingEmailId = '';
     loading = false;
     contactAllDetails = [];
@@ -156,6 +156,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     searchContactType = "";
     saveAsListName:any;
     saveAsError:any;
+    isCsvFileLsitLoading = false;
     
     pageSize: number = 12;
     pageNumber: any;
@@ -279,6 +280,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
         try {
             if ( files[0].type == "application/vnd.ms-excel" || files[0].type == "text/csv" || files[0].type == "text/x-csv" ) {
                 this.selectedAddContactsOption = 2;
+                this.isCsvFileLsitLoading = true;
                 this.isShowUsers = false;
                 this.fileTypeError = false;
                 this.xtremandLogger.info( "coontacts preview" );
@@ -292,7 +294,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                     var contents = e.target.result;
                     
                     let csvData = reader.result;
-                    let csvRecordsArray = csvData.split(/\r\n|\n/);
+                    let csvRecordsArray = csvData.split(/\r|\n/);
                     let headersRow = self.fileUtil
                     .getHeaderArray(csvRecordsArray);
                      let headers = headersRow[0].split(',');
@@ -323,6 +325,11 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                                  
                              }
                              self.setCsvPage(1);
+                             
+                             if( self.csvContacts.length == 0 ){
+                                 self.customResponse = new CustomResponse( 'ERROR', "No results found.", true );  
+                             }
+                             
                          }else {
                              self.customResponse = new CustomResponse( 'ERROR', "Invalid Csv", true );
                              self.removeCsv();
@@ -358,6 +365,11 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                                  
                              }
                              self.setCsvPage(1);
+                             
+                             if( self.csvContacts.length == 0 ){
+                                 self.customResponse = new CustomResponse( 'ERROR', "No results found.", true );  
+                             }
+                             
                          }else {
                              self.customResponse = new CustomResponse( 'ERROR', "Invalid Csv", true );
                              self.removeCsv();
@@ -370,6 +382,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                      }
                     console.log( "AddContacts : readFiles() contacts " + JSON.stringify( self.users ) );
                 }
+                this.isCsvFileLsitLoading = false;
             } else {
                 this.fileTypeError = true;
                 this.uploader.queue.length = 0;
@@ -499,9 +512,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                     }
                 }
 
-                for ( let i = 0; i < this.orgAdminsList.length; i++ ) {
+                /*for ( let i = 0; i < this.orgAdminsList.length; i++ ) {
                     this.teamMembersList.push( this.orgAdminsList[i] );
-                }
+                }*/
                 this.teamMembersList.push( this.authenticationService.user.emailId );
 
                 let emails = []
@@ -573,7 +586,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                     this.customResponse = new CustomResponse( 'ERROR', "Company Details is required", true );
                 }
             } else {
-                this.customResponse = new CustomResponse( 'ERROR', "You are not allowed to add teamMember or orgAdmin as a partner", true );
+                this.customResponse = new CustomResponse( 'ERROR', "You are not allowed to add teamMember(s) or yourself as a partner", true );
                 this.cancelContacts();
             }
         } catch ( error ) {
@@ -650,9 +663,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                             }
                         }
 
-                        for ( let i = 0; i < this.orgAdminsList.length; i++ ) {
+                       /* for ( let i = 0; i < this.orgAdminsList.length; i++ ) {
                             this.teamMembersList.push( this.orgAdminsList[i] );
-                        }
+                        }*/
                         this.teamMembersList.push( this.authenticationService.user.emailId );
 
                         let emails = []
@@ -733,7 +746,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                         }
 
                     } else {
-                        this.customResponse = new CustomResponse( 'ERROR', "You are not allowed add teamMember or orgAdmin as a partner", true );
+                        this.customResponse = new CustomResponse( 'ERROR', "You are not allowed add teamMember(s) or yourself as a partner", true );
                     }
 
                 }else if(this.isEmailExist){
@@ -1281,9 +1294,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                         }*/
                     }
 
-                    for ( let i = 0; i < this.orgAdminsList.length; i++ ) {
+                   /* for ( let i = 0; i < this.orgAdminsList.length; i++ ) {
                         this.teamMembersList.push( this.orgAdminsList[i] );
-                    }
+                    }*/
                     this.teamMembersList.push( this.authenticationService.user.emailId );
                     let emails = []
                     for ( let i = 0; i < this.users.length; i++ ) {
@@ -1346,6 +1359,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                                     this.customResponse = new CustomResponse( 'ERROR', error._body, true );
                                 } else if(JSON.parse(error._body).includes("email addresses in your contact list that aren't formatted properly")){
                                     this.customResponse = new CustomResponse( 'ERROR', JSON.parse(error._body), true );
+                                    this.cancelContacts();
                                 }else{
                                    this.xtremandLogger.errorPage( error );
                                 }
@@ -1358,7 +1372,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                         this.customResponse = new CustomResponse( 'ERROR', "Company Details is required", true );
                     }
                 } else {
-                    this.customResponse = new CustomResponse( 'ERROR', "You are not allowed to add teamMember or orgAdmin as a partner", true );
+                    this.customResponse = new CustomResponse( 'ERROR', "You are not allowed to add teamMember(s) or yourself as a partner", true );
                 }
                 this.dublicateEmailId = false;
             }
@@ -2127,6 +2141,12 @@ export class EditContactsComponent implements OnInit, OnDestroy {
         this.filterConditionErrorMessage = "";
     }
 
+    eventEnterKeyHandler(keyCode: any){
+        if (keyCode === 13) { 
+            this.contactFilter();
+        }
+    }
+    
     contactFilter() {
         try {
             for ( let i = 0; i < this.criterias.length; i++ ) {
@@ -2541,7 +2561,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
     }
 
-    listOrgAdmin() {
+/*    listOrgAdmin() {
         try {
             this.contactService.listOrgAdmins()
                 .subscribe(
@@ -2559,7 +2579,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
         }
 
     }
-
+*/
     closeModal( event ) {
         if ( event == "Emails Send Successfully" ) {
             if ( this.isPartner ) {
@@ -2634,7 +2654,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
             this.loadContactListsNames();
             if(this.isPartner){
               this.listTeamMembers();
-              this.listOrgAdmin();
+            /*  this.listOrgAdmin();*/
             }
             
             this.selectedContactListName = this.contactListName;

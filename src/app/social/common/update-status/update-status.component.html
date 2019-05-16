@@ -243,7 +243,7 @@
 									<i class="fa fa-times-circle"></i>
 								</span>
 								<img async *ngIf="socialStatusContent.fileType !== 'video'" src="{{authenticationService.MEDIA_URL}}{{socialStatusContent.filePath}}">
-								<img async *ngIf="socialStatusContent.fileType === 'video'" src="{{socialStatusContent.filePath}}">
+								<img async *ngIf="socialStatusContent.fileType === 'video'" src="{{socialStatusContent.filePath}}" (error)="videoUtilService.errorVideoHandler($event)">
 							</div>
 						</section>
 
@@ -368,7 +368,8 @@
 					</div>
 				</div>
 				<div class="col-xs-12 m0 p0" id="post-actions-button-group">
-					<div class="col-xs-6 pr10 pull-right">
+					<div class="col-xs-12 col-sm-6 pr10 pull-right">
+						<button type="button" class="btn pull-right ml10" (click)="cancel()">Cancel</button>
 						<div class="btn-group pull-right" *ngIf="!(selectedAccounts > 1 && !isCustomizeButtonClicked)">
 							<button type="button" class="btn btn-primary rounded-0" (click)="shareNow()">Post Now</button>
 							<button type="button" style="min-width: 32px;" class="btn btn-primary dropdown-toggle rounded-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" *ngIf="isSocialCampaign">
@@ -377,6 +378,11 @@
 							<ul class="dropdown-menu pull-right">
 								<li><a (click)="showScheduleOption('schedule-option-div')">Schedule</a></li>
 							</ul>
+						</div>
+						<div *ngIf="selectedAccounts > 1 && isCustomizeButtonClicked">
+							<button type="button" class="btn pull-right mr10" (click)="undoCustomizeEachNetwork()" data-toggle="tooltip" data-placement="top" title="Undo">
+								<span ><i class="fa fa-undo" aria-hidden="true" ></i></span>							
+							</button>
 						</div>
 						<ng-container *ngIf="selectedAccounts > 1 && !isCustomizeButtonClicked">
 							<button class="btn btn-primary pull-right" (click)="customizeEachNetwork()">Customize for each network</button>
@@ -394,17 +400,28 @@
 			</div>
 			<div class="col-sm-12 dashboard-stat2 p0 clearfix" *ngIf="isSocialCampaign && !alias">
 				<div class="portlet-body clearfix p10">
-					<ng-container *ngIf="authenticationService.module.hasSocialStatusRole || (authenticationService.user.hasCompany && authenticationService.module.isOrgAdmin)">
+					<ng-container >
 						<div class="form-group m0 pull-right">
-							<h5 class="control-label font-purple-intense pr10 inline">Partner Contacts</h5>
+							<!--<h5 class="control-label font-purple-intense pr10 inline">Partner Contacts</h5>
 							<switch [status]="socialCampaign.isPartner" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
 							 [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
 							 (statusChange)="toggleContactLists()">
-							</switch>
+							</switch>-->
 						</div>
 					</ng-container>
-					<div class="form-group m0">
-						<h6 class="caption-subject font-red-sunglo uppercase bold mt0">Recipient Lists</h6>
+
+					<div class="row">
+						<div class="col-sm-8 col-xs-12">
+							<h6 class="caption-subject font-red-sunglo uppercase bold mt10 mb10 ml0">Recipient Lists</h6>
+						</div>
+						<div class="col-sm-4 col-xs-12">
+							<div style="position: relative; padding-bottom: 5px;">
+                          <input type="text" [(ngModel)]="contactListsPagination.searchKey" [ngModelOptions]="{standalone: true}" class="form-control"
+                          placeholder="Search for a list">
+                          <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="contactListsPagination.searchKey" (click)="resetSearchContactList()"></button>
+                          <button type="submit" class="search-box-item-click" (click)="searchContactList()"><i class="fa fa-search"></i></button>
+                        </div>
+						</div>
 					</div>
 
 					<section *ngIf="contactListsPagination.pagedItems?.length === 0">
@@ -414,6 +431,7 @@
 						<a class='btn btn-info' style="color: #fff;" [routerLink]="['/home/contacts/add']">Add Contacts</a>
 					</section>
 					<section *ngIf="contactListsPagination.pagedItems?.length > 0">
+						<ngx-loading [show]="contactListsPagination.isLoading"></ngx-loading>
 						<div class="table-responsive">
 							<table class="table tgrid" id='contact-list-table'>
 								<thead>
@@ -422,6 +440,7 @@
 										<th>List Name</th>
 										<th>Created On</th>
 										<th>Recipients</th>
+										<th>Type</th>
 										<th>Preview</th>
 									</tr>
 								</thead>
@@ -432,17 +451,21 @@
 											[checked]="socialCampaign.userListIds.indexOf(contactList.id)>-1">
 										</td>
 										<td>
-											<h5 title="{{contactList.name}}">
-											<span *ngIf="contactList.name?.length<=50">{{contactList.name}}</span>
-											<span *ngIf="contactList.name?.length>50">{{contactList.name | slice:0:50}}...</span>
+											<h5 class="m0 f-w-600" title="{{contactList.name}}">
+												<span *ngIf="contactList.name?.length<=50">{{contactList.name}}</span>
+												<span *ngIf="contactList.name?.length>50">{{contactList.name | slice:0:50}}...</span>
 											</h5>
 											<h6 title="{{contactList.uploadedBy}}" style="margin: 5px 0;">
-											<span *ngIf="contactList.uploadedBy?.length<=50">By {{contactList.uploadedBy}}</span>
-											<span *ngIf="contactList.uploadedBy?.length>50">By {{contactList.uploadedBy | slice:0:50}}...</span>
+												<span *ngIf="contactList.uploadedBy?.length<=50">By {{contactList.uploadedBy}}</span>
+												<span *ngIf="contactList.uploadedBy?.length>50">By {{contactList.uploadedBy | slice:0:50}}...</span>
 											</h6>
 										</td>
 										<td>{{contactList.createdDate | date:'mediumDate'}}</td>
 										<td> <h6 class='m0'>{{contactList.noOfContacts}}</h6> </td>
+										<td>
+											<span *ngIf="contactList.partnerUserList">partner</span>
+											<span *ngIf="!contactList.partnerUserList">contact</span>
+										</td>
 										<td class='m0'>
 											<a class="actions-block pull-left"><i class="fa fa-eye" (click)="loadContactsOnPreview(contactList, contactsPagination);"></i></a>
 										</td>

@@ -108,7 +108,7 @@
       </li>
 
       <li *ngIf="authService.module.isEmailTemplate && !authService.isOnlyPartner()" [ngClass]="{'active':location.path().includes('emailtemplate')}">
-        <a class="hidden-xs" href="javascript:;" (click)="openOrCloseTabs('emailtemplates')" >
+        <a class="hidden-xs" [ngClass]="{'emailTempCss': changeTemplateCss && refService.isSidebarClosed}" (mouseover)="changeTemplateCss=true" (mouseout)="changeTemplateCss=false" (click)="openOrCloseTabs('emailtemplates')" >
         <i class="fa fa-envelope"></i>
         <span class="title">Email Templates</span>
         <span class="arrow "></span>
@@ -169,10 +169,10 @@
         <span class="arrow "></span>
         <span class="selected"></span>
         </a>
-        
+
       </li>
-      
-            
+
+
       <!-- ------Deal Registration------ -->
       <li *ngIf="(authService.module.isOrgAdmin && authService.user.hasCompany && enableLeads) || (authService.module.isVendor && enableLeads) || (isOnlyPartner && enableLeadsByVendor) || (this.authService.module.isCompanyPartner  && enableLeadsByVendor) ||(authService.module.hasOpportunityRole && enableLeads)" [ngClass]="{'active': location.path().includes('deals')}">
         <a   [routerLink]="['./deals/manage']">
@@ -187,7 +187,7 @@
               <i class="fa fa-tags"></i>
               <span class="title">As Vendor</span>
               </a>
-             
+
             </li>
             <li>
               <a  *ngIf="isOnlyPartner || authService.module.isCompanyPartner || authService.module.isPartner" [routerLink]="['./deals/manage/partners']">
@@ -197,8 +197,8 @@
             </li>
           </ul> -->
       </li>
-      
-      
+
+
       <!-- <li *ngIf="authService.module.isOrgAdmin || authService.module.isVendor" [ngClass]="{'active':location.path().includes('upgrade')}">
         <a style="cursor:not-allowed">
           [routerLink]="['./upgrade']"

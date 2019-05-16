@@ -86,8 +86,8 @@ export class DealAnalyticsComponent implements OnInit
   emailLogs: any;
   emailLogDetails: any;
   totalEmailLogs: any;
-  campaignReport: CampaignReport = new CampaignReport;
-  userCampaignReport: CampaignReport = new CampaignReport;
+  campaignReport: CampaignReport = new CampaignReport();
+  userCampaignReport: CampaignReport = new CampaignReport();
   customResponse: CustomResponse = new CustomResponse();
 
   contactListInfoPagination: Pagination = new Pagination();
@@ -148,22 +148,13 @@ export class DealAnalyticsComponent implements OnInit
   {
     try
     {
-      this.campaignRouter = this.utilService.getRouterLocalStorage();
-      this.isTimeLineView = false;
+     
       this.loggedInUserId = this.authenticationService.getUserId();
       this.campaign = new Campaign();
-      this.selectedRow.emailId = "";
-
-
-
-
 
     } catch (error) { this.xtremandLogger.error('error' + error); }
   }
-  showTimeline()
-  {
-    this.isTimeLineView = !this.isTimeLineView;
-  }
+ 
   ngOnInit()
   {
    
@@ -173,9 +164,8 @@ export class DealAnalyticsComponent implements OnInit
       "userId": this.lead.id,
       "emailId": this.lead.emailId
     }
-    this.isTimeLineView = false;
    
-    this.userTimeline(object);
+   
 
     this.mainLoader = true;
     this.dealRegService.getDealById(this.dealId,this.loggedInUserId).subscribe(deal =>
@@ -183,25 +173,15 @@ export class DealAnalyticsComponent implements OnInit
       this.deal = deal.data;
       this.campaignId = this.deal.campaignId;
       const obj = { 'campaignId': this.deal.campaignId };
-      try
-      {
-        this.paginationType = 'campaignViews';
-        this.emailActionListPagination.pageIndex = 1;
-        this.getCampaignById(this.deal.campaignId);
-       
-        this.pagination.pageIndex = 1;
-
-        // this.getCampaignUserViewsCountBarCharts(this.deal.campaignId, this.pagination);
-
-        setTimeout(() => { this.mainLoader = false; }, 3000);
-      }
-      catch (error) { this.hasClientError = true; this.mainLoader = false; this.xtremandLogger.error('error' + error); }
+     
+     
       this.campaignService.getCampaignById(obj).subscribe(campaign =>
       {
         this.campaign = campaign;
+        console.log(this.campaign)
         this.campaignType = this.campaign.campaignType.toLocaleString();
         this.campaignId = this.campaign.campaignId;
-        
+        this.userTimeline(object);
         this.dealRegService.getDealCreatedBy(this.deal.createdBy).subscribe(user =>
           {
     
@@ -214,6 +194,7 @@ export class DealAnalyticsComponent implements OnInit
       
       this.dealRegService.getDealCreatedBy(this.deal.leadId).subscribe(lead =>
       {
+        console.log(lead)
         this.lead = lead;
         this.selectedRow = lead;
         this.getEmailLogCountByCampaign(this.deal.campaignId);
@@ -231,58 +212,7 @@ export class DealAnalyticsComponent implements OnInit
 
   }
 
-  listCampaignViews(campaignId: number, pagination: Pagination)
-  {
-    try
-    {
-      this.loading = true;
-      this.referenceService.loading(this.httpRequestLoader, true);
-      this.downloadTypeName = this.paginationType = 'campaignViews';
-      this.listTotalCampaignViews(campaignId);
-
-      if (!this.campaign.detailedAnalyticsShared && this.campaign.dataShare)
-      {
-        pagination.campaignId = campaignId;
-        pagination.campaignType = "VIDEO";
-        this.campaignService.listCampaignInteractiveViews(pagination)
-          .subscribe(
-            data =>
-            {
-              this.listCampaignViewsDataInsert(data);
-            },
-            error => console.log(error),
-            () => console.log()
-          )
-      } else
-      {
-        this.campaignService.listCampaignViews(campaignId, pagination, this.isChannelCampaign)
-          .subscribe(
-            data =>
-            {
-              this.listCampaignViewsDataInsert(data.campaignviews);
-            },
-            error => console.log(error),
-            () => console.log()
-          )
-      }
-    } catch (error) { this.xtremandLogger.error('error' + error); }
-  }
-
-  listCampaignViewsDataInsert(campaignviews: any)
-  {
-    this.campaignViews = campaignviews;
-    const views = [];
-    for (let i = 0; i < this.campaignViews.length; i++)
-    {
-      views.push(this.campaignViews[i].viewsCount)
-    }
-    this.maxViewsValue = Math.max.apply(null, views);
-    this.campaignViewsPagination.totalRecords = this.campaignReport.emailSentCount;
-    this.campaignViewsPagination = this.pagerService.getPagedItems(this.campaignViewsPagination, this.campaignViews);
-    this.loading = false;
-    this.referenceService.loading(this.httpRequestLoader, false);
-  }
-
+  
   getCampaignViewsReportDurationWise(campaignId: number)
   {
     try
@@ -320,7 +250,7 @@ export class DealAnalyticsComponent implements OnInit
           error => console.log(error),
           () =>
           {
-            this.listCampaignViews(campaignId, this.campaignViewsPagination);
+            
           }
         )
     } catch (error) { this.xtremandLogger.error('error' + error); }
@@ -354,38 +284,9 @@ export class DealAnalyticsComponent implements OnInit
           () => console.log());
     } catch (error) { this.xtremandLogger.error('error' + error); }
   }
-  clickWorldMapReports(event: any)
-  {
-    this.getCampaignUsersWatchedInfo(event);
-  }
+  
 
 
-  getCampaignUsersWatchedInfo(countryCode)
-  {
-    try
-    {
-      this.loading = true;
-      this.referenceService.loading(this.httpRequestLoader, true);
-      this.paginationType = 'coutrywiseUsers';
-      this.countryCode = countryCode.toUpperCase();
-      this.campaignService.getCampaignUsersWatchedInfo(this.campaignId, this.countryCode, this.pagination)
-        .subscribe(
-          (data: any) =>
-          {
-           
-            this.worldMapUserData = data.data;
-            this.pagination.totalRecords = data.totalRecords;
-            this.pagination = this.pagerService.getPagedItems(this.pagination, data.data);
-            this.getCampaignUsersWatchedTotalInfo(countryCode, this.pagination.totalRecords);
-            this.loading = false;
-            this.referenceService.loading(this.httpRequestLoader, false);
-            $('#worldMapModal').modal('show');
-          },
-          error => console.log(error),
-          () => console.log('finished')
-        );
-    } catch (error) { this.xtremandLogger.error('error' + error); }
-  }
   getEmailLogCountByCampaign(campaignId: number)
   {
     try
@@ -416,6 +317,7 @@ export class DealAnalyticsComponent implements OnInit
         .subscribe(
           data =>
           {
+            console.log(data)
             this.campaignReport.usersWatchCount = data.total_views_count;
             this.loading = false;
           },
@@ -468,34 +370,6 @@ export class DealAnalyticsComponent implements OnInit
         )
     } catch (error) { this.xtremandLogger.error('error' + error); }
   }
-
-  setPage(event: any)
-  {
-    try
-    {
-      if (event.type === 'campaignViews')
-      {
-        this.campaignViewsPagination.pageIndex = event.page;
-        this.listCampaignViews(this.campaign.campaignId, this.campaignViewsPagination);
-      } else if (event.type === 'emailAction')
-      {
-        this.emailActionListPagination.pageIndex = event.page;
-        if (this.campaignReport.emailActionType === 'open' || this.campaignReport.emailActionType === 'click')
-        {
-          this.emailActionList(this.campaign.campaignId, this.campaignReport.emailActionType, this.emailActionListPagination);
-        }
-      } else if (event.type === 'usersWatch')
-      {
-        this.usersWatchListPagination.pageIndex = event.page;
-        this.usersWatchList(this.campaign.campaignId, this.usersWatchListPagination);
-      } 
-      else
-      {
-        this.pagination.pageIndex = event.page;
-      }
-    } catch (error) { this.xtremandLogger.error('error' + error); }
-  }
-  
   emailActionList(campaignId: number, actionType: string, pagination: Pagination)
   {
     try
@@ -566,21 +440,27 @@ export class DealAnalyticsComponent implements OnInit
     try
     {
       this.loading = true;
+      console.log(this.emailLogs)
+      this.userCampaignReport = new CampaignReport();
+
+      this.userCampaignReport.totalUniqueWatchCount =0 ;
       if (this.emailLogs !== undefined)
       {
-        for (const i in this.emailLogs)
-        {
-          if (this.emailLogs[i].actionId === 13)
+        this.emailLogs.forEach(emailLog => {
+          if (emailLog.actionId === 13)
           {
             this.userCampaignReport.emailOpenCount += 1;
-          } else if (this.emailLogs[i].actionId === 14 || this.emailLogs[i].actionId === 15)
+          } else if (emailLog.actionId === 14 || emailLog.actionId === 15)
           {
             this.userCampaignReport.emailClickedCount += 1;
           }
-          else if (this.emailLogs[i].actionId === 1) {
-            this.userCampaignReport.totalUniqueWatchCount += 1;
+          else if (emailLog.actionId === 1) {
+            console.log(this.userCampaignReport)
+            this.userCampaignReport.totalUniqueWatchCount = this.userCampaignReport.totalUniqueWatchCount + 1;
            }
-        }
+        });
+
+       
       }
       this.loading = false;
     } catch (error) { this.xtremandLogger.error('Error in count' + error); }
@@ -590,10 +470,13 @@ export class DealAnalyticsComponent implements OnInit
   {
     try
     {
+      console.log(campaignViews)
       this.loading = true;
       this.redistributedAccountsBySelectedUserId = [];
       this.listEmailLogsByCampaignAndUser(campaignViews.campaignId, campaignViews.userId);
-      this.getTotalTimeSpentOfCampaigns(campaignViews.userId, campaignViews.campaignId);
+      let campaignId ;
+     
+      this.getTotalTimeSpentOfCampaigns(this.lead.id, this.campaign.campaignId);
       if (this.campaignType === 'EVENT' && this.isChannelCampaign)
       {
         this.redistributionCampaignsDetails(campaignViews);
@@ -610,11 +493,9 @@ export class DealAnalyticsComponent implements OnInit
           )
         )
       }
-      this.selectedRow = campaignViews;
       
-      this.isTimeLineView = !this.isTimeLineView;
       this.userCampaignReport.totalUniqueWatchCount = campaignViews.viewsCount;
-     
+      
     } catch (error) { this.xtremandLogger.error(error); }
   }
 
@@ -639,11 +520,14 @@ export class DealAnalyticsComponent implements OnInit
   {
     try
     {
+      console.log(userId + "====."+ campaignId)
       this.loading = true;
+      
+
       this.campaignService.getTotalTimeSpentofCamapaigns(userId, campaignId)
         .subscribe(data =>
         {
-         
+       
           this.totalTimeSpent = data;   // data is coming as empty object ,, need to handle it
           this.loading = false;
         },
@@ -928,256 +812,16 @@ export class DealAnalyticsComponent implements OnInit
     } catch (error) { this.xtremandLogger.error('error' + error); }
   }
 
-  listTotalCampaignViews(campaignId: number)
-  {
-    try
-    {
-      //this.loading = true;
-      this.downloadTypeName = 'campaignViews';
-      this.campaignTotalViewsPagination.maxResults = this.campaignReport.emailSentCount;
-      this.campaignService.listCampaignViews(campaignId, this.campaignTotalViewsPagination, this.isChannelCampaign)
-        .subscribe(
-          data =>
-          {
-            this.campaignTotalViewsData = data.campaignviews;
-            
-          },
-          error => console.log(error),
-          () => console.log()
-        );
-    } catch (error) { this.xtremandLogger.error('error' + error); }
-  }
-
-  getCampaignUsersWatchedTotalInfo(countryCode, totalRecord: number)
-  {
-    try
-    {
-      this.loading = true;
-      this.downloadTypeName = 'worldMap';
-      this.countryCode = countryCode.toUpperCase();
-      this.campaignsWorldMapPagination.maxResults = totalRecord;
-      this.campaignService.getCampaignUsersWatchedInfo(this.campaignId, this.countryCode, this.campaignsWorldMapPagination)
-        .subscribe(
-          (data: any) =>
-          {
-          
-            this.worldMapUserTotalData = data.data;
-            this.loading = false;
-          },
-          error => this.xtremandLogger.error('error' + error),
-          () => console.log('finished')
-        );
-    } catch (error) { this.xtremandLogger.error('error' + error); }
-  }
-
-  downloadEmailLogs()
-  {
-    try
-    {
-      this.loading = true;
-      if (this.downloadTypeName === 'donut')
-      {
-        this.logListName = 'Campaign_Views_Logs.csv';
-        this.downloadCsvList = this.totalListOfemailLog;
-      } else if (this.downloadTypeName === 'emailAction')
-      {
-        this.logListName = 'Email_Action_Logs.csv';
-        this.downloadCsvList = this.campaignReport.totalEmailActionList;
-      } else if (this.downloadTypeName === 'usersWatchedList')
-      {
-        this.logListName = 'Users_watched_Logs.csv';
-        this.downloadCsvList = this.campaignReport.totalWatchedList;
-      } else if (this.downloadTypeName === 'campaignViews')
-      {
-        this.logListName = 'Campaign_report_logs.csv';
-        this.downloadCsvList = this.campaignTotalViewsData;
-      } else if (this.downloadTypeName === 'worldMap')
-      {
-        this.logListName = 'World_Map_logs.csv';
-        this.downloadCsvList = this.worldMapUserTotalData;
-      } else if (this.downloadTypeName === 'rsvp')
-      {
-        if (this.rsvpResposeType === 'email open')
-        {
-          this.logListName = 'People who opened mail log.csv';
-        } else
-        {
-          this.logListName = 'People who says ' + this.rsvpResposeType + ' RSVPs log.csv';
-        }
-        this.downloadCsvList = this.rsvpDetailsList;
-      }
-
-
-      this.downloadDataList.length = 0;
-      for (let i = 0; i < this.downloadCsvList.length; i++)
-      {
-        let date = new Date(this.downloadCsvList[i].time);
-        let startTime = new Date(this.downloadCsvList[i].startTime);
-        let endTime = new Date(this.downloadCsvList[i].endTime);
-        let sentTime = new Date(this.campaign.launchTime);
-        let latestView = new Date(this.downloadCsvList[i].latestView);
-        let responseTime = new Date(this.downloadCsvList[i].responseTime);
-
-        var object = {
-          "First Name": this.downloadCsvList[i].firstName,
-          "Last Name": this.downloadCsvList[i].lastName,
-        }
-
-        if (this.downloadTypeName === 'donut')
-        {
-          object["Email Id"] = this.downloadCsvList[i].emailId;
-          object["Campaign Name"] = this.downloadCsvList[i].campaignName;
-          let hours = this.referenceService.formatAMPM(date);
-          object["Date and Time"] = date.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
-          object["Platform"] = this.downloadCsvList[i].os;
-          object["Location"] = this.downloadCsvList[i].location;
-        }
-
-        if (this.downloadTypeName === 'campaignViews')
-        {
-          object["Email Id"] = this.downloadCsvList[i].emailId;
-          object["Campaign Name"] = this.downloadCsvList[i].campaignName;
-          if (this.campaignType === 'EVENT')
-          {
-            if (this.isChannelCampaign)
-            {
-              object["Invities"] = this.downloadCsvList[i].rsvpMap.totalInvities;
-              object["Opened"] = this.downloadCsvList[i].rsvpMap.emailOpenedCount;
-              object["Yes"] = this.downloadCsvList[i].rsvpMap.YES;
-              object["No"] = this.downloadCsvList[i].rsvpMap.NO;
-              object["May Be"] = this.downloadCsvList[i].rsvpMap.MAYBE;
-              object["Not Yet"] = this.downloadCsvList[i].rsvpMap.notYetResponded;
-              object["Total Guests"] = this.downloadCsvList[i].rsvpMap.additionalCount;
-            } else
-            {
-              object["Response Type"] = this.downloadCsvList[i].rsvpMap.responseType;
-              object["Total Guests"] = this.downloadCsvList[i].rsvpMap.additionalCount;
-            }
-          } else
-          {
-            let hours = this.referenceService.formatAMPM(sentTime);
-            object["Sent Time"] = sentTime.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
-            let lastviewHours = this.referenceService.formatAMPM(latestView);
-            object["Latest View"] = latestView.toDateString().split(' ').slice(1).join(' ') + ' ' + lastviewHours;
-          }
-        }
-
-        if (this.downloadTypeName === 'usersWatchedList')
-        {
-          object["Email Id"] = this.downloadCsvList[i].emailId;
-          let srtHours = this.referenceService.formatAMPM(startTime);
-          object["START DURATION"] = startTime.toDateString().split(' ').slice(1).join(' ') + ' ' + srtHours;
-          let endHours = this.referenceService.formatAMPM(endTime);
-          object["STOP DURATION"] = endTime.toDateString().split(' ').slice(1).join(' ') + ' ' + endHours;
-          /*object["IP ADDRESS"] = this.downloadCsvList[i].ipAddress;*/
-          object["PLATFORM"] = this.downloadCsvList[i].os[0].toUpperCase() + this.downloadCsvList[i].os.substr(1).toLowerCase();
-          object["STATE"] = this.downloadCsvList[i].state;
-          object["COUNTRY"] = this.downloadCsvList[i].country;
-        }
-
-        if (this.downloadTypeName === 'emailAction')
-        {
-          object["Email Id"] = this.downloadCsvList[i].emailId;
-          if (this.campaignReport.emailActionType === 'click')
-          {
-            if (this.downloadCsvList[i].url)
-            {
-              object["Url"] = this.downloadCsvList[i].url;
-            } else
-            {
-              object["Url"] = "Clicked on the video thumbnail";
-            }
-          } else
-          {
-            object["Email subject"] = this.downloadCsvList[i].subject;
-          }
-          let hours = this.referenceService.formatAMPM(date);
-          object["Date and Time"] = date.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
-        }
-
-        if (this.downloadTypeName === 'worldMap')
-        {
-          object["Email Id"] = this.downloadCsvList[i].emailId;
-          let hours = this.referenceService.formatAMPM(date);
-          object["Date and Time"] = date.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
-          object["Device"] = this.downloadCsvList[i].deviceType;
-          object["Location"] = this.downloadCsvList[i].location;
-        }
-
-        if (this.downloadTypeName === 'rsvp')
-        {
-          object["Email Id"] = this.downloadCsvList[i].emailId;
-          if (this.rsvpResposeType === 'email open')
-          {
-            object["Campaign Name"] = this.downloadCsvList[i].campaignName;
-            object["Subject"] = this.downloadCsvList[i].subject;
-            let hours = this.referenceService.formatAMPM(date);
-            object["Time"] = date.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
-          } else
-          {
-            object["Message"] = this.downloadCsvList[i].message;
-            let hours = this.referenceService.formatAMPM(responseTime);
-            object["Response Time"] = responseTime.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
-            object["Total Attendees"] = this.downloadCsvList[i].additionalCount;
-          }
-        }
-
-        this.downloadDataList.push(object);
-      }
-
-      this.referenceService.isDownloadCsvFile = true;
-      this.loading = false;
-    } catch (error) { this.xtremandLogger.error('error' + error); }
-  }
-
-  showEmailTemplatePreview(emailTemplate: any)
-  {
-    try
-    {
-     
-      this.referenceService.previewEmailTemplate(emailTemplate, this.campaign);
-    } catch (error) { this.xtremandLogger.error(error); }
-  }
-
-  previewVideo(videoFile: any)
-  {
-    try
-    {
-      this.loading = true;
-      setTimeout(() => { this.loading = false; this.videoFile = videoFile; }, 600);
-    } catch (error) { this.xtremandLogger.error(error); }
-  }
+  
+  
 
   closeModal(event: any)
   {
    
     this.videoFile = undefined;
   }
-  showContactListModal()
-  {
-    this.loading = true;
-    this.getListOfContacts(this.campaingContactLists[0].id);
-  }
+  
  
-
-  getListOfContacts(id: number)
-  {
-    try
-    {
-      this.contactListId = id;
-      this.campaignService.loadUsersOfContactList(id, this.campaignId, this.contactListInfoPagination).subscribe(
-        data =>
-        {
-          this.campaingContactListValues = data.listOfUsers;
-          this.loading = false;
-          this.contactListInfoPagination.totalRecords = data.totalRecords;
-          this.contactListInfoPagination = this.pagerService.getPagedItems(this.contactListInfoPagination, this.campaingContactListValues);
-          $("#show_contact-list-info").modal('show');
-        },
-        (error: any) => { this.xtremandLogger.error('error' + error); })
-    } catch (error) { this.xtremandLogger.error('error' + error); }
-  }
-
   getSortedResult(campaignId: number, event: any)
   {
     this.emailActionListPagination = this.utilService.sortOptionValues(event, this.emailActionListPagination);
@@ -1219,14 +863,8 @@ export class DealAnalyticsComponent implements OnInit
 
   ngOnDestroy()
   {
-    this.paginationType = '';
-    $('#worldMapModal').modal('hide');
-    $('#email_template_preivew').modal('hide');
-    $('#show_contact-list-info').modal('hide');
-    $('#usersWatchListModal').modal('hide');
-    $('#emailActionListModal').modal('hide');
-    $('#emailSentListModal').modal('hide');
-    $('#donutModelPopup').modal('hide');
+   
+   
   }
 
   showDealRegistrationForm()

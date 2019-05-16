@@ -12,7 +12,7 @@
     <div class="caption" *ngIf="submitButtonText == 'REGISTER DEAL'">Deal Registration</div>
     <div class="caption" *ngIf="submitButtonText != 'REGISTER DEAL'">Deal Details</div>
   </div>
-  <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+  <!-- <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message> -->
   <div class="alert alert-danger" id="company-profile-error-div" style="display: none;">
     <a class="close" aria-label="close">x</a>
     <strong>Please complete the required (*) fields. </strong>
@@ -21,7 +21,7 @@
     <div>
       <form role="form" id="deal-registration-form">
 
-          <!-- <div class="row" style="margin: 20px;" *ngIf="!dealRegistration.pushToMarketo && !isVendor" >
+        <!-- <div class="row" style="margin: 20px;" *ngIf="!dealRegistration.pushToMarketo && !isVendor" >
               <div class="col-xs-12 col-md-10" >
                 <h4 style="float:right;">Push Opportunity to Marketo :</h4>
                
@@ -47,152 +47,159 @@
                    
               </div>
           </div> -->
-        <div class="row" style="margin-bottom: 50px;border: 1px solid darkslategrey;margin: 10px;padding: 10px">
+        <div class="row portlet light" style="margin-bottom: 50px;border: 1px solid darkslategrey;margin: 10px;padding: 10px">
 
           <!-- left page -->
-          <div>
-            <h4 class="caption" >Opportunity Details</h4>
-            <div class="col-sm-6 col-xs-12">
-              <div class="form-group">
-                <label class="control-label">Campaign Name
-                  <font style="color: #f55d7a">
-                    <b>*</b>
-                  </font>
-                </label>
-                <input type="text" disabled="disabled" name="campaignName" value="{{campaign.campaignName}}" class="form-control" id="campaignName"
-                />
-              </div>
-
-              <div class="form-group" [attr.class]="company">
-                <label class="control-label">Company
-                  <font style="color: #f55d7a">
-                    <b>*</b>
-                  </font>
-                </label>
-                <input type="text" maxlength="100" class="form-control" [(ngModel)]=" dealRegistration.company" [ngModelOptions]="{standalone: true}"
-                  id="company" (input)="validateField('company',false)" [disabled]="isVendor" />
-              </div>
-              <div class="form-group" [attr.class]="firstName">
-                <label class="control-label">First Name
-                  <font style="color: #f55d7a">
-                    <b>*</b>
-                  </font>
-                </label>
-                <input type="text" maxlength="100" name="companyName" class="form-control" [(ngModel)]=" dealRegistration.firstName" [ngModelOptions]="{standalone: true}"
-                  id="firstName" (input)="validateField('firstName',false)" [disabled]="isVendor" />
-              </div>
-
-              <div class="form-group" [attr.class]="lastName">
-                <label class="control-label">Last Name
-                  <font style="color: #f55d7a">
-                    <b>*</b>
-                  </font>
-                </label>
-                <input type="text" maxlength="100" class="form-control" [(ngModel)]=" dealRegistration.lastName" [ngModelOptions]="{standalone: true}"
-                  id="lastName" (input)="validateField('lastName',false)" [disabled]="isVendor" />
-              </div>
-
-
-              <div class="form-group" *ngIf="dealRegistration.email">
-                <label class="control-label">Email
-                  <font style="color: #f55d7a">
-                    <b>*</b>
-                  </font>
-                </label>
-                <input type="text" maxlength="100" class="form-control" [(ngModel)]=" dealRegistration.email" [ngModelOptions]="{standalone: true}"
-                  id="email" disabled/>
-              </div>
-
-              <div class="form-group" [attr.class]="phoneDivClass">
-                <label class="control-label">Phone Number
-                  <font style="color: #f55d7a">
-                    <b>*</b>
-                  </font>
-                </label>
-                <fieldset style="padding:0 !important;border: 1px solid #ece2e2 !important">
-                  <int-phone-prefix [(ngModel)]="dealRegistration.phone" (input)="validateField('phone',false)" (blur)="validateField('phone',false)"
-                    [ngModelOptions]="{standalone: true}"></int-phone-prefix>
-                </fieldset>
-                <span *ngIf="phoneError" style="color: #f55d7a">{{phoneErrorMessage}}</span>
-              </div>
-
-
-
-
-
+          <h4 class="caption" class="portlet-title">Opportunity Details</h4>
+          <div class="col-sm-6 col-xs-12">
+            <div class="form-group" style="margin-bottom: 20px">
+              <label class="control-label">Campaign Name
+                <font style="color: #f55d7a">
+                  <b>*</b>
+                </font>
+              </label>
+              <input type="text" disabled="disabled" name="campaignName" value="{{campaign.campaignName}}" class="form-control" id="campaignName"
+              />
             </div>
-            <!-- right page -->
-            <div class="col-sm-6 col-xs-12">
 
-
-
-              <div class="form-group" [attr.class]="leadStreet">
-                <label class="control-label">Lead Address
-                  <font style="color: #f55d7a">
-                    <b>*</b>
-                  </font>
-                </label>
-                <textarea type="text" maxlength="100" class="form-control" name="leadstreet" [(ngModel)]=" dealRegistration.leadStreet" [ngModelOptions]="{standalone: true}"
-                  (input)="validateField('leadStreet',false)" id="leadStreet" [disabled]="isVendor"></textarea>
-              </div>
-              <div class="form-group" [attr.class]="leadCity">
-                <label class="control-label">Lead City
-                  <font style="color: #f55d7a">
-                    <b>*</b>
-                  </font>
-                </label>
-                <input type="text" maxlength="100" name="city" class="form-control" [(ngModel)]=" dealRegistration.leadCity" [ngModelOptions]="{standalone: true}"
-                  (input)="validateField('leadCity',false)" id="leadCity" [disabled]="isVendor" />
-              </div>
-
-              <div class="form-group" [attr.class]="leadState">
-                <label class="control-label">Lead State/Province
-                  <font style="color: #f55d7a">
-                    <b>*</b>
-                  </font>
-                </label>
-                <input type="text" maxlength="100" class="form-control" name="lead state" [(ngModel)]=" dealRegistration.leadState" [ngModelOptions]="{standalone: true}"
-                  id="leadState" (input)="validateField('leadState',false)" [disabled]="isVendor" />
-              </div>
-              <div class="form-group" [attr.class]="leadPostalCode">
-                <label class="control-label">Lead Postal Code
-                  <font style="color: #f55d7a">
-                    <b>*</b>
-                  </font>
-                </label>
-                <input type="text" maxlength="10" name="companyName" class="form-control" [(ngModel)]=" dealRegistration.postalCode" [ngModelOptions]="{standalone: true}"
-                  id="leadPostalCode" (input)="validateField('leadPostalCode',false)" [disabled]="isVendor" />
-              </div>
-
-              <div class="form-group" [attr.class]="country">
-                <label class="control-label">Lead Country
-                  <font style="color: #f55d7a">
-                    <b>*</b>
-                  </font>
-                </label>
-                <select class="form-control" [(ngModel)]="dealRegistration.leadCountry" [ngModelOptions]="{standalone: true}" placeholder="Country"
-                  id="leadCountry" (input)="validateField('leadCountry',false)" [disabled]="isVendor">
-                  <option *ngFor="let country of countryNames.countries" [value]="country" [selected]="dealRegistration.leadCountry==country">{{country}}</option>
-                </select>
-              </div>
-              <div class="form-group" [attr.class]="websiteDivClass">
-                <label class="control-label">Website
-                  <font style="color: #f55d7a">
-                    <b>*</b>
-                  </font>
-                </label>
-                <input type="text" maxlength="100" id="website" name="website" class="form-control" [(ngModel)]="dealRegistration.website"
-                  (blur)="validateField('website',false)" [disabled]="isVendor" />
-                <span *ngIf="websiteError" style="color: #f55d7a">{{websiteErrorMessage}}</span>
-              </div>
-
-
+            <div class="form-group" [attr.class]="company" style="margin-bottom: 20px">
+              <label class="control-label">Company
+                <font style="color: #f55d7a">
+                  <b>*</b>
+                </font>
+              </label>
+              <input type="text" maxlength="100" class="form-control" [(ngModel)]=" dealRegistration.company" [ngModelOptions]="{standalone: true}"
+                id="company" (input)="validateField('company',false)" [disabled]="isVendor" />
             </div>
+            <div class="form-group" [attr.class]="firstName" style="margin-bottom: 20px">
+              <label class="control-label">First Name
+                <font style="color: #f55d7a">
+                  <b>*</b>
+                </font>
+              </label>
+              <input type="text" maxlength="100" name="companyName" class="form-control" [(ngModel)]=" dealRegistration.firstName" [ngModelOptions]="{standalone: true}"
+                id="firstName" (input)="validateField('firstName',false)" [disabled]="isVendor" />
+            </div>
+
+            <div class="form-group" [attr.class]="lastName" style="margin-bottom: 20px">
+              <label class="control-label">Last Name
+                <font style="color: #f55d7a">
+                  <b>*</b>
+                </font>
+              </label>
+              <input type="text" maxlength="100" class="form-control" [(ngModel)]=" dealRegistration.lastName" [ngModelOptions]="{standalone: true}"
+                id="lastName" (input)="validateField('lastName',false)" [disabled]="isVendor" />
+            </div>
+          <div class="form-group" [attr.class]="title" style="margin-bottom: 20px">
+            <label class="control-label">Role
+              <font style="color: #f55d7a">
+                <b>*</b>
+              </font>
+            </label>
+            <input type="text" maxlength="100" name="role" class="form-control" [(ngModel)]=" dealRegistration.role" [ngModelOptions]="{standalone: true}"
+              id="role" (input)="validateField('role',false)" [disabled]="isVendor" />
           </div>
+
+            <div class="form-group" *ngIf="dealRegistration.email" style="margin-bottom: 20px">
+              <label class="control-label">Email
+                <font style="color: #f55d7a">
+                  <b>*</b>
+                </font>
+              </label>
+              <input type="text" maxlength="100" class="form-control" [(ngModel)]=" dealRegistration.email" [ngModelOptions]="{standalone: true}"
+                id="email" disabled/>
+            </div>
+
+            <div class="form-group" [attr.class]="phoneDivClass" style="margin-bottom: 20px">
+              <label class="control-label">Phone Number
+                <font style="color: #f55d7a">
+                  <b>*</b>
+                </font>
+              </label>
+              <fieldset style="padding:0 !important;border: 1px solid #ece2e2 !important">
+                <int-phone-prefix [(ngModel)]="dealRegistration.phone" (input)="validateField('phone',false)" (blur)="validateField('phone',false)"
+                  [ngModelOptions]="{standalone: true}"></int-phone-prefix>
+              </fieldset>
+              <span *ngIf="phoneError" style="color: #f55d7a">{{phoneErrorMessage}}</span>
+            </div>
+
+
+
+
+
+          </div>
+          <!-- right page -->
+          <div class="col-sm-6 col-xs-12">
+
+
+
+            <div class="form-group" [attr.class]="leadStreet" style="margin-bottom: 20px">
+              <label class="control-label">Lead Address
+                <font style="color: #f55d7a">
+                  <b>*</b>
+                </font>
+              </label>
+              <textarea type="text" maxlength="100" class="form-control" name="leadstreet" [(ngModel)]=" dealRegistration.leadStreet" [ngModelOptions]="{standalone: true}"
+                (input)="validateField('leadStreet',false)" id="leadStreet" [disabled]="isVendor"></textarea>
+            </div>
+            <div class="form-group" [attr.class]="leadCity" style="margin-bottom: 20px">
+              <label class="control-label">Lead City
+                <font style="color: #f55d7a">
+                  <b>*</b>
+                </font>
+              </label>
+              <input type="text" maxlength="100" name="city" class="form-control" [(ngModel)]=" dealRegistration.leadCity" [ngModelOptions]="{standalone: true}"
+                (input)="validateField('leadCity',false)" id="leadCity" [disabled]="isVendor" />
+            </div>
+
+            <div class="form-group" [attr.class]="leadState" style="margin-bottom: 20px">
+              <label class="control-label">Lead State/Province
+                <font style="color: #f55d7a">
+                  <b>*</b>
+                </font>
+              </label>
+              <input type="text" maxlength="100" class="form-control" name="lead state" [(ngModel)]=" dealRegistration.leadState" [ngModelOptions]="{standalone: true}"
+                id="leadState" (input)="validateField('leadState',false)" [disabled]="isVendor" />
+            </div>
+            <div class="form-group" [attr.class]="leadPostalCode" style="margin-bottom: 20px">
+              <label class="control-label">Lead Postal Code
+                <font style="color: #f55d7a">
+                  <b>*</b>
+                </font>
+              </label>
+              <input type="text" maxlength="10" name="companyName" class="form-control" [(ngModel)]=" dealRegistration.postalCode" [ngModelOptions]="{standalone: true}"
+                id="leadPostalCode" (input)="validateField('leadPostalCode',false)" [disabled]="isVendor" />
+            </div>
+
+            <div class="form-group" [attr.class]="country" style="margin-bottom: 20px">
+              <label class="control-label">Lead Country
+                <font style="color: #f55d7a">
+                  <b>*</b>
+                </font>
+              </label>
+              <select class="form-control" [(ngModel)]="dealRegistration.leadCountry" [ngModelOptions]="{standalone: true}" placeholder="Country"
+                id="leadCountry" (input)="validateField('leadCountry',false)" [disabled]="isVendor">
+                <option *ngFor="let country of countryNames.countries" [value]="country" [selected]="dealRegistration.leadCountry==country">{{country}}</option>
+              </select>
+            </div>
+            <div class="form-group" [attr.class]="websiteDivClass" style="margin-bottom: 20px">
+              <label class="control-label">Website
+                <font style="color: #f55d7a">
+                  <b>*</b>
+                </font>
+              </label>
+              <input type="text" maxlength="100" id="website" name="website" class="form-control" [(ngModel)]="dealRegistration.website"
+                (blur)="validateField('website',false)" [disabled]="isVendor" />
+              <span *ngIf="websiteError" style="color: #f55d7a">{{websiteErrorMessage}}</span>
+            </div>
+
+
+          </div>
+
         </div>
-        <div class=" row " style="margin-bottom: 50px;border: 1px solid darkslategrey;margin: 10px;padding: 10px">
-          <h4 class="caption">Deal Details</h4>
-          <div class="form-group" [attr.class]="title">
+        <div class=" row portlet light" style="margin-bottom: 50px;border: 1px solid darkslategrey;margin: 10px;padding: 10px">
+          <h4 class="caption" class="portlet-title">Deal Details</h4>
+          <div class="form-group" [attr.class]="title" style="margin-bottom: 20px">
             <label class="control-label">Title
               <font style="color: #f55d7a">
                 <b>*</b>
@@ -201,7 +208,10 @@
             <input type="text" maxlength="100" name="titleName" class="form-control" [(ngModel)]=" dealRegistration.title" [ngModelOptions]="{standalone: true}"
               id="title" (input)="validateField('title',false)" [disabled]="isVendor" />
           </div>
-          <div class="form-group" [attr.class]="dealType">
+
+         
+
+          <div class="form-group" [attr.class]="dealType" style="margin-bottom: 20px">
             <label class="control-label">Deal Type
               <font style="color: #f55d7a">
                 <b>*</b>
@@ -247,7 +257,7 @@
             
           </div> -->
 
-          <div class="form-group " [attr.class]="opportunityAmount">
+          <div class="form-group " [attr.class]="opportunityAmount" style="margin-bottom: 20px">
             <label class="control-label">Opportunity Amount
               <font style="color: #f55d7a">
                 <b>*</b>
@@ -261,7 +271,7 @@
                 [disabled]="isVendor" max="10000000000.00" />
             </div>
           </div>
-          <div class="form-group" [attr.class]="estimatedCloseDate">
+          <div class="form-group" [attr.class]="estimatedCloseDate" style="margin-bottom: 20px">
             <label class="control-label">Estimated Close date
               <font style="color: #f55d7a">
                 <b>*</b>
@@ -312,7 +322,7 @@
                   </div>
                   <div class="col-xs-6">
                     <div class="pull-right" id="question-icons">
-                      <button type="button" class="btn-danger button-blue" (click)="remove(i+1,property.id)" *ngIf="!isVendor">
+                      <button type="button" class="btn-danger button-blue" (click)="showAlert(i+1,property)" *ngIf="!isVendor">
                         <span class="glyphicon glyphicon-trash"></span>
                       </button>
                       <button type="button" class="btn-primary button-blue" (click)="addProperties()" *ngIf="!isVendor">
@@ -374,11 +384,11 @@
 
 
 
-  <!-- END CONTENT -->
+<!-- END CONTENT -->
 
-  
+
 <!-- Marketo Authentication -->
-  <!-- <div class="modal right fade" id="templateRetrieve" tabindex="-1" role="dialog" aria-labelledby="templateRetrieve" data-keyboard="false"
+<!-- <div class="modal right fade" id="templateRetrieve" tabindex="-1" role="dialog" aria-labelledby="templateRetrieve" data-keyboard="false"
   data-backdrop="static">
    <div class="modal-dialog template-modal" role="document" style="width: 50%">
      <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>

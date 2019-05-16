@@ -11,6 +11,7 @@ export class DealRegistration{
   firstName:string;
   lastName: string;
   title: string;
+  role:string;
   email: string;
   phone: string;
   opportunityCapacity: number;

@@ -20,7 +20,7 @@ export class TopnavbarComponent implements OnInit {
   currentUrl: string;
   roleName: Roles = new Roles();
   isUser = false;
-  @Input() model = { 'displayName': '', 'profilePicutrePath': 'assets/admin/pages/media/profile/icon-user-default.png' };
+  @Input() model = { 'displayName': '', 'profilePicutrePath': 'assets/images/icon-user-default.png' };
   constructor(public router: Router, public userService: UserService, public utilService: UtilService,
     public socialService: SocialService, public authenticationService: AuthenticationService,
     public refService: ReferenceService, public logger: XtremandLogger,public properties: Properties) {
@@ -48,15 +48,15 @@ export class TopnavbarComponent implements OnInit {
                   this.model.profilePicutrePath = loggedInUser.profileImagePath;
                   refService.topNavBarUserDetails.profilePicutrePath = loggedInUser.profileImagePath;
                 } else {
-                  this.model.profilePicutrePath = 'assets/admin/pages/media/profile/icon-user-default.png';
-                  refService.topNavBarUserDetails.profilePicutrePath = 'assets/admin/pages/media/profile/icon-user-default.png';
+                  this.model.profilePicutrePath = 'assets/images/icon-user-default.png';
+                  refService.topNavBarUserDetails.profilePicutrePath = 'assets/images/icon-user-default.png';
                 }
               },
               error => { this.logger.error(this.refService.errorPrepender + ' Constructor():' + error); },
               () => this.logger.log('Finished')
               );
           }
-   
+
 
     const roles = this.authenticationService.getRoles();
     if(roles!=undefined){
@@ -83,11 +83,11 @@ export class TopnavbarComponent implements OnInit {
     }
     }else{
        this.authenticationService.logout();
-    }   
+    }
     }catch(error) {this.logger.error('error'+error); }
   }
   errorHandler(event:any){
-    event.target.src = 'assets/admin/pages/media/profile/icon-user-default.png';
+    event.target.src = 'assets/images/icon-user-default.png';
   }
   connectToWebSocket(){
       let error_callback = function(error) {
@@ -101,19 +101,19 @@ export class TopnavbarComponent implements OnInit {
               // additional header
               'client-id': 'my-trusted-client'
             };
-      
+
       stompClient.connect(headers, error_callback);
    /*   stompClient.connect(headers, frame => {
           stompClient.subscribe('/topic/notification', notifications => {
           });
 
       });*/
-      
-      
+
+
   }
- 
-  
-  
+
+
+
   getUnreadNotificationsCount() {
    try{
     this.userService.getUnreadNotificationsCount(this.authenticationService.getUserId())

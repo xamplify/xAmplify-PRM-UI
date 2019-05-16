@@ -63,7 +63,9 @@ a.disabled{pointer-events:none;cursor:not-allowed}
   background-color: #8a8282c4;
 }
 
-
+.white-space-transform{
+	   white-space: nowrap;
+}
 
 
 

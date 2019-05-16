@@ -19,9 +19,6 @@
 				<span class="caption-subject font-red-sunglo uppercase">video statistics</span>
 			</div>
 			<div class="panel-title pull-right" style="margin-top: 5px;">
-			   <!-- <span class="tooltip-custom" title="{{heatMapTooltip}}">
-					<i class="fa fa-question-circle" style="font-size: 20px"></i>
-        </span> -->
         <span  class="tooltip-custom" [hidden]="referenceService.daySortValue===sortDates[1].value || referenceService.daySortValue===sortDates[2].value || referenceService.daySortValue===sortDates[3].value"  data-toggle="tooltip" data-placement="left" title="7 Days">
           <i class="fa fa-question-circle stats" style="font-size: 20px"></i>
         </span>
@@ -69,9 +66,10 @@
 								<app-timestamp [isOnlyDate]="true" [dateAndTime]="view.date"> </app-timestamp>
 								</td>
 							</tr>
-						</ng-container>
-					</tbody>
-				</table>
+            </ng-container>
+          </tbody>
+        </table>
+          <div *ngIf="videoViewsLevelFirst?.length ===0" class="text-center"> No data available for the selected stats	</div>
 			</div>
 		</div>
   </div>
@@ -126,9 +124,10 @@
 							<app-timestamp [dateAndTime]="videoViews.date"> </app-timestamp>
 							</td>
 						</tr>
-					</ng-container>
-				</tbody>
-			</table>
+          </ng-container>
+        </tbody>
+       </table>
+       <div *ngIf="videoViewsLevelSecond?.length ===0" class="text-center">No data available for the selected stats	</div>
 			<div class="pg8"><app-pagination [hidden]="loading || videoViewsLevelSecond?.length==0" [pagination]="pagination" [type]="'reports'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination></div>
 		</div>
   </div>

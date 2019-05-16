@@ -21,7 +21,11 @@ import { CustomResponse } from '../../../common/models/custom-response';
 import { SaveVideoFile } from '../../../videos/models/save-video-file';
 import { Properties } from '../../../common/models/properties';
 import { UtilService } from 'app/core/services/util.service';
-import { CropperSettings, ImageCropperComponent } from 'ng2-img-cropper';
+// import { CropperSettings, ImageCropperComponent } from 'ng2-img-cropper';
+// ImageCroppedEvent
+import { ImageCroppedEvent } from '../../../common/image-cropper/interfaces/image-cropped-event.interface';
+import { ImageCropperComponent } from '../../../common/image-cropper/component/image-cropper.component';
+
 declare var $,swal: any;
 
 @Component({
@@ -123,12 +127,19 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
     tempCompanyProfile:any;
     upadatedUserId:any;
     isUpdateChaged = false;
-    squareCropperSettings: CropperSettings;
+    squareCropperSettings: any;
     squareData:any;
     cropRounded = false;
     loadingcrop = false;
     errorUploadCropper = false;
-    @ViewChild(ImageCropperComponent) cropper:ImageCropperComponent;
+    imageChangedEvent: any = '';
+    croppedImage: any = '';
+    showCropper = false;
+    isAspectRatio = false;
+    aspectRatioValue = '4/3';
+
+    @ViewChild(ImageCropperComponent) imageCropper: ImageCropperComponent;
+    // @ViewChild(ImageCropperComponent) cropper:ImageCropperComponent;
     constructor(private logger: XtremandLogger, public authenticationService: AuthenticationService, private fb: FormBuilder,
         private companyProfileService: CompanyProfileService, public homeComponent: HomeComponent,private sanitizer: DomSanitizer,
         public refService: ReferenceService, private router: Router, public processor: Processor, public countryNames: CountryNames,
@@ -139,7 +150,9 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
         this.companyProfileNameDivClass = this.refService.formGroupClass;
         this.isOnlyPartner = this.authenticationService.isOnlyPartner();
         this.isVendorRole = this.authenticationService.isVendor();
-        this.cropperSettings();
+        // this.cropperSettings();
+        this.squareCropperSettings = this.utilService.cropSettings(this.squareCropperSettings,130,196,130,false);
+
         this.companyBackGroundLogoUploader = new FileUploader({
             allowedMimeType: ['image/jpeg', 'image/pjpeg', 'image/jpeg', 'image/pjpeg', 'image/png'],
             maxFileSize: 10 * 1024 * 1024, // 100 MB
@@ -165,34 +178,69 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
     closeModal(){
       this.cropRounded = !this.cropRounded;
       this.squareData = {};
+      this.imageChangedEvent = null;
+      this.croppedImage = '';
     }
-    cropperSettings(){
-      this.squareCropperSettings = this.utilService.cropSettings(this.squareCropperSettings,130,196,130,false);
-      this.squareCropperSettings.noFileInput = true;
-      this.squareData = {};
-    }
+    // cropperSettings(){
+    //   this.squareCropperSettings = this.utilService.cropSettings(this.squareCropperSettings,130,196,130,false);
+    //   this.squareCropperSettings.noFileInput = true;
+    //   this.squareData = {};
+    // }
     fileChangeEvent(){ this.cropRounded = false; $('#cropLogoImage').modal('show'); }
-    fileChangeListener($event,cropperComp: ImageCropperComponent) {
-      this.cropper = cropperComp;
+    // fileChangeListener($event,cropperComp: ImageCropperComponent) {
+    //   // this.cropper = cropperComp;
+    //   const image:any = new Image();
+    //   const file:File = $event.target.files[0];
+    //   const isSupportfile = file.type;
+    //   if (isSupportfile === 'image/jpg' || isSupportfile === 'image/jpeg' || isSupportfile === 'image/png') {
+    //     this.errorUploadCropper = false;
+    //     const myReader:FileReader = new FileReader();
+    //     const that = this;
+    //     myReader.onloadend = function (loadEvent:any) {
+    //         image.src = loadEvent.target.result;
+    //         that.cropper.setImage(image);
+    //     };
+    //     myReader.readAsDataURL(file);
+    //   } else {  this.errorUploadCropper = true;}
+
+    //   }
+
+    setValue(event){
+      if(event === 'None') { this.isAspectRatio = false; }
+      else { this.isAspectRatio = true; this.aspectRatioValue = event; }
+    }
+    filenewChangeEvent(event){
       const image:any = new Image();
-      const file:File = $event.target.files[0];
+      const file:File = event.target.files[0];
       const isSupportfile = file.type;
       if (isSupportfile === 'image/jpg' || isSupportfile === 'image/jpeg' || isSupportfile === 'image/png') {
-        this.errorUploadCropper = false;
-        const myReader:FileReader = new FileReader();
-        const that = this;
-        myReader.onloadend = function (loadEvent:any) {
-            image.src = loadEvent.target.result;
-            that.cropper.setImage(image);
-        };
-        myReader.readAsDataURL(file);
-      } else {  this.errorUploadCropper = true;}
-
+          this.errorUploadCropper = false;
+          this.imageChangedEvent = event;
+      } else {
+        this.errorUploadCropper = true;
+        this.showCropper = false;
       }
+    }
+    imageCroppedMethod(event: ImageCroppedEvent) {
+      this.croppedImage = event.base64;
+      console.log(event);
+    }
+    imageLoaded() {
+      this.showCropper = true;
+      console.log('Image loaded')
+    }
+    cropperReady() {
+      console.log('Cropper ready')
+    }
+    loadImageFailed () {
+      console.log('Load failed');
+      this.errorUploadCropper = true;
+      this.showCropper = false;
+    }
     uploadLogo(){
       this.loadingcrop = true;
       let fileObj:any;
-      fileObj = this.utilService.convertBase64ToFileObject(this.squareData.image);
+      fileObj = this.utilService.convertBase64ToFileObject(this.croppedImage);
       fileObj = this.utilService.blobToFile(fileObj);
       console.log(fileObj);
       this.fileUploadCode(fileObj);
@@ -865,12 +913,16 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
 
     validateCity() {
       if ($.trim(this.companyProfile.city).length > 0) {
-            if (!this.regularExpressions.CITY_PATTERN.test(this.companyProfile.city)) {
-                this.addCityError();
-                this.cityErrorMessage = "Invalid City";
-            } else {
-                this.removeCityError();
-            }
+        if(/^[a-zA-Z0-9]*$/.test(this.companyProfile.city) == false){
+          this.addCityError();
+          this.cityErrorMessage = "Invalid City";
+         } else {  this.removeCityError(); }
+          //  if (!this.regularExpressions.CITY_PATTERN.test(this.companyProfile.city)) {
+          //       this.addCityError();
+          //       this.cityErrorMessage = "Invalid City";
+          //   } else {
+          //       this.removeCityError();
+          //   }
         } else {
             this.removeCityError();
         }
@@ -878,7 +930,8 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
 
     validateState() {
         if ($.trim(this.companyProfile.state).length > 0) {
-            if (!this.regularExpressions.CITY_PATTERN.test(this.companyProfile.state)) {
+          if(/^[a-zA-Z0-9]*$/.test(this.companyProfile.state) == false){
+            // if (!this.regularExpressions.CITY_PATTERN.test(this.companyProfile.state)) {
                 this.addStateError();
                 this.stateErrorMessage = "Invalid State";
             } else {

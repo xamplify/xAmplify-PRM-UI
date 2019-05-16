@@ -1,6 +1,5 @@
 <div class="page-content"
 	[class.ml0]="authenticationService.isSuperAdmin()">
-	<ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 	<div class="page-bar">
 		<ul class="page-breadcrumb">
 			<li *ngIf="!authenticationService.isSuperAdmin()"><i
@@ -27,6 +26,7 @@
 			*ngIf="customResponse.isVisible"></app-response-message>
 	</div>
 	<div class="row">
+	<ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 		<div class="col-md-12">
 			<div class="portlet light clearfix" style="min-height: 644px;">
 				<div class="portlet-title" style="border-bottom: none">
@@ -113,7 +113,7 @@
 										Name</th>
 									<th class="hidden-xs text-center">Type</th>
 									<th class="hidden-xs text-center">Created On</th>
-									<th class="text-center" style="min-width: 145px;">Actions</th>
+									<th class="text-center" style="min-width: 200px;">Actions</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -142,7 +142,8 @@
 											From <b>{{emailTemplate.companyName}}</b>
 										</h6>
 										</ng-container>
-										<h5 class="view-banner-draft" *ngIf="emailTemplate.draft">DRAFT</h5>
+										<h5 class="view-banner-draft mr5" *ngIf="emailTemplate.draft">DRAFT</h5>
+										<h5 class="badge badge-secondary m0" *ngIf="emailTemplate.spamScore" data-toggle="tooltip" title="Spam score">{{emailTemplate.spamScore}}</h5>
 										<h5 class="view-banner" *ngIf="emailTemplate.type=='PARTNER'">PARTNER</h5>
 										<!-- <h5 class="view-banner"
 											*ngIf="(emailTemplate.regularCoBrandingTemplate||emailTemplate.videoCoBrandingTemplate) &&emailTemplate.type=='UPLOADED' ">CO-BRANDED</h5> -->
@@ -166,6 +167,9 @@
 										</app-timestamp></td>
 									<td style="width: 14%">
 										<div class="actions-block override-actions">
+											<a (click)="spamCheck(emailTemplate)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_spam_check}}"> 
+												<i class="fa fa-inbox" aria-hidden="true"></i>
+											</a>
 											<a (click)="edit(emailTemplate.id)" data-toggle="tooltip"
 												data-placement="top"
 												title="{{actionsDescription.template_edit}}"
@@ -250,6 +254,9 @@
 
 							</div>
 							<div class="bar">
+								<a (click)="spamCheck(emailTemplate)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_spam_check}}"> 
+									<i class="fa fa-inbox" aria-hidden="true"></i>
+								</a>
 								<a (click)="edit(emailTemplate.id)" data-toggle="tooltip"
 									data-placement="top"
 									title="{{actionsDescription.template_edit}}"
@@ -270,7 +277,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="row mix-grid" style="margin-top: -15px; padding: 7px;" *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError">
+					<!-- <div class="row mix-grid" style="margin-top: -15px; padding: 7px;" *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError">
 						<ng-container>
 						<div
 							*ngFor="let emailTemplate of pagination.pagedItems ;let i =index"
@@ -290,7 +297,7 @@
 							</div>
 						</div>
 						</ng-container>
-					</div>
+					</div> -->
 				</div>
 				<div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
 					<app-pagination [pagination]="pagination"
@@ -306,12 +313,11 @@
 		</div>
 	</div>
 
-	<div class="modal right fade" id="show_email_template_preivew">
+	<div class="modal right" id="show_email_template_preivew">
 		<div class="modal-dialog modal-lg modal-template" style="right:0">
 			<div class="modal-content">
 				<div class="modal-header">
-					<button type="button" class="close-circle" data-dismiss="modal"
-						aria-hidden="true">
+					<button type="button" class="close-circle" data-dismiss="modal" (click)="emailTemplate = null" aria-hidden="true">
 						<i class="fa fa-times"></i>
 					</button>
 					<h4 class="modal-title" id="email-template-title"
@@ -321,8 +327,23 @@
 					<div id="htmlContent"></div>
 				</div>
 				<div class="modal-footer">
-					<a href="javascript:void(0)" data-dismiss="modal"
-						class="btn btn-default" style="float: right">Close</a>
+					<a href="javascript:void(0)" data-dismiss="modal" (click)="emailTemplate = null" class="btn btn-default" style="float: right">Close</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal right fade" id="email_spam_check">
+		<div class="modal-dialog modal-lg modal-template" style="right:0">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close-circle" data-dismiss="modal" (click)="emailTemplate = null" aria-hidden="true"><i class="fa fa-times"></i></button>
+					<h4 class="modal-title">Email Spam Check</h4>
+				</div>
+				<div class="modal-body">
+					<app-email-spam-check *ngIf="emailTemplate" [emailTemplate] = "emailTemplate"></app-email-spam-check>
+				</div>
+				<div class="modal-footer">
+					<a href="javascript:void(0)" data-dismiss="modal" (click)="emailTemplate = null" class="btn btn-default" style="float: right">Close</a>
 				</div>
 			</div>
 		</div>

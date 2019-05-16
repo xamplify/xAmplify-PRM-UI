@@ -13,7 +13,7 @@ import { Properties } from '../../../common/models/properties';
 })
 export class ProfileLockComponent implements OnInit {
 
-    userProfileImage = 'assets/admin/pages/media/profile/icon-user-default.png';
+    userProfileImage = 'assets/images/icon-user-default.png';
     userData: User;
     displayName: string;
     password: any;
@@ -29,7 +29,7 @@ export class ProfileLockComponent implements OnInit {
       public properties: Properties, public referenceService: ReferenceService) {
         this.password = '';
     }
-    errorHandler(event:any){ event.target.src='assets/admin/pages/media/profile/icon-user-default.png';}
+    errorHandler(event:any){ event.target.src='assets/images/icon-user-default.png';}
     checkPassword() {
         if (this.password.replace(/\s/g, '').length === 0) {
             this.loginDisabled = true;
@@ -84,7 +84,7 @@ export class ProfileLockComponent implements OnInit {
       if (this.password !== '') {
             this.error = 'Password is incorrect';
         } else {
-            this.error = "Password should't be empty";
+            this.error = "Password shouldn't be empty";
         }
         console.log('error : ' + this.error);
     }
