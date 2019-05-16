@@ -49,11 +49,13 @@ export class EmailSpamCheckComponent implements OnChanges, OnInit {
   }
 
   test(emailSpamScore: EmailSpamScore){
-    this.emailSpamCheckService.test(emailSpamScore.toEmail).subscribe(
+      this.loading = true;
+      this.emailSpamCheckService.test(emailSpamScore.toEmail).subscribe(
       result => {
         emailSpamScore.jsonResponse = result;
+        this.loading = false;
       },
-      (error: any) => { console.log(error); },
+      (error: any) => { console.log(error); this.loading = false; },
       () => {
         if(!emailSpamScore.score && emailSpamScore.jsonResponse){
           let _emailSpamScore = new EmailSpamScore();
@@ -67,6 +69,7 @@ export class EmailSpamCheckComponent implements OnChanges, OnInit {
           emailTemplate.spamScore = emailSpamScore.jsonResponse.displayedMark;
           this.updateScoreInEmailTemplate(emailTemplate);
         }
+        this.loading = false;
       }
     );
   }
